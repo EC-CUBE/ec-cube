@@ -34,7 +34,7 @@ class SC_CustomerList extends SC_SelectSql {
         $masterData = new SC_DB_MasterData_Ex();
 
         $objDb = new SC_Helper_DB_Ex();
-        $dbFactory = SC_DB_DBFactory::getInstance();
+        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
 
         if($mode == "") {
             // 会員本登録会員で削除していない会員

@@ -93,14 +93,14 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
                     $this->lfUpdateClass($this->arrForm);
                 }
                 // 再表示
-                SC_Response::reload();
+                SC_Response_Ex::reload();
             }
             break;
             // 削除
         case 'delete':
             // ランク付きレコードの削除
             $this->lfDeleteClassCat($class_id, $classcategory_id);
-            SC_Response::reload();
+            SC_Response_Ex::reload();
             break;
             // 編集前処理
         case 'pre_edit':
@@ -112,12 +112,12 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
         case 'down':
             //並び順を下げる
             $this->lfDownRank($class_id, $classcategory_id);
-            SC_Response::reload();
+            SC_Response_Ex::reload();
             break;
         case 'up':
             //並び順を上げる
             $this->lfUpRank($class_id, $classcategory_id);
-            SC_Response::reload();
+            SC_Response_Ex::reload();
             break;
         default:
             break;

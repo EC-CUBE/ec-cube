@@ -76,7 +76,7 @@ class LC_Page_AbstractMypage extends LC_Page_Ex {
             }
 
             // 携帯端末IDが一致する会員が存在するかどうかをチェックする。
-            if (SC_Display::detectDevice() === DEVICE_TYPE_MOBILE){
+            if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE){
                 $this->tpl_valid_phone_id = $objCustomer->checkMobilePhoneId();
             }
             $this->tpl_title        = 'MYページ(ログイン)';

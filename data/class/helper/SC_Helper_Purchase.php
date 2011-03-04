@@ -62,7 +62,7 @@ class SC_Helper_Purchase {
 
         $objQuery->begin();
         if (!$objSiteSession->isPrePage()) {
-            SC_Utils::sfDispSiteError(PAGE_ERROR, $objSiteSession);
+            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, $objSiteSession);
         }
 
         $uniqId = $objSiteSession->getUniqId();

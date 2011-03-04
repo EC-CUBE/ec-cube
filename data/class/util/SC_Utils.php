@@ -80,14 +80,14 @@ class SC_Utils {
             $phpself = $_SERVER['PHP_SELF'];
             if( !ereg('/install/', $phpself) ) {
                 $path = substr($phpself, 0, strpos($phpself, basename($phpself)));
-                $install_url = SC_Utils::searchInstallerPath($path);
+                $install_url = SC_Utils_Ex::searchInstallerPath($path);
                 header('Location: ' . $install_url);
                 exit;
             }
         }
         $path = HTML_REALDIR . 'install/' . DIR_INDEX_FILE;
         if(file_exists($path)) {
-            SC_Utils::sfErrorHeader('&gt;&gt; /install/' . DIR_INDEX_FILE . ' は、インストール完了後にファイルを削除してください。');
+            SC_Utils_Ex::sfErrorHeader('&gt;&gt; /install/' . DIR_INDEX_FILE . ' は、インストール完了後にファイルを削除してください。');
         }
     }
 
@@ -105,7 +105,7 @@ class SC_Utils {
     function searchInstallerPath($path) {
         $installer = 'install/' . DIR_INDEX_PATH;
 
-        if (SC_Utils::sfIsHTTPS()) {
+        if (SC_Utils_Ex::sfIsHTTPS()) {
             $proto = "https://";
         } else {
             $proto = "http://";
@@ -118,9 +118,9 @@ class SC_Utils {
             $path .= $path . '/';
         }
         $installer_url = $host . $path . $installer;
-        $resources = fopen(SC_Utils::getRealURL($installer_url), 'r');
+        $resources = fopen(SC_Utils_Ex::getRealURL($installer_url), 'r');
         if ($resources === false) {
-            $installer_url = SC_Utils::searchInstallerPath($path . '../');
+            $installer_url = SC_Utils_Ex::searchInstallerPath($path . '../');
         }
         return $installer_url;
     }
@@ -228,7 +228,7 @@ class SC_Utils {
         if($ret != SUCCESS) {
             if($disp_error) {
                 // エラーページの表示
-                SC_Utils::sfDispError($ret);
+                SC_Utils_Ex::sfDispError($ret);
             }
             return false;
         }
@@ -239,13 +239,13 @@ class SC_Utils {
             // TODO 警告表示させる？
             // sfErrorHeader('>> referrerが無効になっています。');
         } else {
-            $domain  = SC_Utils::sfIsHTTPS() ? HTTPS_URL : HTTP_URL;
+            $domain  = SC_Utils_Ex::sfIsHTTPS() ? HTTPS_URL : HTTP_URL;
             $pattern = sprintf('|^%s.*|', $domain);
             $referer = $_SERVER['HTTP_REFERER'];
 
             // 管理画面から以外の遷移の場合はエラー画面を表示
             if (!preg_match($pattern, $referer)) {
-                if ($disp_error) SC_Utils::sfDispError(INVALID_MOVE_ERRORR);
+                if ($disp_error) SC_Utils_Ex::sfDispError(INVALID_MOVE_ERRORR);
                 return false;
             }
         }
@@ -346,7 +346,7 @@ echo "sfGetCSVData()に移行してね。";
 exit;
 
         if($prefix == "") {
-            $dir_name = SC_Utils::sfUpDirName();
+            $dir_name = SC_Utils_Ex::sfUpDirName();
             $file_name = $dir_name . date("ymdHis") .".csv";
         } else {
             $file_name = $prefix . date("ymdHis") .".csv";
@@ -368,7 +368,7 @@ exit;
 
     function sfGetCSVData($data, $prefix = ""){
         if($prefix == "") {
-            $dir_name = SC_Utils::sfUpDirName();
+            $dir_name = SC_Utils_Ex::sfUpDirName();
             $file_name = $dir_name . date("ymdHis") .".csv";
         } else {
             $file_name = $prefix . date("ymdHis") .".csv";
@@ -550,7 +550,7 @@ exit;
 
         for($cnt = 0; $cnt < $max; $cnt++) {
             if($keysize != "") {
-                $key = SC_Utils::sfCutString($arrList[$cnt][$keyname], $keysize);
+                $key = SC_Utils_Ex::sfCutString($arrList[$cnt][$keyname], $keysize);
             } else {
                 $key = $arrList[$cnt][$keyname];
             }
@@ -575,7 +575,7 @@ exit;
 
         for($cnt = 0; $cnt < $max; $cnt++) {
             if($keysize != "") {
-                $key = SC_Utils::sfCutString($arrList[$cnt][$keyname], $keysize);
+                $key = SC_Utils_Ex::sfCutString($arrList[$cnt][$keyname], $keysize);
             } else {
                 $key = $arrList[$cnt][$keyname];
             }
@@ -778,7 +778,7 @@ exit;
         $adjust = pow(10 ,$pow-1);
 
         // 整数且つ0出なければ桁数指定を行う
-        if(SC_Utils::sfIsInt($adjust) and $pow > 1){
+        if(SC_Utils_Ex::sfIsInt($adjust) and $pow > 1){
             $ret = (round($value * $adjust)/$adjust);
         }
 
@@ -821,7 +821,7 @@ exit;
         $objQuery = new SC_Query();
         $arrList = $objQuery->getAll($sql);
         // キーと値をセットした配列を取得
-        $arrRet = SC_Utils::sfArrKeyValue($arrList, 'class_id', 'count');
+        $arrRet = SC_Utils_Ex::sfArrKeyValue($arrList, 'class_id', 'count');
 
         return $arrRet;
     }
@@ -1010,7 +1010,7 @@ exit;
         }
         // ファイルが開けなかった場合はエラーページを表示
           else {
-              SC_Utils::sfDispError('');
+              SC_Utils_Ex::sfDispError('');
               exit;
         }
         return     $outpath;
@@ -1118,7 +1118,7 @@ exit;
                     $keyname = $key;
                 }
                 if(is_array($val)) {
-                    $arrDst = SC_Utils::sfMakeHiddenArray($val, $arrDst, $keyname);
+                    $arrDst = SC_Utils_Ex::sfMakeHiddenArray($val, $arrDst, $keyname);
                 } else {
                     $arrDst[$keyname] = $val;
                 }
@@ -1240,14 +1240,14 @@ exit;
             if(is_writable(dirname($dir))) {
                 if(!file_exists($dir)) {
                     mkdir($dir);
-                    GC_Utils::gfPrintLog("mkdir $dir");
+                    GC_Utils_Ex::gfPrintLog("mkdir $dir");
                 }
             } else {
-                SC_Utils::sfMakeDir($dir);
+                SC_Utils_Ex::sfMakeDir($dir);
                 if(is_writable(dirname($dir))) {
                     if(!file_exists($dir)) {
                         mkdir($dir);
-                        GC_Utils::gfPrintLog("mkdir $dir");
+                        GC_Utils_Ex::gfPrintLog("mkdir $dir");
                     }
                 }
            }
@@ -1288,7 +1288,7 @@ exit;
                 mb_ereg("^(.*[\/])(.*)",$data_, $matches);
                 $data=$matches[2];
                 if( is_dir( $data_ ) ){
-                    $mess = SC_Utils::sfCopyDir( $data_.'/', $des.$data.'/', $mess);
+                    $mess = SC_Utils_Ex::sfCopyDir( $data_.'/', $des.$data.'/', $mess);
                 }else{
                     if(!$override && file_exists($des.$data)) {
                         $mess.= $des.$data . "：ファイルが存在します\n";
@@ -1318,7 +1318,7 @@ exit;
                 if(is_file($del_file)){
                     $ret = unlink($dir . "/" . $file);
                 }else if (is_dir($del_file)){
-                    $ret = SC_Utils::sfDelFile($del_file);
+                    $ret = SC_Utils_Ex::sfDelFile($del_file);
                 }
 
                 if(!$ret){
@@ -1530,8 +1530,8 @@ exit;
 
                         $path = $dir."/".$file;
                         // SELECT内の見た目を整えるため指定文字数で切る
-                        $file_name = SC_Utils::sfCutString($file, FILE_NAME_LEN);
-                        $file_size = SC_Utils::sfCutString(SC_Utils::sfGetDirSize($path), FILE_NAME_LEN);
+                        $file_name = SC_Utils_Ex::sfCutString($file, FILE_NAME_LEN);
+                        $file_size = SC_Utils_Ex::sfCutString(SC_Utils_Ex::sfGetDirSize($path), FILE_NAME_LEN);
                         $file_time = date("Y/m/d", filemtime($path));
 
                         // ディレクトリとファイルで格納配列を変える
@@ -1577,7 +1577,7 @@ exit;
                         $bytes += filesize($path);
                     } else if (is_dir($path) && $file != '..' && $file != '.') {
                         // 下層ファイルのバイト数を取得する為、再帰的に呼び出す。
-                        $bytes += SC_Utils::sfGetDirSize($path);
+                        $bytes += SC_Utils_Ex::sfGetDirSize($path);
                     }
                 }
             } else {
@@ -2196,7 +2196,7 @@ exit;
                      * SC_Utils_Ex への再帰は無限ループやメモリリークの懸念
                      * 自クラスへ再帰する.
                      */
-                    if (!SC_Utils::isBlank($in, $greedy)) {
+                    if (!SC_Utils_Ex::isBlank($in, $greedy)) {
                         return false;
                     }
                 }
@@ -2313,7 +2313,7 @@ exit;
             return json_encode($value);
         } else {
             require_once(dirname(__FILE__) . '/../../module/Services/JSON.php');
-            GC_Utils::gfPrintLog(' *use Services_JSON::encode(). faster than using the json_encode!');
+            GC_Utils_Ex::gfPrintLog(' *use Services_JSON::encode(). faster than using the json_encode!');
             $objJson = new Services_JSON();
             return $objJson->encode($value);
         }
@@ -2336,7 +2336,7 @@ exit;
             return json_decode($json);
         } else {
             require_once(dirname(__FILE__) . '/../../module/Services/JSON.php');
-            GC_Utils::gfPrintLog(' *use Services_JSON::decode(). faster than using the json_decode!');
+            GC_Utils_Ex::gfPrintLog(' *use Services_JSON::decode(). faster than using the json_decode!');
             $objJson = new Services_JSON();
             return $objJson->decode($json);
         }

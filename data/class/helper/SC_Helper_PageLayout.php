@@ -144,7 +144,7 @@ __EOF__;
                     if ($val['php_path'] != '' || is_file($arrNavi[$key]['tpl_path'])) {
                         $arrRet[] = $arrNavi[$key];
                     } else {
-                        GC_Utils::gfPrintLog("ブロック読み込みエラー：" . $arrNavi[$key]['tpl_path']);
+                        GC_Utils_Ex::gfPrintLog("ブロック読み込みエラー：" . $arrNavi[$key]['tpl_path']);
                     }
                 }
             }

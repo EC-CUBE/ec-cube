@@ -251,10 +251,10 @@ class SC_Module {
      */
     function log($msg, $data = null, $suffix = '') {
         $path = DATA_REALDIR . 'logs/' . $this->getCode() . "$suffix.log";
-        GC_Utils::gfPrintLog($msg, $path);
+        GC_Utils_Ex::gfPrintLog($msg, $path);
 
         if (!is_null($data)) {
-            GC_Utils::gfPrintLog(print_r($data, true), $path);
+            GC_Utils_Ex::gfPrintLog(print_r($data, true), $path);
         }
     }
 }

@@ -123,7 +123,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
         $arrSearchCondition = $this->lfGetSearchCondition($this->arrSearchData);
         $this->tpl_linemax = $this->lfGetProductAllNum($arrSearchCondition);
         $urlParam = "category_id={$this->arrSearchData['category_id']}&pageno=#page#";
-        $this->objNavi = new SC_PageNavi($this->tpl_pageno, $this->tpl_linemax, $this->disp_number, "fnNaviPage", NAVI_PMAX, $urlParam,SC_Display::detectDevice() !== DEVICE_TYPE_MOBILE);
+        $this->objNavi = new SC_PageNavi($this->tpl_pageno, $this->tpl_linemax, $this->disp_number, "fnNaviPage", NAVI_PMAX, $urlParam,SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE);
         $this->arrProducts = $this->lfGetProductsList($arrSearchCondition,$this->disp_number,$this->objNavi->start_row,$this->tpl_linemax,$objProduct);
         //商品一覧の表示処理
         $strnavi = $this->objNavi->strnavi;
@@ -176,7 +176,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
         }
 
         // ページャ用データ設定(モバイル)
-        if (SC_Display::detectDevice() == DEVICE_TYPE_MOBILE) {
+        if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
             $this->tpl_previous_page = $this->objNavi->arrPagenavi['before'];
             $this->tpl_next_page =  $this->objNavi->arrPagenavi['next'];
         }

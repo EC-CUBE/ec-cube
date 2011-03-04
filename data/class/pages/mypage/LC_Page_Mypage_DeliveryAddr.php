@@ -120,7 +120,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
                         $this->lfRegistDataNonMember($objFormParam);
                     }
 
-                    if(SC_Display::detectDevice() === DEVICE_TYPE_MOBILE) {
+                    if(SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
                         // モバイルの場合、元のページに遷移
                         SC_Response_Ex::sendRedirect($this->getLocation($_POST['ParentPage']));
                         exit;
@@ -147,7 +147,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
                 break;
         }
 
-        if (SC_Display::detectDevice() === DEVICE_TYPE_MOBILE) {
+        if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
             $this->tpl_mainpage = 'mypage/delivery_addr.tpl';
         } else {
             $this->setTemplate('mypage/delivery_addr.tpl');

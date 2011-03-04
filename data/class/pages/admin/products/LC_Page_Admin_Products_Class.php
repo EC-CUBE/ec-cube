@@ -90,7 +90,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
                     $this->lfUpdateClass($this->arrForm); // 既存編集
                 }
                 // 再表示
-                SC_Response::reload();
+                SC_Response_Ex::reload();
             }
             break;
             // 削除
@@ -98,7 +98,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
             //規格データの削除処理
             $this->lfDeleteClass($class_id);
             // 再表示
-            SC_Response::reload();
+            SC_Response_Ex::reload();
             break;
             // 編集前処理
         case 'pre_edit':
@@ -110,12 +110,12 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
         case 'down':
             $this->lfDownRank($class_id);
             // 再表示
-            SC_Response::reload();
+            SC_Response_Ex::reload();
             break;
         case 'up':
             $this->lfUpRank($class_id);
             // 再表示
-            SC_Response::reload();
+            SC_Response_Ex::reload();
             break;
         default:
             break;

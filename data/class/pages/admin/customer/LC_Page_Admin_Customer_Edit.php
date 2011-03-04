@@ -102,7 +102,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
                 return;
             }
             //指定顧客の情報をセット
-            $this->arrForm = SC_Helper_Customer::sfGetCustomerData($objFormSearchParam->getValue("edit_customer_id"), true);
+            $this->arrForm = SC_Helper_Customer_Ex::sfGetCustomerData($objFormSearchParam->getValue("edit_customer_id"), true);
             //購入履歴情報の取得
             list($this->tpl_linemax, $this->arrPurchaseHistory, $this->objNavi) = $this->lfPurchaseHistory($objFormSearchParam->getValue("edit_customer_id"));
             $this->arrPagenavi = $this->objNavi->arrPagenavi;

@@ -120,7 +120,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
             // パラメータ検証
             $objForm = $this->lfInitDelete();
             if ($objForm->checkError()) {
-                SC_Utils::sfDispError('');
+                SC_Utils_Ex::sfDispError('');
             }
 
             //現在使用中のテンプレートとデフォルトのテンプレートは削除できないようにする
@@ -141,9 +141,9 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
             // ユーザデータの下のファイルも保存する。
             $from_dir = USER_TEMPLATE_REALDIR . $template_code . "/";
             $to_dir = SMARTY_TEMPLATES_REALDIR . $template_code . "/_packages/";
-            SC_Utils::sfMakeDir($to_dir);
-            SC_Utils::sfCopyDir($from_dir, $to_dir);
-            SC_Helper_FileManager::downloadArchiveFiles(SMARTY_TEMPLATES_REALDIR . $template_code);
+            SC_Utils_Ex::sfMakeDir($to_dir);
+            SC_Utils_Ex::sfCopyDir($from_dir, $to_dir);
+            SC_Helper_FileManager_Ex::downloadArchiveFiles(SMARTY_TEMPLATES_REALDIR . $template_code);
             break;
 
             // プレビューボタン押下時

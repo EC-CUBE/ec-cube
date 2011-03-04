@@ -68,7 +68,7 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex {
 
         $offset    = '';
         // mobile時はGETでページ指定
-        if ( SC_Display::detectDevice() == DEVICE_TYPE_MOBILE ){
+        if ( SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE ){
             $this->offset = $this->lfSetOffset($_GET['offset']);
         }
 

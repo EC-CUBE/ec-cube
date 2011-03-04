@@ -183,7 +183,7 @@ class LC_Page_Entry extends LC_Page_Ex {
         $CONF = SC_Helper_DB_Ex::sfGetBasisData();
         $arrResults["point"] = $CONF["welcome_point"];
 
-        if (SC_Display::detectDevice() == DEVICE_TYPE_MOBILE) {
+        if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
             // 携帯メールアドレス
             $arrResults['email_mobile']     = $arrResults['email'];
             // PHONE_IDを取り出す
@@ -254,7 +254,7 @@ class LC_Page_Entry extends LC_Page_Ex {
      */
     function lfCheckReferer(&$post, $referer){
 
-        if (SC_Display::detectDevice() !== DEVICE_TYPE_MOBILE
+        if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE
             && empty($post)
             && (preg_match('/kiyaku.php/', basename($referer)) === 0)) {
             return false;

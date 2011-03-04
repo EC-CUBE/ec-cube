@@ -62,7 +62,7 @@ class SC_Helper_Plugin{
 
     function preProcess(&$lcpage){
         //プラグインの名前を判別してページ内で有効なプラグインがあれば実行する
-        $arrPluginList = SC_Helper_Plugin::load($lcpage);
+        $arrPluginList = SC_Helper_Plugin_Ex::load($lcpage);
        if(count($arrPluginList) > 0){
             foreach ($arrPluginList as $key => $value){
                 $instance = new $value;
@@ -77,7 +77,7 @@ class SC_Helper_Plugin{
      */
     function process(&$lcpage){
         //プラグインの名前を判別してページ内で有効なプラグインがあれば実行する
-        $arrPluginList = SC_Helper_Plugin::load($lcpage);
+        $arrPluginList = SC_Helper_Plugin_Ex::load($lcpage);
         if(count($arrPluginList) > 0){
             foreach ($arrPluginList as $key => $value){
                 $instance = new $value;

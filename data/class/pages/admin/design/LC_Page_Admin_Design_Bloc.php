@@ -115,7 +115,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
             // プレビューファイル作成
             $prev_path = USER_INC_REALDIR . 'preview/bloc_preview.tpl';
             // ディレクトリの作成
-            SC_Utils::sfMakeDir($prev_path);
+            SC_Utils_Ex::sfMakeDir($prev_path);
             $res = file_put_contents($prev_path, $_POST['bloc_html']);
             if ($res === false) {
                 SC_Utils_Ex::sfDispException();
@@ -147,7 +147,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
                 // ファイル作成
                 $new_bloc_path = $package_path . $_POST['filename'] . ".tpl";
                 // ディレクトリの作成
-                SC_Utils::sfMakeDir($new_bloc_path);
+                SC_Utils_Ex::sfMakeDir($new_bloc_path);
                 $res = file_put_contents($new_bloc_path, $_POST['bloc_html']);
                 if ($res === false) {
                     SC_Utils_Ex::sfDispException();
@@ -201,7 +201,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
             exit;
             break;
         default:
-            GC_Utils::gfPrintLog("MODEエラー：".$this->getMode());
+            GC_Utils_Ex::gfPrintLog("MODEエラー：".$this->getMode());
             break;
         }
         $this->device_type_id = $device_type_id;

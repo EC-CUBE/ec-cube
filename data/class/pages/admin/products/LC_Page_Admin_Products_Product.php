@@ -544,7 +544,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         $arrForm['down_realfilename'] = $objDownFile->getFormDownFile();
 
         // 基本情報(デフォルトポイントレート用)
-        $arrForm['arrInfo'] = SC_Helper_DB::sfGetBasisData();
+        $arrForm['arrInfo'] = SC_Helper_DB_Ex::sfGetBasisData();
 
         // サブ情報ありなしフラグ
         $arrForm['sub_find'] = $this->hasSubProductData($arrForm);
@@ -800,7 +800,7 @@ __EOF__;
 
         // 規格が登録されていなければ規格ID取得
         if ($arrProduct[0]['has_product_class'] == false) {
-            $arrProduct[0]['product_class_id'] = SC_Utils::sfGetProductClassId($product_id,"0","0");
+            $arrProduct[0]['product_class_id'] = SC_Utils_Ex::sfGetProductClassId($product_id,"0","0");
         }
 
         // 商品ステータス取得

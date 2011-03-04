@@ -76,7 +76,7 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex {
 
 
         // 正当な数値であればOK
-        if (SC_Utils::sfIsInt($_GET['id'])) {
+        if (SC_Utils_Ex::sfIsInt($_GET['id'])) {
             $arrClean['id'] = $_GET['id'];
 
             switch($arrClean['move']) {
@@ -95,7 +95,7 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex {
         
         // エラー処理
         else {
-            GC_Utils::gfPrintLog("error id=".$_GET['id']);
+            GC_Utils_Ex::gfPrintLog("error id=".$_GET['id']);
         }
 
         // ページの表示

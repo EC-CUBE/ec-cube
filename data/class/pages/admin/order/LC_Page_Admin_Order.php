@@ -266,7 +266,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
      * @return void
      */
     function buildQuery($key, &$where, &$arrValues, &$objFormParam) {
-        $dbFactory = SC_DB_DBFactory::getInstance();
+        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         switch ($key) {
 
         case 'search_product_name':

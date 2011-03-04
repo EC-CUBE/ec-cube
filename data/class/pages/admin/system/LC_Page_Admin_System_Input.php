@@ -142,7 +142,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
             $clean_mode_flg = "new";
         
             // idが0より大きい数字で整数の場合
-            if (isset($_GET['id']) && SC_Utils::sfIsInt($_GET['id']) && $_GET['id'] > 0) {
+            if (isset($_GET['id']) && SC_Utils_Ex::sfIsInt($_GET['id']) && $_GET['id'] > 0) {
                 if ($this->memberDataExists('member_id = ? AND del_flg = 0', $_GET['id'])) {
                     $clean_id = $_GET['id'];
                     $clean_mode_flg = "edit";

@@ -366,12 +366,12 @@ class SC_Helper_FileManager {
 		$dlFileName = 'tpl_package_' . date('YmdHis') . '.tar.gz';
 		
 	    // ファイル一覧取得
-	    $arrFileHash = SC_Utils::sfGetFileList($dir);
+	    $arrFileHash = SC_Utils_Ex::sfGetFileList($dir);
 	    foreach($arrFileHash as $val) {
 	        $arrFileList[] = $val['file_name'];
 	        $debug_message.= "圧縮：".$val['file_name']."\n";
 	    }
-	    GC_Utils::gfDebugLog($debug_message);	    
+	    GC_Utils_Ex::gfDebugLog($debug_message);	    
 	    
 	    // ディレクトリを移動
 	    chdir($dir);
@@ -409,7 +409,7 @@ class SC_Helper_FileManager {
         GC_Utils_Ex::gfPrintLog("解凍：" . $dir."/".$file_name."->".$dir."/".$unpacking_name);
         
         // フォルダ削除
-        SC_Utils::sfDelFile($dir . "/" . $unpacking_name);
+        SC_Utils_Ex::sfDelFile($dir . "/" . $unpacking_name);
         // 圧縮ファイル削除
         unlink($path);
     }

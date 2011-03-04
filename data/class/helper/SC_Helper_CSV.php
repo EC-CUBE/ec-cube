@@ -462,7 +462,7 @@ class SC_Helper_CSV {
     function lfDownloadCsv($arrayData, $prefix = ""){
 
         if($prefix == "") {
-            $dir_name = SC_Utils::sfUpDirName();
+            $dir_name = SC_Utils_Ex::sfUpDirName();
             $file_name = $dir_name . date("ymdHis") .".csv";
         } else {
             $file_name = $prefix . date("ymdHis") .".csv";
@@ -505,7 +505,7 @@ class SC_Helper_CSV {
     function lfGetCsv2($arrayData, $prefix = "") {
 
         if($prefix == "") {
-            $dir_name = SC_Utils::sfUpDirName();
+            $dir_name = SC_Utils_Ex::sfUpDirName();
             $file_name = $dir_name . date("ymdHis") .".csv";
         } else {
             $file_name = $prefix . date("ymdHis") .".csv";

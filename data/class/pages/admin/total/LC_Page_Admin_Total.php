@@ -661,7 +661,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             break;
         }
 
-        $dbFactory = SC_DB_DBFactory::getInstance();
+        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         // todo postgres
         $col = $dbFactory->getOrderTotalDaysWhereSql($type);
 

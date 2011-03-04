@@ -75,7 +75,7 @@ class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex {
         $this->tpl_subject  = $arrMailView[0]['subject'];
         $this->tpl_body     = $arrMailView[0]['mail_body'];
 
-        if (SC_Display::detectDevice() === DEVICE_TYPE_PC){
+        if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_PC){
             $this->setTemplate('mypage/mail_view.tpl');
         } else {
             $this->tpl_title    = 'メール履歴詳細';

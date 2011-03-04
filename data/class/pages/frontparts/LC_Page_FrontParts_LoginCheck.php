@@ -106,7 +106,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
             if (count($arrErr) == 0) {
                 // ログイン判定
                 $loginFailFlag = false;
-                if(SC_Display::detectDevice() === DEVICE_TYPE_MOBILE) {
+                if(SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
                     // モバイルサイト
                     if(!$objCustomer->getCustomerDataFromMobilePhoneIdPass($arrForm['login_pass']) &&
                        !$objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'], true)) {
@@ -121,7 +121,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
 
                 // ログイン処理
                 if ($loginFailFlag == false) {
-                    if(SC_Display::detectDevice() === DEVICE_TYPE_MOBILE) {
+                    if(SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
                         // ログインが成功した場合は携帯端末IDを保存する。
                         $objCustomer->updateMobilePhoneId();
 

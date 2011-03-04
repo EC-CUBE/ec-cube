@@ -309,7 +309,7 @@ class SC_Helper_Customer {
     function sfCustomerMypageParam (&$objFormParam) {
         SC_Helper_Customer_Ex::sfCustomerCommonParam($objFormParam);
         SC_Helper_Customer_Ex::sfCustomerRegisterParam($objFormParam);
-        if (SC_Display::detectDevice() !== DEVICE_TYPE_MOBILE){
+        if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE){
             $objFormParam->addParam('携帯メールアドレス', "email_mobile", MTEXT_LEN, "a", array("NO_SPTAB", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
             $objFormParam->addParam('携帯メールアドレス(確認)', "email_mobile02", MTEXT_LEN, "a", array("NO_SPTAB", "EMAIL_CHECK","SPTAB_CHECK" , "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"), "", false);
         }
@@ -369,7 +369,7 @@ class SC_Helper_Customer {
         $objFormParam->addParam("日", "day", 2, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"), "", false);
         $objFormParam->addParam("メールマガジン", "mailmaga_flg", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 
-        if (SC_Display::detectDevice() !== DEVICE_TYPE_MOBILE){
+        if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE){
             $objFormParam->addParam("FAX番号1", 'fax01', TEL_ITEM_LEN, "n", array("SPTAB_CHECK"));
             $objFormParam->addParam("FAX番号2", 'fax02', TEL_ITEM_LEN, "n", array("SPTAB_CHECK"));
             $objFormParam->addParam("FAX番号3", 'fax03', TEL_ITEM_LEN, "n", array("SPTAB_CHECK"));
@@ -471,7 +471,7 @@ class SC_Helper_Customer {
     function sfCustomerRegisterErrorCheck(&$objErr, $isAdmin = false) {
         $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_BIRTHDAY"));
 
-        if (SC_Display::detectDevice() !== DEVICE_TYPE_MOBILE){
+        if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE){
             if(!$isAdmin) {
                 $objErr->doFunc(array('パスワード', 'パスワード(確認)', "password", "password02") ,array("EQUAL_CHECK"));
                 $objErr->doFunc(array('メールアドレス', 'メールアドレス(確認)', "email", "email02") ,array("EQUAL_CHECK"));
@@ -571,7 +571,7 @@ class SC_Helper_Customer {
              && ($array["search_buy_times_from"] > $array["search_buy_times_to"])) {
             $objErr->arrErr["search_buy_times_from"] .= "※ 購入回数の指定範囲が不正です。";
         }
-        if(!SC_Utils::isBlank($objErr->arrErr)) {
+        if(!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
         }
         return $arrErr;

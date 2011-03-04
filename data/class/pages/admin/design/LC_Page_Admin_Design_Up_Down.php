@@ -234,12 +234,12 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page_Admin_Ex {
         $objUpFile->moveTempFile();
 
         // 解凍
-        SC_Helper_FileManager::unpackFile($template_dir . "/" . $_FILES['template_file']['name']);
+        SC_Helper_FileManager_Ex::unpackFile($template_dir . "/" . $_FILES['template_file']['name']);
         // ユーザデータの下のファイルをコピーする
         $from_dir = SMARTY_TEMPLATES_REALDIR . $template_code . "/_packages/";
         $to_dir = USER_REALDIR . "packages/" . $template_code . "/";
-        SC_Utils::sfMakeDir($to_dir);
-        SC_Utils::sfCopyDir($from_dir, $to_dir);
+        SC_Utils_Ex::sfMakeDir($to_dir);
+        SC_Utils_Ex::sfCopyDir($from_dir, $to_dir);
 
         // DBにテンプレート情報を保存
         $this->lfRegisterTemplates($objForm->getHashArray(), $device_type_id);

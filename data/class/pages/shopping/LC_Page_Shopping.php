@@ -122,7 +122,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
                                   $objFormParam->getValue('login_pass'))) {
 
                 // モバイルサイトで携帯アドレスの登録が無い場合、携帯アドレス登録ページへ遷移
-                if(SC_Display::detectDevice() == DEVICE_TYPE_MOBILE) {
+                if(SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
                     if($this->hasEmailMobile($objCustomer) == false) {
                         SC_Response_Ex::sendRedirectFromUrlPath('entry/email_mobile.php');
                         exit;
@@ -222,7 +222,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
         $this->arrForm = $objFormParam->getFormParamList();
 
         // 携帯端末IDが一致する会員が存在するかどうかをチェックする。
-        if (SC_Display::detectDevice() === DEVICE_TYPE_MOBILE) {
+        if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
             $this->tpl_valid_phone_id = $objCustomer->checkMobilePhoneId();
         }
     }
@@ -466,7 +466,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
      * @return boolean ログインに成功した場合 true; 失敗した場合 false
      */
     function doLogin(&$objCustomer, $login_email, $login_pass) {
-        switch (SC_Display::detectDevice()) {
+        switch (SC_Display_Ex::detectDevice()) {
         case DEVICE_TYPE_MOBILE:
             if(!$objCustomer->getCustomerDataFromMobilePhoneIdPass($login_pass) &&
                !$objCustomer->getCustomerDataFromEmailPass($login_pass, $login_email, true)) {

@@ -112,7 +112,7 @@ class GC_Utils {
      *----------------------------------------------------------------------*/
     function gfDebugLog($obj){
         if(DEBUG_MODE === true) {
-            GC_Utils::gfPrintLog("*** start Debug ***");
+            GC_Utils_Ex::gfPrintLog("*** start Debug ***");
             ob_start();
             print_r($obj);
             $buffer = ob_get_contents();
@@ -120,9 +120,9 @@ class GC_Utils {
             $fp = fopen(LOG_REALFILE, "a+");
             fwrite( $fp, $buffer."\n" );
             fclose( $fp );
-            GC_Utils::gfPrintLog("*** end Debug ***");
+            GC_Utils_Ex::gfPrintLog("*** end Debug ***");
             // ログテーション
-            GC_Utils::gfLogRotation(MAX_LOG_QUANTITY, MAX_LOG_SIZE, LOG_REALFILE);
+            GC_Utils_Ex::gfLogRotation(MAX_LOG_QUANTITY, MAX_LOG_SIZE, LOG_REALFILE);
 		}
     }
 
@@ -154,7 +154,7 @@ class GC_Utils {
         }
 
         // ログテーション
-        GC_Utils::gfLogRotation(MAX_LOG_QUANTITY, MAX_LOG_SIZE, $path);
+        GC_Utils_Ex::gfLogRotation(MAX_LOG_QUANTITY, MAX_LOG_SIZE, $path);
     }
 
     /**

@@ -136,7 +136,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         $this->tpl_onload .= 'lnOnLoad();';
 
         // モバイル用 規格選択セレクトボックスの作成
-        if(SC_Display::detectDevice() == DEVICE_TYPE_MOBILE) {
+        if(SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
             $this->lfMakeSelectMobile($this, $product_id,$this->objFormParam->getValue('classcategory_id1'));
         }
 
@@ -179,7 +179,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         }
 
         // モバイル用 ポストバック処理
-        if(SC_Display::detectDevice() == DEVICE_TYPE_MOBILE) {
+        if(SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
             switch($this->mode) {
                 case 'select':
                     // 規格1が設定されている場合

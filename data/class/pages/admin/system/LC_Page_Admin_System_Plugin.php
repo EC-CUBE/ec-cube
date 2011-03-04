@@ -244,7 +244,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                 $objUpFile->moveTempFile();
 
                 // プラグイン保存ディレクトリへ解凍
-                SC_Helper_FileManager::unpackFile($plugin_dir . $plugin_file_name);
+                SC_Helper_FileManager_Ex::unpackFile($plugin_dir . $plugin_file_name);
 
                 // プラグイン情報をDB登録
                 $this->lfRegistData($plugin_dir, $plugin_code);

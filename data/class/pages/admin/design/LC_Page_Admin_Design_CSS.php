@@ -119,7 +119,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
                 $this->lfExecuteDelete($css_path);
                 break;
             default:
-                GC_Utils::gfPrintLog("MODEエラー：".$this->getMode());
+                GC_Utils_Ex::gfPrintLog("MODEエラー：".$this->getMode());
                 break;
         }
 

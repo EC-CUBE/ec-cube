@@ -201,7 +201,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $this->arrForm = $objFormParam->getFormParamList();
         $this->arrDelivTime = $objPurchase->getDelivTime($objFormParam->getValue('deliv_id'));
         $this->tpl_onload .= $this->getAnchorKey($objFormParam);
-        $this->arrInfo = SC_Helper_DB::sfGetBasisData();
+        $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
     }
 
     /**

@@ -50,7 +50,7 @@ class LC_Upgrade_Helper_Log {
      * @param string $message
      */
     function log($message) {
-        GC_Utils::gfPrintLog($message, OSTORE_LOG_REALFILE);
+        GC_Utils_Ex::gfPrintLog($message, OSTORE_LOG_REALFILE);
     }
     /**
      * エラーメッセージを出力

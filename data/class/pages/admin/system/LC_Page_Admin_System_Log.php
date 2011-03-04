@@ -75,7 +75,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex {
         // POST値をセット
         $objFormParam->setParam($_POST);
 
-        if (SC_Utils::sfIsInt($tmp = $objFormParam->getValue('line'))) {
+        if (SC_Utils_Ex::sfIsInt($tmp = $objFormParam->getValue('line'))) {
             $this->line_max = $tmp;
         }
 

@@ -67,7 +67,7 @@ class LC_Page_FrontParts_Bloc extends LC_Page_Ex {
 
         $this->setTemplate($this->tpl_mainpage);
         $debug_message = "block：" . $this->tpl_mainpage . "\n";
-        GC_Utils::gfDebugLog($debug_message);
+        GC_Utils_Ex::gfDebugLog($debug_message);
     }
 }
 ?>

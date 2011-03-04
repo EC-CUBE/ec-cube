@@ -274,7 +274,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
      * @return void
      */
     function buildQuery($key, &$where, &$arrValues, &$objFormParam, &$objDb) {
-        $dbFactory = SC_DB_DBFactory::getInstance();
+        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         switch ($key) {
         // 商品ID
         case 'search_product_id':

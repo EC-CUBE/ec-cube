@@ -63,7 +63,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
      */
     function action() {
         // モバイル判定
-        switch ( SC_Display::detectDevice() ) {
+        switch ( SC_Display_Ex::detectDevice() ) {
             case DEVICE_TYPE_MOBILE:
                 // メインカテゴリーの取得
                 $this->arrCat = $this->lfGetMainCat(true);

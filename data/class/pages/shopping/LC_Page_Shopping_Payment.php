@@ -141,7 +141,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
                 $arrSelectedDeliv = array('error' => true);
             }
 
-            if (SC_Display::detectDevice() != DEVICE_TYPE_MOBILE) {
+            if (SC_Display_Ex::detectDevice() != DEVICE_TYPE_MOBILE) {
                 echo SC_Utils_Ex::jsonEncode($arrSelectedDeliv);
                 exit;
             } else {
@@ -209,7 +209,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
         }
 
         // モバイル用 ポストバック処理
-        if (SC_Display::detectDevice() == DEVICE_TYPE_MOBILE) {
+        if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
             $this->tpl_mainpage = $this->getMobileMainpage($this->is_single_deliv, $this->getMode());
         }
 

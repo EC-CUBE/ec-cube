@@ -48,7 +48,7 @@ class LC_Page_Admin extends LC_Page_Ex {
         $allow_hosts = unserialize(ADMIN_ALLOW_HOSTS);
         if(count($allow_hosts) > 0){
             if(array_search($_SERVER["REMOTE_ADDR"],$allow_hosts) === FALSE){
-                SC_Response::sendHttpStatus(403);
+                SC_Response_Ex::sendHttpStatus(403);
                 exit;
             }
         }
@@ -56,7 +56,7 @@ class LC_Page_Admin extends LC_Page_Ex {
         //SSL制限チェック
         if(ADMIN_FORCE_SSL == TRUE){
             if(empty($_SERVER['HTTPS']) AND $_SERVER['SERVER_PORT'] != 443){
-                SC_Response::sendRedirect($SERVER["REQUEST_URI"], $_GET,FALSE, TRUE);
+                SC_Response_Ex::sendRedirect($SERVER["REQUEST_URI"], $_GET,FALSE, TRUE);
             }
         }
 

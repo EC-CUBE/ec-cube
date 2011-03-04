@@ -157,7 +157,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query::getSingletonInstance();
         
         // TODO: DBFactory使わないでも共通化できそうな気もしますが
-        $dbFactory = SC_DB_DBFactory::getInstance();
+        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $sql = $dbFactory->getOrderYesterdaySql($method);
         return $objQuery->getOne($sql);
     }
@@ -173,7 +173,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
         $month = date("Y/m", mktime());
         
         // TODO: DBFactory使わないでも共通化できそうな気もしますが
-        $dbFactory = SC_DB_DBFactory::getInstance();
+        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $sql = $dbFactory->getOrderMonthSql($method);
         return $objQuery->getOne($sql, array($month));
     }
@@ -201,7 +201,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query::getSingletonInstance();
 
         // TODO: DBFactory使わないでも共通化できそうな気もしますが
-        $dbFactory = SC_DB_DBFactory::getInstance();
+        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $sql = $dbFactory->getReviewYesterdaySql();
         return $objQuery->getOne($sql);
     }
