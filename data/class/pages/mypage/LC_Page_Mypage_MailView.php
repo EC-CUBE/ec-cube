@@ -61,7 +61,7 @@ class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex {
      * @return void
      */
     function action() {
-        $objCustomer = new SC_Customer();
+        $objCustomer = new SC_Customer_Ex();
         if(!SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }

@@ -57,7 +57,7 @@ class LC_Page_AbstractMypage extends LC_Page_Ex {
     function process() {
         parent::process();
         // ログインチェック
-        $objCustomer = new SC_Customer();
+        $objCustomer = new SC_Customer_Ex();
 
         // ログインしていない場合は必ずログインページを表示する
         if($objCustomer->isLoginSuccess(true) === false) {

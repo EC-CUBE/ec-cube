@@ -144,7 +144,7 @@ class LC_Page_Regist extends LC_Page_Ex {
      */
     function lfSendRegistMail($registSecretKey) {
         $objQuery       = SC_Query::getSingletonInstance();
-        $objCustomer    = new SC_Customer();
+        $objCustomer    = new SC_Customer_Ex();
         $objHelperMail  = new SC_Helper_Mail_Ex();
         $CONF           = SC_Helper_DB_Ex::sfGetBasisData();
 

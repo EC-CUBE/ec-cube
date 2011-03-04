@@ -73,7 +73,7 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
      */
     function action() {
 
-        $objCustomer = new SC_Customer();
+        $objCustomer = new SC_Customer_Ex();
         $customer_id = $objCustomer->getvalue('customer_id');
 
         //ページ送り用

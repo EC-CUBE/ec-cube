@@ -77,7 +77,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
         $objSiteSess = new SC_SiteSession_Ex();
         $objCartSess = new SC_CartSession_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
-        $objCustomer = new SC_Customer();
+        $objCustomer = new SC_Customer_Ex();
         $objFormParam = new SC_FormParam();
 
         // カートの情報を取得

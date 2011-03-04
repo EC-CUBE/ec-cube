@@ -65,7 +65,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
      */
     function action() {
         // 会員管理クラス
-        $objCustomer = new SC_Customer();
+        $objCustomer = new SC_Customer_Ex();
         // クッキー管理クラス
         $objCookie = new SC_Cookie(COOKIE_EXPIRE);
         // パラメータ管理クラス

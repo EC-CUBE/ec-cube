@@ -69,7 +69,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
      */
     function action() {
         // ログインチェック
-        $objCustomer = new SC_Customer();
+        $objCustomer = new SC_Customer_Ex();
         if (!$objCustomer->isLoginSuccess()){
             SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
         }

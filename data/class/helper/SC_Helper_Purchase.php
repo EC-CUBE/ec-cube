@@ -57,7 +57,7 @@ class SC_Helper_Purchase {
         $objQuery =& SC_Query::getSingletonInstance();
         $objSiteSession = new SC_SiteSession_Ex();
         $objCartSession = new SC_CartSession_Ex();
-        $objCustomer = new SC_Customer();
+        $objCustomer = new SC_Customer_Ex();
         $customerId = $objCustomer->getValue('customer_id');
 
         $objQuery->begin();

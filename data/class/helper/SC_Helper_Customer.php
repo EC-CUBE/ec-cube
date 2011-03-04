@@ -124,7 +124,7 @@ class SC_Helper_Customer {
     function sfCheckRegisterUserFromEmail($email){
         $return = 0;
 
-        $objCustomer    = new SC_Customer();
+        $objCustomer    = new SC_Customer_Ex();
         $objQuery       =& SC_Query::getSingletonInstance();
 
         $arrRet         = $objQuery->select("email, update_date, del_flg",
@@ -403,7 +403,7 @@ class SC_Helper_Customer {
          * sfCustomerRegisterErrorCheck() では, ログイン中の場合は重複チェック
          * されないので, 再度チェックを行う
          */
-        $objCustomer = new SC_Customer();
+        $objCustomer = new SC_Customer_Ex();
         if ($objCustomer->isLoginSuccess(true)
             && SC_Helper_Customer_Ex::sfCustomerEmailDuplicationCheck($objCustomer->getValue('customer_id'), $objFormParam->getValue('email'))) {
             $objErr->arrErr['email'] .= "※ すでに会員登録で使用されているメールアドレスです。<br />";

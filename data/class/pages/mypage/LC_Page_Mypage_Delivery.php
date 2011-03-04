@@ -65,7 +65,7 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
      * @return void
      */
     function action() {
-        $objCustomer    = new SC_Customer();
+        $objCustomer    = new SC_Customer_Ex();
         $customer_id    = $objCustomer->getValue('customer_id');
         $objFormParam   = new SC_FormParam();
 

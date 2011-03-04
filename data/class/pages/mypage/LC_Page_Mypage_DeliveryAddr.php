@@ -66,7 +66,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
      * @return void
      */
     function action() {
-        $objCustomer = new SC_Customer();
+        $objCustomer = new SC_Customer_Ex();
         $ParentPage  = MYPAGE_DELIVADDR_URLPATH;
 
         // GETでページを指定されている場合には指定ページに戻す

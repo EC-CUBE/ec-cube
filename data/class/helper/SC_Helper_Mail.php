@@ -146,7 +146,7 @@ class SC_Helper_Mail {
         // 都道府県変換
         $arrTplVar->arrPref = $this->arrPref;
 
-        $objCustomer = new SC_Customer();
+        $objCustomer = new SC_Customer_Ex();
         $arrTplVar->tpl_user_point = $objCustomer->getValue('point');
 
        if(Net_UserAgent_Mobile::isMobile() === true) {

@@ -44,7 +44,7 @@ require_once(CLASS_EX_REALDIR . "SC_SendMail_Ex.php");
 require_once(CLASS_REALDIR . "SC_FormParam.php");
 require_once(CLASS_EX_REALDIR . "SC_CartSession_Ex.php");
 require_once(CLASS_EX_REALDIR . "SC_SiteSession_Ex.php");
-require_once(CLASS_REALDIR . "SC_Customer.php");
+require_once(CLASS_EX_REALDIR . "SC_Customer_Ex.php");
 require_once(CLASS_EX_REALDIR . "SC_CustomerList_Ex.php");
 require_once(CLASS_REALDIR . "SC_Cookie.php");
 require_once(CLASS_REALDIR . "SC_MobileUserAgent.php");

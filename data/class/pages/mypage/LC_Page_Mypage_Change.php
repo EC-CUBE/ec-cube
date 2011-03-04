@@ -76,7 +76,7 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
      * @return void
      */
     function action() {
-        $objCustomer = new SC_Customer();
+        $objCustomer = new SC_Customer_Ex();
         $customer_id = $objCustomer->getValue('customer_id');
 
         // mobile用（戻るボタンでの遷移かどうかを判定）

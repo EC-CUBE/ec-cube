@@ -67,7 +67,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
      * @return void
      */
     function action() {
-        $objCustomer    = new SC_Customer();
+        $objCustomer    = new SC_Customer_Ex();
         $objDb          = new SC_Helper_DB_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
 

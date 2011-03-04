@@ -65,7 +65,7 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function action() {
-        $objCustomer = new SC_Customer();
+        $objCustomer = new SC_Customer_Ex();
         // クッキー管理クラス
         $objCookie = new SC_Cookie(COOKIE_EXPIRE);
 

@@ -116,7 +116,7 @@ class LC_Page_Entry extends LC_Page_Ex {
                 // 仮会員が無効の場合
                 if(CUSTOMER_CONFIRM_MAIL == false) {
                     // ログイン状態にする
-                    $objCustomer = new SC_Customer();
+                    $objCustomer = new SC_Customer_Ex();
                     $objCustomer->setLogin($this->arrForm["email"]);
                 }
 

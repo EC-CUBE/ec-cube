@@ -68,7 +68,7 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
      */
     function action() {
 
-        $objCustomer = new SC_Customer();
+        $objCustomer = new SC_Customer_Ex();
         $customer_id = $objCustomer->getValue('customer_id');
 
         switch ($this->getMode()) {

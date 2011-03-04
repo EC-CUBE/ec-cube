@@ -63,7 +63,7 @@ class LC_Page_Index extends LC_Page_Ex {
      */
     function action() {
         $this->tpl_title = '';
-        $objCustomer = new SC_Customer();
+        $objCustomer = new SC_Customer_Ex();
         $this->isLogin = $objCustomer->isLoginSuccess(true);
     }
 

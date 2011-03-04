@@ -60,7 +60,7 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex {
      * @return void
      */
     function action() {
-        $objCustomer = new SC_Customer();
+        $objCustomer = new SC_Customer_Ex();
 
         //受注詳細データの取得
         $arrOrderDetail = $this->lfGetOrderDetail($_POST['order_id']);
@@ -87,7 +87,7 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex {
     function lfGetOrderDetail($order_id) {
         $objQuery       = SC_Query::getSingletonInstance();
 
-        $objCustomer    = new SC_Customer();
+        $objCustomer    = new SC_Customer_Ex();
         //customer_idを検証
         $customer_id    = $objCustomer->getValue("customer_id");
         $order_count    = $objQuery->count("dtb_order", "order_id = ? and customer_id = ?", array($order_id, $customer_id));

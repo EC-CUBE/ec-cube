@@ -70,7 +70,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex {
             break;
 
         case 'complete':
-            $objCustomer = new SC_Customer();
+            $objCustomer = new SC_Customer_Ex();
             $this->lfDeleteCustomer($objCustomer->getValue('customer_id'));
             $objCustomer->EndSession();
             SC_Response_Ex::sendRedirect('refusal_complete.php');

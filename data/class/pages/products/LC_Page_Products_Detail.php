@@ -92,7 +92,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
      */
     function action() {
         // 顧客クラスs
-        $objCustomer = new SC_Customer();
+        $objCustomer = new SC_Customer_Ex();
 
         // パラメータ管理クラス
         $this->objFormParam = new SC_FormParam();
@@ -442,7 +442,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
         switch ($mode) {
         case 'add_favorite':
-            $objCustomer = new SC_Customer();
+            $objCustomer = new SC_Customer_Ex();
             $objErr = new SC_CheckError();
             $customer_id = $objCustomer->getValue('customer_id');
             if (SC_Helper_DB_Ex::sfDataExists('dtb_customer_favorite_products', 'customer_id = ? AND product_id = ?', array($customer_id, $favorite_product_id))) {

@@ -62,7 +62,7 @@ class LC_Page_Mypage_ChangeComplete extends LC_Page_AbstractMypage_Ex {
      * @return void
      */
     function action() {
-        $objCustomer = new SC_Customer();
+        $objCustomer = new SC_Customer_Ex();
         //セッション情報を最新の状態に更新する
         $objCustomer->updateSession();
     }
