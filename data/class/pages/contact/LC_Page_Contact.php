@@ -43,7 +43,11 @@ class LC_Page_Contact extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_title = 'お問い合わせ(入力ページ)';
+        if (SC_Display::detectDevice() == DEVICE_TYPE_MOBILE) {
+            $this->tpl_title = 'お問い合わせ';
+        } else {
+            $this->tpl_title = 'お問い合わせ(入力ページ)';
+        }
         $this->tpl_page_category = 'contact';
         $this->httpCacheControl('nocache');
 
