@@ -38,7 +38,7 @@ class SC_SmartphoneUserAgent {
     function isSmartphone() {
         $nu = new Net_UserAgent_Mobile();
         // SPでかつPC表示OFFの場合
-        return $nu->isSmartphone() && !SC_SmartphoneUserAgent::getSmartphonePcFlag();
+        return $nu->isSmartphone() && !SC_SmartphoneUserAgent_Ex::getSmartphonePcFlag();
     }
 
     /**
@@ -47,7 +47,7 @@ class SC_SmartphoneUserAgent {
      * @return boolean
      */
     function isNonSmartphone() {
-        return !SC_SmartphoneUserAgent::isSmartphone();
+        return !SC_SmartphoneUserAgent_Ex::isSmartphone();
     }
 
     /**
