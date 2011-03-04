@@ -99,7 +99,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         // パラメータ情報の初期化
         $this->arrForm = $this->lfInitParam($this->objFormParam);
         // ファイル管理クラス
-        $this->objUpFile = new SC_UploadFile(IMAGE_TEMP_REALDIR, IMAGE_SAVE_REALDIR);
+        $this->objUpFile = new SC_UploadFile_Ex(IMAGE_TEMP_REALDIR, IMAGE_SAVE_REALDIR);
         // ファイル情報の初期化
         $this->objUpFile = $this->lfInitFile($this->objUpFile);
 

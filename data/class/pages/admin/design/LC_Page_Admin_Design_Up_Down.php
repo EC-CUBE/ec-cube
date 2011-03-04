@@ -134,7 +134,7 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page_Admin_Ex {
      */
     function lfInitUploadFile($objForm) {
         $pkg_dir = SMARTY_TEMPLATES_REALDIR . $objForm->getValue('template_code');
-        $objUpFile = new SC_UploadFile(TEMPLATE_TEMP_REALDIR, $pkg_dir);
+        $objUpFile = new SC_UploadFile_Ex(TEMPLATE_TEMP_REALDIR, $pkg_dir);
         $objUpFile->addFile("テンプレートファイル", 'template_file', array(), TEMPLATE_SIZE, true, 0, 0, false);
 
         return $objUpFile;

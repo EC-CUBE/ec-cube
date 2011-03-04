@@ -97,7 +97,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
             $plugin_dir = $this->lfGetPluginDir($plugin_code);
 
             // ファイルアップロード情報を設定
-            $objUpFile = new SC_UploadFile(TEMPLATE_TEMP_REALDIR, $plugin_dir);
+            $objUpFile = new SC_UploadFile_Ex(TEMPLATE_TEMP_REALDIR, $plugin_dir);
             $this->lfInitUploadFile($objUpFile);
 
             // エラーチェック

@@ -89,7 +89,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         $this->tpl_pageno = $objFormParam->getValue('pageno');
 
         // Downファイル管理クラスを初期化
-        $this->objDownFile = new SC_UploadFile(DOWN_TEMP_REALDIR, DOWN_SAVE_REALDIR);
+        $this->objDownFile = new SC_UploadFile_Ex(DOWN_TEMP_REALDIR, DOWN_SAVE_REALDIR);
         $this->initDownFile($count, $this->objDownFile);
 
         $this->arrForm = $objFormParam->getHashArray();

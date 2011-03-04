@@ -76,7 +76,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
         $objFormParam->convParam();
 
         // ファイル管理クラス
-        $objUpFile = new SC_UploadFile($objFormParam->getValue('now_dir'), $objFormParam->getValue('now_dir'));
+        $objUpFile = new SC_UploadFile_Ex($objFormParam->getValue('now_dir'), $objFormParam->getValue('now_dir'));
         // ファイル情報の初期化
         $this->lfInitFile($objUpFile);
 

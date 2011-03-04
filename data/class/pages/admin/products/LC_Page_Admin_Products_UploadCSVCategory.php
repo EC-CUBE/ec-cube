@@ -77,7 +77,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
      */
     function action() {
         $objDb        = new SC_Helper_DB_Ex();
-        $objUpFile    = new SC_UploadFile(IMAGE_TEMP_REALDIR, IMAGE_SAVE_REALDIR);
+        $objUpFile    = new SC_UploadFile_Ex(IMAGE_TEMP_REALDIR, IMAGE_SAVE_REALDIR);
         $objFormParam = new SC_FormParam();
 
         // ファイルオブジェクト初期化

@@ -79,12 +79,12 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         $objFormParam = new SC_FormParam();
 
         // アップロードファイル情報の初期化
-        $objUpFile = new SC_UploadFile(IMAGE_TEMP_REALDIR, IMAGE_SAVE_REALDIR);
+        $objUpFile = new SC_UploadFile_Ex(IMAGE_TEMP_REALDIR, IMAGE_SAVE_REALDIR);
         $this->lfInitFile($objUpFile);
         $objUpFile->setHiddenFileList($_POST);
 
         // ダウンロード販売ファイル情報の初期化
-        $objDownFile = new SC_UploadFile(DOWN_TEMP_REALDIR, DOWN_SAVE_REALDIR);
+        $objDownFile = new SC_UploadFile_Ex(DOWN_TEMP_REALDIR, DOWN_SAVE_REALDIR);
         $this->lfInitDownFile($objDownFile);
         $objDownFile->setHiddenFileList($_POST);
 
