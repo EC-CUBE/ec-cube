@@ -187,7 +187,7 @@ class LC_Page_Entry extends LC_Page_Ex {
             // 携帯メールアドレス
             $arrResults['email_mobile']     = $arrResults['email'];
             // PHONE_IDを取り出す
-            $arrResults['mobile_phone_id']  =  SC_MobileUserAgent::getId();
+            $arrResults['mobile_phone_id']  =  SC_MobileUserAgent_Ex::getId();
         }
         return $arrResults;
     }

@@ -116,7 +116,7 @@ class SC_MobileUserAgent {
      * @return boolean 携帯端末ではない場合は true、それ以外の場合は false を返す。
      */
     function isNonMobile() {
-        return !SC_MobileUserAgent::isMobile();
+        return !SC_MobileUserAgent_Ex::isMobile();
     }
 
     /**

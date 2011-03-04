@@ -41,7 +41,7 @@ class SC_Helper_Mobile {
      * @return void
      */
     function lfMobileCheckCompatibility() {
-        if (!SC_MobileUserAgent::isSupported()) {
+        if (!SC_MobileUserAgent_Ex::isSupported()) {
             header('Location: ' . ROOT_URLPATH . 'unsupported/' . DIR_INDEX_PATH);
             exit;
         }
@@ -156,7 +156,7 @@ class SC_Helper_Mobile {
         }
 
         // 携帯端末の機種が一致するかどうかをチェックする。
-        $model = SC_MobileUserAgent::getModel();
+        $model = SC_MobileUserAgent_Ex::getModel();
         if (@$_SESSION['mobile']['model'] != $model) {
             GC_Utils_Ex::gfPrintLog("User agent model mismatch : " .
                        "\"$model\" != \"" . @$_SESSION['mobile']['model'] .
@@ -186,8 +186,8 @@ class SC_Helper_Mobile {
         // し、セッションデータを初期化する。
         if ($sessionId === false || !$this->lfMobileValidateSession()) {
             session_regenerate_id();
-            $_SESSION = array('mobile' => array('model'    => SC_MobileUserAgent::getModel(),
-                                                'phone_id' => SC_MobileUserAgent::getId(),
+            $_SESSION = array('mobile' => array('model'    => SC_MobileUserAgent_Ex::getModel(),
+                                                'phone_id' => SC_MobileUserAgent_Ex::getId(),
                                                 'expires'  => time() + MOBILE_SESSION_LIFETIME));
 
             // 新しいセッションIDを付加してリダイレクトする。
@@ -202,7 +202,7 @@ class SC_Helper_Mobile {
         }
 
         // 携帯端末IDを取得できた場合はセッションデータに保存する。
-        $phoneId = SC_MobileUserAgent::getId();
+        $phoneId = SC_MobileUserAgent_Ex::getId();
         if ($phoneId !== false) {
             $_SESSION['mobile']['phone_id'] = $phoneId;
         }

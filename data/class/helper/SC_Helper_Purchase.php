@@ -893,7 +893,7 @@ __EOS__;
     function sendOrderMail($orderId) {
         $mailHelper = new SC_Helper_Mail_Ex();
         $mailHelper->sfSendOrderMail($orderId,
-                                     SC_MobileUserAgent::isMobile() ? 2 : 1);
+                                     SC_MobileUserAgent_Ex::isMobile() ? 2 : 1);
     }
 
     /**

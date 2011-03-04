@@ -110,9 +110,9 @@ __EOS__;
      */
     function checkMobilePhoneId() {
         //docomo用にデータを取り出す。
-		if(SC_MobileUserAgent::getCarrier() == 'docomo'){
+		if(SC_MobileUserAgent_Ex::getCarrier() == 'docomo'){
 			if($_SESSION['mobile']['phone_id'] == "" && strlen($_SESSION['mobile']['phone_id']) == 0)
-			    $_SESSION['mobile']['phone_id'] = SC_MobileUserAgent::getId();
+			    $_SESSION['mobile']['phone_id'] = SC_MobileUserAgent_Ex::getId();
 		}
 		if (!isset($_SESSION['mobile']['phone_id']) || $_SESSION['mobile']['phone_id'] === false) {
             return false;
@@ -135,9 +135,9 @@ __EOS__;
      */
     function getCustomerDataFromMobilePhoneIdPass($pass) {
         //docomo用にデータを取り出す。
-		if(SC_MobileUserAgent::getCarrier() == 'docomo'){
+		if(SC_MobileUserAgent_Ex::getCarrier() == 'docomo'){
 			if($_SESSION['mobile']['phone_id'] == "" && strlen($_SESSION['mobile']['phone_id']) == 0)
-				$_SESSION['mobile']['phone_id'] = SC_MobileUserAgent::getId();
+				$_SESSION['mobile']['phone_id'] = SC_MobileUserAgent_Ex::getId();
 		}
 		if (!isset($_SESSION['mobile']['phone_id']) || $_SESSION['mobile']['phone_id'] === false) {
             return false;

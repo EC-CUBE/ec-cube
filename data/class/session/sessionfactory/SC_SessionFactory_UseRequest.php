@@ -474,7 +474,7 @@ class LC_UseRequest_State_Mobile extends LC_UseRequest_State {
      *
      */
     function updateModel() {
-        $this->setValue('model', SC_MobileUserAgent::getModel());
+        $this->setValue('model', SC_MobileUserAgent_Ex::getModel());
     }
 
     /**
@@ -484,7 +484,7 @@ class LC_UseRequest_State_Mobile extends LC_UseRequest_State {
      */
     function validateModel() {
         $modelInSession = $this->getModel();
-        $model = SC_MobileUserAgent::getModel();
+        $model = SC_MobileUserAgent_Ex::getModel();
         if (!empty($model)
          && $model === $modelInSession) {
 
@@ -507,7 +507,7 @@ class LC_UseRequest_State_Mobile extends LC_UseRequest_State {
      *
      */
     function updatePhoneId() {
-        $this->setValue('phone_id', SC_MobileUserAgent::getId());
+        $this->setValue('phone_id', SC_MobileUserAgent_Ex::getId());
     }
 
     /**

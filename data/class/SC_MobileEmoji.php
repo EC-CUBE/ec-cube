@@ -50,7 +50,7 @@ class SC_MobileEmoji {
      * @return string 絵文字を表す Shift JIS の文字列を返す。
      */
     function indexToCode($index) {
-        $carrier = SC_MobileUserAgent::getCarrier();
+        $carrier = SC_MobileUserAgent_Ex::getCarrier();
         if ($carrier === false) {
             return MOBILE_EMOJI_SUBSTITUTE;
         }

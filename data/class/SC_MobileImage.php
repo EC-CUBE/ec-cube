@@ -40,8 +40,8 @@ class SC_MobileImage {
     function handler($buffer) {
 
         // 端末情報を取得する
-        $carrier = SC_MobileUserAgent::getCarrier();
-        $model   = SC_MobileUserAgent::getModel();
+        $carrier = SC_MobileUserAgent_Ex::getCarrier();
+        $model   = SC_MobileUserAgent_Ex::getModel();
 
         // 携帯電話の場合のみ処理を行う
         if ($carrier !== FALSE) {
