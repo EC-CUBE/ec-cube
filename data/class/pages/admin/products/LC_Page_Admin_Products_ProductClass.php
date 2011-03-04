@@ -431,7 +431,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
      * @return array エラーの配列
      */
     function lfClassError() {
-        $objErr = new SC_CheckError();
+        $objErr = new SC_CheckError_Ex();
         $objErr->doFunc(array("規格1", "select_class_id1"), array("EXIST_CHECK"));
         $objErr->doFunc(array("規格", "select_class_id1", "select_class_id2"), array("TOP_EXIST_CHECK"));
         $objErr->doFunc(array("規格1", "規格2", "select_class_id1", "select_class_id2"), array("DIFFERENT_CHECK"));
@@ -440,7 +440,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
 
     // 商品規格エラーチェック
     function lfProductClassError($array) {
-        $objErr = new SC_CheckError($array);
+        $objErr = new SC_CheckError_Ex($array);
         $no = 1; // FIXME 未定義変数の修正
         while($array["classcategory_id1:".$no] != "") {
             if($array["check:".$no] == 1) {

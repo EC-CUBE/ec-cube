@@ -225,7 +225,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfCheckError(&$objFormParam) {
-        $objErr = new SC_CheckError($objFormParam->getHashArray());
+        $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
 
         $objErr->doFunc(array("開始日", "終了日", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_SET_TERM"));

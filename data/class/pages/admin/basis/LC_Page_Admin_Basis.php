@@ -259,7 +259,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         $arrErr = $objFormParam->checkError();
         $post = $objFormParam->getHashArray();
 
-        $objErr = new SC_CheckError($post);
+        $objErr = new SC_CheckError_Ex($post);
         $objErr->doFunc(array("郵便番号", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
 
         // 電話番号チェック

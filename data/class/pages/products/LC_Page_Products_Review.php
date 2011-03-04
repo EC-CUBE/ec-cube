@@ -171,7 +171,7 @@ class LC_Page_Products_Review extends LC_Page_Ex {
         }
 
         if (REVIEW_ALLOW_URL == false) {
-            $objErr = new SC_CheckError($objFormParam->getHashArray());
+            $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
             // コメント欄へのURLの入力を禁止
             $objErr->doFunc(array("URL", "comment", $this->arrReviewDenyURL), array("PROHIBITED_STR_CHECK"));
             $arrErr += $objErr->arrErr;

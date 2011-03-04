@@ -121,7 +121,7 @@ class LC_Page_Regist extends LC_Page_Ex {
      * @return array エラーの配列
      */
     function lfErrorCheck($array) {
-        $objErr     = new SC_CheckError($array);
+        $objErr     = new SC_CheckError_Ex($array);
 
         if (preg_match("/^[[:alnum:]]+$/", $array["id"])) {
 

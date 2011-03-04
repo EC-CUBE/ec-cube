@@ -321,7 +321,7 @@ __EOS__;
     function lfCheckError($product_id,&$arrForm,$tpl_classcat_find1,$tpl_classcat_find2) {
 
         // 入力データを渡す。
-        $objErr = new SC_CheckError($arrForm);
+        $objErr = new SC_CheckError_Ex($arrForm);
 
         // 複数項目チェック
         if ($tpl_classcat_find1[$product_id]) {

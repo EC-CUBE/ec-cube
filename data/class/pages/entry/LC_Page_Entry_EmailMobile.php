@@ -116,7 +116,7 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex {
      */
     function lfCheckError(&$objFormParam) {
         $objFormParam->convParam();
-        $objErr         = new SC_CheckError();
+        $objErr         = new SC_CheckError_Ex();
         $objErr->arrErr = $objFormParam->checkError();
 
         $objErr->doFunc(array("メールアドレス", "email_mobile"), array("CHECK_REGIST_CUSTOMER_EMAIL"));

@@ -425,7 +425,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
      * @return array エラー情報を格納した連想配列
      */
     function lfCheckError_Edit(&$objFormParam, &$objUpFile, &$objDownFile, $arrForm) {
-        $objErr = new SC_CheckError($arrForm);
+        $objErr = new SC_CheckError_Ex($arrForm);
         $arrErr = array();
 
         // 入力パラメータチェック

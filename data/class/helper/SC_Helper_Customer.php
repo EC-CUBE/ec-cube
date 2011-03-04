@@ -456,7 +456,7 @@ class SC_Helper_Customer {
         $arrParams = $objFormParam->getHashArray();
 
         // 入力データを渡す。
-        $objErr = new SC_CheckError($arrParams);
+        $objErr = new SC_CheckError_Ex($arrParams);
         $objErr->arrErr = $objFormParam->checkError();
 
         $objErr->doFunc(array("お電話番号", "tel01", "tel02", "tel03"),array("TEL_CHECK"));
@@ -546,7 +546,7 @@ class SC_Helper_Customer {
         // パラメーターの基本チェック
         $arrErr = $objFormParam->checkError();
         // 拡張エラーチェック初期化
-        $objErr = new SC_CheckError($objFormParam->getHashArray());
+        $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         // 拡張エラーチェック
         $objErr->doFunc(array("誕生日(開始日)", "search_b_start_year", "search_b_start_month", "search_b_start_day"), array("CHECK_DATE"));
         $objErr->doFunc(array("誕生日(終了日)", "search_b_end_year", "search_b_end_month", "search_b_end_day"), array("CHECK_DATE"));

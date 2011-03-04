@@ -276,7 +276,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
      * @return array エラー情報
      */
     function lfErrorCheck($array) {
-        $objErr = new SC_CheckError($array);
+        $objErr = new SC_CheckError_Ex($array);
 
         $objErr->doFunc(array("ブロック名", "bloc_name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("ファイル名", "filename", STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "MAX_LENGTH_CHECK","FILE_NAME_CHECK_BY_NOUPLOAD"));

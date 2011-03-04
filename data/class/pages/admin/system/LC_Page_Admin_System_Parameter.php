@@ -154,7 +154,7 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
      * @return void
      */
     function errorCheck(&$arrKeys, &$arrForm) {
-        $objErr = new SC_CheckError($arrForm);
+        $objErr = new SC_CheckError_Ex($arrForm);
         for ($i = 0; $i < count($arrKeys); $i++) {
             $objErr->doFunc(array($arrKeys[$i],
                                   $arrForm[$arrKeys[$i]]),

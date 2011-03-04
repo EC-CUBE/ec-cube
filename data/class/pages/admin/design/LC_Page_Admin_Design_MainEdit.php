@@ -356,7 +356,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
      * @return array エラー情報
      */
     function lfErrorCheck($array, $device_type_id) {
-        $objErr = new SC_CheckError($array);
+        $objErr = new SC_CheckError_Ex($array);
         $objErr->doFunc(array("名称", "page_name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("URL", "url", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
 

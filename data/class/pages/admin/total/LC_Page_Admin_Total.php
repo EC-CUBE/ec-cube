@@ -195,7 +195,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
     function lfCheckError(&$objFormParam) {
 
         $objFormParam->convParam();
-        $objErr         = new SC_CheckError();
+        $objErr         = new SC_CheckError_Ex();
         $objErr->arrErr = $objFormParam->checkError();
 
         // 特殊項目チェック

@@ -144,7 +144,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
      * @return Array エラー内容
      */
     function lfCheckError(&$objFormParam){
-        $objErr = new SC_CheckError($objFormParam->getHashArray());
+        $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
         return $objErr->arrErr;
     }

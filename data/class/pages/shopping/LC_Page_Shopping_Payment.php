@@ -277,7 +277,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
     function lfCheckError(&$objFormParam, $subtotal, $max_point) {
         // 入力データを渡す。
         $arrForm =  $objFormParam->getHashArray();
-        $objErr = new SC_CheckError($arrForm);
+        $objErr = new SC_CheckError_Ex($arrForm);
         $objErr->arrErr = $objFormParam->checkError();
 
         if (USE_POINT === false) {

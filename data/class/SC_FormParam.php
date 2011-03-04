@@ -268,7 +268,7 @@ class SC_FormParam {
                 $recursion_count++;
             }
         } else {
-            $objErr = new SC_CheckError(array(0 => $value));
+            $objErr = new SC_CheckError_Ex(array(0 => $value));
             $objErr->doFunc(array($disp_name, 0, $length), array($func));
             if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
                 foreach($objErr->arrErr as $message) {

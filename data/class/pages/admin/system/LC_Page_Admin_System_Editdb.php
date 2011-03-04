@@ -155,7 +155,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
                             'indexflag_new' => $arrIndexFlagNew[$i],
                             'table_name' => $arrTableName[$i],
                             'column_name' => $arrColumnName[$i]);
-            $objErr = new SC_CheckError($param);
+            $objErr = new SC_CheckError_Ex($param);
             $objErr->doFunc(array("インデックス(" . $i . ")", 'indexflag', INT_LEN), array("NUM_CHECK"));
             $objErr->doFunc(array("インデックス変更後(" . $i . ")", 'indexflag_new', INT_LEN), array("NUM_CHECK"));
             $objErr->doFunc(array("インデックス変更後(" . $i . ")", 'indexflag_new', INT_LEN), array("NUM_CHECK"));

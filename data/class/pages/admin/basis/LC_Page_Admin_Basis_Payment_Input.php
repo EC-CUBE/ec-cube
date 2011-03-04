@@ -244,7 +244,7 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin_Ex {
 
         // 入力データを渡す。
         $arrRet =  $this->objFormParam->getHashArray();
-        $objErr = new SC_CheckError($arrRet);
+        $objErr = new SC_CheckError_Ex($arrRet);
         $objErr->arrErr = $this->objFormParam->checkError();
 
         // 利用条件(下限)チェック

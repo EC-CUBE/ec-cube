@@ -201,7 +201,7 @@ __EOS__;
 
     /* 入力内容のチェック */
     function lfCheckError(&$objFormParam) {
-        $objErr = new SC_CheckError($objFormParam->getHashArray());
+        $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
         return $objErr->arrErr;
     }

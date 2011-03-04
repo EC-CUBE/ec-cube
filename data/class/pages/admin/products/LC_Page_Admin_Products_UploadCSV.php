@@ -328,7 +328,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
     function lfCheckError(&$objFormParam) {
         // 入力データを渡す。
         $arrRet =  $objFormParam->getHashArray();
-        $objErr = new SC_CheckError($arrRet);
+        $objErr = new SC_CheckError_Ex($arrRet);
         $objErr->arrErr = $objFormParam->checkError(false);
         // HTMLタグチェックの実行
         foreach($this->arrTagCheckItem as $item) {

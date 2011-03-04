@@ -443,7 +443,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         switch ($mode) {
         case 'add_favorite':
             $objCustomer = new SC_Customer_Ex();
-            $objErr = new SC_CheckError();
+            $objErr = new SC_CheckError_Ex();
             $customer_id = $objCustomer->getValue('customer_id');
             if (SC_Helper_DB_Ex::sfDataExists('dtb_customer_favorite_products', 'customer_id = ? AND product_id = ?', array($customer_id, $favorite_product_id))) {
                 $objErr->arrErr['add_favorite'.$favorite_product_id] = "※ この商品は既にお気に入りに追加されています。<br />";
@@ -452,7 +452,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         default:
             // 入力データを渡す。
             $arrRet =  $objFormParam->getHashArray();
-            $objErr = new SC_CheckError($arrRet);
+            $objErr = new SC_CheckError_Ex($arrRet);
             $objErr->arrErr = $objFormParam->checkError();
 
             // 複数項目チェック

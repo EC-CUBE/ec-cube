@@ -197,7 +197,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
      * @return array エラー情報
      */
     function lfErrorCheck($array, $css_dir) {
-        $objErr = new SC_CheckError($array);
+        $objErr = new SC_CheckError_Ex($array);
 
         $objErr->doFunc(array("CSSファイル名", "css_name", STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "MAX_LENGTH_CHECK"));
 

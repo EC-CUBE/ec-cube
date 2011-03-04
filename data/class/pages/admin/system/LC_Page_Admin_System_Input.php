@@ -222,7 +222,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         if (isset($arrErr) && count($arrErr) > 0) return $arrErr;
 
         // ログインID・パスワードの文字数チェック
-        $objErr = new SC_CheckError();
+        $objErr = new SC_CheckError_Ex();
         if($mode == "new") {
             $objErr->doFunc(array("パスワード", 'password', ID_MIN_LEN, ID_MAX_LEN), array("NUM_RANGE_CHECK"));
             $objErr->doFunc(array("ログインID", 'login_id', ID_MIN_LEN, ID_MAX_LEN), array("NUM_RANGE_CHECK"));

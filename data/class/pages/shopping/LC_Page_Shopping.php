@@ -388,7 +388,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
         $objFormParam->toLower('order_mail_check');
 
         $arrParams = $objFormParam->getHashArray();
-        $objErr = new SC_CheckError($arrParams);
+        $objErr = new SC_CheckError_Ex($arrParams);
         $objErr->arrErr = $objFormParam->checkError();
 
         // 別のお届け先チェック
