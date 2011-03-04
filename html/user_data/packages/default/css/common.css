@@ -5,11 +5,10 @@
 ************************************************ */
 body {
     font-family: Verdana,Arial,Helvetica,sans-serif;
-    color: #666;
     background-color: #f5f5f5;
     font-size: 72.5%;
     line-height: 150%;
-    letter-spacing:0.1em;
+    letter-spacing: 0.1em;
 }
 
 select {
@@ -58,11 +57,19 @@ select {
 }
 
 /* 中央カラム */
-.main_column { padding: 10px 0 20px; }
+.main_column {
+    padding: 10px 0 20px;
+}
 
 /* サイドカラム */
-#leftcolumn { float: left; width: 20%; }
-#rightcolumn { float: right; width: 20%; }
+#leftcolumn {
+    float: left;
+    width: 20%;
+}
+#rightcolumn {
+    float: right;
+    width: 20%;
+}
 
 /* 1カラム設定 */
 #one_maincolumn {
@@ -92,7 +99,10 @@ select {
 }
 
 /* 下層コンテンツ */
-#undercolumn { width: 100%; margin: 0 0 30px 0;}
+#undercolumn {
+    width: 100%;
+    margin: 0 0 30px 0;
+}
 
 
 /* ==============================================
@@ -101,30 +111,24 @@ select {
 /* フロート回り込み解除
 ----------------------------------------------- */
 .clearfix:after {
-    display:block;
-    clear:both;
-    height:0px;
-    line-height:0px;
-    visibility:hidden;
-    content:".";
+    display: block;
+    clear: both;
+    height: 0px;
+    line-height: 0px;
+    visibility: hidden;
+    content: ".";
 }
 
 
 /* リンク指定
 ----------------------------------------------- */
-a:link {
-    color: #39c;
-    text-decoration: none;
-}
+a:link ,
 a:visited {
-    color: #39c;
+    color: #15a;
     text-decoration: none;
 }
-a:link:hover {
-    color: #f60;
-    text-decoration: underline;
-}
-a[href]:hover { 
+a:link:hover ,
+a[href]:hover {
     color: #f60;
     text-decoration: underline;
 }
@@ -132,26 +136,60 @@ a[href]:hover {
 
 /* フォント
 ----------------------------------------------- */
-h1,h2,h3,h4,h5 { font-size: 100%; line-height: 150%;}
-.price { color: #f00; }
-.sale_price { color: #f00; }
-.normal_price { color: #f00; font-size: 90%; }
-.point { color: #f00; font-weight: bold; }
-.user_name { font-weight: bold; }
-.recommend_level { color: #ecbd00; }
+h1,h2,h3,h4,h5 {
+    font-size: 100%;
+    line-height: 150%;
+}
+.price {
+    color: #f00;
+}
+.sale_price {
+    color: #f00;
+}
+.normal_price {
+    color: #f00;
+    font-size: 90%;
+}
+.point {
+    color: #f00;
+    font-weight: bold;
+}
+.user_name {
+    font-weight: bold;
+}
+.recommend_level {
+    color: #ecbd00;
+}
 
-.attention { color: #f00; }
-.attentionSt { color: #f00; font-weight: bold; }
-.st { font-weight: bold; }
-.mini { font-size: 90%; }
+.attention {
+    color: #f00;
+}
+.attentionSt {
+    color: #f00;
+    font-weight: bold;
+}
+.st {
+    font-weight: bold;
+}
+.mini {
+    font-size: 90%;
+}
 
 
 /* 行揃え
 ----------------------------------------------- */
-.alignC { text-align: center; }
-.alignR { text-align: right; }
-.alignL { text-align: left; }
-.pricetd em { font-weight: bold;}
+.alignC {
+    text-align: center;
+}
+.alignR {
+    text-align: right;
+}
+.alignL {
+    text-align: left;
+}
+.pricetd em {
+    font-weight: bold;
+}
 
 
 /* フォーム
@@ -163,21 +201,47 @@ input[type='password'] ,
     padding: 2px;
 }
 
-.box40 { width: 40px; }
-.box60 { width: 60px; }
-.box100 { width: 100px; }
-.box120 { width: 120px; }
-.box140 { width: 140px; }
-.box145 { width: 145px; }
-.box150 { width: 150px; }
-.box240 { width: 240px; }
-.box300 { width: 300px; }
-.box320 { width: 320px; }
-.box350 { width: 350px; }
-.box380 { width: 380px; }
+.box40 {
+    width: 40px;
+}
+.box60 {
+    width: 60px;
+}
+.box100 {
+    width: 100px;
+}
+.box120 {
+    width: 120px;
+}
+.box140 {
+    width: 140px;
+}
+.box145 {
+    width: 145px;
+}
+.box150 {
+    width: 150px;
+}
+.box240 {
+    width: 240px;
+}
+.box300 {
+    width: 300px;
+}
+.box320 {
+    width: 320px;
+}
+.box350 {
+    width: 350px;
+}
+.box380 {
+    width: 380px;
+}
 
 /* フォームが縦に重なり合う場合に併用する余白 */
-.top { margin-bottom: 5px; }
+.top {
+    margin-bottom: 5px;
+}
 
 
 /* タイトル
@@ -250,14 +314,14 @@ div#undercolumn_login .login_area h4 {
 /* ロゴ
 ----------------------------------------------- */
 #site_description {
-    font-size:90%;
+    font-size: 90%;
 }
 #logo_area h1 {
     width: 378px;
     height: 33px;
 }
 #logo_area h1 span {
-    display: none;/* テキストロゴ非表示 */
+    display: none; /* テキストロゴ非表示 */
 }
 
 
@@ -339,11 +403,10 @@ div#undercolumn_entry .message {
 div#complete_area .shop_information {
     margin-top: 40px;
     padding: 20px 0 0 0;
-    border-top :solid 1px #ccc;
+    border-top: solid 1px #ccc;
 }
 div#complete_area .shop_information .name {
     margin-bottom: 10px;
     font-weight: bold;
     font-size: 140%;
 }
-
