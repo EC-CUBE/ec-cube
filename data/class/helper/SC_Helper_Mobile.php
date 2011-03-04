@@ -235,7 +235,7 @@ class SC_Helper_Mobile {
         ob_start(array('SC_MobileEmoji', 'handler'));
 
         // 端末に合わせて画像サイズを変換する。
-        ob_start(array('SC_MobileImage', 'handler'));
+        ob_start(array('SC_MobileImage_Ex', 'handler'));
 
         // 全角カタカナを半角カタカナに変換する。
         ob_start(create_function('$buffer', 'return mb_convert_kana($buffer, "k", "SJIS-win");'));
