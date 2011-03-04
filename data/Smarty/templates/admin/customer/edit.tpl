@@ -47,13 +47,13 @@
 
     <!--{foreach from=$arrSearchData key="key" item="item"}-->
         <!--{if $key ne "customer_id" && $key ne "mode" && $key ne "edit_customer_id" && $key ne $smarty.const.TRANSACTION_ID_NAME}-->
-		  <!--{if is_array($item)}-->
-		    <!--{foreach item=c_item from=$item}-->
-		      <input type="hidden" name="<!--{$key|h}-->[]" value="<!--{$c_item|h}-->" />
-		    <!--{/foreach}-->
-		  <!--{else}-->
-		    <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
-		  <!--{/if}-->
+          <!--{if is_array($item)}-->
+            <!--{foreach item=c_item from=$item}-->
+              <input type="hidden" name="<!--{$key|h}-->[]" value="<!--{$c_item|h}-->" />
+            <!--{/foreach}-->
+          <!--{else}-->
+            <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
+          <!--{/if}-->
         <!--{/if}-->
     <!--{/foreach}-->
 </form>
@@ -66,25 +66,25 @@
     <!-- 検索条件の保持 -->
     <!--{foreach from=$arrSearchData key="key" item="item"}-->
         <!--{if $key ne "customer_id" && $key ne "mode" && $key ne "edit_customer_id" && $key ne $smarty.const.TRANSACTION_ID_NAME}-->
-		  <!--{if is_array($item)}-->
-		    <!--{foreach item=c_item from=$item}-->
-		      <input type="hidden" name="search_data[<!--{$key|h}-->][]" value="<!--{$c_item|h}-->" />
-		    <!--{/foreach}-->
-		  <!--{else}-->
-		    <input type="hidden" name="search_data[<!--{$key|h}-->]" value="<!--{$item|h}-->" />
-		  <!--{/if}-->
+          <!--{if is_array($item)}-->
+            <!--{foreach item=c_item from=$item}-->
+              <input type="hidden" name="search_data[<!--{$key|h}-->][]" value="<!--{$c_item|h}-->" />
+            <!--{/foreach}-->
+          <!--{else}-->
+            <input type="hidden" name="search_data[<!--{$key|h}-->]" value="<!--{$item|h}-->" />
+          <!--{/if}-->
         <!--{/if}-->
     <!--{/foreach}-->
 
     <div id="customer" class="contents-main">
         <h2><!--{if $arrForm.customer_id}-->顧客編集<!--{else}-->顧客登録<!--{/if}--></h2>
         <table class="form">
-			<!--{if $arrForm.customer_id}-->
+            <!--{if $arrForm.customer_id}-->
             <tr>
                 <th>顧客ID<span class="attention"> *</span></th>
                 <td><!--{$arrForm.customer_id|h}--></td>
             </tr>
-			<!--{/if}-->
+            <!--{/if}-->
             <tr>
                 <th>会員状態<span class="attention"> *</span></th>
                 <td>

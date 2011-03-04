@@ -46,13 +46,13 @@ function func_return(){
     <!-- 検索条件の保持 -->
     <!--{foreach from=$arrSearchData key="key" item="item"}-->
         <!--{if $key ne "customer_id" && $key ne "mode" && $key ne "edit_customer_id" && $key ne $smarty.const.TRANSACTION_ID_NAME}-->
-		  <!--{if is_array($item)}-->
-		    <!--{foreach item=c_item from=$item}-->
-		      <input type="hidden" name="search_data[<!--{$key|h}-->][]" value="<!--{$c_item|h}-->" />
-		    <!--{/foreach}-->
-		  <!--{else}-->
-		    <input type="hidden" name="search_data[<!--{$key|h}-->]" value="<!--{$item|h}-->" />
-		  <!--{/if}-->
+            <!--{if is_array($item)}-->
+                <!--{foreach item=c_item from=$item}-->
+                    <input type="hidden" name="search_data[<!--{$key|h}-->][]" value="<!--{$c_item|h}-->" />
+                <!--{/foreach}-->
+            <!--{else}-->
+                <input type="hidden" name="search_data[<!--{$key|h}-->]" value="<!--{$item|h}-->" />
+            <!--{/if}-->
         <!--{/if}-->
     <!--{/foreach}-->
 
@@ -136,9 +136,10 @@ function func_return(){
             </tr>
         </table>
         <div class="btn-area">
-          <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="func_return(); return false;"><span class="btn-prev">編集画面に戻る</span></a></li>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'complete', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+            <ul>
+                <li><a class="btn-action" href="javascript:;" onclick="func_return(); return false;"><span class="btn-prev">編集画面に戻る</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'complete', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+            </ul>
         </div>
     </div>
 </form>
