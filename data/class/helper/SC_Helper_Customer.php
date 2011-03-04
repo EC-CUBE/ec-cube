@@ -151,16 +151,32 @@ class SC_Helper_Customer {
 
         // ログインしている場合、すでに登録している自分のemailの場合はエラーを返さない
         if ($objCustomer->getValue('customer_id')){
-            $arrRet = $objQuery->select("email, email_mobile",
-                                        "dtb_customer",
-                                        "customer_id = ? ORDER BY del_flg",
-                                        array($objCustomer->getValue('customer_id')));
-
-            if ($email == $arrRet[0]["email"] || $email == $arrRet[0]["email_mobile"]) {
+            if (SC_Helper_Customer_Ex::sfCustomerEmailDuplicationCheck($objCustomer->getValue('customer_id'), $email)) {
                 $return = 3;
             }
         }
         return $return;
+    }
+
+    /**
+     * ログイン時メールアドレス重複チェック.
+     *
+     * 顧客の保持する email, mobile_email が, 引数 $email と一致するかチェックする
+     *
+     * @param integer $customer_id チェック対象の顧客の顧客ID
+     * @param string $email チェック対象のメールアドレス
+     * @return boolean メールアドレスが重複する場合 true
+     */
+    function sfCustomerEmailDuplicationCheck($customer_id, $email) {
+        $objQuery   =& SC_Query::getSingletonInstance();
+        $arrResults = $objQuery->getRow("email, email_mobile",
+                                        "dtb_customer", "customer_id = ?",
+                                        array($customer_id));
+        if ($email == $arrResults["email"]
+            || $email == $arrResults["email_mobile"]) {
+            return true;
+        }
+        return false;
     }
 
 
@@ -382,6 +398,16 @@ class SC_Helper_Customer {
     function sfCustomerEntryErrorCheck(&$objFormParam) {
         $objErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck($objFormParam);
         $objErr = SC_Helper_Customer_Ex::sfCustomerRegisterErrorCheck($objErr);
+
+        /*
+         * sfCustomerRegisterErrorCheck() では, ログイン中の場合は重複チェック
+         * されないので, 再度チェックを行う
+         */
+        $objCustomer = new SC_Customer();
+        if ($objCustomer->isLoginSuccess(true)
+            && SC_Helper_Customer_Ex::sfCustomerEmailDuplicationCheck($objCustomer->getValue('customer_id'), $objFormParam->getValue('email'))) {
+            $objErr->arrErr['email'] .= "※ すでに会員登録で使用されているメールアドレスです。<br />";
+        }
 
         return $objErr->arrErr;
     }
