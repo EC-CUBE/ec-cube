@@ -23,13 +23,13 @@
 *}-->
 <script type="text/javascript"><!--
 function confirmSubmit(mode, msg) {
-  var form = document.form1;
-  form['mode'].value = mode;
-  if (window.confirm(msg)) {
-    form.submit();
-  } else {
-    form['mode'].value = '';
-  }
+    var form = document.form1;
+    form['mode'].value = mode;
+    if (window.confirm(msg)) {
+        form.submit();
+    } else {
+        form['mode'].value = '';
+    }
 }
 //-->
 </script>
@@ -39,40 +39,40 @@ function confirmSubmit(mode, msg) {
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 <div id="disign" class="contents-main">
-  <p class="remark">
-    テンプレートパッケージのアップロードを行います。<br />
-    アップロードしたパッケージは、「テンプレート設定」で選択できるようになります。
-  </p>
-  <table>
-    <!--{assign var=key value="template_code"}-->
-    <tr>
-      <th>テンプレートコード</th>
-      <td>
-        <span class="attention"><!--{$arrErr[$key]}--></span>
-        <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54">
-      </td>
-    </tr>
-    <!--{assign var=key value="template_name"}-->
-    <tr>
-      <th>テンプレート名</th>
-      <td>
-        <span class="attention"><!--{$arrErr[$key]}--></span>
-        <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54">
-      </td>
-    </tr>
-    <!--{assign var=key value="template_file"}-->
-    <tr>
-      <th>テンプレートファイル<br/>
-        <span class="attention"><span class="fs14n">※ファイル形式は.tar/.tar.gzのみ</span></span>
-      </th>
-      <td>
-        <span class="attention"><!--{$arrErr[$key]}--></span>
-        <input type="file" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54" size="64" <!--{if $arrErr[$key]}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->>
-      </td>
-    </tr>
-  </table>
-  <div class="btn-area">
-    <a class="btn-action" href="javascript:;" onclick="fnModeSubmit('upload', '', '');return false;"><span class="btn-next">この内容で登録する</span></a>
-  </div>
+    <p class="remark">
+        テンプレートパッケージのアップロードを行います。<br />
+        アップロードしたパッケージは、「テンプレート設定」で選択できるようになります。
+    </p>
+    <table>
+        <!--{assign var=key value="template_code"}-->
+        <tr>
+            <th>テンプレートコード</th>
+            <td>
+                <span class="attention"><!--{$arrErr[$key]}--></span>
+                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54">
+            </td>
+        </tr>
+        <!--{assign var=key value="template_name"}-->
+        <tr>
+            <th>テンプレート名</th>
+            <td>
+                <span class="attention"><!--{$arrErr[$key]}--></span>
+                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54">
+            </td>
+        </tr>
+        <!--{assign var=key value="template_file"}-->
+        <tr>
+            <th>テンプレートファイル<br/>
+                <span class="attention"><span class="fs14n">※ファイル形式は.tar/.tar.gzのみ</span></span>
+            </th>
+            <td>
+                <span class="attention"><!--{$arrErr[$key]}--></span>
+                <input type="file" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54" size="64" <!--{if $arrErr[$key]}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->>
+            </td>
+        </tr>
+    </table>
+    <div class="btn-area">
+        <a class="btn-action" href="javascript:;" onclick="fnModeSubmit('upload', '', '');return false;"><span class="btn-next">この内容で登録する</span></a>
+    </div>
 </div>
 </form>

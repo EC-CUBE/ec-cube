@@ -47,19 +47,19 @@
         </tr>
     </table>
     <!--{* 検索条件設定テーブルここまで *}-->
-    
-  <div class="btn">
-    <p class="page_rows">検索結果表示件数
-    <!--{assign var=key value="search_page_max"}-->
-    <select name="<!--{$key}-->">
-      <!--{html_options options=$arrPageRows selected=$arrForm[$key]}-->
-    </select> 件</p>
-    <div class="btn-area">
-      <ul>
-        <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next">この条件で検索する</span></a></li>
-      </ul>
+
+    <div class="btn">
+        <p class="page_rows">検索結果表示件数
+        <!--{assign var=key value="search_page_max"}-->
+        <select name="<!--{$key}-->">
+            <!--{html_options options=$arrPageRows selected=$arrForm[$key]}-->
+        </select> 件</p>
+        <div class="btn-area">
+            <ul>
+                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next">この条件で検索する</span></a></li>
+            </ul>
+        </div>
     </div>
-  </div>
 </form>
 
 
@@ -70,9 +70,9 @@
 <input type="hidden" name="mode" value="" />
 <!--{foreach key=key item=item from=$arrHidden}-->
 <!--{if is_array($item)}-->
-  <!--{foreach item=c_item from=$item}-->
-    <input type="hidden" name="<!--{$key}-->[]" value="<!--{$c_item|h}-->" />
-  <!--{/foreach}-->
+    <!--{foreach item=c_item from=$item}-->
+        <input type="hidden" name="<!--{$key}-->[]" value="<!--{$c_item|h}-->" />
+    <!--{/foreach}-->
 <!--{else}-->
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
 <!--{/if}-->

@@ -114,9 +114,9 @@ function fnTargetSelf(){
                 </td>
                 <!-- ★☆★ 上部ナビテーブル ☆★☆ -->
             </tr>
-            
+
         <!--{if $device_type_id == $smarty.const.DEVICE_TYPE_MOBILE || $device_type_id == $smarty.const.DEVICE_TYPE_SMARTPHONE}-->
-        	<!--{* メイン上部テーブルここから *}-->
+            <!--{* メイン上部テーブルここから *}-->
             <tr>
                 <td colspan="3" id="<!--{$arrTarget[$smarty.const.TARGET_ID_MAIN_HEAD]}-->" class="ui-sortable">
                     <!--{assign var="firstflg" value=false}-->
@@ -136,7 +136,7 @@ function fnTargetSelf(){
                 </td>
             </tr>
             <!--{* メイン上部テーブルここまで *}-->
-        	<!--{* メインここから *}-->
+            <!--{* メインここから *}-->
             <tr>
                 <th colspan="3" id="layout-main">メイン</th>
             </tr>

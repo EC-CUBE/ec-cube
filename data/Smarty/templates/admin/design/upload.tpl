@@ -25,33 +25,33 @@
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="upload" />
 <div id="disign" class="contents-main">
-  <h2><!--{$template_name}--></h2>
-  <table>
-    <!--{assign var=key value="template_code"}-->
-    <tr>
-      <th>テンプレートコード</th>
-      <td>
-        <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
-        <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54" />
-      </td>
-    </tr>
-    <!--{assign var=key value="template_name"}-->
-    <tr>
-      <th>テンプレート名</th>
-      <td>
-        <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
-        <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54" />
-      </td>
-    </tr>
-    <!--{assign var=key value="template_file"}-->
-    <tr>
-      <th>テンプレートファイル<br /><span class="attention">※ファイル形式は.tar/.tar.gzのみ</span></th>
-      <td>
-        <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
-        <input type="file" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54" size="64" <!--{if $arrErr.template_file}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}--> />
-      </td>
-    </tr>
-  </table>
+    <h2><!--{$template_name}--></h2>
+    <table>
+        <!--{assign var=key value="template_code"}-->
+        <tr>
+            <th>テンプレートコード</th>
+            <td>
+                <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
+                <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54" />
+            </td>
+        </tr>
+        <!--{assign var=key value="template_name"}-->
+        <tr>
+            <th>テンプレート名</th>
+            <td>
+                <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
+                <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54" />
+            </td>
+        </tr>
+        <!--{assign var=key value="template_file"}-->
+        <tr>
+            <th>テンプレートファイル<br /><span class="attention">※ファイル形式は.tar/.tar.gzのみ</span></th>
+            <td>
+                <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
+                <input type="file" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54" size="64" <!--{if $arrErr.template_file}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}--> />
+            </td>
+        </tr>
+    </table>
 
 <div class="btn-area">
 <a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'upload', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a>
@@ -63,16 +63,16 @@
 <script type="text/javascript">
 function ChangeImage(strUrl)
 {
-  document.main_img.src=strUrl;
+    document.main_img.src=strUrl;
 }
 
 // モードとキーを指定してSUBMITを行う。
 function lfnModeSubmit(mode) {
-  if(!window.confirm('登録しても宜しいですか?')){
-    return false;
-  }
-  document.form1['mode'].value = mode;
-  return true;
+    if(!window.confirm('登録しても宜しいですか?')){
+        return false;
+    }
+    document.form1['mode'].value = mode;
+    return true;
 }
 
 
