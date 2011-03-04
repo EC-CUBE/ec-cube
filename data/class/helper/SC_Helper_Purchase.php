@@ -205,7 +205,7 @@ class SC_Helper_Purchase {
         $arrItems[$product_class_id]['product_class_id'] = $product_class_id;
         $arrItems[$product_class_id]['quantity'] += $quantity;
 
-        $objProduct = new SC_Product();
+        $objProduct = new SC_Product_Ex();
         if (empty($arrItems[$product_class_id]['productsClass'])) {
             $product =& $objProduct->getDetailAndProductsClass($product_class_id);
             $arrItems[$product_class_id]['productsClass'] = $product;
@@ -575,7 +575,7 @@ class SC_Helper_Purchase {
         $where = 'order_id = ? AND shipping_id = ?';
         $objQuery->delete($table, $where, array($order_id, $shipping_id));
 
-        $objProduct = new SC_Product();
+        $objProduct = new SC_Product_Ex();
         foreach ($arrParams as $arrValues) {
             if (SC_Utils_Ex::isBlank($arrValues['product_class_id'])) {
                 continue;
@@ -649,7 +649,7 @@ class SC_Helper_Purchase {
         $cartItems = $objCartSession->getCartList($cartKey);
 
         // 詳細情報を生成
-        $objProduct = new SC_Product();
+        $objProduct = new SC_Product_Ex();
         $i = 0;
         foreach ($cartItems as $item) {
             $p =& $item['productsClass'];
@@ -841,7 +841,7 @@ __EOS__;
         }
 
         if ($has_items) {
-            $objProduct = new SC_Product();
+            $objProduct = new SC_Product_Ex();
             foreach (array_keys($arrResults) as $shipping_id) {
                 $arrResults[$shipping_id]['shipment_item']
                         =& $this->getShipmentItems($order_id, $shipping_id);
@@ -860,7 +860,7 @@ __EOS__;
      */
     function getShipmentItems($order_id, $shipping_id, $has_detail = true) {
         $objQuery =& SC_Query::getSingletonInstance();
-        $objProduct = new SC_Product();
+        $objProduct = new SC_Product_Ex();
         $arrResults = array();
         $arrItems = $objQuery->select("*", "dtb_shipment_item",
                                       "order_id = ? AND shipping_id = ?",

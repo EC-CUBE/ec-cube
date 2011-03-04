@@ -255,7 +255,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
             $objQuery->setWhere($where);
         }
         $objQuery->setOrder('product_id');
-        $objProduct = new SC_Product();
+        $objProduct = new SC_Product_Ex();
         $arrProductLsit = $objProduct->lists($objQuery);
         // 各商品のカテゴリIDとランクの取得
         $arrProduct = array();
@@ -290,7 +290,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
     function lfGetProductsAllclass(&$objQuery){
         // --- 商品一覧の取得
         $objQuery->setOrder('product_id');
-        $objProduct = new SC_Product();
+        $objProduct = new SC_Product_Ex();
         $arrProductLsit = $objProduct->lists($objQuery);
         // 各商品のカテゴリIDとランクの取得
         $arrProduct = array();

@@ -95,7 +95,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
      */
     function action() {
         $objQuery =& SC_Query::getSingletonInstance();
-        $objProduct = new SC_Product();
+        $objProduct = new SC_Product_Ex();
 
         $this->arrForm = $_REQUEST;//時間が無いのでコレで勘弁してください。 tao_s
         //modeの取得
@@ -404,7 +404,7 @@ __EOS__;
         // 検索結果対象となる商品の数を取得
         $objQuery =& SC_Query::getSingletonInstance();
         $objQuery->setWhere($searchCondition["where"]);
-        $objProduct = new SC_Product();
+        $objProduct = new SC_Product_Ex();
         return $objProduct->findProductCount($objQuery, $searchCondition["arrval"]);
     }
     

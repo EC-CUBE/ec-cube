@@ -707,7 +707,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         // 新しく商品を追加した場合はフォームに登録
         // 商品を変更した場合は、該当行を変更
         if (!$exists) {
-            $objProduct = new SC_Product();
+            $objProduct = new SC_Product_Ex();
             $arrProduct = $objProduct->getDetailAndProductsClass($product_class_id);
             $arrProduct['quantity'] = 1;
             $arrProduct['price'] = $arrProduct['price02'];

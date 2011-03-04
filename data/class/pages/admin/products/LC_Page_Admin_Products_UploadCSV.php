@@ -362,7 +362,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfRegistProduct($objQuery, $line = "", &$objFormParam) {
-        $objProduct = new SC_Product();
+        $objProduct = new SC_Product_Ex();
         // 登録データ対象取得
         $arrList = $objFormParam->getHashArray();
         // 登録時間を生成(DBのnow()だとcommitした際、すべて同一の時間になってしまう)
@@ -419,7 +419,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfRegistProductClass($objQuery, $arrList, $product_id, $product_class_id) {
-        $objProduct = new SC_Product();
+        $objProduct = new SC_Product_Ex();
         // 商品規格登録情報を生成する。
         // 商品規格テーブルのカラムに存在しているもののうち、Form投入設定されていないデータは上書きしない。
         $sqlval = SC_Utils_Ex::sfArrayIntersectKeys($arrList, $this->arrProductClassColumn);

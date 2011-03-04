@@ -109,7 +109,7 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc {
         if ( is_array($arrBestProducts) && count($arrBestProducts) > 0 ) {
             // 各商品の詳細情報を取得
             $objQuery = SC_Query::getSingletonInstance();
-            $objProduct = new SC_Product();
+            $objProduct = new SC_Product_Ex();
             // where条件生成&セット
             $arrBestProductIds = array();
             $where = 'product_id IN ( ';

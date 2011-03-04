@@ -225,7 +225,7 @@ class SC_CartSession {
 
     // カートへの商品追加
     function addProduct($product_class_id, $quantity) {
-        $objProduct = new SC_Product();
+        $objProduct = new SC_Product_Ex();
         $arrProduct = $objProduct->getProductsClass($product_class_id);
         $productTypeId = $arrProduct['product_type_id'];
         $find = false;
@@ -291,7 +291,7 @@ class SC_CartSession {
     }
 
     function getCartList($productTypeId) {
-        $objProduct = new SC_Product();
+        $objProduct = new SC_Product_Ex();
         $max = $this->getMax($productTypeId);
         $arrRet = array();
         for($i = 0; $i <= $max; $i++) {
@@ -444,7 +444,7 @@ class SC_CartSession {
      * @return string エラーが発生した場合はエラーメッセージ
      */
     function checkProducts($productTypeId) {
-        $objProduct = new SC_Product();
+        $objProduct = new SC_Product_Ex();
         $tpl_message = "";
 
         // カート内の情報を取得

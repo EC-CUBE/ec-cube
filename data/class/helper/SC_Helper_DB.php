@@ -639,7 +639,7 @@ class SC_Helper_DB {
      * @return void
      */
     function sfCountCategory($objQuery = NULL, $is_force_all_count = false){
-        $objProduct = new SC_Product();
+        $objProduct = new SC_Product_Ex();
 
         if($objQuery == NULL) {
             $objQuery =& SC_Query::getSingletonInstance();

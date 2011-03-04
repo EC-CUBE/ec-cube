@@ -733,7 +733,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
      * @return array 商品規格, 規格, 規格分類の配列
      */
     function getProductsClassAndClasscategory($productId) {
-        $objProduct = new SC_Product();
+        $objProduct = new SC_Product_Ex();
         return $objProduct->getProductsClassFullByProductId($productId);
     }
 }

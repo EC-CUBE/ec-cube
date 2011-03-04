@@ -51,7 +51,7 @@ require_once(CLASS_REALDIR . "SC_MobileUserAgent.php");
 require_once(CLASS_REALDIR . "SC_SmartphoneUserAgent.php");
 require_once(CLASS_REALDIR . "SC_MobileEmoji.php");
 require_once(CLASS_REALDIR . "SC_MobileImage.php");
-require_once(CLASS_REALDIR . "SC_Product.php");
+require_once(CLASS_EX_REALDIR . "SC_Product_Ex.php");
 require_once CLASS_EX_REALDIR . 'SC_Response_Ex.php';
 require_once(CLASS_EX_REALDIR . "SC_Display_Ex.php");
 require_once(CLASS_EX_REALDIR . "helper_extends/SC_Helper_PageLayout_Ex.php");

@@ -80,7 +80,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
 
         switch ($this->getMode()) {
             case 'search':
-                $objProduct = new SC_Product();
+                $objProduct = new SC_Product_Ex();
                 $this->arrForm = $objFormParam->getHashArray();
                 $wheres = $this->createWhere($objFormParam,$objDb);
                 $this->tpl_linemax = $this->getLineCount($wheres,$objProduct);

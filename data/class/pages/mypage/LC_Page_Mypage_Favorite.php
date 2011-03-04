@@ -105,7 +105,7 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
      */
     function lfGetFavoriteProduct($customer_id, &$objPage) {
         $objQuery       = SC_Query::getSingletonInstance();
-        $objProduct     = new SC_Product();
+        $objProduct     = new SC_Product_Ex();
 
         $objQuery->setOrder('create_date DESC');
         $arrProduct_id  = $objQuery->getCol('product_id', 'dtb_customer_favorite_products', 'customer_id = ?', array($customer_id));

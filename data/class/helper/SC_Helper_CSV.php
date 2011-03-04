@@ -221,7 +221,7 @@ class SC_Helper_CSV {
         // TODO: 固有処理 なんかエレガントな処理にしたい
         if($csv_id == '1') {
             //商品の場合
-            $objProduct = new SC_Product();
+            $objProduct = new SC_Product_Ex();
             // このWhereを足さないと無効な規格も出力される。現行仕様と合わせる為追加。
             $inner_where = 'dtb_products_class.del_flg = 0';
             $sql = $objQuery->getSql($cols, $objProduct->prdclsSQL($inner_where),$where);

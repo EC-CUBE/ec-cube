@@ -165,7 +165,7 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
 
         // 検索結果の取得
         // FIXME 商品コードの表示
-        $arrProducts = $objQuery->select("*", SC_Product::alldtlSQL(), $where, $arrval);
+        $arrProducts = $objQuery->select("*", SC_Product_Ex::alldtlSQL(), $where, $arrval);
         return $arrProducts;
     }
 }

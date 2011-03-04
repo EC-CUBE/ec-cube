@@ -110,7 +110,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         // 規格選択セレクトボックスの作成
         $this->js_lnOnload .= $this->lfMakeSelect();
 
-        $objProduct = new SC_Product();
+        $objProduct = new SC_Product_Ex();
         $objProduct->setProductsClassByProductIds(array($product_id));
 
         // 規格1クラス名
@@ -393,7 +393,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
     /* 商品規格情報の取得 */
     function lfGetProductsClass($product_id) {
-        $objProduct = new SC_Product();
+        $objProduct = new SC_Product_Ex();
         return $objProduct->getProductsClassFullByProductId($product_id);
     }
 
@@ -410,7 +410,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
             $arrRecommendData[$recommend["recommend_product_id"]] = $recommend["comment"];
         }
         
-        $objProduct = new SC_Product();
+        $objProduct = new SC_Product_Ex();
         
         $where = "";
         if (!empty($arrRecommendProductId)) {

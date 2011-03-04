@@ -79,7 +79,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
             // 入力された値にエラーがない場合、検索処理を行う。
             // 検索結果の数に応じてページャの処理も入れる。
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                $objProduct = new SC_Product();
+                $objProduct = new SC_Product_Ex();
 
                 $wheres = $this->createWhere($objFormParam,$objDb);
                 $this->tpl_linemax = $this->getLineCount($wheres,$objProduct);

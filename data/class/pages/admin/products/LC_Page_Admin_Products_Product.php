@@ -804,7 +804,7 @@ __EOF__;
         }
 
         // 商品ステータス取得
-        $objProduct = new SC_Product();
+        $objProduct = new SC_Product_Ex();
         $productStatus = $objProduct->getProductStatus(array($product_id));
         $arrProduct[0]['product_status'] = $productStatus[$product_id];
 
@@ -859,7 +859,7 @@ __EOF__;
             if (!isset($arrForm[$delkey])) $arrForm[$delkey] = null;
 
             if((isset($arrForm[$keyname]) && !empty($arrForm[$keyname])) && $arrForm[$delkey] != 1) {
-                $objProduct = new SC_Product();
+                $objProduct = new SC_Product_Ex();
                 $arrRecommend[$i] = $objProduct->getDetail($arrForm[$keyname]);
                 $arrRecommend[$i]['product_id'] = $arrForm[$keyname];
                 $arrRecommend[$i]['comment'] = $arrForm[$commentkey];
@@ -1030,7 +1030,7 @@ __EOF__;
         }
 
         // ステータス設定
-        $objProduct = new SC_Product();
+        $objProduct = new SC_Product_Ex();
         $objProduct->setProductStatus($product_id, $arrList['product_status']);
 
         // 関連商品登録
