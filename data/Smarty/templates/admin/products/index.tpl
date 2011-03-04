@@ -103,7 +103,7 @@ function lfnDispChange(){
         <span class="attention"><!--{$arrErr[$key]}--></span>
         <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
         <option value="">選択してください</option>
-        <!--{html_options options=$arrCatList selected=$arrForm[$key]}-->
+        <!--{html_options options=$arrCatList selected=$arrForm[$key].value}-->
         </select>
       </td>
       <th>種別</th>
@@ -162,7 +162,7 @@ function lfnDispChange(){
     <span class="attention"><!--{$arrErr[$key]}--></span>
     <!--{/if}-->
     <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-    <!--{html_options options=$arrPageMax selected=$arrForm.search_page_max}-->
+    <!--{html_options options=$arrPageMax selected=$arrForm.search_page_max.value}-->
     </select> 件</p>
 
 	<div class="btn-area">
