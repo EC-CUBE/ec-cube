@@ -894,16 +894,29 @@ __EOS__;
         $arrParents[] = $id;
         $child = $id;
 
-        $ret = SC_Utils::sfGetParentsArraySub($arrData, $pid_name, $id_name, $child);
+        $ret = SC_Helper_DB_Ex::sfGetParentsArraySub($arrData, $pid_name, $id_name, $child);
 
         while($ret != "") {
             $arrParents[] = $ret;
-            $ret = SC_Utils::sfGetParentsArraySub($arrData, $pid_name, $id_name, $ret);
+            $ret = SC_Helper_DB_Ex::sfGetParentsArraySub($arrData, $pid_name, $id_name, $ret);
         }
 
         $arrParents = array_reverse($arrParents);
 
         return $arrParents;
+    }
+
+    /* 子ID所属する親IDを取得する */
+    function sfGetParentsArraySub($arrData, $pid_name, $id_name, $child) {
+        $max = count($arrData);
+        $parent = "";
+        for($i = 0; $i < $max; $i++) {
+            if($arrData[$i][$id_name] == $child) {
+                $parent = $arrData[$i][$pid_name];
+                break;
+            }
+        }
+        return $parent;
     }
 
     /**

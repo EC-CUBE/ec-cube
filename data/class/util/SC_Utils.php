@@ -1174,19 +1174,6 @@ exit;
         return false;
     }
 
-    /* 子ID所属する親IDを取得する */
-    function sfGetParentsArraySub($arrData, $pid_name, $id_name, $child) {
-        $max = count($arrData);
-        $parent = "";
-        for($i = 0; $i < $max; $i++) {
-            if($arrData[$i][$id_name] == $child) {
-                $parent = $arrData[$i][$pid_name];
-                break;
-            }
-        }
-        return $parent;
-    }
-
     /* 階層構造のテーブルから与えられたIDの兄弟を取得する */
     function sfGetBrothersArray($arrData, $pid_name, $id_name, $arrPID) {
         $max = count($arrData);
