@@ -62,7 +62,7 @@ class LC_Page_AbstractMypage extends LC_Page_Ex {
         // ログインしていない場合は必ずログインページを表示する
         if($objCustomer->isLoginSuccess(true) === false) {
             // クッキー管理クラス
-            $objCookie = new SC_Cookie(COOKIE_EXPIRE);
+            $objCookie = new SC_Cookie_Ex(COOKIE_EXPIRE);
             // クッキー判定(メールアドレスをクッキーに保存しているか）
             $this->tpl_login_email = $objCookie->getCookie('login_email');
             if($this->tpl_login_email != "") {
