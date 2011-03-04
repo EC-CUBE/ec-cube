@@ -21,9 +21,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-require_once(CLASS_REALDIR . "SC_FormParam.php");
+require_once(CLASS_REALDIR . "SC_Product.php");
 
-class SC_FormParam_Ex extends SC_FormParam {
+class SC_Product_Ex extends SC_Product {
 }
 
 ?>
