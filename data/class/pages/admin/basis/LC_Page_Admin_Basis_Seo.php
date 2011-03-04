@@ -83,7 +83,7 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
         $mode = $this->getMode();
 
         if (!empty($_POST)) {
-            $objFormParam = new SC_FormParam();
+            $objFormParam = new SC_FormParam_Ex();
             $this->lfInitParam($mode, $objFormParam);
             $objFormParam->setParam($_POST);
             $objFormParam->convParam();

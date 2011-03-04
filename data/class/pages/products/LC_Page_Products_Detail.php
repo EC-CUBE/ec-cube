@@ -95,7 +95,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         $objCustomer = new SC_Customer_Ex();
 
         // パラメータ管理クラス
-        $this->objFormParam = new SC_FormParam();
+        $this->objFormParam = new SC_FormParam_Ex();
         // パラメータ情報の初期化
         $this->arrForm = $this->lfInitParam($this->objFormParam);
         // ファイル管理クラス

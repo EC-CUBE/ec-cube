@@ -92,7 +92,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
         $_SESSION['other_deliv_id'] = $_GET['other_deliv_id'];
 
         // パラメータ管理クラス,パラメータ情報の初期化
-        $objFormParam   = new SC_FormParam();
+        $objFormParam   = new SC_FormParam_Ex();
         SC_Helper_Customer_Ex::sfCustomerOtherDelivParam($objFormParam);
         $objFormParam->setParam($_POST);
         $this->arrForm  = $objFormParam->getHashArray();

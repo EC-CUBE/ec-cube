@@ -67,7 +67,7 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
      */
     function action() {
 
-        $objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam_Ex();
 
         $this->initForm($objFormParam, $_GET);
         switch($this->getMode()) {

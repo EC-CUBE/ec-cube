@@ -68,7 +68,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        $objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
         $objFormParam->convParam();

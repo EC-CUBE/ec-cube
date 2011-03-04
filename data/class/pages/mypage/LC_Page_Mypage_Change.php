@@ -85,7 +85,7 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
         }
 
         // パラメータ管理クラス,パラメータ情報の初期化
-        $objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam_Ex();
         SC_Helper_Customer_Ex::sfCustomerMypageParam($objFormParam);
         $objFormParam->setParam($_POST);    // POST値の取得
 

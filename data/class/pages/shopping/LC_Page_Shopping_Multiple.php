@@ -67,7 +67,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
         $objCartSess = new SC_CartSession_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objCustomer = new SC_Customer_Ex();
-        $objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam_Ex();
 
         $this->tpl_uniqid = $objSiteSess->getUniqId();
 

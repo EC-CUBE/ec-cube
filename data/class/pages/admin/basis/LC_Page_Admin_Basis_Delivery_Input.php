@@ -70,7 +70,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        $objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($this->mode, $objFormParam);
         $objFormParam->setParam($_POST);
 

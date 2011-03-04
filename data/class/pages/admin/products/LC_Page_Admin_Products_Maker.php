@@ -66,7 +66,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        $objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam_Ex();
 
         // パラメータ情報の初期化
         $this->lfInitParam($objFormParam);

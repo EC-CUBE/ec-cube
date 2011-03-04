@@ -109,7 +109,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         }
 
         // パラメータ管理クラス
-        $objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam_Ex();
         // パラメータ情報の初期化
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);

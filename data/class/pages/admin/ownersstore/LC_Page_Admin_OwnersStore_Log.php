@@ -113,7 +113,7 @@ END;
     }
 
     function initParam() {
-        $objForm = new SC_FormParam();
+        $objForm = new SC_FormParam_Ex();
         $objForm->addParam('log_id', 'log_id', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objForm->setParam($_GET);
         return $objForm;

@@ -86,9 +86,9 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
      */
     function action() {
         // パラメータ管理クラス
-        $objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam_Ex();
         // 検索引き継ぎ用パラメーター管理クラス
-        $objFormSearchParam = new SC_FormParam();
+        $objFormSearchParam = new SC_FormParam_Ex();
 
         // モードによる処理切り替え
         switch ($this->getMode()) {

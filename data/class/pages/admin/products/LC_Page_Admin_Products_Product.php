@@ -76,7 +76,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
      * @return void
      */
     function action() {
-        $objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam_Ex();
 
         // アップロードファイル情報の初期化
         $objUpFile = new SC_UploadFile_Ex(IMAGE_TEMP_REALDIR, IMAGE_SAVE_REALDIR);
@@ -464,7 +464,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
      */
     function lfGetSearchParam($arrPost) {
         $arrSearchParam = array();
-        $objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam_Ex();
 
         parent::lfInitParam($objFormParam);
         $objFormParam->setParam($arrPost);

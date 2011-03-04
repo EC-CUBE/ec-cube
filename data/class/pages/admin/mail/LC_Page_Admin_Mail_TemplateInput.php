@@ -81,7 +81,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
             break;
         case 'regist':
             // 新規登録
-            $objFormParam = new SC_FormParam();
+            $objFormParam = new SC_FormParam_Ex();
             
             $this->lfInitParam($objFormParam);
             $objFormParam->setParam($_POST);

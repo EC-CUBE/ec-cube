@@ -169,7 +169,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
     }
 
     function lfInitRegister() {
-        $objForm = new SC_FormParam();
+        $objForm = new SC_FormParam_Ex();
         $objForm->addParam(
             'template_code', 'template_code', STEXT_LEN, '',
             array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "ALNUM_CHECK")
@@ -180,7 +180,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
     }
 
     function lfInitDelete() {
-        $objForm = new SC_FormParam();
+        $objForm = new SC_FormParam_Ex();
         $objForm->addParam(
             'template_code_temp', 'template_code_temp', STEXT_LEN, '',
             array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "ALNUM_CHECK")
@@ -191,7 +191,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
     }
 
     function lfInitDownload() {
-        $objForm = new SC_FormParam();
+        $objForm = new SC_FormParam_Ex();
         $objForm->addParam(
             'template_code_temp', 'template_code_temp', STEXT_LEN, '',
             array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "ALNUM_CHECK")

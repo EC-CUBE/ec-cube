@@ -67,7 +67,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
      */
     function action() {
 
-        $objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam_Ex();
 
         // パラメータの初期化
         $this->initForm($objFormParam, $_POST);

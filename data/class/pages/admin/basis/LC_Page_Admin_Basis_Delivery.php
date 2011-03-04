@@ -73,7 +73,7 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
         $mode = $this->getMode();
 
         if (!empty($_POST)) {
-            $objFormParam = new SC_FormParam();
+            $objFormParam = new SC_FormParam_Ex();
             $objFormParam->setParam($_POST);
 
             $this->arrErr = $this->lfCheckError($mode, $objFormParam);

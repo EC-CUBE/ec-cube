@@ -73,7 +73,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
         $objDb = new SC_Helper_DB_Ex();
 
         // パラメータ管理クラス
-        $objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam_Ex();
         // パラメータ情報の初期化
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);

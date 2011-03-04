@@ -76,7 +76,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
 
         if (!empty($_POST)) {
 
-            $objFormParam = new SC_FormParam();
+            $objFormParam = new SC_FormParam_Ex();
             $this->lfInitParam($mode, $objFormParam);
             $objFormParam->setParam($_POST);
             $objFormParam->convParam();

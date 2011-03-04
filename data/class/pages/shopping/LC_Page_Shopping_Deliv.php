@@ -70,7 +70,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
         $objCartSess = new SC_CartSession_Ex();
         $objCustomer = new SC_Customer_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
-        $objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam_Ex();
         $objCookie = new SC_Cookie_Ex(COOKIE_EXPIRE);
 
         $this->tpl_uniqid = $objSiteSess->getUniqId();

@@ -86,7 +86,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
      */
     function action() {
         // パラメータ管理クラス
-        $objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam_Ex();
 
         switch($this->getMode()) {
             case 'mail_check':

@@ -84,7 +84,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         $this->arrDay = $objDate->getDay();
 
         // パラメータ管理クラス
-        $this->objFormParam = new SC_FormParam();
+        $this->objFormParam = new SC_FormParam_Ex();
         // パラメータ情報の初期化
         $this->lfInitParam($this->objFormParam);
         $this->objFormParam->setParam($_POST);

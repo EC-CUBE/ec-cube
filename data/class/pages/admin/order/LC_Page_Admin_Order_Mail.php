@@ -73,7 +73,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Ex {
         // 検索パラメータの引き継ぎ
         $this->arrSearchHidden = SC_Utils_Ex::sfFilterKey($_POST,"^search_");
         // パラメータ管理クラス
-        $objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam_Ex();
         // パラメータ情報の初期化
         $this->lfInitParam($objFormParam);
         // POST値の取得

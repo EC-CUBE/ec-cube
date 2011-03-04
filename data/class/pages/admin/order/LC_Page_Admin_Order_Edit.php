@@ -83,7 +83,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
      */
     function action() {
         $objPurchase = new SC_Helper_Purchase_Ex();
-        $objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam_Ex();
 
         // パラメータ情報の初期化
         $this->lfInitParam($objFormParam);

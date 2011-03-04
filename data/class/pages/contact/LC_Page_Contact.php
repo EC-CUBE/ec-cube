@@ -72,7 +72,7 @@ class LC_Page_Contact extends LC_Page_Ex {
      */
     function action() {
         $objDb = new SC_Helper_DB_Ex();
-        $objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam_Ex();
 
         $this->arrData = isset($_SESSION['customer']) ? $_SESSION['customer'] : "";
 

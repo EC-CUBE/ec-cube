@@ -75,7 +75,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
         }
 
         // パラメータチェック
-        $objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
         // GET、SESSION['customer']値の取得
         $objFormParam->setParam($_SESSION['customer']);

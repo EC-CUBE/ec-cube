@@ -72,7 +72,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         // ページ送りの処理 $_REQUEST['pageno']が信頼しうる値かどうかチェックする。
         $this->tpl_pageno = $this->lfCheckPageNo($_REQUEST['pageno']);
 
-        $objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam_Ex();
         $arrErr = array();
         $arrForm = array();
 

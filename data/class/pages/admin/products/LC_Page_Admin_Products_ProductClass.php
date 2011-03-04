@@ -74,7 +74,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
      */
     function action() {
         // 商品マスタの検索条件パラメータを初期化
-        $objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam_Ex();
         $this->initParam($objFormParam);
 
         // 規格行のPOSTパラメータを初期化

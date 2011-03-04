@@ -67,7 +67,7 @@ class LC_Page_Admin_Plugin_Uninstall extends LC_Page_Admin_Ex {
      */
     function action() {
         // パラメータ管理クラス
-        $this->objFormParam = new SC_FormParam();
+        $this->objFormParam = new SC_FormParam_Ex();
         // パラメータ情報の初期化
         $this->lfInitParam();
         // POST値の取得

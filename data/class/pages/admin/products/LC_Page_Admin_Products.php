@@ -75,7 +75,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
     function action() {
         $objDb = new SC_Helper_DB_Ex();
         $objDate = new SC_Date_Ex();
-        $objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam_Ex();
         $objProduct = new SC_Product_Ex();
         $objQuery =& SC_Query::getSingletonInstance();
 

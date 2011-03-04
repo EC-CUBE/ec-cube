@@ -138,7 +138,7 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex {
             $_POST['public_key'] = trim($_POST['public_key']);
         }
 
-        $objForm = new SC_FormParam();
+        $objForm = new SC_FormParam_Ex();
         $objForm->addParam('認証キー', 'public_key', LTEXT_LEN, '', array('EXIST_CHECK', 'ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objForm->setParam($_POST);
 

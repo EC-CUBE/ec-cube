@@ -80,7 +80,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
         $objCustomer = new SC_Customer_Ex();
         $objCookie = new SC_Cookie_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
-        $objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam_Ex();
 
         $this->tpl_uniqid = $objSiteSess->getUniqId();
         $objPurchase->verifyChangeCart($this->tpl_uniqid, $objCartSess);

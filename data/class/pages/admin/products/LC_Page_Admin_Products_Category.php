@@ -71,7 +71,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
      */
     function action() {
         $objDb      = new SC_Helper_DB_Ex();
-        $objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam_Ex();
 
         // 入力パラメータ初期化
         $this->initParam($objFormParam);

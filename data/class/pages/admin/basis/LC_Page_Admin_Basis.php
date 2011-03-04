@@ -90,7 +90,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
 
         if(!empty($_POST)) {
 
-            $objFormParam = new SC_FormParam();
+            $objFormParam = new SC_FormParam_Ex();
             $this->lfInitParam($objFormParam, $_POST);
             $objFormParam->setParam($_POST);
             $objFormParam->convParam();

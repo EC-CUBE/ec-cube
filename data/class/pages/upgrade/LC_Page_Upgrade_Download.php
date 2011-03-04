@@ -250,7 +250,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
     }
 
     function initParam() {
-        $this->objForm = new SC_FormParam();
+        $this->objForm = new SC_FormParam_Ex();
         $this->objForm->addParam(
             'product_id', 'product_id', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK')
         );

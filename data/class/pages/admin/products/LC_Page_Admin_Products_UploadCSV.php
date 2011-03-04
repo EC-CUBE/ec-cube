@@ -118,7 +118,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         $this->lfInitFile($objUpFile);
 
         // パラメータ情報の初期化
-        $objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam, $arrCSVFrame);
 
         $objFormParam->setHtmlDispNameArray();

@@ -69,7 +69,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
      */
     function action() {
         // フォーム操作クラス
-        $objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam_Ex();
         // パラメータ情報の初期化
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($this->createSetParam($_POST));
@@ -86,7 +86,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
         switch($this->getMode()) {
         // フォルダ移動
         case 'move':
-            $objFormParam = new SC_FormParam();
+            $objFormParam = new SC_FormParam_Ex();
             $this->lfInitParamModeMove($objFormParam);
             $objFormParam->setParam($this->createSetParam($_POST));
             $objFormParam->convParam();
@@ -100,7 +100,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
 
         // ファイル表示
         case 'view':
-            $objFormParam = new SC_FormParam();
+            $objFormParam = new SC_FormParam_Ex();
             $this->lfInitParamModeView($objFormParam);
             $objFormParam->setParam($this->createSetParam($_POST));
             $objFormParam->convParam();
@@ -117,7 +117,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
 
         // ファイルダウンロード
         case 'download':
-            $objFormParam = new SC_FormParam();
+            $objFormParam = new SC_FormParam_Ex();
             $this->lfInitParamModeView($objFormParam);
             $objFormParam->setParam($this->createSetParam($_POST));
             $objFormParam->convParam();
@@ -136,7 +136,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
             break;
         // ファイル削除
         case 'delete':
-            $objFormParam = new SC_FormParam();
+            $objFormParam = new SC_FormParam_Ex();
             $this->lfInitParamModeView($objFormParam);
             $objFormParam->setParam($this->createSetParam($_POST));
             $objFormParam->convParam();
@@ -148,7 +148,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
             break;
         // ファイル作成
         case 'create':
-            $objFormParam = new SC_FormParam();
+            $objFormParam = new SC_FormParam_Ex();
             $this->lfInitParamModeCreate($objFormParam);
             $objFormParam->setParam($this->createSetParam($_POST));
             $objFormParam->convParam();
