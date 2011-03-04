@@ -122,7 +122,7 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
         $objSelect->setLimitOffset(SEARCH_PMAX, $offset);
         $arrResult = $objSelect->select($col, "dtb_send_history", " del_flg = 0");
 
-        $objNavi = new SC_PageNavi($search_pageno,
+        $objNavi = new SC_PageNavi_Ex($search_pageno,
                                     $linemax,
                                     SEARCH_PMAX);
 

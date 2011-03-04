@@ -77,7 +77,7 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
         $customer_id = $objCustomer->getvalue('customer_id');
 
         //ページ送り用
-        $this->objNavi = new SC_PageNavi($_REQUEST['pageno'],
+        $this->objNavi = new SC_PageNavi_Ex($_REQUEST['pageno'],
                                          $this->lfGetOrderHistory($customer_id),
                                          SEARCH_PMAX,
                                          "fnNaviPage",

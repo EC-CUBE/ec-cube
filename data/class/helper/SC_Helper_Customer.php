@@ -600,7 +600,7 @@ class SC_Helper_Customer {
         $linemax = $objQuery->getOne($objSelect->getListCount(), $objSelect->arrVal);
 
         // ページ送りの取得
-        $objNavi = new SC_PageNavi($arrParam['search_pageno'],
+        $objNavi = new SC_PageNavi_Ex($arrParam['search_pageno'],
                                     $linemax,
                                     $page_max,
                                     "fnNaviSearchOnlyPage",

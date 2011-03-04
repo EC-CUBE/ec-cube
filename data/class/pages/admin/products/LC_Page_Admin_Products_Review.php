@@ -351,7 +351,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
         $this->tpl_pageno = isset($arrForm['search_pageno']) ? $arrForm['search_pageno'] : "";
 
         // ページ送りの取得
-        $objNavi = new SC_PageNavi($this->tpl_pageno, $linemax, $page_max,
+        $objNavi = new SC_PageNavi_Ex($this->tpl_pageno, $linemax, $page_max,
                                    "fnNaviSearchPage", NAVI_PMAX);
         $this->arrPagenavi = $objNavi->arrPagenavi;
         $startno = $objNavi->start_row;

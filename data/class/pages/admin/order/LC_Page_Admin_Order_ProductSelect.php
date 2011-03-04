@@ -90,7 +90,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
                 $page_max = SC_Utils_Ex::sfGetSearchPageMax($_POST['search_page_max']);
 
                 // ページ送りの取得
-                $objNavi = new SC_PageNavi($_POST['search_pageno'], $this->tpl_linemax, $page_max, "fnNaviSearchOnlyPage", NAVI_PMAX);
+                $objNavi = new SC_PageNavi_Ex($_POST['search_pageno'], $this->tpl_linemax, $page_max, "fnNaviSearchOnlyPage", NAVI_PMAX);
                 $this->tpl_strnavi = $objNavi->strnavi;     // 表示文字列
                 $startno = $objNavi->start_row;
                 $arrProduct_id = $this->getProducts($wheres, $objProduct, $page_max, $startno);

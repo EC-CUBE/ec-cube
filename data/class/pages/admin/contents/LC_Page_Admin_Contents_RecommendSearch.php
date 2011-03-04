@@ -87,7 +87,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
                 $page_max = SC_Utils_Ex::sfGetSearchPageMax($arrPost['search_page_max']);
 
                 // ページ送りの取得
-                $objNavi = new SC_PageNavi($arrPost['search_pageno'], $this->tpl_linemax, $page_max, "fnNaviSearchOnlyPage", NAVI_PMAX);
+                $objNavi = new SC_PageNavi_Ex($arrPost['search_pageno'], $this->tpl_linemax, $page_max, "fnNaviSearchOnlyPage", NAVI_PMAX);
                 $this->tpl_strnavi = $objNavi->strnavi;      // 表示文字列
                 $startno = $objNavi->start_row;
 
