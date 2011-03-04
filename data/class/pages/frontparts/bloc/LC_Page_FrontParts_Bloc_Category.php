@@ -120,7 +120,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
      * @return array $arrRet カテゴリーツリーの配列を返す
      */
     function lfGetCatTree($arrParentCategoryId, $count_check = false) {
-        $objQuery = new SC_Query();
+        $objQuery = new SC_Query_Ex();
         $objDb = new SC_Helper_DB_Ex();
         $col = '*';
         $from = 'dtb_category left join dtb_category_total_count using (category_id)';
@@ -172,7 +172,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
      * @return array $arrMainCat メインカテゴリーの配列を返す
      */
     function lfGetMainCat($count_check = false) {
-        $objQuery = new SC_Query();
+        $objQuery = new SC_Query_Ex();
         $col = '*';
         $from = 'dtb_category left join dtb_category_total_count using (category_id)';
         // メインカテゴリーとその直下のカテゴリーを取得する。

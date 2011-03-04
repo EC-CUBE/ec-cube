@@ -140,7 +140,7 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
      * @return integer 更新結果
      */
     function lfUpdPageData($arrUpdData = array()){
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sql = "";
 
         // SQL生成

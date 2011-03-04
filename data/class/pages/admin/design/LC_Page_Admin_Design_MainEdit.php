@@ -193,7 +193,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         $this->lfCreateFile($cre_tpl, $_POST['tpl_data']);
 
         // blocposition を削除
-        $objQuery = new SC_Query(); // DB操作オブジェクト
+        $objQuery = new SC_Query_Ex(); // DB操作オブジェクト
         $ret = $objQuery->delete('dtb_blocposition', 'page_id = 0 AND device_type_id = ?', array($device_type_id));
 
         if ($page_id_old != "") {
@@ -278,7 +278,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
      * @return array 実際に使用した更新データ
      */
     function lfEntryPageData($device_type_id, $page_id, $page_name, $filename, $header_chk, $footer_chk) {
-        $objQuery = new SC_Query();
+        $objQuery = new SC_Query_Ex();
         $arrChk = array();          // 排他チェック用
 
         // 更新用データの変換

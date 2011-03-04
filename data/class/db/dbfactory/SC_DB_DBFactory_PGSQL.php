@@ -45,7 +45,7 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      * @return string データベースのバージョン
      */
     function sfGetDBVersion($dsn = "") {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $val = $objQuery->getOne("select version()");
         $arrLine = explode(" " , $val);
         return $arrLine[0] . " " . str_replace(",", "", $arrLine[1]);
@@ -195,7 +195,7 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      * @return array テーブルのカラム一覧の配列
      */
     function sfGetColumnList($table_name) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sql = "  SELECT a.attname "
              . "    FROM pg_class c, pg_attribute a "
              . "   WHERE c.relname=? "
@@ -219,7 +219,7 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      * @return array テーブル名の配列
      */
     function findTableNames($expression = "") {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sql = "   SELECT c.relname AS name, "
             .  "     CASE c.relkind "
             .  "     WHEN 'r' THEN 'table' "

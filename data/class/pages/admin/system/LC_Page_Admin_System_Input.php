@@ -271,7 +271,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         $columns = 'name,department,login_id,authority, work';
         $where   = 'member_id = ?';
 
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         return $objQuery->getRow($columns, $table, $where, array($id));
     }
 
@@ -285,7 +285,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
     function memberDataExists($where, $val) {
         $table = 'dtb_member';
 
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $count = $objQuery->count($table, $where, array($val));
 
         if ($count > 0) return true;
@@ -323,7 +323,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
      * @return void
      */
     function insertMemberData($arrMemberData) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // INSERTする値を作成する.
         $salt                  = SC_Utils_Ex::sfGetRandomString(10);
@@ -353,7 +353,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
      * @return void
      */
     function updateMemberData($member_id, $arrMemberData) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // Updateする値を作成する.
         $sqlVal = array();

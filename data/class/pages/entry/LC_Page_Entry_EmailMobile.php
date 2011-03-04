@@ -136,7 +136,7 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex {
      * @return void
      */
     function lfRegistEmailMobile($email_mobile, $customer_id) {
-        $objQuery = SC_Query::getSingletonInstance();
+        $objQuery = SC_Query_Ex::getSingletonInstance();
         $objQuery->update('dtb_customer',
                           array('email_mobile' => $email_mobile),
                           'customer_id = ?', array($customer_id));

@@ -399,7 +399,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
      * @return void
      */
     function doDelete($where, $arrParam = array()) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->update("dtb_order", array('del_flg' => 1), $where,
                           $arrParam);
     }
@@ -446,7 +446,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
      * @return integer 検索結果の行数
      */
     function getNumberOfLines($where, $arrValues) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         return $objQuery->count('dtb_order', $where, $arrValues);
     }
 
@@ -461,7 +461,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
      * @return array 受注の検索結果
      */
     function findOrders($where, $arrValues, $limit, $offset, $order) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setLimitOffset($limit, $offset);
         $objQuery->setOrder($order);
         return $objQuery->select('*', 'dtb_order', $where, $arrValues);

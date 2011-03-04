@@ -149,7 +149,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
 
     /* DBへの挿入 */
     function lfInsertClass($arrData, $member_id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         // INSERTする値を作成する。
         $sqlval['kiyaku_title'] = $arrData['kiyaku_title'];
         $sqlval['kiyaku_text'] = $arrData['kiyaku_text'];
@@ -164,14 +164,14 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
     }
 
     function lfGetKiyakuDataByKiyakuID($kiyaku_id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $where = "kiyaku_id = ?";
         return $objQuery->select("kiyaku_text, kiyaku_title", "dtb_kiyaku", $where, array($kiyaku_id));
     }
 
     function lfGetKiyakuList() {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $where = "del_flg <> 1";
         $objQuery->setOrder("rank DESC");
@@ -180,7 +180,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
 
     /* DBへの更新 */
     function lfUpdateClass($arrData, $kiyaku_id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         // UPDATEする値を作成する。
         $sqlval['kiyaku_title'] = $arrData['kiyaku_title'];
         $sqlval['kiyaku_text'] = $arrData['kiyaku_text'];
@@ -217,7 +217,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
         $arrErr = $objFormParam->checkError();
         if(!isset($arrErr['name']) && $mode == 'edit') {
             $post = $objFormParam->getHashArray();
-            $objQuery =& SC_Query::getSingletonInstance();
+            $objQuery =& SC_Query_Ex::getSingletonInstance();
             $arrRet = $objQuery->select("kiyaku_id, kiyaku_title", "dtb_kiyaku", "del_flg = 0 AND kiyaku_title = ?", array($post['kiyaku_title']));
             // 編集中のレコード以外に同じ名称が存在する場合
             if ($arrRet[0]['kiyaku_id'] != $post['kiyaku_id'] && $arrRet[0]['kiyaku_title'] == $post['kiyaku_title']) {

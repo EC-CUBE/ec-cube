@@ -103,7 +103,7 @@ class SC_Helper_CSV {
      * @return array CSV 項目の配列
      */
     function sfGetCsvOutput($csv_id = "", $where = '', $arrVal = array(), $order = 'rank, no'){
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         
         $cols = 'no, csv_id, col, disp_name, rank, status, rw_flg, mb_convert_kana_option, size_const_type, error_check_types';
         $table = 'dtb_csv';
@@ -214,7 +214,7 @@ class SC_Helper_CSV {
         if (count($arrOutput) <= 0) return false; // 失敗終了
         $arrOutputCols = $arrOutput['col'];
 
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder($order);        
         $cols = SC_Utils_Ex::sfGetCommaList($arrOutputCols, true);
         
@@ -245,7 +245,7 @@ class SC_Helper_CSV {
      * @return mixed $is_download = true時 成功失敗フラグ(boolean) 、$is_downalod = false時 string
      */
     function sfDownloadCsvFromSql($sql, $arrVal = array(), $file_head = 'csv', $arrHeader = array(), $is_download = false) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 実行時間を制限しない
         @set_time_limit(0);
@@ -287,7 +287,7 @@ class SC_Helper_CSV {
         $from = "dtb_review AS A INNER JOIN dtb_products AS B on A.product_id = B.product_id ";
         $cols = SC_Utils_Ex::sfGetCommaList($this->arrREVIEW_CVSCOL);
 
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOption($option);
 
         $list_data = $objQuery->select($cols, $from, $where, $arrval);
@@ -309,7 +309,7 @@ class SC_Helper_CSV {
         if (count($arrOutput) <= 0) return false; // 失敗終了
         $arrOutputCols = $arrOutput['col'];
 
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder('rank DESC');
 
         $dataRows = $objQuery->select(
@@ -340,7 +340,7 @@ class SC_Helper_CSV {
 
         $cols = SC_Utils_Ex::sfGetCommaList($arrCsvOutputCols);
 
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOption($option);
 
         $list_data = $objQuery->select($cols, $from, $where, $arrval, MDB2_FETCHMODE_ORDERED);

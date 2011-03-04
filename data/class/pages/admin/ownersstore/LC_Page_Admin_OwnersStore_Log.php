@@ -107,7 +107,7 @@ FROM
     ) AS modules USING(module_id)
 ORDER BY update_date DESC
 END;
-        $objQuery = new SC_Query;
+        $objQuery = new SC_Query_Ex();
         $arrRet = $objQuery->getAll($sql);
         return isset($arrRet) ? $arrRet : array();
     }
@@ -134,7 +134,7 @@ FROM
 WHERE
     log_id = ?
 END;
-        $objQuery = new SC_Query;
+        $objQuery = new SC_Query_Ex();
         $arrRet = $objQuery->getAll($sql, array($log_id));
         return isset($arrRet[0]) ? $arrRet[0] : array();
     }

@@ -172,7 +172,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
         case 'delete':
             $this->preview = "off";
              // DBへデータを更新する
-            $objQuery = new SC_Query();     // DB操作オブジェクト
+            $objQuery = new SC_Query_Ex();     // DB操作オブジェクト
             $sql = "";                      // データ更新SQL生成用
             $ret = "";                      // データ更新結果格納用
             $arrDelData = array();          // 更新データ生成用
@@ -224,7 +224,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
      * @return array ブロック情報
      */
     function lfgetBlocData($where = '', $arrVal = array()){
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder("bloc_id");
         return $objQuery->select("*", "dtb_bloc", $where, $arrVal);
     }
@@ -237,7 +237,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
      * @return integer 更新結果
      */
     function lfEntryBlocData($arrData, $device_type_id){
-        $objQuery = new SC_Query();     // DB操作オブジェクト
+        $objQuery = new SC_Query_Ex();     // DB操作オブジェクト
         $sql = "";                      // データ更新SQL生成用
         $ret = "";                      // データ更新結果格納用
         $arrUpdData = array();          // 更新データ生成用

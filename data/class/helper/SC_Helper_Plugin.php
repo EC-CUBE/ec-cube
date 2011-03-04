@@ -35,7 +35,7 @@ class SC_Helper_Plugin{
      */
     function load(&$lcpage){
         //データベースからクラス名を読み込む
-        $objQuery = new SC_Query();
+        $objQuery = new SC_Query_Ex();
         $col = "*";
         $table = "dtb_plugin";
         $where = "enable = 1 AND del_flg = 0";
@@ -91,7 +91,7 @@ class SC_Helper_Plugin{
      * 稼働中のプラグインを取得する。
      */
     function getEnablePlugin(){
-        $objQuery = new SC_Query();
+        $objQuery = new SC_Query_Ex();
         $col = '*';
         $table = 'dtb_plugin';
         $where = 'enable = 1 AND del_flg = 0';
@@ -103,7 +103,7 @@ class SC_Helper_Plugin{
      * インストールされているプラグインを取得する。
      */
     function getAllPlugin(){
-        $objQuery = new SC_Query();
+        $objQuery = new SC_Query_Ex();
         $col = '*';
         $table = 'dtb_plugin';
         $where = 'del_flg = 0';

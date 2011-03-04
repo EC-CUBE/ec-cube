@@ -62,7 +62,7 @@ class SC_Utils {
         $control_flg = 0;
 
         // クエリ発行
-        $objQuery = new SC_Query($dsn, true, true);
+        $objQuery = new SC_Query_Ex($dsn, true, true);
         $arrSiteControl = $objQuery->select($target_column, $table_name, $where, $arrval);
 
         // データが存在すればフラグを取得する
@@ -818,7 +818,7 @@ exit;
         $sql.= "from dtb_class inner join dtb_classcategory on dtb_class.class_id = dtb_classcategory.class_id ";
         $sql.= "where dtb_class.del_flg = 0 AND dtb_classcategory.del_flg = 0 ";
         $sql.= "group by dtb_class.class_id, dtb_class.name";
-        $objQuery = new SC_Query();
+        $objQuery = new SC_Query_Ex();
         $arrList = $objQuery->getAll($sql);
         // キーと値をセットした配列を取得
         $arrRet = SC_Utils_Ex::sfArrKeyValue($arrList, 'class_id', 'count');
@@ -828,7 +828,7 @@ exit;
 
     function sfGetProductClassId($product_id, $classcategory_id1, $classcategory_id2) {
         $where = "product_id = ?";
-        $objQuery = new SC_Query();
+        $objQuery = new SC_Query_Ex();
         $ret = $objQuery->get("product_class_id", "dtb_products_class", $where, Array($product_id));
         return $ret;
     }
@@ -2027,7 +2027,7 @@ exit;
     // 郵便番号から住所の取得
     function sfGetAddress($zipcode) {
 
-        $objQuery = new SC_Query(ZIP_DSN);
+        $objQuery = new SC_Query_Ex(ZIP_DSN);
 
         $masterData = new SC_DB_MasterData_Ex();
         $arrPref = $masterData->getMasterData('mtb_pref');

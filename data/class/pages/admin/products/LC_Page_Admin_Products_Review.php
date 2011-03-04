@@ -169,7 +169,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfDeleteReview($review_id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sqlval['del_flg'] = 1;
         $objQuery->update("dtb_review", $sqlval, "review_id = ?", array($review_id));
     }
@@ -337,7 +337,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
      * @return array レビュー一覧
      */
     function lfGetReview($arrForm, $where, $arrval) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // ページ送りの処理
         $page_max = SC_Utils_Ex::sfGetSearchPageMax($arrForm['search_page_max']);

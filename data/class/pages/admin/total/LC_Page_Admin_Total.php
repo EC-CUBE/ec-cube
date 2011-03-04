@@ -473,7 +473,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
     /** 会員別集計 **/
     function lfGetOrderMember($type, $sdate, $edate) {
-        $objQuery = SC_Query::getSingletonInstance();
+        $objQuery = SC_Query_Ex::getSingletonInstance();
 
         list($where, $arrval) = $this->lfGetWhereMember('create_date', $sdate, $edate, $type);
         $where .= " AND del_flg = 0 AND status <> " . ORDER_CANCEL;
@@ -511,7 +511,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
     /** 商品別集計 **/
     function lfGetOrderProducts($type, $sdate, $edate) {
-        $objQuery = SC_Query::getSingletonInstance();
+        $objQuery = SC_Query_Ex::getSingletonInstance();
 
         list($where, $arrval) = $this->lfGetWhereMember('create_date', $sdate, $edate, $type);
 
@@ -546,7 +546,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
     /** 職業別集計 **/
     function lfGetOrderJob($type, $sdate, $edate) {
-        $objQuery = SC_Query::getSingletonInstance();
+        $objQuery = SC_Query_Ex::getSingletonInstance();
         list($where, $arrval) = $this->lfGetWhereMember('dtb_order.create_date', $sdate, $edate, $type);
 
         $col    = '
@@ -582,7 +582,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
     /** 年代別集計 **/
     function lfGetOrderAge($type, $sdate, $edate) {
 
-        $objQuery = SC_Query::getSingletonInstance();
+        $objQuery = SC_Query_Ex::getSingletonInstance();
 
         list($where, $arrval) = $this->lfGetWhereMember('create_date', $sdate, $edate, $type);
 
@@ -627,7 +627,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
     /** 期間別集計 **/
     // todo あいだの日付埋める
     function lfGetOrderTerm($type, $sdate, $edate) {
-        $objQuery   = SC_Query::getSingletonInstance();
+        $objQuery   = SC_Query_Ex::getSingletonInstance();
 
         list($where, $arrval) = $this->lfGetWhereMember('create_date', $sdate, $edate);
         $where .= " AND del_flg = 0 AND status <> " . ORDER_CANCEL;

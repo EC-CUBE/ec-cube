@@ -137,7 +137,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
     }
 
     function lfAutoCommitZip() {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $objQuery->begin();
         $objQuery->delete('mtb_zip');
@@ -146,7 +146,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
     }
 
     function lfDeleteZip() {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $objQuery->delete('mtb_zip');
     }
@@ -168,7 +168,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
      * @return void
      */
     function insertMtbZip($start = 1) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $img_path = USER_URL . USER_PACKAGE_DIR . "/" . ADMIN_DIR . "img/basis/";
 
@@ -301,7 +301,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
     }
 
     function countMtbZip() {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         return $objQuery->count('mtb_zip');
     }
 

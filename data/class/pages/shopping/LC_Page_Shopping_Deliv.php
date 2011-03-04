@@ -172,7 +172,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
      * @return void
      */
     function doDelete($other_deliv_id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = "other_deliv_id = ?";
         $objQuery->delete("dtb_other_deliv", $where, array($other_deliv_id));
     }
@@ -201,7 +201,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
         }
         // 別のお届け先がチェックされている場合
         elseif ($deliv_check >= 1) {
-            $objQuery =& SC_Query::getSingletonInstance();
+            $objQuery =& SC_Query_Ex::getSingletonInstance();
             $arrOtherDeliv = $objQuery->getRow("*", "dtb_other_deliv",
                                                "customer_id = ? AND other_deliv_id = ?",
                                                array($objCustomer->getValue('customer_id'), $deliv_check));

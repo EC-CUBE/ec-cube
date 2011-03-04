@@ -132,7 +132,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
      * @return array $arrProduct 商品情報の配列を返す
      */
     function lfGetProductsDetailData($mode, $product_id) {
-        $objQuery = SC_Query::getSingletonInstance();
+        $objQuery = SC_Query_Ex::getSingletonInstance();
         //商品詳細を取得
         if ( $mode == 'all' ) {
             $arrProduct = $this->lfGetProductsDetail($objQuery, $mode);
@@ -185,7 +185,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
      * @return array $arrProduct 商品情報の配列を返す
      */
     function lfGetProductsListData() {
-        $objQuery = SC_Query::getSingletonInstance();
+        $objQuery = SC_Query_Ex::getSingletonInstance();
         //商品一覧を取得
         $arrProduct = $objQuery->getAll('SELECT product_id, name AS product_name FROM dtb_products');
         return $arrProduct;
@@ -197,7 +197,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
      * @return array $arrProduct 商品情報の配列を返す
      */
     function lfGetProductsAllData() {
-        $objQuery = SC_Query::getSingletonInstance();
+        $objQuery = SC_Query_Ex::getSingletonInstance();
         //商品情報を取得
         $arrProduct = $this->lfGetProductsAllclass($objQuery);
         // 値の整形

@@ -147,7 +147,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin_Ex {
      * @return $deliv_id
      */
     function lfRegistData($arrRet, $member_id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
 
         // 入力データを渡す。
@@ -262,7 +262,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin_Ex {
 
     /* 配送業者情報の取得 */
     function lfGetDelivData(&$objFormParam) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $deliv_id = $objFormParam->getValue('deliv_id');
 

@@ -108,7 +108,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
         }
 
         // ブロックを取得
-        $objQuery = SC_Query::getSingletonInstance();
+        $objQuery = SC_Query_Ex::getSingletonInstance();
         $arrBloc = $objQuery->select("*", "dtb_bloc", "device_type_id = ?", array($device_type_id));
 
         switch ($this->getMode()) {
@@ -354,7 +354,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfSetPreData($arrPageData, &$objLayout){
-        $objQuery = new SC_Query();     // DB操作オブジェクト
+        $objQuery = new SC_Query_Ex();     // DB操作オブジェクト
         $sql = "";                      // データ更新SQL生成用
         $ret = "";                      // データ更新結果格納用
         $arrUpdData = array();          // 更新データ生成用

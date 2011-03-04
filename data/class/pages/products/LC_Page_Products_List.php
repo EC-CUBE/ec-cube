@@ -94,7 +94,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
      * @return void
      */
     function action() {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objProduct = new SC_Product_Ex();
 
         $this->arrForm = $_REQUEST;//時間が無いのでコレで勘弁してください。 tao_s
@@ -234,7 +234,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
 
         $arrval_order = array();
 
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         // 表示順序
         switch ($this->orderby) {
             // 販売価格が安い順
@@ -297,7 +297,7 @@ __EOS__;
             // 一致させない
             $where = '0<>0';
         }
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setWhere($where);
         $arrProducts = $objProduct->lists($objQuery, $arrProduct_id);
 
@@ -376,7 +376,7 @@ __EOS__;
      * @return array
      */    
     function lfGetSearchConditionDisp($arrSearchData){
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrSearch = array('category'=>"指定なし",'maker'=>"指定なし",'name'=>"指定なし");
         // カテゴリー検索条件
         if ($arrSearchData['category_id'] > 0) {
@@ -402,7 +402,7 @@ __EOS__;
      */    
     function lfGetProductAllNum($searchCondition){
         // 検索結果対象となる商品の数を取得
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setWhere($searchCondition["where"]);
         $objProduct = new SC_Product_Ex();
         return $objProduct->findProductCount($objQuery, $searchCondition["arrval"]);

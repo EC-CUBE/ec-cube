@@ -99,7 +99,7 @@ class SC_Module {
      * @return string
      */
     function _getName() {
-        $objQuery = new SC_Query;
+        $objQuery = new SC_Query_Ex();
         return $objQuery->get('module_name', 'dtb_module', 'module_code = ?', $this->getCode());
     }
 
@@ -152,7 +152,7 @@ class SC_Module {
         if (isset($this->subData)) return $this->subData;
 
         $moduleCode = $this->getCode();
-        $objQuery = new SC_Query;
+        $objQuery = new SC_Query_Ex();
         $ret = $objQuery->get(
             'sub_data', 'dtb_module', 'module_code = ?', array($moduleCode)
         );
@@ -207,7 +207,7 @@ class SC_Module {
 
         $arrUpdate = array('sub_data' => serialize($subData));
 
-        $objQuery = new SC_Query;
+        $objQuery = new SC_Query_Ex();
         $objQuery->update('dtb_module', $arrUpdate, 'module_code = ?', array($this->getCode()));
 
         $this->subData = $subData;

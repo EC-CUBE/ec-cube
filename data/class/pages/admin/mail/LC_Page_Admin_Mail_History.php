@@ -102,8 +102,8 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
         // 引数の初期化
         if(SC_Utils_Ex::sfIsInt($search_pageno)===false) $search_pageno = 1;
         // 
-        $objSelect =& SC_Query::getSingletonInstance();    // 一覧データ取得用
-        $objQuery =& SC_Query::getSingletonInstance();    // 件数取得用
+        $objSelect =& SC_Query_Ex::getSingletonInstance();    // 一覧データ取得用
+        $objQuery =& SC_Query_Ex::getSingletonInstance();    // 件数取得用
         
         // 該当全体件数の取得
         $linemax = $objQuery->count("dtb_send_history","del_flg = 0");
@@ -135,7 +135,7 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfDeleteHistory($send_id){
-            $objQuery =& SC_Query::getSingletonInstance(); 
+            $objQuery =& SC_Query_Ex::getSingletonInstance(); 
             $objQuery->update("dtb_send_history",
                               array('del_flg' =>1),
                               "send_id = ?",

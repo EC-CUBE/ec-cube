@@ -176,7 +176,7 @@ __EOS__;
      * @return array 商品詳細情報の配列
      */
     function getDetail($productId) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $result = $objQuery->select("*", $this->alldtlSQL("product_id = ?"),
                                     "product_id = ?",
                                     array($productId, $productId));
@@ -348,7 +348,7 @@ __EOS__;
         $parentsClass = array();
         // 階層分の親を取得
         for ($i = 0; $i < $level -1; $i++) {
-            $objQuery =& SC_Query::getSingletonInstance();
+            $objQuery =& SC_Query_Ex::getSingletonInstance();
             $objQuery->setWhere('T1.class_combination_id IN (' . implode(', ', array_pad(array(), count($parents), '?')) . ')');
 
             $col = <<< __EOS__
@@ -403,7 +403,7 @@ __EOS__;
      * 商品規格IDから商品規格を取得する.
      */
     function getProductsClass($productClassId) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setWhere('product_class_id = ?');
         $objQuery->setOrder("T2.level DESC");
         $results = $this->getProductsClassByQuery($objQuery, $productClassId);
@@ -421,7 +421,7 @@ __EOS__;
         if (empty($productIds)) {
             return array();
         }
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setWhere('product_id IN (' . implode(', ', array_pad(array(), count($productIds), '?')) . ')');
         $objQuery->setOrder("T2.level DESC");
         return $this->getProductsClassByQuery($objQuery, $productIds);
@@ -499,7 +499,7 @@ __EOS__;
         if (empty($productIds)) {
             return array();
         }
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $cols = 'product_id, product_status_id';
         $from = 'dtb_product_status';
         $where = 'del_flg = 0 AND product_id IN (' . implode(', ', array_pad(array(), count($productIds), '?')) . ')';
@@ -527,7 +527,7 @@ __EOS__;
         $val['update_date'] = 'Now()';
         $val['del_flg'] = '0';
 
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->delete('dtb_product_status', 'product_id = ?', array($productId));
         foreach ($productStatusIds as $productStatusId) {
             if($productStatusId == '') continue;
@@ -578,7 +578,7 @@ __EOS__;
             return false;
         }
 
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->update('dtb_products_class', array(),
                           "product_class_id = ?", array($productClassId),
                           array('stock' => 'stock - ?'), array($quantity));
@@ -749,7 +749,7 @@ __EOS__;
      * @return string product_class_id
      */
     function getClasscategoryIdsByProductClassId($productId, $classcategory_id1, $classcategory_id2) {
-        $objQuery = new SC_Query();
+        $objQuery = new SC_Query_Ex();
         $col = "T1.product_id AS product_id,T1.product_class_id AS product_class_id,T1.classcategory_id1 AS classcategory_id1,T1.classcategory_id2 AS classcategory_id2";
         $table = <<< __EOS__
             (SELECT

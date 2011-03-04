@@ -323,7 +323,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
      * @param integer $product_id 登録を行う商品ID
      */
     function registerProductClass($arrList, $product_id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objDb = new SC_Helper_DB_Ex();
 
         $objQuery->begin();
@@ -600,7 +600,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
      * @return void
      */
     function doDelete($product_id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $objQuery->begin();
 
@@ -629,7 +629,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
      * @return array 規格と規格分類の配列
      */
     function getAllClassCategory($class_id1, $class_id2 = null) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $col = "T1.class_id AS class_id1, "
             . " T1.classcategory_id AS classcategory_id1, "
@@ -665,7 +665,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
      * @return string 商品名の文字列
      */
     function getProductName($product_id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         return $objQuery->getOne("SELECT name FROM dtb_products WHERE product_id = ?", array($product_id));
     }
 
@@ -721,7 +721,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
      * @return array 商品規格の配列
      */
     function getProductsClass($product_id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = "product_id, product_code, price01, price02, stock,  stock_unlimited, point_rate";
         return $objQuery->getRow($col, "dtb_products_class", "product_id = ?", array($product_id));
     }

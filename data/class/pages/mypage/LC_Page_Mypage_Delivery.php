@@ -122,7 +122,7 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
      * @return array
      */
     function getOtherDeliv($customer_id) {
-        $objQuery   =& SC_Query::getSingletonInstance();
+        $objQuery   =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder('other_deliv_id DESC');
         return $objQuery->select('*', 'dtb_other_deliv', 'customer_id = ?', array($customer_id));
     }
@@ -135,7 +135,7 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
      */
     function deleteOtherDeliv($customer_id, $deliv_id) {
         $where      = 'customer_id = ? AND other_deliv_id = ?';
-        $objQuery   =& SC_Query::getSingletonInstance();
+        $objQuery   =& SC_Query_Ex::getSingletonInstance();
         $objQuery->delete("dtb_other_deliv", $where, array($customer_id, $deliv_id));
     }
 }

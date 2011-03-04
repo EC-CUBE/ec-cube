@@ -194,7 +194,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * @param Integer $member_id 登録した管理者のID
      */
     function lfNewsInsert($arrPost,$member_id){
-        $objQuery = $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
         
         // rankの最大+1を取得する
         $rank_max = $this->getRankMax();
@@ -224,7 +224,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
 
     
     function lfNewsUpdate($arrPost,$member_id){
-        $objQuery = $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $table = 'dtb_news';
         $sqlval = array();
@@ -268,7 +268,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * @param Integer news_id ニュースID
      */
     function getNews($news_id = ''){
-        $objQuery = $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '*, cast(news_date as date) as cast_news_date';
         $table = 'dtb_news';
         $order = 'rank DESC';
@@ -288,7 +288,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * @param Integer $news_id
      */
     function getRankByNewsId($news_id){
-        $objQuery = $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = 'rank';
         $table = 'dtb_news';
         $where = 'del_flg = 0 AND news_id = ?';
@@ -303,7 +303,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * @param Integer $rank
      */
     function computeRankForDelete($news_id,$rank){
-        $objQuery = $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
         $table = 'dtb_news';
         $sqlval = array();
@@ -337,7 +337,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * @return Intger $max ランクの最大値の値
      */
     function getRankMax(){
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = 'MAX(rank)';
         $table = 'dtb_news';
         $where = 'del_flg = 0';

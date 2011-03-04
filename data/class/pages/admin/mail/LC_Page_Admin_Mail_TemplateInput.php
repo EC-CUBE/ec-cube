@@ -124,7 +124,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
      */
     function lfRegistData( &$objFormParam, $template_id = null ){
         
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sqlval = $objFormParam->getDbArray();
 
         $sqlval['creator_id'] = $_SESSION['member_id'];

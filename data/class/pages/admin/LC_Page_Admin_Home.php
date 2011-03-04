@@ -140,7 +140,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
      * @return integer 会員数
      */
     function lfGetCustomerCnt(){
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = "COUNT(customer_id)";
         $table = "dtb_customer";
         $where = "del_flg = 0 AND status = 2";
@@ -154,7 +154,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
      * @return integer 結果数値
      */
     function lfGetOrderYesterday($method){
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         
         // TODO: DBFactory使わないでも共通化できそうな気もしますが
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
@@ -169,7 +169,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
      * @return integer 結果数値
      */
     function lfGetOrderMonth($method){
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $month = date("Y/m", mktime());
         
         // TODO: DBFactory使わないでも共通化できそうな気もしますが
@@ -184,7 +184,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
      * @return integer 顧客の保持ポイント合計
      */
     function lfGetTotalCustomerPoint() {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         
         $col = "SUM(point)";
         $where = "del_flg = 0";
@@ -198,7 +198,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
      * @return integer 昨日のレビュー書き込み数
      */
     function lfGetReviewYesterday(){
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // TODO: DBFactory使わないでも共通化できそうな気もしますが
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
@@ -212,7 +212,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
      * @return integer レビュー書き込み非表示数
      */
     function lfGetReviewNonDisp(){
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         
         $table = "dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id";
         $where = "A.del_flg = 0 AND A.status = 2 AND B.del_flg = 0";
@@ -225,7 +225,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
      * @return array 品切れ商品一覧
      */
     function lfGetSoldOut() {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         
         $cols = "product_id, name";
         $table = "dtb_products";
@@ -241,7 +241,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
      * @return array 新規受付一覧配列
      */
     function lfGetNewOrder() {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         
         $sql = "SELECT
                     ord.order_id,

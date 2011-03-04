@@ -164,7 +164,7 @@ class LC_Page_Products_Review extends LC_Page_Ex {
         $arrForm = $objFormParam->getHashArray();
 
         //重複メッセージの判定
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $flag = $objQuery->count("dtb_review","product_id = ? AND title = ? ", array($arrForm['product_id'], $arrForm['title']));
         if ($flag > 0){
             $arrErr['title'] .= "重複したタイトルは登録できません。";
@@ -187,14 +187,14 @@ class LC_Page_Products_Review extends LC_Page_Ex {
      * @return string $product_name 商品名
      */
     function lfGetProductName($product_id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         return $objQuery->get("name", "dtb_products", "product_id = ? ", array($product_id));
     }
 
     //登録実行
     function lfRegistRecommendData (&$objFormParam) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrRegist = $objFormParam->getDbArray();
 
         $arrRegist['create_date'] = 'now()';

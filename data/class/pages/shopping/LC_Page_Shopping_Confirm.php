@@ -73,7 +73,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
         $objCartSess = new SC_CartSession_Ex();
         $objSiteSess = new SC_SiteSession_Ex();
         $objCustomer = new SC_Customer_Ex();
-        $objQuery = new SC_Query();
+        $objQuery = new SC_Query_Ex();
         $objDb = new SC_Helper_DB_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
 
@@ -185,7 +185,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
      * @return boolean 決済モジュールを使用する支払い方法の場合 true
      */
     function useModule($payment_id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $memo03 = $objQuery->get('memo03', 'dtb_payment', 'payment_id = ?',
                                  array($payment_id));
         return !SC_Utils_Ex::isBlank($memo03);

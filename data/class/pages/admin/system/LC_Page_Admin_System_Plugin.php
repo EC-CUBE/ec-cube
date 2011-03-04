@@ -263,7 +263,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      *
      */
     function lfRegistData($plugin_dir, $plugin_code) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sqlval = array();
         
         $sqlval['plugin_id'] = $objQuery->nextVal('dtb_plugin_plugin_id');

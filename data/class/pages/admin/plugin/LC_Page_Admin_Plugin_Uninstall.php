@@ -99,7 +99,7 @@ class LC_Page_Admin_Plugin_Uninstall extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfUninstall($path) {
-        $objQuery = new SC_Query();
+        $objQuery = new SC_Query_Ex();
 
         // アンインストール SQL を実行
         SC_Helper_DB_Ex::sfExecSqlByFile(PLUGIN_REALDIR . "$path/sql/uninstall.sql");

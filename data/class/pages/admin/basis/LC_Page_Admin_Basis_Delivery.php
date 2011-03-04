@@ -110,7 +110,7 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
      * @return array
      */
     function lfGetDelivList() {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $col = "deliv_id, name, service_name";
         $where = "del_flg = 0";

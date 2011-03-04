@@ -261,7 +261,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         // 実行時間を制限しない
         set_time_limit(0);
 
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $csv_data = "";
         $csv_autoinc = "";
         $arrData = array();
@@ -386,7 +386,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
      * @return string $ret
      */
     function lfGetAutoIncrement() {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrSequences = $objQuery->listSequences();
 
         foreach($arrSequences as $val){
@@ -401,7 +401,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
     // バックアップテーブルにデータを更新する
     function lfUpdBkupData($data){
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $arrVal = array();
         $arrVal['bkup_name'] = $data['bkup_name'];
@@ -413,7 +413,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
     // バックアップテーブルからデータを取得する
     function lfGetBkupData($where = "", $data = array()){
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $sql = "SELECT bkup_name, bkup_memo, create_date FROM dtb_bkup ";
         if ($where != "")	$sql .= $where;
@@ -435,7 +435,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         // 実行時間を制限しない
         set_time_limit(0);
 
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $csv_data = "";
         $success = true;
 
@@ -599,7 +599,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
     // 選択したバックアップをDBから削除
     function lfDeleteBackUp(&$arrForm, $bkup_dir, $bkup_ext) {
 
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $del_file = $bkup_dir.$arrForm['list_name'] . $bkup_ext;
         // ファイルの削除

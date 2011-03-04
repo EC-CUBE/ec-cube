@@ -144,7 +144,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
                 } else {
                     // --- ログインに失敗した場合
                     $arrForm['login_email'] = strtolower($arrForm['login_email']);
-                    $objQuery = SC_Query::getSingletonInstance();
+                    $objQuery = SC_Query_Ex::getSingletonInstance();
                     $where = '(email = ? OR email_mobile = ?) AND status = 1 AND del_flg = 0';
                     $ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email'], $arrForm['login_email']));
                     // ログインエラー表示

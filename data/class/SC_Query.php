@@ -98,7 +98,7 @@ class SC_Query {
     function getSingletonInstance($dsn = "", $force_run = false, $new = false) {
         if (!isset($GLOBALS['_SC_Query_instance'])
             || is_null($GLOBALS['_SC_Query_instance'])) {
-            $GLOBALS['_SC_Query_instance'] =& new SC_Query($dsn, $force_run, $new);
+            $GLOBALS['_SC_Query_instance'] =& new SC_Query_Ex($dsn, $force_run, $new);
         }
         $GLOBALS['_SC_Query_instance']->where = "";
         $GLOBALS['_SC_Query_instance']->order = "";

@@ -82,7 +82,7 @@ class LC_Page_Guide_Kiyaku extends LC_Page_Ex {
      * @return void
      */
     function lfGetKiyaku($index, &$objPage) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder('rank DESC');
         $arrKiyaku = $objQuery->select('kiyaku_title, kiyaku_text', 'dtb_kiyaku', 'del_flg <> 1');
 

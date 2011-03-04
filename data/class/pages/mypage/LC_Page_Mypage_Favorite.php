@@ -104,13 +104,13 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
      * @return array お気に入り商品一覧
      */
     function lfGetFavoriteProduct($customer_id, &$objPage) {
-        $objQuery       = SC_Query::getSingletonInstance();
+        $objQuery       = SC_Query_Ex::getSingletonInstance();
         $objProduct     = new SC_Product_Ex();
 
         $objQuery->setOrder('create_date DESC');
         $arrProduct_id  = $objQuery->getCol('product_id', 'dtb_customer_favorite_products', 'customer_id = ?', array($customer_id));
 
-        $objQuery       =& SC_Query::getSingletonInstance();
+        $objQuery       =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setWhere($this->lfMakeWhere('alldtl.', $arrProduct_id));
         $linemax        = $objProduct->findProductCount($objQuery);
 
@@ -121,7 +121,7 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
         $this->tpl_strnavi = $objNavi->strnavi;		// 表示文字列
         $startno        = $objNavi->start_row;
 
-        $objQuery       =& SC_Query::getSingletonInstance();
+        $objQuery       =& SC_Query_Ex::getSingletonInstance();
         //$objQuery->setLimitOffset(SEARCH_PMAX, $startno);
         // 取得範囲の指定(開始行番号、行数のセット)
         $arrProduct_id  = array_slice($arrProduct_id, $startno, SEARCH_PMAX);
@@ -165,7 +165,7 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
 
     // お気に入り商品削除
     function lfDeleteFavoriteProduct($customer_id, $product_id) {
-        $objQuery   = new SC_Query();
+        $objQuery   = new SC_Query_Ex();
         $count      = $objQuery->count("dtb_customer_favorite_products", "customer_id = ? AND product_id = ?", array($customer_id, $product_id));
 
         if ($count > 0) {

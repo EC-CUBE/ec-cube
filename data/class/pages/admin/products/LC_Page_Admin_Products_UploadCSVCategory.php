@@ -129,7 +129,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         // 行数
         $line_count = 0;
 
-        $objQuery = SC_Query::getSingletonInstance();
+        $objQuery = SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
 
         $errFlg = false;
@@ -290,7 +290,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
      * @param 超えている場合 true
      */
     function isOverLevel($parent_category_id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $level = $objQuery->get("level", "dtb_category", "category_id = ?", array($parent_category_id));
         return $level >= LEVEL_MAX;
     }
@@ -334,7 +334,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
      * @return void
      */
     function registerCategory($parent_category_id, $category_name, $creator_id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $rank = null;
         if ($parent_category_id == 0) {

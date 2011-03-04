@@ -183,7 +183,7 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page_Admin_Ex {
         }
 
         // DBにすでに登録されていないかチェック
-        $objQuery = new SC_Query();
+        $objQuery = new SC_Query_Ex();
         $ret = $objQuery->count("dtb_templates", "template_code = ?", array($arrForm['template_code']));
         if(!empty($ret)) {
             $arrErr['template_code'] = "※ すでに登録されているテンプレートコードです。<br/>";
@@ -252,7 +252,7 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfRegisterTemplates($arrForm, $device_type_id) {
-        $objQuery = new SC_Query();
+        $objQuery = new SC_Query_Ex();
         $sqlval = $arrForm;
         $sqlval['device_type_id'] = $device_type_id;
         $sqlval['create_date'] = "now()";

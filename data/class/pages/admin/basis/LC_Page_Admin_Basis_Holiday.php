@@ -155,14 +155,14 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
     }
 
     function lfGetHolidayDataByHolidayID($holiday_id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $where = "holiday_id = ?";
         return $objQuery->select("title, month, day", "dtb_holiday", $where, array($holiday_id));
     }
 
     function lfGetHolidayList() {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $where = "del_flg <> 1";
         $objQuery->setOrder("rank DESC");
@@ -171,7 +171,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
 
     /* DBへの挿入 */
     function lfInsertClass($arrData, $member_id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         // INSERTする値を作成する。
         $sqlval['title'] = $arrData['title'];
         $sqlval['month'] = $arrData['month'];
@@ -188,7 +188,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
 
     /* DBへの更新 */
     function lfUpdateClass($arrData) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         // UPDATEする値を作成する。
         $sqlval['title'] = $arrData['title'];
         $sqlval['month'] = $arrData['month'];
@@ -231,7 +231,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
         $post = $objFormParam->getHashArray();
 
         if(!isset($arrErr['date'])) {
-            $objQuery =& SC_Query::getSingletonInstance();
+            $objQuery =& SC_Query_Ex::getSingletonInstance();
             $where = "del_flg = 0 AND month = ? AND day = ?";
             $arrval = array($post['month'], $post['day']);
             if (!empty($post['holiday_id'])) {

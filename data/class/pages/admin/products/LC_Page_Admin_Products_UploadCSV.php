@@ -190,7 +190,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         // 行数
         $line_count = 0;
 
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
 
         $errFlag = false;
@@ -347,7 +347,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitTableInfo() {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $this->arrProductColumn = $objQuery->listTableFields('dtb_products');
         $this->arrProductClassColumn = $objQuery->listTableFields('dtb_products_class');
     }
@@ -609,7 +609,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
 //      SC_Utils::sfIsRecord が del_flg が無いと使えない為、個別処理
         if(array_search('class_combination_id', $this->arrFormKeyList) !== FALSE
                 and $item['class_combination_id'] != "" ) {
-            $objQuery =& SC_Query::getSingletonInstance();
+            $objQuery =& SC_Query_Ex::getSingletonInstance();
             $ret = $objQuery->get('class_combination_id', 'dtb_class_combination', 'class_combination_id = ?', array($item['class_combination_id']));
             if($ret == "") {
                 $arrErr['class_combination_id'] = "※ 指定の規格組合せIDは、登録されていません。";
@@ -766,7 +766,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         $count = count($arrItems);
         $where = $tblkey ." IN (" . implode(",", array_fill(0, $count, "?")) . ")";
 
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $db_count = $objQuery->count($table, $where, $arrItems);
         if($count != $db_count) {
             return false;

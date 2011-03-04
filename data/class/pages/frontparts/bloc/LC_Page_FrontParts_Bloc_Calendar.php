@@ -131,7 +131,7 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc {
      * @return array $arrHoliday 休日情報の配列を返す
      */
     function lfGetHoliday() {
-        $objQuery = SC_Query::getSingletonInstance();
+        $objQuery = SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder('rank DESC');
 
         $where = 'del_flg <> 1';

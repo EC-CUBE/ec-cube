@@ -47,7 +47,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return string データベースのバージョン
      */
     function sfGetDBVersion($dsn = "") {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $val = $objQuery->getOne("select version()");
         return "MySQL " . $val;
     }
@@ -79,7 +79,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return array 文字コード情報
      */
     function getCharSet() {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrRet = $objQuery->getAll("SHOW VARIABLES LIKE 'char%'");
         return $arrRet;
     }
@@ -213,7 +213,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return array テーブルのカラム一覧の配列
      */
     function sfGetColumnList($table_name) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sql = "SHOW COLUMNS FROM " . $table_name;
         $arrColList = $objQuery->getAll($sql);
         $arrColList = SC_Utils_Ex::sfswaparray($arrColList);
@@ -229,7 +229,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return array テーブル名の配列
      */
     function findTableNames($expression = "") {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sql = "SHOW TABLES LIKE ". $objQuery->quote("%" . $expression . "%");
         $arrColList = $objQuery->getAll($sql);
         $arrColList = SC_Utils_Ex::sfswaparray($arrColList, false);
@@ -301,7 +301,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return array インデックス設定情報配列
      */
     function sfGetCreateIndexDefinition($table, $name, $definition) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrTblInfo = $objQuery->getTableInfo($table);
         foreach($arrTblInfo as $fieldInfo) {
             if(array_key_exists($fieldInfo['name'], $definition['fields'])) {

@@ -90,7 +90,7 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex {
      *                        失敗した場合 false
      */
     function getModulePath($order_id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sql = <<< __EOS__
             SELECT module_path
               FROM dtb_payment T1

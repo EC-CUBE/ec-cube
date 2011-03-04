@@ -113,7 +113,7 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex {
      * @return integer 件数
      */
      function getMemberCount($where) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $table = 'dtb_member';
         return $objQuery->count($table, $where);
      }
@@ -132,7 +132,7 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex {
         $objSql->setWhere("del_flg <> 1 AND member_id <> ". ADMIN_ID);
         $objSql->setLimitOffset(MEMBER_PMAX, $startno);
 
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrMemberData = $objQuery->getAll($objSql->getSql());
 
         return $arrMemberData;

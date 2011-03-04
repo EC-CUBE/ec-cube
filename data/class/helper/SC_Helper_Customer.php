@@ -39,7 +39,7 @@ class SC_Helper_Customer {
      * @return integer 登録編集したユーザーのcustomer_id
      */
     function sfEditCustomerData($array, $customer_id = null) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
 
         $array["update_date"] = "now()";    // 更新日
@@ -96,7 +96,7 @@ class SC_Helper_Customer {
      * @return array 最終ポイントの配列
      */
     function sfGetCustomerPoint($order_id, $use_point, $add_point) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrRet = $objQuery->select("customer_id", "dtb_order", "order_id = ?", array($order_id));
         $customer_id = $arrRet[0]['customer_id'];
         if ($customer_id != "" && $customer_id >= 1) {
@@ -125,7 +125,7 @@ class SC_Helper_Customer {
         $return = 0;
 
         $objCustomer    = new SC_Customer_Ex();
-        $objQuery       =& SC_Query::getSingletonInstance();
+        $objQuery       =& SC_Query_Ex::getSingletonInstance();
 
         $arrRet         = $objQuery->select("email, update_date, del_flg",
                                             "dtb_customer",
@@ -168,7 +168,7 @@ class SC_Helper_Customer {
      * @return boolean メールアドレスが重複する場合 true
      */
     function sfCustomerEmailDuplicationCheck($customer_id, $email) {
-        $objQuery   =& SC_Query::getSingletonInstance();
+        $objQuery   =& SC_Query_Ex::getSingletonInstance();
         $arrResults = $objQuery->getRow("email, email_mobile",
                                         "dtb_customer", "customer_id = ?",
                                         array($customer_id));
@@ -189,7 +189,7 @@ class SC_Helper_Customer {
      * @return array 顧客情報の配列を返す
      */
     function sfGetCustomerData($customer_id, $mask_flg = true) {
-        $objQuery       =& SC_Query::getSingletonInstance();
+        $objQuery       =& SC_Query_Ex::getSingletonInstance();
 
         // 顧客情報DB取得
         $ret        = $objQuery->select("*","dtb_customer","customer_id=?", array($customer_id));
@@ -225,7 +225,7 @@ class SC_Helper_Customer {
      * @return array 対象顧客データ
      */
     function sfGetCustomerDataFromId($customer_id, $add_where = '', $arrAddVal = array()) {
-        $objQuery   =& SC_Query::getSingletonInstance();
+        $objQuery   =& SC_Query_Ex::getSingletonInstance();
         if($where == '') {
             $where = 'customer_id = ?';
             $arrData = $objQuery->getRow("*", "dtb_customer", $where, array($customer_id));
@@ -248,7 +248,7 @@ class SC_Helper_Customer {
      * @return void
      */
     function sfGetUniqSecretKey() {
-        $objQuery   =& SC_Query::getSingletonInstance();
+        $objQuery   =& SC_Query_Ex::getSingletonInstance();
         $count      = 1;
         while ($count != 0) {
             $uniqid = SC_Utils_Ex::sfGetUniqRandomId("r");
@@ -267,7 +267,7 @@ class SC_Helper_Customer {
      * @return void
      */
     function sfGetCustomerId($uniqid, $check_status = false) {
-        $objQuery   =& SC_Query::getSingletonInstance();
+        $objQuery   =& SC_Query_Ex::getSingletonInstance();
         $where      = "secret_key = ?";
 
         if ($check_status) {
@@ -584,7 +584,7 @@ class SC_Helper_Customer {
      * @return array( integer 全体件数, mixed 顧客データ一覧配列, mixed SC_PageNaviオブジェクト)
      */
     function sfGetSearchData($arrParam) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objSelect = new SC_CustomerList_Ex($arrParam, "customer");
         $page_max = SC_Utils_Ex::sfGetSearchPageMax($arrParam['search_page_max']);
         $disp_pageno = $arrParam['search_pageno'];

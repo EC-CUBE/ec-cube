@@ -233,7 +233,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
      * ブロック位置の更新
      */
     function lfChangeBloc($template_code) {
-        $objQuery = new SC_Query();
+        $objQuery = new SC_Query_Ex();
         /*
          * FIXME 各端末に合わせて作成する必要あり
          * $filepath = USER_TEMPLATE_REALDIR. $template_code. "/sql/update_bloc.sql";
@@ -261,7 +261,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
      */
     function lfDeleteTemplate($template_code) {
         // DB更新
-        $objQuery = new SC_Query();
+        $objQuery = new SC_Query_Ex();
         $objQuery->delete('dtb_templates', 'template_code = ?', array($template_code));
         // テンプレート削除
         $templates_dir = SMARTY_TEMPLATES_REALDIR. $template_code. "/";
@@ -275,7 +275,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
     }
 
     function lfGetAllTemplates($device_type_id) {
-        $objQuery = new SC_Query();
+        $objQuery = new SC_Query_Ex();
         $arrRet = $objQuery->select('*', 'dtb_templates', "device_type_id = ?", array($device_type_id));
         if (empty($arrRet)) return array();
 

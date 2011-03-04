@@ -400,7 +400,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
     /* 登録済み関連商品の読み込み */
     function lfPreGetRecommendProducts($product_id) {
         $arrRecommend = array();
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder("rank DESC");
         $arrRecommendData = $objQuery->select("recommend_product_id, comment", "dtb_recommend_products", "product_id = ?", array($product_id));
         
@@ -418,7 +418,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         } else {
             return $arrRecommend;
         }
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setWhere($where);
         $arrProducts = $objProduct->lists($objQuery, $arrRecommendProductId);
 
@@ -470,7 +470,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
     //商品ごとのレビュー情報を取得する
     function lfGetReviewData($id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         //商品ごとのレビュー情報を取得する
         $col = "create_date, reviewer_url, reviewer_name, recommend_level, title, comment";
         $from = "dtb_review";
@@ -510,7 +510,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
             SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
             return false;
         } else {
-            $objQuery =& SC_Query::getSingletonInstance();
+            $objQuery =& SC_Query_Ex::getSingletonInstance();
             $count = $objQuery->count("dtb_customer_favorite_products", "customer_id = ? AND product_id = ?", array($customer_id, $favorite_product_id));
     
             if ($count == 0) {

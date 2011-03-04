@@ -114,7 +114,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
      * @return array 受注メール送信履歴の内容
      */
     function lfGetMailHistory($order_id) {
-        $objQuery   =& SC_Query::getSingletonInstance();
+        $objQuery   =& SC_Query_Ex::getSingletonInstance();
         $col        = 'send_date, subject, template_id, send_id';
         $where      = 'order_id = ?';
         $objQuery->setOrder('send_date DESC');

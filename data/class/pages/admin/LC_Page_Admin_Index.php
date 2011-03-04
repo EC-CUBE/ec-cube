@@ -137,7 +137,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
      * @return boolean ログイン情報が有効な場合 true
      */
     function lfIsLoginMember($login_id, $pass) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         //パスワード、saltの取得
         $cols = "password, salt";
         $table = "dtb_member";
@@ -160,7 +160,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfDoLogin($login_id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         //メンバー情報取得
         $cols = "member_id, authority, login_date, name";
         $table = "dtb_member";
@@ -216,7 +216,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
         GC_Utils_Ex::gfPrintLog($str_log);
         
         // 最終ログイン日時更新
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sqlval = array();
         $sqlval['login_date'] = date("Y-m-d H:i:s");
         $table = "dtb_member";

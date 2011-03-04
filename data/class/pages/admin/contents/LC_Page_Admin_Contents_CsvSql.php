@@ -246,7 +246,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
      * @return array テーブル名一覧
      */
     function lfGetTableList(){
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         // 実テーブル上のカラム設定を見に行く仕様に変更 ref #476
         $arrTable = $objQuery->listTables();
         if(SC_Utils_Ex::isBlank($arrTable)) {
@@ -275,7 +275,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         if(SC_Utils_Ex::isBlank($table)) {
             return array();
         }
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         // 実テーブル上のカラム設定を見に行く仕様に変更 ref #476
         $arrColList = $objQuery->listTableFields($table);
         $arrColList= SC_Utils_Ex::sfArrCombine($arrColList, $arrColList);
@@ -290,7 +290,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
      * @return array 取得結果の配列
      */
     function lfGetSqlList($where = "" , $arrVal = array()){
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $table = "dtb_csv_sql";
         $objQuery->setOrder('sql_id');
         return $objQuery->select('*', $table, $where, $arrVal);
@@ -304,7 +304,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
      */
     function lfCheckSQL($sql){
         // FIXME: 意図的に new SC_Query しています。 force_runをtrueにする必要があるので.本当はqueryの引数で制御したい。ref SC_Query
-        $objQuery = new SC_Query("", true);
+        $objQuery = new SC_Query_Ex("", true);
         $err = "";
         $sql = "SELECT " . $sql . " ";
         $objErrMsg = $objQuery->query($sql);
@@ -345,7 +345,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $sql = "SELECT " . $arrData[0]['csv_sql'] . " ";
 
         // TODO: ヘッダ取得 SQL内にLIMIT文がある場合はLIMIT句は追加しないので重いかも
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $arrHeader = array();
         if(!preg_match("/ LIMIT /", $sql)) {
@@ -373,7 +373,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
      * @return integer $sql_id SQL_IDを返す
      */
     function lfUpdData($sql_id, $arrSqlVal){
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $table = "dtb_csv_sql";
         $arrSqlVal['update_date'] = 'now()';
         if (SC_Utils_Ex::sfIsInt($sql_id)) {
@@ -398,7 +398,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
      * @return boolean 実行結果 true：成功
      */
     function lfDelData($sql_id){
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $table = "dtb_csv_sql";
         $where = "sql_id = ?";
         if(SC_Utils_Ex::sfIsInt($sql_id)) {

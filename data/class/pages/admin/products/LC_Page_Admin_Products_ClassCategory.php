@@ -158,7 +158,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
      * @return array 規格分類情報
      */
     function lfGetClassCat($class_id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $where = "del_flg <> 1 AND class_id = ?";
         $objQuery->setOrder("rank DESC");
@@ -173,7 +173,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
      * @return string 規格名
      */
     function lfGetClassName($class_id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $where = "class_id = ?";
         $name = $objQuery->get("name", "dtb_class", $where, array($class_id));
@@ -186,7 +186,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
      * @return string 規格分類名
      */
     function lfGetClassCatName($classcategory_id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = "classcategory_id = ?";
         $name = $objQuery->get("name", "dtb_classcategory", $where, array($classcategory_id));
         return $name;
@@ -199,7 +199,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
      * @return integer 更新件数
      */
     function lfInsertClass($arrForm) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
         // 親規格IDの存在チェック
         $where = "del_flg <> 1 AND class_id = ?";
@@ -222,7 +222,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
 
     /* DBへの更新 */
     function lfUpdateClass() {
-        $objQuery = new SC_Query();
+        $objQuery = new SC_Query_Ex();
         // UPDATEする値を作成する。
         $sqlval['name'] = $_POST['name'];
         $sqlval['update_date'] = "Now()";
@@ -239,7 +239,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
      * @return array エラー配列
      */
     function lfCheckError(&$objFormParam) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrForm = $objFormParam->getHashArray();
         // パラメーターの基本チェック
         $arrErr = $objFormParam->checkError();

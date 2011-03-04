@@ -101,7 +101,7 @@ class LC_Page_Regist extends LC_Page_Ex {
      * @return string $arrRegist["secret_key"] 本登録ID
      */
     function lfRegistData($array) {
-        $objQuery                   = SC_Query::getSingletonInstance();
+        $objQuery                   = SC_Query_Ex::getSingletonInstance();
         $arrRegist["secret_key"]    = SC_Helper_Customer_Ex::sfGetUniqSecretKey(); //本登録ID発行
         $arrRegist["status"]        = 2;
         $arrRegist["update_date"]   = "NOW()";
@@ -143,7 +143,7 @@ class LC_Page_Regist extends LC_Page_Ex {
      * @return void
      */
     function lfSendRegistMail($registSecretKey) {
-        $objQuery       = SC_Query::getSingletonInstance();
+        $objQuery       = SC_Query_Ex::getSingletonInstance();
         $objCustomer    = new SC_Customer_Ex();
         $objHelperMail  = new SC_Helper_Mail_Ex();
         $CONF           = SC_Helper_DB_Ex::sfGetBasisData();

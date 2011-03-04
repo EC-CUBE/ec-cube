@@ -119,7 +119,7 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin_Ex {
      * 支払方法一覧の取得.
      */
     function lfGetPaymentList() {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = "payment_id, payment_method, charge, rule, upper_rule, note, fix, charge_flg";
         $where = "del_flg = 0";
         $table = "dtb_payment";

@@ -178,7 +178,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
     }
 
     function lfUpdateData($array) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrCol = $this->lfGetCol();
         foreach($arrCol as $val) {
             //配列の場合は、パイプ区切りの文字列に変換
@@ -194,7 +194,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
     }
 
     function lfInsertData($array) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrCol = $this->lfGetCol();
         foreach($arrCol as $val) {
             $sqlval[$val] = $array[$val];

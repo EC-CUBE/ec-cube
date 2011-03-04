@@ -513,7 +513,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
      * @return boolean 仮会員の場合 true
      */
     function checkTempCustomer($login_email) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = "email = ? AND status = 1 AND del_flg = 0";
         $count = $objQuery->count("dtb_customer", $where, array($login_email));
         return $count > 0;

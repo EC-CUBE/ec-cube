@@ -95,7 +95,7 @@ class SC_Helper_PageLayout {
      * @return array ページ情報を格納した配列
      */
     function lfGetPageData($where = 'page_id <> 0', $arrVal = array()) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder('page_id');
         return $objQuery->select("*", "dtb_pagelayout", $where, $arrVal);
     }
@@ -108,7 +108,7 @@ class SC_Helper_PageLayout {
      * @return array ナビ情報の配列
      */
     function lfGetNaviData($page_id, $device_type_id = DEVICE_TYPE_PC) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $table = <<< __EOF__
             dtb_blocposition AS pos
        JOIN dtb_bloc AS bloc
@@ -177,7 +177,7 @@ __EOF__;
      * @return integer 削除数
      */
     function lfDelPageData($page_id, $device_type_id = DEVICE_TYPE_PC) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrDelData = array();      // 抽出データ用
 
         // page_id が空でない場合にはdeleteを実行

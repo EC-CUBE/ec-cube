@@ -41,7 +41,7 @@ class SC_Customer {
         }
         // 本登録された会員のみ
         $sql = "SELECT * FROM dtb_customer WHERE (email = ?" . $sql_mobile . ") AND del_flg = 0 AND status = 2";
-        $objQuery = new SC_Query();
+        $objQuery = new SC_Query_Ex();
         $result = $objQuery->getAll($sql, $arrValues);
         if (empty($result)) {
             return false;
@@ -68,7 +68,7 @@ class SC_Customer {
      * @return array 会員登録住所, 追加登録住所の配列
      */
     function getCustomerAddress($customer_id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $from = <<< __EOS__
             (   SELECT NULL AS other_deliv_id,
@@ -120,7 +120,7 @@ __EOS__;
 
         // 携帯端末IDが一致し、本登録された会員を検索する。
         $sql = 'SELECT count(*) FROM dtb_customer WHERE mobile_phone_id = ? AND del_flg = 0 AND status = 2';
-        $objQuery = new SC_Query();
+        $objQuery = new SC_Query_Ex();
         $result = $objQuery->count("dtb_customer", "mobile_phone_id = ? AND del_flg = 0 AND status = 2", array($_SESSION['mobile']['phone_id']));
         return $result > 0;
     }
@@ -145,7 +145,7 @@ __EOS__;
 
         // 携帯端末IDが一致し、本登録された会員を検索する。
         $sql = 'SELECT * FROM dtb_customer WHERE mobile_phone_id = ? AND del_flg = 0 AND status = 2';
-        $objQuery = new SC_Query();
+        $objQuery = new SC_Query_Ex();
         @list($data) = $objQuery->getAll($sql, array($_SESSION['mobile']['phone_id']));
 
         // パスワードが合っている場合は、顧客情報をcustomer_dataに格納してtrueを返す。
@@ -171,7 +171,7 @@ __EOS__;
             return;
         }
 
-        $objQuery = new SC_Query;
+        $objQuery = new SC_Query_Ex();
         $sqlval = array('mobile_phone_id' => $_SESSION['mobile']['phone_id']);
         $where = 'customer_id = ? AND del_flg = 0 AND status = 2';
         $objQuery->update('dtb_customer', $sqlval, $where, array($this->customer_data['customer_id']));
@@ -183,7 +183,7 @@ __EOS__;
     function setLogin($email) {
         // 本登録された会員のみ
         $sql = "SELECT * FROM dtb_customer WHERE (email = ? OR email_mobile = ?) AND del_flg = 0 AND status = 2";
-        $objQuery = new SC_Query();
+        $objQuery = new SC_Query_Ex();
         $result = $objQuery->getAll($sql, array($email, $email));
         $data = isset($result[0]) ? $result[0] : "";
         $this->customer_data = $data;
@@ -194,7 +194,7 @@ __EOS__;
     function updateSession() {
         $sql = "SELECT * FROM dtb_customer WHERE customer_id = ? AND del_flg = 0";
         $customer_id = $this->getValue('customer_id');
-        $objQuery = new SC_Query();
+        $objQuery = new SC_Query_Ex();
         $arrRet = $objQuery->getAll($sql, array($customer_id));
         $this->customer_data = isset($arrRet[0]) ? $arrRet[0] : "";
         $_SESSION['customer'] = $this->customer_data;
@@ -225,7 +225,7 @@ __EOS__;
         if(isset($_SESSION['customer']['customer_id'])
             && SC_Utils_Ex::sfIsInt($_SESSION['customer']['customer_id'])) {
 
-            $objQuery = new SC_Query();
+            $objQuery = new SC_Query_Ex();
             $email = $objQuery->get("email", "dtb_customer", "customer_id = ?", array($_SESSION['customer']['customer_id']));
             if($email == $_SESSION['customer']['email']) {
                 // モバイルサイトの場合は携帯のメールアドレスが登録されていることもチェックする。

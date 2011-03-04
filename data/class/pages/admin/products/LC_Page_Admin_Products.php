@@ -77,7 +77,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
         $objDate = new SC_Date_Ex();
         $objFormParam = new SC_FormParam_Ex();
         $objProduct = new SC_Product_Ex();
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 登録・更新検索開始年
         $objDate->setStartYear(RELEASE_YEAR);
@@ -252,7 +252,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
      * @return void
      */
     function doDelete($where, $arrParam = array()) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->update("dtb_products", array('del_flg' => 1), $where, $arrParam);
         $objQuery->update("dtb_products_class", array('del_flg' => 1), $where, $arrParam);
         $objQuery->delete("dtb_customer_favorite_products", $where, $arrParam);
@@ -356,7 +356,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
      * @return integer 検索結果の行数
      */
     function getNumberOfLines($where, $arrValues) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         return $objQuery->count('dtb_products', $where, $arrValues);
     }
 
@@ -372,7 +372,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
      * @return array 商品の検索結果
      */
     function findProducts($where, $arrValues, $limit, $offset, $order, &$objProduct) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 読み込む列とテーブルの指定
         $col = "product_id, name, main_list_image, status, product_code_min, product_code_max, price02_min, price02_max, stock_min, stock_max, stock_unlimited_min, stock_unlimited_max, update_date";

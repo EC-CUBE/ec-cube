@@ -201,7 +201,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      */
     function saveMultipleShippings($uniqid, &$objFormParam, &$objCustomer,
                                    &$objPurchase, &$objCartSess) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $arrParams = $objFormParam->getHashArray();
         $i = 0;

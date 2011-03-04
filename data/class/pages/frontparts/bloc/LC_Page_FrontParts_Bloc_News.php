@@ -80,7 +80,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
      * @return array $arrNewsList 新着情報の配列を返す
      */
     function lfGetNews(){
-        $objQuery = SC_Query::getSingletonInstance();
+        $objQuery = SC_Query_Ex::getSingletonInstance();
         $sql = '';
         $sql .= " SELECT ";
         $sql .= "   *, ";

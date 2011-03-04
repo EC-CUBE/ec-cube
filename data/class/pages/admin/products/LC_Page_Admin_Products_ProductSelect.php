@@ -142,7 +142,7 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
 
         $order = "update_date DESC, product_id DESC ";
 
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         // 行数の取得
         if (empty($arrval)) {
             $arrval = array();

@@ -113,7 +113,7 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex {
 
     // ランキングを上げる。
     function lfRunkUp($id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 自身のランクを取得する。
         $rank = $objQuery->getOne("SELECT rank FROM dtb_member WHERE member_id = ?", array($id));
@@ -143,7 +143,7 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex {
 
     // ランキングを下げる。
     function lfRunkDown($id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 自身のランクを取得する。
         $rank = $objQuery->getOne("SELECT rank FROM dtb_member WHERE member_id = ?", array($id));

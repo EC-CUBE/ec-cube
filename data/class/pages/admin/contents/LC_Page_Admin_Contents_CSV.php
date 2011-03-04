@@ -219,7 +219,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
      * @return boolean 成功:true
      */
     function lfUpdCsvOutput($csv_id, $arrData = array()){
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         // ひとまず、全部使用しないで更新する
         $table = "dtb_csv";
         $where = "csv_id = ?";

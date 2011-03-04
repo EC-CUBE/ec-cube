@@ -120,7 +120,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Ex {
      * @var int order_id
      */
     function getMailHistory($order_id){
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = "send_date, subject, template_id, send_id";
         $where = "order_id = ?";
         $objQuery->setOrder("send_date DESC");
@@ -183,7 +183,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Ex {
      */
     function changeData(&$objFormParam){
         if(SC_Utils_Ex::sfIsInt($objFormParam->getValue('template_id'))) {
-            $objQuery =& SC_Query::getSingletonInstance();
+            $objQuery =& SC_Query_Ex::getSingletonInstance();
             $where = "template_id = ?";
             $mailTemplates = $objQuery->select("subject, header, footer", "dtb_mailtemplate", $where, array($objFormParam->getValue('template_id')));
             if(!is_null($mailTemplates )){

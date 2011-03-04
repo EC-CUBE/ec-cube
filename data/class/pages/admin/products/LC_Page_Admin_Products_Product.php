@@ -152,7 +152,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
                 $product_id = $this->lfRegistProduct($objUpFile, $objDownFile, $arrForm);
 
                 // 件数カウントバッチ実行
-                $objQuery =& SC_Query::getSingletonInstance();
+                $objQuery =& SC_Query_Ex::getSingletonInstance();
                 $objDb = new SC_Helper_DB_Ex();
                 $objDb->sfCountCategory($objQuery);
                 $objDb->sfCountMaker($objQuery);
@@ -747,7 +747,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         }
         $where .= ")";
 
-        $objQuery = new SC_Query();
+        $objQuery = new SC_Query_Ex();
         $count = $objQuery->count('dtb_products', $where, $sqlval);
         if (!$count) return false;
         return true;
@@ -760,7 +760,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
      * @return array 商品データ配列
      */
     function lfGetProductData_FromDB($product_id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrProduct = array();
 
         // 商品データ取得
@@ -822,7 +822,7 @@ __EOF__;
      * @return array 関連商品データ配列
      */
     function lfGetRecommendProductsData_FromDB($product_id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrRecommendProducts = array();
 
         $col = 'recommend_product_id,';
@@ -921,7 +921,7 @@ __EOF__;
      * @return integer 登録商品ID
      */
     function lfRegistProduct(&$objUpFile, &$objDownFile, $arrList) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objDb = new SC_Helper_DB_Ex();
 
         // 配列の添字を定義
@@ -1047,7 +1047,7 @@ __EOF__;
      * @return void
      */
     function lfInsertDummyProductClass($arrList) {
-        $objQuery = new SC_Query();
+        $objQuery = new SC_Query_Ex();
         $objDb = new SC_Helper_DB_Ex();
 
         $product_id = $arrList['product_id'];

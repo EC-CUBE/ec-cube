@@ -64,7 +64,7 @@ class SC_Helper_Session {
       * @return string セッションデータの値
       */
      function sfSessRead($id) {
-         $objQuery = new SC_Query();
+         $objQuery = new SC_Query_Ex();
          $arrRet = $objQuery->select("sess_data", "dtb_session", "sess_id = ?", array($id));
          if (empty($arrRet)) {
              return '';
@@ -82,7 +82,7 @@ class SC_Helper_Session {
       */
      function sfSessWrite($id, $sess_data)
      {
-         $objQuery = new SC_Query();
+         $objQuery = new SC_Query_Ex();
          $count = $objQuery->count("dtb_session", "sess_id = ?", array($id));
          $sqlval = array();
          if($count > 0) {
@@ -112,7 +112,7 @@ class SC_Helper_Session {
       * @return bool セッションを正常に破棄した場合 true
       */
      function sfSessDestroy($id) {
-         $objQuery = new SC_Query();
+         $objQuery = new SC_Query_Ex();
          $objQuery->delete("dtb_session", "sess_id = ?", array($id));
          return true;
      }
@@ -126,7 +126,7 @@ class SC_Helper_Session {
       */
      function sfSessGc($maxlifetime) {
          // MAX_LIFETIME以上更新されていないセッションを削除する。
-         $objQuery = new SC_Query();
+         $objQuery = new SC_Query_Ex();
          $where = "update_date < current_timestamp + '-". MAX_LIFETIME . " secs'";
          $objQuery->delete("dtb_session", $where);
          return true;

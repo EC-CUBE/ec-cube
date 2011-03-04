@@ -162,7 +162,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      * @return array $arrMaker メーカー情報
      */
     function lfDisp() {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 削除されていないメーカー情報を表示する
         $where = "del_flg = 0";
@@ -179,7 +179,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInsert(&$arrForm) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // INSERTする値を作成する
         $sqlval['name'] = $arrForm['name'];
@@ -200,7 +200,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfUpdate(&$arrForm) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // UPDATEする値を作成する
         $sqlval['name'] = $arrForm['name'];
@@ -255,7 +255,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      * @return array  $arrForm メーカー名を追加
      */
     function lfPreEdit(&$arrForm, $maker_id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 編集項目を取得する
         $where = "maker_id = ?";
@@ -288,7 +288,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
             }
         }
         if(!isset($objErr->arrErr['name'])) {
-            $objQuery =& SC_Query::getSingletonInstance();
+            $objQuery =& SC_Query_Ex::getSingletonInstance();
             $arrMaker = array();
             $arrMaker = $objQuery->select("maker_id, name", "dtb_maker", "del_flg = 0 AND name = ?", array($arrForm['name']));
 

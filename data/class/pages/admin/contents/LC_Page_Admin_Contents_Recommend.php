@@ -154,7 +154,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
      * @return Array $arrReturnProducts データベースに登録されているおすすめ商品の配列
      */
     function getRecommendProducts(){
-        $objQuery = $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = 'dtb_products.name,dtb_products.main_list_image,dtb_best_products.*';
         $table = 'dtb_best_products INNER JOIN dtb_products USING (product_id)';
         $where = 'dtb_best_products.del_flg = 0';
@@ -175,7 +175,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
      * @param Integer $member_id 登録した管理者を示すID
      */
     function insertRecommendProduct($arrPost,$member_id){
-        $objQuery = $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
         // 古いおすすめ商品のデータを削除する。
         $this->deleteProduct($arrPost);
 
@@ -196,7 +196,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
      * @param Array $arrPost POSTの値を格納した配列
      */
     function deleteProduct($arrPost){
-        $objQuery = $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
         $table = 'dtb_best_products';
         $where = 'category_id = ? AND rank = ?';
         $arrval = array($arrPost['category_id'],$arrPost['rank']);
@@ -209,7 +209,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
      * @return Array $arrProduct 商品のデータを格納した配列
      */
     function getProduct($product_id){
-        $objQuery = $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = 'product_id,main_list_image,name';
         $table = 'dtb_products';
         $where = 'product_id = ? AND del_flg = 0';

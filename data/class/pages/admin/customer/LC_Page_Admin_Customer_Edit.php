@@ -243,7 +243,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         $arrErr = SC_Helper_Customer_Ex::sfCustomerMypageErrorCheck($objFormParam, true);
         
         //メアド重複チェック(共通ルーチンは使えない)
-        $objQuery   =& SC_Query::getSingletonInstance();
+        $objQuery   =& SC_Query_Ex::getSingletonInstance();
         $col = "email, email_mobile, customer_id";
         $table = "dtb_customer";
         $where = "del_flg <> 1 AND (email Like ? OR email_mobile Like ?)";
@@ -277,7 +277,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
      * @return array エラー配列
      */
     function lfRegistData(&$objFormParam) {
-        $objQuery   =& SC_Query::getSingletonInstance();
+        $objQuery   =& SC_Query_Ex::getSingletonInstance();
         // 登録用データ取得
         $arrData = $objFormParam->getDbArray();
         // 足りないものを作る
@@ -309,7 +309,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         if(SC_Utils_Ex::isBlank($customer_id)) {
             return array('0', array(), NULL);
         }
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $page_max = SEARCH_PMAX;
         $table = "dtb_order";
         $where = "customer_id = ? AND del_flg <> 1";

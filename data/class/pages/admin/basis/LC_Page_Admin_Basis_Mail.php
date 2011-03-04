@@ -122,14 +122,14 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
     }
 
     function lfGetMailTemplateByTemplateID($template_id) {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ?";
         return $objQuery->getAll($sql, array($template_id) );
     }
 
     function lfRegistMailTemplate($post, $member_id){
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $post['creator_id'] = $member_id;
         $post['update_date'] = 'now()';

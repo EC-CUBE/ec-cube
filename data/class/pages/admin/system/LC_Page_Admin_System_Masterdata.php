@@ -194,7 +194,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
         }
 
         // マスタデータを更新
-        $masterData->objQuery =& SC_Query::getSingletonInstance();
+        $masterData->objQuery =& SC_Query_Ex::getSingletonInstance();
         $masterData->objQuery->begin();
         $masterData->deleteMasterData($master_data_name, false);
         // TODO カラム名はメタデータから取得した方が良い

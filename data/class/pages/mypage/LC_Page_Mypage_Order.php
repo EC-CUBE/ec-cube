@@ -85,7 +85,7 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex {
 
     // 受注詳細データの取得
     function lfGetOrderDetail($order_id) {
-        $objQuery       = SC_Query::getSingletonInstance();
+        $objQuery       = SC_Query_Ex::getSingletonInstance();
 
         $objCustomer    = new SC_Customer_Ex();
         //customer_idを検証

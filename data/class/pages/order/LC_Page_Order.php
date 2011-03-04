@@ -66,7 +66,7 @@ class LC_Page_Order extends LC_Page_Ex {
      * @return void
      */
     function action() {
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $layout = new SC_Helper_PageLayout_Ex();
         $objDb = new SC_Helper_DB_Ex();
         $this->arrOrder = $objDb->sfGetBasisData();

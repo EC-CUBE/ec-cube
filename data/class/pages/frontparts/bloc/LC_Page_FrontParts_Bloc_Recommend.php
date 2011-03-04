@@ -88,7 +88,7 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc {
     function lfGetRanking(){
         $arrProduct = array();
         // おすすめ商品取得
-        $objQuery = SC_Query::getSingletonInstance();
+        $objQuery = SC_Query_Ex::getSingletonInstance();
         $sql = '';
         $sql .= ' SELECT';
         $sql .= '    T1.best_id,';
@@ -108,7 +108,7 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc {
         $arrBestProducts = $objQuery->getAll($sql);
         if ( is_array($arrBestProducts) && count($arrBestProducts) > 0 ) {
             // 各商品の詳細情報を取得
-            $objQuery = SC_Query::getSingletonInstance();
+            $objQuery = SC_Query_Ex::getSingletonInstance();
             $objProduct = new SC_Product_Ex();
             // where条件生成&セット
             $arrBestProductIds = array();

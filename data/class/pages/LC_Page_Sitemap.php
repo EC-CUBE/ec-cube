@@ -91,7 +91,7 @@ class LC_Page_Sitemap extends LC_Page_Ex {
         // ページのデータを取得
         $this->arrPageList = $this->getPageData();
 
-        $objQuery = SC_Query::getSingletonInstance();
+        $objQuery = SC_Query_Ex::getSingletonInstance();
 
         //キャッシュしない(念のため)
         header("Paragrama: no-cache");
@@ -216,7 +216,7 @@ class LC_Page_Sitemap extends LC_Page_Ex {
     function getAllProducts() {
         
         // XXX: 商品登録の無いカテゴリーは除外する方が良い気もする
-        $objQuery = SC_Query::getSingletonInstance();
+        $objQuery = SC_Query_Ex::getSingletonInstance();
         $sql = "SELECT category_id FROM dtb_category WHERE del_flg = 0";
         $result = $objQuery->getAll($sql);
 
@@ -242,7 +242,7 @@ class LC_Page_Sitemap extends LC_Page_Ex {
      * @return array 検索エンジンからアクセス可能な商品詳細ページの情報
      */
     function getAllDetail() {
-        $objQuery = SC_Query::getSingletonInstance();
+        $objQuery = SC_Query_Ex::getSingletonInstance();
         $sql = "SELECT product_id, update_date FROM dtb_products WHERE del_flg = 0 AND status = 1";
         $result = $objQuery->getAll($sql);
 
@@ -272,7 +272,7 @@ class LC_Page_Sitemap extends LC_Page_Ex {
      * @return array $arrPageList ブロック情報
      */
     function getPageData($where = '', $arrVal = ''){
-        $objQuery = SC_Query::getSingletonInstance();     // DB操作オブジェクト
+        $objQuery = SC_Query_Ex::getSingletonInstance();     // DB操作オブジェクト
         $sql = "";                      // データ取得SQL生成用
         $arrRet = array();              // データ取得用
 
