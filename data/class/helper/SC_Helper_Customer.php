@@ -585,7 +585,7 @@ class SC_Helper_Customer {
      */
     function sfGetSearchData($arrParam) {
         $objQuery =& SC_Query::getSingletonInstance();
-        $objSelect = new SC_CustomerList($arrParam, "customer");
+        $objSelect = new SC_CustomerList_Ex($arrParam, "customer");
         $page_max = SC_Utils_Ex::sfGetSearchPageMax($arrParam['search_page_max']);
         $disp_pageno = $arrParam['search_pageno'];
         if($disp_pageno == 0) {

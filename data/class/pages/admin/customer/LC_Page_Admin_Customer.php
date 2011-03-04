@@ -215,7 +215,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
      * @return boolean true:成功 false:失敗
      */
     function lfDoCSV($arrParam) {
-        $objSelect = new SC_CustomerList($arrParam, "customer");
+        $objSelect = new SC_CustomerList_Ex($arrParam, "customer");
         $order = "update_date DESC, customer_id DESC";
         
         require_once(CLASS_EX_REALDIR . "helper_extends/SC_Helper_CSV_Ex.php");
