@@ -43,7 +43,7 @@
 
 <body>
 <noscript>
-  <p><em>JavaScriptを有効にしてご利用下さい.</em></p>
+    <p><em>JavaScriptを有効にしてご利用下さい.</em></p>
 </noscript>
 
 <a name="top" id="top"></a>

@@ -21,20 +21,20 @@
  *}-->
 <!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_header.tpl" subtitle="住所検索" disable_wincol=1}-->
 
-  <div id="zipsearchcolumn">
+<div id="zipsearchcolumn">
     <h2>住所検索</h2>
     <div id="zipsearch_area">
-      <form name="form1" id="form1" method="post" action="?">
-        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-        <input type="hidden" name="state" value="<!--{$tpl_state}-->" />
-        <input type="hidden" name="city" value="<!--{$tpl_city}-->" />
-        <input type="hidden" name="town" value="<!--{$tpl_town}-->" />
-        <div id="completebox">
-          <p><!--{$tpl_message}--></p>
-        </div>
-      </form>
+        <form name="form1" id="form1" method="post" action="?">
+            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+            <input type="hidden" name="state" value="<!--{$tpl_state}-->" />
+            <input type="hidden" name="city" value="<!--{$tpl_city}-->" />
+            <input type="hidden" name="town" value="<!--{$tpl_town}-->" />
+            <div id="completebox">
+                <p><!--{$tpl_message}--></p>
+            </div>
+        </form>
     </div>
     <div class="btn"><a href="javascript:window.close()" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close_on.gif','b_close');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close.gif','b_close');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_close.gif" alt="閉じる" border="0" name="b_close" /></a></div>
-  </div>
+</div>
 
 <!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_footer.tpl"}-->

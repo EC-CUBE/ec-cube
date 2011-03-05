@@ -56,19 +56,19 @@
 //]]>
 </script>
 <!--{* ▼Head COLUMN*}-->
-  <!--{if $arrPageLayout.HeadNavi|@count > 0}-->
+<!--{if $arrPageLayout.HeadNavi|@count > 0}-->
     <!--{* ▼上ナビ *}-->
-      <!--{foreach key=HeadNaviKey item=HeadNaviItem from=$arrPageLayout.HeadNavi}-->
+    <!--{foreach key=HeadNaviKey item=HeadNaviItem from=$arrPageLayout.HeadNavi}-->
         <!--{* ▼<!--{$HeadNaviItem.bloc_name}--> ここから*}-->
-          <!--{if $HeadNaviItem.php_path != ""}-->
+        <!--{if $HeadNaviItem.php_path != ""}-->
             <!--{include_php file=$HeadNaviItem.php_path}-->
-          <!--{else}-->
+        <!--{else}-->
             <!--{include file=$HeadNaviItem.tpl_path}-->
-          <!--{/if}-->
+        <!--{/if}-->
         <!--{* ▲<!--{$HeadNaviItem.bloc_name}--> ここまで*}-->
-      <!--{/foreach}-->
+    <!--{/foreach}-->
     <!--{* ▲上ナビ *}-->
-  <!--{/if}-->
+<!--{/if}-->
 <!--{* ▲Head COLUMN*}-->
 </head>
 
