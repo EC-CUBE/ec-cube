@@ -190,7 +190,7 @@
     </tr>
     <!--{assign var=discount value="`$arrForm.discount.value`"}-->
     <!--{if $discount != "" && $discount > 0}-->
-                         <tr>
+    <tr>
         <th colspan="4" class="column right">値引き</th>
         <td align="right"><!--{$discount|number_format}-->円</td>
     </tr>
@@ -220,24 +220,24 @@
     <tr>
         <th colspan="4" class="column right">お誕生日ポイント</th>
         <td align="right">
-        <!--{$arrForm.birth_point.value|number_format}-->
-         pt</td>
+            <!--{$arrForm.birth_point.value|number_format}-->
+            pt</td>
     </tr>
     <!--{/if}-->
     <tr>
         <th colspan="4" class="column right">加算ポイント</th>
         <td align="right">
         <!--{$arrForm.add_point.value|default:0|number_format}-->
-         pt</td>
+            pt</td>
     </tr>
     <tr>
         <!--{if $arrForm.customer_id.value > 0}-->
         <th colspan="4" class="column right">現在ポイント</th>
         <td align="right">
         <!--{$arrForm.point.value|number_format}-->
-         pt</td>
+            pt</td>
         <!--{else}-->
-        <th colspan="4" class="column right">現在ポイント</th><td align="center">(なし)</td>
+            <th colspan="4" class="column right">現在ポイント</th><td align="center">(なし)</td>
         <!--{/if}-->
     </tr>
     <!--{*
@@ -246,7 +246,7 @@
         <td align="right">
             <span class="attention"><!--{$arrErr.total_point}--></span>
             <!--{$arrForm.total_point.value|number_format}-->
-             pt
+            pt
         </td>
     </tr>
     *}-->

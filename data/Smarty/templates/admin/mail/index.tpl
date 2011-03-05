@@ -33,16 +33,16 @@
         <tr>
             <th>配信形式</th>
             <td colspan="3">
-              <!--{assign var=key value="search_htmlmail"}-->
-              <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
-              <!--{html_radios name=$key options=$arrHtmlmail separator="&nbsp;" selected=$arrForm[$key].value}-->
+                <!--{assign var=key value="search_htmlmail"}-->
+                <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
+                <!--{html_radios name=$key options=$arrHtmlmail separator="&nbsp;" selected=$arrForm[$key].value}-->
             </td>
         </tr>
         <tr>
             <th>配信メールアドレス種別</th>
             <td colspan="3">
-              <!--{assign var=key value="search_mail_type"}-->
-              <!--{html_radios name=$key options=$arrMailType separator="<br />" selected=$arrForm[$key].value|default:1}-->
+                <!--{assign var=key value="search_mail_type"}-->
+                <!--{html_radios name=$key options=$arrMailType separator="<br />" selected=$arrForm[$key].value|default:1}-->
             </td>
         </tr>
     </table>

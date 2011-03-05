@@ -44,9 +44,9 @@
                 <p>Version.<!--{$product.version|default:"--"}-->　<!--{$product.last_update_date|sfDispDBDate:false|h}--></p>
             </td>
             <td>
-              <div id="ownersstore_version<!--{$product.product_id|h}-->">
-                <!--{$product.installed_version|default:"--"|h}-->
-              </div>
+                <div id="ownersstore_version<!--{$product.product_id|h}-->">
+                    <!--{$product.installed_version|default:"--"|h}-->
+                </div>
             </td>
 
             <!--{* ダウンロード対象商品なら各種ボタンを表示する *}-->
@@ -73,13 +73,13 @@
                     <!--{if $product.installed_flg}-->
                         <span class="icon_confirm">
                         <a href="#" onclick="win02('../load_module_config.php?module_id=<!--{$product.product_id}-->', 'load', 615, 400);return false;">
-                           設定</a>
+                            設定</a>
                         </span>
                     <!--{else}-->
                         <div id='ownersstore_settings<!--{$product.product_id|h}-->' style="display:none">
                         <span class="icon_confirm">
                         <a href="#" onclick="win02('../load_module_config.php?module_id=<!--{$product.product_id}-->', 'load', 615, 400);return false;">
-                           設定</a>
+                            設定</a>
                         </span>
                         </div>
                         <div id='ownersstore_settings_default<!--{$product.product_id|h}-->' style="display:bloc">--</div>

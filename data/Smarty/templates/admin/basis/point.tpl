@@ -29,22 +29,22 @@
         <tr>
             <th>ポイント付与率<span class="attention"> *</span></th>
             <td>
-            <!--{assign var=key value="point_rate"}-->
-            <!--{if $arrErr[$key]}-->
-            <span class="attention"><!--{$arrErr[$key]}--></span>
-            <!--{/if}-->
-            <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box6" />
-            ％　小数点以下切り捨て</td>
+                <!--{assign var=key value="point_rate"}-->
+                <!--{if $arrErr[$key]}-->
+                    <span class="attention"><!--{$arrErr[$key]}--></span>
+                <!--{/if}-->
+                <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box6" />
+                ％　小数点以下切り捨て</td>
         </tr>
         <tr>
             <th>会員登録時付与ポイント<span class="attention"> *</span></th>
             <td>
-            <!--{assign var=key value="welcome_point"}-->
-            <!--{if $arrErr[$key]}-->
-            <span class="attention"><!--{$arrErr[$key]}--></span>
-            <!--{/if}-->
-            <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box6" />
-             pt</td>
+                <!--{assign var=key value="welcome_point"}-->
+                <!--{if $arrErr[$key]}-->
+                    <span class="attention"><!--{$arrErr[$key]}--></span>
+                <!--{/if}-->
+                <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box6" />
+            pt</td>
         </tr>
     </table>
 
@@ -55,4 +55,3 @@
     </div>
 </div>
 </form>
-

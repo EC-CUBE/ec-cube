@@ -56,12 +56,12 @@ self.moveTo(20,20);self.focus();
                 <th>手数料<span class="attention"> *</span></th>
                 <td>
                     <!--{if $charge_flg == 2}-->
-                    設定できません
+                        設定できません
                     <!--{else}-->
-                    <!--{assign var=key value="charge"}-->
-                    <span class="attention"><!--{$arrErr[$key]}--></span>
-                    <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" size="10" class="box10" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-                     円
+                        <!--{assign var=key value="charge"}-->
+                        <span class="attention"><!--{$arrErr[$key]}--></span>
+                        <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" size="10" class="box10" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
+                        円
                     <!--{/if}-->
                 </td>
             </tr>
@@ -73,10 +73,10 @@ self.moveTo(20,20);self.focus();
                     <span class="attention"><!--{$arrErr[$key_from]}--></span>
                     <span class="attention"><!--{$arrErr[$key_to]}--></span>
                     <input type="text" name="<!--{$arrForm[$key_from].keyname}-->" value="<!--{$arrForm[$key_from].value|h}-->" size="10" class="box10" maxlength="<!--{$arrForm[$key_from].length}-->" style="<!--{$arrErr[$key_from]|sfGetErrorColor}-->" />
-                     円
-                     ～
+                    円
+                    ～
                     <input type="text" name="<!--{$arrForm[$key_to].keyname}-->" value="<!--{$arrForm[$key_to].value|h}-->" size="10" class="box10" maxlength="<!--{$arrForm[$key_to].length}-->" style="<!--{$arrErr[$key_to]|sfGetErrorColor}-->" />
-                     円
+                    円
                 </td>
             </tr>
             <tr>

@@ -37,9 +37,9 @@ $(function() {
                     latlng = results[0].geometry.location;
                     $("#latitude").val(latlng.lat());
                     $("#longitude").val(latlng.lng());
-                 } else {
-                     alert('住所の場所が見つかりません');
-                 }
+                } else {
+                    alert('住所の場所が見つかりません');
+                }
             });
         } else {
             alert('住所の場所が見つかりません');
@@ -59,7 +59,7 @@ $(function() {
                 geocoder.geocode({'address': address}, function(results, status) {
                     if (status == google.maps.GeocoderStatus.OK) {
                         latlng = results[0].geometry.location;
-                     }
+                    }
                 });
             }
         }
@@ -69,9 +69,11 @@ $(function() {
             latlng = new google.maps.LatLng(35, 135);
         }
 
-        var mapOptions = {zoom: 15,
-                          center: latlng,
-                          mapTypeId: google.maps.MapTypeId.ROADMAP};
+        var mapOptions = {
+            zoom: 15,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
         var map = new google.maps.Map($("#maps").get(0), mapOptions);
         var marker = new google.maps.Marker({map: map, position: latlng});
         marker.setDraggable(true);

@@ -162,17 +162,17 @@ function lfnDispChange(){
             <span class="attention"><!--{$arrErr[$key]}--></span>
         <!--{/if}-->
         <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-        <!--{html_options options=$arrPageMax selected=$arrForm.search_page_max.value}-->
+            <!--{html_options options=$arrPageMax selected=$arrForm.search_page_max.value}-->
         </select> 件</p>
 
-    <div class="btn-area">
-        <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next">この条件で検索する</span></a></li>
-        </ul>
-    </div>
+        <div class="btn-area">
+            <ul>
+                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next">この条件で検索する</span></a></li>
+            </ul>
+        </div>
 
-  </div>
-  <!--検索条件設定テーブルここまで-->
+    </div>
+    <!--検索条件設定テーブルここまで-->
 </form>  
 
 

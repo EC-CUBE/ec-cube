@@ -38,7 +38,7 @@ var IMG_NORMAL         = "<!--{$TPL_URLPATH}-->img/contents/space.gif";				// ã‚
 <input type="hidden" name="select_file" value="" />
 <div id="admin-contents" class="contents-main">
     <div id="contents-filemanager-tree">
-      <div id="tree"></div>
+        <div id="tree"></div>
     </div>
     <div id="contents-filemanager-right">
         <table class="now_dir">

@@ -92,19 +92,19 @@ function lfnCheckSetItem( rank ){
                                 <!--{/if}-->
                             </div>
                             <div class="table-detail">
-                                 <div class="detail-name">商品名：<!--{$arrItems[$smarty.section.cnt.iteration].name|h}--></div>
-                                     <div class="detail-form">
-                                         <form name="form<!--{$smarty.section.cnt.iteration}-->" id="form<!--{$smarty.section.cnt.iteration}-->" method="post" action="?">
-                                             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-                                             <input type="hidden" name="mode" value="regist" />
-                                             <input type="hidden" name="product_id" value="<!--{$arrItems[$smarty.section.cnt.iteration].product_id|h}-->" />
-                                             <input type="hidden" name="category_id" value="<!--{$category_id|h}-->" />
-                                             <input type="hidden" name="rank" value="<!--{$arrItems[$smarty.section.cnt.iteration].rank|h}-->" />
-                                             <span class="attention"><!--{$arrErr[$smarty.section.cnt.iteration].comment}--></span>
-                                             <textarea class="top" name="comment" cols="45" rows="4" style="width: 586px; height: 80px; <!--{$arrErr[$smarty.section.cnt.iteration].comment|sfGetErrorColor}-->" <!--{$arrItems[$smarty.section.cnt.iteration].product_id|sfGetEnabled}-->><!--{$arrItems[$smarty.section.cnt.iteration].comment}--></textarea>
-                                         </form>
-                                     </div>
-                                 </div>
+                                <div class="detail-name">商品名：<!--{$arrItems[$smarty.section.cnt.iteration].name|h}--></div>
+                                    <div class="detail-form">
+                                        <form name="form<!--{$smarty.section.cnt.iteration}-->" id="form<!--{$smarty.section.cnt.iteration}-->" method="post" action="?">
+                                            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+                                            <input type="hidden" name="mode" value="regist" />
+                                            <input type="hidden" name="product_id" value="<!--{$arrItems[$smarty.section.cnt.iteration].product_id|h}-->" />
+                                            <input type="hidden" name="category_id" value="<!--{$category_id|h}-->" />
+                                            <input type="hidden" name="rank" value="<!--{$arrItems[$smarty.section.cnt.iteration].rank|h}-->" />
+                                            <span class="attention"><!--{$arrErr[$smarty.section.cnt.iteration].comment}--></span>
+                                            <textarea class="top" name="comment" cols="45" rows="4" style="width: 586px; height: 80px; <!--{$arrErr[$smarty.section.cnt.iteration].comment|sfGetErrorColor}-->" <!--{$arrItems[$smarty.section.cnt.iteration].product_id|sfGetEnabled}-->><!--{$arrItems[$smarty.section.cnt.iteration].comment}--></textarea>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </td>

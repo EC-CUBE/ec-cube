@@ -47,13 +47,13 @@
 
     <!--{foreach from=$arrSearchData key="key" item="item"}-->
         <!--{if $key ne "customer_id" && $key ne "mode" && $key ne "edit_customer_id" && $key ne $smarty.const.TRANSACTION_ID_NAME}-->
-          <!--{if is_array($item)}-->
-            <!--{foreach item=c_item from=$item}-->
-              <input type="hidden" name="<!--{$key|h}-->[]" value="<!--{$c_item|h}-->" />
-            <!--{/foreach}-->
-          <!--{else}-->
-            <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
-          <!--{/if}-->
+            <!--{if is_array($item)}-->
+                <!--{foreach item=c_item from=$item}-->
+                    <input type="hidden" name="<!--{$key|h}-->[]" value="<!--{$c_item|h}-->" />
+                <!--{/foreach}-->
+            <!--{else}-->
+                <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
+            <!--{/if}-->
         <!--{/if}-->
     <!--{/foreach}-->
 </form>
@@ -66,13 +66,13 @@
     <!-- 検索条件の保持 -->
     <!--{foreach from=$arrSearchData key="key" item="item"}-->
         <!--{if $key ne "customer_id" && $key ne "mode" && $key ne "edit_customer_id" && $key ne $smarty.const.TRANSACTION_ID_NAME}-->
-          <!--{if is_array($item)}-->
-            <!--{foreach item=c_item from=$item}-->
-              <input type="hidden" name="search_data[<!--{$key|h}-->][]" value="<!--{$c_item|h}-->" />
-            <!--{/foreach}-->
-          <!--{else}-->
-            <input type="hidden" name="search_data[<!--{$key|h}-->]" value="<!--{$item|h}-->" />
-          <!--{/if}-->
+            <!--{if is_array($item)}-->
+                <!--{foreach item=c_item from=$item}-->
+                    <input type="hidden" name="search_data[<!--{$key|h}-->][]" value="<!--{$c_item|h}-->" />
+                <!--{/foreach}-->
+            <!--{else}-->
+                <input type="hidden" name="search_data[<!--{$key|h}-->]" value="<!--{$item|h}-->" />
+            <!--{/if}-->
         <!--{/if}-->
     <!--{/foreach}-->
 
@@ -241,10 +241,10 @@
         </table>
 
         <div class="btn-area">
-          <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="return fnReturn();"><span class="btn-prev">検索画面に戻る</span></a></li>
-            <li><a class="btn-action" href="javascript:;" onclick="fnSetFormSubmit('form1', 'mode', 'confirm'); return false;"><span class="btn-next">確認ページへ</span></a></li>
-          </ul>
+            <ul>
+                <li><a class="btn-action" href="javascript:;" onclick="return fnReturn();"><span class="btn-prev">検索画面に戻る</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="fnSetFormSubmit('form1', 'mode', 'confirm'); return false;"><span class="btn-next">確認ページへ</span></a></li>
+            </ul>
         </div>
 
         <input type="hidden" name="order_id" value="" />
@@ -267,14 +267,14 @@
                     <th>支払方法</th>
                 </tr>
                 <!--{section name=cnt loop=$arrPurchaseHistory}-->
-                <tr>
-                    <td><!--{$arrPurchaseHistory[cnt].create_date|sfDispDBDate}--></td>
-                    <td class="center"><a href="#" onclick="fnOpenWindow('../order/edit.php?order_id=<!--{$arrPurchaseHistory[cnt].order_id}-->','order_disp','800','900'); return false;" ><!--{$arrPurchaseHistory[cnt].order_id}--></a></td>
-                    <td class="center"><!--{$arrPurchaseHistory[cnt].payment_total|number_format}-->円</td>
-                    <td class="center"><!--{if $arrPurchaseHistory[cnt].status eq 5}--><!--{$arrPurchaseHistory[cnt].commit_date|sfDispDBDate}--><!--{else}-->未発送<!--{/if}--></td>
-                    <!--{assign var=payment_id value="`$arrPurchaseHistory[cnt].payment_id`"}-->
-                    <td class="center"><!--{$arrPayment[$payment_id]|h}--></td>
-                </tr>
+                    <tr>
+                        <td><!--{$arrPurchaseHistory[cnt].create_date|sfDispDBDate}--></td>
+                        <td class="center"><a href="#" onclick="fnOpenWindow('../order/edit.php?order_id=<!--{$arrPurchaseHistory[cnt].order_id}-->','order_disp','800','900'); return false;" ><!--{$arrPurchaseHistory[cnt].order_id}--></a></td>
+                        <td class="center"><!--{$arrPurchaseHistory[cnt].payment_total|number_format}-->円</td>
+                        <td class="center"><!--{if $arrPurchaseHistory[cnt].status eq 5}--><!--{$arrPurchaseHistory[cnt].commit_date|sfDispDBDate}--><!--{else}-->未発送<!--{/if}--></td>
+                        <!--{assign var=payment_id value="`$arrPurchaseHistory[cnt].payment_id`"}-->
+                        <td class="center"><!--{$arrPayment[$payment_id]|h}--></td>
+                    </tr>
                 <!--{/section}-->
             </table>
             <!--{* 購入履歴一覧表示テーブル *}-->

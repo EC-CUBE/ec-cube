@@ -101,8 +101,10 @@ $(function() {
 
             // 数量
             var qfield = $('<input type="text" />')
-                .attr({'name': 'multiple_quantity[' + index + ']',
-                       'size': 4})
+                .attr({
+                    'name': 'multiple_quantity[' + index + ']',
+                    'size': 4
+                })
                 .val(1);
 
             // 数量と hidden を設定
@@ -154,8 +156,8 @@ function func_submit() {
     $('input[name^=multiple_], select[name^=multiple_]').each(function() {
         // TODO タグをベタ書きにしないと, innerHTML で value が空になってしまう
         $(div).append('<input type="hidden" name="'
-                      + $(this).attr('name')
-                      + '" value="' + $(this).val() + '" />');
+            + $(this).attr('name')
+            + '" value="' + $(this).val() + '" />');
     });
 
     // window.opener に対する append は IE で動作しない

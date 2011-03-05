@@ -111,7 +111,7 @@ function fnCheckStock(form) {
     // 商品規格
     eleDynamic = document.getElementById('product_class_id' + product_id);
     if (
-           classcat2
+        classcat2
         && typeof classcat2.product_class_id != 'undefined'
         && String(classcat2.product_class_id).length >= 1
     ) {
@@ -152,9 +152,9 @@ function fnCheckStock(form) {
     </tr>
 </table>
 <div class="btn-area">
-  <ul>
-    <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', ''); return false;"><span class="btn-next">検索を開始</span></a></li>
-  </ul>
+    <ul>
+        <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', ''); return false;"><span class="btn-next">検索を開始</span></a></li>
+    </ul>
 </div>
 </form>
 <!--▼検索結果表示-->

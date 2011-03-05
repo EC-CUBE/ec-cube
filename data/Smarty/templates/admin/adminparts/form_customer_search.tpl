@@ -70,12 +70,12 @@
             <option value="" selected="selected">----</option>
             <!--{html_options options=$arrYear selected=$arrForm[$key].value}-->
         </select>年
-         <!--{assign var=key value="search_b_end_month"}-->
+        <!--{assign var=key value="search_b_end_month"}-->
         <select name="<!--{$key}-->" <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><!--{sfSetErrorStyle}--><!--{/if}-->>
             <option value="" selected="selected">--</option>
             <!--{html_options options=$arrMonth selected=$arrForm[$key].value}-->
         </select>月
-         <!--{assign var=key value="search_b_end_day"}-->
+        <!--{assign var=key value="search_b_end_day"}-->
         <select name="<!--{$key}-->" <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><!--{sfSetErrorStyle}--><!--{/if}-->>
             <option value="" selected="selected">--</option>
             <!--{html_options options=$arrDay selected=$arrForm[$key].value}-->
@@ -157,12 +157,12 @@
             <option value="" selected="selected">----</option>
             <!--{html_options options=$arrYear selected=$arrForm[$key].value}-->
         </select>年
-         <!--{assign var=key value="search_end_month"}-->
+        <!--{assign var=key value="search_end_month"}-->
         <select name="<!--{$key}-->" <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><!--{sfSetErrorStyle}--><!--{/if}-->>
             <option value="" selected="selected">--</option>
             <!--{html_options options=$arrMonth selected=$arrForm[$key].value}-->
         </select>月
-         <!--{assign var=key value="search_end_day"}-->
+        <!--{assign var=key value="search_end_day"}-->
         <select name="<!--{$key}-->" <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><!--{sfSetErrorStyle}--><!--{/if}-->>
             <option value="" selected="selected">--</option>
             <!--{html_options options=$arrDay selected=$arrForm[$key].value}-->
@@ -195,12 +195,12 @@
             <option value="" selected="selected">----</option>
             <!--{html_options options=$arrYear selected=$arrForm[$key].value}-->
         </select>年
-         <!--{assign var=key value="search_buy_end_month"}-->
+        <!--{assign var=key value="search_buy_end_month"}-->
         <select name="<!--{$key}-->" <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><!--{sfSetErrorStyle}--><!--{/if}-->>
             <option value="" selected="selected">--</option>
             <!--{html_options options=$arrMonth selected=$arrForm[$key].value}-->
         </select>月
-         <!--{assign var=key value="search_buy_end_day"}-->
+        <!--{assign var=key value="search_buy_end_day"}-->
         <select name="<!--{$key}-->" <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><!--{sfSetErrorStyle}--><!--{/if}-->>
             <option value="" selected="selected">--</option>
             <!--{html_options options=$arrDay selected=$arrForm[$key].value}-->

@@ -69,7 +69,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
                         <span class="attention"><!--{$arrErr.page_name}--></span>
                     </div>
                 <!--{/if}-->
-             </td>
+            </td>
         </tr>
         <tr>
         <th>URL</th>
@@ -85,7 +85,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
                         <span class="attention"><!--{$arrErr.url}--></span>
                     </div>
                 <!--{/if}-->
-             </td>
+            </td>
         </tr>
         <tr>
             <td colspan="2">
@@ -102,8 +102,8 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 
     <div class="btn-area">
         <ul>
-          <li><a class="btn-action" href="javascript:;" name='preview' onclick="doPreview(); return false;"><span class="btn-prev">プレビュー</span></a></li>
-          <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','confirm','',''); return false;"><span class="btn-next">登録する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" name='preview' onclick="doPreview(); return false;"><span class="btn-prev">プレビュー</span></a></li>
+            <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','confirm','',''); return false;"><span class="btn-next">登録する</span></a></li>
         </ul>
     </div>
 
