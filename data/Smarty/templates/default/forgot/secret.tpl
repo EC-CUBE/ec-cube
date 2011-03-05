@@ -35,9 +35,9 @@
     <input type="hidden" name="mode" value="secret_check" />
 
     <!--{foreach key=key item=item from=$arrForm}-->
-    <!--{if $key ne 'reminder_answer'}-->
-    <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
-    <!--{/if}-->
+        <!--{if $key ne 'reminder_answer'}-->
+            <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
+        <!--{/if}-->
     <!--{/foreach}-->
 
     <div id="completebox">
