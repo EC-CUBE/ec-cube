@@ -194,6 +194,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
         case 'nonmember':
             $this->tpl_mainpage = 'shopping/nonmember_input.tpl';
             $this->tpl_title = 'お客様情報入力';
+            $this->lfInitParam($objFormParam);
             // ※breakなし
 
         default:

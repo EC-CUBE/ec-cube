@@ -114,9 +114,9 @@ function fnInCart(productForm) {
                 <select name="disp_number" onchange="javascript:fnChangeDispNumber(this.value);">
                     <!--{foreach from=$arrPRODUCTLISTMAX item="dispnum" key="num"}-->
                         <!--{if $num == $disp_number}-->
-                        <option value="<!--{$num}-->" selected="selected" ><!--{$dispnum}--></option>
+                            <option value="<!--{$num}-->" selected="selected" ><!--{$dispnum}--></option>
                         <!--{else}-->
-                        <option value="<!--{$num}-->" ><!--{$dispnum}--></option>
+                            <option value="<!--{$num}-->" ><!--{$dispnum}--></option>
                         <!--{/if}-->
                     <!--{/foreach}-->
                 </select>
@@ -170,7 +170,7 @@ function fnInCart(productForm) {
 
                 <!--★商品名★-->
                 <h3>
-                    <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrProduct.product_id|u}-->" name="product<!--{$arrProduct.product_id}-->"><!--{$arrProduct.name|h}--></a>
+                    <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrProduct.product_id|u}-->"><!--{$arrProduct.name|h}--></a>
                 </h3>
                 <!--★価格★-->
                 <div class="pricebox sale_price">

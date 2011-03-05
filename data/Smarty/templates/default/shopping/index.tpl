@@ -33,9 +33,9 @@
             <div class="inputbox">
                 <dl class="formlist clearfix">
                     <!--{assign var=key value="login_email"}-->
-                    <span class="attention"><!--{$arrErr[$key]}--></span>
                     <dt>メールアドレス&nbsp;：</dt>
                     <dd>
+                        <!--{if strlen($arrErr[$key]) >= 1}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
                         <input type="text" name="<!--{$key}-->" value="<!--{$tpl_login_email|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->; ime-mode: disabled;" class="box300" />
                         <p class="login_memory">
                             <!--{assign var=key value="login_memory"}-->
