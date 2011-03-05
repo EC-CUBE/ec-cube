@@ -29,7 +29,7 @@
     <p class="remark">
         データベースのバックアップを行います。<br />
         テンプレートファイル等はバックアップされません。
-		</p>
+    </p>
     <table class="form">
         <tr>
             <th>バックアップ名<span class="attention"> *</span></th>
@@ -44,7 +44,7 @@
             <th>バックアップメモ</th>
             <td>
                 <!--{if $arrErr.bkup_memo}-->
-                <span class="attention"><!--{$arrErr.bkup_memo}--></span>
+                    <span class="attention"><!--{$arrErr.bkup_memo}--></span>
                 <!--{/if}-->
                 <textarea name="bkup_memo" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" cols="60" rows="5" class="area60" style="<!--{if $arrErr.bkup_memo != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" ><!--{$arrForm.bkup_memo|h}--></textarea>
                 <span class="attention"> (上限<!--{$smarty.const.MTEXT_LEN}-->文字)</span>
@@ -63,40 +63,39 @@
     <!--{/if}-->
     <!--{* 一覧が存在する場合のみ表示する *}-->
     <!--{if count($arrBkupList) > 0}-->
-    <table class="list">
-        <tr>
-            <th>バックアップ名</th>
-            <th>バックアップメモ</th>
-            <th>作成日</th>
-            <th>リストア</th>
-            <th>ダウンロード</th>
-            <th class="delete">削除</th>
-        </tr>
-        <!--{section name=cnt loop=$arrBkupList}-->
-        <tr>
-            <td ><!--{$arrBkupList[cnt].bkup_name}--></td>
-            <td ><!--{$arrBkupList[cnt].bkup_memo}--></td>
-            <td align="center"><!--{$arrBkupList[cnt].create_date|sfCutString:19:true:false}--></td>
-            <td align="center"><a href="#" onclick="document.body.style.cursor = 'wait'; fnModeSubmit('restore','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">リストア</a></td>
-            <td align="center"><a href="#" onclick="fnModeSubmit('download','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">ダウンロード</a></td>
-            <td align="center">
-                <a href="#" onclick="fnModeSubmit('delete','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">削除</a>
-            </td>
-        </tr>
-        <!--{/section}-->
-    </table>
+        <table class="list">
+            <tr>
+                <th>バックアップ名</th>
+                <th>バックアップメモ</th>
+                <th>作成日</th>
+                <th>リストア</th>
+                <th>ダウンロード</th>
+                <th class="delete">削除</th>
+            </tr>
+            <!--{section name=cnt loop=$arrBkupList}-->
+                <tr>
+                    <td ><!--{$arrBkupList[cnt].bkup_name}--></td>
+                    <td ><!--{$arrBkupList[cnt].bkup_memo}--></td>
+                    <td align="center"><!--{$arrBkupList[cnt].create_date|sfCutString:19:true:false}--></td>
+                    <td align="center"><a href="#" onclick="document.body.style.cursor = 'wait'; fnModeSubmit('restore','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">リストア</a></td>
+                    <td align="center"><a href="#" onclick="fnModeSubmit('download','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">ダウンロード</a></td>
+                    <td align="center">
+                        <a href="#" onclick="fnModeSubmit('delete','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">削除</a>
+                    </td>
+                </tr>
+            <!--{/section}-->
+        </table>
     <!--{/if}-->
 
-    
     <!--{if $restore_msg != ""}-->
-    <h2>実行結果</h2>
-    <div class="message">
-        <!--{if $restore_err == false}-->
-        <div class="btn"><a class="btn-normal" href="javascript:;" name="restore_config" onClick="document.body.style.cursor = 'wait'; form1.mode.value='restore_config'; form1.list_name.value='<!--{$restore_name}-->'; submit(); return false;"><span>テーブル構成を無視してリストアする</span></a></div>
-        <!--{/if}-->
-        <!--{$restore_msg}-->
-    </div>
+        <h2>実行結果</h2>
+        <div class="message">
+            <!--{if $restore_err == false}-->
+                <div class="btn"><a class="btn-normal" href="javascript:;" name="restore_config" onClick="document.body.style.cursor = 'wait'; form1.mode.value='restore_config'; form1.list_name.value='<!--{$restore_name}-->'; submit(); return false;"><span>テーブル構成を無視してリストアする</span></a></div>
+            <!--{/if}-->
+            <!--{$restore_msg}-->
+        </div>
     <!--{/if}-->
-    
+
 </div>
 </form>

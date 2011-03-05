@@ -24,25 +24,25 @@
 
 
 <!--{* ▼CONTENTS *}-->
-	<div id="login-wrap">
+<div id="login-wrap">
 
-		<div id="login-form" class="clearfix">
-			<h1><img src="<!--{$TPL_URLPATH}-->img/contents/admin_login_logo.jpg" width="140" height="150" alt="EC-CUBE管理画面" /></h1>
-			<div id="input-form">
-				<form name="form1" id="form1" method="post" action="?">
-                <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-				<input type="hidden" name="mode" value="login" />
-				<p><label for="login_id">ID</label></p>
-				<input type="text" name="login_id" size="20" class="box25" />
-				<p><label for="password">PASSWORD</label></p>
-				<input type="password" name="password" size="20" class="box25" />
-				<p><a class="btn-tool-format" href="javascript:;" onclick="document.form1.submit(); return false;"><span>LOGIN</span></a></p>
-				</form>
-			</div>
-		</div>
+    <div id="login-form" class="clearfix">
+        <h1><img src="<!--{$TPL_URLPATH}-->img/contents/admin_login_logo.jpg" width="140" height="150" alt="EC-CUBE管理画面" /></h1>
+        <div id="input-form">
+            <form name="form1" id="form1" method="post" action="?">
+            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+            <input type="hidden" name="mode" value="login" />
+            <p><label for="login_id">ID</label></p>
+            <input type="text" name="login_id" size="20" class="box25" />
+            <p><label for="password">PASSWORD</label></p>
+            <input type="password" name="password" size="20" class="box25" />
+            <p><a class="btn-tool-format" href="javascript:;" onclick="document.form1.submit(); return false;"><span>LOGIN</span></a></p>
+            </form>
+        </div>
+    </div>
 
-	</div>
-	<div id="copyright">Copyright &copy; 2000-<!--{$smarty.now|date_format:"%Y"}--> LOCKON CO.,LTD. All Rights Reserved.</div>
+</div>
+<div id="copyright">Copyright &copy; 2000-<!--{$smarty.now|date_format:"%Y"}--> LOCKON CO.,LTD. All Rights Reserved.</div>
 <!--{* ▲CONTENTS *}-->
 
 <script type="text/javascript">
@@ -51,7 +51,7 @@ document.form1.login_id.focus();
 $(function() {
     $('<input type="submit" />')
         .css({'position' : 'absolute',
-              'top' : '-1000px'})
+            'top' : '-1000px'})
         .appendTo('form');
 });
 //]]>

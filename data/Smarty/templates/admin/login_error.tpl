@@ -24,30 +24,28 @@
 
 <!--{* ▼CONTENTS *}-->
 <div id="outside">
-<div id="out-wrap">
-    <div class="logo">
-      <img src="<!--{$TPL_URLPATH}-->img/contents/logo_resize.jpg" width="99" height="15" alt="EC-CUBE" />
+    <div id="out-wrap">
+            <div class="logo">
+                <img src="<!--{$TPL_URLPATH}-->img/contents/logo_resize.jpg" width="99" height="15" alt="EC-CUBE" />
+            </div>
+        <div id="error">
+            <div class="out-top"></div>
+            <div class="contents">
+                <div class="message">
+                    <!--{$tpl_error}-->
+                </div>
+            </div>
+            <div class="btn-area-top"></div>
+            <div class="btn-area">
+                <ul>
+                    <li>
+                        <a class="btn-action" href="<!--{$smarty.const.ADMIN_LOGIN_URLPATH}-->"><span class="btn-prev">ログインページに戻る</span></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="btn-area-bottom"></div>
+        </div>
     </div>
-  <div id="error">
-    <div class="out-top"></div>
-    <div class="contents">
-      <div class="message">
-        <!--{$tpl_error}-->
-      </div>
-    </div>
-    <div class="btn-area-top"></div>
-    <div class="btn-area">
-      <ul>
-        <li>
-          <a class="btn-action" href="<!--{$smarty.const.ADMIN_LOGIN_URLPATH}-->"><span class="btn-prev">ログインページに戻る</span></a>
-        </li>
-      </ul>
-    </div>
-    <div class="btn-area-bottom"></div>
-  </div>
 </div>
-</div>
-
-
 
 <!--{* ▲CONTENTS *}-->

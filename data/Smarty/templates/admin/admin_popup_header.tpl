@@ -36,10 +36,10 @@
 <script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/admin.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/css.js"></script>
 <script type="text/javascript">//<![CDATA[
-    <!--{$tpl_javascript}-->
-    $(function(){
-        <!--{$tpl_onload}-->
-    });
+<!--{$tpl_javascript}-->
+$(function(){
+    <!--{$tpl_onload}-->
+});
 //]]>
 </script>
 <!--{include file='css/contents.tpl'}-->
@@ -48,10 +48,10 @@
 
 <body id="popup">
 <noscript>
-  <p>JavaScript を有効にしてご利用下さい.</p>
+    <p>JavaScript を有効にしてご利用下さい.</p>
 </noscript>
 <div id="popup-header">
-		<div id="popup-logo"><img src="<!--{$TPL_URLPATH}-->img/header/logo_popup.jpg" width="99" height="15" alt="EC-CUBE" /></div>
+    <div id="popup-logo"><img src="<!--{$TPL_URLPATH}-->img/header/logo_popup.jpg" width="99" height="15" alt="EC-CUBE" /></div>
 </div>
 
 <div id="popup-container">

@@ -49,7 +49,7 @@
 <body>
 <!--{$GLOBAL_ERR}-->
 <noscript>
-  <p>JavaScript を有効にしてご利用下さい.</p>
+    <p>JavaScript を有効にしてご利用下さい.</p>
 </noscript>
 <div id="login">
 

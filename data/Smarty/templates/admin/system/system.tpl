@@ -24,14 +24,14 @@
 
 <table border="0" cellspacing="1" cellpadding="8" summary=" ">
     <!--{foreach from=$arrSystemInfo item=info}-->
-    <tr>
-        <th>
-        <!--{$info.title|h}-->
-        </td>
-        <td>
-        <!--{$info.value|h|nl2br}-->
-        </td>
-    </tr>
+        <tr>
+            <th>
+            <!--{$info.title|h}-->
+            </td>
+            <td>
+            <!--{$info.value|h|nl2br}-->
+            </td>
+        </tr>
     <!--{/foreach}-->
 </table>
 
