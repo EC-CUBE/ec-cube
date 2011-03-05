@@ -70,7 +70,8 @@
                             <!--{if $item.main_image|strlen >= 1}--> href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.main_image|sfNoImageMainList|h}-->" class="expansion" target="_blank"
                             <!--{/if}-->
                         >
-                            <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$item.main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="&lt;!--{$item.productsClass.name|h}--&gt;" /></a>                        </td>
+                            <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$item.main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="&lt;!--{$item.productsClass.name|h}--&gt;" /></a>
+                        </td>
                         <td><!--{* 商品名 *}--><strong><!--{$item.name|h}--></strong><br />
                             <!--{if $item.classcategory_name1 != ""}-->
                                 <!--{$item.class_name1}-->：<!--{$item.classcategory_name1}--><br />
@@ -78,28 +79,31 @@
                             <!--{if $item.classcategory_name2 != ""}-->
                                 <!--{$item.class_name2}-->：<!--{$item.classcategory_name2}--><br />
                             <!--{/if}-->
-                            <!--{$item.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円                        </td>
+                            <!--{$item.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+                        </td>
                         <td>
-                        <!--{assign var=key value="quantity`$index`"}-->
-                        <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value}-->" class="box40" /></td>
+                            <!--{assign var=key value="quantity`$index`"}-->
+                            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value}-->" class="box40" />
+                        </td>
                         <td>
-                          <input type="hidden" name="cart_no<!--{$index}-->" value="<!--{$index}-->" />
-                          <input type="hidden" name="product_class_id<!--{$index}-->" value="<!--{$item.product_class_id}-->" />
-                          <!--{assign var=key value="shipping`$index`"}-->
-                          <select name="<!--{$key}-->"><!--{html_options options=$addrs selected=$arrForm[$key].value}--></select>                        </td>
-                     </tr>
-                  <!--{/foreach}-->
+                            <input type="hidden" name="cart_no<!--{$index}-->" value="<!--{$index}-->" />
+                            <input type="hidden" name="product_class_id<!--{$index}-->" value="<!--{$item.product_class_id}-->" />
+                            <!--{assign var=key value="shipping`$index`"}-->
+                            <select name="<!--{$key}-->"><!--{html_options options=$addrs selected=$arrForm[$key].value}--></select>
+                        </td>
+                    </tr>
+                <!--{/foreach}-->
             </table>
             <div class="btn_area">
-                 <ul>
-                     <li>
-                     <a href="<!--{$smarty.const.CART_URLPATH}-->" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg',back03)">
-                         <img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" border="0" name="back03" id="back03" /></a>
-                     </li>
-                     <li>
-                     <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_address_select_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_address_select.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_address_select.jpg" alt="選択したお届け先に送る" class="box190" name="send_button" id="send_button" />
-                     </li>
-                 </ul>
+                <ul>
+                    <li>
+                    <a href="<!--{$smarty.const.CART_URLPATH}-->" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg',back03)">
+                        <img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" border="0" name="back03" id="back03" /></a>
+                    </li>
+                    <li>
+                    <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_address_select_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_address_select.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_address_select.jpg" alt="選択したお届け先に送る" class="box190" name="send_button" id="send_button" />
+                    </li>
+                </ul>
             </div>
         </form>
     </div>
