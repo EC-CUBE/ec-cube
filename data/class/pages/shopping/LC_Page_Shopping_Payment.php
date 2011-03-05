@@ -188,8 +188,8 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
             break;
 
         default:
-            // 前のページから戻ってきた場合の初期値を設定
-            $this->setFormParams($objFormParam, $arrOrderTemp, true, $shipping_vol);
+            // FIXME 前のページから戻ってきた場合は別パラメータ(mode)で処理分岐する必要があるのかもしれない
+            $this->setFormParams($objFormParam, $arrOrderTemp, false, $shipping_vol);
 
             if (!$this->is_single_deliv) {
                 $deliv_id = $objFormParam->getValue('deliv_id');
