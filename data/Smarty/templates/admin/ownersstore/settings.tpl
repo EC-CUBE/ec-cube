@@ -27,27 +27,27 @@
 
 <div id="ownersstore" class="contents-main">
 
-  <!--入力項目ここから-->
-  <p class="remark"><span class="attention">※認証キーは<a href="<!--{$smarty.const.OSTORE_URL}-->" target="_blank">EC-CUBEオーナーズストア</a>で取得できます。</span></p>
-  <table class="form">
-    <tr>
-      <th>認証キーの設定</th>
-      <td>
-        <!--{assign var="key" value="public_key"}-->
-        <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
-        <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|h}--></textarea>
-      </td>
-    </tr>
-  </table>
-  <!--入力項目ここまで-->
-  
-  <!--登録ボタンここから-->
-  <div class="btn-area">
-    <ul>
-      <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'register', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
-    </ul>
-  </div>
-  <!--登録ボタンここまで-->
-  
+    <!--入力項目ここから-->
+    <p class="remark"><span class="attention">※認証キーは<a href="<!--{$smarty.const.OSTORE_URL}-->" target="_blank">EC-CUBEオーナーズストア</a>で取得できます。</span></p>
+    <table class="form">
+        <tr>
+            <th>認証キーの設定</th>
+            <td>
+                <!--{assign var="key" value="public_key"}-->
+                <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
+                <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|h}--></textarea>
+            </td>
+        </tr>
+    </table>
+    <!--入力項目ここまで-->
+
+    <!--登録ボタンここから-->
+    <div class="btn-area">
+        <ul>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'register', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+        </ul>
+    </div>
+    <!--登録ボタンここまで-->
+
 </div>
 </form>

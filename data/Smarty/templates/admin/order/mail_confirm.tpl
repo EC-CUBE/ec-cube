@@ -32,24 +32,24 @@
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
 <!--{/foreach}-->
 <div id="order" class="contents-main">
-  <h2>メール配信</h2>
+    <h2>メール配信</h2>
 
-  <table class="form">
-    <tr>
-      <th>件名</th>
-      <td><!--{$tpl_subject|h}--></td>
-    </tr>
-    <tr>
-      <th>本文</th>
-      <td><!--{$tpl_body|h|nl2br}--></td>
-    </tr>
-  </table>
+    <table class="form">
+        <tr>
+            <th>件名</th>
+            <td><!--{$tpl_subject|h}--></td>
+        </tr>
+        <tr>
+            <th>本文</th>
+            <td><!--{$tpl_body|h|nl2br}--></td>
+        </tr>
+    </table>
 
-  <div class="btn-area">
-    <ul>
-      <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('return', '', ''); return false;"><span class="btn-prev">前のページへ戻る</span></a></li>
-      <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'send', '', ''); return false;"><span class="btn-next">メール送信</span></a></li>
-    </ul>
-  </div>
+    <div class="btn-area">
+        <ul>
+            <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('return', '', ''); return false;"><span class="btn-prev">前のページへ戻る</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'send', '', ''); return false;"><span class="btn-next">メール送信</span></a></li>
+        </ul>
+    </div>
 </div>
 </form>

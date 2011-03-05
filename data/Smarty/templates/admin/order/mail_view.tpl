@@ -24,14 +24,14 @@
 <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`admin_popup_header.tpl"}-->
 
 <table class="form">
-  <tr>
-    <th>件名</th>
-    <td><!--{$tpl_subject|h}--></td>
-  </tr>
-  <tr>
-    <th>本文</th>
-    <td><!--{$tpl_body|h|nl2br}--></td>
-  </tr>
+    <tr>
+        <th>件名</th>
+        <td><!--{$tpl_subject|h}--></td>
+    </tr>
+    <tr>
+        <th>本文</th>
+        <td><!--{$tpl_body|h|nl2br}--></td>
+    </tr>
 </table>
 
 <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`admin_popup_footer.tpl"}-->

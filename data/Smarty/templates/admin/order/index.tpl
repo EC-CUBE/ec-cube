@@ -270,9 +270,9 @@
         <!--{html_options options=$arrPageMax selected=$arrForm[$key].value}-->
         </select> 件</p>
         <div class="btn-area">
-          <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next">この条件で検索する</span></a></li>
-          </ul>
+            <ul>
+                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next">この条件で検索する</span></a></li>
+            </ul>
         </div>
     </div>
     <!--検索条件設定テーブルここまで-->
@@ -289,7 +289,7 @@
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
 <!--{/foreach}-->
     <h2>検索結果一覧</h2>
-		　<div class="btn">
+        <div class="btn">
         <span class="attention"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。
         <!--{if $smarty.const.ADMIN_MODE == '1'}-->
         <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><span>検索結果をすべて削除</span></a>

@@ -580,13 +580,13 @@
     <!--▲受注商品情報ここまで-->
 
     <div class="btn-area">
-      <ul>
-        <!--{if count($arrSearchHidden) > 0}-->
-        <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_URLPATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev">検索画面に戻る</span></a></li>
-        <!--{/if}-->
-        <li><a class="btn-action" href="javascript:;" onclick="return fnFormConfirm(); return false;"><span class="btn-next">この内容で登録する</span></a></li>
-      </ul>
+        <ul>
+            <!--{if count($arrSearchHidden) > 0}-->
+            <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_URLPATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev">検索画面に戻る</span></a></li>
+            <!--{/if}-->
+            <li><a class="btn-action" href="javascript:;" onclick="return fnFormConfirm(); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+        </ul>
     </div>
-  </div>
-  <div id="multiple"></div>
+</div>
+<div id="multiple"></div>
 </form>

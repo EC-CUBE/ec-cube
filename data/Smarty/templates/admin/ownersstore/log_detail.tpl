@@ -27,36 +27,36 @@
 
 <div id="ownersstore" class="contents-main">
 
-  <table class="form">
-    <tr>
-      <th>モジュール名</th>
-      <td><!--{$arrLogDetail.module_name|h}--></td>
-    </tr>
-    <tr>
-      <th>ステータス</th>
-      <td><!--{if $arrLogDetail.error_flg}-->失敗<!--{else}-->成功<!--{/if}--></td>
-    </tr>
-    <tr>
-      <th>日時</th>
-      <td><!--{$arrLogDetail.update_date|sfDispDBDate|h}--></td>
-    </tr>
-    <tr>
-      <th>バックアップパス</th>
-      <td><!--{$arrLogDetail.buckup_path|wordwrap:100:"
+    <table class="form">
+        <tr>
+            <th>モジュール名</th>
+            <td><!--{$arrLogDetail.module_name|h}--></td>
+        </tr>
+        <tr>
+            <th>ステータス</th>
+            <td><!--{if $arrLogDetail.error_flg}-->失敗<!--{else}-->成功<!--{/if}--></td>
+        </tr>
+        <tr>
+            <th>日時</th>
+            <td><!--{$arrLogDetail.update_date|sfDispDBDate|h}--></td>
+        </tr>
+        <tr>
+            <th>バックアップパス</th>
+            <td><!--{$arrLogDetail.buckup_path|wordwrap:100:"
 ":true|h|nl2br}--></td>
-    </tr>
-    <tr>
-      <th>詳細</th>
-      <td>
-      <!--{$arrLogDetail.error|wordwrap:100:"
+        </tr>
+        <tr>
+            <th>詳細</th>
+            <td>
+            <!--{$arrLogDetail.error|wordwrap:100:"
 ":true|h|nl2br}-->
-      <!--{$arrLogDetail.ok|wordwrap:100:"
+            <!--{$arrLogDetail.ok|wordwrap:100:"
 ":true|h|nl2br}-->
-      </td>
-    </tr>
-  </table>
-	<div class="btn">
-		<a class="btn-action" href='./log.php'><span class="btn-prev">一覧へ戻る</span></a>
-	</div>
+            </td>
+        </tr>
+    </table>
+    <div class="btn">
+        <a class="btn-action" href='./log.php'><span class="btn-prev">一覧へ戻る</span></a>
+    </div>
 </div>
 </form>
