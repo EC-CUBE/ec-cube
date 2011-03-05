@@ -78,11 +78,6 @@
      <!--{/section}-->
     </table>
     <br />
-    <!--{if $stock_find_count > 0 && $customer_rank < 51}-->
-    <div class="product-btn">
-      <a href="javascript:void(document.form1.submit())" class="btn-cart">カートに入れる</a>
-    </div>
-    <!--{/if}-->
     </form>
 
     <!--{else}-->
