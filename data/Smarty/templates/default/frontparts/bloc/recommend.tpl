@@ -47,7 +47,7 @@
             <div class="productImage">
                 <!--{assign var=cnt2 value=`$smarty.section.cnt.iteration*$smarty.section.cnt.step-1`}-->
                 <!--{if $arrBestProducts[$cnt2]|count > 0}-->
-                
+
                 <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrBestProducts[$cnt2].product_id|u}-->">
                 <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrBestProducts[$cnt2].main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[$cnt2].name|h}-->" /></a>
             </div>
@@ -55,10 +55,10 @@
                 <h3>
                     <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrBestProducts[$cnt2].product_id|u}-->"><!--{$arrBestProducts[$cnt2].name|h}--></a>
                 </h3>
-                
+
                 <!--{assign var=price01 value=`$arrBestProducts[$cnt2].price01_min`}-->
                 <!--{assign var=price02 value=`$arrBestProducts[$cnt2].price02_min`}-->
-                
+
                 <p class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}-->(税込)：
                     <span class="price"><!--{$price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> 円</span>
                 </p>

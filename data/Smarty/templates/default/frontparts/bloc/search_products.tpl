@@ -23,8 +23,8 @@
     <div id="search_area">
     <h2><span class="title"><img src="<!--{$TPL_URLPATH}-->img/title/tit_bloc_search.gif"alt="検索条件" /></span></h2>
         <div class="bloc_body">
-        <!--検索フォーム-->
-        <form name="search_form" id="search_form" method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
+            <!--検索フォーム-->
+            <form name="search_form" id="search_form" method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
             <dl class="formList">
                 <dt>商品カテゴリから選ぶ</dt>
