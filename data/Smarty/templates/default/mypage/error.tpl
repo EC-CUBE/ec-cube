@@ -24,11 +24,11 @@
 <!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_header.tpl" subtitle="エラー"}-->
 
 <div id="compbox">
-<span class="red"><!--{$tpl_error}--></span><br />
+    <span class="red"><!--{$tpl_error}--></span><br />
 </div>
 
 <div class="button">
-<a href="javascript:window.close()" onmouseOver="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close_on.gif','close');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close.gif','close');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_close.gif" alt="閉じる" name="close" id="close" /></a>
+    <a href="javascript:window.close()" onmouseOver="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close_on.gif','close');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close.gif','close');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_close.gif" alt="閉じる" name="close" id="close" /></a>
 </div>
 
 <!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_footer.tpl"}-->

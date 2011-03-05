@@ -24,7 +24,7 @@
 <div id="mynavi_area">
     <!--{strip}-->
         <ul class="mynavi_list clearfix">
-        
+
           <!--{if $tpl_login}-->
             <!--{* 会員状態 *}-->
             <li><a href="./<!--{$smarty.const.DIR_INDEX_PATH}-->" class="<!--{if $tpl_mypageno == 'index'}--> selected<!--{/if}-->">
