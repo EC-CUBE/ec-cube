@@ -233,7 +233,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      * @param boolean $deliv_only deliv_id チェックのみの場合 true
      * @param integer $shipping_vol 配送数
      */
-    function setFormParams(&$objFormParam, $arrParam, $deliv_only = false, $shipping_vol) {
+    function setFormParams(&$objFormParam, $arrParam, $deliv_only, $shipping_vol) {
         $this->lfInitParam($objFormParam, $deliv_only, $shipping_vol);
         $objFormParam->setParam($arrParam);
         $objFormParam->convParam();
@@ -247,7 +247,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      * @param integer $shipping_vol 配送数
      * @return void
      */
-    function lfInitParam(&$objFormParam, $deliv_only = false, $shipping_vol) {
+    function lfInitParam(&$objFormParam, $deliv_only, $shipping_vol) {
         $objFormParam->addParam("配送業者", "deliv_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
 
         if (!$deliv_only) {
