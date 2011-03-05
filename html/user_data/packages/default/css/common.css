@@ -395,10 +395,9 @@ div#complete_area {
 div#complete_area .message ,
 div#undercolumn_entry .message {
     margin-bottom: 20px;
-    color: #f60;
     line-height: 150%;
     font-weight: bold;
-    font-size: 160%;
+    font-size: 120%;
 }
 div#complete_area .shop_information {
     margin-top: 40px;
