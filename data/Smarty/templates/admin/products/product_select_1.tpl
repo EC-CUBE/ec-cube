@@ -37,7 +37,7 @@ function func_submit( id ){
 }
 //-->
 </script>
-　
+
 <!--▼検索フォーム-->
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|h}-->">
 <input name="mode" type="hidden" value="search" />
@@ -89,7 +89,7 @@ function func_submit( id ){
                 <td align="center"><a href="#" onclick="return func_submit(<!--{$arrProducts[cnt].product_id}-->)">決定</a></td>
             </tr>
             <!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
-            <!--{sectionelse}-->
+        <!--{sectionelse}-->
             <tr>
                 <td colspan="4">商品が登録されていません</td>
             </tr>

@@ -22,34 +22,34 @@
  */
 *}-->
 <div id="products" class="contents-main">
-  <div class="message">
-      <span>CSV登録を実行しました。</span>
-  </div>
-  <!--{if $arrRowErr}-->
-  <table class="form">
-    <tr>
-      <td>
-        <!--{foreach item=err from=$arrRowErr}-->
-        <span class="attention"><!--{$err}--></span>
-        <!--{/foreach}-->
-      </td>
-    </tr>
-  </table>
-  <!--{/if}-->
-  <!--{if $arrRowResult}-->
-  <table class="form">
-    <tr>
-      <td>
-        <!--{foreach item=result from=$arrRowResult}-->
-        <span><!--{$result}--><br/></span>
-        <!--{/foreach}-->
-      </td>
-    </tr>
-  </table>
-  <!--{/if}-->
-  <div class="btn-area">
-      <ul>
-          <li><a class="btn-action" href="./upload_csv.php"><span class="btn-prev">戻る</span></a></li>
-      </ul>
-  </div>
+    <div class="message">
+        <span>CSV登録を実行しました。</span>
+    </div>
+    <!--{if $arrRowErr}-->
+        <table class="form">
+            <tr>
+                <td>
+                    <!--{foreach item=err from=$arrRowErr}-->
+                        <span class="attention"><!--{$err}--></span>
+                    <!--{/foreach}-->
+                </td>
+            </tr>
+        </table>
+    <!--{/if}-->
+    <!--{if $arrRowResult}-->
+        <table class="form">
+            <tr>
+                <td>
+                    <!--{foreach item=result from=$arrRowResult}-->
+                    <span><!--{$result}--><br/></span>
+                    <!--{/foreach}-->
+                </td>
+            </tr>
+        </table>
+    <!--{/if}-->
+    <div class="btn-area">
+        <ul>
+            <li><a class="btn-action" href="./upload_csv.php"><span class="btn-prev">戻る</span></a></li>
+        </ul>
+    </div>
 </div>

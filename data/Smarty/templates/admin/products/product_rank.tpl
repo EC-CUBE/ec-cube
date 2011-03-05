@@ -30,142 +30,142 @@
 <input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->" />
 <div id="products" class="contents-main">
 
-  <!--{* ▼画面左 *}-->
-  <div id="products-rank-left">
-    <a href="?"><img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ">&nbsp;ホーム</a><br />
-    <!--{section name=cnt loop=$arrTree}-->
-      <!--{assign var=level value="`$arrTree[cnt].level`}-->
-      
-      <!--{* 上の階層表示の時にdivを閉じる *}-->
-      <!--{assign var=close_cnt value="`$before_level-$level+1`}-->
-      <!--{if $close_cnt > 0}-->
-        <!--{section name=n loop=$close_cnt}--></div><!--{/section}-->
-      <!--{/if}-->
-                
-      <!--{* スペース繰り返し *}-->
-      <!--{section name=n loop=$level}-->　　<!--{/section}-->
-      
-      <!--{* カテゴリ名表示 *}-->
-      <!--{assign var=disp_name value="`$arrTree[cnt].category_id`.`$arrTree[cnt].category_name`"}-->
-      <a href="?" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrTree[cnt].category_id}-->); return false">
-      <!--{if $arrForm.parent_category_id == $arrTree[cnt].category_id}-->
-        <img src="<!--{$TPL_URLPATH}-->img/contents/folder_open.gif" alt="フォルダ">
-      <!--{else}-->
-        <img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ">
-      <!--{/if}-->
-      <!--{$disp_name|sfCutString:20|h}-->(<!--{$arrTree[cnt].product_count|default:0}-->)</a>
-    <br />          
-      <!--{if $arrTree[cnt].display == true}-->
-        <div id="f<!--{$arrTree[cnt].category_id}-->">
-      <!--{else}-->
-        <div id="f<!--{$arrTree[cnt].category_id}-->" style="display:none">
-      <!--{/if}-->
-      <!--{if $smarty.section.cnt.last}-->
-        <!--{section name=n loop=$level}--></div><!--{/section}-->
-      <!--{/if}-->
-      <!--{assign var=before_level value="`$arrTree[cnt].level`}-->
-    <!--{/section}-->
-  </div>
-  <!--{* ▲画面左 *}-->
+    <!--{* ▼画面左 *}-->
+    <div id="products-rank-left">
+        <a href="?"><img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ">&nbsp;ホーム</a><br />
+        <!--{section name=cnt loop=$arrTree}-->
+            <!--{assign var=level value="`$arrTree[cnt].level`}-->
+            
+            <!--{* 上の階層表示の時にdivを閉じる *}-->
+            <!--{assign var=close_cnt value="`$before_level-$level+1`}-->
+            <!--{if $close_cnt > 0}-->
+                <!--{section name=n loop=$close_cnt}--></div><!--{/section}-->
+            <!--{/if}-->
+                                
+            <!--{* スペース繰り返し *}-->
+            <!--{section name=n loop=$level}-->　　<!--{/section}-->
+            
+            <!--{* カテゴリ名表示 *}-->
+            <!--{assign var=disp_name value="`$arrTree[cnt].category_id`.`$arrTree[cnt].category_name`"}-->
+            <a href="?" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrTree[cnt].category_id}-->); return false">
+            <!--{if $arrForm.parent_category_id == $arrTree[cnt].category_id}-->
+                <img src="<!--{$TPL_URLPATH}-->img/contents/folder_open.gif" alt="フォルダ">
+            <!--{else}-->
+                <img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ">
+            <!--{/if}-->
+            <!--{$disp_name|sfCutString:20|h}-->(<!--{$arrTree[cnt].product_count|default:0}-->)</a>
+            <br />
+            <!--{if $arrTree[cnt].display == true}-->
+                <div id="f<!--{$arrTree[cnt].category_id}-->">
+            <!--{else}-->
+                <div id="f<!--{$arrTree[cnt].category_id}-->" style="display:none">
+            <!--{/if}-->
+            <!--{if $smarty.section.cnt.last}-->
+                <!--{section name=n loop=$level}--></div><!--{/section}-->
+            <!--{/if}-->
+            <!--{assign var=before_level value="`$arrTree[cnt].level`}-->
+        <!--{/section}-->
+    </div>
+    <!--{* ▲画面左 *}-->
 
-  <!--▼画面右-->
-  <div id="products-rank-right">
-    <h2><!--{$breadcrumbs}--></h2>
-  <!--{if count($arrProductsList) > 0}-->
+    <!--▼画面右-->
+    <div id="products-rank-right">
+        <h2><!--{$breadcrumbs}--></h2>
+        <!--{if count($arrProductsList) > 0}-->
 
 
-<script type="text/javascript">
-// カテゴリーテーブルのイニシャライズ
-$(document).ready(function() {
-    $("#categoryTable").tableDnD({
-	    onDragClass: "movingHandle",
-        onDrop: function(table, row) {
-            var rows = table.tBodies[0].rows;
-            var keys = row.id;
+            <script type="text/javascript">
+            // カテゴリーテーブルのイニシャライズ
+            $(document).ready(function() {
+                $("#categoryTable").tableDnD({
+                    onDragClass: "movingHandle",
+                    onDrop: function(table, row) {
+                        var rows = table.tBodies[0].rows;
+                        var keys = row.id;
 
-            for (var i = 0; i < rows.length; i++) {
-                if (row.id == rows[i].id) {
-                    keys += "-" + i;
-                    break;
-                }
-            }
+                        for (var i = 0; i < rows.length; i++) {
+                            if (row.id == rows[i].id) {
+                                keys += "-" + i;
+                                break;
+                            }
+                        }
 
-            fnModeSubmit('moveByDnD','keySet', keys);
-        },
-        dragHandle: "dragHandle"
-    });
+                        fnModeSubmit('moveByDnD','keySet', keys);
+                    },
+                    dragHandle: "dragHandle"
+                });
 
-    $("#categoryTable tr").hover(function() {
-        $(this.cells[0]).addClass('activeHandle');
-    }, function() {
-        $(this.cells[0]).removeClass('activeHandle');
-    });
-});
-</script>
+                $("#categoryTable tr").hover(function() {
+                    $(this.cells[0]).addClass('activeHandle');
+                }, function() {
+                    $(this.cells[0]).removeClass('activeHandle');
+                });
+            });
+            </script>
 
-    <p><span class="attention"><!--{$tpl_linemax}-->件</span>が該当しました。</p>
-    <!--{* ▼ページナビ *}-->
-    <!--{$tpl_strnavi}-->
-    <!--{* ▲ページナビ *}-->
-    
-    <!--{if $smarty.const.ADMIN_MODE == '1'}-->
-        <p class="right"><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('renumber', '', ''); return false;">内部順位再割り当て</a></p>
-    <!--{/if}-->
-    
-    <table class="list" id="categoryTable">
-        <colgroup width="20%">
-        <colgroup width="47%">
-        <colgroup width="10%">
-        <colgroup width="7%">
-        <colgroup width="15%">
-      <tr class="nodrop nodrag">
-        <th>商品コード</th>
-        <th>商品名</th>
-        <th>商品画像</th>
-        <th>順位</th>
-        <th>移動</th>
-      </tr>
+            <p><span class="attention"><!--{$tpl_linemax}-->件</span>が該当しました。</p>
+            <!--{* ▼ページナビ *}-->
+            <!--{$tpl_strnavi}-->
+            <!--{* ▲ページナビ *}-->
 
-      <!--{assign var=rank value=$tpl_start_row}-->
-      <!--{section name=cnt loop=$arrProductsList}-->
-        <tr>
-          <td><!--{from_to from=$arrProductsList[cnt].product_code_min to=$arrProductsList[cnt].product_code_max separator="～<br />"}--></td>          
-          <td>
-            <!--{$arrProductsList[cnt].name|h}-->
-          </td>
-          <td align="center">
-            <!--{* 商品画像 *}-->
-            <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrProductsList[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrProducts[cnt].name|h}-->">
-          </td>
-          <!--{assign var=rank value=`$rank+1`}-->
-          <td align="center">
-            <!--{$rank}-->
-            <!--{if $arrProductsList[cnt].status == "2"}--><br />(非公開)<!--{/if}-->
-          </td>
-          <td align="center">
-          <!--{* 移動 *}-->
-          <!--{if !(count($arrProductsList) == 1 && $rank == 1)}-->
-          <input type="text" name="pos-<!--{$arrProductsList[cnt].product_id}-->" size="3" class="box3" />番目へ<a href="?" onclick="fnModeSubmit('move','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;">移動</a><br />
-          <!--{/if}-->
-          <!--{if !($smarty.section.cnt.first && $tpl_disppage eq 1)}-->
-          <a href="?" onclick="fnModeSubmit('up','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;">上へ</a>
-          <!--{/if}-->
-          <!--{if !($smarty.section.cnt.last && $tpl_disppage eq $tpl_pagemax)}-->
-          <a href="?" onclick="fnModeSubmit('down','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;">下へ</a>
-          <!--{/if}-->
-          </td>
-        </tr>
-      <!--{/section}-->
-    </table>
-    
-    <!--{* ▼ページナビ *}-->
-    <!--{$tpl_strnavi}-->
-    <!--{* ▲ページナビ *}-->
-  <!--{else}-->
-    <p>カテゴリを選択してください。</p>
-  <!--{/if}-->
-  </div>
-  <!--▲画面右-->
+            <!--{if $smarty.const.ADMIN_MODE == '1'}-->
+                <p class="right"><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('renumber', '', ''); return false;">内部順位再割り当て</a></p>
+            <!--{/if}-->
+
+            <table class="list" id="categoryTable">
+                <colgroup width="20%">
+                <colgroup width="47%">
+                <colgroup width="10%">
+                <colgroup width="7%">
+                <colgroup width="15%">
+                <tr class="nodrop nodrag">
+                    <th>商品コード</th>
+                    <th>商品名</th>
+                    <th>商品画像</th>
+                    <th>順位</th>
+                    <th>移動</th>
+                </tr>
+
+                <!--{assign var=rank value=$tpl_start_row}-->
+                <!--{section name=cnt loop=$arrProductsList}-->
+                    <tr>
+                        <td><!--{from_to from=$arrProductsList[cnt].product_code_min to=$arrProductsList[cnt].product_code_max separator="～<br />"}--></td>                    
+                        <td>
+                            <!--{$arrProductsList[cnt].name|h}-->
+                        </td>
+                        <td align="center">
+                            <!--{* 商品画像 *}-->
+                            <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrProductsList[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrProducts[cnt].name|h}-->">
+                        </td>
+                        <!--{assign var=rank value=`$rank+1`}-->
+                        <td align="center">
+                            <!--{$rank}-->
+                            <!--{if $arrProductsList[cnt].status == "2"}--><br />(非公開)<!--{/if}-->
+                        </td>
+                        <td align="center">
+                        <!--{* 移動 *}-->
+                        <!--{if !(count($arrProductsList) == 1 && $rank == 1)}-->
+                        <input type="text" name="pos-<!--{$arrProductsList[cnt].product_id}-->" size="3" class="box3" />番目へ<a href="?" onclick="fnModeSubmit('move','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;">移動</a><br />
+                        <!--{/if}-->
+                        <!--{if !($smarty.section.cnt.first && $tpl_disppage eq 1)}-->
+                        <a href="?" onclick="fnModeSubmit('up','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;">上へ</a>
+                        <!--{/if}-->
+                        <!--{if !($smarty.section.cnt.last && $tpl_disppage eq $tpl_pagemax)}-->
+                        <a href="?" onclick="fnModeSubmit('down','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;">下へ</a>
+                        <!--{/if}-->
+                        </td>
+                    </tr>
+                <!--{/section}-->
+            </table>
+
+            <!--{* ▼ページナビ *}-->
+            <!--{$tpl_strnavi}-->
+            <!--{* ▲ページナビ *}-->
+        <!--{else}-->
+            <p>カテゴリを選択してください。</p>
+        <!--{/if}-->
+    </div>
+    <!--▲画面右-->
 
 </div>
-</form> 
+</form>
