@@ -175,28 +175,28 @@
                 <colgroup width="20%"></colgroup>
                 <colgroup width="80%"></colgroup>
                 <thead>
-                  <tr>
-                    <th>選択</th>
-                    <th colspan="<!--{if !$img_show}-->2<!--{else}-->3<!--{/if}-->" id="payment_method">お支払方法</th>
-                  </tr>
+                    <tr>
+                        <th>選択</th>
+                        <th colspan="<!--{if !$img_show}-->2<!--{else}-->3<!--{/if}-->" id="payment_method">お支払方法</th>
+                    </tr>
                 </thead>
                 <tbody>
-                  <!--{section name=cnt loop=$arrPayment}-->
-                  <tr>
-                    <td class="alignC"><input type="radio" id="pay_<!--{$smarty.section.cnt.iteration}-->" name="<!--{$key}-->"  value="<!--{$arrPayment[cnt].payment_id}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" <!--{$arrPayment[cnt].payment_id|sfGetChecked:$arrForm[$key].value}--> /></td>
-                    <td>
-                      <label for="pay_<!--{$smarty.section.cnt.iteration}-->"><!--{$arrPayment[cnt].payment_method|h}--><!--{if $arrPayment[cnt].note != ""}--><!--{/if}--></label>
-                    </td>
-                    <!--{if $img_show}-->
+                    <!--{section name=cnt loop=$arrPayment}-->
+                        <tr>
+                        <td class="alignC"><input type="radio" id="pay_<!--{$smarty.section.cnt.iteration}-->" name="<!--{$key}-->"  value="<!--{$arrPayment[cnt].payment_id}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" <!--{$arrPayment[cnt].payment_id|sfGetChecked:$arrForm[$key].value}--> /></td>
                         <td>
-                            <!--{if $arrPayment[cnt].payment_image != ""}-->
-                                <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrPayment[cnt].payment_image}-->" />
-                            <!--{/if}-->
+                            <label for="pay_<!--{$smarty.section.cnt.iteration}-->"><!--{$arrPayment[cnt].payment_method|h}--><!--{if $arrPayment[cnt].note != ""}--><!--{/if}--></label>
                         </td>
-                    <!--{/if}-->
-                  </tr>
-                <!--{/section}-->
-              </tbody>
+                        <!--{if $img_show}-->
+                            <td>
+                                <!--{if $arrPayment[cnt].payment_image != ""}-->
+                                    <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrPayment[cnt].payment_image}-->" />
+                                <!--{/if}-->
+                            </td>
+                        <!--{/if}-->
+                        </tr>
+                    <!--{/section}-->
+                </tbody>
             </table>
         </div>
 
@@ -229,12 +229,12 @@
                     <!--{html_options options=$arrDelivTime selected=$arrForm[$key].value}-->
                 </select>
                 <!--{if $is_multiple}-->
-                     <br />
+                    <br />
                     <!--{$shippingItem.shipping_name01}--><!--{$shippingItem.shipping_name02}-->
                     <!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01}--><!--{$shippingItem.shipping_addr02}-->
                 <!--{/if}-->
-             </div>
-             <!--{/foreach}-->
+            </div>
+            <!--{/foreach}-->
         </div>
         <!--{/if}-->
 
@@ -246,16 +246,16 @@
                         使用する場合は、「ポイントを使用する」にチェックを入れた後、使用するポイントをご記入ください。
                     </p>
                     <div class="point_announce">
-                       <p><span class="user_name"><!--{$name01|h}--> <!--{$name02|h}-->様</span>の、現在の所持ポイントは「<span class="point"><!--{$tpl_user_point|default:0|number_format}-->Pt</span>」です。<br />
-                       今回ご購入合計金額：<span class="price"><!--{$arrPrice.subtotal|number_format}-->円</span> <span class="attention">(送料、手数料を含みません。)</span>
-                       </p>
+                        <p><span class="user_name"><!--{$name01|h}--> <!--{$name02|h}-->様</span>の、現在の所持ポイントは「<span class="point"><!--{$tpl_user_point|default:0|number_format}-->Pt</span>」です。<br />
+                            今回ご購入合計金額：<span class="price"><!--{$arrPrice.subtotal|number_format}-->円</span> <span class="attention">(送料、手数料を含みません。)</span>
+                        </p>
                         <ul>
                             <li>
-                             <input type="radio" id="point_on" name="point_check" value="1" <!--{$arrForm.point_check.value|sfGetChecked:1}--> onclick="fnCheckInputPoint();" /><label for="point_on">ポイントを使用する</label>
-                                 <!--{assign var=key value="use_point"}--><br />
-                             今回のお買い物で、<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|default:$tpl_user_point}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box60" />&nbsp;Ptを使用する。<span class="attention"><!--{$arrErr[$key]}--></span>
-                             </li>
-                             <li><input type="radio" id="point_off" name="point_check" value="2" <!--{$arrForm.point_check.value|sfGetChecked:2}--> onclick="fnCheckInputPoint();" /><label for="point_off">ポイントを使用しない</label></li>
+                            <input type="radio" id="point_on" name="point_check" value="1" <!--{$arrForm.point_check.value|sfGetChecked:1}--> onclick="fnCheckInputPoint();" /><label for="point_on">ポイントを使用する</label>
+                                <!--{assign var=key value="use_point"}--><br />
+                            今回のお買い物で、<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|default:$tpl_user_point}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box60" />&nbsp;Ptを使用する。<span class="attention"><!--{$arrErr[$key]}--></span>
+                            </li>
+                            <li><input type="radio" id="point_off" name="point_check" value="2" <!--{$arrForm.point_check.value|sfGetChecked:2}--> onclick="fnCheckInputPoint();" /><label for="point_off">ポイントを使用しない</label></li>
                         </ul>
                 </div>
             </div>

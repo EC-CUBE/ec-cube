@@ -144,26 +144,26 @@ $(document).ready(function() {
                             </ul>
                         </td>
                         <td class="alignR"><!--{$item.total_inctax|number_format}-->円</td>
-                     </tr>
-                 <!--{/foreach}-->
-                 <tr>
-                     <th colspan="5" class="alignR">小計</th>
-                     <td class="alignR"><!--{$tpl_total_inctax[$key]|number_format}-->円</td>
-                 </tr>
-                 <tr>
-                     <th colspan="5" class="alignR">合計</th>
-                     <td class="alignR"><span class="price"><!--{$arrData[$key].total-$arrData[$key].deliv_fee|number_format}-->円</span></td>
-                 </tr>
-                 <!--{if $smarty.const.USE_POINT !== false}-->
-                     <!--{if $arrData[$key].birth_point > 0}-->
-                         <tr>
-                             <th colspan="5" class="alignR">お誕生月ポイント</th>
-                             <td class="alignR"><!--{$arrData[$key].birth_point|number_format}-->pt</td>
-                         </tr>
-                     <!--{/if}-->
-                     <tr>
-                         <th colspan="5" class="alignR">今回加算ポイント</th>
-                         <td class="alignR"><!--{$arrData[$key].add_point|number_format}-->pt</td>
+                    </tr>
+                <!--{/foreach}-->
+                <tr>
+                    <th colspan="5" class="alignR">小計</th>
+                    <td class="alignR"><!--{$tpl_total_inctax[$key]|number_format}-->円</td>
+                </tr>
+                <tr>
+                    <th colspan="5" class="alignR">合計</th>
+                    <td class="alignR"><span class="price"><!--{$arrData[$key].total-$arrData[$key].deliv_fee|number_format}-->円</span></td>
+                </tr>
+                <!--{if $smarty.const.USE_POINT !== false}-->
+                    <!--{if $arrData[$key].birth_point > 0}-->
+                        <tr>
+                            <th colspan="5" class="alignR">お誕生月ポイント</th>
+                            <td class="alignR"><!--{$arrData[$key].birth_point|number_format}-->pt</td>
+                        </tr>
+                    <!--{/if}-->
+                    <tr>
+                        <th colspan="5" class="alignR">今回加算ポイント</th>
+                        <td class="alignR"><!--{$arrData[$key].add_point|number_format}-->pt</td>
                     </tr>
                 <!--{/if}-->
             </table>

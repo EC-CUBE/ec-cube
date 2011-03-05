@@ -39,8 +39,8 @@
                     <!--{/if}-->
                 <!--{/foreach}-->
             </p>
-         <!--{/if}-->
-         <!-- ▲コンビに決済の場合には表示 -->
+        <!--{/if}-->
+        <!-- ▲コンビに決済の場合には表示 -->
 
         <div id="complete_area">
             <p class="message"><!--{$arrInfo.shop_name|h}-->の商品をご購入いただき、ありがとうございました。</p>
@@ -58,10 +58,10 @@
 
         <div class="btn_area">
             <ul>
-               <li>
+                <li>
                     <a href="<!--{$smarty.const.TOP_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage_on.jpg','b_toppage');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage.jpg','b_toppage');">
                         <img src="<!--{$TPL_URLPATH}-->img/button/btn_toppage.jpg" alt="トップページへ" border="0" name="b_toppage" /></a>
-               </li>
+                </li>
             </ul>
         </div>
 

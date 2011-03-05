@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
- <!--検索該当0の時-->
+<!--検索該当0の時-->
 <table width="570" cellspacing="0" cellpadding="0" summary=" ">
     <tr><td height="15"></td></tr>
     <tr>

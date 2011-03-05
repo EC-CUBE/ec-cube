@@ -80,7 +80,7 @@
                 <!--{html_options options=$arrPref selected=$arrForm[$key3]}-->
         </select>
         <p class="top"><input type="text" name="<!--{$key4}-->" value="<!--{$arrForm[$key4]|h}-->" class="box300" style="<!--{$arrErr[$key4]|sfGetErrorColor}-->; ime-mode: active;" /><br />
-         <!--{$smarty.const.SAMPLE_ADDRESS1}--></p>
+            <!--{$smarty.const.SAMPLE_ADDRESS1}--></p>
         <p class="top"><input type="text" name="<!--{$key5}-->" value="<!--{$arrForm[$key5]|h}-->" class="box300" style="<!--{$arrErr[$key5]|sfGetErrorColor}-->; ime-mode: active;" /><br />
             <!--{$smarty.const.SAMPLE_ADDRESS2}--></p>
         <p class="mini"><span class="attention">住所は2つに分けてご記入ください。マンション名は必ず記入してください。</span></p>

@@ -50,16 +50,16 @@ $(document).ready(function() {
                 <!--{assign var=key value="main_image"}-->
                 <!--★画像★-->
                 <!--{if $arrProduct.main_large_image|strlen >= 1}-->
-                   <a
-                    href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct.main_large_image|h}-->"
-                    class="expansion"
-                    target="_blank"
+                    <a
+                        href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct.main_large_image|h}-->"
+                        class="expansion"
+                        target="_blank"
                     >
-               <!--{/if}-->
-                  <img src="<!--{$arrFile[$key].filepath|h}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|h}-->" class="picture" />
-               <!--{if $arrProduct.main_large_image|strlen >= 1}-->
-                   </a>
-               <!--{/if}-->
+                <!--{/if}-->
+                    <img src="<!--{$arrFile[$key].filepath|h}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|h}-->" class="picture" />
+                <!--{if $arrProduct.main_large_image|strlen >= 1}-->
+                    </a>
+                <!--{/if}-->
             </div>
             <!--{if $arrProduct.main_large_image|strlen >= 1}-->
                 <span class="mini">
@@ -69,8 +69,7 @@ $(document).ready(function() {
                             class="expansion"
                             target="_blank"
                         >
-                          画像を拡大する
-                        </a>
+                            画像を拡大する</a>
                 </span>
             <!--{/if}-->
         </div>
@@ -190,26 +189,26 @@ $(document).ready(function() {
                         <ul class="clearfix">
                             <li><!--{$tpl_class_name1|h}-->：</li>
                             <li>
-                              <select name="classcategory_id1" style="<!--{$arrErr.classcategory_id1|sfGetErrorColor}-->">
-                              <!--{html_options options=$arrClassCat1 selected=$arrForm.classcategory_id1.value}-->
-                              </select>
-                              <!--{if $arrErr.classcategory_id1 != ""}-->
-                              <br /><span class="attention">※ <!--{$tpl_class_name1}-->を入力して下さい。</span>
-                              <!--{/if}-->
+                                <select name="classcategory_id1" style="<!--{$arrErr.classcategory_id1|sfGetErrorColor}-->">
+                                <!--{html_options options=$arrClassCat1 selected=$arrForm.classcategory_id1.value}-->
+                                </select>
+                                <!--{if $arrErr.classcategory_id1 != ""}-->
+                                <br /><span class="attention">※ <!--{$tpl_class_name1}-->を入力して下さい。</span>
+                                <!--{/if}-->
                             </li>
                         </ul>
                         <!--▲規格1-->
                         <!--{if $tpl_classcat_find2}-->
                         <!--▼規格2-->
                         <ul class="clearfix">
-                              <li><!--{$tpl_class_name2|h}-->：</li>
-                              <li>
+                            <li><!--{$tpl_class_name2|h}-->：</li>
+                            <li>
                                 <select name="classcategory_id2" style="<!--{$arrErr.classcategory_id2|sfGetErrorColor}-->">
                                 </select>
                                 <!--{if $arrErr.classcategory_id2 != ""}-->
                                 <br /><span class="attention">※ <!--{$tpl_class_name2}-->を入力して下さい。</span>
                                 <!--{/if}-->
-                              </li>
+                            </li>
                         </ul>
                         <!--▲規格2-->
                         <!--{/if}-->
@@ -284,8 +283,7 @@ $(document).ready(function() {
                         <!--{if $arrProduct[$lkey]|strlen >= 1}--></a>
                             <span class="mini">
                                 <a href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct[$lkey]|h}-->" class="expansion" target="_blank">
-                                  画像を拡大する
-                                </a>
+                                    画像を拡大する</a>
                             </span>
                         <!--{/if}-->
                     </div>
@@ -308,9 +306,9 @@ $(document).ready(function() {
                 <!--{if count($arrReview) < $smarty.const.REVIEW_REGIST_MAX}-->
                     <!--★新規コメントを書き込む★-->
                     <a href="./review.php"
-                         onclick="win02('./review.php?product_id=<!--{$arrProduct.product_id}-->','review','600','640'); return false;"
-                         onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_comment_on.jpg','review');"
-                         onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_comment.jpg','review');" target="_blank">
+                        onclick="win02('./review.php?product_id=<!--{$arrProduct.product_id}-->','review','600','640'); return false;"
+                        onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_comment_on.jpg','review');"
+                        onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_comment.jpg','review');" target="_blank">
                         <img src="<!--{$TPL_URLPATH}-->img/button/btn_comment.jpg" alt="新規コメントを書き込む" name="review" id="review" /></a>
                 <!--{/if}-->
             </div>

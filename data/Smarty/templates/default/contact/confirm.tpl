@@ -47,9 +47,9 @@
             <tr>
                 <th>郵便番号</th>
                 <td>
-                     <!--{if strlen($arrForm.zip01.value) > 0 && strlen($arrForm.zip02.value) > 0}-->
-                         〒<!--{$arrForm.zip01.value|h}-->-<!--{$arrForm.zip02.value|h}-->
-                     <!--{/if}-->
+                    <!--{if strlen($arrForm.zip01.value) > 0 && strlen($arrForm.zip02.value) > 0}-->
+                        〒<!--{$arrForm.zip01.value|h}-->-<!--{$arrForm.zip02.value|h}-->
+                    <!--{/if}-->
                 </td>
             </tr>
             <tr>
@@ -70,7 +70,7 @@
             </tr>
             <tr>
                 <th>お問い合わせ内容<span class="attention">※</span><br />
-                     <span class="mini">（全角1000字以下）</span></th>
+                    <span class="mini">（全角1000字以下）</span></th>
                 <td><!--{$arrForm.contents.value|h|nl2br}--></td>
             </tr>
         </table>

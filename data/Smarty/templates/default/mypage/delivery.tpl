@@ -24,19 +24,19 @@
 <!--▼CONTENTS-->
 <div id="mypagecolumn">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
-<!--{include file=$tpl_navi}-->
+    <!--{include file=$tpl_navi}-->
     <div id="mycontents_area">
         <h3><!--{$tpl_subtitle|h}--></h3>
         <p class="inforamtion">登録住所以外への住所へ送付される場合等にご利用いただくことができます。<br />
         ※最大<span class="attention"><!--{$smarty.const.DELIV_ADDR_MAX|h}-->件</span>まで登録できます。</p>
 
         <!--{if $tpl_linemax < $smarty.const.DELIV_ADDR_MAX}-->
-          <!--{* 退会時非表示 *}-->
-          <!--{if $tpl_login}-->
-            <p class="add_address">
-                <a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="win03('./delivery_addr.php','delivadd','600','640'); return false;" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address_on.jpg','newadress');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address.jpg','newadress');" target="_blank"><img src="<!--{$TPL_URLPATH}-->img/button/btn_add_address.jpg" alt="新しいお届け先を追加" border="0" name="newadress" /></a>
-            </p>
-          <!--{/if}-->
+            <!--{* 退会時非表示 *}-->
+            <!--{if $tpl_login}-->
+                <p class="add_address">
+                    <a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="win03('./delivery_addr.php','delivadd','600','640'); return false;" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address_on.jpg','newadress');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address.jpg','newadress');" target="_blank"><img src="<!--{$TPL_URLPATH}-->img/button/btn_add_address.jpg" alt="新しいお届け先を追加" border="0" name="newadress" /></a>
+                </p>
+            <!--{/if}-->
         <!--{/if}-->
 
         <!--{if $tpl_linemax > 0}-->

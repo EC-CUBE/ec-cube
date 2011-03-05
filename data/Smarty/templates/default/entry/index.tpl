@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
- <!--▼CONTENTS-->
+<!--▼CONTENTS-->
 <div id="undercolumn">
     <div id="undercolumn_entry">
         <h2 class="title"><!--{$tpl_title|h}--></h2>
@@ -36,11 +36,11 @@
             </table>
 
             <div class="btn_area">
-                 <ul>
-                     <li>
-                         <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_confirm_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_confirm.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_confirm.jpg" alt="確認ページへ" name="confirm" id="confirm" />
-                     </li>
-                 </ul>
+                <ul>
+                    <li>
+                        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_confirm_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_confirm.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_confirm.jpg" alt="確認ページへ" name="confirm" id="confirm" />
+                    </li>
+                </ul>
             </div>
 
         </form>

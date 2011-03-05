@@ -40,11 +40,11 @@
                 <!--{/if}-->
             </p>
             <form action="order.php" method="post">
-              <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-              <p class="btn">
-                <input type="hidden" name="order_id" value="<!--{$tpl_arrOrderData.order_id|h}-->">
-                <input type="image" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_order_re_on.jpg', this);" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_order_re.jpg', this);" src="<!--{$TPL_URLPATH}-->img/button/btn_order_re.jpg" alt="この購入内容で再注文する" name="submit" value="この購入内容で再注文する" />
-              </p>
+                <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+                <p class="btn">
+                    <input type="hidden" name="order_id" value="<!--{$tpl_arrOrderData.order_id|h}-->">
+                    <input type="image" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_order_re_on.jpg', this);" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_order_re.jpg', this);" src="<!--{$TPL_URLPATH}-->img/button/btn_order_re.jpg" alt="この購入内容で再注文する" name="submit" value="この購入内容で再注文する" />
+                </p>
             </form>
         </div>
 
@@ -141,39 +141,39 @@
             <h3>お届け先<!--{if $isMultiple}--><!--{$smarty.foreach.shippingItem.iteration}--><!--{/if}--></h3>
             <!--{if $isMultiple}-->
                 <table summary="お届け内容確認">
-                  <colgroup width="30%"></colgroup>
-                  <colgroup width="70%"></colgroup>
-                  <tr>
-                    <th>商品コード</th>
-                    <th>商品名</th>
-                    <th>単価</th>
-                    <th>数量</th>
-                    <!--{* XXX 購入小計と誤差が出るためコメントアウト
-                    <th>小計</th>
-                    *}-->
-                  </tr>
-                  <!--{foreach item=item from=$shippingItem.shipment_item}-->
-                      <tr>
-                          <td><!--{$item.productsClass.product_code|h}--></td>
-                          <td><!--{* 商品名 *}--><!--{$item.productsClass.name|h}--><br />
-                              <!--{if $item.productsClass.classcategory_name1 != ""}-->
-                                  <!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--><br />
-                              <!--{/if}-->
-                              <!--{if $item.productsClass.classcategory_name2 != ""}-->
-                                  <!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}-->
-                              <!--{/if}-->
-                          </td>
-                          <td class="alignR">
-                              <!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
-                          </td>
-                          <td class="alignC"><!--{$item.quantity}--></td>
-                          <!--{* XXX 購入小計と誤差が出るためコメントアウト
-                          <td class="alignR"><!--{$item.total_inctax|number_format}-->円</td>
-                          *}-->
-                      </tr>
-                  <!--{/foreach}-->
+                    <colgroup width="30%"></colgroup>
+                    <colgroup width="70%"></colgroup>
+                    <tr>
+                        <th>商品コード</th>
+                        <th>商品名</th>
+                        <th>単価</th>
+                        <th>数量</th>
+                        <!--{* XXX 購入小計と誤差が出るためコメントアウト
+                        <th>小計</th>
+                        *}-->
+                    </tr>
+                    <!--{foreach item=item from=$shippingItem.shipment_item}-->
+                        <tr>
+                            <td><!--{$item.productsClass.product_code|h}--></td>
+                            <td><!--{* 商品名 *}--><!--{$item.productsClass.name|h}--><br />
+                                <!--{if $item.productsClass.classcategory_name1 != ""}-->
+                                    <!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--><br />
+                                <!--{/if}-->
+                                <!--{if $item.productsClass.classcategory_name2 != ""}-->
+                                    <!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}-->
+                                <!--{/if}-->
+                            </td>
+                            <td class="alignR">
+                                <!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+                            </td>
+                            <td class="alignC"><!--{$item.quantity}--></td>
+                            <!--{* XXX 購入小計と誤差が出るためコメントアウト
+                            <td class="alignR"><!--{$item.total_inctax|number_format}-->円</td>
+                            *}-->
+                        </tr>
+                    <!--{/foreach}-->
                 </table>
-             <!--{/if}-->
+            <!--{/if}-->
             <table summary="お届け先" class="delivname">
                     <colgroup width="30%"></colgroup>
                     <colgroup width="70%"></colgroup>
@@ -223,7 +223,7 @@
         <div class="btn_area">
             <ul>
                 <li>
-                 <a href="./<!--{$smarty.const.DIR_INDEX_PATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg','change');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg','change');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" name="change" id="change" /></a>
+                    <a href="./<!--{$smarty.const.DIR_INDEX_PATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg','change');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg','change');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" name="change" id="change" /></a>
                 </li>
             </ul>
         </div>
