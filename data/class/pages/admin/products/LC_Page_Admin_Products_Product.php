@@ -718,7 +718,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
      *
      * 画像ファイルの削除可否判定用。
      * 同名ファイルの登録がある場合には画像ファイルの削除を行わない。
-     * 戻り値：同名ファイル有り(true) 同名ファイル無し(false)
+     * 戻り値： 同名ファイル有り(true) 同名ファイル無し(false)
      *
      * @param string $product_id 商品ID
      * @param string $arrImageKey 対象としない画像カラム名

@@ -582,9 +582,9 @@ define('CSV_COLUMN_RW_FLG_READ_WRITE', 1);
 define('CSV_COLUMN_RW_FLG_READ_ONLY', 2);
 /** CSV入出力列設定読み書きフラグ: キー列 */
 define('CSV_COLUMN_RW_FLG_KEY_FIELD', 3);
-/** 無制限フラグ：無制限 */
+/** 無制限フラグ： 無制限 */
 define('UNLIMITED_FLG_UNLIMITED', "1");
-/** 無制限フラグ：制限有り */
+/** 無制限フラグ： 制限有り */
 define('UNLIMITED_FLG_LIMITED', "0");
 /** EC-CUBE更新情報取得 (true:取得する false:取得しない) */
 define('ECCUBE_INFO', true);
