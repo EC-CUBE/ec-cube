@@ -80,11 +80,11 @@ $(document).ready(function() {
             <colgroup width="10%"></colgroup>
             <colgroup width="20%"></colgroup>
             <tr>
-                <th>商品写真</th>
-                <th>商品名</th>
-                <th>単価</th>
-                <th>数量</th>
-                <th>小計</th>
+                <th scope="col">商品写真</th>
+                <th scope="col">商品名</th>
+                <th scope="col">単価</th>
+                <th scope="col">数量</th>
+                <th scope="col">小計</th>
             </tr>
             <!--{foreach from=$arrCartItems item=item}-->
                 <tr>
@@ -114,27 +114,27 @@ $(document).ready(function() {
                 </tr>
             <!--{/foreach}-->
             <tr>
-                <th colspan="4" class="alignR">小計</th>
+                <th colspan="4" class="alignR" scope="row">小計</th>
                 <td class="alignR"><!--{$tpl_total_inctax[$cartKey]|number_format}-->円</td>
             </tr>
             <!--{if $smarty.const.USE_POINT !== false}-->
                 <tr>
-                    <th colspan="4" class="alignR">値引き（ポイントご使用時）</th>
+                    <th colspan="4" class="alignR" scope="row">値引き（ポイントご使用時）</th>
                     <td class="alignR">
                         <!--{assign var=discount value=`$arrForm.use_point*$smarty.const.POINT_VALUE`}-->
                         -<!--{$discount|number_format|default:0}-->円</td>
                 </tr>
             <!--{/if}-->
             <tr>
-                <th colspan="4" class="alignR">送料</th>
+                <th colspan="4" class="alignR" scope="row">送料</th>
                 <td class="alignR"><!--{$arrForm.deliv_fee|number_format}-->円</td>
             </tr>
             <tr>
-                <th colspan="4" class="alignR">手数料</th>
+                <th colspan="4" class="alignR" scope="row">手数料</th>
                 <td class="alignR"><!--{$arrForm.charge|number_format}-->円</td>
             </tr>
             <tr>
-                <th colspan="4" class="alignR">合計</th>
+                <th colspan="4" class="alignR" scope="row">合計</th>
                 <td class="alignR"><span class="price"><!--{$arrForm.payment_total|number_format}-->円</span></td>
             </tr>
         </table>
@@ -145,26 +145,26 @@ $(document).ready(function() {
             <colgroup width="30%"></colgroup>
             <colgroup width="70%"></colgroup>
                 <tr>
-                    <th>ご注文前のポイント</th>
+                    <th scope="row">ご注文前のポイント</th>
                     <td><!--{$tpl_user_point|number_format|default:0}-->Pt</td>
                 </tr>
                 <tr>
-                    <th>ご使用ポイント</th>
+                    <th scope="row">ご使用ポイント</th>
                     <td>-<!--{$arrForm.use_point|number_format|default:0}-->Pt</td>
                 </tr>
                 <!--{if $arrForm.birth_point > 0}-->
                 <tr>
-                    <th>お誕生月ポイント</th>
+                    <th scope="row">お誕生月ポイント</th>
                     <td>+<!--{$arrForm.birth_point|number_format|default:0}-->Pt</td>
                 </tr>
                 <!--{/if}-->
                 <tr>
-                    <th>今回加算予定のポイント</th>
+                    <th scope="row">今回加算予定のポイント</th>
                     <td>+<!--{$arrForm.add_point|number_format|default:0}-->Pt</td>
                 </tr>
                 <tr>
                 <!--{assign var=total_point value=`$tpl_user_point-$arrForm.use_point+$arrForm.add_point`}-->
-                    <th>加算後のポイント</th>
+                    <th scope="row">加算後のポイント</th>
                     <td><!--{$total_point|number_format}-->Pt</td>
                 </tr>
             </table>
@@ -181,12 +181,12 @@ $(document).ready(function() {
                 <colgroup width="30%"></colgroup>
                 <colgroup width="70%"></colgroup>
                 <tr>
-                    <th>商品写真</th>
-                    <th>商品名</th>
-                    <th>単価</th>
-                    <th>数量</th>
+                    <th scope="col">商品写真</th>
+                    <th scope="col">商品名</th>
+                    <th scope="col">単価</th>
+                    <th scope="col">数量</th>
                     <!--{* XXX 購入小計と誤差が出るためコメントアウト
-                    <th>小計</th>
+                    <th scope="col">小計</th>
                     *}-->
                 </tr>
                 <!--{foreach item=item from=$shippingItem.shipment_item}-->
@@ -223,32 +223,32 @@ $(document).ready(function() {
             <colgroup width="70%"></colgroup>
             <tbody>
                 <tr>
-                    <th>お名前</th>
+                    <th scope="row">お名前</th>
                     <td><!--{$shippingItem.shipping_name01|h}--> <!--{$shippingItem.shipping_name02|h}--></td>
                 </tr>
                 <tr>
-                    <th>お名前(フリガナ)</th>
+                    <th scope="row">お名前(フリガナ)</th>
                     <td><!--{$shippingItem.shipping_kana01|h}--> <!--{$shippingItem.shipping_kana02|h}--></td>
                 </tr>
                 <tr>
-                    <th>郵便番号</th>
+                    <th scope="row">郵便番号</th>
                     <td>〒<!--{$shippingItem.shipping_zip01|h}-->-<!--{$shippingItem.shipping_zip02|h}--></td>
                 </tr>
                 <tr>
-                    <th>住所</th>
+                    <th scope="row">住所</th>
                     <td><!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01|h}--><!--{$shippingItem.shipping_addr02|h}--></td>
                 </tr>
                 <tr>
-                    <th>電話番号</th>
+                    <th scope="row">電話番号</th>
                     <td><!--{$shippingItem.shipping_tel01}-->-<!--{$shippingItem.shipping_tel02}-->-<!--{$shippingItem.shipping_tel03}--></td>
                 </tr>
             <!--{if $cartKey != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
                 <tr>
-                    <th>お届け日</th>
+                    <th scope="row">お届け日</th>
                     <td><!--{$shippingItem.shipping_date|default:"指定なし"|h}--></td>
                 </tr>
                 <tr>
-                    <th>お届け時間</th>
+                    <th scope="row">お届け時間</th>
                     <td><!--{$shippingItem.shipping_time|default:"指定なし"|h}--></td>
                 </tr>
             <!--{/if}-->
@@ -264,15 +264,15 @@ $(document).ready(function() {
             <colgroup width="70%"></colgroup>
             <tbody>
             <tr>
-                <th>配送方法</th>
+                <th scope="row">配送方法</th>
                 <td><!--{$arrDeliv[$arrForm.deliv_id]|h}--></td>
             </tr>
             <tr>
-                <th>お支払方法</th>
+                <th scope="row">お支払方法</th>
                 <td><!--{$arrForm.payment_method|h}--></td>
             </tr>
             <tr>
-                <th>その他お問い合わせ</th>
+                <th scope="row">その他お問い合わせ</th>
                 <td><!--{$arrForm.message|h|nl2br}--></td>
             </tr>
             </tbody>

@@ -29,11 +29,10 @@ table td {
 
 /* 見出し
 ----------------------------------------------- */
-div#undercolumn_shopping table th {
+div#undercolumn_shopping table th[scope=col] {
     text-align: center;
 }
 div#undercolumn_shopping table.delivname th {
-    text-align: left;
     width: 155px;
 }
 
