@@ -30,6 +30,7 @@
  * @version $Id$
  */
 class SC_Helper_Customer {
+
     /**
      * 会員編集登録・更新処理を行う.
      *
@@ -116,10 +117,12 @@ class SC_Helper_Customer {
     }
 
     /**
-     *   emailアドレスから、登録済み会員や退会済み会員をチェックする
+     * emailアドレスから、登録済み会員や退会済み会員をチェックする
      *
-     *	 @param string $email  メールアドレス
-     *   @return integer  0:登録可能     1:登録済み   2:再登録制限期間内削除ユーザー  3:自分のアドレス
+     * XXX SC_CheckError からしか呼び出されず, 本クラスの中で SC_CheckError を呼び出している
+     *
+     * @param string $email  メールアドレス
+     * @return integer  0:登録可能     1:登録済み   2:再登録制限期間内削除ユーザー  3:自分のアドレス
      */
     function sfCheckRegisterUserFromEmail($email){
         $return = 0;
@@ -240,12 +243,10 @@ class SC_Helper_Customer {
     }
 
     /**
-     * sfGetUniqSecretKey
-     *
      * 重複しない会員登録キーを発行する。
      *
      * @access public
-     * @return void
+     * @return string 会員登録キーの文字列
      */
     function sfGetUniqSecretKey() {
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
@@ -259,12 +260,12 @@ class SC_Helper_Customer {
 
 
     /**
-     * sfGetCustomerId
+     * 会員登録キーから顧客IDを取得する.
      *
-     * @param mixed $uniqid
-     * @param mixed $check_status
+     * @param string $uniqid 会員登録キー
+     * @param boolean $check_status 本会員のみを対象とするか
      * @access public
-     * @return void
+     * @return integer 顧客ID
      */
     function sfGetCustomerId($uniqid, $check_status = false) {
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
@@ -281,8 +282,8 @@ class SC_Helper_Customer {
     /**
      * 会員登録時フォーム初期化
      *
-     * @param mixed $objFormParam
-     * @param boolean isAdmin true:管理者画面 false:会員向け
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param boolean $isAdmin true:管理者画面 false:会員向け
      * @access public
      * @return void
      */
@@ -302,7 +303,7 @@ class SC_Helper_Customer {
     /**
      * 会員情報変更フォーム初期化
      *
-     * @param mixed $objFormParam
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @access public
      * @return void
      */
@@ -318,7 +319,7 @@ class SC_Helper_Customer {
     /**
      * お届け先フォーム初期化
      *
-     * @param mixed $objFormParam
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @access public
      * @return void
      */
@@ -330,7 +331,7 @@ class SC_Helper_Customer {
     /**
      * 会員共通
      *
-     * @param mixed $objFormParam
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @access public
      * @return void
      */
@@ -349,9 +350,12 @@ class SC_Helper_Customer {
         $objFormParam->addParam("お電話番号3", 'tel03', TEL_ITEM_LEN, "n", array("EXIST_CHECK", "SPTAB_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
     }
 
-    /*
+    /**
      * 会員登録共通
      *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param boolean $isAdmin true:管理者画面 false:会員向け
+     * @return void
      */
     function sfCustomerRegisterParam (&$objFormParam, $isAdmin = false) {
         if($isAdmin) {
@@ -390,8 +394,7 @@ class SC_Helper_Customer {
 
     /**
      * 会員登録エラーチェック
-     *
-     * @param mixed $objFormParam
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @access public
      * @return array エラーの配列
      */
@@ -415,7 +418,7 @@ class SC_Helper_Customer {
     /**
      * 会員情報変更エラーチェック
      *
-     * @param mixed $objFormParam
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @param boolean $isAdmin 管理画面チェック時:true
      * @access public
      * @return array エラーの配列
@@ -445,7 +448,7 @@ class SC_Helper_Customer {
     /**
      * 会員エラーチェック共通
      *
-     * @param mixed $objFormParam
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @access private
      * @return array エラー情報の配列
      */
@@ -465,8 +468,12 @@ class SC_Helper_Customer {
         return $objErr;
     }
 
-    /*
-     * 会員登録編集共通
+    /**
+     * 会員登録編集共通の相関チェック
+     *
+     * @param SC_CheckError $objErr SC_CheckError インスタンス
+     * @param boolean $isAdmin 管理画面チェック時:true
+     * @return SC_CheckError $objErr エラー情報
      */
     function sfCustomerRegisterErrorCheck(&$objErr, $isAdmin = false) {
         $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_BIRTHDAY"));
@@ -489,7 +496,7 @@ class SC_Helper_Customer {
     /**
      * 顧客検索パラメーター（管理画面用）
      *
-     * @param mixed $objFormParam
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @access public
      * @return void
      */
@@ -538,7 +545,7 @@ class SC_Helper_Customer {
     /**
      * 顧客検索パラメーター　エラーチェック（管理画面用）
      *
-     * @param mixed $objFormParam
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @access public
      * @return array エラー配列
      */
