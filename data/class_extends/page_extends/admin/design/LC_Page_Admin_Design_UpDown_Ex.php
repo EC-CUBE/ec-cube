@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once CLASS_REALDIR . 'pages/admin/design/LC_Page_Admin_Design_Up_Down.php';
+require_once CLASS_REALDIR . 'pages/admin/design/LC_Page_Admin_Design_UpDown.php';
 
 /**
  * テンプレートアップロード のページクラス(拡張).
@@ -33,7 +33,7 @@ require_once CLASS_REALDIR . 'pages/admin/design/LC_Page_Admin_Design_Up_Down.ph
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Design_Up_Down_Ex extends LC_Page_Admin_Design_Up_Down {
+class LC_Page_Admin_Design_UpDown_Ex extends LC_Page_Admin_Design_UpDown {
 
     // }}}
     // {{{ functions

@@ -22,18 +22,18 @@
  */
 
 // {{{ requires
-require_once CLASS_REALDIR . 'pages/admin/basis/LC_Page_Admin_Basis_Delivery_Input.php';
+require_once CLASS_REALDIR . 'pages/admin/basis/LC_Page_Admin_Basis_DeliveryInput.php';
 
 /**
  * 配送業者設定のページクラス(拡張).
  *
- * LC_Page_Admin_Basis_Delivery_Input をカスタマイズする場合はこのクラスを編集する.
+ * LC_Page_Admin_Basis_DeliveryInput をカスタマイズする場合はこのクラスを編集する.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis_Delivery_Input_Ex extends LC_Page_Admin_Basis_Delivery_Input {
+class LC_Page_Admin_Basis_DeliveryInput_Ex extends LC_Page_Admin_Basis_DeliveryInput {
 
     // }}}
     // {{{ functions

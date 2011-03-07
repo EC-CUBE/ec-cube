@@ -22,18 +22,18 @@
  */
 
 // {{{ requires
-require_once CLASS_REALDIR . 'pages/admin/basis/LC_Page_Admin_Basis_Payment_Input.php';
+require_once CLASS_REALDIR . 'pages/admin/basis/LC_Page_Admin_Basis_PaymentInput.php';
 
 /**
  * 支払方法設定 のページクラス(拡張).
  *
- * LC_Page_Admin_Basis_Payment_Input をカスタマイズする場合はこのクラスを編集する.
+ * LC_Page_Admin_Basis_PaymentInput をカスタマイズする場合はこのクラスを編集する.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis_Payment_Input_Ex extends LC_Page_Admin_Basis_Payment_Input {
+class LC_Page_Admin_Basis_PaymentInput_Ex extends LC_Page_Admin_Basis_PaymentInput {
 
     // }}}
     // {{{ functions
