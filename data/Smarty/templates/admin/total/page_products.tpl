@@ -31,7 +31,7 @@
         <th>単価</th>
         <th>金額</th>
     </tr>
-    
+
     <!--{section name=cnt loop=$arrResults}-->
         <!--{* 色分け判定 *}-->
         <!--{assign var=type value="`$smarty.section.cnt.index%2`"}-->
@@ -53,7 +53,7 @@
             <td class="right"><!--{*金額*}--><!--{$arrResults[cnt].total|number_format}-->円</td>
         </tr>
     <!--{/section}-->
-    
+
     <tr>
         <th>順位</th>
         <th>商品コード</th>

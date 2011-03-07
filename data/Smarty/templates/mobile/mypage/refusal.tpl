@@ -27,7 +27,7 @@
 <form action="?" method="post">
     <input type="hidden" name="mode" value="complete">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-    
+
 	<input type="submit" name="complete" value="退会する">
 </form>
 </div>

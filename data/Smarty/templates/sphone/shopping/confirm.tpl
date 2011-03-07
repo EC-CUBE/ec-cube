@@ -145,7 +145,7 @@ $(document).ready(function() {
                 </table>
             <!--{/if}-->
             <!--{* ログイン済みの会員のみ *}-->
-            
+
             <!--お届け先ここから-->
             <!--{* 販売方法判定（ダウンロード販売のみの場合はお届け先を表示しない） *}-->
             <!--{if $cartKey != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->

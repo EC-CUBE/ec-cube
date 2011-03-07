@@ -72,7 +72,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
         $objFormParam->convParam();
-        
+
         switch ($this->getMode()) {
         case 'regist': // 商品を登録する。
             $this->arrErr = $this->lfCheckError($objFormParam);
@@ -109,7 +109,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
             $arrItems = $this->getRecommendProducts();
             break;
         }
-        
+
         $this->category_id = intval($arrPost['category_id']);
         $this->arrItems = $arrItems;
 
@@ -161,7 +161,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
         $order = 'rank';
         $objQuery->setOrder($order);
         $arrProducts = $objQuery->select($col, $table, $where);
-        
+
         $arrReturnProducts = array();
         foreach( $arrProducts as $data ){
             $arrReturnProducts[$data['rank']] = $data;

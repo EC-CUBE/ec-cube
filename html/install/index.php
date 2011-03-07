@@ -870,7 +870,7 @@ function lfCreateSequence($arrSequences, $dsn) {
 function lfMakeConfigFile() {
     global $objWebParam;
     global $objDBParam;
-    
+
     $normal_url = $objWebParam->getValue('normal_url');
     // 語尾に'/'をつける
     if (!ereg("/$", $normal_url)) {

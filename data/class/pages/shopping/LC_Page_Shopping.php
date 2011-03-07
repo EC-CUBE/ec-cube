@@ -128,7 +128,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
                         exit;
                     }
                 }
-                
+
                 SC_Response_Ex::sendRedirect(
                         $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
                                                $objCustomer, $objPurchase,

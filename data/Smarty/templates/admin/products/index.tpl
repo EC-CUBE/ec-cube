@@ -27,25 +27,25 @@ function lfnDispChange(){
     inner_id = 'switch';
 
     cnt = document.form1.item_cnt.value;
-    
+
     if($('#disp_url1').css("display") == 'none'){
         for (i = 1; i <= cnt; i++) {
             disp_id = 'disp_url'+i;
             $('#' + disp_id).css("display", "");
-    
+
             disp_id = 'disp_cat'+i;
             $('#' + disp_id).css("display", "none");
-            
+
             $('#' + inner_id).html('    URL <a href="#" onClick="lfnDispChange();"> &gt;&gt; カテゴリ表示<\/a>');
         }
     }else{
         for (i = 1; i <= cnt; i++) {
             disp_id = 'disp_url'+i;
             $('#' + disp_id).css("display", "none");
-    
+
             disp_id = 'disp_cat'+i;
             $('#' + disp_id).css("display", "");
-            
+
             $('#' + inner_id).html('    カテゴリ <a href="#" onClick="lfnDispChange();"> &gt;&gt; URL表示<\/a>');
         }
     }

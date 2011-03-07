@@ -23,7 +23,7 @@
 *}-->
 <!--{if $tpl_mode|strlen == 0 || $arrErr|@count >= 1}-->
     <style type="text/css">
-        
+
     </style>
     <form name="form1" id="form1" method="get" action="?" onsubmit="return false;">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />

@@ -123,7 +123,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
     function lfGetPHPVersion() {
         return "PHP " . phpversion();
     }
-    
+
     /**
      * DBバージョンの取得
      *
@@ -155,7 +155,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
      */
     function lfGetOrderYesterday($method){
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        
+
         // TODO: DBFactory使わないでも共通化できそうな気もしますが
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $sql = $dbFactory->getOrderYesterdaySql($method);
@@ -171,7 +171,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
     function lfGetOrderMonth($method){
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $month = date("Y/m", mktime());
-        
+
         // TODO: DBFactory使わないでも共通化できそうな気もしますが
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $sql = $dbFactory->getOrderMonthSql($method);
@@ -185,7 +185,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
      */
     function lfGetTotalCustomerPoint() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        
+
         $col = "SUM(point)";
         $where = "del_flg = 0";
         $from = "dtb_customer";
@@ -213,7 +213,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
      */
     function lfGetReviewNonDisp(){
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        
+
         $table = "dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id";
         $where = "A.del_flg = 0 AND A.status = 2 AND B.del_flg = 0";
         return $objQuery->count($table, $where);
@@ -226,7 +226,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
      */
     function lfGetSoldOut() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        
+
         $cols = "product_id, name";
         $table = "dtb_products";
         $where = "product_id IN ("
@@ -242,7 +242,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
      */
     function lfGetNewOrder() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        
+
         $sql = "SELECT
                     ord.order_id,
                     ord.customer_id,
@@ -315,7 +315,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
 
         // タイムアウト時間設定
         $context = array('http' => array('timeout' => HTTP_REQUEST_TIMEOUT));
-        
+
         $jsonStr = @file_get_contents($url, false, stream_context_create($context));
 
         $arrTmpData = is_string($jsonStr) ? SC_Utils_Ex::jsonDecode($jsonStr) : null;

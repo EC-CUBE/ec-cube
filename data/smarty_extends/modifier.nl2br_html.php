@@ -34,7 +34,7 @@ function smarty_modifier_nl2br_html($string) {
         $line .= "\n";
     }
     unset($line);
-    
+
     return implode('', $lines);
 }
 

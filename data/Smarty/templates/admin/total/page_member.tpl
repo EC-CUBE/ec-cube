@@ -28,7 +28,7 @@
         <th>購入合計</th>
         <th>購入平均</th>
     </tr>
-    
+
     <!--{section name=cnt loop=$arrResults}-->
         <!--{* 色分け判定 *}-->
         <!--{assign var=type value="`$smarty.section.cnt.index%2`"}-->
@@ -47,7 +47,7 @@
             <td class="right"><!--{*購入平均*}--><!--{$arrResults[cnt].total_average|number_format}-->円</td>
         </tr>
     <!--{/section}-->
-    
+
     <tr>
         <th>区分</th>
         <th>購入件数</th>

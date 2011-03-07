@@ -63,7 +63,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         $this->arrYear = $objDate->getYear();    
         $this->arrMonth = $objDate->getMonth();
         $this->arrDay = $objDate->getDay();
-        
+
         // 支払い方法種別
         $objDb = new SC_Helper_DB_Ex();
         $this->arrPayment = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
@@ -149,7 +149,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
             $this->arrPagenavi = $this->objNavi->arrPagenavi;
             $this->arrPagenavi['mode'] = 'return';
             $this->tpl_pageno = $objFormParam->getValue("search_pageno");
-            
+
             break;
         case 'complete':
             //登録・保存処理
@@ -232,7 +232,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
     function lfCheckErrorSearchParam(&$objFormParam) {
         return SC_Helper_Customer_Ex::sfCheckErrorSearchParam($objFormParam);
     }
-    
+
     /**
      * フォーム入力パラメーターエラーチェック
      *
@@ -241,7 +241,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
      */
     function lfCheckError(&$objFormParam) {
         $arrErr = SC_Helper_Customer_Ex::sfCustomerMypageErrorCheck($objFormParam, true);
-        
+
         //メアド重複チェック(共通ルーチンは使えない)
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
         $col = "email, email_mobile, customer_id";

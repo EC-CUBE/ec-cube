@@ -28,7 +28,7 @@ function setClassCategories($form, product_id, $sele1, $sele2, selected_id2) {
         if ($sele2) {
             // 規格2の選択肢をクリア
             $sele2.children().remove();
-            
+
             var classcat2;
 
             // 商品一覧時
@@ -86,7 +86,7 @@ function checkStock($form, product_id, classcat_id1, classcat_id2) {
         $product_code_default.show();
         $product_code_dynamic.hide();
     }
-    
+
     // 在庫(品切れ)
     var $cartbtn_default = $form.find('[id^=cartbtn_default]');
     var $cartbtn_dynamic = $form.find('[id^=cartbtn_dynamic]');

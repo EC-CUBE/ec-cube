@@ -67,7 +67,7 @@ class SC_Helper_Mail {
         if ($reply_to == "") $reply_to = $arrInfo['email03'];
         $error = $arrInfo['email04'];
         $tosubject = $this->sfMakeSubject($tmp_subject, $objMailView);
-        
+
         $objSendMail->setItem('', $tosubject, $body, $from_address, $from_name, $reply_to, $error, $error);
         $objSendMail->setTo($to, $to_name);
         $objSendMail->sendMail();    // メール送信
@@ -194,7 +194,7 @@ class SC_Helper_Mail {
         $from = $arrInfo['email03'];
         $error = $arrInfo['email04'];
         $tosubject = $this->sfMakeSubject($tmp_subject, $objMailView);
-        
+
         $objSendMail->setItem($to, $tosubject, $body, $from, $arrInfo['shop_name'], $from, $error, $error, $bcc);
         $objSendMail->sendMail();
     }
@@ -208,7 +208,7 @@ class SC_Helper_Mail {
         $from = $arrInfo['email03'];
         $error = $arrInfo['email04'];
         $tosubject = $this->sfMakeSubject($tmp_subject);
-        
+
         $objSendMail->setItem($to, $tosubject, $body, $from, $arrInfo['shop_name'], $from, $error, $error, $bcc);
         $objSendMail->sendMail();
     }
@@ -219,7 +219,7 @@ class SC_Helper_Mail {
             $objMailView = new SC_SiteView_Ex();
         }
         $objTplAssign = new stdClass;
-        
+
         $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
         $objTplAssign->tpl_shopname=$arrInfo['shop_name'];
         $objTplAssign->tpl_infoemail=$subject; // 従来互換
@@ -282,7 +282,7 @@ class SC_Helper_Mail {
         }
 
         $CONF = SC_Helper_DB_Ex::sfGetBasisData();
-        
+
         $objMailText = new SC_SiteView_Ex();
         $objMailText->assign('CONF', $CONF);
         $objMailText->assign("name01", $arrCustomerData['name01']);
@@ -325,7 +325,7 @@ class SC_Helper_Mail {
         $objMail->sendMail();
         return true;
     }
-    
+
     /**
      * 保存されているメルマガテンプレートの取得
      * @param integer 特定IDのテンプレートを取り出したい時はtemplate_idを指定。未指定時は全件取得
@@ -336,7 +336,7 @@ class SC_Helper_Mail {
         // 初期化
         $where = '';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        
+
         // 条件文
         $where = 'del_flg = ?';
         $arrValues[] = 0;
@@ -345,14 +345,14 @@ class SC_Helper_Mail {
             $where .= 'AND template_id = ?';
             $arrValues[] = $template_id;
         }
-        
+
         // 表示順
         $objQuery->setOrder("create_date DESC");
-        
+
         $arrResults = $objQuery->select('*', 'dtb_mailmaga_template', $where, $arrValues);
         return $arrResults;
     }
-    
+
     /**
      * 保存されているメルマガ送信履歴の取得
      * @param integer 特定の送信履歴を取り出したい時はsend_idを指定。未指定時は全件取得
@@ -362,20 +362,20 @@ class SC_Helper_Mail {
         // 初期化
         $where = '';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        
+
         // 条件文
         $where = 'del_flg = ?';
         $arrValues[] = 0;
-        
+
         //send_id指定時
         if (SC_Utils_Ex::sfIsInt($send_id) === true) {
             $where .= 'AND send_id = ?';
             $arrValues[] = $send_id;
         }
-        
+
         // 表示順
         $objQuery->setOrder("create_date DESC");
-        
+
         $arrResults = $objQuery->select('*', 'dtb_send_history', $where, $arrValues);
         return $arrResults;
     }
@@ -391,7 +391,7 @@ class SC_Helper_Mail {
         $objDb = new SC_Helper_DB_Ex();
         $objSite = $objDb->sfGetBasisData();
         $objMail = new SC_SendMail_Ex();
-        
+
         $where = 'del_flg = 0 AND send_id = ?';
         $arrMail = $objQuery->getRow('*', 'dtb_send_history', $where, array($send_id));
 
@@ -405,11 +405,11 @@ class SC_Helper_Mail {
             'send_id = ? AND (send_flag = 2 OR send_flag IS NULL)',
             array($send_id)
         );
-        
+
         // 現在の配信数
         $complete_count = $arrMail['complete_count'];
         if(SC_Utils_Ex::isBlank($arrMail)) $complete_count = 0;
-        
+
         foreach ($arrDestinationList as $arrDestination) {
 
             // 顧客名の変換
@@ -427,7 +427,7 @@ class SC_Helper_Mail {
                 $objSite["email04"],      // return_path
                 $objSite["email04"]       // errors_to
             );
-            
+
             // テキストメール配信の場合
             if ($arrMail["mail_method"] == 2) {
                 $sendResut = $objMail->sendMail();
@@ -444,7 +444,7 @@ class SC_Helper_Mail {
                 $sendFlag = '1';
                 $complete_count++;
             }
-            
+
             // 送信結果情報を更新
             $objQuery->update('dtb_send_customer',
                               array('send_flag'=>$sendFlag),

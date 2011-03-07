@@ -100,7 +100,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
         $this->arrForm = $_REQUEST;//時間が無いのでコレで勘弁してください。 tao_s
         //modeの取得
         $this->mode = $this->getMode();
-        
+
         //表示条件の取得
         $this->arrSearchData = array(
             'category_id' => $this->lfGetCategoryId(intval($this->arrForm['category_id'])),
@@ -108,7 +108,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
             'name'=>$this->arrForm['name']
         );
         $this->orderby = $this->arrForm['orderby'];
-        
+
         //ページング設定
         $this->tpl_pageno = $this->arrForm['pageno'];
         $this->disp_number = $this->lfGetDisplayNum($this->arrForm['disp_number']);
@@ -310,7 +310,7 @@ __EOS__;
         foreach($arrProduct_id as $product_id) {
             $arrProducts[] = $arrProducts2[$product_id];
         }
-        
+
         // 規格を設定
         $objProduct->setProductsClassByProductIds($arrProduct_id);
         $arrProducts += array('productStatus'=>$objProduct->getProductStatus($arrProduct_id));     
@@ -394,7 +394,7 @@ __EOS__;
         }
         return $arrSearch;
     }
-    
+
     /**
      * 該当件数の取得
      *
@@ -407,7 +407,7 @@ __EOS__;
         $objProduct = new SC_Product_Ex();
         return $objProduct->findProductCount($objQuery, $searchCondition['arrval']);
     }
-    
+
     /**
      * 検索条件のwhere文とかを取得
      *
@@ -420,7 +420,7 @@ __EOS__;
             "where_category"=>"",
             'arrvalCategory'=>array()
         );
-        
+
         // カテゴリからのWHERE文字列取得
         if ($arrSearchData["category_id"] != 0) {
             list($searchCondition["where_category"], $searchCondition['arrvalCategory']) = SC_Helper_DB_Ex::sfGetCatWhere($arrSearchData["category_id"]);
@@ -482,7 +482,7 @@ __EOS__;
         }
         return $js_fnOnLoad;
     }
-    
+
     /**
      * カートに商品を追加
      *

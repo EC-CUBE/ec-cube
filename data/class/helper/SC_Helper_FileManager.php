@@ -338,7 +338,7 @@ class SC_Helper_FileManager {
 
         return $str;
     }
-    
+
     /**
      * ファイル書込を行う.
      *
@@ -397,17 +397,17 @@ class SC_Helper_FileManager {
     function unpackFile($path) {
         // 圧縮フラグTRUEはgzip解凍をおこなう
         $tar = new Archive_Tar($path, true);
-        
+
         $dir = dirname($path);
         $file_name = basename($path);
-                
+
         // 拡張子を切り取る
         $unpacking_name = preg_replace("/(\.tar|\.tar\.gz)$/", "", $file_name);
-    
+
         // 指定されたフォルダ内に解凍する
         $tar->extractModify($dir. "/", $unpacking_name);
         GC_Utils_Ex::gfPrintLog("解凍：" . $dir."/".$file_name."->".$dir."/".$unpacking_name);
-        
+
         // フォルダ削除
         SC_Utils_Ex::sfDelFile($dir . "/" . $unpacking_name);
         // 圧縮ファイル削除

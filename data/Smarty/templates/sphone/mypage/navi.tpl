@@ -24,7 +24,7 @@
 <div id="mynavarea">
     <!--{strip}-->
         <ul class="button_like">
-        
+
           <!--{if $tpl_login}-->
             <!--{* 会員状態 *}-->
             <li><a href="./<!--{$smarty.const.DIR_INDEX_PATH}-->" class="<!--{if $tpl_mypageno == 'index'}--> selected<!--{/if}-->">
@@ -57,7 +57,7 @@
           <!--{/if}-->
 
         </ul>
-        
+
         <!--▼現在のポイント-->
         <!--{if $point_disp !== false}-->
             <ul>

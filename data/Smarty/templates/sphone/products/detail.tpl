@@ -142,7 +142,7 @@ function fnSetClassCategories(form, classcat_id2_selected) {
                 </tr>    
                 <!--{/if}-->
 
-            
+
                 <!--★ポイント★-->
                 <!--{if $smarty.const.USE_POINT !== false}-->
                 <tr>
@@ -212,7 +212,7 @@ function fnSetClassCategories(form, classcat_id2_selected) {
                 <input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->" />
                 <input type="hidden" name="product_class_id" value="<!--{$tpl_product_class_id}-->" id="product_class_id" />
                 <input type="hidden" name="favorite_product_id" value="" />
-                
+
 
                 <!--{if $tpl_stock_find}-->
                     <dl>
@@ -261,7 +261,7 @@ function fnSetClassCategories(form, classcat_id2_selected) {
 
                 <div class="btn">
                     <!--{if $smarty.const.OPTION_FAVOFITE_PRODUCT == 1 && $tpl_login === true}-->
-                        
+
                     <!--{/if}-->
 
                     <!--{if $tpl_stock_find}-->
@@ -281,7 +281,7 @@ function fnSetClassCategories(form, classcat_id2_selected) {
                         <div class="attention">申し訳ございませんが、只今品切れ中です。</div>
                     <!--{/if}-->
                 </div>
-                
+
                 <!--{if $smarty.const.OPTION_FAVOFITE_PRODUCT == 1 && $tpl_login === true}-->
                         <div class="btn" id="btn-recommend">
                             <!--{assign var=add_favorite value="add_favorite`$add_favorite_product_id`"}-->

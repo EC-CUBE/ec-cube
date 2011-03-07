@@ -216,7 +216,7 @@ class SC_Query {
     function exec($str, $arrval = array()) {
         return $this->query($str, $arrval);
     }
-    
+
     /**
      * クエリを実行し、結果行毎にコールバック関数を適用する
      *
@@ -239,7 +239,7 @@ class SC_Query {
         if (PEAR::isError($affected) && $this->force_run) {
             return;
         }
-        
+
         while($data = $affected->fetchRow($fetchmode)) {
             $result = call_user_func($cbFunc, $data);
             if($result === false) {
@@ -513,9 +513,9 @@ class SC_Query {
                 $arrCol[] = "$key = $val";
             }
         }
-        
+
         $arrVal = array_merge($arrVal, $arrRawSqlVal);
-        
+
         if (empty($arrCol)) {
             return false;
         }
@@ -736,10 +736,10 @@ class SC_Query {
         if (PEAR::isError($result) && $this->force_run) {
             return $sth;
         }
-        
+
         //PREPAREの解放
         $sth->free();
-        
+
         return $result;
     }
 
@@ -784,7 +784,7 @@ class SC_Query {
         $objManager =& $this->conn->loadModule('Manager');
         return $objManager->listTableIndexes($table);
     }
-    
+
     /**
      * テーブルにインデックスを付与する
      *

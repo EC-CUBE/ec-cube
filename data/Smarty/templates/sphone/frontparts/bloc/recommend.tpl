@@ -29,7 +29,7 @@
 
             <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrBestProducts[cnt].product_id|u}-->">
                 <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrBestProducts[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[cnt].name|h}-->" /></a>
-            
+
             <div class="recomendrightblock">
                 <h3>
                     <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrBestProducts[cnt].product_id|u}-->"><!--{$arrBestProducts[cnt].name|h}--></a>
@@ -45,7 +45,7 @@
                 <p class="mini comment"><!--{$arrBestProducts[cnt].comment|h|nl2br}--></p>
             </div>
         </div>
-        
+
         <!--{assign var=cnt2 value=`$smarty.section.cnt.iteration*$smarty.section.cnt.step-1`}-->
         <!--{if $arrBestProducts[$cnt2]|count > 0}-->
         <div class="recomendright">

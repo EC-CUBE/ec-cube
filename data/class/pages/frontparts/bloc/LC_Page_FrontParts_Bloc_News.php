@@ -91,7 +91,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
         $sql .= "   del_flg = '0' ";
         $sql .= " ORDER BY ";
         $sql .= "   rank DESC ";
-        
+
         $arrNewsList = $objQuery->getAll($sql);
         return $arrNewsList;
     }

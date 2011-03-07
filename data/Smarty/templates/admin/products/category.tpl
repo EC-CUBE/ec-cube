@@ -48,7 +48,7 @@
 
             <!--{* スペース繰り返し *}-->
             <!--{section name=n loop=$level}-->　　<!--{/section}-->
-            
+
             <!--{* カテゴリ名表示 *}-->
             <!--{assign var=disp_name value="`$arrTree[cnt].category_id`.`$arrTree[cnt].category_name`"}-->
             <!--{if $arrTree[cnt].level != $smarty.const.LEVEL_MAX}-->
@@ -81,7 +81,7 @@
 
     <!--{* ▼画面右 *}-->
     <div id="products-category-right">
-        
+
 
         <div class="now_dir">
                 <!--{if $arrErr.category_name}-->

@@ -104,10 +104,10 @@ class SC_Helper_CSV {
      */
     function sfGetCsvOutput($csv_id = "", $where = '', $arrVal = array(), $order = 'rank, no'){
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        
+
         $cols = 'no, csv_id, col, disp_name, rank, status, rw_flg, mb_convert_kana_option, size_const_type, error_check_types';
         $table = 'dtb_csv';
-        
+
         if(SC_Utils_Ex::sfIsInt($csv_id)){
             if($where == "") {
                 $where = "csv_id = ?";
@@ -117,7 +117,7 @@ class SC_Helper_CSV {
             $arrVal[] = $csv_id;
         }
         $objQuery->setOrder($order);
-        
+
         $arrRet = $objQuery->select($cols, $table, $where, $arrVal);
         return $arrRet;
     }
@@ -142,7 +142,7 @@ class SC_Helper_CSV {
         }
         return $result;
     }
-    
+
     /**
      * CSVが出力設定で更新可能かのチェック
      *
@@ -160,7 +160,7 @@ class SC_Helper_CSV {
         }
         return $result;
     }
-    
+
     /**
      * CSVファイルのカウント数を得る.
      *
@@ -217,7 +217,7 @@ class SC_Helper_CSV {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder($order);        
         $cols = SC_Utils_Ex::sfGetCommaList($arrOutputCols, true);
-        
+
         // TODO: 固有処理 なんかエレガントな処理にしたい
         if($csv_id == '1') {
             //商品の場合
@@ -228,7 +228,7 @@ class SC_Helper_CSV {
         }else if($csv_id == '2') {
             // 顧客の場合
             $sql = "SELECT " . $cols . " FROM dtb_customer " . $where;
-            
+
         }
         // 固有処理ここまで
         return $this->sfDownloadCsvFromSql($sql, $arrVal, $this->arrSubnavi[$csv_id], $arrOutput['disp_name'], $is_download);
@@ -317,20 +317,20 @@ class SC_Helper_CSV {
             ,'dtb_category'
             ,'del_flg = 0'
         );
-        
+
         $outputArray = array();
-        
+
         // ヘッダ行
         $outputArray[] = $arrOutput['disp_name'];
-        
+
         // データ行
         foreach ($dataRows as $row) {
             $outputArray[] = $row;
         }
-        
+
         // CSVを送信する。
         $this->lfDownloadCsv($outputArray, 'category');
-        
+
         // 成功終了
         return true;
     }
@@ -430,20 +430,20 @@ class SC_Helper_CSV {
             trigger_error('delimiter must be a single character', E_USER_WARNING);
             return "";
         }
-        
+
         if( strlen($enclosure) < 1 ) {
             trigger_error('enclosure must be a single character', E_USER_WARNING);
             return "";
         }
-        
+
         foreach (array_keys($fields) as $key) {
             $field =& $fields[$key];
-            
+
             // 配列を「|」区切りの文字列に変換する
             if (is_array($field)) {
                 $field = implode($arrayDelimiter, $field);
             }
-            
+
             /* enclose a field that contains a delimiter, an enclosure character, or a newline */
             if (
                    is_string($field)
@@ -452,10 +452,10 @@ class SC_Helper_CSV {
                 $field = $enclosure . preg_replace('/' . preg_quote($enclosure) . '/', $enclosure . $enclosure, $field) . $enclosure;
             }
         }
-        
+
         return implode($delimiter, $fields);
     }
-    
+
     /**
      * CSVを送信する。
      */
@@ -481,19 +481,19 @@ class SC_Helper_CSV {
             echo $lineString . "\r\n";
         }
     }
-    
+
     /**
      * CSVファイルを送信する。
      */
     function lfDownloadCSVFile($filepath, $prefix = "") {
         $file_name = $prefix . date('YmdHis') . ".csv";
-        
+
         /* HTTPヘッダの出力 */
         Header("Content-disposition: attachment; filename=${file_name}");
         Header("Content-type: application/octet-stream; name=${file_name}");
         Header("Cache-Control: ");
         Header("Pragma: ");
-        
+
         /* データを出力 */
         // file_get_contentsはメモリマッピングも自動的に使ってくれるので高速＆省メモリ
         echo file_get_contents($filepath);

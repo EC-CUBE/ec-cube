@@ -117,7 +117,7 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin_Ex {
 
         case 'pre_edit':
                 $arrRet = $this->lfGetData($post['payment_id']);
-                
+
                 $objFormParam->addParam("支払方法", "payment_method", STEXT_LEN, 'KVa', array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
                 $objFormParam->addParam("手数料", 'charge', PRICE_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
                 $objFormParam->addParam("利用条件(～円以上)", 'rule', PRICE_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));

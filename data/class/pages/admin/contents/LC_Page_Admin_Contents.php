@@ -195,11 +195,11 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      */
     function lfNewsInsert($arrPost,$member_id){
         $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
-        
+
         // rankの最大+1を取得する
         $rank_max = $this->getRankMax();
         $rank_max = $rank_max + 1;
-        
+
         $table = 'dtb_news';
         $sqlval = array();
         $news_id = $objQuery->nextVal('dtb_news_news_id');
@@ -222,7 +222,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
         $objQuery->update($table, $sqlval, $where);
     }
 
-    
+
     function lfNewsUpdate($arrPost,$member_id){
         $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
 

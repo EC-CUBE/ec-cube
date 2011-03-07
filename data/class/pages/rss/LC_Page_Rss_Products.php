@@ -64,17 +64,17 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
      */
     function action() {
         $objView = new SC_SiteView_Ex();
-        
+
         //店舗情報をセット
         $this->arrSiteInfo = SC_Helper_DB_Ex::sfGetBasisData();
-        
+
         //商品IDを取得
         if ( isset($_GET['product_id']) && $_GET['product_id'] != '' && is_numeric($_GET['product_id']) ) {
             $product_id = $_GET['product_id'];
         } else {
             $product_id = '';
         }
-        
+
         // モードによって分岐
         $mode = $this->getMode();
         switch ($mode) {
@@ -96,21 +96,21 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
             }
             break;
         }
-        
+
         // 商品情報をセット
         $this->arrProduct = $arrProduct;
         $this->arrProductKeys = $this->lfGetProductKeys($arrProduct);
-        
+
         //セットしたデータをテンプレートファイルに出力
         $objView->assignobj($this);
-        
+
         //キャッシュしない(念のため)
         header("Pragma: no-cache");
-        
+
         //XMLテキスト(これがないと正常にRSSとして認識してくれないツールがあるため)
         header("Content-type: application/xml");
         P_DETAIL_URLPATH;
-        
+
         //画面表示
         $objView->display($this->tpl_mainpage, true);
     }

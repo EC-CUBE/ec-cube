@@ -73,9 +73,9 @@ class LC_Page_Sitemap extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        
+
         $this->staticURL = array();
-        
+
         $this->staticURL[] = HTTP_URL . 'rss/' . DIR_INDEX_PATH;
         if (USE_MOBILE !== false) {
             $this->staticURL[] = HTTP_URL;
@@ -214,7 +214,7 @@ class LC_Page_Sitemap extends LC_Page_Ex {
      * @return array 検索エンジンからアクセス可能な商品一覧ページの情報
      */
     function getAllProducts() {
-        
+
         // XXX: 商品登録の無いカテゴリーは除外する方が良い気もする
         $objQuery = SC_Query_Ex::getSingletonInstance();
         $sql = "SELECT category_id FROM dtb_category WHERE del_flg = 0";
@@ -223,10 +223,10 @@ class LC_Page_Sitemap extends LC_Page_Ex {
         $arrRet = array();
         foreach ($result as $row) {
             // :TODO: カテゴリの最終更新日を取得できるようにする
-            
+
             $arrPage['url'] = HTTP_URL . 'products/list.php?category_id=' . $row['category_id'];
             $arrRet[] = $arrPage;
-            
+
             // モバイルサイト
             if (USE_MOBILE !== false) {
                 $arrPage['url'] = HTTP_URL . 'products/list.php?category_id=' . $row['category_id'];
@@ -248,12 +248,12 @@ class LC_Page_Sitemap extends LC_Page_Ex {
 
         $arrRet = array();
         foreach ($result as $row) {
-            
+
             $arrPage["update_date"] = $row['update_date'];
-            
+
             $arrPage['url'] = HTTP_URL . substr(P_DETAIL_URLPATH, strlen(ROOT_URLPATH)) . $row['product_id'];
             $arrRet[] = $arrPage;
-            
+
             // モバイルサイト
             if (USE_MOBILE !== false) {
                 $arrPage['url'] = HTTP_URL . substr(MOBILE_P_DETAIL_URLPATH, strlen(ROOT_URLPATH)) . $row['product_id'];
@@ -301,7 +301,7 @@ class LC_Page_Sitemap extends LC_Page_Ex {
         $sql .= " ORDER BY page_id";
 
         $arrPageList = $objQuery->getAll($sql, $arrVal);
-        
+
         // URL にプロトコルの記載が無い場合、HTTP_URL を前置する。
         foreach (array_keys($arrPageList) as $key) {
             $arrPage =& $arrPageList[$key];
@@ -311,7 +311,7 @@ class LC_Page_Sitemap extends LC_Page_Ex {
             $arrPage['url'] = preg_replace('|/' . preg_quote(DIR_INDEX_FILE) . '$|', '/' . DIR_INDEX_PATH, $arrPage['url']);
         }
         unset($arrPage);
-        
+
         return $arrPageList;
     }
 

@@ -74,7 +74,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
     function action() {
         // パラメータ管理クラス
         $objFormParam = new SC_FormParam_Ex();
-        
+
         switch ($this->getMode()) {
         case 'login':
             //ログイン処理
@@ -95,7 +95,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
         // 管理者ログインテンプレートフレームの設定
         $this->setTemplate(LOGIN_FRAME);
     }
-    
+
     /**
      * パラメーター情報の初期化
      *
@@ -106,7 +106,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
         $objFormParam->addParam('ID', 'login_id', ID_MAX_LEN, '', array('EXIST_CHECK', 'ALNUM_CHECK' ,'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('PASSWORD', 'password', ID_MAX_LEN, '', array('EXIST_CHECK', 'ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
-    
+
     /**
      * パラメーターのエラーチェック
      *
@@ -128,7 +128,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
         }
         return $arrErr;
     }
-    
+
     /**
      * 有効な管理者ID/PASSかどうかチェックする
      *
@@ -152,7 +152,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
         }
         return false;
     }
-    
+
     /**
      * 管理者ログイン設定処理
      *
@@ -171,7 +171,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
         // ログイン情報記録
         $this->lfSetLoginData($sid, $arrData['member_id'], $login_id, $arrData['authority'], $arrData['login_date']);
     }
-    
+
     /**
      * ログイン情報セッション登録
      *
@@ -198,7 +198,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
         }
         return $objSess->GetSID();
     }
-    
+
     /**
      * ログイン情報の記録
      *
@@ -214,7 +214,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
         $str_log = "login: user=$login_id($member_id) auth=$authority "
                     . "lastlogin=$last_login sid=$sid";
         GC_Utils_Ex::gfPrintLog($str_log);
-        
+
         // 最終ログイン日時更新
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sqlval = array();
@@ -223,7 +223,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
         $where = "member_id = ?";
         $objQuery->update($table, $sqlval, $where, array($member_id));
     }
-    
+
     /**
      * ログイン失敗情報の記録
      *

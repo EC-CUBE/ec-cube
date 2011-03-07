@@ -157,7 +157,7 @@ class SC_DB_MasterData {
         }
         return $i;
     }
-    
+
     /**
      * マスタデータを追加する.
      *
@@ -185,7 +185,7 @@ class SC_DB_MasterData {
         $sqlVal[$columns[2]] = $this->objQuery->max($columns[2], $name) + 1;
         $sqlVal[$columns[3]] = $comment;
         $this->objQuery->insert($name, $sqlVal);
-        
+
         if ($autoCommit) {
             $this->objQuery->commit();
         }

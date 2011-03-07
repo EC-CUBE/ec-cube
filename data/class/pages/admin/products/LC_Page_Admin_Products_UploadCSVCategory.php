@@ -133,7 +133,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         $objQuery->begin();
 
         $errFlg = false;
-        
+
         while (!feof($fp)) {
             $arrRow = fgetcsv($fp, CSV_LINE_MAX);
             $line_count++;
@@ -180,7 +180,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
                 $this->addRowErr($line_count, "指定の親カテゴリID(" . $arrRow['parent_category_id'] . ")は、存在しません。");
                 break;
             }
-            
+
             $count = $objQuery->count("dtb_category", "category_id = ?", array($arrRow['category_id']));
 
             // 編集
@@ -204,7 +204,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
                 $arrCategory['update_date'] = 'NOW()';
                 $where = "category_id = ?";
                 $objQuery->update("dtb_category", $arrCategory, $where, array($arrRow['category_id']));
-                
+
                 $message = "[更新] カテゴリID: " . $arrRow['category_id'] . " カテゴリ名 : " . $arrRow['category_name'];
                 $this->addRowResult($line_count, $message);
             // 登録

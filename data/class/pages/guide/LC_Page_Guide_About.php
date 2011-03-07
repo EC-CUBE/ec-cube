@@ -65,7 +65,7 @@ class LC_Page_Guide_About extends LC_Page_Ex {
         $objDb = new SC_Helper_DB_Ex();
         $this->arrSiteInfo = $objDb->sfGetBasisData();
     }
-    
+
     /**
      * デストラクタ.
      *

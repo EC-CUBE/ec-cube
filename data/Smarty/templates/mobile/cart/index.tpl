@@ -88,7 +88,7 @@
     <!--{$arrData[$key].add_point|number_format}-->pt<br>
     <br>
 	<!--{/if}-->
-    
+
 	<center><input type="submit" value="注文する"></center>
 </form>
 

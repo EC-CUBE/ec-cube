@@ -62,7 +62,7 @@ class LC_Page_Admin_Mail_Preview extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        
+
         $objMailHelper = new SC_Helper_Mail_Ex();
 
         switch ($this->getMode()) {
@@ -83,7 +83,7 @@ class LC_Page_Admin_Mail_Preview extends LC_Page_Admin_Ex {
         default:
         }
 
-        
+
         $this->setTemplate($this->tpl_mainpage);
     }
 

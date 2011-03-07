@@ -148,7 +148,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $objFormParam->addParam('名称', 'sql_name', STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK","SPTAB_CHECK"));
         $objFormParam->addParam('SQL文', 'csv_sql', "30000", 'KVa', array("MAX_LENGTH_CHECK","SPTAB_CHECK"));
     }
-    
+
     /**
      * SQL登録エラーチェック
      *

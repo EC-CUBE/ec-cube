@@ -54,7 +54,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
     var $arrRowErr;
 
     var $arrRowResult;
-    
+
     /**
      * Page を初期化する.
      *
@@ -98,7 +98,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      */
     function action() {
         $this->objDb = new SC_Helper_DB_Ex();
-        
+
         // CSV管理ヘルパー
         $objCSV = new SC_Helper_CSV_Ex();
         // CSV構造読み込み
@@ -178,10 +178,10 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         if (!$fp) {
              SC_Utils_Ex::sfDispError("");
         }
-        
+
         // 登録先テーブル カラム情報の初期化
         $this->lfInitTableInfo();
-        
+
         // 登録フォーム カラム情報
         $this->arrFormKeyList = $objFormParam->getKeyList();
 
@@ -255,7 +255,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         $this->objDb->sfCountMaker($objQuery);
         return;
     }
-    
+
     /**
      * デストラクタ.
      *

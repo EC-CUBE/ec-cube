@@ -43,7 +43,7 @@ class LC_Page_Admin extends LC_Page_Ex {
      */
     function init() {
         $this->template = MAIN_FRAME;
-        
+
         //IP制限チェック
         $allow_hosts = unserialize(ADMIN_ALLOW_HOSTS);
         if(count($allow_hosts) > 0){
@@ -52,7 +52,7 @@ class LC_Page_Admin extends LC_Page_Ex {
                 exit;
             }
         }
-        
+
         //SSL制限チェック
         if(ADMIN_FORCE_SSL == TRUE){
             if(empty($_SERVER['HTTPS']) AND $_SERVER['SERVER_PORT'] != 443){

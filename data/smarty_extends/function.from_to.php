@@ -33,12 +33,12 @@
 function smarty_function_from_to($params, &$smarty)
 {
     require_once $smarty->_get_plugin_filepath('shared', 'escape_special_chars');
-    
+
     $from = null;
     $to = null;
     $separator = ' ～ ';
     $escape = true;
-    
+
     foreach ($params as $_key => $_val) {
         switch ($_key) {
         case 'from':
@@ -47,18 +47,18 @@ function smarty_function_from_to($params, &$smarty)
         case 'escape':
             $$_key = (string) $_val;
             break;
-        
+
         default:
             $smarty->trigger_error("from_to: extra attribute '$_key' is unknown.", E_USER_NOTICE);
             break;
         }
     }
-    
+
     if ($escape) {
         $from = smarty_function_escape_special_chars($from);
         $to   = smarty_function_escape_special_chars($to);
     }
-    
+
     if ($from === $to) {
         return $from;
     } else {

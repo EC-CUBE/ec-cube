@@ -78,7 +78,7 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
         default:
             break;
         }
-        
+
         list($this->tpl_linemax, $this->arrDataList, $this->arrPagenavi) = $this->lfDoSearch($_POST['search_pageno']);
     }
 
@@ -90,7 +90,7 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
     function destroy() {
         parent::destroy();
     }
-    
+
     /**
      * 実行履歴の取得
      * 
@@ -98,19 +98,19 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
      * @return array( integer 全体件数, mixed メール配信データ一覧配列, mixed SC_PageNaviオブジェクト)
      */
     function lfDoSearch($search_pageno = 1) {
-        
+
         // 引数の初期化
         if(SC_Utils_Ex::sfIsInt($search_pageno)===false) $search_pageno = 1;
         // 
         $objSelect =& SC_Query_Ex::getSingletonInstance();    // 一覧データ取得用
         $objQuery =& SC_Query_Ex::getSingletonInstance();    // 件数取得用
-        
+
         // 該当全体件数の取得
         $linemax = $objQuery->count("dtb_send_history","del_flg = 0");
 
         // 一覧データの取得
         $objSelect->setOrder("start_date DESC, send_id DESC");
-        
+
         $col = "*";
         $col .= ",(SELECT COUNT(*) FROM dtb_send_customer WHERE dtb_send_customer.send_id = dtb_send_history.send_id) AS count_all";
         $col .= ",(SELECT COUNT(*) FROM dtb_send_customer WHERE dtb_send_customer.send_id = dtb_send_history.send_id AND send_flag = 1) AS count_sent";

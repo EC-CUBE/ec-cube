@@ -59,7 +59,7 @@ class SC_SendMail {
     function setRecip($key, $recipient) {
         $this->arrRecip[$key] = $recipient;
     }
-    
+
     // 宛先の設定
     function setTo($to, $to_name = "") {
         if($to != "") {
@@ -234,7 +234,7 @@ class SC_SendMail {
         $arrHeader['Content-Transfer-Encoding'] = "ISO-2022-JP";
         return $arrHeader;
     }
-    
+
     /**
      * メーラーバックエンドに応じた送信先を返す
      *

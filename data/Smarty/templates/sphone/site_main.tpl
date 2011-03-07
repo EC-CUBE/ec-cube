@@ -105,7 +105,7 @@
             <!--{* ▲メイン下部 *}-->
         </div>
 <!--{* ▲CENTER COLUMN *}-->
-        
+
 <!--{* ▼BOTTOM COLUMN*}-->
         <!--{if $arrPageLayout.BottomNavi|@count > 0}-->
             <div>

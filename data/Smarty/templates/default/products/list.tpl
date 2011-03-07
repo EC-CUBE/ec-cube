@@ -82,10 +82,10 @@ function fnInCart(productForm) {
         <!--{* ▲注文関連 *}-->
         <input type="hidden" name="rnd" value="<!--{$tpl_rnd|h}-->" />
     </form>
-    
+
     <!--★タイトル★-->
     <h2 class="title"><!--{$tpl_subtitle|h}--></h2>
-    
+
     <!--▼検索条件-->
     <!--{if $tpl_subtitle == "検索結果"}-->
         <ul class="pagecond_area">
@@ -134,7 +134,7 @@ function fnInCart(productForm) {
                 <span class="attention"><!--{$tpl_linemax}-->件</span>の商品がございます。
             </div>
             <!--▲件数-->
-            
+
             <!--▼ページナビ(上部)-->
             <form name="page_navi_top" id="page_navi_top" action="?">
                 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />

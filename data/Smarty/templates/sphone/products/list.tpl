@@ -59,10 +59,10 @@ function fnChangeDispNumber(dispNumber) {
         <!--{* ▲注文関連 *}-->
         <input type="hidden" name="rnd" value="<!--{$tpl_rnd|h}-->" />
     </form>
-    
+
     <!--★タイトル★-->
     <h2 class="title"><!--{$tpl_subtitle|h}--></h2>
-    
+
     <!--▼検索条件-->
     <!--{if $tpl_subtitle == "検索結果"}-->
         <ul class="pagecondarea">
@@ -99,7 +99,7 @@ function fnChangeDispNumber(dispNumber) {
             <!--▼件数-->
             <div>
                 <span class="pagenumber"><!--{$tpl_linemax}--></span>件の商品
-                
+
                 <select name="disp_number" onchange="javascript:fnChangeDispNumber(this.value);">
                     <!--{foreach from=$arrPRODUCTLISTMAX item="dispnum" key="num"}-->
                         <!--{if $num == $disp_number}-->
@@ -111,7 +111,7 @@ function fnChangeDispNumber(dispNumber) {
                 </select>
             </div>
             <!--▲件数-->
-            
+
             <!--▼ページナビ(上部)-->
             <form name="page_navi_top" id="page_navi_top" action="?">
                 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -129,7 +129,7 @@ function fnChangeDispNumber(dispNumber) {
                 <!--★画像★-->
                 <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrProduct.product_id|u}-->" class="over"><!--商品写真--><img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH|sfTrimURL}-->/<!--{$arrProduct.main_list_image|sfNoImageMainList|h}-->" alt="<!--{$arrProduct.name|h}-->" class="picture" /></a>
             </div>
-            
+
             <div class="listrightblock">
                 <!--▼商品ステータス-->
                 <!--{if count($productStatus[$id]) > 0}-->
@@ -142,15 +142,15 @@ function fnChangeDispNumber(dispNumber) {
                     </ul>
                 <!--{/if}-->
                 <!--▲商品ステータス-->
-                
+
                 <!--★商品名★-->
                 <h3>
                     <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrProduct.product_id|u}-->" name="product<!--{$arrProduct.product_id}-->"><!--{$arrProduct.name|h}--></a>
                 </h3>
-                
+
                 <!--★コメント★-->
                 <p class="listcomment"><!--{$arrProduct.main_list_comment|h|nl2br}--></p>
-                
+
                 <p>
                     <span class="pricebox sale_price">
                         <span class="mini">税込</span>：

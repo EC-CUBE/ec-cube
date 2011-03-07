@@ -94,9 +94,9 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
             // エラーがなければバックアップ処理を行う
             if (SC_Utils_Ex::isBlank($arrErrTmp[1]) && SC_Utils_Ex::isBlank($arrErrTmp[2])) {
-            
+
                 $arrData = $objFormParam->getHashArray();
-            
+
                 // バックアップファイル作成
                 $arrErrTmp[3] = $this->lfCreateBkupData($arrData['bkup_name'], $this->bkup_dir);
 
@@ -407,7 +407,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         $arrVal['bkup_name'] = $data['bkup_name'];
         $arrVal['bkup_memo'] = $data['bkup_memo'];
         $arrVal['create_date'] = "now()";
-        
+
         $objQuery->insert('dtb_bkup', $arrVal);
     }
 

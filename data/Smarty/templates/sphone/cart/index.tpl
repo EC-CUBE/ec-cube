@@ -43,12 +43,12 @@ $(document).ready(function() {
                     <!--{/if}-->
                     ポイントは商品購入時に1pt＝<!--{$smarty.const.POINT_VALUE}-->円として使用することができます。<br />
                 <!--{/if}-->
-                
+
                 <!--{* カゴの中に商品がある場合にのみ表示 *}-->
                 <!--{if count($cartKeys) > 1}-->
                     <em><!--{foreach from=$cartKeys item=key name=cartKey}--><!--{$arrProductType[$key]}--><!--{if !$smarty.foreach.cartKey.last}-->、<!--{/if}--><!--{/foreach}-->は同時購入できません。お手数ですが、個別に購入手続きをお願い致します。</em>
                 <!--{/if}-->
-               
+
             </p>
         <!--{/if}-->
 

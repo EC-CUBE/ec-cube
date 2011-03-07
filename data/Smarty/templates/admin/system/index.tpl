@@ -29,7 +29,7 @@
         <!--{$tpl_strnavi}-->
         <!--▲ページ送り-->
     </div>
-    
+
     <!--▼メンバー一覧ここから-->
     <table class="list">
         <colgroup width="15%">

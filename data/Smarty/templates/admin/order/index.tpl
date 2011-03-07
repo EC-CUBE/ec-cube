@@ -26,14 +26,14 @@
     function fnSelectCheckSubmit(action){
 
         var fm = document.form1;
-        
+
         if (!fm["pdf_order_id[]"]) {
             return false;
         }
-        
+
         var checkflag = false;
         var max = fm["pdf_order_id[]"].length;
-        
+
         if (max) {
             for (var i=0; i<max; i++) {
                 if(fm["pdf_order_id[]"][i].checked == true){
@@ -50,25 +50,25 @@
             alert('チェックボックスが選択されていません');
             return false;
         }
-        
+
         fnOpenPdfSettingPage(action);
     }
 
     function fnOpenPdfSettingPage(action){
         var fm = document.form1;
         win02("about:blank", "pdf", "620","650");
-        
+
         // 退避
         tmpTarget = fm.target;
         tmpMode = fm.mode.value;
         tmpAction = fm.action;
-        
+
         fm.target = "pdf";
         fm.mode.value = 'pdf';
         fm.action = action;
         fm.submit();
         WIN.focus();
-        
+
         // 復元
         fm.target = tmpTarget;
         fm.mode.value = tmpMode;

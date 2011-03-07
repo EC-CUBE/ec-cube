@@ -91,7 +91,7 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
             $arrAllProductID = $objCart->getAllProductID($cart_key);
             // 商品が1つ以上入っている場合には商品名称を取得
             if (count($arrCartList) > 0){
-                
+
                 foreach($arrCartList['productsClass'] as $key => $val){
                     $arrCartList[$key]['product_name'] = $val['name'];
                 }
@@ -101,18 +101,18 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
             // 合計数量
             $total_quantity += $objCart->getTotalQuantity($cart_key);
         }
-        
+
         // 店舗情報の取得
         $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
-        
+
         // 送料無料までの金額
         $arrCartList[0]['ProductsTotal'] = $products_total;
         $arrCartList[0]['TotalQuantity'] = $total_quantity;
-        
+
         $deliv_free = $arrInfo['free_rule'] - $products_total;
         $arrCartList[0]['free_rule'] = $arrInfo['free_rule'];
         $arrCartList[0]['deliv_free'] = $deliv_free;
-        
+
         return $arrCartList;
     }
 }

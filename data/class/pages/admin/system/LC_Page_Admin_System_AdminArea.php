@@ -166,7 +166,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
         }
     }
 
-    
+
     //管理機能ディレクトリのリネームと CONFIG_REALFILE の変更
     function lfUpdateAdminData(&$arrForm){
         $admin_dir = trim($arrForm['admin_dir'])."/";
@@ -195,7 +195,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
                 rename(HTML_REALDIR.ADMIN_DIR,HTML_REALDIR.$admin_dir);
                 $diff ++;
             }
-            
+
             if(strpos($line,"ADMIN_FORCE_SSL") !== false){
                 $installData[$key] = 'define("ADMIN_FORCE_SSL",'.$admin_force_ssl.');';
                 $diff ++;
@@ -205,7 +205,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
                 $diff ++;
             }
         }
-        
+
         if($diff > 0) {
             $fp = fopen(CONFIG_REALFILE,'wb');
             $installData = implode("\n",$installData);

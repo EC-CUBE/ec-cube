@@ -119,7 +119,7 @@ class SC_View {
       // オブジェクト内の変数をすべて割り当てる。
       function assignobj($obj) {
         $data = get_object_vars($obj);
-        
+
         foreach ($data as $key => $value){
             $this->_smarty->assign($key, $value);
         }

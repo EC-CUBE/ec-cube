@@ -217,7 +217,7 @@ class SC_Batch_Update extends SC_Batch {
      */
     function lfMkdirRecursive($path){
         $path = dirname($path);
-        
+
         // HTML_REALDIR/DATA_REALDIRの判別
         if (preg_match("@\Q".HTML_REALDIR."\E@", $path) > 0) {
             $dir = str_replace("\\", "/", HTML_REALDIR);

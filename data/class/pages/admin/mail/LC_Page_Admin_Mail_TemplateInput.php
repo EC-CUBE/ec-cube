@@ -70,7 +70,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
      */
     function action() {
         $objMailHelper = new SC_Helper_Mail_Ex();
-        
+
         switch ($this->getMode()) {
         case 'edit':
             // 編集
@@ -82,12 +82,12 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
         case 'regist':
             // 新規登録
             $objFormParam = new SC_FormParam_Ex();
-            
+
             $this->lfInitParam($objFormParam);
             $objFormParam->setParam($_POST);
             $this->arrErr = $objFormParam->checkError();
             $this->arrForm = $objFormParam->getHashArray();
-            
+
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 // エラーが無いときは登録・編集
                 $this->lfRegistData( $objFormParam, $objFormParam->getValue('template_id'));
@@ -123,7 +123,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfRegistData( &$objFormParam, $template_id = null ){
-        
+
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sqlval = $objFormParam->getDbArray();
 

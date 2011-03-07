@@ -55,14 +55,14 @@ class LC_Page_Guide extends LC_Page_Ex {
         $this->action();
         $this->sendResponse();
     }
-    
+
     /**
      * Page のアクション.
      *
      * @return void
      */
     function action() {}
-    
+
     /**
      * デストラクタ.
      *

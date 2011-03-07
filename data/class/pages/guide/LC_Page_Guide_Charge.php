@@ -55,7 +55,7 @@ class LC_Page_Guide_Charge extends LC_Page_Ex {
         $this->action();
         $this->sendResponse();
     }
-    
+
     /**
      * Page のアクション.
      *

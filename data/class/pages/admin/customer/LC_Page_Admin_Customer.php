@@ -69,7 +69,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
         // カテゴリ一覧設定
         $objDb = new SC_Helper_DB_Ex();
         $this->arrCatList = $objDb->sfGetCategoryList();
-        
+
         $this->httpCacheControl('nocache');
     }
 
@@ -217,7 +217,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
     function lfDoCSV($arrParam) {
         $objSelect = new SC_CustomerList_Ex($arrParam, 'customer');
         $order = "update_date DESC, customer_id DESC";
-        
+
         require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_CSV_Ex.php';
         $objCSV = new SC_Helper_CSV_Ex();
         list($where, $arrVal) = $objSelect->getWhere();

@@ -59,7 +59,7 @@ class LC_Page_RSS extends LC_Page_Ex {
 
         //新着情報を取得
         $arrNews = $this->lfGetNews($objQuery);
-        
+
         //キャッシュしない(念のため)
         header("pragma: no-cache");
 
@@ -112,14 +112,14 @@ class LC_Page_RSS extends LC_Page_Ex {
         $order = "rank DESC";
         $objQuery->setOrder($order);
         $arrNews = $objQuery->select($col,$from,$where);
-        
+
         // RSS用に変換
         foreach (array_keys($arrNews) as $key) {
             $row =& $arrNews[$key];
             // 日付
             $row['news_date'] = date('r', strtotime($row['news_date']));
         }
-        
+
         return $arrNews;
     }
 }

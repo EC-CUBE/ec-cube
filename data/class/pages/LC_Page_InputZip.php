@@ -63,7 +63,7 @@ class LC_Page_InputZip extends LC_Page_Ex {
                 $tpl_message .= preg_replace("/<br \/>/", "\n", $val);
             }
             echo $tpl_message;
-        
+
         // エラー無し
         } else {
             // 郵便番号検索文作成
@@ -118,7 +118,7 @@ class LC_Page_InputZip extends LC_Page_Ex {
         if ( !$this->lfInputNameCheck($arrRequest['input2']) ) {
             $arrErr['input2'] = "※ 入力形式が不正です。<br />";
         }
-        
+
         return $arrErr;
     }
 

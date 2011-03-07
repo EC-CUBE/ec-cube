@@ -24,7 +24,7 @@
 <script type="text/javascript">
 <!--
 function lfnCheckSubmit( fm ){
-    
+
     var err = '';
     /*
     if ( ! fm["title"].value ){
@@ -56,7 +56,7 @@ function lfnCheckSetItem( rank ){
             }
         } 
     }
-    
+
     if ( flag ){
         win03('./recommend_search.php?rank=' + rank,'search','615','600');
     }

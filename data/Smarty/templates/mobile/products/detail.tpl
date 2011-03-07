@@ -37,7 +37,7 @@
   <!--{else}-->
 [<a href="?product_id=<!--{$smarty.get.product_id}-->&amp;image=main_image">1</a>]
   <!--{/if}-->
-  
+
   <!--{assign var=num value="2"}-->
   <!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
   <!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->

@@ -176,7 +176,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
         $objQuery->setLimitOffset($page_max, $startno);
         // 表示順序
         $objQuery->setOrder($order);
-         
+
         // 検索結果の取得
         return $objProduct->findProductIdsOrder($objQuery, $bind);
     }

@@ -72,7 +72,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         // パラメータ情報の初期化
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
-        
+
         $mode = $this->getMode();
 
         switch($mode) {
@@ -86,7 +86,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
             if(count($this->arrErr) == 0) {
                 $plugin_id = $objFormParam->getValue('plugin_id');
                 $plugin_code = $objFormParam->getValue('plugin_code');
-                
+
                 // プラグインファイルを読み込み、modeで指定されたメソッドを実行
                 $this->arrErr = $this->lfExecPlugin($plugin_id, $plugin_code, $mode);
             }
@@ -227,7 +227,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      */
     function lfUploadPlugin(&$objUpFile, $plugin_dir, $plugin_code, $plugin_file_name) {
         $arrErr = array();
-        
+
         // 必須チェック
         $arrErr = $objUpFile->checkEXISTS('plugin_file');
 
@@ -265,7 +265,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
     function lfRegistData($plugin_dir, $plugin_code) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sqlval = array();
-        
+
         $sqlval['plugin_id'] = $objQuery->nextVal('dtb_plugin_plugin_id');
         $sqlval['plugin_code'] = $plugin_code;
         $sqlval['status'] = PLUGIN_STATUS_UPLOADED;
@@ -289,7 +289,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         } else {
             $arrErr['plugin_error'] = "※ " . $plugin_code . ".phpが存在しないため実行できません。<br/>";
         }
-        
+
         return $arrErr;
     }
 
@@ -307,7 +307,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
 
         // プラグインファイル読み込み
         $arrErr = $this->lfRequirePluginFile($plugin_code);
-        
+
         if(count($arrErr) == 0) {
             $plugin = new $plugin_code();
             $arrErr = $plugin->$exec_mode($plugin_id);

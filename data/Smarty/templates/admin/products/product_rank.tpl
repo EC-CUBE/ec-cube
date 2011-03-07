@@ -35,16 +35,16 @@
         <a href="?"><img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ">&nbsp;ホーム</a><br />
         <!--{section name=cnt loop=$arrTree}-->
             <!--{assign var=level value="`$arrTree[cnt].level`}-->
-            
+
             <!--{* 上の階層表示の時にdivを閉じる *}-->
             <!--{assign var=close_cnt value="`$before_level-$level+1`}-->
             <!--{if $close_cnt > 0}-->
                 <!--{section name=n loop=$close_cnt}--></div><!--{/section}-->
             <!--{/if}-->
-                                
+
             <!--{* スペース繰り返し *}-->
             <!--{section name=n loop=$level}-->　　<!--{/section}-->
-            
+
             <!--{* カテゴリ名表示 *}-->
             <!--{assign var=disp_name value="`$arrTree[cnt].category_id`.`$arrTree[cnt].category_name`"}-->
             <a href="?" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrTree[cnt].category_id}-->); return false">

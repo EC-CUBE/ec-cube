@@ -90,7 +90,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         $this->objFormParam->setParam($_POST);
         // 入力値の変換
         $this->objFormParam->convParam();
-        
+
         // どんな状態の時に isset($arrRet) == trueになるんだ? これ以前に$arrRet無いが、、、、
         if (!isset($arrRet)) $arrRet = array();
         switch($this->getMode()) {
@@ -148,7 +148,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
      * @param SC_FormParam $objFormParam
      */
     function createPdf(&$objFormParam){
-        
+
         $arrErr = $this->lfCheckError($objFormParam);
         $arrRet = $objFormParam->getHashArray();
 
@@ -220,15 +220,15 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         if(!is_numeric($month)){
             $arrErr['month'] = "発行月は数値で入力してください。";
         }else if(0 >= $month && 12 < $month){
-                   
+
             $arrErr['month'] = "発行月は1〜12の間で入力してください。";
         }
-        
+
         $day = $objFormParam->getValue('day');
         if(!is_numeric($day)){
             $arrErr['day'] = "発行日は数値で入力してください。";
         }else if(0 >= $day && 31 < $day){
-                   
+
             $arrErr['day'] = "発行日は1〜31の間で入力してください。";
         }
 

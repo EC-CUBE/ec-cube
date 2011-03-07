@@ -86,7 +86,7 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
     function destroy() {
         parent::destroy();
     }
-    
+
     /**
      * 商品IDを取得する.
      * 
@@ -99,7 +99,7 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
         }
         return $product_id;
     }
-    
+
     /**
      * カテゴリIDを取得する.
      * 
@@ -112,7 +112,7 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
         }
         return $category_id;
     }
-    
+
     /**
      * メーカーIDを取得する.
      * 
@@ -125,7 +125,7 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
         }
         return $maker_id;
     }
-    
+
     /**
      * 選択中のカテゴリIDを取得する
      *

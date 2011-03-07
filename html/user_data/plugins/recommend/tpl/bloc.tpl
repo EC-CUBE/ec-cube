@@ -11,7 +11,7 @@
     <!--{if ($smarty.section.cnt.index % 2) == 0}-->
         <!--{if $arrProduct.product_id}-->
             <div class="whoboughtleft"><!--{* XXX whoboughtleft は本来左列用なので、動作に不具合があるかもしれない。 *}-->
-                
+
                 <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrProduct.product_id}-->">
                     <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrProduct.main_list_image|sfNoImageMainList|u}-->&amp;width=65&amp;height=65" alt="<!--{$arrProduct.name|h}-->" /></a>
 

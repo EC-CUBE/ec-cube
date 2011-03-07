@@ -23,16 +23,16 @@
 <div id="undercolumn">
   <div id="undercolumn_contact">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
-    
+
     <p>お問い合わせはメールにて承っています。<br />
     内容によっては回答をさしあげるのにお時間をいただくこともございます。また、土日、祝祭日、年末年始、夏期休暇期間は翌営業日以降の対応となりますのでご了承ください。</p>
-    
+
     <p class="mini"><em>※ご注文に関するお問い合わせには、必ず「ご注文番号」と「お名前」をご記入の上、メールくださいますようお願いいたします。</em></p>
-    
+
     <form name="form1" method="post" action="?">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="confirm" />
-    
+
     <table summary="お問い合わせ">
       <tr>
         <th>お名前<span class="attention">※</span></th>
@@ -99,12 +99,12 @@
         <th>住所</th>
         <td>
           <span class="attention"><!--{$arrErr.pref}--><!--{$arrErr.addr01}--><!--{$arrErr.addr02}--></span>
-          
+
           <select name="pref" style="<!--{$arrErr.pref|sfGetErrorColor}-->">
           <option value="">都道府県を選択</option>
           <!--{html_options options=$arrPref selected=$arrForm.pref|default:$arrData.pref|h}-->
           </select>
-          
+
           <p class="mini">
             <input type="text"
                    class="box380"
@@ -113,7 +113,7 @@
                    style="<!--{$arrErr.addr01|sfGetErrorColor}-->" /><br />
             <!--{$smarty.const.SAMPLE_ADDRESS1}-->
           </p>
-          
+
           <p class="mini">
             <input type="text"
                    class="box380"
@@ -122,7 +122,7 @@
                    style="<!--{$arrErr.addr02|sfGetErrorColor}-->" /><br />
             <!--{$smarty.const.SAMPLE_ADDRESS2}-->
           </p>
-          
+
           <p class="mini"><em>住所は2つに分けてご記入ください。マンション名は必ず記入してください。</em></p>
         </td>
       </tr>
@@ -186,7 +186,7 @@
         </td>
       </tr>
     </table>
-    
+
     <div class="tblareabtn">
       <input type="image"
              onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_confirm_on.gif', this)"

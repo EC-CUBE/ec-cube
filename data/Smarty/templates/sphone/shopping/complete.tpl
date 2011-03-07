@@ -22,7 +22,7 @@
 <!--▼CONTENTS-->
 <div id="under02column">
   <div id="under02column_shopping">
-    
+
     <h2 class="title"><!--{$tpl_title|h}--></h2>
 
     <!-- ▼その他決済情報を表示する場合は表示 -->

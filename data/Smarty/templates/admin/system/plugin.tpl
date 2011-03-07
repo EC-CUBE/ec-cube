@@ -45,7 +45,7 @@
     <div class="btn-area">
         <a class="btn-action" href="javascript:;" onclick="fnModeSubmit('upload', '', '');return false;"><span class="btn-next">この内容で登録する</span></a>
     </div>
-    
+
     <!--▼プラグイン一覧ここから-->
     <h2>プラグイン一覧</h2>
     <!--{if count($plugins) > 0}-->
@@ -99,7 +99,7 @@
                         -
                     <!--{/if}-->
                 </td>
-                
+
             </tr>
             <!--{/section}-->
         </table>

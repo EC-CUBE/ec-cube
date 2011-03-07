@@ -30,21 +30,21 @@
                 $(this).children('input.top').val(top);
             });
     };
-    
+
     var sortableUpdate = function(e, ui){
         updateUpDown(this);
         if(ui.sender)
             updateUpDown(ui.sender[0]);
     };
-    
+
     $(document).ready(function(){
         var els = ['#MainHead', '#MainFoot', '#LeftNavi', '#RightNavi', '#TopNavi', '#BottomNavi', '#HeadNavi', '#HeaderTopNavi', '#FooterBottomNavi', '#HeaderInternalNavi', '#Unused'];
         var $els = $(els.toString());
-        
+
         $els.each(function(){
             updateUpDown(this);
         });
-        
+
         $els.sortable({
             items: '> div',
             //handle: 'dt',
@@ -63,7 +63,7 @@
             update: sortableUpdate
         });
     });
-    
+
     $(window).bind('load',function(){
         setTimeout(function(){
             $('#overlay').fadeOut(function(){

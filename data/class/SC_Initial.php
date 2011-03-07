@@ -138,7 +138,7 @@ class SC_Initial {
         // TODO .htaccess の mbstring.internal_encoding を削除できないか検討
 
         ini_set('arg_separator.output', '&');
-        
+
         //ロケールを明示的に設定
         setlocale(LC_ALL, LOCALE);
     }

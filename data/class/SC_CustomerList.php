@@ -141,7 +141,7 @@ class SC_CustomerList extends SC_SelectSql_Ex {
 
         // E-MAIL(mobile)
         if (!isset($this->arrSql['search_email_mobile'])) $this->arrSql['search_email_mobile'] = "";
-        
+
         if (strlen($this->arrSql['search_email_mobile']) > 0) {
             //カンマ区切りで複数の条件指定可能に
             $this->arrSql['search_email_mobile'] = explode(",", $this->arrSql['search_email_mobile']);

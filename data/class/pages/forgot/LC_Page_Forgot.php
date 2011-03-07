@@ -163,7 +163,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
         }
         return $errmsg;
     }
-    
+
     /**
      * メールアドレス確認におけるパラメーター情報の初期化
      *
@@ -202,7 +202,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
         $result = $objQuery->select($cols, $table, $where, $arrVal);
         if (isset($result[0]['reminder']) and isset($arrReminder[$result[0]['reminder']])
                 and $result[0]['reminder'] == $arrForm['reminder']) {
-            
+
             if (SC_Utils_Ex::sfIsMatchHashPassword($arrForm['reminder_answer'],
                      $result[0]['reminder_answer'], $result[0]['salt'])) {
                 // 秘密の答えが一致

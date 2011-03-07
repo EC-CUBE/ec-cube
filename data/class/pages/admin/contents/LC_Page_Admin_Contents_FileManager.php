@@ -90,7 +90,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
             $this->lfInitParamModeMove($objFormParam);
             $objFormParam->setParam($this->createSetParam($_POST));
             $objFormParam->convParam();
-            
+
             $this->arrErr = $objFormParam->checkError();
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 $now_dir = $this->lfCheckSelectDir($objFormParam, $objFormParam->getValue('tree_select_file'));
@@ -104,7 +104,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
             $this->lfInitParamModeView($objFormParam);
             $objFormParam->setParam($this->createSetParam($_POST));
             $objFormParam->convParam();
-            
+
             $this->arrErr = $objFormParam->checkError();
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 if($this->tryView($objFormParam)){
@@ -152,7 +152,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
             $this->lfInitParamModeCreate($objFormParam);
             $objFormParam->setParam($this->createSetParam($_POST));
             $objFormParam->convParam();
-            
+
             $this->arrErr = $objFormParam->checkError();
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 if(!$this->tryCreateDir($objFileManager, $objFormParam)){
@@ -266,7 +266,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
         $objFormParam->addParam("ツリー選択状態", "tree_status", MTEXT_LEN, 'a', array());
         $objFormParam->addParam("ツリー選択ディレクトリ", "tree_select_file", MTEXT_LEN, 'a', array());
     }
-    
+
 
     /*
      * ファイル情報の初期化

@@ -58,7 +58,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $this->arrPageRows = $masterData->getMasterData("mtb_page_max");
         $this->arrHtmlmail = array( "" => "両方",  1 => 'HTML', 2 => 'TEXT' );
         $this->arrMailType = $masterData->getMasterData("mtb_mail_type");
-        
+
         // 日付プルダウン設定
         $objDate = new SC_Date_Ex(BIRTH_YEAR);
         $this->arrYear = $objDate->getYear();   
@@ -69,10 +69,10 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         // カテゴリ一覧設定
         $objDb = new SC_Helper_DB_Ex();
         $this->arrCatList = $objDb->sfGetCategoryList();
-        
+
         // テンプレート一覧設定
         $this->arrTemplate = $this->lfGetMailTemplateList(SC_Helper_Mail_Ex::sfGetMailmagaTemplate());
-        
+
         $this->httpCacheControl('nocache');
     }
 
@@ -105,7 +105,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $this->arrErr = SC_Helper_Customer_Ex::sfCheckErrorSearchParam($objFormParam);
         $this->arrForm = $objFormParam->getFormParamList();
         if(!SC_Utils_Ex::isBlank($this->arrErr)) return;
-        
+
         // モードによる処理切り替え
         switch ($this->getMode()) {
         // 配信先検索
@@ -188,7 +188,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $objFormParam->addParam('配信形式', 'search_htmlmail', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
         $objFormParam->addParam('配信メールアドレス種別', 'search_mail_type', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
     }
-    
+
     /**
      * パラメーター情報の追加（テンプレート選択）
      *
@@ -201,7 +201,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $objFormParam->addParam("本文", 'body', LLTEXT_LEN, 'KVCa', array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $objFormParam->addParam("テンプレートID", "template_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"), "", false);
     }
-    
+
     /**
      * メルマガテンプレート一覧情報の取得
      *
@@ -216,7 +216,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         }
         return $return;
     }
-    
+
     /**
      * テンプレートIDから情報の取得して$objFormParamにset_paramする
      *
@@ -231,7 +231,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $arrResults = $objQuery->getRow('*', 'dtb_mailmaga_template', $where, array($template_id));
         $objFormParam->setParam($arrResults);
     }
-    
+
     /**
      * 配信内容と配信リストを書き込む
      *
@@ -239,7 +239,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      */
     function lfRegisterData(&$objFormParam){
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        
+
         list($linemax, $arrSendCustomer, $objNavi) = SC_Helper_Customer_Ex::sfGetSearchData($objFormParam->getHashArray());
         $send_customer_cnt = count($arrSendCustomer);
 
@@ -269,7 +269,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         }
         return $send_id;
     }
-    
+
     /**
      * 配信履歴から条件を取得する
      *
@@ -277,9 +277,9 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      * @return array 
      */
     function lfGetMailQuery($send_id){
-        
+
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        
+
         // 送信履歴より、送信条件確認画面
         $sql = "SELECT search_data FROM dtb_send_history WHERE send_id = ?";
         $searchData = $objQuery->getOne($sql, array($_GET["send_id"]));

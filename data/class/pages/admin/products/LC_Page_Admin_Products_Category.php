@@ -344,7 +344,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
                                 $objFormParam->getValue('category_name'),
                                 $_SESSION['member_id']);
     }
-    
+
     /**
      * カテゴリの表示順序を上へ移動する.
      *
@@ -410,7 +410,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         $objFormParam->addParam("カテゴリID", "category_id", null, null, array());
         $objFormParam->addParam("カテゴリ名", "category_name", STEXT_LEN, 'KVa', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
     }
-    
+
     /**
      * ぱんくず文字列を生成する.
      *
@@ -513,7 +513,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
 
         $objQuery->commit();    // トランザクションの終了
     }
-    
+
     /**
      * カテゴリの階層が上限を超えているかを判定する
      *

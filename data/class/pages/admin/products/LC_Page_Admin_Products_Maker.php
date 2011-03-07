@@ -73,7 +73,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
 
         // POST値をセット
         $objFormParam->setParam($_POST);
-        
+
         // POST値の入力文字変換
         $objFormParam->convParam();
 
@@ -231,7 +231,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      */
     function lfRankChange($maker_id, $mode) {
         $objDb = new SC_Helper_DB_Ex();
-        
+
         switch($mode) {
         case 'up':
             $objDb->sfRankUp("dtb_maker", "maker_id", $maker_id);

@@ -53,7 +53,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
     /** アップロードファイル */
     var $objUpFile;
-    
+
     /** モード */
     var $mode;
 
@@ -403,15 +403,15 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder("rank DESC");
         $arrRecommendData = $objQuery->select("recommend_product_id, comment", "dtb_recommend_products", "product_id = ?", array($product_id));
-        
+
         $arrRecommendProductId = array();
         foreach($arrRecommendData as $recommend){
             $arrRecommendProductId[] = $recommend["recommend_product_id"];
             $arrRecommendData[$recommend["recommend_product_id"]] = $recommend['comment'];
         }
-        
+
         $objProduct = new SC_Product_Ex();
-        
+
         $where = "";
         if (!empty($arrRecommendProductId)) {
             $where = 'product_id IN (' . implode(',', $arrRecommendProductId) . ')';
@@ -512,13 +512,13 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         } else {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $count = $objQuery->count("dtb_customer_favorite_products", "customer_id = ? AND product_id = ?", array($customer_id, $favorite_product_id));
-    
+
             if ($count == 0) {
                 $sqlval['customer_id'] = $customer_id;
                 $sqlval['product_id'] = $favorite_product_id;
                 $sqlval['update_date'] = "now()";
                 $sqlval['create_date'] = "now()";
-    
+
                 $objQuery->begin();
                 $objQuery->insert('dtb_customer_favorite_products', $sqlval);
                 $objQuery->commit();
