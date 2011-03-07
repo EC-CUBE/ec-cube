@@ -250,7 +250,7 @@ class SC_Helper_Purchase {
      * @return boolean 複数配送指定の購入の場合 true
      */
     function isMultiple() {
-        return (count($this->getShippingTemp()) > 1);
+        return count($this->getShippingTemp()) > 1;
     }
 
     /**

@@ -322,7 +322,7 @@ class SC_Fpdf {
 
     // 文字コードSJIS変換 -> japanese.phpで使用出来る文字コードはSJIS-winのみ
     function lfConvSjis($conv_str) {
-        return (mb_convert_encoding($conv_str, "SJIS-win", CHAR_CODE));
+        return mb_convert_encoding($conv_str, "SJIS-win", CHAR_CODE);
     }
 
 }

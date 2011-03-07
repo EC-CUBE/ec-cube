@@ -1105,7 +1105,7 @@ class SC_CheckError {
      * @access private
      */
     function numelicCheck($string) {
-        return (strlen($string) > 0 && !ctype_digit($string));
+        return strlen($string) > 0 && !ctype_digit($string);
     }
 }
 ?>

@@ -901,7 +901,7 @@ exit;
 
     /* かけ算をする（Smarty用) */
     function sfMultiply($num1, $num2) {
-        return ($num1 * $num2);
+        return $num1 * $num2;
     }
 
     /**
@@ -930,7 +930,7 @@ exit;
         $random = GC_Utils_Ex::gfMakePassword(8);
         // 同一ホスト内で一意なIDを生成
         $id = uniqid($head);
-        return ($id . $random);
+        return $id . $random;
     }
 
     /* 文字列に強制的に改行を入れる */
@@ -2158,7 +2158,7 @@ exit;
         $microtime = microtime(true);
         if (is_string($microtime)) {
             list($usec, $sec) = explode(" ", microtime());
-            return ((float)$usec + (float)$sec);
+            return (float)$usec + (float)$sec;
         }
         return $microtime;
     }

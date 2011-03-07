@@ -280,7 +280,7 @@ class SC_SendMail {
      * @return void
      */
     function sendHtmlMail() {
-        return($this->sendMail(true));
+        return $this->sendMail(true);
     }
 
     /**

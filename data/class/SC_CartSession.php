@@ -94,7 +94,7 @@ class SC_CartSession {
         foreach($this->cartSession[$productTypeId] as $key => $val){
             $arrRet[] = $this->cartSession[$productTypeId][$key]['cart_no'];
         }
-        return (max($arrRet) + 1);
+        return max($arrRet) + 1;
     }
 
     /**
@@ -145,7 +145,7 @@ class SC_CartSession {
                 }
             }
         }
-        return ($max);
+        return $max;
     }
 
     // カート内商品数の合計
