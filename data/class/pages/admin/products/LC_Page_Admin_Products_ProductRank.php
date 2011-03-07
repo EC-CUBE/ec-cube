@@ -119,7 +119,9 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex {
         // FIXME SC_Product クラスを使用した実装
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = "product_id, name, main_list_image, product_code_min, product_code_max, status";
-        $table = "vw_products_allclass AS allcls";
+        $objProduct = new SC_Product();
+        $table = $objProduct->alldtlSQL();
+        $table.= " LEFT JOIN dtb_product_categories AS T5 USING(product_id)";
         $where = "del_flg = 0 AND category_id = ?";
 
         // 行数の取得
@@ -137,7 +139,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex {
         // 取得範囲の指定(開始行番号、行数のセット)
         $objQuery->setLimitOffset(SEARCH_PMAX, $startno);
 
-        $objQuery->setOrder("product_rank DESC, product_id DESC");
+        $objQuery->setOrder("rank DESC, product_id DESC");
 
         $arrRet = $objQuery->select($col, $table, $where, array($category_id));
         return $arrRet;
