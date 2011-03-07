@@ -105,10 +105,11 @@
             <th>IP制限<br/></th>
             <td>
             <!--{assign var=key value="admin_allow_hosts"}-->
+            <span class="attention"><!--{$arrErr[$key]}--></span>
             <span class="ex-text">管理機能へのアクセスを特定のIPアドレスからの接続のみに制限します。<br />
             アクセスを許可するIPアドレスを1行づつ入力してください。<br />
             何も入力しない場合は全てを許可します。</span><br />
-            <textarea name="<!--{$key}-->" class="box280"><!--{$arrForm[$key].value|h}--></textarea>
+            <textarea name="<!--{$key}-->" class="box280" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;"><!--{$arrForm[$key].value|h}--></textarea>
             </td>
         </tr>
     </table>

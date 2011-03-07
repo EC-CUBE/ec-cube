@@ -101,7 +101,7 @@ case 'step0_1':
 // WEBサイトの設定
 case 'step1':
     //入力値のエラーチェック
-    $objPage->arrErr = lfCheckWEBError($objWebParam);
+    $objPage->arrErr = lfCheckWebError($objWebParam);
     if(count($objPage->arrErr) == 0) {
         $objPage = lfDispStep2($objPage);
     } else {
