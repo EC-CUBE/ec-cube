@@ -94,7 +94,6 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
         parent::destroy();
     }
 
-
     /**
      * お気に入りを取得する
      *
@@ -143,7 +142,6 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
         return $arrProductsList;
     }
 
-
     /* 仕方がない処理。。 */
     function lfMakeWhere ($tablename, $arrProduct_id) {
 
@@ -161,7 +159,6 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
         }
         return $where;
     }
-
 
     // お気に入り商品削除
     function lfDeleteFavoriteProduct($customer_id, $product_id) {

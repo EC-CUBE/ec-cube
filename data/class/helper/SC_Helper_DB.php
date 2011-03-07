@@ -175,7 +175,6 @@ class SC_Helper_DB {
         return $objQuery->count("dtb_baseinfo");
     }
 
-
     /* 選択中のアイテムのルートカテゴリIDを取得する */
     function sfGetRootId() {
 
@@ -223,8 +222,6 @@ class SC_Helper_DB {
         }
         return array($point, $rollback_point);
     }
-
-
 
     /**
      * カテゴリツリーの取得を行う.

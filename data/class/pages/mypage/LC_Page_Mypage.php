@@ -100,7 +100,6 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
         parent::destroy();
     }
 
-
     /**
      * 受注履歴を返す
      *

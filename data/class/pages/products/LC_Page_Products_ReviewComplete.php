@@ -45,7 +45,6 @@ class LC_Page_Products_ReviewComplete extends LC_Page_Ex {
         parent::init();
     }
 
-
     /**
      * Page のプロセス.
      *

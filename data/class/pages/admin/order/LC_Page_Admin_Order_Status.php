@@ -155,8 +155,6 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
 
     }
 
-
-
     /**
      * デストラクタ.
      *

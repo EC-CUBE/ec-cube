@@ -168,7 +168,6 @@ class SC_Helper_Mail {
         $objSendMail->setItem('', $tosubject, $body, $from, $arrInfo['shop_name'], $from, $error, $error, $bcc);
         $objSendMail->setTo($arrOrder["order_email"], $arrOrder["order_name01"] . " ". $arrOrder["order_name02"] ." 様");
 
-
         // 送信フラグ:trueの場合は、送信する。
         if($send) {
             if ($objSendMail->sendMail()) {

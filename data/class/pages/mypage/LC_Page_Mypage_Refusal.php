@@ -86,7 +86,6 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex {
         parent::destroy();
     }
 
-
     /**
      * 会員情報を削除する
      *

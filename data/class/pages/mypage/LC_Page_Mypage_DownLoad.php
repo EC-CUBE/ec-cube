@@ -190,7 +190,6 @@ __EOS__;
         return $arrRet[0];
     }
 
-
     /* パラメータ情報の初期化 */
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam("customer_id", "customer_id", INT_LEN, 'n', array("EXIST_CHECK","NUM_CHECK"));

@@ -80,7 +80,6 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
         // 変換後のPOST値を取得
         $this->arrForm  = $objFormParam->getHashArray();
 
-
         // モードによる処理切り替え
         switch($this->getMode()) {
 
@@ -245,7 +244,6 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
             break;
         }
     }
-
 
     /**
      * メーカー情報編集前処理.

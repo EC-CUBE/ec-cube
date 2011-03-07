@@ -74,7 +74,6 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex {
                 break;
         }
 
-
         // 正当な数値であればOK
         if (SC_Utils_Ex::sfIsInt($_GET['id'])) {
             $arrClean['id'] = $_GET['id'];

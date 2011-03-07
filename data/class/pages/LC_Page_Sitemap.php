@@ -62,7 +62,6 @@ class LC_Page_Sitemap extends LC_Page_Ex {
     /** ページリスト */
     var $arrPageList;
 
-
     // }}}
     // {{{ functions
 
@@ -262,7 +261,6 @@ class LC_Page_Sitemap extends LC_Page_Ex {
         }
         return $arrRet;
     }
-
 
     /**
      * ブロック情報を取得する.

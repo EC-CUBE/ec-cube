@@ -28,7 +28,6 @@ class SC_Helper_CSV {
     /** レビュータイトル */
     var $arrREVIEW_CVSTITLE;
 
-
     // }}}
     // {{{ constructor
 
@@ -68,7 +67,6 @@ class SC_Helper_CSV {
                                       3 => '受注管理',
                                       5 => 'カテゴリ'
                                       );
-
 
         $this->arrREVIEW_CVSCOL = array(
                                         'B.name',
@@ -121,7 +119,6 @@ class SC_Helper_CSV {
         $arrRet = $objQuery->select($cols, $table, $where, $arrVal);
         return $arrRet;
     }
-
 
     /**
      * CSVが出力設定でインポート可能かのチェック
@@ -280,7 +277,6 @@ class SC_Helper_CSV {
         return $res;
     }
 
-
     // CSV出力データを作成する。(レビュー)
     function lfGetReviewCSV($where, $option, $arrval) {
 
@@ -419,7 +415,6 @@ class SC_Helper_CSV {
     function replaceLineSuffix($line) {
         return preg_replace('/,$/',"\r\n",$line);
     }
-
 
     /**
      * 1次元配列を1行のCSVとして返す

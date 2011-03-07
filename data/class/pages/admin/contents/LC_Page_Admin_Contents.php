@@ -149,7 +149,6 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
         $this->max_rank = $this->getRankMax();
     }
 
-
     /**
      * デストラクタ.
      *
@@ -170,7 +169,6 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
         $objErr->doFunc(array("日付", 'year', 'month', 'day'), array("CHECK_DATE"));
         return $objErr->arrErr;
     }
-
 
     /**
      * パラメータの初期化を行う
@@ -222,7 +220,6 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
         $objQuery->update($table, $sqlval, $where);
     }
 
-
     function lfNewsUpdate($arrPost,$member_id){
         $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -249,7 +246,6 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
         $registDate = $arrPost['year'] ."/". $arrPost['month'] ."/". $arrPost['day'];
         return $registDate;
     }
-
 
     /**
      * チェックボックスの値が空の時は無効な値として1を格納する
@@ -330,7 +326,6 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
     function splitNewsDate($news_date){
         return explode("-", $news_date);
     }
-
 
     /**
      * ランクの最大値の値を返す。

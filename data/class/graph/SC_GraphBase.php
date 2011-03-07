@@ -219,7 +219,6 @@ class SC_GraphBase {
         }
     }
 
-
     // オブジェクトカラーの設定
     function setColorList($arrRGB) {
         $this->arrRGB = $arrRGB;

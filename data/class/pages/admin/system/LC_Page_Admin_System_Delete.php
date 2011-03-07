@@ -94,7 +94,6 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex {
         parent::destroy();
     }
 
-
     /**
      * パラメータ初期化.
      *
@@ -126,7 +125,6 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex {
         $objQuery->commit();
     }
 
-
     /**
      * ランキングの振り直し.
      *
@@ -146,7 +144,6 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex {
         // UPDATEの実行 - 削除したレコードより上のランキングを下げてRANKの空きを埋める。
         return $objQuery->update("dtb_member", array(), $where2, array($rank), array('rank' => 'rank-1'));
     }
-
 
     /**
      * レコードの削除(削除フラグをONにする).

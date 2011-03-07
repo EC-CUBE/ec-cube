@@ -194,7 +194,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         parent::destroy();
     }
 
-
     /**
      * パラメータ初期化.
      *
@@ -545,7 +544,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
             }
 
             $err = $objQuery->insert($table_name, $arrVal);
-
 
             // エラーがあれば終了
             if (PEAR::isError($err)){

@@ -120,7 +120,6 @@ class SC_Date {
         return $month_array;
     }   
 
-
     function getMonth($default = false) {
         $month_array = array();
 

@@ -44,7 +44,6 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex {
     function init() {
         parent::init();
 
-
     }
 
     /**

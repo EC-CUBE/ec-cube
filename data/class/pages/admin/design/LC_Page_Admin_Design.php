@@ -162,7 +162,6 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
                 $arrUpdBlocData[$upd_cnt]['update_url'] = $_SERVER['HTTP_REFERER'];
             }
 
-
             // ブロックの順序を取得し、更新を行う
             foreach ($arrUpdBlocData as $key => $val) {
                 if ($arrUpdBlocData[$key]['target_id'] == TARGET_ID_UNUSED) {

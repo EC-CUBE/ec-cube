@@ -190,7 +190,6 @@ __EOS__;
         }
     }
 
-
     function lfGetBreadcrumbs($arrBread) {
         $breadcrumbs = "ホーム";
         // TODO JSON で投げて, フロント側で処理した方が良い？
@@ -207,8 +206,6 @@ __EOS__;
 
         return $breadcrumbs;
     }
-
-
 
 }
 ?>

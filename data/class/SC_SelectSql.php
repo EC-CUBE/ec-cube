@@ -170,8 +170,6 @@ class SC_SelectSql {
         return $return;
     }
 
-
-
     /* 複数のカラムでORで優先検索する場合　例：　AND ( item_flag1 = xxx OR item_flag2 = xxx OR item_flag3 = xxx  ) AND ...
 
         配列の構造例　
@@ -224,7 +222,6 @@ class SC_SelectSql {
         $this->group =  "GROUP BY " . $group;
 
     }
-
 
     function setLimitOffset( $limit, $offset ){
 

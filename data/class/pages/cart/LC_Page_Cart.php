@@ -41,7 +41,6 @@ class LC_Page_Cart extends LC_Page_Ex {
     /** 動作モード */
     var $mode;
 
-
     // }}}
     // {{{ functions
 

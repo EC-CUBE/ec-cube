@@ -182,7 +182,6 @@ class SC_Helper_Customer {
         return false;
     }
 
-
     /**
      * customer_idから顧客情報を取得する
      *
@@ -258,7 +257,6 @@ class SC_Helper_Customer {
         return $uniqid;
     }
 
-
     /**
      * 会員登録キーから顧客IDを取得する.
      *
@@ -277,7 +275,6 @@ class SC_Helper_Customer {
 
         return $objQuery->get("customer_id", "dtb_customer", $where, array($uniqid));
     }
-
 
     /**
      * 会員登録時フォーム初期化

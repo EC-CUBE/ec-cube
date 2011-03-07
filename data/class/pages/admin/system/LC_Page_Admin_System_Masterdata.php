@@ -172,7 +172,6 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
         }
     }
 
-
     /**
      * マスターデータの登録.
      *

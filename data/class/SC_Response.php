@@ -66,7 +66,6 @@ class SC_Response{
         }
     }
 
-
     function setContentType($contentType) {
         $this->header['Content-Type'] = $contentType;
     }

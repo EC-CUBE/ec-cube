@@ -33,7 +33,6 @@ require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.p
  */
 class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
 
-
     // }}}
     // {{{ functions
 

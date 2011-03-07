@@ -151,7 +151,6 @@ class LC_Page_Entry extends LC_Page_Ex {
         return $sqlval["secret_key"];
     }
 
-
     /**
      * 会員登録に必要なSQLパラメータの配列を生成する.
      *
@@ -191,7 +190,6 @@ class LC_Page_Entry extends LC_Page_Ex {
         }
         return $arrResults;
     }
-
 
     /**
      * 会員登録完了メール送信する

@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 // {{{ requires
 require_once CLASS_REALDIR . 'db/SC_DB_DBFactory.php';
 
@@ -165,7 +164,6 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
             SUM(total) AS total,
             AVG(total) AS total_average";
     }
-
 
     /**
      * 文字列連結を行う.

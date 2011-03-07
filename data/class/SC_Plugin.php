@@ -2,7 +2,6 @@
 
 class SC_Plugin
 {
-
     /**
      *
      * plugin_path
@@ -22,36 +21,27 @@ class SC_Plugin
     }
 
     function init(){
-
-
     }
 
     function enable($classname){
-
     }
 
     function getVersion(){
-
     }
 
     function getName(){
-
     }
 
     function process(){
-
     }
 
     function mobileprocess(){
-
     }
 
     function install(){
-
     }
 
     function uninstall(){
-
     }
 
     function disablePlugin(){
@@ -66,19 +56,13 @@ class SC_Plugin
         $objQuery->update("dtb_plugin", array('enable'=>'0'), "plugin_name = ?", array($name));
     }
 
-
     /**
      *
      * @return String インストール用のSQL
      */
     function getInstallSQL(){
-
     }
-
 
     function getUninstallSQL(){
-
     }
-
-
 }

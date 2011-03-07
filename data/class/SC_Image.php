@@ -194,8 +194,6 @@ class SC_Image {
             GC_Utils_Ex::gfDebugLog($size);
             GC_Utils_Ex::gfDebugLog($re_size);
 
-
-
             if ($newFileName) {
                 $ToFile = $newFileName;
             } elseif ($ext) {

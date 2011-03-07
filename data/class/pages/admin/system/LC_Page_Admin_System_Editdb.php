@@ -177,8 +177,6 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
         return $arrTarget;
     }
 
-
-
     /**
      * インデックス設定を行う一覧を返す関数
      *

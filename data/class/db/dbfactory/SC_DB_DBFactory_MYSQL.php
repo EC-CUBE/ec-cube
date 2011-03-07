@@ -145,7 +145,6 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
         return "(SELECT IF((SELECT d1.downloadable_days_unlimited FROM dtb_baseinfo d1)=1, 1, DATE(NOW()) <= DATE(DATE_ADD(" . $dtb_order_alias . ".payment_date, INTERVAL (SELECT downloadable_days FROM dtb_baseinfo) DAY))))";
     }
 
-
     /**
      * 売上集計の期間別集計のSQLを返す
      *
@@ -182,7 +181,6 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
             SUM(total) AS total,
             AVG(total) AS total_average";
     }
-
 
     /**
      * 文字列連結を行う.

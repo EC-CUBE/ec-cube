@@ -68,7 +68,6 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
      */
     function action() {
 
-
         if(strpos(HTTPS_URL,"https://") !== FALSE){
             $this->tpl_enable_ssl = TRUE;
         }
@@ -122,7 +121,6 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
         parent::destroy();
     }
 
-
     /**
      * パラメータ初期化.
      *
@@ -139,7 +137,6 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
         $objFormParam->convParam();
 
     }
-
 
     /**
      * 管理機能ディレクトリのチェック.
@@ -165,7 +162,6 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
             }
         }
     }
-
 
     //管理機能ディレクトリのリネームと CONFIG_REALFILE の変更
     function lfUpdateAdminData(&$arrForm){

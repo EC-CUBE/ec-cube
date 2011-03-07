@@ -94,7 +94,6 @@ class LC_Page_InputZip extends LC_Page_Ex {
         parent::destroy();
     }
 
-
     /**
      * 入力エラーのチェック.
      *

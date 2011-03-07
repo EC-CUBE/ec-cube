@@ -185,7 +185,6 @@ class SC_CheckError {
         }
     }
 
-
     /*　最大文字数制限の判定　*/
     // value[0] = 項目名 value[1] = 判定対象文字列  value[2] = 最大文字数(半角も全角も1文字として数える)
     function MAX_LENGTH_CHECK( $value ) {		// 入力が指定文字数以上ならエラーを返す
@@ -236,7 +235,6 @@ class SC_CheckError {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "は" . $value[2] . "以上で入力してください。<br />";
         }
     }
-
 
     /*　数字の判定　*/
     // value[0] = 項目名 value[1] = 判定対象文字列
@@ -441,7 +439,6 @@ class SC_CheckError {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "は先頭の項目から順番に入力して下さい。<br />";
         }
     }
-
 
     /*　カタカナの判定　*/
     // value[0] = 項目名 value[1] = 判定対象文字列
@@ -1028,7 +1025,6 @@ class SC_CheckError {
         }
     }
 
-
     /**
      * 禁止文字列のチェック
      * value[0] = 項目名 value[1] = 判定対象文字列
@@ -1097,7 +1093,6 @@ class SC_CheckError {
             }
         }
     }
-
 
     /*
      * 値が数字だけかどうかチェックする

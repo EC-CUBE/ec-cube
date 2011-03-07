@@ -200,7 +200,6 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Ex {
         return $objFormParam;
     }
 
-
     /**
      * デストラクタ.
      *
@@ -209,7 +208,6 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Ex {
     function destroy() {
         parent::destroy();
     }
-
 
     /**
      * パラメータ情報の初期化

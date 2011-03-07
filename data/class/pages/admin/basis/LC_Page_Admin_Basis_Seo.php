@@ -161,7 +161,6 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
         return $ret;
     }
 
-
     function lfInitParam($mode, &$objFormParam) {
         $objFormParam->addParam('デバイスID', 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('ページID', 'page_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));

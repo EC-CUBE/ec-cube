@@ -159,7 +159,6 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin_Ex {
         $sqlval['creator_id'] = $member_id;
         $sqlval['update_date'] = 'Now()';
 
-
         // deliv_id が決まっていた場合
         if($arrRet['deliv_id'] != "") {
             $deliv_id = $arrRet['deliv_id'];

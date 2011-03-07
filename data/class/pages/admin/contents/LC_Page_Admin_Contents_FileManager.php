@@ -267,7 +267,6 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
         $objFormParam->addParam("ツリー選択ディレクトリ", "tree_select_file", MTEXT_LEN, 'a', array());
     }
 
-
     /*
      * ファイル情報の初期化
      *

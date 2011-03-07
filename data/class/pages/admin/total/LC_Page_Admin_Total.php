@@ -153,7 +153,6 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         default:
         }
 
-
         // 画面宣しても日付が保存される
         $_SESSION           = $this->lfSaveDateSession($_SESSION, $this->arrHidden);
         $objFormParam->setParam($_SESSION['total']);
@@ -213,7 +212,6 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         return $objErr->arrErr;
     }
 
-
     /* サブナビを移動しても日付が残るようにセッションに入力期間を記録する */
     function lfSaveDateSession($session, $arrForm) {
 
@@ -228,7 +226,6 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
         return $session;
     }
-
 
     /* 日付の初期値 */
     function lfGetDateInit() {
@@ -267,7 +264,6 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
         return array($sdate, $edate);
     }
-
 
     /* 折れ線グラフの作成 */
     function lfGetGraphLine($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, $edate) {
@@ -564,7 +560,6 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $objQuery->setOrder('total DESC');
         $arrTotalResults = $objQuery->select($col, $from, $where, $arrval);
 
-
         foreach($arrTotalResults as &$arrResult) {
             $job_key = $arrResult['job'];
             if($job_key != "") {
@@ -703,7 +698,6 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         return $arrRet;
     }
 
-
     /*
      * 日付の配列を作成する
      *
@@ -746,7 +740,6 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         return $arrDateList;
     }
 
-
     /*
      * 合計を付与する
      */
@@ -765,11 +758,8 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             $arrResults[] = $arrTotal;
         }
 
-
         return $arrResults;
     }
-
-
 
     // 必要なカラムのみ抽出する(CSVデータで取得する)
     function lfGetDataColCSV($arrData, $arrDataCol) {

@@ -105,7 +105,6 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
             }
             break;
 
-
         case 'edit':
             // パラメータの初期化
             $this->initForm($objFormParam, $_POST, $this->getMode());
@@ -179,7 +178,6 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         parent::destroy();
     }
 
-
     /**
      * フォームパラメータ初期化
      *
@@ -209,8 +207,6 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
 
     }
 
-
-
     /**
      * パラメータの妥当性検証を行う.
      *
@@ -230,7 +226,6 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
             $objErr->doFunc(array("パスワード", 'password', ID_MIN_LEN, ID_MAX_LEN), array("SPTAB_CHECK" ,"NUM_RANGE_CHECK"));
             $objErr->doFunc(array("ログインID", 'login_id', ID_MIN_LEN, ID_MAX_LEN), array("SPTAB_CHECK" ,"NUM_RANGE_CHECK"));
         }
-
 
         $arrErr = $objErr->arrErr;
 
@@ -258,7 +253,6 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
 
         return $arrErr;
     }
-
 
     /**
      * DBからmember_idに対応する管理者データを取得する

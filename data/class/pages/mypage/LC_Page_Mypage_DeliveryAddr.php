@@ -163,7 +163,6 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
         parent::destroy();
     }
 
-
     /**
      * ほかのお届け先を取得する
      *

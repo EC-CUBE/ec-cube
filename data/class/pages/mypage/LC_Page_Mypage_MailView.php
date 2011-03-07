@@ -92,7 +92,6 @@ class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex {
         parent::destroy();
     }
 
-
     /**
      * GETで指定された受注idのメール送信内容を返す
      *

@@ -34,6 +34,5 @@ require_once CLASS_REALDIR . 'util/SC_Utils.php';
  * @version $Id$
  */
 class SC_Utils_Ex extends SC_Utils {
-
 }
 ?>

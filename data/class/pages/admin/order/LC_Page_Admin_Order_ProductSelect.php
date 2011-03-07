@@ -63,7 +63,6 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
         $this->sendResponse();
     }
 
-
     /**
      * Page のアクション.
      *
@@ -161,7 +160,6 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
         return  'productsClassCategories = ' . SC_Utils_Ex::jsonEncode($objProduct->classCategories) . '; ';
     }
 
-
     /**
      * 検索結果の取得
      * @param array $whereAndBind string whereと array bindの連想配列
@@ -196,7 +194,6 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
         $linemax = $objProduct->findProductCount($objQuery, $bind);
         return  $linemax;   // 何件が該当しました。表示用
     }
-
 
     /**
      *
@@ -240,7 +237,6 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
         );
     }
 
-
     /**
      * リクエストパラメータnoを取ってくる。
      * @param unknown_type $globalParams
@@ -270,7 +266,6 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
         }
         return $arrProducts;
     }
-
 
     /**
      * デストラクタ.

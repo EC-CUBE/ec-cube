@@ -83,7 +83,6 @@ class LC_Page_Admin_Mail_Preview extends LC_Page_Admin_Ex {
         default:
         }
 
-
         $this->setTemplate($this->tpl_mainpage);
     }
 

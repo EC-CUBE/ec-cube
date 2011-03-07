@@ -158,7 +158,6 @@ class SC_CartSession {
         return $total;
     }
 
-
     // 全商品の合計価格
     function getAllProductsTotal($productTypeId) {
         // 税込み合計
@@ -308,8 +307,7 @@ class SC_CartSession {
                 $this->cartSession[$productTypeId][$i]['price'] = $price;
 
                 $this->cartSession[$productTypeId][$i]['point_rate'] =
-                        $this->cartSession[$productTypeId][$i]['productsClass']['point_rate'];
-
+                    $this->cartSession[$productTypeId][$i]['productsClass']['point_rate'];
 
                 $quantity = $this->cartSession[$productTypeId][$i]['quantity'];
                 $incTax = SC_Helper_DB_Ex::sfCalcIncTax($price);
