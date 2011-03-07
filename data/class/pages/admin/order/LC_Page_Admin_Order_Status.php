@@ -128,11 +128,11 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
      *  @param SC_FormParam
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("注文番号", "order_id", INT_LEN, "n", array( "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("変更前ステータス", "status", INT_LEN, "n", array( "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("変更後ステータス", "change_status", STEXT_LEN, "KVa", array( "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("ページ番号", "search_pageno", INT_LEN, "n", array( "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("移動注文番号", "move", INT_LEN, "n", array( "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("注文番号", "order_id", INT_LEN, 'n', array( "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("変更前ステータス", 'status', INT_LEN, 'n', array( "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("変更後ステータス", "change_status", STEXT_LEN, 'KVa', array( "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("ページ番号", "search_pageno", INT_LEN, 'n', array( "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("移動注文番号", 'move', INT_LEN, 'n', array( "MAX_LENGTH_CHECK", "NUM_CHECK"));
     }
 
     /**
@@ -183,7 +183,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
         $page_max = ORDER_STATUS_MAX;
 
         // ページ送りの取得
-        $objNavi = new SC_PageNavi_Ex($pageno, $linemax, $page_max, "fnNaviSearchOnlyPage", NAVI_PMAX);
+        $objNavi = new SC_PageNavi_Ex($pageno, $linemax, $page_max, 'fnNaviSearchOnlyPage', NAVI_PMAX);
         $this->tpl_strnavi = $objNavi->strnavi;      // 表示文字列
         $startno = $objNavi->start_row;
 

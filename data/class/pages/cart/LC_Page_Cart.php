@@ -169,8 +169,8 @@ class LC_Page_Cart extends LC_Page_Ex {
      */
     function lfInitParam($arrRequest) {
         $objFormParam = new SC_FormParam_Ex();
-        $objFormParam->addParam("カートキー", "cartKey", INT_LEN, "n", array('NUM_CHECK',"MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("カートナンバー", "cart_no", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("カートキー", 'cartKey', INT_LEN, 'n', array('NUM_CHECK',"MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("カートナンバー", "cart_no", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
         // 値の取得
         $objFormParam->setParam($arrRequest);
         // 入力値の変換

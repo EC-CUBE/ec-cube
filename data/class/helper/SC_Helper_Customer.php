@@ -47,17 +47,17 @@ class SC_Helper_Customer {
 
         // salt値の生成(insert時)または取得(update時)。
         if(is_numeric($customer_id)) {
-            $salt = $objQuery->get("salt", "dtb_customer", "customer_id = ? ", array($customer_id));
+            $salt = $objQuery->get('salt', "dtb_customer", "customer_id = ? ", array($customer_id));
         }else{
             $salt = SC_Utils_Ex::sfGetRandomString(10);
-            $array["salt"] = $salt;
+            $array['salt'] = $salt;
         }
         //-- パスワードの更新がある場合は暗号化
-        if ($array["password"] == DEFAULT_PASSWORD or $array["password"] == "") {
+        if ($array['password'] == DEFAULT_PASSWORD or $array['password'] == "") {
             //更新しない
-            unset($array["password"]);
+            unset($array['password']);
         } else {
-            $array["password"] = SC_Utils_Ex::sfGetHashString($array["password"], $salt);
+            $array['password'] = SC_Utils_Ex::sfGetHashString($array['password'], $salt);
         }
         //-- 秘密の質問の更新がある場合は暗号化
         if ($array["reminder_answer"] == DEFAULT_PASSWORD or $array["reminder_answer"] == "") {
@@ -102,7 +102,7 @@ class SC_Helper_Customer {
         $customer_id = $arrRet[0]['customer_id'];
         if ($customer_id != "" && $customer_id >= 1) {
             if (USE_POINT !== false) {
-                $arrRet = $objQuery->select("point", "dtb_customer", "customer_id = ?", array($customer_id));
+                $arrRet = $objQuery->select('point', "dtb_customer", "customer_id = ?", array($customer_id));
                 $point = $arrRet[0]['point'];
                 $total_point = $arrRet[0]['point'] - $use_point + $add_point;
             } else {
@@ -175,7 +175,7 @@ class SC_Helper_Customer {
         $arrResults = $objQuery->getRow("email, email_mobile",
                                         "dtb_customer", "customer_id = ?",
                                         array($customer_id));
-        if ($email == $arrResults["email"]
+        if ($email == $arrResults['email']
             || $email == $arrResults["email_mobile"]) {
             return true;
         }
@@ -204,7 +204,7 @@ class SC_Helper_Customer {
 
         // 誕生日を年月日に分ける
         if (isset($arrForm['birth'])){
-            $birth = explode(" ", $arrForm["birth"]);
+            $birth = explode(" ", $arrForm['birth']);
             list($arrForm['year'], $arrForm['month'], $arrForm['day']) = explode("-",$birth[0]);
         }
 
@@ -252,7 +252,7 @@ class SC_Helper_Customer {
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
         $count      = 1;
         while ($count != 0) {
-            $uniqid = SC_Utils_Ex::sfGetUniqRandomId("r");
+            $uniqid = SC_Utils_Ex::sfGetUniqRandomId('r');
             $count  = $objQuery->count("dtb_customer", "secret_key = ?", array($uniqid));
         }
         return $uniqid;
@@ -291,11 +291,11 @@ class SC_Helper_Customer {
         SC_Helper_Customer_Ex::sfCustomerCommonParam($objFormParam);
         SC_Helper_Customer_Ex::sfCustomerRegisterParam($objFormParam, $isAdmin);
         if($isAdmin) {
-            $objFormParam->addParam("顧客ID", "customer_id", INT_LEN, "n", array("NUM_CHECK"));
-            $objFormParam->addParam('携帯メールアドレス', "email_mobile", MTEXT_LEN, "a", array("NO_SPTAB", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK", "MOBILE_EMAIL_CHECK"));
-            $objFormParam->addParam("会員状態", "status", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-            $objFormParam->addParam("SHOP用メモ", "note", LTEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
-            $objFormParam->addParam("所持ポイント", "point", INT_LEN, "n", array("NUM_CHECK"));
+            $objFormParam->addParam("顧客ID", "customer_id", INT_LEN, 'n', array("NUM_CHECK"));
+            $objFormParam->addParam('携帯メールアドレス', "email_mobile", MTEXT_LEN, 'a', array("NO_SPTAB", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK", "MOBILE_EMAIL_CHECK"));
+            $objFormParam->addParam("会員状態", 'status', INT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+            $objFormParam->addParam("SHOP用メモ", 'note', LTEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
+            $objFormParam->addParam("所持ポイント", 'point', INT_LEN, 'n', array("NUM_CHECK"));
 
         }
     }
@@ -311,8 +311,8 @@ class SC_Helper_Customer {
         SC_Helper_Customer_Ex::sfCustomerCommonParam($objFormParam);
         SC_Helper_Customer_Ex::sfCustomerRegisterParam($objFormParam);
         if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE){
-            $objFormParam->addParam('携帯メールアドレス', "email_mobile", MTEXT_LEN, "a", array("NO_SPTAB", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
-            $objFormParam->addParam('携帯メールアドレス(確認)', "email_mobile02", MTEXT_LEN, "a", array("NO_SPTAB", "EMAIL_CHECK","SPTAB_CHECK" , "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"), "", false);
+            $objFormParam->addParam('携帯メールアドレス', "email_mobile", MTEXT_LEN, 'a', array("NO_SPTAB", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
+            $objFormParam->addParam('携帯メールアドレス(確認)', "email_mobile02", MTEXT_LEN, 'a', array("NO_SPTAB", "EMAIL_CHECK","SPTAB_CHECK" , "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"), "", false);
         }
     }
 
@@ -336,18 +336,18 @@ class SC_Helper_Customer {
      * @return void
      */
     function sfCustomerCommonParam (&$objFormParam) {
-        $objFormParam->addParam("お名前(姓)", 'name01', STEXT_LEN, "aKV", array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("お名前(名)", 'name02', STEXT_LEN, "aKV", array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("お名前(フリガナ・姓)", 'kana01', STEXT_LEN, "CKV", array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
-        $objFormParam->addParam("お名前(フリガナ・名)", 'kana02', STEXT_LEN, "CKV", array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
-        $objFormParam->addParam("郵便番号1", "zip01", ZIP01_LEN, "n", array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
-        $objFormParam->addParam("郵便番号2", "zip02", ZIP02_LEN, "n", array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
-        $objFormParam->addParam("都道府県", 'pref', INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("住所1", "addr01", MTEXT_LEN, "aKV", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("住所2", "addr02", MTEXT_LEN, "aKV", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("お電話番号1", 'tel01', TEL_ITEM_LEN, "n", array("EXIST_CHECK", "SPTAB_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("お電話番号2", 'tel02', TEL_ITEM_LEN, "n", array("EXIST_CHECK", "SPTAB_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("お電話番号3", 'tel03', TEL_ITEM_LEN, "n", array("EXIST_CHECK", "SPTAB_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("お名前(姓)", 'name01', STEXT_LEN, 'aKV', array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("お名前(名)", 'name02', STEXT_LEN, 'aKV', array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("お名前(フリガナ・姓)", 'kana01', STEXT_LEN, 'CKV', array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
+        $objFormParam->addParam("お名前(フリガナ・名)", 'kana02', STEXT_LEN, 'CKV', array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
+        $objFormParam->addParam("郵便番号1", "zip01", ZIP01_LEN, 'n', array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
+        $objFormParam->addParam("郵便番号2", "zip02", ZIP02_LEN, 'n', array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
+        $objFormParam->addParam("都道府県", 'pref', INT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("住所1", "addr01", MTEXT_LEN, 'aKV', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("住所2", "addr02", MTEXT_LEN, 'aKV', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("お電話番号1", 'tel01', TEL_ITEM_LEN, 'n', array("EXIST_CHECK", "SPTAB_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("お電話番号2", 'tel02', TEL_ITEM_LEN, 'n', array("EXIST_CHECK", "SPTAB_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("お電話番号3", 'tel03', TEL_ITEM_LEN, 'n', array("EXIST_CHECK", "SPTAB_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
     }
 
     /**
@@ -359,31 +359,31 @@ class SC_Helper_Customer {
      */
     function sfCustomerRegisterParam (&$objFormParam, $isAdmin = false) {
         if($isAdmin) {
-            $objFormParam->addParam("パスワード", 'password', STEXT_LEN, "a", array("SPTAB_CHECK", "ALNUM_CHECK", "MAX_LENGTH_CHECK"));
-            $objFormParam->addParam("パスワード確認用の質問の答え", "reminder_answer", STEXT_LEN, "aKV", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+            $objFormParam->addParam("パスワード", 'password', STEXT_LEN, 'a', array("SPTAB_CHECK", "ALNUM_CHECK", "MAX_LENGTH_CHECK"));
+            $objFormParam->addParam("パスワード確認用の質問の答え", "reminder_answer", STEXT_LEN, 'aKV', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         }else{
-            $objFormParam->addParam("パスワード", 'password', STEXT_LEN, "a", array("EXIST_CHECK", "SPTAB_CHECK", "ALNUM_CHECK", "MAX_LENGTH_CHECK"));
-            $objFormParam->addParam("パスワード確認用の質問の答え", "reminder_answer", STEXT_LEN, "aKV", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+            $objFormParam->addParam("パスワード", 'password', STEXT_LEN, 'a', array("EXIST_CHECK", "SPTAB_CHECK", "ALNUM_CHECK", "MAX_LENGTH_CHECK"));
+            $objFormParam->addParam("パスワード確認用の質問の答え", "reminder_answer", STEXT_LEN, 'aKV', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         }
-        $objFormParam->addParam("パスワード確認用の質問", "reminder", STEXT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("性別", "sex", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("職業", "job", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("年", "year", 4, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"), "", false);
-        $objFormParam->addParam("月", "month", 2, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"), "", false);
-        $objFormParam->addParam("日", "day", 2, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"), "", false);
-        $objFormParam->addParam("メールマガジン", "mailmaga_flg", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("パスワード確認用の質問", 'reminder', STEXT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("性別", 'sex', INT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("職業", 'job', INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("年", 'year', 4, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"), "", false);
+        $objFormParam->addParam("月", 'month', 2, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"), "", false);
+        $objFormParam->addParam("日", 'day', 2, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"), "", false);
+        $objFormParam->addParam("メールマガジン", "mailmaga_flg", INT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 
         if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE){
-            $objFormParam->addParam("FAX番号1", 'fax01', TEL_ITEM_LEN, "n", array("SPTAB_CHECK"));
-            $objFormParam->addParam("FAX番号2", 'fax02', TEL_ITEM_LEN, "n", array("SPTAB_CHECK"));
-            $objFormParam->addParam("FAX番号3", 'fax03', TEL_ITEM_LEN, "n", array("SPTAB_CHECK"));
-            $objFormParam->addParam('メールアドレス', "email", MTEXT_LEN, "a", array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
+            $objFormParam->addParam("FAX番号1", 'fax01', TEL_ITEM_LEN, 'n', array("SPTAB_CHECK"));
+            $objFormParam->addParam("FAX番号2", 'fax02', TEL_ITEM_LEN, 'n', array("SPTAB_CHECK"));
+            $objFormParam->addParam("FAX番号3", 'fax03', TEL_ITEM_LEN, 'n', array("SPTAB_CHECK"));
+            $objFormParam->addParam('メールアドレス', 'email', MTEXT_LEN, 'a', array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
             if(!$isAdmin) {
-                $objFormParam->addParam("パスワード(確認)", 'password02', STEXT_LEN, "a", array("EXIST_CHECK", "SPTAB_CHECK" ,"ALNUM_CHECK"), "", false);
-                $objFormParam->addParam('メールアドレス(確認)', "email02", MTEXT_LEN, "a", array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK","SPTAB_CHECK" , "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"), "", false);
+                $objFormParam->addParam("パスワード(確認)", 'password02', STEXT_LEN, 'a', array("EXIST_CHECK", "SPTAB_CHECK" ,"ALNUM_CHECK"), "", false);
+                $objFormParam->addParam('メールアドレス(確認)', "email02", MTEXT_LEN, 'a', array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK","SPTAB_CHECK" , "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"), "", false);
             }
         } else {
-            $objFormParam->addParam('メールアドレス', "email", MTEXT_LEN, "a", array("EXIST_CHECK", "EMAIL_CHECK", "NO_SPTAB" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK","MOBILE_EMAIL_CHECK"));
+            $objFormParam->addParam('メールアドレス', 'email', MTEXT_LEN, 'a', array("EXIST_CHECK", "EMAIL_CHECK", "NO_SPTAB" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK","MOBILE_EMAIL_CHECK"));
         }
     }
 
@@ -476,19 +476,19 @@ class SC_Helper_Customer {
      * @return SC_CheckError $objErr エラー情報
      */
     function sfCustomerRegisterErrorCheck(&$objErr, $isAdmin = false) {
-        $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_BIRTHDAY"));
+        $objErr->doFunc(array("生年月日", 'year', 'month', 'day'), array("CHECK_BIRTHDAY"));
 
         if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE){
             if(!$isAdmin) {
-                $objErr->doFunc(array('パスワード', 'パスワード(確認)', "password", "password02") ,array("EQUAL_CHECK"));
-                $objErr->doFunc(array('メールアドレス', 'メールアドレス(確認)', "email", "email02") ,array("EQUAL_CHECK"));
+                $objErr->doFunc(array('パスワード', 'パスワード(確認)', 'password', "password02") ,array("EQUAL_CHECK"));
+                $objErr->doFunc(array('メールアドレス', 'メールアドレス(確認)', 'email', "email02") ,array("EQUAL_CHECK"));
             }
             $objErr->doFunc(array("FAX番号", "fax01", "fax02", "fax03") ,array("TEL_CHECK"));
         }
 
         if(!$isAdmin) {
             // 現会員の判定 → 現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
-            $objErr->doFunc(array("メールアドレス", "email"), array("CHECK_REGIST_CUSTOMER_EMAIL"));
+            $objErr->doFunc(array("メールアドレス", 'email'), array("CHECK_REGIST_CUSTOMER_EMAIL"));
         }
         return $objErr;
     }
@@ -537,9 +537,9 @@ class SC_Helper_Customer {
         $objFormParam->addParam('購入商品コード', 'search_buy_product_code', STEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam('購入商品名', 'search_buy_product_name', STEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam('カテゴリ', 'search_category_id', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('性別', 'search_sex', INT_LEN, "n", array("MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('会員状態', 'search_status', INT_LEN, "n", array("MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('職業', 'search_job', INT_LEN, "n", array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam('性別', 'search_sex', INT_LEN, 'n', array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam('会員状態', 'search_status', INT_LEN, 'n', array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam('職業', 'search_job', INT_LEN, 'n', array("MAX_LENGTH_CHECK"));
     }
 
     /**
@@ -592,7 +592,7 @@ class SC_Helper_Customer {
      */
     function sfGetSearchData($arrParam) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objSelect = new SC_CustomerList_Ex($arrParam, "customer");
+        $objSelect = new SC_CustomerList_Ex($arrParam, 'customer');
         $page_max = SC_Utils_Ex::sfGetSearchPageMax($arrParam['search_page_max']);
         $disp_pageno = $arrParam['search_pageno'];
         if($disp_pageno == 0) {
@@ -610,7 +610,7 @@ class SC_Helper_Customer {
         $objNavi = new SC_PageNavi_Ex($arrParam['search_pageno'],
                                     $linemax,
                                     $page_max,
-                                    "fnNaviSearchOnlyPage",
+                                    'fnNaviSearchOnlyPage',
                                     NAVI_PMAX);
         return array($linemax, $arrData, $objNavi);
     }

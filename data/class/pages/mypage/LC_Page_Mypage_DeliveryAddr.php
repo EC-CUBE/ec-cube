@@ -217,7 +217,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
         $arrRegistColumn = $objFormParam->getDbArray();
 
         foreach ($arrRegistColumn as $data) {
-            $arrRegist['shipping_' . $data["column"] ] = $array[ $data["column"] ];
+            $arrRegist['shipping_' . $data['column'] ] = $array[ $data['column'] ];
         }
         if (count($shipping) >= DELIV_ADDR_MAX) {
             SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, "", false, '別のお届け先最大登録数に達しています。');

@@ -84,7 +84,7 @@ class SC_UploadFile {
 
         if($ret[0] != 1) {
             // エラーメッセージの表示
-            print($ret[1]);
+            echo $ret[1];
             exit;
         }
 
@@ -119,7 +119,7 @@ class SC_UploadFile {
                         } else {
                             // 一意なファイル名を作成する。
                             if($rename) {
-                                $uniqname = date("mdHi") . "_" . uniqid("").".";
+                                $uniqname = date('mdHi') . "_" . uniqid("").".";
                                 $this->temp_file[$cnt] = ereg_replace("^.*\.",$uniqname, $_FILES[$keyname]['name']);
                             } else {
                                 $this->temp_file[$cnt] = $_FILES[$keyname]['name'];
@@ -153,7 +153,7 @@ class SC_UploadFile {
                     // エラーがない場合
                    if(!isset($objErr->arrErr[$keyname])) {
                         // 一意なファイル名を作成する。
-                        $uniqname = date("mdHi") . "_" . uniqid("").".";
+                        $uniqname = date('mdHi') . "_" . uniqid("").".";
                         $this->temp_file[$cnt] = ereg_replace("^.*\.",$uniqname, $_FILES[$keyname]['name']);
                         set_time_limit(0);
                         $result  = copy($_FILES[$keyname]['tmp_name'], $this->temp_dir . $this->temp_file[$cnt]);
@@ -501,7 +501,7 @@ class SC_UploadFile {
 
         if( $rename === true ){
             // 一意なIDを取得し、画像名をリネームし保存
-            $uniqname = date("mdHi") . "_" . uniqid("");
+            $uniqname = date('mdHi') . "_" . uniqid("");
         } else {
             // アップロードした画像名で保存
             $uploadfile = strlen($uploadfile) > 0 ? $uploadfile : $_FILES[$keyname]['name'];

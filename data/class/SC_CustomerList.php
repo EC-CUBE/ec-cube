@@ -43,7 +43,7 @@ class SC_CustomerList extends SC_SelectSql_Ex {
             $regdate_col = 'dtb_customer.update_date';
         }
 
-        if($mode == "customer") {
+        if($mode == 'customer') {
             $this->setWhere( " del_flg = 0 ");
             // 登録日を示すカラム
             $regdate_col = 'dtb_customer.update_date';
@@ -90,7 +90,7 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         // 性別
         if (!isset($this->arrSql['search_sex'])) $this->arrSql['search_sex'] = "";
         if ( is_array( $this->arrSql['search_sex'] ) ){
-            $arrSexVal = $this->setItemTerm( $this->arrSql['search_sex'] ,"sex" );
+            $arrSexVal = $this->setItemTerm( $this->arrSql['search_sex'] ,'sex' );
             foreach ($arrSexVal as $data) {
                 $this->arrVal[] = $data;
             }
@@ -100,9 +100,9 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         if (!isset($this->arrSql['search_job'])) $this->arrSql['search_job'] = "";
         if ( is_array( $this->arrSql['search_job'] ) ){
             if ( in_array("不明", $this->arrSql['search_job'] ) ) {
-                $arrJobVal = $this->setItemTermWithNull( $this->arrSql['search_job'] ,"job" );
+                $arrJobVal = $this->setItemTermWithNull( $this->arrSql['search_job'] ,'job' );
             } else {
-                $arrJobVal = $this->setItemTerm( $this->arrSql['search_job'] ,"job" );
+                $arrJobVal = $this->setItemTerm( $this->arrSql['search_job'] ,'job' );
             }
             if (is_array($arrJobVal)) {
                 foreach ($arrJobVal as $data) {
@@ -169,7 +169,7 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         }
 
         // メールマガジンの場合
-        if($mode == "customer") {
+        if($mode == 'customer') {
             // メルマガ受け取りの選択項目がフォームに存在する場合
             if ( isset($this->arrSql['search_htmlmail'])){
                 if (SC_Utils_Ex::sfIsInt($this->arrSql['search_htmlmail'])){
@@ -238,7 +238,7 @@ class SC_CustomerList extends SC_SelectSql_Ex {
               strlen($this->arrSql['search_b_end_year']) > 0 && strlen($this->arrSql['search_b_end_month']) > 0 && strlen($this->arrSql['search_b_end_day']) > 0) {
 
             $arrBirth = $this->selectTermRange($this->arrSql['search_b_start_year'], $this->arrSql['search_b_start_month'], $this->arrSql['search_b_start_day']
-                      , $this->arrSql['search_b_end_year'], $this->arrSql['search_b_end_month'], $this->arrSql['search_b_end_day'], "birth");
+                      , $this->arrSql['search_b_end_year'], $this->arrSql['search_b_end_month'], $this->arrSql['search_b_end_day'], 'birth');
             if (is_array($arrBirth)) {
                 foreach ($arrBirth as $data3) {
                     $this->arrVal[] = $data3;
@@ -330,7 +330,7 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         // 会員状態
         if (!isset($this->arrSql['search_status'])) $this->arrSql['search_status'] = "";
         if ( is_array( $this->arrSql['search_status'] ) ){
-            $arrStatusVal = $this->setItemTerm( $this->arrSql['search_status'] ,"status" );
+            $arrStatusVal = $this->setItemTerm( $this->arrSql['search_status'] ,'status' );
             foreach ($arrStatusVal as $data) {
                 $this->arrVal[] = $data;
             }
@@ -368,7 +368,7 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         $i = 0;
         foreach ($this->arrColumnCSV as $val) {
             if ($i != 0) $state .= ", ";
-            $state .= $val["sql"];
+            $state .= $val['sql'];
             $i ++;
         }
 

@@ -161,8 +161,8 @@ class SC_Query {
      */
     function getLastQuery($disp = true) {
         $sql = $this->conn->last_query;
-        if($disp) {
-            print($sql.";<br />\n");
+        if ($disp) {
+            echo $sql . ";<br />\n";
         }
         return $sql;
     }

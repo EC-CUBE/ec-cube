@@ -124,7 +124,7 @@ class SC_Helper_Mail {
         // 顧客情報の取得
         $customer_id = $arrOrder['customer_id'];
         $objQuery->setOrder('customer_id');
-        $arrRet = $objQuery->select("point", "dtb_customer", "customer_id = ?", array($customer_id));
+        $arrRet = $objQuery->select('point', "dtb_customer", "customer_id = ?", array($customer_id));
         $arrCustomer = isset($arrRet[0]) ? $arrRet[0] : "";
 
         $arrTplVar->arrCustomer = $arrCustomer;
@@ -135,8 +135,8 @@ class SC_Helper_Mail {
             $arrOther = unserialize($arrOrder['memo02']);
 
             foreach($arrOther as $other_key => $other_val){
-                if(SC_Utils_Ex::sfTrim($other_val["value"]) == ""){
-                    $arrOther[$other_key]["value"] = "";
+                if(SC_Utils_Ex::sfTrim($other_val['value']) == ""){
+                    $arrOther[$other_key]['value'] = "";
                 }
             }
 
@@ -284,10 +284,10 @@ class SC_Helper_Mail {
         $CONF = SC_Helper_DB_Ex::sfGetBasisData();
         
         $objMailText = new SC_SiteView_Ex();
-        $objMailText->assign("CONF", $CONF);
+        $objMailText->assign('CONF', $CONF);
         $objMailText->assign("name01", $arrCustomerData['name01']);
         $objMailText->assign("name02", $arrCustomerData['name02']);
-        $objMailText->assign("uniqid", $arrCustomerData['secret_key']);
+        $objMailText->assign('uniqid', $arrCustomerData['secret_key']);
         $objMailText->assignobj($arrCustomerData);
         $objMailText->assignobj($this);
 
@@ -318,7 +318,7 @@ class SC_Helper_Mail {
         if($is_mobile) {
             $to_addr = $arrCustomerData["email_mobile"];
         }else{
-            $to_addr = $arrCustomerData["email"];
+            $to_addr = $arrCustomerData['email'];
         }
         $objMail->setTo($to_addr, $arrCustomerData["name01"] . $arrCustomerData["name02"] ." 様");
 
@@ -413,12 +413,12 @@ class SC_Helper_Mail {
         foreach ($arrDestinationList as $arrDestination) {
 
             // 顧客名の変換
-            $customerName = trim($arrDestination["name"]);
-            $subjectBody = preg_replace("/{name}/", $customerName, $arrMail["subject"]);
-            $mailBody = preg_replace("/{name}/", $customerName, $arrMail["body"]);
+            $customerName = trim($arrDestination['name']);
+            $subjectBody = preg_replace("/{name}/", $customerName, $arrMail['subject']);
+            $mailBody = preg_replace("/{name}/", $customerName, $arrMail['body']);
 
             $objMail->setItem(
-                $arrDestination["email"],
+                $arrDestination['email'],
                 $subjectBody,
                 $mailBody,
                 $objSite["email03"],      // 送信元メールアドレス

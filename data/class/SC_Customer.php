@@ -226,7 +226,7 @@ __EOS__;
             && SC_Utils_Ex::sfIsInt($_SESSION['customer']['customer_id'])) {
 
             $objQuery = new SC_Query_Ex();
-            $email = $objQuery->get("email", "dtb_customer", "customer_id = ?", array($_SESSION['customer']['customer_id']));
+            $email = $objQuery->get('email', "dtb_customer", "customer_id = ?", array($_SESSION['customer']['customer_id']));
             if($email == $_SESSION['customer']['email']) {
                 // モバイルサイトの場合は携帯のメールアドレスが登録されていることもチェックする。
                 // ただし $dont_check_email_mobile が true の場合はチェックしない。
@@ -263,7 +263,7 @@ __EOS__;
         if (isset($_SESSION['customer']['birth'])) {
             $arrRet = preg_split("|[- :/]|", $_SESSION['customer']['birth']);
             $birth_month = intval($arrRet[1]);
-            $now_month = intval(date("m"));
+            $now_month = intval(date('m'));
 
             if($birth_month == $now_month) {
                 return true;

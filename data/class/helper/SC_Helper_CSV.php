@@ -463,9 +463,9 @@ class SC_Helper_CSV {
 
         if($prefix == "") {
             $dir_name = SC_Utils_Ex::sfUpDirName();
-            $file_name = $dir_name . date("ymdHis") .".csv";
+            $file_name = $dir_name . date('ymdHis') .".csv";
         } else {
-            $file_name = $prefix . date("ymdHis") .".csv";
+            $file_name = $prefix . date('ymdHis') .".csv";
         }
 
         /* HTTPヘッダの出力 */
@@ -486,7 +486,7 @@ class SC_Helper_CSV {
      * CSVファイルを送信する。
      */
     function lfDownloadCSVFile($filepath, $prefix = "") {
-        $file_name = $prefix . date("YmdHis") . ".csv";
+        $file_name = $prefix . date('YmdHis') . ".csv";
         
         /* HTTPヘッダの出力 */
         Header("Content-disposition: attachment; filename=${file_name}");
@@ -506,9 +506,9 @@ class SC_Helper_CSV {
 
         if($prefix == "") {
             $dir_name = SC_Utils_Ex::sfUpDirName();
-            $file_name = $dir_name . date("ymdHis") .".csv";
+            $file_name = $dir_name . date('ymdHis') .".csv";
         } else {
-            $file_name = $prefix . date("ymdHis") .".csv";
+            $file_name = $prefix . date('ymdHis') .".csv";
         }
 
         /* データを出力 */

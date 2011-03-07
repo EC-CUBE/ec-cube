@@ -217,7 +217,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
         $sql = "SHOW COLUMNS FROM " . $table_name;
         $arrColList = $objQuery->getAll($sql);
         $arrColList = SC_Utils_Ex::sfswaparray($arrColList);
-        return $arrColList["Field"];
+        return $arrColList['Field'];
     }
 
     /**

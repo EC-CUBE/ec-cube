@@ -47,7 +47,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $this->tpl_subnavi = 'contents/subnavi.tpl';
         $this->tpl_subno = 'csv';
         $this->tpl_subno_csv = 'csv_sql';
-        $this->tpl_mainno = "contents";
+        $this->tpl_mainno = 'contents';
         $this->tpl_subtitle = 'CSV出力設定';
     }
 
@@ -78,7 +78,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
 
         switch($this->getMode()) {
         // データの登録
-        case "confirm":
+        case 'confirm':
             $this->arrErr = $this->lfCheckConfirmError($objFormParam);
             if(SC_Utils_Ex::isBlank($this->arrErr)) {
                 // データの更新
@@ -88,7 +88,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
             }
             break;
         // 確認画面
-        case "preview":
+        case 'preview':
             $this->arrErr = $this->lfCheckPreviewError($objFormParam);
             if(SC_Utils_Ex::isBlank($this->arrErr)) {
                 $this->sqlerr = $this->lfCheckSQL($objFormParam->getValue('csv_sql'));
@@ -102,7 +102,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
             SC_Response_Ex::reload();
             break;
         // データ削除
-        case "delete":
+        case 'delete':
             $this->arrErr = $this->lfCheckDeleteError($objFormParam);
             if(SC_Utils_Ex::isBlank($this->arrErr)) {
                 $this->lfDelData($objFormParam->getValue('sql_id'));
@@ -361,7 +361,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         }
         require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_CSV_Ex.php';
         $objCSV = new SC_Helper_CSV_Ex();
-        $objCSV->sfDownloadCsvFromSql($sql, array(), "contents", $arrHeader, true);
+        $objCSV->sfDownloadCsvFromSql($sql, array(), 'contents', $arrHeader, true);
         exit;
     }
 

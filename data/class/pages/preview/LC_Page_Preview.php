@@ -56,7 +56,7 @@ class LC_Page_Preview extends LC_Page_Ex {
 
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        if (isset($_SESSION['preview']) && $_SESSION['preview'] === "ON") {
+        if (isset($_SESSION['preview']) && $_SESSION['preview'] === 'ON') {
             // プレビュー用のレイアウトデザインを取得
             $objLayout = new SC_Helper_PageLayout_Ex();
             $objLayout->sfGetPageLayout($this, true);

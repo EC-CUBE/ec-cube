@@ -320,7 +320,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         }
         if ($success) {
             // dataをCSV出力
-            $fp = fopen($csv_file,"w");
+            $fp = fopen($csv_file,'w');
             if($fp) {
                 if($csv_data != ""){
                     $success = fwrite($fp, $csv_data);
@@ -329,7 +329,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
             }
 
             // 自動採番をCSV出力
-            $fp = fopen($csv_autoinc_file,"w");
+            $fp = fopen($csv_autoinc_file,'w');
             if($fp) {
                 if($csv_autoinc != ""){
                     $success = fwrite($fp, $csv_autoinc);
@@ -502,7 +502,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         $arrCol = array();
 
         // csvファイルからデータの取得
-        $fp = fopen($csv, "r");
+        $fp = fopen($csv, 'r');
         while (!feof($fp)) {
             $data = fgetcsv($fp, 1000000);
 

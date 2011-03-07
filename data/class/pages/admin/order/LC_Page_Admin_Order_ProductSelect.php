@@ -90,7 +90,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
                 $page_max = SC_Utils_Ex::sfGetSearchPageMax($_POST['search_page_max']);
 
                 // ページ送りの取得
-                $objNavi = new SC_PageNavi_Ex($_POST['search_pageno'], $this->tpl_linemax, $page_max, "fnNaviSearchOnlyPage", NAVI_PMAX);
+                $objNavi = new SC_PageNavi_Ex($_POST['search_pageno'], $this->tpl_linemax, $page_max, 'fnNaviSearchOnlyPage', NAVI_PMAX);
                 $this->tpl_strnavi = $objNavi->strnavi;     // 表示文字列
                 $startno = $objNavi->start_row;
                 $arrProduct_id = $this->getProducts($wheres, $objProduct, $page_max, $startno);
@@ -285,11 +285,11 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
      * @param SC_FormParam $objFormParam
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("オーダーID", "order_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("商品名", "search_name", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("カテゴリID", "search_category_id", STEXT_LEN, "KVa",  array("MAX_LENGTH_CHECK", "SPTAB_CHECK"));
-        $objFormParam->addParam("商品コード", "search_product_code", LTEXT_LEN, "KVa", array("MAX_LENGTH_CHECK", "SPTAB_CHECK"));
-        $objFormParam->addParam("フッター", "footer", LTEXT_LEN, "KVa", array("MAX_LENGTH_CHECK", "SPTAB_CHECK"));
+        $objFormParam->addParam("オーダーID", "order_id", INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("商品名", "search_name", STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("カテゴリID", "search_category_id", STEXT_LEN, 'KVa',  array("MAX_LENGTH_CHECK", "SPTAB_CHECK"));
+        $objFormParam->addParam("商品コード", "search_product_code", LTEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK", "SPTAB_CHECK"));
+        $objFormParam->addParam("フッター", 'footer', LTEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK", "SPTAB_CHECK"));
     }
 }
 ?>

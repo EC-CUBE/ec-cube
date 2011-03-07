@@ -138,7 +138,7 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex {
 
         // ランクの取得
         $where1 = "member_id = ?";
-        $rank = $objQuery->get("rank", "dtb_member", $where1, array($id));
+        $rank = $objQuery->get('rank', "dtb_member", $where1, array($id));
 
         // Updateする値を作成する.
         $where2 = "rank > ? AND del_flg <> 1";

@@ -114,20 +114,20 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin_Ex {
         switch ($mode) {
             case 'edit':
                 $objFormParam->addParam('配送業者ID', 'deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam("配送業者名", "name", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-                $objFormParam->addParam("名称", "service_name", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-                $objFormParam->addParam("説明", "remark", LLTEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
-                $objFormParam->addParam("伝票No.確認URL", "confirm_url", STEXT_LEN, "n", array("URL_CHECK", "MAX_LENGTH_CHECK"), "http://");
-                $objFormParam->addParam("取扱商品種別", "product_type_id", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-                $objFormParam->addParam("取扱支払方法", "payment_ids", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+                $objFormParam->addParam("配送業者名", 'name', STEXT_LEN, 'KVa', array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+                $objFormParam->addParam("名称", "service_name", STEXT_LEN, 'KVa', array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+                $objFormParam->addParam("説明", 'remark', LLTEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
+                $objFormParam->addParam("伝票No.確認URL", "confirm_url", STEXT_LEN, 'n', array("URL_CHECK", "MAX_LENGTH_CHECK"), "http://");
+                $objFormParam->addParam("取扱商品種別", "product_type_id", INT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+                $objFormParam->addParam("取扱支払方法", "payment_ids", INT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 
                 for($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
-                    $objFormParam->addParam("お届け時間$cnt", "deliv_time$cnt", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+                    $objFormParam->addParam("お届け時間$cnt", "deliv_time$cnt", STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
                 }
 
                 if(INPUT_DELIV_FEE) {
                     for($cnt = 1; $cnt <= DELIVFEE_MAX; $cnt++) {
-                        $objFormParam->addParam("配送料金$cnt", "fee$cnt", PRICE_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+                        $objFormParam->addParam("配送料金$cnt", "fee$cnt", PRICE_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
                     }
                 }
                 break;
@@ -199,7 +199,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin_Ex {
             // 配送料の登録
             if(INPUT_DELIV_FEE) {
                 for($cnt = 1; $cnt <= DELIVFEE_MAX; $cnt++) {
-                    $keyname = "fee".$cnt;
+                    $keyname = 'fee'.$cnt;
                     if(strcmp($arrRet[$keyname], "") != 0) {
                         $sqlval = array('fee' => $arrRet[$keyname]);
                         $objQuery->update("dtb_delivfee", $sqlval, "deliv_id = ? AND fee_id = ?", array($deliv_id, $cnt));
@@ -211,7 +211,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin_Ex {
             // 登録する配送業者IDの取得
             $deliv_id = $objQuery->nextVal('dtb_deliv_deliv_id');
             $sqlval['deliv_id'] = $deliv_id;
-            $sqlval['rank'] = $objQuery->max("rank", "dtb_deliv") + 1;
+            $sqlval['rank'] = $objQuery->max('rank', "dtb_deliv") + 1;
             $sqlval['create_date'] = 'Now()';
             // INSERTの実行
             $objQuery->insert("dtb_deliv", $sqlval);
@@ -282,7 +282,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin_Ex {
         $arrRet = $objQuery->select($col, $table, $where, array($deliv_id));
         $objFormParam->setParamList($arrRet, 'deliv_time');
         // 配送料金の取得
-        $col = "fee";
+        $col = 'fee';
         $where = "deliv_id = ? ORDER BY pref";
         $table = "dtb_delivfee";
         $arrRet = $objQuery->select($col, $table, $where, array($deliv_id));

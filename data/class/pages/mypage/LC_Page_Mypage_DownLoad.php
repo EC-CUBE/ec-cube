@@ -104,7 +104,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
         //DBから商品情報の読込
         $arrForm = $this->lfGetRealFileName($customer_id, $order_id, $product_id, $product_class_id);
         //ステータスが支払済み以上である事
-        if ($arrForm["status"] < ORDER_DELIV){
+        if ($arrForm['status'] < ORDER_DELIV){
             SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
         }
         //ファイル情報が無い場合はNG
@@ -121,7 +121,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
         if(isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'],'Safari')) {
             $encoding = "UTF-8";
         }
-        $sdown_filename = mb_convert_encoding($arrForm["down_filename"], $encoding, "auto");
+        $sdown_filename = mb_convert_encoding($arrForm["down_filename"], $encoding, 'auto');
 
         // flushなどを利用しているので、現行のSC_Displayは利用できません。
         // SC_DisplayやSC_Responseに大容量ファイルレスポンスが実装されたら移行可能だと思います。
@@ -144,7 +144,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
         ob_end_flush();
         flush();
         //ファイル読み込み
-        $handle = fopen($realpath, "rb");
+        $handle = fopen($realpath, 'rb');
         while (!feof($handle)) {
             echo(fread($handle, DOWNLOAD_BLOCK*1024));
             ob_flush();
@@ -193,10 +193,10 @@ __EOS__;
 
     /* パラメータ情報の初期化 */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("customer_id", "customer_id", INT_LEN, "n", array("EXIST_CHECK","NUM_CHECK"));
-        $objFormParam->addParam("order_id", "order_id", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("product_id", "product_id", INT_LEN, "n", array("EXIST_CHECK","NUM_CHECK"));
-        $objFormParam->addParam("product_class_id", "product_class_id", INT_LEN, "n", array("EXIST_CHECK","NUM_CHECK"));
+        $objFormParam->addParam("customer_id", "customer_id", INT_LEN, 'n', array("EXIST_CHECK","NUM_CHECK"));
+        $objFormParam->addParam("order_id", "order_id", INT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("product_id", "product_id", INT_LEN, 'n', array("EXIST_CHECK","NUM_CHECK"));
+        $objFormParam->addParam("product_class_id", "product_class_id", INT_LEN, 'n', array("EXIST_CHECK","NUM_CHECK"));
     }
 
     /* 入力内容のチェック */

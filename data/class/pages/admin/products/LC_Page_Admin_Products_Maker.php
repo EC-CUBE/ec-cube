@@ -152,8 +152,8 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("メーカーID", "maker_id", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("メーカー名", "name", SMTEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("メーカーID", "maker_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("メーカー名", 'name', SMTEXT_LEN, 'KVa', array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
     }
 
     /**
@@ -183,7 +183,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
 
         // INSERTする値を作成する
         $sqlval['name'] = $arrForm['name'];
-        $sqlval['rank'] = $objQuery->max("rank", "dtb_maker") + 1;
+        $sqlval['rank'] = $objQuery->max('rank', "dtb_maker") + 1;
         $sqlval['creator_id'] = $_SESSION['member_id'];
         $sqlval['update_date'] = "Now()";
         $sqlval['create_date'] = "Now()";
@@ -260,7 +260,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
         // 編集項目を取得する
         $where = "maker_id = ?";
         $arrMaker = array();
-        $arrMaker = $objQuery->select("name", "dtb_maker", $where, array($maker_id));
+        $arrMaker = $objQuery->select('name', "dtb_maker", $where, array($maker_id));
         $arrForm['name'] = $arrMaker[0]['name'];
 
         return $arrForm;
@@ -274,7 +274,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      */
     function lfErrorCheck(&$arrForm) {
         $objErr = new SC_CheckError_Ex($arrForm);
-        $objErr->doFunc(array("メーカー名", "name", SMTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array("メーカー名", 'name', SMTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 
         // maker_id の正当性チェック
         if(!empty($arrForm['maker_id'])) {

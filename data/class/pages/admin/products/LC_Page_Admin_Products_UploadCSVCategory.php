@@ -118,7 +118,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         // CSVファイルの文字コード変換
         $enc_filepath = SC_Utils_Ex::sfEncodeFile($filepath, CHAR_CODE, CSV_TEMP_REALDIR);
         // CSVファイルのオープン
-        $fp = fopen($enc_filepath, "r");
+        $fp = fopen($enc_filepath, 'r');
         // 失敗した場合はエラー表示
         if (!$fp) {
              SC_Utils_Ex::sfDispError("");
@@ -291,7 +291,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
      */
     function isOverLevel($parent_category_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $level = $objQuery->get("level", "dtb_category", "category_id = ?", array($parent_category_id));
+        $level = $objQuery->get('level', "dtb_category", "category_id = ?", array($parent_category_id));
         return $level >= LEVEL_MAX;
     }
 
@@ -320,9 +320,9 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
      * @return void
      */
     function initParam(&$objFormParam) {
-        $objFormParam->addParam("カテゴリID","category_id",INT_LEN,"n",array("MAX_LENGTH_CHECK","NUM_CHECK"));
-        $objFormParam->addParam("カテゴリ名","category_name",STEXT_LEN,"KVa",array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("親カテゴリID","parent_category_id",INT_LEN,"n",array("MAX_LENGTH_CHECK","NUM_CHECK"));
+        $objFormParam->addParam("カテゴリID","category_id",INT_LEN,'n',array("MAX_LENGTH_CHECK","NUM_CHECK"));
+        $objFormParam->addParam("カテゴリ名","category_name",STEXT_LEN,'KVa',array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("親カテゴリID","parent_category_id",INT_LEN,'n',array("MAX_LENGTH_CHECK","NUM_CHECK"));
     }
 
     /**
@@ -340,11 +340,11 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         if ($parent_category_id == 0) {
             // ROOT階層で最大のランクを取得する。
             $where = "parent_category_id = ?";
-            $rank = $objQuery->max("rank", "dtb_category", $where, array($parent_category_id)) + 1;
+            $rank = $objQuery->max('rank', "dtb_category", $where, array($parent_category_id)) + 1;
         } else {
             // 親のランクを自分のランクとする。
             $where = "category_id = ?";
-            $rank = $objQuery->get("rank", "dtb_category", $where, array($parent_category_id));
+            $rank = $objQuery->get('rank', "dtb_category", $where, array($parent_category_id));
             // 追加レコードのランク以上のレコードを一つあげる。
             $sqlup = "UPDATE dtb_category SET rank = (rank + 1) WHERE rank >= ?";
             $objQuery->exec($sqlup, array($rank));
@@ -352,7 +352,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
 
         $where = "category_id = ?";
         // 自分のレベルを取得する(親のレベル + 1)
-        $level = $objQuery->get("level", "dtb_category", $where, array($parent_category_id)) + 1;
+        $level = $objQuery->get('level', "dtb_category", $where, array($parent_category_id)) + 1;
 
         $arrCategory = array();
         $arrCategory['category_name'] = $category_name;

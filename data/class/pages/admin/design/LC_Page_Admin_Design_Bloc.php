@@ -47,8 +47,8 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
         $this->tpl_subnavi = 'design/subnavi.tpl';
         $this->tpl_subno_edit = 'bloc';
         $this->text_row = 13;
-        $this->tpl_subno = "bloc";
-        $this->tpl_mainno = "design";
+        $this->tpl_subno = 'bloc';
+        $this->tpl_mainno = 'design';
         $this->tpl_subtitle = 'ブロック設定';
     }
 
@@ -105,7 +105,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
         }
 
         // メッセージ表示
-        if (isset($_GET['msg']) && $_GET['msg'] == "on") {
+        if (isset($_GET['msg']) && $_GET['msg'] == 'on') {
             // 完了メッセージ
             $this->tpl_onload="alert('登録が完了しました。');";
         }
@@ -122,7 +122,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
             }
 
             // プレビューデータ表示
-            $this->preview = "on";
+            $this->preview = 'on';
             $this->arrBlocData['tpl_data'] = $_POST['bloc_html'];
             $this->arrBlocData['tpl_path'] = $prev_path;
             $this->arrBlocData['bloc_name'] = $_POST['bloc_name'];
@@ -130,7 +130,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
             $this->text_row = $_POST['html_area_row'];
             break;
         case 'confirm':
-            $this->preview = "off";
+            $this->preview = 'off';
             // エラーチェック
             $this->arrErr = $this->lfErrorCheck($_POST);
 
@@ -170,7 +170,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
             }
             break;
         case 'delete':
-            $this->preview = "off";
+            $this->preview = 'off';
              // DBへデータを更新する
             $objQuery = new SC_Query_Ex();     // DB操作オブジェクト
             $sql = "";                      // データ更新SQL生成用
@@ -246,7 +246,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
         // 更新データ生成
         $arrUpdData = array("bloc_name" => $arrData['bloc_name'],
                             "tpl_path" => $arrData['filename'] . '.tpl',
-                            "filename" => $arrData['filename']);
+                            'filename' => $arrData['filename']);
 
         // データが存在しているかチェックを行う
         if($arrData['bloc_id'] !== ''){
@@ -279,7 +279,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
         $objErr = new SC_CheckError_Ex($array);
 
         $objErr->doFunc(array("ブロック名", "bloc_name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("ファイル名", "filename", STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "MAX_LENGTH_CHECK","FILE_NAME_CHECK_BY_NOUPLOAD"));
+        $objErr->doFunc(array("ファイル名", 'filename', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "MAX_LENGTH_CHECK","FILE_NAME_CHECK_BY_NOUPLOAD"));
 
         // 同一のファイル名が存在している場合にはエラー
         if(!isset($objErr->arrErr['filename']) && $array['filename'] !== ''){

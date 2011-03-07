@@ -158,7 +158,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
      */
     function lfInitParam($tpl_mode, &$objFormParam) {
         if ($tpl_mode == 'manual') {
-            $objFormParam->addParam("開始行", "startRowNum", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+            $objFormParam->addParam("開始行", 'startRowNum', INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         }
     }
 
@@ -184,8 +184,8 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         // 一部のIEは256バイト以上受け取ってから表示を開始する。
         SC_Utils_Ex::sfFlush(true);
 
-        echo "<img src='" . $img_path . "zip_install_progress.gif'><br />";
-        echo "<img src='" . $img_path . "space_w.gif'>";
+        echo '<img src="' . $img_path . 'zip_install_progress.gif"><br />';
+        echo '<img src="' . $img_path . 'space_w.gif">';
         SC_Utils_Ex::sfFlush();
 
         // 画像を一個表示する件数を求める。
@@ -232,7 +232,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
 
             // $disp_line件ごとに進捗表示する
             if($cntCurrentLine % $disp_line == 0 && $img_cnt < IMAGE_MAX) {
-                print("<img src='". $img_path ."graph_1_w.gif'>");
+                echo '<img src="' . $img_path . 'graph_1_w.gif">';
                 SC_Utils_Ex::sfFlush();
                 $img_cnt++;
             }
@@ -245,8 +245,8 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         }
         fclose($fp);
 
-        echo "<img src='". $img_path ."space_w.gif'>";
-        echo "</div>\n";
+        echo '<img src="' . $img_path . 'space_w.gif">';
+        echo '</div>' . "\n";
 
         ?>
         <script type="text/javascript" language="javascript">
@@ -272,7 +272,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
     function openZipCsv() {
         // http://www.post.japanpost.jp/zipcode/dl/kogaki/lzh/ken_all.lzh
         $this->convertZipCsv();
-        $fp = fopen(ZIP_CSV_UTF8_REALFILE, "r");
+        $fp = fopen(ZIP_CSV_UTF8_REALFILE, 'r');
         if (!$fp) {
             SC_Utils_Ex::sfDispException(ZIP_CSV_UTF8_REALFILE . ' の読み込みに失敗しました。');
         }
@@ -282,12 +282,12 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
     function convertZipCsv() {
         if (file_exists(ZIP_CSV_UTF8_REALFILE)) return;
 
-        $fpr = fopen(ZIP_CSV_REALFILE, "r");
+        $fpr = fopen(ZIP_CSV_REALFILE, 'r');
         if (!$fpr) {
             SC_Utils_Ex::sfDispException(ZIP_CSV_REALFILE . ' の読み込みに失敗しました。');
         }
 
-        $fpw = fopen(ZIP_CSV_UTF8_REALFILE, "w");
+        $fpw = fopen(ZIP_CSV_UTF8_REALFILE, 'w');
         if (!$fpw) {
             SC_Utils_Ex::sfDispException(ZIP_CSV_UTF8_REALFILE . ' を開けません。');
         }

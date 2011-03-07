@@ -87,7 +87,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
 
             //設定ファイルの権限チェック
             if(!is_writable(CONFIG_REALFILE)){
-                $arrErr["all"] = CONFIG_REALFILE . ' を変更する権限がありません。';
+                $arrErr['all'] = CONFIG_REALFILE . ' を変更する権限がありません。';
             }
 
             //管理画面ディレクトリのチェック
@@ -170,9 +170,9 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
     //管理機能ディレクトリのリネームと CONFIG_REALFILE の変更
     function lfUpdateAdminData(&$arrForm){
         $admin_dir = trim($arrForm['admin_dir'])."/";
-        $admin_force_ssl = "FALSE";
+        $admin_force_ssl = 'FALSE';
         if($arrForm['admin_force_ssl'] == 1){
-            $admin_force_ssl = "TRUE";
+            $admin_force_ssl = 'TRUE';
         }
         $admin_allow_hosts = explode("\n",$arrForm['admin_allow_hosts']);
         foreach($admin_allow_hosts as $key=>$host){
@@ -207,7 +207,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
         }
         
         if($diff > 0) {
-            $fp = fopen(CONFIG_REALFILE,"wb");
+            $fp = fopen(CONFIG_REALFILE,'wb');
             $installData = implode("\n",$installData);
             echo $installData;
             fwrite($fp, $installData);

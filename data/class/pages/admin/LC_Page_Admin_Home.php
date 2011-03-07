@@ -76,16 +76,16 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
         $this->customer_cnt = $this->lfGetCustomerCnt();
 
         // 昨日の売上高
-        $this->order_yesterday_amount = $this->lfGetOrderYesterday("SUM");
+        $this->order_yesterday_amount = $this->lfGetOrderYesterday('SUM');
 
         // 昨日の売上件数
-        $this->order_yesterday_cnt = $this->lfGetOrderYesterday("COUNT");
+        $this->order_yesterday_cnt = $this->lfGetOrderYesterday('COUNT');
 
         // 今月の売上高
-        $this->order_month_amount = $this->lfGetOrderMonth("SUM");
+        $this->order_month_amount = $this->lfGetOrderMonth('SUM');
 
         // 今月の売上件数
-        $this->order_month_cnt = $this->lfGetOrderMonth("COUNT");
+        $this->order_month_cnt = $this->lfGetOrderMonth('COUNT');
 
         // 顧客の累計ポイント
         $this->customer_point = $this->lfGetTotalCustomerPoint();
@@ -150,7 +150,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
     /**
      * 昨日の売上データの取得
      *
-     * @param string $method 取得タイプ 件数:"COUNT" or 金額:"SUM"
+     * @param string $method 取得タイプ 件数:'COUNT' or 金額:'SUM'
      * @return integer 結果数値
      */
     function lfGetOrderYesterday($method){
@@ -165,7 +165,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
     /**
      * 今月の売上データの取得
      *
-     * @param string $method 取得タイプ 件数:"COUNT" or 金額:"SUM"
+     * @param string $method 取得タイプ 件数:'COUNT' or 金額:'SUM'
      * @return integer 結果数値
      */
     function lfGetOrderMonth($method){

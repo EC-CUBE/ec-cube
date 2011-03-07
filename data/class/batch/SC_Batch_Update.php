@@ -145,11 +145,11 @@ class SC_Batch_Update extends SC_Batch {
                         }
 
                         // ファイルを書き出しモードで開く
-                        $handle = @fopen($out, "w");
+                        $handle = @fopen($out, 'w');
                         if (!$handle) {
                             // ディレクトリ作成を行ってリトライ
                             $this->lfMkdirRecursive($out);
-                            $handle = @fopen($out, "w");
+                            $handle = @fopen($out, 'w');
                             if (!$handle) {
                                 $msg = "コピー先に書き込み権限がありません: " . $out;
                                 $arrLog['err'][] = $msg;
@@ -177,7 +177,7 @@ class SC_Batch_Update extends SC_Batch {
         }
         $src = $this->makeDistInfo($bkupDistInfoArray);
         if (is_writable($bkupPath)) {
-            $handle = @fopen($bkupPath . 'distinfo.php', "w");
+            $handle = @fopen($bkupPath . 'distinfo.php', 'w');
             @fwrite($handle, $src);
             @fclose($handle);
             $msg = "distinfoファイルの作成に成功しました: " . $bkupPath . 'distinfo.php';

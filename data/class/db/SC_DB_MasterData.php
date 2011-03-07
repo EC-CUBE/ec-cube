@@ -49,7 +49,7 @@ class SC_DB_MasterData {
     var $objQuery;
 
     /** デフォルトのテーブルカラム名 */
-    var $columns = array("id", "name", "rank", "remarks");
+    var $columns = array('id', 'name', 'rank', 'remarks');
 
     // }}}
     // {{{ functions
@@ -279,7 +279,7 @@ class SC_DB_MasterData {
         }
 
         // ファイルを書き出しモードで開く
-        $handle = fopen($path, "w");
+        $handle = fopen($path, 'w');
         if (!$handle) {
             return false;
         }

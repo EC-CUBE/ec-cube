@@ -30,7 +30,7 @@ class SC_CartSession {
     var $cartSession;
 
     /* コンストラクタ */
-    function SC_CartSession($cartKey = "cart") {
+    function SC_CartSession($cartKey = 'cart') {
         if (!isset($_SESSION[$cartKey])) {
             $_SESSION[$cartKey] = array();
         }

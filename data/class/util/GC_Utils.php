@@ -40,7 +40,7 @@ class GC_Utils {
      *----------------------------------------------------------------------*/
     function gfDownloadCsv($header, $contents){
 
-        $fiest_name = date("YmdHis") .".csv";
+        $fiest_name = date('YmdHis') .".csv";
 
         /* HTTPヘッダの出力 */
         Header("Content-disposition: attachment; filename=${fiest_name}");
@@ -93,9 +93,9 @@ class GC_Utils {
      *----------------------------------------------------------------------*/
     function gfGetAge($dbdate)
     {
-        $ty = date("Y");
-        $tm = date("m");
-        $td = date("d");
+        $ty = date('Y');
+        $tm = date('m');
+        $td = date('d');
         list($by, $bm, $bd) = preg_split("/[-/ ]/", $dbdate);
         $age = $ty - $by;
         if($tm * 100 + $td < $bm * 100 + $bd) $age--;

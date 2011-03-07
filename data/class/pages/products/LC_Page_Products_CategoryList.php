@@ -67,8 +67,8 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex {
         // カテゴリー情報を取得する。
         $objFormParam = $this->lfInitParam($_REQUEST);
         $arrCategoryData = $this->lfGetCategories($objFormParam->getValue('category_id'), true, $this);
-        $this->arrCategory = $arrCategoryData["arrCategory"];
-        $this->arrChildren = $arrCategoryData["arrChildren"];
+        $this->arrCategory = $arrCategoryData['arrCategory'];
+        $this->arrChildren = $arrCategoryData['arrChildren'];
         $this->tpl_subtitle = $this->arrCategory['category_name'];
     }
 
@@ -144,7 +144,7 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex {
             array_unshift($arrChildren, $arrCategory);
         }
 
-        return array("arrChildren"=>$arrChildren, "arrCategory"=>$arrCategory);
+        return array('arrChildren'=>$arrChildren, 'arrCategory'=>$arrCategory);
     }
 
     /**
@@ -154,7 +154,7 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex {
      */
     function lfInitParam($arrRequest) {
         $objFormParam = new SC_FormParam_Ex();
-        $objFormParam->addParam("カテゴリID", "category_id", INT_LEN, "n", array('NUM_CHECK',"MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("カテゴリID", "category_id", INT_LEN, 'n', array('NUM_CHECK',"MAX_LENGTH_CHECK"));
         // 値の取得
         $objFormParam->setParam($arrRequest);
         // 入力値の変換

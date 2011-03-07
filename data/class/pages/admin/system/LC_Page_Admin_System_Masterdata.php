@@ -72,7 +72,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
         $masterData = new SC_DB_MasterData_Ex();
 
         switch ($this->getMode()) {
-        case "edit":
+        case 'edit':
             // POST 文字列の妥当性チェック
             $this->masterDataName = $this->checkMasterDataName($_POST, $this->arrMasterDataName);
             $this->errorMessage = $this->checkUniqueID($_POST);
@@ -83,7 +83,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
                 $this->tpl_onload = "window.alert('マスタデータの設定が完了しました。');";
             }
 
-        case "show":
+        case 'show':
             // POST 文字列の妥当性チェック
             $this->masterDataName = $this->checkMasterDataName($_POST, $this->arrMasterDataName);
 
@@ -199,7 +199,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
         $masterData->deleteMasterData($master_data_name, false);
         // TODO カラム名はメタデータから取得した方が良い
         $masterData->registMasterData($master_data_name,
-                                             array("id", "name", "rank"),
+                                             array('id', 'name', 'rank'),
                                              $arrTmp, false);
         $masterData->objQuery->commit();
 

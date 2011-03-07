@@ -139,13 +139,13 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
             // $_GET['id']（member_id）が登録済みのものかチェック。
             // 登録されていない場合は不正なものとして、新規扱いとする。
             $clean_id = "";
-            $clean_mode_flg = "new";
+            $clean_mode_flg = 'new';
         
             // idが0より大きい数字で整数の場合
             if (isset($_GET['id']) && SC_Utils_Ex::sfIsInt($_GET['id']) && $_GET['id'] > 0) {
                 if ($this->memberDataExists('member_id = ? AND del_flg = 0', $_GET['id'])) {
                     $clean_id = $_GET['id'];
-                    $clean_mode_flg = "edit";
+                    $clean_mode_flg = 'edit';
                 }
             }
 
@@ -195,7 +195,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         $objFormParam->addParam('所属', 'department', STEXT_LEN, 'KV', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('ログインID', 'login_id', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
         $objFormParam->addParam('変更前ログインID', 'old_login_id', '' , '', array('ALNUM_CHECK'));
-        if ($mode == "edit" && $arrParams['password'] == DEFAULT_PASSWORD) {
+        if ($mode == 'edit' && $arrParams['password'] == DEFAULT_PASSWORD) {
             $objFormParam->addParam('パスワード', 'password', '' , '', array('EXIST_CHECK'));
         } else {
         	$objFormParam->addParam('パスワード', 'password', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
@@ -223,10 +223,10 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
 
         // ログインID・パスワードの文字数チェック
         $objErr = new SC_CheckError_Ex();
-        if($mode == "new") {
+        if($mode == 'new') {
             $objErr->doFunc(array("パスワード", 'password', ID_MIN_LEN, ID_MAX_LEN), array("NUM_RANGE_CHECK"));
             $objErr->doFunc(array("ログインID", 'login_id', ID_MIN_LEN, ID_MAX_LEN), array("NUM_RANGE_CHECK"));
-        } elseif($mode == "edit") {
+        } elseif($mode == 'edit') {
             $objErr->doFunc(array("パスワード", 'password', ID_MIN_LEN, ID_MAX_LEN), array("SPTAB_CHECK" ,"NUM_RANGE_CHECK"));
             $objErr->doFunc(array("ログインID", 'login_id', ID_MIN_LEN, ID_MAX_LEN), array("SPTAB_CHECK" ,"NUM_RANGE_CHECK"));
         }
@@ -235,7 +235,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         $arrErr = $objErr->arrErr;
 
         switch($mode) {
-        case "new": 
+        case 'new': 
             // 管理者名が登録済みでないか
             if ($this->memberDataExists('name = ?', $arrParams['name'])) {
                 $arrErr['name'] = "既に登録されている名前なので利用できません。<br>";
@@ -245,7 +245,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
                 $arrErr['login_id'] = "既に登録されているIDなので利用できません。<br>";
             }
             break;
-        case "edit":
+        case 'edit':
             // ログインIDが変更されている場合はチェックする。
             if ($arrParams['login_id'] != $arrParams['old_login_id']) {
                 // ログインIDが登録済みでないか

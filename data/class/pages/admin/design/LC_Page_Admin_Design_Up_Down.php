@@ -48,7 +48,7 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'design/up_down.tpl';
         $this->tpl_subnavi  = 'design/subnavi.tpl';
         $this->tpl_subno    = 'up_down';
-        $this->tpl_mainno   = "design";
+        $this->tpl_mainno   = 'design';
         $this->tpl_subtitle = 'テンプレート追加';
         $this->arrErr  = array();
         $this->arrForm = array();
@@ -148,8 +148,8 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page_Admin_Ex {
     function lfInitUpload() {
         $objForm = new SC_FormParam;
 
-        $objForm->addParam("テンプレートコード", "template_code", STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "ALNUM_CHECK"));
-        $objForm->addParam("テンプレート名", "template_name", STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $objForm->addParam("テンプレートコード", "template_code", STEXT_LEN, 'KVa', array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "ALNUM_CHECK"));
+        $objForm->addParam("テンプレート名", "template_name", STEXT_LEN, 'KVa', array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $objForm->setParam($_POST);
 
         return $objForm;

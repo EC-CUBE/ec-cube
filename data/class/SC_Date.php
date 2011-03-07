@@ -72,10 +72,10 @@ class SC_Date {
         if ( $year ) $this->setStartYear($year);
         
         $year = $this->start_year;
-        if ( ! $year ) $year = DATE("Y");
+        if ( ! $year ) $year = DATE('Y');
         
         $end_year = $this->end_year;
-        if ( ! $end_year ) $end_year = (DATE("Y") + 3);
+        if ( ! $end_year ) $end_year = (DATE('Y') + 3);
         
         $year_array = array();
         
@@ -96,10 +96,10 @@ class SC_Date {
         if ( $year ) $this->setStartYear($year);
         
         $year = $this->start_year;
-        if ( ! $year ) $year = DATE("Y");
+        if ( ! $year ) $year = DATE('Y');
         
         $end_year = $this->end_year;
-        if ( ! $end_year ) $end_year = (DATE("Y") + 3);
+        if ( ! $end_year ) $end_year = (DATE('Y') + 3);
         
         $year_array = array();
         

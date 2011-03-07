@@ -315,9 +315,9 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         $stock_find = false;
 
         // 規格名一覧
-        $arrClassName = SC_Helper_DB_Ex::sfGetIDValueList("dtb_class", "class_id", "name");
+        $arrClassName = SC_Helper_DB_Ex::sfGetIDValueList("dtb_class", "class_id", 'name');
         // 規格分類名一覧
-        $arrClassCatName = SC_Helper_DB_Ex::sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
+        $arrClassCatName = SC_Helper_DB_Ex::sfGetIDValueList("dtb_classcategory", "classcategory_id", 'name');
         // 商品規格情報の取得
         $arrProductsClass = $this->lfGetProductsClass($product_id);
 
@@ -376,13 +376,13 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
     /* パラメータ情報の初期化 */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("規格1", "classcategory_id1", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("規格2", "classcategory_id2", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("数量", "quantity", INT_LEN, "n", array("EXIST_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("管理者ログイン", "admin", INT_LEN, "a", array('ALNUM_CHECK',"MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("商品ID", "product_id", INT_LEN, "n", array("EXIST_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("お気に入り商品ID", "favorite_product_id", INT_LEN, "n", array("ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("商品規格ID", "product_class_id", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("規格1", "classcategory_id1", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("規格2", "classcategory_id2", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("数量", 'quantity', INT_LEN, 'n', array("EXIST_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("管理者ログイン", 'admin', INT_LEN, 'a', array('ALNUM_CHECK',"MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("商品ID", "product_id", INT_LEN, 'n', array("EXIST_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("お気に入り商品ID", "favorite_product_id", INT_LEN, 'n', array("ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("商品規格ID", "product_class_id", INT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
         // 値の取得
         $objFormParam->setParam($_REQUEST);
         // 入力値の変換
@@ -407,7 +407,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         $arrRecommendProductId = array();
         foreach($arrRecommendData as $recommend){
             $arrRecommendProductId[] = $recommend["recommend_product_id"];
-            $arrRecommendData[$recommend["recommend_product_id"]] = $recommend["comment"];
+            $arrRecommendData[$recommend["recommend_product_id"]] = $recommend['comment'];
         }
         
         $objProduct = new SC_Product_Ex();
@@ -430,7 +430,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         }
         $arrProducts = array();
         foreach($arrRecommendProductId as $product_id) {
-            $arrProducts2[$product_id]["comment"] = $arrRecommendData[$product_id];
+            $arrProducts2[$product_id]['comment'] = $arrRecommendData[$product_id];
             $arrRecommend[] = $arrProducts2[$product_id];
         }
 
@@ -493,7 +493,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         // サブ画像の有無を判定
         $subImageFlag = false;
         for ($i = 1; $i <= PRODUCTSUB_MAX; $i++) {
-            if ($arrFile["sub_image" . $i]["filepath"] != "") {
+            if ($arrFile["sub_image" . $i]['filepath'] != "") {
                 $subImageFlag = true;
             }
         }

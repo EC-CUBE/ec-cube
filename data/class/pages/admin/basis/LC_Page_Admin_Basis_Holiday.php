@@ -177,7 +177,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
         $sqlval['month'] = $arrData['month'];
         $sqlval['day'] = $arrData['day'];
         $sqlval['creator_id'] = $member_id;
-        $sqlval['rank'] = $objQuery->max("rank", "dtb_holiday") + 1;
+        $sqlval['rank'] = $objQuery->max('rank', "dtb_holiday") + 1;
         $sqlval['update_date'] = "Now()";
         $sqlval['create_date'] = "Now()";
         // INSERTの実行

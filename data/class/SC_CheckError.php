@@ -507,7 +507,7 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        // $this->arrParam[$value[0]] = mb_convert_kana($this->arrParam[$value[0]], "n");
+        // $this->arrParam[$value[0]] = mb_convert_kana($this->arrParam[$value[0]], 'n');
         $count = strlen($this->arrParam[$value[1]]);
         if( ( $count > 0 ) && $value[2] > $count || $value[3] < $count ) {
             $this->arrErr[$value[1]] =  "※ $value[0]は$value[2]桁～$value[3]桁で入力して下さい。<br />";
@@ -698,10 +698,10 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if( $_FILES[$value[1]]['size'] > $value[2] *  1024 ){
-            $byte = "KB";
+            $byte = 'KB';
             if( $value[2] >= 1000 ) {
                 $value[2] = $value[2] / 1000;
-                $byte = "MB";
+                $byte = 'MB';
             }
             $this->arrErr[$value[1]] = "※ " . $value[0] . "のファイルサイズは" . $value[2] . $byte . "以下のものを使用してください。<br />";
         }
@@ -817,7 +817,7 @@ class SC_CheckError {
             }
 
             // 年の最大数値制限チェック
-            $this->doFunc(array($value[0].'(年)', $value[1], date("Y",strtotime("now"))), array("MAX_CHECK"));
+            $this->doFunc(array($value[0].'(年)', $value[1], date('Y',strtotime('now'))), array("MAX_CHECK"));
             // 上のチェックでエラーある場合、中断する。
             if (isset($this->arrErr[$value[1]])) {
                 return;
@@ -1034,7 +1034,7 @@ class SC_CheckError {
      * value[0] = 項目名 value[1] = 判定対象文字列
      * value[2] = 入力を禁止する文字列(配列)
      *
-     * @example $objErr->doFunc(array("URL", "contents", $arrReviewDenyURL), array("PROHIBITED_STR_CHECK"));
+     * @example $objErr->doFunc(array('URL', 'contents', $arrReviewDenyURL), array("PROHIBITED_STR_CHECK"));
      */
     function PROHIBITED_STR_CHECK( $value ) {
         if( isset($this->arrErr[$value[1]]) || empty($this->arrParam[$value[1]]) ) {
@@ -1077,7 +1077,7 @@ class SC_CheckError {
      */
     function evalCheck($value) {
     	// falseは、正当な式と評価する。
-    	if($value === "false") {
+    	if($value === 'false') {
     		return true;
     	}
         return @eval("return " . $value . ";");

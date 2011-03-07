@@ -175,8 +175,8 @@ class SC_SelectSql {
     /* 複数のカラムでORで優先検索する場合　例：　AND ( item_flag1 = xxx OR item_flag2 = xxx OR item_flag3 = xxx  ) AND ...
 
         配列の構造例　
-        if ( $_POST['show_site1'] ) $arrShowsite_1 = array( "column" => "show_site1",
-                                                            "value"  => $_POST['show_site1'] );
+        if ( $_POST['show_site1'] ) $arrShowsite_1 = array( 'column' => "show_site1",
+                                                            'value'  => $_POST['show_site1'] );
 
     */
     function setWhereByOR( $arrWhere ){
@@ -185,7 +185,7 @@ class SC_SelectSql {
 
         for( $i = 0; $i < $count; $i++ ) {
 
-            if( isset( $arrWhere[$i]["value"] ) ) $statement .= $arrWhere[$i]["column"] ." = " . SC_Utils_Ex::sfQuoteSmart($arrWhere[$i]["value"]) ." OR "  ;
+            if( isset( $arrWhere[$i]['value'] ) ) $statement .= $arrWhere[$i]['column'] ." = " . SC_Utils_Ex::sfQuoteSmart($arrWhere[$i]['value']) ." OR "  ;
         }
 
         $statement = "( " . rtrim( $statement, " OR " ) . " )";

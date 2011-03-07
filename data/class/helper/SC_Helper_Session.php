@@ -26,12 +26,12 @@ class SC_Helper_Session {
       */
      function SC_Helper_Session() {
          $this->objDb = new SC_Helper_DB_Ex();
-         session_set_save_handler(array(&$this, "sfSessOpen"),
-                                  array(&$this, "sfSessClose"),
-                                  array(&$this, "sfSessRead"),
-                                  array(&$this, "sfSessWrite"),
-                                  array(&$this, "sfSessDestroy"),
-                                  array(&$this, "sfSessGc"));
+         session_set_save_handler(array(&$this, 'sfSessOpen'),
+                                  array(&$this, 'sfSessClose'),
+                                  array(&$this, 'sfSessRead'),
+                                  array(&$this, 'sfSessWrite'),
+                                  array(&$this, 'sfSessDestroy'),
+                                  array(&$this, 'sfSessGc'));
      }
 
      // }}}

@@ -103,8 +103,8 @@ class LC_Page_Sitemap extends LC_Page_Ex {
         mb_http_output("UTF-8");
         ob_start('mb_output_handler');
 
-        print("<?xml version='1.0' encoding='UTF-8'?>\n");
-        print("<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>\n");
+        echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+        echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
 
         // TOPページを処理
         $arrTopPagesList = $this->getTopPage($this->arrPageList);
@@ -137,7 +137,7 @@ class LC_Page_Sitemap extends LC_Page_Ex {
                                  $this->date2W3CDatetime($arrDetailPage['update_date']));
         }
 
-        print("</urlset>\n");
+        echo '</urlset>' . "\n";
     }
 
     /**
@@ -224,12 +224,12 @@ class LC_Page_Sitemap extends LC_Page_Ex {
         foreach ($result as $row) {
             // :TODO: カテゴリの最終更新日を取得できるようにする
             
-            $arrPage["url"] = HTTP_URL . 'products/list.php?category_id=' . $row['category_id'];
+            $arrPage['url'] = HTTP_URL . 'products/list.php?category_id=' . $row['category_id'];
             $arrRet[] = $arrPage;
             
             // モバイルサイト
             if (USE_MOBILE !== false) {
-                $arrPage["url"] = HTTP_URL . 'products/list.php?category_id=' . $row['category_id'];
+                $arrPage['url'] = HTTP_URL . 'products/list.php?category_id=' . $row['category_id'];
                 $arrRet[] = $arrPage;
             }
         }
@@ -251,12 +251,12 @@ class LC_Page_Sitemap extends LC_Page_Ex {
             
             $arrPage["update_date"] = $row['update_date'];
             
-            $arrPage["url"] = HTTP_URL . substr(P_DETAIL_URLPATH, strlen(ROOT_URLPATH)) . $row['product_id'];
+            $arrPage['url'] = HTTP_URL . substr(P_DETAIL_URLPATH, strlen(ROOT_URLPATH)) . $row['product_id'];
             $arrRet[] = $arrPage;
             
             // モバイルサイト
             if (USE_MOBILE !== false) {
-                $arrPage["url"] = HTTP_URL . substr(MOBILE_P_DETAIL_URLPATH, strlen(ROOT_URLPATH)) . $row['product_id'];
+                $arrPage['url'] = HTTP_URL . substr(MOBILE_P_DETAIL_URLPATH, strlen(ROOT_URLPATH)) . $row['product_id'];
                 $arrRet[] = $arrPage;
             }
         }

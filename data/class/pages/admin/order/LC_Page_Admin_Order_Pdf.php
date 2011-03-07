@@ -94,7 +94,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         // どんな状態の時に isset($arrRet) == trueになるんだ? これ以前に$arrRet無いが、、、、
         if (!isset($arrRet)) $arrRet = array();
         switch($this->getMode()) {
-            case "confirm":
+            case 'confirm':
                 $status = $this->createPdf($this->objFormParam);
                 if($status === true){
                     exit;
@@ -120,9 +120,9 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         $arrForm['title'] = "お買上げ明細書(納品書)";
 
         // 今日の日付をセット
-        $arrForm['year']  = date("Y");
-        $arrForm['month'] = date("m");
-        $arrForm['day']   = date("d");
+        $arrForm['year']  = date('Y');
+        $arrForm['month'] = date('m');
+        $arrForm['day']   = date('d');
 
         // メッセージ
         $arrForm['msg1'] = 'このたびはお買上げいただきありがとうございます。';
@@ -184,21 +184,21 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
      *  @param SC_FormParam 
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("注文番号", "order_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("注文番号", "pdf_order_id", INT_LEN, "n", array( "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("発行日", "year", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("発行日", "month", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("発行日", "day", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("帳票の種類", "type", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("ダウンロード方法", "download", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("帳票タイトル", "title", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("帳票メッセージ1行目", "msg1", STEXT_LEN*3/5, "KVa", array("MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("帳票メッセージ2行目", "msg2", STEXT_LEN*3/5, "KVa", array("MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("帳票メッセージ3行目", "msg3", STEXT_LEN*3/5, "KVa", array("MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("備考1行目", "etc1", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("備考2行目", "etc2", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("備考3行目", "etc3", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("ポイント表記", "disp_point", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("注文番号", "order_id", INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("注文番号", "pdf_order_id", INT_LEN, 'n', array( "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("発行日", 'year', INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("発行日", 'month', INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("発行日", 'day', INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("帳票の種類", 'type', INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("ダウンロード方法", 'download', INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("帳票タイトル", 'title', STEXT_LEN, 'KVa', array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("帳票メッセージ1行目", "msg1", STEXT_LEN*3/5, 'KVa', array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("帳票メッセージ2行目", "msg2", STEXT_LEN*3/5, 'KVa', array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("帳票メッセージ3行目", "msg3", STEXT_LEN*3/5, 'KVa', array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("備考1行目", "etc1", STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("備考2行目", "etc2", STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("備考3行目", "etc3", STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("ポイント表記", "disp_point", INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
     }
 
     /**

@@ -248,17 +248,17 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam, $deliv_only, $shipping_vol) {
-        $objFormParam->addParam("配送業者", "deliv_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("配送業者", "deliv_id", INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
 
         if (!$deliv_only) {
-            $objFormParam->addParam("お支払い方法", "payment_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-            $objFormParam->addParam("ポイント", "use_point", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK", "ZERO_START"));
-            $objFormParam->addParam("その他お問い合わせ", "message", LTEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-            $objFormParam->addParam("ポイントを使用する", "point_check", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), '2');
+            $objFormParam->addParam("お支払い方法", "payment_id", INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+            $objFormParam->addParam("ポイント", "use_point", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK", "ZERO_START"));
+            $objFormParam->addParam("その他お問い合わせ", 'message', LTEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+            $objFormParam->addParam("ポイントを使用する", "point_check", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), '2');
 
             for ($i = 0; $i < $shipping_vol; $i++) {
-                $objFormParam->addParam("お届け時間", "deliv_time_id" . $i, INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-                $objFormParam->addParam("お届け日", "deliv_date" . $i, STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+                $objFormParam->addParam("お届け時間", "deliv_time_id" . $i, INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+                $objFormParam->addParam("お届け日", "deliv_date" . $i, STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
             }
         }
 
@@ -429,7 +429,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      * モバイル用テンプレートのパスを取得する.
      *
      * @param boolean $is_single_deliv 配送業者が1社の場合 true
-     * @param string $mode フォームパラメータ "mode" の文字列
+     * @param string $mode フォームパラメータ 'mode' の文字列
      * @return string モバイル用テンプレートのパス
      */
     function getMobileMainpage($is_single_deliv = true, $mode) {

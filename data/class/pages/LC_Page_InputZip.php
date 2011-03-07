@@ -68,7 +68,7 @@ class LC_Page_InputZip extends LC_Page_Ex {
         } else {
             // 郵便番号検索文作成
             $zipcode = $_GET['zip1'].$_GET['zip2'];
-            $zipcode = mb_convert_kana($zipcode ,"n");
+            $zipcode = mb_convert_kana($zipcode ,'n');
 
             // 郵便番号検索
             $arrAdsList = SC_Utils_Ex::sfGetAddress($zipcode);

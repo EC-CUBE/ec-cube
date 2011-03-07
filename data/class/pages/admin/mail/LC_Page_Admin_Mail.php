@@ -46,7 +46,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'mail/index.tpl';
         $this->tpl_mainno = 'mail';
         $this->tpl_subnavi = 'mail/subnavi.tpl';
-        $this->tpl_subno = "index";
+        $this->tpl_subno = 'index';
         $this->tpl_pager = 'pager.tpl';
         $this->tpl_subtitle = '配信内容設定';
 
@@ -56,7 +56,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $this->arrJob["不明"] = "不明";
         $this->arrSex = $masterData->getMasterData("mtb_sex");
         $this->arrPageRows = $masterData->getMasterData("mtb_page_max");
-        $this->arrHtmlmail = array( "" => "両方",  1 => "HTML", 2 => "TEXT" );
+        $this->arrHtmlmail = array( "" => "両方",  1 => 'HTML', 2 => 'TEXT' );
         $this->arrMailType = $masterData->getMasterData("mtb_mail_type");
         
         // 日付プルダウン設定
@@ -196,10 +196,10 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfAddParamSelectTemplate(&$objFormParam) {
-        $objFormParam->addParam("メール形式", 'mail_method', INT_LEN, "n", array("EXIST_CHECK","ALNUM_CHECK"));
-        $objFormParam->addParam("Subject", 'subject', STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("本文", 'body', LLTEXT_LEN, "KVCa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("テンプレートID", "template_id", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"), "", false);
+        $objFormParam->addParam("メール形式", 'mail_method', INT_LEN, 'n', array("EXIST_CHECK","ALNUM_CHECK"));
+        $objFormParam->addParam('Subject', 'subject', STEXT_LEN, 'KVa', array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("本文", 'body', LLTEXT_LEN, 'KVCa', array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("テンプレートID", "template_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"), "", false);
     }
     
     /**
@@ -246,8 +246,8 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $send_id = $objQuery->nextVal('dtb_send_history_send_id');
         $dtb_send_history = array();
         $dtb_send_history["mail_method"] = $objFormParam->getValue('mail_method');
-        $dtb_send_history["subject"] = $objFormParam->getValue('subject');
-        $dtb_send_history["body"] = $objFormParam->getValue('body');
+        $dtb_send_history['subject'] = $objFormParam->getValue('subject');
+        $dtb_send_history['body'] = $objFormParam->getValue('body');
         $dtb_send_history["start_date"] = "now()";
         $dtb_send_history["creator_id"] = $_SESSION['member_id'];
         $dtb_send_history["send_count"] = $send_customer_cnt;
@@ -262,8 +262,8 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
                 $dtb_send_customer = array();
                 $dtb_send_customer["customer_id"] = $line["customer_id"];
                 $dtb_send_customer["send_id"] = $send_id;
-                $dtb_send_customer["email"] = $line["email"];
-                $dtb_send_customer["name"] = $line["name01"] . " " . $line["name02"];
+                $dtb_send_customer['email'] = $line['email'];
+                $dtb_send_customer['name'] = $line["name01"] . " " . $line["name02"];
                 $objQuery->insert("dtb_send_customer", $dtb_send_customer );
             }
         }

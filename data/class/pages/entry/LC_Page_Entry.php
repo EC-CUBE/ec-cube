@@ -50,7 +50,7 @@ class LC_Page_Entry extends LC_Page_Ex {
         $this->arrReminder  = $masterData->getMasterData("mtb_reminder");
 
         // 生年月日選択肢の取得
-        $objDate            = new SC_Date_Ex(BIRTH_YEAR, date("Y",strtotime("now")));
+        $objDate            = new SC_Date_Ex(BIRTH_YEAR, date('Y',strtotime('now')));
         $this->arrYear      = $objDate->getYear('', START_BIRTH_YEAR, '');
         $this->arrMonth     = $objDate->getMonth(true);
         $this->arrDay       = $objDate->getDay(true);
@@ -85,8 +85,8 @@ class LC_Page_Entry extends LC_Page_Ex {
         }
 
         // mobile用（戻るボタンでの遷移かどうかを判定）
-        if (!empty($this->arrForm["return"])) {
-            $_POST["mode"] = "return";
+        if (!empty($this->arrForm['return'])) {
+            $_POST['mode'] = 'return';
         }
 
         switch ($this->getMode()) {
@@ -117,11 +117,11 @@ class LC_Page_Entry extends LC_Page_Ex {
                 if(CUSTOMER_CONFIRM_MAIL == false) {
                     // ログイン状態にする
                     $objCustomer = new SC_Customer_Ex();
-                    $objCustomer->setLogin($this->arrForm["email"]);
+                    $objCustomer->setLogin($this->arrForm['email']);
                 }
 
                 // 完了ページに移動させる。
-                SC_Response_Ex::sendRedirect('complete.php', array("ci" => SC_Helper_Customer_Ex::sfGetCustomerId($uniqid)));
+                SC_Response_Ex::sendRedirect('complete.php', array('ci' => SC_Helper_Customer_Ex::sfGetCustomerId($uniqid)));
             }
             break;
         default:
@@ -171,7 +171,7 @@ class LC_Page_Entry extends LC_Page_Ex {
         $arrResults['birth']    = SC_Utils_Ex::sfGetTimestamp($arrForm['year'], $arrForm['month'], $arrForm['day']);
 
         // 仮会員 1 本会員 2
-        $arrResults["status"]   = (CUSTOMER_CONFIRM_MAIL == true) ? "1" : "2";
+        $arrResults['status']   = (CUSTOMER_CONFIRM_MAIL == true) ? "1" : "2";
 
         /*
          * secret_keyは、テーブルで重複許可されていない場合があるので、
@@ -181,7 +181,7 @@ class LC_Page_Entry extends LC_Page_Ex {
 
         // 入会時ポイント
         $CONF = SC_Helper_DB_Ex::sfGetBasisData();
-        $arrResults["point"] = $CONF["welcome_point"];
+        $arrResults['point'] = $CONF["welcome_point"];
 
         if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
             // 携帯メールアドレス
@@ -203,10 +203,10 @@ class LC_Page_Entry extends LC_Page_Ex {
         $CONF           = SC_Helper_DB_Ex::sfGetBasisData();
 
         $objMailText    = new SC_SiteView_Ex();
-        $objMailText->assign("CONF", $CONF);
+        $objMailText->assign('CONF', $CONF);
         $objMailText->assign("name01", $arrForm['name01']);
         $objMailText->assign("name02", $arrForm['name02']);
-        $objMailText->assign("uniqid", $uniqid);
+        $objMailText->assign('uniqid', $uniqid);
         $objMailText->assignobj($this);
 
         $objHelperMail  = new SC_Helper_Mail_Ex();
@@ -233,7 +233,7 @@ class LC_Page_Entry extends LC_Page_Ex {
             , $CONF["email01"]      // Bcc
         );
         // 宛先の設定
-        $objMail->setTo($arrForm["email"],
+        $objMail->setTo($arrForm['email'],
                         $arrForm["name01"] . $arrForm["name02"] ." 様");
 
         $objMail->sendMail();

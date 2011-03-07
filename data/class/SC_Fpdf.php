@@ -37,7 +37,7 @@ class SC_Fpdf {
         $this->tpl_pdf = PDF_TEMPLATE_REALDIR . $tpl_pdf;  // テンプレートファイル
         $this->pdf_download = $download;      // PDFのダウンロード形式（0:表示、1:ダウンロード）
         $this->tpl_title = $title;
-        $this->tpl_dispmode = "real";      // 表示モード
+        $this->tpl_dispmode = 'real';      // 表示モード
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->width_cell = array(110.3,12,21.7,24.5);
@@ -164,7 +164,7 @@ class SC_Fpdf {
         $this->pdf->SetFont('SJIS', '', 8);
 
         $monetary_unit = $this->lfConvSjis("円");
-        $point_unit = $this->lfConvSjis("Pt");
+        $point_unit = $this->lfConvSjis('Pt');
 
         // 購入商品情報
         for ($i = 0; $i < count($this->arrDisp['quantity']); $i++) {

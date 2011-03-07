@@ -61,14 +61,14 @@ class LC_Page_ResizeImage extends LC_Page_Ex {
 
             // ファイル名が正しく、ファイルが存在する場合だけ、$fileを設定
             if (!$this->lfCheckFileName()) {
-                GC_Utils_Ex::gfPrintLog('invalid access :resize_image.php $_GET["image"]=' . $_GET['image']);
+                GC_Utils_Ex::gfPrintLog('invalid access :resize_image.php $_GET[\'image\']=' . $_GET['image']);
             }
             else if (file_exists(IMAGE_SAVE_REALDIR . $_GET['image'])) {
                 $file = IMAGE_SAVE_REALDIR . $_GET['image'];
             }
         }
 
-        $objThumb->Main($file, $_GET["width"], $_GET["height"], "", true);
+        $objThumb->Main($file, $_GET['width'], $_GET['height'], "", true);
     }
 
     /**
@@ -88,7 +88,7 @@ class LC_Page_ResizeImage extends LC_Page_Ex {
     function lfCheckFileName() {
         //$pattern = '|^[0-9]+_[0-9a-z]+\.[a-z]{3}$|';
         $pattern = '|\./|';
-        $file    = trim($_GET["image"]);
+        $file    = trim($_GET['image']);
         if ( preg_match_all($pattern, $file, $matches) ) {
             return false;
         } else {

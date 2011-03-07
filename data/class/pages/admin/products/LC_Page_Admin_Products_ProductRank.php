@@ -127,7 +127,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex {
         // 該当件数表示用
         $this->tpl_linemax = $linemax;
 
-        $objNavi = new SC_PageNavi_Ex($this->tpl_pageno, $linemax, SEARCH_PMAX, "fnNaviPage", NAVI_PMAX);
+        $objNavi = new SC_PageNavi_Ex($this->tpl_pageno, $linemax, SEARCH_PMAX, 'fnNaviPage', NAVI_PMAX);
         $startno = $objNavi->start_row;
         $this->tpl_start_row = $objNavi->start_row;
         $this->tpl_strnavi = $objNavi->strnavi;     // Navi表示文字列
@@ -183,7 +183,7 @@ __EOS__;
 
     function lfRankMove(&$objDb, $parent_category_id, $product_id) {
         $key = "pos-".$product_id;
-        $input_pos = mb_convert_kana($_POST[$key], "n");
+        $input_pos = mb_convert_kana($_POST[$key], 'n');
         if(SC_Utils_Ex::sfIsInt($input_pos)) {
             $where = "category_id = " . SC_Utils_Ex::sfQuoteSmart($parent_category_id);
             $objDb->sfMoveRank("dtb_product_categories", "product_id", $product_id, $input_pos, $where);

@@ -46,8 +46,8 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
         parent::init();
         $this->tpl_mainpage = 'design/index.tpl';
         $this->tpl_subnavi = 'design/subnavi.tpl';
-        $this->tpl_subno = "layout";
-        $this->tpl_mainno = "design";
+        $this->tpl_subno = 'layout';
+        $this->tpl_mainno = 'design';
         $this->tpl_subtitle = 'レイアウト設定';
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrTarget = $masterData->getMasterData("mtb_target");
@@ -103,7 +103,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
         }
 
         // メッセージ表示
-        if (isset($_GET['msg']) && $_GET['msg'] == "on") {
+        if (isset($_GET['msg']) && $_GET['msg'] == 'on') {
             $this->complate_msg="alert('登録が完了しました。');";
         }
 
@@ -202,13 +202,13 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
             if ($this->getMode() == 'preview') {
                 $this->lfSetPreData($arrPageData, $objLayout);
 
-                $_SESSION['preview'] = "ON";
+                $_SESSION['preview'] = 'ON';
 
-                SC_Response_Ex::sendRedirectFromUrlPath('preview/' . DIR_INDEX_PATH, array("filename" => $arrPageData[0]["filename"]));
+                SC_Response_Ex::sendRedirectFromUrlPath('preview/' . DIR_INDEX_PATH, array('filename' => $arrPageData[0]['filename']));
                 exit;
 
             } else {
-                $arrQueryString = array("device_type_id" => $device_type_id, "page_id" => $page_id, "msg" => "on");
+                $arrQueryString = array("device_type_id" => $device_type_id, "page_id" => $page_id, 'msg' => 'on');
                 SC_Response_Ex::reload($arrQueryString, true);
                 exit;
             }

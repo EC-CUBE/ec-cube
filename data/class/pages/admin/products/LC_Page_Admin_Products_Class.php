@@ -143,8 +143,8 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("規格名", "name", STEXT_LEN, "KVa", array("EXIST_CHECK" ,"SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("規格ID", "class_id", INT_LEN, "n", array("NUM_CHECK"));
+        $objFormParam->addParam("規格名", 'name', STEXT_LEN, 'KVa', array("EXIST_CHECK" ,"SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("規格ID", "class_id", INT_LEN, 'n', array("NUM_CHECK"));
     }
 
    /**
@@ -171,7 +171,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
     function lfGetClassName($class_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = "class_id = ?";
-        $class_name = $objQuery->get("name", "dtb_class", $where, array($class_id));
+        $class_name = $objQuery->get('name', "dtb_class", $where, array($class_id));
         return $class_name;
     }
 
@@ -186,7 +186,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
         // INSERTする値を作成する。
         $sqlval['name'] = $arrForm['name'];
         $sqlval['creator_id'] = $_SESSION['member_id'];
-        $sqlval['rank'] = $objQuery->max("rank", "dtb_class") + 1;
+        $sqlval['rank'] = $objQuery->max('rank', "dtb_class") + 1;
         $sqlval['create_date'] = "now()";
         $sqlval['update_date'] = "now()";
         // INSERTの実行

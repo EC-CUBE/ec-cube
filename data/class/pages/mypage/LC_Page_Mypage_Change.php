@@ -56,7 +56,7 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
         $this->httpCacheControl('nocache');
 
         // 生年月日選択肢の取得
-        $objDate            = new SC_Date_Ex(BIRTH_YEAR, date("Y",strtotime("now")));
+        $objDate            = new SC_Date_Ex(BIRTH_YEAR, date('Y',strtotime('now')));
         $this->arrYear      = $objDate->getYear('', START_BIRTH_YEAR, '');
         $this->arrMonth     = $objDate->getMonth(true);
         $this->arrDay       = $objDate->getDay(true);
@@ -80,8 +80,8 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
         $customer_id = $objCustomer->getValue('customer_id');
 
         // mobile用（戻るボタンでの遷移かどうかを判定）
-        if (!empty($_POST["return"])) {
-            $_POST["mode"] = "return";
+        if (!empty($_POST['return'])) {
+            $_POST['mode'] = 'return';
         }
 
         // パラメータ管理クラス,パラメータ情報の初期化

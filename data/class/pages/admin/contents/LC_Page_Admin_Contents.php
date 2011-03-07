@@ -45,7 +45,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
         parent::init();
         $this->tpl_mainpage = 'contents/index.tpl';
         $this->tpl_subnavi = 'contents/subnavi.tpl';
-        $this->tpl_subno = "index";
+        $this->tpl_subno = 'index';
         $this->tpl_mainno = 'contents';
         $this->arrForm = array(
             'year' => date('Y'),
@@ -109,7 +109,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
             if (is_numeric($news_id)) {
                 list($this->arrForm) = $this->getNews($news_id);
                 list($this->arrForm['year'],$this->arrForm['month'],$this->arrForm['day']) = $this->splitNewsDate($this->arrForm['cast_news_date']);
-                $this->edit_mode = "on";
+                $this->edit_mode = 'on';
             }
             break;
         case 'delete':
@@ -124,9 +124,9 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
         //----　表示順位移動
             if (strlen($news_id) > 0 && is_numeric($news_id) == true ) {
                 $term = $objFormParam->getValue('term');
-                if ($term == "up") {
+                if ($term == 'up') {
                     $objDb->sfRankUp("dtb_news", "news_id", $news_id);
-                } else if ($term == "down") {
+                } else if ($term == 'down') {
                     $objDb->sfRankDown("dtb_news", "news_id", $news_id);
                 }
                 $this->objDisplay->reload();
@@ -167,7 +167,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
     function lfCheckError(&$objFormParam){
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
-        $objErr->doFunc(array("日付", "year", "month", "day"), array("CHECK_DATE"));
+        $objErr->doFunc(array("日付", 'year', 'month', 'day'), array("CHECK_DATE"));
         return $objErr->arrErr;
     }
 
@@ -178,14 +178,14 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      */
     function lfInitParam(&$objFormParam){
         $objFormParam->addParam("news_id", 'news_id');
-        $objFormParam->addParam("日付(年)", "year", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("日付(月)", "month", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("日付(日)", "day", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("タイトル", 'news_title', MTEXT_LEN, "KVa", array("EXIST_CHECK","MAX_LENGTH_CHECK","SPTAB_CHECK"));
-        $objFormParam->addParam("URL", 'news_url', URL_LEN, "KVa", array("MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("本文", 'news_comment', LTEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("別ウィンドウで開く", 'link_method', INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("ランク移動", 'term', INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("日付(年)", 'year', INT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("日付(月)", 'month', INT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("日付(日)", 'day', INT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("タイトル", 'news_title', MTEXT_LEN, 'KVa', array("EXIST_CHECK","MAX_LENGTH_CHECK","SPTAB_CHECK"));
+        $objFormParam->addParam('URL', 'news_url', URL_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("本文", 'news_comment', LTEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("別ウィンドウで開く", 'link_method', INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("ランク移動", 'term', INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
     }
 
     /**

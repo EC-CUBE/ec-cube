@@ -61,7 +61,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         // 登録・更新日検索用
         $objDate                    = new SC_Date_Ex();
         $objDate->setStartYear(RELEASE_YEAR);
-        $objDate->setEndYear(DATE("Y"));
+        $objDate->setEndYear(DATE('Y'));
         $this->arrYear              = $objDate->getYear();
         $this->arrMonth             = $objDate->getMonth();
         $this->arrDay               = $objDate->getDay();
@@ -174,21 +174,21 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
     /* パラメータ情報の初期化 */
     function lfInitParam(&$objFormParam) {
         // 月度集計
-        $objFormParam->addParam("月度", "search_startyear_m", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("月度", "search_startmonth_m", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("月度", "search_startyear_m", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("月度", "search_startmonth_m", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         // 期間集計
-        $objFormParam->addParam("開始日", "search_startyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("開始日", "search_startmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("開始日", "search_startday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("終了日", "search_endyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("終了日", "search_endmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("終了日", "search_endday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("開始日", "search_startyear", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("開始日", "search_startmonth", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("開始日", "search_startday", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("終了日", "search_endyear", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("終了日", "search_endmonth", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("終了日", "search_endday", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
 
         // hiddenデータの取得用
-        $objFormParam->addParam("", "page");
-        $objFormParam->addParam("", "type");
-        $objFormParam->addParam("", "mode");
-        $objFormParam->addParam("", "form");
+        $objFormParam->addParam("", 'page');
+        $objFormParam->addParam("", 'type');
+        $objFormParam->addParam("", 'mode');
+        $objFormParam->addParam("", 'form');
     }
 
     /* 入力内容のチェック */
@@ -232,9 +232,9 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
     /* 日付の初期値 */
     function lfGetDateInit() {
-        $search_startyear_m     = $search_startyear  = $search_endyear  = date("Y");
-        $search_startmonth_m    = $search_startmonth = $search_endmonth = date("m");
-        $search_startday        = $search_endday     = date("d");
+        $search_startyear_m     = $search_startyear  = $search_endyear  = date('Y');
+        $search_startmonth_m    = $search_startmonth = $search_endmonth = date('m');
+        $search_startday        = $search_endday     = date('d');
 
         return compact($this->arrSearchForm1, $this->arrSearchForm2);
     }
@@ -278,7 +278,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         if(count($arrResults) > 0 && $this->install_GD) {
 
             // グラフの生成
-            $arrList = SC_Utils_Ex::sfArrKeyValue($arrResults, $keyname, "total");
+            $arrList = SC_Utils_Ex::sfArrKeyValue($arrResults, $keyname, 'total');
 
             // 一時ファイル名の取得
             $pngname = $this->lfGetGraphPng($type);
@@ -335,7 +335,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         if(count($arrResults) > 0 && $this->install_GD) {
             // グラフの生成
             $arrList = SC_Utils_Ex::sfArrKeyValue($arrResults, $keyname,
-                                                  "total", GRAPH_PIE_MAX,
+                                                  'total', GRAPH_PIE_MAX,
                                                   GRAPH_LABEL_MAX);
 
             // 一時ファイル名の取得
@@ -378,7 +378,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         // 結果が0行以上ある場合のみグラフを生成する。
         if(count($arrResults) > 0 && $this->install_GD) {
             // グラフの生成
-            $arrList = SC_Utils_Ex::sfArrKeyValue($arrResults, $keyname, "total", GRAPH_PIE_MAX, GRAPH_LABEL_MAX);
+            $arrList = SC_Utils_Ex::sfArrKeyValue($arrResults, $keyname, 'total', GRAPH_PIE_MAX, GRAPH_LABEL_MAX);
 
             // 一時ファイル名の取得
             $pngname = $this->lfGetGraphPng($type);
@@ -504,7 +504,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             }
         }
 
-        $tpl_image = $this->lfGetGraphPie($arrTotalResults, "member_name", "member", "(売上比率)", $sdate, $edate);
+        $tpl_image = $this->lfGetGraphPie($arrTotalResults, "member_name", 'member', "(売上比率)", $sdate, $edate);
 
         return array($arrTotalResults, $tpl_image);
     }
@@ -529,7 +529,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $from = "dtb_order_detail JOIN dtb_order USING(order_id)";
 
         /*
-        if($mode != "csv") {
+        if($mode != 'csv') {
             $sql.= "LIMIT " . PRODUCTS_TOTAL_MAX;
         }*/
 

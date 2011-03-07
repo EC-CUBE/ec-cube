@@ -63,7 +63,7 @@ class SC_FormParam {
     }
 
     // パラメータの追加
-    function addParam($disp_name, $keyname, $length="", $convert="", $arrCheck=array(), $default="", $input_db="true") {
+    function addParam($disp_name, $keyname, $length = "", $convert = "", $arrCheck = array(), $default = "", $input_db = 'true') {
         $this->disp_name[] = $disp_name;
         $this->keyname[] = $keyname;
         $this->length[] = $length;

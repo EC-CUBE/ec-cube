@@ -111,7 +111,7 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
         // コメント, 値の配列を生成
         $this->arrComments = SC_Utils_Ex::getHash2Array(
                                      $masterData->getDBMasterData("mtb_constants",
-                                             array("id", "remarks", "rank")));
+                                             array('id', 'remarks', 'rank')));
 
     }
 

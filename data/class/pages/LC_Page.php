@@ -144,7 +144,7 @@ class LC_Page {
         $this->objDisplay->addHeader("Content-disposition", "attachment; filename=${file_name}");
         $this->objDisplay->addHeader("Content-type", "application/octet-stream; name=${file_name}");
         $this->objDisplay->addHeader("Cache-Control", "");
-        $this->objDisplay->addHeader("Pragma", "");
+        $this->objDisplay->addHeader('Pragma', "");
 
         $this->objDisplay->response->body = $data;
         $this->objDisplay->response->write();
@@ -201,11 +201,11 @@ class LC_Page {
      * @param array $param URL に付与するパラメータの配列
      * @param mixed $useSSL 結果に HTTPS_URL を使用する場合 true,
      *                         HTTP_URL を使用する場合 false,
-     *                         デフォルト "escape" 現在のスキーマを使用
+     *                         デフォルト 'escape' 現在のスキーマを使用
      * @return string $path の存在する http(s):// から始まる絶対パス
      * @see Net_URL
      */
-    function getLocation($path, $param = array(), $useSSL = "escape") {
+    function getLocation($path, $param = array(), $useSSL = 'escape') {
         $rootPath = $this->getRootPath($path);
 
         // スキーマを定義
@@ -213,7 +213,7 @@ class LC_Page {
             $url = HTTPS_URL . $rootPath;
         } elseif ($useSSL === false){
             $url = HTTP_URL . $rootPath;
-        } elseif ($useSSL == "escape") {
+        } elseif ($useSSL == 'escape') {
             if (SC_Utils_Ex::sfIsHTTPS()) {
                 $url = HTTPS_URL . $rootPath;
             } else {
@@ -310,7 +310,7 @@ class LC_Page {
     }
 
     /**
-     * リクエストパラメータ "mode" を取得する.
+     * リクエストパラメータ 'mode' を取得する.
      *
      * 1. $_GET['mode'] の値を取得する.
      * 2. 1 が存在しない場合は $_POST['mode'] の値を取得する.
@@ -349,7 +349,7 @@ class LC_Page {
      * @return void
      */
     function doValidToken($is_admin = false) {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             if (!SC_Helper_Session_Ex::isValidToken(false)) {
                 if ($is_admin) {
                     SC_Utils_Ex::sfDispError(INVALID_MOVE_ERRORR);

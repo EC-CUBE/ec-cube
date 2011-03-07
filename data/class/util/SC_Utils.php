@@ -160,11 +160,11 @@ class SC_Utils {
     // 装飾付きエラーメッセージの表示
     function sfErrorHeader($mess, $print = false) {
         global $GLOBAL_ERR;
-        $GLOBAL_ERR.='<div id="errorHeader" >';
+        $GLOBAL_ERR.= '<div id="errorHeader">';
         $GLOBAL_ERR.= $mess;
         $GLOBAL_ERR.= "</div>";
-        if($print) {
-            print($GLOBAL_ERR);
+        if ($print) {
+            echo $GLOBAL_ERR;
         }
     }
 
@@ -174,7 +174,7 @@ class SC_Utils {
         require_once CLASS_EX_REALDIR . 'page_extends/error/LC_Page_Error_DispError_Ex.php';
 
         $objPage = new LC_Page_Error_DispError_Ex();
-        register_shutdown_function(array($objPage, "destroy"));
+        register_shutdown_function(array($objPage, 'destroy'));
         $objPage->init();
         $objPage->type = $type;
         $objPage->process();
@@ -187,7 +187,7 @@ class SC_Utils {
         require_once CLASS_EX_REALDIR . 'page_extends/error/LC_Page_Error_Ex.php';
 
         $objPage = new LC_Page_Error_Ex();
-        register_shutdown_function(array($objPage, "destroy"));
+        register_shutdown_function(array($objPage, 'destroy'));
         $objPage->init();
         $objPage->type = $type;
         $objPage->objSiteSess = $objSiteSess;
@@ -208,7 +208,7 @@ class SC_Utils {
         require_once CLASS_EX_REALDIR . 'page_extends/error/LC_Page_Error_SystemError_Ex.php';
 
         $objPage = new LC_Page_Error_SystemError_Ex();
-        register_shutdown_function(array($objPage, "destroy"));
+        register_shutdown_function(array($objPage, 'destroy'));
         $objPage->init();
         if (!is_null($debugMsg)) {
             $objPage->addDebugMsg($debugMsg);
@@ -347,9 +347,9 @@ exit;
 
         if($prefix == "") {
             $dir_name = SC_Utils_Ex::sfUpDirName();
-            $file_name = $dir_name . date("ymdHis") .".csv";
+            $file_name = $dir_name . date('ymdHis') .".csv";
         } else {
-            $file_name = $prefix . date("ymdHis") .".csv";
+            $file_name = $prefix . date('ymdHis') .".csv";
         }
 
         /* HTTPヘッダの出力 */
@@ -369,9 +369,9 @@ exit;
     function sfGetCSVData($data, $prefix = ""){
         if($prefix == "") {
             $dir_name = SC_Utils_Ex::sfUpDirName();
-            $file_name = $dir_name . date("ymdHis") .".csv";
+            $file_name = $dir_name . date('ymdHis') .".csv";
         } else {
-            $file_name = $prefix . date("ymdHis") .".csv";
+            $file_name = $prefix . date('ymdHis') .".csv";
         }
 
         if (mb_internal_encoding() == CHAR_CODE){
@@ -989,7 +989,7 @@ exit;
      * @return string 変換後のテキストファイルのパス
      */
     function sfEncodeFile($filepath, $enc_type, $out_dir) {
-        $ifp = fopen($filepath, "r");
+        $ifp = fopen($filepath, 'r');
 
         // 正常にファイルオープンした場合
         if ($ifp !== false) {
@@ -1001,7 +1001,7 @@ exit;
 
             while(!feof($ifp)) {
                 $line = fgets($ifp);
-                $line = mb_convert_encoding($line, $enc_type, "auto");
+                $line = mb_convert_encoding($line, $enc_type, 'auto');
                 fwrite($ofp,  $line);
             }
 
@@ -1072,7 +1072,7 @@ exit;
         $same_month = false;
 
         // 該当月の末日を求める。
-        $end_last_day = date("d", mktime(0, 0, 0, $month + 1, 0, $year));
+        $end_last_day = date('d', mktime(0, 0, 0, $month + 1, 0, $year));
 
         // 月の末日が締め日より少ない場合
         if($end_last_day < $close_day) {
@@ -1083,10 +1083,10 @@ exit;
         }
 
         // 前月の取得
-        $tmp_year = date("Y", mktime(0, 0, 0, $month, 0, $year));
-        $tmp_month = date("m", mktime(0, 0, 0, $month, 0, $year));
+        $tmp_year = date('Y', mktime(0, 0, 0, $month, 0, $year));
+        $tmp_month = date('m', mktime(0, 0, 0, $month, 0, $year));
         // 前月の末日を求める。
-        $start_last_day = date("d", mktime(0, 0, 0, $month, 0, $year));
+        $start_last_day = date('d', mktime(0, 0, 0, $month, 0, $year));
 
         // 前月の末日が締め日より少ない場合
         if ($start_last_day < $close_day) {
@@ -1097,9 +1097,9 @@ exit;
         }
 
         // 先月の末日の翌日を取得する
-        $start_year = date("Y", mktime(0, 0, 0, $tmp_month, $tmp_day + 1, $tmp_year));
-        $start_month = date("m", mktime(0, 0, 0, $tmp_month, $tmp_day + 1, $tmp_year));
-        $start_day = date("d", mktime(0, 0, 0, $tmp_month, $tmp_day + 1, $tmp_year));
+        $start_year = date('Y', mktime(0, 0, 0, $tmp_month, $tmp_day + 1, $tmp_year));
+        $start_month = date('m', mktime(0, 0, 0, $tmp_month, $tmp_day + 1, $tmp_year));
+        $start_day = date('d', mktime(0, 0, 0, $tmp_month, $tmp_day + 1, $tmp_year));
 
         // 日付の作成
         $start_date = sprintf("%d/%d/%d 00:00:00", $start_year, $start_month, $start_day);
@@ -1148,7 +1148,7 @@ exit;
                 return "";
             }
         }else{
-            if ($data == "on"){
+            if ($data == 'on'){
                 return 1;
             }else{
                 return 2;
@@ -1267,7 +1267,7 @@ exit;
         // ディレクトリがなければ作成する
         if(!file_exists($des)) {
             if(!mkdir($des, $mod[2])) {
-                print("path:" . $des);
+                echo 'path:' . $des;
             }
         }
 
@@ -1395,7 +1395,7 @@ exit;
     // @versionの記載があるファイルからバージョンを取得する。
     function sfGetFileVersion($path) {
         if(file_exists($path)) {
-            $src_fp = fopen($path, "rb");
+            $src_fp = fopen($path, 'rb');
             if($src_fp) {
                 while (!feof($src_fp)) {
                     $line = fgets($src_fp);
@@ -1503,7 +1503,7 @@ exit;
     function printXMLDeclaration() {
         $ua = $_SERVER['HTTP_USER_AGENT'];
         if (!preg_match("/MSIE/", $ua) || preg_match("/MSIE 7/", $ua)) {
-            print("<?xml version='1.0' encoding='" . CHAR_CODE . "'?>\n");
+            echo '<?xml version="1.0" encoding="' . CHAR_CODE . '"?>' . "\n";
         }
     }
 
@@ -1788,7 +1788,7 @@ exit;
     function sfReadFile($filename) {
         $str = "";
         // バイナリモードでオープン
-        $fp = @fopen($filename, "rb" );
+        $fp = @fopen($filename, 'rb' );
         //ファイル内容を全て変数に読み込む
         if($fp) {
             $str = @fread($fp, filesize($filename)+1);
@@ -1877,13 +1877,12 @@ exit;
 
     /* デバッグ用 ------------------------------------------------------------------------------------------------*/
     function sfPrintR($obj) {
-        print("<div style='font-size: 12px;color: #00FF00;'>\n");
-        print("<strong>**デバッグ中**</strong><br />\n");
-        print("<pre>\n");
-        //print_r($obj);
+        echo '<div style="font-size: 12px;color: #00FF00;">' . "\n";
+        echo '<strong>**デバッグ中**</strong><br />' . "\n";
+        echo '<pre>' . "\n";
         var_dump($obj);
-        print("</pre>\n");
-        print("<strong>**デバッグ中**</strong></div>\n");
+        echo '</pre>' . "\n";
+        echo '<strong>**デバッグ中**</strong></div>' . "\n";
     }
 
     /**
@@ -2035,7 +2034,7 @@ exit;
         $arrREV_PREF = array_flip($arrPref);
 
         // 郵便番号検索文作成
-        $zipcode = mb_convert_kana($zipcode ,"n");
+        $zipcode = mb_convert_kana($zipcode ,'n');
         $sqlse = "SELECT state, city, town FROM mtb_zip WHERE zipcode = ?";
 
         $data_list = $objQuery->getAll($sqlse, array($zipcode));
@@ -2280,7 +2279,7 @@ exit;
 
     /**
      * 検索結果の1ページあたりの最大表示件数を取得する
-     * 
+     *
      * フォームの入力値から最大表示件数を取得する
      * 取得できなかった場合は, 定数 SEARCH_PMAX の値を返す
      *

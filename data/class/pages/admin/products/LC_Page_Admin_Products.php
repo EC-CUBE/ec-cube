@@ -155,7 +155,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
                     // ページ送りの取得
                     $objNavi = new SC_PageNavi_Ex($this->arrHidden['search_pageno'],
                                                $this->tpl_linemax, $page_max,
-                                               "fnNaviSearchPage", NAVI_PMAX);
+                                               'fnNaviSearchPage', NAVI_PMAX);
                     $this->arrPagenavi = $objNavi->arrPagenavi;
 
                     // 検索結果の取得
@@ -165,7 +165,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
                     // 各商品ごとのカテゴリIDを取得
                     if (count($this->arrProducts) > 0) {
                         foreach ($this->arrProducts as $key => $val) {
-                            $this->arrProducts[$key]["categories"] = $objDb->sfGetCategoryId($val["product_id"], 0, true);
+                            $this->arrProducts[$key]['categories'] = $objDb->sfGetCategoryId($val["product_id"], 0, true);
                             $objDb->g_category_on = false;
                         }
                     }
@@ -197,26 +197,26 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
     function lfInitParam(&$objFormParam) {
 
         // POSTされる値
-        $objFormParam->addParam("商品ID", "product_id", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("カテゴリID", "category_id", STEXT_LEN, "n", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("ページ送り番号","search_pageno", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("表示件数", "search_page_max", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("商品ID", "product_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("カテゴリID", "category_id", STEXT_LEN, 'n', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("ページ送り番号","search_pageno", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("表示件数", "search_page_max", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
 
         // 検索条件
-        $objFormParam->addParam("商品ID", "search_product_id", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("商品コード", "search_product_code", STEXT_LEN, "KVna", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("商品名", "search_name", STEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("カテゴリ", "search_category_id", STEXT_LEN, "n", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("種別", "search_status", INT_LEN, "n", array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("商品ID", "search_product_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("商品コード", "search_product_code", STEXT_LEN, 'KVna', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("商品名", "search_name", STEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("カテゴリ", "search_category_id", STEXT_LEN, 'n', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("種別", "search_status", INT_LEN, 'n', array("MAX_LENGTH_CHECK"));
         // 登録・更新日
-        $objFormParam->addParam("開始年", "search_startyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("開始月", "search_startmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("開始日", "search_startday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("終了年", "search_endyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("終了月", "search_endmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("終了日", "search_endday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("開始年", "search_startyear", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("開始月", "search_startmonth", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("開始日", "search_startday", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("終了年", "search_endyear", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("終了月", "search_endmonth", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("終了日", "search_endday", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
 
-        $objFormParam->addParam("ステータス", "search_product_flag", INT_LEN, "n", array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("ステータス", "search_product_flag", INT_LEN, 'n', array("MAX_LENGTH_CHECK"));
     }
 
     /**

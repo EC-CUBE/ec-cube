@@ -98,7 +98,7 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("ファイル名", "file", MTEXT_LEN, "a", array("EXIST_CHECK"));
+        $objFormParam->addParam("ファイル名", 'file', MTEXT_LEN, 'a', array("EXIST_CHECK"));
     }
 
     /**
@@ -144,7 +144,7 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex {
             $objFileManager = new SC_Helper_FileManager_Ex();
             // ファイルを読み込んで表示
             header("Content-type: text/plain\n\n");
-            print($objFileManager->sfReadFile(USER_REALDIR . $file));
+            echo $objFileManager->sfReadFile(USER_REALDIR . $file);
         } else {
             SC_Response_Ex::sendRedirect(USER_URL . $file);
         }

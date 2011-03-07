@@ -46,7 +46,7 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'mail/history.tpl';
         $this->tpl_mainno = 'mail';
         $this->tpl_subnavi = 'mail/subnavi.tpl';
-        $this->tpl_subno = "history";
+        $this->tpl_subno = 'history';
         $this->tpl_subtitle = '配信履歴';
         $this->tpl_pager = 'pager.tpl';
     }

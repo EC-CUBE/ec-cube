@@ -47,8 +47,8 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
         $this->tpl_subnavi  = 'design/subnavi.tpl';
         $this->header_row = 13;
         $this->footer_row = 13;
-        $this->tpl_subno = "header";
-        $this->tpl_mainno = "design";
+        $this->tpl_subno = 'header';
+        $this->tpl_mainno = 'design';
         $this->tpl_subtitle = 'ヘッダー/フッター設定';
     }
 
@@ -99,8 +99,8 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
                 $this->tpl_onload="alert('登録が完了しました。');";
                 break;
             case 'preview':
-                if ($division == "header") $this->header_prev = "on";
-                if ($division == "footer") $this->footer_prev = "on";
+                if ($division == 'header') $this->header_prev = 'on';
+                if ($division == 'footer') $this->footer_prev = 'on';
                 $this->header_row = isset($_POST['header_row']) ? $_POST['header_row'] : $this->header_row;
                 $this->footer_row = isset($_POST['footer_row']) ? $_POST['footer_row'] : $this->footer_row;
                 break;
@@ -138,7 +138,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
     }
 
     protected function lfUpdateTemplate($template, $content) {
-        $fp = fopen($template,"w");
+        $fp = fopen($template,'w');
         fwrite($fp, $content);
         fclose($fp);
     }

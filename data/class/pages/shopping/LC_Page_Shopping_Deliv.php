@@ -161,8 +161,8 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("その他のお届け先ID", "other_deliv_id", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("お届け先チェック", "deliv_check", INT_LEN, "n", array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("その他のお届け先ID", "other_deliv_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("お届け先チェック", "deliv_check", INT_LEN, 'n', array("MAX_LENGTH_CHECK"));
     }
 
     /**

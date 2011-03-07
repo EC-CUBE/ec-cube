@@ -59,13 +59,13 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
         $objDate = new SC_Date_Ex();
         // 登録・更新検索開始年
         $objDate->setStartYear(RELEASE_YEAR);
-        $objDate->setEndYear(DATE("Y"));
+        $objDate->setEndYear(DATE('Y'));
         $this->arrStartYear = $objDate->getYear();
         $this->arrStartMonth = $objDate->getMonth();
         $this->arrStartDay = $objDate->getDay();
         // 登録・更新検索終了年
         $objDate->setStartYear(RELEASE_YEAR);
-        $objDate->setEndYear(DATE("Y"));
+        $objDate->setEndYear(DATE('Y'));
         $this->arrEndYear = $objDate->getYear();
         $this->arrEndMonth = $objDate->getMonth();
         $this->arrEndDay = $objDate->getDay();
@@ -155,8 +155,8 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
 
         case 'complete':
             $objErr->doFunc(array("おすすめレベル", "recommend_level"), array("SELECT_CHECK"));
-            $objErr->doFunc(array("タイトル", "title", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-            $objErr->doFunc(array("コメント", "comment", LTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+            $objErr->doFunc(array("タイトル", 'title', STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+            $objErr->doFunc(array("コメント", 'comment', LTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
             break;
         }
         return $objErr->arrErr;
@@ -207,21 +207,21 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("投稿者名", "search_reviewer_name", STEXT_LEN, "KVas", array("MAX_LENGTH_CHECK"),"",false);
-        $objFormParam->addParam("投稿者URL", "search_reviewer_url", STEXT_LEN, "KVas", array("MAX_LENGTH_CHECK"),"",false);
-        $objFormParam->addParam("商品名", "search_name", STEXT_LEN, "KVas", array("MAX_LENGTH_CHECK"),"",false);
-        $objFormParam->addParam("商品コード", "search_product_code", STEXT_LEN, "KVas", array("MAX_LENGTH_CHECK"),"",false);
-        $objFormParam->addParam("性別", "search_sex", INT_LEN, "n", array("MAX_LENGTH_CHECK"),"",false);
-        $objFormParam->addParam("おすすめレベル", "search_recommend_level", INT_LEN, "n", array("MAX_LENGTH_CHECK"),"",false);
-        $objFormParam->addParam("投稿年", "search_startyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"),"",false);
-        $objFormParam->addParam("投稿月", "search_startmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"),"",false);
-        $objFormParam->addParam("投稿日", "search_startday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"),"",false);
-        $objFormParam->addParam("投稿年", "search_endyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"),"",false);
-        $objFormParam->addParam("投稿月", "search_endmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"),"",false);
-        $objFormParam->addParam("投稿日", "search_endday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"),"",false);
-        $objFormParam->addParam("最大表示件数", "search_page_max", INT_LEN, "n", array("MAX_LENGTH_CHECK"),"",false);
-        $objFormParam->addParam("ページ番号件数", "search_pageno", INT_LEN, "n", array("MAX_LENGTH_CHECK"),"",false);
-        $objFormParam->addParam("レビューID", "review_id", INT_LEN, "n", array("MAX_LENGTH_CHECK"),"",false);
+        $objFormParam->addParam("投稿者名", "search_reviewer_name", STEXT_LEN, 'KVas', array("MAX_LENGTH_CHECK"),"",false);
+        $objFormParam->addParam("投稿者URL", "search_reviewer_url", STEXT_LEN, 'KVas', array("MAX_LENGTH_CHECK"),"",false);
+        $objFormParam->addParam("商品名", "search_name", STEXT_LEN, 'KVas', array("MAX_LENGTH_CHECK"),"",false);
+        $objFormParam->addParam("商品コード", "search_product_code", STEXT_LEN, 'KVas', array("MAX_LENGTH_CHECK"),"",false);
+        $objFormParam->addParam("性別", "search_sex", INT_LEN, 'n', array("MAX_LENGTH_CHECK"),"",false);
+        $objFormParam->addParam("おすすめレベル", "search_recommend_level", INT_LEN, 'n', array("MAX_LENGTH_CHECK"),"",false);
+        $objFormParam->addParam("投稿年", "search_startyear", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"),"",false);
+        $objFormParam->addParam("投稿月", "search_startmonth", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"),"",false);
+        $objFormParam->addParam("投稿日", "search_startday", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"),"",false);
+        $objFormParam->addParam("投稿年", "search_endyear", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"),"",false);
+        $objFormParam->addParam("投稿月", "search_endmonth", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"),"",false);
+        $objFormParam->addParam("投稿日", "search_endday", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"),"",false);
+        $objFormParam->addParam("最大表示件数", "search_page_max", INT_LEN, 'n', array("MAX_LENGTH_CHECK"),"",false);
+        $objFormParam->addParam("ページ番号件数", "search_pageno", INT_LEN, 'n', array("MAX_LENGTH_CHECK"),"",false);
+        $objFormParam->addParam("レビューID", "review_id", INT_LEN, 'n', array("MAX_LENGTH_CHECK"),"",false);
     }
 
     /**
@@ -352,7 +352,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
 
         // ページ送りの取得
         $objNavi = new SC_PageNavi_Ex($this->tpl_pageno, $linemax, $page_max,
-                                   "fnNaviSearchPage", NAVI_PMAX);
+                                   'fnNaviSearchPage', NAVI_PMAX);
         $this->arrPagenavi = $objNavi->arrPagenavi;
         $startno = $objNavi->start_row;
 

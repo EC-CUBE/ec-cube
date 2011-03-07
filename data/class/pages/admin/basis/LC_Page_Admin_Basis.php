@@ -83,9 +83,9 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
 
         $cnt = $objDb->sfGetBasisCount();
         if ($cnt > 0) {
-            $this->tpl_mode = "update";
+            $this->tpl_mode = 'update';
         } else {
-            $this->tpl_mode = "insert";
+            $this->tpl_mode = 'insert';
         }
 
         if(!empty($_POST)) {
@@ -149,7 +149,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
             "shop_name_eng",
             "zip01",
             "zip02",
-            "pref",
+            'pref',
             "addr01",
             "addr02",
             "tel01",
@@ -163,14 +163,14 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
             "email02",
             "email03",
             "email04",
-            "tax",
+            'tax',
             "tax_rule",
             "free_rule",
             "good_traded",
-            "message",
+            'message',
             "regular_holiday_ids",
-            "latitude",
-            "longitude",
+            'latitude',
+            'longitude',
             "downloadable_days",
             "downloadable_days_unlimited"
         );
@@ -215,7 +215,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         $objFormParam->addParam("郵便番号1", "zip01", ZIP01_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK","NUM_COUNT_CHECK"));
         $objFormParam->addParam("郵便番号2", "zip02", ZIP02_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK","NUM_COUNT_CHECK"));
         // 住所チェック
-        $objFormParam->addParam("都道府県", "pref", array("EXIST_CHECK"));
+        $objFormParam->addParam("都道府県", 'pref', array("EXIST_CHECK"));
         $objFormParam->addParam("住所1", "addr01", MTEXT_LEN, 'KVa', array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("住所2", "addr02", MTEXT_LEN, 'KVa', array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
         // メールチェック
@@ -235,13 +235,13 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         $objFormParam->addParam("FAX番号3", "fax03", TEL_ITEM_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
 
         // その他
-        $objFormParam->addParam("消費税率", "tax", PERCENTAGE_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("消費税率", 'tax', PERCENTAGE_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("課税規則 ", "tax_rule", PERCENTAGE_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("送料無料条件", "free_rule", PRICE_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("店舗営業時間", "business_hour", STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
 
         $objFormParam->addParam("取扱商品", "good_traded", LLTEXT_LEN, '', array("MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("メッセージ", "message", LLTEXT_LEN, '', array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("メッセージ", 'message', LLTEXT_LEN, '', array("MAX_LENGTH_CHECK"));
 
         if(!isset($post['downloadable_days_unlimited']) && $post['downloadable_days_unlimited'] != "1") {
             $objFormParam->addParam("ダウンロード可能日数", "downloadable_days", DOWNLOAD_DAYS_LEN, 'n', array("EXIST_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
@@ -251,7 +251,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         $objFormParam->addParam('緯度', 'latitude', STEXT_LEN, '',  array("MAX_LENGTH_CHECK"));
         $objFormParam->addParam('軽度', 'longitude', STEXT_LEN, '',  array("MAX_LENGTH_CHECK"));
 
-        $objFormParam->addParam("定休日", "regular_holiday_ids", INT_LEN, "n", array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("定休日", "regular_holiday_ids", INT_LEN, 'n', array("MAX_LENGTH_CHECK"));
     }
 
     // 入力エラーチェック
@@ -263,11 +263,11 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         $objErr->doFunc(array("郵便番号", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
 
         // 電話番号チェック
-        $objErr->doFunc(array("TEL", "tel01", "tel02", "tel03"), array("TEL_CHECK"));
-        $objErr->doFunc(array("FAX", "fax01", "fax02", "fax03"), array("TEL_CHECK"));
+        $objErr->doFunc(array('TEL', "tel01", "tel02", "tel03"), array("TEL_CHECK"));
+        $objErr->doFunc(array('FAX', "fax01", "fax02", "fax03"), array("TEL_CHECK"));
 
-        $objErr->doFunc(array("緯度", "latitude", STEXT_LEN), array("NUM_POINT_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("経度", "longitude", STEXT_LEN), array("NUM_POINT_CHECK", "MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array("緯度", 'latitude', STEXT_LEN), array("NUM_POINT_CHECK", "MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array("経度", 'longitude', STEXT_LEN), array("NUM_POINT_CHECK", "MAX_LENGTH_CHECK"));
 
         return  array_merge((array)$arrErr, (array)$objErr->arrErr);
     }

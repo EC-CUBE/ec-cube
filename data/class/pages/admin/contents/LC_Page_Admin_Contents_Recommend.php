@@ -46,7 +46,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'contents/recommend.tpl';
         $this->tpl_mainno = 'contents';
         $this->tpl_subnavi = 'contents/subnavi.tpl';
-        $this->tpl_subno = "recommend";
+        $this->tpl_subno = 'recommend';
         $this->tpl_subtitle = 'おすすめ商品管理';
         //最大登録数の表示
         $this->tpl_disp_max = RECOMMEND_NUM;
@@ -132,10 +132,10 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
      * @param Object $objFormParam
      */
     function lfInitParam(&$objFormParam){
-        $objFormParam->addParam("商品ID", "product_id", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("カテゴリID", "category_id", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("ランク", "rank", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("コメント", "comment", LTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("商品ID", "product_id", INT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("カテゴリID", "category_id", INT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("ランク", 'rank', INT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("コメント", 'comment', LTEXT_LEN, 'KVa', array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
     }
 
     /**

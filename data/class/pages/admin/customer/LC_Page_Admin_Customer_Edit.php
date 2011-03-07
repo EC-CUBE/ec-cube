@@ -208,7 +208,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         // 検索結果一覧画面への戻り用パラメーター
         $objFormParam->addParam("検索用データ", "search_data", "", "", array(), "", false);
         // 顧客購入履歴ページング用
-        $objFormParam->addParam("", "search_pageno", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"), "", false);
+        $objFormParam->addParam("", "search_pageno", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"), "", false);
     }
 
     /**
@@ -220,7 +220,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
     function lfInitSearchParam(&$objFormParam) {
         SC_Helper_Customer_Ex::sfSetSearchParam($objFormParam);
         // 初回受け入れ時用
-        $objFormParam->addParam("編集対象顧客ID", "edit_customer_id", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("編集対象顧客ID", "edit_customer_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
     }
 
     /**
@@ -289,11 +289,11 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         }
 
         if(!is_numeric($arrData['customer_id'])) {
-            $arrData['secret_key'] = SC_Utils_Ex::sfGetUniqRandomId("r");
+            $arrData['secret_key'] = SC_Utils_Ex::sfGetUniqRandomId('r');
         }else {
             $arrOldCustomerData = SC_Helper_Customer_Ex::sfGetCustomerData($arrData['customer_id']);
             if($arrOldCustomerData['status'] != $arrData['status']) {
-                $arrData['secret_key'] = SC_Utils_Ex::sfGetUniqRandomId("r");
+                $arrData['secret_key'] = SC_Utils_Ex::sfGetUniqRandomId('r');
             }
         }
         return SC_Helper_Customer_Ex::sfEditCustomerData($arrData, $arrData['customer_id']);

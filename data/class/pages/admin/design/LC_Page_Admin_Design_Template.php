@@ -48,7 +48,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'design/template.tpl';
         $this->tpl_subnavi  = 'design/subnavi.tpl';
         $this->tpl_subno    = 'template';
-        $this->tpl_mainno   = "design";
+        $this->tpl_mainno   = 'design';
         $this->tpl_subtitle = 'テンプレート設定';
         $this->arrErr  = array();
         $this->arrForm = array();
@@ -241,7 +241,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
 
         // ブロック位置更新SQLファイル有
         if(file_exists($filepath)) {
-            if($fp = fopen($filepath, "r")) {
+            if($fp = fopen($filepath, 'r')) {
                 $sql = fread($fp, filesize($filepath));
                 fclose($fp);
             }

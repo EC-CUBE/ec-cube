@@ -47,8 +47,8 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'mail';
         $this->tpl_subnavi = 'mail/subnavi.tpl';
         $this->tpl_subtitle = 'テンプレート設定';
-        $this->tpl_subno = "template";
-        $this->mode = "regist";
+        $this->tpl_subno = 'template';
+        $this->mode = 'regist';
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrMagazineType = $masterData->getMasterData("mtb_magazine_type");
     }
@@ -92,7 +92,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
                 // エラーが無いときは登録・編集
                 $this->lfRegistData( $objFormParam, $objFormParam->getValue('template_id'));
                 // 自分を再読込して、完了画面へ遷移
-                $this->objDisplay->reload(array("mode" => "complete"));
+                $this->objDisplay->reload(array('mode' => 'complete'));
             } else {
                 $this->arrForm['template_id'] = $objFormParam->getValue('template_id');
             }
@@ -151,10 +151,10 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("メール形式", 'mail_method', INT_LEN, "n", array("EXIST_CHECK","ALNUM_CHECK"));
-        $objFormParam->addParam("Subject", 'subject', STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("本文", 'body', LLTEXT_LEN, "KVCa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("テンプレートID", "template_id", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"), "", false);
+        $objFormParam->addParam("メール形式", 'mail_method', INT_LEN, 'n', array("EXIST_CHECK","ALNUM_CHECK"));
+        $objFormParam->addParam('Subject', 'subject', STEXT_LEN, 'KVa', array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("本文", 'body', LLTEXT_LEN, 'KVCa', array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("テンプレートID", "template_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"), "", false);
     }
 
 }

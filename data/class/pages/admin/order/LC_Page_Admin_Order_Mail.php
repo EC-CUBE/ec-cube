@@ -168,7 +168,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Ex {
             $objFormParam->getValue('footer'), false);
 
             $this->tpl_subject = $objFormParam->getValue('subject');
-            $this->tpl_body = mb_convert_encoding( $objSendMail->body, CHAR_CODE, "auto" );
+            $this->tpl_body = mb_convert_encoding( $objSendMail->body, CHAR_CODE, 'auto' );
             $this->tpl_to = $objSendMail->tpl_to;
             $this->tpl_mainpage = 'order/mail_confirm.tpl';
             return true;
@@ -216,11 +216,11 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Ex {
      * @param SC_FormParam $objFormParam
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("オーダーID", "order_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("テンプレート", "template_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("メールタイトル", "subject", STEXT_LEN, "KVa",  array("EXIST_CHECK", "MAX_LENGTH_CHECK", "SPTAB_CHECK"));
-        $objFormParam->addParam("ヘッダー", "header", LTEXT_LEN, "KVa", array("MAX_LENGTH_CHECK", "SPTAB_CHECK"));
-        $objFormParam->addParam("フッター", "footer", LTEXT_LEN, "KVa", array("MAX_LENGTH_CHECK", "SPTAB_CHECK"));
+        $objFormParam->addParam("オーダーID", "order_id", INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("テンプレート", "template_id", INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("メールタイトル", 'subject', STEXT_LEN, 'KVa',  array("EXIST_CHECK", "MAX_LENGTH_CHECK", "SPTAB_CHECK"));
+        $objFormParam->addParam("ヘッダー", 'header', LTEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK", "SPTAB_CHECK"));
+        $objFormParam->addParam("フッター", 'footer', LTEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK", "SPTAB_CHECK"));
     }
 }
 ?>

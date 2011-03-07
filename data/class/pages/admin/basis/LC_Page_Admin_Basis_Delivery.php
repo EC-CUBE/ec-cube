@@ -129,9 +129,9 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
     function lfCheckError($mode, &$objFormParam) {
         $arrErr = array();
         switch ($mode) {
-            case "delete":
-            case "up":
-            case "down":
+            case 'delete':
+            case 'up':
+            case 'down':
                 $objFormParam->addParam('配送業者ID', 'deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
                 $objFormParam->convParam();

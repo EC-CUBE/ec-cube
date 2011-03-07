@@ -397,7 +397,7 @@ class SC_Helper_Mobile {
             ,array($token, date('Y-m-d H:i:s', time() - MOBILE_SESSION_LIFETIME))
             ,DB_FETCHMODE_ORDERED
         );
-        
+
         if (!isset($arrRow)) {
             return false;
         }

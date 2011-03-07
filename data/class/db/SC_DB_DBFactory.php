@@ -41,11 +41,11 @@ class SC_DB_DBFactory {
      */
     function getInstance() {
         switch (DB_TYPE) {
-        case "mysql":
+        case 'mysql':
             return new SC_DB_DBFactory_MYSQL();
             break;
 
-        case "pgsql":
+        case 'pgsql':
             return new SC_DB_DBFactory_PGSQL();
             break;
 

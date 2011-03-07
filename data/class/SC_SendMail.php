@@ -48,7 +48,7 @@ class SC_SendMail {
         $this->backend = MAIL_BACKEND;
         $this->host = SMTP_HOST;
         $this->port = SMTP_PORT;
-        mb_language( "Japanese" );
+        mb_language( 'Japanese' );
 
         //-- PEAR::Mailを使ってメール送信オブジェクト作成
         $this->objMail =& Mail::factory($this->backend,
@@ -64,7 +64,7 @@ class SC_SendMail {
     function setTo($to, $to_name = "") {
         if($to != "") {
             $this->to = $this->getNameAddress($to_name, $to);
-            $this->setRecip("To", $to);
+            $this->setRecip('To', $to);
         }
     }
 
@@ -77,7 +77,7 @@ class SC_SendMail {
     function setCc($cc, $cc_name = "") {
         if($cc != "") {
             $this->cc = $this->getNameAddress($cc_name, $cc);
-            $this->setRecip("Cc", $cc);
+            $this->setRecip('Cc', $cc);
         }
     }
 
@@ -85,7 +85,7 @@ class SC_SendMail {
     function setBCc($bcc) {
         if($bcc != "") {
             $this->bcc = $bcc;
-            $this->setRecip("Bcc", $bcc);
+            $this->setRecip('Bcc', $bcc);
         }
     }
 
@@ -103,7 +103,7 @@ class SC_SendMail {
 
     // 件名の設定
     function setSubject($subject) {
-        $this->subject = mb_encode_mimeheader($subject, "JIS", 'B', "\n");
+        $this->subject = mb_encode_mimeheader($subject, 'JIS', 'B', "\n");
         $this->subject = str_replace("\x0D\x0A", "\n", $this->subject);
         $this->subject = str_replace("\x0D", "\n", $this->subject);
         $this->subject = str_replace("\x0A", "\n", $this->subject);
@@ -111,7 +111,7 @@ class SC_SendMail {
 
     // 本文の設定
     function setBody($body) {
-        $this->body = mb_convert_encoding($body, "JIS", CHAR_CODE);
+        $this->body = mb_convert_encoding($body, 'JIS', CHAR_CODE);
     }
 
     // SMTPサーバの設定
@@ -122,7 +122,7 @@ class SC_SendMail {
                 'port' => $this->port
         );
         //-- PEAR::Mailを使ってメール送信オブジェクト作成
-        $this->objMail =& Mail::factory("smtp", $arrHost);
+        $this->objMail =& Mail::factory('smtp', $arrHost);
 
     }
 
@@ -134,7 +134,7 @@ class SC_SendMail {
                 'port' => $this->port
         );
         //-- PEAR::Mailを使ってメール送信オブジェクト作成
-        $this->objMail =& Mail::factory("smtp", $arrHost);
+        $this->objMail =& Mail::factory('smtp', $arrHost);
     }
 
     // 名前<メールアドレス>の形式を生成
@@ -144,7 +144,7 @@ class SC_SendMail {
                 $_name = $name;
                 $_name = ereg_replace("<","＜", $_name);
                 $_name = ereg_replace(">","＞", $_name);
-                $_name = mb_encode_mimeheader($_name, "JIS", 'B', "\n");
+                $_name = mb_encode_mimeheader($_name, 'JIS', 'B', "\n");
                 $name_address = "\"". $_name . "\"<" . $mail_address . ">";
             } else {
                 $name_address = $mail_address;
@@ -243,11 +243,11 @@ class SC_SendMail {
     function getRecip() {
         switch ($this->backend) {
             // PEAR::Mail_mail#send は、(他のメーラーバックエンドと異なり) 第1引数を To: として扱う。Cc: や Bcc: は、ヘッダー情報から処理する。
-        case "mail":
+        case 'mail':
             return $this->to;
             break;
-        case "sendmail":
-        case "smtp":
+        case 'sendmail':
+        case 'smtp':
         default:
             return $this->arrRecip;
             break;
@@ -291,15 +291,15 @@ class SC_SendMail {
      */
     function getBackendParams($backend) {
         switch ($backend) {
-        case "mail":
+        case 'mail':
             $arrParams = array();
             break;
-        case "sendmail":
+        case 'sendmail':
             $arrParams = array('sendmail_path' => '/usr/bin/sendmail',
                                'sendmail_args' => '-i'
                                );
             break;
-        case "smtp":
+        case 'smtp':
         default:
             $arrParams = array(
                                'host' => $this->host,

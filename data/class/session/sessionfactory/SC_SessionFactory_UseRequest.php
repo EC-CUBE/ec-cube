@@ -393,10 +393,10 @@ class LC_UseRequest_State_PC extends LC_UseRequest_State {
     /**
      * コンストラクタ
      * セッションのデータ構造は下のようになる.
-     * $_SESSION["pc"]=> array(
-     *     ["model"]   => "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)"
-     *     ["ip"]      => "127.0.0.1"
-     *     ["expires"] => 1204699031
+     * $_SESSION['pc']=> array(
+     *     ['model']   => "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)"
+     *     ['ip']      => "127.0.0.1"
+     *     ['expires'] => 1204699031
      * )
      *
      * @return LC_UseRequest_State_PC
@@ -454,10 +454,10 @@ class LC_UseRequest_State_Mobile extends LC_UseRequest_State {
     /**
      * コンストラクタ
      * セッションのデータ構造は下のようになる.
-     * $_SESSION["mobile"]=> array(
-     *     ["model"]   => 901sh
-     *     ["ip"]      => 127.0.0.1
-     *     ["expires"] => 1204699031
+     * $_SESSION['mobile']=> array(
+     *     ['model']   => 901sh
+     *     ['ip']      => 127.0.0.1
+     *     ['expires'] => 1204699031
      *     ["phone_id"]=> ****
      * )
      *

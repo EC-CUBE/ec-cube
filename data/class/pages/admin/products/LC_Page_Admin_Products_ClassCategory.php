@@ -146,9 +146,9 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-    	$objFormParam->addParam("規格ID", "class_id", INT_LEN, "n", array("NUM_CHECK"));
-        $objFormParam->addParam("規格分類名", "name", STEXT_LEN, "KVa", array("EXIST_CHECK" ,"SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("規格分類ID", "classcategory_id", INT_LEN, "n", array("NUM_CHECK"));
+    	$objFormParam->addParam("規格ID", "class_id", INT_LEN, 'n', array("NUM_CHECK"));
+        $objFormParam->addParam("規格分類名", 'name', STEXT_LEN, 'KVa', array("EXIST_CHECK" ,"SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("規格分類ID", "classcategory_id", INT_LEN, 'n', array("NUM_CHECK"));
     }
 
    /**
@@ -176,7 +176,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $where = "class_id = ?";
-        $name = $objQuery->get("name", "dtb_class", $where, array($class_id));
+        $name = $objQuery->get('name', "dtb_class", $where, array($class_id));
         return $name;
     }
    /**
@@ -188,7 +188,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
     function lfGetClassCatName($classcategory_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = "classcategory_id = ?";
-        $name = $objQuery->get("name", "dtb_classcategory", $where, array($classcategory_id));
+        $name = $objQuery->get('name', "dtb_classcategory", $where, array($classcategory_id));
         return $name;
     }
 
@@ -209,7 +209,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
             $sqlval['name'] = $arrForm['name'];
             $sqlval['class_id'] = $arrForm['class_id'];
             $sqlval['creator_id'] = $_SESSION['member_id'];
-            $sqlval['rank'] = $objQuery->max("rank", "dtb_classcategory", $where, array($arrForm['class_id'])) + 1;
+            $sqlval['rank'] = $objQuery->max('rank', "dtb_classcategory", $where, array($arrForm['class_id'])) + 1;
             $sqlval['create_date'] = "now()";
             $sqlval['update_date'] = "now()";
             // INSERTの実行

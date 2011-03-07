@@ -123,7 +123,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
         $arrSearchCondition = $this->lfGetSearchCondition($this->arrSearchData);
         $this->tpl_linemax = $this->lfGetProductAllNum($arrSearchCondition);
         $urlParam = "category_id={$this->arrSearchData['category_id']}&pageno=#page#";
-        $this->objNavi = new SC_PageNavi_Ex($this->tpl_pageno, $this->tpl_linemax, $this->disp_number, "fnNaviPage", NAVI_PMAX, $urlParam,SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE);
+        $this->objNavi = new SC_PageNavi_Ex($this->tpl_pageno, $this->tpl_linemax, $this->disp_number, 'fnNaviPage', NAVI_PMAX, $urlParam,SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE);
         $this->arrProducts = $this->lfGetProductsList($arrSearchCondition,$this->disp_number,$this->objNavi->start_row,$this->tpl_linemax,$objProduct);
         //商品一覧の表示処理
         $strnavi = $this->objNavi->strnavi;
@@ -149,8 +149,8 @@ class LC_Page_Products_List extends LC_Page_Ex {
         $this->tpl_product_type = $objProduct->product_type;
 
         // 商品ステータスを取得
-        $this->productStatus = $this->arrProducts["productStatus"];
-        unset($this->arrProducts["productStatus"]);
+        $this->productStatus = $this->arrProducts['productStatus'];
+        unset($this->arrProducts['productStatus']);
         $this->tpl_javascript .= 'var productsClassCategories = ' . SC_Utils_Ex::jsonEncode($objProduct->classCategories) . ';';
         //onloadスクリプトを設定
         foreach ($this->arrProducts as $arrProduct) {
@@ -250,7 +250,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
             default:
                 if (strlen($searchCondition["where_category"]) >= 1) {
                     $dtb_product_categories = "(SELECT * FROM dtb_product_categories WHERE ".$searchCondition["where_category"].")";
-                    $arrval_order = array_merge($searchCondition["arrvalCategory"], $searchCondition["arrvalCategory"]);
+                    $arrval_order = array_merge($searchCondition['arrvalCategory'], $searchCondition['arrvalCategory']);
                 } else {
                     $dtb_product_categories = 'dtb_product_categories';
                 }
@@ -284,10 +284,10 @@ __EOS__;
         }
         // 取得範囲の指定(開始行番号、行数のセット)
         $objQuery->setLimitOffset($disp_number, $startno);
-        $objQuery->setWhere($searchCondition["where"]);
+        $objQuery->setWhere($searchCondition['where']);
 
          // 表示すべきIDとそのIDの並び順を一気に取得
-        $arrProduct_id = $objProduct->findProductIdsOrder($objQuery, array_merge($searchCondition["arrval"], $arrval_order));
+        $arrProduct_id = $objProduct->findProductIdsOrder($objQuery, array_merge($searchCondition['arrval'], $arrval_order));
 
         // 取得した表示すべきIDだけを指定して情報を取得。
         $where = "";
@@ -313,7 +313,7 @@ __EOS__;
         
         // 規格を設定
         $objProduct->setProductsClassByProductIds($arrProduct_id);
-        $arrProducts += array("productStatus"=>$objProduct->getProductStatus($arrProduct_id));     
+        $arrProducts += array('productStatus'=>$objProduct->getProductStatus($arrProduct_id));     
         return $arrProducts;
     }
 
@@ -403,9 +403,9 @@ __EOS__;
     function lfGetProductAllNum($searchCondition){
         // 検索結果対象となる商品の数を取得
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->setWhere($searchCondition["where"]);
+        $objQuery->setWhere($searchCondition['where']);
         $objProduct = new SC_Product_Ex();
-        return $objProduct->findProductCount($objQuery, $searchCondition["arrval"]);
+        return $objProduct->findProductCount($objQuery, $searchCondition['arrval']);
     }
     
     /**
@@ -415,28 +415,28 @@ __EOS__;
      */    
     function lfGetSearchCondition($arrSearchData){
         $searchCondition = array(
-            "where"=>"",
-            "arrval"=>array(),
+            'where'=>"",
+            'arrval'=>array(),
             "where_category"=>"",
-            "arrvalCategory"=>array()
+            'arrvalCategory'=>array()
         );
         
         // カテゴリからのWHERE文字列取得
         if ($arrSearchData["category_id"] != 0) {
-            list($searchCondition["where_category"], $searchCondition["arrvalCategory"]) = SC_Helper_DB_Ex::sfGetCatWhere($arrSearchData["category_id"]);
+            list($searchCondition["where_category"], $searchCondition['arrvalCategory']) = SC_Helper_DB_Ex::sfGetCatWhere($arrSearchData["category_id"]);
         }
         // ▼対象商品IDの抽出
         // 商品検索条件の作成（未削除、表示）
-        $searchCondition["where"] = "alldtl.del_flg = 0 AND alldtl.status = 1 ";
+        $searchCondition['where'] = "alldtl.del_flg = 0 AND alldtl.status = 1 ";
 
         // 在庫無し商品の非表示
         if (NOSTOCK_HIDDEN === true) {
-            $searchCondition["where"] .= ' AND (stock >= 1 OR stock_unlimited = 1)';
+            $searchCondition['where'] .= ' AND (stock >= 1 OR stock_unlimited = 1)';
         }
 
         if (strlen($searchCondition["where_category"]) >= 1) {
-            $searchCondition["where"] .= " AND T2.".$searchCondition["where_category"];
-            $searchCondition["arrval"] = array_merge($searchCondition["arrval"], $searchCondition["arrvalCategory"]);
+            $searchCondition['where'] .= " AND T2.".$searchCondition["where_category"];
+            $searchCondition['arrval'] = array_merge($searchCondition['arrval'], $searchCondition['arrvalCategory']);
         }
 
         // 商品名をwhere文に
@@ -449,16 +449,16 @@ __EOS__;
         // 分割したキーワードを一つずつwhere文に追加
         foreach ($names as $val) {
             if ( strlen($val) > 0 ) {
-                $searchCondition["where"] .= " AND ( alldtl.name ILIKE ? OR alldtl.comment3 ILIKE ?) ";
-                $searchCondition["arrval"][] = "%$val%";
-                $searchCondition["arrval"][] = "%$val%";
+                $searchCondition['where'] .= " AND ( alldtl.name ILIKE ? OR alldtl.comment3 ILIKE ?) ";
+                $searchCondition['arrval'][] = "%$val%";
+                $searchCondition['arrval'][] = "%$val%";
             }
         }
 
         // メーカーらのWHERE文字列取得
         if ($arrSearchData['maker_id']) {
-            $searchCondition["where"] .= " AND alldtl.maker_id = ? ";
-            $searchCondition["arrval"][] = $arrSearchData['maker_id'];
+            $searchCondition['where'] .= " AND alldtl.maker_id = ? ";
+            $searchCondition['arrval'][] = $arrSearchData['maker_id'];
         }
         return $searchCondition;
     }

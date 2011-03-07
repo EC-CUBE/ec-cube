@@ -169,7 +169,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             $data = base64_decode($objRet->data->dl_file);
 
             $objLog->log("* open ${filename} start");
-            if ($fp = @fopen($dir . $filename, "w")) {
+            if ($fp = @fopen($dir . $filename, 'w')) {
                 @fwrite($fp, $data);
                 @fclose($fp);
             } else {

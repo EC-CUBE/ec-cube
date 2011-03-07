@@ -329,7 +329,7 @@ class SC_Helper_FileManager {
     function sfReadFile($filename) {
         $str = "";
         // バイナリモードでオープン
-        $fp = @fopen($filename, "rb" );
+        $fp = @fopen($filename, 'rb' );
         //ファイル内容を全て変数に読み込む
         if($fp) {
             $str = @fread($fp, filesize($filename)+1);
@@ -346,7 +346,7 @@ class SC_Helper_FileManager {
      * @param string $value 書き込み内容
      */
     function sfWriteFile($filename, $value) {
-        $fp = @fopen($filename, "w");
+        $fp = @fopen($filename, 'w');
         // ファイルに書き込む
         if($fp) {
             fwrite($fp, $value);

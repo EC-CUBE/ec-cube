@@ -116,10 +116,10 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      */
     function lfInitParam($arrItems, $objFormParam) {
         for ($i = 0; $i < count($arrItems); $i++) {
-            $objFormParam->addParam("商品規格ID", "product_class_id" . $i, INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-            $objFormParam->addParam("数量", "quantity" . $i, INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), 1);
-            $objFormParam->addParam("配送先住所", "shipping" . $i, INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-            $objFormParam->addParam("カート番号", "cart_no" . $i, INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+            $objFormParam->addParam("商品規格ID", "product_class_id" . $i, INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+            $objFormParam->addParam("数量", 'quantity' . $i, INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), 1);
+            $objFormParam->addParam("配送先住所", 'shipping' . $i, INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+            $objFormParam->addParam("カート番号", "cart_no" . $i, INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         }
     }
 
@@ -218,7 +218,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
                     }
                 } else {
                     $objPurchase->copyFromCustomer($arrValues[0], $objCustomer,
-                                                   "shipping");
+                                                   'shipping');
                 }
             }
 

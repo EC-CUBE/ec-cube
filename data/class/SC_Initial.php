@@ -182,10 +182,10 @@ class SC_Initial {
      */
     function defineConstants() {
 
-        $errorMessage = "<div style='color: #F00; font-weight: bold; "
-            . "background-color: #FEB; text-align: center'>"
+        $errorMessage
+            = '<div style="color: #F00; font-weight: bold; background-color: #FEB; text-align: center">'
             . CACHE_REALDIR
-            . " にユーザ書込み権限(777等)を付与して下さい。</div>";
+            . ' にユーザ書込み権限(777等)を付与して下さい。</div>';
 
         // 定数を設定
         if (is_file(CACHE_REALDIR . "mtb_constants.php")) {
@@ -196,7 +196,7 @@ class SC_Initial {
 
             $mtb_constants = file_get_contents(CACHE_REALDIR . "../mtb_constants_init.php");
             if (is_writable(CACHE_REALDIR)) {
-                $handle = fopen(CACHE_REALDIR . "mtb_constants.php", "w");
+                $handle = fopen(CACHE_REALDIR . "mtb_constants.php", 'w');
                 if (!$handle) {
                     die($errorMessage);
                 }

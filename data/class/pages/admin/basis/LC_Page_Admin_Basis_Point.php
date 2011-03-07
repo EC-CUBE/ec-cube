@@ -77,9 +77,9 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex {
 
         $cnt = $objDb->sfGetBasisCount();
         if ($cnt > 0) {
-            $this->tpl_mode = "update";
+            $this->tpl_mode = 'update';
         } else {
-            $this->tpl_mode = "insert";
+            $this->tpl_mode = 'insert';
         }
 
         if(!empty($_POST)) {
@@ -122,8 +122,8 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex {
 
     /* パラメータ情報の初期化 */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("ポイント付与率", "point_rate", PERCENTAGE_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("会員登録時付与ポイント", "welcome_point", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("ポイント付与率", "point_rate", PERCENTAGE_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("会員登録時付与ポイント", "welcome_point", INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
     }
 
     function lfUpdateData($post) {

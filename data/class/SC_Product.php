@@ -458,7 +458,7 @@ __EOS__;
      */
     function getProductsClassLevel($productsClassResults) {
         foreach ($productsClassResults as $row) {
-            $productsClassLevel["level" . $row['level']][] = $row;
+            $productsClassLevel['level' . $row['level']][] = $row;
         }
         return $productsClassLevel;
     }
@@ -475,7 +475,7 @@ __EOS__;
         $productsClass = array();
         if (SC_Utils_Ex::isBlank($results["level1"])
             && SC_Utils_Ex::isBlank($results["level2"])) {
-            return $results["level"];
+            return $results['level'];
         }
 
         foreach ($results["level1"] as $level1) {

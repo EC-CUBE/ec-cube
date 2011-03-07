@@ -106,9 +106,9 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("カテゴリ", "search_category_id", STEXT_LEN, "n");
-        $objFormParam->addParam("商品名", "search_name", STEXT_LEN, "KVa");
-        $objFormParam->addParam("商品コード", "search_product_code", STEXT_LEN, "KVa");
+        $objFormParam->addParam("カテゴリ", "search_category_id", STEXT_LEN, 'n');
+        $objFormParam->addParam("商品名", "search_name", STEXT_LEN, 'KVa');
+        $objFormParam->addParam("商品コード", "search_product_code", STEXT_LEN, 'KVa');
     }
 
     /* 商品検索結果取得 */
@@ -154,7 +154,7 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
         $page_max = SC_Utils_Ex::sfGetSearchPageMax($_POST['search_page_max']);
 
         // ページ送りの取得
-        $objNavi = new SC_PageNavi_Ex($_POST['search_pageno'], $linemax, $page_max, "fnNaviSearchOnlyPage", NAVI_PMAX);
+        $objNavi = new SC_PageNavi_Ex($_POST['search_pageno'], $linemax, $page_max, 'fnNaviSearchOnlyPage', NAVI_PMAX);
         $this->tpl_strnavi = $objNavi->strnavi;     // 表示文字列
         $startno = $objNavi->start_row;
 

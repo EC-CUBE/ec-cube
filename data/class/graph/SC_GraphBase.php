@@ -188,7 +188,7 @@ class SC_GraphBase {
         $this->bgh = $bgh;
         $this->image = imagecreatetruecolor($bgw, $bgh);
         // アンチエイリアス有効
-        if (function_exists("imageantialias")) imageantialias($this->image, true);
+        if (function_exists('imageantialias')) imageantialias($this->image, true);
         // 背景色をセット
         imagefill($this->image, 0, 0, $this->lfGetImageColor($this->image, $this->ARR_BG_COLOR));
 

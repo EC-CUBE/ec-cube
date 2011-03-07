@@ -47,7 +47,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         $this->tpl_subnavi  = 'design/subnavi.tpl';
         $this->text_row     = 13;
         $this->tpl_subno = "main_edit";
-        $this->tpl_mainno = "design";
+        $this->tpl_mainno = 'design';
         $this->tpl_subtitle = 'ページ詳細設定';
     }
 
@@ -90,7 +90,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
                                                              array($device_type_id));
 
         // メッセージ表示
-        if (isset($_GET['msg']) && $_GET['msg'] == "on"){
+        if (isset($_GET['msg']) && $_GET['msg'] == 'on'){
             $this->tpl_onload="alert('登録が完了しました。');";
         }
 
@@ -208,8 +208,8 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
                 $objQuery->insert('dtb_blocposition', $row);
             }
         }
-        $_SESSION['preview'] = "ON";
-        SC_Response_Ex::sendRedirectFromUrlPath('preview/' . DIR_INDEX_PATH, array("filename" => $arrPageData[0]["filename"]));
+        $_SESSION['preview'] = 'ON';
+        SC_Response_Ex::sendRedirectFromUrlPath('preview/' . DIR_INDEX_PATH, array('filename' => $arrPageData[0]['filename']));
     }
 
     /**
@@ -252,7 +252,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
             $arrQueryString = array(
                 "page_id" => $arrData['page_id'],
                 "device_type_id" => $device_type_id,
-                "msg"     => "on",
+                'msg'     => 'on',
             );
             $this->objDisplay->reload($arrQueryString, true);
             exit;
@@ -358,7 +358,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
     function lfErrorCheck($array, $device_type_id) {
         $objErr = new SC_CheckError_Ex($array);
         $objErr->doFunc(array("名称", "page_name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("URL", "url", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array('URL', 'url', STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
 
         // URLチェック
         $okUrl = true;
@@ -413,7 +413,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         }
 
         // ファイル作成
-        $fp = fopen($path,"w");
+        $fp = fopen($path,'w');
         if ($fp === false) {
             SC_Utils_Ex::sfDispException();
         }
@@ -455,7 +455,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         $php_data = str_replace($defaultStrings, $replaceStrings, $php_data);
 
         // phpファイルの作成
-        $fp = fopen($path,"w");
+        $fp = fopen($path,'w');
         fwrite($fp, $php_data);
         fclose($fp);
     }

@@ -206,7 +206,7 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
              . "ORDER BY a.attnum";
         $arrColList = $objQuery->getAll($sql, array($table_name));
         $arrColList = SC_Utils_Ex::sfswaparray($arrColList);
-        return $arrColList["attname"];
+        return $arrColList['attname'];
     }
 
     /**
