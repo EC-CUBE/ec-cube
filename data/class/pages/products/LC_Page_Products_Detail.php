@@ -523,6 +523,8 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
                 $objQuery->insert('dtb_customer_favorite_products', $sqlval);
                 $objQuery->commit();
             }
+            // お気に入りに登録したことを示すフラグ
+            $this->just_added_favorite = true;
             return true;
         }
     }
