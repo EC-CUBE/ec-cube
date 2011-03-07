@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/guide/LC_Page_Guide_Kiyaku.php");
+require_once CLASS_REALDIR . 'pages/guide/LC_Page_Guide_Kiyaku.php';
 
 /**
  * 規約について のページクラス(拡張).

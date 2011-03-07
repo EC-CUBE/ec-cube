@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_EX_REALDIR . "page_extends/LC_Page_Ex.php");
+require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
  * 郵便番号入力 のページクラス.

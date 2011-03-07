@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "helper/SC_Helper_Plugin.php");
+require_once CLASS_REALDIR . 'helper/SC_Helper_Plugin.php';
 
 /**
  * プラグイン関連のヘルパークラス(拡張).

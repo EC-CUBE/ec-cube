@@ -22,8 +22,8 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . '../module/Net/URL.php');
-require_once(CLASS_REALDIR . 'SC_Query.php');
+require_once CLASS_REALDIR . '../module/Net/URL.php';
+require_once CLASS_REALDIR . 'SC_Query.php';
 
 /**
  * モバイルのヘルパークラス.

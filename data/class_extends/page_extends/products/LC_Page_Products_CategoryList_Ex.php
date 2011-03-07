@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/products/LC_Page_Products_CategoryList.php");
+require_once CLASS_REALDIR . 'pages/products/LC_Page_Products_CategoryList.php';
 
 /**
  * カテゴリ一覧 のページクラス(拡張).

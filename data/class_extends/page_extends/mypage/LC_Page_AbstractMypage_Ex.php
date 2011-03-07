@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/mypage/LC_Page_AbstractMypage.php");
+require_once CLASS_REALDIR . 'pages/mypage/LC_Page_AbstractMypage.php';
 
 /**
  * Mypage のページクラス(拡張).

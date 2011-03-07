@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_EX_REALDIR . "page_extends/LC_Page_Ex.php");
+require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
  * 決済モジュールの呼び出しを行うクラス.
@@ -67,7 +67,7 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex {
                                       "モジュールファイルの取得に失敗しました。<br />この手続きは無効となりました。");
             return;
         }
-        require_once($module_path);
+        require_once $module_path;
     }
 
     /**

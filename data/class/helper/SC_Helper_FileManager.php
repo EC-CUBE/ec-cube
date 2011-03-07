@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(dirname(__FILE__) . '/../../module/Tar.php');
+require_once dirname(__FILE__) . '/../../module/Tar.php';
 
 /**
  * ファイル管理 のヘルパークラス.

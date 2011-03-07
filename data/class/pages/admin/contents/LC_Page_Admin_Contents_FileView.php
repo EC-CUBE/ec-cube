@@ -22,8 +22,8 @@
  */
 
 // {{{ requires
-require_once(CLASS_EX_REALDIR . "page_extends/admin/LC_Page_Admin_Ex.php");
-require_once(CLASS_EX_REALDIR . "helper_extends/SC_Helper_FileManager_Ex.php");
+require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
+require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_FileManager_Ex.php';
 
 /**
  * ファイル表示 のページクラス.

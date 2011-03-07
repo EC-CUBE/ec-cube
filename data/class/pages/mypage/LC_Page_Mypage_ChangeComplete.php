@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_EX_REALDIR . "page_extends/mypage/LC_Page_AbstractMypage_Ex.php");
+require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.php';
 
 /**
  * 登録内容変更完了 のページクラス.

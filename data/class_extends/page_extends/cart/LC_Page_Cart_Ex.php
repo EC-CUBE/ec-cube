@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/cart/LC_Page_Cart.php");
+require_once CLASS_REALDIR . 'pages/cart/LC_Page_Cart.php';
 
 /**
  * カート のページクラス(拡張).

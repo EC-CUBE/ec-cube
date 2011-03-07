@@ -72,7 +72,7 @@ class SC_Initial {
 
         define('CONFIG_REALFILE', realpath(dirname(__FILE__)) . '/../config/config.php');
         if (file_exists(CONFIG_REALFILE)) {
-            require_once(CONFIG_REALFILE);
+            require_once CONFIG_REALFILE;
         }
     }
 
@@ -189,7 +189,7 @@ class SC_Initial {
 
         // 定数を設定
         if (is_file(CACHE_REALDIR . "mtb_constants.php")) {
-            require_once(CACHE_REALDIR . "mtb_constants.php");
+            require_once CACHE_REALDIR . 'mtb_constants.php';
 
             // キャッシュが無ければ, 初期データからコピー
         } elseif (is_file(CACHE_REALDIR . "../mtb_constants_init.php")) {
@@ -205,7 +205,7 @@ class SC_Initial {
                 }
                 fclose($handle);
 
-                require_once(CACHE_REALDIR . "mtb_constants.php");
+                require_once CACHE_REALDIR . 'mtb_constants.php';
             } else {
                 die($errorMessage);
             }

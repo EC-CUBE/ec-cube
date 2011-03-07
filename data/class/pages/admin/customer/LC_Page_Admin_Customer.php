@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_EX_REALDIR . "page_extends/admin/LC_Page_Admin_Ex.php");
+require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
  * 顧客管理 のページクラス.
@@ -218,7 +218,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
         $objSelect = new SC_CustomerList_Ex($arrParam, "customer");
         $order = "update_date DESC, customer_id DESC";
         
-        require_once(CLASS_EX_REALDIR . "helper_extends/SC_Helper_CSV_Ex.php");
+        require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_CSV_Ex.php';
         $objCSV = new SC_Helper_CSV_Ex();
         list($where, $arrVal) = $objSelect->getWhere();
         return $objCSV->sfDownloadCsv('2', $where, $arrVal, $order, true);

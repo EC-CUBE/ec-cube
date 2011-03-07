@@ -26,8 +26,8 @@
  */
 
 // {{{ requires
-require_once("../require.php");
-require_once(CLASS_EX_REALDIR . "page_extends/entry/LC_Page_Entry_EmailMobile_Ex.php");
+require_once '../require.php';
+require_once CLASS_EX_REALDIR . 'page_extends/entry/LC_Page_Entry_EmailMobile_Ex.php';
 
 // }}}
 // {{{ generate page

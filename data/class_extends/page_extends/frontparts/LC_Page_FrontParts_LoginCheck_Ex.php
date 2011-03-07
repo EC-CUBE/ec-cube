@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/frontparts/LC_Page_FrontParts_LoginCheck.php");
+require_once CLASS_REALDIR . 'pages/frontparts/LC_Page_FrontParts_LoginCheck.php';
 
 /**
  * ログインチェック のページクラス(拡張).

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/admin/contents/LC_Page_Admin_Contents_CSV.php");
+require_once CLASS_REALDIR . 'pages/admin/contents/LC_Page_Admin_Contents_CSV.php';
 
 /**
  * CSV 項目設定 のページクラス(拡張).

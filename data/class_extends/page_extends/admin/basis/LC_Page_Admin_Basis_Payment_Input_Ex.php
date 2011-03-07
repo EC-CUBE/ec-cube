@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/admin/basis/LC_Page_Admin_Basis_Payment_Input.php");
+require_once CLASS_REALDIR . 'pages/admin/basis/LC_Page_Admin_Basis_Payment_Input.php';
 
 /**
  * 支払方法設定 のページクラス(拡張).

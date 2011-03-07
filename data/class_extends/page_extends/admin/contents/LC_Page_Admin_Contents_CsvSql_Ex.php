@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/admin/contents/LC_Page_Admin_Contents_CsvSql.php");
+require_once CLASS_REALDIR . 'pages/admin/contents/LC_Page_Admin_Contents_CsvSql.php';
 
 /**
  * CSV出力項目設定(高度な設定) のページクラス(拡張).

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/admin/design/LC_Page_Admin_Design.php");
+require_once CLASS_REALDIR . 'pages/admin/design/LC_Page_Admin_Design.php';
 
 /**
  * デザイン管理 のページクラス(拡張).

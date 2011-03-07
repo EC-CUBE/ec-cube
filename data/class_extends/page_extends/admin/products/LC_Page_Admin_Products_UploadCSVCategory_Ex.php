@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/admin/products/LC_Page_Admin_Products_UploadCSVCategory.php");
+require_once CLASS_REALDIR . 'pages/admin/products/LC_Page_Admin_Products_UploadCSVCategory.php';
 
 /**
  * CSV アップロード のページクラス(拡張)

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/admin/products/LC_Page_Admin_Products_ReviewEdit.php");
+require_once CLASS_REALDIR . 'pages/admin/products/LC_Page_Admin_Products_ReviewEdit.php';
 
 /**
  * レビュー編集 のページクラス(拡張).

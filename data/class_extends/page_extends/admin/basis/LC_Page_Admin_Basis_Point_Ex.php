@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/admin/basis/LC_Page_Admin_Basis_Point.php");
+require_once CLASS_REALDIR . 'pages/admin/basis/LC_Page_Admin_Basis_Point.php';
 
 /**
  * ポイント設定 のページクラス(拡張).

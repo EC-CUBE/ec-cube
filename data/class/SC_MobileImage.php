@@ -24,7 +24,7 @@
  */
 
 define("MOBILE_IMAGE_INC_REALDIR", realpath(dirname( __FILE__)) . "/../include/");
-require_once(MOBILE_IMAGE_INC_REALDIR . "image_converter.inc");
+require_once MOBILE_IMAGE_INC_REALDIR . 'image_converter.inc';
 
 /**
  * 画像変換クラス

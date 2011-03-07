@@ -36,7 +36,7 @@ if (!defined("CACHE_REALDIR")) {
     define("CACHE_REALDIR", DATA_REALDIR . "cache/");
 }
 
-require_once(CLASS_EX_REALDIR . "SC_Initial_Ex.php");
+require_once CLASS_EX_REALDIR . 'SC_Initial_Ex.php';
 // アプリケーション初期化処理
 $objInit = new SC_Initial_Ex();
 $objInit->init();

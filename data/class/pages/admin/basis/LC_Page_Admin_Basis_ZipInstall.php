@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_EX_REALDIR . "page_extends/admin/LC_Page_Admin_Ex.php");
+require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /** CSV ファイルの最大行数 */
 define("ZIP_CSV_LINE_MAX", 8192);

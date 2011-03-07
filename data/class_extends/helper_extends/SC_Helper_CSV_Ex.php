@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "helper/SC_Helper_CSV.php");
+require_once CLASS_REALDIR . 'helper/SC_Helper_CSV.php';
 
 /**
  * CSV関連のヘルパークラス(拡張).

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/admin/products/LC_Page_Admin_Products_Maker.php");
+require_once CLASS_REALDIR . 'pages/admin/products/LC_Page_Admin_Products_Maker.php';
 
 /**
  * メーカー管理 のページクラス(拡張).

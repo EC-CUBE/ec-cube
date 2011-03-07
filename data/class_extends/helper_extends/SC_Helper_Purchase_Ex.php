@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "helper/SC_Helper_Purchase.php");
+require_once CLASS_REALDIR . 'helper/SC_Helper_Purchase.php';
 
 /**
  * 商品購入関連のヘルパークラス(拡張).

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/admin/products/LC_Page_Admin_Products_ProductRank.php");
+require_once CLASS_REALDIR . 'pages/admin/products/LC_Page_Admin_Products_ProductRank.php';
 
 /**
  * 商品並べ替え のページクラス(拡張).

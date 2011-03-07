@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/mypage/LC_Page_Mypage_MailView.php");
+require_once CLASS_REALDIR . 'pages/mypage/LC_Page_Mypage_MailView.php';
 
 /**
  * 受注管理メール確認 のページクラス(拡張).

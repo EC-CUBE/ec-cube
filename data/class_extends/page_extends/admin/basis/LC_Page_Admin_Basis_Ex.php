@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/admin/basis/LC_Page_Admin_Basis.php");
+require_once CLASS_REALDIR . 'pages/admin/basis/LC_Page_Admin_Basis.php';
 
 /**
  * 店舗基本情報 のページクラス(拡張).

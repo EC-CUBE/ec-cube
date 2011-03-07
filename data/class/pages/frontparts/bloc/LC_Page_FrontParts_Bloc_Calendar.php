@@ -24,8 +24,8 @@
 // {{{ requires
 $current_dir = realpath(dirname(__FILE__));
 define('CALENDAR_ROOT', DATA_REALDIR.'module/Calendar'.DIRECTORY_SEPARATOR);
-require_once($current_dir . "/../../../../module/Calendar/Month/Weekdays.php");
-require_once(CLASS_REALDIR . "pages/frontparts/bloc/LC_Page_FrontParts_Bloc.php");
+require_once $current_dir . '/../../../../module/Calendar/Month/Weekdays.php';
+require_once CLASS_REALDIR . 'pages/frontparts/bloc/LC_Page_FrontParts_Bloc.php';
 
 /**
  * Calendar のページクラス.

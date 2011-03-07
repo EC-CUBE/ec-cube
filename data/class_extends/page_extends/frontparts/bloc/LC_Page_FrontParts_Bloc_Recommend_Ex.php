@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/frontparts/bloc/LC_Page_FrontParts_Bloc_Recommend.php");
+require_once CLASS_REALDIR . 'pages/frontparts/bloc/LC_Page_FrontParts_Bloc_Recommend.php';
 
 /**
  * Recommend のページクラス(拡張).

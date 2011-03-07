@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/admin/customer/LC_Page_Admin_Customer_Customer.php");
+require_once CLASS_REALDIR . 'pages/admin/customer/LC_Page_Admin_Customer_Customer.php';
 
 /**
  * 顧客情報登録 のページクラス(拡張).

@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-require_once(DATA_REALDIR . "module/Compat/Compat.php");
+require_once DATA_REALDIR . 'module/Compat/Compat.php';
 
 //TODO: このライブラリを使うのが良いのか、PEAR/Crypt_HMAC2を使うべきか検討したが
 //      Crypt_HMAC2は5.0.0以上であったため、4.0.0からの動作が可能な下記を引用。
@@ -30,13 +30,13 @@ require_once(DATA_REALDIR . "module/Compat/Compat.php");
 // パスワード・リマインダーのハッシュ暗号化に利用
 // XXX PHP_Compat::loadFunction("hash_algos"); // include_once のパス相違
 if (!function_exists('hash_algos')) {
-    require_once(DATA_REALDIR . "module/Compat/Compat/Function/hash_algos.php");
+    require_once DATA_REALDIR . 'module/Compat/Compat/Function/hash_algos.php';
 }
 // hash_hmac (PHP 5 >= 5.1.2, PECL hash >= 1.1)
 // パスワード・リマインダーのハッシュ暗号化に利用
 // http://pear.php.net/bugs/bug.php?id=16521 よりPHP_Compat互換仕様のhash関連関数追加
 // XXX PHP_Compat::loadFunction("hash_hmac"); // include_once のパス相違
 if (!function_exists('hash_hmac')) {
-    require_once(DATA_REALDIR . "module/Compat/Compat/Function/hash_hmac.php");
+    require_once DATA_REALDIR . 'module/Compat/Compat/Function/hash_hmac.php';
 }
 ?>

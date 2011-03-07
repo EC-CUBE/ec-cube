@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/rss/LC_Page_Rss.php");
+require_once CLASS_REALDIR . 'pages/rss/LC_Page_Rss.php';
 
 /**
  * RSS のページクラス(拡張).

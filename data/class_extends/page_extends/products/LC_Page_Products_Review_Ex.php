@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/products/LC_Page_Products_Review.php");
+require_once CLASS_REALDIR . 'pages/products/LC_Page_Products_Review.php';
 
 /**
  * お客様の声投稿 のページクラス(拡張).

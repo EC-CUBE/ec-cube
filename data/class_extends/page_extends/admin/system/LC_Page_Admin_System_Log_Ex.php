@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/admin/system/LC_Page_Admin_System_Log.php");
+require_once CLASS_REALDIR . 'pages/admin/system/LC_Page_Admin_System_Log.php';
 
 /**
  * ログ のページクラス(拡張).

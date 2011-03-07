@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "SC_SendMail.php");
+require_once CLASS_REALDIR . 'SC_SendMail.php';
 
 /**
  * メール送信クラス(拡張).

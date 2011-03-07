@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_EX_REALDIR . "page_extends/admin/LC_Page_Admin_Ex.php");
+require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
  * 商品管理 のページクラス.
@@ -134,7 +134,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
                 switch($this->getMode()) {
                 // CSVを送信する。
                 case 'csv':
-                    require_once(CLASS_EX_REALDIR . "helper_extends/SC_Helper_CSV_Ex.php");
+                    require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_CSV_Ex.php';
 
                     $objCSV = new SC_Helper_CSV_Ex();
                     // CSVを送信する。正常終了の場合、終了。

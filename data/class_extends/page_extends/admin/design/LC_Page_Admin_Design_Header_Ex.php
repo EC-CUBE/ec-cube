@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/admin/design/LC_Page_Admin_Design_Header.php");
+require_once CLASS_REALDIR . 'pages/admin/design/LC_Page_Admin_Design_Header.php';
 
 /**
  * ヘッダ, フッタ編集 のページクラス(拡張).

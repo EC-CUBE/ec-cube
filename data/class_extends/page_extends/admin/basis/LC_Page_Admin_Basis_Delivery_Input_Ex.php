@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/admin/basis/LC_Page_Admin_Basis_Delivery_Input.php");
+require_once CLASS_REALDIR . 'pages/admin/basis/LC_Page_Admin_Basis_Delivery_Input.php';
 
 /**
  * 配送業者設定のページクラス(拡張).

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_EX_REALDIR . "page_extends/admin/LC_Page_Admin_Ex.php");
+require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
  * 受注管理 のページクラス
@@ -417,7 +417,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
      *                       失敗した場合 false
      */
     function getCSV($where, $arrValues, $order) {
-        require_once(CLASS_EX_REALDIR . "helper_extends/SC_Helper_CSV_Ex.php");
+        require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_CSV_Ex.php';
         $objCSV = new SC_Helper_CSV_Ex();
 
         $option = "ORDER BY $order";

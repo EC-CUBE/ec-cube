@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(DATA_REALDIR . 'module/Net/URL.php');
+require_once DATA_REALDIR . 'module/Net/URL.php';
 
 /**
  * Web Page を制御する基底クラス

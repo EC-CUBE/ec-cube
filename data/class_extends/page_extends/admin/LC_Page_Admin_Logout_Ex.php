@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin_Logout.php");
+require_once CLASS_REALDIR . 'pages/admin/LC_Page_Admin_Logout.php';
 
 /**
  * ログアウト のページクラス(拡張).

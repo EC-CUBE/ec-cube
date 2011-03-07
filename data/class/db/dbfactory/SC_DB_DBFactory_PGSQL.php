@@ -23,7 +23,7 @@
 
 
 // {{{ requires
-require_once(CLASS_REALDIR . "db/SC_DB_DBFactory.php");
+require_once CLASS_REALDIR . 'db/SC_DB_DBFactory.php';
 
 /**
  * PostgreSQL 固有の処理をするクラス.

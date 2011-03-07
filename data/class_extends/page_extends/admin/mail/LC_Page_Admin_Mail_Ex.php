@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/admin/mail/LC_Page_Admin_Mail.php");
+require_once CLASS_REALDIR . 'pages/admin/mail/LC_Page_Admin_Mail.php';
 
 /**
  * メルマガ管理 のページクラス(拡張).

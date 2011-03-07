@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin_Home.php");
+require_once CLASS_REALDIR . 'pages/admin/LC_Page_Admin_Home.php';
 
 /**
  * 管理画面ホーム のページクラス(拡張).

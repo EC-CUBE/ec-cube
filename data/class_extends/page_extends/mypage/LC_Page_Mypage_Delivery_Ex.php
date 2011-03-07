@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/mypage/LC_Page_Mypage_Delivery.php");
+require_once CLASS_REALDIR . 'pages/mypage/LC_Page_Mypage_Delivery.php';
 
 /**
  * お届け先登録 のページクラス(拡張).

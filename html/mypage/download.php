@@ -22,8 +22,8 @@
  */
 
 // {{{ requires
-require_once("../require.php");
-require_once(CLASS_REALDIR . "pages/mypage/LC_Page_Mypage_DownLoad.php");
+require_once '../require.php';
+require_once CLASS_REALDIR . 'pages/mypage/LC_Page_Mypage_DownLoad.php';
 
 // }}}
 // {{{ generate page

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/admin/order/LC_Page_Admin_Order_Edit.php");
+require_once CLASS_REALDIR . 'pages/admin/order/LC_Page_Admin_Order_Edit.php';
 
 /**
  * 受注修正 のページクラス(拡張).

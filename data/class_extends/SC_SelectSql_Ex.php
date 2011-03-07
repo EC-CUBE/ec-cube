@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-require_once(CLASS_REALDIR . "SC_SelectSql.php");
+require_once CLASS_REALDIR . 'SC_SelectSql.php';
 
 class SC_SelectSql_Ex extends SC_SelectSql {
 }

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_EX_REALDIR . "page_extends/LC_Page_Ex.php");
+require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
  * XXX のページクラス.
@@ -87,7 +87,7 @@ class LC_Page_XXX extends LC_Page_Ex {
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/XXX/LC_Page_XXX.php");
+require_once CLASS_REALDIR . 'pages/XXX/LC_Page_XXX.php';
 
 /**
  * XXX のページクラス(拡張).
@@ -155,8 +155,8 @@ class LC_Page_XXX_Ex extends LC_Page_XXX {
  */
  
  // {{{ requires
-require_once("./require.php");
-require_once(CLASS_REALDIR . "page_extends/LC_Page_XXX_Ex.php");
+require_once './require.php';
+require_once CLASS_REALDIR . 'page_extends/LC_Page_XXX_Ex.php';
 
 // }}}
 // {{{ generate page

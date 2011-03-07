@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/shopping/LC_Page_Shopping_Confirm.php");
+require_once CLASS_REALDIR . 'pages/shopping/LC_Page_Shopping_Confirm.php';
 
 /**
  * 入力内容確認 のページクラス(拡張).

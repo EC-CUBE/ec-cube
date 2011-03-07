@@ -25,13 +25,13 @@ if (!defined("DATA_REALDIR")) {
     define("DATA_REALDIR", HTML_REALDIR . HTML2DATA_DIR);
 }
 // PHP4互換用関数読み込み(PHP_Compat)
-require_once(DATA_REALDIR . "require_compat.php");
+require_once DATA_REALDIR . 'require_compat.php';
 
 // アプリケーション初期化処理
-require_once(DATA_REALDIR . "app_initial.php");
+require_once DATA_REALDIR . 'app_initial.php';
 
 // 各種クラス読み込み
-require_once(DATA_REALDIR . "require_classes.php");
+require_once DATA_REALDIR . 'require_classes.php';
 
 // インストール中で無い場合、
 if (!SC_Utils_Ex::sfIsInstallFunction()) {
@@ -54,6 +54,6 @@ if (!SC_Utils_Ex::sfIsInstallFunction()) {
     $objSession->adminAuthorization();
 
     // プラグインを読み込む
-    //require_once(DATA_REALDIR . 'require_plugin.php');
+    //require_once DATA_REALDIR . 'require_plugin.php';
 }
 ?>

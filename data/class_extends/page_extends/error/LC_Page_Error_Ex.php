@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/error/LC_Page_Error.php");
+require_once CLASS_REALDIR . 'pages/error/LC_Page_Error.php';
 
 /**
  * エラー画面 のページクラス(拡張).

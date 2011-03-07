@@ -26,8 +26,8 @@
  */
 
 // {{{ requires
-require_once("../require.php");
-require_once(CLASS_EX_REALDIR . "page_extends/products/LC_Page_Products_CategoryList_Ex.php");
+require_once '../require.php';
+require_once CLASS_EX_REALDIR . 'page_extends/products/LC_Page_Products_CategoryList_Ex.php';
 
 // }}}
 // {{{ generate page

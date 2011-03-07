@@ -22,8 +22,8 @@
  */
 
 // {{{ requires
-require_once(CLASS_EX_REALDIR . "page_extends/LC_Page_Ex.php");
-require_once(DATA_REALDIR . "module/gdthumb.php");
+require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
+require_once DATA_REALDIR . 'module/gdthumb.php';
 
 /**
  * リサイズイメージ のページクラス.

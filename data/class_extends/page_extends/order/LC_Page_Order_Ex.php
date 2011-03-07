@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/order/LC_Page_Order.php");
+require_once CLASS_REALDIR . 'pages/order/LC_Page_Order.php';
 
 /**
  * 特定商取引に関する法律に基づく表記 のページクラス(拡張).

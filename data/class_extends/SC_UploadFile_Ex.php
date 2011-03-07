@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-require_once(CLASS_REALDIR . "SC_UploadFile.php");
+require_once CLASS_REALDIR . 'SC_UploadFile.php';
 
 class SC_UploadFile_Ex extends SC_UploadFile {
 }

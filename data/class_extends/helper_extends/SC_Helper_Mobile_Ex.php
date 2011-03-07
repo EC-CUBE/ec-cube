@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "helper/SC_Helper_Mobile.php");
+require_once CLASS_REALDIR . 'helper/SC_Helper_Mobile.php';
 
 /**
  * モバイルのヘルパークラス(拡張).

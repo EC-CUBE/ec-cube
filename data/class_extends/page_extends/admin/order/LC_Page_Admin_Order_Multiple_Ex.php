@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/admin/order/LC_Page_Admin_Order_Multiple.php");
+require_once CLASS_REALDIR . 'pages/admin/order/LC_Page_Admin_Order_Multiple.php';
 
 /**
  * 商品選択 のページクラス(拡張).

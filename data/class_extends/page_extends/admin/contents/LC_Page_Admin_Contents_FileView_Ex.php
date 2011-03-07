@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/admin/contents/LC_Page_Admin_Contents_FileView.php");
+require_once CLASS_REALDIR . 'pages/admin/contents/LC_Page_Admin_Contents_FileView.php';
 
 /**
  * ファイル表示 のページクラス(拡張).

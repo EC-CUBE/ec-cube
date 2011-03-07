@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/mypage/LC_Page_Mypage_Change.php");
+require_once CLASS_REALDIR . 'pages/mypage/LC_Page_Mypage_Change.php';
 
 /**
  * 登録内容変更 のページクラス(拡張).

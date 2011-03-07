@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/entry/LC_Page_Entry.php");
+require_once CLASS_REALDIR . 'pages/entry/LC_Page_Entry.php';
 
 /**
  * 会員登録(入力ページ) のページクラス(拡張).

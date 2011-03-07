@@ -171,7 +171,7 @@ class SC_Utils {
     /* エラーページの表示 */
     function sfDispError($type) {
 
-        require_once(CLASS_EX_REALDIR . "page_extends/error/LC_Page_Error_DispError_Ex.php");
+        require_once CLASS_EX_REALDIR . 'page_extends/error/LC_Page_Error_DispError_Ex.php';
 
         $objPage = new LC_Page_Error_DispError_Ex();
         register_shutdown_function(array($objPage, "destroy"));
@@ -184,7 +184,7 @@ class SC_Utils {
     /* サイトエラーページの表示 */
     function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg = "") {
 
-        require_once(CLASS_EX_REALDIR . "page_extends/error/LC_Page_Error_Ex.php");
+        require_once CLASS_EX_REALDIR . 'page_extends/error/LC_Page_Error_Ex.php';
 
         $objPage = new LC_Page_Error_Ex();
         register_shutdown_function(array($objPage, "destroy"));
@@ -205,7 +205,7 @@ class SC_Utils {
      * @return void
      */
     function sfDispException($debugMsg = null) {
-        require_once(CLASS_EX_REALDIR . "page_extends/error/LC_Page_Error_SystemError_Ex.php");
+        require_once CLASS_EX_REALDIR . 'page_extends/error/LC_Page_Error_SystemError_Ex.php';
 
         $objPage = new LC_Page_Error_SystemError_Ex();
         register_shutdown_function(array($objPage, "destroy"));
@@ -1412,7 +1412,7 @@ exit;
 
     // 指定したURLに対してPOSTでデータを送信する
     function sfSendPostData($url, $arrData, $arrOkCode = array()){
-        require_once(DATA_REALDIR . "module/Request.php");
+        require_once DATA_REALDIR . 'module/Request.php';
 
         // 送信インスタンス生成
         $req = new HTTP_Request($url);
@@ -1935,7 +1935,7 @@ exit;
      * @return string ランダムな文字列
      */
     function sfGetRandomString($length = 1) {
-        require_once(dirname(__FILE__) . '/../../module/Text/Password.php');
+        require_once dirname(__FILE__) . '/../../module/Text/Password.php';
         return Text_Password::create($length);
     }
 
@@ -2312,7 +2312,7 @@ exit;
         if (function_exists('json_encode')) {
             return json_encode($value);
         } else {
-            require_once(dirname(__FILE__) . '/../../module/Services/JSON.php');
+            require_once dirname(__FILE__) . '/../../module/Services/JSON.php';
             GC_Utils_Ex::gfPrintLog(' *use Services_JSON::encode(). faster than using the json_encode!');
             $objJson = new Services_JSON();
             return $objJson->encode($value);
@@ -2335,7 +2335,7 @@ exit;
         if (function_exists('json_decode')) {
             return json_decode($json);
         } else {
-            require_once(dirname(__FILE__) . '/../../module/Services/JSON.php');
+            require_once dirname(__FILE__) . '/../../module/Services/JSON.php';
             GC_Utils_Ex::gfPrintLog(' *use Services_JSON::decode(). faster than using the json_decode!');
             $objJson = new Services_JSON();
             return $objJson->decode($json);

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/guide/LC_Page_Guide_About.php");
+require_once CLASS_REALDIR . 'pages/guide/LC_Page_Guide_About.php';
 
 /**
  * 店舗案内 のページクラス(拡張).

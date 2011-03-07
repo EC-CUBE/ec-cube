@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/LC_Page_Sitemap.php");
+require_once CLASS_REALDIR . 'pages/LC_Page_Sitemap.php';
 
 /**
  * サイトマップ のページクラス(拡張).

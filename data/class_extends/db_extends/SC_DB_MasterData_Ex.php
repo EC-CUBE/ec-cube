@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "db/SC_DB_MasterData.php");
+require_once CLASS_REALDIR . 'db/SC_DB_MasterData.php';
 
 /**
  * マスタデータを扱うクラス(拡張).

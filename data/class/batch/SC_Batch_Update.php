@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "batch/SC_Batch.php");
+require_once CLASS_REALDIR . 'batch/SC_Batch.php';
 
 /**
  * アップデート機能 のバッチクラス.

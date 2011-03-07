@@ -22,9 +22,9 @@
  */
 // {{{ requires
 $require_php_dir = realpath(dirname( __FILE__));
-require_once($require_php_dir . "/define.php");
-require_once($require_php_dir . "/" . HTML2DATA_DIR . "require_safe.php");
-require_once(CLASS_EX_REALDIR . "page_extends/error/LC_Page_Error_SystemError_Ex.php");
+require_once $require_php_dir . '/define.php';
+require_once $require_php_dir . '/' . HTML2DATA_DIR . 'require_safe.php';
+require_once CLASS_EX_REALDIR . 'page_extends/error/LC_Page_Error_SystemError_Ex.php';
 
 if (isset($_GET['admin'])) {
     define("ADMIN_FUNCTION", true);

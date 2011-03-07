@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/frontparts/bloc/LC_Page_FrontParts_Bloc_LoginHeader.php");
+require_once CLASS_REALDIR . 'pages/frontparts/bloc/LC_Page_FrontParts_Bloc_LoginHeader.php';
 
 /**
  * ログイン(ヘッダブロック) のページクラス(拡張).

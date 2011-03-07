@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/guide/LC_Page_Guide.php");
+require_once CLASS_REALDIR . 'pages/guide/LC_Page_Guide.php';
 
 /**
  * ガイド のページクラス(拡張).

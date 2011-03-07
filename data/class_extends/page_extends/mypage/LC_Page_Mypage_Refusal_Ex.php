@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/mypage/LC_Page_Mypage_Refusal.php");
+require_once CLASS_REALDIR . 'pages/mypage/LC_Page_Mypage_Refusal.php';
 
 /**
  * 退会手続き のページクラス(拡張).

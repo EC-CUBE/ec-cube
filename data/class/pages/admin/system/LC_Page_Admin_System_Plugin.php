@@ -22,8 +22,8 @@
  */
 
 // {{{ requires
-require_once(CLASS_EX_REALDIR . "page_extends/admin/LC_Page_Admin_Ex.php");
-require_once(CLASS_EX_REALDIR . "helper_extends/SC_Helper_FileManager_Ex.php");
+require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
+require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_FileManager_Ex.php';
 
 /**
  * システム情報 のページクラス.
@@ -285,7 +285,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         $plugin_file_path = $this->lfGetPluginFilePath($plugin_code);
 
         if(file_exists($plugin_file_path)) {
-            require_once($plugin_file_path);
+            require_once $plugin_file_path;
         } else {
             $arrErr['plugin_error'] = "※ " . $plugin_code . ".phpが存在しないため実行できません。<br/>";
         }

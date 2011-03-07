@@ -22,10 +22,10 @@
  */
 
 // {{{ requires
-require_once(CLASS_EX_REALDIR . "page_extends/LC_Page_Ex.php");
+require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 if (file_exists(MODULE_REALDIR . "mdl_gmopg/inc/function.php")) {
-    require_once(MODULE_REALDIR . "mdl_gmopg/inc/function.php");
+    require_once MODULE_REALDIR . 'mdl_gmopg/inc/function.php';
 }
 /**
  * 商品詳細 のページクラス.

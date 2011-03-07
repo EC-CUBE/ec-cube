@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/admin/mail/LC_Page_Admin_Mail_History.php");
+require_once CLASS_REALDIR . 'pages/admin/mail/LC_Page_Admin_Mail_History.php';
 
 /**
  * メール配信履歴 のページクラス(拡張).
