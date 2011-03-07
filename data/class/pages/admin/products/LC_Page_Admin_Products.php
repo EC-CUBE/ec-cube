@@ -55,6 +55,21 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
         $this->arrDISP = $masterData->getMasterData("mtb_disp");
         $this->arrSTATUS = $masterData->getMasterData("mtb_status");
         $this->arrPRODUCTSTATUS_COLOR = $masterData->getMasterData("mtb_product_status_color");
+
+        $objDate = new SC_Date();
+        // 登録・更新検索開始年
+        $objDate->setStartYear(RELEASE_YEAR);
+        $objDate->setEndYear(DATE("Y"));
+        $this->arrStartYear = $objDate->getYear();
+        $this->arrStartMonth = $objDate->getMonth();
+        $this->arrStartDay = $objDate->getDay();
+        // 登録・更新検索終了年
+        $objDate->setStartYear(RELEASE_YEAR);
+        $objDate->setEndYear(DATE("Y"));
+        $this->arrEndYear = $objDate->getYear();
+        $this->arrEndMonth = $objDate->getMonth();
+        $this->arrEndDay = $objDate->getDay();
+
     }
 
     /**
@@ -74,23 +89,9 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
      */
     function action() {
         $objDb = new SC_Helper_DB_Ex();
-        $objDate = new SC_Date_Ex();
-        $objFormParam = new SC_FormParam_Ex();
-        $objProduct = new SC_Product_Ex();
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-
-        // 登録・更新検索開始年
-        $objDate->setStartYear(RELEASE_YEAR);
-        $objDate->setEndYear(DATE("Y"));
-        $this->arrStartYear = $objDate->getYear();
-        $this->arrStartMonth = $objDate->getMonth();
-        $this->arrStartDay = $objDate->getDay();
-        // 登録・更新検索終了年
-        $objDate->setStartYear(RELEASE_YEAR);
-        $objDate->setEndYear(DATE("Y"));
-        $this->arrEndYear = $objDate->getYear();
-        $this->arrEndMonth = $objDate->getMonth();
-        $this->arrEndDay = $objDate->getDay();
+        $objFormParam = new SC_FormParam();
+        $objProduct = new SC_Product();
+        $objQuery =& SC_Query::getSingletonInstance();
 
         // パラメータ情報の初期化
         $this->lfInitParam($objFormParam);
