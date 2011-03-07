@@ -491,5 +491,33 @@ class SC_FormParam {
         }
         return $arrResults;
     }
+
+
+    // addParam の内容をそのまま返す
+    function getFormDispArray() {
+        $cnt = 0;
+        foreach($this->keyname as $val) {
+            // キー名
+            $arrRet[$cnt]['keyname'] = $this->keyname[$cnt];
+            // 文字数制限
+            $arrRet[$cnt]['length'] = $this->length[$cnt];
+
+            $arrRet[$cnt]['disp_name']  = $this->disp_name[$cnt];
+            // 入力値
+            if (isset($this->param[$cnt])) {
+                $arrRet[$cnt]['value'] = $this->param[$cnt];
+            }
+
+            if (!isset($this->param[$cnt])) $this->param[$cnt] = "";
+
+            if($this->default[$cnt] != "" && $this->param[$cnt] == "") {
+                $arrRet[$cnt]['value'] = $this->default[$cnt];
+            }
+            $cnt++;
+        }
+        return $arrRet;
+    }
+
+
 }
 ?>
