@@ -39,14 +39,17 @@ class LC_Page_Error_DispError extends LC_Page_Admin_Ex {
 
     /**
      * Page を初期化する.
+     * LC_Page_Adminクラス内でエラーページを表示しようとした際に無限ループに陥るのを防ぐため,
+     * ここでは, parent::init() を行わない.(フロントのエラー画面出力と同様の仕様)
      *
      * @return void
      */
     function init() {
-        parent::init();
         $this->template = LOGIN_FRAME;
         $this->tpl_mainpage = 'login_error.tpl';
         $this->tpl_title = 'ログインエラー';
+        // ディスプレイクラス生成
+        $this->objDisplay = new SC_Display_Ex();
     }
 
     /**
@@ -73,7 +76,8 @@ class LC_Page_Error_DispError extends LC_Page_Admin_Ex {
                 $this->tpl_error="ログイン認証の有効期限切れの可能性があります。<br />もう一度ご確認のうえ、再度ログインしてください。";
                 break;
             case AUTH_ERROR:
-                $this->tpl_error="このファイルにはアクセス権限がありません。<br />もう一度ご確認のうえ、再度ログインしてください。";
+                $this->tpl_error="このページにはアクセスできません";
+                SC_Response_Ex::sendHttpStatus(403);
                 break;
             case INVALID_MOVE_ERRORR:
                 $this->tpl_error="不正なページ移動です。<br />もう一度ご確認のうえ、再度入力してください。";

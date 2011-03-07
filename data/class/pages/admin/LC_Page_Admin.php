@@ -48,8 +48,7 @@ class LC_Page_Admin extends LC_Page_Ex {
         $allow_hosts = unserialize(ADMIN_ALLOW_HOSTS);
         if(count($allow_hosts) > 0){
             if(array_search($_SERVER["REMOTE_ADDR"],$allow_hosts) === FALSE){
-                SC_Response_Ex::sendHttpStatus(403);
-                exit;
+                SC_Utils_Ex::sfDispError(AUTH_ERROR);
             }
         }
 
