@@ -1,9 +1,10 @@
-﻿@charset "utf-8";
+@charset "utf-8";
 
 /************************************************
  共通設定
 ************************************************ */
 body {
+    color: #666;
     font-family: Verdana,Arial,Helvetica,sans-serif;
     background-color: #f5f5f5;
     font-size: 72.5%;
@@ -124,7 +125,7 @@ select {
 ----------------------------------------------- */
 a:link ,
 a:visited {
-    color: #15a;
+    color: #39c;
     text-decoration: none;
 }
 a:link:hover ,
