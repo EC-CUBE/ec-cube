@@ -158,10 +158,11 @@ class LC_Page {
      */
     function destroy() {
         // 一定時間以上かかったページの場合、ログ出力する。
-        if(defined('PAGE_DISPLAY_TIME_LOG_MODE') && PAGE_DISPLAY_TIME_LOG_MODE == true) {
-            $timeEnd = SC_Utils_Ex::sfMicrotimeFloat();;
+        // エラー画面の表示では $this->timeStart が出力されない
+        if (defined('PAGE_DISPLAY_TIME_LOG_MODE') && PAGE_DISPLAY_TIME_LOG_MODE == true && isset($this->timeStart)) {
+            $timeEnd = SC_Utils_Ex::sfMicrotimeFloat();
             $timeExecTime = $timeEnd - $this->timeStart;
-            if(defined('PAGE_DISPLAY_TIME_LOG_MIN_EXEC_TIME') && $timeExecTime >= (float)PAGE_DISPLAY_TIME_LOG_MIN_EXEC_TIME) {
+            if (defined('PAGE_DISPLAY_TIME_LOG_MIN_EXEC_TIME') && $timeExecTime >= (float)PAGE_DISPLAY_TIME_LOG_MIN_EXEC_TIME) {
                 $logMsg = sprintf("PAGE_DISPLAY_TIME_LOG [%.2fsec]", $timeExecTime);
                 GC_Utils_Ex::gfPrintLog($logMsg);
             }
