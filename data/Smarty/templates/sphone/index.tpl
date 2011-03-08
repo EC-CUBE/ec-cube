@@ -24,7 +24,7 @@
 <!--{* ▼ロゴ ここから *}-->
 <div id="header">
 <h1>
-    <a href="<!--{$smarty.const.HTTPS_URL}-->">
+    <a href="<!--{$smarty.const.ROOT_URLPATH}-->">
       <em><!--{$arrSiteInfo.shop_name|h}-->/<!--{$tpl_title|h}--></em></a>
   </h1>
 </div>
@@ -35,7 +35,7 @@
 
 <!--{* 検索 *}-->
 <div id="searchbar">
-<form method="get" action="<!--{$smarty.const.HTTP_URL}-->products/list.php">
+<form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="text" name="name" maxlength="50" value="<!--{$smarty.get.name|h}-->" placeholder="商品検索" ><input type="submit" name="search" value="検索">
 </form>
