@@ -188,7 +188,7 @@ __EOF__;
             $ret = $objQuery->delete("dtb_pagelayout", "page_id = ? AND device_type_id = ?", array($page_id, $device_type_id));
 
             // ファイルの削除
-            $this->lfDelFile($arrPageData[0]);
+            $this->lfDelFile($arrPageData[0]['filename'], $device_type_id);
         }
         return $ret;
     }
@@ -196,20 +196,27 @@ __EOF__;
     /**
      * ページのファイルを削除する.
      *
-     * @param array $arrData ページ情報の配列
+     * dtb_pagelayout の削除後に呼び出すこと。
+     * @param string $filename 
+     * @param integer $device_type_id 端末種別ID
      * @return void // TODO boolean にするべき?
      */
-    function lfDelFile($arrData) {
-        // ファイルディレクトリ取得
-        $del_php = HTML_REALDIR . $arrData['filename'] . ".php";
-        $del_tpl = HTML_REALDIR . $arrData['filename'] . ".tpl"; // FIXME パスが誤っている
+    function lfDelFile($filename, $device_type_id) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        // phpファイルの削除
-        if (file_exists($del_php)) {
-            unlink($del_php);
+        // 同名ファイルの使用件数
+        $count = $objQuery->count('dtb_pagelayout', 'filename = ?', array($filename));
+
+        if ($count == 0) {
+            // phpファイルの削除
+            $del_php = HTML_REALDIR . $filename . '.php';
+            if (file_exists($del_php)) {
+                unlink($del_php);
+            }
         }
 
         // tplファイルの削除
+        $del_tpl = $this->getTemplatePath($device_type_id) . $filename . '.tpl';
         if (file_exists($del_tpl)) {
             unlink($del_tpl);
         }
@@ -230,7 +237,7 @@ __EOF__;
         }
 
         $arrChkData = $this->lfgetPageData("page_id = ? AND device_type_id = ?",
-                                           array($page_id, $device_type_id));
+            array($page_id, $device_type_id));
 
         if ($arrChkData[0]['edit_flg'] == 2) {
             $result = true;
