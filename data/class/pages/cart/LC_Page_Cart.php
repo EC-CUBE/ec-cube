@@ -100,7 +100,7 @@ class LC_Page_Cart extends LC_Page_Ex {
             // カート商品が1件以上存在する場合
             if(count($cartList) > 0) {
                 // カートを購入モードに設定
-                $this->lfSetCurrentCart($objSiteSess,$objCartSess);
+                $this->lfSetCurrentCart($objSiteSess, $objCartSess, $cartKey);
                 // 購入ページへ
                 SC_Response_Ex::sendRedirect(SHOPPING_URL);
                 exit;
@@ -222,7 +222,7 @@ class LC_Page_Cart extends LC_Page_Ex {
      *
      * @return void
      */
-    function lfSetCurrentCart(&$objSiteSess,&$objCartSess){
+    function lfSetCurrentCart(&$objSiteSess, &$objCartSess, $cartKey){
         // 正常に登録されたことを記録しておく
         $objSiteSess->setRegistFlag();
         $pre_uniqid = $objSiteSess->getUniqId();
@@ -234,6 +234,7 @@ class LC_Page_Cart extends LC_Page_Ex {
             $this->lfUpdateOrderTempid($pre_uniqid,$uniqid);
         }
         // カートを購入モードに設定
+        $objCartSess->registerKey($cartKey);
         $objCartSess->saveCurrentCart($uniqid, $cartKey);
     }
 }

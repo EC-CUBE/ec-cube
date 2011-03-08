@@ -111,7 +111,7 @@ class SC_Helper_Purchase {
 
         foreach ($cartKeys as $cartKey) {
             // 初回のみカートの内容を保存
-            $objCartSession->saveCurrentCart($uniqid, $cartKey);
+            $objCartSession->saveCurrentCart($uniqId, $cartKey);
 
             /*
              * POSTのユニークIDとセッションのユニークIDを比較

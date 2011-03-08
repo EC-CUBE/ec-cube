@@ -50,7 +50,6 @@ class SC_CartSession {
                 unset($this->cartSession[$productTypeId][$k]);
             }
         }
-        $this->registerKey($productTypeId);
     }
 
     // 商品購入中の変更があったかをチェックする。
