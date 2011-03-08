@@ -975,7 +975,7 @@ __EOF__;
 
             // 複製商品の場合には規格も複製する
             if($arrList["copy_product_id"] != "" && SC_Utils_Ex::sfIsInt($arrList["copy_product_id"])) {
-                if($arrList["has_product_class"] == "1") {
+                if($this->lfGetProductClassFlag($arrList["has_product_class"]) == false) {
                     //規格なしの場合、複製は価格等の入力が発生しているため、その内容で追加登録を行う
                     $this->lfCopyProductClass($arrList, $objQuery);
                 } else {
@@ -990,9 +990,36 @@ __EOF__;
                     unset($arrColList[$arrColList_tmp["product_id"]]);           //商品ID
                     unset($arrColList[$arrColList_tmp["create_date"]]);
 
+                    // 複製元商品の規格データ取得
                     $col = SC_Utils_Ex::sfGetCommaList($arrColList);
-                    $product_class_id = $objQuery->nextVal('dtb_products_class_product_class_id');
-                    $objQuery->query("INSERT INTO dtb_products_class (product_class_id, product_id, create_date, ". $col .") SELECT ?, now(), " . $col. " FROM dtb_products_class WHERE product_id = ? ORDER BY product_class_id", array($product_class_id, $product_id, $arrList["copy_product_id"]));
+                    $table = 'dtb_products_class';
+                    $where = 'product_id = ?';
+                    $objQuery->setOrder('product_class_id');
+                    $arrProductsClass = $objQuery->select($col, $table, $where, array($arrList["copy_product_id"]));
+
+                    // 規格データ登録
+                    foreach($arrProductsClass as $arrData) {
+                        $sqlval = array();
+                        $sqlval['product_class_id'] = $objQuery->nextVal('dtb_products_class_product_class_id');
+                        $sqlval['product_id'] = $product_id;
+                        $sqlval['create_date'] = 'now()';
+                        $sqlval['class_combination_id'] = $arrData['class_combination_id'];
+                        $sqlval['product_type_id'] = $arrData['product_type_id'];
+                        $sqlval['product_code'] = $arrData['product_code'];
+                        $sqlval['stock'] = $arrData['stock'];
+                        $sqlval['stock_unlimited'] = $arrData['stock_unlimited'];
+                        $sqlval['sale_limit'] = $arrData['sale_limit'];
+                        $sqlval['price01'] = $arrData['price01'];
+                        $sqlval['price02'] = $arrData['price02'];
+                        $sqlval['deliv_fee'] = $arrData['deliv_fee'];
+                        $sqlval['point_rate'] = $arrData['point_rate'];
+                        $sqlval['creator_id'] = $arrData['creator_id'];
+                        $sqlval['update_date'] = $arrData['update_date'];
+                        $sqlval['down_filename'] = $arrData['down_filename'];
+                        $sqlval['down_realfilename'] = $arrData['down_realfilename'];
+                        $sqlval['del_flg'] = $arrData['del_flg'];
+                        $objQuery->insert($table, $sqlval);
+                    }
                 }
             }
         // 更新
@@ -1130,7 +1157,14 @@ __EOF__;
         foreach($arrProductClass as $records) {
             foreach($records as $key => $value) {
                 if(isset($arrList[$key])) {
-                    $records[$key] = $arrList[$key];
+                    switch($key) {
+                    case 'stock_unlimited':
+                        $records[$key] = (int)$arrList[$key];
+                        break;
+                    default:
+                        $records[$key] = $arrList[$key];
+                        break;
+                    }
                 }
             }
 
