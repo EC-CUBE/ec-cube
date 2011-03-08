@@ -23,8 +23,11 @@
             });
 
         $('#header_login_form').submit(function() {
-            if ($login_email.val() == 'メールアドレス') {
-                alert('メールアドレス/パスワードを入力して下さい。');
+            if (!$login_email.val()
+                || $login_email.val() == 'メールアドレス') {
+                if ($('#header_login_area input[name=login_pass]').val()) {
+                    alert('メールアドレス/パスワードを入力して下さい。');
+                }
                 return false;
             }
             return true;
