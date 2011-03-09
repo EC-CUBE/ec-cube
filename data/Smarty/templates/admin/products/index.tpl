@@ -59,11 +59,6 @@ function lfnDispChange(){
 <form name="search_form" id="search_form" method="post" action="?">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="search" />
-    <!--{foreach key=key item=item from=$arrHidden}-->
-    <!--{if $key == 'campaign_id' || $key == 'search_mode'}-->
-    <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
-    <!--{/if}-->
-    <!--{/foreach}-->
     <h2>検索条件設定</h2>
 
     <!--検索条件設定テーブルここから-->
