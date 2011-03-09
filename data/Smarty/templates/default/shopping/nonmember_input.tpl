@@ -141,8 +141,7 @@
                         <div class="attention"><!--{$arrErr[$key]}--></div>
                     <!--{/if}-->
                     <span style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-                        <input type="radio" id="man" name="<!--{$key}-->" value="1" <!--{if $arrForm[$key] eq 1}--> checked="checked" <!--{/if}--> /><label for="man">男性</label>
-                        <input type="radio" id="woman" name="<!--{$key}-->" value="2" <!--{if $arrForm[$key] eq 2}--> checked="checked" <!--{/if}--> /><label for="woman">女性</label>
+                        <!--{html_radios name="$key" options=$arrSex selected=$arrForm[$key].value style="$err" label_ids=true}-->
                     </span>
                 </td>
             </tr>
