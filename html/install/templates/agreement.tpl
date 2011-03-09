@@ -37,11 +37,11 @@ function fnChangeVisible(check_id, mod_id){
 
 <table width="502" border="0" cellspacing="1" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="?">
-<input type="hidden" name="mode" value="<!--{$tpl_mode}-->">
-<input type="hidden" name="step" value="0">
+<input type="hidden" name="mode" value="<!--{$tpl_mode}-->" />
+<input type="hidden" name="step" value="0" />
 
 <!--{foreach key=key item=item from=$arrHidden}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->">
+    <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
 <!--{/foreach}-->
 
 <tr><td height="30"></td></tr>
@@ -98,5 +98,5 @@ function fnChangeVisible(check_id, mod_id){
         </td>
     </tr>
     <tr><td height="30"></td></tr>
-</from>
+</form>
 </table>

@@ -145,18 +145,18 @@ case 'step3':
     // テーブルの作成
     $objPage->arrErr = lfExecuteSQL("./sql/create_table_".$arrRet['db_type'].".sql", $dsn);
     if(count($objPage->arrErr) == 0) {
-        $objPage->tpl_message.="○：テーブルの作成に成功しました。<br>";
+        $objPage->tpl_message.="○：テーブルの作成に成功しました。<br />";
     } else {
-        $objPage->tpl_message.="×：テーブルの作成に失敗しました。<br>";
+        $objPage->tpl_message.="×：テーブルの作成に失敗しました。<br />";
     }
 
     // 初期データの作成
     if(count($objPage->arrErr) == 0) {
         $objPage->arrErr = lfExecuteSQL("./sql/insert_data.sql", $dsn);
         if(count($objPage->arrErr) == 0) {
-            $objPage->tpl_message.="○：初期データの作成に成功しました。<br>";
+            $objPage->tpl_message.="○：初期データの作成に成功しました。<br />";
         } else {
-            $objPage->tpl_message.="×：初期データの作成に失敗しました。<br>";
+            $objPage->tpl_message.="×：初期データの作成に失敗しました。<br />";
         }
     }
 
@@ -164,9 +164,9 @@ case 'step3':
     if (count($objPage->arrErr) == 0) {
         $objPage->arrErr = lfCreateSequence(getSequences(), $dsn);
         if(count($objPage->arrErr) == 0) {
-            $objPage->tpl_message.="○：シーケンスの作成に成功しました。<br>";
+            $objPage->tpl_message.="○：シーケンスの作成に成功しました。<br />";
         } else {
-            $objPage->tpl_message.="×：シーケンスの作成に失敗しました。<br>";
+            $objPage->tpl_message.="×：シーケンスの作成に失敗しました。<br />";
         }
     }
 
@@ -194,9 +194,9 @@ case 'drop':
     if(count($objPage->arrErr) == 0) {
         $objPage->arrErr = lfExecuteSQL("./sql/drop_table.sql", $dsn, false);
         if(count($objPage->arrErr) == 0) {
-            $objPage->tpl_message.="○：テーブルの削除に成功しました。<br>";
+            $objPage->tpl_message.="○：テーブルの削除に成功しました。<br />";
         } else {
-            $objPage->tpl_message.="×：テーブルの削除に失敗しました。<br>";
+            $objPage->tpl_message.="×：テーブルの削除に失敗しました。<br />";
         }
     }
 
@@ -204,9 +204,9 @@ case 'drop':
     if(count($objPage->arrErr) == 0) {
         $objPage->arrErr = lfDropSequence(getSequences(), $dsn);
         if(count($objPage->arrErr) == 0) {
-            $objPage->tpl_message.="○：シーケンスの削除に成功しました。<br>";
+            $objPage->tpl_message.="○：シーケンスの削除に成功しました。<br />";
         } else {
-            $objPage->tpl_message.="×：シーケンスの削除に失敗しました。<br>";
+            $objPage->tpl_message.="×：シーケンスの削除に失敗しました。<br />";
         }
     }
 
@@ -732,10 +732,10 @@ function lfCheckDBError($objFormParam) {
             // データベースバージョン情報の取得
             $objPage->tpl_db_version = $dbFactory->sfGetDBVersion($dsn);
         } else {
-            $objErr->arrErr['all'] = ">> " . $objDB->message . "<br>";
+            $objErr->arrErr['all'] = ">> " . $objDB->message . "<br />";
             // エラー文を取得する
             ereg("\[(.*)\]", $objDB->userinfo, $arrKey);
-            $objErr->arrErr['all'].= $arrKey[0] . "<br>";
+            $objErr->arrErr['all'].= $arrKey[0] . "<br />";
             GC_Utils_Ex::gfPrintLog($objDB->userinfo, INSTALL_LOG);
         }
     }
@@ -764,11 +764,11 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
                 if (trim($val) != "") {
                     $ret = $objDB->query($val);
                     if(PEAR::isError($ret) && $disp_err) {
-                        $arrErr['all'] = ">> " . $ret->message . "<br>";
+                        $arrErr['all'] = ">> " . $ret->message . "<br />";
                         // エラー文を取得する
                         ereg("\[(.*)\]", $ret->userinfo, $arrKey);
-                        $arrErr['all'].= $arrKey[0] . "<br>";
-                        $objPage->update_mess.=">> テーブル構成の変更に失敗しました。<br>";
+                        $arrErr['all'].= $arrKey[0] . "<br />";
+                        $objPage->update_mess.=">> テーブル構成の変更に失敗しました。<br />";
                         GC_Utils_Ex::gfPrintLog($ret->userinfo, INSTALL_LOG);
                         break;
                     } else {

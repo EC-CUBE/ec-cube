@@ -20,11 +20,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <form name="form1" id="form1" method="post" action="?">
-<input type="hidden" name="mode" value="<!--{$tpl_mode}-->">
-<input type="hidden" name="step" value="0">
+<input type="hidden" name="mode" value="<!--{$tpl_mode}-->" />
+<input type="hidden" name="step" value="0" />
 
 <!--{foreach key=key item=item from=$arrHidden}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->">
+    <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
 <!--{/foreach}-->
 
 <div class="contents">
@@ -40,7 +40,7 @@
                 <td>
                 <!--{assign var=key value="shop_name"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  /><br>
+                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  /><br />
                 <span class="ex-text">あなたの店名をご記入ください。</span>
                 </td>
             </tr>
@@ -49,8 +49,8 @@
                 <td>
                 <!--{assign var=key value="admin_mail"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  /><br>
-                <span class="ex-text">受注メールなどの宛先になります。<br>
+                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  /><br />
+                <span class="ex-text">受注メールなどの宛先になります。<br />
                 (例) eccube@example.com</span>
                 </td>
             </tr>
@@ -59,7 +59,7 @@
                 <td>
                 <!--{assign var=key value="login_id"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  /><br>
+                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  /><br />
                 <span class="ex-text">管理機能にログインするためのIDです。</span><br />
                 </td>
             </tr>
@@ -68,8 +68,8 @@
                 <td>
                 <!--{assign var=key value="login_pass"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <input type="password" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$smarty.const.ID_MAX_LEN}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;" size="50"  /><br>
-                <span class="ex-text">管理機能にログインするためのパスワードです。</sapn><br />
+                <input type="password" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$smarty.const.ID_MAX_LEN}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;" size="50"  /><br />
+                <span class="ex-text">管理機能にログインするためのパスワードです。</span><br />
                 </td>
             </tr>
         </table>
@@ -83,9 +83,9 @@
                 <td>
                 <!--{assign var=key value="admin_dir"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|default:'admin'|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;" size="50" /><br>
-                <span class="ex-text">管理機能のディレクトリ名です。<br>
-                 下記で管理機能にアクセスする場合の[管理機能]の部分です。<br>
+                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|default:'admin'|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;" size="50" /><br />
+                <span class="ex-text">管理機能のディレクトリ名です。<br />
+                 下記で管理機能にアクセスする場合の[管理機能]の部分です。<br />
                  https://[ホスト名].[ドメイン名]/[ショップディレクトリ]/<span class="bold">[ディレクトリ]</span>/</span><br />
                 </td>
             </tr>
@@ -94,7 +94,7 @@
                 <td>
                 <!--{assign var=key value="admin_force_ssl"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <input type="checkbox" name="<!--{$key}-->" id="<!--{$key}-->" value="1" <!--{if $arrForm[$key].value == 1}-->checked="checked"<!--{/if}--> /><label for="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;">SSLを強制する。</label><br>
+                <input type="checkbox" name="<!--{$key}-->" id="<!--{$key}-->" value="1" <!--{if $arrForm[$key].value == 1}-->checked="checked"<!--{/if}--> /><label for="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;">SSLを強制する。</label><br />
                 <span class="ex-text">管理機能へのアクセスをSSL経由(https)の接続に制限します。</span><br />
                 </td>
             </tr>
@@ -136,7 +136,7 @@
                 <td>
                 <!--{assign var=key value="domain"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  /><br>
+                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  /><br />
                 <span class="ex-text">通常URLとセキュアURLでサブドメインが異なる場合に指定します。</span>
                 </td>
             </tr>
@@ -146,9 +146,9 @@
 <div class="btn-area-top"></div>
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="document.form1['mode'].value='return_step0';document.form1.submit();return false;" /><span class="btn-prev">前へ戻る</span></a></li>
-        <li><a class="btn-action"href="javascript:;" onclick="document.form1.submit(); return false;" /><span class="btn-next">次へ進む</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="document.form1['mode'].value='return_step0';document.form1.submit();return false;"><span class="btn-prev">前へ戻る</span></a></li>
+            <li><a class="btn-action"href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next">次へ進む</span></a></li>
         </ul>
     </div>
     <div class="btn-area-bottom"></div>
-</from>
+</form>

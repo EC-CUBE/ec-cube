@@ -21,10 +21,10 @@
  *}-->
 <table width="502" border="0" cellspacing="1" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="?">
-<input type="hidden" name="mode" value="<!--{$tpl_mode}-->">
+<input type="hidden" name="mode" value="<!--{$tpl_mode}-->" />
 
 <!--{foreach key=key item=item from=$arrHidden}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->">
+    <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
 <!--{/foreach}-->
 <div class="contents">
   <div class="message">
@@ -43,4 +43,4 @@
     </ul>
   </div>
   <div class="btn-area-bottom"></div>
-</from>
+</form>
