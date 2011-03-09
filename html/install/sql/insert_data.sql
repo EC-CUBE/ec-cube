@@ -637,6 +637,8 @@ INSERT INTO dtb_class_combination (class_combination_id, parent_class_combinatio
 INSERT INTO dtb_class_combination (class_combination_id, parent_class_combination_id, classcategory_id, level) VALUES(18, 9, 4, 2);
 
 INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, create_date, update_date, del_flg) VALUES (1, 1, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, create_date, update_date, del_flg) VALUES (4, 3, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, create_date, update_date, del_flg) VALUES (5, 3, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 
 INSERT INTO dtb_recommend_products (product_id, recommend_product_id, rank, comment, status, creator_id, create_date, update_date) VALUES (2, 1, 4, 'お口直しに。', 0, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
