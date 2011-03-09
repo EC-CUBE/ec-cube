@@ -136,8 +136,10 @@ class SC_PageNavi {
                 $this->arrPagenavi['arrPageno'][$i] = $i;
             }
 
-            if ($before || $next) {
+            if ($before && $next) {
                 $this->strnavi = $before .(($display_number) ? $page_number : ' | ') .$next;
+            } else if ($before || $next) {
+                $this->strnavi = $before .(($display_number) ? $page_number : '') .$next;
             }
         } else {
             $this->arrPagenavi['arrPageno'][0] = 1;

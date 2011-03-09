@@ -21,16 +21,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<!--{if isset($tpl_previous_page|smarty:nodefaults) || isset($tpl_next_page|smarty:nodefaults)}-->
-<!--{if isset($tpl_previous_page|smarty:nodefaults)}-->
-<a href="<!--{$tpl_previous_page|h}-->">前へ</a>
-<!--{/if}-->
-<!--{if isset($tpl_previous_page|smarty:nodefaults) && isset($tpl_next_page|smarty:nodefaults)}-->
-｜
-<!--{/if}-->
-<!--{if isset($tpl_next_page|smarty:nodefaults)}-->
-<a href="<!--{$tpl_next_page|h}-->">次へ</a>
-<!--{/if}-->
+<!--{if $tpl_strnavi != "&nbsp;"}-->
+<!--{$tpl_strnavi}-->
 <br><br>
 <!--{/if}-->
 
@@ -65,15 +57,7 @@
 <!--{/if}-->
 <!--{/foreach}-->
 
-<!--{if isset($tpl_previous_page|smarty:nodefaults) || isset($tpl_next_page|smarty:nodefaults)}-->
-<!--{if isset($tpl_previous_page|smarty:nodefaults)}-->
-<a href="<!--{$tpl_previous_page|h}-->">前へ</a>
-<!--{/if}-->
-<!--{if isset($tpl_previous_page|smarty:nodefaults) && isset($tpl_next_page|smarty:nodefaults)}-->
-｜
-<!--{/if}-->
-<!--{if isset($tpl_next_page|smarty:nodefaults)}-->
-<a href="<!--{$tpl_next_page|h}-->">次へ</a>
-<!--{/if}-->
-<br>
+<!--{if $tpl_strnavi != "&nbsp;"}-->
+<!--{$tpl_strnavi}-->
+<br><br>
 <!--{/if}-->

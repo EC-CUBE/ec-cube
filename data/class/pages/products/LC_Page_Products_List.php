@@ -123,8 +123,8 @@ class LC_Page_Products_List extends LC_Page_Ex {
         $arrSearchCondition = $this->lfGetSearchCondition($this->arrSearchData);
         $this->tpl_linemax = $this->lfGetProductAllNum($arrSearchCondition);
         $urlParam = "category_id={$this->arrSearchData['category_id']}&pageno=#page#";
-        $this->objNavi = new SC_PageNavi_Ex($this->tpl_pageno, $this->tpl_linemax, $this->disp_number, 'fnNaviPage', NAVI_PMAX, $urlParam,SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE);
-        $this->arrProducts = $this->lfGetProductsList($arrSearchCondition,$this->disp_number,$this->objNavi->start_row,$this->tpl_linemax,$objProduct);
+        $this->objNavi = new SC_PageNavi_Ex($this->tpl_pageno, $this->tpl_linemax, $this->disp_number, 'fnNaviPage', NAVI_PMAX, $urlParam, SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE);
+        $this->arrProducts = $this->lfGetProductsList($arrSearchCondition, $this->disp_number, $this->objNavi->start_row, $this->tpl_linemax, $objProduct);
         //商品一覧の表示処理
         $strnavi = $this->objNavi->strnavi;
         // 表示文字列
@@ -313,7 +313,7 @@ __EOS__;
 
         // 規格を設定
         $objProduct->setProductsClassByProductIds($arrProduct_id);
-        $arrProducts += array('productStatus'=>$objProduct->getProductStatus($arrProduct_id));     
+        $arrProducts += array('productStatus'=>$objProduct->getProductStatus($arrProduct_id));
         return $arrProducts;
     }
 
@@ -357,7 +357,7 @@ __EOS__;
      * ページタイトルの設定
      *
      * @return str
-     */    
+     */
     function lfGetPageTitle($mode,$category_id = 0){
         if ($mode == 'search') {
             return "検索結果";
@@ -367,14 +367,14 @@ __EOS__;
             $arrCat = SC_Helper_DB_Ex::sfGetCat($category_id);
             return $arrCat['name'];
         }
-        return "";       
+        return "";
     }
 
     /**
      * 表示用検索条件の設定
      *
      * @return array
-     */    
+     */
     function lfGetSearchConditionDisp($arrSearchData){
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrSearch = array('category'=>"指定なし",'maker'=>"指定なし",'name'=>"指定なし");
@@ -399,7 +399,7 @@ __EOS__;
      * 該当件数の取得
      *
      * @return int
-     */    
+     */
     function lfGetProductAllNum($searchCondition){
         // 検索結果対象となる商品の数を取得
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -412,7 +412,7 @@ __EOS__;
      * 検索条件のwhere文とかを取得
      *
      * @return array
-     */    
+     */
     function lfGetSearchCondition($arrSearchData){
         $searchCondition = array(
             'where'=>"",
@@ -467,7 +467,7 @@ __EOS__;
      * カートに入れる商品情報にエラーがあったら戻す
      *
      * @return str
-     */   
+     */
     function lfSetSelectedData(&$arrProducts,$arrForm,$arrErr,$product_id){
         $js_fnOnLoad = "";
         foreach (array_keys($arrProducts) as $key) {
@@ -487,7 +487,7 @@ __EOS__;
      * カートに商品を追加
      *
      * @return void
-     */   
+     */
     function lfAddCart($arrForm, $referer){
         $product_class_id = $arrForm['product_class_id'];
         $objCartSess = new SC_CartSession_Ex();
