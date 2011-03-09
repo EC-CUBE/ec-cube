@@ -62,7 +62,7 @@ class LC_Page_Guide_Kiyaku extends LC_Page_Ex {
      * @return void
      */
     function action() {
-    	$this->lfGetKiyaku(intval($_GET['page']), $this);
+        $this->lfGetKiyaku(intval($_GET['page']), $this);
     }
 
     /**

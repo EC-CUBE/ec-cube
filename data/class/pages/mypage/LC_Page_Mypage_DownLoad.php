@@ -32,7 +32,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  */
 class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
 
-	// {{{ properties
+    // {{{ properties
 
     /** フォームパラメータの配列 */
     var $objFormParam;

@@ -354,39 +354,39 @@ class SC_Helper_FileManager {
         @fclose($fp);
     }
 
-	/**
-	 * ユーザが作成したファイルをアーカイブしダウンロードさせる
-	 * TODO 要リファクタリング
-	 * @param void
-	 * @return void
-	 */
-	function downloadArchiveFiles($dir) {
-		$debug_message = "";
-	    // ダウンロードされるファイル名
-		$dlFileName = 'tpl_package_' . date('YmdHis') . '.tar.gz';
-		
-	    // ファイル一覧取得
-	    $arrFileHash = SC_Utils_Ex::sfGetFileList($dir);
-	    foreach($arrFileHash as $val) {
-	        $arrFileList[] = $val['file_name'];
-	        $debug_message.= "圧縮：".$val['file_name']."\n";
-	    }
-	    GC_Utils_Ex::gfDebugLog($debug_message);	    
-	    
-	    // ディレクトリを移動
-	    chdir($dir);
-	    // 圧縮をおこなう
-	    $tar = new Archive_Tar($dlFileName, true);
-	    $tar->create($arrFileList);
-		
-	    // ダウンロード用HTTPヘッダ出力
-	    header("Content-disposition: attachment; filename=${dlFileName}");
-	    header("Content-type: application/octet-stream; name=${dlFileName}");
-	    header("Content-Length: " . filesize($dlFileName));
-	    readfile($dlFileName);
-	    unlink($dir . "/" . $dlFileName);
-	    exit;
-	}
+    /**
+     * ユーザが作成したファイルをアーカイブしダウンロードさせる
+     * TODO 要リファクタリング
+     * @param void
+     * @return void
+     */
+    function downloadArchiveFiles($dir) {
+        $debug_message = "";
+        // ダウンロードされるファイル名
+        $dlFileName = 'tpl_package_' . date('YmdHis') . '.tar.gz';
+        
+        // ファイル一覧取得
+        $arrFileHash = SC_Utils_Ex::sfGetFileList($dir);
+        foreach($arrFileHash as $val) {
+            $arrFileList[] = $val['file_name'];
+            $debug_message.= "圧縮：".$val['file_name']."\n";
+        }
+        GC_Utils_Ex::gfDebugLog($debug_message);        
+        
+        // ディレクトリを移動
+        chdir($dir);
+        // 圧縮をおこなう
+        $tar = new Archive_Tar($dlFileName, true);
+        $tar->create($arrFileList);
+        
+        // ダウンロード用HTTPヘッダ出力
+        header("Content-disposition: attachment; filename=${dlFileName}");
+        header("Content-type: application/octet-stream; name=${dlFileName}");
+        header("Content-Length: " . filesize($dlFileName));
+        readfile($dlFileName);
+        unlink($dir . "/" . $dlFileName);
+        exit;
+    }
 
    /**
      * tarアーカイブを解凍する.

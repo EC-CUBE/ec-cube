@@ -23,12 +23,24 @@
 
 /* セッション管理クラス */
 class SC_Session {
-    var $login_id;		// ログインユーザ名
-    var $authority;		// ユーザ権限
-    var $cert;			// 認証文字列(認証成功の判定に使用)
-    var $sid;			// セッションID
-    var $member_id;		// ログインユーザの主キー
-    var $uniqid;         // ページ遷移の正当性チェックに使用
+
+    /** ログインユーザ名 */
+    var $login_id;
+
+    /** ユーザ権限 */
+    var $authority;
+
+    /** 認証文字列(認証成功の判定に使用) */
+    var $cert;
+
+    /** セッションID */
+    var $sid;
+
+    /** ログインユーザの主キー */
+    var $member_id;
+
+    /** ページ遷移の正当性チェックに使用 */
+    var $uniqid;
 
     /* コンストラクタ */
     function SC_Session() {
@@ -37,7 +49,8 @@ class SC_Session {
             $this->sid = session_id();
             $this->cert = $_SESSION['cert'];
             $this->login_id  = $_SESSION['login_id'];
-            $this->authority = $_SESSION['authority'];	// 管理者:0, 店舗オーナー:1, 閲覧:2, 販売担当:3 (XXX 現状 0, 1 を暫定実装。2, 3 は未実装。)
+            // 管理者:0, 店舗オーナー:1, 閲覧:2, 販売担当:3 (XXX 現状 0, 1 を暫定実装。2, 3 は未実装。)
+            $this->authority = $_SESSION['authority'];
             $this->member_id = $_SESSION['member_id'];
             if (isset($_SESSION['uniq_id'])) {
                 $this->uniqid    = $_SESSION['uniq_id'];

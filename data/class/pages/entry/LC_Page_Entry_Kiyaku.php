@@ -96,7 +96,7 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex {
     function lfMakeKiyakuText($arrKiyaku, $max, $offset) {
         $this->tpl_kiyaku_text = "";
         for ($i = 0; $i < $max; $i++) {
-        	if ($offset !== null && ($offset - 1) <> $i) continue;
+            if ($offset !== null && ($offset - 1) <> $i) continue;
             $tpl_kiyaku_text.=$arrKiyaku[$i]['kiyaku_title'] . "\n\n";
             $tpl_kiyaku_text.=$arrKiyaku[$i]['kiyaku_text'] . "\n\n";
         }

@@ -240,9 +240,9 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      *
      * @return array 文字コード情報
      */
-     function getCharSet() {
-     	// 未実装
-     	return array();
-     }
+    function getCharSet() {
+        // 未実装
+        return array();
+    }
 }
 ?>

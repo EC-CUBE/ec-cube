@@ -146,7 +146,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-    	$objFormParam->addParam("規格ID", "class_id", INT_LEN, 'n', array("NUM_CHECK"));
+        $objFormParam->addParam("規格ID", "class_id", INT_LEN, 'n', array("NUM_CHECK"));
         $objFormParam->addParam("規格分類名", 'name', STEXT_LEN, 'KVa', array("EXIST_CHECK" ,"SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
         $objFormParam->addParam("規格分類ID", "classcategory_id", INT_LEN, 'n', array("NUM_CHECK"));
     }

@@ -54,17 +54,17 @@ class SC_Helper_Mobile {
      * @return void
      */
     function lfMobileConvertInputValue(&$value) {
-    	if (is_array($value)) {
-    		foreach($value as $key => $val ){
-		        $this->lfMobileConvertInputValue($value[$key]);
-			}
-		} else {
-    		// Shift JIS から内部エンコーディングに変換する。
-    		$value = mb_convert_encoding($value, CHAR_CODE, 'SJIS');
-    		// SoftBank? 以外の絵文字は外字領域に含まれるため、この段階で除去される。
-    		// SoftBank? の絵文字を除去する。
-        	$value = preg_replace('/\\x1b\\$[^\\x0f]*\\x0f/', '', $value);
-		}
+        if (is_array($value)) {
+            foreach($value as $key => $val ){
+                $this->lfMobileConvertInputValue($value[$key]);
+            }
+        } else {
+            // Shift JIS から内部エンコーディングに変換する。
+            $value = mb_convert_encoding($value, CHAR_CODE, 'SJIS');
+            // SoftBank? 以外の絵文字は外字領域に含まれるため、この段階で除去される。
+            // SoftBank? の絵文字を除去する。
+            $value = preg_replace('/\\x1b\\$[^\\x0f]*\\x0f/', '', $value);
+        }
     }
 
     /**

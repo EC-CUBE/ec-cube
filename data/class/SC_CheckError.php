@@ -46,8 +46,12 @@ class SC_CheckError {
         }
     }
 
-    /* HTMLのタグをチェックする */
-    // value[0] = 項目名 value[1] = 判定対象 value[2] = 許可するタグが格納された配列
+    /**
+     * HTMLのタグをチェックする
+     *
+     * @param array $value value[0] = 項目名 value[1] = 判定対象 value[2] = 許可するタグが格納された配列
+     * @return void
+     */
     function HTML_TAG_CHECK($value) {
         if(isset($this->arrErr[$value[1]])) {
             return;
@@ -73,9 +77,14 @@ class SC_CheckError {
         }
     }
 
-    /*　必須入力の判定　*/
-    // value[0] = 項目名 value[1] = 判定対象
-    function EXIST_CHECK( $value ) {			// 受け取りがない場合エラーを返す
+    /**
+     * 必須入力の判定
+     *
+     * 受け取りがない場合エラーを返す
+     * @param array $value value[0] = 項目名 value[1] = 判定対象
+     * @return void
+     */
+    function EXIST_CHECK( $value ) {
         if (isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -87,9 +96,14 @@ class SC_CheckError {
         }
     }
 
-    /*　必須入力の判定(逆順)　*/
-    // value[0] = 判定対象 value[1] = 項目名
-    function EXIST_CHECK_REVERSE( $value ) {			// 受け取りがない場合エラーを返す
+    /**
+     * 必須入力の判定(逆順)
+     *
+     * 受け取りがない場合エラーを返す
+     * @param array $value value[0] = 判定対象 value[1] = 項目名
+     * @return void
+     */
+    function EXIST_CHECK_REVERSE( $value ) {
         if(isset($this->arrErr[$value[0]])) {
             return;
         }
@@ -99,9 +113,14 @@ class SC_CheckError {
         }
     }
 
-    /*　スペース、タブの判定　*/
-    // value[0] = 項目名 value[1] = 判定対象
-    function SPTAB_CHECK( $value ) {			// 受け取りがない場合エラーを返す
+    /**
+     * スペース、タブの判定
+     *
+     * 受け取りがない場合エラーを返す
+     * @param array $value value[0] = 項目名 value[1] = 判定対象
+     * @return void
+     */
+    function SPTAB_CHECK( $value ) {
         if(isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -111,9 +130,14 @@ class SC_CheckError {
         }
     }
 
-    /*　スペース、タブの判定　*/
-    // value[0] = 項目名 value[1] = 判定対象
-    function NO_SPTAB( $value ) {			// 受け取りがない場合エラーを返す
+    /**
+     * スペース、タブの判定
+     *
+     * 受け取りがない場合エラーを返す
+     * @param array $value value[0] = 項目名 value[1] = 判定対象
+     * @return void
+     */
+    function NO_SPTAB( $value ) {
         if(isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -134,9 +158,14 @@ class SC_CheckError {
         }
     }
 
-    /*　必須選択の判定　*/
-    // value[0] = 項目名 value[1] = 判定対象
-    function SELECT_CHECK( $value ) {			// プルダウンなどで選択されていない場合エラーを返す
+    /**
+     * 必須選択の判定
+     *
+     * プルダウンなどで選択されていない場合エラーを返す
+     * @param array $value value[0] = 項目名 value[1] = 判定対象
+     * @return void
+     */
+    function SELECT_CHECK( $value ) {
         if(isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -146,9 +175,14 @@ class SC_CheckError {
         }
     }
 
-    /*　同一性の判定　*/
-    // value[0] = 項目名1 value[1] = 項目名2 value[2] = 判定対象文字列1  value[3] = 判定対象文字列2
-    function EQUAL_CHECK( $value ) {		// 入力が指定文字数以上ならエラーを返す
+    /**
+     * 同一性の判定
+     *
+     * 入力が指定文字数以上ならエラーを返す
+     * @param array $value value[0] = 項目名1 value[1] = 項目名2 value[2] = 判定対象文字列1  value[3] = 判定対象文字列2
+     * @return void
+     */
+    function EQUAL_CHECK( $value ) {
         if(isset($this->arrErr[$value[2]]) || isset($this->arrErr[$value[3]])) {
             return;
         }
@@ -159,9 +193,14 @@ class SC_CheckError {
         }
     }
 
-    /*　値が異なることの判定　*/
-    // value[0] = 項目名1 value[1] = 項目名2 value[2] = 判定対象文字列1  value[3] = 判定対象文字列2
-    function DIFFERENT_CHECK( $value ) {		// 入力が指定文字数以上ならエラーを返す
+    /**
+     * 値が異なることの判定
+     *
+     * 入力が指定文字数以上ならエラーを返す
+     * @param array $value value[0] = 項目名1 value[1] = 項目名2 value[2] = 判定対象文字列1  value[3] = 判定対象文字列2
+     * @return void
+     */
+    function DIFFERENT_CHECK( $value ) {
         if(isset($this->arrErr[$value[2]]) || isset($this->arrErr[$value[3]])) {
             return;
         }
@@ -172,9 +211,14 @@ class SC_CheckError {
         }
     }
 
-    /*　値の大きさを比較する value[2] < value[3]でなければエラー　*/
-    // value[0] = 項目名1 value[1] = 項目名2 value[2] = 判定対象文字列1  value[3] = 判定対象文字列2
-    function GREATER_CHECK($value) {		// 入力が指定文字数以上ならエラーを返す
+    /**
+     * 値の大きさを比較する value[2] < value[3]でなければエラー
+     *
+     * 入力が指定文字数以上ならエラーを返す
+     * @param array $value value[0] = 項目名1 value[1] = 項目名2 value[2] = 判定対象文字列1  value[3] = 判定対象文字列2
+     * @return void
+     */
+    function GREATER_CHECK($value) {
         if(isset($this->arrErr[$value[2]]) || isset($this->arrErr[$value[3]])) {
             return;
         }
@@ -185,9 +229,14 @@ class SC_CheckError {
         }
     }
 
-    /*　最大文字数制限の判定　*/
-    // value[0] = 項目名 value[1] = 判定対象文字列  value[2] = 最大文字数(半角も全角も1文字として数える)
-    function MAX_LENGTH_CHECK( $value ) {		// 入力が指定文字数以上ならエラーを返す
+    /**
+     * 最大文字数制限の判定
+     *
+     * 入力が指定文字数以上ならエラーを返す
+     * @param array $value value[0] = 項目名 value[1] = 判定対象文字列  value[2] = 最大文字数(半角も全角も1文字として数える)
+     * @return void
+     */
+    function MAX_LENGTH_CHECK( $value ) {
         if(isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -198,9 +247,14 @@ class SC_CheckError {
         }
     }
 
-    /*　最小文字数制限の判定　*/
-    // value[0] = 項目名 value[1] = 判定対象文字列 value[2] = 最小文字数(半角も全角も1文字として数える)
-    function MIN_LENGTH_CHECK( $value ) {		// 入力が指定文字数未満ならエラーを返す
+    /**
+     * 最小文字数制限の判定
+     *
+     * 入力が指定文字数未満ならエラーを返す
+     * @param array $value value[0] = 項目名 value[1] = 判定対象文字列 value[2] = 最小文字数(半角も全角も1文字として数える)
+     * @return void
+     */
+    function MIN_LENGTH_CHECK( $value ) {
         if(isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -211,9 +265,14 @@ class SC_CheckError {
         }
     }
 
-    /*　最大文字数制限の判定　*/
-    // value[0] = 項目名 value[1] = 判定対象文字列  value[2] = 最大数
-    function MAX_CHECK( $value ) {		// 入力が最大数以上ならエラーを返す
+    /**
+     * 最大文字数制限の判定
+     *
+     * 入力が最大数以上ならエラーを返す
+     * @param array $value value[0] = 項目名 value[1] = 判定対象文字列  value[2] = 最大数]
+     * @return void
+     */
+    function MAX_CHECK( $value ) {
         if(isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -224,9 +283,14 @@ class SC_CheckError {
         }
     }
 
-    /*　最小数値制限の判定　*/
-    // value[0] = 項目名 value[1] = 判定対象文字列  value[2] = 最小数
-    function MIN_CHECK( $value ) {		// 入力が最小数未満ならエラーを返す
+    /**
+     * 最小数値制限の判定
+     *
+     * 入力が最小数未満ならエラーを返す
+     * @param array $value value[0] = 項目名 value[1] = 判定対象文字列  value[2] = 最小数
+     * @return void
+     */
+    function MIN_CHECK( $value ) {
         if(isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -236,9 +300,14 @@ class SC_CheckError {
         }
     }
 
-    /*　数字の判定　*/
-    // value[0] = 項目名 value[1] = 判定対象文字列
-    function NUM_CHECK( $value ) {				// 入力文字が数字以外ならエラーを返す
+    /**
+     * 数字の判定
+     *
+     * 入力文字が数字以外ならエラーを返す
+     * @param array $value value[0] = 項目名 value[1] = 判定対象文字列
+     * @return void
+     */
+    function NUM_CHECK( $value ) {
         if(isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -248,9 +317,14 @@ class SC_CheckError {
         }
     }
 
-    /*　小数点を含む数字の判定　*/
-    // value[0] = 項目名 value[1] = 判定対象文字列
-    function NUM_POINT_CHECK( $value ) {				// 入力文字が数字以外ならエラーを返す
+    /**
+     * 小数点を含む数字の判定
+     *
+     * 入力文字が数字以外ならエラーを返す
+     * @param array $value value[0] = 項目名 value[1] = 判定対象文字列
+     * @return void
+     */
+    function NUM_POINT_CHECK( $value ) {
         if(isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -281,6 +355,7 @@ class SC_CheckError {
      *     [3]: 電番3項目目<br>
      *     [4]: 電話番号各項目制限 (指定なしの場合、TEL_ITEM_LEN)<br>
      *     [5]: 電話番号総数 (指定なしの場合、TEL_LEN)
+     * @return void
      */
     function TEL_CHECK($value) {
         $telItemLen = isset($value[4]) ? $value[4] : TEL_ITEM_LEN;
@@ -320,8 +395,8 @@ class SC_CheckError {
     }
 
     /* 関連項目が完全に満たされているか判定
-        value[0]		: 項目名
-        value[1]		: 判定対象要素名
+        value[0]    : 項目名
+        value[1]    : 判定対象要素名
     */
     function FULL_EXIST_CHECK($value) {
         $max = count($value);
@@ -348,8 +423,8 @@ class SC_CheckError {
     }
 
     /* 関連項目がすべて満たされているか判定
-        value[0]		: 項目名
-        value[1]		: 判定対象要素名
+        value[0]    : 項目名
+        value[1]    : 判定対象要素名
     */
     function ALL_EXIST_CHECK($value) {
         $max = count($value);
@@ -378,9 +453,9 @@ class SC_CheckError {
         }
     }
 
-        /* 関連項目がどれか一つ満たされているか判定
-        value[0]		: 項目名
-        value[1]		: 判定対象要素名
+    /* 関連項目がどれか一つ満たされているか判定
+        value[0]    : 項目名
+        value[1]    : 判定対象要素名
     */
     function ONE_EXIST_CHECK($value) {
         $max = count($value);
@@ -407,8 +482,8 @@ class SC_CheckError {
     }
 
     /* 上位の項目が満たされているか判定
-        value[0]		: 項目名
-        value[1]		: 判定対象要素名
+        value[0]    : 項目名
+        value[1]    : 判定対象要素名
     */
     function TOP_EXIST_CHECK($value) {
         $max = count($value);
@@ -441,8 +516,9 @@ class SC_CheckError {
     }
 
     /*　カタカナの判定　*/
+    // 入力文字がカナ以外ならエラーを返す
     // value[0] = 項目名 value[1] = 判定対象文字列
-    function KANA_CHECK( $value ) {				// 入力文字がカナ以外ならエラーを返す
+    function KANA_CHECK( $value ) {
         if(isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -453,8 +529,9 @@ class SC_CheckError {
     }
 
     /*　カタカナの判定2 (タブ、スペースは許可する) */
+    // 入力文字がカナ以外ならエラーを返す
     // value[0] = 項目名 value[1] = 判定対象文字列
-    function KANABLANK_CHECK( $value ) {				// 入力文字がカナ以外ならエラーを返す
+    function KANABLANK_CHECK( $value ) {
         if(isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -465,8 +542,9 @@ class SC_CheckError {
     }
 
     /*　英数字の判定　*/
+    // 入力文字が英数字以外ならエラーを返す
     // value[0] = 項目名 value[1] = 判定対象文字列
-    function ALNUM_CHECK( $value ) {				// 入力文字が英数字以外ならエラーを返す
+    function ALNUM_CHECK( $value ) {
         if(isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -477,8 +555,9 @@ class SC_CheckError {
     }
 
     /*　英数記号の判定　*/
+    // 入力文字が英数記号以外ならエラーを返す
     // value[0] = 項目名 value[1] = 判定対象文字列
-    function GRAPH_CHECK( $value ) {				// 入力文字が英数記号以外ならエラーを返す
+    function GRAPH_CHECK( $value ) {
         if(isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -489,8 +568,9 @@ class SC_CheckError {
     }
 
     /*　必須選択の判定　*/
+    // 入力値で0が許されない場合エラーを返す
     // value[0] = 項目名 value[1] = 判定対象
-    function ZERO_CHECK( $value ) {				// 入力値で0が許されない場合エラーを返す
+    function ZERO_CHECK( $value ) {
         $this->createParam($value);
         if($this->arrParam[$value[1]] == "0" ){
             $this->arrErr[$value[1]] = "※ " . $value[0] . "は1以上を入力してください。<br />";
@@ -498,8 +578,9 @@ class SC_CheckError {
     }
 
     /*　桁数の判定 (最小最大)*/
+    // 入力文字の桁数判定　→　最小桁数＜入力文字列＜最大桁数
     // value[0] = 項目名 value[1] = 判定対象文字列 value[2] = 最小桁数 value[3] = 最大桁数
-    function NUM_RANGE_CHECK( $value ) {		// 入力文字の桁数判定　→　最小桁数＜入力文字列＜最大桁数
+    function NUM_RANGE_CHECK( $value ) {
         if(isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -512,8 +593,9 @@ class SC_CheckError {
     }
 
     /*　桁数の判定　*/
+    // 入力文字の桁数判定　→　入力文字列 = 桁数　以外はNGの場合
     // value[0] = 項目名 value[1] = 判定対象文字列 value[2] = 桁数
-    function NUM_COUNT_CHECK( $value ) {		// 入力文字の桁数判定　→　入力文字列 = 桁数　以外はNGの場合
+    function NUM_COUNT_CHECK( $value ) {
         if(isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -525,8 +607,9 @@ class SC_CheckError {
     }
 
     /*　メールアドレス形式の判定　*/
+    //　メールアドレスを正規表現で判定する
     // value[0] = 項目名 value[1] = 判定対象メールアドレス
-    function EMAIL_CHECK( $value ){				//　メールアドレスを正規表現で判定する
+    function EMAIL_CHECK( $value ){
         if(isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -551,7 +634,7 @@ class SC_CheckError {
 
         if (RFC_COMPLIANT_EMAIL_CHECK) {
             $regexp = "/\A${addr_spec}\z/";
-		} else {
+        } else {
             // 携帯メールアドレス用に、..や.@を許容する。
             $regexp = "/\A${addr_spec_loose}\z/";
         }
@@ -562,8 +645,9 @@ class SC_CheckError {
     }
 
     /*　メールアドレスに使用できる文字の判定　*/
+    //　メールアドレスに使用する文字を正規表現で判定する
     //  value[0] = 項目名 value[1] = 判定対象メールアドレス
-    function EMAIL_CHAR_CHECK( $value ){				//　メールアドレスに使用する文字を正規表現で判定する
+    function EMAIL_CHAR_CHECK( $value ){
         if(isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -574,8 +658,9 @@ class SC_CheckError {
     }
 
     /*　URL形式の判定　*/
+    //　URLを正規表現で判定する。デフォルトでhttp://があってもOK
     //  value[0] = 項目名 value[1] = 判定対象URL
-    function URL_CHECK( $value ){				//　URLを正規表現で判定する。デフォルトでhttp://があってもOK
+    function URL_CHECK( $value ){
          if(isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -607,8 +692,9 @@ class SC_CheckError {
     }
 
     /*　拡張子の判定　*/
+    // 受け取りがない場合エラーを返す
     // value[0] = 項目名 value[1] = 判定対象 value[2]=array(拡張子)
-    function FILE_EXT_CHECK( $value ) {			// 受け取りがない場合エラーを返す
+    function FILE_EXT_CHECK( $value ) {
         if(isset($this->arrErr[$value[1]]) || count($value[2]) == 0) {
             return;
         }
@@ -654,8 +740,9 @@ class SC_CheckError {
     }
 
     /* ファイルが存在するかチェックする */
+    // 受け取りがない場合エラーを返す
     // value[0] = 項目名 value[1] = 判定対象  value[2] = 指定ディレクトリ
-    function FIND_FILE( $value ) {			// 受け取りがない場合エラーを返す
+    function FIND_FILE( $value ) {
         if(isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -676,8 +763,9 @@ class SC_CheckError {
     }
 
     /*　ファイルが上げられたか確認　*/
+    // 受け取りがない場合エラーを返す
     // value[0] = 項目名 value[1] = 判定対象  value[2] = 指定サイズ(KB)
-    function FILE_EXIST_CHECK( $value ) {			// 受け取りがない場合エラーを返す
+    function FILE_EXIST_CHECK( $value ) {
         if(isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -688,8 +776,9 @@ class SC_CheckError {
     }
 
     /*　ファイルサイズの判定　*/
+    // 受け取りがない場合エラーを返す
     // value[0] = 項目名 value[1] = 判定対象  value[2] = 指定サイズ(KB)
-    function FILE_SIZE_CHECK( $value ) {			// 受け取りがない場合エラーを返す
+    function FILE_SIZE_CHECK( $value ) {
         if(isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -705,8 +794,9 @@ class SC_CheckError {
     }
 
     /*　ファイル名の判定　*/
+    // 入力文字が英数字,"_","-"以外ならエラーを返す
     // value[0] = 項目名 value[1] = 判定対象文字列
-    function FILE_NAME_CHECK( $value ) {				// 入力文字が英数字,"_","-"以外ならエラーを返す
+    function FILE_NAME_CHECK( $value ) {
         if(isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -717,8 +807,9 @@ class SC_CheckError {
     }
 
     /*　ファイル名の判定(アップロード以外の時)　*/
+    // 入力文字が英数字,"_","-"以外ならエラーを返す
     // value[0] = 項目名 value[1] = 判定対象文字列
-    function FILE_NAME_CHECK_BY_NOUPLOAD( $value ) {			// 入力文字が英数字,"_","-"以外ならエラーを返す
+    function FILE_NAME_CHECK_BY_NOUPLOAD( $value ) {
         if(isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -826,13 +917,13 @@ class SC_CheckError {
     }
 
     /*-----------------------------------------------------------------*/
-    /*	CHECK_SET_TERM
-    /*	年月日に別れた2つの期間の妥当性をチェックし、整合性と期間を返す
-    /*　引数 (開始年,開始月,開始日,終了年,終了月,終了日)
-    /*　戻値 array(１，２，３)
-    /*  		１．開始年月日 (YYYYMMDD 000000)
-    /*			２．終了年月日 (YYYYMMDD 235959)
-    /*			３．エラー ( 0 = OK, 1 = NG )
+    /*  CHECK_SET_TERM
+    /*  年月日に別れた2つの期間の妥当性をチェックし、整合性と期間を返す
+    /*  引数 (開始年,開始月,開始日,終了年,終了月,終了日)
+    /*  戻値 array(１，２，３)
+    /*          １．開始年月日 (YYYYMMDD 000000)
+    /*          ２．終了年月日 (YYYYMMDD 235959)
+    /*          ３．エラー ( 0 = OK, 1 = NG )
     /*-----------------------------------------------------------------*/
     // value[0] = 項目名1
     // value[1] = 項目名2
@@ -868,14 +959,14 @@ class SC_CheckError {
     }
 
     /*-----------------------------------------------------------------*/
-    /*	CHECK_SET_TERM2
-    /*	年月日時に別れた2つの期間の妥当性をチェックし、整合性と期間を返す
-    /*　引数 (開始年,開始月,開始日,開始時間,開始分,開始秒,
+    /*  CHECK_SET_TERM2
+    /*  年月日時に別れた2つの期間の妥当性をチェックし、整合性と期間を返す
+    /*  引数 (開始年,開始月,開始日,開始時間,開始分,開始秒,
     /*        終了年,終了月,終了日,終了時間,終了分,終了秒)
-    /*　戻値 array(１，２，３)
-    /*  		１．開始年月日 (YYYYMMDDHHmmss)
-    /*			２．終了年月日 (YYYYMMDDHHmmss)
-    /*			３．エラー ( 0 = OK, 1 = NG )
+    /*  戻値 array(１，２，３)
+    /*          １．開始年月日 (YYYYMMDDHHmmss)
+    /*          ２．終了年月日 (YYYYMMDDHHmmss)
+    /*          ３．エラー ( 0 = OK, 1 = NG )
     /*-----------------------------------------------------------------*/
     // value[0] = 項目名1
     // value[1] = 項目名2
@@ -923,13 +1014,13 @@ class SC_CheckError {
     }
 
     /*-----------------------------------------------------------------*/
-    /*	CHECK_SET_TERM3
-    /*	年月に別れた2つの期間の妥当性をチェックし、整合性と期間を返す
+    /*  CHECK_SET_TERM3
+    /*  年月に別れた2つの期間の妥当性をチェックし、整合性と期間を返す
     /*　引数 (開始年,開始月,終了年,終了月)
     /*　戻値 array(１，２，３)
-    /*  		１．開始年月日 (YYYYMMDD 000000)
-    /*			２．終了年月日 (YYYYMMDD 235959)
-    /*			３．エラー ( 0 = OK, 1 = NG )
+    /*          １．開始年月日 (YYYYMMDD 000000)
+    /*          ２．終了年月日 (YYYYMMDD 235959)
+    /*          ３．エラー ( 0 = OK, 1 = NG )
     /*-----------------------------------------------------------------*/
     // value[0] = 項目名1
     // value[1] = 項目名2
@@ -984,8 +1075,9 @@ class SC_CheckError {
     }
 
     /*　携帯メールアドレスの判定　*/
+    //　メールアドレスを正規表現で判定する
     // value[0] = 項目名 value[1] = 判定対象メールアドレス
-    function MOBILE_EMAIL_CHECK( $value ){				//　メールアドレスを正規表現で判定する
+    function MOBILE_EMAIL_CHECK( $value ){
         if(isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -1000,9 +1092,7 @@ class SC_CheckError {
      * CHECK_REGIST_CUSTOMER_EMAIL
      *
      * メールアドレスが会員登録されているか調べる
-     * value[0] = 項目名 value[1] = 判定対象メールアドレス
-     *
-     * @param mixed $value
+     * @param array $value value[0] = 項目名 value[1] = 判定対象メールアドレス
      * @access public
      * @return void
      */
@@ -1072,10 +1162,10 @@ class SC_CheckError {
      *               評価可能な場合は評価した値
      */
     function evalCheck($value) {
-    	// falseは、正当な式と評価する。
-    	if($value === 'false') {
-    		return true;
-    	}
+        // falseは、正当な式と評価する。
+        if($value === 'false') {
+            return true;
+        }
         return @eval("return " . $value . ";");
     }
 

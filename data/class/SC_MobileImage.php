@@ -68,12 +68,12 @@ class SC_MobileImage {
             // auはHTMLのbyte数上限に画像ファイルサイズが含まれないのでimageFileSizeのまま。
             if ($carrier == 'docomo' or $carrier == 'softbank') {
                 if( $result != false && $result > 0){
-                	// 計算式：(利用端末で表示可能なcacheサイズ - HTMLのバイト数 - 変換後の画像名のバイト数(目安値) ) / HTML中の画像数
-					$temp_imagefilesize = ($cacheSize - strlen($buffer) - (140 * $result) ) / $result;
-				} else {
-					// 計算式：(利用端末で表示可能なcacheサイズ - HTMLのバイト数 )
-					$temp_imagefilesize = ($cacheSize - strlen($buffer) );
-				}
+                    // 計算式：(利用端末で表示可能なcacheサイズ - HTMLのバイト数 - 変換後の画像名のバイト数(目安値) ) / HTML中の画像数
+                    $temp_imagefilesize = ($cacheSize - strlen($buffer) - (140 * $result) ) / $result;
+                } else {
+                    // 計算式：(利用端末で表示可能なcacheサイズ - HTMLのバイト数 )
+                    $temp_imagefilesize = ($cacheSize - strlen($buffer) );
+                }
                 // 計算結果が端末の表示可能ファイルサイズ上限より小さい場合は計算結果の値を有効にする
                 if ($temp_imagefilesize < $imageFileSize) {
                     $imageFileSize = $temp_imagefilesize;

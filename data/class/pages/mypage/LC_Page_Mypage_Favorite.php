@@ -117,7 +117,7 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
 
         // ページ送りの取得
         $objNavi        = new SC_PageNavi_Ex($objPage->tpl_pageno, $linemax, SEARCH_PMAX, 'fnNaviPage', NAVI_PMAX);
-        $this->tpl_strnavi = $objNavi->strnavi;		// 表示文字列
+        $this->tpl_strnavi = $objNavi->strnavi; // 表示文字列
         $startno        = $objNavi->start_row;
 
         $objQuery       =& SC_Query_Ex::getSingletonInstance();

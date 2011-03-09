@@ -354,7 +354,7 @@ class SC_Helper_CSV {
     // 各項目をCSV出力用に変換する。
     function lfMakeCSV($list) {
         $line = "";
-		
+
         foreach($list as $key => $val) {
             $tmp = "";
             switch($key) {

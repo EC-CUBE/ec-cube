@@ -102,14 +102,16 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
 
             if(count($this->arrErr) == 0) {
                 switch($this->getMode()) {
-                case 'update':
-                    $this->lfUpdateData($this->arrForm);	// 既存編集
-                    break;
-                case 'insert':
-                    $this->lfInsertData($this->arrForm);	// 新規作成
-                    break;
-                default:
-                    break;
+                    // 既存編集
+                    case 'update':
+                        $this->lfUpdateData($this->arrForm);
+                        break;
+                    // 新規作成
+                    case 'insert':
+                        $this->lfInsertData($this->arrForm);
+                        break;
+                    default:
+                        break;
                 }
                 $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "'); window.alert('SHOPマスタの登録が完了しました。');";
             }

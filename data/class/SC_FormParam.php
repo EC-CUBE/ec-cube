@@ -37,8 +37,10 @@ class SC_FormParam {
     var $length;
     var $convert;
     var $arrCheck;
-    var $default;	// 何も入力されていないときに表示する値
-    var $input_db;	// DBにそのまま挿入可能か否か
+    /** 何も入力されていないときに表示する値 */
+    var $default;
+    /** DBにそのまま挿入可能か否か */
+    var $input_db;
     var $html_disp_name;
 
     // コンストラクタ
@@ -74,8 +76,8 @@ class SC_FormParam {
     }
 
     // パラメータの入力
-    // $arrVal	:$arrVal['keyname']・・の配列を一致したキーのインスタンスに格納する
-    // $seq		:trueの場合、$arrVal[0]~の配列を登録順にインスタンスに格納する
+    // $arrVal  :$arrVal['keyname']・・の配列を一致したキーのインスタンスに格納する
+    // $seq     :trueの場合、$arrVal[0]~の配列を登録順にインスタンスに格納する
     function setParam($arrVal, $seq = false) {
         $cnt = 0;
         if(!$seq){

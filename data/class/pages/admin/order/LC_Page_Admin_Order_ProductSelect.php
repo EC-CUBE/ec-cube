@@ -232,8 +232,8 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
             }
         }
         return array(
-            'where'=>$where,
-        	'bind' => $bind
+            'where' => $where,
+            'bind'  => $bind,
         );
     }
 

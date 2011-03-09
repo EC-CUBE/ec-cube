@@ -47,9 +47,11 @@ class GC_Utils {
         Header("Content-type: application/octet-stream; name=${fiest_name}");
 
         $return = $header.$contents;
-        if (mb_detect_encoding($return) == CHAR_CODE){						//文字コード変換
+        if (mb_detect_encoding($return) == CHAR_CODE){
+            // 文字コード変換
             $return = mb_convert_encoding($return,'SJIS',CHAR_CODE);
-            $return = str_replace( array( "\r\n", "\r" ), "\n", $return);	// 改行方法の統一
+            // 改行方法の統一
+            $return = str_replace( array( "\r\n", "\r" ), "\n", $return);
         }
         echo $return;
     }
@@ -123,7 +125,7 @@ class GC_Utils {
             GC_Utils_Ex::gfPrintLog("*** end Debug ***");
             // ログテーション
             GC_Utils_Ex::gfLogRotation(MAX_LOG_QUANTITY, MAX_LOG_SIZE, LOG_REALFILE);
-		}
+        }
     }
 
     /*----------------------------------------------------------------------

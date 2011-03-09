@@ -93,7 +93,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
             $this->lfCheckAdminArea($this->arrForm, $arrErr);
 
             if(SC_Utils_Ex::isBlank($arrErr)) {
-                $this->lfUpdateAdminData($this->arrForm);	// 既存編集
+                $this->lfUpdateAdminData($this->arrForm); // 既存編集
                 $this->tpl_onload = "window.alert('管理機能の設定を変更しました。URLを変更した場合は、新しいURLにアクセスしてください。');";
             }else{
                 $this->tpl_onload = "window.alert('設定内容に誤りがあります。設定内容を確認してください。');";

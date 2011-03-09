@@ -196,7 +196,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         if ($mode == 'edit' && $arrParams['password'] == DEFAULT_PASSWORD) {
             $objFormParam->addParam('パスワード', 'password', '' , '', array('EXIST_CHECK'));
         } else {
-        	$objFormParam->addParam('パスワード', 'password', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
+            $objFormParam->addParam('パスワード', 'password', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
         }
         $objFormParam->addParam('権限', 'authority', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('稼働/非稼働', 'work', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));

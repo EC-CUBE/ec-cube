@@ -105,8 +105,8 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex {
             SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND);
         }
 
-        $arrCategory = null;	// 選択されたカテゴリー
-        $arrChildren = array();	// 子カテゴリー
+        $arrCategory = null;    // 選択されたカテゴリー
+        $arrChildren = array(); // 子カテゴリー
 
         $arrAll = SC_Helper_DB_Ex::sfGetCatTree($category_id, $count_check);
         foreach ($arrAll as $category) {
@@ -139,8 +139,8 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex {
 
         // 選択されたカテゴリーに直属の商品がある場合は、子カテゴリーの先頭に追加する。
         if ($arrCategory['product_count'] > $children_product_count) {
-            $arrCategory['product_count'] -= $children_product_count;	// 子カテゴリーの商品数を除く。
-            $arrCategory['has_children'] = false;	// 商品一覧ページに遷移させるため。
+            $arrCategory['product_count'] -= $children_product_count; // 子カテゴリーの商品数を除く。
+            $arrCategory['has_children'] = false; // 商品一覧ページに遷移させるため。
             array_unshift($arrChildren, $arrCategory);
         }
 

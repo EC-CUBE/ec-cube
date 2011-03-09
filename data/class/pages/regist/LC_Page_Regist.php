@@ -72,8 +72,8 @@ class LC_Page_Regist extends LC_Page_Ex {
             $this->arrErr       = $this->lfErrorCheck($_GET);
             if ($this->arrErr) SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, "", true, $this->arrErr['id']);
 
-            $registSecretKey    = $this->lfRegistData($_GET);		//本会員登録（フラグ変更）
-            $this->lfSendRegistMail($registSecretKey);				//本会員登録完了メール送信
+            $registSecretKey    = $this->lfRegistData($_GET);   //本会員登録（フラグ変更）
+            $this->lfSendRegistMail($registSecretKey);          //本会員登録完了メール送信
 
             SC_Response_Ex::sendRedirect('complete.php', array('ci' => SC_Helper_Customer_Ex::sfGetCustomerId($registSecretKey)));
             break;

@@ -98,10 +98,13 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
             $this->arrForm = $this->arrForm = $_POST;
 
             if(count($this->arrErr) <= 0) {
+                // 新規作成
                 if($post['holiday_id'] == "") {
-                    $this->lfInsertClass($this->arrForm, $_SESSION['member_id']);    // 新規作成
-                } else {
-                    $this->lfUpdateClass($this->arrForm, $post['holiday_id']);	// 既存編集
+                    $this->lfInsertClass($this->arrForm, $_SESSION['member_id']);
+                }
+                // 既存編集
+                else {
+                    $this->lfUpdateClass($this->arrForm, $post['holiday_id']);
                 }
                 // 再表示
                 $this->objDisplay->reload();

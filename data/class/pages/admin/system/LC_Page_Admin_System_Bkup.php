@@ -117,7 +117,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
         // リストア
         case 'restore_config':
-        	$this->mode = "restore_config";
+            $this->mode = "restore_config";
 
         case 'restore':
             // データベースに存在するかどうかチェック
@@ -415,7 +415,9 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $sql = "SELECT bkup_name, bkup_memo, create_date FROM dtb_bkup ";
-        if ($where != "")	$sql .= $where;
+        if ($where != "") {
+            $sql .= $where;
+        }
 
         $ret = $objQuery->getAll($sql,$data);
 

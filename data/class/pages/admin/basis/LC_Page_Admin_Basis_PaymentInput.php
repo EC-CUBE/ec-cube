@@ -208,12 +208,12 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sqlval = $objFormParam->getHashArray();
-        $arrRet = $this->objUpFile->getDBFileList();	// ファイル名の取得
+        $arrRet = $this->objUpFile->getDBFileList(); // ファイル名の取得
         $sqlval = array_merge($sqlval, $arrRet);
         $sqlval['update_date'] = 'Now()';
 
         if($sqlval['fix'] != '1') {
-            $sqlval['fix'] = 2;	// 自由設定
+            $sqlval['fix'] = 2; // 自由設定
         }
 
         // 新規登録

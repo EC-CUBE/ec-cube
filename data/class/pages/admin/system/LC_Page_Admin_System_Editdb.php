@@ -81,7 +81,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
             break;
         default:
             break;
-	}
+    }
 
         //インデックスの現在値を取得
         $this->arrForm = $this->lfGetIndexList();
