@@ -114,9 +114,12 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
             $objFormParam->convParam();
             $this->arrErr = $this->lfCheckError($objFormParam);
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                $order_id = $this->doRegister($order_id, $objPurchase, $objFormParam);
-                $this->setOrderToFormParam($objFormParam, $order_id);
-                $this->tpl_onload = "window.alert('受注を編集しました。');";
+                $message = '受注を編集しました。';
+                $order_id = $this->doRegister($order_id, $objPurchase, $objFormParam, $message);
+                if ($order_id >= 0) {
+                    $this->setOrderToFormParam($objFormParam, $order_id);
+                }
+                $this->tpl_onload = "window.alert('" . $message . "');";
             }
             break;
 
@@ -126,11 +129,14 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
                 $objFormParam->convParam();
                 $this->arrErr = $this->lfCheckError($objFormParam);
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                    $order_id = $this->doRegister(null, $objPurchase, $objFormParam);
-                    $this->tpl_mode = 'edit';
-                    $objFormParam->setValue('order_id', $order_id);
-                    $this->setOrderToFormParam($objFormParam, $order_id);
-                    $this->tpl_onload = "window.alert('新規受注を登録しました。');";
+                    $message = '新規受注を登録しました。';
+                    $order_id = $this->doRegister(null, $objPurchase, $objFormParam, $message);
+                    if ($order_id >= 0) {
+                        $this->tpl_mode = 'edit';
+                        $objFormParam->setValue('order_id', $order_id);
+                        $this->setOrderToFormParam($objFormParam, $order_id);
+                    }
+                    $this->tpl_onload = "window.alert('" . $message . "');";
                 }
             }
 
@@ -546,9 +552,12 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
      * @param integer $order_id 受注ID
      * @param SC_Helper_Purchase $objPurchase SC_Helper_Purchase インスタンス
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param string $message 通知メッセージ
      * @return integer $order_id 受注ID
+     *
+     * エラー発生時は負数を返す。
      */
-    function doRegister($order_id, &$objPurchase, &$objFormParam) {
+    function doRegister($order_id, &$objPurchase, &$objFormParam, &$message) {
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrValues = $objFormParam->getDbArray();
