@@ -19,16 +19,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<!--検索該当0の時-->
+<!--{* 検索該当0件 *}-->
 <table width="570" cellspacing="0" cellpadding="0" summary=" ">
     <tr><td height="15"></td></tr>
     <tr>
-        <!--{if $smarty.get.mode == "search"}-->
-        <td height="150" align="center" class="fs12">該当件数<strong><span class="red">0件</span></strong>です。<br />
-        他の検索キーワードより再度検索をしてください。</td>
-        <!--{else}-->
-        <td height="150" align="center" class="fs12">現在、商品はございません。</td>
-        <!--{/if}-->
+        <td height="150" align="center" class="fs12">
+            <!--{if $smarty.get.mode == "search"}-->
+                該当件数<strong>0件</strong>です。<br />
+                他の検索キーワードより再度検索をしてください。
+            <!--{else}-->
+                現在、商品はございません。
+            <!--{/if}-->
+        </td>
     </tr>
 </table>
-<!--検索該当0の時-->
