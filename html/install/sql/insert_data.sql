@@ -925,11 +925,11 @@ INSERT INTO mtb_status (id, name, rank) VALUES (3, 'ポイント２倍', 2);
 INSERT INTO mtb_status (id, name, rank) VALUES (4, 'オススメ', 3);
 INSERT INTO mtb_status (id, name, rank) VALUES (5, '限定品', 4);
 
-INSERT INTO mtb_status_image (id, name, rank) VALUES (1, 'img/icon/icon_01.gif', 0);
-INSERT INTO mtb_status_image (id, name, rank) VALUES (2, 'img/icon/icon_02.gif', 1);
-INSERT INTO mtb_status_image (id, name, rank) VALUES (3, 'img/icon/icon_03.gif', 2);
-INSERT INTO mtb_status_image (id, name, rank) VALUES (4, 'img/icon/icon_04.gif', 3);
-INSERT INTO mtb_status_image (id, name, rank) VALUES (5, 'img/icon/icon_05.gif', 4);
+INSERT INTO mtb_status_image (id, name, rank) VALUES (1, 'img/icon/ico_01.gif', 0);
+INSERT INTO mtb_status_image (id, name, rank) VALUES (2, 'img/icon/ico_02.gif', 1);
+INSERT INTO mtb_status_image (id, name, rank) VALUES (3, 'img/icon/ico_03.gif', 2);
+INSERT INTO mtb_status_image (id, name, rank) VALUES (4, 'img/icon/ico_04.gif', 3);
+INSERT INTO mtb_status_image (id, name, rank) VALUES (5, 'img/icon/ico_05.gif', 4);
 
 INSERT INTO mtb_target (id, name, rank) VALUES (0, 'Unused', 0);
 INSERT INTO mtb_target (id, name, rank) VALUES (1, 'LeftNavi', 1);
