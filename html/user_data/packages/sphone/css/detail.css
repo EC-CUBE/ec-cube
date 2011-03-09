@@ -1,19 +1,19 @@
 /*商品情報（テキストなど）*/
 div#detailrightblock table td {
-text-align: left;
-vertical-align: middle;
+    text-align: left;
+    vertical-align: middle;
 }
 
 /* 商品写真
 ----------------------------------------------- */
 #detailphotoblock {
-margin-top: -1em;
-margin-left: -3.4%;
-width: 106.8%;
-overflow: hidden;
-background-color: #ffffff;
-text-align:center;
-border-bottom: 1px solid #ffffff;
+    margin-top: -1em;
+    margin-left: -3.4%;
+    width: 106.8%;
+    overflow: hidden;
+    background-color: #ffffff;
+    text-align:center;
+    border-bottom: 1px solid #ffffff;
 }
 #detailphotoblock img:first-of-type {
     margin: 10px auto;
@@ -41,15 +41,15 @@ div#detail-size {
 
 /*商品情報（テーブル部分）*/
 div#detailrightblock table span.nomal-price {
-	font-size: 80%;
+    font-size: 80%;
 }
 div#detailrightblock table span.sale-price {
-	font-weight: bold;
-	color: #CC0000;
+    font-weight: bold;
+    color: #CC0000;
 }
 div#detailrightblock table span.member-point {
-	font-weight: bold;
-	color: #CC0000;
+    font-weight: bold;
+    color: #CC0000;
 }
 
 /*商品情報（規格部分）*/
@@ -78,59 +78,59 @@ div#detailrightblock .fm-detail-quantity {
 /* ボタン周辺
 ----------------------------------------------- */
 #btn_form {
-width: 70%;
-margin-left: auto;
-margin-right: auto;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* 購入ボタン
 ----------------------------------------------- */
 input[type="submit"]#cart {
-display:block;
-width: 100%;
-height: 1.8em;
-margin-top: 20px;
-margin-bottom: 10px;
-font: bold large Helvetica, "Lucida Grande", sans-serif;
-//font-size: large bold;
-//font-family: Helvetica, "Lucida Grande", sans-serif;
-color:#4D576B;
-background-color: #c9c9c9;
-background-image: -webkit-gradient(linear, left top, left bottom, from(#c9c9c9), to(#848484), color-stop(0.6, #a1a1a1));
-vertical-align: middle;
-text-align: center;
-text-decoration: none;
-text-shadow: 1px 1px 0px #cccccc;
--webkit-border-radius: 4px;
--webkit-box-shadow: 0 0 3px #000000;
+    display:block;
+    width: 100%;
+    height: 1.8em;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font: bold large Helvetica, "Lucida Grande", sans-serif;
+    //font-size: large bold;
+    //font-family: Helvetica, "Lucida Grande", sans-serif;
+    color:#4D576B;
+    background-color: #c9c9c9;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#c9c9c9), to(#848484), color-stop(0.6, #a1a1a1));
+    vertical-align: middle;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 1px 1px 0px #cccccc;
+    -webkit-border-radius: 4px;
+    -webkit-box-shadow: 0 0 3px #000000;
 }
 
 /* お問い合わせ／友達に教える
 ----------------------------------------------- */
 #detailrightblock table{
-margin: 15px 0px;
-width: 100%;
-background-color: #ffffff;
--webkit-border-radius: 8px;
--webkit-box-shadow: 0 0 4px #000000;
+    margin: 15px 0px;
+    width: 100%;
+    background-color: #ffffff;
+    -webkit-border-radius: 8px;
+    -webkit-box-shadow: 0 0 4px #000000;
 }
 #detailrightblock table tr td, #detailrightblock table tr th {
-border-bottom: solid 1px #cccccc;
-padding: 3px 7px;
+    border-bottom: solid 1px #cccccc;
+    padding: 3px 7px;
 }
 #detailrightblock table tr:last-child td, #detailrightblock table tr:last-child th {
-border-bottom: none;
+    border-bottom: none;
 }
 
 #btn-cago > a {
-background-color: #E19200;
+    background-color: #E19200;
 }
 
 /* お気に入り
 ----------------------------------------------- */
 #btn-recommend {
-text-align:center;
-margin-top:15px;
+    text-align:center;
+    margin-top:15px;
 }
 
 
@@ -139,4 +139,3 @@ margin-top:15px;
 div#undercolumn_entry .kiyaku_text {
     height: 250px;
 }
-

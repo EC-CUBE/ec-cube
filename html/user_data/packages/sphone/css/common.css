@@ -3,58 +3,58 @@
 /* body
 ----------------------------------------------- */
 body {
-background: rgb(197,204,211) url(../img/common/stripes.png);
-background-position: 50% 0% fixed;
-font-family: helvetica, Osaka;
-font-size:small;
-margin: 0px 3.13% 10px;
-padding: 0px;
--webkit-user-select: none;
--webkit-text-size-adjust: none;
--webkit-tap-highlight-color: rgba(51,102,204,0.70);
-max-width: 100%;
+    background: rgb(197,204,211) url(../img/common/stripes.png);
+    background-position: 50% 0% fixed;
+    font-family: helvetica, Osaka;
+    font-size:small;
+    margin: 0px 3.13% 10px;
+    padding: 0px;
+    -webkit-user-select: none;
+    -webkit-text-size-adjust: none;
+    -webkit-tap-highlight-color: rgba(51,102,204,0.70);
+    max-width: 100%;
 }
 
 /* HTML default
 ----------------------------------------------- */
 a {
-	color: #5B87A4;
-	text-decoration: none;
+    color: #5B87A4;
+    text-decoration: none;
 }
 form {
-	margin: 0;
-	padding: 0;
+    margin: 0;
+    padding: 0;
 }
 table,img,p {
-	border: 0;
+    border: 0;
 }
 em {
-	font-weight: bold;
-	font-style: normal;
-	color: #C00;
+    font-weight: bold;
+    font-style: normal;
+    color: #C00;
 }
 hr {
-	display: none;
+    display: none;
 }
 p {
-	margin: 0 0 1em;
-	padding: 0;
+    margin: 0 0 1em;
+    padding: 0;
 }
 li {
-list-style-type: none;
+    list-style-type: none;
 }
 img {
-vertical-align: bottom;
+    vertical-align: bottom;
 }
 .hidden {
-	display: none;
+    display: none;
 }
 br.clear {
-clear: both;
-display: none;
-font-size: 0px;
-line-height: 0%;
-height: 0px
+    clear: both;
+    display: none;
+    font-size: 0px;
+    line-height: 0%;
+    height: 0px
 }
 
 /* クリアフィックス
@@ -64,18 +64,18 @@ height: 0px
 .listarea:after,
 .recomendblock > div 
 .whoboughtblock > div {
-content: "";
-display: block;
-height: 0;
-clear: both;
-visibility: hidden;
+    content: "";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
 }
 
 /* font
 ----------------------------------------------- */
 h1,h2,h3,h4,h5 {
-font-size: 100%;
-line-height: 150%;
+    font-size: 100%;
+    line-height: 150%;
 }
 .price { color: #ff0000; font-weight: bold; }
 .attention { color: #ff0000; }
@@ -84,29 +84,29 @@ line-height: 150%;
 /* wrapper
 ----------------------------------------------- */
 div#wrapper {
-margin: 0 auto;
-padding: 0;
-text-align: left;
-background: #FFFFFF;
-overflow: hidden;
+    margin: 0 auto;
+    padding: 0;
+    text-align: left;
+    background: #FFFFFF;
+    overflow: hidden;
 }
 
 /* 見出し (h2)
 ----------------------------------------------- */
 h2 {
-color:#4D576B;
-font: bold 22px helvetica;
-background-color: transparent;
-text-shadow: 0px 1px 1px #ffffff;
-margin: 10px 0px;
+    color:#4D576B;
+    font: bold 22px helvetica;
+    background-color: transparent;
+    text-shadow: 0px 1px 1px #ffffff;
+    margin: 10px 0px;
 }
 
 /* 見出し (h3)
 ----------------------------------------------- */
 #mycontentsarea h3 {
-color:#4D576B;
-font: bold 19px helvetica;
-text-shadow: 0px 1px 1px #ffffff;
+    color:#4D576B;
+    font: bold 19px helvetica;
+    text-shadow: 0px 1px 1px #ffffff;
 }
 
 /* ナビゲーションバー・ページタイトル
@@ -119,38 +119,38 @@ h2.title,
 .title-mypagecolumn,
 #windowarea h2,
 #pan + h2 {
-display: inline-block;
-width: 106.8%;
-margin: 0 0 1em -3.4%;
-color: #ffffff;
-text-shadow: 0px -1px 1px rgba(0,0,0,0.5);
-font: bold 17px helvetica;
-padding: 0.45em 0;
-background-color: #333332;
-background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));
-border-top: 1px solid rgba(255,255,255,0.3);
-border-bottom: 1px solid rgba(0,0,0,1);
-text-align:center;
-vertical-align: middle;
-white-space: nowrap;
-overflow: hidden;
-text-overflow: ellipsis;
+    display: inline-block;
+    width: 106.8%;
+    margin: 0 0 1em -3.4%;
+    color: #ffffff;
+    text-shadow: 0px -1px 1px rgba(0,0,0,0.5);
+    font: bold 17px helvetica;
+    padding: 0.45em 0;
+    background-color: #333332;
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));
+    border-top: 1px solid rgba(255,255,255,0.3);
+    border-bottom: 1px solid rgba(0,0,0,1);
+    text-align:center;
+    vertical-align: middle;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* ページタイトル
 ----------------------------------------------- */
 #navigation_bar > h2{
-font: bold 17px helvetica;
-color: #ffffff;
-vertical-align: middle;
-text-shadow: 0px -1px 1px rgba(0,0,0,0.5);
-margin: 0;
-display: inline-block;
-max-width: 65%;
-white-space: nowrap;
-overflow: hidden;
-text-overflow: ellipsis;
--webkit-text-overflow: ellipsis;
+    font: bold 17px helvetica;
+    color: #ffffff;
+    vertical-align: middle;
+    text-shadow: 0px -1px 1px rgba(0,0,0,0.5);
+    margin: 0;
+    display: inline-block;
+    max-width: 65%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-text-overflow: ellipsis;
 }
 
 /* header
@@ -167,73 +167,73 @@ text-overflow: ellipsis;
 /* footer
 ----------------------------------------------- */
 #pagetop {
-width: 100%;
-margin: 25px 0 0;
-text-align: right;
+    width: 100%;
+    margin: 25px 0 0;
+    text-align: right;
 }
 #pagetop a{
-color:#4D576B;
-font: bold 13px helvetica;
-text-shadow: 0px 1px 1px #ffffff;
-text-decoration: underline;
+    color:#4D576B;
+    font: bold 13px helvetica;
+    text-shadow: 0px 1px 1px #ffffff;
+    text-decoration: underline;
 }
 div#footer {
-margin: 0;
-padding: 0;
-text-align: center;
+    margin: 0;
+    padding: 0;
+    text-align: center;
 }
 
 /* footer information
 ----------------------------------------------- */
 #footer-menu {
-text-align: left;
-font: bold 15px helvetica;
+    text-align: left;
+    font: bold 15px helvetica;
 }
 #footer-menu li{
-background: #ffffff url(../img/common/chevron.png) no-repeat right center;
+    background: #ffffff url(../img/common/chevron.png) no-repeat right center;
 }
 #footer-navi {
-float:left;
-list-style:none outside none;
-margin: 0 auto 4px;
-padding: 0 0 0 5px;
-text-align:center;
-width: 100%;
-border: none;
-background-color: transparent;
+    float:left;
+    list-style:none outside none;
+    margin: 0 auto 4px;
+    padding: 0 0 0 5px;
+    text-align:center;
+    width: 100%;
+    border: none;
+    background-color: transparent;
 }
 #footer-navi > li{
-display: inline;
-color:#4D576B;
-font: bold 12px helvetica;
-background-color: transparent;
-text-shadow: 0px 1px 1px #ffffff;
-border: none;
-border-right: 1px dotted #999999;
--webkit-border-radius: 0;
-line-height: 1em;
-margin: 0;
-padding: 0;
+    display: inline;
+    color:#4D576B;
+    font: bold 12px helvetica;
+    background-color: transparent;
+    text-shadow: 0px 1px 1px #ffffff;
+    border: none;
+    border-right: 1px dotted #999999;
+    -webkit-border-radius: 0;
+    line-height: 1em;
+    margin: 0;
+    padding: 0;
 }
 #footer-navi > li:last-child{
-border-right: none;
+    border-right: none;
 }
 #footer-navi > li > a {
-margin: 0;
-padding: 0;
-display: inline;
-color:#4D576B;
+    margin: 0;
+    padding: 0;
+    display: inline;
+    color:#4D576B;
 }
 #copyright {
-margin: 7px 0px;
-color: #4D576B;
-font: bold 17px helvetica;
-text-shadow: 0px 1px 1px #ffffff;
-text-align: center;
+    margin: 7px 0px;
+    color: #4D576B;
+    font: bold 17px helvetica;
+    text-shadow: 0px 1px 1px #ffffff;
+    text-align: center;
 }
 #copyright a{
-color: #4D576B;
-text-decoration: under-line;
+    color: #4D576B;
+    text-decoration: under-line;
 }
 
 /* ニュース
@@ -244,14 +244,14 @@ text-decoration: under-line;
 /* panlist
 ----------------------------------------------- */
 div#pan {
-display: none;
+    display: none;
 }
 
 /* error
 ----------------------------------------*/
 
 div .error {
-	text-align:center;
+    text-align:center;
     padding: 30px 0;
 }
 
@@ -259,141 +259,141 @@ div .error {
 /* フォーム
 ----------------------------------------------- */
 input[size="40"] {
-width: 50%;
+    width: 50%;
 }
 input[type="password"] {
-width: 50%;
+    width: 50%;
 }
 input[type="tel"] {
-width: 3em;
+    width: 3em;
 }
 input, tr, th, td {
-max-width: 93.8%;
+    max-width: 93.8%;
 }
 input {
-font-size: small;
+    font-size: small;
 }
 textarea{
-font-size: small;
-width: 95%;
+    font-size: small;
+    width: 95%;
 }
 form dl{
-font: bold small helvetica;
-margin: 10px 0;
+    font: bold small helvetica;
+    margin: 10px 0;
 }
 form dt{
-margin: 5px 0;
-color:#4D576B;
-font: bold small helvetica;
-background-color: transparent;
-text-shadow: 0px 1px 1px #ffffff;
-border: none;
+    margin: 5px 0;
+    color:#4D576B;
+    font: bold small helvetica;
+    background-color: transparent;
+    text-shadow: 0px 1px 1px #ffffff;
+    border: none;
 }
 form dd{
-margin:0;
-background-color: rgba(255,255,255,0.3);
-color: #999999;
-border: 2px dotted #B4B4B4;
-list-style-type: none;
-padding: 10px 7px;
--webkit-border-radius: 8px;
+    margin:0;
+    background-color: rgba(255,255,255,0.3);
+    color: #999999;
+    border: 2px dotted #B4B4B4;
+    list-style-type: none;
+    padding: 10px 7px;
+    -webkit-border-radius: 8px;
 }
 
 body, p,
 table, thead, tbody, th, td {
-word-break: break-all;
+    word-break: break-all;
 }
 table, thead, tbody {
-white-space: normal;
-overflow: hidden;
+    white-space: normal;
+    overflow: hidden;
 }
 
 /* プライバシーポリシー
 ----------------------------------------------- */
 ol {
-padding-start:0;
--o-padding-start:0; 
--moz-padding-start:0;
--webkit-padding-start:0;
-margin: 1em 3.13%;
+    padding-start:0;
+    -o-padding-start:0; 
+    -moz-padding-start:0;
+    -webkit-padding-start:0;
+    margin: 1em 3.13%;
 }
 ol > li.privacy_ol{
-margin: 1em;
+    margin: 1em;
 }
 ol > li.privacy_ol > strong{
-color:#4D576B;
-font: bold 17px helvetica;
-text-shadow: 0px 1px 1px #ffffff;
-line-height: 2em;
+    color:#4D576B;
+    font: bold 17px helvetica;
+    text-shadow: 0px 1px 1px #ffffff;
+    line-height: 2em;
 }
 
 /* 特定商取引に基づく表記
 ----------------------------------------------- */
 #undercolumn_order dl{
-margin: 0;
+    margin: 0;
 }
 #undercolumn_order dt{
-color:#4D576B;
-font: bold 17px helvetica;
-text-shadow: 0px 1px 1px #ffffff;
-line-height: 2em;
+    color:#4D576B;
+    font: bold 17px helvetica;
+    text-shadow: 0px 1px 1px #ffffff;
+    line-height: 2em;
 }
 #undercolumn_order dd,
 #undercolumn_order ul {
-padding-start:0;
--o-padding-start:0; 
--moz-padding-start:0;
--webkit-padding-start:0;
-margin: 0 3.13%;
+    padding-start:0;
+    -o-padding-start:0; 
+    -moz-padding-start:0;
+    -webkit-padding-start:0;
+    margin: 0 3.13%;
 }
 
 /* マイページ
 ----------------------------------------------- */
 #welcome-message {
-color: #4D576B;
-text-shadow: 0px 1px 1px #ffffff;
+    color: #4D576B;
+    text-shadow: 0px 1px 1px #ffffff;
 }
 .your-point {
-display: inline-block;
-padding: 0.1em;
-text-align: right;
-color: #ffffff;
-width: 100%;
-background-color: rgba(0,0,0,0.3);
-margin-bottom: 5px;
+    display: inline-block;
+    padding: 0.1em;
+    text-align: right;
+    color: #ffffff;
+    width: 100%;
+    background-color: rgba(0,0,0,0.3);
+    margin-bottom: 5px;
 }
 .your-point em {
-text-shadow: 0 0 2px #ffffff;
+    text-shadow: 0 0 2px #ffffff;
 }
 #btn-mypagetop {
-width: 100%;
-text-align: left;
--webkit-border-radius: 8px;
-background: #ffffff url(../img/common/chevron.png) no-repeat right center;
-border: solid 1px #cccccc;
-margin: 10px 0;
+    width: 100%;
+    text-align: left;
+    -webkit-border-radius: 8px;
+    background: #ffffff url(../img/common/chevron.png) no-repeat right center;
+    border: solid 1px #cccccc;
+    margin: 10px 0;
 }
 #btn-mypagetop a {
-display: inline-block;
-margin: 7px 3.3%;
-width: 93%;
-color: black;
-text-decoration: none;
-font: bold 15px helvetica;
+    display: inline-block;
+    margin: 7px 3.3%;
+    width: 93%;
+    color: black;
+    text-decoration: none;
+    font: bold 15px helvetica;
 }
 
 /* マイページ・購入履歴
 ----------------------------------------------- */
 table[summary="購入履歴"] td:first-child {
-width: 20%;
-text-align: center;
+    width: 20%;
+    text-align: center;
 }
 table[summary="購入履歴"] tr[onclick] td:last-child {
-background: #ffffff url(../img/common/chevron.png) no-repeat right center;
+    background: #ffffff url(../img/common/chevron.png) no-repeat right center;
 }
 table[summary="お届け先の指定"] td:nth-child(2),
 table[summary="購入履歴"] tr[onclick] td:last-child {
-text-align: left;
+    text-align: left;
 }
 
 /* 商品詳細
