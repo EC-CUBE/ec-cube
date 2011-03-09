@@ -82,7 +82,8 @@ class LC_Page_Upgrade_ProductsList extends LC_Page_Upgrade_Base {
         $arrPostData = array(
             'eccube_url' => HTTP_URL,
             'public_key' => sha1($public_key . $sha1_key),
-            'sha1_key'   => $sha1_key
+            'sha1_key'   => $sha1_key,
+            'ver'        => ECCUBE_VERSION
         );
         $objReq = $this->request('products_list', $arrPostData);
 
