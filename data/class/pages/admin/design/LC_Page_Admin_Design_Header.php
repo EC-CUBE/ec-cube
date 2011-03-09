@@ -50,6 +50,8 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
         $this->tpl_subno = 'header';
         $this->tpl_mainno = 'design';
         $this->tpl_subtitle = 'ヘッダー/フッター設定';
+        $masterData = new SC_DB_MasterData_Ex();
+        $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
     }
 
     /**
@@ -78,6 +80,9 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
             $device_type_id = DEVICE_TYPE_PC;
         }
         $this->device_type_id = $device_type_id;
+
+        //サブタイトルの追加
+        $this->tpl_subtitle .= ' - ' . $this->arrDeviceType[$device_type_id];
 
         // テンプレートのパス
         $template_path = $this->lfGetTemplatePath($device_type_id);

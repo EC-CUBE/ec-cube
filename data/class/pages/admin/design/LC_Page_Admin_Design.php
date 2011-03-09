@@ -51,6 +51,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
         $this->tpl_subtitle = 'レイアウト設定';
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrTarget = $masterData->getMasterData("mtb_target");
+        $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
     }
 
     /**
@@ -86,6 +87,9 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
         } else {
             $device_type_id = DEVICE_TYPE_PC;
         }
+
+        //サブタイトルの追加
+        $this->tpl_subtitle .= ' - ' . $this->arrDeviceType[$device_type_id];
 
         // 編集可能ページを取得
         $this->arrEditPage = $objLayout->lfGetPageData("page_id <> 0 AND device_type_id = ?", array($device_type_id));

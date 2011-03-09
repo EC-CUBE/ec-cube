@@ -50,6 +50,8 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
         $this->tpl_subno = 'bloc';
         $this->tpl_mainno = 'design';
         $this->tpl_subtitle = 'ブロック設定';
+        $masterData = new SC_DB_MasterData_Ex();
+        $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
     }
 
     /**
@@ -88,6 +90,9 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
 
         $this->objLayout = new SC_Helper_PageLayout_Ex();
         $package_path = $this->objLayout->getTemplatePath($device_type_id) . BLOC_DIR;
+
+        //サブタイトルの追加
+        $this->tpl_subtitle .= ' - ' . $this->arrDeviceType[$device_type_id];
 
         // ブロック一覧を取得
         $this->arrBlocList = $this->lfgetBlocData("device_type_id = ?", array($device_type_id));

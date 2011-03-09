@@ -53,6 +53,8 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
         $this->arrErr  = array();
         $this->arrForm = array();
         ini_set("max_execution_time", 300);
+        $masterData = new SC_DB_MasterData_Ex();
+        $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
     }
 
     /**
@@ -80,6 +82,9 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
         } else {
             $device_type_id = DEVICE_TYPE_PC;
         }
+        
+        //サブタイトルの追加
+        $this->tpl_subtitle .= ' - ' . $this->arrDeviceType[$device_type_id];
 
         $this->tpl_select = $this->getTemplateName($device_type_id);
 

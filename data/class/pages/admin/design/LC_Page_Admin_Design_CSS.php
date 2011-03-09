@@ -50,6 +50,8 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
         $this->tpl_subno = 'css';
         $this->tpl_mainno = 'design';
         $this->tpl_subtitle = 'CSS設定';
+        $masterData = new SC_DB_MasterData_Ex();
+        $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
     }
 
     /**
@@ -99,6 +101,9 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
         } else {
             $device_type_id = DEVICE_TYPE_PC;
         }
+
+        //サブタイトルの追加
+        $this->tpl_subtitle .= ' - ' . $this->arrDeviceType[$device_type_id];
 
         $css_dir = $this->objLayout->getTemplatePath($device_type_id, true) . "css/";
         $css_path = $css_dir . $css_name . '.css';
