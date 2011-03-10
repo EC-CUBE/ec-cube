@@ -180,8 +180,14 @@ function lfnDispChange(){
     <input type="hidden" name="product_id" value="" />
     <input type="hidden" name="category_id" value="" />
     <!--{foreach key=key item=item from=$arrHidden}-->
-        <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
-    <!--{/foreach}-->    
+        <!--{if is_array($item)}-->
+            <!--{foreach item=c_item from=$item}-->
+            <input type="hidden" name="<!--{$key|h}-->[]" value="<!--{$c_item|h}-->" />
+            <!--{/foreach}-->
+        <!--{else}-->
+            <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
+        <!--{/if}-->
+    <!--{/foreach}-->
     <h2>検索結果一覧</h2>
     <div class="btn">
         <span class="attention"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。
