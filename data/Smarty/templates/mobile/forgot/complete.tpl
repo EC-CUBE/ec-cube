@@ -26,6 +26,10 @@
 
 <br>
 
-<center><font color="red"><!--{$temp_password}--></font></center>
+<!--{if $smarty.const.FORGOT_MAIL != 1}-->
+<center><font color="red"><!--{$arrForm.new_password}--></font></center>
+<!--{else}-->
+<center><font color="red">ご登録メールアドレスに送付致しました。</font></center>
+<!--{/if}-->
 
 <br>

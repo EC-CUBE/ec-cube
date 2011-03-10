@@ -28,7 +28,11 @@
     <form action="?" method="post" name="form1">
       <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
       <div id="completebox">
-        <p><em><!--{$temp_password}--></em></p>
+      <!--{if $smarty.const.FORGOT_MAIL != 1}-->
+        <p><em><!--{$arrForm.new_password}--></em></p>
+      <!--{else}-->
+        <p><em>ご登録メールアドレスに送付致しました。</em></p>
+      <!--{/if}-->
       </div>
       <div class="btn">
         <a href="javascript:window.close()" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close_on.gif','close');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close.gif','close');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_close.gif" width="150" height="30" alt="閉じる" name="close" id="close" /></a>
