@@ -246,11 +246,12 @@ class SC_CartSession {
     }
 
     // 前頁のURLを記録しておく
-    function setPrevURL($url) {
+    function setPrevURL($url, $excludePaths = array()) {
         // 前頁として記録しないページを指定する。
         $arrExclude = array(
             "/shopping/"
         );
+        $arrExclude = array_merge($arrExclude, $excludePaths);
         $exclude = false;
         // ページチェックを行う。
         foreach($arrExclude as $val) {
