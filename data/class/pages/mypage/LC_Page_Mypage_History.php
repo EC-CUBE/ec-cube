@@ -85,7 +85,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
 
-        $this->arrShipping      = $this->IfGetShippingDate(&$objPurchase, $order_id, $this->arrWDAY);
+        $this->arrShipping      = $this->lfGetShippingDate(&$objPurchase, $order_id, $this->arrWDAY);
 
         $this->isMultiple       = count($this->arrShipping) > 1;
         // 支払い方法の取得
