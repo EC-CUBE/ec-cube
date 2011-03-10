@@ -128,7 +128,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
      * @param $arrWDAY array 曜日データの配列
      * @return array お届け先情報
      */
-    function IfGetShippingDate(&$objPurchase, $order_id, $arrWDAY) {
+    function lfGetShippingDate(&$objPurchase, $order_id, $arrWDAY) {
         $arrShipping = $objPurchase->getShippings($order_id);
 
         foreach($arrShipping as $shipping_index => $shippingData) {
