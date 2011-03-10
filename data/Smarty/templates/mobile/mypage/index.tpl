@@ -30,8 +30,8 @@
 <!--{/if}-->
 
 <hr>
-<a href="change.php" accesskey="2"><!--{2|numeric_emoji}-->登録内容変更</a><br>
-<a href="refusal.php" accesskey="3"><!--{3|numeric_emoji}-->退会</a><br>
+<a href="change.php" accesskey="1"><!--{1|numeric_emoji}-->登録内容変更</a><br>
+<a href="refusal.php" accesskey="2"><!--{2|numeric_emoji}-->退会</a><br>
 <hr>
 ■購入履歴一覧<br>
 <!--{if $objNavi->all_row > 0}-->
