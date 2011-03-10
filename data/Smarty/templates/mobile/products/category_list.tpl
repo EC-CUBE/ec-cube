@@ -27,11 +27,7 @@
 <!--{else}-->
 <!--{assign var=path value="`$smarty.const.ROOT_URLPATH`products/list.php"}-->
 <!--{/if}-->
-<!--{if $i+1<9}-->
-<a href="<!--{$path}-->?category_id=<!--{$arrChild.category_id}-->" accesskey="<!--{$i+1}-->"><!--{$i+1|numeric_emoji}--><!--{$arrChild.category_name|h}-->(<!--{$arrChild.product_count}-->)</a><br>
-<!--{else}-->
-[<!--{$i+1}-->]<a href="<!--{$path}-->?category_id=<!--{$arrChild.category_id}-->"><!--{$arrChild.category_name|h}-->(<!--{$arrChild.product_count}-->)</a><br>
-<!--{/if}-->
+<a href="<!--{$path}-->?category_id=<!--{$arrChild.category_id}-->"><!--{$arrChild.category_name|h}-->(<!--{$arrChild.product_count}-->)</a><br>
 <!--{/foreach}-->
 
 <br>

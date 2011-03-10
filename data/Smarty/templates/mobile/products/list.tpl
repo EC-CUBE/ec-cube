@@ -28,7 +28,6 @@
 
 <!--{foreach from=$arrProducts key=i item=arrProduct}-->
 <!-- ▼商品 ここから -->
-<!--{if $i+1<9}--><!--{$i+1|numeric_emoji}--><!--{else}-->[<!--{$i+1}-->]<!--{/if}-->
 <!-- 商品名 --><!--{$arrProduct.name|h}--><br>
 
 <!--{$smarty.const.SALE_PRICE_TITLE}-->：
@@ -40,11 +39,7 @@
 <br>
 
 <div align="right">
-<!--{if $i+1<9}-->
-<a href="<!--{$smarty.const.MOBILE_P_DETAIL_URLPATH}--><!--{$arrProduct.product_id|u}-->" accesskey="<!--{$i+1}-->">商品詳細へ→</a>
-<!--{else}-->
 <a href="<!--{$smarty.const.MOBILE_P_DETAIL_URLPATH}--><!--{$arrProduct.product_id|u}-->">商品詳細へ→</a>
-<!--{/if}-->
 </div>
 
 <br>
