@@ -47,6 +47,9 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
         $masterData         = new SC_DB_MasterData_Ex();
         $this->arrPref      = $masterData->getMasterData('mtb_pref');
         $this->httpCacheControl('nocache');
+        $this->validUrl = array(MYPAGE_DELIVADDR_URLPATH,
+                                DELIV_URLPATH,
+                                MULTIPLE_URLPATH);
     }
 
     /**
@@ -105,10 +108,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
                 if(empty($this->arrErr)) {
 
                     // TODO ここでやるべきではない
-                    $validUrl = array(MYPAGE_DELIVADDR_URLPATH,
-                                      DELIV_URLPATH,
-                                      MULTIPLE_URLPATH);
-                    if (in_array($_POST['ParentPage'], $validUrl)) {
+                    if (in_array($_POST['ParentPage'], $this->validUrl)) {
                         $this->tpl_onload = "fnUpdateParent('". $this->getLocation($_POST['ParentPage']) ."'); window.close();";
                     } else {
                         SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
