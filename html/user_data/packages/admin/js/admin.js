@@ -242,37 +242,6 @@ function fnCheckStockLimit(icolor) {
     }
 }
 
-// 在庫数制限判定
-function fnCheckStockNoLimit(no, icolor) {
-    $check_key = "stock_unlimited:"+no;
-    $input_key = "stock:"+no;
-
-    list = new Array($input_key );
-    if(document.form1[$check_key].checked) {
-        fnChangeDisabled(list, icolor);
-        document.form1[$input_key].value = "";
-    } else {
-        fnChangeDisabled(list, '');
-    }
-}
-
-// 在庫数判定
-function fnCheckAllStockLimit(max, icolor) {
-    for(no = 1; no <= max; no++) {
-        $check_key = "stock_unlimited:"+no;
-        $input_key = "stock:"+no;
-
-        list = new Array($input_key);
-
-        if(document.form1[$check_key].checked) {
-            fnChangeDisabled(list, icolor);
-            document.form1[$input_key].value = "";
-        } else {
-            fnChangeDisabled(list, '');
-        }
-    }
-}
-
 // Form指定のSubmit
 function fnFormSubmit(form) {
     document.forms[form].submit();

@@ -177,7 +177,7 @@ __EOS__;
      */
     function getDetail($productId) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $result = $objQuery->select("*", $this->alldtlSQL("product_id = ?"),
+        $result = $objQuery->select("*", $this->alldtlSQL("product_id = ? AND del_flg = 0"),
                                     "product_id = ?",
                                     array($productId, $productId));
         return $result[0];
@@ -202,13 +202,14 @@ __EOS__;
      * 設定する.
      *
      * @param array $arrProductId 商品ID の配列
+     * @param boolean $has_deleted 削除された商品規格も含む場合 true; 初期値 false
      * @return void
      */
-    function setProductsClassByProductIds($arrProductId) {
+    function setProductsClassByProductIds($arrProductId, $has_deleted = false) {
 
         $arrProductsClass = array();
         foreach ($arrProductId as $productId) {
-            $arrProductClass = $this->getProductsClassFullByProductId($productId);
+            $arrProductClass = $this->getProductsClassFullByProductId($productId, $has_deleted);
 
             $classCats1 = array();
             $classCats1[''] = '選択してください';
@@ -325,6 +326,7 @@ __EOS__;
             T2.classcategory_id,
             T2.level,
             T3.name AS classcategory_name,
+            T3.rank,
             T4.name AS class_name,
             T4.class_id
 __EOS__;
@@ -337,6 +339,8 @@ __EOS__;
             LEFT JOIN dtb_class T4
                    ON T3.class_id = T4.class_id
 __EOS__;
+
+        $objQuery->setOrder('T3.rank DESC'); // XXX
         $arrRet = $objQuery->select($col, $table, "", $params);
         $levels = array();
         $parents = array();
@@ -357,6 +361,7 @@ __EOS__;
                 T1.parent_class_combination_id,
                 T1.level,
                 T2.name AS classcategory_name,
+                T2.rank,
                 T3.name AS class_name,
                 T3.class_id
 __EOS__;
@@ -368,9 +373,9 @@ __EOS__;
                        ON T2.class_id = T3.class_id
 __EOS__;
 
+            $objQuery->setOrder('T2.rank DESC'); // XXX
             $arrParents = $objQuery->select($col, $table, "", $parents);
 
-            unset($parents);
             foreach ($arrParents as $rows) {
                 $parents[] = $rows['parent_class_combination_id'];
 
@@ -395,16 +400,20 @@ __EOS__;
             $val['classcategory_id' . $val['level']] = $val['classcategory_id'];
             $arrProductsClass[] = $val;
         }
-
         return $arrProductsClass;
     }
 
     /**
      * 商品規格IDから商品規格を取得する.
+     *
+     * 削除された商品規格は取得しない.
+     *
+     * @param integer $productClassId 商品規格ID
+     * @return array 商品規格の配列
      */
     function getProductsClass($productClassId) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->setWhere('product_class_id = ?');
+        $objQuery->setWhere('product_class_id = ? AND T1.del_flg = 0');
         $objQuery->setOrder("T2.level DESC");
         $results = $this->getProductsClassByQuery($objQuery, $productClassId);
         $productsClass = $this->getProductsClassFull($results);
@@ -415,14 +424,19 @@ __EOS__;
      * 複数の商品IDに紐づいた, 商品規格を取得する.
      *
      * @param array $productIds 商品IDの配列
+     * @param boolean $has_deleted 削除された商品規格も含む場合 true; 初期値 false
      * @return array 商品規格の配列
      */
-    function getProductsClassByProductIds($productIds = array()) {
+    function getProductsClassByProductIds($productIds = array(), $has_deleted = false) {
         if (empty($productIds)) {
             return array();
         }
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->setWhere('product_id IN (' . implode(', ', array_pad(array(), count($productIds), '?')) . ')');
+        $where = 'product_id IN (' . implode(', ', array_pad(array(), count($productIds), '?')) . ')';
+        if (!$has_deleted) {
+            $where .= ' AND T1.del_flg = 0';
+        }
+        $objQuery->setWhere($where);
         $objQuery->setOrder("T2.level DESC");
         return $this->getProductsClassByQuery($objQuery, $productIds);
     }
@@ -442,10 +456,11 @@ __EOS__;
      * 商品IDに紐づいた, 商品規格をすべての組み合わせごとに取得する.
      *
      * @param array $productId 商品ID
+     * @param boolean $has_deleted 削除された商品規格も含む場合 true; 初期値 false
      * @return array すべての組み合わせの商品規格の配列
      */
-    function getProductsClassFullByProductId($productId) {
-        $results = $this->getProductsClassByProductIds(array($productId));
+    function getProductsClassFullByProductId($productId, $has_deleted = false) {
+        $results = $this->getProductsClassByProductIds(array($productId), $has_deleted);
         return $this->getProductsClassFull($results);
     }
 

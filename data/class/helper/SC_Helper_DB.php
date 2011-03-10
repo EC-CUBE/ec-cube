@@ -1447,7 +1447,7 @@ __EOS__;
         if (!SC_Utils_Ex::sfIsInt($product_id)) return false;
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $where = 'product_id = ? AND class_combination_id IS NOT NULL';
+        $where = 'product_id = ? AND del_flg = 0 AND class_combination_id IS NOT NULL';
         $count = $objQuery->count('dtb_products_class', $where, array($product_id));
 
         return $count >= 1;

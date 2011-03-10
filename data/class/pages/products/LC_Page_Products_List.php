@@ -297,6 +297,8 @@ __EOS__;
             // 一致させない
             $where = '0<>0';
         }
+
+        $where .= ' AND del_flg = 0'; // 商品規格の削除フラグ
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setWhere($where);
         $arrProducts = $objProduct->lists($objQuery, $arrProduct_id);

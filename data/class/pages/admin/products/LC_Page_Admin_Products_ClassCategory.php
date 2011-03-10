@@ -161,7 +161,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $where = "del_flg <> 1 AND class_id = ?";
-        $objQuery->setOrder("rank DESC");
+        $objQuery->setOrder("rank DESC"); // XXX 降順
         $arrClassCat = $objQuery->select("name, classcategory_id", "dtb_classcategory", $where, array($class_id));
         return $arrClassCat;
     }
