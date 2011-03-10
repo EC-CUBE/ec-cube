@@ -28,7 +28,7 @@ require_once HTML_REALDIR . 'define.php';
 require_once HTML_REALDIR . 'handle_error.php';
 require_once HTML_REALDIR . HTML2DATA_DIR . 'require_base.php';
 
-if (SC_Display::detectDevice() == DEVICE_TYPE_MOBILE){
+if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE){
     define('MOBILE_SITE', true);
     $objMobile = new SC_Helper_Mobile_Ex();
     $objMobile->sfMobileInit();

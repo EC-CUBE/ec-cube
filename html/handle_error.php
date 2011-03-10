@@ -94,7 +94,7 @@ function handle_error($errno, $errstr, $errfile, $errline) {
  * @return void
  */
 function displaySystemError($errstr = null) {
-    if (SC_Display::detectDevice() == DEVICE_TYPE_MOBILE) {
+    if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
         ob_clean();
         ob_start(array('SC_MobileEmoji', 'handler'));
     } else {
