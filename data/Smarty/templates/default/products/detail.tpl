@@ -219,7 +219,7 @@ $(document).ready(function() {
                 <div class="quantity">
                     <ul class="clearfix">
                         <li>数量：</li>
-                        <li><input type="text" class="box60" name="quantity" value="<!--{$arrForm.quantity.value|default:1}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr.quantity|sfGetErrorColor}-->" />
+                        <li><input type="text" class="box60" name="quantity" value="<!--{$arrForm.quantity.value|default:1|h}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr.quantity|sfGetErrorColor}-->" />
                             <!--{if $arrErr.quantity != ""}-->
                                 <br /><span class="attention"><!--{$arrErr.quantity}--></span>
                             <!--{/if}-->

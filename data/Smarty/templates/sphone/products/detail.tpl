@@ -251,7 +251,7 @@ function fnSetClassCategories(form, classcat_id2_selected) {
 
                         <dt>数量</dt>
                         <dd>
-                            <input type="text" name="quantity" class="box54" value="<!--{$arrForm.quantity.value|default:1}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr.quantity|sfGetErrorColor}-->" />
+                            <input type="text" name="quantity" class="box54" value="<!--{$arrForm.quantity.value|default:1|h}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr.quantity|sfGetErrorColor}-->" />
                             <!--{if $arrErr.quantity != ""}-->
                                 <br /><span class="attention"><!--{$arrErr.quantity}--></span>
                             <!--{/if}-->
