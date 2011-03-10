@@ -32,12 +32,6 @@
                 <span class="st">購入日時：&nbsp;</span><!--{$tpl_arrOrderData.create_date|sfDispDBDate}--><br />
                 <span class="st">注文番号：&nbsp;</span><!--{$tpl_arrOrderData.order_id}--><br />
                 <span class="st">お支払い方法：&nbsp;</span><!--{$arrPayment[$tpl_arrOrderData.payment_id]|h}-->
-                <!--{if $tpl_arrOrderData.deliv_time_id != ""}--><br />
-                <span class="st">お届け時間：&nbsp;</span><!--{$arrDelivTime[$tpl_arrOrderData.deliv_time_id]|h}-->
-                <!--{/if}-->
-                <!--{if $tpl_arrOrderData.deliv_date != ""}--><br />
-                <span class="st">お届け日：&nbsp;</span><!--{$tpl_arrOrderData.deliv_date|h}-->
-                <!--{/if}-->
             </p>
             <form action="order.php" method="post">
                 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -196,6 +190,14 @@
                     <tr>
                         <th class="alignL">電話番号</th>
                         <td><!--{$shippingItem.shipping_tel01}-->-<!--{$shippingItem.shipping_tel02}-->-<!--{$shippingItem.shipping_tel03}--></td>
+                    </tr>
+                    <tr>
+                        <th class="alignL">お届け日</th>
+                        <td><!--{$shippingItem.shipping_date|default:'指定なし'|h}--></td>
+                    </tr>
+                    <tr>
+                        <th class="alignL">お届け時間</th>
+                        <td><!--{$shippingItem.shipping_time|default:'指定なし'|h}--></td>
                     </tr>
                 </tbody>
             </table>
