@@ -50,6 +50,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
         $masterData             = new SC_DB_MasterData_Ex();
         $this->arrMAILTEMPLATE  = $masterData->getMasterData("mtb_mail_template");
         $this->arrPref          = $masterData->getMasterData('mtb_pref');
+        $this->arrWDAY          = $masterData->getMasterData("mtb_wday");
    }
 
     /**
@@ -84,13 +85,11 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
 
-        $this->arrShipping      = $objPurchase->getShippings($order_id);
+        $this->arrShipping      = $this->IfGetShippingDate(&$objPurchase, $order_id, $this->arrWDAY);
 
         $this->isMultiple       = count($this->arrShipping) > 1;
         // 支払い方法の取得
         $this->arrPayment       = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
-        // FIXME お届け時間の取得
-        //$this->arrDelivTime     = $objPurchase->getDelivTime($this->tpl_arrOrderData['deliv_id']);
         // 受注商品明細の取得
         $this->tpl_arrOrderDetail = $objPurchase->getOrderDetail($order_id);
         // 受注メール送信履歴の取得
@@ -119,5 +118,29 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
         $where      = 'order_id = ?';
         $objQuery->setOrder('send_date DESC');
         return $objQuery->select($col, 'dtb_mail_history', $where, array($order_id));
+    }
+
+    /**
+     * 受注お届け先情報の取得
+     *
+     * @param $objPurchase object SC_Helper_Purchaseクラス
+     * @param $order_id integer 注文番号
+     * @param $arrWDAY array 曜日データの配列
+     * @return array お届け先情報
+     */
+    function IfGetShippingDate(&$objPurchase, $order_id, $arrWDAY) {
+        $arrShipping = $objPurchase->getShippings($order_id);
+
+        foreach($arrShipping as $shipping_index => $shippingData) {
+            foreach($shippingData as $key => $val) {
+                if($key == 'shipping_date' && SC_Utils_Ex::isBlank($val) == false) {
+                    // お届け日を整形
+                    list($y, $m, $d, $w) = explode(" ", date("Y m d w" , strtotime($val)));
+                    $arrShipping[$shipping_index]['shipping_date'] = sprintf("%04d/%02d/%02d(%s)", $y, $m, $d, $arrWDAY[$w]);
+                }
+            }
+        }
+
+        return $arrShipping;
     }
 }
