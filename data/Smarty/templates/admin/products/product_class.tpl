@@ -66,6 +66,7 @@ $(function() {
 <input type="hidden" name="mode" value="edit" />
 <input type="hidden" name="product_id" value="<!--{$arrForm.product_id.value|h}-->" />
 <input type="hidden" name="down_key" value="">
+<input type="hidden" name="total" value="<!--{$arrForm.total.value|h}-->" />
 <!--{* foreach key=name item=item from=$arrHidden *}-->
 <input type="hidden" name="<!--{$name}-->" value="<!--{$item|h}-->" />
 <!--{* /foreach *}-->
@@ -133,6 +134,10 @@ $(function() {
     <!--{assign var=class_id2 value=$arrForm[$key2].value|h}-->
     <input type="hidden" name="<!--{$key1}-->" value="<!--{$class_id1}-->" />
     <input type="hidden" name="<!--{$key2}-->" value="<!--{$class_id2}-->" />
+    <!--{if $arrErr.check_empty}-->
+        <span class="attention"><!--{$arrErr.check_empty}--></span>
+    <!--{/if}-->
+
     <table class="list" width="900">
         <colgroup width="5%">
         <colgroup width="9%">
@@ -160,16 +165,8 @@ $(function() {
         <!--{section name=cnt loop=$arrForm.total.value}-->
             <!--{assign var=index value=$smarty.section.cnt.index}-->
 
-            <!--{* TODO *}-->
-            <!--{assign var=key value="error:`$smarty.section.cnt.iteration`"}-->
-            <!--{if $arrErr[$key] != ""}-->
             <tr>
-                <td colspan="10"><span class="attention"><!--{$arrErr[$key]}--></span></td>
-            </tr>
-            <!--{/if}-->
-            <tr >
-
-                <td class="center" >
+                <td class="center">
                     <!--{assign var=key value="classcategory_id1"}-->
                     <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" />
                     <!--{assign var=key value="classcategory_id2"}-->
@@ -177,48 +174,79 @@ $(function() {
                     <!--{assign var=key value="product_class_id"}-->
                     <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" />
                     <!--{assign var=key value="check"}-->
+                    <!--{if $arrErr[$key][$index]}-->
+                        <span class="attention"><!--{$arrErr[$key][$index]}--></span>
+                    <!--{/if}-->
                     <input type="checkbox" name="<!--{$key}-->[<!--{$index}-->]" value="1" <!--{if $arrForm[$key].value[$index] == 1}-->checked="checked"<!--{/if}--> />
                 </td>
                 <td class="center">
                     <!--{assign var=key value="classcategory_name1"}-->
+                    <!--{if $arrErr[$key][$index]}-->
+                        <span class="attention"><!--{$arrErr[$key][$index]}--></span>
+                    <!--{/if}-->
                     <!--{$arrForm[$key].value[$index]|h}-->
                     <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" />
                 </td>
                 <td class="center">
                     <!--{assign var=key value="classcategory_name2"}-->
+                    <!--{if $arrErr[$key][$index]}-->
+                        <span class="attention"><!--{$arrErr[$key][$index]}--></span>
+                    <!--{/if}-->
                     <!--{$arrForm[$key].value[$index]|h}-->
                     <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" />
                 </td>
                 <td class="center">
                     <!--{assign var=key value="product_code"}-->
-                    <input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" size="6" class="box6" maxlength="<!--{$arrForm[$key].length}-->" <!--{if $arrErr[$key] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                    <!--{if $arrErr[$key][$index]}-->
+                        <span class="attention"><!--{$arrErr[$key][$index]}--></span>
+                    <!--{/if}-->
+                    <input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" size="6" class="box6" maxlength="<!--{$arrForm[$key].length}-->" <!--{if $arrErr[$key][$index] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                 </td>
                 <td class="center">
                     <!--{assign var=key value="stock"}-->
-                    <input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" size="6" class="box6" maxlength="<!--{$arrForm[$key].length}-->" <!--{if $arrErr[$key] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> id="<!--{$key}-->_<!--{$index}-->" />
+                    <!--{if $arrErr[$key][$index]}-->
+                        <span class="attention"><!--{$arrErr[$key][$index]}--></span>
+                    <!--{/if}-->
+                     <input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" size="6" class="box6" maxlength="<!--{$arrForm[$key].length}-->" <!--{if $arrErr[$key][$index] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> id="<!--{$key}-->_<!--{$index}-->" />
                     <!--{assign var=key value="stock_unlimited"}--><br />
+                    <!--{if $arrErr[$key][$index]}-->
+                        <span class="attention"><!--{$arrErr[$key][$index]}--></span>
+                    <!--{/if}-->
                     <input type="checkbox" name="<!--{$key}-->[<!--{$index}-->]" value="1" <!--{if $arrForm[$key].value[$index] == "1"}-->checked="checked"<!--{/if}--> onClick="fnCheckStockNoLimit('<!--{$index}-->','<!--{$smarty.const.DISABLED_RGB}-->');" id="<!--{$key}-->_<!--{$index}-->" /><label for="<!--{$key}-->_<!--{$index}-->">無制限</label>
                 </td>
                 <td class="center">
                     <!--{assign var=key value="price01"}-->
-                    <input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" size="6" class="box6" maxlength="<!--{$arrForm[$key].length}-->" <!--{if $arrErr[$key] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                    <!--{if $arrErr[$key][$index]}-->
+                        <span class="attention"><!--{$arrErr[$key][$index]}--></span>
+                    <!--{/if}-->
+                    <input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" size="6" class="box6" maxlength="<!--{$arrForm[$key].length}-->" <!--{if $arrErr[$key][$index] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                 </td>
                 <td class="center">
                     <!--{assign var=key value="price02"}-->
-                    <input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" size="6" class="box6" maxlength="<!--{$arrForm[$key].length}-->" <!--{if $arrErr[$key] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                    <!--{if $arrErr[$key][$index]}-->
+                        <span class="attention"><!--{$arrErr[$key][$index]}--></span>
+                    <!--{/if}-->
+                    <input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" size="6" class="box6" maxlength="<!--{$arrForm[$key].length}-->" <!--{if $arrErr[$key][$index] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                 </td>
                 <td class="class-product-type">
                     <!--{assign var=key value="product_type_id"}-->
+                    <!--{if $arrErr[$key][$index]}-->
+                        <span class="attention"><!--{$arrErr[$key][$index]}--></span>
+                    <!--{/if}-->
                     <!--{html_radios name="`$key`[`$index`]" options=$arrProductType selected=$arrForm[$key].value[$index]|h separator='<br />'}-->
                 </td>
                 <td class="center">
                     <!--{assign var=key value="down_filename}-->
-                    <span class="attention"><!--{$arrErr[$key]}--></span>
-                    <input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{if $arrErr[$key] != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="10" />
+                    <!--{if $arrErr[$key][$index]}-->
+                        <span class="attention"><!--{$arrErr[$key][$index]}--></span>
+                    <!--{/if}-->
+                    <input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{if $arrErr[$key][$index] != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="10" />
                 </td>
                 <td>
                     <!--{assign var=key value="down_realfilename"}-->
-                    <span class="attention"><!--{$arrErr[$key]}--></span>
+                    <!--{if $arrErr[$key][$index]}-->
+                        <span class="attention"><!--{$arrErr[$key][$index]}--></span>
+                    <!--{/if}-->
                     <!--{if $arrForm[$key].value[$index] != ""}-->
                         <!--{$arrForm[$key].value[$index]|h}-->
                         <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" />

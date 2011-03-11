@@ -35,11 +35,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
 
     // }}}
     // {{{ functions
-    /** ダウンロード用ファイル管理クラスのインスタンス */
-    var $objDownFile;
-
-    /** hidden 項目の配列 */
-    var $arrHidden;
 
     /**
      * Page を初期化する.
@@ -92,16 +87,21 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
 
         // 編集実行
         case 'edit':
-            // エラーチェック
-            $this->arrErr = $this->lfProductClassError($objFormParam->getHashArray());
-            if (empty($this->arrErr)){
+
+            $this->arrErr = $this->lfCheckProductsClass($objFormParam);
+
+            // エラーの無い場合は確認画面を表示
+            if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 $this->tpl_mainpage = 'products/product_class_confirm.tpl';
                 $this->doDisp($objFormParam);
                 $objFormParam->setParam($_POST);
                 $objFormParam->convParam();
+            }
+            // エラーが発生した場合
+            else {
+                $objFormParam->setParam($_POST);
+                $objFormParam->convParam();
 
-            } else {
-                $this->doPreEdit($objFormParam->getValue('product_id'), false ,true);
                 /* TODO
                 // Hiddenからのデータを引き継ぐ
                 $this->objDownFile->setHiddenFileList($_POST);
@@ -110,10 +110,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                 // Form用に配列を渡す。
                 $this->arrForm = array_merge((array)$this->arrForm, (array)$this->objDownFile->getFormKikakuDownFile());
                 */
-                $this->doDisp($objFormParam);
-                $objFormParam->setParam($_POST);
-                $objFormParam->convParam();
-
             }
             break;
 
@@ -125,6 +121,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         // 初期表示
         case 'pre_edit':
             $this->doPreEdit($objFormParam);
+
             /* TODO
             // HIDDEN用に配列を渡す。
             $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
@@ -133,7 +130,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
 
         // 「表示する」ボタン押下時
         case 'disp':
-            $this->arrErr = $this->lfClassError();
+            $this->arrErr = $this->lfCheckSelectClass();
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 $this->doDisp($objFormParam);
             }
@@ -141,6 +138,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
 
         // ダウンロード商品ファイルアップロード
         case 'upload_down':
+
             /* TODO
             $product_id = $objFormParam->getValue('product_id');
             $down_key   = $objFormParam->getValue('down_key');
@@ -165,6 +163,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
 
         // ダウンロードファイルの削除
         case 'delete_down':
+
             /* TODO
             $product_id = $objFormParam->getValue('product_id');
             $down_key   = $objFormParam->getValue('down_key');
@@ -202,17 +201,14 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
 
             break;
         case 'complete':
-            // 完了ページ設定
             $this->tpl_mainpage = 'products/product_class_complete.tpl';
-            // ファイル情報の初期化
-            // Hiddenからのデータを引き継ぐ
-            $this->objDownFile->setHiddenFileList($_POST);
-            // 商品規格の登録
-            $arrList = $objFormParam->getHashArray();
-            $this->registerProductClass($arrList, $objFormParam->getValue('product_id'),
+            // TODO $this->objDownFile->setHiddenFileList($_POST);
+
+            $this->registerProductClass($objFormParam->getHashArray(), $objFormParam->getValue('product_id'),
                                         $objFormParam->getValue('total'));
+            // TODO
             // 一時ファイルを本番ディレクトリに移動する
-            $this->objDownFile->moveTempDownFile();
+            // $this->objDownFile->moveTempDownFile();
             break;
 
         default:
@@ -272,10 +268,10 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         $objFormParam->addParam("規格名1", "classcategory_name1", STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
         $objFormParam->addParam("規格名2", "classcategory_name2", STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
         $objFormParam->addParam("商品規格ID", "product_class_id", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("在庫数", "stock", AMOUNT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("在庫数", "stock", AMOUNT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("在庫数", "stock_unlimited", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam(NORMAL_PRICE_TITLE, "price01", PRICE_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam(SALE_PRICE_TITLE, "price02", PRICE_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam(SALE_PRICE_TITLE, "price02", PRICE_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("商品種別", "product_type_id", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("削除フラグ", "del_flg", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("DLファイル名", "down_filename", STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
@@ -417,7 +413,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
      *
      * @return array エラーの配列
      */
-    function lfClassError() {
+    function lfCheckSelectClass() {
         $objErr = new SC_CheckError_Ex();
         $objErr->doFunc(array("規格1", "select_class_id1"), array("EXIST_CHECK"));
         $objErr->doFunc(array("規格", "select_class_id1", "select_class_id2"), array("TOP_EXIST_CHECK"));
@@ -425,55 +421,75 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         return $objErr->arrErr;
     }
 
-    // 商品規格エラーチェック
-    function lfProductClassError($array) {
-        $objErr = new SC_CheckError_Ex($array);
-        $no = 1; // FIXME 未定義変数の修正
-        while($array["classcategory_id1:".$no] != "") {
-            if($array["check:".$no] == 1) {
-                $objErr->doFunc(array("商品コード", "product_code:".$no, STEXT_LEN), array("MAX_LENGTH_CHECK"));
-                $objErr->doFunc(array(NORMAL_PRICE_TITLE, "price01:".$no, PRICE_LEN), array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-                $objErr->doFunc(array(SALE_PRICE_TITLE, "price02:".$no, PRICE_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+    /**
+     * 商品規格エラーチェック.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return array エラー結果の配列
+     */
+    function lfCheckProductsClass(&$objFormParam) {
+        $arrValues = $objFormParam->getHashArray();
+        $arrErr = $objFormParam->checkError();
+        $total = $objFormParam->getValue('total');
 
-                if($array["stock_unlimited:".$no] != '1') {
-                    $objErr->doFunc(array("在庫数", "stock:".$no, AMOUNT_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-                }
-
-                // 商品種別チェック
-                if (empty($array['product_type_id:' . $no])) {
-                    $objErr->arrErr['product_type_id:' . $no] = "※ 商品種別は、いずれかを選択してください。<br />";
-                }
-
-                //ダウンロード商品チェック
-                if($array["product_type_id:".$no] == PRODUCT_TYPE_DOWNLOAD) {
-                    $objErr->doFunc(array("ダウンロードファイル名", "down_filename:".$no, STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-                    if($array["down_realfilename:".$no] == "") {
-                        $objErr->arrErr["down_realfilename:".$no] = "※ ダウンロード商品の場合はダウンロード商品用ファイルをアップロードしてください。<br />";
-                    }
-                }
-                //実商品チェック
-                else if($array["product_type_id:".$no] == PRODUCT_TYPE_DOWNLOAD) {
-                    if($array["down_filename:".$no] != "") {
-                        $objErr->arrErr["down_filename:".$no] = "※ 実商品の場合はダウンロードファイル名を設定できません。<br />";
-                    }
-                    if($array["down_realfilename:".$no] != "") {
-                        $objErr->arrErr["down_realfilename:".$no] = "※ 実商品の場合はダウンロード商品用ファイルをアップロードできません。<br />ファイルを取り消してください。<br />";
-                    }
-                }
-            }
-            if (count($objErr->arrErr) > 0) {
-                $objErr->arrErr["error:".$no] = $objErr->arrErr["product_type_id:".$no];
-                $objErr->arrErr["error:".$no] .= $objErr->arrErr["product_code:".$no];
-                $objErr->arrErr["error:".$no] .= $objErr->arrErr["price01:".$no];
-                $objErr->arrErr["error:".$no] .= $objErr->arrErr["price02:".$no];
-                $objErr->arrErr["error:".$no] .= $objErr->arrErr["stock:".$no];
-                $objErr->arrErr["error:".$no] .= $objErr->arrErr["stock:".$no];
-                $objErr->arrErr["error:".$no] .= $objErr->arrErr["down_filename:".$no];
-                $objErr->arrErr["error:".$no] .= $objErr->arrErr["down_realfilename:".$no];
-            }
-            $no++;
+        if (SC_Utils_Ex::isBlank($arrValues['check'])) {
+            $arrErr['check_empty'] = '※ 商品種別が選択されていません。<br />';
         }
-        return $objErr->arrErr;
+
+        for ($i = 0; $i < $total; $i++) {
+
+            /*
+             * チェックボックスの入っている項目のみ, 必須チェックを行う.
+             * エラーを配列で返す必要があるため, SC_CheckError を使用しない.
+             */
+            if (!SC_Utils_Ex::isBlank($arrValues['check'][$i])) {
+
+                /*
+                 * 販売価格の必須チェック
+                 */
+                if (SC_Utils_Ex::isBlank($arrValues['price02'][$i])) {
+                    $arrErr['price02'][$i] = '※ ' . SALE_PRICE_TITLE . 'が入力されていません。<br />';
+                }
+                /*
+                 * 在庫数の必須チェック
+                 */
+                if ((SC_Utils_Ex::isBlank($arrValues['stock_unlimited'][$i])
+                     || $arrValues['stock_unlimited'][$i] != 1)
+
+                    && SC_Utils_Ex::isBlank($arrValues['stock'][$i])) {
+                    $arrErr['stock'][$i] = '※ 在庫数が入力されていません。<br />';
+                }
+                /*
+                 * 商品種別の必須チェック
+                 */
+                if (SC_Utils_Ex::isBlank($arrValues['product_type_id'][$i])) {
+                    $arrErr['product_type_id'][$i] = "※ 商品種別は、いずれかを選択してください。<br />";
+                }
+                /*
+                 * ダウンロード商品の必須チェック
+                 */
+                if($arrValues['product_type_id'][$i] == PRODUCT_TYPE_DOWNLOAD) {
+                    if (SC_Utils_Ex::isBlank($arrValues['down_filename'][$i])) {
+                        $arrErr['down_filename'][$i] = "※ ダウンロード商品の場合はダウンロードファイル名を入力してください。<br />";
+                    }
+                    if (SC_Utils_Ex::isBlank($arrValues['down_realfilename'][$i])) {
+                        $arrErr['down_realfilename'][$i] = "※ ダウンロード商品の場合はダウンロード商品用ファイルをアップロードしてください。<br />";
+                    }
+                }
+                /*
+                 * 通常商品チェック
+                 */
+                else if ($arrValues['product_type_id'][$i] == PRODUCT_TYPE_NORMAL) {
+                    if (!SC_Utils_Ex::isBlank($arrValues['down_filename'][$i])) {
+                        $arrErr['down_filename'] = "※ 通常商品の場合はダウンロードファイル名を設定できません。<br />";
+                    }
+                    if (!SC_Utils_Ex::isBlank($arrValues['down_realfilename'][$i])) {
+                        $arrErr['down_realfilename'][$i] = "※ 実商品の場合はダウンロード商品用ファイルをアップロードできません。<br />ファイルを取り消してください。<br />";
+                    }
+                }
+            }
+        }
+        return $arrErr;
     }
 
     /**
@@ -522,7 +538,8 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
      */
     function doPreEdit(&$objFormParam) {
         $product_id = $objFormParam->getValue('product_id');
-        $existsProductsClass = $this->getProductsClassAndClasscategory($product_id);
+        $objProduct = new SC_Product_Ex();
+        $existsProductsClass = $objProduct->getProductsClassFullByProductId($product_id, true);
 
         $class_id1 = $existsProductsClass[0]['class_id1'];
         $class_id2 = $existsProductsClass[0]['class_id2'];
@@ -548,6 +565,10 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
             $index++;
         }
         $objFormParam->setValue('check', $arrChecks);
+
+        // class_id1, class_id2 を上書き
+        $objFormParam->setValue('class_id1', $class_id1);
+        $objFormParam->setValue('class_id2', $class_id2);
 
         // DBデータからダウンロードファイル名の読込
         $this->objDownFile->setDBFileList($this->arrForm);
@@ -589,11 +610,12 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
     function getAllClassCategory($class_id1, $class_id2 = null) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        $col = "T1.class_id AS class_id1, "
-            . " T1.classcategory_id AS classcategory_id1, "
-            . " T1.name AS classcategory_name1, "
-            . " T1.rank AS rank1 ";
-
+        $col = <<< __EOF__
+            T1.class_id AS class_id1,
+            T1.classcategory_id AS classcategory_id1,
+            T1.name AS classcategory_name1,
+            T1.rank AS rank1
+__EOF__;
         $table = '';
         $arrParams = array();
         if(SC_Utils_Ex::isBlank($class_id2)) {
@@ -602,11 +624,13 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
             $objQuery->setOrder("T1.rank DESC");
             $arrParams = array($class_id1);
         } else {
-            $col .= ","
-                . "T2.class_id AS class_id2,"
-                . "T2.classcategory_id AS classcategory_id2,"
-                . "T2.name AS classcategory_name2,"
-                . "T2.rank AS rank2";
+            $col .= <<< __EOF__
+                ,
+                T2.class_id AS class_id2,
+                T2.classcategory_id AS classcategory_id2,
+                T2.name AS classcategory_name2,
+                T2.rank AS rank2
+__EOF__;
             $table = "dtb_classcategory AS T1, dtb_classcategory AS T2";
             $objQuery->setWhere("T1.class_id = ? AND T2.class_id = ?");
             $objQuery->setOrder("T1.rank DESC, T2.rank DESC");
@@ -625,27 +649,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
     function getProductName($product_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         return $objQuery->get('name', 'dtb_products', 'product_id = ?', array($product_id));
-    }
-
-    /**
-     * 検索パラメータを生成する.
-     *
-     * "search_" で始まるパラメータのみを生成して返す.
-     *
-     * TODO パラメータの妥当性検証
-     *
-     * @access private
-     * @param array $params 生成元の POST パラメータ
-     * @return array View にアサインするパラメータの配列
-     */
-    function createSearchParams($params) {
-        $results = array();
-        foreach ($params as $key => $val) {
-            if (substr($key, 0, 7) == "search_") {
-                $results[$key] = $val;
-            }
-        }
-        return $results;
     }
 
     /**
@@ -683,16 +686,5 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = "product_code, price01, price02, stock, stock_unlimited, sale_limit, deliv_fee, point_rate";
         return $objQuery->getRow($col, "dtb_products_class", "product_id = ? AND class_combination_id IS NULL", array($product_id));
-    }
-
-    /**
-     * 登録済みの商品規格, 規格, 規格分類を取得する.
-     *
-     * @param integer $product_id 商品ID
-     * @return array 商品規格, 規格, 規格分類の配列
-     */
-    function getProductsClassAndClasscategory($productId) {
-        $objProduct = new SC_Product_Ex();
-        return $objProduct->getProductsClassFullByProductId($productId, true);
     }
 }
