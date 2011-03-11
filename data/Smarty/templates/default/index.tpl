@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <div id="main_image">
-    <a href="http://www.ec-cube.net/" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/banner/bnr_top_main_on.jpg','bnr_top_main');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/banner/bnr_top_main.jpg','bnr_top_main');">
-        <img src="<!--{$TPL_URLPATH}-->img/banner/bnr_top_main.jpg" alt="EC-CUBE" id="bnr_top_main" name="bnr_top_main" />
+    <a href="<!--{$smarty.const.P_DETAIL_URLPATH}-->1" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/banner/bnr_top_main_on.jpg','bnr_top_main');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/banner/bnr_top_main.jpg','bnr_top_main');">
+        <img src="<!--{$TPL_URLPATH}-->img/banner/bnr_top_main.jpg" alt="Ú×‚Í‚±‚¿‚ç" id="bnr_top_main" name="bnr_top_main" />
     </a>
 </div>

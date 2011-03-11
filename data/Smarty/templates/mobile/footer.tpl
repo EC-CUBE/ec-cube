@@ -27,7 +27,7 @@
 <br>
 <div align="right"><a href="#top">↑このページのトップへ</a></div>
 
-<hr
+<hr>
 
 <a href="<!--{$smarty.const.HTTPS_URL}-->mypage/login.php?<!--{$smarty.const.SID}-->" accesskey="8" utn><!--{8|numeric_emoji}-->MYページ</a><br>
 <a href="<!--{$smarty.const.MOBILE_CART_URLPATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
