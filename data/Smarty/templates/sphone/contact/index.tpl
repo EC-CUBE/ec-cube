@@ -41,11 +41,11 @@
           姓&nbsp;<input type="text"
                          class="box120"
                          name="name01"
-                         value="<!--{$arrForm.name01|default:$arrData.name01|h}-->"
+                         value="<!--{$arrForm.name01.value|default:$arrData.name01|h}-->"
                          maxlength="<!--{$smarty.const.STEXT_LEN}-->"
                          style="<!--{$arrErr.name01|sfGetErrorColor}-->" />　
           名&nbsp;<input type="text" class="box120" name="name02"
-                         value="<!--{$arrForm.name02|default:$arrData.name02|h}-->"
+                         value="<!--{$arrForm.name02.value|default:$arrData.name02|h}-->"
                          maxlength="<!--{$smarty.const.STEXT_LEN}-->"
                          style="<!--{$arrErr.name02|sfGetErrorColor}-->" />
         </td>
@@ -57,13 +57,13 @@
           セイ&nbsp;<input type="text"
                            class="box120"
                            name="kana01"
-                           value="<!--{$arrForm.kana01|default:$arrData.kana01|h}-->"
+                           value="<!--{$arrForm.kana01.value|default:$arrData.kana01|h}-->"
                            maxlength="<!--{$smarty.const.STEXT_LEN}-->"
                            style="<!--{$arrErr.kana01|sfGetErrorColor}-->" />　
           メイ&nbsp;<input type="text"
                            class="box120"
                            name="kana02"
-                           value="<!--{$arrForm.kana02|default:$arrData.kana02|h}-->"
+                           value="<!--{$arrForm.kana02.value|default:$arrData.kana02|h}-->"
                            maxlength="<!--{$smarty.const.STEXT_LEN}-->"
                            style="<!--{$arrErr.kana02|sfGetErrorColor}-->" />
         </td>
@@ -77,13 +77,13 @@
             <input type="text"
                    name="zip01"
                    class="box60"
-                   value="<!--{$arrForm.zip01|default:$arrData.zip01|h}-->"
+                   value="<!--{$arrForm.zip01.value|default:$arrData.zip01|h}-->"
                    maxlength="<!--{$smarty.const.ZIP01_LEN}-->"
                    style="<!--{$arrErr.zip01|sfGetErrorColor}-->" />&nbsp;-&nbsp;
             <input type="text"
                    name="zip02"
                    class="box60"
-                   value="<!--{$arrForm.zip02|default:$arrData.zip02|h}-->"
+                   value="<!--{$arrForm.zip02.value|default:$arrData.zip02|h}-->"
                    maxlength="<!--{$smarty.const.ZIP02_LEN}-->"
                    style="<!--{$arrErr.zip02|sfGetErrorColor}-->" />　
             <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fs12">郵便番号検索</span></a>
@@ -102,14 +102,14 @@
 
           <select name="pref" style="<!--{$arrErr.pref|sfGetErrorColor}-->">
           <option value="">都道府県を選択</option>
-          <!--{html_options options=$arrPref selected=$arrForm.pref|default:$arrData.pref|h}-->
+          <!--{html_options options=$arrPref selected=$arrForm.pref.value|default:$arrData.pref|h}-->
           </select>
 
           <p class="mini">
             <input type="text"
                    class="box380"
                    name="addr01"
-                   value="<!--{$arrForm.addr01|default:$arrData.addr01|h}-->"
+                   value="<!--{$arrForm.addr01.value|default:$arrData.addr01|h}-->"
                    style="<!--{$arrErr.addr01|sfGetErrorColor}-->" /><br />
             <!--{$smarty.const.SAMPLE_ADDRESS1}-->
           </p>
@@ -118,7 +118,7 @@
             <input type="text"
                    class="box380"
                    name="addr02"
-                   value="<!--{$arrForm.addr02|default:$arrData.addr02|h}-->"
+                   value="<!--{$arrForm.addr02.value|default:$arrData.addr02|h}-->"
                    style="<!--{$arrErr.addr02|sfGetErrorColor}-->" /><br />
             <!--{$smarty.const.SAMPLE_ADDRESS2}-->
           </p>
@@ -133,19 +133,19 @@
           <input type="text" 
                  class="box60"
                  name="tel01"
-                 value="<!--{$arrForm.tel01|default:$arrData.tel01|h}-->"
+                 value="<!--{$arrForm.tel01.value|default:$arrData.tel01|h}-->"
                  maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
                  style="<!--{$arrErr.tel01|sfGetErrorColor}-->" />&nbsp;-&nbsp;
           <input type="text" 
                  class="box60"
                  name="tel02"
-                 value="<!--{$arrForm.tel02|default:$arrData.tel02|h}-->"
+                 value="<!--{$arrForm.tel02.value|default:$arrData.tel02|h}-->"
                  maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
                  style="<!--{$arrErr.tel02|sfGetErrorColor}-->" />&nbsp;-&nbsp;
           <input type="text" 
                  class="box60"
                  name="tel03"
-                 value="<!--{$arrForm.tel03|default:$arrData.tel03|h}-->"
+                 value="<!--{$arrForm.tel03.value|default:$arrData.tel03|h}-->"
                  maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
                  style="<!--{$arrErr.tel03|sfGetErrorColor}-->" />
         </td>
@@ -157,7 +157,7 @@
           <input type="text"
                  class="box380"
                  name="email"
-                 value="<!--{$arrForm.email|default:$arrData.email|h}-->"
+                 value="<!--{$arrForm.email.value|default:$arrData.email|h}-->"
                  maxlength="<!--{$smarty.const.MTEXT_LEN}-->"
                  style="<!--{$arrErr.email|sfGetErrorColor}-->" /><br />
           <!--{* ログインしていれば入力済みにする *}-->
@@ -167,7 +167,7 @@
           <input type="text"
                  class="box380"
                  name="email02"
-                 value="<!--{$arrForm.email02|h}-->"
+                 value="<!--{$arrForm.email02.value|h}-->"
                  maxlength="<!--{$smarty.const.MTEXT_LEN}-->"
                  style="<!--{$arrErr.email02|sfGetErrorColor}-->" /><br />
           <p class="mini"><em>確認のため2度入力してください。</em></p>
@@ -182,7 +182,7 @@
                     class="area380"
                     cols="60"
                     rows="20"
-                    style="<!--{$arrErr.contents|sfGetErrorColor}-->"><!--{$arrForm.contents|h}--></textarea>
+                    style="<!--{$arrErr.contents|sfGetErrorColor}-->"><!--{$arrForm.contents.value|h}--></textarea>
         </td>
       </tr>
     </table>
