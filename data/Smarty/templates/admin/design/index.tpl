@@ -55,10 +55,10 @@ function fnTargetSelf(){
             </tr>
             <tr>
                 <!-- ★☆★ ヘッダより上部ナビテーブル ☆★☆ -->
-                <td colspan="3" id="<!--{$arrTarget[$smarty.const.TARGET_ID_HEADER_TOP]}-->" class="ui-sortable">
+                <td colspan="3" id="<!--{$arrTarget[$smarty.const.TARGET_ID_HEAD_TOP]}-->" class="ui-sortable">
                     <!--{assign var="firstflg" value=false}-->
                     <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
-                        <!--{if $item.target_id == $arrTarget[$smarty.const.TARGET_ID_HEAD]}-->
+                        <!--{if $item.target_id == $arrTarget[$smarty.const.ID_HEAD_TOP]}-->
                             <div class="sort<!--{if !$firstflg}--> first<!--{/if}-->">
                                 <input type="hidden" class="name" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->" />
                                 <input type="hidden" class="id" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->" />
