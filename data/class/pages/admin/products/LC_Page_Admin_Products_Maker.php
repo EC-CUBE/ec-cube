@@ -77,6 +77,9 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
         // POST値の入力文字変換
         $objFormParam->convParam();
 
+        //maker_idを変数にセット
+        $maker_id = $objFormParam->getValue('maker_id');
+
         // 変換後のPOST値を取得
         $this->arrForm  = $objFormParam->getHashArray();
 
@@ -132,6 +135,8 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
 
         // メーカー情報読み込み
         $this->arrMaker = $this->lfDisp();
+        // POSTデータを引き継ぐ
+        $this->tpl_maker_id = $maker_id;
 
     }
 

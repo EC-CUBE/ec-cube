@@ -80,6 +80,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
             $this->lfInitParam($mode, $objFormParam);
             $objFormParam->setParam($_POST);
             $objFormParam->convParam();
+            $holiday_id = $objFormParam->getValue('holiday_id');
 
             $this->arrErr = $this->lfCheckError($mode, $objFormParam);
             if (!empty($this->arrErr['holiday_id'])) {
@@ -146,6 +147,8 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
         }
 
         $this->arrHoliday = $this->lfGetHolidayList();
+        // POSTデータを引き継ぐ
+        $this->tpl_holiday_id = $holiday_id;
     }
 
     /**

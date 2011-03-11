@@ -78,7 +78,7 @@
             <th>移動</th>
         </tr>
         <!--{section name=cnt loop=$arrHoliday}-->
-        <tr style="background:<!--{if $tpl_class_id != $arrHoliday[cnt].holiday_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->;">
+        <tr style="background:<!--{if $tpl_holiday_id != $arrHoliday[cnt].holiday_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->;">
             <!--{assign var=holiday_id value=$arrHoliday[cnt].holiday_id}-->
             <td><!--{$arrHoliday[cnt].title|h}--></td>
             <td><!--{$arrHoliday[cnt].month|h}-->月<!--{$arrHoliday[cnt].day|h}-->日</td>

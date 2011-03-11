@@ -75,6 +75,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
             $this->lfInitParam($mode, $objFormParam);
             $objFormParam->setParam($_POST);
             $objFormParam->convParam();
+            $kiyaku_id = $objFormParam->getValue('kiyaku_id');
 
             $this->arrErr = $this->lfCheckError($mode, $objFormParam);
             if (!empty($this->arrErr['kiyaku_id'])) {
@@ -136,6 +137,8 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
         }
 
         $this->arrKiyaku = $this->lfGetKiyakuList();
+        // POSTデータを引き継ぐ
+        $this->tpl_kiyaku_id = $kiyaku_id;
     }
 
     /**

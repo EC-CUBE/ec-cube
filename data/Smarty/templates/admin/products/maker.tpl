@@ -57,7 +57,7 @@
                 <th>移動</th>
             </tr>
             <!--{section name=cnt loop=$arrMaker}-->
-            <tr style="background:<!--{if $tpl_class_id != $arrMaker[cnt].maker_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->;">
+            <tr style="background:<!--{if $tpl_maker_id != $arrMaker[cnt].maker_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->;">
                 <!--{assign var=maker_id value=$arrMaker[cnt].maker_id}-->
                 <td><!--{$arrMaker[cnt].name|h}--></td>
                 <td class="center">

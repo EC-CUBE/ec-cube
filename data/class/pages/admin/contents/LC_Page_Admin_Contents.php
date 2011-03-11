@@ -145,6 +145,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
         }
 
         $this->arrNews = $this->getNews();
+        $this->tpl_news_id = $news_id;
         $this->line_max = count($this->arrNews);
         $this->max_rank = $this->getRankMax();
     }

@@ -199,7 +199,7 @@ function moving(news_id,rank, max_rank) {
             <th>移動</th>
         </tr>
         <!--{section name=data loop=$arrNews}-->
-        <tr style="background:<!--{if $arrNews[data].news_id eq $news_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;" class="center">
+        <tr style="background:<!--{if $arrNews[data].news_id != $tpl_news_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->;" class="center">
             <!--{assign var=db_rank value="`$arrNews[data].rank`"}-->
             <td><!--{math equation="$line_max - $db_rank + 1"}--></td>
             <td><!--{$arrNews[data].cast_news_date|date_format:"%Y/%m/%d"}--></td>
@@ -210,7 +210,13 @@ function moving(news_id,rank, max_rank) {
                 <!--{else}--><!--{$arrNews[data].news_title|h|nl2br}-->
                 <!--{/if}-->
             </td>
-            <td><a href="#" onclick="return func_edit('<!--{$arrNews[data].news_id|h}-->');">編集</a></td>
+            <td>
+                <!--{if $arrNews[data].news_id != $tpl_news_id}-->
+                <a href="#" onclick="return func_edit('<!--{$arrNews[data].news_id|h}-->');">編集</a>
+                <!--{else}-->
+                編集中
+                <!--{/if}-->
+            </td>
             <td><a href="#" onclick="return func_del('<!--{$arrNews[data].news_id|h}-->');">削除</a></td>
             <td>
             <!--{if count($arrNews) != 1}-->

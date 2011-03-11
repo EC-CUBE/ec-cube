@@ -63,7 +63,7 @@
             <th>移動</th>
         </tr>
         <!--{section name=cnt loop=$arrKiyaku}-->
-            <tr style="background:<!--{if $tpl_class_id != $arrKiyaku[cnt].kiyaku_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->;">
+            <tr style="background:<!--{if $tpl_kiyaku_id != $arrKiyaku[cnt].kiyaku_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->;">
             <!--{assign var=kiyaku_id value=$arrKiyaku[cnt].kiyaku_id}-->
                 <td><!--{* 規格名 *}--><!--{$arrKiyaku[cnt].kiyaku_title|h}--></td>
                 <td align="center">

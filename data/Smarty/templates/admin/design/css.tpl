@@ -70,7 +70,7 @@
         <!--{if count($arrCSSList) > 0}-->
         <!--{foreach key=key item=item from=$arrCSSList}-->
         <tr>
-            <td><!--{$item.file_name}--></td>
+            <td style="background:<!--{if $item.css_name == $css_name}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;"><!--{$item.file_name}--></td>
             <td class="center" style="background:<!--{if $item.css_name == $css_name}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
                 <a href="?css_name=<!--{$item.css_name}-->&amp;device_type_id=<!--{$device_type_id}-->">編集</a>
             </td>
