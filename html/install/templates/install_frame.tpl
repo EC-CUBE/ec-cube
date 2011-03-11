@@ -45,6 +45,13 @@
                     <div class="out-top"></div>
                     <!--{include file=$tpl_mainpage}-->
                 </div>
+                <!--{if strlen($install_info_url) != 0}-->
+                <div id="info-area">
+                            <iframe src="<!--{$install_info_url}-->" width="562" height="550" frameborder="no" scrolling="no">
+                                                         こちらはEC-CUBEからのお知らせです。この部分は iframe対応ブラウザでご覧下さい。
+                            </iframe>
+                 </div>
+                <!--{/if}-->
             </div>
         </div>
     </body>
