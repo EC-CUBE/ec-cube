@@ -81,13 +81,11 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
 
         // Downファイル管理クラスを初期化
         $this->objDownFile = new SC_UploadFile_Ex(DOWN_TEMP_REALDIR, DOWN_SAVE_REALDIR);
-        $this->initDownFile($count, $this->objDownFile);
 
         switch ($this->getMode()) {
 
         // 編集実行
         case 'edit':
-
             $this->arrErr = $this->lfCheckProductsClass($objFormParam);
 
             // エラーの無い場合は確認画面を表示
@@ -116,6 +114,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         // 削除
         case 'delete':
             $this->doDelete($objFormParam->getValue('product_id'));
+            $objFormParam->setValue('check', array());
             break;
 
         // 初期表示
@@ -137,51 +136,13 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
             break;
 
         // ダウンロード商品ファイルアップロード
-        case 'upload_down':
-
-            /* TODO
-            $product_id = $objFormParam->getValue('product_id');
-            $down_key   = $objFormParam->getValue('down_key');
-            // 編集画面用パラメータをセット
-            $this->doPreEdit($product_id, true);
-            // Hiddenからのデータを引き継ぐ
-            $this->objDownFile->setHiddenKikakuFileList($_POST);
-            // ファイル存在チェック
-            $this->arrErr = array_merge((array)$this->arrErr, (array)$this->objDownFile->checkEXISTS($down_key));
-            // ファイル保存処理
-            $this->arrErr[$down_key] = $this->objDownFile->makeTempDownFile($down_key);
-            // HIDDEN用に配列を渡す。
-            $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
-            // Form用に配列を渡す。
-            $this->arrForm = array_merge((array)$this->arrForm, (array)$this->objDownFile->getFormKikakuDownFile());
-            // 規格の組み合わせ一覧を表示
-            $this->doDisp($product_id,
-                          $objFormParam->getValue('select_class_id1'),
-                          $objFormParam->getValue('select_class_id2'), $objFormParam);
-            */
+        case 'file_upload':
+            $this->doFileUpload($objFormParam);
             break;
 
         // ダウンロードファイルの削除
-        case 'delete_down':
-
-            /* TODO
-            $product_id = $objFormParam->getValue('product_id');
-            $down_key   = $objFormParam->getValue('down_key');
-            // 編集画面用パラメータをセット
-            $this->doPreEdit($product_id, true);
-            // Hiddenからのデータを引き継ぐ
-            $this->objDownFile->setHiddenKikakuFileList($_POST);
-            // ファイル削除処理
-            $this->objDownFile->deleteKikakuFile($down_key);
-            // HIDDEN用に配列を渡す。
-            $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
-            // Form用に配列を渡す。
-            $this->arrForm = array_merge((array)$this->arrForm, (array)$this->objDownFile->getFormKikakuDownFile());
-            // 規格の組み合わせ一覧を表示
-            $this->doDisp($product_id,
-                          $objFormParam->getValue('select_class_id1'),
-                          $objFormParam->getValue('select_class_id2'), $objFormParam);
-            */
+        case 'file_delete':
+            $this->doFileDelete($objFormParam);
             break;
 
         // 確認画面からの戻り
@@ -189,26 +150,14 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
             $this->doPreEdit($objFormParam);
             $objFormParam->setParam($_POST);
             $objFormParam->convParam();
-
-            /* TODO
-            // Hiddenからのデータを引き継ぐ
-            $this->objDownFile->setHiddenFileList($_POST);
-            // HIDDEN用に配列を渡す。
-            $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
-            // Form用に配列を渡す。
-            $this->arrForm = array_merge((array)$this->arrForm, (array)$this->objDownFile->getFormKikakuDownFile());
-            */
-
             break;
+
         case 'complete':
             $this->tpl_mainpage = 'products/product_class_complete.tpl';
-            // TODO $this->objDownFile->setHiddenFileList($_POST);
-
-            $this->registerProductClass($objFormParam->getHashArray(), $objFormParam->getValue('product_id'),
+            $this->doUploadComplete($objFormParam);
+            $this->registerProductClass($objFormParam->getHashArray(),
+                                        $objFormParam->getValue('product_id'),
                                         $objFormParam->getValue('total'));
-            // TODO
-            // 一時ファイルを本番ディレクトリに移動する
-            // $this->objDownFile->moveTempDownFile();
             break;
 
         default:
@@ -228,6 +177,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
     function destroy() {
         parent::destroy();
     }
+
     /**
      * パラメータ初期化
      *
@@ -254,8 +204,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         $objFormParam->addParam("ステータス", "search_product_flag", INT_LEN, 'n', array("MAX_LENGTH_CHECK"));
 
         // 規格プルダウン
-        $objFormParam->addParam("規格1", "select_class_id1", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("規格2", "select_class_id2", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("規格1", "class_id1", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("規格2", "class_id2", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
 
@@ -274,23 +222,10 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         $objFormParam->addParam(SALE_PRICE_TITLE, "price02", PRICE_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("商品種別", "product_type_id", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("削除フラグ", "del_flg", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("DLファイル名", "down_filename", STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("DLファイル名", "down_realfilename", STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("ダウンロード販売用ファイル名", "down_filename", STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("ダウンロード販売用ファイル名", "down_realfilename", STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
         $objFormParam->addParam("チェックボックス", "check", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("ファイルアップロード用キー", "down_key", STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
-    }
-
-    /**
-     * Downファイル管理クラスを初期化
-     *
-     * @param 行数 $count
-     * @param SC_FormParam $objDownFile
-     */
-    function initDownFile($count, &$objDownFile) {
-        $i = 1;
-        for ($i = 1; $i < $count; $i++) {
-            $objDownFile->addFile("ダウンロード販売用ファイル", 'down_realfilename'. ":" . $i, explode(",", DOWNLOAD_EXTENSION), DOWN_SIZE, true, 0, 0);
-        }
+        $objFormParam->addParam("ファイルアップロード用キー", "upload_index", STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
     }
 
     /**
@@ -390,6 +325,10 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
             else {
                 $arrPC['create_date'] = "now()";
                 $arrPC['product_class_id'] = $objQuery->nextVal('dtb_products_class_product_class_id');
+                /*
+                 * チェックを入れない商品は product_type_id が NULL になるので, 0 を入れる
+                 */
+                $arrPC['product_type_id'] = SC_Utils_Ex::isBlank($arrPC['product_type_id']) ? 0 : $arrPC['product_type_id'];
                 $objQuery->insert("dtb_products_class", $arrPC);
             }
         }
@@ -415,9 +354,9 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
      */
     function lfCheckSelectClass() {
         $objErr = new SC_CheckError_Ex();
-        $objErr->doFunc(array("規格1", "select_class_id1"), array("EXIST_CHECK"));
-        $objErr->doFunc(array("規格", "select_class_id1", "select_class_id2"), array("TOP_EXIST_CHECK"));
-        $objErr->doFunc(array("規格1", "規格2", "select_class_id1", "select_class_id2"), array("DIFFERENT_CHECK"));
+        $objErr->doFunc(array("規格1", "class_id1"), array("EXIST_CHECK"));
+        $objErr->doFunc(array("規格", "class_id1", "select_class_id2"), array("TOP_EXIST_CHECK"));
+        $objErr->doFunc(array("規格1", "規格2", "class_id1", "class_id2"), array("DIFFERENT_CHECK"));
         return $objErr->arrErr;
     }
 
@@ -503,18 +442,18 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
      */
     function doDisp(&$objFormParam) {
         $product_id = $objFormParam->getValue('product_id');
-        $select_class_id1 = $objFormParam->getValue('select_class_id1');
-        $select_class_id2 = $objFormParam->getValue('select_class_id2');
+        $class_id1 = $objFormParam->getValue('class_id1');
+        $class_id2 = $objFormParam->getValue('class_id2');
 
         // すべての組み合わせを取得し, フォームに設定
-        $arrClassCat = $this->getAllClassCategory($select_class_id1, $select_class_id2);
+        $arrClassCat = $this->getAllClassCategory($class_id1, $class_id2);
         $total = count($arrClassCat);
         $objFormParam->setValue('total', $total);
         $objFormParam->setParam(SC_Utils_Ex::sfSwapArray($arrClassCat));
 
-        // class_id1, class_id2 は select_class_id1 で上書き
-        $objFormParam->setValue('class_id1', $select_class_id1);
-        $objFormParam->setValue('class_id2', $select_class_id2);
+        // class_id1, class_id2 を, 入力値で上書き
+        $objFormParam->setValue('class_id1', $class_id1);
+        $objFormParam->setValue('class_id2', $class_id2);
 
         // 商品情報を取得し, フォームに設定
         $arrProductsClass = $this->getProductsClass($product_id);
@@ -545,8 +484,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         $class_id2 = $existsProductsClass[0]['class_id2'];
         $objFormParam->setValue('class_id1', $class_id1);
         $objFormParam->setValue('class_id2', $class_id2);
-        $objFormParam->setValue('select_class_id1', $class_id1);
-        $objFormParam->setValue('select_class_id2', $class_id2);
         $this->doDisp($objFormParam);
 
         // 登録済みのデータで上書き
@@ -566,7 +503,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         }
         $objFormParam->setValue('check', $arrChecks);
 
-        // class_id1, class_id2 を上書き
+        // class_id1, class_id2 を取得値で上書き
         $objFormParam->setValue('class_id1', $class_id1);
         $objFormParam->setValue('class_id2', $class_id2);
 
@@ -597,6 +534,111 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
             // 件数カウントバッチ実行
             $objDb = new SC_Helper_DB_Ex();
             $objDb->sfCountCategory($objQuery);
+        }
+    }
+
+    /**
+     * ファイルアップロードを行う.
+     *
+     * 以下のチェックを行い, ファイルを一時領域へアップロードする.
+     * 1. ファイルサイズチェック
+     * 2. 拡張子チェック
+     *
+     * TODO
+     * SC_CheckError クラスや, SC_UploadFile クラスが多次元配列に対応して
+     * いないため, 独自のロジックを使用している.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return void
+     */
+    function doFileUpload(&$objFormParam) {
+        $index   = $objFormParam->getValue('upload_index');
+        $arrDownRealFiles = $objFormParam->getValue('down_realfilename');
+
+        if ($_FILES['down_realfilename']['size'][$index] <= 0) {
+            $this->arrErr['down_realfilename'][$index] = '※ ファイルがアップロードされていません';
+        } else if ($_FILES['down_realfilename']['size'][$index] > DOWN_SIZE *  1024 ) {
+            $size = DOWN_SIZE;
+            $byte = 'KB';
+            if ($size >= 1000) {
+                $size = $size / 1000;
+                $byte = 'MB';
+            }
+            $this->arrErr['down_realfilename'][$index] = "※ ダウンロード販売用ファイル名のファイルサイズは" . $size . $byte . "以下のものを使用してください。<br />";
+        } else {
+            $array_ext = explode(".", $_FILES['down_realfilename']['name'][$index]);
+            $is_error = true;
+            $strExt = "";
+
+            foreach (explode(",", DOWNLOAD_EXTENSION) as $checkExt ) {
+                $ext = "";
+                // チェック拡張子のピリオドの数を取得('tar.gz'の場合1個、'jpg'のように通常は0個)
+                $count_period = substr_count($checkExt, ".");
+                if($count_period > 0) {
+                    for ($i = max(array_keys($array_ext)) - $count_period; $i < count($array_ext); $i++) {
+                        $ext .= $array_ext[$i] . ".";
+                    }
+                    $ext = preg_replace("/.$/", "" ,$ext);
+                } else {
+                    $ext = $array_ext[ count ( $array_ext ) - 1 ];
+                }
+                $ext = strtolower($ext);
+
+                if ($ext == $checkExt) {
+                    $is_error = false;
+                }
+                if($strExt == "") {
+                    $strExt .= $checkExt;
+                } else {
+                    $strExt .= "・$checkExt";
+                }
+            }
+            if ($is_error) {
+                $this->arrErr['down_realfilename'][$index] = "※ ダウンロード販売用ファイル名で許可されている形式は、" . $strExt . "です。<br />";
+            }
+
+            $uniqname = date('mdHi') . "_" . uniqid("").".";
+            $temp_file = preg_replace("/^.*\./", $uniqname, $_FILES['down_realfilename']['name'][$index]);
+
+            if (move_uploaded_file($_FILES['down_realfilename']['tmp_name'][$index], DOWN_TEMP_REALDIR . $temp_file)) {
+                $arrDownRealFiles[$index] = $temp_file;
+                $objFormParam->setValue('down_realfilename', $arrDownRealFiles);
+                GC_Utils_Ex::gfPrintLog($_FILES['down_realfilename']['name'][$index] ." -> ". realpath(DOWN_TEMP_REALDIR . $temp_file));
+            } else {
+                $objErr->arrErr[$keyname] = '※ ファイルのアップロードに失敗しました。<br />';
+                GC_Utils_Ex::gfPrintLog('File Upload Error!: ' . $_FILES['down_realfilename']['name'][$index] . " -> " . DOWN_TEMP_REALDIR . $temp_file);
+            }
+        }
+    }
+
+    /**
+     * アップロードしたファイルを削除する.
+     *
+     * TODO 一時ファイルの削除
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return void
+     */
+    function doFileDelete(&$objFormParam) {
+        $objImage = new SC_Image_Ex(DOWN_TEMP_REALDIR);
+        $arrRealFileName = $objFormParam->getValue('down_realfilename');
+        $index = $objFormParam->getValue('upload_index');
+        $objImage->deleteImage($arrRealFileName[$index], DOWN_SAVE_REALDIR);
+        $arrRealFileName[$index] = '';
+        $objFormParam->setValue('down_realfilename', $arrRealFileName);
+    }
+
+    /**
+     * アップロードした一時ファイルを保存する.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return void
+     */
+    function doUploadComplete(&$objFormParam) {
+        $objImage = new SC_Image_Ex(DOWN_TEMP_REALDIR);
+        $arrRealFileName = $objFormParam->getValue('down_realfilename');
+        foreach ($arrRealFileName as $real_file_name) {
+            $objImage->moveTempImage($real_file_name, DOWN_SAVE_REALDIR);
         }
     }
 

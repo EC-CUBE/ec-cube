@@ -146,7 +146,9 @@ class gdthumb {
                             $dst_file = $dst_file . ".gif";
 		                    if($re_size[0] == $size[0] && $re_size[1] == $size[1]) {
 		                        // サイズが同じ場合には、そのままコピーする。(画質劣化を防ぐ）           
-		                        copy($path, $dst_file);
+                                if (!move_uploaded_file($path, $dst_file)) {
+                                    return array(0, "アップロードに失敗しました。");
+                                }
 		                    } else {
 		                        imagegif($dst_im, $dst_file);
 		                    }
@@ -163,7 +165,9 @@ class gdthumb {
 							$dst_file = $dst_file . ".png";
 		                    if($re_size[0] == $size[0] && $re_size[1] == $size[1]) {
 		                        // サイズが同じ場合には、そのままコピーする。(画質劣化を防ぐ）           
-		                        copy($path, $dst_file);
+                                if (!move_uploaded_file($path, $dst_file)) {
+                                    return array(0, "アップロードに失敗しました。");
+                                }
 		                    } else {
 		                        imagepng($dst_im, $dst_file);
 		                    }
@@ -215,7 +219,9 @@ class gdthumb {
                     
                     if($re_size[0] == $size[0] && $re_size[1] == $size[1]) {
                         // サイズが同じ場合には、そのままコピーする。(画質劣化を防ぐ）       
-                        copy($path, $dst_file);
+                        if (!move_uploaded_file($path, $dst_file)) {
+                            return array(0, "アップロードに失敗しました。");
+                        }
                     } else {
                         imageJpeg($dst_im, $dst_file);
                     }
@@ -256,7 +262,9 @@ class gdthumb {
 					$dst_file = $dst_file . ".png";
                     if($re_size[0] == $size[0] && $re_size[1] == $size[1]) {
                         // サイズが同じ場合には、そのままコピーする。(画質劣化を防ぐ）           
-                        copy($path, $dst_file);
+                        if (!move_uploaded_file($path, $dst_file)) {
+                            return array(0, "アップロードに失敗しました。");
+                        }
                     } else {
                         imagepng($dst_im, $dst_file);
                     }

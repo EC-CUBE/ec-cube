@@ -65,7 +65,7 @@ $(function() {
 <!--{/foreach}-->
 <input type="hidden" name="mode" value="edit" />
 <input type="hidden" name="product_id" value="<!--{$arrForm.product_id.value|h}-->" />
-<input type="hidden" name="down_key" value="">
+<input type="hidden" name="upload_index" value="">
 <input type="hidden" name="total" value="<!--{$arrForm.total.value|h}-->" />
 <!--{* foreach key=name item=item from=$arrHidden *}-->
 <input type="hidden" name="<!--{$name}-->" value="<!--{$item|h}-->" />
@@ -80,7 +80,7 @@ $(function() {
         <tr>
             <th>規格1<span class="attention">*</span></th>
             <td>
-                <!--{assign var=key value="select_class_id1"}-->
+                <!--{assign var=key value="class_id1"}-->
                 <!--{if $arrErr[$key]}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{/if}-->
@@ -94,7 +94,7 @@ $(function() {
         <tr>
             <th>規格2</th>
             <td>
-                <!--{assign var=key value="select_class_id2"}-->
+                <!--{assign var=key value="class_id2"}-->
                 <!--{if $arrErr[$key]}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{/if}-->
@@ -128,12 +128,6 @@ $(function() {
         <p><span class="bold">アップロード可能な拡張子：</span><!--{$smarty.const.DOWNLOAD_EXTENSION}-->(パラメータ DOWNLOAD_EXTENSION)</p>
     </div>
 
-    <!--{assign var=key1 value="class_id1"}-->
-    <!--{assign var=key2 value="class_id2"}-->
-    <!--{assign var=class_id1 value=$arrForm[$key1].value|h}-->
-    <!--{assign var=class_id2 value=$arrForm[$key2].value|h}-->
-    <input type="hidden" name="<!--{$key1}-->" value="<!--{$class_id1}-->" />
-    <input type="hidden" name="<!--{$key2}-->" value="<!--{$class_id2}-->" />
     <!--{if $arrErr.check_empty}-->
         <span class="attention"><!--{$arrErr.check_empty}--></span>
     <!--{/if}-->
@@ -248,12 +242,13 @@ $(function() {
                         <span class="attention"><!--{$arrErr[$key][$index]}--></span>
                     <!--{/if}-->
                     <!--{if $arrForm[$key].value[$index] != ""}-->
-                        <!--{$arrForm[$key].value[$index]|h}-->
+                        <!--{$arrForm[$key].value[$index]|h}--><br />
                         <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" />
-                        <a href="?" onclick="fnFormModeSubmit('form1', 'delete_down', 'down_key[<!--{$index}-->]', '<!--{$key}-->'); return false;">[ファイルの取り消し]</a><br />
-                    <!--{/if}-->
+                        <a href="?" onclick="fnFormModeSubmit('form1', 'file_delete', 'upload_index', '<!--{$index}-->'); return false;">[ファイルの取り消し]</a>
+                    <!--{else}-->
                     <input type="file" name="<!--{$key}-->[<!--{$index}-->]" size="10" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /><br />
-                    <a class="btn-normal" href="javascript:;" name="btn" onclick="fnFormModeSubmit('form1', 'upload_down', 'down_key', '<!--{$key}-->[<!--{$index}-->]'); return false;">アップロード</a>
+                    <a class="btn-normal" href="javascript:;" name="btn" onclick="fnFormModeSubmit('form1', 'file_upload', 'upload_index', '<!--{$index}-->'); return false;">アップロード</a>
+                    <!--{/if}-->
                 </td>
             </tr>
         <!--{/section}-->

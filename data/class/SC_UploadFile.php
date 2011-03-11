@@ -92,7 +92,6 @@ class SC_UploadFile {
     }
 
     // アップロードされたファイルを保存する。
-    // FIXME see. http://www.php.net/manual/en/features.file-upload.php
     function makeTempFile($keyname, $rename = IMAGE_RENAME) {
         $objErr = new SC_CheckError_Ex();
         $cnt = 0;
@@ -124,8 +123,12 @@ class SC_UploadFile {
                             } else {
                                 $this->temp_file[$cnt] = $_FILES[$keyname]['name'];
                             }
-                            $result  = copy($_FILES[$keyname]['tmp_name'], $this->temp_dir . $this->temp_file[$cnt]);
-                            GC_Utils_Ex::gfPrintLog($_FILES[$keyname]['name']." -> ". $this->temp_dir . $this->temp_file[$cnt]);
+                            if (move_uploaded_file($_FILES[$keyname]['tmp_name'], $this->temp_dir . $this->temp_file[$cnt])) {
+                                GC_Utils_Ex::gfPrintLog($_FILES[$keyname]['name']." -> ". $this->temp_dir . $this->temp_file[$cnt]);
+                            } else {
+                                $objErr->arrErr[$keyname] = '※ ファイルのアップロードに失敗しましたん。<br />';
+                                GC_Utils_Ex::gfPrintLog('File Upload Error!: ' . $_FILES[$keyname]['name']." -> ". $this->temp_dir . $this->temp_file[$cnt]);
+                            }
                         }
                     }
                 }
