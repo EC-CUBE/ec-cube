@@ -89,15 +89,13 @@
 <input type="hidden" name="mode" value="search" />
 <input type="hidden" name="edit_customer_id" value="" />
 <input type="hidden" name="search_pageno" value="<!--{$smarty.post.search_pageno|h}-->" />
-<!--{foreach from=$smarty.post key="key" item="item"}-->
-    <!--{if $key ne "mode" && $key ne "edit_customer_id" && $key ne "search_pageno" && $key ne $smarty.const.TRANSACTION_ID_NAME}-->
-        <!--{if is_array($item)}-->
-            <!--{foreach item=c_item from=$item}-->
-                <input type="hidden" name="<!--{$key|h}-->[]" value="<!--{$c_item|h}-->" />
-            <!--{/foreach}-->
-        <!--{else}-->
-            <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
-        <!--{/if}-->
+    <!--{foreach key=key item=item from=$arrHidden}-->
+    <!--{if is_array($item)}-->
+        <!--{foreach item=c_item from=$item}-->
+        <input type="hidden" name="<!--{$key|h}-->[]" value="<!--{$c_item|h}-->" />
+        <!--{/foreach}-->
+    <!--{else}-->
+        <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
     <!--{/if}-->
 <!--{/foreach}-->
 
