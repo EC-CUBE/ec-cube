@@ -781,11 +781,11 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
                               down_filename,
                               down_realfilename
                         FROM dtb_products_class
-                        WHERE class_combination_id IS NULL
                        ) AS T2
                      ON T1.product_id = T2.product_id_sub
 __EOF__;
         $where = "product_id = ?";
+        $objQuery->setLimit('1');
         $arrProduct = $objQuery->select($col, $table, $where, array($product_id));
 
         // カテゴリID取得
@@ -1050,10 +1050,16 @@ __EOF__;
             $objDb->updateProductCategories($arrList['category_id'], $product_id);
         }
 
-        //商品登録の時は規格を生成する。複製の場合は規格も複製されるのでこの処理は不要。
+        // 商品登録の時は規格を生成する。複製の場合は規格も複製されるのでこの処理は不要。
         if($arrList["copy_product_id"] == "") {
             // 規格登録
-            $this->lfInsertDummyProductClass($arrList);
+            if ($objDb->sfHasProductClass($product_id)) {
+                // 規格あり商品（商品規格テーブルのうち、商品登録フォームで設定するパラメータのみ更新）
+                $this->lfUpdateProductClass($arrList);
+            } else {
+                // 規格なし商品（商品規格テーブルの更新）
+                $this->lfInsertDummyProductClass($arrList);
+            }
         }
 
         // ステータス設定
@@ -1078,8 +1084,6 @@ __EOF__;
         $objDb = new SC_Helper_DB_Ex();
 
         $product_id = $arrList['product_id'];
-        // 規格登録してある商品の場合、処理しない
-        if ($objDb->sfHasProductClass($product_id)) return;
 
         // 配列の添字を定義
         $checkArray = array('product_class_id', 'product_id', 'product_code', 'stock', 'stock_unlimited', 'price01', 'price02', 'sale_limit', 'deliv_fee', 'point_rate' ,'product_type_id', 'down_filename', 'down_realfilename');
@@ -1101,6 +1105,24 @@ __EOF__;
             $objQuery->update('dtb_products_class', $sqlval, "product_class_id = ?", array($sqlval['product_class_id']));
 
         }
+    }
+
+    /**
+     * 商品規格テーブルを更新
+     * (deliv_fee, point_rate, sale_limit)
+     *
+     * @param array $arrList
+     * @return void
+     */
+    function lfUpdateProductClass($arrList) {
+        $objQuery = new SC_Query_Ex();
+        $sqlval = array();
+        
+        $sqlval['deliv_fee'] = $arrList['deliv_fee'];
+        $sqlval['point_rate'] = $arrList['point_rate'];
+        $sqlval['sale_limit'] = $arrList['sale_limit'];
+        $where = 'product_id = ?';
+        $objQuery->update('dtb_products_class', $sqlval, $where, array($arrList['product_id']));
     }
 
     /**
