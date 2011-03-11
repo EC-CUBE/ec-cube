@@ -82,6 +82,15 @@
 <input type="hidden" id="edit_product_class_id" name="edit_product_class_id" value="" />
 <input type="hidden" id="no" name="no" value="" />
 <input type="hidden" id="delete_no" name="delete_no" value="" />
+<!--{foreach key=key item=item from=$arrSearchHidden}-->
+    <!--{if is_array($item)}-->
+        <!--{foreach item=c_item from=$item}-->
+        <input type="hidden" name="<!--{$key|h}-->[]" value="<!--{$c_item|h}-->" />
+        <!--{/foreach}-->
+    <!--{else}-->
+        <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
+    <!--{/if}-->
+<!--{/foreach}-->
 
 <div id="order" class="contents-main">
 
@@ -125,9 +134,6 @@
         </tr>
     </table>
 
-    <!--{foreach key=key item=item from=$arrSearchHidden}-->
-    <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
-    <!--{/foreach}-->
     <h2>お客様情報
         <!--{if $tpl_mode == 'add'}-->
             <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnOpenWindow('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->customer/search_customer.php','search','600','650'); return false;">顧客検索</a>

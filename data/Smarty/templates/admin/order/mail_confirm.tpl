@@ -29,7 +29,13 @@
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
 <!--{/foreach}-->
 <!--{foreach key=key item=item from=$arrSearchHidden}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
+    <!--{if is_array($item)}-->
+        <!--{foreach item=c_item from=$item}-->
+        <input type="hidden" name="<!--{$key|h}-->[]" value="<!--{$c_item|h}-->" />
+        <!--{/foreach}-->
+    <!--{else}-->
+        <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
+    <!--{/if}-->
 <!--{/foreach}-->
 <div id="order" class="contents-main">
     <h2>メール配信</h2>
