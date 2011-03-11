@@ -22,7 +22,7 @@
  */
 *}-->
 <!--{if count($arrBestProducts) > 0}-->
-<center>
+
 <!--{foreach from=$arrBestProducts item=arrProduct name=best_products}-->
 
 <!-- ▼おすすめ商品コメント ここから -->
@@ -30,9 +30,11 @@
 <!--{$arrProduct.comment|h|nl2br}--></a>
 <!-- ▲おすすめ商品コメント ここまで -->
 
-<!--{if !$smarty.foreach.best_products.last}--><br><br><!--{/if}-->
+<!--{if !$smarty.foreach.best_products.last}--><br><!--{/if}-->
 <!--{/foreach}-->
-</center>
-<hr>
+
 <br>
+<br>
+<hr>
+
 <!--{/if}-->

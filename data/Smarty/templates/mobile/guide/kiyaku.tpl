@@ -22,7 +22,8 @@
  */
 *}-->
 <!-- ▼本文 ここから -->
-<font color="#ff0000"><!--{$tpl_kiyaku_title|h}--></font><br>
+<!--{$tpl_kiyaku_title|h}--><br>
+<br>
 <!--{$tpl_kiyaku_text|h}--><br>
 <!-- ▲本文 ここまで -->
 
@@ -32,7 +33,6 @@
 <a href="kiyaku.php?page=<!--{$tpl_kiyaku_index-1}-->" accesskey="1"><!--{1|numeric_emoji}-->戻る</a><br>
 <!--{/if}-->
 <!--{if !$tpl_kiyaku_is_last}-->
-<a href="kiyaku.php?page=<!--{$tpl_kiyaku_index+1}-->" accesskey="2"><!--{2|numeric_emoji}-->進む</a><br>
+<a href="kiyaku.php?page=<!--{$tpl_kiyaku_index+1}-->" accesskey="2"><!--{2|numeric_emoji}-->進む</a>
 <!--{/if}-->
 <!--{/if}-->
-<br>

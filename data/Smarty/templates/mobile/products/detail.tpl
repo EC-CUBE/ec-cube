@@ -30,6 +30,7 @@
 <center><img src="<!--{$arrFile[$key].filepath}-->"></center>
 
 <!--★商品サブ画像★-->
+<center>
 <!--{if $subImageFlag == true}-->
 <br>画像
   <!--{if ($smarty.get.image == "" || $smarty.get.image == "main_image")}-->
@@ -37,7 +38,7 @@
   <!--{else}-->
 [<a href="?product_id=<!--{$smarty.get.product_id}-->&amp;image=main_image">1</a>]
   <!--{/if}-->
-
+  
   <!--{assign var=num value="2"}-->
   <!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
   <!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
@@ -53,7 +54,7 @@
 <br>
 <!--{/if}-->
 <br>
-
+</center>
 <!--{* オペビルダー用 *}-->
 <!--{if "sfViewDetailOpe"|function_exists === TRUE}-->
 <!--{include file=`$smarty.const.MODULE_REALDIR`mdl_opebuilder/detail_ope_mb_view.tpl}-->

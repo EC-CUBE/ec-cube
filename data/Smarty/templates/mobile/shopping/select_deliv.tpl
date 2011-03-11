@@ -43,5 +43,3 @@
 <form action="<!--{$tpl_back_url|h}-->" method="get">
 <center><input type="submit" name="return" value="戻る"></center>
 </form>
-
-<br>

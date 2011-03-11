@@ -40,9 +40,10 @@
 	<center><input type="submit" value="送信" name="log"></center><br>
 	<a href="<!--{$smarty.const.HTTPS_URL}-->forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->">パスワードをお忘れの方はこちら</a><br>
 </form>
+<br>
 
 <hr>
 会員登録をすると便利なMyページをご利用いただけます。<br>
 また、ログインするだけで、毎回お名前や住所などを入力することなくスムーズにお買い物をお楽しみいただけます。<br>
-<center><a href="<!--{$smarty.const.HTTPS_URL}-->entry/kiyaku.php?<!--{$smarty.const.SID}-->">会員登録</a></center>
 <br>
+<a href="<!--{$smarty.const.HTTPS_URL}-->entry/kiyaku.php?<!--{$smarty.const.SID}-->">新規会員登録はこちら</a>

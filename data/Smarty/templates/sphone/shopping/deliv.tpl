@@ -32,8 +32,8 @@
 
         <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
             <p class="addbtn">
-                <a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|h}-->','new_deiv','600','640'); return false;" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address_on.gif','addition');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address.gif','addition');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_add_address.gif" width="160" height="22" alt="新しいお届け先を追加する" name="addition" id="addition" /></a>
-            </p>
+                <a class="kybtn" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php">新しいお届け先を追加する</a>
+            </p><br /><br /><br />
         <!--{/if}-->
         <form name="form1" id="form1" method="post" action="?">
             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -43,13 +43,13 @@
             <!--{if $arrErr.deli != ""}-->
                 <p class="attention"><!--{$arrErr.deli}--></p>
             <!--{/if}-->
-            <table summary="お届け先の指定">
+            <table summary="お届け先の指定" class="entryform">
                 <tr>
-                    <th>選択</th>
-                    <th>住所種類</th>
-                    <th>お届け先</th>
-                    <th>変更</th>
-                    <th>削除</th>
+                    <th class="alignC select valignM">選択</th>
+                    <th class="alignC valignM">住所種類</th>
+                    <th class="alignC valignM">お届け先</th>
+                    <th class="change alignC valignM">変更</th>
+                    <th class="change alignC valignM">削除</th>
                 </tr>
                 <!--{section name=cnt loop=$arrAddr}-->
                 <tr>
@@ -87,7 +87,7 @@
                 </tr>
             <!--{/section}-->
         </table>
- <p><a href="javascript:;" onclick="fnModeSubmit('multiple', '', ''); return false">お届け先を複数指定する</a></p>
+ <p><a class="kybtn" href="javascript:;" onclick="fnModeSubmit('multiple', '', ''); return false">お届け先を複数指定する</a></p><br /><br /><br /><br />
             <div class="tblareabtn">
                       <a href="<!--{$smarty.const.CART_URLPATH}-->" class="spbtn spbtn-medeum">
                     戻る</a>&nbsp;

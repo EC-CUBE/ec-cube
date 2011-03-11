@@ -21,22 +21,21 @@
  *}-->
 <!--▼CONTENTS-->
 <div id="undercolumn">
-    <div id="undercolumn_entry">
-        <h2 class="title"><!--{$tpl_title|h}--></h2>
-        <div id="completetext">
-            <em>本登録が完了いたしました。<br />
-                それではショッピングをお楽しみください。</em>
+  <div id="undercolumn_entry">
+    <h2 class="title"><!--{$tpl_title|h}--></h2>
+    <div id="completetext">
+      本登録が完了いたしました。それではショッピングをお楽しみください。</em>
 
-            <p>今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
+      <p>今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
 
-            <p><!--{$arrSiteInfo.company_name|h}--><br />
-                TEL：<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}--> <!--{if $arrSiteInfo.business_hour != ""}-->（受付時間/<!--{$arrSiteInfo.business_hour}-->）<!--{/if}--><br />
-                E-mall：<a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->"><!--{$arrSiteInfo.email02|escape:'hexentity'}--></a></p>
+      <p><!--{$arrSiteInfo.company_name|h}--><br />
+        TEL：<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}--> <!--{if $arrSiteInfo.business_hour != ""}-->（受付時間/<!--{$arrSiteInfo.business_hour}-->）<!--{/if}--><br />
+        E-mall：<a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->"><!--{$arrSiteInfo.email02|escape:'hexentity'}--></a></p>
 
-            <div class="tblareabtn">
-                <a href="<!--{$smarty.const.TOP_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage.gif','b_toppage');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_toppage.gif" width="150" height="30" alt="トップページへ" border="0" name="b_toppage" /></a>
-            </div>
-        </div>
     </div>
+      <div class="tblareabtn">
+	<a class="spbtn spbtn-medeum" href="<!--{$smarty.const.TOP_URLPATH}-->">トップページへ</a>
+      </div>
+  </div>
 </div>
 <!--▲CONTENTS-->

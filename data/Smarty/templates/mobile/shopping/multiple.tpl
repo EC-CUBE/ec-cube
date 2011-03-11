@@ -31,7 +31,7 @@
 <input type="hidden" name="cart_no<!--{$index}-->" value="<!--{$index}-->" />
 <input type="hidden" name="product_class_id<!--{$index}-->" value="<!--{$item.product_class_id}-->" />
 
-<!--{* 商品名 *}--><!--{$item.name|h}--><br>
+<!--{* 商品名 *}-->◎<!--{$item.name|h}--><br>
 <!--{* 規格名1 *}--><!--{if $item.classcategory_name1 != ""}--><!--{$item.class_name1}-->：<!--{$item.classcategory_name1}--><br><!--{/if}-->
 <!--{* 規格名2 *}--><!--{if $item.classcategory_name2 != ""}--><!--{$item.class_name2}-->：<!--{$item.classcategory_name2}--><br><!--{/if}-->
 <!--{* 販売価格 *}-->
@@ -43,24 +43,26 @@
 お届け先：<br>
 <select name="<!--{$key}-->"><!--{html_options options=$addrs selected=$arrForm[$key].value}--></select>
 <br>
-<hr>
-<!--{/foreach}-->
+<br>
 
+<!--{/foreach}-->
 <center><input type="submit" value="選択したお届け先に送る"></center>
 </form>
+
+<br>
+<hr>
 
 <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
 <form method="post" action="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="ParentPage" value="<!--{$smarty.const.MULTIPLE_URLPATH}-->">
     一覧にご希望の住所が無い場合は、お届け先を新規登録してください。<br>
+    ※最大<!--{$smarty.const.DELIV_ADDR_MAX|h}-->件まで登録できます。<br><br>
     <center><input type="submit" value="新規登録"></center>
-    ※最大<!--{$smarty.const.DELIV_ADDR_MAX|h}-->件まで登録できます。<br>
 </form>
 <!--{/if}-->
+
 
 <form action="<!--{$smarty.const.SHOPPING_URL}-->" method="get">
 <center><input type="submit" name="return" value="戻る"></center>
 </form>
-
-<br>

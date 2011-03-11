@@ -12,33 +12,20 @@
 ----------------------------------------------- */
 div.tblareabtn {
     clear: both;
-    margin: 15px 0 0 0;
+    margin: 20px auto;
     text-align: center;
 }
 div.tblareabtn img {
     vertical-align: baseline;
 }
-.phototd {
-    width: 60px;
-    text-align: center;
-}
-.centertd {
-    text-align: center;
-}
-.pricetd {
-    text-align: right;
-}
 .pricetd em {
     font-weight: bold;
 }
-div#completetext {
-    margin: 15px auto 0 auto;
-    padding: 15px;
-}
+
+
 div#completetext em {
     font-weight: bold;
 }
 div#completetext p{
-    padding: 20px 0 0 0;
     text-align: left;
 }

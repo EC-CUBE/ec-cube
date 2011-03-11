@@ -26,7 +26,7 @@
   <h2 class="title"><!--{$tpl_title|h}--></h2>
   <!--{include file = $tpl_navi}-->
   <div id="mycontentsarea">
-    <h3><!--{$tpl_subtitle|h}--></h3>
+    <h2><!--{$tpl_subtitle|h}--></h2>
     <div id="completetext">
       <p class="changetext">退会手続きが完了いたしました。<br />
         MYページをご利用いただき誠にありがとうございました。<br />

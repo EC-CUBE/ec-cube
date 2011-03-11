@@ -34,32 +34,25 @@
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="order_id" value="" />
     <input type="hidden" name="pageno" value="<!--{$objNavi->nowpage}-->" />
-    <h3><!--{$tpl_subtitle|h}--></h3>
+    <h2><!--{$tpl_subtitle|h}--></h2>
 
 <!--{if $objNavi->all_row > 0}-->
 
     <p><!--{$objNavi->all_row}-->件の購入履歴があります。</p>
     <div>
-      <!--▼ページナビ-->
-      <!--{$objNavi->all_row}-->
-      <!--▲ページナビ-->
     </div>
 
-    <table summary="購入履歴">
+    <table summary="購入履歴" class="entryform">
       <tr>
-        <th>購入日時</th>
-        <th>注文番号</th>
-        <th>お支払い方法</th>
-        <th>合計金額</th>
-        <th>詳細</th>
+        <th class="alignC valignM">購入詳細</th>
+        <th class="alignC valignM">合計金額</th>
+        <th class="alignC valignM">詳細</th>
       </tr>
       <!--{section name=cnt loop=$arrOrder}-->
       <tr>
-       <td><!--{$arrOrder[cnt].create_date|sfDispDBDate}--></td>
-       <td><!--{$arrOrder[cnt].order_id}--></td>
-       <!--{assign var=payment_id value="`$arrOrder[cnt].payment_id`"}-->
-       <td><!--{$arrPayment[$payment_id]|h}--></td>
-       <td class="alignR"><!--{$arrOrder[cnt].payment_total|number_format}-->円</td>
+       <td class="detailtd">購入日時：<!--{$arrOrder[cnt].create_date|sfDispDBDate}--><br />注文番号：<!--→注文番号--><!--{$arrOrder[cnt].order_id}--><!--{assign var=payment_id value="`$arrOrder[cnt].payment_id`"}--><!--←注文番号--><br />お支払方法：<!--→支払方法--><!--{$arrPayment[$payment_id]|h}--><!--←支払方法--></td>
+       
+       <td class="alignR yentd"><!--{$arrOrder[cnt].payment_total|number_format}-->円</td>
        <td class="centertd"><a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/history.php?order_id=<!--{$arrOrder[cnt].order_id}-->">詳細</a></td>
      </tr>
      <!--{/section}-->

@@ -21,12 +21,11 @@
  *}-->
 <!--▼ログインここから-->
 <div id="block-login" class="block-side">
-  <div class="create-box">
+  <div class="create-box clearfix">
     <!--{if $tpl_login}-->
       <a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" class="spbtn">マイページ</a>
     <!--{else}-->
-      <a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/entry/kiyaku.php" class="spbtn">会員登録</a>
-      <a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" class="spbtn">ログイン</a>
+<a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/entry/kiyaku.php" class="spbtn">会員登録</a><a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" class="spbtn">ログイン</a></div>
     <!--{/if}-->
     <!--ログインフォーム-->
   </div>

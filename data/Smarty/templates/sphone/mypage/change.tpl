@@ -26,7 +26,7 @@
   <h2 class="title"><!--{$tpl_title|h}--></h2>
 <!--{include file=$tpl_navi}-->
 <div id="mycontentsarea">
-  <h3><!--{$tpl_subtitle|h}--></h3>
+  <h2><!--{$tpl_subtitle|h}--></h2>
   <p>下記項目にご入力ください。「<span class="attention">※</span>」印は入力必須項目です。<br />
     入力後、一番下の「確認ページへ」ボタンをクリックしてください。</p>
 
@@ -34,14 +34,14 @@
   <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
   <input type="hidden" name="mode" value="confirm" />
   <input type="hidden" name="customer_id" value="<!--{$arrForm.customer_id|h}-->" />
-    <table summary="会員登録内容変更 " class="delivname">
+    <table summary="会員登録内容変更 " class="entryform">
       <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`frontparts/form_personal_input.tpl" flgFields=3 emailMobile=true prefix=""}-->
     </table>
     <!--{if 'sfGMOMypageDisplay'|function_exists}-->
       <!--{'sfGMOMypageDisplay'|call_user_func}-->
     <!--{/if}-->
     <div class="tblareabtn">
-      <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_confirm_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_confirm.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_confirm.gif" class="box150" alt="確認ページへ" name="refusal" id="refusal" />
+      <input class="spbtn spbtn-shopping" type="submit" class="box150" value="確認ページへ" name="refusal" id="refusal" />
     </div>
   </form>
 </div>

@@ -42,24 +42,20 @@
         <form action="order.php" method="post">
             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
             <input type="hidden" name="order_id" value="<!--{$tpl_arrOrderData.order_id}-->">
-            <input type="submit" name="submit" value="再注文">
+            <input class="spbtn spbtn-shopping" type="submit" name="submit" value="再注文">
         </form>
 
-        <table summary="購入商品詳細">
+        <table summary="購入商品詳細" class="entryform">
             <tr>
-                <th>商品コード</th>
-                <th>商品名</th>
-                <th>商品種別</th>
-                <th>単価</th>
-                <th>数量</th>
-                <th>小計</th>
+                <th class="alignC valignM">商品コード</th>
+                <th class="alignC valignM">商品内容</th>
+                <th class="alignC valignM">数量</th>
+                <th class="alignC valignM">小計</th>
             </tr>
             <!--{foreach from=$tpl_arrOrderDetail item=orderDetail}-->
                 <tr>
                     <td><!--{$orderDetail.product_code|h}--></td>
-                    <td><a<!--{if $orderDetail.enable}--> href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$orderDetail.product_id|u}-->"<!--{/if}-->><!--{$orderDetail.product_name|h}--></a></td>
-                    <td>
-                    <!--{if $orderDetail.product_type_id == PRODUCT_TYPE_DOWNLOAD}-->
+                    <td><!--→商品名--><a<!--{if $orderDetail.enable}--> href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$orderDetail.product_id|u}-->"<!--{/if}-->><!--{$orderDetail.product_name|h}--></a><!--←商品名--><br /><!--→商品種別--><!--{if $orderDetail.product_type_id == PRODUCT_TYPE_DOWNLOAD}-->
                         <!--{if $orderDetail.price == "0" || ( $orderDetail.status >= "4" && $orderDetail.effective == "1" )}-->
                             <a target="_self" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/download.php?order_id=<!--{$tpl_arrOrderData.order_id}-->&amp;product_id=<!--{$orderDetail.product_id}-->&amp;product_class_id=<!--{$orderDetail.product_class_id}-->">ダウンロード</a>
                         <!--{elseif $orderDetail.payment_date == "" || $orderDetail.status < "4"}-->
@@ -69,51 +65,50 @@
                         <!--{/if}-->
                     <!--{else if $orderDetail.product_type_id == PRODUCT_TYPE_NORMAL}-->
                             通常商品
-                    <!--{/if}-->
-                    </td>
-                    <!--{assign var=price value=`$orderDetail.price`}-->
+                    <!--{/if}--><!--←商品種別--><br /><!--→金額--><!--{assign var=price value=`$orderDetail.price`}-->
                     <!--{assign var=quantity value=`$orderDetail.quantity`}-->
-                    <td class="alignR"><!--{$price|number_format|h}-->円</td>
-                    <td><!--{$quantity|h}--></td>
+<!--{$price|number_format|h}-->円<!--←金額--></td>
+
+                    <td class="detailtdNumber"><!--{$quantity|h}--></td>
                     <td class="alignR"><!--{$price|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|sfMultiply:$quantity|number_format}-->円</td>
                 </tr>
             <!--{/foreach}-->
             <tr>
-                <th colspan="5" class="resulttd">小計</th>
+                <th colspan="3" class="resulttd">小計</th>
                 <td class="pricetd"><!--{$tpl_arrOrderData.subtotal|number_format}-->円</td>
             </tr>
             <!--{assign var=point_discount value="`$tpl_arrOrderData.use_point*$smarty.const.POINT_VALUE`"}-->
             <!--{if $point_discount > 0}-->
             <tr>
-                <th colspan="5" class="resulttd">ポイント値引き</th>
+                <th colspan="3" class="resulttd">ポイント値引き</th>
                 <td class="alignR"><!--{$point_discount|number_format}-->円</td>
             </tr>
             <!--{/if}-->
             <!--{assign var=key value="discount"}-->
             <!--{if $tpl_arrOrderData[$key] != "" && $tpl_arrOrderData[$key] > 0}-->
             <tr>
-                <th colspan="5" class="resulttd">値引き</th>
+                <th colspan="3" class="resulttd">値引き</th>
                 <td class="pricetd"><!--{$tpl_arrOrderData[$key]|number_format}-->円</td>
             </tr>
             <!--{/if}-->
             <tr>
-                <th colspan="5" class="resulttd">送料</th>
+                <th colspan="3" class="resulttd">送料</th>
                 <td class="pricetd"><!--{assign var=key value="deliv_fee"}--><!--{$tpl_arrOrderData[$key]|number_format|h}-->円</td>
             </tr>
             <tr>
-                <th colspan="5" class="resulttd">手数料</th>
+                <th colspan="3" class="resulttd">手数料</th>
                 <!--{assign var=key value="charge"}-->
                 <td class="pricetd"><!--{$tpl_arrOrderData[$key]|number_format|h}-->円</td>
             </tr>
             <tr>
-                <th colspan="5" class="resulttd">合計</th>
+                <th colspan="3" class="resulttd">合計</th>
                 <td class="pricetd"><em><!--{$tpl_arrOrderData.payment_total|number_format}-->円</em></td>
             </tr>
         </table>
 
         <!-- 使用ポイントここから -->
         <!--{if $smarty.const.USE_POINT !== false}-->
-            <table summary="使用ポイント">
+            <table summary="使用ポイント" class="entryform">
                 <tr>
                     <th>ご使用ポイント</th>
                     <td class="pricetd"><!--{assign var=key value="use_point"}--><!--{$tpl_arrOrderData[$key]|number_format|default:0}--> pt</td>
@@ -129,12 +124,12 @@
         <!--{foreach item=shippingItem name=shippingItem from=$arrShipping}-->
         <h3>お届け先<!--{if $isMultiple}--><!--{$smarty.foreach.shippingItem.iteration}--><!--{/if}--></h3>
         <!--{if $isMultiple}-->
-            <table summary="お届け内容確認">
+            <table summary="お届け内容確認" class="entryform">
               <tr>
-                <th>商品コード</th>
-                <th>商品名</th>
-                <th>単価</th>
-                <th>数量</th>
+                <th class="alignC valignM">商品コード</th>
+                <th class="alignC valignM">商品名</th>
+                <th class="alignC valignM">単価</th>
+                <th class="alignC valignM">数量</th>
                 <!--{* XXX 購入小計と誤差が出るためコメントアウト
                 <th>小計</th>
                 *}-->
@@ -161,7 +156,7 @@
               <!--{/foreach}-->
             </table>
          <!--{/if}-->
-        <table summary="お届け先" class="delivname">
+        <table summary="お届け先" class="entryform">
             <tbody>
                 <tr>
                     <th>お名前</th>
@@ -190,11 +185,11 @@
         <br />
 
         <h3>メール配信履歴一覧</h3>
-        <table>
+        <table class="entryform">
             <tr>
-                <th>処理日</th>
-                <th>通知メール</th>
-                <th>件名</th>
+                <th class="alignC valignM">処理日</th>
+                <th class="alignC valignM">通知メール</th>
+                <th class="alignC valignM">件名</th>
             </tr>
             <!--{section name=cnt loop=$tpl_arrMailHistory}-->
             <tr class="center">
@@ -207,7 +202,7 @@
         </table>
 
         <div class="tblareabtn">
-            <a href="./<!--{$smarty.const.DIR_INDEX_PATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.gif','change');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.gif','change');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" name="change" id="change" /></a>
+            <a class="spbtn spbtn-medeum" href="./<!--{$smarty.const.DIR_INDEX_PATH}-->">戻る</a>
         </div>
 
     </div>

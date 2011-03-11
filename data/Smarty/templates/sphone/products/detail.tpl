@@ -66,11 +66,11 @@ function fnSetClassCategories(form, classcat_id2_selected) {
             <!--{assign var=ps value=$productStatus[$smarty.get.product_id]}-->
             <!--{if count($ps) > 0}-->
                 <ul class="status_icon">
-                    <!--{foreach from=$ps item=status}-->
                     <li>
+                    <!--{foreach from=$ps item=status}-->
                         <img src="<!--{$TPL_URLPATH}--><!--{$arrSTATUS_IMAGE[$status]}-->" width="65" height="17" alt="<!--{$arrSTATUS[$status]}-->" id="icon<!--{$status}-->" />
-                    </li>
                     <!--{/foreach}-->
+                    </li>
                 </ul>
             <!--{/if}-->
             <!--▲商品ステータス-->
@@ -84,14 +84,14 @@ function fnSetClassCategories(form, classcat_id2_selected) {
                 <tr>
                     <th colspan="2">
                         <!--★商品名★-->
-                        <h2><!--{$arrProduct.name|h}--></h2>
+                        <h2 class="product_name"><!--{$arrProduct.name|h}--></h2>
                     </th>
                 </tr>
                  <tr>
                     <th>
-                        <div class="product_code">商品コード：</div>
+                        <div class="product_code">商品コード</div>
                     </th>
-                     <td>
+                     <td class="product_td">
                      <span id="product_code_default">
                     <!--{if $arrProduct.product_code_min == $arrProduct.product_code_max}-->
                         <!--{$arrProduct.product_code_min|h}-->
@@ -104,9 +104,9 @@ function fnSetClassCategories(form, classcat_id2_selected) {
                 <tr>
                     <th>
                         <!--★販売価格★-->
-                        <div class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span></div>
+                        <div class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}-->(税込)</div>
                     </th>
-                    <td>
+                    <td class="product_td">
                         <span class="price">
                             <span id="price02_default">
                                 <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
@@ -123,9 +123,11 @@ function fnSetClassCategories(form, classcat_id2_selected) {
                 <!--{if $arrProduct.price01_max > 0}-->
                 <tr>
                     <th>
-                        <div class="normal_price"><!--{$smarty.const.NORMAL_PRICE_TITLE}--><span class="mini">(税込)</span>：</div>
+                        <div class="normal_price">
+                            <!--{$smarty.const.NORMAL_PRICE_TITLE}-->(税込)
+                        </div>
                     </th>
-                    <td>
+                    <td class="product_td">
                         <span class="price">
                             <span id="price01_default">
                                 <!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->
@@ -145,9 +147,9 @@ function fnSetClassCategories(form, classcat_id2_selected) {
                 <!--{if $smarty.const.USE_POINT !== false}-->
                 <tr>
                     <th>
-                        <span class="price">ポイント：</span>
+                        <div class="sale_price">ポイント</div>
                     </th>
-                    <td>
+                    <td class="product_td">
                         <span id="point_default">
                             <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
                                 <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id|number_format}-->
@@ -169,9 +171,9 @@ function fnSetClassCategories(form, classcat_id2_selected) {
                 <!--{if $arrProduct.comment1|strlen >= 1}-->
                 <tr>
                     <th>
-                        <span class="comment1">メーカーURL：
+                        <span class="comment1">メーカーURL
                     </th>
-                    <td>
+                    <td class="product_td">
                             <a href="<!--{$arrProduct.comment1|h}-->">
                                 <!--{$arrProduct.comment1|h}--></a>
                     </td>
@@ -182,11 +184,11 @@ function fnSetClassCategories(form, classcat_id2_selected) {
                 <!--★関連カテゴリ★-->
                 <tr>
                     <th>
-                        <div class="relative_cat">関連カテゴリ：</div>
+                        <div class="relative_cat">関連カテゴリ</div>
                     </th>
-                    <td>
+                    <td class="product_td">
                         <!--{section name=r loop=$arrRelativeCat}-->
-                        <p>
+                        <p class="no_margin">
                             <!--{section name=s loop=$arrRelativeCat[r]}-->
                             <a href="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php?category_id=<!--{$arrRelativeCat[r][s].category_id}-->"><!--{$arrRelativeCat[r][s].category_name}--></a>
                             <!--{if !$smarty.section.s.last}--><!--{$smarty.const.SEPA_CATNAVI}--><!--{/if}-->
@@ -196,7 +198,7 @@ function fnSetClassCategories(form, classcat_id2_selected) {
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2">
+                    <td colspan="2" class="product_td">
                             <!--★詳細メインコメント★-->
                             <div class="main_comment"><!--{$arrProduct.main_comment|nl2br_html}--></div>
                     </td>
@@ -266,7 +268,7 @@ function fnSetClassCategories(form, classcat_id2_selected) {
                         <div id="cartbtn_default">
                             <!--★カゴに入れる★-->
                             <div>
-                                <a href="javascript:void(document.form1.submit())" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/products/b_cartin_on.gif','cart');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/products/b_cartin.gif','cart');" class="spbtn spbtn-agree">
+                               <a href="javascript:void(document.form1.submit())" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/products/b_cartin_on.gif','cart');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/products/b_cartin.gif','cart');" class="spbtn spbtn-agree">
                                     カゴに入れる
                                 </a>
                             </div>
@@ -285,7 +287,7 @@ function fnSetClassCategories(form, classcat_id2_selected) {
                             <!--{assign var=add_favorite value="add_favorite`$add_favorite_product_id`"}-->
                             <!--{if $arrErr[$add_favorite]}--><div class="attention"><!--{$arrErr[$add_favorite]}--></div><!--{/if}-->
                             <!--{if !$arrProduct.favorite_count}-->
-                               <a href="javascript:fnModeSubmit('add_favorite','favorite_product_id','<!--{$arrProduct.product_id|h}-->');" class="spbtn spbtn-small">
+                               <a class="spbtn spbtn-medeum" href="javascript:fnModeSubmit('add_favorite','favorite_product_id','<!--{$arrProduct.product_id|h}-->');" class="spbtn spbtn-small">
                                     お気に入りに追加</a>
                             <!--{else}-->
                                 <div>お気に入り登録済</div>
@@ -297,10 +299,6 @@ function fnSetClassCategories(form, classcat_id2_selected) {
 
         </div>
     </div>
-    <!--{* オペビルダー用 *}-->
-    <!--{if "sfViewDetailOpe"|function_exists === TRUE}-->
-        <!--{include file=`$smarty.const.MODULE_REALDIR`mdl_opebuilder/detail_ope_view.tpl}-->
-    <!--{/if}-->
     <!--詳細ここまで-->
 
     <!--▼サブコメント-->
@@ -322,14 +320,14 @@ function fnSetClassCategories(form, classcat_id2_selected) {
                             <!--{if $arrProduct[$lkey]|strlen >= 1}-->
                                 href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct[$lkey]|h}-->"
                                 class="expansion"
-                                onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/products/b_expansion_on.gif', 'expansion_<!--{$lkey|h}-->');"
-                                onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/products/b_expansion.gif', 'expansion_<!--{$lkey|h}-->');"
+                                onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_expansion_on.gif', 'expansion_<!--{$lkey|h}-->');"
+                                onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_expansion.gif', 'expansion_<!--{$lkey|h}-->');"
                                 target="_blank"
                             <!--{/if}-->
                         >
                             <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|h}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" /><br />
                             <!--{if $arrProduct[$lkey]|strlen >= 1}-->
-                                <img src="<!--{$TPL_URLPATH}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" id="expansion_<!--{$lkey|h}-->" />
+                                <img src="<!--{$TPL_URLPATH}-->img/button/btn_expansion.gif" width="85" height="13" alt="画像を拡大する" id="expansion_<!--{$lkey|h}-->" />
                             <!--{/if}-->
                         </a>
                     </div>
@@ -343,7 +341,7 @@ function fnSetClassCategories(form, classcat_id2_selected) {
     <!--▼関連商品-->
     <!--{if $arrRecommend}-->
         <div id="whoboughtarea">
-            <h2>その他のオススメ商品(関連商品)</h2>
+            <h3>その他のオススメ商品</h3>
             <div class="whoboughtblock">
 
             <!--{section name=cnt loop=$arrRecommend}-->
@@ -360,7 +358,7 @@ function fnSetClassCategories(form, classcat_id2_selected) {
                         <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
                         <h3><a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrRecommend[cnt].product_id|u}-->"><!--{$arrRecommend[cnt].name|h}--></a></h3>
 
-                        <p class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：<span class="price">
+                        <p class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}-->(税込):<span class="price">
                             <!--{if $price02_min == $price02_max}-->
                                 <!--{$price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                             <!--{else}-->
@@ -387,7 +385,7 @@ function fnSetClassCategories(form, classcat_id2_selected) {
                         <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
                         <h3><a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrRecommend[cnt].product_id|u}-->"><!--{$arrRecommend[cnt].name|h}--></a></h3>
 
-                        <p class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：<span class="price">
+                        <p class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}-->(税込):<span class="price">
 
                             <!--{if $price02_min == $price02_max}-->
                                 <!--{$price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->

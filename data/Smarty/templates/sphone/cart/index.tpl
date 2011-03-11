@@ -100,7 +100,6 @@ $(document).ready(function() {
                 <tr>
                     <th>商品写真</th>
                     <th>商品名</th>
-                    <th>価格</th>
                     <th>数量</th>
                     <th>小計</th>
                 </tr>
@@ -117,24 +116,24 @@ $(document).ready(function() {
                             <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->&amp;width=40&amp;height=40" alt="<!--{$item.productsClass.name|h}-->" /></a><br />
 <a href="?" onclick="fnModeSubmit('delete', 'cart_no', '<!--{$item.cart_no}-->'); return false;">削除</a>
                         </td>
-                        <td><!--{* 商品名 *}--><strong><!--{$item.productsClass.name|h}--></strong><br />
+                        <td class="detailtdName"><!--{* 商品名 *}--><strong><!--{$item.productsClass.name|h}--></strong><br />
                             <!--{if $item.productsClass.classcategory_name1 != ""}-->
                                 <!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--><br />
                             <!--{/if}-->
                             <!--{if $item.productsClass.classcategory_name2 != ""}-->
-                                <!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}-->
+                                <!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--><br />
                             <!--{/if}-->
+価格:<!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+
+
                         </td>
-                        <td>
-                            <!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
-                        </td>
-                        <td><!--{$item.quantity}-->
+                        <td class="detailtdPM"><!--{$item.quantity}-->
                         <br />
 <ul id="quantity_level">
-                                <li><a href="?" onclick="fnModeSubmit('up','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_URLPATH}-->img/button/btn_plus.gif" width="8" height="8" alt="＋" /></a></li>
-                                <li><a href="?" onclick="fnModeSubmit('down','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_URLPATH}-->img/button/btn_minus.gif" width="8" height="8" alt="-" /></a></li>
+                                <li><a href="?" onclick="fnModeSubmit('up','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_URLPATH}-->img/button/btn_plus.gif" width="16" height="16" alt="＋" /></a></li>
+                                <li><a href="?" onclick="fnModeSubmit('down','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_URLPATH}-->img/button/btn_minus.gif" width="16" height="16" alt="-" /></a></li>
                             </ul></td>
-                        <td><!--{$item.total_inctax|number_format}-->円</td>
+                        <td class="detailtdYenT"><!--{$item.total_inctax|number_format}-->円</td>
               </tr>
                  <!--{/foreach}-->
                  <tr>

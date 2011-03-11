@@ -123,7 +123,7 @@ function fnChangeDispNumber(dispNumber) {
         <!--{assign var=id value=$arrProduct.product_id}-->
         <!--{assign var=arrErr value=$arrProduct.arrErr}-->
         <!--▼商品-->
-        <div class="listarea">
+        <div class="listarea" class="clearfix">
         <a name="product<!--{$id|h}-->" />
             <div class="listphoto">
                 <!--★画像★-->
@@ -134,11 +134,11 @@ function fnChangeDispNumber(dispNumber) {
                 <!--▼商品ステータス-->
                 <!--{if count($productStatus[$id]) > 0}-->
                     <ul class="status_icon">
-                        <!--{foreach from=$productStatus[$id] item=status}--> 
                             <li>
+                        <!--{foreach from=$productStatus[$id] item=status}--> 
                                 <img src="<!--{$TPL_URLPATH}--><!--{$arrSTATUS_IMAGE[$status]}-->" width="65" height="17" alt="<!--{$arrSTATUS[$status]}-->"/>
-                            </li>
                         <!--{/foreach}-->
+                            </li>
                     </ul>
                 <!--{/if}-->
                 <!--▲商品ステータス-->
@@ -149,11 +149,9 @@ function fnChangeDispNumber(dispNumber) {
                 </h3>
 
                 <!--★コメント★-->
-                <p class="listcomment"><!--{$arrProduct.main_list_comment|h|nl2br}--></p>
-
                 <p>
                     <span class="pricebox sale_price">
-                        <span class="mini">税込</span>：
+                        販売価格(税込):</span>
                         <span class="price">
                             <span id="price02_default_<!--{$id}-->">
                                 <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
@@ -163,8 +161,10 @@ function fnChangeDispNumber(dispNumber) {
                                 <!--{/if}-->
                             </span><span id="price02_dynamic_<!--{$id}-->"></span>
                             円</span>
-                    </span>
+                    
                 </p>
+
+                <p class="listcomment"><!--{$arrProduct.main_list_comment|h|nl2br}--></p>
 
             </div>
         </div>

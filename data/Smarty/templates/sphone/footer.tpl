@@ -20,11 +20,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 
-<!--▼ BEGIN PAGETOP-->
-<div id="pagetop">
-<a href="#top">↑このページのトップへ</a>
-</div>
-<!--▲ END PAGETOP-->
+
 
 <!--▼ BEGIN FOOTER-->
 <div id="footer">
@@ -45,16 +41,11 @@ $tmp = $this->get_template_vars('tpl_mainpage');
 if(preg_match("/index\.tpl$/", $tmp))
 $this->assign('isTop', 1);
 <!--{/php}-->
-<!--{if $isTop ne 1}-->
-<li>
-<a href="<!--{$smarty.const.HTTP_URL|sfTrimURL}-->">TOPページへ</a>
-</li>
-<!--{/if}-->
 
 </ul>
 <ul id="footer-navi">
-<li><a href="<!--{$smarty.const.HTTPS_URL}-->contact/<!--{$smarty.const.DIR_INDEX_PATH|h}-->">お問合せ</a></li>
-<li><a href="<!--{$smarty.const.HTTP_URL}-->guide/privacy.php">プライバシーポリシー</a></li>
+<li><a href="<!--{$smarty.const.HTTPS_URL}-->contact/<!--{$smarty.const.DIR_INDEX_PATH|h}-->">お問い合わせ</a></li> <span class="footB">│</span> 
+<li><a href="<!--{$smarty.const.HTTP_URL}-->guide/privacy.php">プライバシーポリシー</a></li> <span class="footB">│</span> 
 <li class="end"><a href="<!--{$smarty.const.HTTP_URL}-->abouts/<!--{$smarty.const.DIR_INDEX_PATH|h}-->">店舗情報</a></li>
 <li class="end"><a href="<!--{$smarty.const.HTTP_URL}-->order/<!--{$smarty.const.DIR_INDEX_PATH|h}-->">特定商取引法に基づく表記</a></li>
 </ul>

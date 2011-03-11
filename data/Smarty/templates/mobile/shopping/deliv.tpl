@@ -38,6 +38,7 @@
 <!--{else}-->
 <input type="hidden" name="other_deliv_id" value="<!--{$arrAddr[cnt].other_deliv_id}-->">
 <input type="hidden" name="deliv_check" value="<!--{$arrAddr[cnt].other_deliv_id}-->">
+<br>
 <!--{/if}-->
 ■お届け先<!--{$smarty.section.cnt.iteration}--><br>
 〒<!--{$arrAddr[cnt].zip01}-->-<!--{$arrAddr[cnt].zip02}--><br>
@@ -68,5 +69,3 @@
 <input type="hidden" name="mode" value="multiple">
 <center><input type="submit" value="複数お届け先"></center>
 </form>
-
-<br>

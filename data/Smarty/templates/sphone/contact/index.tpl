@@ -33,7 +33,7 @@
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="confirm" />
 
-    <table summary="お問い合わせ">
+    <table summary="お問い合わせ" class="entryform">
       <tr>
         <th>お名前<span class="attention">※</span></th>
         <td>
@@ -72,7 +72,6 @@
         <th>郵便番号</th>
         <td>
           <span class="attention"><!--{$arrErr.zip01}--><!--{$arrErr.zip02}--></span>
-          <p>
             〒&nbsp;
             <input type="text"
                    name="zip01"
@@ -87,10 +86,8 @@
                    maxlength="<!--{$smarty.const.ZIP02_LEN}-->"
                    style="<!--{$arrErr.zip02|sfGetErrorColor}-->" />　
             <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fs12">郵便番号検索</span></a>
-          </p>
           <p class="zipimg">
-            <a href="javascript:fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'zip01', 'zip02', 'pref', 'addr01');">
-              <img src="<!--{$TPL_URLPATH}-->img/button/btn_address_input.gif" width="86" height="20" alt="住所自動入力" /></a>
+            <a href="<!--{$smarty.const.ROOT_URLPATH}-->input_zip.php" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', '<!--{$key1}-->', '<!--{$key2}-->', '<!--{$key3}-->', '<!--{$key4}-->'); return false;" target="_blank" class="oubtn">住所自動入力</a><br />
             <span class="mini">&nbsp;郵便番号を入力後、クリックしてください。</span>
           </p>
         </td>
@@ -107,7 +104,7 @@
 
           <p class="mini">
             <input type="text"
-                   class="box380"
+                   class="box300"
                    name="addr01"
                    value="<!--{$arrForm.addr01.value|default:$arrData.addr01|h}-->"
                    style="<!--{$arrErr.addr01|sfGetErrorColor}-->" /><br />
@@ -116,7 +113,7 @@
 
           <p class="mini">
             <input type="text"
-                   class="box380"
+                   class="box300"
                    name="addr02"
                    value="<!--{$arrForm.addr02.value|default:$arrData.addr02|h}-->"
                    style="<!--{$arrErr.addr02|sfGetErrorColor}-->" /><br />
@@ -155,7 +152,7 @@
         <td>
           <span class="attention"><!--{$arrErr.email}--><!--{$arrErr.email02}--></span>
           <input type="text"
-                 class="box380"
+                 class="box300"
                  name="email"
                  value="<!--{$arrForm.email.value|default:$arrData.email|h}-->"
                  maxlength="<!--{$smarty.const.MTEXT_LEN}-->"
@@ -165,7 +162,7 @@
           <!--{assign var=email02 value=$arrData.email}-->
           <!--{/if}-->
           <input type="text"
-                 class="box380"
+                 class="box300"
                  name="email02"
                  value="<!--{$arrForm.email02.value|h}-->"
                  maxlength="<!--{$smarty.const.MTEXT_LEN}-->"
@@ -187,15 +184,9 @@
       </tr>
     </table>
 
-    <div class="tblareabtn">
-      <input type="image"
-             onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_confirm_on.gif', this)"
-             onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_confirm.gif', this)"
-             src="<!--{$TPL_URLPATH}-->img/button/btn_confirm.gif"
-             style="width:150px; height=30px;"
-             alt="確認ページへ"
-             name="confirm" />
-    </div>
+            <div class="tblareabtn">
+            <input type="submit" value="確認ページへ" class="spbtn spbtn-shopping" width="130" height="30" alt="確認ページへ" name="confirm" id="confirm" />
+            </div>
     </form>
   </div>
 </div>

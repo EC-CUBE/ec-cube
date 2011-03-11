@@ -25,7 +25,7 @@
     <h2>パスワードを忘れた方</h2>
     <p>ご登録時に入力した下記質問の答えを入力して「次へ」ボタンをクリックしてください。<br />
       ※下記質問の答えをお忘れになられた場合は、<a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->"><!--{$arrSiteInfo.email02|escape:'hexentitiy'}--></a>までご連絡ください。</p>
-    <p><span class="attention">※新しくパスワードを発行いたしますので、お忘れになったパスワードはご利用できなくなります。</span></p>
+    <p><span class="mini"><em>※新しくパスワードを発行いたしますので、お忘れになったパスワードはご利用できなくなります。</em></span></p>
     <form action="?" method="post" name="form1">
       <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
       <input type="hidden" name="mode" value="secret_check" />
@@ -35,14 +35,17 @@
         <!--{/if}-->
       <!--{/foreach}-->
 
-      <div id="completebox">
-        <p>
-          <span class="attention"><!--{$arrErr.reminder}--><!--{$arrErr.reminder_answer}--></span>
-          <!--{$arrReminder[$arrForm.reminder]}-->：&nbsp;<!--★答え入力★--><input type="text" name="reminder_answer" value="" size="40" class="box300" style="<!--{$arrErr.reminder_answer|sfGetErrorColor}-->" /></p>
-        <span class="attention"><!--{$errmsg}--></span>
-      </div>
+<table class="entryform">
+<tr>
+<th class="alignC valignM"><span class="attention"><!--{$arrErr.reminder}--><!--{$arrErr.reminder_answer}--></span>
+<!--{$arrReminder[$arrForm.reminder]}--></th></tr>
+<tr><td>
+<!--★答え入力★--><input type="text" name="reminder_answer" value="" size="40" class="box300" style="<!--{$arrErr.reminder_answer|sfGetErrorColor}-->" /><br />
+<span class="attention"><!--{$errmsg}--></span>
+</td></tr></table>
+
       <div class="btn">
-        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_next.gif" alt="次へ" class="box150" name="next" id="next" />
+        <input type="submit" class="spbtn spbtn-shopping" value="次へ" name="next" id="next" />
       </div>
     </form>
   </div>

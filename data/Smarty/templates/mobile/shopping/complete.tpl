@@ -22,12 +22,13 @@
  */
 *}-->
 ご注文、有り難うございました。<br>
-商品到着をお楽しみにお待ち下さいませ。<br>
-どうぞ、今後とも、<!--{$arrInfo.shop_name|h}-->をよろしくお願いします。<br>
-<br>
+商品到着をお楽しみにお待ちくださいませ。<br>
+どうぞ、今後とも、<!--{$arrInfo.shop_name|h}-->をよろしくお願いします。
 
 <!--{if $arrOther.title.value}-->
 <!-- ▼その他の決済情報 -->
+<br>
+<br>
 ■<!--{$arrOther.title.name}-->情報<br>
 <!--{foreach key=key item=item from=$arrOther}-->
 <!--{if $key != "title"}-->

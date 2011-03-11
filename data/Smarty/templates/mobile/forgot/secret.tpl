@@ -26,6 +26,7 @@
 <!--{/if}-->
 
 ご登録時に入力した下記質問の答えを入力して「次へ」ボタンをクリックしてください。<br>
+<br>
 ※下記質問の答えをお忘れになられた場合は、<a href="mailto:<!--{$arrSiteInfo.email02|h}-->"><!--{$arrSiteInfo.email02|h}--></a>までご連絡ください。<br>
 <br>
 <form action="?" method="post">

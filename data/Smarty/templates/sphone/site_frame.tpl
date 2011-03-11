@@ -36,6 +36,13 @@
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/win_op.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/site.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery-1.4.2.min.js"></script>
+<script src="<!--{$TPL_URLPATH}-->js/jquery.biggerlink.js" type="text/javascript"></script>
+<script type="text/javascript">	
+	$(function(){
+		$('#recomendarea div.recomendleft, #recomendarea div.recomendright, #undercolumn div.listrightblock, #whoboughtarea div.whoboughtleft, #whoboughtarea div.whoboughtright').biggerlink();
+	});
+</script>
+
 <script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/barbutton.js"></script>
 <script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/category.js"></script>
 <script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/news.js"></script>
@@ -60,6 +67,9 @@
     });
 //]]>
 </script>
+
+
+
 <!--{* ▼Head COLUMN*}-->
   <!--{if $arrPageLayout.HeadNavi|@count > 0}-->
     <!--{* ▼上ナビ *}-->

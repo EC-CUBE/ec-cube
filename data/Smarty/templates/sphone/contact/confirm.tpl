@@ -33,7 +33,7 @@
       <input type="hidden" name="<!--{$key}-->" value="<!--{$item.value|h}-->" />
         <!--{/if}-->
       <!--{/foreach}-->
-      <table summary="お問い合わせ内容確認">
+      <table summary="お問い合わせ内容確認" class="entryform">
         <tr>
           <th>お名前<span class="attention">※</span></th>
           <td><!--{$arrForm.name01.value|h}-->　<!--{$arrForm.name02.value|h}--></td>
@@ -73,16 +73,9 @@
         </tr>
       </table>
       <div class="tblareabtn">
-      <a href="?"
-         onclick="fnModeSubmit('return', '', ''); return false;"
-         onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.gif','back02');"
-         onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.gif','back02');">
-        <img src="<!--{$TPL_URLPATH}-->img/button/btn_back.gif" width="150" height="30"
-             alt="戻る" name="back02" id="back02" /></a>
-      <input type="image"
-             onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_send_on.gif',this)"
-             onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_send.gif',this)"
-             src="<!--{$TPL_URLPATH}-->img/button/btn_send.gif" alt="送信" name="send" id="send" class="box150" />
+
+ <a class="spbtn spbtn-medeum" href="?">戻る</a>&nbsp;
+        <input type="submit" value="送信" class="spbtn spbtn-shopping" width="130" height="30" alt="送信" name="send" id="send" />
        </div>
      </form>
    </div>

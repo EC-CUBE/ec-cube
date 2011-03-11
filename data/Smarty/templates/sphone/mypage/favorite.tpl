@@ -34,7 +34,7 @@
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="order_id" value="" />
     <input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->" />
-    <h3><!--{$tpl_subtitle|h}--></h3>
+    <h2><!--{$tpl_subtitle|h}--></h2>
 
 <!--{if $tpl_linemax > 0}-->
 
@@ -49,20 +49,20 @@
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="cart" />
     <input type="hidden" name="product_id" value="" />
-    <table summary="お気に入り" id="mypage-history-list" class="list">
+    <table summary="お気に入り" id="mypage-history-list" class="entryform">
       <tr>
-        <th width="40">削除</th>
-        <th width="60">商品画像</th>
-        <th width="200">商品名</th>
-        <th width="200" class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span></th>
+        <th width="40" class="alignC valignM">削除</th>
+        <th width="60" class="alignC valignM">商品画像</th>
+        <th width="200" class="alignC valignM">商品名</th>
+        <th width="200" class="sale_price alignC valignM"><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span></th>
       </tr>
       <!--{section name=cnt loop=$arrFavorite}-->
       <!--{assign var=product_id value="`$arrFavorite[cnt].product_id`"}-->
       <tr>
-       <td><a href="javascript:fnModeSubmit('delete_favorite','product_id','<!--{$product_id|h}-->');">削除</a></td>
+       <td class="multi_send"><a href="javascript:fnModeSubmit('delete_favorite','product_id','<!--{$product_id|h}-->');">削除</a></td>
        <td><a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$product_id|u}-->"><img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrFavorite[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65"></a></td>
        <td><a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$product_id|u}-->"><!--{$arrFavorite[cnt].name}--></a></td>
-       <td class="right sale_price">
+       <td class="right sale_price alignR">
         <span class="price">
           <!--{if $arrFavorite[cnt].price02_min == $arrFavorite[cnt].price02_max}-->
             <!--{$arrFavorite[cnt].price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
@@ -74,6 +74,11 @@
      <!--{/section}-->
     </table>
     <br />
+    <!--{if $stock_find_count > 0 && $customer_rank < 51}-->
+    <div class="product-btn">
+      <a href="javascript:void(document.form1.submit())" class="btn-cart">カートに入れる</a>
+    </div>
+    <!--{/if}-->
     </form>
 
     <!--{else}-->

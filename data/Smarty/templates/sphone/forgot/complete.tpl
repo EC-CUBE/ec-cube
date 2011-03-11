@@ -35,9 +35,9 @@
       <!--{/if}-->
       </div>
       <div class="btn">
-        <a href="javascript:window.close()" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close_on.gif','close');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close.gif','close');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_close.gif" width="150" height="30" alt="閉じる" name="close" id="close" /></a>
+        <a class="spbtn spbtn-medeum" href="javascript:window.close()">閉じる</a>
       </div>
     </form>
   </div>
-
+<br />
 <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`popup_footer.tpl"}-->

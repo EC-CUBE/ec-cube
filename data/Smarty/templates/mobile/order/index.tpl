@@ -73,4 +73,3 @@
 
 [emoji:e42]<font color="#800000">返品・交換について</font><br>
 <!--{$arrOrder.law_term06|h|nl2br}--><br>
-<br>

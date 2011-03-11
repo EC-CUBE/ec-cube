@@ -23,6 +23,20 @@
 *}-->
 <div id="mynavarea">
     <!--{strip}-->
+
+        <!--▼現在のポイント-->
+        <!--{if $point_disp !== false}-->
+            <ul id="mypageT">
+                 <li>ようこそ！<br />
+                     <!--{$CustomerName1|h}--> <!--{$CustomerName2|h}-->様<br />
+                     <!--{if $smarty.const.USE_POINT !== false}-->
+                         現在の所持ポイントは<em><!--{$CustomerPoint|number_format|default:"0"|h}-->pt</em>です。
+                     <!--{/if}-->
+                 </li>
+            </ul>
+        <!--{/if}-->
+        <!--▲現在のポイント-->
+
         <ul class="button_like">
 
           <!--{if $tpl_login}-->
@@ -58,18 +72,7 @@
 
         </ul>
 
-        <!--▼現在のポイント-->
-        <!--{if $point_disp !== false}-->
-            <ul>
-                 <li>ようこそ <br />
-                     <!--{$CustomerName1|h}--> <!--{$CustomerName2|h}-->様
-                     <!--{if $smarty.const.USE_POINT !== false}-->
-                         <br />現在の所持ポイントは<em><!--{$CustomerPoint|number_format|default:"0"|h}-->pt</em>です。
-                     <!--{/if}-->
-                 </li>
-            </ul>
-        <!--{/if}-->
-        <!--▲現在のポイント-->
+
     <!--{/strip}-->
 </div>
 <!--▲NAVI-->

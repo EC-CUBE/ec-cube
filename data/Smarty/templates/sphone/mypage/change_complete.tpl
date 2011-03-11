@@ -26,7 +26,7 @@
   <h2 class="title"><!--{$tpl_title|h}--></h2>
   <!--{include file=$tpl_navi}-->
   <div id="mycontentsarea">
-    <h3><!--{$tpl_subtitle|h}--></h3>
+    <h2><!--{$tpl_subtitle|h}--></h2>
 
     <div id="completetext">
       <p class="changetext">会員登録内容の変更が完了いたしました。<br />
@@ -34,7 +34,8 @@
     </div>
 
     <div class="tblareabtn">
-      <a href="<!--{$smarty.const.TOP_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage_on.gif','fortop');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage.gif','fortop');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_toppage.gif" width="150" height="30" alt="トップページへ" name="fortop" id="fortop" /></a>
+
+<a class="spbtn spbtn-medeum" href="<!--{$smarty.const.TOP_URLPATH}-->">トップページへ</a>
     </div>
   </div>
 </div>

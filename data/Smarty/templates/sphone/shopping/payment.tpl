@@ -121,7 +121,7 @@
 </script>
 <div id="under02column">
     <div id="under02column_shopping">
-        <h2 class="title"><!--{$tpl_title|h}--></h2>
+        <h2 class="title"><!--{$tpl_title|h}--></h2><br />
 
         <form name="form1" id="form1" method="post" action="?">
             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -132,7 +132,7 @@
                 <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value}-->" id="deliv_id" />
             <!--{else}-->
             <div class="payarea">
-                <h3>配送方法の指定</h3>
+                <h2>配送方法の指定</h2><br />
                 <p>配送方法をご選択ください。</p>
 
                 <!--{if $arrErr[$key] != ""}-->
@@ -157,7 +157,7 @@
             <!--{/if}-->
 
             <div class="payarea">
-                <h3>お支払方法の指定</h3>
+                <h2>お支払方法の指定</h2>
                 <p class="select-msg">お支払方法をご選択ください。</p>
                 <p class="non-select-msg">まずはじめに、配送方法を選択ください。</p>
 
@@ -165,10 +165,10 @@
                 <!--{if $arrErr[$key] != ""}-->
                 <p class="attention"><!--{$arrErr[$key]}--></p>
                 <!--{/if}-->
-                <table summary="お支払方法選択" id="payment">
+                <table summary="お支払方法選択" id="payment" class="payment">
                   <thead>
                     <tr>
-                        <th>選択</th>
+                        <th class="select">選択</th>
                         <th colspan="<!--{if !$img_show}-->2<!--{else}-->3<!--{/if}-->" id="payment_method">お支払方法</th>
                     </tr>
                   </thead>
@@ -177,7 +177,7 @@
                     <tr>
                         <td class="centertd"><input type="radio" id="pay_<!--{$smarty.section.cnt.iteration}-->" name="<!--{$key}-->" value="<!--{$arrPayment[cnt].payment_id}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" <!--{$arrPayment[cnt].payment_id|sfGetChecked:$arrForm[$key].value}--> />
                         </td>
-                        <td>
+                        <td class="right">
                             <label for="pay_<!--{$smarty.section.cnt.iteration}-->"><!--{$arrPayment[cnt].payment_method|h}--><!--{if $arrPayment[cnt].note != ""}--><!--{/if}--></label>
                         </td>
                         <!--{if $img_show}-->
@@ -195,22 +195,22 @@
 
             <!--{if $cartKey != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
             <div class="payarea02">
-                <h3>お届け時間の指定</h3>
+                <h2>お届け時間の指定</h2>
                 <p class="select-msg">ご希望の方は、お届け時間を選択してください。</p>
                 <p class="non-select-msg">まずはじめに、配送方法を選択ください。</p>
                 <!--{foreach item=shippingItem name=shippingItem from=$arrShipping}-->
                 <!--{assign var=index value=$smarty.foreach.shippingItem.index}-->
                 <!--{if $is_multiple}-->
                 <div class="delivdate">
-                        &nbsp;<!--{$shippingItem.shipping_name01}--><!--{$shippingItem.shipping_name02}--><br />
-                        &nbsp;<!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01}--><!--{$shippingItem.shipping_addr02}-->
+                        ▼<!--{$shippingItem.shipping_name01}--><!--{$shippingItem.shipping_name02}--><br />
+                        <!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01}--><!--{$shippingItem.shipping_addr02}-->
                 </div>
                 <!--{/if}-->
                 <div class="delivdate">
                     <!--★お届け日★-->
                     <!--{assign var=key value="deliv_date`$index`"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
-                    <em>お届け日：</em>
+                    お届け日：
                     <!--{if !$arrDelivDate}-->
                         ご指定頂けません。
                     <!--{else}-->
@@ -224,7 +224,7 @@
                     <!--★お届け時間★-->
                     <!--{assign var=key value="deliv_time_id`$index`"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
-                    <em>お届け時間：</em>
+                    お届け時間：
                     <select name="<!--{$key}-->" id="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
                         <option value="" selected="">指定なし</option>
                         <!--{html_options options=$arrDelivTime selected=$arrForm[$key].value}-->
@@ -235,7 +235,7 @@
             <!--{/if}-->
 
             <div class="payarea02">
-                <h3>その他お問い合わせ</h3>
+                <h2>その他お問い合わせ</h2>
                 <p>その他お問い合わせ事項がございましたら、こちらにご入力ください。</p>
                 <div>
                     <!--★その他お問い合わせ事項★-->
@@ -251,19 +251,19 @@
             <!-- ▼ポイント使用 ここから -->
             <!--{if $tpl_login == 1 && $smarty.const.USE_POINT !== false}-->
                 <div class="pointarea">
-                    <h3>ポイント使用の指定</h3>
+                    <h2>ポイント使用の指定</h2>
 
                         <p><span class="attention">1ポイントを1円</span>として使用する事ができます。<br />
                             使用する場合は、「ポイントを使用する」にチェックを入れた後、使用するポイントをご記入ください。</p>
                     <div>
                         <p><!--{$name01|h}--> <!--{$name02|h}-->様の、現在の所持ポイントは「<em><!--{$tpl_user_point|default:0|number_format}-->Pt</em>」です。</p>
-                        <p>今回ご購入合計金額：<span class="price"><!--{$arrPrices.subtotal|number_format}-->円</span> <span class="attention">(送料、手数料を含みません。)</span></p>
-                        <ul>
-                            <li><input type="radio" id="point_on" name="point_check" value="1" <!--{$arrForm.point_check.value|sfGetChecked:1}--> onclick="fnCheckInputPoint();" /><label for="point_on">ポイントを使用する</label></li>
+                        <p>今回ご購入合計金額：<span class="paymentprice"><!--{$arrPrices.subtotal|number_format}-->円</span> <span class="attention">(送料、手数料を含みません。)</span></p>
+                        <ul id="paymentP">
+                            <li><input class="radio_btn" type="radio" id="point_on" name="point_check" value="1" <!--{$arrForm.point_check.value|sfGetChecked:1}--> onclick="fnCheckInputPoint();" /><label for="point_on">ポイントを使用する</label></li>
                              <!--{assign var=key value="use_point"}-->
 
-                             <li class="underline">今回のお買い物で、<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|default:$tpl_user_point}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box60" />&nbsp;ポイントを使用する。<span class="attention"><!--{$arrErr[$key]}--></span></li>
-                             <li><input type="radio" id="point_off" name="point_check" value="2" <!--{$arrForm.point_check.value|sfGetChecked:2}--> onclick="fnCheckInputPoint();" /><label for="point_off">ポイントを使用しない</label></li>
+                             <li class="underline">今回のお買い物で、<input type="number" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|default:$tpl_user_point}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box100 pointP" />&nbsp;ポイントを使用する。<span class="attention"><!--{$arrErr[$key]}--></span></li>
+                             <li><input class="radio_btn" type="radio" id="point_off" name="point_check" value="2" <!--{$arrForm.point_check.value|sfGetChecked:2}--> onclick="fnCheckInputPoint();" /><label for="point_off">ポイントを使用しない</label></li>
                         </ul>
                     </div>
                 </div>

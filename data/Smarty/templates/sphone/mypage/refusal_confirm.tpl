@@ -29,12 +29,12 @@
   <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
   <input type="hidden" name="mode" value="complete" />
   <div id="mycontentsarea">
-    <h3><!--{$tpl_subtitle|h}--></h3>
+    <h2><!--{$tpl_subtitle|h}--></h2>
     <div id="completetext">
       <p>退会手続きを実行してもよろしいでしょうか？</p>
       <div class="tblareabtn">
-        <a href="./refusal.php" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_refuse_not_on.gif','refuse_not');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_refuse_not.gif','refuse_not');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_refuse_not.gif" width="180" height="30" alt="いいえ、退会しません" name="refuse_not" id="refuse_not" /></a>&nbsp;
-        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_refuse_do_on.gif',this);" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_refuse_do.gif',this);" src="<!--{$TPL_URLPATH}-->img/button/btn_refuse_do.gif" class="box180" alt="はい、退会します" name="refuse_do" id="refuse_do" />
+        <a class="spbtn spbtn-shopping" href="./refusal.php">いいえ、退会しません</a><br />
+        <input class="spbtn spbtn-medeum" type="submit" value="はい、退会します" name="refuse_do" id="refuse_do" />
       </div>
 
       <p class="mini"><em>※退会手続きが完了した時点で、現在保存されている購入履歴や、お届け先等の情報はすべてなくなりますのでご注意ください。</em></p>

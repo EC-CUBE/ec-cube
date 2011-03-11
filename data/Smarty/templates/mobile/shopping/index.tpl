@@ -54,5 +54,3 @@
 	<a href="<!--{$smarty.const.ROOT_URLPATH}-->forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->">パスワードをお忘れの方はこちら</a><br>
 </form>
 <!--▲会員登録がお済のお客様-->
-
-<br>

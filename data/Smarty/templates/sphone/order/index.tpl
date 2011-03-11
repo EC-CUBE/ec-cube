@@ -23,60 +23,60 @@
 <div id="undercolumn">
   <div id="undercolumn_order">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
-    <table summary="特定商取引に関する法律に基づく表記">
+    <table summary="特定商取引に関する法律に基づく表記" class="entryform">
       <tr>
-        <th>販売業者</th>
+        <th class="trorder">販売業者</th>
         <td><!--{$arrOrder.law_company|h}--></td>
       </tr>
       <tr>
-        <th>運営責任者</th>
+        <th class="trorder">運営責任者</th>
         <td><!--{$arrOrder.law_manager|h}--></td>
       </tr>
       <tr>
-        <th>住所</th>
+        <th class="trorder">住所</th>
         <td>〒<!--{$arrOrder.law_zip01|h}-->-<!--{$arrOrder.law_zip02|h}--><br /><!--{$arrPref[$arrOrder.law_pref]|h}--><!--{$arrOrder.law_addr01|h}--><!--{$arrOrder.law_addr02|h}--></td>
       </tr>
       <tr>
-        <th>電話番号</th>
+        <th class="trorder">電話番号</th>
         <td><!--{$arrOrder.law_tel01|h}-->-<!--{$arrOrder.law_tel02|h}-->-<!--{$arrOrder.law_tel03|h}--></td>
       </tr>
       <tr>
-        <th>FAX番号</th>
+        <th class="trorder">FAX番号</th>
         <td><!--{$arrOrder.law_fax01|h}-->-<!--{$arrOrder.law_fax02|h}-->-<!--{$arrOrder.law_fax03|h}--></td>
       </tr>
       <tr>
-        <th>メールアドレス</th>
+        <th class="trorder">メールアドレス</th>
         <td><a href="mailto:<!--{$arrOrder.law_email|escape:'hex'}-->"><!--{$arrOrder.law_email|escape:'hexentity'}--></a></td>
       </tr>
       <tr>
-        <th>URL</th>
+        <th class="trorder">URL</th>
         <td><a href="<!--{$arrOrder.law_url|h}-->"><!--{$arrOrder.law_url|h}--></a></td>
       </tr>
       <tr>
-        <th>商品以外の必要代金</th>
+        <th class="trorder">商品以外の必要代金</th>
         <td><!--{$arrOrder.law_term01|h|nl2br}--></td>
       </tr>
       <tr>
-        <th>注文方法</th>
+        <th class="trorder">注文方法</th>
         <td><!--{$arrOrder.law_term02|h|nl2br}--></td>
       </tr>
       <tr>
-        <th>支払方法</th>
+        <th class="trorder">支払方法</th>
         <td><!--{$arrOrder.law_term03|h|nl2br}--></td>
       </tr>
       <tr>
-        <th>支払期限</th>
+        <th class="trorder">支払期限</th>
         <td><!--{$arrOrder.law_term04|h|nl2br}--></td>
       </tr>
       <tr>
-        <th>引渡し時期</th>
+        <th class="trorder">引渡し時期</th>
         <td><!--{$arrOrder.law_term05|h|nl2br}--></td>
       </tr>
       <tr>
-        <th>返品・交換について</th>
+        <th class="trorder">返品・交換について</th>
         <td><!--{$arrOrder.law_term06|h|nl2br}--></td>
       </tr>
-    </table>
+    </table><br />
   </div>
 </div>
 <!--▲CONTENTS-->

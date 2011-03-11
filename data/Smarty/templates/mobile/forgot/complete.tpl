@@ -22,14 +22,8 @@
  */
 *}-->
 パスワードの発行が完了いたしました。ログインには下記のパスワードをご利用ください。<br>
+<br>
 ※下記パスワードは、MYページの「会員登録内容変更」よりご変更いただけます。<br>
-
 <br>
 
-<!--{if $smarty.const.FORGOT_MAIL != 1}-->
-<center><font color="red"><!--{$arrForm.new_password}--></font></center>
-<!--{else}-->
-<center><font color="red">ご登録メールアドレスに送付致しました。</font></center>
-<!--{/if}-->
-
-<br>
+<center><font color="ff0000"><!--{$temp_password}--></font></center>

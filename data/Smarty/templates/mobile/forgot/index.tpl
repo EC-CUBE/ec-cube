@@ -22,8 +22,8 @@
  */
 *}-->
 <font color="#ff0000">※新しくパスワードを発行いたしますので、お忘れになったパスワードはご利用できなくなります。</font>
-
-<hr>
+<br>
+<br>
 
 <!--{if $errmsg}-->
 <font color="#ff0000"><!--{$errmsg}--></font><br>
@@ -31,6 +31,7 @@
 
 <!--{if @$tpl_kara_mail_to != ''}-->
 ■ご登録時のメールアドレスからメールを送れる方は、次のリンクをクリックして空メールを送信してください。<br>
+<br>
 <center><a href="mailto:<!--{$tpl_kara_mail_to|u}-->">メール送信</a></center>
 
 <br>
@@ -39,6 +40,7 @@
 <!--{else}-->
 ご登録時のメールアドレスとお名前を入力して「次へ」ボタンをクリックしてください。<br>
 <!--{/if}-->
+<br>
 
 <form action="?" method="post">
 <input type="hidden" name="mode" value="mail_check">
@@ -51,6 +53,6 @@
  姓<input type="text" name="name01" value="<!--{$arrForm.name01|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" istyle="1"><br>
  名<input type="text" name="name02" value="<!--{$arrForm.name02|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" istyle="1"><br>
 
-
+<br>
 <center><input type="submit" value="次へ" name="next"></center>
 </form>

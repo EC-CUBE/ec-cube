@@ -24,32 +24,33 @@
   <div id="windowarea">
     <h2>パスワードを忘れた方</h2>
     <p>ご登録時のメールアドレスを入力して「次へ」ボタンをクリックしてください。<br />
-      <span class="attention">※新しくパスワードを発行いたしますので、お忘れになったパスワードはご利用できなくなります。</span></p>
+      <span class="mini"><em>※新しくパスワードを発行いたしますので、お忘れになったパスワードはご利用できなくなります。</em></span></p>
     <form action="?" method="post" name="form1">
       <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
       <input type="hidden" name="mode" value="mail_check" />
-      <div id="completebox">
-        <p>メールアドレス：&nbsp;<!--★メールアドレス入力★--><input type="text" name="email" value="<!--{$tpl_login_email|h}-->" size="40" class="box300" style="<!--{$errmsg|sfGetErrorColor}-->; ime-mode: disabled;" /><br />
-        <br />
-        お名前：&nbsp;
-          <span class="attention"><!--{$arrErr.name01}--><!--{$arrErr.name02}--></span>
-          姓&nbsp;<input type="text"
-                         class="box120"
-                         name="name01"
-                         value="<!--{$arrForm.name01|default:''|h}-->"
-                         maxlength="<!--{$smarty.const.STEXT_LEN}-->"
-                         style="<!--{$arrErr.name01|sfGetErrorColor}-->; ime-mode: active;" />　
-          名&nbsp;<input type="text" class="box120" name="name02"
-                         value="<!--{$arrForm.name02|default:''|h}-->"
-                         maxlength="<!--{$smarty.const.STEXT_LEN}-->"
-                         style="<!--{$arrErr.name02|sfGetErrorColor}-->; ime-mode: active;" />
-        </p>
+
+
+
+<table class="entryform">
+<tr>
+<th>メールアドレス</th>
+<td><!--★メールアドレス入力★--><input type="email" name="email" value="<!--{$tpl_login_email|h}-->" size="40" class="box300" style="<!--{$errmsg|sfGetErrorColor}-->; ime-mode: disabled;" />
+</td>
+</tr>
+<tr>
+<th>お名前</th>
+<td><span class="attention"><!--{$arrErr.name01}--><!--{$arrErr.name02}--></span>
+姓&nbsp;<input type="text" class="box120" name="name01" value="<!--{$arrForm.name01|default:''|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name01|sfGetErrorColor}-->; ime-mode: active;" />　
+
+名&nbsp;<input type="text" class="box120" name="name02" value="<!--{$arrForm.name02|default:''|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name02|sfGetErrorColor}-->; ime-mode: active;" />
+<br />
         <span class="attention"><!--{$errmsg}--></span>
-      </div>
+</td></tr></table>
+
       <div class="btn">
-        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_next.gif" alt="次へ" class="box150" name="next" id="next" />
+        <input class="spbtn spbtn-shopping" type="submit" value="次へ" />
       </div>
     </form>
   </div>
-
+<br />
 <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`popup_footer.tpl"}-->

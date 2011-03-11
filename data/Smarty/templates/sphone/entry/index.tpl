@@ -31,7 +31,7 @@
             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
             <input type="hidden" name="mode" value="confirm" />
 
-            <table summary="会員登録フォーム">
+            <table summary="会員登録フォーム" class="entryform">
             <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`frontparts/form_personal_input.tpl" flgFields=3 emailMobile=false prefix=""}-->
             </table>
 

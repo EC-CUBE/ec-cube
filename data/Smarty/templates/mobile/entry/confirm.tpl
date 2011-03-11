@@ -29,14 +29,6 @@
 	<!--{/foreach}-->
 	下記の内容でご登録してもよろしいですか？<br>
 	<br>
-	●ﾒｰﾙｱﾄﾞﾚｽ<br>
-	<!--{$arrForm.email|h}--><br>
-
-	●ﾊﾟｽﾜｰﾄﾞ確認用質問<br>
-	<!--{$arrReminder[$arrForm.reminder]|h}--><br>
-
-	●質問の答え<br>
-	<!--{$arrForm.reminder_answer|h}--><br>
 
 	●お名前<br>
 	<!--{$arrForm.name01|h}-->　<!--{$arrForm.name02|h}--><br>
@@ -57,10 +49,21 @@
 	●電話番号<br>
 	<!--{$arrForm.tel01|h}-->-<!--{$arrForm.tel02|h}-->-<!--{$arrForm.tel03|h}--><br>
 	
+	●ﾒｰﾙｱﾄﾞﾚｽ<br>
+	<!--{$arrForm.email|h}--><br>
+
+	●ﾊﾟｽﾜｰﾄﾞ確認用質問<br>
+	<!--{$arrReminder[$arrForm.reminder]|h}--><br>
+
+	●質問の答え<br>
+	<!--{$arrForm.reminder_answer|h}--><br>
+
 	●ﾒｰﾙﾏｶﾞｼﾞﾝﾞ<br>
 	<!--{if $arrForm.mailmaga_flg eq 2}-->希望する<!--{else}-->希望しない<!--{/if}--><br>
 	<br>
 
+	<center>
 	<input type="submit" name="submit" value="登録"><br>
 	<input type="submit" name="return" value="戻る">
+	</center>
 </form>

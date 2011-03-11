@@ -22,5 +22,3 @@
  */
 *}-->
 <font color="#ff0000"><!--{$arrErr.id}--></font>
-
-<br>

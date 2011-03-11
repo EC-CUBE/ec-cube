@@ -26,7 +26,7 @@
     <h2 class="title"><!--{$tpl_title|h}--></h2>
 <!--{include file=$tpl_navi}-->
     <div id="mycontentsarea">
-        <h3><!--{$tpl_subtitle|h}--></h3>
+        <h2><!--{$tpl_subtitle|h}--></h2>
         <p>登録住所以外への住所へ送付される場合等にご利用いただくことができます。</p>
         <p>※最大<!--{$smarty.const.DELIV_ADDR_MAX|h}-->件まで登録できます。</p>
 
@@ -34,7 +34,7 @@
           <!--{* 退会時非表示 *}-->
           <!--{if $tpl_login}-->
             <p class="addbtn">
-                <a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="win03('./delivery_addr.php','delivadd','600','640'); return false;" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address_on.gif','newadress');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address.gif','newadress');" target="_blank"><img src="<!--{$TPL_URLPATH}-->img/button/btn_add_address.gif" width="160" height="22" alt="新しいお届け先を追加" border="0" name="newadress" /></a>
+                <a class="spbtn spbtn-shopping" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" target="_blank">新しいお届け先を追加</a>
             </p>
           <!--{/if}-->
         <!--{/if}-->
@@ -46,7 +46,7 @@
             <input type="hidden" name="other_deliv_id" value="" />
             <input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->" />
 
-            <table summary="お届け先">
+            <table summary="お届け先" class="entryform">
                 <tr>
                     <th colspan="5">▼お届け先</th>
                 </tr>

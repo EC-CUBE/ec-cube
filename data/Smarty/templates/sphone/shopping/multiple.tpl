@@ -41,7 +41,7 @@
 
         <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
             <p class="addbtn">
-                <a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|h}-->','new_deiv','600','640'); return false;" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address_on.gif','addition');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address.gif','addition');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_add_address.gif" width="160" height="22" alt="新しいお届け先を追加する" name="addition" id="addition" /></a>
+                <a class="kybtn" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php">新しいお届け先を追加する</a>
             </p>
         <!--{/if}-->
         <form name="form1" id="form1" method="post" action="?">
@@ -49,11 +49,11 @@
             <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
             <input type="hidden" name="mode" value="confirm" />
                 <!--{foreach from=$items item=item name=cartItem}-->
-                <table summary="商品情報">
+                <table summary="商品情報" class="entryform">
                 <tr>
-                    <th>商品写真</th>
-                    <th>商品名</th>
-                    <th>数量</th>
+                    <th class="multi_ph">商品写真</th>
+                    <th class="multi_pr">商品名</th>
+                    <th class="multi_nu">数量</th>
                 </tr>
                     <!--{assign var=index value=$smarty.foreach.cartItem.index}-->
                     <tr style="<!--{if $item.error}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
@@ -67,7 +67,7 @@
                         >
                             <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$item.main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="&lt;!--{$item.productsClass.name|h}--&gt;" /></a>
                         </td>
-                        <td><!--{* 商品名 *}--><strong><!--{$item.name|h}--></strong><br />
+                        <td class="multi_pr"><!--{* 商品名 *}--><strong><!--{$item.name|h}--></strong><br />
                             <!--{if $item.classcategory_name1 != ""}-->
                                 <!--{$item.class_name1}-->：<!--{$item.classcategory_name1}--><br />
                             <!--{/if}-->
@@ -76,21 +76,21 @@
                             <!--{/if}-->
                             <!--{$item.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                         </td>
-                        <td>
-                          <input type="hidden" name="cart_no<!--{$index}-->" value="<!--{$index}-->" />
-                          <input type="hidden" name="product_class_id<!--{$index}-->" value="<!--{$item.product_class_id}-->" />
+                        <td class="multi_nu">
+                          <input class="multi_nu" type="hidden" name="cart_no<!--{$index}-->" value="<!--{$index}-->" />
+                          <input class="multi_nu" type="hidden" name="product_class_id<!--{$index}-->" value="<!--{$item.product_class_id}-->" />
                           <!--{assign var=key value="quantity`$index`"}-->
-                          <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value}-->" size="4" />
+                          <input class="multi_nu" type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value}-->" size="4" />
                         </td>
                      </tr>
                     <tr style="<!--{if $item.error}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
-                      <td colspan="3">お届け先</td>
+                      <td colspan="3"class="multi_send">お届け先</td>
                     </tr>
                     <tr style="<!--{if $item.error}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
                       <td colspan="3"><!--{assign var=key value="shipping`$index`"}-->
                           <select name="<!--{$key}-->"><!--{html_options options=$addrs selected=$arrForm[$key].value}--></select></td>
                     </tr>
-                   </table>
+                   </table><br />
                   <!--{/foreach}-->
 
             <div class="tblareabtn">

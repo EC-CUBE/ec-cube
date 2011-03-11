@@ -2,7 +2,7 @@
 
 /* スマートフォン用グラデーションボタン
 ----------------------------------------------- */
-.spbtn {
+/*.spbtn {
 display: block;
 margin: 0.5em auto 0.3em;
 padding: 0.4em 0;
@@ -17,7 +17,7 @@ background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255
 border: solid 2px #666666;
 -webkit-border-radius: 8px;
 -webkit-box-shadow: 0px 0px 3px rgba(0,0,0,0.7);
-}
+}*/
 .spbtn:before {
 content: "";
 display: block;
@@ -25,13 +25,12 @@ height: 0;
 clear: both;
 visibility: hidden;
 }
-a.spbtn {
+/*a.spbtn {
 width: 79%;
 max-width: 236px;
-}
+}*/
 input.spbtn {
-width: 80%;
-max-width: 240px;
+width: 100%;
 }
 
 /* ボタン大（汎用）
@@ -40,16 +39,24 @@ max-width: 240px;
 color: #ffffff;
 border: solid 2px #666666;
 background-color: #666666;
-background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));
+/*background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));*/
 }
 
 /* ボタン大（承諾、送信）
 ----------------------------------------------- */
 .spbtn-agree {
-color: #ffffff;
-border: solid 2px #666666;
-background-color: #8DCB66;
-background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));
+    background-color: #6dc935;
+    border: 1px solid #666666;
+    color: #FFFFFF;
+    display: block;
+    font: bold 120% helvetica;
+    margin: 0.5em auto 0.3em;
+    padding: 7px;
+    text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.5);
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));
+    -webkit-border-radius: 6px;
+    -webkit-box-shadow: 0px 0px 3px rgba(0,0,0,0.7);
+	text-decoration:none;
 }
 
 /* ボタン大（キャンセル、退会）
@@ -58,27 +65,34 @@ background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255
 color: #ffffff;
 border: solid 2px #666666;
 background-color: #fc4743;
-background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));
+/*background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));*/
 }
 
 /* ボタン中（お問い合わせ、友達に教える）
 ----------------------------------------------- */
 .spbtn-medeum {
-display: block;
-margin: 0.5em auto 0.3em;
-font: bold 15px helvetica;
-border: solid 1px #666666;
-text-shadow: 0px -1px 1px rgba(0,0,0,0.5);
+    background-color: #aaaaaa;
+    border: 1px solid #666666;
+    color: #FFFFFF;
+    display: block;
+    font: bold 120% helvetica;
+    margin: 0 auto;
+    padding: 7px;
+    text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.5);
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));
+    -webkit-border-radius: 6px;
+    -webkit-box-shadow: 0px 0px 3px rgba(0,0,0,0.7);
+/*text-shadow: 0px -1px 1px rgba(0,0,0,0.5);
 -webkit-border-radius: 6px;
--webkit-box-shadow: 0px 0px 3px rgba(0,0,0,0.7);
+-webkit-box-shadow: 0px 0px 3px rgba(0,0,0,0.7);*/
 }
 a.spbtn-medeum {
-width: 59%;
-max-width: 178px;
+width: 95%;
+text-decoration:none;
+text-align:center;
 }
 input.spbtn-medeum {
-width: 60%;
-max-width: 180px;
+width: 100%;
 }
 
 /* ボタン小（お気に入りに登録、住所自動入力）
@@ -89,7 +103,7 @@ margin: 0;
 padding: 0.2em 0.4em;
 color: #ffffff;
 text-shadow: 0px -1px 1px rgba(0,0,0,1);
-font: bold 13px helvetica;
+font: bold 100% helvetica;
 font-weight: bold;
 background-color: #666666;
 background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));
@@ -126,31 +140,37 @@ border: solid 1px #666666;
 
 /* ログイン・会員登録・マイページボタン
 ----------------------------------------------- */
+
 #block-login .spbtn{
-color:#292929;
-text-shadow: 1px 1px 1px #cccccc;
-float: left;
-font-size: medium;
-background-color: #c9c9c9;
-background-image: -webkit-gradient(linear, left top, left bottom, from(#c9c9c9), to(#848484), color-stop(0.6, #a1a1a1));
-margin: 0;
-margin-left: -1px;
-border: none;
-border-left: 1px solid #818181;
--webkit-border-radius: 0px;
--webkit-box-shadow: none;
+    background-color: #666666;
+    border-left: 1px solid #666666;
+    color: #FFFFFF;
+    display: block;
+    float: left;
+    margin: 5px 0;
+    padding: 0.3em 0;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.5);
+    vertical-align: middle;
+    width: 49.6%;
+text-shadow: 0px -1px 1px rgba(0,0,0,0.5);
+background-color: #666666;
+background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));
 }
+
 #block-login .spbtn:first-child{
-width: 50%;
+width: 49.6%;
 border-left: none;
 margin-left: 0px;
 -webkit-border-top-left-radius: 4px;
 -webkit-border-bottom-left-radius: 4px;
 }
 #block-login .spbtn:last-child{
-width: 50%;
+width: 49.6%;
 -webkit-border-top-right-radius: 4px;
 -webkit-border-bottom-right-radius: 4px;
+margin-left:1px
 }
 #block-login .spbtn:only-child{
 width: 100%;
@@ -158,6 +178,47 @@ max-width: 100%;
 -webkit-border-radius: 4px;
 }
 #block-login .spbtn > a{
+}
+
+/*ご利用規約はこちら　ボタン
+------------------------------------------------*/
+.kybtn{
+    background-color: #666666;
+    border-left: 1px solid #666666;
+    color: #FFFFFF;
+    display: block;
+    float: left;
+    margin: 5px 0;
+    padding: 0.3em 0;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.5);
+    vertical-align: middle;
+    width: 100%;
+text-shadow: 0px -1px 1px rgba(0,0,0,0.5);
+background-color: #666666;
+background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));
+}
+
+
+/*住所自動入力　ボタン
+------------------------------------------------*/
+.oubtn{
+    background-color: #666666;
+    border-left: 1px solid #666666;
+    color: #FFFFFF;
+    display: block;
+    float: left;
+    margin: 5px 0;
+    padding: 0.3em 0;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.5);
+    vertical-align: middle;
+    width: 99%;
+text-shadow: 0px -1px 1px rgba(0,0,0,0.5);
+background-color: #666666;
+background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));
 }
 
 
@@ -168,7 +229,7 @@ display:block;
 position: absolute;
 top: 4px;
 right: 0.4em;
-font: bold 12px helvetica;
+font: bold 100% helvetica;
 width: 4.3em;
 border: 1px solid rgba(0,0,0,0.5);
 border-top: 1px solid rgba(0,0,0,0.7);
@@ -183,10 +244,10 @@ text-decoration: none;
 }
 #btn-top > a {
 display: block;
-margin-top: 0.5em;
-margin-bottom: 0.5em;
+padding-top: 0.3em;
+padding-bottom: 0.4em;
 color: #ffffff;
-font: bold 12px helvetica;
+font: bold 100% helvetica;
 text-shadow: 0px -1px 1px rgba(0,0,0,0.5);
 vertical-align: middle;
 text-decoration: none;
@@ -195,22 +256,40 @@ text-decoration: none;
 /* ショッピング関連ボタン
 ----------------------------------------------- */
 .spbtn-shopping {
-display: block;
+    background-color: #6dc935;
+    border: 1px solid #666666;
+    color: #FFFFFF;
+    display: block;
+    font: bold 120% helvetica;
+    margin: 0 auto;
+    padding: 7px;
+    text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.5);
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));
+    -webkit-border-radius: 6px;
+    -webkit-box-shadow: 0px 0px 3px rgba(0,0,0,0.7);
+
+/*display: block;
 margin: 0.5em auto 0.3em;
-font: bold 15px helvetica;
+font: bold 100% helvetica;
 border: solid 1px #666666;
 text-shadow: 0px -1px 1px rgba(0,0,0,0.5);
 color: #ffffff;
 background-color: #fc4743;
 background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));
 -webkit-border-radius: 6px;
--webkit-box-shadow: 0px 0px 3px rgba(0,0,0,0.7);
+-webkit-box-shadow: 0px 0px 3px rgba(0,0,0,0.7);*/
 }
 a.spbtn-shopping {
-width: 59%;
-max-width: 178px;
+width: 95%;
+text-decoration:none;
+margin:0;
+text-align:center;
 }
 input.spbtn-shopping {
-width: 60%;
-max-width: 180px;
+width: 100%;
+margin:0;
+}
+
+p.addbtn {
+margin-bottom:20px;
 }

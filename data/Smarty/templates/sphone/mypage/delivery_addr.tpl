@@ -34,14 +34,15 @@
         <input type="hidden" name="other_deliv_id" value="<!--{$smarty.session.other_deliv_id}-->" />
         <input type="hidden" name="ParentPage" value="<!--{$ParentPage}-->" />
 
-        <table summary="お届け先登録">
+        <table summary="お届け先登録" class="entryform">
             <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`frontparts/form_personal_input.tpl" flgFields=1 emailMobile=false prefix=""}-->
         </table>
-
+<br />
         <div class="btn">
-            <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_add_address_complete_on.gif',this);" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_add_address_complete.gif',this);" src="<!--{$TPL_URLPATH}-->img/button/btn_add_address_complete.gif" class="box150" alt="登録する" name="register" id="register" />
+            <input class="spbtn spbtn-shopping" type="submit" class="box150" value="登録する" name="register" id="register" />
         </div>
     </form>
+    <br />
 </div>
 
 <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`popup_footer.tpl"}-->

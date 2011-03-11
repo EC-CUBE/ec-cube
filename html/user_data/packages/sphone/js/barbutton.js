@@ -24,7 +24,7 @@ function setTopButton(topURL) {
     spn.innerText = obj.innerText;
     obj.innerText = "";
     spn.style.display = "inline-block";
-    spn.style.maxWidth = "67%";
+    spn.style.maxWidth = "50%";
     spn.style.overflow = "hidden";
     spn.style.textOverflow = "ellipsis";
     obj.appendChild(spn);

@@ -30,30 +30,28 @@
     <input type="hidden" name="mode" value="login" />
     <input type="hidden" name="url" value="<!--{$smarty.server.PHP_SELF|h}-->" />
    <div class="loginarea">
-     <h3>会員登録がお済みのお客様</h3>
+     <h2>会員登録がお済みのお客様</h2>
      <p class="inputtext">会員の方は、登録時に入力されたメールアドレスとパスワードでログインしてください。</p>
-       <div class="inputbox">
+
+<table class="entryform">
+<tr><th>
        <!--{assign var=key value="login_email"}-->
        <span class="attention"><!--{$arrErr[$key]}--></span>
-       <p>メールアドレス:&nbsp;
-         <input type="text" name="<!--{$key}-->"
-                value="<!--{$tpl_login_email|h}-->"
-                maxlength="<!--{$arrForm[$key].length}-->"
-                style="<!--{$arrErr[$key]|sfGetErrorColor}-->; ime-mode: disabled;"
-                size="40" class="box300" />
-       </p>
+メールアドレス</th>
+
+<td><input type="email" name="<!--{$key}-->" value="<!--{$tpl_login_email|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->; ime-mode: disabled;" size="40" class="box300" /><br />
        <p class="mini">
          <!--{assign var=key value="login_memory"}-->
-         <input type="checkbox" name="<!--{$key}-->" value="1" <!--{$tpl_login_memory|sfGetChecked:1}--> id="login_memory" />
+         <input class="radio_btn" type="checkbox" name="<!--{$key}-->" value="1" <!--{$tpl_login_memory|sfGetChecked:1}--> id="login_memory" />
          <label for="login_memory">メールアドレスを記憶させる</label>
-       </p>
-       <p class="passwd">
+       </p></td></tr>
+<tr><th>
          <!--{assign var=key value="login_pass"}-->
          <span class="attention"><!--{$arrErr[$key]}--></span>
-         パスワード:&nbsp;
-         <input type="password" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box300" />
-       </p>
-     </div>
+パスワード</th>
+<td><input type="password" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box300" /></td></tr></table>
+
+
      <div class="tblareabtn">
       <input type="submit" value="ログイン" class="spbtn spbtn-shopping" width="130" height="30" alt="ログイン" name="log" id="log" />
      </div>
@@ -63,7 +61,7 @@
      </p>
   </div>
   <div class="loginarea">
-    <h3>まだ会員登録されていないお客様</h3>
+    <h2>まだ会員登録されていないお客様</h2>
     <p class="inputtext">会員登録をすると便利なMyページをご利用いただけます。<br />
       また、ログインするだけで、毎回お名前や住所などを入力することなくスムーズにお買い物をお楽しみいただけます。
     </p>

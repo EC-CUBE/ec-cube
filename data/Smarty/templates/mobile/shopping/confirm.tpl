@@ -32,7 +32,7 @@
 
 【ご注文内容】<br>
 <!--{foreach from=$arrCartItems item=item}-->
-<!--{$item.productsClass.name|h}--><br>
+◎<!--{$item.productsClass.name|h}--><br>
 <!--{if $item.productsClass.classcategory_name1 != ""}--><!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--><br><!--{/if}-->
 <!--{if $item.productsClass.classcategory_name2 != ""}--><!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--><br><!--{/if}-->
 &nbsp;単価：<!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円<br>
@@ -49,13 +49,12 @@
 <!--{/if}-->
 送料：<!--{$arrForm.deliv_fee|number_format}-->円<br>
 <!--{if $arrForm.charge > 0}-->手数料：<!--{$arrForm.charge|number_format}-->円<br><!--{/if}-->
-合計：<!--{$arrForm.payment_total|number_format}-->円<br>
+<font color="#FF0000">合計：<!--{$arrForm.payment_total|number_format}-->円</font><br>
 (内消費税：<!--{$arrForm.tax|number_format}-->円)<br>
-
-<br>
 
 <!--{* ログイン済みの会員のみ *}-->
 <!--{if $tpl_login == 1 && $smarty.const.USE_POINT !== false}-->
+<br>
 【ポイント確認】<br>
 ご注文前のポイント：<!--{$tpl_user_point|number_format|default:0}-->Pt<br>
 ご使用ポイント：-<!--{$arrForm.use_point|number_format|default:0}-->Pt<br>
@@ -75,7 +74,7 @@
     ▼お届け先<!--{$smarty.foreach.shippingItem.iteration}--><br>
     <!--{* 複数お届け先の場合、お届け先毎の商品を表示 *}-->
     <!--{foreach item=item from=$shippingItem.shipment_item}-->
-    <!--{$item.productsClass.name|h}--><br>
+    ◎<!--{$item.productsClass.name|h}--><br>
     <!--{if $item.productsClass.classcategory_name1 != ""}--><!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--><br><!--{/if}-->
     <!--{if $item.productsClass.classcategory_name2 != ""}--><!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--><br><!--{/if}-->
     &nbsp;数量：<!--{$item.quantity}--><br>
@@ -93,7 +92,7 @@
 お届け日：<!--{$shippingItem.shipping_date|default:"指定なし"|h}--><br>
 お届け時間：<!--{$shippingItem.shipping_time|default:"指定なし"|h}--><br>
 
-<hr>
+<br>
 <!--{/foreach}-->
 <!--{/if}-->
 
@@ -121,5 +120,3 @@
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 <center><input type="submit" value="戻る"></center>
 </form>
-
-<br>

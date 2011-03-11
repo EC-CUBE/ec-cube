@@ -45,7 +45,7 @@ class LC_Page_AbstractMypage extends LC_Page_Ex {
         parent::init();
         // mypage 共通
         $this->tpl_title        = 'MYページ';
-        $this->tpl_navi         = TEMPLATE_REALDIR . 'mypage/navi.tpl';
+        $this->tpl_navi         = 'mypage/navi.tpl';
         $this->tpl_mainno       = 'mypage';
     }
 

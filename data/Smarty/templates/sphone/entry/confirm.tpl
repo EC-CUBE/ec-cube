@@ -32,41 +32,41 @@
         <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
       <!--{/foreach}-->
 
-      <table summary="入力内容確認">
+      <table summary="入力内容確認" class="entryform">
         <tr>
-          <th>お名前<span class="attention">※</span></th>
+          <th class="confirmtd">お名前<span class="attention">※</span></th>
           <td>
             <!--{$arrForm.name01|h}-->&nbsp;
             <!--{$arrForm.name02|h}-->
           </td>
         </tr>
         <tr>
-          <th>お名前(フリガナ)<span class="attention">※</span></th>
+          <th class="confirmtd">お名前(フリガナ)<span class="attention">※</span></th>
           <td>
             <!--{$arrForm.kana01|h}-->&nbsp;
             <!--{$arrForm.kana02|h}-->
           </td>
         </tr>
         <tr>
-          <th>郵便番号<span class="attention">※</span></th>
+          <th class="confirmtd">郵便番号<span class="attention">※</span></th>
           <td>
             〒<!--{$arrForm.zip01|h}--> - <!--{$arrForm.zip02|h}-->
           </td>
         </tr>
         <tr>
-          <th>住所<span class="attention">※</span></th>
+          <th class="confirmtd">住所<span class="attention">※</span></th>
           <td>
             <!--{$arrPref[$arrForm.pref]|h}--><!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}-->
           </td>
         </tr>
         <tr>
-          <th>電話番号<span class="attention">※</span></th>
+          <th class="confirmtd">電話番号<span class="attention">※</span></th>
           <td>
             <!--{$arrForm.tel01|h}--> - <!--{$arrForm.tel02|h}--> - <!--{$arrForm.tel03|h}-->
           </td>
         </tr>
         <tr>
-          <th>FAX</th>
+          <th class="confirmtd">FAX</th>
           <td>
             <!--{if strlen($arrForm.fax01) > 0 && strlen($arrForm.fax02) > 0 && strlen($arrForm.fax03) > 0}-->
               <!--{$arrForm.fax01|h}--> - <!--{$arrForm.fax02|h}--> - <!--{$arrForm.fax03|h}-->
@@ -76,13 +76,13 @@
           </td>
         </tr>
         <tr>
-          <th>メールアドレス<span class="attention">※</span></th>
+          <th class="confirmtd">メールアドレス<span class="attention">※</span></th>
           <td>
             <a href="mailto:<!--{$arrForm.email|escape:'hex'}-->"><!--{$arrForm.email|escape:'hexentity'}--></a>
           </td>
         </tr>
         <tr>
-          <th>性別<span class="attention">※</span></th>
+          <th class="confirmtd">性別<span class="attention">※</span></th>
           <td>
             <!--{if $arrForm.sex eq 1}-->
             男性
@@ -92,11 +92,11 @@
           </td>
         </tr>
         <tr>
-          <th>職業</th>
+          <th class="confirmtd">職業</th>
           <td><!--{$arrJob[$arrForm.job]|default:"未登録"|h}--></td>
         </tr>
         <tr>
-          <th>生年月日</th>
+          <th class="confirmtd">生年月日</th>
           <td>
             <!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}-->
               <!--{$arrForm.year|h}-->年<!--{$arrForm.month|h}-->月<!--{$arrForm.day|h}-->日
@@ -106,19 +106,19 @@
           </td>
         </tr>
         <tr>
-          <th>希望するパスワード<span class="attention">※</span><br />
+          <th class="confirmtd">希望するパスワード<span class="attention">※</span><br />
           </th>
           <td><!--{$passlen}--></td>
         </tr>
         <tr>
-          <th>パスワードを忘れた時のヒント<span class="attention">※</span></th>
+          <th class="confirmtd">パスワードを忘れた時のヒント<span class="attention">※</span></th>
           <td>
               質問：<!--{$arrReminder[$arrForm.reminder]|h}--><br />
               答え：<!--{$arrForm.reminder_answer|h}-->
           </td>
         </tr>
         <tr>
-          <th>メールマガジン送付について<span class="attention">※</span></th>
+          <th class="confirmtd">メールマガジン送付について<span class="attention">※</span></th>
           <td>
             <!--{if $arrForm.mailmaga_flg eq 1}-->
             HTMLメール＋テキストメールを受け取る
@@ -132,7 +132,7 @@
       </table>
 
       <div class="tblareabtn">
-        <a href="?" onclick="fnModeSubmit('return', '', ''); return false;" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.gif','back')" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.gif','back')"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" border="0" name="back" id="back" /></a>&nbsp;
+        <a class="spbtn spbtn-medeum" href="?">戻る</a>&nbsp;
         <input type="submit" value="送信" class="spbtn spbtn-shopping" width="130" height="30" alt="送信" name="send" id="send" />
       </div>
     </form>

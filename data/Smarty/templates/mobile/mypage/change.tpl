@@ -27,28 +27,6 @@
 	<font color="#FF0000">*は必須項目です。</font><br>
 	<br>
 
-	【メールアドレス】<font color="#FF0000">※</font><br>
-	<font color="#FF0000"><!--{$arrErr.email}--></font>
-	<input type="text" name="email" value="<!--{$arrForm.email|h}-->" istyle="3">
-  <br>
-
-	【パスワード】<font color="#FF0000">※</font><br>
-	（半角英数字<!--{$smarty.const.PASSWORD_MIN_LEN}-->文字以上<!--{$smarty.const.PASSWORD_MAX_LEN}-->文字以内）<br>
-	<font color="#FF0000"><!--{$arrErr.password}--></font>
-	<!--{assign var="size" value="`$smarty.const.PASSWORD_MAX_LEN+2`"}-->
-	<input type="password" name="password" value="<!--{$arrForm.password}-->" istyle="4" maxlength="<!--{$smarty.const.PASSWORD_MAX_LEN}-->" size="<!--{$size}-->"><br>
-
-	【パスワード確認用の質問】<font color="#FF0000">※</font><br>
-	<font color="#FF0000"><!--{$arrErr.reminder}--></font>
-	<select name="reminder">
-		<option value="">選択してください</option>
-		<!--{html_options options=$arrReminder selected=$arrForm.reminder}-->
-	</select><br>
-
-	【質問の答え】<font color="#FF0000">※</font><br>
-	<font color="#FF0000"><!--{$arrErr.reminder_answer}--></font>
-	<input type="text" name="reminder_answer" value="<!--{$arrForm.reminder_answer|h}-->" istyle="1"><br>
-
 	【お名前】<font color="#FF0000">※</font><br>
 	<font color="#FF0000"><!--{$arrErr.name01}--><!--{$arrErr.name02}--></font>
 	姓（例：渋谷）<br>
@@ -112,18 +90,39 @@
 	&nbsp;-&nbsp;
 	<input type="text" size="<!--{$size}-->" name="tel03" value="<!--{$arrForm.tel03|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" istyle="4"><br>
 
+	【メールアドレス】<font color="#FF0000">※</font><br>
+	<font color="#FF0000"><!--{$arrErr.email}--></font>
+	<input type="text" name="email" value="<!--{$arrForm.email|h}-->" istyle="3">
+  <br>
+
+	【パスワード】<font color="#FF0000">※</font><br>
+	（半角英数字<!--{$smarty.const.PASSWORD_MIN_LEN}-->文字以上<!--{$smarty.const.PASSWORD_MAX_LEN}-->文字以内）<br>
+	<font color="#FF0000"><!--{$arrErr.password}--></font>
+	<!--{assign var="size" value="`$smarty.const.PASSWORD_MAX_LEN+2`"}-->
+	<input type="password" name="password" value="<!--{$arrForm.password}-->" istyle="4" maxlength="<!--{$smarty.const.PASSWORD_MAX_LEN}-->" size="<!--{$size}-->"><br>
+
+	【パスワード確認用の質問】<font color="#FF0000">※</font><br>
+	<font color="#FF0000"><!--{$arrErr.reminder}--></font>
+	<select name="reminder">
+		<option value="">選択してください</option>
+		<!--{html_options options=$arrReminder selected=$arrForm.reminder}-->
+	</select><br>
+
+	【質問の答え】<font color="#FF0000">※</font><br>
+	<font color="#FF0000"><!--{$arrErr.reminder_answer}--></font>
+	<input type="text" name="reminder_answer" value="<!--{$arrForm.reminder_answer|h}-->" istyle="1"><br>
+
 	【メールマガジン】<br>
 	お得な情報を希望されますか？<br>
+	（希望されない場合はチェックをはずしてください）<br>
 	<input type="hidden" name="mailmaga_flg" value="3">
 	配信希望<input type="checkbox" name="mailmaga_flg" value="2" <!--{if  $arrForm.mailmaga_flg == 2}-->checked<!--{/if}--> /><br>
-	（希望されない場合はチェックをはずしてください）<br>
+	
 	<br>
 
-	<input type="submit" name="submit" value="次へ">
+	<center><input type="submit" name="submit" value="次へ"></center>
 
 	<!--{foreach from=$list_data key=key item=item}-->
 		<input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->">
 	<!--{/foreach}-->
 </form>
-
-<br>

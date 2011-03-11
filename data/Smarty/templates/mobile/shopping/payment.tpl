@@ -43,6 +43,12 @@
 ■お届け時間の指定<br>
 <!--{foreach item=shippingItem name=shippingItem from=$arrShipping}-->
 <!--{assign var=index value=$smarty.foreach.shippingItem.index}-->
+
+<!--{if $is_multiple}-->
+    ▼<!--{$shippingItem.shipping_name01}--><!--{$shippingItem.shipping_name02}-->
+    <!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01}--><!--{$shippingItem.shipping_addr02}--><br>
+<!--{/if}-->
+
 <!--★お届け日★-->
 <!--{assign var=key value="deliv_date`$index`"}-->
 <font color="#FF0000"><!--{$arrErr[$key]}--></font>
@@ -65,14 +71,10 @@
     <!--{html_options options=$arrDelivTime selected=$arrForm[$key].value}-->
 </select>
 <br>
-<!--{if $is_multiple}-->
-    &nbsp;<!--{$shippingItem.shipping_name01}--><!--{$shippingItem.shipping_name02}-->
-    &nbsp;<!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01}--><!--{$shippingItem.shipping_addr02}-->
-<!--{/if}-->
-<hr>
+
+<br>
 <!--{/foreach}-->
 <!--{/if}-->
-<br>
 
 ■その他お問い合わせ<br>
 <!--{assign var=key value="message"}-->
@@ -87,9 +89,9 @@
 ■ポイント使用の指定<br>
 1ポイントを<!--{$smarty.const.POINT_VALUE}-->円として使用する事ができます。<br>
 <br>
-<!--{$name01|h}--> <!--{$name02|h}-->様の、現在の所持ポイントは「<!--{$tpl_user_point|number_format|default:0}-->Pt」です。<br>
+<!--{$name01|h}--> <!--{$name02|h}-->様の、現在の所持ポイントは「<font color="#FF0000"><!--{$tpl_user_point|number_format|default:0}-->Pt</font>」です。<br>
 <br>
-今回ご購入合計金額： <!--{$arrPrices.subtotal|number_format}-->円<br>
+今回ご購入合計金額：<font color="#FF0000"><!--{$arrPrices.subtotal|number_format}-->円</font><br>
 (送料、手数料を含みません。)<br>
 <br>
 <input type="radio" name="point_check" value="1" <!--{$arrForm.point_check.value|sfGetChecked:1}-->>ポイントを使用する<br>
@@ -108,5 +110,3 @@
 <form action="<!--{$tpl_back_url|h}-->" method="get">
 <center><input type="submit" name="return" value="戻る"></center>
 </form>
-
-<br>

@@ -24,7 +24,7 @@
   <div id="undercolumn_entry">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
     <div id="completetext">
-      <em>会員登録の受付が完了いたしました。</em>
+      会員登録の受付が完了いたしました。
       <p>現在<em>仮会員</em>の状態です。<br />
         ご入力いただいたメールアドレス宛てに、ご連絡が届いておりますので、本会員登録になった上でお買い物をお楽しみください。<br />
         今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
@@ -34,10 +34,10 @@
         E-mail：<a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->"><!--{$arrSiteInfo.email02|escape:'hexentity'}--></a>
       </p>
 
-      <div class="tblareabtn">
-        <a href="<!--{$smarty.const.TOP_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage.gif','b_toppage');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_toppage.gif" width="150" height="30" alt="トップページへ" border="0" name="b_toppage" /></a>
-      </div>
     </div>
+      <div class="tblareabtn">
+	<a class="spbtn spbtn-medeum" href="<!--{$smarty.const.TOP_URLPATH}-->">トップページへ</a>
+      </div>
   </div>
 </div>
 <!--▲CONTENTS-->
