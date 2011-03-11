@@ -93,6 +93,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
 
                 $arrProduct_id = $this->getProducts($wheres, $objProduct, $page_max, $startno);
                 $this->arrProducts = $this->getProductList($arrProduct_id,$objProduct);
+                $this->arrForm = $arrPost;
             }
             break;
         default:

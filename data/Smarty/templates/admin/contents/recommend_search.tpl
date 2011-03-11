@@ -51,8 +51,8 @@ function func_submit( id ){
             <th>カテゴリ</th>
             <td>
                 <select name="search_category_id">
-                <option value="" selected="selected">選択してください</option>
-                <!--{html_options options=$arrCatList selected=$arrForm.search_category_id}-->
+                    <option value="" selected="selected">選択してください</option>
+                    <!--{html_options options=$arrCatList selected=$arrForm.search_category_id}-->
                 </select>
             </td>
         </tr>
