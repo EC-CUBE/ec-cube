@@ -84,11 +84,11 @@
 
 <!--{if $arrProduct.price01_max > 0}-->
 <!--★通常価格★-->
-<font color="#FF0000"><!--{$smarty.const.NORMAL_PRICE_TITLE}-->:
+<font color="#FF0000"><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(税込):
 <!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->
-<!--{$arrProduct.price01_min|number_format}-->
+<!--{$arrProduct.price01_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 <!--{else}-->
-<!--{$arrProduct.price01_min|number_format}-->～<!--{$arrProduct.price01_max|number_format}-->
+<!--{$arrProduct.price01_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$arrProduct.price01_max|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 <!--{/if}-->
 円</font>
 <br>

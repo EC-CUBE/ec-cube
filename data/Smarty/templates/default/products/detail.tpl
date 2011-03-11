@@ -109,9 +109,9 @@ $(document).ready(function() {
                     <span class="price">
                         <span id="price01_default">
                             <!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->
-                                <!--{$arrProduct.price01_min|number_format}-->
+                                <!--{$arrProduct.price01_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                             <!--{else}-->
-                                <!--{$arrProduct.price01_min|number_format}-->～<!--{$arrProduct.price01_max|number_format}-->
+                                <!--{$arrProduct.price01_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$arrProduct.price01_max|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                             <!--{/if}-->
                         </span><span id="price01_dynamic"></span>
                         円

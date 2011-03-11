@@ -123,17 +123,15 @@ function fnSetClassCategories(form, classcat_id2_selected) {
                 <!--{if $arrProduct.price01_max > 0}-->
                 <tr>
                     <th>
-                        <div class="normal_price">
-                        <!--{$smarty.const.NORMAL_PRICE_TITLE}-->：
-                        </div>
+                        <div class="normal_price"><!--{$smarty.const.NORMAL_PRICE_TITLE}--><span class="mini">(税込)</span>：</div>
                     </th>
                     <td>
                         <span class="price">
                             <span id="price01_default">
                                 <!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->
-                                    <!--{$arrProduct.price01_min|number_format}-->
+                                    <!--{$arrProduct.price01_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                                 <!--{else}-->
-                                    <!--{$arrProduct.price01_min|number_format}-->～<!--{$arrProduct.price01_max|number_format}-->
+                                    <!--{$arrProduct.price01_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$arrProduct.price01_max|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                                 <!--{/if}-->
                             </span><span id="price01_dynamic"></span>
                             円
