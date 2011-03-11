@@ -84,7 +84,7 @@ class LC_Page_Contact extends LC_Page_Ex {
             $objFormParam->convParam();
             $objFormParam->toLower('email');
             $objFormParam->toLower('email02');
-            $this->arrErr = $objFormParam->checkError();
+            $this->arrErr = $this->lfCheckError($objFormParam);
             // 入力値の取得
             $this->arrForm = $objFormParam->getFormParamList();
 
@@ -159,6 +159,21 @@ class LC_Page_Contact extends LC_Page_Ex {
         $objFormParam->addParam("お電話番号1", 'tel01', TEL_ITEM_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("お電話番号2", 'tel02', TEL_ITEM_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("お電話番号3", 'tel03', TEL_ITEM_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+    }
+
+    /**
+     * 入力内容のチェックを行なう.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return array 入力チェック結果の配列
+     */
+    function lfCheckError(&$objFormParam) {
+        // 入力データを渡す。
+        $arrForm =  $objFormParam->getHashArray();
+        $objErr = new SC_CheckError_Ex($arrForm);
+        $objErr->arrErr = $objFormParam->checkError();
+        $objErr->doFunc(array('メールアドレス', 'メールアドレス(確認)', 'email', "email02") ,array("EQUAL_CHECK"));
+        return $objErr->arrErr;
     }
 
     /**
