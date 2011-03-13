@@ -21,6 +21,6 @@
  *}-->
 <div id="main_image">
     <a href="<!--{$smarty.const.P_DETAIL_URLPATH}-->1" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/banner/bnr_top_main_on.jpg','bnr_top_main');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/banner/bnr_top_main.jpg','bnr_top_main');">
-        <img src="<!--{$TPL_URLPATH}-->img/banner/bnr_top_main.jpg" alt="Ú×‚Í‚±‚¿‚ç" id="bnr_top_main" name="bnr_top_main" />
+        <img src="<!--{$TPL_URLPATH}-->img/banner/bnr_top_main.jpg" alt="è©³ç´°ã¯ã“ã¡ã‚‰" id="bnr_top_main" name="bnr_top_main" />
     </a>
 </div>
