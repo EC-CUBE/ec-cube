@@ -116,26 +116,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
         }
 
         switch($this->getMode()) {
-        case 'preview':
-            // プレビューファイル作成
-            $prev_path = USER_INC_REALDIR . 'preview/bloc_preview.tpl';
-            // ディレクトリの作成
-            SC_Utils_Ex::sfMakeDir($prev_path);
-            $res = file_put_contents($prev_path, $_POST['bloc_html']);
-            if ($res === false) {
-                SC_Utils_Ex::sfDispException();
-            }
-
-            // プレビューデータ表示
-            $this->preview = 'on';
-            $this->arrBlocData['tpl_data'] = $_POST['bloc_html'];
-            $this->arrBlocData['tpl_path'] = $prev_path;
-            $this->arrBlocData['bloc_name'] = $_POST['bloc_name'];
-            $this->arrBlocData['filename'] = $_POST['filename'];
-            $this->text_row = $_POST['html_area_row'];
-            break;
         case 'confirm':
-            $this->preview = 'off';
             // エラーチェック
             $this->arrErr = $this->lfErrorCheck($_POST);
 
@@ -175,7 +156,6 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
             }
             break;
         case 'delete':
-            $this->preview = 'off';
              // DBへデータを更新する
             $objQuery = new SC_Query_Ex();     // DB操作オブジェクト
             $sql = "";                      // データ更新SQL生成用

@@ -86,15 +86,11 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
 
         // テンプレートのパス
         $template_path = $this->lfGetTemplatePath($device_type_id);
-        $preview_template_path = $this->lfGetPreviewTemplatePath();
 
         // データ更新処理
         if (isset($_POST['division']) && $_POST['division'] != '') {
             $division = $_POST['division'];
             $content = $_POST[$division]; // TODO no checked?
-            // プレビュー用のテンプレートに書き込む
-            $preview_template = $preview_template_path.'/'.$division.'.tpl';
-            $this->lfUpdateTemplate($preview_template, $content);
 
             switch ($this->getMode()) {
             case 'regist':
@@ -103,43 +99,18 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
                 $this->lfUpdateTemplate($template, $content);
                 $this->tpl_onload="alert('登録が完了しました。');";
                 break;
-            case 'preview':
-                if ($division == 'header') $this->header_prev = 'on';
-                if ($division == 'footer') $this->footer_prev = 'on';
-                $this->header_row = isset($_POST['header_row']) ? $_POST['header_row'] : $this->header_row;
-                $this->footer_row = isset($_POST['footer_row']) ? $_POST['footer_row'] : $this->footer_row;
-                break;
             default:
                 // なにもしない
                 break;
             }
-        }else{
-            // postでデータが渡されなければ新規読み込みと判断をし、
-            // プレビュー用テンプレートに正規のテンプレートをロードする
-            $templates = array(
-                'header.tpl',
-                'footer.tpl'
-            );
-            $this->lfLoadPreviewTemplates($preview_template_path, $template_path, $templates);
         }
 
         // テキストエリアに表示
-        $this->header_data = file_get_contents($preview_template_path . '/header.tpl');
-        $this->footer_data = file_get_contents($preview_template_path . '/footer.tpl');
+        $this->header_data = file_get_contents($template_path . '/header.tpl');
+        $this->footer_data = file_get_contents($template_path . '/footer.tpl');
 
         // ブラウザタイプ
         $this->browser_type = isset($_POST['browser_type']) ? $_POST['browser_type'] : "";
-    }
-
-    protected function lfLoadPreviewTemplates($preview_template_path, $template_path, $templates) {
-        if (!is_dir($preview_template_path)) {
-            mkdir($preview_template_path);
-        }
-        foreach($templates as $template) {
-            $source = $template_path . '/' . $template;
-            $dest = $preview_template_path . '/' . $template;
-            copy($source, $dest);
-        }
     }
 
     protected function lfUpdateTemplate($template, $content) {
@@ -151,10 +122,6 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
     protected function lfGetTemplatePath($device_type_id) {
         $objLayout = new SC_Helper_PageLayout_Ex();
         return $objLayout->getTemplatePath($device_type_id);
-    }
-
-    protected function lfGetPreviewTemplatePath() {
-        return USER_INC_REALDIR . 'preview';
     }
 
     /**

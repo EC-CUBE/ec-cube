@@ -29,18 +29,6 @@ XXX: ヘッダーとフッターでwrapの設定が違うのは疑問。それ�
 <div id="design" class="contents-main">
     <!--{* ▼ヘッダー編集ここから *}-->
     <h2>ヘッダー編集</h2>
-    <!--{* プレビューここから *}-->
-    <!--{if $header_prev == "on"}-->
-    <div id="design-header-preview">
-        <!--{if $browser_type == 1}-->
-            <div style="zoom:0.8"><!--{include file="`$smarty.const.USER_REALDIR`include/preview/header.tpl"}--></div>
-        <!--{else}-->
-            <span class="attention"><strong>プレビューはIEでのみ表示されます。</strong></span>
-        <!--{/if}-->
-    </div>
-    <!--{/if}-->
-    <!--{* プレビューここまで *}-->
-
     <form name="form_header" id="form_header" method="post" action="?" >
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="" />
@@ -56,7 +44,6 @@ XXX: ヘッダーとフッターでwrapの設定が違うのは疑問。それ�
 
         <div class="btn-area">
                 <ul>
-                    <li><a class="btn-action" href="javascript:;" name='preview' onclick="lfnSetBrowser('form_header', 'browser_type'); fnFormModeSubmit('form_header','preview','',''); return false;"><span class="btn-prev">プレビュー</span></a></li>
                     <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_header','regist','',''); return false;"><span class="btn-next">登録する</span></a></li>
                 </ul>
         </div>

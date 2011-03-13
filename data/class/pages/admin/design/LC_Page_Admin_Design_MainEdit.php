@@ -105,11 +105,6 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         }
 
         switch ($this->getMode()) {
-        case 'preview':
-            $this->lfPreviewPageData($page_id, $device_type_id);
-            exit;
-            break;
-
         case 'delete':
             if (!$this->objLayout->lfCheckBaseData($page_id, $device_type_id)) {
                 $this->lfDeletePageData($page_id, $device_type_id);
@@ -165,56 +160,6 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         $arrPageData[0]['filename'] = preg_replace('|^' . preg_quote(USER_DIR) . '|', '', $arrPageData[0]['filename']);
 
         return $arrPageData[0];
-    }
-
-    /**
-     * プレビュー画面を表示する.
-     *
-     * @param integer $page_id_old 元のページID
-     * @param integer $device_type_id 端末種別ID
-     * @return void
-     */
-    function lfPreviewPageData($page_id_old, $device_type_id) {
-
-        // プレビューの場合ページIDを0にセットする。
-        $page_id = '0';
-        $url = 'preview/index';
-
-        $arrPreData = $this->objLayout->lfGetPageData("page_id = ? AND device_type_id = ?",
-                                                      array($page_id, $device_type_id));
-
-        // DBへデータを更新する
-        $this->lfEntryPageData(
-            $device_type_id,
-            $page_id,
-            $_POST['page_name'],
-            $url,
-            $_POST['header_chk'],
-            $_POST['footer_chk']
-        );
-
-        // TPLファイル作成
-        $cre_tpl = $this->objLayout->getTemplatePath($device_type_id) . "{$url}.tpl";
-        $this->lfCreateFile($cre_tpl, $_POST['tpl_data']);
-
-        // blocposition を削除
-        $objQuery = new SC_Query_Ex(); // DB操作オブジェクト
-        $ret = $objQuery->delete('dtb_blocposition', 'page_id = 0 AND device_type_id = ?', array($device_type_id));
-
-        if ($page_id_old != "") {
-            // 登録データを取得
-            $sql = 'SELECT target_id, bloc_id, bloc_row FROM dtb_blocposition WHERE page_id = ? AND device_type_id = ?';
-            $ret = $objQuery->getAll($sql, array($page_id_old, $device_type_id));
-
-            // blocposition を複製
-            foreach($ret as $row){
-                $row['page_id'] = $page_id;
-                $row['device_type_id'] = $device_type_id;
-                $objQuery->insert('dtb_blocposition', $row);
-            }
-        }
-        $_SESSION['preview'] = 'ON';
-        SC_Response_Ex::sendRedirectFromUrlPath('preview/' . DIR_INDEX_PATH, array('filename' => $arrPageData[0]['filename']));
     }
 
     /**

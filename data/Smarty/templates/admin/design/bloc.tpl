@@ -28,14 +28,6 @@
 <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 
     <!--{* ▼ブロック設定 *}-->
-
-    <!--{if $arrBlocData.tpl_path != '' and $preview == on}-->
-    <h3>プレビュー：</h3>
-    <div id="design-bloc-preview">
-        <!--{include file=$arrBlocData.tpl_path}-->
-    </div>
-    <!--{/if}-->
-
     <table>
         <tr>
             <th>ブロック名</th>
@@ -64,7 +56,6 @@
     </table>
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" name='preview' onclick="fnFormModeSubmit('form_bloc','preview','',''); return false;"><span class="btn-prev">プレビュー</span></a></li>
             <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_bloc','confirm','',''); return false;"><span class="btn-next">登録する</span></a></li>
         </ul>
     </div>

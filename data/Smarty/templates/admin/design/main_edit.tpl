@@ -23,12 +23,6 @@
 *}-->
 <script type="text/javascript">
 <!--
-function doPreview(){
-    document.form_edit.mode.value="preview"
-    document.form_edit.target = "_blank";
-    document.form_edit.submit();
-}
-
 function fnTargetSelf(){
     document.form_edit.target = "_self";
 }
@@ -102,7 +96,6 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" name='preview' onclick="doPreview(); return false;"><span class="btn-prev">プレビュー</span></a></li>
             <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','confirm','',''); return false;"><span class="btn-next">登録する</span></a></li>
         </ul>
     </div>
