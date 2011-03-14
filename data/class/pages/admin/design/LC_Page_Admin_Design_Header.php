@@ -113,13 +113,13 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
         $this->browser_type = isset($_POST['browser_type']) ? $_POST['browser_type'] : "";
     }
 
-    protected function lfUpdateTemplate($template, $content) {
+    function lfUpdateTemplate($template, $content) {
         $fp = fopen($template,'w');
         fwrite($fp, $content);
         fclose($fp);
     }
 
-    protected function lfGetTemplatePath($device_type_id) {
+    function lfGetTemplatePath($device_type_id) {
         $objLayout = new SC_Helper_PageLayout_Ex();
         return $objLayout->getTemplatePath($device_type_id);
     }
