@@ -72,9 +72,9 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
         $objFormParam = new SC_FormParam_Ex();
 
         $mode = $this->getMode();
+        $this->lfInitParam($mode, $objFormParam);
 
         if (!empty($_POST) || !empty($_GET)) {
-            $this->lfInitParam($mode, $objFormParam);
 
             $param = (empty($_POST))? $_GET : $_POST;
 
@@ -191,6 +191,12 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
                 break;
 
             default:
+                $objFormParam->addParam("支払方法", "payment_method", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+                $objFormParam->addParam("手数料", "charge", PRICE_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+                $objFormParam->addParam("利用条件(～円以上)", "rule", PRICE_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+                $objFormParam->addParam("利用条件(～円以下)", "upper_rule", PRICE_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+                $objFormParam->addParam("固定", "fix");
+
                 break;
         }
     }
