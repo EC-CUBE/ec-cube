@@ -334,7 +334,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      */
     function getRankMax(){
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $col = 'MAX(rank)';
+        $col = 'MAX(rank) as max';
         $table = 'dtb_news';
         $where = 'del_flg = 0';
         list($result) = $objQuery->select($col, $table, $where);
