@@ -53,16 +53,6 @@ XXX: ヘッダーとフッターでwrapの設定が違うのは疑問。それ�
 
     <!--{* ▼フッター編集ここから *}-->
     <h2>フッター編集</h2>
-    <!--{if $footer_prev == "on"}-->
-    <div id="design-footer-preview">
-        <!--{if $browser_type == 1}-->
-            <div style="zoom:0.8"><!--{include file="`$smarty.const.USER_REALDIR`/include/preview/footer.tpl"}--></div>
-        <!--{else}-->
-            <span class="attention"><strong>プレビューはIEでのみ表示されます。</strong></span>
-        <!--{/if}-->
-    </div>
-    <!--{/if}-->
-
     <form name="form_footer" id="form_footer" method="post" action="?" >
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="" />
@@ -78,7 +68,6 @@ XXX: ヘッダーとフッターでwrapの設定が違うのは疑問。それ�
 
         <div class="btn-area">
                 <ul>
-                    <li><a class="btn-action" href="javascript:;" name='preview' onclick="lfnSetBrowser('form_footer', 'browser_type'); fnFormModeSubmit('form_footer','preview','',''); return false;"><span class="btn-prev">プレビュー</span></a></li>
                     <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_footer','regist','',''); return false;"><span class="btn-next">登録する</span></a></li>
                 </ul>
         </div>
