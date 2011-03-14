@@ -54,7 +54,7 @@ class SC_Query {
             $dsn = DEFAULT_DSN;
         }
 
-        // Debugモード指定 
+        // Debugモード指定
         // 常時ONにするとメモリが解放されない。
         // 連続クエリ実行時に問題が生じる。
         if(DEBUG_MODE) {
@@ -222,7 +222,7 @@ class SC_Query {
      *
      * @param callback $function コールバック先
      * @param string $sql SQL クエリ
-     * @param array $arrVal プリペアドステートメントの実行時に使用される配列。配列の要素数は、クエリ内のプレースホルダの数と同じでなければなりません。 
+     * @param array $arrVal プリペアドステートメントの実行時に使用される配列。配列の要素数は、クエリ内のプレースホルダの数と同じでなければなりません。
      * @param integer $fetchmode 使用するフェッチモード。デフォルトは DB_FETCHMODE_ASSOC。
      * @return boolean 結果
      */
@@ -254,7 +254,7 @@ class SC_Query {
      * クエリを実行し、全ての行を返す
      *
      * @param string $sql SQL クエリ
-     * @param array $arrVal プリペアドステートメントの実行時に使用される配列。配列の要素数は、クエリ内のプレースホルダの数と同じでなければなりません。 
+     * @param array $arrVal プリペアドステートメントの実行時に使用される配列。配列の要素数は、クエリ内のプレースホルダの数と同じでなければなりません。
      * @param integer $fetchmode 使用するフェッチモード。デフォルトは DB_FETCHMODE_ASSOC。
      * @return array データを含む2次元配列。失敗した場合に 0 または DB_Error オブジェクトを返します。
      */
@@ -906,6 +906,7 @@ class SC_Query {
                 error_log($this->traceError($affected, $sql), 3, LOG_REALFILE);
             }
         }
+        $this->conn->last_query = stripslashes($sth->query);
         return $affected;
     }
 
