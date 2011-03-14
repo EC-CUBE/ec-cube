@@ -134,10 +134,12 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
                 $new_bloc_path = $package_path . $_POST['filename'] . ".tpl";
                 // ディレクトリの作成
                 SC_Utils_Ex::sfMakeDir($new_bloc_path);
-                $res = file_put_contents($new_bloc_path, $_POST['bloc_html']);
-                if ($res === false) {
+                $fp = fopen($new_bloc_path,"w");
+                if (!$fp) {
                     SC_Utils_Ex::sfDispException();
                 }
+                fwrite($fp, $_POST['bloc_html']); // FIXME いきなり POST はちょっと...
+                fclose($fp);
 
                 $arrBlocData = $this->lfGetBlocData("filename = ? AND device_type_id = ?",
                                                     array($_POST['filename'], $device_type_id));
