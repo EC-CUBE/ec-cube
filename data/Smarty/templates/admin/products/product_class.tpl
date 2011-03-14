@@ -23,6 +23,7 @@
 *}-->
 <script type="text/javascript">//<![CDATA[
 $(function() {
+    // 無制限チェックボックスの初期化
     $('input[id^=stock_unlimited_]').each(function() {
         var index = $(this).attr('id').replace(/^stock_unlimited_/ig, '');
         var checked = $(this).attr('checked');
@@ -34,6 +35,7 @@ $(function() {
         }
     });
 
+    // 無制限チェックボックス
     $('input[id^=stock_unlimited_]').change(function() {
         var index = $(this).attr('id').replace(/^stock_unlimited_/ig, '');
         var checked = $(this).attr('checked');
@@ -47,6 +49,55 @@ $(function() {
                 .attr('readonly', false)
                 .css('background-color', '');
         }
+    });
+
+    // 1行目をコピーボタン
+    $('#copy_from_first').click(function() {
+        var check = $('#check_0').attr('checked');
+        $('input[id^=check_]').attr('checked', check);
+
+        var product_code = $('#product_code_0').val();
+        $('input[id^=product_code_]').val(product_code);
+
+        var stock = $('#stock_0').val();
+        $('input[id^=stock_]').val(stock);
+
+        var stock_unlimited = $('#stock_unlimited_0').attr('checked');
+        $('input[id^=stock_unlimited_]').each(function() {
+            var checked = stock_unlimited;
+            var index = $(this).attr('id').replace(/^stock_unlimited_/ig, '');
+            $(this).attr('checked', checked);
+            if (checked) {
+                $('#stock_' + index)
+                    .attr('readonly', true)
+                    .css('background-color', '<!--{$smarty.const.DISABLED_RGB}-->');
+            } else {
+                $('#stock_' + index)
+                    .attr('readonly', false)
+                    .css('background-color', '');
+            }
+        });
+
+        var price01 = $('#price01_0').val();
+        $('input[id^=price01_]').val(price01);
+
+        var price02 = $('#price02_0').val();
+        $('input[id^=price02_]').val(price02);
+
+        var product_type_id_value = '';
+        $('input[id^=product_type_id_0_]').each(function() {
+            if ($(this).attr('checked')) {
+                product_type_id_value = $(this).val();
+            }
+        });
+        $('input[id^=product_type_id_]').each(function() {
+            if ($(this).val() == product_type_id_value) {
+                $(this).attr('checked', true);
+            }
+        });
+
+        var down_filename = $('#down_filename_0').val();
+        $('input[id^=down_filename_]').val(down_filename);
     });
 });
 //]]>
@@ -67,9 +118,7 @@ $(function() {
 <input type="hidden" name="product_id" value="<!--{$arrForm.product_id.value|h}-->" />
 <input type="hidden" name="upload_index" value="">
 <input type="hidden" name="total" value="<!--{$arrForm.total.value|h}-->" />
-<!--{* foreach key=name item=item from=$arrHidden *}-->
-<input type="hidden" name="<!--{$name}-->" value="<!--{$item|h}-->" />
-<!--{* /foreach *}-->
+
 <div id="products" class="contents-main">
 
     <table>
@@ -124,7 +173,7 @@ $(function() {
     <!--{/foreach}-->
 
     <div class="list-info clearfix">
-        <div class="btn"><a class="btn-normal" href="javascript:;" onclick="fnCopyValue('<!--{$cnt}-->', '<!--{$smarty.const.DISABLED_RGB}-->'); return false;"><span>一行目のデータをコピーする</span></a></div>
+        <div class="btn"><a class="btn-normal" href="javascript:;" id="copy_from_first"><span>一行目のデータをコピーする</span></a></div>
         <p><span class="bold">アップロード可能な拡張子：</span><!--{$smarty.const.DOWNLOAD_EXTENSION}-->(パラメータ DOWNLOAD_EXTENSION)</p>
     </div>
 
@@ -171,7 +220,7 @@ $(function() {
                     <!--{if $arrErr[$key][$index]}-->
                         <span class="attention"><!--{$arrErr[$key][$index]}--></span>
                     <!--{/if}-->
-                    <input type="checkbox" name="<!--{$key}-->[<!--{$index}-->]" value="1" <!--{if $arrForm[$key].value[$index] == 1}-->checked="checked"<!--{/if}--> />
+                    <input type="checkbox" name="<!--{$key}-->[<!--{$index}-->]" value="1" <!--{if $arrForm[$key].value[$index] == 1}-->checked="checked"<!--{/if}--> id="<!--{$key}-->_<!--{$index}-->" />
                 </td>
                 <td class="center">
                     <!--{assign var=key value="classcategory_name1"}-->
@@ -194,7 +243,7 @@ $(function() {
                     <!--{if $arrErr[$key][$index]}-->
                         <span class="attention"><!--{$arrErr[$key][$index]}--></span>
                     <!--{/if}-->
-                    <input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" size="6" class="box6" maxlength="<!--{$arrForm[$key].length}-->" <!--{if $arrErr[$key][$index] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                    <input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" size="6" class="box6" maxlength="<!--{$arrForm[$key].length}-->" <!--{if $arrErr[$key][$index] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> id="<!--{$key}-->_<!--{$index}-->" />
                 </td>
                 <td class="center">
                     <!--{assign var=key value="stock"}-->
@@ -206,35 +255,37 @@ $(function() {
                     <!--{if $arrErr[$key][$index]}-->
                         <span class="attention"><!--{$arrErr[$key][$index]}--></span>
                     <!--{/if}-->
-                    <input type="checkbox" name="<!--{$key}-->[<!--{$index}-->]" value="1" <!--{if $arrForm[$key].value[$index] == "1"}-->checked="checked"<!--{/if}--> onClick="fnCheckStockNoLimit('<!--{$index}-->','<!--{$smarty.const.DISABLED_RGB}-->');" id="<!--{$key}-->_<!--{$index}-->" /><label for="<!--{$key}-->_<!--{$index}-->">無制限</label>
+                    <input type="checkbox" name="<!--{$key}-->[<!--{$index}-->]" value="1" <!--{if $arrForm[$key].value[$index] == "1"}-->checked="checked"<!--{/if}--> id="<!--{$key}-->_<!--{$index}-->" /><label for="<!--{$key}-->_<!--{$index}-->">無制限</label>
                 </td>
                 <td class="center">
                     <!--{assign var=key value="price01"}-->
                     <!--{if $arrErr[$key][$index]}-->
                         <span class="attention"><!--{$arrErr[$key][$index]}--></span>
                     <!--{/if}-->
-                    <input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" size="6" class="box6" maxlength="<!--{$arrForm[$key].length}-->" <!--{if $arrErr[$key][$index] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                    <input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" size="6" class="box6" maxlength="<!--{$arrForm[$key].length}-->" <!--{if $arrErr[$key][$index] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> id="<!--{$key}-->_<!--{$index}-->" />
                 </td>
                 <td class="center">
                     <!--{assign var=key value="price02"}-->
                     <!--{if $arrErr[$key][$index]}-->
                         <span class="attention"><!--{$arrErr[$key][$index]}--></span>
                     <!--{/if}-->
-                    <input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" size="6" class="box6" maxlength="<!--{$arrForm[$key].length}-->" <!--{if $arrErr[$key][$index] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                    <input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" size="6" class="box6" maxlength="<!--{$arrForm[$key].length}-->" <!--{if $arrErr[$key][$index] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> id="<!--{$key}-->_<!--{$index}-->" />
                 </td>
                 <td class="class-product-type">
                     <!--{assign var=key value="product_type_id"}-->
                     <!--{if $arrErr[$key][$index]}-->
                         <span class="attention"><!--{$arrErr[$key][$index]}--></span>
                     <!--{/if}-->
-                    <!--{html_radios name="`$key`[`$index`]" options=$arrProductType selected=$arrForm[$key].value[$index]|h separator='<br />'}-->
+                    <!--{foreach from=$arrProductType key=productTypeKey item=productType name=productType}-->
+                        <input type="radio" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$productTypeKey}-->" <!--{if $arrForm[$key].value[$index] == $productTypeKey}-->checked="checked"<!--{/if}--> <!--{if $arrErr[$key][$index] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> id="<!--{$key}-->_<!--{$index}-->_<!--{$smarty.foreach.productType.index}-->"><label for="<!--{$key}-->_<!--{$index}-->_<!--{$smarty.foreach.productType.index}-->"<!--{if $arrErr[$key][$index] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> ><!--{$productType}--></label><!--{if !$smarty.foreach.productType.last}--><br /><!--{/if}-->
+                    <!--{/foreach}-->
                 </td>
                 <td class="center">
                     <!--{assign var=key value="down_filename}-->
                     <!--{if $arrErr[$key][$index]}-->
                         <span class="attention"><!--{$arrErr[$key][$index]}--></span>
                     <!--{/if}-->
-                    <input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{if $arrErr[$key][$index] != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="10" />
+                    <input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{if $arrErr[$key][$index] != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="10" id="<!--{$key}-->_<!--{$index}-->" />
                 </td>
                 <td>
                     <!--{assign var=key value="down_realfilename"}-->

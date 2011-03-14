@@ -99,15 +99,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
             else {
                 $objFormParam->setParam($_POST);
                 $objFormParam->convParam();
-
-                /* TODO
-                // Hiddenからのデータを引き継ぐ
-                $this->objDownFile->setHiddenFileList($_POST);
-                // HIDDEN用に配列を渡す。
-                $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
-                // Form用に配列を渡す。
-                $this->arrForm = array_merge((array)$this->arrForm, (array)$this->objDownFile->getFormKikakuDownFile());
-                */
             }
             break;
 
@@ -120,11 +111,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         // 初期表示
         case 'pre_edit':
             $this->doPreEdit($objFormParam);
-
-            /* TODO
-            // HIDDEN用に配列を渡す。
-            $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
-            */
             break;
 
         // 「表示する」ボタン押下時
@@ -466,6 +452,9 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
             }
             $objFormParam->setValue($key, $arrValues);
         }
+
+        // 商品種別を 1 に初期化
+        $objFormParam->setValue('product_type_id', array_pad(array(), $total, 1));
     }
 
     /**

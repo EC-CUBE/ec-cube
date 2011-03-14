@@ -334,20 +334,6 @@ function fnDelListContents(sel1, sel2, mode_name) {
     fm.submit();
 }
 
-//一行目の価格を以下の行にコピーする
-function fnCopyValue(length, icolor) {
-    fm = document.form1;
-    for(i = 1; i <= length; i++) {
-        fm['product_code:' + i].value = fm['product_code:1'].value;
-        fm['stock:' + i].value = fm['stock:1'].value;
-        fm['price01:' + i].value = fm['price01:1'].value;
-        fm['price02:' + i].value = fm['price02:1'].value;
-        fm['stock_unlimited:' + i].checked = fm['stock_unlimited:1'].checked;
-        fm['stock:' + i].disabled = fm['stock:1'].disabled;
-        fm['stock:' + i].style.backgroundColor = fm['stock:1'].style.backgroundColor;
-    }
-}
-
 // タグの表示非表示切り替え
 function fnDispChange(disp_id, inner_id, disp_flg){
     disp_state = document.getElementById(disp_id).style.display;
