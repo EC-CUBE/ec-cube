@@ -75,6 +75,7 @@ function selectAll(target) {
 <input type="hidden" name="product_class_id" value="<!--{$arrForm.product_class_id}-->" />
 <input type="hidden" name="copy_product_id" value="<!--{$arrForm.copy_product_id}-->" />
 <input type="hidden" name="anchor_key" value="" />
+<input type="hidden" name="select_recommend_no" value="" />
 <input type="hidden" name="has_product_class" value="<!--{$arrForm.has_product_class|h}-->" />
 <!--{foreach key=key item=item from=$arrForm.arrHidden}-->
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
@@ -416,10 +417,10 @@ function selectAll(target) {
                 <a class="btn-normal" href="javascript:;" name="change" onclick="selectAll('category_id'); win03('./product_select.php?no=<!--{$smarty.section.cnt.iteration}-->', 'search', '615', '500'); return false;">変更</a>
                 <!--{assign var=key value="recommend_delete`$smarty.section.cnt.iteration`"}-->
                 <input type="checkbox" name="<!--{$key}-->" value="1" />削除<br />
+               <!--{assign var=key value="recommend_comment`$smarty.section.cnt.iteration`"}-->
+                <span class="attention"><!--{$arrErr[$key]}--></span>
                 商品コード:<!--{$arrRecommend[$recommend_no].product_code_min}--><br />
                 商品名:<!--{$arrRecommend[$recommend_no].name|h}--><br />
-                <!--{assign var=key value="recommend_comment`$smarty.section.cnt.iteration`"}-->
-                <span class="attention"><!--{$arrErr[$key]}--></span>
                 <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrRecommend[$recommend_no].comment|h}--></textarea><br />
                 <span class="attention"> (上限<!--{$smarty.const.LTEXT_LEN}-->文字)</span>
             </td>

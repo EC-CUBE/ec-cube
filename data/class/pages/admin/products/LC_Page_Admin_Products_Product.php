@@ -234,8 +234,12 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
             $arrForm = $objFormParam->getHashArray();
             // 入力画面表示設定
             $this->arrForm = $this->lfSetViewParam_InputPage($objUpFile, $objDownFile, $arrForm);
+
+            // 選択された関連商品IDがすでに登録している関連商品と重複していないかチェック
+            $this->lfCheckError_RecommendSelect($this->arrForm, $this->arrErr);
+
             // ページonload時のJavaScript設定
-            $anchor_hash = $this->getAnchorHash($arrForm['anchor_key']);
+            $anchor_hash = $this->getAnchorHash($this->arrForm['anchor_key']);
             $this->tpl_onload = $this->lfSetOnloadJavaScript_InputPage($anchor_hash);
             break;
 
@@ -345,7 +349,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
             $objFormParam->addParam("recommend_delete" . $cnt, "recommend_delete" . $cnt, '', 'n', array());
         }
 
-                $objFormParam->addParam("商品ID", "copy_product_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("商品ID", "copy_product_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
 
         $objFormParam->addParam("has_product_class", "has_product_class", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("product_class_id", "product_class_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
@@ -385,6 +389,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
      */
     function lfInitFormParam_RecommendSelect(&$objFormParam) {
         $objFormParam->addParam("anchor_key", "anchor_key", "", "", array());
+        $objFormParam->addParam("select_recommend_no", "select_recommend_no", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
     }
 
     /**
@@ -454,6 +459,35 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
 
         $arrErr = array_merge((array)$arrErr, (array)$objErr->arrErr);
         return $arrErr;
+    }
+
+    /**
+     * 関連商品の重複登録チェック、エラーチェック
+     *
+     * 関連商品の重複があった場合はエラーメッセージを格納し、該当の商品IDをリセットする
+     *
+     * @param array $arrForm 入力値の配列
+     * @param array $arrErr エラーメッセージの配列
+     * @return void
+     */
+    function lfCheckError_RecommendSelect(&$arrForm, &$arrErr) {
+        $select_recommend_no = $arrForm['select_recommend_no'];
+        $select_recommend_id = $arrForm['recommend_id' . $select_recommend_no];
+
+        foreach(array_keys($arrForm) as $key) {
+            if(preg_match('/^recommend_id/', $key)) {
+                if($select_recommend_no == preg_replace('/^recommend_id/', '', $key)) {
+                    continue;
+                }
+
+                if($select_recommend_id == $arrForm[$key]) {
+                    // 重複した場合、選択されたデータをリセットする
+                    $arrForm['recommend_id' . $select_recommend_no] = '';
+                    $arrErr['recommend_comment' . $select_recommend_no] = '※ すでに登録されている関連商品です。<br />';
+                    break;
+                }
+            }
+        }
     }
 
     /**
