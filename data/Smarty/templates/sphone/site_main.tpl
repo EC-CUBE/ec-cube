@@ -150,12 +150,11 @@
 <!--{* ▲FooterBottom COLUMN*}-->
 
 </body>
-
-<!--{if "/\/index.tpl$/"|preg_match:$tpl_mainpage}-->
-<!--{else}-->
-<script type="text/javascript" language="JavaScript">
-//<![CDATA[
-setTopButton("<!--{$smarty.const.HTTPS_URL}-->");
-//]]>
+<!--{assign var=index value="`$smarty.const.ROOT_URLPATH``$smarty.const.DIR_INDEX_FILE`"}-->
+<!--{if $index != $smarty.server.PHP_SELF}-->
+    <script type="text/javascript" language="JavaScript">
+    //<![CDATA[
+    setTopButton("<!--{$smarty.const.HTTPS_URL}-->");
+    //]]>
+    </script>
 <!--{/if}-->
-</script>
