@@ -59,7 +59,7 @@
     <!--▼CSSファイル一覧　ここから-->
     <h2>編集可能CSSファイル</h2>
     <div class="btn addnew">
-        <a class="btn-normal" href="?"><span>CSSを新規入力</span></a>
+        <a class="btn-normal" href="?" onclick="fnFormModeSubmit('form_css','','',''); return false;"><span>CSSを新規入力</span></a>
     </div>
     <table class="list" id="design-css-list">
         <tr>
