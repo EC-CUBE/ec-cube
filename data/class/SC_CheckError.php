@@ -1184,12 +1184,20 @@ class SC_CheckError {
         }
     }
 
-    /*
+    /**
      * 値が数字だけかどうかチェックする
      *
      * @access private
+     * @param string $string チェックする文字列
+     * @return boolean 値が10進数の数値表現のみの場合 true
      */
     function numelicCheck($string) {
+        /*
+         * XXX 10進数の数値表現か否かを調べたいだけだが,
+         * ctype_digit() は文字列以外 false を返す.
+         * string ではなく int 型の数値が入る場合がある.
+         */
+        $string = (string) $string;
         return strlen($string) > 0 && !ctype_digit($string);
     }
 }
