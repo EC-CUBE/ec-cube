@@ -140,5 +140,12 @@ __EOS__;
         }
         return false;
     }
+
+    /**
+     * 決済モジュールから遷移する場合があるため, トークンチェックしない.
+     */
+    function doValidToken() {
+        // nothing.
+    }
 }
 ?>
