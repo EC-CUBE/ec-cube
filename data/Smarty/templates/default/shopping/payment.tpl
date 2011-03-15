@@ -217,7 +217,8 @@
                 <!--{else}-->
                     <select name="<!--{$key}-->" id="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
                         <option value="" selected="">指定なし</option>
-                        <!--{html_options options=$arrDelivDate selected=$arrForm[$key].value}-->
+                        <!--{assign var=shipping_date_value value=$arrForm[$key].value|default:$shippingItem.shipping_date}-->
+                        <!--{html_options options=$arrDelivDate selected=$shipping_date_value}-->
                     </select>
                 <!--{/if}-->
                 <!--★お届け時間★-->
@@ -226,7 +227,8 @@
                 <span class="st">お届け時間：</span>
                 <select name="<!--{$key}-->" id="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
                     <option value="" selected="">指定なし</option>
-                    <!--{html_options options=$arrDelivTime selected=$arrForm[$key].value}-->
+                    <!--{assign var=shipping_time_value value=$arrForm[$key].value|default:$shippingItem.time_id}-->
+                    <!--{html_options options=$arrDelivTime selected=$shipping_time_value}-->
                 </select>
                 <!--{if $is_multiple}-->
                     <br />
