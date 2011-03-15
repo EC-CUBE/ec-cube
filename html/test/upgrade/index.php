@@ -38,7 +38,7 @@ require_once '../../require.php';
  * product_idは重複しない値を設定してください.
  * 本番商品との重複を避けるためにも大きめの値を設定しておくとよいかもしれません.
  */
-$arrProductsList = array(
+$GLOBALS['productsList'] = array(
     // サンプルモジュール
     array(
         'name' => 'サンプルモジュール',
@@ -86,14 +86,13 @@ function getMode() {
  *
  */
 function displayProductsList() {
-    global $arrProductsList;
     $arrRet = array(
         'status' => 'SUCCESS',
-        'data'   => $arrProductsList
+        'data'   => $GLOBALS['productsList']
     );
 
     // FIXME 一覧を取得するたびに更新されるのは微妙かも..
-    updateModuleTable($arrProductsList);
+    updateModuleTable($GLOBALS['productsList']);
 
     echo SC_Utils_Ex::jsonEncode($arrRet);
 }
@@ -106,8 +105,9 @@ function displayProductsList() {
 function updateModuleTable($arrProductsList) {
     $table = 'dtb_module';
     $where = 'module_id = ?';
-    $objQuery = new SC_Query;
+    $objQuery =& SC_Query_Ex::getSingletonInstance();
 
+    $objQuery->begin();
     foreach ($arrProductsList as $arrProduct) {
         $count = $objQuery->count($table, $where, array($arrProduct['product_id']));
         if ($count) {
@@ -132,5 +132,6 @@ function updateModuleTable($arrProductsList) {
             $objQuery->insert($table, $arrInsert);
         }
     }
+    $objQuery->commit();
 }
 ?>
