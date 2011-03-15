@@ -82,7 +82,6 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
 
         // カートの情報を取得
         $this->arrShipping =& $objPurchase->getShippingTemp();
-        $shipping_vol = count($this->arrShipping);
 
         $this->is_multiple = $objPurchase->isMultiple();
         $this->tpl_uniqid = $objSiteSess->getUniqId();
@@ -130,7 +129,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
          * モバイル端末以外の場合は, JSON 形式のデータを出力し, ajax で取得する.
          */
         case 'select_deliv':
-            $this->setFormParams($objFormParam, $_POST, true, $shipping_vol);
+            $this->setFormParams($objFormParam, $_POST, true, $this->arrShipping);
 
             $arrErr = $objFormParam->checkError();
             if (SC_Utils_Ex::isBlank($arrErr)) {
@@ -153,7 +152,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
         // 登録処理
         case 'confirm':
             // パラメータ情報の初期化
-            $this->setFormParams($objFormParam, $_POST, false, $shipping_vol);
+            $this->setFormParams($objFormParam, $_POST, false, $this->arrShipping);
 
             $deliv_id = $objFormParam->getValue('deliv_id');
             $arrSelectedDeliv = $this->getSelectedDeliv($objPurchase, $objCartSess, $deliv_id);
@@ -189,7 +188,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
 
         default:
             // FIXME 前のページから戻ってきた場合は別パラメータ(mode)で処理分岐する必要があるのかもしれない
-            $this->setFormParams($objFormParam, $arrOrderTemp, false, $shipping_vol);
+            $this->setFormParams($objFormParam, $arrOrderTemp, false, $this->arrShipping);
 
             if (!$this->is_single_deliv) {
                 $deliv_id = $objFormParam->getValue('deliv_id');
@@ -201,7 +200,6 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
                 $objFormParam->setValue('deliv_id', $deliv_id);
                 $arrSelectedDeliv = $this->getSelectedDeliv($objPurchase, $objCartSess, $deliv_id);
                 $this->arrPayment = $arrSelectedDeliv['arrPayment'];
-                // XXX セッションからデフォルト値を取得する必要あり
                 $this->arrDelivTime = $arrSelectedDeliv['arrDelivTime'];
                 $this->img_show = $arrSelectedDeliv['img_show'];
             }
@@ -231,10 +229,10 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @param array $arrParam 設定する値の配列
      * @param boolean $deliv_only deliv_id チェックのみの場合 true
-     * @param integer $shipping_vol 配送数
+     * @param array $arrShipping 配送先情報の配列
      */
-    function setFormParams(&$objFormParam, $arrParam, $deliv_only, $shipping_vol) {
-        $this->lfInitParam($objFormParam, $deliv_only, $shipping_vol);
+    function setFormParams(&$objFormParam, $arrParam, $deliv_only, &$arrShipping) {
+        $this->lfInitParam($objFormParam, $deliv_only, $arrShipping);
         $objFormParam->setParam($arrParam);
         $objFormParam->convParam();
     }
@@ -244,10 +242,10 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @param boolean $deliv_only deliv_id チェックのみの場合 true
-     * @param integer $shipping_vol 配送数
+     * @param array $arrShipping 配送先情報の配列
      * @return void
      */
-    function lfInitParam(&$objFormParam, $deliv_only, $shipping_vol) {
+    function lfInitParam(&$objFormParam, $deliv_only, &$arrShipping) {
         $objFormParam->addParam("配送業者", "deliv_id", INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
 
         if (!$deliv_only) {
@@ -256,9 +254,9 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
             $objFormParam->addParam("その他お問い合わせ", 'message', LTEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
             $objFormParam->addParam("ポイントを使用する", "point_check", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), '2');
 
-            for ($i = 0; $i < $shipping_vol; $i++) {
-                $objFormParam->addParam("お届け時間", "deliv_time_id" . $i, INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-                $objFormParam->addParam("お届け日", "deliv_date" . $i, STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
+            foreach ($arrShipping as $val) {
+                $objFormParam->addParam("お届け時間", "deliv_time_id" . $val['shipping_id'], INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+                $objFormParam->addParam("お届け日", "deliv_date" . $val['shipping_id'], STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
             }
         }
 
@@ -315,13 +313,12 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
          * リファレンスで代入すると, セッションに添字を追加できない？
          */
         foreach (array_keys($_SESSION['shipping']) as $key) {
-
-            $time_id = $objFormParam->getValue('deliv_time_id' . $key);
-
+            $shipping_id = $_SESSION['shipping'][$key]['shipping_id'];
+            $time_id = $objFormParam->getValue('deliv_time_id' . $shipping_id);
             $_SESSION['shipping'][$key]['deliv_id'] = $deliv_id;
             $_SESSION['shipping'][$key]['time_id'] = $time_id;
             $_SESSION['shipping'][$key]['shipping_time'] = $arrDelivTime[$time_id];
-            $_SESSION['shipping'][$key]['shipping_date'] = $objFormParam->getValue('deliv_date' . $key);
+            $_SESSION['shipping'][$key]['shipping_date'] = $objFormParam->getValue('deliv_date' . $shipping_id);
         }
     }
 

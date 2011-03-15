@@ -199,7 +199,7 @@
                 <p class="select-msg">ご希望の方は、お届け時間を選択してください。</p>
                 <p class="non-select-msg">まずはじめに、配送方法を選択ください。</p>
                 <!--{foreach item=shippingItem name=shippingItem from=$arrShipping}-->
-                <!--{assign var=index value=$smarty.foreach.shippingItem.index}-->
+                <!--{assign var=index value=$shippingItem.shipping_id}-->
                 <!--{if $is_multiple}-->
                 <div class="delivdate">
                         ▼<!--{$shippingItem.shipping_name01}--><!--{$shippingItem.shipping_name02}--><br />

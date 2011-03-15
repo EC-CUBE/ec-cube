@@ -42,7 +42,7 @@
 <!--{if $cartKey != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
 ■お届け時間の指定<br>
 <!--{foreach item=shippingItem name=shippingItem from=$arrShipping}-->
-<!--{assign var=index value=$smarty.foreach.shippingItem.index}-->
+<!--{assign var=index value=$shippingItem.shipping_id}-->
 
 <!--{if $is_multiple}-->
     ▼<!--{$shippingItem.shipping_name01}--><!--{$shippingItem.shipping_name02}-->

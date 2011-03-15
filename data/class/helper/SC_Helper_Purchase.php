@@ -586,7 +586,7 @@ class SC_Helper_Purchase {
                 : $arrValues['product_name'];
 
             $code = SC_Utils_Ex::isBlank($arrValues['product_code'])
-                ? $d['code']
+                ? $d['product_code']
                 : $arrValues['product_code'];
 
             $cname1 = SC_Utils_Ex::isBlank($arrValues['classcategory_name1'])
