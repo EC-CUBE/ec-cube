@@ -304,7 +304,7 @@ INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_da
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (198, 5, 'level', '階層', 4, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (199, 5, 'rank', '表示ランク', 5, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
 
-INSERT INTO dtb_deliv (deliv_id, product_type_id, name, service_name, confirm_url, rank, status, del_flg, creator_id, create_date, update_date) VALUES (1, 1, 'サンプル業者', 'サンプル業者', NULL, 1, 1, 0, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_deliv (deliv_id, product_type_id, name, service_name, confirm_url, rank, status, del_flg, creator_id, create_date, update_date) VALUES (1, 1, 'サンプル業者', 'サンプル業者', NULL, 2, 1, 0, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_deliv (deliv_id, product_type_id, name, service_name, confirm_url, rank, status, del_flg, creator_id, create_date, update_date) VALUES (2, 2, '配送無し(ダウンロード商品用)', 'なし', NULL, 1, 1, 0, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO dtb_payment_options (deliv_id, payment_id, rank) VALUES (1, 1, 1);
