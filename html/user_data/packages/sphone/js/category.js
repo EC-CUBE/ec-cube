@@ -8,7 +8,7 @@ function openOrClose(tgt){
         tgt.style.visibility = "visible";
         tgt.style.height = "auto";
         tgt.style.paddingTop = "0.25em";
-        tgt.style.lineHeight = "1em"
+        tgt.style.lineHeight = "1em";
         tgt.style.opacity = 1.0;
     }
     //指定ノードが「hidden」でないとき、リストを隠す

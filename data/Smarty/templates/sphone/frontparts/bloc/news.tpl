@@ -27,22 +27,15 @@
 <div class="create-box">
 
 <!--{section name=data loop=$arrNews max=3}-->
-<div class="anews">
-<span><!--{$arrNews[data].news_date_disp|date_format:"%m.%d"}--></span>&nbsp;
-<!--{if $arrNews[data].news_url}--><a href="<!--{$arrNews[data].news_url|h}-->"><!--{/if}-->
-<!--{$arrNews[data].news_title|h}-->
-<!--{if $arrNews[data].news_url}--></a><!--{/if}-->
-</div>
+    <div class="anews">
+        <span><!--{$arrNews[data].news_date_disp|date_format:"%m.%d"}--></span>&nbsp;
+        <!--{if $arrNews[data].news_url}--><a href="<!--{$arrNews[data].news_url|h}-->"><!--{/if}--><!--{$arrNews[data].news_title|h}--><!--{if $arrNews[data].news_url}--></a><!--{/if}-->
+    </div>
 <!--{/section}-->
 
 </div>
 </div>
 
-<script type="text/javascript" language="JavaScript">
-//<![CDATA[
-initNews(); //カテゴリーリストの初期化
-//]]>
-</script>
 <!--{/if}-->
 
 
