@@ -1132,23 +1132,6 @@ exit;
         return  mb_convert_encoding($str, $encode);
     }
 
-    // チェックボックスの型を変換する
-    function sfChangeCheckBox($data , $tpl = false){
-        if ($tpl) {
-            if ($data == 1){
-                return 'checked';
-            }else{
-                return "";
-            }
-        }else{
-            if ($data == 'on'){
-                return 1;
-            }else{
-                return 2;
-            }
-        }
-    }
-
     // 2つの配列を用いて連想配列を作成する
     function sfArrCombine($arrKeys, $arrValues) {
 

@@ -152,10 +152,6 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         $templatePath = $this->objLayout->getTemplatePath($device_type_id);
         $arrPageData[0]['tpl_data'] = file_get_contents($templatePath . $arrPageData[0]['filename'] . ".tpl");
 
-        // チェックボックスの値変更
-        $arrPageData[0]['header_chk'] = SC_Utils_Ex::sfChangeCheckBox($arrPageData[0]['header_chk'], true);
-        $arrPageData[0]['footer_chk'] = SC_Utils_Ex::sfChangeCheckBox($arrPageData[0]['footer_chk'], true);
-
         // ディレクトリを画面表示用に編集
         $arrPageData[0]['filename'] = preg_replace('|^' . preg_quote(USER_DIR) . '|', '', $arrPageData[0]['filename']);
 
