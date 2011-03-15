@@ -504,8 +504,8 @@ class SC_Helper_Purchase {
      */
     function getDeliv($product_type_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->setOrder('rank');
-        return $objQuery->select('*', 'dtb_deliv', 'product_type_id = ?',
+        $objQuery->setOrder('rank DESC');
+        return $objQuery->select('*', 'dtb_deliv', 'product_type_id = ? AND del_flg = 0',
                                  array($product_type_id));
     }
 
