@@ -266,7 +266,7 @@ class SC_Helper_Mail {
      *
      * @param string $secret_key 顧客固有キー
      * @param integer $customer_id 顧客ID
-     * @param boolean $is_mobile false(default):PCアドレスにメールを送る true:携帯アドレスにメールを送る 
+     * @param boolean $is_mobile false(default):PCアドレスにメールを送る true:携帯アドレスにメールを送る
      * @return boolean true:成功 false:失敗
      */
     function sfSendRegistMail($secret_key, $customer_id = '', $is_mobile = false) {
@@ -341,7 +341,7 @@ class SC_Helper_Mail {
         $arrValues[] = 0;
         //template_id指定時
         if (SC_Utils_Ex::sfIsInt($template_id) === true) {
-            $where .= 'AND template_id = ?';
+            $where .= ' AND template_id = ?';
             $arrValues[] = $template_id;
         }
 
@@ -368,7 +368,7 @@ class SC_Helper_Mail {
 
         //send_id指定時
         if (SC_Utils_Ex::sfIsInt($send_id) === true) {
-            $where .= 'AND send_id = ?';
+            $where .= ' AND send_id = ?';
             $arrValues[] = $send_id;
         }
 
@@ -381,7 +381,7 @@ class SC_Helper_Mail {
 
     /**
      * 指定したIDのメルマガ配送を行う
-     * 
+     *
      * @param integer $send_id dtb_send_history の情報
      * @return　void
      */
