@@ -88,7 +88,6 @@
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="search" />
 <input type="hidden" name="edit_customer_id" value="" />
-<input type="hidden" name="search_pageno" value="<!--{$smarty.post.search_pageno|h}-->" />
     <!--{foreach key=key item=item from=$arrHidden}-->
     <!--{if is_array($item)}-->
         <!--{foreach item=c_item from=$item}-->
