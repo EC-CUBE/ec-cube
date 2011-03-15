@@ -243,7 +243,15 @@ __EOS__;
 
     // パラメータの取得
     function getValue($keyname) {
-        return isset($_SESSION['customer'][$keyname]) ? $_SESSION['customer'][$keyname] : "";
+        // ポイントはリアルタイム表示
+        if ($keyname == 'point') {
+            $objQuery =& SC_Query_Ex::getSingletonInstance();
+            $point = $objQuery->get('point', 'dtb_customer', 'customer_id = ?', array($_SESSION['customer']['customer_id']));
+            $_SESSION['customer']['point'] = $point;
+            return $point;
+        } else {
+            return isset($_SESSION['customer'][$keyname]) ? $_SESSION['customer'][$keyname] : "";
+        }
     }
 
     // パラメータのセット
