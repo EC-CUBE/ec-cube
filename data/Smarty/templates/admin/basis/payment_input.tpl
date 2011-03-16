@@ -21,14 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`admin_popup_header.tpl"}-->
-
-<script type="text/javascript">
-<!--
-self.moveTo(20,20);self.focus();
-//-->
-</script>
-
 <form name="form1" id="form1" method="post" action="./payment_input.php" enctype="multipart/form-data">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="edit" />
@@ -39,6 +31,7 @@ self.moveTo(20,20);self.focus();
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
 <!--{/foreach}-->
 <input type="hidden" name="charge_flg" value="<!--{$charge_flg}-->" />
+<div id="basis" class="contents-main">
     <h2>支払方法登録・編集</h2>
 
         <table class="form">
@@ -85,7 +78,7 @@ self.moveTo(20,20);self.focus();
                     <!--{assign var=key value="payment_image"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
                     <!--{if $arrFile[$key].filepath != ""}-->
-                    <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->">　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
+                    <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->">　<br /><a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
                     <!--{/if}-->
                     <input type="file" name="<!--{$key}-->" size="30" class="box30" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
                     <a class="btn-normal" href="javascript:;" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;">アップロード</a>
@@ -95,11 +88,9 @@ self.moveTo(20,20);self.focus();
 
     <div class="btn-area">
         <ul>
+            <li><a class="btn-action" href="javascript:;" onclick="location.href='./payment.php';"><span class="btn-prev">前のページに戻る</span></a></li>
             <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
         </ul>
     </div>
-
 </div>
 </form>
-
-<!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`admin_popup_footer.tpl"}-->

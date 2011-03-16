@@ -49,6 +49,9 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'basis/payment_input.tpl';
+        $this->tpl_subnavi = 'basis/subnavi.tpl';
+        $this->tpl_mainno = 'basis';
+        $this->tpl_subno = 'payment';
         $this->tpl_subtitle = '支払方法設定';
     }
 
@@ -68,22 +71,9 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        $objDb = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
-
         $mode = $this->getMode();
         $this->lfInitParam($mode, $objFormParam);
-
-        if (!empty($_POST) || !empty($_GET)) {
-
-            $param = (empty($_POST))? $_GET : $_POST;
-
-            $objFormParam->setParam($param);
-            $objFormParam->convParam();
-
-            $this->arrErr = $objFormParam->checkError();
-            $post = $objFormParam->getHashArray();
-        }
 
         // ファイル管理クラス
         $this->objUpFile = new SC_UploadFile(IMAGE_TEMP_REALDIR, IMAGE_SAVE_REALDIR);
@@ -94,28 +84,47 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
 
         switch($mode) {
         case 'edit':
+            $objFormParam->setParam($_REQUEST);
+            $objFormParam->convParam();
+            $this->arrErr = $objFormParam->checkError();
+            $post = $objFormParam->getHashArray();
             $this->charge_flg = $post["charge_flg"];
             if(count($this->arrErr) == 0) {
                 $this->lfRegistData($post['payment_id'], $_SESSION['member_id'], $objFormParam);
                 $this->objUpFile->moveTempFile();
-                $this->tpl_onload="fnUpdateParent('".ADMIN_PAYMENT_URLPATH."'); window.close();";
+                $this->tpl_onload = "location.href = './payment.php'; return;";
             }
-
+            $this->tpl_payment_id = $post['payment_id'];
             break;
         // 画像のアップロード
         case 'upload_image':
+            $objFormParam->setParam($_REQUEST);
+            $objFormParam->convParam();
+            $post = $objFormParam->getHashArray();
             // ファイル存在チェック
             $this->arrErr = $this->objUpFile->checkEXISTS($post['image_key']);
             // 画像保存処理
             $this->arrErr[$post['image_key']] = $this->objUpFile->makeTempFile($post['image_key']);
+            $this->tpl_payment_id = $post['payment_id'];
             break;
         // 画像の削除
         case 'delete_image':
-
-            $this->objUpFile->deleteFile($post['image_key']);
+            $objFormParam->setParam($_REQUEST);
+            $objFormParam->convParam();
+            $this->arrErr = $objFormParam->checkError();
+            $post = $objFormParam->getHashArray();
+            if(count($this->arrErr) == 0) {
+                $this->objUpFile->deleteFile($post['image_key']);
+            }
+            $this->tpl_payment_id = $post['payment_id'];
             break;
 
         case 'pre_edit':
+            $objFormParam->setParam($_REQUEST);
+            $objFormParam->convParam();
+            $this->arrErr = $objFormParam->checkError();
+            $post = $objFormParam->getHashArray();
+            if(count($this->arrErr) == 0) {
                 $arrRet = $this->lfGetData($post['payment_id']);
 
                 $objFormParam->addParam("支払方法", "payment_method", STEXT_LEN, 'KVa', array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
@@ -127,14 +136,11 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
 
                 $this->charge_flg = $arrRet["charge_flg"];
                 $this->objUpFile->setDBFileList($arrRet);
-                $this->tpl_payment_id = $post['payment_id'];
+            }
+            $this->tpl_payment_id = $post['payment_id'];
             break;
         default:
             break;
-        }
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $this->tpl_payment_id = $_POST['payment_id'];
         }
 
         $this->arrForm = $objFormParam->getFormParamList();
@@ -143,7 +149,6 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
         $this->arrFile = $this->objUpFile->getFormFileList(IMAGE_TEMP_URLPATH, IMAGE_SAVE_URLPATH);
         // HIDDEN用に配列を渡す。
         $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objUpFile->getHiddenFileList());
-        $this->setTemplate($this->tpl_mainpage);
     }
 
     /**
@@ -177,6 +182,7 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
                 break;
             case "upload_image":
             case "delete_image":
+                $objFormParam->addParam('支払いID', 'payment_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
                 $objFormParam->addParam("支払方法", "payment_method", STEXT_LEN, 'KVa', array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
                 $objFormParam->addParam("手数料", 'charge', PRICE_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
                 $objFormParam->addParam("利用条件(～円以上)", 'rule', PRICE_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
