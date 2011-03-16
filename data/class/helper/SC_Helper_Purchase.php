@@ -362,29 +362,32 @@ class SC_Helper_Purchase {
     function getPaymentsByPrice($total, $deliv_id) {
 
         $arrPaymentIds = $this->getPayments($deliv_id);
+        if (SC_Utils_Ex::isBlank($arrPaymentIds)) {
+            return array();
+        }
+
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 削除されていない支払方法を取得
         $where = 'del_flg = 0 AND payment_id IN (' . implode(', ', array_pad(array(), count($arrPaymentIds), '?')) . ')';
         $objQuery->setOrder("rank DESC");
         $payments = $objQuery->select("payment_id, payment_method, rule, upper_rule, note, payment_image, charge", "dtb_payment", $where, $arrPaymentIds);
-
         foreach ($payments as $data) {
             // 下限と上限が設定されている
             if (strlen($data['rule']) != 0 && strlen($data['upper_rule']) != 0) {
-                if ($data['rule'] <= $total_inctax && $data['upper_rule'] >= $total_inctax) {
+                if ($data['rule'] <= $total && $data['upper_rule'] >= $total) {
                     $arrPayment[] = $data;
                 }
             }
             // 下限のみ設定されている
             elseif (strlen($data['rule']) != 0) {
-                if($data['rule'] <= $total_inctax) {
+                if($data['rule'] <= $total) {
                     $arrPayment[] = $data;
                 }
             }
             // 上限のみ設定されている
             elseif (strlen($data['upper_rule']) != 0) {
-                if($data['upper_rule'] >= $total_inctax) {
+                if($data['upper_rule'] >= $total) {
                     $arrPayment[] = $data;
                 }
             }
