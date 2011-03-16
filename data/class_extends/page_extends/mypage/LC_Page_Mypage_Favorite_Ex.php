@@ -45,7 +45,6 @@ class LC_Page_Mypage_Favorite_Ex extends LC_Page_Mypage_Favorite {
      */
     function init() {
         parent::init();
-        $this->tpl_column_num = 2;
     }
 
     /**
