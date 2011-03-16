@@ -108,17 +108,17 @@ class LC_Page_Cart extends LC_Page_Ex {
             break;
         case 'up'://1個追加
             $objCartSess->upQuantity($cart_no, $cartKey);
-            SC_Response_Ex::reload(array(), true);
+            SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
             exit;
             break;
         case 'down'://1個減らす
             $objCartSess->downQuantity($cart_no, $cartKey);
-            SC_Response_Ex::reload(array(), true);
+            SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
             exit;
             break;
         case 'delete'://カートから削除
             $objCartSess->delProduct($cart_no, $cartKey);
-            SC_Response_Ex::reload(array(), true);
+            SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
             exit;
             break;
         default:
@@ -138,6 +138,8 @@ class LC_Page_Cart extends LC_Page_Ex {
             $this->tpl_deliv_free[$key] = $this->arrInfo['free_rule'] - $this->tpl_total_inctax[$key];
         }
 
+        $this->tpl_category_id = $objFormParam->getValue('category_id');
+
         // ログイン判定
         if($objCustomer->isLoginSuccess(true)) {
             $this->tpl_login = true;
@@ -148,7 +150,6 @@ class LC_Page_Cart extends LC_Page_Ex {
         // 前頁のURLを取得
         // TODO: SC_CartSession::setPrevURL()利用不可。
         $this->lfGetCartPrevUrl($_SESSION,$_SERVER['HTTP_REFERER']);
-
         $this->tpl_prev_url = (isset($_SESSION['cart_prev_url'])) ? $_SESSION['cart_prev_url'] : '';
     }
 
@@ -170,6 +171,8 @@ class LC_Page_Cart extends LC_Page_Ex {
         $objFormParam = new SC_FormParam_Ex();
         $objFormParam->addParam("カートキー", 'cartKey', INT_LEN, 'n', array('NUM_CHECK',"MAX_LENGTH_CHECK"));
         $objFormParam->addParam("カートナンバー", "cart_no", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        // PC版での値引き継ぎ用
+        $objFormParam->addParam("カテゴリID", "category_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
         // 値の取得
         $objFormParam->setParam($arrRequest);
         // 入力値の変換

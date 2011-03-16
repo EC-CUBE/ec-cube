@@ -74,6 +74,7 @@ $(document).ready(function() {
             <input type="hidden" name="mode" value="confirm" />
             <input type="hidden" name="cart_no" value="" />
             <input type="hidden" name="cartKey" value="<!--{$key}-->" />
+            <input type="hidden" name="category_id" value="<!--{$tpl_category_id|h}-->" />
             <!--{if count($cartKeys) > 1}-->
             <h3><!--{$arrProductType[$key]}--></h3>
                 <p>
