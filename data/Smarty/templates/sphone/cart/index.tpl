@@ -76,24 +76,28 @@ $(document).ready(function() {
             <h3><!--{$arrProductType[$key]}--></h3>
                 <p>
                     <!--{$arrProductType[$key]}-->の合計金額は「<em><!--{$tpl_total_inctax[$key]|number_format}-->円</em>」です。
-                    <!--{if $arrInfo.free_rule > 0}-->
-                        <!--{if $arrData[$key].deliv_fee > 0}-->
-                            あと「<em><!--{$tpl_deliv_free[$key]|number_format}-->円</em>」で送料無料です！！
-                        <!--{else}-->
-                            現在、「<em>送料無料</em>」です！！
+                    <!--{if $key != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
+                        <!--{if $arrInfo.free_rule > 0}-->
+                            <!--{if $arrData[$key].deliv_fee > 0}-->
+                                あと「<em><!--{$tpl_deliv_free[$key]|number_format}-->円</em>」で送料無料です！！
+                            <!--{else}-->
+                                現在、「<em>送料無料</em>」です！！
+                            <!--{/if}-->
                         <!--{/if}-->
                     <!--{/if}-->
                 </p>
             <!--{else}-->
                 <p>
                     お買い上げ商品の合計金額は「<em><!--{$tpl_total_inctax[$key]|number_format}-->円</em>」です。
-                    <!--{if $arrInfo.free_rule > 0}-->
-                        <!--{if $arrData[$key].deliv_fee > 0}-->
-                            あと「<em><!--{$tpl_deliv_free[$key]|number_format}-->円</em>」で送料無料です！！
-                        <!--{else}-->
-                            現在、「<em>送料無料</em>」です！！
-                        <!--{/if}-->
-                    <!--{/if}-->
+                    <!--{if $key != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
+                        <!--{if $arrInfo.free_rule > 0}-->
+                            <!--{if $arrData[$key].deliv_fee > 0}-->
+                                あと「<em><!--{$tpl_deliv_free[$key]|number_format}-->円</em>」で送料無料です！！
+                            <!--{else}-->
+                                現在、「<em>送料無料</em>」です！！
+                            <!--{/if}-->
+                       <!--{/if}-->
+                   <!--{/if}-->
                 </p>
             <!--{/if}-->
             <table summary="商品情報">

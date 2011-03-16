@@ -601,8 +601,23 @@ class SC_CartSession {
         return $_SESSION['cartKey'];
     }
 
+    /**
+     * 複数配送扱いかどうか.
+     *
+     * @return boolean カートが複数配送扱いの場合 true
+     */
     function isMultiple() {
         return count($this->getKeys()) > 1;
+    }
+
+    /**
+     * 引数の商品種別の商品がカートに含まれるかどうか.
+     *
+     * @param integer $product_type_id 商品種別ID
+     * @return boolean 指定の商品種別がカートに含まれる場合 true
+     */
+    function hasProductType($product_type_id) {
+        return in_array($product_type_id, $this->getKeys());
     }
 }
 ?>

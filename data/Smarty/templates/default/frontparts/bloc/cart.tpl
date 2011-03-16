@@ -30,7 +30,7 @@
                      * カゴの中に商品がある場合にのみ表示
                      * 複数の商品種別が存在する場合は非表示
                      *************************************}-->
-                <!--{if $arrCartList.0.TotalQuantity > 0 and $arrCartList.0.free_rule > 0 and !$isMultiple}-->
+                <!--{if $arrCartList.0.TotalQuantity > 0 and $arrCartList.0.free_rule > 0 and !$isMultiple and !$hasDownload}-->
                 <p class="postage">
                     <!--{if $arrCartList.0.deliv_free > 0}-->
                         <span class="point_announce">送料手数料無料まで</span>あと<span class="price"><!--{$arrCartList.0.deliv_free|number_format|default:0}-->円（税込）</span>です。

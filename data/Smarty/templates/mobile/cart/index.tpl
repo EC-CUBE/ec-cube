@@ -72,7 +72,7 @@
 	合計:<!--{$arrData[$key].total-$arrData[$key].deliv_fee|number_format}-->円<br>
 	</font>
     <br>
-
+    <!--{if $key != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
     <!--{if $arrInfo.free_rule > 0}-->
     <!--{if $arrData[$key].deliv_fee > 0}-->
         あと「<font color="#FF0000"><!--{$tpl_deliv_free[$key]|number_format}-->円</font>」で<font color="#FF0000">送料無料</font>です！！<br>
@@ -80,6 +80,7 @@
         現在、「<font color="#FF0000">送料無料</font>」です！！<br>
     <!--{/if}-->
     <br>
+    <!--{/if}-->
     <!--{/if}-->
 
 	<!--{if $smarty.const.USE_POINT !== false}-->
