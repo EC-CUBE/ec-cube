@@ -42,7 +42,7 @@ function fnTargetSelf(){
                                 <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
                                 <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
                                 <!--{$item.name}-->
-                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label> 
+                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label>
                             </div>
                             <!--{assign var="firstflg" value=true}-->
                         <!--{/if}-->
@@ -58,7 +58,7 @@ function fnTargetSelf(){
                 <td colspan="3" id="<!--{$arrTarget[$smarty.const.TARGET_ID_HEAD_TOP]}-->" class="ui-sortable">
                     <!--{assign var="firstflg" value=false}-->
                     <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
-                        <!--{if $item.target_id == $arrTarget[$smarty.const.ID_HEAD_TOP]}-->
+                        <!--{if $item.target_id == $arrTarget[$smarty.const.TARGET_ID_HEAD_TOP]}-->
                             <div class="sort<!--{if !$firstflg}--> first<!--{/if}-->">
                                 <input type="hidden" class="name" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->" />
                                 <input type="hidden" class="id" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->" />
@@ -86,7 +86,7 @@ function fnTargetSelf(){
                                 <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
                                 <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
                                 <!--{$item.name}-->
-                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label> 
+                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label>
                             </div>
                             <!--{assign var="firstflg" value=true}-->
                         <!--{/if}-->
@@ -106,7 +106,7 @@ function fnTargetSelf(){
                                 <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
                                 <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
                                 <!--{$item.name}-->
-                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label> 
+                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label>
                             </div>
                             <!--{assign var="firstflg" value=true}-->
                         <!--{/if}-->
@@ -128,7 +128,7 @@ function fnTargetSelf(){
                                     <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
                                     <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
                                     <!--{$item.name}-->
-                                    <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label> 
+                                    <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label>
                                 </div>
                                 <!--{assign var="firstflg" value=true}-->
                             <!--{/if}-->
@@ -153,7 +153,7 @@ function fnTargetSelf(){
                                     <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
                                     <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
                                     <!--{$item.name}-->
-                                    <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label> 
+                                    <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label>
                                 </div>
                                 <!--{assign var="firstflg" value=true}-->
                             <!--{/if}-->
@@ -173,7 +173,7 @@ function fnTargetSelf(){
                                     <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
                                     <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
                                     <!--{$item.name}-->
-                                    <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label> 
+                                    <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label>
                                 </div>
                                 <!--{assign var="firstflg" value=true}-->
                             <!--{/if}-->
@@ -191,7 +191,7 @@ function fnTargetSelf(){
                                     <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
                                     <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
                                     <!--{$item.name}-->
-                                    <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label> 
+                                    <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label>
                                 </div>
                                 <!--{assign var="firstflg" value=true}-->
                             <!--{/if}-->
@@ -209,7 +209,7 @@ function fnTargetSelf(){
                                     <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
                                     <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
                                     <!--{$item.name}-->
-                                    <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label> 
+                                    <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label>
                                 </div>
                                 <!--{assign var="firstflg" value=true}-->
                             <!--{/if}-->
@@ -234,7 +234,7 @@ function fnTargetSelf(){
                                     <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
                                     <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
                                     <!--{$item.name}-->
-                                    <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label> 
+                                    <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label>
                                 </div>
                                 <!--{assign var="firstflg" value=true}-->
                             <!--{/if}-->
@@ -255,13 +255,13 @@ function fnTargetSelf(){
                                 <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
                                 <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
                                 <!--{$item.name}-->
-                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label> 
+                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label>
                             </div>
                             <!--{assign var="firstflg" value=true}-->
                         <!--{/if}-->
                     <!--{/foreach}-->
                 </td>
-                <!-- ★☆★ 下部ナビテーブル ☆★☆ --> 
+                <!-- ★☆★ 下部ナビテーブル ☆★☆ -->
             </tr>
             <tr>
                 <th colspan="3" id="layout-footer">フッター部</th>
@@ -278,7 +278,7 @@ function fnTargetSelf(){
                                 <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
                                 <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
                                 <!--{$item.name}-->
-                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label> 
+                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label>
                             </div>
                             <!--{assign var="firstflg" value=true}-->
                         <!--{/if}-->
@@ -307,7 +307,7 @@ function fnTargetSelf(){
                                 <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
                                 <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
                                 <!--{$item.name}-->
-                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}-->    />全ページ)</label> 
+                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}-->    />全ページ)</label>
                             </div>
                             <!--{assign var="firstflg" value=true}-->
                         <!--{/if}-->
