@@ -25,27 +25,50 @@
 <form method="post" action="?">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->">
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
+<input type="hidden" name="line_of_num" value="<!--{$arrForm.line_of_num.value}-->" />
 <input type="hidden" name="mode" value="confirm">
-<!--{foreach from=$items item=item name=cartItem}-->
-<!--{assign var=index value=$smarty.foreach.cartItem.index}-->
-<input type="hidden" name="cart_no<!--{$index}-->" value="<!--{$index}-->" />
-<input type="hidden" name="product_class_id<!--{$index}-->" value="<!--{$item.product_class_id}-->" />
+<!--{section name=line loop=$arrForm.line_of_num.value}-->
+<!--{assign var=index value=$smarty.section.line.index}-->
+<input type="hidden" name="cart_no[<!--{$index}-->]" value="<!--{$index}-->" />
+<!--{assign var=key value="product_class_id"}-->
+<input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
+<!--{assign var=key value="name"}-->
+<input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
+<!--{assign var=key value="class_name1"}-->
+<input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
+<!--{assign var=key value="class_name2"}-->
+<input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
+<!--{assign var=key value="classcategory_name1"}-->
+<input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
+<!--{assign var=key value="classcategory_name2"}-->
+<input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
+<!--{assign var=key value="main_image"}-->
+<input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
+<!--{assign var=key value="main_list_image"}-->
+<input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
+<!--{assign var=key value="price02"}-->
+<input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
 
-<!--{* 商品名 *}-->◎<!--{$item.name|h}--><br>
-<!--{* 規格名1 *}--><!--{if $item.classcategory_name1 != ""}--><!--{$item.class_name1}-->：<!--{$item.classcategory_name1}--><br><!--{/if}-->
-<!--{* 規格名2 *}--><!--{if $item.classcategory_name2 != ""}--><!--{$item.class_name2}-->：<!--{$item.classcategory_name2}--><br><!--{/if}-->
+<!--{* 商品名 *}-->◎<!--{$arrForm.name.value[$index]|h}--><br>
+<!--{* 規格名1 *}--><!--{if $arrForm.classcategory_name1.value[$index] != ""}--><!--{$arrForm.class_name1.value[$index]}-->：<!--{$arrForm.classcategory_name1.value[$index]}--><br><!--{/if}-->
+<!--{* 規格名2 *}--><!--{if $arrForm.classcategory_name2.value[$index] != ""}--><!--{$arrForm.class_name2.value[$index]}-->：<!--{$arrForm.classcategory_name2.value[$index]}--><br><!--{/if}-->
 <!--{* 販売価格 *}-->
-<!--{$item.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円<br>
-<!--{assign var=key value="quantity`$index`"}-->
-数量：<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value}-->" size="4" />
+<!--{$arrForm.price02.value[$index]|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円<br>
+
+<!--{assign var=key value="quantity"}-->
+<!--{if $arrErr[$key][$index] != ''}-->
+<font color="#FF0000"><!--{$arrErr[$key][$index]}--></font>
+<!--{/if}-->
+数量：<input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" size="4">
 <br>
-<!--{assign var=key value="shipping`$index`"}-->
+
+<!--{assign var=key value="shipping"}-->
 お届け先：<br>
-<select name="<!--{$key}-->"><!--{html_options options=$addrs selected=$arrForm[$key].value}--></select>
+<select name="<!--{$key}-->[<!--{$index}-->]"><!--{html_options options=$addrs selected=$arrForm[$key].value[$index]}--></select>
 <br>
 <br>
 
-<!--{/foreach}-->
+<!--{/section}-->
 <center><input type="submit" value="選択したお届け先に送る"></center>
 </form>
 

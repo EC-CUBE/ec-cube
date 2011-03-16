@@ -73,16 +73,17 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
 
         $this->addrs = $this->getDelivAddrs($objCustomer, $objPurchase,
                                             $this->tpl_uniqid);
-        $this->items = $this->splitItems($objCartSess);
+        $this->lfInitParam($objFormParam);
 
-        $this->lfInitParam($this->items, $objFormParam);
-        $objFormParam->setParam($_POST);
         $objPurchase->verifyChangeCart($this->tpl_uniqid, $objCartSess);
 
         switch ($this->getMode()) {
             case 'confirm':
+                $objFormParam->setParam($_POST);
                 $this->arrErr = $this->lfCheckError($objFormParam);
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    // フォームの情報を一時保存しておく
+                    $_SESSION['multiple_temp'] = $objFormParam->getHashArray();
                     $this->saveMultipleShippings($this->tpl_uniqid, $objFormParam,
                                                  $objCustomer, $objPurchase,
                                                  $objCartSess);
@@ -93,6 +94,12 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
                 break;
 
         default:
+            $this->setParamToSplitItems($objFormParam, $objCartSess);
+        }
+
+        // 前のページから戻ってきた場合
+        if ($_GET['from'] == 'multiple') {
+            $objFormParam->setParam($_SESSION['multiple_temp']);
         }
 
         $this->arrForm = $objFormParam->getFormParamList();
@@ -110,33 +117,49 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
     /**
      * フォームを初期化する.
      *
-     * @param array $arrItems 数量ごとに分割した, カートの商品情報の配列
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam($arrItems, $objFormParam) {
-        for ($i = 0; $i < count($arrItems); $i++) {
-            $objFormParam->addParam("商品規格ID", "product_class_id" . $i, INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-            $objFormParam->addParam("数量", 'quantity' . $i, INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), 1);
-            $objFormParam->addParam("配送先住所", 'shipping' . $i, INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-            $objFormParam->addParam("カート番号", "cart_no" . $i, INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        }
+    function lfInitParam(&$objFormParam) {
+        $objFormParam->addParam("商品規格ID", "product_class_id", INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("商品名", "name");
+        $objFormParam->addParam("規格1", "class_name1");
+        $objFormParam->addParam("規格2", "class_name2");
+        $objFormParam->addParam("規格分類1", "classcategory_name1");
+        $objFormParam->addParam("規格分類2", "classcategory_name2");
+        $objFormParam->addParam("メイン画像", "main_image");
+        $objFormParam->addParam("メイン一覧画像", "main_list_image");
+        $objFormParam->addParam("販売価格", "price02");
+        $objFormParam->addParam("数量", 'quantity', INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), 1);
+        $objFormParam->addParam("配送先住所", 'shipping', INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("カート番号", "cart_no", INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("行数", "line_of_num", INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
     }
 
     /**
-     * カートの商品を数量ごとに分割する
+     * カートの商品を数量ごとに分割し, フォームに設定する.
      *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @param SC_CartSession $objCartSess SC_CartSession インスタンス
-     * @return array 数量ごとに分割した, カートの商品情報の配列
+     * @return void
      */
-    function splitItems(&$objCartSess) {
+    function setParamToSplitItems(&$objFormParam, &$objCartSess) {
         $cartLists =& $objCartSess->getCartList($objCartSess->getKey());
+        $arrItems = array();
+        $index = 0;
         foreach (array_keys($cartLists) as $key) {
-            for ($i = 0; $i < $cartLists[$key]['quantity']; $i++) {
-                $items[] =& $cartLists[$key]['productsClass'];
+            $arrProductsClass = $cartLists[$key]['productsClass'];
+            $quantity = (int) $cartLists[$key]['quantity'];
+            for ($i = 0; $i < $quantity; $i++) {
+                foreach ($arrProductsClass as $key => $val) {
+                    $arrItems[$key][$index] = $val;
+                }
+                $arrItems['quantity'][$index] = 1;
+                $index++;
             }
         }
-        return $items;
+        $objFormParam->setParam($arrItems);
+        $objFormParam->setValue('line_of_num', $index);
     }
 
     /**
@@ -204,9 +227,10 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $arrParams = $objFormParam->getHashArray();
-        $i = 0;
-        while ($arrParams['cart_no' . $i] != null) {
-            $other_deliv_id = $arrParams['shipping' . $i];
+        $total = $arrParams['line_of_num'];
+
+        for ($index = 0; $index < $total; $index++) {
+            $other_deliv_id = $arrParams['shipping'][$index];
 
             if ($objCustomer->isLoginSuccess(true)) {
                 if ($other_deliv_id != 0) {
@@ -221,11 +245,15 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
                                                    'shipping');
                 }
             }
+            $arrItemTemp[$other_deliv_id][$arrParams['product_class_id'][$index]] += $arrParams['quantity'][$index];
+        }
 
-            $objPurchase->setShipmentItemTemp($other_deliv_id,
-                                              $arrParams['product_class_id' . $i],
-                                              $arrParams['quantity' . $i]);
-            $i++;
+        foreach ($arrItemTemp as $other_deliv_id => $arrProductClassIds) {
+            foreach ($arrProductClassIds as $product_class_id => $quantity) {
+                $objPurchase->setShipmentItemTemp($other_deliv_id,
+                                                  $product_class_id,
+                                                  $quantity);
+            }
         }
 
         foreach ($arrValues as $shipping_id => $val) {

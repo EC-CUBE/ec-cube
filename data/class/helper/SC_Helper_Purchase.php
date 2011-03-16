@@ -203,7 +203,7 @@ class SC_Helper_Purchase {
 
         $arrItems[$product_class_id]['shipping_id'] = $shipping_id;
         $arrItems[$product_class_id]['product_class_id'] = $product_class_id;
-        $arrItems[$product_class_id]['quantity'] += $quantity;
+        $arrItems[$product_class_id]['quantity'] = $quantity;
 
         $objProduct = new SC_Product_Ex();
         if (empty($arrItems[$product_class_id]['productsClass'])) {
@@ -221,7 +221,6 @@ class SC_Helper_Purchase {
      */
     function shippingItemTempToCart(&$objCartSession) {
         $arrShipmentItems = array();
-
         foreach (array_keys($_SESSION['shipping']) as $shipping_id) {
             foreach (array_keys($_SESSION['shipping'][$shipping_id]['shipment_item']) as $product_class_id) {
                 $arrShipmentItems[$product_class_id] += $_SESSION['shipping'][$shipping_id]['shipment_item'][$product_class_id]['quantity'];
@@ -275,6 +274,7 @@ class SC_Helper_Purchase {
      */
     function unsetShippingTemp() {
         unset($_SESSION['shipping']);
+        unset($_SESSION['multiple_temp']);
     }
 
     /**
