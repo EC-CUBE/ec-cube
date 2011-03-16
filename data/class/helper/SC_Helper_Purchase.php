@@ -713,6 +713,12 @@ class SC_Helper_Purchase {
             if (SC_Utils_Ex::isBlank($order_id)) {
                 $order_id = $objQuery->nextVal('dtb_order_order_id');
             }
+            /*
+             * 新規受付の場合は受注ステータス null で insert し,
+             * sfUpdateOrderStatus で ORDER_NEW に変更する.
+             */
+            $status = $arrValues['status'];
+            $arrValues['status'] = null;
             $arrValues['order_id'] = $order_id;
             $arrValues['customer_id'] =
                     SC_Utils_Ex::isBlank($arrValues['customer_id'])
@@ -721,7 +727,7 @@ class SC_Helper_Purchase {
             $arrValues['update_date'] = 'now()';
             $objQuery->insert($table, $arrValues);
 
-            $this->sfUpdateOrderStatus($order_id, $arrValues['status'],
+            $this->sfUpdateOrderStatus($order_id, $status,
                                        $arrValues['add_point'],
                                        $arrValues['use_point'],
                                        $arrValues);
@@ -899,7 +905,7 @@ __EOS__;
     /**
      * 受注.対応状況の更新
      *
-     * ・必ず呼び出し元でトランザクションブロックを開いておくこと。
+     * 必ず呼び出し元でトランザクションブロックを開いておくこと。
      *
      * @param integer $orderId 注文番号
      * @param integer|null $newStatus 対応状況 (null=変更無し)
@@ -934,24 +940,25 @@ __EOS__;
 
             // ▼使用ポイント
             // 変更前の対応状況が利用対象の場合、変更前の使用ポイント分を戻す
-            if (SC_Utils_Ex::sfIsUsePoint($arrOrderOld['status'])) {
+            if ($this->isUsePoint($arrOrderOld['status'])) {
                 $addCustomerPoint += $arrOrderOld['use_point'];
             }
 
             // 変更後の対応状況が利用対象の場合、変更後の使用ポイント分を引く
-            if (SC_Utils_Ex::sfIsUsePoint($newStatus)) {
+            if ($this->isUsePoint($newStatus)) {
                 $addCustomerPoint -= $newUsePoint;
             }
+
             // ▲使用ポイント
 
             // ▼加算ポイント
             // 変更前の対応状況が加算対象の場合、変更前の加算ポイント分を戻す
-            if (SC_Utils_Ex::sfIsAddPoint($arrOrderOld['status'])) {
+            if ($this->isAddPoint($arrOrderOld['status'])) {
                 $addCustomerPoint -= $arrOrderOld['add_point'];
             }
 
             // 変更後の対応状況が加算対象の場合、変更後の加算ポイント分を足す
-            if (SC_Utils_Ex::sfIsAddPoint($newStatus)) {
+            if ($this->isAddPoint($newStatus)) {
                 $addCustomerPoint += $newAddPoint;
             }
             // ▲加算ポイント
@@ -1009,14 +1016,7 @@ __EOS__;
         $sqlval['status'] = $newStatus;
         $sqlval['update_date'] = 'Now()';
 
-        $cols = $objQuery->listTableFields('dtb_order');
-        $dest = array();
-        foreach ($sqlval as $key => $val) {
-            if (in_array($key, $cols)) {
-                $dest[$key] = $val;
-            }
-        }
-
+        $dest = $objQuery->extractOnlyColsOf('dtb_order', $sqlval);
         $objQuery->update('dtb_order', $dest, 'order_id = ?', array($orderId));
         // ▲受注テーブルの更新
     }
@@ -1051,5 +1051,52 @@ __EOS__;
                           array($order_id),
                           array('payment_method' =>
                                 "(SELECT payment_method FROM dtb_payment WHERE payment_id = " . $tgt_table . ".payment_id)"));
+    }
+
+    /**
+     * ポイント使用するかの判定
+     *
+     * $status が null の場合は false を返す.
+     *
+     * @param integer $status 対応状況
+     * @return boolean 使用するか(顧客テーブルから減算するか)
+     */
+    function isUsePoint($status) {
+        if ($status == null) {
+            return false;
+        }
+        switch ($status) {
+            case ORDER_CANCEL:      // キャンセル
+                return false;
+            default:
+                break;
+        }
+
+        return true;
+    }
+
+    /**
+     * ポイント加算するかの判定
+     *
+     * @param integer $status 対応状況
+     * @return boolean 加算するか
+     */
+    function isAddPoint($status) {
+        switch ($status) {
+            case ORDER_NEW:         // 新規注文
+            case ORDER_PAY_WAIT:    // 入金待ち
+            case ORDER_PRE_END:     // 入金済み
+            case ORDER_CANCEL:      // キャンセル
+            case ORDER_BACK_ORDER:  // 取り寄せ中
+                return false;
+
+            case ORDER_DELIV:       // 発送済み
+                return true;
+
+            default:
+                break;
+        }
+
+        return false;
     }
 }

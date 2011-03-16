@@ -1862,48 +1862,6 @@ exit;
     }
 
     /**
-     * ポイント使用するかの判定
-     *
-     * @param integer $status 対応状況
-     * @return boolean 使用するか(顧客テーブルから減算するか)
-     */
-    function sfIsUsePoint($status) {
-        switch ($status) {
-            case ORDER_CANCEL:      // キャンセル
-                return false;
-            default:
-                break;
-        }
-
-        return true;
-    }
-
-    /**
-     * ポイント加算するかの判定
-     *
-     * @param integer $status 対応状況
-     * @return boolean 加算するか
-     */
-    function sfIsAddPoint($status) {
-        switch ($status) {
-            case ORDER_NEW:         // 新規注文
-            case ORDER_PAY_WAIT:    // 入金待ち
-            case ORDER_PRE_END:     // 入金済み
-            case ORDER_CANCEL:      // キャンセル
-            case ORDER_BACK_ORDER:  // 取り寄せ中
-                return false;
-
-            case ORDER_DELIV:       // 発送済み
-                return true;
-
-            default:
-                break;
-        }
-
-        return false;
-    }
-
-    /**
      * ランダムな文字列を取得する
      *
      * @param integer $length 文字数
