@@ -64,9 +64,10 @@ class SC_CheckError {
             $find = false;
 
             foreach($value[2] as $tag) {
+                $tag = preg_replace('/^\\//', '\/', $tag);
                 if(preg_match("/^" . $tag . "$/i", $val)) {
                     $find = true;
-                } else {
+                    break;
                 }
             }
 
