@@ -26,7 +26,7 @@
 <link rel="stylesheet" href="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
 <script type="text/javascript">//<![CDATA[
 var map;
-
+var marker;
 
 $(function() {
     var geocoder = new google.maps.Geocoder();
@@ -86,8 +86,16 @@ $(function() {
         {
             map.panTo(latlng);
         }
-        var marker = new google.maps.Marker({map: map, position: latlng});
-        marker.setDraggable(true);
+
+        if (!marker)
+        {
+            marker = new google.maps.Marker({map: map, position: latlng});
+            marker.setDraggable(true);
+        }
+        else
+        {
+            marker.setPosition(latlng);
+        }
 
         // TODO Maker のダブルクリックにも対応したい
         $("#inputPoint").click(function() {
