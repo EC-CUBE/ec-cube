@@ -28,7 +28,11 @@
 <link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/import.css" type="text/css" media="all" />
 <link rel="alternate" type="application/rss+xml" title="RSS" href="<!--{$smarty.const.HTTP_URL}-->rss/<!--{$smarty.const.DIR_INDEX_PATH}-->" />
 <!--{if $tpl_page_category == "abouts"}-->
+<!--{if ($smarty.server.HTTPS != "") && ($smarty.server.HTTPS != "off")}-->
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+<!--{else}-->
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<!--{/if}-->
 <script type="text/javascript">//<![CDATA[
     var map = new google.maps.Map(document.getElementById("maps"), {"zoom":"3"});
 //]]>

@@ -52,6 +52,7 @@ class SC_View {
         $this->_smarty->register_modifier('sfGetEnabled', array("SC_Utils_Ex", 'sfGetEnabled'));
         $this->_smarty->register_modifier('sfGetCategoryId', array("SC_Utils_Ex", 'sfGetCategoryId'));
         $this->_smarty->register_modifier('sfNoImageMainList', array("SC_Utils_Ex", 'sfNoImageMainList'));
+        // XXX register_function で登録すると if で使用できないのではないか？
         $this->_smarty->register_function('sfIsHTTPS', array("SC_Utils_Ex", 'sfIsHTTPS'));
         $this->_smarty->register_function('sfSetErrorStyle', array("SC_Utils_Ex", 'sfSetErrorStyle'));
         $this->_smarty->register_function('printXMLDeclaration', array("SC_Utils_Ex", 'printXMLDeclaration'));

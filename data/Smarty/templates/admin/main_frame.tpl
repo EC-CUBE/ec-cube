@@ -31,9 +31,13 @@
 <link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/admin_contents.css" type="text/css" media="all" />
 <link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/admin_file_manager.css" type="text/css" media="all" />
 <!--{if $tpl_mainno eq "basis"}-->
-<script type="text/javascript" src="http://www.google.com/jsapi?key=xxx"></script>
+<!--{if ($smarty.server.HTTPS != "") && ($smarty.server.HTTPS != "off")}-->
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+<!--{else}-->
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<!--{/if}-->
 <script type="text/javascript">//<![CDATA[
-    google.load("maps", "3", {other_params:'sensor=false'});
+    var map = new google.maps.Map(document.getElementById("maps"), {"zoom":"3"});
 //]]>
 </script>
 <!--{/if}-->
