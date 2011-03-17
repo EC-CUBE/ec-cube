@@ -113,13 +113,13 @@ function func_return(){
             </tr>
             <tr>
                 <th>パスワード<span class="attention"> *</span></th>
-                <td><!--{$arrForm.password|h}--></td>
+                <td><!--{$smarty.const.DEFAULT_PASSWORD}--></td>
             </tr>
             <tr>
                 <th>パスワードを忘れたときのヒント<span class="attention"> *</span></th>
                 <td>
                     質問： <!--{$arrReminder[$arrForm.reminder]|h}--><br />
-                    答え： <!--{$arrForm.reminder_answer|h}-->
+                    答え： <!--{$smarty.const.DEFAULT_PASSWORD}-->
                 </td>
             </tr>
             <tr>

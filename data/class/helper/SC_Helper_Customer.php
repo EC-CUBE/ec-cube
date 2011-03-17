@@ -355,13 +355,8 @@ class SC_Helper_Customer {
      * @return void
      */
     function sfCustomerRegisterParam (&$objFormParam, $isAdmin = false) {
-        if($isAdmin) {
-            $objFormParam->addParam("パスワード", 'password', STEXT_LEN, 'a', array("SPTAB_CHECK", "ALNUM_CHECK", "MAX_LENGTH_CHECK"));
-            $objFormParam->addParam("パスワード確認用の質問の答え", "reminder_answer", STEXT_LEN, 'aKV', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        }else{
-            $objFormParam->addParam("パスワード", 'password', STEXT_LEN, 'a', array("EXIST_CHECK", "SPTAB_CHECK", "ALNUM_CHECK", "MAX_LENGTH_CHECK"));
-            $objFormParam->addParam("パスワード確認用の質問の答え", "reminder_answer", STEXT_LEN, 'aKV', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        }
+        $objFormParam->addParam("パスワード", 'password', STEXT_LEN, 'a', array("EXIST_CHECK", "SPTAB_CHECK", "ALNUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("パスワード確認用の質問の答え", "reminder_answer", STEXT_LEN, 'aKV', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("パスワード確認用の質問", 'reminder', STEXT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("性別", 'sex', INT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("職業", 'job', INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
@@ -428,15 +423,13 @@ class SC_Helper_Customer {
         $objErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck($objFormParam);
         $objErr = SC_Helper_Customer_Ex::sfCustomerRegisterErrorCheck($objErr, $isAdmin);
 
-        if ((isset($objErr->arrErr['password'])
-                && $objFormParam->getValue('password') == DEFAULT_PASSWORD)
-              or $isAdmin) {
+        if (isset($objErr->arrErr['password'])
+             && $objFormParam->getValue('password') == DEFAULT_PASSWORD) {
             unset($objErr->arrErr['password']);
             unset($objErr->arrErr['password02']);
         }
-        if ((isset($objErr->arrErr['reminder_answer'])
-                && $objFormParam->getValue('reminder_answer') == DEFAULT_PASSWORD)
-              or $isAdmin) {
+        if (isset($objErr->arrErr['reminder_answer'])
+                && $objFormParam->getValue('reminder_answer') == DEFAULT_PASSWORD) {
             unset($objErr->arrErr['reminder_answer']);
         }
         return $objErr->arrErr;
