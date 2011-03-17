@@ -76,6 +76,12 @@ h1 span.title {
     background: url('../img/contents/subtitle_back.gif') no-repeat;
 }
 
+h1 span.subtitle {
+    display:block;
+    padding-top: 2px;
+    padding-left: 10px;
+}
+
 h2 {
     margin: 0 0 10px 0;
     padding: 5px 0;
@@ -676,6 +682,17 @@ a:hover {
     left: auto;
 }
 
+#navi ul.level1 li.on_level2 {
+    background: url('../img/header/subnavi_bak_l2.gif') top left no-repeat #787878;
+}
+
+#navi ul.level1 li.on_level2 a:hover {
+    background: url('../img/header/subnavi_bak_l2_on.gif') top left no-repeat #787878;
+}
+
+#navi ul.level1 li.on_level2 ul.level2 li a:hover {
+    background: url('../img/header/subnavi_bak_on.gif') top left no-repeat #474747;
+}
 
 /*subnavi*/
 .subnavi a {
@@ -749,16 +766,16 @@ a:hover {
 
 .pager li a {
     padding: 3px 5px;
-    border: 1px solid #ccc;
+    border: 1px solid #999;
 }
 
 .pager li.on a {
-    border: 1px solid #333;
-    background: #f2f1ec;
+    background: #f4f5f5;
 }
 
 .pager li a:hover, .pager li.on a:hover {
-    background: #fff5ee;
+    background: #f8f8f8;
+	border: 1px solid #ccc;
 }
 
 
