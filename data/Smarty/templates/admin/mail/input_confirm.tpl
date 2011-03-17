@@ -55,7 +55,7 @@ function winSubmitMail(URL,formName,Winname,Wwidth,Wheight){
         </tr>
         <!--{if $arrForm.mail_method.value ne 2}-->
             <tr>
-                <td colspan="2"><a href="javascript:;" onClick="winSubmitMail('','form2','preview',650,700); return false;">HTMLで確認</a></td>
+                <td colspan="2"><a href="javascript:;" onClick="winSubmitMail('','form2','preview',650,700); return false;">HTMLで確認</a>
             </tr>
         <!--{/if}-->
         <tr>
@@ -71,4 +71,8 @@ function winSubmitMail(URL,formName,Winname,Wwidth,Wheight){
         </ul>
     </div>
 </div>
+</form>
+<form name="form2" id="form2" method="post" action="./preview.php" target="_blank">
+    <input type="hidden" name="mode" value="presend" />
+    <input type="hidden" name="body" value="<!--{$arrForm.body.value|h}-->" />
 </form>
