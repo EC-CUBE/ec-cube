@@ -185,7 +185,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         // ぱんくずの生成
         $arrBread = array();
         $objDb->findTree($this->arrTree, $parent_category_id, $arrBread);
-        $this->breadcrumbs = "ホーム" . $this->createBreaCrumbs($arrBread);
+        $this->tpl_bread_crumbs = SC_Utils_Ex::jsonEncode($arrBread);
     }
 
     /**
@@ -409,29 +409,6 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         $objFormParam->addParam("親カテゴリID", "parent_category_id", null, null, array());
         $objFormParam->addParam("カテゴリID", "category_id", null, null, array());
         $objFormParam->addParam("カテゴリ名", "category_name", STEXT_LEN, 'KVa', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-    }
-
-    /**
-     * ぱんくず文字列を生成する.
-     *
-     * @param array $arrBread カテゴリ配列
-     * @return string ぱんくず文字列
-     */
-    function createBreaCrumbs($arrBread) {
-        $breadcrumbs = '';
-        // TODO JSON で投げて, フロント側で処理した方が良い？
-        $count = count($arrBread) - 1;
-        for ($i = $count; $i >= 0; $i--) {
-            // フロント側で &gt; へエスケープするため, ここでは > を使用
-            if ($i === $count) {
-                $breadcrumbs .= ' > ';
-            }
-            $breadcrumbs .= $arrBread[$i]['category_name'];
-            if ($i > 0) {
-                $breadcrumbs .= ' > ';
-            }
-        }
-        return $breadcrumbs;
     }
 
     /**

@@ -21,6 +21,16 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
+<script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/breadcrumbs.js"></script>
+<script type="text/javascript">//<![CDATA[
+    $(function() {
+        $('h2').breadcrumbs({
+            'bread_crumbs': <!--{$tpl_bread_crumbs}-->,
+        });
+    });
+//]]>
+</script>
+
 <form name="form1" id="form1" method="post" action="?" enctype="multipart/form-data">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="edit" />
@@ -70,38 +80,8 @@
 
     <!--▼画面右-->
     <div id="products-rank-right">
-        <h2><!--{$breadcrumbs}--></h2>
+        <h2><!--{* jQuery で挿入される *}--></h2>
         <!--{if count($arrProductsList) > 0}-->
-
-
-            <script type="text/javascript">
-            // カテゴリーテーブルのイニシャライズ
-            $(document).ready(function() {
-                $("#categoryTable").tableDnD({
-                    onDragClass: "movingHandle",
-                    onDrop: function(table, row) {
-                        var rows = table.tBodies[0].rows;
-                        var keys = row.id;
-
-                        for (var i = 0; i < rows.length; i++) {
-                            if (row.id == rows[i].id) {
-                                keys += "-" + i;
-                                break;
-                            }
-                        }
-
-                        fnModeSubmit('moveByDnD','keySet', keys);
-                    },
-                    dragHandle: "dragHandle"
-                });
-
-                $("#categoryTable tr").hover(function() {
-                    $(this.cells[0]).addClass('activeHandle');
-                }, function() {
-                    $(this.cells[0]).removeClass('activeHandle');
-                });
-            });
-            </script>
 
             <p class="remark"><span class="attention"><!--{$tpl_linemax}-->件</span>が該当しました。</p>
             <div class="pager">

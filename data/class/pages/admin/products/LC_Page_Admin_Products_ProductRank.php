@@ -102,7 +102,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex {
         $this->arrProductsList = $this->lfGetProduct($this->arrForm['parent_category_id']);
         $arrBread = array();
         $objDb->findTree($this->arrTree, $this->arrForm['parent_category_id'], $arrBread);
-        $this->breadcrumbs = $this->lfGetBreadcrumbs($arrBread);
+        $this->tpl_bread_crumbs = SC_Utils_Ex::jsonEncode($arrBread);
     }
 
     /**
@@ -191,23 +191,5 @@ __EOS__;
             $objDb->sfMoveRank("dtb_product_categories", "product_id", $product_id, $input_pos, $where);
         }
     }
-
-    function lfGetBreadcrumbs($arrBread) {
-        $breadcrumbs = "ホーム";
-        // TODO JSON で投げて, フロント側で処理した方が良い？
-        for ($i = count($arrBread) - 1; $i >= 0; $i--) {
-            // フロント側で &gt; へエスケープするため, ここでは > を使用
-            if ($i === count($arrBread) - 1) {
-                $breadcrumbs .= ' > ';
-            }
-            $breadcrumbs .= $arrBread[$i]['category_name'];
-            if ($i > 0) {
-                $breadcrumbs .= ' > ';
-            }
-        }
-
-        return $breadcrumbs;
-    }
-
 }
 ?>

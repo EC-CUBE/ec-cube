@@ -21,12 +21,28 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<script type="text/javascript">
+<script type="text/javascript">//<![CDATA[
+    $(function() {
+        var bread_crumbs = <!--{$tpl_now_dir}-->;
+        var file_path = '<!--{$smarty.const.HTML_REALDIR}-->';
+        var $delimiter = '<span>&nbsp;&gt;&nbsp;</span>';
+        var $node = $('h2');
+        var total = bread_crumbs.length;
+        for (var i in bread_crumbs) {
+            file_path += bread_crumbs[i] + '/';
+            $('<a href="javascript:;" onclick="fnFolderOpen(\'' + file_path + '\')" />')
+                .text(bread_crumbs[i])
+                .appendTo($node);
+            if (i < total - 1) $node.append($delimiter);
+        }
+    });
+
 var IMG_FOLDER_CLOSE   = "<!--{$TPL_URLPATH}-->img/contents/folder_close.gif";  // フォルダクローズ時画像
 var IMG_FOLDER_OPEN    = "<!--{$TPL_URLPATH}-->img/contents/folder_open.gif";   // フォルダオープン時画像
 var IMG_PLUS           = "<!--{$TPL_URLPATH}-->img/contents/plus.gif";          // プラスライン
 var IMG_MINUS          = "<!--{$TPL_URLPATH}-->img/contents/minus.gif";         // マイナスライン
 var IMG_NORMAL         = "<!--{$TPL_URLPATH}-->img/contents/space.gif";         // スペース
+//]]>
 </script>
 <form name="form1" method="post" action="?"  enctype="multipart/form-data">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -57,7 +73,7 @@ var IMG_NORMAL         = "<!--{$TPL_URLPATH}-->img/contents/space.gif";         
                 </td>
             </tr>
         </table>
-        <h2><!--{$tpl_now_dir|h}--></h2>
+        <h2><!--{* jQuery で挿入される *}--></h2>
         <table class="list">
             <tr>
                 <th>ファイル名</th>

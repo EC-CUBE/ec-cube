@@ -356,19 +356,9 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
      * @return void
      */
     function setDispPath($objFormParam){
-        // TODO JSON で投げて, フロント側で処理した方が良い？
         $tpl_now_dir = "";
         $arrNowDir = preg_split('/\//', str_replace(HTML_REALDIR, '', $objFormParam->getValue('now_dir')));
-        for ($i = 0; $i < count($arrNowDir); $i++) {
-            if (!empty($arrNowDir)) {
-                $tpl_now_dir .= $arrNowDir[$i];
-                if ($i < count($arrNowDir) - 1) {
-                     // フロント側で &gt; へエスケープするため, ここでは > を使用
-                    $tpl_now_dir .= ' > ';
-                }
-            }
-        }
-        $this->setDispParam('tpl_now_dir', $tpl_now_dir);
+        $this->setDispParam('tpl_now_dir', SC_Utils_Ex::jsonEncode($arrNowDir));
     }
 
     /**

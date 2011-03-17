@@ -21,7 +21,15 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.tablednd.js"></script>
+<script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/breadcrumbs.js"></script>
+<script type="text/javascript">//<![CDATA[
+    $(function() {
+        $('h2').breadcrumbs({
+            'bread_crumbs': <!--{$tpl_bread_crumbs}-->,
+        });
+    });
+//]]>
+</script>
 <form name="form1" id="form1" method="post" action="?" enctype="multipart/form-data">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="edit" />
@@ -91,7 +99,7 @@
                 <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('edit','',''); return false;"><span class="btn-next">登録</span></a><span class="attention">&nbsp;（上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
         </div>
 
-        <h2><!--{$breadcrumbs}--></h2>
+        <h2><!--{* jQuery で挿入される *}--></h2>
         <!--{if count($arrList) > 0}-->
 
         <table class="list" id="categoryTable">
