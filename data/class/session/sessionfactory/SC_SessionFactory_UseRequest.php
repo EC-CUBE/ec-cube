@@ -192,6 +192,14 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory {
             session_start();
         }
 
+        /*
+         * PHP4 では session.use_trans_sid が PHP_INI_PREDIR なので
+         * ini_set() で設定できない
+         */
+        if (!ini_get('session.use_trans_sid')) {
+            output_add_rewrite_var(session_name(), session_id());
+        }
+
         // セッションIDまたはセッションデータが無効な場合は、セッションIDを再生成
         // し、セッションデータを初期化する。
         if ($sessionId === false || !$this->validateSession()) {
