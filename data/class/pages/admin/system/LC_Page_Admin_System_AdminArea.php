@@ -92,12 +92,12 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
             //管理画面ディレクトリのチェック
             $this->lfCheckAdminArea($this->arrForm, $arrErr);
 
-            if(SC_Utils_Ex::isBlank($arrErr)) {
-                $this->lfUpdateAdminData($this->arrForm); // 既存編集
+            if(SC_Utils_Ex::isBlank($arrErr) && $this->lfUpdateAdminData($this->arrForm)) {
+               
                 $this->tpl_onload = "window.alert('管理機能の設定を変更しました。URLを変更した場合は、新しいURLにアクセスしてください。');";
             }else{
                 $this->tpl_onload = "window.alert('設定内容に誤りがあります。設定内容を確認してください。');";
-                $this->arrErr = $arrErr;
+                $this->arrErr = array_merge($arrErr, $this->arrErr);
             }
 
         } else {
@@ -188,7 +188,10 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
             if(strpos($line,"ADMIN_DIR") !== false and ADMIN_DIR != $admin_dir){
                 $installData[$key] = 'define("ADMIN_DIR","'.$admin_dir.'");';
                 //管理機能ディレクトリのリネーム
-                rename(HTML_REALDIR.ADMIN_DIR,HTML_REALDIR.$admin_dir);
+                if (!rename(HTML_REALDIR.ADMIN_DIR,HTML_REALDIR.$admin_dir)) {
+                    $this->arrErr["admin_dir"] .= ROOT_URLPATH.ADMIN_DIR."のディレクトリ名を変更できませんでした。";
+                    return false;
+                }
                 $diff ++;
             }
 
