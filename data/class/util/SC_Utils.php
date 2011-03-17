@@ -34,45 +34,6 @@
  */
 class SC_Utils {
 
-    /**
-     * サイト管理情報から値を取得する。
-     * データが存在する場合、必ず1以上の数値が設定されている。
-     * 0を返した場合は、呼び出し元で対応すること。
-     *
-     * @param $control_id 管理ID
-     * @param $dsn DataSource
-     * @return $control_flg フラグ
-     */
-    function sfGetSiteControlFlg($control_id, $dsn = "") {
-
-        // データソース
-        if($dsn == "") {
-            if(defined('DEFAULT_DSN')) {
-                $dsn = DEFAULT_DSN;
-            } else {
-                return;
-            }
-        }
-
-        // クエリ生成
-        $target_column = "control_flg";
-        $table_name = "dtb_site_control";
-        $where = "control_id = ?";
-        $arrval = array($control_id);
-        $control_flg = 0;
-
-        // クエリ発行
-        $objQuery = new SC_Query_Ex($dsn, true, true);
-        $arrSiteControl = $objQuery->select($target_column, $table_name, $where, $arrval);
-
-        // データが存在すればフラグを取得する
-        if (count($arrSiteControl) > 0) {
-            $control_flg = $arrSiteControl[0]["control_flg"];
-        }
-
-        return $control_flg;
-    }
-
     // インストール初期処理
     function sfInitInstall() {
         // インストール済みが定義されていない。
@@ -339,31 +300,6 @@ class SC_Utils {
         if (strlen($value) > 1 && $value{0} === '0')
             return true;
         return false;
-    }
-
-    function sfCSVDownload($data, $prefix = ""){
-echo "sfGetCSVData()に移行してね。";
-exit;
-
-        if($prefix == "") {
-            $dir_name = SC_Utils_Ex::sfUpDirName();
-            $file_name = $dir_name . date('ymdHis') .".csv";
-        } else {
-            $file_name = $prefix . date('ymdHis') .".csv";
-        }
-
-        /* HTTPヘッダの出力 */
-        Header("Content-disposition: attachment; filename=${file_name}");
-        Header("Content-type: application/octet-stream; name=${file_name}");
-        Header("Cache-Control: ");
-        Header("Pragma: ");
-
-        if (mb_internal_encoding() == CHAR_CODE){
-            $data = mb_convert_encoding($data,'SJIS-Win',CHAR_CODE);
-        }
-
-        /* データを出力 */
-        echo $data;
     }
 
     function sfGetCSVData($data, $prefix = ""){

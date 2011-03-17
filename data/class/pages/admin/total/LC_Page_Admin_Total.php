@@ -491,7 +491,8 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
         $arrTotalResults = $objQuery->select($col, $from, $where, $arrval);
 
-        foreach($arrTotalResults as &$arrResult) {
+        foreach(array_keys($arrTotalResults) as $key) {
+            $arrResult =& $arrTotalResults[$key];
             $member_key = $arrResult['order_sex'];
             if($member_key != "") {
                 $arrResult['member_name'] = (($arrResult['member']) ? '会員' : '非会員') . $this->arrSex[$member_key];
@@ -560,7 +561,8 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $objQuery->setOrder('total DESC');
         $arrTotalResults = $objQuery->select($col, $from, $where, $arrval);
 
-        foreach($arrTotalResults as &$arrResult) {
+        foreach(array_keys($arrTotalResults) as $key) {
+            $arrResult =& $arrTotalResults[$key];
             $job_key = $arrResult['job'];
             if($job_key != "") {
                 $arrResult['job_name'] = $this->arrJob[$job_key];
@@ -605,7 +607,8 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $objQuery->setOrder('age DESC');
         $arrTotalResults = $objQuery->select($col, $from, $where, $arrval);
 
-        foreach($arrTotalResults as &$arrResult) {
+        foreach(array_keys($arrTotalResults) as $key) {
+            $arrResult =& $arrTotalResults[$key];
             $age_key = $arrResult['age'];
             if($age_key != "") {
                 $arrResult['age_name'] = $arrResult['age'] . '代';
