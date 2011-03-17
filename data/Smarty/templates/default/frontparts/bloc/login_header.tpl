@@ -43,16 +43,14 @@
         <input type="hidden" name="url" value="<!--{$smarty.server.PHP_SELF|h}-->" />
         <div class="bloc_body clearfix">
             <!--{if $tpl_login}-->
-                <!--{if !$tpl_disable_logout}-->
-                    <p class="btn">
-                        ようこそ
-                        <span class="user_name"><!--{$tpl_name1|h}--> <!--{$tpl_name2|h}--> 様</span> /
-                        <!--{if $smarty.const.USE_POINT !== false}-->
-                            所持ポイント: <span class="point"> <!--{$tpl_user_point|number_format|default:0}--> pt</span>
-                        <!--{/if}-->&nbsp;&nbsp;
-                        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/common/btn_header_logout_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/common/btn_header_logout.jpg',this)" src="<!--{$TPL_URLPATH}-->img/common/btn_header_logout.jpg" onclick="fnFormModeSubmit('header_login_form', 'logout', '', ''); return false;" alt="ログアウト" />
+                <p class="btn">
+                    ようこそ
+                    <span class="user_name"><!--{$tpl_name1|h}--> <!--{$tpl_name2|h}--> 様</span>
+                    <!--{if $smarty.const.USE_POINT !== false}-->
+                        / 所持ポイント: <span class="point"> <!--{$tpl_user_point|number_format|default:0}--> pt</span>&nbsp;&nbsp;
+                    <!--{/if}--><!--{if !$tpl_disable_logout}-->
+                        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/common/btn_header_logout_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/common/btn_header_logout.jpg',this)" src="<!--{$TPL_URLPATH}-->img/common/btn_header_logout.jpg" onclick="fnFormModeSubmit('header_login_form', 'logout', '', ''); return false;" alt="ログアウト" /><!--{/if}-->
                     </p>
-                <!--{/if}-->
             <!--{else}-->
                 <ul class="formlist clearfix">
                     <li class="mail">
