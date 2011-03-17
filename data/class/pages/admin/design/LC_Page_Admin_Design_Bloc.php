@@ -72,21 +72,21 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // ページIDを取得
-        if (isset($_REQUEST['bloc_id']) && is_numeric($_REQUEST['bloc_id'])) {
-            $bloc_id = $_REQUEST['bloc_id'];
-        } else {
-            $bloc_id = null;
-        }
+        $objFormParam = new SC_FormParam_Ex();
+        $this->lfInitParam($objFormParam, $_REQUEST);
+
+       // ページIDを取得
+        $bloc_id = $objFormParam->getValue('bloc_id');
         $this->bloc_id = $bloc_id;
 
         // 端末種別IDを取得
-        if (isset($_REQUEST['device_type_id'])
-            && is_numeric($_REQUEST['device_type_id'])) {
-            $device_type_id = $_REQUEST['device_type_id'];
-        } else {
-            $device_type_id = DEVICE_TYPE_PC;
-        }
+        $device_type_id = $objFormParam->getValue('device_type_id');
+//        if (isset($_REQUEST['device_type_id'])
+//            && is_numeric($_REQUEST['device_type_id'])) {
+//            $device_type_id = $_REQUEST['device_type_id'];
+//        } else {
+//            $device_type_id = DEVICE_TYPE_PC;
+//        }
 
         $this->objLayout = new SC_Helper_PageLayout_Ex();
         $package_path = $this->objLayout->getTemplatePath($device_type_id) . BLOC_DIR;
@@ -159,25 +159,16 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
             break;
         case 'delete':
              // DBへデータを更新する
-            $objQuery = new SC_Query_Ex();     // DB操作オブジェクト
+            $objQuery =& SC_Query_Ex::getSingletonInstance();
             $sql = "";                      // データ更新SQL生成用
             $ret = "";                      // データ更新結果格納用
-            $arrDelData = array();          // 更新データ生成用
-
-            // 更新データ生成
-            $arrUpdData = array($arrData['bloc_name'], BLOC_DIR . $arrData['filename'] . '.tpl', $arrData['filename']);
 
             // bloc_id が空でない場合にはdeleteを実行
-            if ($_POST['bloc_id'] !== '') {
-                // SQL生成
-                $sql = " DELETE FROM dtb_bloc WHERE bloc_id = ? AND device_type_id = ?";
-                // SQL実行
-                $ret = $objQuery->query($sql,array($_POST['bloc_id'], $device_type_id));
+            if ($bloc_id !== '') {
+                $objQuery->delete('dtb_bloc', 'bloc_id = ? AND device_type_id = ?', array($bloc_id, $device_type_id));
 
                 // ページに配置されているデータも削除する
-                $sql = "DELETE FROM dtb_blocposition WHERE bloc_id = ? AND device_type_id = ?";
-                // SQL実行
-                $ret = $objQuery->query($sql,array($_POST['bloc_id'], $device_type_id));
+                $objQuery->delete('dtb_blocposition', 'bloc_id = ? AND device_type_id = ?', array($bloc_id, $device_type_id));
 
                 // ファイルの削除
                 if (file_exists($tplPath)) {
@@ -204,6 +195,20 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
     }
 
     /**
+     * パラメータ情報の初期化
+     *
+     * @param object $objFormParam SC_FormParamインスタンス
+     * @param array $arrPost $_POSTデータ
+     * @return void
+     */
+    function lfInitParam(&$objFormParam, $arrPost) {
+        $objFormParam->addParam("ブロックID", "bloc_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("端末種別ID", "device_type_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"), DEVICE_TYPE_PC);
+        $objFormParam->setParam($arrPost);
+        $objFormParam->convParam();
+    }
+
+    /**
      * ブロック情報を取得する.
      *
      * @param string $where Where句文
@@ -224,7 +229,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
      * @return integer 更新結果
      */
     function lfEntryBlocData($arrData, $device_type_id){
-        $objQuery = new SC_Query_Ex();     // DB操作オブジェクト
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sql = "";                      // データ更新SQL生成用
         $ret = "";                      // データ更新結果格納用
         $arrUpdData = array();          // 更新データ生成用

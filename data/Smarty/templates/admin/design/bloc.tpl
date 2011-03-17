@@ -24,7 +24,7 @@
 <form name="form_bloc" id="form_bloc" method="post" action="?" >
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="" />
-<input type="hidden" name="bloc_id" value="<!--{$bloc_id}-->" />
+<input type="hidden" name="bloc_id" value="<!--{$bloc_id|h}-->" />
 <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 
     <!--{* ▼ブロック設定 *}-->
@@ -76,12 +76,12 @@
             <tr style="background-color:<!--{if $item.bloc_id == $bloc_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
                 <td><!--{$item.bloc_name}--></td>
                 <td class="center">
-                    <a href="?bloc_id=<!--{$item.bloc_id}-->&amp;device_type_id=<!--{$device_type_id}-->" >編集</a>
+                    <a href="?bloc_id=<!--{$item.bloc_id|h}-->&amp;device_type_id=<!--{$device_type_id|h}-->" >編集</a>
                 </td>
                 <td class="center">
                     <!--{if $item.deletable_flg == 1}-->
-                        <a href="javascript:;" onclick="fnFormModeSubmit('form_bloc','delete','bloc_id',this.name.substr(3));">削除</a>
-                        <input type="hidden" value="<!--{$item.bloc_id}-->" name="del_id<!--{$item.bloc_id}-->" />
+                        <a href="javascript:;" onclick="fnFormModeSubmit('form_bloc','delete','bloc_id',<!--{$item.bloc_id|h}-->);">削除</a>
+                        <input type="hidden" value="<!--{$item.bloc_id|h}-->" name="del_id<!--{$item.bloc_id|h}-->" />
                     <!--{/if}-->
                 </td>
             </tr>
