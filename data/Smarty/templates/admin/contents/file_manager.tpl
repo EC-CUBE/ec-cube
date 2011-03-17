@@ -24,7 +24,7 @@
 <script type="text/javascript">//<![CDATA[
     $(function() {
         var bread_crumbs = <!--{$tpl_now_dir}-->;
-        var file_path = '<!--{$smarty.const.HTML_REALDIR}-->';
+        var file_path = '<!--{$tpl_file_path}-->';
         var $delimiter = '<span>&nbsp;&gt;&nbsp;</span>';
         var $node = $('h2');
         var total = bread_crumbs.length;
