@@ -437,22 +437,13 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         set_time_limit(0);
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $csv_data = "";
         $success = true;
 
-        //$bkup_dir = $bkup_dir . $bkup_name . "/";
-
-        //バックアップフォルダに移動する
-        chdir($bkup_dir);
-
         //圧縮フラグTRUEはgzip解凍をおこなう
-        $tar = new Archive_Tar($bkup_name . $bkup_ext, TRUE);
-
+        $tar = new Archive_Tar($bkup_dir . $bkup_name . $bkup_ext, TRUE);
+        
         //指定されたフォルダ内に解凍する
-        $success = $tar->extract("./");
-
-        //バックアップフォルダに移動する
-        chdir($bkup_dir . $bkup_name . "/");
+        $success = $tar->extract($bkup_dir);
 
         // 無事解凍できれば、リストアを行う
         if ($success) {
@@ -464,7 +455,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
             $success = $this->lfDeleteAll($objQuery);
 
             // INSERT実行
-            if ($success) $success = $this->lfExeInsertSQL($objQuery, $bkup_dir . "bkup_data.csv", $mode);
+            if ($success) $success = $this->lfExeInsertSQL($objQuery, $bkup_dir . $bkup_name . "/bkup_data.csv", $mode);
 
             // 自動採番の値をセット
             if ($success) $this->lfSetAutoInc($objQuery, $bkup_dir . "autoinc_data.csv");
@@ -504,6 +495,10 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
         // csvファイルからデータの取得
         $fp = fopen($csv, 'r');
+        if($fp === false) {
+            SC_Utils_Ex::sfDispException($csv . ' のファイルオープンに失敗しました。');
+        }
+        
         while (!feof($fp)) {
             $data = fgetcsv($fp, 1000000);
 
@@ -533,7 +528,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
             // カラムフラグがたっていない場合にはカラムセット
             if (!$col_flg) {
                 if ($mode != "restore_config"){
-                    for($i = 0; $i < count($data)-1; $i++){
+                    for($i = 0; $i < count($data); $i++){
                         $arrCol[$i] = $data[$i];
                     }
                 }
@@ -541,8 +536,10 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
                 continue;
             }
 
-            for($i = 0; $i < count($data)-1; $i++) {
-                $arrVal[$arrCol[$i]] = $data[$i];
+            for($i = 0; $i < count($data); $i++) {
+                if($arrCol[$i] != '') {
+                    $arrVal[$arrCol[$i]] = $data[$i];
+                }
             }
 
             $err = $objQuery->insert($table_name, $arrVal);
