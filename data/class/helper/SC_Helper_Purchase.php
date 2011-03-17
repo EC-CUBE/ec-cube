@@ -544,7 +544,7 @@ class SC_Helper_Purchase {
         $where = 'order_id = ?';
         $objQuery->delete($table, $where, array($order_id));
 
-         foreach ($arrParams as $arrShipping) {
+         foreach ($arrParams as $key => $arrShipping) {
 
             $arrValues = $objQuery->extractOnlyColsOf($table, $arrShipping);
 
@@ -557,6 +557,10 @@ class SC_Helper_Purchase {
                 $arrValues['shipping_date'] = date("Y-m-d", $ts);
             }
 
+            // 非会員購入の場合は shipping_id が存在しない
+            if (!isset($arrValues['shipping_id'])) {
+                $arrValues['shipping_id'] = $key;
+            }
             $arrValues['order_id'] = $order_id;
             $arrValues['create_date'] = 'Now()';
             $arrValues['update_date'] = 'Now()';

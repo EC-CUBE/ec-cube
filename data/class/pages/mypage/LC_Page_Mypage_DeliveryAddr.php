@@ -128,7 +128,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
                 }
                 break;
             case 'multiple':
-                // 複数配送先用？
+                // 複数配送先用
                 break;
             default :
 
@@ -214,11 +214,10 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
 
     function lfRegistDataNonMember($objFormParam) {
         $arrRegistColumn = $objFormParam->getDbArray();
-
-        foreach ($arrRegistColumn as $data) {
-            $arrRegist['shipping_' . $data['column'] ] = $array[ $data['column'] ];
+        foreach ($arrRegistColumn as $key => $val) {
+            $arrRegist['shipping_' . $key ] = $val;
         }
-        if (count($shipping) >= DELIV_ADDR_MAX) {
+        if (count($_SESSION['shipping']) >= DELIV_ADDR_MAX) {
             SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, "", false, '別のお届け先最大登録数に達しています。');
         } else {
             $_SESSION['shipping'][] = $arrRegist;
