@@ -390,7 +390,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
         copy($tplfile . ".tpl", $copyTo);
 
         // 更新データの取得
-        $sql = "select page_id,page_name, header_chk, footer_chk from dtb_pagelayout where page_id = ? OR page_id = (SELECT page_id FROM dtb_blocposition WHERE anywhere = 1)" ;
+        $sql = "select page_id,page_name, header_chk, footer_chk from dtb_pagelayout where page_id = ? OR page_id = ANY (SELECT page_id FROM dtb_blocposition WHERE anywhere = 1)" ;
 
         $ret = $objQuery->getAll($sql, array($arrPageData[0]['page_id']));
 
