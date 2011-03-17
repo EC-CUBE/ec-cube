@@ -25,15 +25,10 @@
         <p class="flow_area"><img src="<!--{$TPL_URLPATH}-->img/picture/img_flow_01.jpg" alt="購入手続きの流れ" /></p>
         <h2 class="title"><!--{$tpl_title|h}--></h2>
 
-        <div id="address_area" class="clearfix">
-                <div class="information">
-                                <p>下記項目にご入力ください。「<span class="attention">※</span>」印は入力必須項目です。<br />
-                入力後、一番下の「次へ」ボタンをクリックしてください。</p>
-                </div>
-                <div class="add_multiple">
-                        <p>この商品を複数の<br />お届け先に送りますか？</p>
-                <a href="javascript:;" onclick="fnModeSubmit('multiple', '', ''); return false" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_several_address_on.jpg','several');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_several_address.jpg','several');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_several_address.jpg" alt="お届け先を複数指定する" name="several" id="several" /></a>
-                </div>
+        <div class="information">
+            <p>下記項目にご入力ください。「<span class="attention">※</span>」印は入力必須項目です。<br />
+            入力後、一番下の「上記のお届け先のみに送る」<br/>
+            または「複数のお届け先に送る」ボタンをクリックしてください。</p>
         </div>
 
         <form name="form1" id="form1" method="post" action="?">
@@ -251,14 +246,18 @@
             </tr>
         </table>
 
+        <p class="alignC">この商品を複数のお届け先に送りますか？</p>
         <div class="btn_area">
             <ul>
                 <li>
-                    <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_next.jpg" alt="次へ" name="next" id="next" />
+                    <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_singular_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_singular.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_singular.jpg" alt="上記のお届け先のみに送る" name="singular" id="singular" />
+                </li>
+                <li>
+                <a href="javascript:;" onclick="fnModeSubmit('multiple', '', ''); return false" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_multiple_on.jpg','several');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_multiple.jpg','several');">
+                    <img src="<!--{$TPL_URLPATH}-->img/button/btn_multiple.jpg" alt="複数のお届け先に送る" border="0"name="several" id="several" /></a>
                 </li>
             </ul>
         </div>
-
         </form>
     </div>
 </div>

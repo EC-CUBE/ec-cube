@@ -146,8 +146,8 @@
                 <colgroup width="20%"></colgroup>
                 <colgroup width="80%"></colgroup>
                 <tr>
-                    <th>選択</th>
-                    <th colspan="2">配送方法</th>
+                    <th class="alignC">選択</th>
+                    <th class="alignC" colspan="2">配送方法</th>
                 </tr>
                 <!--{section name=cnt loop=$arrDeliv}-->
                 <tr>
@@ -176,8 +176,8 @@
                 <colgroup width="80%"></colgroup>
                 <thead>
                     <tr>
-                        <th>選択</th>
-                        <th colspan="<!--{if !$img_show}-->2<!--{else}-->3<!--{/if}-->" id="payment_method">お支払方法</th>
+                        <th class="alignC">選択</th>
+                        <th class="alignC" colspan="<!--{if !$img_show}-->2<!--{else}-->3<!--{/if}-->" id="payment_method">お支払方法</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -208,10 +208,14 @@
             <!--{foreach item=shippingItem name=shippingItem from=$arrShipping}-->
             <!--{assign var=index value=$shippingItem.shipping_id}-->
             <div class="delivdate top">
+                <!--{if $is_multiple}-->
+                    <span class="st">▼<!--{$shippingItem.shipping_name01}--><!--{$shippingItem.shipping_name02}-->
+                    <!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01}--><!--{$shippingItem.shipping_addr02}--></span><br/>
+                <!--{/if}-->
                 <!--★お届け日★-->
                 <!--{assign var=key value="deliv_date`$index`"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <span class="st">お届け日：</span>
+                お届け日：
                 <!--{if !$arrDelivDate}-->
                     ご指定頂けません。
                 <!--{else}-->
@@ -219,22 +223,17 @@
                         <option value="" selected="">指定なし</option>
                         <!--{assign var=shipping_date_value value=$arrForm[$key].value|default:$shippingItem.shipping_date}-->
                         <!--{html_options options=$arrDelivDate selected=$shipping_date_value}-->
-                    </select>
+                    </select>&nbsp;
                 <!--{/if}-->
                 <!--★お届け時間★-->
                 <!--{assign var=key value="deliv_time_id`$index`"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <span class="st">お届け時間：</span>
+                お届け時間：
                 <select name="<!--{$key}-->" id="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
                     <option value="" selected="">指定なし</option>
                     <!--{assign var=shipping_time_value value=$arrForm[$key].value|default:$shippingItem.time_id}-->
                     <!--{html_options options=$arrDelivTime selected=$shipping_time_value}-->
                 </select>
-                <!--{if $is_multiple}-->
-                    <br />
-                    <!--{$shippingItem.shipping_name01}--><!--{$shippingItem.shipping_name02}-->
-                    <!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01}--><!--{$shippingItem.shipping_addr02}-->
-                <!--{/if}-->
             </div>
             <!--{/foreach}-->
         </div>

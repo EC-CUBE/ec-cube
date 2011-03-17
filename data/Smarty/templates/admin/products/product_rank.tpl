@@ -103,10 +103,12 @@
             });
             </script>
 
-            <p><span class="attention"><!--{$tpl_linemax}-->件</span>が該当しました。</p>
-            <!--{* ▼ページナビ *}-->
-            <!--{$tpl_strnavi}-->
-            <!--{* ▲ページナビ *}-->
+            <p class="remark"><span class="attention"><!--{$tpl_linemax}-->件</span>が該当しました。</p>
+            <div class="pager">
+              <ul>
+                <!--{$tpl_strnavi}-->
+              </ul>
+            </div>
 
             <!--{if $smarty.const.ADMIN_MODE == '1'}-->
                 <p class="right"><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('renumber', '', ''); return false;">内部順位再割り当て</a></p>
@@ -157,10 +159,6 @@
                     </tr>
                 <!--{/section}-->
             </table>
-
-            <!--{* ▼ページナビ *}-->
-            <!--{$tpl_strnavi}-->
-            <!--{* ▲ページナビ *}-->
         <!--{else}-->
             <p>カテゴリを選択してください。</p>
         <!--{/if}-->

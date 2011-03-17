@@ -94,11 +94,11 @@
 
     <!--検索結果表示テーブル-->
     <table class="list">
-    <colgroup width="5%">
+    <colgroup width="10%">
     <colgroup width="20%">
-    <colgroup width="30%">
+    <colgroup width="35%">
     <colgroup width="15%">
-    <colgroup width="25%">
+    <colgroup width="15%">
         <tr>
             <th>会員番号</th>
             <th>名前</th>
@@ -112,8 +112,8 @@
             <td><!--{$arrResults[i].name01|h}--> <!--{$arrResults[i].name02|h}--></td>
             <td><!--{$arrResults[i].email|h}--></td>
             <!--{assign var="key" value="`$arrResults[i].mailmaga_flg`"}-->
-            <td><!--{$arrHtmlmail[$key]}--></td>
-            <td><!--{$arrResults[i].update_date|sfDispDBDate}--></td>
+            <td class="center"><!--{$arrHtmlmail[$key]}--></td>
+            <td class="center"><!--{$arrResults[i].update_date|sfDispDBDate}--></td>
         </tr>
         <!--{/section}-->
     </table>

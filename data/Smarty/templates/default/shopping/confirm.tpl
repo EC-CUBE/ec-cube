@@ -59,7 +59,7 @@ $(document).ready(function() {
         <div class="btn_area">
             <ul>
                 <li>
-                    <a href="./payment.php" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg', 'back03-top')" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg', 'back03-top')"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" border="0" name="back03-top" id="back03-top" /></a>
+                    <a href="./payment.php" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg', 'back04-top')" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg', 'back04-top')"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" border="0" name="back04-top" id="back04-top" /></a>
                 </li>
                     <!--{if $use_module}-->
                 <li>
@@ -178,8 +178,10 @@ $(document).ready(function() {
         <h3>お届け先<!--{if $is_multiple}--><!--{$smarty.foreach.shippingItem.iteration}--><!--{/if}--></h3>
         <!--{if $is_multiple}-->
             <table summary="ご注文内容確認">
-                <colgroup width="30%"></colgroup>
-                <colgroup width="70%"></colgroup>
+                <colgroup width="10%"></colgroup>
+                <colgroup width="60%"></colgroup>
+                <colgroup width="20%"></colgroup>
+                <colgroup width="10%"></colgroup>
                 <tr>
                     <th scope="col">商品写真</th>
                     <th scope="col">商品名</th>
@@ -209,7 +211,7 @@ $(document).ready(function() {
                         <td class="alignR">
                             <!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                         </td>
-                        <td id="quantity"><!--{$item.quantity}--></td>
+                        <td class="alignC" id="quantity"><!--{$item.quantity}--></td>
                         <!--{* XXX 購入小計と誤差が出るためコメントアウト
                         <td class="alignR"><!--{$item.total_inctax|number_format}-->円</td>
                         *}-->
@@ -281,7 +283,7 @@ $(document).ready(function() {
         <div class="btn_area">
             <ul>
                 <li>
-                    <a href="./payment.php" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg','back<!--{$key}-->');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg','back<!--{$key}-->');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" name="back<!--{$key}-->" /></a>&nbsp;
+                    <a href="./payment.php" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg','back<!--{$key}-->');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg','back<!--{$key}-->');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" name="back<!--{$key}-->" /></a>
                 </li>
                 <!--{if $use_module}-->
                 <li>

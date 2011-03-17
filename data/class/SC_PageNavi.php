@@ -118,17 +118,17 @@ class SC_PageNavi {
             for ($i=$disp_min; $i <= $disp_max; $i++) {
 
                 if ($i != $disp_max) {
-                    $sep = " | ";
+                    $sep = " ";
                 } else {
                     $sep = "";
                 }
 
                 if ($i == $this->now_page) {
-                    $page_number .= "<strong>$i</strong>";
+                    $page_number .= "<li><strong>$i</strong></li>";
                 } else {
                     $urlParamThis = str_replace('#page#', $i, $urlParam);
                     $urlParamThis = htmlentities($urlParamThis, ENT_QUOTES);
-                    $page_number .= "<a href=\"?$urlParamThis\" onclick=\"$func_name('$i'); return false;\">$i</a>";
+                    $page_number .= "<li><a href=\"?$urlParamThis\" onclick=\"$func_name('$i'); return false;\">$i</a></li>";
                 }
 
                 $page_number .= $sep;

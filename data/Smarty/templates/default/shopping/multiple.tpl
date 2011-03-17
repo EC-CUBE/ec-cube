@@ -58,10 +58,10 @@
                 <colgroup width="10%"></colgroup>
                 <colgroup width="45%"></colgroup>
                 <tr>
-                    <th>商品写真</th>
-                    <th>商品名</th>
-                    <th>数量</th>
-                    <th>お届け先</th>
+                    <th class="alignC">商品写真</th>
+                    <th class="alignC">商品名</th>
+                    <th class="alignC">数量</th>
+                    <th class="alignC">お届け先</th>
                 </tr>
                 <!--{section name=line loop=$arrForm.line_of_num.value}-->
                     <!--{assign var=index value=$smarty.section.line.index}-->

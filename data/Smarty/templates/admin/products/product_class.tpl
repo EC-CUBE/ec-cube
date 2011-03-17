@@ -181,16 +181,15 @@ $(function() {
         <span class="attention"><!--{$arrErr.check_empty}--></span>
     <!--{/if}-->
 
-    <table class="list" width="900">
+    <table class="list">
         <colgroup width="5%">
+        <colgroup width="15%">
+        <colgroup width="15%">
         <colgroup width="9%">
-        <colgroup width="9%">
-        <colgroup width="9%">
         <colgroup width="10%">
         <colgroup width="10%">
         <colgroup width="10%">
         <colgroup width="10%">
-        <colgroup width="8%">
         <colgroup width="8%">
         <colgroup width="8%">
         <tr>

@@ -35,7 +35,7 @@
             <ul>
                 <li>
                     <a href="<!--{$smarty.const.TOP_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_cannot_on.jpg','b_noagree');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_cannot.jpg','b_noagree');">
-                        <img src="<!--{$TPL_URLPATH}-->img/button/btn_entry_cannot.jpg" alt="同意しない" border="0" name="b_noagree" /></a>&nbsp;
+                        <img src="<!--{$TPL_URLPATH}-->img/button/btn_entry_cannot.jpg" alt="同意しない" border="0" name="b_noagree" /></a>
                 </li>
                 <li>
                     <a href="<!--{$smarty.const.ENTRY_URL}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_agree_on.jpg','b_agree');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_agree.jpg','b_agree');">

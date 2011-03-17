@@ -50,18 +50,18 @@
             <colgroup width="10%"></colgroup>
             <colgroup width="15%"></colgroup>
             <tr>
-                <th>商品コード</th>
-                <th>商品名</th>
-                <th>商品種別</th>
-                <th>単価</th>
-                <th>数量</th>
-                <th>小計</th>
+                <th class="alignC">商品コード</th>
+                <th class="alignC">商品名</th>
+                <th class="alignC">商品種別</th>
+                <th class="alignC">単価</th>
+                <th class="alignC">数量</th>
+                <th class="alignC">小計</th>
             </tr>
             <!--{foreach from=$tpl_arrOrderDetail item=orderDetail}-->
                 <tr>
                     <td><!--{$orderDetail.product_code|h}--></td>
                     <td><a<!--{if $orderDetail.enable}--> href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$orderDetail.product_id|u}-->"<!--{/if}-->><!--{$orderDetail.product_name|h}--></a></td>
-                    <td>
+                    <td class="alignC">
                     <!--{if $orderDetail.product_type_id == PRODUCT_TYPE_DOWNLOAD}-->
                         <!--{if $orderDetail.price == "0" || ( $orderDetail.status >= "4" && $orderDetail.effective == "1" )}-->
                             <a target="_self" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/download.php?order_id=<!--{$tpl_arrOrderData.order_id}-->&product_id=<!--{$orderDetail.product_id}-->&product_class_id=<!--{$orderDetail.product_class_id}-->">ダウンロード</a>
@@ -89,14 +89,14 @@
             <!--{if $point_discount > 0}-->
             <tr>
                 <th colspan="5" class="alignR">ポイント値引き</th>
-                <td class="alignR"><!--{$point_discount|number_format}-->円</td>
+                <td class="alignR">&minus;<!--{$point_discount|number_format}-->円</td>
             </tr>
             <!--{/if}-->
             <!--{assign var=key value="discount"}-->
             <!--{if $tpl_arrOrderData[$key] != "" && $tpl_arrOrderData[$key] > 0}-->
             <tr>
                 <th colspan="5" class="alignR">値引き</th>
-                <td class="alignR"><!--{$tpl_arrOrderData[$key]|number_format}-->円</td>
+                <td class="alignR">&minus;<!--{$tpl_arrOrderData[$key]|number_format}-->円</td>
             </tr>
             <!--{/if}-->
             <tr>
@@ -136,12 +136,14 @@
             <!--{if $isMultiple}-->
                 <table summary="お届け内容確認">
                     <colgroup width="30%"></colgroup>
-                    <colgroup width="70%"></colgroup>
+                    <colgroup width="40%"></colgroup>
+                    <colgroup width="20%"></colgroup>
+                    <colgroup width="10%"></colgroup>
                     <tr>
-                        <th>商品コード</th>
-                        <th>商品名</th>
-                        <th>単価</th>
-                        <th>数量</th>
+                        <th class="alignC">商品コード</th>
+                        <th class="alignC">商品名</th>
+                        <th class="alignC">単価</th>
+                        <th class="alignC">数量</th>
                         <!--{* XXX 購入小計と誤差が出るためコメントアウト
                         <th>小計</th>
                         *}-->
@@ -208,15 +210,15 @@
         <h3>メール配信履歴一覧</h3>
         <table>
             <tr>
-                <th>処理日</th>
-                <th>通知メール</th>
-                <th>件名</th>
+                <th class="alignC">処理日</th>
+                <th class="alignC">通知メール</th>
+                <th class="alignC">件名</th>
             </tr>
             <!--{section name=cnt loop=$tpl_arrMailHistory}-->
             <tr class="center">
-                <td><!--{$tpl_arrMailHistory[cnt].send_date|sfDispDBDate|h}--></td>
+                <td class="alignC"><!--{$tpl_arrMailHistory[cnt].send_date|sfDispDBDate|h}--></td>
                 <!--{assign var=key value="`$tpl_arrMailHistory[cnt].template_id`"}-->
-                <td><!--{$arrMAILTEMPLATE[$key]|h}--></td>
+                <td class="alignC"><!--{$arrMAILTEMPLATE[$key]|h}--></td>
                 <td><a href="#" onclick="win02('./mail_view.php?send_id=<!--{$tpl_arrMailHistory[cnt].send_id}-->','mail_view','650','800'); return false;"><!--{$tpl_arrMailHistory[cnt].subject|h}--></a></td>
             </tr>
             <!--{/section}-->

@@ -160,7 +160,7 @@ table.form th {
 }
 
 table tr.last {
-    background: #e0e0e0;
+    background: #ffffdf;
 }
 
 #popup-container table th.column {
@@ -427,7 +427,7 @@ a:visited {
 }
 
 a:hover {
-    color: #39c;
+    color: #74badc;
     text-decoration: none;
 }
 

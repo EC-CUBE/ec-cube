@@ -62,11 +62,11 @@
             <colgroup width="10%"></colgroup>
             <colgroup width="10%"></colgroup>
             <tr>
-                <th>選択</th>
-                <th>住所種類</th>
-                <th>お届け先</th>
-                <th>変更</th>
-                <th>削除</th>
+                <th class="alignC">選択</th>
+                <th class="alignC">住所種類</th>
+                <th class="alignC">お届け先</th>
+                <th class="alignC">変更</th>
+                <th class="alignC">削除</th>
             </tr>
             <!--{section name=cnt loop=$arrAddr}-->
                 <tr>

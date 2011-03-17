@@ -59,5 +59,5 @@
         <!--{/section}-->
     </table>
 
-    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('index_form', 'confirm', '', ''); return false;">変更する</a>
+    <a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('index_form', 'confirm', '', ''); return false;"><span class="btn-next">変更する</span></a>
 </form>

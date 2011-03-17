@@ -25,7 +25,7 @@
         <h2 class="title"><!--{$tpl_title|h}--></h2>
         <div id="complete_area">
             <p class="message">会員登録の受付が完了いたしました。</p>
-            <p>現在<span class="st">仮会員</span>の状態です。<br />
+            <p>現在<span class="attention">仮会員</span>の状態です。<br />
                 ご入力いただいたメールアドレス宛てに、ご連絡が届いておりますので、本会員登録になった上でお買い物をお楽しみください。<br />
                 今後ともご愛顧賜りますようよろしくお願い申し上げます。
             </p>

@@ -58,6 +58,11 @@ div#window_area #forgot .mailaddres {
     margin-bottom: 10px;
 }
 
+div#window_area #forgot p {
+    text-align: center;
+}
+
+
 /* 商品詳細拡大写真、カート拡大写真
 ----------------------------------------------- */
 div#bigimage,

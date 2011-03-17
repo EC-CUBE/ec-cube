@@ -38,13 +38,16 @@ div#undercolumn_shopping table.delivname th {
 
 /* MYページ */
 div#mycontents_area table th {
-    text-align: center;
+    text-align: left;
 }
 div#mycontents_area table th.alignR {
     text-align: right;
 }
 div#mycontents_area table th.alignL {
     text-align: left;
+}
+div#mycontents_area table th.alignC {
+    text-align: center;
 }
 div#mycontents_area table th.resulttd {
     text-align: right;

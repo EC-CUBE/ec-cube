@@ -171,7 +171,8 @@ div#undercolumn_login .login_area .inputbox .btn_area {
 ▼エラー
 =============================================== */
 div#undercolumn_error .message_area {
-    margin: 30px auto;
+    width:80%;
+	margin: 30px auto;
     padding: 30px;
     border: 1px solid #ccc;
     text-align: center;
@@ -644,7 +645,7 @@ div#undercolumn_shopping .point_area .point_announce li {
 /* お届け先の指定
 ----------------------------------------------- */
 #address_area {
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     width: 100%;
 }
 
@@ -654,7 +655,7 @@ div#undercolumn_shopping .point_area .point_announce li {
 }
 
 #undercolumn_shopping .information {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 #address_area .add_multiple {

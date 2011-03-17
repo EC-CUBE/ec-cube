@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
+<!--▼CONTENTS-->
 <div id="mypagecolumn">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
     <!--{if $tpl_navi != ""}-->
@@ -28,7 +29,6 @@
     <!--{else}-->
         <!--{include file=`$smarty.const.TEMPLATE_REALDIR`mypage/navi.tpl}-->
     <!--{/if}-->
-
     <div id="mycontents_area">
         <form name="form1" method="post" action="?">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -53,10 +53,10 @@
                 <colgroup width="45%"></colgroup>
                 <colgroup width="20%"></colgroup>
                 <tr>
-                    <th>削除</th>
-                    <th>商品画像</th>
-                    <th>商品名</th>
-                    <th><!--{$smarty.const.SALE_PRICE_TITLE}-->(税込)</th>
+                    <th class="alignC">削除</th>
+                    <th class="alignC">商品画像</th>
+                    <th class="alignC">商品名</th>
+                    <th class="alignC"><!--{$smarty.const.SALE_PRICE_TITLE}-->(税込)</th>
                 </tr>
                 <!--{section name=cnt loop=$arrFavorite}-->
                     <!--{assign var=product_id value="`$arrFavorite[cnt].product_id`"}-->

@@ -25,7 +25,8 @@
 
     <div id="undercolumn_contact">
 
-        <p>内容によっては回答をさしあげるのにお時間をいただくこともございます。また、休業日は翌営業日以降の対応となりますのでご了承ください。</p>
+        <p>内容によっては回答をさしあげるのにお時間をいただくこともございます。<br />
+        また、休業日は翌営業日以降の対応となりますのでご了承ください。</p>
 
         <form name="form1" method="post" action="?">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />

@@ -47,18 +47,18 @@
 
             <table summary="購入履歴">
                 <tr>
-                    <th>購入日時</th>
-                    <th>注文番号</th>
-                    <th>お支払い方法</th>
-                    <th>合計金額</th>
-                    <th>詳細</th>
+                    <th class="alignC">購入日時</th>
+                    <th class="alignC">注文番号</th>
+                    <th class="alignC">お支払い方法</th>
+                    <th class="alignC">合計金額</th>
+                    <th class="alignC">詳細</th>
                 </tr>
                 <!--{section name=cnt loop=$arrOrder}-->
                     <tr>
-                        <td><!--{$arrOrder[cnt].create_date|sfDispDBDate}--></td>
+                        <td class="alignC"><!--{$arrOrder[cnt].create_date|sfDispDBDate}--></td>
                         <td><!--{$arrOrder[cnt].order_id}--></td>
                         <!--{assign var=payment_id value="`$arrOrder[cnt].payment_id`"}-->
-                        <td><!--{$arrPayment[$payment_id]|h}--></td>
+                        <td class="alignC"><!--{$arrPayment[$payment_id]|h}--></td>
                         <td class="alignR"><!--{$arrOrder[cnt].payment_total|number_format}-->円</td>
                         <td class="alignC"><a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/history.php?order_id=<!--{$arrOrder[cnt].order_id}-->">詳細</a></td>
                     </tr>
