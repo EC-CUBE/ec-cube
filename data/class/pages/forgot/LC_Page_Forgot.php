@@ -273,10 +273,12 @@ class LC_Page_Forgot extends LC_Page_Ex {
         $objMailText->assign('customer_name', $customer_name);
         $objMailText->assign('new_password', $new_password);
         $toCustomerMail = $objMailText->fetch("mail_templates/forgot_mail.tpl");
+        $objHelperMail  = new SC_Helper_Mail_Ex();
         // メール送信オブジェクトによる送信処理
         $objMail = new SC_SendMail();
         $objMail->setItem(
             '' //宛先
+            , $objHelperMail->sfMakeSubject('パスワードを変更いたしました。')
             , $toCustomerMail //本文
             , $CONF['email03'] //配送元アドレス
             , $CONF['shop_name'] // 配送元名
