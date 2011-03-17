@@ -25,7 +25,7 @@
 <script type="text/javascript">//<![CDATA[
     $(function() {
         $('h2').breadcrumbs({
-            'bread_crumbs': <!--{$tpl_bread_crumbs}-->,
+            'bread_crumbs': <!--{$tpl_bread_crumbs}-->
         });
     });
 //]]>
