@@ -71,6 +71,10 @@
       <tr>
         <th>郵便番号</th>
         <td>
+          <!--{assign var=key1 value="`$prefix`zip01"}-->
+          <!--{assign var=key2 value="`$prefix`zip02"}-->
+          <!--{assign var=key3 value="`$prefix`pref"}-->
+          <!--{assign var=key4 value="`$prefix`addr01"}-->
           <span class="attention"><!--{$arrErr.zip01}--><!--{$arrErr.zip02}--></span>
             〒&nbsp;
             <input type="text"
