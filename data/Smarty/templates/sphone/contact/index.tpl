@@ -82,13 +82,13 @@
                    class="box60"
                    value="<!--{$arrForm.zip01.value|default:$arrData.zip01|h}-->"
                    maxlength="<!--{$smarty.const.ZIP01_LEN}-->"
-                   style="<!--{$arrErr.zip01|sfGetErrorColor}-->" />&nbsp;-&nbsp;
+                   style="<!--{$arrErr.zip01|sfGetErrorColor}-->; ime-mode: disabled;" />&nbsp;-&nbsp;
             <input type="text"
                    name="zip02"
                    class="box60"
                    value="<!--{$arrForm.zip02.value|default:$arrData.zip02|h}-->"
                    maxlength="<!--{$smarty.const.ZIP02_LEN}-->"
-                   style="<!--{$arrErr.zip02|sfGetErrorColor}-->" />　
+                   style="<!--{$arrErr.zip02|sfGetErrorColor}-->; ime-mode: disabled;" />　
             <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fs12">郵便番号検索</span></a>
           <p class="zipimg">
             <a href="<!--{$smarty.const.ROOT_URLPATH}-->input_zip.php" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', '<!--{$key1}-->', '<!--{$key2}-->', '<!--{$key3}-->', '<!--{$key4}-->'); return false;" target="_blank" class="oubtn">住所自動入力</a><br />
