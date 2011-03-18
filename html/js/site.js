@@ -234,6 +234,11 @@ function fnCheckInputPoint() {
         len = list.length
         for(i = 0; i < len; i++) {
             if(document.form1[list[i]]) {
+                var current_color = document.form1[list[i]].style.backgroundColor;
+                if (color != "#dddddd" && (current_color == "#ffe8e8" || current_color == "rgb(255, 232, 232)"))
+                {
+                    continue;
+                }
                 document.form1[list[i]].disabled = flag;
                 document.form1[list[i]].style.backgroundColor = color;
             }
