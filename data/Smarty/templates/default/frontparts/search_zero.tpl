@@ -21,7 +21,6 @@
  *}-->
 <!--{* 検索該当0件 *}-->
 <table width="570" cellspacing="0" cellpadding="0" summary=" ">
-    <tr><td height="15"></td></tr>
     <tr>
         <td height="150" align="center" class="fs12">
             <!--{if $smarty.get.mode == "search"}-->
