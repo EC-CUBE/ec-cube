@@ -706,7 +706,7 @@ __EOS__;
         }
         //削除カテゴリを想定して、古いカテゴリ一覧から見て商品数が異なるデータが無いか確認。
         foreach($arrOld as $cid => $count){
-            if($arrNew[$cid] != $count){
+            if($arrNew[$cid] != $count && $count > 0){
                 $arrDiffCategory_id[] = $cid;
             }
         }
@@ -784,7 +784,7 @@ __EOS__;
                 $ret = $objQuery->insert('dtb_category_total_count', $sqlval);
             }
         }
-        // トランザクション音終了処理
+        // トランザクション終了処理
         if($is_out_trans) {
             $objQuery->commit();
         }
