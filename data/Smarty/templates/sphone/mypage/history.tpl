@@ -55,16 +55,16 @@
             <!--{foreach from=$tpl_arrOrderDetail item=orderDetail}-->
                 <tr>
                     <td><!--{$orderDetail.product_code|h}--></td>
-                    <td><!--→商品名--><a<!--{if $orderDetail.enable}--> href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$orderDetail.product_id|u}-->"<!--{/if}-->><!--{$orderDetail.product_name|h}--></a><!--←商品名--><br /><!--→商品種別--><!--{if $orderDetail.product_type_id == PRODUCT_TYPE_DOWNLOAD}-->
+                    <td><!--→商品名--><a<!--{if $orderDetail.enable}--> href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$orderDetail.product_id|u}-->"<!--{/if}-->><!--{$orderDetail.product_name|h}--></a><!--←商品名--><br /><!--→商品種別--><!--{if $orderDetail.product_type_id == $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
                         <!--{if $orderDetail.price == "0" || ( $orderDetail.status >= "4" && $orderDetail.effective == "1" )}-->
                             <a target="_self" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/download.php?order_id=<!--{$tpl_arrOrderData.order_id}-->&amp;product_id=<!--{$orderDetail.product_id}-->&amp;product_class_id=<!--{$orderDetail.product_class_id}-->">ダウンロード</a>
                         <!--{elseif $orderDetail.payment_date == "" || $orderDetail.status < "4"}-->
-                            ダウンロード商品<BR />（入金確認中）
+                            <!--{$arrProductType[$orderDetail.product_type_id]}--><BR />（入金確認中）
                         <!--{elseif $orderDetail.effective != "1"}-->
-                            ダウンロード商品<BR />（期限切れ）
+                            <!--{$arrProductType[$orderDetail.product_type_id]}--><BR />（期限切れ）
                         <!--{/if}-->
-                    <!--{else if $orderDetail.product_type_id == PRODUCT_TYPE_NORMAL}-->
-                            通常商品
+                    <!--{else}-->
+                        <!--{$arrProductType[$orderDetail.product_type_id]}-->
                     <!--{/if}--><!--←商品種別--><br /><!--→金額--><!--{assign var=price value=`$orderDetail.price`}-->
                     <!--{assign var=quantity value=`$orderDetail.quantity`}-->
 <!--{$price|number_format|h}-->円<!--←金額--></td>

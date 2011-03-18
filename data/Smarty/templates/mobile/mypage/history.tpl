@@ -43,16 +43,16 @@
 商品コード：<!--{$orderDetail.product_code|h}--><br>
 商品名：<a<!--{if $orderDetail.enable}--> href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$orderDetail.product_id|u}-->"<!--{/if}-->><!--{$orderDetail.product_name|h}--></a><br>
 商品種別：
-<!--{if $orderDetail.product_type_id == PRODUCT_TYPE_DOWNLOAD}-->
+<!--{if $orderDetail.product_type_id == $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
 <!--{if $orderDetail.price == "0" || ( $orderDetail.status >= "4" && $orderDetail.effective == "1" )}-->
 <a target="_self" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/download.php?order_id=<!--{$tpl_arrOrderData.order_id}-->&product_id=<!--{$orderDetail.product_id}-->&product_class_id=<!--{$orderDetail.product_class_id}-->">ダウンロード</a><br>
 <!--{elseif $orderDetail.payment_date == "" || $orderDetail.status < "4"}-->
-ダウンロード商品<br>（入金確認中）<br>
+<!--{$arrProductType[$orderDetail.product_type_id]}--><br>（入金確認中）<br>
 <!--{elseif $orderDetail.effective != "1"}-->
-ダウンロード商品<br>（期限切れ）<br>
+<!--{$arrProductType[$orderDetail.product_type_id]}--><br>（期限切れ）<br>
 <!--{/if}-->
-<!--{else if $orderDetail.product_type_id == PRODUCT_TYPE_NORMAL}-->
-通常商品<br>
+<!--{else}-->
+<!--{$arrProductType[$orderDetail.product_type_id]}--><br>
 <!--{/if}-->
 単価：
 <!--{assign var=price value=`$orderDetail.price`}-->

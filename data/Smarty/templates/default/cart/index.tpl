@@ -35,28 +35,28 @@ $(document).ready(function() {
     <div id="undercolumn_cart">
         <h2 class="title"><!--{$tpl_title|h}--></h2>
 
-        <!--{if $smarty.const.USE_POINT !== false || count($arrProductsClass) > 0}-->
-                    <!--★ポイント案内★-->
-                    <div class="point_announce">
-                        <!--{if $smarty.const.USE_POINT !== false}-->
-                            <!--{if $tpl_login}-->
-                                <span class="user_name"><!--{$tpl_name|h}--> 様</span>の、現在の所持ポイントは「<span class="point"><!--{$tpl_user_point|number_format|default:0}--> pt</span>」です。<br />
-                            <!--{else}-->
-                                ポイント制度をご利用になられる場合は、会員登録後ログインしてくださいますようお願い致します。<br />
-                            <!--{/if}-->
-                            ポイントは商品購入時に<span class="price">1pt＝<!--{$smarty.const.POINT_VALUE}-->円</span>として使用することができます。<br />
-                        <!--{/if}-->
-                    </div>
-
-                    <!--{* カゴの中に商品がある場合にのみ表示 *}-->
-                    <!--{if count($cartKeys) > 1}-->
-                        <span class="attentionSt"><!--{foreach from=$cartKeys item=key name=cartKey}--><!--{$arrProductType[$key]}--><!--{if !$smarty.foreach.cartKey.last}-->、<!--{/if}--><!--{/foreach}-->は同時購入できません。<br />
-                            お手数ですが、個別に購入手続きをお願い致します。
-                        </span>
-                    <!--{/if}-->
-            <!--{/if}-->
+    <!--{if $smarty.const.USE_POINT !== false || count($arrProductsClass) > 0}-->
+        <!--★ポイント案内★-->
+        <!--{if $smarty.const.USE_POINT !== false}-->
+            <div class="point_announce">
+                <!--{if $tpl_login}-->
+                    <span class="user_name"><!--{$tpl_name|h}--> 様</span>の、現在の所持ポイントは「<span class="point"><!--{$tpl_user_point|number_format|default:0}--> pt</span>」です。<br />
+                <!--{else}-->
+                    ポイント制度をご利用になられる場合は、会員登録後ログインしてくださいますようお願い致します。<br />
+                <!--{/if}-->
+                ポイントは商品購入時に<span class="price">1pt＝<!--{$smarty.const.POINT_VALUE}-->円</span>として使用することができます。<br />
+            </div>
+        <!--{/if}-->
+    <!--{/if}-->
 
     <p class="totalmoney_area">
+        <!--{* カゴの中に商品がある場合にのみ表示 *}-->
+        <!--{if count($cartKeys) > 1}-->
+            <span class="attentionSt"><!--{foreach from=$cartKeys item=key name=cartKey}--><!--{$arrProductType[$key]}--><!--{if !$smarty.foreach.cartKey.last}-->、<!--{/if}--><!--{/foreach}-->は同時購入できません。<br />
+                        お手数ですが、個別に購入手続きをお願い致します。
+            </span>
+        <!--{/if}-->
+
         <!--{if strlen($tpl_error) != 0}-->
             <p class="attention"><!--{$tpl_error|h}--></p>
         <!--{/if}-->

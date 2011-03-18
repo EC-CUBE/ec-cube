@@ -51,6 +51,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
         $this->arrMAILTEMPLATE  = $masterData->getMasterData("mtb_mail_template");
         $this->arrPref          = $masterData->getMasterData('mtb_pref');
         $this->arrWDAY          = $masterData->getMasterData("mtb_wday");
+        $this->arrProductType   = $masterData->getMasterData("mtb_product_type");
    }
 
     /**
