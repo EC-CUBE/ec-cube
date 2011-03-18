@@ -138,12 +138,12 @@ function lfnCheckSetItem( rank ){
         </tr>
 
         <tr><td colspan="4" class="no-border-w" height="20"></td></tr>
-
-        <tr><td colspan="4" class="no-border">
         <!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->
-        <a class="btn-action" href="javascript:;" onclick="return lfnCheckSubmit(document.form<!--{$smarty.section.cnt.iteration}-->);"><span class="btn-next">この内容で登録する</span></a><!--{/if}-->
-            </td>
+        <tr><td colspan="4" class="no-border">
+        <a class="btn-action" href="javascript:;" onclick="return lfnCheckSubmit(document.form<!--{$smarty.section.cnt.iteration}-->);"><span class="btn-next">この内容で登録する</span></a>
+        </td>
         </tr>
+        <!--{/if}-->
     <!--▲おすすめ商品<!--{$smarty.section.cnt.iteration}-->-->
     <!--{/section}-->
     </table>
