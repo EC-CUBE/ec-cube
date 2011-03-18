@@ -170,7 +170,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
     function insertMtbZip($start = 1) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        $img_path = USER_URL . USER_PACKAGE_DIR . "/" . ADMIN_DIR . "img/basis/";
+        $img_path = USER_URL . USER_PACKAGE_DIR . "admin/img/basis/"; // 画像パスは admin 固定
 
         ?>
         <html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
