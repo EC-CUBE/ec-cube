@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
+require_once CLASS_EX_REALDIR . 'page_extends/admin/order/LC_Page_Admin_Order_Ex.php';
 
 /**
  * 受注メール管理 のページクラス.
@@ -31,7 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
 
     // }}}
     // {{{ functions
@@ -70,16 +70,18 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // 検索パラメータの引き継ぎ
-        $this->arrSearchHidden = SC_Utils_Ex::sfFilterKey($_POST,"^search_");
         // パラメータ管理クラス
         $objFormParam = new SC_FormParam_Ex();
         // パラメータ情報の初期化
         $this->lfInitParam($objFormParam);
+
         // POST値の取得
         $objFormParam->setParam($_POST);
         $objFormParam->convParam();
         $this->tpl_order_id = $objFormParam->getValue('order_id');
+
+        // 検索パラメータの引き継ぎ
+        $this->arrSearchHidden = $objFormParam->getSearchArray();
 
         switch($this->getMode()) {
             case 'pre_edit':
@@ -214,6 +216,9 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Ex {
      * @param SC_FormParam $objFormParam
      */
     function lfInitParam(&$objFormParam) {
+        // 検索条件のパラメータを初期化
+        parent::lfInitParam($objFormParam);
+
         $objFormParam->addParam("オーダーID", "order_id", INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("テンプレート", "template_id", INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("メールタイトル", 'subject', STEXT_LEN, 'KVa',  array("EXIST_CHECK", "MAX_LENGTH_CHECK", "SPTAB_CHECK"));

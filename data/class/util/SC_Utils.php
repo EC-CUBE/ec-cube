@@ -608,23 +608,6 @@ class SC_Utils {
         return $default;
     }
 
-    /**
-     * keyが正規表現にマッチした配列のみ値を返す
-     *
-     * @param mixed $array
-     * @param mixed $regex
-     * @access public
-     * @return array $results
-     */
-    function sfFilterKey($array, $regex) {
-        foreach ($array as $key => $val) {
-            if (preg_match("/{$regex}/", $key)) {
-                $results[$key] = $val;
-            }
-        }
-        return $results;
-    }
-
     function sfGetErrorColor($val) {
         if($val != "") {
             return "background-color:" . ERR_COLOR;

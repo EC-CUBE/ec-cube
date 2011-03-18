@@ -116,7 +116,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $objFormParam->setParam($_GET);
 
         // 検索ワードの引き継ぎ
-        $this->arrHidden = SC_Utils_Ex::sfFilterKey($_POST, '^search_');
+        $this->arrHidden = $objFormParam->getSearchArray();
 
         switch($this->getMode()) {
         case 'csv':
