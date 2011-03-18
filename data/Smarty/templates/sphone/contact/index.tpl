@@ -168,7 +168,7 @@
           <input type="text"
                  class="box300"
                  name="email02"
-                 value="<!--{$arrForm.email02.value|h}-->"
+                 value="<!--{$arrForm.email02.value|default:$email02|h}-->"
                  maxlength="<!--{$smarty.const.MTEXT_LEN}-->"
                  style="<!--{$arrErr.email02|sfGetErrorColor}-->" /><br />
           <p class="mini"><em>確認のため2度入力してください。</em></p>
