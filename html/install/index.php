@@ -114,8 +114,6 @@ case 'step2':
     //入力値のエラーチェック
     $objPage->arrErr = lfCheckDBError($objDBParam);
     if (count($objPage->arrErr) == 0) {
-        // 設定ファイルの生成
-        lfMakeConfigFile();
         if ($err = renameAdminDir($objWebParam->getValue('admin_dir')) !== true) {
             $objPage->arrErr["all"] .= $err;
             $objPage = lfDispStep2($objPage);
@@ -137,8 +135,7 @@ case 'step3':
         // スキップする場合には次画面へ遷移
         $skip = $_POST["db_skip"];
         if ($skip == "on") {
-            $objPage = lfDispComplete($objPage);
-            //$objPage = lfDispStep4($objPage);
+            $objPage = lfDispStep4($objPage);
             break;
         }
     }
@@ -215,49 +212,6 @@ case 'drop':
     break;
 // 完了画面
 case 'complete':
-    // ショップマスタ情報の書き込み
-    $arrRet =  $objDBParam->getHashArray();
-
-    $dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
-    $sqlval['shop_name'] = $objWebParam->getValue('shop_name');
-    $sqlval['email01'] = $objWebParam->getValue('admin_mail');
-    $sqlval['email02'] = $objWebParam->getValue('admin_mail');
-    $sqlval['email03'] = $objWebParam->getValue('admin_mail');
-    $sqlval['email04'] = $objWebParam->getValue('admin_mail');
-    $sqlval['email05'] = $objWebParam->getValue('admin_mail');
-    $sqlval['top_tpl'] = "default1";
-    $sqlval['product_tpl'] = "default1";
-    $sqlval['detail_tpl'] = "default1";
-    $sqlval['mypage_tpl'] = "default1";
-    $sqlval['update_date'] = 'now()';
-    $objQuery = new SC_Query($dsn);
-    $cnt = $objQuery->count("dtb_baseinfo");
-    if($cnt > 0) {
-        $objQuery->update("dtb_baseinfo", $sqlval);
-    } else {
-        $objQuery->insert("dtb_baseinfo", $sqlval);
-    }
-
-    // 管理者登録
-    $login_id = $objWebParam->getValue('login_id');
-    $salt = SC_Utils_Ex::sfGetRandomString(10);
-    $login_pass = SC_Utils_Ex::sfGetHashString($objWebParam->getValue('login_pass'), $salt);
-
-    $objQuery->delete("dtb_member", "login_id = ?", array($login_id));
-
-    $member_id = $objQuery->nextVal("dtb_member_member_id");
-    $objQuery->insert("dtb_member", array("member_id" => $member_id,
-                                          "name" => "管理者",
-                                          "login_id" => $login_id,
-                                          "password" => $login_pass,
-                                          "salt" => $salt,
-                                          "creator_id" => 0,
-                                          "authority" => 0,
-                                          "work" => 1,
-                                          "del_flg" => 0,
-                                          "rank" => 1,
-                                          "create_date" => "now()",
-                                          "update_date" => "now()"));
 
     $GLOBAL_ERR = "";
     $objPage = lfDispComplete($objPage);
@@ -539,6 +493,9 @@ function lfDispStep4($objPage) {
     global $objDBParam;
     global $objDb;
 
+    // 設定ファイルの生成
+    lfMakeConfigFile();
+
     // hiddenに入力値を保持
     $objPage->arrHidden = $objWebParam->getHashArray();
     $objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
@@ -574,6 +531,52 @@ function lfDispComplete($objPage) {
     $objPage->arrHidden = $objWebParam->getHashArray();
     // hiddenに入力値を保持
     $objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
+
+    // ショップマスタ情報の書き込み
+    $arrRet =  $objDBParam->getHashArray();
+
+    $dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
+    $sqlval['shop_name'] = $objWebParam->getValue('shop_name');
+    $sqlval['email01'] = $objWebParam->getValue('admin_mail');
+    $sqlval['email02'] = $objWebParam->getValue('admin_mail');
+    $sqlval['email03'] = $objWebParam->getValue('admin_mail');
+    $sqlval['email04'] = $objWebParam->getValue('admin_mail');
+    $sqlval['email05'] = $objWebParam->getValue('admin_mail');
+    $sqlval['top_tpl'] = "default1";
+    $sqlval['product_tpl'] = "default1";
+    $sqlval['detail_tpl'] = "default1";
+    $sqlval['mypage_tpl'] = "default1";
+    $sqlval['update_date'] = 'now()';
+    $objQuery = new SC_Query($dsn);
+    $cnt = $objQuery->count("dtb_baseinfo");
+    if($cnt > 0) {
+        $objQuery->update("dtb_baseinfo", $sqlval);
+    } else {
+        $objQuery->insert("dtb_baseinfo", $sqlval);
+    }
+
+    // 管理者登録
+    $login_id = $objWebParam->getValue('login_id');
+    $salt = SC_Utils_Ex::sfGetRandomString(10);
+    $login_pass = SC_Utils_Ex::sfGetHashString($objWebParam->getValue('login_pass'), $salt);
+
+    $objQuery->delete("dtb_member", "login_id = ?", array($login_id));
+
+    $member_id = $objQuery->nextVal("dtb_member_member_id");
+    $objQuery->insert("dtb_member", array("member_id" => $member_id,
+                                          "name" => "管理者",
+                                          "login_id" => $login_id,
+                                          "password" => $login_pass,
+                                          "salt" => $salt,
+                                          "creator_id" => 0,
+                                          "authority" => 0,
+                                          "work" => 1,
+                                          "del_flg" => 0,
+                                          "rank" => 1,
+                                          "create_date" => "now()",
+                                          "update_date" => "now()"));
+
+
     $objPage->arrHidden['db_skip'] = $_POST['db_skip'];
     $objPage->tpl_mainpage = 'complete.tpl';
     $objPage->tpl_mode = 'complete';
@@ -940,7 +943,13 @@ function lfMakeConfigFile() {
         $algos = '';
     }
     //MAGICハッシュワード決定
-    $auth_magic = SC_Utils_Ex::sfGetRandomString(40);
+    if ($_POST['db_skip'] && defined('AUTH_MAGIC')) {
+        $auth_magic = AUTH_MAGIC;
+    } else {
+        $auth_magic = SC_Utils_Ex::sfGetRandomString(40);
+        define('AUTH_MAGIC', $auth_magic);
+    }
+
     $config_data =
     "<?php\n".
     "    define ('ECCUBE_INSTALL', 'ON');\n" .
