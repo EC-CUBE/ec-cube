@@ -622,13 +622,30 @@ function lfInitWebParam($objWebParam) {
     // 管理機能のディレクトリ名を取得（再インストール時）
     $oldAdminDir = SC_Utils_Ex::sfTrimURL(ADMIN_DIR);
 
+    if (defined('ADMIN_FORCE_SSL')) {
+        $admin_force_ssl = ADMIN_FORCE_SSL;
+    } else {
+        $admin_force_ssl = '';
+    }
+
+    if (defined('ADMIN_ALLOW_HOSTS')) {
+        $arrAllowHosts = unserialize(ADMIN_ALLOW_HOSTS);
+        $admin_allow_hosts = '';
+        foreach ($arrAllowHosts as $val) {
+            $admin_allow_hosts .= $val . "\n";
+        }
+
+    } else {
+        $admin_allow_hosts = '';
+    }
+
     $objWebParam->addParam("店名", "shop_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $shop_name);
     $objWebParam->addParam("管理者：メールアドレス", "admin_mail", MTEXT_LEN, "", array("EXIST_CHECK","EMAIL_CHECK","EMAIL_CHAR_CHECK","MAX_LENGTH_CHECK"), $admin_mail);
     $objWebParam->addParam("管理者：ログインID", "login_id", ID_MAX_LEN, "", array("EXIST_CHECK","SPTAB_CHECK", "ALNUM_CHECK"));
     $objWebParam->addParam("管理者：パスワード", "login_pass", ID_MAX_LEN, "", array("EXIST_CHECK","SPTAB_CHECK", "ALNUM_CHECK"));
     $objWebParam->addParam("管理機能：ディレクトリ", "admin_dir", ID_MAX_LEN, "a", array("EXIST_CHECK","SPTAB_CHECK", "ALNUM_CHECK"), $oldAdminDir);
-    $objWebParam->addParam("管理機能：SSL制限", "admin_force_ssl", 1, "n", array("SPTAB_CHECK", "NUM_CHECK","MAX_LENGTH_CHECK"));
-    $objWebParam->addParam("管理機能：IP制限", "admin_allow_hosts", LTEXT_LEN, "an", array("IP_CHECK","MAX_LENGTH_CHECK"));
+    $objWebParam->addParam("管理機能：SSL制限", "admin_force_ssl", 1, "n", array("SPTAB_CHECK", "NUM_CHECK","MAX_LENGTH_CHECK"), $admin_force_ssl);
+    $objWebParam->addParam("管理機能：IP制限", "admin_allow_hosts", LTEXT_LEN, "an", array("IP_CHECK","MAX_LENGTH_CHECK"), $admin_allow_hosts);
     $objWebParam->addParam("URL(通常)", "normal_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $normal_url);
     $objWebParam->addParam("URL(セキュア)", "secure_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $secure_url);
     $objWebParam->addParam("ドメイン", "domain", MTEXT_LEN, "", array("MAX_LENGTH_CHECK"));
