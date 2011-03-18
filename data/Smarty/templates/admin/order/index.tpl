@@ -56,14 +56,14 @@
 
     function fnOpenPdfSettingPage(action){
         var fm = document.form1;
-        win02("about:blank", "pdf", "620","650");
+        win02("about:blank", "pdf_input", "620","650");
 
         // 退避
         tmpTarget = fm.target;
         tmpMode = fm.mode.value;
         tmpAction = fm.action;
 
-        fm.target = "pdf";
+        fm.target = "pdf_input";
         fm.mode.value = 'pdf';
         fm.action = action;
         fm.submit();
