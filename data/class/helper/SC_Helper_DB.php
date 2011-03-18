@@ -754,7 +754,6 @@ __EOS__;
         $arrUpdateData = array();
         foreach ($arrTgtCategory_id as $category_id) {
             $arrval = array();
-            $arrval[] = $category_id;
             list($tmp_where, $tmp_arrval) = $this->sfGetCatWhere($category_id);
             if ($tmp_where != "") {
                 $sql_where_product_ids = "product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
