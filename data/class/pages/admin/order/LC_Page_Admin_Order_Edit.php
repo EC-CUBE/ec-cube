@@ -513,6 +513,25 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
             $totaltax += SC_Helper_DB_Ex::sfTax($arrValues['price'][$i]) * $arrValues['quantity'][$i];
             // 加算ポイントの計算
             $totalpoint += SC_Utils_Ex::sfPrePoint($arrValues['price'][$i], $arrValues['point_rate'][$i]) * $arrValues['quantity'][$i];
+
+            // 在庫数のチェック
+            $objProduct = new SC_Product_Ex();
+            $arrProduct = $objProduct->getDetailAndProductsClass($arrValues['product_class_id'][$i]);
+
+            // 編集前の値と比較するため受注詳細を取得
+            $objPurchase = new SC_Helper_Purchase_Ex();
+            $arrOrderDetail = SC_Utils_Ex::sfSwapArray($objPurchase->getOrderDetail($objFormParam->getValue('order_id'), false));
+
+            if ($arrProduct['stock_unlimited'] != '1'
+                && $arrProduct['stock'] < $arrValues['quantity'][$i] - $arrOrderDetail['quantity'][$i]) {
+                $class_name1 = $arrValues['classcategory_name1'][$i];
+                $class_name1 = SC_Utils_Ex::isBlank($class_name1) ? 'なし' : $class_name1;
+                $class_name2 = $arrValues['classcategory_name2'][$i];
+                $class_name2 = SC_Utils_Ex::isBlank($class_name2) ? 'なし' : $class_name2;
+                $arrErr['quantity'][$i] .= $arrValues['product_name'][$i]
+                    . '/(' . $class_name1 . ')/(' . $class_name2 . ') の在庫が不足しています。 設定できる数量は「' 
+                    . ($arrOrderDetail['quantity'][$i] + $arrProduct['stock']) . '」までです。<br />';
+            }
         }
 
         // 消費税
