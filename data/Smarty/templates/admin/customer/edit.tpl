@@ -58,7 +58,7 @@
     <!--{/foreach}-->
 </form>
 
-<form name="form1" id="form1" method="post" action="?">
+<form name="form1" id="form1" method="post" action="?" autocomplete="off">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="confirm" />
     <input type="hidden" name="customer_id" value="<!--{$arrForm.customer_id|h}-->" />
