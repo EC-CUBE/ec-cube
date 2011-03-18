@@ -73,6 +73,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
 
         $this->addrs = $this->getDelivAddrs($objCustomer, $objPurchase,
                                             $this->tpl_uniqid);
+        $this->tpl_addrmax = count($this->addrs);
         $this->lfInitParam($objFormParam);
 
         $objPurchase->verifyChangeCart($this->tpl_uniqid, $objCartSess);

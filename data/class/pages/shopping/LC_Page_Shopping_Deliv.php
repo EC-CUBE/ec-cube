@@ -143,6 +143,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
 
         // 登録済み住所を取得
         $this->arrAddr = $objCustomer->getCustomerAddress($objCustomer->getValue('customer_id'));
+        $this->tpl_addrmax = count($this->arrAddr);
     }
 
     /**
