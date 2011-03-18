@@ -269,7 +269,7 @@
                 <!--{section name=cnt loop=$arrPurchaseHistory}-->
                     <tr>
                         <td><!--{$arrPurchaseHistory[cnt].create_date|sfDispDBDate}--></td>
-                        <td class="center"><a href="#" onclick="fnOpenWindow('../order/edit.php?order_id=<!--{$arrPurchaseHistory[cnt].order_id}-->','order_disp','800','900'); return false;" ><!--{$arrPurchaseHistory[cnt].order_id}--></a></td>
+                        <td class="center"><a href="../order/edit.php?order_id=<!--{$arrPurchaseHistory[cnt].order_id}-->" ><!--{$arrPurchaseHistory[cnt].order_id}--></a></td>
                         <td class="center"><!--{$arrPurchaseHistory[cnt].payment_total|number_format}-->円</td>
                         <td class="center"><!--{if $arrPurchaseHistory[cnt].status eq 5}--><!--{$arrPurchaseHistory[cnt].commit_date|sfDispDBDate}--><!--{else}-->未発送<!--{/if}--></td>
                         <!--{assign var=payment_id value="`$arrPurchaseHistory[cnt].payment_id`"}-->
