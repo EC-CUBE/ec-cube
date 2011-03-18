@@ -20,15 +20,16 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <!--{* 検索該当0件 *}-->
-<table width="570" cellspacing="0" cellpadding="0" summary=" ">
-    <tr>
-        <td height="150" align="center" class="fs12">
+    <div id="undercolumn_error"> 
+        <div class="message_area"> 
+            <!--★エラーメッセージ--> 
+            <p class="error">
             <!--{if $smarty.get.mode == "search"}-->
                 該当件数<strong>0件</strong>です。<br />
                 他の検索キーワードより再度検索をしてください。
             <!--{else}-->
                 現在、商品はございません。
             <!--{/if}-->
-        </td>
-    </tr>
-</table>
+            </p> 
+        </div> 
+    </div>
