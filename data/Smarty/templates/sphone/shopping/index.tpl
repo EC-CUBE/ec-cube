@@ -30,24 +30,20 @@
      <p class="inputtext">会員の方は、登録時に入力されたメールアドレスとパスワードでログインしてください。</p>
 
        <input type="hidden" name="mode" value="login" />
-<table class="entryform">
-<tr><th>
+       <div class="entryform>
        <!--{assign var=key value="login_email"}-->
-       <span class="attention"><!--{$arrErr[$key]}--></span>
-メールアドレス</th>
+       <span class="attention"><!--{$arrErr[$key]}--></span>▼メールアドレス<br>
 
-<td><input type="email" name="<!--{$key}-->" value="<!--{$tpl_login_email|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->; ime-mode: disabled;" size="40" class="box300" /><br />
+<input type="email" name="<!--{$key}-->" value="<!--{$tpl_login_email|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->; ime-mode: disabled;" size="40" class="box300" /><br />
        <p class="mini">
          <!--{assign var=key value="login_memory"}-->
          <input class="radio_btn" type="checkbox" name="<!--{$key}-->" value="1" <!--{$tpl_login_memory|sfGetChecked:1}--> id="login_memory" />
          <label for="login_memory">メールアドレスを記憶させる</label>
-       </p></td></tr>
-<tr><th>
-         <!--{assign var=key value="login_pass"}-->
-         <span class="attention"><!--{$arrErr[$key]}--></span>
-パスワード</th>
-<td><input type="password" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box300" /></td></tr></table>
+       </p>
 
+         <!--{assign var=key value="login_pass"}-->
+         <span class="attention"><!--{$arrErr[$key]}--></span>▼パスワード<br>
+<input type="password" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box300" /></div>
 
 
 
@@ -72,9 +68,8 @@
       また、ログインするだけで、毎回お名前や住所などを入力することなくスムーズにお買い物をお楽しみいただけます。
     </p>
     <div class="inputbox02">
-    <a href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php" class="spbtn spbtn-medeum">
-                    会員登録をする</a>&nbsp;
-      <input type="submit" value="購入手続きへ" class="spbtn spbtn-shopping" width="130" height="30" alt="購入手続きへ" name="buystep" id="buystep" />
+    <p><a href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php" class="spbtn spbtn-shopping">会員登録をする</a></p>
+    <p><input type="submit" value="購入手続きへ" class="spbtn spbtn-shopping" width="130" height="30" alt="購入手続きへ" name="buystep" id="buystep" /></p>
     </div>
   </div>
 </form>

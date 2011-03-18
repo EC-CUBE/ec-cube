@@ -220,7 +220,7 @@
                         </select>
                     <!--{/if}-->
                 </div>
-                <div class="delivdate">
+                <div class="delivdate02">
                     <!--★お届け時間★-->
                     <!--{assign var=key value="deliv_time_id`$index`"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -271,9 +271,8 @@
             <!-- ▲ポイント使用 ここまで -->
 
             <div class="tblareabtn">
-                <a href="<!--{$tpl_back_url|h}-->" class="spbtn spbtn-medeum">
-                    戻る</a>&nbsp;
-                <input type="submit" value="次へ" class="spbtn spbtn-shopping" width="130" height="30" alt="次へ" name="next" id="next" />
+                <p><input type="submit" value="次へ" class="spbtn spbtn-shopping" width="130" height="30" alt="次へ" name="next" id="next" /></p>
+                <p><a href="<!--{$tpl_back_url|h}-->" class="spbtn spbtn-medeum">戻る</a></p>
             </div>
         </form>
     </div>

@@ -166,16 +166,17 @@ $(document).ready(function() {
               <p>上記内容でよろしければ「購入手続きへ」ボタンをクリックしてください。</p>
                 <!--{/if}-->
 
-                <p>
-                    <!--{if $tpl_prev_url != ""}-->
-                     <a href="<!--{$tpl_prev_url|h}-->" class="spbtn spbtn-medeum">
-                                    買い物を続ける</a>&nbsp;&nbsp;
-                    <!--{/if}-->
+                
                     <!--{if strlen($tpl_error) == 0}-->
+                        <p>
                         <input type="hidden" name="cartKey" value="<!--{$key}-->" />
                         <input type="submit" value="購入手続きへ" class="spbtn spbtn-shopping" width="130" height="30" alt="購入手続きへ" name="confirm" />
+                        </p>
                     <!--{/if}-->
-              </p>
+                    <!--{if $tpl_prev_url != ""}-->
+                        <p><a href="<!--{$tpl_prev_url|h}-->" class="spbtn spbtn-medeum">買い物を続ける</a></p>
+                    <!--{/if}-->
+              
           </div>
         </form>
     <!--{/foreach}-->

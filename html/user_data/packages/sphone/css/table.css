@@ -294,7 +294,7 @@ width: 63%;
 .listphoto {
 float:left;
 display:block;
-margin: 3px;
+margin: 3px 10px;
 position: relative;
 }
 .recommend-photo img,
@@ -305,7 +305,7 @@ width: 80px;
 div.listrightblock {
 float:right;
 text-align:left;
-width:70%;
+width:65%;
 }
 
 .recommend-box h3 {
@@ -522,8 +522,9 @@ width:80px;
 table th.resulttd {
 text-align:left;
 }
-
-
+table td.mailtd {
+text-align:left;
+}
 
 table td.product_td {
 font-size:80%;
@@ -597,6 +598,11 @@ table.entryform th {
 
 table.entryform td {
 text-align:left;
+padding: 3px;
+}
+
+table.entryform td.tdc {
+text-align:center;
 }
 
 table.entryform th.confirmtd {
@@ -608,6 +614,7 @@ table.entryform th.confirmtd {
 
 table.entryform th.select {
 min-width:30px;
+text-align:center;
 }
 
 table.entryform th.change {
@@ -709,5 +716,11 @@ margin-bottom:30px;
 }
 
 div.delivdate {
+margin-bottom:5px;
+}
+
+div.delivdate02 {
+padding-bottom:10px;
 margin-bottom:15px;
+border-bottom:1px solid #ccc;
 }

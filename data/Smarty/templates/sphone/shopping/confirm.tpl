@@ -244,13 +244,12 @@ $(document).ready(function() {
             </table>
 
             <div class="tblareabtn">
-            <a href="./payment.php" class="spbtn spbtn-medeum">
-                    戻る</a>&nbsp;
-                <!--{if $use_module}-->
+                <!--{if $use_module}--><p>
                  <input type="submit" value="次へ" class="spbtn spbtn-shopping" width="130" height="30" alt="次へ" name="next" id="next" />
                 <!--{else}-->
                  <input type="submit" value="ご注文完了ページへ" class="spbtn spbtn-shopping" width="130" height="30" alt="ご注文完了ページへ" name="next" id="next" />
-                <!--{/if}-->
+                </p><!--{/if}-->
+                <p><a href="./payment.php" class="spbtn spbtn-medeum">戻る</a></p>
             </div>
         </form>
     </div>

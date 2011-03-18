@@ -28,7 +28,7 @@
 
 <!--{section name=data loop=$arrNews max=3}-->
     <div class="anews">
-        <span><!--{$arrNews[data].news_date_disp|date_format:"%m.%d"}--></span>&nbsp;
+        <span><!--{$arrNews[data].news_date_disp|date_format:"%m&frasl;%d"}--></span>&nbsp;
         <!--{if $arrNews[data].news_url}--><a href="<!--{$arrNews[data].news_url|h}-->"><!--{/if}--><!--{$arrNews[data].news_title|h}--><!--{if $arrNews[data].news_url}--></a><!--{/if}-->
     </div>
 <!--{/section}-->

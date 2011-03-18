@@ -34,8 +34,7 @@
           <!--{* 退会時非表示 *}-->
           <!--{if $tpl_login}-->
             <p class="addbtn">
-                <a class="spbtn spbtn-shopping" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" target="_blank">新しいお届け先を追加</a>
-            </p>
+                <a class="kybtn" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" target="_blank">新しいお届け先を追加</a></p><br>
           <!--{/if}-->
         <!--{/if}-->
 
@@ -61,9 +60,7 @@
                             <!--{$arrOtherDeliv[cnt].name01|h}-->&nbsp;<!--{$arrOtherDeliv[cnt].name02|h}-->
                         </td>
                         <td class="centertd">
-                            <a href="./delivery_addr.php" onclick="win02('./delivery_addr.php?other_deliv_id=<!--{$arrOtherDeliv[cnt].other_deliv_id}-->','deliv_disp','600','640'); return false;">変更</a>
-                        </td>
-                        <td class="centertd">
+                            <a href="./delivery_addr.php" onclick="win02('./delivery_addr.php?other_deliv_id=<!--{$arrOtherDeliv[cnt].other_deliv_id}-->','deliv_disp','600','640'); return false;">変更</a><br>
                             <a href="#" onclick="fnModeSubmit('delete','other_deliv_id','<!--{$arrOtherDeliv[cnt].other_deliv_id}-->'); return false;">削除</a>
                         </td>
                     </tr>

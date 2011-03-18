@@ -28,9 +28,9 @@
 <!--{if $isLogin eq true}-->
 <a href="<!--{$smarty.const.HTTPS_URL}-->mypage/refusal.php?<!--{$smarty.const.SID}-->" accesskey="3"><!--{3|numeric_emoji}-->会員退会</a><br>
 <!--{else}-->
-<a href="<!--{$smarty.const.HTTPS_URL}-->entry/kiyaku.php?<!--{$smarty.const.SID}-->" accesskey="3"><!--{3|numeric_emoji}-->会員登録</a><br>
+<a href="<!--{$smarty.const.HTTPS_URL}-->entry/kiyaku.php?<!--{$smarty.const.SID}-->" accesskey="3"><!--{3|numeric_emoji}-->新規会員登録</a><br>
 <!--{/if}-->
 <a href="guide/<!--{$smarty.const.DIR_INDEX_PATH}-->" accesskey="4"><!--{4|numeric_emoji}-->ご利用ガイド</a><br>
 <a href="contact/<!--{$smarty.const.DIR_INDEX_PATH}-->" accesskey="5"><!--{5|numeric_emoji}-->お問い合わせ</a><br>
-<a href="order/<!--{$smarty.const.DIR_INDEX_PATH}-->" accesskey="6"><!--{6|numeric_emoji}-->特定商取引に関する法律に基づく表記</a>
+<a href="order/<!--{$smarty.const.DIR_INDEX_PATH}-->" accesskey="6"><!--{6|numeric_emoji}-->特定商取引に関する表記</a>
 <!-- ▲メニュー ここまで -->

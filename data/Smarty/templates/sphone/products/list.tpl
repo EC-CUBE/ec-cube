@@ -136,7 +136,7 @@ function fnChangeDispNumber(dispNumber) {
                     <ul class="status_icon">
                             <li>
                         <!--{foreach from=$productStatus[$id] item=status}--> 
-                                <img src="<!--{$TPL_URLPATH}--><!--{$arrSTATUS_IMAGE[$status]}-->" width="65" height="17" alt="<!--{$arrSTATUS[$status]}-->"/>
+                                <img src="<!--{$TPL_URLPATH}--><!--{$arrSTATUS_IMAGE[$status]}-->" width="60" height="17" alt="<!--{$arrSTATUS[$status]}-->"/>
                         <!--{/foreach}-->
                             </li>
                     </ul>

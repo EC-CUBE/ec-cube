@@ -35,14 +35,12 @@
 
         <p>各商品のお届け先を選択してください。</p>
         <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
-            <p>一覧にご希望の住所が無い場合は、「新しいお届け先を追加する」より追加登録してください。</p>
+            <p>一覧にご希望の住所が無い場合は、「新しいお届け先を追加する」より追加登録してください。<br>
+            ※最大<!--{$smarty.const.DELIV_ADDR_MAX|h}-->件まで登録できます。</p>
         <!--{/if}-->
-        <p>※最大<!--{$smarty.const.DELIV_ADDR_MAX|h}-->件まで登録できます。</p>
 
         <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
-            <p class="addbtn">
-                <a class="kybtn" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php">新しいお届け先を追加する</a>
-            </p>
+            <p class="addbtn"><a class="kybtn" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|h}-->','new_deiv','600','640'); return false;">新しいお届け先を追加する</a></p><br /><br />
         <!--{/if}-->
         <form name="form1" id="form1" method="post" action="?">
             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -106,22 +104,21 @@
                           <input class="multi_nu" type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" size="4" />
                         </td>
                      </tr>
-                    <tr style="<!--{if $item.error}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
-                      <td colspan="3"class="multi_send">お届け先</td>
+                    <tr>
+                      <td colspan="3">お届け先</td>
                     </tr>
-                    <tr style="<!--{if $item.error}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
+                    <tr>
                       <td colspan="3">
                         <!--{assign var=key value="shipping"}-->
                         <select name="<!--{$key}-->[<!--{$index}-->]"><!--{html_options options=$addrs selected=$arrForm[$key].value[$index]}--></select>
-                        </td>
+                      </td>
                     </tr>
-                   </table><br />
+                   </table>
                   <!--{/section}-->
 
             <div class="tblareabtn">
-                      <a href="<!--{$smarty.const.CART_URLPATH}-->" class="spbtn spbtn-medeum">
-                    戻る</a>&nbsp;
-                 <input type="submit" value="選択したお届け先に送る" class="spbtn spbtn-shopping" width="130" height="30" alt="選択したお届け先に送る" name="send_button" id="next" />
+                 <p><input type="submit" value="選択したお届け先に送る" class="spbtn spbtn-shopping" width="130" height="30" alt="選択したお届け先に送る" name="send_button" id="next" /></p>
+                 <p><a href="<!--{$smarty.const.CART_URLPATH}-->" class="spbtn spbtn-medeum">戻る</a></p>
             </div>
         </form>
     </div>

@@ -108,8 +108,8 @@
       </table>
 
       <div class="tblareabtn">
-        <a class="spbtn spbtn-medeum" href="?" name="back" id="back" />戻る</a><br />
-       <input class="spbtn spbtn-shopping" type="submit" class="box150" value="送信" name="complete" id="complete" />
+        <p><input class="spbtn spbtn-shopping" type="submit" class="box150" value="送信" name="complete" id="complete" /></p>
+        <p><a class="spbtn spbtn-medeum" href="?" name="back" id="back" />戻る</a></p>
       </div>
     </form>
   </div>

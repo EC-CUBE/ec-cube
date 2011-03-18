@@ -20,7 +20,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <!--商品カテゴリーここから-->
+<div id="topcatarea">
 <h2 id="title-category" class="title-side">商品カテゴリ</h2>
+</div>
+
 <div id="block-category" class="block-side">
   <div class="create-box">
 

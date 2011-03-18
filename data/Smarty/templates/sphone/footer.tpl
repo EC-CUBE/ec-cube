@@ -26,15 +26,9 @@
 <div id="footer">
 <div id="footer-info">
 <ul id="footer-menu">
-<li>
-<a href="<!--{$smarty.const.CART_URLPATH|h}-->">かごを見る</a>
-</li>
-<li>
-<a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php">マイページ</a>
-</li>
-<li>
-<a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/entry/kiyaku.php">会員登録</a>
-</li>
+<li><a href="<!--{$smarty.const.CART_URLPATH|h}-->">カゴの中を見る</a></li>
+<li><a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php">MYページ</a></li>
+<li><a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/entry/kiyaku.php">新規会員登録</a></li>
 
 <!--{php}-->
 $tmp = $this->get_template_vars('tpl_mainpage');
@@ -43,12 +37,13 @@ $this->assign('isTop', 1);
 <!--{/php}-->
 
 </ul>
-<ul id="footer-navi">
-<li><a href="<!--{$smarty.const.HTTPS_URL}-->contact/<!--{$smarty.const.DIR_INDEX_PATH|h}-->">お問い合わせ</a></li> <span class="footB">│</span> 
-<li><a href="<!--{$smarty.const.HTTP_URL}-->guide/privacy.php">プライバシーポリシー</a></li> <span class="footB">│</span> 
-<li class="end"><a href="<!--{$smarty.const.HTTP_URL}-->abouts/<!--{$smarty.const.DIR_INDEX_PATH|h}-->">店舗情報</a></li>
-<li class="end"><a href="<!--{$smarty.const.HTTP_URL}-->order/<!--{$smarty.const.DIR_INDEX_PATH|h}-->">特定商取引法に基づく表記</a></li>
-</ul>
+
+<span class="footB">
+<a href="<!--{$smarty.const.HTTP_URL}-->abouts/<!--{$smarty.const.DIR_INDEX_PATH|h}-->">当サイトについて</a>│
+<a href="<!--{$smarty.const.HTTPS_URL}-->contact/<!--{$smarty.const.DIR_INDEX_PATH|h}-->">お問い合わせ</a><br>
+<a href="<!--{$smarty.const.HTTP_URL}-->order/<!--{$smarty.const.DIR_INDEX_PATH|h}-->">特定商取引に関する表記</a>│
+<a href="<!--{$smarty.const.HTTP_URL}-->guide/privacy.php">プライバシーポリシー</a>
+</span>
 
 <div id="copyright">(C) <!--{$arrSiteInfo.shop_name|h}-->.</div>
 

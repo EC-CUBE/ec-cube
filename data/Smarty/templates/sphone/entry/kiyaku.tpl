@@ -38,6 +38,5 @@
                 <a href="<!--{$smarty.const.ENTRY_URL}-->" class="spbtn spbtn-shopping">
                     規約に同意して会員登録</a>
             </div>
-        </form>
     </div>
 </div>

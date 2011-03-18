@@ -182,8 +182,6 @@
         </table>
         <!--{/foreach}-->
 
-        <br />
-
         <h3>メール配信履歴一覧</h3>
         <table class="entryform">
             <tr>

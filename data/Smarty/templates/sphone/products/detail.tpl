@@ -287,7 +287,7 @@ function fnSetClassCategories(form, classcat_id2_selected) {
                             <a class="spbtn spbtn-medeum" href="javascript:fnModeSubmit('add_favorite','favorite_product_id','<!--{$arrProduct.product_id|h}-->');" class="spbtn spbtn-small">
                                     お気に入りに追加</a>
                     <!--{else}-->
-                            <div class="spbtn spbtn-medeum">お気に入り登録済</div>
+                            <div class="spbtn spbtn-medeum02">お気に入り登録済</div>
                         </div>
                     <!--{/if}-->
             </form>

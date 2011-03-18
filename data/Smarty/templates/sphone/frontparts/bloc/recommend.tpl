@@ -21,8 +21,7 @@
  *}-->
 <!--{if count($arrBestProducts) > 0}-->
 <div id="recomendarea" class="bloc_outer">
-    <h2>
-        おすすめ商品</h2>
+    <h2>おすすめ商品</h2>
     <!--{section name=cnt loop=$arrBestProducts step=2}-->
 
 

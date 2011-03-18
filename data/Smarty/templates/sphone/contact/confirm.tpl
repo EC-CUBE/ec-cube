@@ -73,9 +73,8 @@
         </tr>
       </table>
       <div class="tblareabtn">
-
- <a class="spbtn spbtn-medeum" href="?" onclick="fnModeSubmit('return', '', ''); return false;">戻る</a>&nbsp;
-        <input type="submit" value="送信" class="spbtn spbtn-shopping" width="130" height="30" alt="送信" name="send" id="send" />
+        <p><input type="submit" value="送信" class="spbtn spbtn-shopping" width="130" height="30" alt="送信" name="send" id="send" /></p>
+        <p><a class="spbtn spbtn-medeum" href="?" onclick="fnModeSubmit('return', '', ''); return false;">戻る</a></p>
        </div>
      </form>
    </div>

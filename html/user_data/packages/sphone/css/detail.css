@@ -142,6 +142,8 @@ margin-bottom:20px;
 /* 会員登録
 ----------------------------------------------- */
 div#undercolumn_entry .kiyaku_text {
+    overflow: scroll;
+    width: 250px;
     height: 250px;
 }
 
@@ -166,16 +168,34 @@ div#whoboughtarea h2, div.subarea h3, div#whoboughtarea h3 {
 	color:#4D576B;
 }
 
+div#recomendarea h2 {
+    font-weight: bold;
+    line-height: 1.1;
+    margin: 0;
+    padding: 5px 0 3px 0;
+	color:#4D576B;
+	background-image: none !important;
+}
+
+div#topcatarea h2 {
+    font-weight: bold;
+    line-height: 1.1;
+    margin: 0;
+    padding: 5px 0 3px 0;
+	color:#4D576B;
+	background-image: none !important;
+}
+
 div.subtext {
 font-size:80%;
 }
 
 div.subarea {
-margin-bottom:30px;
+margin-top:30px;
 }
 
 div#whoboughtarea {
-margin-bottom:30px;
+margin-top:30px;
 }
 
 div.subphotoimg {
@@ -184,4 +204,9 @@ margin-top:10px;
 
 div#mynavarea, div#mynavi_area {
 margin-bottom:20px;
+}
+
+div.slistarea {
+border-top:1px solid #ccc;
+margin:10px 0;
 }
