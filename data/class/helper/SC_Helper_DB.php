@@ -660,7 +660,6 @@ class SC_Helper_DB {
 
         //dtb_category_countの構成
         // 各カテゴリに所属する商品の数を集計。集計対象には子カテゴリを含まない。
-        // 2.5で消える予定だったが復活させます。DELETE処理は無くしました。
 
         //まずテーブル内容の元を取得
         if(!$is_force_all_count) {
@@ -757,7 +756,7 @@ __EOS__;
             list($tmp_where, $tmp_arrval) = $this->sfGetCatWhere($category_id);
             if ($tmp_where != "") {
                 $sql_where_product_ids = "product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
-                $arrval = array_merge((array)$arrval, (array)$tmp_arrval, (array)$tmp_arrval);
+                $arrval = array_merge((array)$tmp_arrval, (array)$tmp_arrval);
             } else {
                 $sql_where_product_ids = '0<>0'; // 一致させない
             }
