@@ -743,9 +743,7 @@ __EOS__;
         foreach ($arrDiffCategory_id as $parent_category_id) {
             $arrTgtCategory_id[] = $parent_category_id;
             $arrParentID = $this->sfGetParents('dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
-            foreach($arrParentID as $pid) {
-                $arrTgtCategory_id[] = $pid;
-            }
+            $arrTgtCategory_id = array_merge($arrTgtCategory_id, $arrParentID);
         }
 
         //重複を取り除く
@@ -814,20 +812,12 @@ __EOS__;
      * @return array 子IDの配列
      */
     function sfGetChildrenArray($table, $pid_name, $id_name, $id) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $col = $pid_name . "," . $id_name;
-        $arrData = $objQuery->select($col, $table);
-
-        $arrPID = array();
-        $arrPID[] = $id;
         $arrChildren = array();
-        $arrChildren[] = $id;
-
-        $arrRet = SC_Helper_DB_Ex::sfGetChildrenArraySub($arrData, $pid_name, $id_name, $arrPID);
+        $arrRet = array($id);
 
         while(count($arrRet) > 0) {
             $arrChildren = array_merge($arrChildren, $arrRet);
-            $arrRet = SC_Helper_DB_Ex::sfGetChildrenArraySub($arrData, $pid_name, $id_name, $arrRet);
+            $arrRet = SC_Helper_DB_Ex::sfGetChildrenArraySub($table, $pid_name, $id_name, $arrRet);
         }
 
         return $arrChildren;
@@ -842,17 +832,18 @@ __EOS__;
      * @param array $arrPID 親IDの配列
      * @return array 子IDの配列
      */
-    function sfGetChildrenArraySub($arrData, $pid_name, $id_name, $arrPID) {
-        $arrChildren = array();
-        $max = count($arrData);
+    function sfGetChildrenArraySub($table, $pid_name, $id_name, $arrPID) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        for($i = 0; $i < $max; $i++) {
-            foreach($arrPID as $val) {
-                if($arrData[$i][$pid_name] == $val) {
-                    $arrChildren[] = $arrData[$i][$id_name];
-                }
-            }
+        $where = "$pid_name IN (" . implode(',', array_fill(0, count($arrPID), '?')) . ")";
+
+        $ret = $objQuery->select($id_name, $table, $where, $arrPID);
+
+        $arrChildren = array();
+        foreach ($ret as $val) {
+            $arrChildren[] = $val[$id_name];
         }
+
         return $arrChildren;
     }
 
@@ -868,8 +859,6 @@ __EOS__;
      */
     function sfGetParents($table, $pid_name, $id_name, $id) {
         $arrRet = SC_Helper_DB_Ex::sfGetParentsArray($table, $pid_name, $id_name, $id);
-        // 配列の先頭1つを削除する。
-        array_shift($arrRet);
         return $arrRet;
     }
 
@@ -883,36 +872,21 @@ __EOS__;
      * @return array 親IDの配列
      */
     function sfGetParentsArray($table, $pid_name, $id_name, $id) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $col = $pid_name . "," . $id_name;
-        $arrData = $objQuery->select($col, $table);
-
         $arrParents = array();
-        $arrParents[] = $id;
-        $child = $id;
+        $ret = $id;
 
-        $ret = SC_Helper_DB_Ex::sfGetParentsArraySub($arrData, $pid_name, $id_name, $child);
-
-        while($ret != "") {
+        while($ret != "0") {
             $arrParents[] = $ret;
-            $ret = SC_Helper_DB_Ex::sfGetParentsArraySub($arrData, $pid_name, $id_name, $ret);
+            $ret = SC_Helper_DB_Ex::sfGetParentsArraySub($table, $pid_name, $id_name, $ret);
         }
-
-        $arrParents = array_reverse($arrParents);
 
         return $arrParents;
     }
 
     /* 子ID所属する親IDを取得する */
-    function sfGetParentsArraySub($arrData, $pid_name, $id_name, $child) {
-        $max = count($arrData);
-        $parent = "";
-        for($i = 0; $i < $max; $i++) {
-            if($arrData[$i][$id_name] == $child) {
-                $parent = $arrData[$i][$pid_name];
-                break;
-            }
-        }
+    function sfGetParentsArraySub($table, $pid_name, $id_name, $child) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $parent = $objQuery->get($pid_name, $table, "$id_name = ?", $child);
         return $parent;
     }
 
@@ -925,17 +899,10 @@ __EOS__;
     function sfGetCatWhere($category_id) {
         // 子カテゴリIDの取得
         $arrRet = SC_Helper_DB_Ex::sfGetChildrenArray("dtb_category", "parent_category_id", "category_id", $category_id);
-        $tmp_where = "";
-        foreach ($arrRet as $val) {
-            if($tmp_where == "") {
-                $tmp_where.= "category_id IN ( ?";
-            } else {
-                $tmp_where.= ",? ";
-            }
-            $arrval[] = $val;
-        }
-        $tmp_where.= " ) ";
-        return array($tmp_where, $arrval);
+
+        $where = "category_id IN (" . implode(',', array_fill(0, count($arrRet), '?')) . ")";
+
+        return array($where, $arrRet);
     }
 
     /**
