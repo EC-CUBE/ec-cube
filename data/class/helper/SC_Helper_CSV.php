@@ -22,12 +22,6 @@ class SC_Helper_CSV {
     /** 項目名 */
     var $arrSubnaviName;
 
-    /** レビュー管理項目 */
-    var $arrREVIEW_CVSCOL;
-
-    /** レビュータイトル */
-    var $arrREVIEW_CVSTITLE;
-
     // }}}
     // {{{ constructor
 
@@ -36,12 +30,6 @@ class SC_Helper_CSV {
      */
     function SC_Helper_CSV() {
         $this->init();
-
-        $masterData = new SC_DB_MasterData_Ex();
-        $this->arrPref = $masterData->getMasterData('mtb_pref');
-        $this->arrSex = $masterData->getMasterData("mtb_sex");
-        $this->arrDISP = $masterData->getMasterData("mtb_disp");
-        $this->arrRECOMMEND = $masterData->getMasterData("mtb_recommend");
     }
 
     // }}}
@@ -69,6 +57,53 @@ class SC_Helper_CSV {
                                       4 => 'レビュー',
                                       5 => 'カテゴリ'
                                       );
+    }
+
+    /**
+     * CSVファイルを送信する
+     *
+     * @param integer $csv_id CSVフォーマットID
+     * @param string $where WHERE条件文
+     * @param array $arrVal プリペアドステートメントの実行時に使用される配列。配列の要素数は、クエリ内のプレースホルダの数と同じでなければなりません。 
+     * @param string $order ORDER文
+     * @param boolean $is_download true:ダウンロード用出力までさせる false:CSVの内容を返す(旧方式、メモリを食います。）
+     * @return mixed $is_download = true時 成功失敗フラグ(boolean) 、$is_downalod = false時 string
+     */
+    function sfDownloadCsv($csv_id, $where = "", $arrVal = array(), $order = "", $is_download = false) {
+        // 実行時間を制限しない
+        @set_time_limit(0);
+
+        // CSV出力タイトル行の作成
+        $arrOutput = SC_Utils_Ex::sfSwapArray($this->sfGetCsvOutput($csv_id, 'status = ' . CSV_COLUMN_STATUS_FLG_ENABLE));
+        if (count($arrOutput) <= 0) return false; // 失敗終了
+        $arrOutputCols = $arrOutput['col'];
+
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $objQuery->setOrder($order);        
+        $cols = SC_Utils_Ex::sfGetCommaList($arrOutputCols, true);
+
+        // TODO: 固有処理 なんかエレガントな処理にしたい
+        if($csv_id == '1') {
+            //商品の場合
+            $objProduct = new SC_Product_Ex();
+            // このWhereを足さないと無効な規格も出力される。現行仕様と合わせる為追加。
+            $inner_where = 'dtb_products_class.del_flg = 0';
+            $sql = $objQuery->getSql($cols, $objProduct->prdclsSQL($inner_where),$where);
+        }else if($csv_id == '2') {
+            // 顧客の場合
+            $sql = "SELECT " . $cols . " FROM dtb_customer " . $where;
+        }else if($csv_id == '3') {
+            // 注文の場合
+            $sql = "SELECT " . $cols . " FROM dtb_order " . $where;
+        }else if($csv_id == '4') {
+            // レビューの場合
+            $sql = "SELECT " . $cols . " FROM dtb_review AS A INNER JOIN dtb_products AS B on A.product_id = B.product_id " . $where;
+        }else if($csv_id == '5') {
+            // カテゴリの場合
+            $sql = "SELECT " . $cols . " FROM dtb_category " . $where;
+        }
+        // 固有処理ここまで
+        return $this->sfDownloadCsvFromSql($sql, $arrVal, $this->arrSubnavi[$csv_id], $arrOutput['disp_name'], $is_download);
     }
 
     /**
@@ -173,53 +208,6 @@ class SC_Helper_CSV {
     }
 
     /**
-     * CSVファイルを送信する
-     *
-     * @param integer $csv_id CSVフォーマットID
-     * @param string $where WHERE条件文
-     * @param array $arrVal プリペアドステートメントの実行時に使用される配列。配列の要素数は、クエリ内のプレースホルダの数と同じでなければなりません。 
-     * @param string $order ORDER文
-     * @param boolean $is_download true:ダウンロード用出力までさせる false:CSVの内容を返す(旧方式、メモリを食います。）
-     * @return mixed $is_download = true時 成功失敗フラグ(boolean) 、$is_downalod = false時 string
-     */
-    function sfDownloadCsv($csv_id, $where = "", $arrVal = array(), $order = "", $is_download = false) {
-        // 実行時間を制限しない
-        @set_time_limit(0);
-
-        // CSV出力タイトル行の作成
-        $arrOutput = SC_Utils_Ex::sfSwapArray($this->sfGetCsvOutput($csv_id, 'status = ' . CSV_COLUMN_STATUS_FLG_ENABLE));
-        if (count($arrOutput) <= 0) return false; // 失敗終了
-        $arrOutputCols = $arrOutput['col'];
-
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->setOrder($order);        
-        $cols = SC_Utils_Ex::sfGetCommaList($arrOutputCols, true);
-
-        // TODO: 固有処理 なんかエレガントな処理にしたい
-        if($csv_id == '1') {
-            //商品の場合
-            $objProduct = new SC_Product_Ex();
-            // このWhereを足さないと無効な規格も出力される。現行仕様と合わせる為追加。
-            $inner_where = 'dtb_products_class.del_flg = 0';
-            $sql = $objQuery->getSql($cols, $objProduct->prdclsSQL($inner_where),$where);
-        }else if($csv_id == '2') {
-            // 顧客の場合
-            $sql = "SELECT " . $cols . " FROM dtb_customer " . $where;
-        }else if($csv_id == '3') {
-            // 注文の場合
-            $sql = "SELECT " . $cols . " FROM dtb_order " . $where;
-        }else if($csv_id == '4') {
-            // レビューの場合
-            $sql = "SELECT " . $cols . " FROM dtb_review AS A INNER JOIN dtb_products AS B on A.product_id = B.product_id " . $where;
-        }else if($csv_id == '5') {
-            // カテゴリの場合
-            $sql = "SELECT " . $cols . " FROM dtb_category " . $where;
-        }
-        // 固有処理ここまで
-        return $this->sfDownloadCsvFromSql($sql, $arrVal, $this->arrSubnavi[$csv_id], $arrOutput['disp_name'], $is_download);
-    }
-
-    /**
      * SQL文からクエリ実行し CSVファイルを送信する
      *
      * @param integer $sql SQL文
@@ -265,94 +253,15 @@ class SC_Helper_CSV {
         return $res;
     }
 
-    // CSV出力データを作成する。
-    function lfGetCSV($from, $where, $option, $arrval, $arrCsvOutputCols = "", $arrCsvOutputConverts = array()) {
-
-        $cols = SC_Utils_Ex::sfGetCommaList($arrCsvOutputCols);
-
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->setOption($option);
-
-        $list_data = $objQuery->select($cols, $from, $where, $arrval, MDB2_FETCHMODE_ORDERED);
-
-        $csv = '';
-        foreach ($list_data as $row) {
-            $row = SC_Utils_Ex::mbConvertKanaWithArray($row, $arrCsvOutputConverts);
-            // 各項目をCSV出力用に変換する。
-            $line = $this->sfArrayToCsv($row);
-            $csv .= "$line\r\n";
-        }
-        return $csv;
-    }
-
-    // 各項目をCSV出力用に変換する。
-    function lfMakeCSV($list) {
-        $line = "";
-
-        foreach($list as $key => $val) {
-            $tmp = "";
-            switch($key) {
-                case 'order_pref':
-                case 'deliv_pref':
-                    $tmp = $this->arrPref[$val];
-                    break;
-                default:
-                    $tmp = $val;
-                    break;
-            }
-
-            $tmp = preg_replace('/[",]/', " ", $tmp);
-            $line .= "\"".$tmp."\",";
-        }
-        // 文末の","を変換
-        $line = $this->replaceLineSuffix($line);
-        return $line;
-    }
-
-    // 各項目をCSV出力用に変換する。(レビュー)
-    function lfMakeReviewCSV($list) {
-        $line = "";
-
-        foreach($list as $key => $val) {
-            $tmp = "";
-            switch($key) {
-            case 'sex':
-                $tmp = isset($this->arrSex[$val]) ? $this->arrSex[$val] : "";
-                break;
-            case 'recommend_level':
-                $tmp = isset($this->arrRECOMMEND[$val]) ? $this->arrRECOMMEND[$val]
-                                                        : "";
-                break;
-            case 'status':
-                $tmp = isset($this->arrDISP[$val]) ? $this->arrDISP[$val] : "";
-                break;
-            default:
-                $tmp = $val;
-                break;
-            }
-
-            $tmp = preg_replace('/[",]/', " ", $tmp);
-            $line .= "\"".$tmp."\",";
-        }
-        // 文末の","を変換
-        $line = $this->replaceLineSuffix($line);
-        return $line;
-    }
-
-    /**
-     * 行末の ',' を CRLF へ変換する.
-     *
-     * @access private
-     * @param string $line CSV出力用の1行分の文字列
-     * @return string 行末の ',' を CRLF に変換した文字列
-     */
-    function replaceLineSuffix($line) {
-        return preg_replace('/,$/',"\r\n",$line);
-    }
-
     /**
      * 1次元配列を1行のCSVとして返す
      * 参考: http://jp.php.net/fputcsv
+     *
+     * @param array $fields データ1次元配列
+     * @param string $delimiter
+     * @param string $enclosure
+     * @param string $arrayDelimiter
+     * @return string 結果行
      */
     function sfArrayToCsv($fields, $delimiter = ',', $enclosure = '"', $arrayDelimiter = '|') {
         if( strlen($delimiter) != 1 ) {
@@ -386,9 +295,13 @@ class SC_Helper_CSV {
     }
 
     /**
-     * CSVを送信する。
+     * 配列データのCSVを送信する。
+     *
+     * @param array $fields データ配列
+     * @param string $prefix
+     * @return void
      */
-    function lfDownloadCsv($arrayData, $prefix = ""){
+    function lfDownloadCsv($arrData, $prefix = ""){
 
         if($prefix == "") {
             $dir_name = SC_Utils_Ex::sfUpDirName();
@@ -404,7 +317,7 @@ class SC_Helper_CSV {
         Header("Pragma: ");
 
         /* データを出力 */
-        foreach ($arrayData as $lineArray) {
+        foreach ($arrData as $lineArray) {
             $lineString = $this->sfArrayToCsv($lineArray);
             $lineString = mb_convert_encoding($lineString, 'SJIS-Win');
             echo $lineString . "\r\n";
@@ -413,6 +326,10 @@ class SC_Helper_CSV {
 
     /**
      * CSVファイルを送信する。
+     *
+     * @param string $filepath 送信するファイルのフルパス
+     * @param string $prefix
+     * @return void
      */
     function lfDownloadCSVFile($filepath, $prefix = "") {
         $file_name = $prefix . date('YmdHis') . ".csv";
@@ -426,27 +343,6 @@ class SC_Helper_CSV {
         /* データを出力 */
         // file_get_contentsはメモリマッピングも自動的に使ってくれるので高速＆省メモリ
         echo file_get_contents($filepath);
-    }
-
-    /**
-     * CSVデータを取得する。
-     */
-    function lfGetCsv2($arrayData, $prefix = "") {
-
-        if($prefix == "") {
-            $dir_name = SC_Utils_Ex::sfUpDirName();
-            $file_name = $dir_name . date('ymdHis') .".csv";
-        } else {
-            $file_name = $prefix . date('ymdHis') .".csv";
-        }
-
-        /* データを出力 */
-        foreach ($arrayData as $lineArray) {
-            $lineString = $this->sfArrayToCsv($lineArray);
-            $lineString = mb_convert_encoding($lineString, 'SJIS-Win');
-            $lineString .= "\r\n";
-        }
-        return array($file_name, $lineString);
     }
 }
 ?>
