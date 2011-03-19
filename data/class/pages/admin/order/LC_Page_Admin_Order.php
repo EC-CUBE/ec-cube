@@ -132,9 +132,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
                 switch($this->getMode()) {
                 // CSVを送信する。
                 case 'csv':
-                    list($file_name, $data) = $this->getCSV($where, $arrval,
-                                                            $order);
-                    $this->sendResponseCSV($file_name, $data);
+                    $this->doOutputCSV($where, $arrval,$order);
                     exit;
                     break;
 
@@ -411,31 +409,18 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
      * 構築に失敗した場合は, false を返す.
      *
      * @param string $where 検索条件の WHERE 句
-     * @param array $arrValues 検索条件のパラメータ
+     * @param array $arrVal 検索条件のパラメータ
      * @param string $order 検索結果の並び順
-     * @return array|boolean 構築に成功した場合, ファイルと出力内容の配列;
-     *                       失敗した場合 false
+     * @return void
      */
-    function getCSV($where, $arrValues, $order) {
+    function doOutputCSV($where, $arrVal, $order) {
         require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_CSV_Ex.php';
-        $objCSV = new SC_Helper_CSV_Ex();
-
-        $option = "ORDER BY $order";
-
-        // CSV出力タイトル行の作成
-        $arrCsvOutput = SC_Utils_Ex::sfSwapArray($objCSV->sfGetCsvOutput(3, 'status = 1'));
-
-        if (count($arrCsvOutput) <= 0) {
-            return false;
+        if($where != "") {
+            $where = " WHERE $where ";
         }
 
-        $arrCsvOutputCols = $arrCsvOutput['col'];
-        $arrCsvOutputConvs = $arrCsvOutput['conv'];
-        $arrCsvOutputTitle = $arrCsvOutput['disp_name'];
-        $head = SC_Utils_Ex::sfGetCSVList($arrCsvOutputTitle);
-        $data = $objCSV->lfGetCSV("dtb_order", $where, $option, $arrValues,
-                                  $arrCsvOutputCols, $arrCsvOutputConvs);
-        return SC_Utils_Ex::sfGetCSVData($head . $data);
+        $objCSV = new SC_Helper_CSV_Ex();
+        $objCSV->sfDownloadCsv("3", $where, $arrVal, $order, true);
     }
 
     /**
