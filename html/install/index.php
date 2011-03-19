@@ -511,12 +511,16 @@ function lfDispStep4($objPage) {
         define("DB_TYPE", $arrDbParam['db_type']);
     }
     $dsn = $arrDbParam['db_type']."://".$arrDbParam['db_user'].":".$arrDbParam['db_password']."@".$arrDbParam['db_server'].":".$arrDbParam['db_port']."/".$arrDbParam['db_name'];
+    if (!defined('DEFAULT_DSN')) {
+        define('DEFAULT_DSN', $dsn);
+    }
 
     $objPage->tpl_site_url = $normal_url;
     $objPage->tpl_shop_name = $objWebParam->getValue('shop_name');
     $objPage->tpl_cube_ver = ECCUBE_VERSION;
     $objPage->tpl_php_ver = phpversion();
-    $objPage->tpl_db_ver = $objDb->sfGetDBVersion($dsn);
+    $dbFactory = SC_DB_DBFactory_Ex::getInstance();
+    $objPage->tpl_db_ver = $dbFactory->sfGetDBVersion($dsn);
     $objPage->tpl_db_skip = $_POST['db_skip'];
     $objPage->tpl_mainpage = 'step4.tpl';
     $objPage->tpl_mode = 'complete';
