@@ -61,11 +61,11 @@ class LC_Page_Upgrade_SiteCheck extends LC_Page_Upgrade_Base {
             return;
         }
 
-        $objDB = new SC_Helper_DB;
+        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $arrSystemInfo = array(
             'eccube_version' => ECCUBE_VERSION,
             'php_version'    => phpversion(),
-            'db_version'     => $objDB->sfGetDBVersion()
+            'db_version'     => $dbFactory->sfGetDBVersion()
         );
         $objJson->setSuccess($arrSystemInfo);
         $objJson->display();

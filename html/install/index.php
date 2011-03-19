@@ -519,7 +519,7 @@ function lfDispStep4($objPage) {
     $objPage->tpl_shop_name = $objWebParam->getValue('shop_name');
     $objPage->tpl_cube_ver = ECCUBE_VERSION;
     $objPage->tpl_php_ver = phpversion();
-    $dbFactory = SC_DB_DBFactory_Ex::getInstance();
+    $dbFactory = SC_DB_DBFactory_Ex::getInstance($arrDbParam['db_type']);
     $objPage->tpl_db_ver = $dbFactory->sfGetDBVersion($dsn);
     $objPage->tpl_db_skip = $_POST['db_skip'];
     $objPage->tpl_mainpage = 'step4.tpl';
@@ -591,7 +591,7 @@ function lfDispComplete($objPage) {
         $secure_url = $secure_url . "/";
     }
     $objPage->tpl_sslurl = $secure_url;
-	//EC-CUBEオフィシャルサイトからのお知らせURL
+    //EC-CUBEオフィシャルサイトからのお知らせURL
     $objPage->install_info_url = INSTALL_INFO_URL;
     return $objPage;
 }
@@ -755,7 +755,7 @@ function lfCheckDBError($objFormParam) {
         $objDB = MDB2::connect($dsn, $options);
         // 接続成功
         if(!PEAR::isError($objDB)) {
-            $dbFactory = SC_DB_DBFactory_Ex::getInstance();
+            $dbFactory = SC_DB_DBFactory_Ex::getInstance($arrRet['db_type']);
             // データベースバージョン情報の取得
             $objPage->tpl_db_version = $dbFactory->sfGetDBVersion($dsn);
         } else {

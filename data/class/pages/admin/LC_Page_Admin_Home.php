@@ -130,8 +130,8 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
      * @return mixed DBバージョン情報
      */
     function lfGetDBVersion() {
-        $objDb = new SC_Helper_DB_Ex();
-        return $objDb->sfGetDBVersion();
+        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
+        return $dbFactory->sfGetDBVersion();
     }
 
     /**

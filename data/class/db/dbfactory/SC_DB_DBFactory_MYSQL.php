@@ -47,7 +47,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return string データベースのバージョン
      */
     function sfGetDBVersion($dsn = "") {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance($dsn);
         $val = $objQuery->getOne("select version()");
         return "MySQL " . $val;
     }

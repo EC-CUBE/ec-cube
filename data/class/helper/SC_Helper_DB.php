@@ -48,17 +48,6 @@ class SC_Helper_DB {
     // {{{ functions
 
     /**
-     * データベースのバージョンを所得する.
-     *
-     * @param string $dsn データソース名
-     * @return string データベースのバージョン
-     */
-    function sfGetDBVersion($dsn = "") {
-        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
-        return $dbFactory->sfGetDBVersion($dsn);
-    }
-
-    /**
      * カラムの存在チェックと作成を行う.
      *
      * チェック対象のテーブルに, 該当のカラムが存在するかチェックする.
