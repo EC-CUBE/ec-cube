@@ -163,9 +163,10 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
             break;
          // CSVダウンロード
         case 'csv':
-            // CSVを送信する。正常終了の場合、終了。
+            // CSVを送信する
             $objCSV = new SC_Helper_CSV_Ex();
-            $objCSV->sfDownloadCategoryCsv() && exit;
+            $objCSV->sfDownloadCsv("5", "", array(), "", true);
+            exit;
             break;
         default:
             break;

@@ -226,6 +226,9 @@ class SC_Helper_CSV {
             // 顧客の場合
             $sql = "SELECT " . $cols . " FROM dtb_customer " . $where;
 
+        }else if($csv_id == '5') {
+            // カテゴリの場合
+            $sql = "SELECT " . $cols . " FROM dtb_category " . $where;
         }
         // 固有処理ここまで
         return $this->sfDownloadCsvFromSql($sql, $arrVal, $this->arrSubnavi[$csv_id], $arrOutput['disp_name'], $is_download);
@@ -295,40 +298,6 @@ class SC_Helper_CSV {
             $data .= $this->lfMakeReviewCSV($list_data[$i]);
         }
         return $data;
-    }
-
-    // CSVを送信する。(カテゴリ)
-    function sfDownloadCategoryCsv() {
-
-        // CSV出力タイトル行の作成
-        $arrOutput = SC_Utils_Ex::sfSwapArray($this->sfGetCsvOutput(5, 'status = ' . CSV_COLUMN_STATUS_FLG_ENABLE));
-        if (count($arrOutput) <= 0) return false; // 失敗終了
-        $arrOutputCols = $arrOutput['col'];
-
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->setOrder('rank DESC');
-
-        $dataRows = $objQuery->select(
-             SC_Utils_Ex::sfGetCommaList($arrOutputCols)
-            ,'dtb_category'
-            ,'del_flg = 0'
-        );
-
-        $outputArray = array();
-
-        // ヘッダ行
-        $outputArray[] = $arrOutput['disp_name'];
-
-        // データ行
-        foreach ($dataRows as $row) {
-            $outputArray[] = $row;
-        }
-
-        // CSVを送信する。
-        $this->lfDownloadCsv($outputArray, 'category');
-
-        // 成功終了
-        return true;
     }
 
     // CSV出力データを作成する。
