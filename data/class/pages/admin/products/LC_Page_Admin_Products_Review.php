@@ -112,7 +112,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
 
             //CSVダウンロード
             if ($this->getMode() == 'csv') {
-                $this->lfCsv($where, $arrval);
+                $this->lfDoOutputCsv($where, $arrval);
                 exit;
             }
 
@@ -231,14 +231,12 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
      * @param array $arrval WHERE文の判定値
      * @return void
      */
-    function lfCsv($where, $arrval) {
+    function lfDoOutputCsv($where, $arrVal) {
         $objCSV = new SC_Helper_CSV_Ex();
-        // CSV出力タイトル行の作成
-        $head = SC_Utils_Ex::sfGetCSVList($objCSV->arrREVIEW_CVSTITLE);
-        $data = $objCSV->lfGetReviewCSV($where, '', $arrval);
-        // CSVを送信する。
-        list($fime_name, $data) = SC_Utils_Ex::sfGetCSVData($head.$data);
-        $this->sendResponseCSV($fime_name, $data);
+        if($where != ""){
+            $where = "WHERE " . $where;
+        }
+        $objCSV->sfDownloadCsv("4", $where, $arrVal, "", true);
     }
 
     /**

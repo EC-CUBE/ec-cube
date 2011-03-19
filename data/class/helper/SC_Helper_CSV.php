@@ -58,6 +58,7 @@ class SC_Helper_CSV {
                                   1 => 'product',
                                   2 => 'customer',
                                   3 => 'order',
+                                  4 => 'review',
                                   5 => 'category'
                                   );
 
@@ -65,30 +66,9 @@ class SC_Helper_CSV {
                                       1 => '商品管理',
                                       2 => '顧客管理',
                                       3 => '受注管理',
+                                      4 => 'レビュー',
                                       5 => 'カテゴリ'
                                       );
-
-        $this->arrREVIEW_CVSCOL = array(
-                                        'B.name',
-                                        'A.status',
-                                        'A.create_date',
-                                        'A.reviewer_name',
-                                        'A.sex',
-                                        'A.recommend_level',
-                                        'A.title',
-                                        'A.comment'
-                                        );
-
-        $this->arrREVIEW_CVSTITLE = array(
-                                          '商品名',
-                                          'レビュー表示',
-                                          '投稿日',
-                                          '投稿者名',
-                                          '性別',
-                                          'おすすめレベル',
-                                          'タイトル',
-                                          'コメント'
-                                          );
     }
 
     /**
@@ -225,7 +205,12 @@ class SC_Helper_CSV {
         }else if($csv_id == '2') {
             // 顧客の場合
             $sql = "SELECT " . $cols . " FROM dtb_customer " . $where;
-
+        }else if($csv_id == '3') {
+            // 注文の場合
+            $sql = "SELECT " . $cols . " FROM dtb_order " . $where;
+        }else if($csv_id == '4') {
+            // レビューの場合
+            $sql = "SELECT " . $cols . " FROM dtb_review AS A INNER JOIN dtb_products AS B on A.product_id = B.product_id " . $where;
         }else if($csv_id == '5') {
             // カテゴリの場合
             $sql = "SELECT " . $cols . " FROM dtb_category " . $where;
@@ -278,26 +263,6 @@ class SC_Helper_CSV {
         //テンポラリファイル削除
         unlink($tmp_filename);
         return $res;
-    }
-
-    // CSV出力データを作成する。(レビュー)
-    function lfGetReviewCSV($where, $option, $arrval) {
-
-        $from = "dtb_review AS A INNER JOIN dtb_products AS B on A.product_id = B.product_id ";
-        $cols = SC_Utils_Ex::sfGetCommaList($this->arrREVIEW_CVSCOL);
-
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->setOption($option);
-
-        $list_data = $objQuery->select($cols, $from, $where, $arrval);
-
-        $max = count($list_data);
-        if (!isset($data)) $data = "";
-        for($i = 0; $i < $max; $i++) {
-            // 各項目をCSV出力用に変換する。
-            $data .= $this->lfMakeReviewCSV($list_data[$i]);
-        }
-        return $data;
     }
 
     // CSV出力データを作成する。
