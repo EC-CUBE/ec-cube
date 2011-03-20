@@ -194,9 +194,19 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         $objQuery->begin();
 
         $errFlag = false;
+        $all_line_checked = false;
 
         while (!feof($fp)) {
             $arrCSV = fgetcsv($fp, CSV_LINE_MAX);
+
+            // 全行入力チェック後に、ファイルポインターを先頭に戻す
+            if (feof($fp) && !$all_line_checked) {
+                rewind($fp);
+                $line_count = 0;
+                $all_line_checked = true;
+                continue;
+            }
+
             // 行カウント
             $line_count++;
             // ヘッダ行はスキップ
@@ -232,10 +242,12 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
                 break;
             }
 
-            $this->lfRegistProduct($objQuery, $line_count, $objFormParam);
-            $arrParam = $objFormParam->getHashArray();
+            if ($all_line_checked) {
+                $this->lfRegistProduct($objQuery, $line_count, $objFormParam);
+                $arrParam = $objFormParam->getHashArray();
 
-            $this->addRowResult($line_count, "商品ID：".$arrParam['product_id'] . " / 商品名：" . $arrParam['name']);
+                $this->addRowResult($line_count, "商品ID：".$arrParam['product_id'] . " / 商品名：" . $arrParam['name']);
+            }
         }
 
         // 実行結果画面を表示
