@@ -406,7 +406,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                  */
                 else if ($arrValues['product_type_id'][$i] == PRODUCT_TYPE_NORMAL) {
                     if (!SC_Utils_Ex::isBlank($arrValues['down_filename'][$i])) {
-                        $arrErr['down_filename'] = "※ 通常商品の場合はダウンロードファイル名を設定できません。<br />";
+                        $arrErr['down_filename'][$i] = "※ 通常商品の場合はダウンロードファイル名を設定できません。<br />";
                     }
                     if (!SC_Utils_Ex::isBlank($arrValues['down_realfilename'][$i])) {
                         $arrErr['down_realfilename'][$i] = "※ 実商品の場合はダウンロード商品用ファイルをアップロードできません。<br />ファイルを取り消してください。<br />";
