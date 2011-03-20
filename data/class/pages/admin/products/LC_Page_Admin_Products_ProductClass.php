@@ -79,9 +79,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
 
         $this->arrSearchHidden = $objFormParam->getSearchArray();
 
-        // Downファイル管理クラスを初期化
-        $this->objDownFile = new SC_UploadFile_Ex(DOWN_TEMP_REALDIR, DOWN_SAVE_REALDIR);
-
         switch ($this->getMode()) {
 
         // 編集実行
@@ -241,21 +238,24 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         for ($i = 0; $i < $total; $i++) {
             $del_flg = SC_Utils_Ex::isBlank($arrList['check'][$i]) ? 1 : 0;
             $stock_unlimited = SC_Utils_Ex::isBlank($arrList['stock_unlimited'][$i]) ? 0 : 1;
-
+            $price02 = SC_Utils_Ex::isBlank($arrList['price02'][$i]) ? 0 : $arrList['price02'][$i];
             // dtb_products_class 登録/更新用
             $registerKeys = array('product_code', 'stock',
-                                  'price01', 'price02', 'product_type_id',
+                                  'price01', 'product_type_id',
                                   'down_filename', 'down_realfilename');
 
             $arrPC = array();
             foreach ($registerKeys as $key) {
-                $arrPC[$key] = $arrList[$key][$i];
+                if ($del_flg === 0) {
+                    $arrPC[$key] = $arrList[$key][$i];
+                }
             }
             $arrPC['product_id'] = $product_id;
             $arrPC['sale_limit'] = $arrDefault['sale_limit'];
             $arrPC['deliv_fee'] = $arrDefault['deliv_fee'];
             $arrPC['point_rate'] = $arrDefault['point_rate'];
             $arrPC['stock_unlimited'] = $stock_unlimited;
+            $arrPC['price02'] = $price02;
 
             // 該当関数が無いため, セッションの値を直接代入
             $arrPC['creator_id'] = $_SESSION['member_id'];
@@ -495,11 +495,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         // class_id1, class_id2 を取得値で上書き
         $objFormParam->setValue('class_id1', $class_id1);
         $objFormParam->setValue('class_id2', $class_id2);
-
-        // DBデータからダウンロードファイル名の読込
-        $this->objDownFile->setDBFileList($this->arrForm);
-        // PostデータからダウンロードTempファイル名の読込
-        $this->objDownFile->setPostFileList($_POST, $this->arrForm);
     }
 
     /**
