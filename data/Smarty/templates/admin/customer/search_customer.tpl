@@ -102,7 +102,7 @@ function func_submit(customer_id){
             </td>
             <td><!--{$arrCustomer[cnt].name01|h}--><!--{$arrCustomer[cnt].name02|h}-->(<!--{$arrCustomer[cnt].kana01|h}--><!--{$arrCustomer[cnt].kana02|h}-->)</td>
             <td><!--{$arrCustomer[cnt].tel01|h}-->-<!--{$arrCustomer[cnt].tel02|h}-->-<!--{$arrCustomer[cnt].tel03|h}--></td>
-            <td align="center"><a href="" onClick="return func_submit(<!--{$arrCustomer[cnt].customer_id}-->)">決定</a></td>
+            <td align="center"><a href="" onClick="return func_submit(<!--{$arrCustomer[cnt].customer_id|h}-->)">決定</a></td>
         </tr>
         <!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
         <!--{sectionelse}-->

@@ -24,8 +24,8 @@
 <form name="form_css" method="post" action="?" >
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="" />
-<input type="hidden" name="area_row" value="<!--{$area_row}-->" />
-<input type="hidden" name="old_css_name" value="<!--{$old_css_name}-->" />
+<input type="hidden" name="area_row" value="<!--{$area_row|h}-->" />
+<input type="hidden" name="old_css_name" value="<!--{$old_css_name|h}-->" />
 <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 <div id="design" class="contents-main">
 
@@ -35,7 +35,7 @@
             <th>CSSファイル名</th>
             <td>
                 <!--{if $arrErr.css_name != ""}--><span class="attention"><!--{$arrErr.css_name}--></span><br /><!--{/if}-->
-                <input type="text" name="css_name" value="<!--{$css_name}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.css_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />.css<span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
+                <input type="text" name="css_name" value="<!--{$css_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.css_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />.css<span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
             </td>
         </tr>
         <tr>
@@ -59,7 +59,7 @@
     <!--▼CSSファイル一覧　ここから-->
     <h2>編集可能CSSファイル</h2>
     <div class="btn addnew">
-        <a class="btn-normal" href="?" onclick="fnFormModeSubmit('form_css','','',''); return false;"><span>CSSを新規入力</span></a>
+        <a class="btn-normal" href="?device_type_id=<!--{$device_type_id|h}-->"><span>CSSを新規入力</span></a>
     </div>
     <table class="list" id="design-css-list">
         <tr>
@@ -70,12 +70,12 @@
         <!--{if count($arrCSSList) > 0}-->
         <!--{foreach key=key item=item from=$arrCSSList}-->
         <tr>
-            <td style="background:<!--{if $item.css_name == $css_name}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;"><!--{$item.file_name}--></td>
+            <td style="background:<!--{if $item.css_name == $css_name}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;"><!--{$item.file_name|h}--></td>
             <td class="center" style="background:<!--{if $item.css_name == $css_name}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
-                <a href="?css_name=<!--{$item.css_name}-->&amp;device_type_id=<!--{$device_type_id}-->">編集</a>
+                <a href="?css_name=<!--{$item.css_name|h}-->&amp;device_type_id=<!--{$device_type_id|h}-->">編集</a>
             </td>
             <td class="center" style="background:<!--{if $item.css_name == $css_name}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
-                <a href="javascript:;" onclick="fnFormModeSubmit('form_css','delete','css_name','<!--{$item.css_name}-->'); return false;">削除</a>
+                <a href="javascript:;" onclick="fnFormModeSubmit('form_css','delete','css_name','<!--{$item.css_name|h}-->'); return false;">削除</a>
             </td>
         </tr>
         <!--{/foreach}-->

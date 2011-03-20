@@ -48,10 +48,10 @@ function lfnCheckSubmit( fm ){
 
 function lfnCheckSetItem( rank ){
     var flag = true;
-    var checkRank = '<!--{$checkRank}-->';
+    var checkRank = '<!--{$checkRank|h}-->';
     if ( checkRank ){
         if ( rank != checkRank ){
-            if( ! window.confirm('さきほど選択した<!--{$checkRank}-->位の情報は破棄されます。宜しいでしょうか')){
+            if( ! window.confirm('さきほど選択した<!--{$checkRank|h}-->位の情報は破棄されます。宜しいでしょうか')){
                 flag = false;
             }
         } 

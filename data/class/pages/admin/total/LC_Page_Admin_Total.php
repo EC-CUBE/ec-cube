@@ -170,18 +170,48 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         parent::destroy();
     }
 
+    /* デフォルト値の取得 */
+    function lfGetDateDefault() {
+        $year = date("Y");
+        $month = date("m");
+        $day = date("d");
+
+        $list = isset($_SESSION['total']) ? $_SESSION['total'] : "";
+
+        // セッション情報に開始月度が保存されていない。
+        if(empty($_SESSION['total']['startyear_m'])) {
+            $list['startyear_m'] = $year;
+            $list['startmonth_m'] = $month;
+        }
+
+        // セッション情報に開始日付、終了日付が保存されていない。
+        if(empty($_SESSION['total']['startyear']) && empty($_SESSION['total']['endyear'])) {
+            $list['startyear'] = $year;
+            $list['startmonth'] = $month;
+            $list['startday'] = $day;
+            $list['endyear'] = $year;
+            $list['endmonth'] = $month;
+            $list['endday'] = $day;
+        }
+
+        return $list;
+    }
+
     /* パラメータ情報の初期化 */
     function lfInitParam(&$objFormParam) {
+        // デフォルト値の取得
+        $arrList = $this->lfGetDateDefault();
+
         // 月度集計
-        $objFormParam->addParam("月度", "search_startyear_m", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("月度", "search_startmonth_m", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("月度", "search_startyear_m", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['startyear_m']);
+        $objFormParam->addParam("月度", "search_startmonth_m", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['startmonth_m']);
         // 期間集計
-        $objFormParam->addParam("開始日", "search_startyear", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("開始日", "search_startmonth", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("開始日", "search_startday", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("終了日", "search_endyear", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("終了日", "search_endmonth", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("終了日", "search_endday", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("開始日", "search_startyear", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['startyear']);
+        $objFormParam->addParam("開始日", "search_startmonth", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['startmonth']);
+        $objFormParam->addParam("開始日", "search_startday", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['startday']);
+        $objFormParam->addParam("終了日", "search_endyear", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['endyear']);
+        $objFormParam->addParam("終了日", "search_endmonth", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['endmonth']);
+        $objFormParam->addParam("終了日", "search_endday", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['endday']);
 
         // hiddenデータの取得用
         $objFormParam->addParam("", 'page');

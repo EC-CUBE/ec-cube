@@ -81,12 +81,6 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
 
         // 端末種別IDを取得
         $device_type_id = $objFormParam->getValue('device_type_id');
-//        if (isset($_REQUEST['device_type_id'])
-//            && is_numeric($_REQUEST['device_type_id'])) {
-//            $device_type_id = $_REQUEST['device_type_id'];
-//        } else {
-//            $device_type_id = DEVICE_TYPE_PC;
-//        }
 
         $this->objLayout = new SC_Helper_PageLayout_Ex();
         $package_path = $this->objLayout->getTemplatePath($device_type_id) . BLOC_DIR;

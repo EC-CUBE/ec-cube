@@ -114,7 +114,7 @@
                 <!--{if $install_GD}-->
                 <div id="graph-image">
                     <!--{* <img src="<!--{$tpl_image}-->?<!--{$cashtime}-->" alt="グラフ"> *}-->
-                    <img src="?draw_image=true&amp;type=<!--{$smarty.post.type}-->&amp;mode=search&amp;page=<!--{$smarty.post.page}-->&amp;search_startyear_m=<!--{$smarty.post.search_startyear_m}-->&amp;search_startmonth_m=<!--{$smarty.post.search_startmonth_m}-->&amp;search_startyear=<!--{$smarty.post.search_startyear}-->&amp;search_startmonth=<!--{$smarty.post.search_startmonth}-->&amp;search_startday=<!--{$smarty.post.search_startday}-->&amp;search_endyear=<!--{$smarty.post.search_endyear}-->&amp;search_endmonth=<!--{$smarty.post.search_endmonth}-->&amp;search_endday=<!--{$smarty.post.search_endday}-->" alt="グラフ" />
+                    <img src="?draw_image=true&amp;type=<!--{$smarty.post.type|h}-->&amp;mode=search&amp;page=<!--{$smarty.post.page|h}-->&amp;search_startyear_m=<!--{$smarty.post.search_startyear_m}-->&amp;search_startmonth_m=<!--{$smarty.post.search_startmonth_m}-->&amp;search_startyear=<!--{$smarty.post.search_startyear}-->&amp;search_startmonth=<!--{$smarty.post.search_startmonth}-->&amp;search_startday=<!--{$smarty.post.search_startday}-->&amp;search_endyear=<!--{$smarty.post.search_endyear}-->&amp;search_endmonth=<!--{$smarty.post.search_endmonth}-->&amp;search_endday=<!--{$smarty.post.search_endday}-->" alt="グラフ" />
                 </div>
                 <!--{/if}-->
             <!--{* グラフ表示 *}-->
@@ -129,8 +129,8 @@
             <form name="form1" id="form1" method="post" action="?">
             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
             <input type="hidden" name="mode" value="search" />
-            <input type="hidden" name="type" value="<!--{$arrForm.type.value}-->" />
-            <input type="hidden" name="page" value="<!--{$arrForm.page.value}-->" />
+            <input type="hidden" name="type" value="<!--{$arrForm.type.value|h}-->" />
+            <input type="hidden" name="page" value="<!--{$arrForm.page.value|h}-->" />
             <!--{foreach key=key item=item from=$arrHidden}-->
                 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
             <!--{/foreach}-->    

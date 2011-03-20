@@ -220,7 +220,7 @@
     <td>
         <!--{assign var=key value="search_buy_product_code"}-->
         <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
-        <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value}-->" maxlength="<!--{$arrForm[$key].length}-->" size="30" class="box30" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" >
+        <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" size="30" class="box30" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" >
     </td>
 </tr>
 <tr>

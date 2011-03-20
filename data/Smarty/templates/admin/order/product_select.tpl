@@ -41,7 +41,7 @@ function func_submit(product_id, class_name1, class_name2) {
     <!--{if $tpl_no != ''}-->
     var opner_product_id = 'edit_product_id';
     var opner_product_class_id = 'edit_product_class_id';
-    fm1.getElementById("no").value = <!--{$tpl_no}-->;
+    fm1.getElementById("no").value = <!--{$tpl_no|h}-->;
     <!--{else}-->
     var opner_product_id = 'add_product_id';
     var opner_product_class_id = 'add_product_class_id';
@@ -129,7 +129,7 @@ function fnCheckStock(form) {
 <input name="mode" type="hidden" value="search" />
 <input name="anchor_key" type="hidden" value="" />
 <input name="search_pageno" type="hidden" value="" />
-<input name="no" type="hidden" value="<!--{$tpl_no}-->" />
+<input name="no" type="hidden" value="<!--{$tpl_no|h}-->" />
 <table class="form">
     <colgroup width="20%">
     <colgroup width="80%">
@@ -144,11 +144,11 @@ function fnCheckStock(form) {
     </tr>
     <tr>
         <th>商品名</th>
-        <td><input type="text" name="search_name" value="<!--{$arrForm.search_name}-->" size="35" class="box35" /></td>
+        <td><input type="text" name="search_name" value="<!--{$arrForm.search_name|h}-->" size="35" class="box35" /></td>
     </tr>
     <tr>
         <th>商品コード</th>
-        <td><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code}-->" size="35" class="box35" /></td>
+        <td><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code|h}-->" size="35" class="box35" /></td>
     </tr>
 </table>
 <div class="btn-area">

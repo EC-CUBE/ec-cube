@@ -29,7 +29,7 @@ self.moveTo(20,20);self.focus();
 
 function func_submit( id ){
     var fm = window.opener.document.form1;
-    fm.recommend_id<!--{$smarty.get.no}-->.value = id;
+    fm.recommend_id<!--{$smarty.get.no|h}-->.value = id;
     fm.mode.value = 'recommend_select';
     fm.anchor_key.value = 'recommend_no<!--{$smarty.get.no}-->';
     fm.submit();

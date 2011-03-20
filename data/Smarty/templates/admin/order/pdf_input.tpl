@@ -92,11 +92,11 @@ function lfPopwinSubmit(formName) {
     <tr>
         <th>帳票メッセージ</th>
         <td><!--{if $arrErr.msg1}--><span class="attention"><!--{$arrErr.msg1}--></span><!--{/if}-->
-            1行目：<input type="text" name="msg1" size="40" value="<!--{$arrForm.msg1}-->" maxlength="<!--{$smarty.const.STEXT_LEN*3/5}-->"/><br />
+            1行目：<input type="text" name="msg1" size="40" value="<!--{$arrForm.msg1|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN*3/5}-->"/><br />
             <!--{if $arrErr.msg2}--><span class="attention"><!--{$arrErr.msg1}--></span><!--{/if}-->
-            2行目：<input type="text" name="msg2" size="40" value="<!--{$arrForm.msg2}-->" maxlength="<!--{$smarty.const.STEXT_LEN*3/5}-->"/><br />
+            2行目：<input type="text" name="msg2" size="40" value="<!--{$arrForm.msg2|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN*3/5}-->"/><br />
             <!--{if $arrErr.msg3}--><span class="attention"><!--{$arrErr.msg3}--></span><!--{/if}-->
-            3行目：<input type="text" name="msg3" size="40" value="<!--{$arrForm.msg3}-->" maxlength="<!--{$smarty.const.STEXT_LEN*3/5}-->"/><br />
+            3行目：<input type="text" name="msg3" size="40" value="<!--{$arrForm.msg3|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN*3/5}-->"/><br />
             <span style="font-size: 80%;">※未入力時はデフォルトのメッセージが表示されます。</span><br />
         </td>
     </tr>

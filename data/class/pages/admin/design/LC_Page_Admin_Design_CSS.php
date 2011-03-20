@@ -75,32 +75,17 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
         $objFileManager = new SC_Helper_FileManager_Ex();
         $this->objLayout = new SC_Helper_PageLayout_Ex();
 
-        // CSSファイル名を取得
-        if (isset($_POST['css_name'])) {
-            $css_name = $_POST['css_name'];
-        }else if (isset($_GET['css_name'])){
-            $css_name = $_GET['css_name'];
-        }else{
-            $css_name = '';
-        }
-        $this->css_name = $css_name;
+        $objFormParam = new SC_FormParam_Ex();
+        $this->lfInitParam($objFormParam, $_REQUEST);
 
-        if (isset($_POST['old_css_name'])) {
-            $old_css_name = $_POST['old_css_name'];
-        }else if (isset($_GET['css_name'])) {
-            $old_css_name = $_GET['css_name'];
-        }else{
-            $old_css_name = '';
-        }
+        // CSSファイル名を取得
+        $css_name = $objFormParam->getValue('css_name');
+        $this->css_name = $css_name;
+        $old_css_name = $objFormParam->getValue('old_css_name');
         $this->old_css_name = $old_css_name;
 
         // 端末種別IDを取得
-        if (isset($_REQUEST['device_type_id'])
-            && is_numeric($_REQUEST['device_type_id'])) {
-            $device_type_id = $_REQUEST['device_type_id'];
-        } else {
-            $device_type_id = DEVICE_TYPE_PC;
-        }
+        $device_type_id = $objFormParam->getValue('device_type_id');
 
         //サブタイトルの追加
         $this->tpl_subtitle .= ' - ' . $this->arrDeviceType[$device_type_id];
@@ -121,10 +106,9 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
                 $this->lfExecuteConfirm($css_dir, $css_name, $old_css_name, $css_path);
                 break;
             case 'delete':
-                $this->lfExecuteDelete($css_path);
+                $this->lfExecuteDelete($css_path, $device_type_id);
                 break;
             default:
-                GC_Utils_Ex::gfPrintLog("MODEエラー：".$this->getMode());
                 break;
         }
 
@@ -140,6 +124,22 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
      */
     function destroy() {
         parent::destroy();
+    }
+
+
+    /**
+     * パラメータ情報の初期化
+     *
+     * @param object $objFormParam SC_FormParamインスタンス
+     * @param array $arrPost $_POSTデータ
+     * @return void
+     */
+    function lfInitParam(&$objFormParam, $arrPost) {
+        $objFormParam->addParam("端末種別ID", "device_type_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"), DEVICE_TYPE_PC);
+        $objFormParam->addParam("CSSファイル名", "css_name", MTEXT_LEN, 'a', array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("旧CSSファイル名", "old_css_name", MTEXT_LEN, 'a', array("MAX_LENGTH_CHECK"));
+        $objFormParam->setParam($arrPost);
+        $objFormParam->convParam();
     }
 
     function lfExecuteConfirm($css_dir, $css_name, $old_css_name, $css_path) {
@@ -163,14 +163,14 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
         $this->css_data = $_POST['css'];
     }
 
-    function lfExecuteDelete($css_path) {
+    function lfExecuteDelete($css_path, $device_type_id) {
         $objFileManager = new SC_Helper_FileManager_Ex();
 
         // css_name が空でない場合にはdeleteを実行
         if ($_POST['css_name'] !== '') {
             $objFileManager->sfDeleteDir($css_path);
         }
-        $this->objDisplay->reload(array(), true);
+        $this->objDisplay->reload(array('device_type_id' => $device_type_id), true);
     }
 
     /**
