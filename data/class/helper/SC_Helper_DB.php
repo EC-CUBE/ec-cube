@@ -178,8 +178,12 @@ class SC_Helper_DB {
                 // 選択中のカテゴリIDを判定する
                 $category_id = $this->sfGetCategoryId($_GET['product_id'], $_GET['category_id']);
                 // ROOTカテゴリIDの取得
-                $arrRet = $this->sfGetParents('dtb_category', 'parent_category_id', 'category_id', $category_id);
-                $root_id = isset($arrRet[0]) ? $arrRet[0] : "";
+                if(count($category_id) > 0) {
+                    $arrRet = $this->sfGetParents('dtb_category', 'parent_category_id', 'category_id', $category_id);
+                    $root_id = isset($arrRet[0]) ? $arrRet[0] : "";
+                } else {
+                    $root_id = "";
+                }
             } else {
                 // ROOTカテゴリIDをなしに設定する
                 $root_id = "";
