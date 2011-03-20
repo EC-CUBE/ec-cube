@@ -748,6 +748,9 @@ function lfCheckDBError($objFormParam) {
     $objErr->arrErr = $objFormParam->checkError();
 
     if(count($objErr->arrErr) == 0) {
+        if (!defined("DB_TYPE")) {
+            define("DB_TYPE", $arrRet['db_type']);
+        }
         // 接続確認
         $dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
         // Debugモード指定
