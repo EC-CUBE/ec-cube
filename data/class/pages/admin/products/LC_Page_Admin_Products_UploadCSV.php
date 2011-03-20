@@ -157,7 +157,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
 
     /**
      * CSVアップロードを実行します.
-     * 
+     *
      * @return void
      */
     function doUploadCsv(&$objFormParam, &$objUpFile) {
@@ -194,8 +194,6 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         $objQuery->begin();
 
         $errFlag = false;
-
-        $arrTargets = array();
 
         while (!feof($fp)) {
             $arrCSV = fgetcsv($fp, CSV_LINE_MAX);
@@ -234,21 +232,16 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
                 break;
             }
 
-            $arrTargets[$line_count] = clone $objFormParam;
-        }
-        fclose($fp);
+            $this->lfRegistProduct($objQuery, $line_count, $objFormParam);
+            $arrParam = $objFormParam->getHashArray();
 
-        if (!$errFlag) {
-            foreach ($arrTargets as $line_count=>$objFormParam) {
-                $this->lfRegistProduct($objQuery, $line_count, $objFormParam);
-                $arrParam = $objFormParam->getHashArray();
-
-                $this->addRowResult($line_count, "商品ID：".$arrParam['product_id'] . " / 商品名：" . $arrParam['name']);
-            }
+            $this->addRowResult($line_count, "商品ID：".$arrParam['product_id'] . " / 商品名：" . $arrParam['name']);
         }
 
         // 実行結果画面を表示
         $this->tpl_mainpage = 'products/upload_csv_complete.tpl';
+
+        fclose($fp);
 
         if ($errFlag) {
             $objQuery->rollback();
