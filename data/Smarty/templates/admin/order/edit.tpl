@@ -144,7 +144,7 @@
             <th>顧客ID</th>
             <td>
                 <!--{if $arrForm.customer_id.value > 0}-->
-                    <!--{$arrForm.customer_id.value}-->
+                    <!--{$arrForm.customer_id.value|h}-->
                     <input type="hidden" name="customer_id" value="<!--{$arrForm.customer_id.value|h}-->" />
                 <!--{else}-->
                     (非会員)

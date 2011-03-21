@@ -33,8 +33,8 @@
 <form name="form1" id="form1" method="post" action="?" enctype="multipart/form-data">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="edit" />
-<input type="hidden" name="parent_category_id" value="<!--{$arrForm.parent_category_id}-->">
-<input type="hidden" name="category_id" value="<!--{$arrForm.category_id}-->">
+<input type="hidden" name="parent_category_id" value="<!--{$arrForm.parent_category_id|h}-->">
+<input type="hidden" name="category_id" value="<!--{$arrForm.category_id|h}-->">
 <input type="hidden" name="keySet" value="">
 <div id="products" class="contents-main">
     <div class="btn">

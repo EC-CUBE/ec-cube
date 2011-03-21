@@ -31,7 +31,7 @@ function func_submit( id ){
     var fm = window.opener.document.form1;
     fm.recommend_id<!--{$smarty.get.no|h}-->.value = id;
     fm.mode.value = 'recommend_select';
-    fm.anchor_key.value = 'recommend_no<!--{$smarty.get.no}-->';
+    fm.anchor_key.value = 'recommend_no<!--{$smarty.get.no|h}-->';
     fm.submit();
     window.close();
     return false;
@@ -57,7 +57,7 @@ function func_submit( id ){
     </tr>
     <tr>
         <th>商品名</th>
-        <td><input type="text" name="search_name" value="<!--{$arrForm.search_name}-->" size="35" class="box35" /></td>
+        <td><input type="text" name="search_name" value="<!--{$arrForm.search_name|h}-->" size="35" class="box35" /></td>
     </tr>
 </table>
 <div class="btn-area">
@@ -88,7 +88,7 @@ function func_submit( id ){
                 </td>
                 <td><!--{$arrProducts[cnt].product_code|default:"-"|h}--></td>
                 <td><!--{$arrProducts[cnt].name|h}--></td>
-                <td align="center"><a href="#" onclick="return func_submit(<!--{$arrProducts[cnt].product_id}-->)">決定</a></td>
+                <td align="center"><a href="#" onclick="return func_submit(<!--{$arrProducts[cnt].product_id|h}-->)">決定</a></td>
             </tr>
             <!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
             <!--{sectionelse}-->
