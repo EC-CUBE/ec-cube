@@ -115,8 +115,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
             $this->arrErr = $this->lfCheckSelectClass();
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 $this->doDisp($objFormParam);
-                // 登録チェックボックスはすべて初期化
-                $objFormParam->setValue('check', '');
+                $this->initDispParam($objFormParam);
             }
             break;
 
@@ -457,6 +456,23 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
 
         // 商品種別を 1 に初期化
         $objFormParam->setValue('product_type_id', array_pad(array(), $total, 1));
+    }
+
+    /**
+     * 「表示する」ボタンをクリックされたときのパラメータ初期化処理
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return void
+     */
+    function initDispParam(&$objFormParam) {
+        // 登録チェックボックス初期化(すべてチェックを外す)
+        $objFormParam->setValue('check', '');
+
+        // 規格2が選択されていない場合、規格2名称初期化
+        $class_id2 = $objFormParam->getValue('class_id2');
+        if(SC_Utils_Ex::isBlank($class_id2) == true) {
+            $objFormParam->setValue('classcategory_name2', '');
+        }
     }
 
     /**
