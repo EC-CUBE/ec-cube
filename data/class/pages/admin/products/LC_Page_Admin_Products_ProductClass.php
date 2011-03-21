@@ -115,6 +115,8 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
             $this->arrErr = $this->lfCheckSelectClass();
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 $this->doDisp($objFormParam);
+                // 登録チェックボックスはすべて初期化
+                $objFormParam->setValue('check', '');
             }
             break;
 
