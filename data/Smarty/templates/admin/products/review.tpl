@@ -115,15 +115,15 @@
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="search" />
     <input type="hidden" name="review_id" value="" />
-    <input type="hidden" name="search_pageno" value="<!--{$tpl_pageno}-->" />
+    <input type="hidden" name="search_pageno" value="<!--{$tpl_pageno|h}-->" />
     <!--{foreach key=key item=item from=$arrHidden}-->
         <!--{if $key ne "search_pageno"}-->
-            <input type="hidden" name="<!--{$key}-->" value="<!--{$item}-->" />
+            <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
         <!--{/if}-->
     <!--{/foreach}-->
     <h2>検索結果一覧</h2>
     <div class="btn">
-        <span class="attention"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。
+        <span class="attention"><!--検索結果数--><!--{$tpl_linemax|h}-->件</span>&nbsp;が該当しました。
         <!--{if $smarty.const.ADMIN_MODE == '1'}-->
             <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><span>検索結果をすべて削除</span></a>
         <!--{/if}-->
@@ -147,11 +147,11 @@
 
             <!--{section name=cnt loop=$arrReview}-->
                 <tr>
-                    <td><!--{$arrReview[cnt].create_date|sfDispDBDate}--></td>
+                    <td><!--{$arrReview[cnt].create_date|h|sfDispDBDate}--></td>
                     <td><!--{$arrReview[cnt].reviewer_name|h}--></td>
                     <td><!--{$arrReview[cnt].name|h}--></td>
                     <!--{assign var=key value="`$arrReview[cnt].recommend_level`"}-->
-                    <td><!--{$arrRECOMMEND[$key]}--></td>
+                    <td><!--{$arrRECOMMEND[$key]|h}--></td>
                     <td class="menu"><!--{if $arrReview[cnt].status eq 1}-->表示<!--{elseif $arrReview[cnt].status eq 2}-->非表示<!--{/if}--></td>
                     <td class="menu"><a href="javascript:;" onclick="fnChangeAction('./review_edit.php'); fnModeSubmit('','review_id','<!--{$arrReview[cnt].review_id}-->'); return false;">編集</a></td>
                     <td class="menu"><a href="javascript:;" onclick="fnModeSubmit('delete','review_id','<!--{$arrReview[cnt].review_id}-->'); return false;">削除</a></td>

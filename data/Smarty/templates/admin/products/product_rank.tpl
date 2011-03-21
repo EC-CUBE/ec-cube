@@ -34,10 +34,10 @@
 <form name="form1" id="form1" method="post" action="?" enctype="multipart/form-data">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="edit" />
-<input type="hidden" name="parent_category_id" value="<!--{$arrForm.parent_category_id}-->" />
-<input type="hidden" name="category_id" value="<!--{$arrForm.category_id}-->" />
+<input type="hidden" name="parent_category_id" value="<!--{$arrForm.parent_category_id|h}-->" />
+<input type="hidden" name="category_id" value="<!--{$arrForm.category_id|h}-->" />
 <input type="hidden" name="product_id" value="" />
-<input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->" />
+<input type="hidden" name="pageno" value="<!--{$tpl_pageno|h}-->" />
 <div id="products" class="contents-main">
 
     <!--{* ▼画面左 *}-->
