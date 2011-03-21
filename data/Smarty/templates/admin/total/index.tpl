@@ -54,35 +54,35 @@
                     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
                     <input type="hidden" name="mode" value="search" />
                     <input type="hidden" name="form" value="2" />
-                    <input type="hidden" name="page" value="<!--{$arrForm.page.value}-->" />
-                    <input type="hidden" name="type" value="<!--{$smarty.post.type}-->" />
+                    <input type="hidden" name="page" value="<!--{$arrForm.page.value|h}-->" />
+                    <input type="hidden" name="type" value="<!--{$smarty.post.type|h}-->" />
                     <!--{if $arrErr.search_startyear || $arrErr.search_endyear}-->
                         <span class="attention"><!--{$arrErr.search_startyear}--></span>
                         <span class="attention"><!--{$arrErr.search_endyear}--></span>
                     <!--{/if}-->
                     <select name="search_startyear"    style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
                         <option value="">----</option>
-                        <!--{html_options options=$arrYear selected=$arrForm.search_startyear.value}-->
+                        <!--{html_options options=$arrYear selected=$arrForm.search_startyear.value|h}-->
                     </select>年
                     <select name="search_startmonth" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
                         <option value="">--</option>
-                        <!--{html_options options=$arrMonth selected=$arrForm.search_startmonth.value}-->
+                        <!--{html_options options=$arrMonth selected=$arrForm.search_startmonth.value|h}-->
                     </select>月
                     <select name="search_startday" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
                         <option value="">--</option>
-                        <!--{html_options options=$arrDay selected=$arrForm.search_startday.value}-->
+                        <!--{html_options options=$arrDay selected=$arrForm.search_startday.value|h}-->
                     </select>日～
                     <select name="search_endyear" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
                         <option value="">----</option>
-                        <!--{html_options options=$arrYear selected=$arrForm.search_endyear.value}-->
+                        <!--{html_options options=$arrYear selected=$arrForm.search_endyear.value|h}-->
                     </select>年
                     <select name="search_endmonth" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
                         <option value="">--</option>
-                        <!--{html_options options=$arrMonth selected=$arrForm.search_endmonth.value}-->
+                        <!--{html_options options=$arrMonth selected=$arrForm.search_endmonth.value|h}-->
                     </select>月
                     <select name="search_endday" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
                         <option value="">--</option>
-                        <!--{html_options options=$arrDay selected=$arrForm.search_endday.value}-->
+                        <!--{html_options options=$arrDay selected=$arrForm.search_endday.value|h}-->
                     </select>日
                     <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('search_form2', 'search', '', ''); return false;" name="subm">期間で集計する</a>
                 </form>
@@ -114,7 +114,7 @@
                 <!--{if $install_GD}-->
                 <div id="graph-image">
                     <!--{* <img src="<!--{$tpl_image}-->?<!--{$cashtime}-->" alt="グラフ"> *}-->
-                    <img src="?draw_image=true&amp;type=<!--{$smarty.post.type|h}-->&amp;mode=search&amp;page=<!--{$smarty.post.page|h}-->&amp;search_startyear_m=<!--{$smarty.post.search_startyear_m}-->&amp;search_startmonth_m=<!--{$smarty.post.search_startmonth_m}-->&amp;search_startyear=<!--{$smarty.post.search_startyear}-->&amp;search_startmonth=<!--{$smarty.post.search_startmonth}-->&amp;search_startday=<!--{$smarty.post.search_startday}-->&amp;search_endyear=<!--{$smarty.post.search_endyear}-->&amp;search_endmonth=<!--{$smarty.post.search_endmonth}-->&amp;search_endday=<!--{$smarty.post.search_endday}-->" alt="グラフ" />
+                    <img src="?draw_image=true&amp;type=<!--{$smarty.post.type|h}-->&amp;mode=search&amp;page=<!--{$smarty.post.page|h}-->&amp;search_startyear_m=<!--{$smarty.post.search_startyear_m|h}-->&amp;search_startmonth_m=<!--{$smarty.post.search_startmonth_m|h}-->&amp;search_startyear=<!--{$smarty.post.search_startyear|h}-->&amp;search_startmonth=<!--{$smarty.post.search_startmonth|h}-->&amp;search_startday=<!--{$smarty.post.search_startday|h}-->&amp;search_endyear=<!--{$smarty.post.search_endyear|h}-->&amp;search_endmonth=<!--{$smarty.post.search_endmonth|h}-->&amp;search_endday=<!--{$smarty.post.search_endday|h}-->" alt="グラフ" />
                 </div>
                 <!--{/if}-->
             <!--{* グラフ表示 *}-->
