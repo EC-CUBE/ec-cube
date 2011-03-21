@@ -215,9 +215,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
     /**
      * 規格の登録または更新を行う.
      *
-     * TODO dtb_class_combination は, dtb_product_categories に倣って,
-     *      DELETE to INSERT だが, UPDATE を検討する.
-     *
      * @param array $arrList 入力フォームの内容
      * @param integer $product_id 登録を行う商品ID
      */
@@ -236,6 +233,9 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         // デフォルト値として設定する値を取得しておく
         $arrDefault = $this->getProductsClass($product_id);
 
+        // XXX #1188 UPDATE だとデータの不整合が発生するため DELETE/INSERT を行う
+        $objQuery->delete('dtb_products_class', 'product_id = ? AND class_combination_id IS NOT NULL', array($product_id));
+
         for ($i = 0; $i < $total; $i++) {
             $del_flg = SC_Utils_Ex::isBlank($arrList['check'][$i]) ? 1 : 0;
             $stock_unlimited = SC_Utils_Ex::isBlank($arrList['stock_unlimited'][$i]) ? 0 : $arrList['stock_unlimited'][$i];
@@ -247,9 +247,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
 
             $arrPC = array();
             foreach ($registerKeys as $key) {
-                if ($del_flg === 0) {
-                    $arrPC[$key] = $arrList[$key][$i];
-                }
+                $arrPC[$key] = $arrList[$key][$i];
             }
             $arrPC['product_id'] = $product_id;
             $arrPC['sale_limit'] = $arrDefault['sale_limit'];
@@ -263,24 +261,15 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
             $arrPC['update_date'] = 'now()';
             $arrPC['del_flg'] = $del_flg;
 
-            // 登録 or 更新
-            $is_update = false;
-            if (!SC_Utils_Ex::isBlank($arrList['product_class_id'][$i])) {
-                $is_update = true;
+            $class_combination_id = $arrExists[$arrList['product_class_id'][$i]]['class_combination_id'];
+            $existsCombi = $objQuery->getRow('*', 'dtb_class_combination',
+                                             'class_combination_id = ?',
+                                             array($class_combination_id));
 
-                // 更新の場合は規格組み合わせを検索し, 削除しておく
-                $class_combination_id = $arrExists[$arrList['product_class_id'][$i]]['class_combination_id'];
-                $existsCombi = $objQuery->getRow(
-                    '*',
-                    'dtb_class_combination',
-                    'class_combination_id = ?',
-                    array($class_combination_id));
-
-                $objQuery->delete('dtb_class_combination',
-                                  'class_combination_id IN (?, ?)',
-                                  array($existsCombi['class_combination_id'],
-                                        $existsCombi['parent_class_combination_id']));
-            }
+            $objQuery->delete('dtb_class_combination',
+                              'class_combination_id IN (?, ?)',
+                              array($existsCombi['class_combination_id'],
+                                    $existsCombi['parent_class_combination_id']));
 
             // 規格組み合わせを登録
             $arrComb1['class_combination_id'] = $objQuery->nextVal('dtb_class_combination_class_combination_id');
@@ -301,23 +290,14 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                 $arrPC['class_combination_id'] = $arrComb1['class_combination_id'];
             }
 
-            // 更新
-            if ($is_update) {
-                $arrPC['product_class_id'] = $arrList['product_class_id'][$i];
-                $objQuery->update("dtb_products_class", $arrPC,
-                                  "product_class_id = ?",
-                                  array($arrPC['product_class_id']));
-            }
-            // 新規登録
-            else {
-                $arrPC['create_date'] = "now()";
-                $arrPC['product_class_id'] = $objQuery->nextVal('dtb_products_class_product_class_id');
-                /*
-                 * チェックを入れない商品は product_type_id が NULL になるので, 0 を入れる
-                 */
-                $arrPC['product_type_id'] = SC_Utils_Ex::isBlank($arrPC['product_type_id']) ? 0 : $arrPC['product_type_id'];
-                $objQuery->insert("dtb_products_class", $arrPC);
-            }
+            $arrPC['create_date'] = "now()";
+            $arrPC['product_class_id'] = $objQuery->nextVal('dtb_products_class_product_class_id');
+            /*
+             * チェックを入れない商品は product_type_id が NULL になるので, 0 を入れる
+             */
+            $arrPC['product_type_id'] = SC_Utils_Ex::isBlank($arrPC['product_type_id']) ? 0 : $arrPC['product_type_id'];
+
+            $objQuery->insert("dtb_products_class", $arrPC);
         }
 
         // 規格無し用の商品規格を非表示に

@@ -35,14 +35,13 @@
     <!--{/if}-->
 <!--{/foreach}-->
 
-<!--{* TODO 不要？ *}-->
-<!--{foreach key=key item=items from=$arrSearchHidden}-->
-    <!--{if is_array($items.value)}-->
-        <!--{foreach key=index item=item from=$items.value}-->
-            <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$item|h}-->" />
+<!--{foreach key=key item=item from=$arrSearchHidden}-->
+    <!--{if is_array($item)}-->
+        <!--{foreach item=c_item from=$item}-->
+        <input type="hidden" name="<!--{$key|h}-->[]" value="<!--{$c_item|h}-->" />
         <!--{/foreach}-->
     <!--{else}-->
-        <input type="hidden" name="<!--{$key}-->" value="<!--{$items|h}-->" />
+        <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
     <!--{/if}-->
 <!--{/foreach}-->
 
