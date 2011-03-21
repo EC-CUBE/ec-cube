@@ -31,8 +31,8 @@
                     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
                     <input type="hidden" name="mode" value="search" />
                     <input type="hidden" name="form" value="1" />
-                    <input type="hidden" name="page" value="<!--{$arrForm.page.value}-->" />
-                    <input type="hidden" name="type" value="<!--{$smarty.post.type}-->" />
+                    <input type="hidden" name="page" value="<!--{$arrForm.page.value|h}-->" />
+                    <input type="hidden" name="type" value="<!--{$smarty.post.type|h}-->" />
                     <!--{if $arrErr.search_startyear_m || $arrErr.search_endyear_m}-->
                         <span class="attention"><!--{$arrErr.search_startyear_m}--></span>
                         <span class="attention"><!--{$arrErr.search_endyear_m}--></span>
@@ -97,8 +97,8 @@
         <form name="form1" id="form1" method="post" action="?">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="hidden" name="type" value="<!--{$arrForm.type.value}-->" />
-        <input type="hidden" name="page" value="<!--{$arrForm.page.value}-->" />
+        <input type="hidden" name="type" value="<!--{$arrForm.type.value|h}-->" />
+        <input type="hidden" name="page" value="<!--{$arrForm.page.value|h}-->" />
         <!--{foreach key=key item=item from=$arrHidden}-->
             <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
         <!--{/foreach}-->    
