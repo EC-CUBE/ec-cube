@@ -245,6 +245,8 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
                     $objPurchase->copyFromCustomer($arrValues[0], $objCustomer,
                                                    'shipping');
                 }
+            } else {
+                $arrValues = $objPurchase->getShippingTemp();
             }
             $arrItemTemp[$other_deliv_id][$arrParams['product_class_id'][$index]] += $arrParams['quantity'][$index];
         }
