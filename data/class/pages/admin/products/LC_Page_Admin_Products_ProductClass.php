@@ -505,10 +505,29 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $objQuery->begin();
+        $arrClassCombi = $objQuery->getCol('class_combination_id',
+                                           'dtb_products_class',
+                                           'product_id = ?', array($product_id));
+
+        foreach ($arrClassCombi as $class_combination_id) {
+            if (SC_Utils_Ex::isBlank($class_combination_id)) {
+                continue;
+            }
+            $existsCombi = $objQuery->getRow('*', 'dtb_class_combination',
+                                             'class_combination_id = ?',
+                                             array($class_combination_id));
+
+            $objQuery->delete('dtb_class_combination',
+                              'class_combination_id IN (?, ?)',
+                              array($existsCombi['class_combination_id'],
+                                    $existsCombi['parent_class_combination_id']));
+        }
         $objQuery->update("dtb_products_class", array('del_flg' => 0),
-                          "product_id = ? AND class_combination_id IS NULL", array($product_id));
-        $objQuery->update("dtb_products_class", array('del_flg' => 1),
-                          "product_id = ? AND class_combination_id IS NOT NULL", array($product_id));
+                          "product_id = ? AND class_combination_id IS NULL",
+                          array($product_id));
+        $objQuery->delete("dtb_products_class",
+                          "product_id = ? AND class_combination_id IS NOT NULL",
+                          array($product_id));
         $objQuery->commit();
 
         // 在庫無し商品の非表示対応
