@@ -41,7 +41,7 @@ function func_submit(product_id, class_name1, class_name2) {
     <!--{if $tpl_no != ''}-->
     var opner_product_id = 'edit_product_id';
     var opner_product_class_id = 'edit_product_class_id';
-    fm1.getElementById("no").value = <!--{$tpl_no|h}-->;
+    fm1.getElementById("no").value = escape('<!--{$tpl_no}-->');
     <!--{else}-->
     var opner_product_id = 'add_product_id';
     var opner_product_class_id = 'add_product_class_id';
