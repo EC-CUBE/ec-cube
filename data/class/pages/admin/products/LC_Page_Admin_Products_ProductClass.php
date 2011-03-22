@@ -102,7 +102,9 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         // 削除
         case 'delete':
             $this->doDelete($objFormParam->getValue('product_id'));
-            $objFormParam->setValue('check', array());
+            $objFormParam->setValue('class_id1', '');
+            $objFormParam->setValue('class_id2', '');
+            $this->doDisp($objFormParam);
             break;
 
         // 初期表示
