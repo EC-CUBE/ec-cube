@@ -244,7 +244,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
     function getNo($globalParams){
         foreach ($globalParams as $params){
             if(isset($params['no']) && $params['no']!= ''){
-                return strval($params['no']);
+                return intval($params['no']);
             }
         }
         return null;
