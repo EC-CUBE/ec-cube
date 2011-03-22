@@ -26,17 +26,17 @@
             規約には、本サービスを使用するに当たってのあなたの権利と義務が規定されております。<br />
             「規約に同意して会員登録」ボタン をクリックすると、あなたが本規約の全ての条件に同意したことになります。</p>
             <div class="tblareabtn">
-                <a href="<!--{$smarty.const.TOP_URLPATH}-->" class="spbtn spbtn-medeum">
-                    同意しない</a>&nbsp;
-                <a href="<!--{$smarty.const.ENTRY_URL}-->" class="spbtn spbtn-shopping">
-                    規約に同意して会員登録</a>
+                <p><a href="<!--{$smarty.const.ENTRY_URL}-->" class="spbtn spbtn-shopping">
+                    規約に同意して会員登録</a></p>
+                <p><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="spbtn spbtn-medeum">
+                    同意しない</a></p>
             </div>
             <div id="kiyaku_text"><!--{$tpl_kiyaku_text|nl2br}--></div>
             <div class="tblareabtn">
-                <a href="<!--{$smarty.const.TOP_URLPATH}-->" class="spbtn spbtn-medeum">
-                    同意しない</a>&nbsp;
-                <a href="<!--{$smarty.const.ENTRY_URL}-->" class="spbtn spbtn-shopping">
-                    規約に同意して会員登録</a>
+                <p><a href="<!--{$smarty.const.ENTRY_URL}-->" class="spbtn spbtn-shopping">
+                    規約に同意して会員登録</a></p>
+                <p><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="spbtn spbtn-medeum">
+                    同意しない</a></p>
             </div>
     </div>
 </div>
