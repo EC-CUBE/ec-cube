@@ -432,6 +432,11 @@ text-align:center;
 
 /*商品一覧ページ
 -----------------------------------------------*/
+.navi li {
+width:100%;
+display:inline;
+}
+
 p.listcomment {
 font-size:90%;
 }
