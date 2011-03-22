@@ -434,6 +434,11 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
             $objFormParam->setValue($key, $arrValues);
         }
 
+        // 規格2未選択時は, 商品規格2を確実にクリアする
+        if (SC_Utils_Ex::isBlank($class_id2)) {
+            $objFormParam->setValue('classcategory_id2', array());
+        }
+
         // 商品種別を 1 に初期化
         $objFormParam->setValue('product_type_id', array_pad(array(), $total, 1));
     }
