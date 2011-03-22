@@ -474,23 +474,61 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         $objProduct = new SC_Product_Ex();
         $existsProductsClass = $objProduct->getProductsClassFullByProductId($product_id, true);
 
+        // 規格のデフォルト値(すべての組み合わせ)を取得し, フォームに反映
         $class_id1 = $existsProductsClass[0]['class_id1'];
         $class_id2 = $existsProductsClass[0]['class_id2'];
         $objFormParam->setValue('class_id1', $class_id1);
         $objFormParam->setValue('class_id2', $class_id2);
         $this->doDisp($objFormParam);
 
-        // 登録済みのデータで上書き
-        $objFormParam->setParam(SC_Utils_Ex::sfSwapArray($existsProductsClass));
+        /*-------------------------------------------------------------
+         * 登録済みのデータで, フォームの値を上書きする.
+         *
+         * 登録済みデータと, フォームの値は, 配列の形式が違うため,
+         * 同じ形式の配列を生成し, マージしてフォームの値を上書きする
+         --------------------------------------------------------------*/
+        $arrKeys = array('classcategory_id1', 'classcategory_id2','product_code',
+                         'classcategory_name1', 'classcategory_name2', 'stock',
+                         'stock_unlimited', 'price01', 'price02',
+                         'product_type_id', 'down_filename', 'down_realfilename',
+                         'upload_index');
+        $arrFormValues = $objFormParam->getSwapArray($arrKeys);
+        // フォームの規格1, 規格2をキーにした配列を生成
+        $arrClassCatKey = array();
+        foreach ($arrFormValues as $formValue) {
+            $arrClassCatKey[$formValue['classcategory_id1']][$formValue['classcategory_id2']] = $formValue;
+        }
+        // 登録済みデータをマージ
+        foreach ($existsProductsClass as $existsValue) {
+            $arrClassCatKey[$existsValue['classcategory_id1']][$existsValue['classcategory_id2']] = $existsValue;
+        }
 
-        // $existsProductsClass で product_id が配列になってしまうため数値で上書き
+        // 規格のデフォルト値に del_flg をつけてマージ後の1次元配列を生成
+        $arrMergeProductsClass = array();
+        foreach ($arrClassCatKey as $arrC1) {
+            foreach ($arrC1 as $arrValues) {
+                $arrValues['del_flg'] = (string) $arrValues['del_flg'];
+                if (SC_Utils_Ex::isBlank($arrValues['del_flg'])
+                    || $arrValues['del_flg'] === '1') {
+                    $arrValues['del_flg'] = '1';
+                } else {
+                    $arrValues['del_flg'] = '0';
+                }
+                $arrMergeProductsClass[] = $arrValues;
+            }
+        }
+
+        // 登録済みのデータで上書き
+        $objFormParam->setParam(SC_Utils_Ex::sfSwapArray($arrMergeProductsClass));
+
+        // $arrMergeProductsClass で product_id が配列になってしまうため数値で上書き
         $objFormParam->setValue('product_id', $product_id);
 
         // check を設定
         $arrChecks = array();
         $index = 0;
         foreach ($objFormParam->getValue('del_flg') as $key => $val) {
-            if ($val == 0) {
+            if ($val === '0') {
                 $arrChecks[$index] = 1;
             }
             $index++;
