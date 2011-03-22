@@ -206,6 +206,9 @@ div#undercolumn_error .message_area .error {
     width: 100%;
     text-align: left;
 }
+.pagenumber_area .navi li {
+    display: inline;
+}
 .pagenumber_area .change {
     float: right;
     text-align: right;
