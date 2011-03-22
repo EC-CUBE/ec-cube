@@ -71,8 +71,9 @@ class SC_Helper_Purchase {
         $orderTemp = $this->getOrderTemp($uniqId);
 
         $orderTemp['status'] = $orderStatus;
+        $cartkey = $objCartSession->getKey();
         $orderId = $this->registerOrderComplete($orderTemp, $objCartSession,
-                                                $objCartSession->getKey());
+                                                $cartkey);
         $shippingTemp =& $this->getShippingTemp();
         if (count($shippingTemp) > 1) {
             foreach ($shippingTemp as $shippingId => $val) {
@@ -83,8 +84,7 @@ class SC_Helper_Purchase {
 
         $this->registerShipping($orderId, $shippingTemp);
         $objQuery->commit();
-        $this->unsetShippingTemp();
-        $objCustomer->updateSession();
+        $this->cleanupSession($orderId, $objCartSession, $objCustomer, $cartkey);
     }
 
     /**
@@ -625,7 +625,7 @@ class SC_Helper_Purchase {
      * 受注登録を完了する.
      *
      * 引数の受注情報を受注テーブル及び受注詳細テーブルに登録する.
-     * 登録後, 受注一時テーブルに削除フラグを立て, カートの内容を削除する.
+     * 登録後, 受注一時テーブルに削除フラグを立てる.
      *
      * @param array $orderParams 登録する受注情報の配列
      * @param SC_CartSession $objCartSession カート情報のインスタンス
@@ -684,8 +684,6 @@ class SC_Helper_Purchase {
                           "order_temp_id = ?",
                           array(SC_SiteSession_Ex::getUniqId()));
 
-        $objCartSession->delAllProducts($cartKey);
-        SC_SiteSession_Ex::unsetUniqId();
         return $orderParams['order_id'];
     }
 
@@ -1105,5 +1103,30 @@ __EOS__;
         }
 
         return false;
+    }
+
+    /**
+     * セッションに保持している情報を破棄する.
+     *
+     * 通常、受注処理(completeOrder)完了後に呼び出され、
+     * セッション情報を破棄する.
+     *
+     * 決済モジュール画面から確認画面に「戻る」場合を考慮し、
+     * セッション情報を破棄しないカスタマイズを、モジュール側で
+     * 加える機会を与える.
+     *
+     * @param integer $orderId 注文番号
+     * @param SC_CartSession $objCartSession カート情報のインスタンス
+     * @param SC_Customer $objCustomer SC_Customer インスタンス
+     * @param integer $cartKey 登録を行うカート情報のキー
+     */
+    function cleanupSession($orderId, &$objCartSession, &$objCustomer, $cartKey) {
+        // カートの内容を削除する. 
+        $objCartSession->delAllProducts($cartKey);
+        SC_SiteSession_Ex::unsetUniqId();
+
+        // セッションの配送情報を破棄する.
+        $this->unsetShippingTemp();
+        $objCustomer->updateSession();
     }
 }
