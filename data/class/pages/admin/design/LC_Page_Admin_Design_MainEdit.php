@@ -177,8 +177,8 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
                 $page_id,
                 $_POST['page_name'],
                 USER_DIR . $_POST['url'],
-                $_POST['header_chk'],
-                $_POST['footer_chk']
+                intval($_POST['header_chk']) === 1 ? 1 : 2,
+                intval($_POST['footer_chk']) === 1 ? 1 : 2
             );
             $page_id = $arrTmp['page_id'];
 
@@ -205,8 +205,6 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         } else {
             // エラーがあれば入力時のデータを表示する
             $this->arrPageData = $_POST;
-            $this->arrPageData['header_chk'] = SC_Utils_Ex::sfChangeCheckBox(SC_Utils_Ex::sfChangeCheckBox($_POST['header_chk']), true);
-            $this->arrPageData['footer_chk'] = SC_Utils_Ex::sfChangeCheckBox(SC_Utils_Ex::sfChangeCheckBox($_POST['footer_chk']), true);
             $this->arrPageData['directory'] = '';
             $this->arrPageData['filename'] = $_POST['url'];
         }
@@ -267,8 +265,8 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
      */
     function lfGetUpdData($device_type_id, $page_id, $page_name, $filename, $header_chk, $footer_chk) {
         $arrUpdData = array(
-            'header_chk'    => SC_Utils_Ex::sfChangeCheckBox($header_chk),  // ヘッダー使用
-            'footer_chk'    => SC_Utils_Ex::sfChangeCheckBox($footer_chk),  // フッター使用
+            'header_chk'    => $header_chk,  // ヘッダー使用
+            'footer_chk'    => $footer_chk,  // フッター使用
             'update_url'    => $_SERVER['HTTP_REFERER'],                    // 更新URL
             'update_date'   => 'now()',
         );

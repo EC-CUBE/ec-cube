@@ -83,8 +83,8 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
         </tr>
         <tr>
             <td colspan="2">
-                <label for="header-chk"><input type="checkbox" name="header_chk" id="header-chk" <!--{if $arrPageData.header_chk != "2"}-->checked="checked"<!--{/if}--> />共通のヘッダーを使用する</label>&nbsp;
-                <label for="footer-chk"><input type="checkbox" name="footer_chk" id="footer-chk" <!--{if $arrPageData.footer_chk != "2"}-->checked="checked"<!--{/if}--> />共通のフッターを使用する</label>
+                <label for="header-chk"><input type="checkbox" name="header_chk" id="header-chk" value="1" <!--{if $arrPageData.header_chk == "1"}-->checked="checked"<!--{/if}--> />共通のヘッダーを使用する</label>&nbsp;
+                <label for="footer-chk"><input type="checkbox" name="footer_chk" id="footer-chk" value="1" <!--{if $arrPageData.footer_chk == "1"}-->checked="checked"<!--{/if}--> />共通のフッターを使用する</label>
                 <div>
                     <textarea id="tpl_data" class="top" name="tpl_data" rows=<!--{$text_row}--> style="width: 98%;"><!--{$arrPageData.tpl_data|h|smarty:nodefaults}--></textarea>
                     <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" /><br />
