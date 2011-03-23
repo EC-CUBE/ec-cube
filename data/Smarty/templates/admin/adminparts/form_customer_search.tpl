@@ -40,7 +40,7 @@
         <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
         <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" >
             <option value="" selected="selected">--</option>
-            <!--{html_options options=$objDate->getMonth() selected=$arrForm[$key].value}-->
+            <!--{html_options options=$arrMonth selected=$arrForm[$key].value}-->
         </select>月
     </td>
 </tr>
@@ -53,7 +53,7 @@
         <!--{assign var=key value="search_b_start_year"}-->
         <select name="<!--{$key}-->" <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><!--{sfSetErrorStyle}--><!--{/if}-->>
             <option value="" selected="selected">----</option>
-            <!--{html_options options=$arrYear selected=$arrForm[$key].value}-->
+            <!--{html_options options=$arrBirthYear selected=$arrForm[$key].value}-->
         </select>年
         <!--{assign var=key value="search_b_start_month"}-->
         <select name="<!--{$key}-->" <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><!--{sfSetErrorStyle}--><!--{/if}-->>
@@ -68,7 +68,7 @@
         <!--{assign var=key value="search_b_end_year"}-->
         <select name="<!--{$key}-->" <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><!--{sfSetErrorStyle}--><!--{/if}-->>
             <option value="" selected="selected">----</option>
-            <!--{html_options options=$arrYear selected=$arrForm[$key].value}-->
+            <!--{html_options options=$arrBirthYear selected=$arrForm[$key].value}-->
         </select>年
         <!--{assign var=key value="search_b_end_month"}-->
         <select name="<!--{$key}-->" <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><!--{sfSetErrorStyle}--><!--{/if}-->>
@@ -140,7 +140,7 @@
         <!--{assign var=key value="search_start_year"}-->
         <select name="<!--{$key}-->" <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><!--{sfSetErrorStyle}--><!--{/if}-->>
             <option value="" selected="selected">----</option>
-            <!--{html_options options=$arrYear selected=$arrForm[$key].value}-->
+            <!--{html_options options=$arrRegistYear selected=$arrForm[$key].value}-->
         </select>年
         <!--{assign var=key value="search_start_month"}-->
         <select name="<!--{$key}-->" <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><!--{sfSetErrorStyle}--><!--{/if}-->>
@@ -155,7 +155,7 @@
         <!--{assign var=key value="search_end_year"}-->
         <select name="<!--{$key}-->" <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><!--{sfSetErrorStyle}--><!--{/if}-->>
             <option value="" selected="selected">----</option>
-            <!--{html_options options=$arrYear selected=$arrForm[$key].value}-->
+            <!--{html_options options=$arrRegistYear selected=$arrForm[$key].value}-->
         </select>年
         <!--{assign var=key value="search_end_month"}-->
         <select name="<!--{$key}-->" <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><!--{sfSetErrorStyle}--><!--{/if}-->>
@@ -178,7 +178,7 @@
         <!--{assign var=key value="search_buy_start_year"}-->
         <select name="<!--{$key}-->" <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><!--{sfSetErrorStyle}--><!--{/if}-->>
             <option value="" selected="selected">----</option>
-            <!--{html_options options=$arrYear selected=$arrForm[$key].value}-->
+            <!--{html_options options=$arrRegistYear selected=$arrForm[$key].value}-->
         </select>年
         <!--{assign var=key value="search_buy_start_month"}-->
         <select name="<!--{$key}-->" <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><!--{sfSetErrorStyle}--><!--{/if}-->>
@@ -193,7 +193,7 @@
         <!--{assign var=key value="search_buy_end_year"}-->
         <select name="<!--{$key}-->" <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><!--{sfSetErrorStyle}--><!--{/if}-->>
             <option value="" selected="selected">----</option>
-            <!--{html_options options=$arrYear selected=$arrForm[$key].value}-->
+            <!--{html_options options=$arrRegistYear selected=$arrForm[$key].value}-->
         </select>年
         <!--{assign var=key value="search_buy_end_month"}-->
         <select name="<!--{$key}-->" <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><!--{sfSetErrorStyle}--><!--{/if}-->>

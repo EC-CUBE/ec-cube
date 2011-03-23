@@ -60,11 +60,18 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
         $this->arrMagazineType = $masterData->getMasterData("mtb_magazine_type");
 
         // 日付プルダウン設定
-        $objDate = new SC_Date_Ex(BIRTH_YEAR);
-        $this->arrYear = $objDate->getYear();   
+        $objDate = new SC_Date_Ex();
+        // 登録・更新日検索用
+        $objDate->setStartYear(RELEASE_YEAR);
+        $objDate->setEndYear(DATE('Y'));
+        $this->arrRegistYear = $objDate->getYear();
+        // 生年月日検索用
+        $objDate->setStartYear(BIRTH_YEAR);
+        $objDate->setEndYear(DATE('Y'));
+        $this->arrBirthYear = $objDate->getYear();
+        // 月日の設定
         $this->arrMonth = $objDate->getMonth();
         $this->arrDay = $objDate->getDay();
-        $this->objDate = $objDate;
 
         // カテゴリ一覧設定
         $objDb = new SC_Helper_DB_Ex();
