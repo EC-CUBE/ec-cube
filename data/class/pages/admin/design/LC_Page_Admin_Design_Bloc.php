@@ -89,12 +89,12 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
         $this->tpl_subtitle .= ' - ' . $this->arrDeviceType[$device_type_id];
 
         // ブロック一覧を取得
-        $this->arrBlocList = $this->lfgetBlocData("device_type_id = ?", array($device_type_id));
+        $this->arrBlocList = $this->lfGetBlocData($device_type_id);
 
         // bloc_id が指定されている場合にはブロックデータの取得
         if ($bloc_id != '') {
-            $arrBlocData = $this->lfGetBlocData("bloc_id = ? AND device_type_id = ?",
-                                                array($bloc_id, $device_type_id));
+            $arrBlocData = $this->lfGetBlocData($device_type_id, "bloc_id = ?",
+                                                array($bloc_id));
 
             $tplPath = $package_path . $arrBlocData[0]['filename'] . '.tpl';
 
@@ -135,8 +135,8 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
                 fwrite($fp, $_POST['bloc_html']); // FIXME いきなり POST はちょっと...
                 fclose($fp);
 
-                $arrBlocData = $this->lfGetBlocData("filename = ? AND device_type_id = ?",
-                                                    array($_POST['filename'], $device_type_id));
+                $arrBlocData = $this->lfGetBlocData($device_type_id, "filename = ?",
+                                                    array($_POST['filename']));
 
                 $bloc_id = $arrBlocData[0]['bloc_id'];
                 $arrQueryString = array(
@@ -205,14 +205,21 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
     /**
      * ブロック情報を取得する.
      *
+     * @param integer $device_type_id 端末種別ID
      * @param string $where Where句文
      * @param array $arrVal Where句の絞込条件値
      * @return array ブロック情報
      */
-    function lfgetBlocData($where = '', $arrVal = array()){
+    function lfGetBlocData($device_type_id, $where = '', $arrVal = array()){
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder("bloc_id");
-        return $objQuery->select("*", "dtb_bloc", $where, $arrVal);
+        $sql_where = 'device_type_id = ?';
+        $arrSql = array($device_type_id);
+        if (!empty($where)) {
+            $sql_where .= ' AND ' . $where;
+            $arrSql = array_merge($arrSql, $arrVal);
+        }
+        return $objQuery->select("*", "dtb_bloc", $sql_where, $arrSql);
     }
 
     /**
@@ -236,8 +243,8 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
 
         // データが存在しているかチェックを行う
         if($arrData['bloc_id'] !== ''){
-            $arrChk = $this->lfgetBlocData("bloc_id = ? AND device_type_id = ?",
-                                           array($arrData['bloc_id'], $device_type_id));
+            $arrChk = $this->lfGetBlocData($device_type_id, "bloc_id = ?",
+                                           array($arrData['bloc_id']));
         }
 
         // bloc_id が空 若しくは データが存在していない場合にはINSERTを行う
@@ -269,7 +276,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
 
         // 同一のファイル名が存在している場合にはエラー
         if(!isset($objErr->arrErr['filename']) && $array['filename'] !== ''){
-            $arrChk = $this->lfgetBlocData("filename = ?", array($array['filename']));
+            $arrChk = $this->lfGetBlocData($array['device_type_id'], "filename = ?", array($array['filename']));
 
             if (count($arrChk[0]) >= 1 && $arrChk[0]['bloc_id'] != $array['bloc_id']) {
                 $objErr->arrErr['filename'] = '※ 同じファイル名のデータが存在しています。別の名称を付けてください。';
