@@ -26,11 +26,17 @@ class LC_Page_User extends LC_Page_Ex {
      * @return void
      */
     function process() {
-        $objView = new SC_SiteView_Ex();
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
 
-        // 画面の表示
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
     }
 
     /**
