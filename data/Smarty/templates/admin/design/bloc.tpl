@@ -64,7 +64,7 @@
     <!--{* ▼ブロック一覧 *}-->
     <h2>編集可能ブロック</h2>
     <div class="btn addnew">
-        <a class="btn-normal" href="?" onclick="fnFormModeSubmit('form_bloc','','',''); return false;"><span>ブロックを新規入力</span></a>
+        <a class="btn-normal" href="?device_type_id=<!--{$device_type_id|h}-->"><span>ブロックを新規入力</span></a>
     </div>
     <table class="list">
         <tr>
