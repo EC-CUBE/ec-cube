@@ -82,6 +82,9 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
         $css_name = $objFormParam->getValue('css_name');
         $this->css_name = $css_name;
         $old_css_name = $objFormParam->getValue('old_css_name');
+        if ($old_css_name == "" && $css_name != "") {
+            $old_css_name = $css_name;
+        }
         $this->old_css_name = $old_css_name;
 
         // 端末種別IDを取得
