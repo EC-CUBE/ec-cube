@@ -1016,7 +1016,7 @@ __EOF__;
                     //規格がある場合の複製は複製元の内容で追加登録を行う
                     // dtb_products_class のカラムを取得
                     $dbFactory = SC_DB_DBFactory_Ex::getInstance();
-                    $arrColList = $dbFactory->sfGetColumnList("dtb_products_class", $objQuery);
+                    $arrColList = $objQuery->listTableFields('dtb_products_class');
                     $arrColList_tmp = array_flip($arrColList);
 
                     // 複製しない列
