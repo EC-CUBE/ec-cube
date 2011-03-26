@@ -212,10 +212,10 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      */
     function sfGetColumnList($table_name) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $sql = "SHOW COLUMNS FROM " . $table_name;
+        $sql = "SHOW COLUMNS FROM $table_name";
         $arrColList = $objQuery->getAll($sql);
         $arrColList = SC_Utils_Ex::sfswaparray($arrColList);
-        return $arrColList['Field'];
+        return $arrColList['field'];
     }
 
     /**
