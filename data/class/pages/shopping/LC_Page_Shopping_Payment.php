@@ -117,8 +117,11 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
             exit;
         }
 
-        // 購入金額の取得
-        $this->arrPrices = $objCartSess->calculate($cart_key, $objCustomer, 0, $objPurchase->getShippingPref());
+        /*
+         * 購入金額の取得
+         * ここでは送料を加算しない
+         */
+        $this->arrPrices = $objCartSess->calculate($cart_key, $objCustomer);
 
         // お届け日一覧の取得
         $this->arrDelivDate = $objPurchase->getDelivDate($objCartSess, $cart_key);

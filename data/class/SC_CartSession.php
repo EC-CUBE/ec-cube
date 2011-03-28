@@ -507,10 +507,11 @@ class SC_CartSession {
                                         複数に配送する場合は都道府県IDの配列
      * @param integer $charge 手数料
      * @param integer $discount 値引
+     * @param integer $deliv_id 配送業者ID
      * @return array カートの計算結果の配列
      */
     function calculate($productTypeId, &$objCustomer, $use_point = 0,
-                       $deliv_pref = "", $charge = 0, $discount = 0) {
+                       $deliv_pref = "", $charge = 0, $discount = 0, $deliv_id = 0) {
         $objDb = new SC_Helper_DB_Ex();
 
         $total_point = $this->getAllProductsPoint($productTypeId);
@@ -527,8 +528,10 @@ class SC_CartSession {
         }
 
         // 配送業者の送料を加算
-        if (OPTION_DELIV_FEE == 1) {
-            $results['deliv_fee'] += $objDb->sfGetDelivFee($deliv_pref, $productTypeId);
+        if (OPTION_DELIV_FEE == 1
+            && !SC_Utils_Ex::isBlank($deliv_pref)
+            && !SC_Utils_Ex::isBlank($deliv_id)) {
+            $results['deliv_fee'] += $objDb->sfGetDelivFee($deliv_pref, $deliv_id);
         }
 
         // 送料無料の購入数が設定されている場合

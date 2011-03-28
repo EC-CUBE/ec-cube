@@ -115,7 +115,8 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
                                                   $arrOrderTemp['use_point'],
                                                   $objPurchase->getShippingPref(),
                                                   $arrOrderTemp['charge'],
-                                                  $arrOrderTemp['discount']);
+                                                  $arrOrderTemp['discount'],
+                                                  $arrOrderTemp['deliv_id']);
         $this->arrForm = array_merge($arrOrderTemp, $arrCalcResults);
 
         // 会員ログインチェック
