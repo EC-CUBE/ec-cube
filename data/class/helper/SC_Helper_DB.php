@@ -871,6 +871,8 @@ __EOS__;
             $ret = SC_Helper_DB_Ex::sfGetParentsArraySub($table, $pid_name, $id_name, $ret);
         }
 
+        $arrParents = array_reverse($arrParents);
+
         return $arrParents;
     }
 
