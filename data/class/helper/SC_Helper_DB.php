@@ -1192,6 +1192,7 @@ __EOS__;
               JOIN dtb_deliv T2
                 ON T1.deliv_id = T2.deliv_id
              WHERE T1.pref = ? AND T2.product_type_id = ?
+               AND T2.del_flg = 0
 __EOS__;
 
         $result = 0;
