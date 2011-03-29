@@ -27,7 +27,7 @@
 <div id="basis" class="contents-main">
     <table>
         <tr>
-            <th>ポイント付与率<span class="attention"> *</span></th>
+            <th>ポイント付与率（初期値）<span class="attention"> *</span></th>
             <td>
                 <!--{assign var=key value="point_rate"}-->
                 <!--{if $arrErr[$key]}-->
