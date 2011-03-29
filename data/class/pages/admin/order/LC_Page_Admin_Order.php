@@ -268,7 +268,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
         switch ($key) {
 
         case 'search_product_name':
-            $where .= " AND (SELECT COUNT(*) FROM dtb_order_detail od WHERE od.order_id = dtb_order.order_id AND od.product_name LIKE ?) > 0";
+            $where .= " AND EXISTS (SELECT 1 FROM dtb_order_detail od WHERE od.order_id = dtb_order.order_id AND od.product_name LIKE ?)";
             $arrValues[] = sprintf('%%%s%%', $objFormParam->getValue($key));
             break;
         case 'search_order_name':
