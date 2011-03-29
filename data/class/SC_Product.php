@@ -312,6 +312,7 @@ __EOS__;
             T1.product_id,
             T1.stock,
             T1.stock_unlimited,
+            T1.sale_limit,
             T1.price01,
             T1.price02,
             T1.point_rate,
