@@ -22,6 +22,7 @@
  */
 *}-->
 <!--▼CONTENTS-->
+<!--{if $objSiteInfo->data.latitude && $objSiteInfo->data.longitude}-->
 <script type="text/javascript">//<![CDATA[
 $(function() {
     $("#maps").css({
@@ -48,6 +49,7 @@ $(function() {
 });
 //]]>
 </script>
+<!--{/if}-->
 <div id="undercolumn">
 
     <div id="undercolumn_aboutus">

@@ -36,10 +36,6 @@
 <!--{else}-->
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <!--{/if}-->
-<script type="text/javascript">//<![CDATA[
-    var map = new google.maps.Map(document.getElementById("maps"), {"zoom":"3"});
-//]]>
-</script>
 <!--{/if}-->
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/win_op.js"></script>

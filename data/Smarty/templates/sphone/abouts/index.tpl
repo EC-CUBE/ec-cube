@@ -23,6 +23,7 @@
 *}-->
 <!--▼CONTENTS-->
 <!--{assign var=_site value=$arrSiteInfo}-->
+<!--{if $_site.latitude && $_site.longitude}-->
 <script type="text/javascript">//<![CDATA[
 $(function() {
     $("#maps").css({
@@ -47,6 +48,7 @@ $(function() {
 });
 //]]>
 </script>
+<!--{/if}-->
 <div id="undercolumn">
 
   <div id="undercolumn_aboutus">
