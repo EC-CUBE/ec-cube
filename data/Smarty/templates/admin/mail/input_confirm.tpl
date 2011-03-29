@@ -73,6 +73,7 @@ function winSubmitMail(URL,formName,Winname,Wwidth,Wheight){
 </div>
 </form>
 <form name="form2" id="form2" method="post" action="./preview.php" target="_blank">
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="presend" />
     <input type="hidden" name="body" value="<!--{$arrForm.body.value|h}-->" />
 </form>
