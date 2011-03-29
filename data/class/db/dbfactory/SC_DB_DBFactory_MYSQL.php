@@ -183,6 +183,15 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
     }
 
     /**
+     * 売上集計の年代別集計の年代抽出部分のSQLを返す
+     *
+     * @return string 年代抽出部分の SQL
+     */
+    function getOrderTotalAgeColSql() {
+        return 'TRUNC((YEAR(create_date) - YEAR(order_birth)) - (RIGHT(create_date, 5) < RIGHT(order_birth, 5)), -1)';
+    }
+
+    /**
      * 文字列連結を行う.
      *
      * @param array $columns 連結を行うカラム名

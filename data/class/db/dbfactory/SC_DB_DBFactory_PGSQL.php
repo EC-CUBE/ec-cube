@@ -166,6 +166,15 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
     }
 
     /**
+     * 売上集計の年代別集計の年代抽出部分のSQLを返す
+     *
+     * @return string 年代抽出部分の SQL
+     */
+    function getOrderTotalAgeColSql() {
+        return 'TRUNC(CAST(EXTRACT(YEAR FROM AGE(create_date, order_birth)) AS INT), -1)';
+    }
+
+    /**
      * 文字列連結を行う.
      *
      * @param array $columns 連結を行うカラム名
