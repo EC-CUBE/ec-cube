@@ -134,6 +134,6 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
         <!--{/foreach}-->
     </table>
     <div class="btn addnew">
-        <a class="btn-normal" href="?"><span>ページを新規入力</span></a>
+        <a class="btn-normal" href="?device_type_id=<!--{$device_type_id|u}-->"><span>ページを新規入力</span></a>
     </div>
 </form>
