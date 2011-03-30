@@ -826,6 +826,7 @@ __EOF__;
         $col = "category_id";
         $table = "dtb_product_categories";
         $where = "product_id = ?";
+        $objQuery->setOption('');
         $arrProduct[0]['category_id'] = $objQuery->getCol($col, $table, $where, array($product_id));
 
         // 規格情報ありなしフラグ取得
