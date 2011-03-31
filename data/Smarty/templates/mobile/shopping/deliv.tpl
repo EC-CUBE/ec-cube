@@ -27,7 +27,7 @@
 
 <!--▼CONTENTS-->
 <!--{section name=cnt loop=$arrAddr}-->
-<form method="post" action="?">
+<form method="post" action="<!--{$smarty.const.ROOT_URLPATH}-->shopping/deliv.php">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 <input type="hidden" name="deli" value="<!--{$smarty.section.cnt.iteration}-->">
@@ -63,7 +63,7 @@
 <br>
 
 ■お届け先を複数指定する<br>
-<form method="post" action="?">
+<form method="post" action="<!--{$smarty.const.ROOT_URLPATH}-->shopping/deliv.php">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 <input type="hidden" name="mode" value="multiple">
