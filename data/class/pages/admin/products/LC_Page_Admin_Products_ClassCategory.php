@@ -220,15 +220,20 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
         return $ret;
     }
 
-    /* DBへの更新 */
-    function lfUpdateClass() {
+   /**
+     * 規格分類情報を更新
+     *
+     * @param array $arrForm フォームパラメータークラス
+     * @return integer 更新件数
+     */
+    function lfUpdateClass($arrForm) {
         $objQuery = new SC_Query_Ex();
         // UPDATEする値を作成する。
-        $sqlval['name'] = $_POST['name'];
+        $sqlval['name'] = $arrForm['name'];
         $sqlval['update_date'] = "Now()";
         $where = "classcategory_id = ?";
         // UPDATEの実行
-        $ret = $objQuery->update("dtb_classcategory", $sqlval, $where, array($_POST['classcategory_id']));
+        $ret = $objQuery->update("dtb_classcategory", $sqlval, $where, array($arrForm['classcategory_id']));
         return $ret;
     }
 
