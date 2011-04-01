@@ -499,7 +499,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
      */
     function hasEmailMobile(&$objCustomer) {
         $objMobile = new SC_Helper_Mobile_Ex();
-        if (!$objMobile->gfIsMobileMailAddress($objCustomer->getValue('email'))) {
+        if ($objMobile->gfIsMobileMailAddress($objCustomer->getValue('email'))) {
             if ($objCustomer->hasValue('email_mobile')) {
                 return true;
             }
