@@ -309,7 +309,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam("電話番号2", "shipping_tel02", TEL_ITEM_LEN, 'n', array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
         $objFormParam->addParam("電話番号3", "shipping_tel03", TEL_ITEM_LEN, 'n', array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
         $objFormParam->addParam("お届け時間ID", "time_id", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("お届け時間", "shipping_time");
         $objFormParam->addParam("お届け日(年)", "shipping_date_year", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("お届け日(月)", "shipping_date_month", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("お届け日(日)", "shipping_date_day", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
@@ -671,6 +670,9 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
                                               'shipment_classcategory_name2',
                                               'shipment_price',
                                               'shipment_quantity'));
+
+        $arrDelivTime = $objPurchase->getDelivTime($objFormParam->getValue('deliv_id'));
+
         $arrShippingValues = array();
         foreach ($arrAllShipping as $shipping_index => $arrShipping) {
             $shipping_id = $arrShipping['shipping_id'];
@@ -683,6 +685,9 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
 
             // 配送業者IDを取得
             $arrShippingValues[$shipping_index]['deliv_id'] = $objFormParam->getValue('deliv_id');
+
+            // お届け時間名称を取得
+            $arrShippingValues[$shipping_index]['shipping_time'] = $arrDelivTime[$arrShipping['time_id']];
 
             // 複数配送の場合は配送商品を登録
             if (!SC_Utils_Ex::isBlank($arrAllShipmentItem)) {
