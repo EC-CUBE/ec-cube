@@ -37,7 +37,7 @@ XXX: ヘッダーとフッターでwrapの設定が違うのは疑問。それ�
     <input type="hidden" name="browser_type" value="" />
     <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 
-        <textarea id="header-area" class="top" name="header" rows="<!--{$header_row}-->" wrap="off" style="width: 100%;"><!--{$header_data|smarty:nodefaults}--></textarea>
+        <textarea id="header-area" class="top" name="header" rows="<!--{$header_row}-->" wrap="off" style="width: 100%;"><!--{$header_data|h|smarty:nodefaults}--></textarea>
         <div class="btn">
             <a id="header-area-resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#header-area-resize-btn', '#header-area', 50, 13); $('input[name=header_row]').val($('#header-area').attr('rows'));return false;"><span>拡大</span></a>
         </div>
@@ -61,7 +61,7 @@ XXX: ヘッダーとフッターでwrapの設定が違うのは疑問。それ�
     <input type="hidden" name="browser_type" value="" />
     <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 
-        <textarea id="footer-area" class="top" name="footer" rows="<!--{$footer_row}-->" style="width: 100%;"><!--{$footer_data|smarty:nodefaults}--></textarea>
+        <textarea id="footer-area" class="top" name="footer" rows="<!--{$footer_row}-->" style="width: 100%;"><!--{$footer_data|h|smarty:nodefaults}--></textarea>
         <div class="btn">
             <a id="footer-area-resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#footer-area-resize-btn', '#footer-area', 50, 13); $('input[name=footer_row]').val($('#footer-area').attr('rows'));return false;"><span>拡大</span></a>
         </div>

@@ -41,7 +41,7 @@
         <tr>
             <th>CSS内容</th>
             <td>
-                <textarea id="css" class="top" name="css" cols=90 rows=<!--{$area_row}--> align="left" wrap=off style="width: 650px;"><!--{$css_data}--></textarea>
+                <textarea id="css" class="top" name="css" cols=90 rows=<!--{$area_row}--> align="left" wrap=off style="width: 650px;"><!--{$css_data|h}--></textarea>
                 <input type="hidden" name="area_row" value="<!--{$area_row}-->" />
                 <div class="btn">
                     <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#css', 50, 30); return false;">拡大</a>

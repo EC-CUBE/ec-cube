@@ -101,7 +101,7 @@ function lfnCheckSetItem( rank ){
                                             <input type="hidden" name="category_id" value="<!--{$category_id|h}-->" />
                                             <input type="hidden" name="rank" value="<!--{$arrItems[$smarty.section.cnt.iteration].rank|h}-->" />
                                             <span class="attention"><!--{$arrErr[$smarty.section.cnt.iteration].comment}--></span>
-                                            <textarea class="top" name="comment" cols="45" rows="4" style="width: 586px; height: 80px; <!--{$arrErr[$smarty.section.cnt.iteration].comment|sfGetErrorColor}-->" <!--{$arrItems[$smarty.section.cnt.iteration].product_id|sfGetEnabled}-->><!--{$arrItems[$smarty.section.cnt.iteration].comment}--></textarea>
+                                            <textarea class="top" name="comment" cols="45" rows="4" style="width: 586px; height: 80px; <!--{$arrErr[$smarty.section.cnt.iteration].comment|sfGetErrorColor}-->" <!--{$arrItems[$smarty.section.cnt.iteration].product_id|sfGetEnabled}-->><!--{$arrItems[$smarty.section.cnt.iteration].comment|h}--></textarea>
                                         </form>
                                     </div>
                                 </div>

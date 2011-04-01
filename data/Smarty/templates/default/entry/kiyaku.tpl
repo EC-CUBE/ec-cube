@@ -29,7 +29,7 @@
 
         <form name="form1" id="form1" method="post" action="?">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-        <textarea name="textfield" class="kiyaku_text" cols="80" rows="30" readonly="readonly"><!--{$tpl_kiyaku_text}--></textarea>
+        <textarea name="textfield" class="kiyaku_text" cols="80" rows="30" readonly="readonly"><!--{$tpl_kiyaku_text|h}--></textarea>
 
         <div class="btn_area">
             <ul>
