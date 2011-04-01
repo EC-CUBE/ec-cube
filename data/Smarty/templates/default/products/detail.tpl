@@ -238,7 +238,7 @@ $(document).ready(function() {
                 </div>
                 <div class="attention" id="cartbtn_dynamic"></div>
             <!--{else}-->
-                <div class="attention" id="cartbtn_default">申し訳ございませんが、只今品切れ中です。</div>
+                <div class="attention">申し訳ございませんが、只今品切れ中です。</div>
             <!--{/if}-->
 
             <!--★お気に入り登録★-->
