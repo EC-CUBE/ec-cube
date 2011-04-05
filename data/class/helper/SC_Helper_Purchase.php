@@ -88,6 +88,92 @@ class SC_Helper_Purchase {
     }
 
     /**
+     * 受注をキャンセルする.
+     *
+     * 受注完了後の受注をキャンセルする.
+     * この関数は, 主に決済モジュールにて, 受注をキャンセルする場合に使用する.
+     *
+     * 受注ステータスを引数 $orderStatus で指定したステータスに変更する.
+     * (デフォルト ORDER_CANCEL)
+     * 引数 $is_delete が true の場合は, 受注データを論理削除する.
+     * 商品の在庫数は, 受注前の在庫数に戻される.
+     *
+     * @param integer $order_id 受注ID
+     * @param integer $orderStatus 受注ステータス
+     * @param boolean $is_delete 受注データを論理削除する場合 true
+     * @return void
+     */
+    function cancelOrder($order_id, $orderStatus = ORDER_CANCEL, $is_delete = false) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $in_transaction = $objQuery->inTransaction();
+        if (!$in_transaction) {
+            $objQuery->begin();
+        }
+
+        $arrParams['status'] = $orderStatus;
+        if ($is_delete) {
+            $arrParams['del_flg'] = 1;
+        }
+
+        $this->registerOrder($order_id, $arrParams);
+
+        $arrOrderDetail = $this->getOrderDetail($order_id);
+        foreach ($arrOrderDetail as $arrDetail) {
+            $objQuery->update('dtb_products_class', array(),
+                              "product_class_id = ?", array($arrDetail['product_class_id']),
+                              array('stock' => 'stock + ?'), array($arrDetail['quantity']));
+        }
+        if (!$in_transaction) {
+            $objQuery->commit();
+        }
+    }
+
+    /**
+     * 受注をキャンセルし, カートをロールバックして, 受注一時IDを返す.
+     *
+     * 受注完了後の受注をキャンセルし, カートの状態を受注前の状態へ戻す.
+     * この関数は, 主に, 決済モジュールに遷移した後, 購入確認画面へ戻る場合に使用する.
+     *
+     * 受注ステータスを引数 $orderStatus で指定したステータスに変更する.
+     * (デフォルト ORDER_CANCEL)
+     * 引数 $is_delete が true の場合は, 受注データを論理削除する.
+     * 商品の在庫数, カートの内容は受注前の状態に戻される.
+     *
+     * @param integer $order_id 受注ID
+     * @param integer $orderStatus 受注ステータス
+     * @param boolean $is_delete 受注データを論理削除する場合 true
+     * @return string 受注一時ID
+     */
+    function rollbackOrder($order_id, $orderStatus = ORDER_CANCEL, $is_delete = false) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $in_transaction = $objQuery->inTransaction();
+        if (!$in_transaction) {
+            $objQuery->begin();
+        }
+
+        $this->cancelOrder($order_id, $orderStatus, $is_delete);
+        $arrOrderTemp = $this->getOrderTempByOrderId($order_id);
+        $_SESSION = array_merge($_SESSION, unserialize($arrOrderTemp['session']));
+
+        $objSiteSession = new SC_SiteSession_Ex();
+        $objCartSession = new SC_CartSession_Ex();
+        $objCustomer = new SC_Customer_Ex();
+
+        // 新たに受注一時情報を保存する
+        $objSiteSession->unsetUniqId();
+        $uniqid = $objSiteSession->getUniqId();
+        $arrOrderTemp['del_flg'] = 0;
+        $this->saveOrderTemp($uniqid, $arrOrderTemp, &$objCustomer);
+        $this->verifyChangeCart($uniqid, $objCartSession);
+        $objSiteSession->setRegistFlag();
+
+        if (!$in_transaction) {
+            $objQuery->commit();
+        }
+        return $uniqid;
+    }
+
+    /**
      * カートに変化が無いか検証する.
      *
      * ユニークIDとセッションのユニークIDを比較し, 異なる場合は
@@ -141,6 +227,18 @@ class SC_Helper_Purchase {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         return $objQuery->getRow("*", "dtb_order_temp", "order_temp_id = ?",
                                  array($uniqId));
+    }
+
+    /**
+     * 受注IDをキーにして受注一時情報を取得する.
+     *
+     * @param integer $order_id 受注ID
+     * @return array 受注一時情報の配列
+     */
+    function getOrderTempByOrderId($order_id) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        return $objQuery->getRow("*", "dtb_order_temp", "order_id = ?",
+                                 array($order_id));
     }
 
     /**
