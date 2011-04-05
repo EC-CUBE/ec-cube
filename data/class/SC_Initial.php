@@ -139,7 +139,13 @@ class SC_Initial {
         ini_set('arg_separator.output', '&');
 
         //ロケールを明示的に設定
-        setlocale(LC_ALL, LOCALE);
+        $res = setlocale(LC_ALL, LOCALE);
+        if($res === FALSE) {
+            // TODO: Windows上のロケール設定が正常に働かない場合があることに暫定的に対応
+            // ''を指定するとApache実行環境の環境変数が使われる
+            // See also: http://php.net/manual/ja/function.setlocale.php
+            setlocale(LC_ALL, '');
+        }
     }
 
     /**
