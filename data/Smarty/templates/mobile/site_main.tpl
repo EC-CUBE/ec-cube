@@ -34,9 +34,9 @@
     <!--{foreach key=HeaderTopNaviKey item=HeaderTopNaviItem from=$arrPageLayout.HeaderTopNavi}-->
         <!-- ▼<!--{$HeaderTopNaviItem.bloc_name}--> -->
         <!--{if $HeaderTopNaviItem.php_path != ""}-->
-            <!--{include_php file=$HeaderTopNaviItem.php_path}-->
+            <!--{include_php file=$HeaderTopNaviItem.php_path items=$HeaderTopNaviItem}-->
         <!--{else}-->
-            <!--{include file=$HeaderTopNaviItem.tpl_path}-->
+            <!--{include file=$HeaderTopNaviItem.tpl_path items=$HeaderTopNaviItem}-->
         <!--{/if}-->
         <!-- ▲<!--{$HeaderTopNaviItem.bloc_name}--> -->
     <!--{/foreach}-->
@@ -54,9 +54,9 @@
     <!--{foreach key=TopNaviKey item=TopNaviItem from=$arrPageLayout.TopNavi}-->
         <!-- ▼<!--{$TopNaviItem.bloc_name}--> -->
         <!--{if $TopNaviItem.php_path != ""}-->
-            <!--{include_php file=$TopNaviItem.php_path}-->
+            <!--{include_php file=$TopNaviItem.php_path items=$TopNaviItem}-->
         <!--{else}-->
-            <!--{include file=$TopNaviItem.tpl_path}-->
+            <!--{include file=$TopNaviItem.tpl_path items=$TopNaviItem}-->
         <!--{/if}-->
         <!-- ▲<!--{$TopNaviItem.bloc_name}--> -->
     <!--{/foreach}-->
@@ -69,9 +69,9 @@
     <!--{foreach key=MainHeadKey item=MainHeadItem from=$arrPageLayout.MainHead}-->
         <!-- ▼<!--{$MainHeadItem.bloc_name}--> -->
         <!--{if $MainHeadItem.php_path != ""}-->
-           <!--{include_php file=$MainHeadItem.php_path}-->
+           <!--{include_php file=$MainHeadItem.php_path items=$MainHeadItem}-->
         <!--{else}-->
-            <!--{include file=$MainHeadItem.tpl_path}-->
+            <!--{include file=$MainHeadItem.tpl_path items=$MainHeadItem}-->
         <!--{/if}-->
         <!-- ▲<!--{$MainHeadItem.bloc_name}--> -->
     <!--{/foreach}-->
@@ -87,9 +87,9 @@
     <!--{foreach key=MainFootKey item=MainFootItem from=$arrPageLayout.MainFoot}-->
         <!-- ▼<!--{$MainFootItem.bloc_name}--> -->
         <!--{if $MainFootItem.php_path != ""}-->
-            <!--{include_php file=$MainFootItem.php_path}-->
+            <!--{include_php file=$MainFootItem.php_path items=$MainFootItem}-->
         <!--{else}-->
-            <!--{include file=$MainFootItem.tpl_path}-->
+            <!--{include file=$MainFootItem.tpl_path items=$MainFootItem}-->
         <!--{/if}-->
         <!-- ▲<!--{$MainFootItem.bloc_name}--> -->
     <!--{/foreach}-->
@@ -102,9 +102,9 @@
     <!--{foreach key=BottomNaviKey item=BottomNaviItem from=$arrPageLayout.BottomNavi}-->
         <!-- ▼<!--{$BottomNaviItem.bloc_name}--> -->
         <!--{if $BottomNaviItem.php_path != ""}-->
-            <!--{include_php file=$BottomNaviItem.php_path}-->
+            <!--{include_php file=$BottomNaviItem.php_path items=$BottomNaviItem}-->
         <!--{else}-->
-            <!--{include file=$BottomNaviItem.tpl_path}-->
+            <!--{include file=$BottomNaviItem.tpl_path items=$BottomNaviItem}-->
         <!--{/if}-->
         <!-- ▲<!--{$BottomNaviItem.bloc_name}--> -->
     <!--{/foreach}-->
@@ -122,9 +122,9 @@
     <!--{foreach key=FooterBottomNaviKey item=FooterBottomNaviItem from=$arrPageLayout.FooterBottomNavi}-->
         <!-- ▼<!--{$FooterBottomNaviItem.bloc_name}--> -->
         <!--{if $FooterBottomNaviItem.php_path != ""}-->
-            <!--{include_php file=$FooterBottomNaviItem.php_path}-->
+            <!--{include_php file=$FooterBottomNaviItem.php_path items=$BottomNaviItem}-->
         <!--{else}-->
-            <!--{include file=$FooterBottomNaviItem.tpl_path}-->
+            <!--{include file=$FooterBottomNaviItem.tpl_path items=$FooterBottomNaviItem}-->
         <!--{/if}-->
         <!-- ▲<!--{$FooterBottomNaviItem.bloc_name}--> -->
     <!--{/foreach}-->
