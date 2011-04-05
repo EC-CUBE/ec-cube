@@ -28,7 +28,7 @@
 <div id="basis" class="contents-main">
     <div class="btn">
         <ul>
-            <li><a class="btn-action" href="javascript:;" name="subm2" onclick="fnChangeAction('./payment_input.php'); fnModeSubmit('','','');">
+            <li><a class="btn-action" href="javascript:;" name="subm2" onclick="fnChangeAction('./payment_input.php'); fnModeSubmit('','',''); return false;">
                 <span class="btn-next">支払方法を新規入力</span></a></li>
         </ul>
     </div>
