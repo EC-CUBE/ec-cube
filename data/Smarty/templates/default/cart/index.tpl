@@ -81,7 +81,7 @@ $(document).ready(function() {
                     <!--{$arrProductType[$key]}-->の合計金額は「<span class="price"><!--{$tpl_total_inctax[$key]|number_format}-->円</span>」です。
                     <!--{if $key != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
                         <!--{if $arrInfo.free_rule > 0}-->
-                            <!--{if $arrData[$key].deliv_fee > 0}-->
+                            <!--{if !$arrData[$key].is_deliv_free}-->
                                 あと「<span class="price"><!--{$tpl_deliv_free[$key]|number_format}-->円</span>」で送料無料です！！
                             <!--{else}-->
 
@@ -95,7 +95,7 @@ $(document).ready(function() {
                     お買い上げ商品の合計金額は「<span class="price"><!--{$tpl_total_inctax[$key]|number_format}-->円</span>」です。
                     <!--{if $key != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
                         <!--{if $arrInfo.free_rule > 0}-->
-                            <!--{if $arrData[$key].deliv_fee > 0}-->
+                            <!--{if !$arrData[$key].is_deliv_free}-->
                                 あと「<span class="price"><!--{$tpl_deliv_free[$key]|number_format}-->円</span>」で送料無料です！！
                             <!--{else}-->
                                 現在、「<span class="attention">送料無料</span>」です！！

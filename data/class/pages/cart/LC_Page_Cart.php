@@ -134,6 +134,10 @@ class LC_Page_Cart extends LC_Page_Ex {
             $this->tpl_total_point[$key] = $objCartSess->getAllProductsPoint($key);
 
             $this->arrData[$key] = $objCartSess->calculate($key, $objCustomer);
+
+            // 送料無料チェック
+            $this->arrData[$key]['is_deliv_free'] = $objCartSess->isDelivFree($key);
+
             // 送料無料までの金額を計算
             $this->tpl_deliv_free[$key] = $this->arrInfo['free_rule'] - $this->tpl_total_inctax[$key];
         }

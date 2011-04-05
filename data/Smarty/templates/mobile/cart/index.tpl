@@ -74,7 +74,7 @@
     <br>
     <!--{if $key != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
     <!--{if $arrInfo.free_rule > 0}-->
-    <!--{if $arrData[$key].deliv_fee > 0}-->
+    <!--{if !$arrData[$key].is_deliv_free}-->
         あと「<font color="#FF0000"><!--{$tpl_deliv_free[$key]|number_format}-->円</font>」で<font color="#FF0000">送料無料</font>です！！<br>
     <!--{else}-->
         現在、「<font color="#FF0000">送料無料</font>」です！！<br>
