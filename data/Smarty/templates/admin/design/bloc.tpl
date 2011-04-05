@@ -46,7 +46,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                <textarea class="top" id="bloc_html" name="bloc_html" rows="<!--{$text_row}-->" style="width: 99%;"><!--{$arrBlocData.tpl_data|smarty:nodefaults}--></textarea>
+                <textarea class="top" id="bloc_html" name="bloc_html" rows="<!--{$text_row}-->" style="width: 99%;"><!--{$arrBlocData.tpl_data|smarty:nodefaults|h}--></textarea>
                 <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
                 <div>
                     <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#bloc_html', 50, 13); return false;">拡大</a>
