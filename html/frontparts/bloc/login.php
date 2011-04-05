@@ -28,6 +28,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/frontparts/bloc/LC_Page_FrontParts
 // }}}
 // {{{ generate page
 $objPage = new LC_Page_FrontParts_BLoc_Login_Ex();
+$objPage->blocItems = $params['items'];
 register_shutdown_function(array($objPage, "destroy"));
 $objPage->init();
 $objPage->process();

@@ -43,7 +43,6 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
      */
     function init() {
         parent::init();
-        $this->setTplMainpage('search_products.tpl');
     }
 
     /**
@@ -89,7 +88,7 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
 
     /**
      * 商品IDを取得する.
-     * 
+     *
      * @return string $product_id 商品ID
      */
     function lfGetProductId() {
@@ -102,7 +101,7 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
 
     /**
      * カテゴリIDを取得する.
-     * 
+     *
      * @return string $category_id カテゴリID
      */
     function lfGetCategoryId() {
@@ -115,7 +114,7 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
 
     /**
      * メーカーIDを取得する.
-     * 
+     *
      * @return string $maker_id メーカーID
      */
     function lfGetMakerId() {

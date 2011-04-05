@@ -43,7 +43,6 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
      */
     function init() {
         parent::init();
-        $this->setTplMainpage('news.tpl');
     }
 
     /**

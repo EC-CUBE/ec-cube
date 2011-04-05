@@ -46,7 +46,6 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc {
      */
     function init() {
         parent::init();
-        $this->setTplMainpage('calendar.tpl');
     }
 
     /**

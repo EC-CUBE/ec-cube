@@ -50,6 +50,7 @@ class LC_Page_FrontParts_Bloc extends LC_Page_Ex {
         // プラグインクラス生成
         $this->objPlugin = new SC_Helper_Plugin_Ex();
         $this->objPlugin->preProcess($this);
+        $this->setTplMainpage($this->blocItems['tpl_path']);
     }
 
     /**
