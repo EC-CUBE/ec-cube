@@ -96,7 +96,12 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
             $arrBlocData = $this->lfGetBlocData($device_type_id, "bloc_id = ?",
                                                 array($bloc_id));
 
-            $tplPath = $package_path . $arrBlocData[0]['filename'] . '.tpl';
+            $bloc_file = $arrBlocData[0]['tpl_path'];
+            if (substr($bloc_file, 0, 1) == '/') {
+                $tplPath = $bloc_file;
+            } else {
+                $tplPath = SC_Helper_PageLayout_Ex::getTemplatePath($this->objDisplay->detectDevice()) . BLOC_DIR . $bloc_file;
+            }
 
             // テンプレートファイルの読み込み
             $arrBlocData[0]['tpl_data'] = file_get_contents($tplPath);
