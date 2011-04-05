@@ -486,6 +486,39 @@ class SC_CartSession {
     }
 
     /**
+     * 送料無料条件を満たすかどうかチェックする
+     *
+     * @param integer $productTypeId 商品種別ID
+     * @return boolean 送料無料の場合 true
+     */
+    function isDelivFree($productTypeId) {
+        $objDb = new SC_Helper_DB_Ex();
+
+        $subtotal = $this->getAllProductsTotal($productTypeId);
+
+        // 送料無料の購入数が設定されている場合
+        if (DELIV_FREE_AMOUNT > 0) {
+            // 商品の合計数量
+            $total_quantity = $this->getTotalQuantity($productTypeId);
+
+            if($total_quantity >= DELIV_FREE_AMOUNT) {
+                return true;
+            }
+        }
+
+        // 送料無料条件が設定されている場合
+        $arrInfo = $objDb->sfGetBasisData();
+        if ($arrInfo['free_rule'] > 0) {
+            // 小計が無料条件を超えている場合
+            if($subtotal >= $arrInfo['free_rule']) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * カートの内容を計算する.
      *
      * カートの内容を計算し, 下記のキーを保持する連想配列を返す.
@@ -534,23 +567,9 @@ class SC_CartSession {
             $results['deliv_fee'] += $objDb->sfGetDelivFee($deliv_pref, $deliv_id);
         }
 
-        // 送料無料の購入数が設定されている場合
-        if (DELIV_FREE_AMOUNT > 0) {
-            // 商品の合計数量
-            $total_quantity = $this->getTotalQuantity($productTypeId);
-
-            if($total_quantity >= DELIV_FREE_AMOUNT) {
-                $results['deliv_fee'] = 0;
-            }
-        }
-
-        // 送料無料条件が設定されている場合
-        $arrInfo = $objDb->sfGetBasisData();
-        if($arrInfo['free_rule'] > 0) {
-            // 小計が無料条件を超えている場合
-            if($results['subtotal'] >= $arrInfo['free_rule']) {
-                $results['deliv_fee'] = 0;
-            }
+        // 送料無料チェック
+        if ($this->isDelivFree($productTypeId)) {
+            $results['deliv_fee'] = 0;
         }
 
         // 合計を計算
