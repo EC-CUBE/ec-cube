@@ -60,7 +60,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
 
         // 日付プルダウン設定
         $objDate = new SC_Date_Ex(BIRTH_YEAR);
-        $this->arrYear = $objDate->getYear();    
+        $this->arrYear = $objDate->getYear();
         $this->arrMonth = $objDate->getMonth();
         $this->arrDay = $objDate->getDay();
 
@@ -264,7 +264,9 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
             if($arrData['email_mobile'] == $objFormParam->getValue('email_mobile')) {
                 $arrErr['email_mobile'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用している携帯アドレスです。';
             }else if($arrData['email_mobile'] == $objFormParam->getValue('email')) {
-                $arrErr['email_mobile'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用している携帯アドレスです。';
+            	if ($arrErr['email'] == "") {
+                    $arrErr['email'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用している携帯アドレスです。';
+                }
             }
         }
         return $arrErr;
@@ -284,7 +286,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         if(!SC_Utils_Ex::isBlank($objFormParam->getValue('year'))) {
             $arrData['birth'] = $objFormParam->getValue('year') . '/'
                             . $objFormParam->getValue('month') . '/'
-                            . $objFormParam->getValue('day') 
+                            . $objFormParam->getValue('day')
                             . ' 00:00:00';
         }
 
