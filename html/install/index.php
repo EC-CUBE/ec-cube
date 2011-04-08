@@ -790,7 +790,7 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
         if(!PEAR::isError($objDB)) {
             $sql_split = split(";",$sql);
             foreach($sql_split as $key => $val){
-                SC_Utils::sfFlush();
+                SC_Utils::sfFlush(true);
                 if (trim($val) != "") {
                     $ret = $objDB->query($val);
                     if(PEAR::isError($ret) && $disp_err) {
@@ -834,6 +834,7 @@ function lfDropSequence($arrSequences, $dsn) {
 
         $exists = $objManager->listSequences();
         foreach ($arrSequences as $seq) {
+            SC_Utils::sfFlush(true);
             $seq_name = $seq[0] . "_" . $seq[1];
             if (in_array($seq_name, $exists)) {
                 $result = $objManager->dropSequence($seq_name);
@@ -872,6 +873,7 @@ function lfCreateSequence($arrSequences, $dsn) {
 
         $exists = $objManager->listSequences();
         foreach ($arrSequences as $seq) {
+            SC_Utils::sfFlush(true);
             $res = $objDB->query("SELECT max(" . $seq[1] . ") FROM ". $seq[0]);
             if (PEAR::isError($res)) {
                 $arrErr['all'] = ">> " . $res->userinfo . "<br />";
