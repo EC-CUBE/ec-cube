@@ -59,6 +59,8 @@ class LC_Page_Admin extends LC_Page_Ex {
             }
         }
 
+        $this->tpl_authority = $_SESSION['authority'];
+
         // ディスプレイクラス生成
         $this->objDisplay = new SC_Display_Ex();
 
