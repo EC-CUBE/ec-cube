@@ -505,7 +505,7 @@ class SC_Helper_Customer {
         $objFormParam->addParam('誕生月', 'search_birth_month', 2, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
         $objFormParam->addParam('メールアドレス', 'search_email', MTEXT_LEN, 'a', array("SPTAB_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam('携帯メールアドレス', 'search_email_mobile', MTEXT_LEN, 'a', array("SPTAB_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('電話番号', 'search_birth_month', TEL_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
+        $objFormParam->addParam('電話番号', 'search_tel', TEL_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
         $objFormParam->addParam('購入金額(開始)', 'search_buy_total_from', PRICE_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
         $objFormParam->addParam('購入金額(終了)', 'search_buy_total_to', PRICE_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
         $objFormParam->addParam('購入回数(開始)', 'search_buy_times_from', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
