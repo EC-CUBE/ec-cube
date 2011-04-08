@@ -45,7 +45,9 @@
 <!--{* ▲HeaderHeaderTop COLUMN *}-->
 
 <!--{* ▼HEADER *}-->
+<!--{if $arrPageLayout.header_chk != 2}-->
 <!--{include file= $header_tpl}-->
+<!--{/if}-->
 <!--{* ▲HEADER *}-->
 
 <!--{* ▼TOP COLUMN *}-->
@@ -113,7 +115,9 @@
 <!--{* ▲BOTTOM COLUMN*}-->
 
 <!--{* ▼FOOTER *}-->
+<!--{if $arrPageLayout.footer_chk != 2}-->
 <!--{include file=$footer_tpl}-->
+<!--{/if}-->
 <!--{* ▲FOOTER *}-->
 
 <!--{* ▼FooterBottom COLUMN *}-->
