@@ -46,11 +46,13 @@
         </div>
         <!--{if count($arrMaker) > 0}-->
         <table class="list">
-            <colgroup width="60%">
+            <colgroup width="10%">
+            <colgroup width="50%">
             <colgroup width="10%">
             <colgroup width="10%">
             <colgroup width="20%">
             <tr>
+                <th>ID</th>
                 <th>メーカー</th>
                 <th class="edit">編集</th>
                 <th class="delete">削除</th>
@@ -59,6 +61,7 @@
             <!--{section name=cnt loop=$arrMaker}-->
             <tr style="background:<!--{if $tpl_maker_id != $arrMaker[cnt].maker_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->;">
                 <!--{assign var=maker_id value=$arrMaker[cnt].maker_id}-->
+                <td><!--{$maker_id|h}--></td>
                 <td><!--{$arrMaker[cnt].name|h}--></td>
                 <td class="center">
                     <!--{if $tpl_maker_id != $arrMaker[cnt].maker_id}-->
