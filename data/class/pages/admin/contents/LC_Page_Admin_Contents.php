@@ -100,6 +100,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
                 } else {
                     $this->lfNewsInsert($arrPost,$member_id);
                 }
+                $news_id = "";
                 $this->tpl_onload = "window.alert('編集が完了しました');";
             } else {
                 $this->arrForm = $arrPost;
