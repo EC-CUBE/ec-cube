@@ -66,10 +66,10 @@
                 <!--{else}-->
                     <img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ">
                 <!--{/if}-->
-                <!--{$disp_name|sfCutString:20|h}--></a><br />
+                <!--{$disp_name|sfCutString:10:false|h}--></a><br />
             <!--{else}-->
                 <img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ">
-                <!--{$disp_name|sfCutString:20|h}--></a><br />
+                <!--{$disp_name|sfCutString:10:false|h}--></a><br />
             <!--{/if}-->
 
             <!--{if $arrTree[cnt].display == true}-->

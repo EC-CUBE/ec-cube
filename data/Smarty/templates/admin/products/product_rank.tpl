@@ -63,7 +63,7 @@
             <!--{else}-->
                 <img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ">
             <!--{/if}-->
-            <!--{$disp_name|sfCutString:20|h}-->(<!--{$arrTree[cnt].product_count|default:0}-->)</a>
+            <!--{$disp_name|sfCutString:10:false|h}-->(<!--{$arrTree[cnt].product_count|default:0}-->)</a>
             <br />
             <!--{if $arrTree[cnt].display == true}-->
                 <div id="f<!--{$arrTree[cnt].category_id}-->">
