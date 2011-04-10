@@ -115,13 +115,26 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
         $objDB = SC_DB_DBFactory_Ex::getInstance();
 
         $arrSystemInfo = array(
-            array('title' => 'EC-CUBE',  'value' => ECCUBE_VERSION),
-            array('title' => 'OS',       'value' => php_uname()),
-            array('title' => 'DBサーバ',  'value' => $objDB->sfGetDBVersion()),
-            array('title' => 'WEBサーバ', 'value' => $_SERVER['SERVER_SOFTWARE']),
-            array('title' => 'PHP',      'value' => phpversion()),
-            array('title' => 'GD',       'value' => extension_loaded('GD') ? 'Loaded' : '--'),
+            array('title' => 'EC-CUBE',     'value' => ECCUBE_VERSION),
+            array('title' => 'サーバOS',    'value' => php_uname()),
+            array('title' => 'DBサーバ',    'value' => $objDB->sfGetDBVersion()),
+            array('title' => 'WEBサーバ',   'value' => $_SERVER['SERVER_SOFTWARE']),
         );
+
+        $value = phpversion() . ' (' . implode(', ', get_loaded_extensions()) . ')';
+        $arrSystemInfo[] = array('title' => 'PHP', 'value' => $value);
+
+        if (extension_loaded('GD')) {
+            $arrValue = array();
+            foreach (gd_info() as $key => $val) {
+                $arrValue[] = "$key => $val";
+            }
+            $value = '有効 (' . implode(', ', $arrValue) . ')';
+        } else {
+            $value = '無効';
+        }
+        $arrSystemInfo[] = array('title' => 'GD', 'value' => $value);
+        $arrSystemInfo[] = array('title' => 'HTTPユーザーエージェント', 'value' => $_SERVER["HTTP_USER_AGENT"]);
 
         return $arrSystemInfo;
     }
