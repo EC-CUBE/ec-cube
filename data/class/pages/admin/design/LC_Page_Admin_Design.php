@@ -258,8 +258,6 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
         $objQuery->delete("dtb_blocposition", "page_id = ? AND device_type_id = ?",
                           array($page_id, $device_type_id));
         $arrTargetFlip = array_flip($this->arrTarget);
-        var_dump($objFormParam->getHashArray());
-        var_dump($_POST);
         for ($i = 1; $i <= $bloc_cnt; $i++) {
             // bloc_id が取得できない場合は INSERT しない
             $id = $objFormParam->getValue('id_' . $i);
