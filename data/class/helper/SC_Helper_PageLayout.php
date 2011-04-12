@@ -34,80 +34,122 @@ class SC_Helper_PageLayout {
     // {{{ functions
 
     /**
-     * ページのレイアウト情報をセットする.
+     * ページのレイアウト情報を取得し, 設定する.
      *
-     * LC_Page オブジェクトにページのレイアウト情報をセットする.
+     * 現在の URL に応じたページのレイアウト情報を取得し, LC_Page インスタンスに
+     * 設定する.
      *
-     * @param LC_Page $objPage ページ情報のインスタンス
+     * @access public
+     * @param LC_Page $objPage LC_Page インスタンス
      * @param boolean $preview プレビュー表示の場合 true
      * @param string $url ページのURL($_SERVER['PHP_SELF'] の情報)
      * @param integer $device_type_id 端末種別ID
      * @return void
      */
     function sfGetPageLayout(&$objPage, $preview = false, $url = "", $device_type_id = DEVICE_TYPE_PC) {
-        $debug_message = "";
-        $arrPageLayout = array();
 
-        // 現在のURLの取得
+        // URLを元にページ情報を取得
         if ($preview === false) {
             $url = preg_replace('|^' . preg_quote(ROOT_URLPATH) . '|', '', $url);
-
-            // URLを元にページデザインを取得
-            $arrPageData = $this->lfGetPageData("device_type_id = ? AND url = ? AND page_id <> 0" , array($device_type_id, $url));
-        } else {
-            // TODO
-            $arrPageData = $this->lfGetPageData("device_type_id = ? AND page_id = 0", array($device_type_id));
-            $objPage->tpl_mainpage = $this->getTemplatePath($device_type_id) 
-                . "preview/" . $arrPageData[0]['filename'] . ".tpl";
+            $arrPageData = $this->getPageProperties($device_type_id, null, 'url = ?', array($url));
         }
-
-        $arrPageLayout = $arrPageData[0];
-
-        $objPage->tpl_mainpage = $this->getTemplatePath($device_type_id) . $arrPageLayout['filename'] . ".tpl";
+        // プレビューの場合は, プレビュー用のデータを取得
+        else {
+            $arrPageData = $this->getPageProperties($device_type_id, 0);
+        }
+        $objPage->tpl_mainpage = $this->getTemplatePath($device_type_id) . $arrPageData[0]['filename'] . ".tpl";
+        $objPage->arrPageLayout =& $arrPageData[0];
 
         // ページタイトルを設定
-        if (!isset($objPage->tpl_title)) {
-            $objPage->tpl_title = $arrPageLayout['page_name'];
+        if (SC_Utils_Ex::isBlank($objPage->tpl_title)) {
+            $objPage->tpl_title = $objPage->arrPageLayout['page_name'];
         }
 
-        // 全ナビデータを取得する
-        $arrNavi = $this->lfGetNaviData($arrPageLayout['page_id'], $device_type_id);
+        // 該当ページのブロックを取得し, 配置する
         $masterData = new SC_DB_MasterData();
         $arrTarget = $masterData->getMasterData("mtb_target");
-
-        foreach (array_keys($arrTarget) as $key) {
-            if (TARGET_ID_UNUSED != $key) {
-                $arrPageLayout[$arrTarget[$key]]
-                    = $this->lfGetNavi($arrNavi, $key, $device_type_id);
+        $arrBlocs = $this->getBlocPositions($device_type_id, $objPage->arrPageLayout['page_id']);
+        // php_path, tpl_path が存在するものを, 各ターゲットに配置
+        foreach (array_keys($arrTarget) as $target_id) {
+            foreach ($arrBlocs as $arrBloc) {
+                if ($arrBloc['target_id'] != $target_id) {
+                    continue;
+                }
+                if (is_file($arrBloc['php_path'])
+                    || is_file($arrBloc['tpl_path'])) {
+                    $objPage->arrPageLayout[$arrTarget[$target_id]][] = $arrBloc;
+                } else {
+                    $error = "ブロックが見つかりません\n"
+                        . "tpl_path: " . $arrBloc['tpl_path'] . "\n"
+                        . "php_path: " . $arrBloc['php_path'];
+                    GC_Utils_Ex::gfPrintLog($error);
+                }
             }
         }
-        $objPage->arrPageLayout = $arrPageLayout;
-
         // カラム数を取得する
-        $objPage->tpl_column_num = $this->lfGetColumnNum($arrPageLayout);
+        $objPage->tpl_column_num = $this->getColumnNum($objPage->arrPageLayout);
     }
 
     /**
-     * ページ情報を取得する.
+     * ページの属性を取得する.
      *
-     * @param string $where クエリのWHERE句
-     * @param array $arrVal WHERE句の条件値
-     * @return array ページ情報を格納した配列
-     */
-    function lfGetPageData($where = 'page_id <> 0', $arrVal = array()) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->setOrder('page_id');
-        return $objQuery->select("*", "dtb_pagelayout", $where, $arrVal);
-    }
-
-    /**
-     * ナビ情報を取得する.
+     * この関数は, dtb_pagelayout の情報を検索する.
+     * $device_type_id は必須. デフォルト値は DEVICE_TYPE_PC.
+     * $page_id が null の場合は, $page_id が 0 以外のものを検索する.
      *
-     * @param integer $page_id ページID
+     * @access public
      * @param integer $device_type_id 端末種別ID
-     * @return array ナビ情報の配列
+     * @param integer $page_id ページID; null の場合は, 0 以外を検索する.
+     * @param string $where 追加の検索条件
+     * @param array $arrParams 追加の検索パラメータ
+     * @return array ページ属性の配列
      */
-    function lfGetNaviData($page_id, $device_type_id = DEVICE_TYPE_PC) {
+    function getPageProperties($device_type_id = DEVICE_TYPE_PC, $page_id = null, $where = '', $arrParams = array()) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $where = 'device_type_id = ? ' . (SC_Utils_Ex::isBlank($where) ? $where : 'AND ' . $where);
+        if ($page_id === null) {
+            $where = 'page_id <> ? AND ' . $where;
+            $page_id = 0;
+        } else {
+            $where = 'page_id = ? AND ' . $where;
+        }
+        $objQuery->setOrder('page_id');
+        $arrParams = array_merge(array($page_id, $device_type_id), $arrParams);
+        return $objQuery->select('*', 'dtb_pagelayout', $where, $arrParams);
+    }
+
+    /**
+     * ブロック情報を取得する.
+     *
+     * @access public
+     * @param integer $device_type_id 端末種別ID
+     * @param string $where 追加の検索条件
+     * @param array $arrParams 追加の検索パラメータ
+     * @param boolean $has_realpath php_path, tpl_path の絶対パスを含める場合 true
+     * @return array ブロック情報の配列
+     */
+    function getBlocs($device_type_id = DEVICE_TYPE_PC, $where = '', $arrParams = array(), $has_realpath = true) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $where = 'device_type_id = ? ' . (SC_Utils_Ex::isBlank($where) ? $where : 'AND ' . $where);
+        $arrParams = array_merge(array($device_type_id), $arrParams);
+        $objQuery->setOrder('bloc_id');
+        $arrBlocs = $objQuery->select('*', 'dtb_bloc', $where, $arrParams);
+        if ($has_realpath) {
+            $this->setBlocPathTo($device_type_id, $arrBlocs);
+        }
+        return $arrBlocs;
+    }
+
+    /**
+     * ブロック配置情報を取得する.
+     *
+     * @access public
+     * @param integer $device_type_id 端末種別ID
+     * @param integer $page_id ページID
+     * @param boolean $has_realpath php_path, tpl_path の絶対パスを含める場合 true
+     * @return array 配置情報を含めたブロックの配列
+     */
+    function getBlocPositions($device_type_id, $page_id, $has_realpath = true) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $table = <<< __EOF__
             dtb_blocposition AS pos
@@ -117,61 +159,20 @@ class SC_Helper_PageLayout {
 __EOF__;
         $where = "bloc.device_type_id = ? AND (anywhere = 1 OR pos.page_id = ?)";
         $objQuery->setOrder('target_id, bloc_row');
-        return $objQuery->select("*", $table, $where,
-                                 array($device_type_id, $page_id));
-    }
-
-    /**
-     * 各部分のナビ情報を取得する.
-     *
-     * @param array $arrNavi ナビ情報の配列
-     * @param integer $target_id ターゲットID
-     * @param integer $device_type_id 端末種別ID
-     * @return array ブロック情報の配列
-     */
-    function lfGetNavi($arrNavi, $target_id, $device_type_id = DEVICE_TYPE_PC) {
-        $arrRet = array();
-        if (is_array($arrNavi)) {
-            foreach ($arrNavi as $key => $val) {
-                // 指定された箇所と同じデータだけを取得する
-                if ($target_id == $val['target_id'] ) {
-                    if ($val['php_path'] != '') {
-                        $arrNavi[$key]['php_path'] = HTML_REALDIR . $val['php_path'];
-                    } else {
-                        $arrNavi[$key]['tpl_path'] = $this->getTemplatePath($device_type_id) . BLOC_DIR . $val['tpl_path'];
-                    }
-                    // phpから呼び出されるか、tplファイルが存在する場合
-                    if ($val['php_path'] != '' || is_file($arrNavi[$key]['tpl_path'])) {
-                        $arrRet[] = $arrNavi[$key];
-                    } else {
-                        GC_Utils_Ex::gfPrintLog("ブロック読み込みエラー：" . $arrNavi[$key]['tpl_path']);
-                    }
-                }
-            }
+        $arrBlocs = $objQuery->select("*", $table, $where,
+                                      array($device_type_id, $page_id));
+        if ($has_realpath) {
+            $this->setBlocPathTo($device_type_id, $arrBlocs);
         }
-        return $arrRet;
-    }
-
-    /**
-     * カラム数を取得する.
-     *
-     * @param array $arrPageLayout レイアウト情報の配列
-     * @return integer $col_num カラム数
-     */
-    function lfGetColumnNum($arrPageLayout) {
-        // メインは確定
-        $col_num = 1;
-        // LEFT NAVI
-        if (count($arrPageLayout['LeftNavi']) > 0) $col_num++;
-        // RIGHT NAVI
-        if (count($arrPageLayout['RightNavi']) > 0) $col_num++;
-
-        return $col_num;
+        return $arrBlocs;
     }
 
     /**
      * ページ情報を削除する.
      *
+     * XXX ファイルを確実に削除したかどうかのチェック
+     *
+     * @access public
      * @param integer $page_id ページID
      * @param integer $device_type_id 端末種別ID
      * @return integer 削除数
@@ -182,8 +183,7 @@ __EOF__;
 
         // page_id が空でない場合にはdeleteを実行
         if ($page_id != '') {
-
-            $arrPageData = $this->lfGetPageData("page_id = ? AND device_type_id = ?" , array($page_id, $device_type_id));
+            $arrPageData = $this->getPageProperties($device_type_id, $page_id);
             // SQL実行
             $ret = $objQuery->delete("dtb_pagelayout", "page_id = ? AND device_type_id = ?", array($page_id, $device_type_id));
 
@@ -197,6 +197,8 @@ __EOF__;
      * ページのファイルを削除する.
      *
      * dtb_pagelayout の削除後に呼び出すこと。
+     *
+     * @access private
      * @param string $filename 
      * @param integer $device_type_id 端末種別ID
      * @return void // TODO boolean にするべき?
@@ -223,31 +225,31 @@ __EOF__;
     }
 
     /**
-     * データがベースデータかどうか.
+     * 編集可能ページかどうか.
      *
-     * @param integer $page_id ページID
+     * @access public
      * @param integer $device_type_id 端末種別ID
-     * @return boolean ベースデータの場合 true
+     * @param integer $page_id ページID
+     * @return 編集可能ページの場合 true
      */
-    function lfCheckBaseData($page_id, $device_type_id) {
-        $result = false;
-
+    function isEditablePage($device_type_id, $page_id) {
         if ($page_id == 0) {
-            return $result;
+            return false;
         }
-
-        $arrChkData = $this->lfgetPageData("page_id = ? AND device_type_id = ?",
-            array($page_id, $device_type_id));
-
-        if ($arrChkData[0]['edit_flg'] == 2) {
-            $result = true;
+        $arrPages = $this->getPageProperties($device_type_id, $page_id);
+        if ($arrPages[0]['edit_flg'] != 2) {
+            return true;
         }
-
-        return $result;
+        return false;
     }
 
     /**
      * テンプレートのパスを取得する.
+     *
+     * @access public
+     * @param integer $device_type_id 端末種別ID
+     * @param boolean $isUser USER_REALDIR 以下のパスを返す場合 true
+     * @return string テンプレートのパス
      */
     function getTemplatePath($device_type_id = DEVICE_TYPE_PC, $isUser = false) {
         $templateName = "";
@@ -280,6 +282,7 @@ __EOF__;
      * 引数 $hasPackage を true にした場合は, user_data/packages/template_name
      * を取得する.
      *
+     * @access public
      * @param integer $device_type_id 端末種別ID
      * @param boolean $hasPackage パッケージのパスも含める場合 true
      * @return string 端末に応じた DocumentRoot から user_data までのパス
@@ -303,6 +306,44 @@ __EOF__;
             return $userDir . USER_PACKAGE_DIR . $templateName . "/";
         }
         return $userDir;
+    }
+
+    // }}}
+    // {{{ private functions
+
+    /**
+     * ブロックの php_path, tpl_path を設定する.
+     *
+     * @access private
+     * @param integer $device_type_id 端末種別ID
+     * @param array $arrBlocs 設定するブロックの配列
+     * @return void
+     */
+    function setBlocPathTo($device_type_id = DEVICE_TYPE_PC, &$arrBlocs) {
+        foreach (array_keys($arrBlocs) as $key) {
+            $arrBloc =& $arrBlocs[$key];
+            $arrBloc['php_path'] = SC_Utils_Ex::isBlank($arrBloc['php_path']) ? '' : HTML_REALDIR . $arrBloc['php_path'];
+            $bloc_dir = $this->getTemplatePath($device_type_id) . BLOC_DIR;
+            $arrBloc['tpl_path'] = SC_Utils_Ex::isBlank($arrBloc['tpl_path']) ? '' : $bloc_dir . $arrBloc['tpl_path'];
+        }
+    }
+
+    /**
+     * カラム数を取得する.
+     *
+     * @access private
+     * @param array $arrPageLayout レイアウト情報の配列
+     * @return integer $col_num カラム数
+     */
+    function getColumnNum($arrPageLayout) {
+        // メインは確定
+        $col_num = 1;
+        // LEFT NAVI
+        if (count($arrPageLayout['LeftNavi']) > 0) $col_num++;
+        // RIGHT NAVI
+        if (count($arrPageLayout['RightNavi']) > 0) $col_num++;
+
+        return $col_num;
     }
 }
 ?>

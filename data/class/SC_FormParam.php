@@ -414,7 +414,7 @@ class SC_FormParam {
             }
             $cnt++;
         }
-        if(is_null($ret)){
+        if(SC_Utils_Ex::isBlank($ret)){
             $ret = $default;
         }
         return $ret;

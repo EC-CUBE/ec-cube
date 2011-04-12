@@ -91,8 +91,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         $this->tpl_subtitle .= ' - ' . $this->arrDeviceType[$device_type_id];
 
         // ページ一覧を取得
-        $this->arrPageList = $this->objLayout->lfGetPageData("page_id <> 0 AND device_type_id = ?",
-                                                             array($device_type_id));
+        $this->arrPageList = $this->objLayout->getPageProperties($device_type_id, null);
 
         // メッセージ表示
         if (isset($_GET['msg']) && $_GET['msg'] == 'on'){
@@ -106,7 +105,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
 
         switch ($this->getMode()) {
         case 'delete':
-            if (!$this->objLayout->lfCheckBaseData($page_id, $device_type_id)) {
+            if ($this->objLayout->isEditablePage($device_type_id, $page_id)) {
                 $this->lfDeletePageData($page_id, $device_type_id);
                 exit;
             }
@@ -137,8 +136,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfGetPageData($page_id, $device_type_id, $objView){
-        $arrPageData = $this->objLayout->lfGetPageData("page_id = ? AND device_type_id = ?",
-                                                       array($page_id, $device_type_id));
+        $arrPageData = $this->objLayout->getPageProperties($device_type_id, $page_id);
 
         if (strlen($arrPageData[0]['filename']) == 0) {
             $this->arrErr['page_id_err'] = "※ 指定されたページは編集できません。";
@@ -182,11 +180,11 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
             );
             $page_id = $arrTmp['page_id'];
 
-            $arrTmp = $this->objLayout->lfGetPageData('page_id = ? AND device_type_id = ?', array($page_id, $device_type_id));
+            $arrTmp = $this->objLayout->getPageProperties($device_type_id, $page_id);
             $arrData = $arrTmp[0];
 
             // ベースデータでなければファイルを削除し、PHPファイルを作成する
-            if (!$this->objLayout->lfCheckBaseData($arrData['page_id'], $device_type_id)) {
+            if ($this->objLayout->isEditablePage($device_type_id, $arrData['page_id'])) {
                 // PHPファイル作成
                 $this->lfCreatePHPFile($_POST['url'], $device_type_id);
             }
@@ -230,8 +228,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
 
         // データが存在しているかチェックを行う
         if ($page_id !== ''){
-            $arrChk = $this->objLayout->lfGetPageData("page_id = ? AND device_type_id = ?",
-                                                      array($page_id, $device_type_id));
+            $arrChk = $this->objLayout->getPageProperties($device_type_id, $page_id);
         }
 
         // page_id が空 若しくは データが存在していない場合にはINSERTを行う
@@ -272,7 +269,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         );
 
         // ベースデータの場合には変更しない。
-        if (!$this->objLayout->lfCheckBaseData($page_id, $device_type_id)) {
+        if ($this->objLayout->isEditablePage($device_type_id, $page_id)) {
             $arrUpdData['page_name']    = $page_name;
             $arrUpdData['url']          = $filename . '.php';
             $arrUpdData['filename']     = $filename; // 拡張子を付加しない
@@ -294,6 +291,8 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
 
     /**
      * 入力項目のエラーチェックを行う.
+     *
+     * XXX $device_type_id が dtb_pagelayout の検索条件に入ってない
      *
      * @param array $arrData 入力データ
      * @param integer $device_type_id 端末種別ID
@@ -333,7 +332,8 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
             $params[] = $array['page_id'];
         }
 
-        $arrChk = $this->objLayout->lfgetPageData($sqlWhere , $params);
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $arrChk = $objQuery->select('*', 'dtb_pagelayout', $sqlWhere, $params);
 
         if (count($arrChk) >= 1) {
             $objErr->arrErr['url'] = '※ 同じURLのデータが存在しています。別のURLを付けてください。<br />';
