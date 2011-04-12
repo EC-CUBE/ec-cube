@@ -388,9 +388,21 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         $sqlval = $this->lfSetProductDefaultData($sqlval);
 
         if($sqlval['product_id'] != "") {
-            // UPDATEの実行
+            // 同じidが存在すればupdate存在しなければinsert
             $where = "product_id = ?";
-            $objQuery->update("dtb_products", $sqlval, $where, array($sqlval['product_id']));
+            $product_count = $objQuery->count("dtb_products", $where, array($sqlval['product_id']));
+            if($product_count > 0){
+                $objQuery->update("dtb_products", $sqlval, $where, array($sqlval['product_id']));
+            }else{
+                $sqlval['create_date'] = $arrList['update_date'];
+                // INSERTの実行
+                $objQuery->insert("dtb_products", $sqlval);
+                // シーケンスの調整
+                $seq_count = $objQuery->currVal('dtb_products_product_id');
+                if($seq_count < $sqlval['product_id']){
+                    $objQuery->setVal('dtb_products_product_id', $sqlval['product_id'] + 1);
+                }
+            }
             $product_id = $sqlval['product_id'];
         } else {
             // 新規登録
@@ -596,10 +608,6 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      * @return array エラー配列
      */
     function lfCheckErrorDetail($item, $arrErr) {
-        // 商品IDの存在チェック
-        if(!$this->lfIsDbRecord('dtb_products', 'product_id', $item)) {
-            $arrErr['product_id'] = "※ 指定の商品IDは、登録されていません。";
-        }
         // 規格IDの存在チェック
         if(!$this->lfIsDbRecord('dtb_products_class', 'product_class_id', $item)) {
             $arrErr['product_class_id'] = "※ 指定の商品規格IDは、登録されていません。";
