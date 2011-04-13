@@ -564,22 +564,28 @@ function lfDispComplete($objPage) {
     $salt = SC_Utils_Ex::sfGetRandomString(10);
     $login_pass = SC_Utils_Ex::sfGetHashString($objWebParam->getValue('login_pass'), $salt);
 
-    $objQuery->delete("dtb_member", "login_id = ?", array($login_id));
+    $arrVal = array(
+        'login_id' => $login_id,
+        'password' => $login_pass,
+        'salt' => $salt,
+        'work' => 1,
+        'del_flg' => 0,
+        'update_date' => 'now()',
+    );
 
-    $member_id = $objQuery->nextVal("dtb_member_member_id");
-    $objQuery->insert("dtb_member", array("member_id" => $member_id,
-                                          "name" => "管理者",
-                                          "login_id" => $login_id,
-                                          "password" => $login_pass,
-                                          "salt" => $salt,
-                                          "creator_id" => 0,
-                                          "authority" => 0,
-                                          "work" => 1,
-                                          "del_flg" => 0,
-                                          "rank" => 1,
-                                          "create_date" => "now()",
-                                          "update_date" => "now()"));
+    $member_id = $objQuery->get('member_id', 'dtb_member', 'login_id = ? AND del_flg = 0', array($login_id));
 
+    if (strlen($member_id) == 0) {
+        $member_id = $objQuery->nextVal('dtb_member_member_id');
+        $arrVal['member_id'] = $member_id;
+        $arrVal['name'] = '管理者';
+        $arrVal['creator_id'] = 0;
+        $arrVal['authority'] = 0;
+        $arrVal['rank'] = 1;
+        $objQuery->insert("dtb_member", $arrVal);
+    } else {
+        $objQuery->update("dtb_member", $arrVal, 'member_id = ?', array($member_id));
+    }
 
     $objPage->arrHidden['db_skip'] = $_POST['db_skip'];
     $objPage->tpl_mainpage = 'complete.tpl';
