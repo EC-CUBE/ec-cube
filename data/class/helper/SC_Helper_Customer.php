@@ -295,6 +295,11 @@ class SC_Helper_Customer {
             $objFormParam->addParam("所持ポイント", 'point', INT_LEN, 'n', array("NUM_CHECK"));
 
         }
+
+        if (SC_MobileUserAgent_Ex::isMobile()) {
+            // 登録確認画面の「戻る」ボタンのためのパラメーター
+            $objFormParam->addParam("戻る", "return", '', '', array(), '', false);
+        }
     }
 
     /**
