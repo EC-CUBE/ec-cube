@@ -408,6 +408,10 @@ class SC_Helper_Customer {
             && SC_Helper_Customer_Ex::sfCustomerEmailDuplicationCheck($objCustomer->getValue('customer_id'), $objFormParam->getValue('email'))) {
             $objErr->arrErr['email'] .= "※ すでに会員登録で使用されているメールアドレスです。<br />";
         }
+        if ($objCustomer->isLoginSuccess(true)
+            && SC_Helper_Customer_Ex::sfCustomerEmailDuplicationCheck($objCustomer->getValue('customer_id'), $objFormParam->getValue('email_mobile'))) {
+            $objErr->arrErr['email_mobile'] .= "※ すでに会員登録で使用されているメールアドレスです。<br />";
+        }
 
         return $objErr->arrErr;
     }
@@ -484,6 +488,7 @@ class SC_Helper_Customer {
         if(!$isAdmin) {
             // 現会員の判定 → 現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
             $objErr->doFunc(array("メールアドレス", 'email'), array("CHECK_REGIST_CUSTOMER_EMAIL"));
+            $objErr->doFunc(array("携帯メールアドレス", 'email_mobile'), array("CHECK_REGIST_CUSTOMER_EMAIL"));
         }
         return $objErr;
     }
