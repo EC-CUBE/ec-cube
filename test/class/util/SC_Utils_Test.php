@@ -23,7 +23,7 @@
 
 // {{{ requires
 require_once(realpath(dirname(__FILE__)) . '/../../require.php');
-require_once(realpath(dirname(__FILE__)) . '/../../../data/class/pages/LC_Page_Ex.php');
+require_once(realpath(dirname(__FILE__)) . '/../../../data/class/pages/LC_Page.php');
 
 /**
  * SC_Utils のテストケース.
@@ -45,7 +45,7 @@ class SC_Utils_Test extends PHPUnit_Framework_TestCase {
     function testGetRealURL_変換無し() {
         $url = "http://www.example.jp/admin/index.php";
 
-        $expected = "http://www.example.jp/admin/index.php";
+        $expected = "http://www.example.jp:/admin/index.php";
         $actual = SC_Utils::getRealURL($url);
 
         $this->assertEquals($expected, $actual);
@@ -54,7 +54,7 @@ class SC_Utils_Test extends PHPUnit_Framework_TestCase {
     function testGetRealURL_変換有() {
         $url = "http://www.example.jp/admin/../index.php";
 
-        $expected = "http://www.example.jp/index.php";
+        $expected = "http://www.example.jp:/index.php";
         $actual = SC_Utils::getRealURL($url);
 
         $this->assertEquals($expected, $actual);
@@ -63,7 +63,7 @@ class SC_Utils_Test extends PHPUnit_Framework_TestCase {
     function testGetRealURL_空のディレクトリ() {
         $url = "http://www.example.jp/admin/..///index.php";
 
-        $expected = "http://www.example.jp/index.php";
+        $expected = "http://www.example.jp:/index.php";
         $actual = SC_Utils::getRealURL($url);
 
         $this->assertEquals($expected, $actual);
@@ -72,7 +72,7 @@ class SC_Utils_Test extends PHPUnit_Framework_TestCase {
     function testGetRealURL_Dotのディレクトリ() {
         $url = "http://www.example.jp/admin/././../index.php";
 
-        $expected = "http://www.example.jp/index.php";
+        $expected = "http://www.example.jp:/index.php";
         $actual = SC_Utils::getRealURL($url);
 
         $this->assertEquals($expected, $actual);
@@ -116,6 +116,32 @@ class SC_Utils_Test extends PHPUnit_Framework_TestCase {
         $zero = 0;
         $this->assertFalse(SC_Utils::isBlank($zero));
         $this->assertFalse(SC_Utils::isBlank($zero, false));
+    }
+
+    function testIsAbsoluteRealPath() {
+        // for *NIX
+        if (strpos(PHP_OS, 'WIN') === false) {
+            $unix_absolute = '/usr/local';
+            $this->assertTrue(SC_Utils::isAbsoluteRealPath($unix_absolute));
+
+            $relative = '../foo/bar';
+            $this->assertFalse(SC_Utils::isAbsoluteRealPath($relative));
+        }
+        // for Win
+        else {
+            $win_absolute = 'C:\Windows\system32';
+            $this->assertTrue(SC_Utils::isAbsoluteRealPath($win_absolute));
+
+            $win_absolute = 'C:/Windows/system32';
+            $this->assertTrue(SC_Utils::isAbsoluteRealPath($win_absolute));
+
+            $relative = '..\\foo\\bar';
+            $this->assertFalse(SC_Utils::isAbsoluteRealPath($relative));
+
+        }
+
+        $empty = '';
+        $this->assertFalse(SC_Utils::isAbsoluteRealPath($empty));
     }
 }
 ?>

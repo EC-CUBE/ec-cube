@@ -97,7 +97,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
                                                 array($bloc_id));
 
             $bloc_file = $arrBlocData[0]['tpl_path'];
-            if (substr($bloc_file, 0, 1) == '/') {
+            if (SC_Utils_Ex::isAbsoluteRealPath($bloc_file)) {
                 $tplPath = $bloc_file;
             } else {
                 $tplPath = SC_Helper_PageLayout_Ex::getTemplatePath($this->objDisplay->detectDevice()) . BLOC_DIR . $bloc_file;

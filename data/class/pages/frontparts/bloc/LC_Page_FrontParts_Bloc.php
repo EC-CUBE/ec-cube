@@ -60,7 +60,7 @@ class LC_Page_FrontParts_Bloc extends LC_Page_Ex {
      * @return void
      */
     function setTplMainpage($bloc_file) {
-        if (substr($bloc_file, 0, 1) == '/') {
+        if (SC_Utils_Ex::isAbsoluteRealPath($bloc_file)) {
             $this->tpl_mainpage = $bloc_file;
         } else {
             $this->tpl_mainpage = SC_Helper_PageLayout_Ex::getTemplatePath($this->objDisplay->detectDevice()) . BLOC_DIR . $bloc_file;

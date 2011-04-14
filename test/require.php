@@ -23,8 +23,8 @@
 
 // {{{ requires
 
-/** PHPUnit/Framework.php のパス(必ずフルパスで指定!) */
-require_once("/opt/local/lib/php/PHPUnit/Framework.php");
-
+/** PHPUnit が含まれる pear ライブラリのパス(必ずフルパスで指定!) */
+$pear_path = '/opt/local/lib/php';
 require_once(realpath(dirname(__FILE__)) . "/../html/require.php");
+set_include_path(get_include_path() . PATH_SEPARATOR . $pear_path);
 ?>

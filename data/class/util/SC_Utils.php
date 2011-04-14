@@ -2193,5 +2193,22 @@ class SC_Utils {
             return $objJson->decode($json);
         }
     }
+
+    /**
+     * パスが絶対パスかどうかをチェックする.
+     *
+     * 引数のパスが絶対パスの場合は true を返す.
+     * この関数は, パスの存在チェックを行なわないため注意すること.
+     *
+     * @param string チェック対象のパス
+     * @return boolean 絶対パスの場合 true
+     */
+    function isAbsoluteRealPath($realpath) {
+        if (strpos(PHP_OS, 'WIN') === false) {
+            return (substr($realpath, 0, 1) == '/');
+        } else {
+            return preg_match('/^[a-zA-Z]:(\\\|\/)/', $realpath) ? true : false;
+        }
+    }
 }
 ?>
