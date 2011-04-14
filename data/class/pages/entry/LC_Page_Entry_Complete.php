@@ -64,7 +64,14 @@ class LC_Page_Entry_Complete extends LC_Page_Ex {
     function action() {
         // カートが空かどうかを確認する。
         $objCartSess            = new SC_CartSession_Ex();
-        $this->tpl_cart_empty   = count($objCartSess->getCartList()) < 1;
+        $arrCartKeys = $objCartSess->getKeys();
+        $this->tpl_cart_empty = true;
+        foreach ($arrCartKeys as $cart_key) {
+            if (count($objCartSess->getCartList($cart_key)) > 0) {
+                $this->tpl_cart_empty = false;
+                break;
+            }
+        }
 
         // メインテンプレートを設定
         if(CUSTOMER_CONFIRM_MAIL == true) {
