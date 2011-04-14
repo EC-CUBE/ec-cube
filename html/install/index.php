@@ -794,6 +794,9 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
         $objDB = MDB2::connect($dsn, $options);
         // 接続エラー
         if(!PEAR::isError($objDB)) {
+            if($objDB->dbsyntax == "mysql"){
+                $objDB->setCharset(array("utf-8","utf8_general_ci"));
+            }
             $sql_split = split(";",$sql);
             foreach($sql_split as $key => $val){
                 SC_Utils::sfFlush(true);
