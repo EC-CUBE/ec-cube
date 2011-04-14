@@ -39,6 +39,9 @@
 	●性別<br>
 	<!--{if $arrForm.sex eq 1}-->男性<!--{else}-->女性<!--{/if}--><br>
 
+	●職業<br>
+	<!--{if $arrForm.job}--><!--{$arrJob[$arrForm.job]|h}--><!--{else}-->未登録<!--{/if}--><br>
+
 	●生年月日<br>
 	<!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}--><!--{$arrForm.year|h}-->年<!--{$arrForm.month|h}-->月<!--{$arrForm.day|h}-->日生まれ<!--{else}-->未登録<!--{/if}--><br>
 

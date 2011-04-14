@@ -46,6 +46,13 @@
 	<font color="#FF0000"><!--{$arrErr.sex}--></font>
 	<input type="radio" name="sex" value="1" <!--{if $arrForm.sex eq 1}-->checked<!--{/if}--> />男性&nbsp;<input type="radio" name="sex" value="2" <!--{if $arrForm.sex eq 2}-->checked<!--{/if}--> />女性<br>
 
+	【職業】<br>
+	<font color="#FF0000"><!--{$arrErr.job}--></font>
+	<select name="job">
+		<option value="">選択してください</option>
+		<!--{html_options options=$arrJob selected=$arrForm.job}-->
+	</select><br>
+
 	【生年月日】<br>
 	<font color="#FF0000"><!--{$arrErr.year}--><!--{$arrErr.month}--><!--{$arrErr.day}--></font>
 	<input type="text" name="year" value="<!--{$arrForm.year|h}-->" size="4" maxlength="4" istyle="4">年<br>

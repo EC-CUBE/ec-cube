@@ -34,6 +34,7 @@
 	<!--{$arrForm.name01|h}-->　<!--{$arrForm.name02|h}--><br>
 	<!--{$arrForm.kana01|h}-->　<!--{$arrForm.kana02|h}--><br>
 	<!--{if $arrForm.sex eq 1}-->男性<!--{else}-->女性<!--{/if}--><br>
+	<!--{$arrJob[$arrForm.job]|h}--><br>
 	<!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}--><!--{$arrForm.year|h}-->年<!--{$arrForm.month|h}-->月<!--{$arrForm.day|h}-->日生まれ<!--{else}-->生年月日 未登録<!--{/if}--><br>
 	〒<!--{$arrForm.zip01|h}--> - <!--{$arrForm.zip02|h}--><br>
 	<!--{$arrPref[$arrForm.pref]|h}--><!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}--><br>
