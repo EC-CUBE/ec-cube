@@ -163,7 +163,7 @@ class SC_Helper_Purchase {
         $objSiteSession->unsetUniqId();
         $uniqid = $objSiteSession->getUniqId();
         $arrOrderTemp['del_flg'] = 0;
-        $this->saveOrderTemp($uniqid, $arrOrderTemp, &$objCustomer);
+        $this->saveOrderTemp($uniqid, $arrOrderTemp, $objCustomer);
         $this->verifyChangeCart($uniqid, $objCartSession);
         $objSiteSession->setRegistFlag();
 
