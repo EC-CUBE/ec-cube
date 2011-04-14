@@ -22,6 +22,7 @@
  */
 *}-->
 <!--▼商品カテゴリーここから-->
+<!--{1|numeric_emoji}-->商品カテゴリ<br>
 <!--{section name=cnt loop=$arrCat}-->
 <!--{assign var=disp_name value="`$arrCat[cnt].category_name`"}-->
 <!--{if $arrCat[cnt].has_children}-->

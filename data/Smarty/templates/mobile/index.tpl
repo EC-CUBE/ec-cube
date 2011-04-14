@@ -22,8 +22,6 @@
  */
 *}-->
 <!-- ▼メニュー ここから -->
-<!--{1|numeric_emoji}-->商品カテゴリ<br>
-<!--{include_php file=`$smarty.const.HTML_REALDIR`frontparts/bloc/category.php}-->
 <a href="products/search.php" accesskey="2"><!--{2|numeric_emoji}-->商品検索</a><br>
 <!--{if $isLogin eq true}-->
 <a href="<!--{$smarty.const.HTTPS_URL}-->mypage/refusal.php?<!--{$smarty.const.SID}-->" accesskey="3"><!--{3|numeric_emoji}-->会員退会</a><br>
