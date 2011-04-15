@@ -299,7 +299,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         foreach($arrCSVFrame as $item) {
             if($item['status'] == CSV_COLUMN_STATUS_FLG_DISABLE) continue;
             //サブクエリ構造の場合は AS名 を使用
-            if(preg_match_all('/\(.+\) as (.+)$/i', $item['col'], $match, PREG_SET_ORDER)) {
+            if(preg_match_all('/\(.+\)[ ]*as[ ]*(.+)$/i', $item['col'], $match, PREG_SET_ORDER)) {
                 $col = $match[0][1];
             }else{
                 $col = $item['col'];
