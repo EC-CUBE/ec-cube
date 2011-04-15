@@ -23,6 +23,7 @@
 
 // {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
+require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_FileManager_Ex.php';
 
 /**
  * メイン編集 のページクラス.
@@ -69,53 +70,61 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        $objView = new SC_AdminView_Ex();
-        $this->objLayout = new SC_Helper_PageLayout_Ex();
+        $objLayout = new SC_Helper_PageLayout_Ex();
+        $objFormParam = new SC_FormParam_Ex();
+        $this->lfInitParam($objFormParam);
+        $objFormParam->setParam($_REQUEST);
+        $objFormParam->convParam();
+        $this->arrErr = $objFormParam->checkError();
+        $is_error = (!SC_Utils_Ex::isBlank($this->arrErr));
 
-        // ページIDを取得
-        if (isset($_REQUEST['page_id']) && is_numeric($_REQUEST['page_id'])) {
-            $page_id = $_REQUEST['page_id'];
-        }
-
-        $this->page_id = $page_id;
-
-        // 端末種別IDを取得
-        if (isset($_REQUEST['device_type_id'])
-            && is_numeric($_REQUEST['device_type_id'])) {
-            $device_type_id = $_REQUEST['device_type_id'];
-        } else {
-            $device_type_id = DEVICE_TYPE_PC;
-        }
-
-        //サブタイトルの追加
-        $this->tpl_subtitle .= ' - ' . $this->arrDeviceType[$device_type_id];
-
-        // ページ一覧を取得
-        $this->arrPageList = $this->objLayout->getPageProperties($device_type_id, null);
-
-        // メッセージ表示
-        if (isset($_GET['msg']) && $_GET['msg'] == 'on'){
-            $this->tpl_onload="alert('登録が完了しました。');";
-        }
-
-        // page_id が指定されている場合にはテンプレートデータの取得
-        if (is_numeric($page_id) && $page_id != '') {
-            $this->arrPageData = $this->lfGetPageData($page_id, $device_type_id, $objView);
-        }
+        $this->device_type_id = $objFormParam->getValue('device_type_id', DEVICE_TYPE_PC);
+        $this->page_id = $objFormParam->getValue('page_id');
 
         switch ($this->getMode()) {
         case 'delete':
-            if ($this->objLayout->isEditablePage($device_type_id, $page_id)) {
-                $this->lfDeletePageData($page_id, $device_type_id);
-                exit;
+            if (!$is_error) {
+                if ($objLayout->isEditablePage($this->device_type_id, $this->page_id)) {
+                    $objLayout->lfDelPageData($this->page_id, $this->device_type_id);
+                    SC_Response_Ex::reload(array("device_type_id" => $this->device_type_id,
+                                                 "msg" => "on"), true);
+                    exit;
+                }
             }
             break;
 
         case 'confirm':
-            $this->lfConfirmPageData($page_id, $device_type_id);
+            if (!$is_error) {
+                $this->arrErr = $this->lfCheckError($objFormParam, $this->arrErr);
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    $result = $this->doRegister($objFormParam, $objLayout);
+                    if ($result !== false) {
+                        SC_Response_Ex::reload(array("device_type_id" => $this->device_type_id,
+                                                     "page_id" => $result,
+                                                     "msg" => "on"), true);
+                    exit;
+                    }
+                }
+            }
         default:
+            if (isset($_GET['msg']) && $_GET['msg'] == 'on'){
+                $this->tpl_onload = "alert('登録が完了しました。');";
+            }
         }
-        $this->device_type_id = $device_type_id;
+
+        if (!$is_error) {
+            $this->arrPageList = $objLayout->getPageProperties($this->device_type_id, null);
+            // page_id が指定されている場合にはテンプレートデータの取得
+            if (!SC_Utils_Ex::isBlank($this->page_id)) {
+                $arrPageData = $this->getTplMainpage($this->device_type_id, $this->page_id, $objLayout);
+                $objFormParam->setParam($arrPageData);
+            }
+        } else {
+            // 画面にエラー表示しないため, ログ出力
+            GC_Utils_Ex::gfPrintLog('Error: ' . print_r($this->arrErr, true));
+        }
+        $this->tpl_subtitle .= ' - ' . $this->arrDeviceType[$this->device_type_id];
+        $this->arrForm = $objFormParam->getFormParamList();
     }
 
     /**
@@ -128,281 +137,224 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
     }
 
     /**
-     * ページデータを取得する.
+     * パラメータ情報の初期化
      *
-     * @param integer $page_id ページID
-     * @param integer $device_type_id 端末種別ID
-     * @param object $objView ビューオブジェクト
+     * XXX URL のフィールドは, 実際は filename なので注意
+     *
+     * @param object $objFormParam SC_FormParamインスタンス
      * @return void
      */
-    function lfGetPageData($page_id, $device_type_id, $objView){
-        $arrPageData = $this->objLayout->getPageProperties($device_type_id, $page_id);
+    function lfInitParam(&$objFormParam) {
+        $objFormParam->addParam("ページID", "page_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("端末種別ID", "device_type_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("名称", "page_name", STEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("URL", "filename", STEXT_LEN, 'a', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("ヘッダチェック", "header_chk", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("フッタチェック", "footer_chk", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("修正フラグ", "edit_flg", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("TPLデータ", "tpl_data");
+     }
 
-        if (strlen($arrPageData[0]['filename']) == 0) {
-            $this->arrErr['page_id_err'] = "※ 指定されたページは編集できません。";
-            // 画面の表示
-            $objView->assignobj($this);
-            $objView->display(MAIN_FRAME);
-            exit;
+    /**
+     * ページデータを取得する.
+     *
+     * @param integer $device_type_id 端末種別ID
+     * @param integer $page_id ページID
+     * @param SC_Helper_PageLayout $objLayout SC_Helper_PageLayout インスタンス
+     * @return array ページデータの配列
+     */
+    function getTplMainpage($device_type_id, $page_id, &$objLayout){
+        $arrPageData = $objLayout->getPageProperties($device_type_id, $page_id);
+
+        $templatePath = $objLayout->getTemplatePath($device_type_id);
+        $filename = $templatePath . $arrPageData[0]['filename'] . ".tpl";
+        if (file_exists($filename)) {
+            $arrPageData[0]['tpl_data'] = file_get_contents($filename);
         }
-
-        // テンプレートを読み込む
-        $templatePath = $this->objLayout->getTemplatePath($device_type_id);
-        $arrPageData[0]['tpl_data'] = file_get_contents($templatePath . $arrPageData[0]['filename'] . ".tpl");
-
-        // ディレクトリを画面表示用に編集
+        // ファイル名を画面表示用に加工しておく
         $arrPageData[0]['filename'] = preg_replace('|^' . preg_quote(USER_DIR) . '|', '', $arrPageData[0]['filename']);
-
         return $arrPageData[0];
     }
 
     /**
-     * データ登録処理.
+     * 登録を実行する.
      *
-     * @param integer $page_id ページID
-     * @param integer $device_type_id 端末種別ID
-     * @return void
+     * ファイルの作成に失敗した場合は, エラーメッセージを出力し,
+     * データベースをロールバックする.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param SC_Helper_PageLayout $objLayout SC_Helper_PageLayout インスタンス
+     * @return integer|boolean 登録が成功した場合, 登録したページID;
+     *                         失敗した場合 false
      */
-    function lfConfirmPageData($page_id, $device_type_id) {
-        // エラーチェック
-        $this->arrErr = $this->lfErrorCheck($_POST, $device_type_id);
+    function doRegister($objFormParam, &$objLayout) {
+        $filename = $objFormParam->getValue('filename');
+        $arrParams['device_type_id'] = $objFormParam->getValue('device_type_id');
+        $arrParams['page_id'] = $objFormParam->getValue('page_id');
+        $arrParams['header_chk'] = intval($objFormParam->getValue('header_chk')) === 1 ? 1 : 2;
+        $arrParams['footer_chk'] = intval($objFormParam->getValue('footer_chk')) === 1 ? 1 : 2;
+        $arrParams['tpl_data'] = $objFormParam->getValue('tpl_data');
+        $arrParams['page_name'] = $objFormParam->getValue('page_name');
+        $arrParams['url'] = USER_DIR . $filename . '.php';
+        $arrParams['filename'] = USER_DIR . $filename;
 
-        // エラーがなければ更新処理を行う
-        if (count($this->arrErr) == 0) {
-            // DBへデータを更新する
-            $arrTmp = $this->lfEntryPageData(
-                $device_type_id,
-                $page_id,
-                $_POST['page_name'],
-                USER_DIR . $_POST['url'],
-                intval($_POST['header_chk']) === 1 ? 1 : 2,
-                intval($_POST['footer_chk']) === 1 ? 1 : 2
-            );
-            $page_id = $arrTmp['page_id'];
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $objQuery->begin();
 
-            $arrTmp = $this->objLayout->getPageProperties($device_type_id, $page_id);
-            $arrData = $arrTmp[0];
+        $page_id = $this->registerPage($arrParams, $objLayout);
 
-            // ベースデータでなければファイルを削除し、PHPファイルを作成する
-            if ($this->objLayout->isEditablePage($device_type_id, $arrData['page_id'])) {
-                // PHPファイル作成
-                $this->lfCreatePHPFile($_POST['url'], $device_type_id);
+        /*
+         * 新規登録時
+         * or 編集可能な既存ページ編集時かつ, PHP ファイルが存在しない場合に,
+         * PHP ファイルを作成する.
+         */
+        if (SC_Utils_Ex::isBlank($arrParams['page_id'])
+            || $objLayout->isEditablePage($arrParams['device_type_id'], $arrParams['page_id'])) {
+            if (!$this->createPHPFile($filename)) {
+                $this->arrErr['err'] = '※ PHPファイルの作成に失敗しました<br />';
+                $objQuery->rollback();
+                return false;
             }
+            // 新規登録時のみ $page_id を代入
+            $arrParams['page_id'] = $page_id;
+        }
 
-            // TPLファイル作成
-            $cre_tpl = $this->objLayout->getTemplatePath($device_type_id) . $arrData['filename'] . '.tpl';
-            $this->lfCreateFile($cre_tpl, $_POST['tpl_data']);
-
-            $arrQueryString = array(
-                "page_id" => $arrData['page_id'],
-                "device_type_id" => $device_type_id,
-                'msg'     => 'on',
-            );
-            $this->objDisplay->reload($arrQueryString, true);
-            exit;
+        if ($objLayout->isEditablePage($arrParams['device_type_id'], $page_id)) {
+            $tpl_path = $objLayout->getTemplatePath($arrParams['device_type_id']) . $arrParams['filename'] . '.tpl';
         } else {
-            // エラーがあれば入力時のデータを表示する
-            $this->arrPageData = $_POST;
-            $this->arrPageData['directory'] = '';
-            $this->arrPageData['filename'] = $_POST['url'];
+            $tpl_path = $objLayout->getTemplatePath($arrParams['device_type_id']) . $filename . '.tpl';
         }
+
+        if (!SC_Helper_FileManager_Ex::sfWriteFile($tpl_path, $arrParams['tpl_data'])) {
+            $this->arrErr['err'] = '※ TPLファイルの書き込みに失敗しました<br />';
+            $objQuery->rollback();
+            return false;
+        }
+
+        $objQuery->commit();
+        return $arrParams['page_id'];
     }
 
     /**
-     * ブロック情報を更新する.
+     * 入力内容をデータベースに登録する.
      *
-     * @param integer $device_type_id
-     * @param integer $page_id
-     * @param string $page_name
-     * @param string $filename
-     * @param integer $header_chk
-     * @param integer $footer_chk
-     * @return array 実際に使用した更新データ
+     * @param array $arrParams フォームパラメータの配列
+     * @param SC_Helper_PageLayout $objLayout SC_Helper_PageLayout インスタンス
+     * @return integer ページID
      */
-    function lfEntryPageData($device_type_id, $page_id, $page_name, $filename, $header_chk, $footer_chk) {
-        $objQuery = new SC_Query_Ex();
-        $arrChk = array();          // 排他チェック用
+    function registerPage($arrParams, &$objLayout) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        // 更新用データの変換
-        $sqlval = $this->lfGetUpdData($device_type_id, $page_id, $page_name, $filename, $header_chk, $footer_chk);
-
-        // データが存在しているかチェックを行う
-        if ($page_id !== ''){
-            $arrChk = $this->objLayout->getPageProperties($device_type_id, $page_id);
+        // ページIDが空の場合は新規登録
+        $is_new = SC_Utils_Ex::isBlank($arrParams['page_id']);
+        // 既存ページの存在チェック
+        if (!$is_new) {
+            $arrExists = $objLayout->getPageProperties($arrParams['device_type_id'], $arrParams['page_id']);
         }
 
-        // page_id が空 若しくは データが存在していない場合にはINSERTを行う
-        if ($page_id === '' || !isset($arrChk[0])) {
-            // FIXME device_type_id ごとの連番にする
-            $sqlval['page_id'] = $objQuery->nextVal('dtb_pagelayout_page_id');
-            $sqlval['device_type_id'] = $device_type_id;
-            $sqlval['create_date'] = 'now()';
-            $objQuery->insert('dtb_pagelayout', $sqlval);
+        $table = 'dtb_pagelayout';
+        $arrValues = $objQuery->extractOnlyColsOf($table, $arrParams);
+        $arrValues['update_url'] = $_SERVER['HTTP_REFERER'];
+        $arrValues['update_date'] = 'now()';
+
+        // 新規登録
+        if ($is_new || SC_Utils_Ex::isBlank($arrExists)) {
+            $objQuery->setOrder('');
+            $arrValues['page_id'] = 1 + $objQuery->max('page_id', $table, 'device_type_id = ?',
+                                                       array($arrValues['device_type_id']));
+            $arrValues['create_date'] = 'now()';
+            $objQuery->insert($table, $arrValues);
         }
-        // データが存在してる場合にはアップデートを行う
+        // 更新
         else {
-            $objQuery->update('dtb_pagelayout', $sqlval, 'page_id = ? AND device_type_id = ?',
-                              array($page_id, $device_type_id));
-            // 戻り値用
-            $sqlval['page_id'] = $page_id;
+            // 編集不可ページは更新しない
+            if (!$objLayout->isEditablePage($arrValues['device_type_id'], $arrValues['page_id'])) {
+                unset($arrValues['page_name']);
+                unset($arrValues['filename']);
+                unset($arrValues['url']);
+            }
+
+            $objQuery->update('dtb_pagelayout', $arrValues, 'page_id = ? AND device_type_id = ?',
+                              array($arrValues['page_id'], $arrValues['device_type_id']));
         }
-        return $sqlval;
+        return $arrValues['page_id'];
     }
 
     /**
-     * DBへ更新を行うデータを生成する.
+     * エラーチェックを行う.
      *
-     * @param integer $device_type_id
-     * @param integer $page_id
-     * @param string $page_name
-     * @param string $filename
-     * @param integer $header_chk
-     * @param integer $footer_chk
-     * @return array 更新データ
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return array エラーメッセージの配列
      */
-    function lfGetUpdData($device_type_id, $page_id, $page_name, $filename, $header_chk, $footer_chk) {
-        $arrUpdData = array(
-            'header_chk'    => $header_chk,  // ヘッダー使用
-            'footer_chk'    => $footer_chk,  // フッター使用
-            'update_url'    => $_SERVER['HTTP_REFERER'],                    // 更新URL
-            'update_date'   => 'now()',
-        );
-
-        // ベースデータの場合には変更しない。
-        if ($this->objLayout->isEditablePage($device_type_id, $page_id)) {
-            $arrUpdData['page_name']    = $page_name;
-            $arrUpdData['url']          = $filename . '.php';
-            $arrUpdData['filename']     = $filename; // 拡張子を付加しない
-        }
-
-        return $arrUpdData;
-    }
-
-    /**
-     * ページデータを削除する.
-     *
-     * @param integer $page_id ページID
-     * @return void
-     */
-    function lfDeletePageData($page_id, $device_type_id){
-        $this->objLayout->lfDelPageData($page_id, $device_type_id);
-        $this->objDisplay->reload(array("device_type_id" => $device_type_id), true);
-    }
-
-    /**
-     * 入力項目のエラーチェックを行う.
-     *
-     * XXX $device_type_id が dtb_pagelayout の検索条件に入ってない
-     *
-     * @param array $arrData 入力データ
-     * @param integer $device_type_id 端末種別ID
-     * @return array エラー情報
-     */
-    function lfErrorCheck($array, $device_type_id) {
-        $objErr = new SC_CheckError_Ex($array);
+    function lfCheckError(&$objFormParam, &$arrErr) {
+        $arrParams = $objFormParam->getHashArray();
+        $objErr = new SC_CheckError_Ex($arrParams);
+        $objErr->arrErr =& $arrErr;
         $objErr->doFunc(array("名称", "page_name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array('URL', 'url', STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array('URL', 'filename', STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
 
-        // URLチェック
-        $okUrl = true;
-        foreach (explode('/', $array['url']) as $url_part) {
-            if (!ereg( '^[a-zA-Z0-9:_~\.-]+$', $url_part)) {
-                $okUrl = false;
+        /*
+         * URL チェック
+         * ここでチェックするのは, パスのみなので SC_CheckError::URL_CHECK()
+         * は使用しない
+         */
+        $valid_url = true;
+        foreach (explode('/', $arrParams['filename']) as $val) {
+            if (!preg_match('/^[a-zA-Z0-9:_~\.\-]+$/', $val)) {
+                $valid_url = false;
             }
-            if ($url_part == '.' || $url_part == '..') {
-                $okUrl = false;
+            if ($val == '.' || $val == '..') {
+                $valid_url = false;
             }
         }
-        if (!$okUrl) {
-            $objErr->arrErr['url'] = "※ URLを正しく入力してください。<br />";
+        if (!$valid_url) {
+            $objErr->arrErr['filename'] = "※ URLを正しく入力してください。<br />";
         }
-
-        // 同一のURLが存在している場合にはエラー
-        $params = array();
-
-        $sqlWhere = 'url = ?';
-        $params[] = $this->objLayout->getUserDir($device_type_id) . $array['url'] . '.php';
-
-        // プレビュー用のレコードは除外
-        $sqlWhere .= ' AND page_id <> 0';
-
-        // 変更の場合、自身のレコードは除外
-        if (strlen($array['page_id']) != 0) {
-            $sqlWhere .= ' AND page_id <> ?';
-            $params[] = $array['page_id'];
+        // 同一URLの存在チェック
+        $where = 'page_id <> 0 AND device_type_id = ? AND filename = ?';
+        $arrValues = array($arrParams['device_type_id'],
+                           SC_Helper_PageLayout_Ex::getUserDir($arrParams['device_type_id']) . $arrParams['filename'] . '.php');
+        // 変更の場合は自 URL を除外
+        if (!SC_Utils_Ex::isBlank($arrParams['page_id'])) {
+            $where .= ' AND page_id <> ?';
+            $arrValues[] = $arrParams['page_id'];
         }
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $arrChk = $objQuery->select('*', 'dtb_pagelayout', $sqlWhere, $params);
-
-        if (count($arrChk) >= 1) {
-            $objErr->arrErr['url'] = '※ 同じURLのデータが存在しています。別のURLを付けてください。<br />';
+        $count = $objQuery->count('dtb_pagelayout', $where, $arrValues);
+        if ($count > 0) {
+            $objErr->arrErr['filename'] = '※ 同じURLのデータが存在しています。別のURLを入力してください。<br />';
         }
-
         return $objErr->arrErr;
     }
 
     /**
-     * ファイルを作成する.
+     * PHP ファイルを生成する.
      *
-     * @param string $path テンプレートファイルのパス
-     * @param string $data テンプレートの内容
-     * @return void
-     */
-    function lfCreateFile($path, $data){
-
-        // ディレクトリが存在していなければ作成する
-        if (!is_dir(dirname($path))) {
-            mkdir(dirname($path), 0777, true); // FIXME (PHP4)
-        }
-
-        // ファイル作成
-        $fp = fopen($path,'w');
-        if ($fp === false) {
-            SC_Utils_Ex::sfDispException();
-        }
-        $ret = fwrite($fp, $data);
-        if ($ret === false) {
-            SC_Utils_Ex::sfDispException();
-        }
-        fclose($fp);
-    }
-
-    /**
-     * PHPファイルを作成する.
+     * 既に同名の PHP ファイルが存在する場合は何もせず true を返す.(#831)
      *
-     * @param string $path PHPファイルのパス
-     * @return void
+     * @param string $filename フォームパラメータの filename
+     * @return boolean 作成に成功した場合 true
      */
-    function lfCreatePHPFile($url, $device_type_id){
+    function createPHPFile($filename) {
+        $path = USER_REALDIR . $filename . '.php';
 
-        $path = USER_REALDIR . $url . ".php";
-
-        // カスタマイズを考慮し、上書きしない。(#831)
         if (file_exists($path)) {
-            return;
+            return true;
         }
 
-        // php保存先ディレクトリが存在していなければ作成する
-        if (!is_dir(dirname($path))) {
-            mkdir(dirname($path), 0777, true); // FIXME (PHP4)
+        if (file_exists(USER_DEF_PHP_REALFILE)) {
+            $php_contents = file_get_contents(USER_DEF_PHP_REALFILE);
+        } else {
+            return false;
         }
 
-        // ベースとなるPHPファイルの読み込み
-        if (file_exists(USER_DEF_PHP_REALFILE)){
-            $php_data = file_get_contents(USER_DEF_PHP_REALFILE);
-        }
-
-        // require.phpの場所を書き換える
+        // require.php の PATH を書き換える
         $defaultStrings = "exit; // Don't rewrite. This line is rewritten by EC-CUBE.";
-        $replaceStrings = "require_once '" . str_repeat('../', substr_count($url, '/')) . "../require.php';";
-        $php_data = str_replace($defaultStrings, $replaceStrings, $php_data);
+        $replaceStrings = "require_once '" . str_repeat('../', substr_count($filename, '/')) . "../require.php';";
+        $php_contents = str_replace($defaultStrings, $replaceStrings, $php_contents);
 
-        // phpファイルの作成
-        $fp = fopen($path,'w');
-        fwrite($fp, $php_data);
-        fclose($fp);
+        return SC_Helper_FileManager_Ex::sfWriteFile($path, $php_contents);
     }
-
 }
 ?>

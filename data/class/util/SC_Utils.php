@@ -2048,7 +2048,7 @@ class SC_Utils {
                      * SC_Utils_Ex への再帰は無限ループやメモリリークの懸念
                      * 自クラスへ再帰する.
                      */
-                    if (!SC_Utils_Ex::isBlank($in, $greedy)) {
+                    if (!SC_Utils::isBlank($in, $greedy)) {
                         return false;
                     }
                 }
@@ -2214,6 +2214,25 @@ class SC_Utils {
         } else {
             return preg_match('/^[a-zA-Z]:(\\\|\/)/', $realpath) ? true : false;
         }
+    }
+
+    /**
+     * ディレクトリを再帰的に作成する.
+     *
+     * mkdir 関数の $recursive パラメータを PHP4 でサポートする.
+     *
+     * @param string $pathname ディレクトリのパス
+     * @param integer $mode 作成するディレクトリのパーミッション
+     * @return boolean 作成に成功した場合 true; 失敗した場合 false
+     * @see http://jp.php.net/mkdir
+     */
+    function recursiveMkdir($pathname, $mode) {
+        /*
+         * SC_Utils_Ex への再帰は無限ループやメモリリークの懸念
+         * 自クラスへ再帰する.
+         */
+        is_dir(dirname($pathname)) || SC_Utils::recursiveMkdir(dirname($pathname), $mode);
+        return is_dir($pathname) || @mkdir($pathname, $mode);
     }
 }
 ?>

@@ -143,5 +143,17 @@ class SC_Utils_Test extends PHPUnit_Framework_TestCase {
         $empty = '';
         $this->assertFalse(SC_Utils::isAbsoluteRealPath($empty));
     }
+
+    function testRecursiveMkdir() {
+        $tmp_dir = sys_get_temp_dir();
+        $dir = 'foo/bar';
+        $results = false;
+        if (is_dir($tmp_dir . $dir)) {
+            rmdir($tmp_dir . '/foo/bar');
+            rmdir($tmp_dir . '/foo');
+        }
+        $results = SC_Utils::recursiveMkdir($tmp_dir . $dir, 0777);
+        $this->assertTrue($results);
+    }
 }
 ?>

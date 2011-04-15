@@ -57,6 +57,7 @@ class SC_Helper_PageLayout {
         else {
             $arrPageData = $this->getPageProperties($device_type_id, 0);
         }
+
         $objPage->tpl_mainpage = $this->getTemplatePath($device_type_id) . $arrPageData[0]['filename'] . ".tpl";
         $objPage->arrPageLayout =& $arrPageData[0];
 
@@ -184,9 +185,7 @@ __EOF__;
         // page_id が空でない場合にはdeleteを実行
         if ($page_id != '') {
             $arrPageData = $this->getPageProperties($device_type_id, $page_id);
-            // SQL実行
             $ret = $objQuery->delete("dtb_pagelayout", "page_id = ? AND device_type_id = ?", array($page_id, $device_type_id));
-
             // ファイルの削除
             $this->lfDelFile($arrPageData[0]['filename'], $device_type_id);
         }
@@ -206,7 +205,10 @@ __EOF__;
     function lfDelFile($filename, $device_type_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        // 同名ファイルの使用件数
+        /*
+         * 同名ファイルの使用件数
+         * PHP ファイルは, 複数のデバイスで共有するため, device_type_id を条件に入れない
+         */
         $count = $objQuery->count('dtb_pagelayout', 'filename = ?', array($filename));
 
         if ($count == 0) {

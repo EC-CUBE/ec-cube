@@ -26,14 +26,6 @@
 function fnTargetSelf(){
     document.form_edit.target = "_self";
 }
-
-browser_type = 0;
-if(navigator.userAgent.indexOf("MSIE") >= 0){
-    browser_type = 1;
-}
-else if(navigator.userAgent.indexOf("Mozilla") >= 0){
-    browser_type = 2;
-}
 //-->
 </script>
 
@@ -44,23 +36,24 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 <input type="hidden" name="page_id" value="<!--{$page_id}-->" />
 <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 
-    <!--{if $arrErr.page_id_err != ""}-->
+    <!--{if $arrErr.err != ""}-->
         <div class="message">
-            <span class="attention"><!--{$arrErr.page_id_err}--></span>
+            <span class="attention"><!--{$arrErr.err}--></span>
         </div>
     <!--{/if}-->
     <table>
         <tr>
             <th>名称</th>
             <td>
-                <!--{if $arrPageData.edit_flg == 2}-->
-                    <!--{$arrPageData.page_name|h}--><input type="hidden" name="page_name" value="<!--{$arrPageData.page_name|h}-->" />
+                <!--{assign var=key value="page_name"}-->
+                <!--{if $arrForm.edit_flg.value == 2}-->
+                    <!--{$arrForm[$key].value|h}--><input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" />
                 <!--{else}-->
-                    <input type="text" name="page_name" value="<!--{$arrPageData.page_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.page_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" /><span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
+                    <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length|h}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> (上限<!--{$arrForm[$key].length|h}-->文字)</span>
                 <!--{/if}-->
-                <!--{if $arrErr.page_name != ""}-->
+                <!--{if $arrErr[$key] != ""}-->
                     <div class="message">
-                        <span class="attention"><!--{$arrErr.page_name}--></span>
+                        <span class="attention"><!--{$arrErr[$key]}--></span>
                     </div>
                 <!--{/if}-->
             </td>
@@ -68,25 +61,26 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
         <tr>
         <th>URL</th>
             <td>
-                <!--{if $arrPageData.edit_flg == 2}-->
-                    <!--{$smarty.const.HTTP_URL|h}--><!--{$arrPageData.url|h}-->
-                    <input type="hidden" name="url" value="<!--{$arrPageData.filename|h}-->" />
+                <!--{assign var=key value="filename"}-->
+                <!--{if $arrForm.edit_flg.value == 2}-->
+                    <!--{$smarty.const.HTTP_URL|h}--><!--{$arrForm[$key].value|h}-->.php
+                    <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" />
                 <!--{else}-->
-                    <!--{$smarty.const.USER_URL|h}--><input type="text" name="url" value="<!--{$arrPageData.filename|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.url != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" size="40" class="box40" />.php<span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
+                    <!--{$smarty.const.USER_URL|h}--><input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length|h}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ime-mode: disabled;" size="40" class="box40" />.php<span class="attention"> (上限<!--{$arrForm[$key].length|h}-->文字)</span>
                 <!--{/if}-->
-                <!--{if $arrErr.url != ""}-->
+                <!--{if $arrErr[$key] != ""}-->
                     <div class="attention">
-                        <span class="attention"><!--{$arrErr.url}--></span>
+                        <span class="attention"><!--{$arrErr[$key]}--></span>
                     </div>
                 <!--{/if}-->
             </td>
         </tr>
         <tr>
             <td colspan="2">
-                <label for="header-chk"><input type="checkbox" name="header_chk" id="header-chk" value="1" <!--{if $arrPageData.header_chk == "1"}-->checked="checked"<!--{/if}--> />共通のヘッダーを使用する</label>&nbsp;
-                <label for="footer-chk"><input type="checkbox" name="footer_chk" id="footer-chk" value="1" <!--{if $arrPageData.footer_chk == "1"}-->checked="checked"<!--{/if}--> />共通のフッターを使用する</label>
+                <label for="header-chk"><input type="checkbox" name="header_chk" id="header-chk" value="1" <!--{if $arrForm.header_chk.value == "1"}-->checked="checked"<!--{/if}--> />共通のヘッダーを使用する</label>&nbsp;
+                <label for="footer-chk"><input type="checkbox" name="footer_chk" id="footer-chk" value="1" <!--{if $arrForm.footer_chk.value == "1"}-->checked="checked"<!--{/if}--> />共通のフッターを使用する</label>
                 <div>
-                    <textarea id="tpl_data" class="top" name="tpl_data" rows=<!--{$text_row}--> style="width: 98%;"><!--{$arrPageData.tpl_data|h|smarty:nodefaults}--></textarea>
+                    <textarea id="tpl_data" class="top" name="tpl_data" rows=<!--{$text_row}--> style="width: 98%;"><!--{$arrForm.tpl_data.value|h|smarty:nodefaults}--></textarea>
                     <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" /><br />
                     <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#tpl_data', 50, 13); return false;"><span>拡大</span></a>
                 </div>
@@ -101,6 +95,9 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
     </div>
 
     <h2>編集可能ページ一覧</h2>
+    <div class="btn addnew">
+        <a class="btn-normal" href="?device_type_id=<!--{$device_type_id|u}-->"><span>ページを新規入力</span></a>
+    </div>
     <table class="list">
         <colgroup width="70%">
         <colgroup width="10%">
@@ -133,7 +130,4 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
             </tr>
         <!--{/foreach}-->
     </table>
-    <div class="btn addnew">
-        <a class="btn-normal" href="?device_type_id=<!--{$device_type_id|u}-->"><span>ページを新規入力</span></a>
-    </div>
 </form>

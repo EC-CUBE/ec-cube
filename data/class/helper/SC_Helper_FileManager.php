@@ -344,14 +344,20 @@ class SC_Helper_FileManager {
      *
      * @param string $filename ファイルパス
      * @param string $value 書き込み内容
+     * @return boolean ファイルの書き込みに成功した場合 true
      */
     function sfWriteFile($filename, $value) {
-        $fp = @fopen($filename, 'w');
-        // ファイルに書き込む
-        if($fp) {
-            fwrite($fp, $value);
+        if (!is_dir(dirname($filename))) {
+            SC_Utils_Ex::recursiveMkdir(dirname($filename), 0777);
         }
-        @fclose($fp);
+        $fp = fopen($filename,'w');
+        if ($fp === false) {
+            return false;
+        }
+        if (fwrite($fp, $value) === false) {
+            return false;
+        }
+        return fclose($fp);;
     }
 
     /**
