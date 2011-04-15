@@ -135,7 +135,7 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex {
         $objFormParam->addParam("FAX番号1", "law_fax01", TEL_ITEM_LEN, 'n', array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
         $objFormParam->addParam("FAX番号2", "law_fax02", TEL_ITEM_LEN, 'n', array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
         $objFormParam->addParam("FAX番号3", "law_fax03", TEL_ITEM_LEN, 'n', array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
-        $objFormParam->addParam("メールアドレス", "law_email", STEXT_LEN, 'KVa', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK"));
+        $objFormParam->addParam("メールアドレス", "law_email", null, 'KVa', array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK"));
         $objFormParam->addParam('URL', "law_url", STEXT_LEN, 'KVa', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "URL_CHECK"));
         $objFormParam->addParam("必要料金", "law_term01", MTEXT_LEN, 'KVa', array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("注文方法", "law_term02", MTEXT_LEN, 'KVa', array("EXIST_CHECK", "MAX_LENGTH_CHECK"));

@@ -217,32 +217,28 @@ $(function() {
             <th>商品注文受付<br />メールアドレス<span class="attention"> *</span></th>
             <td>
                 <span class="attention"><!--{$arrErr.email01}--></span>
-                <input type="text" name="email01" value="<!--{$arrForm.email01|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.email01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
-                <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
+                <input type="text" name="email01" value="<!--{$arrForm.email01|h}-->" size="60" class="box60" style="<!--{if $arrErr.email01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
             </td>
         </tr>
         <tr>
             <th>問い合わせ受付<br />メールアドレス<span class="attention"> *</span></th>
             <td>
                 <span class="attention"><!--{$arrErr.email02}--></span>
-                <input type="text" name="email02" value="<!--{$arrForm.email02|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.email02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
-                <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
+                <input type="text" name="email02" value="<!--{$arrForm.email02|h}-->" size="60" class="box60" style="<!--{if $arrErr.email02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
             </td>
         </tr>
         <tr>
             <th>メール送信元<br />メールアドレス<span class="attention"> *</span></th>
             <td>
                 <span class="attention"><!--{$arrErr.email03}--></span>
-                <input type="text" name="email03" value="<!--{$arrForm.email03|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.email03 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
-                <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
+                <input type="text" name="email03" value="<!--{$arrForm.email03|h}-->" size="60" class="box60" style="<!--{if $arrErr.email03 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
             </td>
         </tr>
         <tr>
             <th>送信エラー受付<br />メールアドレス<span class="attention"> *</span></th>
             <td>
                 <span class="attention"><!--{$arrErr.email04}--></span>
-                <input type="text" name="email04" value="<!--{$arrForm.email04|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.email04 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
-                <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
+                <input type="text" name="email04" value="<!--{$arrForm.email04|h}-->" size="60" class="box60" style="<!--{if $arrErr.email04 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
             </td>
         </tr>
         <tr>

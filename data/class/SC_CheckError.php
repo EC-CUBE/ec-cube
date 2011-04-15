@@ -607,14 +607,25 @@ class SC_CheckError {
         }
     }
 
-    /*　メールアドレス形式の判定　*/
-    //　メールアドレスを正規表現で判定する
-    // value[0] = 項目名 value[1] = 判定対象メールアドレス
+    /**
+     * メールアドレス形式の判定
+     *
+     * @param array $value 各要素は以下の通り。<br>
+     *     [0]: 項目名<br>
+     *     [1]: 判定対象を格納している配列キー
+     * @return void
+     */
     function EMAIL_CHECK( $value ){
         if(isset($this->arrErr[$value[1]])) {
             return;
         }
+
         $this->createParam($value);
+
+        // 入力がない場合処理しない
+        if (strlen($this->arrParam[$value[1]]) === 0) {
+            return;
+        }
 
         $wsp           = '[\x20\x09]';
         $vchar         = '[\x21-\x7e]';
@@ -640,9 +651,15 @@ class SC_CheckError {
             $regexp = "/\A${addr_spec_loose}\z/";
         }
 
-        if(strlen($this->arrParam[$value[1]]) > 0 && !preg_match($regexp, $this->arrParam[$value[1]])) {
+        if (!preg_match($regexp, $this->arrParam[$value[1]])) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "の形式が不正です。<br />";
+            return;
         }
+
+        // 最大文字数制限の判定 (#871)
+        $arrValueTemp = $value;
+        $arrValueTemp[2] = 256;
+        $this->MAX_LENGTH_CHECK($arrValueTemp);
     }
 
     /*　メールアドレスに使用できる文字の判定　*/

@@ -221,10 +221,10 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         $objFormParam->addParam("住所1", "addr01", MTEXT_LEN, 'KVa', array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("住所2", "addr02", MTEXT_LEN, 'KVa', array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
         // メールチェック
-        $objFormParam->addParam('商品注文受付メールアドレス', "email01", STEXT_LEN, 'a', array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('問い合わせ受付メールアドレス', "email02", STEXT_LEN, 'a', array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('メール送信元メールアドレス', "email03", STEXT_LEN, 'a', array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('送信エラー受付メールアドレス', "email04", STEXT_LEN, 'a', array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK","MAX_LENGTH_CHECK"));
+        $objFormParam->addParam('商品注文受付メールアドレス', "email01", null, 'a', array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK"));
+        $objFormParam->addParam('問い合わせ受付メールアドレス', "email02", null, 'a', array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK"));
+        $objFormParam->addParam('メール送信元メールアドレス', "email03", null, 'a', array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK"));
+        $objFormParam->addParam('送信エラー受付メールアドレス', "email04", null, 'a', array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK"));
 
         // 電話番号
         $objFormParam->addParam("電話番号1", "tel01", TEL_ITEM_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));

@@ -154,8 +154,8 @@ class LC_Page_Contact extends LC_Page_Ex {
         $objFormParam->addParam("住所1", "addr01", MTEXT_LEN, 'KVa', array("SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
         $objFormParam->addParam("住所2", "addr02", MTEXT_LEN, 'KVa', array("SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
         $objFormParam->addParam("お問い合わせ内容", 'contents', MLTEXT_LEN, 'KVa', array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('メールアドレス', 'email', MTEXT_LEN, 'KVa',array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('メールアドレス(確認)', "email02", MTEXT_LEN, 'KVa',array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam('メールアドレス', 'email', null, 'KVa',array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK"));
+        $objFormParam->addParam('メールアドレス(確認)', "email02", null, 'KVa',array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK"));
         $objFormParam->addParam("お電話番号1", 'tel01', TEL_ITEM_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("お電話番号2", 'tel02', TEL_ITEM_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("お電話番号3", 'tel03', TEL_ITEM_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
