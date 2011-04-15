@@ -203,8 +203,19 @@ class LC_Page_Forgot extends LC_Page_Ex {
         if (isset($result[0]['reminder']) and isset($arrReminder[$result[0]['reminder']])
                 and $result[0]['reminder'] == $arrForm['reminder']) {
 
-            if (SC_Utils_Ex::sfIsMatchHashPassword($arrForm['reminder_answer'],
+            $is_authorized = false;
+            if (empty($result[0]['salt'])) {
+                // 旧バージョン(2.11未満)からの移行を考慮
+                if ($result[0]['reminder_answer'] == $arrForm['reminder_answer']) {
+                    $is_authorized = true;
+                }
+            }
+            elseif (SC_Utils_Ex::sfIsMatchHashPassword($arrForm['reminder_answer'],
                      $result[0]['reminder_answer'], $result[0]['salt'])) {
+                $is_authorized = true;
+            }
+
+            if ($is_authorized) {
                 // 秘密の答えが一致
                 // 新しいパスワードを設定する
                 $new_password = GC_Utils_Ex::gfMakePassword(8);

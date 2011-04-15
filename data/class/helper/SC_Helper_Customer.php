@@ -48,6 +48,9 @@ class SC_Helper_Customer {
         // salt値の生成(insert時)または取得(update時)。
         if(is_numeric($customer_id)) {
             $salt = $objQuery->get('salt', "dtb_customer", "customer_id = ? ", array($customer_id));
+
+            // 旧バージョン(2.11未満)からの移行を考慮
+            if (empty($salt)) $old_version_flag = true;
         }else{
             $salt = SC_Utils_Ex::sfGetRandomString(10);
             $array['salt'] = $salt;
@@ -57,14 +60,34 @@ class SC_Helper_Customer {
             //更新しない
             unset($array['password']);
         } else {
+            // 旧バージョン(2.11未満)からの移行を考慮
+            if ($old_version_flag) {
+                $is_password_updated = true;
+                $salt = SC_Utils_Ex::sfGetRandomString(10);
+                $array['salt'] = $salt;
+            }
+
             $array['password'] = SC_Utils_Ex::sfGetHashString($array['password'], $salt);
         }
         //-- 秘密の質問の更新がある場合は暗号化
         if ($array["reminder_answer"] == DEFAULT_PASSWORD or $array["reminder_answer"] == "") {
             //更新しない
             unset($array["reminder_answer"]);
+
+            // 旧バージョン(2.11未満)からの移行を考慮
+            if ($old_version_flag && $is_password_updated) {
+                // パスワードが更新される場合は、平文になっている秘密の質問を暗号化する
+                $reminder_answer = $objQuery->get('reminder_answer', "dtb_customer", "customer_id = ? ", array($customer_id));
+                $array["reminder_answer"] = SC_Utils_Ex::sfGetHashString($reminder_answer, $salt);
+            }
         } else {
-            $array["reminder_answer"] = SC_Utils_Ex::sfGetHashString($array["reminder_answer"], $salt);
+            // 旧バージョン(2.11未満)からの移行を考慮
+            if ($old_version_flag && !$is_password_updated) {
+                // パスワードが更新されない場合は、平文のままにする
+                unset($array['salt']);
+            } else {
+                $array["reminder_answer"] = SC_Utils_Ex::sfGetHashString($array["reminder_answer"], $salt);
+            }
         }
 
         //-- 編集登録実行

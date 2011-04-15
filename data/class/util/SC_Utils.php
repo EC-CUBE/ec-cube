@@ -2121,7 +2121,12 @@ class SC_Utils {
                     $res = true;
                 }
             } else {
-                $hash = SC_Utils_Ex::sfGetHashString($pass, $salt);
+                if (empty($salt)) {
+                    // 旧バージョン(2.11未満)からの移行を考慮
+                    $hash = sha1($pass . ":" . AUTH_MAGIC);
+                } else {
+                    $hash = SC_Utils_Ex::sfGetHashString($pass, $salt);
+                }
                 if($hash === $hashpass) {
                     $res = true;
                 }
