@@ -27,7 +27,7 @@
         <th>商品コード</th>
         <th>商品名</th>
         <th>購入件数</th>
-        <th>点数</th>
+        <th>数量</th>
         <th>単価</th>
         <th>金額</th>
     </tr>
@@ -48,7 +48,7 @@
             <td class="right"><!--{*商品コード*}--><!--{$arrResults[cnt].product_code|h}--></td>
             <td class="left"><!--{*商品名*}--><!--{$arrResults[cnt].product_name|sfCutString:40:false|h}--></td>
             <td class="right"><!--{*購入件数*}--><!--{$arrResults[cnt].order_count}-->件</td>
-            <td class="right"><!--{*点数*}--><!--{$arrResults[cnt].products_count}--></td>
+            <td class="right"><!--{*数量*}--><!--{$arrResults[cnt].products_count}--></td>
             <td class="right"><!--{*単価*}--><!--{$arrResults[cnt].price|number_format}-->円</td>
             <td class="right"><!--{*金額*}--><!--{$arrResults[cnt].total|number_format}-->円</td>
         </tr>
@@ -59,7 +59,7 @@
         <th>商品コード</th>
         <th>商品名</th>
         <th>購入件数</th>
-        <th>点数</th>
+        <th>数量</th>
         <th>単価</th>
         <th>金額</th>
     </tr>

@@ -147,7 +147,7 @@ class SC_CartSession {
         return $max;
     }
 
-    // カート内商品数の合計
+    // カート内商品数量の合計
     function getTotalQuantity($productTypeId) {
         $total = 0;
         $max = $this->getMax($productTypeId);

@@ -192,7 +192,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
                 case 'select2':
                     $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam,$this->tpl_classcat_find1,$this->tpl_classcat_find2);
 
-                    // 規格1が設定されている場合
+                    // 規格1が設定されていて、エラーを検出した場合
                     if($this->tpl_classcat_find1 and $this->arrErr['classcategory_id1']) {
                         // templateの変更
                         $this->tpl_mainpage = "products/select_find1.tpl";
@@ -210,7 +210,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
                 case 'selectItem':
                     $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam,$this->tpl_classcat_find1,$this->tpl_classcat_find2);
 
-                    // 規格1が設定されている場合
+                    // 規格2が設定されていて、エラーを検出した場合
                     if($this->tpl_classcat_find2 and $this->arrErr['classcategory_id2']) {
                         // templateの変更
                         $this->tpl_mainpage = "products/select_find2.tpl";
@@ -219,7 +219,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
                     $this->tpl_product_class_id = $objProduct->classCategories[$product_id][$this->objFormParam->getValue('classcategory_id1')]['#' . $this->objFormParam->getValue('classcategory_id2')]['product_class_id'];
 
-                    // 商品数の選択を行う
+                    // 数量の入力を行う
                     $this->tpl_mainpage = "products/select_item.tpl";
                     break;
 

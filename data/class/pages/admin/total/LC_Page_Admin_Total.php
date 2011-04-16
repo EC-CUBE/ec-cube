@@ -806,7 +806,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
                                  '商品コード',
                                  '商品名',
                                  '購入件数',
-                                 '点数',
+                                 '数量',
                                  '単価',
                                  '金額'
                                  );

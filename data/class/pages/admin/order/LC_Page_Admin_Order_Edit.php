@@ -313,7 +313,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam("お届け日(月)", "shipping_date_month", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("お届け日(日)", "shipping_date_day", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("お届け日", "shipping_date", STEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("配送商品数", "shipping_product_quantity", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("配送商品数量", "shipping_product_quantity", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
 
         $objFormParam->addParam("商品規格ID", "shipment_product_class_id", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("商品コード", "shipment_product_code");
@@ -385,7 +385,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
          * フォームの配送先ごとの配列を生成
          *
          * $arrShipmentForm['(key)'][$shipping_index][$item_index] = 値
-         * $arrProductQuantity[$shipping_index] = 配送先ごとの配送商品数
+         * $arrProductQuantity[$shipping_index] = 配送先ごとの配送商品数量
          */
         $arrShipmentForm = array();
         $arrProductQuantity = array();
@@ -400,7 +400,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
                 $arrQuantity[$product_class_id] += $shipment_item['shipment_quantity'];
                 $item_index++;
             }
-            // 配送先ごとの配送商品数を設定
+            // 配送先ごとの配送商品数量を設定
             $arrProductQuantity[$shipping_index] = count($arrShipmentItem[$shipping_id]);
         }
 
@@ -451,7 +451,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
          * 配送商品を設定
          *
          * $arrShipmentItem['shipment_(key)'][$shipping_index][$item_index] = 値
-         * $arrProductQuantity[$shipping_index] = 配送先ごとの配送商品数
+         * $arrProductQuantity[$shipping_index] = 配送先ごとの配送商品数量
          */
         $arrProductQuantity = array();
         $arrShipmentItem = array();
