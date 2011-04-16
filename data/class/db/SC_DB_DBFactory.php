@@ -138,15 +138,6 @@ class SC_DB_DBFactory {
     function concatColumn($columns) { return null; }
 
     /**
-     * テーブルのカラム一覧を取得する.
-     *
-     * @deprecated SC_Query::listTableFields() を使用してください
-     * @param string $table_name テーブル名
-     * @return array テーブルのカラム一覧の配列
-     */
-    function sfGetColumnList($table_name) { return array(); }
-
-    /**
      * テーブルを検索する.
      *
      * 引数に部分一致するテーブル名を配列で返す.

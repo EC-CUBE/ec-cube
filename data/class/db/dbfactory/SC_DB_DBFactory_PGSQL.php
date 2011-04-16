@@ -195,28 +195,6 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
     }
 
     /**
-     * テーブルのカラム一覧を取得する.
-     *
-     * @deprecated SC_Query::listTableFields() を使用してください
-     * @param string $table_name テーブル名
-     * @return array テーブルのカラム一覧の配列
-     */
-    function sfGetColumnList($table_name) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $sql = "  SELECT a.attname "
-             . "    FROM pg_class c, pg_attribute a "
-             . "   WHERE c.relname=? "
-             . "     AND c.oid=a.attrelid "
-             . "     AND a.attnum > 0 "
-             . "     AND not a.attname "
-             . "    LIKE '........pg.dropped.%........' "
-             . "ORDER BY a.attnum";
-        $arrColList = $objQuery->getAll($sql, array($table_name));
-        $arrColList = SC_Utils_Ex::sfswaparray($arrColList);
-        return $arrColList['attname'];
-    }
-
-    /**
      * テーブルを検索する.
      *
      * 引数に部分一致するテーブル名を配列で返す.

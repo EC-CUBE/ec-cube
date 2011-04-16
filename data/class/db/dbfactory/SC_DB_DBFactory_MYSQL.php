@@ -213,21 +213,6 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
     }
 
     /**
-     * テーブルのカラム一覧を取得する.
-     *
-     * @deprecated SC_Query::listTableFields() を使用してください
-     * @param string $table_name テーブル名
-     * @return array テーブルのカラム一覧の配列
-     */
-    function sfGetColumnList($table_name) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $sql = "SHOW COLUMNS FROM $table_name";
-        $arrColList = $objQuery->getAll($sql);
-        $arrColList = SC_Utils_Ex::sfswaparray($arrColList);
-        return $arrColList['field'];
-    }
-
-    /**
      * テーブルを検索する.
      *
      * 引数に部分一致するテーブル名を配列で返す.
