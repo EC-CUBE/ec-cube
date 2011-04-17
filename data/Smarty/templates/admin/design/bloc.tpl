@@ -27,26 +27,36 @@
 <input type="hidden" name="bloc_id" value="<!--{$bloc_id|h}-->" />
 <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 
+    <!--{if $arrErr.err != ""}-->
+        <div class="message">
+            <span class="attention"><!--{$arrErr.err}--></span>
+        </div>
+    <!--{/if}-->
+
     <!--{* ▼ブロック設定 *}-->
     <table>
         <tr>
             <th>ブロック名</th>
             <td>
-                <input type="text" name="bloc_name" value="<!--{$arrBlocData.bloc_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.bloc_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />
-                <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
-                <!--{if $arrErr.bloc_name != ""}--> <div align="center"> <span class="attention"><!--{$arrErr.bloc_name}--></span></div> <!--{/if}-->
+                <!--{assign var=key value="bloc_name"}-->
+                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" />
+                <span class="attention"> (上限<!--{$arrForm[$key].length}-->文字)</span>
+                <!--{if $arrErr[$key] != ""}--> <div class="attention"><!--{$arrErr[$key]}--></div> <!--{/if}-->
             </td>
         </tr>
         <tr>
             <th>ファイル名</th>
-            <td><input type="text" name="filename" value="<!--{$arrBlocData.filename|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.filename != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />.tpl
-            <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
-                <!--{if $arrErr.filename != ""}--> <div align="center"> <span class="attention"><!--{$arrErr.filename}--></span></div> <!--{/if}-->
+            <td>
+                <!--{assign var=key value="filename"}-->
+                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" />.tpl
+                <span class="attention"> (上限<!--{$arrForm[$key].length}-->文字)</span>
+                <!--{if $arrErr[$key] != ""}--> <div class="attention"><!--{$arrErr[$key]}--></div> <!--{/if}-->
             </td>
         </tr>
         <tr>
             <td colspan="2">
-                <textarea class="top" id="bloc_html" name="bloc_html" rows="<!--{$text_row}-->" style="width: 99%;"><!--{$arrBlocData.tpl_data|smarty:nodefaults|h}--></textarea>
+                <!--{assign var=key value="bloc_html"}-->
+                <textarea class="top" id="<!--{$key}-->" name="<!--{$key}-->" rows="<!--{$text_row}-->" style="width: 99%;"><!--{$arrForm[$key].value|smarty:nodefaults|h}--></textarea>
                 <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
                 <div>
                     <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#bloc_html', 50, 13); return false;">拡大</a>

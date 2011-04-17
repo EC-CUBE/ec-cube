@@ -67,52 +67,21 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
     /**
      * Page のアクション.
      *
-     * FIXME テンプレートパスの取得方法を要修正
-     *
      * @return void
      */
     function action() {
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam, $_REQUEST);
+        $objFormParam->setParam($_REQUEST);
+        $objFormParam->convParam();
+        $this->arrErr = $objFormParam->checkError();
+        $is_error = (!SC_Utils_Ex::isBlank($this->arrErr));
 
-       // ページIDを取得
         $bloc_id = $objFormParam->getValue('bloc_id');
         $this->bloc_id = $bloc_id;
 
-        // 端末種別IDを取得
-        $device_type_id = $objFormParam->getValue('device_type_id');
-
+        $device_type_id = $objFormParam->getValue('device_type_id', DEVICE_TYPE_PC);
         $this->objLayout = new SC_Helper_PageLayout_Ex();
-        $package_path = $this->objLayout->getTemplatePath($device_type_id) . BLOC_DIR;
-
-        //サブタイトルの追加
-        $this->tpl_subtitle .= ' - ' . $this->arrDeviceType[$device_type_id];
-
-        // ブロック一覧を取得
-        $this->arrBlocList = $this->lfGetBlocData($device_type_id);
-
-        // bloc_id が指定されている場合にはブロックデータの取得
-        if ($bloc_id != '') {
-            $arrBlocData = $this->lfGetBlocData($device_type_id, "bloc_id = ?",
-                                                array($bloc_id));
-
-            $bloc_file = $arrBlocData[0]['tpl_path'];
-            if (SC_Utils_Ex::isAbsoluteRealPath($bloc_file)) {
-                $tplPath = $bloc_file;
-            } else {
-                $tplPath = SC_Helper_PageLayout_Ex::getTemplatePath($this->objDisplay->detectDevice()) . BLOC_DIR . $bloc_file;
-            }
-
-            // テンプレートファイルの読み込み
-            $arrBlocData[0]['tpl_data'] = file_get_contents($tplPath);
-            $this->arrBlocData = $arrBlocData[0];
-        }
-
-        // メッセージ表示
-        if (isset($_GET['msg']) && $_GET['msg'] == 'on') {
-            // 完了メッセージ
-            $this->tpl_onload="alert('登録が完了しました。');";
-        }
 
         switch($this->getMode()) {
         case 'confirm':
@@ -130,6 +99,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
                 }
 
                 // ファイル作成
+                $package_path = $this->objLayout->getTemplatePath($device_type_id) . BLOC_DIR;
                 $new_bloc_path = $package_path . $_POST['filename'] . ".tpl";
                 // ディレクトリの作成
                 SC_Utils_Ex::sfMakeDir($new_bloc_path);
@@ -178,10 +148,27 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
             exit;
             break;
         default:
-            GC_Utils_Ex::gfPrintLog("MODEエラー：".$this->getMode());
-            break;
+            if (isset($_GET['msg']) && $_GET['msg'] == 'on') {
+                // 完了メッセージ
+                $this->tpl_onload="alert('登録が完了しました。');";
+            }
         }
         $this->device_type_id = $device_type_id;
+
+        if (!$is_error) {
+            // ブロック一覧を取得
+            $this->arrBlocList = $this->objLayout->getBlocs($device_type_id);
+            // bloc_id が指定されている場合にはブロックデータの取得
+            if (!SC_Utils_Ex::isBlank($this->bloc_id)) {
+                $arrBloc = $this->getBlocTemplate($this->device_type_id, $this->bloc_id, $this->objLayout);
+                $objFormParam->setParam($arrBloc);
+            }
+        } else {
+            // 画面にエラー表示しないため, ログ出力
+            GC_Utils_Ex::gfPrintLog('Error: ' . print_r($this->arrErr, true));
+        }
+        $this->tpl_subtitle .= ' - ' . $this->arrDeviceType[$this->device_type_id];
+        $this->arrForm = $objFormParam->getFormParamList();
     }
 
     /**
@@ -197,14 +184,35 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
      * パラメータ情報の初期化
      *
      * @param object $objFormParam SC_FormParamインスタンス
-     * @param array $arrPost $_POSTデータ
      * @return void
      */
-    function lfInitParam(&$objFormParam, $arrPost) {
+    function lfInitParam(&$objFormParam) {
         $objFormParam->addParam("ブロックID", "bloc_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("端末種別ID", "device_type_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"), DEVICE_TYPE_PC);
-        $objFormParam->setParam($arrPost);
-        $objFormParam->convParam();
+        $objFormParam->addParam("端末種別ID", "device_type_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("ブロック名", "bloc_name", STEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("ファイル名", "filename", STEXT_LEN, 'a', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("ブロックデータ", "bloc_html");
+    }
+
+    /**
+     * ブロックのテンプレートを取得する.
+     *
+     * @param integer $device_type_id 端末種別ID
+     * @param integer $bloc_id ブロックID
+     * @param SC_Helper_PageLayout $objLayout SC_Helper_PageLayout インスタンス
+     * @return array ブロック情報の配列
+     */
+    function getBlocTemplate($device_type_id, $bloc_id, &$objLayout) {
+        $arrBloc = $objLayout->getBlocs($device_type_id, 'bloc_id = ?', array($bloc_id));
+        if (SC_Utils_Ex::isAbsoluteRealPath($arrBloc[0]['tpl_path'])) {
+            $tpl_path = $arrBloc[0]['tpl_path'];
+        } else {
+            $tpl_path = SC_Helper_PageLayout_Ex::getTemplatePath($device_type_id) . BLOC_DIR . $arrBloc[0]['tpl_path'];
+        }
+        if (file_exists($tpl_path)) {
+            $arrBloc[0]['bloc_html'] = file_get_contents($tpl_path);
+        }
+        return $arrBloc[0];
     }
 
     /**
