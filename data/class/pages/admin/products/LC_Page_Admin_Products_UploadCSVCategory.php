@@ -371,9 +371,21 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         $sqlval = $this->lfSetCategoryDefaultData($sqlval);
 
         if($sqlval['category_id'] != "") {
-            // UPDATEの実行
+            // 同じidが存在すればupdate存在しなければinsert
             $where = "category_id = ?";
-            $objQuery->update("dtb_category", $sqlval, $where, array($sqlval['category_id']));
+            $category_count = $objQuery->count("dtb_category", $where, array($sqlval['category_id']));
+            if($category_count > 0){
+                // UPDATEの実行
+                $where = "category_id = ?";
+                $objQuery->update("dtb_category", $sqlval, $where, array($sqlval['category_id']));
+            }else{
+                $sqlval['create_date'] = $arrList['update_date'];
+                // 新規登録
+                $category_id = $this->registerCategory($sqlval['parent_category_id'],
+                                        $sqlval['category_name'],
+                                        $_SESSION['member_id'],
+                                        $sqlval['category_id']);
+            }
             $category_id = $sqlval['category_id'];
             // TODO: 削除時処理
         }else{
@@ -435,10 +447,12 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
      */
     function lfCheckErrorDetail($item, $arrErr) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
+        /*
         // カテゴリIDの存在チェック
         if(!$this->lfIsDbRecord('dtb_category', 'category_id', $item)) {
             $arrErr['category_id'] = "※ 指定のカテゴリIDは、登録されていません。";
         }
+        */
         // 親カテゴリIDの存在チェック
         if(array_search('parent_category_id', $this->arrFormKeyList) !== FALSE
                 and $item['parent_category_id'] != ""
@@ -494,9 +508,10 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
      * @param integer 親カテゴリID
      * @param string カテゴリ名
      * @param integer 作成者のID
+     * @param integer 指定カテゴリID
      * @return integer カテゴリID
      */
-    function registerCategory($parent_category_id, $category_name, $creator_id) {
+    function registerCategory($parent_category_id, $category_name, $creator_id, $category_id = null) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $rank = null;
@@ -525,8 +540,19 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         $arrCategory['creator_id']  = $creator_id;
         $arrCategory['rank']        = $rank;
         $arrCategory['level']       = $level;
-        $arrCategory['category_id'] = $objQuery->nextVal('dtb_category_category_id');
+        //カテゴリIDが指定されていればそれを利用する
+        if(isset($category_id)){
+            $arrCategory['category_id'] = $category_id;
+            // シーケンスの調整
+            $seq_count = $objQuery->currVal('dtb_category_category_id');
+            if($seq_count < $arrCategory['category_id']){
+                $objQuery->setVal('dtb_category_category_id', $arrCategory['category_id'] + 1);
+            }
+        }else{
+            $arrCategory['category_id'] = $objQuery->nextVal('dtb_category_category_id');
+        }
         $objQuery->insert("dtb_category", $arrCategory);
+
         return $arrCategory['category_id'];
     }
 
