@@ -320,6 +320,10 @@ INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_da
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (213, 6, 'down_filename', 'ダウンロードファイル名', 13, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (214, 6, 'down_realfilename', 'ダウンロード実ファイル', 14, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,DOWN_FILE_EXISTS');
 
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (251, 8, 'product_id', '商品ID', 1, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK,EXIST_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (252, 8, 'category_id', 'カテゴリID', 2, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK,EXIST_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (253, 8, 'rank', '表示ランク', 3, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+
 INSERT INTO dtb_deliv (deliv_id, product_type_id, name, service_name, confirm_url, rank, status, del_flg, creator_id, create_date, update_date) VALUES (1, 1, 'サンプル業者', 'サンプル業者', NULL, 2, 1, 0, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_deliv (deliv_id, product_type_id, name, service_name, confirm_url, rank, status, del_flg, creator_id, create_date, update_date) VALUES (2, 2, '配送無し(ダウンロード商品用)', 'なし', NULL, 1, 1, 0, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
