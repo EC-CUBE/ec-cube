@@ -149,15 +149,15 @@ $(document).ready(function() {
                      <td colspan="2" class="alignR"><em><!--{$arrData[$key].total-$arrData[$key].deliv_fee|number_format}-->円</em></td>
                  </tr>
                  <!--{if $smarty.const.USE_POINT !== false}-->
-                     <!--{if $arrData.birth_point > 0}-->
+                     <!--{if $arrData[$key].birth_point > 0}-->
                          <tr>
                              <th colspan="3" class="resulttd">お誕生月ポイント</th>
-                             <td colspan="2" class="alignR"><!--{$arrData.birth_point|number_format}-->pt</td>
+                             <td colspan="2" class="alignR"><!--{$arrData[$key].birth_point|number_format}-->pt</td>
                          </tr>
                      <!--{/if}-->
                      <tr>
                          <th colspan="3" class="resulttd">今回加算ポイント</th>
-                         <td colspan="2" class="alignR"><!--{$arrData.add_point|number_format}-->pt</td>
+                         <td colspan="2" class="alignR"><!--{$arrData[$key].add_point|number_format}-->pt</td>
                     </tr>
                 <!--{/if}-->
             </table>
