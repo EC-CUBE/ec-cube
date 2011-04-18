@@ -83,8 +83,11 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
         switch ($this->getMode()) {
         // 登録
         case 'regist':
-            if ($this->doRegister($objFormParam)) {
-                $this->tpl_onload = "alert('登録が完了しました。');";
+            $this->arrErr = $this->lfCheckError($objFormParam, $this->arrErr);
+            if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                if ($this->doRegister($objFormParam)) {
+                    $this->tpl_onload = "alert('登録が完了しました。');";
+                }
             }
             break;
 
@@ -139,7 +142,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return array エラーメッセージの配列
      */
-    function lfCheckError(&$objFormParam, &$arrErr, &$objLayout) {
+    function lfCheckError(&$objFormParam, &$arrErr) {
         $arrParams = $objFormParam->getHashArray();
         $objErr = new SC_CheckError_Ex($arrParams);
         $objErr->arrErr =& $arrErr;

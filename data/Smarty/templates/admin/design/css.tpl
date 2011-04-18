@@ -29,19 +29,28 @@
 <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 <div id="design" class="contents-main">
 
+    <!--{if $arrErr.err != ""}-->
+        <div class="message">
+            <span class="attention"><!--{$arrErr.err}--></span>
+        </div>
+    <!--{/if}-->
+
     <!--▼CSS設定ここから-->
     <table class="form">
         <tr>
             <th>CSSファイル名</th>
             <td>
-                <!--{if $arrErr.css_name != ""}--><span class="attention"><!--{$arrErr.css_name}--></span><br /><!--{/if}-->
-                <input type="text" name="css_name" value="<!--{$css_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.css_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />.css<span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
+                <!--{assign var=key value="css_name"}-->
+                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" />.css
+                <span class="attention"> (上限<!--{$arrForm[$key].length}-->文字)</span>
+                <!--{if $arrErr[$key] != ""}--> <div class="attention"><!--{$arrErr[$key]}--></div> <!--{/if}-->
             </td>
         </tr>
         <tr>
             <th>CSS内容</th>
             <td>
-                <textarea id="css" class="top" name="css" cols=90 rows=<!--{$area_row}--> align="left" wrap=off style="width: 650px;"><!--{$css_data|h}--></textarea>
+                <!--{assign var=key value="css_data"}-->
+                <textarea id="css" class="top" name="<!--{$key}-->" cols="90" rows=<!--{$area_row}--> align="left" style="width: 650px;"><!--{$arrForm[$key].value|h}--></textarea>
                 <input type="hidden" name="area_row" value="<!--{$area_row}-->" />
                 <div class="btn">
                     <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#css', 50, 30); return false;">拡大</a>
