@@ -23,6 +23,7 @@
 
 // {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
+require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_FileManager_Ex.php';
 
 /**
  * ブロック編集 のページクラス.
@@ -77,90 +78,52 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
         $this->arrErr = $objFormParam->checkError();
         $is_error = (!SC_Utils_Ex::isBlank($this->arrErr));
 
-        $bloc_id = $objFormParam->getValue('bloc_id');
-        $this->bloc_id = $bloc_id;
+        $this->bloc_id = $objFormParam->getValue('bloc_id');
+        $this->device_type_id = $objFormParam->getValue('device_type_id', DEVICE_TYPE_PC);
 
-        $device_type_id = $objFormParam->getValue('device_type_id', DEVICE_TYPE_PC);
-        $this->objLayout = new SC_Helper_PageLayout_Ex();
+        $objLayout = new SC_Helper_PageLayout_Ex();
 
         switch($this->getMode()) {
+        // 登録/更新
         case 'confirm':
-            // エラーチェック
-            $this->arrErr = $this->lfErrorCheck($_POST);
-
-            // エラーがなければ更新処理を行う
-            if (count($this->arrErr) == 0) {
-                // DBへデータを更新する
-                $this->lfEntryBlocData($_POST, $device_type_id);
-
-                // 旧ファイルの削除
-                if (file_exists($tplPath)) {
-                    unlink($tplPath);
+            if (!$is_error) {
+                $this->arrErr = $this->lfCheckError($objFormParam, $this->arrErr, $objLayout);
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    $result = $this->doRegister($objFormParam, $objLayout);
+                    if ($result !== false) {
+                        SC_Response_Ex::reload(array('bloc_id' => $result,
+                                                     'device_type_id' => $this->device_type_id,
+                                                     'msg' => 'on'), true);
+                        exit;
+                    }
                 }
-
-                // ファイル作成
-                $package_path = $this->objLayout->getTemplatePath($device_type_id) . BLOC_DIR;
-                $new_bloc_path = $package_path . $_POST['filename'] . ".tpl";
-                // ディレクトリの作成
-                SC_Utils_Ex::sfMakeDir($new_bloc_path);
-                $fp = fopen($new_bloc_path,"w");
-                if (!$fp) {
-                    SC_Utils_Ex::sfDispException();
-                }
-                fwrite($fp, $_POST['bloc_html']); // FIXME いきなり POST はちょっと...
-                fclose($fp);
-
-                $arrBlocData = $this->lfGetBlocData($device_type_id, "filename = ?",
-                                                    array($_POST['filename']));
-
-                $bloc_id = $arrBlocData[0]['bloc_id'];
-                $arrQueryString = array(
-                    'bloc_id' => $bloc_id,
-                    'device_type_id' => $device_type_id,
-                    'msg' => 'on',
-                );
-                $this->objDisplay->reload($arrQueryString, true);
-                exit;
-            }else{
-                // エラーがあれば入力時のデータを表示する
-                $this->arrBlocData = $_POST;
             }
             break;
+
+        // 削除
         case 'delete':
-             // DBへデータを更新する
-            $objQuery =& SC_Query_Ex::getSingletonInstance();
-            $sql = "";                      // データ更新SQL生成用
-            $ret = "";                      // データ更新結果格納用
-
-            // bloc_id が空でない場合にはdeleteを実行
-            if ($bloc_id !== '') {
-                $objQuery->delete('dtb_bloc', 'bloc_id = ? AND device_type_id = ?', array($bloc_id, $device_type_id));
-
-                // ページに配置されているデータも削除する
-                $objQuery->delete('dtb_blocposition', 'bloc_id = ? AND device_type_id = ?', array($bloc_id, $device_type_id));
-
-                // ファイルの削除
-                if (file_exists($tplPath)) {
-                    unlink($tplPath);
+            if (!$is_error) {
+                if ($this->doDelete($objFormParam, $objLayout)) {
+                    SC_Response_Ex::reload(array('device_type_id' => $this->device_type_id,
+                                                 'msg' => 'on'), true);
+                    exit;
                 }
             }
-            $this->objDisplay->reload(array("device_type_id" => $device_type_id), true);
-            exit;
             break;
+
         default:
             if (isset($_GET['msg']) && $_GET['msg'] == 'on') {
                 // 完了メッセージ
-                $this->tpl_onload="alert('登録が完了しました。');";
+                $this->tpl_onload = "alert('登録が完了しました。');";
             }
         }
-        $this->device_type_id = $device_type_id;
 
         if (!$is_error) {
             // ブロック一覧を取得
-            $this->arrBlocList = $this->objLayout->getBlocs($device_type_id);
+            $this->arrBlocList = $objLayout->getBlocs($this->device_type_id);
             // bloc_id が指定されている場合にはブロックデータの取得
             if (!SC_Utils_Ex::isBlank($this->bloc_id)) {
-                $arrBloc = $this->getBlocTemplate($this->device_type_id, $this->bloc_id, $this->objLayout);
+                $arrBloc = $this->getBlocTemplate($this->device_type_id, $this->bloc_id, $objLayout);
                 $objFormParam->setParam($arrBloc);
             }
         } else {
@@ -216,86 +179,134 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
     }
 
     /**
-     * ブロック情報を取得する.
+     * 登録を実行する.
      *
-     * @param integer $device_type_id 端末種別ID
-     * @param string $where Where句文
-     * @param array $arrVal Where句の絞込条件値
-     * @return array ブロック情報
+     * ファイルの作成に失敗した場合は, エラーメッセージを出力し,
+     * データベースをロールバックする.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param SC_Helper_PageLayout $objLayout SC_Helper_PageLayout インスタンス
+     * @return integer|boolean 登録が成功した場合, 登録したブロックID;
+     *                         失敗した場合 false
      */
-    function lfGetBlocData($device_type_id, $where = '', $arrVal = array()){
+    function doRegister(&$objFormParam, &$objLayout) {
+        $arrParams = $objFormParam->getHashArray();
+
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->setOrder("bloc_id");
-        $sql_where = 'device_type_id = ?';
-        $arrSql = array($device_type_id);
-        if (!empty($where)) {
-            $sql_where .= ' AND ' . $where;
-            $arrSql = array_merge($arrSql, $arrVal);
-        }
-        return $objQuery->select("*", "dtb_bloc", $sql_where, $arrSql);
-    }
+        $objQuery->begin();
 
-    /**
-     * ブロック情報を更新する.
-     *
-     * @param array $arrData 更新データ
-     * @param integer $device_type_id 端末種別ID
-     * @return integer 更新結果
-     */
-    function lfEntryBlocData($arrData, $device_type_id){
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $sql = "";                      // データ更新SQL生成用
-        $ret = "";                      // データ更新結果格納用
-        $arrUpdData = array();          // 更新データ生成用
-        $arrChk = array();              // 排他チェック用
+        // blod_id が空の場合は新規登録
+        $is_new = SC_Utils_Ex::isBlank($arrParams['bloc_id']);
+        $bloc_dir = $objLayout->getTemplatePath($arrParams['device_type_id']) . BLOC_DIR;
+        // 既存データの重複チェック
+        if (!$is_new) {
+            $arrExists = $objLayout->getBlocs($arrParams['device_type_id'], 'bloc_id = ?', array($arrParams['bloc_id']));
 
-        // 更新データ生成
-        $arrUpdData = array("bloc_name" => $arrData['bloc_name'],
-                            "tpl_path" => $arrData['filename'] . '.tpl',
-                            'filename' => $arrData['filename']);
-
-        // データが存在しているかチェックを行う
-        if($arrData['bloc_id'] !== ''){
-            $arrChk = $this->lfGetBlocData($device_type_id, "bloc_id = ?",
-                                           array($arrData['bloc_id']));
-        }
-
-        // bloc_id が空 若しくは データが存在していない場合にはINSERTを行う
-        if ($arrData['bloc_id'] === '' or !isset($arrChk[0])) {
-            // SQL生成
-            // FIXME device_type_id ごとの連番にする
-            $arrUpdData['bloc_id'] = $objQuery->nextVal('dtb_bloc_bloc_id');
-            $arrUpdData['device_type_id'] = $device_type_id;
-            $arrUpdData['update_date'] = "now()";
-            $ret = $objQuery->insert('dtb_bloc', $arrUpdData);
-        } else {
-            $ret = $objQuery->update('dtb_bloc', $arrUpdData, 'bloc_id = ? AND device_type_id = ?',
-                                     array($arrData['bloc_id'], $device_type_id));
-        }
-        return $ret;
-    }
-
-    /**
-     * 入力項目のエラーチェックを行う.
-     *
-     * @param array $arrData 入力データ
-     * @return array エラー情報
-     */
-    function lfErrorCheck($array) {
-        $objErr = new SC_CheckError_Ex($array);
-
-        $objErr->doFunc(array("ブロック名", "bloc_name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("ファイル名", 'filename', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "MAX_LENGTH_CHECK","FILE_NAME_CHECK_BY_NOUPLOAD"));
-
-        // 同一のファイル名が存在している場合にはエラー
-        if(!isset($objErr->arrErr['filename']) && $array['filename'] !== ''){
-            $arrChk = $this->lfGetBlocData($array['device_type_id'], "filename = ?", array($array['filename']));
-
-            if (count($arrChk[0]) >= 1 && $arrChk[0]['bloc_id'] != $array['bloc_id']) {
-                $objErr->arrErr['filename'] = '※ 同じファイル名のデータが存在しています。別の名称を付けてください。';
+            // 既存のファイルが存在する場合は削除しておく
+            $exists_file = $bloc_dir . $arrExists[0]['filename'] . '.tpl';
+            if (file_exists($exists_file)) {
+                unlink($exists_file);
             }
         }
 
+        $table = 'dtb_bloc';
+        $arrValues = $objQuery->extractOnlyColsOf($table, $arrParams);
+        $arrValues['tpl_path'] = $arrParams['filename'] . '.tpl';
+        $arrValues['update_date'] = 'now()';
+
+        // 新規登録
+        if ($is_new || SC_Utils_Ex::isBlank($arrExists)) {
+            $objQuery->setOrder('');
+            $arrValues['bloc_id'] = 1 + $objQuery->max('bloc_id', $table, 'device_type_id = ?',
+                                                       array($arrValues['device_type_id']));
+            $arrValues['create_date'] = 'now()';
+            $objQuery->insert($table, $arrValues);
+        }
+        // 更新
+        else {
+            $objQuery->update($table, $arrValues, 'bloc_id = ? AND device_type_id = ?',
+                              array($arrValues['bloc_id'], $arrValues['device_type_id']));
+        }
+
+        $bloc_path = $bloc_dir . $arrValues['tpl_path'];
+        if (!SC_Helper_FileManager_Ex::sfWriteFile($bloc_path, $arrParams['bloc_html'])) {
+            $this->arrErr['err'] = '※ ブロックの書き込みに失敗しました<br />';
+            $objQuery->rollback();
+            return false;
+        }
+
+        $objQuery->commit();
+        return $arrValues['bloc_id'];
+    }
+
+    /**
+     * 削除を実行する.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param SC_Helper_PageLayout $objLayout SC_Helper_PageLayout インスタンス
+     * @return boolean 登録が成功した場合 true; 失敗した場合 false
+     */
+    function doDelete(&$objFormParam, &$objLayout) {
+        $arrParams = $objFormParam->getHashArray();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $objQuery->begin();
+
+        $arrExists = $objLayout->getBlocs($arrParams['device_type_id'], 'bloc_id = ? AND deletable_flg = 1',
+                                          array($arrParams['bloc_id']));
+        $is_error = false;
+        if (!SC_Utils_Ex::isBlank($arrExists)) {
+            $objQuery->delete('dtb_bloc', 'bloc_id = ? AND device_type_id = ?',
+                              array($arrExists[0]['bloc_id'], $arrExists[0]['device_type_id']));
+            $objQuery->delete('dtb_blocposition', 'bloc_id = ? AND device_type_id = ?',
+                              array($arrExists[0]['bloc_id'], $arrExists[0]['device_type_id']));
+
+            $bloc_dir = $objLayout->getTemplatePath($arrParams['device_type_id']) . BLOC_DIR;
+            $exists_file = $bloc_dir . $arrExists[0]['filename'] . '.tpl';
+
+            // ファイルの削除
+            if (file_exists($exists_file)) {
+                if (!unlink($exists_file)) {
+                    $is_error = true;
+                }
+            }
+        } else {
+            $is_error = true;
+        }
+
+        if ($is_error) {
+            $this->arrErr['err'] = '※ ブロックの削除に失敗しました<br />';
+            $objQuery->rollback();
+            return false;
+        }
+        $objQuery->commit();
+        return true;
+    }
+
+    /**
+     * エラーチェックを行う.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return array エラーメッセージの配列
+     */
+    function lfCheckError(&$objFormParam, &$arrErr, &$objLayout) {
+        $arrParams = $objFormParam->getHashArray();
+        $objErr = new SC_CheckError_Ex($arrParams);
+        $objErr->arrErr =& $arrErr;
+        $objErr->doFunc(array("ブロック名", "bloc_name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array('ファイル名', 'filename', STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK","FILE_NAME_CHECK_BY_NOUPLOAD"));
+
+        $where = 'filename = ?';
+        $arrValues = array($arrParams['filename']);
+
+        // 変更の場合は自ブロックを除外
+        if (!SC_Utils_Ex::isBlank($arrParams['bloc_id'])) {
+            $where .= ' AND bloc_id <> ?';
+            $arrValues[] = $arrParams['bloc_id'];
+        }
+        $arrBloc = $objLayout->getBlocs($arrParams['device_type_id'], $where, $arrValues);
+        if (!SC_Utils_Ex::isBlank($arrBloc)) {
+            $objErr->arrErr['filename'] = '※ 同じファイル名のデータが存在しています。別のファイル名を入力してください。<br />';
+        }
         return $objErr->arrErr;
     }
 }

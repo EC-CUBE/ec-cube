@@ -27,6 +27,7 @@
 <input type="hidden" name="bloc_id" value="<!--{$bloc_id|h}-->" />
 <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 
+    <div id="design" class="contents-main">
     <!--{if $arrErr.err != ""}-->
         <div class="message">
             <span class="attention"><!--{$arrErr.err}--></span>
@@ -98,5 +99,5 @@
         <!--{/foreach}-->
     </table>
     <!--{* ▲ブロック一覧 *}-->
-
+  </div>
 </form>

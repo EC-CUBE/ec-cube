@@ -82,6 +82,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         $this->page_id = $objFormParam->getValue('page_id');
 
         switch ($this->getMode()) {
+        // 削除
         case 'delete':
             if (!$is_error) {
                 if ($objLayout->isEditablePage($this->device_type_id, $this->page_id)) {
@@ -93,6 +94,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
             }
             break;
 
+        // 登録/編集
         case 'confirm':
             if (!$is_error) {
                 $this->arrErr = $this->lfCheckError($objFormParam, $this->arrErr);
@@ -106,6 +108,8 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
                     }
                 }
             }
+            break;
+
         default:
             if (isset($_GET['msg']) && $_GET['msg'] == 'on'){
                 $this->tpl_onload = "alert('登録が完了しました。');";
@@ -187,7 +191,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
      * @return integer|boolean 登録が成功した場合, 登録したページID;
      *                         失敗した場合 false
      */
-    function doRegister($objFormParam, &$objLayout) {
+    function doRegister(&$objFormParam, &$objLayout) {
         $filename = $objFormParam->getValue('filename');
         $arrParams['device_type_id'] = $objFormParam->getValue('device_type_id');
         $arrParams['page_id'] = $objFormParam->getValue('page_id');
@@ -274,7 +278,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
                 unset($arrValues['url']);
             }
 
-            $objQuery->update('dtb_pagelayout', $arrValues, 'page_id = ? AND device_type_id = ?',
+            $objQuery->update($table, $arrValues, 'page_id = ? AND device_type_id = ?',
                               array($arrValues['page_id'], $arrValues['device_type_id']));
         }
         return $arrValues['page_id'];
