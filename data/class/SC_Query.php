@@ -76,7 +76,7 @@ class SC_Query {
             $this->conn = MDB2::singleton($dsn, $options);
         }
         if (!PEAR::isError($this->conn)) {
-            $this->conn->setCharset(array("utf8","utf8_general_ci"));
+            $this->conn->setCharset("utf8");
             $this->conn->setFetchMode(MDB2_FETCHMODE_ASSOC);
         }
         $this->dbFactory = SC_DB_DBFactory_Ex::getInstance();
