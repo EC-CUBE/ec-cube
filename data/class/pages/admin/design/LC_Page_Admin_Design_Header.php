@@ -23,6 +23,7 @@
 
 // {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
+require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_FileManager_Ex.php';
 
 /**
  * ヘッダ, フッタ編集 のページクラス.
@@ -67,61 +68,47 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
     /**
      * Page のアクション.
      *
-     * FIXME テンプレートの取得方法を要修正
-     *
      * @return void
      */
     function action() {
-        // 端末種別IDを取得
-        if (isset($_REQUEST['device_type_id'])
-            && is_numeric($_REQUEST['device_type_id'])) {
-            $device_type_id = $_REQUEST['device_type_id'];
-        } else {
-            $device_type_id = DEVICE_TYPE_PC;
+        $objFormParam = new SC_FormParam_Ex();
+        $this->lfInitParam($objFormParam);
+        $objFormParam->setParam($_REQUEST);
+        $objFormParam->convParam();
+        $this->arrErr = $objFormParam->checkError();
+        $is_error = (!SC_Utils_Ex::isBlank($this->arrErr));
+
+        $this->device_type_id = $objFormParam->getValue('device_type_id', DEVICE_TYPE_PC);
+
+        switch ($this->getMode()) {
+        // 登録
+        case 'regist':
+            if ($this->doRegister($objFormParam)) {
+                $this->tpl_onload = "alert('登録が完了しました。');";
+            }
+            break;
+
+        default:
+            break;
         }
-        $this->device_type_id = $device_type_id;
+
+        if (!$is_error) {
+            // テキストエリアに表示
+            $header_path = $this->getTemplatePath($this->device_type_id, 'header');
+            $footer_path = $this->getTemplatePath($this->device_type_id, 'footer');
+            if ($header_path === false || $footer_path === false) {
+                $this->arrErr['err'] = '※ ファイルの取得に失敗しました<br />';
+            } else {
+                $this->header_data = file_get_contents($header_path);
+                $this->footer_data = file_get_contents($footer_path);
+            }
+        } else {
+            // 画面にエラー表示しないため, ログ出力
+            GC_Utils_Ex::gfPrintLog('Error: ' . print_r($this->arrErr, true));
+        }
 
         //サブタイトルの追加
-        $this->tpl_subtitle .= ' - ' . $this->arrDeviceType[$device_type_id];
-
-        // テンプレートのパス
-        $template_path = $this->lfGetTemplatePath($device_type_id);
-
-        // データ更新処理
-        if (isset($_POST['division']) && $_POST['division'] != '') {
-            $division = $_POST['division'];
-            $content = $_POST[$division]; // TODO no checked?
-
-            switch ($this->getMode()) {
-            case 'regist':
-                // 正規のテンプレートに書き込む
-                $template = $template_path . '/' . $division . '.tpl';
-                $this->lfUpdateTemplate($template, $content);
-                $this->tpl_onload="alert('登録が完了しました。');";
-                break;
-            default:
-                // なにもしない
-                break;
-            }
-        }
-
-        // テキストエリアに表示
-        $this->header_data = file_get_contents($template_path . '/header.tpl');
-        $this->footer_data = file_get_contents($template_path . '/footer.tpl');
-
-        // ブラウザタイプ
-        $this->browser_type = isset($_POST['browser_type']) ? $_POST['browser_type'] : "";
-    }
-
-    function lfUpdateTemplate($template, $content) {
-        $fp = fopen($template,'w');
-        fwrite($fp, $content);
-        fclose($fp);
-    }
-
-    function lfGetTemplatePath($device_type_id) {
-        $objLayout = new SC_Helper_PageLayout_Ex();
-        return $objLayout->getTemplatePath($device_type_id);
+        $this->tpl_subtitle .= ' - ' . $this->arrDeviceType[$this->device_type_id];
     }
 
     /**
@@ -132,4 +119,68 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
     function destroy() {
         parent::destroy();
     }
+
+    /**
+     * パラメータ情報の初期化
+     *
+     * @param object $objFormParam SC_FormParamインスタンス
+     * @return void
+     */
+    function lfInitParam(&$objFormParam) {
+        $objFormParam->addParam("端末種別ID", "device_type_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("division", "division", STEXT_LEN, 'a', array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("ヘッダデータ", "header");
+        $objFormParam->addParam("フッタデータ", "footer");
+    }
+
+    /**
+     * エラーチェックを行う.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return array エラーメッセージの配列
+     */
+    function lfCheckError(&$objFormParam, &$arrErr, &$objLayout) {
+        $arrParams = $objFormParam->getHashArray();
+        $objErr = new SC_CheckError_Ex($arrParams);
+        $objErr->arrErr =& $arrErr;
+        $objErr->doFunc(array("division", "division", STEXT_LEN), array("EXIST_CHECK"));
+        return $objErr->arrErr;
+    }
+
+    /**
+     * 登録を実行する.
+     *
+     * ファイルの作成に失敗した場合は, エラーメッセージを出力する.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return integer|boolean 登録が成功した場合 true; 失敗した場合 false
+     */
+    function doRegister(&$objFormParam) {
+        $division = $objFormParam->getValue('division');
+        $contents = $objFormParam->getValue($division);
+        $tpl_path = $this->getTemplatePath($objFormParam->getValue('device_type_id'), $division);
+        if ($tpl_path === false
+            || !SC_Helper_FileManager_Ex::sfWriteFile($tpl_path, $contents)) {
+            $this->arrErr['err'] = '※ ファイルの書き込みに失敗しました<br />';
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * テンプレートパスを取得する.
+     *
+     * @param integer $device_type_id 端末種別ID
+     * @param string $division "header" or "footer"
+     * @return string|boolean 成功した場合, テンプレートのパス; 失敗した場合 false
+     */
+    function getTemplatePath($device_type_id, $division) {
+        $tpl_path = SC_Helper_PageLayout_Ex::getTemplatePath($device_type_id) . '/' . $division . '.tpl';
+        if (file_exists($tpl_path)) {
+            return $tpl_path;
+        } else {
+            return false;
+        }
+    }
 }
+?>

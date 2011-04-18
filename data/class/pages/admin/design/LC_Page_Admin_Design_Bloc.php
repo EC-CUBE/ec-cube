@@ -72,7 +72,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
      */
     function action() {
         $objFormParam = new SC_FormParam_Ex();
-        $this->lfInitParam($objFormParam, $_REQUEST);
+        $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_REQUEST);
         $objFormParam->convParam();
         $this->arrErr = $objFormParam->checkError();
