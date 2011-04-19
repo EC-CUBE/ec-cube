@@ -1,4 +1,4 @@
-<!--{*
+<?php
 /*
  * This file is part of EC-CUBE
  *
@@ -20,9 +20,16 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-*}-->
-<ul class="level1">
-<li<!--{if $tpl_subno == 'index'}--> class="on"<!--{/if}--> id="navi-customer-index"><a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->customer/<!--{$smarty.const.DIR_INDEX_PATH}-->"><span>顧客マスタ</span></a></li>
-<li<!--{if $tpl_subno == 'customer'}--> class="on"<!--{/if}--> id="navi-customer-customer"><a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->customer/edit.php"><span>顧客登録</span></a></li>
-<li<!--{if $tpl_subno == 'customer'}--> class="on"<!--{/if}--> id="navi-customer-upload_csv"><a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->customer/upload_csv.php"><span>顧客登録CSV</span></a></li>
-</ul>
+
+// {{{ requires
+require_once '../require.php';
+require_once CLASS_EX_REALDIR . 'page_extends/admin/Customer/LC_Page_Admin_Customer_UploadCSV_Ex.php';
+
+// }}}
+// {{{ generate page
+
+$objPage = new LC_Page_Admin_Customer_UploadCSV_Ex();
+register_shutdown_function(array($objPage, 'destroy'));
+$objPage->init();
+$objPage->process();
+?>
