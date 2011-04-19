@@ -126,7 +126,7 @@ class SC_UploadFile {
                             if (move_uploaded_file($_FILES[$keyname]['tmp_name'], $this->temp_dir . $this->temp_file[$cnt])) {
                                 GC_Utils_Ex::gfPrintLog($_FILES[$keyname]['name']." -> ". $this->temp_dir . $this->temp_file[$cnt]);
                             } else {
-                                $objErr->arrErr[$keyname] = '※ ファイルのアップロードに失敗しましたん。<br />';
+                                $objErr->arrErr[$keyname] = '※ ファイルのアップロードに失敗しました。<br />';
                                 GC_Utils_Ex::gfPrintLog('File Upload Error!: ' . $_FILES[$keyname]['name']." -> ". $this->temp_dir . $this->temp_file[$cnt]);
                             }
                         }

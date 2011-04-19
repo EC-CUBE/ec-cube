@@ -43,6 +43,13 @@ function confirmSubmit(mode, msg) {
         テンプレートパッケージのアップロードを行います。<br />
         アップロードしたパッケージは、「テンプレート設定」で選択できるようになります。
     </p>
+
+    <!--{if $arrErr.err != ""}-->
+        <div class="message">
+            <span class="attention"><!--{$arrErr.err}--></span>
+        </div>
+    <!--{/if}-->
+
     <table>
         <!--{assign var=key value="template_code"}-->
         <tr>

@@ -37,13 +37,20 @@ function submitRegister() {
 <form name="form1" method="post" action="?">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="" />
-<input type="hidden" name="template_code_temp" value="" />
+<input type="hidden" name="template_code" value="" />
 <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 <div id="design" class="contents-main">
     <p class="remark">
         テンプレートを選択し、「この内容で登録する」ボタンを押すと、<br />
         選択したテンプレートへデザインを変更することが出来ます。
     </p>
+
+    <!--{if $arrErr.err != ""}-->
+        <div class="message">
+            <span class="attention"><!--{$arrErr.err}--></span>
+        </div>
+    <!--{/if}-->
+
     <table class="list center">
         <colgroup width="5%">
         <colgroup width="30%">
@@ -60,11 +67,11 @@ function submitRegister() {
         <!--{foreach from=$templates item=tpl}-->
         <!--{assign var=tplcode value=$tpl.template_code}-->
         <tr class="center">
-            <td><input type="radio" name="template_code" value="<!--{$tplcode|h}-->" <!--{if $tplcode == $tpl_select}-->checked<!--{/if}--> /></td>
+            <td><input type="radio" name="template_code" value="<!--{$tplcode|h}-->" <!--{if $tplcode == $tpl_select}-->checked="checked"<!--{/if}--> /></td>
             <td class="left"><!--{$tpl.template_name|h}--></td>
             <td class="left">data/Smarty/templates/<!--{$tplcode|h}-->/</td>
-            <td><span class="icon_confirm"><a href="#" onClick="fnModeSubmit('download','template_code_temp','<!--{$tplcode}-->');return false;">ダウンロード</a></span></td>
-            <td><span class="icon_delete"><a href="#" onClick="fnModeSubmit('delete','template_code_temp','<!--{$tplcode}-->');return false;">削除</a></span></td>
+            <td><span class="icon_confirm"><a href="javascript:;" onClick="fnFormModeSubmit('form2', 'download','template_code','<!--{$tplcode}-->');return false;">ダウンロード</a></span></td>
+            <td><span class="icon_delete"><a href="javascript:;" onClick="fnFormModeSubmit('form2', 'delete','template_code','<!--{$tplcode}-->');return false;">削除</a></span></td>
         </tr>
         <!--{/foreach}-->
     </table>
@@ -74,4 +81,10 @@ function submitRegister() {
         </ul>
     </div>
 </div>
+</form>
+<form name="form2" method="post" action="?">
+  <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+  <input type="hidden" name="mode" value="" />
+  <input type="hidden" name="template_code" value="" />
+  <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 </form>

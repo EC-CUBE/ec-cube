@@ -2226,7 +2226,7 @@ class SC_Utils {
      * @return boolean 作成に成功した場合 true; 失敗した場合 false
      * @see http://jp.php.net/mkdir
      */
-    function recursiveMkdir($pathname, $mode) {
+    function recursiveMkdir($pathname, $mode = 0777) {
         /*
          * SC_Utils_Ex への再帰は無限ループやメモリリークの懸念
          * 自クラスへ再帰する.

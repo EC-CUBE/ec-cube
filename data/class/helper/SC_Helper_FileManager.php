@@ -363,42 +363,46 @@ class SC_Helper_FileManager {
     /**
      * ユーザが作成したファイルをアーカイブしダウンロードさせる
      * TODO 要リファクタリング
-     * @param void
-     * @return void
+     * @param string $dir アーカイブを行なうディレクトリ
+     * @param string $template_code テンプレートコード
+     * @return boolean 成功した場合 true; 失敗した場合 false
      */
-    function downloadArchiveFiles($dir) {
-        $debug_message = "";
+    function downloadArchiveFiles($dir, $template_code) {
         // ダウンロードされるファイル名
-        $dlFileName = 'tpl_package_' . date('YmdHis') . '.tar.gz';
+        $dlFileName = 'tpl_package_' . $template_code . '_' . date('YmdHis') . '.tar.gz';
 
+        $debug_message = $dir . " から " . $dlFileName . " を作成します...\n";
         // ファイル一覧取得
         $arrFileHash = SC_Utils_Ex::sfGetFileList($dir);
         foreach($arrFileHash as $val) {
             $arrFileList[] = $val['file_name'];
             $debug_message.= "圧縮：".$val['file_name']."\n";
         }
-        GC_Utils_Ex::gfDebugLog($debug_message);
+        GC_Utils_Ex::gfPrintLog($debug_message);
 
         // ディレクトリを移動
         chdir($dir);
         // 圧縮をおこなう
         $tar = new Archive_Tar($dlFileName, true);
-        $tar->create($arrFileList);
-
-        // ダウンロード用HTTPヘッダ出力
-        header("Content-disposition: attachment; filename=${dlFileName}");
-        header("Content-type: application/octet-stream; name=${dlFileName}");
-        header("Content-Length: " . filesize($dlFileName));
-        readfile($dlFileName);
-        unlink($dir . "/" . $dlFileName);
-        exit;
+        if ($tar->create($arrFileList)) {
+            // ダウンロード用HTTPヘッダ出力
+            header("Content-disposition: attachment; filename=${dlFileName}");
+            header("Content-type: application/octet-stream; name=${dlFileName}");
+            header("Cache-Control: ");
+            header("Pragma: ");
+            readfile($dlFileName);
+            unlink($dir . "/" . $dlFileName);
+            return true;
+        } else {
+            return false;
+        }
     }
 
    /**
      * tarアーカイブを解凍する.
      *
      * @param string $path アーカイブパス
-     * @return string Archive_Tar::extractModify()のエラー
+     * @return boolean Archive_Tar::extractModify()のエラー
      */
     function unpackFile($path) {
         // 圧縮フラグTRUEはgzip解凍をおこなう
@@ -411,13 +415,14 @@ class SC_Helper_FileManager {
         $unpacking_name = preg_replace("/(\.tar|\.tar\.gz)$/", "", $file_name);
 
         // 指定されたフォルダ内に解凍する
-        $tar->extractModify($dir. "/", $unpacking_name);
+        $result = $tar->extractModify($dir. "/", $unpacking_name);
         GC_Utils_Ex::gfPrintLog("解凍：" . $dir."/".$file_name."->".$dir."/".$unpacking_name);
 
         // フォルダ削除
         SC_Utils_Ex::sfDelFile($dir . "/" . $unpacking_name);
         // 圧縮ファイル削除
         unlink($path);
+        return $result;
     }
 }
 ?>
