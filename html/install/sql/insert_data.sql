@@ -1287,8 +1287,8 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USE_POINT', 'true',
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('NOSTOCK_HIDDEN', 'false', 291, '在庫無し商品の非表示(true:非表示、false:表示)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USE_MOBILE', 'true', 292, 'モバイルサイトを利用するか(true:利用する、false:利用しない) (false は一部対応)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEFAULT_TEMPLATE_NAME', '"default"', 300, 'デフォルトテンプレート名(PC)');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMARTPHONE_DEFAULT_TEMPLATE_NAME', '"mobile"', 301, 'デフォルトテンプレート名(モバイル)');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_DEFAULT_TEMPLATE_NAME', '"sphone"', 302, 'デフォルトテンプレート名(スマートフォン)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_DEFAULT_TEMPLATE_NAME', '"mobile"', 301, 'デフォルトテンプレート名(モバイル)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMARTPHONE_DEFAULT_TEMPLATE_NAME', '"sphone"', 302, 'デフォルトテンプレート名(スマートフォン)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TEMPLATE_NAME', '"default"', 303, 'テンプレート名');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_TEMPLATE_NAME', '"mobile"', 304, 'モバイルテンプレート名');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMARTPHONE_TEMPLATE_NAME', '"sphone"', 305, 'スマートフォンテンプレート名');
