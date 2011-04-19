@@ -32,7 +32,7 @@ require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_CSV_Ex.php';
  * @author LOCKON CO.,LTD.
  *
  */
-class LC_Page_Admin_Order_UploadCSV extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Order_UploadCSVDetail extends LC_Page_Admin_Ex {
 
     // }}}
     // {{{ functions
@@ -42,9 +42,6 @@ class LC_Page_Admin_Order_UploadCSV extends LC_Page_Admin_Ex {
 
     /** 受注テーブルカラム情報 (登録処理用) **/
     var $arrOrderColumn;
-
-    /** 配送先テーブルカラム情報 (登録処理用) **/
-    var $arrShippingColumn;
 
     /** 登録フォームカラム情報 **/
     var $arrFormKeyList;
@@ -60,12 +57,12 @@ class LC_Page_Admin_Order_UploadCSV extends LC_Page_Admin_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = 'order/upload_csv.tpl';
+        $this->tpl_mainpage = 'order/upload_csv_detail.tpl';
         $this->tpl_subnavi = 'order/subnavi.tpl';
         $this->tpl_mainno = 'order';
         $this->tpl_subno = 'upload_csv';
-        $this->tpl_subtitle = '新規受注登録CSV';
-        $this->csv_id = '9';
+        $this->tpl_subtitle = '受注明細追加登録CSV';
+        $this->csv_id = '10';
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrDISP = $masterData->getMasterData("mtb_disp");
@@ -238,17 +235,25 @@ class LC_Page_Admin_Order_UploadCSV extends LC_Page_Admin_Ex {
                 $errFlag = true;
                 break;
             }
+            
+            $product_class_id = $this->lfGetProductClassId($objQuery,$objFormParam);
 
+            if(!is_numeric($product_class_id)){
+                $this->addRowErr($line_count, '規格が存在しません。');
+                $errFlag = true;
+                break;
+            }
+            
             if ($all_line_checked) {
-                $order_id = $this->lfRegistOrder($objQuery, $line_count, $objFormParam);
+                $this->lfRegistOrder($objQuery, $line_count, $objFormParam, $product_class_id);
                 $arrParam = $objFormParam->getHashArray();
 
-                $this->addRowResult($line_count, "受注ID：".$order_id );
+                $this->addRowResult($line_count, "受注ID：".$arrParam['order_id'] ."/商品ID：". $arrParam['product_id']);
             }
         }
 
         // 実行結果画面を表示
-        $this->tpl_mainpage = 'order/upload_csv_complete.tpl';
+        $this->tpl_mainpage = 'order/upload_csv_detail_complete.tpl';
 
         fclose($fp);
 
@@ -258,7 +263,6 @@ class LC_Page_Admin_Order_UploadCSV extends LC_Page_Admin_Ex {
         }
 
         $objQuery->commit();
-
         return;
     }
 
@@ -354,10 +358,72 @@ class LC_Page_Admin_Order_UploadCSV extends LC_Page_Admin_Ex {
      */
     function lfInitTableInfo() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $this->arrOrderColumn = $objQuery->listTableFields('dtb_order');
-        $this->arrShippingColumn = $objQuery->listTableFields('dtb_shipping');
+        $this->arrOrderColumn = $objQuery->listTableFields('dtb_order_detail');
     }
+    
+    /**
+     * 規格名称等からproduct_class_idを出す.
+     *
+     *
+     * @param SC_Query $objQuery SC_Queryインスタンス
+     * @return product_class_id 規格ID
+     */
+    function lfGetProductClassId($objQuery,$objFormParam){
+        // 登録データ対象取得
+        $arrList = $objFormParam->getHashArray();
+        //規格ある場合
+        if($arrList['parent_class_name'] != "" && $arrList['parent_classcategory_name'] != ""){
+        $parent_class_id = $objQuery->getOne("SELECT class_id FROM dtb_class WHERE name = ?", array($arrList['parent_class_name']));
+        $classcategory_id1 = $objQuery->getOne("SELECT classcategory_id FROM dtb_classcategory WHERE class_id =? AND name = ?", array($parent_class_id,$arrList['parent_classcategory_name']));
 
+        $class_combination_id = $objQuery->select("class_combination_id", "dtb_class_combination", "classcategory_id = ?", array($classcategory_id1));
+        // where文作成
+        $where = "";
+        $arrval = array();
+        foreach($class_combination_id as $val){
+            if($where == ""){
+                $where = "( parent_class_combination_id = ?";
+            }else{
+                $where .= " OR parent_class_combination_id = ?";
+            }
+                $arrval[] = $val['class_combination_id'];
+        }
+        $where .= " )";
+        if($arrList['class_name'] != "" && $arrList['classcategory_name'] != ""){
+            $class_id = $objQuery->getOne("SELECT class_id FROM dtb_class WHERE name = ?", array($arrList['class_name']));
+            $classcategory_id2 = $objQuery->getOne("SELECT classcategory_id FROM dtb_classcategory WHERE class_id =? AND name = ?", array($class_id,$arrList['classcategory_name']));
+            $where .= " AND classcategory_id = ?";
+            $arrval[] = $classcategory_id2;
+            
+            $class_combination_id = $objQuery->getOne("SELECT class_combination_id FROM dtb_class_combination WHERE ".$where, $arrval);
+            $product_class_id = $objQuery->getOne("SELECT product_class_id FROM dtb_products_class WHERE product_id = ? AND class_combination_id = ?", array($arrList['product_id'], $class_combination_id));
+        }else{
+            $where .= " AND product_id = ?";
+            $arrval[] = $arrList['product_id'];
+            $product_class_id = $objQuery->getOne("SELECT product_class_id FROM dtb_products_class WHERE ".$where, $arrval);
+        }
+
+        //規格無い場合
+        }else{
+            $product_class_id = $objQuery->getOne("SELECT product_class_id FROM dtb_products_class WHERE product_id = ? AND class_combination_id IS NULL", array($arrList['product_id']));
+        }
+        /*
+        if($arrList['parent_classcategory_name'] != ""){
+            $sqlval['classcategory_name1'] = $arrList['parent_classcategory_name'];
+        }else{
+            $sqlval['classcategory_name1'] = NULL;
+        }
+        
+        if($arrList['classcategory_name'] != ""){
+            $sqlval['classcategory_name2'] = $arrList['classcategory_name'];
+        }else{
+            $sqlval['classcategory_name2'] = NULL;
+        }
+        */
+        return $product_class_id;
+    }
+    
+    
     /**
      * 新規受注登録を行う.
      *
@@ -366,74 +432,21 @@ class LC_Page_Admin_Order_UploadCSV extends LC_Page_Admin_Ex {
      * @param string|integer $line 処理中の行数
      * @return void
      */
-    function lfRegistOrder($objQuery, $line = "", &$objFormParam) {
+    function lfRegistOrder($objQuery, $line = "", &$objFormParam, $product_class_id) {
         // 登録データ対象取得
         $arrList = $objFormParam->getHashArray();
-        // 登録時間を生成(DBのnow()だとcommitした際、すべて同一の時間になってしまう)
-        $arrList['update_date'] = $this->lfGetDbFormatTimeWithLine($line);
 
         // 商品テーブルのカラムに存在しているもののうち、Form投入設定されていないデータは上書きしない。
         $sqlval = SC_Utils_Ex::sfArrayIntersectKeys($arrList, $this->arrOrderColumn);
+        
+        $sqlval['product_class_id'] = $product_class_id;
 
         // 必須入力では無い項目だが、空文字では問題のある特殊なカラム値の初期値設定
         $sqlval = $this->lfSetOrderDefaultData($sqlval);
-
-        if($sqlval['order_id'] != "") {
-            $sqlval['create_date'] = $arrList['update_date'];
-            // INSERTの実行
-            $objQuery->insert("dtb_order", $sqlval);
-            // シーケンスの調整
-            $seq_count = $objQuery->currVal('dtb_order_order_id');
-            if($seq_count < $sqlval['order_id']){
-                $objQuery->setVal('dtb_order_order_id', $sqlval['order_id'] + 1);
-            }
-            $order_id = $sqlval['order_id'];
-        } else {
-            // 新規登録
-            $sqlval['order_id'] = $objQuery->nextVal('dtb_order_order_id');
-            $order_id = $sqlval['order_id'];
-            $sqlval['create_date'] = $arrList['update_date'];
-            // INSERTの実行
-            $objQuery->insert("dtb_order", $sqlval);
-        }
-        // 配送先情報を登録する
-        $this->lfRegistShipping($objQuery, $arrList, $order_id);
-        return $order_id;
-    }
-
-    /**
-     * 配送先登録を行う.
-     *
-     * @param SC_Query $objQuery SC_Queryインスタンス
-     * @param array $arrList 受注登録情報配列
-     * @param integer $order_id 受注ID
-     * @return void
-     */
-     function lfRegistShipping($objQuery, $arrList, $order_id) {
-        // 配送先登録情報を生成する。
-        // 配送先テーブルのカラムに存在しているもののうち、Form投入設定されていないデータは上書きしない。
-        $sqlval = SC_Utils_Ex::sfArrayIntersectKeys($arrList, $this->arrShippingColumn);
-        // 必須入力では無い項目だが、空文字では問題のある特殊なカラム値の初期値設定
-        $sqlval = $this->lfSetShippingDefaultData($sqlval);
-        
-        $objQuery->delete("dtb_shipping", "order_id = ?", array($order_id));
-        
-        // 配送日付を timestamp に変換
-        if (!SC_Utils_Ex::isBlank($sqlval['shipping_date'])) {
-            $d = mb_strcut($sqlval["shipping_date"], 0, 10);
-            $arrDate = explode("/", $d);
-            $ts = mktime(0, 0, 0, $arrDate[1], $arrDate[2], $arrDate[0]);
-            $sqlval['shipping_date'] = date("Y-m-d", $ts);
-        }
-        // 非会員購入の場合は shipping_id が存在しない
-        if (!is_numeric($sqlval['shipping_id'])) {
-            $sqlval['shipping_id'] = '0';
-        }
-        $sqlval['order_id'] = $order_id;
-        //$sqlval['product_class_id'] = $objQuery->nextVal('dtb_products_class_product_class_id');
-        $sqlval['create_date'] = $arrList['update_date'];
+        $sqlval['order_detail_id'] = $objQuery->nextVal('dtb_order_detail_order_detail_id');
         // INSERTの実行
-        $objQuery->insert("dtb_shipping", $sqlval);
+        $objQuery->insert("dtb_order_detail", $sqlval);
+            
     }
 
     /**
@@ -445,12 +458,6 @@ class LC_Page_Admin_Order_UploadCSV extends LC_Page_Admin_Ex {
     function lfSetParamDefaultValue(&$arrCSVFrame) {
         foreach($arrCSVFrame as $key => $val) {
             switch($val['col']) {
-                case 'status':
-                    $arrCSVFrame[$key]['default'] = '1';
-                    break;
-                case 'del_flg':
-                    $arrCSVFrame[$key]['default'] = '0';
-                    break;
                 default:
                     break;
             }
@@ -465,19 +472,6 @@ class LC_Page_Admin_Order_UploadCSV extends LC_Page_Admin_Ex {
      * @return $sqlval 登録情報配列
      */
     function lfSetOrderDefaultData(&$sqlval) {
-        if($sqlval['del_flg'] == ""){
-            $sqlval['del_flg'] = '0'; //有効
-        }
-        return $sqlval;
-    }
-
-    /**
-     * 配送先データ登録前に特殊な値の持ち方をする部分のデータ部分の初期値補正を行う
-     *
-     * @param array $sqlval 配送先登録情報配列
-     * @return $sqlval 登録情報配列
-     */
-    function lfSetShippingDefaultData(&$sqlval) {
         return $sqlval;
     }
 
@@ -489,26 +483,15 @@ class LC_Page_Admin_Order_UploadCSV extends LC_Page_Admin_Ex {
      * @return array エラー配列
      */
     function lfCheckErrorDetail($item, $arrErr) {
-        // 顧客IDの存在チェック
-        if(!$this->lfIsDbRecord('dtb_customer', 'customer_id', $item)) {
-            $arrErr['product_class_id'] = "※ 指定の顧客IDは、登録されていません。";
+        // 受注IDの存在チェック
+        if(!$this->lfIsDbRecord('dtb_order', 'order_id', $item)) {
+            $arrErr['order_id'] = "※ 指定の受注IDは、登録されていません。";
         }
-        // 対応状況の存在チェック
-        if(!$this->lfIsArrayRecord($this->arrOrderSTATUS, 'status', $item)) {
-            $arrErr['status'] = "※ 指定の対応状況は、登録されていません。";
+        // 商品IDの存在チェック
+        if(!$this->lfIsDbRecord('dtb_products', 'product_id', $item)) {
+            $arrErr['order_id'] = "※ 指定の受注IDは、登録されていません。";
         }
-        // 支払い方法IDの存在チェック
-        if(!$this->lfIsArrayRecordMulti($this->arrPayments, 'product_payment_ids', $item, ',')) {
-            $arrErr['product_payment_ids'] = "※ 指定の支払い方法IDは、登録されていません。";
-        }
-        // 削除フラグのチェック
-        if(array_search('del_flg', $this->arrFormKeyList) !== FALSE
-                and $item['del_flg'] != "") {
-            if(!($item['del_flg'] == "0" or $item['del_flg'] == "1")) {
-                $arrErr['del_flg'] = "※ 削除フラグは「0」(有効)、「1」(削除)のみが有効な値です。";
-            }
-        }
-
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         return $arrErr;
     }
 
