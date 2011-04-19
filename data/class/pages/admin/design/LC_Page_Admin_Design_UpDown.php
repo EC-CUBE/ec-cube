@@ -178,9 +178,9 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
         $arrArchive = $tar->listContent();
         if (!is_array($arrArchive)) {
             $arrErr['template_file'] = "※ テンプレートファイルが解凍できません。許可されている形式は、tar/tar.gzです。<br />";
+        } else {
+            $arrErr['template_file'] = $objUpFile->makeTempFile('template_file', false);
         }
-
-        $arrErr['template_file'] = $objUpFile->makeTempFile('template_file', false);
         return $arrErr;
     }
 
