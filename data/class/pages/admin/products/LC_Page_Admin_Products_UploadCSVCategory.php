@@ -241,7 +241,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
 
         fclose($fp);
 
-        if ($errFlg) {
+        if ($errFlag) {
             $objQuery->rollback();
             return;
         }
