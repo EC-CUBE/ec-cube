@@ -319,7 +319,7 @@ class SC_Helper_Customer {
 
         }
 
-        if (SC_MobileUserAgent_Ex::isMobile()) {
+        if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
             // 登録確認画面の「戻る」ボタンのためのパラメーター
             $objFormParam->addParam("戻る", "return", '', '', array(), '', false);
         }
