@@ -1,5 +1,15 @@
 <script type="text/javascript">
-
+    $(function() {
+        var page_id = '<!--{$page_id|h}-->';
+        if (page_id != '1') {
+            $('.anywhere').attr('disabled', true);
+            $('.anywhere:checked').each(function() {
+                $(this).parents('.sort').children('input[type=hidden]').each(function() {
+                    $(this).remove();
+                });
+            });
+        }
+    });
 function doPreview(){
     document.form1.mode.value="preview"
     document.form1.target = "_blank";
