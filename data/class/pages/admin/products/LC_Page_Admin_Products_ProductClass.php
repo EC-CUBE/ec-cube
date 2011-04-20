@@ -89,6 +89,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 $this->tpl_mainpage = 'products/product_class_confirm.tpl';
                 $this->doDisp($objFormParam);
+                $this->fillCheckboxesValue('stock_unlimited', $_POST['total']);
                 $objFormParam->setParam($_POST);
                 $objFormParam->convParam();
             }
@@ -774,5 +775,22 @@ __EOF__;
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = "product_code, price01, price02, stock, stock_unlimited, sale_limit, deliv_fee, point_rate";
         return $objQuery->getRow($col, "dtb_products_class", "product_id = ? AND class_combination_id IS NULL", array($product_id));
+    }
+
+    /**
+     * チェックボックスの値を埋める.
+     *
+     * チェックボックスが, すべて空で submit されると, $_POST の値が全く渡らない
+     * ため, SC_FormParam::getValue() で取得できない.
+     * これを防ぐため, $_POST[$key] を直接操作し, 指定の長さで空白の配列を作成する
+     *
+     * @param string $key $_POST のキー
+     * @param integer $size 作成する配列のサイズ
+     * @return void
+     */
+    function fillCheckboxesValue($key, $size) {
+        if (empty($_POST[$key])) {
+            $_POST[$key] = array_pad(array(), $size, '');
+        }
     }
 }
