@@ -86,6 +86,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
         $this->is_multiple = $objPurchase->isMultiple();
         $this->tpl_uniqid = $objSiteSess->getUniqId();
         $cart_key = $objCartSess->getKey();
+        $this->cartKey = $cart_key;
         $objPurchase->verifyChangeCart($this->tpl_uniqid, $objCartSess);
 
         // 配送業者を取得
