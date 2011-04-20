@@ -56,16 +56,18 @@
             <colgroup width="25%">
             <colgroup width="28%">
             <colgroup width="7%">
-            <colgroup width="10%">
+            <colgroup width="5%">
+            <colgroup width="5%">
             <colgroup width="5%">
             <tr>
-                <th >プラグイン名</th>
+                <th>プラグイン名</th>
                 <th>作者</th>
                 <th>サイトURL</th>
                 <th>説明</th>
                 <th>ステータス</th>
                 <th>操作</th>
                 <th>設定</th>
+                <th>移動</th>
             </tr>
             <!--{section name=data loop=$plugins}-->
             <tr>
@@ -99,7 +101,14 @@
                         -
                     <!--{/if}-->
                 </td>
-
+                <td align="center">
+                <!--{if $smarty.section.data.iteration != 1}-->
+                <a href="?" onclick="fnModeSubmit('up','plugin_id', '<!--{$plugins[data].plugin_id}-->'); return false;">上へ</a>
+                <!--{/if}-->
+                <!--{if $smarty.section.data.iteration != $smarty.section.data.last}-->
+                <a href="?" onclick="fnModeSubmit('down','plugin_id', '<!--{$plugins[data].plugin_id}-->'); return false;">下へ</a>
+                <!--{/if}-->
+                </td>
             </tr>
             <!--{/section}-->
         </table>

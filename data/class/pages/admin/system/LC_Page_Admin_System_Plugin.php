@@ -118,6 +118,23 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                 }
             }
             break;
+        case 'up':
+            $this->arrErr = $objFormParam->checkError();
+            if(count($this->arrErr) == 0) {
+                $plugin_id = $objFormParam->getValue('plugin_id');
+                SC_Helper_DB_Ex::sfRankUp("dtb_plugin", "plugin_id", $plugin_id);
+                SC_Response_Ex::reload();
+            }
+            break;
+        case 'down':
+            $this->arrErr = $objFormParam->checkError();
+            if(count($this->arrErr) == 0) {
+                $plugin_id = $objFormParam->getValue('plugin_id');
+                SC_Helper_DB_Ex::sfRankDown("dtb_plugin", "plugin_id", $plugin_id);
+                SC_Response_Ex::reload();
+            }
+            break;
+
         default:
             break;
         }
@@ -268,6 +285,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
 
         $sqlval['plugin_id'] = $objQuery->nextVal('dtb_plugin_plugin_id');
         $sqlval['plugin_code'] = $plugin_code;
+        $sqlval['rank'] = 1 + $objQuery->max('rank', 'dtb_plugin');
         $sqlval['status'] = PLUGIN_STATUS_UPLOADED;
         $sqlval['enable'] = PLUGIN_ENABLE_FALSE;
         $sqlval['update_date'] = 'now()';

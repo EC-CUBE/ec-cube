@@ -39,22 +39,39 @@ class SC_Helper_Plugin{
         $col = "*";
         $table = "dtb_plugin";
         $where = "enable = 1 AND del_flg = 0";
+        // XXX 2.11.0 互換のため
+        $arrCols = $objQuery->listTableFields($table);
+        if (in_array('rank', $arrCols)) {
+            $objQuery->setOrder('rank');
+        }
         $arrRet = $objQuery->select($col, $table, $where);
         $class_name = get_class($lcpage);
 
-        // 実行されたぺーじ
         // 現在のページで使用するプラグインが存在するかどうかを検証する
         foreach ($arrRet as $plugins){
             // プラグインを稼働させるクラス名のリストを取得する
             // プラグインのディレクトリ内の設定ファイルを参照する
-            $plugin_name = $plugins['name'];
+            $plugin_name = $plugins['plugin_name'];
             $plugin_class_name = $plugins['class_name'];
-            require_once DATA_REALDIR."plugin/{$plugin_name}/{$plugin_class_name}.php";
+            $plugin_path = DATA_REALDIR . "plugin/{$plugin_name}/{$plugin_class_name}.php";
 
-            $code_str = "\$is_enable = {$plugin_class_name}::isEnable(\$class_name);";
-            eval($code_str);
-            if ($is_enable) {
-                $arrPluginList[] = $plugin_class_name;
+            if (file_exists($plugin_path)) {
+                require_once $plugin_path;
+                if (class_exists($class_name)) {
+                    $code_str = "\$is_enable = {$plugin_class_name}::isEnable(\$class_name);";
+                    eval($code_str);
+                    if ($is_enable) {
+                        $arrPluginList[] = $plugin_class_name;
+                        GC_Utils_Ex::gfDebugLog($class_name . ' で、プラグイン ' . $plugin_name . ' をロードしました');
+                    } else {
+                        GC_Utils_Ex::gfDebugLog($class_name . ' で、プラグイン ' . $plugin_name . ' は無効になっています');
+                    }
+                } else {
+                    GC_Utils_Ex::gfDebugLog('プラグイン ' . $plugin_name . ' の ' . $class_name . ' が見つかりませんでした');
+                }
+            } else {
+                GC_Utils_Ex::gfDebugLog('プラグイン ' . $plugin_name . " が読み込めませんでした。\n"
+                                        . 'Failed opening required ' . $plugin_path);
             }
         }
         return $arrPluginList;
@@ -95,6 +112,11 @@ class SC_Helper_Plugin{
         $col = '*';
         $table = 'dtb_plugin';
         $where = 'enable = 1 AND del_flg = 0';
+        // XXX 2.11.0 互換のため
+        $arrCols = $objQuery->listTableFields($table);
+        if (in_array('rank', $arrCols)) {
+            $objQuery->setOrder('rank DESC');
+        }
         $arrRet = $objQuery->select($col,$table,$where);
         return $arrRet;
     }
@@ -107,6 +129,11 @@ class SC_Helper_Plugin{
         $col = '*';
         $table = 'dtb_plugin';
         $where = 'del_flg = 0';
+        // XXX 2.11.0 互換のため
+        $arrCols = $objQuery->listTableFields($table);
+        if (in_array('rank', $arrCols)) {
+            $objQuery->setOrder('rank DESC');
+        }
         $arrRet = $objQuery->select($col,$table,$where);
         return $arrRet;
     }

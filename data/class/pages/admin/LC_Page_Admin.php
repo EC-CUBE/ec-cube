@@ -65,8 +65,8 @@ class LC_Page_Admin extends LC_Page_Ex {
         $this->objDisplay = new SC_Display_Ex();
 
         // プラグインクラス生成
-        // $this->objPlagin = new SC_Helper_Plugin_Ex();
-        // $this->objPlagin->preProcess($this);
+        $this->objPlagin = new SC_Helper_Plugin_Ex();
+        $this->objPlagin->preProcess($this);
 
         // トランザクショントークンの検証と生成
         $this->doValidToken(true);
@@ -87,6 +87,10 @@ class LC_Page_Admin extends LC_Page_Ex {
      * @return void
      */
     function sendResponse() {
+        if (isset($this->objPlagin)) { // FIXME モバイルエラー応急対応
+            // post-prosess処理(暫定的)
+            $this->objPlagin->process($this);
+        }
         $this->objDisplay->prepare($this, true);
         $this->objDisplay->response->write();
     }

@@ -1142,6 +1142,7 @@ CREATE TABLE dtb_plugin (
     plugin_description varchar(255) NOT NULL DEFAULT '',
     plugin_setting_path varchar(255) NOT NULL DEFAULT '',
     class_name varchar(255) NOT NULL DEFAULT '',
+    rank int NOT NULL DEFAULT 0,
     status smallint NOT NULL DEFAULT 0,
     enable smallint NOT NULL DEFAULT 0,
     del_flg smallint NOT NULL DEFAULT 0,
