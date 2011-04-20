@@ -49,10 +49,9 @@
                         var payment_tbody = $('#payment tbody');
                         payment_tbody.empty();
                         for (var i in data.arrPayment) {
-                            // ラジオボタン
-                            var radio = $('<input type="radio" />')
-                                .attr('name', 'payment_id')
-                                .attr('id', 'pay_' + i)
+                            // ラジオボタン 
+                            <!--{* IE7未満対応のため name と id をベタ書きする *}-->
+                            var radio = $('<input type="radio" name="payment_id" id="pay_' + i + '" />')
                                 .val(data.arrPayment[i].payment_id);
                             // ラベル
                             var label = $('<label />')
