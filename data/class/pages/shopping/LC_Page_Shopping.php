@@ -82,6 +82,9 @@ class LC_Page_Shopping extends LC_Page_Ex {
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objFormParam = new SC_FormParam_Ex();
 
+        $nonmember_mainpage = 'shopping/nonmember_input.tpl';
+        $nonmember_title = 'お客様情報入力';
+
         $this->tpl_uniqid = $objSiteSess->getUniqId();
         $objPurchase->verifyChangeCart($this->tpl_uniqid, $objCartSess);
 
@@ -150,11 +153,10 @@ class LC_Page_Shopping extends LC_Page_Ex {
 
         // お客様情報登録
         case 'nonmember_confirm':
-            $this->tpl_mainpage = 'shopping/nonmember_input.tpl';
-            $this->tpl_title = 'お客様情報入力';
+            $this->tpl_mainpage = $nonmember_mainpage;
+            $this->tpl_title = $nonmember_title;
             $this->lfInitParam($objFormParam);
             $objFormParam->setParam($_POST);
-
             $this->arrErr = $this->lfCheckError($objFormParam);
 
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
@@ -188,20 +190,22 @@ class LC_Page_Shopping extends LC_Page_Ex {
                 SC_Response_Ex::sendRedirect(MULTIPLE_URLPATH);
                 exit;
             }
-            // ※breakなし
+            $this->tpl_mainpage = $nonmember_mainpage;
+            $this->tpl_title = $nonmember_title;
+            break;
 
         // お客様情報入力ページの表示
         case 'nonmember':
-            $this->tpl_mainpage = 'shopping/nonmember_input.tpl';
-            $this->tpl_title = 'お客様情報入力';
+            $this->tpl_mainpage = $nonmember_mainpage;
+            $this->tpl_title = $nonmember_title;
             $this->lfInitParam($objFormParam);
             // ※breakなし
 
         default:
             // 前のページから戻ってきた場合は, お客様情報入力ページ
             if (isset($_GET['from']) && $_GET['from'] == 'nonmember') {
-                $this->tpl_mainpage = 'shopping/nonmember_input.tpl';
-                $this->tpl_title = 'お客様情報入力';
+                $this->tpl_mainpage = $nonmember_mainpage;
+                $this->tpl_title = $nonmember_title;
                 $this->lfInitParam($objFormParam);
             }
             // 通常はログインページ
