@@ -224,7 +224,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
         switch($mode) {
         case 'bkup':
-            $arrVal[] = $arrFrom['bkup_name'];
+            $arrVal[] = $arrForm['bkup_name'];
             break;
 
         case 'restore_config':
