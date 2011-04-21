@@ -41,5 +41,8 @@
 </form>
 
 <form action="<!--{$tpl_back_url|h}-->" method="get">
+<!--{if $is_multiple}-->
+<input type="hidden" name="from" value="multiple">
+<!--{/if}-->
 <center><input type="submit" name="return" value="戻る"></center>
 </form>

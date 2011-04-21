@@ -109,6 +109,9 @@
 
 <!--{if $is_single_deliv}-->
 <form action="<!--{$tpl_back_url|h}-->" method="get">
+<!--{if $is_multiple}-->
+<input type="hidden" name="from" value="multiple">
+<!--{/if}-->
 <!--{else}-->
 <form action="<!--{$smarty.const.MOBILE_SHOPPING_PAYMENT_URLPATH}-->" method="post">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
