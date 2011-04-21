@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<form method="post" action="<!--{$smarty.const.ROOT_URLPATH}-->shopping/confirm.php">
+<form method="post" action="<!--{$smarty.const.MOBILE_SHOPPING_CONFIRM_URLPATH}-->">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="confirm">
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
@@ -116,7 +116,8 @@
 </form>
 <form action="<!--{$smarty.const.MOBILE_SHOPPING_PAYMENT_URLPATH}-->" method="post">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-<input type="hidden" name="mode" value="">
+<input type="hidden" name="mode" value="select_deliv">
+<input type="hidden" name="deliv_id" value="<!--{$arrForm.deliv_id|h}-->">
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 <center><input type="submit" value="戻る"></center>
 </form>

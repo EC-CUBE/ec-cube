@@ -133,7 +133,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
          * モバイル端末以外の場合は, JSON 形式のデータを出力し, ajax で取得する.
          */
         case 'select_deliv':
-            $this->setFormParams($objFormParam, $_POST, true, $this->arrShipping);
+            $this->setFormParams($objFormParam, array_merge($_POST, $arrOrderTemp), true, $this->arrShipping);
 
             $this->arrErr = $objFormParam->checkError();
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
@@ -247,18 +247,20 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      * パラメータ情報の初期化を行う.
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @param boolean $deliv_only deliv_id チェックのみの場合 true
+     * @param boolean $deliv_only 必須チェックは deliv_id のみの場合 true
      * @param array $arrShipping 配送先情報の配列
      * @return void
      */
     function lfInitParam(&$objFormParam, $deliv_only, &$arrShipping) {
         $objFormParam->addParam("配送業者", "deliv_id", INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("ポイント", "use_point", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK", "ZERO_START"));
+        $objFormParam->addParam("その他お問い合わせ", 'message', LTEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("ポイントを使用する", "point_check", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), '2');
 
-        if (!$deliv_only) {
+        if ($deliv_only) {
+            $objFormParam->addParam("お支払い方法", "payment_id", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        } else {
             $objFormParam->addParam("お支払い方法", "payment_id", INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-            $objFormParam->addParam("ポイント", "use_point", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK", "ZERO_START"));
-            $objFormParam->addParam("その他お問い合わせ", 'message', LTEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-            $objFormParam->addParam("ポイントを使用する", "point_check", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), '2');
 
             foreach ($arrShipping as $val) {
                 $objFormParam->addParam("お届け時間", "deliv_time_id" . $val['shipping_id'], INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
