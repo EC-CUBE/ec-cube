@@ -511,7 +511,8 @@ class SC_Helper_Customer {
         if(!$isAdmin) {
             // 現会員の判定 → 現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
             $objErr->doFunc(array("メールアドレス", 'email'), array("CHECK_REGIST_CUSTOMER_EMAIL"));
-            $objErr->doFunc(array("携帯メールアドレス", 'email_mobile'), array("CHECK_REGIST_CUSTOMER_EMAIL"));
+            $objErr->doFunc(array("携帯メールアドレス", 'email_mobile'), array("CHECK_REGIST_CUSTOMER_EMAIL", "MOBILE_EMAIL_CHECK"));
+
         }
         return $objErr;
     }
