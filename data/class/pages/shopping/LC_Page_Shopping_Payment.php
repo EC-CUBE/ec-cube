@@ -135,13 +135,14 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
         case 'select_deliv':
             $this->setFormParams($objFormParam, $_POST, true, $this->arrShipping);
 
-            $arrErr = $objFormParam->checkError();
-            if (SC_Utils_Ex::isBlank($arrErr)) {
+            $this->arrErr = $objFormParam->checkError();
+            if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 $deliv_id = $objFormParam->getValue('deliv_id');
                 $arrSelectedDeliv = $this->getSelectedDeliv($objPurchase, $objCartSess, $deliv_id);
                 $arrSelectedDeliv['error'] = false;
             } else {
                 $arrSelectedDeliv = array('error' => true);
+                $this->tpl_mainpage = 'shopping/select_deliv.tpl'; // モバイル用
             }
 
             if (SC_Display_Ex::detectDevice() != DEVICE_TYPE_MOBILE) {
@@ -211,7 +212,8 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
         }
 
         // モバイル用 ポストバック処理
-        if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
+        if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE
+            && SC_Utils_Ex::isBlank($this->arrErr)) {
             $this->tpl_mainpage = $this->getMobileMainpage($this->is_single_deliv, $this->getMode());
         }
 
