@@ -30,7 +30,7 @@
         var total = bread_crumbs.length;
         for (var i in bread_crumbs) {
             file_path += bread_crumbs[i] + '/';
-            $('<a href="javascript:;" onclick="fnFolderOpen(\'' + file_path + '\')" />')
+            $('<a href="javascript:;" onclick="fnFolderOpen(\'' + file_path + '\'); return false;" />')
                 .text(bread_crumbs[i])
                 .appendTo($node);
             if (i < total - 1) $node.append($delimiter);
