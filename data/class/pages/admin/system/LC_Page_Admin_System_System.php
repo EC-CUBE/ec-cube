@@ -124,7 +124,7 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
         $value = phpversion() . ' (' . implode(', ', get_loaded_extensions()) . ')';
         $arrSystemInfo[] = array('title' => 'PHP', 'value' => $value);
 
-        if (extension_loaded('GD')) {
+        if (extension_loaded('GD') || extension_loaded('gd')) {
             $arrValue = array();
             foreach (gd_info() as $key => $val) {
                 $arrValue[] = "$key => $val";
