@@ -334,10 +334,13 @@ class SC_Helper_Customer {
      */
     function sfCustomerMypageParam (&$objFormParam) {
         SC_Helper_Customer_Ex::sfCustomerCommonParam($objFormParam);
-        SC_Helper_Customer_Ex::sfCustomerRegisterParam($objFormParam);
+        SC_Helper_Customer_Ex::sfCustomerRegisterParam($objFormParam, false, true);
         if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE){
-            $objFormParam->addParam('携帯メールアドレス', "email_mobile", null, 'a', array("NO_SPTAB", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK"));
-            $objFormParam->addParam('携帯メールアドレス(確認)', "email_mobile02", null, 'a', array("NO_SPTAB", "EMAIL_CHECK","SPTAB_CHECK" , "EMAIL_CHAR_CHECK"), "", false);
+            $objFormParam->addParam('携帯メールアドレス', "email_mobile", null, 'a', array("NO_SPTAB", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MOBILE_EMAIL_CHECK"));
+            $objFormParam->addParam('携帯メールアドレス(確認)', "email_mobile02", null, 'a', array("NO_SPTAB", "EMAIL_CHECK","SPTAB_CHECK" , "EMAIL_CHAR_CHECK", "MOBILE_EMAIL_CHECK"), "", false);
+        } else {
+            $objFormParam->addParam('携帯メールアドレス', "email_mobile", null, 'a', array("EXIST_CHECK", "NO_SPTAB", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MOBILE_EMAIL_CHECK"));
+            $objFormParam->addParam('メールアドレス', 'email', null, 'a', array("NO_SPTAB", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK"));
         }
     }
 
@@ -380,9 +383,10 @@ class SC_Helper_Customer {
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @param boolean $isAdmin true:管理者画面 false:会員向け
+     * @param boolean $is_mypage マイページの場合 true
      * @return void
      */
-    function sfCustomerRegisterParam (&$objFormParam, $isAdmin = false) {
+    function sfCustomerRegisterParam (&$objFormParam, $isAdmin = false, $is_mypage = false) {
         $objFormParam->addParam("パスワード", 'password', STEXT_LEN, 'a', array("EXIST_CHECK", "SPTAB_CHECK", "ALNUM_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("パスワード確認用の質問の答え", "reminder_answer", STEXT_LEN, 'aKV', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("パスワード確認用の質問", 'reminder', STEXT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
@@ -403,7 +407,9 @@ class SC_Helper_Customer {
                 $objFormParam->addParam('メールアドレス(確認)', "email02", null, 'a', array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK","SPTAB_CHECK" , "EMAIL_CHAR_CHECK"), "", false);
             }
         } else {
-            $objFormParam->addParam('メールアドレス', 'email', null, 'a', array("EXIST_CHECK", "EMAIL_CHECK", "NO_SPTAB" ,"EMAIL_CHAR_CHECK", "MOBILE_EMAIL_CHECK"));
+            if (!$is_mypage) {
+                $objFormParam->addParam('メールアドレス', 'email', null, 'a', array("EXIST_CHECK", "EMAIL_CHECK", "NO_SPTAB" ,"EMAIL_CHAR_CHECK", "MOBILE_EMAIL_CHECK"));
+            }
         }
     }
 

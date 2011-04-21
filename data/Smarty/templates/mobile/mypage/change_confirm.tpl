@@ -40,15 +40,11 @@
 	<!--{$arrPref[$arrForm.pref]|h}--><!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}--><br>
 	<!--{$arrForm.tel01|h}-->-<!--{$arrForm.tel02|h}-->-<!--{$arrForm.tel03|h}--><br>
 	<br>
-	
-	【ﾒｰﾙｱﾄﾞﾚｽ】<br>
-	<!--{$arrForm.email|h}--><br>
-	<br>
 
 	【携帯ﾒｰﾙｱﾄﾞﾚｽ】<br>
 	<!--{$arrForm.email_mobile|default:"未登録"|h}--><br>
 	<br>
-
+	
 	【ﾊﾟｽﾜｰﾄﾞ確認用質問】<br>
 	<!--{$arrReminder[$arrForm.reminder]|h}--><br>
 	<br>

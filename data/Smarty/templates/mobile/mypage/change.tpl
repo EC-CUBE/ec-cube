@@ -42,7 +42,7 @@
 	カナ/名（例：ハナコ）<font color="#FF0000">※</font><br>
 	<input type="text" name="kana02" value="<!--{$arrForm.kana02|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" istyle="2"><br>
 
-	【性別】<font color="#FF0000">*</font><br>
+	【性別】<font color="#FF0000">※</font><br>
 	<font color="#FF0000"><!--{$arrErr.sex}--></font>
 	<input type="radio" name="sex" value="1" <!--{if $arrForm.sex eq 1}-->checked<!--{/if}--> />男性&nbsp;<input type="radio" name="sex" value="2" <!--{if $arrForm.sex eq 2}-->checked<!--{/if}--> />女性<br>
 
@@ -65,7 +65,7 @@
 
 	<!--{assign var=key1 value="zip01"}-->
 	<!--{assign var=key2 value="zip02"}-->
-	【郵便番号】<font color="#FF0000">*</font><br>
+	【郵便番号】<font color="#FF0000">※</font><br>
 	<font color="#FF0000"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></font>
 	<!--{assign var="size1" value="`$smarty.const.ZIP01_LEN+2`"}-->
 	<!--{assign var="size2" value="`$smarty.const.ZIP02_LEN+2`"}-->
@@ -73,22 +73,22 @@
 	&nbsp;-&nbsp;
 	<input size="<!--{$size2}-->" type="text" name="zip02" value="<!--{if $arrForm.zip02 == ""}--><!--{$arrOtherDeliv.zip02|h}--><!--{else}--><!--{$arrForm.zip02|h}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" istyle="4"><br>
 
-	【都道府県】<font color="#FF0000">*</font><br>
+	【都道府県】<font color="#FF0000">※</font><br>
 	<font color="#FF0000"><!--{$arrErr.pref}--></font>
 	<select name="pref">
 		<option value="">都道府県を選択</option>
 		<!--{html_options options=$arrPref selected=$arrForm.pref}-->
 	</select><br>
 
-	【住所1】<font color="#FF0000">*</font><br>
+	【住所1】<font color="#FF0000">※</font><br>
 	<font color="#FF0000"><!--{$arrErr.addr01}--></font>
 	<input type="text" name="addr01" value="<!--{$arrForm.addr01|h}-->" istyle="1"><br>
 
-	【住所2】<font color="#FF0000">*</font><br>
+	【住所2】<font color="#FF0000">※</font><br>
 	<font color="#FF0000"><!--{$arrErr.addr02}--></font>
 	<input type="text" name="addr02" value="<!--{$arrForm.addr02|h}-->" istyle="1"><br>
 
-	【電話番号】<font color="#FF0000">*</font><br>
+	【電話番号】<font color="#FF0000">※</font><br>
 	<font color="#FF0000"><!--{$arrErr.tel01}--><!--{$arrErr.tel02}--><!--{$arrErr.tel03}--></font>
 	<!--{assign var="size" value="`$smarty.const.TEL_ITEM_LEN+2`"}-->
 	<input type="text" size="<!--{$size}-->" name="tel01" value="<!--{$arrForm.tel01|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" istyle="4">
@@ -97,10 +97,13 @@
 	&nbsp;-&nbsp;
 	<input type="text" size="<!--{$size}-->" name="tel03" value="<!--{$arrForm.tel03|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" istyle="4"><br>
 
-	【メールアドレス】<font color="#FF0000">※</font><br>
-	<font color="#FF0000"><!--{$arrErr.email}--></font>
-	<input type="text" name="email" value="<!--{$arrForm.email|h}-->" istyle="3">
+	【携帯メールアドレス】<font color="#FF0000">※</font><br>
+	<font color="#FF0000"><!--{$arrErr.email_mobile}--></font>
+	<input type="text" name="email_mobile" value="<!--{$arrForm.email_mobile|h}-->" istyle="3">
   <br>
+
+  <!--{* PCメールアドレス *}-->
+	<input type="hidden" name="email" value="<!--{$arrForm.email|h}-->" istyle="3">
 
 	【パスワード】<font color="#FF0000">※</font><br>
 	（半角英数字<!--{$smarty.const.PASSWORD_MIN_LEN}-->文字以上<!--{$smarty.const.PASSWORD_MAX_LEN}-->文字以内）<br>
