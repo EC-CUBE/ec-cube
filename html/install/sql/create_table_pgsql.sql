@@ -1134,14 +1134,14 @@ CREATE TABLE dtb_bkup (
 
 CREATE TABLE dtb_plugin (
     plugin_id int NOT NULL,
-    plugin_name text NOT NULL DEFAULT '',
+    plugin_name text NOT NULL,
     plugin_code text NOT NULL,
-    author text NOT NULL DEFAULT '',
-    plugin_site_url text NOT NULL DEFAULT '',
-    plugin_version text NOT NULL DEFAULT '',
-    plugin_description text NOT NULL DEFAULT '',
-    plugin_setting_path text NOT NULL DEFAULT '',
-    class_name text NOT NULL DEFAULT '',
+    author text,
+    plugin_site_url text,
+    plugin_version text,
+    plugin_description text,
+    plugin_setting_path text,
+    class_name text NOT NULL,
     rank int NOT NULL DEFAULT 0,
     status smallint NOT NULL DEFAULT 0,
     enable smallint NOT NULL DEFAULT 0,
@@ -1161,8 +1161,8 @@ CREATE INDEX dtb_mobile_ext_session_id_url_key ON dtb_mobile_ext_session_id (url
 CREATE INDEX dtb_mobile_ext_session_id_create_date_key ON dtb_mobile_ext_session_id (create_date);
 
 CREATE TABLE dtb_index_list (
-    table_name text NOT NULL DEFAULT '',
-    column_name text NOT NULL DEFAULT '',
+    table_name text NOT NULL,
+    column_name text NOT NULL,
     recommend_flg smallint NOT NULL DEFAULT 0,
     recommend_comment text,
     PRIMARY KEY (table_name, column_name)
