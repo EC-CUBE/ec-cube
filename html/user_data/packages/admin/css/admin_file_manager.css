@@ -2,7 +2,10 @@
     float: left;
     height: 430px;
 }
-#contents-filemanager-right {margin-left: 22em;}
+#contents-filemanager-right {
+    width:720px;
+    float:right;
+}
 
 #tree{
     width: 230px;
