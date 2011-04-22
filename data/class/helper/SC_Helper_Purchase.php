@@ -930,6 +930,34 @@ __EOS__;
     }
 
     /**
+     * ダウンロード可能フラグを, 受注詳細に設定する.
+     *
+     * ダウンロード可能と判断されるのは, 以下の通り.
+     *
+     * 1. ダウンロード可能期限が期限内かつ, 入金日が入力されている
+     * 2. 販売価格が 0 円である
+     *
+     * 受注詳細行には, is_downloadable という真偽値が設定される.
+     * @param array 受注詳細の配列
+     * @return void
+     */
+    function setDownloadableFlgTo(&$arrOrderDetail) {
+        foreach (array_keys($arrOrderDetail) as $key) {
+            // 販売価格が 0 円
+            if ($arrOrderDetail[$key]['price'] == '0') {
+                $arrOrderDetail[$key]['is_downloadable'] = true;
+            }
+            // ダウンロード期限内かつ, 入金日あり
+            elseif ($arrOrderDetail[$key]['effective'] == '1'
+                    && !SC_Utils_Ex::isBlank($arrOrderDetail[$key]['payment_date'])) {
+                $arrOrderDetail[$key]['is_downloadable'] = true;
+            } else {
+                $arrOrderDetail[$key]['is_downloadable'] = false;
+            }
+        }
+    }
+
+    /**
      * 配送情報を取得する.
      *
      * @param integer $order_id 受注ID

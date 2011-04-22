@@ -93,6 +93,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
         $this->arrPayment       = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
         // 受注商品明細の取得
         $this->tpl_arrOrderDetail = $objPurchase->getOrderDetail($order_id);
+        $objPurchase->setDownloadableFlgTo($this->tpl_arrOrderDetail);
         // 受注メール送信履歴の取得
         $this->tpl_arrMailHistory = $this->lfGetMailHistory($order_id);
 
