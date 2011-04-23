@@ -199,13 +199,12 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
      */
     function lfGetSeoPageData() {
         $objLayout = new SC_Helper_PageLayout_Ex();
-        $arrRet = array();
 
-        $arrRet[DEVICE_TYPE_PC] = $objLayout->lfgetPageData('edit_flg = ? AND device_type_id = ?', array('2', DEVICE_TYPE_PC));
-        $arrRet[DEVICE_TYPE_MOBILE] = $objLayout->lfgetPageData('edit_flg = ? AND device_type_id = ?', array('2', DEVICE_TYPE_MOBILE));
-        $arrRet[DEVICE_TYPE_SMARTPHONE] = $objLayout->lfgetPageData('edit_flg = ? AND device_type_id = ?', array('2', DEVICE_TYPE_SMARTPHONE));
-
-        return $arrRet;
+        return array(
+            DEVICE_TYPE_PC          => $objLayout->getPageProperties(DEVICE_TYPE_PC, null, 'edit_flg = ?', array('2')),
+            DEVICE_TYPE_MOBILE      => $objLayout->getPageProperties(DEVICE_TYPE_MOBILE, null, 'edit_flg = ?', array('2')),
+            DEVICE_TYPE_SMARTPHONE  => $objLayout->getPageProperties(DEVICE_TYPE_SMARTPHONE, null, 'edit_flg = ?', array('2')),
+        );
     }
 }
 ?>
