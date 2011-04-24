@@ -103,10 +103,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
 
         //DBから商品情報の読込
         $arrForm = $this->lfGetRealFileName($customer_id, $order_id, $product_id, $product_class_id);
-        //ステータスが支払済み以上である事
-        if ($arrForm['status'] < ORDER_DELIV){
-            SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
-        }
+
         //ファイル情報が無い場合はNG
         if ($arrForm["down_realfilename"] == "" ){
             SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
