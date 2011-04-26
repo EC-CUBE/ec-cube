@@ -133,8 +133,8 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
          * モバイル端末以外の場合は, JSON 形式のデータを出力し, ajax で取得する.
          */
         case 'select_deliv':
-            $this->setFormParams($objFormParam, array_merge($_POST, $arrOrderTemp), true, $this->arrShipping);
-
+            $this->setFormParams($objFormParam, $arrOrderTemp, true, $this->arrShipping);
+            $objFormParam->setParam($_POST);
             $this->arrErr = $objFormParam->checkError();
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 $deliv_id = $objFormParam->getValue('deliv_id');
