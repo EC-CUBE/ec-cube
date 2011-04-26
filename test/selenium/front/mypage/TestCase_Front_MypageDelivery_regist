@@ -3,7 +3,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="http://eccube.local/" />
 <title>MYページ(お届け先追加)</title>
 </head>
 <body>
@@ -97,7 +96,7 @@
 	<td>5051</td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
+	<td>click</td>
 	<td>register</td>
 	<td></td>
 </tr>

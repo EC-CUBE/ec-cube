@@ -3,7 +3,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="http://eccube.local/" />
 <title>基本情報管理(支払方法設定：編集)</title>
 </head>
 <body>
@@ -24,16 +23,6 @@
 <tr>
 	<td>click</td>
 	<td>link=編集</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForPopUp</td>
-	<td>payment_input</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>selectWindow</td>
-	<td>name=payment_input</td>
 	<td></td>
 </tr>
 <tr>

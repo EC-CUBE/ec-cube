@@ -3,7 +3,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="http://eccube.local/" />
 <title>受注管理(帳票PDF個別出力)</title>
 </head>
 <body>
@@ -11,11 +10,6 @@
 <thead>
 <tr><td rowspan="1" colspan="3">受注管理(帳票PDF個別出力)</td></tr>
 </thead><tbody>
-<tr>
-	<td>open</td>
-	<td>/eccube/html/admin/home.php</td>
-	<td></td>
-</tr>
 <tr>
 	<td>clickAndWait</td>
 	<td>//li[@id='navi-order']/a/span</td>

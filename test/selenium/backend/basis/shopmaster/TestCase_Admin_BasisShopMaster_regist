@@ -3,7 +3,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="http://eccube.local/" />
 <title>基本情報管理(SHOPマスタ：入力)</title>
 </head>
 <body>
@@ -59,12 +58,12 @@
 <tr>
 	<td>type</td>
 	<td>addr01</td>
-	<td>大阪市北区梅田2-4-9</td>
+	<td>大阪市北区梅田</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>addr02</td>
-	<td>ブリーゼタワー13F</td>
+	<td>2-4-9</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -148,7 +147,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//div[@id='basis']/div/ul/li/a/span</td>
+	<td>link=この内容で登録する</td>
 	<td></td>
 </tr>
 </tbody></table>

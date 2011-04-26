@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+  <title>Test Suite</title>
+</head>
+<body>
+<table id="suiteTable" cellpadding="1" cellspacing="1" border="1" class="selenium"><tbody>
+<tr><td><b>Test Suite</b></td></tr>
+<tr><td><a href="../TestCase_Install">再インストールして初期化(初期化しない場合は実行しないこと)</a></td></tr>
+<tr><td><a href="./contact/TestCase_Front_Contact_nologin">./contact/TestCase_Front_Contact_nologin</a></td></tr>
+<tr><td><a href="./shopping/TestCase_Front_Shopping_unmember">./shopping/TestCase_Front_Shopping_unmember</a></td></tr>
+<tr><td><a href="entry/TestCase_Front_Entry">TestCase_Front_Entry</a></td></tr>
+<tr><td><a href="TestCase_Front_logout">TestCase_Front_logout</a></td></tr>
+<tr><td><a href="TestCase_Front_login">TestCase_Front_login</a></td></tr>
+<tr><td><a href="./cart/TestCase_Front_Cart">./cart/TestCase_Front_Cart</a></td></tr>
+<tr><td><a href="./contact/TestCase_Front_Contact_login">./contact/TestCase_Front_Contact_login</a></td></tr>
+<tr><td><a href="./products/TestCase_Front_ProductsReview_regist">./products/TestCase_Front_ProductsReview_regist</a></td></tr>
+<tr><td><a href="./shopping/TestCase_Front_Shopping_login">./shopping/TestCase_Front_Shopping_login</a></td></tr>
+<tr><td><a href="./mypage/TestCase_Front_Mypage_disp">./mypage/TestCase_Front_Mypage_disp</a></td></tr>
+<tr><td><a href="./mypage/TestCase_Front_MypageDelivery_regist">./mypage/TestCase_Front_MypageDelivery_regist</a></td></tr>
+<tr><td><a href="./mypage/TestCase_Front_MypageDelivery_edit">./mypage/TestCase_Front_MypageDelivery_edit</a></td></tr>
+<tr><td><a href="./mypage/TestCase_Front_MypageDelivery_delete">./mypage/TestCase_Front_MypageDelivery_delete</a></td></tr>
+<tr><td><a href="./mypage/TestCase_Front_MypageHistory">./mypage/TestCase_Front_MypageHistory</a></td></tr>
+<tr><td><a href="./products/TestCase_Front_ProductsDetail_disp_image">./products/TestCase_Front_ProductsDetail_disp_image</a></td></tr>
+<tr><td><a href="TestCase_Front_logout">TestCase_Front_logout</a></td></tr>
+<tr><td><a href="TestCase_Front_login">TestCase_Front_login</a></td></tr>
+<tr><td><a href="./mypage/TestCase_Front_MypageChange_edit">./mypage/TestCase_Front_MypageChange_edit</a></td></tr>
+</tbody></table>
+<!-- 以下個別実行 -->
+<!-- <tr><td><a href="./mypage/TestCase_Front_MypageFavorite_disp">./mypage/TestCase_Front_MypageFavorite_disp</a></td></tr> -->
+<!-- <tr><td><a href="/mypage/TestCase_Front_MypageFavorite_delete">./mypage/TestCase_Front_MypageFavorite_delete</a></td></tr> -->
+<!-- <tr><td><a href="./shopping/TestCase_Front_Shopping_login_download_product">./shopping/TestCase_Front_Shopping_login_download_product</a></td></tr> -->
+<!-- <tr><td><a href="./mypage/TestCase_Front_MypageHistory_download_product">./mypage/TestCase_Front_MypageHistory_download_product</a></td></tr> -->
+<!-- <tr><td><a href="./products/TestCase_Front_ProductsDetail_regist_favorite">./products/TestCase_Front_ProductsDetail_regist_favorite</a></td></tr> -->
+<!-- <tr><td><a href="mypage/TestCase_Front_MypageRefusal">TestCase_Front_MypageRefusal</a></td></tr> -->
+</body>
+</html>

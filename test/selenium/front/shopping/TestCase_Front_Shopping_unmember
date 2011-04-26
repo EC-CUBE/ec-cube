@@ -3,7 +3,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="http://eccube.local/" />
 <title>商品購入フロー(非ログイン非会員)</title>
 </head>
 <body>
@@ -18,7 +17,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=食品(2)</td>
+	<td>link=食品(3)</td>
 	<td></td>
 </tr>
 <tr>
@@ -128,7 +127,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>man</td>
+	<td>order_sex_1</td>
 	<td></td>
 </tr>
 <tr>
@@ -218,7 +217,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>next</td>
+	<td>singular</td>
 	<td></td>
 </tr>
 <tr>
@@ -238,7 +237,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>next</td>
+	<td>singular</td>
 	<td></td>
 </tr>
 <tr>
@@ -247,8 +246,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>back03-top</td>
+	<td>click</td>
+	<td>pay_1</td>
 	<td></td>
 </tr>
 <tr>
