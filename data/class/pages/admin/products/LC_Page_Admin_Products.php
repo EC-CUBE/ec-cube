@@ -254,8 +254,10 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
      */
     function doDelete($where, $arrParam = array()) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->update("dtb_products", array('del_flg' => 1), $where, $arrParam);
-        $objQuery->update("dtb_products_class", array('del_flg' => 1), $where, $arrParam);
+        $sqlval['del_flg']     = 1;
+        $sqlval['update_date'] = 'now()';
+        $objQuery->update("dtb_products", $sqlval, $where, $arrParam);
+        $objQuery->update("dtb_products_class", $sqlval, $where, $arrParam);
         $objQuery->delete("dtb_customer_favorite_products", $where, $arrParam);
     }
 
