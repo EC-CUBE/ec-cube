@@ -32,7 +32,7 @@
 <link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/admin_file_manager.css" type="text/css" media="all" />
 <!--{if $tpl_mainno eq "basis"}-->
 <!--{if ($smarty.server.HTTPS != "") && ($smarty.server.HTTPS != "off")}-->
-<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="https://maps-api-ssl.google.com/maps/api/js?sensor=false"></script>
 <!--{else}-->
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <!--{/if}-->
