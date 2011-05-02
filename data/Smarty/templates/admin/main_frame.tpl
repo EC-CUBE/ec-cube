@@ -30,7 +30,7 @@
 <meta name="robots" content="noindex,nofollow" />
 <link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/admin_contents.css" type="text/css" media="all" />
 <link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/admin_file_manager.css" type="text/css" media="all" />
-<!--{if $tpl_mainno eq "basis"}-->
+<!--{if $tpl_mainno eq "basis" && $tpl_subno eq "index"}-->
 <!--{if ($smarty.server.HTTPS != "") && ($smarty.server.HTTPS != "off")}-->
 <script type="text/javascript" src="https://maps-api-ssl.google.com/maps/api/js?sensor=false"></script>
 <!--{else}-->
