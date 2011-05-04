@@ -147,21 +147,27 @@ class SC_Helper_Customer {
      * @param string $email  メールアドレス
      * @return integer  0:登録可能     1:登録済み   2:再登録制限期間内削除ユーザー  3:自分のアドレス
      */
-    function sfCheckRegisterUserFromEmail($email){
-        $return = 0;
+    function sfCheckRegisterUserFromEmail($email) {
+        $objCustomer = new SC_Customer_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        $objCustomer    = new SC_Customer_Ex();
-        $objQuery       =& SC_Query_Ex::getSingletonInstance();
+        // ログインしている場合、すでに登録している自分のemailの場合
+        if ($objCustomer->isLoginSuccess(true)
+            && SC_Helper_Customer_Ex::sfCustomerEmailDuplicationCheck($objCustomer->getValue('customer_id'), $email)) {
+            // 自分のアドレス
+            return 3;
+        }
 
-        $arrRet         = $objQuery->select("email, update_date, del_flg",
-                                            "dtb_customer",
-                                            "email = ? OR email_mobile = ? ORDER BY del_flg",
-                                            array($email, $email));
+        $arrRet = $objQuery->select("email, update_date, del_flg",
+            "dtb_customer",
+            "email = ? OR email_mobile = ? ORDER BY del_flg",
+            array($email, $email));
 
-        if(count($arrRet) > 0) {
-            if($arrRet[0]['del_flg'] != '1') {
-                // 会員である場合
-                $return = 1;
+        if (count($arrRet) > 0) {
+            // 会員である場合
+            if ($arrRet[0]['del_flg'] != '1') {
+                // 登録済み
+                return 1;
             } else {
                 // 退会した会員である場合
                 $leave_time = SC_Utils_Ex::sfDBDatetoTime($arrRet[0]['update_date']);
@@ -170,18 +176,14 @@ class SC_Helper_Customer {
                 // 退会から何時間-経過しているか判定する。
                 $limit_time = ENTRY_LIMIT_HOUR * 3600;
                 if($pass_time < $limit_time) {
-                    $return = 2;
+                    // 再登録制限期間内削除ユーザー
+                    return 2;
                 }
             }
         }
 
-        // ログインしている場合、すでに登録している自分のemailの場合はエラーを返さない
-        if ($objCustomer->getValue('customer_id')){
-            if (SC_Helper_Customer_Ex::sfCustomerEmailDuplicationCheck($objCustomer->getValue('customer_id'), $email)) {
-                $return = 3;
-            }
-        }
-        return $return;
+        // 登録可能
+        return 0;
     }
 
     /**
@@ -194,15 +196,16 @@ class SC_Helper_Customer {
      * @return boolean メールアドレスが重複する場合 true
      */
     function sfCustomerEmailDuplicationCheck($customer_id, $email) {
-        $objQuery   =& SC_Query_Ex::getSingletonInstance();
-        $arrResults = $objQuery->getRow("email, email_mobile",
-                                        "dtb_customer", "customer_id = ?",
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+
+        $arrResults = $objQuery->getRow('email, email_mobile',
+                                        'dtb_customer', 'customer_id = ?',
                                         array($customer_id));
-        if ($email == $arrResults['email']
-            || $email == $arrResults["email_mobile"]) {
-            return true;
-        }
-        return false;
+        $return =
+               strlen($arrResults['email']) >= 1 && $email === $arrResults['email']
+            || strlen($arrResults['email_mobile']) >= 1 &&  $email === $arrResults['email_mobile']
+        ;
+        return $return;
     }
 
     /**
@@ -310,13 +313,12 @@ class SC_Helper_Customer {
     function sfCustomerEntryParam (&$objFormParam, $isAdmin = false) {
         SC_Helper_Customer_Ex::sfCustomerCommonParam($objFormParam);
         SC_Helper_Customer_Ex::sfCustomerRegisterParam($objFormParam, $isAdmin);
-        if($isAdmin) {
+        if ($isAdmin) {
             $objFormParam->addParam("顧客ID", "customer_id", INT_LEN, 'n', array("NUM_CHECK"));
             $objFormParam->addParam('携帯メールアドレス', "email_mobile", null, 'a', array("NO_SPTAB", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MOBILE_EMAIL_CHECK"));
             $objFormParam->addParam("会員状態", 'status', INT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
             $objFormParam->addParam("SHOP用メモ", 'note', LTEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
             $objFormParam->addParam("所持ポイント", 'point', INT_LEN, 'n', array("NUM_CHECK"));
-
         }
 
         if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
@@ -428,20 +430,6 @@ class SC_Helper_Customer {
         $objErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck($objFormParam);
         $objErr = SC_Helper_Customer_Ex::sfCustomerRegisterErrorCheck($objErr);
 
-        /*
-         * sfCustomerRegisterErrorCheck() では, ログイン中の場合は重複チェック
-         * されないので, 再度チェックを行う
-         */
-        $objCustomer = new SC_Customer_Ex();
-        if ($objCustomer->isLoginSuccess(true)
-            && SC_Helper_Customer_Ex::sfCustomerEmailDuplicationCheck($objCustomer->getValue('customer_id'), $objFormParam->getValue('email'))) {
-            $objErr->arrErr['email'] .= "※ すでに会員登録で使用されているメールアドレスです。<br />";
-        }
-        if ($objCustomer->isLoginSuccess(true)
-            && SC_Helper_Customer_Ex::sfCustomerEmailDuplicationCheck($objCustomer->getValue('customer_id'), $objFormParam->getValue('email_mobile'))) {
-            $objErr->arrErr['email_mobile'] .= "※ すでに会員登録で使用されているメールアドレスです。<br />";
-        }
-
         return $objErr->arrErr;
     }
 
@@ -506,19 +494,18 @@ class SC_Helper_Customer {
     function sfCustomerRegisterErrorCheck(&$objErr, $isAdmin = false) {
         $objErr->doFunc(array("生年月日", 'year', 'month', 'day'), array("CHECK_BIRTHDAY"));
 
-        if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE){
-            if(!$isAdmin) {
+        if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE) {
+            if (!$isAdmin) {
                 $objErr->doFunc(array('パスワード', 'パスワード(確認)', 'password', "password02") ,array("EQUAL_CHECK"));
                 $objErr->doFunc(array('メールアドレス', 'メールアドレス(確認)', 'email', "email02") ,array("EQUAL_CHECK"));
             }
             $objErr->doFunc(array("FAX番号", "fax01", "fax02", "fax03") ,array("TEL_CHECK"));
         }
 
-        if(!$isAdmin) {
+        if (!$isAdmin) {
             // 現会員の判定 → 現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
             $objErr->doFunc(array("メールアドレス", 'email'), array("CHECK_REGIST_CUSTOMER_EMAIL"));
             $objErr->doFunc(array("携帯メールアドレス", 'email_mobile'), array("CHECK_REGIST_CUSTOMER_EMAIL", "MOBILE_EMAIL_CHECK"));
-
         }
         return $objErr;
     }

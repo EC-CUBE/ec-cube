@@ -118,6 +118,7 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex {
         $objErr         = new SC_CheckError_Ex();
         $objErr->arrErr = $objFormParam->checkError();
 
+        // FIXME: lfInitParam() で設定すれば良いように感じる
         $objErr->doFunc(array("メールアドレス", "email_mobile"), array("CHECK_REGIST_CUSTOMER_EMAIL"));
 
         return $objErr->arrErr;
