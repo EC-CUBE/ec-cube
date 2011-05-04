@@ -44,9 +44,9 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'system/system.tpl';
-        $this->tpl_subnavi  = 'system/subnavi.tpl';
         $this->tpl_subno    = 'system';
         $this->tpl_mainno   = 'system';
+        $this->tpl_maintitle = 'システム設定';
         $this->tpl_subtitle = 'システム情報';
     }
 

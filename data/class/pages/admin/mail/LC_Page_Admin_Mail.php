@@ -45,9 +45,9 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         parent::init();
         $this->tpl_mainpage = 'mail/index.tpl';
         $this->tpl_mainno = 'mail';
-        $this->tpl_subnavi = 'mail/subnavi.tpl';
         $this->tpl_subno = 'index';
         $this->tpl_pager = 'pager.tpl';
+        $this->tpl_maintitle = 'メルマガ管理';
         $this->tpl_subtitle = '配信内容設定';
 
         $masterData = new SC_DB_MasterData_Ex();

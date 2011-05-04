@@ -44,9 +44,9 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'system/masterdata.tpl';
-        $this->tpl_subnavi = 'system/subnavi.tpl';
         $this->tpl_subno = 'masterdata';
         $this->tpl_mainno = 'system';
+        $this->tpl_maintitle = 'システム設定';
         $this->tpl_subtitle = 'マスタデータ管理';
     }
 

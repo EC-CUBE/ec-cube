@@ -62,8 +62,8 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'basis/zip_install.tpl';
-        $this->tpl_subnavi = 'basis/subnavi.tpl';
         $this->tpl_subno = 'zip_install';
+        $this->tpl_maintitle = '基本情報管理';
         $this->tpl_subtitle = '郵便番号DB登録';
         $this->tpl_mainno = 'basis';
 

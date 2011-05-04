@@ -44,7 +44,6 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'products/review_edit.tpl';
-        $this->tpl_subnavi = 'products/subnavi.tpl';
         $this->tpl_mainno = 'products';
         $this->tpl_subno = 'review';
         // 両方選択可能
@@ -52,6 +51,7 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrRECOMMEND = $masterData->getMasterData("mtb_recommend");
+        $this->tpl_maintitle = '商品管理';
         $this->tpl_subtitle = 'レビュー管理';
         $this->arrSex = $masterData->getMasterData("mtb_sex");
     }

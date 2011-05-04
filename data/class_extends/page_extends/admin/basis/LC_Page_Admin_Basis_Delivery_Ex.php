@@ -25,7 +25,7 @@
 require_once CLASS_REALDIR . 'pages/admin/basis/LC_Page_Admin_Basis_Delivery.php';
 
 /**
- * 配送業者設定 のページクラス(拡張).
+ * 配送方法設定 のページクラス(拡張).
  *
  * LC_Page_Admin_Basis_Delivery をカスタマイズする場合はこのクラスを編集する.
  *

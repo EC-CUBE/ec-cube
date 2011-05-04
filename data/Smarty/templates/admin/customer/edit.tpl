@@ -77,7 +77,6 @@
     <!--{/foreach}-->
 
     <div id="customer" class="contents-main">
-        <h2><!--{if $arrForm.customer_id}-->顧客編集<!--{else}-->顧客登録<!--{/if}--></h2>
         <table class="form">
             <!--{if $arrForm.customer_id}-->
             <tr>

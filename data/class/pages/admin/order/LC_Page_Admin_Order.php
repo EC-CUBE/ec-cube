@@ -44,10 +44,10 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'order/index.tpl';
-        $this->tpl_subnavi = 'order/subnavi.tpl';
         $this->tpl_mainno = 'order';
         $this->tpl_subno = 'index';
         $this->tpl_pager = 'pager.tpl';
+        $this->tpl_maintitle = '受注管理';
         $this->tpl_subtitle = '受注管理';
 
         $masterData = new SC_DB_MasterData_Ex();

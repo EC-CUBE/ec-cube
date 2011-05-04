@@ -45,9 +45,9 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
         parent::init();
         $this->tpl_mainpage = 'customer/index.tpl';
         $this->tpl_mainno = 'customer';
-        $this->tpl_subnavi = 'customer/subnavi.tpl';
         $this->tpl_subno = 'index';
         $this->tpl_pager = 'pager.tpl';
+        $this->tpl_maintitle = '顧客管理';
         $this->tpl_subtitle = '顧客マスタ';
 
         $masterData = new SC_DB_MasterData_Ex();

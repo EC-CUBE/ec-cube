@@ -45,10 +45,10 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'products/review.tpl';
-        $this->tpl_subnavi = 'products/subnavi.tpl';
         $this->tpl_mainno = 'products';
         $this->tpl_subno = 'review';
         $this->tpl_pager = 'pager.tpl';
+        $this->tpl_maintitle = '商品管理';
         $this->tpl_subtitle = 'レビュー管理';
 
         $masterData = new SC_DB_MasterData_Ex();

@@ -44,9 +44,9 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'products/product.tpl';
-        $this->tpl_subnavi = 'products/subnavi.tpl';
         $this->tpl_mainno = 'products';
         $this->tpl_subno = 'product';
+        $this->tpl_maintitle = '商品管理';
         $this->tpl_subtitle = '商品登録';
 
         $masterData = new SC_DB_MasterData_Ex();

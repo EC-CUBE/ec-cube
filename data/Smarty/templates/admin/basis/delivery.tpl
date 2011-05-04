@@ -29,7 +29,7 @@
     <div class="btn">
         <ul>
             <li><a class="btn-action" href="javascript:;" name="subm2" onclick="fnChangeAction('./delivery_input.php'); fnModeSubmit('pre_edit','',''); return false;">
-                <span class="btn-next">配送業者<!--{if $smarty.const.INPUT_DELIV_FEE}-->・配送料<!--{/if}-->を新規入力</span></a></li>
+                <span class="btn-next">配送方法<!--{if $smarty.const.INPUT_DELIV_FEE}-->・配送料<!--{/if}-->を新規入力</span></a></li>
         </ul>
     </div>
     <table class="list">

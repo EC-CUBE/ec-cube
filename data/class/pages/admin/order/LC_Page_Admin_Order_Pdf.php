@@ -45,9 +45,9 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'order/pdf_input.tpl';
-        $this->tpl_subnavi = 'order/subnavi.tpl';
         $this->tpl_mainno = 'order';
         $this->tpl_subno = 'pdf';
+        $this->tpl_maintitle = '受注管理';
         $this->tpl_subtitle = '帳票出力';
 
         $this->SHORTTEXT_MAX = STEXT_LEN;

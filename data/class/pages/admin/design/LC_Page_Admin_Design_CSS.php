@@ -45,10 +45,10 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'design/css.tpl';
-        $this->tpl_subnavi  = 'design/subnavi.tpl';
         $this->area_row = 30;
         $this->tpl_subno = 'css';
         $this->tpl_mainno = 'design';
+        $this->tpl_maintitle = 'デザイン管理';
         $this->tpl_subtitle = 'CSS設定';
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
@@ -128,7 +128,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
             GC_Utils_Ex::gfPrintLog('Error: ' . print_r($this->arrErr, true));
 
         }
-        $this->tpl_subtitle .= ' - ' . $this->arrDeviceType[$this->device_type_id];
+        $this->tpl_subtitle = $this->arrDeviceType[$this->device_type_id] . '＞' . $this->tpl_subtitle;
         $this->arrForm = $objFormParam->getFormParamList();
     }
 

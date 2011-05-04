@@ -44,8 +44,8 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'basis/holiday.tpl';
-        $this->tpl_subnavi = 'basis/subnavi.tpl';
         $this->tpl_subno = 'holiday';
+        $this->tpl_maintitle = '基本情報管理';
         $this->tpl_subtitle = '定休日管理';
         $this->tpl_mainno = 'basis';
     }

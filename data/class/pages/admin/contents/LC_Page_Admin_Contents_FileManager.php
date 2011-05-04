@@ -46,8 +46,8 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
         parent::init();
         $this->tpl_mainpage = 'contents/file_manager.tpl';
         $this->tpl_mainno = 'contents';
-        $this->tpl_subnavi = 'contents/subnavi.tpl';
         $this->tpl_subno = 'file';
+        $this->tpl_maintitle = 'コンテンツ管理';
         $this->tpl_subtitle = 'ファイル管理';
 
     }

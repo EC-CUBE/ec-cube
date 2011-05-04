@@ -57,7 +57,6 @@ function func_return(){
     <!--{/foreach}-->
 
     <div id="customer" class="contents-main">
-        <h2>顧客編集</h2>
         <table class="form">
             <tr>
                 <th>顧客ID<span class="attention"> *</span></th>

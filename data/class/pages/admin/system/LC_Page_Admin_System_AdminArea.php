@@ -44,9 +44,9 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'system/adminarea.tpl';
-        $this->tpl_subnavi = 'system/subnavi.tpl';
         $this->tpl_subno = 'adminarea';
         $this->tpl_mainno = 'system';
+        $this->tpl_maintitle = 'システム設定';
         $this->tpl_subtitle = '管理画面設定';
         $this->tpl_enable_ssl = FALSE;
     }

@@ -44,9 +44,9 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'basis/mail.tpl';
-        $this->tpl_subnavi = 'basis/subnavi.tpl';
         $this->tpl_mainno = 'basis';
         $this->tpl_subno = 'mail';
+        $this->tpl_maintitle = '基本情報管理';
         $this->tpl_subtitle = 'メール設定';
     }
 

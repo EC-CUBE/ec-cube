@@ -44,9 +44,9 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'products/classcategory.tpl';
-        $this->tpl_subnavi = 'products/subnavi.tpl';
         $this->tpl_subno = 'class';
-        $this->tpl_subtitle = '規格登録';
+        $this->tpl_maintitle = '商品管理';
+        $this->tpl_subtitle = '規格管理＞分類登録';
         $this->tpl_mainno = 'products';
     }
 

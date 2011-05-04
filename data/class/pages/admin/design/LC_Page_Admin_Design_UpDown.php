@@ -46,9 +46,9 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'design/up_down.tpl';
-        $this->tpl_subnavi  = 'design/subnavi.tpl';
         $this->tpl_subno    = 'up_down';
         $this->tpl_mainno   = 'design';
+        $this->tpl_maintitle = 'デザイン管理';
         $this->tpl_subtitle = 'テンプレート追加';
         $this->arrErr  = array();
         $this->arrForm = array();
@@ -100,7 +100,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
             break;
         }
         //サブタイトルの追加
-        $this->tpl_subtitle .= ' - ' . $this->arrDeviceType[$this->device_type_id];
+        $this->tpl_subtitle = $this->arrDeviceType[$this->device_type_id] . '＞' . $this->tpl_subtitle;
         $this->arrForm = $objFormParam->getFormParamList();
     }
 

@@ -25,7 +25,7 @@
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
- * 配送業者設定 のページクラス.
+ * 配送方法設定 のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
@@ -44,13 +44,13 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'basis/delivery.tpl';
-        $this->tpl_subnavi = 'basis/subnavi.tpl';
         $this->tpl_subno = 'delivery';
         $this->tpl_mainno = 'basis';
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrTAXRULE = $masterData->getMasterData("mtb_taxrule");
-        $this->tpl_subtitle = '配送業者設定';
+        $this->tpl_maintitle = '基本情報管理';
+        $this->tpl_subtitle = '配送方法設定';
     }
 
     /**

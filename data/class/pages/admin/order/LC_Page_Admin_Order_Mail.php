@@ -44,9 +44,9 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'order/mail.tpl';
-        $this->tpl_subnavi = 'order/subnavi.tpl';
         $this->tpl_mainno = 'order';
         $this->tpl_subno = 'index';
+        $this->tpl_maintitle = '受注管理';
         $this->tpl_subtitle = '受注管理';
 
         $masterData = new SC_DB_MasterData_Ex();

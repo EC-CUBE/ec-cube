@@ -44,10 +44,10 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'contents/csv_sql.tpl';
-        $this->tpl_subnavi = 'contents/subnavi.tpl';
         $this->tpl_subno = 'csv';
         $this->tpl_subno_csv = 'csv_sql';
         $this->tpl_mainno = 'contents';
+        $this->tpl_maintitle = 'コンテンツ管理';
         $this->tpl_subtitle = 'CSV出力設定';
     }
 

@@ -48,10 +48,10 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex {
         $this->tpl_disppage = '';  // 表示中のページ番号
         $this->tpl_strnavi  = '';
         $this->tpl_mainpage = 'system/index.tpl';
-        $this->tpl_subnavi  = 'system/subnavi.tpl';
         $this->tpl_mainno   = 'system';
         $this->tpl_subno    = 'index';
         $this->tpl_onload   = 'fnGetRadioChecked();';
+        $this->tpl_maintitle = 'システム設定';
         $this->tpl_subtitle = 'メンバー管理';
 
         $masterData = new SC_DB_MasterData_Ex();

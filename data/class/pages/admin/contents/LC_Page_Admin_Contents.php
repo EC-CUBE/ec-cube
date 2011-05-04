@@ -44,7 +44,6 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'contents/index.tpl';
-        $this->tpl_subnavi = 'contents/subnavi.tpl';
         $this->tpl_subno = 'index';
         $this->tpl_mainno = 'contents';
         $this->arrForm = array(
@@ -52,6 +51,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
             'month' => date('n'),
             'day' => date('j'),
         );
+        $this->tpl_maintitle = 'コンテンツ管理';
         $this->tpl_subtitle = '新着情報管理';
         //---- 日付プルダウン設定
         $objDate = new SC_Date_Ex(ADMIN_NEWS_STARTYEAR);

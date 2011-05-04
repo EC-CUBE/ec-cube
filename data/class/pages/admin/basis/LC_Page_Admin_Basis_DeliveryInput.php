@@ -25,7 +25,7 @@
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
- * 配送業者設定 のページクラス.
+ * 配送方法設定 のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
@@ -43,14 +43,14 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'basis/delivery_input.tpl';
-        $this->tpl_subnavi = 'basis/subnavi.tpl';
         $this->tpl_subno = 'delivery';
         $this->tpl_mainno = 'basis';
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrProductType = $masterData->getMasterData("mtb_product_type");
         $this->arrPayments = SC_Helper_DB_Ex::sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
-        $this->tpl_subtitle = '配送業者設定';
+        $this->tpl_maintitle = '基本情報管理';
+        $this->tpl_subtitle = '配送方法設定';
         $this->mode = $this->getMode();
     }
 
@@ -82,7 +82,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
             case 'edit':
                 if (count($this->arrErr) == 0) {
                     $objFormParam->setValue('deliv_id', $this->lfRegistData($objFormParam->getHashArray(), $_SESSION['member_id']));
-                    $this->tpl_onload = "window.alert('配送業者設定が完了しました。');";
+                    $this->tpl_onload = "window.alert('配送方法設定が完了しました。');";
                 }
                 break;
             case 'pre_edit':

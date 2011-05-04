@@ -44,9 +44,9 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'system/bkup.tpl';
-        $this->tpl_subnavi = 'system/subnavi.tpl';
         $this->tpl_mainno = 'system';
         $this->tpl_subno = 'bkup';
+        $this->tpl_maintitle = 'システム設定';
         $this->tpl_subtitle = 'バックアップ管理';
 
         $this->bkup_dir = DATA_REALDIR . "downloads/backup/";

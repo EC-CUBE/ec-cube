@@ -46,9 +46,9 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'design/template.tpl';
-        $this->tpl_subnavi  = 'design/subnavi.tpl';
         $this->tpl_subno    = 'template';
         $this->tpl_mainno   = 'design';
+        $this->tpl_maintitle = 'デザイン管理';
         $this->tpl_subtitle = 'テンプレート設定';
         $this->arrErr  = array();
         $this->arrForm = array();
@@ -129,7 +129,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
             // 画面にエラー表示しないため, ログ出力
             GC_Utils_Ex::gfPrintLog('Error: ' . print_r($this->arrErr, true));
         }
-        $this->tpl_subtitle .= ' - ' . $this->arrDeviceType[$this->device_type_id];
+        $this->tpl_subtitle = $this->arrDeviceType[$this->device_type_id] . '＞' . $this->tpl_subtitle;
     }
 
     /**

@@ -44,7 +44,6 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainno = 'contents';
-        $this->tpl_subnavi = '';
         $this->tpl_subno = "";
 
     }

@@ -49,9 +49,9 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'basis/seo.tpl';
-        $this->tpl_subnavi = 'basis/subnavi.tpl';
         $this->tpl_subno = 'seo';
         $this->tpl_mainno = 'basis';
+        $this->tpl_maintitle = '基本情報管理';
         $this->tpl_subtitle = 'SEO管理';
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');

@@ -48,6 +48,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'ownersstore/index.tpl';
         $this->tpl_mainno   = 'ownersstore';
         $this->tpl_subno    = 'index';
+        $this->tpl_maintitle = 'オーナーズストア';
         $this->tpl_subtitle = '購入商品一覧';
     }
 

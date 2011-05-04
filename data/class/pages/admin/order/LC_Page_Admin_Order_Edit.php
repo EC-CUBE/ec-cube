@@ -44,8 +44,9 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'order/edit.tpl';
-        $this->tpl_subnavi = 'order/subnavi.tpl';
         $this->tpl_mainno = 'order';
+        $this->tpl_maintitle = '受注管理';
+        $this->tpl_subtitle = '受注登録';
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
@@ -95,11 +96,9 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         if (!SC_Utils_Ex::isBlank($order_id)) {
             $this->setOrderToFormParam($objFormParam, $order_id);
             $this->tpl_subno = 'index';
-            $this->tpl_subtitle = '受注管理';
         } else {
             $this->tpl_subno = 'add';
             $this->tpl_mode = 'add';
-            $this->tpl_subtitle = '新規受注入力';
         }
 
         $this->arrSearchHidden = $objFormParam->getSearchArray();
@@ -129,7 +128,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
                 $objFormParam->convParam();
                 $this->arrErr = $this->lfCheckError($objFormParam);
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                    $message = '新規受注を登録しました。';
+                    $message = '受注を登録しました。';
                     $order_id = $this->doRegister(null, $objPurchase, $objFormParam, $message);
                     if ($order_id >= 0) {
                         $this->tpl_mode = 'edit';

@@ -44,8 +44,8 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'products/maker.tpl';
-        $this->tpl_subnavi = 'products/subnavi.tpl';
         $this->tpl_subno = 'maker';
+        $this->tpl_maintitle = '商品管理';
         $this->tpl_subtitle = 'メーカー登録';
         $this->tpl_mainno = 'products';
     }

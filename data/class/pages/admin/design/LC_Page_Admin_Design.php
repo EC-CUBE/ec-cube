@@ -44,9 +44,9 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'design/index.tpl';
-        $this->tpl_subnavi = 'design/subnavi.tpl';
         $this->tpl_subno = 'layout';
         $this->tpl_mainno = 'design';
+        $this->tpl_maintitle = 'デザイン管理';
         $this->tpl_subtitle = 'レイアウト設定';
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrTarget = $masterData->getMasterData("mtb_target");
@@ -131,7 +131,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
         // 編集可能ページ一覧
         $this->arrEditPage = $objLayout->getPageProperties($this->device_type_id, null);
         //サブタイトルを取得
-        $this->tpl_subtitle .= ' - ' . $this->arrDeviceType[$this->device_type_id];
+        $this->tpl_subtitle = $this->arrDeviceType[$this->device_type_id] . '＞' . $this->tpl_subtitle;
     }
 
     /**

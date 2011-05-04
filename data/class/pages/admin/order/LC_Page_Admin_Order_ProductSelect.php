@@ -45,8 +45,8 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
         parent::init();
         $this->tpl_mainpage = 'order/product_select.tpl';
         $this->tpl_mainno = 'order';
-        $this->tpl_subnavi = '';
         $this->tpl_subno = "";
+        $this->tpl_maintitle = '受注管理';
         $this->tpl_subtitle = '商品選択';
 
         $masterData = new SC_DB_MasterData_Ex();

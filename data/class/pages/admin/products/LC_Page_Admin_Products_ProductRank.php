@@ -44,9 +44,9 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'products/product_rank.tpl';
-        $this->tpl_subnavi = 'products/subnavi.tpl';
         $this->tpl_mainno = 'products';
         $this->tpl_subno = 'product_rank';
+        $this->tpl_maintitle = '商品管理';
         $this->tpl_subtitle = '商品並び替え';
     }
 

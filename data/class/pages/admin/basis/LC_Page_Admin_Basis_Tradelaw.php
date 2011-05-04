@@ -44,12 +44,12 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'basis/tradelaw.tpl';
-        $this->tpl_subnavi = 'basis/subnavi.tpl';
         $this->tpl_subno = 'tradelaw';
         $this->tpl_mainno = 'basis';
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrTAXRULE = $masterData->getMasterData("mtb_taxrule");
+        $this->tpl_maintitle = '基本情報管理';
         $this->tpl_subtitle = '特定商取引法';
     }
 

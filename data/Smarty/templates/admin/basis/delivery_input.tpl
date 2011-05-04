@@ -27,7 +27,7 @@
 <!--{assign var=key value="deliv_id"}-->
 <input type="hidden" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" />
 <div id="basis" class="contents-main">
-    <h2>配送業者登録</h2>
+    <h2>配送方法登録</h2>
 
     <table>
         <tr>

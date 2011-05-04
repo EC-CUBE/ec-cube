@@ -44,9 +44,9 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'basis/kiyaku.tpl';
-        $this->tpl_subnavi = 'basis/subnavi.tpl';
         $this->tpl_subno = 'kiyaku';
-        $this->tpl_subtitle = '会員規約登録';
+        $this->tpl_maintitle = '基本情報管理';
+        $this->tpl_subtitle = '会員規約設定';
         $this->tpl_mainno = 'basis';
     }
 

@@ -45,11 +45,11 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'design/header.tpl';
-        $this->tpl_subnavi  = 'design/subnavi.tpl';
         $this->header_row = 13;
         $this->footer_row = 13;
         $this->tpl_subno = 'header';
         $this->tpl_mainno = 'design';
+        $this->tpl_maintitle = 'デザイン管理';
         $this->tpl_subtitle = 'ヘッダー/フッター設定';
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
@@ -111,7 +111,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
         }
 
         //サブタイトルの追加
-        $this->tpl_subtitle .= ' - ' . $this->arrDeviceType[$this->device_type_id];
+        $this->tpl_subtitle = $this->arrDeviceType[$this->device_type_id] . '＞' . $this->tpl_subtitle;
     }
 
     /**

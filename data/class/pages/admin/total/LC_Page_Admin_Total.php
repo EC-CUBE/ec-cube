@@ -48,9 +48,9 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         // GDライブラリのインストール判定
         $this->install_GD = function_exists("gd_info") ? true : false;
         $this->tpl_mainpage         = 'total/index.tpl';
-        $this->tpl_subnavi          = 'total/subnavi.tpl';
         $this->tpl_graphsubtitle    = 'total/subtitle.tpl';
         $this->tpl_titleimage       = ROOT_URLPATH.'img/title/title_sale.jpg';
+        $this->tpl_maintitle = '売上集計';
         $this->tpl_mainno           = 'total';
 
         $masterData                 = new SC_DB_MasterData_Ex();

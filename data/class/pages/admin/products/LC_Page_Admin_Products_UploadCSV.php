@@ -63,9 +63,9 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'products/upload_csv.tpl';
-        $this->tpl_subnavi = 'products/subnavi.tpl';
         $this->tpl_mainno = 'products';
         $this->tpl_subno = 'upload_csv';
+        $this->tpl_maintitle = '商品管理';
         $this->tpl_subtitle = '商品登録CSV';
         $this->csv_id = '1';
 
@@ -413,7 +413,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
             $objQuery->insert("dtb_products", $sqlval);
         }
 
-        // カテゴリ登録
+        // カテゴリー登録
         if($arrList['category_ids'] != "") {
             $arrCategory_id = explode(',', $arrList['category_ids']);
             $this->objDb->updateProductCategories($arrCategory_id, $product_id);

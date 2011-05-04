@@ -46,8 +46,8 @@ class LC_Page_Admin_Order_Multiple extends LC_Page_Admin_Ex {
         parent::init();
         $this->tpl_mainpage = 'order/multiple.tpl';
         $this->tpl_mainno = 'order';
-        $this->tpl_subnavi = '';
         $this->tpl_subno = "";
+        $this->tpl_maintitle = '受注管理';
         $this->tpl_subtitle = '複数配送設定';
     }
 

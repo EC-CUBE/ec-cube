@@ -44,9 +44,9 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'basis/point.tpl';
-        $this->tpl_subnavi = 'basis/subnavi.tpl';
         $this->tpl_subno = 'point';
         $this->tpl_mainno = 'basis';
+        $this->tpl_maintitle = '基本情報管理';
         $this->tpl_subtitle = 'ポイント設定';
     }
 
