@@ -430,6 +430,20 @@ class SC_Helper_Customer {
         $objErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck($objFormParam);
         $objErr = SC_Helper_Customer_Ex::sfCustomerRegisterErrorCheck($objErr);
 
+        /*
+         * sfCustomerRegisterErrorCheck() では, ログイン中の場合は重複チェック
+         * されないので, 再度チェックを行う
+         */
+        $objCustomer = new SC_Customer_Ex();
+        if ($objCustomer->isLoginSuccess(true)
+            && SC_Helper_Customer_Ex::sfCustomerEmailDuplicationCheck($objCustomer->getValue('customer_id'), $objFormParam->getValue('email'))) {
+            $objErr->arrErr['email'] .= "※ すでに会員登録で使用されているメールアドレスです。<br />";
+        }
+        if ($objCustomer->isLoginSuccess(true)
+            && SC_Helper_Customer_Ex::sfCustomerEmailDuplicationCheck($objCustomer->getValue('customer_id'), $objFormParam->getValue('email_mobile'))) {
+            $objErr->arrErr['email_mobile'] .= "※ すでに会員登録で使用されているメールアドレスです。<br />";
+        }
+
         return $objErr->arrErr;
     }
 

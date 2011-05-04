@@ -1123,7 +1123,6 @@ class SC_CheckError {
         $register_user_flg =  SC_Helper_Customer_Ex::sfCheckRegisterUserFromEmail($this->arrParam[$value[1]]);
         switch($register_user_flg) {
             case 1:
-            case 3:
                 $this->arrErr[$value[1]] .= "※ すでに会員登録で使用されている" . $value[0] . "です。<br />";
                 break;
             case 2:
