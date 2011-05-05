@@ -53,8 +53,6 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
 
         $this->assertEquals('products/product_class.tpl',
                             $this->objPage->tpl_mainpage);
-        $this->assertEquals('products/subnavi.tpl',
-                            $this->objPage->tpl_subnavi);
         $this->assertEquals('products',
                             $this->objPage->tpl_mainno);
         $this->assertEquals('product',
