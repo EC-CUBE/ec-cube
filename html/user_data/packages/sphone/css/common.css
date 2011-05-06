@@ -432,9 +432,28 @@ text-align:center;
 
 /*商品一覧ページ
 -----------------------------------------------*/
+.navi{
+border: none;
+font-family:monospace;
+font-size:18px;
+}
+
 .navi li {
 width:100%;
 display:inline;
+padding: 0px;
+border-top: none;
+}
+
+.navi li a{
+display:inline;
+color:#3399CC;
+font-weight:normal;
+text-decoration:underline;
+}
+
+.navi li strong{
+color:#000000;
 }
 
 p.listcomment {
