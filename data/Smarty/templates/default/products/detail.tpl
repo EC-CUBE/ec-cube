@@ -89,24 +89,27 @@ $(document).ready(function() {
             <!--▲商品ステータス-->
 
             <!--★商品コード★-->
-            <div>商品コード：
-                <span id="product_code_default">
-                    <!--{if $arrProduct.product_code_min == $arrProduct.product_code_max}-->
-                        <!--{$arrProduct.product_code_min|h}-->
-                    <!--{else}-->
-                        <!--{$arrProduct.product_code_min|h}-->～<!--{$arrProduct.product_code_max|h}-->
-                    <!--{/if}-->
-                </span><span id="product_code_dynamic"></span>
-            </div>
+            <dl class="product_code">
+                <dt>商品コード：</dt>
+                <dd>
+                    <span id="product_code_default">
+                        <!--{if $arrProduct.product_code_min == $arrProduct.product_code_max}-->
+                            <!--{$arrProduct.product_code_min|h}-->
+                        <!--{else}-->
+                            <!--{$arrProduct.product_code_min|h}-->～<!--{$arrProduct.product_code_max|h}-->
+                        <!--{/if}-->
+                    </span><span id="product_code_dynamic"></span>
+                </dd>
+            </dl>
 
             <!--★商品名★-->
             <h2><!--{$arrProduct.name|h}--></h2>
 
             <!--★通常価格★-->
             <!--{if $arrProduct.price01_max > 0}-->
-                <div class="normal_price">
-                    <!--{$smarty.const.NORMAL_PRICE_TITLE}-->(税込)：
-                    <span class="price">
+                <dl class="normal_price">
+                    <dt><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(税込)：</dt>
+                    <dd class="price">
                         <span id="price01_default">
                             <!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->
                                 <!--{$arrProduct.price01_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
@@ -115,13 +118,14 @@ $(document).ready(function() {
                             <!--{/if}-->
                         </span><span id="price01_dynamic"></span>
                         円
-                    </span>
-                </div>
+                    </dd>
+                </dl>
             <!--{/if}-->
 
             <!--★販売価格★-->
-            <div class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}-->(税込)：
-                <span class="price">
+            <dl class="sale_price">
+                <dt><!--{$smarty.const.SALE_PRICE_TITLE}-->(税込)：</dt>
+                <dd class="price">
                     <span id="price02_default">
                         <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
                             <!--{$arrProduct.price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
@@ -130,8 +134,8 @@ $(document).ready(function() {
                         <!--{/if}-->
                     </span><span id="price02_dynamic"></span>
                     円
-                </span>
-            </div>
+                </dd>
+            </dl>
 
             <!--★ポイント★-->
             <!--{if $smarty.const.USE_POINT !== false}-->
@@ -146,30 +150,41 @@ $(document).ready(function() {
                                 <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id|number_format}-->～<!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id|number_format}-->
                             <!--{/if}-->
                         <!--{/if}-->
-                        </span><span id="point_dynamic"></span>
-                        Pt
+                    </span><span id="point_dynamic"></span>
+                    Pt
                 </div>
             <!--{/if}-->
 
+            <!--{* ▼メーカー *}-->
+            <!--{if $arrProduct.maker_name|strlen >= 1}-->
+                <dl class="maker">
+                    <dt>メーカー：</dt>
+                    <dd><!--{$arrProduct.maker_name|h}--></dd>
+                </dl>
+            <!--{/if}-->
+            <!--{* ▲メーカー *}-->
+
             <!--▼メーカーURL-->
             <!--{if $arrProduct.comment1|strlen >= 1}-->
-                <div><span class="comment1">メーカーURL：
-                    <a href="<!--{$arrProduct.comment1|h}-->"><!--{$arrProduct.comment1|h}--></a>
-                </div>
+                <dl class="comment1">
+                    <td>メーカーURL：</dt>
+                    <dd><a href="<!--{$arrProduct.comment1|h}-->"><!--{$arrProduct.comment1|h}--></a></dd>
+                </dl>
             <!--{/if}-->
             <!--▼メーカーURL-->
 
             <!--★関連カテゴリ★-->
-            <div class="relative_cat">関連カテゴリ：
+            <dl class="relative_cat">
+                <td>関連カテゴリ：</td>
                 <!--{section name=r loop=$arrRelativeCat}-->
-                <p>
-                    <!--{section name=s loop=$arrRelativeCat[r]}-->
-                    <a href="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php?category_id=<!--{$arrRelativeCat[r][s].category_id}-->"><!--{$arrRelativeCat[r][s].category_name}--></a>
-                    <!--{if !$smarty.section.s.last}--><!--{$smarty.const.SEPA_CATNAVI}--><!--{/if}-->
-                    <!--{/section}-->
-                </p>
+                    <dd>
+                        <!--{section name=s loop=$arrRelativeCat[r]}-->
+                            <a href="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php?category_id=<!--{$arrRelativeCat[r][s].category_id}-->"><!--{$arrRelativeCat[r][s].category_name}--></a>
+                            <!--{if !$smarty.section.s.last}--><!--{$smarty.const.SEPA_CATNAVI}--><!--{/if}-->
+                        <!--{/section}-->
+                    </dd>
                 <!--{/section}-->
-            </div>
+            </dl>
 
             <!--★詳細メインコメント★-->
             <div class="main_comment"><!--{$arrProduct.main_comment|nl2br_html}--></div>
@@ -216,16 +231,14 @@ $(document).ready(function() {
                 <!--{/if}-->
 
                 <!--★数量★-->
-                <div class="quantity">
-                    <ul class="clearfix">
-                        <li>数量：</li>
-                        <li><input type="text" class="box60" name="quantity" value="<!--{$arrForm.quantity.value|default:1|h}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr.quantity|sfGetErrorColor}-->" />
-                            <!--{if $arrErr.quantity != ""}-->
-                                <br /><span class="attention"><!--{$arrErr.quantity}--></span>
-                            <!--{/if}-->
-                        </li>
-                    </ul>
-                </div>
+                <dl class="quantity">
+                    <dt>数量：</dt>
+                    <dd><input type="text" class="box60" name="quantity" value="<!--{$arrForm.quantity.value|default:1|h}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr.quantity|sfGetErrorColor}-->" />
+                        <!--{if $arrErr.quantity != ""}-->
+                            <br /><span class="attention"><!--{$arrErr.quantity}--></span>
+                        <!--{/if}-->
+                    </dd>
+                </dl>
 
                 <div class="cartin">
                     <div class="cartin_btn">

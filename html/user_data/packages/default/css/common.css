@@ -141,14 +141,10 @@ h1,h2,h3,h4,h5 {
     font-size: 100%;
     line-height: 150%;
 }
-.price {
-    color: #f00;
-}
 .sale_price {
     color: #f00;
 }
 .normal_price {
-    color: #f00;
     font-size: 90%;
 }
 .point {

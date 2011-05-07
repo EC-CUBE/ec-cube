@@ -1,5 +1,5 @@
 /*商品情報（テキストなど）*/
-div#detailrightblock table td {
+#detailrightblock table td {
 text-align: left;
 vertical-align: middle;
 }
@@ -40,34 +40,34 @@ div#detail-size {
 }
 
 /*商品情報（テーブル部分）*/
-div#detailrightblock table span.nomal-price {
+#detailrightblock table span.nomal-price {
 	font-size: 100%;
 }
-div#detailrightblock table span.sale-price {
+#detailrightblock table span.sale-price {
 	font-weight: bold;
 	color: #CC0000;
 }
-div#detailrightblock table span.member-point {
+#detailrightblock table span.member-point {
 	font-weight: bold;
 	color: #CC0000;
 }
 
 /*商品情報（規格部分）*/
-div#detailrightblock dl {
+#detailrightblock dl {
     margin: 0;
     padding: 5px 0 0;
 }
-div#detailrightblock dt {
+#detailrightblock dt {
     font-weight: bold;
     margin: 0;
     padding: 5px 0 3px 0;
     line-height: 1.1;
 }
-div#detailrightblock dd {
+#detailrightblock dd {
     margin: 0;
     padding: 0 0 5px;
 }
-div#detailrightblock .fm-detail-quantity {
+#detailrightblock .fm-detail-quantity {
     width: 70px;
     height: 16px;
     padding: 2px;

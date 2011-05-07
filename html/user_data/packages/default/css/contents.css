@@ -172,7 +172,7 @@ div#undercolumn_login .login_area .inputbox .btn_area {
 =============================================== */
 div#undercolumn_error .message_area {
     width:80%;
-	margin: 30px auto;
+    margin: 30px auto;
     padding: 30px;
     border: 1px solid #ccc;
     text-align: center;
@@ -356,7 +356,7 @@ div.listrightbloc .cartin_btn {
     width: 37%;
     float: left;
 }
-#one_maincolumn div#detailrightbloc {
+#one_maincolumn #detailrightbloc {
     width: 63%;
     float: right;
 }
@@ -380,8 +380,8 @@ div.listrightbloc .cartin_btn {
     float: left;
     width: 37%;
 }
-#two_maincolumn_left div#detailrightbloc ,
-#two_maincolumn_right div#detailrightbloc {
+#two_maincolumn_left #detailrightbloc ,
+#two_maincolumn_right #detailrightbloc {
     float: right;
     width: 63%;
 }
@@ -407,7 +407,7 @@ div.listrightbloc .cartin_btn {
     float: left;
     width: 49%;
 }
-#three_maincolumn div#detailrightbloc {
+#three_maincolumn #detailrightbloc {
     float: right;
     width: 50%;
 }
@@ -427,7 +427,7 @@ div.listrightbloc .cartin_btn {
 
 /* 商品情報 各種設定
 ----------------------------------------------- */
-div#detailrightbloc h2 {
+#detailrightbloc h2 {
     margin: 0 0 10px 0;
     padding: 0 0 15px 0;
     color: #666;
@@ -435,59 +435,104 @@ div#detailrightbloc h2 {
     font-weight: bold;
     font-size: 160%;
 }
-div#detailrightbloc .point ,
-div#detailrightbloc .relative_cat {
+#detailrightbloc .point,
+#detailrightbloc .relative_cat {
     margin: 0 0 10px 0;
     padding: 0 0 10px 0;
     background: url("../img/background/line_dot_01.gif") repeat-x bottom ;
 }
-div#detailrightbloc .main_comment {
+#detailrightbloc .main_comment {
     margin-bottom: 20px;
 }
-div.cart_area {
-    padding: 10px;
-    background-color: #ecf5ff;
-    border: 1px solid #cef0f4;
+
+/* 商品コード */
+#detailrightbloc .product_code dt,
+#detailrightbloc .product_code dd {
+    display: inline;
 }
 
 /* 商品ステータス */
-div#detailrightbloc ul.status_icon {
+#detailrightbloc ul.status_icon {
     margin-bottom: 10px;
     width: 100%;
 }
-div#detailrightbloc ul.status_icon li {
+#detailrightbloc ul.status_icon li {
     margin-right: 5px;
     margin-bottom: 3px;
     float: left;
 }
 
+/* 通常価格 */
+#detailrightbloc .normal_price dt,
+#detailrightbloc .normal_price dd {
+    display: inline;
+}
+
+/* 販売価格 */
+#detailrightbloc .sale_price dt,
+#detailrightbloc .sale_price dd {
+    display: inline;
+}
+
+/* ポイント */
+#detailrightbloc .point dt,
+#detailrightbloc .point dd {
+    display: inline;
+}
+
 /* 規格 */
-div#detailrightbloc div.classlist {
+#detailrightbloc div.classlist {
     margin-bottom: 10px;
     padding-bottom: 10px;
     width: 100%;
     background: url("../img/background/line_dot_02.gif") repeat-x bottom ;
 }
-div#detailrightbloc .classlist {
+#detailrightbloc .classlist {
     margin-bottom: 5px;
 }
-div#detailrightbloc ul {
+#detailrightbloc ul {
     margin-bottom: 10px;
     width: 100%;
 }
-div#detailrightbloc ul li {
+#detailrightbloc ul li {
     vertical-align: top;
     float: left;
 }
 
+/* メーカー */
+#detailrightbloc .maker dt,
+#detailrightbloc .maker dd {
+    display: inline;
+}
+
+/* メーカーURL */
+#detailrightbloc .comment1 dt,
+#detailrightbloc .comment1 dd {
+    display: inline;
+}
+
+/* 関連カテゴリ */
+#detailrightbloc .relative_cat dd {
+    margin-left: 1em;
+}
+
 /* 買い物かご */
-div#detailrightbloc .cartin {
+#detailrightbloc .cart_area {
+    padding: 10px;
+    background-color: #ecf5ff;
+    border: 1px solid #cef0f4;
+}
+#detailrightbloc .quantity dt,
+#detailrightbloc .quantity dd {
+    display: inline;
+}
+#detailrightbloc .cartin {
     text-align: center;
 }
-div#detailrightbloc .cartin_btn {
+#detailrightbloc .cartin_btn {
     text-align: center;
 }
-div#detailrightbloc .favorite_btn {
+#detailrightbloc .favorite_btn {
     text-align: center;
     margin-top: 10px;
 }
