@@ -142,6 +142,11 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
         flush();
         //ファイル読み込み
         $handle = fopen($realpath, 'rb');
+        if ($handle === false) {
+            SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
+            exit;
+        }
+
         while (!feof($handle)) {
             echo(fread($handle, DOWNLOAD_BLOCK*1024));
             ob_flush();

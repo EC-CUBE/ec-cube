@@ -52,6 +52,10 @@ class SC_MobileImage {
 
             // 端末の情報を取得する
             $fp = fopen(MOBILE_IMAGE_INC_REALDIR . "mobile_image_map_$carrier.csv", 'r');
+            // 取得できない場合は, 入力内容をそのまま返す
+            if ($fp === false) {
+                return $buffer;
+            }
             while (($data = fgetcsv($fp, 1000, ",")) !== FALSE) {
                 if ($data[1] == $model || $data[1] == '*') {
                     $cacheSize     = $data[2];
