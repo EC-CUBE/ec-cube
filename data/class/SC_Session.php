@@ -66,12 +66,13 @@ class SC_Session {
     /* 認証成功の判定 */
     function IsSuccess() {
         global $arrPERMISSION;
-        if($this->cert == CERT_STRING) {
+       if($this->cert == CERT_STRING) {
+			$admin_path = preg_replace('/\/+/', '/', $_SERVER['PHP_SELF']);
             $masterData                 = new SC_DB_MasterData_Ex();
             $this->arrPERMISSION        = $masterData->getMasterData("mtb_permission");
-            if(isset($this->arrPERMISSION[$_SERVER['PHP_SELF']])) {
+            if(isset($this->arrPERMISSION[$admin_path])) {
                 // 数値が自分の権限以上のものでないとアクセスできない。
-                if($this->arrPERMISSION[$_SERVER['PHP_SELF']] < $this->authority) {
+                if($this->arrPERMISSION[$admin_path] < $this->authority) {
                     return AUTH_ERROR;
                 }
             }
