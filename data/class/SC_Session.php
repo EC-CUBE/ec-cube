@@ -67,9 +67,11 @@ class SC_Session {
     function IsSuccess() {
         global $arrPERMISSION;
         if($this->cert == CERT_STRING) {
-            if(isset($arrPERMISSION[$_SERVER['PHP_SELF']])) {
+            $masterData                 = new SC_DB_MasterData_Ex();
+            $this->arrPERMISSION        = $masterData->getMasterData("mtb_permission");
+            if(isset($this->arrPERMISSION[$_SERVER['PHP_SELF']])) {
                 // 数値が自分の権限以上のものでないとアクセスできない。
-                if($arrPERMISSION[$_SERVER['PHP_SELF']] < $this->authority) {
+                if($this->arrPERMISSION[$_SERVER['PHP_SELF']] < $this->authority) {
                     return AUTH_ERROR;
                 }
             }
