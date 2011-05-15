@@ -268,7 +268,7 @@ function fnSetClassCategories(form, classcat_id2_selected) {
                         <div id="cartbtn_default">
                             <!--★カゴに入れる★-->
                             <div>
-                               <a href="javascript:void(document.form1.submit())" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/products/b_cartin_on.gif','cart');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/products/b_cartin.gif','cart');" class="spbtn spbtn-agree">
+                               <a href="javascript:void(document.form1.submit())" class="spbtn spbtn-agree">
                                     カゴに入れる
                                 </a>
                             </div>
