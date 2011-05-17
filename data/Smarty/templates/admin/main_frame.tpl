@@ -131,7 +131,7 @@
 <!--{* ▲NAVI *}-->
 
 <!--{if $tpl_subtitle}-->
-<h1><span class="title"><!--{$tpl_maintitle|h}-->＞<!--{$tpl_subtitle|h}--></span></h1>
+<h1><span class="title"><!--{$tpl_maintitle|h}--><!--{if strlen($tpl_maintitle) >= 1 && strlen($tpl_subtitle) >= 1}-->＞<!--{/if}--><!--{$tpl_subtitle|h}--></span></h1>
 <!--{/if}-->
 
 <!--{* ▼CONTENTS *}-->
