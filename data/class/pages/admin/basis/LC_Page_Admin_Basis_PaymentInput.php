@@ -86,7 +86,7 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
         case 'edit':
             $objFormParam->setParam($_REQUEST);
             $objFormParam->convParam();
-            $this->arrErr = $objFormParam->checkError();
+            $this->arrErr = $this->lfCheckError($objFormParam);
             $post = $objFormParam->getHashArray();
             $this->charge_flg = $post["charge_flg"];
             if(count($this->arrErr) == 0) {
@@ -246,18 +246,18 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
     /*　利用条件の数値チェック */
 
     /* 入力内容のチェック */
-    function lfCheckError($post) {
+    function lfCheckError($objFormParam) {
 
         // DBのデータを取得
         $arrPaymentData = $this->lfGetData($post['payment_id']);
 
         // 手数料を設定できない場合には、手数料を0にする
-        if($arrPaymentData["charge_flg"] == 2) $this->objFormParam->setValue('charge', "0");
+        if($arrPaymentData["charge_flg"] == 2) $objFormParam->setValue('charge', "0");
 
         // 入力データを渡す。
-        $arrRet =  $this->objFormParam->getHashArray();
+        $arrRet =  $objFormParam->getHashArray();
         $objErr = new SC_CheckError_Ex($arrRet);
-        $objErr->arrErr = $this->objFormParam->checkError();
+        $objErr->arrErr = $objFormParam->checkError();
 
         // 利用条件(下限)チェック
         if($arrRet['rule'] < $arrPaymentData["rule_min"] and $arrPaymentData["rule_min"] != ""){
