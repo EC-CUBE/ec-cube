@@ -81,7 +81,6 @@ class LC_Page_AbstractMypage extends LC_Page_Ex {
             }
             $this->tpl_title        = 'MYページ(ログイン)';
             $this->tpl_mainpage     = 'mypage/login.tpl';
-            $this->transactionid    = SC_Helper_Session_Ex::getToken();
 
         } else {
             //マイページ顧客情報表示用共通処理

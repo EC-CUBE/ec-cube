@@ -186,23 +186,9 @@ class SC_Helper_Session {
      * @return boolean トランザクショントークンが有効な場合 true
      */
     function isValidToken($is_unset = false) {
-
-        $checkToken = "";
-
-        // $_POST の値を優先する
-        if (isset($_POST[TRANSACTION_ID_NAME])) {
-
-            $checkToken = $_POST[TRANSACTION_ID_NAME];
-        } elseif (isset($_GET[TRANSACTION_ID_NAME])) {
-
-            $checkToken = $_GET[TRANSACTION_ID_NAME];
-        }
-
-        $ret = false;
         // token の妥当性チェック
-        if ($checkToken === $_SESSION[TRANSACTION_ID_NAME]) {
-            $ret = true;
-        }
+        $ret = $_REQUEST[TRANSACTION_ID_NAME] === $_SESSION[TRANSACTION_ID_NAME];
+
         if ($is_unset || $ret === false) {
             SC_Helper_Session_Ex::destroyToken();
         }
