@@ -86,8 +86,8 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
         case 'edit':
             $objFormParam->setParam($_REQUEST);
             $objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError($objFormParam);
             $post = $objFormParam->getHashArray();
+            $this->arrErr = $this->lfCheckError($post, $objFormParam);
             $this->charge_flg = $post["charge_flg"];
             if(count($this->arrErr) == 0) {
                 $this->lfRegistData($post['payment_id'], $_SESSION['member_id'], $objFormParam);
@@ -246,7 +246,7 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
     /*　利用条件の数値チェック */
 
     /* 入力内容のチェック */
-    function lfCheckError($objFormParam) {
+    function lfCheckError($post, $objFormParam) {
 
         // DBのデータを取得
         $arrPaymentData = $this->lfGetData($post['payment_id']);
