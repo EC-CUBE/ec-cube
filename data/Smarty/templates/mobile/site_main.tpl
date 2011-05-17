@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<body bgcolor="#ffffff" text="#555555" link="#3a75af" vlink="#3a75af" alink="#3a75af">
+<body bgcolor="#ffffff" text="#555555" link="#3a75af" vlink="#3a75af">
     <a name="top" id="top"></a>
 <!--{* Moba8リクエスト用 *}-->
 <!--{if "sfRequestMoba8"|function_exists === TRUE}-->
