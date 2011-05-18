@@ -85,7 +85,14 @@ class SC_Response{
     /**
      * アプリケーション内でリダイレクトする
      *
+     * 内部で生成する URL の searchpart は、下記の順で上書きしていく。(後勝ち)
+     * 1. 引数 $inheritQueryString が true の場合、$_SERVER['QUERY_STRING']
+     * 2. $location に含まれる searchpart
+     * 3. 引数 $arrQueryString
      * @param string $location 「url-path」「現在のURLからのパス」「URL」のいずれか。「../」の解釈は行なわない。
+     * @param array $arrQueryString URL に付加する searchpart
+     * @param bool $inheritQueryString 現在のリクエストの searchpart を継承するか
+     * @param bool|null $useSsl true:HTTPSを強制, false:HTTPを強制, null:継承
      * @return void
      * @static
      */
@@ -93,8 +100,7 @@ class SC_Response{
 
         // url-path → URL 変換
         if ($location[0] === '/') {
-            $netUrl = new Net_URL();
-            $netUrl->path = $location;
+            $netUrl = new Net_URL($location);
             $location = $netUrl->getUrl();
         }
 
@@ -132,20 +138,15 @@ class SC_Response{
         }
 
         $netUrl = new Net_URL($url);
-        $arrQueryString = array_merge($netUrl->querystring, $arrQueryString);
-        $netUrl->querystring = array();
 
-        if ($inheritQueryString) {
-            if (!empty($_SERVER['QUERY_STRING'])) {
-                $netUrl->addRawQueryString($_SERVER['QUERY_STRING']);
-            }
+        if ($inheritQueryString && !empty($_SERVER['QUERY_STRING'])) {
+            $arrQueryStringBackup = $netUrl->querystring;
+            // XXX メソッド名は add で始まるが、実際には置換を行う
+            $netUrl->addRawQueryString($_SERVER['QUERY_STRING']);
+            $netUrl->querystring = array_merge($netUrl->querystring, $arrQueryStringBackup);
         }
 
-        foreach ($arrQueryString as $key => $val) {
-            $netUrl->addQueryString($key, $val);
-        }
-
-        $url = $netUrl->getURL();
+        $netUrl->querystring = array_merge($netUrl->querystring, $arrQueryString);
 
         $session = SC_SessionFactory::getInstance();
         if (SC_MobileUserAgent_Ex::isMobile() || $session->useCookie() == false) {
