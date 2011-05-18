@@ -27,7 +27,7 @@
 <!--{if $arrErr.classcategory_id1 != ""}-->
 	<font color="#FF0000">※<!--{$tpl_class_name1}-->を入力して下さい｡</font><br>
 <!--{/if}-->
-<form method="post" action="<!--{$smarty.server.REQUEST_URI|h}-->">
+<form method="post" action="?">
   <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 	<select name="classcategory_id1">
 		<option value="">選択してください</option>

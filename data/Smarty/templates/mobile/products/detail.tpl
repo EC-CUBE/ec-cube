@@ -122,7 +122,7 @@ Pt<br>
 <!--{/section}-->
 <br>
 
-<form name="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|h}-->">
+<form name="form1" method="post" action="?">
 	<input type="hidden" name="mode" value="select">
   <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 

@@ -28,7 +28,7 @@
     <form name="login_mypage" id="login_mypage" method="post" action="<!--{$smarty.const.HTTPS_URL}-->frontparts/login_check.php" onsubmit="return fnCheckLogin('login_mypage')">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="login" />
-    <input type="hidden" name="url" value="<!--{$smarty.server.PHP_SELF|h}-->" />
+    <input type="hidden" name="url" value="<!--{$smarty.server.REQUEST_URI|h}-->" />
    <div class="loginarea">
      <h2>会員登録がお済みのお客様</h2>
      <p class="inputtext">会員の方は、登録時に入力されたメールアドレスとパスワードでログインしてください。</p>

@@ -124,7 +124,7 @@ function fnCheckStock(form) {
 </script>
 
 <!--▼検索フォーム-->
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|h}-->">
+<form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input name="mode" type="hidden" value="search" />
 <input name="anchor_key" type="hidden" value="" />
