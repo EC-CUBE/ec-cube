@@ -156,7 +156,6 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
                 }
             } else {
                 // 入力エラーの場合、元のアドレスに戻す。
-                // FIXME $_POST['url'] には、URL ではなく、url-path が渡るもよう。HTTPS 利用に関わる問題も考えられるので、URL が渡るように改善した方が良いように感じる。
                 SC_Response_Ex::sendRedirect($_POST['url']);
                 exit;
             }
