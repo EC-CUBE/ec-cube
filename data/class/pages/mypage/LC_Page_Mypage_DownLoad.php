@@ -123,10 +123,17 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
         // flushなどを利用しているので、現行のSC_Displayは利用できません。
         // SC_DisplayやSC_Responseに大容量ファイルレスポンスが実装されたら移行可能だと思います。
 
+        // 拡張子を取得(Android対応 apkは変更や増加の可能性が低いと考えとりあえず固定)
+        $extension = pathinfo($realpath, PATHINFO_EXTENSION);
         //タイプ指定
-        header("Content-Type: Application/octet-stream");
+        if($extension=='apk'){
+            // Androidの場合はコンテンツタイプを変更する必要がある
+            header("Content-Type: application/vnd.android.package-archive ");
+        }else{
+            header("Content-Type: Application/octet-stream");
+        }
         //ファイル名指定
-        header("Content-Disposition: attachment; filename=" . $sdown_filename);
+        header('Content-Disposition: attachment; filename="' . $sdown_filename . '"');
         header("Content-Transfer-Encoding: binary");
         //キャッシュ無効化
         header("Expires: Mon, 26 Nov 1962 00:00:00 GMT");
