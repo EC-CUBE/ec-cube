@@ -132,10 +132,20 @@ class SC_Response{
         }
 
         $netUrl = new Net_URL($url);
+        $arrQueryString = array_merge($netUrl->querystring, $arrQueryString);
+        $netUrl->querystring = array();
+
         if ($inheritQueryString) {
-            $arrQueryString = array_merge($netUrl->querystring, $arrQueryString);
+            if (!empty($_SERVER['QUERY_STRING'])) {
+                $netUrl->addRawQueryString($_SERVER['QUERY_STRING']);
+            }
         }
-        $netUrl->querystring = $arrQueryString;
+
+        foreach ($arrQueryString as $key => $val) {
+            $netUrl->addQueryString($key, $val);
+        }
+
+        $url = $netUrl->getURL();
 
         $session = SC_SessionFactory::getInstance();
         if (SC_MobileUserAgent_Ex::isMobile() || $session->useCookie() == false) {
