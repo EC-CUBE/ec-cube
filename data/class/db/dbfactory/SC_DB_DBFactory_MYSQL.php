@@ -224,7 +224,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sql = "SHOW TABLES LIKE ". $objQuery->quote("%" . $expression . "%");
         $arrColList = $objQuery->getAll($sql);
-        $arrColList = SC_Utils_Ex::sfswaparray($arrColList, false);
+        $arrColList = SC_Utils_Ex::sfSwapArray($arrColList, false);
         return $arrColList[0];
     }
 

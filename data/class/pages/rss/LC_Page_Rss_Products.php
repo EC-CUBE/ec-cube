@@ -324,7 +324,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
      */
     function lfGetProductKeys($arrProduct) {
         $arrProductKeys = array();
-        $arrProduct = SC_Utils_Ex::sfswaparray($arrProduct);
+        $arrProduct = SC_Utils_Ex::sfSwapArray($arrProduct);
         if ( is_array($arrProduct) ) {
             $arrProductKeys = array_keys($arrProduct);
         }

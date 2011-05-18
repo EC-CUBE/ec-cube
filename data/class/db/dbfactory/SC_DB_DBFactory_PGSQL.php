@@ -218,7 +218,7 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
             .  "      AND c.relname LIKE ?"
             .  " ORDER BY 1,2;";
         $arrColList = $objQuery->getAll($sql, array("%" . $expression . "%"));
-        $arrColList = SC_Utils_Ex::sfswaparray($arrColList, false);
+        $arrColList = SC_Utils_Ex::sfSwapArray($arrColList, false);
         return $arrColList[0];
     }
 
