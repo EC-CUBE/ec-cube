@@ -37,6 +37,14 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
     /** フォームパラメータの配列 */
     var $objFormParam;
 
+    /** 基本Content-Type */
+    var $defaultContentType = 'Application/octet-stream';
+
+    /** 拡張Content-Type配列
+     * Application/octet-streamで対応出来ないファイルタイプのみ拡張子をキーに記述する
+     * 拡張子が本配列に存在しない場合は $defaultContentTypeを利用する */
+    var $arrContentType = array('apk' => 'application/vnd.android.package-archive');
+
     // }}}
     // {{{ functions
 
@@ -123,15 +131,15 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
         // flushなどを利用しているので、現行のSC_Displayは利用できません。
         // SC_DisplayやSC_Responseに大容量ファイルレスポンスが実装されたら移行可能だと思います。
 
-        // 拡張子を取得(Android対応 apkは変更や増加の可能性が低いと考えとりあえず固定)
+        // 拡張子を取得
         $extension = pathinfo($realpath, PATHINFO_EXTENSION);
-        //タイプ指定
-        if($extension=='apk'){
-            // Androidの場合はコンテンツタイプを変更する必要がある
-            header("Content-Type: application/vnd.android.package-archive ");
-        }else{
-            header("Content-Type: Application/octet-stream");
+        $contentType = $this->defaultContentType;
+        // 拡張ContentType判定（拡張子をキーに拡張ContentType対象か判断）
+        if(isset($this->arrContentType[$extension])){
+            // 拡張ContentType対象の場合は、ContentTypeを変更
+            $contentType = $this->arrContentType[$extension];
         }
+        header("Content-Type: ".$contentType);
         //ファイル名指定
         header('Content-Disposition: attachment; filename="' . $sdown_filename . '"');
         header("Content-Transfer-Encoding: binary");
