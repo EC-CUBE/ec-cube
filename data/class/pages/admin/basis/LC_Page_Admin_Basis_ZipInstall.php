@@ -51,6 +51,15 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
     var $exec;
     var $tpl_count_mtb_zip;
 
+    /** CSV の更新日時 */
+    var $tpl_csv_datetime;
+
+    /** ZIP アーカイブファイルの取得元 */
+    var $zip_download_url = 'http://www.post.japanpost.jp/zipcode/dl/kogaki/zip/ken_all.zip';
+
+    /** 日本郵便から取得した ZIP アーカイブファイルの保管パス */
+    var $zip_csv_temp_realfile;
+
     // }}}
     // {{{ functions
 
@@ -69,6 +78,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
 
         $this->tpl_mode = $this->getMode();
         $this->exec = (boolean)$_GET['exec'];
+        $this->zip_csv_temp_realfile = DATA_REALDIR . 'downloads/tmp/ken_all.zip';
     }
 
     /**
@@ -104,7 +114,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
                 case 'auto':
                     $this->lfAutoCommitZip();
                     break;
-                // 手動登録
+                // DB手動登録
                 case 'manual':
                     $this->insertMtbZip($this->arrForm['startRowNum']);
                     break;
@@ -113,18 +123,29 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         }
 
         switch ($this->tpl_mode) {
-            // 手動削除
+            // 削除
             case 'delete':
                 $this->lfDeleteZip();
 
                 // 進捗・完了画面を表示しない
                 $this->tpl_mode = null;
+                break;
 
+            // 郵便番号CSV更新
+            case 'update_csv';
+                $this->lfDownloadZipFileFromJp();
+                $this->lfExtractZipFile();
+
+                // 進捗・完了画面を表示しない
+                $this->tpl_mode = null;
                 break;
         }
 
         $this->tpl_line = $this->countZipCsv();
         $this->tpl_count_mtb_zip = $this->countMtbZip();
+        $this->tpl_csv_datetime = $this->lfGetCsvDatetime();
+        // XXX PHP4 を切捨てたら、ダウンロードの必要性チェックなども行いたい
+        // $arrHeader = get_headers($this->zip_download_url, 1);
     }
 
     /**
@@ -139,16 +160,28 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
     function lfAutoCommitZip() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
+        $this->lfDownloadZipFileFromJp();
+        $this->lfExtractZipFile();
+
         $objQuery->begin();
-        $objQuery->delete('mtb_zip');
+        $this->lfDeleteZip();
         $this->insertMtbZip();
         $objQuery->commit();
     }
 
+    /**
+     * テーブルデータと UTF-8 変換済みの郵便番号 CSV を削除
+     *
+     * @return void
+     */
     function lfDeleteZip() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
+        // DB
         $objQuery->delete('mtb_zip');
+
+        // UTF-8 変換済みの郵便番号 CSV
+        unlink(ZIP_CSV_UTF8_REALFILE);
     }
 
     /**
@@ -178,7 +211,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
             <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHAR_CODE ?>" />
         </head>
         <body>
-        <p>進捗状況</p>
+        <p>DB 登録進捗状況</p>
         <div style="background-color: #494E5F;">
         <?php
         // 一部のIEは256バイト以上受け取ってから表示を開始する。
@@ -270,7 +303,6 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
     }
 
     function openZipCsv() {
-        // http://www.post.japanpost.jp/zipcode/dl/kogaki/lzh/ken_all.lzh
         $this->convertZipCsv();
         $fp = fopen(ZIP_CSV_UTF8_REALFILE, 'r');
         if (!$fp) {
@@ -323,6 +355,84 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         fclose($fp);
 
         return $line;
+    }
+
+    /**
+     * 日本郵便から郵便番号 CSV の ZIP アーカイブファイルを取得
+     *
+     * @return void
+     */
+    function lfDownloadZipFileFromJp() {
+        $res = copy($this->zip_download_url, $this->zip_csv_temp_realfile);
+        if (!$res) {
+            SC_Utils_Ex::sfDispException($this->zip_download_url . ' の取得または ' . $this->zip_csv_temp_realfile . ' への書き込みに失敗しました。');
+        }
+    }
+
+    /**
+     * ZIP アーカイブファイルを展開して、郵便番号 CSV を上書き
+     *
+     * @return void
+     */
+    function lfExtractZipFile() {
+        if (!function_exists('zip_open')) {
+            SC_Utils_Ex::sfDispException('PHP 拡張モジュール「zip」を有効にしてください。');
+        }
+
+        $zip = zip_open($this->zip_csv_temp_realfile);
+        if (!is_resource($zip)) {
+            SC_Utils_Ex::sfDispException($this->zip_csv_temp_realfile . ' をオープンできません。');
+        }
+
+        do {
+            $entry = zip_read($zip);
+        } while ($entry && zip_entry_name($entry) != 'KEN_ALL.CSV');
+
+        if (!$entry) {
+            SC_Utils_Ex::sfDispException($this->zip_csv_temp_realfile . ' に対象ファイルが見つかりません。');
+        }
+
+        // 展開時の破損を考慮し、別名で一旦展開する。
+        $tmp_csv_realfile = ZIP_CSV_REALFILE . '.tmp';
+
+        $res = zip_entry_open($zip, $entry, 'rb');
+        if (!$res) {
+            SC_Utils_Ex::sfDispException($this->zip_csv_temp_realfile . ' の展開に失敗しました。');
+        }
+
+        $fp = fopen($tmp_csv_realfile, 'w');
+        if (!$fp) {
+            SC_Utils_Ex::sfDispException($tmp_csv_realfile . ' を開けません。');
+        }
+
+        $res = fwrite($fp, zip_entry_read($entry, zip_entry_filesize($entry)));
+        if ($res === FALSE) {
+            SC_Utils_Ex::sfDispException($tmp_csv_realfile . ' の書き込みに失敗しました。');
+        }
+
+        fclose($fp);
+        zip_close($zip);
+
+        // CSV 削除
+        $res = unlink(ZIP_CSV_REALFILE);
+        if (!$res) {
+            SC_Utils_Ex::sfDispException(ZIP_CSV_REALFILE . ' を削除できません。');
+        }
+
+        // CSV ファイル名変更
+        $res = rename($tmp_csv_realfile, ZIP_CSV_REALFILE);
+        if (!$res) {
+            SC_Utils_Ex::sfDispException('ファイル名を変更できません。: ' . $tmp_csv_realfile . ' -> ' . ZIP_CSV_REALFILE);
+        }
+    }
+
+    /**
+     * CSV の更新日時を取得
+     *
+     * @return string CSV の更新日時 (整形済みテキスト)
+     */
+    function lfGetCsvDatetime() {
+        return date('Y/m/d H:i:s', filemtime(ZIP_CSV_REALFILE));
     }
 }
 ?>
