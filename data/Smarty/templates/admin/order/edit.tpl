@@ -396,7 +396,7 @@
             <!--{assign var=product_quantity value="shipping_product_quantity"}-->
             <input type="hidden" name="<!--{$product_quantity}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$product_quantity]|h}-->" />
 
-            <!--{if $arrShipping[$product_quantity] > 0}-->
+            <!--{if count($arrShipping.shipment_product_class_id) > 0}-->
                 <table class="list" id="order-edit-products">
                     <tr>
                         <th class="id">商品コード</th>
@@ -404,7 +404,7 @@
                         <th class="price">単価</th>
                         <th class="qty">数量</th>
                     </tr>
-                    <!--{section name=item loop=$arrShipping[$product_quantity]}-->
+                    <!--{section name=item loop=$arrShipping.shipment_product_class_id|@count}-->
                         <!--{assign var=item_index value="`$smarty.section.item.index`"}-->
 
                         <tr>
