@@ -349,14 +349,11 @@ class SC_FormParam {
 
     // 配列の縦横を入れ替えて返す
     function getSwapArray($arrKey) {
-        foreach($arrKey as $keyname) {
-            $arrVal = $this->getValue($keyname);
-            $max = count($arrVal);
-            for($i = 0; $i < $max; $i++) {
-                $arrRet[$i][$keyname] = $arrVal[$i];
-            }
+        $arrRet = array();
+        foreach ($arrKey as $keyname) {
+            $arrRet[$keyname] = $this->getValue($keyname);
         }
-        return $arrRet;
+        return SC_Utils_Ex::sfSwapArray($arrRet);
     }
 
     // 項目名一覧の取得

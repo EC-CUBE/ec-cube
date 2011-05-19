@@ -770,14 +770,13 @@ class SC_Utils {
     /* 配列をキー名ごとの配列に変更する */
     function sfSwapArray($array, $isColumnName = true) {
         $arrRet = array();
-        $max = count($array);
-        for($i = 0; $i < $max; $i++) {
-            $j = 0;
-            foreach($array[$i] as $key => $val) {
+        foreach($array as $key1 => $arr1) {
+            $i = 0;
+            foreach($arr1 as $key2 => $val) {
                 if ($isColumnName) {
-                    $arrRet[$key][] = $val;
+                    $arrRet[$key2][$key1] = $val;
                 } else {
-                    $arrRet[$j][] = $val;
+                    $arrRet[$i][$i] = $val;
                 }
                 $j++;
             }

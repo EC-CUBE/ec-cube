@@ -33,6 +33,39 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/order/LC_Page_Admin_Order_Ex
  */
 class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
 
+    var $arrShippingKeys = array(
+        'shipping_id',
+        'shipping_name01',
+        'shipping_name02',
+        'shipping_kana01',
+        'shipping_kana02',
+        'shipping_tel01',
+        'shipping_tel02',
+        'shipping_tel03',
+        'shipping_fax01',
+        'shipping_fax02',
+        'shipping_fax03',
+        'shipping_pref',
+        'shipping_zip01',
+        'shipping_zip02',
+        'shipping_addr01',
+        'shipping_addr02',
+        'shipping_date_year',
+        'shipping_date_month',
+        'shipping_date_day',
+        'time_id',
+    );
+
+    var $arrShipmentItemKeys = array(
+        'shipment_product_class_id',
+        'shipment_product_code',
+        'shipment_product_name',
+        'shipment_classcategory_name1',
+        'shipment_classcategory_name2',
+        'shipment_price',
+        'shipment_quantity',
+    );
+
     // }}}
     // {{{ functions
 
@@ -204,6 +237,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         }
 
         $this->arrForm = $objFormParam->getFormParamList();
+        $this->arrAllShipping = $objFormParam->getSwapArray(array_merge($this->arrShippingKeys, $this->arrShipmentItemKeys));
         $this->arrDelivTime = $objPurchase->getDelivTime($objFormParam->getValue('deliv_id'));
         $this->tpl_onload .= $this->getAnchorKey($objFormParam);
         $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
@@ -383,24 +417,24 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         /*
          * フォームの配送先ごとの配列を生成
          *
-         * $arrShipmentForm['(key)'][$shipping_index][$item_index] = 値
-         * $arrProductQuantity[$shipping_index] = 配送先ごとの配送商品数量
+         * $arrShipmentForm['(key)'][$shipping_id][$item_index] = 値
+         * $arrProductQuantity[$shipping_id] = 配送先ごとの配送商品数量
          */
         $arrShipmentForm = array();
         $arrProductQuantity = array();
         $arrShippingIds = $objFormParam->getValue('shipping_id');
-        foreach ($arrShippingIds as $shipping_index => $shipping_id) {
+        foreach ($arrShippingIds as $shipping_id) {
             $item_index = 0;
             foreach ($arrShipmentItem[$shipping_id] as $product_class_id => $shipment_item) {
                 foreach ($shipment_item as $key => $val) {
-                    $arrShipmentForm[$key][$shipping_index][$item_index] = $val;
+                    $arrShipmentForm[$key][$shipping_id][$item_index] = $val;
                 }
                 // 受注商品の数量を設定
                 $arrQuantity[$product_class_id] += $shipment_item['shipment_quantity'];
                 $item_index++;
             }
             // 配送先ごとの配送商品数量を設定
-            $arrProductQuantity[$shipping_index] = count($arrShipmentItem[$shipping_id]);
+            $arrProductQuantity[$shipping_id] = count($arrShipmentItem[$shipping_id]);
         }
 
         $objFormParam->setParam($arrShipmentForm);
@@ -432,16 +466,17 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $arrOrderDetail = $objPurchase->getOrderDetail($order_id, false);
         $objFormParam->setParam(SC_Utils_Ex::sfSwapArray($arrOrderDetail));
 
-        $arrShippings = $objPurchase->getShippings($order_id);
-        // お届け日の処理
-        foreach (array_keys($arrShippings) as $key) {
-            $shipping =& $arrShippings[$key];
-            if (!SC_Utils_Ex::isBlank($shipping["shipping_date"])) {
-                $ts = strtotime($shipping["shipping_date"]);
-                $arrShippings[$key]['shipping_date_year'] = date('Y', $ts);
-                $arrShippings[$key]['shipping_date_month'] = date('n', $ts);
-                $arrShippings[$key]['shipping_date_day'] = date('j', $ts);
+        $arrShippingsTmp = $objPurchase->getShippings($order_id);
+        $arrShippings = array();
+        foreach ($arrShippingsTmp as $row) {
+            // お届け日の処理
+            if (!SC_Utils_Ex::isBlank($row["shipping_date"])) {
+                $ts = strtotime($row["shipping_date"]);
+                $row['shipping_date_year'] = date('Y', $ts);
+                $row['shipping_date_month'] = date('n', $ts);
+                $row['shipping_date_day'] = date('j', $ts);
             }
+            $arrShippings[$row['shipping_id']] = $row;
         }
         $objFormParam->setValue('shipping_quantity', count($arrShippings));
         $objFormParam->setParam(SC_Utils_Ex::sfSwapArray($arrShippings));
@@ -449,16 +484,16 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         /*
          * 配送商品を設定
          *
-         * $arrShipmentItem['shipment_(key)'][$shipping_index][$item_index] = 値
-         * $arrProductQuantity[$shipping_index] = 配送先ごとの配送商品数量
+         * $arrShipmentItem['shipment_(key)'][$shipping_id][$item_index] = 値
+         * $arrProductQuantity[$shipping_id] = 配送先ごとの配送商品数量
          */
         $arrProductQuantity = array();
         $arrShipmentItem = array();
-        foreach ($arrShippings as $shipping_index => $arrShipping) {
-            $arrProductQuantity[$shipping_index] = count($arrShipping['shipment_item']);
+        foreach ($arrShippings as $shipping_id => $arrShipping) {
+            $arrProductQuantity[$shipping_id] = count($arrShipping['shipment_item']);
             foreach ($arrShipping['shipment_item'] as $item_index => $arrItem) {
                 foreach ($arrItem as $item_key => $item_val) {
-                    $arrShipmentItem['shipment_' . $item_key][$shipping_index][$item_index] = $item_val;
+                    $arrShipmentItem['shipment_' . $item_key][$shipping_id][$item_index] = $item_val;
                 }
             }
         }
@@ -640,35 +675,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
             }
         }
 
-        $arrAllShipping =  $objFormParam->getSwapArray(array('shipping_id',
-                                                             'shipping_name01',
-                                                             'shipping_name02',
-                                                             'shipping_kana01',
-                                                             'shipping_kana02',
-                                                             'shipping_tel01',
-                                                             'shipping_tel02',
-                                                             'shipping_tel03',
-                                                             'shipping_fax01',
-                                                             'shipping_fax02',
-                                                             'shipping_fax03',
-                                                             'shipping_pref',
-                                                             'shipping_zip01',
-                                                             'shipping_zip02',
-                                                             'shipping_addr01',
-                                                             'shipping_addr02',
-                                                             'shipping_date_year',
-                                                             'shipping_date_month',
-                                                             'shipping_date_day',
-                                                             'time_id'));
-
-        $arrAllShipmentItem =
-            $objFormParam->getSwapArray(array('shipment_product_class_id',
-                                              'shipment_product_code',
-                                              'shipment_product_name',
-                                              'shipment_classcategory_name1',
-                                              'shipment_classcategory_name2',
-                                              'shipment_price',
-                                              'shipment_quantity'));
+        $arrAllShipping = $objFormParam->getSwapArray($this->arrShippingKeys);
+        $arrAllShipmentItem = $objFormParam->getSwapArray($this->arrShipmentItemKeys);
 
         $arrDelivTime = $objPurchase->getDelivTime($objFormParam->getValue('deliv_id'));
 
