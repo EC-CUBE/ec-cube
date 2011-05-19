@@ -37,7 +37,6 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * 2. 管理画面のデザイン管理から生成したページ
  * 3. 公開されているすべての商品一覧ページ
  * 4. 公開されているすべての商品詳細ページ
- * 5. html/mobile 以下の上記ページ
  *
  * このモジュールを設置後, 各検索エンジンにサイトマップを登録することにより, 検索エンジンの
  * インデックス化が促進される.
@@ -76,9 +75,6 @@ class LC_Page_Sitemap extends LC_Page_Ex {
         $this->staticURL = array();
 
         $this->staticURL[] = HTTP_URL . 'rss/' . DIR_INDEX_PATH;
-        if (USE_MOBILE !== false) {
-            $this->staticURL[] = HTTP_URL;
-        }
     }
 
     /**
@@ -88,7 +84,8 @@ class LC_Page_Sitemap extends LC_Page_Ex {
      */
     function process() {
         // ページのデータを取得
-        $this->arrPageList = $this->getPageData();
+        // FIXME PCサイトのみに限定している。ある程度妥当だとは思うが、よりベターな方法はないだろうか。
+        $this->arrPageList = $this->getPageData('device_type_id = ?', DEVICE_TYPE_PC);
 
         $objQuery = SC_Query_Ex::getSingletonInstance();
 
@@ -225,12 +222,6 @@ class LC_Page_Sitemap extends LC_Page_Ex {
 
             $arrPage['url'] = HTTP_URL . 'products/list.php?category_id=' . $row['category_id'];
             $arrRet[] = $arrPage;
-
-            // モバイルサイト
-            if (USE_MOBILE !== false) {
-                $arrPage['url'] = HTTP_URL . 'products/list.php?category_id=' . $row['category_id'];
-                $arrRet[] = $arrPage;
-            }
         }
         return $arrRet;
     }
@@ -252,12 +243,6 @@ class LC_Page_Sitemap extends LC_Page_Ex {
 
             $arrPage['url'] = HTTP_URL . substr(P_DETAIL_URLPATH, strlen(ROOT_URLPATH)) . $row['product_id'];
             $arrRet[] = $arrPage;
-
-            // モバイルサイト
-            if (USE_MOBILE !== false) {
-                $arrPage['url'] = HTTP_URL . substr(MOBILE_P_DETAIL_URLPATH, strlen(ROOT_URLPATH)) . $row['product_id'];
-                $arrRet[] = $arrPage;
-            }
         }
         return $arrRet;
     }
