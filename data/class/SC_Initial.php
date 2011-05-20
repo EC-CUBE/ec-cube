@@ -377,7 +377,7 @@ class SC_Initial {
      *
      * @param string $name 定数の名前。
      * @param mixed $value 定数の値。
-     * @return boolean 成功した場合に TRUE を、失敗した場合に FALSE を返します。
+     * @return void
      */
     function defineIfNotDefined($name, $value = null) {
         if (!defined($name)) {
