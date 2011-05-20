@@ -77,7 +77,7 @@ class SC_PageNavi {
                 $this->arrPagenavi['before'] = $this->now_page - 1;
                 $urlParamThis = str_replace('#page#', $this->arrPagenavi['before'], $urlParam);
                 $urlParamThis = htmlentities($urlParamThis, ENT_QUOTES);
-                $before = "<li><a href=\"?$urlParamThis\" onclick=\"$func_name('{$this->arrPagenavi['before']}'); return false;\">&lt;&lt;前へ</a></li> ";
+                $before = "<a href=\"?$urlParamThis\" onclick=\"$func_name('{$this->arrPagenavi['before']}'); return false;\">&lt;&lt;前へ</a> ";
             } else {
                 $this->arrPagenavi['before'] = $this->now_page;
             }
@@ -86,7 +86,7 @@ class SC_PageNavi {
                 $this->arrPagenavi['next'] = $this->now_page + 1;
                 $urlParamThis = str_replace('#page#', $this->arrPagenavi['next'], $urlParam);
                 $urlParamThis = htmlentities($urlParamThis, ENT_QUOTES);
-                $next = " <li><a href=\"?$urlParamThis\" onclick=\"$func_name('{$this->arrPagenavi['next']}'); return false;\">次へ&gt;&gt;</a></li>";
+                $next = " <a href=\"?$urlParamThis\" onclick=\"$func_name('{$this->arrPagenavi['next']}'); return false;\">次へ&gt;&gt;</a>";
             } else {
                 $this->arrPagenavi['next'] = $this->now_page;
             }
@@ -137,9 +137,9 @@ class SC_PageNavi {
             }
 
             if ($before && $next) {
-                $this->strnavi = '<ul class="navi">' .$before .(($display_number) ? $page_number : ' | ') .$next .'</ul>';
+                $this->strnavi = $before .(($display_number) ? $page_number : ' | ') .$next;
             } else if ($before || $next) {
-                $this->strnavi = '<ul class="navi">' .$before .(($display_number) ? $page_number : '') .$next .'</ul>';
+                $this->strnavi = $before .(($display_number) ? $page_number : '') .$next;
             }
         } else {
             $this->arrPagenavi['arrPageno'][0] = 1;
