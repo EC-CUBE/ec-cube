@@ -771,14 +771,13 @@ class SC_Utils {
     function sfSwapArray($array, $isColumnName = true) {
         $arrRet = array();
         foreach($array as $key1 => $arr1) {
-            $i = 0;
+            $index = 0;
             foreach($arr1 as $key2 => $val) {
                 if ($isColumnName) {
                     $arrRet[$key2][$key1] = $val;
                 } else {
-                    $arrRet[$i][$i] = $val;
+                    $arrRet[$index++][$key1] = $val;
                 }
-                $j++;
             }
         }
         return $arrRet;
