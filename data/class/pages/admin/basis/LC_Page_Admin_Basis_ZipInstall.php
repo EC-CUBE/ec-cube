@@ -23,6 +23,7 @@
 
 // {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
+require_once DATA_REALDIR . 'module/Request.php';
 
 /** CSV ファイルの最大行数 */
 define("ZIP_CSV_LINE_MAX", 8192);
@@ -363,10 +364,23 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfDownloadZipFileFromJp() {
-        $res = copy($this->zip_download_url, $this->zip_csv_temp_realfile);
-        if (!$res) {
-            SC_Utils_Ex::sfDispException($this->zip_download_url . ' の取得または ' . $this->zip_csv_temp_realfile . ' への書き込みに失敗しました。');
+       // Proxy経由を可能とする。        
+       // TODO Proxyの設定は「DATA_REALDIR . 'module/Request.php'」内の「function HTTP_Request」へ記述する。いずれは、外部設定としたい。
+       $req = new HTTP_Request();
+       $req->setURL($this->zip_download_url);
+       
+        // 郵便番号CSVをdownloadする。
+       $res1 = $req->sendRequest();
+       
+       if ($res1) {
+            // 郵便番号CSV(zip file)を保存する。
+           $fp = fopen($this->zip_csv_temp_realfile, 'w');
+           $res2 = fwrite($fp, $req->getResponseBody());
         }
+       if (!$res1 or !$res2) {
+            // 郵便番号CSVの「downloadに失敗」または「書き込みに失敗」
+           SC_Utils_Ex::sfDispException($this->zip_download_url . ' の取得または ' . $this->zip_csv_temp_realfile . ' への書き込みに失敗しました。');
+       }
     }
 
     /**
