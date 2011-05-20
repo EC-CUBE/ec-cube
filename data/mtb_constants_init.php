@@ -598,4 +598,6 @@ define('PLUGIN_STATUS_INSTALLED', "2");
 define('PLUGIN_ENABLE_TRUE', "1");
 /** プラグイン有効/無効：無効 */
 define('PLUGIN_ENABLE_FALSE', "2");
+/** 郵便番号CSVのZIPアーカイブファイルの取得元 */
+define('ZIP_DOWNLOAD_URL', "http://www.post.japanpost.jp/zipcode/dl/kogaki/zip/ken_all.zip");
 ?>

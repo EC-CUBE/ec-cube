@@ -1266,6 +1266,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_STATUS_UPLOA
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_STATUS_INSTALLED', '"2"', 1221, 'プラグインの状態：インストール済み');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_ENABLE_TRUE', '"1"', 1222, 'プラグイン有効/無効：有効');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_ENABLE_FALSE', '"2"', 1223, 'プラグイン有効/無効：無効');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ZIP_DOWNLOAD_URL', '"http://www.post.japanpost.jp/zipcode/dl/kogaki/zip/ken_all.zip"', 1224, '郵便番号CSVのZIPアーカイブファイルの取得元');
 
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_customer', 'email_mobile', 0, '会員数増加時のログイン処理速度を向上させたいときに試してみてください');
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_products', 'name', 2, '商品名検索速度を向上させたいときに試してみてください');

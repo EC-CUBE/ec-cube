@@ -56,6 +56,7 @@ class SC_Initial {
         $this->defineDirectoryIndex();
         $this->defineErrorType();
         $this->defineConstants();
+        $this->complementConstants();
         $this->phpconfigInit();
         $this->createCacheDir();
         $this->stripslashesDeepGpc();
@@ -220,6 +221,20 @@ class SC_Initial {
     }
 
     /**
+     * パラメータの補完
+     *
+     * ソースのみ差し替えたバージョンアップを考慮したもの。
+     *
+     * @access protected
+     * @return void
+     */
+    function complementConstants() {
+        // 2.11.1 → 2.11.2
+        /** 郵便番号CSVのZIPアーカイブファイルの取得元 */
+        $this->defineIfNotDefined('ZIP_DOWNLOAD_URL', "http://www.post.japanpost.jp/zipcode/dl/kogaki/zip/ken_all.zip");
+    }
+
+    /**
      * 各種キャッシュディレクトリを生成する.
      *
      * Smarty キャッシュディレクトリを生成する.
@@ -355,6 +370,19 @@ class SC_Initial {
      */
     function resetSuperglobalsRequest() {
         $_REQUEST = array_merge($_GET, $_POST);
+    }
+
+    /**
+     * 指定された名前の定数が存在しない場合、指定された値で定義
+     *
+     * @param string $name 定数の名前。
+     * @param mixed $value 定数の値。
+     * @return boolean 成功した場合に TRUE を、失敗した場合に FALSE を返します。
+     */
+    function defineIfNotDefined($name, $value = null) {
+        if (!defined($name)) {
+            define($name, $value);
+        }
     }
 }
 ?>
