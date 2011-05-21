@@ -55,9 +55,6 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
     /** CSV の更新日時 */
     var $tpl_csv_datetime;
 
-    /** ZIP アーカイブファイルの取得元 */
-    var $zip_download_url = 'http://www.post.japanpost.jp/zipcode/dl/kogaki/zip/ken_all.zip';
-
     /** 日本郵便から取得した ZIP アーカイブファイルの保管パス */
     var $zip_csv_temp_realfile;
 
@@ -146,7 +143,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         $this->tpl_count_mtb_zip = $this->countMtbZip();
         $this->tpl_csv_datetime = $this->lfGetCsvDatetime();
         // XXX PHP4 を切捨てたら、ダウンロードの必要性チェックなども行いたい
-        // $arrHeader = get_headers($this->zip_download_url, 1);
+        // $arrHeader = get_headers(ZIP_DOWNLOAD_URL, 1);
     }
 
     /**
@@ -363,12 +360,12 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function lfDownloadZipFileFromJp() {
+   function lfDownloadZipFileFromJp() {
        // Proxy経由を可能とする。        
        // TODO Proxyの設定は「DATA_REALDIR . 'module/Request.php'」内の「function HTTP_Request」へ記述する。いずれは、外部設定としたい。
        $req = new HTTP_Request();
-       $req->setURL($this->zip_download_url);
-       
+       $req->setURL(ZIP_DOWNLOAD_URL);
+
         // 郵便番号CSVをdownloadする。
        $res1 = $req->sendRequest();
        
@@ -376,12 +373,12 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
             // 郵便番号CSV(zip file)を保存する。
            $fp = fopen($this->zip_csv_temp_realfile, 'w');
            $res2 = fwrite($fp, $req->getResponseBody());
-        }
+       }
        if (!$res1 or !$res2) {
             // 郵便番号CSVの「downloadに失敗」または「書き込みに失敗」
-           SC_Utils_Ex::sfDispException($this->zip_download_url . ' の取得または ' . $this->zip_csv_temp_realfile . ' への書き込みに失敗しました。');
+           SC_Utils_Ex::sfDispException(ZIP_DOWNLOAD_URL . ' の取得または ' . $this->zip_csv_temp_realfile . ' への書き込みに失敗しました。');
        }
-    }
+   }
 
     /**
      * ZIP アーカイブファイルを展開して、郵便番号 CSV を上書き
