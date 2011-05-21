@@ -105,13 +105,13 @@
             </td>
         </tr>
         <tr>
-            <th>顧客名</th>
+            <th>お名前</th>
             <td>
             <!--{assign var=key value="search_order_name"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" />
             </td>
-            <th>顧客名(カナ)</th>
+            <th>お名前(フリガナ)</th>
             <td>
             <!--{assign var=key value="search_order_kana"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -329,7 +329,7 @@
         <tr>
             <th>受注日</th>
             <th>注文番号</th>
-            <th>顧客名</th>
+            <th>お名前</th>
             <th>支払方法</th>
             <th>購入金額(円)</th>
             <th>全商品発送日</th>

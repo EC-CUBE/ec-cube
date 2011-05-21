@@ -83,7 +83,7 @@ class LC_Page_AbstractMypage extends LC_Page_Ex {
             $this->tpl_mainpage     = 'mypage/login.tpl';
 
         } else {
-            //マイページ顧客情報表示用共通処理
+            //マイページ会員情報表示用共通処理
             $this->tpl_login     = true;
             $this->CustomerName1 = $objCustomer->getvalue('name01');
             $this->CustomerName2 = $objCustomer->getvalue('name02');

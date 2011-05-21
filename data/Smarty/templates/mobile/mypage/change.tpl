@@ -36,10 +36,10 @@
 	<input type="text" name="name02" value="<!--{$arrForm.name02|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" istyle="1"><br>
 	<font color="#FF0000"><!--{$arrErr.kana01}--><!--{$arrErr.kana02}--></font>
 
-	カナ/姓（例：シブヤ）<font color="#FF0000">※</font><br>
+	フリガナ/姓（例：シブヤ）<font color="#FF0000">※</font><br>
 	<input type="text" name="kana01" value="<!--{$arrForm.kana01|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" istyle="2"><br>
 
-	カナ/名（例：ハナコ）<font color="#FF0000">※</font><br>
+	フリガナ/名（例：ハナコ）<font color="#FF0000">※</font><br>
 	<input type="text" name="kana02" value="<!--{$arrForm.kana02|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" istyle="2"><br>
 
 	【性別】<font color="#FF0000">※</font><br>

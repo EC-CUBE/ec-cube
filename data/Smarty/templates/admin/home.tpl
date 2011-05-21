@@ -91,7 +91,7 @@
                 <td><!--{$review_yesterday_cnt|default:"0"}-->件</td>
             </tr>
             <tr>
-                <th>顧客の保持ポイント合計</td>
+                <th>会員の保持ポイント合計</td>
                 <td><!--{$customer_point|default:"0"}-->pt</td>
             </tr>
             <tr>
@@ -114,7 +114,7 @@
         <table summary="新規受付一覧" id="home-order">
             <tr>
                 <th class="center">受注日</th>
-                <th class="center">顧客名</th>
+                <th class="center">お名前</th>
                 <th class="center">購入商品</th>
                 <th class="center">支払方法</th>
                 <th class="center">購入金額(円)</th>

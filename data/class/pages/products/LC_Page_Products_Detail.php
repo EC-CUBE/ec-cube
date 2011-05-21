@@ -91,7 +91,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
      * @return void
      */
     function action() {
-        // 顧客クラスs
+        // 会員クラス
         $objCustomer = new SC_Customer_Ex();
 
         // パラメータ管理クラス

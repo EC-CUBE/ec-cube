@@ -52,7 +52,7 @@ class SC_Helper_CSV {
 
         $this->arrSubnaviName = array(
                                       1 => '商品管理',
-                                      2 => '顧客管理',
+                                      2 => '会員管理',
                                       3 => '受注管理',
                                       4 => 'レビュー',
                                       5 => 'カテゴリ'
@@ -90,7 +90,7 @@ class SC_Helper_CSV {
             $inner_where = 'dtb_products_class.del_flg = 0';
             $sql = $objQuery->getSql($cols, $objProduct->prdclsSQL($inner_where),$where);
         }else if($csv_id == '2') {
-            // 顧客の場合
+            // 会員の場合
             $sql = "SELECT " . $cols . " FROM dtb_customer " . $where;
         }else if($csv_id == '3') {
             // 注文の場合

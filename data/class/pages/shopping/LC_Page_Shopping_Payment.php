@@ -38,7 +38,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
     /** フォームパラメータの配列 */
     var $objFormParam;
 
-    /** 顧客情報のインスタンス */
+    /** 会員情報のインスタンス */
     var $objCustomer;
 
     // }}}

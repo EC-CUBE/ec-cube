@@ -202,7 +202,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
             $this->arrErr = $this->lfCheckError($objFormParam);
             break;
 
-        // 顧客検索ポップアップより顧客指定
+        // 会員検索ポップアップより会員指定
         case 'search_customer':
             $objFormParam->setParam($_POST);
             $objFormParam->convParam();
@@ -263,10 +263,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         parent::lfInitParam($objFormParam);
 
         // お客様情報
-        $objFormParam->addParam("顧客名1", "order_name01", STEXT_LEN, 'KVa', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("顧客名2", "order_name02", STEXT_LEN, 'KVa', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("顧客名カナ1", "order_kana01", STEXT_LEN, 'KVCa', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("顧客名カナ2", "order_kana02", STEXT_LEN, 'KVCa', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("注文者 お名前(姓)", "order_name01", STEXT_LEN, 'KVa', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("注文者 お名前(名)", "order_name02", STEXT_LEN, 'KVa', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("注文者 お名前(フリガナ・姓)", "order_kana01", STEXT_LEN, 'KVCa', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("注文者 お名前(フリガナ・名)", "order_kana02", STEXT_LEN, 'KVCa', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("メールアドレス", "order_email", null, 'KVCa', array("NO_SPTAB", "EMAIL_CHECK", "EMAIL_CHAR_CHECK"));
         $objFormParam->addParam("郵便番号1", "order_zip01", ZIP01_LEN, 'n', array("NUM_CHECK", "NUM_COUNT_CHECK"));
         $objFormParam->addParam("郵便番号2", "order_zip02", ZIP02_LEN, 'n', array("NUM_CHECK", "NUM_COUNT_CHECK"));
@@ -315,8 +315,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam("お誕生日ポイント", "birth_point");
         $objFormParam->addParam("消費税合計", 'tax');
         $objFormParam->addParam("最終保持ポイント", "total_point");
-        $objFormParam->addParam("顧客ID", "customer_id", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
-        $objFormParam->addParam("顧客ID", "edit_customer_id", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
+        $objFormParam->addParam("会員ID", "customer_id", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
+        $objFormParam->addParam("会員ID", "edit_customer_id", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
         $objFormParam->addParam("現在のポイント", "customer_point");
         $objFormParam->addParam("受注前ポイント", 'point');
         $objFormParam->addParam("注文番号", "order_id");
@@ -329,8 +329,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         // 複数情報
         $objFormParam->addParam("配送数", "shipping_quantity", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), 1);
         $objFormParam->addParam("配送ID", "shipping_id", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), 0);
-        $objFormParam->addParam("お名前1", "shipping_name01", STEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("お名前2", "shipping_name02", STEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("お名前(姓)", "shipping_name01", STEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("お名前(名)", "shipping_name02", STEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("お名前(フリガナ・姓)", "shipping_kana01", STEXT_LEN, 'KVCa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("お名前(フリガナ・名)", "shipping_kana02", STEXT_LEN, 'KVCa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("郵便番号1", "shipping_zip01", ZIP01_LEN, 'n', array("NUM_CHECK", "NUM_COUNT_CHECK"));
@@ -813,9 +813,9 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
     }
 
     /**
-     * 顧客情報をフォームに設定する.
+     * 会員情報をフォームに設定する.
      *
-     * @param integer $customer_id 顧客ID
+     * @param integer $customer_id 会員ID
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */

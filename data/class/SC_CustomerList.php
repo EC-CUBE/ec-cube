@@ -49,7 +49,7 @@ class SC_CustomerList extends SC_SelectSql_Ex {
             $regdate_col = 'dtb_customer.update_date';
         }
 
-        // 顧客ID
+        // 会員ID
         if (!isset($this->arrSql['search_customer_id'])) $this->arrSql['search_customer_id'] = "";
         if ( strlen($this->arrSql['search_customer_id']) > 0 ) {
             $this->setWhere( "customer_id =  ?" );
@@ -64,7 +64,7 @@ class SC_CustomerList extends SC_SelectSql_Ex {
             $this->arrVal[] = mb_ereg_replace("[ 　]+","",$searchName);
         }
 
-        // 名前(カナ)
+        // 名前(フリガナ)
         if (!isset($this->arrSql['search_kana'])) $this->arrSql['search_kana'] = "";
         if ( strlen($this->arrSql['search_kana']) > 0 ) {
             $this->setWhere("(" . $dbFactory->concatColumn(array("kana01", "kana02")) . " LIKE ?)" );
@@ -195,11 +195,11 @@ class SC_CustomerList extends SC_SelectSql_Ex {
                     case 2:
                         $this->setWhere("NOT $sqlEmailMobileIsEmpty");
                         break;
-                    // PCメールアドレス (携帯メールアドレスを登録している顧客は除外)
+                    // PCメールアドレス (携帯メールアドレスを登録している会員は除外)
                     case 3:
                         $this->setWhere($sqlEmailMobileIsEmpty);
                         break;
-                    // 携帯メールアドレス (PCメールアドレスを登録している顧客は除外)
+                    // 携帯メールアドレス (PCメールアドレスを登録している会員は除外)
                     case 4:
                         $this->setWhere('dtb_customer.email = dtb_customer.email_mobile');
                         break;

@@ -867,7 +867,7 @@ class SC_Helper_Purchase {
      * 受注情報を取得する.
      *
      * @param integer $order_id 受注ID
-     * @param integer $customer_id 顧客ID
+     * @param integer $customer_id 会員ID
      * @return array 受注情報の配列
      */
     function getOrder($order_id, $customer_id = null) {
@@ -1066,7 +1066,7 @@ __EOS__;
         }
 
         if (USE_POINT !== false) {
-            // 顧客.ポイントの加減値
+            // 会員.ポイントの加減値
             $addCustomerPoint = 0;
 
             // ▼使用ポイント
@@ -1095,7 +1095,7 @@ __EOS__;
             // ▲加算ポイント
 
             if ($addCustomerPoint != 0) {
-                // ▼顧客テーブルの更新
+                // ▼会員テーブルの更新
                 $sqlval = array();
                 $where = '';
                 $arrVal = array();
@@ -1109,13 +1109,13 @@ __EOS__;
                 $arrVal[] = $arrOrderOld['customer_id'];
 
                 $objQuery->update('dtb_customer', $sqlval, $where, $arrVal, $arrRawSql, $arrRawSqlVal);
-                // ▲顧客テーブルの更新
+                // ▲会員テーブルの更新
 
-                // 顧客.ポイントをマイナスした場合、
+                // 会員.ポイントをマイナスした場合、
                 if ($addCustomerPoint < 0) {
                     $sql = 'SELECT point FROM dtb_customer WHERE customer_id = ?';
                     $point = $objQuery->getOne($sql, array($arrOrderOld['customer_id']));
-                    // 変更後の顧客.ポイントがマイナスの場合、
+                    // 変更後の会員.ポイントがマイナスの場合、
                     if ($point < 0) {
                         // ロールバック
                         $objQuery->rollback();
@@ -1190,7 +1190,7 @@ __EOS__;
      * $status が null の場合は false を返す.
      *
      * @param integer $status 対応状況
-     * @return boolean 使用するか(顧客テーブルから減算するか)
+     * @return boolean 使用するか(会員テーブルから減算するか)
      */
     function isUsePoint($status) {
         if ($status == null) {

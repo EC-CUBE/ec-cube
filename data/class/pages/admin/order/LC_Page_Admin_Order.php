@@ -182,8 +182,8 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
         $objFormParam->addParam("注文番号1", "search_order_id1", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("注文番号2", "search_order_id2", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("対応状況", "search_order_status", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("顧客名", "search_order_name", STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("顧客名(カナ)", "search_order_kana", STEXT_LEN, 'KVCa', array("KANA_CHECK","MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("注文者 お名前", "search_order_name", STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("注文者 お名前(フリガナ)", "search_order_kana", STEXT_LEN, 'KVCa', array("KANA_CHECK","MAX_LENGTH_CHECK"));
         $objFormParam->addParam("性別", "search_order_sex", INT_LEN, 'n', array("MAX_LENGTH_CHECK"));
         $objFormParam->addParam("年齢1", "search_age1", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("年齢2", "search_age2", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));

@@ -25,7 +25,7 @@
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
- * 顧客管理 のページクラス.
+ * 会員管理 のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
@@ -47,8 +47,8 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'customer';
         $this->tpl_subno = 'index';
         $this->tpl_pager = 'pager.tpl';
-        $this->tpl_maintitle = '顧客管理';
-        $this->tpl_subtitle = '顧客マスタ';
+        $this->tpl_maintitle = '会員管理';
+        $this->tpl_subtitle = '会員マスタ';
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
@@ -155,7 +155,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
      */
     function lfInitParam(&$objFormParam) {
         SC_Helper_Customer_Ex::sfSetSearchParam($objFormParam);
-        $objFormParam->addParam('編集対象顧客ID', 'edit_customer_id', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
+        $objFormParam->addParam('編集対象会員ID', 'edit_customer_id', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
     }
 
     /**
@@ -169,9 +169,9 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
     }
 
     /**
-     * 顧客を削除する処理
+     * 会員を削除する処理
      *
-     * @param integer $customer_id 顧客ID
+     * @param integer $customer_id 会員ID
      * @return boolean true:成功 false:失敗
      */
     function lfDoDeleteCustomer($customer_id) {
@@ -188,9 +188,9 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
     }
 
     /**
-     * 顧客に登録メールを再送する処理
+     * 会員に登録メールを再送する処理
      *
-     * @param integer $customer_id 顧客ID
+     * @param integer $customer_id 会員ID
      * @return boolean true:成功 false:失敗
      */
     function lfDoResendMail($customer_id) {
@@ -206,17 +206,17 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
     }
 
     /**
-     * 顧客一覧を検索する処理
+     * 会員一覧を検索する処理
      *
      * @param array $arrParam 検索パラメーター連想配列
-     * @return array( integer 全体件数, mixed 顧客データ一覧配列, mixed SC_PageNaviオブジェクト)
+     * @return array( integer 全体件数, mixed 会員データ一覧配列, mixed SC_PageNaviオブジェクト)
      */
     function lfDoSearch($arrParam) {
         return SC_Helper_Customer_Ex::sfGetSearchData($arrParam);
     }
 
     /**
-     * 顧客一覧CSVを検索してダウンロードする処理
+     * 会員一覧CSVを検索してダウンロードする処理
      *
      * @param array $arrParam 検索パラメーター連想配列
      * @return boolean true:成功 false:失敗

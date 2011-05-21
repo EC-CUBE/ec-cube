@@ -1,5 +1,5 @@
 <tr>
-    <th>顧客ID</th>
+    <th>会員ID</th>
     <td>
     <!--{assign var=key value="search_customer_id"}-->
     <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
@@ -15,13 +15,13 @@
     </td>
 </tr>
 <tr>
-    <th>顧客名</th>
+    <th>お名前</th>
     <td>
             <!--{assign var=key value="search_name"}-->
             <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
             <input type="text" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key].value|h}-->" size="30" class="box30" <!--{if $arrErr[$key]}--><!--{sfSetErrorStyle}--><!--{/if}--> />
     </td>
-    <th>顧客名(カナ)</th>
+    <th>お名前(フリガナ)</th>
     <td>
         <!--{assign var=key value="search_kana"}-->
         <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->

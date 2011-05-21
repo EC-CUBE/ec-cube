@@ -121,7 +121,7 @@ class SC_Helper_Mail {
 
         $arrTplVar->Message_tmp = $arrOrder['message'];
 
-        // 顧客情報の取得
+        // 会員情報の取得
         $customer_id = $arrOrder['customer_id'];
         $objQuery->setOrder('customer_id');
         $arrRet = $objQuery->select('point', "dtb_customer", "customer_id = ?", array($customer_id));
@@ -264,13 +264,13 @@ class SC_Helper_Mail {
     /**
      * 登録メールを送信する。
      *
-     * @param string $secret_key 顧客固有キー
-     * @param integer $customer_id 顧客ID
+     * @param string $secret_key 会員固有キー
+     * @param integer $customer_id 会員ID
      * @param boolean $is_mobile false(default):PCアドレスにメールを送る true:携帯アドレスにメールを送る
      * @return boolean true:成功 false:失敗
      */
     function sfSendRegistMail($secret_key, $customer_id = '', $is_mobile = false) {
-        // 顧客データの取得
+        // 会員データの取得
         if(SC_Utils_Ex::sfIsInt($customer_id)) {
             $arrCustomerData = SC_Helper_Customer_Ex::sfGetCustomerDataFromId($customer_id);
         }else{
@@ -411,7 +411,7 @@ class SC_Helper_Mail {
 
         foreach ($arrDestinationList as $arrDestination) {
 
-            // 顧客名の変換
+            // お名前の変換
             $customerName = trim($arrDestination['name']);
             $subjectBody = preg_replace("/{name}/", $customerName, $arrMail['subject']);
             $mailBody = preg_replace("/{name}/", $customerName, $arrMail['body']);

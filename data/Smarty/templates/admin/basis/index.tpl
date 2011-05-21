@@ -125,7 +125,7 @@ $(function() {
             </td>
         </tr>
         <tr>
-            <th>会社名(カナ)</th>
+            <th>会社名(フリガナ)</th>
             <td>
                 <span class="attention"><!--{$arrErr.company_kana}--></span>
                 <input type="text" name="company_kana" value="<!--{$arrForm.company_kana|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.company_kana != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
@@ -141,7 +141,7 @@ $(function() {
             </td>
         </tr>
         <tr>
-            <th>店名(カナ)</th>
+            <th>店名(フリガナ)</th>
             <td>
                 <span class="attention"><!--{$arrErr.shop_kana}--></span>
                 <input type="text" name="shop_kana" value="<!--{$arrForm.shop_kana|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.shop_kana != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />

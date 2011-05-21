@@ -48,7 +48,7 @@
     </tr>
 </table>
 
-<h3>お客様情報</h3>
+<h3>注文者情報</h3>
 <table class="form">
     <colgroup width="30%">
     <colgroup width="80%">
@@ -61,7 +61,7 @@
         <td><!--{$arrForm.create_date.value|sfDispDBDate}--></td>
     </tr>
     <tr>
-        <th>顧客ID</th>
+        <th>会員ID</th>
         <td>
         <!--{if $arrForm.customer_id.value > 0}-->
             <!--{$arrForm.customer_id.value}-->
@@ -71,11 +71,11 @@
         </td>
     </tr>
     <tr>
-        <th>顧客名</th>
+        <th>お名前</th>
         <td><!--{$arrForm.order_name01.value|h}--> <!--{$arrForm.order_name02.value|h}--></td>
     </tr>
     <tr>
-        <th>顧客名(カナ)</th>
+        <th>お名前(フリガナ)</th>
         <td><!--{$arrForm.order_kana01.value|h}--> <!--{$arrForm.order_kana02.value|h}--></td>
     </tr>
     <tr>
@@ -115,7 +115,7 @@
         </td>
     </tr>
     <tr>
-        <th>お名前(カナ)</th>
+        <th>お名前(フリガナ)</th>
         <td>
             <!--{assign var=key1 value="deliv_kana01"}-->
             <!--{assign var=key2 value="deliv_kana02"}-->
@@ -242,7 +242,7 @@
     </tr>
     <!--{*
     <tr>
-        <th colspan="4" class="column right">反映後ポイント (ポイントの変更は<a href="?" onclick="return fnEdit('<!--{$arrForm.customer_id.value}-->');">顧客編集</a>から手動にてお願い致します。)</th>
+        <th colspan="4" class="column right">反映後ポイント (ポイントの変更は<a href="?" onclick="return fnEdit('<!--{$arrForm.customer_id.value}-->');">会員登録</a>から手動にてお願い致します。)</th>
         <td align="right">
             <span class="attention"><!--{$arrErr.total_point}--></span>
             <!--{$arrForm.total_point.value|number_format}-->

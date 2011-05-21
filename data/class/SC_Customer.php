@@ -50,7 +50,7 @@ class SC_Customer {
             $data = $result[0];
         }
 
-        // パスワードが合っていれば顧客情報をcustomer_dataにセットしてtrueを返す
+        // パスワードが合っていれば会員情報をcustomer_dataにセットしてtrueを返す
         if ( SC_Utils_Ex::sfIsMatchHashPassword($pass, $data['password'], $data['salt']) ) {
             $this->customer_data = $data;
             $this->startSession();
@@ -128,7 +128,7 @@ __EOS__;
 
     /**
      * 携帯端末IDを使用して会員を検索し、パスワードの照合を行う。
-     * パスワードが合っている場合は顧客情報を取得する。
+     * パスワードが合っている場合は会員情報を取得する。
      *
      * @param string $pass パスワード
      * @return boolean 該当する会員が存在し、パスワードが合っている場合は true、
@@ -149,7 +149,7 @@ __EOS__;
         $objQuery = new SC_Query_Ex();
         @list($data) = $objQuery->getAll($sql, array($_SESSION['mobile']['phone_id']));
 
-        // パスワードが合っている場合は、顧客情報をcustomer_dataに格納してtrueを返す。
+        // パスワードが合っている場合は、会員情報をcustomer_dataに格納してtrueを返す。
         if ( SC_Utils_Ex::sfIsMatchHashPassword($pass, $data['password'], $data['salt']) ) {
             $this->customer_data = $data;
             $this->startSession();

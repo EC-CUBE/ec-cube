@@ -173,7 +173,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
     /**
      * 商品情報の読み込みを行う.
      *
-     * @param integer $customer_id 顧客ID
+     * @param integer $customer_id 会員ID
      * @param integer $order_id 受注ID
      * @param integer $product_id 商品ID
      * @param integer $product_class_id 商品規格ID

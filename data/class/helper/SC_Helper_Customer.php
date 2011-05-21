@@ -32,7 +32,7 @@
 class SC_Helper_Customer {
 
     /**
-     * 会員編集登録・更新処理を行う.
+     * 会員情報の登録・編集処理を行う.
      *
      * @param array $array 登録するデータの配列（SC_FormParamのgetDbArrayの戻り値）
      * @param array $customer_id nullの場合はinsert, 存在する場合はupdate
@@ -189,9 +189,9 @@ class SC_Helper_Customer {
     /**
      * ログイン時メールアドレス重複チェック.
      *
-     * 顧客の保持する email, mobile_email が, 引数 $email と一致するかチェックする
+     * 会員の保持する email, mobile_email が, 引数 $email と一致するかチェックする
      *
-     * @param integer $customer_id チェック対象の顧客の顧客ID
+     * @param integer $customer_id チェック対象の会員の会員ID
      * @param string $email チェック対象のメールアドレス
      * @return boolean メールアドレスが重複する場合 true
      */
@@ -209,17 +209,17 @@ class SC_Helper_Customer {
     }
 
     /**
-     * customer_idから顧客情報を取得する
+     * customer_idから会員情報を取得する
      *
      * @param mixed $customer_id
      * @param mixed $mask_flg
      * @access public
-     * @return array 顧客情報の配列を返す
+     * @return array 会員情報の配列を返す
      */
     function sfGetCustomerData($customer_id, $mask_flg = true) {
         $objQuery       =& SC_Query_Ex::getSingletonInstance();
 
-        // 顧客情報DB取得
+        // 会員情報DB取得
         $ret        = $objQuery->select("*","dtb_customer","customer_id=?", array($customer_id));
         $arrForm    = $ret[0];
 
@@ -242,15 +242,15 @@ class SC_Helper_Customer {
     }
 
     /**
-     * 顧客ID指定またはwhere条件指定での顧客情報取得(単一行データ)
+     * 会員ID指定またはwhere条件指定での会員情報取得(単一行データ)
      *
      * TODO: sfGetCustomerDataと統合したい
      *
-     * @param integer $customer_id 顧客ID (指定無しでも構わないが、Where条件を入れる事)
+     * @param integer $customer_id 会員ID (指定無しでも構わないが、Where条件を入れる事)
      * @param string $add_where 追加WHERE条件
      * @param array $arrAddVal 追加WHEREパラメーター
      * @access public
-     * @return array 対象顧客データ
+     * @return array 対象会員データ
      */
     function sfGetCustomerDataFromId($customer_id, $add_where = '', $arrAddVal = array()) {
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
@@ -284,12 +284,12 @@ class SC_Helper_Customer {
     }
 
     /**
-     * 会員登録キーから顧客IDを取得する.
+     * 会員登録キーから会員IDを取得する.
      *
      * @param string $uniqid 会員登録キー
      * @param boolean $check_status 本会員のみを対象とするか
      * @access public
-     * @return integer 顧客ID
+     * @return integer 会員ID
      */
     function sfGetCustomerId($uniqid, $check_status = false) {
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
@@ -314,7 +314,7 @@ class SC_Helper_Customer {
         SC_Helper_Customer_Ex::sfCustomerCommonParam($objFormParam);
         SC_Helper_Customer_Ex::sfCustomerRegisterParam($objFormParam, $isAdmin);
         if ($isAdmin) {
-            $objFormParam->addParam("顧客ID", "customer_id", INT_LEN, 'n', array("NUM_CHECK"));
+            $objFormParam->addParam("会員ID", "customer_id", INT_LEN, 'n', array("NUM_CHECK"));
             $objFormParam->addParam('携帯メールアドレス', "email_mobile", null, 'a', array("NO_SPTAB", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MOBILE_EMAIL_CHECK"));
             $objFormParam->addParam("会員状態", 'status', INT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
             $objFormParam->addParam("SHOP用メモ", 'note', LTEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
@@ -525,16 +525,16 @@ class SC_Helper_Customer {
     }
 
     /**
-     * 顧客検索パラメーター（管理画面用）
+     * 会員検索パラメーター（管理画面用）
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @access public
      * @return void
      */
     function sfSetSearchParam(&$objFormParam) {
-        $objFormParam->addParam('顧客ID', 'search_customer_id', ID_MAX_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('顧客名', 'search_name', STEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('顧客名(カナ)', 'search_kana', STEXT_LEN, 'CKV', array("SPTAB_CHECK", "MAX_LENGTH_CHECK", "KANABLANK_CHECK"));
+        $objFormParam->addParam('会員ID', 'search_customer_id', ID_MAX_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
+        $objFormParam->addParam('お名前', 'search_name', STEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam('お名前(フリガナ)', 'search_kana', STEXT_LEN, 'CKV', array("SPTAB_CHECK", "MAX_LENGTH_CHECK", "KANABLANK_CHECK"));
         $objFormParam->addParam('都道府県', 'search_pref', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
         $objFormParam->addParam('誕生日(開始年)', 'search_b_start_year', 4, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
         $objFormParam->addParam('誕生日(開始月)', 'search_b_start_month', 2, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
@@ -574,7 +574,7 @@ class SC_Helper_Customer {
     }
 
     /**
-     * 顧客検索パラメーター　エラーチェック（管理画面用）
+     * 会員検索パラメーター　エラーチェック（管理画面用）
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @access public
@@ -616,10 +616,10 @@ class SC_Helper_Customer {
     }
 
     /**
-     * 顧客一覧検索をする処理（ページング処理付き、管理画面用共通処理）
+     * 会員一覧検索をする処理（ページング処理付き、管理画面用共通処理）
      *
      * @param array $arrParam 検索パラメーター連想配列
-     * @return array( integer 全体件数, mixed 顧客データ一覧配列, mixed SC_PageNaviオブジェクト)
+     * @return array( integer 全体件数, mixed 会員データ一覧配列, mixed SC_PageNaviオブジェクト)
      */
     function sfGetSearchData($arrParam) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();

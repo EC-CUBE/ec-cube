@@ -87,7 +87,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
         // 今月の売上件数
         $this->order_month_cnt = $this->lfGetOrderMonth('COUNT');
 
-        // 顧客の累計ポイント
+        // 会員の累計ポイント
         $this->customer_point = $this->lfGetTotalCustomerPoint();
 
         //昨日のレビュー書き込み数
@@ -179,9 +179,9 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
     }
 
     /**
-     * 顧客の保持ポイント合計の取得
+     * 会員の保持ポイント合計の取得
      *
-     * @return integer 顧客の保持ポイント合計
+     * @return integer 会員の保持ポイント合計
      */
     function lfGetTotalCustomerPoint() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();

@@ -178,7 +178,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
     }
 
     /**
-     * パラメーター情報の初期化（初期顧客検索時）
+     * パラメーター情報の初期化（初期会員検索時）
      *
      * @param array $objFormParam フォームパラメータークラス
      * @return void

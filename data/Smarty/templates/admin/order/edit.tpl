@@ -134,14 +134,14 @@
         </tr>
     </table>
 
-    <h2>お客様情報
+    <h2>注文者情報
         <!--{if $tpl_mode == 'add'}-->
-            <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnOpenWindow('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->customer/search_customer.php','search','600','650'); return false;">顧客検索</a>
+            <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnOpenWindow('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->customer/search_customer.php','search','600','650'); return false;">会員検索</a>
         <!--{/if}-->
     </h2>
     <table class="form">
         <tr>
-            <th>顧客ID</th>
+            <th>会員ID</th>
             <td>
                 <!--{if $arrForm.customer_id.value > 0}-->
                     <!--{$arrForm.customer_id.value|h}-->
@@ -152,7 +152,7 @@
             </td>
         </tr>
         <tr>
-            <th>顧客名</th>
+            <th>お名前</th>
             <td>
                 <!--{assign var=key1 value="order_name01"}-->
                 <!--{assign var=key2 value="order_name02"}-->
@@ -162,7 +162,7 @@
             </td>
         </tr>
         <tr>
-            <th>顧客名(カナ)</th>
+            <th>お名前(フリガナ)</th>
             <td>
                 <!--{assign var=key1 value="order_kana01"}-->
                 <!--{assign var=key2 value="order_kana02"}-->
@@ -452,7 +452,7 @@
                 </td>
             </tr>
             <tr>
-                <th>お名前(カナ)</th>
+                <th>お名前(フリガナ)</th>
                 <td>
                     <!--{assign var=key1 value="shipping_kana01"}-->
                     <!--{assign var=key2 value="shipping_kana02"}-->

@@ -37,11 +37,11 @@ self.moveTo(20,20);self.focus();
 
     <table class="form">
         <tr>
-            <th>顧客名</th>
+            <th>お名前</th>
             <td><!--{$arrSearchData.search_name|default:"(未指定)"|h}--></td>
         </tr>
         <tr>
-            <th>顧客名(カナ)</th>
+            <th>お名前(フリガナ)</th>
             <td><!--{$arrSearchData.search_kana|default:"(未指定)"|h}--></td>
         </tr>
         <tr>
