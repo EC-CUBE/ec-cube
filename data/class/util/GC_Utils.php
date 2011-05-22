@@ -104,27 +104,19 @@ class GC_Utils {
         return $age;
     }
 
-    /*----------------------------------------------------------------------
-     * [名称] gfDebugLog
-     * [概要] ログファイルに変数の詳細を出力する。
-     * [引数] 対象となる変数
-     * [戻値] なし
-     * [依存] gfPrintLog
-     * [注釈] -
-     *----------------------------------------------------------------------*/
-    function gfDebugLog($obj){
-        if(DEBUG_MODE === true) {
-            GC_Utils_Ex::gfPrintLog("*** start Debug ***");
-            ob_start();
-            print_r($obj);
-            $buffer = ob_get_contents();
-            ob_end_clean();
-            $fp = fopen(LOG_REALFILE, "a+");
-            fwrite( $fp, $buffer."\n" );
-            fclose( $fp );
-            GC_Utils_Ex::gfPrintLog("*** end Debug ***");
-            // ログテーション
-            GC_Utils_Ex::gfLogRotation(MAX_LOG_QUANTITY, MAX_LOG_SIZE, LOG_REALFILE);
+    /**
+     * ログファイルに変数の詳細を出力
+     *
+     * @param mixed $obj
+     * @return void
+     */
+    function gfDebugLog($obj) {
+        if (DEBUG_MODE === true) {
+            GC_Utils_Ex::gfPrintLog(
+                "*** start Debug ***\n" .
+                print_r($obj, true) .
+                "*** end Debug ***"
+            );
         }
     }
 
