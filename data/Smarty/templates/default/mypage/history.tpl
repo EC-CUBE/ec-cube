@@ -162,7 +162,7 @@
                                 <!--{/if}-->
                             </td>
                             <td class="alignR">
-                                <!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+                                <!--{$item.price|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                             </td>
                             <td class="alignC"><!--{$item.quantity}--></td>
                             <!--{* XXX 購入小計と誤差が出るためコメントアウト

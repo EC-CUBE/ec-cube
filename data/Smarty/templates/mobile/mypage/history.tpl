@@ -100,7 +100,7 @@
 <!--{if $item.productsClass.classcategory_name2 != ""}-->
 <!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--><br>
 <!--{/if}-->
-単価：<!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円<br>
+単価：<!--{$item.price|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円<br>
 数量：<!--{$item.quantity}--><br>
 <br>
 <!--{/foreach}-->

@@ -35,7 +35,7 @@
 ◎<!--{$item.productsClass.name|h}--><br>
 <!--{if $item.productsClass.classcategory_name1 != ""}--><!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--><br><!--{/if}-->
 <!--{if $item.productsClass.classcategory_name2 != ""}--><!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--><br><!--{/if}-->
-&nbsp;単価：<!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円<br>
+&nbsp;単価：<!--{$item.price|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円<br>
 &nbsp;数量：<!--{$item.quantity|number_format}--><br>
 &nbsp;小計：<!--{$item.total_inctax|number_format}-->円<br>
 <br>

@@ -78,7 +78,7 @@ $(document).ready(function() {
                             <!--{if $item.productsClass.classcategory_name2 != ""}-->
                             <!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}-->
                             <!--{/if}--><br />
-<!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+<!--{$item.price|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                  </td>
                  <td class="detailtdNumber"><!--{$item.quantity|number_format}--></td>
                  <td class="alignR"><!--{$item.total_inctax|number_format}-->円</td>
@@ -177,7 +177,7 @@ $(document).ready(function() {
                           <!--{/if}-->
                       </td>
                       <td class="alignR">
-                          <!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+                          <!--{$item.price|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                       </td>
                       <td class="detailtdNumber"><!--{$item.quantity}--></td>
                       <!--{* XXX 購入小計と誤差が出るためコメントアウト
