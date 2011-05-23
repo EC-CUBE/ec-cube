@@ -127,7 +127,7 @@
 	（希望されない場合はチェックをはずしてください）<br>
 	<br>
 
-	<center><input type="submit" name="submit" value="次へ"><center>
+	<center><input type="submit" name="submit" value="次へ"></center>
 
 	<!--{foreach from=$list_data key=key item=item}-->
 		<input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->">
