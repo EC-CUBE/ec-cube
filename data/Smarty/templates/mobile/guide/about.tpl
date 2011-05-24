@@ -35,7 +35,7 @@
 <br>
 [emoji:121]住所<br>
 〒<!--{$arrSiteInfo.zip01|h}-->-<!--{$arrSiteInfo.zip02|h}--><br>
-<!--{$arrSiteInfo.pref|h}--><!--{$arrSiteInfo.addr01|h}--><!--{$arrSiteInfo.addr02|h}--><br>
+<!--{$arrPref[$arrSiteInfo.pref]}--><!--{$arrSiteInfo.addr01|h}--><!--{$arrSiteInfo.addr02|h}--><br>
 <!--{/if}-->
 <!--{if $arrSiteInfo.tel01 != ""}-->
 <br>
