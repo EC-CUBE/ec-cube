@@ -910,7 +910,7 @@ __EOS__;
         $col .= <<< __EOS__
 
             CASE WHEN EXISTS(
-                    SELECT 1 FROM dtb_products
+                    SELECT * FROM dtb_products
                      WHERE product_id = T3.product_id
                        AND del_flg = 0
                        AND status = 1)
