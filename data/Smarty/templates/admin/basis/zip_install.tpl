@@ -58,8 +58,11 @@
             <h2>郵便番号CSV更新</h2>
             <!--{if $tpl_skip_update_csv}-->
                 ご利用頂けません。
-                <!--{if strlen($smarty.const.ZIP_DOWNLOAD_URL) === 0}-->
+                <!--{if $tpl_zip_download_url_empty}-->
                     <p class="attention">※ パラメータ ZIP_DOWNLOAD_URL が未設定です。</p>
+                <!--{/if}-->
+                <!--{if $tpl_zip_function_not_exists}-->
+                    <p class="attention">※ PHP 拡張モジュール「zip」が無効です。</p>
                 <!--{/if}-->
             <!--{else}-->
                 <p>日本郵便の WEB サイトから、郵便番号CSVを取得します。</p>
