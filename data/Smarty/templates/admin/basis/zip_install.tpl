@@ -44,7 +44,7 @@
 
         <div class="basis-zip-item">
             <h2>自動登録</h2>
-            <p>下の [削除] [郵便番号CSV更新] [DB手動登録] を順に実行します。ただし、タイムアウトした場合、DBは元の状態に戻ります。</p>
+            <p>下の [削除] <!--{if !$tpl_skip_update_csv}-->[郵便番号CSV更新] <!--{/if}-->[DB手動登録] を順に実行します。ただし、タイムアウトした場合、DBは元の状態に戻ります。</p>
             <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('auto', '', ''); return false;"><span class="btn-next">自動登録</span></a></p>
         </div>
 
@@ -56,8 +56,15 @@
 
         <div class="basis-zip-item">
             <h2>郵便番号CSV更新</h2>
-            <p>日本郵便の WEB サイトから、郵便番号CSVを取得します。</p>
-            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('update_csv', '', ''); return false;"><span class="btn-next">更新</span></a><span class="attention"><!--{$arrErr.startRowNum}--></span></p>
+            <!--{if $tpl_skip_update_csv}-->
+                ご利用頂けません。
+                <!--{if strlen($smarty.const.ZIP_DOWNLOAD_URL) === 0}-->
+                    <p class="attention">※ パラメータ ZIP_DOWNLOAD_URL が未設定です。</p>
+                <!--{/if}-->
+            <!--{else}-->
+                <p>日本郵便の WEB サイトから、郵便番号CSVを取得します。</p>
+                <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('update_csv', '', ''); return false;"><span class="btn-next">更新</span></a><span class="attention"><!--{$arrErr.startRowNum}--></span></p>
+            <!--{/if}-->
         </div>
 
         <div class="basis-zip-item end">

@@ -102,6 +102,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         $objFormParam->setParam($_GET);
         $this->arrErr = $objFormParam->checkError();
         $this->arrForm = $objFormParam->getHashArray();
+        $this->tpl_skip_update_csv = !defined('ZIP_DOWNLOAD_URL') || strlen(ZIP_DOWNLOAD_URL) === 0 || ZIP_DOWNLOAD_URL === false;
 
         if ($this->exec) {
             if (!empty($this->arrErr)) {
@@ -158,8 +159,10 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
     function lfAutoCommitZip() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        $this->lfDownloadZipFileFromJp();
-        $this->lfExtractZipFile();
+        if (!$this->tpl_skip_update_csv) {
+            $this->lfDownloadZipFileFromJp();
+            $this->lfExtractZipFile();
+        }
 
         $objQuery->begin();
         $this->lfDeleteZip();
@@ -361,24 +364,28 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
      * @return void
      */
    function lfDownloadZipFileFromJp() {
-       // Proxy経由を可能とする。        
-       // TODO Proxyの設定は「DATA_REALDIR . 'module/Request.php'」内の「function HTTP_Request」へ記述する。いずれは、外部設定としたい。
-       $req = new HTTP_Request();
-       $req->setURL(ZIP_DOWNLOAD_URL);
+        // Proxy経由を可能とする。
+        // TODO Proxyの設定は「DATA_REALDIR . 'module/Request.php'」内の「function HTTP_Request」へ記述する。いずれは、外部設定としたい。
+        $req = new HTTP_Request();
+
+        $req->setURL(ZIP_DOWNLOAD_URL);
 
         // 郵便番号CSVをdownloadする。
-       $res1 = $req->sendRequest();
-       
-       if ($res1) {
-            // 郵便番号CSV(zip file)を保存する。
-           $fp = fopen($this->zip_csv_temp_realfile, 'w');
-           $res2 = fwrite($fp, $req->getResponseBody());
-       }
-       if (!$res1 or !$res2) {
-            // 郵便番号CSVの「downloadに失敗」または「書き込みに失敗」
-           SC_Utils_Ex::sfDispException(ZIP_DOWNLOAD_URL . ' の取得または ' . $this->zip_csv_temp_realfile . ' への書き込みに失敗しました。');
-       }
-   }
+        $res = $req->sendRequest();
+        if (!$res) {
+            SC_Utils_Ex::sfDispException(ZIP_DOWNLOAD_URL . ' の取得に失敗しました。');
+        }
+
+        // 郵便番号CSV(zip file)を保存する。
+        $fp = fopen($this->zip_csv_temp_realfile, 'w');
+        if (!$fp) {
+            SC_Utils_Ex::sfDispException($this->zip_csv_temp_realfile . ' を開けません。');
+        }
+        $res = fwrite($fp, $req->getResponseBody());
+        if (!$res) {
+            SC_Utils_Ex::sfDispException($this->zip_csv_temp_realfile . ' への書き込みに失敗しました。');
+        }
+    }
 
     /**
      * ZIP アーカイブファイルを展開して、郵便番号 CSV を上書き
