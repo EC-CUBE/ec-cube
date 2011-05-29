@@ -43,7 +43,7 @@ class SC_Helper_Mail {
     }
 
     /* DBに登録されたテンプレートメールの送信 */
-    function sfSendTemplateMail($to, $to_name, $template_id, &$objPage, $from_address = "", $from_name = "", $reply_to = "") {
+    function sfSendTemplateMail($to, $to_name, $template_id, &$objPage, $from_address = "", $from_name = "", $reply_to = "", $bcc = '') {
 
         $objQuery = new SC_Query_Ex();
         // メールテンプレート情報の取得
@@ -68,7 +68,7 @@ class SC_Helper_Mail {
         $error = $arrInfo['email04'];
         $tosubject = $this->sfMakeSubject($tmp_subject, $objMailView);
 
-        $objSendMail->setItem('', $tosubject, $body, $from_address, $from_name, $reply_to, $error, $error);
+        $objSendMail->setItem('', $tosubject, $body, $from_address, $from_name, $reply_to, $error, $error, $bcc);
         $objSendMail->setTo($to, $to_name);
         $objSendMail->sendMail();    // メール送信
     }

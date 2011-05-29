@@ -188,8 +188,16 @@ class LC_Page_Contact extends LC_Page_Ex {
         $fromMail_name = $objPage->arrForm['name01']['value'] ." 様";
         $fromMail_address = $objPage->arrForm['email']['value'];
         $helperMail = new SC_Helper_Mail_Ex();
-        $helperMail->sfSendTemplateMail($CONF["email02"], $CONF["shop_name"], "5", $objPage, $fromMail_address, $fromMail_name, $fromMail_address);
-        $helperMail->sfSendTemplateMail($objPage->arrForm['email']['value'], $objPage->arrForm['name01']['value'] ." 様", "5", $objPage, $CONF["email03"], $CONF["shop_name"], $CONF["email02"]);
+        $helperMail->sfSendTemplateMail(
+            $objPage->arrForm['email']['value'],            // to
+            $objPage->arrForm['name01']['value'] .' 様',    // to_name
+            5,                                              // template_id
+            $objPage,                                       // objPage
+            $CONF['email03'],                               // from_address
+            $CONF['shop_name'],                             // from_name
+            $CONF['email02'],                               // reply_to
+            $CONF['email02']                                // bcc
+        );
     }
 }
 ?>
