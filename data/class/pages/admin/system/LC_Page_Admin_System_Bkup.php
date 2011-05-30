@@ -23,6 +23,7 @@
 
 // {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
+require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_CSV_Ex.php';
 require_once DATA_REALDIR. 'module/Tar.php';
 /**
  * バックアップ のページクラス.
@@ -253,6 +254,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
     /**
      * バックアップファイル作成.
      *
+     * TODO $csv_data はデータを大きく保持しすぎに感じる。分割して書き込みたい。
      * @param string $bkup_name
      * @return array $arrErr
      */
@@ -261,7 +263,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         set_time_limit(0);
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $csv_data = "";
+        $csv_data = '';
         $csv_autoinc = "";
         $arrData = array();
         $success = true;
@@ -273,32 +275,33 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         $arrTableList = $objQuery->listTables();
 
         // 各テーブル情報を取得する
-        foreach($arrTableList as $key => $val){
+        foreach ($arrTableList as $table) {
 
-            if (!($val == "dtb_bkup" || $val == "mtb_zip")) {
+            if (!($table == "dtb_bkup" || $table == "mtb_zip")) {
 
                 // 全データを取得
-                if ($val == "dtb_pagelayout"){
-                    $arrData = $objQuery->getAll("SELECT * FROM $val ORDER BY page_id");
+                if ($table == "dtb_pagelayout"){
+                    $arrData = $objQuery->getAll("SELECT * FROM $table ORDER BY page_id");
                 }else{
-                    $arrData = $objQuery->getAll("SELECT * FROM $val");
+                    $arrData = $objQuery->getAll("SELECT * FROM $table");
                 }
 
                 // CSVデータ生成
                 if (count($arrData) > 0) {
 
-                    // カラムをCSV形式に整える
-                    $arrKyes = SC_Utils_Ex::sfGetCommaList(array_keys($arrData[0]), false);
+                    // テーブル名
+                    $csv_data .= $table . "\r\n";
 
-                    // データをCSV形式に整える
-                    $data = "";
-                    foreach($arrData as $data_key => $data_val){
-                        $data .= $this->lfGetCSVList($arrData[$data_key]);
+                    // カラム名
+                    $csv_data .= SC_Helper_CSV_Ex::sfArrayToCsv(array_keys($arrData[0])) . "\r\n";
+
+                    // データ
+                    foreach ($arrData as $data_val) {
+                        $csv_data .= SC_Helper_CSV_Ex::sfArrayToCsv($data_val) . "\r\n";
                     }
-                    // CSV出力データ生成
-                    $csv_data .= $val . "\r\n";
-                    $csv_data .= $arrKyes . "\r\n";
-                    $csv_data .= $data . "\r\n";
+
+                    // テーブル終端
+                    $csv_data .= "\r\n";
                 }
 
                 // タイムアウトを防ぐ
@@ -358,22 +361,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         }
 
         return isset($arrErr) ? $arrErr : array();
-    }
-
-    /* 配列の要素をCSVフォーマットで出力する。*/
-    function lfGetCSVList($array) {
-        $line = '';
-        if (count($array) > 0) {
-            foreach($array as $key => $val) {
-                $val = mb_convert_encoding($val, CHAR_CODE, CHAR_CODE);
-                $val = str_replace("\"", "\\\"", $val);
-                $line .= "\"".$val."\",";
-            }
-            $line = ereg_replace(",$", "\r\n", $line);
-        }else{
-            return false;
-        }
-        return $line;
     }
 
     /**
