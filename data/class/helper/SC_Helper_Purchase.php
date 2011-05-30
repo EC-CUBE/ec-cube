@@ -288,6 +288,20 @@ class SC_Helper_Purchase {
     }
 
     /**
+     * 配送商品をクリア(消去)する
+     *
+     * @param integer $shipping_id 配送先ID
+     * @return void
+     */
+    function clearShipmentItemTemp($shipping_id = null) {
+        if (is_null($shipping_id)) {
+            unset($_SESSION['shipping']);
+        } else {
+            unset($_SESSION['shipping'][$shipping_id]);
+        }
+    }
+
+    /**
      * 配送商品を設定する.
      *
      * @param integer $shipping_id 配送先ID

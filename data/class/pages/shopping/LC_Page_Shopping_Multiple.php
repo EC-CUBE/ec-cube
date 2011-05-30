@@ -251,6 +251,8 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
             $arrItemTemp[$other_deliv_id][$arrParams['product_class_id'][$index]] += $arrParams['quantity'][$index];
         }
 
+        $objPurchase->clearShipmentItemTemp();
+
         foreach ($arrItemTemp as $other_deliv_id => $arrProductClassIds) {
             foreach ($arrProductClassIds as $product_class_id => $quantity) {
                 $objPurchase->setShipmentItemTemp($other_deliv_id,
