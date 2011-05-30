@@ -133,42 +133,43 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
                  * 処理を実行
                  * ----------------------------------------------- */
                 switch($this->getMode()) {
-                // CSVを送信する。
-                case 'csv':
-                    require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_CSV_Ex.php';
+                    // CSVを送信する。
+                    case 'csv':
+                        require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_CSV_Ex.php';
 
-                    $objCSV = new SC_Helper_CSV_Ex();
-                    // CSVを送信する。正常終了の場合、終了。
-                    $objCSV->sfDownloadCsv(1, $where, $arrval, $order, true);
-                    exit;
-                // 全件削除(ADMIN_MODE)
-                case 'delete_all':
-                    $this->doDelete($where, $arrval);
-                    break;
+                        $objCSV = new SC_Helper_CSV_Ex();
+                        // CSVを送信する。正常終了の場合、終了。
+                        $objCSV->sfDownloadCsv(1, $where, $arrval, $order, true);
+                        exit;
 
-                // 検索実行
-                default:
-                    // 行数の取得
-                    $this->tpl_linemax = $this->getNumberOfLines($where, $arrval);
-                    // ページ送りの処理
-                    $page_max = SC_Utils_Ex::sfGetSearchPageMax($objFormParam->getValue('search_page_max'));
-                    // ページ送りの取得
-                    $objNavi = new SC_PageNavi_Ex($this->arrHidden['search_pageno'],
-                                               $this->tpl_linemax, $page_max,
-                                               'fnNaviSearchPage', NAVI_PMAX);
-                    $this->arrPagenavi = $objNavi->arrPagenavi;
+                    // 全件削除(ADMIN_MODE)
+                    case 'delete_all':
+                        $this->doDelete($where, $arrval);
+                        break;
 
-                    // 検索結果の取得
-                    $this->arrProducts = $this->findProducts($where, $arrval,
-                                                          $page_max, $objNavi->start_row, $order, $objProduct);
+                    // 検索実行
+                    default:
+                        // 行数の取得
+                        $this->tpl_linemax = $this->getNumberOfLines($where, $arrval);
+                        // ページ送りの処理
+                        $page_max = SC_Utils_Ex::sfGetSearchPageMax($objFormParam->getValue('search_page_max'));
+                        // ページ送りの取得
+                        $objNavi = new SC_PageNavi_Ex($this->arrHidden['search_pageno'],
+                                                   $this->tpl_linemax, $page_max,
+                                                   'fnNaviSearchPage', NAVI_PMAX);
+                        $this->arrPagenavi = $objNavi->arrPagenavi;
 
-                    // 各商品ごとのカテゴリIDを取得
-                    if (count($this->arrProducts) > 0) {
-                        foreach ($this->arrProducts as $key => $val) {
-                            $this->arrProducts[$key]['categories'] = $objDb->sfGetCategoryId($val["product_id"], 0, true);
-                            $objDb->g_category_on = false;
+                        // 検索結果の取得
+                        $this->arrProducts = $this->findProducts($where, $arrval,
+                                                              $page_max, $objNavi->start_row, $order, $objProduct);
+
+                        // 各商品ごとのカテゴリIDを取得
+                        if (count($this->arrProducts) > 0) {
+                            foreach ($this->arrProducts as $key => $val) {
+                                $this->arrProducts[$key]['categories'] = $objDb->sfGetCategoryId($val["product_id"], 0, true);
+                                $objDb->g_category_on = false;
+                            }
                         }
-                    }
                 }
             }
             break;
@@ -256,9 +257,11 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sqlval['del_flg']     = 1;
         $sqlval['update_date'] = 'now()';
-        $objQuery->update("dtb_products", $sqlval, $where, $arrParam);
-        $objQuery->update("dtb_products_class", $sqlval, $where, $arrParam);
-        $objQuery->delete("dtb_customer_favorite_products", $where, $arrParam);
+        $objQuery->begin();
+        $objQuery->update('dtb_products_class', $sqlval, "product_id IN (SELECT product_id FROM dtb_products WHERE $where)", $arrParam);
+        $objQuery->delete('dtb_customer_favorite_products', "product_id IN (SELECT product_id FROM dtb_products WHERE $where)", $arrParam);
+        $objQuery->update('dtb_products', $sqlval, $where, $arrParam);
+        $objQuery->commit();
     }
 
     /**
