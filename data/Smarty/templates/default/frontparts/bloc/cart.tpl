@@ -21,7 +21,7 @@
  *}-->
 <div class="bloc_outer">
     <div id="cart_area">
-    <h2 class="cart"><span class="title"><img src="<!--{$TPL_URLPATH}-->img/title/tit_bloc_cart.gif"alt="現在のカゴの中" /></span></h2>
+    <h2 class="cart"><span class="title"><img src="<!--{$TPL_URLPATH}-->img/title/tit_bloc_cart.gif" alt="現在のカゴの中" /></span></h2>
         <div class="bloc_body">
             <div class="information">
                 <p class="item">合計数量：<span class="attention"><!--{$arrCartList.0.TotalQuantity|number_format|default:0}--></span></p>

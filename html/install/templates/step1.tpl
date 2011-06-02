@@ -147,7 +147,7 @@
     <div class="btn-area">
         <ul>
             <li><a class="btn-action" href="javascript:;" onclick="document.form1['mode'].value='return_step0';document.form1.submit();return false;"><span class="btn-prev">前へ戻る</span></a></li>
-            <li><a class="btn-action"href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next">次へ進む</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next">次へ進む</span></a></li>
         </ul>
     </div>
     <div class="btn-area-bottom"></div>
