@@ -41,7 +41,7 @@
                     <dd>
                         <input type="text" name="<!--{$key}-->" value="<!--{$tpl_login_email|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->; ime-mode: disabled;" class="box300" />
                         <p class="login_memory">
-                            <!--{assign var=key value="mypage_login_memory"}-->
+                            <!--{assign var=key value="login_memory"}-->
                             <input type="checkbox" name="<!--{$key}-->" value="1"<!--{$tpl_login_memory|sfGetChecked:1}--> id="login_memory" />
                             <label for="login_memory">メールアドレスをコンピューターに記憶させる</label>
                         </p>
