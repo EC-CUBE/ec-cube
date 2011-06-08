@@ -20,11 +20,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <!--▼CONTENTS-->
-<div id="under02column">
-  <div id="under02column_login">
-    <h2 class="title"><!--{$tpl_title|h}--></h2>
-    <form name="member_form" id="member_form" method="post" action="?" onsubmit="return fnCheckLogin('member_form')">
-    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+<h2 class="title"><!--{$tpl_title|h}--></h2>
+<form name="member_form" id="member_form" method="post" action="?" onsubmit="return fnCheckLogin('member_form')">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
    <div class="loginarea">
      <h2>会員登録がお済みのお客様</h2>
      <p class="inputtext">会員の方は、登録時に入力されたメールアドレスとパスワードでログインしてください。</p>
@@ -73,6 +71,4 @@
     </div>
   </div>
 </form>
-</div>
-</div>
 <!--▲CONTENTS-->
