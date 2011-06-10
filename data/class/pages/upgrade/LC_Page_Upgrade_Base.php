@@ -49,10 +49,10 @@ class LC_Page_Upgrade_Base extends LC_Page_Ex {
     }
 
     /**
-     * 配信サーバへリクエストを送信する.
+     * 配信サーバーへリクエストを送信する.
      *
      * @param string $mode
-     * @param array $arrParams 追加パラメータ.連想配列で渡す.
+     * @param array $arrParams 追加パラメーター.連想配列で渡す.
      * @return string|object レスポンスボディ|エラー時にはPEAR::Errorオブジェクトを返す.
      */
     function request($mode, $arrParams = array(), $arrCookies = array()) {

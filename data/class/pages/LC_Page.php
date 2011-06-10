@@ -199,7 +199,7 @@ class LC_Page {
      *
      * @access protected
      * @param string $path 結果を取得するためのパス
-     * @param array $param URL に付与するパラメータの配列
+     * @param array $param URL に付与するパラメーターの配列
      * @param mixed $useSSL 結果に HTTPS_URL を使用する場合 true,
      *                         HTTP_URL を使用する場合 false,
      *                         デフォルト 'escape' 現在のスキーマを使用
@@ -311,7 +311,7 @@ class LC_Page {
     }
 
     /**
-     * リクエストパラメータ 'mode' を取得する.
+     * リクエストパラメーター 'mode' を取得する.
      *
      * 1. $_GET['mode'] の値を取得する.
      * 2. 1 が存在しない場合は $_POST['mode'] の値を取得する.

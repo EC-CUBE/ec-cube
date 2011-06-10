@@ -25,7 +25,7 @@
 require_once CLASS_REALDIR . 'db/SC_DB_MasterData.php';
 
 /**
- * マスタデータを扱うクラス(拡張).
+ * マスターデータを扱うクラス(拡張).
  *
  * SC_DB_MasterData をカスタマイズする場合はこのクラスを編集する.
  *

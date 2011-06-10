@@ -139,7 +139,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
     }
 
     /**
-     * uploadモードのパラメータ検証を行う.
+     * uploadモードのパラメーター検証を行う.
      *
      * @param object $objFormParam SC_FormParamのインスタンス
      * @param object $objUpFile SC_UploadFileのインスタンス

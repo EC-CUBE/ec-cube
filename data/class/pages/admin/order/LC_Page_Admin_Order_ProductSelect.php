@@ -238,7 +238,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
     }
 
     /**
-     * リクエストパラメータnoを取ってくる。
+     * リクエストパラメーターnoを取ってくる。
      * @param unknown_type $globalParams
      */
     function getNo($globalParams){
@@ -276,7 +276,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
     }
 
     /**
-     * パラメータ情報の初期化
+     * パラメーター情報の初期化
      * @param SC_FormParam $objFormParam
      */
     function lfInitParam(&$objFormParam) {

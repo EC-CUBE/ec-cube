@@ -32,9 +32,9 @@ require_once CLASS_REALDIR . 'session/sessionfactory/SC_SessionFactory_UseReques
  * 他のセッション管理クラスとは若干異なります.
  *
  * EC-CUBE2.1.1ベータ版から、
- * 管理画面＞基本情報＞パラメータ管理で、セッションの維持方法を
+ * 管理画面＞基本情報＞パラメーター管理で、セッションの維持方法を
  * ・Cookieを使用する場合
- * ・リクエストパラメータを使用する場合
+ * ・リクエストパラメーターを使用する場合
  * の2種類が選択できますが、どちらの設定であっても下記のように呼び出すことで
  * 適切にセッションを開始することができます.
  *
@@ -51,7 +51,7 @@ class SC_SessionFactory {
     // {{{ functions
 
     /**
-     * パラメータ管理で設定したセッション維持設定に従って適切なオブジェクトを返す.
+     * パラメーター管理で設定したセッション維持設定に従って適切なオブジェクトを返す.
      *
      * @return SC_SessionFactory
      */
@@ -62,7 +62,7 @@ class SC_SessionFactory {
             : '';
 
         switch($type) {
-        // セッションの維持にリクエストパラメータを使用する
+        // セッションの維持にリクエストパラメーターを使用する
         case 'useRequest':
             $session = new SC_SessionFactory_UseRequest;
             defined('MOBILE_SITE')

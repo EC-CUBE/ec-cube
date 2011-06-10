@@ -137,7 +137,7 @@ class LC_Page_Contact extends LC_Page_Ex {
     // {{{ protected functions
 
     /**
-     * お問い合わせ入力時のパラメータ情報の初期化を行う.
+     * お問い合わせ入力時のパラメーター情報の初期化を行う.
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void

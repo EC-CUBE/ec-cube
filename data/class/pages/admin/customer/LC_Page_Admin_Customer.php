@@ -48,7 +48,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
         $this->tpl_subno = 'index';
         $this->tpl_pager = 'pager.tpl';
         $this->tpl_maintitle = '会員管理';
-        $this->tpl_subtitle = '会員マスタ';
+        $this->tpl_subtitle = '会員マスター';
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
@@ -96,9 +96,9 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // パラメータ管理クラス
+        // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
-        // パラメータ設定
+        // パラメーター設定
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
         $objFormParam->convParam();

@@ -50,7 +50,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrTAXRULE = $masterData->getMasterData("mtb_taxrule");
         $this->tpl_maintitle = '基本情報管理';
-        $this->tpl_subtitle = 'SHOPマスタ';
+        $this->tpl_subtitle = 'SHOPマスター';
 
         //定休日用配列
         $this->arrRegularHoliday[0] = '日';
@@ -113,7 +113,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
                     default:
                         break;
                 }
-                $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "'); window.alert('SHOPマスタの登録が完了しました。');";
+                $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "'); window.alert('SHOPマスターの登録が完了しました。');";
             }
             if( empty($this->arrForm['regular_holiday_ids']) ) {
                 $this->arrSel = array();

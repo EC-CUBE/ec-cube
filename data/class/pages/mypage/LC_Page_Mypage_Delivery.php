@@ -107,7 +107,7 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
     }
 
     /**
-     * フォームパラメータの初期化
+     * フォームパラメーターの初期化
      *
      * @return SC_FormParam
      */

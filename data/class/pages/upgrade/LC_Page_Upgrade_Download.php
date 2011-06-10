@@ -220,7 +220,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             $objLog->log("* file execute start");
             $this->fileExecute($objRet->data->product_code);
 
-            // 配信サーバへ通知
+            // 配信サーバーへ通知
             $objLog->log("* notify to lockon server start");
             $objReq = $this->notifyDownload($mode, $objReq->getResponseCookies());
 
@@ -233,7 +233,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             $objLog->end();
             return;
         } else {
-            // 配信サーバ側でエラーを補足
+            // 配信サーバー側でエラーを補足
             echo $body;
             $objLog->error($objRet->errcode, $objReq);
             return;
@@ -289,7 +289,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
     }
 
     /**
-     * 配信サーバへダウンロード完了を通知する.
+     * 配信サーバーへダウンロード完了を通知する.
      *
      * FIXME エラーコード追加
      * @param array #arrCookies Cookie配列

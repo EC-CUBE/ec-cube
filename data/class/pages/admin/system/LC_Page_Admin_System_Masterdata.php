@@ -25,7 +25,7 @@
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
- * マスタデータ管理 のページクラス.
+ * マスターデータ管理 のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
@@ -47,7 +47,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
         $this->tpl_subno = 'masterdata';
         $this->tpl_mainno = 'system';
         $this->tpl_maintitle = 'システム設定';
-        $this->tpl_subtitle = 'マスタデータ管理';
+        $this->tpl_subtitle = 'マスターデータ管理';
     }
 
     /**
@@ -78,16 +78,16 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
             $this->errorMessage = $this->checkUniqueID($_POST);
 
             if (empty($this->errorMessage)) {
-                // 取得したデータからマスタデータを生成
+                // 取得したデータからマスターデータを生成
                 $this->registMasterData($_POST, $masterData, $this->masterDataName);
-                $this->tpl_onload = "window.alert('マスタデータの設定が完了しました。');";
+                $this->tpl_onload = "window.alert('マスターデータの設定が完了しました。');";
             }
 
         case 'show':
             // POST 文字列の妥当性チェック
             $this->masterDataName = $this->checkMasterDataName($_POST, $this->arrMasterDataName);
 
-            // DB からマスタデータを取得
+            // DB からマスターデータを取得
             $this->arrMasterData =
                 $masterData->getDbMasterData($this->masterDataName);
             break;
@@ -106,7 +106,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
     }
 
     /**
-     * マスタデータ名チェックを行う
+     * マスターデータ名チェックを行う
      *
      * @access private
      * @param array $_POST値
@@ -125,11 +125,11 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
     }
 
     /**
-     * マスタデータ名を配列で取得する.
+     * マスターデータ名を配列で取得する.
      *
      * @access private
-     * @param array $ignores 取得しないマスタデータ名の配列
-     * @return array マスタデータ名の配列
+     * @param array $ignores 取得しないマスターデータ名の配列
+     * @return array マスターデータ名の配列
      */
     function getMasterDataNames($ignores = array()) {
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
@@ -192,7 +192,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
             }
         }
 
-        // マスタデータを更新
+        // マスターデータを更新
         $masterData->objQuery =& SC_Query_Ex::getSingletonInstance();
         $masterData->objQuery->begin();
         $masterData->deleteMasterData($master_data_name, false);

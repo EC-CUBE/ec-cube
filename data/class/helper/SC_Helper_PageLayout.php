@@ -102,7 +102,7 @@ class SC_Helper_PageLayout {
      * @param integer $device_type_id 端末種別ID
      * @param integer $page_id ページID; null の場合は, 0 以外を検索する.
      * @param string $where 追加の検索条件
-     * @param array $arrParams 追加の検索パラメータ
+     * @param array $arrParams 追加の検索パラメーター
      * @return array ページ属性の配列
      */
     function getPageProperties($device_type_id = DEVICE_TYPE_PC, $page_id = null, $where = '', $arrParams = array()) {
@@ -125,7 +125,7 @@ class SC_Helper_PageLayout {
      * @access public
      * @param integer $device_type_id 端末種別ID
      * @param string $where 追加の検索条件
-     * @param array $arrParams 追加の検索パラメータ
+     * @param array $arrParams 追加の検索パラメーター
      * @param boolean $has_realpath php_path, tpl_path の絶対パスを含める場合 true
      * @return array ブロック情報の配列
      */

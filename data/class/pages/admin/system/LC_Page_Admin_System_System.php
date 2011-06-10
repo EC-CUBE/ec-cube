@@ -95,7 +95,7 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
     }
 
     /**
-     * フォームパラメータ初期化.
+     * フォームパラメーター初期化.
      *
      * @param object $objFormParam
      * @param array $arrParams $_GET値
@@ -116,9 +116,9 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
 
         $arrSystemInfo = array(
             array('title' => 'EC-CUBE',     'value' => ECCUBE_VERSION),
-            array('title' => 'サーバOS',    'value' => php_uname()),
-            array('title' => 'DBサーバ',    'value' => $objDB->sfGetDBVersion()),
-            array('title' => 'WEBサーバ',   'value' => $_SERVER['SERVER_SOFTWARE']),
+            array('title' => 'サーバーOS',    'value' => php_uname()),
+            array('title' => 'DBサーバー',    'value' => $objDB->sfGetDBVersion()),
+            array('title' => 'WEBサーバー',   'value' => $_SERVER['SERVER_SOFTWARE']),
         );
 
         $value = phpversion() . ' (' . implode(', ', get_loaded_extensions()) . ')';

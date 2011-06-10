@@ -48,7 +48,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
     /** おすすめレベル */
     var $arrRECOMMEND;
 
-    /** フォームパラメータ */
+    /** フォームパラメーター */
     var $objFormParam;
 
     /** アップロードファイル */
@@ -94,9 +94,9 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         // 会員クラス
         $objCustomer = new SC_Customer_Ex();
 
-        // パラメータ管理クラス
+        // パラメーター管理クラス
         $this->objFormParam = new SC_FormParam_Ex();
-        // パラメータ情報の初期化
+        // パラメーター情報の初期化
         $this->arrForm = $this->lfInitParam($this->objFormParam);
         // ファイル管理クラス
         $this->objUpFile = new SC_UploadFile_Ex(IMAGE_TEMP_REALDIR, IMAGE_SAVE_REALDIR);
@@ -374,7 +374,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         $objPage->tpl_stock_find = $stock_find;
     }
 
-    /* パラメータ情報の初期化 */
+    /* パラメーター情報の初期化 */
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam("規格1", "classcategory_id1", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("規格2", "classcategory_id2", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));

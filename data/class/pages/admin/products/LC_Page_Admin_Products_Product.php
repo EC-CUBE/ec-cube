@@ -88,14 +88,14 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         $this->lfInitDownFile($objDownFile);
         $objDownFile->setHiddenFileList($_POST);
 
-        // 検索パラメータ引き継ぎ
+        // 検索パラメーター引き継ぎ
         $this->arrSearchHidden = $this->lfGetSearchParam($_POST);
 
         $mode = $this->getMode();
         switch($mode) {
         case 'pre_edit':
         case 'copy' :
-            // パラメータ初期化(商品ID)
+            // パラメーター初期化(商品ID)
             $this->lfInitFormParam_PreEdit($objFormParam, $_POST);
             // エラーチェック
             $this->arrErr = $objFormParam->checkError();
@@ -107,7 +107,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
             $product_id = $objFormParam->getValue('product_id');
             // 商品データ取得
             $arrForm = $this->lfGetFormParam_PreEdit($objUpFile, $objDownFile, $product_id);
-            // ページ表示用パラメータ設定
+            // ページ表示用パラメーター設定
             $this->arrForm = $this->lfSetViewParam_InputPage($objUpFile, $objDownFile, $arrForm);
 
             // 商品複製の場合、画像ファイルコピー
@@ -123,7 +123,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
             break;
 
         case 'edit':
-            // パラメータ初期化, 取得
+            // パラメーター初期化, 取得
             $this->lfInitFormParam($objFormParam, $_POST);
             $arrForm = $objFormParam->getHashArray();
             // エラーチェック
@@ -142,7 +142,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
             break;
 
         case 'complete':
-            // パラメータ初期化, 取得
+            // パラメーター初期化, 取得
             $this->lfInitFormParam($objFormParam, $_POST);
             $arrForm = $this->lfGetFormParam_Complete($objFormParam);
             // エラーチェック
@@ -173,7 +173,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         // 画像のアップロード
         case 'upload_image':
         case 'delete_image':
-            // パラメータ初期化
+            // パラメーター初期化
             $this->lfInitFormParam_UploadImage($objFormParam);
             $this->lfInitFormParam($objFormParam, $_POST);
             $arrForm = $objFormParam->getHashArray();
@@ -203,7 +203,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         // ダウンロード商品ファイルアップロード
         case 'upload_down':
         case 'delete_down':
-            // パラメータ初期化
+            // パラメーター初期化
             $this->lfInitFormParam_UploadDown($objFormParam);
             $this->lfInitFormParam($objFormParam, $_POST);
             $arrForm = $objFormParam->getHashArray();
@@ -228,7 +228,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
 
         // 関連商品選択
         case 'recommend_select' :
-            // パラメータ初期化
+            // パラメーター初期化
             $this->lfInitFormParam_RecommendSelect($objFormParam);
             $this->lfInitFormParam($objFormParam, $_POST);
             $arrForm = $objFormParam->getHashArray();
@@ -245,7 +245,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
 
         // 確認ページからの戻り
         case 'confirm_return':
-            // パラメータ初期化
+            // パラメーター初期化
             $this->lfInitFormParam($objFormParam, $_POST);
             $arrForm = $objFormParam->getHashArray();
             // 入力画面表示設定
@@ -277,7 +277,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
     }
 
     /**
-     * パラメータ情報の初期化
+     * パラメーター情報の初期化
      * - 編集/複製モード
      *
      * @param object $objFormParam SC_FormParamインスタンス
@@ -291,7 +291,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
     }
 
     /**
-     * パラメータ情報の初期化
+     * パラメーター情報の初期化
      *
      * @param object $objFormParam SC_FormParamインスタンス
      * @param array $arrPost $_POSTデータ
@@ -359,7 +359,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
     }
 
     /**
-     * パラメータ情報の初期化
+     * パラメーター情報の初期化
      * - 画像ファイルアップロードモード
      *
      * @param object $objFormParam SC_FormParamインスタンス
@@ -370,7 +370,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
     }
 
     /**
-     * パラメータ情報の初期化
+     * パラメーター情報の初期化
      * - ダウンロード商品ファイルアップロードモード
      *
      * @param object $objFormParam SC_FormParamインスタンス
@@ -381,7 +381,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
     }
 
     /**
-     * パラメータ情報の初期化
+     * パラメーター情報の初期化
      * - 関連商品追加モード
      *
      * @param object $objFormParam SC_FormParamインスタンス
@@ -393,7 +393,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
     }
 
     /**
-     * アップロードファイルパラメータ情報の初期化
+     * アップロードファイルパラメーター情報の初期化
      * - 画像ファイル用
      * 
      * @param object $objUpFile SC_UploadFileインスタンス
@@ -410,7 +410,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
     }
 
     /**
-     * アップロードファイルパラメータ情報の初期化
+     * アップロードファイルパラメーター情報の初期化
      * - ダウンロード商品ファイル用
      *
      * @param object $objDownFile SC_UploadFileインスタンス
@@ -421,19 +421,19 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
     }
 
     /**
-     * フォーム入力パラメータのエラーチェック
+     * フォーム入力パラメーターのエラーチェック
      * 
      * @param object $objFormParam SC_FormParamインスタンス
      * @param object $objUpFile SC_UploadFileインスタンス
      * @param object $objDownFile SC_UploadFileインスタンス
-     * @param array $arrForm フォーム入力パラメータ配列
+     * @param array $arrForm フォーム入力パラメーター配列
      * @return array エラー情報を格納した連想配列
      */
     function lfCheckError_Edit(&$objFormParam, &$objUpFile, &$objDownFile, $arrForm) {
         $objErr = new SC_CheckError_Ex($arrForm);
         $arrErr = array();
 
-        // 入力パラメータチェック
+        // 入力パラメーターチェック
         $arrErr = $objFormParam->checkError();
 
         // アップロードファイル必須チェック
@@ -491,10 +491,10 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
     }
 
     /**
-     * 検索パラメータ引き継ぎ用配列取得
+     * 検索パラメーター引き継ぎ用配列取得
      *
      * @param array $arrPost $_POSTデータ
-     * @return array 検索パラメータ配列
+     * @return array 検索パラメーター配列
      */
     function lfGetSearchParam($arrPost) {
         $arrSearchParam = array();
@@ -508,13 +508,13 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
     }
 
     /**
-     * フォームパラメータ取得
+     * フォームパラメーター取得
      * - 編集/複製モード
      * 
      * @param object $objUpFile SC_UploadFileインスタンス
      * @param object $objDownFile SC_UploadFileインスタンス
      * @param integer $product_id 商品ID
-     * @return array フォームパラメータ配列
+     * @return array フォームパラメーター配列
      */
     function lfGetFormParam_PreEdit(&$objUpFile, &$objDownFile, $product_id) {
         $arrForm = array();
@@ -530,11 +530,11 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
     }
 
     /**
-     * フォームパラメータ取得
+     * フォームパラメーター取得
      * - 登録モード
      * 
      * @param object $objFormParam SC_FormParamインスタンス
-     * @return array フォームパラメータ配列
+     * @return array フォームパラメーター配列
      */
     function lfGetFormParam_Complete(&$objFormParam) {
         $arrForm = $objFormParam->getHashArray();
@@ -545,16 +545,16 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
     }
 
     /**
-     * 表示用フォームパラメータ取得
+     * 表示用フォームパラメーター取得
      * - 入力画面
      *
      * @param object $objUpFile SC_UploadFileインスタンス
      * @param object $objDownFile SC_UploadFileインスタンス
-     * @param array $arrForm フォーム入力パラメータ配列
-     * @return array 表示用フォームパラメータ配列
+     * @param array $arrForm フォーム入力パラメーター配列
+     * @return array 表示用フォームパラメーター配列
      */
     function lfSetViewParam_InputPage(&$objUpFile, &$objDownFile, &$arrForm) {
-        // カテゴリマスタデータ取得
+        // カテゴリマスターデータ取得
         $objDb = new SC_Helper_DB_Ex();
         list($this->arrCatVal, $this->arrCatOut) = $objDb->sfGetLevelCatList(false);
 
@@ -587,13 +587,13 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
     }
 
     /**
-     * 表示用フォームパラメータ取得
+     * 表示用フォームパラメーター取得
      * - 確認画面
      *
      * @param object $objUpFile SC_UploadFileインスタンス
      * @param object $objDownFile SC_UploadFileインスタンス
-     * @param array $arrForm フォーム入力パラメータ配列
-     * @return array 表示用フォームパラメータ配列
+     * @param array $arrForm フォーム入力パラメーター配列
+     * @return array 表示用フォームパラメーター配列
      */
     function lfSetViewParam_ConfirmPage(&$objUpFile, &$objDownFile, &$arrForm) {
         // カテゴリ表示用
@@ -686,7 +686,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
     }
 
     /**
-     * アップロードファイルパラメータ情報から削除
+     * アップロードファイルパラメーター情報から削除
      * 一時ディレクトリに保存されている実ファイルも削除する
      *
      * @param object $objUpFile SC_UploadFileインスタンス
@@ -880,7 +880,7 @@ __EOF__;
     /**
      * 関連商品データ表示用配列を取得する
      * 
-     * @param string $arrForm フォーム入力パラメータ配列
+     * @param string $arrForm フォーム入力パラメーター配列
      * @return array 関連商品データ配列
      */
     function lfGetRecommendProducts(&$arrForm) {
@@ -904,11 +904,11 @@ __EOF__;
     }
 
     /**
-     * 表示用カテゴリマスタデータ配列を取得する
+     * 表示用カテゴリマスターデータ配列を取得する
      * - 編集モード
      * 
      * @param void
-     * @return array カテゴリマスタデータ配列
+     * @return array カテゴリマスターデータ配列
      */
     function lfGetCategoryList_Edit() {
         $objDb = new SC_Helper_DB_Ex();
@@ -923,9 +923,9 @@ __EOF__;
     }
 
     /**
-     * 入力フォームパラメータの規格ありなしフラグを判定
+     * 入力フォームパラメーターの規格ありなしフラグを判定
      * 
-     * @param string $has_product_class 入力フォームパラメータの規格ありなしフラグ
+     * @param string $has_product_class 入力フォームパラメーターの規格ありなしフラグ
      * @return boolean true: 規格あり, false: 規格なし
      */
     function lfGetProductClassFlag($has_product_class) {
@@ -952,7 +952,7 @@ __EOF__;
      * 
      * @param object $objUpFile SC_UploadFileインスタンス
      * @param object $objDownFile SC_UploadFileインスタンス
-     * @param array $arrList フォーム入力パラメータ配列
+     * @param array $arrList フォーム入力パラメーター配列
      * @return integer 登録商品ID
      */
     function lfRegistProduct(&$objUpFile, &$objDownFile, $arrList) {
@@ -1094,7 +1094,7 @@ __EOF__;
         if($arrList["copy_product_id"] == "") {
             // 規格登録
             if ($objDb->sfHasProductClass($product_id)) {
-                // 規格あり商品（商品規格テーブルのうち、商品登録フォームで設定するパラメータのみ更新）
+                // 規格あり商品（商品規格テーブルのうち、商品登録フォームで設定するパラメーターのみ更新）
                 $this->lfUpdateProductClass($arrList);
             } else {
                 // 規格なし商品（商品規格テーブルの更新）
@@ -1169,7 +1169,7 @@ __EOF__;
      * DBに関連商品データを登録する
      * 
      * @param object $objQuery SC_Queryインスタンス
-     * @param string $arrList フォーム入力パラメータ配列
+     * @param string $arrList フォーム入力パラメーター配列
      * @param integer $product_id 登録する商品ID
      * @return void
      */
@@ -1201,7 +1201,7 @@ __EOF__;
     /**
      * 規格データをコピーする
      * 
-     * @param array $arrList フォーム入力パラメータ配列
+     * @param array $arrList フォーム入力パラメーター配列
      * @param object $objQuery SC_Queryインスタンス
      * @return boolean エラーフラグ
      */
@@ -1416,7 +1416,7 @@ __EOF__;
      * アンカーハッシュ文字列を取得する
      * アンカーキーをサニタイジングする
      * 
-     * @param string $anchor_key フォーム入力パラメータで受け取ったアンカーキー
+     * @param string $anchor_key フォーム入力パラメーターで受け取ったアンカーキー
      * @return <type> 
      */
     function getAnchorHash($anchor_key) {

@@ -35,7 +35,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
 
     // {{{ properties
 
-    /** フォームパラメータの配列 */
+    /** フォームパラメーターの配列 */
     var $objFormParam;
 
     /** 会員情報のインスタンス */
@@ -156,7 +156,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
 
         // 登録処理
         case 'confirm':
-            // パラメータ情報の初期化
+            // パラメーター情報の初期化
             $this->setFormParams($objFormParam, $_POST, false, $this->arrShipping);
 
             $deliv_id = $objFormParam->getValue('deliv_id');
@@ -192,7 +192,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
             break;
 
         default:
-            // FIXME 前のページから戻ってきた場合は別パラメータ(mode)で処理分岐する必要があるのかもしれない
+            // FIXME 前のページから戻ってきた場合は別パラメーター(mode)で処理分岐する必要があるのかもしれない
             $this->setFormParams($objFormParam, $arrOrderTemp, false, $this->arrShipping);
 
             if (!$this->is_single_deliv) {
@@ -230,7 +230,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
     }
 
     /**
-     * パラメータの初期化を行い, 初期値を設定する.
+     * パラメーターの初期化を行い, 初期値を設定する.
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @param array $arrParam 設定する値の配列
@@ -244,7 +244,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
     }
 
     /**
-     * パラメータ情報の初期化を行う.
+     * パラメーター情報の初期化を行う.
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @param boolean $deliv_only 必須チェックは deliv_id のみの場合 true
@@ -438,7 +438,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      * モバイル用テンプレートのパスを取得する.
      *
      * @param boolean $is_single_deliv 配送業者が1社の場合 true
-     * @param string $mode フォームパラメータ 'mode' の文字列
+     * @param string $mode フォームパラメーター 'mode' の文字列
      * @return string モバイル用テンプレートのパス
      */
     function getMobileMainpage($is_single_deliv = true, $mode) {

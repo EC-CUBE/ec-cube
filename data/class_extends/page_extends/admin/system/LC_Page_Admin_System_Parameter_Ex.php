@@ -25,7 +25,7 @@
 require_once CLASS_REALDIR . 'pages/admin/system/LC_Page_Admin_System_Parameter.php';
 
 /**
- * パラメータ設定 のページクラス(拡張).
+ * パラメーター設定 のページクラス(拡張).
  *
  * LC_Page_Admin_System_Parameter をカスタマイズする場合はこのクラスを編集する.
  *

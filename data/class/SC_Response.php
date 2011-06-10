@@ -254,8 +254,8 @@ class SC_Response{
             415 => 'Unsupported Media Type',            // サポートしていないメディアタイプ
             416 => 'Requested Range Not Satisfiable',   // リクエストしたレンジは範囲外にある
             417 => 'Expectation Failed',                // 期待するヘッダに失敗
-            // Server Error 5xx                         // 【サーバエラー】
-            500 => 'Internal Server Error',             // サーバ内部エラー
+            // Server Error 5xx                         // 【サーバーエラー】
+            500 => 'Internal Server Error',             // サーバー内部エラー
             501 => 'Not Implemented',                   // 実装されていない
             502 => 'Bad Gateway',                       // 不正なゲートウェイ
             503 => 'Service Unavailable',               // サービス利用不可

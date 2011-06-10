@@ -25,7 +25,7 @@
 オーナーズストア通信処理用のjsとcssを読み込む
 onclickなどで
 OwnersStore.download();やOwnersStore.products_list();を呼び出すことで
-配信サーバとの通信処理を行う
+配信サーバーとの通信処理を行う
 
 購入商品一覧はid="ownersstore_products_list"に出力される
 

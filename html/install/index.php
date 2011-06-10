@@ -62,10 +62,10 @@ if(!is_writable($temp_dir)) {
 
 $objView = new SC_InstallView_Ex($ownDir . 'templates', $ownDir . 'temp');
 
-// パラメータ管理クラス
+// パラメーター管理クラス
 $objWebParam = new SC_FormParam();
 $objDBParam = new SC_FormParam();
-// パラメータ情報の初期化
+// パラメーター情報の初期化
 $objWebParam = lfInitWebParam($objWebParam);
 $objDBParam = lfInitDBParam($objDBParam);
 
@@ -262,7 +262,7 @@ default:
     break;
 }
 
-//フォーム用のパラメータを返す
+//フォーム用のパラメーターを返す
 $objPage->arrForm = $objWebParam->getFormParamList();
 $objPage->arrForm = array_merge($objPage->arrForm, $objDBParam->getFormParamList());
 
@@ -536,7 +536,7 @@ function lfDispComplete($objPage) {
     // hiddenに入力値を保持
     $objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
 
-    // ショップマスタ情報の書き込み
+    // ショップマスター情報の書き込み
     $arrRet =  $objDBParam->getHashArray();
 
     $dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
@@ -602,7 +602,7 @@ function lfDispComplete($objPage) {
     return $objPage;
 }
 
-// WEBパラメータ情報の初期化
+// WEBパラメーター情報の初期化
 function lfInitWebParam($objWebParam) {
     global $objDb;
 
@@ -666,7 +666,7 @@ function lfInitWebParam($objWebParam) {
     return $objWebParam;
 }
 
-// DBパラメータ情報の初期化
+// DBパラメーター情報の初期化
 function lfInitDBParam($objDBParam) {
 
     if(defined('DB_SERVER')) {
@@ -700,7 +700,7 @@ function lfInitDBParam($objDBParam) {
     }
 
     $objDBParam->addParam("DBの種類", "db_type", INT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_type);
-    $objDBParam->addParam("DBサーバ", "db_server", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_server);
+    $objDBParam->addParam("DBサーバー", "db_server", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_server);
     $objDBParam->addParam("DBポート", "db_port", INT_LEN, "", array("MAX_LENGTH_CHECK"), $db_port);
     $objDBParam->addParam("DB名", "db_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_name);
     $objDBParam->addParam("DBユーザ", "db_user", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_user);

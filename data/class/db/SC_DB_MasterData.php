@@ -22,20 +22,20 @@
  */
 
 /**
- * マスタデータを扱うクラス.
+ * マスターデータを扱うクラス.
  *
- * プルダウン等で使用するマスタデータを扱う.
- * マスタデータは, DB に格納されているが, パフォーマンスを得るため,
+ * プルダウン等で使用するマスターデータを扱う.
+ * マスターデータは, DB に格納されているが, パフォーマンスを得るため,
  * 初回のみ DBへアクセスし, データを定義したキャッシュファイルを生成する.
  *
- * マスタデータのテーブルは, 下記のようなカラムが必要がある.
+ * マスターデータのテーブルは, 下記のようなカラムが必要がある.
  * 1. キーとなる文字列
  * 2. 表示文字列
  * 3. 表示順
  * 上記カラムのデータ型は特に指定しないが, 1 と 2 は常に string 型となる.
  *
- * マスタデータがキャッシュされると, key => value 形式の配列として使用できる.
- * マスタデータのキャッシュは, MASTER_DATA_REALDIR/マスタデータ名.php というファイルが生成される.
+ * マスターデータがキャッシュされると, key => value 形式の配列として使用できる.
+ * マスターデータのキャッシュは, MASTER_DATA_REALDIR/マスターデータ名.php というファイルが生成される.
  *
  * @package DB
  * @author LOCKON CO.,LTD.
@@ -55,19 +55,19 @@ class SC_DB_MasterData {
     // {{{ functions
 
     /**
-     * マスタデータを取得する.
+     * マスターデータを取得する.
      *
-     * 以下の順序でマスタデータを取得する.
-     * 1. MASTER_DATA_REALDIR にマスタデータキャッシュが存在しない場合、
-     *    DBからマスタデータを取得して、マスタデータキャッシュを生成する。
-     * 2. マスタデータキャッシュを読み込み、変数に格納し返す。
+     * 以下の順序でマスターデータを取得する.
+     * 1. MASTER_DATA_REALDIR にマスターデータキャッシュが存在しない場合、
+     *    DBからマスターデータを取得して、マスターデータキャッシュを生成する。
+     * 2. マスターデータキャッシュを読み込み、変数に格納し返す。
      *
      * 返り値は, key => value 形式の配列である.
      *
-     * @param string $name マスタデータ名
+     * @param string $name マスターデータ名
      * @param array $columns [0] => キー, [1] => 表示文字列, [2] => 表示順
      *                        を表すカラム名を格納した配列
-     * @return array マスタデータ
+     * @return array マスターデータ
      */
     function getMasterData($name, $columns = array()) {
 
@@ -87,19 +87,19 @@ class SC_DB_MasterData {
     }
 
     /**
-     * マスタデータをDBに追加する.
+     * マスターデータをDBに追加する.
      *
-     * 引数 $masterData をマスタデータとしてDBに追加し,
+     * 引数 $masterData をマスターデータとしてDBに追加し,
      * キャッシュを生成する.
      * 既存のキャッシュが存在する場合は上書きする.
      * $masterData は key => value 形式の配列である必要がある.
      *
-     * @param string $name マスタデータ名
+     * @param string $name マスターデータ名
      * @param array $columns [0] => キー, [1] => 表示文字列, [2] => 表示順
      *                        を表すカラム名を格納した配列
-     * @param array $masterData マスタデータ
+     * @param array $masterData マスターデータ
      * @param bool $autoCommit トランザクションを自動的に commit する場合 true
-     * @return integer マスタデータの登録数
+     * @return integer マスターデータの登録数
      */
     function registMasterData($name, $columns, $masterData, $autoCommit = true) {
 
@@ -124,17 +124,17 @@ class SC_DB_MasterData {
     }
 
     /**
-     * マスタデータを更新する.
+     * マスターデータを更新する.
      *
-     * 引数 $masterData の値でマスタデータを更新する.
+     * 引数 $masterData の値でマスターデータを更新する.
      * $masterData は key => value 形式の配列である必要がある.
      *
-     * @param string $name マスタデータ名
+     * @param string $name マスターデータ名
      * @param array $columns [0] => キー, [1] => 表示文字列, [2] => 表示順
      *                        を表すカラム名を格納した配列
-     * @param array $masterData マスタデータ
+     * @param array $masterData マスターデータ
      * @param bool $autoCommit トランザクションを自動的に commit する場合 true
-     * @return integer マスタデータの更新数
+     * @return integer マスターデータの更新数
      */
     function updateMasterData($name, $columns, $masterData, $autoCommit = true) {
 
@@ -159,16 +159,16 @@ class SC_DB_MasterData {
     }
 
     /**
-     * マスタデータを追加する.
+     * マスターデータを追加する.
      *
-     * 引数 $masterData の値でマスタデータを更新する.
+     * 引数 $masterData の値でマスターデータを更新する.
      * $masterData は key => value 形式の配列である必要がある.
      *
-     * @param string $name マスタデータ名
+     * @param string $name マスターデータ名
      * @param string $key キー名
      * @param string $comment コメント
      * @param bool $autoCommit トランザクションを自動的に commit する場合 true
-     * @return integer マスタデータの更新数
+     * @return integer マスターデータの更新数
      */
     function insertMasterData($name, $key, $value, $comment, $autoCommit = true) {
 
@@ -193,14 +193,14 @@ class SC_DB_MasterData {
     }
 
     /**
-     * マスタデータを削除する.
+     * マスターデータを削除する.
      *
-     * 引数 $name のマスタデータを削除し,
+     * 引数 $name のマスターデータを削除し,
      * キャッシュも削除する.
      *
-     * @param string $name マスタデータ名
+     * @param string $name マスターデータ名
      * @param bool $autoCommit トランザクションを自動的に commit する場合 true
-     * @return integer マスタデータの削除数
+     * @return integer マスターデータの削除数
      */
     function deleteMasterData($name, $autoCommit = true) {
         $this->objQuery = new SC_Query_Ex();
@@ -219,9 +219,9 @@ class SC_DB_MasterData {
     }
 
     /**
-     * マスタデータのキャッシュを消去する.
+     * マスターデータのキャッシュを消去する.
      *
-     * @param string $name マスタデータ名
+     * @param string $name マスターデータ名
      * @return bool 消去した場合 true
      */
     function clearCache($name) {
@@ -236,16 +236,16 @@ class SC_DB_MasterData {
     }
 
     /**
-     * マスタデータのキャッシュを生成する.
+     * マスターデータのキャッシュを生成する.
      *
-     * 引数 $name のマスタデータキャッシュを生成する.
+     * 引数 $name のマスターデータキャッシュを生成する.
      * 既存のキャッシュが存在する場合は上書きする.
      *
      * 引数 $isDefine が true の場合は, 定数を生成する.
      * 定数コメントを生成する場合は, $commentColumn を指定する.
      *
-     * @param string $name マスタデータ名
-     * @param array $masterData マスタデータ
+     * @param string $name マスターデータ名
+     * @param array $masterData マスターデータ
      * @param bool $isDefine 定数を生成する場合 true
      * @param array $commentColumn [0] => キー, [1] => コメント文字列,
                                    [2] => 表示順 を表すカラム名を格納した配列
@@ -254,10 +254,10 @@ class SC_DB_MasterData {
     function createCache($name, $columns = array(), $isDefine = false,
                          $commentColumn = array()) {
 
-        // マスタデータを取得
+        // マスターデータを取得
         $masterData = $this->getDbMasterData($name, $columns);
 
-        // マスタデータを文字列にする
+        // マスターデータを文字列にする
         // 定数を生成する場合
         if ($isDefine) {
             $path = MASTER_DATA_REALDIR . $name . '.php';
@@ -291,16 +291,16 @@ class SC_DB_MasterData {
     }
 
     /**
-     * DBからマスタデータを取得する.
+     * DBからマスターデータを取得する.
      *
-     * キャッシュの有無に関係なく, DBからマスタデータを検索し, 取得する.
+     * キャッシュの有無に関係なく, DBからマスターデータを検索し, 取得する.
      *
      * 返り値は, key => value 形式の配列である.
      *
-     * @param string $name マスタデータ名
+     * @param string $name マスターデータ名
      * @param array $columns [0] => キー, [1] => 表示文字列, [2] => 表示順
      *                        を表すカラム名を格納した配列
-     * @return array マスタデータ
+     * @return array マスターデータ
      */
     function getDbMasterData($name, $columns = array()) {
 
@@ -344,10 +344,10 @@ class SC_DB_MasterData {
     }
 
     /**
-     * マスタデータの配列を定数定義の文字列として出力する.
+     * マスターデータの配列を定数定義の文字列として出力する.
      *
      * @access private
-     * @param array $masterData マスタデータの配列
+     * @param array $masterData マスターデータの配列
      * @param array $comments コメントの配列
      * @return string 定数定義の文字列
      */

@@ -114,7 +114,7 @@ class SC_SendMail {
         $this->body = mb_convert_encoding($body, 'JIS', CHAR_CODE);
     }
 
-    // SMTPサーバの設定
+    // SMTPサーバーの設定
     function setHost($host) {
         $this->host = $host;
         $arrHost = array(
@@ -284,10 +284,10 @@ class SC_SendMail {
     }
 
     /**
-     * メーラーバックエンドに応じたパラメータを返す.
+     * メーラーバックエンドに応じたパラメーターを返す.
      *
      * @param string $backend Pear::Mail のバックエンド
-     * @return array メーラーバックエンドに応じたパラメータの配列
+     * @return array メーラーバックエンドに応じたパラメーターの配列
      */
     function getBackendParams($backend) {
         switch ($backend) {

@@ -70,7 +70,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
     function action() {
         // フォーム操作クラス
         $objFormParam = new SC_FormParam_Ex();
-        // パラメータ情報の初期化
+        // パラメーター情報の初期化
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($this->createSetParam($_POST));
         $objFormParam->convParam();
@@ -217,7 +217,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
     }
 
     /**
-     * ディレクトリ移動時、パラメータ定義
+     * ディレクトリ移動時、パラメーター定義
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
@@ -229,7 +229,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
     }
 
     /**
-     * ファイル表示時、パラメータ定義
+     * ファイル表示時、パラメーター定義
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
@@ -241,7 +241,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
     }
 
     /**
-     * ファイル表示時、パラメータ定義
+     * ファイル表示時、パラメーター定義
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
@@ -254,7 +254,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
     }
 
     /**
-     * ファイル表示時、パラメータ定義
+     * ファイル表示時、パラメーター定義
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void

@@ -145,7 +145,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
     }
 
     /**
-     * お問い合わせ入力時のパラメータ情報の初期化を行う.
+     * お問い合わせ入力時のパラメーター情報の初期化を行う.
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void

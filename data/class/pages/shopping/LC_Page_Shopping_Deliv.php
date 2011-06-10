@@ -156,7 +156,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
     }
 
     /**
-     * パラメータ情報の初期化を行う.
+     * パラメーター情報の初期化を行う.
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void

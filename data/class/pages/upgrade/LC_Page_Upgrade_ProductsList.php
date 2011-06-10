@@ -144,7 +144,7 @@ class LC_Page_Upgrade_ProductsList extends LC_Page_Upgrade_Base {
             $objLog->end();
             return;
         } else {
-            // 配信サーバ側でエラーを補足
+            // 配信サーバー側でエラーを補足
             echo $body;
             $objLog->error($objRet->errcode, $objReq);
             return;

@@ -25,7 +25,7 @@
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
- * パラメータ設定 のページクラス.
+ * パラメーター設定 のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
@@ -58,7 +58,7 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
         $this->tpl_subno = 'parameter';
         $this->tpl_mainno = 'system';
         $this->tpl_maintitle = 'システム設定';
-        $this->tpl_subtitle = 'パラメータ設定';
+        $this->tpl_subtitle = 'パラメーター設定';
     }
 
     /**
@@ -92,7 +92,7 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
             // エラーの無い場合は update
             if (empty($this->arrErr)) {
                 $this->update($this->arrKeys, $this->arrForm);
-                $this->tpl_onload = "window.alert('パラメータの設定が完了しました。');";
+                $this->tpl_onload = "window.alert('パラメーターの設定が完了しました。');";
             } else {
                 $this->arrValues = SC_Utils_Ex::getHash2Array($this->arrForm,
                                                               $this->arrKeys);
@@ -125,7 +125,7 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
     }
 
     /**
-     * パラメータ情報を更新する.
+     * パラメーター情報を更新する.
      *
      * 画面の設定値で mtb_constants テーブルの値とキャッシュを更新する.
      *
@@ -164,10 +164,10 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
     }
 
     /**
-     * パラメータのキーを配列で返す.
+     * パラメーターのキーを配列で返す.
      *
      * @access private
-     * @return array パラメータのキーの配列
+     * @return array パラメーターのキーの配列
      */
     function getParamKeys(&$masterData) {
         $keys = array();

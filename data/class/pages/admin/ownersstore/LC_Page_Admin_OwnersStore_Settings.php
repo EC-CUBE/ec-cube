@@ -36,7 +36,7 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex {
     /** SC_FormParamのインスタンス */
     var $objForm;
 
-    /** リクエストパラメータを格納する連想配列 */
+    /** リクエストパラメーターを格納する連想配列 */
     var $arrForm;
 
     /** バリデーションエラー情報を格納する連想配列 */
@@ -105,9 +105,9 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex {
      * @return void
      */
     function execRegisterMode() {
-        // パラメータオブジェクトの初期化
+        // パラメーターオブジェクトの初期化
         $this->initRegisterMode();
-        // POSTされたパラメータの検証
+        // POSTされたパラメーターの検証
         $arrErr = $this->validateRegistermode();
 
         // エラー時の処理
@@ -147,7 +147,7 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex {
     }
 
     /**
-     * registerアクションのパラメータを検証する.
+     * registerアクションのパラメーターを検証する.
      *
      * @param void
      * @return array エラー情報を格納した連想配列

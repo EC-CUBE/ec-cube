@@ -66,7 +66,7 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex {
             default:
                 // フォーム操作クラス
                 $objFormParam = new SC_FormParam_Ex();
-                // パラメータ情報の初期化
+                // パラメーター情報の初期化
                 $this->lfInitParam($objFormParam);
                 $objFormParam->setParam($_GET);
                 $objFormParam->convParam();

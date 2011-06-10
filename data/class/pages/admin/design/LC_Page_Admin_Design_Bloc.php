@@ -144,7 +144,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
     }
 
     /**
-     * パラメータ情報の初期化
+     * パラメーター情報の初期化
      *
      * @param object $objFormParam SC_FormParamインスタンス
      * @return void

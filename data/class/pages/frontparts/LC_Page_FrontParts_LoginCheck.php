@@ -68,10 +68,10 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
         $objCustomer = new SC_Customer_Ex();
         // クッキー管理クラス
         $objCookie = new SC_Cookie_Ex(COOKIE_EXPIRE);
-        // パラメータ管理クラス
+        // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
 
-        // パラメータ情報の初期化
+        // パラメーター情報の初期化
         $this->lfInitParam($objFormParam);
 
         // リクエスト値をフォームにセット
@@ -194,9 +194,9 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
     }
 
     /**
-     * パラメータ情報の初期化.
+     * パラメーター情報の初期化.
      *
-     * @param SC_FormParam $objFormParam パラメータ管理クラス
+     * @param SC_FormParam $objFormParam パラメーター管理クラス
      * @return void
      */
     function lfInitParam(&$objFormParam) {

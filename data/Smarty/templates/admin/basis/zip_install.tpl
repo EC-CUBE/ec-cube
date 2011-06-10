@@ -59,7 +59,7 @@
             <!--{if $tpl_skip_update_csv}-->
                 ご利用頂けません。
                 <!--{if $tpl_zip_download_url_empty}-->
-                    <p class="attention">※ パラメータ ZIP_DOWNLOAD_URL が未設定です。</p>
+                    <p class="attention">※ パラメーター ZIP_DOWNLOAD_URL が未設定です。</p>
                 <!--{/if}-->
                 <!--{if $tpl_zip_function_not_exists}-->
                     <p class="attention">※ PHP 拡張モジュール「zip」が無効です。</p>

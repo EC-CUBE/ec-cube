@@ -64,9 +64,9 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // パラメータ管理クラス
+        // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
-        // パラメータ設定
+        // パラメーター設定
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
         $objFormParam->convParam();

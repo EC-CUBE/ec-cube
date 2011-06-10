@@ -114,7 +114,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
     }
 
     /**
-     * パラメータの初期化を行う
+     * パラメーターの初期化を行う
      * @param Object $objFormParam
      */
     function lfInitParam(&$objFormParam){
@@ -125,7 +125,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
     }
 
     /**
-     * 入力されたパラメータのエラーチェックを行う。
+     * 入力されたパラメーターのエラーチェックを行う。
      * @param Object $objFormParam
      * @return Array エラー内容
      */

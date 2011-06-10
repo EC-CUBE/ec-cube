@@ -73,7 +73,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         $objDb      = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
 
-        // 入力パラメータ初期化
+        // 入力パラメーター初期化
         $this->initParam($objFormParam);
         $objFormParam->setParam($_POST);
         $objFormParam->convParam();
@@ -401,7 +401,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
     }
 
     /**
-     * パラメータの初期化を行う
+     * パラメーターの初期化を行う
      *
      * @param SC_FormParam $objFormParam
      * @return void

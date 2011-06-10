@@ -241,7 +241,7 @@ __EOS__;
         return false;
     }
 
-    // パラメータの取得
+    // パラメーターの取得
     function getValue($keyname) {
         // ポイントはリアルタイム表示
         if ($keyname == 'point') {
@@ -254,12 +254,12 @@ __EOS__;
         }
     }
 
-    // パラメータのセット
+    // パラメーターのセット
     function setValue($keyname, $val) {
         $_SESSION['customer'][$keyname] = $val;
     }
 
-    // パラメータがNULLかどうかの判定
+    // パラメーターがNULLかどうかの判定
     function hasValue($keyname) {
         if (isset($_SESSION['customer'][$keyname])) {
             return !SC_Utils_Ex::isBlank($_SESSION['customer'][$keyname]);

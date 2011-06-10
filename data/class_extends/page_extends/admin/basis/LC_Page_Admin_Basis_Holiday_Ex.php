@@ -25,7 +25,7 @@
 require_once CLASS_REALDIR . 'pages/admin/basis/LC_Page_Admin_Basis_Holiday.php';
 
 /**
- * マスタデータ管理 のページクラス(拡張).
+ * マスターデータ管理 のページクラス(拡張).
  *
  * LC_Page_Admin_Basis_Holiday をカスタマイズする場合はこのクラスを編集する.
  *

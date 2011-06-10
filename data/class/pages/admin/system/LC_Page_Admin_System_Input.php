@@ -46,7 +46,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
 
         $this->tpl_mainpage = 'system/input.tpl';
 
-        // マスタ-データから権限配列を取得
+        // マスターデータから権限配列を取得
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrAUTHORITY = $masterData->getMasterData('mtb_authority');
 
@@ -78,7 +78,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
 
         switch($this->getMode()) {
         case 'new':
-            // パラメータの初期化
+            // パラメーターの初期化
             $this->initForm($objFormParam, $_POST);
 
             // エラーチェック
@@ -106,7 +106,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
             break;
 
         case 'edit':
-            // パラメータの初期化
+            // パラメーターの初期化
             $this->initForm($objFormParam, $_POST, $this->getMode());
 
             // エラーチェック
@@ -179,7 +179,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
     }
 
     /**
-     * フォームパラメータ初期化
+     * フォームパラメーター初期化
      *
      * @param object $objFormParam
      * @param array  $arrParams $_POST値
@@ -208,7 +208,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
     }
 
     /**
-     * パラメータの妥当性検証を行う.
+     * パラメーターの妥当性検証を行う.
      *
      * @param void
      * @return array エラー情報の連想配列

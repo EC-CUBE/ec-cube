@@ -48,7 +48,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
         $this->tpl_subno = 'index';
         $this->tpl_pager = 'pager.tpl';
         $this->tpl_maintitle = '商品管理';
-        $this->tpl_subtitle = '商品マスタ';
+        $this->tpl_subtitle = '商品マスター';
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPageMax = $masterData->getMasterData("mtb_page_max");
@@ -93,7 +93,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
         $objProduct = new SC_Product();
         $objQuery =& SC_Query::getSingletonInstance();
 
-        // パラメータ情報の初期化
+        // パラメーター情報の初期化
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
         $this->arrHidden = $objFormParam->getSearchArray();
@@ -108,7 +108,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
             $objDb->sfCountMaker($objQuery);
             // 削除後に検索結果を表示するため breakしない
 
-        // 検索パラメータ生成後に処理実行するため breakしない
+        // 検索パラメーター生成後に処理実行するため breakしない
         case 'csv':
         case 'delete_all':
 
@@ -190,7 +190,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
     }
 
     /**
-     * パラメータ情報の初期化を行う.
+     * パラメーター情報の初期化を行う.
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
@@ -267,14 +267,14 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
     /**
      * クエリを構築する.
      *
-     * 検索条件のキーに応じた WHERE 句と, クエリパラメータを構築する.
-     * クエリパラメータは, SC_FormParam の入力値から取得する.
+     * 検索条件のキーに応じた WHERE 句と, クエリパラメーターを構築する.
+     * クエリパラメーターは, SC_FormParam の入力値から取得する.
      *
      * 構築内容は, 引数の $where 及び $arrValues にそれぞれ追加される.
      *
      * @param string $key 検索条件のキー
      * @param string $where 構築する WHERE 句
-     * @param array $arrValues 構築するクエリパラメータ
+     * @param array $arrValues 構築するクエリパラメーター
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @param SC_FormParam $objDb SC_Helper_DB_Ex インスタンス
      * @return void
@@ -358,7 +358,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
      * 検索結果の行数を取得する.
      *
      * @param string $where 検索条件の WHERE 句
-     * @param array $arrValues 検索条件のパラメータ
+     * @param array $arrValues 検索条件のパラメーター
      * @return integer 検索結果の行数
      */
     function getNumberOfLines($where, $arrValues) {
@@ -370,7 +370,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
      * 商品を検索する.
      *
      * @param string $where 検索条件の WHERE 句
-     * @param array $arrValues 検索条件のパラメータ
+     * @param array $arrValues 検索条件のパラメーター
      * @param integer $limit 表示件数
      * @param integer $offset 開始件数
      * @param string $order 検索結果の並び順

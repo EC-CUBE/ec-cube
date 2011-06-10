@@ -69,7 +69,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
 
         $objFormParam = new SC_FormParam_Ex();
 
-        // パラメータの初期化
+        // パラメーターの初期化
         $this->initForm($objFormParam, $_POST);
 
         switch($this->getMode()) {
@@ -97,7 +97,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
     }
 
     /**
-     * フォームパラメータ初期化
+     * フォームパラメーター初期化
      *
      * @param object $objFormParam
      * @param array $arrParams $_POST値

@@ -108,9 +108,9 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             define('DRAW_IMAGE' , false);
         }
 
-        // パラメータ管理クラス
+        // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
-        // パラメータ情報の初期化
+        // パラメーター情報の初期化
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
         $objFormParam->setParam($_GET);
@@ -197,7 +197,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         return $list;
     }
 
-    /* パラメータ情報の初期化 */
+    /* パラメーター情報の初期化 */
     function lfInitParam(&$objFormParam) {
         // デフォルト値の取得
         $arrList = $this->lfGetDateDefault();

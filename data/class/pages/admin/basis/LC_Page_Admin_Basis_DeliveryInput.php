@@ -107,7 +107,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
         parent::destroy();
     }
 
-    /* パラメータ情報の初期化 */
+    /* パラメーター情報の初期化 */
     function lfInitParam($mode, &$objFormParam) {
         $objFormParam->initParam();
 
@@ -265,7 +265,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
 
         $deliv_id = $objFormParam->getValue('deliv_id');
 
-        // パラメータ情報の初期化
+        // パラメーター情報の初期化
         $this->lfInitParam('edit', $objFormParam);
 
         // 配送業者一覧の取得

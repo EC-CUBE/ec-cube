@@ -72,9 +72,9 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
     function action() {
         $objDb = new SC_Helper_DB_Ex();
 
-        // パラメータ管理クラス
+        // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
-        // パラメータ情報の初期化
+        // パラメーター情報の初期化
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
         // 入力値の変換
@@ -124,7 +124,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
     }
 
     /**
-     *  パラメータ情報の初期化
+     *  パラメーター情報の初期化
      *  @param SC_FormParam
      */
     function lfInitParam(&$objFormParam) {

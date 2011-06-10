@@ -72,7 +72,7 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
      * @return void
      */
     function action() {
-        // パラメータ情報の初期化
+        // パラメーター情報の初期化
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
@@ -111,13 +111,13 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
     }
 
     /**
-     * パラメータ情報の初期化を行う.
+     * パラメーター情報の初期化を行う.
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        // 検索条件のパラメータを初期化
+        // 検索条件のパラメーターを初期化
         parent::lfInitParam($objFormParam);
         $objFormParam->addParam("レビューID", "review_id", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("商品名", 'name', "", "", array(), "", false);

@@ -60,7 +60,7 @@ class SC_Display{
     }
 
     /**
-     * LC_Page のパラメータを, テンプレートに設定し, 出力の準備を行う.
+     * LC_Page のパラメーターを, テンプレートに設定し, 出力の準備を行う.
      *
      * @param LC_Page $page LC_Page インスタンス
      * @param $is_admin boolean 管理画面を扱う場合 true

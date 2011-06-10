@@ -101,9 +101,9 @@ class LC_Page_InputZip extends LC_Page_Ex {
      * @return array $arrErr エラーメッセージ配列
      */
     function fnErrorCheck($arrRequest) {
-        // パラメータ管理クラス
+        // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
-        // パラメータ情報の初期化
+        // パラメーター情報の初期化
         $objFormParam->addParam('郵便番号1', 'zip1', ZIP01_LEN, 'n', array('NUM_COUNT_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('郵便番号2', 'zip2', ZIP02_LEN, 'n', array('NUM_COUNT_CHECK', 'NUM_CHECK'));
         // // リクエスト値をセット

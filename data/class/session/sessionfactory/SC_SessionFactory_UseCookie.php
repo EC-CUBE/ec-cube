@@ -41,7 +41,7 @@ class SC_SessionFactory_UseCookie extends SC_SessionFactory {
     // {{{ functions
 
     /**
-     * セッションパラメータの指定
+     * セッションパラメーターの指定
      * ・ブラウザを閉じるまで有効
      * ・すべてのパスで有効
      * ・同じドメイン間で共有

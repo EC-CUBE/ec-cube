@@ -144,7 +144,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
     }
 
     /**
-     * フォームパラメータの初期化を行う.
+     * フォームパラメーターの初期化を行う.
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス.
      * @param integer $bloc_cnt ブロック数

@@ -68,9 +68,9 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex {
     function action() {
         $objDb = new SC_Helper_DB_Ex();
 
-        // パラメータ管理クラス
+        // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
-        // パラメータ情報の初期化
+        // パラメーター情報の初期化
         $this->lfInitParam($objFormParam);
         // POST値の取得
         $objFormParam->setParam($_POST);
@@ -120,7 +120,7 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex {
         parent::destroy();
     }
 
-    /* パラメータ情報の初期化 */
+    /* パラメーター情報の初期化 */
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam("ポイント付与率", "point_rate", PERCENTAGE_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("会員登録時付与ポイント", "welcome_point", INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));

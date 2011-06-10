@@ -142,7 +142,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
     }
 
     /**
-     * パラメータ情報の初期化
+     * パラメーター情報の初期化
      *
      * @param object $objFormParam SC_FormParamインスタンス
      * @return void
@@ -155,7 +155,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
     /**
      * 使用するテンプレートを設定する.
      *
-     * テンプレートをマスタデータに登録する.
+     * テンプレートをマスターデータに登録する.
      *
      * @param string $template_code テンプレートコード
      * @param integer $device_type_id 端末種別ID

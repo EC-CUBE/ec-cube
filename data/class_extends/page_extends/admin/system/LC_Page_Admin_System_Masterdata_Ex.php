@@ -25,7 +25,7 @@
 require_once CLASS_REALDIR . 'pages/admin/system/LC_Page_Admin_System_Masterdata.php';
 
 /**
- * マスタデータ管理 のページクラス(拡張).
+ * マスターデータ管理 のページクラス(拡張).
  *
  * LC_Page_Admin_System_Masterdata をカスタマイズする場合はこのクラスを編集する.
  *

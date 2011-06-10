@@ -87,7 +87,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // パラメータ管理クラス
+        // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
@@ -201,7 +201,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
     }
 
     /**
-     * パラメータ情報の初期化を行う.
+     * パラメーター情報の初期化を行う.
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void

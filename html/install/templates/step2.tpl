@@ -60,7 +60,7 @@ function lfnChangePort(db_type) {
                 </td>
             </tr>
             <tr>
-                <th>DBサーバ<span class="attention">※</span></th>
+                <th>DBサーバー<span class="attention">※</span></th>
                 <td>
                 <!--{assign var=key value="db_server"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>

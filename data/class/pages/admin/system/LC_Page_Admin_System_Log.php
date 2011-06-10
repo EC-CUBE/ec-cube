@@ -69,7 +69,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex {
     function action() {
         $objFormParam = new SC_FormParam;
 
-        // パラメータ情報初期化
+        // パラメーター情報初期化
         $this->lfInitParam($objFormParam);
 
         // POST値をセット
@@ -92,7 +92,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex {
     }
 
     /**
-     * パラメータの初期化.
+     * パラメーターの初期化.
      *
      * @return object SC_FormParam インスタンス
      * @return void

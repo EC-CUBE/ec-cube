@@ -66,9 +66,9 @@ class LC_Page_Admin_Plugin_Install extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // パラメータ管理クラス
+        // パラメーター管理クラス
         $this->objFormParam = new SC_FormParam_Ex();
-        // パラメータ情報の初期化
+        // パラメーター情報の初期化
         $this->lfInitParam();
         // POST値の取得
         $this->objFormParam->setParam($_REQUEST);
@@ -125,7 +125,7 @@ class LC_Page_Admin_Plugin_Install extends LC_Page_Admin_Ex {
     }
 
     /**
-     * パラメータ情報の初期化
+     * パラメーター情報の初期化
      *
      * @return void
      */

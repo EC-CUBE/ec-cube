@@ -70,7 +70,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // 商品マスタの検索条件パラメータを初期化
+        // 商品マスターの検索条件パラメーターを初期化
         $objFormParam = new SC_FormParam_Ex();
         $this->initParam($objFormParam);
 
@@ -166,13 +166,13 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
     }
 
     /**
-     * パラメータ初期化
+     * パラメーター初期化
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
     function initParam(&$objFormParam) {
-        // 商品マスタ検索パラメータ引き継ぎ
+        // 商品マスター検索パラメーター引き継ぎ
         $objFormParam->addParam("商品ID", "product_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("カテゴリID", "category_id", STEXT_LEN, 'n', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("ページ送り番号","search_pageno", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
@@ -447,7 +447,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
     }
 
     /**
-     * 「表示する」ボタンをクリックされたときのパラメータ初期化処理
+     * 「表示する」ボタンをクリックされたときのパラメーター初期化処理
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void

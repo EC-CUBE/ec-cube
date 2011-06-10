@@ -111,7 +111,7 @@
             </tr>
         </table>
 
-        <h2>WEBサーバの設定</h2>
+        <h2>WEBサーバーの設定</h2>
         <table>
             <colgroup width="30%">
             <colgroup width="70%">

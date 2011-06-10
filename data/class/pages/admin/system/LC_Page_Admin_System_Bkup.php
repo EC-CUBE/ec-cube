@@ -73,7 +73,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
         $objFormParam = new SC_FormParam;
 
-        // パラメータの初期化
+        // パラメーターの初期化
         $this->initParam($objFormParam, $_POST);
 
         $arrErrTmp  = array();
@@ -196,7 +196,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
     }
 
     /**
-     * パラメータ初期化.
+     * パラメーター初期化.
      *
      * @param object $objFormParam
      * @param array  $arrParams  $_POST値

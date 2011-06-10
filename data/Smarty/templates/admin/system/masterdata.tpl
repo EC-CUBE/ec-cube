@@ -40,7 +40,7 @@
         <input type="hidden" name="mode" value="edit" />
         <input type="hidden" name="master_data_name" value="<!--{$masterDataName}-->" />
         <p class="remark attention">
-            マスタデータの値を設定できます。<br />
+            マスターデータの値を設定できます。<br />
             重複したIDを登録することはできません。<br />
             空のIDを登録すると、値は削除されます。<br />
             設定値によってはサイトが機能しなくなる場合もありますので、十分ご注意下さい。

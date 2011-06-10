@@ -22,9 +22,9 @@
  */
 
 /**
- * パラメータ管理クラス
+ * パラメーター管理クラス
  *
- * :XXX: addParam と setParam で言う「パラメータ」が用語として競合しているように感じる。(2009/10/17 Seasoft 塚田)
+ * :XXX: addParam と setParam で言う「パラメーター」が用語として競合しているように感じる。(2009/10/17 Seasoft 塚田)
  *
  * @package SC
  * @author LOCKON CO.,LTD.
@@ -50,7 +50,7 @@ class SC_FormParam {
     }
 
     /**
-     * パラメータの初期化
+     * パラメーターの初期化
      *
      * @return void
      */
@@ -64,7 +64,7 @@ class SC_FormParam {
         $this->input_db = array();
     }
 
-    // パラメータの追加
+    // パラメーターの追加
     function addParam($disp_name, $keyname, $length = "", $convert = "", $arrCheck = array(), $default = "", $input_db = 'true') {
         $this->disp_name[] = $disp_name;
         $this->keyname[] = $keyname;
@@ -75,7 +75,7 @@ class SC_FormParam {
         $this->input_db[] = $input_db;
     }
 
-    // パラメータの入力
+    // パラメーターの入力
     // $arrVal  :$arrVal['keyname']・・の配列を一致したキーのインスタンスに格納する
     // $seq     :trueの場合、$arrVal[0]~の配列を登録順にインスタンスに格納する
     function setParam($arrVal, $seq = false) {
@@ -125,7 +125,7 @@ class SC_FormParam {
         return $this->html_disp_name;
     }
 
-    // 複数列パラメータの取得
+    // 複数列パラメーターの取得
     function setParamList($arrVal, $keyname) {
         // DBの件数を取得する。
         $count = count($arrVal);
@@ -290,7 +290,7 @@ class SC_FormParam {
     }
 
     /**
-     * フォームの入力パラメータに応じて, 再帰的に mb_convert_kana 関数を実行する.
+     * フォームの入力パラメーターに応じて, 再帰的に mb_convert_kana 関数を実行する.
      *
      * @return voi
      * @see mb_convert_kana
@@ -367,7 +367,7 @@ class SC_FormParam {
         return $count;
     }
 
-    // フォームに渡す用のパラメータを返す
+    // フォームに渡す用のパラメーターを返す
     function getFormParamList() {
         $cnt = 0;
         foreach($this->keyname as $val) {
@@ -433,7 +433,7 @@ class SC_FormParam {
     }
 
     /**
-     * 入力パラメータの先頭及び末尾にある空白文字を削除する.
+     * 入力パラメーターの先頭及び末尾にある空白文字を削除する.
      *
      * @param boolean $has_wide_space 全角空白も削除する場合 true
      * @return void
@@ -448,7 +448,7 @@ class SC_FormParam {
     }
 
     /**
-     * 再帰的に入力パラメータの先頭及び末尾にある空白文字を削除する.
+     * 再帰的に入力パラメーターの先頭及び末尾にある空白文字を削除する.
      *
      * @param mixed $value 変換する値. 配列の場合は再帰的に実行する.
      * @param boolean $has_wide_space 全角空白も削除する場合 true
@@ -473,9 +473,9 @@ class SC_FormParam {
     /**
      * 検索結果引き継ぎ用の連想配列を取得する.
      *
-     * 引数で指定した文字列で始まるパラメータ名の入力値を連想配列で取得する.
+     * 引数で指定した文字列で始まるパラメーター名の入力値を連想配列で取得する.
      *
-     * @param string $prefix パラメータ名の接頭辞
+     * @param string $prefix パラメーター名の接頭辞
      * @return array 検索結果引き継ぎ用の連想配列.
      */
     function getSearchArray($prefix = 'search_') {

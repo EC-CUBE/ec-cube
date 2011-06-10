@@ -174,7 +174,7 @@ $(function() {
 
     <div class="list-info clearfix">
         <div class="btn"><a class="btn-normal" href="javascript:;" id="copy_from_first"><span>一行目のデータをコピーする</span></a></div>
-        <p><span class="bold">アップロード可能な拡張子：</span><!--{$smarty.const.DOWNLOAD_EXTENSION}-->(パラメータ DOWNLOAD_EXTENSION)</p>
+        <p><span class="bold">アップロード可能な拡張子：</span><!--{$smarty.const.DOWNLOAD_EXTENSION}-->(パラメーター DOWNLOAD_EXTENSION)</p>
     </div>
 
     <!--{if $arrErr.check_empty}-->

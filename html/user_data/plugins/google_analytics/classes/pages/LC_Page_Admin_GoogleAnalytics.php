@@ -63,11 +63,11 @@ class LC_Page_Admin_GoogleAnalytics extends LC_Page_Ex {
     /**
      * Page のプロセス.
      *
-     * POST パラメータ "mode" が register の場合は登録処理を行う.
-     * 登録処理の後, 自ページをリロードし, GET パラメータ "mode" を付与する.
-     * 登録に成功し, GET パラメータ "mode" の値が success の場合は
+     * POST パラメーター "mode" が register の場合は登録処理を行う.
+     * 登録処理の後, 自ページをリロードし, GET パラメーター "mode" を付与する.
+     * 登録に成功し, GET パラメーター "mode" の値が success の場合は
      * 「登録に成功しました」というメッセージをポップアップで表示する.
-     * 登録に失敗し, GET パラメータ "mode" の値が failure の場合は
+     * 登録に失敗し, GET パラメーター "mode" の値が failure の場合は
      * 「登録に失敗しました」というメッセージをポップアップで表示する.
      *
      * TODO Transaction Token を使用する

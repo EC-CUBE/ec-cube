@@ -68,7 +68,7 @@ class SC_Product {
      * 検索条件は, SC_Query::getWhere() 関数で設定しておく必要があります.
      *
      * @param SC_Query $objQuery SC_Query インスタンス
-     * @param array $arrVal 検索パラメータの配列
+     * @param array $arrVal 検索パラメーターの配列
      * @return array 商品IDの配列
      */
     function findProductIdsOrder(&$objQuery, $arrVal = array(), $where) {
@@ -112,7 +112,7 @@ __EOS__;
      * 検索条件は, SC_Query::getWhere() 関数で設定しておく必要があります.
      *
      * @param SC_Query $objQuery SC_Query インスタンス
-     * @param array $arrVal 検索パラメータの配列
+     * @param array $arrVal 検索パラメーターの配列
      * @return array 対象商品ID数
      */
     function findProductCount(&$objQuery, $arrVal = array()) {
@@ -136,7 +136,7 @@ __EOS__;
      * の配列を取得する.
      *
      * @param SC_Query $objQuery SC_Query インスタンス
-     * @param array $arrVal 検索パラメータ(ソート条件)の配列
+     * @param array $arrVal 検索パラメーター(ソート条件)の配列
      * @return array 商品一覧の配列
      */
     function lists(&$objQuery, $arrVal = array()) {
@@ -273,7 +273,7 @@ __EOS__;
                     : '';
 
                 // ポイント
-                // XXX sfPrePoint() の第4パラメータは、処理にバグがあるため現状省略している。(http://xoops.ec-cube.net/modules/newbb/viewtopic.php?topic_id=3540&forum=1&post_id=13853#forumpost13853)
+                // XXX sfPrePoint() の第4パラメーターは、処理にバグがあるため現状省略している。(http://xoops.ec-cube.net/modules/newbb/viewtopic.php?topic_id=3540&forum=1&post_id=13853#forumpost13853)
                 $classCats2['point']
                     = number_format(SC_Utils_Ex::sfPrePoint($productsClass['price02'], $productsClass['point_rate']));
 
@@ -303,7 +303,7 @@ __EOS__;
      * SC_Query インスタンスに設定された検索条件を使用して商品規格を取得する.
      *
      * @param SC_Query $objQuery SC_Queryインスタンス
-     * @param array $params 検索パラメータの配列
+     * @param array $params 検索パラメーターの配列
      * @return array 商品規格の配列
      */
     function getProductsClassByQuery(&$objQuery, $params) {

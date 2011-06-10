@@ -242,7 +242,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
     }
 
     /**
-     * お客様情報入力時のパラメータ情報の初期化を行う.
+     * お客様情報入力時のパラメーター情報の初期化を行う.
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
@@ -288,7 +288,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
     }
 
     /**
-     * ログイン時のパラメータ情報の初期化を行う.
+     * ログイン時のパラメーター情報の初期化を行う.
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void

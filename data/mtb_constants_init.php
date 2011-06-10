@@ -33,7 +33,7 @@ define('MODULE_DIR', "downloads/module/");
 define('MODULE_REALDIR', DATA_REALDIR . MODULE_DIR);
 /** DBセッションの有効期限(秒) */
 define('MAX_LIFETIME', 7200);
-/** マスタデータキャッシュディレクトリ */
+/** マスターデータキャッシュディレクトリ */
 define('MASTER_DATA_REALDIR', DATA_REALDIR . "cache/");
 /** アップデート管理用ファイル格納場所 */
 define('UPDATE_HTTP', "http://sv01.ec-cube.net/info/index.php");

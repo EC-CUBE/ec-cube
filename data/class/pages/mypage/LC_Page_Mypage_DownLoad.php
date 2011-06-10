@@ -34,7 +34,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
 
     // {{{ properties
 
-    /** フォームパラメータの配列 */
+    /** フォームパラメーターの配列 */
     var $objFormParam;
 
     /** 基本Content-Type */
@@ -82,7 +82,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
             SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
         }
 
-        // パラメータチェック
+        // パラメーターチェック
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
         // GET、SESSION['customer']値の取得
@@ -103,7 +103,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
     function sendResponse() {
         $this->objDisplay->noAction();
 
-        // パラメータ取得
+        // パラメーター取得
         $customer_id = $_SESSION['customer']['customer_id'];
         $order_id = $_GET['order_id'];
         $product_id = $_GET['product_id'];
@@ -207,7 +207,7 @@ __EOS__;
         return $arrRet[0];
     }
 
-    /* パラメータ情報の初期化 */
+    /* パラメーター情報の初期化 */
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam("customer_id", "customer_id", INT_LEN, 'n', array("EXIST_CHECK","NUM_CHECK"));
         $objFormParam->addParam("order_id", "order_id", INT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK"));

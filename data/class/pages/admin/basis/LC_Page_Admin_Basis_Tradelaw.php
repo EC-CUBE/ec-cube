@@ -120,7 +120,7 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex {
         parent::destroy();
     }
 
-    /* パラメータ情報の初期化 */
+    /* パラメーター情報の初期化 */
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam("販売業者", "law_company", STEXT_LEN, 'KVa', array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("運営責任者", "law_manager", STEXT_LEN, 'KVa', array("EXIST_CHECK", "MAX_LENGTH_CHECK"));

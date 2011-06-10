@@ -70,9 +70,9 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
      * @return void
      */
     function action() {
-        // パラメータ管理クラス
+        // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
-        // パラメータ情報の初期化
+        // パラメーター情報の初期化
         $this->lfInitParam($objFormParam);
 
         // POST値の取得
@@ -80,7 +80,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
         $objFormParam->convParam();
         $this->tpl_order_id = $objFormParam->getValue('order_id');
 
-        // 検索パラメータの引き継ぎ
+        // 検索パラメーターの引き継ぎ
         $this->arrSearchHidden = $objFormParam->getSearchArray();
 
         switch($this->getMode()) {
@@ -212,11 +212,11 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
     }
 
     /**
-     * パラメータ情報の初期化
+     * パラメーター情報の初期化
      * @param SC_FormParam $objFormParam
      */
     function lfInitParam(&$objFormParam) {
-        // 検索条件のパラメータを初期化
+        // 検索条件のパラメーターを初期化
         parent::lfInitParam($objFormParam);
 
         $objFormParam->addParam("オーダーID", "order_id", INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));

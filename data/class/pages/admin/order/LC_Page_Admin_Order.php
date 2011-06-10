@@ -104,11 +104,11 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
                             array($objFormParam->getValue('order_id')));
             // 削除後に検索結果を表示するため breakしない
 
-        // 検索パラメータ生成後に処理実行するため breakしない
+        // 検索パラメーター生成後に処理実行するため breakしない
         case 'csv':
         case 'delete_all':
 
-        // 検索パラメータの生成
+        // 検索パラメーターの生成
         case 'search':
             $objFormParam->convParam();
             $objFormParam->trimParam();
@@ -173,7 +173,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
     }
 
     /**
-     * パラメータ情報の初期化を行う.
+     * パラメーター情報の初期化を行う.
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
@@ -252,14 +252,14 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
     /**
      * クエリを構築する.
      *
-     * 検索条件のキーに応じた WHERE 句と, クエリパラメータを構築する.
-     * クエリパラメータは, SC_FormParam の入力値から取得する.
+     * 検索条件のキーに応じた WHERE 句と, クエリパラメーターを構築する.
+     * クエリパラメーターは, SC_FormParam の入力値から取得する.
      *
      * 構築内容は, 引数の $where 及び $arrValues にそれぞれ追加される.
      *
      * @param string $key 検索条件のキー
      * @param string $where 構築する WHERE 句
-     * @param array $arrValues 構築するクエリパラメータ
+     * @param array $arrValues 構築するクエリパラメーター
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
@@ -410,7 +410,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
      * 構築に失敗した場合は, false を返す.
      *
      * @param string $where 検索条件の WHERE 句
-     * @param array $arrVal 検索条件のパラメータ
+     * @param array $arrVal 検索条件のパラメーター
      * @param string $order 検索結果の並び順
      * @return void
      */
@@ -428,7 +428,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
      * 検索結果の行数を取得する.
      *
      * @param string $where 検索条件の WHERE 句
-     * @param array $arrValues 検索条件のパラメータ
+     * @param array $arrValues 検索条件のパラメーター
      * @return integer 検索結果の行数
      */
     function getNumberOfLines($where, $arrValues) {
@@ -440,7 +440,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
      * 受注を検索する.
      *
      * @param string $where 検索条件の WHERE 句
-     * @param array $arrValues 検索条件のパラメータ
+     * @param array $arrValues 検索条件のパラメーター
      * @param integer $limit 表示件数
      * @param integer $offset 開始件数
      * @param string $order 検索結果の並び順

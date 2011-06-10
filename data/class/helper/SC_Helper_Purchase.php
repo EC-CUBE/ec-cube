@@ -1056,7 +1056,7 @@ __EOS__;
      * @param integer|null $newStatus 対応状況 (null=変更無し)
      * @param integer|null $newAddPoint 加算ポイント (null=変更無し)
      * @param integer|null $newUsePoint 使用ポイント (null=変更無し)
-     * @param array $sqlval 更新後の値をリファレンスさせるためのパラメータ
+     * @param array $sqlval 更新後の値をリファレンスさせるためのパラメーター
      * @return void
      */
     function sfUpdateOrderStatus($orderId, $newStatus = null, $newAddPoint = null, $newUsePoint = null, &$sqlval) {

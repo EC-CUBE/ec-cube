@@ -447,7 +447,7 @@ INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, 
 INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (5, '第5条 (会員資格の喪失及び賠償義務)', '1. 会員が、会員資格取得申込の際に虚偽の申告をしたとき、通信販売による代金支払債務を怠ったとき、その他当社が会員として不適当と認める事由があるときは、当社は、会員資格を取り消すことができることとします。
 2. 会員が、以下の各号に定める行為をしたときは、これにより当社が被った損害を賠償する責任を負います。
 (1)会員番号、パスワードを不正に使用すること
-(2)当ホームページにアクセスして情報を改ざんしたり、当ホームページに有害なコンピュータプログラムを送信するなどして、当社の営業を妨害すること
+(2)当ホームページにアクセスして情報を改ざんしたり、当ホームページに有害なコンピュータープログラムを送信するなどして、当社の営業を妨害すること
 (3)当社が扱う商品の知的所有権を侵害する行為をすること
 (4)その他、この利用規約に反する行為をすること', 8, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (6, '第6条 (会員情報の取扱い)', '1. 当社は、原則として会員情報を会員の事前の同意なく第三者に対して開示することはありません。ただし、次の各号の場合には、会員の事前の同意なく、当社は会員情報その他のお客様情報を開示できるものとします。
@@ -462,8 +462,8 @@ INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, 
 3. 青少年の心身に悪影響を及ぼす恐れがある行為、その他公序良俗に反する行為を行うこと
 4. 他の利用者その他の第三者に迷惑となる行為や不快感を抱かせる行為を行うこと
 5. 虚偽の情報を入力すること
-6. 有害なコンピュータプログラム、メール等を送信または書き込むこと
-7. 当社のサーバその他のコンピュータに不正にアクセスすること
+6. 有害なコンピュータープログラム、メール等を送信または書き込むこと
+7. 当社のサーバーその他のコンピューターに不正にアクセスすること
 8. パスワードを第三者に貸与・譲渡すること、または第三者と共用すること
 9. その他当社が不適切と判断すること', 6, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (8, '第8条 (サービスの中断・停止等)', '1. 当社は、本サービスの稼動状態を良好に保つために、次の各号の一に該当する場合、予告なしに、本サービスの提供全てあるいは一部を停止することがあります。
@@ -472,8 +472,8 @@ INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, 
 (3)火災、停電、第三者による妨害行為などによりシステムの運用が困難になった場合
 (4)その他、止むを得ずシステムの停止が必要と当社が判断した場合', 5, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (9, '第9条 (サービスの変更・廃止)', '当社は、その判断によりサービスの全部または一部を事前の通知なく、適宜変更・廃止できるものとします。', 4, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (10, '第10条 (免責)', '1. 通信回線やコンピュータなどの障害によるシステムの中断・遅滞・中止・データの消失、データへの不正アクセスにより生じた損害、その他当社のサービスに関して会員に生じた損害について、当社は一切責任を負わないものとします。
-2. 当社は、当社のウェブページ・サーバ・ドメインなどから送られるメール・コンテンツに、コンピュータ・ウィルスなどの有害なものが含まれていないことを保証いたしません。
+INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (10, '第10条 (免責)', '1. 通信回線やコンピューターなどの障害によるシステムの中断・遅滞・中止・データの消失、データへの不正アクセスにより生じた損害、その他当社のサービスに関して会員に生じた損害について、当社は一切責任を負わないものとします。
+2. 当社は、当社のウェブページ・サーバー・ドメインなどから送られるメール・コンテンツに、コンピューター・ウィルスなどの有害なものが含まれていないことを保証いたしません。
 3. 会員が本規約等に違反したことによって生じた損害については、当社は一切責任を負いません。', 3, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (11, '第11条 (本規約の改定)', '当社は、本規約を任意に改定できるものとし、また、当社において本規約を補充する規約(以下「補充規約」といいます)を定めることができます。本規約の改定または補充は、改定後の本規約または補充規約を当社所定のサイトに掲示したときにその効力を生じるものとします。この場合、会員は、改定後の規約および補充規約に従うものと致します。', 2, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (12, '第12条 (準拠法、管轄裁判所)', '本規約に関して紛争が生じた場合、当社本店所在地を管轄する地方裁判所を第一審の専属的合意管轄裁判所とします。 ', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
@@ -736,8 +736,8 @@ INSERT INTO mtb_device_type (id, name, rank) VALUES (99, '管理画面', 3);
 
 INSERT INTO mtb_job (id, name, rank) VALUES (1, '公務員', 0);
 INSERT INTO mtb_job (id, name, rank) VALUES (2, 'コンサルタント', 1);
-INSERT INTO mtb_job (id, name, rank) VALUES (3, 'コンピュータ関連技術職', 2);
-INSERT INTO mtb_job (id, name, rank) VALUES (4, 'コンピュータ関連以外の技術職', 3);
+INSERT INTO mtb_job (id, name, rank) VALUES (3, 'コンピューター関連技術職', 2);
+INSERT INTO mtb_job (id, name, rank) VALUES (4, 'コンピューター関連以外の技術職', 3);
 INSERT INTO mtb_job (id, name, rank) VALUES (5, '金融関係', 4);
 INSERT INTO mtb_job (id, name, rank) VALUES (6, '医師', 5);
 INSERT INTO mtb_job (id, name, rank) VALUES (7, '弁護士', 6);
@@ -803,20 +803,20 @@ INSERT INTO mtb_order_status_color (id, name, rank) VALUES (6, '#FFFFAB', 5);
 INSERT INTO mtb_order_status_color (id, name, rank) VALUES (7, '#FFCCCC', 6);
 
 INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1000', '不明なエラーが発生しました。', 0);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1001', '不正なパラメータが送信されました。', 1);
+INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1001', '不正なパラメーターが送信されました。', 1);
 INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1002', '認証に失敗しました。<br />・仮会員の方は、本会員登録を行ってください<br />・認証キーが正しく設定されているか確認してください', 2);
 INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1003', '認証に失敗しました。<br />・仮会員の方は、本会員登録を行ってください<br />・認証キーが正しく設定されているか確認してください', 3);
 INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1004', '購入済みの商品はありません。', 4);
 INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1005', 'ダウンロード可能なアップデータはありません。<br />・ステータスが「入金待ち」の可能性があります<br />・インストールされているモジュールが既に最新版の可能性があります。', 5);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1006', '配信サーバでエラーが発生しました。', 6);
+INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1006', '配信サーバーでエラーが発生しました。', 6);
 INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1007', 'ダウンロード完了通知に失敗しました。', 7);
 INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2001', '管理画面の認証に失敗しました。<br />管理画面トップページへ戻り、ログインし直してください。', 8);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2002', '配信サーバへ接続できません。', 9);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2003', '配信サーバへ接続できません。', 10);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2004', '配信サーバでエラーが発生しました。', 11);
+INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2002', '配信サーバーへ接続できません。', 9);
+INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2003', '配信サーバーへ接続できません。', 10);
+INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2004', '配信サーバーでエラーが発生しました。', 11);
 INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2005', '認証キーが設定されていません。<br />・「認証キー設定」で認証キーを設定してください。', 12);
 INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2006', '不正なアクセスです。', 13);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2007', '不正なパラメータが送信されました。', 14);
+INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2007', '不正なパラメーターが送信されました。', 14);
 INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2008', '自動アップデートが無効です', 15);
 INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2009', 'ファイルの書き込みに失敗しました。<br />・書き込み権限が正しく設定されていません。<br />・data/downloads/tmpディレクトリに書き込み権限があるかどうか確認してください', 16);
 INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2010', 'ファイルの書き込みに失敗しました。<br />・「ログ管理」で詳細を確認してください。', 17);
@@ -984,7 +984,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEF_LAYOUT', '"prod
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MODULE_DIR', '"downloads/module/"', 22, 'ダウンロードモジュール保存ディレクトリ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MODULE_REALDIR', 'DATA_REALDIR . MODULE_DIR', 23, 'ダウンロードモジュール保存ディレクトリ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MAX_LIFETIME', '7200', 26, 'DBセッションの有効期限(秒)');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MASTER_DATA_REALDIR', 'DATA_REALDIR . "cache/"', 27, 'マスタデータキャッシュディレクトリ');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MASTER_DATA_REALDIR', 'DATA_REALDIR . "cache/"', 27, 'マスターデータキャッシュディレクトリ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UPDATE_HTTP', '"http://sv01.ec-cube.net/info/index.php"', 28, 'アップデート管理用ファイル格納場所');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UPDATE_CSV_LINE_MAX', '4096', 29, 'アップデート管理用CSV1行辺りの最大文字数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UPDATE_CSV_COL_MAX', '13', 30, 'アップデート管理用CSVカラム数');

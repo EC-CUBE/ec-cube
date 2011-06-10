@@ -78,7 +78,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
         // 登録ボタン押下
         // 新規作成 or 編集
         case 'edit':
-            // パラメータ値の取得
+            // パラメーター値の取得
             $this->arrForm = $objFormParam->getHashArray();
             // 入力パラメーターチェック
             $this->arrErr = $this->lfCheckError($objFormParam);
@@ -140,7 +140,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
     }
 
     /**
-     * パラメータの初期化を行う.
+     * パラメーターの初期化を行う.
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void

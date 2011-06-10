@@ -35,7 +35,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
 
     // {{{ properties
 
-    /** フォームパラメータの配列 */
+    /** フォームパラメーターの配列 */
     var $objFormParam;
 
     /** 秘密の質問の答え */
@@ -85,7 +85,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
      * @return void
      */
     function action() {
-        // パラメータ管理クラス
+        // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
 
         switch($this->getMode()) {

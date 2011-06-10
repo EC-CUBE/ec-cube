@@ -141,7 +141,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
     }
 
     /**
-     * パラメータ情報の初期化
+     * パラメーター情報の初期化
      *
      * XXX URL のフィールドは, 実際は filename なので注意
      *
@@ -242,7 +242,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
     /**
      * 入力内容をデータベースに登録する.
      *
-     * @param array $arrParams フォームパラメータの配列
+     * @param array $arrParams フォームパラメーターの配列
      * @param SC_Helper_PageLayout $objLayout SC_Helper_PageLayout インスタンス
      * @return integer ページID
      */
@@ -337,7 +337,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
      *
      * 既に同名の PHP ファイルが存在する場合は何もせず true を返す.(#831)
      *
-     * @param string $filename フォームパラメータの filename
+     * @param string $filename フォームパラメーターの filename
      * @return boolean 作成に成功した場合 true
      */
     function createPHPFile($filename) {

@@ -95,9 +95,9 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // パラメータ管理クラス
+        // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
-        // パラメータ情報の初期化
+        // パラメーター情報の初期化
         $this->lfInitParam($this->tpl_mode, $objFormParam);
         $objFormParam->setParam($_GET);
         $this->arrErr = $objFormParam->checkError();
@@ -188,7 +188,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
     }
 
     /**
-     * パラメータ情報の初期化
+     * パラメーター情報の初期化
      *
      * @return void
      */

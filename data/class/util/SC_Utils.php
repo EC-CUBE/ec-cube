@@ -2217,7 +2217,7 @@ class SC_Utils {
     /**
      * ディレクトリを再帰的に作成する.
      *
-     * mkdir 関数の $recursive パラメータを PHP4 でサポートする.
+     * mkdir 関数の $recursive パラメーターを PHP4 でサポートする.
      *
      * @param string $pathname ディレクトリのパス
      * @param integer $mode 作成するディレクトリのパーミッション

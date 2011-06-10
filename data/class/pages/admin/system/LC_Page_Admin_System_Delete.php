@@ -63,10 +63,10 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex {
     function action() {
         $objFormParam = new SC_FormParam;
 
-        // パラメータの初期化
+        // パラメーターの初期化
         $this->initParam($objFormParam, $_GET);
 
-        // パラメータの検証
+        // パラメーターの検証
         if ($objFormParam->checkError()
             || !SC_Utils_ex::sfIsInt($id = $objFormParam->getValue('id'))) {
 
@@ -95,7 +95,7 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex {
     }
 
     /**
-     * パラメータ初期化.
+     * パラメーター初期化.
      *
      * @param object $objFormParam
      * @param array  $arrParams  $_GET値

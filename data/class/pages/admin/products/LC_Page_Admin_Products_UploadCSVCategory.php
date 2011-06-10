@@ -114,7 +114,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         $objUpFile = new SC_UploadFile_Ex(IMAGE_TEMP_REALDIR, IMAGE_SAVE_REALDIR);
         $this->lfInitFile($objUpFile);
 
-        // パラメータ情報の初期化
+        // パラメーター情報の初期化
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam, $arrCSVFrame);
 

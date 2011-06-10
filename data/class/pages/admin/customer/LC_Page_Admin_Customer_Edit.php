@@ -85,7 +85,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // パラメータ管理クラス
+        // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
         // 検索引き継ぎ用パラメーター管理クラス
         $objFormSearchParam = new SC_FormParam_Ex();

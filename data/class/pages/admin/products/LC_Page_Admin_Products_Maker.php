@@ -68,7 +68,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
     function action() {
         $objFormParam = new SC_FormParam_Ex();
 
-        // パラメータ情報の初期化
+        // パラメーター情報の初期化
         $this->lfInitParam($objFormParam);
 
         // POST値をセット
@@ -150,7 +150,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
     }
 
     /**
-     * パラメータ情報の初期化を行う.
+     * パラメーター情報の初期化を行う.
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void

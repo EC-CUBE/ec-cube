@@ -119,7 +119,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objFormParam = new SC_FormParam_Ex();
 
-        // パラメータ情報の初期化
+        // パラメーター情報の初期化
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_REQUEST);
         $objFormParam->convParam();
@@ -253,13 +253,13 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
     }
 
     /**
-     * パラメータ情報の初期化を行う.
+     * パラメーター情報の初期化を行う.
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        // 検索条件のパラメータを初期化
+        // 検索条件のパラメーターを初期化
         parent::lfInitParam($objFormParam);
 
         // お客様情報

@@ -166,7 +166,7 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
         return $this->objUpFile;
     }
 
-    /* パラメータ情報の初期化 */
+    /* パラメーター情報の初期化 */
     function lfInitParam($mode, &$objFormParam) {
 
         switch ($mode) {

@@ -21,8 +21,8 @@ header('Content-Type: application/x-javascript');
 // オーナーズストア通信スクリプトのパス
 var upgrade_url = '<?php echo ROOT_URLPATH ?>upgrade/<?php echo DIR_INDEX_PATH; ?>';
 
-// ロード中メッセージ(配信サーバと通信中です…)
-var loading_message = '\u30B5\u30FC\u30D0\u3068\u901A\u4FE1\u4E2D\u3067\u3059';
+// ロード中メッセージ「サーバーと通信中です」
+var loading_message = '\u30b5\u30fc\u30d0\u30fc\u3068\u901a\u4fe1\u4e2d\u3067\u3059';
 
 // ロード中画像の先読み
 var loading_img = new Image();

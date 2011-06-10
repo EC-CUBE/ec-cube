@@ -299,7 +299,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
         // 更新情報の取得ON/OFF確認
         if (!ECCUBE_INFO) return array();
 
-        // パラメータ「UPDATE_HTTP」が空文字の場合、処理しない。
+        // パラメーター「UPDATE_HTTP」が空文字の場合、処理しない。
         // XXX これと別に on/off を持たせるべきか。
         if (strlen(UPDATE_HTTP) == 0) return array();
 

@@ -67,9 +67,9 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // パラメータ管理クラス
+        // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
-        // パラメータ情報の初期化
+        // パラメーター情報の初期化
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
 
@@ -153,7 +153,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
     }
 
     /**
-     * パラメータ初期化.
+     * パラメーター初期化.
      *
      * @param object $objFormParam
      * @return void
@@ -166,7 +166,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
     }
 
     /**
-     * アップロードファイルパラメータ初期化.
+     * アップロードファイルパラメーター初期化.
      *
      * @param object $objUpFile SC_UploadFileのインスタンス.
      * @return void
