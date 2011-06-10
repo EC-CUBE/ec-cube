@@ -327,24 +327,6 @@ class SC_Helper_Purchase {
     }
 
     /**
-     * 配送商品の情報でカートを更新する.
-     *
-     * @param SC_CartSession $objCartSession SC_CartSession インスタンス
-     */
-    function shippingItemTempToCart(&$objCartSession) {
-        $arrShipmentItems = array();
-        foreach (array_keys($_SESSION['shipping']) as $shipping_id) {
-            foreach (array_keys($_SESSION['shipping'][$shipping_id]['shipment_item']) as $product_class_id) {
-                $arrShipmentItems[$product_class_id] += $_SESSION['shipping'][$shipping_id]['shipment_item'][$product_class_id]['quantity'];
-           }
-        }
-        foreach ($arrShipmentItems as $product_class_id => $quantity) {
-            $objCartSession->setProductValue($product_class_id, 'quantity',
-                                             $quantity,$objCartSession->getKey());
-        }
-    }
-
-    /**
      * 配送先都道府県の配列を返す.
      */
     function getShippingPref() {

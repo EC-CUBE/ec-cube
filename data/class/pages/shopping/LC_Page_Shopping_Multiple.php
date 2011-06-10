@@ -265,7 +265,6 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
             $objPurchase->saveShippingTemp($val, $shipping_id);
         }
 
-        $objPurchase->shippingItemTempToCart($objCartSess);
         // $arrValues[0] には, 購入者の情報が格納されている
         $objPurchase->saveOrderTemp($uniqid, $arrValues[0], $objCustomer);
     }
