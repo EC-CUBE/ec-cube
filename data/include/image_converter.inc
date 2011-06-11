@@ -12,7 +12,7 @@ class ImageConverter {
     // コンストラクタ
     function ImageConverter() {
         $this->outputImageDir    = realpath(realpath(dirname(__FILE__)));
-        $this->outputImageType   = 'jpeg';
+        $this->outputImageType   = 'jpg';
         $this->outputImageWidth  = 320;
         $this->outputImageHeight = NULL;
         $this->outputFileSize    = 20000;
@@ -26,6 +26,12 @@ class ImageConverter {
         $inputImageWidth  = $imagesize[0];
         $inputImageHeight = $imagesize[1];
         $inputImageType   = $imagesize[2];
+
+        // GIF 画像は縮小後も GIF 画像で出力する。旧機種対応などで、機種用の画像形式に変換したい場合、この処理は削除する。
+        if ($inputImageType == IMAGETYPE_GIF) {
+            $this->outputImageType = 'gif';
+        }
+
         $outputImageName  = sha1($inputImagePath . '_' . $this->outputImageWidth . '_' . $this->outputFileSize . '_' . $filestat['mtime']) . '.' . $this->outputImageType;
         $outputImagePath  = $this->outputImageDir . '/' . $outputImageName;
 
@@ -60,22 +66,25 @@ class ImageConverter {
         } else {
             // 元ファイル作成
             switch($inputImageType) {
-            case 1:
-                // gif
-                $tempImage = imagecreatefromgif($inputImagePath);
-                break;
-            case 2:
-                // jpeg
-                $tempImage = imagecreatefromjpeg($inputImagePath);
-                break;
-            case 3:
-                // png
-                $tempImage = imagecreatefrompng($inputImagePath);
-                break;
-            case 6:
-                // bmp
-                $tempImage = imagecreatefromwbmp($inputImagePath);
-                break;
+                case IMAGETYPE_GIF:
+                    $tempImage = imagecreatefromgif($inputImagePath);
+                    $arrTransparentColor = $this->getTransparentColor($tempImage);
+                    if (!empty($arrTransparentColor)) {
+                        imagecolortransparent($tempImage, $arrTransparentColor);
+                    }
+                    break;
+
+                case IMAGETYPE_JPEG:
+                    $tempImage = imagecreatefromjpeg($inputImagePath);
+                    break;
+
+                case IMAGETYPE_PNG:
+                    $tempImage = imagecreatefrompng($inputImagePath);
+                    break;
+
+                case IMAGETYPE_WBMP:
+                    $tempImage = imagecreatefromwbmp($inputImagePath);
+                    break;
             }
 
             if (!$tempImage) {
@@ -86,7 +95,13 @@ class ImageConverter {
             $outputImagePathTemp = $outputImagePath . '.tmp-' . rand();
             do {
                 // 空ファイル作成
-                $outputImage = ImageCreateTruecolor($this->outputImageWidth * $scale, $this->outputImageHeight * $scale);
+                if ($this->outputImageType == 'gif') {
+                    // 縮小時のノイズ防止のためインデックスカラーで処理する。特に透過色を扱う上で重要。
+                    $outputImage = ImageCreate($this->outputImageWidth * $scale, $this->outputImageHeight * $scale);
+                } else {
+                    $outputImage = ImageCreateTruecolor($this->outputImageWidth * $scale, $this->outputImageHeight * $scale);
+                }
+
                 ImageCopyResampled($outputImage, $tempImage, 0, 0, 0, 0, $this->outputImageWidth * $scale, $this->outputImageHeight * $scale, $inputImageWidth, $inputImageHeight);
 
                 // ファイル出力
@@ -94,31 +109,36 @@ class ImageConverter {
                 @unlink($outputImagePathTemp);
 
                 switch ($this->outputImageType) {
-                case 1:
-                case 'gif':
-                    imagegif($outputImage, $outputImagePathTemp);
-                    break;
-                default:
-                case 2:
-                case 'jpg':
-                case 'jpeg':
-                    $quality = 75;
-                    // 表示可能なファイルサイズ以下になるまで、10%ずつクオリティを調整する
-                    do {
-                        @unlink($outputImagePathTemp);
-                        imagejpeg($outputImage, $outputImagePathTemp, $quality);
-                        $quality -= 10;
-                        clearstatcache();
-                    } while (filesize($outputImagePathTemp) > $this->outputFileSize && $quality > 0);
-                    break;
-                case 3:
-                case 'png':
-                    imagepng($outputImage, $outputImagePathTemp);
-                    break;
-                case 6:
-                case 'bmp':
-                    imagewbmp($outputImage, $outputImagePathTemp);
-                    break;
+                    case 'gif':
+                        if (!empty($arrTransparentColor)) {
+                            $transparent_color_id = imagecolorexact($outputImage, $arrTransparentColor['red'], $arrTransparentColor['green'], $arrTransparentColor['blue']);
+                            imagecolortransparent($outputImage, $transparent_color_id);
+                        }
+                        imagegif($outputImage, $outputImagePathTemp);
+                        break;
+
+                    case 'jpg':
+                        $quality = 75;
+                        // 表示可能なファイルサイズ以下になるまで、10%ずつクオリティを調整する
+                        do {
+                            @unlink($outputImagePathTemp);
+                            imagejpeg($outputImage, $outputImagePathTemp, $quality);
+                            $quality -= 10;
+                            clearstatcache();
+                        } while (filesize($outputImagePathTemp) > $this->outputFileSize && $quality > 0);
+                        break;
+
+                    case 'png':
+                        imagepng($outputImage, $outputImagePathTemp);
+                        break;
+
+                    case 'bmp':
+                        imagewbmp($outputImage, $outputImagePathTemp);
+                        break;
+
+                    default:
+                        GC_Utils_Ex::gfPrintLog('不正な画像タイプ: ');
+                        break;
                 }
 
                 // メモリ開放
@@ -163,6 +183,28 @@ class ImageConverter {
      * PrivateMethod
      */
     function beforeExecute() {
+    }
+
+    /**
+     * 透過GIFの色情報を返す
+     *
+     * @access private
+     * @param resource $image imagecreatetruecolor() のような画像作成関数が返す画像リソース。
+     * @return array 色情報
+     */
+    function getTransparentColor($image) {
+        $max_x = imagesx($image) - 1;
+        $max_y = imagesy($image) - 1;
+        for ($x = 0; $x <= $max_x; $x++) {
+            for ($y = 0; $y <= $max_y; $y++) {
+                $color_index = imagecolorat($image, $x, $y);
+                $arrColors = imagecolorsforindex($image, $color_index);
+                if ($arrColors['alpha'] !== 0){
+                    return $arrColors;
+                }
+            }
+        }
+        return array();
     }
 }
 ?>
