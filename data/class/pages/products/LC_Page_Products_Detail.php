@@ -143,7 +143,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         // 商品IDをFORM内に保持する
         $this->tpl_product_id = $product_id;
 
-        switch($this->mode) {
+        switch ($this->mode) {
             case 'cart':
                 $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam,
                                                     $this->tpl_classcat_find1,
