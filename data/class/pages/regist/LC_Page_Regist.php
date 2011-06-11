@@ -164,13 +164,13 @@ class LC_Page_Regist extends LC_Page_Ex {
 
         $objMail->setItem(
                               ''                                // 宛先
-                            , $subject                          // サブジェクト
-                            , $toCustomerMail                   // 本文
-                            , $this->CONF["email03"]            // 配送元アドレス
-                            , $this->CONF["shop_name"]          // 配送元 名前
-                            , $this->CONF["email03"]            // reply_to
-                            , $this->CONF["email04"]            // return_path
-                            , $this->CONF["email04"]            // Errors_to
+                            , $subject                  // サブジェクト
+                            , $toCustomerMail           // 本文
+                            , $CONF["email03"]          // 配送元アドレス
+                            , $CONF["shop_name"]        // 配送元 名前
+                            , $CONF["email03"]          // reply_to
+                            , $CONF["email04"]          // return_path
+                            , $CONF["email04"]          // Errors_to
                         );
         // 宛先の設定
         $name = $data["name01"] . $data["name02"] ." 様";
