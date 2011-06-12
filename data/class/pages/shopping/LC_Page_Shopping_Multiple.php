@@ -130,7 +130,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
         $objFormParam->addParam("規格分類2", "classcategory_name2");
         $objFormParam->addParam("メイン画像", "main_image");
         $objFormParam->addParam("メイン一覧画像", "main_list_image");
-        $objFormParam->addParam("販売価格", "price02");
+        $objFormParam->addParam("販売価格", "price");
         $objFormParam->addParam("数量", 'quantity', INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), 1);
         $objFormParam->addParam("配送先住所", 'shipping', INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("カート番号", "cart_no", INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
@@ -152,10 +152,11 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
             $arrProductsClass = $cartLists[$key]['productsClass'];
             $quantity = (int) $cartLists[$key]['quantity'];
             for ($i = 0; $i < $quantity; $i++) {
-                foreach ($arrProductsClass as $key => $val) {
-                    $arrItems[$key][$index] = $val;
+                foreach ($arrProductsClass as $key2 => $val) {
+                    $arrItems[$key2][$index] = $val;
                 }
                 $arrItems['quantity'][$index] = 1;
+                $arrItems['price'][$index] = $cartLists[$key]['price'];
                 $index++;
             }
         }

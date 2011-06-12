@@ -311,19 +311,29 @@ class SC_Helper_Purchase {
      */
     function setShipmentItemTemp($shipping_id, $product_class_id, $quantity) {
         // 配列が長くなるので, リファレンスを使用する
-        $arrItems =& $_SESSION['shipping'][$shipping_id]['shipment_item'];
+        $arrItems =& $_SESSION['shipping'][$shipping_id]['shipment_item'][$product_class_id];
 
-        $arrItems[$product_class_id]['shipping_id'] = $shipping_id;
-        $arrItems[$product_class_id]['product_class_id'] = $product_class_id;
-        $arrItems[$product_class_id]['quantity'] = $quantity;
+        $arrItems['shipping_id'] = $shipping_id;
+        $arrItems['product_class_id'] = $product_class_id;
+        $arrItems['quantity'] = $quantity;
 
         $objProduct = new SC_Product_Ex();
-        if (empty($arrItems[$product_class_id]['productsClass'])) {
+
+        // カート情報から読みこめば済むと思うが、一旦保留。むしろ、カート情報も含め、セッション情報を縮小すべきかもしれない。
+        /*
+        $objCartSession = new SC_CartSession_Ex();
+        $cartKey = $objCartSession->getKey();
+        // 詳細情報を取得
+        $cartItems = $objCartSession->getCartList($cartKey);
+        */
+
+        if (empty($arrItems['productsClass'])) {
             $product =& $objProduct->getDetailAndProductsClass($product_class_id);
-            $arrItems[$product_class_id]['productsClass'] = $product;
+            $arrItems['productsClass'] = $product;
         }
-        $incTax = SC_Helper_DB_Ex::sfCalcIncTax($arrItems[$product_class_id]['productsClass']['price02']);
-        $arrItems[$product_class_id]['total_inctax'] = $incTax * $arrItems[$product_class_id]['quantity'];
+        $arrItems['price'] = $arrItems['productsClass']['price02'];
+        $inctax = SC_Helper_DB_Ex::sfCalcIncTax($arrItems['price']);
+        $arrItems['total_inctax'] = $inctax * $arrItems['quantity'];
     }
 
     /**
@@ -699,7 +709,7 @@ class SC_Helper_Purchase {
                 : $arrValues['classcategory_name2'];
 
             $price = SC_Utils_Ex::isBlank($arrValues['price'])
-                ? $d['price02']
+                ? $d['price']
                 : $arrValues['price'];
 
             $arrValues['order_id'] = $order_id;
