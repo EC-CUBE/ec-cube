@@ -218,8 +218,7 @@ class SC_CartSession {
                 if (!isset($this->cartSession[$productTypeId][$i]['id'][0])) {
                     $this->cartSession[$productTypeId][$i]['id'][0] = "";
                 }
-                $id = $this->cartSession[$productTypeId][$i]['id'][0];
-                $point = SC_Utils_Ex::sfPrePoint($price, $point_rate, POINT_RULE, $id);
+                $point = SC_Utils_Ex::sfPrePoint($price, $point_rate);
                 $total+= ($point * $quantity);
             }
         }

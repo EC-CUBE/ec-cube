@@ -273,7 +273,6 @@ __EOS__;
                     : '';
 
                 // ポイント
-                // XXX sfPrePoint() の第4パラメーターは、処理にバグがあるため現状省略している。(http://xoops.ec-cube.net/modules/newbb/viewtopic.php?topic_id=3540&forum=1&post_id=13853#forumpost13853)
                 $classCats2['point']
                     = number_format(SC_Utils_Ex::sfPrePoint($productsClass['price02'], $productsClass['point_rate']));
 

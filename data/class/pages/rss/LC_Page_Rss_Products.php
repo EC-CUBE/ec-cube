@@ -165,9 +165,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
             // ポイント計算
             $arrProduct[$key]['point'] = SC_Utils_Ex::sfPrePoint(
                 $arrProduct[$key]['price02'],
-                $arrProduct[$key]['point_rate'],
-                POINT_RULE,
-                $arrProduct[$key]['product_id']
+                $arrProduct[$key]['point_rate']
             );
             // 在庫無制限
             if ( $arrProduct[$key]['stock_unlimited'] == 1 ) {
@@ -227,15 +225,11 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
             // ポイント計算
             $arrProduct[$key]['point_max'] = SC_Utils_Ex::sfPrePoint(
                 $arrProduct[$key]['price02_max'],
-                $arrProduct[$key]['point_rate'],
-                POINT_RULE,
-                $arrProduct[$key]['product_id']
+                $arrProduct[$key]['point_rate']
             );
             $arrProduct[$key]['point_min'] = SC_Utils_Ex::sfPrePoint(
                 $arrProduct[$key]['price02_min'],
-                $arrProduct[$key]['point_rate'],
-                POINT_RULE,
-                $arrProduct[$key]['product_id']
+                $arrProduct[$key]['point_rate']
             );
         }
         return $arrProduct;
