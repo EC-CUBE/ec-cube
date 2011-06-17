@@ -61,7 +61,7 @@ $(document).ready(function() {
 <!--{if count($cartItems) > 0}-->
 
 <!--{foreach from=$cartKeys item=key}-->
-    <form name="form1" id="form1" method="post" action="?">
+    <form name="form<!--{$key}-->" id="form<!--{$key}-->" method="post" action="?">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <!--{if 'sfGMOCartDisplay'|function_exists}-->
             <!--{'sfGMOCartDisplay'|call_user_func}-->
@@ -116,7 +116,7 @@ $(document).ready(function() {
                         <!--{/if}-->
                     >
                         <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->&amp;width=40&amp;height=40" alt="<!--{$item.productsClass.name|h}-->" /></a><br />
-<a href="?" onclick="fnModeSubmit('delete', 'cart_no', '<!--{$item.cart_no}-->'); return false;">削除</a>
+<a href="?" onclick="fnFormModeSubmit('form<!--{$key}-->', 'delete', 'cart_no', '<!--{$item.cart_no}-->'); return false;">削除</a>
                     </td>
                     <td class="detailtdName"><!--{* 商品名 *}--><strong><!--{$item.productsClass.name|h}--></strong><br />
                         <!--{if $item.productsClass.classcategory_name1 != ""}-->
@@ -132,8 +132,8 @@ $(document).ready(function() {
                     <td class="detailtdPM"><!--{$item.quantity}-->
                     <br />
 <ul id="quantity_level">
-                            <li><a href="?" onclick="fnModeSubmit('up','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_URLPATH}-->img/button/btn_plus.gif" width="16" height="16" alt="＋" /></a></li>
-                            <li><a href="?" onclick="fnModeSubmit('down','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_URLPATH}-->img/button/btn_minus.gif" width="16" height="16" alt="-" /></a></li>
+                            <li><a href="?" onclick="fnFormModeSubmit('form<!--{$key}-->', 'up','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_URLPATH}-->img/button/btn_plus.gif" width="16" height="16" alt="＋" /></a></li>
+                            <li><a href="?" onclick="fnFormModeSubmit('form<!--{$key}-->', 'down','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_URLPATH}-->img/button/btn_minus.gif" width="16" height="16" alt="-" /></a></li>
                         </ul></td>
                     <td class="detailtdYenT"><!--{$item.total_inctax|number_format}-->円</td>
           </tr>
