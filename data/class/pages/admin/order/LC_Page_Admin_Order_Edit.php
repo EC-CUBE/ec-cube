@@ -738,6 +738,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
             $exists_product_class_id = $arrExistsProductClassIds[$key];
             if ($exists_product_class_id == $product_class_id) {
                 $exists = true;
+                $exists_no = $key;
                 $arrExistsQuantity = $objFormParam->getValue('quantity');
                 $arrExistsQuantity[$key]++;
                 $objFormParam->setValue('quantity', $arrExistsQuantity);
@@ -767,7 +768,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
                 }
                 $objFormParam->setValue($key, $arrValues);
             }
-        } elseif (isset($changed_no)) {
+        } elseif (isset($changed_no) && $exists_no != $changed_no) {
             // 変更したが、選択済みの商品だった場合は、変更対象行を削除。
             $this->doDeleteProduct($changed_no, $objFormParam);
         }
