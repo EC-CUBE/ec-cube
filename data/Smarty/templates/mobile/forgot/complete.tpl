@@ -26,4 +26,4 @@
 ※下記パスワードは、MYページの「会員登録内容変更」よりご変更いただけます。<br>
 <br>
 
-<center><font color="ff0000"><!--{$temp_password}--></font></center>
+<center><font color="ff0000"><!--{$arrForm.new_password}--></font></center>
