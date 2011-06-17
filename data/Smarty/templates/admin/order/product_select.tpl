@@ -37,16 +37,15 @@ function func_submit(product_id, class_name1, class_name2) {
     var class1_id = document.getElementById(class1).value;
     var class2_id = document.getElementById(class2).value;
     var product_class_id = document.getElementById("product_class_id" + product_id).value;
-
-    <!--{if $tpl_no != ''}-->
-    var opner_product_id = 'edit_product_id';
-    var opner_product_class_id = 'edit_product_class_id';
-    fm1.getElementById("no").value = escape('<!--{$tpl_no}-->');
-    <!--{else}-->
     var opner_product_id = 'add_product_id';
     var opner_product_class_id = 'add_product_class_id';
-    <!--{/if}-->
+    var tpl_no = '<!--{$tpl_no}-->';
 
+    if (tpl_no != '') {
+        opner_product_id = 'edit_product_id';
+        opner_product_class_id = 'edit_product_class_id';
+        fm1.getElementById("no").value = escape('<!--{$tpl_no}-->');
+    }
     if (document.getElementById(class1).type == 'select-one' && class1_id == '') {
         err_text = class_name1 + "を選択してください。\n";
     }
