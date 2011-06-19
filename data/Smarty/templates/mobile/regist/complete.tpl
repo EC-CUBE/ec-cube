@@ -35,6 +35,6 @@ E-mail：<a href="mailto:<!--{$arrSiteInfo.email02|h}-->"><!--{$arrSiteInfo.emai
 
 <!--{if !$tpl_cart_empty}-->
 <br>
-<a href="<!--{$smarty.const.ROOT_URLPATH}-->shopping/deliv.php">ご注文手続きへ進む</a><br>
+<a href="<!--{$smarty.const.DELIV_URLPATH|h}-->">ご注文手続きへ進む</a><br>
 <br>
 <!--{/if}-->
