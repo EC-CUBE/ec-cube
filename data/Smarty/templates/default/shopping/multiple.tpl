@@ -87,7 +87,7 @@
                             <!--{if $arrErr[$key][$index] != ''}-->
                                 <span class="attention"><!--{$arrErr[$key][$index]}--></span>
                             <!--{/if}-->
-                            <input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" class="box40" />
+                            <input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" class="box40" style="<!--{$arrErr[$key][$index]|sfGetErrorColor}-->" />
                         </td>
                         <td>
                             <input type="hidden" name="cart_no[<!--{$index}-->]" value="<!--{$index}-->" />

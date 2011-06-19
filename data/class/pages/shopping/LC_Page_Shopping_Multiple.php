@@ -208,8 +208,36 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      * @return array エラー情報の配列
      */
     function lfCheckError(&$objFormParam) {
+        $objCartSess = new SC_CartSession_Ex();
+
         $objFormParam->convParam();
-        return $objFormParam->checkError();
+        $arrErr = $objFormParam->checkError();
+        // 入力エラーが無い場合、カゴの中身との数量の整合を確認
+
+        if (empty($arrErr)) {
+            $arrQuantity = array();
+            // 入力内容を集計
+            $arrParams = $objFormParam->getHashArray();
+            $arrParams = SC_Utils_Ex::sfSwapArray($arrParams);
+            foreach ($arrParams as $arrParam) {
+                $product_class_id = $arrParam['product_class_id'];
+                $arrQuantity[$product_class_id] += $arrParam['quantity'];
+            }
+            // カゴの中身と突き合わせ
+            $cartLists =& $objCartSess->getCartList($objCartSess->getKey());
+            foreach ($cartLists as $arrCartRow) {
+                $product_class_id = $arrCartRow['id'];
+                // 差異がある場合、エラーを記録
+                if ($arrCartRow['quantity'] != $arrQuantity[$product_class_id]) {
+                    foreach ($arrParams as $key => $arrParam) {
+                        if ($arrParam['product_class_id'] == $product_class_id) {
+                            $arrErr['quantity'][$key] = 'カゴの中(数量：' . $arrCartRow['quantity'] .')と合計が一致していません。<br />';
+                        }
+                    }
+                }
+            }
+        }
+        return $arrErr;
     }
 
     /**
