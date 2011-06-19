@@ -61,7 +61,7 @@
 	●質問の答え<br>
 	<!--{$arrForm.reminder_answer|h}--><br>
 
-	●ﾒｰﾙﾏｶﾞｼﾞﾝﾞ<br>
+	●ﾒｰﾙﾏｶﾞｼﾞﾝ<br>
 	<!--{if $arrForm.mailmaga_flg eq 2}-->希望する<!--{else}-->希望しない<!--{/if}--><br>
 	<br>
 
