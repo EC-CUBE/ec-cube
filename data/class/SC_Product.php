@@ -65,13 +65,13 @@ class SC_Product {
     /**
      * SC_Queryインスタンスに設定された検索条件を元に並び替え済みの検索結果商品IDの配列を取得する。
      *
-     * 検索条件は, SC_Query::getWhere() 関数で設定しておく必要があります.
+     * 検索条件は, SC_Query::setWhere() 関数で設定しておく必要があります.
      *
      * @param SC_Query $objQuery SC_Query インスタンス
      * @param array $arrVal 検索パラメーターの配列
      * @return array 商品IDの配列
      */
-    function findProductIdsOrder(&$objQuery, $arrVal = array(), $where) {
+    function findProductIdsOrder(&$objQuery, $arrVal = array()) {
         $table = <<< __EOS__
                  dtb_products AS alldtl
             JOIN dtb_products_class AS T1
@@ -109,7 +109,7 @@ __EOS__;
     /**
      * SC_Queryインスタンスに設定された検索条件をもとに対象商品数を取得する.
      *
-     * 検索条件は, SC_Query::getWhere() 関数で設定しておく必要があります.
+     * 検索条件は, SC_Query::setWhere() 関数で設定しておく必要があります.
      *
      * @param SC_Query $objQuery SC_Query インスタンス
      * @param array $arrVal 検索パラメーターの配列
