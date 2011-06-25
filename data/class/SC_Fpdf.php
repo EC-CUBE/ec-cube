@@ -271,7 +271,7 @@ class SC_Fpdf {
             } else {
                 $filename = "nouhinsyo.pdf";
             }
-            $this->pdf->Output($this->lfConvSjis($filename), D);
+            $this->pdf->Output($this->lfConvSjis($filename), 'D');
         } else {
             $this->pdf->Output();
         }
