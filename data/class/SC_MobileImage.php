@@ -102,6 +102,8 @@ class SC_MobileImage {
                 } else {
                     $buffer = str_replace($images[0][$key], '<!--No image-->', $buffer);
                 }
+                $imageConverter->setImageWidth($imageWidth);
+                $imageConverter->setImageHeight($imageHeight);
             }
         }
         return $buffer;
