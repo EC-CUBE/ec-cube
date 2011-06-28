@@ -470,9 +470,9 @@
                     <span class="attention"><!--{$arrErr[$key1][$shipping_index]}--></span>
                     <span class="attention"><!--{$arrErr[$key2][$shipping_index]}--></span>
                     <span class="attention"><!--{$arrErr[$key3][$shipping_index]}--></span>
-                    <input type="text" name="<!--{$key1}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key1]|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="6" class="box6" /> -
-                    <input type="text" name="<!--{$key2}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key2]|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="6" class="box6" /> -
-                    <input type="text" name="<!--{$key3}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key3]|h}-->" maxlength="<!--{$arrForm[$key3].length}-->" style="<!--{$arrErr[$key3]|sfGetErrorColor}-->" size="6" class="box6" />
+                    <input type="text" name="<!--{$key1}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key1]|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1][$shipping_index]|sfGetErrorColor}-->" size="6" class="box6" /> -
+                    <input type="text" name="<!--{$key2}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key2]|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2][$shipping_index]|sfGetErrorColor}-->" size="6" class="box6" /> -
+                    <input type="text" name="<!--{$key3}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key3]|h}-->" maxlength="<!--{$arrForm[$key3].length}-->" style="<!--{$arrErr[$key3][$shipping_index]|sfGetErrorColor}-->" size="6" class="box6" />
                 </td>
             </tr>
             <tr>
@@ -488,7 +488,7 @@
                     <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'shipping_zip01[<!--{$shipping_index}-->]', 'shipping_zip02[<!--{$shipping_index}-->]', 'shipping_pref[<!--{$shipping_index}-->]', 'shipping_addr01[<!--{$shipping_index}-->]'); return false;">住所入力</a><br />
                     <!--{assign var=key value="shipping_pref"}-->
                     <span class="attention"><!--{$arrErr[$key][$shipping_index]}--></span>
-                    <select class="top" name="<!--{$key}-->[<!--{$shipping_index}-->]" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+                    <select class="top" name="<!--{$key}-->[<!--{$shipping_index}-->]" style="<!--{$arrErr[$key][$shipping_index]|sfGetErrorColor}-->">
                         <option value="" selected="">都道府県を選択</option>
                         <!--{html_options options=$arrPref selected=$arrShipping[$key]}-->
                     </select><br />
@@ -505,7 +505,7 @@
                 <td>
                     <!--{assign var=key value="time_id"}-->
                     <span class="attention"><!--{$arrErr[$key][$shipping_index]}--></span>
-                    <select name="<!--{$key}-->[<!--{$shipping_index}-->]" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+                    <select name="<!--{$key}-->[<!--{$shipping_index}-->]" style="<!--{$arrErr[$key][$shipping_index]|sfGetErrorColor}-->">
                         <option value="" selected="0">指定無し</option>
                         <!--{html_options options=$arrDelivTime selected=$arrShipping[$key]}-->
                     </select>
@@ -517,16 +517,16 @@
                     <!--{assign var=key1 value="shipping_date_year"}-->
                     <!--{assign var=key2 value="shipping_date_month"}-->
                     <!--{assign var=key3 value="shipping_date_day"}-->
-                    <span class="attention"><!--{$arrErr[$key1]}--></span>
-                    <span class="attention"><!--{$arrErr[$key2]}--></span>
-                    <span class="attention"><!--{$arrErr[$key3]}--></span>
-                    <select name="<!--{$key1}-->[<!--{$shipping_index}-->]" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->">
+                    <span class="attention"><!--{$arrErr[$key1][$shipping_index]}--></span>
+                    <span class="attention"><!--{$arrErr[$key2][$shipping_index]}--></span>
+                    <span class="attention"><!--{$arrErr[$key3][$shipping_index]}--></span>
+                    <select name="<!--{$key1}-->[<!--{$shipping_index}-->]" style="<!--{$arrErr[$key1][$shipping_index]|sfGetErrorColor}-->">
                         <!--{html_options options=$arrYearShippingDate selected=$arrShipping[$key1]|default:""}-->
                     </select>年
-                    <select name="<!--{$key2}-->[<!--{$shipping_index}-->]" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->">
+                    <select name="<!--{$key2}-->[<!--{$shipping_index}-->]" style="<!--{$arrErr[$key2][$shipping_index]|sfGetErrorColor}-->">
                         <!--{html_options options=$arrMonthShippingDate selected=$arrShipping[$key2]|default:""}-->
                     </select>月
-                    <select name="<!--{$key3}-->[<!--{$shipping_index}-->]" style="<!--{$arrErr[$key3]|sfGetErrorColor}-->">
+                    <select name="<!--{$key3}-->[<!--{$shipping_index}-->]" style="<!--{$arrErr[$key3][$shipping_index]|sfGetErrorColor}-->">
                         <!--{html_options options=$arrDayShippingDate selected=$arrShipping[$key3]|default:""}-->
                     </select>日
                 </td>
