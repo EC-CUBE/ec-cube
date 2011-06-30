@@ -78,7 +78,7 @@
                     </td>
                     <!--{assign var=price value=`$orderDetail.price`}-->
                     <!--{assign var=quantity value=`$orderDetail.quantity`}-->
-                    <td class="alignR"><!--{$price|number_format|h}-->円</td>
+                    <td class="alignR"><!--{$price|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format|h}-->円</td>
                     <td class="alignR"><!--{$quantity|h}--></td>
                     <td class="alignR"><!--{$price|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|sfMultiply:$quantity|number_format}-->円</td>
                 </tr>

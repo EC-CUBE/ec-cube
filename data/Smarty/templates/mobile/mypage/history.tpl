@@ -59,7 +59,7 @@
 単価：
 <!--{assign var=price value=`$orderDetail.price`}-->
 <!--{assign var=quantity value=`$orderDetail.quantity`}-->
-<!--{$price|number_format|h}-->円<br>
+<!--{$price|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format|h}-->円<br>
 数量：<!--{$quantity|h}--><br>
 小計：<!--{$price|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|sfMultiply:$quantity|number_format}-->円<br>
 <!--{/foreach}-->

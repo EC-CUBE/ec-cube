@@ -69,7 +69,7 @@
                         <!--{$arrProductType[$orderDetail.product_type_id]}-->
                     <!--{/if}--><!--←商品種別--><br /><!--→金額--><!--{assign var=price value=`$orderDetail.price`}-->
                     <!--{assign var=quantity value=`$orderDetail.quantity`}-->
-<!--{$price|number_format|h}-->円<!--←金額--></td>
+<!--{$price|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format|h}-->円<!--←金額--></td>
 
                     <td class="detailtdNumber"><!--{$quantity|h}--></td>
                     <td class="alignR"><!--{$price|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|sfMultiply:$quantity|number_format}-->円</td>
