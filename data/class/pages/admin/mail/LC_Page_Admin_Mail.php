@@ -61,7 +61,8 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
 
         // 日付プルダウン設定
         $objDate = new SC_Date_Ex(BIRTH_YEAR);
-        $this->arrYear = $objDate->getYear();   
+        $this->arrBirthYear = $objDate->getYear();   
+        $this->arrRegistYear = $objDate->getYear();   
         $this->arrMonth = $objDate->getMonth();
         $this->arrDay = $objDate->getDay();
         $this->objDate = $objDate;
