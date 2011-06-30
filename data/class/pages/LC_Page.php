@@ -66,9 +66,6 @@ class LC_Page {
     /** HTML ロード後に実行する JavaScript コード */
     var $tpl_onload;
 
-    /** 送料合計 */
-    var $tpl_total_deliv_fee;
-
     /** トランザクションID */
     var $transactionid;
 
