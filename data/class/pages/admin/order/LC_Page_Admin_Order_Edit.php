@@ -514,8 +514,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $objFormParam->setValue('point', $rollback_point);
 
         if (!SC_Utils_Ex::isBlank($objFormParam->getValue('customer_id'))) {
-            $this->setCustomerTo($objFormParam->getValue('customer_id'),
-                                 $objFormParam);
+            $arrCustomer = SC_Helper_Customer_Ex::sfGetCustomerDataFromId($objFormParam->getValue('customer_id'));
+            $objFormParam->setValue('customer_point', $arrCustomer['point']);
         }
     }
 
