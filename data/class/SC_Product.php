@@ -586,10 +586,7 @@ __EOS__;
      */
     function reduceStock($productClassId, $quantity) {
 
-        $productsClass = $this->getDetailAndProductsClass($productClassId);
-        if (($productsClass['stock_unlimited'] != '1'
-             && $productsClass['stock'] < $quantity)
-            || $quantity == 0) {
+        if ($quantity == 0) {
             return false;
         }
 
@@ -598,6 +595,12 @@ __EOS__;
                           "product_class_id = ?", array($productClassId),
                           array('stock' => 'stock - ?'), array($quantity));
         // TODO エラーハンドリング
+
+        $productsClass = $this->getDetailAndProductsClass($productClassId);
+        if ($productsClass['stock_unlimited'] != '1' && $productsClass['stock'] < 0) {
+            return false;
+        }
+
         return true;
     }
 
