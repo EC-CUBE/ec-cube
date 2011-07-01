@@ -514,6 +514,7 @@ class SC_CartSession {
             if (!is_null($limit) && $item['quantity'] > $limit) {
                 if ($limit > 0) {
                     $this->setProductValue($item['id'], 'quantity', $limit, $productTypeId);
+                    $this->setProductValue($item['id'], 'total_inctax', SC_Helper_DB_Ex::sfCalcIncTax($item['price']) * $limit, $productTypeId);
                     $tpl_message .= "※「" . $product['name'] . "」は販売制限(または在庫が不足)しております。一度に数量{$limit}以上の購入はできません。\n";
                 } else {
                     $this->delProduct($item['cart_no'], $productTypeId);
