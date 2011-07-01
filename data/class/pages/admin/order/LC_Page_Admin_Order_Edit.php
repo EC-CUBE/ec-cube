@@ -513,7 +513,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $objFormParam->setValue('total_point', $db_point);
         $objFormParam->setValue('point', $rollback_point);
 
-        if (!in_array($this->getMode(), array('pre_edit','edit')) && !SC_Utils_Ex::isBlank($objFormParam->getValue('customer_id'))) {
+        if (!SC_Utils_Ex::isBlank($objFormParam->getValue('customer_id'))) {
             $this->setCustomerTo($objFormParam->getValue('customer_id'),
                                  $objFormParam);
         }
