@@ -316,8 +316,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         }
         // 同一URLの存在チェック
         $where = 'page_id <> 0 AND device_type_id = ? AND filename = ?';
-        $arrValues = array($arrParams['device_type_id'],
-                           SC_Helper_PageLayout_Ex::getUserDir($arrParams['device_type_id']) . $arrParams['filename'] . '.php');
+        $arrValues = array($arrParams['device_type_id'], USER_DIR . $arrParams['filename']);
         // 変更の場合は自 URL を除外
         if (!SC_Utils_Ex::isBlank($arrParams['page_id'])) {
             $where .= ' AND page_id <> ?';
