@@ -81,7 +81,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
         $objFormParam = new SC_FormParam_Ex();
 
         // カートの情報を取得
-        $this->arrShipping =& $objPurchase->getShippingTemp();
+        $this->arrShipping =& $objPurchase->getShippingTemp(true);
 
         $this->is_multiple = $objPurchase->isMultiple();
         $this->tpl_uniqid = $objSiteSess->getUniqId();

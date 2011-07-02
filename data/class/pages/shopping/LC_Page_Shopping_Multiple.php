@@ -282,16 +282,16 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
 
         $objPurchase->clearShipmentItemTemp();
 
+        foreach ($arrValues as $shipping_id => $arrVal) {
+            $objPurchase->saveShippingTemp($arrVal, $shipping_id);
+        }
+
         foreach ($arrItemTemp as $other_deliv_id => $arrProductClassIds) {
             foreach ($arrProductClassIds as $product_class_id => $quantity) {
                 $objPurchase->setShipmentItemTemp($other_deliv_id,
                                                   $product_class_id,
                                                   $quantity);
             }
-        }
-
-        foreach ($arrValues as $shipping_id => $val) {
-            $objPurchase->saveShippingTemp($val, $shipping_id);
         }
 
         // $arrValues[0] には, 購入者の情報が格納されている

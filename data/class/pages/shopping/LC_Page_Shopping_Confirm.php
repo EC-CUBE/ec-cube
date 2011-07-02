@@ -98,7 +98,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
         }
 
         // カートの商品を取得
-        $this->arrShipping = $objPurchase->getShippingTemp();
+        $this->arrShipping = $objPurchase->getShippingTemp(true);
         $this->arrCartItems = $objCartSess->getCartList($this->cartKey);
         // 合計金額
         $this->tpl_total_inctax[$this->cartKey] = $objCartSess->getAllProductsTotal($this->cartKey);

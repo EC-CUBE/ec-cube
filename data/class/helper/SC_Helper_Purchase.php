@@ -74,12 +74,10 @@ class SC_Helper_Purchase {
         $cartkey = $objCartSession->getKey();
         $orderId = $this->registerOrderComplete($orderTemp, $objCartSession,
                                                 $cartkey);
-        $shippingTemp =& $this->getShippingTemp();
-        if (count($shippingTemp) > 1) {
-            foreach ($shippingTemp as $shippingId => $val) {
-                $this->registerShipmentItem($orderId, $shippingId,
-                                            $val['shipment_item']);
-            }
+        $shippingTemp =& $this->getShippingTemp(true);
+        foreach ($shippingTemp as $shippingId => $val) {
+            $this->registerShipmentItem($orderId, $shippingId,
+                                        $val['shipment_item']);
         }
 
         $this->registerShipping($orderId, $shippingTemp);
@@ -281,9 +279,20 @@ class SC_Helper_Purchase {
     }
 
     /**
-     * セッションの配送情報を取得する.
+     * 配送情報をセッションから取得する.
+     *
+     * @param bool $has_shipment_item 配送商品を保有している配送先のみ返す。
      */
-    function getShippingTemp() {
+    function getShippingTemp($has_shipment_item) {
+        if ($has_shipment_item) {
+            $arrReturn = array();
+            foreach ($_SESSION['shipping'] as $key => $arrVal) {
+                if (count($arrVal['shipment_item']) == 0) continue;
+                $arrReturn[$key] = $arrVal;
+            }
+            return $arrReturn;
+        }
+
         return $_SESSION['shipping'];
     }
 
@@ -341,7 +350,7 @@ class SC_Helper_Purchase {
      */
     function getShippingPref() {
         $results = array();
-        foreach ($_SESSION['shipping'] as $val) {
+        foreach (SC_Helper_Purchase_Ex::getShippingTemp(true) as $val) {
             $results[] = $val['shipping_pref'];
         }
         return $results;
@@ -353,7 +362,7 @@ class SC_Helper_Purchase {
      * @return boolean 複数配送指定の購入の場合 true
      */
     function isMultiple() {
-        return count($this->getShippingTemp()) > 1;
+        return count(SC_Helper_Purchase_Ex::getShippingTemp(true)) > 1;
     }
 
     /**
@@ -363,7 +372,10 @@ class SC_Helper_Purchase {
      * @param integer $shipping_id 配送先ID
      * @return void
      */
-    function saveShippingTemp(&$arrSrc, $shipping_id = 0) {
+    function saveShippingTemp($arrSrc, $shipping_id = 0) {
+        // 配送商品は引き継がない
+        unset($arrSrc['shipment_item']);
+
         if (empty($_SESSION['shipping'][$shipping_id])) {
             $_SESSION['shipping'][$shipping_id] = $arrSrc;
             $_SESSION['shipping'][$shipping_id]['shipping_id'] = $shipping_id;
@@ -648,7 +660,7 @@ class SC_Helper_Purchase {
         $where = 'order_id = ?';
         $objQuery->delete($table, $where, array($order_id));
 
-         foreach ($arrParams as $key => $arrShipping) {
+        foreach ($arrParams as $key => $arrShipping) {
 
             $arrValues = $objQuery->extractOnlyColsOf($table, $arrShipping);
 
