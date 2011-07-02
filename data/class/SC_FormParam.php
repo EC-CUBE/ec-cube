@@ -173,9 +173,7 @@ class SC_FormParam {
     }
 
     // エラーチェック
-    function checkError($br = true, $keyname = "") {
-        // 連想配列の取得
-        $arrRet = $this->getHashArray($keyname);
+    function checkError($br = true) {
         $objErr->arrErr = array();
 
         $cnt = 0;
@@ -322,14 +320,17 @@ class SC_FormParam {
         }
     }
 
-    // 連想配列の作成
-    function getHashArray($keyname = "") {
+    /**
+     * 連想配列で返す
+     *
+     * @param array $arrKey 対象のキー
+     * @return array 連想配列
+     */
+    function getHashArray($arrKey = array()) {
         $arrRet = array();
-        $cnt = 0;
-        foreach($this->keyname as $val) {
-            if($keyname == "" || $keyname == $val) {
-                $arrRet[$val] = isset($this->param[$cnt]) ? $this->param[$cnt] : "";
-                $cnt++;
+        foreach($this->keyname as $index => $keyname) {
+            if (empty($arrKey) || in_array($keyname, $arrKey)) {
+                $arrRet[$keyname] = isset($this->param[$index]) ? $this->param[$index] : '';
             }
         }
         return $arrRet;
@@ -347,13 +348,15 @@ class SC_FormParam {
         return $arrRet;
     }
 
-    // 配列の縦横を入れ替えて返す
-    function getSwapArray($arrKey) {
-        $arrRet = array();
-        foreach ($arrKey as $keyname) {
-            $arrRet[$keyname] = $this->getValue($keyname);
-        }
-        return SC_Utils_Ex::sfSwapArray($arrRet);
+    /**
+     * 配列の縦横を入れ替えて返す
+     *
+     * @param array $arrKey 対象のキー
+     * @return array 縦横を入れ替えた配列
+     */
+    function getSwapArray($arrKey = array()) {
+        $arrTmp = $this->getHashArray($arrKey);
+        return SC_Utils_Ex::sfSwapArray($arrTmp);
     }
 
     // 項目名一覧の取得
@@ -392,12 +395,13 @@ class SC_FormParam {
         return $arrRet;
     }
 
-    // キー名の一覧を返す
+    /**
+     * キー名の一覧を返す
+     *
+     * @return array キー名の一覧
+     */
     function getKeyList() {
-        foreach($this->keyname as $val) {
-            $arrRet[] = $val;
-        }
-        return $arrRet;
+        return $this->keyname;
     }
 
     // キー名と一致した値を返す
