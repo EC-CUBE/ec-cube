@@ -46,14 +46,14 @@
 <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
 <!--{assign var=key value="main_list_image"}-->
 <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
-<!--{assign var=key value="price02"}-->
+<!--{assign var=key value="price"}-->
 <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
 
 <!--{* 商品名 *}-->◎<!--{$arrForm.name.value[$index]|h}--><br>
 <!--{* 規格名1 *}--><!--{if $arrForm.classcategory_name1.value[$index] != ""}--><!--{$arrForm.class_name1.value[$index]}-->：<!--{$arrForm.classcategory_name1.value[$index]}--><br><!--{/if}-->
 <!--{* 規格名2 *}--><!--{if $arrForm.classcategory_name2.value[$index] != ""}--><!--{$arrForm.class_name2.value[$index]}-->：<!--{$arrForm.classcategory_name2.value[$index]}--><br><!--{/if}-->
 <!--{* 販売価格 *}-->
-<!--{$arrForm.price02.value[$index]|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円<br>
+<!--{$arrForm.price.value[$index]|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円<br>
 
 <!--{assign var=key value="quantity"}-->
 <!--{if $arrErr[$key][$index] != ''}-->
@@ -63,8 +63,13 @@
 <br>
 
 <!--{assign var=key value="shipping"}-->
+<!--{if strlen($arrErr[$key][$index]) >= 1}-->
+<font color="#FF0000"><!--{$arrErr[$key][$index]}--></font>
+<!--{/if}-->
 お届け先：<br>
-<select name="<!--{$key}-->[<!--{$index}-->]"><!--{html_options options=$addrs selected=$arrForm[$key].value[$index]}--></select>
+<select name="<!--{$key}-->[<!--{$index}-->]">
+<!--{html_options options=$addrs selected=$arrForm[$key].value[$index]}-->
+</select>
 <br>
 <br>
 

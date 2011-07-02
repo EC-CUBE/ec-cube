@@ -67,11 +67,11 @@
                     <!--{assign var=index value=$smarty.section.line.index}-->
                     <tr>
                         <td class="alignC">
-                        <a
-                            <!--{if $arrForm.main_image[$index]|strlen >= 1}--> href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrForm.main_image.value[$index]|sfNoImageMainList|h}-->" class="expansion" target="_blank"
-                            <!--{/if}-->
-                        >
-                            <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrForm.main_list_image.value[$index]|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="&lt;!--{$arrForm.name.value[$index]|h}--&gt;" /></a>
+                            <a
+                                <!--{if $arrForm.main_image[$index]|strlen >= 1}--> href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrForm.main_image.value[$index]|sfNoImageMainList|h}-->" class="expansion" target="_blank"
+                                <!--{/if}-->
+                            >
+                                <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrForm.main_list_image.value[$index]|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="&lt;!--{$arrForm.name.value[$index]|h}--&gt;" /></a>
                         </td>
                         <td><!--{* 商品名 *}--><strong><!--{$arrForm.name.value[$index]|h}--></strong><br />
                             <!--{if $arrForm.classcategory_name1.value[$index] != ""}-->
@@ -110,7 +110,12 @@
                             <!--{assign var=key value="price"}-->
                             <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
                             <!--{assign var=key value="shipping"}-->
-                            <select name="<!--{$key}-->[<!--{$index}-->]"><!--{html_options options=$addrs selected=$arrForm[$key].value[$index]}--></select>
+                            <!--{if strlen($arrErr[$key][$index]) >= 1}-->
+                                <div class="attention"><!--{$arrErr[$key][$index]}--></div>
+                            <!--{/if}-->
+                            <select name="<!--{$key}-->[<!--{$index}-->]" style="<!--{$arrErr[$key][$index]|sfGetErrorColor}-->">
+                                <!--{html_options options=$addrs selected=$arrForm[$key].value[$index]}-->
+                            </select>
                         </td>
                     </tr>
                 <!--{/section}-->

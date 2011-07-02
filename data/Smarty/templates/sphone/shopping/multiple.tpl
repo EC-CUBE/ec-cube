@@ -73,33 +73,33 @@
                     <!--{if $arrForm.classcategory_name2.value[$index] != ""}-->
                         <!--{$arrForm.class_name2.value[$index]|h}-->：<!--{$arrForm.classcategory_name2.value[$index]|h}--><br />
                     <!--{/if}-->
-                    <!--{$arrForm.price02.value[$index]|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+                    <!--{$arrForm.price.value[$index]|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                 </td>
                 <td class="multi_nu">
-                  <input class="multi_nu" type="hidden" name="cart_no[<!--{$index}-->]" value="<!--{$index}-->" />
-                  <!--{assign var=key value="product_class_id"}-->
-                  <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
-                  <!--{assign var=key value="name"}-->
-                  <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
-                  <!--{assign var=key value="class_name1"}-->
-                  <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
-                  <!--{assign var=key value="class_name2"}-->
-                  <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
-                  <!--{assign var=key value="classcategory_name1"}-->
-                  <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
-                  <!--{assign var=key value="classcategory_name2"}-->
-                  <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
-                  <!--{assign var=key value="main_image"}-->
-                  <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
-                  <!--{assign var=key value="main_list_image"}-->
-                  <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
-                  <!--{assign var=key value="price02"}-->
-                  <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
-                  <!--{assign var=key value="quantity"}-->
-                  <!--{if $arrErr[$key][$index] != ''}-->
-                      <span class="attention"><!--{$arrErr[$key][$index]}--></span>
-                  <!--{/if}-->
-                  <input class="multi_nu" type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" size="4" />
+                    <input class="multi_nu" type="hidden" name="cart_no[<!--{$index}-->]" value="<!--{$index}-->" />
+                    <!--{assign var=key value="product_class_id"}-->
+                    <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
+                    <!--{assign var=key value="name"}-->
+                    <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
+                    <!--{assign var=key value="class_name1"}-->
+                    <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
+                    <!--{assign var=key value="class_name2"}-->
+                    <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
+                    <!--{assign var=key value="classcategory_name1"}-->
+                    <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
+                    <!--{assign var=key value="classcategory_name2"}-->
+                    <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
+                    <!--{assign var=key value="main_image"}-->
+                    <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
+                    <!--{assign var=key value="main_list_image"}-->
+                    <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
+                    <!--{assign var=key value="price"}-->
+                    <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
+                    <!--{assign var=key value="quantity"}-->
+                    <!--{if $arrErr[$key][$index] != ''}-->
+                        <span class="attention"><!--{$arrErr[$key][$index]}--></span>
+                    <!--{/if}-->
+                    <input class="multi_nu" type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" size="4" />
                 </td>
              </tr>
             <tr>
@@ -108,7 +108,12 @@
             <tr>
               <td colspan="3">
                 <!--{assign var=key value="shipping"}-->
-                <select name="<!--{$key}-->[<!--{$index}-->]"><!--{html_options options=$addrs selected=$arrForm[$key].value[$index]}--></select>
+                <!--{if strlen($arrErr[$key][$index]) >= 1}-->
+                    <div class="attention"><!--{$arrErr[$key][$index]}--></div>
+                <!--{/if}-->
+                <select name="<!--{$key}-->[<!--{$index}-->]">
+                    <!--{html_options options=$addrs selected=$arrForm[$key].value[$index]}-->
+                </select>
               </td>
             </tr>
            </table>

@@ -74,6 +74,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
         $this->addrs = $this->getDelivAddrs($objCustomer, $objPurchase,
                                             $this->tpl_uniqid);
         $this->tpl_addrmax = count($this->addrs);
+        $this->addrs = array_merge(array('' => '選択してください'), $this->addrs);
         $this->lfInitParam($objFormParam);
 
         $objPurchase->verifyChangeCart($this->tpl_uniqid, $objCartSess);
@@ -131,8 +132,8 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
         $objFormParam->addParam("メイン画像", "main_image");
         $objFormParam->addParam("メイン一覧画像", "main_list_image");
         $objFormParam->addParam("販売価格", "price");
-        $objFormParam->addParam("数量", 'quantity', INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), 1);
-        $objFormParam->addParam("配送先住所", 'shipping', INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("数量", 'quantity', INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), 1);
+        $objFormParam->addParam("配送先住所", 'shipping', INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("カート番号", "cart_no", INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("行数", "line_of_num", INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
     }
@@ -212,13 +213,26 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
 
         $objFormParam->convParam();
         $arrErr = $objFormParam->checkError();
-        // 入力エラーが無い場合、カゴの中身との数量の整合を確認
 
+        $arrKey = $objFormParam->getKeyList();
+        unset($arrKey['line_of_num']);
+        $arrParams = $objFormParam->getSwapArray();
+
+        foreach ($arrParams as $index => $arrParam) {
+            // お届け先を選択していて、数量を入力していない
+            if (!SC_Utils_Ex::isBlank($arrParam['shipping']) && SC_Utils_Ex::isBlank($arrParam['quantity'])) {
+                $arrErr['quantity'][$index] = '※ 数量が入力されていません。<br />';
+            }
+            // 数量を入力していて、お届け先を選択していない
+            if (!SC_Utils_Ex::isBlank($arrParam['quantity']) && SC_Utils_Ex::isBlank($arrParam['shipping'])) {
+                $arrErr['shipping'][$index] = '※ お届け先が入力されていません。<br />';
+            }
+        }
+
+        // 入力エラーが無い場合、カゴの中身との数量の整合を確認
         if (empty($arrErr)) {
             $arrQuantity = array();
             // 入力内容を集計
-            $arrParams = $objFormParam->getHashArray();
-            $arrParams = SC_Utils_Ex::sfSwapArray($arrParams);
             foreach ($arrParams as $arrParam) {
                 $product_class_id = $arrParam['product_class_id'];
                 $arrQuantity[$product_class_id] += $arrParam['quantity'];
@@ -229,9 +243,9 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
                 $product_class_id = $arrCartRow['id'];
                 // 差異がある場合、エラーを記録
                 if ($arrCartRow['quantity'] != $arrQuantity[$product_class_id]) {
-                    foreach ($arrParams as $key => $arrParam) {
+                    foreach ($arrParams as $index => $arrParam) {
                         if ($arrParam['product_class_id'] == $product_class_id) {
-                            $arrErr['quantity'][$key] = 'カゴの中(数量：' . $arrCartRow['quantity'] .')と合計が一致していません。<br />';
+                            $arrErr['quantity'][$index] = '※ カゴの中(数量：' . $arrCartRow['quantity'] .')と合計が一致していません。<br />';
                         }
                     }
                 }
@@ -256,11 +270,10 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
                                    &$objPurchase, &$objCartSess) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        $arrParams = $objFormParam->getHashArray();
-        $total = $arrParams['line_of_num'];
+        $arrParams = $objFormParam->getSwapArray();
 
-        for ($index = 0; $index < $total; $index++) {
-            $other_deliv_id = $arrParams['shipping'][$index];
+        foreach ($arrParams as $arrParam) {
+            $other_deliv_id = $arrParam['shipping'];
 
             if ($objCustomer->isLoginSuccess(true)) {
                 if ($other_deliv_id != 0) {
@@ -277,7 +290,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
             } else {
                 $arrValues = $objPurchase->getShippingTemp();
             }
-            $arrItemTemp[$other_deliv_id][$arrParams['product_class_id'][$index]] += $arrParams['quantity'][$index];
+            $arrItemTemp[$other_deliv_id][$arrParam['product_class_id']] += $arrParam['quantity'];
         }
 
         $objPurchase->clearShipmentItemTemp();
@@ -288,6 +301,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
 
         foreach ($arrItemTemp as $other_deliv_id => $arrProductClassIds) {
             foreach ($arrProductClassIds as $product_class_id => $quantity) {
+                if ($quantity == 0) continue;
                 $objPurchase->setShipmentItemTemp($other_deliv_id,
                                                   $product_class_id,
                                                   $quantity);
