@@ -90,9 +90,8 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
             $this->tpl_onload = "fnUpdateParent('". $this->getLocation($_POST['ParentPage']) ."'); window.close();";
         }
 
-        // $_GET['other_deliv_id'] のあるなしで追加か編集か判定しているらしい
-        if (!isset($_GET['other_deliv_id'])) $_GET['other_deliv_id'] = "";
-        $_SESSION['other_deliv_id'] = $_GET['other_deliv_id'];
+        // other_deliv_id のあるなしで追加か編集か判定しているらしい
+        $_SESSION['other_deliv_id'] = $_REQUEST['other_deliv_id'];
 
         // パラメーター管理クラス,パラメーター情報の初期化
         $objFormParam   = new SC_FormParam_Ex();
