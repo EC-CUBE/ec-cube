@@ -370,6 +370,22 @@ class LC_Page {
     }
 
     /**
+     * ログ出力を行う.
+     *
+     * ログイン中の顧客IDを含めてログ出力します.
+     *
+     * @access protected
+     * @param string $mess ログメッセージ
+     * @param string $log_level ログレベル
+     * @return void
+     */
+    function log($mess, $log_level) {
+        $mess = $mess . " user=" . $_SESSION['customer']['customer_id'];
+        
+        GC_Utils_Ex::gfFrontLog($mess, $log_level);
+    }
+
+    /**
      * デバック出力を行う.
      *
      * デバック用途のみに使用すること.

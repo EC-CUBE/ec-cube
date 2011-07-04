@@ -83,6 +83,9 @@ class SC_Helper_Purchase {
         $this->registerShipping($orderId, $shippingTemp);
         $objQuery->commit();
         $this->cleanupSession($orderId, $objCartSession, $objCustomer, $cartkey);
+
+        GC_Utils_Ex::gfFrontLog("order complete. customerId=" . $customerId);
+
     }
 
     /**

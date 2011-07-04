@@ -192,6 +192,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
      * @return boolean お届け先チェックの値が妥当な場合 true
      */
     function registerDeliv($deliv_check, $uniqid, &$objPurchase, &$objCustomer) {
+        $this->log("register deliv. deliv_check=" . $deliv_check);
         $arrValues = array();
         // 会員登録住所がチェックされている場合
         if ($deliv_check == '-1') {
@@ -210,7 +211,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
                 return false;
             }
 
-            $objPurchase->copyFromOrder($arrValues, $arrOtherDeliv, 'shipping', '');;
+            $objPurchase->copyFromOrder($arrValues, $arrOtherDeliv, 'shipping', '');
             $objPurchase->saveShippingTemp($arrValues);
             $objPurchase->saveOrderTemp($uniqid, $arrValues, $objCustomer);
             return true;

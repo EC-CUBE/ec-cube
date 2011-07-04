@@ -120,6 +120,34 @@ class GC_Utils {
         }
     }
 
+    /**
+     * フロント用ログ出力
+     *
+     * フロント用ログ出力を行ないます
+     * @param string $mess ログメッセージ
+     * @return void
+     */
+    function gfFrontLog($mess, $log_level='Debug') {
+        // バックトレースを取得する
+        $traces = debug_backtrace(false);
+        $bklv = 1;
+        if ($traces[1]['class'] === 'LC_Page' && $traces[1]['function'] === 'log') {
+            $bklv = 2;
+        }
+        $str = $traces[$bklv]['class'] . "::" . $traces[$bklv]['function'] . "(" . $traces[$bklv]['line'] . ") ";
+        
+        // メッセージの前に、ログ出力元関数名とログ出力関数呼び出し部分の行数を付与
+        $mess = $str . $mess;
+        
+        // TODO: デバッグログの場合は、設定によってはスタックトレースも出力する等の制御を入れたいが、要検討
+        if ($log_level === 'Debug') {
+            // $mess .= print_r($traces, true);
+        }
+        
+        // ログ出力
+        GC_Utils_Ex::gfPrintLog($mess, CUSTOMER_LOG_REALFILE );
+    }
+
     /*----------------------------------------------------------------------
      * [名称] gfPrintLog
      * [概要] ログファイルに日時、処理ファイル名、メッセージを出力
