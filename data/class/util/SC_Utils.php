@@ -154,7 +154,7 @@ class SC_Utils {
         $objPage->objSiteSess = $objSiteSess;
         $objPage->return_top = $return_top;
         $objPage->err_msg = $err_msg;
-        $objPage->is_mobile = (defined('MOBILE_SITE')) ? true : false;
+        $objPage->is_mobile = SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE;
         $objPage->process();
         exit;
     }
@@ -1844,25 +1844,7 @@ class SC_Utils {
      * @return bool フロント機能か
      */
     function sfIsFrontFunction() {
-        return SC_Utils_Ex::sfIsPcSite() || SC_Utils_Ex::sfIsMobileSite();
-    }
-
-    /**
-     * フロント機能PCサイトかを判定
-     *
-     * @return bool フロント機能PCサイトか
-     */
-    function sfIsPcSite() {
-        return defined('FRONT_FUNCTION_PC_SITE') && FRONT_FUNCTION_PC_SITE;
-    }
-
-    /**
-     * フロント機能モバイル機能かを判定
-     *
-     * @return bool フロント機能モバイル機能か
-     */
-    function sfIsMobileSite() {
-        return defined('MOBILE_SITE') && MOBILE_SITE;
+        return defined('FRONT_FUNCTION') && FRONT_FUNCTION;
     }
 
     /**

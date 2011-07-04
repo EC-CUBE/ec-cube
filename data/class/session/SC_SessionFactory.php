@@ -65,7 +65,7 @@ class SC_SessionFactory {
         // セッションの維持にリクエストパラメーターを使用する
         case 'useRequest':
             $session = new SC_SessionFactory_UseRequest;
-            defined('MOBILE_SITE')
+            SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE
                 ? $session->setState('mobile')
                 : $session->setState('pc');
             break;

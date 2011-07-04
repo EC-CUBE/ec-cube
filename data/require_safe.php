@@ -27,11 +27,8 @@
  * 主に, エラー画面などに使用する.
  */
 
-// rtrim は PHP バージョン依存対策
-define("HTML_REALDIR", rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') . '/'), '/\\') . '/');
-
-if (!defined("DATA_REALDIR")) {
-    define("DATA_REALDIR", HTML_REALDIR . HTML2DATA_DIR);
+if (!defined('DATA_REALDIR')) {
+    define('DATA_REALDIR', HTML_REALDIR . HTML2DATA_DIR);
 }
 
 // アプリケーションの初期化処理
@@ -39,8 +36,4 @@ require_once DATA_REALDIR . 'app_initial.php';
 
 // 各種クラス読み込み
 require_once DATA_REALDIR . 'require_classes.php';
-
-if (SC_Display::detectDevice() == DEVICE_TYPE_MOBILE) {
-    ob_start(array('SC_MobileEmoji', 'handler'));
-}
 ?>

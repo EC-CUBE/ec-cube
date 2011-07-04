@@ -231,7 +231,7 @@ __EOS__;
             if($email == $_SESSION['customer']['email']) {
                 // モバイルサイトの場合は携帯のメールアドレスが登録されていることもチェックする。
                 // ただし $dont_check_email_mobile が true の場合はチェックしない。
-                if (defined('MOBILE_SITE') && !$dont_check_email_mobile) {
+                if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE && !$dont_check_email_mobile) {
                     $email_mobile = $objQuery->get("email_mobile", "dtb_customer", "customer_id = ?", array($_SESSION['customer']['customer_id']));
                     return isset($email_mobile);
                 }
