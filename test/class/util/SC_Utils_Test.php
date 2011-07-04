@@ -116,6 +116,9 @@ class SC_Utils_Test extends PHPUnit_Framework_TestCase {
         $zero = 0;
         $this->assertFalse(SC_Utils::isBlank($zero));
         $this->assertFalse(SC_Utils::isBlank($zero, false));
+
+        $emptyArray[0] = "";
+        $this->assertTrue(SC_Utils::isBlank($emptyArray));
     }
 
     function testIsAbsoluteRealPath() {

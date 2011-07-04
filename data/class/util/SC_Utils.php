@@ -2023,15 +2023,18 @@ class SC_Utils {
                 if (empty($val)) {
                     return true;
                 }
+                $array_result = true;
                 foreach ($val as $in) {
                     /*
                      * SC_Utils_Ex への再帰は無限ループやメモリリークの懸念
                      * 自クラスへ再帰する.
                      */
-                    if (!SC_Utils::isBlank($in, $greedy)) {
+                    $array_result = SC_Utils::isBlank($in, $greedy);
+                    if (!$array_result) {
                         return false;
                     }
                 }
+                return $array_result;
             } else {
                 return empty($val);
             }
