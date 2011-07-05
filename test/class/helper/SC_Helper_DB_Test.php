@@ -41,12 +41,5 @@ class SC_Helper_DB_Test extends PHPUnit_Framework_TestCase {
         $objDb = new SC_Helper_DB_Ex();
         $this->assertEquals(true, $objDb->sfColumnExists("mtb_zip", "zipcode"));
     }
-
-    function testSfIndexExists() {
-        $objDb = new SC_Helper_DB_Ex();
-        $this->assertEquals(true, $objDb->sfIndexExists("dtb_products",
-                                                        "product_id",
-                                                        "dtb_products_pkey"));
-    }
 }
 ?>
