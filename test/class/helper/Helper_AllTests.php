@@ -25,6 +25,7 @@
 require_once(realpath(dirname(__FILE__)) . "/../../require.php");
 require_once(realpath(dirname(__FILE__)) . "/SC_Helper_DB_Test.php");
 require_once(realpath(dirname(__FILE__)) . "/SC_Helper_Session_Test.php");
+require_once(realpath(dirname(__FILE__)) . "/SC_Helper_Purchase_Test.php");
 
 /**
  * Helper パッケージのテストケース.
@@ -39,6 +40,7 @@ class Helper_AllTests extends PHPUnit_Framework_TestCase {
         $suite = new PHPUnit_Framework_TestSuite('SC_Helper');
         $suite->addTestSuite('SC_Helper_DB_Test');
         $suite->addTestSuite('SC_Helper_Session_Test');
+        $suite->addTestSuite('SC_Helper_Purchase_Test');
         return $suite;
     }
 }

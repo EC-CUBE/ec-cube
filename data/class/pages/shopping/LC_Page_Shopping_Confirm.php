@@ -98,7 +98,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
         }
 
         // カートの商品を取得
-        $this->arrShipping = $objPurchase->getShippingTemp(true);
+        $this->arrShipping = $objPurchase->getShippingTemp($this->is_multiple);
         $this->arrCartItems = $objCartSess->getCartList($this->cartKey);
         // 合計金額
         $this->tpl_total_inctax[$this->cartKey] = $objCartSess->getAllProductsTotal($this->cartKey);
@@ -113,7 +113,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
         // カート集計を元に最終計算
         $arrCalcResults = $objCartSess->calculate($this->cartKey, $objCustomer,
                                                   $arrOrderTemp['use_point'],
-                                                  $objPurchase->getShippingPref(),
+                                                  $objPurchase->getShippingPref($this->is_multiple),
                                                   $arrOrderTemp['charge'],
                                                   $arrOrderTemp['discount'],
                                                   $arrOrderTemp['deliv_id']);

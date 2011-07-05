@@ -30,7 +30,7 @@ require_once(realpath(dirname(__FILE__)) . "/../../../data/class_extends/helper_
  *
  * @package Helper
  * @author LOCKON CO.,LTD.
- * @version $Id:LC_Page_Test.php 15116 2007-07-23 11:32:53Z nanasess $
+ * @version $Id$
  */
 class SC_Helper_Session_Test extends PHPUnit_Framework_TestCase {
 

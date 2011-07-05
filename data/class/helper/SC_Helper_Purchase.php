@@ -74,7 +74,8 @@ class SC_Helper_Purchase {
         $cartkey = $objCartSession->getKey();
         $orderId = $this->registerOrderComplete($orderTemp, $objCartSession,
                                                 $cartkey);
-        $shippingTemp =& $this->getShippingTemp(true);
+        $isMultiple = SC_Helper_Purchase::isMultiple();
+        $shippingTemp =& $this->getShippingTemp( $isMultiple );
         foreach ($shippingTemp as $shippingId => $val) {
             $this->registerShipmentItem($orderId, $shippingId,
                                         $val['shipment_item']);
@@ -351,9 +352,9 @@ class SC_Helper_Purchase {
     /**
      * 配送先都道府県の配列を返す.
      */
-    function getShippingPref() {
+    function getShippingPref($is_multiple) {
         $results = array();
-        foreach (SC_Helper_Purchase_Ex::getShippingTemp(true) as $val) {
+        foreach (SC_Helper_Purchase_Ex::getShippingTemp($is_multiple) as $val) {
             $results[] = $val['shipping_pref'];
         }
         return $results;
@@ -1268,7 +1269,7 @@ __EOS__;
      * @param integer $cartKey 登録を行うカート情報のキー
      */
     function cleanupSession($orderId, &$objCartSession, &$objCustomer, $cartKey) {
-        // カートの内容を削除する. 
+        // カートの内容を削除する.
         $objCartSession->delAllProducts($cartKey);
         SC_SiteSession_Ex::unsetUniqId();
 
