@@ -314,7 +314,7 @@ self.moveTo(20,20);self.focus();
     
         <div class="btn-area"  >
             <ul>
-                <li><a class="btn-action" href="#" onclick="window.close(); return false;"><span class="btn-prev">閉じる</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="window.close(); return false;"><span class="btn-next">閉じる</span></a></li>
             </ul>
         </div>
 
