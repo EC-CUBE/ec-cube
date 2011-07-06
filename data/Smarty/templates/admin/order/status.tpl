@@ -89,7 +89,7 @@
             <tr style="background:<!--{$arrORDERSTATUS_COLOR[$status]}-->;">
                 <td><input type="checkbox" name="move[]" value="<!--{$arrStatus[cnt].order_id}-->" ></td>
                 <td><!--{$arrORDERSTATUS[$status]}--></td>
-                <td><a href="#" onclick="fnOpenWindow('./edit.php?order_id=<!--{$arrStatus[cnt].order_id}-->','order_disp','800','900'); return false;" ><!--{$arrStatus[cnt].order_id}--></a></td>
+                <td><a href="#" onclick="fnOpenWindow('./disp.php?order_id=<!--{$arrStatus[cnt].order_id}-->','order_disp','800','900'); return false;" ><!--{$arrStatus[cnt].order_id}--></a></td>
                 <td><!--{$arrStatus[cnt].create_date|sfDispDBDate:false}--></td>
                 <td><!--{$arrStatus[cnt].order_name01|h}--><!--{$arrStatus[cnt].order_name02|h}--></td>
                 <!--{assign var=payment_id value=`$arrStatus[cnt].payment_id`}-->

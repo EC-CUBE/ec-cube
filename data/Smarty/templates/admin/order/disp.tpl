@@ -21,279 +21,301 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
+<script type="text/javascript">
+<!--
+self.moveTo(20,20);self.focus();
+//-->
+</script>
+
 <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`admin_popup_header.tpl"}-->
-
-<h2>受注詳細</h2>
-
-<table class="form">
-    <colgroup width="30%">
-    <colgroup width="80%">
-    <tr>
-        <th>対応状況</th>
-        <td>
-            <!--{if $arrForm.delete.value == 1}-->削除済み
-            <!--{else}-->
-            <!--{assign var=status value=`$arrForm.status.value`}-->
-            <!--{$arrORDERSTATUS[$status]}-->
+    <h2>受注管理</h2>
+        <table class="form">
+            <tr>
+                <th>注文番号</th>
+                <td><!--{$arrForm.order_id.value|h}--></td>
+                <input type="hidden" name="order_id" value="<!--{$arrForm.order_id.value|h}-->" />
+            </tr>
+            <tr>
+                <th>受注日</th>
+                <td><!--{$arrForm.create_date.value|sfDispDBDate|h}--></td>
+            </tr>
+            <tr>
+                <th>対応状況</th>
+                <td><!--{$arrORDERSTATUS[$arrForm.status.value]|h}--></td>
+            </tr>
+            <tr>
+                <th>入金日</th>
+                <td><!--{$arrForm.payment_date.value|sfDispDBDate|default:"未入金"}--></td>
+            </tr>
+            <tr>
+                <th>発送日</th>
+                <td><!--{$arrForm.commit_date.value|sfDispDBDate|default:"未発送"}--></td>
+            </tr>
+        </table>
+        
+    <h2>お客様情報</h2>
+        <table class="form">
+            <tr>
+                <th>顧客ID</th>
+                <!--{if $arrForm.customer_id.value > 0}-->
+                    <td><!--{$arrForm.customer_id.value|h}-->
+                <!--{else}-->
+                    (非会員)
+                <!--{/if}-->
+                    </td>
+            </tr>
+            <tr>
+                <th>顧客名</th>
+                <td><!--{$arrForm.order_name01.value|h}-->　<!--{$arrForm.order_name02.value|h}--></td>
+            </tr>
+            <tr>
+                <th>顧客名(カナ)</th>
+                <td><!--{$arrForm.order_kana01.value|h}-->　<!--{$arrForm.order_kana02.value|h}--></td>
+            </tr>
+            <tr>
+                <th>メールアドレス</th>
+                <td><!--{$arrForm.order_email.value|h}--></td>
+            </tr>
+            <tr>
+                <th>TEL</th>
+                <td><!--{$arrForm.order_tel01.value|h}--> - <!--{$arrForm.order_tel02.value|h}--> - <!--{$arrForm.order_tel03.value|h}--></td>
+            </tr>
+            <tr>
+                <th>住所</th>
+                <td>
+                    〒　<!--{$arrForm.order_zip01.value|h}--> - <!--{$arrForm.order_zip02.value|h}--><br />
+                    <!--{$arrPref[$arrForm.order_pref.value]|h}--><!--{$arrForm.order_addr01.value|h}--><!--{$arrForm.order_addr02.value|h}-->
+                </td>
+            </tr>
+            <tr>
+                <th>備考</th>
+                <td><!--{$arrForm.message.value|h|nl2br}--></td>
+            </tr>
+            <tr>
+                <th>現在ポイント</th>
+                <td>
+                    <!--{if $arrForm.customer_id >0}-->
+                        <!--{$arrForm.customer_point.value|number_format}-->
+                        pt
+                    <!--{else}-->
+                        (非会員)
+                    <!--{/if}-->
+                </td>
+            </tr>
+            <tr>
+                <th>アクセス端末</th>
+                <td><!--{$arrDeviceType[$arrForm.device_type_id.value]|h}--></td>
+            </tr>
+        </table>
+        
+    <h2>受注商品情報</h2>
+        <table class="list">
+            <tr>
+                <th class="id">商品コード</th>
+                <th class="name">商品名/規格1/規格2</th>
+                <th class="price">単価</th>
+                <th class="qty">数量</th>
+                <th class="price">税込み価格</th>
+                <th class="price">小計</th>
+            </tr>
+            <!--{section name=cnt loop=$arrForm.quantity.value}-->
+            <!--{assign var=product_index value="`$smarty.section.cnt.index`"}-->
+            <tr>
+                <td>
+                    <!--{$arrForm.product_code.value[$product_index]|h}-->
+                </td>
+                <td>
+                    <!--{$arrForm.product_name.value[$product_index]|h}-->/<!--{$arrForm.classcategory_name1.value[$product_index]|default:"(なし)"|h}-->/<!--{$arrForm.classcategory_name2.value[$product_index]|default:"(なし)"|h}-->
+                </td>
+                <td align="center">
+                    <!--{$arrForm.price.value[$product_index]|h}-->円
+                </td>
+                <td align="center">
+                    <!--{$arrForm.quantity.value[$product_index]|h}-->
+                </td>
+                <!--{assign var=price value=`$arrForm.price.value[$product_index]`}-->
+                <!--{assign var=quantity value=`$arrForm.quantity.value[$product_index]`}-->
+                <td class="right"><!--{$price|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> 円</td>
+                <td class="right"><!--{$price|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|sfMultiply:$quantity|number_format}-->円</td>
+            </tr>
+            <!--{/section}-->
+            <tr>
+                <th colspan="5" class="column right">小計</th>
+                <td class="right"><!--{$arrForm.subtotal.value|number_format}-->円</td>
+            </tr>
+            <tr>
+                <th colspan="5" class="column right">値引</th>
+                <td class="right"><!--{$arrForm.discount.value|h}-->円</td>
+            </tr>
+            <tr>
+                <th colspan="5" class="column right">送料</th>
+                <td class="right"><!--{$arrForm.deliv_fee.value|h}-->円</td>
+            </tr>
+            <tr>
+                <th colspan="5" class="column right">手数料</th>
+                <td class="right"><!--{$arrForm.charge.value|h}-->円</td>
+            </tr>
+            <tr>
+                <th colspan="5" class="column right">合計</th>
+                <td class="right"><!--{$arrForm.total.value|number_format}--> 円</td>
+            </tr>
+            <tr>
+                <th colspan="5" class="column right">お支払い合計</th>
+                <td class="right"><!--{$arrForm.payment_total.value|number_format}--> 円</td>
+            </tr>
+            <!--{if $smarty.const.USE_POINT !== false}-->
+                <tr>
+                    <th colspan="5" class="column right">使用ポイント</th>
+                    <td class="right"><!--{$arrForm.use_point.value|default:0|h}-->pt</td>
+                </tr>
+                <!--{if $arrForm.birth_point.value > 0}-->
+                <tr>
+                    <th colspan="5" class="column right">お誕生日ポイント</th>
+                    <td class="right"><!--{$arrForm.birth_point.value|number_format}-->pt</td>
+                </tr>
+                <!--{/if}-->
+                <tr>
+                    <th colspan="5" class="column right">加算ポイント</th>
+                    <td class="right"><!--{$arrForm.add_point.value|number_format|default:0}-->pt</td>
+                </tr>
             <!--{/if}-->
-        </td>
-    </tr>
-    <tr>
-        <th>入金日</th>
-        <td><!--{$arrForm.payment_date.value|sfDispDBDate|default:"未入金"}--></td>
-    </tr>
-    <tr>
-        <th>発送日</th>
-        <td><!--{$arrForm.commit_date.value|sfDispDBDate|default:"未発送"}--></td>
-    </tr>
-</table>
+        </table>
+        
+    <h2>お届け先情報</h2>
+        <!--{section name=shipping loop=$arrForm.shipping_quantity.value}-->
+        <!--{assign var=shipping_index value="`$smarty.section.shipping.index`"}-->
 
-<h3>注文者情報</h3>
-<table class="form">
-    <colgroup width="30%">
-    <colgroup width="80%">
-    <tr>
-        <th>注文番号</th>
-        <td><!--{$arrForm.order_id.value}--></td>
-    </tr>
-    <tr>
-        <th>受注日</th>
-        <td><!--{$arrForm.create_date.value|sfDispDBDate}--></td>
-    </tr>
-    <tr>
-        <th>会員ID</th>
-        <td>
-        <!--{if $arrForm.customer_id.value > 0}-->
-            <!--{$arrForm.customer_id.value}-->
-        <!--{else}-->
-            (非会員)
+        <!--{if $arrForm.shipping_quantity.value > 1}-->
+            <h3>お届け先<!--{$smarty.section.shipping.iteration}--></h3>
         <!--{/if}-->
-        </td>
-    </tr>
-    <tr>
-        <th>お名前</th>
-        <td><!--{$arrForm.order_name01.value|h}--> <!--{$arrForm.order_name02.value|h}--></td>
-    </tr>
-    <tr>
-        <th>お名前(フリガナ)</th>
-        <td><!--{$arrForm.order_kana01.value|h}--> <!--{$arrForm.order_kana02.value|h}--></td>
-    </tr>
-    <tr>
-        <th>メールアドレス</th>
-        <td><a href="mailto:<!--{$arrForm.order_email.value|h}-->"><!--{$arrForm.order_email.value|h}--></a></td>
-    </tr>
-    <tr>
-        <th>TEL</th>
-        <td><!--{$arrForm.order_tel01.value}-->-<!--{$arrForm.order_tel02.value}-->-<!--{$arrForm.order_tel03.value}--></td>
-    </tr>
-    <tr>
-        <th>住所</th>
-        <td>
-            〒<!--{$arrForm.order_zip01.value}-->-<!--{$arrForm.order_zip02.value}--><br />
-            <!--{assign var=key value=$arrForm.order_pref.value}-->
-            <!--{$arrPref[$key]}--><!--{$arrForm.order_addr01.value}--><!--{$arrForm.order_addr02.value}-->
-        </td>
-    </tr>
-    <tr>
-        <th>備考</th>
-        <td><!--{$arrForm.message.value|h|nl2br}--></td>
-    </tr>
-</table>
+        <!--{assign var=key value="shipping_id"}-->
+        <!--{if $arrForm.shipping_quantity.value > 1}-->
+            <!--{assign var=product_quantity value="shipping_product_quantity"}-->
 
-<!--▼お届け先情報ここから-->
-<h3>お届け先情報</h3>
-<table class="form">
-    <colgroup width="30%">
-    <colgroup width="80%">
-    <tr>
-        <th>お名前</th>
-        <td>
-            <!--{assign var=key1 value="deliv_name01"}-->
-            <!--{assign var=key2 value="deliv_name02"}-->
-            <!--{$arrForm[$key1].value|h}-->
-            <!--{$arrForm[$key2].value|h}-->
-        </td>
-    </tr>
-    <tr>
-        <th>お名前(フリガナ)</th>
-        <td>
-            <!--{assign var=key1 value="deliv_kana01"}-->
-            <!--{assign var=key2 value="deliv_kana02"}-->
-            <!--{$arrForm[$key1].value|h}-->
-            <!--{$arrForm[$key2].value|h}-->
-        </td>
-    </tr>
-    <tr>
-        <th>郵便番号</th>
-        <td>
-            <!--{assign var=key1 value="deliv_zip01"}-->
-            <!--{assign var=key2 value="deliv_zip02"}-->
-            〒<!--{$arrForm[$key1].value|h}-->-<!--{$arrForm[$key2].value|h}-->
-        </td>
-    </tr>
-    <tr>
-        <th>TEL</th>
-        <td>
-            <!--{assign var=key1 value="deliv_tel01"}-->
-            <!--{assign var=key2 value="deliv_tel02"}-->
-            <!--{assign var=key3 value="deliv_tel03"}-->
-            <!--{$arrForm[$key1].value|h}-->-<!--{$arrForm[$key2].value|h}-->-<!--{$arrForm[$key3].value|h}-->
-        </td>
-    </tr>
-    <tr>
-        <th>住所</th>
-        <td>
-            <!--{assign var=pref value=`$arrForm.deliv_pref.value`}-->
-            <!--{$arrPref[$pref]}-->
-            <!--{assign var=key value="deliv_addr01"}-->
-            <!--{$arrForm[$key].value|h}-->
-            <!--{assign var=key value="deliv_addr02"}-->
-            <!--{$arrForm[$key].value|h}-->
-        </td>
-    </tr>
-</table>
-<!--▲お届け先情報ここまで-->
+            <!--{if $arrForm[$product_quantity].value[$shipping_index] > 0}-->
+                <table class="list" id="order-edit-products">
+                    <tr>
+                        <th class="id">商品コード</th>
+                        <th class="name">商品名/規格1/規格2</th>
+                        <th class="price">単価</th>
+                        <th class="qty">数量</th>
+                    </tr>
+                    <!--{section name=item loop=$arrForm[$product_quantity].value[$shipping_index]}-->
+                        <!--{assign var=item_index value="`$smarty.section.item.index`"}-->
 
-<h3>受注商品情報</h3>
-<table class="list">
-    <colgroup width="15%">
-    <colgroup width="35%">
-    <colgroup width="15%">
-    <colgroup width="10%">
-    <colgroup width="15%">
-    <tr>
-        <th>商品コード</th>
-        <th>商品名/規格1/規格2</th>
-        <th>単価</th>
-        <th>数量</th>
-        <th>小計</th>
-    </tr>
-    <!--{section name=cnt loop=$arrForm.quantity.value}-->
-    <!--{assign var=key value="`$smarty.section.cnt.index`"}-->
-    <tr>
-        <td><!--{$arrForm.product_code.value[$key]|h}--></td>
-        <td><!--{$arrForm.product_name.value[$key]|h}--><br><!--{$arrForm.classcategory_name1.value[$key]|default:"(なし)"|h}-->/<!--{$arrForm.classcategory_name2.value[$key]|default:"(なし)"|h}--></td>
-        <td class="right"><!--{if $arrForm.price.value[$key] != 0}--><!--{$arrForm.price.value[$key]|number_format}-->円<!--{else}-->無料<!--{/if}--></td>
-        <td class="center"><!--{$arrForm.quantity.value[$key]|h}--></td>
-        <!--{assign var=price value=`$arrForm.price.value[$key]`}-->
-        <!--{assign var=quantity value=`$arrForm.quantity.value[$key]`}-->
-        <td class="right"><!--{if $price != 0}--><!--{$price|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|sfMultiply:$quantity|number_format}-->円<!--{else}-->無料<!--{/if}--></td>
-    </tr>
-    <!--{/section}-->
-    <tr>
-        <th colspan="4" class="column right">小計</th>
-        <td align="right"><!--{$arrForm.subtotal.value|number_format}-->円</td>
-    </tr>
-    <tr>
-        <th colspan="4" class="column right">ポイント値引き</th>
-        <td align="right"><!--{assign var=point_discount value="`$arrForm.use_point.value*$smarty.const.POINT_VALUE`"}--><!--{$point_discount|number_format}-->円</td>
-    </tr>
-    <!--{assign var=discount value="`$arrForm.discount.value`"}-->
-    <!--{if $discount != "" && $discount > 0}-->
-    <tr>
-        <th colspan="4" class="column right">値引き</th>
-        <td align="right"><!--{$discount|number_format}-->円</td>
-    </tr>
-    <!--{/if}-->
-    <tr>
-        <th colspan="4" class="column right">送料</th>
-        <td align="right"><!--{assign var=key value="deliv_fee"}--><!--{$arrForm[$key].value|number_format|h}--> 円</td>
-    </tr>
-    <tr>
-        <th colspan="4" class="column right">手数料</th>
-        <td align="right"><!--{assign var=key value="charge"}-->
-    <span class="attention"><!--{$arrErr[$key]}--></span><!--{$arrForm[$key].value|number_format|h}--> 円</td>
-    </tr>
-    <tr>
-        <th colspan="4" class="column right">合計</th>
-        <td align="right"><!--{$arrForm.total.value|number_format}--> 円</td>
-    </tr>
-    <tr>
-        <th colspan="4" class="column right">お支払い合計</th>
-        <td align="right"><!--{$arrForm.payment_total.value|number_format}--> 円</td>
-    </tr>
-    <tr>
-        <th colspan="4" class="column right">使用ポイント</th>
-        <td align="right"><!--{assign var=key value="use_point"}--><!--{if $arrForm[$key].value != ""}--><!--{$arrForm[$key].value|number_format}--><!--{else}-->0<!--{/if}--> pt</td>
-    </tr>
-    <!--{if $arrForm.birth_point.value > 0}-->
-    <tr>
-        <th colspan="4" class="column right">お誕生日ポイント</th>
-        <td align="right">
-            <!--{$arrForm.birth_point.value|number_format}-->
-            pt</td>
-    </tr>
-    <!--{/if}-->
-    <tr>
-        <th colspan="4" class="column right">加算ポイント</th>
-        <td align="right">
-        <!--{$arrForm.add_point.value|default:0|number_format}-->
-            pt</td>
-    </tr>
-    <tr>
-        <!--{if $arrForm.customer_id.value > 0}-->
-        <th colspan="4" class="column right">現在ポイント</th>
-        <td align="right">
-        <!--{$arrForm.point.value|number_format}-->
-            pt</td>
-        <!--{else}-->
-            <th colspan="4" class="column right">現在ポイント</th><td align="center">(なし)</td>
+                        <tr>
+                            <td>
+                                <!--{assign var=key value="shipment_product_class_id"}-->
+                                <!--{assign var=key value="shipment_product_code"}-->
+                                <!--{$arrForm[$key].value[$shipping_index][$item_index]|h}-->
+                            </td>
+                            <td>
+                                <!--{assign var=key1 value="shipment_product_name"}-->
+                                <!--{assign var=key2 value="shipment_classcategory_name1"}-->
+                                <!--{assign var=key3 value="shipment_classcategory_name2"}-->
+                                <!--{$arrForm[$key1].value[$shipping_index][$item_index]|h}-->/<!--{$arrForm[$key2].value[$shipping_index][$item_index]|default:"(なし)"|h}-->/<!--{$arrForm[$key3].value[$shipping_index][$item_index]|default:"(なし)"|h}-->
+                            </td>
+                            <td class="right">
+                                <!--{assign var=key value="shipment_price"}-->
+                                <!--{$arrForm[$key].value[$shipping_index][$item_index]|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+                            </td>
+                            <td class="right">
+                                <!--{assign var=key value="shipment_quantity"}-->
+                                <!--{$arrForm[$key].value[$shipping_index][$item_index]|h}-->
+                            </td>
+                        </tr>
+                    <!--{/section}-->
+                </table>
+            <!--{/if}-->
         <!--{/if}-->
-    </tr>
-    <!--{*
-    <tr>
-        <th colspan="4" class="column right">反映後ポイント (ポイントの変更は<a href="?" onclick="return fnEdit('<!--{$arrForm.customer_id.value}-->');">会員登録</a>から手動にてお願い致します。)</th>
-        <td align="right">
-            <span class="attention"><!--{$arrErr.total_point}--></span>
-            <!--{$arrForm.total_point.value|number_format}-->
-            pt
-        </td>
-    </tr>
-    *}-->
-</table>
+        
+        <table class="form">
+            <tr>
+                <th>お名前</th>
+                <td>
+                    <!--{$arrForm.shipping_name01.value[$shipping_index]|h}-->　<!--{$arrForm.shipping_name02.value[$shipping_index]|h}-->
+                </td>
+            </tr>
+            <tr>
+                <th>お名前(カナ)</th>
+                <td>
+                    <!--{$arrForm.shipping_kana01.value[$shipping_index]|h}-->　<!--{$arrForm.shipping_kana02.value[$shipping_index]|h}-->
+                </td>
+            </tr>
+            <tr>
+                <th>TEL</th>
+                <td>
+                    <!--{$arrForm.shipping_tel01.value[$shipping_index]|h}--> - <!--{$arrForm.shipping_tel02.value[$shipping_index]|h}--> - <!--{$arrForm.shipping_tel03.value[$shipping_index]|h}-->
+                </td>
+            </tr>
+            <tr>
+                <th>住所</th>
+                <td>
+                    〒　<!--{$arrForm.shipping_zip01.value[$shipping_index]|h}--> - <!--{$arrForm.shipping_zip02.value[$shipping_index]|h}--><br />
+                    <!--{$arrPref[$arrForm.order_pref.value]|h}--><!--{$arrForm.shipping_addr01.value[$shipping_index]|h}--><!--{$arrForm.shipping_addr02.value[$shipping_index]|h}-->
+                </td>
+            </tr>
+            <tr>
+                <th>お届け時間</th>
+                <td>
+                    <!--{assign var=deliv_time_id value="`$arrForm.time_id.value[$shipping_index]`"}-->
+                    <!--{$arrDelivTime[$deliv_time_id]|default:"指定無し"}-->
+                </td>
+            </tr>
+            <tr>
+                <th>お届け日</th>
+                <td>
+                    <!--{if $arrForm.shipping_date.value[$shipping_index] == ""}-->
+                        指定無し
+                    <!--{else}-->
+                        <!--{$arrForm.shipping_date_year.value[$shipping_index]|default:""}-->年
+                        <!--{$arrForm.shipping_date_month.value[$shipping_index]|default:""}-->月
+                        <!--{$arrForm.shipping_date_day.value[$shipping_index]|default:""}-->日
+                    <!--{/if}-->
+                </td>
+            </tr>
 
-<table class="form">
-    <colgroup width="30%">
-    <colgroup width="80%">
-    <tr>
-        <th>お支払方法</th>
-        <td>
-            <!--{assign var=payment_id value="`$arrForm.payment_id.value`"}-->
-            <!--{$arrPayment[$payment_id]|h}-->
-        </td>
-    </tr>
-    <!--{if $arrForm.payment_info.value|@count > 0}-->
-    <tr>
-        <th><!--{$arrForm.payment_typ.valuee}-->情報</th>
-        <td>
-            <!--{foreach key=key item=item from=$arrForm.payment_info.value}-->
-            <!--{if $key != "title"}--><!--{if $item.name != ""}--><!--{$item.name}-->：<!--{/if}--><!--{$item.value}--><br/><!--{/if}-->
-            <!--{/foreach}-->
-        </td>
-    </tr>
-    <!--{/if}-->
-    <tr>
-        <th>お届け時間</th>
-        <td>
-            <!--{assign var=deliv_time_id value="`$arrForm.deliv_time_id.value`"}-->
-            <!--{$arrDelivTime[$deliv_time_id]|default:"指定なし"}-->
-        </td>
-    </tr>
-    <tr>
-        <th>お届け日</th>
-        <td>
-            <!--{assign var=key value="deliv_date"}-->
-            <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
-            <!--{$arrForm[$key].value|default:"指定なし"}-->
-        </td>
-    </tr>
-    <tr>
-        <th>メモ</th>
-        <td>
-            <!--{assign var=key value="note"}-->
-            <!--{$arrForm[$key].value|h|nl2br}-->
-        </td>
-    </tr>
-</table>
+        </table>
+        <!--{/section}-->
+    
+        <a name="deliv"></a>
+        <table class="form">
+            <tr>
+                <th>配送業者</th>
+                <td>
+                    <!--{$arrDeliv[$arrForm.deliv_id.value]|h}-->
+                </td>
+            </tr>
+            <tr>
+                <th>お支払方法</th>
+                <td>
+                    <!--{$arrPayment[$arrForm.payment_id.value]|h}-->
+                </td>
+            </tr>
+
+            <!--{if $arrForm.payment_info|@count > 0}-->
+            <tr>
+                <th><!--{$arrForm.payment_type}-->情報</th>
+                <td>
+                    <!--{foreach key=key item=item from=$arrForm.payment_info}-->
+                    <!--{if $key != "title"}--><!--{if $item.name != ""}--><!--{$item.name}-->：<!--{/if}--><!--{$item.value}--><br/><!--{/if}-->
+                    <!--{/foreach}-->
+                </td>
+            </tr>
+            <!--{/if}-->
+
+            <tr>
+                <th>メモ</th>
+                <td>
+                    <!--{$arrForm.note.value|h|nl2br}-->
+                </td>
+            </tr>
+        </table>
+    
+        <div class="btn-area"  >
+            <ul>
+                <li><a class="btn-action" href="#" onclick="window.close(); return false;"><span class="btn-prev">閉じる</span></a></li>
+            </ul>
+        </div>
 
 <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`admin_popup_footer.tpl"}-->
