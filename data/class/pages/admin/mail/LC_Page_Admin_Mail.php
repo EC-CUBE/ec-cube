@@ -61,8 +61,8 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
 
         // 日付プルダウン設定
         $objDate = new SC_Date_Ex(BIRTH_YEAR);
-        $this->arrBirthYear = $objDate->getYear();   
-        $this->arrRegistYear = $objDate->getYear();   
+        $this->arrBirthYear = $objDate->getYear();
+        $this->arrRegistYear = $objDate->getYear();
         $this->arrMonth = $objDate->getMonth();
         $this->arrDay = $objDate->getDay();
         $this->objDate = $objDate;
@@ -207,7 +207,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      * メルマガテンプレート一覧情報の取得
      *
      * @param array $arrTemplate SC_Helper_Mail_Ex::sfGetMailmagaTemplate()の戻り値
-     * @return array key:template_id value:サブジェクト【配信形式】 
+     * @return array key:template_id value:サブジェクト【配信形式】
      */
     function lfGetMailTemplateList($arrTemplate){
         if ( is_array($arrTemplate) ){
@@ -257,13 +257,16 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $dtb_send_history["create_date"] = "now()";
         $dtb_send_history['send_id'] = $send_id;
         $objQuery->insert("dtb_send_history", $dtb_send_history );
-
+        // 「配信メールアドレス種別」に携帯メールアドレスが指定されている場合は、携帯メールアドレスに配信
+        $emailtype="email";
+        $searchmailtype = $objFormParam->getValue('search_mail_type');
+        if($searchmailtype==2||$searchmailtype==4)$emailtype="email_mobile";
         if ( is_array( $arrSendCustomer ) ){
             foreach( $arrSendCustomer as $line ){
                 $dtb_send_customer = array();
                 $dtb_send_customer["customer_id"] = $line["customer_id"];
                 $dtb_send_customer["send_id"] = $send_id;
-                $dtb_send_customer['email'] = $line['email'];
+                $dtb_send_customer['email'] = $line[$emailtype];
                 $dtb_send_customer['name'] = $line["name01"] . " " . $line["name02"];
                 $objQuery->insert("dtb_send_customer", $dtb_send_customer );
             }
@@ -275,7 +278,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      * 配信履歴から条件を取得する
      *
      * @param integer $send_id　配信履歴番号
-     * @return array 
+     * @return array
      */
     function lfGetMailQuery($send_id){
 
