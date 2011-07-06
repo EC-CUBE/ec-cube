@@ -1118,19 +1118,18 @@ __EOS__;
 
             if ($addCustomerPoint != 0) {
                 // ▼会員テーブルの更新
-                $sqlval = array();
+                $customer_sqlval = array();
                 $where = '';
                 $arrVal = array();
                 $arrRawSql = array();
                 $arrRawSqlVal = array();
 
-                $sqlval['update_date'] = 'Now()';
+                $customer_sqlval['update_date'] = 'Now()';
                 $arrRawSql['point'] = 'point + ?';
                 $arrRawSqlVal[] = $addCustomerPoint;
                 $where .= 'customer_id = ?';
                 $arrVal[] = $arrOrderOld['customer_id'];
-
-                $objQuery->update('dtb_customer', $sqlval, $where, $arrVal, $arrRawSql, $arrRawSqlVal);
+                $objQuery->update('dtb_customer', $customer_sqlval, $where, $arrVal, $arrRawSql, $arrRawSqlVal);
                 // ▲会員テーブルの更新
 
                 // 会員.ポイントをマイナスした場合、
