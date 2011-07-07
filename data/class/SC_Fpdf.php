@@ -57,6 +57,7 @@ class SC_Fpdf {
 
         // SJISフォント
         $this->pdf->AddSJISFont();
+        $this->pdf->SetFont('SJIS');
 
         //ページ総数取得
         $this->pdf->AliasNbPages();
@@ -150,18 +151,18 @@ class SC_Fpdf {
         $this->lfText(27, 59, $text, 11); //購入者氏名
 
         // お届け先情報
-        $this->pdf->SetFont('SJIS', '', 10);
+        $this->pdf->SetFontSize(10);
         $this->lfText(25, 125, SC_Utils_Ex::sfDispDBDate($this->arrDisp['create_date']), 10); //ご注文日
         $this->lfText(25, 135, $this->arrDisp['order_id'], 10); //注文番号
 
-        $this->pdf->SetFont('SJIS', 'B', 15);
+        $this->pdf->SetFont('', 'B', 15);
         $this->pdf->Cell(0, 10, $this->lfConvSjis($this->tpl_title), 0, 2, 'C', 0, '');  //文書タイトル（納品書・請求書）
         $this->pdf->Cell(0, 66, '', 0, 2, 'R', 0, '');
         $this->pdf->Cell(5, 0, '', 0, 0, 'R', 0, '');
         $this->pdf->Cell(67, 8, $this->lfConvSjis(number_format($this->arrDisp['payment_total'])." 円"), 0, 2, 'R', 0, '');
         $this->pdf->Cell(0, 45, '', 0, 2, '', 0, '');
 
-        $this->pdf->SetFont('SJIS', '', 8);
+        $this->pdf->SetFontSize(8);
 
         $monetary_unit = $this->lfConvSjis("円");
         $point_unit = $this->lfConvSjis('Pt');
@@ -255,10 +256,10 @@ class SC_Fpdf {
 
     function setEtcData() {
         $this->pdf->Cell(0, 10, '', 0, 1, 'C', 0, '');
-        $this->pdf->SetFont('SJIS', '', 9);
+        $this->pdf->SetFontSize(9);
         $this->pdf->MultiCell(0, 6, $this->lfConvSjis("＜ 備 考 ＞"), 'T', 2, 'L', 0, '');  //備考
         $this->pdf->Ln();
-        $this->pdf->SetFont('SJIS', '', 8);
+        $this->pdf->SetFontSize(8);
         $this->pdf->MultiCell(0, 4, $this->lfConvSjis($this->arrData['etc1']."\n".$this->arrData['etc2']."\n".$this->arrData['etc3']), '', 2, 'L', 0, '');  //備考
     }
 
@@ -281,11 +282,16 @@ class SC_Fpdf {
     }
 
     // PDF_Japanese::Text へのパーサー
-    function lfText($x, $y, $text, $size, $style = '') {
-        $text = mb_convert_encoding($text, "SJIS-win", CHAR_CODE);
+    function lfText($x, $y, $text, $size = 0, $style = '') {
+        // 退避
+        $bak_font_style = $this->pdf->FontStyle;
+        $bak_font_size = $this->pdf->FontSizePt;
 
-        $this->pdf->SetFont('SJIS', $style, $size);
-        $this->pdf->Text($x, $y, $text);
+        $this->pdf->SetFont('', $style, $size);
+        $this->pdf->Text($x, $y, $this->lfConvSjis($text));
+
+        // 復元
+        $this->pdf->SetFont('', $bak_font_style, $bak_font_size);
     }
 
     // 受注データの取得
