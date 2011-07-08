@@ -27,35 +27,32 @@ class ImageConverter {
         $inputImageHeight = $imagesize[1];
         $inputImageType   = $imagesize[2];
 
-        // GIF 画像は縮小後も GIF 画像で出力する。旧機種対応などで、機種用の画像形式に変換したい場合、この処理は削除する。
-        if ($inputImageType == IMAGETYPE_GIF) {
-            $this->outputImageType = 'gif';
-        }
+        // 今回実行用の一時変数をセット
+        $output_image_width = $this->outputImageWidth;
+        $output_image_height = is_null($this->outputImageHeight)
+            ? $inputImageHeight * ($output_image_width / $inputImageWidth)
+            : $this->outputImageHeight;
+        // GIF 画像は縮小後も GIF 画像で出力する。旧機種対応などで、機種用の画像形式に変換したい場合、expr3 に固定する。
+        $output_image_type = $inputImageType == IMAGETYPE_GIF ? 'gif' : $this->outputImageType;
 
-        $outputImageName  = sha1($inputImagePath . '_' . $this->outputImageWidth . '_' . $this->outputFileSize . '_' . $filestat['mtime']) . '.' . $this->outputImageType;
+        $outputImageName  = sha1($inputImagePath . '_' . $this->outputImageWidth . '_' . $this->outputFileSize . '_' . $filestat['mtime']) . '.' . $output_image_type;
         $outputImagePath  = $this->outputImageDir . '/' . $outputImageName;
 
-        if (is_null($this->outputImageHeight)) {
-            $height_was_null = TRUE;
-            $this->outputImageHeight = $inputImageHeight * ($this->outputImageWidth / $inputImageWidth);
-        } else {
-            $height_was_null = FALSE;
-        }
-        if ($inputImageWidth <= $this->outputImageWidth) {
-            if ($inputImageHeight <= $this->outputImageHeight) {
-                $this->outputImageWidth  = $inputImageWidth;
-                $this->outputImageHeight = $inputImageHeight;
+        if ($inputImageWidth <= $output_image_width) {
+            if ($inputImageHeight <= $output_image_height) {
+                $output_image_width  = $inputImageWidth;
+                $output_image_height = $inputImageHeight;
             } else {
-                $this->outputImageWidth = $inputImageWidth * ($this->outputImageHeight / $inputImageHeight);
+                $output_image_width = $inputImageWidth * ($output_image_height / $inputImageHeight);
             }
         } else {
-            if ($inputImageHeight <= $this->outputImageHeight) {
-                $this->outputImageHeight = $inputImageHeight * ($this->outputImageWidth / $inputImageWidth);
+            if ($inputImageHeight <= $output_image_height) {
+                $output_image_height = $inputImageHeight * ($output_image_width / $inputImageWidth);
             } else {
-                if ($this->outputImageWidth / $inputImageWidth < $this->outputImageHeight / $inputImageHeight) {
-                    $this->outputImageHeight = $inputImageHeight * ($this->outputImageWidth / $inputImageWidth);
+                if ($output_image_width / $inputImageWidth < $output_image_height / $inputImageHeight) {
+                    $output_image_height = $inputImageHeight * ($output_image_width / $inputImageWidth);
                 } else {
-                    $this->outputImageWidth = $inputImageWidth * ($this->outputImageHeight / $inputImageHeight);
+                    $output_image_width = $inputImageWidth * ($output_image_height / $inputImageHeight);
                 }
             }
         }
@@ -95,20 +92,20 @@ class ImageConverter {
             $outputImagePathTemp = $outputImagePath . '.tmp-' . rand();
             do {
                 // 空ファイル作成
-                if ($this->outputImageType == 'gif') {
+                if ($output_image_type == 'gif') {
                     // 縮小時のノイズ防止のためインデックスカラーで処理する。特に透過色を扱う上で重要。
-                    $outputImage = ImageCreate($this->outputImageWidth * $scale, $this->outputImageHeight * $scale);
+                    $outputImage = ImageCreate($output_image_width * $scale, $output_image_height * $scale);
                 } else {
-                    $outputImage = ImageCreateTruecolor($this->outputImageWidth * $scale, $this->outputImageHeight * $scale);
+                    $outputImage = ImageCreateTruecolor($output_image_width * $scale, $output_image_height * $scale);
                 }
 
-                ImageCopyResampled($outputImage, $tempImage, 0, 0, 0, 0, $this->outputImageWidth * $scale, $this->outputImageHeight * $scale, $inputImageWidth, $inputImageHeight);
+                ImageCopyResampled($outputImage, $tempImage, 0, 0, 0, 0, $output_image_width * $scale, $output_image_height * $scale, $inputImageWidth, $inputImageHeight);
 
                 // ファイル出力
 
                 @unlink($outputImagePathTemp);
 
-                switch ($this->outputImageType) {
+                switch ($output_image_type) {
                     case 'gif':
                         if (!empty($arrTransparentColor)) {
                             $transparent_color_id = imagecolorexact($outputImage, $arrTransparentColor['red'], $arrTransparentColor['green'], $arrTransparentColor['blue']);
@@ -154,10 +151,6 @@ class ImageConverter {
             imagedestroy($tempImage);
 
             $info['convert'] = TRUE;
-        }
-
-        if ($height_was_null) {
-            $this->outputImageHeigh = NULL;
         }
 
         $info['outputImagePath']  = $outputImagePath;
