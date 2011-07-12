@@ -121,31 +121,89 @@ class GC_Utils {
     }
 
     /**
+     * 呼び出し元関数名を返します
+     *
+     * @param int $forLogInfo ログ出力用に利用するかどうか(1:ログ出力用に利用する)
+     * @return string 呼び出し元クラス、関数名、行数の文字列表現
+     */
+    function gfGetCallerInfo($forLogInfo=0) {
+        // バックトレースを取得する
+        $traces = debug_backtrace(false);
+        $bklv = 1;
+        if ( $forLogInfo === 1
+            && ($traces[1]['class'] === 'LC_Page'
+            || $traces[1]['class'] === 'LC_Page_Admin')
+            && $traces[1]['function'] === 'log') {
+            $bklv = 2;
+        }
+        $str = $traces[$bklv]['class'] . "::" . $traces[$bklv]['function'] . "(" . $traces[$bklv]['line'] . ") ";
+
+        return $str;
+    }
+
+    /**
+     * ログメッセージに、呼び出し元関数名等の情報を付加して返します
+     *
+     * @param string $mess ログメッセージ
+     * @param string $log_level ログレベル("Info" or "Debug")
+     * @return string ログメッセージに呼び出し元関数名等の情報を付加した文字列
+     */
+    function gfGetLogStr($mess, $log_level='Info') {
+        // メッセージの前に、ログ出力元関数名とログ出力関数呼び出し部分の行数を付与
+        $mess = GC_Utils::gfGetCallerInfo(1) . $mess;
+
+        // ログレベル=Debugの場合は、[Debug]を先頭に付与する
+        if ($log_level === 'Debug') {
+            $mess = "[Debug]" . $mess;
+        }
+
+        return $mess;
+    }
+
+    /**
+     * 管理画面用ログ出力
+     *
+     * 管理画面用ログ出力を行ないます
+     * @param string $mess ログメッセージ
+     * @param string $log_level ログレベル("Info" or "Debug")
+     * @return void
+     */
+    function gfAdminLog($mess, $log_level='Info') {
+        // ログレベル=Debugの場合は、DEBUG_MODEがtrueの場合のみログ出力する
+        if ($log_level === 'Debug'&& DEBUG_MODE === false) {
+            return;
+        }
+
+        // ログメッセージに、呼び出し元関数名等の情報を付加する
+        $mess = GC_Utils::gfGetLogStr($mess, $log_level);
+
+        // ログ出力
+        // ※現在は管理画面用・フロント用のログ出力とも、同じファイル(site.log)に出力します。
+        // 　分けたい場合は、以下の関数呼び出しの第２引数にファイルパスを指定してください
+        GC_Utils_Ex::gfPrintLog($mess);
+    }
+
+    /**
      * フロント用ログ出力
      *
      * フロント用ログ出力を行ないます
      * @param string $mess ログメッセージ
+     * @param string $log_level ログレベル("Info" or "Debug")
      * @return void
      */
-    function gfFrontLog($mess, $log_level='Debug') {
-        // バックトレースを取得する
-        $traces = debug_backtrace(false);
-        $bklv = 1;
-        if ($traces[1]['class'] === 'LC_Page' && $traces[1]['function'] === 'log') {
-            $bklv = 2;
+    function gfFrontLog($mess, $log_level='Info') {
+        // ログレベル=Debugの場合は、DEBUG_MODEがtrueの場合のみログ出力する
+        if ($log_level === 'Debug'&& DEBUG_MODE === false) {
+            return;
         }
-        $str = $traces[$bklv]['class'] . "::" . $traces[$bklv]['function'] . "(" . $traces[$bklv]['line'] . ") ";
-        
-        // メッセージの前に、ログ出力元関数名とログ出力関数呼び出し部分の行数を付与
-        $mess = $str . $mess;
-        
-        // TODO: デバッグログの場合は、設定によってはスタックトレースも出力する等の制御を入れたいが、要検討
-        if ($log_level === 'Debug') {
-            // $mess .= print_r($traces, true);
-        }
-        
+
+        // ログメッセージに、呼び出し元関数名等の情報を付加する
+        $mess = GC_Utils::gfGetLogStr($mess, $log_level);
+
         // ログ出力
-        GC_Utils_Ex::gfPrintLog($mess, CUSTOMER_LOG_REALFILE );
+        // ※現在は管理画面用・フロント用のログ出力とも、同じファイル(site.log)に出力します。
+        // 　分けたい場合は、以下の関数呼び出しの第２引数にファイルパスを指定してください
+        GC_Utils_Ex::gfPrintLog($mess);
     }
 
     /*----------------------------------------------------------------------

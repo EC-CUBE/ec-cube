@@ -193,6 +193,8 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         $sqlval['update_date'] = 'Now()';
         // UPDATEの実行
         $ret = $objQuery->update("dtb_baseinfo", $sqlval);
+
+        $this->log("update done.");
     }
 
     function lfInsertData($array) {
@@ -204,6 +206,8 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         $sqlval['update_date'] = 'Now()';
         // INSERTの実行
         $ret = $objQuery->insert("dtb_baseinfo", $sqlval);
+
+        $this->log("insert done.");
     }
 
     function lfInitParam(&$objFormParam, $post) {

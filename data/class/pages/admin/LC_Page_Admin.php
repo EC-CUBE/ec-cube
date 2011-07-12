@@ -103,5 +103,22 @@ class LC_Page_Admin extends LC_Page_Ex {
     function destroy() {
         parent::destroy();
     }
+
+    /**
+     * ログ出力を行う.
+     *
+     * ログイン中の管理者IDを含めてログ出力します.
+     *
+     * @access protected
+     * @param string $mess ログメッセージ
+     * @param string $log_level ログレベル("Info" or "Debug")
+     * @return void
+     */
+    function log($mess, $log_level) {
+        $mess = $mess . " id=" . $_SESSION['login_id'] . "(" . $_SESSION['authority'] . ")" . "[" . session_id() . "]";
+
+        GC_Utils_Ex::gfAdminLog($mess, $log_level);
+    }
+
 }
 ?>

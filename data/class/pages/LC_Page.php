@@ -376,12 +376,12 @@ class LC_Page {
      *
      * @access protected
      * @param string $mess ログメッセージ
-     * @param string $log_level ログレベル
+     * @param string $log_level ログレベル("Info" or "Debug")
      * @return void
      */
     function log($mess, $log_level) {
         $mess = $mess . " user=" . $_SESSION['customer']['customer_id'];
-        
+
         GC_Utils_Ex::gfFrontLog($mess, $log_level);
     }
 
