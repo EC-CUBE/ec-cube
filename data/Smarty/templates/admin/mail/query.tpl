@@ -47,11 +47,8 @@ self.moveTo(20,20);self.focus();
         <tr>
             <th>都道府県</th>
             <td>
-            <!--{assign var=key value="search_pref"}-->
-            <!--{if is_array($arrSearchData[$key])}-->
-                <!--{foreach item=item from=$arrSearchData[$key]}-->
-                    <!--{$arrPref[$item]|h}-->　
-                <!--{/foreach}-->
+            <!--{if $arrSearchData.search_pref}-->
+                <!--{$arrPref[$arrSearchData.search_pref]|h}-->　
             <!--{else}-->(未指定)<!--{/if}-->
             </td>
         </tr>
@@ -145,11 +142,10 @@ self.moveTo(20,20);self.focus();
         <tr>
             <th>カテゴリ</th>
             <td>
-            <!--{assign var=key value="search_category_id"}-->
-            <!--{if is_array($arrSearchData[$key])}-->
-                <!--{foreach item=item from=$arrSearchData[$key]}-->
-                    <!--{$arrCatList[$item]|h}-->　
-                <!--{/foreach}-->
+            <!--{if $arrSearchData.search_category_id}-->
+                <!--{if $arrCatList[$arrSearchData.search_category_id]}-->
+                    <!--{$arrCatList[$arrSearchData.search_category_id]|h}-->
+                <!--{else}-->(削除済みカテゴリ)<!--{/if}-->
             <!--{else}-->(未指定)<!--{/if}-->
             </td>
         </tr>
