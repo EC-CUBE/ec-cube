@@ -126,18 +126,20 @@ class GC_Utils {
      * @param int $forLogInfo ログ出力用に利用するかどうか(1:ログ出力用に利用する)
      * @return string 呼び出し元クラス、関数名、行数の文字列表現
      */
-    function gfGetCallerInfo($forLogInfo=0) {
+    function gfGetCallerInfo($forLogInfo=true) {
         // バックトレースを取得する
         $traces = debug_backtrace(false);
         $bklv = 1;
-        if ( $forLogInfo === 1
-            && ($traces[1]['class'] === 'LC_Page'
-            || $traces[1]['class'] === 'LC_Page_Admin')
-            && $traces[1]['function'] === 'log') {
-            $bklv = 2;
+        if ( $forLogInfo === true ){
+            $bklv = 3;
+            if( ($traces[3]['class'] === 'LC_Page'
+                || $traces[3]['class'] === 'LC_Page_Admin')
+                && $traces[3]['function'] === 'log')
+            {
+                $bklv = 4;
+            }
         }
-        $str = $traces[$bklv]['class'] . "::" . $traces[$bklv]['function'] . "(" . $traces[$bklv]['line'] . ") ";
-
+        $str = $traces[$bklv]['class'] . "::" . $traces[$bklv]['function'] . "(" . $traces[$bklv-1]['line'] . ") ";
         return $str;
     }
 
@@ -150,7 +152,7 @@ class GC_Utils {
      */
     function gfGetLogStr($mess, $log_level='Info') {
         // メッセージの前に、ログ出力元関数名とログ出力関数呼び出し部分の行数を付与
-        $mess = GC_Utils::gfGetCallerInfo(1) . $mess;
+        $mess = GC_Utils::gfGetCallerInfo(true) . $mess;
 
         // ログレベル=Debugの場合は、[Debug]を先頭に付与する
         if ($log_level === 'Debug') {
