@@ -24,8 +24,8 @@
 <script type="text/javascript">//<![CDATA[
 $(function() {
     // 無制限チェックボックスの初期化
-    $('input[id^=stock_unlimited_]').each(function() {
-        var index = $(this).attr('id').replace(/^stock_unlimited_/ig, '');
+    $('input[id^=chk_stock_unlimited_]').each(function() {
+        var index = $(this).attr('id').replace(/^chk_stock_unlimited_/ig, '');
         var checked = $(this).attr('checked');
 
         if (checked) {
@@ -36,8 +36,8 @@ $(function() {
     });
 
     // 無制限チェックボックス
-    $('input[id^=stock_unlimited_]').change(function() {
-        var index = $(this).attr('id').replace(/^stock_unlimited_/ig, '');
+    $('input[id^=chk_stock_unlimited_]').change(function() {
+        var index = $(this).attr('id').replace(/^chk_stock_unlimited_/ig, '');
         var checked = $(this).attr('checked');
 
         if (checked) {
@@ -62,10 +62,10 @@ $(function() {
         var stock = $('#stock_0').val();
         $('input[id^=stock_]').val(stock);
 
-        var stock_unlimited = $('#stock_unlimited_0').attr('checked');
-        $('input[id^=stock_unlimited_]').each(function() {
+        var stock_unlimited = $('#chk_stock_unlimited_0').attr('checked');
+        $('input[id^=chk_stock_unlimited_]').each(function() {
             var checked = stock_unlimited;
-            var index = $(this).attr('id').replace(/^stock_unlimited_/ig, '');
+            var index = $(this).attr('id').replace(/^chk_stock_unlimited_/ig, '');
             $(this).attr('checked', checked);
             if (checked) {
                 $('#stock_' + index)
@@ -254,7 +254,7 @@ $(function() {
                     <!--{if $arrErr[$key][$index]}-->
                         <span class="attention"><!--{$arrErr[$key][$index]}--></span>
                     <!--{/if}-->
-                    <input type="checkbox" name="<!--{$key}-->[<!--{$index}-->]" value="1" <!--{if $arrForm[$key].value[$index] == "1"}-->checked="checked"<!--{/if}--> id="<!--{$key}-->_<!--{$index}-->" /><label for="<!--{$key}-->_<!--{$index}-->">無制限</label>
+                    <input type="checkbox" name="<!--{$key}-->[<!--{$index}-->]" value="1" <!--{if $arrForm[$key].value[$index] == "1"}-->checked="checked"<!--{/if}--> id="chk_<!--{$key}-->_<!--{$index}-->" /><label for="chk_<!--{$key}-->_<!--{$index}-->">無制限</label>
                 </td>
                 <td class="center">
                     <!--{assign var=key value="price01"}-->
