@@ -40,6 +40,9 @@
 
     <p><!--{$objNavi->all_row}-->件の購入履歴があります。</p>
     <div>
+        <!--▼ページナビ-->
+        <!--{$objNavi->strnavi}-->
+        <!--▲ページナビ-->
     </div>
 
     <table summary="購入履歴" class="entryform">
