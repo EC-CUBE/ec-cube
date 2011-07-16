@@ -866,7 +866,7 @@ __EOS__;
         $arrParents = array();
         $ret = $id;
 
-        while($ret != "0") {
+        while($ret != "0" && !SC_Utils_Ex::isBlank($ret)) {
             $arrParents[] = $ret;
             $ret = SC_Helper_DB_Ex::sfGetParentsArraySub($table, $pid_name, $id_name, $ret);
         }
@@ -878,7 +878,13 @@ __EOS__;
 
     /* 子ID所属する親IDを取得する */
     function sfGetParentsArraySub($table, $pid_name, $id_name, $child) {
+        if(SC_Utils_Ex::isBlank($child)) {
+            return false;
+        }
         $objQuery =& SC_Query_Ex::getSingletonInstance();
+        if(!is_array($child)) {
+            $child = array($child);
+        }
         $parent = $objQuery->get($pid_name, $table, "$id_name = ?", $child);
         return $parent;
     }
