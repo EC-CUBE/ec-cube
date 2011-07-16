@@ -71,7 +71,7 @@ function fnTargetSelf(){
     </div>
 
 
-    <h2>SQL設定</h2>
+    <h2>SQL設定<!--{if $arrForm.sql_id != ""}-->(編集中:<!--{$arrForm.sql_name|h}-->)<!--{else}-->(新規入力)<!--{/if}--></h2>
     <table id="contents-csv-sqlset" class="form">
         <tr>
             <th>名称<span class="attention"> *</span></th>

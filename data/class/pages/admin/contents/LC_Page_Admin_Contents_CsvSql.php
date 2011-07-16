@@ -75,7 +75,6 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $objFormParam->setParam($_GET);
         $objFormParam->convParam();
         $this->arrForm = $objFormParam->getHashArray();
-
         switch($this->getMode()) {
         // データの登録
         case 'confirm':
@@ -326,9 +325,9 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
                 or !SC_Utils_Ex::isBlank($objFormParam->getValue('csv_sql'))) {
             return $objFormParam->getHashArray();
         }
-        $csv_id = $objFormParam->getValue('csv_id');
-        if(!SC_Utils_Ex::isBlank($csv_id)) {
-            $arrData = $this->lfGetSqlList('csv_id = ?', array($csv_id));
+        $sql_id = $objFormParam->getValue('sql_id');
+        if(!SC_Utils_Ex::isBlank($sql_id)) {
+            $arrData = $this->lfGetSqlList('sql_id = ?', array($sql_id));
             return $arrData[0];
         }
         return array();
