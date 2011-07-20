@@ -182,6 +182,7 @@ self.moveTo(20,20);self.focus();
         </table>
         
     <h2>お届け先情報</h2>
+    <!--{if $arrForm.product_type_id.value[0] != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
         <!--{section name=shipping loop=$arrForm.shipping_quantity.value}-->
         <!--{assign var=shipping_index value="`$smarty.section.shipping.index`"}-->
 
@@ -277,7 +278,8 @@ self.moveTo(20,20);self.focus();
 
         </table>
         <!--{/section}-->
-    
+    <!--{/if}-->
+        
         <a name="deliv"></a>
         <table class="form">
             <tr>
