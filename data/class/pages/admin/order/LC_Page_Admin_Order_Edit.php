@@ -124,14 +124,19 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $objFormParam->setParam($_REQUEST);
         $objFormParam->convParam();
         $order_id = $objFormParam->getValue('order_id');
+        $arrValuesBefore = array();
 
         // DBから受注情報を読み込む
         if (!SC_Utils_Ex::isBlank($order_id)) {
             $this->setOrderToFormParam($objFormParam, $order_id);
             $this->tpl_subno = 'index';
+            $arrValuesBefore['payment_id'] = $objFormParam->getValue('payment_id');
+            $arrValuesBefore['payment_method'] = $objFormParam->getValue('payment_method');
         } else {
             $this->tpl_subno = 'add';
             $this->tpl_mode = 'add';
+            $arrValuesBefore['payment_id'] = NULL;
+            $arrValuesBefore['payment_method'] = NULL;
         }
 
         $this->arrSearchHidden = $objFormParam->getSearchArray();
@@ -147,7 +152,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
             $this->arrErr = $this->lfCheckError($objFormParam);
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 $message = '受注を編集しました。';
-                $order_id = $this->doRegister($order_id, $objPurchase, $objFormParam, $message);
+                $order_id = $this->doRegister($order_id, $objPurchase, $objFormParam, $message, $arrValuesBefore);
                 if ($order_id >= 0) {
                     $this->setOrderToFormParam($objFormParam, $order_id);
                 }
@@ -162,7 +167,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
                 $this->arrErr = $this->lfCheckError($objFormParam);
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     $message = '受注を登録しました。';
-                    $order_id = $this->doRegister(null, $objPurchase, $objFormParam, $message);
+                    $order_id = $this->doRegister(null, $objPurchase, $objFormParam, $message, $arrValuesBefore);
                     if ($order_id >= 0) {
                         $this->tpl_mode = 'edit';
                         $objFormParam->setValue('order_id', $order_id);
@@ -241,6 +246,9 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $this->arrDelivTime = $objPurchase->getDelivTime($objFormParam->getValue('deliv_id'));
         $this->tpl_onload .= $this->getAnchorKey($objFormParam);
         $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
+        if ($arrValuesBefore['payment_id'])
+            $this->arrPayment[$arrValuesBefore['payment_id']] = $arrValuesBefore['payment_method'];
+
     }
 
     /**
@@ -605,11 +613,12 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
      * @param SC_Helper_Purchase $objPurchase SC_Helper_Purchase インスタンス
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @param string $message 通知メッセージ
+     * @param array $arrValuesBefore 更新前の受注情報
      * @return integer $order_id 受注ID
      *
      * エラー発生時は負数を返す。
      */
-    function doRegister($order_id, &$objPurchase, &$objFormParam, &$message) {
+    function doRegister($order_id, &$objPurchase, &$objFormParam, &$message, &$arrValuesBefore) {
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrValues = $objFormParam->getDbArray();
@@ -617,6 +626,12 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $where = "order_id = ?";
 
         $objQuery->begin();
+        
+        // 支払い方法が変更されたら、支払い方法名称も更新
+        if ($arrValues['payment_id'] != $arrValuesBefore['payment_id']) {
+            $arrValues['payment_method'] = $this->arrPayment[$arrValues['payment_id']];
+            $arrValuesBefore['payment_id'] = NULL;
+        }
 
         // 受注テーブルの更新
         $order_id = $objPurchase->registerOrder($order_id, $arrValues);
