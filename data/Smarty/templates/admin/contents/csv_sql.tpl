@@ -97,7 +97,7 @@ function fnTargetSelf(){
     </div>
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" name="subm" onclick="fnFormModeSubmit('form1', 'confirm', '', '')"><span class="btn-next">この内容で登録する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" name="subm" onclick="fnTargetSelf(); fnFormModeSubmit('form1', 'confirm', '', '')"><span class="btn-next">この内容で登録する</span></a></li>
         </ul>
     </div>
 
