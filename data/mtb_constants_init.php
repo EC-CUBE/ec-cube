@@ -312,8 +312,6 @@ define('CREDIT_NO_LEN', 4);
 define('SEARCH_CATEGORY_LEN', 18);
 /** ファイル名表示文字数 */
 define('FILE_NAME_LEN', 10);
-/** 購入制限なしの場合の最大購入数量 */
-define('SALE_LIMIT_MAX', 10);
 /** クッキー保持期限(日) */
 define('COOKIE_EXPIRE', 365);
 /** カテゴリ区切り文字 */

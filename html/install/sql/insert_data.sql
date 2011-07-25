@@ -1122,7 +1122,6 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('INT_LEN', '9', 206,
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CREDIT_NO_LEN', '4', 207, 'クレジットカードの文字数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SEARCH_CATEGORY_LEN', '18', 208, '検索カテゴリ最大表示文字数(byte)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('FILE_NAME_LEN', '10', 209, 'ファイル名表示文字数');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SALE_LIMIT_MAX', '10', 210, '購入制限なしの場合の最大購入数量');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('COOKIE_EXPIRE', '365', 212, 'クッキー保持期限(日)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SEPA_CATNAVI', '" > "', 235, 'カテゴリ区切り文字');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SEPA_CATLIST', '" | "', 236, 'カテゴリ区切り文字');
