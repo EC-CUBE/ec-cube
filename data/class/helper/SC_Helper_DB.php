@@ -725,6 +725,12 @@ __EOS__;
             if(isset($arrOld[$cid])) {
                 $objQuery->update('dtb_category_count', $sqlval, 'category_id = ?', array($cid));
             }else{
+                if ($is_force_all_count) {
+                    $ret = $objQuery->update('dtb_category_count', $sqlval, 'category_id = ?', array($cid));
+                    if ($ret > 0) {
+                        continue;
+                    }
+                }
                 $sqlval['category_id'] = $cid;
                 $objQuery->insert('dtb_category_count', $sqlval);
             }
