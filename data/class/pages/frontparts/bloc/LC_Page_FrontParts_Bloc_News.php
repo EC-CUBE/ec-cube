@@ -61,7 +61,36 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function action() {
-        $this->arrNews = $this->lfGetNews();
+
+        $objFormParam = new SC_FormParam_Ex();
+        switch($this->getMode()){
+            case "getList":
+                $this->lfInitNewsParam($objFormParam);
+                $objFormParam->setParam($_POST);
+                $objFormParam->convParam();
+                $this->arrErr = $this->lfCheckError($objFormParam);
+                if(empty($this->arrEr)){
+                     $json = $this->lfGetNewsForJson($objFormParam);
+                     echo $json;
+                     exit;
+                }
+                break;
+            case "getDetail":
+                $this->lfInitNewsParam($objFormParam);
+                $objFormParam->setParam($_GET);
+                $objFormParam->convParam();
+                $this->arrErr = $this->lfCheckError($objFormParam);
+                if(empty($this->arrEr)){
+                     $json = $this->lfGetNewsDetailForJson($objFormParam);
+                     echo $json;
+                     exit;
+                }
+                break;
+            default:
+                $this->newsCount = $this->lfGetNewsCount();
+                $this->arrNews = $this->lfGetNews();
+                break;
+        }
     }
 
     /**
@@ -71,6 +100,29 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
      */
     function destroy() {
         parent::destroy();
+    }
+
+   /**
+     * 新着情報パラメーター初期化
+     *
+     * @param array $objFormParam フォームパラメータークラス
+     * @return void
+     */
+    function lfInitNewsParam(&$objFormParam) {
+        $objFormParam->addParam("現在ページ", "pageno", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"), "", false);
+        $objFormParam->addParam("表示件数", "disp_number", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"), "", false);
+        $objFormParam->addParam("新着ID", "news_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"), "", false);
+    }
+
+      /**
+     * フォーム入力パラメーターエラーチェック
+     *
+     * @param array $objFormParam フォームパラメータークラス
+     * @return array エラー配列
+     */
+    function lfCheckError(&$objFormParam) {
+        $arrErr = SC_Helper_Customer_Ex::sfCustomerMypageErrorCheck($objFormParam, true);
+        return $arrErr;
     }
 
     /**
@@ -93,6 +145,70 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
 
         $arrNewsList = $objQuery->getAll($sql);
         return $arrNewsList;
+    }
+
+    /**
+     * 新着情報をJSON形式で取得する
+     * (ページと表示件数を指定)
+     *
+     * @param array $objFormParam フォームパラメータークラス
+     * @return String $json 新着情報のJSONを返す
+     */
+    function lfGetNewsForJson(&$objFormParam){
+
+        $objQuery = SC_Query_Ex::getSingletonInstance();
+        $arrData = $objFormParam->getHashArray();
+		
+        $dispNumber = $arrData['disp_number'];
+        $pageNo = $arrData['pageno'];
+        if(!empty($dispNumber) && !empty($pageNo)){
+             $objQuery->setLimitOffset($dispNumber, (($pageNo - 1) * $dispNumber));
+        }
+
+        $objQuery->setOrder("rank DESC ");
+        $arrNewsList = $objQuery->select(" * , cast(news_date as date) as news_date_disp "," dtb_news "," del_flg = '0' ");
+
+        //新着情報の最大ページ数をセット
+        $newsCount = $this->lfGetNewsCount();
+        $arrNewsList["news_page_count"] = ceil($newsCount / 3);
+
+        $json =  SC_Utils_Ex::jsonEncode($arrNewsList);    //JSON形式
+
+        return $json;
+    }
+
+    /**
+     * 新着情報1件分をJSON形式で取得する
+     * (news_idを指定)
+     *
+     * @param array $objFormParam フォームパラメータークラス
+     * @return String $json 新着情報1件分のJSONを返す
+     */
+    function lfGetNewsDetailForJson(&$objFormParam){
+
+        $objQuery = SC_Query_Ex::getSingletonInstance();
+        $arrData = $objFormParam->getHashArray();
+        $newsId = $arrData['news_id'];
+        $arrNewsList = $objQuery->select(" * , cast(news_date as date) as news_date_disp "," dtb_news "," del_flg = '0' AND news_id = ? ", array($newsId));
+
+        $json =  SC_Utils_Ex::jsonEncode($arrNewsList);    //JSON形式
+
+        return $json;
+    }
+    
+    /**
+     * 新着情報の件数を取得する
+     *
+     * @return Integer $count 新着情報の件数を返す
+     */
+    function lfGetNewsCount(){
+
+        $count = 0;
+        
+        $objQuery = SC_Query_Ex::getSingletonInstance();
+        $count = $objQuery->count("dtb_news", "del_flg = '0'");
+
+        return $count;
     }
 }
 ?>
