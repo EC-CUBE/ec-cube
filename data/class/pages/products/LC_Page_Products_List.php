@@ -125,61 +125,78 @@ class LC_Page_Products_List extends LC_Page_Ex {
         $urlParam           = "category_id={$this->arrSearchData['category_id']}&pageno=#page#";
         $this->objNavi      = new SC_PageNavi_Ex($this->tpl_pageno, $this->tpl_linemax, $this->disp_number, 'fnNaviPage', NAVI_PMAX, $urlParam, SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE);
         $this->arrProducts  = $this->lfGetProductsList($arrSearchCondition, $this->disp_number, $this->objNavi->start_row, $this->tpl_linemax, $objProduct);
-        //商品一覧の表示処理
-        $strnavi            = $this->objNavi->strnavi;
-        // 表示文字列
-        $this->tpl_strnavi  = empty($strnavi) ? "&nbsp;" : $strnavi;
 
-        // 規格1クラス名
-        $this->tpl_class_name1  = $objProduct->className1;
 
-        // 規格2クラス名
-        $this->tpl_class_name2  = $objProduct->className2;
+        switch($this->getMode()){
 
-        // 規格1
-        $this->arrClassCat1     = $objProduct->classCats1;
+            case "json":
+                   $this->arrProducts = $this->setStatusData($this->arrProducts, $this->arrSTATUS, $this->arrSTATUS_IMAGE);
+                   $this->arrProducts = $this->setPriceTax($this->arrProducts);
+                   echo SC_Utils_Ex::jsonEncode($this->arrProducts);
+                   exit;
+               break;
 
-        // 規格1が設定されている
-        $this->tpl_classcat_find1 = $objProduct->classCat1_find;
-        // 規格2が設定されている
-        $this->tpl_classcat_find2 = $objProduct->classCat2_find;
+            default:
 
-        $this->tpl_stock_find       = $objProduct->stock_find;
-        $this->tpl_product_class_id = $objProduct->product_class_id;
-        $this->tpl_product_type     = $objProduct->product_type;
+                //商品一覧の表示処理
+                $strnavi            = $this->objNavi->strnavi;
+                // 表示文字列
+                $this->tpl_strnavi  = empty($strnavi) ? "&nbsp;" : $strnavi;
 
-        // 商品ステータスを取得
-        $this->productStatus = $this->arrProducts['productStatus'];
-        unset($this->arrProducts['productStatus']);
-        $this->tpl_javascript .= 'var productsClassCategories = ' . SC_Utils_Ex::jsonEncode($objProduct->classCategories) . ';';
-        //onloadスクリプトを設定
-        foreach ($this->arrProducts as $arrProduct) {
-            $js_fnOnLoad .= "fnSetClassCategories(document.product_form{$arrProduct['product_id']});";
-        }
+                // 規格1クラス名
+                $this->tpl_class_name1  = $objProduct->className1;
 
-        //カート処理
-        $target_product_id = intval($this->arrForm['product_id']);
-        if ( $target_product_id > 0) {
-            // 商品IDの正当性チェック
-            if (!SC_Utils_Ex::sfIsInt($this->arrForm['product_id'])
-                || !SC_Helper_DB_Ex::sfIsRecord("dtb_products", "product_id", $this->arrForm['product_id'], "del_flg = 0 AND status = 1")) {
-                SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
+                // 規格2クラス名
+                $this->tpl_class_name2  = $objProduct->className2;
+
+                // 規格1
+                $this->arrClassCat1     = $objProduct->classCats1;
+
+                // 規格1が設定されている
+                $this->tpl_classcat_find1 = $objProduct->classCat1_find;
+                // 規格2が設定されている
+                $this->tpl_classcat_find2 = $objProduct->classCat2_find;
+
+                $this->tpl_stock_find       = $objProduct->stock_find;
+                $this->tpl_product_class_id = $objProduct->product_class_id;
+                $this->tpl_product_type     = $objProduct->product_type;
+
+                // 商品ステータスを取得
+                $this->productStatus = $this->arrProducts['productStatus'];
+                unset($this->arrProducts['productStatus']);
+                $this->tpl_javascript .= 'var productsClassCategories = ' . SC_Utils_Ex::jsonEncode($objProduct->classCategories) . ';';
+                //onloadスクリプトを設定
+                foreach ($this->arrProducts as $arrProduct) {
+                    $js_fnOnLoad .= "fnSetClassCategories(document.product_form{$arrProduct['product_id']});";
+                }
+
+                //カート処理
+                $target_product_id = intval($this->arrForm['product_id']);
+                if ( $target_product_id > 0) {
+                    // 商品IDの正当性チェック
+                    if (!SC_Utils_Ex::sfIsInt($this->arrForm['product_id'])
+                        || !SC_Helper_DB_Ex::sfIsRecord("dtb_products", "product_id", $this->arrForm['product_id'], "del_flg = 0 AND status = 1")) {
+                        SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
+                    }
+
+                    // 入力内容のチェック
+                    $arrErr = $this->lfCheckError($target_product_id, $this->arrForm, $this->tpl_classcat_find1, $this->tpl_classcat_find2);
+                    if (empty($arrErr)) {
+                        $this->lfAddCart($this->arrForm, $_SERVER['HTTP_REFERER']);
+                        SC_Response_Ex::sendRedirect(CART_URLPATH);
+                        exit;
+                    }
+                    $js_fnOnLoad .= $this->lfSetSelectedData($this->arrProducts, $this->arrForm, $arrErr, $target_product_id);
+                }
+
+                $this->tpl_javascript   .= 'function fnOnLoad(){' . $js_fnOnLoad . '}';
+                $this->tpl_onload       .= 'fnOnLoad(); ';
+                break;
+
             }
 
-            // 入力内容のチェック
-            $arrErr = $this->lfCheckError($target_product_id, $this->arrForm, $this->tpl_classcat_find1, $this->tpl_classcat_find2);
-            if (empty($arrErr)) {
-                $this->lfAddCart($this->arrForm, $_SERVER['HTTP_REFERER']);
-                SC_Response_Ex::sendRedirect(CART_URLPATH);
-                exit;
-            }
-            $js_fnOnLoad .= $this->lfSetSelectedData($this->arrProducts, $this->arrForm, $arrErr, $target_product_id);
-        }
+            $this->tpl_rnd          = SC_Utils_Ex::sfGetRandomString(3);
 
-        $this->tpl_javascript   .= 'function fnOnLoad(){' . $js_fnOnLoad . '}';
-        $this->tpl_onload       .= 'fnOnLoad(); ';
-
-        $this->tpl_rnd          = SC_Utils_Ex::sfGetRandomString(3);
     }
 
     /**
@@ -486,6 +503,55 @@ __EOS__;
             //該当メソッドが無いため、$_SESSIONに直接セット
             $_SESSION['cart_referer_url'] = $referer;
         }
+    }
+
+    /**
+     * 商品情報配列にステータス情報を追加する
+     *
+     * @param Array $arrProducts 商品一覧情報
+     * @param Array $arrStatus	ステータス配列
+     * @param Array $arrStatusImage スタータス画像配列
+     * @return Array $arrProducts 商品一覧情報
+     */
+    function setStatusData($arrProducts, $arrStatus, $arrStatusImage){
+
+        foreach($arrProducts['productStatus'] as $keyArr => $valArr){
+            for($i=0; $i<count($valArr); $i++){
+                $statusCd = $valArr[$i];
+                if(!empty($statusCd)){
+                    $statusAry = array('status_cd'=>$statusCd, 'status_name'=>$arrStatus[$statusCd], 'status_image' =>$arrStatusImage[$statusCd]);
+                    $arrProducts['productStatus'][$keyArr][$i] = $statusAry;
+
+                }
+            }
+        }
+        return $arrProducts;
+    }
+
+    /**
+     * 商品情報配列に税込み金額を追加する
+     *
+     * @param Array $arrProducts 商品一覧情報
+     * @return Array $arrProducts 商品一覧情報
+     */
+    function setPriceTax($arrProducts){
+        foreach($arrProducts as $key=>$val){
+            $arrProducts[$key]['price01_min_format'] = number_format($arrProducts[$key]['price01_min']);
+            $arrProducts[$key]['price01_max_format'] = number_format($arrProducts[$key]['price01_max']);
+            $arrProducts[$key]['price02_min_format'] = number_format($arrProducts[$key]['price02_min']);
+            $arrProducts[$key]['price02_max_format'] = number_format($arrProducts[$key]['price02_max']);
+
+            $arrProducts[$key]['price01_min_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price01_min']);
+            $arrProducts[$key]['price01_max_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price01_max']);
+            $arrProducts[$key]['price02_min_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price02_min']);
+            $arrProducts[$key]['price02_max_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price02_max']);
+
+            $arrProducts[$key]['price01_min_tax_format'] = number_format($arrProducts[$key]['price01_min_tax']);
+            $arrProducts[$key]['price01_max_tax_format'] = number_format($arrProducts[$key]['price01_max_tax']);
+            $arrProducts[$key]['price02_min_tax_format'] = number_format($arrProducts[$key]['price02_min_tax']);
+            $arrProducts[$key]['price02_max_tax_format'] = number_format($arrProducts[$key]['price02_max_tax']);
+        }
+        return $arrProducts;
     }
 }
 ?>
