@@ -72,10 +72,21 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
         $customer_id = $objCustomer->getValue('customer_id');
 
         switch ($this->getMode()) {
-        case 'delete_favorite':
-            // お気に入り削除
-            $this->lfDeleteFavoriteProduct($customer_id, $_POST['product_id']);
-            break;
+            case 'delete_favorite':
+                // お気に入り削除
+                $this->lfDeleteFavoriteProduct($customer_id, $_POST['product_id']);
+                break;
+            case 'getList':
+                // スマートフォン版のもっと見るボタン用
+                // ページ送り用
+		        if (isset($_POST['pageno'])) {
+		            $this->tpl_pageno = htmlspecialchars($_POST['pageno'], ENT_QUOTES, CHAR_CODE);
+		        }
+		        $this->arrFavorite = $this->lfGetFavoriteProduct($customer_id, $this);
+		        $this->arrFavorite = $this->lfSetPriceTax($this->arrFavorite);
+		        echo SC_Utils_Ex::jsonEncode($this->arrFavorite);
+                exit;
+                break;
         }
 
         // ページ送り用
@@ -83,6 +94,8 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
             $this->tpl_pageno = htmlspecialchars($_POST['pageno'], ENT_QUOTES, CHAR_CODE);
         }
         $this->arrFavorite = $this->lfGetFavoriteProduct($customer_id, $this);
+        // 1ページあたりの件数
+        $this->dispNumber = SEARCH_PMAX;
     }
 
     /**
@@ -170,5 +183,31 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
             $objQuery->delete('dtb_customer_favorite_products', "customer_id = ? AND product_id = ?", array($customer_id, $product_id));
             $objQuery->commit();
         }
+    }
+    
+    /**
+     * お気に入り情報配列に税込み金額を追加する
+     *
+     * @param Array $arrProducts お気に入り一覧情報
+     * @return Array $arrProducts お気に入り一覧情報
+     */
+    function lfSetPriceTax($arrProducts){
+        foreach($arrProducts as $key=>$val){
+            $arrProducts[$key]['price01_min_format'] = number_format($arrProducts[$key]['price01_min']);
+            $arrProducts[$key]['price01_max_format'] = number_format($arrProducts[$key]['price01_max']);
+            $arrProducts[$key]['price02_min_format'] = number_format($arrProducts[$key]['price02_min']);
+            $arrProducts[$key]['price02_max_format'] = number_format($arrProducts[$key]['price02_max']);
+
+            $arrProducts[$key]['price01_min_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price01_min']);
+            $arrProducts[$key]['price01_max_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price01_max']);
+            $arrProducts[$key]['price02_min_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price02_min']);
+            $arrProducts[$key]['price02_max_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price02_max']);
+
+            $arrProducts[$key]['price01_min_tax_format'] = number_format($arrProducts[$key]['price01_min_tax']);
+            $arrProducts[$key]['price01_max_tax_format'] = number_format($arrProducts[$key]['price01_max_tax']);
+            $arrProducts[$key]['price02_min_tax_format'] = number_format($arrProducts[$key]['price02_min_tax']);
+            $arrProducts[$key]['price02_max_tax_format'] = number_format($arrProducts[$key]['price02_max_tax']);
+        }
+        return $arrProducts;
     }
 }
