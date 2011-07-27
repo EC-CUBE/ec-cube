@@ -173,7 +173,19 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
                         }
                     }
                 }
-
+            case "add_favorite_sphone":
+                // ログイン中のユーザが商品をお気に入りにいれる処理(スマートフォン用)
+                if ($objCustomer->isLoginSuccess() === true && $this->objFormParam->getValue('favorite_product_id') > 0 ) {
+                    $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam);
+                    if(count($this->arrErr) == 0){
+                        if($this->lfRegistFavoriteProduct($this->objFormParam->getValue('favorite_product_id'),$objCustomer->getValue('customer_id'))){
+                            print "true";
+                            exit;
+                        }
+                    }
+                    print "error";
+                    exit;
+                }
             default:
                 break;
         }
