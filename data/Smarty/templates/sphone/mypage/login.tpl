@@ -22,51 +22,46 @@
  */
 *}-->
 <!--▼CONTENTS-->
-    <h2 class="title"><!--{$tpl_title|h}--></h2>
-    <form name="login_mypage" id="login_mypage" method="post" action="<!--{$smarty.const.HTTPS_URL}-->frontparts/login_check.php" onsubmit="return fnCheckLogin('login_mypage')">
-    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-    <input type="hidden" name="mode" value="login" />
-    <input type="hidden" name="url" value="<!--{$smarty.server.REQUEST_URI|h}-->" />
-   <div class="loginarea">
-     <h2>会員登録がお済みのお客様</h2>
-     <p class="inputtext">会員の方は、登録時に入力されたメールアドレスとパスワードでログインしてください。</p>
+<section id="slidewindow">
 
-<table class="entryform">
-<tr><th>
-       <!--{assign var=key value="login_email"}-->
-       <span class="attention"><!--{$arrErr[$key]}--></span>
-メールアドレス</th>
+<h2 class="title"><!--{$tpl_title|h}--></h2>
+     <form name="login_mypage" id="login_mypage" method="post" action="<!--{$smarty.const.HTTPS_URL}-->frontparts/login_check.php" onsubmit="return fnCheckLogin('login_mypage')">
+        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+        <input type="hidden" name="mode" value="login" />
+        <input type="hidden" name="url" value="<!--{$smarty.server.PHP_SELF|h}-->" />
+<div class="login_area">
 
-<td><input type="email" name="<!--{$key}-->" value="<!--{$tpl_login_email|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->; ime-mode: disabled;" size="40" class="box300" /><br />
-       <p class="mini">
-         <!--{assign var=key value="login_memory"}-->
-         <input class="radio_btn" type="checkbox" name="<!--{$key}-->" value="1" <!--{$tpl_login_memory|sfGetChecked:1}--> id="login_memory" />
-         <label for="login_memory">メールアドレスを記憶させる</label>
-       </p></td></tr>
-<tr><th>
-         <!--{assign var=key value="login_pass"}-->
-         <span class="attention"><!--{$arrErr[$key]}--></span>
-パスワード</th>
-<td><input type="password" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box300" /></td></tr></table>
+    <div class="loginareaBox">
+          <!--{assign var=key value="login_email"}-->
+               <span class="attention"><!--{$arrErr[$key]}--></span>
+                  <input type="email" name="<!--{$key}-->" value="<!--{$tpl_login_email|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="mailtextBox data-role-none" placeholder="メールアドレス" />
 
+          <!--{assign var=key value="login_pass"}-->
+               <span class="attention"><!--{$arrErr[$key]}--></span>
+                  <input type="password" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="passtextBox data-role-none" placeholder="パスワード" />
 
-     <div class="tblareabtn">
-      <input type="submit" value="ログイン" class="spbtn spbtn-shopping" width="130" height="30" alt="ログイン" name="log" id="log" />
-     </div>
-     <p class="inputtext02">
-       パスワードを忘れた方は<a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->" onclick="win01('<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->','forget','600','460'); return false;" target="_blank">こちら</a>からパスワードの再発行を行ってください。<br />
-      メールアドレスを忘れた方は、お手数ですが、<a href="<!--{$smarty.const.ROOT_URLPATH}-->contact/<!--{$smarty.const.DIR_INDEX_PATH}-->">お問い合わせページ</a>からお問い合わせください。
-     </p>
-  </div>
-  <div class="loginarea">
-    <h2>まだ会員登録されていないお客様</h2>
-    <p class="inputtext">会員登録をすると便利なMyページをご利用いただけます。<br />
-      また、ログインするだけで、毎回お名前や住所などを入力することなくスムーズにお買い物をお楽しみいただけます。
-    </p>
-    <div class="inputbox02">
-        <a href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php" class="spbtn spbtn-medeum">
-                    会員登録をする</a>&nbsp;
-    </div>
-  </div>
-</form>
-<!--▲CONTENTS-->
+</div><!--▲loginBox -->
+
+<p class="arrowRtxt"><a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->" onclick="win01('<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->','forget','600','460'); return false;" target="_blank">パスワードを忘れた方</a></p>
+
+        <div class="btn_area">
+                                       <input type="submit" value="ログイン" class="btn data-role-none" name="log" id="log" />
+        </div>
+     </div><!--▲loginarea -->
+    </form>
+                
+                <form name="member_form2" id="member_form2" method="post" action="?">
+      <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+      <input type="hidden" name="mode" value="nonmember" />
+      <div class="login_area_btm">
+        <nav>
+          <ul class="navBox">
+            <li><a rel="external" href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php">新規会員登録</a></li>
+          </ul>
+        </nav>
+       <p>会員登録をすると便利なMyページをご利用いただけます。</p>
+      </div>
+   </form>
+  </section>
+ <!--▲コンテンツここまで -->
+

@@ -29,98 +29,105 @@
         });
     });
 //]]></script>
+
+<!--▼コンテンツここから -->
+<section id="undercolumn">
+
 <h2 class="title"><!--{$tpl_title|h}--></h2>
 
-<p>各商品のお届け先を選択してください。</p>
+<!--★インフォメーション★-->
+<div class="information">
+ <p>各商品のお届け先を選択してください。</p>  
+</div>
+
+ <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
+            <p>一覧にご希望の住所が無い場合は、「新しいお届け先を追加する」より追加登録してください。<br>
+            ※最大<!--{$smarty.const.DELIV_ADDR_MAX|h}-->件まで登録できます。</p>
+ <!--{/if}-->
+
+<!--★ボタン★-->
 <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
-    <p>一覧にご希望の住所が無い場合は、「新しいお届け先を追加する」より追加登録してください。<br>
-    ※最大<!--{$smarty.const.DELIV_ADDR_MAX|h}-->件まで登録できます。</p>
+<div class="btn_area_top">
+  <a rel="external" href="javascript:void(0);" class="btn_sub addbtn" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|h}-->','new_deiv','600','640'); return false;">新しいお届け先を追加</a>
+</div>
 <!--{/if}-->
+ 
+<!--▼フォームここから -->
+<div class="form_area">
+    <form name="form1" id="form1" method="post" action="<!--{$smarty.const.HTTP_URL}-->shopping/multiple.php">
+            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+            <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
+            <input type="hidden" name="line_of_num" value="<!--{$arrForm.line_of_num.value}-->" />
+            <input type="hidden" name="mode" value="confirm" />
 
-<!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
-    <p class="addbtn"><a class="kybtn" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|h}-->','new_deiv','600','640'); return false;">新しいお届け先を追加する</a></p><br /><br />
-<!--{/if}-->
-<form name="form1" id="form1" method="post" action="?">
-    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-    <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
-    <input type="hidden" name="line_of_num" value="<!--{$arrForm.line_of_num.value}-->" />
-    <input type="hidden" name="mode" value="confirm" />
+<!--{section name=line loop=$arrForm.line_of_num.value}-->
+            <!--{assign var=index value=$smarty.section.line.index}-->
+                
+<div class="formBox">
+<!--▼商品 -->
+<div class="delivitemBox">
+<img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrForm.main_list_image.value[$index]|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="&lt;!--{$arrForm.name[$index]|h}--&gt;" width="80" height="80" class="photoL" />
+ <div class="delivContents">
 
-        <!--{section name=line loop=$arrForm.line_of_num.value}-->
-        <!--{assign var=index value=$smarty.section.line.index}-->
+  <p><em><!--{$arrForm.name.value[$index]|h}--></em><br />
+    <!--{if $arrForm.classcategory_name1.value[$index] != ""}-->
+        <span class="mini"><!--{$arrForm.class_name1.value[$index]|h}-->：<!--{$arrForm.classcategory_name1.value[$index]|h}--></span><br />
+    <!--{/if}-->
+    <!--{if $arrForm.classcategory_name2.value[$index] != ""}-->
+        <span class="mini"><!--{$arrForm.class_name2.value[$index]|h}-->：<!--{$arrForm.classcategory_name2.value[$index]|h}--></span>
+    <!--{/if}-->
+    </p>
+<ul>
+<li class="result"><span class="mini">数量</li>
+ <li>
+       <!--{assign var=key value="quantity"}-->
+      <!--{if $arrErr[$key][$index] != ''}-->
+          <span class="attention"><!--{$arrErr[$key][$index]}--></span>
+      <!--{/if}-->
+      <input type="text" name="<!--{$key}-->[<!--{$index}-->]" class="cartin_quantity txt" value="<!--{$arrForm[$key].value[$index]}-->" maxlength="9" style="" />
+ </li>
+  </ul>
+</div>
 
-        <table summary="商品情報" class="entryform">
-        <tr>
-            <th class="multi_ph">商品写真</th>
-            <th class="multi_pr">商品名</th>
-            <th class="multi_nu">数量</th>
-        </tr>
-            <tr>
-                <td class="phototd">
-                <a
-                    <!--{if $arrForm.main_image.value[$index]|strlen >= 1}-->
-                        href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrForm.main_image.value[$index]|sfNoImageMainList|h}-->"
-                        class="expansion"
-                        target="_blank"
-                    <!--{/if}-->
-                >
-                    <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrForm.main_list_image.value[$index]|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="&lt;!--{$arrForm.name[$index]|h}--&gt;" /></a>
-                </td>
-                <td class="multi_pr"><!--{* 商品名 *}--><strong><!--{$arrForm.name.value[$index]|h}--></strong><br />
-                    <!--{if $arrForm.classcategory_name1.value[$index] != ""}-->
-                        <!--{$arrForm.class_name1.value[$index]|h}-->：<!--{$arrForm.classcategory_name1.value[$index]|h}--><br />
-                    <!--{/if}-->
-                    <!--{if $arrForm.classcategory_name2.value[$index] != ""}-->
-                        <!--{$arrForm.class_name2.value[$index]|h}-->：<!--{$arrForm.classcategory_name2.value[$index]|h}--><br />
-                    <!--{/if}-->
-                    <!--{$arrForm.price.value[$index]|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
-                </td>
-                <td class="multi_nu">
-                    <input class="multi_nu" type="hidden" name="cart_no[<!--{$index}-->]" value="<!--{$index}-->" />
-                    <!--{assign var=key value="product_class_id"}-->
-                    <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
-                    <!--{assign var=key value="name"}-->
-                    <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
-                    <!--{assign var=key value="class_name1"}-->
-                    <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
-                    <!--{assign var=key value="class_name2"}-->
-                    <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
-                    <!--{assign var=key value="classcategory_name1"}-->
-                    <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
-                    <!--{assign var=key value="classcategory_name2"}-->
-                    <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
-                    <!--{assign var=key value="main_image"}-->
-                    <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
-                    <!--{assign var=key value="main_list_image"}-->
-                    <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
-                    <!--{assign var=key value="price"}-->
-                    <input class="multi_nu" type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
-                    <!--{assign var=key value="quantity"}-->
-                    <!--{if $arrErr[$key][$index] != ''}-->
-                        <span class="attention"><!--{$arrErr[$key][$index]}--></span>
-                    <!--{/if}-->
-                    <input class="multi_nu" type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" size="4" />
-                </td>
-             </tr>
-            <tr>
-              <td colspan="3">お届け先</td>
-            </tr>
-            <tr>
-              <td colspan="3">
-                <!--{assign var=key value="shipping"}-->
-                <!--{if strlen($arrErr[$key][$index]) >= 1}-->
-                    <div class="attention"><!--{$arrErr[$key][$index]}--></div>
-                <!--{/if}-->
-                <select name="<!--{$key}-->[<!--{$index}-->]">
-                    <!--{html_options options=$addrs selected=$arrForm[$key].value[$index]}-->
-                </select>
-              </td>
-            </tr>
-           </table>
-          <!--{/section}-->
+</div>
+ <!--▲商品 -->
+<div class="btn_area_btm">
 
-    <div class="tblareabtn">
-         <p><input type="submit" value="選択したお届け先に送る" class="spbtn spbtn-shopping" width="130" height="30" alt="選択したお届け先に送る" name="send_button" id="next" /></p>
-         <p><a href="<!--{$smarty.const.CART_URLPATH}-->" class="spbtn spbtn-medeum">戻る</a></p>
-    </div>
+                        <input type="hidden" name="cart_no[<!--{$index}-->]" value="<!--{$index}-->" />
+                          <!--{assign var=key value="product_class_id"}-->
+                          <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
+                          <!--{assign var=key value="name"}-->
+                          <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
+                          <!--{assign var=key value="class_name1"}-->
+                          <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
+                          <!--{assign var=key value="class_name2"}-->
+                          <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
+                          <!--{assign var=key value="classcategory_name1"}-->
+                          <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
+                          <!--{assign var=key value="classcategory_name2"}-->
+                          <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
+                          <!--{assign var=key value="main_image"}-->
+                          <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
+                          <!--{assign var=key value="main_list_image"}-->
+                          <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
+                          <!--{assign var=key value="price02"}-->
+                          <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
+                        <!--{assign var=key value="shipping"}-->
+                        <select name="<!--{$key}-->[<!--{$index}-->]"><!--{html_options options=$addrs selected=$arrForm[$key].value[$index]}--></select>
+</div>
+
+</div><!--▲formBox -->
+<!--{/section}-->
+
+<ul class="btn_btm">
+ <li><a rel="external" href="javascript:void(document.form1.submit());" class="btn">選択したお届け先に送る</a></li>
+ <li><a rel="external" href="<!--{$smarty.const.CART_URLPATH}-->" class="btn_back">戻る</a></li>
+</ul>
+
 </form>
+
+</div><!--▲form_area -->
+
+
+</section>
+<!--▲コンテンツここまで -->

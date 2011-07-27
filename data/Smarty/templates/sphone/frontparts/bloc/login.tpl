@@ -19,15 +19,23 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<!--▼ログインここから-->
-<div id="block-login" class="block-side">
-  <div class="create-box clearfix">
-    <!--{if $tpl_login}-->
-      <a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" class="spbtn">マイページ</a>
-    <!--{else}-->
-<a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/entry/kiyaku.php" class="spbtn">会員登録</a><a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" class="spbtn">ログイン</a></div>
-    <!--{/if}-->
-    <!--ログインフォーム-->
-  </div>
-</div>
-<!--▲ログインここまで-->
+<nav class="top_menu clearfix">
+ <!--{if $tpl_login}-->
+<ul>
+  <li><a rel="external" href="javascript:void(document.login_form_bloc.submit())"><img src="<!--{$TPL_URLPATH}-->img/icon/ico_login.png" width="22" height="21" alt="ログアウト" />ログアウト</a></li>
+  <li><a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" data-transition="slideup"><img src="<!--{$TPL_URLPATH}-->img/icon/ico_mypage.png" width="22" height="21" alt="MYページ" />MYページ</a></li>
+  <li><a rel="external" href="<!--{$smarty.const.CART_URLPATH|h}-->"><img src="<!--{$TPL_URLPATH}-->img/icon/ico_cart.png" width="22" height="21" alt="カートを見る" />カートを見る</a></li>
+</ul>
+<!--{else}-->
+<ul>
+  <li><a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" data-transition="slideup"><img src="<!--{$TPL_URLPATH}-->img/icon/ico_login.png" width="22" height="21" alt="ログイン" />ログイン</a></li>
+  <li><a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" data-transition="slideup"><img src="<!--{$TPL_URLPATH}-->img/icon/ico_mypage.png" width="22" height="21" alt="MYページ" />MYページ</a></li>
+  <li><a rel="external" href="<!--{$smarty.const.CART_URLPATH|h}-->"><img src="<!--{$TPL_URLPATH}-->img/icon/ico_cart.png" width="22" height="21" alt="カートを見る" />カートを見る</a></li>
+</ul>
+<!--{/if}-->
+</nav>
+<form name="login_form_bloc" id="login_form_bloc" method="post" action="<!--{$smarty.const.HTTPS_URL}-->frontparts/login_check.php" onsubmit="return fnCheckLogin('login_form_bloc')">
+        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+        <input type="hidden" name="mode" value="logout" />
+        <input type="hidden" name="url" value="<!--{$smarty.server.PHP_SELF|h}-->" />
+</form>

@@ -19,38 +19,47 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`popup_header.tpl" subtitle="パスワードを忘れた方(入力ページ)"}-->
+<!--{*<!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`popup_header.tpl" subtitle="パスワードを忘れた方(入力ページ)"}-->*}-->
 
-  <div id="windowarea">
-    <h2>パスワードを忘れた方</h2>
-    <p>ご登録時のメールアドレスを入力して「次へ」ボタンをクリックしてください。<br />
-      <span class="mini"><em>※新しくパスワードを発行いたしますので、お忘れになったパスワードはご利用できなくなります。</em></span></p>
+<section id="windowcolumn">
+  <div data-role="header">
+    <div class="title_box clearfix">
+      <h2>パスワードを忘れた方</h2><a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="notext" class="ui-btn-right" data-theme="d"><span class="ui-btn-text">close</span></a>
+       </div>
+        </div>
     <form action="?" method="post" name="form1">
-      <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-      <input type="hidden" name="mode" value="mail_check" />
+        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+        <input type="hidden" name="mode" value="mail_check" />
+       <div class="intro">
+         <p>ご登録時のメールアドレスと、ご登録されたお名前を入力して「次へ」ボタンをクリックしてください。</p>
+          </div>
+     <div class="window_area clearfix">
+        <p>お名前<br />
+          <span class="attention"><!--{$arrErr.name01}--><!--{$arrErr.name02}--></span>
+          <input type="text" name="name01" 
+            value="<!--{$arrForm.name01|default:''|h}-->" 
+             maxlength="<!--{$smarty.const.STEXT_LEN}-->" 
+              style="<!--{$arrErr.name01|sfGetErrorColor}-->; ime-mode: active;" 
+                 class="boxHarf text data-role-none" placeholder="姓"/>&nbsp;&nbsp;
+           <input type="text" name="name02" 
+             value="<!--{$arrForm.name02|default:''|h}-->" 
+              maxlength="<!--{$smarty.const.STEXT_LEN}-->" 
+               style="<!--{$arrErr.name02|sfGetErrorColor}-->; ime-mode: active;" 
+                class="boxHarf text data-role-none" placeholder="名"/></p>
+          <hr />
+        <p>メールアドレス<br />
+          <input type="email" name="email" 
+            value="<!--{$tpl_login_email|h}-->" 
+             style="<!--{$errmsg|sfGetErrorColor}-->; ime-mode: disabled;" 
+              maxlength="200" class="boxLong data-role-none" /></p>
+               <span class="attention"><!--{$errmsg}--></span>
+             <hr />
+        <p class="attentionSt">【重要】新しくパスワードを発行いたしますので、お忘れになったパスワードはご利用できなくなります。</p>
 
+   </div>
 
+        <div class="btn_area"><p><input class="btn data-role-none" type="submit" value="次へ" /></p></div>
+     </form>
+</section>
 
-<table class="entryform">
-<tr>
-<th>メールアドレス</th>
-<td><!--★メールアドレス入力★--><input type="email" name="email" value="<!--{$tpl_login_email|h}-->" size="40" class="box300" style="<!--{$errmsg|sfGetErrorColor}-->; ime-mode: disabled;" />
-</td>
-</tr>
-<tr>
-<th>お名前</th>
-<td><span class="attention"><!--{$arrErr.name01}--><!--{$arrErr.name02}--></span>
-姓&nbsp;<input type="text" class="box120" name="name01" value="<!--{$arrForm.name01|default:''|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name01|sfGetErrorColor}-->; ime-mode: active;" />　
-
-名&nbsp;<input type="text" class="box120" name="name02" value="<!--{$arrForm.name02|default:''|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name02|sfGetErrorColor}-->; ime-mode: active;" />
-<br />
-        <span class="attention"><!--{$errmsg}--></span>
-</td></tr></table>
-
-      <div class="btn">
-        <input class="spbtn spbtn-shopping" type="submit" value="次へ" />
-      </div>
-    </form>
-  </div>
-<br />
-<!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`popup_footer.tpl"}-->
+<!--{*<!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`popup_footer.tpl"}-->*}-->

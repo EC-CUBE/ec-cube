@@ -20,24 +20,16 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <!--▼CONTENTS-->
-<div id="undercolumn">
-  <div id="undercolumn_entry">
-    <h2 class="title"><!--{$tpl_title|h}--></h2>
-    <div id="completetext">
-      会員登録の受付が完了いたしました。
-      <p>現在<em>仮会員</em>の状態です。<br />
-        ご入力いただいたメールアドレス宛てに、ご連絡が届いておりますので、本会員登録になった上でお買い物をお楽しみください。<br />
-        今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
-
-      <p><!--{$arrSiteInfo.company_name|h}--><br />
-        TEL：<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}--> <!--{if $arrSiteInfo.business_hour != ""}-->（受付時間/<!--{$arrSiteInfo.business_hour}-->）<!--{/if}--><br />
-        E-mail：<a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->"><!--{$arrSiteInfo.email02|escape:'hexentity'}--></a>
-      </p>
-
-    </div>
-      <div class="tblareabtn">
-	<a class="spbtn spbtn-medeum" href="<!--{$smarty.const.TOP_URLPATH}-->">トップページへ</a>
-      </div>
-  </div>
-</div>
+<section id="undercolumn">
+       <h2 class="title"><!--{$tpl_title|h}--></h2>
+         <div class="thankstext">
+            <p>会員登録が完了いたしました。</p>
+         </div>
+       <hr>
+         <div id="completetext">
+            <p>今後ともご愛顧賜りますよう、よろしくお願い申し上げます。</p>
+            <a class="btn_s btn_sub" href="<!--{$smarty.const.TOP_URLPATH}-->">トップページへ</a>
+         </div>
+</section>
 <!--▲CONTENTS-->
+

@@ -19,24 +19,29 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<div id="undercolumn">
-    <div id="undercolumn_entry">
-        <h2 class="title"><!--{$tpl_title|h}--></h2>
-        <p><em>【重要】 会員登録をされる前に、下記ご利用規約をよくお読みください。</em><br />
-            規約には、本サービスを使用するに当たってのあなたの権利と義務が規定されております。<br />
-            「規約に同意して会員登録」ボタン をクリックすると、あなたが本規約の全ての条件に同意したことになります。</p>
-            <div class="tblareabtn">
-                <p><a href="<!--{$smarty.const.ENTRY_URL}-->" class="spbtn spbtn-shopping">
-                    規約に同意して会員登録</a></p>
-                <p><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="spbtn spbtn-medeum">
-                    同意しない</a></p>
-            </div>
-            <div id="kiyaku_text"><!--{$tpl_kiyaku_text|nl2br}--></div>
-            <div class="tblareabtn">
-                <p><a href="<!--{$smarty.const.ENTRY_URL}-->" class="spbtn spbtn-shopping">
-                    規約に同意して会員登録</a></p>
-                <p><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="spbtn spbtn-medeum">
-                    同意しない</a></p>
-            </div>
-    </div>
-</div>
+<!--▼CONTENTS-->                     
+<section id="undercolumn">
+       <h2 class="title"><!--{$tpl_title|h}--></h2>
+          <div class="information">
+             <p><span class="attention">【重要】 会員登録をされる前に、下記ご利用規約をよくお読みください。</span></p>
+             <p>規約には、本サービスを使用するに当たってのあなたの権利と義務が規定されております。<br />
+              「規約に同意して会員登録」ボタン をクリックすると、あなたが本規約の全ての条件に同意したことになります。</p>
+          </div>
+
+          <div class="btn_area">
+              <ul>
+                <li><a href="<!--{$smarty.const.ENTRY_URL}-->" class="btn" rel="external">同意して会員登録へ</a></li>
+                <li><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="btn_back" rel="external">同意しない</a></li>
+              </ul>
+          </div>
+
+          <div id="kiyaku_text"><!--{$tpl_kiyaku_text|nl2br}--></div>
+
+          <div class="btn_area">
+              <ul class="btn_btm">
+                <li><a href="<!--{$smarty.const.ENTRY_URL}-->" class="btn" rel="external">同意して会員登録へ</a></li>
+                <li><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="btn_back" rel="external">同意しない</a></li>
+              </ul>
+          </div>
+</section>
+<!--▲CONTENTS-->

@@ -22,29 +22,33 @@
  */
 *}-->
 <!--▼CONTENTS-->
-<div id="mypagecolumn">
-  <h2 class="title"><!--{$tpl_title|h}--></h2>
-<!--{include file=$tpl_navi}-->
-<div id="mycontentsarea">
-  <h2><!--{$tpl_subtitle|h}--></h2>
-  <p>下記項目にご入力ください。「<span class="attention">※</span>」印は入力必須項目です。<br />
-    入力後、一番下の「確認ページへ」ボタンをクリックしてください。</p>
+<section id="mypagecolumn">
+       <h2 class="title"><!--{$tpl_title|h}--></h2>
+       <!--{include file=$tpl_navi}-->
 
-  <form name="form1" id="form1" method="post" action="?">
-  <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-  <input type="hidden" name="mode" value="confirm" />
-  <input type="hidden" name="customer_id" value="<!--{$arrForm.customer_id|h}-->" />
-    <table summary="会員登録内容変更 " class="entryform">
-      <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`frontparts/form_personal_input.tpl" flgFields=3 emailMobile=true prefix=""}-->
-    </table>
-    <!--{if 'sfGMOMypageDisplay'|function_exists}-->
-      <!--{'sfGMOMypageDisplay'|call_user_func}-->
-    <!--{/if}-->
-    <div class="tblareabtn">
-      <input class="spbtn spbtn-shopping" type="submit" class="box150" value="確認ページへ" name="refusal" id="refusal" />
-    </div>
-  </form>
-</div>
+       <h3 class="title_mypage"><!--{$tpl_subtitle|h}--></h3>
 
-</div>
+       <!--★インフォメーション★-->
+       <div class="intro">
+           <p><span class="attention">※</span>は必須入力項目です。</p>
+       </div>
+
+         <form name="form1" id="form1" method="post" action="?">
+             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+             <input type="hidden" name="mode" value="confirm" />
+             <input type="hidden" name="customer_id" value="<!--{$arrForm.customer_id|h}-->" />
+
+       <dl class="form_entry">
+          <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`frontparts/form_personal_input.tpl" flgFields=3 emailMobile=true prefix=""}-->
+       </dl>
+          
+                                        <!--{if 'sfGMOMypageDisplay'|function_exists}-->
+          <!--{'sfGMOMypageDisplay'|call_user_func}-->
+          <!--{/if}-->
+       <div class="btn_area">
+           <p><input type="submit" class="btn data-role-none" value="確認ページへ" name="refusal" id="refusal" /></p>
+          </div>
+
+         </form>
+</section>
 <!--▲CONTENTS-->

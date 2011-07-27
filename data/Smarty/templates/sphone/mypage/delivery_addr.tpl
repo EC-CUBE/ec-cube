@@ -23,26 +23,34 @@
 *}-->
 <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`popup_header.tpl" subtitle="新しいお届け先の追加・変更"}-->
 
-<div id="windowarea">
-    <h2 class="title"><!--{$tpl_title|h}--></h2>
-    <p>下記項目にご入力ください。「<span class="attention">※</span>」印は入力必須項目です。</p>
-    <p>入力後、一番下の「登録する」ボタンをクリックしてください。</p>
+<section id="windowcolumn">
+    <div data-role="header">
+                <div class="title_box clearfix">
+       <h2><!--{$tpl_title|h}--></h2>
+         <a href="delivery.php" data-role="button" data-rel="back" data-icon="delete" data-iconpos="notext" class="ui-btn-right" data-theme="d"><span class="ui-btn-text">close</span></a>
+                                    </div>
+                                     </div>
 
-    <form name="form1" id="form1" method="post" action="?">
-        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-        <input type="hidden" name="mode" value="edit" />
-        <input type="hidden" name="other_deliv_id" value="<!--{$smarty.session.other_deliv_id}-->" />
-        <input type="hidden" name="ParentPage" value="<!--{$ParentPage}-->" />
+       <!--★インフォメーション★-->
+       <div class="information">
+          <p><span class="attention">※</span>は必須入力項目です。<br />
+           最大20件まで登録できます。</p> 
+       </div>
 
-        <table summary="お届け先登録" class="entryform">
-            <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`frontparts/form_personal_input.tpl" flgFields=1 emailMobile=false prefix=""}-->
-        </table>
-<br />
-        <div class="btn">
-            <input class="spbtn spbtn-shopping" type="submit" class="box150" value="登録する" name="register" id="register" />
-        </div>
-    </form>
-    <br />
-</div>
+       <form name="form1" id="form1" method="post" action="?">
+           <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+           <input type="hidden" name="mode" value="edit" />
+           <input type="hidden" name="other_deliv_id" value="<!--{$smarty.session.other_deliv_id}-->" />
+           <input type="hidden" name="ParentPage" value="<!--{$ParentPage}-->" />
+
+       <dl class="form_entry">
+           <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`frontparts/form_personal_input.tpl" flgFields=1 emailMobile=false prefix=""}-->
+       </dl>
+
+       <div class="btn_area">
+          <input class="btn" type="submit" value="登録する" name="register" id="register" />
+       </div>
+       </form>
+</section>
 
 <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`popup_footer.tpl"}-->

@@ -20,14 +20,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <!--商品カテゴリーここから-->
-<div id="topcatarea">
-<h2 id="title-category" class="title-side">商品カテゴリ</h2>
-</div>
-
-<div id="block-category" class="block-side">
-  <div class="create-box">
-
-    <ul id="categorytree">
+<section id="category_area">
+<h2 class="title_block">商品カテゴリー</h2>
+<nav id="categorytree">
+<ul id="categorytree">
     <!--{assign var=preLev value=1}-->
     <!--{assign var=firstdone value=0}-->
     <!--{section name=cnt loop=$arrTree}-->
@@ -51,7 +47,7 @@
             </li>
           <!--{/if}-->
 
-          <li class="level<!--{$level}--><!--{if in_array($arrTree[cnt].category_id, $tpl_category_id)}--> onmark<!--{/if}-->"><span class="category_header"></span><span class="category_body"><a href="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php?category_id=<!--{$arrTree[cnt].category_id}-->"<!--{if in_array($arrTree[cnt].category_id, $tpl_category_id)}--> class="onlink"<!--{/if}-->><!--{$arrTree[cnt].category_name|h}-->(<!--{$arrTree[cnt].product_count|default:0}-->)</a></span>
+          <li class="level<!--{$level}--><!--{if in_array($arrTree[cnt].category_id, $tpl_category_id)}--> onmark<!--{/if}-->"><span class="category_header"></span><span class="category_body"><a rel="external" href="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php?category_id=<!--{$arrTree[cnt].category_id}-->"<!--{if in_array($arrTree[cnt].category_id, $tpl_category_id)}--> class="onlink"<!--{/if}-->><!--{$arrTree[cnt].category_name|h}-->(<!--{$arrTree[cnt].product_count|default:0}-->)</a></span>
             <!--{if $firstdone == 0}--><!--{assign var=firstdone value=1}--><!--{/if}-->
             <!--{assign var=preLev value=`$level`}-->
             <!--{/if}-->
@@ -69,17 +65,12 @@
         <!--{/if}-->
       <!--{/if}-->
     <!--{/section}-->
-    </ul>
+</ul>
 
-  </div>
-</div>
-
-<!--{if $arrTree|@count > 0}-->
 <script type="text/javascript" language="JavaScript">
 //<![CDATA[
 initCategoryList(); //カテゴリーリストの初期化
 //]]>
 </script>
-<!--{/if}-->
-
-<!--商品カテゴリーここまで-->
+</section>
+<!-- ▲カテゴリ -->

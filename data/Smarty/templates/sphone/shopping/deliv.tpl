@@ -19,22 +19,22 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<!--▼CONTENTS-->
+<!--▼コンテンツここから -->
+<section id="undercolumn">
+
 <h2 class="title"><!--{$tpl_title|h}--></h2>
 
-<p>下記一覧よりお届け先住所を選択して、「選択したお届け先に送る」ボタンをクリックしてください。</p>
+<!--★インフォメーション★-->
+<div class="information">
+ <p>一覧よりお届け先住所を選択してください。</p>
 <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
-<p>一覧にご希望の住所が無い場合は、「新しいお届け先を追加する」より追加登録してください。<br>
 ※最大<!--{$smarty.const.DELIV_ADDR_MAX|h}-->件まで登録できます。</p>
 <!--{/if}-->
+</div>
 
-<!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
-    <p class="addbtn"><a class="kybtn" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|h}-->','new_deiv','600','640'); return false;">新しいお届け先を追加する</a>
-    </p><br />
-<!--{/if}-->
-
-<p><a class="kybtn" href="javascript:;" onclick="fnModeSubmit('multiple', '', ''); return false">お届け先を複数指定する        </a></p><br /><br />
-<form name="form1" id="form1" method="post" action="?">
+<!--▼フォームここから -->
+<div class="form_area">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.const.HTTP_URL}-->shopping/deliv.php">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="customer_addr" />
     <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
@@ -42,50 +42,63 @@
     <!--{if $arrErr.deli != ""}-->
         <p class="attention"><!--{$arrErr.deli}--></p>
     <!--{/if}-->
-    <table summary="お届け先の指定" class="entryform">
-        <tr>
-            <th class="alignC select valignM">選択</th>
-            <th class="alignC valignM">住所種類</th>
-            <th class="alignC valignM">お届け先</th>
-            <th class="change alignC valignM">変更</th>
-        </tr>
-        <!--{section name=cnt loop=$arrAddr}-->
-            <tr>
-                 <td>
-                     <!--{if $smarty.section.cnt.first}-->
-                        <input type="radio" name="deliv_check" id="chk_id_<!--{$smarty.section.cnt.iteration}-->" value="-1" <!--{if $arrForm.deliv_check.value == "" || $arrForm.deliv_check.value == -1}--> checked="checked"<!--{/if}--> />
-                     <!--{else}-->
-                        <input type="radio" name="deliv_check" id="chk_id_<!--{$smarty.section.cnt.iteration}-->" value="<!--{$arrAddr[cnt].other_deliv_id}-->"<!--{if $arrForm.deliv_check.value == $arrAddr[cnt].other_deliv_id}--> checked="checked"<!--{/if}--> />
-                     <!--{/if}-->
-                </td>
-                <td>
-                    <label for="chk_id_<!--{$smarty.section.cnt.iteration}-->">
-                        <!--{if $smarty.section.cnt.first}-->
-                            会員登録住所
-                        <!--{else}-->
-                            追加登録住所
-                        <!--{/if}-->
-                    </label>
-                </td>
-                <td>
-                    <!--{assign var=key value=$arrAddr[cnt].pref}-->
-                    <!--{$arrPref[$key]}--><!--{$arrAddr[cnt].addr01|h}--><!--{$arrAddr[cnt].addr02|h}--><br />
-                    <!--{$arrAddr[cnt].name01|h}--> <!--{$arrAddr[cnt].name02|h}-->
-                </td>
-                <td class="centertd">
-                    <!--{if !$smarty.section.cnt.first}-->
-                        <a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|h}-->&amp;other_deliv_id=<!--{$arrAddr[cnt].other_deliv_id}-->','new_deiv','600','640'); return false;">変更</a><br>
-                    <!--{/if}-->
-                    <!--{if !$smarty.section.cnt.first}-->
-                        <a href="?" onclick="fnModeSubmit('delete', 'other_deliv_id', '<!--{$arrAddr[cnt].other_deliv_id}-->'); return false">削除</a>
-                    <!--{/if}-->
-                </td>
-            </tr>
-        <!--{/section}-->
-    </table>
-    <div class="tblareabtn">
-         <p><input type="submit" value="選択したお届け先に送る" class="spbtn spbtn-shopping" width="130" height="30" alt="選択したお届け先に送る" name="send_button" id="next" /></p>
-         <p><a href="<!--{$smarty.const.CART_URLPATH}-->" class="spbtn spbtn-medeum">戻る</a></p>
-    </div>
+            
+<!--☆右にスライドボタン -->
+<div class="bubbleBox">
+<div class="bubble_announce clearfix">
+<p class="fb"><a rel="external" href="javascript:fnModeSubmit('multiple', '', '');">複数のお届け先に送りますか？</a></p>
+</div>
+  <div class="bubble_arrow_line"><!--矢印空タグ --></div>
+<div class="bubble_arrow"><!--矢印空タグ --></div>
+</div>
+
+
+<div class="formBox">
+
+<!--{section name=cnt loop=$arrAddr}-->
+<dl class="deliv_check">
+  <dt>
+   <p>
+     <!--{if $smarty.section.cnt.first}-->
+        <input type="radio" name="deliv_check" id="chk_id_<!--{$smarty.section.cnt.iteration}-->" value="-1" <!--{if $arrForm.deliv_check.value == "" || $arrForm.deliv_check.value == -1}--> checked="checked"<!--{/if}--> class="data-role-none" />
+        <label for="chk_id_<!--{$smarty.section.cnt.iteration}-->">会員登録住所</label>
+     <!--{else}-->
+        <input type="radio" name="deliv_check" id="chk_id_<!--{$smarty.section.cnt.iteration}-->" value="<!--{$arrAddr[cnt].other_deliv_id}-->"<!--{if $arrForm.deliv_check.value == $arrAddr[cnt].other_deliv_id}--> checked="checked"<!--{/if}--> class="data-role-none" />
+        <label for="chk_id_<!--{$smarty.section.cnt.iteration}-->">追加登録住所</label>
+     <!--{/if}-->
+   </p>
+   <ul class="edit">
+       <!--{if !$smarty.section.cnt.first}-->
+           <li><a rel="external" href="javascript:void(0);" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|h}-->&amp;other_deliv_id=<!--{$arrAddr[cnt].other_deliv_id}-->','new_deiv','600','640'); return false;">編集</a></li>
+           <li><img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" width="21" height="20" alt="削除" onclick="fnModeSubmit('delete', 'other_deliv_id', '<!--{$arrAddr[cnt].other_deliv_id}-->');" /></li>
+       <!--{/if}-->
+   </ul>
+    </dt>
+      <dd>
+        <!--{assign var=key value=$arrAddr[cnt].pref}-->
+        <!--{$arrPref[$key]}--><!--{$arrAddr[cnt].addr01|h}--><!--{$arrAddr[cnt].addr02|h}--><br />
+        <!--{$arrAddr[cnt].name01|h}--> <!--{$arrAddr[cnt].name02|h}-->
+     </dd>
+</dl>
+ <!--{/section}-->
+
+<div class="inner">
+<!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
+  <a rel="external" href="javascript:void(0);" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|h}-->','new_deiv','600','640'); return false;" class="btn_sub addbtn">新しいお届け先を追加</a>
+<!--{/if}-->
+</div>
+
+</div><!--▲formBox -->
+
+
+<ul class="btn_btm">
+ <li><a rel="external" href="javascript:void(document.form1.submit());" class="btn">選択したお届け先に送る</a></li>
+ <li><a rel="external" href="<!--{$smarty.const.CART_URLPATH}-->" class="btn_back">戻る</a></li>
+</ul>
+
 </form>
-<!--▲CONTENTS-->
+</div><!--▲form_area -->
+
+
+</section>
+<!--▲コンテンツここまで -->

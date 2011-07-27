@@ -19,25 +19,34 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`popup_header.tpl" subtitle="パスワードを忘れた方(完了ページ)"}-->
+<!--{*<!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`popup_header.tpl" subtitle="パスワードを忘れた方(完了ページ)"}-->*}-->
 
-  <div id="windowarea">
-    <h2 class="title">パスワードを忘れた方</h2>
-    <p>パスワードの発行が完了いたしました。ログインには下記のパスワードをご利用ください。<br />
-    ※下記パスワードは、MYページの「会員登録内容変更」よりご変更いただけます。</p>
+  <section id="windowcolumn">
+  <div data-role="header">
+    <div class="title_box clearfix">
+      <h2>パスワードを忘れた方</h2><a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="notext" class="ui-btn-right" data-theme="d"><span class="ui-btn-text">close</span></a>
+       </div>
+        </div>
+   <div class="intro">
+     <p>パスワードの発行が完了いたしました。ログインには下記のパスワードをご利用ください。</p>
+      </div>
     <form action="?" method="post" name="form1">
-      <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-      <div id="completebox">
-      <!--{if $smarty.const.FORGOT_MAIL != 1}-->
-        <p><em><!--{$arrForm.new_password}--></em></p>
-      <!--{else}-->
-        <p><em>ご登録メールアドレスに送付致しました。</em></p>
-      <!--{/if}-->
-      </div>
-      <div class="btn">
-        <a class="spbtn spbtn-medeum" href="javascript:window.close()">閉じる</a>
-      </div>
-    </form>
-  </div>
-<br />
-<!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`popup_footer.tpl"}-->
+         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+
+     <div class="window_area clearfix">
+       <!--{if $smarty.const.FORGOT_MAIL != 1}-->
+      <p id="completebox"><!--{$arrForm.new_password}--></p>
+       <!--{else}-->
+          <p  class="attention">ご登録メールアドレスに送付致しました。</p>
+       <!--{/if}-->
+         <hr />
+       <p>※パスワードは、MYページの「会員登録内容変更」よりご変更いただけます。</p>
+     </div>
+
+     <div class="btn_area">
+      <p><a href="javascript:window.close()" class="btn_sub btn_close">閉じる</a></p>
+       </div>
+     </form>    
+  </section>
+
+<!--{*<!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`popup_footer.tpl"}-->*}-->

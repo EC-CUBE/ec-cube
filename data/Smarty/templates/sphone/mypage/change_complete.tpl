@@ -22,21 +22,17 @@
  */
 *}-->
 <!--▼CONTENTS-->
-<div id="mypagecolumn">
-  <h2 class="title"><!--{$tpl_title|h}--></h2>
-  <!--{include file=$tpl_navi}-->
-  <div id="mycontentsarea">
-    <h2><!--{$tpl_subtitle|h}--></h2>
+<section id="mypagecolumn">
+      <h2 class="title"><!--{$tpl_title|h}--></h2>
+      <!--{include file=$tpl_navi}-->
 
-    <div id="completetext">
-      <p class="changetext">会員登録内容の変更が完了いたしました。<br />
-        今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
-    </div>
+      <h3 class="title_mypage"><!--{$tpl_subtitle|h}--></h3>
 
-    <div class="tblareabtn">
-
-<a class="spbtn spbtn-medeum" href="<!--{$smarty.const.TOP_URLPATH}-->">トップページへ</a>
-    </div>
-  </div>
-</div>
+         <div class="thankstext">
+           <p>会員登録内容の変更が完了いたしました。</p>
+         </div>
+         <div id="completetext">
+           <p>今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
+         </div>
+</section>
 <!--▲CONTENTS-->

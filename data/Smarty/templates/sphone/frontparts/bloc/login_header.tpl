@@ -19,8 +19,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<header class="global_header clearfix">
-<div id="site_name">
-<h1><a rel="external" href="<!--{$smarty.const.ROOT_URLPATH}-->"><img src="<!--{$TPL_URLPATH}-->img/header/logo.png" width="150" height="25" alt="サイト名" /></a></h1>
-</div>
 
+<nav class="header_navi">
+    <!--{if $tpl_login}-->
+        <p>ようこそ
+                                        <a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" data-transition="slideup"><!--{$tpl_name1|h}--> <!--{$tpl_name2|h}--></a>さん</p>
+        <!--{if $smarty.const.USE_POINT !== false}-->
+            <p>所持ポイント<!--{$tpl_user_point|number_format|default:0}-->pt</p>
+        <!--{/if}-->
+    <!--{else}-->
+        <p>ようこそ 
+        ゲストさん</p>
+        <p><a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/entry/kiyaku.php">新規会員登録</a></p>
+    <!--{/if}-->
+</nav>

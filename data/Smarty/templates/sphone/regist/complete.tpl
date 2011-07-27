@@ -20,22 +20,25 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <!--▼CONTENTS-->
-<div id="undercolumn">
-  <div id="undercolumn_entry">
-    <h2 class="title"><!--{$tpl_title|h}--></h2>
-    <div id="completetext">
-      本登録が完了いたしました。それではショッピングをお楽しみください。</em>
+<section id="undercolumn">
+       <h2 class="title"><!--{$tpl_title|h}--></h2>
+         <div class="thankstext">
+            <p>本登録が完了いたしました。</p>
+         </div>
+      <hr>
+         <div id="completetext">
+            <p>それではショッピングをお楽しみください。</p>
+            <p>今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
 
-      <p>今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
-
-      <p><!--{$arrSiteInfo.company_name|h}--><br />
-        TEL：<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}--> <!--{if $arrSiteInfo.business_hour != ""}-->（受付時間/<!--{$arrSiteInfo.business_hour}-->）<!--{/if}--><br />
-        E-mall：<a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->"><!--{$arrSiteInfo.email02|escape:'hexentity'}--></a></p>
-
-    </div>
-      <div class="tblareabtn">
-	<a class="spbtn spbtn-medeum" href="<!--{$smarty.const.TOP_URLPATH}-->">トップページへ</a>
-      </div>
-  </div>
-</div>
+                                      <div class="btn_area">
+             <a href="<!--{$smarty.const.TOP_URLPATH}-->" class="btn_toppage btn_sub">トップページへ</a>
+           </div>
+         </div>
+      <hr>
+         <div class="shopInformation">
+             <p><!--{$arrSiteInfo.company_name|h}--></p>
+             <p>TEL：<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}--><br />
+                E-mail：<a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->"><!--{$arrSiteInfo.email02|escape:'hexentity'}--></a></p>
+         </div>
+</section>
 <!--▲CONTENTS-->

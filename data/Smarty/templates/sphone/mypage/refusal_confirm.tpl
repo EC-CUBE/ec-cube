@@ -22,24 +22,24 @@
  */
 *}-->
 <!--▼CONTENTS-->
-<div id="mypagecolumn">
-  <h2 class="title"><!--{$tpl_title|h}--></h2>
-  <!--{include file=$tpl_navi}-->
-  <form name="form1" method="post" action="?">
-  <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-  <input type="hidden" name="mode" value="complete" />
-  <div id="mycontentsarea">
-    <h2><!--{$tpl_subtitle|h}--></h2>
-    <div id="completetext">
-      <p>退会手続きを実行してもよろしいでしょうか？</p>
-      <div class="tblareabtn">
-        <a class="spbtn spbtn-shopping" href="./refusal.php">いいえ、退会しません</a><br />
-        <input class="spbtn spbtn-medeum" type="submit" value="はい、退会します" name="refuse_do" id="refuse_do" />
-      </div>
+<section id="mypagecolumn">
+     <h2 class="title"><!--{$tpl_title|h}--></h2>
+     <!--{include file=$tpl_navi}-->
+        <form name="form1" method="post" action="?">
+            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+            <input type="hidden" name="mode" value="complete" />
 
-      <p class="mini"><em>※退会手続きが完了した時点で、現在保存されている購入履歴や、お届け先等の情報はすべてなくなりますのでご注意ください。</em></p>
-    </div>
-  </div>
-  </form>
-</div>
+     <h3 class="title_mypage"><!--{$tpl_subtitle|h}--></h3>
+
+     <!--★インフォメーション★-->
+        <div class="refusetxt">
+           <p>退会手続きを実行してもよろしいでしょうか？</p>
+                                            <ul class="btn_refuse">
+              <li><a class="btn" href="./refusal.php" rel="external">いいえ、退会しません</a></li>
+                       <li><input class="btn data-role-none" type="submit" value="はい、退会します" name="refuse_do" id="refuse_do" /></li>
+           </ul>
+        </div>
+         </form>
+</section>
 <!--▲CONTENTS-->
+

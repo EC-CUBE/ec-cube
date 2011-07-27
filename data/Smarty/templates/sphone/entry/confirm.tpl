@@ -20,122 +20,87 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <!--▼CONTENTS-->
-<div id="undercolumn">
-  <div id="undercolumn_entry">
-    <h2 class="title"><!--{$tpl_title|h}--></h2>
-    <p>下記の内容で送信してもよろしいでしょうか？<br />
-      よろしければ、一番下の「会員登録完了へ」ボタンをクリックしてください。</p>
-    <form name="form1" id="form1" method="post" action="?">
-      <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-      <input type="hidden" name="mode" value="complete">
-      <!--{foreach from=$arrForm key=key item=item}-->
-        <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
-      <!--{/foreach}-->
+<section id="undercolumn">
+       <h2 class="title"><!--{$tpl_title|h}--></h2>
 
-      <table summary="入力内容確認" class="entryform">
-        <tr>
-          <th class="confirmtd">お名前<span class="attention">※</span></th>
-          <td>
-            <!--{$arrForm.name01|h}-->&nbsp;
-            <!--{$arrForm.name02|h}-->
-          </td>
-        </tr>
-        <tr>
-          <th class="confirmtd">お名前(フリガナ)<span class="attention">※</span></th>
-          <td>
-            <!--{$arrForm.kana01|h}-->&nbsp;
-            <!--{$arrForm.kana02|h}-->
-          </td>
-        </tr>
-        <tr>
-          <th class="confirmtd">郵便番号<span class="attention">※</span></th>
-          <td>
-            〒<!--{$arrForm.zip01|h}--> - <!--{$arrForm.zip02|h}-->
-          </td>
-        </tr>
-        <tr>
-          <th class="confirmtd">住所<span class="attention">※</span></th>
-          <td>
-            <!--{$arrPref[$arrForm.pref]|h}--><!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}-->
-          </td>
-        </tr>
-        <tr>
-          <th class="confirmtd">電話番号<span class="attention">※</span></th>
-          <td>
-            <!--{$arrForm.tel01|h}--> - <!--{$arrForm.tel02|h}--> - <!--{$arrForm.tel03|h}-->
-          </td>
-        </tr>
-        <tr>
-          <th class="confirmtd">FAX</th>
-          <td>
-            <!--{if strlen($arrForm.fax01) > 0 && strlen($arrForm.fax02) > 0 && strlen($arrForm.fax03) > 0}-->
+         <!--★インフォメーション★-->
+         <div class="information">
+            <p>入力内容をご確認ください。</p>
+         </div>
+
+      <form name="form1" id="form1" method="post" action="?">
+           <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+           <input type="hidden" name="mode" value="complete">
+           <!--{foreach from=$arrForm key=key item=item}-->
+           <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
+           <!--{/foreach}-->
+
+      <dl class="form_entry">
+
+         <dt>お名前</dt>
+          <dd><!--{$arrForm.name01|h}-->&nbsp;<!--{$arrForm.name02|h}--></dd>
+        
+         <dt>お名前(フリガナ)</dt>
+          <dd><!--{$arrForm.kana01|h}-->&nbsp;<!--{$arrForm.kana02|h}--></dd>
+         
+         <dt>住所</dt>
+          <dd>〒<!--{$arrForm.zip01|h}--> - <!--{$arrForm.zip02|h}--><br />
+                <!--{$arrPref[$arrForm.pref]|h}--><!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}--></dd>
+
+         <dt>電話番号</dt>
+          <dd><!--{$arrForm.tel01|h}--> - <!--{$arrForm.tel02|h}--> - <!--{$arrForm.tel03|h}--></dd>
+        
+         <dt>FAX</dt>
+          <dd><!--{if strlen($arrForm.fax01) > 0 && strlen($arrForm.fax02) > 0 && strlen($arrForm.fax03) > 0}-->
               <!--{$arrForm.fax01|h}--> - <!--{$arrForm.fax02|h}--> - <!--{$arrForm.fax03|h}-->
-            <!--{else}-->
+              <!--{else}-->
               未登録
-            <!--{/if}-->
-          </td>
-        </tr>
-        <tr>
-          <th class="confirmtd">メールアドレス<span class="attention">※</span></th>
-          <td>
-            <a href="mailto:<!--{$arrForm.email|escape:'hex'}-->"><!--{$arrForm.email|escape:'hexentity'}--></a>
-          </td>
-        </tr>
-        <tr>
-          <th class="confirmtd">性別<span class="attention">※</span></th>
-          <td>
-            <!--{if $arrForm.sex eq 1}-->
-            男性
-            <!--{else}-->
-            女性
-            <!--{/if}-->
-          </td>
-        </tr>
-        <tr>
-          <th class="confirmtd">職業</th>
-          <td><!--{$arrJob[$arrForm.job]|default:"未登録"|h}--></td>
-        </tr>
-        <tr>
-          <th class="confirmtd">生年月日</th>
-          <td>
-            <!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}-->
-              <!--{$arrForm.year|h}-->年<!--{$arrForm.month|h}-->月<!--{$arrForm.day|h}-->日
-            <!--{else}-->
-            未登録
-            <!--{/if}-->
-          </td>
-        </tr>
-        <tr>
-          <th class="confirmtd">希望するパスワード<span class="attention">※</span><br />
-          </th>
-          <td><!--{$passlen}--></td>
-        </tr>
-        <tr>
-          <th class="confirmtd">パスワードを忘れた時のヒント<span class="attention">※</span></th>
-          <td>
-              質問：<!--{$arrReminder[$arrForm.reminder]|h}--><br />
-              答え：<!--{$arrForm.reminder_answer|h}-->
-          </td>
-        </tr>
-        <tr>
-          <th class="confirmtd">メールマガジン送付について<span class="attention">※</span></th>
-          <td>
-            <!--{if $arrForm.mailmaga_flg eq 1}-->
-            HTMLメール＋テキストメールを受け取る
-            <!--{elseif $arrForm.mailmaga_flg eq 2}-->
-            テキストメールを受け取る
-            <!--{else}-->
-            受け取らない
-            <!--{/if}-->
-          </td>
-        </tr>
-      </table>
+              <!--{/if}--></dd>
 
-      <div class="tblareabtn">
-        <a class="spbtn spbtn-medeum" href="?" onclick="fnModeSubmit('return', '', ''); return false;">戻る</a>&nbsp;
-        <input type="submit" value="送信" class="spbtn spbtn-shopping" width="130" height="30" alt="送信" name="send" id="send" />
-      </div>
-    </form>
-  </div>
-</div>
+         <dt>メールアドレス</dt>
+          <dd><a href="mailto:<!--{$arrForm.email|escape:'hex'}-->" rel="external"><!--{$arrForm.email|escape:'hexentity'}--></a></dd>
+        
+          <dt>性別</dt>
+          <dd><!--{if $arrForm.sex eq 1}-->
+              男性
+              <!--{else}-->
+              女性
+              <!--{/if}--></dd>
+        
+          <dt>職業</dt>
+           <dd><!--{$arrJob[$arrForm.job]|default:"未登録"|h}--></dd>
+
+          <dt>生年月日</dt>
+           <dd><!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}-->
+               <!--{$arrForm.year|h}-->年<!--{$arrForm.month|h}-->月<!--{$arrForm.day|h}-->日
+               <!--{else}-->
+               未登録
+               <!--{/if}--></dd>
+        
+          <dt>希望するパスワード</dt>
+           <dd><!--{$passlen}--></dd>
+        
+          <dt>パスワードを忘れた時のヒント</dt>
+           <dd>質問：<!--{$arrReminder[$arrForm.reminder]|h}--><br />
+               答え：<!--{$arrForm.reminder_answer|h}--></dd>
+
+          <dt>メールマガジン送付について</dt>
+           <dd><!--{if $arrForm.mailmaga_flg eq 1}-->
+               HTMLメール＋テキストメールを受け取る
+               <!--{elseif $arrForm.mailmaga_flg eq 2}-->
+               テキストメールを受け取る
+               <!--{else}-->
+               受け取らない
+               <!--{/if}--></dd>
+        </dl>
+
+       <!--★ボタン★-->
+       <div class="btn_area">
+          <ul class="btn_btm">
+            <li><input type="submit" value="送信" class="spbtn spbtn-shopping" width="130" height="30" alt="送信" name="send" id="send" /></li>
+            <li><a href="spbtn spbtn-medeum" href="?" onclick="fnModeSubmit('return', '', ''); return false;" class="btn_back">戻る</a></li>
+          </ul>
+       </div>
+     </form>
+</section>
 <!--▲CONTENTS-->

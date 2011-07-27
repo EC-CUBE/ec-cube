@@ -20,17 +20,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <body>
-
-<!--{$GLOBAL_ERR}-->
-<noscript>
-  <p>JavaScript を有効にしてご利用下さい.</p>
-</noscript>
+<div data-role="page" data-keep-native=".data-role-none" data-theme="d">
 
 <a name="top" id="top"></a>
 
 <!--{* ▼HeaderHeaderTop COLUMN*}-->
     <!--{if $arrPageLayout.HeaderTopNavi|@count > 0}-->
-        <div>
+        <div class="header_utility">
             <!--{* ▼上ナビ *}-->
             <!--{foreach key=HeaderTopNaviKey item=HeaderTopNaviItem from=$arrPageLayout.HeaderTopNavi}-->
                 <!-- ▼<!--{$HeaderTopNaviItem.bloc_name}--> -->
@@ -43,6 +39,7 @@
             <!--{/foreach}-->
             <!--{* ▲上ナビ *}-->
         </div>
+</header>
     <!--{/if}-->
 <!--{* ▲HeaderHeaderTop COLUMN*}-->
 <!--{* ▼HEADER *}-->
@@ -54,7 +51,7 @@
 
 <!--{* ▼TOP COLUMN*}-->
 <!--{if $arrPageLayout.TopNavi|@count > 0}-->
-            <div>
+            <div class="header_utility">
                 <!--{* ▼上ナビ *}-->
                 <!--{foreach key=TopNaviKey item=TopNaviItem from=$arrPageLayout.TopNavi}-->
                     <!-- ▼<!--{$TopNaviItem.bloc_name}--> -->
@@ -67,11 +64,12 @@
                 <!--{/foreach}-->
                 <!--{* ▲上ナビ *}-->
             </div>
+</header>
 <!--{/if}-->
 <!--{* ▲TOP COLUMN*}-->
 
 <!--{* ▼CENTER COLUMN *}-->
-        <div>
+        <div id="main-content">
             <!--{* ▼メイン上部 *}-->
             <!--{if $arrPageLayout.MainHead|@count > 0}-->
                 <!--{foreach key=MainHeadKey item=MainHeadItem from=$arrPageLayout.MainHead}-->
@@ -108,7 +106,7 @@
 
 <!--{* ▼BOTTOM COLUMN*}-->
         <!--{if $arrPageLayout.BottomNavi|@count > 0}-->
-            <div>
+            <div id="footer_utility">
                 <!--{* ▼下ナビ *}-->
                 <!--{foreach key=BottomNaviKey item=BottomNaviItem from=$arrPageLayout.BottomNavi}-->
                     <!-- ▼<!--{$BottomNaviItem.bloc_name}--> -->
@@ -149,12 +147,26 @@
     <!--{/if}-->
 <!--{* ▲FooterBottom COLUMN*}-->
 
+</div>
+
+<!-- ▼明細情報 -->
+<div id="windowcolumn" data-role="dialog" data-theme="d">
+ <div data-role="header" data-backbtn="false">
+    
+  <h2>新着情報</h2>
+    
+                </div>
+<div data-role="content">
+  <dl class="view_detail">
+    <dt><a href="#"></a></dt>
+      <dd id="newsComment"></dd>
+       </dl>
+    <p><a href="javascript:void(0);" class="btn_more" data-rel="back">新着一覧にもどる</a></p>
+</div>
+
+<div data-role="footer"></div>
+
+</div>
+<!-- ▲明細情報 -->
+
 </body>
-<!--{assign var=index value="`$smarty.const.ROOT_URLPATH``$smarty.const.DIR_INDEX_FILE`"}-->
-<!--{if $index != $smarty.server.PHP_SELF}-->
-    <script type="text/javascript" language="JavaScript">
-    //<![CDATA[
-    setTopButton("<!--{$smarty.const.HTTPS_URL}-->");
-    //]]>
-    </script>
-<!--{/if}-->

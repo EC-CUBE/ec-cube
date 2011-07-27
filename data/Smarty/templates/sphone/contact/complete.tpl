@@ -20,22 +20,25 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <!--▼CONTENTS-->
-<div id="undercolumn">
-  <div id="undercolumn_contact">
-    <h2 class="title"><!--{$tpl_title|h}--></h2>
-    <div id="completetext">
-      お問い合わせ内容の送信が完了いたしました。<br />
-      万一、ご回答メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせください。<br />
-      今後ともご愛顧賜りますようよろしくお願い申し上げます。
-    <p><!--{$arrSiteInfo.company_name|h}--><br />
-      TEL：<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}-->
-       <!--{if $arrSiteInfo.business_hour != ""}-->
-      (受付時間/<!--{$arrSiteInfo.business_hour}-->)
-       <!--{/if}--><br />
-      E-mail：<a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->"><!--{$arrSiteInfo.email02|escape:'hexentity'}--></a></p>
-    </div>
-    <div class="tblareabtn">
-      <a class="spbtn spbtn-medeum" href="<!--{$smarty.const.TOP_URLPATH}-->">トップページへ</a>
-    </div>
-  </div>
-</div>
+<section id="undercolumn">
+        <h2 class="title"><!--{$tpl_title|h}--></h2>
+          <div class="thankstext">
+            お問い合わせをいただき、ありがとうございました。
+          </div>
+        <hr>
+          <div id="completetext">
+             <p>万一、ご回答メールが届かない場合は、トラブルの可能性もありますので、大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせください。</p>
+             <p>今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
+          </div>
+                                         
+                                        <div class="btn_area">
+              <a class="btn_s btn_sub" href="<!--{$smarty.const.TOP_URLPATH}-->">トップページへ</a>
+          </div>
+        <hr>
+          <div class="shopInformation">
+             <p><!--{$arrSiteInfo.company_name|h}--></p>
+             <p>TEL：<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}--><br />
+                 E-mail：<a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->"><!--{$arrSiteInfo.email02|escape:'hexentity'}--></a></p>
+          </div>
+</section>
+<!--▲CONTENTS -->

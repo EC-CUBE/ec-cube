@@ -19,42 +19,119 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<!--{assign var=mypage value="`$smarty.const.ROOT_URLPATH`mypage/index.php"}-->
-<!--{if $smarty.server.PHP_SELF != $mypage}-->
+<!-- ▼新着情報 -->
 
-<!--{if $arrNews}-->
-<div id="block-news" class="block-center">
-<div class="create-box">
+<section id="news_area">
+<h2 class="title_block">新着情報</h2>
+<ul class="newslist">
+  <!--{section name=data loop=$arrNews max=3}-->
+  <li>
+    <a #windowcolumn href="javascript:getNewsDetail(<!--{$arrNews[data].news_id}-->);">
+    <span class="news_title"><!--{$arrNews[data].news_title|h}--></span></a><br />
+    <span class="news_date"><!--{$arrNews[data].news_date_disp|date_format:"%Y年 %m月 %d日"}--></span>
+  </li>
+  </a>
+  <!--{/section}-->
+</ul>
 
-<!--{section name=data loop=$arrNews max=3}-->
-    <div class="anews">
-        <span><!--{$arrNews[data].news_date_disp|date_format:"%m&frasl;%d"}--></span>&nbsp;
-        <!--{if $arrNews[data].news_url}--><a href="<!--{$arrNews[data].news_url|h}-->"><!--{/if}--><!--{$arrNews[data].news_title|h}--><!--{if $arrNews[data].news_url}--></a><!--{/if}-->
-    </div>
-<!--{/section}-->
-
-</div>
-</div>
-
-<!--{/if}-->
-
-
-<!--{elseif $smarty.server.PHP_SELF == $mypage}-->
-
-<!--{if $arrMemberNews}-->
-<h3>お知らせ</h3>
-<div id="block-news-mypage">
-
-<!--{section name=data loop=$arrMemberNews max=3}-->
-<div class=" ">
-<span><!--{$arrMemberNews[data].news_date_disp|date_format:"%m.%d"}--></span>&nbsp;
-<!--{if $arrMemberNews[data].news_url}--><a href="<!--{$arrMemberNews[data].news_url|h}-->"><!--{/if}-->
-<!--{$arrMemberNews[data].news_title|h}-->
-<!--{if $arrMemberNews[data].news_url}--></a><!--{/if}-->
-</div>
-<!--{/section}-->
-
+<!--{if $newsCount > 3}-->
+<div class="btn_area">
+<p><a href="javascript: void(0);" class="btn_more" id="btn_more_news" onClick="getNews(3); return false;">もっとみる(＋3件)</a></p>
 </div>
 <!--{/if}-->
+</section>
+<!-- ▲新着情報 -->
 
-<!--{/if}-->
+
+<script>
+var newsPageNo = 2;
+
+function getNews(limit) {
+    $.mobile.pageLoading();
+    var i = limit;
+    
+    $.ajax({
+        url: "<!--{$smarty.const.HTTP_URL}-->frontparts/bloc/news.php",
+        type: "POST",
+           data: "mode=getList&pageno="+newsPageNo+"&disp_number="+i,
+           cache: false,
+           dataType: "json",
+           error: function(XMLHttpRequest, textStatus, errorThrown){
+            alert(textStatus);
+            $.mobile.pageLoading(true);
+           },
+           success: function(result){
+             for (var j = 0; j < i; j++) {
+                 if (result[j] != null) {
+                    var news = result[j];
+                    var maxCnt = $("#news_area ul.newslist li").length - 1;
+                    var newsEl = $("#news_area ul.newslist li").get(maxCnt);
+                    newsEl = $(newsEl).clone(true).insertAfter(newsEl);
+                    maxCnt++;
+                    
+                     //件名をセット
+                     $($("#news_area ul.newslist li a span.news_title").get(maxCnt)).text(news.news_title);
+                     
+                     //リンクをセット
+                     $($("#news_area ul.newslist li a").get(maxCnt)).attr("href", "javascript:getNewsDetail(" + news.news_id + ");");
+                     
+                     //年月をセット
+                     var newsDateDispArray = news.news_date_disp.split("-"); //ハイフンで年月日を分解
+                     var newsDateDisp = newsDateDispArray[0] + "年 " + newsDateDispArray[1] + "月 " + newsDateDispArray[2] + "日";
+                     $($("#news_area ul.newslist li span.news_date").get(maxCnt)).text(newsDateDisp);
+                 }
+             }
+
+             //すべての新着情報を表示したか判定
+             var newsPageCount = result.news_page_count;
+             if (parseInt(newsPageCount) <= newsPageNo) {
+                 $("#btn_more_news").hide();
+             }
+             
+             newsPageNo++;
+             
+             $.mobile.pageLoading(true);
+           }
+    });
+}
+
+function getNewsDetail(newsId) {
+    $.mobile.pageLoading();
+    $.ajax({
+        url: "<!--{$smarty.const.HTTP_URL}-->frontparts/bloc/news.php",
+        type: "GET",
+           data: "mode=getDetail&news_id="+newsId,
+           cache: false,
+           dataType: "json",
+           error: function(XMLHttpRequest, textStatus, errorThrown){
+               alert(textStatus);
+               $.mobile.pageLoading(true);
+           },
+           success: function(result){
+             if (result[0] != null) {
+                 var news = result[0];
+                var maxCnt = 0;
+                
+                 //件名をセット
+                 $($("#windowcolumn dl.view_detail dt a").get(maxCnt)).text(news.news_title);
+                 if (news.news_url != null) {
+                     $($("#windowcolumn dl.view_detail dt a").get(maxCnt)).attr("href", news.news_url);
+                 } else {
+                     $($("#windowcolumn dl.view_detail dt a").get(maxCnt)).attr("href", "#");
+                 }
+                 
+                 //年月をセット
+                 //var newsDateDispArray = news.news_date_disp.split("-"); //ハイフンで年月日を分解
+                 //var newsDateDisp = newsDateDispArray[0] + "年 " + newsDateDispArray[1] + "月 " + newsDateDispArray[2] + "日";
+                 //$($("#windowcolumn dl.view_detail dt").get(maxCnt)).text(newsDateDisp);
+
+                //コメントをセット
+                 $("#newsComment").text(news.news_comment);
+             }
+             
+             $.mobile.pageLoading(true);
+             $.mobile.changePage('#windowcolumn', 'slideup');
+           }
+    });
+}
+</script>

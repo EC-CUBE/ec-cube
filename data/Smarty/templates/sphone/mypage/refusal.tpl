@@ -22,22 +22,22 @@
  */
 *}-->
 <!--▼CONTENTS-->
-<div id="mypagecolumn">
-  <h2 class="title"><!--{$tpl_title|h}--></h2>
-  <!--{include file=$tpl_navi}-->
-  <div id="mycontentsarea">
-    <h2><!--{$tpl_subtitle|h}--></h2>
-    <form name="form1" method="post" action="?">
-      <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-      <input type="hidden" name="mode" value="confirm" />
-      <div id="completetext">
-        会員を退会された場合には、現在保存されている購入履歴や、お届け先などの情報は、すべて削除されますがよろしいでしょうか？
-      </div>
-        <div class="tblareabtn">
-          <input class="spbtn spbtn-shopping" type="submit" value="退会手続きを行う" name="refusal" id="refusal" /></div>
-<p class="mini"><em>※退会手続きが完了した時点で、現在保存されている購入履歴や、お届け先等の情報はすべてなくなりますのでご注意ください。</em></p>
+<section id="mypagecolumn">
+      <h2 class="title"><!--{$tpl_title|h}--></h2>
+      <!--{include file=$tpl_navi}-->
 
-    </form>
-  </div>
-</div><br />
+      <h3 class="title_mypage"><!--{$tpl_subtitle|h}--></h3>
+          <form name="form1" method="post" action="?">
+              <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+              <input type="hidden" name="mode" value="confirm" />
+
+      <!--★インフォメーション★-->
+      <div class="refusetxt">
+          <p>会員を退会された場合には、現在保存されている購入履歴や、お届け先などの情報は、すべて削除されますがよろしいでしょうか？</p>
+         <div class="btn_area">
+              <p><input class="btn data-role-none" type="submit" value="会員退会手続き" name="refusal" id="refusal" /></p>
+         </div>
+      </div>
+          </form>
+</section>
 <!--▲CONTENTS-->
