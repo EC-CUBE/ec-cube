@@ -161,7 +161,7 @@
     <dt><a href="#"></a></dt>
       <dd id="newsComment"></dd>
        </dl>
-    <p><a href="javascript:void(0);" class="btn_more" data-rel="back">新着一覧にもどる</a></p>
+    <p><a href="<!--{$smarty.const.HTTP_URL}-->" class="btn_more" data-rel="back">新着一覧にもどる</a></p>
 </div>
 
 <div data-role="footer"></div>

@@ -30,7 +30,6 @@
     <span class="news_title"><!--{$arrNews[data].news_title|h}--></span></a><br />
     <span class="news_date"><!--{$arrNews[data].news_date_disp|date_format:"%Y年 %m月 %d日"}--></span>
   </li>
-  </a>
   <!--{/section}-->
 </ul>
 
@@ -95,43 +94,54 @@ function getNews(limit) {
     });
 }
 
+var loadingState = 0;
 function getNewsDetail(newsId) {
-    $.mobile.pageLoading();
-    $.ajax({
-        url: "<!--{$smarty.const.HTTP_URL}-->frontparts/bloc/news.php",
-        type: "GET",
-           data: "mode=getDetail&news_id="+newsId,
-           cache: false,
-           dataType: "json",
-           error: function(XMLHttpRequest, textStatus, errorThrown){
-               alert(textStatus);
-               $.mobile.pageLoading(true);
-           },
-           success: function(result){
-             if (result[0] != null) {
-                 var news = result[0];
-                var maxCnt = 0;
-                
-                 //件名をセット
-                 $($("#windowcolumn dl.view_detail dt a").get(maxCnt)).text(news.news_title);
-                 if (news.news_url != null) {
-                     $($("#windowcolumn dl.view_detail dt a").get(maxCnt)).attr("href", news.news_url);
-                 } else {
-                     $($("#windowcolumn dl.view_detail dt a").get(maxCnt)).attr("href", "#");
+    if (loadingState == 0) {
+        $.mobile.pageLoading();
+        loadingState = 1;
+        $.ajax({
+            url: "<!--{$smarty.const.HTTP_URL}-->frontparts/bloc/news.php",
+            type: "GET",
+               data: "mode=getDetail&news_id="+newsId,
+               cache: false,
+               async: false,
+               dataType: "json",
+               error: function(XMLHttpRequest, textStatus, errorThrown){
+                   alert(textStatus);
+                   $.mobile.pageLoading(true);
+                   loadingState = 0;
+               },
+               success: function(result){
+                 if (result[0] != null) {
+                    var news = result[0];
+                    var maxCnt = 0;
+                    
+                     //件名をセット
+                     $($("#windowcolumn dl.view_detail dt a").get(maxCnt)).text(news.news_title);
+                     if (news.news_url != null) {
+                         $($("#windowcolumn dl.view_detail dt a").get(maxCnt)).attr("href", news.news_url);
+                     } else {
+                         $($("#windowcolumn dl.view_detail dt a").get(maxCnt)).attr("href", "#");
+                     }
+                     
+                     //年月をセット
+                     //var newsDateDispArray = news.news_date_disp.split("-"); //ハイフンで年月日を分解
+                     //var newsDateDisp = newsDateDispArray[0] + "年 " + newsDateDispArray[1] + "月 " + newsDateDispArray[2] + "日";
+                     //$($("#windowcolumn dl.view_detail dt").get(maxCnt)).text(newsDateDisp);
+
+                    //コメントをセット
+                     $("#newsComment").text(news.news_comment);
                  }
                  
-                 //年月をセット
-                 //var newsDateDispArray = news.news_date_disp.split("-"); //ハイフンで年月日を分解
-                 //var newsDateDisp = newsDateDispArray[0] + "年 " + newsDateDispArray[1] + "月 " + newsDateDispArray[2] + "日";
-                 //$($("#windowcolumn dl.view_detail dt").get(maxCnt)).text(newsDateDisp);
-
-                //コメントをセット
-                 $("#newsComment").text(news.news_comment);
-             }
-             
-             $.mobile.pageLoading(true);
-             $.mobile.changePage('#windowcolumn', 'slideup');
-           }
-    });
+                 $.mobile.pageLoading(true);
+                 $.mobile.changePage('#windowcolumn', 'slideup');
+                 //ダイアログが開き終わるまで待機
+                 setTimeout( function() {
+                     loadingState = 0;
+                 }, 3000);
+                 
+               }
+        });
+    }
 }
 </script>
