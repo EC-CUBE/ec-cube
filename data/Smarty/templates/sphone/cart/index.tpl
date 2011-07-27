@@ -36,7 +36,7 @@ $(document).ready(function() {
 <!--{if $smarty.const.USE_POINT !== false}-->
   <!--★ポイント案内★-->
   <div class="information">
-    <p>商品の合計金額は「<span class="price"><!--{$tpl_total_inctax[$key]|number_format}-->円</span>」です。</p>
+    <p>商品の合計金額は「<span class="price"><!--{$tpl_all_total_inctax|number_format}-->円</span>」です。</p>
 
     <!--{if $tpl_login}-->
        <p point_announce><span class="user_name"><!--{$tpl_name|h}--> 様</span>の、現在の所持ポイントは「<span class="point"><!--{$tpl_user_point|number_format|default:0}--> pt</span>」です。<br />
