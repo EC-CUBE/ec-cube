@@ -1,314 +1,314 @@
 @charset "utf-8";
+/* ===================================================================
+CSS information
 
-/* スマートフォン用グラデーションボタン
------------------------------------------------ */
-/*.spbtn {
-display: block;
-margin: 0.5em auto 0.3em;
-padding: 0.4em 0;
-font: bold large helvetica;
-text-shadow: 0px -1px 1px rgba(0,0,0,0.5);
-vertical-align: middle;
-text-align:center;
-text-decoration: none;
-color: #ffffff;
-background-color: #666666;
-background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));
-border: solid 2px #666666;
--webkit-border-radius: 8px;
--webkit-box-shadow: 0px 0px 3px rgba(0,0,0,0.7);
-}*/
-.spbtn:before {
-content: "";
-display: block;
-height: 0;
-clear: both;
-visibility: hidden;
+file name  :button.css
+style info :ボタン用
+
+=================================================================== */
+.btn_area{
+padding:10px;
+clear:both;
 }
-/*a.spbtn {
-width: 79%;
-max-width: 236px;
-}*/
-input.spbtn {
-width: 100%;
+ul.btn_btm{
+clear:both;
 }
-
-/* ボタン大（汎用）
------------------------------------------------ */
-.spbtn-normal {
-color: #ffffff;
-border: solid 2px #666666;
-background-color: #666666;
-/*background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));*/
+.btn_area li,ul.btn_btm li{
+margin-bottom:12px;
 }
-
-/* ボタン大（承諾、送信）
------------------------------------------------ */
-.spbtn-agree {
-    background-color: #6dc935;
-    border: 1px solid #666666;
-    color: #FFFFFF;
-    display: block;
-    font: bold 120% helvetica;
-    margin: 0.5em auto 0.3em;
-    padding: 7px;
-    text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.5);
-    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));
-    -webkit-border-radius: 6px;
-    -webkit-box-shadow: 0px 0px 3px rgba(0,0,0,0.7);
-	text-decoration:none;
-}
-
-/* ボタン大（キャンセル、退会）
------------------------------------------------ */
-.spbtn-cancel {
-color: #ffffff;
-border: solid 2px #666666;
-background-color: #fc4743;
-/*background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));*/
-}
-
-/* ボタン中（お問い合わせ、友達に教える）
------------------------------------------------ */
-.spbtn-medeum {
-    background-color: #aaaaaa;
-    border: 1px solid #666666;
-    color: #FFFFFF;
-    display: block;
-    font: bold 100% helvetica;
-    margin: 0 auto;
-    padding: 7px;
-    text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.5);
-    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));
-    -webkit-border-radius: 6px;
-    -webkit-box-shadow: 0px 0px 3px rgba(0,0,0,0.7);
-/*text-shadow: 0px -1px 1px rgba(0,0,0,0.5);
--webkit-border-radius: 6px;
--webkit-box-shadow: 0px 0px 3px rgba(0,0,0,0.7);*/
-}
-a.spbtn-medeum {
-width: 95%;
-text-decoration:none;
-text-align:center;
-}
-input.spbtn-medeum {
-width: 100%;
-}
-
-.spbtn-medeum02 {
-    background-color: #aaaaaa;
-    border: 1px solid #666666;
-    color: #FFFFFF;
-    display: block;
-    font: bold 100% helvetica;
-    margin: 0 auto;
-    padding: 7px;
-    text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.5);
-    text-align:center;
-        -webkit-border-radius: 6px;
-/*text-shadow: 0px -1px 1px rgba(0,0,0,0.5);
--webkit-border-radius: 6px;
--webkit-box-shadow: 0px 0px 3px rgba(0,0,0,0.7);*/
-}
-
-
-
-/* ボタン小（お気に入りに登録、住所自動入力）
------------------------------------------------ */
-.spbtn-small {
-display: inline-block;
-margin: 0;
-padding: 0.2em 0.4em;
-color: #ffffff;
-text-shadow: 0px -1px 1px rgba(0,0,0,1);
-font: bold 100% helvetica;
-font-weight: bold;
-background-color: #666666;
-background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));
-text-align:center;
-vertical-align: middle;
-text-decoration: none;
-border: solid 1px #333333;
--webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.7);
-}
-
-
-/* ×ボタン (お気に入りから削除)
------------------------------------------------ */
-.spbtn-delete {
-display: inline-block;
-line-height: 1em;
-width: 1em;
-height: 1em;
-margin: 0;
-margin-left: 5px;
-padding: 0;
-color: #ffffff;
-text-shadow: 0px -1px 1px rgba(0,0,0,0.5);
-font-family: verdana;
-font-weight: bold;
-background-color: #333333;
-background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));
-text-align:center;
-vertical-align: middle;
-text-decoration: none;
--webkit-border-radius: 4px;
-border: solid 1px #666666;
-}
-
-/* ログイン・会員登録・マイページボタン
------------------------------------------------ */
-
-#block-login .spbtn{
-    background-color: #666666;
-    border-left: 1px solid #666666;
-    color: #FFFFFF;
-    display: block;
-    float: left;
-    margin: 5px 0;
-    padding: 0.3em 0;
-    text-align: center;
-    text-decoration: none;
-    text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.5);
-    vertical-align: middle;
-    width: 49.6%;
-text-shadow: 0px -1px 1px rgba(0,0,0,0.5);
-background-color: #666666;
-background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));
-}
-
-#block-login .spbtn:first-child{
-width: 49.6%;
-border-left: none;
-margin-left: 0px;
--webkit-border-top-left-radius: 4px;
--webkit-border-bottom-left-radius: 4px;
-}
-#block-login .spbtn:last-child{
-width: 49.6%;
--webkit-border-top-right-radius: 4px;
--webkit-border-bottom-right-radius: 4px;
-margin-left:1px
-}
-#block-login .spbtn:only-child{
-width: 100%;
-max-width: 100%;
--webkit-border-radius: 4px;
-}
-#block-login .spbtn > a{
-}
-
-/*ご利用規約はこちら　ボタン
-------------------------------------------------*/
-.kybtn{
-    background-color: #666666;
-    border-left: 1px solid #666666;
-    color: #FFFFFF;
-    display: block;
-    float: left;
-    margin: 5px 0;
-    padding: 0.3em 0;
-    text-align: center;
-    text-decoration: none;
-    text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.5);
-    vertical-align: middle;
-    width: 100%;
-    font-size: 90%;
-text-shadow: 0px -1px 1px rgba(0,0,0,0.5);
-background-color: #666666;
-background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));
-}
-
-
-/*住所自動入力　ボタン
-------------------------------------------------*/
-.oubtn{
-    background-color: #666666;
-    border-left: 1px solid #666666;
-    color: #FFFFFF;
-    display: block;
-    float: left;
-    margin: 5px 0;
-    padding: 0.3em 0;
-    text-align: center;
-    text-decoration: none;
-    text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.5);
-    vertical-align: middle;
-    width: 99%;
-text-shadow: 0px -1px 1px rgba(0,0,0,0.5);
-background-color: #666666;
-background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));
-}
-
-
-/* 「TOPへ」ボタン
------------------------------------------------ */
-#btn-top {
+.btn_area_top{
+box-shadow:0 1px 1px 1px rgba(255,255,255,1) inset;
+-webkit-box-shadow:0 1px 1px 0 rgba(255,255,255,1) inset;
+-moz-box-shadow: 0 1px 1px rgba(255,255,255,1) inset;
+border-top: 1px solid #CCC;
+border-bottom: 1px solid #CCC;
+background:#EEE;
 display:block;
-position: absolute;
-top: 4px;
-right: 0.4em;
-font: bold 100% helvetica;
-width: 4.3em;
-border: 1px solid rgba(0,0,0,0.5);
-border-top: 1px solid rgba(0,0,0,0.7);
-background-color: rgba(51,51,51,0.2);
-background-color: #333332;
-background-image: -webkit-gradient(linear, 0% 0%, 0% 95%, from(rgba(0,0,0,0.1)), to(rgba(0,0,0,0.01)), color-stop(.02,rgba(255,255,255,0.4)),color-stop(.5,rgba(255,255,255,0.3)));
--webkit-box-shadow: 0px 1px 1px rgba(255,255,255,0.3);
-vertical-align: middle;
-text-align: center;
-text-decoration: none;
--webkit-border-radius: 5px;
+clear:both;
+margin-bottom:10px;
+padding:10px 0;
 }
-#btn-top > a {
-display: block;
-padding-top: 0.3em;
-padding-bottom: 0.4em;
-color: #ffffff;
-font: bold 100% helvetica;
-text-shadow: 0px -1px 1px rgba(0,0,0,0.5);
-vertical-align: middle;
-text-decoration: none;
-}
-
-/* ショッピング関連ボタン
+/*-----------------------------------------------
+ボタン（進む系ボタン:グリーン）
 ----------------------------------------------- */
-.spbtn-shopping {
-    background-color: #6dc935;
-    border: 1px solid #666666;
-    color: #FFFFFF;
-    display: block;
-    font: bold 120% helvetica;
-    margin: 0 auto;
-    padding: 7px;
-    text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.5);
-    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));
-    -webkit-border-radius: 6px;
-    -webkit-box-shadow: 0px 0px 3px rgba(0,0,0,0.7);
-
-/*display: block;
-margin: 0.5em auto 0.3em;
-font: bold 100% helvetica;
-border: solid 1px #666666;
-text-shadow: 0px -1px 1px rgba(0,0,0,0.5);
-color: #ffffff;
-background-color: #fc4743;
-background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));
--webkit-border-radius: 6px;
--webkit-box-shadow: 0px 0px 3px rgba(0,0,0,0.7);*/
-}
-a.spbtn-shopping {
-width: 95%;
-text-decoration:none;
-margin:0;
+a.btn,a.btn:link,a.btn:visited,a.btn:hover{
+color:#FFF;
+font-size: 16px;
+font-weight:bold;
+text-decoration: none;
 text-align:center;
+padding: 10px;
+text-shadow: 0 -1px 1px rgba(0,0,0,1);
+border: 1px solid #A9ABAD;
+border-radius: 5px;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+display:block;
+background:#B4DF34;
+background: -moz-linear-gradient(center top, #B4DF34 0%,#669222 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #B4DF34),color-stop(1, #669222));
+cursor:pointer;
+-webkit-transition:opacity 0.5s ease-in;
+-moz-transition:opacity 0.5s ease-in;
 }
-input.spbtn-shopping {
-width: 100%;
-margin:0;
+input[type="submit"].btn{
+width:100%;
+color:#FFF;
+font-size: 16px;
+font-weight:bold;
+text-decoration: none;
+text-align:center;
+padding: 10px;
+text-shadow: 0 -1px 1px rgba(0,0,0,1);
+border: 1px solid #A9ABAD;
+border-radius: 5px;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+display:block;
+background:#B4DF34;
+background: -moz-linear-gradient(center top, #B4DF34 0%,#669222 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #B4DF34),color-stop(1, #669222));
+cursor:pointer;
+-webkit-transition:opacity 0.5s ease-in;
+-moz-transition:opacity 0.5s ease-in;
+}
+/*-----------------------------------------------
+ボタン（戻る系ボタン:グレー）
+----------------------------------------------- */
+a.btn_back,a.btn_back:link,a.btn_back:visited,a.btn_back:hover {
+color:#FFF;
+font-size: 16px;
+font-weight:bold;
+text-decoration: none;
+text-align:center;
+text-shadow: 0 -1px 1px rgba(0,0,0,1);
+border: 1px solid #A9ABAD;
+border-radius: 5px;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+display:block;
+padding:5px 0;
+background:#999999;
+background: -moz-linear-gradient(center top, #C5C5C5 0%,#999999 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #C5C5C5),color-stop(1, #999999));
+}
+input[type="submit"].btn_back{
+color:#FFF;
+font-size: 16px;
+font-weight:bold;
+text-decoration: none;
+text-align:center;
+text-shadow: 0 -1px 1px rgba(0,0,0,1);
+border: 1px solid #A9ABAD;
+border-radius: 5px;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+display:block;
+padding:5px 0;
+background:#999999;
+background: -moz-linear-gradient(center top, #C5C5C5 0%,#999999 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #C5C5C5),color-stop(1, #999999));
+}
+/*-----------------------------------------------
+ボタン（サブ系ボタン:ライトグレー）
+----------------------------------------------- */
+.btn_sub,a.btn_sub,a.btn_sub:link,a.btn_sub:visited,a.btn_sub:hover {
+color:#000;
+font-size: 16px;
+padding:5px 0;
+font-weight:bold;
+text-decoration: none;
+text-align:center;
+text-shadow: 0 -1px 1px rgba(0,0,0,0.3);
+border: 1px solid #A9ABAD;
+border-radius: 5px;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+display:block;
+background:#FDFDfD;
+background: -moz-linear-gradient(center top, #FDFDFD 0%,#D7DDE3 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FDFDFD),color-stop(1, #D7DDE3));
+}
+input[type="submit"].btn_sub{
+color:#000;
+font-size: 16px;
+padding:5px 0;
+font-weight:bold;
+text-decoration: none;
+text-align:center;
+text-shadow: 0 -1px 1px rgba(0,0,0,0.3);
+border: 1px solid #A9ABAD;
+border-radius: 5px;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+display:block;
+background:#FDFDfD;
+background: -moz-linear-gradient(center top, #FDFDFD 0%,#D7DDE3 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FDFDFD),color-stop(1, #D7DDE3));
+}
+/*-----------------------------------------------
+ボタン（追加系ボタン:ホワイト）
+----------------------------------------------- */
+a.btn_more,a.btn_more:link,a.btn_more:visited,a.btn_more:hover{
+color:#000;
+font-size: 16px;
+padding:5px 0;
+font-weight:bold;
+text-decoration: none;
+text-align:center;
+border: 1px solid #A9ABAD;
+border-radius: 5px;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+display:block;
+background: #FFF;
+clear:both;
+margin:10px;
+}
+input[type="submit"].btn_more{
+color:#000;
+font-size: 16px;
+padding:5px 0;
+font-weight:bold;
+text-decoration: none;
+text-align:center;
+border: 1px solid #A9ABAD;
+border-radius: 5px;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+display:block;
+background: #FFF;
+clear:both;
+}
+/*-----------------------------------------------
+ボタン（フッター）
+----------------------------------------------- */
+a.btn_btm{
+width:150px;
+text-align: center;
+color: #FFF;
+background-color: #000;
+background: -moz-linear-gradient(center top, #5E5E5E 0%,#232323 48%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #5E5E5E),color-stop(0.48, #232323));
+border:#303030 solid 1px;
+text-shadow: 0 -1px 1px rgba(0,0,0,0.5);
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+padding: 5px;
+margin:10px auto;
+transition: background-color 1s ease-in;
+-webkit-transition: background-color 1s ease-in;
+-moz-transition: opacity 1s ease-int;
+}
+.btn_btm,a.btn_btm:link,a.btn_btm:hover,a.btn_btm:visited{
+color:#FFF;
+text-decoration:none;
+}
+input[type="submit"].btn_btm{
+width:150px;
+text-align: center;
+color: #FFF;
+background-color: #000;
+background: -moz-linear-gradient(center top, #5E5E5E 0%,#232323 48%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #5E5E5E),color-stop(0.48, #232323));
+border:#303030 solid 1px;
+text-shadow: 0 -1px 1px rgba(0,0,0,0.5);
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+padding: 5px;
+margin:10px auto;
+transition: background-color 1s ease-in;
+-webkit-transition: background-color 1s ease-in;
+-moz-transition: opacity 1s ease-int;
+cursor:pointer;
+}
+/*-----------------------------------------------
+ボタン小（編集/削除）
+----------------------------------------------- */
+ul.edit{
+float:right;
+clear:right;
+display:inline;
+vertical-align:top;
+line-height:1;
+position:absolute;
+right:10px;
+top:15px;
+}
+ul.edit li{
+display:inline;
+float:left;
+line-height:1;
+vertical-align:middle;
+}
+ul.edit li:first-child{
+margin-right:0.8em;
+}
+a.b_edit:link,a.b_edit:visited,a.b_edit:hover{
+color:#000;
+font-size:11px;
+padding:4px 5px;
+border:#CCC solid 1px;
+border-radius: 12px;
+-moz-border-radius: 12px;
+-webkit-border-radius: 12px;
+background:#D7DDE3;
+background: -moz-linear-gradient(center top, #FFFFFF 0%,#D7DDE3 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FFFFFF),color-stop(1, #D7DDE3));
+display:inline;
+text-align:center;
+cursor:pointer;
+vertical-align:middle;
+}
+a.b_delete:link,a.b_delete:visited,a.b_delete:hover{
+vertical-align:top;
+cursor:pointer;
+}
+/*-----------------------------------------------
+ボタン（商品詳細:カゴに入れる）
+----------------------------------------------- */
+.cartbtn_default{
+width:50%!important;
+font-size:15px;
+padding:10px 0;
+background:#669222;
+background: -moz-linear-gradient(center top, #B4DF34 0%,#669222 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #B4DF34),color-stop(1, #669222));
 }
 
-p.addbtn {
-margin-bottom:20px;
+/*-----------------------------------------------
+ボタン（商品詳細:お気に入り)
+----------------------------------------------- */
+.btn_favorite .btn_sub{
+width:auto;
+display:block;
+}
+/*-----------------------------------------------
+ボタン（新しいお届け先を追加する)
+----------------------------------------------- */
+.addbtn{
+margin:0 30px;
+padding:5px 0;
+}
+/*-----------------------------------------------
+ボタン（トップページへ)
+----------------------------------------------- */
+.btn_s{
+width:12em;
+padding:10px 0!important;
+margin:10px auto;
+clear:both;
+}
+/*-----------------------------------------------
+ボタン（住所自動入力)
+----------------------------------------------- */
+.btn_inputzip{
+margin:12px 0 5px 0;
+}
+/*-----------------------------------------------
+ボタン（ログイン/ウィンドウ)
+----------------------------------------------- */
+.btn_login,.btn_close{
+width:70%;
+margin:10px auto;
 }
