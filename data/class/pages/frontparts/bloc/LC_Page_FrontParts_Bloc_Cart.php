@@ -43,6 +43,8 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
      */
     function init() {
         parent::init();
+        $masterData = new SC_DB_MasterData_Ex();
+        $this->arrProductType = $masterData->getMasterData("mtb_product_type"); //商品種類を取得
     }
 
     /**
