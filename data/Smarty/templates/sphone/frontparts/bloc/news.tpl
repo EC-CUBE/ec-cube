@@ -133,12 +133,12 @@ function getNewsDetail(newsId) {
                      $("#newsComment").text(news.news_comment);
                  }
                  
-                 $.mobile.pageLoading(true);
                  $.mobile.changePage('#windowcolumn', 'slideup');
                  //ダイアログが開き終わるまで待機
                  setTimeout( function() {
                      loadingState = 0;
-                 }, 3000);
+                     $.mobile.pageLoading(true);
+                 }, 1000);
                  
                }
         });
