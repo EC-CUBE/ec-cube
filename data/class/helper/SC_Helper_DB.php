@@ -208,7 +208,7 @@ class SC_Helper_DB {
         if($customer_id != "" && $customer_id >= 1) {
             $arrRet = $objQuery->select('point', "dtb_customer", "customer_id = ?", array($customer_id));
             $point = $arrRet[0]['point'];
-            $rollback_point = $arrRet[0]['point'] + $use_point - $add_point;
+            $rollback_point = $arrRet[0]['point'] + $use_point;
         } else {
             $rollback_point = "";
             $point = "";
