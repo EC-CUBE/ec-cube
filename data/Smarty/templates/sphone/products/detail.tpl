@@ -76,7 +76,7 @@ function fnWhoboughtToggle(areaEl, imgEl) {
         <!--{assign var=key value="main_image"}-->
         <li id="mainImage0">
         <!--{if $arrProduct.main_large_image|strlen >= 1}-->
-            <a rel="lightbox" data-ajax="false" href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct.main_large_image|h}-->">
+            <a rel="lightbox" data-ajax="false" href="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrProduct.main_large_image|h}-->&amp;width=200&amp;height=200">
                 <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct.main_large_image|h}-->" alt="<!--{$arrProduct.name|h}-->" width="200" height="200" /></a>
         <!--{else}-->
             <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct.main_large_image|h}-->" alt="<!--{$arrProduct.name|h}-->" width="200" height="200" />
