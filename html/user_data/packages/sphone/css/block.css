@@ -278,6 +278,7 @@ text-align:center;
 .category_header.plus, .category_header.minus{
 color:#FFF;
 margin:0 0 0 10px;
+padding-bottom:1px;
 display: inline-block;
 text-align: center;
 line-height:0.3;

@@ -199,6 +199,7 @@ margin:10px auto;
 transition: background-color 1s ease-in;
 -webkit-transition: background-color 1s ease-in;
 -moz-transition: opacity 1s ease-int;
+cursor:pointer;
 }
 .btn_btm,a.btn_btm:link,a.btn_btm:hover,a.btn_btm:visited{
 color:#FFF;

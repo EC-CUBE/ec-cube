@@ -30,10 +30,11 @@ a:visited {
 color: #603E7D;
 text-decoration: none;
 }
-a:link:hover{
+a:hover{
 text-decoration:none;
 cursor:pointer;
 }
+
 /*右矢印リンクテキスト*/
 .arrowRtxt{
 display:inline;
@@ -147,14 +148,6 @@ width: 100%;
 background: #FFF;
 }
 #main-content{
-}
-/*----------------------------------------------------
-ランドスケープ表示
-----------------------------------------------------*/
-@media screen and (max-width: 480px){  
-/*body {
-font-size: 12px;
-}*/
 }
 /*-----------------------------------------------
 タイトル
@@ -289,7 +282,7 @@ font-size: 14px;
 }
 input[type="radio"]{
 vertical-align:top;
-padding:0;
+padding:5px;
 margin-right:0.5em;
 }
 .text, .textarea, .dropdown{
@@ -499,11 +492,11 @@ footer
 ----------------------------------------------- */
 footer.global_footer {
 padding:0 0 10px 0;
-background: #F5F5F5;
+background: #E6E6E6;
 text-align:center;
 }
 .footer_utility{
-background: #F5F5F5;
+background: #E6E6E6;
 }
 /*フッター4列ボタン*/
 .footer_navi {
@@ -549,9 +542,9 @@ position:relative;
 }
 .footer_status_area{
 margin:0;
-padding:10px;
+padding:20px 10px 10px;
 text-align:center;
-background: #F5F5F5;
+background: #E6E6E6;
 }
 .footer_status_area p:last-child{
 margin:10px auto;
@@ -564,12 +557,18 @@ text-align:center;
 border-top:#999 solid 1px;
 }
 .guide_area p{
+font-size:14px;
 font-weight:bold;
 line-height:2.4;
 }
 .guide_area a{
 padding:0.5em 0.3em;
 margin:0.5em 0.1em;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+.guide_area p{
+font-size:12px;
+}
 }
 footer.global_footer p.copyright {
 margin: 0;
