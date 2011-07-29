@@ -50,7 +50,7 @@ class LC_Page_Mypage_RefusalComplete extends LC_Page_Ex {
         } else {
             $this->tpl_subtitle = '退会手続き(完了ページ)';
         }
-        $this->tpl_navi     = TEMPLATE_REALDIR . 'mypage/navi.tpl';
+        $this->tpl_navi     = SC_Helper_PageLayout::getTemplatePath(SC_Display_Ex::detectDevice()) . 'mypage/navi.tpl';
         $this->tpl_mypageno = 'refusal';
         $this->point_disp   = false;
     }
