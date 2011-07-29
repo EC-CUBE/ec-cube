@@ -69,7 +69,7 @@
 var stateMyPage = 0;
 var stateCart = 0;
 function fnShowPopupmyPage(el) {
-    $("div.popup_mypage").css("left", $(el).offset().left - $("div.popup_mypage").width() - $(el).width() + 5);
+    $("div.popup_mypage").css("left", $(el).offset().left - $("div.popup_mypage").width() + 15);
     $("div.popup_mypage").toggle();
     //表示状態の更新
     if (stateMyPage == 0) {
@@ -86,7 +86,7 @@ function fnShowPopupmyPage(el) {
 }
 
 function fnShowPopupCart(el) {
-    $("div.popup_cart").css("left", $(el).offset().left - $("div.popup_cart").width() - $(el).width() + 5);
+    $("div.popup_cart").css("left", $(el).offset().left - $("div.popup_cart").width() + 15);
     $("div.popup_cart").toggle();
     //表示状態の更新
     if (stateCart == 0) {

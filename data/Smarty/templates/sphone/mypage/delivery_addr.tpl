@@ -37,7 +37,7 @@
            最大20件まで登録できます。</p> 
        </div>
 
-       <form name="form1" id="form1" method="post" action="?">
+       <form name="form1" id="form1" method="post" action="<!--{$smarty.const.HTTP_URL}-->mypage/delivery_addr.php">
            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
            <input type="hidden" name="mode" value="edit" />
            <input type="hidden" name="other_deliv_id" value="<!--{$smarty.session.other_deliv_id}-->" />

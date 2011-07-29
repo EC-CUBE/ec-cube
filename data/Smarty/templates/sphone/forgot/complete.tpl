@@ -44,7 +44,7 @@
      </div>
 
      <div class="btn_area">
-      <p><a href="javascript:window.close()" class="btn_sub btn_close">閉じる</a></p>
+      <p><a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" class="btn_sub btn_close">ログイン画面へ</a></p>
        </div>
      </form>    
   </section>

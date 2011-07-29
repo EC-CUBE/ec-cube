@@ -28,7 +28,7 @@
        <hr>
          <div id="completetext">
             <p>今後ともご愛顧賜りますよう、よろしくお願い申し上げます。</p>
-            <a class="btn_s btn_sub" href="<!--{$smarty.const.TOP_URLPATH}-->">トップページへ</a>
+            <a rel="external" class="btn_s btn_sub" href="<!--{$smarty.const.TOP_URLPATH}-->">トップページへ</a>
          </div>
 </section>
 <!--▲CONTENTS-->

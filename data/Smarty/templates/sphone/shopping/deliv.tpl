@@ -26,10 +26,7 @@
 
 <!--★インフォメーション★-->
 <div class="information">
- <p>一覧よりお届け先住所を選択してください。</p>
-<!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
-※最大<!--{$smarty.const.DELIV_ADDR_MAX|h}-->件まで登録できます。</p>
-<!--{/if}-->
+<p>一覧よりお届け先住所を選択してください。</p>
 </div>
 
 <!--▼フォームここから -->

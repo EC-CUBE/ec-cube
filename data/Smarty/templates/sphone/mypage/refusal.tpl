@@ -27,7 +27,7 @@
       <!--{include file=$tpl_navi}-->
 
       <h3 class="title_mypage"><!--{$tpl_subtitle|h}--></h3>
-          <form name="form1" method="post" action="?">
+          <form name="form1" method="post" action="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/refusal.php">
               <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
               <input type="hidden" name="mode" value="confirm" />
 

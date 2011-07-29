@@ -89,7 +89,7 @@ $(document).ready(function() {
             <!--{/if}-->
         <!--{/if}-->
 
-        <form name="form1" id="form1" method="post" action="<!--{$smarty.const.CART_URLPATH|h}-->">
+        <form name="form<!--{$key}-->" id="form<!--{$key}-->" method="post" action="<!--{$smarty.const.CART_URLPATH|h}-->">
             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
             <!--{if 'sfGMOCartDisplay'|function_exists}-->
                 <!--{'sfGMOCartDisplay'|call_user_func}-->
@@ -107,10 +107,6 @@ $(document).ready(function() {
                   </div>
                   <div class="totalmoney_area">
                   <!--{$arrProductType[$key]}-->の合計金額は「<span class="price"><!--{$tpl_total_inctax[$key]|number_format}-->円</span>」です。
-                  </div>
-                <!--{else}-->
-                  <div class="totalmoney_area">
-                  お買い上げ商品の合計金額は「<span class="price"><!--{$tpl_total_inctax[$key]|number_format}-->円</span>」です。
                   </div>
                 <!--{/if}-->
 
@@ -134,12 +130,13 @@ $(document).ready(function() {
                       <!--{if $item.productsClass.classcategory_name2 != ""}-->
                           <span class="mini"><!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--></span><br />
                       <!--{/if}-->
+                                                   価格:<!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                       </p>
                     <p class="btn_delete">
-                    <img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" onclick="fnModeSubmit('delete', 'cart_no', '<!--{$item.cart_no}-->');" class="pointer" width="21" height="20" alt="削除" /></p>
+                    <img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" onClick="fnFormModeSubmit('form<!--{$key}-->', 'delete', 'cart_no', '<!--{$item.cart_no}-->');" class="pointer" width="21" height="20" alt="削除" /></p>
 
                     <ul>
-                     <li><input type="number" name="quantity" class="cartin_quantity text data-role-none" value="<!--{$item.quantity}-->" maxlength="9" style="" onchange="fnModeSubmit('setQuantity','cart_no','<!--{$item.cart_no}-->');" /></li>
+                     <li><input type="number" name="quantity" class="cartin_quantity text data-role-none" value="<!--{$item.quantity}-->" maxlength="9" style="" onchange="fnFormModeSubmit('form<!--{$key}-->', 'setQuantity','cart_no','<!--{$item.cart_no}-->');" /></li>
                       <li class="result"><span class="mini">小計：</span><!--{$item.total_inctax|number_format}-->円</li>
                     </ul>
                     </div>

@@ -48,7 +48,6 @@
 <script type="text/javascript">    
     $(function(){
         $('.recomendblock, .list_area, .newslist li, .bubbleBox, .arrowBox, .category_body, .navBox li').biggerlink();
-        //$('.recomendblock, .newslist li,.bubbleBox,.arrowBox,.navBox li').biggerlink();
     });
 </script>
 <script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/btn.js"></script>

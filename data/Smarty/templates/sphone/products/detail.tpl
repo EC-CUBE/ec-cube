@@ -31,11 +31,12 @@ function fnSetClassCategories(form, classcat_id2_selected) {
     setClassCategories($form, product_id, $sele1, $sele2, classcat_id2_selected);
 }
 $(function(){
-    $('#detailphotoblock ul li').flickSlide({target:'#detailphotoblock>ul', duration:5000});
-    $('#whobought_area ul li').flickSlide({target:'#whobought_area>ul', duration:5000});
+    $('#detailphotoblock ul li').flickSlide({target:'#detailphotoblock>ul', duration:5000, parentArea:'#detailphotoblock'});
+    $('#whobought_area ul li').flickSlide({target:'#whobought_area>ul', duration:5000, parentArea:'#whobought_area'});
     //サブエリアとお勧めエリアを非表示にする（初期値）
     $("#sub_area").hide();
-    $("#whobought_area").hide();
+    //お勧め商品のリンクを張り直し(フリックスライドによるエレメント生成後)
+    $('#whobought_area li').biggerlink();
 });
 //サブエリアの表示/非表示
 var speed = 1000; //表示アニメのスピード（ミリ秒）
@@ -51,7 +52,7 @@ function fnSubToggle(areaEl, imgEl) {
     }
 }
 //お勧めエリアの表示/非表示
-var statewhobought = 1;
+var statewhobought = 0;
 function fnWhoboughtToggle(areaEl, imgEl) {
     areaEl.toggle(speed);
     if (statewhobought == 0) {
@@ -282,7 +283,7 @@ function fnWhoboughtToggle(areaEl, imgEl) {
 <!--詳細ここまで-->
 
 <!--▼サブエリアここから-->
-<!--{if $arrProduct[$key] != ""}-->
+<!--{if $arrProduct.sub_title1 != ""}-->
   <div class="title_box_sub clearfix">
     <h2>商品情報</h2>
      <!--{assign var=ckey value="sub_comment`$smarty.section.cnt.index+1`"}-->
@@ -291,6 +292,7 @@ function fnWhoboughtToggle(areaEl, imgEl) {
     <div id="sub_area">
         <!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
             <!--{assign var=key value="sub_title`$smarty.section.cnt.index+1`"}-->
+            <!--{if $arrProduct[$key] != ""}-->
             <!--▼サブ情報-->
            <div class="subarea clearfix">
             <!--★サブタイトル★-->
@@ -314,6 +316,7 @@ function fnWhoboughtToggle(areaEl, imgEl) {
             <!--★サブテキスト★-->
             <p class="subtext"><!--★サブテキスト★--><!--{$arrProduct[$ckey]|nl2br_html}--></p>
             </div>
+            <!--{/if}-->
         <!--{/section}-->
     </div>
 <!--{/if}-->
@@ -324,19 +327,15 @@ function fnWhoboughtToggle(areaEl, imgEl) {
 <!--{if $arrRecommend}-->
 <div class="title_box_sub clearfix">
   <h2>その他のオススメ商品</h2>
-     <span class="b_expand"><img src="<!--{$TPL_URLPATH}-->img/common/btn_plus.png" onClick="fnWhoboughtToggle($('#whobought_area'), this);"></span>
+     <span class="b_expand"><img src="<!--{$TPL_URLPATH}-->img/common/btn_minus.png" onClick="fnWhoboughtToggle($('#whobought_area'), this);"></span>
       </div>
   
   <div id="whobought_area" class="mainImageInit">
 
     <ul>
     <!--{section name=cnt loop=$arrRecommend}-->
-        <!--{if ($smarty.section.cnt.index % 2) == 0}-->
         <!--{if $arrRecommend[cnt].product_id}-->
-        <!-- 左列 -->
-   
-          <li id="mainImage0"><a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrRecommend[cnt].product_id|u}-->">
-          <a href="#">
+          <li id="mainImage1<!--{$smarty.section.cnt.index}-->">
           <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrRecommend[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" width="80" height="80" alt="<!--{$arrRecommend[cnt].name|h}-->" /></a>
              <!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->
              <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
@@ -347,33 +346,9 @@ function fnWhoboughtToggle(areaEl, imgEl) {
               <!--{else}-->
                    <!--{$price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$price02_max|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
               <!--{/if}--> 
-               円</span></p> 
-          </a></li>
-                
-         <!-- 左列 -->
-         <!--{/if}-->
-         <!--{/if}-->
-
-         <!--{if ($smarty.section.cnt.index % 2) != 0}-->
-         <!--{if $arrRecommend[cnt].product_id}-->
-         <!-- 右列 -->
-                
-         <li id="mainImage0"><a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrRecommend[cnt].product_id|u}-->">
-          <a href="#">
-          <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrRecommend[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" width="80" height="80" alt="<!--{$arrRecommend[cnt].name|h}-->" /></a>
-             <h3><a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrRecommend[cnt].product_id|u}-->"><!--{$arrRecommend[cnt].name|h}--></a></h3>
-              <p class="sale_price"><span class="price">
-              <!--{if $price02_min == $price02_max}-->
-                <!--{$price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
-              <!--{else}-->
-                <!--{$price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$price02_max|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
-              <!--{/if}-->
-              </span></p> 
-                </a></li>
-                
-          <!-- 右列 -->
-          <!--{/if}-->
-          <!--{/if}-->
+               円</span></p>
+          </li>
+        <!--{/if}-->
     <!--{/section}-->
                 
     </ul>

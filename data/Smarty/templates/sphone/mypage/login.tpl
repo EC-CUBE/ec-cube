@@ -42,7 +42,7 @@
 
 </div><!--▲loginBox -->
 
-<p class="arrowRtxt"><a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->" onclick="win01('<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->','forget','600','460'); return false;" target="_blank">パスワードを忘れた方</a></p>
+<p class="arrowRtxt"><a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->">パスワードを忘れた方</a></p>
 
         <div class="btn_area">
                                        <input type="submit" value="ログイン" class="btn data-role-none" name="log" id="log" />

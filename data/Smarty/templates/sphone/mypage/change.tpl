@@ -23,32 +23,31 @@
 *}-->
 <!--▼CONTENTS-->
 <section id="mypagecolumn">
-       <h2 class="title"><!--{$tpl_title|h}--></h2>
-       <!--{include file=$tpl_navi}-->
+    <h2 class="title"><!--{$tpl_title|h}--></h2>
+    <!--{include file=$tpl_navi}-->
+    <h3 class="title_mypage"><!--{$tpl_subtitle|h}--></h3>
 
-       <h3 class="title_mypage"><!--{$tpl_subtitle|h}--></h3>
+    <!--★インフォメーション★-->
+    <div class="intro">
+       <p><span class="attention">※</span>は必須入力項目です。</p>
+    </div>
 
-       <!--★インフォメーション★-->
-       <div class="intro">
-           <p><span class="attention">※</span>は必須入力項目です。</p>
-       </div>
-
-         <form name="form1" id="form1" method="post" action="?">
-             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-             <input type="hidden" name="mode" value="confirm" />
-             <input type="hidden" name="customer_id" value="<!--{$arrForm.customer_id|h}-->" />
+    <form name="form1" id="form1" method="post" action="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/change.php">
+       <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+       <input type="hidden" name="mode" value="confirm" />
+       <input type="hidden" name="customer_id" value="<!--{$arrForm.customer_id|h}-->" />
 
        <dl class="form_entry">
-          <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`frontparts/form_personal_input.tpl" flgFields=3 emailMobile=true prefix=""}-->
+           <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`frontparts/form_personal_input.tpl" flgFields=3 emailMobile=true prefix=""}-->
        </dl>
           
-                                        <!--{if 'sfGMOMypageDisplay'|function_exists}-->
-          <!--{'sfGMOMypageDisplay'|call_user_func}-->
-          <!--{/if}-->
+       <!--{if 'sfGMOMypageDisplay'|function_exists}-->
+           <!--{'sfGMOMypageDisplay'|call_user_func}-->
+       <!--{/if}-->
        <div class="btn_area">
            <p><input type="submit" class="btn data-role-none" value="確認ページへ" name="refusal" id="refusal" /></p>
-          </div>
+       </div>
 
-         </form>
+    </form>
 </section>
 <!--▲CONTENTS-->
