@@ -159,6 +159,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $arrProduct = $objQuery->select('main_list_image', 'dtb_products', 'product_id = ?', array($arrOrderDetail['product_id']));
             $arrOrderDetails[$i]['main_list_image'] = $arrProduct[0]['main_list_image'];
+            $i++;
         }
         return $arrOrderDetails;
     }
