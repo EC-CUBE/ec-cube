@@ -39,7 +39,6 @@
             <!--{/foreach}-->
             <!--{* ▲上ナビ *}-->
         </div>
-</header>
     <!--{/if}-->
 <!--{* ▲HeaderHeaderTop COLUMN*}-->
 <!--{* ▼HEADER *}-->
@@ -51,20 +50,19 @@
 
 <!--{* ▼TOP COLUMN*}-->
 <!--{if $arrPageLayout.TopNavi|@count > 0}-->
-            <div class="header_utility">
-                <!--{* ▼上ナビ *}-->
-                <!--{foreach key=TopNaviKey item=TopNaviItem from=$arrPageLayout.TopNavi}-->
-                    <!-- ▼<!--{$TopNaviItem.bloc_name}--> -->
-                    <!--{if $TopNaviItem.php_path != ""}-->
-                        <!--{include_php file=$TopNaviItem.php_path items=$TopNaviItem}-->
-                    <!--{else}-->
-                        <!--{include file=$TopNaviItem.tpl_path items=$TopNaviItem}-->
-                    <!--{/if}-->
-                    <!-- ▲<!--{$TopNaviItem.bloc_name}--> -->
-                <!--{/foreach}-->
-                <!--{* ▲上ナビ *}-->
-            </div>
-</header>
+<div class="header_utility">
+    <!--{* ▼上ナビ *}-->
+    <!--{foreach key=TopNaviKey item=TopNaviItem from=$arrPageLayout.TopNavi}-->
+        <!-- ▼<!--{$TopNaviItem.bloc_name}--> -->
+        <!--{if $TopNaviItem.php_path != ""}-->
+            <!--{include_php file=$TopNaviItem.php_path items=$TopNaviItem}-->
+        <!--{else}-->
+            <!--{include file=$TopNaviItem.tpl_path items=$TopNaviItem}-->
+        <!--{/if}-->
+        <!-- ▲<!--{$TopNaviItem.bloc_name}--> -->
+    <!--{/foreach}-->
+    <!--{* ▲上ナビ *}-->
+</div>
 <!--{/if}-->
 <!--{* ▲TOP COLUMN*}-->
 
