@@ -20,7 +20,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/products.js"></script>
-<script src="<!--{$TPL_URLPATH}-->js/jquery.flickslide.js"></script>
+<script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/jquery.facebox/facebox.js"></script>
+<link rel="stylesheet" type="text/css" href="<!--{$TPL_URLPATH}-->js/jquery.facebox/facebox.css" media="screen" />
 <script type="text/javascript">//<![CDATA[
 // 規格2に選択肢を割り当てる。
 function fnSetClassCategories(form, classcat_id2_selected) {
@@ -37,6 +38,11 @@ $(function(){
     $("#sub_area").hide();
     //お勧め商品のリンクを張り直し(フリックスライドによるエレメント生成後)
     $('#whobought_area li').biggerlink();
+    //商品画像の拡大
+    $('a.expansion').facebox({
+        loadingImage : '<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/loading.gif',
+        closeImage   : '<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/closelabel.png'
+    });
 });
 //サブエリアの表示/非表示
 var speed = 1000; //表示アニメのスピード（ミリ秒）
@@ -77,7 +83,7 @@ function fnWhoboughtToggle(areaEl, imgEl) {
         <!--{assign var=key value="main_image"}-->
         <li id="mainImage0">
         <!--{if $arrProduct.main_large_image|strlen >= 1}-->
-            <a rel="lightbox" data-ajax="false" href="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrProduct.main_large_image|h}-->&amp;width=200&amp;height=200">
+            <a rel="external" class="expansion" href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct.main_large_image|h}-->" target="_blank">
                 <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct.main_large_image|h}-->" alt="<!--{$arrProduct.name|h}-->" width="200" height="200" /></a>
         <!--{else}-->
             <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct.main_large_image|h}-->" alt="<!--{$arrProduct.name|h}-->" width="200" height="200" />
@@ -90,7 +96,7 @@ function fnWhoboughtToggle(areaEl, imgEl) {
             <!--{assign var=key value="sub_image`$smarty.section.cnt.index+1`"}-->
             <!--{assign var=lkey value="sub_large_image`$smarty.section.cnt.index+1`"}-->
             <li id="mainImage<!--{$smarty.section.cnt.index+1}-->">
-              <a rel="lightbox" data-ajax="false" href="<!--{$arrFile[$key].filepath}-->">
+              <a rel="external" class="expansion" href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct[$lkey]|h}-->" target="_blank">
               <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|h}-->" width="200" height="200" /></a>
               </li>
         <!--{/if}-->
@@ -149,14 +155,13 @@ function fnWhoboughtToggle(areaEl, imgEl) {
         <!--{if $arrProduct.price01_max > 0}-->
         <p class="normal_price">
         <span class="mini"><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(税込)：</span>
-        <span class="price">
         <span id="price01_default">
                <!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->
                <!--{$arrProduct.price01_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                  <!--{else}-->
                    <!--{$arrProduct.price01_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$arrProduct.price01_max|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                     <!--{/if}-->
-        </span><span id="price01_dynamic"></span>円</span></p>
+        <span id="price01_dynamic"></span>円</span></p>
         <!--{/if}-->
 
         <!--★販売価格★-->
