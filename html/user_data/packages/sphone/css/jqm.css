@@ -1,7 +1,6 @@
 @charset "utf-8";
 /* ===================================================================
 CSS information
-file name  :jqm.css
 style info :jqmテーマ
 =================================================================== */
 /*jqm追記*/
@@ -9,123 +8,105 @@ style info :jqmテーマ
 -----------------------------------------------------------------------------------------------------------*/
 
 .ui-bar-f {
-	border: 1px solid 		#ccc;
-	background: 			#bbb;
-	color: 					#333;
-	text-shadow: 0 1px 0 #eee;
-	background-image: -moz-linear-gradient(top, 
-							#6D7481, 
-							#494e57);
-	background-image: -webkit-gradient(linear,left top,left bottom,
-		color-stop(0, 		#6D7481),
-		color-stop(1, 		##494e57));
-  	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#dddddd', EndColorStr='#bbbbbb')";
+    border: 1px solid #ccc;
+    background: #bbb;
+    color: #333;
+    text-shadow: 0 1px 0 #eee;
+    background-image: -moz-linear-gradient(top, #6D7481, #494e57);
+    background-image: -webkit-gradient(linear,left top,left bottom, color-stop(0, #6D7481), color-stop(1, ##494e57));
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#dddddd', EndColorStr='#bbbbbb')";
 }
 .ui-bar-f,
 .ui-bar-f input,
 .ui-bar-f select,
 .ui-bar-f textarea,
 .ui-bar-f button {
-	font-family: Helvetica, Arial, sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
 }
 .ui-bar-f .ui-link-inherit {
-	color: 					#333;
+    color: #333;
 }
 .ui-bar-f .ui-link {
-	color: 					#324E85;
-	font-weight: bold;
+    color: #324E85;
+    font-weight: bold;
 }
 .ui-body-f {
-	border: 1px solid 		#ccc;
-	color: 					#333333;
-	text-shadow: 0 1px 0 	#fff;
-	background: 			#ffffff;
+    border: 1px solid #ccc;
+    color: #333333;
+    text-shadow: 0 1px 0 #fff;
+    background: #ffffff;
 }
 .ui-body-f,
 .ui-body-f input,
 .ui-body-f select,
 .ui-body-f textarea,
 .ui-body-f button {
-	font-family: Helvetica, Arial, sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
 }
 .ui-body-f .ui-link-inherit {
-	color: 					#333333;
+    color: #333333;
 }
 .ui-body-f .ui-link {
-	color: 					#324E85;
-	font-weight: bold;
+    color: #324E85;
+    font-weight: bold;
 }
 .ui-btn-up-f {
-	border: 1px solid 		#ccc;
-	background: 			#fff;
-	font-weight: bold;
-	color: 					#333;
-	text-decoration: none;
-	text-shadow: 0 1px 1px #fff;
+    border: 1px solid #ccc;
+    background: #fff;
+    font-weight: bold;
+    color: #333;
+    text-decoration: none;
+    text-shadow: 0 1px 1px #fff;
 }
 .ui-btn-up-f a.ui-link-inherit {
-	color: 					#333;
+    color: #333;
 }
 .ui-btn-hover-f {
-	border: 1px solid 		#aaa;
-	background: 			#eeeeee;
-	font-weight: bold;
-	color: 					#222;
-	cursor: pointer;
-	text-shadow: 0 1px 1px 	#fff;
-	text-decoration: none;
-	background-image: -moz-linear-gradient(top, 
-							#fdfdfd, 
-							#eeeeee);
-	background-image: -webkit-gradient(linear,left top,left bottom,
-		color-stop(0, 		#fdfdfd),
-		color-stop(1, 		#eeeeee));
-  	-msfilter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#fdfdfd', EndColorStr='#eeeeee')";
+    border: 1px solid #aaa;
+    background: #eeeeee;
+    font-weight: bold;
+    color: #222;
+    cursor: pointer;
+    text-shadow: 0 1px 1px #fff;
+    text-decoration: none;
+    background-image: -moz-linear-gradient(top, #fdfdfd, #eeeeee);
+    background-image: -webkit-gradient(linear,left top,left bottom, color-stop(0, #fdfdfd), color-stop(1, #eeeeee));
+    -msfilter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#fdfdfd', EndColorStr='#eeeeee')";
 }
 .ui-btn-hover-f a.ui-link-inherit {
-	color: 					#222;
+    color: #222;
 }
 .ui-btn-down-f {
-	border: 1px solid 		#aaaaaa;
-	background: 			#ffffff;
-	font-weight: bold;
-	color: 					#111;
-	text-shadow: 0 1px 1px 	#ffffff;
-	background-image: -moz-linear-gradient(top, 
-							#eeeeee, 
-							#ffffff);
-	background-image: -webkit-gradient(linear,left top,left bottom,
-		color-stop(0, 		#eeeeee),
-		color-stop(1, 		#ffffff));
-  	-msfilter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#eeeeee', EndColorStr='#ffffff')";
+    border: 1px solid #aaaaaa;
+    background: #ffffff;
+    font-weight: bold;
+    color: #111;
+    text-shadow: 0 1px 1px #ffffff;
+    background-image: -moz-linear-gradient(top, #eeeeee, #ffffff);
+    background-image: -webkit-gradient(linear,left top,left bottom, color-stop(0, #eeeeee), color-stop(1, #ffffff));
+    -msfilter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#eeeeee', EndColorStr='#ffffff')";
 }
 .ui-btn-down-f a.ui-link-inherit {
-	border: 1px solid 		#808080;
-	background: 			#ced0d2;
-	font-weight: bold;
-	color: 					#111;
-	text-shadow: none;
-	background-image: -moz-linear-gradient(top, 
-							#cccccc, 
-							#eeeeee);
-	background-image: -webkit-gradient(linear,left top,left bottom,
-		color-stop(0, 		#cccccc),
-		color-stop(1, 		#eeeeee));
-  	-msfilter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#cccccc', EndColorStr='#eeeeee')";
+    border: 1px solid #808080;
+    background: #ced0d2;
+    font-weight: bold;
+    color: #111;
+    text-shadow: none;
+    background-image: -moz-linear-gradient(top, #cccccc, #eeeeee);
+    background-image: -webkit-gradient(linear,left top,left bottom, color-stop(0, #cccccc), color-stop(1, #eeeeee));
+    -msfilter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#cccccc', EndColorStr='#eeeeee')";
 }
 .ui-btn-up-f,
 .ui-btn-hover-f,
 .ui-btn-down-f {
-	font-family: Helvetica, Arial, sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
 }
 
 .ui-link:link {
-	color: 					#324E85;
-	font-weight: bold;
+    color: #324E85;
+    font-weight: bold;
 }
 .ui-link:visited {
-	color: 					#603E7D;
-	font-weight: bold;
+    color: #603E7D;
+    font-weight: bold;
 }
-
-
