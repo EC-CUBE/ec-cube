@@ -33,7 +33,7 @@
         <!--{* <!--{if $arrTree[cnt].display == 1}--> *}-->
         <!--{assign var=level value=`$arrTree[cnt].level`}-->
         <!--{* level2以下なら表示（level指定可能） *}-->
-        <!--{if $level <= 2 || $arrTree[cnt].display == 1}-->
+        <!--{if $level <= 5 || $arrTree[cnt].display == 1}-->
         <!--{assign var=levdiff value=`$level-$preLev`}-->
           <!--{if $levdiff > 0}-->
               <ul>
