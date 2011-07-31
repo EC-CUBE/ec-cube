@@ -119,7 +119,9 @@ select {
     visibility: hidden;
     content: ".";
 }
-
+.clearfix {
+    display: block; /* for IE8 */
+}
 
 /* リンク指定
 ----------------------------------------------- */
