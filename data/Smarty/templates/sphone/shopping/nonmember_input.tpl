@@ -126,7 +126,7 @@ function fnDelivToggle(areaEl) {
   
         <dt>電話番号&nbsp;<span class="attention">※</span></dt>
           <dd>
-                     <!--{assign var=key1 value="order_tel01"}-->
+            <!--{assign var=key1 value="order_tel01"}-->
             <!--{assign var=key2 value="order_tel02"}-->
             <!--{assign var=key3 value="order_tel03"}-->
             <span class="attention"><!--{$arrErr[$key1]}--></span>
@@ -185,7 +185,7 @@ function fnDelivToggle(areaEl) {
              <input type="email" name="<!--{$key}-->" 
                 value="<!--{$arrForm[$key].value|h}-->" 
                 style="<!--{$arrErr[$key]|sfGetErrorColor}-->" 
-                maxlength="<!--{$arrForm[$key].length}-->" class="boxLong data-role-none" />
+                maxlength="<!--{$arrForm[$key].length}-->" class="boxLong top data-role-none" />
              <!--{assign var=key value="order_email02"}-->
               <span class="attention"><!--{$arrErr[$key]}--></span>
                                   <input type="email" name="<!--{$key}-->" 
@@ -352,7 +352,7 @@ function fnDelivToggle(areaEl) {
                                    style="<!--{$arrErr[$key3]|sfGetErrorColor}-->" 
                                     class="boxShort text data-role-none" />
                                      </dd>
-     <dd>
+     <dd class="pb">
        <a class="btn_more" href="javascript:fnModeSubmit('multiple', '', '');">お届け先を複数指定する</a>
        </dd>
 
