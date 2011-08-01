@@ -405,7 +405,7 @@ class SC_FormParam {
     }
 
     // キー名と一致した値を返す
-    function getValue($keyname,$default="") {
+    function getValue($keyname, $default = '') {
         $cnt = 0;
         $ret = null;
         foreach($this->keyname as $val) {
@@ -415,8 +415,17 @@ class SC_FormParam {
             }
             $cnt++;
         }
-        if(SC_Utils_Ex::isBlank($ret)){
-            $ret = $default;
+
+        if (is_array($ret)) {
+            foreach (array_keys($ret) as $key) {
+                if (SC_Utils_Ex::isBlank($ret[$key])) {
+                    $ret[$key] = $default;
+                }
+            }
+        } else {
+            if (SC_Utils_Ex::isBlank($ret)) {
+                $ret = $default;
+            }
         }
         return $ret;
     }
