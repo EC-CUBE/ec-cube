@@ -126,7 +126,7 @@ cursor:pointer;
 
 input[type="submit"].nav_nonmember{
 width:100%;
-padding:5px 10px;
+padding:10px;
 font-weight:bold;
 background:none;
 border:none;

@@ -112,6 +112,9 @@ margin-bottom:8px!important;
 .bg_head{
 background:#EEE;
 }
+.pb{
+padding-bottom:0!important;
+}
 /*-----------------------------------------------
 font
 ----------------------------------------------- */
@@ -282,12 +285,13 @@ padding:2px;
 input/select
 ----------------------------------------------------*/
 input {
-margin:5px 0;
+margin:0;
 padding:5px;
 -webkit-box-shadow:none;
 -moz-box-shadow:none;
 }
 input[type="text"]{
+margin:5px 0;
 }
 input[type="number"]{
 padding:5px 0;
@@ -447,7 +451,7 @@ margin-bottom:0.5em;
 .popup_cart{
 font-size:small;
 width:auto;
-min-width:100px;
+min-width:90px;
 padding:10px;
 display: none;
 position: absolute;
