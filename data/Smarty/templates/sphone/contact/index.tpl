@@ -32,7 +32,7 @@
        <input type="hidden" name="mode" value="confirm" />
 
         <dl class="form_entry">
-         <dt>お名前<span class="attention">※</span></dt>
+         <dt>お名前&nbsp;<span class="attention">※</span></dt>
            <dd><span class="attention"><!--{$arrErr.name01}--><!--{$arrErr.name02}--></span>
              <input type="text" name="name01" 
                value="<!--{$arrForm.name01.value|default:$arrData.name01|h}-->" 
@@ -44,7 +44,7 @@
                  style="<!--{$arrErr.name02|sfGetErrorColor}-->" class="boxHarf text data-role-none" placeholder="名"/>
               </dd>
 
-          <dt>お名前(フリガナ)<span class="attention">※</span></dt>
+          <dt>お名前(フリガナ)&nbsp;<span class="attention">※</span></dt>
             <dd><span class="attention"><!--{$arrErr.kana01}--><!--{$arrErr.kana02}--></span>
               <input type="text" name="kana01" 
                 value="<!--{$arrForm.kana01.value|default:$arrData.kana01|h}-->" 
@@ -65,12 +65,10 @@
              <p><input type="number" name="zip01" 
                  value="<!--{$arrForm.zip01.value|default:$arrData.zip01|h}-->" 
                    maxlength="<!--{$smarty.const.ZIP01_LEN}-->" 
-                    style="<!--{$arrErr.zip01|sfGetErrorColor}-->; ime-mode: disabled;" class="boxShort text data-role-none" />&nbsp;－&nbsp;
-                <input type="number" name="zip02" 
+                    style="<!--{$arrErr.zip01|sfGetErrorColor}-->; ime-mode: disabled;" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="number" name="zip02" 
                  value="<!--{$arrForm.zip02.value|default:$arrData.zip02|h}-->" 
                   maxlength="<!--{$smarty.const.ZIP02_LEN}-->" 
-                   style="<!--{$arrErr.zip02|sfGetErrorColor}-->; ime-mode: disabled;" class="boxShort text data-role-none" />&nbsp;&nbsp;
-                <a href="http://search.post.japanpost.jp/zipcode/" target="_blank" rel="external"><span class="mini">郵便番号検索</span></a>
+                   style="<!--{$arrErr.zip02|sfGetErrorColor}-->; ime-mode: disabled;" class="boxShort text data-role-none" />&nbsp;&nbsp;<a href="http://search.post.japanpost.jp/zipcode/" target="_blank" rel="external"><span class="fn">郵便番号検索</span></a>
              </p>
 
              <a href="<!--{$smarty.const.ROOT_URLPATH}-->input_zip.php" onClick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', '<!--{$key1}-->', '<!--{$key2}-->', '<!--{$key3}-->', '<!--{$key4}-->'); return false;" target="_blank" class="btn_sub btn_inputzip" rel="external">郵便番号から住所自動入力</a>
@@ -78,14 +76,14 @@
 
           <dt>住所</dt>
             <dd><span class="attention"><!--{$arrErr.pref}--><!--{$arrErr.addr01}--><!--{$arrErr.addr02}--></span>
-              <select name="pref" style="<!--{$arrErr.pref|sfGetErrorColor}-->" class="boxMedium data-role-none">
+              <select name="pref" style="<!--{$arrErr.pref|sfGetErrorColor}-->" class="boxHarf top data-role-none">
                 <option value="" selected="selected">都道府県</option>
                  <!--{html_options options=$arrPref selected=$arrForm.pref.value|default:$arrData.pref|h}-->
                   </select>
 
               <input type="text" name="addr01" 
                value="<!--{$arrForm.addr01.value|default:$arrData.addr01|h}-->" 
-                class="boxLong text data-role-none" 
+                class="boxLong top text data-role-none" 
                  style="<!--{$arrErr.addr01|sfGetErrorColor}-->" placeholder="市区町村名" />
                 <input type="text" name="addr02" 
                   value="<!--{$arrForm.addr02.value|default:$arrData.addr02|h}-->" 
@@ -98,23 +96,15 @@
                   value="<!--{$arrForm.tel01.value|default:$arrData.tel01|h}-->" 
                    maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" 
                     style="<!--{$arrErr.tel01|sfGetErrorColor}-->" 
-                     class="boxShort text data-role-none" />&nbsp;－&nbsp;
-                <input type="tel" name="tel02" 
-                 value="<!--{$arrForm.tel02.value|default:$arrData.tel02|h}-->" 
-                  maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" 
-                   style="<!--{$arrErr.tel02|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;
-                <input type="text" name="tel03" 
-                  value="<!--{$arrForm.tel03.value|default:$arrData.tel03|h}-->" 
-                   maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" 
-                    style="<!--{$arrErr.tel03|sfGetErrorColor}-->" class="boxShort text data-role-none" />
+                     class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="tel02" value="<!--{$arrForm.tel02.value|default:$arrData.tel02|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" style="<!--{$arrErr.tel02|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="text" name="tel03" value="<!--{$arrForm.tel03.value|default:$arrData.tel03|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" style="<!--{$arrErr.tel03|sfGetErrorColor}-->" class="boxShort text data-role-none" />
               </dd>
 
-             <dt>メールアドレス<span class="attention">※</span></dt>
+             <dt>メールアドレス&nbsp;<span class="attention">※</span></dt>
               <dd><span class="attention"><!--{$arrErr.email}--><!--{$arrErr.email02}--></span>
                 <input type="email" name="email" 
                  value="<!--{$arrForm.email.value|default:$arrData.email|h}-->" 
                   style="<!--{$arrErr.email|sfGetErrorColor}-->" 
-                   maxlength="<!--{$smarty.const.MTEXT_LEN}-->" class="boxLong text data-role-none" />
+                   maxlength="<!--{$smarty.const.MTEXT_LEN}-->" class="boxLong top text data-role-none" />
 
            <!--{* ログインしていれば入力済みにする *}-->
                 <!--{if $smarty.server.REQUEST_METHOD != 'POST' && $smarty.session.customer}-->
@@ -127,10 +117,10 @@
                    maxlength="<!--{$smarty.const.MTEXT_LEN}-->" class="boxLong text data-role-none" placeholder="確認のため2回入力してください" />
               </dd>
 
-             <dt>お問い合わせ内容<span class="attention">※</span>
+             <dt>お問い合わせ内容&nbsp;<span class="attention">※</span>
                <span class="mini">（全角<!--{$smarty.const.MLTEXT_LEN}-->字以下）</span></dt>
               <dd><span class="attention"><!--{$arrErr.contents}--></span>
-                <textarea name="contents" class="txtarea" cols="60" rows="20" style="<!--{$arrErr.contents|sfGetErrorColor}-->"><!--{$arrForm.contents.value|h}--></textarea>
+                <textarea name="contents" id="contents" class="textarea data-role-none" cols="42" rows="20" style="<!--{$arrErr.contents|sfGetErrorColor}-->"><!--{$arrForm.contents.value|h}--></textarea>
               </dd>
 
          </dl>
@@ -141,3 +131,9 @@
      </form>
 </section>
 <!--▲CONTENTS-->
+
+<!--{* テキストエリアのリサイズ *}-->
+<script type="text/javascript">
+  $('#contents').autoResize({limit: 9000});
+  $('#contents').keydown();
+</script>

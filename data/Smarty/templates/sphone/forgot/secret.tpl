@@ -49,9 +49,9 @@
            style="<!--{$arrErr.reminder_answer|sfGetErrorColor}-->" /><br />
             <span class="attention"><!--{$errmsg}--></span></p>
            
-                                            <hr />
+											<hr />
        
-                            <p>※質問の答えをお忘れになられた場合は、<a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->"><!--{$arrSiteInfo.email02|escape:'hexentitiy'}--></a>までご連絡ください。</p>
+							<p>※質問の答えをお忘れになられた場合は、<a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->"><!--{$arrSiteInfo.email02|escape:'hexentitiy'}--></a>までご連絡ください。</p>
         
      </div>
 

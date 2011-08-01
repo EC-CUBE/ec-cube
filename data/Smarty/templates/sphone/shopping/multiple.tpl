@@ -36,14 +36,9 @@
 <h2 class="title"><!--{$tpl_title|h}--></h2>
 
 <!--★インフォメーション★-->
-<div class="information">
+<div class="information end">
  <p>各商品のお届け先を選択してください。</p>  
 </div>
-
- <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
-            <p>一覧にご希望の住所が無い場合は、「新しいお届け先を追加する」より追加登録してください。<br>
-            ※最大<!--{$smarty.const.DELIV_ADDR_MAX|h}-->件まで登録できます。</p>
- <!--{/if}-->
 
 <!--★ボタン★-->
 <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
@@ -66,7 +61,7 @@
 <div class="formBox">
 <!--▼商品 -->
 <div class="delivitemBox">
-<img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrForm.main_list_image.value[$index]|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="&lt;!--{$arrForm.name[$index]|h}--&gt;" width="80" height="80" class="photoL" />
+<img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrForm.main_list_image.value[$index]|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="&lt;!--{$arrForm.name[$index]|h}--&gt;" class="photoL" />
  <div class="delivContents">
 
   <p><em><!--{$arrForm.name.value[$index]|h}--></em><br />
@@ -74,8 +69,9 @@
         <span class="mini"><!--{$arrForm.class_name1.value[$index]|h}-->：<!--{$arrForm.classcategory_name1.value[$index]|h}--></span><br />
     <!--{/if}-->
     <!--{if $arrForm.classcategory_name2.value[$index] != ""}-->
-        <span class="mini"><!--{$arrForm.class_name2.value[$index]|h}-->：<!--{$arrForm.classcategory_name2.value[$index]|h}--></span>
+        <span class="mini"><!--{$arrForm.class_name2.value[$index]|h}-->：<!--{$arrForm.classcategory_name2.value[$index]|h}--></span><br />
     <!--{/if}-->
+    <!--{$arrForm.price02.value[$index]|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
     </p>
 <ul>
 <li class="result"><span class="mini">数量</li>
@@ -113,7 +109,7 @@
                           <!--{assign var=key value="price02"}-->
                           <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" />
                         <!--{assign var=key value="shipping"}-->
-                        <select name="<!--{$key}-->[<!--{$index}-->]"><!--{html_options options=$addrs selected=$arrForm[$key].value[$index]}--></select>
+                        <select name="<!--{$key}-->[<!--{$index}-->]" class="boxLong data-role-none"><!--{html_options options=$addrs selected=$arrForm[$key].value[$index]}--></select>
 </div>
 
 </div><!--▲formBox -->

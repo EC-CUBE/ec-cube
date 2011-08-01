@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
  <!--▼CONTENTS-->
-    <section class="undercolumn">
+    <section id="undercolumn">
      <h2 class="title"><!--{$tpl_title|h}--></h2>
 
 <div id="errorBox">

@@ -29,9 +29,9 @@
 <form name="member_form" id="member_form" method="post" action="<!--{$smarty.const.HTTP_URL}-->shopping/index.php" onSubmit="return fnCheckLogin('member_form')">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="login" />
-    <div class="login_area clearfix">
+    <div class="login_area">
 
-    <div class="loginareaBox">
+    <div class="loginareaBox data-role-none">
     <!--{assign var=key value="login_email"}-->
     <span class="attention"><!--{$arrErr[$key]}--></span>
     <input type="email" name="<!--{$key}-->" value="<!--{$tpl_login_email|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="mailtextBox data-role-none" placeholder="メールアドレス" />

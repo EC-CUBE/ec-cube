@@ -148,13 +148,11 @@
 </div>
 
 <!-- ▼明細情報 -->
-<div id="windowcolumn" data-role="dialog" data-theme="d">
- <div data-role="header" data-backbtn="false">
-    
-  <h2>新着情報</h2>
-    
-                </div>
-<div data-role="content">
+<div id="windowcolumn" data-role="dialog" class="dialogbox" data-theme="d" data-iconpos="right">
+ <div data-role="header" class="ui-header-f" data-theme="d" >
+    <h2>新着情報</h2>
+                  </div>
+<div data-role="content" class="ui-body-d">
   <dl class="view_detail">
     <dt><a href="#"></a></dt>
       <dd id="newsComment"></dd>
@@ -162,7 +160,7 @@
     <p><a href="<!--{$smarty.const.HTTP_URL}-->" class="btn_more" data-rel="back">新着一覧にもどる</a></p>
 </div>
 
-<div data-role="footer"></div>
+
 
 </div>
 <!-- ▲明細情報 -->

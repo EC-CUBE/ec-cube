@@ -40,8 +40,8 @@ $(function(){
     $('#whobought_area li').biggerlink();
     //商品画像の拡大
     $('a.expansion').facebox({
-        loadingImage : '<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/loading.gif',
-        closeImage   : '<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/closelabel.png'
+        loadingImage : '<!--{$TPL_URLPATH}-->js/jquery.facebox/loading.gif',
+        closeImage   : '<!--{$TPL_URLPATH}-->js/jquery.facebox/closelabel.png'
     });
 });
 //サブエリアの表示/非表示

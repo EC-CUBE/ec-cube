@@ -93,10 +93,8 @@ function fnOtherconfirmToggle(areaEl, imgEl) {
             <input type="hidden" name="mode" value="confirm" />
             <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
             
-  <div class="title_box_sub clearfix">
-   <h3>ご注文内容</h3>
-    <a href="#" class="b_expand"><img src="<!--{$TPL_URLPATH}-->img/common/btn_minus.png" alt="minus" width="22" height="21" onClick="fnCartconfirmToggle($('.cartconfirm_area'), this);" /></a></div>
-    
+  <h3 class="subtitle">ご注文内容</h3>
+ 
 <section class="cartconfirm_area">
 <div class="form_area">
 <!--▼フォームボックスここから -->
@@ -190,9 +188,7 @@ function fnOtherconfirmToggle(areaEl, imgEl) {
 <!--{* 販売方法判定（ダウンロード販売のみの場合はお届け先を表示しない） *}-->
 <!--{if $cartKey != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
 <section class="delivconfirm_area">
-  <div class="title_box_sub clearfix">
-    <h3>お届け先</h3>
-    <a href="#" class="b_expand"><img src="<!--{$TPL_URLPATH}-->img/common/btn_minus.png" alt="minus" width="22" height="21" onClick="fnDelivconfirmToggle($('.delivconfirm_area .form_area'), this);" /></a></div>
+   <h3 class="subtitle">お届け先</h3>
 
 <div class="form_area">
 
@@ -258,9 +254,7 @@ function fnOtherconfirmToggle(areaEl, imgEl) {
 
 <!--★配送方法・お支払方法など★-->
 <section class="otherconfirm_area">
-<div class="title_box_sub clearfix">
-  <h3>配送方法・お支払方法など</h3>
-   <a href="#" class="b_expand"><img src="<!--{$TPL_URLPATH}-->img/common/btn_minus.png" alt="minus" width="22" height="21" onClick="fnOtherconfirmToggle($('.otherconfirm_area .form_area'), this);" /></a></div>
+  <h3 class="subtitle">配送方法・お支払方法など</h3>
 
 <div class="form_area">
 <!--▼フォームボックスここから -->

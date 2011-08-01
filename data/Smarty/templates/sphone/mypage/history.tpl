@@ -56,12 +56,14 @@
       <!--{foreach from=$tpl_arrOrderDetail item=orderDetail}-->
         <div class="cartitemBox">
           <!--{if $item.productsClass.main_image|strlen >= 1}--><a href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.productsClass.main_image|sfNoImageMainList|h}-->" rel="external">
-              <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$orderDetail.main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$orderDetail.product_name|h}-->" width="80" height="80" class="photoL" /></a>
+              <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$orderDetail.main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$orderDetail.product_name|h}-->" class="photoL" /></a>
           <!--{else}-->
-              <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$orderDetail.main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$orderDetail.product_name|h}-->" width="80" height="80" class="photoL" />
+              <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$orderDetail.main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$orderDetail.product_name|h}-->" class="photoL" />
           <!--{/if}-->
         <div class="cartinContents">
-           <p><em><!--→商品名--><a<!--{if $orderDetail.enable}--> href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$orderDetail.product_id|u}-->"<!--{/if}-->><!--{$orderDetail.product_name|h}--></a><!--←商品名--></em><br />
+								<div>
+           <p><em><!--→商品名--><a<!--{if $orderDetail.enable}--> href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$orderDetail.product_id|u}-->"<!--{/if}-->><!--{$orderDetail.product_name|h}--></a><!--←商品名--></em></p>
+											<p>
               <!--→商品種別-->
               <!--{if $orderDetail.product_type_id == $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
                   <!--{if $orderDetail.is_downloadable}-->
@@ -79,7 +81,7 @@
               <!--←商品種別--><br />
               <!--→金額-->
               <!--{assign var=price value=`$orderDetail.price`}-->
-              <!--{assign var=quantity value=`$orderDetail.quantity`}--><!--{$price|number_format|h}-->円<!--←金額-->
+              <!--{assign var=quantity value=`$orderDetail.quantity`}--><span class="mini">価格:</span><!--{$price|number_format|h}-->円<!--←金額-->
               <span class="mini"><!--{$item.productsClass.name|h}--><br />
               <!--{if $item.productsClass.classcategory_name1 != ""}-->
                   <span class="mini"><!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--></span><br />
@@ -88,6 +90,7 @@
                   <span class="mini"><!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--></span>
               <!--{/if}-->
           </p>
+										</div>
       <ul>
         <li><span class="mini">数量：</span><!--{$quantity|h}--></li>
         <li class="result"><span class="mini">小計：</span><!--{$price|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|sfMultiply:$quantity|number_format}-->円</li>

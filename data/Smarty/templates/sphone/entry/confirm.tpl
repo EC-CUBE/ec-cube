@@ -24,7 +24,7 @@
        <h2 class="title"><!--{$tpl_title|h}--></h2>
 
          <!--★インフォメーション★-->
-         <div class="information">
+         <div class="information end">
             <p>入力内容をご確認ください。</p>
          </div>
 
@@ -97,7 +97,7 @@
        <!--★ボタン★-->
        <div class="btn_area">
           <ul class="btn_btm">
-            <li><input type="submit" value="送信" class="spbtn spbtn-shopping" width="130" height="30" alt="送信" name="send" id="send" /></li>
+            <li><input type="submit" value="完了ページへ" class="btn data-role-none" name="send" id="send" /></li>
             <li><a href="spbtn spbtn-medeum" href="?" onclick="fnModeSubmit('return', '', ''); return false;" class="btn_back">戻る</a></li>
           </ul>
        </div>

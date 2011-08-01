@@ -22,8 +22,7 @@
 
 <nav class="header_navi">
     <!--{if $tpl_login}-->
-        <p>ようこそ
-        <a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" data-transition="slideup"><!--{$tpl_name1|h}--> <!--{$tpl_name2|h}--></a>さん</p>
+        <p><a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" data-transition="slideup">ようこそ<!--{$tpl_name1|h}--> <!--{$tpl_name2|h}-->さん</a></p>
         <!--{if $smarty.const.USE_POINT !== false}-->
             <p>所持ポイント<!--{$tpl_user_point|number_format|default:0}-->pt</p>
         <!--{/if}-->

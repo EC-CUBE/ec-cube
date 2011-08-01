@@ -54,7 +54,7 @@ function fnDelivToggle(areaEl) {
           <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
 
    <dl class="form_entry">
-       <dt>お名前<span class="attention">※</span></dt>
+       <dt>お名前&nbsp;<span class="attention">※</span></dt>
          <dd>
                  <!--{assign var=key1 value="order_name01"}-->
            <!--{assign var=key2 value="order_name02"}-->
@@ -72,7 +72,7 @@ function fnDelivToggle(areaEl) {
                 class="boxHarf text data-role-none" placeholder="名"/>
          </dd>
 
-       <dt>お名前(フリガナ)<span class="attention">※</span></dt>
+       <dt>お名前(フリガナ)&nbsp;<span class="attention">※</span></dt>
           <dd>
                  <!--{assign var=key1 value="order_kana01"}-->
            <!--{assign var=key2 value="order_kana02"}-->
@@ -90,7 +90,7 @@ function fnDelivToggle(areaEl) {
              class="boxHarf text data-role-none" placeholder="メイ"/>
           </dd>
 
-        <dt>郵便番号<span class="attention">※</span></dt>
+        <dt>郵便番号&nbsp;<span class="attention">※</span></dt>
           <dd>
                      <!--{assign var=key1 value="order_zip01"}-->
             <!--{assign var=key2 value="order_zip02"}-->
@@ -105,26 +105,26 @@ function fnDelivToggle(areaEl) {
                         value="<!--{$arrForm[$key2].value|h}-->" 
                         maxlength="<!--{$arrForm[$key2].length}-->" 
                         style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;
-                        <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="mini">郵便番号検索</span></a></p>
+                        <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fn">郵便番号検索</span></a></p>
 
                <a href="javascript:fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'order_zip01', 'order_zip02', 'order_pref', 'order_addr01');" class="btn_sub btn_inputzip">郵便番号から住所自動入力</a>
           </dd>
 
-        <dt>住所<span class="attention">※</span></dt>
+        <dt>住所&nbsp;<span class="attention">※</span></dt>
           <dd>
                      <!--{assign var=key value="order_pref"}-->
             <span class="attention"><!--{$arrErr.order_pref}--><!--{$arrErr.order_addr01}--><!--{$arrErr.order_addr02}--></span>
-              <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="boxMedium data-role-none">
+              <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="boxHarf top data-role-none">
                   <option value="" selected="selected">都道府県</option>
                                        <!--{html_options options=$arrPref selected=$arrForm[$key].value}-->
                   </select>
                   <!--{assign var=key value="order_addr01"}-->
-                  <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" class="boxLong data-role-none" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" placeholder="市区町村名" />
+                  <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" class="boxLong top data-role-none" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" placeholder="市区町村名" />
                               <!--{assign var=key value="order_addr02"}-->
                               <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" class="boxLong data-role-none" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" placeholder="番地・ビル名" />
           </dd>
   
-        <dt>電話番号<span class="attention">※</span></dt>
+        <dt>電話番号&nbsp;<span class="attention">※</span></dt>
           <dd>
                      <!--{assign var=key1 value="order_tel01"}-->
             <!--{assign var=key2 value="order_tel02"}-->
@@ -178,7 +178,7 @@ function fnDelivToggle(areaEl) {
                               class="boxShort text data-role-none" />
                             </dd>
 
-         <dt>メールアドレス<span class="attention">※</span></dt>
+         <dt>メールアドレス&nbsp;<span class="attention">※</span></dt>
            <dd>
                       <!--{assign var=key value="order_email"}-->
                <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -194,7 +194,7 @@ function fnDelivToggle(areaEl) {
                 maxlength="<!--{$arrForm[$key].length}-->" class="boxLong data-role-none" placeholder="確認のため2回入力してください" />
           </dd>
 
-        <dt>性別<span class="attention">※</span></dt>
+        <dt>性別&nbsp;<span class="attention">※</span></dt>
           <dd>
                   <!--{assign var=key value="order_sex"}-->
              <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -202,7 +202,7 @@ function fnDelivToggle(areaEl) {
               <!--{assign var=err value="background-color: `$smarty.const.ERR_COLOR`"}-->
             <!--{/if}-->
             <span style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-      <p><input type="radio" id="man" name="<!--{$key}-->" value="1" <!--{if $arrForm[$key].value eq 1}--> checked="checked" <!--{/if}--> class="data-role-none" /><label for="man">男性</label>&nbsp;
+      <p><input type="radio" id="man" name="<!--{$key}-->" value="1" <!--{if $arrForm[$key].value eq 1}--> checked="checked" <!--{/if}--> class="data-role-none" /><label for="man">男性</label>&nbsp;&nbsp;
     <input type="radio" id="woman" name="<!--{$key}-->" value="2" <!--{if $arrForm[$key].value eq 2}--> checked="checked" <!--{/if}--> class="data-role-none" /><label for="woman">女性</label></p>
      </dd>
             </span>
@@ -216,7 +216,7 @@ function fnDelivToggle(areaEl) {
             <!--{if $arrErr[$key]}-->
             <!--{assign var=err value="background-color: `$smarty.const.ERR_COLOR`"}-->
             <!--{/if}-->
-              <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="data-role-none">
+              <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="boxLong data-role-none">
                  <option value="" selected="selected">選択してください</option>
                <!--{html_options options=$arrJob selected=$arrForm[$key].value}-->
               </select>
@@ -246,9 +246,9 @@ function fnDelivToggle(areaEl) {
              <label for="deliv_label"><span class="fb">お届け先を指定</span></label>
         
                                 </dt>
-        <dd>※上記に入力された住所と同一の場合は省略可能です。</dd>
+        <dd><br />※上記に入力された住所と同一の場合は省略可能です。</dd>
 <div id="add_deliv_area" >
-              <dt>お名前<span class="attention">※</span></dt>
+              <dt>お名前&nbsp;<span class="attention">※</span></dt>
           <dd>
             <!--{assign var=key1 value="shipping_name01"}-->
             <!--{assign var=key2 value="shipping_name02"}-->
@@ -266,7 +266,7 @@ function fnDelivToggle(areaEl) {
                              class="boxHarf text data-role-none" placeholder="名"/>
                         </dd>
 
-       <dt>フリガナ<span class="attention">※</span></dt>
+       <dt>フリガナ&nbsp;<span class="attention">※</span></dt>
          <dd>
             <!--{assign var=key1 value="shipping_kana01"}-->
             <!--{assign var=key2 value="shipping_kana02"}-->
@@ -284,7 +284,7 @@ function fnDelivToggle(areaEl) {
                            class="boxHarf text data-role-none" placeholder="メイ"/>
                          </dd>
 
-       <dt>郵便番号<span class="attention">※</span></dt>
+       <dt>郵便番号&nbsp;<span class="attention">※</span></dt>
          <dd>
            <!--{assign var=key1 value="shipping_zip01"}-->
            <!--{assign var=key2 value="shipping_zip02"}-->
@@ -298,24 +298,24 @@ function fnDelivToggle(areaEl) {
                              value="<!--{$arrForm[$key2].value|h}-->" 
                                 maxlength="<!--{$arrForm[$key2].length}-->" 
                                   style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;
-                                      <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="mini">郵便番号検索</span></a></p>
+                                      <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fn">郵便番号検索</span></a></p>
 
                <a href="javascript:fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'shipping_zip01', 'shipping_zip02', 'shipping_pref', 'shipping_addr01');" class="btn_sub btn_inputzip">郵便番号から住所自動入力</a>
 
           </dd>
         
-          <dt>住所<span class="attention">※</span></dt>
+          <dt>住所&nbsp;<span class="attention">※</span></dt>
           <dd>
             <!--{assign var=key value="shipping_pref"}-->
             <span class="attention"><!--{$arrErr.shipping_pref}--><!--{$arrErr.shipping_addr01}--><!--{$arrErr.shipping_addr02}--></span>
-               <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="boxMedium data-role-none">
+               <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="boxHarf top data-role-none">
                   <option value="" selected="selected">都道府県</option>
                                        <!--{html_options options=$arrPref selected=$arrForm[$key].value}-->
                </select>
                                                   <!--{assign var=key value="shipping_addr01"}-->
               <input type="text" name="<!--{$key}-->" 
                  value="<!--{$arrForm[$key].value|h}-->" 
-                  class="boxLong data-role-none" 
+                  class="boxLong top data-role-none" 
                     style="<!--{$arrErr[$key]|sfGetErrorColor}-->" 
                       placeholder="市区町村名" />
 
@@ -327,7 +327,7 @@ function fnDelivToggle(areaEl) {
                          placeholder="番地・ビル名" />
           </dd>
         
-          <dt>電話番号<span class="attention">※</span></dt>
+          <dt>電話番号&nbsp;<span class="attention">※</span></dt>
           <dd>
             <!--{assign var=key1 value="shipping_tel01"}-->
             <!--{assign var=key2 value="shipping_tel02"}-->

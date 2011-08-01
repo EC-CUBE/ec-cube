@@ -266,11 +266,10 @@
   <div class="form_area">
     <p>その他お問い合わせ事項がございましたら、こちらにご入力ください。</p>
    
-     <div class="innerBox end">
        <!--{assign var=key value="message"}-->
        <span class="attention"><!--{$arrErr[$key]}--></span>
-       <textarea name="<!--{$key}-->" id="etc" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" cols="62" rows="8" class="textarea" wrap="hard"><!--{$arrForm[$key].value|h}--></textarea><br />
-        </div>
+       <textarea name="<!--{$key}-->" id="etc" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" cols="62" rows="8" class="textarea data-role-none" wrap="hard"><!--{$arrForm[$key].value|h}--></textarea><br />
+        
          </div><!--▲form_area -->
           </section>
 

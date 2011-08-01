@@ -54,19 +54,21 @@
 
 <!--{section name=cnt loop=$arrAddr}-->
 <dl class="deliv_check">
-  <dt>
-   <p>
-     <!--{if $smarty.section.cnt.first}-->
-        <input type="radio" name="deliv_check" id="chk_id_<!--{$smarty.section.cnt.iteration}-->" value="-1" <!--{if $arrForm.deliv_check.value == "" || $arrForm.deliv_check.value == -1}--> checked="checked"<!--{/if}--> class="data-role-none" />
+   <!--{if $smarty.section.cnt.first}-->
+      <dt class="first">
+       <p>  
+<input type="radio" name="deliv_check" id="chk_id_<!--{$smarty.section.cnt.iteration}-->" value="-1" <!--{if $arrForm.deliv_check.value == "" || $arrForm.deliv_check.value == -1}--> checked="checked"<!--{/if}--> class="data-role-none" />
         <label for="chk_id_<!--{$smarty.section.cnt.iteration}-->">会員登録住所</label>
      <!--{else}-->
+ <dt>
+       <p>  
         <input type="radio" name="deliv_check" id="chk_id_<!--{$smarty.section.cnt.iteration}-->" value="<!--{$arrAddr[cnt].other_deliv_id}-->"<!--{if $arrForm.deliv_check.value == $arrAddr[cnt].other_deliv_id}--> checked="checked"<!--{/if}--> class="data-role-none" />
         <label for="chk_id_<!--{$smarty.section.cnt.iteration}-->">追加登録住所</label>
      <!--{/if}-->
    </p>
    <ul class="edit">
        <!--{if !$smarty.section.cnt.first}-->
-           <li><a rel="external" href="javascript:void(0);" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|h}-->&amp;other_deliv_id=<!--{$arrAddr[cnt].other_deliv_id}-->','new_deiv','600','640'); return false;">編集</a></li>
+           <li><a rel="external" href="javascript:void(0);" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|h}-->&amp;other_deliv_id=<!--{$arrAddr[cnt].other_deliv_id}-->','new_deiv','600','640'); return false;" class="b_edit">編集</a></li>
            <li><img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" width="21" height="20" alt="削除" onclick="fnModeSubmit('delete', 'other_deliv_id', '<!--{$arrAddr[cnt].other_deliv_id}-->');" /></li>
        <!--{/if}-->
    </ul>

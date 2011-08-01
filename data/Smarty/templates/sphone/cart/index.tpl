@@ -36,10 +36,10 @@ $(document).ready(function() {
 <!--{if $smarty.const.USE_POINT !== false}-->
   <!--★ポイント案内★-->
   <div class="information">
-    <p>商品の合計金額は「<span class="price"><!--{$tpl_all_total_inctax|number_format}-->円</span>」です。</p>
+    <p class="fb">商品の合計金額は「<span class="price"><!--{$tpl_all_total_inctax|number_format}-->円</span>」です。</p>
 
     <!--{if $tpl_login}-->
-       <p point_announce><span class="user_name"><!--{$tpl_name|h}--> 様</span>の、現在の所持ポイントは「<span class="point"><!--{$tpl_user_point|number_format|default:0}--> pt</span>」です。<br />
+       <p class="point_announce"><span class="user_name"><!--{$tpl_name|h}--> 様</span>の、現在の所持ポイントは「<span class="point"><!--{$tpl_user_point|number_format|default:0}--> pt</span>」です。<br />
          ポイントは商品購入時に<span class="price">1pt＝<!--{$smarty.const.POINT_VALUE}-->円</span>として使用することができます。</p>
     <!--{else}-->
           <p class="point_announce">ポイント制度をご利用になられる場合は、ログインが必要です。</p>
@@ -122,7 +122,7 @@ $(document).ready(function() {
                         <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$item.productsClass.name|h}-->" class="photoL" />
                     <!--{/if}-->
                      <div class="cartinContents">
-
+                     <div>
                       <p><em><!--{$item.productsClass.name|h}--></em><br />
                       <!--{if $item.productsClass.classcategory_name1 != ""}-->
                           <span class="mini"><!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--></span><br />
@@ -130,11 +130,11 @@ $(document).ready(function() {
                       <!--{if $item.productsClass.classcategory_name2 != ""}-->
                           <span class="mini"><!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--></span><br />
                       <!--{/if}-->
-                                                   価格:<!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+                      <span class="mini">価格:</span><!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                       </p>
                     <p class="btn_delete">
                     <img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" onClick="fnFormModeSubmit('form<!--{$key}-->', 'delete', 'cart_no', '<!--{$item.cart_no}-->');" class="pointer" width="21" height="20" alt="削除" /></p>
-
+                     </div>
                     <ul>
                      <li><input type="number" name="quantity" class="cartin_quantity text data-role-none" value="<!--{$item.quantity}-->" maxlength="9" style="" onchange="fnFormModeSubmit('form<!--{$key}-->', 'setQuantity','cart_no','<!--{$item.cart_no}-->');" /></li>
                       <li class="result"><span class="mini">小計：</span><!--{$item.total_inctax|number_format}-->円</li>

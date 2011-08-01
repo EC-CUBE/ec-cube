@@ -29,14 +29,14 @@
 <!--!!空ボックス -->
 <div class="popup_mypage">
     <!--{if $tpl_login}-->
-        <span class="mini">ようこそ</span><br />
-        <a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" data-transition="slideup"><!--{$tpl_name1|h}--> <!--{$tpl_name2|h}--></a>さん
+        <p><span class="mini"><a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" data-transition="slideup">ようこそ</span><br />
+        <!--{$tpl_name1|h}--> <!--{$tpl_name2|h}-->さん</a></p>
         <!--{if $smarty.const.USE_POINT !== false}-->
             <p>所持ポイント<!--{$tpl_user_point|number_format|default:0}-->pt</p>
         <!--{/if}-->
     <!--{else}-->
-        ようこそ<br />
-        ゲストさん
+        <p>ようこそ<br />
+        ゲストさん</p>
         <p><a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/entry/kiyaku.php" rel="external">新規会員登録</a></p>
     <!--{/if}-->
 </div>
