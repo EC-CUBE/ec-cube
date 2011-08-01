@@ -95,8 +95,8 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
                 }
                 break;
 
-        default:
-            $this->setParamToSplitItems($objFormParam, $objCartSess);
+            default:
+                $this->setParamToSplitItems($objFormParam, $objCartSess);
         }
 
         // 前のページから戻ってきた場合
@@ -132,7 +132,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
         $objFormParam->addParam("メイン画像", "main_image");
         $objFormParam->addParam("メイン一覧画像", "main_list_image");
         $objFormParam->addParam("販売価格", "price");
-        $objFormParam->addParam("数量", 'quantity', INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), 1);
+        $objFormParam->addParam("数量", 'quantity', INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), 1);
         $objFormParam->addParam("配送先住所", 'shipping', INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("カート番号", "cart_no", INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("行数", "line_of_num", INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
@@ -212,20 +212,23 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
         $objCartSess = new SC_CartSession_Ex();
 
         $objFormParam->convParam();
+        // 数量未入力は0に置換
+        $objFormParam->setValue('quantity', $objFormParam->getValue('quantity', 0));
+
         $arrErr = $objFormParam->checkError();
 
-        $arrKey = $objFormParam->getKeyList();
-        unset($arrKey['line_of_num']);
         $arrParams = $objFormParam->getSwapArray();
 
-        foreach ($arrParams as $index => $arrParam) {
-            // お届け先を選択していて、数量を入力していない
-            if (!SC_Utils_Ex::isBlank($arrParam['shipping']) && SC_Utils_Ex::isBlank($arrParam['quantity'])) {
-                $arrErr['quantity'][$index] = '※ 数量が入力されていません。<br />';
-            }
-            // 数量を入力していて、お届け先を選択していない
-            if (!SC_Utils_Ex::isBlank($arrParam['quantity']) && SC_Utils_Ex::isBlank($arrParam['shipping'])) {
-                $arrErr['shipping'][$index] = '※ お届け先が入力されていません。<br />';
+        if (empty($arrErr)) {
+            foreach ($arrParams as $index => $arrParam) {
+                // 数量0で、お届け先を選択している場合
+                if ($arrParam['quantity'] == 0 && !SC_Utils_Ex::isBlank($arrParam['shipping'])) {
+                    $arrErr['shipping'][$index] = '※ 数量が0の場合、お届け先を入力できません。<br />';;
+                }
+                // 数量の入力があり、お届け先を選択していない場合
+                if ($arrParam['quantity'] > 0 && SC_Utils_Ex::isBlank($arrParam['shipping'])) {
+                    $arrErr['shipping'][$index] = '※ お届け先が入力されていません。<br />';
+                }
             }
         }
 
