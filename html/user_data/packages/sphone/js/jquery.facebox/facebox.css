@@ -37,16 +37,22 @@
 
 #facebox .close{
   position:absolute;
-  top:5px;
-  right:5px;
-  padding:2px;
+  top:5%;
+  right:5%;
+  padding:3px;
   background:#fff;
+		border:#FFF solid 1px;
+		border-radius: 16px;
+-moz-border-radius: 16px;
+-webkit-border-radius: 16px;
 }
 #facebox .close img{
-  opacity:0.3;
+		width:21px;
+		height:20px;
+  opacity:1.0;
 }
 #facebox .close:hover img{
-  opacity:1.0;
+  opacity:0.7;
 }
 
 #facebox .loading {
