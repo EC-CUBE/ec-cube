@@ -47,7 +47,7 @@
 <script src="<!--{$TPL_URLPATH}-->js/jquery.biggerlink.js"></script>
 <script type="text/javascript">    
     $(function(){
-        $('.header_navi li,.recomendblock, .list_area, .newslist li, .bubbleBox, .arrowBox, .category_body, .navBox li').biggerlink();
+        $('.header_navi li,.recomendblock, .list_area, .newslist li, .bubbleBox, .arrowBox, .category_body, .navBox li,#mypagecolumn .cartitemBox').biggerlink();
     });
 </script>
 <script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/btn.js"></script>
