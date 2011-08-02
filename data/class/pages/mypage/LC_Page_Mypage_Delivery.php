@@ -90,6 +90,8 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
                 $arrData = $objFormParam->getHashArray();
                 //別のお届け先情報
                 $arrOtherDeliv = $this->getOtherDeliv($customer_id, (($arrData['pageno'] - 1) * SEARCH_PMAX));
+                //県名をセット
+                $arrOtherDeliv = $this->setPref($arrOtherDeliv, $this->arrPref);
                 $arrOtherDeliv['delivCount'] = count($arrOtherDeliv);
                 $this->arrOtherDeliv = $arrOtherDeliv;
                 echo SC_Utils_Ex::jsonEncode($this->arrOtherDeliv);
@@ -157,5 +159,21 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
         $where      = 'customer_id = ? AND other_deliv_id = ?';
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
         $objQuery->delete("dtb_other_deliv", $where, array($customer_id, $deliv_id));
+    }
+    
+    /**
+     * 県名をセット
+     *
+     * @param array $arrOtherDeliv
+     * @param array $arrPref
+     * return array
+     */
+    function setPref($arrOtherDeliv, $arrPref) {
+        if (is_array($arrOtherDeliv)) {
+            foreach($arrOtherDeliv as $key => $arrDeliv) {
+                $arrOtherDeliv[$key]['prefname'] = $arrPref[$arrDeliv['pref']];
+            }
+        }
+        return $arrOtherDeliv;
     }
 }

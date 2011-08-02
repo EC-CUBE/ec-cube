@@ -64,7 +64,7 @@
 
                           <ul class="edit">
                               <li><a href="#" onClick="win02('./delivery_addr.php?other_deliv_id=<!--{$arrOtherDeliv[cnt].other_deliv_id}-->','deliv_disp','600','640'); return false;" class="b_edit deliv_edit" rel="external">編集</a></li>
-                              <li><a href="#" onClick="fnModeSubmit('delete','other_deliv_id','<!--{$arrOtherDeliv[cnt].other_deliv_id}-->'); return false;" class="deliv_delete" rel="external">削除</a></li>
+                              <li><a href="#" onClick="fnModeSubmit('delete','other_deliv_id','<!--{$arrOtherDeliv[cnt].other_deliv_id}-->'); return false;" class="deliv_delete" rel="external"><img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" class="pointer" width="21" height="20" alt="削除" /></a></li>
                           </ul>
                        </div>
                        <!--▲お届け先-->
@@ -128,7 +128,7 @@ function getDelivery(limit) {
                     //郵便番号2をセット
                     $($(".delivBox span.zip02").get(maxCnt)).text(delivery.zip02);
                     //住所をセット
-                    $($(".delivBox span.address").get(maxCnt)).text(delivery.pref + delivery.addr01 + delivery.addr02);
+                    $($(".delivBox span.address").get(maxCnt)).text(delivery.prefname + delivery.addr01 + delivery.addr02);
                     //姓をセット
                     $($(".delivBox span.name01").get(maxCnt)).text(delivery.name01);
                     //名前をセット
