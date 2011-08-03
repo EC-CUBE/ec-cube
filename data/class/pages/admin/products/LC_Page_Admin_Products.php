@@ -101,7 +101,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
 
         switch ($this->getMode()) {
         case 'delete':
-            // 商品、子テーブル(商品規格)、会員お気に入り商品の削除
+            // 商品、子テーブル(商品規格)、顧客お気に入り商品の削除
             $this->doDelete("product_id = ?", array($objFormParam->getValue('product_id')));
             // 件数カウントバッチ実行
             $objDb->sfCountCategory($objQuery);

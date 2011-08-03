@@ -136,12 +136,12 @@
 
     <h2>注文者情報
         <!--{if $tpl_mode == 'add'}-->
-            <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnOpenWindow('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->customer/search_customer.php','search','600','650'); return false;">会員検索</a>
+            <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnOpenWindow('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->customer/search_customer.php','search','600','650'); return false;">顧客検索</a>
         <!--{/if}-->
     </h2>
     <table class="form">
         <tr>
-            <th>会員ID</th>
+            <th>顧客ID</th>
             <td>
                 <!--{if $arrForm.customer_id.value > 0}-->
                     <!--{$arrForm.customer_id.value|h}-->

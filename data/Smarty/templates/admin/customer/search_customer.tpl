@@ -48,7 +48,7 @@ function func_submit(customer_id){
     <colgroup width="20%">
     <colgroup width="80%">
     <tr>
-        <th class="colmun">会員ID</th>
+        <th class="colmun">顧客ID</th>
         <td width="287" colspan="2">
             <!--{assign var=key value="search_customer_id"}-->
             <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
@@ -89,13 +89,13 @@ function func_submit(customer_id){
     <!--▼検索後表示部分-->
     <table class="list">
         <tr>
-            <th>会員ID</th>
+            <th>顧客ID</th>
             <th>お名前(フリガナ)</th>
             <th>TEL</th>
             <th>決定</th>
         </tr>
         <!--{section name=cnt loop=$arrCustomer}-->
-        <!--▼会員<!--{$smarty.section.cnt.iteration}-->-->
+        <!--▼顧客<!--{$smarty.section.cnt.iteration}-->-->
         <tr>
             <td>
             <!--{$arrCustomer[cnt].customer_id|h}-->
@@ -104,10 +104,10 @@ function func_submit(customer_id){
             <td><!--{$arrCustomer[cnt].tel01|h}-->-<!--{$arrCustomer[cnt].tel02|h}-->-<!--{$arrCustomer[cnt].tel03|h}--></td>
             <td align="center"><a href="" onClick="return func_submit(<!--{$arrCustomer[cnt].customer_id|h}-->)">決定</a></td>
         </tr>
-        <!--▲会員<!--{$smarty.section.cnt.iteration}-->-->
+        <!--▲顧客<!--{$smarty.section.cnt.iteration}-->-->
         <!--{sectionelse}-->
         <tr>
-            <td colspan="4">会員情報が存在しません。</td>
+            <td colspan="4">顧客情報が存在しません。</td>
         </tr>
         <!--{/section}-->
     </table>

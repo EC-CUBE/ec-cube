@@ -100,7 +100,7 @@
     <colgroup width="15%">
     <colgroup width="15%">
         <tr>
-            <th>会員番号</th>
+            <th>顧客ID</th>
             <th>名前</th>
             <th>メールアドレス</th>
             <th>希望配信</th>

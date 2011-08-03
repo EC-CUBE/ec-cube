@@ -67,7 +67,7 @@
         <h2>ショップの状況</h2>
         <table summary="ショップの状況" class="shop-info">
             <tr>
-                <th>現在の会員数</td>
+                <th>現在の顧客数</td>
                 <td><!--{$customer_cnt|default:"0"|number_format}-->名</td>
             </tr>
             <tr>
@@ -91,7 +91,7 @@
                 <td><!--{$review_yesterday_cnt|default:"0"}-->件</td>
             </tr>
             <tr>
-                <th>会員の保持ポイント合計</td>
+                <th>顧客の保持ポイント合計</td>
                 <td><!--{$customer_point|default:"0"}-->pt</td>
             </tr>
             <tr>

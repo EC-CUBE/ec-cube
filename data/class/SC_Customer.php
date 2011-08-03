@@ -65,7 +65,7 @@ class SC_Customer {
      * 配列の1番目に会員登録住所, 追加登録住所が存在する場合は2番目以降に
      * 設定される.
      *
-     * @param integer $customer_id 会員ID
+     * @param integer $customer_id 顧客ID
      * @return array 会員登録住所, 追加登録住所の配列
      */
     function getCustomerAddress($customer_id) {

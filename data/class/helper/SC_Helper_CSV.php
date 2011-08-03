@@ -52,7 +52,7 @@ class SC_Helper_CSV {
 
         $this->arrSubnaviName = array(
                                       1 => '商品管理',
-                                      2 => '会員管理',
+                                      2 => '顧客管理',
                                       3 => '受注管理',
                                       4 => 'レビュー',
                                       5 => 'カテゴリ'
@@ -64,7 +64,7 @@ class SC_Helper_CSV {
      *
      * @param integer $csv_id CSVフォーマットID
      * @param string $where WHERE条件文
-     * @param array $arrVal プリペアドステートメントの実行時に使用される配列。配列の要素数は、クエリ内のプレースホルダの数と同じでなければなりません。 
+     * @param array $arrVal プリペアドステートメントの実行時に使用される配列。配列の要素数は、クエリ内のプレースホルダの数と同じでなければなりません。
      * @param string $order ORDER文
      * @param boolean $is_download true:ダウンロード用出力までさせる false:CSVの内容を返す(旧方式、メモリを食います。）
      * @return mixed $is_download = true時 成功失敗フラグ(boolean) 、$is_downalod = false時 string
@@ -79,7 +79,7 @@ class SC_Helper_CSV {
         $arrOutputCols = $arrOutput['col'];
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->setOrder($order);        
+        $objQuery->setOrder($order);
         $cols = SC_Utils_Ex::sfGetCommaList($arrOutputCols, true);
 
         // TODO: 固有処理 なんかエレガントな処理にしたい
@@ -211,7 +211,7 @@ class SC_Helper_CSV {
      * SQL文からクエリ実行し CSVファイルを送信する
      *
      * @param integer $sql SQL文
-     * @param array $arrVal プリペアドステートメントの実行時に使用される配列。配列の要素数は、クエリ内のプレースホルダの数と同じでなければなりません。 
+     * @param array $arrVal プリペアドステートメントの実行時に使用される配列。配列の要素数は、クエリ内のプレースホルダの数と同じでなければなりません。
      * @param string $file_head ファイル名の頭に付ける文字列
      * @param array $arrHeader ヘッダ出力列配列
      * @param boolean $is_download true:ダウンロード用出力までさせる false:CSVの内容を返す(旧方式、メモリを食います。）

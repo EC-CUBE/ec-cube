@@ -80,7 +80,7 @@
         <table class="form">
             <!--{if $arrForm.customer_id}-->
             <tr>
-                <th>会員ID<span class="attention"> *</span></th>
+                <th>顧客ID<span class="attention"> *</span></th>
                 <td><!--{$arrForm.customer_id|h}--></td>
             </tr>
             <!--{/if}-->

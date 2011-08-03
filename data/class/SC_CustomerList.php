@@ -49,7 +49,7 @@ class SC_CustomerList extends SC_SelectSql_Ex {
             $regdate_col = 'dtb_customer.update_date';
         }
 
-        // 会員ID
+        // 顧客ID
         if (!isset($this->arrSql['search_customer_id'])) $this->arrSql['search_customer_id'] = "";
         if ( strlen($this->arrSql['search_customer_id']) > 0 ) {
             $this->setWhere( "customer_id =  ?" );
