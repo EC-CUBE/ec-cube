@@ -57,14 +57,12 @@
 
 <!--{* スマートフォンカスタマイズ用CSS *}-->
 <link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->css/jquery.mobile-1.0a3.min.css" />
-<link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->css/jquery.lightbox-0.5.css" />
 
 <!--{* スマートフォンカスタマイズ用JS *}-->
 <script src="<!--{$TPL_URLPATH}-->js/config.js"></script>
 <script src="<!--{$TPL_URLPATH}-->js/jquery.mobile-1.0a3.min.js"></script>
 <script src="<!--{$TPL_URLPATH}-->js/autoresize.jquery.min.js"></script>
 <script src="<!--{$TPL_URLPATH}-->js/jquery.flickslide.js"></script>
-<script src="<!--{$TPL_URLPATH}-->js/jquery.lightbox-0.5.min.js"></script>
 <script src="<!--{$TPL_URLPATH}-->js/favorite.js"></script>
 
 <title><!--{$arrSiteInfo.shop_name|h}--><!--{if $tpl_subtitle|strlen >= 1}--> / <!--{$tpl_subtitle|h}--><!--{elseif $tpl_title|strlen >= 1}--> / <!--{$tpl_title|h}--><!--{/if}--></title>
@@ -83,16 +81,8 @@
 <script type="text/javascript">//<![CDATA[
     <!--{$tpl_javascript}-->
     $(function(){
-    <!--{* lightbox準備 *}-->
-    $('a[rel*=lightbox]').lightBox({
-        imageLoading: '<!--{$TPL_URLPATH}-->img/lightboximages/lightbox-ico-loading.gif', 
-        imageBtnPrev: '<!--{$TPL_URLPATH}-->img/lightboximages/lightbox-btn-prev.gif', 
-        imageBtnNext: '<!--{$TPL_URLPATH}-->img/lightboximages/lightbox-btn-next.gif', 
-        imageBtnClose: '<!--{$TPL_URLPATH}-->img/lightboximages/lightbox-btn-close.gif', 
-        imageBlank: '<!--{$TPL_URLPATH}-->img/lightboximages/lightbox-blank.gif' 
+        <!--{$tpl_onload}-->
     });
-    <!--{$tpl_onload}-->
-});
 //]]>
 </script>
 </head>
