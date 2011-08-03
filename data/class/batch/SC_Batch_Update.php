@@ -38,7 +38,7 @@ class SC_Batch_Update extends SC_Batch {
     /**
      * 変換したいファイルの拡張子をカンマ区切りで羅列.
      */
-    var $includes = "php,inc,tpl,css,sql,js,png,jpg,gif,swf";
+    var $includes = "php,inc,tpl,css,sql,js,png,jpg,gif,swf,txt,doc,pdf";
 
     /**
      * 除外するファイル名をカンマ区切りで羅列.
