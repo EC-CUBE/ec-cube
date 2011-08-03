@@ -786,7 +786,11 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
                 if (isset($changed_no)) {
                     $arrValues[$changed_no] = $arrProduct[$key];
                 } else {
-                    $arrValues[] = $arrProduct[$key];
+                    $added_no = 0;
+                    if (is_array($arrExistsProductClassIds)) {
+                        $added_no = count($arrExistsProductClassIds);
+                    }
+                    $arrValues[$added_no] = $arrProduct[$key];
                 }
                 $objFormParam->setValue($key, $arrValues);
             }
