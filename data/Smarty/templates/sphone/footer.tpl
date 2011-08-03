@@ -31,7 +31,11 @@
 </p>
 </nav>
 
-<p class="copyright"><small>(C) <!--{$arrSiteInfo.shop_name|h}-->.</small></p>
+<p class="copyright"><small>Copyright &copy;
+<!--{if $smarty.const.RELEASE_YEAR !=  $smarty.now|date_format:"%Y"}-->
+    <!--{$smarty.const.RELEASE_YEAR}-->-
+<!--{/if}-->
+<!--{$smarty.now|date_format:"%Y"}--> <!--{$arrSiteInfo.shop_name_eng|default:$arrSiteInfo.shop_name|h}--> All rights reserved.</small></p>
 
 </footer>
 <!--▲ END FOOTER-->
