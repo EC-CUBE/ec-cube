@@ -163,7 +163,7 @@ border-radius: 5px;
 display:block;
 background: #FFF;
 clear:both;
-margin:10px;
+margin:10px 0;
 }
 input[type="submit"].btn_more{
 color:#000;

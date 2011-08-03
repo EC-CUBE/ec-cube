@@ -134,7 +134,7 @@ color: #CC0000; }
 font-size: 11px;
 font-weight:normal; }
 .fb{
-font-size:14px;
+font-size:15px;
 font-weight:bold;
 }
 .fn{
@@ -319,9 +319,6 @@ border-radius: 5px;
 width:97%;
 padding:0.5em;
 margin:0 0 10px 0;
-height:auto;
-min-height:70px;
-overflow:visible;
 }
 .cartin_quantity,.box_point{
 width:2em;
@@ -361,23 +358,24 @@ header {
 width:100%;
 background: #FFF;
 margin: 0 auto;
-padding:10px 0;
+padding:5px 0 10px 0;
 clear:both;
+min-height:40px;
 }
 header h1{
 width:47%;
 height:25px;
 float:left;
 clear:left;
-padding-right:5px;
-margin:0 0 0 5px;
+margin:2px 0 0 5px;
+padding:0;
 max-width:150px;
 position:relative;
 }
 header h1 a{
 display:block;
-padding:0;
 margin:0;
+padding:0;
 cursor:pointer;
 vertical-align:middle;
 }
@@ -398,11 +396,18 @@ float:right;
 }
 .header_navi{
 font-size:11px;
-padding-top:5px;
 float:right;
 display:inline;
 text-align:right;
 line-height:1.2;
+}
+.header_navi{
+font-size:11px;
+float:right;
+display:inline;
+text-align:right;
+line-height:1.2;
+margin-top:5px;
 }
 .header_navi ul{
 display:inline;

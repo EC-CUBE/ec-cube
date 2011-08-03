@@ -104,6 +104,10 @@ border-right:none;
 /* -----------------------------------------------
 購入履歴詳細
 ----------------------------------------------- */
+#mypagecolumn .cartitemBox{
+padding:10px 0;
+}
+
 #historyBox{
 padding:10px 10px 5px;
 background:#F7F5F0;
@@ -188,11 +192,12 @@ padding:15px 10px 10px 10px;
 margin-top:10px;
 }
 .delivBox{
-padding:10px;
+padding:10px 10px 5px 10px;
 border-bottom:#CCC solid 1px;
 clear:both;
 position:relative;
 }
+
 .delivBox:last-child{
 border-bottom:none;
 }
@@ -202,6 +207,9 @@ border-bottom:none;
 ----------------------------------------------- */
 .refusetxt{
 padding:15px 10px 10px 10px;
+}
+.refusetxt p:first-child{
+margin-bottom:10px;
 }
 .btn_refuse{
 padding:0;

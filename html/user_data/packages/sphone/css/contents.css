@@ -127,7 +127,6 @@ position:relative;
 .cartinarea .cartinContents p{
 line-height:1.2;
 }
-
 .cartinContents div{
 min-height:50px;
 }
@@ -373,6 +372,10 @@ display:block;
 position:relative;
 line-height:1.3;
 }
+.cartconfirmContents div{
+min-height:62px;
+line-height:1.3;
+}
 .cartconfirmBox ul{
 float:right;
 clear:both;
@@ -495,6 +498,9 @@ dl.form_entry li{
 margin-bottom:0.3em;
 vertical-align:middle;
 }
+dl.form_entry .bg_head{
+padding-bottom:10px;
+}
 /* -----------------------------------------------
 完了画面
 ----------------------------------------------- */
@@ -504,6 +510,7 @@ color:#FF6633;
 font-weight:bold;
 padding:10px;
 margin-bottom:10px;
+line-height:1.3;
 }
 #completetext p{
 line-height:1.3;
@@ -516,6 +523,7 @@ clear:both;
 }
 #completetext p,.shopInformation p{
 margin-bottom:0.5em;
+line-height:1.3;
 }
 /* -----------------------------------------------
 特定商/当サイトについて
