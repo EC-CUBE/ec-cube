@@ -115,9 +115,25 @@ class LC_Page_RSS extends LC_Page_Ex {
 
         // RSS用に変換
         foreach (array_keys($arrNews) as $key) {
+            $netUrlHttpUrl = new Net_URL(HTTP_URL);
+
             $row =& $arrNews[$key];
             // 日付
             $row['news_date'] = date('r', strtotime($row['news_date']));
+            // 新着情報URL
+            if (SC_Utils_Ex::isBlank($row['news_url'])) {
+                $row['news_url'] = HTTP_URL;
+            }
+            elseif ($row['news_url'][0] == '/') {
+                // 変換(絶対パス→URL)
+                $netUrl = new Net_URL($row['news_url']);
+                $netUrl->protocol = $netUrlHttpUrl->protocol;
+                $netUrl->user = $netUrlHttpUrl->user;
+                $netUrl->pass = $netUrlHttpUrl->pass;
+                $netUrl->host = $netUrlHttpUrl->host;
+                $netUrl->port = $netUrlHttpUrl->port;
+                $row['news_url'] = $netUrl->getUrl();
+            }
         }
 
         return $arrNews;
