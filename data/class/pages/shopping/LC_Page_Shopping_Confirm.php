@@ -97,8 +97,8 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
             exit;
         }
 
-        // カートの商品を取得(常に配送商品を保有している配送先のみ取得)
-        $this->arrShipping = $objPurchase->getShippingTemp(true);
+        // カートの商品を取得
+        $this->arrShipping = $objPurchase->getShippingTemp($this->is_multiple);
         $this->arrCartItems = $objCartSess->getCartList($this->cartKey);
         // 合計金額
         $this->tpl_total_inctax[$this->cartKey] = $objCartSess->getAllProductsTotal($this->cartKey);

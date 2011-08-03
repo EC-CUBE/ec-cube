@@ -82,8 +82,8 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
 
         $this->is_multiple = $objPurchase->isMultiple();
 
-        // カートの情報を取得(常に配送商品を保有している配送先のみ取得)
-        $this->arrShipping = $objPurchase->getShippingTemp(true);
+        // カートの情報を取得
+        $this->arrShipping = $objPurchase->getShippingTemp($this->is_multiple);
 
         $this->tpl_uniqid = $objSiteSess->getUniqId();
         $cart_key = $objCartSess->getKey();
