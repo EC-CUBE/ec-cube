@@ -61,9 +61,9 @@
               <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$orderDetail.main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$orderDetail.product_name|h}-->" class="photoL" />
           <!--{/if}-->
         <div class="cartinContents">
-								<div>
+                                <div>
            <p><em><!--→商品名--><a<!--{if $orderDetail.enable}--> href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$orderDetail.product_id|u}-->"<!--{/if}--> rel="external"><!--{$orderDetail.product_name|h}--></a><!--←商品名--></em></p>
-											<p>
+                                            <p>
               <!--→商品種別-->
               <!--{if $orderDetail.product_type_id == $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
                   <!--{if $orderDetail.is_downloadable}-->
@@ -90,7 +90,7 @@
                   <span class="mini"><!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--></span>
               <!--{/if}-->
           </p>
-										</div>
+                                        </div>
       <ul>
         <li><span class="mini">数量：</span><!--{$quantity|h}--></li>
         <li class="result"><span class="mini">小計：</span><!--{$price|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|sfMultiply:$quantity|number_format}-->円</li>
@@ -135,4 +135,12 @@
   </div><!--▲form_area -->
 
 </section>
+<!--▼検索バー -->
+<section id="search_area">
+<form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+<input type="search" name="name" id="search" value="" placeholder="キーワードを入力" class="searchbox" >
+</form>
+</section>
+<!--▲検索バー -->
 <!--▲CONTENTS -->

@@ -122,9 +122,19 @@ function fnChangeDispNumber(dispNumber) {
 <!--{/foreach}-->
 
 <!--{if count($arrProducts) < $tpl_linemax}-->
+<div class="btn_area">
 <p><a rel="external" href="javascript: void(0);" class="btn_more" id="btn_more_product" onClick="getProducts(<!--{$disp_number|h}-->); return false;">もっとみる(＋<!--{$disp_number|h}-->件)</a></p>
+</div>
 <!--{/if}-->
 </section>
+<!--▼検索バー -->
+<section id="search_area">
+<form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+<input type="search" name="name" id="search" value="" placeholder="キーワードを入力" class="searchbox" >
+</form>
+</section>
+<!--▲検索バー -->
 <!--▲CONTENTS-->
 
 <script>

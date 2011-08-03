@@ -138,7 +138,7 @@ function getNewsDetail(newsId) {
                  setTimeout( function() {
                      loadingState = 0;
                      $.mobile.pageLoading(true);
-                 }, 1000);
+                 }, 3000);
                  
                }
         });

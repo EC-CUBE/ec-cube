@@ -112,6 +112,7 @@ function fnOtherconfirmToggle(areaEl, imgEl) {
                <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$item.productsClass.name|h}-->" width="80" height="80" class="photoL" />
              <!--{/if}-->
                  <div class="cartconfirmContents">
+                                                                    <div>
                   <p><em><!--{$item.productsClass.name|h}--></em><br />
                   <!--{if $item.productsClass.classcategory_name1 != ""}-->
                       <span class="mini"><!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--></span><br />
@@ -120,6 +121,7 @@ function fnOtherconfirmToggle(areaEl, imgEl) {
                       <span class="mini"><!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--></span>
                   <!--{/if}-->
                   </p>
+                                                                    </div>
                <ul>
                  <li><span class="mini">数量：</span><!--{$item.quantity|number_format}--></li>
                   <li class="result"><span class="mini">小計：</span><!--{$item.total_inctax|number_format}-->円</li>
@@ -288,4 +290,12 @@ function fnOtherconfirmToggle(areaEl, imgEl) {
 
 </form>
 </section>
+<!--▼検索バー -->
+<section id="search_area">
+<form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+<input type="search" name="name" id="search" value="" placeholder="キーワードを入力" class="searchbox" >
+</form>
+</section>
+<!--▲検索バー -->
 <!--▲コンテンツここまで -->

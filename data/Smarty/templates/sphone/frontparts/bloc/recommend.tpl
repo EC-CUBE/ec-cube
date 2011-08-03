@@ -26,10 +26,8 @@
 <ul>
 <!--{section name=cnt loop=$arrBestProducts step=2}-->
         <li id="mainImage0">
-          <a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrBestProducts[cnt].product_id|u}-->">
             <div class="recomendblock clearfix">
-              <a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrBestProducts[cnt].product_id|u}-->">
-              <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrBestProducts[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[cnt].name|h}-->" /></a>
+              <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrBestProducts[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[cnt].name|h}-->" />
               <div class="productContents">
                 <h3><a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrBestProducts[cnt].product_id|u}-->"><!--{$arrBestProducts[cnt].name|h}--></a></h3>
                   <p class="mini comment"><!--{$arrBestProducts[cnt].comment|h|nl2br}--></p>
@@ -38,15 +36,12 @@
                   <p class="sale_price"><span class="mini"><!--<span class="mini">-->販売価格(税込):<!--</span>--></span><span class="price"><!--{$price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> 円</span></p> 
               </div>
             </div>
-          </a>
         </li>
         <!--{assign var=cnt2 value=`$smarty.section.cnt.iteration*$smarty.section.cnt.step-1`}-->
         <!--{if $arrBestProducts[$cnt2]|count > 0}-->
           <li id="mainImage0">
-            <a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrBestProducts[$cnt2].product_id|u}-->">
               <div class="recomendblock clearfix">
-                <a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrBestProducts[$cnt2].product_id|u}-->">
-                <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrBestProducts[$cnt2].main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[$cnt2].name|h}-->" /></a>
+                <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrBestProducts[$cnt2].main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[$cnt2].name|h}-->" />
                 <div class="productContents">
                   <h3><a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrBestProducts[$cnt2].product_id|u}-->"><!--{$arrBestProducts[$cnt2].name|h}--></a></h3>
                     <p class="mini comment"><!--{$arrBestProducts[$cnt2].comment|h|nl2br}--></p>
@@ -55,7 +50,6 @@
                     <p class="sale_price"><span class="mini"><!--<span class="mini">-->販売価格(税込):</span><!--</span>--><span class="price"><!--{$price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> 円</span></p> 
                 </div>
               </div>
-            </a>
           </li>
         <!--{/if}-->
     <!--{/section}-->

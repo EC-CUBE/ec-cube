@@ -361,8 +361,16 @@ function fnWhoboughtToggle(areaEl, imgEl) {
 <!--{/if}-->
 
 <!--▲その他おすすめ商品-->
-
+<div class="btn_area">
 <p><a href="javascript:void(0);" class="btn_more" data-rel="back">商品一覧に戻る</a></p>
-
+</div>
 </section>
+<!--▼検索バー -->
+<section id="search_area">
+<form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+<input type="search" name="name" id="search" value="" placeholder="キーワードを入力" class="searchbox" >
+</form>
+</section>
+<!--▲検索バー -->
 <!--▲CONTENTS-->

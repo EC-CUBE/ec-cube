@@ -24,12 +24,12 @@
 <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`popup_header.tpl" subtitle="新しいお届け先の追加・変更"}-->
 
 <section id="windowcolumn">
-    <div data-role="header">
-                <div class="title_box clearfix">
-       <h2><!--{$tpl_title|h}--></h2>
-         <a href="delivery.php" data-role="button" data-rel="back" data-icon="delete" data-iconpos="notext" class="ui-btn-right" data-theme="d"><span class="ui-btn-text">close</span></a>
-                                    </div>
-                                     </div>
+    <div data-role="header" data-theme="d">
+       <div class="title_box clearfix">
+         <h2><!--{$tpl_title|h}--></h2>
+             <a rel="external" href="delivery.php" data-role="button" data-icon="delete" data-iconpos="notext" data-rel="back">close</a>
+       </div>
+    </div>
 
        <!--★インフォメーション★-->
        <div class="information">

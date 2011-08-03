@@ -30,7 +30,7 @@
             <p>それではショッピングをお楽しみください。</p>
             <p>今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
 
-                                      <div class="btn_area">
+           <div class="btn_area">
              <a href="<!--{$smarty.const.TOP_URLPATH}-->" class="btn_toppage btn_sub">トップページへ</a>
            </div>
          </div>
@@ -41,4 +41,12 @@
                 E-mail：<a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->"><!--{$arrSiteInfo.email02|escape:'hexentity'}--></a></p>
          </div>
 </section>
+<!--▼検索バー -->
+<section id="search_area">
+<form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+<input type="search" name="name" id="search" value="" placeholder="キーワードを入力" class="searchbox" >
+</form>
+</section>
+<!--▲検索バー -->
 <!--▲CONTENTS-->

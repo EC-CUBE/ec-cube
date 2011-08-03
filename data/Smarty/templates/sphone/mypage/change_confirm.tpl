@@ -29,9 +29,8 @@
        <h3 class="title_mypage"><!--{$tpl_subtitle|h}--></h3>
        
                             <!--★インフォメーション★-->
-       <div class="inner">
-          <p>下記の内容で送信してもよろしいでしょうか？<br />
-            よろしければ、一番下の「会員登録完了へ」ボタンをクリックしてください。</p>
+       <div class="intro">
+          <p>入力内容をご確認ください。</p>
        </div>
 
        <form name="form1" id="form1" method="post" action="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/change.php">
@@ -104,4 +103,12 @@
        </div>
       </form>
 </section>
+<!--▼検索バー -->
+<section id="search_area">
+<form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+<input type="search" name="name" id="search" value="" placeholder="キーワードを入力" class="searchbox" >
+</form>
+</section>
+<!--▲検索バー -->
 <!--▲CONTENTS -->
