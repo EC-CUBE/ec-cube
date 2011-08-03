@@ -68,10 +68,10 @@ class SC_Session {
         if ($this->cert == CERT_STRING) {
             $masterData = new SC_DB_MasterData_Ex();
             $admin_path = preg_replace('/\/+/', '/', $_SERVER['PHP_SELF']);
-            $this->arrPERMISSION = $masterData->getMasterData("mtb_permission");
-            if (isset($this->arrPERMISSION[$admin_path])) {
+            $arrPERMISSION = $masterData->getMasterData("mtb_permission");
+            if (isset($arrPERMISSION[$admin_path])) {
                 // 数値が自分の権限以上のものでないとアクセスできない。
-                if ($this->arrPERMISSION[$admin_path] < $this->authority) {
+                if ($arrPERMISSION[$admin_path] < $this->authority) {
                     return AUTH_ERROR;
                 }
             }
