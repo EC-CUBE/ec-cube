@@ -233,7 +233,7 @@ class SC_FormParam {
             }
 
             if (isset($objErr->arrErr[$val]) && !$br) {
-                $objErr->arrErr[$val] = ereg_replace("<br>$", "", $objErr->arrErr[$val]);
+                $objErr->arrErr[$val] = preg_replace("/<br(\s+\/)?>/i", "", $objErr->arrErr[$val]);
             }
             $cnt++;
         }
