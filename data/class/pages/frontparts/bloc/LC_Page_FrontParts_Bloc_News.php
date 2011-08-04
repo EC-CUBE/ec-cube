@@ -68,22 +68,28 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
                 $this->lfInitNewsParam($objFormParam);
                 $objFormParam->setParam($_POST);
                 $objFormParam->convParam();
-                $this->arrErr = $this->lfCheckError($objFormParam);
-                if(empty($this->arrEr)){
-                     $json = $this->lfGetNewsForJson($objFormParam);
-                     echo $json;
-                     exit;
+                $this->arrErr = $objFormParam->checkError(false);
+                if(empty($this->arrErr)){
+                    $json = $this->lfGetNewsForJson($objFormParam);
+                    echo $json;
+                    exit;
+                } else {
+                    echo $this->lfGetErrors($this->arrErr);
+                    exit;
                 }
                 break;
             case "getDetail":
                 $this->lfInitNewsParam($objFormParam);
                 $objFormParam->setParam($_GET);
                 $objFormParam->convParam();
-                $this->arrErr = $this->lfCheckError($objFormParam);
-                if(empty($this->arrEr)){
+                $this->arrErr = $objFormParam->checkError(false);
+                if(empty($this->arrErr)){
                      $json = $this->lfGetNewsDetailForJson($objFormParam);
                      echo $json;
                      exit;
+                } else {
+                    echo $this->lfGetErrors($this->arrErr);
+                    exit;
                 }
                 break;
             default:
@@ -112,17 +118,6 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
         $objFormParam->addParam("現在ページ", "pageno", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"), "", false);
         $objFormParam->addParam("表示件数", "disp_number", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"), "", false);
         $objFormParam->addParam("新着ID", "news_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"), "", false);
-    }
-
-      /**
-     * フォーム入力パラメーターエラーチェック
-     *
-     * @param array $objFormParam フォームパラメータークラス
-     * @return array エラー配列
-     */
-    function lfCheckError(&$objFormParam) {
-        $arrErr = SC_Helper_Customer_Ex::sfCustomerMypageErrorCheck($objFormParam, true);
-        return $arrErr;
     }
 
     /**
@@ -209,6 +204,20 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
         $count = $objQuery->count("dtb_news", "del_flg = '0'");
 
         return $count;
+    }
+
+    /**
+     * エラーメッセージを整形し, JSON 形式で返す.
+     *
+     * @param array $arrErr エラーメッセージの配列
+     * @return string JSON 形式のエラーメッセージ
+     */
+    function lfGetErrors($arrErr) {
+        $messages = '';
+        foreach ($arrErr as $val) {
+            $messages .= $val . "\n";
+        }
+        return SC_Utils_Ex::jsonEncode(array('error' => $messages));
     }
 }
 ?>
