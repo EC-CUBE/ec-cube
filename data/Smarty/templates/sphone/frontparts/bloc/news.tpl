@@ -129,8 +129,10 @@ function getNewsDetail(newsId) {
                      //var newsDateDisp = newsDateDispArray[0] + "年 " + newsDateDispArray[1] + "月 " + newsDateDispArray[2] + "日";
                      //$($("#windowcolumn dl.view_detail dt").get(maxCnt)).text(newsDateDisp);
 
-                    //コメントをセット
-                     $("#newsComment").text(news.news_comment);
+                    //コメントをセット(iphone4の場合、innerHTMLの再描画が行われない為、タイマーで無理やり再描画させる)
+                    setTimeout( function() {
+                        $("#newsComment").html(news.news_comment.replace(/\n/g,"<br />"));
+                    }, 10);
                  }
                  
                  $.mobile.changePage('#windowcolumn', 'slideup');
@@ -138,7 +140,7 @@ function getNewsDetail(newsId) {
                  setTimeout( function() {
                      loadingState = 0;
                      $.mobile.pageLoading(true);
-                 }, 3000);
+                 }, 1000);
                  
                }
         });
