@@ -63,7 +63,7 @@
                   <!--{else}-->
                   <!--{$arrFavorite[cnt].price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$arrFavorite[cnt].price02_max|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                   <!--{/if}-->円</span></p>
-               <p class="btn_delete"><img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" width="21" height="20" alt="削除" onClick="javascript:fnModeSubmit('delete_favorite','product_id','<!--{$product_id|h}-->');" class="pointer" /></p>
+               <p class="btn_delete"><img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" width="21" height="20" alt="削除" onclick="javascript:fnModeSubmit('delete_favorite','product_id','<!--{$product_id|h}-->');" class="pointer" /></p>
         </div>
       </div><!--▲商品 -->
         
@@ -80,7 +80,7 @@
          
          <div class="btn_area">
          <!--{if $tpl_linemax > $dispNumber}-->
-           <p><a rel="external" href="javascript: void(0);" class="btn_more" id="btn_more_product" onClick="getProducts(5); return false;">もっとみる(＋<!--{$dispNumber}-->件)</a></p>
+           <p><a rel="external" href="javascript: void(0);" class="btn_more" id="btn_more_product" onclick="getProducts(5); return false;">もっとみる(＋<!--{$dispNumber}-->件)</a></p>
          <!--{/if}-->
          </div>
          

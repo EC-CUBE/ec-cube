@@ -74,24 +74,24 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
         switch ($this->getMode()) {
             case 'delete_favorite':
                 // お気に入り削除
-                $this->lfDeleteFavoriteProduct($customer_id, $_POST['product_id']);
+                $this->lfDeleteFavoriteProduct($customer_id, intval($_POST['product_id']));
                 break;
             case 'getList':
                 // スマートフォン版のもっと見るボタン用
                 // ページ送り用
-		        if (isset($_POST['pageno'])) {
-		            $this->tpl_pageno = htmlspecialchars($_POST['pageno'], ENT_QUOTES, CHAR_CODE);
-		        }
-		        $this->arrFavorite = $this->lfGetFavoriteProduct($customer_id, $this);
-		        $this->arrFavorite = $this->lfSetPriceTax($this->arrFavorite);
-		        echo SC_Utils_Ex::jsonEncode($this->arrFavorite);
+                if (isset($_POST['pageno'])) {
+                    $this->tpl_pageno = intval($_POST['pageno']);
+                }
+                $this->arrFavorite = $this->lfGetFavoriteProduct($customer_id, $this);
+                $this->arrFavorite = $this->lfSetPriceTax($this->arrFavorite);
+                echo SC_Utils_Ex::jsonEncode($this->arrFavorite);
                 exit;
                 break;
         }
 
         // ページ送り用
         if (isset($_POST['pageno'])) {
-            $this->tpl_pageno = htmlspecialchars($_POST['pageno'], ENT_QUOTES, CHAR_CODE);
+            $this->tpl_pageno = intval($_POST['pageno']);
         }
         $this->arrFavorite = $this->lfGetFavoriteProduct($customer_id, $this);
         // 1ページあたりの件数
