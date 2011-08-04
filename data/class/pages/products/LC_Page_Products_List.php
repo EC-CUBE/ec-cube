@@ -126,12 +126,11 @@ class LC_Page_Products_List extends LC_Page_Ex {
         $this->objNavi      = new SC_PageNavi_Ex($this->tpl_pageno, $this->tpl_linemax, $this->disp_number, 'fnNaviPage', NAVI_PMAX, $urlParam, SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE);
         $this->arrProducts  = $this->lfGetProductsList($arrSearchCondition, $this->disp_number, $this->objNavi->start_row, $this->tpl_linemax, $objProduct);
 
-
         switch($this->getMode()){
 
             case "json":
-                   $this->arrProducts = $this->setStatusData($this->arrProducts, $this->arrSTATUS, $this->arrSTATUS_IMAGE);
-                   $this->arrProducts = $this->setPriceTax($this->arrProducts);
+                   $this->arrProducts = $this->setStatusDataTo($this->arrProducts, $this->arrSTATUS, $this->arrSTATUS_IMAGE);
+                   $this->arrProducts = $objProduct->setPriceTaxTo($this->arrProducts);
                    echo SC_Utils_Ex::jsonEncode($this->arrProducts);
                    exit;
                break;
@@ -513,43 +512,18 @@ __EOS__;
      * @param Array $arrStatusImage スタータス画像配列
      * @return Array $arrProducts 商品一覧情報
      */
-    function setStatusData($arrProducts, $arrStatus, $arrStatusImage){
+    function setStatusDataTo($arrProducts, $arrStatus, $arrStatusImage){
 
-        foreach($arrProducts['productStatus'] as $keyArr => $valArr){
-            for($i=0; $i<count($valArr); $i++){
-                $statusCd = $valArr[$i];
-                if(!empty($statusCd)){
-                    $statusAry = array('status_cd'=>$statusCd, 'status_name'=>$arrStatus[$statusCd], 'status_image' =>$arrStatusImage[$statusCd]);
-                    $arrProducts['productStatus'][$keyArr][$i] = $statusAry;
-
+        foreach ($arrProducts['productStatus'] as $product_id => $arrValues) {
+            for ($i = 0; $i < count($arrValues); $i++){
+                $product_status_id = $arrValues[$i];
+                if (!empty($product_status_id)) {
+                    $arrProductStatus = array('status_cd' => $product_status_id,
+                                              'status_name' => $arrStatus[$product_status_id],
+                                              'status_image' =>$arrStatusImage[$product_status_id]);
+                    $arrProducts['productStatus'][$product_id][$i] = $arrProductStatus;
                 }
             }
-        }
-        return $arrProducts;
-    }
-
-    /**
-     * 商品情報配列に税込み金額を追加する
-     *
-     * @param Array $arrProducts 商品一覧情報
-     * @return Array $arrProducts 商品一覧情報
-     */
-    function setPriceTax($arrProducts){
-        foreach($arrProducts as $key=>$val){
-            $arrProducts[$key]['price01_min_format'] = number_format($arrProducts[$key]['price01_min']);
-            $arrProducts[$key]['price01_max_format'] = number_format($arrProducts[$key]['price01_max']);
-            $arrProducts[$key]['price02_min_format'] = number_format($arrProducts[$key]['price02_min']);
-            $arrProducts[$key]['price02_max_format'] = number_format($arrProducts[$key]['price02_max']);
-
-            $arrProducts[$key]['price01_min_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price01_min']);
-            $arrProducts[$key]['price01_max_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price01_max']);
-            $arrProducts[$key]['price02_min_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price02_min']);
-            $arrProducts[$key]['price02_max_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price02_max']);
-
-            $arrProducts[$key]['price01_min_tax_format'] = number_format($arrProducts[$key]['price01_min_tax']);
-            $arrProducts[$key]['price01_max_tax_format'] = number_format($arrProducts[$key]['price01_max_tax']);
-            $arrProducts[$key]['price02_min_tax_format'] = number_format($arrProducts[$key]['price02_min_tax']);
-            $arrProducts[$key]['price02_max_tax_format'] = number_format($arrProducts[$key]['price02_max_tax']);
         }
         return $arrProducts;
     }

@@ -67,7 +67,7 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
      * @return void
      */
     function action() {
-
+        $objProduct  = new SC_Product_Ex();
         $objCustomer = new SC_Customer_Ex();
         $customer_id = $objCustomer->getValue('customer_id');
 
@@ -83,7 +83,7 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
                     $this->tpl_pageno = intval($_POST['pageno']);
                 }
                 $this->arrFavorite = $this->lfGetFavoriteProduct($customer_id, $this);
-                $this->arrFavorite = $this->lfSetPriceTax($this->arrFavorite);
+                $this->arrFavorite = $objProduct->setPriceTaxTo($this->arrFavorite);
                 echo SC_Utils_Ex::jsonEncode($this->arrFavorite);
                 exit;
                 break;
@@ -183,31 +183,5 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
             $objQuery->delete('dtb_customer_favorite_products', "customer_id = ? AND product_id = ?", array($customer_id, $product_id));
             $objQuery->commit();
         }
-    }
-    
-    /**
-     * お気に入り情報配列に税込み金額を追加する
-     *
-     * @param Array $arrProducts お気に入り一覧情報
-     * @return Array $arrProducts お気に入り一覧情報
-     */
-    function lfSetPriceTax($arrProducts){
-        foreach($arrProducts as $key=>$val){
-            $arrProducts[$key]['price01_min_format'] = number_format($arrProducts[$key]['price01_min']);
-            $arrProducts[$key]['price01_max_format'] = number_format($arrProducts[$key]['price01_max']);
-            $arrProducts[$key]['price02_min_format'] = number_format($arrProducts[$key]['price02_min']);
-            $arrProducts[$key]['price02_max_format'] = number_format($arrProducts[$key]['price02_max']);
-
-            $arrProducts[$key]['price01_min_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price01_min']);
-            $arrProducts[$key]['price01_max_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price01_max']);
-            $arrProducts[$key]['price02_min_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price02_min']);
-            $arrProducts[$key]['price02_max_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price02_max']);
-
-            $arrProducts[$key]['price01_min_tax_format'] = number_format($arrProducts[$key]['price01_min_tax']);
-            $arrProducts[$key]['price01_max_tax_format'] = number_format($arrProducts[$key]['price01_max_tax']);
-            $arrProducts[$key]['price02_min_tax_format'] = number_format($arrProducts[$key]['price02_min_tax']);
-            $arrProducts[$key]['price02_max_tax_format'] = number_format($arrProducts[$key]['price02_max_tax']);
-        }
-        return $arrProducts;
     }
 }

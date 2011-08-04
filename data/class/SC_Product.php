@@ -605,6 +605,34 @@ __EOS__;
     }
 
     /**
+     * 商品情報の配列に, 税込金額を設定して返す.
+     *
+     * この関数は, 主にスマートフォンで使用します.
+     *
+     * @param array $arrProducts 商品情報の配列
+     * @return array 税込金額を設定した商品情報の配列
+     */
+    function setPriceTaxTo($arrProducts) {
+        foreach ($arrProducts as $key=>$val) {
+            $arrProducts[$key]['price01_min_format'] = number_format($arrProducts[$key]['price01_min']);
+            $arrProducts[$key]['price01_max_format'] = number_format($arrProducts[$key]['price01_max']);
+            $arrProducts[$key]['price02_min_format'] = number_format($arrProducts[$key]['price02_min']);
+            $arrProducts[$key]['price02_max_format'] = number_format($arrProducts[$key]['price02_max']);
+
+            $arrProducts[$key]['price01_min_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price01_min']);
+            $arrProducts[$key]['price01_max_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price01_max']);
+            $arrProducts[$key]['price02_min_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price02_min']);
+            $arrProducts[$key]['price02_max_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price02_max']);
+
+            $arrProducts[$key]['price01_min_tax_format'] = number_format($arrProducts[$key]['price01_min_tax']);
+            $arrProducts[$key]['price01_max_tax_format'] = number_format($arrProducts[$key]['price01_max_tax']);
+            $arrProducts[$key]['price02_min_tax_format'] = number_format($arrProducts[$key]['price02_min_tax']);
+            $arrProducts[$key]['price02_max_tax_format'] = number_format($arrProducts[$key]['price02_max_tax']);
+        }
+        return $arrProducts;
+    }
+
+    /**
      * 商品詳細の SQL を取得する.
      *
      * @param string $where 商品詳細の WHERE 句
