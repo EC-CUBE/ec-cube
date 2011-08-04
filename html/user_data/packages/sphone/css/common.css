@@ -604,7 +604,6 @@ border-radius: 8px;
 -moz-border-radius: 8px;
 -webkit-box-shadow: 3px 3px 3px 3px rgba(0,0,0,0.2) inset,-3px -3px 3px 3px rgba(0,0,0,0.2) inset;
 -moz-box-shadow: 3px 3px 3px 3px rgba(0,0,0,0.2) inset,-3px -3px 3px 3px rgba(0,0,0,0.2) inset;
-position:relative;
 }
 .footer_status_area{
 margin:0;
