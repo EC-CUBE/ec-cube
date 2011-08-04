@@ -35,7 +35,7 @@
 
 <!--{if $tpl_page_category == "abouts"}-->
 <!--{if ($smarty.server.HTTPS != "") && ($smarty.server.HTTPS != "off")}-->
-<script src="https://maps.google.com/maps/api/js?sensor=false"></script>
+<script src="https://maps-api-ssl.google.com/maps/api/js?sensor=false"></script>
 <!--{else}-->
 <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <!--{/if}-->
