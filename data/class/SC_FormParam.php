@@ -254,18 +254,16 @@ class SC_FormParam {
      * @param string $error_key エラーメッセージを格納する配列のキー
      * @param integer $length チェック対象の値の長さ
      * @param integer $depth 再帰実行した場合の深度
-     * @param integer $recursion_count 再帰実行した回数
+     * @param integer $error_last_key エラーメッセージを格納する配列の末端のキー
      * @return void
      */
     function recursionCheck($disp_name, $func, $value, &$arrErr, $error_key,
-                            $length = 0, $depth = 0, $recursion_count = 0) {
+                            $length = 0, $depth = 0, $error_last_key = null) {
         if (is_array($value)) {
             $depth++;
-            $recursion_count = 0;
-            foreach ($value as $in) {
+            foreach ($value as $key => $in) {
                 $this->recursionCheck($disp_name, $func, $in, $arrErr, $error_key,
-                                      $length, $depth, $recursion_count);
-                $recursion_count++;
+                                      $length, $depth, $key);
             }
         } else {
             $objErr = new SC_CheckError_Ex(array(0 => $value));
@@ -278,7 +276,7 @@ class SC_FormParam {
                         $error_var = '$arrErr[$error_key]';
                         for ($i = 0; $i < $depth; $i++) {
                             // FIXME 二次元以上の対応
-                            $error_var .= '[' . $recursion_count . ']';
+                            $error_var .= '[' . $error_last_key . ']';
                         }
                         eval($error_var . ' = $message;');
                     }
