@@ -186,6 +186,11 @@ class LC_Page_Products_List extends LC_Page_Ex {
                         exit;
                     }
                     $js_fnOnLoad .= $this->lfSetSelectedData($this->arrProducts, $this->arrForm, $arrErr, $target_product_id);
+                } else {
+                    // カート「戻るボタン」用に保持
+                    $netURL = new Net_URL();
+                    //該当メソッドが無いため、$_SESSIONに直接セット
+                    $_SESSION['cart_referer_url'] = $netURL->getURL();
                 }
 
                 $this->tpl_javascript   .= 'function fnOnLoad(){' . $js_fnOnLoad . '}';
@@ -496,12 +501,6 @@ __EOS__;
         $product_class_id = $arrForm['product_class_id'];
         $objCartSess = new SC_CartSession_Ex();
         $objCartSess->addProduct($product_class_id, $arrForm['quantity']);
-
-        // カート「戻るボタン」用に保持
-        if (SC_Utils_Ex::sfIsInternalDomain($referer)) {
-            //該当メソッドが無いため、$_SESSIONに直接セット
-            $_SESSION['cart_referer_url'] = $referer;
-        }
     }
 
     /**

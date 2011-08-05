@@ -154,11 +154,6 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
                     $objCartSess->addProduct($product_class_id, $this->objFormParam->getValue('quantity'));
 
-                    // カート「戻るボタン」用に保持
-                    if (SC_Utils_Ex::sfIsInternalDomain($_SERVER['HTTP_REFERER'])) {
-                        $_SESSION['cart_referer_url'] = $_SERVER['HTTP_REFERER'];
-                    }
-
                     SC_Response_Ex::sendRedirect(CART_URLPATH);
                     exit;
                 }
@@ -191,6 +186,9 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
                 break;
 
             default:
+                // カート「戻るボタン」用に保持
+                $netURL = new Net_URL();
+                $_SESSION['cart_referer_url'] = $netURL->getURL();
                 break;
         }
 
