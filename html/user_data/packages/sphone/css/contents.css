@@ -126,7 +126,12 @@ position:relative;
 }
 .cartinarea .cartinContents p{
 line-height:1.2;
+margin-right: 25px;
 }
+.cartinarea .cartinContents p.btn_delete{
+margin-right: 0;
+}
+
 .cartinContents div{
 min-height:50px;
 }
