@@ -133,7 +133,9 @@ margin:0;
 #mypagecolumn .cartinContents div{
 min-height:65px;
 }
-
+#mypagecolumn .cartinContents p#downloadable {
+    margin-top: 0.8em;
+}
 #mypagecolumn .cartinContents ul li.result{
 padding-top:0!important;
 padding-left:1em;

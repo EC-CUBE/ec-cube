@@ -54,42 +54,32 @@
 
       <!--▼商品 -->
       <!--{foreach from=$tpl_arrOrderDetail item=orderDetail}-->
-        <div class="cartitemBox">
-          <!--{if $item.productsClass.main_image|strlen >= 1}--><a href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.productsClass.main_image|sfNoImageMainList|h}-->" rel="external">
-              <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$orderDetail.main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$orderDetail.product_name|h}-->" class="photoL" /></a>
-          <!--{else}-->
-              <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$orderDetail.main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$orderDetail.product_name|h}-->" class="photoL" />
-          <!--{/if}-->
+        <div>
+            <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$orderDetail.main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$orderDetail.product_name|h}-->" class="photoL" />
         <div class="cartinContents">
                                 <div>
            <p><em><!--→商品名--><a<!--{if $orderDetail.enable}--> href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$orderDetail.product_id|u}-->"<!--{/if}--> rel="external"><!--{$orderDetail.product_name|h}--></a><!--←商品名--></em></p>
-                                            <p>
-              <!--→商品種別-->
-              <!--{if $orderDetail.product_type_id == $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
-                  <!--{if $orderDetail.is_downloadable}-->
-                      <a target="_self" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/download.php?order_id=<!--{$tpl_arrOrderData.order_id}-->&amp;product_id=<!--{$orderDetail.product_id}-->&amp;product_class_id=<!--{$orderDetail.product_class_id}-->" rel="external">ダウンロードする</a><br />
-                  <!--{else}-->
-                     <!--{if $orderDetail.payment_date == "" && $orderDetail.effective == "0"}-->
-                         <!--{$arrProductType[$orderDetail.product_type_id]}--><BR />（入金確認中）
-                     <!--{else}-->
-                         <!--{$arrProductType[$orderDetail.product_type_id]}--><BR />（期限切れ）
-                     <!--{/if}-->
-                  <!--{/if}-->
-              <!--{else}-->
-                  <!--{$arrProductType[$orderDetail.product_type_id]}-->
-              <!--{/if}-->
-              <!--←商品種別--><br />
+           <p>
               <!--→金額-->
               <!--{assign var=price value=`$orderDetail.price`}-->
               <!--{assign var=quantity value=`$orderDetail.quantity`}--><span class="mini">価格:</span><!--{$price|number_format|h}-->円<!--←金額-->
-              <span class="mini"><!--{$item.productsClass.name|h}--><br />
-              <!--{if $item.productsClass.classcategory_name1 != ""}-->
-                  <span class="mini"><!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--></span><br />
-              <!--{/if}-->
-              <!--{if $item.productsClass.classcategory_name2 != ""}-->
-                  <span class="mini"><!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--></span>
+           </p>
+          <!--→商品種別-->
+          <!--{if $orderDetail.product_type_id == $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
+          <p id="downloadable">
+              <!--{if $orderDetail.is_downloadable}-->
+                  <a target="_self" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/download.php?order_id=<!--{$tpl_arrOrderData.order_id}-->&amp;product_id=<!--{$orderDetail.product_id}-->&amp;product_class_id=<!--{$orderDetail.product_class_id}-->" rel="external">ダウンロード</a><br />
+              <!--{else}-->
+                 <!--{if $orderDetail.payment_date == "" && $orderDetail.effective == "0"}-->
+                     <!--{$arrProductType[$orderDetail.product_type_id]}--><br />（入金確認中）
+                 <!--{else}-->
+                     <!--{$arrProductType[$orderDetail.product_type_id]}--><br />（期限切れ）
+                 <!--{/if}-->
               <!--{/if}-->
           </p>
+          <!--{/if}-->
+         <!--←商品種別-->
+
                                         </div>
       <ul>
         <li><span class="mini">数量：</span><!--{$quantity|h}--></li>
