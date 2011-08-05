@@ -20,13 +20,48 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <!--▼CONTENTS-->
+<script>
+  function ajaxLogin() {
+      var checkLogin = fnCheckLogin('member_form');
+
+      if (checkLogin == false) {
+          return false;
+      } else {
+
+          var postData = new Object;
+          postData['<!--{$smarty.const.TRANSACTION_ID_NAME}-->'] = "<!--{$transactionid}-->";
+          postData['mode'] = 'login';
+          postData['login_email'] = $('input[type=email]').val();
+          postData['login_pass'] = $('input[type=password]').val();
+
+          $.ajax({
+              type: "POST",
+              url: "<!--{$smarty.const.ROOT_URLPATH}-->shopping/index.php",
+              data: postData,
+              cache: false,
+              dataType: "json",
+              error: function(XMLHttpRequest, textStatus, errorThrown){
+                  alert(textStatus);
+              },
+              success: function(result){
+                  if (result.success) {
+                      location.href = '<!--{$smarty.const.ROOT_URLPATH}-->shopping/' + result.success;
+                  } else {
+                      alert(result.login_error);
+                  }
+              }
+          });
+      }
+  }
+</script>
 <section id="slidewindow">
 <div data-role="header">
 <div class="title_box clearfix">
 <h2><!--{$tpl_title|h}--></h2><a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="notext" class="ui-btn-right" data-theme="d"><span class="ui-btn-text">close</span></a>
 </div>
 </div>
-<form name="member_form" id="member_form" method="post" action="<!--{$smarty.const.HTTP_URL}-->shopping/index.php" onSubmit="return fnCheckLogin('member_form')">
+<!--<!--{$smarty.const.HTTP_URL}-->shopping/index.php-->
+<form name="member_form" id="member_form" method="post" action="javascript:;" onSubmit="return ajaxLogin()">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="login" />
     <div class="login_area">

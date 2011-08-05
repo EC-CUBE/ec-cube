@@ -131,22 +131,40 @@ class LC_Page_Shopping extends LC_Page_Ex {
                         exit;
                     }
                 }
-
-                SC_Response_Ex::sendRedirect(
-                        $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
-                                               $objCustomer, $objPurchase,
-                                               $objSiteSess));
+                // スマートフォンの場合はログイン成功を返す
+                elseif (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
+                    echo SC_Utils_Ex::jsonEncode(array('success' => 
+                                                $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
+                                                                       $objCustomer, $objPurchase,
+                                                                       $objSiteSess)));
+                    exit;
+                } else {
+                    SC_Response_Ex::sendRedirect(
+                            $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
+                                                   $objCustomer, $objPurchase,
+                                                   $objSiteSess));
+                }
                 exit;
             }
             // ログインに失敗した場合
             else {
                 // 仮登録の場合
                 if($this->checkTempCustomer($objFormParam->getValue('login_email'))) {
-                    SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
-                    exit;
+                    if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
+                        echo $this->lfGetErrorMessage(TEMP_LOGIN_ERROR);
+                        exit;
+                    } else {
+                        SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
+                        exit;
+                    }
                 } else {
-                    SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
-                    exit;
+                    if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
+                        echo $this->lfGetErrorMessage(SITE_LOGIN_ERROR);
+                        exit;
+                    } else {
+                        SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
+                        exit;
+                    }
                 }
             }
             break;
@@ -520,6 +538,28 @@ class LC_Page_Shopping extends LC_Page_Ex {
         $where = "email = ? AND status = 1 AND del_flg = 0";
         $count = $objQuery->count("dtb_customer", $where, array($login_email));
         return $count > 0;
+    }
+
+    /**
+     * エラーメッセージを JSON 形式で返す.
+     *
+     * TODO リファクタリング
+     * この関数は主にスマートフォンで使用します.
+     *
+     * @param integer エラーコード
+     * @return string JSON 形式のエラーメッセージ
+     * @see LC_PageError
+     */
+    function lfGetErrorMessage($error) {
+        switch ($error) {
+            case TEMP_LOGIN_ERROR:
+                $msg = "メールアドレスもしくはパスワードが正しくありません。\n本登録がお済みでない場合は、仮登録メールに記載されているURLより本登録を行ってください。";
+                break;
+            case SITE_LOGIN_ERROR:
+            default:
+                $msg = "メールアドレスもしくはパスワードが正しくありません。";
+        }
+        return SC_Utils_Ex::jsonEncode(array('login_error' => $msg));
     }
 }
 ?>
