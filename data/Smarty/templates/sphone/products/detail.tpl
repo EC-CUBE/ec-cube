@@ -19,10 +19,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/products.js"></script>
-<script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/jquery.facebox/facebox.js"></script>
-<link rel="stylesheet" type="text/css" href="<!--{$TPL_URLPATH}-->js/jquery.facebox/facebox.css" media="screen" />
-<script type="text/javascript">//<![CDATA[
+<script src="<!--{$smarty.const.ROOT_URLPATH}-->js/products.js"></script>
+<script src="<!--{$TPL_URLPATH}-->js/jquery.facebox/facebox.js"></script>
+<script>//<![CDATA[
 // 規格2に選択肢を割り当てる。
 function fnSetClassCategories(form, classcat_id2_selected) {
     var $form = $(form);
@@ -251,7 +250,7 @@ function fnWhoboughtToggle(areaEl, imgEl) {
                 <dl class="">
                     <dt>数量</dt>
                     <dd>
-                        <input type="number" name="quantity" class="quantitybox" value="<!--{$arrForm.quantity.value|default:1|h}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr.quantity|sfGetErrorColor}-->" />
+                        <input type="number" name="quantity" class="quantitybox" value="<!--{$arrForm.quantity.value|default:1|h}-->" max="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr.quantity|sfGetErrorColor}-->" />
                         <!--{if $arrErr.quantity != ""}-->
                             <br /><span class="attention"><!--{$arrErr.quantity}--></span>
                         <!--{/if}-->
@@ -292,7 +291,7 @@ function fnWhoboughtToggle(areaEl, imgEl) {
   <div class="title_box_sub clearfix">
     <h2>商品情報</h2>
      <!--{assign var=ckey value="sub_comment`$smarty.section.cnt.index+1`"}-->
-      <span class="b_expand"><img src="<!--{$TPL_URLPATH}-->img/common/btn_plus.png" onClick="fnSubToggle($('#sub_area'), this);"></span>
+      <span class="b_expand"><img src="<!--{$TPL_URLPATH}-->img/common/btn_plus.png" onclick="fnSubToggle($('#sub_area'), this);" alt=""></span>
        </div>
     <div id="sub_area">
         <!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
@@ -332,7 +331,7 @@ function fnWhoboughtToggle(areaEl, imgEl) {
 <!--{if $arrRecommend}-->
 <div class="title_box_sub clearfix">
   <h2>その他のオススメ商品</h2>
-     <span class="b_expand"><img src="<!--{$TPL_URLPATH}-->img/common/btn_minus.png" onClick="fnWhoboughtToggle($('#whobought_area'), this);"></span>
+     <span class="b_expand"><img src="<!--{$TPL_URLPATH}-->img/common/btn_minus.png" onclick="fnWhoboughtToggle($('#whobought_area'), this);" alt=""></span>
       </div>
   
   <div id="whobought_area" class="mainImageInit">
@@ -341,7 +340,7 @@ function fnWhoboughtToggle(areaEl, imgEl) {
     <!--{section name=cnt loop=$arrRecommend}-->
         <!--{if $arrRecommend[cnt].product_id}-->
           <li id="mainImage1<!--{$smarty.section.cnt.index}-->">
-          <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrRecommend[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" width="80" height="80" alt="<!--{$arrRecommend[cnt].name|h}-->" /></a>
+          <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrRecommend[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" width="80" height="80" alt="<!--{$arrRecommend[cnt].name|h}-->" />
              <!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->
              <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
              <h3><a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrRecommend[cnt].product_id|u}-->"><!--{$arrRecommend[cnt].name|h}--></a></h3>

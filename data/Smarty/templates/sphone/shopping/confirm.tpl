@@ -19,10 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-<link rel="stylesheet" href="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
-<script type="text/javascript">//<![CDATA[
+<script>//<![CDATA[
 var send = true;
 
 function fnCheckSubmit() {
@@ -34,10 +31,6 @@ function fnCheckSubmit() {
         return false;
     }
 }
-
-$(document).ready(function() {
-    $('a.expansion').fancybox();
-});
 
 //ご注文内容エリアの表示/非表示
 var speed = 1000; //表示アニメのスピード（ミリ秒）
@@ -105,12 +98,7 @@ function fnOtherconfirmToggle(areaEl, imgEl) {
          <!--{foreach from=$arrCartItems item=item}-->
            <!--▼商品 -->
              <div class="cartconfirmBox">
-             <!--{if $item.productsClass.main_image|strlen >= 1}-->
-               <a href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.productsClass.main_image|sfNoImageMainList|h}-->" target="_blank">
-               <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$item.productsClass.name|h}-->" width="80" height="80" class="photoL" /></a>
-             <!--{else}-->
                <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$item.productsClass.name|h}-->" width="80" height="80" class="photoL" />
-             <!--{/if}-->
                  <div class="cartconfirmContents">
                                                                     <div>
                   <p><em><!--{$item.productsClass.name|h}--></em><br />

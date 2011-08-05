@@ -98,12 +98,12 @@ function fnDelivToggle(areaEl) {
              <p>
                   <input type="number" name="<!--{$key1}-->" 
                         value="<!--{$arrForm[$key1].value|h}-->" 
-                        maxlength="<!--{$arrForm[$key1].length}-->" 
+                        max="<!--{$arrForm[$key1].length}-->" 
                         style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;
 
                         <input type="number" name="<!--{$key2}-->" 
                         value="<!--{$arrForm[$key2].value|h}-->" 
-                        maxlength="<!--{$arrForm[$key2].length}-->" 
+                        max="<!--{$arrForm[$key2].length}-->" 
                         style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;
                         <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fn">郵便番号検索</span></a></p>
 
@@ -292,11 +292,11 @@ function fnDelivToggle(areaEl) {
             <p>
                 <input type="number" name="<!--{$key1}-->" 
                    value="<!--{$arrForm[$key1].value|h}-->" 
-                     maxlength="<!--{$arrForm[$key1].length}-->" 
+                     max="<!--{$arrForm[$key1].length}-->" 
                        style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;
                          <input type="number" name="<!--{$key2}-->" 
                              value="<!--{$arrForm[$key2].value|h}-->" 
-                                maxlength="<!--{$arrForm[$key2].length}-->" 
+                                max="<!--{$arrForm[$key2].length}-->" 
                                   style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;
                                       <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fn">郵便番号検索</span></a></p>
 

@@ -23,7 +23,7 @@
 <section id="category_area">
 <h2 class="title_block">商品カテゴリー</h2>
 <nav id="categorytree">
-<ul id="categorytree">
+<ul id="categorytreelist">
     <!--{assign var=preLev value=1}-->
     <!--{assign var=firstdone value=0}-->
     <!--{section name=cnt loop=$arrTree}-->
@@ -67,72 +67,11 @@
     <!--{/section}-->
 </ul>
 
-<script type="text/javascript" language="JavaScript">
+<script>
 //<![CDATA[
 initCategoryList(); //カテゴリーリストの初期化
 //]]>
 </script>
+</nav>
 </section>
 <!-- ▲カテゴリ -->
-
-<!--{* デフォルト
-<!--商品カテゴリーここから-->
-<div id="topcatarea">
-<h2 id="title-category" class="title-side">商品カテゴリ</h2>
-</div>
-
-<div id="block-category" class="block-side">
-  <div class="create-box">
-
-    <ul id="categorytree">
-    <!--{assign var=preLev value=1}-->
-    <!--{assign var=firstdone value=0}-->
-    <!--{section name=cnt loop=$arrTree}-->
-      <!--{if $arrTree[cnt].view_flg != "2"}-->
-        <!--{assign var=level value=`$arrTree[cnt].level`}-->
-        <!--{if $level <= 2 || $arrTree[cnt].display == 1}-->
-        <!--{assign var=levdiff value=`$level-$preLev`}-->
-          <!--{if $levdiff > 0}-->
-              <ul>
-          <!--{elseif $levdiff == 0 && $firstdone == 1}-->
-              </li>
-          <!--{elseif $levdiff < 0}-->
-            <!--{section name=d loop=`$levdiff*-1`}-->
-                </li>
-              </ul>
-            <!--{/section}-->
-            </li>
-          <!--{/if}-->
-
-          <li class="level<!--{$level}--><!--{if in_array($arrTree[cnt].category_id, $tpl_category_id)}--> onmark<!--{/if}-->"><span class="category_header"></span><span class="category_body"><a href="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php?category_id=<!--{$arrTree[cnt].category_id}-->"<!--{if in_array($arrTree[cnt].category_id, $tpl_category_id)}--> class="onlink"<!--{/if}-->><!--{$arrTree[cnt].category_name|h}-->(<!--{$arrTree[cnt].product_count|default:0}-->)</a></span>
-            <!--{if $firstdone == 0}--><!--{assign var=firstdone value=1}--><!--{/if}-->
-            <!--{assign var=preLev value=`$level`}-->
-            <!--{/if}-->
-            <!--{if $smarty.section.cnt.last}-->
-                <!--{if $preLev-1 > 0}-->
-                    <!--{section name=d loop=`$preLev-1`}-->
-                        </li>
-                    </ul>
-            <!--{/section}-->
-            </li>
-          <!--{else}-->
-            </li>
-          <!--{/if}-->
-        <!--{/if}-->
-      <!--{/if}-->
-    <!--{/section}-->
-    </ul>
-
-  </div>
-</div>
-
-<!--{if $arrTree|@count > 0}-->
-<script type="text/javascript" language="JavaScript">
-//<![CDATA[
-initCategoryList(); //カテゴリーリストの初期化
-//]]>
-</script>
-<!--{/if}-->
-
-<!--商品カテゴリーここまで-->
- *}-->

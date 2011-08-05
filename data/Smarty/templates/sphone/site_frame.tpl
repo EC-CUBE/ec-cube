@@ -28,8 +28,6 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
 <meta name="format-detection" content="telephone=no">
-<meta http-equiv="Content-Script-Type" content="text/javascript" />
-<meta http-equiv="Content-Style-Type" content="text/css" />
 <!--{* 共通CSS *}-->
 <link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->css/import.css" />
 
@@ -45,18 +43,20 @@
 <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/site.js"></script>
 <script src="<!--{$TPL_URLPATH}-->js/jquery-1.5.2.min.js"></script>
 <script src="<!--{$TPL_URLPATH}-->js/jquery.biggerlink.js"></script>
-<script type="text/javascript">    
+<script>//<![CDATA[
     $(function(){
         $('.header_navi li,.recomendblock, .list_area, .newslist li, .bubbleBox, .arrowBox, .category_body, .navBox li,#mypagecolumn .cartitemBox').biggerlink();
     });
+//]]>
 </script>
-<script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/btn.js"></script>
-<script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/barbutton.js"></script>
-<script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/category.js"></script>
-<script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/news.js"></script>
+<script src="<!--{$TPL_URLPATH}-->js/btn.js"></script>
+<script src="<!--{$TPL_URLPATH}-->js/barbutton.js"></script>
+<script src="<!--{$TPL_URLPATH}-->js/category.js"></script>
+<script src="<!--{$TPL_URLPATH}-->js/news.js"></script>
 
 <!--{* スマートフォンカスタマイズ用CSS *}-->
 <link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->css/jquery.mobile-1.0a3.min.css" />
+<link rel="stylesheet" media="screen" href="<!--{$TPL_URLPATH}-->js/jquery.facebox/facebox.css" />
 
 <!--{* スマートフォンカスタマイズ用JS *}-->
 <script src="<!--{$TPL_URLPATH}-->js/config.js"></script>

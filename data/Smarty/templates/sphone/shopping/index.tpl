@@ -42,7 +42,7 @@
 
     <p class="arrowRtxt"><a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->">パスワードを忘れた方</a></p>
     <div class="btn_area">
-    <p><input type="submit" value="ログイン" class="btn data-role-none" alt="ログイン" name="log" id="log" /></p>
+    <p><input type="submit" value="ログイン" class="btn data-role-none" name="log" id="log" /></p>
     </div>
     </div><!--▲loginarea-->
 </form>
@@ -53,7 +53,7 @@
     <nav>
     <ul class="navBox">
     <li><a rel="external" href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php" class="navBox_link">新規会員登録</a></li>
-    <li><input type="submit" value="会員登録をせずに購入" class="nav_nonmember data-role-none" alt="会員登録をせずに購入" name="buystep" id="buystep" /></li>
+    <li><input type="submit" value="会員登録をせずに購入" class="nav_nonmember data-role-none" name="buystep" id="buystep" /></li>
     </ul>
     </nav>
     <p class="message">会員登録をすると便利なMyページをご利用いただけます。</p>

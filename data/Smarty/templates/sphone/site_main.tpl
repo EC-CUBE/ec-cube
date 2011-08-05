@@ -22,8 +22,6 @@
 <body>
 <div data-role="page" data-keep-native=".data-role-none" data-theme="f">
 
-<a name="top" id="top"></a>
-
 <!--{* ▼HeaderHeaderTop COLUMN*}-->
     <!--{if $arrPageLayout.HeaderTopNavi|@count > 0}-->
         <div class="header_utility">
@@ -155,7 +153,7 @@
 
  <div data-role="content" data-theme="d">
    <dl class="view_detail">
-     <dt><a href="#" rel="external" target="_blank"></a></dt>
+     <dt><a href="javascript:;" rel="external" target="_blank"></a></dt>
        <dd id="newsComment"></dd>
    </dl>
      <p><a href="<!--{$smarty.const.HTTP_URL}-->" class="btn_more" data-rel="back">新着一覧にもどる</a></p>

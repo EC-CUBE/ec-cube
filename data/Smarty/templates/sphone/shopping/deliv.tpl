@@ -66,12 +66,12 @@
         <label for="chk_id_<!--{$smarty.section.cnt.iteration}-->">追加登録住所</label>
      <!--{/if}-->
    </p>
+   <!--{if !$smarty.section.cnt.first}-->
    <ul class="edit">
-       <!--{if !$smarty.section.cnt.first}-->
            <li><a rel="external" href="javascript:void(0);" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|h}-->&amp;other_deliv_id=<!--{$arrAddr[cnt].other_deliv_id}-->','new_deiv','600','640'); return false;" class="b_edit">編集</a></li>
            <li><img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" width="21" height="20" alt="削除" onclick="fnModeSubmit('delete', 'other_deliv_id', '<!--{$arrAddr[cnt].other_deliv_id}-->');" /></li>
-       <!--{/if}-->
    </ul>
+   <!--{/if}-->
     </dt>
       <dd>
         <!--{assign var=key value=$arrAddr[cnt].pref}-->

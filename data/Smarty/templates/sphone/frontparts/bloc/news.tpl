@@ -26,7 +26,7 @@
 <ul class="newslist">
   <!--{section name=data loop=$arrNews max=3}-->
   <li>
-    <a id="windowcolumn" href="javascript:getNewsDetail(<!--{$arrNews[data].news_id}-->);">
+    <a id="windowcolumn<!--{$smarty.section.data.index}-->" href="javascript:getNewsDetail(<!--{$arrNews[data].news_id}-->);">
     <span class="news_title"><!--{$arrNews[data].news_title|h}--></span></a><br />
     <span class="news_date"><!--{$arrNews[data].news_date_disp|date_format:"%Y年 %m月 %d日"}--></span>
   </li>

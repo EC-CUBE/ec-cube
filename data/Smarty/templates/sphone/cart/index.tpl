@@ -19,15 +19,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-<link rel="stylesheet" href="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
-<script type="text/javascript">//<![CDATA[
-$(document).ready(function() {
-    $('a.expansion').fancybox();
-});
-//]]></script>
-
 <!--▼コンテンツここから -->
 <section id="undercolumn">
 
@@ -115,12 +106,7 @@ $(document).ready(function() {
                 <!--{foreach from=$cartItems[$key] item=item}-->
                     <!--▼商品 -->
                     <div class="cartitemBox">
-                    <!--{if $item.productsClass.main_image|strlen >= 1}-->
-                        <a rel="external" href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.productsClass.main_image|sfNoImageMainList|h}-->" target="_blank">
-                        <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$item.productsClass.name|h}-->" class="photoL" /></a>
-                    <!--{else}-->
                         <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$item.productsClass.name|h}-->" class="photoL" />
-                    <!--{/if}-->
                      <div class="cartinContents">
                      <div>
                       <p><em><!--{$item.productsClass.name|h}--></em><br />
@@ -136,7 +122,7 @@ $(document).ready(function() {
                     <img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" onClick="fnFormModeSubmit('form<!--{$key}-->', 'delete', 'cart_no', '<!--{$item.cart_no}-->');" class="pointer" width="21" height="20" alt="削除" /></p>
                      </div>
                     <ul>
-                     <li><input type="number" name="quantity" class="cartin_quantity text data-role-none" value="<!--{$item.quantity}-->" maxlength="9" style="" onchange="fnFormModeSubmit('form<!--{$key}-->', 'setQuantity','cart_no','<!--{$item.cart_no}-->');" /></li>
+                     <li><input type="number" name="quantity" class="cartin_quantity text data-role-none" value="<!--{$item.quantity}-->" max="9" style="" onchange="fnFormModeSubmit('form<!--{$key}-->', 'setQuantity','cart_no','<!--{$item.cart_no}-->');" /></li>
                       <li class="result"><span class="mini">小計：</span><!--{$item.total_inctax|number_format}-->円</li>
                     </ul>
                     </div>
@@ -159,7 +145,7 @@ $(document).ready(function() {
               <!--{if strlen($tpl_error) == 0}-->
                 <div class="btn_area_btm">
                 <input type="hidden" name="cartKey" value="<!--{$key}-->" />
-                <input type="submit" value="ご購入手続きへ" alt="ご購入手続きへ" name="confirm" class="btn data-role-none" />
+                <input type="submit" value="ご購入手続きへ" name="confirm" class="btn data-role-none" />
                 </div>
               <!--{/if}-->
             </div><!--▲formBox -->

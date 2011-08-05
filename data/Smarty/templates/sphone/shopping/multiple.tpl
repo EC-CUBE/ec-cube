@@ -19,17 +19,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<!--▼CONTENTS-->
-<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-<link rel="stylesheet" href="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
-<script type="text/javascript">//<![CDATA[
-    $(document).ready(function() {
-        $("a.expansion").fancybox({
-        });
-    });
-//]]></script>
-
 <!--▼コンテンツここから -->
 <section id="undercolumn">
 
@@ -80,7 +69,7 @@
       <!--{if $arrErr[$key][$index] != ''}-->
           <span class="attention"><!--{$arrErr[$key][$index]}--></span>
       <!--{/if}-->
-      <input type="text" name="<!--{$key}-->[<!--{$index}-->]" class="cartin_quantity txt" value="<!--{$arrForm[$key].value[$index]}-->" maxlength="9" style="" />
+      <input type="number" name="<!--{$key}-->[<!--{$index}-->]" class="cartin_quantity txt" value="<!--{$arrForm[$key].value[$index]}-->" max="9" style="" />
  </li>
   </ul>
 </div>

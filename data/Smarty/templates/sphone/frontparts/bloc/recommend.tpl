@@ -25,7 +25,7 @@
 <h2>おすすめ商品</h2>
 <ul>
 <!--{section name=cnt loop=$arrBestProducts step=2}-->
-        <li id="mainImage0">
+        <li id="mainImage<!--{$smarty.section.cnt.index}-->">
             <div class="recomendblock clearfix">
               <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrBestProducts[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[cnt].name|h}-->" />
               <div class="productContents">
@@ -39,7 +39,7 @@
         </li>
         <!--{assign var=cnt2 value=`$smarty.section.cnt.iteration*$smarty.section.cnt.step-1`}-->
         <!--{if $arrBestProducts[$cnt2]|count > 0}-->
-          <li id="mainImage0">
+          <li id="mainImage<!--{$cnt2}-->">
               <div class="recomendblock clearfix">
                 <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrBestProducts[$cnt2].main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[$cnt2].name|h}-->" />
                 <div class="productContents">

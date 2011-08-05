@@ -23,14 +23,14 @@
 <nav class="header_navi">
 <ul>
  <li class="mypage"><img src="<!--{$TPL_URLPATH}-->img/header/btn_header_mypage.png" onclick="fnShowPopupmyPage(this)" width="30" height="20" alt="マイページ" /></li>
- <li class="cart"><img src="<!--{$TPL_URLPATH}-->img/header/btn_header_cart.png" onclick="fnShowPopupCart(this)"width="30" height="20" alt="カート" /></li>
+ <li class="cart"><img src="<!--{$TPL_URLPATH}-->img/header/btn_header_cart.png" onclick="fnShowPopupCart(this)" width="30" height="20" alt="カート" /></li>
 </ul>
 </nav>
 <!--!!空ボックス -->
 <div class="popup_mypage">
     <!--{if $tpl_login}-->
-        <p><span class="mini"><a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" rel="external">ようこそ</span><br />
-        <!--{$tpl_name1|h}--> <!--{$tpl_name2|h}-->さん</a></p>
+        <p><span class="mini">ようこそ</span><br />
+        <a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" rel="external"><!--{$tpl_name1|h}--> <!--{$tpl_name2|h}-->さん</a></p>
         <!--{if $smarty.const.USE_POINT !== false}-->
             <p>所持ポイント<!--{$tpl_user_point|number_format|default:0}-->pt</p>
         <!--{/if}-->
