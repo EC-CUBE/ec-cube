@@ -36,7 +36,7 @@
             <img src="<!--{$TPL_URLPATH}-->img/picture/img_flow_01.jpg" alt="購入手続きの流れ" />
         </p>
         <h2 class="title"><!--{$tpl_title|h}--></h2>
-        <p class="information">各商品のお届け先を選択してください。</p>
+        <p class="information">各商品のお届け先を選択してください。<br />（※数量は、カゴの中の数量と数を合わせてください。）</p>
         <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
             <p>一覧にご希望の住所が無い場合は、「新しいお届け先を追加する」より追加登録してください。</p>
         <!--{/if}-->
@@ -52,6 +52,10 @@
             <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
             <input type="hidden" name="line_of_num" value="<!--{$arrForm.line_of_num.value}-->" />
             <input type="hidden" name="mode" value="confirm" />
+            <!--{assign var=key value="quantity_error"}-->
+            <!--{if strlen($arrErr[$key]) >= 1}-->
+                <br /><p class="attention"><!--{$arrErr[$key]}--></p>
+            <!--{/if}-->
             <table summary="商品情報">
                 <colgroup width="10%"></colgroup>
                 <colgroup width="35%"></colgroup>
@@ -84,8 +88,8 @@
                         </td>
                         <td>
                             <!--{assign var=key value="quantity"}-->
-                            <!--{if $arrErr[$key][$index] != ''}-->
-                                <span class="attention"><!--{$arrErr[$key][$index]}--></span>
+                            <!--{if strlen($arrErr[$key]) >= 1}-->
+                                <p class="attention"><!--{$arrErr[$key][$index]}--></p>
                             <!--{/if}-->
                             <input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" class="box40" style="<!--{$arrErr[$key][$index]|sfGetErrorColor}-->" />
                         </td>

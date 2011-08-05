@@ -26,7 +26,8 @@
 
 <!--★インフォメーション★-->
 <div class="information end">
- <p>各商品のお届け先を選択してください。</p>  
+ <p>各商品のお届け先を選択してください。<br />（※数量は、カートの中の数量と数を合わせてください。）</p>
+ <p>※カートの中の数量と数を合わせてください。</p>
 </div>
 
 <!--★ボタン★-->
@@ -35,7 +36,7 @@
   <a rel="external" href="javascript:void(0);" class="btn_sub addbtn" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|h}-->','new_deiv','600','640'); return false;">新しいお届け先を追加</a>
 </div>
 <!--{/if}-->
- 
+
 <!--▼フォームここから -->
 <div class="form_area">
     <form name="form1" id="form1" method="post" action="<!--{$smarty.const.HTTP_URL}-->shopping/multiple.php">
@@ -46,12 +47,15 @@
 
 <!--{section name=line loop=$arrForm.line_of_num.value}-->
             <!--{assign var=index value=$smarty.section.line.index}-->
-                
+<!--{assign var=key value="quantity"}-->
+<!--{if $arrErr[$key][$index] != ''}-->
+    <span class="attention"><!--{$arrErr[$key][$index]}--></span>
+<!--{/if}-->
 <div class="formBox">
 <!--▼商品 -->
 <div class="delivitemBox">
 <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrForm.main_list_image.value[$index]|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="&lt;!--{$arrForm.name[$index]|h}--&gt;" class="photoL" />
- <div class="delivContents">
+<div class="delivContents">
 
   <p><em><!--{$arrForm.name.value[$index]|h}--></em><br />
     <!--{if $arrForm.classcategory_name1.value[$index] != ""}-->
@@ -65,10 +69,6 @@
 <ul>
 <li class="result"><span class="mini">数量</li>
  <li>
-       <!--{assign var=key value="quantity"}-->
-      <!--{if $arrErr[$key][$index] != ''}-->
-          <span class="attention"><!--{$arrErr[$key][$index]}--></span>
-      <!--{/if}-->
       <input type="number" name="<!--{$key}-->[<!--{$index}-->]" class="cartin_quantity txt" value="<!--{$arrForm[$key].value[$index]}-->" max="9" style="" />
  </li>
   </ul>
