@@ -20,6 +20,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 各商品のお届け先を選択してください。<br>
+※数量の合計は、カゴの中の数量と合わせてください。<br>
 <br>
 
 <form method="post" action="?">

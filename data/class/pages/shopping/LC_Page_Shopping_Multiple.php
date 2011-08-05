@@ -247,7 +247,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
                 if ($arrCartRow['quantity'] != $arrQuantity[$product_class_id]) {
                     foreach ($arrParams as $index => $arrParam) {
                         if ($arrParam['product_class_id'] == $product_class_id) {
-                            $arrErr['quantity'][$index] = '※ 数量が購入数量（' . $arrCartRow['quantity'] .'）と一致していません。<br />';
+                            $arrErr['quantity'][$index] = '※ 数量合計を「' . $arrCartRow['quantity'] .'」にしてください。<br />';
                         }
                     }
                 }
