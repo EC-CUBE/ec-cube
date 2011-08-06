@@ -31,7 +31,7 @@
             <p>今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
 
            <div class="btn_area">
-             <a href="<!--{$smarty.const.TOP_URLPATH}-->" class="btn_toppage btn_sub">トップページへ</a>
+             <a rel="external" href="<!--{$smarty.const.TOP_URLPATH}-->" class="btn_toppage btn_sub">トップページへ</a>
            </div>
          </div>
       <hr>
