@@ -43,10 +43,10 @@ $(function(){
     });
 });
 //サブエリアの表示/非表示
-var speed = 100;
+var speed = 500;
 var stateSub = 0;
 function fnSubToggle(areaEl, imgEl) {
-    areaEl.toggle(speed);
+    areaEl.slideToggle(speed);
     if (stateSub == 0) {
         $(imgEl).attr("src", "<!--{$TPL_URLPATH}-->img/common/btn_plus.png");
         stateSub = 1;
@@ -58,7 +58,7 @@ function fnSubToggle(areaEl, imgEl) {
 //お勧めエリアの表示/非表示
 var statewhobought = 0;
 function fnWhoboughtToggle(areaEl, imgEl) {
-    areaEl.toggle(speed);
+    areaEl.slideToggle(speed);
     if (statewhobought == 0) {
         $(imgEl).attr("src", "<!--{$TPL_URLPATH}-->img/common/btn_plus.png");
         statewhobought = 1;
