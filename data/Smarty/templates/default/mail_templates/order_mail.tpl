@@ -90,7 +90,7 @@
 ============================================
 <!--{* ご注文前のポイント {$tpl_user_point} pt *}-->
 ご使用ポイント <!--{$arrOrder.use_point|default:0|number_format}--> pt
-今回加算される加算ポイント <!--{$arrOrder.add_point|default:0|number_format}--> pt
+今回加算される予定のポイント <!--{$arrOrder.add_point|default:0|number_format}--> pt
 現在の所持ポイント <!--{$arrCustomer.point|default:0|number_format}--> pt
 <!--{/if}-->
 <!--{$tpl_footer}-->
