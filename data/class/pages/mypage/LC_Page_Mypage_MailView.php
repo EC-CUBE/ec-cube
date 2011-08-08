@@ -81,6 +81,14 @@ class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex {
             $this->tpl_title    = 'メール履歴詳細';
             $this->tpl_mainpage = 'mypage/mail_view.tpl';
         }
+
+        switch ($this->getMode()) {
+        case 'getDetail':
+            echo SC_Utils_Ex::jsonEncode($arrMailView);
+            exit;
+            break;
+        default:
+        }
     }
 
     /**

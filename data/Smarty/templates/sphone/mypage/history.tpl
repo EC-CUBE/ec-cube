@@ -112,7 +112,7 @@
          <p>配信日：<!--{$tpl_arrMailHistory[cnt].send_date|sfDispDBDate|h}--><br />
                      <!--{assign var=key value="`$tpl_arrMailHistory[cnt].template_id`"}-->
          通知メール：<!--{$arrMAILTEMPLATE[$key]|h}--></p>
-         <p><a href="#" onclick="win02('./mail_view.php?send_id=<!--{$tpl_arrMailHistory[cnt].send_id}-->','mail_view','650','800'); return false;" rel="external"><!--{$tpl_arrMailHistory[cnt].subject|h}--></a></p> 
+         <p><a href="javascript:;" onclick="getMailDetail(<!--{$tpl_arrMailHistory[cnt].send_id}-->)" rel="external"><!--{$tpl_arrMailHistory[cnt].subject|h}--></a></p> 
      </div>
      <!--▲メール -->
      <!--{/section}-->
@@ -134,3 +134,34 @@
 </section>
 <!--▲検索バー -->
 <!--▲CONTENTS -->
+<script>
+function getMailDetail(send_id) {
+    $.mobile.pageLoading();
+    $.ajax({
+           type: "GET",
+           url: "<!--{$smarty.const.ROOT_URLPATH}-->mypage/mail_view.php",
+           data: "mode=getDetail&send_id=" + send_id,
+           cache: false,
+           dataType: "json",
+           error: function(XMLHttpRequest, textStatus, errorThrown){
+               alert(textStatus);
+               $.mobile.pageLoading(true);
+           },
+           success: function(result){
+               var maxCnt = 0;
+               $("#windowcolumn h2").text('メール詳細');
+               $("#windowcolumn a[data-rel=back]").text('購入履歴詳細にもどる');
+               $($("#windowcolumn dl.view_detail dt").get(maxCnt)).text(result[0].subject);
+               $($("#windowcolumn dl.view_detail dd").get(maxCnt)).html(result[0].mail_body.replace(/\n/g,"<br />"));
+               $("#windowcolumn dl.view_detail dd").css('font-family', 'monospace');
+               $.mobile.changePage('#windowcolumn', 'slideup');
+               //ダイアログが開き終わるまで待機
+               setTimeout( function() {
+                               loadingState = 0;
+                               $.mobile.pageLoading(true);
+                          }, 1000);
+           }
+});
+
+}
+</script>
