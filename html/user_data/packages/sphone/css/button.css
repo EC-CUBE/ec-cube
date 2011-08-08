@@ -284,6 +284,9 @@ background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #B4DF3
 width:auto;
 display:block;
 }
+.btn_favorite p {
+text-align: center;
+}
 /*-----------------------------------------------
 ボタン（新しいお届け先を追加する)
 ----------------------------------------------- */

@@ -33,8 +33,7 @@ function fnSetClassCategories(form, classcat_id2_selected) {
 $(function(){
     $('#detailphotoblock ul li').flickSlide({target:'#detailphotoblock>ul', duration:5000, parentArea:'#detailphotoblock'});
     $('#whobought_area ul li').flickSlide({target:'#whobought_area>ul', duration:5000, parentArea:'#whobought_area'});
-    //サブエリアとお勧めエリアを非表示にする（初期値）
-    $("#sub_area").hide();
+
     //お勧め商品のリンクを張り直し(フリックスライドによるエレメント生成後)
     $('#whobought_area li').biggerlink();
     //商品画像の拡大
@@ -44,8 +43,8 @@ $(function(){
     });
 });
 //サブエリアの表示/非表示
-var speed = 1000; //表示アニメのスピード（ミリ秒）
-var stateSub = 1;
+var speed = 100;
+var stateSub = 0;
 function fnSubToggle(areaEl, imgEl) {
     areaEl.toggle(speed);
     if (stateSub == 0) {
@@ -276,7 +275,7 @@ function fnWhoboughtToggle(areaEl, imgEl) {
                 </div>
             <!--{else}-->
                 <div class="btn_favorite">
-                    <p class="btn_sub">お気に入り登録済</p>
+                    <p>お気に入り登録済み</p>
                 </div>
             <!--{/if}-->
         <!--{/if}-->
@@ -291,7 +290,7 @@ function fnWhoboughtToggle(areaEl, imgEl) {
   <div class="title_box_sub clearfix">
     <h2>商品情報</h2>
      <!--{assign var=ckey value="sub_comment`$smarty.section.cnt.index+1`"}-->
-      <span class="b_expand"><img src="<!--{$TPL_URLPATH}-->img/common/btn_plus.png" onclick="fnSubToggle($('#sub_area'), this);" alt=""></span>
+      <span class="b_expand"><img src="<!--{$TPL_URLPATH}-->img/common/btn_minus.png" onclick="fnSubToggle($('#sub_area'), this);" alt=""></span>
        </div>
     <div id="sub_area">
         <!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
