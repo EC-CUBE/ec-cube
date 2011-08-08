@@ -136,11 +136,7 @@ function fnOtherconfirmToggle(areaEl, imgEl) {
 
     <!--★合計★-->
     <div class="total_area">
-        <p><span class="mini">合計：</span><span class="price fb"><!--{$arrForm.payment_total|number_format}--> 円</span></p>
-        <!--{* ログイン済みの会員のみ *}-->
-        <!--{if $tpl_login == 1 && $smarty.const.USE_POINT !== false}-->
-        <p><span class="mini">今回加算ポイント：</span> <!--{$arrForm.add_point|number_format|default:0}--> Pt</p>
-        <!--{/if}-->
+        <span class="mini">合計：</span><span class="price fb"><!--{$arrForm.payment_total|number_format}--> 円</span>
     </div>   
    </div><!--▲formBox -->
 
@@ -160,7 +156,7 @@ function fnOtherconfirmToggle(areaEl, imgEl) {
           </dl>
           <!--{/if}-->
           <dl>
-            <dt>今回加算予定のポイント</dt><dd>+<!--{$arrForm.add_point|number_format|default:0}--></dd>
+            <dt>今回加算予定のポイント</dt><dd>+<!--{$arrForm.add_point|number_format|default:0}-->Pt</dd>
           </dl>
           <dl>
               <!--{assign var=total_point value=`$tpl_user_point-$arrForm.use_point+$arrForm.add_point`}-->

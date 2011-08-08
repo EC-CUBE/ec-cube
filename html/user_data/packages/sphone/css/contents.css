@@ -126,12 +126,7 @@ position:relative;
 }
 .cartinarea .cartinContents p{
 line-height:1.2;
-margin-right: 25px;
 }
-.cartinarea .cartinContents p.btn_delete{
-margin-right: 0;
-}
-
 .cartinContents div{
 min-height:50px;
 }
@@ -232,6 +227,14 @@ padding-top:1em;
 vertical-align:bottom;
 }
 
+.cartinContents p{
+margin-right:25px;
+}
+
+.cartinContents p.btn_delete{
+margin-right:0;
+}
+
 /* -----------------------------------------------
 お届け先指定
 ----------------------------------------------- */
@@ -295,15 +298,17 @@ float:right;
 display:block;
 position:relative;
 }
+
 .delivContents p{
 float:left;
 line-height:1.2;
 margin-bottom:5px;
+margin-right:40px;
 }
 .delivContents ul{
 width:2.2em;
 float:right;
-right:15px;
+right:0;
 position:absolute;
 }
 .delivContents ul li{

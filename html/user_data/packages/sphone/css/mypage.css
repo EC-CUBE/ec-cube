@@ -22,7 +22,7 @@ h3.title_mypage{
 font-size:18px;
 line-height:1.2;
 margin-bottom:10px;
-padding:10px 10px 10px 25px;
+padding:10px 10px 15px 25px;
 background:url(../img/common/bg_tit_bar.png) 10px 12px no-repeat;
 -webkit-box-shadow: 1px 5px 5px #E2E2E2;
 -moz-box-shadow: 1px 5px 5px #E2E2E2;
@@ -48,8 +48,8 @@ background:#DAE0E5;
 background: -moz-linear-gradient(center top, #FDFDFD 0%,#DAE0E5 90%,#DAE0E5 0%);
 background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FDFDFD),color-stop(0.9, #DAE0E5),color-stop(0, #DAE0E5));
 margin-bottom:15px;
--webkit-box-shadow: 1px 5px 5px #C0C0C0;
--moz-box-shadow: 1px 5px 5px #C0C0C0;
+-webkit-box-shadow: 1px 5px 5px #EEEEEE;
+-moz-box-shadow: 1px 5px 5px #EEEEEE;
 }
 #mypage_nav ul{
 width:auto;
@@ -133,9 +133,7 @@ margin:0;
 #mypagecolumn .cartinContents div{
 min-height:65px;
 }
-#mypagecolumn .cartinContents p#downloadable {
-    margin-top: 0.8em;
-}
+
 #mypagecolumn .cartinContents ul li.result{
 padding-top:0!important;
 padding-left:1em;
@@ -168,14 +166,19 @@ border-bottom:none;
 width:80px;
 }
 .favoriteContents{
-width:70%;
+width:65%;
 float:right;
 display:block;
 position:relative;
 }
+
+.favoriteContents h4{
+margin-right:30px;
+}
+
 .favoriteContents .btn_delete{
 padding:1px;
-right:10px;
+right:0;
 float:right;
 position:absolute;
 top:0;

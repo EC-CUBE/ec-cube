@@ -134,12 +134,12 @@
                 <!--▲カートの中の商品一覧ここまで -->
 
                 <div class="total_area">
-                <p><span class="mini">合計：</span><span class="price fb"><!--{$arrData[$key].total-$arrData[$key].deliv_fee|number_format}--> 円</span></p>
+                <div><span class="mini">合計：</span><span class="price fb"><!--{$arrData[$key].total-$arrData[$key].deliv_fee|number_format}--> 円</span></div>
                 <!--{if $smarty.const.USE_POINT !== false}-->
                 <!--{if $arrData[$key].birth_point > 0}-->
-                    <p><span class="mini">お誕生月ポイント：</span> <!--{$arrData[$key].birth_point|number_format}--> Pt</p>
+                    <div><span class="mini">お誕生月ポイント：</span> <!--{$arrData[$key].birth_point|number_format}--> Pt</div>
                 <!--{/if}-->
-                <p><span class="mini">今回加算ポイント：</span> <!--{$arrData[$key].add_point|number_format}--> Pt</p>
+                <div><span class="mini">今回加算ポイント：</span> <!--{$arrData[$key].add_point|number_format}--> Pt</div>
                 <!--{/if}-->
                 </div>
               <!--{if strlen($tpl_error) == 0}-->

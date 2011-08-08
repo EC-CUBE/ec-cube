@@ -23,7 +23,7 @@ padding: 0;
 リンク指定
 ----------------------------------------------- */
 a:link{
-color:#324E85;
+color:#4265AE;
 text-decoration: none;
 }
 a:visited {
@@ -295,13 +295,12 @@ margin:5px 0;
 }
 input[type="number"]{
 padding:5px 0;
-text-indent:5px;
+text-indent:0;
 }
 input[type="number"]:first-child{
 margin-right:-2px;
 }
 input[type="radio"],input[type="check"]{
-vertical-align:bottom;
 padding:5px;
 line-height:1.5;
 margin-right:0.5em;
@@ -321,7 +320,7 @@ padding:0.5em;
 margin:0 0 10px 0;
 }
 .cartin_quantity,.box_point{
-width:2em;
+width:2.5em;
 }
 .boxLong{
 width:95%;
@@ -335,7 +334,6 @@ width: 22%;
 .boxHarf{
 width:42%;
 }
-
 select.boxLong{
 width:100%;
 }
@@ -610,6 +608,7 @@ margin:0;
 padding:20px 10px 10px;
 text-align:center;
 background: #E6E6E6;
+border-bottom:#999 solid 1px;
 }
 .footer_status_area p:last-child{
 margin:10px auto;
@@ -619,7 +618,7 @@ clear:both;
 margin:0;
 padding:10px 0 0 0;
 text-align:center;
-border-top:#999 solid 1px;
+border-top:#fff solid 1px;
 }
 .guide_area p{
 font-size:14px;

@@ -243,7 +243,7 @@ padding-bottom:0;
 
 /*商品情報（数量）*/
 .cartin_btn{
-padding:15px;
+padding:15px 15px 15px 8px;
 background:#F1F0E7;
 border-top:#FFF solid 1px;
 }
@@ -255,8 +255,7 @@ clear:left;
 .cartin_btn dt{
 width:2em;
 float:left;
-padding:15px 5px 5px;
-vertical-align:bottom;
+padding:15px 5px 0 5px;
 line-height:1.1;
 font-weight:bold;
 }
@@ -264,6 +263,7 @@ font-weight:bold;
 width:3.2em;
 display:inline;
 float:left;
+padding-top:5px;
 }
 .detail_quantity dd .quantitybox{
 width:3em;
@@ -310,7 +310,7 @@ position:relative;
 }
 #detailphotoblock div.moveWrap {
 width:200px;
-height:auto;
+height:220px;
 margin:0 auto;
 position:relative;
 overflow:hidden;
@@ -368,9 +368,12 @@ vertical-align:middle;
 text-align:center;
 -webkit-box-sizing:border-box;
 }
+
+.flickSlideContainer {
+}
+
 #detailphotoblock div.flickSlideBottom {
 width:100%;
-margin-top:5px;
 }
 #detailphotoblock div.flickSlideBottom div.bottomLeft,#detailphotoblock div.flickSlideBottom div.bottomRight {
 padding:0 10px;
@@ -428,7 +431,7 @@ padding:0;
 font-size:11px;
 width:6px;
 height:6px;
-margin:12px 6px 6px 6px;
+margin:0 6px 10px 6px;
 display:inline-block;
 background-color:#CCC;
 border-radius: 6px;

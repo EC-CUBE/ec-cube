@@ -94,9 +94,9 @@
 <!--▲cartinarea カートの中の商品一覧ここまで -->
 
     <div class="total_area">
-       <p><span class="mini">小計：</span><!--{$tpl_arrOrderData.subtotal|number_format}-->円</p>
-       <p><span class="mini">合計：</span><span class="price fb"><!--{$tpl_arrOrderData.payment_total|number_format}-->円</span></p>
-       <p><span class="mini">今回加算ポイント：</span><!--{$tpl_arrOrderData.add_point|number_format|default:0}-->Pt</p>
+       <div><span class="mini">小計：</span><!--{$tpl_arrOrderData.subtotal|number_format}-->円</div>
+       <div><span class="mini">合計：</span><span class="price fb"><!--{$tpl_arrOrderData.payment_total|number_format}-->円</span></div>
+       <div><span class="mini">今回加算ポイント：</span><!--{$tpl_arrOrderData.add_point|number_format|default:0}-->Pt</div>
     </div>
   </div><!--▲formBox -->
 
