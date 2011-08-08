@@ -89,7 +89,13 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
 
             // エラーの場合はエラー画面に遷移
             if (count($arrErr) > 0) {
-                SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
+                if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
+                    echo $this->lfGetErrorMessage(TEMP_LOGIN_ERROR);
+                    exit;
+                } else {
+                    SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
+                    exit;
+                }
             }
 
             // 入力チェック後の値を取得
@@ -151,11 +157,23 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
                     $objQuery = SC_Query_Ex::getSingletonInstance();
                     $where = '(email = ? OR email_mobile = ?) AND status = 1 AND del_flg = 0';
                     $ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email'], $arrForm['login_email']));
-                    // ログインエラー表示
+                    // ログインエラー表示 TODO リファクタリング
                     if($ret > 0) {
-                        SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
+                        if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
+                            echo $this->lfGetErrorMessage(TEMP_LOGIN_ERROR);
+                            exit;
+                        } else {
+                            SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
+                            exit;
+                        }
                     } else {
-                        SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
+                        if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
+                            echo $this->lfGetErrorMessage(SITE_LOGIN_ERROR);
+                            exit;
+                        } else {
+                            SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
+                            exit;
+                        }
                     }
                 }
             } else {
@@ -208,6 +226,28 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
         $objFormParam->addParam('記憶する', 'login_memory', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('メールアドレス', 'login_email', MTEXT_LEN, 'a', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('パスワード', 'login_pass', PASSWORD_MAX_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+    }
+
+    /**
+     * エラーメッセージを JSON 形式で返す.
+     *
+     * TODO リファクタリング
+     * この関数は主にスマートフォンで使用します.
+     *
+     * @param integer エラーコード
+     * @return string JSON 形式のエラーメッセージ
+     * @see LC_PageError
+     */
+    function lfGetErrorMessage($error) {
+        switch ($error) {
+            case TEMP_LOGIN_ERROR:
+                $msg = "メールアドレスもしくはパスワードが正しくありません。\n本登録がお済みでない場合は、仮登録メールに記載されているURLより本登録を行ってください。";
+                break;
+            case SITE_LOGIN_ERROR:
+            default:
+                $msg = "メールアドレスもしくはパスワードが正しくありません。";
+        }
+        return SC_Utils_Ex::jsonEncode(array('login_error' => $msg));
     }
 }
 ?>
