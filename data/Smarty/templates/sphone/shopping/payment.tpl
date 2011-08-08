@@ -46,8 +46,8 @@
                         remoteException();
                     } else {
                         // 支払い方法の行を生成
-                        var payment_tbody = $('#payment tbody');
-                        payment_tbody.empty();
+                        var payment = $('#payment');
+                        payment.empty();
                         for (var i in data.arrPayment) {
                             // ラジオボタン
                             var radio = $('<input type="radio" />')
@@ -79,7 +79,7 @@
                                 $('th#payment_method').attr('colspan', 2);
                             }
 
-                            tr.appendTo(payment_tbody);
+                            tr.appendTo(payment);
                         }
                         // お届け時間を生成
                         var deliv_time_id_select = $('select[id^=deliv_time_id]');
@@ -163,7 +163,7 @@
   <!--{if $arrErr[$key] != ""}-->
     <p class="attention"><!--{$arrErr[$key]}--></p>
   <!--{/if}-->
-  <ul>
+  <ul id="payment">
   <!--{section name=cnt loop=$arrPayment}-->
    <li>
      <input type="radio" id="pay_<!--{$smarty.section.cnt.iteration}-->" name="<!--{$key}-->" value="<!--{$arrPayment[cnt].payment_id}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" <!--{$arrPayment[cnt].payment_id|sfGetChecked:$arrForm[$key].value}--> class="data-role-none" />
