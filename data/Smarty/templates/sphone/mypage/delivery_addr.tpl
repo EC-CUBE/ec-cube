@@ -24,13 +24,8 @@
 <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`popup_header.tpl" subtitle="新しいお届け先の追加・変更"}-->
 
 <section id="windowcolumn">
-    <div data-role="header" data-theme="d">
-       <div class="title_box clearfix">
-         <h2><!--{$tpl_title|h}--></h2>
-             <a rel="external" href="delivery.php" data-role="button" data-icon="delete" data-iconpos="notext" data-rel="back">close</a>
-       </div>
-    </div>
-
+       <h2 class="title"><!--{$tpl_title|h}--></h2>
+  
        <!--★インフォメーション★-->
        <div class="information">
           <p><span class="attention">※</span>は必須入力項目です。<br />

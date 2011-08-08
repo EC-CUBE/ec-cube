@@ -23,8 +23,8 @@
 
 <section id="windowcolumn">
   <div data-role="header">
-    <div class="title_box clearfix">
-      <h2>パスワードを忘れた方</h2><a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="notext" class="ui-btn-right" data-theme="d"><span class="ui-btn-text">close</span></a>
+    <div class="">
+      <h2 class="title">パスワードを忘れた方</h2>
        </div>
         </div>
     <form action="?" method="post" name="form1">

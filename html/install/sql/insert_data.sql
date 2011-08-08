@@ -202,6 +202,9 @@ INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_
 INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 28, 6, 7, 2, 0);
 INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 28, 6, 8, 1, 0);
 INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 28, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 29, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 29, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 29, 10, 6, 1, 0);
 
 INSERT INTO dtb_category (category_id, category_name, parent_category_id, level, rank, creator_id, create_date, update_date, del_flg) VALUES (1, '食品', 0, 1, 5, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO dtb_category (category_id, category_name, parent_category_id, level, rank, creator_id, create_date, update_date, del_flg) VALUES (2, '雑貨', 0, 1, 6, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
@@ -646,6 +649,7 @@ INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, h
 INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date) VALUES (2, 26, '商品購入/ご入力内容のご確認', 'shopping/confirm.php', 'shopping/confirm', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date) VALUES (2, 27, '商品購入/ご注文完了', 'shopping/complete.php', 'shopping/complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date) VALUES (2, 28, 'プライバシーポリシー', 'guide/privacy.php', 'guide/privacy', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date) VALUES (2, 29, 'パスワードを忘れた方', 'forgot/index.php', 'forgot/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date) VALUES (1, 0, NULL, 'preview', 'preview', 1, 1, 1, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date) VALUES (1, 1, 'TOPページ', 'index.php', 'index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date) VALUES (1, 2, '商品一覧ページ', 'products/list.php', 'products/list', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
