@@ -24,7 +24,7 @@ function fnAddFavoriteSphone(favoriteProductId) {
            success: function(result){
               if (result == "true") {
                   alert("お気に入りに登録しました");
-                  $(".btn_favorite").html("<p>お気に入り登録済</p>");
+                  $(".btn_favorite").html("<p>お気に入り登録済み</p>");
               } else {
                   alert("お気に入りの登録に失敗しました");
               }

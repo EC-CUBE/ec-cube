@@ -455,6 +455,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
     function lfCheckError($mode,&$objFormParam,$tpl_classcat_find1 = null ,$tpl_classcat_find2 = null) {
 
         switch ($mode) {
+        case 'add_favorite_sphone':
         case 'add_favorite':
             $objCustomer = new SC_Customer_Ex();
             $objErr = new SC_CheckError_Ex();

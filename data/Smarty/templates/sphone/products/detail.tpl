@@ -107,6 +107,7 @@ function fnWhoboughtToggle(areaEl, imgEl) {
 <!--★詳細メインコメント★-->
 <p class="main_comment"><!--{$arrProduct.main_comment|nl2br_html}--></p>
 
+<form name="form1" id="form1" method="post" action="<!--{$smarty.const.ROOT_URLPATH}-->products/detail.php">
 <div id="detailrightblock">
     <!--▼商品ステータス-->
     <!--{assign var=ps value=$productStatus[$smarty.get.product_id]}-->
@@ -158,8 +159,8 @@ function fnWhoboughtToggle(areaEl, imgEl) {
                <!--{$arrProduct.price01_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                  <!--{else}-->
                    <!--{$arrProduct.price01_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$arrProduct.price01_max|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
-                    <!--{/if}-->
-        <span id="price01_dynamic"></span>円</span></p>
+                    <!--{/if}--></span>
+        <span id="price01_dynamic"></span>円</p>
         <!--{/if}-->
 
         <!--★販売価格★-->
@@ -198,7 +199,6 @@ function fnWhoboughtToggle(areaEl, imgEl) {
         <!--▲メーカーURL-->
      </div>
 
-    <form name="form1" id="form1" method="post" action="<!--{$smarty.const.ROOT_URLPATH}-->products/detail.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="cart" />
         <input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->" />
@@ -216,7 +216,6 @@ function fnWhoboughtToggle(areaEl, imgEl) {
                         <dd>
                         <select name="classcategory_id1"
                             style="<!--{$arrErr.classcategory_id1|sfGetErrorColor}-->" 
-                            onchange="fnSetClassCategories(this.form);"
                             class="data-role-none">
                             <!--{html_options options=$arrClassCat1 selected=$arrForm.classcategory_id1.value}-->
                         </select>
@@ -233,7 +232,6 @@ function fnWhoboughtToggle(areaEl, imgEl) {
                         <dd>
                         <select name="classcategory_id2"
                             style="<!--{$arrErr.classcategory_id2|sfGetErrorColor}-->"
-                            onchange="fnCheckStock(this.form);"
                             class="data-role-none">
                         </select>
                         <!--{if $arrErr.classcategory_id2 != ""}-->
