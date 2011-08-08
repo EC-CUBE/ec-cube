@@ -22,13 +22,42 @@
  */
 *}-->
 <!--▼CONTENTS-->
+<script>
+  function ajaxLogin() {
+      var postData = new Object;
+      postData['<!--{$smarty.const.TRANSACTION_ID_NAME}-->'] = "<!--{$transactionid}-->";
+      postData['mode'] = 'login';
+      postData['login_email'] = $('input[type=email]').val();
+      postData['login_pass'] = $('input[type=password]').val();
+      postData['url'] = $('input[name=url]').val();
+
+      $.ajax({
+          type: "POST",
+          url: "<!--{$smarty.const.HTTPS_URL}-->frontparts/login_check.php",
+          data: postData,
+          cache: false,
+          dataType: "json",
+          error: function(XMLHttpRequest, textStatus, errorThrown){
+              alert(textStatus);
+          },
+          success: function(result){
+              if (result.success) {
+                  location.href = result.success;
+              } else {
+                  alert(result.login_error);
+              }
+          }
+      });
+  }
+</script>
 <section id="slidewindow">
 
 <h2 class="title"><!--{$tpl_title|h}--></h2>
-     <form name="login_mypage" id="login_mypage" method="post" action="<!--{$smarty.const.HTTPS_URL}-->frontparts/login_check.php" onsubmit="return fnCheckLogin('login_mypage')">
+     <form name="login_mypage" id="login_mypage" method="post" action="javascript:;" onsubmit="return ajaxLogin();">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="login" />
-        <input type="hidden" name="url" value="<!--{$smarty.server.PHP_SELF|h}-->" />
+        <input type="hidden" name="url" value="<!--{$smarty.server.REQUEST_URI|h}-->" />
+
 <div class="login_area">
 
     <div class="loginareaBox">

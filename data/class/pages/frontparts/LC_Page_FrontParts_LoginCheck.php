@@ -139,7 +139,11 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
                     }
 
                     // --- ログインに成功した場合
-                    SC_Response_Ex::sendRedirect($_POST['url']);
+                    if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
+                        echo SC_Utils_Ex::jsonEncode(array('success' => $_POST['url']));
+                    } else {
+                        SC_Response_Ex::sendRedirect($_POST['url']);
+                    }
                     exit;
                 } else {
                     // --- ログインに失敗した場合
@@ -155,6 +159,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
                     }
                 }
             } else {
+                // XXX 到達しない？
                 // 入力エラーの場合、元のアドレスに戻す。
                 SC_Response_Ex::sendRedirect($_POST['url']);
                 exit;
