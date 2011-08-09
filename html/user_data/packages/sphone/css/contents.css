@@ -260,6 +260,9 @@ padding:10px;
 border-bottom:#CCC solid 1px;
 display:block;
 }
+.deliv_check dd.end {
+border-bottom: none;
+}
 .deliv_check dd p{
 display:inline;
 float:left;
