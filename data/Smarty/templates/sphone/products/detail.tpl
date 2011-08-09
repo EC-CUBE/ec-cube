@@ -192,7 +192,7 @@ function fnWhoboughtToggle(areaEl, imgEl) {
         <!--▼メーカーURL-->
         <!--{if $arrProduct.comment1|strlen >= 1}-->
         <p class="sale_price"><span class="mini">メーカーURL：</span><span>
-            <a rel="external" href="<!--{$arrProduct.comment1|h}-->">
+            <a rel="external" href="<!--{$arrProduct.comment1|h}-->" target="_blank">
                 <!--{$arrProduct.comment1|h}--></a>
         </span></p>
         <!--{/if}-->
