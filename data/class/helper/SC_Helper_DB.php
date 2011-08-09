@@ -199,16 +199,27 @@ class SC_Helper_DB {
      * @param integer $order_id 受注番号
      * @param integer $use_point 利用ポイント
      * @param integer $add_point 加算ポイント
+     * @param integer $order_status 受注ステータス
      * @return array オーダー前ポイントの配列
      */
-    function sfGetRollbackPoint($order_id, $use_point, $add_point) {
+    function sfGetRollbackPoint($order_id, $use_point, $add_point, $order_status) {
         $objQuery = new SC_Query_Ex();
         $arrRet = $objQuery->select("customer_id", "dtb_order", "order_id = ?", array($order_id));
         $customer_id = $arrRet[0]['customer_id'];
         if($customer_id != "" && $customer_id >= 1) {
             $arrRet = $objQuery->select('point', "dtb_customer", "customer_id = ?", array($customer_id));
             $point = $arrRet[0]['point'];
-            $rollback_point = $arrRet[0]['point'] + $use_point;
+            $rollback_point = $arrRet[0]['point'];
+
+            // 対応状況がポイント利用対象の場合、使用ポイント分を戻す
+            if (SC_Helper_Purchase_Ex::isUsePoint($order_status)) {
+                $rollback_point += $use_point;
+            }
+
+            // 対応状況がポイント加算対象の場合、加算ポイント分を戻す
+            if (SC_Helper_Purchase_Ex::isAddPoint($order_status)) {
+                $rollback_point -= $add_point;
+            }
         } else {
             $rollback_point = "";
             $point = "";
