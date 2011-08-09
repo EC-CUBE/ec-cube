@@ -32,7 +32,7 @@ clear:both;
 オススメ商品
 ----------------------------------------------- */
 #recomend_area{
-margin:15px 10px;
+margin:15px 10px 20px 10px;
 padding-top:10px;
 border:#CCC solid 1px;
 border-radius: 8px;
@@ -227,9 +227,10 @@ background-color:#333;
 カテゴリリスト（アコーディオン）
 ----------------------------------------------- */
 #category_area{
+margin-bottom: 20px;
 }
 #categorytree ul{
-margin:10px;
+margin:10px 10px 0 10px;
 border:#A9ACAB solid 1px;
 border-radius: 8px;
 -webkit-border-radius: 8px;
@@ -359,9 +360,9 @@ color:#FFF;
 news
 ----------------------------------------------- */
 #news_area{
+margin-bottom: 20px;
 }
 #news_area ul{
-margin-bottom:10px;
 }
 #news_area li{
 display:block;
