@@ -259,7 +259,10 @@ function fnWhoboughtToggle(areaEl, imgEl) {
 
         <!--★カートに入れる★-->
         <!--{if $tpl_stock_find}-->
-            <a rel="external" href="javascript:void(document.form1.submit());" class="btn cartbtn_default">カートに入れる</a>
+            <div id="cartbtn_default">
+                <a rel="external" href="javascript:void(document.form1.submit());" class="btn cartbtn_default">カートに入れる</a>
+            </div>
+            <div class="attention" id="cartbtn_dynamic"></div>
         <!--{else}-->
             <div class="attention">申し訳ございませんが、只今品切れ中です。</div>
         <!--{/if}-->
