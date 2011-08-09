@@ -55,7 +55,7 @@
 <script src="<!--{$TPL_URLPATH}-->js/news.js"></script>
 
 <!--{* スマートフォンカスタマイズ用CSS *}-->
-<link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->css/jquery.mobile-1.0a3.min.css" />
+<link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->css/jquery.mobile-1.0a3.css" />
 <link rel="stylesheet" media="screen" href="<!--{$TPL_URLPATH}-->js/jquery.facebox/facebox.css" />
 
 <!--{* スマートフォンカスタマイズ用JS *}-->
