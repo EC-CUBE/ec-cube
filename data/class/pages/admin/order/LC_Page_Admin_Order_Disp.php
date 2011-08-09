@@ -270,7 +270,9 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
         $objFormParam->setParam($arrOrder);
 
         // XXX ポイントを設定
-        list($db_point, $rollback_point) = SC_Helper_DB_Ex::sfGetRollbackPoint($order_id, $arrOrder['use_point'], $arrOrder['add_point']);
+        list($db_point, $rollback_point) = SC_Helper_DB_Ex::sfGetRollbackPoint(
+            $order_id, $arrOrder['use_point'], $arrOrder['add_point'], $arrOrder['status']
+        );
         $objFormParam->setValue('total_point', $db_point);
         $objFormParam->setValue('point', $rollback_point);
 
