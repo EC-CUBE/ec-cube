@@ -55,11 +55,7 @@
   }
 </script>
 <section id="slidewindow">
-<div data-role="header">
-<div class="title_box clearfix">
-<h2><!--{$tpl_title|h}--></h2><a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="notext" class="ui-btn-right" data-theme="d"><span class="ui-btn-text">close</span></a>
-</div>
-</div>
+<h2 class="title"><!--{$tpl_title|h}--></h2>
 <!--<!--{$smarty.const.HTTP_URL}-->shopping/index.php-->
 <form name="member_form" id="member_form" method="post" action="javascript:;" onSubmit="return ajaxLogin()">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />

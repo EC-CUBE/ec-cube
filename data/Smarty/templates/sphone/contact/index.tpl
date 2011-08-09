@@ -20,6 +20,16 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <!--▼CONTENTS-->
+<script>
+  $(function() {
+      $('#contents')
+          .css('font-size', '100%')
+          .autoResizeTextAreaQ({
+              'max_rows': 50,
+              'extra_rows': 0
+          });
+  });
+</script>
 <section id="undercolumn">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
       <div class="intro">
@@ -120,7 +130,7 @@
              <dt>お問い合わせ内容&nbsp;<span class="attention">※</span>
                <span class="mini">（全角<!--{$smarty.const.MLTEXT_LEN}-->字以下）</span></dt>
               <dd><span class="attention"><!--{$arrErr.contents}--></span>
-                <textarea name="contents" id="contents" class="textarea data-role-none" cols="42" rows="20" style="<!--{$arrErr.contents|sfGetErrorColor}-->"><!--{$arrForm.contents.value|h}--></textarea>
+                <textarea name="contents" id="contents" class="textarea data-role-none" rows="4" cols="42" style="<!--{$arrErr.contents|sfGetErrorColor}-->"><!--{$arrForm.contents.value|h}--></textarea>
               </dd>
 
          </dl>
@@ -139,9 +149,3 @@
 </section>
 <!--▲検索バー -->
 <!--▲CONTENTS-->
-
-<!--{* テキストエリアのリサイズ *}-->
-<script type="text/javascript">
-  $('#contents').autoResize({extraSpace:40,limit: 9000});
-  $('#contents').keydown();
-</script>

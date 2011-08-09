@@ -61,7 +61,7 @@
 <!--{* スマートフォンカスタマイズ用JS *}-->
 <script src="<!--{$TPL_URLPATH}-->js/config.js"></script>
 <script src="<!--{$TPL_URLPATH}-->js/jquery.mobile-1.0a3.min.js"></script>
-<script src="<!--{$TPL_URLPATH}-->js/autoresize.jquery.min.js"></script>
+<script src="<!--{$TPL_URLPATH}-->js/jquery.autoResizeTextAreaQ-0.1.js"></script>
 <script src="<!--{$TPL_URLPATH}-->js/jquery.flickslide.js"></script>
 <script src="<!--{$TPL_URLPATH}-->js/favorite.js"></script>
 

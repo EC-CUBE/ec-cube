@@ -188,6 +188,9 @@ visibility: hidden;
 #detailrightblock div{
 border-bottom:#CCC solid 1px;
 }
+#detailrightblock div#cartbtn_default {
+border-bottom: none;
+}
 #detailrightblock div:last-child{
 border-bottom:none;
 border-radius:0 0 7px 7px;

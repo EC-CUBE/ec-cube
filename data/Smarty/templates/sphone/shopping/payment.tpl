@@ -116,6 +116,13 @@
                 $('.non-select-msg').show();
             }
         }
+
+        $('#etc')
+          .css('font-size', '100%')
+          .autoResizeTextAreaQ({
+              'max_rows': 50,
+              'extra_rows': 0
+          });
     });
 //]]>
 </script>
@@ -292,9 +299,3 @@
 </section>
 <!--▲検索バー -->
 <!--▲コンテンツここまで -->
- 
-<!--{* テキストエリアのリサイズ *}-->
-<script type="text/javascript">
-  $('#etc').autoResize({extraSpace:40,limit: 9000});
-  $('#etc').keydown();
-</script>
