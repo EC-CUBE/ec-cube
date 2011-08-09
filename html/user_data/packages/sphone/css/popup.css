@@ -155,11 +155,16 @@ padding:5px 10px;
 line-height:1.3;
 }
 .window_area #completebox{
+border: none;
 font-size:16px;
 font-weight:bold;
 color:#CC0000;
 text-align:center;
 padding:20px 10px;
+-webkit-box-shadow: none;
+width: 10em;
+margin: auto;
+display: block;
 }
 /* -----------------------------------------------
 ビュー画面

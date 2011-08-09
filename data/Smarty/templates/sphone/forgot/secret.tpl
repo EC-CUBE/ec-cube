@@ -22,11 +22,7 @@
 <!--{*<!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`popup_header.tpl" subtitle="パスワードを忘れた方(確認ページ)"}-->*}-->
 
 <section id="windowcolumn">
-  <div data-role="header">
-    <div class="title_box clearfix">
-      <h2>パスワードを忘れた方</h2><a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="notext" class="ui-btn-right" data-theme="d"><span class="ui-btn-text">close</span></a>
-       </div>
-        </div>
+      <h2 class="title">パスワードを忘れた方</h2>
       <div class="intro">
          <p>ご登録時に入力した下記質問の答えを入力して「次へ」ボタンをクリックしてください。</p>
          </div>

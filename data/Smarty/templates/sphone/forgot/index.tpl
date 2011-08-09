@@ -22,11 +22,7 @@
 <!--{*<!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`popup_header.tpl" subtitle="パスワードを忘れた方(入力ページ)"}-->*}-->
 
 <section id="windowcolumn">
-  <div data-role="header">
-    <div class="">
-      <h2 class="title">パスワードを忘れた方</h2>
-       </div>
-        </div>
+    <h2 class="title">パスワードを忘れた方</h2>
     <form action="?" method="post" name="form1">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="mail_check" />

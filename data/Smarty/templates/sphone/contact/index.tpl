@@ -81,7 +81,7 @@
                    style="<!--{$arrErr.zip02|sfGetErrorColor}-->; ime-mode: disabled;" class="boxShort text data-role-none" />&nbsp;&nbsp;<a href="http://search.post.japanpost.jp/zipcode/" target="_blank" rel="external"><span class="fn">郵便番号検索</span></a>
              </p>
 
-             <a href="<!--{$smarty.const.ROOT_URLPATH}-->input_zip.php" onClick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', '<!--{$key1}-->', '<!--{$key2}-->', '<!--{$key3}-->', '<!--{$key4}-->'); return false;" target="_blank" class="btn_sub btn_inputzip" rel="external">郵便番号から住所自動入力</a>
+             <a href="javascript:fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', '<!--{$key1}-->', '<!--{$key2}-->', '<!--{$key3}-->', '<!--{$key4}-->'); return false;" class="btn_sub btn_inputzip" rel="external">郵便番号から住所自動入力</a>
               </dd>
 
           <dt>住所</dt>

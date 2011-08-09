@@ -22,11 +22,7 @@
 <!--{*<!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`popup_header.tpl" subtitle="パスワードを忘れた方(完了ページ)"}-->*}-->
 
   <section id="windowcolumn">
-  <div data-role="header">
-    <div class="title_box clearfix">
-      <h2>パスワードを忘れた方</h2><a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="notext" class="ui-btn-right" data-theme="d"><span class="ui-btn-text">close</span></a>
-       </div>
-        </div>
+   <h2 class="title">パスワードを忘れた方</h2>
    <div class="intro">
      <p>パスワードの発行が完了いたしました。ログインには下記のパスワードをご利用ください。</p>
       </div>
@@ -35,7 +31,7 @@
 
      <div class="window_area clearfix">
        <!--{if $smarty.const.FORGOT_MAIL != 1}-->
-      <p id="completebox"><!--{$arrForm.new_password}--></p>
+          <input id="completebox" type="text" value="<!--{$arrForm.new_password}-->" readonly="readonly" />
        <!--{else}-->
           <p  class="attention">ご登録メールアドレスに送付致しました。</p>
        <!--{/if}-->
