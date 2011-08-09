@@ -81,7 +81,7 @@ function fnChangeDispNumber(dispNumber) {
     <!--▼商品-->
     <div class="list_area clearfix">
      <!--★画像★-->
-       <p class="listphoto"><img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH|sfTrimURL}-->/<!--{$arrProduct.main_list_image|sfNoImageMainList|h}-->" width="80" height="80" alt="<!--{$arrProduct.name|h}-->" /></p>
+       <p class="listphoto"><img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrProduct.main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80"  alt="<!--{$arrProduct.name|h}-->" /></p>
     
      <div class="listrightblock">
       <div class="statusArea">
