@@ -189,7 +189,7 @@ visibility: hidden;
 border-bottom:#CCC solid 1px;
 }
 #detailrightblock div#cartbtn_default {
-border-bottom:none;
+border-bottom: none;
 }
 #detailrightblock div:last-child{
 border-bottom:none;
@@ -284,7 +284,8 @@ background:#F1F0E7;
 }
 /*サブエリア*/
 .subarea{
-padding:10px;
+padding:0 10px 20px 10px;
+margin-bottom:15px;
 border-bottom:#CCC solid 1px;
 clear:both;
 }
@@ -451,7 +452,7 @@ margin-top:20px;
 }
 #whobought_area{
 width:100%;
-margin-top:30px;
+margin-top:15px;
 margin-bottom:15px;
 clear:both;
 position:relative;
