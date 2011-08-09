@@ -29,6 +29,6 @@
     <!--{else}-->
         <p>ようこそ 
         ゲストさん</p>
-        <p><a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php">ログイン</a></p>
+        <p><a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/entry/kiyaku.php">新規会員登録</a></p>
     <!--{/if}-->
 </nav>

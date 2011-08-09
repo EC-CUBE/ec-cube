@@ -34,6 +34,6 @@
   <p><a rel="external" href="javascript:void(document.login_form_footer.submit())" class="btn_btm">ログアウト</a></p>
 <!--{else}-->
   <p>ようこそ ゲストさん</p>
-  <p><a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" class="btn_btm">ログイン</a></p>
+  <p><a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/entry/kiyaku.php" class="btn_btm">新規会員登録</a></p>
 <!--{/if}-->
 </section>
