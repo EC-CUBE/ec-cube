@@ -45,16 +45,18 @@
 <!--{if count($arrCartList) > 0}-->
     <h2><a rel="external" href="<!--{$smarty.const.CART_URLPATH|h}-->">カートの中</a></h2>
     <!--{foreach from=$arrCartList item=key}-->
-        <div class="normal_item">
+        <div class="product_type">
+            <!--{if count($arrCartList) > 1}-->
             <p><span class="product_type">[<!--{$key.productTypeName|h}-->]</span></p>
+            <!--{/if}-->
             <p><span class="mini">商品数:</span><span class="quantity"><!--{$key.quantity|number_format}--></span>点<br />
                 <span class="mini">合計:</span><span class="money"><!--{$key.totalInctax|number_format}--></span>円(税込)</p>
             <hr class="dashed" />
-            <!--{if $freeRule > 0 && $key.productTypeName|h == "通常商品"}-->
+            <!--{if $freeRule > 0 && $key.productTypeId|h != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
                 <!--{if $key.delivFree > 0}-->
-                    <p class="attention free_money_area">あと<span class="free_money"><!--{$key.delivFree|number_format}--></span>円で送料無料！</p>
+                    <p class="attention free_money_area">あと<span class="free_money"><!--{$key.delivFree|number_format}--></span>円で送料無料</p>
                 <!--{else}-->
-                    <p class="attention free_money_area">現在、送料無料です！</p>
+                    <p class="attention free_money_area">現在、送料無料です</p>
                 <!--{/if}-->
             <!--{/if}-->
         </div>

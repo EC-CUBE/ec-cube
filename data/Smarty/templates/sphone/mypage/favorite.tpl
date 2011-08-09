@@ -36,7 +36,6 @@
       <!--★インフォメーション★-->
       <div class="information">
            <p><span class="attention"><span id="productscount"><!--{$tpl_linemax}--></span>件</span>のお気に入りがあります。</p>
-           <p>最大20件まで登録できます。</p>  
       </div>
 
       <!--▼フォームここから -->

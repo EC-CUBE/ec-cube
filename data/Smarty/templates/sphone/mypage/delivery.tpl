@@ -29,8 +29,8 @@
     <h3 class="title_mypage"><!--{$tpl_subtitle|h}--></h3>
     <!--★インフォメーション★-->
     <div class="information">
-        <p><span class="attention">※</span>は必須入力項目です。<p>
-        <p>最大<span class="attention"><!--{$smarty.const.DELIV_ADDR_MAX|h}-->件</span>まで登録できます。</p>  
+        <p>登録住所一覧です。<p>
+        <p>最大<!--{$smarty.const.DELIV_ADDR_MAX|h}-->件まで登録できます。</p>  
     </div>
     <!--{if $tpl_linemax < $smarty.const.DELIV_ADDR_MAX}-->
         <!--{* 退会時非表示 *}-->

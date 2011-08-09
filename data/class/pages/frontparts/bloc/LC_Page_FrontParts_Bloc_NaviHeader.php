@@ -99,6 +99,7 @@ class LC_Page_FrontParts_Bloc_NaviHeader extends LC_Page_FrontParts_Bloc_Login_E
             $cartList[$key]['delivFree'] = $arrInfo['free_rule'] - $cartList[$key]['totalInctax']; // 送料無料までの金額を計算
             $cartList[$key]['totalTax'] = $objCart->getAllProductsTax($key); //消費税合計
             $cartList[$key]['quantity'] = $objCart->getTotalQuantity($key); //商品数量合計
+            $cartList[$key]['productTypeId'] = $key; // 商品種別ID
         }
         
         return $cartList;

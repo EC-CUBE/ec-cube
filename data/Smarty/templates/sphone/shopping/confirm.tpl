@@ -198,7 +198,8 @@ function fnOtherconfirmToggle(areaEl, imgEl) {
         </dd>
     <!--{/if}-->
           </dl>
-<!--▼カートの中の商品一覧 -->
+  <!--{if $is_multiple}-->
+  <!--▼カートの中の商品一覧 -->
      <div class="cartcartconfirmarea">
   <!--{foreach item=item from=$shippingItem.shipment_item}-->
    <!--▼商品 -->
@@ -229,6 +230,7 @@ function fnOtherconfirmToggle(areaEl, imgEl) {
   <!--{/foreach}-->
 </div>
 <!--▲カートの中の商品一覧ここまで -->
+<!--{/if}-->
 
 </div><!--▲formBox -->
 <!--{/foreach}-->

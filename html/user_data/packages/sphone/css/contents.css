@@ -337,6 +337,10 @@ font-weight:bold;
 line-height:1.5;
 margin-bottom:6px;
 }
+.pay_area .attention,
+.pay_area2 .attention {
+margin-left: 10px;
+}
 .pay_area02 select:first-child{
 margin-bottom:12px;
 }
@@ -357,7 +361,14 @@ margin-bottom:10px;
 .contact_area .textarea{
 width:95%;
 }
-
+.non-select-msg {
+margin: 20px 0;
+border: none;
+}
+.time_select {
+margin-top:5px;
+margin-bottom:15px;
+}
 /* -----------------------------------------------
 ご注文内容のご確認
 ----------------------------------------------- */
@@ -463,10 +474,9 @@ display:block;
 line-height:1.3;
 }
 
-/*
 .deliv_confirm dd:last-child{
 border-bottom:none;
-}*/
+}
 
 .deliv_confirm dd p.deliv_name{
 margin-bottom:3px;

@@ -59,27 +59,13 @@
                                 .attr('for', 'pay_' + i)
                                 .text(data.arrPayment[i].payment_method);
                             // 行
-                            var tr = $('<tr />')
+                            var li = $('<li />')
                                 .append($('<td />')
                                         .addClass('centertd')
-                                        .append(radio))
-                                .append($('<td />').append(label));
+                                        .append(radio)
+                                        .append(label));
 
-                            // 支払方法の画像が登録されている場合は表示
-                            if (data.img_show) {
-                                var payment_image = data.arrPayment[i].payment_image;
-                                $('th#payment_method').attr('colspan', 3);
-                                if (payment_image) {
-                                    var img = $('<img />').attr('src', '<!--{$smarty.const.IMAGE_SAVE_URLPATH}-->' + payment_image);
-                                    tr.append($('<td />').append(img));
-                                } else {
-                                    tr.append($('<td />'));
-                                }
-                            } else {
-                                $('th#payment_method').attr('colspan', 2);
-                            }
-
-                            tr.appendTo(payment);
+                            li.appendTo(payment);
                         }
                         // お届け時間を生成
                         var deliv_time_id_select = $('select[id^=deliv_time_id]');
@@ -170,6 +156,7 @@
   <!--{if $arrErr[$key] != ""}-->
     <p class="attention"><!--{$arrErr[$key]}--></p>
   <!--{/if}-->
+  <p class="non-select-msg information">まずはじめに、配送方法を選択ください。</p>
   <ul id="payment">
   <!--{section name=cnt loop=$arrPayment}-->
    <li>
@@ -196,18 +183,19 @@
   <!--{assign var=index value=$shippingItem.shipping_id}-->
  
  <!--▼フォームボックスここから -->
+ <!--{if $is_multiple}-->
   <div class="formBox">
-
     <div class="box_header">
       お届け先<!--{$smarty.foreach.shippingItem.iteration}-->
-        </div>
+    </div>
 
-  <!--{if $is_multiple}-->
      <div class="innerBox">
        <!--{$shippingItem.shipping_name01}--><!--{$shippingItem.shipping_name02}--><br />
         <span class="mini"><!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01}--><!--{$shippingItem.shipping_addr02}--></span>
-          </div>
-  <!--{/if}-->
+     </div>
+ <!--{else}-->
+   <div class="time_select">
+ <!--{/if}-->
        <div class="btn_area_btm">
        <!--★お届け日★-->
        <!--{assign var=key value="deliv_date`$index`"}-->

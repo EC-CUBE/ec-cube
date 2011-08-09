@@ -465,6 +465,12 @@ border-radius: 5px;
 -webkit-border-radius: 5px;
 -moz-border-radius: 5px;
 }
+.popup_cart .product_type {
+margin-bottom: 5px;
+}
+.popup_cart div:last-child {
+margin-bottom: 0;
+}
 .popup_mypage a,.popup_cart a{
 text-decoration:underline;
 }
