@@ -31,8 +31,8 @@ function fnSetClassCategories(form, classcat_id2_selected) {
     setClassCategories($form, product_id, $sele1, $sele2, classcat_id2_selected);
 }
 $(function(){
-    $('#detailphotoblock ul li').flickSlide({target:'#detailphotoblock>ul', duration:5000, parentArea:'#detailphotoblock'});
-    $('#whobought_area ul li').flickSlide({target:'#whobought_area>ul', duration:5000, parentArea:'#whobought_area'});
+    $('#detailphotoblock ul li').flickSlide({target:'#detailphotoblock>ul', duration:5000, parentArea:'#detailphotoblock', height: 200});
+    $('#whobought_area ul li').flickSlide({target:'#whobought_area>ul', duration:5000, parentArea:'#whobought_area', height: 80});
 
     //お勧め商品のリンクを張り直し(フリックスライドによるエレメント生成後)
     $('#whobought_area li').biggerlink();
@@ -76,27 +76,36 @@ function fnWhoboughtToggle(areaEl, imgEl) {
 <!--★タイトル★-->
 <h2 class="title"><!--{$tpl_subtitle|h}--></h2>
 <!--★画像★-->
+
 <div id="detailphotoblock" class="mainImageInit">
     <ul>
         <!--{assign var=key value="main_image"}-->
         <li id="mainImage0">
+
+        <!--{* 画像の縦横倍率を算出 *}-->
+        <!--{assign var=detail_image_size value=200}-->
+        <!--{assign var=main_image_factor value=`$arrFile[$key].width/$detail_image_size`}-->
         <!--{if $arrProduct.main_large_image|strlen >= 1}-->
             <a rel="external" class="expansion" href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct.main_large_image|h}-->" target="_blank">
-                <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct.main_large_image|h}-->" alt="<!--{$arrProduct.name|h}-->" width="200" height="200" /></a>
+                <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct.main_image|h}-->" alt="<!--{$arrProduct.name|h}-->" width="<!--{$arrFile.main_image.width/$main_image_factor}-->" height="<!--{$arrFile.main_image.height/$main_image_factor}-->" /></a>
         <!--{else}-->
-            <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct.main_large_image|h}-->" alt="<!--{$arrProduct.name|h}-->" width="200" height="200" />
+            <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct.main_image|h}-->" alt="<!--{$arrProduct.name|h}-->" width="<!--{$arrFile.main_image.width/$main_image_factor}-->" height="<!--{$arrFile.main_image.height/$main_image_factor}-->" />
         <!--{/if}-->
         </li>
         <!--★サブ画像★-->
         <!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
-        <!--{assign var=key value="sub_title`$smarty.section.cnt.index+1`"}-->
-        <!--{if $arrProduct[$key] != ""}-->
-            <!--{assign var=key value="sub_image`$smarty.section.cnt.index+1`"}-->
-            <!--{assign var=lkey value="sub_large_image`$smarty.section.cnt.index+1`"}-->
+        <!--{assign var=sub_image_factor value=`$arrFile[$key].width/$detail_image_size`}-->
+        <!--{assign var=key value="sub_image`$smarty.section.cnt.index+1`"}-->
+        <!--{assign var=lkey value="sub_large_image`$smarty.section.cnt.index+1`"}-->
+        <!--{if $arrFile[$key].filepath != ""}-->
             <li id="mainImage<!--{$smarty.section.cnt.index+1}-->">
+            <!--{if $arrProduct[$lkey] != ""}-->
               <a rel="external" class="expansion" href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct[$lkey]|h}-->" target="_blank">
-              <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|h}-->" width="200" height="200" /></a>
-              </li>
+              <img src="<!--{$arrFile[$key].filepath|h}-->" alt="<!--{$arrProduct.name|h}-->" width="<!--{$arrFile[$key].width/$sub_image_factor}-->" height="<!--{$arrFile[$key].height/$sub_image_factor}-->" /></a>
+            <!--{else}-->
+              <img src="<!--{$arrFile[$key].filepath|h}-->" alt="<!--{$arrProduct.name|h}-->" width="<!--{$arrFile[$key].width/$sub_image_factor}-->" height="<!--{$arrFile[$key].height/$sub_image_factor}-->" />
+            <!--{/if}-->
+            </li>
         <!--{/if}-->
         <!--{/section}-->
     </ul>
@@ -122,11 +131,6 @@ function fnWhoboughtToggle(areaEl, imgEl) {
 
     <div class="product_detail">
 
-        <!--★ダウンロード販売★-->
-        <!--{if $arrProduct.down == 2}-->
-            <div><font color="red">本商品はダウンロード販売となります。<br /> 購入後はMYページの購入履歴からダウンロード可能です。</font></div><br />
-        <!--{/if}-->
-                    
         <!--★商品名★-->
         <h3 class="product_name"><!--{$arrProduct.name|h}--></h3>
 
@@ -303,17 +307,19 @@ function fnWhoboughtToggle(areaEl, imgEl) {
             <h3><!--{$arrProduct[$key]|h}--></h3>
 
             <!--★サブ画像★-->
+            <!--{assign var=sub_image_size value=80}-->
             <!--{assign var=key value="sub_image`$smarty.section.cnt.index+1`"}-->
             <!--{assign var=lkey value="sub_large_image`$smarty.section.cnt.index+1`"}-->
             <!--{assign var=ckey value="sub_comment`$smarty.section.cnt.index+1`"}-->
+            <!--{assign var=sub_image_factor value=`$arrFile[$key].width/$sub_image_size`}-->
             <!--{if $arrProduct[$key]|strlen >= 1}-->
                 <p class="subphotoimg">
                 <!--{if $arrProduct[$lkey]|strlen >= 1}-->
-                    <a rel="external" href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct[$lkey]|h}-->" target="_blank">
-                    <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|h}-->" width="80" height="80" />
+                    <a rel="external" class="expansion" href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct[$lkey]|h}-->" target="_blank">
+                    <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|h}-->" width="<!--{$arrFile[$key].width/$sub_image_factor}-->" height="<!--{$arrFile[$key].height/$sub_image_factor}-->" />
                     </a>
                 <!--{else}-->
-                    <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|h}-->" width="80" height="80" />
+                    <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|h}-->" width="<!--{$arrFile[$key].width/$sub_image_factor}-->" height="<!--{$arrFile[$key].height/$sub_image_factor}-->" />
                 <!--{/if}-->
                 </p>
             <!--{/if}-->
