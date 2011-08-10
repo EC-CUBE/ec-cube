@@ -52,7 +52,6 @@ class SC_Initial {
     function init() {
         $this->requireInitialConfig();
         $this->defineDSN();
-        $this->setErrorReporting();
         $this->defineDirectoryIndex();
         $this->defineErrorType();
         $this->defineConstants();
@@ -90,24 +89,6 @@ class SC_Initial {
             define ("DEFAULT_DSN",
                     DB_TYPE . "://" . DB_USER . ":" . DB_PASSWORD . "@"
                     . DB_SERVER . ":" .DB_PORT . "/" . DB_NAME);
-        }
-    }
-
-    /**
-     * エラーレベル設定を行う.
-     *
-     * ・推奨値
-     *   開発時 - E_ALL
-     *   運用時 - E_ALL & ~E_NOTICE
-     *
-     * @access protected
-     * @return void
-     */
-    function setErrorReporting() {
-        error_reporting(E_ALL & ~E_NOTICE);
-        // PHP 5.3.0対応
-        if (error_reporting() > 6143) {
-            error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
         }
     }
 

@@ -10,6 +10,9 @@ php_flag session.auto_start 0
 php_value mbstring.internal_encoding UTF-8
 
 # デフォルトテンプレートの状態で 2M 近くになるため
-php_value upload_max_filesize 5M
+php_value upload_max_filesize 15M
 #php_value post_max_size 8M
 php_flag register_globals off
+
+# E_ALL(30719) - E_NOTICE(8) - E_DEPRECATED(8192)
+php_value error_reporting 22519
