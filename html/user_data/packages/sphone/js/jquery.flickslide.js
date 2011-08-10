@@ -1,5 +1,6 @@
 // FlickSlide v1.0.2
 // Copyright (c) 2011 Kosuke Araki - twitterF@kaleido_kosuke
+// Modified by Kentaro Ohkouchi <ohkouchi@loop-az.jp>
 // Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 (function($){
      $.fn.flickSlide=function(settings){
