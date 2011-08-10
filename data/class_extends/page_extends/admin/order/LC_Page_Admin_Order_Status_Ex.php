@@ -25,7 +25,7 @@
 require_once CLASS_REALDIR . 'pages/admin/order/LC_Page_Admin_Order_Status.php';
 
 /**
- * ステータス管理 のページクラス(拡張).
+ * 対応状況管理 のページクラス(拡張).
  *
  * LC_Page_Admin_Order_Status をカスタマイズする場合はこのクラスを編集する.
  *

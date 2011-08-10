@@ -197,7 +197,7 @@ border-radius:0 0 7px 7px;
 -moz-border-radius: 0 0 7px 7px;
 -webkit-border-radius: 0 0 7px 7px;
 }
-/*ステータスアイコン*/
+/* 商品ステータスアイコン */
 #detailrightblock .status_icon{
 padding:10px 12px;
 border-bottom:#CCC solid 1px;

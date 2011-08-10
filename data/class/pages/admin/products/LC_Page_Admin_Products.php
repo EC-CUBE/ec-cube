@@ -217,7 +217,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
         $objFormParam->addParam("終了月", "search_endmonth", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("終了日", "search_endday", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
 
-        $objFormParam->addParam("ステータス", "search_product_flag", INT_LEN, 'n', array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("商品ステータス", "search_product_flag", INT_LEN, 'n', array("MAX_LENGTH_CHECK"));
     }
 
     /**
@@ -340,7 +340,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
             $where.= " AND update_date <= ?";
             $arrValues[] = $date;
             break;
-        //ステータス
+        // 商品ステータス
         case 'search_product_flag':
             if(count($objFormParam->getValue($key)) > 0) {
                 $where .= " AND product_id IN (SELECT product_id FROM dtb_product_status WHERE product_status_id IN (";

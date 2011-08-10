@@ -1102,7 +1102,7 @@ __EOF__;
             }
         }
 
-        // ステータス設定
+        // 商品ステータス設定
         $objProduct = new SC_Product_Ex();
         $objProduct->setProductStatus($product_id, $arrList['product_status']);
 

@@ -418,7 +418,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
             $arrCategory_id = explode(',', $arrList['category_ids']);
             $this->objDb->updateProductCategories($arrCategory_id, $product_id);
         }
-        // ステータス登録
+        // 商品ステータス登録
         if($arrList['product_statuses'] != "") {
             $arrStatus_id = explode(',', $arrList['product_statuses']);
             $objProduct->setProductStatus($product_id, $arrStatus_id);
@@ -663,9 +663,9 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         if(!$this->lfIsDbRecordMulti('dtb_category', 'category_id', 'category_ids', $item, ',')) {
             $arrErr['category_ids'] = "※ 指定のカテゴリIDは、登録されていません。";
         }
-        // ステータスIDの存在チェック
+        // 商品ステータスIDの存在チェック
         if(!$this->lfIsArrayRecordMulti($this->arrSTATUS, 'product_statuses', $item, ',')) {
-            $arrErr['product_statuses'] = "※ 指定のステータスIDは、登録されていません。";
+            $arrErr['product_statuses'] = "※ 指定の商品ステータスIDは、登録されていません。";
         }
         // 支払い方法IDの存在チェック
         if(!$this->lfIsArrayRecordMulti($this->arrPayments, 'product_payment_ids', $item, ',')) {

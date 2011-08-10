@@ -188,7 +188,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         $objFormParam->addParam("終了年", "search_endyear", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("終了月", "search_endmonth", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("終了日", "search_endday", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("ステータス", "search_product_flag", INT_LEN, 'n', array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("商品ステータス", "search_product_flag", INT_LEN, 'n', array("MAX_LENGTH_CHECK"));
 
         // 規格プルダウン
         $objFormParam->addParam("規格1", "class_id1", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));

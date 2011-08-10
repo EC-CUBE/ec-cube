@@ -181,9 +181,9 @@ function getProducts(limit) {
                                                                  alt: product.name
                                                              });
 
-                     //ステータスをセット
-                     var statusAreaEl = $($(".list_area div.statusArea").get(maxCnt));
-                    //ステータスの削除
+                    // 商品ステータスをセット
+                    var statusAreaEl = $($(".list_area div.statusArea").get(maxCnt));
+                    // 商品ステータスの削除
                     statusAreaEl.empty();
 
                      if (productStatus[product.product_id] != null) {

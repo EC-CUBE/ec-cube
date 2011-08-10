@@ -47,10 +47,10 @@ class SC_Helper_Purchase {
      *
      * 実行中に, 何らかのエラーが発生した場合, 処理を中止しエラーページへ遷移する
      *
-     * 決済モジュールを使用する場合は受注ステータスを「決済処理中」に設定し,
+     * 決済モジュールを使用する場合は対応状況を「決済処理中」に設定し,
      * 決済完了後「新規受付」に変更すること
      *
-     * @param integer $orderStatus 受注処理を完了する際に設定する受注ステータス
+     * @param integer $orderStatus 受注処理を完了する際に設定する対応状況
      * @return void
      */
     function completeOrder($orderStatus = ORDER_NEW) {
@@ -95,13 +95,13 @@ class SC_Helper_Purchase {
      * 受注完了後の受注をキャンセルする.
      * この関数は, 主に決済モジュールにて, 受注をキャンセルする場合に使用する.
      *
-     * 受注ステータスを引数 $orderStatus で指定したステータスに変更する.
+     * 対応状況を引数 $orderStatus で指定した値に変更する.
      * (デフォルト ORDER_CANCEL)
      * 引数 $is_delete が true の場合は, 受注データを論理削除する.
      * 商品の在庫数は, 受注前の在庫数に戻される.
      *
      * @param integer $order_id 受注ID
-     * @param integer $orderStatus 受注ステータス
+     * @param integer $orderStatus 対応状況
      * @param boolean $is_delete 受注データを論理削除する場合 true
      * @return void
      */
@@ -136,13 +136,13 @@ class SC_Helper_Purchase {
      * 受注完了後の受注をキャンセルし, カートの状態を受注前の状態へ戻す.
      * この関数は, 主に, 決済モジュールに遷移した後, 購入確認画面へ戻る場合に使用する.
      *
-     * 受注ステータスを引数 $orderStatus で指定したステータスに変更する.
+     * 対応状況を引数 $orderStatus で指定した値に変更する.
      * (デフォルト ORDER_CANCEL)
      * 引数 $is_delete が true の場合は, 受注データを論理削除する.
      * 商品の在庫数, カートの内容は受注前の状態に戻される.
      *
      * @param integer $order_id 受注ID
-     * @param integer $orderStatus 受注ステータス
+     * @param integer $orderStatus 対応状況
      * @param boolean $is_delete 受注データを論理削除する場合 true
      * @return string 受注一時ID
      */
@@ -762,7 +762,7 @@ class SC_Helper_Purchase {
             unset($orderParams[$unset]);
         }
 
-        // 注文ステータスの指定が無い場合は新規受付
+        // 対応状況の指定が無い場合は新規受付
         if(SC_Utils_Ex::isBlank($orderParams['status'])) {
             $orderParams['status'] = ORDER_NEW;
         }
@@ -839,7 +839,7 @@ class SC_Helper_Purchase {
                 $order_id = $objQuery->nextVal('dtb_order_order_id');
             }
             /*
-             * 新規受付の場合は受注ステータス null で insert し,
+             * 新規受付の場合は対応状況 null で insert し,
              * sfUpdateOrderStatus で ORDER_NEW に変更する.
              */
             $status = $arrValues['status'];
@@ -907,7 +907,7 @@ class SC_Helper_Purchase {
      * 受注詳細を取得する.
      *
      * @param integer $order_id 受注ID
-     * @param boolean $has_order_status 受注ステータス, 入金日も含める場合 true
+     * @param boolean $has_order_status 対応状況, 入金日も含める場合 true
      * @return array 受注詳細の配列
      */
     function getOrderDetail($order_id, $has_order_status = true) {
@@ -1147,11 +1147,11 @@ __EOS__;
             $sqlval['add_point'] = $newAddPoint;
             $sqlval['use_point'] = $newUsePoint;
         }
-        // ステータスが発送済みに変更の場合、発送日を更新
+        // 対応状況が発送済みに変更の場合、発送日を更新
         if ($arrOrderOld['status'] != ORDER_DELIV && $newStatus == ORDER_DELIV) {
             $sqlval['commit_date'] = 'Now()';
         }
-        // ステータスが入金済みに変更の場合、入金日を更新
+        // 対応状況が入金済みに変更の場合、入金日を更新
         elseif ($arrOrderOld['status'] != ORDER_PRE_END && $newStatus == ORDER_PRE_END) {
             $sqlval['payment_date'] = 'Now()';
         }

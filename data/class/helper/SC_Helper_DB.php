@@ -199,7 +199,7 @@ class SC_Helper_DB {
      * @param integer $order_id 受注番号
      * @param integer $use_point 利用ポイント
      * @param integer $add_point 加算ポイント
-     * @param integer $order_status 受注ステータス
+     * @param integer $order_status 対応状況
      * @return array オーダー前ポイントの配列
      */
     function sfGetRollbackPoint($order_id, $use_point, $add_point, $order_status) {

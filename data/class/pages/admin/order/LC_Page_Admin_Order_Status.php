@@ -25,7 +25,7 @@
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
- * ステータス管理 のページクラス.
+ * 対応状況管理 のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
@@ -47,7 +47,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'order';
         $this->tpl_subno = 'status';
         $this->tpl_maintitle = '受注管理';
-        $this->tpl_subtitle = 'ステータス管理';
+        $this->tpl_subtitle = '対応状況管理';
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrORDERSTATUS = $masterData->getMasterData("mtb_order_status");
@@ -101,23 +101,23 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
                         break;
                 }
 
-                //ステータス情報
+                // 対応状況
                 $status = !is_null($objFormParam->getValue('status')) ? $objFormParam->getValue('status') : "";
                 break;
 
             case 'search':
-                //ステータス情報
+                // 対応状況
                 $status = !is_null($_POST['status']) ? $objFormParam->getValue('status') : "";
                 break;
 
             default:
-                //ステータス情報
+                // 対応状況
                 //デフォルトで新規受付一覧表示
                 $status = ORDER_NEW;
                 break;
         }
 
-        //ステータス情報
+        // 対応状況
         $this->SelectedStatus = $status;
         //検索結果の表示
         $this->lfStatusDisp($status, $objFormParam->getValue('search_pageno'));
@@ -129,8 +129,8 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
      */
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam("注文番号", "order_id", INT_LEN, 'n', array( "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("変更前ステータス", 'status', INT_LEN, 'n', array( "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("変更後ステータス", "change_status", STEXT_LEN, 'KVa', array( "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("変更前対応状況", 'status', INT_LEN, 'n', array( "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("変更後対応状況", "change_status", STEXT_LEN, 'KVa', array( "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("ページ番号", "search_pageno", INT_LEN, 'n', array( "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("移動注文番号", 'move', INT_LEN, 'n', array( "MAX_LENGTH_CHECK", "NUM_CHECK"));
     }
@@ -164,7 +164,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
         parent::destroy();
     }
 
-    //ステータス一覧の表示
+    // 対応状況一覧の表示
     function lfStatusDisp($status,$pageno){
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -198,7 +198,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
     }
 
     /**
-     * ステータス情報の更新
+     * 対応状況の更新
      */
     function lfStatusMove($statusId, $arrOrderId) {
         $objPurchase = new SC_Helper_Purchase_Ex();

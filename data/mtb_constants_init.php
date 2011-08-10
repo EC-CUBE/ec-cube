@@ -93,7 +93,7 @@ define('OPTION_CLASS_REGIST', 1);
 define('DEFAULT_PASSWORD', "********");
 /** 別のお届け先最大登録数 */
 define('DELIV_ADDR_MAX', 20);
-/** 管理画面ステータス一覧表示件数 */
+/** 対応状況管理画面の一覧表示件数 */
 define('ORDER_STATUS_MAX', 50);
 /** フロントレビュー書き込み最大数 */
 define('REVIEW_REGIST_MAX', 5);

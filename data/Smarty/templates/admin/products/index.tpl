@@ -142,7 +142,7 @@ function lfnDispChange(){
             </td>
         </tr>
         <tr>
-            <th>ステータス</th>
+            <th>商品ステータス</th>
             <td colspan="3">
             <!--{assign var=key value="search_product_flag"}-->
             <span class="attention"><!--{$arrErr[$key]|h}--></span>

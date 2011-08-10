@@ -36,10 +36,10 @@ if (file_exists(MODULE_REALDIR . "mdl_gmopg/inc/function.php")) {
  */
 class LC_Page_Products_Detail extends LC_Page_Ex {
 
-    /** ステータス */
+    /** 商品ステータス */
     var $arrSTATUS;
 
-    /** ステータス画像 */
+    /** 商品ステータス画像 */
     var $arrSTATUS_IMAGE;
 
     /** 発送予定日 */
