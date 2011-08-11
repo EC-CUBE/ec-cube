@@ -92,7 +92,7 @@ class SC_DB_DBFactory_Test extends PHPUnit_Framework_TestCase {
         case "pgsql":
             $expected = "SELECT COUNT(total) FROM dtb_order "
                        . "WHERE del_flg = 0 "
-                         . "AND to_char(create_date,'YYYY/MM/DD') = to_char(now() - interval '1 days','YYYY/MM/DD') "
+                         . "AND to_char(create_date,'YYYY/MM/DD') = to_char(CURRENT_TIMESTAMP - interval '1 days','YYYY/MM/DD') "
                          . "AND status <> " . ORDER_CANCEL;
             break;
 
@@ -121,7 +121,7 @@ class SC_DB_DBFactory_Test extends PHPUnit_Framework_TestCase {
             $expected =  "SELECT COUNT(total) FROM dtb_order "
                         . "WHERE del_flg = 0 "
                           . "AND to_char(create_date,'YYYY/MM') = ? "
-                          . "AND to_char(create_date,'YYYY/MM/DD') <> to_char(now(),'YYYY/MM/DD') "
+                          . "AND to_char(create_date,'YYYY/MM/DD') <> to_char(CURRENT_TIMESTAMP,'YYYY/MM/DD') "
                           . "AND status <> " . ORDER_CANCEL;
             break;
 
@@ -129,7 +129,7 @@ class SC_DB_DBFactory_Test extends PHPUnit_Framework_TestCase {
             $expected = "SELECT COUNT(total) FROM dtb_order "
                        . "WHERE del_flg = 0 "
                          . "AND date_format(create_date, '%Y/%m') = ? "
-                         . "AND date_format(create_date, '%Y/%m/%d') <> date_format(now(), '%Y/%m/%d') "
+                         . "AND date_format(create_date, '%Y/%m/%d') <> date_format(CURRENT_TIMESTAMP, '%Y/%m/%d') "
                          . "AND status <> " . ORDER_CANCEL;
             break;
 
@@ -153,8 +153,8 @@ class SC_DB_DBFactory_Test extends PHPUnit_Framework_TestCase {
                           . "ON A.product_id = B.product_id "
                        . "WHERE A.del_flg=0 "
                          . "AND B.del_flg = 0 "
-                         . "AND to_char(A.create_date, 'YYYY/MM/DD') = to_char(now() - interval '1 days','YYYY/MM/DD') "
-                         . "AND to_char(A.create_date,'YYYY/MM/DD') != to_char(now(),'YYYY/MM/DD')";
+                         . "AND to_char(A.create_date, 'YYYY/MM/DD') = to_char(CURRENT_TIMESTAMP - interval '1 days','YYYY/MM/DD') "
+                         . "AND to_char(A.create_date,'YYYY/MM/DD') != to_char(CURRENT_TIMESTAMP,'YYYY/MM/DD')";
             break;
 
         case "mysql":

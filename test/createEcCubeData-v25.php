@@ -135,8 +135,8 @@ class CreateEcCubeData {
 
         // 全カテゴリ共通の値
         $sqlval['creator_id'] = 2;
-        $sqlval['create_date'] = "now()";
-        $sqlval['update_date'] = "now()";
+        $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['del_flg'] = (string) "0";
 
         // 大カテゴリを生成
@@ -252,8 +252,8 @@ class CreateEcCubeData {
             $sqlval['sub_comment1'] = "コメント";
             $sqlval['del_flg'] = (string) "0";
             $sqlval['creator_id'] = 2;
-            $sqlval['create_date'] = "now()";
-            $sqlval['update_date'] = "now()";
+            $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
+            $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
             $sqlval['deliv_date_id'] = 2;
             $this->objQuery->insert("dtb_products", $sqlval);
 
@@ -280,8 +280,8 @@ class CreateEcCubeData {
                                FROM dtb_class
                               WHERE del_flg = 0) as x),";
         $sqlval['creator_id'] = 2;
-        $sqlval['create_date'] = "now()";
-        $sqlval['update_date'] = "now()";
+        $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['del_flg'] = (string) "0";
         $this->objQuery->insert("dtb_class", $sqlval);
 
@@ -307,8 +307,8 @@ class CreateEcCubeData {
                                       WHERE del_flg = 0
                                         AND class_id = %d) as x),", $class_id);
         $sqlval['creator_id'] = 2;
-        $sqlval['create_date'] = "now()";
-        $sqlval['update_date'] = "now()";
+        $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['del_flg'] = (string) "0";
 
         $this->objQuery->insert("dtb_classcategory", $sqlval);
@@ -344,8 +344,8 @@ class CreateEcCubeData {
         $sqlval['price02'] = 2000;
         $sqlval['point_rate'] = 10;
         $sqlval['creator_id'] = 2;
-        $sqlval['create_date'] = "now()";
-        $sqlval['update_date'] = "now()";
+        $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['del_flg'] = 0;
 
         $count = 0;

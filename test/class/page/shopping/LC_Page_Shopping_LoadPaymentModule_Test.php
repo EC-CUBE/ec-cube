@@ -111,13 +111,13 @@ class LC_Page_Shopping_LoadPaymentModule_Test extends PHPUnit_Framework_TestCase
         $this->objQuery->insert('dtb_order', array('order_id' => $order_id,
                                                    'customer_id' => (int) 0,
                                                    'payment_id' => $payment_id,
-                                                   'create_date' => 'now()',
-                                                   'update_date' => 'now()'));
+                                                   'create_date' => 'CURRENT_TIMESTAMP',
+                                                   'update_date' => 'CURRENT_TIMESTAMP'));
 
         $this->objQuery->insert("dtb_payment", array('payment_id' => $order_id,
                                                      'module_path' => $module_path,
                                                      'creator_id' => 1,
-                                                     'create_date' => 'now()',
-                                                     'update_date' => 'now()'));
+                                                     'create_date' => 'CURRENT_TIMESTAMP',
+                                                     'update_date' => 'CURRENT_TIMESTAMP'));
     }
 }
