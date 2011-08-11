@@ -36,7 +36,3 @@ input, textarea, select, button{
     font-size:100%;
     font-family:inherit;
 }
-
-select{
-    margin:inherit;
-}
