@@ -196,10 +196,9 @@ class LC_Page_Products_List extends LC_Page_Ex {
                 $this->tpl_javascript   .= 'function fnOnLoad(){' . $js_fnOnLoad . '}';
                 $this->tpl_onload       .= 'fnOnLoad(); ';
                 break;
+        }
 
-            }
-
-            $this->tpl_rnd          = SC_Utils_Ex::sfGetRandomString(3);
+        $this->tpl_rnd          = SC_Utils_Ex::sfGetRandomString(3);
 
     }
 
