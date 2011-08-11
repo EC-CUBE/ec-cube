@@ -288,7 +288,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         $sqlval['rank'] = 1 + $objQuery->max('rank', 'dtb_plugin');
         $sqlval['status'] = PLUGIN_STATUS_UPLOADED;
         $sqlval['enable'] = PLUGIN_ENABLE_FALSE;
-        $sqlval['update_date'] = 'now()';
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $objQuery->insert('dtb_plugin', $sqlval);
     }
 

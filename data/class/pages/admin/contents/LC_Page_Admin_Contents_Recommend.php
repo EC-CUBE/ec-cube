@@ -185,8 +185,8 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
         $sqlval['rank'] = $arrPost['rank'];
         $sqlval['comment'] = $arrPost['comment'];
         $sqlval['creator_id'] = $member_id;
-        $sqlval['create_date'] = "NOW()";
-        $sqlval['update_date'] = "NOW()";
+        $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['best_id'] = $objQuery->nextVal('dtb_best_products_best_id');
         $objQuery->insert("dtb_best_products", $sqlval);
     }

@@ -190,7 +190,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
                 $sqlval[$val] = $array[$val];
             }
         }
-        $sqlval['update_date'] = 'Now()';
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         // UPDATEの実行
         $ret = $objQuery->update("dtb_baseinfo", $sqlval);
 
@@ -203,7 +203,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         foreach($arrCol as $val) {
             $sqlval[$val] = $array[$val];
         }
-        $sqlval['update_date'] = 'Now()';
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         // INSERTの実行
         $ret = $objQuery->insert("dtb_baseinfo", $sqlval);
 

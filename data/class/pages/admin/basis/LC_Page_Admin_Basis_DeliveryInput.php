@@ -157,7 +157,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
         $sqlval['confirm_url'] = $arrRet['confirm_url'];
         $sqlval['product_type_id'] = $arrRet['product_type_id'];
         $sqlval['creator_id'] = $member_id;
-        $sqlval['update_date'] = 'Now()';
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
 
         // deliv_id が決まっていた場合
         if($arrRet['deliv_id'] != "") {
@@ -211,7 +211,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
             $deliv_id = $objQuery->nextVal('dtb_deliv_deliv_id');
             $sqlval['deliv_id'] = $deliv_id;
             $sqlval['rank'] = $objQuery->max('rank', "dtb_deliv") + 1;
-            $sqlval['create_date'] = 'Now()';
+            $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
             // INSERTの実行
             $objQuery->insert("dtb_deliv", $sqlval);
 

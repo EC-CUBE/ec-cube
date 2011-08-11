@@ -211,8 +211,8 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
         $sqlval['link_method'] = $arrPost['link_method'];
         $sqlval['news_comment'] = $arrPost['news_comment'];
         $sqlval['rank'] = $rank_max;
-        $sqlval['create_date'] = 'now()';
-        $sqlval['update_date'] = 'now()';
+        $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $objQuery->insert($table, $sqlval);
 
         // 最初の1件目の登録はrankにNULLが入るので対策
@@ -233,7 +233,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
         $sqlval['news_url'] = $arrPost['news_url'];
         $sqlval['news_comment'] = $arrPost['news_comment'];
         $sqlval['link_method'] = $arrPost['link_method'];
-        $sqlval['update_date'] = 'NOW()';
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $where = 'news_id = ?';
         $arrValIn = array($arrPost['news_id']);
         $objQuery->update($table, $sqlval, $where, $arrValIn);
@@ -306,7 +306,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
         $table = 'dtb_news';
         $sqlval = array();
         $sqlval['rank'] = $rank;
-        $sqlval['update_date'] = 'NOW()';
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $where = 'del_flg = 0 AND rank > ?';
         $arrValIn = array($rank);
         $objQuery->update($table, $sqlval, $where, $arrValIn);
@@ -314,7 +314,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
         $sqlval = array();
         $sqlval['rank'] = '0';
         $sqlval['del_flg'] = '1';
-        $sqlval['update_date'] = 'NOW()';
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $where = 'news_id = ?';
         $arrValIn = array($news_id);
         $objQuery->update($table, $sqlval, $where, $arrValIn);

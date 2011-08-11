@@ -531,8 +531,8 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
             if ($count == 0) {
                 $sqlval['customer_id'] = $customer_id;
                 $sqlval['product_id'] = $favorite_product_id;
-                $sqlval['update_date'] = "now()";
-                $sqlval['create_date'] = "now()";
+                $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
+                $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
 
                 $objQuery->begin();
                 $objQuery->insert('dtb_customer_favorite_products', $sqlval);

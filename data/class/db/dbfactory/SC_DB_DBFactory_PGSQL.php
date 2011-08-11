@@ -72,7 +72,7 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
     function getOrderYesterdaySql($method) {
         return "SELECT ".$method."(total) FROM dtb_order "
               . "WHERE del_flg = 0 "
-                . "AND to_char(create_date,'YYYY/MM/DD') = to_char(now() - interval '1 days','YYYY/MM/DD') "
+                . "AND to_char(create_date,'YYYY/MM/DD') = to_char(CURRENT_TIMESTAMP - interval '1 days','YYYY/MM/DD') "
                 . "AND status <> " . ORDER_CANCEL;
     }
 
@@ -86,7 +86,7 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
         return "SELECT ".$method."(total) FROM dtb_order "
               . "WHERE del_flg = 0 "
                 . "AND to_char(create_date,'YYYY/MM') = ? "
-                . "AND to_char(create_date,'YYYY/MM/DD') <> to_char(now(),'YYYY/MM/DD') "
+                . "AND to_char(create_date,'YYYY/MM/DD') <> to_char(CURRENT_TIMESTAMP,'YYYY/MM/DD') "
                 . "AND status <> " . ORDER_CANCEL;
     }
 
@@ -101,8 +101,8 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
                  . "ON A.product_id = B.product_id "
               . "WHERE A.del_flg=0 "
                 . "AND B.del_flg = 0 "
-                . "AND to_char(A.create_date, 'YYYY/MM/DD') = to_char(now() - interval '1 days','YYYY/MM/DD') "
-                . "AND to_char(A.create_date,'YYYY/MM/DD') != to_char(now(),'YYYY/MM/DD')";
+                . "AND to_char(A.create_date, 'YYYY/MM/DD') = to_char(CURRENT_TIMESTAMP - interval '1 days','YYYY/MM/DD') "
+                . "AND to_char(A.create_date,'YYYY/MM/DD') != to_char(CURRENT_TIMESTAMP,'YYYY/MM/DD')";
     }
 
     /**
@@ -125,7 +125,7 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
         //downloadable_daysにNULLが入っている場合(無期限ダウンロード可能時)もあるので、NULLの場合は0日に補正
         $downloadable_days = $baseinfo['downloadable_days'];
         if($downloadable_days ==null || $downloadable_days == "")$downloadable_days=0;
-        return "(SELECT CASE WHEN (SELECT d1.downloadable_days_unlimited FROM dtb_baseinfo d1) = 1 AND " . $dtb_order_alias . ".payment_date IS NOT NULL THEN 1 WHEN DATE(NOW()) <= DATE(" . $dtb_order_alias . ".payment_date + '". $downloadable_days ." days') THEN 1 ELSE 0 END)";
+        return "(SELECT CASE WHEN (SELECT d1.downloadable_days_unlimited FROM dtb_baseinfo d1) = 1 AND " . $dtb_order_alias . ".payment_date IS NOT NULL THEN 1 WHEN DATE(CURRENT_TIMESTAMP) <= DATE(" . $dtb_order_alias . ".payment_date + '". $downloadable_days ." days') THEN 1 ELSE 0 END)";
     }
 
     /**

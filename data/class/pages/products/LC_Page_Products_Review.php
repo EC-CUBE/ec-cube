@@ -197,8 +197,8 @@ class LC_Page_Products_Review extends LC_Page_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrRegist = $objFormParam->getDbArray();
 
-        $arrRegist['create_date'] = 'now()';
-        $arrRegist['update_date'] = 'now()';
+        $arrRegist['create_date'] = 'CURRENT_TIMESTAMP';
+        $arrRegist['update_date'] = 'CURRENT_TIMESTAMP';
         $arrRegist['creator_id'] = '0';
 
         //-- 登録実行

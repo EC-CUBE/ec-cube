@@ -88,15 +88,15 @@ class SC_Helper_Session {
          if($count > 0) {
              // レコード更新
              $sqlval['sess_data'] = $sess_data;
-             $sqlval['update_date'] = 'Now()';
+             $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
              $objQuery->update("dtb_session", $sqlval, "sess_id = ?", array($id));
          } else {
              // セッションデータがある場合は、レコード作成
              if(strlen($sess_data) > 0) {
                  $sqlval['sess_id'] = $id;
                  $sqlval['sess_data'] = $sess_data;
-                 $sqlval['update_date'] = 'Now()';
-                 $sqlval['create_date'] = 'Now()';
+                 $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
+                 $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
                  $objQuery->insert("dtb_session", $sqlval);
              }
          }

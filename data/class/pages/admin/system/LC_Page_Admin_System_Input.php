@@ -332,8 +332,8 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         $sqlVal['work']        = $arrMemberData['work'];
         $sqlVal['del_flg']     = '0'; // 削除フラグをOFFに設定
         $sqlVal['creator_id']  = $_SESSION['member_id'];
-        $sqlVal['create_date'] = 'NOW()';
-        $sqlVal['update_date'] = 'NOW()';
+        $sqlVal['create_date'] = 'CURRENT_TIMESTAMP';
+        $sqlVal['update_date'] = 'CURRENT_TIMESTAMP';
 
         // INSERTの実行
         $sqlVal['member_id'] = $objQuery->nextVal('dtb_member_member_id');
@@ -356,7 +356,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         $sqlVal['login_id']    = $arrMemberData['login_id'];
         $sqlVal['authority']   = $arrMemberData['authority'];
         $sqlVal['work']   = $arrMemberData['work'];
-        $sqlVal['update_date'] = 'NOW()';
+        $sqlVal['update_date'] = 'CURRENT_TIMESTAMP';
         if($arrMemberData['password'] != DEFAULT_PASSWORD) {
             $salt = SC_Utils_Ex::sfGetRandomString(10);
             $sqlVal['salt']     = $salt;

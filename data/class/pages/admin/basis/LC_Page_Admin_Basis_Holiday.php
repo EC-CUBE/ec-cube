@@ -184,8 +184,8 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
         $sqlval['day'] = $arrData['day'];
         $sqlval['creator_id'] = $member_id;
         $sqlval['rank'] = $objQuery->max('rank', "dtb_holiday") + 1;
-        $sqlval['update_date'] = "Now()";
-        $sqlval['create_date'] = "Now()";
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
+        $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
         // INSERTの実行
         $sqlval['holiday_id'] = $objQuery->nextVal('dtb_holiday_holiday_id');
         $ret = $objQuery->insert("dtb_holiday", $sqlval);
@@ -199,7 +199,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
         $sqlval['title'] = $arrData['title'];
         $sqlval['month'] = $arrData['month'];
         $sqlval['day'] = $arrData['day'];
-        $sqlval['update_date'] = "Now()";
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $where = "holiday_id = ?";
         // UPDATEの実行
         $ret = $objQuery->update("dtb_holiday", $sqlval, $where, array($arrData['holiday_id']));

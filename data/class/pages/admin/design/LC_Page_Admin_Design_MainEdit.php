@@ -259,14 +259,14 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         $table = 'dtb_pagelayout';
         $arrValues = $objQuery->extractOnlyColsOf($table, $arrParams);
         $arrValues['update_url'] = $_SERVER['HTTP_REFERER'];
-        $arrValues['update_date'] = 'now()';
+        $arrValues['update_date'] = 'CURRENT_TIMESTAMP';
 
         // 新規登録
         if ($is_new || SC_Utils_Ex::isBlank($arrExists)) {
             $objQuery->setOrder('');
             $arrValues['page_id'] = 1 + $objQuery->max('page_id', $table, 'device_type_id = ?',
                                                        array($arrValues['device_type_id']));
-            $arrValues['create_date'] = 'now()';
+            $arrValues['create_date'] = 'CURRENT_TIMESTAMP';
             $objQuery->insert($table, $arrValues);
         }
         // 更新

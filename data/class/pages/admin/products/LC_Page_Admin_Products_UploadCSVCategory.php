@@ -360,7 +360,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
     function lfRegistCategory($objQuery, $line, &$objFormParam) {
         // 登録データ対象取得
         $arrList = $objFormParam->getHashArray();
-        // 登録時間を生成(DBのnow()だとcommitした際、すべて同一の時間になってしまう)
+        // 登録時間を生成(DBのCURRENT_TIMESTAMPだとcommitした際、すべて同一の時間になってしまう)
         $arrList['update_date'] = $this->lfGetDbFormatTimeWithLine($line);
 
         // 登録情報を生成する。
@@ -535,8 +535,8 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         $arrCategory = array();
         $arrCategory['category_name'] = $category_name;
         $arrCategory['parent_category_id'] = $parent_category_id;
-        $arrCategory['create_date'] = "Now()";
-        $arrCategory['update_date'] = "Now()";
+        $arrCategory['create_date'] = 'CURRENT_TIMESTAMP';
+        $arrCategory['update_date'] = 'CURRENT_TIMESTAMP';
         $arrCategory['creator_id']  = $creator_id;
         $arrCategory['rank']        = $rank;
         $arrCategory['level']       = $level;
@@ -558,7 +558,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
 
     /**
      * 指定された行番号をmicrotimeに付与してDB保存用の時間を生成する。
-     * トランザクション内のnow()は全てcommit()時の時間に統一されてしまう為。
+     * トランザクション内のCURRENT_TIMESTAMPは全てcommit()時の時間に統一されてしまう為。
      *
      * @param string $line_no 行番号
      * @return string $time DB保存用の時間文字列

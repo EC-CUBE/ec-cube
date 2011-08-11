@@ -550,7 +550,7 @@ function lfDispComplete($objPage) {
     $sqlval['product_tpl'] = "default1";
     $sqlval['detail_tpl'] = "default1";
     $sqlval['mypage_tpl'] = "default1";
-    $sqlval['update_date'] = 'now()';
+    $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
     $objQuery = new SC_Query($dsn);
     $cnt = $objQuery->count("dtb_baseinfo");
     if($cnt > 0) {
@@ -570,7 +570,7 @@ function lfDispComplete($objPage) {
         'salt' => $salt,
         'work' => 1,
         'del_flg' => 0,
-        'update_date' => 'now()',
+        'update_date' => 'CURRENT_TIMESTAMP',
     );
 
     $member_id = $objQuery->get('member_id', 'dtb_member', 'login_id = ? AND del_flg = 0', array($login_id));

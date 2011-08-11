@@ -43,7 +43,7 @@ class SC_Helper_Customer {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
 
-        $array["update_date"] = "now()";    // 更新日
+        $array["update_date"] = 'CURRENT_TIMESTAMP';    // 更新日
 
         // salt値の生成(insert時)または取得(update時)。
         if(is_numeric($customer_id)) {
@@ -102,7 +102,7 @@ class SC_Helper_Customer {
             $array['customer_id'] = $customer_id;
             // 作成日
             if (is_null($array["create_date"])){
-                $array["create_date"] = "now()";
+                $array["create_date"] = 'CURRENT_TIMESTAMP';
             }
             $objQuery->insert("dtb_customer", $array);
         }

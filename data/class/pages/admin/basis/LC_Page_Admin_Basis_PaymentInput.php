@@ -222,7 +222,7 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
         $sqlval = $objFormParam->getHashArray();
         $arrRet = $this->objUpFile->getDBFileList(); // ファイル名の取得
         $sqlval = array_merge($sqlval, $arrRet);
-        $sqlval['update_date'] = 'Now()';
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
 
         if($sqlval['fix'] != '1') {
             $sqlval['fix'] = 2; // 自由設定
@@ -233,7 +233,7 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
             // INSERTの実行
             $sqlval['creator_id'] = $member_id;
             $sqlval['rank'] = $objQuery->max('rank', "dtb_payment") + 1;
-            $sqlval['create_date'] = 'Now()';
+            $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
             $sqlval['payment_id'] = $objQuery->nextVal('dtb_payment_payment_id');
             $objQuery->insert("dtb_payment", $sqlval);
         // 既存編集

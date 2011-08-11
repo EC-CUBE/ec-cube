@@ -343,7 +343,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
     function lfRegistData($uniqid, $arrForm, &$objPurchase, $arrPayment) {
 
         $arrForm['order_temp_id'] = $uniqid;
-        $arrForm['update_date'] = 'Now()';
+        $arrForm['update_date'] = 'CURRENT_TIMESTAMP';
 
         if($arrForm['point_check'] != '1') {
             $arrForm['use_point'] = 0;

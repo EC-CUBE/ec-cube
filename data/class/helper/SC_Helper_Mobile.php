@@ -372,7 +372,7 @@ class SC_Helper_Mobile {
         }
 
         $arrValues = array('email' => $email);
-        $arrRawValues = array('receive_date' => 'now()');
+        $arrRawValues = array('receive_date' => 'CURRENT_TIMESTAMP');
         $objQuery->update('dtb_mobile_kara_mail', $arrValues, 'kara_mail_id = ?', array($kara_mail_id), $arrRawValues);
 
         return true;

@@ -249,12 +249,12 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $dtb_send_history["mail_method"] = $objFormParam->getValue('mail_method');
         $dtb_send_history['subject'] = $objFormParam->getValue('subject');
         $dtb_send_history['body'] = $objFormParam->getValue('body');
-        $dtb_send_history["start_date"] = "now()";
+        $dtb_send_history["start_date"] = 'CURRENT_TIMESTAMP';
         $dtb_send_history["creator_id"] = $_SESSION['member_id'];
         $dtb_send_history["send_count"] = $send_customer_cnt;
         $dtb_send_history["search_data"] = serialize($objFormParam->getSearchArray());
-        $dtb_send_history["update_date"] = "now()";
-        $dtb_send_history["create_date"] = "now()";
+        $dtb_send_history["update_date"] = 'CURRENT_TIMESTAMP';
+        $dtb_send_history["create_date"] = 'CURRENT_TIMESTAMP';
         $dtb_send_history['send_id'] = $send_id;
         $objQuery->insert("dtb_send_history", $dtb_send_history );
         // 「配信メールアドレス種別」に携帯メールアドレスが指定されている場合は、携帯メールアドレスに配信

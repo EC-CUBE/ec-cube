@@ -399,7 +399,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
     function doDelete($where, $arrParam = array()) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sqlval['del_flg']     = 1;
-        $sqlval['update_date'] = 'now()';
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $objQuery->update("dtb_order", $sqlval, $where, $arrParam);
     }
 

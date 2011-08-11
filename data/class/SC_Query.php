@@ -459,6 +459,8 @@ class SC_Query {
             $strcol .= $key . ',';
             if(strcasecmp("Now()", $val) === 0) {
                 $strval .= 'Now(),';
+            } else if(strcasecmp('CURRENT_TIMESTAMP', $val) === 0) {
+                $strval .= 'CURRENT_TIMESTAMP,';
             } else if(strpos($val, '~') === 0) {
                 $strval .= preg_replace("/^~/", "", $val);
             } else {
@@ -499,6 +501,8 @@ class SC_Query {
         foreach ($sqlval as $key => $val) {
             if (strcasecmp("Now()", $val) === 0) {
                 $arrCol[] = $key . '= Now()';
+            } else if(strcasecmp('CURRENT_TIMESTAMP', $val) === 0) {
+                $arrCol[] = $key . '= CURRENT_TIMESTAMP';
             } else if(strpos('~', $val) === 0) {
                 $arrCol[] = $key . '= ' . $val;
             } else {

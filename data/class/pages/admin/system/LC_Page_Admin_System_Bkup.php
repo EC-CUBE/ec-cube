@@ -392,7 +392,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         $arrVal = array();
         $arrVal['bkup_name'] = $data['bkup_name'];
         $arrVal['bkup_memo'] = $data['bkup_memo'];
-        $arrVal['create_date'] = "now()";
+        $arrVal['create_date'] = 'CURRENT_TIMESTAMP';
 
         $objQuery->insert('dtb_bkup', $arrVal);
     }

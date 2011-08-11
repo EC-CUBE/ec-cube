@@ -129,7 +129,7 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex {
     function lfUpdateData($post) {
         // 入力データを渡す。
         $sqlval = $post;
-        $sqlval['update_date'] = 'Now()';
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         // UPDATEの実行
         $ret = $objQuery->update("dtb_baseinfo", $sqlval);
@@ -138,7 +138,7 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex {
     function lfInsertData($post) {
         // 入力データを渡す。
         $sqlval = $post;
-        $sqlval['update_date'] = 'Now()';
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         // INSERTの実行
         $ret = $objQuery->insert("dtb_baseinfo", $sqlval);

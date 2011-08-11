@@ -210,8 +210,8 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
         $arrValues = array('template_code' => $template_code,
                            'device_type_id' => $device_type_id,
                            'template_name' => $template_name,
-                           'create_date' => 'now()',
-                           'update_date' => 'now()');
+                           'create_date' => 'CURRENT_TIMESTAMP',
+                           'update_date' => 'CURRENT_TIMESTAMP');
         $objQuery->insert('dtb_templates', $arrValues);
 
         $is_error = false;

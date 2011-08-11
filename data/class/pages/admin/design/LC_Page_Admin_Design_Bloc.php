@@ -212,14 +212,14 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
         $table = 'dtb_bloc';
         $arrValues = $objQuery->extractOnlyColsOf($table, $arrParams);
         $arrValues['tpl_path'] = $arrParams['filename'] . '.tpl';
-        $arrValues['update_date'] = 'now()';
+        $arrValues['update_date'] = 'CURRENT_TIMESTAMP';
 
         // 新規登録
         if ($is_new || SC_Utils_Ex::isBlank($arrExists)) {
             $objQuery->setOrder('');
             $arrValues['bloc_id'] = 1 + $objQuery->max('bloc_id', $table, 'device_type_id = ?',
                                                        array($arrValues['device_type_id']));
-            $arrValues['create_date'] = 'now()';
+            $arrValues['create_date'] = 'CURRENT_TIMESTAMP';
             $objQuery->insert($table, $arrValues);
         }
         // 更新

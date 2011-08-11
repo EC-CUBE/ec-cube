@@ -234,7 +234,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
 
         $arrUpdate = array(
              'del_flg'      => 1,
-             'update_date'  => 'Now()'
+             'update_date'  => 'CURRENT_TIMESTAMP'
         );
 
         $objQuery->begin();

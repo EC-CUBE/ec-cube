@@ -104,7 +104,7 @@ class LC_Page_Regist extends LC_Page_Ex {
         $objQuery                   = SC_Query_Ex::getSingletonInstance();
         $arrRegist["secret_key"]    = SC_Helper_Customer_Ex::sfGetUniqSecretKey(); //本登録ID発行
         $arrRegist['status']        = 2;
-        $arrRegist["update_date"]   = "NOW()";
+        $arrRegist["update_date"]   = 'CURRENT_TIMESTAMP';
 
         $objQuery->begin();
         $objQuery->update("dtb_customer", $arrRegist, "secret_key = ? AND status = 1", array($array['id']));

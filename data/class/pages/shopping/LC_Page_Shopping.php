@@ -360,7 +360,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
         $arrValues = $objFormParam->getDbArray();
         // 登録データの作成
         $arrValues['order_birth'] = SC_Utils_Ex::sfGetTimestamp($arrParams['year'], $arrParams['month'], $arrParams['day']);
-        $arrValues['update_date'] = 'Now()';
+        $arrValues['update_date'] = 'CURRENT_TIMESTAMP';
         $arrValues['customer_id'] = '0';
 
         // お届け先を指定しない場合、

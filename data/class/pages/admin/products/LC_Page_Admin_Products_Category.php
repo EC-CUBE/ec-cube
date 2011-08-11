@@ -286,7 +286,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         // カテゴリ更新
         $arrCategory = array();
         $arrCategory['category_name'] = $objFormParam->getValue('category_name');
-        $arrCategory['update_date']   = 'NOW()';
+        $arrCategory['update_date']   = 'CURRENT_TIMESTAMP';
         $this->updateCategory($objFormParam->getValue('category_id'), $arrCategory);
     }
 
@@ -481,8 +481,8 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         $arrCategory = array();
         $arrCategory['category_name'] = $category_name;
         $arrCategory['parent_category_id'] = $parent_category_id;
-        $arrCategory['create_date'] = "Now()";
-        $arrCategory['update_date'] = "Now()";
+        $arrCategory['create_date'] = 'CURRENT_TIMESTAMP';
+        $arrCategory['update_date'] = 'CURRENT_TIMESTAMP';
         $arrCategory['creator_id']  = $creator_id;
         $arrCategory['rank']        = $rank;
         $arrCategory['level']       = $level;

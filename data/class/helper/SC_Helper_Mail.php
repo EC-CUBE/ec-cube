@@ -233,7 +233,7 @@ class SC_Helper_Mail {
         $sqlval['subject'] = $subject;
         $sqlval['order_id'] = $order_id;
         $sqlval['template_id'] = $template_id;
-        $sqlval['send_date'] = "Now()";
+        $sqlval['send_date'] = 'CURRENT_TIMESTAMP';
         if (!isset($_SESSION['member_id'])) $_SESSION['member_id'] = "";
         if($_SESSION['member_id'] != "") {
             $sqlval['creator_id'] = $_SESSION['member_id'];
@@ -453,7 +453,7 @@ class SC_Helper_Mail {
 
         // メール全件送信完了後の処理
         $objQuery->update('dtb_send_history',
-                          array('end_date'=>"now()", 'complete_count'=>$complete_count),
+                          array('end_date'=>'CURRENT_TIMESTAMP', 'complete_count'=>$complete_count),
                           'send_id = ?',
                           array($send_id));
 

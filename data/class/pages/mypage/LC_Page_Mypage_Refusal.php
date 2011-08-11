@@ -96,7 +96,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex {
         $objQuery = SC_Query_Ex::getSingletonInstance();
 
         $sqlval['del_flg']      = 1;
-        $sqlval['update_date']  = 'now()';
+        $sqlval['update_date']  = 'CURRENT_TIMESTAMP';
         $where                  = 'customer_id = ?';
         $objQuery->update('dtb_customer', $sqlval, $where, array($customer_id));
     }

@@ -374,7 +374,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
     function lfUpdData($sql_id, $arrSqlVal){
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $table = "dtb_csv_sql";
-        $arrSqlVal['update_date'] = 'now()';
+        $arrSqlVal['update_date'] = 'CURRENT_TIMESTAMP';
         if (SC_Utils_Ex::sfIsInt($sql_id)) {
             //データ更新
             $where = "sql_id = ?";
@@ -383,7 +383,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
             //新規作成
             $sql_id = $objQuery->nextVal('dtb_csv_sql_sql_id');
             $arrSqlVal['sql_id'] = $sql_id;
-            $arrSqlVal['create_date'] = 'now()';
+            $arrSqlVal['create_date'] = 'CURRENT_TIMESTAMP';
             $objQuery->insert($table, $arrSqlVal);
         }
         return $sql_id;

@@ -261,7 +261,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
 
             // 該当関数が無いため, セッションの値を直接代入
             $arrPC['creator_id'] = $_SESSION['member_id'];
-            $arrPC['update_date'] = 'now()';
+            $arrPC['update_date'] = 'CURRENT_TIMESTAMP';
             $arrPC['del_flg'] = $del_flg;
 
             $class_combination_id = $arrExists[$arrList['product_class_id'][$i]]['class_combination_id'];
@@ -293,7 +293,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                 $arrPC['class_combination_id'] = $arrComb1['class_combination_id'];
             }
 
-            $arrPC['create_date'] = "now()";
+            $arrPC['create_date'] = 'CURRENT_TIMESTAMP';
             $arrPC['product_class_id'] = $objQuery->nextVal('dtb_products_class_product_class_id');
             /*
              * チェックを入れない商品は product_type_id が NULL になるので, 0 を入れる
@@ -305,7 +305,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
 
         // 規格無し用の商品規格を非表示に
         $arrBlank['del_flg'] = 1;
-        $arrBlank['update_date'] = 'now()';
+        $arrBlank['update_date'] = 'CURRENT_TIMESTAMP';
         $objQuery->update("dtb_products_class", $arrBlank,
                           "product_id = ? AND class_combination_id IS NULL",
                           array($product_id));

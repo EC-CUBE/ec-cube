@@ -107,7 +107,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
         return "SELECT ".$method."(total) FROM dtb_order "
               . "WHERE del_flg = 0 "
                 . "AND date_format(create_date, '%Y/%m') = ? "
-                . "AND date_format(create_date, '%Y/%m/%d') <> date_format(now(), '%Y/%m/%d') "
+                . "AND date_format(create_date, '%Y/%m/%d') <> date_format(CURRENT_TIMESTAMP, '%Y/%m/%d') "
                 . "AND status <> " . ORDER_CANCEL;
     }
 
@@ -132,7 +132,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return string 検索条件の SQL
      */
     function getSendHistoryWhereStartdateSql() {
-        return "start_date BETWEEN date_add(now(),INTERVAL -5 minute) AND date_add(now(),INTERVAL 5 minute)";
+        return "start_date BETWEEN date_add(CURRENT_TIMESTAMP,INTERVAL -5 minute) AND date_add(CURRENT_TIMESTAMP,INTERVAL 5 minute)";
     }
 
     /**
@@ -142,7 +142,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return string 検索条件の SQL
      */
     function getDownloadableDaysWhereSql($dtb_order_alias = 'dtb_order') {
-        return "(SELECT IF((SELECT d1.downloadable_days_unlimited FROM dtb_baseinfo d1)=1, 1, DATE(NOW()) <= DATE(DATE_ADD(" . $dtb_order_alias . ".payment_date, INTERVAL (SELECT downloadable_days FROM dtb_baseinfo) DAY))))";
+        return "(SELECT IF((SELECT d1.downloadable_days_unlimited FROM dtb_baseinfo d1)=1, 1, DATE(CURRENT_TIMESTAMP) <= DATE(DATE_ADD(" . $dtb_order_alias . ".payment_date, INTERVAL (SELECT downloadable_days FROM dtb_baseinfo) DAY))))";
     }
 
     /**

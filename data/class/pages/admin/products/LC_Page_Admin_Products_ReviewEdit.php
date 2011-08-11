@@ -175,7 +175,7 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
     function lfRegistReviewData($review_id, &$objFormParam){
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrValues = $objFormParam->getDbArray();
-        $arrValues['update_date'] = 'now()';
+        $arrValues['update_date'] = 'CURRENT_TIMESTAMP';
         $objQuery->update("dtb_review", $arrValues, "review_id = ?", array($review_id));
     }
 }

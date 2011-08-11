@@ -982,7 +982,7 @@ __EOF__;
         $sqlval['deliv_date_id'] = $arrList['deliv_date_id'];
         $sqlval['maker_id'] = $arrList['maker_id'];
         $sqlval['note'] = $arrList['note'];
-        $sqlval['update_date'] = "Now()";
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['creator_id'] = $_SESSION['member_id'];
         $arrRet = $objUpFile->getDBFileList();
         $sqlval = array_merge($sqlval, $arrRet);
@@ -1000,7 +1000,7 @@ __EOF__;
             $sqlval['product_id'] = $product_id;
 
             // INSERTの実行
-            $sqlval['create_date'] = "Now()";
+            $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
             $objQuery->insert("dtb_products", $sqlval);
 
             $arrList['product_id'] = $product_id;
@@ -1042,7 +1042,7 @@ __EOF__;
                         $sqlval = array();
                         $sqlval['product_class_id'] = $objQuery->nextVal('dtb_products_class_product_class_id');
                         $sqlval['product_id'] = $product_id;
-                        $sqlval['create_date'] = 'now()';
+                        $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
                         $sqlval['class_combination_id'] = $arrRetCombinationId[$arrData['class_combination_id']];
                         $sqlval['product_type_id'] = $arrData['product_type_id'];
                         $sqlval['product_code'] = $arrData['product_code'];
@@ -1054,7 +1054,7 @@ __EOF__;
                         $sqlval['deliv_fee'] = $arrData['deliv_fee'];
                         $sqlval['point_rate'] = $arrData['point_rate'];
                         $sqlval['creator_id'] = $arrData['creator_id'];
-                        $sqlval['update_date'] = 'now()';
+                        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
                         $sqlval['down_filename'] = $arrData['down_filename'];
                         $sqlval['down_realfilename'] = $arrData['down_realfilename'];
                         $sqlval['del_flg'] = $arrData['del_flg'];
@@ -1135,12 +1135,12 @@ __EOF__;
 
         if (strlen($sqlval['product_class_id']) == 0) {
             $sqlval['product_class_id'] = $objQuery->nextVal('dtb_products_class_product_class_id');
-            $sqlval['create_date'] = 'now()';
-            $sqlval['update_date'] = 'now()';
+            $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
+            $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
             // INSERTの実行
             $objQuery->insert('dtb_products_class', $sqlval);
         } else {
-            $sqlval['update_date'] = 'now()';
+            $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
             // UPDATEの実行
             $objQuery->update('dtb_products_class', $sqlval, "product_class_id = ?", array($sqlval['product_class_id']));
 
@@ -1190,8 +1190,8 @@ __EOF__;
                 $sqlval['comment'] = $arrList[$commentkey];
                 $sqlval['rank'] = $rank;
                 $sqlval['creator_id'] = $_SESSION['member_id'];
-                $sqlval['create_date'] = "now()";
-                $sqlval['update_date'] = "now()";
+                $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
+                $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
                 $objQuery->insert("dtb_recommend_products", $sqlval);
                 $rank--;
             }
@@ -1231,8 +1231,8 @@ __EOF__;
             }
 
             $records["product_class_id"] = $objQuery->nextVal('dtb_products_class_product_class_id');
-            $records["update_date"] = 'now()';
-            $records["create_date"] = "Now()";
+            $records["update_date"] = 'CURRENT_TIMESTAMP';
+            $records["create_date"] = 'CURRENT_TIMESTAMP';
             $objQuery->insert($table, $records);
             //エラー発生時は中断
             if($objQuery->isError()) {

@@ -187,8 +187,8 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
         $sqlval['name'] = $arrForm['name'];
         $sqlval['creator_id'] = $_SESSION['member_id'];
         $sqlval['rank'] = $objQuery->max('rank', "dtb_class") + 1;
-        $sqlval['create_date'] = "now()";
-        $sqlval['update_date'] = "now()";
+        $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         // INSERTの実行
         $sqlval['class_id'] = $objQuery->nextVal('dtb_class_class_id');
         $ret = $objQuery->insert("dtb_class", $sqlval);
@@ -205,7 +205,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         // UPDATEする値を作成する。
         $sqlval['name'] = $arrForm['name'];
-        $sqlval['update_date'] = "Now()";
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $where = "class_id = ?";
         // UPDATEの実行
         $ret = $objQuery->update("dtb_class", $sqlval, $where, array($arrForm['class_id']));

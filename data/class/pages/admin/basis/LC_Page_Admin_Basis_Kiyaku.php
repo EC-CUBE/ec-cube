@@ -158,8 +158,8 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
         $sqlval['kiyaku_text'] = $arrData['kiyaku_text'];
         $sqlval['creator_id'] = $member_id;
         $sqlval['rank'] = $objQuery->max('rank', "dtb_kiyaku") + 1;
-        $sqlval['update_date'] = "Now()";
-        $sqlval['create_date'] = "Now()";
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
+        $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
         // INSERTの実行
         $sqlval['kiyaku_id'] = $objQuery->nextVal('dtb_kiyaku_kiyaku_id');
         $ret = $objQuery->insert("dtb_kiyaku", $sqlval);
@@ -187,7 +187,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
         // UPDATEする値を作成する。
         $sqlval['kiyaku_title'] = $arrData['kiyaku_title'];
         $sqlval['kiyaku_text'] = $arrData['kiyaku_text'];
-        $sqlval['update_date'] = "Now()";
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $where = "kiyaku_id = ?";
         // UPDATEの実行
         $ret = $objQuery->update("dtb_kiyaku", $sqlval, $where, array($kiyaku_id));

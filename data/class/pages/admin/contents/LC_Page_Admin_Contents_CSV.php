@@ -228,7 +228,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
         $table = "dtb_csv";
         $where = "csv_id = ?";
         $arrWhereVal = array($csv_id);
-        $arrUpdVal = array( 'status' => '2', 'rank' => NULL, 'update_date' => 'now()' );
+        $arrUpdVal = array( 'status' => '2', 'rank' => NULL, 'update_date' => 'CURRENT_TIMESTAMP' );
 
         $objQuery->begin();
         $objQuery->update($table, $arrUpdVal, $where, $arrWhereVal);

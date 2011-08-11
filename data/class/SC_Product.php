@@ -538,8 +538,8 @@ __EOS__;
 
         $val['product_id'] = $productId;
         $val['creator_id'] = $_SESSION['member_id'];
-        $val['create_date'] = 'Now()';
-        $val['update_date'] = 'Now()';
+        $val['create_date'] = 'CURRENT_TIMESTAMP';
+        $val['update_date'] = 'CURRENT_TIMESTAMP';
         $val['del_flg'] = '0';
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();

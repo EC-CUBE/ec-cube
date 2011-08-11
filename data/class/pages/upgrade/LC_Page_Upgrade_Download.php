@@ -272,7 +272,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             $arrUpdate = array(
                 'module_code' => $objRet->product_code,
                 'module_name' => $objRet->product_name,
-                'update_date' => 'NOW()'
+                'update_date' => 'CURRENT_TIMESTAMP'
             );
             $objQuery->update($table, $arrUpdate ,$where, array($objRet->product_id));
         } else {
@@ -281,8 +281,8 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
                 'module_code' => $objRet->product_code,
                 'module_name' => $objRet->product_name,
                 'auto_update_flg' => '0',
-                'create_date'     => 'NOW()',
-                'update_date' => 'NOW()'
+                'create_date'     => 'CURRENT_TIMESTAMP',
+                'update_date' => 'CURRENT_TIMESTAMP'
             );
             $objQuery->insert($table, $arrInsert);
         }
@@ -367,8 +367,8 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             'error_flg'   => count($arrLog['err']),
             'error'       => implode("\n", $arrLog['err']),
             'ok'          => implode("\n", $arrLog['ok']),
-            'update_date' => 'NOW()',
-            'create_date' => 'NOW()'
+            'update_date' => 'CURRENT_TIMESTAMP',
+            'create_date' => 'CURRENT_TIMESTAMP'
         );
         $objQuery->insert('dtb_module_update_logs', $arrInsert);
     }

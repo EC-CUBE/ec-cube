@@ -274,7 +274,7 @@ class SC_Helper_Purchase {
         if (SC_Utils_Ex::isBlank($exists)) {
             $this->copyFromCustomer($sqlval, $objCustomer);
             $sqlval['order_temp_id'] = $uniqId;
-            $sqlval['create_date'] = "now()";
+            $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
             $objQuery->insert("dtb_order_temp", $sqlval);
         } else {
             $objQuery->update("dtb_order_temp", $sqlval, 'order_temp_id = ?',
@@ -435,7 +435,7 @@ class SC_Helper_Purchase {
             }
 
             $dest['customer_id'] = $objCustomer->getValue('customer_id');
-            $dest['update_date'] = 'Now()';
+            $dest['update_date'] = 'CURRENT_TIMESTAMP';
         }
     }
 
@@ -682,8 +682,8 @@ class SC_Helper_Purchase {
                 $arrValues['shipping_id'] = $key;
             }
             $arrValues['order_id'] = $order_id;
-            $arrValues['create_date'] = 'Now()';
-            $arrValues['update_date'] = 'Now()';
+            $arrValues['create_date'] = 'CURRENT_TIMESTAMP';
+            $arrValues['update_date'] = 'CURRENT_TIMESTAMP';
             $objQuery->insert($table, $arrValues);
         }
     }
@@ -767,8 +767,8 @@ class SC_Helper_Purchase {
             $orderParams['status'] = ORDER_NEW;
         }
 
-        $orderParams['create_date'] = 'Now()';
-        $orderParams['update_date'] = 'Now()';
+        $orderParams['create_date'] = 'CURRENT_TIMESTAMP';
+        $orderParams['update_date'] = 'CURRENT_TIMESTAMP';
 
         $this->registerOrder($orderParams['order_id'], $orderParams);
 
@@ -832,7 +832,7 @@ class SC_Helper_Purchase {
                                        $arrValues);
             $this->sfUpdateOrderNameCol($order_id);
 
-            $arrValues['update_date'] = 'now()';
+            $arrValues['update_date'] = 'CURRENT_TIMESTAMP';
             $objQuery->update($table, $arrValues, $where, array($order_id));
         } else {
             if (SC_Utils_Ex::isBlank($order_id)) {
@@ -848,8 +848,8 @@ class SC_Helper_Purchase {
             $arrValues['customer_id'] =
                     SC_Utils_Ex::isBlank($arrValues['customer_id'])
                     ? 0 : $arrValues['customer_id'];
-            $arrValues['create_date'] = 'now()';
-            $arrValues['update_date'] = 'now()';
+            $arrValues['create_date'] = 'CURRENT_TIMESTAMP';
+            $arrValues['update_date'] = 'CURRENT_TIMESTAMP';
             $objQuery->insert($table, $arrValues);
 
             $this->sfUpdateOrderStatus($order_id, $status,
@@ -1118,7 +1118,7 @@ __EOS__;
 
             if ($addCustomerPoint != 0) {
                 // ▼会員テーブルの更新
-                $objQuery->update('dtb_customer', array('update_date' => 'Now()'),
+                $objQuery->update('dtb_customer', array('update_date' => 'CURRENT_TIMESTAMP'),
                                   'customer_id = ?', array($arrOrderOld['customer_id']),
                                   array('point' => 'point + ?'), array($addCustomerPoint));
                 // ▲会員テーブルの更新
@@ -1149,15 +1149,15 @@ __EOS__;
         }
         // 対応状況が発送済みに変更の場合、発送日を更新
         if ($arrOrderOld['status'] != ORDER_DELIV && $newStatus == ORDER_DELIV) {
-            $sqlval['commit_date'] = 'Now()';
+            $sqlval['commit_date'] = 'CURRENT_TIMESTAMP';
         }
         // 対応状況が入金済みに変更の場合、入金日を更新
         elseif ($arrOrderOld['status'] != ORDER_PRE_END && $newStatus == ORDER_PRE_END) {
-            $sqlval['payment_date'] = 'Now()';
+            $sqlval['payment_date'] = 'CURRENT_TIMESTAMP';
         }
 
         $sqlval['status'] = $newStatus;
-        $sqlval['update_date'] = 'Now()';
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
 
         $dest = $objQuery->extractOnlyColsOf('dtb_order', $sqlval);
         $objQuery->update('dtb_order', $dest, 'order_id = ?', array($orderId));

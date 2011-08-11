@@ -728,7 +728,7 @@ __EOS__;
         //dtb_category_countの更新 差分のあったカテゴリだけ更新する。
         foreach($arrDiffCategory_id as $cid) {
             $sqlval = array();
-            $sqlval['create_date'] = 'Now()';
+            $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
             $sqlval['product_count'] = (string)$arrNew[$cid];
             if($sqlval['product_count'] =="") {
                 $sqlval['product_count'] = (string)'0';
@@ -779,7 +779,7 @@ __EOS__;
         // 更新対象だけを更新。
         foreach($arrUpdateData as $cid => $count) {
             $sqlval = array();
-            $sqlval['create_date'] = 'Now()';
+            $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
             $sqlval['product_count'] = $count;
             if($sqlval['product_count'] =="") {
                 $sqlval['product_count'] = (string)'0';
@@ -1270,7 +1270,7 @@ __EOS__;
 
         //各メーカーの商品数を数えて格納
         $sql = " INSERT INTO dtb_maker_count(maker_id, product_count, create_date) ";
-        $sql .= " SELECT T1.maker_id, count(T2.maker_id), now() ";
+        $sql .= " SELECT T1.maker_id, count(T2.maker_id), CURRENT_TIMESTAMP ";
         $sql .= " FROM dtb_maker AS T1 LEFT JOIN dtb_products AS T2";
         $sql .= " ON T1.maker_id = T2.maker_id ";
         $sql .= " WHERE T2.del_flg = 0 AND T2.status = 1 ";

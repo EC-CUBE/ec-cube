@@ -189,8 +189,8 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
         $sqlval['name'] = $arrForm['name'];
         $sqlval['rank'] = $objQuery->max('rank', "dtb_maker") + 1;
         $sqlval['creator_id'] = $_SESSION['member_id'];
-        $sqlval['update_date'] = "Now()";
-        $sqlval['create_date'] = "Now()";
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
+        $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['maker_id'] = $objQuery->nextVal('dtb_maker_maker_id');
 
         // INSERTの実行
@@ -208,7 +208,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
 
         // UPDATEする値を作成する
         $sqlval['name'] = $arrForm['name'];
-        $sqlval['update_date'] = "Now()";
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $where = "maker_id = ?";
 
         // UPDATEの実行

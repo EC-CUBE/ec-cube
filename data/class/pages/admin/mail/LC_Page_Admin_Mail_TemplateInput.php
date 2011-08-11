@@ -128,7 +128,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
         $sqlval = $objFormParam->getDbArray();
 
         $sqlval['creator_id'] = $_SESSION['member_id'];
-        $sqlval['update_date'] = "now()";
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
 
         if ( SC_Utils_Ex::sfIsInt($template_id) ){
             // 更新時
@@ -138,7 +138,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
                               array($template_id));
         } else {
             // 新規登録時
-            $sqlval['create_date'] = "now()";
+            $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
             $sqlval['template_id'] = $objQuery->nextVal('dtb_mailmaga_template_template_id');
             $objQuery->insert("dtb_mailmaga_template", $sqlval);
         }
