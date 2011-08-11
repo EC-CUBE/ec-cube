@@ -198,26 +198,26 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
     function lfInitParam(&$objFormParam) {
 
         // POSTされる値
-        $objFormParam->addParam("商品ID", "product_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("カテゴリID", "category_id", STEXT_LEN, 'n', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("ページ送り番号","search_pageno", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("表示件数", "search_page_max", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam('商品ID', 'product_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('カテゴリID', 'category_id', STEXT_LEN, 'n', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('ページ送り番号','search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('表示件数', 'search_page_max', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
 
         // 検索条件
-        $objFormParam->addParam("商品ID", "search_product_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("商品コード", "search_product_code", STEXT_LEN, 'KVna', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("商品名", "search_name", STEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("カテゴリ", "search_category_id", STEXT_LEN, 'n', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("種別", "search_status", INT_LEN, 'n', array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam('商品ID', 'search_product_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('商品コード', 'search_product_code', STEXT_LEN, 'KVna', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('商品名', 'search_name', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('カテゴリ', 'search_category_id', STEXT_LEN, 'n', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('種別', 'search_status', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
         // 登録・更新日
-        $objFormParam->addParam("開始年", "search_startyear", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("開始月", "search_startmonth", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("開始日", "search_startday", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("終了年", "search_endyear", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("終了月", "search_endmonth", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("終了日", "search_endday", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam('開始年', 'search_startyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('開始月', 'search_startmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('開始日', 'search_startday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('終了年', 'search_endyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('終了月', 'search_endmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('終了日', 'search_endday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
 
-        $objFormParam->addParam("商品ステータス", "search_product_flag", INT_LEN, 'n', array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam('商品ステータス', 'search_product_statuses', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -341,7 +341,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
             $arrValues[] = $date;
             break;
         // 商品ステータス
-        case 'search_product_flag':
+        case 'search_product_statuses':
             if(count($objFormParam->getValue($key)) > 0) {
                 $where .= " AND product_id IN (SELECT product_id FROM dtb_product_status WHERE product_status_id IN (";
                 foreach($objFormParam->getValue($key) as $param) {

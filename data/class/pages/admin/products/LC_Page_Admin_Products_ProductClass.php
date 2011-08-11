@@ -173,46 +173,46 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
      */
     function initParam(&$objFormParam) {
         // 商品マスター検索パラメーター引き継ぎ
-        $objFormParam->addParam("商品ID", "product_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("カテゴリID", "category_id", STEXT_LEN, 'n', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("ページ送り番号","search_pageno", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("表示件数", "search_page_max", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("商品ID", "search_product_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("商品コード", "search_product_code", STEXT_LEN, 'KVna', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("商品名", "search_name", STEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("カテゴリ", "search_category_id", STEXT_LEN, 'n', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("種別", "search_status", INT_LEN, 'n', array("MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("開始年", "search_startyear", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("開始月", "search_startmonth", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("開始日", "search_startday", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("終了年", "search_endyear", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("終了月", "search_endmonth", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("終了日", "search_endday", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("商品ステータス", "search_product_flag", INT_LEN, 'n', array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam('商品ID', 'product_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('カテゴリID', 'category_id', STEXT_LEN, 'n', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('ページ送り番号','search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('表示件数', 'search_page_max', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('商品ID', 'search_product_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('商品コード', 'search_product_code', STEXT_LEN, 'KVna', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('商品名', 'search_name', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('カテゴリ', 'search_category_id', STEXT_LEN, 'n', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('種別', 'search_status', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('開始年', 'search_startyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('開始月', 'search_startmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('開始日', 'search_startday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('終了年', 'search_endyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('終了月', 'search_endmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('終了日', 'search_endday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('商品ステータス', 'search_product_statuses', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
 
         // 規格プルダウン
-        $objFormParam->addParam("規格1", "class_id1", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("規格2", "class_id2", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam('規格1', 'class_id1', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('規格2', 'class_id2', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
 
         // 商品規格
-        $objFormParam->addParam("商品規格数", "total", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("商品名", "product_name", STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("商品コード", "product_code", STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("規格ID1", "classcategory_id1", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("規格ID2", "classcategory_id2", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("規格名1", "classcategory_name1", STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("規格名2", "classcategory_name2", STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("商品規格ID", "product_class_id", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("在庫数", "stock", AMOUNT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("在庫数", "stock_unlimited", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam(NORMAL_PRICE_TITLE, "price01", PRICE_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam(SALE_PRICE_TITLE, "price02", PRICE_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("商品種別", "product_type_id", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("削除フラグ", "del_flg", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("ダウンロード販売用ファイル名", "down_filename", STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("ダウンロード販売用ファイル名", "down_realfilename", STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("チェックボックス", "check", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("ファイルアップロード用キー", "upload_index", STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam('商品規格数', 'total', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('商品名', 'product_name', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('商品コード', 'product_code', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('規格ID1', 'classcategory_id1', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('規格ID2', 'classcategory_id2', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('規格名1', 'classcategory_name1', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('規格名2', 'classcategory_name2', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('商品規格ID', 'product_class_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('在庫数', 'stock', AMOUNT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('在庫数', 'stock_unlimited', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(NORMAL_PRICE_TITLE, 'price01', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SALE_PRICE_TITLE, 'price02', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('商品種別', 'product_type_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('削除フラグ', 'del_flg', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('ダウンロード販売用ファイル名', 'down_filename', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('ダウンロード販売用ファイル名', 'down_realfilename', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('チェックボックス', 'check', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('ファイルアップロード用キー', 'upload_index', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
     }
 
     /**

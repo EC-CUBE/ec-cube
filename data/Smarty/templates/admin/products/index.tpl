@@ -144,7 +144,7 @@ function lfnDispChange(){
         <tr>
             <th>商品ステータス</th>
             <td colspan="3">
-            <!--{assign var=key value="search_product_flag"}-->
+            <!--{assign var=key value="search_product_statuses"}-->
             <span class="attention"><!--{$arrErr[$key]|h}--></span>
             <!--{html_checkboxes name="$key" options=$arrSTATUS selected=$arrForm[$key].value}-->
             </td>
