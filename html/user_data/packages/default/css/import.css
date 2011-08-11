@@ -3,7 +3,7 @@
 /************************************************
  import css (ポップアップ用)
 ************************************************ */
-@import url("./set.css");
+@import url("./reset.css");
 @import url("./common.css");
 @import url("./contents.css");
 @import url("./table.css");
