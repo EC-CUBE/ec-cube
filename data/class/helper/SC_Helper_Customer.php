@@ -619,9 +619,10 @@ class SC_Helper_Customer {
      * 顧客一覧検索をする処理（ページング処理付き、管理画面用共通処理）
      *
      * @param array $arrParam 検索パラメーター連想配列
+     * @param string $limitMode ページングを利用するか判定用フラグ
      * @return array( integer 全体件数, mixed 顧客データ一覧配列, mixed SC_PageNaviオブジェクト)
      */
-    function sfGetSearchData($arrParam) {
+    function sfGetSearchData($arrParam, $limitMode = '') {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objSelect = new SC_CustomerList_Ex($arrParam, 'customer');
         $page_max = SC_Utils_Ex::sfGetSearchPageMax($arrParam['search_page_max']);
@@ -630,8 +631,9 @@ class SC_Helper_Customer {
             $disp_pageno = 1;
         }
         $offset = intval($page_max) * (intval($disp_pageno) - 1);
-        $objSelect->setLimitOffset($page_max, $offset);
-
+        if ($limitMode == '') {
+        	$objSelect->setLimitOffset($page_max, $offset);
+        }
         $arrData = $objQuery->getAll($objSelect->getList(), $objSelect->arrVal);
 
         // 該当全体件数の取得
