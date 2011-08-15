@@ -294,6 +294,33 @@ class SC_CartSession {
     }
 
     /**
+     * セッション中の商品情報データの調整。
+     * productsClass項目から、不必要な項目を削除する。
+     */
+    function adjustSessionProductsClass(&$arrProductsClass) {
+        $arrNecessaryItems = array(
+            'product_id'        => true,
+            'product_class_id'  => true,
+            'name'              => true,
+            'price02'           => true,
+            'point_rate'        => true,
+            'main_list_image'   => true,
+            'main_image'        => true,
+            'product_code'      => true,
+            'stock'             => true,
+            'stock_unlimited'   => true,
+            'sale_limit'        => true,
+        );
+
+        // 必要な項目以外を削除。
+        foreach (array_keys($arrProductsClass) as $key) {
+            if (!isset($arrNecessaryItems[$key])) {
+                unset($arrProductsClass[$key]);
+            }
+        }
+    }
+
+    /**
      * 商品種別ごとにカート内商品の一覧を取得する.
      *
      * @param integer $productTypeId 商品種別ID
@@ -311,6 +338,8 @@ class SC_CartSession {
                 $this->cartSession[$productTypeId][$i]['productsClass'] =&
                         $objProduct->getDetailAndProductsClass(
                                     $this->cartSession[$productTypeId][$i]['id']);
+
+                $this->adjustSessionProductsClass($this->cartSession[$productTypeId][$i]['productsClass']);
 
                 $price = $this->cartSession[$productTypeId][$i]['productsClass']['price02'];
                 $this->cartSession[$productTypeId][$i]['price'] = $price;
