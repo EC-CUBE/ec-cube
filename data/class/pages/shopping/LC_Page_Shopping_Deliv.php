@@ -112,6 +112,8 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
 
         // 会員登録住所に送る
         case 'customer_addr':
+            $objPurchase->unsetShippingTemp();
+
             if ($this->registerDeliv($arrForm['deliv_check'], $this->tpl_uniqid,
                                      $objPurchase, $objCustomer)) {
                 $objSiteSess->setRegistFlag();
@@ -134,10 +136,6 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
         case 'multiple':
             SC_Response_Ex::sendRedirect('multiple.php');
             exit;
-            break;
-
-        default:
-            $objPurchase->unsetShippingTemp();
             break;
         }
 

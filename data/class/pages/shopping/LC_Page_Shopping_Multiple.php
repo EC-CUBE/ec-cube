@@ -83,6 +83,8 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
                 $objFormParam->setParam($_POST);
                 $this->arrErr = $this->lfCheckError($objFormParam);
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    $objPurchase->unsetShippingTemp();
+
                     // フォームの情報を一時保存しておく
                     $_SESSION['multiple_temp'] = $objFormParam->getHashArray();
                     $this->saveMultipleShippings($this->tpl_uniqid, $objFormParam,
