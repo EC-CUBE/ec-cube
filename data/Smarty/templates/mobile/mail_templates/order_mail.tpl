@@ -23,6 +23,8 @@
 *}-->
 <!--{$arrOrder.order_name01}--> <!--{$arrOrder.order_name02}--> 様
 
+<!--{$tpl_header}-->
+
 ■ご請求金額
 ご注文番号：<!--{$arrOrder.order_id}-->
 お支払合計：￥ <!--{$arrOrder.payment_total|number_format|default:0}-->
@@ -81,3 +83,4 @@
 加算予定ポイント：<!--{$arrOrder.add_point|number_format|default:0}--> pt
 現在の所持ポイント：<!--{$arrCustomer.point|number_format|default:0}--> pt
 <!--{/if}-->
+<!--{$tpl_footer}-->
