@@ -95,6 +95,9 @@
 
     <div class="total_area">
        <div><span class="mini">小計：</span><!--{$tpl_arrOrderData.subtotal|number_format}-->円</div>
+			 <div><span class="mini">値引き（ポイントご使用時）：</span><!--{$tpl_arrOrderData.use_point|number_format}-->円</div>
+			 <div><span class="mini">送料：</span><!--{$tpl_arrOrderData.deliv_fee|number_format}-->円</div>
+			 <div><span class="mini">手数料：</span><!--{$tpl_arrOrderData.charge|number_format}-->円</div>
        <div><span class="mini">合計：</span><span class="price fb"><!--{$tpl_arrOrderData.payment_total|number_format}-->円</span></div>
        <div><span class="mini">今回加算ポイント：</span><!--{$tpl_arrOrderData.add_point|number_format|default:0}-->Pt</div>
     </div>
