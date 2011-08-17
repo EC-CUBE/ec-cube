@@ -58,7 +58,7 @@ class SC_Helper_Session {
      }
 
      /**
-      * セッションのデータををDBから読み込む.
+      * セッションのデータをDBから読み込む.
       *
       * @param string $id セッションID
       * @return string セッションデータの値
