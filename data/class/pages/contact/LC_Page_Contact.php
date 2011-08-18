@@ -53,6 +53,10 @@ class LC_Page_Contact extends LC_Page_Ex {
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
+
+        if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
+            $this->CONF = SC_Helper_DB_Ex::sfGetBasisData();
+        }
     }
 
     /**
