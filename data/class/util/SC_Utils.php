@@ -326,26 +326,6 @@ class SC_Utils {
         return $arrVal[($cnt - 2)];
     }
 
-    /**
-     * 現在のサイトを更新（ただしポストは行わない）
-     *
-     * @deprecated LC_Page::reload() を使用して下さい.
-     */
-    function sfReload($get = "") {
-        if ($_SERVER["SERVER_PORT"] == "443" ){
-            $url = ereg_replace(ROOT_URLPATH . "$", "", HTTPS_URL);
-        } else {
-            $url = ereg_replace(ROOT_URLPATH . "$", "", HTTP_URL);
-        }
-
-        if($get != "") {
-            header("Location: ". $url . $_SERVER['PHP_SELF'] . "?" . $get);
-        } else {
-            header("Location: ". $url . $_SERVER['PHP_SELF']);
-        }
-        exit;
-    }
-
     // チェックボックスの値をマージ
     /**
      * @deprecated

@@ -99,7 +99,6 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex {
                     break;
                 }
                 // 再表示
-                //sfReload();
                 $this->tpl_onload = "window.alert('ポイント設定が完了しました。');";
             }
         } else {

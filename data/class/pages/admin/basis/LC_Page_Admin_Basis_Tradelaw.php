@@ -99,7 +99,6 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex {
                     break;
                 }
                 // 再表示
-                //sfReload();
                 $this->tpl_onload = "window.alert('特定商取引法の登録が完了しました。');";
             }
         } else {
