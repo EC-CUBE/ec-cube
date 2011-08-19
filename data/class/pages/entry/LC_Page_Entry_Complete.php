@@ -80,7 +80,6 @@ class LC_Page_Entry_Complete extends LC_Page_Ex {
         } else {
             // 本会員登録完了
             $this->tpl_mainpage     = 'regist/complete.tpl';
-            $this->tpl_conv_page    = AFF_ENTRY_COMPLETE;
         }
     }
 
