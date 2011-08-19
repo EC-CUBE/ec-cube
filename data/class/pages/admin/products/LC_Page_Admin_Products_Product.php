@@ -157,6 +157,12 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
                 $objDb->sfCountCategory($objQuery);
                 $objDb->sfCountMaker($objQuery);
 
+                // ダウンロード商品の複製時に、ダウンロード商品用ファイルを
+                // 変更すると、複製元のファイルが削除されるのを回避。
+                if (!empty($arrForm['copy_product_id'])) {
+                    $objDownFile->save_file = array();
+                }
+
                 // 一時ファイルを本番ディレクトリに移動する
                 $this->lfSaveUploadFiles($objUpFile, $objDownFile, $product_id);
 
