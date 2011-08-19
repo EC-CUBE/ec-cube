@@ -39,7 +39,7 @@ class SC_Utils {
         // インストール済みが定義されていない。
         if (!defined('ECCUBE_INSTALL')) {
             $phpself = $_SERVER['PHP_SELF'];
-            if( !ereg('/install/', $phpself) ) {
+            if( strpos('/install/', $phpself) === false ) {
                 $path = substr($phpself, 0, strpos($phpself, basename($phpself)));
                 $install_url = SC_Utils_Ex::searchInstallerPath($path);
                 header('Location: ' . $install_url);
