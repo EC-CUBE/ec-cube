@@ -1081,8 +1081,6 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UPDATE_HTTP', '"htt
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UPDATE_CSV_LINE_MAX', '4096', 29, 'アップデート管理用CSV1行辺りの最大文字数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UPDATE_CSV_COL_MAX', '13', 30, 'アップデート管理用CSVカラム数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MODULE_CSV_COL_MAX', '16', 31, 'モジュール管理用CSVカラム数');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('AFF_SHOPPING_COMPLETE', '1', 34, '商品購入完了');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('AFF_ENTRY_COMPLETE', '2', 35, 'ユーザ登録完了');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CHAR_CODE', '"UTF-8"', 39, '文字コード');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LOCALE', '"ja_JP.UTF-8"', 40, 'ロケール設定');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ECCUBE_PAYMENT', '"EC-CUBE"', 41, '決済モジュール付与文言');

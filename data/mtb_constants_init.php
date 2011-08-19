@@ -43,10 +43,6 @@ define('UPDATE_CSV_LINE_MAX', 4096);
 define('UPDATE_CSV_COL_MAX', 13);
 /** モジュール管理用CSVカラム数 */
 define('MODULE_CSV_COL_MAX', 16);
-/** 商品購入完了 */
-define('AFF_SHOPPING_COMPLETE', 1);
-/** ユーザ登録完了 */
-define('AFF_ENTRY_COMPLETE', 2);
 /** 文字コード */
 define('CHAR_CODE', "UTF-8");
 /** ロケール設定 */
