@@ -33,6 +33,39 @@ require_once CLASS_REALDIR . 'pages/admin/order/LC_Page_Admin_Order_Edit.php';
  */
 class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
 
+    var $arrShippingKeys = array(
+        'shipping_id',
+        'shipping_name01',
+        'shipping_name02',
+        'shipping_kana01',
+        'shipping_kana02',
+        'shipping_tel01',
+        'shipping_tel02',
+        'shipping_tel03',
+        'shipping_fax01',
+        'shipping_fax02',
+        'shipping_fax03',
+        'shipping_pref',
+        'shipping_zip01',
+        'shipping_zip02',
+        'shipping_addr01',
+        'shipping_addr02',
+        'shipping_date_year',
+        'shipping_date_month',
+        'shipping_date_day',
+        'time_id',
+    );
+
+    var $arrShipmentItemKeys = array(
+        'shipment_product_class_id',
+        'shipment_product_code',
+        'shipment_product_name',
+        'shipment_classcategory_name1',
+        'shipment_classcategory_name2',
+        'shipment_price',
+        'shipment_quantity',
+    );
+
     // }}}
     // {{{ functions
 
@@ -79,23 +112,24 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
     function action() {
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objFormParam = new SC_FormParam_Ex();
-        
+
         // パラメータ情報の初期化
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_REQUEST);
         $objFormParam->convParam();
         $order_id = $objFormParam->getValue('order_id');
-        
+
         // DBから受注情報を読み込む
         $this->setOrderToFormParam($objFormParam, $order_id);
-        
+
         $this->arrForm = $objFormParam->getFormParamList();
+        $this->arrAllShipping = $objFormParam->getSwapArray(array_merge($this->arrShippingKeys, $this->arrShipmentItemKeys));
         $this->arrDelivTime = $objPurchase->getDelivTime($objFormParam->getValue('deliv_id'));
-        $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
-            
+        $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();        
+
         $this->setTemplate($this->tpl_mainpage);
     }
-    
+
     /**
      * デストラクタ.
      * @return void
@@ -228,16 +262,17 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
         $arrOrderDetail = $objPurchase->getOrderDetail($order_id, false);
         $objFormParam->setParam(SC_Utils_Ex::sfSwapArray($arrOrderDetail));
 
-        $arrShippings = $objPurchase->getShippings($order_id);
-        // お届け日の処理
-        foreach (array_keys($arrShippings) as $key) {
-            $shipping =& $arrShippings[$key];
-            if (!SC_Utils_Ex::isBlank($shipping["shipping_date"])) {
-                $ts = strtotime($shipping["shipping_date"]);
-                $arrShippings[$key]['shipping_date_year'] = date('Y', $ts);
-                $arrShippings[$key]['shipping_date_month'] = date('n', $ts);
-                $arrShippings[$key]['shipping_date_day'] = date('j', $ts);
+        $arrShippingsTmp = $objPurchase->getShippings($order_id);
+        $arrShippings = array();
+        foreach ($arrShippingsTmp as $row) {
+            // お届け日の処理
+            if (!SC_Utils_Ex::isBlank($row["shipping_date"])) {
+                $ts = strtotime($row["shipping_date"]);
+                $row['shipping_date_year'] = date('Y', $ts);
+                $row['shipping_date_month'] = date('n', $ts);
+                $row['shipping_date_day'] = date('j', $ts);
             }
+            $arrShippings[$row['shipping_id']] = $row;
         }
         $objFormParam->setValue('shipping_quantity', count($arrShippings));
         $objFormParam->setParam(SC_Utils_Ex::sfSwapArray($arrShippings));
@@ -245,16 +280,16 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
         /*
          * 配送商品を設定
          *
-         * $arrShipmentItem['shipment_(key)'][$shipping_index][$item_index] = 値
-         * $arrProductQuantity[$shipping_index] = 配送先ごとの配送商品数量
+         * $arrShipmentItem['shipment_(key)'][$shipping_id][$item_index] = 値
+         * $arrProductQuantity[$shipping_id] = 配送先ごとの配送商品数量
          */
         $arrProductQuantity = array();
         $arrShipmentItem = array();
-        foreach ($arrShippings as $shipping_index => $arrShipping) {
-            $arrProductQuantity[$shipping_index] = count($arrShipping['shipment_item']);
+        foreach ($arrShippings as $shipping_id => $arrShipping) {
+            $arrProductQuantity[$shipping_id] = count($arrShipping['shipment_item']);
             foreach ($arrShipping['shipment_item'] as $item_index => $arrItem) {
                 foreach ($arrItem as $item_key => $item_val) {
-                    $arrShipmentItem['shipment_' . $item_key][$shipping_index][$item_index] = $item_val;
+                    $arrShipmentItem['shipment_' . $item_key][$shipping_id][$item_index] = $item_val;
                 }
             }
         }
@@ -269,7 +304,7 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
         $arrOrder = $objPurchase->getOrder($order_id);
         $objFormParam->setParam($arrOrder);
 
-        // XXX ポイントを設定
+        // ポイントを設定
         list($db_point, $rollback_point) = SC_Helper_DB_Ex::sfGetRollbackPoint(
             $order_id, $arrOrder['use_point'], $arrOrder['add_point'], $arrOrder['status']
         );
@@ -277,8 +312,8 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
         $objFormParam->setValue('point', $rollback_point);
 
         if (!SC_Utils_Ex::isBlank($objFormParam->getValue('customer_id'))) {
-            $this->setCustomerTo($objFormParam->getValue('customer_id'),
-                                 $objFormParam);
+            $arrCustomer = SC_Helper_Customer_Ex::sfGetCustomerDataFromId($objFormParam->getValue('customer_id'));
+            $objFormParam->setValue('customer_point', $arrCustomer['point']);
         }
     }
 
