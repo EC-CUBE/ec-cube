@@ -94,8 +94,8 @@ function fnWhoboughtToggle(areaEl, imgEl) {
         </li>
         <!--★サブ画像★-->
         <!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
-        <!--{assign var=sub_image_factor value=`$arrFile[$key].width/$detail_image_size`}-->
         <!--{assign var=key value="sub_image`$smarty.section.cnt.index+1`"}-->
+        <!--{assign var=sub_image_factor value=`$arrFile[$key].width/$detail_image_size`}-->
         <!--{assign var=lkey value="sub_large_image`$smarty.section.cnt.index+1`"}-->
         <!--{if $arrFile[$key].filepath != ""}-->
             <li id="mainImage<!--{$smarty.section.cnt.index+1}-->">
