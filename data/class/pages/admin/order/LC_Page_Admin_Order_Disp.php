@@ -91,7 +91,7 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
         $this->arrPayment = SC_Helper_DB_Ex::sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
 
         // 配送業者の取得
-        $this->arrDeliv = SC_Helper_DB_Ex::sfGetIDValueList("dtb_deliv", "deliv_id", 'name');  
+        $this->arrDeliv = SC_Helper_DB_Ex::sfGetIDValueList("dtb_deliv", "deliv_id", 'name');
     }
 
     /**
@@ -125,7 +125,7 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
         $this->arrForm = $objFormParam->getFormParamList();
         $this->arrAllShipping = $objFormParam->getSwapArray(array_merge($this->arrShippingKeys, $this->arrShipmentItemKeys));
         $this->arrDelivTime = $objPurchase->getDelivTime($objFormParam->getValue('deliv_id'));
-        $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();        
+        $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
 
         $this->setTemplate($this->tpl_mainpage);
     }
@@ -315,22 +315,6 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
             $arrCustomer = SC_Helper_Customer_Ex::sfGetCustomerDataFromId($objFormParam->getValue('customer_id'));
             $objFormParam->setValue('customer_point', $arrCustomer['point']);
         }
-    }
-
-    /**
-     * 顧客情報をフォームに設定する.
-     *
-     * @param integer $customer_id 顧客ID
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @return void
-     */
-    function setCustomerTo($customer_id, &$objFormParam) {
-        $arrCustomer = SC_Helper_Customer_Ex::sfGetCustomerDataFromId($customer_id);
-        foreach ($arrCustomer as $key => $val) {
-            $objFormParam->setValue('order_' . $key, $val);
-        }
-        $objFormParam->setValue('customer_id', $customer_id);
-        $objFormParam->setValue('customer_point', $arrCustomer['point']);
     }
 
 }

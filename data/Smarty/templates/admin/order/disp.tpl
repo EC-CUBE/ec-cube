@@ -193,8 +193,8 @@ self.moveTo(20,20);self.focus();
         <!--{/if}-->
         <!--{assign var=key value="shipping_id"}-->
         <!--{if $arrForm.shipping_quantity.value > 1}-->
-            <!--{assign var=product_quantity value="shipping_product_quantity"}-->
-            <!--{if $arrForm[$product_quantity].value[$shipping_index] > 0}-->
+
+            <!--{if count($arrShipping.shipment_product_class_id) > 0}-->
                 <table class="list" id="order-edit-products">
                     <tr>
                         <th class="id">商品コード</th>
@@ -298,9 +298,9 @@ self.moveTo(20,20);self.focus();
 
         </table>
     <!--{/foreach}-->
-    <!--▲お届け先情報ここまで-->
     <!--{/if}-->
-        
+    <!--▲お届け先情報ここまで-->
+
         <a name="deliv"></a>
         <table class="form">
             <tr>
