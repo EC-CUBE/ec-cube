@@ -47,7 +47,7 @@ class SC_MobileImage {
         if ($carrier !== FALSE) {
 
             // HTML中のIMGタグを取得する
-            $pattern = '/<img\s+[^<>]*src=[\'"]?([^>"\'\s]+)[\'"]?\s*\/?/i';
+            $pattern = '/<img\s+[^<>]*src=[\'"]?([^>"\'\s]+)[\'"]?[^>]*>/i';
             $result = preg_match_all($pattern, $buffer, $images);
 
             // 端末の情報を取得する
