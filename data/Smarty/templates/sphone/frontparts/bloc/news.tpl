@@ -50,7 +50,7 @@ function getNews(limit) {
     var i = limit;
 
     $.ajax({
-               url: "<!--{$smarty.const.HTTP_URL}-->frontparts/bloc/news.php",
+               url: "<!--{$smarty.const.ROOT_URLPATH}-->frontparts/bloc/news.php",
                type: "POST",
                data: "mode=getList&pageno="+newsPageNo+"&disp_number="+i,
                cache: false,
@@ -103,7 +103,7 @@ function getNewsDetail(newsId) {
         $.mobile.pageLoading();
         loadingState = 1;
         $.ajax({
-                   url: "<!--{$smarty.const.HTTP_URL}-->frontparts/bloc/news.php",
+                   url: "<!--{$smarty.const.ROOT_URLPATH}-->frontparts/bloc/news.php",
                    type: "GET",
                    data: "mode=getDetail&news_id="+newsId,
                    cache: false,
