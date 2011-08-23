@@ -177,7 +177,7 @@ function getProducts(limit) {
                     
                      //商品写真をセット
                      $($(".list_area .listphoto img").get(maxCnt)).attr({
-                                                                 src: imagePath + product.main_list_image, 
+                                                                 src: "<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=" + product.main_list_image + '&width=80&height=80', 
                                                                  alt: product.name
                                                              });
 
