@@ -131,6 +131,12 @@ class LC_Page_Products_List extends LC_Page_Ex {
             case "json":
                    $this->arrProducts = $this->setStatusDataTo($this->arrProducts, $this->arrSTATUS, $this->arrSTATUS_IMAGE);
                    $this->arrProducts = $objProduct->setPriceTaxTo($this->arrProducts);
+
+                   // 一覧メイン画像の指定が無い商品のための処理
+                   foreach ($this->arrProducts as $key=>$val) {
+                       $this->arrProducts[$key]['main_list_image'] = SC_Utils_Ex::sfNoImageMainList($val['main_list_image']);
+                   }
+
                    echo SC_Utils_Ex::jsonEncode($this->arrProducts);
                    exit;
                break;
