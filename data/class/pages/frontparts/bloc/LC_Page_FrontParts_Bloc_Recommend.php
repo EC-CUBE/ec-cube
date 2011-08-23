@@ -107,6 +107,7 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc {
             }
             $where .= implode(', ', $arrBestProductIds);
             $where .= ')';
+            $where .= ' AND del_flg = 0'; // 商品規格の削除フラグ
             $objQuery->setWhere($where);
             // 取得
             $arrTmp = $objProduct->lists($objQuery);
