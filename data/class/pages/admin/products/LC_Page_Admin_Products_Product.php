@@ -107,6 +107,16 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
             $product_id = $objFormParam->getValue('product_id');
             // 商品データ取得
             $arrForm = $this->lfGetFormParam_PreEdit($objUpFile, $objDownFile, $product_id);
+
+            // 複製の場合は、ダウンロード商品情報部分はコピーしない
+            if ($mode == 'copy') {
+                // ダウンロード商品ファイル名をunset
+                $arrForm['down_filename'] = '';
+
+                // $objDownFile->setDBDownFile()でsetされたダウンロードファイル名をunset
+                unset($objDownFile->save_file[0]);
+            }
+
             // ページ表示用パラメーター設定
             $this->arrForm = $this->lfSetViewParam_InputPage($objUpFile, $objDownFile, $arrForm);
 
