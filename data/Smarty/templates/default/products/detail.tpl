@@ -167,7 +167,7 @@ $(document).ready(function() {
             <!--▼メーカーURL-->
             <!--{if $arrProduct.comment1|strlen >= 1}-->
                 <dl class="comment1">
-                    <td>メーカーURL：</dt>
+                    <dt>メーカーURL：</dt>
                     <dd><a href="<!--{$arrProduct.comment1|h}-->"><!--{$arrProduct.comment1|h}--></a></dd>
                 </dl>
             <!--{/if}-->
@@ -175,7 +175,7 @@ $(document).ready(function() {
 
             <!--★関連カテゴリ★-->
             <dl class="relative_cat">
-                <td>関連カテゴリ：</td>
+                <dt>関連カテゴリ：</dt>
                 <!--{section name=r loop=$arrRelativeCat}-->
                     <dd>
                         <!--{section name=s loop=$arrRelativeCat[r]}-->
