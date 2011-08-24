@@ -163,6 +163,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
             } else {
                 $this->tpl_onload = "window.alert('メール送信IDが正しくありません');";
             }
+            break;
         default:
             break;
         }
