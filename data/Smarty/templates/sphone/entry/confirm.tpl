@@ -98,7 +98,7 @@
        <div class="btn_area">
           <ul class="btn_btm">
             <li><input type="submit" value="完了ページへ" class="btn data-role-none" name="send" id="send" /></li>
-            <li><a href="spbtn spbtn-medeum" href="?" onclick="fnModeSubmit('return', '', ''); return false;" class="btn_back">戻る</a></li>
+            <li><a href="#" onclick="fnModeSubmit('return', '', ''); return false;" class="btn_back">戻る</a></li>
           </ul>
        </div>
      </form>
