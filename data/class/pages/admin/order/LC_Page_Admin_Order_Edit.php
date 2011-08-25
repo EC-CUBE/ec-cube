@@ -137,6 +137,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
             $this->tpl_mode = 'add';
             $arrValuesBefore['payment_id'] = NULL;
             $arrValuesBefore['payment_method'] = NULL;
+            $this->addShipping($objFormParam);
 
             // 新規受注登録で入力エラーがあった場合の画面表示用に、顧客の現在ポイントを取得
             if (!SC_Utils_Ex::isBlank($objFormParam->getValue('customer_id'))) {
