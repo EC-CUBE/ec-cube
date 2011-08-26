@@ -254,10 +254,11 @@ class SC_Helper_Customer {
      */
     function sfGetCustomerDataFromId($customer_id, $add_where = '', $arrAddVal = array()) {
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
-        if($where == '') {
+        if($add_where == '') {
             $where = 'customer_id = ?';
             $arrData = $objQuery->getRow("*", "dtb_customer", $where, array($customer_id));
         }else{
+            $where = $add_where;
             if(SC_Utils_Ex::sfIsInt($customer_id)) {
                 $where .= ' AND customer_id = ?';
                 $arrAddVal[] = $customer_id;
