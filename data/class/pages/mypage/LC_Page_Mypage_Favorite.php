@@ -138,7 +138,9 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
         // 取得範囲の指定(開始行番号、行数のセット)
         $arrProduct_id  = array_slice($arrProduct_id, $startno, SEARCH_PMAX);
 
-        $objQuery->setWhere($this->lfMakeWhere('', $arrProduct_id));
+        $where = $this->lfMakeWhere('', $arrProduct_id);
+        $where .= ' AND del_flg = 0';
+        $objQuery->setWhere($where);
         $objProduct->setProductsOrder('create_date', 'dtb_customer_favorite_products', 'DESC');
         $arrProducts    = $objProduct->lists($objQuery, $arrProduct_id);
 
