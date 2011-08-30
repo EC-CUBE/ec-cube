@@ -460,6 +460,9 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
 
         // 受注商品の数量を変更
         $arrDest = array();
+        foreach ($objFormParam->getValue('product_class_id') as $n => $order_product_class_id) {
+            $arrDest['quantity'][$n] = 0;
+        }
         foreach ($arrQuantity as $product_class_id => $quantity) {
             foreach ($objFormParam->getValue('product_class_id') as $n => $order_product_class_id) {
                 if ($product_class_id == $order_product_class_id) {
