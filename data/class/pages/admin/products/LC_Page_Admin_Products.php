@@ -89,9 +89,9 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
      */
     function action() {
         $objDb = new SC_Helper_DB_Ex();
-        $objFormParam = new SC_FormParam();
-        $objProduct = new SC_Product();
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objFormParam = new SC_FormParam_Ex();
+        $objProduct = new SC_Product_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // パラメーター情報の初期化
         $this->lfInitParam($objFormParam);
