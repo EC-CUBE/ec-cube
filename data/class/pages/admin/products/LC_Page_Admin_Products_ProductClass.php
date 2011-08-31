@@ -236,7 +236,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         // デフォルト値として設定する値を取得しておく
         $arrDefault = $this->getProductsClass($product_id);
 
-        // XXX #1188 UPDATE だとデータの不整合が発生するため DELETE/INSERT を行う
         $objQuery->delete('dtb_products_class', 'product_id = ? AND class_combination_id IS NOT NULL', array($product_id));
 
         for ($i = 0; $i < $total; $i++) {
@@ -294,7 +293,13 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
             }
 
             $arrPC['create_date'] = 'CURRENT_TIMESTAMP';
-            $arrPC['product_class_id'] = $objQuery->nextVal('dtb_products_class_product_class_id');
+            // 更新の場合は, product_class_id を使い回す
+            if (!SC_Utils_Ex::isBlank($arrList['product_class_id'][$i])) {
+                $arrPC['product_class_id'] = $arrList['product_class_id'][$i];
+            } else {
+                $arrPC['product_class_id'] = $objQuery->nextVal('dtb_products_class_product_class_id');
+            }
+
             /*
              * チェックを入れない商品は product_type_id が NULL になるので, 0 を入れる
              */
