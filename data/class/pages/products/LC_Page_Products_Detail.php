@@ -325,8 +325,6 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
         $classcat_find1 = false;
         $classcat_find2 = false;
-        // 在庫ありの商品の有無
-        $stock_find = false;
 
         // 規格名一覧
         $arrClassName = SC_Helper_DB_Ex::sfGetIDValueList("dtb_class", "class_id", 'name');
@@ -353,8 +351,6 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
             if($arrProductsClass[$i]['stock'] <= 0 && $arrProductsClass[$i]['stock_unlimited'] != '1') {
                 continue;
             }
-
-            $stock_find = true;
 
             // 規格1のセレクトボックス用
             if($classcat_id1 != $arrProductsClass[$i]['classcategory_id1']){
@@ -385,7 +381,6 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
         $objPage->tpl_classcat_find1 = $classcat_find1;
         $objPage->tpl_classcat_find2 = $classcat_find2;
-        $objPage->tpl_stock_find = $stock_find;
     }
 
     /* パラメーター情報の初期化 */
