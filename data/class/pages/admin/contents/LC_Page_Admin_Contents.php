@@ -214,12 +214,6 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
         $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $objQuery->insert($table, $sqlval);
-
-        // 最初の1件目の登録はrankにNULLが入るので対策
-        $sqlval = array();
-        $sqlval['rank'] = 1;
-        $where = ' del_flg = 0 AND rank IS NULL';
-        $objQuery->update($table, $sqlval, $where);
     }
 
     function lfNewsUpdate($arrPost,$member_id){
