@@ -39,7 +39,7 @@
 
 <!--▼フォームここから -->
 <div class="form_area">
-    <form name="form1" id="form1" method="post" action="<!--{$smarty.const.HTTP_URL}-->shopping/multiple.php">
+    <form name="form1" id="form1" method="post" action="<!--{$smarty.const.ROOT_URLPATH}-->shopping/multiple.php">
             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
             <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
             <input type="hidden" name="line_of_num" value="<!--{$arrForm.line_of_num.value}-->" />

@@ -56,7 +56,6 @@
 </script>
 <section id="slidewindow">
 <h2 class="title"><!--{$tpl_title|h}--></h2>
-<!--<!--{$smarty.const.HTTP_URL}-->shopping/index.php-->
 <form name="member_form" id="member_form" method="post" action="javascript:;" onSubmit="return ajaxLogin()">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="login" />

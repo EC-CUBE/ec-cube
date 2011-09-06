@@ -31,7 +31,7 @@
 
 <!--▼フォームここから -->
 <div class="form_area">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.const.HTTP_URL}-->shopping/deliv.php">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.const.ROOT_URLPATH}-->shopping/deliv.php">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="customer_addr" />
     <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />

@@ -81,7 +81,7 @@ function fnOtherconfirmToggle(areaEl, imgEl) {
  <p>下記ご注文内容でよろしければ、「ご注文完了ページへ」ボタンをクリックしてください。</p>
 </div>
 
-<form name="form1" id="form1" method="post" action="<!--{$smarty.const.HTTP_URL}-->shopping/confirm.php">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.const.ROOT_URLPATH}-->shopping/confirm.php">
             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
             <input type="hidden" name="mode" value="confirm" />
             <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
