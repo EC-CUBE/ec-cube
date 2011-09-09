@@ -1285,7 +1285,7 @@ class SC_Utils {
 
     // 指定したURLに対してPOSTでデータを送信する
     function sfSendPostData($url, $arrData, $arrOkCode = array()){
-        require_once DATA_REALDIR . 'module/Request.php';
+        require_once DATA_REALDIR . 'module/HTTP/Request.php';
 
         // 送信インスタンス生成
         $req = new HTTP_Request($url);

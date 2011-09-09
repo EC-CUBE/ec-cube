@@ -31,7 +31,7 @@ require_once HTML_REALDIR . HTML2DATA_DIR . 'require_base.php';
 // ▲require.php 相当
 
 $ownDir = realpath(dirname(__FILE__)) . '/';
-require_once DATA_REALDIR . 'module/Request.php';
+require_once DATA_REALDIR . 'module/HTTP/Request.php';
 
 if(!defined("ADMIN_DIR")){
     define("ADMIN_DIR","admin/");

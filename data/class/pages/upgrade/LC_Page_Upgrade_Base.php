@@ -3,7 +3,7 @@
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 require_once CLASS_REALDIR . 'pages/upgrade/helper/LC_Upgrade_Helper_Log.php';
 require_once CLASS_REALDIR . 'pages/upgrade/helper/LC_Upgrade_Helper_Json.php';
-require_once DATA_REALDIR . 'module/Request.php';
+require_once DATA_REALDIR . 'module/HTTP/Request.php';
 
 /**
  * オーナーズストアページクラスの基底クラス.
