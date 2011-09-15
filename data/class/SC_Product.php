@@ -639,9 +639,9 @@ __EOS__;
      * @return string 商品詳細の SQL
      */
     function alldtlSQL($where = "") {
-        $whereCause = "";
+        $where_clause = "";
         if (!SC_Utils_Ex::isBlank($where)) {
-            $whereCause = " WHERE " . $where;
+            $where_clause = " WHERE " . $where;
         }
         /*
          * point_rate, deliv_fee は商品規格(dtb_products_class)ごとに保持しているが,
@@ -726,7 +726,7 @@ __EOS__;
                               MAX(deliv_fee) AS deliv_fee,
                               COUNT(*) as class_count
                         FROM dtb_products_class
-                        $whereCause
+                        $where_clause
                         GROUP BY product_id
                     ) AS T4
                         ON dtb_products.product_id = T4.product_id
@@ -746,9 +746,9 @@ __EOS__;
      * @return string 商品規格詳細の SQL
      */
     function prdclsSQL($where = "") {
-        $whereCause = "";
+        $where_clause = "";
         if (!SC_Utils_Ex::isBlank($where)) {
-            $whereCause = " WHERE " . $where;
+            $where_clause = " WHERE " . $where;
         }
         $sql = <<< __EOS__
         (
@@ -786,7 +786,7 @@ __EOS__;
                      ON dtb_class_combination.classcategory_id = Tcc1.classcategory_id
                  LEFT JOIN dtb_classcategory as Tcc2
                      ON Tpcm.classcategory_id = Tcc2.classcategory_id
-             $whereCause
+             $where_clause
         ) as prdcls
 __EOS__;
         return $sql;
