@@ -1294,7 +1294,9 @@ class SC_Utils {
         $req->setMethod(HTTP_REQUEST_METHOD_POST);
 
         // POSTデータ送信
-        $req->addPostDataArray($arrData);
+        foreach ($arrData as $key => $val) {
+            $req->addPostData($key, $val);
+        }
 
         // エラーが無ければ、応答情報を取得する
         if (!PEAR::isError($req->sendRequest())) {

@@ -60,7 +60,9 @@ class LC_Page_Upgrade_Base extends LC_Page_Ex {
         $objReq->setUrl(OSTORE_URL . 'upgrade/index.php');
         $objReq->setMethod('POST');
         $objReq->addPostData('mode', $mode);
-        $objReq->addPostDataArray($arrParams);
+        foreach ($arrParams as $key => $val) {
+            $objReq->addPostData($key, $val);
+        }
 
         foreach ($arrCookies as $cookie) {
             $objReq->addCookie($cookie['name'], $cookie['value']);

@@ -229,7 +229,9 @@ case 'complete':
             }
         }
 
-        $req->addPostDataArray($arrSendData);
+        foreach ($arrSendData as $key => $val) {
+            $req->addPostData($key, $val);
+        }
 
         if (!PEAR::isError($req->sendRequest())) {
             $response1 = $req->getResponseBody();
