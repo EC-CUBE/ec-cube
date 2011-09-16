@@ -45,7 +45,7 @@
 <script src="<!--{$TPL_URLPATH}-->js/jquery.biggerlink.js"></script>
 <script>//<![CDATA[
     $(function(){
-        $('.header_navi li,.recomendblock, .list_area, .newslist li, .bubbleBox, .arrowBox, .category_body, .navBox li,#mypagecolumn .cartitemBox').biggerlink();
+        $('.header_navi li,.recommendblock, .list_area, .newslist li, .bubbleBox, .arrowBox, .category_body, .navBox li,#mypagecolumn .cartitemBox').biggerlink();
     });
 //]]>
 </script>

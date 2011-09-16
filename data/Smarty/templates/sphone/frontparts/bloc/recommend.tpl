@@ -21,12 +21,12 @@
  *}-->
 <!-- ▼おすすめ商品 -->
 <!--{if count($arrBestProducts) > 0}-->
-<section id="recomend_area" class="mainImageInit">
+<section id="recommend_area" class="mainImageInit">
 <h2>おすすめ商品</h2>
 <ul>
 <!--{section name=cnt loop=$arrBestProducts step=2}-->
         <li id="mainImage<!--{$smarty.section.cnt.index}-->">
-            <div class="recomendblock clearfix">
+            <div class="recommendblock clearfix">
               <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrBestProducts[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[cnt].name|h}-->" />
               <div class="productContents">
                 <h3><a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrBestProducts[cnt].product_id|u}-->"><!--{$arrBestProducts[cnt].name|h}--></a></h3>
@@ -40,7 +40,7 @@
         <!--{assign var=cnt2 value=`$smarty.section.cnt.iteration*$smarty.section.cnt.step-1`}-->
         <!--{if $arrBestProducts[$cnt2]|count > 0}-->
           <li id="mainImage<!--{$cnt2}-->">
-              <div class="recomendblock clearfix">
+              <div class="recommendblock clearfix">
                 <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrBestProducts[$cnt2].main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[$cnt2].name|h}-->" />
                 <div class="productContents">
                   <h3><a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrBestProducts[$cnt2].product_id|u}-->"><!--{$arrBestProducts[$cnt2].name|h}--></a></h3>
@@ -61,7 +61,7 @@
 <script type="application/javascript"> 
 <!--//
 $(function(){
-    $('#recomend_area ul li').flickSlide({target:'#recomend_area>ul', duration:5000});
+    $('#recommend_area ul li').flickSlide({target:'#recommend_area>ul', duration:5000});
 });
 //-->
 </script>

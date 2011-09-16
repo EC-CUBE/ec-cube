@@ -21,11 +21,11 @@
  *}-->
 <!--{if count($arrBestProducts) > 0}-->
 <div class="bloc_outer clearfix">
-    <div id="recomend_area">
+    <div id="recommend_area">
         <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_bloc_recommend.jpg" alt="*" class="title_icon" /></h2>
         <!--{section name=cnt loop=$arrBestProducts step=2}-->
         <div class="bloc_body clearfix">
-            <div class="recomendleft clearfix">
+            <div class="recommendleft clearfix">
                 <div class="productImage">
                     <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrBestProducts[cnt].product_id|u}-->">
                         <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrBestProducts[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[cnt].name|h}-->" /></a>
@@ -43,7 +43,7 @@
                 </div>
             </div>
 
-            <div class="recomendright clearfix">
+            <div class="recommendright clearfix">
                 <div class="productImage">
                     <!--{assign var=cnt2 value=`$smarty.section.cnt.iteration*$smarty.section.cnt.step-1`}-->
                     <!--{if $arrBestProducts[$cnt2]|count > 0}-->

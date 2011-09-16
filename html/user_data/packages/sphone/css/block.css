@@ -31,7 +31,7 @@ clear:both;
 /*-----------------------------------------------
 オススメ商品
 ----------------------------------------------- */
-#recomend_area{
+#recommend_area{
 margin:15px 10px 20px 10px;
 padding-top:10px;
 border:#CCC solid 1px;
@@ -39,32 +39,32 @@ border-radius: 8px;
 -webkit-border-radius: 8px;
 -moz-border-radius: 8px;
 }
-#recomend_area h2{
+#recommend_area h2{
 font-size:12px;
 margin-left:10px;
 }
-#recomend_area li{
+#recommend_area li{
 width:290px;
 }
-.recomendblock{
+.recommendblock{
 width:270px;
 padding:5px 10px 5px 8px;
 margin:0 auto;
 clear:both;
 }
-.recomendblock img{
+.recommendblock img{
 width:80px;
 float:left;
 }
-.recomendblock .productContents{
+.recommendblock .productContents{
 width:68%;
 float:right;
 text-align:left;
 }
-.recomendblock .productContents p{
+.recommendblock .productContents p{
 clear:both;
 }
-.recomendblock .productContents p.comment{
+.recommendblock .productContents p.comment{
 width:17em;
 height:3.7em;
 overflow:hidden;
@@ -73,12 +73,12 @@ text-overflow: ellipsis;
 -webkit-text-overflow: ellipsis;
 clear:both;
 }
-.recomendblock .sale_price{
+.recommendblock .sale_price{
 clear:both;
 float:right;
 text-align:right;
 }
-#recomend_area div.moveWrap {
+#recommend_area div.moveWrap {
 width:290px;
 height:auto;
 margin:0 auto;
@@ -87,7 +87,7 @@ overflow:hidden;
 -webkit-box-sizing:border-box;
 }
 
-#recomend_area ul.moveWrapBG {
+#recommend_area ul.moveWrapBG {
 margin:0;
 padding:0;
 display:inline-block;
@@ -97,7 +97,7 @@ height:auto;
 visibility:hidden;
 -webkit-box-sizing:border-box;
 }
-#recomend_area div.slideMask {
+#recommend_area div.slideMask {
 margin:0 auto;
 padding:0;
 margin-right:1px;
@@ -107,7 +107,7 @@ left:0;
 border:4px #FFF solid;
 -webkit-box-sizing:border-box;
 }
-#recomend_area div.moveWrap>ul.move {
+#recommend_area div.moveWrap>ul.move {
 width:10000px;
 margin:0;
 padding:0;
@@ -121,7 +121,7 @@ margin:0;
 padding:0;
 display:none;
 }
-#recomend_area div.moveWrap>ul.move li.slideUnit {
+#recommend_area div.moveWrap>ul.move li.slideUnit {
 width:290px!important;
 margin:0;
 padding:0;
@@ -130,14 +130,14 @@ list-style:none;
 text-align:center;
 -webkit-box-sizing:border-box;
 }
-#recomend_area li.slideUnit>div {
+#recommend_area li.slideUnit>div {
 padding:4px;
 display:inline-block;
 vertical-align:middle;
 text-align:center;
 -webkit-box-sizing:border-box;
 }
-#recomend_area div.flickSlideBottom {
+#recommend_area div.flickSlideBottom {
 width:100%;
 margin-top:5px;
 border-top:#DBDBDB solid 1px;	
@@ -150,14 +150,14 @@ border-bottom-left-radius:8px;
 -webkit-border-bottom-left-radius:8px;
 moz-border-bottom-left-radius:8px;
 }
-#recomend_area div.flickSlideBottom div.bottomLeft,#recomend_area div.flickSlideBottom div.bottomRight {
+#recommend_area div.flickSlideBottom div.bottomLeft,#recommend_area div.flickSlideBottom div.bottomRight {
 display:table-cell;
 -webkit-box-sizing:border-box;
 -webkit-box-shadow: rgba(0, 0, 0, 0.0976562) 0px 1px 3px, rgba(255, 255, 255, 1) 0px 0px 0px inset;
 vertical-align:middle;
 padding:0 10px;
 }
-#recomend_area div.flickSlideBottom div.bottomRight {
+#recommend_area div.flickSlideBottom div.bottomRight {
 font-size:16px;
 font-weight: bold;
 color:#7F7F7F;
@@ -167,7 +167,7 @@ border-bottom-right-radius: 8px;
 -moz-border-bottom-right-radius: 8px;
 border-left:#DBDBDB solid 1px;
 }
-#recomend_area div.flickSlideBottom div.bottomLeft {
+#recommend_area div.flickSlideBottom div.bottomLeft {
 font-size:16px;
 font-weight: bold;
 color:#7F7F7F;
@@ -177,38 +177,38 @@ border-bottom-left-radius: 8px;
 -moz-border-bottom-left-radius:8px;
 border-right:#DBDBDB solid 1px;
 }
-#recomend_area div.flickSlideBottom div.bottomLeft:after {
+#recommend_area div.flickSlideBottom div.bottomLeft:after {
 font-size:10px;
 padding:5px;
 text-align:left;
 display:table-cell;
 }
-#recomend_area div.flickSlideBottom div.bottomLeft:before {
+#recommend_area div.flickSlideBottom div.bottomLeft:before {
 margin-top:2px;
 padding:5px;
 text-align:left;
 display:table-cell;
 }
-#recomend_area div.flickSlideBottom div.bottomRight:before {
+#recommend_area div.flickSlideBottom div.bottomRight:before {
 font-size:10px;
 padding:5px;
 text-align:right;
 display:table-cell;
 }
-#recomend_area div.flickSlideBottom div.bottomRight:after {
+#recommend_area div.flickSlideBottom div.bottomRight:after {
 margin-top:2px;
 padding:5px;
 text-align:right;
 display:table-cell;
 }
-#recomend_area div.flickSlideBottom ul.slidePager {
+#recommend_area div.flickSlideBottom ul.slidePager {
 width:100%;
 margin:0;
 padding:0;
 display:table-cell;
 text-align:center;
 }
-#recomend_area div.flickSlideBottom ul.slidePager li.slidePagerPointer {
+#recommend_area div.flickSlideBottom ul.slidePager li.slidePagerPointer {
 font-size:10px;
 width:6px;
 height:6px;
@@ -219,7 +219,7 @@ border-radius: 6px;
 -webkit-border-radius: 6px;
 -moz-border-radius: 6px;
 }
-#recomend_area div.flickSlideBottom ul.slidePager li.slidePagerPointer.active {
+#recommend_area div.flickSlideBottom ul.slidePager li.slidePagerPointer.active {
 background-color:#333;
 }
 
