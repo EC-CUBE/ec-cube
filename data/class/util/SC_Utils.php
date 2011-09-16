@@ -1283,43 +1283,6 @@ class SC_Utils {
         return $version;
     }
 
-    // 指定したURLに対してPOSTでデータを送信する
-    function sfSendPostData($url, $arrData, $arrOkCode = array()){
-        require_once DATA_REALDIR . 'module/HTTP/Request.php';
-
-        // 送信インスタンス生成
-        $req = new HTTP_Request($url);
-
-        $req->addHeader('User-Agent', 'DoCoMo/2.0　P2101V(c100)');
-        $req->setMethod(HTTP_REQUEST_METHOD_POST);
-
-        // POSTデータ送信
-        foreach ($arrData as $key => $val) {
-            $req->addPostData($key, $val);
-        }
-
-        // エラーが無ければ、応答情報を取得する
-        if (!PEAR::isError($req->sendRequest())) {
-
-            // レスポンスコードがエラー判定なら、空を返す
-            $res_code = $req->getResponseCode();
-
-            if(!in_array($res_code, $arrOkCode)){
-                $response = "";
-            }else{
-                $response = $req->getResponseBody();
-            }
-
-        } else {
-            $response = "";
-        }
-
-        // POSTデータクリア
-        $req->clearPostData();
-
-        return $response;
-    }
-
     /**
      * $array の要素を $arrConvList で指定した方式で mb_convert_kana を適用する.
      *
