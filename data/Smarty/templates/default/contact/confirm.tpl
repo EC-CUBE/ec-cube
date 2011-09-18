@@ -69,8 +69,7 @@
                 <td><a href="mailto:<!--{$arrForm.email.value|escape:'hex'}-->"><!--{$arrForm.email.value|escape:'hexentity'}--></a></td>
             </tr>
             <tr>
-                <th>お問い合わせ内容<span class="attention">※</span><br />
-                    <span class="mini">（全角1000字以下）</span></th>
+                <th>お問い合わせ内容<span class="attention">※</span></th>
                 <td><!--{$arrForm.contents.value|h|nl2br}--></td>
             </tr>
         </table>
