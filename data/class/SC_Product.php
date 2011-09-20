@@ -212,7 +212,7 @@ __EOS__;
             $arrProductClass = $this->getProductsClassFullByProductId($productId, $has_deleted);
 
             $classCats1 = array();
-            $classCats1[''] = '選択してください';
+            $classCats1['__unselected'] = '選択してください';
 
             // 規格1クラス名
             $this->className1[$productId] =
@@ -233,10 +233,10 @@ __EOS__;
 
             $this->stock_find[$productId] = false;
             $classCategories = array();
-            $classCategories['']['']['name'] = '選択してください';
-            $classCategories['']['']['product_class_id'] = $arrProductClass[0]['product_class_id'];
+            $classCategories['__unselected']['__unselected']['name'] = '選択してください';
+            $classCategories['__unselected']['__unselected']['product_class_id'] = $arrProductClass[0]['product_class_id'];
             // 商品種別
-            $classCategories['']['']['product_type'] = $arrProductClass[0]['product_type_id'];
+            $classCategories['__unselected']['__unselected']['product_type'] = $arrProductClass[0]['product_type_id'];
             $this->product_class_id[$productId] = $arrProductClass[0]['product_class_id'];
             // 商品種別
             $this->product_type[$productId] = $arrProductClass[0]['product_type_id'];
