@@ -60,52 +60,32 @@ $(function() {
             var dispname = '';
 
             // 商品規格ID
-            var idfield = $('<input type="hidden" />')
-                .attr({'name': 'multiple_product_class_id[' + index + ']'})
-                .val($(product_class_id[i]).val());
+            var idfield = $('<input type="hidden" name="multiple_product_class_id[' + index + ']" value="' + $(product_class_id[i]).val() + '" />"');
 
             // 商品コード
-            var codefield = $('<input type="hidden" />')
-                .attr({'name': 'multiple_product_code['+ index + ']'})
-                .val($(product_code[i]).val());
+            var codefield = $('<input type="hidden" name="multiple_product_code['+ index + ']" value="' + $(product_code[i]).val() + '" />');
 
             // 商品名
-            var namefield = $('<input type="hidden" />')
-                .attr({'name': 'multiple_product_name[' + index + ']'})
-                .val($(product_name[i]).val());
+            var namefield = $('<input type="hidden" name="multiple_product_name[' + index + ']" value="' + $(product_name[i]).val() + '" />');
             dispname = $(product_name[i]).val();
 
             // 規格1
-            var class1field = $('<input type="hidden" />')
-                .attr({'name': 'multiple_classcategory_name1[' + index + ']'})
-                .val($(classcategory_name1[i]).val());
-
+            var class1field = $('<input type="hidden" name="multiple_classcategory_name1[' + index + ']" value="' + $(classcategory_name1[i]).val() + '" />');
             if ($(classcategory_name1[i]).val() != '') {
                 dispname += '<br />' + $(classcategory_name1[i]).val();
             }
 
             // 規格2
-            var class2field = $('<input type="hidden" />')
-                .attr({'name': 'multiple_classcategory_name2[' + index + ']'})
-                .val($(classcategory_name2[i]).val());
-
+            var class2field = $('<input type="hidden" name="multiple_classcategory_name2[' + index + ']" value="' + $(classcategory_name2[i]).val() + '" />');
             if ($(classcategory_name2[i]).val() != '') {
                 dispname += '<br />' + $(classcategory_name2[i]).val();
             }
 
             // 単価
-            var pricefield = $('<input type="hidden" />')
-                .attr({'name': 'multiple_price[' + index + ']'})
-                .val($(price[i]).val());
-
+            var pricefield = $('<input type="hidden" name="multiple_price[' + index + ']" value="' + $(price[i]).val() + '" />');
 
             // 数量
-            var qfield = $('<input type="text" />')
-                .attr({
-                    'name': 'multiple_quantity[' + index + ']',
-                    'size': 4
-                })
-                .val(1);
+            var qfield = $('<input type="text" name="multiple_quantity[' + index + ']" size="4" value="1" />');
 
             // 数量と hidden を設定
             var q = $('<td />').addClass('center')
@@ -118,7 +98,7 @@ $(function() {
                 .append(qfield);
 
             // お届け先
-            var select = $('<select />').attr('name', 'multiple_shipping_id[' + index + ']');
+            var select = $('<select name="multiple_shipping_id[' + index + ']" />');
             var s = $('<td />').append(select);
 
             // 行を生成
@@ -138,9 +118,8 @@ $(function() {
         var text = $(shipping_name01[i]).val() + $(shipping_name02[i]).val()
             + ' ' + $(shipping_pref[i]).text()
             + $(shipping_addr01[i]).val() + $(shipping_addr02[i]).val();
-        var option = $('<option />')
-            .val($(shipping_id[i]).val())
-            .text(text);
+
+        var option = $('<option value="' + $(shipping_id[i]).val() + '">' + text + '</option>');
         $('select').append(option);
     }
 });
@@ -170,7 +149,7 @@ function func_submit() {
 </script>
 
 <!--▼検索フォーム-->
-<form name="form1" id="form1" method="post" action="?">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|h}-->">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input name="mode" type="hidden" value="search" />
 <input name="anchor_key" type="hidden" value="" />
