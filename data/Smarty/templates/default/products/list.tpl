@@ -176,13 +176,13 @@ function fnInCart(productForm) {
                 <div class="pricebox sale_price">
                     <!--{$smarty.const.SALE_PRICE_TITLE}-->(税込)：
                     <span class="price">
-                        <span id="price02_default_<!--{$id}-->">
+                        <span id="price02_default_<!--{$id}-->"><!--{strip}-->
                             <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
                                 <!--{$arrProduct.price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                             <!--{else}-->
                                 <!--{$arrProduct.price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$arrProduct.price02_max|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                             <!--{/if}-->
-                        </span><span id="price02_dynamic_<!--{$id}-->"></span>
+                        </span><span id="price02_dynamic_<!--{$id}-->"></span><!--{/strip}-->
                         円</span>
                 </div>
 

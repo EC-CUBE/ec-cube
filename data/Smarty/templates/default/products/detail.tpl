@@ -110,13 +110,13 @@ $(document).ready(function() {
                 <dl class="normal_price">
                     <dt><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(税込)：</dt>
                     <dd class="price">
-                        <span id="price01_default">
+                        <span id="price01_default"><!--{strip}-->
                             <!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->
                                 <!--{$arrProduct.price01_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                             <!--{else}-->
                                 <!--{$arrProduct.price01_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$arrProduct.price01_max|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                             <!--{/if}-->
-                        </span><span id="price01_dynamic"></span>
+                        </span><span id="price01_dynamic"></span><!--{/strip}-->
                         円
                     </dd>
                 </dl>
@@ -126,13 +126,13 @@ $(document).ready(function() {
             <dl class="sale_price">
                 <dt><!--{$smarty.const.SALE_PRICE_TITLE}-->(税込)：</dt>
                 <dd class="price">
-                    <span id="price02_default">
+                    <span id="price02_default"><!--{strip}-->
                         <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
                             <!--{$arrProduct.price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                         <!--{else}-->
                             <!--{$arrProduct.price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$arrProduct.price02_max|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                         <!--{/if}-->
-                    </span><span id="price02_dynamic"></span>
+                    </span><span id="price02_dynamic"></span><!--{/strip}-->
                     円
                 </dd>
             </dl>
@@ -140,7 +140,7 @@ $(document).ready(function() {
             <!--★ポイント★-->
             <!--{if $smarty.const.USE_POINT !== false}-->
                 <div class="point">ポイント：
-                    <span id="point_default">
+                    <span id="point_default"><!--{strip}-->
                         <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
                             <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate|number_format}-->
                         <!--{else}-->
@@ -150,7 +150,7 @@ $(document).ready(function() {
                                 <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate|number_format}-->～<!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate|number_format}-->
                             <!--{/if}-->
                         <!--{/if}-->
-                    </span><span id="point_dynamic"></span>
+                    </span><span id="point_dynamic"></span><!--{/strip}-->
                     Pt
                 </div>
             <!--{/if}-->
