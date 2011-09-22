@@ -50,6 +50,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrAUTHORITY = $masterData->getMasterData('mtb_authority');
 
+        $this->tpl_subtitle = 'メンバー登録/編集';
         $this->httpCacheControl('nocache');
     }
 
