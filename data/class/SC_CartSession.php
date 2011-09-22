@@ -523,36 +523,37 @@ class SC_CartSession {
         foreach (array_keys($items) as $key) {
             $item =& $items[$key];
             $product =& $item['productsClass'];
-
-            /*
-             * 配送業者のチェック
-             */
-            $arrDeliv = SC_Helper_Purchase_Ex::getDeliv($productTypeId);
-            if (SC_Utils_Ex::isBlank($arrDeliv)) {
-                $tpl_message .= "※「" . $product['name'] . "」はまだ配送の準備ができておりません。恐れ入りますがお問い合わせページよりお問い合わせください。\n";
-            }
-
             /*
              * 表示/非表示商品のチェック
              */
             if (SC_Utils_Ex::isBlank($product)) {
                 $this->delProduct($item['cart_no'], $productTypeId);
                 $tpl_message .= "※ 現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。\n";
-            }
+            } else {
 
-            /*
-             * 商品購入制限数, 在庫数のチェック
-             */
-            $limit = $objProduct->getBuyLimit($product);
-            if (!is_null($limit) && $item['quantity'] > $limit) {
-                if ($limit > 0) {
-                    $this->setProductValue($item['id'], 'quantity', $limit, $productTypeId);
-                    $this->setProductValue($item['id'], 'total_inctax', SC_Helper_DB_Ex::sfCalcIncTax($item['price']) * $limit, $productTypeId);
-                    $tpl_message .= "※「" . $product['name'] . "」は販売制限(または在庫が不足)しております。一度に数量{$limit}以上の購入はできません。\n";
-                } else {
+                /*
+                 * 配送業者のチェック
+                 */
+                $arrDeliv = SC_Helper_Purchase_Ex::getDeliv($productTypeId);
+                if (SC_Utils_Ex::isBlank($arrDeliv)) {
+                    $tpl_message .= "※「" . $product['name'] . "」はまだ配送の準備ができておりません。恐れ入りますがお問い合わせページよりお問い合わせください。\n";
                     $this->delProduct($item['cart_no'], $productTypeId);
-                    $tpl_message .= "※「" . $product['name'] . "」は売り切れました。\n";
-                    continue;
+                }
+
+                /*
+                 * 商品購入制限数, 在庫数のチェック
+                 */
+                $limit = $objProduct->getBuyLimit($product);
+                if (!is_null($limit) && $item['quantity'] > $limit) {
+                    if ($limit > 0) {
+                        $this->setProductValue($item['id'], 'quantity', $limit, $productTypeId);
+                        $this->setProductValue($item['id'], 'total_inctax', SC_Helper_DB_Ex::sfCalcIncTax($item['price']) * $limit, $productTypeId);
+                        $tpl_message .= "※「" . $product['name'] . "」は販売制限(または在庫が不足)しております。一度に数量{$limit}以上の購入はできません。\n";
+                    } else {
+                        $this->delProduct($item['cart_no'], $productTypeId);
+                        $tpl_message .= "※「" . $product['name'] . "」は売り切れました。\n";
+                        continue;
+                    }
                 }
             }
         }
