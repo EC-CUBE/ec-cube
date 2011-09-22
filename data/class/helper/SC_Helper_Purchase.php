@@ -941,11 +941,11 @@ __EOS__;
 __EOS__;
         $col .= $dbFactory->getDownloadableDaysWhereSql('T1') . ' AS effective';
         $from = <<< __EOS__
-                 dtb_order T1
-            JOIN dtb_order_detail T2
-              ON T1.order_id = T2.order_id
-            JOIN dtb_products_class T3
-              ON T2.product_class_id = T3.product_class_id
+                      dtb_order T1
+                 JOIN dtb_order_detail T2
+                   ON T1.order_id = T2.order_id
+            LEFT JOIN dtb_products_class T3
+                   ON T2.product_class_id = T3.product_class_id
 __EOS__;
         $objQuery->setOrder('T2.order_detail_id');
         return $objQuery->select($col, $from, 'T1.order_id = ?', array($order_id));
