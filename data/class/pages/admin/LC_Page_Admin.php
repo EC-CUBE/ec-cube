@@ -54,8 +54,8 @@ class LC_Page_Admin extends LC_Page_Ex {
 
         //SSL制限チェック
         if(ADMIN_FORCE_SSL == TRUE){
-            if(empty($_SERVER['HTTPS']) AND $_SERVER['SERVER_PORT'] != 443){
-                SC_Response_Ex::sendRedirect($SERVER["REQUEST_URI"], $_GET,FALSE, TRUE);
+            if (SC_Utils_Ex::sfIsHTTPS() === false){
+                SC_Response_Ex::sendRedirect($_SERVER["REQUEST_URI"], $_GET, FALSE, TRUE);
             }
         }
 
