@@ -299,17 +299,21 @@ class SC_CartSession {
      */
     function adjustSessionProductsClass(&$arrProductsClass) {
         $arrNecessaryItems = array(
-            'product_id'        => true,
-            'product_class_id'  => true,
-            'name'              => true,
-            'price02'           => true,
-            'point_rate'        => true,
-            'main_list_image'   => true,
-            'main_image'        => true,
-            'product_code'      => true,
-            'stock'             => true,
-            'stock_unlimited'   => true,
-            'sale_limit'        => true,
+            'product_id'          => true,
+            'product_class_id'    => true,
+            'name'                => true,
+            'price02'             => true,
+            'point_rate'          => true,
+            'main_list_image'     => true,
+            'main_image'          => true,
+            'product_code'        => true,
+            'stock'               => true,
+            'stock_unlimited'     => true,
+            'sale_limit'          => true,
+            'class_name1'         => true,
+            'classcategory_name1' => true,
+            'class_name2'         => true,
+            'classcategory_name2' => true,
         );
 
         // 必要な項目以外を削除。
