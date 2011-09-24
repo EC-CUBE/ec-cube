@@ -360,7 +360,6 @@ div#search_area .bloc_body .btn {
     margin-bottom: 10px;
     padding: 10px 0 10px;
     border: none;
-    width: 100%;
     background: url("../img/background/line_dot_01.gif") repeat-x bottom;
 }
 
@@ -371,8 +370,6 @@ div#search_area .bloc_body .btn {
 
 #recommend_area .bloc_body img ,
 #whobought .whobought_bloc img {
-    display: block;
-    float: left;
     margin: 0 5px 0 0;
 }
 
@@ -382,31 +379,36 @@ div#search_area .bloc_body .btn {
     font-weight: normal;
 }
 
+/* サイドカラム用 */
+.side_column #recommend_area .product_item {
+    margin-bottom: 10px;
+}
+
 
 /* 画像
 ----------------------------------------------- */
-#recommend_area .bloc_body .productImage ,
+/* メインカラム用 */
+.main_column #recommend_area .bloc_body .productImage,
 #whobought_area .whobought_bloc .productImage {
     margin-bottom: 10px;
     float: left;
     width: 90px;
 }
+/* サイドカラム用 */
+.side_column #recommend_area .bloc_body .productImage {
+    float: none;
+    text-align: center;
+    width: auto;
+}
 
 
 /* 左右の振り分け
 ----------------------------------------------- */
-#one_maincolumn #recommend_area .recommendleft ,
-#two_maincolumn_right #recommend_area .recommendleft ,
-#two_maincolumn_left #recommend_area .recommendleft ,
-#three_maincolumn #recommend_area .recommendleft ,
+.main_column #recommend_area .product_item,
 #whobought_area .whobought_bloc .whobought_left {
     float: left;
     width: 47.5%;
 }
-#one_maincolumn #recommend_area .recommendright ,
-#two_maincolumn_right #recommend_area .recommendright ,
-#two_maincolumn_left #recommend_area .recommendright ,
-#three_maincolumn #recommend_area .recommendright ,
 #whobought_area .whobought_bloc .whobought_right {
     float: right;
     width: 47.5%;
@@ -437,32 +439,7 @@ div#search_area .bloc_body .btn {
     width: 67%;
 }
 
-/* サイドカラム用 (幅px固定) */
-.side_column #recommend_area .bloc_body {
-    margin-top: 5px;
-    margin-right: 0;
-    width: 157px;
-    padding: 0;
-}
+/* サイドカラム用 */
 .side_column #recommend_area .bloc_body .productContents {
-    padding: 0;
-    margin: 0;
-    width: 80px;
+    clear: both;
 }
-.side_column #recommend_area .recommendleft {
-    padding: 0;
-    width: 70px;
-    float: left;
-}
-.side_column #recommend_area .recommendright {
-    margin: 0;
-    padding: 0;
-    width: 70px;
-    float: right;
-}
-
-/* IE6以下*/
-* html .side_column #recommend_area .bloc_body {
-    width: 180px;
-}
-

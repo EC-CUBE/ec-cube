@@ -122,6 +122,9 @@ select {
 .clearfix {
     display: block; /* for IE8 */
 }
+.clear {
+    clear: both;
+}
 
 /* リンク指定
 ----------------------------------------------- */
