@@ -660,7 +660,7 @@ class SC_Query {
             return;
         }
 
-        return $affected->fetchCol($col);
+        return $affected->fetchCol();
     }
 
     /**
