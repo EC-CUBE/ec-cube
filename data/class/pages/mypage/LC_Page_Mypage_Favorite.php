@@ -141,8 +141,7 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
         $where = $this->lfMakeWhere('', $arrProduct_id);
         $where .= ' AND del_flg = 0';
         $objQuery->setWhere($where);
-        $objProduct->setProductsOrder('create_date', 'dtb_customer_favorite_products', 'DESC');
-        $arrProducts    = $objProduct->lists($objQuery, $arrProduct_id);
+        $arrProducts = $objProduct->lists($objQuery, $arrProduct_id);
 
         //取得している並び順で並び替え
         $arrProducts2 = array();
