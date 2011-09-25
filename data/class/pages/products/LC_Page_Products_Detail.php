@@ -408,8 +408,9 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
     /* 登録済み関連商品の読み込み */
     function lfPreGetRecommendProducts($product_id) {
-        $arrRecommend = array();
+        $objProduct = new SC_Product_Ex();
         $objQuery =& SC_Query_Ex::getSingletonInstance();
+
         $objQuery->setOrder("rank DESC");
         $arrRecommendData = $objQuery->select("recommend_product_id, comment", "dtb_recommend_products", "product_id = ?", array($product_id));
 
@@ -419,17 +420,8 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
             $arrRecommendData[$recommend["recommend_product_id"]] = $recommend['comment'];
         }
 
-        $objProduct = new SC_Product_Ex();
-
-        $where = "";
-        if (!empty($arrRecommendProductId)) {
-            $where = 'product_id IN (' . implode(',', $arrRecommendProductId) . ')';
-        } else {
-            return $arrRecommend;
-        }
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->setWhere($where);
-        $arrProducts = $objProduct->lists($objQuery, $arrRecommendProductId);
+        $arrProducts = $objProduct->getListByProductIds($objQuery, $arrRecommendProductId);
 
         //取得している並び順で並び替え
         // FIXME SC_Productあたりにソート処理はもってくべき
@@ -437,7 +429,8 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         foreach($arrProducts as $item) {
             $arrProducts2[ $item['product_id'] ] = $item;
         }
-        $arrProducts = array();
+
+        $arrRecommend = array();
         foreach($arrRecommendProductId as $product_id) {
             $arrProducts2[$product_id]['comment'] = $arrRecommendData[$product_id];
             $arrRecommend[] = $arrProducts2[$product_id];

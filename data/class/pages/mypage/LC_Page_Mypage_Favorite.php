@@ -120,10 +120,10 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
         $objProduct     = new SC_Product_Ex();
 
         $objQuery->setOrder('create_date DESC');
-        $arrProduct_id  = $objQuery->getCol('product_id', 'dtb_customer_favorite_products', 'customer_id = ?', array($customer_id));
+        $arrProductId  = $objQuery->getCol('product_id', 'dtb_customer_favorite_products', 'customer_id = ?', array($customer_id));
 
         $objQuery       =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->setWhere($this->lfMakeWhere('alldtl.', $arrProduct_id));
+        $objQuery->setWhere($this->lfMakeWhere('alldtl.', $arrProductId));
         $linemax        = $objProduct->findProductCount($objQuery);
 
         $objPage->tpl_linemax = $linemax;   // 何件が該当しました。表示用
@@ -136,12 +136,12 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
         $objQuery       =& SC_Query_Ex::getSingletonInstance();
         //$objQuery->setLimitOffset(SEARCH_PMAX, $startno);
         // 取得範囲の指定(開始行番号、行数のセット)
-        $arrProduct_id  = array_slice($arrProduct_id, $startno, SEARCH_PMAX);
+        $arrProductId  = array_slice($arrProductId, $startno, SEARCH_PMAX);
 
-        $where = $this->lfMakeWhere('', $arrProduct_id);
+        $where = $this->lfMakeWhere('', $arrProductId);
         $where .= ' AND del_flg = 0';
-        $objQuery->setWhere($where);
-        $arrProducts = $objProduct->lists($objQuery, $arrProduct_id);
+        $objQuery->setWhere($where, $arrProductId);
+        $arrProducts = $objProduct->lists($objQuery);
 
         //取得している並び順で並び替え
         $arrProducts2 = array();
@@ -149,7 +149,7 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
             $arrProducts2[ $item['product_id'] ] = $item;
         }
         $arrProductsList = array();
-        foreach($arrProduct_id as $product_id) {
+        foreach($arrProductId as $product_id) {
             $arrProductsList[] = $arrProducts2[$product_id];
         }
 
@@ -157,12 +157,12 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
     }
 
     /* 仕方がない処理。。 */
-    function lfMakeWhere ($tablename, $arrProduct_id) {
+    function lfMakeWhere ($tablename, $arrProductId) {
 
         // 取得した表示すべきIDだけを指定して情報を取得。
         $where = "";
-        if (is_array($arrProduct_id) && !empty($arrProduct_id)) {
-            $where = $tablename . 'product_id IN (' . implode(',', $arrProduct_id) . ')';
+        if (is_array($arrProductId) && !empty($arrProductId)) {
+            $where = $tablename . 'product_id IN (' . implode(',', $arrProductId) . ')';
         } else {
             // 一致させない
             $where = '0<>0';

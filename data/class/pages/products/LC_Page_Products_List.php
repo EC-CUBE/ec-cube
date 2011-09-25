@@ -303,21 +303,10 @@ __EOS__;
         $objQuery->setWhere($searchCondition['where']);
 
          // 表示すべきIDとそのIDの並び順を一気に取得
-        $arrProduct_id = $objProduct->findProductIdsOrder($objQuery, array_merge($searchCondition['arrval'], $arrval_order));
+        $arrProductId = $objProduct->findProductIdsOrder($objQuery, array_merge($searchCondition['arrval'], $arrval_order));
 
-        // 取得した表示すべきIDだけを指定して情報を取得。
-        $where = "";
-        if (is_array($arrProduct_id) && !empty($arrProduct_id)) {
-            $where = 'product_id IN (' . implode(',', $arrProduct_id) . ')';
-        } else {
-            // 一致させない
-            $where = '0<>0';
-        }
-
-        $where .= ' AND del_flg = 0'; // 商品規格の削除フラグ
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->setWhere($where);
-        $arrProducts = $objProduct->lists($objQuery, $arrProduct_id);
+        $arrProducts = $objProduct->getListByProductIds($objQuery, $arrProductId);
 
         //取得している並び順で並び替え
         $arrProducts2 = array();
@@ -325,13 +314,13 @@ __EOS__;
             $arrProducts2[ $item['product_id'] ] = $item;
         }
         $arrProducts = array();
-        foreach($arrProduct_id as $product_id) {
+        foreach($arrProductId as $product_id) {
             $arrProducts[] = $arrProducts2[$product_id];
         }
 
         // 規格を設定
-        $objProduct->setProductsClassByProductIds($arrProduct_id);
-        $arrProducts += array('productStatus' => $objProduct->getProductStatus($arrProduct_id));
+        $objProduct->setProductsClassByProductIds($arrProductId);
+        $arrProducts += array('productStatus' => $objProduct->getProductStatus($arrProductId));
         return $arrProducts;
     }
 

@@ -243,14 +243,16 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
      * @return array $arrProduct 取得結果を配列で返す
      */
     function lfGetProductsDetail(&$objQuery, $product_id = 'all'){
-        // --- 商品詳細の取得
-        if ($product_id != 'all') {
-            $where = 'product_id = ' . $product_id;
-            $objQuery->setWhere($where);
-        }
-        $objQuery->setOrder('product_id');
         $objProduct = new SC_Product_Ex();
-        $arrProductLsit = $objProduct->lists($objQuery);
+
+        // --- 商品詳細の取得
+        if ($product_id == 'all') {
+            $objQuery->setOrder('product_id');
+            $arrProductLsit = $objProduct->lists($objQuery);
+        } else {
+            $arrProductLsit = $objProduct->getListByProductIds($objQuery, $product_id);
+        }
+
         // 各商品のカテゴリIDとランクの取得
         $arrProduct = array();
         foreach( $arrProductLsit as $key => $val ) {

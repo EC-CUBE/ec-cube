@@ -136,10 +136,9 @@ __EOS__;
      * の配列を取得する.
      *
      * @param SC_Query $objQuery SC_Query インスタンス
-     * @param array $arrVal 検索パラメーター(ソート条件)の配列
      * @return array 商品一覧の配列
      */
-    function lists(&$objQuery, $arrVal = array()) {
+    function lists(&$objQuery) {
         $col = <<< __EOS__
              product_id
             ,product_code_min
@@ -164,9 +163,34 @@ __EOS__;
             ,del_flg
             ,update_date
 __EOS__;
-        $res = $objQuery->select($col, $this->alldtlSQL($objQuery->where),
-                                 "", $arrVal);
+        $where = 'dtb_products_class.del_flg = 0';
+        $res = $objQuery->select($col, $this->alldtlSQL($where));
         return $res;
+    }
+
+
+    /**
+     * 商品IDを指定し、商品一覧を取得する
+     *
+     * SC_Query::setOrder() や SC_Query::setLimitOffset() を設定して, 商品一覧
+     * の配列を取得する.
+     * FIXME: 呼び出し元で設定した、SC_Query::setWhere() も有効に扱いたい。
+     *
+     * @param SC_Query $objQuery SC_Query インスタンス
+     * @param array|int $arrProductId 商品ID
+     * @return array 商品一覧の配列
+     */
+    function getListByProductIds(&$objQuery, $arrProductId = array()) {
+        if (empty($arrProductId)) {
+            return array();
+        }
+
+        $where = 'alldtl.product_id IN (' . implode(',', array_fill(0, count($arrProductId), '?')) . ')';
+        $where .= ' AND alldtl.del_flg = 0';
+
+        $objQuery->setWhere($where, $arrProductId);
+        $arrRet = $this->lists($objQuery);
+        return $arrRet;
     }
 
     /**

@@ -124,22 +124,19 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
     }
 
     /**
-     * 
      * 商品取得
-     * @param array $arrProduct_id
+     * 
+     * @param array $arrProductId
      * @param SC_Product $objProduct
      */
-    function getProductList($arrProduct_id,&$objProduct){
-        $where = "";
-        if (is_array($arrProduct_id) && !empty($arrProduct_id)) {
-            $where = 'product_id IN (' . implode(',', $arrProduct_id) . ')';
-        } else {
-            // 一致させない
-            $where = '0<>0';
-        }
+    function getProductList($arrProductId, &$objProduct){
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->setWhere($where);
-        return $objProduct->lists($objQuery, $arrProduct_id);
+
+        // 表示順序
+        $order = "update_date DESC, product_id DESC";
+        $objQuery->setOrder($order);
+
+        return $objProduct->getListByProductIds($objQuery, $arrProductId);
     }
 
     /**

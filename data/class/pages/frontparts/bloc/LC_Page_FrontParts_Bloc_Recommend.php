@@ -100,17 +100,13 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc {
         if (count($arrBestProducts) > 0) {
             // 商品一覧を取得
             // where条件生成&セット
-            $arrBestProductIds = array();
+            $arrProductId = array();
             $where = 'product_id IN (';
             foreach ($arrBestProducts as $key => $val) {
-                $arrBestProductIds[] = $val['product_id'];
+                $arrProductId[] = $val['product_id'];
             }
-            $where .= implode(', ', $arrBestProductIds);
-            $where .= ')';
-            $where .= ' AND del_flg = 0'; // 商品規格の削除フラグ
-            $objQuery->setWhere($where);
             // 取得
-            $arrTmp = $objProduct->lists($objQuery);
+            $arrTmp = $objProduct->getListByProductIds($objQuery, $arrProductId);
             foreach ($arrTmp as $key => $arrRow) {
                 $arrProductList[$arrRow['product_id']] = $arrRow;
             }

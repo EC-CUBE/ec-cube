@@ -34,11 +34,12 @@ require_once realpath(dirname(__FILE__)) . '/../module/MDB2.php';
 class SC_Query {
 
     var $instance;
-    var $option;
-    var $where;
+    var $option = '';
+    var $where = '';
+    var $arrWhereVal = array();
     var $conn;
-    var $groupby;
-    var $order;
+    var $groupby = '';
+    var $order = '';
     var $force_run;
 
     /**
@@ -81,10 +82,6 @@ class SC_Query {
         }
         $this->dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $this->force_run = $force_run;
-        $this->where = "";
-        $this->order = "";
-        $this->groupby = "";
-        $this->option = "";
     }
 
     /**
@@ -100,10 +97,11 @@ class SC_Query {
             || is_null($GLOBALS['_SC_Query_instance'])) {
             $GLOBALS['_SC_Query_instance'] =& new SC_Query_Ex($dsn, $force_run, $new);
         }
-        $GLOBALS['_SC_Query_instance']->where = "";
-        $GLOBALS['_SC_Query_instance']->order = "";
-        $GLOBALS['_SC_Query_instance']->groupby = "";
-        $GLOBALS['_SC_Query_instance']->option = "";
+        $GLOBALS['_SC_Query_instance']->where = '';
+        $GLOBALS['_SC_Query_instance']->arrWhereVal = array();
+        $GLOBALS['_SC_Query_instance']->order = '';
+        $GLOBALS['_SC_Query_instance']->groupby = '';
+        $GLOBALS['_SC_Query_instance']->option = '';
         return $GLOBALS['_SC_Query_instance'];
     }
 
@@ -125,17 +123,17 @@ class SC_Query {
      *
      * @param string $table テーブル名
      * @param string $where where句
-     * @param array $arrval プレースホルダ
+     * @param array $arrWhereVal プレースホルダ
      * @return integer 件数
      */
-    function count($table, $where = "", $arrval = array()) {
+    function count($table, $where = "", $arrWhereVal = array()) {
         if(strlen($where) <= 0) {
             $sqlse = "SELECT COUNT(*) FROM $table";
         } else {
             $sqlse = "SELECT COUNT(*) FROM $table WHERE $where";
         }
         $sqlse = $this->dbFactory->sfChangeMySQL($sqlse);
-        return $this->getOne($sqlse, $arrval);
+        return $this->getOne($sqlse, $arrWhereVal);
     }
 
     /**
@@ -144,13 +142,13 @@ class SC_Query {
      * @param string $col カラム名. 複数カラムの場合はカンマ区切りで書く
      * @param string $table テーブル名
      * @param string $where WHERE句
-     * @param array $arrval プレースホルダ
+     * @param array $arrWhereVal プレースホルダ
      * @param integer $fetchmode 使用するフェッチモード。デフォルトは MDB2_FETCHMODE_ASSOC。
      * @return array|null
      */
-    function select($col, $table, $where = "", $arrval = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
-        $sqlse = $this->getSql($col, $table, $where);
-        return $this->getAll($sqlse, $arrval, $fetchmode);
+    function select($col, $table, $where = "", $arrWhereVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
+        $sqlse = $this->getSql($col, $table, $where, $arrWhereVal);
+        return $this->getAll($sqlse, $arrWhereVal, $fetchmode);
     }
 
     /**
@@ -278,12 +276,14 @@ class SC_Query {
     /**
      * 構築した SELECT 文を取得する.
      *
+     * クラス変数から WHERE 句を組み立てる場合、$arrWhereVal を経由してプレースホルダもクラス変数のもので上書きする。
      * @param string $col SELECT 文に含めるカラム名
      * @param string $table SELECT 文に含めるテーブル名
      * @param string $where SELECT 文に含める WHERE 句
+     * @param mixed $arrWhereVal プレースホルダ(参照)
      * @return string 構築済みの SELECT 文
      */
-    function getSql($col, $table, $where = '') {
+    function getSql($col, $table, $where = '', &$arrWhereVal = null) {
         $sqlse = "SELECT $col FROM $table";
 
         // 引数の$whereを優先する。
@@ -291,6 +291,9 @@ class SC_Query {
             $sqlse .= " WHERE $where";
         } elseif (strlen($this->where) >= 1) {
             $sqlse .= " WHERE " . $this->where;
+            if (empty($arrWhereVal)) {
+                $arrWhereVal = $this->arrWhereVal;
+            }
         }
 
         $sqlse .= ' ' . $this->groupby . ' ' . $this->order . ' ' . $this->option;
@@ -387,11 +390,13 @@ class SC_Query {
      *
      * この関数で設定した値は SC_Query::getSql() で使用されます.
      *
-     * @param string $str WHERE 句に付与する文字列
+     * @param string $where WHERE 句に付与する文字列
+     * @param mixed $arrWhereVal プレースホルダ
      * @return SC_Query 自分自身のインスタンス
      */
-    function setWhere($str) {
-        $this->where = $str;
+    function setWhere($where = '', $arrWhereVal = array()) {
+        $this->where = $where;
+        $this->arrWhereVal = $arrWhereVal;
         return $this;
     }
 
@@ -488,12 +493,12 @@ class SC_Query {
      * @param string $table テーブル名
      * @param array $sqlval array('カラム名' => '値',...)の連想配列
      * @param string $where WHERE句
-     * @param array $arrValIn WHERE句用のプレースホルダ配列 (従来は追加カラム用も兼ねていた)
+     * @param array $arrWhereVal WHERE句用のプレースホルダ配列 (従来は追加カラム用も兼ねていた)
      * @param array $arrRawSql 追加カラム
      * @param array $arrRawSqlVal 追加カラム用のプレースホルダ配列
      * @return
      */
-    function update($table, $sqlval, $where = "", $arrValIn = array(), $arrRawSql = array(), $arrRawSqlVal = array()) {
+    function update($table, $sqlval, $where = "", $arrWhereVal = array(), $arrRawSql = array(), $arrRawSqlVal = array()) {
         $arrCol = array();
         $arrVal = array();
         $find = false;
@@ -527,9 +532,9 @@ class SC_Query {
         // 文末の","を削除
         $strcol = implode(', ', $arrCol);
 
-        if (is_array($arrValIn)) { // 旧版との互換用
+        if (is_array($arrWhereVal)) { // 旧版との互換用
             // プレースホルダー用に配列を追加
-            $arrVal = array_merge($arrVal, $arrValIn);
+            $arrVal = array_merge($arrVal, $arrWhereVal);
         }
 
         $sqlup = "UPDATE $table SET $strcol";
@@ -547,7 +552,7 @@ class SC_Query {
      * @param string $table テーブル名
      * @param string $col カラム名
      * @param string $where 付与する WHERE 句
-     * @param array $arrval ブレースホルダに挿入する値
+     * @param array $arrval プレースホルダに挿入する値
      * @return integer MAX文の実行結果
      */
     function max($col, $table, $where = "", $arrval = array()) {
@@ -561,7 +566,7 @@ class SC_Query {
      * @param string $table テーブル名
      * @param string $col カラム名
      * @param string $where 付与する WHERE 句
-     * @param array $arrval ブレースホルダに挿入する値
+     * @param array $arrval プレースホルダに挿入する値
      * @return integer MIN文の実行結果
      */
     function min($col, $table, $where = "", $arrval = array()) {
@@ -575,13 +580,13 @@ class SC_Query {
      * @param string $table テーブル名
      * @param string $col カラム名
      * @param string $where 付与する WHERE 句
-     * @param array $arrval ブレースホルダに挿入する値
+     * @param array $arrWhereVal プレースホルダに挿入する値
      * @return mixed SQL の実行結果
      */
-    function get($col, $table, $where = "", $arrval = array()) {
-        $sqlse = $this->getSql($col, $table, $where);
+    function get($col, $table, $where = "", $arrWhereVal = array()) {
+        $sqlse = $this->getSql($col, $table, $where, $arrWhereVal);
         // SQL文の実行
-        $ret = $this->getOne($sqlse, $arrval);
+        $ret = $this->getOne($sqlse, $arrWhereVal);
         return $ret;
     }
 
@@ -589,7 +594,7 @@ class SC_Query {
      * SQL を指定して, 特定のカラムの値を取得する.
      *
      * @param string $sql 実行する SQL
-     * @param array $arrval ブレースホルダに挿入する値
+     * @param array $arrval プレースホルダに挿入する値
      * @return mixed SQL の実行結果
      */
     function getOne($sql, $arrval = array()) {
@@ -615,13 +620,13 @@ class SC_Query {
      * @param string $table テーブル名
      * @param string $col カラム名
      * @param string $where WHERE句
-     * @param array $arrVal プレースホルダ配列
+     * @param array $arrWhereVal プレースホルダ配列
      * @param integer $fetchmode 使用するフェッチモード。デフォルトは MDB2_FETCHMODE_ASSOC。
      * @return array array('カラム名' => '値', ...)の連想配列
      */
-    function getRow($col, $table, $where = "", $arrVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
+    function getRow($col, $table, $where = "", $arrWhereVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
 
-        $sql = $this->getSql($col, $table, $where);
+        $sql = $this->getSql($col, $table, $where, $arrWhereVal);
         $sql = $this->dbFactory->sfChangeMySQL($sql);
 
         $sth =& $this->prepare($sql);
@@ -629,7 +634,7 @@ class SC_Query {
             return;
         }
 
-        $affected =& $this->execute($sth, $arrVal);
+        $affected =& $this->execute($sth, $arrWhereVal);
         if (PEAR::isError($affected) && $this->force_run) {
             return;
         }
@@ -638,16 +643,16 @@ class SC_Query {
     }
 
     /**
-     * SELECT 文の実行結果を 1行のみ取得する.
+     * SELECT 文の実行結果を 1列のみ取得する.
      *
      * @param string $table テーブル名
      * @param string $col カラム名
      * @param string $where 付与する WHERE 句
-     * @param array $arrval ブレースホルダに挿入する値
+     * @param array $arrWhereVal プレースホルダに挿入する値
      * @return array SQL の実行結果の配列
      */
-    function getCol($col, $table, $where = "", $arrval = array()) {
-        $sql = $this->getSql($col, $table, $where);
+    function getCol($col, $table, $where = "", $arrWhereVal = array()) {
+        $sql = $this->getSql($col, $table, $where, $arrWhereVal);
         $sql = $this->dbFactory->sfChangeMySQL($sql);
 
         $sth =& $this->prepare($sql);
@@ -655,7 +660,7 @@ class SC_Query {
             return;
         }
 
-        $affected =& $this->execute($sth, $arrval);
+        $affected =& $this->execute($sth, $arrWhereVal);
         if (PEAR::isError($affected) && $this->force_run) {
             return;
         }
@@ -721,7 +726,7 @@ class SC_Query {
      * FIXME $ignore_errが無視されるようになっているが互換性として問題が無いか確認が必要
      *
      * @param string $n 実行する SQL 文
-     * @param array $arr ブレースホルダに挿入する値
+     * @param array $arr プレースホルダに挿入する値
      * @param boolean $ignore_err MDB2切替で無効化されている (エラーが発生しても処理を続行する場合 true)
      * @param mixed $types プレースホルダの型指定 デフォルトnull = string
      * @param mixed $result_types 返値の型指定またはDML実行(MDB2_PREPARE_MANIP)
@@ -829,7 +834,7 @@ class SC_Query {
      * 値を適切にクォートする.
      *
      * TODO MDB2 に対応するための暫定的な措置.
-     *      ブレースホルダが使用できない実装があるため.
+     *      プレースホルダが使用できない実装があるため.
      *      本来であれば, MDB2::prepare() を適切に使用するべき
      *
      * @see MDB2::quote()
@@ -844,7 +849,7 @@ class SC_Query {
      * パラメーターの連想配列から, テーブルに存在する列のみを取得する.
      *
      * @param string $table テーブル名
-     * @param array ブレースホルダの連想配列
+     * @param array プレースホルダの連想配列
      * @return array テーブルに存在する列のみ抽出した連想配列
      */
     function extractOnlyColsOf($table, $arrParams) {
@@ -884,12 +889,12 @@ class SC_Query {
      *
      * @access private
      * @param MDB2_Statement_Common プリペアドステートメントインスタンス
-     * @param array $arrVal ブレースホルダに挿入する配列
+     * @param array $arrVal プレースホルダに挿入する配列
      * @return MDB2_Result 結果セットのインスタンス
      */
     function execute(&$sth, $arrVal = array()) {
         $timeStart = SC_Utils_Ex::sfMicrotimeFloat();
-        $affected =& $sth->execute($arrVal);
+        $affected =& $sth->execute((array)$arrVal);
 
         // 一定以上時間かかったSQLの場合、ログ出力する。
         if(defined('SQL_QUERY_LOG_MODE') && SQL_QUERY_LOG_MODE == true) {
@@ -946,7 +951,7 @@ class SC_Query {
      * SQLクエリの結果セットのカラム名だけを取得する
      *
      * @param string $n 実行する SQL 文
-     * @param array $arr ブレースホルダに挿入する値
+     * @param array $arr プレースホルダに挿入する値
      * @param boolean エラーが発生しても処理を続行する場合 true
      * @param mixed $types プレースホルダの型指定 デフォルトnull = string
      * @param mixed $result_types 返値の型指定またはDML実行(MDB2_PREPARE_MANIP)
