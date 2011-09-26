@@ -24,13 +24,12 @@
 // rtrim は PHP バージョン依存対策
 define('HTML_REALDIR', rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') . '/'), '/\\') . '/');
 
-if (ADMIN_FUNCTION !== true) {
+if (!defined('ADMIN_FUNCTION') || ADMIN_FUNCTION !== true) {
     define('FRONT_FUNCTION', true);
 }
 
 require_once HTML_REALDIR . 'define.php';
-
-if (SAFE === true) {
+if (defined('SAFE') && SAFE === true) {
     require_once HTML_REALDIR . HTML2DATA_DIR . 'require_safe.php';
 } else {
     require_once HTML_REALDIR . 'handle_error.php';
