@@ -83,6 +83,12 @@ class SC_Helper_Purchase {
 
         $this->registerShipping($orderId, $shippingTemp);
         $objQuery->commit();
+
+        //会員情報の最終購入日、購入合計を更新
+        if($customerId > 0){
+            SC_Customer_Ex::updateOrderSummary($customerId);
+        }
+
         $this->cleanupSession($orderId, $objCartSession, $objCustomer, $cartkey);
 
         GC_Utils_Ex::gfFrontLog("order complete. customerId=" . $customerId);
@@ -803,7 +809,9 @@ class SC_Helper_Purchase {
         $objQuery->update("dtb_order_temp", array('del_flg' => 1),
                           "order_temp_id = ?",
                           array(SC_SiteSession_Ex::getUniqId()));
-
+        
+        
+        
         return $orderParams['order_id'];
     }
 
@@ -1069,7 +1077,6 @@ __EOS__;
      */
     function sfUpdateOrderStatus($orderId, $newStatus = null, $newAddPoint = null, $newUsePoint = null, &$sqlval) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-
         $arrOrderOld = $objQuery->getRow('status, add_point, use_point, customer_id', 'dtb_order', 'order_id = ?', array($orderId));
 
         // 対応状況が変更無しの場合、DB値を引き継ぐ
@@ -1162,6 +1169,11 @@ __EOS__;
         $dest = $objQuery->extractOnlyColsOf('dtb_order', $sqlval);
         $objQuery->update('dtb_order', $dest, 'order_id = ?', array($orderId));
         // ▲受注テーブルの更新
+
+        //会員情報の最終購入日、購入合計を更新
+        if($arrOrderOld['customer_id'] > 0 and $arrOrderOld['status'] != $newStatus){
+            SC_Customer_Ex::updateOrderSummary($arrOrderOld['customer_id']);
+        }
     }
 
     /**
