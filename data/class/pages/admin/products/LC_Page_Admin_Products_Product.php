@@ -470,6 +470,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
             // ダウンロード商品ファイル必須チェック(ダウンロード商品の場合)
             if($arrForm['product_type_id'] == PRODUCT_TYPE_DOWNLOAD) {
                 $arrErr = array_merge((array)$arrErr, (array)$objDownFile->checkEXISTS());
+                $objErr->doFunc(array("ダウンロード商品ファイル名", 'down_filename'), array("EXIST_CHECK"));
             }
         }
 
