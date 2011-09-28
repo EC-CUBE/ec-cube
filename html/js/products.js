@@ -50,7 +50,7 @@ function setClassCategories($form, product_id, $sele1, $sele2, selected_id2) {
                 }
                 $sele2.append(option);
             }
-            checkStock($form, product_id, $sele1.val() ? $sele1.val() : '',
+            checkStock($form, product_id, $sele1.val() ? $sele1.val() : '__unselected2',
                        $sele2.val() ? $sele2.val() : '');
         }
     }

@@ -308,6 +308,9 @@ __EOS__;
                 $classCats2['product_type'] = $productsClass['product_type_id'];
 
                 // #929(GC8 規格のプルダウン順序表示不具合)対応のため、2次キーは「#」を前置
+                if (SC_Utils_Ex::isBlank($productsClass1)) {
+                    $productsClass1 = '__unselected2';
+                }
                 $classCategories[$productsClass1]['#'] = array(
                     'classcategory_id2' => '',
                     'name' => '選択してください',
