@@ -41,7 +41,8 @@ set_error_handler('handle_error');
  */
 function &_fatal_error_handler(&$buffer) {
     if (preg_match('/<b>(Fatal) error<\/b>: +(.+) in <b>(.+)<\/b> on line <b>(\d+)<\/b><br \/>/i', $buffer, $matches)) {
-        error_log("FATAL Error: $matches[3]:$matches[4] $matches[2]\n", 3,
+        $now = date("Y/m/d H:i:s");
+        error_log($now . " [$matches[3]:$matches[4]] FATAL Error: $matches[2] from ". $_SERVER['REMOTE_ADDR'] . "\n", 3,
                   realpath(dirname(__FILE__) . "/" . HTML2DATA_DIR . "logs/site.log"));
         if (DEBUG_MODE !== true) {
             $url = HTTP_URL . "error.php";
@@ -72,9 +73,10 @@ function &_fatal_error_handler(&$buffer) {
  *                      E_USER_ERROR 以外の場合は true
  */
 function handle_error($errno, $errstr, $errfile, $errline) {
+    $now = date("Y/m/d H:i:s");
     switch ($errno) {
     case E_USER_ERROR:
-        error_log("FATAL Error($errno) $errfile:$errline $errstr", 3, realpath(dirname(__FILE__) . "/" . HTML2DATA_DIR . "logs/site.log"));
+        error_log($now . " [$errfile] FATAL Error($errno) $errfile:$errline $errstr from ". $_SERVER['REMOTE_ADDR'] . "\n", 3, realpath(dirname(__FILE__) . "/" . HTML2DATA_DIR . "logs/site.log"));
 
         displaySystemError($errstr);
         exit(1);
