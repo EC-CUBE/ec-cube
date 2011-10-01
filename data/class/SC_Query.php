@@ -909,9 +909,9 @@ class SC_Query {
         if (PEAR::isError($affected)) {
             $sql = isset($sth->query) ? $sth->query : '';
             if (!$this->force_run) {
-                trigger_error($this->traceError($affected, $sql), E_USER_ERROR);
+                trigger_error($this->traceError($affected, $sql, $arrVal), E_USER_ERROR);
             } else {
-                error_log($this->traceError($affected, $sql), 3, LOG_REALFILE);
+                error_log($this->traceError($affected, $sql, $arrVal), 3, LOG_REALFILE);
             }
         }
         $this->conn->last_query = stripslashes($sth->query);
@@ -924,9 +924,10 @@ class SC_Query {
      * @access private
      * @param PEAR::Error $error PEAR::Error インスタンス
      * @param string $sql エラーの発生した SQL 文
+     * @param array $arrVal プレースホルダ
      * @return string トレースしたエラー文字列
      */
-    function traceError($error, $sql = "") {
+    function traceError($error, $sql = "", $arrVal = false) {
         $scheme = '';
         if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
             $scheme = "http://";
@@ -938,9 +939,12 @@ class SC_Query {
             . "SERVER_ADDR: " . $_SERVER['SERVER_ADDR'] . "\n"
             . "REMOTE_ADDR: " . $_SERVER['REMOTE_ADDR'] . "\n"
             . "USER_AGENT: " . $_SERVER['HTTP_USER_AGENT'] . "\n\n"
-            . "SQL: " . $sql . "\n\n"
-            . $error->getMessage() . "\n\n"
-            . $error->getUserInfo() . "\n\n";
+            . "SQL: " . $sql . "\n\n";
+        if ($arrVal !== false) {
+            $err .= "PlaceHolder: " . var_export($arrVal, true) . "\n\n";
+        }
+        $err .= $error->getMessage() . "\n\n";
+        $err .= $error->getUserInfo() . "\n\n";
 
         $err .= SC_Utils_Ex::sfBacktraceToString($error->getBackTrace());
 
