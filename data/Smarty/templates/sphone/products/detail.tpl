@@ -48,10 +48,10 @@ var stateSub = 0;
 function fnSubToggle(areaEl, imgEl) {
     areaEl.slideToggle(speed);
     if (stateSub == 0) {
-        $(imgEl).attr("src", "<!--{$TPL_URLPATH}-->img/common/btn_plus.png");
+        $(imgEl).attr("src", "<!--{$TPL_URLPATH}-->img/button/btn_plus.png");
         stateSub = 1;
     } else {
-        $(imgEl).attr("src", "<!--{$TPL_URLPATH}-->img/common/btn_minus.png");
+        $(imgEl).attr("src", "<!--{$TPL_URLPATH}-->img/button/btn_minus.png");
         stateSub = 0
     }
 }
@@ -60,10 +60,10 @@ var statewhobought = 0;
 function fnWhoboughtToggle(areaEl, imgEl) {
     areaEl.slideToggle(speed);
     if (statewhobought == 0) {
-        $(imgEl).attr("src", "<!--{$TPL_URLPATH}-->img/common/btn_plus.png");
+        $(imgEl).attr("src", "<!--{$TPL_URLPATH}-->img/button/btn_plus.png");
         statewhobought = 1;
     } else {
-        $(imgEl).attr("src", "<!--{$TPL_URLPATH}-->img/common/btn_minus.png");
+        $(imgEl).attr("src", "<!--{$TPL_URLPATH}-->img/button/btn_minus.png");
         statewhobought = 0
     }
 }
@@ -295,7 +295,7 @@ function fnWhoboughtToggle(areaEl, imgEl) {
   <div class="title_box_sub clearfix">
     <h2>商品情報</h2>
      <!--{assign var=ckey value="sub_comment`$smarty.section.cnt.index+1`"}-->
-      <span class="b_expand"><img src="<!--{$TPL_URLPATH}-->img/common/btn_minus.png" onclick="fnSubToggle($('#sub_area'), this);" alt=""></span>
+      <span class="b_expand"><img src="<!--{$TPL_URLPATH}-->img/button/btn_minus.png" onclick="fnSubToggle($('#sub_area'), this);" alt=""></span>
        </div>
     <div id="sub_area">
         <!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
@@ -337,7 +337,7 @@ function fnWhoboughtToggle(areaEl, imgEl) {
 <!--{if $arrRecommend}-->
 <div class="title_box_sub clearfix">
   <h2>その他のオススメ商品</h2>
-     <span class="b_expand"><img src="<!--{$TPL_URLPATH}-->img/common/btn_minus.png" onclick="fnWhoboughtToggle($('#whobought_area'), this);" alt=""></span>
+     <span class="b_expand"><img src="<!--{$TPL_URLPATH}-->img/button/btn_minus.png" onclick="fnWhoboughtToggle($('#whobought_area'), this);" alt=""></span>
       </div>
   
   <div id="whobought_area" class="mainImageInit">

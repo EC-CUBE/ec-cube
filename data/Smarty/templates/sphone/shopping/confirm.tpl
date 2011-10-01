@@ -38,10 +38,10 @@ var stateCartconfirm = 0;
 function fnCartconfirmToggle(areaEl, imgEl) {
     areaEl.toggle(speed);
     if (stateCartconfirm == 0) {
-        $(imgEl).attr("src", "<!--{$TPL_URLPATH}-->img/common/btn_plus.png");
+        $(imgEl).attr("src", "<!--{$TPL_URLPATH}-->img/button/btn_plus.png");
         stateCartconfirm = 1;
     } else {
-        $(imgEl).attr("src", "<!--{$TPL_URLPATH}-->img/common/btn_minus.png");
+        $(imgEl).attr("src", "<!--{$TPL_URLPATH}-->img/button/btn_minus.png");
         stateCartconfirm = 0
     }
 }
@@ -50,10 +50,10 @@ var stateDelivconfirm = 0;
 function fnDelivconfirmToggle(areaEl, imgEl) {
     areaEl.toggle(speed);
     if (stateDelivconfirm == 0) {
-        $(imgEl).attr("src", "<!--{$TPL_URLPATH}-->img/common/btn_plus.png");
+        $(imgEl).attr("src", "<!--{$TPL_URLPATH}-->img/button/btn_plus.png");
         stateDelivconfirm = 1;
     } else {
-        $(imgEl).attr("src", "<!--{$TPL_URLPATH}-->img/common/btn_minus.png");
+        $(imgEl).attr("src", "<!--{$TPL_URLPATH}-->img/button/btn_minus.png");
         stateDelivconfirm = 0
     }
 }
@@ -62,10 +62,10 @@ var stateOtherconfirm = 0;
 function fnOtherconfirmToggle(areaEl, imgEl) {
     areaEl.toggle(speed);
     if (stateOtherconfirm == 0) {
-        $(imgEl).attr("src", "<!--{$TPL_URLPATH}-->img/common/btn_plus.png");
+        $(imgEl).attr("src", "<!--{$TPL_URLPATH}-->img/button/btn_plus.png");
         stateOtherconfirm = 1;
     } else {
-        $(imgEl).attr("src", "<!--{$TPL_URLPATH}-->img/common/btn_minus.png");
+        $(imgEl).attr("src", "<!--{$TPL_URLPATH}-->img/button/btn_minus.png");
         stateOtherconfirm = 0
     }
 }
