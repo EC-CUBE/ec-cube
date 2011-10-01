@@ -212,8 +212,8 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         if (!isset($this->arrSql['search_buy_total_to'])) $this->arrSql['search_buy_total_to'] = "";
         if( is_numeric( $this->arrSql["search_buy_total_from"] ) || is_numeric( $this->arrSql["search_buy_total_to"] ) ) {
             $arrBuyTotal = $this->selectRange($this->arrSql["search_buy_total_from"], $this->arrSql["search_buy_total_to"], "buy_total");
-            foreach ($arrBuyTotal as $data1) {
-                $this->arrVal[] = $data1;
+            foreach ($arrBuyTotal as $data) {
+                $this->arrVal[] = $data;
             }
         }
 
@@ -222,8 +222,8 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         if (!isset($this->arrSql['search_buy_times_to'])) $this->arrSql['search_buy_times_to'] = "";
         if( is_numeric( $this->arrSql["search_buy_times_from"] ) || is_numeric( $this->arrSql["search_buy_times_to"] ) ) {
             $arrBuyTimes = $this->selectRange($this->arrSql["search_buy_times_from"], $this->arrSql["search_buy_times_to"], "buy_times");
-            foreach ($arrBuyTimes as $data2) {
-                $this->arrVal[] = $data2;
+            foreach ($arrBuyTimes as $data) {
+                $this->arrVal[] = $data;
             }
         }
 
@@ -239,10 +239,8 @@ class SC_CustomerList extends SC_SelectSql_Ex {
 
             $arrBirth = $this->selectTermRange($this->arrSql['search_b_start_year'], $this->arrSql['search_b_start_month'], $this->arrSql['search_b_start_day']
                       , $this->arrSql['search_b_end_year'], $this->arrSql['search_b_end_month'], $this->arrSql['search_b_end_day'], 'birth');
-            if (is_array($arrBirth)) {
-                foreach ($arrBirth as $data3) {
-                    $this->arrVal[] = $data3;
-                }
+            foreach ($arrBirth as $data) {
+                $this->arrVal[] = $data;
             }
         }
 
@@ -265,10 +263,8 @@ class SC_CustomerList extends SC_SelectSql_Ex {
 
             $arrRegistTime = $this->selectTermRange($this->arrSql['search_start_year'], $this->arrSql['search_start_month'], $this->arrSql['search_start_day']
                             , $this->arrSql['search_end_year'], $this->arrSql['search_end_month'], $this->arrSql['search_end_day'], $regdate_col);
-            if (is_array($arrRegistTime)) {
-                foreach ($arrRegistTime as $data4) {
-                    $this->arrVal[] = $data4;
-                }
+            foreach ($arrRegistTime as $data) {
+                $this->arrVal[] = $data;
             }
         }
 
@@ -284,10 +280,8 @@ class SC_CustomerList extends SC_SelectSql_Ex {
                 (strlen($this->arrSql['search_buy_end_year']) > 0 && strlen($this->arrSql['search_buy_end_month']) >0 && strlen($this->arrSql['search_buy_end_day']) > 0) ) {
             $arrRegistTime = $this->selectTermRange($this->arrSql['search_buy_start_year'], $this->arrSql['search_buy_start_month'], $this->arrSql['search_buy_start_day']
                             , $this->arrSql['search_buy_end_year'], $this->arrSql['search_buy_end_month'], $this->arrSql['search_buy_end_day'], "last_buy_date");
-            if (is_array($arrRegistTime)) {
-                foreach ($arrRegistTime as $data4) {
-                    $this->arrVal[] = $data4;
-                }
+            foreach ($arrRegistTime as $data) {
+                $this->arrVal[] = $data;
             }
         }
 

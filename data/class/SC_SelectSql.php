@@ -87,6 +87,7 @@ class SC_SelectSql {
 
     //--　期間検索（○年○月○日か~○年○月○日まで）
     function selectTermRange($from_year, $from_month, $from_day, $to_year, $to_month, $to_day, $column) {
+        $return = array();
 
         // 開始期間の構築
         $date1 = $from_year . "/" . $from_month . "/" . $from_day;
@@ -101,19 +102,25 @@ class SC_SelectSql {
 
         // 開始期間だけ指定の場合
         if( ( $from_year != "" ) && ( $from_month != "" ) && ( $from_day != "" ) && ( $to_year == "" ) && ( $to_month == "" ) && ( $to_day == "" ) ) {
-            $this->setWhere( $column ." >= '" . $date1 . "'");
+            $this->setWhere( $column .' >= ?');
+            $return[] = $date1;
         }
 
         //　開始～終了
         if( ( $from_year != "" ) && ( $from_month != "" ) && ( $from_day != "" ) &&
             ( $to_year != "" ) && ( $to_month != "" ) && ( $to_day != "" ) ) {
-            $this->setWhere( $column ." >= '" . $date1 ."' AND ". $column . " < date('" . $date2 . "')" );
+            $this->setWhere( $column . ' >= ? AND ' . $column . ' < date(?)' );
+            $return[] = $date1;
+            $return[] = $date2;
         }
 
         // 終了期間だけ指定の場合
         if( ( $from_year == "" ) && ( $from_month == "" ) && ( $from_day == "" ) && ( $to_year != "" ) && ( $to_month != "" ) && ( $to_day != "" ) ) {
-            $this->setWhere( $column ." < date('" . $date2 . "')");
+            $this->setWhere( $column . ' < date(?)');
+            $return[] = $date2;
         }
+
+        return $return;
     }
 
     // checkboxなどで同一カラム内で単一、もしくは複数選択肢が有る場合　例: AND ( sex = xxx OR sex = xxx OR sex = xxx  ) AND ...
