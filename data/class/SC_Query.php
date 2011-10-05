@@ -33,7 +33,6 @@ require_once realpath(dirname(__FILE__)) . '/../module/MDB2.php';
  */
 class SC_Query {
 
-    var $instance;
     var $option = '';
     var $where = '';
     var $arrWhereVal = array();
