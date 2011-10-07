@@ -88,35 +88,42 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
         SC_Helper_Customer_Ex::sfCustomerMypageParam($objFormParam);
         $objFormParam->setParam($_POST);    // POST値の取得
 
-        $this->arrForm = $objFormParam->getHashArray();
-
         switch ($this->getMode()) {
-        case 'confirm':
-        //-- 確認
-            $this->arrErr = SC_Helper_Customer_Ex::sfCustomerMypageErrorCheck($objFormParam);
-            // 入力エラーなし
-            if(empty($this->arrErr)) {
-                //パスワード表示
-                $this->passlen      = SC_Utils_Ex::sfPassLen(strlen($this->arrForm['password']));
+            // 確認
+            case 'confirm':
+                $this->arrErr = SC_Helper_Customer_Ex::sfCustomerMypageErrorCheck($objFormParam);
+                $this->arrForm = $objFormParam->getHashArray();
 
-                $this->tpl_mainpage = 'mypage/change_confirm.tpl';
-                $this->tpl_title    = '会員登録(確認ページ)';
-            }
-            break;
-        case 'complete':
-            //-- 会員登録と完了画面
+                // 入力エラーなし
+                if (empty($this->arrErr)) {
+                    //パスワード表示
+                    $this->passlen      = SC_Utils_Ex::sfPassLen(strlen($this->arrForm['password']));
 
-            // 会員情報の登録
-            $this->lfRegistCustomerData($objFormParam, $customer_id);
+                    $this->tpl_mainpage = 'mypage/change_confirm.tpl';
+                    $this->tpl_title    = '会員登録(確認ページ)';
+                }
+                break;
+            // 会員登録と完了画面
+            case 'complete':
+                $this->arrErr = SC_Helper_Customer_Ex::sfCustomerMypageErrorCheck($objFormParam);
+                $this->arrForm = $objFormParam->getHashArray();
 
-            // 完了ページに移動させる。
-            SC_Response_Ex::sendRedirect('change_complete.php');
-            break;
-        case 'return':
-            break;
-        default:
-            $this->arrForm = SC_Helper_Customer_Ex::sfGetCustomerData($customer_id);
-            break;
+                // 入力エラーなし
+                if (empty($this->arrErr)) {
+                    // 会員情報の登録
+                    $this->lfRegistCustomerData($objFormParam, $customer_id);
+
+                    // 完了ページに移動させる。
+                    SC_Response_Ex::sendRedirect('change_complete.php');
+                }
+                break;
+            // 確認ページからの戻り
+            case 'return':
+                $this->arrForm = $objFormParam->getHashArray();
+                break;
+            default:
+                $this->arrForm = SC_Helper_Customer_Ex::sfGetCustomerData($customer_id);
+                break;
         }
     }
 

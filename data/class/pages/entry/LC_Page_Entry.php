@@ -77,15 +77,15 @@ class LC_Page_Entry extends LC_Page_Ex {
 
         SC_Helper_Customer_Ex::sfCustomerEntryParam($objFormParam);
         $objFormParam->setParam($_POST);
-        $this->arrForm  = $objFormParam->getHashArray();
+        $arrForm  = $objFormParam->getHashArray();
 
         // PC時は規約ページからの遷移でなければエラー画面へ遷移する
-        if ($this->lfCheckReferer($this->arrForm, $_SERVER['HTTP_REFERER']) === false) {
+        if ($this->lfCheckReferer($arrForm, $_SERVER['HTTP_REFERER']) === false) {
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
         }
 
         // mobile用（戻るボタンでの遷移かどうかを判定）
-        if (!empty($this->arrForm['return'])) {
+        if (!empty($arrForm['return'])) {
             $_POST['mode'] = 'return';
         }
 
@@ -93,6 +93,7 @@ class LC_Page_Entry extends LC_Page_Ex {
         case 'confirm':
             //-- 確認
             $this->arrErr = SC_Helper_Customer_Ex::sfCustomerEntryErrorCheck($objFormParam);
+            $this->arrForm  = $objFormParam->getHashArray();
             // 入力エラーなし
             if(empty($this->arrErr)) {
                 //パスワード表示
@@ -105,6 +106,7 @@ class LC_Page_Entry extends LC_Page_Ex {
         case 'complete':
             //-- 会員登録と完了画面
             $this->arrErr = SC_Helper_Customer_Ex::sfCustomerEntryErrorCheck($objFormParam);
+            $this->arrForm  = $objFormParam->getHashArray();
             if(empty($this->arrErr)) {
 
                 $uniqid             = $this->lfRegistCustomerData($this->lfMakeSqlVal($objFormParam));
@@ -123,6 +125,9 @@ class LC_Page_Entry extends LC_Page_Ex {
                 // 完了ページに移動させる。
                 SC_Response_Ex::sendRedirect('complete.php', array('ci' => SC_Helper_Customer_Ex::sfGetCustomerId($uniqid)));
             }
+            break;
+        case 'return':
+            $this->arrForm  = $objFormParam->getHashArray();
             break;
         default:
             break;
