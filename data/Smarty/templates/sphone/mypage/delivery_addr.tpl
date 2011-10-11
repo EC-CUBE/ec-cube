@@ -35,7 +35,7 @@
        <form name="form1" id="form1" method="post" action="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php">
            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
            <input type="hidden" name="mode" value="edit" />
-           <input type="hidden" name="other_deliv_id" value="<!--{$smarty.session.other_deliv_id}-->" />
+           <input type="hidden" name="other_deliv_id" value="<!--{$smarty.session.other_deliv_id|h}-->" />
            <input type="hidden" name="ParentPage" value="<!--{$ParentPage}-->" />
 
        <dl class="form_entry">
