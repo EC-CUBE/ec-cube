@@ -128,8 +128,8 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         $this->tpl_classcat_find2 = $objProduct->classCat2_find[$product_id];
 
         $this->tpl_stock_find = $objProduct->stock_find[$product_id];
-        $this->tpl_product_class_id = $objProduct->classCategories[$product_id]['']['']['product_class_id'];
-        $this->tpl_product_type = $objProduct->classCategories[$product_id]['']['']['product_type'];
+        $this->tpl_product_class_id = $objProduct->classCategories[$product_id]['__unselected']['__unselected']['product_class_id'];
+        $this->tpl_product_type = $objProduct->classCategories[$product_id]['__unselected']['__unselected']['product_type'];
 
         $this->tpl_javascript .= 'classCategories = ' . SC_Utils_Ex::jsonEncode($objProduct->classCategories[$product_id]) . ';';
         $this->tpl_javascript .= 'function lnOnLoad(){' . $this->js_lnOnload . '}';
@@ -231,7 +231,19 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
                         break;
                     }
 
-                    $this->tpl_product_class_id = $objProduct->classCategories[$product_id][$this->objFormParam->getValue('classcategory_id1')]['#' . $this->objFormParam->getValue('classcategory_id2')]['product_class_id'];
+                    $value1 = $this->objFormParam->getValue('classcategory_id1');
+                    $value2 = $this->objFormParam->getValue('classcategory_id2');
+
+                    if ($value1 == '') {
+                        $value1 = '__unselected';
+                    }
+                    if ($value2 == '') {
+                        $value2 = '__unselected';
+                    } else {
+                        $value2 = '#' . $value2;
+                    }
+
+                    $this->tpl_product_class_id = $objProduct->classCategories[$product_id][$value1][$value2]['product_class_id'];
 
                     // 数量の入力を行う
                     $this->tpl_mainpage = "products/select_item.tpl";
