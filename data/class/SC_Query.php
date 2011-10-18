@@ -290,7 +290,9 @@ class SC_Query {
             $sqlse .= " WHERE $where";
         } elseif (strlen($this->where) >= 1) {
             $sqlse .= " WHERE " . $this->where;
-            if (empty($arrWhereVal)) {
+            // 実行時と同じくキャストしてから評価する (空文字を要素1の配列と評価させる意図)
+            $arrWhereValForEval = (array)$arrWhereVal;
+            if (empty($arrWhereValForEval)) {
                 $arrWhereVal = $this->arrWhereVal;
             }
         }
