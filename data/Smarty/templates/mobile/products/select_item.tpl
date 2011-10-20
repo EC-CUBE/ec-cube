@@ -24,7 +24,7 @@
 <div align="center">数量指定</div>
 <hr>
 
-<!--{if $arrErr.classcategory_id2 != ""}-->
+<!--{if $arrErr.quantity != ""}-->
 	<font color="#FF0000">※数量を入力して下さい｡</font><br>
 <!--{/if}-->
 <form method="post" action="?">

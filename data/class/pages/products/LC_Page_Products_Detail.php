@@ -213,6 +213,10 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
                         break;
                     }
 
+                    // 数量の入力を行う
+                    $this->tpl_mainpage = "products/select_item.tpl";
+                    break;
+
                 case 'select2':
                     $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam,$this->tpl_classcat_find1,$this->tpl_classcat_find2);
 
@@ -255,8 +259,19 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
                     $this->tpl_product_class_id = $objProduct->classCategories[$product_id][$value1][$value2]['product_class_id'];
 
+                    // この段階では、数量の入力チェックエラーを出させない。
+                    unset($this->arrErr['quantity']);
+
                     // 数量の入力を行う
                     $this->tpl_mainpage = "products/select_item.tpl";
+                    break;
+
+                case 'cart':
+                    // この段階でエラーが出る場合は、数量の入力エラーのはず
+                    if (count($this->arrErr)) {
+                        // 数量の入力を行う
+                        $this->tpl_mainpage = "products/select_item.tpl";
+                    }
                     break;
 
                 default:
