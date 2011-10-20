@@ -143,6 +143,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         // 商品IDをFORM内に保持する
         $this->tpl_product_id = $product_id;
 
+var_dump($this->mode);
         switch ($this->mode) {
             case 'cart':
                 $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam,
@@ -183,6 +184,13 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
                     print "error";
                     exit;
                 }
+                break;
+
+            case 'select':
+                /**
+                 * モバイルの数量指定の際に、$_SESSION['cart_referer_url'] を
+                 * 上書きさせないために、何もせずbreakする。
+                 */
                 break;
 
             default:
