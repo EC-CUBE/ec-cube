@@ -186,9 +186,12 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
                 break;
 
             case 'select':
+            case 'select2':
+            case 'selectItem':
                 /**
-                 * モバイルの数量指定の際に、$_SESSION['cart_referer_url'] を
-                 * 上書きさせないために、何もせずbreakする。
+                 * モバイルの数量指定・規格選択の際に、
+                 * $_SESSION['cart_referer_url'] を上書きさせないために、
+                 * 何もせずbreakする。
                  */
                 break;
 
