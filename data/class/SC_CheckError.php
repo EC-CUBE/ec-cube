@@ -189,7 +189,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         // 文字数の取得
-        if( $this->arrParam[$value[2]] != $this->arrParam[$value[3]]) {
+        if( $this->arrParam[$value[2]] !== $this->arrParam[$value[3]]) {
             $this->arrErr[$value[2]] = "※ " . $value[0] . "と" . $value[1] . "が一致しません。<br />";
         }
     }
