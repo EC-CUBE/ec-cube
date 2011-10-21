@@ -96,12 +96,12 @@ function fnDelivToggle(areaEl) {
             <!--{assign var=key2 value="order_zip02"}-->
             <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
              <p>
-                  <input type="number" name="<!--{$key1}-->" 
+                  <input type="tel" name="<!--{$key1}-->" 
                         value="<!--{$arrForm[$key1].value|h}-->" 
                         max="<!--{$arrForm[$key1].length}-->" 
                         style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;
 
-                        <input type="number" name="<!--{$key2}-->" 
+                        <input type="tel" name="<!--{$key2}-->" 
                         value="<!--{$arrForm[$key2].value|h}-->" 
                         max="<!--{$arrForm[$key2].length}-->" 
                         style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;
@@ -290,11 +290,11 @@ function fnDelivToggle(areaEl) {
            <!--{assign var=key2 value="shipping_zip02"}-->
            <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
             <p>
-                <input type="number" name="<!--{$key1}-->" 
+                <input type="tel" name="<!--{$key1}-->" 
                    value="<!--{$arrForm[$key1].value|h}-->" 
                      max="<!--{$arrForm[$key1].length}-->" 
                        style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;
-                         <input type="number" name="<!--{$key2}-->" 
+                         <input type="tel" name="<!--{$key2}-->" 
                              value="<!--{$arrForm[$key2].value|h}-->" 
                                 max="<!--{$arrForm[$key2].length}-->" 
                                   style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;

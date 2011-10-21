@@ -72,10 +72,10 @@
                 <!--{assign var=key3 value="`$prefix`pref"}-->
                 <!--{assign var=key4 value="`$prefix`addr01"}-->
                 <span class="attention"><!--{$arrErr.zip01}--><!--{$arrErr.zip02}--></span>
-             <p><input type="number" name="zip01" 
+             <p><input type="tel" name="zip01" 
                  value="<!--{$arrForm.zip01.value|default:$arrData.zip01|h}-->" 
                    max="<!--{$smarty.const.ZIP01_LEN}-->" 
-                    style="<!--{$arrErr.zip01|sfGetErrorColor}-->; ime-mode: disabled;" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="number" name="zip02" 
+                    style="<!--{$arrErr.zip01|sfGetErrorColor}-->; ime-mode: disabled;" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="zip02" 
                  value="<!--{$arrForm.zip02.value|default:$arrData.zip02|h}-->" 
                   max="<!--{$smarty.const.ZIP02_LEN}-->" 
                    style="<!--{$arrErr.zip02|sfGetErrorColor}-->; ime-mode: disabled;" class="boxShort text data-role-none" />&nbsp;&nbsp;<a href="http://search.post.japanpost.jp/zipcode/" target="_blank" rel="external"><span class="fn">郵便番号検索</span></a>
