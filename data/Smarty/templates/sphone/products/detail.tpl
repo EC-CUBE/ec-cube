@@ -119,7 +119,7 @@ function fnWhoboughtToggle(areaEl, imgEl) {
 <form name="form1" id="form1" method="post" action="<!--{$smarty.const.ROOT_URLPATH}-->products/detail.php">
 <div id="detailrightblock">
     <!--▼商品ステータス-->
-    <!--{assign var=ps value=$productStatus[$smarty.get.product_id]}-->
+    <!--{assign var=ps value=$productStatus[$tpl_product_id]}-->
     <!--{if count($ps) > 0}-->
         <ul class="status_icon">
         <!--{foreach from=$ps item=status}-->
