@@ -76,7 +76,7 @@ $(document).ready(function() {
 
         <div id="detailrightbloc">
             <!--▼商品ステータス-->
-            <!--{assign var=ps value=$productStatus[$smarty.get.product_id]}-->
+            <!--{assign var=ps value=$productStatus[$tpl_product_id]}-->
             <!--{if count($ps) > 0}-->
                 <ul class="status_icon clearfix">
                     <!--{foreach from=$ps item=status}-->
