@@ -178,7 +178,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
             $this->arrErr = $this->lfCheckError($objFormParam);
 
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
-
+                $objPurchase->unsetShippingTemp();
                 $this->lfRegistData($this->tpl_uniqid, $objPurchase,
                                     $objCustomer, $objFormParam);
 
@@ -201,6 +201,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
             $this->arrErr = $this->lfCheckError($objFormParam);
 
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                $objPurchase->unsetShippingTemp();
                 $this->lfRegistData($this->tpl_uniqid, $objPurchase,
                                     $objCustomer, $objFormParam, true);
 
@@ -232,7 +233,6 @@ class LC_Page_Shopping extends LC_Page_Ex {
             }
 
             $this->setFormParams($objFormParam, $objPurchase, $this->tpl_uniqid);
-            $objPurchase->unsetShippingTemp();
         }
 
         // 記憶したメールアドレスを取得
