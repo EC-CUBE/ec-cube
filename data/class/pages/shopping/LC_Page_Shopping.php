@@ -138,12 +138,12 @@ class LC_Page_Shopping extends LC_Page_Ex {
                                                                        $objCustomer, $objPurchase,
                                                                        $objSiteSess)));
                     exit;
-                } else {
-                    SC_Response_Ex::sendRedirect(
-                            $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
-                                                   $objCustomer, $objPurchase,
-                                                   $objSiteSess));
                 }
+
+                SC_Response_Ex::sendRedirect(
+                        $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
+                                               $objCustomer, $objPurchase,
+                                               $objSiteSess));
                 exit;
             }
             // ログインに失敗した場合
