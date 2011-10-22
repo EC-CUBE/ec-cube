@@ -339,11 +339,8 @@ class SC_CartSession {
                && $this->cartSession[$productTypeId][$i]['cart_no'] != "") {
 
                 // 商品情報は常に取得
-                $this->cartSession[$productTypeId][$i]['productsClass'] =&
-                        $objProduct->getDetailAndProductsClass(
-                                    $this->cartSession[$productTypeId][$i]['id']);
-
-                $this->adjustSessionProductsClass($this->cartSession[$productTypeId][$i]['productsClass']);
+                $this->cartSession[$productTypeId][$i]['productsClass']
+                    =& $objProduct->getDetailAndProductsClass($this->cartSession[$productTypeId][$i]['id']);
 
                 $price = $this->cartSession[$productTypeId][$i]['productsClass']['price02'];
                 $this->cartSession[$productTypeId][$i]['price'] = $price;
@@ -357,7 +354,11 @@ class SC_CartSession {
 
                 $this->cartSession[$productTypeId][$i]['total_inctax'] = $total;
 
-                $arrRet[] =& $this->cartSession[$productTypeId][$i];
+                $arrRet[] = $this->cartSession[$productTypeId][$i];
+
+                // セッション変数のデータ量を抑制するため、一部の商品情報を切り捨てる
+                // XXX 上で「常に取得」するのだから、丸ごと切り捨てて良さそうにも感じる。
+                $this->adjustSessionProductsClass($this->cartSession[$productTypeId][$i]['productsClass']);
             }
         }
         return $arrRet;
