@@ -175,7 +175,7 @@ class SOAP_Server extends SOAP_Base
         if (!$test && !$this->endpoint) {
             /* We'll try to build our endpoint. */
             $this->endpoint = 'http://' . $_SERVER['SERVER_NAME'];
-            if ($_SERVER['SERVER_PORT']) {
+            if (isset($_SERVER['SERVER_PORT'])) {
                 $this->endpoint .= ':' . $_SERVER['SERVER_PORT'];
             }
             $this->endpoint .= $_SERVER['SCRIPT_NAME'];
@@ -185,21 +185,21 @@ class SOAP_Server extends SOAP_Base
          * data as UTF-8 if no encoding set. */
         if (isset($_SERVER['CONTENT_TYPE'])) {
             if (strcasecmp($_SERVER['CONTENT_TYPE'], 'application/dime') == 0) {
-                $this->_decodeDIMEMessage($data, $headers, $attachments);
+                $this->_decodeDIMEMessage($data, $this->headers, $attachments);
                 $useEncoding = 'DIME';
             } elseif (stristr($_SERVER['CONTENT_TYPE'], 'multipart/related')) {
                 /* This is a mime message, let's decode it. */
                 $data = 'Content-Type: ' .
                     stripslashes($_SERVER['CONTENT_TYPE']) .
                     "\r\n\r\n" . $data;
-                $this->_decodeMimeMessage($data, $headers, $attachments);
+                $this->_decodeMimeMessage($data, $this->headers, $attachments);
                 $useEncoding = 'Mime';
             }
-            if (!isset($headers['content-type'])) {
-                $headers['content-type'] = stripslashes($_SERVER['CONTENT_TYPE']);
+            if (!isset($this->headers['content-type'])) {
+                $this->headers['content-type'] = stripslashes($_SERVER['CONTENT_TYPE']);
             }
             if (!$this->fault &&
-                !$this->_getContentEncoding($headers['content-type'])) {
+                !$this->_getContentEncoding($this->headers['content-type'])) {
                 $this->xml_encoding = SOAP_DEFAULT_ENCODING;
                 /* Found encoding we don't understand; return a fault. */
                 $this->_raiseSoapFault('Unsupported encoding, use one of ISO-8859-1, US-ASCII, UTF-8', '', '', 'Server');
@@ -209,11 +209,14 @@ class SOAP_Server extends SOAP_Base
         /* If this is not a POST with Content-Type text/xml, try to return a
          * WSDL file. */
         if (!$this->fault && !$test &&
-            ($_SERVER['REQUEST_METHOD'] != 'POST' ||
-             strncmp($headers['content-type'], 'text/xml', 8) != 0)) {
+            ((isset($_SERVER['REQUEST_METHOD']) &&
+              $_SERVER['REQUEST_METHOD'] != 'POST') ||
+             (isset($this->headers['content-type']) &&
+              strncmp($this->headers['content-type'], 'text/xml', 8) != 0))) {
             /* This is not possibly a valid SOAP request, try to return a WSDL
              * file. */
-            $this->_raiseSoapFault('Invalid SOAP request, must be POST with content-type: text/xml, got: ' . (isset($headers['content-type']) ? $headers['content-type'] : 'Nothing!'), '', '', 'Server');
+            $got = isset($this->headers['content-type']) ? $this->headers['content-type'] : 'Nothing!';
+            $this->_raiseSoapFault('Invalid SOAP request, must be POST with content-type: text/xml, got: ' . $got, '', '', 'Server');
         }
 
         if (!$this->fault) {
@@ -379,10 +382,16 @@ class SOAP_Server extends SOAP_Base
     function parseRequest($data = '', $attachments = null)
     {
         /* Parse response, get SOAP_Parser object. */
-        $parser =& new SOAP_Parser($data, $this->xml_encoding, $attachments);
-        /* If fault occurred during message parsing. */
+        $parser = new SOAP_Parser($data, $this->xml_encoding, $attachments);
+
         if ($parser->fault) {
+            /* Fault occurred during message parsing. */
             $this->fault = $parser->fault;
+            return null;
+        }
+        if (!count($parser->root_struct_name)) {
+            /* No method specified. */
+            $this->_raiseSoapFault('No method specified in request.');
             return null;
         }
 
@@ -543,7 +552,7 @@ class SOAP_Server extends SOAP_Base
         }
         if (is_array($requestArray)) {
             if (isset($requestArray['faultcode']) ||
-                isset($requestArray['SOAP-ENV:faultcode'])) {
+                isset($requestArray[SOAP_BASE::SOAPENVPrefix().':faultcode'])) {
                 $faultcode = $faultstring = $faultdetail = $faultactor = '';
                 foreach ($requestArray as $k => $v) {
                     if (stristr($k, 'faultcode')) {
@@ -799,7 +808,7 @@ class SOAP_Server extends SOAP_Base
     /**
      * @return void
      */
-    function addObjectWSDL(&$wsdl_obj, $targetNamespace, $service_name,
+    function addObjectWSDL($wsdl_obj, $targetNamespace, $service_name,
                            $service_desc = '')
     {
         if (!isset($this->_wsdl)) {

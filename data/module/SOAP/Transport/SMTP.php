@@ -151,7 +151,7 @@ class SOAP_Transport_SMTP extends SOAP_Transport
         if (!PEAR::isError($result)) {
             $val = new SOAP_Value('Message-ID', 'string', $headers['Message-ID']);
         } else {
-            $sval[] = new SOAP_Value('faultcode', 'QName', 'SOAP-ENV:Client');
+            $sval[] = new SOAP_Value('faultcode', 'QName', SOAP_BASE::SOAPENVPrefix().':Client');
             $sval[] = new SOAP_Value('faultstring', 'string', "couldn't send SMTP message to {$this->urlparts['path']}");
             $val = new SOAP_Value('Fault', 'Struct', $sval);
         }

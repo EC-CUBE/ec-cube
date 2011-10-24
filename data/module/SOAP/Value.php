@@ -40,39 +40,76 @@ require_once 'SOAP/Base.php';
 class SOAP_Value
 {
     /**
-     * @var string
+     * The actual value.
+     *
+     * @var mixed
      */
     var $value = null;
 
     /**
+     * QName instance representing the value name.
+     *
+     * @var QName
+     */
+    var $nqn;
+
+    /**
+     * The value name, without namespace information.
+     *
      * @var string
      */
     var $name = '';
 
     /**
+     * The namespace of the value name.
+     *
+     * @var string
+     */
+    var $namespace = '';
+
+    /**
+     * QName instance representing the value type.
+     *
+     * @var QName
+     */
+    var $tqn;
+
+    /**
+     * The value type, without namespace information.
+     *
      * @var string
      */
     var $type = '';
 
     /**
-     * Namespace
+     * The namespace of the value type.
      *
      * @var string
      */
-    var $namespace = '';
     var $type_namespace = '';
 
-    var $attributes = array();
-
     /**
+     * The type of the array elements, if this value is an array.
+     *
      * @var string
      */
     var $arrayType = '';
 
-    var $options = array();
+    /**
+     * A hash of additional attributes.
+     *
+     * @see SOAP_Value()
+     * @var array
+     */
+    var $attributes = array();
 
-    var $nqn;
-    var $tqn;
+    /**
+     * List of encoding and serialization options.
+     *
+     * @see SOAP_Value()
+     * @var array
+     */
+    var $options = array();
 
     /**
      * Constructor.
@@ -81,21 +118,34 @@ class SOAP_Value
      * @param mixed $type        SOAP value {namespace}type. Determined
      *                           automatically if not set.
      * @param mixed $value       Value to set.
-     * @param array $attributes  Attributes.
+     * @param array $attributes  A has of additional XML attributes to be
+     *                           added to the serialized value.
+     * @param array $options     A list of encoding and serialization options:
+     *                           - 'attachment': array with information about
+     *                             the attachment
+     *                           - 'soap_encoding': defines encoding for SOAP
+     *                             message part of a MIME encoded SOAP request
+     *                             (default: base64)
+     *                           - 'keep_arrays_flat': use the tag name
+     *                             multiple times for each element when
+     *                             passing in an array in literal mode
+     *                           - 'no_type_prefix': supress adding of the
+     *                             namespace prefix
      */
     function SOAP_Value($name = '', $type = false, $value = null,
-                        $attributes = array())
+                        $attributes = array(), $options = array())
     {
-        // Detect type if not passed.
         $this->nqn = new QName($name);
         $this->name = $this->nqn->name;
         $this->namespace = $this->nqn->namespace;
-        $this->tqn = new QName($type);
-        $this->type = $this->tqn->name;
-        $this->type_prefix = $this->tqn->ns;
-        $this->type_namespace = $this->tqn->namespace;
+        if ($type) {
+            $this->tqn = new QName($type);
+            $this->type = $this->tqn->name;
+            $this->type_namespace = $this->tqn->namespace;
+        }
         $this->value = $value;
         $this->attributes = $attributes;
+        $this->options = $options;
     }
 
     /**
@@ -109,10 +159,8 @@ class SOAP_Value
     function serialize(&$serializer)
     {
         return $serializer->_serializeValue($this->value,
-                                            $this->name,
-                                            $this->type,
-                                            $this->namespace,
-                                            $this->type_namespace,
+                                            $this->nqn,
+                                            $this->tqn,
                                             $this->options,
                                             $this->attributes,
                                             $this->arrayType);
@@ -156,11 +204,11 @@ class SOAP_Header extends SOAP_Value
         parent::SOAP_Value($name, $type, $value, $attributes);
 
         if (isset($actor)) {
-            $this->attributes['SOAP-ENV:actor'] = $actor;
-        } elseif (!isset($this->attributes['SOAP-ENV:actor'])) {
-            $this->attributes['SOAP-ENV:actor'] = 'http://schemas.xmlsoap.org/soap/actor/next';
+            $this->attributes[SOAP_BASE::SOAPENVPrefix().':actor'] = $actor;
+        } elseif (!isset($this->attributes[SOAP_BASE::SOAPENVPrefix().':actor'])) {
+            $this->attributes[SOAP_BASE::SOAPENVPrefix().':actor'] = 'http://schemas.xmlsoap.org/soap/actor/next';
         }
-        $this->attributes['SOAP-ENV:mustUnderstand'] = (int)$mustunderstand;
+        $this->attributes[SOAP_BASE::SOAPENVPrefix().':mustUnderstand'] = (int)$mustunderstand;
     }
 
 }
@@ -183,13 +231,14 @@ class SOAP_Attachment extends SOAP_Value
      * @param string $filename  The attachment's file name. Ignored if $file
      *                          is provide.
      * @param string $file      The attachment data.
+     * @param array $attributes Attributes.
      */
     function SOAP_Attachment($name = '', $type = 'application/octet-stream',
-                             $filename, $file = null)
+                             $filename, $file = null, $attributes = null)
     {
         parent::SOAP_Value($name, null, null);
 
-        $filedata = ($file === null) ? $this->_file2str($filename) : $file;
+        $filedata = $file === null ? $this->_file2str($filename) : $file;
         $filename = basename($filename);
         if (PEAR::isError($filedata)) {
             $this->options['attachment'] = $filedata;
@@ -198,7 +247,8 @@ class SOAP_Attachment extends SOAP_Value
 
         $cid = md5(uniqid(time()));
 
-        $this->attributes['href'] = 'cid:' . $cid; 
+        $this->attributes = $attributes;
+        $this->attributes['href'] = 'cid:' . $cid;
 
         $this->options['attachment'] = array('body' => $filedata,
                                              'disposition' => $filename,
