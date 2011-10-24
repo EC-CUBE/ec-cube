@@ -76,7 +76,7 @@
     </div>
     </div><!--▲loginarea-->
 </form>
-<form name="member_form2" id="member_form2" method="post" action="<!--{$smarty.const.HTTP_URL}-->shopping/index.php">
+<form name="member_form2" id="member_form2" method="post" action="<!--{$smarty.const.ROOT_URLPATH}-->shopping/index.php">
       <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
       <input type="hidden" name="mode" value="nonmember" />
     <div class="login_area_btm">
