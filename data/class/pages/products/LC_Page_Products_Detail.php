@@ -107,9 +107,6 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         $product_id = $this->lfCheckProductId($this->objFormParam->getValue('admin'),$this->objFormParam->getValue('product_id'));
         $this->mode = $this->getMode();
 
-        // 規格選択セレクトボックスの作成
-        $this->js_lnOnload .= $this->lfMakeSelect();
-
         $objProduct = new SC_Product_Ex();
         $objProduct->setProductsClassByProductIds(array($product_id));
 
@@ -130,6 +127,12 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         $this->tpl_stock_find = $objProduct->stock_find[$product_id];
         $this->tpl_product_class_id = $objProduct->classCategories[$product_id]['__unselected']['__unselected']['product_class_id'];
         $this->tpl_product_type = $objProduct->classCategories[$product_id]['__unselected']['__unselected']['product_type'];
+
+        // 在庫が無い場合は、OnLoadしない。(javascriptエラー防止)
+        if ($this->tpl_stock_find) {
+            // 規格選択セレクトボックスの作成
+            $this->js_lnOnload .= $this->lfMakeSelect();
+        }
 
         $this->tpl_javascript .= 'classCategories = ' . SC_Utils_Ex::jsonEncode($objProduct->classCategories[$product_id]) . ';';
         $this->tpl_javascript .= 'function lnOnLoad(){' . $this->js_lnOnload . '}';
