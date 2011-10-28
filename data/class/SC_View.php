@@ -117,21 +117,21 @@ class SC_View {
         }
     }
 
-      // オブジェクト内の変数をすべて割り当てる。
-      function assignobj($obj) {
+    // オブジェクト内の変数をすべて割り当てる。
+    function assignobj($obj) {
         $data = get_object_vars($obj);
 
         foreach ($data as $key => $value){
             $this->_smarty->assign($key, $value);
         }
-      }
+    }
 
-      // 連想配列内の変数をすべて割り当てる。
-      function assignarray($array) {
-          foreach ($array as $key => $val) {
-              $this->_smarty->assign($key, $val);
-          }
-      }
+    // 連想配列内の変数をすべて割り当てる。
+    function assignarray($array) {
+        foreach ($array as $key => $val) {
+            $this->_smarty->assign($key, $val);
+        }
+    }
 
     /* サイト初期設定 */
     function initpath() {
