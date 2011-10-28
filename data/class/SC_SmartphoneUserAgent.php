@@ -63,14 +63,14 @@ class SC_SmartphoneUserAgent {
     /**
      * PC表示ON
      */
-    function setPcDsiplayOn() {
+    function setPcDisplayOn() {
         $_SESSION['pc_disp'] = true;
     }
 
     /**
      * PC表示OFF
      */
-    function setPcDsiplayOff() {
+    function setPcDisplayOff() {
         $_SESSION['pc_disp'] = false;
     }
 }
