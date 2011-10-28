@@ -149,7 +149,7 @@ class SC_Helper_Mail {
         $objCustomer = new SC_Customer_Ex();
         $arrTplVar->tpl_user_point = $objCustomer->getValue('point');
 
-       if(Net_UserAgent_Mobile::isMobile() === true) {
+       if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
             $objMailView = new SC_MobileView_Ex();
        } else {
             $objMailView = new SC_SiteView_Ex();

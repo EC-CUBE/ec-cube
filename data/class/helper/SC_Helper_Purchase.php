@@ -430,8 +430,9 @@ class SC_Helper_Purchase {
                 }
             }
 
-            if (Net_UserAgent_Mobile::isMobile()
-                && in_array('email', $keys)) {
+            if ((SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE)
+                && in_array('email', $keys)
+            ) {
                 $email_mobile = $objCustomer->getValue('email_mobile');
                 if (empty($email_mobile)) {
                     $dest[$prefix . '_email'] = $objCustomer->getValue('email');
@@ -1059,8 +1060,9 @@ __EOS__;
      */
     function sendOrderMail($orderId) {
         $mailHelper = new SC_Helper_Mail_Ex();
-        $mailHelper->sfSendOrderMail($orderId,
-                                     SC_MobileUserAgent_Ex::isMobile() ? 2 : 1);
+        $template_id =
+            SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE ? 2 : 1;
+        $mailHelper->sfSendOrderMail($orderId, $template_id);
     }
 
     /**

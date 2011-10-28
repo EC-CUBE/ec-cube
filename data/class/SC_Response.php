@@ -149,7 +149,9 @@ class SC_Response{
         $netUrl->querystring = array_merge($netUrl->querystring, $arrQueryString);
 
         $session = SC_SessionFactory::getInstance();
-        if (SC_MobileUserAgent_Ex::isMobile() || $session->useCookie() == false) {
+        if ((SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE)
+            || ($session->useCookie() == false)
+        ) {
             $netUrl->addQueryString(session_name(), session_id());
         }
 

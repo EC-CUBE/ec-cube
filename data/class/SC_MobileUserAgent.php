@@ -116,6 +116,11 @@ class SC_MobileUserAgent {
      * @return boolean 携帯端末ではない場合は true、それ以外の場合は false を返す。
      */
     function isNonMobile() {
+        /**
+         * ここは、自クラスのメソッドの逆関数なので、
+         * EC-CUBE標準規約/リファクタリングガイドラインの
+         * SC_Display_Ex::detectDevice()への統一からは除外。
+         */
         return !SC_MobileUserAgent_Ex::isMobile();
     }
 
