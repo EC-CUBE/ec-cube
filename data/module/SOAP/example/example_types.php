@@ -10,9 +10,6 @@
  * structures.  The soap library does not call this directly, you would call
  * it from your soap server class, echoStruct in the server class is an
  * example of doing this.
- *
- * @category Web Services
- * @package  SOAP
  */
 class SOAPStruct
 {
@@ -32,24 +29,16 @@ class SOAPStruct
                         $mustUnderstand = 0,
                         $actor = 'http://schemas.xmlsoap.org/soap/actor/next')
     {
-        $inner = array(
-            new SOAP_Value('varString', 'string', $this->varString),
-            new SOAP_Value('varInt', 'int', $this->varInt),
-            new SOAP_Value('varFloat', 'float', $this->varFloat));
+        $inner[] = new SOAP_Value('varString', 'string', $this->varString);
+        $inner[] = new SOAP_Value('varInt', 'int', $this->varInt);
+        $inner[] = new SOAP_Value('varFloat', 'float', $this->varFloat);
 
         if ($header) {
-            $value = new SOAP_Header($name,
-                                     '{http://soapinterop.org/xsd}SOAPStruct',
-                                     $inner,
-                                     $mustUnderstand,
-                                     $actor);
+            $value = new SOAP_Header($name,'{http://soapinterop.org/xsd}SOAPStruct',$inner,$mustUnderstand,$actor);
         } else {
-            $value = new SOAP_Value($name,
-                                    '{http://soapinterop.org/xsd}SOAPStruct',
-                                    $inner);
+            $value = new SOAP_Value($name,'{http://soapinterop.org/xsd}SOAPStruct',$inner);
         }
 
         return $value;
     }
-
 }

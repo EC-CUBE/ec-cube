@@ -1,9 +1,4 @@
 <?php
-/**
- * @category Web Services
- * @package SOAP
- */
-
 require_once("SOAP/Client.php");
 require_once("SOAP/test/test.utility.php");
 require_once("SOAP/Value.php");
