@@ -313,13 +313,6 @@ class SC_CustomerList extends SC_SelectSql_Ex {
                 $this->arrVal = array_merge((array)$this->arrVal, (array)$tmp_arrval);
             }
         }
-        // 携帯電話番号
-        if (!isset($this->arrSql['search_cell'])) $this->arrSql['search_cell'] = "";
-        if ( is_numeric( $this->arrSql['search_cell'] ) ) {
-            $this->setWhere( "(cell01 || cell02 || cell03 LIKE ?)" );
-            $searchTel = $this->addSearchStr($this->arrSql['search_cell']);
-            $this->arrVal[] = ereg_replace("-", "", $searchTel);
-        }
 
         // 会員状態
         if (!isset($this->arrSql['search_status'])) $this->arrSql['search_status'] = "";
