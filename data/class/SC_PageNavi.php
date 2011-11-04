@@ -115,13 +115,7 @@ class SC_PageNavi {
 
             $this->arrPagenavi['arrPageno'] = array();
             $page_number = "";
-            for ($i=$disp_min; $i <= $disp_max; $i++) {
-
-                if ($i != $disp_max) {
-                    $sep = " ";
-                } else {
-                    $sep = "";
-                }
+            for ($i = $disp_min; $i <= $disp_max; $i++) {
 
                 if ($i == $this->now_page) {
                     $page_number .= "<li><strong>$i</strong></li>";
@@ -131,7 +125,8 @@ class SC_PageNavi {
                     $page_number .= "<li><a href=\"?$urlParamThis\" onclick=\"$func_name('$i'); return false;\">$i</a></li>";
                 }
 
-                $page_number .= $sep;
+                $page_number .= ' ';
+                // FIXME CSS を使おう
 
                 $this->arrPagenavi['arrPageno'][$i] = $i;
             }
