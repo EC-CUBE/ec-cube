@@ -53,6 +53,7 @@ class LC_Page_Contact_Complete extends LC_Page_Ex {
      * @return void
      */
     function process() {
+        parent::process();
         $this->action();
         $this->sendResponse();
     }
