@@ -40,11 +40,9 @@
 
             <p><span class="attention"><!--{$objNavi->all_row}-->件</span>の購入履歴があります。</p>
             <div class="pagenumber_area">
-              <ul>
-                  <!--▼ページナビ-->
-                  <!--{$objNavi->strnavi}-->
-                  <!--▲ページナビ-->
-              </ul>
+                <!--▼ページナビ-->
+                <!--{$objNavi->strnavi}-->
+                <!--▲ページナビ-->
             </div>
 
             <table summary="購入履歴">
