@@ -249,15 +249,10 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
                     }
 
                     $value1 = $this->objFormParam->getValue('classcategory_id1');
-                    $value2 = $this->objFormParam->getValue('classcategory_id2');
+                    $value2 = '#' . $this->objFormParam->getValue('classcategory_id2');
 
-                    if ($value1 == '') {
+                    if (strlen($value1) === 0) {
                         $value1 = '__unselected';
-                    }
-                    if ($value2 == '') {
-                        $value2 = '__unselected';
-                    } else {
-                        $value2 = '#' . $value2;
                     }
 
                     $this->tpl_product_class_id = $objProduct->classCategories[$product_id][$value1][$value2]['product_class_id'];
