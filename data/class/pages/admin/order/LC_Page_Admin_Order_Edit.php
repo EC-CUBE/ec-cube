@@ -548,6 +548,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
      * @return array エラーメッセージの配列
      */
     function lfCheckError(&$objFormParam) {
+        $objProduct = new SC_Product_Ex();
+
         $arrErr = $objFormParam->checkError();
 
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
@@ -570,7 +572,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
             $totalpoint += SC_Utils_Ex::sfPrePoint($arrValues['price'][$i], $arrValues['point_rate'][$i]) * $arrValues['quantity'][$i];
 
             // 在庫数のチェック
-            $objProduct = new SC_Product_Ex();
             $arrProduct = $objProduct->getDetailAndProductsClass($arrValues['product_class_id'][$i]);
 
             // 編集前の値と比較するため受注詳細を取得
