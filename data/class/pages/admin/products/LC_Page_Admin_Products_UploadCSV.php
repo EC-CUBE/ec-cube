@@ -413,7 +413,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
             $objQuery->insert("dtb_products", $sqlval);
         }
 
-        // カテゴリー登録
+        // カテゴリ登録
         if($arrList['category_ids'] != "") {
             $arrCategory_id = explode(',', $arrList['category_ids']);
             $this->objDb->updateProductCategories($arrCategory_id, $product_id);

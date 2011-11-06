@@ -19,9 +19,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<!--商品カテゴリーここから-->
+<!--商品カテゴリここから-->
 <section id="category_area">
-<h2 class="title_block">商品カテゴリー</h2>
+<h2 class="title_block">商品カテゴリ</h2>
 <nav id="categorytree">
 <ul id="categorytreelist">
     <!--{assign var=preLev value=1}-->
@@ -69,7 +69,7 @@
 
 <script>
 //<![CDATA[
-initCategoryList(); //カテゴリーリストの初期化
+initCategoryList(); //カテゴリリストの初期化
 //]]>
 </script>
 </nav>

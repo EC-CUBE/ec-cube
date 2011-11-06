@@ -47,7 +47,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_maintitle = '商品管理';
-        $this->tpl_subtitle = 'カテゴリー登録';
+        $this->tpl_subtitle = 'カテゴリ登録';
         $this->tpl_mainpage = 'products/category.tpl';
         $this->tpl_mainno = 'products';
         $this->tpl_subno  = 'category';
@@ -79,7 +79,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         $objFormParam->convParam();
 
         switch($this->getMode()) {
-        // カテゴリー登録/編集実行
+        // カテゴリ登録/編集実行
         case 'edit':
             $category_id = $objFormParam->getValue('category_id');
             if ($category_id == '') {
@@ -295,7 +295,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
      *
      * 下記の場合は, 登録を実行せず、エラーメッセージを表示する
      *
-     * - カテゴリー登録数の上限を超える場合
+     * - カテゴリ登録数の上限を超える場合
      * - 階層登録数の上限を超える場合
      * - カテゴリ名がすでに使用されている場合
      *
@@ -340,7 +340,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
             return;
         }
 
-        // カテゴリー登録
+        // カテゴリ登録
         $this->registerCategory($objFormParam->getValue('parent_category_id'),
                                 $objFormParam->getValue('category_name'),
                                 $_SESSION['member_id']);

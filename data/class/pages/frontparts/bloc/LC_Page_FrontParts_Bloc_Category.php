@@ -64,7 +64,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
         // モバイル判定
         switch ( SC_Display_Ex::detectDevice() ) {
             case DEVICE_TYPE_MOBILE:
-                // メインカテゴリーの取得
+                // メインカテゴリの取得
                 $this->arrCat = $this->lfGetMainCat(true);
                 break;
             default:
@@ -116,7 +116,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
      *
      * @param array $arrParentCategoryId 親カテゴリの配列
      * @param boolean $count_check 登録商品数をチェックする場合はtrue
-     * @return array $arrRet カテゴリーツリーの配列を返す
+     * @return array $arrRet カテゴリツリーの配列を返す
      */
     function lfGetCatTree($arrParentCategoryId, $count_check = false) {
         $objQuery = new SC_Query_Ex();
@@ -165,16 +165,16 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
     }
 
     /**
-     * メインカテゴリーの取得.
+     * メインカテゴリの取得.
      *
      * @param boolean $count_check 登録商品数をチェックする場合はtrue
-     * @return array $arrMainCat メインカテゴリーの配列を返す
+     * @return array $arrMainCat メインカテゴリの配列を返す
      */
     function lfGetMainCat($count_check = false) {
         $objQuery = new SC_Query_Ex();
         $col = '*';
         $from = 'dtb_category left join dtb_category_total_count using (category_id)';
-        // メインカテゴリーとその直下のカテゴリーを取得する。
+        // メインカテゴリとその直下のカテゴリを取得する。
         $where = 'level <= 2 AND del_flg = 0';
         // 登録商品数のチェック
         if($count_check) {
@@ -182,13 +182,13 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
         }
         $objQuery->setOption('ORDER BY rank DESC');
         $arrRet = $objQuery->select($col, $from, $where);
-        // メインカテゴリーを抽出する。
+        // メインカテゴリを抽出する。
         $arrMainCat = array();
         foreach ($arrRet as $cat) {
             if ($cat['level'] != 1) {
                 continue;
             }
-            // 子カテゴリーを持つかどうかを調べる。
+            // 子カテゴリを持つかどうかを調べる。
             $arrChildrenID = SC_Utils_Ex::sfGetUnderChildrenArray(
                 $arrRet,
                 'parent_category_id',

@@ -628,7 +628,7 @@ class CreateEcCubeData {
                      );
 
     /**
-    * 総カテゴリー数を計算し、dtb_categoryに代入するrankに使う
+    * 総カテゴリ数を計算し、dtb_categoryに代入するrankに使う
     */
     function lfGetTotalCategoryrank(){
         $TotalCategoryrank = (TOP_CATEGORIES_VOLUME * MIDDLE_CATEGORIES_VOLUME * SMALL_CATEGORIES_VOLUME) + (MIDDLE_CATEGORIES_VOLUME * TOP_CATEGORIES_VOLUME) + TOP_CATEGORIES_VOLUME;

@@ -296,7 +296,7 @@ class SC_Helper_DB {
     }
 
     /**
-     * カテゴリツリーの取得を複数カテゴリーで行う.
+     * カテゴリツリーの取得を複数カテゴリで行う.
      *
      * @param integer $product_id 商品ID
      * @param bool $count_check 登録商品数のチェックを行う場合 true
@@ -345,10 +345,10 @@ class SC_Helper_DB {
     }
 
     /**
-     * 親カテゴリーを連結した文字列を取得する.
+     * 親カテゴリを連結した文字列を取得する.
      *
      * @param integer $category_id カテゴリID
-     * @return string 親カテゴリーを連結した文字列
+     * @return string 親カテゴリを連結した文字列
      */
     function sfGetCatCombName($category_id){
         // 商品が属するカテゴリIDを縦に取得
@@ -356,7 +356,7 @@ class SC_Helper_DB {
         $arrCatID = $this->sfGetParents("dtb_category", "parent_category_id", "category_id", $category_id);
         $ConbName = "";
 
-        // カテゴリー名称を取得する
+        // カテゴリ名称を取得する
         foreach($arrCatID as $key => $val){
             $sql = "SELECT category_name FROM dtb_category WHERE category_id = ?";
             $arrVal = array($val);
@@ -370,15 +370,15 @@ class SC_Helper_DB {
     }
 
     /**
-     * 指定したカテゴリーIDのカテゴリーを取得する.
+     * 指定したカテゴリIDのカテゴリを取得する.
      *
      * @param integer $category_id カテゴリID
-     * @return array 指定したカテゴリーIDのカテゴリー
+     * @return array 指定したカテゴリIDのカテゴリ
      */
     function sfGetCat($category_id){
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        // カテゴリーを取得する
+        // カテゴリを取得する
         $arrVal = array($category_id);
         $res = $objQuery->select('category_id AS id, category_name AS name', 'dtb_category', 'category_id = ?', $arrVal);
 
@@ -386,10 +386,10 @@ class SC_Helper_DB {
     }
 
     /**
-     * 指定したカテゴリーIDの大カテゴリーを取得する.
+     * 指定したカテゴリIDの大カテゴリを取得する.
      *
      * @param integer $category_id カテゴリID
-     * @return array 指定したカテゴリーIDの大カテゴリー
+     * @return array 指定したカテゴリIDの大カテゴリ
      */
     function sfGetFirstCat($category_id){
         // 商品が属するカテゴリIDを縦に取得
@@ -398,7 +398,7 @@ class SC_Helper_DB {
         $arrCatID = $this->sfGetParents("dtb_category", "parent_category_id", "category_id", $category_id);
         $arrRet['id'] = $arrCatID[0];
 
-        // カテゴリー名称を取得する
+        // カテゴリ名称を取得する
         $sql = "SELECT category_name FROM dtb_category WHERE category_id = ?";
         $arrVal = array($arrRet['id']);
         $arrRet['name'] = $objQuery->getOne($sql,$arrVal);
@@ -447,7 +447,7 @@ class SC_Helper_DB {
     }
 
     /**
-     * カテゴリーツリーの取得を行う.
+     * カテゴリツリーの取得を行う.
      *
      * 親カテゴリの Value=0 を対象とする
      *

@@ -64,7 +64,7 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex {
         // カテゴリIDの正当性チェック
         $this->lfCheckCategoryId();
 
-        // カテゴリー情報を取得する。
+        // カテゴリ情報を取得する。
         $objFormParam = $this->lfInitParam($_REQUEST);
         $arrCategoryData = $this->lfGetCategories($objFormParam->getValue('category_id'), true, $this);
         $this->arrCategory = $arrCategoryData['arrCategory'];
@@ -90,38 +90,38 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex {
     }
 
     /**
-     * 選択されたカテゴリーとその子カテゴリーの情報を取得し、
+     * 選択されたカテゴリとその子カテゴリの情報を取得し、
      * ページオブジェクトに格納する。
      *
-     * @param string $category_id カテゴリーID
-     * @param boolean $count_check 有効な商品がないカテゴリーを除くかどうか
+     * @param string $category_id カテゴリID
+     * @param boolean $count_check 有効な商品がないカテゴリを除くかどうか
      * @param object &$objPage ページオブジェクト
      * @return void
      */
     function lfGetCategories($category_id, $count_check = false, &$objPage) {
-        // カテゴリーの正しいIDを取得する。
+        // カテゴリの正しいIDを取得する。
         $category_id = $this->lfCheckCategoryId($category_id);
         if ($category_id == 0) {
             SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND);
         }
 
-        $arrCategory = null;    // 選択されたカテゴリー
-        $arrChildren = array(); // 子カテゴリー
+        $arrCategory = null;    // 選択されたカテゴリ
+        $arrChildren = array(); // 子カテゴリ
 
         $arrAll = SC_Helper_DB_Ex::sfGetCatTree($category_id, $count_check);
         foreach ($arrAll as $category) {
-            // 選択されたカテゴリーの場合
+            // 選択されたカテゴリの場合
             if ($category['category_id'] == $category_id) {
                 $arrCategory = $category;
                 continue;
             }
 
-            // 関係のないカテゴリーはスキップする。
+            // 関係のないカテゴリはスキップする。
             if ($category['parent_category_id'] != $category_id) {
                 continue;
             }
 
-            // 子カテゴリーの場合は、孫カテゴリーが存在するかどうかを調べる。
+            // 子カテゴリの場合は、孫カテゴリが存在するかどうかを調べる。
             $arrGrandchildrenID = SC_Utils_Ex::sfGetUnderChildrenArray($arrAll, 'parent_category_id', 'category_id', $category['category_id']);
             $category['has_children'] = count($arrGrandchildrenID) > 0;
             $arrChildren[] = $category;
@@ -131,15 +131,15 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex {
             SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND);
         }
 
-        // 子カテゴリーの商品数を合計する。
+        // 子カテゴリの商品数を合計する。
         $children_product_count = 0;
         foreach ($arrChildren as $category) {
             $children_product_count += $category['product_count'];
         }
 
-        // 選択されたカテゴリーに直属の商品がある場合は、子カテゴリーの先頭に追加する。
+        // 選択されたカテゴリに直属の商品がある場合は、子カテゴリの先頭に追加する。
         if ($arrCategory['product_count'] > $children_product_count) {
-            $arrCategory['product_count'] -= $children_product_count; // 子カテゴリーの商品数を除く。
+            $arrCategory['product_count'] -= $children_product_count; // 子カテゴリの商品数を除く。
             $arrCategory['has_children'] = false; // 商品一覧ページに遷移させるため。
             array_unshift($arrChildren, $arrCategory);
         }

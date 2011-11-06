@@ -26,7 +26,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_CSV_Ex.php';
 
 /**
- * カテゴリー登録CSVのページクラス
+ * カテゴリ登録CSVのページクラス
  *
  * LC_Page_Admin_Products_UploadCSV をカスタマイズする場合はこのクラスを編集する.
  *
@@ -72,7 +72,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         $this->tpl_mainno   = 'products';
         $this->tpl_subno    = 'upload_csv_category';
         $this->tpl_maintitle = '商品管理';
-        $this->tpl_subtitle = 'カテゴリー登録CSV';
+        $this->tpl_subtitle = 'カテゴリ登録CSV';
         $this->csv_id = '5';
 
         $masterData = new SC_DB_MasterData_Ex();
@@ -349,7 +349,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
     }
 
     /**
-     * カテゴリー登録を行う.
+     * カテゴリ登録を行う.
      *
      * FIXME: 登録の実処理自体は、LC_Page_Admin_Products_Categoryと共通化して欲しい。
      *
