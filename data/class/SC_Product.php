@@ -663,7 +663,7 @@ __EOS__;
     /**
      * 商品詳細の SQL を取得する.
      *
-     * @param string $where_products_class 商品詳細の WHERE 句
+     * @param string $where_products_class 商品規格情報の WHERE 句
      * @return string 商品詳細の SQL
      */
     function alldtlSQL($where_products_class = '') {
