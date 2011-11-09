@@ -19,6 +19,7 @@
  * @link       http://pear.php.net/package/SOAP
  */
 
+/** SOAP_Server_Email */
 require_once 'SOAP/Server/Email.php';
 require_once 'SOAP/Transport.php';
 

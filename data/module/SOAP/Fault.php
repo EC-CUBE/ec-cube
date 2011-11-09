@@ -23,20 +23,21 @@
  * @link       http://pear.php.net/package/SOAP
  */
 
+/** PEAR_Error */
 require_once 'PEAR.php';
 
 /**
  * PEAR::Error wrapper used to match SOAP Faults to PEAR Errors
  *
- * SOAP_Fault transmissions normally contain a complete backtrace of the
- * error.  Revealing these details in a public web services is a bad idea
- * because it can be used by attackers.  Backtrace information can be kept out
- * of SOAP_Fault responses by putting the following code in your script after
- * your "require_once 'SOAP/Server.php';" line:
+ * SOAP_Fault can provide a complete backtrace of the error.  Revealing these
+ * details in a public web services is a bad idea because it can be used by
+ * attackers.  Thus you have to enable backtrace information in SOAP_Fault
+ * responses by putting the following code in your script after your
+ * "require_once 'SOAP/Server.php';" line:
  *
  * <code>
- * $skiptrace =& PEAR::getStaticProperty('PEAR_Error', 'skiptrace');
- * $skiptrace = true;
+ * $backtrace =& PEAR::getStaticProperty('SOAP_Fault', 'backtrace');
+ * $backtrace = true;
  * </code>
  *
  * @package  SOAP
@@ -75,10 +76,11 @@ class SOAP_Fault extends PEAR_Error
     {
         $msg = new SOAP_Base();
         $params = array();
-        $params[] = new SOAP_Value('faultcode', 'QName', 'SOAP-ENV:' . $this->code);
+        $params[] = new SOAP_Value('faultcode', 'QName', SOAP_BASE::SOAPENVPrefix().':' . $this->code);
         $params[] = new SOAP_Value('faultstring', 'string', $this->message);
         $params[] = new SOAP_Value('faultactor', 'anyURI', $this->error_message_prefix);
-        if (isset($this->backtrace)) {
+        if (PEAR::getStaticProperty('SOAP_Fault', 'backtrace') &&
+            isset($this->backtrace)) {
             $params[] = new SOAP_Value('detail', 'string', $this->backtrace);
         } else {
             $params[] = new SOAP_Value('detail', 'string', $this->userinfo);

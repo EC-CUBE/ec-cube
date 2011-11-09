@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the code for the SOAP date/time clas.
+ * This file contains the code for the SOAP_Type_dateTime class.
  *
  * PHP versions 4 and 5
  *
@@ -16,7 +16,7 @@
  * @author     Dietrich Ayala <dietrich@ganx4.com> Original Author
  * @author     Shane Caraveo <Shane@Caraveo.com>   Port to PEAR and more
  * @author     Jan Schneider <jan@horde.org>       Maintenance
- * @copyright  2003-2005 The PHP Group
+ * @copyright  2003-2007 The PHP Group
  * @license    http://www.php.net/license/2_02.txt  PHP License 2.02
  * @link       http://pear.php.net/package/SOAP
  */
@@ -30,7 +30,7 @@
  * @author   Shane Caraveo <shane@php.net>       Port to PEAR and more
  * @author   Jan Schneider <jan@horde.org>       Maintenance
  */
-class SOAP_Type_dateTime 
+class SOAP_Type_dateTime
 {
     var $_iso8601 =
         '# 1: centuries & years CCYY-
@@ -96,7 +96,7 @@ class SOAP_Type_dateTime
 
         //simulate PHP5's P parameter
         $zone = date('O', $timestamp);
-        if (strlen($zone) == 5) {
+        if (strlen($zone) === 5) {
             $zone = substr($zone, 0, 3) . ':' . substr($zone, 3);
         }
         return date('Y-m-d\TH:i:s', $timestamp) . $zone;

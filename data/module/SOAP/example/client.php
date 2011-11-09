@@ -15,87 +15,123 @@
  * @category   Web Services
  * @package    SOAP
  * @author     Shane Caraveo <Shane@Caraveo.com>   Port to PEAR and more
- * @copyright  2003-2005 The PHP Group
+ * @author     Jan Schneider <jan@horde.org>       Maintenance
+ * @copyright  2003-2007 The PHP Group
  * @license    http://www.php.net/license/2_02.txt  PHP License 2.02
  * @link       http://pear.php.net/package/SOAP
  */
 
+/** SOAP_Client */
 require 'SOAP/Client.php';
 
-/**
- * This client runs against the example server in SOAP/example/server.php.  It
+/* This client runs against the example server in SOAP/example/server.php.  It
  * does not use WSDL to run these requests, but that can be changed easily by
- * simply adding '?wsdl' to the end of the url.
- */
+ * simply adding '?wsdl' to the end of the url. */
 $soapclient = new SOAP_Client('http://localhost/SOAP/example/server.php');
-// This namespace is the same as declared in server.php.
-$options = array('namespace' => 'urn:SOAP_Example_Server',
-                 'trace' => true);
 
+/* Set a few options. */
+$options = array();
+
+/* This namespace is the same as declared in server.php. */
+$options['namespace'] = 'urn:SOAP_Example_Server';
+
+/* Trace the communication for debugging purposes, so we can later inspect the
+ * data with getWire(). */
+$options['trace'] = true;
+
+/* Uncomment the following lines if you want to use Basic HTTP
+ * Authentication. */
+// $options['user'] = 'username';
+// $options['pass'] = 'password';
+
+header('Content-Type: text/plain');
+
+/* Calling echoStringSimple. */
 $ret = $soapclient->call('echoStringSimple',
-                         $params = array('inputStringSimple' => 'this is a test string'),
+                         array('inputStringSimple' => 'this is a test string'),
                          $options);
-// print $soapclient->getWire();
+// echo $soapclient->getWire();
 print_r($ret);
-echo "<br>\n";
+echo "\n";
 
+/* Calling echoString. */
 $ret = $soapclient->call('echoString',
-                         $params = array('inputString' => 'this is a test string'),
+                         array('inputString' => 'this is a test string'),
                          $options);
+// echo $soapclient->getWire();
 print_r($ret);
-echo "<br>\n";
+echo "\n";
 
+/* Calling divide with valid parameters. */
 $ret = $soapclient->call('divide',
-                         $params = array('dividend' => 22, 'divisor' => 7),
+                         array('dividend' => 22, 'divisor' => 7),
                          $options);
-// print $soapclient->getWire();
+// echo $soapclient->getWire();
 if (PEAR::isError($ret)) {
-    echo 'Error: ' . $ret->getMessage() . "<br>\n";
+    echo 'Error: ' . $ret->getMessage();
 } else {
-    echo 'Quotient is ' . $ret . "<br>\n";
+    echo 'Quotient is ' . $ret;
 }
+echo "\n";
 
+/* Calling divide with invalid parameters. */
 $ret = $soapclient->call('divide',
-                         $params = array('dividend' => 22, 'divisor' => 0),
+                         array('dividend' => 22, 'divisor' => 0),
                          $options);
+// echo $soapclient->getWire();
 if (PEAR::isError($ret)) {
-    echo 'Error: ' . $ret->getMessage() . "<br>\n";
+    echo 'Error: ' . $ret->getMessage();
 } else {
-    echo 'Quotient is ' . $ret . "<br>\n";
+    echo 'Quotient is ' . $ret;
 }
+echo "\n";
 
-
-// SOAPStruct is defined in the following file.
+/* The SOAPStruct class is defined in example_types.php. */
 require_once 'example_types.php';
-
 $struct = new SOAPStruct('test string', 123, 123.123);
 
 /* Send an object, get an object back. Tell the client to translate to classes
  * we provide if possible. */
 $soapclient->_auto_translation = true;
+
 /* You can explicitly set the translation for a specific
  * class. auto_translation works for all cases, but opens ANY class in the
  * script to be used as a data type, and may not be desireable. Both can be
  * used on client or server. */
 $soapclient->setTypeTranslation('{http://soapinterop.org/xsd}SOAPStruct',
                                 'SOAPStruct');
+
+/* Calling echoStruct. */
 $ret = $soapclient->call('echoStruct',
-                         $p = array('inputStruct' => $struct->__to_soap()),
+                         array('inputStruct' => $struct->__to_soap()),
                          $options);
-// print $soapclient->getWire();
+// echo $soapclient->getWire();
 print_r($ret);
 
-/**
- * PHP doesn't support multiple OUT parameters in function calls, so we must
- * do a little work to make it happen here.  This requires knowledge on the
- * developers part to figure out how they want to deal with it.
- */
+/* Calling echoStructAsSimpleTypes.
+ * PHP doesn't support multiple return values in function calls, so we must do
+ * a little work to make it happen here, for example returning an array
+ * instead.  This requires knowledge on the developers part to figure out how
+ * they want to deal with it. */
 $ret = $soapclient->call('echoStructAsSimpleTypes',
-                         $p = array('inputStruct' => $struct->__to_soap()),
+                         array('inputStruct' => $struct->__to_soap()),
                          $options);
+// echo $soapclient->getWire();
 if (PEAR::isError($ret)) {
-    echo 'Error: ' . $ret->getMessage() . "<br>\n";
+    echo 'Error: ' . $ret->getMessage();
 } else {
     list($string, $int, $float) = array_values($ret);
-    echo "varString: $string<br>\nvarInt: $int<br>\nvarFloat: $float<br>\n";
+    echo "varString: $string\nvarInt: $int\nvarFloat: $float";
 }
+echo "\n";
+
+/* Calling echoMimeAttachment.
+ * We want to use MIME encoding here, the default is to use DIME encoding. */
+$options['attachments'] = 'Mime';
+$attachment = new SOAP_Attachment('attachment', 'text/plain', null,
+                                  'This is a MIME attachment');
+$ret = $soapclient->call('echoMimeAttachment',
+                         array($attachment),
+                         $options);
+// echo $soapclient->getWire();
+print_r($ret);
