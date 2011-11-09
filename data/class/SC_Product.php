@@ -663,13 +663,13 @@ __EOS__;
     /**
      * 商品詳細の SQL を取得する.
      *
-     * @param string $where 商品詳細の WHERE 句
+     * @param string $where_products_class 商品詳細の WHERE 句
      * @return string 商品詳細の SQL
      */
-    function alldtlSQL($where = "") {
-        $where_clause = "";
-        if (!SC_Utils_Ex::isBlank($where)) {
-            $where_clause = " WHERE " . $where;
+    function alldtlSQL($where_products_class = '') {
+        $where_clause = '';
+        if (!SC_Utils_Ex::isBlank($where_products_class)) {
+            $where_clause = 'WHERE ' . $where_products_class;
         }
         /*
          * point_rate, deliv_fee は商品規格(dtb_products_class)ごとに保持しているが,
