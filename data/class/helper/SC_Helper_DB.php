@@ -655,7 +655,7 @@ class SC_Helper_DB {
         //共通のfrom/where文の構築
         $sql_where = 'alldtl.del_flg = 0 AND alldtl.status = 1';
         // 在庫無し商品の非表示
-        if (NOSTOCK_HIDDEN === true) {
+        if (NOSTOCK_HIDDEN) {
             $sql_where_dtl = 'stock_max >= 1 OR stock_unlimited_max = 1';
             $from = $objProduct->alldtlSQL($sql_where_dtl);
         }else{

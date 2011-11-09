@@ -582,7 +582,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         $objQuery->commit();
 
         // 在庫無し商品の非表示対応
-        if (NOSTOCK_HIDDEN === true) {
+        if (NOSTOCK_HIDDEN) {
             // 件数カウントバッチ実行
             $objDb = new SC_Helper_DB_Ex();
             $objDb->sfCountCategory($objQuery);

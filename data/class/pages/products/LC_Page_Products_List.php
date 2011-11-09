@@ -434,7 +434,7 @@ __EOS__;
         $searchCondition['where'] = "alldtl.del_flg = 0 AND alldtl.status = 1 ";
 
         // 在庫無し商品の非表示
-        if (NOSTOCK_HIDDEN === true) {
+        if (NOSTOCK_HIDDEN) {
             $searchCondition['where'] .= ' AND (stock >= 1 OR stock_unlimited = 1)';
         }
 

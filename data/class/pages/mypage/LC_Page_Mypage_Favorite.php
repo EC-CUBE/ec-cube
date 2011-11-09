@@ -168,7 +168,7 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
             $where = '0<>0';
         }
         // 在庫無し商品の非表示
-        if (NOSTOCK_HIDDEN === true) {
+        if (NOSTOCK_HIDDEN) {
             $where .= ' AND (stock_max >= 1 OR stock_unlimited_max = 1)';
         }
         return $where;
