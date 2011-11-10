@@ -452,7 +452,6 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         $arrRecommendProductId = array();
         foreach($arrRecommendData as $recommend){
             $arrRecommendProductId[] = $recommend["recommend_product_id"];
-            $arrRecommendData[$recommend["recommend_product_id"]] = $recommend['comment'];
         }
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -466,12 +465,11 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         }
 
         $arrRecommend = array();
-        foreach($arrRecommendProductId as $product_id) {
-            $arrProducts2[$product_id]['comment'] = $arrRecommendData[$product_id];
-            $arrRecommend[] = $arrProducts2[$product_id];
+        foreach ($arrRecommendData as $key => $arrRow) {
+            $arrRecommendData[$key] = array_merge($arrRow, $arrProducts2[$arrRow['recommend_product_id']]);
         }
 
-        return $arrRecommend;
+        return $arrRecommendData;
     }
 
     /* 入力内容のチェック */
