@@ -457,16 +457,9 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrProducts = $objProduct->getListByProductIds($objQuery, $arrRecommendProductId);
 
-        //取得している並び順で並び替え
-        // FIXME SC_Productあたりにソート処理はもってくべき
-        $arrProducts2 = array();
-        foreach($arrProducts as $item) {
-            $arrProducts2[ $item['product_id'] ] = $item;
-        }
-
         $arrRecommend = array();
         foreach ($arrRecommendData as $key => $arrRow) {
-            $arrRecommendData[$key] = array_merge($arrRow, $arrProducts2[$arrRow['recommend_product_id']]);
+            $arrRecommendData[$key] = array_merge($arrRow, $arrProducts[$arrRow['recommend_product_id']]);
         }
 
         return $arrRecommendData;

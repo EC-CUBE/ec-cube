@@ -179,7 +179,7 @@ __EOS__;
      *
      * @param SC_Query $objQuery SC_Query インスタンス
      * @param array|int $arrProductId 商品ID
-     * @return array 商品一覧の配列
+     * @return array 商品一覧の配列 (キー: 商品ID)
      */
     function getListByProductIds(&$objQuery, $arrProductId = array()) {
         if (empty($arrProductId)) {
@@ -190,8 +190,27 @@ __EOS__;
         $where .= ' AND alldtl.del_flg = 0';
 
         $objQuery->setWhere($where, $arrProductId);
-        $arrRet = $this->lists($objQuery);
-        return $arrRet;
+        $arrProducts = $this->lists($objQuery);
+
+        // 配列のキーを商品IDに
+        $arrTmp = array();
+        foreach($arrProducts as $arrProduct) {
+            $arrTmp[$arrProduct['product_id']] = $arrProduct;
+        }
+        $arrProducts =& $arrTmp;
+        unset($arrTmp);
+
+        // SC_Query::setOrder() の指定がない場合、$arrProductId で指定された商品IDの順に配列要素を並び替え
+        if (strlen($objQuery->order) === 0) {
+            $arrTmp = array();
+            foreach($arrProductId as $product_id) {
+                $arrTmp[$product_id] = $arrProducts[$product_id];
+            }
+            $arrProducts =& $arrTmp;
+            unset($arrTmp);
+        }
+
+        return $arrProducts;
     }
 
     /**

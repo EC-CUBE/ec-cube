@@ -310,16 +310,6 @@ __EOS__;
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrProducts = $objProduct->getListByProductIds($objQuery, $arrProductId);
 
-        //取得している並び順で並び替え
-        $arrProducts2 = array();
-        foreach($arrProducts as $item) {
-            $arrProducts2[ $item['product_id'] ] = $item;
-        }
-        $arrProducts = array();
-        foreach($arrProductId as $product_id) {
-            $arrProducts[] = $arrProducts2[$product_id];
-        }
-
         // 規格を設定
         $objProduct->setProductsClassByProductIds($arrProductId);
         $arrProducts += array('productStatus' => $objProduct->getProductStatus($arrProductId));
