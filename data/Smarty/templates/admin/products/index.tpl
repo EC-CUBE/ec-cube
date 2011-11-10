@@ -246,7 +246,8 @@ function lfnDispChange(){
                     <td rowspan="2"><!--{$arrProducts[cnt].product_code_min|h}-->
                         <!--{if $arrProducts[cnt].product_code_min != $arrProducts[cnt].product_code_max}-->
                             <br />～ <!--{$arrProducts[cnt].product_code_max|h}-->
-                        <!--{/if}-->            </td>
+                        <!--{/if}-->
+                    </td>
                     <!--{* 価格 *}-->
                     <td rowspan="2" class="right">
                         <!--{$arrProducts[cnt].price02_min|number_format}-->
