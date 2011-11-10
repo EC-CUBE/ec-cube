@@ -656,7 +656,7 @@ class SC_Helper_DB {
         $sql_where = 'alldtl.del_flg = 0 AND alldtl.status = 1';
         // 在庫無し商品の非表示
         if (NOSTOCK_HIDDEN) {
-            $sql_where_dtl = 'stock >= 1 OR stock_unlimited = 1';
+            $sql_where_dtl = '(stock >= 1 OR stock_unlimited = 1)';
             $from = $objProduct->alldtlSQL($sql_where_dtl);
         }else{
             $from = 'dtb_products as alldtl';
@@ -772,11 +772,12 @@ __EOS__;
             }
             $where = "($sql_where) AND ($sql_where_product_ids)";
 
+            $where_products_class = '';
             if (NOSTOCK_HIDDEN) {
-                $sql_where_product_ids .= ' AND stock >= 1 OR stock_unlimited = 1';
+                $where_products_class .= '(stock >= 1 OR stock_unlimited = 1)';
             }
 
-            $from = $objProduct->alldtlSQL($sql_where_product_ids);
+            $from = $objProduct->alldtlSQL($where_products_class);
             $sql = "SELECT count(*) FROM $from WHERE $where ";
             $arrUpdateData[ $category_id ] = $objQuery->getOne($sql, $arrval);
         }
