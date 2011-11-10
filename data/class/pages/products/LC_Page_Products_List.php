@@ -397,7 +397,7 @@ __EOS__;
     function lfGetProductAllNum($searchCondition){
         // 検索結果対象となる商品の数を取得
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->setWhere($searchCondition['where']);
+        $objQuery->setWhere($searchCondition['where_for_count']);
         $objProduct = new SC_Product_Ex();
         return $objProduct->findProductCount($objQuery, $searchCondition['arrval']);
     }
@@ -422,11 +422,6 @@ __EOS__;
         // ▼対象商品IDの抽出
         // 商品検索条件の作成（未削除、表示）
         $searchCondition['where'] = "alldtl.del_flg = 0 AND alldtl.status = 1 ";
-
-        // 在庫無し商品の非表示
-        if (NOSTOCK_HIDDEN) {
-            $searchCondition['where'] .= ' AND (stock >= 1 OR stock_unlimited = 1)';
-        }
 
         if (strlen($searchCondition["where_category"]) >= 1) {
             $searchCondition['where'] .= " AND T2.".$searchCondition["where_category"];
@@ -454,6 +449,15 @@ __EOS__;
             $searchCondition['where']   .= " AND alldtl.maker_id = ? ";
             $searchCondition['arrval'][] = $arrSearchData['maker_id'];
         }
+
+        $searchCondition['where_for_count'] = $searchCondition['where'];
+
+        // 在庫無し商品の非表示
+        if (NOSTOCK_HIDDEN) {
+            $searchCondition['where'] .= ' AND (stock >= 1 OR stock_unlimited = 1)';
+            $searchCondition['where_for_count'] .= ' AND EXISTS(SELECT * FROM dtb_products_class WHERE product_id = alldtl.product_id AND del_flg = 0 AND (stock >= 1 OR stock_unlimited = 1))';
+        }
+
         return $searchCondition;
     }
 
