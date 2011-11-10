@@ -164,8 +164,7 @@ __EOS__;
             ,del_flg
             ,update_date
 __EOS__;
-        $where = 'dtb_products_class.del_flg = 0';
-        $res = $objQuery->select($col, $this->alldtlSQL($where));
+        $res = $objQuery->select($col, $this->alldtlSQL());
         return $res;
     }
 
@@ -203,7 +202,7 @@ __EOS__;
         // SC_Query::setOrder() の指定がない場合、$arrProductId で指定された商品IDの順に配列要素を並び替え
         if (strlen($objQuery->order) === 0) {
             $arrTmp = array();
-            foreach($arrProductId as $product_id) {
+        foreach($arrProductId as $product_id) {
                 $arrTmp[$product_id] = $arrProducts[$product_id];
             }
             $arrProducts =& $arrTmp;
@@ -221,7 +220,7 @@ __EOS__;
      */
     function getDetail($productId) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $result = $objQuery->select("*", $this->alldtlSQL("product_id = ? AND del_flg = 0"),
+        $result = $objQuery->select("*", $this->alldtlSQL('product_id = ?'),
                                     "product_id = ?",
                                     array($productId, $productId));
         return $result[0];
@@ -688,7 +687,7 @@ __EOS__;
     function alldtlSQL($where_products_class = '') {
         $where_clause = '';
         if (!SC_Utils_Ex::isBlank($where_products_class)) {
-            $where_clause = 'WHERE ' . $where_products_class;
+            $where_products_class = 'AND (' . $where_products_class . ')';
         }
         /*
          * point_rate, deliv_fee は商品規格(dtb_products_class)ごとに保持しているが,
@@ -773,7 +772,7 @@ __EOS__;
                               MAX(deliv_fee) AS deliv_fee,
                               COUNT(*) as class_count
                         FROM dtb_products_class
-                        $where_clause
+                        WHERE del_flg = 0 $where_products_class
                         GROUP BY product_id
                     ) AS T4
                         ON dtb_products.product_id = T4.product_id
