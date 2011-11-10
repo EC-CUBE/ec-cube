@@ -312,7 +312,7 @@ __EOS__;
 
         // 規格を設定
         $objProduct->setProductsClassByProductIds($arrProductId);
-        $arrProducts += array('productStatus' => $objProduct->getProductStatus($arrProductId));
+        $arrProducts['productStatus'] = $objProduct->getProductStatus($arrProductId);
         return $arrProducts;
     }
 
