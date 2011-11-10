@@ -772,6 +772,10 @@ __EOS__;
             }
             $where = "($sql_where) AND ($sql_where_product_ids)";
 
+            if (NOSTOCK_HIDDEN) {
+                $sql_where_product_ids .= ' AND stock >= 1 OR stock_unlimited = 1';
+            }
+
             $from = $objProduct->alldtlSQL($sql_where_product_ids);
             $sql = "SELECT count(*) FROM $from WHERE $where ";
             $arrUpdateData[ $category_id ] = $objQuery->getOne($sql, $arrval);
