@@ -760,6 +760,12 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
             $product_class_id = $objFormParam->getValue('edit_product_class_id');
             $changed_no = $objFormParam->getValue('no');
         }
+        // FXIME バリデーションを通さず $objFormParam の値で DB 問い合わせしている。(管理機能ため、さほど問題は無いと思うものの…)
+
+        // 商品規格IDが指定されていない場合、例外エラーを発生
+        if (strlen($product_class_id) === 0) {
+            SC_Utils_Ex::sfDispException('商品規格指定なし');
+        }
 
         // 選択済みの商品であれば数量を1増やす
         $exists = false;
@@ -780,6 +786,12 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         if (!$exists) {
             $objProduct = new SC_Product_Ex();
             $arrProduct = $objProduct->getDetailAndProductsClass($product_class_id);
+
+            // 一致する商品規格がない場合、例外エラーを発生
+            if (empty($arrProduct)) {
+                SC_Utils_Ex::sfDispException('商品規格一致なし');
+            }
+
             $arrProduct['quantity'] = 1;
             $arrProduct['price'] = $arrProduct['price02'];
             $arrProduct['product_name'] = $arrProduct['name'];
