@@ -88,7 +88,6 @@ class LC_Page_Cart extends LC_Page_Ex {
                 $this->tpl_message = "商品購入中にカート内容が変更されましたので、お手数ですが購入手続きをやり直して下さい。";
             }
         }
-        $this->cartItems =& $objCartSess->getAllCartList();
 
         $cart_no = $objFormParam->getValue('cart_no');
         $cartKey = $objFormParam->getValue('cartKey');
@@ -169,6 +168,9 @@ class LC_Page_Cart extends LC_Page_Ex {
         // TODO: SC_CartSession::setPrevURL()利用不可。
         $this->lfGetCartPrevUrl($_SESSION,$_SERVER['HTTP_REFERER']);
         $this->tpl_prev_url = (isset($_SESSION['cart_prev_url'])) ? $_SESSION['cart_prev_url'] : '';
+
+        // すべてのカートの内容を取得する
+        $this->cartItems = $objCartSess->getAllCartList();
     }
 
     /**
