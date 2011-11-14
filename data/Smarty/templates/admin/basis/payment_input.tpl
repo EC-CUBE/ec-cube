@@ -80,7 +80,7 @@
                     <!--{if $arrFile[$key].filepath != ""}-->
                     <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->">　<br /><a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
                     <!--{/if}-->
-                    <input type="file" name="<!--{$key}-->" size="30" class="box30" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
+                    <input type="file" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
                     <a class="btn-normal" href="javascript:;" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;">アップロード</a>
                 </td>
             </tr>
