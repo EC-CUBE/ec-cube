@@ -158,6 +158,7 @@ function getProducts(limit) {
     $.ajax({
         type: "POST",
            data: postData,
+           url: "<!--{$smarty.const.ROOT_URLPATH}-->products/list.php",
            cache: false,
            dataType: "json",
            error: function(XMLHttpRequest, textStatus, errorThrown){
