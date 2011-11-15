@@ -202,7 +202,7 @@ __EOS__;
         // SC_Query::setOrder() の指定がない場合、$arrProductId で指定された商品IDの順に配列要素を並び替え
         if (strlen($objQuery->order) === 0) {
             $arrTmp = array();
-        foreach($arrProductId as $product_id) {
+            foreach ($arrProductId as $product_id) {
                 $arrTmp[$product_id] = $arrProducts[$product_id];
             }
             $arrProducts =& $arrTmp;
