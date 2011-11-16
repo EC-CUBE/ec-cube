@@ -190,8 +190,6 @@ class LC_Page_Contact extends LC_Page_Ex {
         $CONF = SC_Helper_DB_Ex::sfGetBasisData();
         $objPage->tpl_shopname = $CONF['shop_name'];
         $objPage->tpl_infoemail = $CONF['email02'];
-        $fromMail_name = $objPage->arrForm['name01']['value'] ." 様";
-        $fromMail_address = $objPage->arrForm['email']['value'];
         $helperMail = new SC_Helper_Mail_Ex();
         $helperMail->sfSendTemplateMail(
             $objPage->arrForm['email']['value'],            // to
