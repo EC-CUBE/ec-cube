@@ -288,7 +288,7 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         // 購入商品コード
         if (!isset($this->arrSql['search_buy_product_code'])) $this->arrSql['search_buy_product_code'] = "";
         if ( strlen($this->arrSql['search_buy_product_code']) > 0 ) {
-            $this->setWhere( "customer_id IN (SELECT customer_id FROM dtb_order WHERE order_id IN (SELECT order_id FROM dtb_order_detail WHERE product_code LIKE ? ))");
+            $this->setWhere( "customer_id IN (SELECT customer_id FROM dtb_order WHERE order_id IN (SELECT order_id FROM dtb_order_detail WHERE product_code LIKE ? ) AND del_flg = 0)");
             $search_buyproduct_code = $this->addSearchStr($this->arrSql['search_buy_product_code']);
             $this->arrVal[] = $search_buyproduct_code;
         }
@@ -296,7 +296,7 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         // 購入商品名称
         if (!isset($this->arrSql['search_buy_product_name'])) $this->arrSql['search_buy_product_name'] = "";
         if ( strlen($this->arrSql['search_buy_product_name']) > 0 ) {
-            $this->setWhere( "customer_id IN (SELECT customer_id FROM dtb_order WHERE order_id IN (SELECT order_id FROM dtb_order_detail WHERE product_name LIKE ? ))");
+            $this->setWhere( "customer_id IN (SELECT customer_id FROM dtb_order WHERE order_id IN (SELECT order_id FROM dtb_order_detail WHERE product_name LIKE ? ) AND del_flg = 0)");
             $search_buyproduct_name = $this->addSearchStr($this->arrSql['search_buy_product_name']);
             $this->arrVal[] = $search_buyproduct_name;
         }
@@ -309,7 +309,7 @@ class SC_CustomerList extends SC_SelectSql_Ex {
 
             // カテゴリで絞込みが可能の場合
             if($tmp_where != "") {
-                $this->setWhere( " customer_id IN (SELECT distinct customer_id FROM dtb_order WHERE order_id IN (SELECT distinct order_id FROM dtb_order_detail WHERE product_id IN (SELECT product_id FROM dtb_product_categories WHERE ".$tmp_where." ))) ");
+                $this->setWhere( " customer_id IN (SELECT distinct customer_id FROM dtb_order WHERE order_id IN (SELECT distinct order_id FROM dtb_order_detail WHERE product_id IN (SELECT product_id FROM dtb_product_categories WHERE ".$tmp_where." ) AND del_flg = 0)) ");
                 $this->arrVal = array_merge((array)$this->arrVal, (array)$tmp_arrval);
             }
         }
