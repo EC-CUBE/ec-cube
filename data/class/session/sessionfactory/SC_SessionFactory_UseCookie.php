@@ -44,6 +44,7 @@ class SC_SessionFactory_UseCookie extends SC_SessionFactory {
      * セッションパラメーターの指定
      * ・ブラウザを閉じるまで有効
      * ・すべてのパスで有効
+     *   FIXME 多分、同一ホスト名に複数の EC-CUBE をインストールした場合に望ましくない状態である。特段の事由がなければ、アプリケーションルートを指定すべきだし、あればコメントに残すべき。
      * ・同じドメイン間で共有
      **/
     function initSession() {
