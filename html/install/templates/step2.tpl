@@ -47,8 +47,8 @@ function lfnChangePort(db_type) {
     </div>
     <div class="block">
         <table>
-            <colgroup width="30%">
-            <colgroup width="70%">
+            <col width="30%" />
+            <col width="70%" />
             <tr>
                 <th>DBの種類<span class="attention">※</span></th>
                 <td>

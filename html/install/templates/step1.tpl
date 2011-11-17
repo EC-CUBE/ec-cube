@@ -33,8 +33,8 @@
     </div>
     <div class="block">
         <table>
-            <colgroup width="30%">
-            <colgroup width="70%">
+            <col width="30%" />
+            <col width="70%" />
             <tr>
                 <th>店名<span class="attention">※</span></th>
                 <td>
@@ -76,8 +76,8 @@
 
         <h2>管理機能の設定</h2>
         <table>
-            <colgroup width="30%">
-            <colgroup width="70%">
+            <col width="30%" />
+            <col width="70%" />
             <tr>
                 <th>ディレクトリ<br/>半角英数字<!--{$smarty.const.ID_MIN_LEN}-->～<!--{$smarty.const.ID_MAX_LEN}-->文字</th>
                 <td>
@@ -113,8 +113,8 @@
 
         <h2>WEBサーバーの設定</h2>
         <table>
-            <colgroup width="30%">
-            <colgroup width="70%">
+            <col width="30%" />
+            <col width="70%" />
             <tr>
                 <th>URL(通常)<span class="attention">※</span></th>
                 <td>

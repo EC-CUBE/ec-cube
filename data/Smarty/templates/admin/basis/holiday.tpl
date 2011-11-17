@@ -65,11 +65,11 @@
     </div>
 
     <table class="list">
-        <col width="50*" />
-        <col width="15*" />
-        <col width="5*" />
-        <col width="5*" />
-        <col width="15*" />
+        <col width="50%" />
+        <col width="15%" />
+        <col width="5%" />
+        <col width="5%" />
+        <col width="15%" />
         <tr>
             <th>タイトル</th>
             <th>日付</th>
