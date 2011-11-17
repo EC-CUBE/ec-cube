@@ -204,9 +204,9 @@ function lfnDispChange(){
 
         <!--検索結果表示テーブル-->
         <table class="list" id="products-search-result">
-            <col width="5%" />
             <col width="8%" />
-            <col width="8%" />
+            <col width="9%" />
+            <col width="9%" />
             <col width="8%" />
             <col width="25%" />
             <col width="8%" />

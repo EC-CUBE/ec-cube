@@ -66,10 +66,10 @@
 
     <table class="list">
         <col width="50%" />
-        <col width="15%" />
-        <col width="5%" />
-        <col width="5%" />
-        <col width="15%" />
+        <col width="20%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="20%" />
         <tr>
             <th>タイトル</th>
             <th>日付</th>

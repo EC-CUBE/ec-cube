@@ -31,9 +31,9 @@
     <table class="list">
         <col width="5%" />
         <col width="5%" />
-        <col width="28%" />
         <col width="25%" />
-        <col width="43%" />
+        <col width="25%" />
+        <col width="40%" />
         <tr>
             <th colspan="2">インデックス</th>
             <th rowspan="2">テーブル名</th>

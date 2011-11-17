@@ -111,10 +111,10 @@
 
     <!--検索結果表示テーブル-->
     <table class="list" id="customer-search-result">
-        <col width="5%" />
+        <col width="8%" />
         <col width="10%" />
-        <col width="25%" />
-        <col width="5%" />
+        <col width="30%" />
+        <col width="8%" />
         <col width="30%" />
         <col width="7%" />
         <col width="7%" />
