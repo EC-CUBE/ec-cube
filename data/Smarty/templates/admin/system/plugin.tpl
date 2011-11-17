@@ -51,14 +51,14 @@
     <!--{if count($plugins) > 0}-->
         <span class="attention"><!--{$arrErr.plugin_error}--><!--{$arrErr.mode}--><!--{$arrErr.plugin_id}--><!--{$arrErr.plugin_code}--></span>
         <table class="list" width="900">
-            <colgroup width="15%">
-            <colgroup width="10%">
-            <colgroup width="25%">
-            <colgroup width="28%">
-            <colgroup width="7%">
-            <colgroup width="5%">
-            <colgroup width="5%">
-            <colgroup width="5%">
+            <col width="15%" />
+            <col width="10%" />
+            <col width="25%" />
+            <col width="28%" />
+            <col width="7%" />
+            <col width="5%" />
+            <col width="5%" />
+            <col width="5%" />
             <tr>
                 <th>プラグイン名</th>
                 <th>作者</th>

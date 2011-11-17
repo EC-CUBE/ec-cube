@@ -111,13 +111,13 @@
 
     <!--検索結果表示テーブル-->
     <table class="list" id="customer-search-result">
-        <colgroup width="5%">
-        <colgroup width="10%">
-        <colgroup width="25%">
-        <colgroup width="5%">
-        <colgroup width="30%">
-        <colgroup width="7%">
-        <colgroup width="7%">
+        <col width="5%" />
+        <col width="10%" />
+        <col width="25%" />
+        <col width="5%" />
+        <col width="30%" />
+        <col width="7%" />
+        <col width="7%" />
         <tr>
             <th rowspan="2">種別</th>
             <th>顧客ID</th>

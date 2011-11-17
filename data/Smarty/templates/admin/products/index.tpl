@@ -204,18 +204,18 @@ function lfnDispChange(){
 
         <!--検索結果表示テーブル-->
         <table class="list" id="products-search-result">
-            <colgroup width="5%">
-            <colgroup width="8%">
-            <colgroup width="8%">
-            <colgroup width="8%">
-            <colgroup width="25%">
-            <colgroup width="8%">
-            <colgroup width="8%">
-            <colgroup width="5%">
-            <colgroup width="5%">
-            <colgroup width="5%">
-            <colgroup width="5%">
-            <colgroup width="5%">
+            <col width="5%" />
+            <col width="8%" />
+            <col width="8%" />
+            <col width="8%" />
+            <col width="25%" />
+            <col width="8%" />
+            <col width="8%" />
+            <col width="5%" />
+            <col width="5%" />
+            <col width="5%" />
+            <col width="5%" />
+            <col width="5%" />
             <tr>
                 <th rowspan="2">商品ID</th>
                 <th rowspan="2">商品画像</th>

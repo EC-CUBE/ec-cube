@@ -35,8 +35,8 @@
     <h2>支払方法登録・編集</h2>
 
         <table class="form">
-        <colgroup width="20%">
-        <colgroup width="80%">
+        <col width="20%" />
+        <col width="80%" />
             <tr>
                 <th>支払方法<span class="attention"> *</span></th>
                 <td>

@@ -53,10 +53,10 @@
             <input type="hidden" name="line_of_num" value="<!--{$arrForm.line_of_num.value}-->" />
             <input type="hidden" name="mode" value="confirm" />
             <table summary="商品情報">
-                <colgroup width="10%"></colgroup>
-                <colgroup width="35%"></colgroup>
-                <colgroup width="10%"></colgroup>
-                <colgroup width="45%"></colgroup>
+                <col width="10%" />
+                <col width="35%" />
+                <col width="10%" />
+                <col width="45%" />
                 <tr>
                     <th class="alignC">商品写真</th>
                     <th class="alignC">商品名</th>

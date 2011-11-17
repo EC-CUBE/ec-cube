@@ -106,12 +106,12 @@ $(document).ready(function() {
             <!--{/if}-->
 
             <table summary="商品情報">
-                <colgroup width="10%"></colgroup>
-                <colgroup width="15%"></colgroup>
-                <colgroup width="30%"></colgroup>
-                <colgroup width="15%"></colgroup>
-                <colgroup width="15%"></colgroup>
-                <colgroup width="15%"></colgroup>
+                <col width="10%" />
+                <col width="15%" />
+                <col width="30%" />
+                <col width="15%" />
+                <col width="15%" />
+                <col width="15%" />
                 <tr>
                     <th class="alignC">削除</th>
                     <th class="alignC">商品写真</th>

@@ -56,11 +56,11 @@
             <p class="attention"><!--{$arrErr.deli}--></p>
         <!--{/if}-->
         <table summary="お届け先の指定">
-            <colgroup width="10%"></colgroup>
-            <colgroup width="20%"></colgroup>
-            <colgroup width="50%"></colgroup>
-            <colgroup width="10%"></colgroup>
-            <colgroup width="10%"></colgroup>
+            <col width="10%" />
+            <col width="20%" />
+            <col width="50%" />
+            <col width="10%" />
+            <col width="10%" />
             <tr>
                 <th class="alignC">選択</th>
                 <th class="alignC">住所種類</th>

@@ -56,8 +56,8 @@ $(function() {
         <h2 class="title"><!--{$tpl_title|h}--></h2>
 
         <table summary="当サイトについて">
-            <colgroup width="20%"></colgroup>
-            <colgroup width="80%"></colgroup>
+            <col width="20%" />
+            <col width="80%" />
             <!--{if strlen($objSiteInfo->data.shop_name)}-->
                 <tr>
                     <th>店名</th>

@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<colgroup width="30%"></colgroup>
-<colgroup width="70%"></colgroup>
+<col width="30%" />
+<col width="70%" />
 <tr>
     <th>お名前<span class="attention">※</span></th>
     <td>

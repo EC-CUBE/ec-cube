@@ -70,10 +70,10 @@ function lfnCheckSetItem( rank ){
 
 <div id="admin-contents" class="contents-main">
     <table class="list center" id="recommend-table">
-        <colgroup width="13%">
-        <colgroup width="73%">
-        <colgroup width="7%">
-        <colgroup width="7%">
+        <col width="13%" />
+        <col width="73%" />
+        <col width="7%" />
+        <col width="7%" />
         <tr>
             <th>順位</th>
             <th>商品/コメント</th>

@@ -29,12 +29,12 @@
 <!--{if count($arrTemplates) > 0}-->
 <div id="mail" class="contents-main">
     <table class="list center">
-    <colgroup width="15%">
-    <colgroup width="35%">
-    <colgroup width="20%">
-    <colgroup width="10%">
-    <colgroup width="10%">
-    <colgroup width="10%">
+    <col width="15%" />
+    <col width="35%" />
+    <col width="20%" />
+    <col width="10%" />
+    <col width="10%" />
+    <col width="10%" />
         <tr>
             <th>作成日</th>
             <th>subject</th>

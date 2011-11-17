@@ -53,10 +53,10 @@
     </div>
 
     <table class="list">
-        <colgroup width="55%">
-        <colgroup width="10%">
-        <colgroup width="10%">
-        <colgroup width="15%">
+        <col width="55%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="15%" />
         <tr>
             <th>分類名</th>
             <th class="edit">編集</th>

@@ -46,11 +46,11 @@
         </div>
         <!--{if count($arrMaker) > 0}-->
         <table class="list">
-            <colgroup width="10%">
-            <colgroup width="50%">
-            <colgroup width="10%">
-            <colgroup width="10%">
-            <colgroup width="20%">
+            <col width="10%" />
+            <col width="50%" />
+            <col width="10%" />
+            <col width="10%" />
+            <col width="20%" />
             <tr>
                 <th>ID</th>
                 <th>メーカー</th>

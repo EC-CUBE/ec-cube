@@ -33,11 +33,11 @@
         </ul>
     </div>
     <table class="list">
-        <colgroup width="35%">
-        <colgroup width="30%">
-        <colgroup width="10%">
-        <colgroup width="10%">
-        <colgroup width="15%">
+        <col width="35%" />
+        <col width="30%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="15%" />
         <tr>
             <th>配送業者</th>
             <th>名称</th>

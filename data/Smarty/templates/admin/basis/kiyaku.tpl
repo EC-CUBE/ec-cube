@@ -52,10 +52,10 @@
     </div>
 
     <table class="list">
-        <colgroup width="65%">
-        <colgroup width="10%">
-        <colgroup width="10%">
-        <colgroup width="15%">
+        <col width="65%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="15%" />
         <tr>
             <th>規約タイトル</th>
             <th>編集</th>

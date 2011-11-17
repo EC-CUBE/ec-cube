@@ -45,8 +45,8 @@ function func_submit(customer_id){
 <input name="customer_id" type="hidden" value="">
 
 <table class="form">
-    <colgroup width="20%">
-    <colgroup width="80%">
+    <col width="20%" />
+    <col width="80%" />
     <tr>
         <th class="colmun">顧客ID</th>
         <td width="287" colspan="2">

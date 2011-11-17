@@ -103,11 +103,11 @@
         <!--{if count($arrList) > 0}-->
 
         <table class="list" id="categoryTable">
-            <colgroup width="5%">
-            <colgroup width="60%">
-            <colgroup width="10%">
-            <colgroup width="10%">
-            <colgroup width="25%">
+            <col width="5%" />
+            <col width="60%" />
+            <col width="10%" />
+            <col width="10%" />
+            <col width="25%" />
             <tr class="nodrop nodrag">
                 <th>ID</th>
                 <th>カテゴリ名</th>

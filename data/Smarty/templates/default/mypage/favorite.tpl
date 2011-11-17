@@ -48,10 +48,10 @@
             </div>
 
             <table summary="お気に入り">
-                <colgroup width="15%"></colgroup>
-                <colgroup width="20%"></colgroup>
-                <colgroup width="45%"></colgroup>
-                <colgroup width="20%"></colgroup>
+                <col width="15%" />
+                <col width="20%" />
+                <col width="45%" />
+                <col width="20%" />
                 <tr>
                     <th class="alignC">削除</th>
                     <th class="alignC">商品画像</th>

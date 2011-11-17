@@ -94,11 +94,11 @@
 
     <!--検索結果表示テーブル-->
     <table class="list">
-    <colgroup width="10%">
-    <colgroup width="20%">
-    <colgroup width="35%">
-    <colgroup width="15%">
-    <colgroup width="15%">
+    <col width="10%" />
+    <col width="20%" />
+    <col width="35%" />
+    <col width="15%" />
+    <col width="15%" />
         <tr>
             <th>顧客ID</th>
             <th>名前</th>

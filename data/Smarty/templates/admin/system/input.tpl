@@ -39,8 +39,8 @@ self.moveTo(20,20);self.focus();
 <h2>メンバー登録/編集</h2>
 
 <table>
-    <colgroup width="20%">
-    <colgroup width="80%">
+    <col width="20%" />
+    <col width="80%" />
     <tr>
         <th>名前</th>
         <td>

@@ -99,10 +99,10 @@ function fnTargetSelf(){
         <a class="btn-normal" href="?device_type_id=<!--{$device_type_id|u}-->"><span>ページを新規入力</span></a>
     </div>
     <table class="list">
-        <colgroup width="70%">
-        <colgroup width="10%">
-        <colgroup width="10%">
-        <colgroup width="10%">
+        <col width="70%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="10%" />
         <tr>
             <th>名称</th>
             <th>レイアウト</th>

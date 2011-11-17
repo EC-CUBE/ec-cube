@@ -74,11 +74,11 @@ $(document).ready(function() {
         </div>
 
         <table summary="ご注文内容確認">
-            <colgroup width="10%"></colgroup>
-            <colgroup width="40%"></colgroup>
-            <colgroup width="20%"></colgroup>
-            <colgroup width="10%"></colgroup>
-            <colgroup width="20%"></colgroup>
+            <col width="10%" />
+            <col width="40%" />
+            <col width="20%" />
+            <col width="10%" />
+            <col width="20%" />
             <tr>
                 <th scope="col">商品写真</th>
                 <th scope="col">商品名</th>
@@ -142,8 +142,8 @@ $(document).ready(function() {
         <!--{* ログイン済みの会員のみ *}-->
         <!--{if $tpl_login == 1 && $smarty.const.USE_POINT !== false}-->
             <table summary="ポイント確認" class="delivname">
-            <colgroup width="30%"></colgroup>
-            <colgroup width="70%"></colgroup>
+            <col width="30%" />
+            <col width="70%" />
                 <tr>
                     <th scope="row">ご注文前のポイント</th>
                     <td><!--{$tpl_user_point|number_format|default:0}-->Pt</td>
@@ -178,10 +178,10 @@ $(document).ready(function() {
         <h3>お届け先<!--{if $is_multiple}--><!--{$smarty.foreach.shippingItem.iteration}--><!--{/if}--></h3>
         <!--{if $is_multiple}-->
             <table summary="ご注文内容確認">
-                <colgroup width="10%"></colgroup>
-                <colgroup width="60%"></colgroup>
-                <colgroup width="20%"></colgroup>
-                <colgroup width="10%"></colgroup>
+                <col width="10%" />
+                <col width="60%" />
+                <col width="20%" />
+                <col width="10%" />
                 <tr>
                     <th scope="col">商品写真</th>
                     <th scope="col">商品名</th>
@@ -221,8 +221,8 @@ $(document).ready(function() {
         <!--{/if}-->
 
         <table summary="お届け先確認" class="delivname">
-            <colgroup width="30%"></colgroup>
-            <colgroup width="70%"></colgroup>
+            <col width="30%" />
+            <col width="70%" />
             <tbody>
                 <tr>
                     <th scope="row">お名前</th>
@@ -262,8 +262,8 @@ $(document).ready(function() {
 
         <h3>配送方法・お支払方法・その他お問い合わせ</h3>
         <table summary="配送方法・お支払方法・その他お問い合わせ" class="delivname">
-            <colgroup width="30%"></colgroup>
-            <colgroup width="70%"></colgroup>
+            <col width="30%" />
+            <col width="70%" />
             <tbody>
             <tr>
                 <th scope="row">配送方法</th>

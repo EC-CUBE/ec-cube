@@ -43,12 +43,12 @@
         </div>
 
         <table summary="購入商品詳細">
-            <colgroup width="15%"></colgroup>
-            <colgroup width="25%"></colgroup>
-            <colgroup width="20%"></colgroup>
-            <colgroup width="15%"></colgroup>
-            <colgroup width="10%"></colgroup>
-            <colgroup width="15%"></colgroup>
+            <col width="15%" />
+            <col width="25%" />
+            <col width="20%" />
+            <col width="15%" />
+            <col width="10%" />
+            <col width="15%" />
             <tr>
                 <th class="alignC">商品コード</th>
                 <th class="alignC">商品名</th>
@@ -119,8 +119,8 @@
         <!-- 使用ポイントここから -->
         <!--{if $smarty.const.USE_POINT !== false}-->
             <table summary="使用ポイント">
-                <colgroup width="30%"></colgroup>
-                <colgroup width="70%"></colgroup>
+                <col width="30%" />
+                <col width="70%" />
                 <tr>
                     <th class="alignL">ご使用ポイント</th>
                     <td><!--{assign var=key value="use_point"}--><!--{$tpl_arrOrderData[$key]|number_format|default:0}--> pt</td>
@@ -137,10 +137,10 @@
             <h3>お届け先<!--{if $isMultiple}--><!--{$smarty.foreach.shippingItem.iteration}--><!--{/if}--></h3>
             <!--{if $isMultiple}-->
                 <table summary="お届け内容確認">
-                    <colgroup width="30%"></colgroup>
-                    <colgroup width="40%"></colgroup>
-                    <colgroup width="20%"></colgroup>
-                    <colgroup width="10%"></colgroup>
+                    <col width="30%" />
+                    <col width="40%" />
+                    <col width="20%" />
+                    <col width="10%" />
                     <tr>
                         <th class="alignC">商品コード</th>
                         <th class="alignC">商品名</th>
@@ -173,8 +173,8 @@
                 </table>
             <!--{/if}-->
             <table summary="お届け先" class="delivname">
-                    <colgroup width="30%"></colgroup>
-                    <colgroup width="70%"></colgroup>
+                    <col width="30%" />
+                    <col width="70%" />
                     <tr>
                         <th class="alignL">お名前</th>
                         <td><!--{$shippingItem.shipping_name01|h}-->&nbsp;<!--{$shippingItem.shipping_name02|h}--></td>

@@ -310,17 +310,17 @@
 
     <!--{* 検索結果表示テーブル *}-->
         <table class="list">
-        <colgroup width="10%">
-        <colgroup width="10%">
-        <colgroup width="15%">
-        <colgroup width="10%">
-        <colgroup width="10%">
-        <colgroup width="10%">
-        <colgroup width="10%">
-        <colgroup width="10%">
-        <colgroup width="5%">
-        <colgroup width="5%">
-        <colgroup width="5%">
+        <col width="10%" />
+        <col width="10%" />
+        <col width="15%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="5%" />
+        <col width="5%" />
+        <col width="5%" />
         <!--{* ペイジェントモジュール連携用 *}-->
         <!--{assign var=path value=`$smarty.const.MODULE_REALDIR`mdl_paygent/paygent_order_index.tpl}-->
         <!--{if file_exists($path)}-->

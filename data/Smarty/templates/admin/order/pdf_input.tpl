@@ -46,8 +46,8 @@ function lfPopwinSubmit(formName) {
 <h2><!--コンテンツタイトル-->帳票の作成</h2>
 
 <table class="form">
-    <colgroup width="20%">
-    <colgroup width="80%">
+    <col width="20%" />
+    <col width="80%" />
     <tr>
         <th>注文番号</th>
         <td><!--{$arrForm.order_id|@join:', '}--></td>

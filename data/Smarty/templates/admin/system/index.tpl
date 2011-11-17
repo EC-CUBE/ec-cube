@@ -32,13 +32,13 @@
 
     <!--▼メンバー一覧ここから-->
     <table class="list">
-        <colgroup width="15%">
-        <colgroup width="20%">
-        <colgroup width="20%">
-        <colgroup width="10%">
-        <colgroup width="5%">
-        <colgroup width="5%">
-        <colgroup width="20%">
+        <col width="15%" />
+        <col width="20%" />
+        <col width="20%" />
+        <col width="10%" />
+        <col width="5%" />
+        <col width="5%" />
+        <col width="20%" />
         <div class="btn">
             <a class="btn-action" href="javascript:;" onclick="win02('./input.php','input','620','450'); return false;"><span class="btn-next">メンバーを新規入力</span></a>
         </div>

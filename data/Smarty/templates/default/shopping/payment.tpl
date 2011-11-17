@@ -142,8 +142,8 @@
             <p class="attention"><!--{$arrErr[$key]}--></p>
             <!--{/if}-->
             <table summary="配送方法選択">
-                <colgroup width="20%"></colgroup>
-                <colgroup width="80%"></colgroup>
+                <col width="20%" />
+                <col width="80%" />
                 <tr>
                     <th class="alignC">選択</th>
                     <th class="alignC" colspan="2">配送方法</th>
@@ -171,8 +171,8 @@
             <p class="attention"><!--{$arrErr[$key]}--></p>
             <!--{/if}-->
             <table summary="お支払方法選択" id="payment">
-                <colgroup width="20%"></colgroup>
-                <colgroup width="80%"></colgroup>
+                <col width="20%" />
+                <col width="80%" />
                 <thead>
                     <tr>
                         <th class="alignC">選択</th>

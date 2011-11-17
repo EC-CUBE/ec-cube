@@ -184,12 +184,12 @@ function moving(news_id,rank, max_rank) {
     <input type="hidden" name="moveposition" value="" />
     <input type="hidden" name="rank" value="" />
     <table class="list">
-        <colgroup width="5%">
-        <colgroup width="15%">
-        <colgroup width="45%">
-        <colgroup width="5%">
-        <colgroup width="5%">
-        <colgroup width="25%">
+        <col width="5%" />
+        <col width="15%" />
+        <col width="45%" />
+        <col width="5%" />
+        <col width="5%" />
+        <col width="25%" />
         <tr>
             <th>順位</th>
             <th>日付</th>

@@ -52,11 +52,11 @@ function submitRegister() {
     <!--{/if}-->
 
     <table class="list center">
-        <colgroup width="5%">
-        <colgroup width="30%">
-        <colgroup width="50%">
-        <colgroup width="10%">
-        <colgroup width="5%">
+        <col width="5%" />
+        <col width="30%" />
+        <col width="50%" />
+        <col width="10%" />
+        <col width="5%" />
         <tr>
             <th>選択</th>
             <th>名前</th>

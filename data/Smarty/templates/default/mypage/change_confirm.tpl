@@ -40,8 +40,8 @@
             <!--{/if}-->
         <!--{/foreach}-->
         <table summary=" " class="delivname">
-            <colgroup width="30%"></colgroup>
-            <colgroup width="70%"></colgroup>
+            <col width="30%" />
+            <col width="70%" />
             <tr>
                 <th>お名前<span class="attention">※</span></th>
                 <td><!--{$arrForm.name01|h}-->　<!--{$arrForm.name02|h}--></td>

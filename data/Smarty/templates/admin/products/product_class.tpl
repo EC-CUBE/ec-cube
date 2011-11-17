@@ -182,16 +182,16 @@ $(function() {
     <!--{/if}-->
 
     <table class="list">
-        <colgroup width="5%">
-        <colgroup width="15%">
-        <colgroup width="15%">
-        <colgroup width="9%">
-        <colgroup width="10%">
-        <colgroup width="10%">
-        <colgroup width="10%">
-        <colgroup width="10%">
-        <colgroup width="8%">
-        <colgroup width="8%">
+        <col width="5%" />
+        <col width="15%" />
+        <col width="15%" />
+        <col width="9%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="8%" />
+        <col width="8%" />
         <tr>
             <th><input type="checkbox" onclick="fnAllCheck(this, 'input[name^=check]')" id="allCheck" /> <label for="allCheck"><br>登録</label></th>
             <th>規格1<br>(<!--{$arrClass[$class_id1]|default:"未選択"|h}-->)</th>

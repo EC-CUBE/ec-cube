@@ -33,13 +33,13 @@
         </ul>
     </div>
     <table class="list">
-        <colgroup width="5%">
-        <colgroup width="30%">
-        <colgroup width="20%">
-        <colgroup width="20%">
-        <colgroup width="5%">
-        <colgroup width="5%">
-        <colgroup width="15%">
+        <col width="5%" />
+        <col width="30%" />
+        <col width="20%" />
+        <col width="20%" />
+        <col width="5%" />
+        <col width="5%" />
+        <col width="15%" />
         <tr>
             <th class="center">ID</th>
             <th>支払方法</th>

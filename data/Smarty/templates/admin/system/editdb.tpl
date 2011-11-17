@@ -29,11 +29,11 @@
         <a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('index_form', 'confirm', '', '');"><span class="btn-next">変更する</span></a>
     </div>
     <table class="list">
-        <colgroup width="5%">
-        <colgroup width="5%">
-        <colgroup width="28%">
-        <colgroup width="25%">
-        <colgroup width="43%">
+        <col width="5%" />
+        <col width="5%" />
+        <col width="28%" />
+        <col width="25%" />
+        <col width="43%" />
         <tr>
             <th colspan="2">インデックス</th>
             <th rowspan="2">テーブル名</th>

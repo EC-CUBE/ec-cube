@@ -47,11 +47,11 @@
             <input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->" />
 
             <table summary="お届け先">
-            <colgroup width="5%"></colgroup>
-            <colgroup width="25%"></colgroup>
-            <colgroup width="50%"></colgroup>
-            <colgroup width="10%"></colgroup>
-            <colgroup width="10%"></colgroup>
+            <col width="5%" />
+            <col width="25%" />
+            <col width="50%" />
+            <col width="10%" />
+            <col width="10%" />
                 <tr>
                     <th colspan="5">お届け先</th>
                 </tr>
