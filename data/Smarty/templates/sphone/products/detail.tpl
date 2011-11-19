@@ -219,7 +219,7 @@ function fnWhoboughtToggle(areaEl, imgEl) {
                         <dt><!--{$tpl_class_name1|h}--></dt>
                         <dd>
                         <select name="classcategory_id1"
-                            style="<!--{$arrErr.classcategory_id1|sfGetErrorColor}-->" 
+                            style="<!--{$arrErr.classcategory_id1|sfGetErrorColor}-->"
                             class="data-role-none">
                             <!--{html_options options=$arrClassCat1 selected=$arrForm.classcategory_id1.value}-->
                         </select>

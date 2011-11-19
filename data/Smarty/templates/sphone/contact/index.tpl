@@ -44,25 +44,25 @@
         <dl class="form_entry">
          <dt>お名前&nbsp;<span class="attention">※</span></dt>
            <dd><span class="attention"><!--{$arrErr.name01}--><!--{$arrErr.name02}--></span>
-             <input type="text" name="name01" 
-               value="<!--{$arrForm.name01.value|default:$arrData.name01|h}-->" 
-                maxlength="<!--{$smarty.const.STEXT_LEN}-->" 
+             <input type="text" name="name01"
+               value="<!--{$arrForm.name01.value|default:$arrData.name01|h}-->"
+                maxlength="<!--{$smarty.const.STEXT_LEN}-->"
                  style="<!--{$arrErr.name01|sfGetErrorColor}-->" class="boxHarf text data-role-none" placeholder="姓"/>&nbsp;&nbsp;
-             <input type="text" name="name02" 
-               value="<!--{$arrForm.name02.value|default:$arrData.name02|h}-->" 
-                maxlength="<!--{$smarty.const.STEXT_LEN}-->" 
+             <input type="text" name="name02"
+               value="<!--{$arrForm.name02.value|default:$arrData.name02|h}-->"
+                maxlength="<!--{$smarty.const.STEXT_LEN}-->"
                  style="<!--{$arrErr.name02|sfGetErrorColor}-->" class="boxHarf text data-role-none" placeholder="名"/>
               </dd>
 
           <dt>お名前(フリガナ)&nbsp;<span class="attention">※</span></dt>
             <dd><span class="attention"><!--{$arrErr.kana01}--><!--{$arrErr.kana02}--></span>
-              <input type="text" name="kana01" 
-                value="<!--{$arrForm.kana01.value|default:$arrData.kana01|h}-->" 
-                 maxlength="<!--{$smarty.const.STEXT_LEN}-->" 
+              <input type="text" name="kana01"
+                value="<!--{$arrForm.kana01.value|default:$arrData.kana01|h}-->"
+                 maxlength="<!--{$smarty.const.STEXT_LEN}-->"
                   style="<!--{$arrErr.kana01|sfGetErrorColor}-->"class="boxHarf text data-role-none" placeholder="セイ"/>&nbsp;&nbsp;
-              <input type="text" name="kana02" 
-                value="<!--{$arrForm.kana02.value|default:$arrData.kana02|h}-->" 
-                 maxlength="<!--{$smarty.const.STEXT_LEN}-->" 
+              <input type="text" name="kana02"
+                value="<!--{$arrForm.kana02.value|default:$arrData.kana02|h}-->"
+                 maxlength="<!--{$smarty.const.STEXT_LEN}-->"
                   style="<!--{$arrErr.kana02|sfGetErrorColor}-->" class="boxHarf text data-role-none" placeholder="メイ"/>
               </dd>
 
@@ -72,12 +72,12 @@
                 <!--{assign var=key3 value="`$prefix`pref"}-->
                 <!--{assign var=key4 value="`$prefix`addr01"}-->
                 <span class="attention"><!--{$arrErr.zip01}--><!--{$arrErr.zip02}--></span>
-             <p><input type="tel" name="zip01" 
-                 value="<!--{$arrForm.zip01.value|default:$arrData.zip01|h}-->" 
-                   max="<!--{$smarty.const.ZIP01_LEN}-->" 
-                    style="<!--{$arrErr.zip01|sfGetErrorColor}-->; ime-mode: disabled;" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="zip02" 
-                 value="<!--{$arrForm.zip02.value|default:$arrData.zip02|h}-->" 
-                  max="<!--{$smarty.const.ZIP02_LEN}-->" 
+             <p><input type="tel" name="zip01"
+                 value="<!--{$arrForm.zip01.value|default:$arrData.zip01|h}-->"
+                   max="<!--{$smarty.const.ZIP01_LEN}-->"
+                    style="<!--{$arrErr.zip01|sfGetErrorColor}-->; ime-mode: disabled;" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="zip02"
+                 value="<!--{$arrForm.zip02.value|default:$arrData.zip02|h}-->"
+                  max="<!--{$smarty.const.ZIP02_LEN}-->"
                    style="<!--{$arrErr.zip02|sfGetErrorColor}-->; ime-mode: disabled;" class="boxShort text data-role-none" />&nbsp;&nbsp;<a href="http://search.post.japanpost.jp/zipcode/" target="_blank" rel="external"><span class="fn">郵便番号検索</span></a>
              </p>
 
@@ -91,29 +91,29 @@
                  <!--{html_options options=$arrPref selected=$arrForm.pref.value|default:$arrData.pref|h}-->
                   </select>
 
-              <input type="text" name="addr01" 
-               value="<!--{$arrForm.addr01.value|default:$arrData.addr01|h}-->" 
-                class="boxLong top text data-role-none" 
+              <input type="text" name="addr01"
+               value="<!--{$arrForm.addr01.value|default:$arrData.addr01|h}-->"
+                class="boxLong top text data-role-none"
                  style="<!--{$arrErr.addr01|sfGetErrorColor}-->" placeholder="市区町村名" />
-                <input type="text" name="addr02" 
-                  value="<!--{$arrForm.addr02.value|default:$arrData.addr02|h}-->" 
-                  class="boxLong text data-role-none" 
+                <input type="text" name="addr02"
+                  value="<!--{$arrForm.addr02.value|default:$arrData.addr02|h}-->"
+                  class="boxLong text data-role-none"
                    style="<!--{$arrErr.addr02|sfGetErrorColor}-->" placeholder="番地・ビル名" /></dd>
 
              <dt>電話番号</dt>
               <dd><span class="attention"><!--{$arrErr.tel01}--><!--{$arrErr.tel02}--><!--{$arrErr.tel03}--></span>
-                <input type="tel" name="tel01" 
-                  value="<!--{$arrForm.tel01.value|default:$arrData.tel01|h}-->" 
-                   maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" 
-                    style="<!--{$arrErr.tel01|sfGetErrorColor}-->" 
+                <input type="tel" name="tel01"
+                  value="<!--{$arrForm.tel01.value|default:$arrData.tel01|h}-->"
+                   maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
+                    style="<!--{$arrErr.tel01|sfGetErrorColor}-->"
                      class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="tel02" value="<!--{$arrForm.tel02.value|default:$arrData.tel02|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" style="<!--{$arrErr.tel02|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="text" name="tel03" value="<!--{$arrForm.tel03.value|default:$arrData.tel03|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" style="<!--{$arrErr.tel03|sfGetErrorColor}-->" class="boxShort text data-role-none" />
               </dd>
 
              <dt>メールアドレス&nbsp;<span class="attention">※</span></dt>
               <dd><span class="attention"><!--{$arrErr.email}--><!--{$arrErr.email02}--></span>
-                <input type="email" name="email" 
-                 value="<!--{$arrForm.email.value|default:$arrData.email|h}-->" 
-                  style="<!--{$arrErr.email|sfGetErrorColor}-->" 
+                <input type="email" name="email"
+                 value="<!--{$arrForm.email.value|default:$arrData.email|h}-->"
+                  style="<!--{$arrErr.email|sfGetErrorColor}-->"
                    maxlength="<!--{$smarty.const.MTEXT_LEN}-->" class="boxLong top text data-role-none" />
 
            <!--{* ログインしていれば入力済みにする *}-->
@@ -121,9 +121,9 @@
                 <!--{assign var=email02 value=$arrData.email}-->
                 <!--{/if}-->
 
-               <input type="email" name="email02" 
-                 value="<!--{$arrForm.email02.value|default:$email02|h}-->" 
-                  style="<!--{$arrErr.email02|sfGetErrorColor}-->" 
+               <input type="email" name="email02"
+                 value="<!--{$arrForm.email02.value|default:$email02|h}-->"
+                  style="<!--{$arrErr.email02|sfGetErrorColor}-->"
                    maxlength="<!--{$smarty.const.MTEXT_LEN}-->" class="boxLong text data-role-none" placeholder="確認のため2回入力してください" />
               </dd>
 

@@ -59,16 +59,16 @@ function fnDelivToggle(areaEl) {
                  <!--{assign var=key1 value="order_name01"}-->
            <!--{assign var=key2 value="order_name02"}-->
            <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
-             <input type="text" name="<!--{$key1}-->" 
-                value="<!--{$arrForm[$key1].value|h}-->" 
-                maxlength="<!--{$arrForm[$key1].length}-->" 
-                style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" 
+             <input type="text" name="<!--{$key1}-->"
+                value="<!--{$arrForm[$key1].value|h}-->"
+                maxlength="<!--{$arrForm[$key1].length}-->"
+                style="<!--{$arrErr[$key1]|sfGetErrorColor}-->"
                 class="boxHarf text data-role-none" placeholder="姓" />&nbsp;&nbsp;
 
-                <input type="text" name="<!--{$key2}-->" 
-                value="<!--{$arrForm[$key2].value|h}-->" 
-                maxlength="<!--{$arrForm[$key2].length}-->" 
-                style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" 
+                <input type="text" name="<!--{$key2}-->"
+                value="<!--{$arrForm[$key2].value|h}-->"
+                maxlength="<!--{$arrForm[$key2].length}-->"
+                style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"
                 class="boxHarf text data-role-none" placeholder="名"/>
          </dd>
 
@@ -77,16 +77,16 @@ function fnDelivToggle(areaEl) {
                  <!--{assign var=key1 value="order_kana01"}-->
            <!--{assign var=key2 value="order_kana02"}-->
            <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
-             <input type="text" name="<!--{$key1}-->" 
-             value="<!--{$arrForm[$key1].value|h}-->" 
-             maxlength="<!--{$arrForm[$key1].length}-->" 
-             style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" 
+             <input type="text" name="<!--{$key1}-->"
+             value="<!--{$arrForm[$key1].value|h}-->"
+             maxlength="<!--{$arrForm[$key1].length}-->"
+             style="<!--{$arrErr[$key1]|sfGetErrorColor}-->"
              class="boxHarf text data-role-none" placeholder="セイ"/>&nbsp;&nbsp;
 
-                            <input type="text" name="<!--{$key2}-->" 
-             value="<!--{$arrForm[$key2].value|h}-->" 
-             maxlength="<!--{$arrForm[$key2].length}-->" 
-             style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" 
+                            <input type="text" name="<!--{$key2}-->"
+             value="<!--{$arrForm[$key2].value|h}-->"
+             maxlength="<!--{$arrForm[$key2].length}-->"
+             style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"
              class="boxHarf text data-role-none" placeholder="メイ"/>
           </dd>
 
@@ -96,14 +96,14 @@ function fnDelivToggle(areaEl) {
             <!--{assign var=key2 value="order_zip02"}-->
             <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
              <p>
-                  <input type="tel" name="<!--{$key1}-->" 
-                        value="<!--{$arrForm[$key1].value|h}-->" 
-                        max="<!--{$arrForm[$key1].length}-->" 
+                  <input type="tel" name="<!--{$key1}-->"
+                        value="<!--{$arrForm[$key1].value|h}-->"
+                        max="<!--{$arrForm[$key1].length}-->"
                         style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;
 
-                        <input type="tel" name="<!--{$key2}-->" 
-                        value="<!--{$arrForm[$key2].value|h}-->" 
-                        max="<!--{$arrForm[$key2].length}-->" 
+                        <input type="tel" name="<!--{$key2}-->"
+                        value="<!--{$arrForm[$key2].value|h}-->"
+                        max="<!--{$arrForm[$key2].length}-->"
                         style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;
                         <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fn">郵便番号検索</span></a></p>
 
@@ -132,22 +132,22 @@ function fnDelivToggle(areaEl) {
             <span class="attention"><!--{$arrErr[$key1]}--></span>
             <span class="attention"><!--{$arrErr[$key2]}--></span>
             <span class="attention"><!--{$arrErr[$key3]}--></span>
-             <input type="tel" name="<!--{$key1}-->" 
-               value="<!--{$arrForm[$key1].value|h}-->" 
-                  maxlength="<!--{$arrForm[$key1].length}-->" 
-                   style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" 
+             <input type="tel" name="<!--{$key1}-->"
+               value="<!--{$arrForm[$key1].value|h}-->"
+                  maxlength="<!--{$arrForm[$key1].length}-->"
+                   style="<!--{$arrErr[$key1]|sfGetErrorColor}-->"
                     class="boxShort text data-role-none" />&nbsp;－&nbsp;
  
-             <input type="tel" name="<!--{$key2}-->" 
-               value="<!--{$arrForm[$key2].value|h}-->" 
-                maxlength="<!--{$arrForm[$key2].length}-->" 
-                 style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" 
+             <input type="tel" name="<!--{$key2}-->"
+               value="<!--{$arrForm[$key2].value|h}-->"
+                maxlength="<!--{$arrForm[$key2].length}-->"
+                 style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"
                    class="boxShort text data-role-none" />&nbsp;－&nbsp;
 
-             <input type="tel" name="<!--{$key3}-->" 
-               value="<!--{$arrForm[$key3].value|h}-->" 
-                 maxlength="<!--{$arrForm[$key3].length}-->" 
-                  style="<!--{$arrErr[$key3]|sfGetErrorColor}-->" 
+             <input type="tel" name="<!--{$key3}-->"
+               value="<!--{$arrForm[$key3].value|h}-->"
+                 maxlength="<!--{$arrForm[$key3].length}-->"
+                  style="<!--{$arrErr[$key3]|sfGetErrorColor}-->"
                   class="boxShort text data-role-none" />
                  </dd>
  
@@ -159,22 +159,22 @@ function fnDelivToggle(areaEl) {
             <span class="attention"><!--{$arrErr[$key1]}--></span>
             <span class="attention"><!--{$arrErr[$key2]}--></span>
             <span class="attention"><!--{$arrErr[$key3]}--></span>
-             <input type="tel" name="<!--{$key1}-->" 
-               value="<!--{$arrForm[$key1].value|h}-->" 
-                maxlength="<!--{$arrForm[$key1].length}-->" 
-                 style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" 
+             <input type="tel" name="<!--{$key1}-->"
+               value="<!--{$arrForm[$key1].value|h}-->"
+                maxlength="<!--{$arrForm[$key1].length}-->"
+                 style="<!--{$arrErr[$key1]|sfGetErrorColor}-->"
                    class="boxShort text data-role-none" />&nbsp;－&nbsp;
 
-              <input type="tel" name="<!--{$key2}-->" 
-                 value="<!--{$arrForm[$key2].value|h}-->" 
-                   maxlength="<!--{$arrForm[$key2].length}-->" 
-                     style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" 
+              <input type="tel" name="<!--{$key2}-->"
+                 value="<!--{$arrForm[$key2].value|h}-->"
+                   maxlength="<!--{$arrForm[$key2].length}-->"
+                     style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"
                        class="boxShort text data-role-none" />&nbsp;－&nbsp;
 
-                  <input type="tel" name="<!--{$key3}-->" 
-                      value="<!--{$arrForm[$key3].value|h}-->" 
-                         maxlength="<!--{$arrForm[$key3].length}-->" 
-                           style="<!--{$arrErr[$key3]|sfGetErrorColor}-->" 
+                  <input type="tel" name="<!--{$key3}-->"
+                      value="<!--{$arrForm[$key3].value|h}-->"
+                         maxlength="<!--{$arrForm[$key3].length}-->"
+                           style="<!--{$arrErr[$key3]|sfGetErrorColor}-->"
                               class="boxShort text data-role-none" />
                             </dd>
 
@@ -182,15 +182,15 @@ function fnDelivToggle(areaEl) {
            <dd>
                       <!--{assign var=key value="order_email"}-->
                <span class="attention"><!--{$arrErr[$key]}--></span>
-             <input type="email" name="<!--{$key}-->" 
-                value="<!--{$arrForm[$key].value|h}-->" 
-                style="<!--{$arrErr[$key]|sfGetErrorColor}-->" 
+             <input type="email" name="<!--{$key}-->"
+                value="<!--{$arrForm[$key].value|h}-->"
+                style="<!--{$arrErr[$key]|sfGetErrorColor}-->"
                 maxlength="<!--{$arrForm[$key].length}-->" class="boxLong top data-role-none" />
              <!--{assign var=key value="order_email02"}-->
               <span class="attention"><!--{$arrErr[$key]}--></span>
-                                  <input type="email" name="<!--{$key}-->" 
-                value="<!--{$arrForm[$key].value|h}-->" 
-                style="<!--{$arrErr[$key]|sfGetErrorColor}-->" 
+                                  <input type="email" name="<!--{$key}-->"
+                value="<!--{$arrForm[$key].value|h}-->"
+                style="<!--{$arrErr[$key]|sfGetErrorColor}-->"
                 maxlength="<!--{$arrForm[$key].length}-->" class="boxLong data-role-none" placeholder="確認のため2回入力してください" />
           </dd>
 
@@ -253,16 +253,16 @@ function fnDelivToggle(areaEl) {
             <!--{assign var=key1 value="shipping_name01"}-->
             <!--{assign var=key2 value="shipping_name02"}-->
             <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
-            <input type="text" name="<!--{$key1}-->" 
-                 value="<!--{$arrForm[$key1].value|h}-->" 
-                   maxlength="<!--{$arrForm[$key1].length}-->" 
-                     style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" 
+            <input type="text" name="<!--{$key1}-->"
+                 value="<!--{$arrForm[$key1].value|h}-->"
+                   maxlength="<!--{$arrForm[$key1].length}-->"
+                     style="<!--{$arrErr[$key1]|sfGetErrorColor}-->"
                        class="boxHarf text data-role-none" placeholder="姓" />&nbsp;&nbsp;
 
-                    <input type="text" name="<!--{$key2}-->" 
-                      value="<!--{$arrForm[$key2].value|h}-->" 
-                        maxlength="<!--{$arrForm[$key2].length}-->" 
-                           style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" 
+                    <input type="text" name="<!--{$key2}-->"
+                      value="<!--{$arrForm[$key2].value|h}-->"
+                        maxlength="<!--{$arrForm[$key2].length}-->"
+                           style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"
                              class="boxHarf text data-role-none" placeholder="名"/>
                         </dd>
 
@@ -271,16 +271,16 @@ function fnDelivToggle(areaEl) {
             <!--{assign var=key1 value="shipping_kana01"}-->
             <!--{assign var=key2 value="shipping_kana02"}-->
             <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
-            <input type="text" name="<!--{$key1}-->" 
-               value="<!--{$arrForm[$key1].value|h}-->" 
-                 maxlength="<!--{$arrForm[$key1].length}-->" 
-                  style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" 
+            <input type="text" name="<!--{$key1}-->"
+               value="<!--{$arrForm[$key1].value|h}-->"
+                 maxlength="<!--{$arrForm[$key1].length}-->"
+                  style="<!--{$arrErr[$key1]|sfGetErrorColor}-->"
                     class="boxHarf text data-role-none" placeholder="セイ"/>&nbsp;&nbsp;
 
-                  <input type="text" name="<!--{$key2}-->" 
-                    value="<!--{$arrForm[$key2].value|h}-->" 
-                       maxlength="<!--{$arrForm[$key2].length}-->" 
-                        style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" 
+                  <input type="text" name="<!--{$key2}-->"
+                    value="<!--{$arrForm[$key2].value|h}-->"
+                       maxlength="<!--{$arrForm[$key2].length}-->"
+                        style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"
                            class="boxHarf text data-role-none" placeholder="メイ"/>
                          </dd>
 
@@ -290,13 +290,13 @@ function fnDelivToggle(areaEl) {
            <!--{assign var=key2 value="shipping_zip02"}-->
            <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
             <p>
-                <input type="tel" name="<!--{$key1}-->" 
-                   value="<!--{$arrForm[$key1].value|h}-->" 
-                     max="<!--{$arrForm[$key1].length}-->" 
+                <input type="tel" name="<!--{$key1}-->"
+                   value="<!--{$arrForm[$key1].value|h}-->"
+                     max="<!--{$arrForm[$key1].length}-->"
                        style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;
-                         <input type="tel" name="<!--{$key2}-->" 
-                             value="<!--{$arrForm[$key2].value|h}-->" 
-                                max="<!--{$arrForm[$key2].length}-->" 
+                         <input type="tel" name="<!--{$key2}-->"
+                             value="<!--{$arrForm[$key2].value|h}-->"
+                                max="<!--{$arrForm[$key2].length}-->"
                                   style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;
                                       <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fn">郵便番号検索</span></a></p>
 
@@ -313,17 +313,17 @@ function fnDelivToggle(areaEl) {
                                        <!--{html_options options=$arrPref selected=$arrForm[$key].value}-->
                </select>
                                                   <!--{assign var=key value="shipping_addr01"}-->
-              <input type="text" name="<!--{$key}-->" 
-                 value="<!--{$arrForm[$key].value|h}-->" 
-                  class="boxLong top data-role-none" 
-                    style="<!--{$arrErr[$key]|sfGetErrorColor}-->" 
+              <input type="text" name="<!--{$key}-->"
+                 value="<!--{$arrForm[$key].value|h}-->"
+                  class="boxLong top data-role-none"
+                    style="<!--{$arrErr[$key]|sfGetErrorColor}-->"
                       placeholder="市区町村名" />
 
               <!--{assign var=key value="shipping_addr02"}-->
-              <input type="text" name="<!--{$key}-->" 
-                  value="<!--{$arrForm[$key].value|h}-->" 
-                    class="boxLong data-role-none" 
-                      style="<!--{$arrErr[$key]|sfGetErrorColor}-->" 
+              <input type="text" name="<!--{$key}-->"
+                  value="<!--{$arrForm[$key].value|h}-->"
+                    class="boxLong data-role-none"
+                      style="<!--{$arrErr[$key]|sfGetErrorColor}-->"
                          placeholder="番地・ビル名" />
           </dd>
         
@@ -335,21 +335,21 @@ function fnDelivToggle(areaEl) {
             <span class="attention"><!--{$arrErr[$key1]}--></span>
             <span class="attention"><!--{$arrErr[$key2]}--></span>
             <span class="attention"><!--{$arrErr[$key3]}--></span>
-            <input type="tel" name="<!--{$key1}-->" 
-               value="<!--{$arrForm[$key1].value|h}-->" 
-                 maxlength="<!--{$arrForm[$key1].length}-->" 
-                  style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" 
+            <input type="tel" name="<!--{$key1}-->"
+               value="<!--{$arrForm[$key1].value|h}-->"
+                 maxlength="<!--{$arrForm[$key1].length}-->"
+                  style="<!--{$arrErr[$key1]|sfGetErrorColor}-->"
                     class="boxShort text data-role-none" />&nbsp;－&nbsp;
-                       <input type="tel" name="<!--{$key2}-->" 
-                          value="<!--{$arrForm[$key2].value|h}-->" 
-                            maxlength="<!--{$arrForm[$key2].length}-->" 
-                               style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" 
+                       <input type="tel" name="<!--{$key2}-->"
+                          value="<!--{$arrForm[$key2].value|h}-->"
+                            maxlength="<!--{$arrForm[$key2].length}-->"
+                               style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"
                                  class="boxShort text data-role-none" />&nbsp;－&nbsp;
 
-                            <input type="tel" name="<!--{$key3}-->" 
-                               value="<!--{$arrForm[$key3].value|h}-->" 
-                                 maxlength="<!--{$arrForm[$key3].length}-->" 
-                                   style="<!--{$arrErr[$key3]|sfGetErrorColor}-->" 
+                            <input type="tel" name="<!--{$key3}-->"
+                               value="<!--{$arrForm[$key3].value|h}-->"
+                                 maxlength="<!--{$arrForm[$key3].length}-->"
+                                   style="<!--{$arrErr[$key3]|sfGetErrorColor}-->"
                                     class="boxShort text data-role-none" />
                                      </dd>
      <dd class="pb">
