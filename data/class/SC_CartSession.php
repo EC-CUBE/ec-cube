@@ -509,7 +509,7 @@ class SC_CartSession {
      *
      * 1. 商品種別に関連づけられた配送業者の存在チェック
      * 2. 削除/非表示商品のチェック
-     * 3. 商品購入制限数のチェック
+     * 3. 販売制限数のチェック
      * 4. 在庫数チェック
      *
      * @param string $key 商品種別ID
@@ -542,7 +542,7 @@ class SC_CartSession {
                 }
 
                 /*
-                 * 商品購入制限数, 在庫数のチェック
+                 * 販売制限数, 在庫数のチェック
                  */
                 $limit = $objProduct->getBuyLimit($product);
                 if (!is_null($limit) && $item['quantity'] > $limit) {

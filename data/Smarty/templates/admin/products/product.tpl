@@ -222,7 +222,7 @@ function selectAll(target) {
             </td>
         </tr>
         <tr>
-            <th>購入制限</th>
+            <th>販売制限数</th>
             <td>
                 <span class="attention"><!--{$arrErr.sale_limit}--></span>
                 <input type="text" name="sale_limit" value="<!--{$arrForm.sale_limit|h}-->" size="6" class="box6" maxlength="<!--{$smarty.const.AMOUNT_LEN}-->" style="<!--{if $arrErr.sale_limit != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
