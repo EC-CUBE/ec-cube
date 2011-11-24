@@ -34,6 +34,50 @@ require_once CLASS_REALDIR . 'SC_Query.php';
  */
 class SC_Helper_Mobile {
 
+    /** 基本MimeType */
+    var $defaultMimeType = 'application/force-download';
+
+    /** 拡張MimeType配列
+     * Application/octet-streamで対応出来ないファイルタイプのみ拡張子をキーに記述する
+     * 拡張子が本配列に存在しない場合は application/force-download を利用する */
+    var $arrMimetypes = array(
+            'html'=> 'text/html',
+            'css' => 'text/css',
+            'hdml'=> 'text/x-hdml',
+            'mmf' => 'application/x-smaf',
+            'jpeg'=> 'image/jpeg',
+            'jpg' => 'image/jpeg',
+            'gif' => 'image/gif',
+            'png' => 'image/png',
+            'bmp' => 'image/x-ms-bmp',
+            'amc' => 'application/x-mpeg',
+            '3g2' => 'video/3gpp2',
+            '3gp' => 'video/3gpp',
+            'jam' => 'application/x-jam',
+            'kjx' => 'application/x-kjx',
+            'jar' => 'application/java-archive',
+            'jad' => 'text/vnd.sun.j2me.app-descriptor',
+            'swf' => 'application/x-shockwave-flash',
+            'dmt' => 'application/x-decomail-template',
+            'khm' => 'application/x-kddi-htmlmail',
+            'hmt' => 'application/x-htmlmail-template',
+            'ucm' => 'application/x-ucf-package',
+            'ucp' => 'application/x-ucf-package',
+            'pdf' => 'application/pdf',
+            'wma' => 'audio/x-ms-wma',
+            'asf' => 'video/x-ms-asf',
+            'wax' => 'audio/x-ms-wax',
+            'wvx' => 'video/x-ms-wvx',
+            'wmv' => 'video/x-ms-wmv',
+            'asx' => 'video/asx',
+            'txt' => 'text/plain',
+            'exe' => 'application/octet-stream',
+            'zip' => 'application/zip',
+            'doc' => 'application/msword',
+            'xls' => 'application/vnd.ms-excel',
+            'ppt' => 'application/vnd.ms-powerpoint'
+        );
+
     /**
      * EC-CUBE がサポートする携帯端末かどうかをチェックする。
      * 非対応端末の場合は /unsupported/ へリダイレクトする。
@@ -237,8 +281,11 @@ class SC_Helper_Mobile {
         // 端末に合わせて画像サイズを変換する。
         ob_start(array('SC_MobileImage_Ex', 'handler'));
 
-        // 全角カタカナを半角カタカナに変換する。
-        ob_start(create_function('$buffer', 'return mb_convert_kana($buffer, "k", "SJIS-win");'));
+        //download.phpに対してカタカナ変換をするとファイルが壊れてしまうため回避する
+        if ($_SERVER['SCRIPT_FILENAME'] != HTML_REALDIR . "mypage/download.php") {
+            // 全角カタカナを半角カタカナに変換する。
+            ob_start(create_function('$buffer', 'return mb_convert_kana($buffer, "k", "SJIS-win");'));
+        }
 
         // 内部エンコーディングから Shift JIS に変換する。
         ob_start('mb_output_handler');
@@ -458,6 +505,22 @@ class SC_Helper_Mobile {
         }
 
         return false;
+    }
+
+    /**
+     * ファイルのMIMEタイプを判別する
+     *
+     * @param string $filename ファイル名
+     * @return string MIMEタイプ
+     */
+    function getMimeType($filename) {
+        //ファイルの拡張子からコンテンツタイプを決定する
+        $file_extension = strtolower(substr(strrchr($filename,"."),1));
+        $mime_type = $this->defaultMimeType;
+        if(array_key_exists($file_extension, $this->arrMimetypes)){
+            $mime_type = $this->arrMimetypes[$file_extension];
+        }
+        return $mime_type;
     }
 }
 ?>

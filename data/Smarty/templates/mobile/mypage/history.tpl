@@ -45,7 +45,13 @@
 商品種別：
 <!--{if $orderDetail.product_type_id == $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
 <!--{if $orderDetail.is_downloadable}-->
+<!--{if $isAU == false}-->
 <a target="_self" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/download.php?order_id=<!--{$tpl_arrOrderData.order_id}-->&product_id=<!--{$orderDetail.product_id}-->&product_class_id=<!--{$orderDetail.product_class_id}-->">ダウンロード</a><br>
+<!--{else}-->
+<object data="<!--{$smarty.const.ROOT_URLPATH}-->mypage/download.php?order_id=<!--{$tpl_arrOrderData.order_id}-->&product_id=<!--{$orderDetail.product_id}-->&product_class_id=<!--{$orderDetail.product_class_id}-->&PHPSESSID=<!--{$phpsessid}-->" copyright="no" standby="ダウンロード" type="<!--{$orderDetail.mime_type}-->">
+<param name="title" value="<!--{$orderDetail.down_filename}-->" valuetype="data">
+</object><br>
+<!--{/if}-->
 <!--{else}-->
 <!--{if $orderDetail.payment_date == "" && $orderDetail.effective == "0"}-->
 <!--{$arrProductType[$orderDetail.product_type_id]}--><br>（入金確認中）<br>

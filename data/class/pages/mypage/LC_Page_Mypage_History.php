@@ -95,6 +95,8 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
         $this->tpl_arrOrderDetail = $objPurchase->getOrderDetail($order_id);
         $this->tpl_arrOrderDetail = $this->setMainListImage($this->tpl_arrOrderDetail);
         $objPurchase->setDownloadableFlgTo($this->tpl_arrOrderDetail);
+        // モバイルダウンロード対応処理
+        $this->lfSetAU($this->tpl_arrOrderDetail);
         // 受注メール送信履歴の取得
         $this->tpl_arrMailHistory = $this->lfGetMailHistory($order_id);
 
@@ -162,5 +164,43 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
             $i++;
         }
         return $arrOrderDetails;
+    }
+
+    /**
+     * 購入履歴商品にMIMETYPE、ファイル名をセット
+     *
+     * @param $arrOrderDetail 購入履歴の配列
+     * @return array MIMETYPE、ファイル名をセットした購入履歴の配列
+     */
+    function lfSetMimetype($arrOrderDetails) {
+        $objHelperMobile = new SC_Helper_Mobile_Ex();
+        $i = 0;
+        foreach ($arrOrderDetails as $arrOrderDetail) {
+            $objQuery =& SC_Query_Ex::getSingletonInstance();
+            $arrProduct = $objQuery->select('down_realfilename,down_filename', 'dtb_products_class', 'product_id = ? AND product_class_id = ?', array($arrOrderDetail['product_id'],$arrOrderDetail['product_class_id']));
+            $arrOrderDetails[$i]['mime_type'] = $objHelperMobile->getMimeType($arrProduct[0]['down_realfilename']);
+            $arrOrderDetails[$i]['down_filename'] = $arrProduct[0]['down_filename'];
+            $i++;
+        }
+        return $arrOrderDetails;
+    }
+
+    /**
+     * 特定キャリア（AU）モバイルダウンロード処理
+     * キャリアがAUのモバイル端末からダウンロードする場合は単純に
+     * Aタグでダウンロードできないケースがある為、対応する。
+     *
+     * @param integer $order_id 注文番号
+     * @param $arrOrderDetail 購入履歴の配列
+     */
+    function lfSetAU($arrOrderDetails) {
+        $this->isAU = false;
+        // モバイル端末かつ、キャリアがAUの場合に処理を行う
+        if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE && SC_MobileUserAgent::getCarrier() == 'ezweb'){
+            // MIMETYPE、ファイル名のセット
+            $this->tpl_arrOrderDetail = $this->lfSetMimetype($arrOrderDetails);
+            $this->phpsessid = $_GET['PHPSESSID'];
+            $this->isAU = true;
+        }
     }
 }
