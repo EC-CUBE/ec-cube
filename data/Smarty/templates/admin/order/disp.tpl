@@ -105,7 +105,7 @@ self.moveTo(20,20);self.focus();
             </td>
         </tr>
         <tr>
-            <th>アクセス端末</th>
+            <th>端末種別</th>
             <td><!--{$arrDeviceType[$arrForm.device_type_id.value]|h}--></td>
         </tr>
     </table>

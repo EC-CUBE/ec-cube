@@ -341,7 +341,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam("発送日", "commit_date");
         $objFormParam->addParam("備考", 'message');
         $objFormParam->addParam("入金日", "payment_date");
-        $objFormParam->addParam("アクセス端末", "device_type_id");
+        $objFormParam->addParam("端末種別", "device_type_id");
 
         // 複数情報
         $objFormParam->addParam("配送数", "shipping_quantity", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), 1);
