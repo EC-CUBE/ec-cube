@@ -31,8 +31,9 @@ require(DATA_REALDIR . 'module/fpdf/fpdf.php');
 require(DATA_REALDIR . 'module/fpdi/japanese.php');
 define('PDF_TEMPLATE_REALDIR', TEMPLATE_ADMIN_REALDIR . 'pdf/');
 
-class SC_Fpdf {
+class SC_Fpdf extends PDF_Japanese {
     function SC_Fpdf($download, $title, $tpl_pdf = 'nouhinsyo1.pdf') {
+        $this->FPDF();
         // デフォルトの設定
         $this->tpl_pdf = PDF_TEMPLATE_REALDIR . $tpl_pdf;  // テンプレートファイル
         $this->pdf_download = $download;      // PDFのダウンロード形式（0:表示、1:ダウンロード）
@@ -53,34 +54,33 @@ class SC_Fpdf {
             'ご確認くださいますよう、お願いいたします。'
         );
 
-        $this->pdf  = new PDF_Japanese();
         $this->lfAddGothicFont();
 
         // SJISフォント
-        $this->pdf->AddSJISFont();
-        $this->pdf->SetFont('SJIS');
+        $this->AddSJISFont();
+        $this->SetFont('SJIS');
 
         //ページ総数取得
-        $this->pdf->AliasNbPages();
+        $this->AliasNbPages();
 
         // マージン設定
-        $this->pdf->SetMargins(15, 20);
+        $this->SetMargins(15, 20);
 
         // PDFを読み込んでページ数を取得
-        $pageno = $this->pdf->setSourceFile($this->tpl_pdf);
+        $pageno = $this->setSourceFile($this->tpl_pdf);
     }
 
     function setData($arrData) {
         $this->arrData = $arrData;
 
         // ページ番号よりIDを取得
-        $tplidx = $this->pdf->ImportPage(1);
+        $tplidx = $this->ImportPage(1);
 
         // ページを追加（新規）
-        $this->pdf->AddPage();
+        $this->AddPage();
 
         //表示倍率(100%)
-        $this->pdf->SetDisplayMode($this->tpl_dispmode);
+        $this->SetDisplayMode($this->tpl_dispmode);
 
         if (SC_Utils_Ex::sfIsInt($arrData['order_id'])) {
             $this->disp_mode = true;
@@ -88,7 +88,7 @@ class SC_Fpdf {
         }
 
         // テンプレート内容の位置、幅を調整 ※useTemplateに引数を与えなければ100%表示がデフォルト
-        $this->pdf->useTemplate($tplidx);
+        $this->useTemplate($tplidx);
 
         $this->setShopData();
         $this->setMessageData();
@@ -126,7 +126,7 @@ class SC_Fpdf {
 
         //ロゴ画像
         $logo_file = PDF_TEMPLATE_REALDIR . 'logo.png';
-        $this->pdf->Image($logo_file, 124, 46, 40);
+        $this->Image($logo_file, 124, 46, 40);
     }
 
     function setMessageData() {
@@ -152,19 +152,19 @@ class SC_Fpdf {
         $this->lfText(27, 59, $text, 11); //購入者氏名
 
         // お届け先情報
-        $this->pdf->SetFont('SJIS', '', 10);
+        $this->SetFont('SJIS', '', 10);
         $this->lfText(25, 125, SC_Utils_Ex::sfDispDBDate($this->arrDisp['create_date']), 10); //ご注文日
         $this->lfText(25, 135, $this->arrDisp['order_id'], 10); //注文番号
 
-        $this->pdf->SetFont('Gothic', 'B', 15);
-        $this->pdf->Cell(0, 10, $this->lfConvSjis($this->tpl_title), 0, 2, 'C', 0, '');  //文書タイトル（納品書・請求書）
-        $this->pdf->Cell(0, 66, '', 0, 2, 'R', 0, '');
-        $this->pdf->Cell(5, 0, '', 0, 0, 'R', 0, '');
-        $this->pdf->SetFont('SJIS', 'B', 15);
-        $this->pdf->Cell(67, 8, $this->lfConvSjis(number_format($this->arrDisp['payment_total'])." 円"), 0, 2, 'R', 0, '');
-        $this->pdf->Cell(0, 45, '', 0, 2, '', 0, '');
+        $this->SetFont('Gothic', 'B', 15);
+        $this->Cell(0, 10, $this->lfConvSjis($this->tpl_title), 0, 2, 'C', 0, '');  //文書タイトル（納品書・請求書）
+        $this->Cell(0, 66, '', 0, 2, 'R', 0, '');
+        $this->Cell(5, 0, '', 0, 0, 'R', 0, '');
+        $this->SetFont('SJIS', 'B', 15);
+        $this->Cell(67, 8, $this->lfConvSjis(number_format($this->arrDisp['payment_total'])." 円"), 0, 2, 'R', 0, '');
+        $this->Cell(0, 45, '', 0, 2, '', 0, '');
 
-        $this->pdf->SetFont('SJIS', '', 8);
+        $this->SetFont('SJIS', '', 8);
 
         $monetary_unit = $this->lfConvSjis("円");
         $point_unit = $this->lfConvSjis('Pt');
@@ -253,47 +253,47 @@ class SC_Fpdf {
             $arrOrder[$i][3] = number_format($this->arrDisp['add_point']).$point_unit;
         }
 
-        $this->pdf->FancyTable($this->label_cell, $arrOrder, $this->width_cell);
+        $this->FancyTable($this->label_cell, $arrOrder, $this->width_cell);
     }
 
     function setEtcData() {
-        $this->pdf->Cell(0, 10, '', 0, 1, 'C', 0, '');
-        $this->pdf->SetFont('Gothic', 'B', 9);
-        $this->pdf->MultiCell(0, 6, $this->lfConvSjis("＜ 備 考 ＞"), 'T', 2, 'L', 0, '');  //備考
-        $this->pdf->Ln();
-        $this->pdf->SetFont('SJIS', '', 8);
-        $this->pdf->MultiCell(0, 4, $this->lfConvSjis($this->arrData['etc1']."\n".$this->arrData['etc2']."\n".$this->arrData['etc3']), '', 2, 'L', 0, '');  //備考
+        $this->Cell(0, 10, '', 0, 1, 'C', 0, '');
+        $this->SetFont('Gothic', 'B', 9);
+        $this->MultiCell(0, 6, $this->lfConvSjis("＜ 備 考 ＞"), 'T', 2, 'L', 0, '');  //備考
+        $this->Ln();
+        $this->SetFont('SJIS', '', 8);
+        $this->MultiCell(0, 4, $this->lfConvSjis($this->arrData['etc1']."\n".$this->arrData['etc2']."\n".$this->arrData['etc3']), '', 2, 'L', 0, '');  //備考
     }
 
     function createPdf() {
         // PDFをブラウザに送信
         ob_clean();
         if ($this->pdf_download == 1) {
-            if ($this->pdf->PageNo() == 1) {
+            if ($this->PageNo() == 1) {
                 $filename = "nouhinsyo-No".$this->arrData['order_id'].".pdf";
             } else {
                 $filename = "nouhinsyo.pdf";
             }
-            $this->pdf->Output($this->lfConvSjis($filename), 'D');
+            $this->Output($this->lfConvSjis($filename), 'D');
         } else {
-            $this->pdf->Output();
+            $this->Output();
         }
 
         // 入力してPDFファイルを閉じる
-        $this->pdf->Close();
+        $this->Close();
     }
 
     // PDF_Japanese::Text へのパーサー
     function lfText($x, $y, $text, $size = 0, $style = '') {
         // 退避
-        $bak_font_style = $this->pdf->FontStyle;
-        $bak_font_size = $this->pdf->FontSizePt;
+        $bak_font_style = $this->FontStyle;
+        $bak_font_size = $this->FontSizePt;
 
-        $this->pdf->SetFont('', $style, $size);
-        $this->pdf->Text($x, $y, $this->lfConvSjis($text));
+        $this->SetFont('', $style, $size);
+        $this->Text($x, $y, $this->lfConvSjis($text));
 
         // 復元
-        $this->pdf->SetFont('', $bak_font_style, $bak_font_size);
+        $this->SetFont('', $bak_font_style, $bak_font_size);
     }
 
     // 受注データの取得
@@ -342,7 +342,17 @@ class SC_Fpdf {
         $cw = $GLOBALS['SJIS_widths'];
         $c_map = '90msp-RKSJ-H';
         $registry = array('ordering'=>'Japan1','supplement'=>2);
-        $this->pdf->AddCIDFonts('Gothic', 'KozGoPro-Medium-Acro,MS-PGothic,Osaka', $cw, $c_map, $registry);
+        $this->AddCIDFonts('Gothic', 'KozGoPro-Medium-Acro,MS-PGothic,Osaka', $cw, $c_map, $registry);
+    }
+
+    /**
+     * フッター
+     *
+     * 現状の PDF_Japanese#Footer の動作によって、生成される PDF がエラーとなるケースがあり、
+     * そのエラーを抑える意図。
+     * @return void
+     */
+    function Footer() {
     }
 }
 ?>
