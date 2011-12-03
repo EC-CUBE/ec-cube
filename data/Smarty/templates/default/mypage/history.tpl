@@ -112,7 +112,7 @@
             </tr>
             <tr>
                 <th colspan="5" class="alignR">合計</th>
-                <td class="alignR"><span class="price"><!--{$tpl_arrOrderData.payment_total|number_format}-->円</price></td>
+                <td class="alignR"><span class="price"><!--{$tpl_arrOrderData.payment_total|number_format}-->円</span></td>
             </tr>
         </table>
 
