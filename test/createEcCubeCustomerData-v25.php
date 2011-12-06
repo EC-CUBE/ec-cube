@@ -22,7 +22,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  * @auther Kentaro Habu
- * @version $Id: createEcCubeCustomerData-v25.php $
+ * @version $Id$
  */
 
 // {{{ requires
@@ -65,7 +65,8 @@ $start = microtime_float();
 //$objData->objQuery->begin();
 
 // 会員生成
-$objData->createProducts();
+print("creating Customer Data(for Test)...\n");
+$objData->createCustomers();
 
 //$objData->objQuery->rollback();
 //$objData->objQuery->commit();
@@ -77,7 +78,8 @@ $end = microtime_float();
  */
 print("create customer data DONE!\n");
 printf("elapsed time: %f sec\n", $end - $start);
-
+lfPrintLog(sprintf("elapsed time: %f sec\n", $end - $start));
+exit;
 
 // }}}
 // {{{ classes
@@ -102,10 +104,11 @@ class CreateEcCubeCustomerData {
      *
      * @return void
      */
-    function createProducts() {
-
-        print("creating Customer Data(for Test)...\n");
+    function createCustomers() {
+        lfPrintLog("createCustomers START.(" . CUSTOMERS_VOLUME . " data)");
         for ($i = 0; $i < CUSTOMERS_VOLUME; $i++) {
+            lfPrintLog("----------");
+            lfPrintLog("creating customer data count:[" . ($i+1) . "] start.");
             
             $sqlval['name01'] = "検証";
             $sqlval['name02'] = sprintf("太郎%05d", $i+1);
@@ -113,7 +116,7 @@ class CreateEcCubeCustomerData {
             $sqlval['kana02'] = "タロウ";
             $sqlval['zip01'] = "101";
             $sqlval['zip02'] = "0051";
-            $sqlval['pref'] = "13";
+            $sqlval['pref'] = "13";	// 13:東京都
             $sqlval['addr01'] = "千代田区神田神保町";
             $sqlval['addr02'] = "1-3-5";
             $sqlval['tel01'] = "012";
@@ -146,10 +149,18 @@ class CreateEcCubeCustomerData {
             SC_Helper_Customer_Ex::sfEditCustomerData($sqlval);
 
             print("*");
+            lfPrintLog("creating customer data count:[" . ($i+1) . "] end.");
         }
         print("\n");
+        lfPrintLog("createCustomers DONE.(" . CUSTOMERS_VOLUME . " data created)");
     }
 
+}
+
+/** テスト用スクリプトのログ出力関数 */
+function lfPrintLog($mess) {
+	$path = DATA_REALDIR . "logs/" .  basename(__FILE__, '.php') . ".log";
+	GC_Utils::gfPrintLog($mess, $path);
 }
 
 /** PHP4対応のための microtime 関数 */
