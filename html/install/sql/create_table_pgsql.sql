@@ -221,7 +221,8 @@ CREATE TABLE dtb_mailtemplate (
     creator_id int NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    update_date timestamp NOT NULL
+    update_date timestamp NOT NULL,
+    PRIMARY KEY (template_id)
 );
 
 CREATE TABLE dtb_mailmaga_template (
