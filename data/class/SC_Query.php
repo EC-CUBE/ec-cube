@@ -454,12 +454,15 @@ class SC_Query {
      *
      * @param string $table テーブル名
      * @param array $sqlval array('カラム名' => '値',...)の連想配列
+     * @param array $arrSql array('カラム名' => 'SQL文',...)の連想配列
+     * @param array $arrSqlVal SQL文の中で使用するプレースホルダ配列
      * @return
      */
-    function insert($table, $sqlval) {
+    function insert($table, $sqlval, $arrSql = array(), $arrSqlVal = array()) {
         $strcol = '';
         $strval = '';
         $find = false;
+        $arrVal = array();
 
         if(count($sqlval) <= 0 ) return false;
         foreach ($sqlval as $key => $val) {
@@ -470,10 +473,18 @@ class SC_Query {
                 $strval .= 'CURRENT_TIMESTAMP,';
             } else {
                 $strval .= '?,';
-                $arrval[] = $val;
+                $arrVal[] = $val;
             }
             $find = true;
         }
+
+        foreach($arrSql as $key => $val) {
+            $strcol .= $key . ',';
+            $strval .= $val . ',';
+        }
+
+        $arrVal = array_merge($arrVal, $arrSqlVal);
+
         if(!$find) {
             return false;
         }
@@ -482,7 +493,7 @@ class SC_Query {
         $strval = preg_replace("/,$/", "", $strval);
         $sqlin = "INSERT INTO $table(" . $strcol. ") VALUES (" . $strval . ")";
         // INSERT文の実行
-        $ret = $this->query($sqlin, $arrval, false, null, MDB2_PREPARE_MANIP);
+        $ret = $this->query($sqlin, $arrVal, false, null, MDB2_PREPARE_MANIP);
 
         return $ret;
     }
