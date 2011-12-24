@@ -105,7 +105,7 @@ class SC_Query {
     }
 
     /**
-     *  エラー判定を行う.
+     * エラー判定を行う.
      *
      * @deprecated PEAR::isError() を使用して下さい
      * @return boolean
@@ -125,14 +125,8 @@ class SC_Query {
      * @param array $arrWhereVal プレースホルダ
      * @return integer 件数
      */
-    function count($table, $where = "", $arrWhereVal = array()) {
-        if(strlen($where) <= 0) {
-            $sqlse = "SELECT COUNT(*) FROM $table";
-        } else {
-            $sqlse = "SELECT COUNT(*) FROM $table WHERE $where";
-        }
-        $sqlse = $this->dbFactory->sfChangeMySQL($sqlse);
-        return $this->getOne($sqlse, $arrWhereVal);
+    function count($table, $where = '', $arrWhereVal = array()) {
+        return $this->get('COUNT(*)', $table, $where, $arrWhereVal);
     }
 
     /**
