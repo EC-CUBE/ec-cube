@@ -94,7 +94,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
                 break;
             default:
                 $this->newsCount = $this->lfGetNewsCount();
-                $this->arrNews = $this->lfGetNews();
+                $this->arrNews = $this->lfGetNews(SC_Query_Ex::getSingletonInstance());
                 break;
         }
     }
@@ -125,20 +125,22 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
      *
      * @return array $arrNewsList 新着情報の配列を返す
      */
-    function lfGetNews(){
-        $objQuery = SC_Query_Ex::getSingletonInstance();
-        $sql = '';
-        $sql .= " SELECT ";
-        $sql .= "   *, ";
-        $sql .= "   cast(news_date as date) as news_date_disp ";
-        $sql .= " FROM ";
-        $sql .= "   dtb_news ";
-        $sql .= " WHERE ";
-        $sql .= "   del_flg = '0' ";
-        $sql .= " ORDER BY ";
-        $sql .= "   rank DESC ";
+    function lfGetNews(&$objQuery) {
+        $objQuery->setOrder("rank DESC ");
+        $arrNewsList = $objQuery->select('* , cast(news_date as date) as news_date_disp', 'dtb_news' ,'del_flg = 0');
 
-        $arrNewsList = $objQuery->getAll($sql);
+        // モバイルサイトのセッション保持 (#797)
+        if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
+            foreach (array_keys($arrNewsList) as $key) {
+                $arrRow =& $arrNewsList[$key];
+                if (SC_Utils_Ex::isAppInnerUrl($arrRow['news_url'])) {
+                    $netUrl = new Net_URL($arrRow['news_url']);
+                    $netUrl->addQueryString(session_name(), session_id());
+                    $arrRow['news_url'] = $netUrl->getURL();
+                }
+            }
+        }
+
         return $arrNewsList;
     }
 
@@ -151,17 +153,16 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
      */
     function lfGetNewsForJson(&$objFormParam){
 
-        $objQuery = SC_Query_Ex::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrData = $objFormParam->getHashArray();
-		
+
         $dispNumber = $arrData['disp_number'];
         $pageNo = $arrData['pageno'];
         if(!empty($dispNumber) && !empty($pageNo)){
              $objQuery->setLimitOffset($dispNumber, (($pageNo - 1) * $dispNumber));
         }
 
-        $objQuery->setOrder("rank DESC ");
-        $arrNewsList = $objQuery->select(" * , cast(news_date as date) as news_date_disp "," dtb_news "," del_flg = '0' ");
+        $arrNewsList = $this->lfGetNews($objQuery);
 
         //新着情報の最大ページ数をセット
         $newsCount = $this->lfGetNewsCount();
