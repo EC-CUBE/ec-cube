@@ -269,6 +269,7 @@ class SC_Query {
             return;
         }
 
+        $sth->free();
         return $affected->fetchAll($fetchmode);
     }
 
@@ -608,6 +609,7 @@ class SC_Query {
             return;
         }
 
+        $sth->free();
         return $affected->fetchOne();
     }
 
@@ -636,6 +638,7 @@ class SC_Query {
             return;
         }
 
+        $sth->free();
         return $affected->fetchRow($fetchmode);
     }
 
@@ -662,6 +665,7 @@ class SC_Query {
             return;
         }
 
+        $sth->free();
         return $affected->fetchCol();
     }
 
