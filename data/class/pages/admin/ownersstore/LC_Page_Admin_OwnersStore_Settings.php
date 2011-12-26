@@ -176,9 +176,9 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex {
     function registerOwnersStoreSettings($arrSettingsData) {
         $table = 'dtb_ownersstore_settings';
         $objQuery = new SC_Query_Ex();
-        $count = $objQuery->count($table);
+        $exists = $objQuery->exists($table);
 
-        if ($count) {
+        if ($exists) {
             $objQuery->update($table, $arrSettingsData);
         } else {
             $objQuery->insert($table, $arrSettingsData);

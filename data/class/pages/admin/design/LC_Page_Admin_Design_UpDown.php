@@ -165,8 +165,8 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
 
         // DBにすでに登録されていないかチェック
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $count = $objQuery->count("dtb_templates", "template_code = ?", array($template_code));
-        if ($count > 0) {
+        $exists = $objQuery->exists("dtb_templates", "template_code = ?", array($template_code));
+        if ($exists) {
             $arrErr['template_code'] = "※ すでに登録されているテンプレートコードです。<br/>";
         }
 

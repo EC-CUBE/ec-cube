@@ -324,8 +324,8 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         }
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $count = $objQuery->count('dtb_pagelayout', $where, $arrValues);
-        if ($count > 0) {
+        $exists = $objQuery->exists('dtb_pagelayout', $where, $arrValues);
+        if ($exists) {
             $objErr->arrErr['filename'] = '※ 同じURLのデータが存在しています。別のURLを入力してください。<br />';
         }
         return $objErr->arrErr;

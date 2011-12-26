@@ -390,10 +390,10 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         if($sqlval['product_id'] != "") {
             // 同じidが存在すればupdate存在しなければinsert
             $where = "product_id = ?";
-            $product_count = $objQuery->count("dtb_products", $where, array($sqlval['product_id']));
-            if($product_count > 0){
+            $product_exists = $objQuery->exists("dtb_products", $where, array($sqlval['product_id']));
+            if ($product_exists) {
                 $objQuery->update("dtb_products", $sqlval, $where, array($sqlval['product_id']));
-            }else{
+            } else {
                 $sqlval['create_date'] = $arrList['update_date'];
                 // INSERTの実行
                 $objQuery->insert("dtb_products", $sqlval);

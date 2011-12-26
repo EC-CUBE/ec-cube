@@ -273,9 +273,9 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
             // 他のページに anywhere が存在する場合は INSERT しない
             $arrParams['anywhere'] = intval($objFormParam->getValue('anywhere_' . $i));
             if ($arrParams['anywhere'] == 1) {
-                $count = $objQuery->count('dtb_blocposition', 'anywhere = 1 AND bloc_id = ? AND device_type_id = ?',
+                $exists = $objQuery->exists('dtb_blocposition', 'anywhere = 1 AND bloc_id = ? AND device_type_id = ?',
                                           array($id, $device_type_id));
-                if ($count > 0) {
+                if ($exists) {
                     continue;
                 }
             }

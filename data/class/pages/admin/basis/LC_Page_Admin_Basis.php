@@ -81,8 +81,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
 
         $objDb = new SC_Helper_DB_Ex();
 
-        $cnt = $objDb->sfGetBasisCount();
-        if ($cnt > 0) {
+        if ($objDb->sfGetBasisExists()) {
             $this->tpl_mode = 'update';
         } else {
             $this->tpl_mode = 'insert';

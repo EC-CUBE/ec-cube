@@ -169,7 +169,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
             }
             if($param['indexflag'] != $param['indexflag_new']) {
                 // 入力値がデータにある対象テーブルかのチェック
-                if($objQuery->count('dtb_index_list', 'table_name = ? and column_name = ?', array($param['table_name'], $param['column_name']))) {
+                if ($objQuery->exists('dtb_index_list', 'table_name = ? and column_name = ?', array($param['table_name'], $param['column_name']))) {
                     $arrTarget[] = $param;
                 }
             }

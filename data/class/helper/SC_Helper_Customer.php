@@ -275,12 +275,12 @@ class SC_Helper_Customer {
      * @return string 会員登録キーの文字列
      */
     function sfGetUniqSecretKey() {
-        $objQuery   =& SC_Query_Ex::getSingletonInstance();
-        $count      = 1;
-        while ($count != 0) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+
+        do {
             $uniqid = SC_Utils_Ex::sfGetUniqRandomId('r');
-            $count  = $objQuery->count("dtb_customer", "secret_key = ?", array($uniqid));
-        }
+            $exists = $objQuery->exists("dtb_customer", "secret_key = ?", array($uniqid));
+        } while ($exists);
         return $uniqid;
     }
 

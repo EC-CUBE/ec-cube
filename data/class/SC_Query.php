@@ -130,6 +130,21 @@ class SC_Query {
     }
 
     /**
+     * EXISTS文を実行する.
+     *
+     * @param string $table テーブル名
+     * @param string $where where句
+     * @param array $arrWhereVal プレースホルダ
+     * @return boolean 有無
+     */
+    function exists($table, $where = '', $arrWhereVal = array()) {
+        $sql_inner = $this->getSql('*', $table, $where, $arrWhereVal);
+        $sql = "SELECT CASE WHEN EXISTS($sql_inner) THEN 1 ELSE 0 END";
+        $res = $this->getOne($sql, $arrWhereVal);
+        return (bool)$res;
+    }
+
+    /**
      * SELECT文を実行する.
      *
      * @param string $col カラム名. 複数カラムの場合はカンマ区切りで書く
