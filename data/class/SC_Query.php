@@ -263,8 +263,13 @@ class SC_Query {
             return;
         }
 
+        // MySQL での不具合対応のため、一旦変数に退避
+        $arrRet = $affected->fetchAll($fetchmode);
+
+        // PREPAREの解放
         $sth->free();
-        return $affected->fetchAll($fetchmode);
+
+        return $arrRet;
     }
 
     /**
@@ -614,8 +619,13 @@ class SC_Query {
             return;
         }
 
+        // MySQL での不具合対応のため、一旦変数に退避
+        $arrRet = $affected->fetchOne();
+
+        // PREPAREの解放
         $sth->free();
-        return $affected->fetchOne();
+
+        return $arrRet;
     }
 
     /**
@@ -643,8 +653,13 @@ class SC_Query {
             return;
         }
 
+        // MySQL での不具合対応のため、一旦変数に退避
+        $arrRet = $affected->fetchRow($fetchmode);
+
+        // PREPAREの解放
         $sth->free();
-        return $affected->fetchRow($fetchmode);
+
+        return $arrRet;
     }
 
     /**
@@ -670,8 +685,13 @@ class SC_Query {
             return;
         }
 
+        // MySQL での不具合対応のため、一旦変数に退避
+        $arrRet = $affected->fetchCol();
+
+        // PREPAREの解放
         $sth->free();
-        return $affected->fetchCol();
+
+        return $arrRet;
     }
 
     /**
@@ -752,7 +772,7 @@ class SC_Query {
             return $sth;
         }
 
-        //PREPAREの解放
+        // PREPAREの解放
         $sth->free();
 
         return $result;
@@ -981,7 +1001,7 @@ class SC_Query {
             return;
         }
         $arrRet = $result->getColumnNames();
-        //PREPAREの解放
+        // PREPAREの解放
         $sth->free();
 
         return $arrRet;
