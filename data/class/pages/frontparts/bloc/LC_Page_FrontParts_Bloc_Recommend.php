@@ -89,14 +89,13 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc {
         $objProduct = new SC_Product_Ex();
 
         // おすすめ商品取得
-        $col = 'best_id, best_id, category_id, rank, product_id, title, comment, create_date, update_date';
-        $table = 'dtb_best_products';
-        $where = 'del_flg = 0';
-        $objQuery->setOrder('rank');
+        $col = 'T1.best_id, T1.best_id, T1.category_id, T1.rank, T1.product_id, T1.title, T1.comment, T1.create_date, T1.update_date';
+        $table = 'dtb_best_products as T1 INNER JOIN dtb_products as T2 ON T1.product_id = T2.product_id';
+        $where = 'T1.del_flg = 0 and T2.status = 1';
+        $objQuery->setOrder('T1.rank');
         $objQuery->setLimit(RECOMMEND_NUM);
         $arrBestProducts = $objQuery->select($col, $table, $where);
 
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
         if (count($arrBestProducts) > 0) {
             // 商品一覧を取得
             // where条件生成&セット
