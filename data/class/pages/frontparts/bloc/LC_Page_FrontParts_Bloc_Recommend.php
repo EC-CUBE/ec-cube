@@ -96,6 +96,7 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc {
         $objQuery->setLimit(RECOMMEND_NUM);
         $arrBestProducts = $objQuery->select($col, $table, $where);
 
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         if (count($arrBestProducts) > 0) {
             // 商品一覧を取得
             // where条件生成&セット
