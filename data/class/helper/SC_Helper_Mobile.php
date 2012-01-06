@@ -383,9 +383,9 @@ class SC_Helper_Mobile {
 
             $arrValues['kara_mail_id'] = $objQuery->nextVal('dtb_mobile_kara_mail_kara_mail_id');
             $objQuery->insert('dtb_mobile_kara_mail', $arrValues);
-            $count = $objQuery->count('dtb_mobile_kara_mail', 'token = ?', array($token));
+            $exists = $objQuery->exists('dtb_mobile_kara_mail', 'token = ?', array($token));
 
-            if ($count == 1) {
+            if ($exists) {
                 break;
             }
 

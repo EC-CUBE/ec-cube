@@ -278,13 +278,12 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
      * @return boolean 登録済みならtrue, 未登録ならfalse
      */
     function memberDataExists($where, $val) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+
         $table = 'dtb_member';
 
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $count = $objQuery->count($table, $where, array($val));
-
-        if ($count > 0) return true;
-        return false;
+        $exists = $objQuery->exists($table, $where, array($val));
+        return $exists;
     }
 
     /**

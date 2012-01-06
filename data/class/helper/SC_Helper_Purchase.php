@@ -832,8 +832,8 @@ class SC_Helper_Purchase {
         $objQuery = SC_Query_Ex::getSingletonInstance();
         $arrValues = $objQuery->extractOnlyColsOf($table, $arrParams);
 
-        $exists = $objQuery->count($table, $where, array($order_id));
-        if ($exists > 0) {
+        $exists = $objQuery->exists($table, $where, array($order_id));
+        if ($exists) {
 
             $this->sfUpdateOrderStatus($order_id, $arrValues['status'],
                                        $arrValues['add_point'],

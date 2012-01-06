@@ -173,8 +173,6 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
     function lfGetOtherDeliv($customer_id, $other_deliv_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         return $objQuery->select("*", "dtb_other_deliv", "customer_id = ? AND other_deliv_id = ?", array($customer_id, $other_deliv_id));
-
-         $arrOtherDeliv[0];
     }
 
     /* 登録実行 */

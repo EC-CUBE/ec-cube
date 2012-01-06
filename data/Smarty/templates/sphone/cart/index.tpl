@@ -122,7 +122,9 @@
                     <img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" onClick="fnFormModeSubmit('form<!--{$key}-->', 'delete', 'cart_no', '<!--{$item.cart_no}-->');" class="pointer" width="21" height="20" alt="削除" /></p>
                      </div>
                     <ul>
-                     <li><input type="number" name="quantity" class="cartin_quantity text data-role-none" value="<!--{$item.quantity}-->" max="9" style="" onchange="fnFormModeSubmit('form<!--{$key}-->', 'setQuantity','cart_no','<!--{$item.cart_no}-->');" /></li>
+                      <li class="quantity"><span class="mini">数量:</span><!--{$item.quantity|number_format}--></li>
+                      <li class="quantity_btn"><img src="<!--{$TPL_URLPATH}-->img/button/btn_plus.png" width="22" height="21" alt="＋" onclick="fnFormModeSubmit('form<!--{$key}-->', 'up','cart_no','<!--{$item.cart_no}-->'); return false" /></li>
+                      <li class="quantity_btn"><img src="<!--{$TPL_URLPATH}-->img/button/btn_minus.png" width="22" height="21" alt="-" onclick="fnFormModeSubmit('form<!--{$key}-->', 'down','cart_no','<!--{$item.cart_no}-->'); return false" /></a></li>
                       <li class="result"><span class="mini">小計：</span><!--{$item.total_inctax|number_format}-->円</li>
                     </ul>
                     </div>
