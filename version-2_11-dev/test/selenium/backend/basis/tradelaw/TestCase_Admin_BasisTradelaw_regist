@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>基本情報管理(特定商取引法：入力)</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">基本情報管理(特定商取引法：入力)</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>//li[@id='navi-basis-tradelaw']/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>law_company</td>
+	<td>株式会社ロックオン</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>law_manager</td>
+	<td>株式会社ロックオン</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>law_zip01</td>
+	<td>530</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>law_zip02</td>
+	<td>0001</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>law_pref</td>
+	<td>label=大阪府</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>law_addr01</td>
+	<td>大阪市北区梅田2-4-9</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>law_addr02</td>
+	<td>ブリーゼタワー13F</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>law_tel01</td>
+	<td>06</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>law_tel02</td>
+	<td>4795</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>law_tel03</td>
+	<td>7500</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>law_fax01</td>
+	<td>06</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>law_fax02</td>
+	<td>4795</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>law_fax03</td>
+	<td>7501</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>law_email</td>
+	<td>test@example.com</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>law_url</td>
+	<td>http://www.lockon.co.jp/</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>law_term01</td>
+	<td>サイト利用料が1回につき5000円発生します。</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>law_term02</td>
+	<td>当サイトで一定の購入手続きを踏んで頂きます。</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>law_term03</td>
+	<td>銀行振込、代金引換、クレジットカード、どのような支払い方法でも対応します。</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>law_term04</td>
+	<td>商品到着後、7日以内にお支払い下さい。</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>law_term05</td>
+	<td>購入お申し込み完了後、14日以内。</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>law_term06</td>
+	<td>返品・交換には一切、応じておりません。</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=この内容で登録する</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

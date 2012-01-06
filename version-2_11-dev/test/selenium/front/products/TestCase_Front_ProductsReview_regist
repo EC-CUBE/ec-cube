@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>商品コメント登録</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">商品コメント登録</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=食品(3)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//img[@alt='おなべ']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>review</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPopUp</td>
+	<td>review</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>selectWindow</td>
+	<td>name=review</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>reviewer_name</td>
+	<td>Lockon</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>reviewer_url</td>
+	<td>http://www.lockon.co.jp/</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>man</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>recommend_level</td>
+	<td>label=★★★★★</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>title</td>
+	<td>冬はやっぱりおなべ！</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>comment</td>
+	<td>うますぎる</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>conf</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>back</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>conf</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>send</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

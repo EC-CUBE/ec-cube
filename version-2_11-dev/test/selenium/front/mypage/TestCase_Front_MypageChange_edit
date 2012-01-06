@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>MYページ(会員登録内容変更)</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">MYページ(会員登録内容変更)</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>mypage</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=会員登録内容変更</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name01</td>
+	<td>ロックオン編集</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name02</td>
+	<td>太郎編集</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>kana01</td>
+	<td>ロックオンヘンシュウ</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>kana02</td>
+	<td>タロウヘンシュウ</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>zip01</td>
+	<td>104</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>zip02</td>
+	<td>0061</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>pref</td>
+	<td>label=東京都</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>addr01</td>
+	<td>中央区銀座</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>addr02</td>
+	<td>6-11-4 ニックス銀座ビル3F</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>tel01</td>
+	<td>03</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>tel02</td>
+	<td>3289</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>tel03</td>
+	<td>5051</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>fax01</td>
+	<td>03</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>fax02</td>
+	<td>3289</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>fax03</td>
+	<td>5052</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>email</td>
+	<td>test02@example.com</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>email02</td>
+	<td>test02@example.com</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>woman</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>job</td>
+	<td>label=主婦</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>year</td>
+	<td>label=1981</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>month</td>
+	<td>label=1</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>day</td>
+	<td>label=1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>test02</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password02</td>
+	<td>test02</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>reminder</td>
+	<td>label=母親の旧姓は？</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>reminder_answer</td>
+	<td>ヒント</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>text</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>refusal</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>back</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>refusal</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>complete</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

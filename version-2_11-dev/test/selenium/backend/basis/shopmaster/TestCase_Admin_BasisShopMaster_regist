@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>基本情報管理(SHOPマスタ：入力)</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">基本情報管理(SHOPマスタ：入力)</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>//li[@id='navi-basis-index']/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>company_name</td>
+	<td>株式会社ロックオン</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>company_kana</td>
+	<td>カブシキカイシャロックオン</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>shop_name</td>
+	<td>ロックオンテスト店舗</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>shop_kana</td>
+	<td>ロックオンテストテンポ</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>shop_name_eng</td>
+	<td>LOCKON TEST SHOP</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>zip01</td>
+	<td>530</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>zip02</td>
+	<td>0001</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>pref</td>
+	<td>label=大阪府</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>addr01</td>
+	<td>大阪市北区梅田</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>addr02</td>
+	<td>2-4-9</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>tel01</td>
+	<td>06</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>tel02</td>
+	<td>4795</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>tel03</td>
+	<td>7500</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>fax01</td>
+	<td>06</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>fax02</td>
+	<td>4795</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>fax03</td>
+	<td>7501</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>business_hour</td>
+	<td>9時00分～18時00分</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>good_traded</td>
+	<td>食品</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>message</td>
+	<td>美味しい食べ物をできるだけ多くの皆様へ届けたい！<br />その思いをこのサイトで実現します。</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>regular_holiday_ids[]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@name='regular_holiday_ids[]' and @value='6']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@name='tax_rule' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>free_rule</td>
+	<td>5000</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>codeAddress</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mapAddress</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>fancybox-close</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=この内容で登録する</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

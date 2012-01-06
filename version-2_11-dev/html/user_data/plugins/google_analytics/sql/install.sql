@@ -1,0 +1,1 @@
+INSERT INTO dtb_bloc (bloc_name, tpl_path, filename, php_path, deletable_flg) VALUES ('Google Analytics', 'user_data/plugins/google_analytics/tpl/ga.tpl', 'google_analytics', 'user_data/plugins/google_analytics/ga.php', 0);

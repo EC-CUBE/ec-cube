@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>お問い合わせ(非ログイン)</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">お問い合わせ(非ログイン)</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=お問い合わせ</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name01</td>
+	<td>ロックオン</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name02</td>
+	<td>太郎</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>kana01</td>
+	<td>ロックオン</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>kana02</td>
+	<td>タロウ</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>zip01</td>
+	<td>530</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>zip02</td>
+	<td>0001</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>pref</td>
+	<td>label=大阪府</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>addr01</td>
+	<td>大阪市北区梅田</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>addr02</td>
+	<td>2-4-9 ブリーゼタワー13F</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>tel01</td>
+	<td>06</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>tel02</td>
+	<td>4795</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>tel03</td>
+	<td>7500</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>email</td>
+	<td>test@example.com</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>email02</td>
+	<td>test@example.com</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>contents</td>
+	<td>テストお問い合わせ<br />非ログイン時<br /><br />お問い合わせ内容本文<br />お問い合わせ内容本文<br />お問い合わせ内容本文<br />お問い合わせ内容本文</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>confirm</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>back02</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>confirm</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>send</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

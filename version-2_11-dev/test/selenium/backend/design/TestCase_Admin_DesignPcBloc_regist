@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>デザイン管理(PC：ブロック設定：登録)</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">デザイン管理(PC：ブロック設定：登録)</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>//li[@id='navi-design-bloc-10']/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>bloc_name</td>
+	<td>管理者の紹介</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>filename</td>
+	<td>syoukai</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>bloc_html</td>
+	<td>&lt;h2&gt;管理者の紹介&lt;/h2&gt;<br />&lt;p&gt;管理者のLOCKONです。&lt;/p&gt;</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>resize-btn</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>resize-btn</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//form[@id='form_bloc']/div[1]/ul/li[1]/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//form[@id='form_bloc']/div[2]/ul/li[2]/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmation</td>
+	<td>登録しても宜しいですか</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

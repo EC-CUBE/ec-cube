@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>受注管理(新規受注入力：非会員)</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">受注管理(新規受注入力：非会員)</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>//li[@id='navi-order-add']/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>status</td>
+	<td>label=新規受付</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_name01</td>
+	<td>ロックオン</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_name02</td>
+	<td>太郎</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_kana01</td>
+	<td>ロックオン</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_kana02</td>
+	<td>タロウ</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_email</td>
+	<td>test01@example.com</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_tel01</td>
+	<td>06</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_tel02</td>
+	<td>4795</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_tel03</td>
+	<td>7500</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_zip01</td>
+	<td>530</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_zip02</td>
+	<td>0001</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>order_pref</td>
+	<td>label=大阪府</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_addr01</td>
+	<td>大阪市北区梅田</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_addr02</td>
+	<td>2-4-9 ブリーゼタワー13F</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=商品の追加</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPopUp</td>
+	<td>search</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>selectWindow</td>
+	<td>name=search</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>search_category_id</td>
+	<td>label=&gt;食品</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//form[@id='form1']/div/ul/li/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=決定</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectWindow</td>
+	<td>null</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=計算結果の確認</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=お客様情報へお届けする</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>deliv_id</td>
+	<td>label=サンプル業者</td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>payment_id</td>
+	<td>label=郵便振替</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='order']/div/ul/li[2]/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmation</td>
+	<td>この内容で登録しても宜しいでしょうか</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectWindow</td>
+	<td>name=search</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

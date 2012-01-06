@@ -1,0 +1,15 @@
+# 基本は SC_Initial.php で設定するが、ini_setで反映されないものはここで設定する
+
+php_value mbstring.language Japanese
+php_flag mbstring.encoding_translation off
+php_value output_handler NULL
+php_flag magic_quotes_gpc off
+php_flag session.auto_start 0
+
+# INI_ALL なのにもかかわらず, ini_set で指定しても反映されない環境がある...
+php_value mbstring.internal_encoding UTF-8
+
+# デフォルトテンプレートの状態で 2M 近くになるため
+php_value upload_max_filesize 5M
+#php_value post_max_size 8M
+php_flag register_globals off

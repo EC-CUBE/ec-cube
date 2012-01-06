@@ -1,0 +1,231 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head profile="http://gmpg.org/xfn/11">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+	<title>Senamion.com - multiselect2side (multiple select double side) plugin: documentation and demo page</title>
+	<link rel="stylesheet" href="css/jquery.multiselect2side.css" type="text/css" media="screen" />
+	<script type="text/javascript" src="js/jquery.js" ></script>
+	<script type="text/javascript" src="js/jquery.multiselect2side.js" ></script>
+	<script type="text/javascript">
+		$().ready(function() {
+			$('#first').multiselect2side();
+			$('#second').multiselect2side({
+				selectedPosition: 'right',
+				moveOptions: false,
+				labelsx: '',
+				labeldx: ''
+				});
+			$('#third').multiselect2side({
+				selectedPosition: 'left',
+				moveOptions: true,
+				labelTop: '+ +',
+				labelBottom: '- -',
+				labelUp: '+',
+				labelDown: '-',
+				labelsx: '* Selected *',
+				labeldx: '* Available *'
+				});
+			$('#fourth').multiselect2side({maxSelected: 4});
+		});
+	</script>
+
+
+
+
+</head>
+<body>
+
+				<h2>multiselect2side plugin: documentation and demo page</h2>
+				<h3>Demo 1 - Full demo select multiple double side</h3>
+				<p>Select multiple="multiple" modified by multiselect2side</p>
+
+				<select name="firstSelect[]" id='first' multiple='multiple' >
+				<optgroup label="Group1">
+					<option value="1">First Option</option>
+					<option value="2">Option 2th</option>
+					<option value="3" SELECTED >Option selected 3</option>
+				</optgroup>
+				<optgroup label="Group2">
+					<option value="4">Option 4</option>
+					<option value="5">Option 5</option>
+					<option value="6">Option 6</option>
+					<option value="7" SELECTED >Option selected 7</option>
+					<option value="8">Option 8</option>
+				</optgroup>
+				</select>
+
+				<p>This is the javascript code to launch multiselect2side to #first select:</p>
+				<pre>
+$().ready(function() {
+	$('#first').multiselect2side();
+});
+				</pre>
+
+				<h3>Demo 2 - select multiple double side - moveOptions: false</h3>
+				<p>Move buttons are disabled. Header label not present.</p>
+				<select name="secondSelect[]" id='second' multiple='multiple' size='8' >
+					<option value="1">1Option 1</option>
+					<option value="2" SELECTED >Option 2 (sel)</option>
+					<option value="3">a Option 3</option>
+					<option value="4" SELECTED >This Option 4 (sel)</option>
+					<option value="5">Optaion 5</option>
+					<option value="6">Option 6</option>
+					<option value="7">Odption 7</option>
+					<option value="8">Optaion 8</option>
+					<option value="9">Optdion 9</option>
+					<option value="10" SELECTED >Option 10 (sel)</option>
+				</select>
+
+				<p>This is the javascript code to launch multiselect2side to #second select:</p>
+				<pre>
+$().ready(function() {
+	$('#second').multiselect2side({
+		selectedPosition: 'right',
+		moveOptions: false,
+		labelsx: '',
+		labeldx: ''
+		});
+});
+				</pre>
+
+				<h3>Demo 3 - select multiple double side - selectedPosition: 'left'</h3>
+				<p>Elements selected are in the left, label of move buttoms are modified.</p>
+				<select name="thirdSelect[]" id='third' multiple='multiple' size='6' >
+					<option value="1">1Option 1</option>
+					<option value="2" SELECTED >Option 2 (sel)</option>
+					<option value="3">a Option 3</option>
+					<option value="4" SELECTED >This Option 4 (sel)</option>
+					<option value="5">Optaion 5</option>
+					<option value="6">Option 6</option>
+					<option value="7">Odption 7</option>
+					<option value="8">Optaion 8</option>
+					<option value="9">Optdion 9</option>
+					<option value="10" SELECTED >Option 10 (sel)</option>
+				</select>
+
+				<p>This is the javascript code to launch multiselect2side to #third select:</p>
+				<pre>
+$().ready(function() {
+	$('#third').multiselect2side({
+		selectedPosition: 'left',
+		moveOptions: true,
+		labelTop: '+ +',
+		labelBottom: '- -',
+		labelUp: '+',
+		labelDown: '-',
+		labelsx: '* Selected *',
+		labeldx: '* Available *'
+		});
+});
+				</pre>
+
+				<h3>Demo 4 - Select multiple double side with limited number of selectionable options</h3>
+				<p>Select multiple="multiple" with parameter maxSelected, selectionable options limited to 4</p>
+
+				<select name="fourthSelect[]" id='fourth' multiple='multiple' >
+					<option value="1">First Option</option>
+					<option value="2">Option 2th</option>
+					<option value="3" SELECTED >Option selected 3</option>
+					<option value="4">Option 4</option>
+					<option value="5">Option 5</option>
+					<option value="6">Option 6</option>
+					<option value="7" SELECTED >Option selected 7</option>
+					<option value="8">Option 8</option>
+				</select>
+
+				<p>This is the javascript code to launch multiselect2side to #first select:</p>
+				<pre>
+$().ready(function() {
+	$('#fourth').multiselect2side({maxSelected: 4});
+});
+				</pre>
+
+
+				<h3>Documentation</h3>
+
+				<p>
+				To use this jquery plugin:<br />
+				<ul>
+				<li>
+				include the js in the head section of the page:
+				<pre>
+&lt;head&gt;
+...
+&lt;link rel="stylesheet" href="css/jquery.multiselect2side.css" type="text/css" media="screen" /&gt;
+
+&lt;script type="text/javascript" src="js/jquery.js" &gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="js/jquery.multiselect2side.js" &gt;&lt;/script&gt;
+...
+&lt;/head&gt;
+				</pre>
+				</li>
+				<li>
+				in the read function launch the multiselect2side (select multiple double side) relative at your element:
+				<pre>
+&lt;script type="text/javascript"&gt;
+$().ready(function() {
+	$("select").multiselect2side();
+});
+&lt;/script&gt;
+				</pre>
+				</li>
+				</ul>
+				For comments <a href="http://www.senamion.com/blog/2010/02/20/jquery-select-multiple-double-side/">see the blog page</a>.
+				</p>
+				<h4>Parameters:</h4>
+				<ul>
+					<li>selectedPosition - position of selected elements - default 'right'</li>
+					<li>moveOptions - show move options - default true</li>
+					<li>labelTop - label of top buttom - default 'Top'</li>
+					<li>labelBottom - label of bottom buttom - default 'Bottom'</li>
+					<li>labelUp - label of up buttom - default 'Up'</li>
+					<li>labelDown - label of down buttom - default 'Down'</li>
+					<li>labelSort - label of sort buttom - default 'Sort'</li>
+					<li>maxSelected - number of max selectable options</li>
+					<li>labelsx: Left label - default '* Selected *'</li>
+					<li>labeldx: Right label - default '* Available *'</li>
+
+				</ul>
+
+				<h3 id='download'>Download</h3>
+				<p>
+					You can download the entire archive:
+					<ul>
+						<li><a href="jquery.multiselect2side.zip">jquery.multiselect2side.zip</a> - a zip archive containing the plugin source, a minified version of jQuery and a demo page.</li>
+					</ul>
+					Or single file:
+					<ul>
+						<li><a href="jquery.multiselect2side/js/jquery.multiselect2side.js">jquery.multiselect2side.js</a> - js code.</li>
+						<li><a href="jquery.multiselect2side/css/jquery.multiselect2side.css">jquery.multiselect2side.css</a> - css code.</li>
+					</ul>
+				</p>
+
+
+				<h3>Release</h3>
+				<p>
+				<ul>
+					<li><strong>0.11</strong> - Aug 26 2010 - correct ie6 bug</li>
+					<li><strong>0.10</strong> - Jul 20 2010 - correct ie8 bug (padding-top)</li>
+					<li><strong>0.9</strong> - Jul 16 2010 - new labels button (left and right label)</li>
+					<li><strong>0.8</strong> - May 17 2010 - new sort button (if moveOptions is true)</li>
+					<li><strong>0.7</strong> - May 16 2010 - correct order options bug</li>
+					<li><strong>0.6</strong> - Avr 16 2010 - correct bug with optgroup</li>
+					<li><strong>0.5</strong> - Avr 15 2010 - Now move and updown options are vertically centered</li>
+					<li><strong>0.4</strong> - Avr 12 2010 - New option maxSelected</li>
+					<li><strong>0.3</strong> - Avr  1 2010 - New CSS</li>
+					<li><strong>0.2</strong> - Mar 25 2010 - New parameters moveOptions (default true)</li>
+					<li><strong>0.1</strong> - Mar 22 2010 - New parameters selectedPosition (default 'right')</li>
+					<li><strong>0.0</strong> - Feb 19 2010 - First release of multiselect2side (select multiple double side)</li>
+				</ul>
+				</p>
+
+
+				<h3>License</h3>
+				<p>
+				Dual licensed under the MIT and GPL licenses. 
+				</p>
+
+</body>
+</html>

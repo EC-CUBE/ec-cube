@@ -1,0 +1,1 @@
+INSERT INTO dtb_bloc (bloc_name, tpl_path, filename, php_path, deletable_flg) VALUES ('こんな商品も買っています', 'user_data/plugins/recommend/tpl/bloc.tpl', 'recommend', 'user_data/plugins/recommend/bloc.php', 0);

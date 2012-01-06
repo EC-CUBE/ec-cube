@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>受注管理(CSV出力項目設定)</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">受注管理(CSV出力項目設定)</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>//li[@id='navi-order']/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//form[@id='search_form']/div/div/ul/li/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=CSV 出力項目設定</td>
+	<td></td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>output_listms2side__dx</td>
+	<td>label=注文番号</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='admin-contents']/div[1]/div/div[2]/p[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>output_listms2side__dx</td>
+	<td>label=顧客ID</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='admin-contents']/div[1]/div/div[2]/p[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>output_listms2side__dx</td>
+	<td>label=要望等</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='admin-contents']/div[1]/div/div[2]/p[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='admin-contents']/div[2]/ul/li[1]/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmation</td>
+	<td>登録しても宜しいですか</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='admin-contents']/div[2]/ul/li[2]/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmation</td>
+	<td>初期設定で登録しても宜しいですか</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

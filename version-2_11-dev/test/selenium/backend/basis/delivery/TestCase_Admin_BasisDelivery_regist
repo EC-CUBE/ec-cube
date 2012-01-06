@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>基本情報管理(配送業者設定：新規入力)</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">基本情報管理(配送業者設定：新規入力)</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>//li[@id='navi-basis-delivery']/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=配送業者・配送料を新規入力</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name</td>
+	<td>ロックオン即配便</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>service_name</td>
+	<td>ロクソク</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>remark</td>
+	<td>ロクソクなら日本全国即日配達を実現！<br />北海道から沖縄まで約60分でお届け。<br />世界初の配送方法でお客様に大満足を提供します。</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>confirm_url</td>
+	<td>http://www.lockon.co.jp/</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>deliv_time1</td>
+	<td>06時00分～07時00分</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>deliv_time2</td>
+	<td>08時00分～09時00分</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>deliv_time3</td>
+	<td>13時00分～14時00分</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>deliv_time4</td>
+	<td>14時00分～20時30分</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>product_type_id</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@name='payment_ids[]' and @value='4']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@name='payment_ids[]' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>fee_all</td>
+	<td>980</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='basis']/div[1]/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=この内容で登録する</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>
