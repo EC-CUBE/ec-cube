@@ -48,7 +48,7 @@ define("CLASSCATEGORY1_VOLUME", 10);
 define("CLASSCATEGORY2_VOLUME", 10);
 
 /** 商品の生成数 */
-define("PRODUCTS_VOLUME", 1000);
+define("PRODUCTS_VOLUME", 100);
 
 // }}}
 // {{{ Logic
@@ -106,6 +106,9 @@ class CreateEcCubeData {
     /** 規格2 */
     var $arrClassCategory_id2 = array();
 
+    /** 削除するか */
+    var $delete = false;
+
     /**
      * コンストラクタ.
      */
@@ -130,6 +133,10 @@ class CreateEcCubeData {
     function createCategories() {
 
         print("カテゴリを生成しています...\n");
+
+        if ($this->delete) {
+            $this->objQuery->delete('dtb_category');
+        }
 
         $count = 0;
 
@@ -194,12 +201,21 @@ class CreateEcCubeData {
     function createClassData() {
         // 規格データ生成
         print("規格データを生成しています...\n");
+
+        if ($this->delete) {
+            $this->objQuery->delete('dtb_class');
+        }
+
         $this->createClass("Size");
         $this->createClass("Color");
         print("\n");
 
         // 規格分類データ生成
         print("規格分類データを生成しています...\n");
+
+        if ($this->delete) {
+            $this->objQuery->delete('dtb_classcategory');
+        }
 
         // 規格1
         for ($i = 0; $i < CLASSCATEGORY1_VOLUME; $i++) {
@@ -225,6 +241,11 @@ class CreateEcCubeData {
 
         print("商品と規格の関連づけを行います...\n");
 
+        if ($this->delete) {
+            $this->objQuery->delete('dtb_class_combination');
+            $this->objQuery->delete('dtb_products_class');
+        }
+
         foreach ($this->arrProduct_id as $product_id) {
             $this->createProductsClass($product_id);
         }
@@ -239,6 +260,11 @@ class CreateEcCubeData {
     function createProducts() {
 
         print("商品を生成しています...\n");
+
+        if ($this->delete) {
+            $this->objQuery->delete('dtb_products');
+        }
+
         for ($i = 0; $i < PRODUCTS_VOLUME; $i++) {
             $sqlval['product_id'] = $this->objQuery->nextval("dtb_products_product_id");
             $sqlval['name'] = sprintf("商品%d", $i);
@@ -273,17 +299,17 @@ class CreateEcCubeData {
         // class_idを取得
         $sqlval['class_id'] = $this->objQuery->nextVal("dtb_class_class_id");
         $sqlval['name'] = $class_name;
-        $sqlval['rank'] = "~(SELECT x.rank FROM (SELECT CASE
+        $arrRaw['rank'] = "(SELECT x.rank FROM (SELECT CASE
                                       WHEN max(rank) + 1 IS NULL THEN 1
                                       ELSE max(rank) + 1
                                     END as rank
                                FROM dtb_class
-                              WHERE del_flg = 0) as x),";
+                              WHERE del_flg = 0) as x)";
         $sqlval['creator_id'] = 2;
         $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['del_flg'] = (string) "0";
-        $this->objQuery->insert("dtb_class", $sqlval);
+        $this->objQuery->insert("dtb_class", $sqlval, $arrRaw);
 
         $this->arrclass_id[] = $sqlval['class_id'];
         print("+");
@@ -299,19 +325,19 @@ class CreateEcCubeData {
         $sqlval['classcategory_id'] = $this->objQuery->nextVal("dtb_classcategory_classcategory_id");
         $sqlval['name'] = $classcategory_name;
         $sqlval['class_id'] = $class_id;
-        $sqlval['rank'] = sprintf("~(SELECT x.rank FROM (SELECT CASE
+        $arrRaw['rank'] = sprintf("~(SELECT x.rank FROM (SELECT CASE
                                               WHEN max(rank) + 1 IS NULL THEN 1
                                               ELSE max(rank) + 1
                                             END as rank
                                        FROM dtb_classcategory
                                       WHERE del_flg = 0
-                                        AND class_id = %d) as x),", $class_id);
+                                        AND class_id = %d) as x)", $class_id);
         $sqlval['creator_id'] = 2;
         $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['del_flg'] = (string) "0";
 
-        $this->objQuery->insert("dtb_classcategory", $sqlval);
+        $this->objQuery->insert("dtb_classcategory", $sqlval, $arrRaw);
 
         switch ($class_name) {
         case "size":
@@ -335,7 +361,6 @@ class CreateEcCubeData {
     function createProductsClass($product_id) {
 
         printf("商品ID %d の商品規格を生成しています...\n", $product_id);
-
 
         $sqlval['product_id'] = $product_id;
         $sqlval['product_type_id'] = 1;
@@ -391,6 +416,11 @@ class CreateEcCubeData {
     function relateProductsCategories() {
 
         print("商品とカテゴリの関連づけを行います...\n");
+
+        if ($this->delete) {
+            $this->objQuery->delete('dtb_product_categories');
+        }
+
         $this->createProductsCategories($this->arrCategory1, "大カテゴリ");
         $this->createProductsCategories($this->arrCategory2, "中カテゴリ");
         $this->createProductsCategories($this->arrCategory3, "小カテゴリ");
