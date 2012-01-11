@@ -20,8 +20,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-// エラー捕捉用の出力バッファリング
-ob_start('_fatal_error_handler');
 
 // E_DEPRECATED 定数 (for PHP < 5.3)
 // TODO バージョン互換処理に統合したい。
@@ -33,8 +31,13 @@ if (!defined('E_DEPRECATED')) {
 // 開発時は E_ALL を推奨
 error_reporting(E_ALL & ~E_NOTICE & ~E_USER_NOTICE & ~E_DEPRECATED);
 
-// E_USER_ERROR を捕捉した場合にエラー画面を表示させるためのエラーハンドラ
-set_error_handler('handle_error', error_reporting());
+if (!defined('SAFE') || SAFE !== true || !defined('INSTALL_FUNCTION') || INSTALL_FUNCTION !== true) {
+    // エラー捕捉用の出力バッファリング
+    ob_start('_fatal_error_handler');
+
+    // E_USER_ERROR を捕捉した場合にエラー画面を表示させるためのエラーハンドラ
+    set_error_handler('handle_error', error_reporting());
+}
 
 /**
  * エラーを捕捉するための関数.
