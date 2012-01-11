@@ -113,8 +113,6 @@ define('SITE_FRAME', "site_frame.tpl");
 define('CERT_STRING', "7WDhcBTF");
 /** 生年月日登録開始年 */
 define('BIRTH_YEAR', 1901);
-/** 本システムの稼働開始年 */
-define('RELEASE_YEAR', 2005);
 /** クレジットカードの期限＋何年 */
 define('CREDIT_ADD_YEAR', 10);
 /** 親カテゴリのカテゴリIDの最大数 (これ以下は親カテゴリとする。) */

@@ -1114,7 +1114,6 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MAIN_FRAME', '"main
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SITE_FRAME', '"site_frame.tpl"', 79, '一般サイト画面フレーム');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CERT_STRING', '"7WDhcBTF"', 80, '認証文字列');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('BIRTH_YEAR', '1901', 83, '生年月日登録開始年');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('RELEASE_YEAR', '2005', 84, '本システムの稼働開始年');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CREDIT_ADD_YEAR', '10', 85, 'クレジットカードの期限＋何年');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PARENT_CAT_MAX', '12', 86, '親カテゴリのカテゴリIDの最大数 (これ以下は親カテゴリとする。)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('NUMBER_MAX', '1000000000', 87, 'GET値変更などのいたずらを防ぐため最大数制限を設ける。');

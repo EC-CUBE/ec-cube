@@ -986,6 +986,7 @@ function lfMakeConfigFile() {
     "    define ('ADMIN_ALLOW_HOSTS', '".serialize($allow_hosts)."');\n".
     "    define ('AUTH_MAGIC', '" . $auth_magic . "');\n".
     "    define ('PASSWORD_HASH_ALGOS', '" . $algos . "');\n".
+    "    define ('RELEASE_YEAR', '" . date('Y') . "');\n".    
     "?>";
 
     if ($fp = fopen(CONFIG_REALFILE, 'w')) {
