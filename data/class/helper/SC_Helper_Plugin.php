@@ -27,81 +27,87 @@
  * @package Helper
  * @version $Id$
  */
-class SC_Helper_Plugin{
+class SC_Helper_Plugin {
+    // プラグインのインスタンスの配列.
+    var $arrPluginInstances = array();
+    // プラグインのアクションの配列.
+    var $arrRegistedPluginActions = array();
+    // プラグインのIDの配列.
+    var $arrPluginIds = array();
 
     /**
-     * enableかどうかを判別する
-     * インスタンス化
-     */
-    function load(&$lcpage){
-        //データベースからクラス名を読み込む
-        $objQuery = new SC_Query_Ex();
-        $col = "*";
-        $table = "dtb_plugin";
-        $where = "enable = 1 AND del_flg = 0";
-        // XXX 2.11.0 互換のため
-        $arrCols = $objQuery->listTableFields($table);
-        if (in_array('rank', $arrCols)) {
-            $objQuery->setOrder('rank');
-        }
-        $arrRet = $objQuery->select($col, $table, $where);
-        $class_name = get_class($lcpage);
-
-        // 現在のページで使用するプラグインが存在するかどうかを検証する
-        foreach ($arrRet as $plugins){
-            // プラグインを稼働させるクラス名のリストを取得する
-            // プラグインのディレクトリ内の設定ファイルを参照する
-            $plugin_name = $plugins['plugin_name'];
-            $plugin_class_name = $plugins['class_name'];
-            $plugin_path = DATA_REALDIR . "plugin/{$plugin_name}/{$plugin_class_name}.php";
-
-            if (file_exists($plugin_path)) {
-                require_once $plugin_path;
-                if (class_exists($class_name)) {
-                    $code_str = "\$is_enable = {$plugin_class_name}::isEnable(\$class_name);";
-                    eval($code_str);
-                    if ($is_enable) {
-                        $arrPluginList[] = $plugin_class_name;
-                        GC_Utils_Ex::gfDebugLog($class_name . ' で、プラグイン ' . $plugin_name . ' をロードしました');
-                    } else {
-                        GC_Utils_Ex::gfDebugLog($class_name . ' で、プラグイン ' . $plugin_name . ' は無効になっています');
-                    }
-                } else {
-                    GC_Utils_Ex::gfDebugLog('プラグイン ' . $plugin_name . ' の ' . $class_name . ' が見つかりませんでした');
-                }
-            } else {
-                GC_Utils_Ex::gfDebugLog('プラグイン ' . $plugin_name . " が読み込めませんでした。\n"
-                                        . 'Failed opening required ' . $plugin_path);
-            }
-        }
-        return $arrPluginList;
-    }
-
-    function preProcess(&$lcpage){
-        //プラグインの名前を判別してページ内で有効なプラグインがあれば実行する
-        $arrPluginList = SC_Helper_Plugin_Ex::load($lcpage);
-       if(count($arrPluginList) > 0){
-            foreach ($arrPluginList as $key => $value){
-                $instance = new $value;
-                $instance->preProcess($lcpage);
-            }
-        }
-        return $lcpage;
-    }
-
-    /* 読み込んだプラグインの実行用メソッド
+     * 有効なプラグインのロード. プラグインエンジンが有効になっていない場合は
+     * プラグインエンジン自身のインストール処理を起動する
      *
+     * @return void
      */
-    function process(&$lcpage){
-        //プラグインの名前を判別してページ内で有効なプラグインがあれば実行する
-        $arrPluginList = SC_Helper_Plugin_Ex::load($lcpage);
-        if(count($arrPluginList) > 0){
-            foreach ($arrPluginList as $key => $value){
-                $instance = new $value;
-                $instance->process($lcpage);
+    function load() {
+        
+        if (!defined('CONFIG_REALFILE') || !file_exists(CONFIG_REALFILE)) return; // インストール前
+        if (SC_Utils_Ex::sfIsInstallFunction()) return; // インストール中
+
+        // 有効なプラグインを取得
+        $arrPluginDataList = $this->getEnablePlugin();
+        // pluginディレクトリを取得
+        $arrPluginDirectory = $this->getPluginDirectory();
+
+        foreach ($arrPluginDataList as $arrPluginData) {
+            // プラグイン本体ファイル名が取得したプラグインディレクトリ一覧にある事を確認
+            if (array_search($arrPluginData['class_name'], $arrPluginDirectory) !== false ) {
+                // プラグイン本体ファイルをrequire.
+                require_once(DOWNLOADS_PLUGIN_REALDIR . $arrPluginData['plugin_setting_path']);
+                // プラグインのインスタンス生成.
+                $objPlugin = new $arrPluginData['class_name']($arrPluginData);
+                // メンバ変数にプラグインのインスタンスを登録.
+                $this->arrPluginInstances[$arrPluginData['plugin_id']] = $objPlugin;
+                $this->arrPluginIds[] = $arrPluginData['plugin_id'];
+                // ローカルフックポイントの登録.
+                $this->registLocalHookPoint($objPlugin, $arrPluginData['rank']);
+                // スーパーフックポイントの登録.
+                $this->registSuperHookPoint($objPlugin, HOOK_POINT_PREPROCESS, 'preProcess', $arrPluginData['rank']);
+                $this->registSuperHookPoint($objPlugin, HOOK_POINT_PROCESS, 'process', $arrPluginData['rank']);
             }
         }
-        return $lcpage;
+    }
+
+    /**
+     * SC_Helper_Plugin オブジェクトを返す（Singletonパターン）
+     *
+     * @return object SC_Helper_Pluginオブジェクト
+     */
+    function getSingletonInstance() {
+        if (!isset($GLOBALS['_SC_Helper_Plugin_instance']) || is_null($GLOBALS['_SC_Helper_Plugin_instance'])) {
+            $GLOBALS['_SC_Helper_Plugin_instance'] =& new SC_Helper_Plugin_Ex();
+            $GLOBALS['_SC_Helper_Plugin_instance']->load();
+        }
+        return $GLOBALS['_SC_Helper_Plugin_instance'];
+    }
+
+    /**
+     * プラグイン実行
+     *
+     * @param string $hook_point フックポイント
+     * @param array  $arrArgs    コールバック関数へ渡す引数
+     * @return void
+     */
+    function doAction($hook_point, $arrArgs = array()) {
+        if(is_array($arrArgs) === false) {
+            array(&$arrArgs);
+        }
+
+        if (array_key_exists($hook_point, $this->arrRegistedPluginActions)
+            && is_array($this->arrRegistedPluginActions[$hook_point])) {
+
+            ksort($this->arrRegistedPluginActions[$hook_point]);
+            foreach ($this->arrRegistedPluginActions[$hook_point] as $priority => $arrFuncs) {
+                
+                foreach ($arrFuncs as $func) {
+                    if (!is_null($func['function'])) {
+                        call_user_func_array($func['function'], $arrArgs);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -138,13 +144,209 @@ class SC_Helper_Plugin{
         return $arrRet;
     }
 
-    function getFilesystemPlugins(){
-        $plugin_dir = DATA_REALDIR."/plugin/";
-        if($dh = opendir($plugin_dir)){
-            while(($file = readdir($dh) !== false)){
-                if(is_dir($plugin_dir."/".$file)){
+    /**
+     * プラグインディレクトリの取得
+     *
+     * @return array $arrEccPluginDirectory
+     */
+    function getPluginDirectory() {
+        $arrPluginDirectory = array();
+        if (is_dir(DOWNLOADS_PLUGIN_REALDIR)) {
+            if ($dh = opendir(DOWNLOADS_PLUGIN_REALDIR)) {
+                while (($pluginDirectory = readdir($dh)) !== false) {
+                    $arrPluginDirectory[] = $pluginDirectory;
+                }
+                closedir($dh);
+            }
+        }
+        return $arrPluginDirectory;
+    }
+
+    /**
+     * スーパーフックポイントを登録します.
+     * 
+     * @param Object $objPlugin プラグインのインスタンス
+     * @param string $hook_point スーパーフックポイント
+     * @param string $function_name 実行する関数名
+     * @param string $priority 実行順
+     */
+    function registSuperHookPoint($objPlugin, $hook_point, $function_name, $priority) {
+        // スーパープラグイン関数を定義しているかを検証.
+        if(method_exists($objPlugin, $function_name) === true){
+            // アクションの登録
+            $this->addAction($hook_point, array($objPlugin, $function_name), $priority);
+        }
+    }
+
+    /**
+     * ローカルフックポイントを登録します.
+     *
+     * @param Object $objPlugin プラグインのインスタンス
+     * @param string $priority 実行順
+     */
+    function registLocalHookPoint($objPlugin, $priority) {
+        // ローカルプラグイン関数を定義しているかを検証.
+        if(method_exists($objPlugin, 'regist') === true){
+            // アクションの登録（プラグイン側に記述）
+            $objPluginHelper =& SC_Helper_Plugin::getSingletonInstance();
+            $objPlugin->regist($objPluginHelper, $priority);
+        }
+    }
+
+    /**
+     * プラグイン コールバック関数を追加する
+     *
+     * @param string   $hook_point フックポイント名
+     * @param callback $function   コールバック関数名
+     * @param string   $priority   同一フックポイント内での実行優先度
+     * @return boolean 成功すればtrue
+     */
+    function addAction($hook_point, $function, $priority) {
+        if (!is_callable($function)){
+            // TODO エラー処理;　コール可能な形式ではありません
+        }
+        $idx = $this->makeActionUniqueId($hook_point, $function, $priority);
+        $this->arrRegistedPluginActions[$hook_point][$priority][$idx] = array('function' => $function);
+        return true;
+    }
+
+    /**
+     * コールバック関数を一意に識別するIDの生成
+     *
+     * @param string   $hook_point フックポイント名
+     * @param callback $function   コールバック関数名
+     * @param integer  $priority   同一フックポイント内での実行優先度
+     * @return string コールバック関数を一意に識別するID
+     */
+    function makeActionUniqueId($hook_point, $function, $priority) {
+        static $filter_id_count = 0;
+
+        if (is_string($function)) {
+            return $function;
+        }
+
+        if (is_object($function)) {
+            $function = array($function, '');
+        } else {
+            $function = (array) $function;
+        }
+
+        if (is_object($function[0])) {
+            if (function_exists('spl_object_hash')) {
+                return spl_object_hash($function[0]) . $function[1];
+            } else {
+                $obj_idx = get_class($function[0]).$function[1];
+                if ( false === $priority )
+                    return false;
+                $obj_idx .= isset($this->arrRegistedPluginActions[$hook_point][$priority])
+                          ? count((array)$this->arrRegistedPluginActions[$hook_point][$priority])
+                          : $filter_id_count;
+                $function[0]->wp_filter_id = $filter_id_count;
+                ++$filter_id_count;
+
+                return $obj_idx;
+            }
+        } else if ( is_string($function[0]) ) {
+            return $function[0].$function[1];
+        }
+    }
+
+    /**
+     * 全てのテンプレートを再生成する
+     *
+     * @param boolean $test_mode true の場合、validate のみを行い、実際にテンプレートの再生成は行わない
+     * @return void
+     */
+    function remakeAllTemplates($test_mode = false) {
+        $this->load(); // 最新のデータを読み込みなおす
+        if (!is_writable(PLUGIN_TMPL_CACHE_REALDIR)) {
+            // TODO エラー処理;
+            exit;
+        }
+        // キャッシュテンプレートを削除
+        if ($test_mode === true) {
+            $this->unlinkRecurse(PLUGIN_TMPL_CACHE_REALDIR, false);
+        }
+        $objTemplateTransformList = SC_Plugin_Template_Transform_List::getSingletonInstance();
+        $objTemplateTransformList->init();
+        foreach ($this->arrPluginInstances as $objPlugin) {
+            // TODO 関数チェック;
+            $objPlugin->setTemplateTransformer();
+        }
+        // トランスフォーム実行
+        $objTemplateTransformList->transformAll($test_mode);
+    }
+
+    /**
+     * 指定されたパスの配下を再帰的に unlink
+     *
+     * @param string  $path       削除対象のディレクトリまたはファイルのパス
+     * @param boolean $del_myself $pathそのものを削除するか. true なら削除する.
+     * @return void
+     */
+    function unlinkRecurse($path, $del_myself = true) {
+        if (!file_exists($path)) {
+            // TODO エラー処理; パスが存在しません
+        } elseif (is_dir($path)) {
+            // ディレクトリ
+            $handle = opendir($path);
+            if (!$handle) {
+                // TODO エラー処理; ディレクトリが開けませんでした
+            }
+
+            while (($item = readdir($handle)) !== false) {
+                if ($item === '.' || $item === '..') continue;
+                $cur_path = $path . '/' . $item;
+                if (is_dir($cur_path)) SC_Helper_Plugin::unlinkRecurse($cur_path);
+                else @unlink($cur_path);
+            }
+            closedir($handle);
+
+            // ディレクトリを削除
+            if ($del_myself) @rmdir($path);
+        } else {
+            // ファイルが指定された
+            @unlink($path);
+        }
+    }
+
+    /**
+     * テンプレートキャッシュファイルのフルパスを返す.
+     *
+     * @param string $tpl_mainpage  返すキャッシュファイルのパスの対象となるテンプレート.
+     * @param object $objPage  ページオブジェクト.
+     */
+    function getPluginTemplateCachePath($objPage) {
+        // main_template の差し替え
+		if (strpos($objPage->tpl_mainpage, SMARTY_TEMPLATES_REALDIR) === 0) {
+			// フルパスで指定された
+			$dir = '';
+			$default_tpl_mainpage = str_replace(SMARTY_TEMPLATES_REALDIR, '', $objPage->tpl_mainpage);
+		} else {
+            // フロントページ or 管理画面を判定
+		    $dir = ($objPage instanceof LC_Page_Admin) ? 'admin/' : TEMPLATE_NAME . '/';
+			$default_tpl_mainpage = $objPage->tpl_mainpage;
+		}
+        return PLUGIN_TMPL_CACHE_REALDIR . $dir . $default_tpl_mainpage;
+    }
+
+    /**
+     * ブロックの配列から有効でないpluginのブロックを除外して返します.
+     *
+     * @param array $arrBlocs プラグインのインストールディレクトリ
+     * @return array $arrBlocsサイトルートからメディアディレクトリへの相対パス
+     */
+    function getEnableBlocs($arrBlocs) {
+        foreach ($arrBlocs as $key => $value) {
+            // 有効なpluginのブロック以外.
+            if(!in_array($value['plugin_id'] , $this->arrPluginIds)) {
+                // 通常ブロック以外.
+                if($value['plugin_id'] != ""){
+                    //　ブロック配列から削除する
+                    unset ($arrBlocs[$key]);
                 }
             }
         }
+        return $arrBlocs;
     }
 }

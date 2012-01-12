@@ -488,8 +488,16 @@ define('OPTION_FAVOFITE_PRODUCT', 1);
 define('IMAGE_RENAME', true);
 /** プラグインディレクトリ */
 define('PLUGIN_DIR', "plugins/");
-/** プラグイン保存先 */
-define('PLUGIN_REALDIR', USER_REALDIR . PLUGIN_DIR);
+/** プラグインエンジン */
+define('PLUGIN_REALDIR', DATA_REALDIR . "class/plugin/");
+/** プラグイン保存先. */
+define('DOWNLOADS_PLUGIN_REALDIR', DATA_REALDIR . "downloads/plugin/");
+/** プラグイン・テンプレートキャッシュ. */
+define('PLUGIN_TMPL_CACHE_REALDIR', DOWNLOADS_PLUGIN_REALDIR . 'templates_cache/');
+/** プラグイン・ディレクトリパーミッション. */
+define('PLUGIN_DIR_PERMISSION', 0777);
+/** プラグイン URL. */
+define('PLUGIN_HTML_URLPATH', ROOT_URLPATH . 'plugin/');
 /** プラグイン URL */
 define('PLUGIN_URL', USER_URL . PLUGIN_DIR);
 /** 日数桁数 */
@@ -592,4 +600,8 @@ define('PLUGIN_ENABLE_TRUE', "1");
 define('PLUGIN_ENABLE_FALSE', "2");
 /** 郵便番号CSVのZIPアーカイブファイルの取得元 */
 define('ZIP_DOWNLOAD_URL', "http://www.post.japanpost.jp/zipcode/dl/kogaki/zip/ken_all.zip");
+/** フックポイント（プレプロセス） */
+define('HOOK_POINT_PREPROCESS', "lc_page_preProcess");
+/** フックポイント（プロセス） */
+define('HOOK_POINT_PROCESS', "lc_page_process");
 ?>

@@ -52,7 +52,15 @@
     });
 //]]>
 </script>
-
+<!--{* ▼Head COLUMN*}-->
+<!--{if $arrPageLayout.HeadNavi|@count > 0}-->
+    <!--{foreach key=HeadNaviKey item=HeadNaviItem from=$arrPageLayout.HeadNavi}-->
+        <!--{if $HeadNaviItem.php_path != ""}-->
+            <!--{include_php file=$HeadNaviItem.php_path}-->
+        <!--{/if}-->
+    <!--{/foreach}-->
+<!--{/if}-->
+<!--{* ▲Head COLUMN*}-->
 </head>
 
 <body class="<!--{if strlen($tpl_authority) >= 1}-->authority_<!--{$tpl_authority}--><!--{/if}-->">

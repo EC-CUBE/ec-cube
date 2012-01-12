@@ -19,11 +19,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ *
  */
 
-    require_once (PLUGIN_REALDIR . 'SC_Plugin_Template_Transform_List.php');
-    require_once (PLUGIN_REALDIR . 'SC_Plugin_Template_Transformer.php');
-    require_once (PLUGIN_REALDIR . 'SC_Plugin_Template_Selector.php');
-    require_once (DOWNLOADS_PLUGIN_REALDIR . 'SC_Plugin_Base.php');
-//}
+/**
+ * プラグインの基底クラス
+ *
+ * @package Plugin
+ * @author LOCKON CO.,LTD.
+ * @version $Id: $
+ */
+class SC_Plugin_Base {
+
+    var $arrSelfInfo;
+
+    /**
+     * コンストラクタ
+     * 
+     * @param array $arrSelfInfo 自身のプラグイン情報
+     * @return void
+     */
+    function SC_Plugin_Base (array $arrSelfInfo) {
+        $this->arrSelfInfo = $arrSelfInfo;
+    }
+
+}
+
+
 ?>

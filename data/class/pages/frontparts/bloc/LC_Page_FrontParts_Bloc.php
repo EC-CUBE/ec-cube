@@ -47,9 +47,6 @@ class LC_Page_FrontParts_Bloc extends LC_Page_Ex {
         // ディスプレイクラス生成
         $this->objDisplay = new SC_Display_Ex();
 
-        // プラグインクラス生成
-        $this->objPlugin = new SC_Helper_Plugin_Ex();
-        $this->objPlugin->preProcess($this);
         $this->setTplMainpage($this->blocItems['tpl_path']);
 
         // トランザクショントークンの検証と生成

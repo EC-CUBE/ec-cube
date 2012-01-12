@@ -64,9 +64,9 @@ class LC_Page_Admin extends LC_Page_Ex {
         // ディスプレイクラス生成
         $this->objDisplay = new SC_Display_Ex();
 
-        // プラグインクラス生成
-        $this->objPlagin = new SC_Helper_Plugin_Ex();
-        $this->objPlagin->preProcess($this);
+        // スーパーフックポイントを実行.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_preProcess', array($this));
 
         // トランザクショントークンの検証と生成
         $this->doValidToken(true);
@@ -87,10 +87,20 @@ class LC_Page_Admin extends LC_Page_Ex {
      * @return void
      */
     function sendResponse() {
-        if (isset($this->objPlagin)) { // FIXME モバイルエラー応急対応
-            // post-prosess処理(暫定的)
-            $this->objPlagin->process($this);
-        }
+        
+        // HeadNaviにpluginテンプレートを追加する.
+        $objTemplateTransformList = SC_Plugin_Template_Transform_List::getSingletonInstance();
+        $objTemplateTransformList->setHeadNaviBlocs($this->arrPageLayout['HeadNavi']);
+
+        // プラグインによってトランスフォームされたテンプレートがあればセットする
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $plugin_tmplpath = $objPlugin->getPluginTemplateCachePath($this);
+        if (file_exists($plugin_tmplpath)) $this->tpl_mainpage = $plugin_tmplpath;
+
+        // スーパーフックポイントを実行.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_process', array($this));
+       
         $this->objDisplay->prepare($this, true);
         $this->objDisplay->response->write();
     }

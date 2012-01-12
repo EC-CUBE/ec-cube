@@ -54,6 +54,6 @@ if (!SC_Utils_Ex::sfIsInstallFunction()) {
     $objSession->adminAuthorization();
 
     // プラグインを読み込む
-    //require_once DATA_REALDIR . 'require_plugin.php';
+    require_once DATA_REALDIR . 'require_plugin.php';
 }
 ?>
