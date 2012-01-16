@@ -162,7 +162,10 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      */
     function doUploadCsv(&$objFormParam, &$objUpFile) {
         // ファイルアップロードのチェック
-        $objUpFile->makeTempFile('csv_file');
+        $this->arrErr['csv_file'] = $objUpFile->makeTempFile('csv_file');
+        if (strlen($this->arrErr['csv_file']) >= 1) {
+            return;
+        }
         $arrErr = $objUpFile->checkExists();
         if (count($arrErr) > 0) {
             $this->arrErr = $arrErr;
