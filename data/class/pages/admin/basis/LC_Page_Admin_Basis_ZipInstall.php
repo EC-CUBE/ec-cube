@@ -233,12 +233,6 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         /** 挿入した行数 */
         $cntInsert = 0;
         $img_cnt = 0;
-        $safe_mode = (boolean)ini_get('safe_mode');
-        $max_execution_time
-            = is_numeric(ini_get('max_execution_time'))
-            ? intval(ini_get('max_execution_time'))
-            : intval(get_cfg_var('max_execution_time'))
-        ;
 
         $fp = $this->openZipCsv();
         while (!feof($fp)) {
@@ -272,12 +266,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
                 SC_Utils_Ex::sfFlush();
                 $img_cnt++;
             }
-            // 暴走スレッドが残留する確率を軽減したタイムアウト防止のロジック
-            // TODO 動作が安定していれば、SC_Utils 辺りに移動したい。
-            if (!$safe_mode) {
-                // タイムアウトをリセット
-                set_time_limit($max_execution_time);
-            }
+            SC_Utils_Ex::extendTimeOut();
         }
         fclose($fp);
 

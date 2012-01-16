@@ -2167,5 +2167,31 @@ class SC_Utils {
         $pattern = '/^(' . preg_quote(HTTP_URL, '/') . '|' . preg_quote(HTTPS_URL, '/') . ')/';
         return preg_match($pattern, $url) >= 1;
     }
+
+    /**
+     * PHP のタイムアウトを延長する
+     *
+     * ループの中で呼び出すことを意図している。
+     * 暴走スレッドが残留する確率を軽減するため、set_time_limit(0) とはしていない。
+     * @param integer $seconds 最大実行時間を延長する秒数。
+     * @return boolean 成功=true, 失敗=false
+     */
+    function extendTimeOut($seconds = null) {
+        $safe_mode = (boolean)ini_get('safe_mode');
+        if ($safe_mode) return false;
+
+        if (is_null($seconds)) {
+            $seconds
+                = is_numeric(ini_get('max_execution_time'))
+                ? intval(ini_get('max_execution_time'))
+                : intval(get_cfg_var('max_execution_time'))
+            ;
+        }
+
+        // タイムアウトをリセット
+        set_time_limit($seconds);
+
+        return true;
+    }
 }
 ?>
