@@ -209,9 +209,9 @@ __EOF__;
          * 同名ファイルの使用件数
          * PHP ファイルは, 複数のデバイスで共有するため, device_type_id を条件に入れない
          */
-        $exists = $objQuery->exists('dtb_pagelayout', 'filename = ?', array($filename));
+        $count = $objQuery->count('dtb_pagelayout', 'filename = ?', array($filename));
 
-        if (!$exists) {
+        if ($count == 0) {
             // phpファイルの削除
             $del_php = HTML_REALDIR . $filename . '.php';
             if (file_exists($del_php)) {

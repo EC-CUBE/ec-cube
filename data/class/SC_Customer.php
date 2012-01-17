@@ -120,9 +120,10 @@ __EOS__;
         }
 
         // 携帯端末IDが一致し、本登録された会員を検索する。
+        $sql = 'SELECT count(*) FROM dtb_customer WHERE mobile_phone_id = ? AND del_flg = 0 AND status = 2';
         $objQuery = new SC_Query_Ex();
-        $exists = $objQuery->exists("dtb_customer", "mobile_phone_id = ? AND del_flg = 0 AND status = 2", array($_SESSION['mobile']['phone_id']));
-        return $exists;
+        $result = $objQuery->count("dtb_customer", "mobile_phone_id = ? AND del_flg = 0 AND status = 2", array($_SESSION['mobile']['phone_id']));
+        return $result > 0;
     }
 
     /**

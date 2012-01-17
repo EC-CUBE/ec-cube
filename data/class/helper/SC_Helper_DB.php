@@ -98,8 +98,8 @@ class SC_Helper_DB {
      * @param string $table_name テーブル名
      * @param string $where データを検索する WHERE 句
      * @param string $dsn データソース名
-     * @param string $sql @deprecated データの追加を行う場合の SQL文
-     * @param bool $add @deprecated データの追加も行う場合 true
+     * @param string $sql データの追加を行う場合の SQL文
+     * @param bool $add データの追加も行う場合 true
      * @return bool データが存在する場合 true, データの追加に成功した場合 true,
      *               $add == false で, データが存在しない場合 false
      */
@@ -108,10 +108,15 @@ class SC_Helper_DB {
         $dsn = $dbFactory->getDSN($dsn);
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $exists = $objQuery->exists($table_name, $where, $arrval);
+        $count = $objQuery->count($table_name, $where, $arrval);
 
+        if($count > 0) {
+            $ret = true;
+        } else {
+            $ret = false;
+        }
         // データを追加する
-        if(!$exists && $add) {
+        if(!$ret && $add) {
             $objQuery->exec($sql);
         }
         return $ret;
@@ -152,23 +157,11 @@ class SC_Helper_DB {
      * 基本情報の登録数を取得する
      *
      * @return int
-     * @deprecated
      */
     function sfGetBasisCount() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         return $objQuery->count("dtb_baseinfo");
-    }
-
-    /**
-     * 基本情報の登録有無を取得する
-     *
-     * @return boolean 有無
-     */
-    function sfGetBasisExists() {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-
-        return $objQuery->exists('dtb_baseinfo');
     }
 
     /* 選択中のアイテムのルートカテゴリIDを取得する */
@@ -1437,9 +1430,9 @@ __EOS__;
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = 'product_id = ? AND del_flg = 0 AND class_combination_id IS NOT NULL';
-        $exists = $objQuery->exists('dtb_products_class', $where, array($product_id));
+        $count = $objQuery->count('dtb_products_class', $where, array($product_id));
 
-        return $exists;
+        return $count >= 1;
     }
 }
 ?>

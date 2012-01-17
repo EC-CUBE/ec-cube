@@ -373,12 +373,12 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         if($sqlval['category_id'] != "") {
             // 同じidが存在すればupdate存在しなければinsert
             $where = "category_id = ?";
-            $category_exists = $objQuery->exists("dtb_category", $where, array($sqlval['category_id']));
-            if ($category_exists) {
+            $category_count = $objQuery->count("dtb_category", $where, array($sqlval['category_id']));
+            if($category_count > 0){
                 // UPDATEの実行
                 $where = "category_id = ?";
                 $objQuery->update("dtb_category", $sqlval, $where, array($sqlval['category_id']));
-            } else {
+            }else{
                 $sqlval['create_date'] = $arrList['update_date'];
                 // 新規登録
                 $category_id = $this->registerCategory($sqlval['parent_category_id'],
@@ -476,12 +476,12 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
                 $parent_category_id = (string)'0';
             }
             $where = "parent_category_id = ? AND category_id <> ? AND category_name = ?";
-            $exists = $objQuery->exists('dtb_category',
+            $count = $objQuery->count('dtb_category',
                         $where,
                         array($parent_category_id,
                                 $item['category_id'],
                                 $item['category_name']));
-            if ($exists) {
+            if($count > 0) {
                 $arrErr['category_name'] = "※ 既に同名のカテゴリが存在します。";
             }
         }

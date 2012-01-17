@@ -799,8 +799,9 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         $where .= ")";
 
         $objQuery = new SC_Query_Ex();
-        $exists = $objQuery->exists('dtb_products', $where, $sqlval);
-        return $exists;
+        $count = $objQuery->count('dtb_products', $where, $sqlval);
+        if (!$count) return false;
+        return true;
     }
 
     /**

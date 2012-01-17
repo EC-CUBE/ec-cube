@@ -267,8 +267,8 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
         $where = 'module_id = ?';
         $objQuery = new SC_Query_Ex();
 
-        $exists = $objQuery->exists($table, $where, array($objRet->product_id));
-        if ($exists) {
+        $count = $objQuery->count($table, $where, array($objRet->product_id));
+        if ($count) {
             $arrUpdate = array(
                 'module_code' => $objRet->product_code,
                 'module_name' => $objRet->product_name,

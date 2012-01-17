@@ -204,16 +204,16 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
 
         // 子カテゴリのチェック
         $where = "parent_category_id = ? AND del_flg = 0";
-        $exists = $objQuery->exists("dtb_category", $where, array($category_id));
-        if ($exists) {
+        $count = $objQuery->count("dtb_category", $where, array($category_id));
+        if ($count > 0) {
              $this->arrErr['category_name'] = "※ 子カテゴリが存在するため削除できません。<br/>";
              return;
         }
         // 登録商品のチェック
         $table = "dtb_product_categories AS T1 LEFT JOIN dtb_products AS T2 ON T1.product_id = T2.product_id";
         $where = "T1.category_id = ? AND T2.del_flg = 0";
-        $exists = $objQuery->exists($table, $where, array($category_id));
-        if ($exists) {
+        $count = $objQuery->count($table, $where, array($category_id));
+        if ($count > 0) {
             $this->arrErr['category_name'] = "※ カテゴリ内に商品が存在するため削除できません。<br/>";
             return;
         }
@@ -330,8 +330,8 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
             $where .= ' AND category_id <> ?';
             $arrWhereVal[] = $category_id;
         }
-        $exists = $objQuery->exists('dtb_category', $where, $arrWhereVal);
-        if ($exists) {
+        $count = $objQuery->count('dtb_category', $where, $arrWhereVal);
+        if ($count > 0) {
             $arrErr['category_name'] = "※ 既に同じ内容の登録が存在します。<br/>";
             return $arrErr;
         }

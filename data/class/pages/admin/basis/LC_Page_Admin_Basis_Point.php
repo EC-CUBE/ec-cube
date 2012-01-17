@@ -75,7 +75,8 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex {
         // POST値の取得
         $objFormParam->setParam($_POST);
 
-        if ($objDb->sfGetBasisExists()) {
+        $cnt = $objDb->sfGetBasisCount();
+        if ($cnt > 0) {
             $this->tpl_mode = 'update';
         } else {
             $this->tpl_mode = 'insert';

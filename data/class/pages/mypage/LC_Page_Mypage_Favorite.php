@@ -176,12 +176,13 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
 
     // お気に入り商品削除
     function lfDeleteFavoriteProduct($customer_id, $product_id) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $objQuery       =& SC_Query_Ex::getSingletonInstance();
+        $count      = $objQuery->count("dtb_customer_favorite_products", "customer_id = ? AND product_id = ?", array($customer_id, $product_id));
 
-        $exists = $objQuery->exists("dtb_customer_favorite_products", "customer_id = ? AND product_id = ?", array($customer_id, $product_id));
-
-        if ($exists) {
+        if ($count > 0) {
+            $objQuery->begin();
             $objQuery->delete('dtb_customer_favorite_products', "customer_id = ? AND product_id = ?", array($customer_id, $product_id));
+            $objQuery->commit();
         }
     }
 }

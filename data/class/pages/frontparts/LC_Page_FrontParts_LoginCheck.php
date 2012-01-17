@@ -156,9 +156,9 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
                     $arrForm['login_email'] = strtolower($arrForm['login_email']);
                     $objQuery = SC_Query_Ex::getSingletonInstance();
                     $where = '(email = ? OR email_mobile = ?) AND status = 1 AND del_flg = 0';
-                    $exists = $objQuery->exists("dtb_customer", $where, array($arrForm['login_email'], $arrForm['login_email']));
+                    $ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email'], $arrForm['login_email']));
                     // ログインエラー表示 TODO リファクタリング
-                    if ($exists) {
+                    if($ret > 0) {
                         if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
                             echo $this->lfGetErrorMessage(TEMP_LOGIN_ERROR);
                             exit;

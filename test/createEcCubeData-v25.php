@@ -299,17 +299,17 @@ class CreateEcCubeData {
         // class_idを取得
         $sqlval['class_id'] = $this->objQuery->nextVal("dtb_class_class_id");
         $sqlval['name'] = $class_name;
-        $arrRaw['rank'] = "(SELECT x.rank FROM (SELECT CASE
+        $sqlval['rank'] = "~(SELECT x.rank FROM (SELECT CASE
                                       WHEN max(rank) + 1 IS NULL THEN 1
                                       ELSE max(rank) + 1
                                     END as rank
                                FROM dtb_class
-                              WHERE del_flg = 0) as x)";
+                              WHERE del_flg = 0) as x),";
         $sqlval['creator_id'] = 2;
         $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['del_flg'] = (string) "0";
-        $this->objQuery->insert("dtb_class", $sqlval, $arrRaw);
+        $this->objQuery->insert("dtb_class", $sqlval);
 
         $this->arrclass_id[] = $sqlval['class_id'];
         print("+");
@@ -325,19 +325,19 @@ class CreateEcCubeData {
         $sqlval['classcategory_id'] = $this->objQuery->nextVal("dtb_classcategory_classcategory_id");
         $sqlval['name'] = $classcategory_name;
         $sqlval['class_id'] = $class_id;
-        $arrRaw['rank'] = sprintf("~(SELECT x.rank FROM (SELECT CASE
+        $sqlval['rank'] = sprintf("~(SELECT x.rank FROM (SELECT CASE
                                               WHEN max(rank) + 1 IS NULL THEN 1
                                               ELSE max(rank) + 1
                                             END as rank
                                        FROM dtb_classcategory
                                       WHERE del_flg = 0
-                                        AND class_id = %d) as x)", $class_id);
+                                        AND class_id = %d) as x),", $class_id);
         $sqlval['creator_id'] = 2;
         $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['del_flg'] = (string) "0";
 
-        $this->objQuery->insert("dtb_classcategory", $sqlval, $arrRaw);
+        $this->objQuery->insert("dtb_classcategory", $sqlval);
 
         switch ($class_name) {
         case "size":

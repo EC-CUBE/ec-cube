@@ -83,10 +83,9 @@ class SC_Helper_Session {
      function sfSessWrite($id, $sess_data)
      {
          $objQuery = new SC_Query_Ex();
-         $exists = $objQuery->exists("dtb_session", "sess_id = ?", array($id));
-var_dump($id, $exists);exit;
+         $count = $objQuery->count("dtb_session", "sess_id = ?", array($id));
          $sqlval = array();
-         if ($exists) {
+         if($count > 0) {
              // レコード更新
              $sqlval['sess_data'] = $sess_data;
              $sqlval['update_date'] = 'CURRENT_TIMESTAMP';

@@ -2162,10 +2162,5 @@ class SC_Utils {
         is_dir(dirname($pathname)) || SC_Utils::recursiveMkdir(dirname($pathname), $mode);
         return is_dir($pathname) || @mkdir($pathname, $mode);
     }
-
-    function isAppInnerUrl($url) {
-        $pattern = '/^(' . preg_quote(HTTP_URL, '/') . '|' . preg_quote(HTTPS_URL, '/') . ')/';
-        return preg_match($pattern, $url) >= 1;
-    }
 }
 ?>

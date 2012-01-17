@@ -540,9 +540,9 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
             return false;
         } else {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
-            $exists = $objQuery->exists("dtb_customer_favorite_products", "customer_id = ? AND product_id = ?", array($customer_id, $favorite_product_id));
+            $count = $objQuery->count("dtb_customer_favorite_products", "customer_id = ? AND product_id = ?", array($customer_id, $favorite_product_id));
 
-            if (!$exists) {
+            if ($count == 0) {
                 $sqlval['customer_id'] = $customer_id;
                 $sqlval['product_id'] = $favorite_product_id;
                 $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
