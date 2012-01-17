@@ -37,7 +37,7 @@ class SC_Initial {
     function SC_Initial() {
 
         /** EC-CUBEのバージョン */
-        define('ECCUBE_VERSION', '2.11.5-dev');
+        define('ECCUBE_VERSION', '2.11.4-dev');
     }
 
     // }}}
@@ -51,15 +51,16 @@ class SC_Initial {
      */
     function init() {
         $this->requireInitialConfig();
-        $this->defineDSN();                 // requireInitialConfig メソッドより後で実行
+        $this->defineDSN();
+        $this->setErrorReporting();
         $this->defineDirectoryIndex();
-        $this->defineErrorType();           // XXX 多分、もっと後で大丈夫
-        $this->defineConstants();           // defineDirectoryIndex メソッドより後で実行
-        $this->complementConstants();       // defineConstants メソッドより後で実行
-        $this->phpconfigInit();             // defineConstants メソッドより後で実行
-        $this->createCacheDir();            // defineConstants メソッドより後で実行
+        $this->defineErrorType();
+        $this->defineConstants();
+        $this->complementConstants();
+        $this->phpconfigInit();
+        $this->createCacheDir();
         $this->stripslashesDeepGpc();
-        $this->resetSuperglobalsRequest();  // stripslashesDeepGpc メソッドより後で実行
+        $this->resetSuperglobalsRequest();
     }
 
     /**
@@ -93,7 +94,14 @@ class SC_Initial {
     }
 
     /**
-     * @deprecated
+     * エラーレベル設定を行う.
+     *
+     * ・推奨値
+     *   開発時 - E_ALL
+     *   運用時 - E_ALL & ~E_NOTICE
+     *
+     * @access protected
+     * @return void
      */
     function setErrorReporting() {
         error_reporting(E_ALL & ~E_NOTICE);
@@ -112,20 +120,13 @@ class SC_Initial {
      * @return void
      */
     function phpconfigInit() {
-        // E_DEPRECATED 定数 (for PHP < 5.3)
-        // TODO バージョン互換処理に統合したい。
-        $this->defineIfNotDefined('E_DEPRECATED', 8192);
-
-        // エラーレベル設定
-        // 開発時は E_ALL を推奨
-        error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
-
         ini_set('display_errors', '1');
         ini_set('html_errors', '1');
         ini_set('mbstring.http_input', CHAR_CODE);
         ini_set('mbstring.http_output', CHAR_CODE);
         ini_set('auto_detect_line_endings', 1);
         ini_set('default_charset', CHAR_CODE);
+        ini_set('mbstring.internal_encoding', CHAR_CODE);
         ini_set('mbstring.detect_order', 'auto');
         ini_set('mbstring.substitute_character', 'none');
 
@@ -134,6 +135,8 @@ class SC_Initial {
         // TODO .htaccess の mbstring.language を削除できないか検討
 
         mb_internal_encoding(CHAR_CODE); // mb_language() より後で
+        // TODO 上の「ini_set('mbstring.internal_encoding', CHAR_CODE);」を削除できないか検討
+        // TODO .htaccess の mbstring.internal_encoding を削除できないか検討
 
         ini_set('arg_separator.output', '&');
 
