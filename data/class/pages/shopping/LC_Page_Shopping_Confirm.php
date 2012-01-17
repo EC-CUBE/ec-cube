@@ -73,7 +73,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
         $objCartSess = new SC_CartSession_Ex();
         $objSiteSess = new SC_SiteSession_Ex();
         $objCustomer = new SC_Customer_Ex();
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $objQuery = new SC_Query_Ex();
         $objDb = new SC_Helper_DB_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
 

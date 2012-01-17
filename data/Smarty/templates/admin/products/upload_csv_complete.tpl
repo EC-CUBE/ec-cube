@@ -41,7 +41,7 @@
             <tr>
                 <td>
                     <!--{foreach item=result from=$arrRowResult}-->
-                    <span><!--{$result|h}--><br/></span>
+                    <span><!--{$result}--><br/></span>
                     <!--{/foreach}-->
                 </td>
             </tr>

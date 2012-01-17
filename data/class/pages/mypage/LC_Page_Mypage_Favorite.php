@@ -176,7 +176,7 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
 
     // お気に入り商品削除
     function lfDeleteFavoriteProduct($customer_id, $product_id) {
-        $objQuery       =& SC_Query_Ex::getSingletonInstance();
+        $objQuery   = new SC_Query_Ex();
         $count      = $objQuery->count("dtb_customer_favorite_products", "customer_id = ? AND product_id = ?", array($customer_id, $product_id));
 
         if ($count > 0) {
