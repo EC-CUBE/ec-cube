@@ -93,7 +93,7 @@
                 <td><!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}--><!--{$arrForm.year|h}-->年<!--{$arrForm.month|h}-->月<!--{$arrForm.day|h}-->日<!--{else}-->未登録<!--{/if}--></td>
             </tr>
             <tr>
-                <th>希望するパスワード<span class="attention">※</span><br />
+                <th>希望するパスワード<br />
                 </th>
                 <td><!--{$passlen}--></td>
             </tr>

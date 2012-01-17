@@ -101,7 +101,6 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
 
                     $this->tpl_mainpage = 'mypage/change_confirm.tpl';
                     $this->tpl_title    = '会員登録(確認ページ)';
-                    $this->tpl_subtitle = '会員登録内容変更(確認ページ)';
                 }
                 break;
             // 会員登録と完了画面
