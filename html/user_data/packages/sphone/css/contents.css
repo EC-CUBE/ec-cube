@@ -221,18 +221,8 @@ line-height:1.1;
 display:inline;
 float:left;
 }
-.cartinContents ul li.quantity{
-padding-left:0.5em;
-padding-top:1em;
-vertical-align:bottom;
-}
-.cartinContents ul li.quantity_btn{
-padding-left:0.5em;
-padding-top:0.8em;
-vertical-align:bottom;
-}
 .cartinContents ul li.result{
-padding-left:1.5em;
+padding-left:0.5em;
 padding-top:1em;
 vertical-align:bottom;
 }

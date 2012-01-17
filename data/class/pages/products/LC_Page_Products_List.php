@@ -424,7 +424,7 @@ __EOS__;
         $searchCondition['where'] = "alldtl.del_flg = 0 AND alldtl.status = 1 ";
 
         if (strlen($searchCondition["where_category"]) >= 1) {
-            $searchCondition['where'] .= " AND dtb_product_categories.".$searchCondition["where_category"];
+            $searchCondition['where'] .= " AND T2.".$searchCondition["where_category"];
             $searchCondition['arrval'] = array_merge($searchCondition['arrval'], $searchCondition['arrvalCategory']);
         }
 

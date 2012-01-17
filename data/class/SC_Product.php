@@ -73,11 +73,13 @@ class SC_Product {
      */
     function findProductIdsOrder(&$objQuery, $arrVal = array()) {
         $table = <<< __EOS__
-            dtb_products AS alldtl
-            LEFT JOIN dtb_products_class
-                ON alldtl.product_id = dtb_products_class.product_id
-            LEFT JOIN dtb_product_categories
-                ON alldtl.product_id = dtb_product_categories.product_id
+                 dtb_products AS alldtl
+            JOIN dtb_products_class AS T1
+              ON alldtl.product_id = T1.product_id
+            JOIN dtb_product_categories AS T2
+              ON alldtl.product_id = T2.product_id
+            JOIN dtb_category
+              ON T2.category_id = dtb_category.category_id
 __EOS__;
         $objQuery->setGroupBy('alldtl.product_id');
         if(is_array($this->arrOrderData) and $objQuery->order == ""){
@@ -116,11 +118,11 @@ __EOS__;
      */
     function findProductCount(&$objQuery, $arrVal = array()) {
         $table = <<< __EOS__
-            dtb_products AS alldtl
-            LEFT JOIN dtb_products_class
-                ON alldtl.product_id = dtb_products_class.product_id
-            LEFT JOIN dtb_product_categories
-                ON alldtl.product_id = dtb_product_categories.product_id
+                 dtb_products AS alldtl
+            JOIN dtb_product_categories AS T2
+              ON alldtl.product_id = T2.product_id
+            JOIN dtb_category
+              ON T2.category_id = dtb_category.category_id
 __EOS__;
         $objQuery->setGroupBy('alldtl.product_id');
         $sql_base = $objQuery->getSql('alldtl.product_id',$table);

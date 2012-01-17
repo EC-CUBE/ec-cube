@@ -112,6 +112,14 @@ class SC_Initial {
      * @return void
      */
     function phpconfigInit() {
+        // E_DEPRECATED 定数 (for PHP < 5.3)
+        // TODO バージョン互換処理に統合したい。
+        $this->defineIfNotDefined('E_DEPRECATED', 8192);
+
+        // エラーレベル設定
+        // 開発時は E_ALL を推奨
+        error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+
         ini_set('display_errors', '1');
         ini_set('html_errors', '1');
         ini_set('mbstring.http_input', CHAR_CODE);
