@@ -84,6 +84,7 @@ class SC_Helper_Session {
      {
          $objQuery = new SC_Query_Ex();
          $exists = $objQuery->exists("dtb_session", "sess_id = ?", array($id));
+var_dump($id, $exists);exit;
          $sqlval = array();
          if ($exists) {
              // レコード更新
