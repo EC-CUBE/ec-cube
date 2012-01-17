@@ -100,7 +100,6 @@ __EOS__;
         }
         $results = $objQuery->select('alldtl.product_id', $table, "", $arrVal,
                                      MDB2_FETCHMODE_ORDERED);
-        $resultValues = array();
         foreach ($results as $val) {
             $resultValues[] = $val[0];
         }

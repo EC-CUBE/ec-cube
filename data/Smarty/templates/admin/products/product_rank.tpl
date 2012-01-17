@@ -85,7 +85,9 @@
 
             <p class="remark"><span class="attention"><!--{$tpl_linemax}-->件</span>が該当しました。</p>
             <div class="pager">
-              <!--{$tpl_strnavi}-->
+              <ul>
+                <!--{$tpl_strnavi}-->
+              </ul>
             </div>
 
             <!--{if $smarty.const.ADMIN_MODE == '1'}-->

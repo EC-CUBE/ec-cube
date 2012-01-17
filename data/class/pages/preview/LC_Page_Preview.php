@@ -51,8 +51,6 @@ class LC_Page_Preview extends LC_Page_Ex {
      * @return void
      */
     function process() {
-        parent::process();
-
         $objView = new SC_SiteView_Ex();
         $objSess = new SC_Session_Ex();
 

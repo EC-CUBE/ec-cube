@@ -52,7 +52,6 @@ class LC_Page_Entry_Complete extends LC_Page_Ex {
      * @return void
      */
     function process() {
-        parent::process();
         $this->action();
         $this->sendResponse();
     }
