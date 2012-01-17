@@ -36,8 +36,8 @@
         <col width="20%" />
         <col width="20%" />
         <col width="10%" />
-        <col width="7.5%" />
-        <col width="7.5%" />
+        <col width="5%" />
+        <col width="5%" />
         <col width="20%" />
         <div class="btn">
             <a class="btn-action" href="javascript:;" onclick="win02('./input.php','input','620','450'); return false;"><span class="btn-next">メンバーを新規入力</span></a>

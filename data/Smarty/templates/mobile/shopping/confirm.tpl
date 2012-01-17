@@ -111,11 +111,8 @@
 <!--{$arrForm.message|h|nl2br}--><br>
 <br>
 <!--{/if}-->
-<!--{if $use_module}-->
-<center><input type="submit" value="次へ"></center>
-<!--{else}-->
+
 <center><input type="submit" value="注文"></center>
-<!--{/if}-->
 </form>
 <form action="<!--{$smarty.const.MOBILE_SHOPPING_PAYMENT_URLPATH}-->" method="post">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />

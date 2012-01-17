@@ -53,7 +53,7 @@
     </div>
 
     <table class="list">
-        <col />
+        <col width="55%" />
         <col width="10%" />
         <col width="10%" />
         <col width="15%" />

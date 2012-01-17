@@ -94,9 +94,9 @@
 
             <table class="list" id="categoryTable">
                 <col width="20%" />
-                <col width="47.5%" />
+                <col width="47%" />
                 <col width="10%" />
-                <col width="7.5%" />
+                <col width="7%" />
                 <col width="15%" />
                 <tr class="nodrop nodrag">
                     <th>商品コード</th>

@@ -73,9 +73,9 @@ function func_submit( id ){
 
     <table class="list">
         <col width="15%" />
-        <col width="12.5%" />
+        <col width="13%" />
         <col width="60%" />
-        <col width="12.5%" />
+        <col width="13%" />
         <tr>
             <th>商品画像</th>
             <th>商品コード</th>
