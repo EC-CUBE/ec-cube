@@ -89,7 +89,7 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc {
         $objProduct = new SC_Product_Ex();
 
         // おすすめ商品取得
-        $col = 'best_id, best_id, category_id, rank, product_id, title, comment, create_date, update_date';
+        $col = 'best_id, category_id, rank, product_id, title, comment, create_date, update_date';
         $table = 'dtb_best_products';
         $where = 'del_flg = 0';
         $objQuery->setOrder('rank');
