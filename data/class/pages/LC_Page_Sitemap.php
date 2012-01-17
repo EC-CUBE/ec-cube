@@ -211,7 +211,7 @@ class LC_Page_Sitemap extends LC_Page_Ex {
      */
     function getAllProducts() {
 
-        // XXX: 商品登録の無いカテゴリは除外する方が良い気もする
+        // XXX: 商品登録の無いカテゴリーは除外する方が良い気もする
         $objQuery = SC_Query_Ex::getSingletonInstance();
         $sql = "SELECT category_id FROM dtb_category WHERE del_flg = 0";
         $result = $objQuery->getAll($sql);

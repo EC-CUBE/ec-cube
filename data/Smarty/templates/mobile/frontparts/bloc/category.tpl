@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<!--▼商品カテゴリここから-->
+<!--▼商品カテゴリーここから-->
 <!--{1|numeric_emoji}-->商品カテゴリ<br>
 <!--{section name=cnt loop=$arrCat}-->
 <!--{assign var=disp_name value="`$arrCat[cnt].category_name`"}-->
@@ -32,4 +32,4 @@
 <!--{/if}-->
 　<font color="<!--{cycle values="#000000,#880000,#8888ff,#88ff88,#ff0000"}-->">■</font><a href="<!--{$path}-->?category_id=<!--{$arrCat[cnt].category_id}-->"><!--{$disp_name|sfCutString:10:false|h}--></a><br>
 <!--{/section}-->
-<!--▲商品カテゴリここまで-->
+<!--▲商品カテゴリーここまで-->

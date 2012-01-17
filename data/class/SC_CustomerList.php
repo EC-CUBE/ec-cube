@@ -301,13 +301,13 @@ class SC_CustomerList extends SC_SelectSql_Ex {
             $this->arrVal[] = $search_buyproduct_name;
         }
 
-        // カテゴリを選択している場合のみ絞込検索を行う
+        // カテゴリーを選択している場合のみ絞込検索を行う
         if (!isset($this->arrSql['search_category_id'])) $this->arrSql['search_category_id'] = "";
         if ( strlen($this->arrSql['search_category_id']) > 0){
-            // カテゴリで絞込検索を行うSQL文生成
+            // カテゴリーで絞込検索を行うSQL文生成
             list($tmp_where, $tmp_arrval) = $objDb->sfGetCatWhere($this->arrSql['search_category_id']);
 
-            // カテゴリで絞込みが可能の場合
+            // カテゴリーで絞込みが可能の場合
             if($tmp_where != "") {
                 $this->setWhere( " customer_id IN (SELECT distinct customer_id FROM dtb_order WHERE order_id IN (SELECT distinct order_id FROM dtb_order_detail WHERE product_id IN (SELECT product_id FROM dtb_product_categories WHERE ".$tmp_where." ))) ");
                 $this->arrVal = array_merge((array)$this->arrVal, (array)$tmp_arrval);

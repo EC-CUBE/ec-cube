@@ -28,7 +28,7 @@
 <div class="bloc_outer">
     <div id="category_area">
         <div class="bloc_body">
-            <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_bloc_category.gif" alt="商品カテゴリ" /></h2>
+            <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_bloc_category.gif" alt="商品カテゴリー" /></h2>
             <!--{strip}-->
                 <ul id="categorytree">
                     <!--{assign var=preLev value=1}-->

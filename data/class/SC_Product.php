@@ -179,7 +179,7 @@ __EOS__;
      *
      * @param SC_Query $objQuery SC_Query インスタンス
      * @param array|int $arrProductId 商品ID
-     * @return array 商品一覧の配列 (キー: 商品ID)
+     * @return array 商品一覧の配列
      */
     function getListByProductIds(&$objQuery, $arrProductId = array()) {
         if (empty($arrProductId)) {
@@ -190,27 +190,8 @@ __EOS__;
         $where .= ' AND alldtl.del_flg = 0';
 
         $objQuery->setWhere($where, $arrProductId);
-        $arrProducts = $this->lists($objQuery);
-
-        // 配列のキーを商品IDに
-        $arrTmp = array();
-        foreach($arrProducts as $arrProduct) {
-            $arrTmp[$arrProduct['product_id']] = $arrProduct;
-        }
-        $arrProducts =& $arrTmp;
-        unset($arrTmp);
-
-        // SC_Query::setOrder() の指定がない場合、$arrProductId で指定された商品IDの順に配列要素を並び替え
-        if (strlen($objQuery->order) === 0) {
-            $arrTmp = array();
-            foreach ($arrProductId as $product_id) {
-                $arrTmp[$product_id] = $arrProducts[$product_id];
-            }
-            $arrProducts =& $arrTmp;
-            unset($arrTmp);
-        }
-
-        return $arrProducts;
+        $arrRet = $this->lists($objQuery);
+        return $arrRet;
     }
 
     /**
@@ -682,13 +663,13 @@ __EOS__;
     /**
      * 商品詳細の SQL を取得する.
      *
-     * @param string $where_products_class 商品規格情報の WHERE 句
+     * @param string $where 商品詳細の WHERE 句
      * @return string 商品詳細の SQL
      */
-    function alldtlSQL($where_products_class = '') {
-        $where_clause = '';
-        if (!SC_Utils_Ex::isBlank($where_products_class)) {
-            $where_clause = 'WHERE ' . $where_products_class;
+    function alldtlSQL($where = "") {
+        $where_clause = "";
+        if (!SC_Utils_Ex::isBlank($where)) {
+            $where_clause = " WHERE " . $where;
         }
         /*
          * point_rate, deliv_fee は商品規格(dtb_products_class)ごとに保持しているが,

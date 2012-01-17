@@ -106,7 +106,10 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc {
                 $arrProductId[] = $val['product_id'];
             }
             // 取得
-            $arrProductList = $objProduct->getListByProductIds($objQuery, $arrProductId);
+            $arrTmp = $objProduct->getListByProductIds($objQuery, $arrProductId);
+            foreach ($arrTmp as $key => $arrRow) {
+                $arrProductList[$arrRow['product_id']] = $arrRow;
+            }
             // おすすめ商品情報にマージ
             foreach (array_keys($arrBestProducts) as $key) {
                 $arrRow =& $arrBestProducts[$key];

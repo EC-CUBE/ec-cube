@@ -296,7 +296,7 @@ class SC_Helper_DB {
     }
 
     /**
-     * カテゴリツリーの取得を複数カテゴリで行う.
+     * カテゴリツリーの取得を複数カテゴリーで行う.
      *
      * @param integer $product_id 商品ID
      * @param bool $count_check 登録商品数のチェックを行う場合 true
@@ -345,10 +345,10 @@ class SC_Helper_DB {
     }
 
     /**
-     * 親カテゴリを連結した文字列を取得する.
+     * 親カテゴリーを連結した文字列を取得する.
      *
      * @param integer $category_id カテゴリID
-     * @return string 親カテゴリを連結した文字列
+     * @return string 親カテゴリーを連結した文字列
      */
     function sfGetCatCombName($category_id){
         // 商品が属するカテゴリIDを縦に取得
@@ -356,7 +356,7 @@ class SC_Helper_DB {
         $arrCatID = $this->sfGetParents("dtb_category", "parent_category_id", "category_id", $category_id);
         $ConbName = "";
 
-        // カテゴリ名称を取得する
+        // カテゴリー名称を取得する
         foreach($arrCatID as $key => $val){
             $sql = "SELECT category_name FROM dtb_category WHERE category_id = ?";
             $arrVal = array($val);
@@ -370,15 +370,15 @@ class SC_Helper_DB {
     }
 
     /**
-     * 指定したカテゴリIDのカテゴリを取得する.
+     * 指定したカテゴリーIDのカテゴリーを取得する.
      *
      * @param integer $category_id カテゴリID
-     * @return array 指定したカテゴリIDのカテゴリ
+     * @return array 指定したカテゴリーIDのカテゴリー
      */
     function sfGetCat($category_id){
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        // カテゴリを取得する
+        // カテゴリーを取得する
         $arrVal = array($category_id);
         $res = $objQuery->select('category_id AS id, category_name AS name', 'dtb_category', 'category_id = ?', $arrVal);
 
@@ -386,10 +386,10 @@ class SC_Helper_DB {
     }
 
     /**
-     * 指定したカテゴリIDの大カテゴリを取得する.
+     * 指定したカテゴリーIDの大カテゴリーを取得する.
      *
      * @param integer $category_id カテゴリID
-     * @return array 指定したカテゴリIDの大カテゴリ
+     * @return array 指定したカテゴリーIDの大カテゴリー
      */
     function sfGetFirstCat($category_id){
         // 商品が属するカテゴリIDを縦に取得
@@ -398,7 +398,7 @@ class SC_Helper_DB {
         $arrCatID = $this->sfGetParents("dtb_category", "parent_category_id", "category_id", $category_id);
         $arrRet['id'] = $arrCatID[0];
 
-        // カテゴリ名称を取得する
+        // カテゴリー名称を取得する
         $sql = "SELECT category_name FROM dtb_category WHERE category_id = ?";
         $arrVal = array($arrRet['id']);
         $arrRet['name'] = $objQuery->getOne($sql,$arrVal);
@@ -447,7 +447,7 @@ class SC_Helper_DB {
     }
 
     /**
-     * カテゴリツリーの取得を行う.
+     * カテゴリーツリーの取得を行う.
      *
      * 親カテゴリの Value=0 を対象とする
      *
@@ -655,11 +655,11 @@ class SC_Helper_DB {
         //共通のfrom/where文の構築
         $sql_where = 'alldtl.del_flg = 0 AND alldtl.status = 1';
         // 在庫無し商品の非表示
-        if (NOSTOCK_HIDDEN) {
-            $sql_where_dtl = '(stock >= 1 OR stock_unlimited = 1)';
+        if (NOSTOCK_HIDDEN === true) {
+            $sql_where_dtl = 'stock_max >= 1 OR stock_unlimited_max = 1';
             $from = $objProduct->alldtlSQL($sql_where_dtl);
         }else{
-            $from = 'dtb_products as alldtl';
+            $from = " dtb_products as alldtl ";
         }
 
         //dtb_category_countの構成
@@ -772,12 +772,7 @@ __EOS__;
             }
             $where = "($sql_where) AND ($sql_where_product_ids)";
 
-            $where_products_class = '';
-            if (NOSTOCK_HIDDEN) {
-                $where_products_class .= '(stock >= 1 OR stock_unlimited = 1)';
-            }
-
-            $from = $objProduct->alldtlSQL($where_products_class);
+            $from = $objProduct->alldtlSQL($sql_where_product_ids);
             $sql = "SELECT count(*) FROM $from WHERE $where ";
             $arrUpdateData[ $category_id ] = $objQuery->getOne($sql, $arrval);
         }

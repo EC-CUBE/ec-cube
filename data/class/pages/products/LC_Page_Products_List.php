@@ -310,6 +310,16 @@ __EOS__;
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrProducts = $objProduct->getListByProductIds($objQuery, $arrProductId);
 
+        //取得している並び順で並び替え
+        $arrProducts2 = array();
+        foreach($arrProducts as $item) {
+            $arrProducts2[ $item['product_id'] ] = $item;
+        }
+        $arrProducts = array();
+        foreach($arrProductId as $product_id) {
+            $arrProducts[] = $arrProducts2[$product_id];
+        }
+
         // 規格を設定
         $objProduct->setProductsClassByProductIds($arrProductId);
         $arrProducts['productStatus'] = $objProduct->getProductStatus($arrProductId);
@@ -372,7 +382,7 @@ __EOS__;
     function lfGetSearchConditionDisp($arrSearchData){
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
         $arrSearch  = array('category' => '指定なし', 'maker' => '指定なし', 'name' => '指定なし');
-        // カテゴリ検索条件
+        // カテゴリー検索条件
         if ($arrSearchData['category_id'] > 0) {
             $arrSearch['category']  = $objQuery->get('category_name', 'dtb_category', 'category_id = ?', array($arrSearchData['category_id']));
         }
@@ -397,7 +407,7 @@ __EOS__;
     function lfGetProductAllNum($searchCondition){
         // 検索結果対象となる商品の数を取得
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->setWhere($searchCondition['where_for_count']);
+        $objQuery->setWhere($searchCondition['where']);
         $objProduct = new SC_Product_Ex();
         return $objProduct->findProductCount($objQuery, $searchCondition['arrval']);
     }
@@ -422,6 +432,11 @@ __EOS__;
         // ▼対象商品IDの抽出
         // 商品検索条件の作成（未削除、表示）
         $searchCondition['where'] = "alldtl.del_flg = 0 AND alldtl.status = 1 ";
+
+        // 在庫無し商品の非表示
+        if (NOSTOCK_HIDDEN === true) {
+            $searchCondition['where'] .= ' AND (stock >= 1 OR stock_unlimited = 1)';
+        }
 
         if (strlen($searchCondition["where_category"]) >= 1) {
             $searchCondition['where'] .= " AND T2.".$searchCondition["where_category"];
@@ -449,15 +464,6 @@ __EOS__;
             $searchCondition['where']   .= " AND alldtl.maker_id = ? ";
             $searchCondition['arrval'][] = $arrSearchData['maker_id'];
         }
-
-        $searchCondition['where_for_count'] = $searchCondition['where'];
-
-        // 在庫無し商品の非表示
-        if (NOSTOCK_HIDDEN) {
-            $searchCondition['where'] .= ' AND (stock >= 1 OR stock_unlimited = 1)';
-            $searchCondition['where_for_count'] .= ' AND EXISTS(SELECT * FROM dtb_products_class WHERE product_id = alldtl.product_id AND del_flg = 0 AND (stock >= 1 OR stock_unlimited = 1))';
-        }
-
         return $searchCondition;
     }
 

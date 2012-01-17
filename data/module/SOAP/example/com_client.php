@@ -1,29 +1,25 @@
 <?php
-/**
- * This file contains an example SOAP client based on the Windows
- * MSSOAP.SoapClient30 COM object that calls methods on the example SOAP
- * server in this same directory.
- *
- * PHP versions 4 and 5
- *
- * LICENSE: This source file is subject to version 2.02 of the PHP license,
- * that is bundled with this package in the file LICENSE, and is available at
- * through the world-wide-web at http://www.php.net/license/2_02.txt.  If you
- * did not receive a copy of the PHP license and are unable to obtain it
- * through the world-wide-web, please send a note to license@php.net so we can
- * mail you a copy immediately.
- *
- * @category   Web Services
- * @package    SOAP
- * @author     Shane Caraveo <Shane@Caraveo.com>   Port to PEAR and more
- * @author     Jan Schneider <jan@horde.org>       Maintenance
- * @copyright  2003-2007 The PHP Group
- * @license    http://www.php.net/license/2_02.txt  PHP License 2.02
- * @link       http://pear.php.net/package/SOAP
- */
-
-/** SOAPStruct */
-require_once './example_types.php';
+//
+// +----------------------------------------------------------------------+
+// | PHP Version 4                                                        |
+// +----------------------------------------------------------------------+
+// | Copyright (c) 1997-2003 The PHP Group                                |
+// +----------------------------------------------------------------------+
+// | This source file is subject to version 2.02 of the PHP license,      |
+// | that is bundled with this package in the file LICENSE, and is        |
+// | available at through the world-wide-web at                           |
+// | http://www.php.net/license/2_02.txt.                                 |
+// | If you did not receive a copy of the PHP license and are unable to   |
+// | obtain it through the world-wide-web, please send a note to          |
+// | license@php.net so we can mail you a copy immediately.               |
+// +----------------------------------------------------------------------+
+// | Authors: Shane Caraveo <Shane@Caraveo.com>                           |
+// +----------------------------------------------------------------------+
+//
+// $Id: com_client.php,v 1.3 2005/03/10 23:16:40 yunosh Exp $
+//
+// SOAPStruct is defined in the following file
+require_once 'example_types.php';
 
 /* just a simple example of using MS SOAP on win32 as a client
    to the php server.  */
