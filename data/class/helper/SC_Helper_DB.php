@@ -656,8 +656,8 @@ class SC_Helper_DB {
         $sql_where = 'alldtl.del_flg = 0 AND alldtl.status = 1';
         // 在庫無し商品の非表示
         if (NOSTOCK_HIDDEN) {
-            $where_products_class = '(stock >= 1 OR stock_unlimited = 1)';
-            $from = $objProduct->alldtlSQL($where_products_class);
+            $sql_where_dtl = '(stock >= 1 OR stock_unlimited = 1)';
+            $from = $objProduct->alldtlSQL($sql_where_dtl);
         }else{
             $from = 'dtb_products as alldtl';
         }

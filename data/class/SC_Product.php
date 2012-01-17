@@ -164,7 +164,8 @@ __EOS__;
             ,del_flg
             ,update_date
 __EOS__;
-        $res = $objQuery->select($col, $this->alldtlSQL());
+        $where = 'dtb_products_class.del_flg = 0';
+        $res = $objQuery->select($col, $this->alldtlSQL($where));
         return $res;
     }
 
@@ -220,7 +221,7 @@ __EOS__;
      */
     function getDetail($productId) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $result = $objQuery->select("*", $this->alldtlSQL('product_id = ?'),
+        $result = $objQuery->select("*", $this->alldtlSQL("product_id = ? AND del_flg = 0"),
                                     "product_id = ?",
                                     array($productId, $productId));
         return $result[0];
@@ -687,7 +688,7 @@ __EOS__;
     function alldtlSQL($where_products_class = '') {
         $where_clause = '';
         if (!SC_Utils_Ex::isBlank($where_products_class)) {
-            $where_products_class = 'AND (' . $where_products_class . ')';
+            $where_clause = 'WHERE ' . $where_products_class;
         }
         /*
          * point_rate, deliv_fee は商品規格(dtb_products_class)ごとに保持しているが,
@@ -772,7 +773,7 @@ __EOS__;
                               MAX(deliv_fee) AS deliv_fee,
                               COUNT(*) as class_count
                         FROM dtb_products_class
-                        WHERE del_flg = 0 $where_products_class
+                        $where_clause
                         GROUP BY product_id
                     ) AS T4
                         ON dtb_products.product_id = T4.product_id
