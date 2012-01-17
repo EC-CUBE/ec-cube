@@ -81,7 +81,12 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         switch($this->getMode()) {
         // カテゴリ登録/編集実行
         case 'edit':
-            $this->doEdit($objFormParam);
+            $category_id = $objFormParam->getValue('category_id');
+            if ($category_id == '') {
+                $this->doRegister($objFormParam);
+            } else {
+                $this->doEdit($objFormParam);
+            }
             break;
         // 入力ボックスへ編集対象のカテゴリ名をセット
         case 'pre_edit':
@@ -99,7 +104,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         case 'down':
             $this->doDown($objFormParam);
             break;
-        // FIXME r19909 によってテンプレートが削除されている
+        // XXX 使われていないコード？
         case 'moveByDnD':
             // DnDしたカテゴリと移動先のセットを分解する
             $keys = explode("-", $_POST['keySet']);
@@ -235,108 +240,110 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
 
         // 編集対象のカテゴリ名をDBより取得する
         $where = "category_id = ?";
-        $arrRes = $objQuery->getRow("*", "dtb_category", $where, array($category_id));
+        $category_name = $objQuery->get("category_name", "dtb_category", $where, array($category_id));
 
-        $objFormParam->setParam($arrRes);
-
-        $this->arrForm = $objFormParam->getHashArray();
+        // 入力ボックスへカテゴリ名を保持する.
+        $this->arrForm['category_name'] = $category_name;
+        // カテゴリIDを保持する.
+        $this->arrForm['category_id']   = $category_id;
     }
 
     /**
-     * カテゴリの登録・編集を実行する.
+     * カテゴリの編集を実行する.
      *
-     * 下記の場合は, 登録・編集を実行せず、エラーメッセージを表示する
+     * 下記の場合は, 編集を実行せず、エラーメッセージを表示する
      *
      * - カテゴリ名がすでに使用されている場合
-     * - 階層登録数の上限を超える場合 (登録時のみ評価)
-     * - カテゴリ名がすでに使用されている場合 (登録時のみ評価)
      *
      * @param SC_FormParam $objFormParam
      * @return void
      */
     function doEdit(&$objFormParam) {
-        $category_id = $objFormParam->getValue('category_id');
-
-        // 追加か
-        $add = strlen($category_id) === 0;
-
-        // エラーチェック
-        $this->arrErr = $this->checkError($objFormParam, $add);
-
-        // エラーがない場合、追加・更新処理
-        if (empty($this->arrErr)) {
-            $arrCategory = $objFormParam->getDbArray();
-
-            // 追加
-            if ($add) {
-                $this->registerCategory($arrCategory);
-            }
-            // 更新
-            else {
-                unset($arrCategory['category_id']);
-                $this->updateCategory($category_id, $arrCategory);
-            }
-        }
-        // エラーがある場合、入力値の再表示
-        else {
-            $this->arrForm = $objFormParam->getHashArray();
-        }
-    }
-
-    /**
-     * エラーチェック
-     *
-     * @param SC_FormParam $objFormParam
-     * @param boolean $add 追加か
-     * @return void
-     */
-    function checkError(&$objFormParam, $add) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-
         // 入力項目チェック
         $arrErr = $objFormParam->checkError();
-        if (!empty($arrErr)) {
-            return $arrErr;
-        }
-
-        $category_id = $objFormParam->getValue('category_id');
-        $parent_category_id = $objFormParam->getValue('parent_category_id');
-        $category_name = $objFormParam->getValue('category_name');
-
-        // 追加の場合に固有のチェック
-        if ($add) {
-            // 登録数上限チェック
-            $where = "del_flg = 0";
-            $count = $objQuery->count("dtb_category", $where);
-            if ($count >= CATEGORY_MAX) {
-                $arrErr['category_name'] = "※ カテゴリの登録最大数を超えました。<br/>";
-                return $arrErr;
-            }
-
-            // 階層上限チェック
-            if ($this->isOverLevel($parent_category_id)) {
-                $arrErr['category_name'] = "※ " . LEVEL_MAX . "階層以上の登録はできません。<br/>";
-                return $arrErr;
-            }
+        if (count($arrErr) > 0) {
+            $this->arrErr = $arrErr;
+            $this->arrForm['category_id']   = $objFormParam->getValue('category_id');
+            $this->arrForm['category_name'] = $objFormParam->getValue('category_name');
+            return;
         }
 
         // 重複チェック
-        $arrWhereVal = array();
-        $where = 'del_flg = 0 AND parent_category_id = ? AND category_name = ?';
-        $arrWhereVal[] = $parent_category_id;
-        $arrWhereVal[] = $category_name;
-        // 更新の場合、抽出対象から自己を除外する
-        if (!$add) {
-            $where .= ' AND category_id <> ?';
-            $arrWhereVal[] = $category_id;
-        }
-        $count = $objQuery->count('dtb_category', $where, $arrWhereVal);
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $where = "parent_category_id = ? AND category_id <> ? AND category_name = ?";
+        $count = $objQuery->count("dtb_category",
+                                  $where,
+                                  array($objFormParam->getValue('parent_category_id'),
+                                        $objFormParam->getValue('category_id'),
+                                        $objFormParam->getValue('category_name')));
         if ($count > 0) {
-            $arrErr['category_name'] = "※ 既に同じ内容の登録が存在します。<br/>";
-            return $arrErr;
+            $this->arrErr['category_name']  = "※ 既に同じ内容の登録が存在します。<br/>";
+            $this->arrForm['category_id']   = $objFormParam->getValue('category_id');
+            $this->arrForm['category_name'] = $objFormParam->getValue('category_name');
+            return;
         }
 
-        return $arrErr;
+        // カテゴリ更新
+        $arrCategory = array();
+        $arrCategory['category_name'] = $objFormParam->getValue('category_name');
+        $arrCategory['update_date']   = 'CURRENT_TIMESTAMP';
+        $this->updateCategory($objFormParam->getValue('category_id'), $arrCategory);
+    }
+
+    /**
+     * カテゴリの登録を実行する.
+     *
+     * 下記の場合は, 登録を実行せず、エラーメッセージを表示する
+     *
+     * - カテゴリ登録数の上限を超える場合
+     * - 階層登録数の上限を超える場合
+     * - カテゴリ名がすでに使用されている場合
+     *
+     * @param SC_FormParam $objFormParam
+     * @return void
+     */
+    function doRegister(&$objFormParam) {
+        // 入力項目チェック
+        $arrErr = $objFormParam->checkError();
+        if (count($arrErr) > 0) {
+            $this->arrErr = $arrErr;
+            $this->arrForm['category_name'] = $objFormParam->getValue('category_name');
+            return;
+        }
+
+        // 登録数上限チェック
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $where = "del_flg = 0";
+        $count = $objQuery->count("dtb_category", $where);
+        if ($count >= CATEGORY_MAX) {
+            $this->arrErr['category_name']  = "※ カテゴリの登録最大数を超えました。<br/>";
+            $this->arrForm['category_name'] = $objFormParam->getValue('category_name');
+            return;
+        }
+
+        // 階層上限チェック
+        if ($this->isOverLevel($objFormParam->getValue('parent_category_id'))) {
+            $this->arrErr['category_name']  = "※ " . LEVEL_MAX . "階層以上の登録はできません。<br/>";
+            $this->arrForm['category_name'] = $objFormParam->getValue('category_name');
+            return;
+        }
+
+        // 重複チェック
+        $where = "parent_category_id = ? AND category_name = ?";
+        $count = $objQuery->count("dtb_category",
+                                  $where,
+                                  array($objFormParam->getValue('parent_category_id'),
+                                        $objFormParam->getValue('category_name')));
+        if ($count > 0) {
+            $this->arrErr['category_name']  = "※ 既に同じ内容の登録が存在します。<br/>";
+            $this->arrForm['category_name'] = $objFormParam->getValue('category_name');
+            return;
+        }
+
+        // カテゴリ登録
+        $this->registerCategory($objFormParam->getValue('parent_category_id'),
+                                $objFormParam->getValue('category_name'),
+                                $_SESSION['member_id']);
     }
 
     /**
@@ -429,14 +436,12 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
     /**
      * カテゴリを更新する
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param integer $category_id 更新対象のカテゴリID
+     * @param array 更新する カラム名 => 値 の連想配列
      * @return void
      */
     function updateCategory($category_id, $arrCategory) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-
-        $arrCategory['update_date']   = 'CURRENT_TIMESTAMP';
-
         $objQuery->begin();
         $where = "category_id = ?";
         $objQuery->update("dtb_category", $arrCategory, $where, array($category_id));
@@ -446,14 +451,13 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
     /**
      * カテゴリを登録する
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param integer 親カテゴリID
+     * @param string カテゴリ名
+     * @param integer 作成者のID
      * @return void
      */
-    function registerCategory($arrCategory) {
+    function registerCategory($parent_category_id, $category_name, $creator_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-
-        $parent_category_id = $arrCategory['parent_category_id'];
-
         $objQuery->begin();
 
         $rank = null;
@@ -474,13 +478,15 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         // 自分のレベルを取得する(親のレベル + 1)
         $level = $objQuery->get('level', "dtb_category", $where, array($parent_category_id)) + 1;
 
+        $arrCategory = array();
+        $arrCategory['category_name'] = $category_name;
+        $arrCategory['parent_category_id'] = $parent_category_id;
         $arrCategory['create_date'] = 'CURRENT_TIMESTAMP';
         $arrCategory['update_date'] = 'CURRENT_TIMESTAMP';
-        $arrCategory['creator_id']  = $_SESSION['member_id'];
+        $arrCategory['creator_id']  = $creator_id;
         $arrCategory['rank']        = $rank;
         $arrCategory['level']       = $level;
         $arrCategory['category_id'] = $objQuery->nextVal('dtb_category_category_id');
-
         $objQuery->insert("dtb_category", $arrCategory);
 
         $objQuery->commit();    // トランザクションの終了

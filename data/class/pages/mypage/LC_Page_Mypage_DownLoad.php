@@ -43,9 +43,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
     /** 拡張Content-Type配列
      * Application/octet-streamで対応出来ないファイルタイプのみ拡張子をキーに記述する
      * 拡張子が本配列に存在しない場合は $defaultContentTypeを利用する */
-    var $arrContentType = array('apk' => 'application/vnd.android.package-archive',
-                                'pdf' => 'application/pdf'
-        );
+    var $arrContentType = array('apk' => 'application/vnd.android.package-archive');
 
     // }}}
     // {{{ functions
@@ -133,20 +131,43 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
         // flushなどを利用しているので、現行のSC_Displayは利用できません。
         // SC_DisplayやSC_Responseに大容量ファイルレスポンスが実装されたら移行可能だと思います。
 
-        // ダウンロード実行 モバイル端末はダウンロード方法が異なる
-        if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE){
-            // キャリアがAUのモバイル端末はさらにダウンロード方法が異なる
-            if (SC_MobileUserAgent::getCarrier() == 'ezweb'){
-                // AUモバイル
-                $this->lfMobileAuDownload($realpath,$sdown_filename);
-            }else{
-                // AU以外のモバイル
-                $this->lfMobileDownload($realpath,$sdown_filename);
-            }
-        }else{
-            // PC、スマフォ
-            $this->lfDownload($realpath,$sdown_filename);
+        // 拡張子を取得
+        $extension = pathinfo($realpath, PATHINFO_EXTENSION);
+        $contentType = $this->defaultContentType;
+        // 拡張ContentType判定（拡張子をキーに拡張ContentType対象か判断）
+        if(isset($this->arrContentType[$extension])){
+            // 拡張ContentType対象の場合は、ContentTypeを変更
+            $contentType = $this->arrContentType[$extension];
         }
+        header("Content-Type: ".$contentType);
+        //ファイル名指定
+        header('Content-Disposition: attachment; filename="' . $sdown_filename . '"');
+        header("Content-Transfer-Encoding: binary");
+        //キャッシュ無効化
+        header("Expires: Mon, 26 Nov 1962 00:00:00 GMT");
+        header("Last-Modified: " . gmdate("D,d M Y H:i:s") . " GMT");
+        //IE6+SSL環境下は、キャッシュ無しでダウンロードできない
+        header("Cache-Control: private");
+        header("Pragma: private");
+        //ファイルサイズ指定
+        $zv_filesize = filesize($realpath);
+        header("Content-Length: " . $zv_filesize);
+        set_time_limit(0);
+        ob_end_flush();
+        flush();
+        //ファイル読み込み
+        $handle = fopen($realpath, 'rb');
+        if ($handle === false) {
+            SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
+            exit;
+        }
+
+        while (!feof($handle)) {
+            echo(fread($handle, DOWNLOAD_BLOCK*1024));
+            ob_flush();
+            flush();
+        }
+        fclose($handle);
     }
 
     /**
@@ -199,158 +220,6 @@ __EOS__;
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
         return $objErr->arrErr;
-    }
-
-    /**
-     * モバイル端末用ヘッダー出力処理
-     *
-     * @param string $realpath ダウンロードファイルパス
-     * @param string $sdown_filename ダウンロード時の指定ファイル名
-     */
-    function lfMobileHeader($realpath,$sdown_filename){
-        $objHelperMobile = new SC_Helper_Mobile_Ex();
-        //ファイルの拡張子からコンテンツタイプを取得する
-        $mime_type = $objHelperMobile->getMIMEType($realpath);
-        header('Content-Type: ' . $mime_type);
-        header("Content-Disposition: attachment; filename=" . $sdown_filename);
-        header('Accept-Ranges: bytes');
-        header("Last-Modified: " . gmdate("D,d M Y H:i:s") . " GMT");
-        header("Cache-Control: public");
-    }
-
-    /**
-     * モバイル端末（AU）ダウンロード処理
-     *
-     * @param string $realpath ダウンロードファイルパス
-     * @param string $sdown_filename ダウンロード時の指定ファイル名
-     */
-    function lfMobileAuDownload($realpath,$sdown_filename){
-        //モバイル用ヘッダー出力
-        $this->lfMobileHeader($realpath,$sdown_filename);
-        //ファイルサイズを取得する
-        $file_size = filesize($realpath);
-        //読み込み
-        $fp = fopen( $realpath, "rb" );
-        if (isset($_SERVER['HTTP_RANGE'])) {
-            // 二回目以降のリクエスト
-            list($range_offset, $range_limit) = sscanf($_SERVER['HTTP_RANGE'], "bytes=%d-%d");
-            $content_range = sprintf("bytes %d-%d/%d", $range_offset, $range_limit, $file_size);
-            $content_length = $range_limit - $range_offset + 1;
-            fseek( $fp, $range_offset, SEEK_SET );
-            header("HTTP/1.1 206 Partial Content" );
-            header("Content-Lenth: " . $content_length);
-            header("Content-Range: " . $content_range);
-        } else {
-            // 一回目のリクエスト
-            $content_length = $file_size;
-            header("Content-Length: " . $content_length);
-        }
-        echo fread( $fp, $content_length ) ;
-        ob_flush();
-        flush();
-    }
-
-    /**
-     * モバイル端末（AU以外）ダウンロード処理
-     *
-     * @param string $realpath ダウンロードファイルパス
-     * @param string $sdown_filename ダウンロード時の指定ファイル名
-     */
-    function lfMobileDownload($realpath,$sdown_filename){
-        //モバイル用ヘッダー出力
-        $this->lfMobileHeader($realpath,$sdown_filename);
-        //ファイルサイズを取得する
-        $file_size = filesize($realpath);
-
-        //出力用バッファをクリアする
-        @ob_end_clean();
-
-        //HTTP_RANGEがセットされていた場合
-        if (isset($_SERVER['HTTP_RANGE'])) {
-            // 二回目以降のリクエスト
-            list($a, $range) = explode("=",$_SERVER['HTTP_RANGE'],2);
-            list($range) = explode(",",$range,2);
-            list($range, $range_end) = explode("-", $range);
-            $range=intval($range);
-
-            if (!$range_end) {
-                $range_end=$file_size-1;
-            } else {
-                $range_end=intval($range_end);
-            }
-
-            $new_length = $range_end-$range+1;
-            header("HTTP/1.1 206 Partial Content");
-            header("Content-Length: $new_length");
-            header("Content-Range: bytes $range-$range_end/$file_size");
-        } else {
-            // 一回目のリクエスト
-            $new_length=$file_size;
-            header("Content-Length: ".$file_size);
-        }
-
-        //ファイル読み込み
-        $chunksize = 1*(DOWNLOAD_BLOCK*1024);
-        $bytes_send = 0;
-        if ($realpath = fopen($realpath, 'r')) {
-            // 二回目以降のリクエスト
-            if (isset($_SERVER['HTTP_RANGE'])) fseek($realpath, $range);
-
-            while (!feof($realpath) && (!connection_aborted()) && ($bytes_send<$new_length)) {
-                $buffer = fread($realpath, $chunksize);
-                print($buffer);
-                ob_flush();
-                flush();
-                $bytes_send += strlen($buffer);
-            }
-            fclose($realpath);
-        }
-        die();
-    }
-
-    /**
-     * モバイル端末以外ダウンロード処理
-     *
-     * @param string $realpath ダウンロードファイルパス
-     * @param string $sdown_filename ダウンロード時の指定ファイル名
-     */
-    function lfDownload($realpath,$sdown_filename){
-        // 拡張子を取得
-        $extension = pathinfo($realpath, PATHINFO_EXTENSION);
-        $contentType = $this->defaultContentType;
-        // 拡張ContentType判定（拡張子をキーに拡張ContentType対象か判断）
-        if(isset($this->arrContentType[$extension])){
-            // 拡張ContentType対象の場合は、ContentTypeを変更
-            $contentType = $this->arrContentType[$extension];
-        }
-        header("Content-Type: ".$contentType);
-        //ファイル名指定
-        header('Content-Disposition: attachment; filename="' . $sdown_filename . '"');
-        header("Content-Transfer-Encoding: binary");
-        //キャッシュ無効化
-        header("Expires: Mon, 26 Nov 1962 00:00:00 GMT");
-        header("Last-Modified: " . gmdate("D,d M Y H:i:s") . " GMT");
-        //IE6+SSL環境下は、キャッシュ無しでダウンロードできない
-        header("Cache-Control: private");
-        header("Pragma: private");
-        //ファイルサイズ指定
-        $zv_filesize = filesize($realpath);
-        header("Content-Length: " . $zv_filesize);
-        set_time_limit(0);
-        ob_end_flush();
-        flush();
-        //ファイル読み込み
-        $handle = fopen($realpath, 'rb');
-        if ($handle === false) {
-            SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
-            exit;
-        }
-        while (!feof($handle)) {
-            echo(fread($handle, DOWNLOAD_BLOCK*1024));
-            ob_flush();
-            flush();
-        }
-        fclose($handle);
     }
 
     /**

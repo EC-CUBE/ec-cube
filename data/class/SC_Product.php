@@ -598,12 +598,12 @@ __EOS__;
     }
 
     /**
-     * 商品詳細の結果から, 販売制限数を取得する.
+     * 商品詳細の結果から, 購入制限数を取得する.
      *
-     * getDetailAndProductsClass() の結果から, 販売制限数を取得する.
+     * getDetailAndProductsClass() の結果から, 購入制限数を取得する.
      *
      * @param array $p 商品詳細の検索結果の配列
-     * @return integer 商品詳細の結果から求めた販売制限数.
+     * @return integer 商品詳細の結果から求めた購入制限数.
      * @see getDetailAndProductsClass()
      */
     function getBuyLimit($p) {

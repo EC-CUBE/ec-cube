@@ -147,7 +147,7 @@
             </td>
         </tr>
         <tr>
-            <th>販売制限数</th>
+            <th>購入制限</th>
             <td>
                 <!--{$arrForm.sale_limit|default:'無制限'|h}-->
             </td>

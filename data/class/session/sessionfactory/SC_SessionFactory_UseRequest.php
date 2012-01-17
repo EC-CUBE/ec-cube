@@ -157,13 +157,6 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory {
         $sessionId = @$_POST[session_name()];
         if (!isset($sessionId)) {
             $sessionId = @$_GET[session_name()];
-            // AU動画音声ファイルダウンロード対策
-            // キャリアがAUで、動画、音声ファイルをダウンロードする際に
-            // SESSIONIDの後に余計なパラメータが付与され、セッションが無効になるケースがある
-            if (SC_MobileUserAgent::getCarrier() == "ezweb") {
-                $idArray = split("\?", $sessionId);
-                $sessionId = $idArray[0];
-            }
         }
         if (!isset($sessionId)) {
             $sessionId = $this->getExtSessionId();

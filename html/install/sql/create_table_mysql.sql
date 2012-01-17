@@ -1104,7 +1104,7 @@ CREATE TABLE dtb_mobile_ext_session_id (
     param_value text,
     url text,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB;
+);
 
 CREATE TABLE dtb_module (
     module_id int NOT NULL UNIQUE,
