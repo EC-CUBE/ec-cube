@@ -46,7 +46,7 @@ function func_submit(product_id, class_name1, class_name2) {
         opner_product_class_id = 'edit_product_class_id';
         fm1.getElementById("no").value = escape('<!--{$tpl_no}-->');
     }
-    if (document.getElementById(class1).type == 'select-one' && class1_id == '__unselected') {
+    if (document.getElementById(class1).type == 'select-one' && class1_id == '') {
         err_text = class_name1 + "を選択してください。\n";
     }
     if (document.getElementById(class2).type == 'select-one' && class2_id == '') {
