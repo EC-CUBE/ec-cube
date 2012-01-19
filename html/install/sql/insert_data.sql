@@ -1360,10 +1360,8 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_STATUS_INSTA
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_ENABLE_TRUE', '"1"', 1222, 'プラグイン有効/無効：有効');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_ENABLE_FALSE', '"2"', 1223, 'プラグイン有効/無効：無効');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ZIP_DOWNLOAD_URL', '"http://www.post.japanpost.jp/zipcode/dl/kogaki/zip/ken_all.zip"', 1224, '郵便番号CSVのZIPアーカイブファイルの取得元');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_ENABLE_TRUE', '"1"', 1222, 'プラグイン有効/無効：有効');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_ENABLE_FALSE', '"2"', 1223, 'プラグイン有効/無効：無効');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_ENABLE_TRUE', '"1"', 1222, 'プラグイン有効/無効：有効');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_ENABLE_FALSE', '"2"', 1223, 'プラグイン有効/無効：無効');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('HOOK_POINT_PREPROCESS', 'lc_page_preProcess', 1301, 'フックポイント(プレプロセス)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('HOOK_POINT_PROCESS', 'lc_page_process', 1302, 'フックポイント(プロセス)');
 
 
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_customer', 'email_mobile', 0, '会員数増加時のログイン処理速度を向上させたいときに試してみてください');
