@@ -1430,43 +1430,6 @@ class SC_Utils {
     }
 
     /*
-     * 関数名：sfDeleteDir()
-     * 説明　：指定したディレクトリを削除
-     * 引数1 ：削除ファイル
-     */
-    function sfDeleteDir($dir) {
-        $arrResult = array();
-        if(file_exists($dir)) {
-            // ディレクトリかチェック
-            if (is_dir($dir)) {
-                if ($handle = opendir("$dir")) {
-                    $cnt = 0;
-                    while (false !== ($item = readdir($handle))) {
-                        if ($item != "." && $item != "..") {
-                            if (is_dir("$dir/$item")) {
-                                sfDeleteDir("$dir/$item");
-                            } else {
-                                $arrResult[$cnt]['result'] = @unlink("$dir/$item");
-                                $arrResult[$cnt]['file_name'] = "$dir/$item";
-                            }
-                        }
-                        $cnt++;
-                    }
-                }
-                closedir($handle);
-                $arrResult[$cnt]['result'] = @rmdir($dir);
-                $arrResult[$cnt]['file_name'] = "$dir/$item";
-            } else {
-                // ファイル削除
-                $arrResult[0]['result'] = @unlink("$dir");
-                $arrResult[0]['file_name'] = "$dir";
-            }
-        }
-
-        return $arrResult;
-    }
-
-    /*
      * 関数名：sfGetFileTree()
      * 説明　：ツリー生成用配列取得(javascriptに渡す用)
      * 引数1 ：ディレクトリ
