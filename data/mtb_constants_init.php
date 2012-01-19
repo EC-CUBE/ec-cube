@@ -488,16 +488,18 @@ define('OPTION_FAVOFITE_PRODUCT', 1);
 define('IMAGE_RENAME', true);
 /** プラグインディレクトリ */
 define('PLUGIN_DIR', "plugins/");
+/** プラグイン保存先 (deprecated：PLUGIN_UPLOAD_REALDIRを使用して下さい) */
+define('PLUGIN_REALDIR', USER_REALDIR . PLUGIN_DIR);
 /** プラグインエンジン */
-define('PLUGIN_REALDIR', DATA_REALDIR . "class/plugin/");
+define('PLUGIN_ENGINE_REALDIR', DATA_REALDIR . "class/plugin/");
 /** プラグイン保存先. */
-define('DOWNLOADS_PLUGIN_REALDIR', DATA_REALDIR . "downloads/plugin/");
-/** プラグイン・テンプレートキャッシュ. */
-define('PLUGIN_TMPL_CACHE_REALDIR', DOWNLOADS_PLUGIN_REALDIR . 'templates_cache/');
+define('PLUGIN_UPLOAD_REALDIR', DATA_REALDIR . "downloads/plugin/");
+/** プラグイン外部ファイル保存先. */
+define('PLUGIN_HTML_REALDIR', HTML_REALDIR . 'plugin/');
+/** プラグイン・テンプレートキャッシュ保存先. */
+define('PLUGIN_TMPL_CACHE_REALDIR', PLUGIN_UPLOAD_REALDIR . 'templates_cache/');
 /** プラグイン・ディレクトリパーミッション. */
 define('PLUGIN_DIR_PERMISSION', 0777);
-/** プラグイン URL. */
-define('PLUGIN_HTML_URLPATH', ROOT_URLPATH . 'plugin/');
 /** プラグイン URL */
 define('PLUGIN_URL', USER_URL . PLUGIN_DIR);
 /** 日数桁数 */

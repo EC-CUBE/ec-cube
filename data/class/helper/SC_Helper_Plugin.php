@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2011 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2012 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -55,7 +55,7 @@ class SC_Helper_Plugin {
             // プラグイン本体ファイル名が取得したプラグインディレクトリ一覧にある事を確認
             if (array_search($arrPluginData['class_name'], $arrPluginDirectory) !== false ) {
                 // プラグイン本体ファイルをrequire.
-                require_once(DOWNLOADS_PLUGIN_REALDIR . $arrPluginData['plugin_setting_path']);
+                require_once(PLUGIN_UPLOAD_REALDIR . $arrPluginData['class_name'] . '/' . $arrPluginData['class_name'] . '.php');
                 // プラグインのインスタンス生成.
                 $objPlugin = new $arrPluginData['class_name']($arrPluginData);
                 // メンバ変数にプラグインのインスタンスを登録.
@@ -147,12 +147,12 @@ class SC_Helper_Plugin {
     /**
      * プラグインディレクトリの取得
      *
-     * @return array $arrEccPluginDirectory
+     * @return array $arrPluginDirectory
      */
     function getPluginDirectory() {
         $arrPluginDirectory = array();
-        if (is_dir(DOWNLOADS_PLUGIN_REALDIR)) {
-            if ($dh = opendir(DOWNLOADS_PLUGIN_REALDIR)) {
+        if (is_dir(PLUGIN_UPLOAD_REALDIR)) {
+            if ($dh = opendir(PLUGIN_UPLOAD_REALDIR)) {
                 while (($pluginDirectory = readdir($dh)) !== false) {
                     $arrPluginDirectory[] = $pluginDirectory;
                 }
@@ -264,7 +264,7 @@ class SC_Helper_Plugin {
             exit;
         }
         // キャッシュテンプレートを削除
-        if ($test_mode === true) {
+        if ($test_mode === false) {
             $this->unlinkRecurse(PLUGIN_TMPL_CACHE_REALDIR, false);
         }
         $objTemplateTransformList = SC_Plugin_Template_Transform_List::getSingletonInstance();
@@ -301,7 +301,7 @@ class SC_Helper_Plugin {
                 else @unlink($cur_path);
             }
             closedir($handle);
-
+            
             // ディレクトリを削除
             if ($del_myself) @rmdir($path);
         } else {

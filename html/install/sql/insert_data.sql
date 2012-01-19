@@ -1304,6 +1304,11 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('IMAGE_RENAME', 'tru
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_DIR', '"plugins/"', 600, 'プラグインディレクトリ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_REALDIR', 'USER_REALDIR . PLUGIN_DIR', 601, 'プラグイン保存先');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_URL', 'USER_URL . PLUGIN_DIR', 602, 'プラグイン URL');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_ENGINE_REALDIR', 'DATA_REALDIR . "class/plugin/"', 603, 'プラグインエンジン');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_UPLOAD_REALDIR', 'DATA_REALDIR . "downloads/plugin/"', 604, 'プラグイン保存先');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_HTML_REALDIR', 'HTML_REALDIR . "plugin/"', 605, 'プラグイン外部ファイル保存先');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_TMPL_CACHE_REALDIR', 'PLUGIN_UPLOAD_REALDIR . "templates_cache/"', 606, 'プラグイン・テンプレートキャッシュ保存先');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_DIR_PERMISSION', '0777', 607, 'プラグイン・ディレクトリパーミッション');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOAD_DAYS_LEN', '3', 700, '日数桁数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOAD_EXTENSION', '"zip,lzh,jpg,jpeg,gif,png,mp3,pdf,csv"', 701, 'ダウンロードファイル登録可能拡張子(カンマ区切り)"');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWN_SIZE', '50000', 702, 'ダウンロード販売ファイル用サイズ制限(KB)');
@@ -1355,6 +1360,11 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_STATUS_INSTA
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_ENABLE_TRUE', '"1"', 1222, 'プラグイン有効/無効：有効');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_ENABLE_FALSE', '"2"', 1223, 'プラグイン有効/無効：無効');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ZIP_DOWNLOAD_URL', '"http://www.post.japanpost.jp/zipcode/dl/kogaki/zip/ken_all.zip"', 1224, '郵便番号CSVのZIPアーカイブファイルの取得元');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_ENABLE_TRUE', '"1"', 1222, 'プラグイン有効/無効：有効');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_ENABLE_FALSE', '"2"', 1223, 'プラグイン有効/無効：無効');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_ENABLE_TRUE', '"1"', 1222, 'プラグイン有効/無効：有効');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_ENABLE_FALSE', '"2"', 1223, 'プラグイン有効/無効：無効');
+
 
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_customer', 'email_mobile', 0, '会員数増加時のログイン処理速度を向上させたいときに試してみてください');
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_products', 'name', 2, '商品名検索速度を向上させたいときに試してみてください');
