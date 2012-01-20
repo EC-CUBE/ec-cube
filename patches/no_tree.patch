@@ -1,0 +1,754 @@
+Index: data/class/pages/admin/products/LC_Page_Admin_Products_Product.php
+===================================================================
+--- data/class/pages/admin/products/LC_Page_Admin_Products_Product.php	(revision 21417)
++++ data/class/pages/admin/products/LC_Page_Admin_Products_Product.php	(working copy)
+@@ -1048,32 +1048,14 @@
+                     $objQuery->setOrder('product_class_id');
+                     $arrProductsClass = $objQuery->select($col, $table, $where, array($arrList["copy_product_id"]));
+ 
+-                    // 複製元商品の規格組み合わせデータ登録
+-                    // 登録した組み合わせIDを取得
+-                    $arrRetCombinationId = $this->lfRegistClassCombination($arrProductsClass);
+-
+                     // 規格データ登録
+                     $objQuery =& SC_Query_Ex::getSingletonInstance();
+                     foreach($arrProductsClass as $arrData) {
+-                        $sqlval = array();
++                        $sqlval = $arrData;
+                         $sqlval['product_class_id'] = $objQuery->nextVal('dtb_products_class_product_class_id');
+                         $sqlval['product_id'] = $product_id;
+                         $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
+-                        $sqlval['class_combination_id'] = $arrRetCombinationId[$arrData['class_combination_id']];
+-                        $sqlval['product_type_id'] = $arrData['product_type_id'];
+-                        $sqlval['product_code'] = $arrData['product_code'];
+-                        $sqlval['stock'] = $arrData['stock'];
+-                        $sqlval['stock_unlimited'] = $arrData['stock_unlimited'];
+-                        $sqlval['sale_limit'] = $arrData['sale_limit'];
+-                        $sqlval['price01'] = $arrData['price01'];
+-                        $sqlval['price02'] = $arrData['price02'];
+-                        $sqlval['deliv_fee'] = $arrData['deliv_fee'];
+-                        $sqlval['point_rate'] = $arrData['point_rate'];
+-                        $sqlval['creator_id'] = $arrData['creator_id'];
+                         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
+-                        $sqlval['down_filename'] = $arrData['down_filename'];
+-                        $sqlval['down_realfilename'] = $arrData['down_realfilename'];
+-                        $sqlval['del_flg'] = $arrData['del_flg'];
+                         $objQuery->insert($table, $sqlval);
+                     }
+                 }
+@@ -1266,118 +1248,6 @@
+     }
+ 
+     /**
+-     * 商品規格データを元に、規格組み合わせデータを複製登録する
+-     * 
+-     * @param array $arrProductsClass 商品規格データ配列
+-     * @return array 登録した規格組み合わせID配列
+-     */
+-    function lfRegistClassCombination($arrProductsClass) {
+-        $arrRetCombinationId = array();
+-
+-        // 規格組み合わせデータを取得
+-        $arrClassCombination = $this->lfGetClassCombination($arrProductsClass);
+-
+-        // 規格2を持っているかチェック
+-        $has_class2 = $this->lfHasClass2($arrClassCombination);
+-
+-        // 規格組み合わせデータを複製登録
+-        if($has_class2 == true) {
+-            // 規格2を持っている場合、規格1の組み合わせデータも取得
+-            $arrClassCombinationParent = $this->lfGetClassCombination($arrClassCombination, true);
+-
+-            // 親組み合わせデータを複製登録
+-            $arrRetCombinationId = $this->lfInsertClassCombination($arrClassCombinationParent);
+-            // 子組み合わせデータを複製登録
+-            $arrRetCombinationId = $this->lfInsertClassCombination($arrClassCombination, $arrRetCombinationId);
+-        } else {
+-            // 規格1のみの場合、複製登録
+-            $arrRetCombinationId = $this->lfInsertClassCombination($arrClassCombination);
+-        }
+-
+-        return $arrRetCombinationId;
+-    }
+-
+-    /**
+-     * 規格2を持っている規格組み合わせデータであるか判定する
+-     * 
+-     * @param array $arrClassCombination 規格組み合わせデータ配列
+-     * @return boolean true: 規格2を持っている, false: 規格1のみ
+-     */
+-    function lfHasClass2($arrClassCombination) {
+-        $has_class2 = false;
+-
+-        foreach($arrClassCombination as $arrVal) {
+-            if($arrVal['level'] == '2') {
+-                $has_class2 = true;
+-                break;
+-            }
+-        }
+-
+-        return $has_class2;
+-    }
+-
+-    /**
+-     * 規格組み合わせデータを取得する
+-     * 
+-     * @param array $arrData 組み合わせIDを含むデータ配列
+-     * @param boolean $is_parent 親規格IDから抽出するフラグ(省略時: false)
+-     * @return array 規格組み合わせデータ配列
+-     */
+-    function lfGetClassCombination($arrData, $is_parent = false) {
+-        $objQuery =& SC_Query_Ex::getSingletonInstance();
+-        $key = 'class_combination_id';
+-        if($is_parent == true) {
+-            $key = 'parent_class_combination_id';
+-        }
+-
+-        $where = 'class_combination_id IN (';
+-        $arrParam = array();
+-        foreach($arrData as $arrVal) {
+-            if(SC_Utils_Ex::isBlank($arrVal[$key]) == true) {
+-                continue;
+-            }
+-            $where .= '?,';
+-            $arrParam[] = $arrVal[$key];
+-        }
+-        $where = preg_replace('/,$/', ')', $where);
+-        $arrClassCombination = $objQuery->select('*', 'dtb_class_combination', $where, $arrParam);
+-
+-        return $arrClassCombination;
+-    }
+-
+-    /**
+-     * 規格組み合わせデータを複製登録する
+-     * 
+-     * @param array $arrClassCombination 複製元の規格組み合わせデータ配列
+-     * @param array $arrParentCombinationId 登録する親組み合わせID配列 (省略可)
+-     * @return array 登録した規格組み合わせID配列
+-     */
+-    function lfInsertClassCombination($arrClassCombination, $arrParentCombinationId = array()) {
+-        $objQuery =& SC_Query_Ex::getSingletonInstance();
+-        $arrRetCombinationId = array();
+-
+-        // 親組み合わせIDの指定がある場合、指定された親組み合わせIDで複製登録
+-        if(count($arrParentCombinationId) > 0) {
+-            foreach($arrClassCombination as $key => $arrVal) {
+-                $arrClassCombination[$key]['parent_class_combination_id'] = $arrParentCombinationId[$arrVal['parent_class_combination_id']];
+-            }
+-        }
+-
+-        foreach($arrClassCombination as $arrVal) {
+-            $sqlval = array();
+-            $sqlval['class_combination_id'] = $objQuery->nextVal('dtb_class_combination_class_combination_id');
+-            $sqlval['parent_class_combination_id'] = $arrVal['parent_class_combination_id'];
+-            $sqlval['classcategory_id'] = $arrVal['classcategory_id'];
+-            $sqlval['level'] = $arrVal['level'];
+-            $objQuery->insert('dtb_class_combination', $sqlval);
+-
+-            $arrRetCombinationId[$arrVal['class_combination_id']] = $sqlval['class_combination_id'];
+-        }
+-
+-        return $arrRetCombinationId;
+-    }
+-
+-    /**
+      * リネームする際は、自動生成される画像名に一意となるように、Suffixを付ける
+      * 
+      * @param string $to_key
+Index: data/class/pages/admin/products/LC_Page_Admin_Products_ProductClass.php
+===================================================================
+--- data/class/pages/admin/products/LC_Page_Admin_Products_ProductClass.php	(revision 21417)
++++ data/class/pages/admin/products/LC_Page_Admin_Products_ProductClass.php	(working copy)
+@@ -236,16 +236,18 @@
+         // デフォルト値として設定する値を取得しておく
+         $arrDefault = $this->getProductsClass($product_id);
+ 
+-        $objQuery->delete('dtb_products_class', 'product_id = ? AND class_combination_id IS NOT NULL', array($product_id));
++        $objQuery->delete('dtb_products_class', 'product_id = ? AND (classcategory_id1 <> 0 OR classcategory_id2 <> 0)', array($product_id));
+ 
+         for ($i = 0; $i < $total; $i++) {
+             $del_flg = SC_Utils_Ex::isBlank($arrList['check'][$i]) ? 1 : 0;
+             $stock_unlimited = SC_Utils_Ex::isBlank($arrList['stock_unlimited'][$i]) ? 0 : $arrList['stock_unlimited'][$i];
+             $price02 = SC_Utils_Ex::isBlank($arrList['price02'][$i]) ? 0 : $arrList['price02'][$i];
+             // dtb_products_class 登録/更新用
+-            $registerKeys = array('product_code', 'stock',
+-                                  'price01', 'product_type_id',
+-                                  'down_filename', 'down_realfilename');
++            $registerKeys = array(
++                'classcategory_id1', 'classcategory_id2',
++                'product_code', 'stock', 'price01', 'product_type_id',
++                'down_filename', 'down_realfilename',
++            );
+ 
+             $arrPC = array();
+             foreach ($registerKeys as $key) {
+@@ -263,35 +265,6 @@
+             $arrPC['update_date'] = 'CURRENT_TIMESTAMP';
+             $arrPC['del_flg'] = $del_flg;
+ 
+-            $class_combination_id = $arrExists[$arrList['product_class_id'][$i]]['class_combination_id'];
+-            $existsCombi = $objQuery->getRow('*', 'dtb_class_combination',
+-                                             'class_combination_id = ?',
+-                                             array($class_combination_id));
+-
+-            $objQuery->delete('dtb_class_combination',
+-                              'class_combination_id IN (?, ?)',
+-                              array($existsCombi['class_combination_id'],
+-                                    $existsCombi['parent_class_combination_id']));
+-
+-            // 規格組み合わせを登録
+-            $arrComb1['class_combination_id'] = $objQuery->nextVal('dtb_class_combination_class_combination_id');
+-            $arrComb1['classcategory_id'] = $arrList['classcategory_id1'][$i];
+-            $arrComb1['level'] = 1;
+-            $objQuery->insert('dtb_class_combination', $arrComb1);
+-
+-            // 規格2も登録する場合
+-            if (!SC_Utils_Ex::isBlank($arrList['classcategory_id2'][$i])) {
+-                $arrComb2['class_combination_id'] = $objQuery->nextVal('dtb_class_combination_class_combination_id');
+-                $arrComb2['classcategory_id'] = $arrList['classcategory_id2'][$i];
+-                $arrComb2['parent_class_combination_id'] = $arrComb1['class_combination_id'];
+-                $arrComb2['level'] = 2;
+-                $objQuery->insert('dtb_class_combination', $arrComb2);
+-
+-                $arrPC['class_combination_id'] = $arrComb2['class_combination_id'];
+-            } else {
+-                $arrPC['class_combination_id'] = $arrComb1['class_combination_id'];
+-            }
+-
+             $arrPC['create_date'] = 'CURRENT_TIMESTAMP';
+             // 更新の場合は, product_class_id を使い回す
+             if (!SC_Utils_Ex::isBlank($arrList['product_class_id'][$i])) {
+@@ -312,7 +285,7 @@
+         $arrBlank['del_flg'] = 1;
+         $arrBlank['update_date'] = 'CURRENT_TIMESTAMP';
+         $objQuery->update("dtb_products_class", $arrBlank,
+-                          "product_id = ? AND class_combination_id IS NULL",
++                          "product_id = ? AND classcategory_id1 = 0 AND classcategory_id2 = 0",
+                           array($product_id));
+ 
+         // 件数カウントバッチ実行
+@@ -478,7 +451,7 @@
+     function doPreEdit(&$objFormParam) {
+         $product_id = $objFormParam->getValue('product_id');
+         $objProduct = new SC_Product_Ex();
+-        $existsProductsClass = $objProduct->getProductsClassFullByProductId($product_id, true);
++        $existsProductsClass = $objProduct->getProductsClassFullByProductId($product_id);
+ 
+         // 規格のデフォルト値(すべての組み合わせ)を取得し, フォームに反映
+         $class_id1 = $existsProductsClass[0]['class_id1'];
+@@ -556,29 +529,15 @@
+         $objQuery =& SC_Query_Ex::getSingletonInstance();
+ 
+         $objQuery->begin();
+-        $arrClassCombi = $objQuery->getCol('class_combination_id',
+-                                           'dtb_products_class',
+-                                           'product_id = ?', array($product_id));
+ 
+-        foreach ($arrClassCombi as $class_combination_id) {
+-            if (SC_Utils_Ex::isBlank($class_combination_id)) {
+-                continue;
+-            }
+-            $existsCombi = $objQuery->getRow('*', 'dtb_class_combination',
+-                                             'class_combination_id = ?',
+-                                             array($class_combination_id));
++        // 商品規格なしデータの復元
++        $where = 'product_id = ? AND classcategory_id1 = 0 AND classcategory_id2 = 0';
++        $objQuery->update("dtb_products_class", array('del_flg' => 0), $where, array($product_id));
+ 
+-            $objQuery->delete('dtb_class_combination',
+-                              'class_combination_id IN (?, ?)',
+-                              array($existsCombi['class_combination_id'],
+-                                    $existsCombi['parent_class_combination_id']));
+-        }
+-        $objQuery->update("dtb_products_class", array('del_flg' => 0),
+-                          "product_id = ? AND class_combination_id IS NULL",
+-                          array($product_id));
+-        $objQuery->delete("dtb_products_class",
+-                          "product_id = ? AND class_combination_id IS NOT NULL",
+-                          array($product_id));
++        // 商品規格データの削除
++        $where = 'product_id = ? AND (classcategory_id1 <> 0 OR classcategory_id2 <> 0)';
++        $objQuery->delete("dtb_products_class", $where, array($product_id));
++
+         $objQuery->commit();
+ 
+         // 在庫無し商品の非表示対応
+@@ -779,7 +738,8 @@
+     function getProductsClass($product_id) {
+         $objQuery =& SC_Query_Ex::getSingletonInstance();
+         $col = "product_code, price01, price02, stock, stock_unlimited, sale_limit, deliv_fee, point_rate";
+-        return $objQuery->getRow($col, "dtb_products_class", "product_id = ? AND class_combination_id IS NULL", array($product_id));
++        $where = 'product_id = ? AND classcategory_id1 = 0 AND classcategory_id2 = 0';
++        return $objQuery->getRow($col, "dtb_products_class", $where, array($product_id));
+     }
+ 
+     /**
+Index: data/class/pages/admin/products/LC_Page_Admin_Products_UploadCSV.php
+===================================================================
+--- data/class/pages/admin/products/LC_Page_Admin_Products_UploadCSV.php	(revision 21417)
++++ data/class/pages/admin/products/LC_Page_Admin_Products_UploadCSV.php	(working copy)
+@@ -612,6 +612,7 @@
+      */
+     function lfCheckErrorDetail($item, $arrErr) {
+         // 規格IDの存在チェック
++        // FIXME 規格分類ID自体のが有効かを主眼においたチェックをすべきと感じる。
+         if(!$this->lfIsDbRecord('dtb_products_class', 'product_class_id', $item)) {
+             $arrErr['product_class_id'] = "※ 指定の商品規格IDは、登録されていません。";
+         }
+@@ -627,17 +628,6 @@
+                 }
+             }
+         }
+-        // 規格組合せIDの存在チェック
+-//        if(!$this->lfIsDbRecord('dtb_class_combination', 'class_combination_id', $item)) {
+-//      SC_Utils::sfIsRecord が del_flg が無いと使えない為、個別処理
+-        if(array_search('class_combination_id', $this->arrFormKeyList) !== FALSE
+-                and $item['class_combination_id'] != "" ) {
+-            $objQuery =& SC_Query_Ex::getSingletonInstance();
+-            $ret = $objQuery->get('class_combination_id', 'dtb_class_combination', 'class_combination_id = ?', array($item['class_combination_id']));
+-            if($ret == "") {
+-                $arrErr['class_combination_id'] = "※ 指定の規格組合せIDは、登録されていません。";
+-            }
+-        }
+         // 表示ステータスの存在チェック
+         if(!$this->lfIsArrayRecord($this->arrDISP, 'status', $item)) {
+             $arrErr['status'] = "※ 指定の表示ステータスは、登録されていません。";
+Index: data/class/SC_Product.php
+===================================================================
+--- data/class/SC_Product.php	(revision 21417)
++++ data/class/SC_Product.php	(working copy)
+@@ -268,9 +268,9 @@
+                 : '';
+ 
+             // 規格1が設定されている
+-            $this->classCat1_find[$productId] = (!SC_Utils_Ex::isBlank($arrProductClass[0]['classcategory_id1']));
++            $this->classCat1_find[$productId] = $arrProductClass[0]['classcategory_id1'] > 0; // 要変更ただし、他にも改修が必要となる
+             // 規格2が設定されている
+-            $this->classCat2_find[$productId] = (!SC_Utils_Ex::isBlank($arrProductClass[0]['classcategory_id2']));
++            $this->classCat2_find[$productId] = $arrProductClass[0]['classcategory_id2'] > 0; // 要変更ただし、他にも改修が必要となる
+ 
+             $this->stock_find[$productId] = false;
+             $classCategories = array();
+@@ -325,7 +325,7 @@
+                 $classCats2['product_type'] = $productsClass['product_type_id'];
+ 
+                 // #929(GC8 規格のプルダウン順序表示不具合)対応のため、2次キーは「#」を前置
+-                if (SC_Utils_Ex::isBlank($productsClass1)) {
++                if (!$this->classCat1_find[$productId]) {
+                     $productsClass1 = '__unselected2';
+                 }
+                 $classCategories[$productsClass1]['#'] = array(
+@@ -365,86 +365,33 @@
+             T1.product_type_id,
+             T1.down_filename,
+             T1.down_realfilename,
+-            T2.class_combination_id,
+-            T2.parent_class_combination_id,
+-            T2.classcategory_id,
+-            T2.level,
+-            T3.name AS classcategory_name,
+-            T3.rank,
+-            T4.name AS class_name,
+-            T4.class_id
++            T3.name AS classcategory_name1,
++            T3.rank AS rank1,
++            T4.name AS class_name1,
++            T4.class_id AS class_id1,
++            T1.classcategory_id1,
++            T1.classcategory_id2,
++            dtb_classcategory2.name AS classcategory_name2,
++            dtb_classcategory2.rank AS rank2,
++            dtb_class2.name AS class_name2,
++            dtb_class2.class_id AS class_id2
+ __EOS__;
+         $table = <<< __EOS__
+                       dtb_products_class T1
+-            LEFT JOIN dtb_class_combination T2
+-                   ON T1.class_combination_id = T2.class_combination_id
+             LEFT JOIN dtb_classcategory T3
+-                   ON T2.classcategory_id = T3.classcategory_id
++                   ON T1.classcategory_id1 = T3.classcategory_id
+             LEFT JOIN dtb_class T4
+                    ON T3.class_id = T4.class_id
++            LEFT JOIN dtb_classcategory dtb_classcategory2
++                   ON T1.classcategory_id2 = dtb_classcategory2.classcategory_id
++            LEFT JOIN dtb_class dtb_class2
++                   ON dtb_classcategory2.class_id = dtb_class2.class_id
+ __EOS__;
+ 
+         $objQuery->setOrder('T3.rank DESC'); // XXX
+         $arrRet = $objQuery->select($col, $table, "", $params);
+-        $levels = array();
+-        $parents = array();
+-        foreach ($arrRet as $rows) {
+-            $levels[] = $rows['level'];
+-            $parents[] = $rows['parent_class_combination_id'];
+-        }
+-        $level = max($levels);
+-        $parentsClass = array();
+-        // 階層分の親を取得
+-        for ($i = 0; $i < $level -1; $i++) {
+-            $objQuery =& SC_Query_Ex::getSingletonInstance();
+-            $objQuery->setWhere('T1.class_combination_id IN (' . implode(', ', array_pad(array(), count($parents), '?')) . ')');
+ 
+-            $col = <<< __EOS__
+-                T1.class_combination_id,
+-                T1.classcategory_id,
+-                T1.parent_class_combination_id,
+-                T1.level,
+-                T2.name AS classcategory_name,
+-                T2.rank,
+-                T3.name AS class_name,
+-                T3.class_id
+-__EOS__;
+-            $table = <<< __EOS__
+-                          dtb_class_combination T1
+-                LEFT JOIN dtb_classcategory T2
+-                       ON T1.classcategory_id = T2.classcategory_id
+-                LEFT JOIN dtb_class T3
+-                       ON T2.class_id = T3.class_id
+-__EOS__;
+-
+-            $objQuery->setOrder('T2.rank DESC'); // XXX
+-            $arrParents = $objQuery->select($col, $table, "", $parents);
+-
+-            foreach ($arrParents as $rows) {
+-                $parents[] = $rows['parent_class_combination_id'];
+-
+-                foreach ($arrRet as $child) {
+-                    if ($child['parent_class_combination_id']
+-                        == $rows['class_combination_id']) {
+-                        $rows['product_id'] = $child['product_id'];
+-                    }
+-                }
+-                $tmpParents[] = $rows;
+-            }
+-            $parentsClass = array_merge($parentsClass, $tmpParents);
+-        }
+-
+-        // 末端から枝を作成
+-        $tmpClass = array_merge($arrRet, $parentsClass);
+-
+-        foreach ($tmpClass as $val) {
+-            $val['class_id' . $val['level']] = $val['class_id'];
+-            $val['class_name' . $val['level']] = $val['class_name'];
+-            $val['classcategory_name' . $val['level']] = $val['classcategory_name'];
+-            $val['classcategory_id' . $val['level']] = $val['classcategory_id'];
+-            $arrProductsClass[] = $val;
+-        }
+-        return $arrProductsClass;
++        return $arrRet;
+     }
+ 
+     /**
+@@ -798,7 +745,7 @@
+         (
+              SELECT dtb_products.*,
+                     dtb_products_class.product_class_id,
+-                    dtb_products_class.class_combination_id,
++                    'dummy' AS class_combination_id,
+                     dtb_products_class.product_type_id,
+                     dtb_products_class.product_code,
+                     dtb_products_class.stock,
+@@ -810,11 +757,13 @@
+                     dtb_products_class.point_rate,
+                     dtb_products_class.down_filename,
+                     dtb_products_class.down_realfilename,
+-                    dtb_class_combination.parent_class_combination_id,
+-                    dtb_class_combination.classcategory_id,
+-                    dtb_class_combination.level as classlevel,
+-                    Tpcm.classcategory_id as parent_classcategory_id,
+-                    Tpcm.level as parent_classlevel,
++                    'dummy' AS parent_class_combination_id, -- 削除
++                    dtb_products_class.classcategory_id1 AS classcategory_id, -- 削除
++                    dtb_products_class.classcategory_id1,
++                    'dummy' as classlevel, -- 削除
++                    dtb_products_class.classcategory_id2 AS parent_classcategory_id, -- 削除
++                    dtb_products_class.classcategory_id2,
++                    'dummy' as parent_classlevel, -- 削除
+                     Tcc1.class_id as class_id,
+                     Tcc1.name as classcategory_name,
+                     Tcc2.class_id as parent_class_id,
+@@ -822,14 +771,10 @@
+              FROM dtb_products
+                  LEFT JOIN dtb_products_class
+                      ON dtb_products.product_id = dtb_products_class.product_id
+-                 LEFT JOIN dtb_class_combination
+-                     ON dtb_products_class.class_combination_id = dtb_class_combination.class_combination_id
+-                 LEFT JOIN dtb_class_combination as Tpcm
+-                     ON dtb_class_combination.parent_class_combination_id = Tpcm.class_combination_id
+                  LEFT JOIN dtb_classcategory as Tcc1
+-                     ON dtb_class_combination.classcategory_id = Tcc1.classcategory_id
++                     ON dtb_products_class.classcategory_id1 = Tcc1.classcategory_id
+                  LEFT JOIN dtb_classcategory as Tcc2
+-                     ON Tpcm.classcategory_id = Tcc2.classcategory_id
++                     ON dtb_products_class.classcategory_id2 = Tcc2.classcategory_id
+              $where_clause
+         ) as prdcls
+ __EOS__;
+Index: html/install/index.php
+===================================================================
+--- html/install/index.php	(revision 21417)
++++ html/install/index.php	(working copy)
+@@ -1053,7 +1053,6 @@
+                  array("dtb_payment", "payment_id"),
+                  array("dtb_products_class", "product_class_id"),
+                  array("dtb_products", "product_id"),
+-                 array("dtb_class_combination", "class_combination_id"),
+                  array("dtb_review", "review_id"),
+                  array("dtb_send_history", "send_id"),
+                  array("dtb_mailmaga_template", "template_id"));
+Index: html/install/sql/create_table_mysql.sql
+===================================================================
+--- html/install/sql/create_table_mysql.sql	(revision 21417)
++++ html/install/sql/create_table_mysql.sql	(working copy)
+@@ -315,7 +315,8 @@
+ CREATE TABLE dtb_products_class (
+     product_class_id int  NOT NULL,
+     product_id int NOT NULL,
+-    class_combination_id int,
++    classcategory_id1 int NOT NULL DEFAULT 0,
++    classcategory_id2 int NOT NULL DEFAULT 0,
+     product_type_id int NOT NULL DEFAULT 0,
+     product_code text,
+     stock numeric,
+@@ -357,14 +358,6 @@
+     PRIMARY KEY (classcategory_id)
+ ) ENGINE=InnoDB;
+ 
+-CREATE TABLE dtb_class_combination (
+-    class_combination_id int NOT NULL,
+-    parent_class_combination_id int,
+-    classcategory_id int NOT NULL,
+-    level int,
+-    PRIMARY KEY(class_combination_id)
+-) ENGINE=InnoDB;
+-
+ CREATE TABLE dtb_category (
+     category_id int  NOT NULL,
+     category_name text,
+Index: html/install/sql/create_table_pgsql.sql
+===================================================================
+--- html/install/sql/create_table_pgsql.sql	(revision 21417)
++++ html/install/sql/create_table_pgsql.sql	(working copy)
+@@ -315,7 +315,8 @@
+ CREATE TABLE dtb_products_class (
+     product_class_id int NOT NULL,
+     product_id int NOT NULL,
+-    class_combination_id int,
++    classcategory_id1 int NOT NULL DEFAULT 0,
++    classcategory_id2 int NOT NULL DEFAULT 0,
+     product_type_id int NOT NULL DEFAULT 0,
+     product_code text,
+     stock numeric,
+@@ -357,14 +358,6 @@
+     PRIMARY KEY (classcategory_id)
+ );
+ 
+-CREATE TABLE dtb_class_combination (
+-    class_combination_id int NOT NULL,
+-    parent_class_combination_id int,
+-    classcategory_id int NOT NULL,
+-    level int,
+-    PRIMARY KEY (class_combination_id)
+-);
+-
+ CREATE TABLE dtb_category (
+     category_id int NOT NULL,
+     category_name text,
+Index: html/install/sql/drop_table.sql
+===================================================================
+--- html/install/sql/drop_table.sql	(revision 21417)
++++ html/install/sql/drop_table.sql	(working copy)
+@@ -15,7 +15,6 @@
+ DROP TABLE dtb_product_status;
+ DROP TABLE dtb_class;
+ DROP TABLE dtb_classcategory;
+-DROP TABLE dtb_class_combination;
+ DROP TABLE dtb_category;
+ DROP TABLE dtb_recommend_products;
+ DROP TABLE dtb_review;
+Index: html/install/sql/insert_data.sql
+===================================================================
+--- html/install/sql/insert_data.sql	(revision 21417)
++++ html/install/sql/insert_data.sql	(working copy)
+@@ -236,8 +236,6 @@
+ 
+ INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (1, 1, 'product_id', '商品ID', 1, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+ INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (2, 1, 'product_class_id', '商品規格ID', 2, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (3, 1, 'parent_class_combination_id', '親規格組合わせID', 3, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (4, 1, 'class_combination_id', '規格組合わせID', 4, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+ INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (5, 1, 'parent_classcategory_id', '親規格分類ID', 5, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+ INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (6, 1, 'classcategory_id', '規格分類ID', 6, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+ INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (7, 1, 'parent_classcategory_name', '親規格分類名', 7, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+@@ -395,6 +393,8 @@
+ INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (198, 5, 'level', '階層', NULL, 2, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+ INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (199, 5, 'rank', '表示ランク', NULL, 2, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+ INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (200, 5, 'del_flg', '削除フラグ', NULL, 1, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
++UPDATE dtb_csv SET no = no - 2 WHERE no > 2;
++UPDATE dtb_csv SET rank = rank - 2 WHERE csv_id = 1 AND rank > 2;
+ 
+ INSERT INTO dtb_deliv (deliv_id, product_type_id, name, service_name, confirm_url, rank, status, del_flg, creator_id, create_date, update_date) VALUES (1, 1, 'サンプル業者', 'サンプル業者', NULL, 2, 1, 0, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+ INSERT INTO dtb_deliv (deliv_id, product_type_id, name, service_name, confirm_url, rank, status, del_flg, creator_id, create_date, update_date) VALUES (2, 2, '配送無し(ダウンロード商品用)', 'なし', NULL, 1, 1, 0, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+@@ -703,38 +703,19 @@
+ INSERT INTO dtb_products (product_id, name, maker_id, status, comment1, comment2, comment3, comment4, comment5, comment6, note, main_list_comment, main_list_image, main_comment, main_image, main_large_image, sub_title1, sub_comment1, sub_image1, sub_large_image1, sub_title2, sub_comment2, sub_image2, sub_large_image2, sub_title3, sub_comment3, sub_image3, sub_large_image3, sub_title4, sub_comment4, sub_image4, sub_large_image4, sub_title5, sub_comment5, sub_image5, sub_large_image5, sub_title6, sub_comment6, sub_image6, sub_large_image6, del_flg, creator_id, create_date, update_date, deliv_date_id) VALUES (2, 'おなべ', NULL, 1, NULL, NULL, '鍋,なべ,ナベ', NULL, NULL, NULL, NULL, '一人用からあります。', 'nabe130.jpg', 'たまには鍋でもどうでしょう。', 'nabe260.jpg', 'nabe500.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 3);
+ INSERT INTO dtb_products (product_id, name, maker_id, status, comment1, comment2, comment3, comment4, comment5, comment6, note, main_list_comment, main_list_image, main_comment, main_image, main_large_image, sub_title1, sub_comment1, sub_image1, sub_large_image1, sub_title2, sub_comment2, sub_image2, sub_large_image2, sub_title3, sub_comment3, sub_image3, sub_large_image3, sub_title4, sub_comment4, sub_image4, sub_large_image4, sub_title5, sub_comment5, sub_image5, sub_large_image5, sub_title6, sub_comment6, sub_image6, sub_large_image6, del_flg, creator_id, create_date, update_date, deliv_date_id) VALUES (3, 'おなべレシピ', NULL, 1, NULL, NULL, '鍋,なべ,ナベ,レシピ,作り方', NULL, NULL, NULL, NULL, 'あの、秘伝のお鍋レシピです。', 'recipe130.jpg', '<b>この商品はダウンロード商品です</b><br />自分でチャレンジしてみたい方に。', 'recipe260.jpg', 'recipe500.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1);
+ 
+-INSERT INTO dtb_products_class (product_class_id, product_id, class_combination_id, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(0, 1, NULL, 'ice-01', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, NULL, NULL);
+-INSERT INTO dtb_products_class (product_class_id, product_id, class_combination_id, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(1, 1, 10, 'ice-01', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
+-INSERT INTO dtb_products_class (product_class_id, product_id, class_combination_id, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(2, 1, 11, 'ice-02', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
+-INSERT INTO dtb_products_class (product_class_id, product_id, class_combination_id, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(3, 1, 12, 'ice-03', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
+-INSERT INTO dtb_products_class (product_class_id, product_id, class_combination_id, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(4, 1, 13, 'ice-04', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
+-INSERT INTO dtb_products_class (product_class_id, product_id, class_combination_id, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(5, 1, 14, 'ice-05', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
+-INSERT INTO dtb_products_class (product_class_id, product_id, class_combination_id, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(6, 1, 15, 'ice-06', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
+-INSERT INTO dtb_products_class (product_class_id, product_id, class_combination_id, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(7, 1, 16, 'ice-07', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
+-INSERT INTO dtb_products_class (product_class_id, product_id, class_combination_id, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(8, 1, 17, 'ice-08', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
+-INSERT INTO dtb_products_class (product_class_id, product_id, class_combination_id, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(9, 1, 18, 'ice-09', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
+-INSERT INTO dtb_products_class (product_class_id, product_id, class_combination_id, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(10, 2, NULL, 'nabe-01', 100, 0, 5, 1700, 1650, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
+-INSERT INTO dtb_products_class (product_class_id, product_id, class_combination_id, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(11, 3, NULL, 'recipe-01', NULL, 1, NULL, NULL, 100, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 2, 'おなべレシピ.pdf', 'recipe_onabe.pdf');
++INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(0, 1, 0, 0, 'ice-01', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, NULL, NULL);
++INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(1, 1, 3, 6, 'ice-01', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
++INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(2, 1, 3, 5, 'ice-02', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
++INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(3, 1, 3, 4, 'ice-03', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
++INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(4, 1, 2, 6, 'ice-04', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
++INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(5, 1, 2, 5, 'ice-05', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
++INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(6, 1, 2, 4, 'ice-06', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
++INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(7, 1, 1, 6, 'ice-07', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
++INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(8, 1, 1, 5, 'ice-08', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
++INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(9, 1, 1, 4, 'ice-09', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
++INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(10, 2, 0, 0, 'nabe-01', 100, 0, 5, 1700, 1650, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
++INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(11, 3, 0, 0, 'recipe-01', NULL, 1, NULL, NULL, 100, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 2, 'おなべレシピ.pdf', 'recipe_onabe.pdf');
+ 
+-INSERT INTO dtb_class_combination (class_combination_id, parent_class_combination_id, classcategory_id, level) VALUES(1, NULL, 3, 1);
+-INSERT INTO dtb_class_combination (class_combination_id, parent_class_combination_id, classcategory_id, level) VALUES(2, NULL, 3, 1);
+-INSERT INTO dtb_class_combination (class_combination_id, parent_class_combination_id, classcategory_id, level) VALUES(3, NULL, 3, 1);
+-INSERT INTO dtb_class_combination (class_combination_id, parent_class_combination_id, classcategory_id, level) VALUES(4, NULL, 2, 1);
+-INSERT INTO dtb_class_combination (class_combination_id, parent_class_combination_id, classcategory_id, level) VALUES(5, NULL, 2, 1);
+-INSERT INTO dtb_class_combination (class_combination_id, parent_class_combination_id, classcategory_id, level) VALUES(6, NULL, 2, 1);
+-INSERT INTO dtb_class_combination (class_combination_id, parent_class_combination_id, classcategory_id, level) VALUES(7, NULL, 1, 1);
+-INSERT INTO dtb_class_combination (class_combination_id, parent_class_combination_id, classcategory_id, level) VALUES(8, NULL, 1, 1);
+-INSERT INTO dtb_class_combination (class_combination_id, parent_class_combination_id, classcategory_id, level) VALUES(9, NULL, 1, 1);
+-INSERT INTO dtb_class_combination (class_combination_id, parent_class_combination_id, classcategory_id, level) VALUES(10, 1, 6, 2);
+-INSERT INTO dtb_class_combination (class_combination_id, parent_class_combination_id, classcategory_id, level) VALUES(11, 2, 5, 2);
+-INSERT INTO dtb_class_combination (class_combination_id, parent_class_combination_id, classcategory_id, level) VALUES(12, 3, 4, 2);
+-INSERT INTO dtb_class_combination (class_combination_id, parent_class_combination_id, classcategory_id, level) VALUES(13, 4, 6, 2);
+-INSERT INTO dtb_class_combination (class_combination_id, parent_class_combination_id, classcategory_id, level) VALUES(14, 5, 5, 2);
+-INSERT INTO dtb_class_combination (class_combination_id, parent_class_combination_id, classcategory_id, level) VALUES(15, 6, 4, 2);
+-INSERT INTO dtb_class_combination (class_combination_id, parent_class_combination_id, classcategory_id, level) VALUES(16, 7, 6, 2);
+-INSERT INTO dtb_class_combination (class_combination_id, parent_class_combination_id, classcategory_id, level) VALUES(17, 8, 5, 2);
+-INSERT INTO dtb_class_combination (class_combination_id, parent_class_combination_id, classcategory_id, level) VALUES(18, 9, 4, 2);
+-
+ INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, create_date, update_date, del_flg) VALUES (1, 1, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+ INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, create_date, update_date, del_flg) VALUES (4, 3, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+ INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, create_date, update_date, del_flg) VALUES (5, 3, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+Index: test/createEcCubeData-v25.php
+===================================================================
+--- test/createEcCubeData-v25.php	(revision 21417)
++++ test/createEcCubeData-v25.php	(working copy)
+@@ -57,7 +57,7 @@
+ 
+ $objData = new CreateEcCubeData();
+ $start = microtime_float();
+-//$objData->objQuery->begin();
++$objData->objQuery->begin();
+ 
+ // カテゴリ生成
+ $objData->createCategories();
+@@ -74,7 +74,7 @@
+ $objDb->sfCountCategory(NULL, true);
+ 
+ //$objData->objQuery->rollback();
+-//$objData->objQuery->commit();
++$objData->objQuery->commit();
+ $end = microtime_float();
+ print("データの生成が完了しました!\n");
+ printf("所要時間 %f 秒\n", $end - $start);
+@@ -107,7 +107,7 @@
+     var $arrClassCategory_id2 = array();
+ 
+     /** 削除するか */
+-    var $delete = false;
++    var $delete = true;
+ 
+     /**
+      * コンストラクタ.
+@@ -242,7 +242,6 @@
+         print("商品と規格の関連づけを行います...\n");
+ 
+         if ($this->delete) {
+-            $this->objQuery->delete('dtb_class_combination');
+             $this->objQuery->delete('dtb_products_class');
+         }
+ 
+@@ -271,10 +270,10 @@
+             $sqlval['status'] = 1;
+             $sqlval['comment3'] = "コメント";
+             $sqlval['main_list_comment'] = "コメント";
+-            $sqlval['main_list_image'] = "08311201_44f65122ee5fe.jpg";
++            $sqlval['main_list_image'] = "nabe130.jpg";
+             $sqlval['main_comment'] = "コメント";
+-            $sqlval['main_image'] = "08311202_44f6515906a41.jpg";
+-            $sqlval['main_large_image'] = "08311203_44f651959bcb5.jpg";
++            $sqlval['main_image'] = "nabe260.jpg";
++            $sqlval['main_large_image'] = "nabe500.jpg";
+             $sqlval['sub_comment1'] = "コメント";
+             $sqlval['del_flg'] = (string) "0";
+             $sqlval['creator_id'] = 2;
+@@ -373,35 +372,23 @@
+         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
+         $sqlval['del_flg'] = 0;
+ 
+-        $count = 0;
+-        foreach ($this->arrClassCategory_id1 as $classCategory_id1) {
+-            foreach ($this->arrClassCategory_id2 as $classCategory_id2) {
+-                $c1['classcategory_id'] = $classCategory_id1;
+-                $c1['class_combination_id'] = $this->objQuery->nextVal('dtb_class_combination_class_combination_id');
+-                $c1['level'] = 1;
+-                $this->objQuery->insert("dtb_class_combination", $c1);
+-
+-                $c2['classcategory_id'] = $classCategory_id2;
+-                $c2['class_combination_id'] = $this->objQuery->nextVal('dtb_class_combination_class_combination_id');
+-                $c2['parent_class_combination_id'] = $c1['class_combination_id'];
+-                $c2['level'] = 2;
+-                $this->objQuery->insert("dtb_class_combination", $c2);
+-
+-                $sqlval['product_class_id'] =
+-                    $this->objQuery->nextVal('dtb_products_class_product_class_id');
+-                $sqlval['product_code'] = sprintf("商品コード%d", $count);
+-
+-                $sqlval['class_combination_id'] = $c2['class_combination_id'];
++        foreach ($this->arrClassCategory_id1 as $classcategory_id1) {
++            foreach ($this->arrClassCategory_id2 as $classcategory_id2) {
++                $sqlval['product_class_id'] = $this->objQuery->nextVal('dtb_products_class_product_class_id');
++                $sqlval['classcategory_id1'] = $classcategory_id1;
++                $sqlval['classcategory_id2'] = $classcategory_id2;
++                $sqlval['product_code'] = 'CODE_' . $product_id . '_' . $classcategory_id1 . '_' . $classcategory_id2;
+                 $this->objQuery->insert("dtb_products_class", $sqlval);
+ 
+-                $count++;
+                 print("#");
+             }
+         }
+ 
+         // 規格無し用
+         $sqlval['product_class_id'] = $this->objQuery->nextVal('dtb_products_class_product_class_id');
+-        $sqlval['class_combination_id'] = null;
++        $sqlval['classcategory_id1'] = 0;
++        $sqlval['classcategory_id2'] = 0;
++        $sqlval['product_code'] = 'CODE_' . $product_id;
+         $sqlval['del_flg'] = 1;
+         $this->objQuery->insert("dtb_products_class", $sqlval);
+ 
+@@ -462,9 +449,9 @@
+                          ,"43"
+                          ,"42"
+                          ,"41"
+-                         ,"43(27.0cm?27.5cm)"
+-                         ,"42(26.5cm?27.0cm)"
+-                         ,"37(ladies 23.5?24cm)"
++                         ,"43(27.0cm～27.5cm)"
++                         ,"42(26.5cm～27.0cm)"
++                         ,"37(ladies 23.5～24cm)"
+                          ,"42(約27.5cm)"
+                          ,"41(約26.5cm)"
+                          ,"W36"
