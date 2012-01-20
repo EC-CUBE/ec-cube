@@ -141,7 +141,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
             $arrShippingIds[] = null;
             $objFormParam->setValue('shipping_id', $arrShippingIds);
             
-            // 新規受注登録で入力エラーがあった場合の画面表示用に、顧客の現在ポイントを取得
+            // 新規受注登録で入力エラーがあった場合の画面表示用に、会員の現在ポイントを取得
             if (!SC_Utils_Ex::isBlank($objFormParam->getValue('customer_id'))) {
                 $customer_id = $objFormParam->getValue('customer_id');
                 $arrCustomer = SC_Helper_Customer_Ex::sfGetCustomerDataFromId($customer_id);
@@ -217,7 +217,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
             $this->arrErr = $this->lfCheckError($objFormParam);
             break;
 
-        // 顧客検索ポップアップより顧客指定
+        // 会員検索ポップアップより会員指定
         case 'search_customer':
             $objFormParam->setParam($_POST);
             $objFormParam->convParam();
@@ -332,8 +332,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam("お誕生日ポイント", "birth_point");
         $objFormParam->addParam("消費税合計", 'tax');
         $objFormParam->addParam("最終保持ポイント", "total_point");
-        $objFormParam->addParam("顧客ID", "customer_id", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
-        $objFormParam->addParam("顧客ID", "edit_customer_id", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
+        $objFormParam->addParam("会員ID", "customer_id", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
+        $objFormParam->addParam("会員ID", "edit_customer_id", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
         $objFormParam->addParam("現在のポイント", "customer_point");
         $objFormParam->addParam("受注前ポイント", 'point');
         $objFormParam->addParam("注文番号", "order_id");
@@ -860,9 +860,9 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
     }
 
     /**
-     * 顧客情報をフォームに設定する.
+     * 会員情報をフォームに設定する.
      *
-     * @param integer $customer_id 顧客ID
+     * @param integer $customer_id 会員ID
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */

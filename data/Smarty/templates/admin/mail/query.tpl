@@ -36,7 +36,7 @@ self.moveTo(20,20);self.focus();
 
     <table class="form">
         <tr>
-            <th>顧客ID</th>
+            <th>会員ID</th>
             <td><!--{$arrSearchData.search_customer_id|default:"(未指定)"|h}--></td>
         </tr>
         <tr>

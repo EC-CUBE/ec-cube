@@ -25,7 +25,7 @@
 require_once CLASS_REALDIR . 'pages/admin/customer/LC_Page_Admin_Customer_Customer.php';
 
 /**
- * 顧客情報登録 のページクラス(拡張).
+ * 会員情報登録 のページクラス(拡張).
  *
  * LC_Page_Admin_Customer_Customer をカスタマイズする場合はこのクラスを編集する.
  *

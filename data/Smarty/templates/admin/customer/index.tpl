@@ -25,7 +25,7 @@
 <!--
 
     function fnDelete(customer_id) {
-        if (confirm('この顧客情報を削除しても宜しいですか？')) {
+        if (confirm('この会員情報を削除しても宜しいですか？')) {
             document.form1.mode.value = "delete"
             document.form1['edit_customer_id'].value = customer_id;
             document.form1.submit();
@@ -120,7 +120,7 @@
         <col width="7%" />
         <tr>
             <th rowspan="2">種別</th>
-            <th>顧客ID</th>
+            <th>会員ID</th>
             <th rowspan="2">お名前/(フリガナ)</th>
             <th rowspan="2">性別</th>
             <th>TEL</th>

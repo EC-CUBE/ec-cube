@@ -100,7 +100,7 @@
     <col width="15%" />
     <col width="15%" />
         <tr>
-            <th>顧客ID</th>
+            <th>会員ID</th>
             <th>名前</th>
             <th>メールアドレス</th>
             <th>希望配信</th>

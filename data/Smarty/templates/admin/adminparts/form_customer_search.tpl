@@ -1,5 +1,5 @@
 <tr>
-    <th>顧客ID</th>
+    <th>会員ID</th>
     <td>
     <!--{assign var=key value="search_customer_id"}-->
     <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->

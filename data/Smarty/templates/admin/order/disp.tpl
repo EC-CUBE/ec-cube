@@ -57,7 +57,7 @@ self.moveTo(20,20);self.focus();
     <h2>注文者情報</h2>
     <table class="form">
         <tr>
-            <th>顧客ID</th>
+            <th>会員ID</th>
             <td>
                 <!--{if $arrForm.customer_id.value > 0}-->
                     <!--{$arrForm.customer_id.value|h}-->

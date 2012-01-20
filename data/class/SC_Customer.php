@@ -65,7 +65,7 @@ class SC_Customer {
      * 配列の1番目に会員登録住所, 追加登録住所が存在する場合は2番目以降に
      * 設定される.
      *
-     * @param integer $customer_id 顧客ID
+     * @param integer $customer_id 会員ID
      * @return array 会員登録住所, 追加登録住所の配列
      */
     function getCustomerAddress($customer_id) {
@@ -299,7 +299,7 @@ __EOS__;
         }
     }
     
-    //受注関連の顧客情報を更新
+    //受注関連の会員情報を更新
     function updateOrderSummary($customer_id){
         $objQuery = new SC_Query_Ex();
         $arrOrderSummary =  $objQuery->getRow("SUM( payment_total ) as buy_total, COUNT(order_id) as buy_times,MAX( create_date ) as last_buy_date, MIN(create_date) as first_buy_date","dtb_order","customer_id = ? AND del_flg = 0 AND status <> ?",array($customer_id,ORDER_CANCEL));

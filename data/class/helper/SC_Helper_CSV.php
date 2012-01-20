@@ -52,7 +52,7 @@ class SC_Helper_CSV {
 
         $this->arrSubnaviName = array(
                                       1 => '商品管理',
-                                      2 => '顧客管理',
+                                      2 => '会員管理',
                                       3 => '受注管理',
                                       4 => 'レビュー',
                                       5 => 'カテゴリ'

@@ -380,7 +380,7 @@ class LC_Page {
     /**
      * ログ出力を行う.
      *
-     * ログイン中の顧客IDを含めてログ出力します.
+     * ログイン中の会員IDを含めてログ出力します.
      *
      * @access protected
      * @param string $mess ログメッセージ

@@ -265,7 +265,7 @@ class SC_Helper_Mail {
      * 登録メールを送信する。
      *
      * @param string $secret_key 会員固有キー
-     * @param integer $customer_id 顧客ID
+     * @param integer $customer_id 会員ID
      * @param boolean $is_mobile false(default):PCアドレスにメールを送る true:携帯アドレスにメールを送る
      * @return boolean true:成功 false:失敗
      */

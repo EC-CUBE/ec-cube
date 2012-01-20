@@ -898,7 +898,7 @@ class SC_Helper_Purchase {
      * 受注情報を取得する.
      *
      * @param integer $order_id 受注ID
-     * @param integer $customer_id 顧客ID
+     * @param integer $customer_id 会員ID
      * @return array 受注情報の配列
      */
     function getOrder($order_id, $customer_id = null) {

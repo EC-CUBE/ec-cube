@@ -45,7 +45,7 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex {
     {
         parent::init();
         $this->tpl_mainpage = 'customer/search_customer.tpl';
-        $this->tpl_subtitle = '顧客検索';
+        $this->tpl_subtitle = '会員検索';
         $this->httpCacheControl('nocache');
     }
 
@@ -79,7 +79,7 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex {
             return;
         }
 
-        // POSTのモードがsearchなら顧客検索開始
+        // POSTのモードがsearchなら会員検索開始
         switch ($this->getMode()) {
         case 'search':
             list($this->tpl_linemax, $this->arrCustomer, $this->objNavi) = $this->lfDoSearch($objFormParam->getHashArray());
@@ -122,10 +122,10 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex {
     }
 
     /**
-     * 顧客一覧を検索する処理
+     * 会員一覧を検索する処理
      *
      * @param array $arrParam 検索パラメーター連想配列
-     * @return array( integer 全体件数, mixed 顧客データ一覧配列, mixed SC_PageNaviオブジェクト)
+     * @return array( integer 全体件数, mixed 会員データ一覧配列, mixed SC_PageNaviオブジェクト)
      */
     function lfDoSearch($arrParam) {
         return SC_Helper_Customer_Ex::sfGetSearchData($arrParam);

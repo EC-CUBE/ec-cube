@@ -25,7 +25,7 @@
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
- * 顧客情報修正 のページクラス.
+ * 会員情報修正 のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
@@ -47,8 +47,8 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'customer';
         $this->tpl_subno = 'index';
         $this->tpl_pager = 'pager.tpl';
-        $this->tpl_maintitle = '顧客管理';
-        $this->tpl_subtitle = '顧客登録';
+        $this->tpl_maintitle = '会員管理';
+        $this->tpl_subtitle = '会員登録';
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
@@ -101,7 +101,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
             if(!SC_Utils_Ex::isBlank($this->arrErr)) {
                 return;
             }
-            //指定顧客の情報をセット
+            //指定会員の情報をセット
             $this->arrForm = SC_Helper_Customer_Ex::sfGetCustomerData($objFormSearchParam->getValue("edit_customer_id"), true);
             //購入履歴情報の取得
             list($this->tpl_linemax, $this->arrPurchaseHistory, $this->objNavi) = $this->lfPurchaseHistory($objFormSearchParam->getValue("edit_customer_id"));
@@ -203,11 +203,11 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        // 顧客項目のパラメーター取得
+        // 会員項目のパラメーター取得
         SC_Helper_Customer_Ex::sfCustomerEntryParam($objFormParam, true);
         // 検索結果一覧画面への戻り用パラメーター
         $objFormParam->addParam("検索用データ", "search_data", "", "", array(), "", false);
-        // 顧客購入履歴ページング用
+        // 会員購入履歴ページング用
         $objFormParam->addParam("", "search_pageno", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"), "", false);
     }
 
@@ -220,7 +220,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
     function lfInitSearchParam(&$objFormParam) {
         SC_Helper_Customer_Ex::sfSetSearchParam($objFormParam);
         // 初回受け入れ時用
-        $objFormParam->addParam("編集対象顧客ID", "edit_customer_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("編集対象会員ID", "edit_customer_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
     }
 
     /**
@@ -255,17 +255,17 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         $arrData = $objQuery->getRow($col, $table, $where, $arrVal);
         if(!SC_Utils_Ex::isBlank($arrData['email'])) {
             if($arrData['email'] == $objFormParam->getValue('email')) {
-                $arrErr['email'] = '※ すでに他の顧客(ID:' . $arrData['customer_id'] . ')が使用しているアドレスです。';
+                $arrErr['email'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用しているアドレスです。';
             }else if($arrData['email'] == $objFormParam->getValue('email_mobile')) {
-                $arrErr['email_mobile'] = '※ すでに他の顧客(ID:' . $arrData['customer_id'] . ')が使用しているアドレスです。';
+                $arrErr['email_mobile'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用しているアドレスです。';
             }
         }
         if(!SC_Utils_Ex::isBlank($arrData['email_mobile'])) {
             if($arrData['email_mobile'] == $objFormParam->getValue('email_mobile')) {
-                $arrErr['email_mobile'] = '※ すでに他の顧客(ID:' . $arrData['customer_id'] . ')が使用している携帯アドレスです。';
+                $arrErr['email_mobile'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用している携帯アドレスです。';
             }else if($arrData['email_mobile'] == $objFormParam->getValue('email')) {
             	if ($arrErr['email'] == "") {
-                    $arrErr['email'] = '※ すでに他の顧客(ID:' . $arrData['customer_id'] . ')が使用している携帯アドレスです。';
+                    $arrErr['email'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用している携帯アドレスです。';
                 }
             }
         }
@@ -305,7 +305,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
      * 購入履歴情報の取得
      *
      * @param array $arrParam 検索パラメーター連想配列
-     * @return array( integer 全体件数, mixed 顧客データ一覧配列, mixed SC_PageNaviオブジェクト)
+     * @return array( integer 全体件数, mixed 会員データ一覧配列, mixed SC_PageNaviオブジェクト)
      */
     function lfPurchaseHistory($customer_id, $pageno = 0){
         if(SC_Utils_Ex::isBlank($customer_id)) {

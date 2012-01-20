@@ -149,10 +149,10 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
         parent::lfInitParam($objFormParam);
 
         // お客様情報
-        $objFormParam->addParam("顧客名1", "order_name01", STEXT_LEN, 'KVa', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("顧客名2", "order_name02", STEXT_LEN, 'KVa', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("顧客名カナ1", "order_kana01", STEXT_LEN, 'KVCa', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("顧客名カナ2", "order_kana02", STEXT_LEN, 'KVCa', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("会員名1", "order_name01", STEXT_LEN, 'KVa', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("会員名2", "order_name02", STEXT_LEN, 'KVa', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("会員名カナ1", "order_kana01", STEXT_LEN, 'KVCa', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("会員名カナ2", "order_kana02", STEXT_LEN, 'KVCa', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("メールアドレス", "order_email", null, 'KVCa', array("NO_SPTAB", "EMAIL_CHECK", "EMAIL_CHAR_CHECK"));
         $objFormParam->addParam("郵便番号1", "order_zip01", ZIP01_LEN, 'n', array("NUM_CHECK", "NUM_COUNT_CHECK"));
         $objFormParam->addParam("郵便番号2", "order_zip02", ZIP02_LEN, 'n', array("NUM_CHECK", "NUM_COUNT_CHECK"));
@@ -200,8 +200,8 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam("お誕生日ポイント", "birth_point");
         $objFormParam->addParam("消費税合計", 'tax');
         $objFormParam->addParam("最終保持ポイント", "total_point");
-        $objFormParam->addParam("顧客ID", "customer_id", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
-        $objFormParam->addParam("顧客ID", "edit_customer_id", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
+        $objFormParam->addParam("会員ID", "customer_id", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
+        $objFormParam->addParam("会員ID", "edit_customer_id", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
         $objFormParam->addParam("現在のポイント", "customer_point");
         $objFormParam->addParam("受注前ポイント", 'point');
         $objFormParam->addParam("注文番号", "order_id");
