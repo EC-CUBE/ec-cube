@@ -298,7 +298,7 @@ __EOS__;
             return "";
         }
     }
-    
+
     //受注関連の会員情報を更新
     function updateOrderSummary($customer_id){
         $objQuery = new SC_Query_Ex();
@@ -306,4 +306,3 @@ __EOS__;
         $objQuery->update("dtb_customer",$arrOrderSummary,"customer_id = ?",array($customer_id));
     }
 }
-?>

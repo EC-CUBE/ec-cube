@@ -35,4 +35,3 @@ require_once CLASS_REALDIR . 'helper/SC_Helper_PageLayout.php';
  */
 class SC_Helper_PageLayout_Ex extends SC_Helper_PageLayout {
 }
-?>

@@ -32,4 +32,3 @@ $objPage = new LC_Page_Mypage_DownLoad();
 register_shutdown_function(array($objPage, "destroy"));
 $objPage->init();
 $objPage->process();
-?>

@@ -65,4 +65,3 @@ class LC_Page_FrontParts_Bloc_Cart_Ex extends LC_Page_FrontParts_Bloc_Cart {
         parent::destroy();
     }
 }
-?>

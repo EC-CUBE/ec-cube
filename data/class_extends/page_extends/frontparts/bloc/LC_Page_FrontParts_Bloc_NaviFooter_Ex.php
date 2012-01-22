@@ -65,4 +65,3 @@ class LC_Page_FrontParts_Bloc_NaviFooter_Ex extends LC_Page_FrontParts_Bloc_Navi
         parent::destroy();
     }
 }
-?>

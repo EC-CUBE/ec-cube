@@ -328,4 +328,3 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
     }
 
 }
-?>

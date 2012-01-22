@@ -162,4 +162,3 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex {
         return $clean_pageno;
     }
 }
-?>

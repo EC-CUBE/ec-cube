@@ -109,4 +109,3 @@ class LC_Page_Upgrade_Base extends LC_Page_Ex {
         // nothing.
     }
 }
-?>

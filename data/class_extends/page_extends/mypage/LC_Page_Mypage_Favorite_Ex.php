@@ -65,4 +65,3 @@ class LC_Page_Mypage_Favorite_Ex extends LC_Page_Mypage_Favorite {
         parent::destroy();
     }
 }
-?>

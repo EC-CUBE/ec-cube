@@ -275,4 +275,3 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
         return $objErr->arrErr;
     }
 }
-?>

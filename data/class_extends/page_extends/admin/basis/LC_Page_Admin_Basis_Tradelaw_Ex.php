@@ -64,4 +64,3 @@ class LC_Page_Admin_Basis_Tradelaw_Ex extends LC_Page_Admin_Basis_Tradelaw {
         parent::destroy();
     }
 }
-?>

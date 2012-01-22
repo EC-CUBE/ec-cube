@@ -187,4 +187,3 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
     }
 
 }
-?>

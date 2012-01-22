@@ -64,7 +64,7 @@ class LC_Page_FrontParts_Bloc_NaviHeader extends LC_Page_FrontParts_Bloc_Login_E
      */
     function action() {
         parent::action();
-        
+
         //ヘッダーナビのカート情報を取得
         $objCart = new SC_CartSession_Ex();
         $cartKeys = $objCart->getKeys();
@@ -86,8 +86,8 @@ class LC_Page_FrontParts_Bloc_NaviHeader extends LC_Page_FrontParts_Bloc_Login_E
      * カートの情報を取得する
      *
      * @param SC_CartSession $objCart カートセッション管理クラス
-	 * @param Array $arrInfo 基本情報配列
-	 * @param Array $cartKeys 商品種類配列
+     * @param Array $arrInfo 基本情報配列
+     * @param Array $cartKeys 商品種類配列
      * @return array $arrCartList カートデータ配列
      */
     function lfGetCartData($objCart, $arrInfo, $cartKeys) {
@@ -101,8 +101,7 @@ class LC_Page_FrontParts_Bloc_NaviHeader extends LC_Page_FrontParts_Bloc_Login_E
             $cartList[$key]['quantity'] = $objCart->getTotalQuantity($key); //商品数量合計
             $cartList[$key]['productTypeId'] = $key; // 商品種別ID
         }
-        
+
         return $cartList;
     }
 }
-?>

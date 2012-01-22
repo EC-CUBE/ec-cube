@@ -74,4 +74,3 @@ class LC_Page_Regist_Complete extends LC_Page_Ex {
         parent::destroy();
     }
 }
-?>

@@ -43,4 +43,3 @@ class SC_Initial_Ex extends SC_Initial {
         parent::SC_Initial();
     }
 }
-?>

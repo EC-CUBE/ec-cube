@@ -367,4 +367,3 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         return array($this->where, $this->arrVal);
     }
 }
-?>

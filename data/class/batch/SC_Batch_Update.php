@@ -254,4 +254,3 @@ class SC_Batch_Update extends SC_Batch {
         GC_Utils_Ex::gfPrintLog($msg, DATA_REALDIR . 'logs/ownersstore_batch_update.log');
     }
 }
-?>

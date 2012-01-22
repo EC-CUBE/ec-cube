@@ -68,4 +68,3 @@ class LC_Page_Unsupported extends LC_Page_Ex {
         parent::destroy();
     }
 }
-?>

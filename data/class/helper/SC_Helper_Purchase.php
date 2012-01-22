@@ -810,9 +810,9 @@ class SC_Helper_Purchase {
         $objQuery->update("dtb_order_temp", array('del_flg' => 1),
                           "order_temp_id = ?",
                           array(SC_SiteSession_Ex::getUniqId()));
-        
-        
-        
+
+
+
         return $orderParams['order_id'];
     }
 

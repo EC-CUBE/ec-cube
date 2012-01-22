@@ -36,5 +36,3 @@ WHERE dtb_customer.email = dtb_customer_mail.email
 $objQuery->commit();
 
 echo "正常に移行が完了致しました。";
-
-?>

@@ -84,7 +84,7 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
 
             $this->deleteOtherDeliv($customer_id, $objFormParam->getValue('other_deliv_id'));
             break;
-            
+
         // スマートフォン版のもっと見るボタン用
         case 'getList':
                 $arrData = $objFormParam->getHashArray();
@@ -108,7 +108,7 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
 
         //お届け先登録数
         $this->tpl_linemax = count($this->arrOtherDeliv);
-        
+
         // 1ページあたりの件数
         $this->dispNumber = SEARCH_PMAX;
     }
@@ -160,7 +160,7 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
         $objQuery->delete("dtb_other_deliv", $where, array($customer_id, $deliv_id));
     }
-    
+
     /**
      * 県名をセット
      *

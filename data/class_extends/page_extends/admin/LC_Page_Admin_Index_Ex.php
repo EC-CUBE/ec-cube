@@ -65,4 +65,3 @@ class LC_Page_Admin_Index_Ex extends LC_Page_Admin_Index {
         parent::destroy();
     }
 }
-?>

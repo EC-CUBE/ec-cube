@@ -35,4 +35,3 @@ require_once CLASS_REALDIR . 'helper/SC_Helper_Mobile.php';
  */
 class SC_Helper_Mobile_Ex extends SC_Helper_Mobile {
 }
-?>

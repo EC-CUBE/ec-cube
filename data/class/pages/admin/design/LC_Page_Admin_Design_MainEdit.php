@@ -360,4 +360,3 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         return SC_Helper_FileManager_Ex::sfWriteFile($path, $php_contents);
     }
 }
-?>

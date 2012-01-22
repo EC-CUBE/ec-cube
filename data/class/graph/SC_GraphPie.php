@@ -215,4 +215,3 @@ class SC_GraphPie extends SC_GraphBase{
         }
     }
 }
-?>

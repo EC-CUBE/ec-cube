@@ -104,4 +104,3 @@ class LC_Page_Error_DispError extends LC_Page_Admin_Ex {
         // queit.
     }
 }
-?>

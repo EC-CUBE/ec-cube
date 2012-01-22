@@ -54,9 +54,9 @@ function smarty_function_html_radios_ex($params, &$smarty)
 
     foreach($params as $_key => $_val) {
         switch($_key) {
-			case 'tags':
-				$$_key = split("\|", $_val);
-				break;
+    case 'tags':
+    $$_key = split("\|", $_val);
+    break;
             case 'name':
             case 'separator':
                 $$_key = (string)$_val;
@@ -91,7 +91,7 @@ function smarty_function_html_radios_ex($params, &$smarty)
 
             case 'assign':
                 break;
-			
+
             default:
                 if(!is_array($_val)) {
                     $extra .= ' '.$_key.'="'.smarty_function_escape_special_chars($_val).'"';
@@ -135,37 +135,35 @@ function smarty_function_html_radios_output_ex($name, $value, $output, $selected
    $_output .= '<input type="radio" name="'
         . smarty_function_escape_special_chars($name) . '" value="'
         . smarty_function_escape_special_chars($value) . '"';
-  	
+
    if ($labels && $label_ids) {
-	   $_id = smarty_function_escape_special_chars(preg_replace('![^\w\-\.]!', '_', $name . '_' . $value));
-	   $_output .= ' id="' . $_id . '"';
+       $_id = smarty_function_escape_special_chars(preg_replace('![^\w\-\.]!', '_', $name . '_' . $value));
+       $_output .= ' id="' . $_id . '"';
    }
     if ((string)$value == $selected) {
         $_output .= ' checked="checked"';
     }
-	
-	$_output .= $extra . ' />';
 
-	$_output .= $tags[0];
-		
-	if ($labels) {
+    $_output .= $extra . ' />';
+
+    $_output .= $tags[0];
+
+    if ($labels) {
       if($label_ids) {
-		  $_id = smarty_function_escape_special_chars(preg_replace('![^\w\-\.]!', '_', $name . '_' . $value));
+      $_id = smarty_function_escape_special_chars(preg_replace('![^\w\-\.]!', '_', $name . '_' . $value));
           $_output .= '<label for="' . $_id . '">';
       } else {
           $_output .= '<label>';           
       }
     }
-	
-	// 値を挿入
-	$_output .= $output;
-	
-	$_output .= $tags[1];
-	
-	if ($labels) $_output .= '</label>';
+
+    // 値を挿入
+    $_output .= $output;
+
+    $_output .= $tags[1];
+
+    if ($labels) $_output .= '</label>';
     $_output .=  $separator;
 
     return $_output;
 }
-
-?>

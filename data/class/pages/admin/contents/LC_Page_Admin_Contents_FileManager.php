@@ -482,4 +482,3 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
     }
 
 }
-?>

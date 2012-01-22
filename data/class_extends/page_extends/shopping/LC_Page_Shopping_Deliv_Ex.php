@@ -65,4 +65,3 @@ class LC_Page_Shopping_Deliv_Ex extends LC_Page_Shopping_Deliv {
         parent::destroy();
     }
 }
-?>

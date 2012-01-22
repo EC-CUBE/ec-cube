@@ -370,4 +370,3 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
     }
 
 }
-?>

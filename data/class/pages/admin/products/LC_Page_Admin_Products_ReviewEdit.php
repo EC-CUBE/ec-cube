@@ -179,4 +179,3 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
         $objQuery->update("dtb_review", $arrValues, "review_id = ?", array($review_id));
     }
 }
-?>

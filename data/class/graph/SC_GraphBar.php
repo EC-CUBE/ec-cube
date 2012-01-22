@@ -97,4 +97,3 @@ class SC_GraphBar extends SC_GraphLine{
     }
 
 }
-?>

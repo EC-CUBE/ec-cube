@@ -164,4 +164,3 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex {
         return $objQuery->update("dtb_member", $sqlVal, $where, array($id));
     }
 }
-?>

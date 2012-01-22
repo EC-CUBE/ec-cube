@@ -76,4 +76,3 @@ class LC_Page_Mypage_ChangeComplete extends LC_Page_AbstractMypage_Ex {
         parent::destroy();
     }
 }
-?>

@@ -28,5 +28,3 @@ class SC_UserView extends SC_SiteView_Ex {
         $this->_smarty->compile_dir = $compile_dir;
     }
 }
-
-?>

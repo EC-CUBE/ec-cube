@@ -169,4 +169,3 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex {
         }
     }
 }
-?>

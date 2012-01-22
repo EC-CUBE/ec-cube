@@ -41,4 +41,3 @@ class SC_Module_Payment extends SC_Module {
  * coding: utf-8
  * End:
  */
-?>

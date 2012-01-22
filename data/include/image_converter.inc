@@ -200,4 +200,3 @@ class ImageConverter {
         return array();
     }
 }
-?>

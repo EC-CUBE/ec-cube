@@ -65,4 +65,3 @@ class LC_Page_Admin_Products_UploadCSVCategory_Ex extends LC_Page_Admin_Products
         parent::destroy();
     }
 }
-?>

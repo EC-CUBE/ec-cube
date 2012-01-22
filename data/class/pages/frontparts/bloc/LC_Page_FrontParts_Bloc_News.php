@@ -191,7 +191,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
 
         return $json;
     }
-    
+
     /**
      * 新着情報の件数を取得する
      *
@@ -200,7 +200,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
     function lfGetNewsCount(){
 
         $count = 0;
-        
+
         $objQuery = SC_Query_Ex::getSingletonInstance();
         $count = $objQuery->count("dtb_news", "del_flg = '0'");
 
@@ -221,4 +221,3 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
         return SC_Utils_Ex::jsonEncode(array('error' => $messages));
     }
 }
-?>

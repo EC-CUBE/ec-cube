@@ -8,19 +8,18 @@
  * @return string 出力
  */
 function smarty_block_marquee($params, $content, &$smarty, &$repeat) {
-	// {/marquee}の場合のみ出力する。
-	if ($repeat || !isset($content)) {
-		return null;
-	}
+    // {/marquee}の場合のみ出力する。
+    if ($repeat || !isset($content)) {
+    return null;
+    }
 
-	// 末尾の改行などを取り除く。
-	$content = rtrim($content);
+    // 末尾の改行などを取り除く。
+    $content = rtrim($content);
 
-	// marqueeタグを使用しない場合
-	if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE && SC_MobileUserAgent::getCarrier() == 'docomo') {
-		return "<div>\n$content\n</div>\n";
-	}
+    // marqueeタグを使用しない場合
+    if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE && SC_MobileUserAgent::getCarrier() == 'docomo') {
+    return "<div>\n$content\n</div>\n";
+    }
 
-	return "<marquee>\n$content\n</marquee>\n";
+    return "<marquee>\n$content\n</marquee>\n";
 }
-?>

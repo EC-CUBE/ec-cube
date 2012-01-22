@@ -315,5 +315,3 @@ class LC_Page_Sitemap extends LC_Page_Ex {
     }
 
 }
-
-?>

@@ -252,4 +252,3 @@ class SC_SelectSql {
         $this->select = $sql;
     }
 }
-?>

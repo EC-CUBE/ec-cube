@@ -142,4 +142,3 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
                               array($send_id));
     }
 }
-?>

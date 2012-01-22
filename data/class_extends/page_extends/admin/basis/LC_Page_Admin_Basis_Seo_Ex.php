@@ -65,4 +65,3 @@ class LC_Page_Admin_Basis_Seo_Ex extends LC_Page_Admin_Basis_Seo {
         parent::destroy();
     }
 }
-?>

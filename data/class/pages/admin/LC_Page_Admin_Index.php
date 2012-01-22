@@ -236,4 +236,3 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
         GC_Utils_Ex::gfPrintLog($error_login_id . " password incorrect.");
     }
 }
-?>

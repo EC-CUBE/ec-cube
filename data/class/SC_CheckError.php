@@ -1219,4 +1219,3 @@ class SC_CheckError {
         return strlen($string) > 0 && !ctype_digit($string);
     }
 }
-?>

@@ -562,4 +562,3 @@ class LC_Page_Shopping extends LC_Page_Ex {
         return SC_Utils_Ex::jsonEncode(array('login_error' => $msg));
     }
 }
-?>

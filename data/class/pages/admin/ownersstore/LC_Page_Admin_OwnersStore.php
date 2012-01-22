@@ -80,4 +80,3 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         parent::destroy();
     }
 }
-?>

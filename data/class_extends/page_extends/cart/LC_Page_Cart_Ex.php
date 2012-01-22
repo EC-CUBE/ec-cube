@@ -65,4 +65,3 @@ class LC_Page_Cart_Ex extends LC_Page_Cart {
         parent::destroy();
     }
 }
-?>

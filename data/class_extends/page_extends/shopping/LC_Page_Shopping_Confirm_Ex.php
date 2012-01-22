@@ -65,4 +65,3 @@ class LC_Page_Shopping_Confirm_Ex extends LC_Page_Shopping_Confirm {
         parent::destroy();
     }
 }
-?>

@@ -65,4 +65,3 @@ class LC_Page_FrontParts_Bloc_Category_Ex extends LC_Page_FrontParts_Bloc_Catego
         parent::destroy();
     }
 }
-?>

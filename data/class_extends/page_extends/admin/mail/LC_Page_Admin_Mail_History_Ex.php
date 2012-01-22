@@ -65,4 +65,3 @@ class LC_Page_Admin_Mail_History_Ex extends LC_Page_Admin_Mail_History {
         parent::destroy();
     }
 }
-?>

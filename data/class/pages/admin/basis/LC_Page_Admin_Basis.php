@@ -277,4 +277,3 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         return  array_merge((array)$arrErr, (array)$objErr->arrErr);
     }
 }
-?>

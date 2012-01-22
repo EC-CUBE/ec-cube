@@ -65,4 +65,3 @@ class LC_Page_Admin_Basis_DeliveryInput_Ex extends LC_Page_Admin_Basis_DeliveryI
         parent::destroy();
     }
 }
-?>

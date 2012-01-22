@@ -65,4 +65,3 @@ class LC_Page_Admin_Products_Category_Ex extends LC_Page_Admin_Products_Category
         parent::destroy();
     }
 }
-?>

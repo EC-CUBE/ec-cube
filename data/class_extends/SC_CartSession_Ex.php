@@ -25,5 +25,3 @@ require_once CLASS_REALDIR . 'SC_CartSession.php';
 
 class SC_CartSession_Ex extends SC_CartSession {
 }
-
-?>

@@ -65,4 +65,3 @@ class LC_Page_ResizeImage_Ex extends LC_Page_ResizeImage {
         parent::destroy();
     }
 }
-?>

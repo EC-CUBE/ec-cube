@@ -227,4 +227,3 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
         return $objProduct->getListByProductIds($objQuery, $arrProductId);
     }
 }
-?>

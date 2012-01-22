@@ -65,4 +65,3 @@ class LC_Page_Entry_Kiyaku_Ex extends LC_Page_Entry_Kiyaku {
         parent::destroy();
     }
 }
-?>

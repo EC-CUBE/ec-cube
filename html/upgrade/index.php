@@ -72,5 +72,3 @@ function lfPageFactory($mode) {
     require_once $file;
     return new $class;
 }
-?>
-

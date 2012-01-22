@@ -221,4 +221,3 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
         }
     }
 }
-?>

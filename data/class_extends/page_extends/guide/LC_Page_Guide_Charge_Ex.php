@@ -65,4 +65,3 @@ class LC_Page_Guide_Charge_Ex extends LC_Page_Guide_Charge {
         parent::destroy();
     }
 }
-?>

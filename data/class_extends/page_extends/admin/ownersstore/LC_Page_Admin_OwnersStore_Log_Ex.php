@@ -65,4 +65,3 @@ class LC_Page_Admin_OwnersStore_Log_Ex extends LC_Page_Admin_OwnersStore_Log {
         parent::destroy();
     }
 }
-?>

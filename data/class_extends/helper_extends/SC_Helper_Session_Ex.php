@@ -45,4 +45,3 @@ class SC_Helper_Session_Ex extends SC_Helper_Session {
         parent::SC_Helper_Session();
     }
 }
-?>

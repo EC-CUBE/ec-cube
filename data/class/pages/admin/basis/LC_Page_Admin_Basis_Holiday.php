@@ -254,4 +254,3 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
         return $arrErr;
     }
 }
-?>

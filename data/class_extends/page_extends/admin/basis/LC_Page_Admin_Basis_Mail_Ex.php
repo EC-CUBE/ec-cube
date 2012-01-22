@@ -65,4 +65,3 @@ class LC_Page_Admin_Basis_Mail_Ex extends LC_Page_Admin_Basis_Mail {
         parent::destroy();
     }
 }
-?>

@@ -35,4 +35,3 @@ require_once CLASS_REALDIR . 'util/GC_Utils.php';
  */
 class GC_Utils_Ex extends GC_Utils {
 }
-?>

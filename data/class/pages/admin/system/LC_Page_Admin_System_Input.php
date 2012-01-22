@@ -369,4 +369,3 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         $objQuery->update("dtb_member", $sqlVal, $where, array($member_id));
     }
 }
-?>

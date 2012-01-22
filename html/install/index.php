@@ -1078,4 +1078,3 @@ function renameAdminDir($adminDir) {
     }
     return true;
 }
-?>

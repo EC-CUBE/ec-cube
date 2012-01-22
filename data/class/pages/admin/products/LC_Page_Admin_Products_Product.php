@@ -1173,7 +1173,7 @@ __EOF__;
     function lfUpdateProductClass($arrList) {
         $objQuery = new SC_Query_Ex();
         $sqlval = array();
-        
+
         $sqlval['deliv_fee'] = $arrList['deliv_fee'];
         $sqlval['point_rate'] = $arrList['point_rate'];
         $sqlval['sale_limit'] = $arrList['sale_limit'];
@@ -1443,4 +1443,3 @@ __EOF__;
         }
     }
 }
-?>

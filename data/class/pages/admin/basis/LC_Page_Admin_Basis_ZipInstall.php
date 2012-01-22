@@ -440,4 +440,3 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         return date('Y/m/d H:i:s', filemtime(ZIP_CSV_REALFILE));
     }
 }
-?>

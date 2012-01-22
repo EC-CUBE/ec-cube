@@ -178,4 +178,3 @@ class LC_Page_Error extends LC_Page_Ex {
         // queit.
     }
 }
-?>

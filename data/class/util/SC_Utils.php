@@ -2157,4 +2157,3 @@ class SC_Utils {
         return true;
     }
 }
-?>

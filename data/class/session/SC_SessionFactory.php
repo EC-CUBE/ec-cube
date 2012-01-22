@@ -105,4 +105,3 @@ class SC_SessionFactory {
  * coding: utf-8
  * End:
  */
-?>

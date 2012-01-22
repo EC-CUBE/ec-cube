@@ -65,4 +65,3 @@ class LC_Page_Contact_Complete_Ex extends LC_Page_Contact_Complete {
         parent::destroy();
     }
 }
-?>

@@ -153,4 +153,3 @@ class SC_MobileUserAgent {
     }
 
 }
-?>

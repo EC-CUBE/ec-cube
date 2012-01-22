@@ -71,4 +71,3 @@ class LC_Page_Admin_Plugin_Recommend extends LC_Page_Ex {
         parent::destroy();
     }
 }
-?>

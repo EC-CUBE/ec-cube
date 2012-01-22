@@ -304,4 +304,3 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
         return $objErr->arrErr;
     }
 }
-?>

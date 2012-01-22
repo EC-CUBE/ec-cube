@@ -38,4 +38,3 @@ class SC_SendMail_Ex extends SC_SendMail {
         parent::SC_SendMail();
     }
 }
-?>

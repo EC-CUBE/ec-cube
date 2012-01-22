@@ -103,7 +103,7 @@ class SC_Plugin_Template_Selector {
         }
         return $this;
     }
-    
+
 
     /**
      * 要素の後にHTMLを挿入
@@ -130,8 +130,8 @@ class SC_Plugin_Template_Selector {
         }
         return $this;
     }
-    
-    
+
+
     /**
      * 要素を指定したHTMLに置換
      *
@@ -144,8 +144,8 @@ class SC_Plugin_Template_Selector {
         }
         return $this;
     }
-    
-    
+
+
     /**
      * findで見つかったエレメントの数を返す
      *
@@ -154,9 +154,7 @@ class SC_Plugin_Template_Selector {
     function getFoundCount() {
         return count($this->arrElements);
     }
-    
+
 
 
 }
-
-?>

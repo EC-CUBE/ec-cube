@@ -133,4 +133,3 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex {
     }
 
 }
-?>

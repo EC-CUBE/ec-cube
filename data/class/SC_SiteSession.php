@@ -92,4 +92,3 @@ class SC_SiteSession {
         $_SESSION['site']['regist_success'] = true;
     }
 }
-?>

@@ -142,5 +142,3 @@ class SC_PageNavi {
         }
     }
 }
-
-?>

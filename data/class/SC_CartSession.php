@@ -736,4 +736,3 @@ class SC_CartSession {
         return in_array($product_type_id, $this->getKeys());
     }
 }
-?>

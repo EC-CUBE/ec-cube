@@ -139,4 +139,3 @@ class LC_Page_RSS extends LC_Page_Ex {
         return $arrNews;
     }
 }
-?>

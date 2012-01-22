@@ -25,5 +25,3 @@ require_once CLASS_REALDIR . 'SC_UserView.php';
 
 class SC_UserView_Ex extends SC_UserView {
 }
-
-?>

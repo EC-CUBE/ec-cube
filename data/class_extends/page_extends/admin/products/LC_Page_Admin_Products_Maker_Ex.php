@@ -65,4 +65,3 @@ class LC_Page_Admin_Products_Maker_Ex extends LC_Page_Admin_Products_Maker {
         parent::destroy();
     }
 }
-?>

@@ -65,4 +65,3 @@ class LC_Page_Admin_Contents_CsvSql_Ex extends LC_Page_Admin_Contents_CsvSql {
         parent::destroy();
     }
 }
-?>

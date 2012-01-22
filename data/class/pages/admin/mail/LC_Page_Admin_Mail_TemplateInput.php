@@ -158,4 +158,3 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
     }
 
 }
-?>

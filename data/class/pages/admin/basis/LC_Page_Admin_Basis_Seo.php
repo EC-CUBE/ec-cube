@@ -207,4 +207,3 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
         );
     }
 }
-?>

@@ -65,4 +65,3 @@ class LC_Page_Entry_Complete_Ex extends LC_Page_Entry_Complete {
         parent::destroy();
     }
 }
-?>

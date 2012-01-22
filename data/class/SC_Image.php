@@ -236,4 +236,3 @@ class SC_Image {
         return array(1,$RetVal);
     }
 }
-?>

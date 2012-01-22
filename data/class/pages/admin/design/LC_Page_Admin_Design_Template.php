@@ -344,4 +344,3 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
         return $isDefault ? DEFAULT_TEMPLATE_NAME : TEMPLATE_NAME;
     }
 }
-?>

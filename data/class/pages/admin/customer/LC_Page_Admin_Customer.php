@@ -231,4 +231,3 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
         return $objCSV->sfDownloadCsv('2', $where, $arrVal, $order, true);
     }
 }
-?>

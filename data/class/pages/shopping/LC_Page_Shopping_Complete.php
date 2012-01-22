@@ -83,4 +83,3 @@ class LC_Page_Shopping_Complete extends LC_Page_Ex {
         // nothing.
     }
 }
-?>

@@ -79,4 +79,3 @@ class LC_Page_Upgrade_SiteCheck extends LC_Page_Upgrade_Base {
      */
     function destroy() {}
 }
-?>

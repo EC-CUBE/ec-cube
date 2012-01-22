@@ -315,4 +315,3 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
         $objDb->sfRankDown("dtb_classcategory", "classcategory_id", $classcategory_id, $where);
     }
 }
-?>

@@ -65,4 +65,3 @@ class LC_Page_Admin_System_Rank_Ex extends LC_Page_Admin_System_Rank {
         parent::destroy();
     }
 }
-?>

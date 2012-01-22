@@ -226,4 +226,3 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam("フッター", 'footer', LTEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK", "SPTAB_CHECK"));
     }
 }
-?>

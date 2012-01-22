@@ -254,4 +254,3 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
         return true;
     }
 }
-?>

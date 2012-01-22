@@ -107,4 +107,3 @@ class LC_Page_Guide_Kiyaku extends LC_Page_Ex {
         $objPage->tpl_kiyaku_is_last = $index >= $last;
     }
 }
-?>

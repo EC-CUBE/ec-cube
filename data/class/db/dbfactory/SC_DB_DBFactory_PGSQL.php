@@ -232,4 +232,3 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
         return array();
     }
 }
-?>

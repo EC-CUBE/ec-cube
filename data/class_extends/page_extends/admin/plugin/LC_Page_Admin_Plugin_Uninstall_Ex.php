@@ -61,4 +61,3 @@ class LC_Page_Admin_Plugin_Uninstall_Ex extends LC_Page_Admin_Plugin_Uninstall {
         parent::destroy();
     }
 }
-?>

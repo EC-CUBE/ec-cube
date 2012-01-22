@@ -41,4 +41,3 @@ class SC_Batch {
      */
     function execute($argv = "") {}
 }
-?>

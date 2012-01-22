@@ -326,4 +326,3 @@ class GC_Utils {
         return implode(", ", $mailaddrs); //複数アドレスはカンマ区切りにする
     }
 }
-?>

@@ -172,4 +172,3 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex {
         return $objErr->arrErr;
     }
 }
-?>

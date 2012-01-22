@@ -65,4 +65,3 @@ class LC_Page_Guide_Kiyaku_Ex extends LC_Page_Guide_Kiyaku {
         parent::destroy();
     }
 }
-?>

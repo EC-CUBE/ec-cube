@@ -65,4 +65,3 @@ class LC_Page_Admin_System_Masterdata_Ex extends LC_Page_Admin_System_Masterdata
         parent::destroy();
     }
 }
-?>

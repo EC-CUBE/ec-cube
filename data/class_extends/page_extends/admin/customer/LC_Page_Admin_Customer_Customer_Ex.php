@@ -65,4 +65,3 @@ class LC_Page_Admin_Customer_Customer_Ex extends LC_Page_Admin_Customer_Customer
         parent::destroy();
     }
 }
-?>

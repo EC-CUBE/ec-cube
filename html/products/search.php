@@ -36,4 +36,3 @@ $objPage = new LC_Page_Products_Search_Ex();
 register_shutdown_function(array($objPage, "destroy"));
 $objPage->init();
 $objPage->process();
-?>

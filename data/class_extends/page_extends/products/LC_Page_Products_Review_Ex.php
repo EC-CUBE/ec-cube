@@ -65,4 +65,3 @@ class LC_Page_Products_Review_Ex extends LC_Page_Products_Review {
         parent::destroy();
     }
 }
-?>

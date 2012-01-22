@@ -99,7 +99,7 @@ class LC_Page {
         // スーパーフックポイントを実行.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
         $objPlugin->doAction('lc_page_preProcess', array($this));
-       
+
         // 店舗基本情報取得
         $this->arrSiteInfo = SC_Helper_DB_Ex::sfGetBasisData();
 
@@ -125,16 +125,16 @@ class LC_Page {
         // HeadNaviにpluginテンプレートを追加する.
         $objTemplateTransformList = SC_Plugin_Template_Transform_List::getSingletonInstance();
         $objTemplateTransformList->setHeadNaviBlocs($this->arrPageLayout['HeadNavi']);
-        
+
         // plugin側で生成したページがあるかを検証し、ある場合は tpl_mainpage にセットする.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
         $plugin_tmplpath = $objPlugin->getPluginTemplateCachePath($this);
         if (file_exists($plugin_tmplpath)) $this->tpl_mainpage = $plugin_tmplpath;
-        
+
         // スーパーフックポイントを実行.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
         $objPlugin->doAction('lc_page_process', array($this));
-        
+
         $this->objDisplay->prepare($this);
         $this->objDisplay->response->write();
     }
@@ -406,4 +406,3 @@ class LC_Page {
         SC_Utils_Ex::sfPrintR($val);
     }
 }
-?>

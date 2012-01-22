@@ -21,4 +21,3 @@ define('USE_FILENAME_DIR_INDEX', null);
  * c-hanging-comment-ender-p: nil
  * End:
  */
-?>

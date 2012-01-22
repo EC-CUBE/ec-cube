@@ -348,4 +348,3 @@ __EOF__;
         return $col_num;
     }
 }
-?>

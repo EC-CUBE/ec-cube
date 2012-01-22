@@ -362,4 +362,3 @@ __EOS__;
         parent::destroy();
     }
 }
-?>

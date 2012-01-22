@@ -42,4 +42,3 @@ class SC_Cookie {
         return isset($_COOKIE[$key]) ? $_COOKIE[$key] : null;
     }
 }
-?>

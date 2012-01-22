@@ -310,4 +310,3 @@ class SC_SendMail {
         return $arrParams;
     }
 }
-?>

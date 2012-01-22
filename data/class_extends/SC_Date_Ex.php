@@ -25,5 +25,3 @@ require_once CLASS_REALDIR . 'SC_Date.php';
 
 class SC_Date_Ex extends SC_Date {
 }
-
-?>

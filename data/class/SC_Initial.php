@@ -375,4 +375,3 @@ class SC_Initial {
         }
     }
 }
-?>

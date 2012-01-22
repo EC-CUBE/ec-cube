@@ -33,4 +33,3 @@ $objPage->blocItems = $params['items'];
 register_shutdown_function(array($objPage, "destroy"));
 $objPage->init();
 $objPage->process();
-?>

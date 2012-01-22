@@ -71,4 +71,3 @@ class LC_Page_FrontParts_Bloc extends LC_Page_Ex {
         GC_Utils_Ex::gfDebugLog($debug_message);
     }
 }
-?>

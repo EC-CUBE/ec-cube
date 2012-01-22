@@ -73,4 +73,3 @@ class LC_Page_FrontParts_Bloc_NaviFooter extends LC_Page_FrontParts_Bloc_Login_E
         parent::destroy();
     }
 }
-?>

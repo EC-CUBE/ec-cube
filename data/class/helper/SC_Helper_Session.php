@@ -231,4 +231,3 @@ class SC_Helper_Session {
         }
     }
 }
-?>

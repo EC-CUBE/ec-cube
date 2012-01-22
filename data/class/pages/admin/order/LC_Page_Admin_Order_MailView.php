@@ -95,4 +95,3 @@ class LC_Page_Admin_Order_MailView extends LC_Page_Admin_Ex {
         parent::destroy();
     }
 }
-?>

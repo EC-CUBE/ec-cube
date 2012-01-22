@@ -74,4 +74,3 @@ class SC_SmartphoneUserAgent {
         $_SESSION['pc_disp'] = false;
     }
 }
-?>

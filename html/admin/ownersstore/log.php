@@ -32,4 +32,3 @@ $objPage = new LC_Page_Admin_OwnersStore_Log_Ex();
 $objPage->init();
 $objPage->process();
 register_shutdown_function(array($objPage, 'destroy'));
-?>

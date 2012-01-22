@@ -236,4 +236,3 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
     }
 
 }
-?>

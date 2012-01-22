@@ -154,7 +154,7 @@ class LC_Page_Cart extends LC_Page_Ex {
 
         //商品の合計金額をセット
         $this->tpl_all_total_inctax = $totalIncTax;
-        
+
         $this->tpl_category_id = $objFormParam->getValue('category_id');
 
         // ログイン判定
@@ -263,4 +263,3 @@ class LC_Page_Cart extends LC_Page_Ex {
         $objCartSess->saveCurrentCart($uniqid, $cartKey);
     }
 }
-?>

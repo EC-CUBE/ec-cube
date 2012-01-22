@@ -497,7 +497,7 @@ __EOS__;
      * 商品情報配列に商品ステータス情報を追加する
      *
      * @param Array $arrProducts 商品一覧情報
-     * @param Array $arrStatus	商品ステータス配列
+     * @param Array $arrStatus 商品ステータス配列
      * @param Array $arrStatusImage スタータス画像配列
      * @return Array $arrProducts 商品一覧情報
      */
@@ -517,4 +517,3 @@ __EOS__;
         return $arrProducts;
     }
 }
-?>

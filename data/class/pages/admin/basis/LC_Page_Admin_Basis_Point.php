@@ -142,4 +142,3 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex {
         $ret = $objQuery->insert("dtb_baseinfo", $sqlval);
     }
 }
-?>

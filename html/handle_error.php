@@ -145,4 +145,3 @@ function displaySystemError($errstr = null) {
     }
     $objPage->process();
 }
-?>

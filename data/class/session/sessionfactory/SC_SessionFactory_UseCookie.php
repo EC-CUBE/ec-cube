@@ -72,4 +72,3 @@ class SC_SessionFactory_UseCookie extends SC_SessionFactory {
  * coding: utf-8
  * End:
  */
-?>

@@ -304,4 +304,3 @@ class LC_Page_Forgot extends LC_Page_Ex {
     }
 
 }
-?>

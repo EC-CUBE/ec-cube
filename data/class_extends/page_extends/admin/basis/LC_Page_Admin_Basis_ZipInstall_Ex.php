@@ -65,4 +65,3 @@ class LC_Page_Admin_Basis_ZipInstall_Ex extends LC_Page_Admin_Basis_ZipInstall {
         parent::destroy();
     }
 }
-?>

@@ -143,4 +143,3 @@ class LC_Page_Admin_GoogleAnalytics extends LC_Page_Ex {
         parent::destroy();
     }
 }
-?>

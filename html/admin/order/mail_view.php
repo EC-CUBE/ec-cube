@@ -32,4 +32,3 @@ $objPage = new LC_Page_Admin_Order_MailView_Ex();
 register_shutdown_function(array($objPage, 'destroy'));
 $objPage->init();
 $objPage->process();
-?>

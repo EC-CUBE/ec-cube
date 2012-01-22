@@ -65,4 +65,3 @@ class LC_Page_Sitemap_Ex extends LC_Page_Sitemap {
         parent::destroy();
     }
 }
-?>

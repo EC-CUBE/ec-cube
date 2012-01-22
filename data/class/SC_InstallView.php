@@ -28,5 +28,3 @@ class SC_InstallView extends SC_View_Ex {
         $this->_smarty->compile_dir = $compile_dir;
     }
 }
-
-?>

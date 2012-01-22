@@ -160,4 +160,3 @@ class SC_DB_DBFactory {
     function sfGetCreateIndexDefinition($table, $name, $definition) { return $definition; }
 
 }
-?>

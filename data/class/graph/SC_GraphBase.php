@@ -482,4 +482,3 @@ class SC_GraphBase {
         return $ret;
     }
 }
-?>

@@ -37,5 +37,3 @@ function smarty_modifier_nl2br_html($string) {
 
     return implode('', $lines);
 }
-
-?>

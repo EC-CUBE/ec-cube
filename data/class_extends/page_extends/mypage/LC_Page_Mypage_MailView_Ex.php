@@ -65,4 +65,3 @@ class LC_Page_Mypage_MailView_Ex extends LC_Page_Mypage_MailView {
         parent::destroy();
     }
 }
-?>

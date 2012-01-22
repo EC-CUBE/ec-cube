@@ -192,4 +192,3 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
         return !SC_Utils_Ex::isBlank($memo03);
     }
 }
-?>

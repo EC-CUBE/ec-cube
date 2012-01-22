@@ -25,5 +25,3 @@ require_once CLASS_REALDIR . 'SC_SelectSql.php';
 
 class SC_SelectSql_Ex extends SC_SelectSql {
 }
-
-?>

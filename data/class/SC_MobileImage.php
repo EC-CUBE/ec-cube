@@ -107,4 +107,3 @@ class SC_MobileImage {
         return $buffer;
     }
 }
-?>

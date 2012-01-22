@@ -65,4 +65,3 @@ class LC_Page_FrontParts_Bloc_LoginHeader_Ex extends LC_Page_FrontParts_Bloc_Log
         parent::destroy();
     }
 }
-?>

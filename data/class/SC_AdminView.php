@@ -31,5 +31,3 @@ class SC_AdminView extends SC_View_Ex {
         $this->initpath();
     }
 }
-
-?>

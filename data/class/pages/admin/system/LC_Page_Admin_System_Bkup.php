@@ -428,7 +428,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
         //圧縮フラグTRUEはgzip解凍をおこなう
         $tar = new Archive_Tar($bkup_dir . $bkup_name . $bkup_ext, TRUE);
-        
+
         //指定されたフォルダ内に解凍する
         $success = $tar->extract($bkup_dir);
 
@@ -485,7 +485,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         if($fp === false) {
             SC_Utils_Ex::sfDispException($csv . ' のファイルオープンに失敗しました。');
         }
-        
+
         while (!feof($fp)) {
             $data = fgetcsv($fp, 1000000);
 
@@ -597,4 +597,3 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
     }
 
 }
-?>

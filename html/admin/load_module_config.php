@@ -56,4 +56,3 @@ if(!empty($module_id) && is_numeric($module_id)) {
         die("モジュールが存在しません: module_id => $module_id");
     }
 }
-?>

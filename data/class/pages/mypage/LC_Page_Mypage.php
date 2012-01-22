@@ -88,7 +88,7 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
         $this->arrOrder = $this->lfGetOrderHistory($customer_id, $this->objNavi->start_row);
 
         switch($this->getMode()){
-        	case "getList":
+    case "getList":
                     echo SC_Utils_Ex::jsonEncode($this->arrOrder);
                     exit;
                 break;
@@ -99,7 +99,7 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
         $this->arrPayment = SC_Helper_DB_Ex::sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
         // 1ページあたりの件数
         $this->dispNumber = SEARCH_PMAX;
-        
+
     }
 
     /**

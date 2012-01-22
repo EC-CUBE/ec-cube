@@ -65,4 +65,3 @@ class LC_Page_Error_DispError_Ex extends LC_Page_Error_DispError {
         parent::destroy();
     }
 }
-?>

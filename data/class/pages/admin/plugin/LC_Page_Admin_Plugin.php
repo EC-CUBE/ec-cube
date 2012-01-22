@@ -112,4 +112,3 @@ class LC_Page_Admin_Plugin extends LC_Page_Admin_Ex {
 
     }
 }
-?>

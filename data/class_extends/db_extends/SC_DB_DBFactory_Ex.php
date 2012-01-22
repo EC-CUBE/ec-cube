@@ -61,4 +61,3 @@ class SC_DB_DBFactory_Ex extends SC_DB_DBFactory {
         }
     }
 }
-?>

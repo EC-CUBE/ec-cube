@@ -65,4 +65,3 @@ class LC_Page_Admin_Mail_Template_Ex extends LC_Page_Admin_Mail_Template {
         parent::destroy();
     }
 }
-?>

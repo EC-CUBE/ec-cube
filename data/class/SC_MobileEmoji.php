@@ -63,4 +63,3 @@ class SC_MobileEmoji {
         return isset($arrMap[$index]) ? $arrMap[$index] : MOBILE_EMOJI_SUBSTITUTE;
     }
 }
-?>

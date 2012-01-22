@@ -160,4 +160,3 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
         }
     }
 }
-?>

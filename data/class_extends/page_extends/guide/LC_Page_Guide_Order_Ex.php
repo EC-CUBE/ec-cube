@@ -65,4 +65,3 @@ class LC_Page_Guide_Order_Ex extends LC_Page_Guide_Order {
         parent::destroy();
     }
 }
-?>

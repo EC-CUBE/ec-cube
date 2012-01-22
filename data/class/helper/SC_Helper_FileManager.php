@@ -425,4 +425,3 @@ class SC_Helper_FileManager {
         return $result;
     }
 }
-?>

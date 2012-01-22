@@ -128,4 +128,3 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin_Ex {
         return $arrRet;
     }
 }
-?>

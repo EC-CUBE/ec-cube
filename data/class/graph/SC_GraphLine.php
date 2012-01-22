@@ -306,4 +306,3 @@ class SC_GraphLine extends SC_GraphBase{
         $this->YTitle = $title;
     }
 }
-?>

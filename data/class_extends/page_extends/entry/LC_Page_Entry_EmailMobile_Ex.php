@@ -65,4 +65,3 @@ class LC_Page_Entry_EmailMobile_Ex extends LC_Page_Entry_EmailMobile {
         parent::destroy();
     }
 }
-?>

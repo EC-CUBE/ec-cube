@@ -65,4 +65,3 @@ class LC_Page_FrontParts_LoginCheck_Ex extends LC_Page_FrontParts_LoginCheck {
         parent::destroy();
     }
 }
-?>

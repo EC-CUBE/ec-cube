@@ -362,4 +362,3 @@ class SC_DB_MasterData {
         return $data;
     }
 }
-?>

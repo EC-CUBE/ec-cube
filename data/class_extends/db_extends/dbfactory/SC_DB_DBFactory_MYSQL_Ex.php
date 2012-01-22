@@ -35,4 +35,3 @@ require_once CLASS_REALDIR . 'db/dbfactory/SC_DB_DBFactory_MYSQL.php';
  */
 class SC_DB_DBFactory_MYSQL_Ex extends SC_DB_DBFactory_MYSQL {
 }
-?>

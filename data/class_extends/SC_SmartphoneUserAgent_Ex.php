@@ -25,5 +25,3 @@ require_once CLASS_REALDIR . 'SC_SmartphoneUserAgent.php';
 
 class SC_SmartphoneUserAgent_Ex extends SC_SmartphoneUserAgent {
 }
-
-?>

@@ -69,4 +69,3 @@ class LC_Page_FrontParts_Bloc_GoogleAnalytics extends LC_Page_Ex {
         parent::destroy();
     }
 }
-?>

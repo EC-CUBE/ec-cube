@@ -896,4 +896,3 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         return array($arrTitleCol, $arrDataCol);
     }
 }
-?>

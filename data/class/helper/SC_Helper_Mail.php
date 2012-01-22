@@ -473,4 +473,3 @@ class SC_Helper_Mail {
         return;
     }
 }
-?>

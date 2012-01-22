@@ -201,4 +201,3 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
         return $arrMainCat;
     }
 }
-?>

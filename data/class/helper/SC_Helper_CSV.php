@@ -345,4 +345,3 @@ class SC_Helper_CSV {
         echo file_get_contents($filepath);
     }
 }
-?>

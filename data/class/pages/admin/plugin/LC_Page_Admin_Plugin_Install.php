@@ -133,4 +133,3 @@ class LC_Page_Admin_Plugin_Install extends LC_Page_Admin_Ex {
         $this->objFormParam->addParam('プラグインのパス', 'path', STEXT_LEN, '', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
     }
 }
-?>

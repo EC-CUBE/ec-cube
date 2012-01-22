@@ -65,4 +65,3 @@ class LC_Page_Admin_Order_Multiple_Ex extends LC_Page_Admin_Order_Multiple {
         parent::destroy();
     }
 }
-?>

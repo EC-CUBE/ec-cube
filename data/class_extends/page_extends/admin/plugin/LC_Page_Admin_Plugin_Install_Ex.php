@@ -61,4 +61,3 @@ class LC_Page_Admin_Plugin_Install_Ex extends LC_Page_Admin_Plugin_Install {
         parent::destroy();
     }
 }
-?>

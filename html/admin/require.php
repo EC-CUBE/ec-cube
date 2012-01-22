@@ -31,4 +31,3 @@ require_once HTML_REALDIR . 'handle_error.php';
 require_once HTML_REALDIR . HTML2DATA_DIR . 'require_base.php';
 
 ob_start();
-?>

@@ -355,4 +355,3 @@ class SC_Fpdf extends PDF_Japanese {
     function Footer() {
     }
 }
-?>

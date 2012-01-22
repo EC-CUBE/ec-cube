@@ -76,4 +76,3 @@ class LC_Page_Index extends LC_Page_Ex {
         parent::destroy();
     }
 }
-?>

@@ -131,4 +131,3 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex {
         return SC_Helper_Customer_Ex::sfGetSearchData($arrParam);
     }
 }
-?>

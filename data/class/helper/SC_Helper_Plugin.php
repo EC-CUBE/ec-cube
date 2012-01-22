@@ -42,7 +42,7 @@ class SC_Helper_Plugin {
      * @return void
      */
     function load() {
-        
+
         if (!defined('CONFIG_REALFILE') || !file_exists(CONFIG_REALFILE)) return; // インストール前
         if (SC_Utils_Ex::sfIsInstallFunction()) return; // インストール中
 
@@ -100,7 +100,7 @@ class SC_Helper_Plugin {
 
             ksort($this->arrRegistedPluginActions[$hook_point]);
             foreach ($this->arrRegistedPluginActions[$hook_point] as $priority => $arrFuncs) {
-                
+
                 foreach ($arrFuncs as $func) {
                     if (!is_null($func['function'])) {
                         call_user_func_array($func['function'], $arrArgs);
@@ -301,7 +301,7 @@ class SC_Helper_Plugin {
                 else @unlink($cur_path);
             }
             closedir($handle);
-            
+
             // ディレクトリを削除
             if ($del_myself) @rmdir($path);
         } else {
@@ -318,15 +318,15 @@ class SC_Helper_Plugin {
      */
     function getPluginTemplateCachePath($objPage) {
         // main_template の差し替え
-		if (strpos($objPage->tpl_mainpage, SMARTY_TEMPLATES_REALDIR) === 0) {
-			// フルパスで指定された
-			$dir = '';
-			$default_tpl_mainpage = str_replace(SMARTY_TEMPLATES_REALDIR, '', $objPage->tpl_mainpage);
-		} else {
+    if (strpos($objPage->tpl_mainpage, SMARTY_TEMPLATES_REALDIR) === 0) {
+    // フルパスで指定された
+    $dir = '';
+    $default_tpl_mainpage = str_replace(SMARTY_TEMPLATES_REALDIR, '', $objPage->tpl_mainpage);
+    } else {
             // フロントページ or 管理画面を判定
-		    $dir = ($objPage instanceof LC_Page_Admin) ? 'admin/' : TEMPLATE_NAME . '/';
-			$default_tpl_mainpage = $objPage->tpl_mainpage;
-		}
+        $dir = ($objPage instanceof LC_Page_Admin) ? 'admin/' : TEMPLATE_NAME . '/';
+    $default_tpl_mainpage = $objPage->tpl_mainpage;
+    }
         return PLUGIN_TMPL_CACHE_REALDIR . $dir . $default_tpl_mainpage;
     }
 

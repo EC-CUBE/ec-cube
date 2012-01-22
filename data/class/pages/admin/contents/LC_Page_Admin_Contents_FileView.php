@@ -150,4 +150,3 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex {
         }
     }
 }
-?>

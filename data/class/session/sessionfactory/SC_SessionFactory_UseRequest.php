@@ -542,4 +542,3 @@ class LC_UseRequest_State_Mobile extends LC_UseRequest_State {
  * coding: utf-8
  * End:
  */
-?>

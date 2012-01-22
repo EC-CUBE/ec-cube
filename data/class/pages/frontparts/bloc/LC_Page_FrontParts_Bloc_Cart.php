@@ -127,4 +127,3 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
         return $arrCartList;
     }
 }
-?>

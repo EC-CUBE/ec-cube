@@ -48,23 +48,23 @@ function smarty_function_html_checkboxes_ex($params, &$smarty)
     $selected = null;
     $separator = '';
     $labels = true;
-	$label_ids = true;
+    $label_ids = true;
     $output = null;
 
     $extra = '';
 
     foreach($params as $_key => $_val) {
         switch($_key) {
-			case 'tags':
-				$$_key = split("\|", $_val);
-				break;
+    case 'tags':
+    $$_key = split("\|", $_val);
+    break;
             case 'name':
             case 'separator':
                 $$_key = $_val;
                 break;
 
             case 'labels':
-			case 'label_ids':
+    case 'label_ids':
                 $$_key = (bool)$_val;
                 break;
 
@@ -128,42 +128,40 @@ function smarty_function_html_checkboxes_ex($params, &$smarty)
 }
 
 function smarty_function_html_checkboxes_output_ex($name, $value, $output, $selected, $extra, $separator, $labels, $label_ids, $tags) {
-	$_output = '';
-		
+    $_output = '';
+
     $_output .= '<input type="checkbox" name="'
         . smarty_function_escape_special_chars($name) . '[]" value="'
         . smarty_function_escape_special_chars($value) . '"';
-	
-	if ($labels && $label_ids) {
-		$_id = smarty_function_escape_special_chars(preg_replace('![^\w\-\.]!', '_', $name . '_' . $value));
-		$_output .= ' id="' . $_id . '"';
-	}
-	
+
+    if ($labels && $label_ids) {
+    $_id = smarty_function_escape_special_chars(preg_replace('![^\w\-\.]!', '_', $name . '_' . $value));
+    $_output .= ' id="' . $_id . '"';
+    }
+
     if (in_array((string)$value, $selected)) {
         $_output .= ' checked="checked"';
     }
     $_output .= $extra . ' />';
-	
-	$_output .= $tags[0];
-	
-	if ($labels) {
-		if($label_ids) {
-			$_id = smarty_function_escape_special_chars(preg_replace('![^\w\-\.]!', '_', $name . '_' . $value));
-			$_output .= '<label for="' . $_id . '">';
-		} else {
-			$_output .= '<label>';			
-		}
-	}
-	
-	// 値を挿入
-	$_output .= $output;
-	
-	$_output .= $tags[1];
-	
+
+    $_output .= $tags[0];
+
+    if ($labels) {
+    if($label_ids) {
+    $_id = smarty_function_escape_special_chars(preg_replace('![^\w\-\.]!', '_', $name . '_' . $value));
+    $_output .= '<label for="' . $_id . '">';
+    } else {
+    $_output .= '<label>';
+    }
+    }
+
+    // 値を挿入
+    $_output .= $output;
+
+    $_output .= $tags[1];
+
     if ($labels) $_output .= '</label>';
     $_output .=  $separator;
 
     return $_output;
 }
-
-?>

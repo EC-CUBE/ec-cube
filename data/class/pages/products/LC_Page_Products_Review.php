@@ -208,4 +208,3 @@ class LC_Page_Products_Review extends LC_Page_Ex {
         $objQuery->commit();
     }
 }
-?>

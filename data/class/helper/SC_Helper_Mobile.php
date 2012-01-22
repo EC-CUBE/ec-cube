@@ -523,4 +523,3 @@ class SC_Helper_Mobile {
         return $mime_type;
     }
 }
-?>

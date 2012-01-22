@@ -134,4 +134,3 @@ function updateModuleTable($arrProductsList) {
     }
     $objQuery->commit();
 }
-?>

@@ -72,4 +72,3 @@ class LC_Page_Guide extends LC_Page_Ex {
         parent::destroy();
     }
 }
-?>

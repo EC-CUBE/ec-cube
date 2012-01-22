@@ -43,8 +43,8 @@ class LC_Page_Guide_About extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-	$masterData = new SC_DB_MasterData_Ex();
-	$this->arrPref = $masterData->getMasterData('mtb_pref');
+    $masterData = new SC_DB_MasterData_Ex();
+    $this->arrPref = $masterData->getMasterData('mtb_pref');
     }
 
     /**
@@ -75,4 +75,3 @@ class LC_Page_Guide_About extends LC_Page_Ex {
         parent::destroy();
     }
 }
-?>

@@ -73,4 +73,3 @@ class LC_Page_Products_Search extends LC_Page_Ex {
         parent::destroy();
     }
 }
-?>

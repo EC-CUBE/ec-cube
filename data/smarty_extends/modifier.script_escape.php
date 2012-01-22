@@ -18,4 +18,3 @@ function smarty_modifier_script_escape($value) {
         return $value;
     }
 }
-?>

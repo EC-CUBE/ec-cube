@@ -140,4 +140,3 @@ END;
         return isset($arrRet[0]) ? $arrRet[0] : array();
     }
 }
-?>

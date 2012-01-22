@@ -87,7 +87,7 @@ class LC_Page_Admin extends LC_Page_Ex {
      * @return void
      */
     function sendResponse() {
-        
+
         // HeadNaviにpluginテンプレートを追加する.
         $objTemplateTransformList = SC_Plugin_Template_Transform_List::getSingletonInstance();
         $objTemplateTransformList->setHeadNaviBlocs($this->arrPageLayout['HeadNavi']);
@@ -100,7 +100,7 @@ class LC_Page_Admin extends LC_Page_Ex {
         // スーパーフックポイントを実行.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
         $objPlugin->doAction('lc_page_process', array($this));
-       
+
         $this->objDisplay->prepare($this, true);
         $this->objDisplay->response->write();
     }
@@ -131,4 +131,3 @@ class LC_Page_Admin extends LC_Page_Ex {
     }
 
 }
-?>

@@ -29,5 +29,3 @@ class SC_MobileView extends SC_SiteView_Ex {
         $this->assignTemplatePath(DEVICE_TYPE_MOBILE);
     }
 }
-
-?>

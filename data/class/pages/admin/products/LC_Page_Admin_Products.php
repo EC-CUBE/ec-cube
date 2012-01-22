@@ -390,4 +390,3 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
         return $objQuery->select($col, $from, $where, $arrValues);
     }
 }
-?>

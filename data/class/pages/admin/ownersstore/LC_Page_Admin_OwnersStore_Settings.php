@@ -203,4 +203,3 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex {
         return array();
     }
 }
-?>

@@ -307,4 +307,3 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
         return $definition;
     }
 }
-?>

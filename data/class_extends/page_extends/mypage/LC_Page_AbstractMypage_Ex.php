@@ -65,4 +65,3 @@ class LC_Page_AbstractMypage_Ex extends LC_Page_AbstractMypage {
         parent::destroy();
     }
 }
-?>

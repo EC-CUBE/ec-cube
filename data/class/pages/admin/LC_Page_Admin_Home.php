@@ -331,4 +331,3 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
         return $arrInfo;
     }
 }
-?>

@@ -65,4 +65,3 @@ class LC_Page_Guide_Privacy_Ex extends LC_Page_Guide_Privacy {
         parent::destroy();
     }
 }
-?>

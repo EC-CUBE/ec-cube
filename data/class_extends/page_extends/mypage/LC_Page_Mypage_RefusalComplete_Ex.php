@@ -65,4 +65,3 @@ class LC_Page_Mypage_RefusalComplete_Ex extends LC_Page_Mypage_RefusalComplete {
         parent::destroy();
     }
 }
-?>

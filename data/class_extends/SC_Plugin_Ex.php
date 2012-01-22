@@ -38,4 +38,3 @@ class SC_Plugin_Ex extends SC_Plugin {
         parent::SC_Plugin();
     }
 }
-?>

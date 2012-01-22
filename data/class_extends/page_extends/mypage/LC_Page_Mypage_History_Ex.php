@@ -65,4 +65,3 @@ class LC_Page_Mypage_History_Ex extends LC_Page_Mypage_History {
         parent::destroy();
     }
 }
-?>

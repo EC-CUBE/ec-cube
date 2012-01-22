@@ -558,4 +558,3 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         }
     }
 }
-?>

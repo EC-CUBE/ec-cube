@@ -65,4 +65,3 @@ class LC_Page_FrontParts_Bloc_Calendar_Ex extends LC_Page_FrontParts_Bloc_Calend
         parent::destroy();
     }
 }
-?>

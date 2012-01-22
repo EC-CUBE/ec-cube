@@ -178,4 +178,3 @@ class LC_Page_Regist extends LC_Page_Ex {
         $objMail->sendMail();
     }
 }
-?>

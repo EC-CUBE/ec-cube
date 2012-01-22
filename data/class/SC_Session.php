@@ -141,4 +141,3 @@ class SC_Session {
         GC_Utils_Ex::gfPrintLog("logout : user=".$this->login_id." auth=".$this->authority." sid=".$this->sid);
     }
 }
-?>

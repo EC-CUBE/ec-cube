@@ -515,4 +515,3 @@ class SC_UploadFile {
         return $dst_file;
     }
 }
-?>

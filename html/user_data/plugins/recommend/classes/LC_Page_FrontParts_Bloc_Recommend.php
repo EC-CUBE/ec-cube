@@ -110,4 +110,3 @@ __EOS__;
         return $recommendProducts;
     }
 }
-?>

@@ -65,4 +65,3 @@ class LC_Page_Products_ReviewComplete_Ex extends LC_Page_Products_ReviewComplete
         parent::destroy();
     }
 }
-?>

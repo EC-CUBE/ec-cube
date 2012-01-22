@@ -476,4 +476,3 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         return $arrList;
     }
 }
-?>

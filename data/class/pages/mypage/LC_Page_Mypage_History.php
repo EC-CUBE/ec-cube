@@ -148,7 +148,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
 
         return $arrShipping;
     }
-    
+
     /**
      * 購入履歴商品に画像をセット
      *

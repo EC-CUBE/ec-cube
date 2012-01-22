@@ -167,5 +167,3 @@ class SC_View {
         $this->_smarty->debugging = $var;
     }
 }
-
-?>

@@ -81,4 +81,3 @@ class LC_Page_Order extends LC_Page_Ex {
         parent::destroy();
     }
 }
-?>

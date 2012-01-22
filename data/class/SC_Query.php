@@ -1023,5 +1023,3 @@ class SC_Query {
     }
 
 }
-
-?>

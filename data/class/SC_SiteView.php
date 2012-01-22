@@ -37,5 +37,3 @@ class SC_SiteView extends SC_View_Ex {
         }
     }
 }
-
-?>

@@ -65,4 +65,3 @@ class LC_Page_Guide_About_Ex extends LC_Page_Guide_About {
         parent::destroy();
     }
 }
-?>

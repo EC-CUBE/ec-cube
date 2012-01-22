@@ -65,4 +65,3 @@ class LC_Page_Entry_New_Ex extends LC_Page_Entry_New {
         parent::destroy();
     }
 }
-?>

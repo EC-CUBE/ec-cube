@@ -453,4 +453,3 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
         return $objQuery->select('*', 'dtb_order', $where, $arrValues);
     }
 }
-?>

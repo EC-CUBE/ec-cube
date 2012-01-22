@@ -25,5 +25,3 @@ require_once CLASS_REALDIR . 'SC_FormParam.php';
 
 class SC_FormParam_Ex extends SC_FormParam {
 }
-
-?>

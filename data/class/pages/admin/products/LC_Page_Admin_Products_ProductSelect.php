@@ -169,4 +169,3 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
         return $arrProducts;
     }
 }
-?>

@@ -65,4 +65,3 @@ class LC_Page_Admin_Design_MainEdit_Ex extends LC_Page_Admin_Design_MainEdit {
         parent::destroy();
     }
 }
-?>

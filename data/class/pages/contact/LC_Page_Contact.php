@@ -203,4 +203,3 @@ class LC_Page_Contact extends LC_Page_Ex {
         );
     }
 }
-?>

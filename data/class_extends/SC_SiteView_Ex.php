@@ -25,5 +25,3 @@ require_once CLASS_REALDIR . 'SC_SiteView.php';
 
 class SC_SiteView_Ex extends SC_SiteView {
 }
-
-?>

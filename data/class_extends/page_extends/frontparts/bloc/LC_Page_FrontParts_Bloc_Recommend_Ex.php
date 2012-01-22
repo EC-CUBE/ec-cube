@@ -65,4 +65,3 @@ class LC_Page_FrontParts_Bloc_Recommend_Ex extends LC_Page_FrontParts_Bloc_Recom
         parent::destroy();
     }
 }
-?>

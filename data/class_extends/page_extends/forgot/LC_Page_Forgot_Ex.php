@@ -65,4 +65,3 @@ class LC_Page_Forgot_Ex extends LC_Page_Forgot {
         parent::destroy();
     }
 }
-?>

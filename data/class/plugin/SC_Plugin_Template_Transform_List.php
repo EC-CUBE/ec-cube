@@ -173,5 +173,3 @@ class SC_Plugin_Template_Transform_List {
     }
 
 }
-
-?>

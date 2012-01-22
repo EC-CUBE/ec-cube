@@ -290,4 +290,3 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
         $objQuery->commit();
     }
 }
-?>

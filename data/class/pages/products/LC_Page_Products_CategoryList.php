@@ -163,4 +163,3 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex {
     }
 
 }
-?>

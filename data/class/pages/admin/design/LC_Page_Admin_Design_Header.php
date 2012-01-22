@@ -186,4 +186,3 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
         }
     }
 }
-?>

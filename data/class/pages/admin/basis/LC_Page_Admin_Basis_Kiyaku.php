@@ -230,4 +230,3 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
         return $arrErr;
     }
 }
-?>

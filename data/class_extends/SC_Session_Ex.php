@@ -25,5 +25,3 @@ require_once CLASS_REALDIR . 'SC_Session.php';
 
 class SC_Session_Ex extends SC_Session {
 }
-
-?>

@@ -199,4 +199,3 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
         $this->arrDebugMsg[] = rtrim($debugMsg, "\n");
     }
 }
-?>

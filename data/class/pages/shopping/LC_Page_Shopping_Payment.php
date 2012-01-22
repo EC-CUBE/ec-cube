@@ -459,4 +459,3 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
         }
     }
 }
-?>

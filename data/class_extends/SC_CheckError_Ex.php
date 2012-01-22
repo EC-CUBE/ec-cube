@@ -25,5 +25,3 @@ require_once CLASS_REALDIR . 'SC_CheckError.php';
 
 class SC_CheckError_Ex extends SC_CheckError {
 }
-
-?>

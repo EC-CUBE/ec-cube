@@ -179,4 +179,3 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
         return $keys;
     }
 }
-?>

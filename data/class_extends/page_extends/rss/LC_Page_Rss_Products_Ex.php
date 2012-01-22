@@ -65,4 +65,3 @@ class LC_Page_Rss_Products_Ex extends LC_Page_Rss_Products {
         parent::destroy();
     }
 }
-?>

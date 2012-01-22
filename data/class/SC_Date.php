@@ -169,4 +169,3 @@ class SC_Date {
         return $minutes_array;
     }
 }
-?>

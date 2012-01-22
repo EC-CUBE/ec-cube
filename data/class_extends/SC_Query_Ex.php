@@ -25,5 +25,3 @@ require_once CLASS_REALDIR . 'SC_Query.php';
 
 class SC_Query_Ex extends SC_Query {
 }
-
-?>

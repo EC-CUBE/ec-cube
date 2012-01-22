@@ -65,4 +65,3 @@ class LC_Page_Mypage_Delivery_Ex extends LC_Page_Mypage_Delivery {
         parent::destroy();
     }
 }
-?>

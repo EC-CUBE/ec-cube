@@ -220,4 +220,3 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
         }
     }
 }
-?>

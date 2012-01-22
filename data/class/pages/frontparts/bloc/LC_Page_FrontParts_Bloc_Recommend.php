@@ -121,4 +121,3 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc {
         return $arrBestProducts;
     }
 }
-?>

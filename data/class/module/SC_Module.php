@@ -263,4 +263,3 @@ class SC_Module {
  * coding: utf-8
  * End:
  */
-?>

@@ -107,4 +107,3 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex {
     }
 
 }
-?>

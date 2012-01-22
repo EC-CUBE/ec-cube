@@ -81,4 +81,3 @@ class LC_Page_Preview extends LC_Page_Ex {
         parent::destroy();
     }
 }
-?>

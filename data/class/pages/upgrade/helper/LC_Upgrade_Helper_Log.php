@@ -65,4 +65,3 @@ class LC_Upgrade_Helper_Log {
         $this->end();
     }
 }
-?>

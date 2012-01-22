@@ -32,5 +32,3 @@ $objPage = new LC_Page_Admin_Basis_Point_Ex();
 register_shutdown_function(array($objPage, 'destroy'));
 $objPage->init();
 $objPage->process();
-?>
-
