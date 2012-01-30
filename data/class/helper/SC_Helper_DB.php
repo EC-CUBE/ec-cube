@@ -635,6 +635,7 @@ class SC_Helper_DB {
         // カテゴリを登録
         foreach ($arrCategory_id as $category_id) {
             $this->addProductBeforCategories($category_id, $product_id);
+            SC_Utils_Ex::extendTimeOut();
         }
     }
 

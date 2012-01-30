@@ -251,6 +251,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
 
                 $this->addRowResult($line_count, "商品ID：".$arrParam['product_id'] . " / 商品名：" . $arrParam['name']);
             }
+            SC_Utils_Ex::extendTimeOut();
         }
 
         // 実行結果画面を表示
