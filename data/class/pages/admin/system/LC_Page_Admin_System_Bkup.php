@@ -98,11 +98,13 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
                 $arrData = $objFormParam->getHashArray();
 
-                // バックアップファイル作成
                 $work_dir = $this->bkup_dir . $arrData['bkup_name'] . "/";
+                // バックアップデータの事前削除
+                SC_Utils_Ex::sfDelFile($work_dir);
+                // バックアップファイル作成
                 $res = $this->lfCreateBkupData($arrData['bkup_name'], $work_dir);
-                // バックアップデータの削除
-//                SC_Utils_Ex::sfDelFile($work_dir);
+                // バックアップデータの事後削除
+                SC_Utils_Ex::sfDelFile($work_dir);
 
                 $arrErrTmp[3] = array();
                 if ($res !== true) {
@@ -428,10 +430,10 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         $work_dir = $bkup_dir . $bkup_name . '/';
 
         //圧縮フラグTRUEはgzip解凍をおこなう
-//        $tar = new Archive_Tar($work_dir . $bkup_name . $bkup_ext, TRUE);
+        $tar = new Archive_Tar($work_dir . $bkup_name . $bkup_ext, TRUE);
 
         //指定されたフォルダ内に解凍する
-//        $success = $tar->extract($work_dir . $bkup_name);
+        $success = $tar->extract($work_dir . $bkup_name);
 
         // 無事解凍できれば、リストアを行う
         if ($success) {
