@@ -99,7 +99,15 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
                 $arrData = $objFormParam->getHashArray();
 
                 // バックアップファイル作成
-                $arrErrTmp[3] = $this->lfCreateBkupData($arrData['bkup_name'], $this->bkup_dir);
+                $work_dir = $this->bkup_dir . $arrData['bkup_name'] . "/";
+                $res = $this->lfCreateBkupData($arrData['bkup_name'], $work_dir);
+                // バックアップデータの削除
+//                SC_Utils_Ex::sfDelFile($work_dir);
+
+                $arrErrTmp[3] = array();
+                if ($res !== true) {
+                    $arrErrTmp[3]['bkup_name'] = 'バックアップに失敗しました。(' . $res . ')';
+                }
 
                 // DBにデータ更新
                 if (SC_Utils_Ex::isBlank($arrErrTmp[3])) {
@@ -254,22 +262,21 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
     /**
      * バックアップファイル作成.
      *
-     * TODO $csv_data はデータを大きく保持しすぎに感じる。分割して書き込みたい。
      * @param string $bkup_name
-     * @return array $arrErr
+     * @return boolean|int 結果。true:成功 int:失敗 FIXME 本来は int ではなく、エラーメッセージを戻すべき
      */
-    function lfCreateBkupData($bkup_name, $bkup_dir){
+    function lfCreateBkupData($bkup_name, $work_dir){
         // 実行時間を制限しない
         set_time_limit(0);
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $csv_data = '';
         $csv_autoinc = "";
         $arrData = array();
-        $success = true;
 
-        if (!is_dir(dirname($bkup_dir))) $success = mkdir(dirname($bkup_dir));
-        $bkup_dir = $bkup_dir . $bkup_name . "/";
+        $success = mkdir($work_dir, 0777, true);
+        if (!$success) {
+            return __LINE__;
+        }
 
         // 全テーブル取得
         $arrTableList = $objQuery->listTables();
@@ -277,90 +284,82 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         // 各テーブル情報を取得する
         foreach ($arrTableList as $table) {
 
-            if (!($table == "dtb_bkup" || $table == "mtb_zip")) {
-
-                // 全データを取得
-                if ($table == "dtb_pagelayout"){
-                    $arrData = $objQuery->getAll("SELECT * FROM $table ORDER BY page_id");
-                }else{
-                    $arrData = $objQuery->getAll("SELECT * FROM $table");
-                }
-
-                // CSVデータ生成
-                if (count($arrData) > 0) {
-
-                    // テーブル名
-                    $csv_data .= $table . "\r\n";
-
-                    // カラム名
-                    $csv_data .= SC_Helper_CSV_Ex::sfArrayToCsv(array_keys($arrData[0])) . "\r\n";
-
-                    // データ
-                    foreach ($arrData as $data_val) {
-                        $csv_data .= SC_Helper_CSV_Ex::sfArrayToCsv($data_val) . "\r\n";
-                    }
-
-                    // テーブル終端
-                    $csv_data .= "\r\n";
-                }
-
-                // タイムアウトを防ぐ
-                SC_Utils_Ex::sfFlush();
+            if ($table == 'dtb_bkup' || $table == 'mtb_zip') {
+                continue;
             }
+
+            // dataをCSV出力
+            $csv_file = $work_dir . $table . '.csv';
+            $fp = fopen($csv_file, 'w');
+            if (!$fp) {
+                return __LINE__;
+            }
+
+            // 全データを取得
+            $sql = "SELECT * FROM $table";
+
+            $this->fpOutput =& $fp;
+            $this->first_line = true;
+            $success = $objQuery->doCallbackAll(array(&$this, 'cbOutputCSV'), $sql);
+            unset($this->fpOutput);
+
+            if ($success === false) {
+                return __LINE__;
+            }
+
+            fclose($fp);
+
+            // タイムアウトを防ぐ
+            SC_Utils_Ex::sfFlush();
         }
 
         // 自動採番型の構成を取得する
         $csv_autoinc = $this->lfGetAutoIncrement();
 
-        $csv_file = $bkup_dir . "bkup_data.csv";
-        $csv_autoinc_file = $bkup_dir . "autoinc_data.csv";
-        mb_internal_encoding(CHAR_CODE);
+        $csv_autoinc_file = $work_dir . "autoinc_data.csv";
+
         // CSV出力
-        // ディレクトリが存在していなければ作成する
-        if (!is_dir(dirname($csv_file))) {
-            $success = mkdir(dirname($csv_file));
-        }
-        if ($success) {
-            // dataをCSV出力
-            $fp = fopen($csv_file,'w');
-            if($fp) {
-                if($csv_data != ""){
-                    $success = fwrite($fp, $csv_data);
+
+        // 自動採番をCSV出力
+        $fp = fopen($csv_autoinc_file,'w');
+        if($fp) {
+            if($csv_autoinc != ""){
+                $success = fwrite($fp, $csv_autoinc);
+                if (!$success) {
+                    return __LINE__;
                 }
-                fclose($fp);
             }
-
-            // 自動採番をCSV出力
-            $fp = fopen($csv_autoinc_file,'w');
-            if($fp) {
-                if($csv_autoinc != ""){
-                    $success = fwrite($fp, $csv_autoinc);
-                }
-                fclose($fp);
-            }
+            fclose($fp);
         }
 
-        if ($success) {
-            //圧縮フラグTRUEはgzip圧縮をおこなう
-            $tar = new Archive_Tar($this->bkup_dir . $bkup_name . $this->bkup_ext, TRUE);
+        //圧縮フラグTRUEはgzip圧縮をおこなう
+        $tar = new Archive_Tar($this->bkup_dir . $bkup_name . $this->bkup_ext, TRUE);
 
-            //bkupフォルダに移動する
-            chdir($this->bkup_dir);
+        //bkupフォルダに移動する
+        chdir($work_dir);
 
-            //圧縮をおこなう
-            $zip = $tar->create("./" . $bkup_name . "/");
+        //圧縮をおこなう
+        $zip = $tar->create('./');
 
-            // バックアップデータの削除
-            if ($zip) SC_Utils_Ex::sfDelFile($bkup_dir);
+        return true;
+    }
+
+    /**
+     * CSV作成 テンポラリファイル出力 コールバック関数
+     *
+     * @param mixed $data 出力データ
+     * @return boolean true (true:固定 false:中断)
+     */
+    function cbOutputCSV($data) {
+        $line = '';
+        if ($this->first_line) {
+            // カラム名
+            $line .= SC_Helper_CSV_Ex::sfArrayToCsv(array_keys($data)) . "\n";
+            $this->first_line = false;
         }
-
-        if (!$success) {
-            $arrErr['bkup_name'] = "バックアップに失敗しました。";
-            // バックアップデータの削除
-            SC_Utils_Ex::sfDelFile($bkup_dir);
-        }
-
-        return isset($arrErr) ? $arrErr : array();
+        $line .= SC_Helper_CSV_Ex::sfArrayToCsv($data);
+        $line .= "\n";
+        return fwrite($this->fpOutput, $line);
     }
 
     /**
@@ -426,11 +425,13 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $success = true;
 
+        $work_dir = $bkup_dir . $bkup_name . '/';
+
         //圧縮フラグTRUEはgzip解凍をおこなう
-        $tar = new Archive_Tar($bkup_dir . $bkup_name . $bkup_ext, TRUE);
+//        $tar = new Archive_Tar($work_dir . $bkup_name . $bkup_ext, TRUE);
 
         //指定されたフォルダ内に解凍する
-        $success = $tar->extract($bkup_dir);
+//        $success = $tar->extract($work_dir . $bkup_name);
 
         // 無事解凍できれば、リストアを行う
         if ($success) {
@@ -442,10 +443,10 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
             $success = $this->lfDeleteAll($objQuery);
 
             // INSERT実行
-            if ($success) $success = $this->lfExeInsertSQL($objQuery, $bkup_dir . $bkup_name . "/bkup_data.csv", $mode);
+            if ($success) $success = $this->lfExeInsertSQL($objQuery, $work_dir, $mode);
 
             // 自動採番の値をセット
-            if ($success) $this->lfSetAutoInc($objQuery, $bkup_dir . "autoinc_data.csv");
+            if ($success) $this->lfSetAutoInc($objQuery, $work_dir . 'autoinc_data.csv');
 
             // リストア成功ならコミット失敗ならロールバック
             if ($success) {
@@ -460,94 +461,69 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
             }
         }
 
+        // FIXME この辺りで、バックアップ時と同等の一時ファイルの削除を実行すべきでは?
     }
 
     /**
      * CSVファイルからインサート実行.
      *
      * @param object $objQuery
-     * @param string $csv
+     * @param string $dir
      * @param string $mode
      * @return void
      */
-    function lfExeInsertSQL(&$objQuery, $csv, $mode){
+    function lfExeInsertSQL(&$objQuery, $dir, $mode){
 
         $tbl_flg = false;
         $col_flg = false;
         $ret = true;
         $pagelayout_flg = false;
-        $table_name = "";
         $arrVal = array();
         $arrCol = array();
+        $arrAllTableList = $objQuery->listTables();
 
-        // csvファイルからデータの取得
-        $fp = fopen($csv, 'r');
-        if($fp === false) {
-            SC_Utils_Ex::sfDispException($csv . ' のファイルオープンに失敗しました。');
-        }
-
-        while (!feof($fp)) {
-            $data = fgetcsv($fp, 1000000);
-
-            //空白行のときはテーブル変更
-            if (count($data) <= 1 and $data[0] == "") {
-                $tbl_flg = false;
-                $col_flg = false;
-                $table_name = "";
-                $arrVal = array();
-                $arrCol = array();
-
+        $objDir = dir($dir);
+        while (false !== ($file_name = $objDir->read())) {
+            if (!preg_match('/^((dtb|mtb)_(\w+))\.csv$/', $file_name, $matches)) {
                 continue;
             }
+            var_dump($matches);
+            $file_path = $dir . $file_name;
+            $table = $matches[1];
 
-            // テーブルフラグがたっていない場合にはテーブル名セット
-            if (!$tbl_flg) {
-                $table_name = $data[0];
-                $tbl_flg = true;
-
-                if($table_name == "dtb_pagelayout"){
-                    $pagelayout_flg = true;
+            // テーブル存在チェック
+            if (!in_array($table, $arrAllTableList)) {
+                if ($mode === 'restore_config') {
+                    continue;
                 }
-
-                continue;
-            }
-
-            // カラムフラグがたっていない場合にはカラムセット
-            if (!$col_flg) {
-                if ($mode != "restore_config"){
-                    for($i = 0; $i < count($data); $i++){
-                        $arrCol[$i] = $data[$i];
-                    }
-                }
-                $col_flg = true;
-                continue;
-            }
-
-            for($i = 0; $i < count($data); $i++) {
-                if($arrCol[$i] != '') {
-                    $arrVal[$arrCol[$i]] = $data[$i];
-                }
-            }
-
-            $err = $objQuery->insert($table_name, $arrVal);
-
-            // エラーがあれば終了
-            if (PEAR::isError($err)){
-                SC_Utils_Ex::sfErrorHeader(">> " . $objQuery->getlastquery(false));
                 return false;
             }
 
-            if ($pagelayout_flg) {
-                // dtb_pagelayoutの場合には最初のデータはpage_id = 0にする
-                $arrVal['page_id'] = '0';
-                $objQuery->update("dtb_pagelayout", $arrVal);
-                $pagelayout_flg = false;
+            // csvファイルからデータの取得
+            $fp = fopen($file_path, 'r');
+            if($fp === false) {
+                SC_Utils_Ex::sfDispException($file_name . ' のファイルオープンに失敗しました。');
             }
 
-            // タイムアウトを防ぐ
-            SC_Utils_Ex::sfFlush();
+            $line = 0;
+            while (!feof($fp)) {
+                $line++;
+                $arrCsvLine = fgetcsv($fp, 1000000);
+
+                // 1行目: 列名
+                if ($line === 1) {
+                    $arrColName = $arrCsvLine;
+                    continue;
+                }
+
+                $arrVal = array_combine($arrColName, $arrCsvLine);
+                $objQuery->insert($table, $arrVal);
+
+                SC_Utils_Ex::extendTimeOut(); 
+            }
+
+            fclose($fp);
         }
-        fclose($fp);
 
         return $ret;
     }
@@ -572,6 +548,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
         foreach($arrTableList as $val){
             // バックアップテーブルは削除しない
+            // XXX mtb_zip も削除不要では?
             if ($val != "dtb_bkup") {
                 $ret = $objQuery->delete($val);
                 if (PEAR::isError($ret)) return false;
