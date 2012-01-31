@@ -325,7 +325,7 @@ class CreateEcCubeData {
         $sqlval['classcategory_id'] = $this->objQuery->nextVal("dtb_classcategory_classcategory_id");
         $sqlval['name'] = $classcategory_name;
         $sqlval['class_id'] = $class_id;
-        $arrRaw['rank'] = sprintf("~(SELECT x.rank FROM (SELECT CASE
+        $arrRaw['rank'] = sprintf("(SELECT x.rank FROM (SELECT CASE
                                               WHEN max(rank) + 1 IS NULL THEN 1
                                               ELSE max(rank) + 1
                                             END as rank
