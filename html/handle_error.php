@@ -93,9 +93,11 @@ function handle_error($errno, $errstr, $errfile, $errline) {
     }
 
     $now = date("Y/m/d H:i:s");
+    // 本来 realpath() で正規化したいところだが、NULL を返すケースがあるため避けている (#1618)
+    $log_file_path = dirname(__FILE__) . '/' . HTML2DATA_DIR . 'logs/site.log';
     switch ($errno) {
         case E_USER_ERROR:
-            error_log($now . " [$errfile] FATAL Error($errno) $errfile:$errline $errstr from ". $_SERVER['REMOTE_ADDR'] . "\n", 3, realpath(dirname(__FILE__) . "/" . HTML2DATA_DIR . "logs/site.log"));
+            error_log($now . " [$errfile] FATAL Error($errno) $errfile:$errline $errstr from ". $_SERVER['REMOTE_ADDR'] . "\n", 3, $log_file_path);
 
             displaySystemError($errstr);
             exit(1);
@@ -103,7 +105,7 @@ function handle_error($errno, $errstr, $errfile, $errline) {
 
         case E_WARNING:
         case E_USER_WARNING:
-            error_log($now . " [$errfile] WARNING($errno) $errfile:$errline $errstr from ". $_SERVER['REMOTE_ADDR'] . "\n", 3, realpath(dirname(__FILE__) . "/" . HTML2DATA_DIR . "logs/site.log"));
+            error_log($now . " [$errfile] WARNING($errno) $errfile:$errline $errstr from ". $_SERVER['REMOTE_ADDR'] . "\n", 3, $log_file_path);
             return true;
             break;
 
