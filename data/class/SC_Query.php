@@ -942,7 +942,7 @@ class SC_Query {
             $timeEnd = SC_Utils_Ex::sfMicrotimeFloat();;
             $timeExecTime = $timeEnd - $timeStart;
             if(defined('SQL_QUERY_LOG_MIN_EXEC_TIME') && $timeExecTime >= (float)SQL_QUERY_LOG_MIN_EXEC_TIME) {
-                $logMsg = sprintf("SQL_LOG [%.2fsec]\n%s", $timeExecTime, $sth->query);
+                $logMsg = sprintf("SQL_LOG [%.2fsec]\n%s", $timeExecTime, $sth->query) . "\n";
                 error_log($logMsg, 3, LOG_REALFILE);
             }
         }
