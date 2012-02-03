@@ -448,7 +448,6 @@ __EOS__;
     function getProductsClass($productClassId) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setWhere('product_class_id = ? AND T1.del_flg = 0');
-        $objQuery->setOrder("T2.level DESC");
         $results = $this->getProductsClassByQuery($objQuery, $productClassId);
         $productsClass = $this->getProductsClassFull($results);
         return $productsClass[0];
@@ -471,7 +470,6 @@ __EOS__;
             $where .= ' AND T1.del_flg = 0';
         }
         $objQuery->setWhere($where);
-        $objQuery->setOrder("T2.level DESC");
         return $this->getProductsClassByQuery($objQuery, $productIds);
     }
 
