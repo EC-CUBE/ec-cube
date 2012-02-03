@@ -268,14 +268,14 @@ class LC_Page_Products_List extends LC_Page_Ex {
             default:
                 if (strlen($searchCondition["where_category"]) >= 1) {
                     $dtb_product_categories = "(SELECT * FROM dtb_product_categories WHERE ".$searchCondition["where_category"].")";
-                    $arrval_order           = array_merge($searchCondition['arrvalCategory'], $searchCondition['arrvalCategory']);
+                    $arrval_order           = $searchCondition['arrvalCategory'];
                 } else {
                     $dtb_product_categories = 'dtb_product_categories';
                 }
                 $order = <<< __EOS__
                     (
                         SELECT
-                             T3.rank
+                             T3.rank * 2147483648 + T2.rank
                         FROM
                             $dtb_product_categories T2
                             JOIN dtb_category T3
@@ -284,18 +284,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
                         ORDER BY T3.rank DESC, T2.rank DESC
                         LIMIT 1
                     ) DESC
-                    ,(
-                        SELECT
-                            T2.rank
-                        FROM
-                            $dtb_product_categories T2
-                            JOIN dtb_category T3
-                                USING (category_id)
-                        WHERE T2.product_id = alldtl.product_id
-                        ORDER BY T3.rank DESC, T2.rank DESC
-                        LIMIT 1
-                    ) DESC
-                    ,product_id
+                    ,product_id DESC
 __EOS__;
                     $objQuery->setOrder($order);
                 break;
@@ -424,7 +413,7 @@ __EOS__;
         $searchCondition['where'] = "alldtl.del_flg = 0 AND alldtl.status = 1 ";
 
         if (strlen($searchCondition["where_category"]) >= 1) {
-            $searchCondition['where'] .= " AND dtb_product_categories.".$searchCondition["where_category"];
+            $searchCondition['where'] .= ' AND EXISTS (SELECT * FROM dtb_product_categories WHERE ' . $searchCondition["where_category"] . ' AND product_id = alldtl.product_id)';
             $searchCondition['arrval'] = array_merge($searchCondition['arrval'], $searchCondition['arrvalCategory']);
         }
 
