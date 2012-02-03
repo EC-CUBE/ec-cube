@@ -40,6 +40,7 @@
         <p class="attention"><!--{$arrErr.deli}--></p>
     <!--{/if}-->
             
+<!--{if $smarty.const.USE_MULTIPLE_SHIPPING !== false}-->
 <!--☆右にスライドボタン -->
 <div class="bubbleBox">
 <div class="bubble_announce clearfix">
@@ -48,6 +49,7 @@
   <div class="bubble_arrow_line"><!--矢印空タグ --></div>
 <div class="bubble_arrow"><!--矢印空タグ --></div>
 </div>
+<!--{/if}-->
 
 
 <div class="formBox">

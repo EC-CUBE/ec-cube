@@ -376,6 +376,8 @@ define('USE_POINT', true);
 define('NOSTOCK_HIDDEN', false);
 /** モバイルサイトを利用するか(true:利用する、false:利用しない) (false は一部対応) */
 define('USE_MOBILE', true);
+/** 複数配送先指定機能を利用するか(true:利用する、false:利用しない) **/
+define('USE_MULTIPLE_SHIPPING', true);
 /** デフォルトテンプレート名(PC) */
 define('DEFAULT_TEMPLATE_NAME', "default");
 /** デフォルトテンプレート名(モバイル) */

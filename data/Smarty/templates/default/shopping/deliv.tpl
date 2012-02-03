@@ -35,10 +35,12 @@
                 <!--{/if}-->
                 <p class="mini attention">※最大<!--{$smarty.const.DELIV_ADDR_MAX|h}-->件まで登録できます。</p>
             </div>
+            <!--{if $smarty.const.USE_MULTIPLE_SHIPPING !== false}-->
             <div class="add_multiple">
                 <p>この商品を複数の<br />お届け先に送りますか？</p>
                 <a href="javascript:;" onclick="fnModeSubmit('multiple', '', ''); return false" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_several_address_on.jpg','several');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_several_address.jpg','several');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_several_address.jpg" alt="お届け先を複数指定する" name="several" id="several" /></a>
             </div>
+            <!--{/if}-->
         </div>
 
         <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->

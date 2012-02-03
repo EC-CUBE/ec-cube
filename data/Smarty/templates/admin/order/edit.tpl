@@ -382,8 +382,10 @@
     <!--{if $arrForm.shipping_quantity.value <= 1}-->
         <a class="btn-normal" href="javascript:;" onclick="fnCopyFromOrderData();">お客様情報へお届けする</a>
     <!--{/if}-->
+    <!--{if $smarty.const.USE_MULTIPLE_SHIPPING !== false}-->
         <a class="btn-normal" href="javascript:;"  onclick="fnAppendShipping();">お届け先を新規追加</a>
         <a class="btn-normal" href="javascript:;" onclick="fnMultiple();">複数のお届け先を指定する</a>
+    <!--{/if}-->
     </h2>
 
     <!--{foreach name=shipping from=$arrAllShipping item=arrShipping key=shipping_index}-->

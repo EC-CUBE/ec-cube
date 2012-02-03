@@ -79,6 +79,7 @@
 <center><input type="submit" value="新規登録"></center>
 </form>
 
+<!--{if $smarty.const.USE_MULTIPLE_SHIPPING !== false}-->
 <br>
 
 ■お届け先を複数指定する<br>
@@ -88,3 +89,4 @@
 <input type="hidden" name="mode" value="multiple">
 <center><input type="submit" value="複数お届け先"></center>
 </form>
+<!--{/if}-->
