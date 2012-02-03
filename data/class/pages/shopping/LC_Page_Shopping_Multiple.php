@@ -70,6 +70,12 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
         $objCustomer = new SC_Customer_Ex();
         $objFormParam = new SC_FormParam_Ex();
 
+        // 複数配送先指定が無効な場合はエラー
+        if (USE_MULTIPLE_SHIPPING === false) {
+            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
+            exit;
+        }
+
         $this->tpl_uniqid = $objSiteSess->getUniqId();
 
         $this->addrs = $this->getDelivAddrs($objCustomer, $objPurchase,

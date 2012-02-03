@@ -196,6 +196,12 @@ class LC_Page_Shopping extends LC_Page_Ex {
 
         // 複数配送ページへ遷移
         case 'multiple':
+            // 複数配送先指定が無効な場合はエラー
+            if (USE_MULTIPLE_SHIPPING === false) {
+                SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
+                exit;
+            }
+
             $this->lfInitParam($objFormParam);
             $objFormParam->setParam($_POST);
             $this->arrErr = $this->lfCheckError($objFormParam);

@@ -134,6 +134,12 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
 
         // お届け先複数指定
         case 'multiple':
+            // 複数配送先指定が無効な場合はエラー
+            if (USE_MULTIPLE_SHIPPING === false) {
+                SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
+                exit;
+            }
+
             SC_Response_Ex::sendRedirect('multiple.php');
             exit;
             break;
