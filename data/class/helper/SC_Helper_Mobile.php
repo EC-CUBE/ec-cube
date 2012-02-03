@@ -212,50 +212,6 @@ class SC_Helper_Mobile {
     }
 
     /**
-     * モバイルサイト用のセッション関連の初期処理を行う。
-     *
-     * @return void
-     */
-    function lfMobileInitSession() {
-        // セッションIDの受け渡しにクッキーを使用しない。
-        ini_set('session.use_cookies', '0');
-        ini_set('session.use_only_cookies', '0');
-
-        // パラメーターから有効なセッションIDを取得する。
-        $sessionId = $this->lfMobileGetSessionId();
-
-        session_start();
-
-        // セッションIDまたはセッションデータが無効な場合は、セッションIDを再生成
-        // し、セッションデータを初期化する。
-        if ($sessionId === false || !$this->lfMobileValidateSession()) {
-            session_regenerate_id();
-            $_SESSION = array('mobile' => array('model'    => SC_MobileUserAgent_Ex::getModel(),
-                                                'phone_id' => SC_MobileUserAgent_Ex::getId(),
-                                                'expires'  => time() + MOBILE_SESSION_LIFETIME));
-
-            // 新しいセッションIDを付加してリダイレクトする。
-            if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                // GET の場合は同じページにリダイレクトする。
-                header('Location: ' . $this->gfAddSessionId());
-            } else {
-                // GET 以外の場合はトップページへリダイレクトする。
-                header('Location: ' . TOP_URLPATH . '?' . SID);
-            }
-            exit;
-        }
-
-        // 携帯端末IDを取得できた場合はセッションデータに保存する。
-        $phoneId = SC_MobileUserAgent_Ex::getId();
-        if ($phoneId !== false) {
-            $_SESSION['mobile']['phone_id'] = $phoneId;
-        }
-
-        // セッションの有効期限を更新する。
-        $_SESSION['mobile']['expires'] = time() + MOBILE_SESSION_LIFETIME;
-    }
-
-    /**
      * モバイルサイト用の出力の初期処理を行う。
      *
      * 出力の流れ
@@ -301,13 +257,6 @@ class SC_Helper_Mobile {
 
         if (basename(dirname($_SERVER['SCRIPT_NAME'])) != 'unsupported') {
             $this->lfMobileCheckCompatibility();
-            /**
-             * 共有SSL対応のため、SC_SessionFactory_UseRequest::initSession()へ移行
-             * また、他のセッション関連メソッドもSC_SessionFactory_UseRequestのインスタンスから呼び出すこと
-             *
-             * @see data/class/session/sessionfactory/SC_SessionFactory_UseRequest.php
-             */
-            // $this->lfMobileInitSession();
         }
 
         $this->lfMobileInitOutput();
