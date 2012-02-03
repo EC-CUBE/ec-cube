@@ -1,6 +1,19 @@
+Index: data/class/helper/SC_Helper_DB.php
+===================================================================
+--- data/class/helper/SC_Helper_DB.php	(revision 21433)
++++ data/class/helper/SC_Helper_DB.php	(working copy)
+@@ -1437,7 +1437,7 @@
+         if (!SC_Utils_Ex::sfIsInt($product_id)) return false;
+ 
+         $objQuery =& SC_Query_Ex::getSingletonInstance();
+-        $where = 'product_id = ? AND del_flg = 0 AND class_combination_id IS NOT NULL';
++        $where = 'product_id = ? AND del_flg = 0 AND classcategory_id1 != 0 AND classcategory_id2 != 0';
+         $exists = $objQuery->exists('dtb_products_class', $where, array($product_id));
+ 
+         return $exists;
 Index: data/class/pages/admin/products/LC_Page_Admin_Products_Product.php
 ===================================================================
---- data/class/pages/admin/products/LC_Page_Admin_Products_Product.php	(revision 21417)
+--- data/class/pages/admin/products/LC_Page_Admin_Products_Product.php	(revision 21433)
 +++ data/class/pages/admin/products/LC_Page_Admin_Products_Product.php	(working copy)
 @@ -1048,32 +1048,14 @@
                      $objQuery->setOrder('product_class_id');
@@ -157,7 +170,7 @@ Index: data/class/pages/admin/products/LC_Page_Admin_Products_Product.php
       * @param string $to_key
 Index: data/class/pages/admin/products/LC_Page_Admin_Products_ProductClass.php
 ===================================================================
---- data/class/pages/admin/products/LC_Page_Admin_Products_ProductClass.php	(revision 21417)
+--- data/class/pages/admin/products/LC_Page_Admin_Products_ProductClass.php	(revision 21433)
 +++ data/class/pages/admin/products/LC_Page_Admin_Products_ProductClass.php	(working copy)
 @@ -236,16 +236,18 @@
          // デフォルト値として設定する値を取得しておく
@@ -285,9 +298,9 @@ Index: data/class/pages/admin/products/LC_Page_Admin_Products_ProductClass.php
      /**
 Index: data/class/pages/admin/products/LC_Page_Admin_Products_UploadCSV.php
 ===================================================================
---- data/class/pages/admin/products/LC_Page_Admin_Products_UploadCSV.php	(revision 21417)
+--- data/class/pages/admin/products/LC_Page_Admin_Products_UploadCSV.php	(revision 21433)
 +++ data/class/pages/admin/products/LC_Page_Admin_Products_UploadCSV.php	(working copy)
-@@ -612,6 +612,7 @@
+@@ -613,6 +613,7 @@
       */
      function lfCheckErrorDetail($item, $arrErr) {
          // 規格IDの存在チェック
@@ -295,7 +308,7 @@ Index: data/class/pages/admin/products/LC_Page_Admin_Products_UploadCSV.php
          if(!$this->lfIsDbRecord('dtb_products_class', 'product_class_id', $item)) {
              $arrErr['product_class_id'] = "※ 指定の商品規格IDは、登録されていません。";
          }
-@@ -627,17 +628,6 @@
+@@ -628,17 +629,6 @@
                  }
              }
          }
@@ -315,9 +328,9 @@ Index: data/class/pages/admin/products/LC_Page_Admin_Products_UploadCSV.php
              $arrErr['status'] = "※ 指定の表示ステータスは、登録されていません。";
 Index: data/class/SC_Product.php
 ===================================================================
---- data/class/SC_Product.php	(revision 21417)
+--- data/class/SC_Product.php	(revision 21433)
 +++ data/class/SC_Product.php	(working copy)
-@@ -268,9 +268,9 @@
+@@ -258,9 +258,9 @@
                  : '';
  
              // 規格1が設定されている
@@ -329,7 +342,7 @@ Index: data/class/SC_Product.php
  
              $this->stock_find[$productId] = false;
              $classCategories = array();
-@@ -325,7 +325,7 @@
+@@ -315,7 +315,7 @@
                  $classCats2['product_type'] = $productsClass['product_type_id'];
  
                  // #929(GC8 規格のプルダウン順序表示不具合)対応のため、2次キーは「#」を前置
@@ -338,7 +351,7 @@ Index: data/class/SC_Product.php
                      $productsClass1 = '__unselected2';
                  }
                  $classCategories[$productsClass1]['#'] = array(
-@@ -365,86 +365,33 @@
+@@ -355,86 +355,33 @@
              T1.product_type_id,
              T1.down_filename,
              T1.down_realfilename,
@@ -441,7 +454,7 @@ Index: data/class/SC_Product.php
      }
  
      /**
-@@ -798,7 +745,7 @@
+@@ -788,7 +735,7 @@
          (
               SELECT dtb_products.*,
                      dtb_products_class.product_class_id,
@@ -450,7 +463,7 @@ Index: data/class/SC_Product.php
                      dtb_products_class.product_type_id,
                      dtb_products_class.product_code,
                      dtb_products_class.stock,
-@@ -810,11 +757,13 @@
+@@ -800,11 +747,13 @@
                      dtb_products_class.point_rate,
                      dtb_products_class.down_filename,
                      dtb_products_class.down_realfilename,
@@ -469,7 +482,7 @@ Index: data/class/SC_Product.php
                      Tcc1.class_id as class_id,
                      Tcc1.name as classcategory_name,
                      Tcc2.class_id as parent_class_id,
-@@ -822,14 +771,10 @@
+@@ -812,14 +761,10 @@
               FROM dtb_products
                   LEFT JOIN dtb_products_class
                       ON dtb_products.product_id = dtb_products_class.product_id
@@ -488,7 +501,7 @@ Index: data/class/SC_Product.php
  __EOS__;
 Index: html/install/index.php
 ===================================================================
---- html/install/index.php	(revision 21417)
+--- html/install/index.php	(revision 21430)
 +++ html/install/index.php	(working copy)
 @@ -1053,7 +1053,6 @@
                   array("dtb_payment", "payment_id"),
@@ -500,7 +513,7 @@ Index: html/install/index.php
                   array("dtb_mailmaga_template", "template_id"));
 Index: html/install/sql/create_table_mysql.sql
 ===================================================================
---- html/install/sql/create_table_mysql.sql	(revision 21417)
+--- html/install/sql/create_table_mysql.sql	(revision 21430)
 +++ html/install/sql/create_table_mysql.sql	(working copy)
 @@ -315,7 +315,8 @@
  CREATE TABLE dtb_products_class (
@@ -529,7 +542,7 @@ Index: html/install/sql/create_table_mysql.sql
      category_name text,
 Index: html/install/sql/create_table_pgsql.sql
 ===================================================================
---- html/install/sql/create_table_pgsql.sql	(revision 21417)
+--- html/install/sql/create_table_pgsql.sql	(revision 21430)
 +++ html/install/sql/create_table_pgsql.sql	(working copy)
 @@ -315,7 +315,8 @@
  CREATE TABLE dtb_products_class (
@@ -558,7 +571,7 @@ Index: html/install/sql/create_table_pgsql.sql
      category_name text,
 Index: html/install/sql/drop_table.sql
 ===================================================================
---- html/install/sql/drop_table.sql	(revision 21417)
+--- html/install/sql/drop_table.sql	(revision 21430)
 +++ html/install/sql/drop_table.sql	(working copy)
 @@ -15,7 +15,6 @@
  DROP TABLE dtb_product_status;
@@ -570,7 +583,7 @@ Index: html/install/sql/drop_table.sql
  DROP TABLE dtb_review;
 Index: html/install/sql/insert_data.sql
 ===================================================================
---- html/install/sql/insert_data.sql	(revision 21417)
+--- html/install/sql/insert_data.sql	(revision 21430)
 +++ html/install/sql/insert_data.sql	(working copy)
 @@ -236,8 +236,6 @@
  
@@ -643,7 +656,7 @@ Index: html/install/sql/insert_data.sql
  INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, create_date, update_date, del_flg) VALUES (5, 3, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 Index: test/createEcCubeData-v25.php
 ===================================================================
---- test/createEcCubeData-v25.php	(revision 21417)
+--- test/createEcCubeData-v25.php	(revision 21430)
 +++ test/createEcCubeData-v25.php	(working copy)
 @@ -57,7 +57,7 @@
  
