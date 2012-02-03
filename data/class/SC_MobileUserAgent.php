@@ -97,34 +97,6 @@ class SC_MobileUserAgent {
     }
 
     /**
-     * EC-CUBE がサポートする携帯キャリアかどうかを判別する。
-     *
-     * @return boolean サポートしている場合は true、それ以外の場合は false を返す。
-     */
-    function isMobile() {
-        $objAgent =& Net_UserAgent_Mobile::singleton();
-        if (Net_UserAgent_Mobile::isError($objAgent)) {
-            return false;
-        } else {
-            return $objAgent->isDoCoMo() || $objAgent->isEZweb() || $objAgent->isVodafone();
-        }
-    }
-
-    /**
-     * EC-CUBE がサポートする携帯キャリアかどうかを判別する。
-     *
-     * @return boolean 携帯端末ではない場合は true、それ以外の場合は false を返す。
-     */
-    function isNonMobile() {
-        /**
-         * ここは、自クラスのメソッドの逆関数なので、
-         * EC-CUBE標準規約/リファクタリングガイドラインの
-         * SC_Display_Ex::detectDevice()への統一からは除外。
-         */
-        return !SC_MobileUserAgent_Ex::isMobile();
-    }
-
-    /**
      * EC-CUBE がサポートする携帯端末かどうかを判別する。
      *
      * @return boolean サポートしている場合は true、それ以外の場合は false を返す。
