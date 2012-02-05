@@ -464,7 +464,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         // 規格情報がない商品の場合のチェック
         if($arrForm['has_product_class'] != true) {
             // 在庫必須チェック(在庫無制限ではない場合)
-            if(!isset($arrForm['stock_unlimited']) && $arrForm['stock_unlimited'] != UNLIMITED_FLG_UNLIMITED) {
+            if ($arrForm['stock_unlimited'] != UNLIMITED_FLG_UNLIMITED) {
                 $objErr->doFunc(array("在庫数", 'stock'), array("EXIST_CHECK"));
             }
             // ダウンロード商品ファイル必須チェック(ダウンロード商品の場合)
