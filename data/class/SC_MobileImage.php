@@ -98,7 +98,7 @@ class SC_MobileImage {
                 $realpath = preg_replace('|^' . ROOT_URLPATH . '|', HTML_REALDIR, $realpath);
                 $converted = $imageConverter->execute($realpath);
                 if (isset($converted['outputImageName'])) {
-                    $buffer = str_replace($path, MOBILE_IMAGE_URLPATH . '/' . $converted['outputImageName'], $buffer);
+                    $buffer = str_replace($path, MOBILE_IMAGE_URLPATH . $converted['outputImageName'], $buffer);
                 } else {
                     $buffer = str_replace($images[0][$key], '<!--No image-->', $buffer);
                 }
