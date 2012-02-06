@@ -159,8 +159,8 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $arrErr = $objFormParam->checkError();
         // 拡張エラーチェック
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
-        $objErr->doFunc( array("名称", "sql_name"), array("EXIST_CHECK") );
-        $objErr->doFunc( array("SQL文", "csv_sql", "30000"), array("EXIST_CHECK", "MAX_LENGTH_CHECK") );
+        $objErr->doFunc( array("名称", "sql_name"), array("EXIST_CHECK"));
+        $objErr->doFunc( array("SQL文", "csv_sql", "30000"), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc( array('SQL文には読み込み関係以外のSQLコマンドおよび";"記号', 'csv_sql', $this->lfGetSqlDenyList()), array("PROHIBITED_STR_CHECK"));
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
@@ -186,7 +186,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $arrErr = $objFormParam->checkError();
         // 拡張エラーチェック
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
-        $objErr->doFunc( array("SQL文", "csv_sql", "30000"), array("EXIST_CHECK", "MAX_LENGTH_CHECK") );
+        $objErr->doFunc( array("SQL文", "csv_sql", "30000"), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc( array('SQL文には読み込み関係以外のSQLコマンドおよび";"記号', 'csv_sql', $this->lfGetSqlDenyList()), array("PROHIBITED_STR_CHECK"));
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
@@ -205,7 +205,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $arrErr = $objFormParam->checkError();
         // 拡張エラーチェック
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
-        $objErr->doFunc( array("SQL ID", "sql_id"), array("EXIST_CHECK") );
+        $objErr->doFunc( array("SQL ID", "sql_id"), array("EXIST_CHECK"));
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
         }
@@ -223,7 +223,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $arrErr = $objFormParam->checkError();
         // 拡張エラーチェック
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
-        $objErr->doFunc( array("CSV出力対象SQL ID", "csv_output_id"), array("EXIST_CHECK") );
+        $objErr->doFunc( array("CSV出力対象SQL ID", "csv_output_id"), array("EXIST_CHECK"));
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
         }

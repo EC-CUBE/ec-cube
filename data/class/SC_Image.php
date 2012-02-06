@@ -222,7 +222,7 @@ class SC_Image {
                 $ToFile .= ".png";
             }
             $TmpPath = $ToImgPath.$ToFile;
-            @ImagePNG($ImgNew,$TmpPath );
+            @ImagePNG($ImgNew,$TmpPath);
             if (!@file_exists($TmpPath)){ // 画像が作成されていない場合
                 return array(0,"画像の出力に失敗しました。");
             }

@@ -32,7 +32,7 @@ class SC_Customer {
     function SC_Customer() {
     }
 
-    function getCustomerDataFromEmailPass( $pass, $email, $mobile = false ) {
+    function getCustomerDataFromEmailPass( $pass, $email, $mobile = false) {
         // 小文字に変換
         $email = strtolower($email);
         $sql_mobile = $mobile ? ' OR email_mobile = ?' : '';
@@ -204,7 +204,7 @@ __EOS__;
     function startSession() {
         $_SESSION['customer'] = $this->customer_data;
         // セッション情報の保存
-        GC_Utils_Ex::gfPrintLog("access : user=".$this->customer_data['customer_id'] ."\t"."ip=". $this->getRemoteHost(), CUSTOMER_LOG_REALFILE );
+        GC_Utils_Ex::gfPrintLog("access : user=".$this->customer_data['customer_id'] ."\t"."ip=". $this->getRemoteHost(), CUSTOMER_LOG_REALFILE);
     }
 
     // ログアウト　$_SESSION['customer']を解放し、ログに書き込む
@@ -216,7 +216,7 @@ __EOS__;
         $objSiteSess = new SC_SiteSession_Ex();
         $objSiteSess->unsetUniqId();
         // ログに記録する
-        GC_Utils_Ex::gfPrintLog("logout : user=".$this->customer_data['customer_id'] ."\t"."ip=". $this->getRemoteHost(), CUSTOMER_LOG_REALFILE );
+        GC_Utils_Ex::gfPrintLog("logout : user=".$this->customer_data['customer_id'] ."\t"."ip=". $this->getRemoteHost(), CUSTOMER_LOG_REALFILE);
     }
 
     // ログインに成功しているか判定する。
@@ -302,7 +302,7 @@ __EOS__;
     //受注関連の会員情報を更新
     function updateOrderSummary($customer_id){
         $objQuery = new SC_Query_Ex();
-        $arrOrderSummary =  $objQuery->getRow("SUM( payment_total ) as buy_total, COUNT(order_id) as buy_times,MAX( create_date ) as last_buy_date, MIN(create_date) as first_buy_date","dtb_order","customer_id = ? AND del_flg = 0 AND status <> ?",array($customer_id,ORDER_CANCEL));
+        $arrOrderSummary =  $objQuery->getRow("SUM( payment_total ) as buy_total, COUNT(order_id) as buy_times,MAX( create_date) as last_buy_date, MIN(create_date) as first_buy_date","dtb_order","customer_id = ? AND del_flg = 0 AND status <> ?",array($customer_id,ORDER_CANCEL));
         $objQuery->update("dtb_customer",$arrOrderSummary,"customer_id = ?",array($customer_id));
     }
 }

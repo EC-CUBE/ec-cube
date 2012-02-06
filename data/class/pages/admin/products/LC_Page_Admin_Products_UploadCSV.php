@@ -632,7 +632,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
 //        if (!$this->lfIsDbRecord('dtb_class_combination', 'class_combination_id', $item)) {
 //      SC_Utils::sfIsRecord が del_flg が無いと使えない為、個別処理
         if(array_search('class_combination_id', $this->arrFormKeyList) !== FALSE
-                and $item['class_combination_id'] != "" ) {
+                and $item['class_combination_id'] != "") {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $ret = $objQuery->get('class_combination_id', 'dtb_class_combination', 'class_combination_id = ?', array($item['class_combination_id']));
             if ($ret == "") {
@@ -659,7 +659,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         for ($i = 1; $i <= RECOMMEND_PRODUCT_MAX; $i++) {
             if(array_search('recommend_product_id' . $i, $this->arrFormKeyList) !== FALSE
                     and $item['recommend_product_id' . $i] != ""
-                    and !$this->objDb->sfIsRecord('dtb_products', 'product_id', (array)$item['recommend_product_id' . $i]) ) {
+                    and !$this->objDb->sfIsRecord('dtb_products', 'product_id', (array)$item['recommend_product_id' . $i])) {
                 $arrErr['recommend_product_id' . $i] = "※ 指定の関連商品ID($i)は、登録されていません。";
             }
         }

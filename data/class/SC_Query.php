@@ -478,7 +478,7 @@ class SC_Query {
         $find = false;
         $arrVal = array();
 
-        if(count($sqlval) <= 0 ) return false;
+        if(count($sqlval) <= 0) return false;
         foreach ($sqlval as $key => $val) {
             $strcol .= $key . ',';
             if (strcasecmp("Now()", $val) === 0) {
@@ -773,7 +773,7 @@ class SC_Query {
      * @param mixed $result_types 返値の型指定またはDML実行(MDB2_PREPARE_MANIP)
      * @return array SQL の実行結果の配列
      */
-    function query($n ,$arr = array(), $ignore_err = false, $types = null, $result_types = MDB2_PREPARE_RESULT ){
+    function query($n ,$arr = array(), $ignore_err = false, $types = null, $result_types = MDB2_PREPARE_RESULT){
 
         $n = $this->dbFactory->sfChangeMySQL($n);
 
@@ -1002,7 +1002,7 @@ class SC_Query {
      * @param mixed $result_types 返値の型指定またはDML実行(MDB2_PREPARE_MANIP)
      * @return array 実行結果の配列
      */
-    function getQueryDefsFields($n ,$arr = array(), $ignore_err = false, $types = null, $result_types = MDB2_PREPARE_RESULT ){
+    function getQueryDefsFields($n ,$arr = array(), $ignore_err = false, $types = null, $result_types = MDB2_PREPARE_RESULT){
 
         $n = $this->dbFactory->sfChangeMySQL($n);
 

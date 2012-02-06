@@ -56,7 +56,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $this->arrJob["不明"] = "不明";
         $this->arrSex = $masterData->getMasterData("mtb_sex");
         $this->arrPageRows = $masterData->getMasterData("mtb_page_max");
-        $this->arrHtmlmail = array( "" => "両方",  1 => 'HTML', 2 => 'TEXT' );
+        $this->arrHtmlmail = array( "" => "両方",  1 => 'HTML', 2 => 'TEXT');
         $this->arrMailType = $masterData->getMasterData("mtb_mail_type");
 
         // 日付プルダウン設定
@@ -257,19 +257,19 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $dtb_send_history["update_date"] = 'CURRENT_TIMESTAMP';
         $dtb_send_history["create_date"] = 'CURRENT_TIMESTAMP';
         $dtb_send_history['send_id'] = $send_id;
-        $objQuery->insert("dtb_send_history", $dtb_send_history );
+        $objQuery->insert("dtb_send_history", $dtb_send_history);
         // 「配信メールアドレス種別」に携帯メールアドレスが指定されている場合は、携帯メールアドレスに配信
         $emailtype="email";
         $searchmailtype = $objFormParam->getValue('search_mail_type');
         if($searchmailtype==2||$searchmailtype==4)$emailtype="email_mobile";
-        if (is_array( $arrSendCustomer )) {
+        if (is_array( $arrSendCustomer)) {
             foreach ($arrSendCustomer as $line) {
                 $dtb_send_customer = array();
                 $dtb_send_customer["customer_id"] = $line["customer_id"];
                 $dtb_send_customer["send_id"] = $send_id;
                 $dtb_send_customer['email'] = $line[$emailtype];
                 $dtb_send_customer['name'] = $line["name01"] . " " . $line["name02"];
-                $objQuery->insert("dtb_send_customer", $dtb_send_customer );
+                $objQuery->insert("dtb_send_customer", $dtb_send_customer);
             }
         }
         return $send_id;

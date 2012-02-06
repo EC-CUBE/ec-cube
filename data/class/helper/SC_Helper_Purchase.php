@@ -75,7 +75,7 @@ class SC_Helper_Purchase {
         $orderId = $this->registerOrderComplete($orderTemp, $objCartSession,
                                                 $cartkey);
         $isMultiple = SC_Helper_Purchase::isMultiple();
-        $shippingTemp =& $this->getShippingTemp( $isMultiple );
+        $shippingTemp =& $this->getShippingTemp( $isMultiple);
         foreach ($shippingTemp as $shippingId => $val) {
             $this->registerShipmentItem($orderId, $shippingId,
                                         $val['shipment_item']);

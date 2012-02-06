@@ -170,7 +170,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
             $objFormParam->getValue('footer'), false);
 
             $this->tpl_subject = $objFormParam->getValue('subject');
-            $this->tpl_body = mb_convert_encoding( $objSendMail->body, CHAR_CODE, 'auto' );
+            $this->tpl_body = mb_convert_encoding( $objSendMail->body, CHAR_CODE, 'auto');
             $this->tpl_to = $objSendMail->tpl_to;
             $this->tpl_mainpage = 'order/mail_confirm.tpl';
             return true;
@@ -188,7 +188,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $where = "template_id = ?";
             $mailTemplates = $objQuery->select("subject, header, footer", "dtb_mailtemplate", $where, array($objFormParam->getValue('template_id')));
-            if (!is_null($mailTemplates )) {
+            if (!is_null($mailTemplates)) {
                 foreach (array('subject','header','footer') as $key) {
                     $objFormParam->setValue($key,$mailTemplates[$key]);
                 }

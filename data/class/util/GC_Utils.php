@@ -51,7 +51,7 @@ class GC_Utils {
             // 文字コード変換
             $return = mb_convert_encoding($return,'SJIS',CHAR_CODE);
             // 改行方法の統一
-            $return = str_replace( array( "\r\n", "\r" ), "\n", $return);
+            $return = str_replace( array( "\r\n", "\r"), "\n", $return);
         }
         echo $return;
     }
@@ -64,19 +64,19 @@ class GC_Utils {
      * [依存] -
      * [注釈] -
      *----------------------------------------------------------------------*/
-    function gfSetCsv( $array, $arrayIndex = "" ){
+    function gfSetCsv( $array, $arrayIndex = ""){
         //引数$arrayIndexは、$arrayが連想配列のときに添え字を指定してやるために使用する
 
         $return = "";
         for ($i=0; $i<count($array); $i++) {
 
             for ($j=0; $j<count($array[$i]); $j++) {
-                if ( $j > 0 ) $return .= ",";
+                if ( $j > 0) $return .= ",";
                 $return .= "\"";
                 if ($arrayIndex) {
-                    $return .= mb_ereg_replace("<","＜",mb_ereg_replace( "\"","\"\"",$array[$i][$arrayIndex[$j]] )) ."\"";
+                    $return .= mb_ereg_replace("<","＜",mb_ereg_replace( "\"","\"\"",$array[$i][$arrayIndex[$j]])) ."\"";
                 } else {
-                    $return .= mb_ereg_replace("<","＜",mb_ereg_replace( "\"","\"\"",$array[$i][$j] )) ."\"";
+                    $return .= mb_ereg_replace("<","＜",mb_ereg_replace( "\"","\"\"",$array[$i][$j])) ."\"";
                 }
             }
             $return .= "\n";
@@ -231,8 +231,8 @@ class GC_Utils {
 
         $fp = fopen($path, "a+");
         if ($fp) {
-            fwrite( $fp, $today." [".$_SERVER['PHP_SELF']."] ".$mess." from ". $_SERVER['REMOTE_ADDR']. "\n" );
-            fclose( $fp );
+            fwrite( $fp, $today." [".$_SERVER['PHP_SELF']."] ".$mess." from ". $_SERVER['REMOTE_ADDR']. "\n");
+            fclose( $fp);
         }
 
         // ログテーション

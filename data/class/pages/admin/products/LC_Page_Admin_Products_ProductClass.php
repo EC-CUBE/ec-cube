@@ -609,7 +609,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
 
         if ($_FILES['down_realfilename']['size'][$index] <= 0) {
             $this->arrErr['down_realfilename'][$index] = '※ ファイルがアップロードされていません';
-        } else if ($_FILES['down_realfilename']['size'][$index] > DOWN_SIZE *  1024 ) {
+        } else if ($_FILES['down_realfilename']['size'][$index] > DOWN_SIZE *  1024) {
             $size = DOWN_SIZE;
             $byte = 'KB';
             if ($size >= 1000) {
@@ -632,7 +632,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                     }
                     $ext = preg_replace("/.$/", "" ,$ext);
                 } else {
-                    $ext = $array_ext[ count ( $array_ext ) - 1 ];
+                    $ext = $array_ext[ count ( $array_ext) - 1 ];
                 }
                 $ext = strtolower($ext);
 

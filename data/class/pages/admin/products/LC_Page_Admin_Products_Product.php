@@ -1384,7 +1384,7 @@ __EOF__;
      * @return string 
      */
     function lfGetAddSuffix($to_key){
-        if( IMAGE_RENAME === true ) return ;
+        if( IMAGE_RENAME === true) return ;
 
         // 自動生成される画像名
         $dist_name = "";

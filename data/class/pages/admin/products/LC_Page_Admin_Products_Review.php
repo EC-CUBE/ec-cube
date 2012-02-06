@@ -273,7 +273,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
 
             case 'search_product_code':
                 $val = preg_replace("/ /", "%", $val);
-                $where.= " AND A.product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code LIKE ? )";
+                $where.= " AND A.product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code LIKE ?)";
                 $arrval[] = "%$val%";
                 break;
 

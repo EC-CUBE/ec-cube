@@ -236,7 +236,7 @@ class SC_Helper_Plugin {
                 return spl_object_hash($function[0]) . $function[1];
             } else {
                 $obj_idx = get_class($function[0]).$function[1];
-                if ( false === $priority )
+                if ( false === $priority)
                     return false;
                 $obj_idx .= isset($this->arrRegistedPluginActions[$hook_point][$priority])
                           ? count((array)$this->arrRegistedPluginActions[$hook_point][$priority])
@@ -246,7 +246,7 @@ class SC_Helper_Plugin {
 
                 return $obj_idx;
             }
-        } else if (is_string($function[0]) ) {
+        } else if (is_string($function[0])) {
             return $function[0].$function[1];
         }
     }

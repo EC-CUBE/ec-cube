@@ -125,7 +125,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ?";
-        return $objQuery->getAll($sql, array($template_id) );
+        return $objQuery->getAll($sql, array($template_id));
     }
 
     function lfRegistMailTemplate($post, $member_id){

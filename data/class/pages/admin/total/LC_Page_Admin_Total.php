@@ -583,7 +583,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             AVG(total) AS total_average
             ';
 
-        $from   = 'dtb_order JOIN dtb_customer USING ( customer_id )';
+        $from   = 'dtb_order JOIN dtb_customer USING ( customer_id)';
 
         $where .= " AND dtb_order.del_flg = 0 AND dtb_order.status <> " . ORDER_CANCEL;
 
