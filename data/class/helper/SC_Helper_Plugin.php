@@ -53,7 +53,7 @@ class SC_Helper_Plugin {
 
         foreach ($arrPluginDataList as $arrPluginData) {
             // プラグイン本体ファイル名が取得したプラグインディレクトリ一覧にある事を確認
-            if (array_search($arrPluginData['class_name'], $arrPluginDirectory) !== false ) {
+            if (array_search($arrPluginData['class_name'], $arrPluginDirectory) !== false) {
                 // プラグイン本体ファイルをrequire.
                 require_once(PLUGIN_UPLOAD_REALDIR . $arrPluginData['class_name'] . '/' . $arrPluginData['class_name'] . '.php');
                 // プラグインのインスタンス生成.

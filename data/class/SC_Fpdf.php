@@ -119,7 +119,7 @@ class SC_Fpdf extends PDF_Japanese {
         }
         $this->lfText(125, 80, $text, 8);  //TEL・FAX
 
-        if (strlen($arrInfo['law_email']) > 0 ) {
+        if (strlen($arrInfo['law_email']) > 0) {
             $text = "Email: ".$arrInfo['law_email'];
             $this->lfText(125, 83, $text, 8);      //Email
         }

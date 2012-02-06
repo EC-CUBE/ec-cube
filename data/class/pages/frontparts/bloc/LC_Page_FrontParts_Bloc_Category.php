@@ -62,7 +62,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
      */
     function action() {
         // モバイル判定
-        switch (SC_Display_Ex::detectDevice() ) {
+        switch (SC_Display_Ex::detectDevice()) {
             case DEVICE_TYPE_MOBILE:
                 // メインカテゴリの取得
                 $this->arrCat = $this->lfGetMainCat(true);
@@ -94,12 +94,12 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
     function lfGetSelectedCategoryId($arrRequest) {
             // 商品ID取得
         $product_id = '';
-        if (isset($arrRequest['product_id']) && $arrRequest['product_id'] != '' && is_numeric($arrRequest['product_id']) ) {
+        if (isset($arrRequest['product_id']) && $arrRequest['product_id'] != '' && is_numeric($arrRequest['product_id'])) {
             $product_id = $arrRequest['product_id'];
         }
         // カテゴリID取得
         $category_id = '';
-        if (isset($arrRequest['category_id']) && $arrRequest['category_id'] != '' && is_numeric($arrRequest['category_id']) ) {
+        if (isset($arrRequest['category_id']) && $arrRequest['category_id'] != '' && is_numeric($arrRequest['category_id'])) {
             $category_id = $arrRequest['category_id'];
         }
         // 選択中のカテゴリIDを判定する

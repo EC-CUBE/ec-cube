@@ -111,10 +111,10 @@ class LC_Page_InputZip extends LC_Page_Ex {
         // エラーチェック
         $arrErr = $objFormParam->checkError();
         // 親ウィンドウの戻り値を格納するinputタグのnameのエラーチェック
-        if (!$this->lfInputNameCheck($arrRequest['input1']) ) {
+        if (!$this->lfInputNameCheck($arrRequest['input1'])) {
             $arrErr['input1'] = "※ 入力形式が不正です。<br />";
         }
-        if (!$this->lfInputNameCheck($arrRequest['input2']) ) {
+        if (!$this->lfInputNameCheck($arrRequest['input2'])) {
             $arrErr['input2'] = "※ 入力形式が不正です。<br />";
         }
 

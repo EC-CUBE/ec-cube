@@ -115,7 +115,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
         $arrForm = $this->lfGetRealFileName($customer_id, $order_id, $product_id, $product_class_id);
 
         //ファイル情報が無い場合はNG
-        if ($arrForm["down_realfilename"] == "" ) {
+        if ($arrForm["down_realfilename"] == "") {
             SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
         }
         //ファイルそのものが無い場合もとりあえずNG

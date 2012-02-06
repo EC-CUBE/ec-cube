@@ -163,7 +163,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
         $arrProducts = $objQuery->select($col, $table, $where);
 
         $arrReturnProducts = array();
-        foreach ($arrProducts as $data ) {
+        foreach ($arrProducts as $data) {
             $arrReturnProducts[$data['rank']] = $data;
         }
         return $arrReturnProducts;

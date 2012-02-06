@@ -426,7 +426,7 @@ __EOS__;
         $names = preg_split("/ +/", $name);
         // 分割したキーワードを一つずつwhere文に追加
         foreach ($names as $val) {
-            if (strlen($val) > 0 ) {
+            if (strlen($val) > 0) {
                 $searchCondition['where']    .= " AND ( alldtl.name ILIKE ? OR alldtl.comment3 ILIKE ?) ";
                 $searchCondition['arrval'][]  = "%$val%";
                 $searchCondition['arrval'][]  = "%$val%";

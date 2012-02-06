@@ -70,10 +70,10 @@ class GC_Utils {
         $return = "";
         for ($i=0; $i<count($array); $i++) {
 
-            for ($j=0; $j<count($array[$i]); $j++ ) {
+            for ($j=0; $j<count($array[$i]); $j++) {
                 if ( $j > 0 ) $return .= ",";
                 $return .= "\"";
-                if ($arrayIndex ) {
+                if ($arrayIndex) {
                     $return .= mb_ereg_replace("<","＜",mb_ereg_replace( "\"","\"\"",$array[$i][$arrayIndex[$j]] )) ."\"";
                 } else {
                     $return .= mb_ereg_replace("<","＜",mb_ereg_replace( "\"","\"\"",$array[$i][$j] )) ."\"";
@@ -130,7 +130,7 @@ class GC_Utils {
         // バックトレースを取得する
         $traces = debug_backtrace(false);
         $bklv = 1;
-        if ($forLogInfo === true ) {
+        if ($forLogInfo === true) {
             $bklv = 3;
             if( ($traces[3]['class'] === 'LC_Page'
                 || $traces[3]['class'] === 'LC_Page_Admin')
@@ -296,7 +296,7 @@ class GC_Utils {
         $pw = preg_split("//", $character, 0, PREG_SPLIT_NO_EMPTY);
 
         $password = "";
-        for ($i = 0; $i<$pwLength; $i++ ) {
+        for ($i = 0; $i<$pwLength; $i++) {
             $password .= $pw[array_rand($pw, 1)];
         }
 

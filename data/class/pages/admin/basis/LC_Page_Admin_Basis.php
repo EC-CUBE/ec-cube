@@ -114,7 +114,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
                 }
                 $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "'); window.alert('SHOPマスターの登録が完了しました。');";
             }
-            if (empty($this->arrForm['regular_holiday_ids']) ) {
+            if (empty($this->arrForm['regular_holiday_ids'])) {
                 $this->arrSel = array();
             } else {
                 $this->arrSel = $this->arrForm['regular_holiday_ids'];

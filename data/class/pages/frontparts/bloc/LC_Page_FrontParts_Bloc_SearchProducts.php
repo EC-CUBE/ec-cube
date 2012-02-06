@@ -93,7 +93,7 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
      */
     function lfGetProductId() {
         $product_id = '';
-        if (isset($_GET['product_id']) && $_GET['product_id'] != '' && is_numeric($_GET['product_id']) ) {
+        if (isset($_GET['product_id']) && $_GET['product_id'] != '' && is_numeric($_GET['product_id'])) {
             $product_id = $_GET['product_id'];
         }
         return $product_id;
@@ -106,7 +106,7 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
      */
     function lfGetCategoryId() {
         $category_id = '';
-        if (isset($_GET['category_id']) && $_GET['category_id'] != '' && is_numeric($_GET['category_id']) ) {
+        if (isset($_GET['category_id']) && $_GET['category_id'] != '' && is_numeric($_GET['category_id'])) {
             $category_id = $_GET['category_id'];
         }
         return $category_id;
@@ -119,7 +119,7 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
      */
     function lfGetMakerId() {
         $maker_id = '';
-        if (isset($_GET['maker_id']) && $_GET['maker_id'] != '' && is_numeric($_GET['maker_id']) ) {
+        if (isset($_GET['maker_id']) && $_GET['maker_id'] != '' && is_numeric($_GET['maker_id'])) {
             $maker_id = $_GET['maker_id'];
         }
         return $maker_id;

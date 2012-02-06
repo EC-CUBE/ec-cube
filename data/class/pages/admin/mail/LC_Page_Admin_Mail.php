@@ -211,8 +211,8 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      * @return array key:template_id value:サブジェクト【配信形式】
      */
     function lfGetMailTemplateList($arrTemplate){
-        if (is_array($arrTemplate) ) {
-            foreach ($arrTemplate as $line ) {
+        if (is_array($arrTemplate)) {
+            foreach ($arrTemplate as $line) {
                 $return[$line['template_id']] = "【" . $this->arrHtmlmail[$line['mail_method']] . "】" . $line['subject'];
             }
         }
@@ -262,8 +262,8 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $emailtype="email";
         $searchmailtype = $objFormParam->getValue('search_mail_type');
         if($searchmailtype==2||$searchmailtype==4)$emailtype="email_mobile";
-        if (is_array( $arrSendCustomer ) ) {
-            foreach ($arrSendCustomer as $line ) {
+        if (is_array( $arrSendCustomer )) {
+            foreach ($arrSendCustomer as $line) {
                 $dtb_send_customer = array();
                 $dtb_send_customer["customer_id"] = $line["customer_id"];
                 $dtb_send_customer["send_id"] = $send_id;

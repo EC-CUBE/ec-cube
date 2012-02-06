@@ -753,9 +753,9 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             $tmp    = strtotime($st);
             $nAday  = 60*60*24;
             $edx    = strtotime($ed);
-            while ($tmp <= $edx ) {
+            while ($tmp <= $edx) {
                 $sDate = date($format, $tmp);
-                if (!in_array($sDate, $arrDateList) ) {
+                if (!in_array($sDate, $arrDateList)) {
                     $arrDateList[] = $sDate;
                 }
                 $tmp += $nAday;

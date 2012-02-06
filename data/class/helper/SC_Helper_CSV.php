@@ -264,12 +264,12 @@ class SC_Helper_CSV {
      * @return string 結果行
      */
     function sfArrayToCsv($fields, $delimiter = ',', $enclosure = '"', $arrayDelimiter = '|') {
-        if (strlen($delimiter) != 1 ) {
+        if (strlen($delimiter) != 1) {
             trigger_error('delimiter must be a single character', E_USER_WARNING);
             return "";
         }
 
-        if (strlen($enclosure) < 1 ) {
+        if (strlen($enclosure) < 1) {
             trigger_error('enclosure must be a single character', E_USER_WARNING);
             return "";
         }

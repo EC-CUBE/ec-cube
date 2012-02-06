@@ -503,7 +503,7 @@ class SC_UploadFile {
      */
     function lfGetTmpImageName($rename, $keyname = "", $uploadfile = ""){
 
-        if ($rename === true ) {
+        if ($rename === true) {
             // 一意なIDを取得し、画像名をリネームし保存
             $uniqname = date('mdHi') . "_" . uniqid("");
         } else {

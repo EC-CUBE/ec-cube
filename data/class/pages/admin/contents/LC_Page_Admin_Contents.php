@@ -123,7 +123,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
             break;
         case 'move':
         //----　表示順位移動
-            if (strlen($news_id) > 0 && is_numeric($news_id) == true ) {
+            if (strlen($news_id) > 0 && is_numeric($news_id) == true) {
                 $term = $objFormParam->getValue('term');
                 if ($term == 'up') {
                     $objDb->sfRankUp("dtb_news", "news_id", $news_id);

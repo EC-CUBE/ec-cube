@@ -99,7 +99,7 @@ class SC_Session {
     /** ユニークIDの取得 **/
     function getUniqId() {
         // ユニークIDがセットされていない場合はセットする。
-        if (empty($_SESSION['uniqid']) ) {
+        if (empty($_SESSION['uniqid'])) {
             $this->setUniqId();
         }
         return $this->GetSession('uniqid');

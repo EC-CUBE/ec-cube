@@ -77,7 +77,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
         // パラメーターの初期化
         $this->initParam($objFormParam, $_POST);
 
-        if (count($_POST) > 0 ) {
+        if (count($_POST) > 0) {
 
             // エラーチェック
             $arrErr = $objFormParam->checkError();

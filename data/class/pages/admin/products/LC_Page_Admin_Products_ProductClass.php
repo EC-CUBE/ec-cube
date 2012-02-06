@@ -622,7 +622,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
             $is_error = true;
             $strExt = "";
 
-            foreach (explode(",", DOWNLOAD_EXTENSION) as $checkExt ) {
+            foreach (explode(",", DOWNLOAD_EXTENSION) as $checkExt) {
                 $ext = "";
                 // チェック拡張子のピリオドの数を取得('tar.gz'の場合1個、'jpg'のように通常は0個)
                 $count_period = substr_count($checkExt, ".");

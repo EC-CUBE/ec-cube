@@ -102,7 +102,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         $arrCSVFrame = $objCSV->sfGetCsvOutput($this->csv_id);
 
         // CSV構造がインポート可能かのチェック
-        if (!$objCSV->sfIsImportCSVFrame($arrCSVFrame) ) {
+        if (!$objCSV->sfIsImportCSVFrame($arrCSVFrame)) {
             // 無効なフォーマットなので初期状態に強制変更
             $arrCSVFrame = $objCSV->sfGetCsvOutput($this->csv_id, '', array(), 'no');
             $this->tpl_is_format_default = true;

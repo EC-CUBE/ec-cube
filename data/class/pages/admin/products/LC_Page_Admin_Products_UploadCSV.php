@@ -105,7 +105,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         $arrCSVFrame = $objCSV->sfGetCsvOutput($this->csv_id);
 
         // CSV構造がインポート可能かのチェック
-        if (!$objCSV->sfIsImportCSVFrame($arrCSVFrame) ) {
+        if (!$objCSV->sfIsImportCSVFrame($arrCSVFrame)) {
             // 無効なフォーマットなので初期状態に強制変更
             $arrCSVFrame = $objCSV->sfGetCsvOutput($this->csv_id, '', array(), 'no');
             $this->tpl_is_format_default = true;
@@ -581,10 +581,10 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
             if ($sqlval['stock'] == "" and $sqlval['stock_unlimited'] != UNLIMITED_FLG_UNLIMITED) {
                 //在庫数設定がされておらず、かつ無制限フラグが設定されていない場合、強制無制限
                 $sqlval['stock_unlimited'] = UNLIMITED_FLG_UNLIMITED;
-            }elseif($sqlval['stock'] != "" and $sqlval['stock_unlimited'] != UNLIMITED_FLG_UNLIMITED) {
+            } elseif ($sqlval['stock'] != "" and $sqlval['stock_unlimited'] != UNLIMITED_FLG_UNLIMITED) {
                 //在庫数設定時は在庫無制限フラグをクリア
                 $sqlval['stock_unlimited'] = UNLIMITED_FLG_LIMITED;
-            }elseif($sqlval['stock'] != "" and $sqlval['stock_unlimited'] == UNLIMITED_FLG_UNLIMITED) {
+            } elseif ($sqlval['stock'] != "" and $sqlval['stock_unlimited'] == UNLIMITED_FLG_UNLIMITED) {
                 //在庫無制限フラグ設定時は在庫数をクリア
                 $sqlval['stock'] = '';
             }

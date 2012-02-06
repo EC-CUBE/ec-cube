@@ -954,9 +954,9 @@ function lfMakeConfigFile() {
     $arrAlgos = hash_algos();
     if (array_search('sha256', $arrAlgos) !== FALSE) {
         $algos = 'sha256';
-    }elseif(array_search('sha1', $arrAlgos) !== FALSE) {
+    } elseif (array_search('sha1', $arrAlgos) !== FALSE) {
         $algos = 'sha1';
-    }elseif(array_search('md5', $arrAlgos) !== FALSE) {
+    } elseif (array_search('md5', $arrAlgos) !== FALSE) {
         $algos = 'md5';
     } else {
         $algos = '';

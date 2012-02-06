@@ -464,7 +464,7 @@ class SC_Helper_Mail {
         $objMail->setSubject($compSubject);
 
         // テキストメール配信の場合
-        if ($arrMail["mail_method"] == 2 ) {
+        if ($arrMail["mail_method"] == 2) {
             $sendResut = $objMail->sendMail();
         // HTMLメール配信の場合
         } else {

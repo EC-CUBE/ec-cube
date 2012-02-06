@@ -41,7 +41,7 @@ class SC_CheckError {
     }
 
     function doFunc($value, $arrFunc) {
-        foreach ($arrFunc as $key ) {
+        foreach ($arrFunc as $key) {
             $this->$key($value);
         }
     }
@@ -90,7 +90,7 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        if (!is_array($this->arrParam[$value[1]]) && strlen($this->arrParam[$value[1]]) == 0 ) {
+        if (!is_array($this->arrParam[$value[1]]) && strlen($this->arrParam[$value[1]]) == 0) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "が入力されていません。<br />";
         } else if (is_array($this->arrParam[$value[1]]) && count($this->arrParam[$value[1]]) == 0) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "が選択されていません。<br />";
@@ -109,7 +109,7 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        if (strlen($this->arrParam[$value[0]]) == 0 ) {
+        if (strlen($this->arrParam[$value[0]]) == 0) {
             $this->arrErr[$value[0]] = "※ " . $value[0] . "が入力されていません。<br />";
         }
     }
@@ -171,7 +171,7 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        if (strlen($this->arrParam[$value[1]]) == 0 ) {
+        if (strlen($this->arrParam[$value[1]]) == 0) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "が選択されていません。<br />";
         }
     }
@@ -243,7 +243,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         // 文字数の取得
-        if (mb_strlen($this->arrParam[$value[1]]) > $value[2] ) {
+        if (mb_strlen($this->arrParam[$value[1]]) > $value[2]) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "は" . $value[2] . "字以下で入力してください。<br />";
         }
     }
@@ -261,7 +261,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         // 文字数の取得
-        if (mb_strlen($this->arrParam[$value[1]]) < $value[2] ) {
+        if (mb_strlen($this->arrParam[$value[1]]) < $value[2]) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "は" . $value[2] . "字以上で入力してください。<br />";
         }
     }
@@ -279,7 +279,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         // 文字数の取得
-        if ($this->arrParam[$value[1]] > $value[2] ) {
+        if ($this->arrParam[$value[1]] > $value[2]) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "は" . $value[2] . "以下で入力してください。<br />";
         }
     }
@@ -296,7 +296,7 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        if ($this->arrParam[$value[1]] < $value[2] ) {
+        if ($this->arrParam[$value[1]] < $value[2]) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "は" . $value[2] . "以上で入力してください。<br />";
         }
     }
@@ -313,7 +313,7 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        if ($this->numelicCheck($this->arrParam[$value[1]]) ) {
+        if ($this->numelicCheck($this->arrParam[$value[1]])) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "は数字で入力してください。<br />";
         }
     }
@@ -550,7 +550,7 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        if (strlen($this->arrParam[$value[1]]) > 0 && !ctype_alnum($this->arrParam[$value[1]]) ) {
+        if (strlen($this->arrParam[$value[1]]) > 0 && !ctype_alnum($this->arrParam[$value[1]])) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "は英数字で入力してください。<br />";
         }
     }
@@ -563,7 +563,7 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^[[:graph:]|[:space:]]+$/i", $this->arrParam[$value[1]] ) ) {
+        if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^[[:graph:]|[:space:]]+$/i", $this->arrParam[$value[1]] )) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "は英数記号で入力してください。<br />";
         }
     }
@@ -573,7 +573,7 @@ class SC_CheckError {
     // value[0] = 項目名 value[1] = 判定対象
     function ZERO_CHECK( $value ) {
         $this->createParam($value);
-        if ($this->arrParam[$value[1]] == "0" ) {
+        if ($this->arrParam[$value[1]] == "0") {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "は1以上を入力してください。<br />";
         }
     }
@@ -588,7 +588,7 @@ class SC_CheckError {
         $this->createParam($value);
         // $this->arrParam[$value[0]] = mb_convert_kana($this->arrParam[$value[0]], 'n');
         $count = strlen($this->arrParam[$value[1]]);
-        if (( $count > 0 ) && $value[2] > $count || $value[3] < $count ) {
+        if (( $count > 0 ) && $value[2] > $count || $value[3] < $count) {
             $this->arrErr[$value[1]] =  "※ $value[0]は$value[2]桁～$value[3]桁で入力して下さい。<br />";
         }
     }
@@ -602,7 +602,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         $count = strlen($this->arrParam[$value[1]]);
-        if (($count > 0) && $count != $value[2] ) {
+        if (($count > 0) && $count != $value[2]) {
             $this->arrErr[$value[1]] =  "※ $value[0]は$value[2]桁で入力して下さい。<br />";
         }
     }
@@ -670,7 +670,7 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^[a-zA-Z0-9_\.@\+\?-]+$/i",$this->arrParam[$value[1]]) ) {
+        if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^[a-zA-Z0-9_\.@\+\?-]+$/i",$this->arrParam[$value[1]])) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "に使用する文字を正しく入力してください。<br />";
         }
     }
@@ -682,7 +682,7 @@ class SC_CheckError {
          if (isset($this->arrErr[$value[1]])) {
             return;
         }
-         if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("@^https?://+($|[a-zA-Z0-9_~=:&\?\.\/-])+$@i", $this->arrParam[$value[1]] ) ) {
+         if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("@^https?://+($|[a-zA-Z0-9_~=:&\?\.\/-])+$@i", $this->arrParam[$value[1]] )) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "を正しく入力してください。<br />";
         }
     }
@@ -718,13 +718,13 @@ class SC_CheckError {
         }
         $this->createParam($value);
 
-        if ($_FILES[$value[1]]['name'] != "" ) {
+        if ($_FILES[$value[1]]['name'] != "") {
             $errFlag = 1;
             $array_ext = explode(".", $_FILES[$value[1]]['name']);
 
             $strExt = "";
 
-            foreach ($value[2] as $checkExt ) {
+            foreach ($value[2] as $checkExt) {
                 $ext = "";
 
                 // チェック拡張子のピリオドの数を取得('tar.gz'の場合1個、'jpg'のように通常は0個)
@@ -801,9 +801,9 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        if ($_FILES[$value[1]]['size'] > $value[2] *  1024 ) {
+        if ($_FILES[$value[1]]['size'] > $value[2] *  1024) {
             $byte = 'KB';
-            if ($value[2] >= 1000 ) {
+            if ($value[2] >= 1000) {
                 $value[2] = $value[2] / 1000;
                 $byte = 'MB';
             }
@@ -819,7 +819,7 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        if (strlen($_FILES[$value[1]]['name']) > 0 && !preg_match("/^[[:alnum:]_\.-]+$/i", $_FILES[$value[1]]['name']) ) {
+        if (strlen($_FILES[$value[1]]['name']) > 0 && !preg_match("/^[[:alnum:]_\.-]+$/i", $_FILES[$value[1]]['name'])) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "のファイル名に日本語やスペースは使用しないで下さい。<br />";
         }
     }
@@ -959,13 +959,13 @@ class SC_CheckError {
         }
         $this->createParam($value);
         $error = 0;
-        if ((strlen($this->arrParam[$value[2]]) > 0 || strlen($this->arrParam[$value[3]]) > 0 || strlen($this->arrParam[$value[4]] ) > 0) && ! checkdate($this->arrParam[$value[3]], $this->arrParam[$value[4]], $this->arrParam[$value[2]]) ) {
+        if ((strlen($this->arrParam[$value[2]]) > 0 || strlen($this->arrParam[$value[3]]) > 0 || strlen($this->arrParam[$value[4]] ) > 0) && ! checkdate($this->arrParam[$value[3]], $this->arrParam[$value[4]], $this->arrParam[$value[2]])) {
             $this->arrErr[$value[2]] = "※ " . $value[0] . "を正しく指定してください。<br />";
         }
-        if ((strlen($this->arrParam[$value[5]]) > 0 || strlen($this->arrParam[$value[6]]) > 0 || strlen($this->arrParam[$value[7]] ) > 0) && ! checkdate($this->arrParam[$value[6]], $this->arrParam[$value[7]], $this->arrParam[$value[5]]) ) {
+        if ((strlen($this->arrParam[$value[5]]) > 0 || strlen($this->arrParam[$value[6]]) > 0 || strlen($this->arrParam[$value[7]] ) > 0) && ! checkdate($this->arrParam[$value[6]], $this->arrParam[$value[7]], $this->arrParam[$value[5]])) {
             $this->arrErr[$value[5]] = "※ " . $value[1] . "を正しく指定してください。<br />";
         }
-        if ((strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0 && strlen($this->arrParam[$value[4]] ) > 0) &&  (strlen($this->arrParam[$value[5]]) > 0 || strlen($this->arrParam[$value[6]]) > 0 || strlen($this->arrParam[$value[7]] ) > 0) ) {
+        if ((strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0 && strlen($this->arrParam[$value[4]] ) > 0) &&  (strlen($this->arrParam[$value[5]]) > 0 || strlen($this->arrParam[$value[6]]) > 0 || strlen($this->arrParam[$value[7]] ) > 0)) {
 
             $date1 = $this->arrParam[$value[2]] .sprintf("%02d", $this->arrParam[$value[3]]) .sprintf("%02d",$this->arrParam[$value[4]]) ."000000";
             $date2 = $this->arrParam[$value[5]] .sprintf("%02d", $this->arrParam[$value[6]]) .sprintf("%02d",$this->arrParam[$value[7]]) ."235959";
@@ -1010,13 +1010,13 @@ class SC_CheckError {
         }
         $this->createParam($value);
         $error = 0;
-        if ((strlen($this->arrParam[$value[2]]) > 0 || strlen($this->arrParam[$value[3]]) > 0 || strlen($this->arrParam[$value[4]] ) > 0 || strlen($this->arrParam[$value[5]]) > 0) && ! checkdate($this->arrParam[$value[3]], $this->arrParam[$value[4]], $this->arrParam[$value[2]]) ) {
+        if ((strlen($this->arrParam[$value[2]]) > 0 || strlen($this->arrParam[$value[3]]) > 0 || strlen($this->arrParam[$value[4]] ) > 0 || strlen($this->arrParam[$value[5]]) > 0) && ! checkdate($this->arrParam[$value[3]], $this->arrParam[$value[4]], $this->arrParam[$value[2]])) {
             $this->arrErr[$value[2]] = "※ " . $value[0] . "を正しく指定してください。<br />";
         }
-        if ((strlen($this->arrParam[$value[8]]) > 0 || strlen($this->arrParam[$value[9]]) > 0 || strlen($this->arrParam[$value[10]] ) > 0 || strlen($this->arrParam[$value[11]] ) > 0) && ! checkdate($this->arrParam[$value[9]], $this->arrParam[$value[10]], $this->arrParam[$value[8]]) ) {
+        if ((strlen($this->arrParam[$value[8]]) > 0 || strlen($this->arrParam[$value[9]]) > 0 || strlen($this->arrParam[$value[10]] ) > 0 || strlen($this->arrParam[$value[11]] ) > 0) && ! checkdate($this->arrParam[$value[9]], $this->arrParam[$value[10]], $this->arrParam[$value[8]])) {
             $this->arrErr[$value[8]] = "※ " . $value[1] . "を正しく指定してください。<br />";
         }
-        if ((strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0 && strlen($this->arrParam[$value[4]] ) > 0 && strlen($this->arrParam[$value[5]] ) > 0) &&  (strlen($this->arrParam[$value[8]]) > 0 || strlen($this->arrParam[$value[9]]) > 0 || strlen($this->arrParam[$value[10]] ) > 0 || strlen($this->arrParam[$value[11]] ) > 0) ) {
+        if ((strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0 && strlen($this->arrParam[$value[4]] ) > 0 && strlen($this->arrParam[$value[5]] ) > 0) &&  (strlen($this->arrParam[$value[8]]) > 0 || strlen($this->arrParam[$value[9]]) > 0 || strlen($this->arrParam[$value[10]] ) > 0 || strlen($this->arrParam[$value[11]] ) > 0)) {
 
             $date1 = $this->arrParam[$value[2]] .sprintf("%02d", $this->arrParam[$value[3]]) .sprintf("%02d",$this->arrParam[$value[4]]) .sprintf("%02d",$this->arrParam[$value[5]]).sprintf("%02d",$this->arrParam[$value[6]]).sprintf("%02d",$this->arrParam[$value[7]]);
             $date2 = $this->arrParam[$value[8]] .sprintf("%02d", $this->arrParam[$value[9]]) .sprintf("%02d",$this->arrParam[$value[10]]) .sprintf("%02d",$this->arrParam[$value[11]]).sprintf("%02d",$this->arrParam[$value[12]]).sprintf("%02d",$this->arrParam[$value[13]]);
@@ -1054,10 +1054,10 @@ class SC_CheckError {
         }
         $this->createParam($value);
         $error = 0;
-        if ((strlen($this->arrParam[$value[2]]) > 0 || strlen($this->arrParam[$value[3]]) > 0) && ! checkdate($this->arrParam[$value[3]], 1, $this->arrParam[$value[2]]) ) {
+        if ((strlen($this->arrParam[$value[2]]) > 0 || strlen($this->arrParam[$value[3]]) > 0) && ! checkdate($this->arrParam[$value[3]], 1, $this->arrParam[$value[2]])) {
             $this->arrErr[$value[2]] = "※ " . $value[0] . "を正しく指定してください。<br />";
         }
-        if ((strlen($this->arrParam[$value[4]]) > 0 || strlen($this->arrParam[$value[5]]) > 0) && ! checkdate($this->arrParam[$value[5]], 1, $this->arrParam[$value[4]]) ) {
+        if ((strlen($this->arrParam[$value[4]]) > 0 || strlen($this->arrParam[$value[5]]) > 0) && ! checkdate($this->arrParam[$value[5]], 1, $this->arrParam[$value[4]])) {
             $this->arrErr[$value[4]] = "※ " . $value[1] . "を正しく指定してください。<br />";
         }
         if ((strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0 && (strlen($this->arrParam[$value[4]]) > 0 || strlen($this->arrParam[$value[5]]) > 0 ))) {
@@ -1141,7 +1141,7 @@ class SC_CheckError {
      * @example $objErr->doFunc(array('URL', 'contents', $arrReviewDenyURL), array("PROHIBITED_STR_CHECK"));
      */
     function PROHIBITED_STR_CHECK( $value ) {
-        if (isset($this->arrErr[$value[1]]) || empty($this->arrParam[$value[1]]) ) {
+        if (isset($this->arrErr[$value[1]]) || empty($this->arrParam[$value[1]])) {
             return;
         }
         $this->createParam($value);

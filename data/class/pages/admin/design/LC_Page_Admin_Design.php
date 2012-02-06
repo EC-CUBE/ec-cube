@@ -220,7 +220,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
      */
     function existsBloc($arrBloc, $arrToBlocs) {
         foreach ($arrToBlocs as $arrToBloc) {
-            if ($arrBloc['bloc_id'] === $arrToBloc['bloc_id'] ) {
+            if ($arrBloc['bloc_id'] === $arrToBloc['bloc_id']) {
                 return true;
             }
         }

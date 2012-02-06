@@ -123,8 +123,7 @@ class LC_Page_RSS extends LC_Page_Ex {
             // 新着情報URL
             if (SC_Utils_Ex::isBlank($row['news_url'])) {
                 $row['news_url'] = HTTP_URL;
-            }
-            elseif ($row['news_url'][0] == '/') {
+            } elseif ($row['news_url'][0] == '/') {
                 // 変換(絶対パス→URL)
                 $netUrl = new Net_URL($row['news_url']);
                 $netUrl->protocol = $netUrlHttpUrl->protocol;

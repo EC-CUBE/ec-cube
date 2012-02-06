@@ -238,7 +238,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
     // カテゴリIDをキー、カテゴリ名を値にする配列を返す。
     function lfGetIDName($arrCatKey, $arrCatVal) {
         $max = count($arrCatKey);
-        for ($cnt = 0; $cnt < $max; $cnt++ ) {
+        for ($cnt = 0; $cnt < $max; $cnt++) {
             $key = isset($arrCatKey[$cnt]) ? $arrCatKey[$cnt] : "";
             $val = isset($arrCatVal[$cnt]) ? $arrCatVal[$cnt] : "";
             $arrRet[$key] = $val;

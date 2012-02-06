@@ -39,7 +39,7 @@ class SC_Utils {
         // インストール済みが定義されていない。
         if (!defined('ECCUBE_INSTALL')) {
             $phpself = $_SERVER['PHP_SELF'];
-            if (strpos('/install/', $phpself) === false ) {
+            if (strpos('/install/', $phpself) === false) {
                 $path = substr($phpself, 0, strpos($phpself, basename($phpself)));
                 $install_url = SC_Utils_Ex::searchInstallerPath($path);
                 header('Location: ' . $install_url);
@@ -196,7 +196,7 @@ class SC_Utils {
         // リファラーチェック(CSRFの暫定的な対策)
         // 「リファラ無」 の場合はスルー
         // 「リファラ有」 かつ 「管理画面からの遷移でない」 場合にエラー画面を表示する
-        if (empty($_SERVER['HTTP_REFERER']) ) {
+        if (empty($_SERVER['HTTP_REFERER'])) {
             // TODO 警告表示させる？
             // sfErrorHeader('>> referrerが無効になっています。');
         } else {
@@ -252,7 +252,7 @@ class SC_Utils {
     function sfIsValidTransition($objSess) {
         // 前画面からPOSTされるuniqidが正しいものかどうかをチェック
         $uniqid = $objSess->getUniqId();
-        if (!empty($_POST['uniqid']) && ($_POST['uniqid'] === $uniqid) ) {
+        if (!empty($_POST['uniqid']) && ($_POST['uniqid'] === $uniqid)) {
             return true;
         } else {
             return false;
@@ -563,7 +563,7 @@ class SC_Utils {
         if ($end_month || $end_day || $end_year) {
             if ( ! checkdate($end_month ,$end_day ,$end_year) ) $error = 2;
         }
-        if (! $error ) {
+        if (! $error) {
             $date1 = $start_year ."/".sprintf("%02d",$start_month) ."/".sprintf("%02d",$start_day) ." 000000";
             $date2 = $end_year   ."/".sprintf("%02d",$end_month)   ."/".sprintf("%02d",$end_day)   ." 235959";
             if ($date1 > $date2) $error = 3;
@@ -596,7 +596,7 @@ class SC_Utils {
     }
 
     function sfGetEnabled($val) {
-        if (! $val ) {
+        if (! $val) {
             return " disabled=\"disabled\"";
         }
         return "";
@@ -1146,7 +1146,7 @@ class SC_Utils {
 
         $fileArray=glob( $src."*" );
         if (is_array($fileArray)) {
-            foreach ($fileArray as $key => $data_ ) {
+            foreach ($fileArray as $key => $data_) {
                 // CVS管理ファイルはコピーしない
                 if (ereg("/CVS/Entries", $data_)) {
                     break;
@@ -1160,7 +1160,7 @@ class SC_Utils {
 
                 mb_ereg("^(.*[\/])(.*)",$data_, $matches);
                 $data=$matches[2];
-                if (is_dir( $data_ ) ) {
+                if (is_dir( $data_ )) {
                     $mess = SC_Utils_Ex::sfCopyDir( $data_.'/', $des.$data.'/', $mess);
                 } else {
                     if (!$override && file_exists($des.$data)) {
@@ -1608,13 +1608,13 @@ class SC_Utils {
         for ($i = 0; $i < count($array); $i++) {
             // インデックスが設定されている場合
             if (is_array($arrayIndex) && 0 < count($arrayIndex)) {
-                for ($j = 0; $j < count($arrayIndex); $j++ ) {
+                for ($j = 0; $j < count($arrayIndex); $j++) {
                     if ( $j > 0 ) $return .= ",";
                     $return .= "\"";
                     $return .= mb_ereg_replace("<","＜",mb_ereg_replace( "\"","\"\"",$array[$i][$arrayIndex[$j]] )) ."\"";
                 }
             } else {
-                for ($j = 0; $j < count($array[$i]); $j++ ) {
+                for ($j = 0; $j < count($array[$i]); $j++) {
                     if ( $j > 0 ) $return .= ",";
                     $return .= "\"";
                     $return .= mb_ereg_replace("<","＜",mb_ereg_replace( "\"","\"\"",$array[$i][$j] )) ."\"";
