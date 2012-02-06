@@ -236,7 +236,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return string 変換後の SQL 文
      */
     function sfChangeILIKE($sql){
-        $changesql = eregi_replace("(ILIKE )", "LIKE ", $sql);
+        $changesql = preg_replace('/(^|[^\w])ILIKE([^\w]|$)/i', '$1LIKE$2', $sql);
         return $changesql;
     }
 
@@ -248,7 +248,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return string 変換後の SQL 文
      */
     function sfChangeRANDOM($sql){
-        $changesql = eregi_replace("( RANDOM)", " RAND", $sql);
+        $changesql = preg_replace('/(^|[^\w])RANDOM\(/i', '$1RAND(', $sql);
         return $changesql;
     }
 
@@ -260,7 +260,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return string 変換後の SQL 文
      */
     function sfChangeTrunc($sql){
-        $changesql = eregi_replace("( TRUNC)", " TRUNCATE", $sql);
+        $changesql = preg_replace('/(^|[^\w])TRUNC([^\w]|$)/i', '$1TRUNCATE$2', $sql);
         return $changesql;
     }
 
