@@ -111,7 +111,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
             break;
 
         default:
-            if (isset($_GET['msg']) && $_GET['msg'] == 'on'){
+            if (isset($_GET['msg']) && $_GET['msg'] == 'on') {
                 $this->tpl_onload = "alert('登録が完了しました。');";
             }
         }

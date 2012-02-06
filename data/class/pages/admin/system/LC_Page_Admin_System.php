@@ -150,7 +150,7 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex {
         $clean_pageno = "";
 
         // $pagenoが0以上の整数かチェック
-        if(SC_Utils_Ex::sfIsInt($pageno) && $pageno > 0) {
+        if (SC_Utils_Ex::sfIsInt($pageno) && $pageno > 0) {
             $clean_pageno = $pageno;
         }
 

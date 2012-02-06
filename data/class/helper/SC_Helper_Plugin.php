@@ -91,7 +91,7 @@ class SC_Helper_Plugin {
      * @return void
      */
     function doAction($hook_point, $arrArgs = array()) {
-        if(is_array($arrArgs) === false) {
+        if (is_array($arrArgs) === false) {
             array(&$arrArgs);
         }
 
@@ -172,7 +172,7 @@ class SC_Helper_Plugin {
      */
     function registSuperHookPoint($objPlugin, $hook_point, $function_name, $priority) {
         // スーパープラグイン関数を定義しているかを検証.
-        if(method_exists($objPlugin, $function_name) === true){
+        if (method_exists($objPlugin, $function_name) === true) {
             // アクションの登録
             $this->addAction($hook_point, array($objPlugin, $function_name), $priority);
         }
@@ -186,7 +186,7 @@ class SC_Helper_Plugin {
      */
     function registLocalHookPoint($objPlugin, $priority) {
         // ローカルプラグイン関数を定義しているかを検証.
-        if(method_exists($objPlugin, 'regist') === true){
+        if (method_exists($objPlugin, 'regist') === true) {
             // アクションの登録（プラグイン側に記述）
             $objPluginHelper =& SC_Helper_Plugin::getSingletonInstance();
             $objPlugin->regist($objPluginHelper, $priority);
@@ -202,7 +202,7 @@ class SC_Helper_Plugin {
      * @return boolean 成功すればtrue
      */
     function addAction($hook_point, $function, $priority) {
-        if (!is_callable($function)){
+        if (!is_callable($function)) {
             // TODO エラー処理;　コール可能な形式ではありません
         }
         $idx = $this->makeActionUniqueId($hook_point, $function, $priority);
@@ -246,7 +246,7 @@ class SC_Helper_Plugin {
 
                 return $obj_idx;
             }
-        } else if ( is_string($function[0]) ) {
+        } else if (is_string($function[0]) ) {
             return $function[0].$function[1];
         }
     }
@@ -339,9 +339,9 @@ class SC_Helper_Plugin {
     function getEnableBlocs($arrBlocs) {
         foreach ($arrBlocs as $key => $value) {
             // 有効なpluginのブロック以外.
-            if(!in_array($value['plugin_id'] , $this->arrPluginIds)) {
+            if (!in_array($value['plugin_id'] , $this->arrPluginIds)) {
                 // 通常ブロック以外.
-                if($value['plugin_id'] != ""){
+                if ($value['plugin_id'] != "") {
                     //　ブロック配列から削除する
                     unset ($arrBlocs[$key]);
                 }

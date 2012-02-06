@@ -178,14 +178,14 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
 
         // レイアウト済みのブロックデータを追加
         $arrBlocPos = $objLayout->getBlocPositions($device_type_id, $page_id);
-        foreach($arrBlocPos as $arrBloc){
+        foreach ($arrBlocPos as $arrBloc) {
             $this->copyBloc($arrResults, $arrBloc, $i);
             $i++;
         }
 
         // 未使用のブロックデータを追加
         $arrBloc = $objLayout->getBlocs($device_type_id);
-        foreach($arrBloc as $arrBloc){
+        foreach ($arrBloc as $arrBloc) {
             if (!$this->existsBloc($arrBloc, $arrResults)) {
                 $arrBloc['target_id'] = TARGET_ID_UNUSED;
                 $this->copyBloc($arrResults, $arrBloc, $i);
@@ -219,7 +219,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
      * @return bool 存在する場合 true
      */
     function existsBloc($arrBloc, $arrToBlocs) {
-        foreach($arrToBlocs as $arrToBloc){
+        foreach ($arrToBlocs as $arrToBloc) {
             if ($arrBloc['bloc_id'] === $arrToBloc['bloc_id'] ) {
                 return true;
             }

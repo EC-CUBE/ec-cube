@@ -92,15 +92,15 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
         }
 
         // 要求判定
-        switch($mode) {
+        switch ($mode) {
         // 編集処理
         case 'edit':
             // POST値の引き継ぎ
             $this->arrForm = $this->arrForm = $_POST;
 
-            if(count($this->arrErr) <= 0) {
+            if (count($this->arrErr) <= 0) {
                 // 新規作成
-                if($post['holiday_id'] == "") {
+                if ($post['holiday_id'] == "") {
                     $this->lfInsertClass($this->arrForm, $_SESSION['member_id']);
                 }
                 // 既存編集
@@ -236,7 +236,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
         $arrErr = $objFormParam->checkError();
         $post = $objFormParam->getHashArray();
 
-        if(!isset($arrErr['date'])) {
+        if (!isset($arrErr['date'])) {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $where = "del_flg = 0 AND month = ? AND day = ?";
             $arrval = array($post['month'], $post['day']);

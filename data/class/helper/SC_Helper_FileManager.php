@@ -51,9 +51,9 @@ class SC_Helper_FileManager {
                 $dir = ereg_replace("/$", "", $dir);
                 // アルファベットと数字でソート
                 natcasesort($arrDir);
-                foreach($arrDir as $file) {
+                foreach ($arrDir as $file) {
                     // ./ と ../を除くファイルのみを取得
-                    if($file != "." && $file != "..") {
+                    if ($file != "." && $file != "..") {
 
                         $path = $dir."/".$file;
                         // SELECT内の見た目を整えるため指定文字数で切る
@@ -62,7 +62,7 @@ class SC_Helper_FileManager {
                         $file_time = date("Y/m/d", filemtime($path));
 
                         // ディレクトリとファイルで格納配列を変える
-                        if(is_dir($path)) {
+                        if (is_dir($path)) {
                             $arrDirList[$cnt]['file_name'] = $file;
                             $arrDirList[$cnt]['file_path'] = $path;
                             $arrDirList[$cnt]['file_size'] = $file_size;
@@ -94,7 +94,7 @@ class SC_Helper_FileManager {
      */
     function sfGetDirSize($dir) {
         $bytes = 0;
-        if(file_exists($dir)) {
+        if (file_exists($dir)) {
             // ディレクトリの場合下層ファイルの総量を取得
             if (is_dir($dir)) {
                 $handle = opendir($dir);
@@ -128,7 +128,7 @@ class SC_Helper_FileManager {
      */
     function sfDeleteDir($dir) {
         $arrResult = array();
-        if(file_exists($dir)) {
+        if (file_exists($dir)) {
             // ディレクトリかチェック
             if (is_dir($dir)) {
                 if ($handle = opendir("$dir")) {
@@ -175,7 +175,7 @@ class SC_Helper_FileManager {
         // 文末の/を取り除く
         $dir = ereg_replace("/$", "", $dir);
         // 最上位層を格納(user_data/)
-        if($this->sfDirChildExists($dir)) {
+        if ($this->sfDirChildExists($dir)) {
             $arrTree[$cnt]['type'] = "_parent";
         } else {
             $arrTree[$cnt]['type'] = "_child";
@@ -184,7 +184,7 @@ class SC_Helper_FileManager {
         $arrTree[$cnt]['rank'] = 0;
         $arrTree[$cnt]['count'] = $cnt;
         // 初期表示はオープン
-        if($_POST['mode'] != '') {
+        if ($_POST['mode'] != '') {
             $arrTree[$cnt]['open'] = $this->lfIsFileOpen($dir, $tree_status);
         } else {
             $arrTree[$cnt]['open'] = true;
@@ -209,12 +209,12 @@ class SC_Helper_FileManager {
      */
     function sfGetFileTreeSub($dir, $default_rank, &$cnt, &$arrTree, $tree_status) {
 
-        if(file_exists($dir)) {
+        if (file_exists($dir)) {
             if ($handle = opendir("$dir")) {
                 while (false !== ($item = readdir($handle))) $arrDir[] = $item;
                 // アルファベットと数字でソート
                 natcasesort($arrDir);
-                foreach($arrDir as $item) {
+                foreach ($arrDir as $item) {
                     if ($item != "." && $item != "..") {
                         // 文末の/を取り除く
                         $dir = ereg_replace("/$", "", $dir);
@@ -222,7 +222,7 @@ class SC_Helper_FileManager {
                         // ディレクトリのみ取得
                         if (is_dir($path)) {
                             $arrTree[$cnt]['path'] = $path;
-                            if($this->sfDirChildExists($path)) {
+                            if ($this->sfDirChildExists($path)) {
                                 $arrTree[$cnt]['type'] = "_parent";
                             } else {
                                 $arrTree[$cnt]['type'] = "_child";
@@ -253,7 +253,7 @@ class SC_Helper_FileManager {
      * @return bool ファイルが存在する場合 true
      */
     function sfDirChildExists($dir) {
-        if(file_exists($dir)) {
+        if (file_exists($dir)) {
             if (is_dir($dir)) {
                 $handle = opendir($dir);
                 while ($file = readdir($handle)) {
@@ -280,7 +280,7 @@ class SC_Helper_FileManager {
      */
     function lfIsFileOpen($dir, $tree_status) {
         $arrTreeStatus = explode('|', $tree_status);
-        if(in_array($dir, $arrTreeStatus)) {
+        if (in_array($dir, $arrTreeStatus)) {
             return true;
         }
 
@@ -311,7 +311,7 @@ class SC_Helper_FileManager {
      */
     function sfCreateFile($file, $mode = "") {
         // 行末の/を取り除く
-        if($mode != "") {
+        if ($mode != "") {
             $ret = @mkdir($file, $mode);
         } else {
             $ret = @mkdir($file);
@@ -331,7 +331,7 @@ class SC_Helper_FileManager {
         // バイナリモードでオープン
         $fp = @fopen($filename, 'rb' );
         //ファイル内容を全て変数に読み込む
-        if($fp) {
+        if ($fp) {
             $str = @fread($fp, filesize($filename)+1);
         }
         @fclose($fp);
@@ -374,7 +374,7 @@ class SC_Helper_FileManager {
         $debug_message = $dir . " から " . $dlFileName . " を作成します...\n";
         // ファイル一覧取得
         $arrFileHash = SC_Utils_Ex::sfGetFileList($dir);
-        foreach($arrFileHash as $val) {
+        foreach ($arrFileHash as $val) {
             $arrFileList[] = $val['file_name'];
             $debug_message.= "圧縮：".$val['file_name']."\n";
         }

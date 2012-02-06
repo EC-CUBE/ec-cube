@@ -77,7 +77,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex {
         $this->arrForm['product_id'] =
             isset($_POST['product_id']) ? $_POST['product_id'] : '';
 
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
         case 'up':
             $this->lfRankUp($objDb, $this->arrForm['parent_category_id'], $this->arrForm['product_id']);
             break;
@@ -186,7 +186,7 @@ __EOS__;
     function lfRankMove(&$objDb, $parent_category_id, $product_id) {
         $key = "pos-".$product_id;
         $input_pos = mb_convert_kana($_POST[$key], 'n');
-        if(SC_Utils_Ex::sfIsInt($input_pos)) {
+        if (SC_Utils_Ex::sfIsInt($input_pos)) {
             $where = "category_id = " . SC_Utils_Ex::sfQuoteSmart($parent_category_id);
             $objDb->sfMoveRank("dtb_product_categories", "product_id", $product_id, $input_pos, $where);
         }

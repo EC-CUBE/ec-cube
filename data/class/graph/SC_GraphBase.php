@@ -214,7 +214,7 @@ class SC_GraphBase {
         $new_width = $this->bgw * 0.8;
         $new_height = $this->bgh * 0.8;
         $tmp_image = imagecreatetruecolor($new_width, $new_height);
-        if(imagecopyresampled($tmp_image, $this->image, 0, 0, 0, 0, $new_width, $new_height, $this->bgw, $this->bgh)) {
+        if (imagecopyresampled($tmp_image, $this->image, 0, 0, 0, 0, $new_width, $new_height, $this->bgw, $this->bgh)) {
             $this->image = $tmp_image;
         }
     }
@@ -224,11 +224,11 @@ class SC_GraphBase {
         $this->arrRGB = $arrRGB;
         $count = count($this->arrRGB);
         // 通常色の設定
-        for($i = 0; $i < $count; $i++) {
+        for ($i = 0; $i < $count; $i++) {
             $this->arrColor[$i] = $this->lfGetImageColor($this->image, $this->arrRGB[$i]);
         }
         // 暗色の設定
-        for($i = 0; $i < $count; $i++) {
+        for ($i = 0; $i < $count; $i++) {
             $this->arrDarkColor[$i] = $this->lfGetImageDarkColor($this->image, $this->arrRGB[$i]);
         }
     }
@@ -240,13 +240,13 @@ class SC_GraphBase {
 
     // 画像を出力する
     function outputGraph($header = true, $filename = "") {
-        if($header) {
+        if ($header) {
             header('Content-type: image/png');
         }
 
         if ($filename != "") {
             imagepng($this->image, $filename);
-        }else{
+        } else {
             imagepng($this->image);
         }
 
@@ -271,7 +271,7 @@ class SC_GraphBase {
         // 時計回りに角度を変更
         $angle = -$angle;
         // ラベル背景
-        if($labelbg) {
+        if ($labelbg) {
             $text_width = $this->getTextWidth($text, $font_size);
             imagefilledrectangle($this->image, $left - 2, $top - 2, $left + $text_width + 2, $top + $font_size + 2, $this->labelbg_color);
         }
@@ -291,7 +291,7 @@ class SC_GraphBase {
          */
         $text = mb_convert_encoding($text, "EUC-JP", CHAR_CODE);
         //$text = mb_convert_encoding($text, CHAR_CODE);
-        if($color != NULL) {
+        if ($color != NULL) {
             ImageTTFText($this->image, $font_size, $angle, $left, $top + $font_size, $color, FONT_REALFILE, $text);
         } else {
             ImageTTFText($this->image, $font_size, $angle, $left, $top + $font_size, $this->text_color, FONT_REALFILE, $text);
@@ -310,7 +310,7 @@ class SC_GraphBase {
     // ログを出力する
     function debugPrint($text) {
         $text = mb_convert_encoding($text, "UTF-8", CHAR_CODE);
-        if(!isset($this->text_top)) {
+        if (!isset($this->text_top)) {
             $this->text_top = FONT_SIZE + LINE_PAD;
         }
         // テキスト描画
@@ -321,11 +321,11 @@ class SC_GraphBase {
     // カラーラベルを描画
     function drawLegend($legend_max = "", $clabelbg = true) {
         // 凡例が登録されていなければ中止
-        if(count($this->arrLegend) <= 0) {
+        if (count($this->arrLegend) <= 0) {
             return;
         }
 
-        if($legend_max != "") {
+        if ($legend_max != "") {
             $label_max = $legend_max;
         } else {
             $label_max = count($this->arrLegend);
@@ -336,9 +336,9 @@ class SC_GraphBase {
         $width_max = 0;
 
         // 一番文字数が多いものを取得
-        for($i = 0; $i < $label_max; $i++) {
+        for ($i = 0; $i < $label_max; $i++) {
             $text_len = strlen($this->arrLegend[$i]);
-            if($text_max < $text_len) {
+            if ($text_max < $text_len) {
                 $text_max = $text_len;
             }
             $height_max += FONT_SIZE + LINE_PAD;
@@ -350,14 +350,14 @@ class SC_GraphBase {
         $left = $this->bgw - $width_max - LEGEND_RIGHT;
         $top = LEGEND_TOP;
         // カラーラベル背景の描画
-        if($clabelbg) {
+        if ($clabelbg) {
             $this->drawClabelBG($left - LINE_PAD, $top, $left + $width_max, $top + $height_max + LINE_PAD);
         }
         $top += LINE_PAD;
 
         // 色数の取得
         $c_max = count($this->arrColor);
-        for($i = 0; $i < $label_max; $i++) {
+        for ($i = 0; $i < $label_max; $i++) {
             // カラーアイコンの表示
             imagerectangle($this->image, $left, $top, $left + FONT_SIZE, $top + FONT_SIZE, $this->flame_color);
             imagefilledrectangle($this->image, $left + 1, $top + 1, $left + FONT_SIZE - 1, $top + FONT_SIZE - 1, $this->arrColor[($i % $c_max)]);
@@ -370,7 +370,7 @@ class SC_GraphBase {
     // カラーラベル背景の描画
     function drawClabelBG($left, $top, $right, $bottom) {
         // 影の描画
-        if($this->shade_on) {
+        if ($this->shade_on) {
             imagefilledrectangle($this->image, $left + 2, $top + 2, $right + 2, $bottom + 2, $this->shade_color);
         }
         // カラーラベル背景の描画
@@ -458,7 +458,7 @@ class SC_GraphBase {
 
     /** 表示色の取得 */
     function lfGetImageColor($image, $array) {
-        if(count($array) != 3) {
+        if (count($array) != 3) {
             return NULL;
         }
         $ret = imagecolorallocate($image, $array[0], $array[1], $array[2]);
@@ -467,13 +467,13 @@ class SC_GraphBase {
 
     /** 影用表示色の取得 */
     function lfGetImageDarkColor($image, $array) {
-        if(count($array) != 3) {
+        if (count($array) != 3) {
             return NULL;
         }
         $i = 0;
-        foreach($array as $val) {
+        foreach ($array as $val) {
             $dark[$i] = $val - 45;
-            if($dark[$i] < 0) {
+            if ($dark[$i] < 0) {
                 $dark[$i] = 0;
             }
             $i++;

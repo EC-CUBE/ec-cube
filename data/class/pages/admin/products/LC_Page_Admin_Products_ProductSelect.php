@@ -126,7 +126,7 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
                 break;
             case 'search_category_id':
                 list($tmp_where, $tmp_arrval) = $objDb->sfGetCatWhere($val);
-                if($tmp_where != "") {
+                if ($tmp_where != "") {
                     $where.= " AND product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
                     $arrval = array_merge((array)$arrval, (array)$tmp_arrval);
                 }

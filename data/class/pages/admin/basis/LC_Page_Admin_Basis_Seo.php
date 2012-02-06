@@ -100,14 +100,14 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
             $this->arrErr[$device_type_id][$page_id] = $objFormParam->checkError();
 
             // エラーがなければデータを更新
-            if(count($this->arrErr[$device_type_id][$page_id]) == 0) {
+            if (count($this->arrErr[$device_type_id][$page_id]) == 0) {
                 $arrMETA = $objFormParam->getHashArray();
 
                 // 更新データ配列生成
                 $arrUpdData = array($arrMETA['author'], $arrMETA['description'], $arrMETA['keyword'], $device_type_id, $page_id);
                 // データ更新
                 $this->lfUpdPageData($arrUpdData);
-            }else{
+            } else {
                 // POSTのデータを再表示
                 $arrPageData = $this->lfSetData($this->arrPageData, $_POST['meta']);
                 $this->arrPageData = $arrPageData;
@@ -118,7 +118,7 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
         }
 
         // エラーがなければデータの取得
-        if(count($this->arrErr[$device_type_id][$page_id]) == 0) {
+        if (count($this->arrErr[$device_type_id][$page_id]) == 0) {
             // データの取得
             $this->arrPageData = $this->lfGetSeoPageData();
         }
@@ -178,8 +178,8 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
      */
     function lfSetData($arrPageData, $arrDispData){
 
-        foreach($arrPageData as $device_key => $arrVal){
-            foreach($arrVal as $key => $val) {
+        foreach ($arrPageData as $device_key => $arrVal) {
+            foreach ($arrVal as $key => $val) {
                 $device_type_id = $val['device_type_id'];
                 $page_id = $val['page_id'];
                 $arrPageData[$device_key][$key]['author'] = $arrDispData[$device_type_id][$page_id]['author'];

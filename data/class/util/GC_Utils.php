@@ -47,7 +47,7 @@ class GC_Utils {
         Header("Content-type: application/octet-stream; name=${fiest_name}");
 
         $return = $header.$contents;
-        if (mb_detect_encoding($return) == CHAR_CODE){
+        if (mb_detect_encoding($return) == CHAR_CODE) {
             // 文字コード変換
             $return = mb_convert_encoding($return,'SJIS',CHAR_CODE);
             // 改行方法の統一
@@ -68,12 +68,12 @@ class GC_Utils {
         //引数$arrayIndexは、$arrayが連想配列のときに添え字を指定してやるために使用する
 
         $return = "";
-        for ($i=0; $i<count($array); $i++){
+        for ($i=0; $i<count($array); $i++) {
 
-            for ($j=0; $j<count($array[$i]); $j++ ){
+            for ($j=0; $j<count($array[$i]); $j++ ) {
                 if ( $j > 0 ) $return .= ",";
                 $return .= "\"";
-                if ( $arrayIndex ){
+                if ($arrayIndex ) {
                     $return .= mb_ereg_replace("<","＜",mb_ereg_replace( "\"","\"\"",$array[$i][$arrayIndex[$j]] )) ."\"";
                 } else {
                     $return .= mb_ereg_replace("<","＜",mb_ereg_replace( "\"","\"\"",$array[$i][$j] )) ."\"";
@@ -130,7 +130,7 @@ class GC_Utils {
         // バックトレースを取得する
         $traces = debug_backtrace(false);
         $bklv = 1;
-        if ( $forLogInfo === true ){
+        if ($forLogInfo === true ) {
             $bklv = 3;
             if( ($traces[3]['class'] === 'LC_Page'
                 || $traces[3]['class'] === 'LC_Page_Admin')
@@ -230,7 +230,7 @@ class GC_Utils {
         $mess = strtr($mess, $trans_tbl);
 
         $fp = fopen($path, "a+");
-        if($fp) {
+        if ($fp) {
             fwrite( $fp, $today." [".$_SERVER['PHP_SELF']."] ".$mess." from ". $_SERVER['REMOTE_ADDR']. "\n" );
             fclose( $fp );
         }
@@ -296,7 +296,7 @@ class GC_Utils {
         $pw = preg_split("//", $character, 0, PREG_SPLIT_NO_EMPTY);
 
         $password = "";
-        for($i = 0; $i<$pwLength; $i++ ) {
+        for ($i = 0; $i<$pwLength; $i++ ) {
             $password .= $pw[array_rand($pw, 1)];
         }
 

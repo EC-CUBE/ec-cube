@@ -75,7 +75,7 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex {
         $this->arrForm = $objFormParam->getFormParamList();
         // 入力パラメーターチェック
         $this->arrErr = $this->lfCheckError($objFormParam);
-        if(!SC_Utils_Ex::isBlank($this->arrErr)) {
+        if (!SC_Utils_Ex::isBlank($this->arrErr)) {
             return;
         }
 

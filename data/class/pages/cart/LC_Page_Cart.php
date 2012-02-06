@@ -84,7 +84,7 @@ class LC_Page_Cart extends LC_Page_Ex {
         $this->cartKeys = $objCartSess->getKeys();
         foreach ($this->cartKeys as $key) {
             // 商品購入中にカート内容が変更された。
-            if($objCartSess->getCancelPurchase($key)) {
+            if ($objCartSess->getCancelPurchase($key)) {
                 $this->tpl_message = "商品購入中にカート内容が変更されましたので、お手数ですが購入手続きをやり直して下さい。";
             }
         }
@@ -92,12 +92,12 @@ class LC_Page_Cart extends LC_Page_Ex {
         $cart_no = $objFormParam->getValue('cart_no');
         $cartKey = $objFormParam->getValue('cartKey');
 
-        switch($this->mode) {
+        switch ($this->mode) {
         case 'confirm':
             // カート内情報の取得
             $cartList = $objCartSess->getCartList($cartKey);
             // カート商品が1件以上存在する場合
-            if(count($cartList) > 0) {
+            if (count($cartList) > 0) {
                 // カートを購入モードに設定
                 $this->lfSetCurrentCart($objSiteSess, $objCartSess, $cartKey);
                 // 購入ページへ
@@ -158,7 +158,7 @@ class LC_Page_Cart extends LC_Page_Ex {
         $this->tpl_category_id = $objFormParam->getValue('category_id');
 
         // ログイン判定
-        if($objCustomer->isLoginSuccess(true)) {
+        if ($objCustomer->isLoginSuccess(true)) {
             $this->tpl_login = true;
             $this->tpl_user_point = $objCustomer->getValue('point');
             $this->tpl_name = $objCustomer->getValue('name01');
@@ -212,7 +212,7 @@ class LC_Page_Cart extends LC_Page_Ex {
         $where = "order_temp_id = ?";
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $res = $objQuery->update("dtb_order_temp", $sqlval, $where, array($pre_uniqid));
-        if($res != 1){
+        if ($res != 1) {
             return false;
         }
         return true;
@@ -255,7 +255,7 @@ class LC_Page_Cart extends LC_Page_Ex {
         $objSiteSess->setUniqId();
         $uniqid = $objSiteSess->getUniqId();
         // エラーリトライなどで既にuniqidが存在する場合は、設定を引き継ぐ
-        if($pre_uniqid != "") {
+        if ($pre_uniqid != "") {
             $this->lfUpdateOrderTempid($pre_uniqid,$uniqid);
         }
         // カートを購入モードに設定

@@ -56,7 +56,7 @@ $GLOBALS['productsList'] = array(
     ),
 );
 
-switch(getMode()) {
+switch (getMode()) {
 
 case 'products_list':
     displayProductsList();

@@ -85,7 +85,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
         switch ($mode) {
         case 'id_set':
                 $result = $this->lfGetMailTemplateByTemplateID($post['template_id']);
-                if ($result){
+                if ($result) {
                     $this->arrForm = $result[0];
                 } else {
                     $this->arrForm['template_id'] = $post['template_id'];
@@ -94,7 +94,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
         case 'regist':
 
                 $this->arrForm = $post;
-                if ($this->arrErr){
+                if ($this->arrErr) {
                     // エラーメッセージ
                     $this->tpl_msg = "エラーが発生しました";
 
@@ -136,10 +136,10 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
 
         $sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ?";
         $template_data = $objQuery->getAll($sql, array($post['template_id']));
-        if ($template_data){
+        if ($template_data) {
             $sql_where = "template_id = ?";
             $objQuery->update("dtb_mailtemplate", $post, $sql_where, array(addslashes($post['template_id'])));
-        }else{
+        } else {
             $objQuery->insert("dtb_mailtemplate", $post);
         }
 

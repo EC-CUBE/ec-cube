@@ -135,7 +135,7 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      * @return string 検索条件のSQL
      */
     function getOrderTotalDaysWhereSql($type) {
-        switch($type){
+        switch ($type) {
         case 'month':
             $format = 'MM';
             break;

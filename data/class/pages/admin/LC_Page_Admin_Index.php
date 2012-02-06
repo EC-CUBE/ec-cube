@@ -84,7 +84,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 $this->lfDoLogin($objFormParam->getValue('login_id'));
                 SC_Response_Ex::sendRedirect(ADMIN_HOME_URLPATH);
-            }else{
+            } else {
                 SC_Utils_Ex::sfDispError(LOGIN_ERROR);
             }
             break;
@@ -118,10 +118,10 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
     function lfCheckError(&$objFormParam) {
         // 書式チェック
         $arrErr = $objFormParam->checkError();
-        if(SC_Utils_Ex::isBlank($arrErr)) {
+        if (SC_Utils_Ex::isBlank($arrErr)) {
             $arrForm = $objFormParam->getHashArray();
             // ログインチェック
-            if(!$this->lfIsLoginMember($arrForm['login_id'], $arrForm['password'])) {
+            if (!$this->lfIsLoginMember($arrForm['login_id'], $arrForm['password'])) {
                 $arrErr['password'] = "ログイン出来ません。";
                 $this->lfSetIncorrectData($arrForm['login_id']);
             }
@@ -191,9 +191,9 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
         $objSess->SetSession('authority', $authority);
         $objSess->SetSession('login_name', $login_name);
         $objSess->SetSession('uniqid', $objSess->getUniqId());
-        if(SC_Utils_Ex::isBlank($last_login)) {
+        if (SC_Utils_Ex::isBlank($last_login)) {
             $objSess->SetSession('last_login', date("Y-m-d H:i:s"));
-        }else{
+        } else {
             $objSess->SetSession('last_login', $last_login);
         }
         return $objSess->GetSID();

@@ -120,7 +120,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
         $this->arrForm = array_merge($arrOrderTemp, $arrCalcResults);
 
         // 会員ログインチェック
-        if($objCustomer->isLoginSuccess(true)) {
+        if ($objCustomer->isLoginSuccess(true)) {
             $this->tpl_login = '1';
             $this->tpl_user_point = $objCustomer->getValue('point');
         }
@@ -128,7 +128,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
         // 決済モジュールを使用するかどうか
         $this->use_module = $this->useModule($this->arrForm['payment_id']);
 
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
         // 前のページに戻る
         case 'return':
             // 正常な推移であることを記録しておく

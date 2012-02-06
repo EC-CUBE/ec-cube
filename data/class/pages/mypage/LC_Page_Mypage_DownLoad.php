@@ -80,7 +80,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
     function action() {
         // ログインチェック
         $objCustomer = new SC_Customer_Ex();
-        if (!$objCustomer->isLoginSuccess(true)){
+        if (!$objCustomer->isLoginSuccess(true)) {
             SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
         }
 
@@ -91,7 +91,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
         $objFormParam->setParam($_SESSION['customer']);
         $objFormParam->setParam($_GET);
         $this->arrErr = $this->lfCheckError($objFormParam);
-        if (count($this->arrErr)!=0){
+        if (count($this->arrErr)!=0) {
             SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
         }
     }
@@ -115,17 +115,17 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
         $arrForm = $this->lfGetRealFileName($customer_id, $order_id, $product_id, $product_class_id);
 
         //ファイル情報が無い場合はNG
-        if ($arrForm["down_realfilename"] == "" ){
+        if ($arrForm["down_realfilename"] == "" ) {
             SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
         }
         //ファイルそのものが無い場合もとりあえずNG
         $realpath = DOWN_SAVE_REALDIR . $arrForm["down_realfilename"];
-        if (!file_exists($realpath)){
+        if (!file_exists($realpath)) {
             SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
         }
         //ファイル名をエンコードする Safariの対策はUTF-8で様子を見る
         $encoding = "Shift_JIS";
-        if(isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'],'Safari')) {
+        if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'],'Safari')) {
             $encoding = "UTF-8";
         }
         $sdown_filename = mb_convert_encoding($arrForm["down_filename"], $encoding, 'auto');
@@ -134,16 +134,16 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
         // SC_DisplayやSC_Responseに大容量ファイルレスポンスが実装されたら移行可能だと思います。
 
         // ダウンロード実行 モバイル端末はダウンロード方法が異なる
-        if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE){
+        if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
             // キャリアがAUのモバイル端末はさらにダウンロード方法が異なる
-            if (SC_MobileUserAgent::getCarrier() == 'ezweb'){
+            if (SC_MobileUserAgent::getCarrier() == 'ezweb') {
                 // AUモバイル
                 $this->lfMobileAuDownload($realpath,$sdown_filename);
-            }else{
+            } else {
                 // AU以外のモバイル
                 $this->lfMobileDownload($realpath,$sdown_filename);
             }
-        }else{
+        } else {
             // PC、スマフォ
             $this->lfDownload($realpath,$sdown_filename);
         }
@@ -319,7 +319,7 @@ __EOS__;
         $extension = pathinfo($realpath, PATHINFO_EXTENSION);
         $contentType = $this->defaultContentType;
         // 拡張ContentType判定（拡張子をキーに拡張ContentType対象か判断）
-        if(isset($this->arrContentType[$extension])){
+        if (isset($this->arrContentType[$extension])) {
             // 拡張ContentType対象の場合は、ContentTypeを変更
             $contentType = $this->arrContentType[$extension];
         }

@@ -47,21 +47,21 @@ class SC_GraphPie extends SC_GraphBase{
     function getCircleData($array) {
         $total = "";
         $new_total = "";
-        if(!is_array($array)) {
+        if (!is_array($array)) {
             return;
         }
         $arrRet = array();
-        foreach($array as $val) {
+        foreach ($array as $val) {
             $total += $val;
         }
-        if($total <= 0) {
+        if ($total <= 0) {
             return;
         }
         $rate = 360 / $total;
         // ラベル表示用
         $p_rate = 100 / $total;
         $cnt = 0;
-        foreach($array as $val) {
+        foreach ($array as $val) {
             $ret = round($val * $rate);
             $new_total+= $ret;
             $arrRet[] = $ret;
@@ -90,7 +90,7 @@ class SC_GraphPie extends SC_GraphBase{
     // 影の描画
     function drawShade() {
         $move = 1;
-        for($i = ($this->cy + $this->cz); $i <= ($this->cy + $this->cz + ($this->cz * PIE_SHADE_IMPACT)); $i++) {
+        for ($i = ($this->cy + $this->cz); $i <= ($this->cy + $this->cz + ($this->cz * PIE_SHADE_IMPACT)); $i++) {
             imagefilledarc($this->image, $this->cx + $move, $i, $this->cw, $this->ch, 0, 360, $this->shade_color, IMG_ARC_PIE);
             $move += 0.5;
         }
@@ -114,12 +114,12 @@ class SC_GraphPie extends SC_GraphBase{
         $rd_max = count($arrRad);
 
         // データが存在しない場合
-        if($rd_max <= 0) {
+        if ($rd_max <= 0) {
             return;
         }
 
         // 影の描画
-        if($this->shade_on) {
+        if ($this->shade_on) {
             $this->drawShade();
         }
 
@@ -130,11 +130,11 @@ class SC_GraphPie extends SC_GraphBase{
         // 側面の描画
         for ($i = ($y + $z - 1); $i >= $y; $i--) {
             $start = 0;
-            for($j = 0; $j < $rd_max; $j++) {
+            for ($j = 0; $j < $rd_max; $j++) {
                 // 角度が0度以上の場合のみ側面を描画する。
-                if($arrRad[$j] > 0) {
+                if ($arrRad[$j] > 0) {
                     $end = $start + $arrRad[$j];
-                    if($start == 0 && $end == 360) {
+                    if ($start == 0 && $end == 360) {
                         // -90~270で指定すると円が描画できないので0~360に指定
                         imagearc($this->image, $x, $i, $w, $h, 0, 360, $this->arrDarkColor[($j % $dc_max)]);
                     } else {
@@ -150,9 +150,9 @@ class SC_GraphPie extends SC_GraphBase{
 
         // 上面の描画
         $start = 0;
-        for($i = 0; $i < $rd_max; $i++) {
+        for ($i = 0; $i < $rd_max; $i++) {
             $end = $start + $arrRad[$i];
-            if($start == 0 && $end == 360) {
+            if ($start == 0 && $end == 360) {
                 // -90~270で指定すると円が描画できないので0~360に指定
                 imagefilledarc($this->image, $x, $y, $w, $h, 0, 360, $this->arrColor[($i % $c_max)], IMG_ARC_PIE);
             } else {
@@ -164,9 +164,9 @@ class SC_GraphPie extends SC_GraphBase{
 
         // 上面の縁取り
         $start = 0;
-        for($i = 0; $i < $rd_max; $i++) {
+        for ($i = 0; $i < $rd_max; $i++) {
             $end = $start + $arrRad[$i];
-            if($start == 0 && $end == 360) {
+            if ($start == 0 && $end == 360) {
                 // -90~270で指定すると円が描画できないので0~360に指定
                 imagearc($this->image, $x, $y, $w, $h, 0, 360 , $this->flame_color);
             }
@@ -179,13 +179,13 @@ class SC_GraphPie extends SC_GraphBase{
         imageline($this->image, $x + ($w / 2), $y, $x + ($w / 2), $y + $z, $this->flame_color);
         imageline($this->image, $x - ($w / 2), $y, $x - ($w / 2), $y + $z, $this->flame_color);
         $start = 0;
-        for($i = 0; $i < $rd_max; $i++) {
+        for ($i = 0; $i < $rd_max; $i++) {
             $end = $start + $arrRad[$i];
             // 前面のみ
-            if($end > 90 && $end < 270) {
+            if ($end > 90 && $end < 270) {
                 list($ax, $ay) = $this->lfGetArcPos($x, $y, $w, $h, $end);
                 // ラインのずれを補正する
-                if($end > 180) {
+                if ($end > 180) {
                     $ax = $ax + 1;
                 }
                 imageline($this->image, $ax, $ay, $ax, $ay + $z, $this->flame_color);
@@ -203,7 +203,7 @@ class SC_GraphPie extends SC_GraphBase{
     function drawLabel($arrRad) {
         $rd_max = count($arrRad);
         $start = 0;
-        for($i = 0; $i < $rd_max; $i++) {
+        for ($i = 0; $i < $rd_max; $i++) {
             $center = $start + ($arrRad[$i] / 2);
             $end = $start + $arrRad[$i];
             list($sx, $sy) = $this->lfGetArcPos($this->cx, $this->cy, ($this->cw / 1.5), ($this->ch / 1.5), $center);

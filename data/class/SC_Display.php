@@ -66,7 +66,7 @@ class SC_Display{
      * @param $is_admin boolean 管理画面を扱う場合 true
      */
     function prepare($page, $is_admin = false){
-        if(!$this->deviceSeted || !is_null($this->view)){
+        if (!$this->deviceSeted || !is_null($this->view)) {
             $device = ($is_admin) ? DEVICE_TYPE_ADMIN : $this->detectDevice();
             $this->setDevice($device);
         }
@@ -100,7 +100,7 @@ class SC_Display{
      */
     function setDevice($device = DEVICE_TYPE_PC){
 
-        switch ($device){
+        switch ($device) {
             case DEVICE_TYPE_MOBILE:
                 $this->response->setContentType("text/html");
                 $this->setView(new SC_MobileView_Ex());

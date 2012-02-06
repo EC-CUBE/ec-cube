@@ -283,7 +283,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
                         create_date DESC LIMIT 10 OFFSET 0
                 ) AS ord";
         $arrNewOrder = $objQuery->getAll($sql);
-        foreach ($arrNewOrder as $key => $val){
+        foreach ($arrNewOrder as $key => $val) {
             $arrNewOrder[$key]['create_date'] = str_replace("-", "/", substr($val['create_date'], 0,19));
 
         }

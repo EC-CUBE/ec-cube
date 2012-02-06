@@ -46,12 +46,12 @@ class SC_Helper_Customer {
         $array["update_date"] = 'CURRENT_TIMESTAMP';    // 更新日
 
         // salt値の生成(insert時)または取得(update時)。
-        if(is_numeric($customer_id)) {
+        if (is_numeric($customer_id)) {
             $salt = $objQuery->get('salt', "dtb_customer", "customer_id = ? ", array($customer_id));
 
             // 旧バージョン(2.11未満)からの移行を考慮
             if (empty($salt)) $old_version_flag = true;
-        }else{
+        } else {
             $salt = SC_Utils_Ex::sfGetRandomString(10);
             $array['salt'] = $salt;
         }
@@ -91,7 +91,7 @@ class SC_Helper_Customer {
         }
 
         //-- 編集登録実行
-        if (is_numeric($customer_id)){
+        if (is_numeric($customer_id)) {
             // 編集
             $objQuery->update("dtb_customer", $array, "customer_id = ? ", array($customer_id));
         } else {
@@ -101,7 +101,7 @@ class SC_Helper_Customer {
             $customer_id = $objQuery->nextVal('dtb_customer_customer_id');
             $array['customer_id'] = $customer_id;
             // 作成日
-            if (is_null($array["create_date"])){
+            if (is_null($array["create_date"])) {
                 $array["create_date"] = 'CURRENT_TIMESTAMP';
             }
             $objQuery->insert("dtb_customer", $array);
@@ -175,7 +175,7 @@ class SC_Helper_Customer {
                 $pass_time  = $now_time - $leave_time;
                 // 退会から何時間-経過しているか判定する。
                 $limit_time = ENTRY_LIMIT_HOUR * 3600;
-                if($pass_time < $limit_time) {
+                if ($pass_time < $limit_time) {
                     // 再登録制限期間内削除ユーザー
                     return 2;
                 }
@@ -228,7 +228,7 @@ class SC_Helper_Customer {
         $arrForm['email_mobile02'] = $arrForm['email_mobile'];
 
         // 誕生日を年月日に分ける
-        if (isset($arrForm['birth'])){
+        if (isset($arrForm['birth'])) {
             $birth = explode(" ", $arrForm['birth']);
             list($arrForm['year'], $arrForm['month'], $arrForm['day']) = explode("-",$birth[0]);
         }
@@ -254,12 +254,12 @@ class SC_Helper_Customer {
      */
     function sfGetCustomerDataFromId($customer_id, $add_where = '', $arrAddVal = array()) {
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
-        if($add_where == '') {
+        if ($add_where == '') {
             $where = 'customer_id = ?';
             $arrData = $objQuery->getRow("*", "dtb_customer", $where, array($customer_id));
-        }else{
+        } else {
             $where = $add_where;
-            if(SC_Utils_Ex::sfIsInt($customer_id)) {
+            if (SC_Utils_Ex::sfIsInt($customer_id)) {
                 $where .= ' AND customer_id = ?';
                 $arrAddVal[] = $customer_id;
             }
@@ -338,7 +338,7 @@ class SC_Helper_Customer {
     function sfCustomerMypageParam (&$objFormParam) {
         SC_Helper_Customer_Ex::sfCustomerCommonParam($objFormParam);
         SC_Helper_Customer_Ex::sfCustomerRegisterParam($objFormParam, false, true);
-        if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE){
+        if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE) {
             $objFormParam->addParam('携帯メールアドレス', "email_mobile", null, 'a', array("NO_SPTAB", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MOBILE_EMAIL_CHECK"));
             $objFormParam->addParam('携帯メールアドレス(確認)', "email_mobile02", null, 'a', array("NO_SPTAB", "EMAIL_CHECK","SPTAB_CHECK" , "EMAIL_CHAR_CHECK", "MOBILE_EMAIL_CHECK"), "", false);
         } else {
@@ -400,12 +400,12 @@ class SC_Helper_Customer {
         $objFormParam->addParam("日", 'day', 2, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"), "", false);
         $objFormParam->addParam("メールマガジン", "mailmaga_flg", INT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 
-        if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE){
+        if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE) {
             $objFormParam->addParam("FAX番号1", 'fax01', TEL_ITEM_LEN, 'n', array("SPTAB_CHECK"));
             $objFormParam->addParam("FAX番号2", 'fax02', TEL_ITEM_LEN, 'n', array("SPTAB_CHECK"));
             $objFormParam->addParam("FAX番号3", 'fax03', TEL_ITEM_LEN, 'n', array("SPTAB_CHECK"));
             $objFormParam->addParam('メールアドレス', 'email', null, 'a', array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK"));
-            if(!$isAdmin) {
+            if (!$isAdmin) {
                 $objFormParam->addParam("パスワード(確認)", 'password02', STEXT_LEN, 'a', array("EXIST_CHECK", "SPTAB_CHECK" ,"ALNUM_CHECK"), "", false);
                 $objFormParam->addParam('メールアドレス(確認)', "email02", null, 'a', array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK","SPTAB_CHECK" , "EMAIL_CHAR_CHECK"), "", false);
             }
@@ -611,7 +611,7 @@ class SC_Helper_Customer {
              && ($array["search_buy_times_from"] > $array["search_buy_times_to"])) {
             $objErr->arrErr["search_buy_times_from"] .= "※ 購入回数の指定範囲が不正です。";
         }
-        if(!SC_Utils_Ex::isBlank($objErr->arrErr)) {
+        if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
         }
         return $arrErr;
@@ -629,7 +629,7 @@ class SC_Helper_Customer {
         $objSelect = new SC_CustomerList_Ex($arrParam, 'customer');
         $page_max = SC_Utils_Ex::sfGetSearchPageMax($arrParam['search_page_max']);
         $disp_pageno = $arrParam['search_pageno'];
-        if($disp_pageno == 0) {
+        if ($disp_pageno == 0) {
             $disp_pageno = 1;
         }
         $offset = intval($page_max) * (intval($disp_pageno) - 1);

@@ -63,7 +63,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex {
      */
     function action() {
 
-        switch ($this->getMode()){
+        switch ($this->getMode()) {
         case 'confirm':
             $this->tpl_mainpage     = 'mypage/refusal_confirm.tpl';
             $this->tpl_subtitle     = '退会手続き(確認ページ)';

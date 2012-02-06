@@ -88,7 +88,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
         case 'confirm':
             // 入力パラメーターチェック
             $this->arrErr = $objFormParam->checkError();
-            if(SC_Utils_Ex::isBlank($this->arrErr)) {
+            if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 // 更新
                 $this->tpl_is_update = $this->lfUpdCsvOutput($this->tpl_csv_id, $objFormParam->getValue('output_list'));
             }
@@ -131,14 +131,14 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
      */
     function lfGetCSVColumn($csv_id, $csv_status_flg = '', $order ='rank, no') {
         $objCSV = new SC_Helper_CSV_Ex();
-        if(SC_Utils_Ex::sfIsInt($csv_id)) {
-            if($csv_status_flg !="") {
+        if (SC_Utils_Ex::sfIsInt($csv_id)) {
+            if ($csv_status_flg !="") {
                 $arrData = $objCSV->sfGetCsvOutput($csv_id, 'status = ?' , array($csv_status_flg), $order);
-            }else{
+            } else {
                 $arrData = $objCSV->sfGetCsvOutput($csv_id, '', array(), $order);
             }
             $arrData = SC_Utils_Ex::sfSwapArray($arrData);
-        }else{
+        } else {
             $arrData = array();
         }
         return $arrData;
@@ -193,7 +193,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
         $objCSV = new SC_Helper_CSV_Ex();
         $arrKey = array_keys($objCSV->arrSubnavi,$subno_csv);
         $csv_id = $arrKey[0];
-        if(!SC_Utils_Ex::sfIsInt($csv_id)) {
+        if (!SC_Utils_Ex::sfIsInt($csv_id)) {
             //初期値取りだし
             $arrKey = array_keys($objCSV->arrSubnavi);
             $csv_id = $arrKey[0];
@@ -236,7 +236,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
         if (is_array($arrData)) {
             $where .= " AND no = ?";
             $arrUpdVal = array('status' => '1');
-            foreach($arrData as $key => $val){
+            foreach ($arrData as $key => $val) {
                 $arrWhereVal = array($csv_id, $val);
                 $arrUpdVal['rank'] = $key + 1;
                 $objQuery->update($table, $arrUpdVal, $where, $arrWhereVal);

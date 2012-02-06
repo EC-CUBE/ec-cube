@@ -136,7 +136,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
         case 'moveRankSet':
         //----　指定表示順位移動
             $input_pos = $this->getPostRank($news_id);
-            if(SC_Utils_Ex::sfIsInt($input_pos)) {
+            if (SC_Utils_Ex::sfIsInt($input_pos)) {
                 $objDb->sfMoveRank("dtb_news", "news_id", $news_id, $input_pos);
                 $this->objDisplay->reload();
             }
@@ -249,7 +249,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * @return int
      */
     function checkLinkMethod($link_method){
-        if(strlen($link_method) == 0){
+        if (strlen($link_method) == 0) {
             $link_method = 1;
         }
         return $link_method;
@@ -264,10 +264,10 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
         $col = '*, cast(news_date as date) as cast_news_date';
         $table = 'dtb_news';
         $order = 'rank DESC';
-        if(strlen($news_id) == 0){
+        if (strlen($news_id) == 0) {
             $where = 'del_flg = 0';
             $arrval = array();
-        }else{
+        } else {
             $where = 'del_flg = 0 AND news_id = ?';
             $arrval = array($news_id);
         }
@@ -342,7 +342,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * @param Integer $news_id
      */
     function getPostRank($news_id){
-        if(strlen($news_id) > 0 && is_numeric($news_id) == true){
+        if (strlen($news_id) > 0 && is_numeric($news_id) == true) {
            $key = "pos-".$news_id;
            $input_pos = $_POST[$key];
            return $input_pos;

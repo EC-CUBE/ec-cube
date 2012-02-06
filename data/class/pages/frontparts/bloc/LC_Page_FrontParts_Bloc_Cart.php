@@ -92,9 +92,9 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
             // カート内の商品ＩＤ一覧を取得
             $arrAllProductID = $objCart->getAllProductID($cart_key);
             // 商品が1つ以上入っている場合には商品名称を取得
-            if (count($arrCartList) > 0){
+            if (count($arrCartList) > 0) {
 
-                foreach($arrCartList['productsClass'] as $key => $val){
+                foreach ($arrCartList['productsClass'] as $key => $val) {
                     $arrCartList[$key]['product_name'] = $val['name'];
                 }
             }

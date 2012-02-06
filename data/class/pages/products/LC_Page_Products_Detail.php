@@ -139,7 +139,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         $this->tpl_onload .= 'lnOnLoad();';
 
         // モバイル用 規格選択セレクトボックスの作成
-        if(SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
+        if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
             $this->lfMakeSelectMobile($this, $product_id,$this->objFormParam->getValue('classcategory_id1'));
         }
 
@@ -165,8 +165,8 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
                 // ログイン中のユーザが商品をお気に入りにいれる処理
                 if ($objCustomer->isLoginSuccess() === true && $this->objFormParam->getValue('favorite_product_id') > 0 ) {
                     $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam);
-                    if(count($this->arrErr) == 0){
-                        if(!$this->lfRegistFavoriteProduct($this->objFormParam->getValue('favorite_product_id'),$objCustomer->getValue('customer_id'))){
+                    if (count($this->arrErr) == 0) {
+                        if (!$this->lfRegistFavoriteProduct($this->objFormParam->getValue('favorite_product_id'),$objCustomer->getValue('customer_id'))) {
                             exit;
                         }
                     }
@@ -177,8 +177,8 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
                 // ログイン中のユーザが商品をお気に入りにいれる処理(スマートフォン用)
                 if ($objCustomer->isLoginSuccess() === true && $this->objFormParam->getValue('favorite_product_id') > 0 ) {
                     $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam);
-                    if(count($this->arrErr) == 0){
-                        if($this->lfRegistFavoriteProduct($this->objFormParam->getValue('favorite_product_id'),$objCustomer->getValue('customer_id'))){
+                    if (count($this->arrErr) == 0) {
+                        if ($this->lfRegistFavoriteProduct($this->objFormParam->getValue('favorite_product_id'),$objCustomer->getValue('customer_id'))) {
                             print "true";
                             exit;
                         }
@@ -206,11 +206,11 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         }
 
         // モバイル用 ポストバック処理
-        if(SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
-            switch($this->mode) {
+        if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
+            switch ($this->mode) {
                 case 'select':
                     // 規格1が設定されている場合
-                    if($this->tpl_classcat_find1) {
+                    if ($this->tpl_classcat_find1) {
                         // templateの変更
                         $this->tpl_mainpage = "products/select_find1.tpl";
                         break;
@@ -224,14 +224,14 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
                     $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam,$this->tpl_classcat_find1,$this->tpl_classcat_find2);
 
                     // 規格1が設定されていて、エラーを検出した場合
-                    if($this->tpl_classcat_find1 and $this->arrErr['classcategory_id1']) {
+                    if ($this->tpl_classcat_find1 and $this->arrErr['classcategory_id1']) {
                         // templateの変更
                         $this->tpl_mainpage = "products/select_find1.tpl";
                         break;
                     }
 
                     // 規格2が設定されている場合
-                    if($this->tpl_classcat_find2) {
+                    if ($this->tpl_classcat_find2) {
                         $this->arrErr = array();
 
                         $this->tpl_mainpage = "products/select_find2.tpl";
@@ -242,7 +242,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
                     $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam,$this->tpl_classcat_find1,$this->tpl_classcat_find2);
 
                     // 規格2が設定されていて、エラーを検出した場合
-                    if($this->tpl_classcat_find2 and $this->arrErr['classcategory_id2']) {
+                    if ($this->tpl_classcat_find2 and $this->arrErr['classcategory_id2']) {
                         // templateの変更
                         $this->tpl_mainpage = "products/select_find2.tpl";
                         break;
@@ -383,18 +383,18 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
         for ($i = 0; $i < $count; $i++) {
             // 在庫のチェック
-            if($arrProductsClass[$i]['stock'] <= 0 && $arrProductsClass[$i]['stock_unlimited'] != '1') {
+            if ($arrProductsClass[$i]['stock'] <= 0 && $arrProductsClass[$i]['stock_unlimited'] != '1') {
                 continue;
             }
 
             // 規格1のセレクトボックス用
-            if($classcat_id1 != $arrProductsClass[$i]['classcategory_id1']){
+            if ($classcat_id1 != $arrProductsClass[$i]['classcategory_id1']) {
                 $classcat_id1 = $arrProductsClass[$i]['classcategory_id1'];
                 $arrSele1[$classcat_id1] = $arrClassCatName[$classcat_id1];
             }
 
             // 規格2のセレクトボックス用
-            if($arrProductsClass[$i]['classcategory_id1'] == $request_classcategory_id1 and $classcat_id2 != $arrProductsClass[$i]['classcategory_id2']) {
+            if ($arrProductsClass[$i]['classcategory_id1'] == $request_classcategory_id1 and $classcat_id2 != $arrProductsClass[$i]['classcategory_id2']) {
                 $classcat_id2 = $arrProductsClass[$i]['classcategory_id2'];
                 $arrSele2[$classcat_id2] = $arrClassCatName[$classcat_id2];
             }
@@ -405,12 +405,12 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         $objPage->arrClassCat2 = $arrSele2;
 
         // 規格1が設定されている
-        if(isset($arrProductsClass[0]['classcategory_id1']) && $arrProductsClass[0]['classcategory_id1'] != '0') {
+        if (isset($arrProductsClass[0]['classcategory_id1']) && $arrProductsClass[0]['classcategory_id1'] != '0') {
             $classcat_find1 = true;
         }
 
         // 規格2が設定されている
-        if(isset($arrProductsClass[0]['classcategory_id2']) && $arrProductsClass[0]['classcategory_id2'] != '0') {
+        if (isset($arrProductsClass[0]['classcategory_id2']) && $arrProductsClass[0]['classcategory_id2'] != '0') {
             $classcat_find2 = true;
         }
 
@@ -450,7 +450,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         $arrRecommendData = $objQuery->select("recommend_product_id, comment", "dtb_recommend_products", "product_id = ?", array($product_id));
 
         $arrRecommendProductId = array();
-        foreach($arrRecommendData as $recommend){
+        foreach ($arrRecommendData as $recommend) {
             $arrRecommendProductId[] = $recommend["recommend_product_id"];
         }
 
@@ -535,7 +535,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
      */
     function lfRegistFavoriteProduct($favorite_product_id,$customer_id) {
         // ログイン中のユーザが商品をお気に入りにいれる処理
-        if(!SC_Helper_DB_Ex::sfIsRecord("dtb_products", "product_id", $favorite_product_id, "del_flg = 0 AND status = 1")) {
+        if (!SC_Helper_DB_Ex::sfIsRecord("dtb_products", "product_id", $favorite_product_id, "del_flg = 0 AND status = 1")) {
             SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
             return false;
         } else {

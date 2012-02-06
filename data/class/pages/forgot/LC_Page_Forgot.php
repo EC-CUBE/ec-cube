@@ -89,7 +89,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
 
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
             case 'mail_check':
                 $this->lfInitMailCheckParam($objFormParam, $this->device_type);
                 $objFormParam->setParam($_POST);
@@ -99,7 +99,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
                 $this->arrErr = $objFormParam->checkError();
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     $this->errmsg = $this->lfCheckForgotMail($this->arrForm, $this->arrReminder);
-                    if(SC_Utils_Ex::isBlank($this->errmsg)) {
+                    if (SC_Utils_Ex::isBlank($this->errmsg)) {
                         $this->tpl_mainpage = 'forgot/secret.tpl';
                     }
                 }
@@ -113,16 +113,16 @@ class LC_Page_Forgot extends LC_Page_Ex {
                 $this->arrErr = $objFormParam->checkError();
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     $this->errmsg = $this->lfCheckForgotSecret($this->arrForm, $this->arrReminder);
-                    if(SC_Utils_Ex::isBlank($this->errmsg)) {
+                    if (SC_Utils_Ex::isBlank($this->errmsg)) {
                         // 完了ページへ移動する
                         $this->tpl_mainpage = 'forgot/complete.tpl';
                         // transactionidを更新させたいので呼び出し元(ログインフォーム側)をリロード。
                         $this->tpl_onload .= 'opener.location.reload(true);';
-                    }else{
+                    } else {
                         // 秘密の答えが一致しなかった
                         $this->tpl_mainpage = 'forgot/secret.tpl';
                     }
-                }else{
+                } else {
                     // 入力値エラー
                     $this->tpl_mainpage = 'forgot/secret.tpl';
                 }
@@ -132,7 +132,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
         }
 
         // ポップアップ用テンプレート設定
-        if($this->device_type == DEVICE_TYPE_PC) {
+        if ($this->device_type == DEVICE_TYPE_PC) {
             $this->setTemplate($this->tpl_mainpage);
         }
     }
@@ -152,7 +152,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
         $result = $objQuery->select("reminder, status", "dtb_customer", $where, $arrVal);
         if (isset($result[0]['reminder']) and isset($arrReminder[$result[0]['reminder']])) {
             // 会員状態の確認
-            if($result[0]['status'] == '2') {
+            if ($result[0]['status'] == '2') {
                 // 正会員
                 $arrForm['reminder'] = $result[0]['reminder'];
             } else if ($result[0]['status'] == '1') {
@@ -175,7 +175,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
     function lfInitMailCheckParam(&$objFormParam, $device_type) {
         $objFormParam->addParam("お名前(姓)", 'name01', STEXT_LEN, 'aKV', array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
         $objFormParam->addParam("お名前(名)", 'name02', STEXT_LEN, 'aKV', array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
-        if ($device_type === DEVICE_TYPE_MOBILE){
+        if ($device_type === DEVICE_TYPE_MOBILE) {
             $objFormParam->addParam('メールアドレス', 'email', null, 'a', array("EXIST_CHECK", "EMAIL_CHECK", "NO_SPTAB" ,"EMAIL_CHAR_CHECK", "MOBILE_EMAIL_CHECK"));
         } else {
             $objFormParam->addParam('メールアドレス', 'email', null, 'a', array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK"));
@@ -220,7 +220,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
                 // 秘密の答えが一致
                 // 新しいパスワードを設定する
                 $new_password = GC_Utils_Ex::gfMakePassword(8);
-                if(FORGOT_MAIL == 1) {
+                if (FORGOT_MAIL == 1) {
                     // メールで変更通知をする
                     $objDb = new SC_Helper_DB_Ex();
                     $CONF = $objDb->sfGetBasisData();

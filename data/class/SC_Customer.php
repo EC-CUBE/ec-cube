@@ -51,7 +51,7 @@ class SC_Customer {
         }
 
         // パスワードが合っていれば会員情報をcustomer_dataにセットしてtrueを返す
-        if ( SC_Utils_Ex::sfIsMatchHashPassword($pass, $data['password'], $data['salt']) ) {
+        if (SC_Utils_Ex::sfIsMatchHashPassword($pass, $data['password'], $data['salt']) ) {
             $this->customer_data = $data;
             $this->startSession();
             return true;
@@ -111,7 +111,7 @@ __EOS__;
      */
     function checkMobilePhoneId() {
         //docomo用にデータを取り出す。
-        if(SC_MobileUserAgent_Ex::getCarrier() == 'docomo'){
+        if (SC_MobileUserAgent_Ex::getCarrier() == 'docomo') {
             if($_SESSION['mobile']['phone_id'] == "" && strlen($_SESSION['mobile']['phone_id']) == 0)
                 $_SESSION['mobile']['phone_id'] = SC_MobileUserAgent_Ex::getId();
         }
@@ -135,7 +135,7 @@ __EOS__;
      */
     function getCustomerDataFromMobilePhoneIdPass($pass) {
         //docomo用にデータを取り出す。
-        if(SC_MobileUserAgent_Ex::getCarrier() == 'docomo'){
+        if (SC_MobileUserAgent_Ex::getCarrier() == 'docomo') {
             if($_SESSION['mobile']['phone_id'] == "" && strlen($_SESSION['mobile']['phone_id']) == 0)
                 $_SESSION['mobile']['phone_id'] = SC_MobileUserAgent_Ex::getId();
         }
@@ -149,7 +149,7 @@ __EOS__;
         @list($data) = $objQuery->getAll($sql, array($_SESSION['mobile']['phone_id']));
 
         // パスワードが合っている場合は、会員情報をcustomer_dataに格納してtrueを返す。
-        if ( SC_Utils_Ex::sfIsMatchHashPassword($pass, $data['password'], $data['salt']) ) {
+        if (SC_Utils_Ex::sfIsMatchHashPassword($pass, $data['password'], $data['salt']) ) {
             $this->customer_data = $data;
             $this->startSession();
             return true;
@@ -227,7 +227,7 @@ __EOS__;
 
             $objQuery = new SC_Query_Ex();
             $email = $objQuery->get('email', "dtb_customer", "customer_id = ?", array($_SESSION['customer']['customer_id']));
-            if($email == $_SESSION['customer']['email']) {
+            if ($email == $_SESSION['customer']['email']) {
                 // モバイルサイトの場合は携帯のメールアドレスが登録されていることもチェックする。
                 // ただし $dont_check_email_mobile が true の場合はチェックしない。
                 if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE && !$dont_check_email_mobile) {
@@ -273,7 +273,7 @@ __EOS__;
             $birth_month = intval($arrRet[1]);
             $now_month = intval(date('m'));
 
-            if($birth_month == $now_month) {
+            if ($birth_month == $now_month) {
                 return true;
             }
         }

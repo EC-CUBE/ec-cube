@@ -98,7 +98,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
             $objFormSearchParam->setParam($_REQUEST);
             $this->arrErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
             $this->arrSearchData = $objFormSearchParam->getSearchArray();
-            if(!SC_Utils_Ex::isBlank($this->arrErr)) {
+            if (!SC_Utils_Ex::isBlank($this->arrErr)) {
                 return;
             }
             //指定会員の情報をセット
@@ -122,7 +122,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
             $objFormSearchParam->setParam($objFormParam->getValue("search_data"));
             $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
             $this->arrSearchData = $objFormSearchParam->getSearchArray();
-            if(!SC_Utils_Ex::isBlank($this->arrErr) or !SC_Utils_Ex::isBlank($this->arrSearchErr)) {
+            if (!SC_Utils_Ex::isBlank($this->arrErr) or !SC_Utils_Ex::isBlank($this->arrSearchErr)) {
                 return;
             }
             // 確認画面テンプレートに切り替え
@@ -141,7 +141,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
             $objFormSearchParam->setParam($objFormParam->getValue("search_data"));
             $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
             $this->arrSearchData = $objFormSearchParam->getSearchArray();
-            if(!SC_Utils_Ex::isBlank($this->arrErr) or !SC_Utils_Ex::isBlank($this->arrSearchErr)) {
+            if (!SC_Utils_Ex::isBlank($this->arrErr) or !SC_Utils_Ex::isBlank($this->arrSearchErr)) {
                 return;
             }
             //購入履歴情報の取得
@@ -165,7 +165,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
             $objFormSearchParam->setParam($objFormParam->getValue("search_data"));
             $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
             $this->arrSearchData = $objFormSearchParam->getSearchArray();
-            if(!SC_Utils_Ex::isBlank($this->arrErr) or !SC_Utils_Ex::isBlank($this->arrSearchErr)) {
+            if (!SC_Utils_Ex::isBlank($this->arrErr) or !SC_Utils_Ex::isBlank($this->arrSearchErr)) {
                 return;
             }
             $this->lfRegistData($objFormParam);
@@ -179,7 +179,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
             $objFormSearchParam->setParam($objFormParam->getValue("search_data"));
             $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
             $this->arrSearchData = $objFormSearchParam->getSearchArray();
-            if(!SC_Utils_Ex::isBlank($this->arrSearchErr)) {
+            if (!SC_Utils_Ex::isBlank($this->arrSearchErr)) {
                 return;
             }
         default:
@@ -248,22 +248,22 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         $table = "dtb_customer";
         $where = "del_flg <> 1 AND (email Like ? OR email_mobile Like ?)";
         $arrVal = array($objFormParam->getValue('email'), $objFormParam->getValue('email_mobile'));
-        if($objFormParam->getValue("customer_id")) {
+        if ($objFormParam->getValue("customer_id")) {
             $where .= " AND customer_id <> ?";
             $arrVal[] = $objFormParam->getValue("customer_id");
         }
         $arrData = $objQuery->getRow($col, $table, $where, $arrVal);
-        if(!SC_Utils_Ex::isBlank($arrData['email'])) {
-            if($arrData['email'] == $objFormParam->getValue('email')) {
+        if (!SC_Utils_Ex::isBlank($arrData['email'])) {
+            if ($arrData['email'] == $objFormParam->getValue('email')) {
                 $arrErr['email'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用しているアドレスです。';
-            }else if($arrData['email'] == $objFormParam->getValue('email_mobile')) {
+            }else if ($arrData['email'] == $objFormParam->getValue('email_mobile')) {
                 $arrErr['email_mobile'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用しているアドレスです。';
             }
         }
-        if(!SC_Utils_Ex::isBlank($arrData['email_mobile'])) {
-            if($arrData['email_mobile'] == $objFormParam->getValue('email_mobile')) {
+        if (!SC_Utils_Ex::isBlank($arrData['email_mobile'])) {
+            if ($arrData['email_mobile'] == $objFormParam->getValue('email_mobile')) {
                 $arrErr['email_mobile'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用している携帯アドレスです。';
-            }else if($arrData['email_mobile'] == $objFormParam->getValue('email')) {
+            }else if ($arrData['email_mobile'] == $objFormParam->getValue('email')) {
     if ($arrErr['email'] == "") {
                     $arrErr['email'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用している携帯アドレスです。';
                 }
@@ -283,18 +283,18 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         // 登録用データ取得
         $arrData = $objFormParam->getDbArray();
         // 足りないものを作る
-        if(!SC_Utils_Ex::isBlank($objFormParam->getValue('year'))) {
+        if (!SC_Utils_Ex::isBlank($objFormParam->getValue('year'))) {
             $arrData['birth'] = $objFormParam->getValue('year') . '/'
                             . $objFormParam->getValue('month') . '/'
                             . $objFormParam->getValue('day')
                             . ' 00:00:00';
         }
 
-        if(!is_numeric($arrData['customer_id'])) {
+        if (!is_numeric($arrData['customer_id'])) {
             $arrData['secret_key'] = SC_Utils_Ex::sfGetUniqRandomId('r');
-        }else {
+        } else {
             $arrOldCustomerData = SC_Helper_Customer_Ex::sfGetCustomerData($arrData['customer_id']);
-            if($arrOldCustomerData['status'] != $arrData['status']) {
+            if ($arrOldCustomerData['status'] != $arrData['status']) {
                 $arrData['secret_key'] = SC_Utils_Ex::sfGetUniqRandomId('r');
             }
         }
@@ -308,7 +308,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
      * @return array( integer 全体件数, mixed 会員データ一覧配列, mixed SC_PageNaviオブジェクト)
      */
     function lfPurchaseHistory($customer_id, $pageno = 0){
-        if(SC_Utils_Ex::isBlank($customer_id)) {
+        if (SC_Utils_Ex::isBlank($customer_id)) {
             return array('0', array(), NULL);
         }
         $objQuery =& SC_Query_Ex::getSingletonInstance();

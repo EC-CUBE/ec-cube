@@ -77,7 +77,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         $arrErr = array();
         $arrForm = array();
 
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
         case 'new':
             // パラメーターの初期化
             $this->initForm($objFormParam, $_POST);
@@ -86,7 +86,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
             $arrErr = $this->validateData($objFormParam, $_POST, $this->getMode());
             $this->arrForm = $objFormParam->getHashArray();
 
-            if(SC_Utils_Ex::isBlank($arrErr)) {
+            if (SC_Utils_Ex::isBlank($arrErr)) {
 
                 $this->insertMemberData($this->arrForm);
                 // 親ウィンドウを更新後、自ウィンドウを閉じる。
@@ -114,7 +114,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
             $arrErr = $this->validateData($objFormParam, $_POST, $this->getMode());
             $this->arrForm = $objFormParam->getHashArray();
 
-            if(SC_Utils_Ex::isBlank($arrErr)) {
+            if (SC_Utils_Ex::isBlank($arrErr)) {
 
                 $this->updateMemberData($this->arrForm['member_id'], $this->arrForm);
                 // 親ウィンドウを更新後、自ウィンドウを閉じる。
@@ -149,7 +149,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
                 }
             }
 
-            switch($clean_mode_flg) {
+            switch ($clean_mode_flg) {
             case 'edit':
                 $this->tpl_mode      = $clean_mode_flg;
                 $this->tpl_member_id = $clean_id;
@@ -220,17 +220,17 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
 
         // ログインID・パスワードの文字数チェック
         $objErr = new SC_CheckError_Ex();
-        if($mode == 'new') {
+        if ($mode == 'new') {
             $objErr->doFunc(array("パスワード", 'password', ID_MIN_LEN, ID_MAX_LEN), array("NUM_RANGE_CHECK"));
             $objErr->doFunc(array("ログインID", 'login_id', ID_MIN_LEN, ID_MAX_LEN), array("NUM_RANGE_CHECK"));
-        } elseif($mode == 'edit') {
+        } elseif ($mode == 'edit') {
             $objErr->doFunc(array("パスワード", 'password', ID_MIN_LEN, ID_MAX_LEN), array("SPTAB_CHECK" ,"NUM_RANGE_CHECK"));
             $objErr->doFunc(array("ログインID", 'login_id', ID_MIN_LEN, ID_MAX_LEN), array("SPTAB_CHECK" ,"NUM_RANGE_CHECK"));
         }
 
         $arrErr = $objErr->arrErr;
 
-        switch($mode) {
+        switch ($mode) {
         case 'new': 
             // 管理者名が登録済みでないか
             if ($this->memberDataExists('name = ? AND del_flg = 0', $arrParams['name'])) {
@@ -298,7 +298,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         $clean_pageno = "";
 
         // $pagenoが0以上の整数かチェック
-        if(SC_Utils_Ex::sfIsInt($pageno) && $pageno > 0) {
+        if (SC_Utils_Ex::sfIsInt($pageno) && $pageno > 0) {
             $clean_pageno = $pageno;
         }
 
@@ -357,7 +357,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         $sqlVal['authority']   = $arrMemberData['authority'];
         $sqlVal['work']   = $arrMemberData['work'];
         $sqlVal['update_date'] = 'CURRENT_TIMESTAMP';
-        if($arrMemberData['password'] != DEFAULT_PASSWORD) {
+        if ($arrMemberData['password'] != DEFAULT_PASSWORD) {
             $salt = SC_Utils_Ex::sfGetRandomString(10);
             $sqlVal['salt']     = $salt;
             $sqlVal['password'] = SC_Utils_Ex::sfGetHashString($arrMemberData['password'], $salt);

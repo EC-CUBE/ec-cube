@@ -83,7 +83,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
 
         $objLayout = new SC_Helper_PageLayout_Ex();
 
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
         // 登録/更新
         case 'confirm':
             if (!$is_error) {

@@ -57,7 +57,7 @@ class SC_Query {
         // Debugモード指定
         // 常時ONにするとメモリが解放されない。
         // 連続クエリ実行時に問題が生じる。
-        if(DEBUG_MODE) {
+        if (DEBUG_MODE) {
             $options['debug'] = PEAR_DB_DEBUG;
         } else {
             $options['debug'] = 0;
@@ -111,7 +111,7 @@ class SC_Query {
      * @return boolean
      */
     function isError() {
-        if(PEAR::isError($this->conn)) {
+        if (PEAR::isError($this->conn)) {
             return true;
         }
         return false;
@@ -246,9 +246,9 @@ class SC_Query {
             return;
         }
 
-        while($data = $affected->fetchRow($fetchmode)) {
+        while ($data = $affected->fetchRow($fetchmode)) {
             $result = call_user_func($cbFunc, $data);
-            if($result === false) {
+            if ($result === false) {
                 break;
             }
         }
@@ -341,7 +341,7 @@ class SC_Query {
      * @return SC_Query 自分自身のインスタンス
      */
     function setLimitOffset($limit, $offset = 0) {
-        if (is_numeric($limit) && is_numeric($offset)){
+        if (is_numeric($limit) && is_numeric($offset)) {
 
             $option = " LIMIT " . $limit;
             $option.= " OFFSET " . $offset;
@@ -376,7 +376,7 @@ class SC_Query {
      * @return SC_Query 自分自身のインスタンス
      */
     function andWhere($str) {
-        if($this->where != "") {
+        if ($this->where != "") {
             $this->where .= " AND " . $str;
         } else {
             $this->where = $str;
@@ -393,7 +393,7 @@ class SC_Query {
      * @return SC_Query 自分自身のインスタンス
      */
     function orWhere($str) {
-        if($this->where != "") {
+        if ($this->where != "") {
             $this->where .= " OR " . $str;
         } else {
             $this->where = $str;
@@ -442,7 +442,7 @@ class SC_Query {
      * @return SC_Query 自分自身のインスタンス
      */
     function setLimit($limit){
-        if ( is_numeric($limit)){
+        if (is_numeric($limit)) {
             $this->option = " LIMIT " .$limit;
         }
         return $this;
@@ -457,7 +457,7 @@ class SC_Query {
      * @return SC_Query 自分自身のインスタンス
      */
     function setOffset($offset) {
-        if ( is_numeric($offset)){
+        if (is_numeric($offset)) {
             $this->offset = " OFFSET " .$offset;
         }
         return $this;
@@ -481,9 +481,9 @@ class SC_Query {
         if(count($sqlval) <= 0 ) return false;
         foreach ($sqlval as $key => $val) {
             $strcol .= $key . ',';
-            if(strcasecmp("Now()", $val) === 0) {
+            if (strcasecmp("Now()", $val) === 0) {
                 $strval .= 'Now(),';
-            } else if(strcasecmp('CURRENT_TIMESTAMP', $val) === 0) {
+            } else if (strcasecmp('CURRENT_TIMESTAMP', $val) === 0) {
                 $strval .= 'CURRENT_TIMESTAMP,';
             } else {
                 $strval .= '?,';
@@ -492,14 +492,14 @@ class SC_Query {
             $find = true;
         }
 
-        foreach($arrSql as $key => $val) {
+        foreach ($arrSql as $key => $val) {
             $strcol .= $key . ',';
             $strval .= $val . ',';
         }
 
         $arrVal = array_merge($arrVal, $arrSqlVal);
 
-        if(!$find) {
+        if (!$find) {
             return false;
         }
         // 文末の","を削除
@@ -531,7 +531,7 @@ class SC_Query {
         foreach ($sqlval as $key => $val) {
             if (strcasecmp("Now()", $val) === 0) {
                 $arrCol[] = $key . '= Now()';
-            } else if(strcasecmp('CURRENT_TIMESTAMP', $val) === 0) {
+            } else if (strcasecmp('CURRENT_TIMESTAMP', $val) === 0) {
                 $arrCol[] = $key . '= CURRENT_TIMESTAMP';
             } else {
                 $arrCol[] = $key . '= ?';
@@ -541,7 +541,7 @@ class SC_Query {
         }
 
         if ($arrRawSql != "") {
-            foreach($arrRawSql as $key => $val) {
+            foreach ($arrRawSql as $key => $val) {
                 $arrCol[] = "$key = $val";
             }
         }
@@ -718,7 +718,7 @@ class SC_Query {
      * @return
      */
     function delete($table, $where = "", $arrval = array()) {
-        if(strlen($where) <= 0) {
+        if (strlen($where) <= 0) {
             $sqlde = "DELETE FROM $table";
         } else {
             $sqlde = "DELETE FROM $table WHERE $where";
@@ -938,10 +938,10 @@ class SC_Query {
         $affected =& $sth->execute((array)$arrVal);
 
         // 一定以上時間かかったSQLの場合、ログ出力する。
-        if(defined('SQL_QUERY_LOG_MODE') && SQL_QUERY_LOG_MODE == true) {
+        if (defined('SQL_QUERY_LOG_MODE') && SQL_QUERY_LOG_MODE == true) {
             $timeEnd = SC_Utils_Ex::sfMicrotimeFloat();;
             $timeExecTime = $timeEnd - $timeStart;
-            if(defined('SQL_QUERY_LOG_MIN_EXEC_TIME') && $timeExecTime >= (float)SQL_QUERY_LOG_MIN_EXEC_TIME) {
+            if (defined('SQL_QUERY_LOG_MIN_EXEC_TIME') && $timeExecTime >= (float)SQL_QUERY_LOG_MIN_EXEC_TIME) {
                 $logMsg = sprintf("SQL_LOG [%.2fsec]\n%s", $timeExecTime, $sth->query) . "\n";
                 error_log($logMsg, 3, LOG_REALFILE);
             }

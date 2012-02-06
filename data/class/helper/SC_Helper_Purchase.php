@@ -85,7 +85,7 @@ class SC_Helper_Purchase {
         $objQuery->commit();
 
         //会員情報の最終購入日、購入合計を更新
-        if($customerId > 0){
+        if ($customerId > 0) {
             SC_Customer_Ex::updateOrderSummary($customerId);
         }
 
@@ -211,14 +211,14 @@ class SC_Helper_Purchase {
              * POSTのユニークIDとセッションのユニークIDを比較
              *(ユニークIDがPOSTされていない場合はスルー)
              */
-            if(!SC_SiteSession_Ex::checkUniqId()) {
+            if (!SC_SiteSession_Ex::checkUniqId()) {
                 SC_Utils_Ex::sfDispSiteError(CANCEL_PURCHASE);
                 exit;
             }
 
             // 購入ボタンを押してから変化がないか
             $quantity = $objCartSession->getTotalQuantity($cartKey);
-            if($objCartSession->checkChangeCart($cartKey) || !($quantity > 0)) {
+            if ($objCartSession->checkChangeCart($cartKey) || !($quantity > 0)) {
                 SC_Response_Ex::sendRedirect(CART_URLPATH);
                 exit;
             }
@@ -508,13 +508,13 @@ class SC_Helper_Purchase {
             }
             // 下限のみ設定されている
             elseif (strlen($data['rule']) != 0) {
-                if($data['rule'] <= $total) {
+                if ($data['rule'] <= $total) {
                     $arrPayment[] = $data;
                 }
             }
             // 上限のみ設定されている
             elseif (strlen($data['upper_rule']) != 0) {
-                if($data['upper_rule'] >= $total) {
+                if ($data['upper_rule'] >= $total) {
                     $arrPayment[] = $data;
                 }
             }
@@ -537,7 +537,7 @@ class SC_Helper_Purchase {
         }
         $max_date = max($delivDateIds);
         //発送目安
-        switch($max_date) {
+        switch ($max_date) {
         //即日発送
         case '1':
             $start_day = 1;
@@ -590,7 +590,7 @@ class SC_Helper_Purchase {
         $masterData = new SC_DB_MasterData();
         $arrWDAY = $masterData->getMasterData("mtb_wday");
         //お届け可能日のスタート値がセットされていれば
-        if($start_day >= 1) {
+        if ($start_day >= 1) {
             $now_time = time();
             $max_day = $start_day + $end_day;
             // 集計
@@ -770,7 +770,7 @@ class SC_Helper_Purchase {
         }
 
         // 対応状況の指定が無い場合は新規受付
-        if(SC_Utils_Ex::isBlank($orderParams['status'])) {
+        if (SC_Utils_Ex::isBlank($orderParams['status'])) {
             $orderParams['status'] = ORDER_NEW;
         }
 
@@ -1173,7 +1173,7 @@ __EOS__;
         // ▲受注テーブルの更新
 
         //会員情報の最終購入日、購入合計を更新
-        if($arrOrderOld['customer_id'] > 0 and $arrOrderOld['status'] != $newStatus){
+        if ($arrOrderOld['customer_id'] > 0 and $arrOrderOld['status'] != $newStatus) {
             SC_Customer_Ex::updateOrderSummary($arrOrderOld['customer_id']);
         }
     }

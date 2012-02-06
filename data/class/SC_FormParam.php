@@ -80,14 +80,14 @@ class SC_FormParam {
     // $seq     :trueの場合、$arrVal[0]~の配列を登録順にインスタンスに格納する
     function setParam($arrVal, $seq = false) {
         $cnt = 0;
-        if(!$seq){
-            foreach($this->keyname as $val) {
-                if(isset($arrVal[$val])) {
+        if (!$seq) {
+            foreach ($this->keyname as $val) {
+                if (isset($arrVal[$val])) {
                     $this->setValue($val, $arrVal[$val]);
                 }
             }
         } else {
-            foreach($this->keyname as $val) {
+            foreach ($this->keyname as $val) {
                 $this->param[$cnt] = $arrVal[$cnt];
                 $cnt++;
             }
@@ -97,23 +97,23 @@ class SC_FormParam {
     // 画面表示用タイトル生成
     function setHtmlDispNameArray() {
         $cnt = 0;
-        foreach($this->keyname as $val) {
+        foreach ($this->keyname as $val) {
             $find = false;
-            foreach($this->arrCheck[$cnt] as $val) {
-                if($val == "EXIST_CHECK") {
+            foreach ($this->arrCheck[$cnt] as $val) {
+                if ($val == "EXIST_CHECK") {
                     $find = true;
                 }
             }
 
-            if($find) {
+            if ($find) {
                 $this->html_disp_name[$cnt] = $this->disp_name[$cnt] . '<span class="red">(※ 必須)</span>';
             } else {
                 $this->html_disp_name[$cnt] = $this->disp_name[$cnt];
             }
-            if($this->default[$cnt] != "") {
+            if ($this->default[$cnt] != "") {
                 $this->html_disp_name[$cnt] .= ' [省略時初期値: ' . $this->default[$cnt] . ']';
             }
-            if($this->input_db[$cnt] == false) {
+            if ($this->input_db[$cnt] == false) {
                 $this->html_disp_name[$cnt] .= ' [登録・更新不可] ';
             }
             $cnt++;
@@ -130,9 +130,9 @@ class SC_FormParam {
         // DBの件数を取得する。
         $count = count($arrVal);
         $no = 1;
-        for($cnt = 0; $cnt < $count; $cnt++) {
+        for ($cnt = 0; $cnt < $count; $cnt++) {
             $key = $keyname.$no;
-            if($arrVal[$cnt][$keyname] != "") {
+            if ($arrVal[$cnt][$keyname] != "") {
                 $this->setValue($key, $arrVal[$cnt][$keyname]);
             }
             $no++;
@@ -152,8 +152,8 @@ class SC_FormParam {
     // キーに対応した値をセットする。
     function setValue($key, $param) {
         $cnt = 0;
-        foreach($this->keyname as $val) {
-            if($val == $key) {
+        foreach ($this->keyname as $val) {
+            if ($val == $key) {
                 $this->param[$cnt] = $param;
                 // 複数一致の場合もあるので break してはいけない。
             }
@@ -163,8 +163,8 @@ class SC_FormParam {
 
     function toLower($key) {
         $cnt = 0;
-        foreach($this->keyname as $val) {
-            if($val == $key) {
+        foreach ($this->keyname as $val) {
+            if ($val == $key) {
                 $this->param[$cnt] = strtolower($this->param[$cnt]);
                 // 複数一致の場合もあるので break してはいけない。
             }
@@ -177,10 +177,10 @@ class SC_FormParam {
         $objErr->arrErr = array();
 
         $cnt = 0;
-        foreach($this->keyname as $val) {
-            foreach($this->arrCheck[$cnt] as $func) {
+        foreach ($this->keyname as $val) {
+            foreach ($this->arrCheck[$cnt] as $func) {
                 if (!isset($this->param[$cnt])) $this->param[$cnt] = "";
-                switch($func) {
+                switch ($func) {
                 case 'EXIST_CHECK':
                 case 'NUM_CHECK':
                 case 'EMAIL_CHECK':
@@ -216,13 +216,13 @@ class SC_FormParam {
                     break;
                 // ファイルの存在チェック
                 case 'FILE_EXISTS':
-                    if($this->param[$cnt] != "" && !file_exists($this->check_dir . $this->param[$cnt])) {
+                    if ($this->param[$cnt] != "" && !file_exists($this->check_dir . $this->param[$cnt])) {
                         $objErr->arrErr[$val] = "※ " . $this->disp_name[$cnt] . "のファイルが存在しません。<br>";
                     }
                     break;
                 // ダウンロード用ファイルの存在チェック
                 case 'DOWN_FILE_EXISTS':
-                    if($this->param[$cnt] != "" && !file_exists(DOWN_SAVE_REALDIR . $this->param[$cnt])) {
+                    if ($this->param[$cnt] != "" && !file_exists(DOWN_SAVE_REALDIR . $this->param[$cnt])) {
                         $objErr->arrErr[$val] = "※ " . $this->disp_name[$cnt] . "のファイルが存在しません。<br>";
                     }
                     break;
@@ -269,9 +269,9 @@ class SC_FormParam {
             $objErr = new SC_CheckError_Ex(array(0 => $value));
             $objErr->doFunc(array($disp_name, 0, $length), array($func));
             if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
-                foreach($objErr->arrErr as $message) {
+                foreach ($objErr->arrErr as $message) {
 
-                    if(!SC_Utils_Ex::isBlank($message)) {
+                    if (!SC_Utils_Ex::isBlank($message)) {
                         // 再帰した場合は多次元配列のエラーメッセージを生成
                         $error_var = '$arrErr[$error_key]';
                         for ($i = 0; $i < $depth; $i++) {
@@ -326,7 +326,7 @@ class SC_FormParam {
      */
     function getHashArray($arrKey = array()) {
         $arrRet = array();
-        foreach($this->keyname as $index => $keyname) {
+        foreach ($this->keyname as $index => $keyname) {
             if (empty($arrKey) || in_array($keyname, $arrKey)) {
                 $arrRet[$keyname] = isset($this->param[$index]) ? $this->param[$index] : '';
             }
@@ -371,7 +371,7 @@ class SC_FormParam {
     // フォームに渡す用のパラメーターを返す
     function getFormParamList() {
         $cnt = 0;
-        foreach($this->keyname as $val) {
+        foreach ($this->keyname as $val) {
 
             // キー名
             $arrRet[$val]['keyname'] = $this->keyname[$cnt];
@@ -384,7 +384,7 @@ class SC_FormParam {
 
             if (!isset($this->param[$cnt])) $this->param[$cnt] = "";
 
-            if($this->default[$cnt] != "" && $this->param[$cnt] == "") {
+            if ($this->default[$cnt] != "" && $this->param[$cnt] == "") {
                 $arrRet[$val]['value'] = $this->default[$cnt];
             }
 
@@ -406,8 +406,8 @@ class SC_FormParam {
     function getValue($keyname, $default = '') {
         $cnt = 0;
         $ret = null;
-        foreach($this->keyname as $val) {
-            if($val == $keyname) {
+        foreach ($this->keyname as $val) {
+            if ($val == $keyname) {
                 $ret = isset($this->param[$cnt]) ? $this->param[$cnt] : "";
                 break;
             }
@@ -433,9 +433,9 @@ class SC_FormParam {
      */
     function splitParamCheckBoxes($keyname) {
         $cnt = 0;
-        foreach($this->keyname as $val) {
-            if($val == $keyname) {
-                if(isset($this->param[$cnt]) && !is_array($this->param[$cnt])) {
+        foreach ($this->keyname as $val) {
+            if ($val == $keyname) {
+                if (isset($this->param[$cnt]) && !is_array($this->param[$cnt])) {
                     $this->param[$cnt] = explode("-", $this->param[$cnt]);
                 }
             }
@@ -506,7 +506,7 @@ class SC_FormParam {
     // addParam の内容をそのまま返す
     function getFormDispArray() {
         $cnt = 0;
-        foreach($this->keyname as $val) {
+        foreach ($this->keyname as $val) {
             // キー名
             $arrRet[$cnt]['keyname'] = $this->keyname[$cnt];
             // 文字数制限
@@ -520,7 +520,7 @@ class SC_FormParam {
 
             if (!isset($this->param[$cnt])) $this->param[$cnt] = "";
 
-            if($this->default[$cnt] != "" && $this->param[$cnt] == "") {
+            if ($this->default[$cnt] != "" && $this->param[$cnt] == "") {
                 $arrRet[$cnt]['value'] = $this->default[$cnt];
             }
             $cnt++;

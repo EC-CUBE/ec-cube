@@ -79,7 +79,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         $arrErrTmp  = array();
         $arrForm = array();
 
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
 
         // バックアップを作成する
         case 'bkup':
@@ -88,7 +88,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
             $arrErrTmp[1] = $objFormParam->checkError();
 
             // データ型に問題がない場合
-            if(SC_Utils_Ex::isBlank($arrErrTmp[1])) {
+            if (SC_Utils_Ex::isBlank($arrErrTmp[1])) {
                 // データ型以外のエラーチェック
                 $arrErrTmp[2] = $this->lfCheckError($objFormParam->getHashArray(), $this->getMode());
             }
@@ -114,7 +114,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
                 // DBにデータ更新
                 if (SC_Utils_Ex::isBlank($arrErrTmp[3])) {
                     $this->lfUpdBkupData($arrData);
-                }else{
+                } else {
                     $arrForm = $arrData;
                     $arrErr = $arrErrTmp[3];
                 }
@@ -233,7 +233,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
         $arrVal = array();
 
-        switch($mode) {
+        switch ($mode) {
         case 'bkup':
             $arrVal[] = $arrForm['bkup_name'];
             break;
@@ -324,8 +324,8 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
         // 自動採番をCSV出力
         $fp = fopen($csv_autoinc_file,'w');
-        if($fp) {
-            if($csv_autoinc != ""){
+        if ($fp) {
+            if ($csv_autoinc != "") {
                 $success = fwrite($fp, $csv_autoinc);
                 if (!$success) {
                     return __LINE__;
@@ -376,7 +376,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrSequences = $objQuery->listSequences();
 
-        foreach($arrSequences as $val){
+        foreach ($arrSequences as $val) {
             $seq = $objQuery->currVal($val);
 
             $ret .= $val . ",";
@@ -455,7 +455,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
                 $objQuery->commit();
                 $this->restore_msg = "リストア終了しました。";
                 $this->restore_err = true;
-            }else{
+            } else {
                 $objQuery->rollback();
                 $this->restore_msg = "リストアに失敗しました。";
                 $this->restore_name = $bkup_name;
@@ -503,7 +503,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
             // csvファイルからデータの取得
             $fp = fopen($file_path, 'r');
-            if($fp === false) {
+            if ($fp === false) {
                 SC_Utils_Ex::sfDispException($file_name . ' のファイルオープンに失敗しました。');
             }
 
@@ -535,7 +535,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         // csvファイルからデータの取得
         $arrCsvData = file($csv);
 
-        foreach($arrCsvData as $val){
+        foreach ($arrCsvData as $val) {
             $arrData = explode(",", trim($val));
 
              $objQuery->setval($arrData[0], $arrData[1]);
@@ -548,7 +548,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
         $arrTableList = $objQuery->listTables();
 
-        foreach($arrTableList as $val){
+        foreach ($arrTableList as $val) {
             // バックアップテーブルは削除しない
             // XXX mtb_zip も削除不要では?
             if ($val != "dtb_bkup") {
@@ -566,7 +566,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
         $del_file = $bkup_dir.$arrForm['list_name'] . $bkup_ext;
         // ファイルの削除
-        if(is_file($del_file)){
+        if (is_file($del_file)) {
             $ret = unlink($del_file);
         }
 

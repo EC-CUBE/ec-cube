@@ -105,7 +105,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         $arrCSVFrame = $objCSV->sfGetCsvOutput($this->csv_id);
 
         // CSV構造がインポート可能かのチェック
-        if(!$objCSV->sfIsImportCSVFrame($arrCSVFrame) ) {
+        if (!$objCSV->sfIsImportCSVFrame($arrCSVFrame) ) {
             // 無効なフォーマットなので初期状態に強制変更
             $arrCSVFrame = $objCSV->sfGetCsvOutput($this->csv_id, '', array(), 'no');
             $this->tpl_is_format_default = true;
@@ -124,7 +124,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         $objFormParam->setHtmlDispNameArray();
         $this->arrTitle = $objFormParam->getHtmlDispNameArray();
 
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
         case 'csv_upload':
             $this->doUploadCsv($objFormParam, $objUpFile);
             break;
@@ -300,26 +300,26 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         // 固有の初期値調整
         $arrCSVFrame = $this->lfSetParamDefaultValue($arrCSVFrame);
         // CSV項目毎の処理
-        foreach($arrCSVFrame as $item) {
+        foreach ($arrCSVFrame as $item) {
             if($item['status'] == CSV_COLUMN_STATUS_FLG_DISABLE) continue;
             //サブクエリ構造の場合は AS名 を使用
-            if(preg_match_all('/\(.+\)\s+as\s+(.+)$/i', $item['col'], $match, PREG_SET_ORDER)) {
+            if (preg_match_all('/\(.+\)\s+as\s+(.+)$/i', $item['col'], $match, PREG_SET_ORDER)) {
                 $col = $match[0][1];
-            }else{
+            } else {
                 $col = $item['col'];
             }
             // HTML_TAG_CHECKは別途実行なので除去し、別保存しておく
-            if(strpos(strtoupper($item['error_check_types']), 'HTML_TAG_CHECK') !== FALSE) {
+            if (strpos(strtoupper($item['error_check_types']), 'HTML_TAG_CHECK') !== FALSE) {
                 $this->arrTagCheckItem[] = $item;
                 $error_check_types = str_replace('HTML_TAG_CHECK', '', $item['error_check_types']);
-            }else{
+            } else {
                 $error_check_types = $item['error_check_types'];
             }
             $arrErrorCheckTypes = explode(',', $error_check_types);
-            foreach($arrErrorCheckTypes as $key => $val) {
-                if(trim($val) == "") {
+            foreach ($arrErrorCheckTypes as $key => $val) {
+                if (trim($val) == "") {
                     unset($arrErrorCheckTypes[$key]);
-                }else{
+                } else {
                     $arrErrorCheckTypes[$key] = trim($val);
                 }
             }
@@ -347,11 +347,11 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         $objErr = new SC_CheckError_Ex($arrRet);
         $objErr->arrErr = $objFormParam->checkError(false);
         // HTMLタグチェックの実行
-        foreach($this->arrTagCheckItem as $item) {
+        foreach ($this->arrTagCheckItem as $item) {
             $objErr->doFunc(array( $item['disp_name'], $item['col'], $this->arrAllowedTag), array("HTML_TAG_CHECK"));
         }
         // このフォーム特有の複雑系のエラーチェックを行う
-        if(count($objErr->arrErr) == 0) {
+        if (count($objErr->arrErr) == 0) {
             $objErr->arrErr = $this->lfCheckErrorDetail($arrRet, $objErr->arrErr);
         }
         return $objErr->arrErr;
@@ -391,7 +391,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         // 必須入力では無い項目だが、空文字では問題のある特殊なカラム値の初期値設定
         $sqlval = $this->lfSetProductDefaultData($sqlval);
 
-        if($sqlval['product_id'] != "") {
+        if ($sqlval['product_id'] != "") {
             // 同じidが存在すればupdate存在しなければinsert
             $where = "product_id = ?";
             $product_exists = $objQuery->exists("dtb_products", $where, array($sqlval['product_id']));
@@ -403,7 +403,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
                 $objQuery->insert("dtb_products", $sqlval);
                 // シーケンスの調整
                 $seq_count = $objQuery->currVal('dtb_products_product_id');
-                if($seq_count < $sqlval['product_id']){
+                if ($seq_count < $sqlval['product_id']) {
                     $objQuery->setVal('dtb_products_product_id', $sqlval['product_id'] + 1);
                 }
             }
@@ -454,7 +454,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         // 必須入力では無い項目だが、空文字では問題のある特殊なカラム値の初期値設定
         $sqlval = $this->lfSetProductClassDefaultData($sqlval);
 
-        if($product_class_id == "") {
+        if ($product_class_id == "") {
             // 新規登録
             $sqlval['product_id'] = $product_id;
             $sqlval['product_class_id'] = $objQuery->nextVal('dtb_products_class_product_class_id');
@@ -468,7 +468,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
             $objQuery->update("dtb_products_class", $sqlval, $where, array($product_class_id));
         }
         // 支払い方法登録
-        if($arrList['product_payment_ids'] != "") {
+        if ($arrList['product_payment_ids'] != "") {
             $arrPayment_id = explode(',', $arrList['product_payment_ids']);
             $objProduct->setPaymentOptions($product_class_id, $arrPayment_id);
         }
@@ -487,12 +487,12 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      */
     function lfRegistReccomendProducts($objQuery, $arrList, $product_id) {
         $objQuery->delete("dtb_recommend_products", "product_id = ?", array($product_id));
-        for($i = 1; $i <= RECOMMEND_PRODUCT_MAX; $i++) {
+        for ($i = 1; $i <= RECOMMEND_PRODUCT_MAX; $i++) {
             $keyname = "recommend_product_id" . $i;
             $comment_key = "recommend_comment" . $i;
-            if($arrList[$keyname] != "") {
+            if ($arrList[$keyname] != "") {
                 $arrProduct = $objQuery->select("product_id", "dtb_products", "product_id = ?", array($arrList[$keyname]));
-                if($arrProduct[0]['product_id'] != "") {
+                if ($arrProduct[0]['product_id'] != "") {
                     $arrval['product_id'] = $product_id;
                     $arrval['recommend_product_id'] = $arrProduct[0]['product_id'];
                     $arrval['comment'] = $arrList[$comment_key];
@@ -513,8 +513,8 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      * @return array $arrCSVFrame CSV構造配列
      */
     function lfSetParamDefaultValue(&$arrCSVFrame) {
-        foreach($arrCSVFrame as $key => $val) {
-            switch($val['col']) {
+        foreach ($arrCSVFrame as $key => $val) {
+            switch ($val['col']) {
                 case 'status':
                     $arrCSVFrame[$key]['default'] = DEFAULT_PRODUCT_DISP;
                     break;
@@ -547,16 +547,16 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      */
     function lfSetProductDefaultData(&$sqlval) {
         //新規登録時のみ設定する項目
-        if( $sqlval['product_id'] == "") {
-            if($sqlval['status'] == "") {
+        if ($sqlval['product_id'] == "") {
+            if ($sqlval['status'] == "") {
                 $sqlval['status'] = DEFAULT_PRODUCT_DISP;
             }
         }
         //共通で空欄時に上書きする項目
-        if($sqlval['del_flg'] == ""){
+        if ($sqlval['del_flg'] == "") {
             $sqlval['del_flg'] = '0'; //有効
         }
-        if($sqlval['creator_id'] == "") {
+        if ($sqlval['creator_id'] == "") {
             $sqlval['creator_id'] = $_SESSION['member_id'];
         }
         return $sqlval;
@@ -570,15 +570,15 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      */
     function lfSetProductClassDefaultData(&$sqlval) {
         //新規登録時のみ設定する項目
-        if($sqlval['product_class_id'] == "") {
-            if($sqlval['point_rate'] == "") {
+        if ($sqlval['product_class_id'] == "") {
+            if ($sqlval['point_rate'] == "") {
                 $sqlval['point_rate'] = $this->arrInfo['point_rate'];
             }
-            if($sqlval['product_type_id'] == "") {
+            if ($sqlval['product_type_id'] == "") {
                 $sqlval['product_type_id'] = DEFAULT_PRODUCT_DOWN;
             }
             // TODO: 在庫数、無制限フラグの扱いについて仕様がぶれているので要調整
-            if($sqlval['stock'] == "" and $sqlval['stock_unlimited'] != UNLIMITED_FLG_UNLIMITED) {
+            if ($sqlval['stock'] == "" and $sqlval['stock_unlimited'] != UNLIMITED_FLG_UNLIMITED) {
                 //在庫数設定がされておらず、かつ無制限フラグが設定されていない場合、強制無制限
                 $sqlval['stock_unlimited'] = UNLIMITED_FLG_UNLIMITED;
             }elseif($sqlval['stock'] != "" and $sqlval['stock_unlimited'] != UNLIMITED_FLG_UNLIMITED) {
@@ -588,17 +588,17 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
                 //在庫無制限フラグ設定時は在庫数をクリア
                 $sqlval['stock'] = '';
             }
-        }else{
+        } else {
             //更新時のみ設定する項目
-            if(array_key_exists('stock_unlimited', $sqlval) and $sqlval['stock_unlimited'] == UNLIMITED_FLG_UNLIMITED) {
+            if (array_key_exists('stock_unlimited', $sqlval) and $sqlval['stock_unlimited'] == UNLIMITED_FLG_UNLIMITED) {
                 $sqlval['stock'] = '';
             }
         }
         //共通で設定する項目
-        if($sqlval['del_flg'] == ""){
+        if ($sqlval['del_flg'] == "") {
             $sqlval['del_flg'] = '0'; //有効
         }
-        if($sqlval['creator_id'] == "") {
+        if ($sqlval['creator_id'] == "") {
             $sqlval['creator_id'] = $_SESSION['member_id'];
         }
         return $sqlval;
@@ -613,15 +613,15 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      */
     function lfCheckErrorDetail($item, $arrErr) {
         // 規格IDの存在チェック
-        if(!$this->lfIsDbRecord('dtb_products_class', 'product_class_id', $item)) {
+        if (!$this->lfIsDbRecord('dtb_products_class', 'product_class_id', $item)) {
             $arrErr['product_class_id'] = "※ 指定の商品規格IDは、登録されていません。";
         }
         // 商品ID、規格IDの組合せチェック
         if(array_search('product_class_id', $this->arrFormKeyList) !== FALSE
                 and $item['product_class_id'] != "") {
-            if($item['product_id'] == "") {
+            if ($item['product_id'] == "") {
                 $arrErr['product_class_id'] = "※ 商品規格ID指定時には商品IDの指定が必須です。";
-            }else{
+            } else {
                 if(!$this->objDb->sfIsRecord('dtb_products_class', 'product_id, product_class_id'
                         , array($item['product_id'], $item['product_class_id']))) {
                     $arrErr['product_class_id'] = "※ 指定の商品IDと商品規格IDの組合せは正しくありません。";
@@ -629,34 +629,34 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
             }
         }
         // 規格組合せIDの存在チェック
-//        if(!$this->lfIsDbRecord('dtb_class_combination', 'class_combination_id', $item)) {
+//        if (!$this->lfIsDbRecord('dtb_class_combination', 'class_combination_id', $item)) {
 //      SC_Utils::sfIsRecord が del_flg が無いと使えない為、個別処理
         if(array_search('class_combination_id', $this->arrFormKeyList) !== FALSE
                 and $item['class_combination_id'] != "" ) {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $ret = $objQuery->get('class_combination_id', 'dtb_class_combination', 'class_combination_id = ?', array($item['class_combination_id']));
-            if($ret == "") {
+            if ($ret == "") {
                 $arrErr['class_combination_id'] = "※ 指定の規格組合せIDは、登録されていません。";
             }
         }
         // 表示ステータスの存在チェック
-        if(!$this->lfIsArrayRecord($this->arrDISP, 'status', $item)) {
+        if (!$this->lfIsArrayRecord($this->arrDISP, 'status', $item)) {
             $arrErr['status'] = "※ 指定の表示ステータスは、登録されていません。";
         }
         // メーカーIDの存在チェック
-        if(!$this->lfIsArrayRecord($this->arrMaker, 'maker_id', $item)) {
+        if (!$this->lfIsArrayRecord($this->arrMaker, 'maker_id', $item)) {
             $arrErr['maker_id'] = "※ 指定のメーカーIDは、登録されていません。";
         }
         // 発送日目安IDの存在チェック
-        if(!$this->lfIsArrayRecord($this->arrDELIVERYDATE, 'deliv_date_id', $item)) {
+        if (!$this->lfIsArrayRecord($this->arrDELIVERYDATE, 'deliv_date_id', $item)) {
             $arrErr['deliv_date_id'] = "※ 指定の発送日目安IDは、登録されていません。";
         }
         // 発送日目安IDの存在チェック
-        if(!$this->lfIsArrayRecord($this->arrProductType, 'product_type_id', $item)) {
+        if (!$this->lfIsArrayRecord($this->arrProductType, 'product_type_id', $item)) {
             $arrErr['product_type_id'] = "※ 指定の商品種別IDは、登録されていません。";
         }
         // 関連商品IDの存在チェック
-        for($i = 1; $i <= RECOMMEND_PRODUCT_MAX; $i++) {
+        for ($i = 1; $i <= RECOMMEND_PRODUCT_MAX; $i++) {
             if(array_search('recommend_product_id' . $i, $this->arrFormKeyList) !== FALSE
                     and $item['recommend_product_id' . $i] != ""
                     and !$this->objDb->sfIsRecord('dtb_products', 'product_id', (array)$item['recommend_product_id' . $i]) ) {
@@ -664,31 +664,31 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
             }
         }
         // カテゴリIDの存在チェック
-        if(!$this->lfIsDbRecordMulti('dtb_category', 'category_id', 'category_ids', $item, ',')) {
+        if (!$this->lfIsDbRecordMulti('dtb_category', 'category_id', 'category_ids', $item, ',')) {
             $arrErr['category_ids'] = "※ 指定のカテゴリIDは、登録されていません。";
         }
         // 商品ステータスIDの存在チェック
-        if(!$this->lfIsArrayRecordMulti($this->arrSTATUS, 'product_statuses', $item, ',')) {
+        if (!$this->lfIsArrayRecordMulti($this->arrSTATUS, 'product_statuses', $item, ',')) {
             $arrErr['product_statuses'] = "※ 指定の商品ステータスIDは、登録されていません。";
         }
         // 支払い方法IDの存在チェック
-        if(!$this->lfIsArrayRecordMulti($this->arrPayments, 'product_payment_ids', $item, ',')) {
+        if (!$this->lfIsArrayRecordMulti($this->arrPayments, 'product_payment_ids', $item, ',')) {
             $arrErr['product_payment_ids'] = "※ 指定の支払い方法IDは、登録されていません。";
         }
         // 削除フラグのチェック
         if(array_search('del_flg', $this->arrFormKeyList) !== FALSE
                 and $item['del_flg'] != "") {
-            if(!($item['del_flg'] == "0" or $item['del_flg'] == "1")) {
+            if (!($item['del_flg'] == "0" or $item['del_flg'] == "1")) {
                 $arrErr['del_flg'] = "※ 削除フラグは「0」(有効)、「1」(削除)のみが有効な値です。";
             }
         }
 /*
     TODO: 在庫数の扱いが2.4仕様ではぶれているのでどうするか・・
         // 在庫数/在庫無制限フラグの有効性に関するチェック
-        if($item['stock'] == "") {
-            if(array_search('stock_unlimited', $this->arrFormKeyList) === FALSE) {
+        if ($item['stock'] == "") {
+            if (array_search('stock_unlimited', $this->arrFormKeyList) === FALSE) {
                 $arrErr['stock'] = "※ 在庫数は必須です（無制限フラグ項目がある場合のみ空欄許可）。";
-            }else if($item['stock_unlimited'] != UNLIMITED_FLG_UNLIMITED) {
+            }else if ($item['stock_unlimited'] != UNLIMITED_FLG_UNLIMITED) {
                 $arrErr['stock'] = "※ 在庫数または在庫無制限フラグのいずれかの入力が必須です。";
             }
         }
@@ -697,19 +697,19 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         if(array_search('product_type_id', $this->arrFormKeyList) !== FALSE
                  and $item['product_type_id'] == PRODUCT_TYPE_NORMAL) {
             //実商品の場合
-            if( $item['down_filename'] != "") {
+            if ($item['down_filename'] != "") {
                 $arrErr['down_filename'] = "※ 実商品の場合はダウンロードファイル名は入力できません。";
             }
-            if( $item['down_realfilename'] != "") {
+            if ($item['down_realfilename'] != "") {
                 $arrErr['down_realfilename'] = "※ 実商品の場合はダウンロード商品用ファイルアップロードは入力できません。";
             }
         }elseif(array_search('product_type_id', $this->arrFormKeyList) !== FALSE
                 and $item['product_type_id'] == PRODUCT_TYPE_DOWNLOAD) {
             //ダウンロード商品の場合
-            if( $item['down_filename'] == "") {
+            if ($item['down_filename'] == "") {
                 $arrErr['down_filename'] = "※ ダウンロード商品の場合はダウンロードファイル名は必須です。";
             }
-            if( $item['down_realfilename'] == "") {
+            if ($item['down_realfilename'] == "") {
                 $arrErr['down_realfilename'] = "※ ダウンロード商品の場合はダウンロード商品用ファイルアップロードは必須です。";
             }
         }
@@ -728,7 +728,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
     function lfGetDbFormatTimeWithLine($line_no = '') {
         $time = date("Y-m-d H:i:s");
         // 秒以下を生成
-        if($line_no != '') {
+        if ($line_no != '') {
             $microtime = sprintf("%06d", $line_no);
             $time .= ".$microtime";
         }
@@ -745,20 +745,20 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      * @return boolean true:有効なデータがある false:有効ではない
      */
     function lfIsArrayRecordMulti($arr, $keyname, $item, $delimiter = ',') {
-        if(array_search($keyname, $this->arrFormKeyList) === FALSE) {
+        if (array_search($keyname, $this->arrFormKeyList) === FALSE) {
             return true;
         }
-        if($item[$keyname] == "") {
+        if ($item[$keyname] == "") {
             return true;
         }
         $arrItems = explode($delimiter, $item[$keyname]);
         //空項目のチェック 1つでも空指定があったら不正とする。
-        if(array_search("", $arrItems) !== FALSE) {
+        if (array_search("", $arrItems) !== FALSE) {
             return false;
         }
         //キー項目への存在チェック
-        foreach($arrItems as $item) {
-            if(!array_key_exists($item, $arr)) {
+        foreach ($arrItems as $item) {
+            if (!array_key_exists($item, $arr)) {
                 return false;
             }
         }
@@ -776,15 +776,15 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      * @return boolean true:有効なデータがある false:有効ではない
      */
     function lfIsDbRecordMulti($table, $tblkey, $keyname, $item, $delimiter = ',') {
-        if(array_search($keyname, $this->arrFormKeyList) === FALSE) {
+        if (array_search($keyname, $this->arrFormKeyList) === FALSE) {
             return true;
         }
-        if($item[$keyname] == "") {
+        if ($item[$keyname] == "") {
             return true;
         }
         $arrItems = explode($delimiter, $item[$keyname]);
         //空項目のチェック 1つでも空指定があったら不正とする。
-        if(array_search("", $arrItems) !== FALSE) {
+        if (array_search("", $arrItems) !== FALSE) {
             return false;
         }
         $count = count($arrItems);
@@ -792,7 +792,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $db_count = $objQuery->count($table, $where, $arrItems);
-        if($count != $db_count) {
+        if ($count != $db_count) {
             return false;
         }
         return true;

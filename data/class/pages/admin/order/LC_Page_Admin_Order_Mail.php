@@ -83,25 +83,25 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
         // 検索パラメーターの引き継ぎ
         $this->arrSearchHidden = $objFormParam->getSearchArray();
 
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
             case 'pre_edit':
                 break;
             case 'return':
                 break;
             case 'send':
                 $sendStatus = $this->doSend($objFormParam);
-                if($sendStatus === true){
+                if ($sendStatus === true) {
                     SC_Response_Ex::sendRedirect(ADMIN_ORDER_URLPATH);
                     exit;
-                }else{
+                } else {
                     $this->arrErr = $sendStatus;
                 }
             case 'confirm':
                 $status = $this->confirm($objFormParam);
-                if($status === true){
+                if ($status === true) {
                     $this->arrHidden = $objFormParam->getHashArray();
                     return ;
-                }else{
+                } else {
                     $this->arrErr = $status;
                 }
                 break;
@@ -110,7 +110,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
                 break;
         }
 
-        if(SC_Utils_Ex::sfIsInt($objFormParam->getValue('order_id'))) {
+        if (SC_Utils_Ex::sfIsInt($objFormParam->getValue('order_id'))) {
             $this->arrMailHistory = $this->getMailHistory($objFormParam->getValue('order_id'));
         }
 
@@ -184,18 +184,18 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
      * @param SC_FormParam $objFormParam
      */
     function changeData(&$objFormParam){
-        if(SC_Utils_Ex::sfIsInt($objFormParam->getValue('template_id'))) {
+        if (SC_Utils_Ex::sfIsInt($objFormParam->getValue('template_id'))) {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $where = "template_id = ?";
             $mailTemplates = $objQuery->select("subject, header, footer", "dtb_mailtemplate", $where, array($objFormParam->getValue('template_id')));
-            if(!is_null($mailTemplates )){
-                foreach(array('subject','header','footer') as $key){
+            if (!is_null($mailTemplates )) {
+                foreach (array('subject','header','footer') as $key) {
                     $objFormParam->setValue($key,$mailTemplates[$key]);
                 }
             }
             $objFormParam->setParam($mailTemplates[0]);
-        }else{
-            foreach(array('subject','header','footer') as $key){
+        } else {
+            foreach (array('subject','header','footer') as $key) {
                 $objFormParam->setValue($key,"");
             }
         }

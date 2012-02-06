@@ -87,7 +87,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
         $css_dir = $objLayout->getTemplatePath($this->device_type_id, true) . "css/";
         $css_path = $css_dir . $this->css_name . '.css';
 
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
             // データ更新処理
             case 'confirm':
                 if (!$is_error) {
@@ -238,7 +238,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
 
         $is_error = false;
         // 重複チェック
-        if(!SC_Utils_Ex::isBlank(($objErr->arrErr['css_name']))) {
+        if (!SC_Utils_Ex::isBlank(($objErr->arrErr['css_name']))) {
             $arrCSSList = $this->getCSSList($this->getCSSDir());
             foreach ($arrCSSList as $val) {
                 if ($val['css_name'] == $css_name) {

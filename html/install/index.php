@@ -34,7 +34,7 @@ require_once HTML_REALDIR . HTML2DATA_DIR . 'require_base.php';
 $ownDir = realpath(dirname(__FILE__)) . '/';
 require_once DATA_REALDIR . 'module/HTTP/Request.php';
 
-if(!defined("ADMIN_DIR")){
+if (!defined("ADMIN_DIR")) {
     define("ADMIN_DIR","admin/");
 }
 
@@ -56,7 +56,7 @@ $objDb = new SC_Helper_DB_Ex();
 // テンプレートコンパイルディレクトリの書込み権限チェック
 $temp_dir = $ownDir . 'temp';
 
-if(!is_writable($temp_dir)) {
+if (!is_writable($temp_dir)) {
     SC_Utils_Ex::sfErrorHeader($temp_dir . "にユーザ書込み権限(777, 707等)を付与して下さい。", true);
     exit;
 }
@@ -76,7 +76,7 @@ $objDBParam->setParam($_POST);
 
 $mode = isset($_POST['mode_overwrite']) ? $_POST['mode_overwrite'] : $_POST['mode'];
 
-switch($mode) {
+switch ($mode) {
 // ようこそ
 case 'welcome':
     //$objPage = lfDispAgreement($objPage);
@@ -104,7 +104,7 @@ case 'step0_1':
 case 'step1':
     //入力値のエラーチェック
     $objPage->arrErr = lfCheckWebError($objWebParam);
-    if(count($objPage->arrErr) == 0) {
+    if (count($objPage->arrErr) == 0) {
         $objPage = lfDispStep2($objPage);
     } else {
         $objPage = lfDispStep1($objPage);
@@ -132,7 +132,7 @@ case 'step3':
     define("DB_TYPE", $arrRet['db_type']);
     $dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
 
-    if(count($objPage->arrErr) == 0) {
+    if (count($objPage->arrErr) == 0) {
         // スキップする場合には次画面へ遷移
         $skip = $_POST["db_skip"];
         if ($skip == "on") {
@@ -143,16 +143,16 @@ case 'step3':
 
     // テーブルの作成
     $objPage->arrErr = lfExecuteSQL("./sql/create_table_".$arrRet['db_type'].".sql", $dsn);
-    if(count($objPage->arrErr) == 0) {
+    if (count($objPage->arrErr) == 0) {
         $objPage->tpl_message.="○：テーブルの作成に成功しました。<br />";
     } else {
         $objPage->tpl_message.="×：テーブルの作成に失敗しました。<br />";
     }
 
     // 初期データの作成
-    if(count($objPage->arrErr) == 0) {
+    if (count($objPage->arrErr) == 0) {
         $objPage->arrErr = lfExecuteSQL("./sql/insert_data.sql", $dsn);
-        if(count($objPage->arrErr) == 0) {
+        if (count($objPage->arrErr) == 0) {
             $objPage->tpl_message.="○：初期データの作成に成功しました。<br />";
         } else {
             $objPage->tpl_message.="×：初期データの作成に失敗しました。<br />";
@@ -162,14 +162,14 @@ case 'step3':
     // シーケンスの作成
     if (count($objPage->arrErr) == 0) {
         $objPage->arrErr = lfCreateSequence(getSequences(), $dsn);
-        if(count($objPage->arrErr) == 0) {
+        if (count($objPage->arrErr) == 0) {
             $objPage->tpl_message.="○：シーケンスの作成に成功しました。<br />";
         } else {
             $objPage->tpl_message.="×：シーケンスの作成に失敗しました。<br />";
         }
     }
 
-    if(count($objPage->arrErr) == 0) {
+    if (count($objPage->arrErr) == 0) {
         $objPage = lfDispStep3($objPage);
         $objPage->tpl_mode = 'step4';
     } else {
@@ -190,9 +190,9 @@ case 'drop':
     $dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
 
     // テーブルの削除
-    if(count($objPage->arrErr) == 0) {
+    if (count($objPage->arrErr) == 0) {
         $objPage->arrErr = lfExecuteSQL("./sql/drop_table.sql", $dsn, false);
-        if(count($objPage->arrErr) == 0) {
+        if (count($objPage->arrErr) == 0) {
             $objPage->tpl_message.="○：テーブルの削除に成功しました。<br />";
         } else {
             $objPage->tpl_message.="×：テーブルの削除に失敗しました。<br />";
@@ -200,9 +200,9 @@ case 'drop':
     }
 
     // シーケンスの削除
-    if(count($objPage->arrErr) == 0) {
+    if (count($objPage->arrErr) == 0) {
         $objPage->arrErr = lfDropSequence(getSequences(), $dsn);
-        if(count($objPage->arrErr) == 0) {
+        if (count($objPage->arrErr) == 0) {
             $objPage->tpl_message.="○：シーケンスの削除に成功しました。<br />";
         } else {
             $objPage->tpl_message.="×：シーケンスの削除に失敗しました。<br />";
@@ -217,14 +217,14 @@ case 'complete':
     $GLOBAL_ERR = "";
     $objPage = lfDispComplete($objPage);
 
-    if(isset($_POST['send_info']) && $_POST['send_info'] === 'true'){
+    if (isset($_POST['send_info']) && $_POST['send_info'] === 'true') {
         // サイト情報を送信
         $req = new HTTP_Request("http://www.ec-cube.net/mall/use_site.php");
         $req->setMethod(HTTP_REQUEST_METHOD_POST);
 
         $arrSendData = array();
-        foreach($_POST as $key => $val){
-            if (ereg("^senddata_*", $key)){
+        foreach ($_POST as $key => $val) {
+            if (ereg("^senddata_*", $key)) {
                 $arrSendDataTmp = array(str_replace("senddata_", "", $key) => $val);
                 $arrSendData = array_merge($arrSendData, $arrSendDataTmp);
             }
@@ -331,7 +331,7 @@ function lfDispStep0($objPage) {
 
     $mess = "";
     $hasErr = false;
-    foreach($arrWriteFile as $val) {
+    foreach ($arrWriteFile as $val) {
         // listdirsの保持データを初期化
         initdirs();
         if (is_dir($val) and $val != HTML_REALDIR) {
@@ -341,20 +341,20 @@ function lfDispStep0($objPage) {
         }
 
         foreach ($arrDirs as $path) {
-            if(file_exists($path)) {
+            if (file_exists($path)) {
                 $filemode = lfGetFileMode($path);
                 $real_path = realpath($path);
 
                 // ディレクトリの場合
-                if(is_dir($path)) {
-                    if(!is_writable($path)) {
+                if (is_dir($path)) {
+                    if (!is_writable($path)) {
                         $mess.= ">> ×：$real_path($filemode) \nユーザ書込み権限(777, 707等)を付与して下さい。\n";
                         $hasErr = true;
                     } else {
                         GC_Utils_Ex::gfPrintLog("WRITABLE：".$path, INSTALL_LOG);
                     }
                 } else {
-                    if(!is_writable($path)) {
+                    if (!is_writable($path)) {
                         $mess.= ">> ×：$real_path($filemode) \nユーザ書込み権限(666, 606等)を付与して下さい。\n";
                         $hasErr = true;
                     } else {
@@ -387,35 +387,35 @@ function lfDispStep0($objPage) {
         $objPage->tpl_mode = 'step0';
         umask(0);
         $path = HTML_REALDIR . "upload/temp_template";
-        if(!file_exists($path)) {
+        if (!file_exists($path)) {
             mkdir($path);
         }
         $path = HTML_REALDIR . "upload/save_image";
-        if(!file_exists($path)) {
+        if (!file_exists($path)) {
             mkdir($path);
         }
         $path = HTML_REALDIR . "upload/temp_image";
-        if(!file_exists($path)) {
+        if (!file_exists($path)) {
             mkdir($path);
         }
         $path = HTML_REALDIR . "upload/graph_image";
-        if(!file_exists($path)) {
+        if (!file_exists($path)) {
             mkdir($path);
         }
         $path = HTML_REALDIR . "upload/mobile_image";
-        if(!file_exists($path)) {
+        if (!file_exists($path)) {
             mkdir($path);
         }
         $path = DATA_REALDIR . "downloads/module";
-        if(!file_exists($path)) {
+        if (!file_exists($path)) {
             mkdir($path);
         }
         $path = DATA_REALDIR . "downloads/update";
-        if(!file_exists($path)) {
+        if (!file_exists($path)) {
             mkdir($path);
         }
         $path = DATA_REALDIR . "upload/csv";
-        if(!file_exists($path)) {
+        if (!file_exists($path)) {
             mkdir($path);
         }
         $mess.= ">> ○：アクセス権限は正常です。";
@@ -556,7 +556,7 @@ function lfDispComplete($objPage) {
     $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
     $objQuery = new SC_Query($dsn);
     $cnt = $objQuery->count("dtb_baseinfo");
-    if($cnt > 0) {
+    if ($cnt > 0) {
         $objQuery->update("dtb_baseinfo", $sqlval);
     } else {
         $objQuery->insert("dtb_baseinfo", $sqlval);
@@ -609,14 +609,14 @@ function lfDispComplete($objPage) {
 function lfInitWebParam($objWebParam) {
     global $objDb;
 
-    if(defined('HTTP_URL')) {
+    if (defined('HTTP_URL')) {
         $normal_url = HTTP_URL;
     } else {
         $dir = ereg_replace("install/.*$", "", $_SERVER['REQUEST_URI']);
         $normal_url = "http://" . $_SERVER['HTTP_HOST'] . $dir;
     }
 
-    if(defined('HTTPS_URL')) {
+    if (defined('HTTPS_URL')) {
         $secure_url = HTTPS_URL;
     } else {
         $dir = ereg_replace("install/.*$", "", $_SERVER['REQUEST_URI']);
@@ -624,11 +624,11 @@ function lfInitWebParam($objWebParam) {
     }
 
     // 店名、管理者メールアドレスを取得する。(再インストール時)
-    if(defined('DEFAULT_DSN')) {
+    if (defined('DEFAULT_DSN')) {
         $objQuery = new SC_Query();
         $tables = $objQuery->listTables();
 
-        if(!PEAR::isError($tables) && in_array("dtb_baseinfo", $tables)) {
+        if (!PEAR::isError($tables) && in_array("dtb_baseinfo", $tables)) {
             $arrRet = $objQuery->select("shop_name, email01", "dtb_baseinfo");
             $shop_name = $arrRet[0]['shop_name'];
             $admin_mail = $arrRet[0]['email01'];
@@ -672,31 +672,31 @@ function lfInitWebParam($objWebParam) {
 // DBパラメーター情報の初期化
 function lfInitDBParam($objDBParam) {
 
-    if(defined('DB_SERVER')) {
+    if (defined('DB_SERVER')) {
         $db_server = DB_SERVER;
     } else {
         $db_server = "127.0.0.1";
     }
 
-    if(defined('DB_TYPE')) {
+    if (defined('DB_TYPE')) {
         $db_type = DB_TYPE;
     } else {
         $db_type = "";
     }
 
-    if(defined('DB_PORT')) {
+    if (defined('DB_PORT')) {
         $db_port = DB_PORT;
     } else {
         $db_port = "";
     }
 
-    if(defined('DB_NAME')) {
+    if (defined('DB_NAME')) {
         $db_name = DB_NAME;
     } else {
         $db_name = "eccube_db";
     }
 
-    if(defined('DB_USER')) {
+    if (defined('DB_USER')) {
         $db_user = DB_USER;
     } else {
         $db_user = "eccube_db_user";
@@ -723,7 +723,7 @@ function lfCheckWebError($objFormParam) {
     $normal_dir = ereg_replace("^https?://[a-zA-Z0-9_~=&\?\.\-]+", "", $arrRet['normal_url']);
     $secure_dir = ereg_replace("^https?://[a-zA-Z0-9_~=&\?\.\-]+", "", $arrRet['secure_url']);
 
-    if($normal_dir != $secure_dir) {
+    if ($normal_dir != $secure_dir) {
         $objErr->arrErr['normal_url'] = "※ URLに異なる階層を指定することはできません。";
         $objErr->arrErr['secure_url'] = "※ URLに異なる階層を指定することはできません。";
     }
@@ -756,7 +756,7 @@ function lfCheckDBError($objFormParam) {
     $objErr = new SC_CheckError($arrRet);
     $objErr->arrErr = $objFormParam->checkError();
 
-    if(count($objErr->arrErr) == 0) {
+    if (count($objErr->arrErr) == 0) {
         if (!defined("DB_TYPE")) {
             define("DB_TYPE", $arrRet['db_type']);
         }
@@ -766,7 +766,7 @@ function lfCheckDBError($objFormParam) {
         $options['debug'] = PEAR_DB_DEBUG;
         $objDB = MDB2::connect($dsn, $options);
         // 接続成功
-        if(!PEAR::isError($objDB)) {
+        if (!PEAR::isError($objDB)) {
             $dbFactory = SC_DB_DBFactory_Ex::getInstance($arrRet['db_type']);
             // データベースバージョン情報の取得
             $objPage->tpl_db_version = $dbFactory->sfGetDBVersion($dsn);
@@ -785,10 +785,10 @@ function lfCheckDBError($objFormParam) {
 function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
     $arrErr = array();
 
-    if(!file_exists($filepath)) {
+    if (!file_exists($filepath)) {
         $arrErr['all'] = ">> スクリプトファイルが見つかりません";
     } else {
-        if($fp = fopen($filepath,"r")) {
+        if ($fp = fopen($filepath,"r")) {
             $sql = fread($fp, filesize($filepath));
             fclose($fp);
         }
@@ -796,14 +796,14 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
         $options['debug'] = PEAR_DB_DEBUG;
         $objDB = MDB2::connect($dsn, $options);
         // 接続エラー
-        if(!PEAR::isError($objDB)) {
+        if (!PEAR::isError($objDB)) {
             $objDB->setCharset("utf8");
             $sql_split = split(";",$sql);
-            foreach($sql_split as $key => $val){
+            foreach ($sql_split as $key => $val) {
                 SC_Utils::sfFlush(true);
                 if (trim($val) != "") {
                     $ret = $objDB->query($val);
-                    if(PEAR::isError($ret) && $disp_err) {
+                    if (PEAR::isError($ret) && $disp_err) {
                         $arrErr['all'] = ">> " . $ret->message . "<br />";
                         // エラー文を取得する
                         ereg("\[(.*)\]", $ret->userinfo, $arrKey);
@@ -929,36 +929,36 @@ function lfMakeConfigFile() {
     $url_dir = ereg_replace("^https?://[a-zA-Z0-9_:~=&\?\.\-]+", "", $normal_url);
 
     //管理機能SSL制限
-    if($objWebParam->getValue('admin_force_ssl') == 1 and strpos($secure_url,"https://") !== FALSE){
+    if ($objWebParam->getValue('admin_force_ssl') == 1 and strpos($secure_url,"https://") !== FALSE) {
         $force_ssl = "TRUE";
-    }else{
+    } else {
         $force_ssl = "FALSE";
     }
     //管理機能IP制限
     $allow_hosts = array();
     $hosts = $objWebParam->getValue('admin_allow_hosts');
-    if(!empty($hosts)){
+    if (!empty($hosts)) {
         $hosts = str_replace("\r","",$hosts);
-        if(strpos($hosts,"\n") === false){
+        if (strpos($hosts,"\n") === false) {
             $hosts .= "\n";
         }
         $hosts = explode("\n",$hosts);
-        foreach($hosts as $key=>$host){
+        foreach ($hosts as $key=>$host) {
             $host = trim($host);
-            if(strlen($host) >= 8) {
+            if (strlen($host) >= 8) {
                 $allow_hosts[] = $host;
             }
         }
     }
     //パスワード暗号化方式決定
     $arrAlgos = hash_algos();
-    if(array_search('sha256', $arrAlgos) !== FALSE) {
+    if (array_search('sha256', $arrAlgos) !== FALSE) {
         $algos = 'sha256';
     }elseif(array_search('sha1', $arrAlgos) !== FALSE) {
         $algos = 'sha1';
     }elseif(array_search('md5', $arrAlgos) !== FALSE) {
         $algos = 'md5';
-    }else{
+    } else {
         $algos = '';
     }
     //MAGICハッシュワード決定

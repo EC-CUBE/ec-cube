@@ -96,7 +96,7 @@ class LC_Page_Entry extends LC_Page_Ex {
             $this->arrErr = SC_Helper_Customer_Ex::sfCustomerEntryErrorCheck($objFormParam);
             $this->arrForm  = $objFormParam->getHashArray();
             // 入力エラーなし
-            if(empty($this->arrErr)) {
+            if (empty($this->arrErr)) {
                 //パスワード表示
                 $this->passlen      = SC_Utils_Ex::sfPassLen(strlen($this->arrForm['password']));
 
@@ -108,7 +108,7 @@ class LC_Page_Entry extends LC_Page_Ex {
             //-- 会員登録と完了画面
             $this->arrErr = SC_Helper_Customer_Ex::sfCustomerEntryErrorCheck($objFormParam);
             $this->arrForm  = $objFormParam->getHashArray();
-            if(empty($this->arrErr)) {
+            if (empty($this->arrErr)) {
 
                 $uniqid             = $this->lfRegistCustomerData($this->lfMakeSqlVal($objFormParam));
 
@@ -117,7 +117,7 @@ class LC_Page_Entry extends LC_Page_Ex {
                 $this->lfSendMail($uniqid, $this->arrForm);
 
                 // 仮会員が無効の場合
-                if(CUSTOMER_CONFIRM_MAIL == false) {
+                if (CUSTOMER_CONFIRM_MAIL == false) {
                     // ログイン状態にする
                     $objCustomer = new SC_Customer_Ex();
                     $objCustomer->setLogin($this->arrForm['email']);
@@ -216,7 +216,7 @@ class LC_Page_Entry extends LC_Page_Ex {
         $objHelperMail  = new SC_Helper_Mail_Ex();
 
         // 仮会員が有効の場合
-        if(CUSTOMER_CONFIRM_MAIL == true) {
+        if (CUSTOMER_CONFIRM_MAIL == true) {
             $subject        = $objHelperMail->sfMakeSubject('会員登録のご確認');
             $toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
         } else {

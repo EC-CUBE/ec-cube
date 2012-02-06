@@ -204,7 +204,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
         $where = "alldtl.del_flg = 0";
         $bind = array();
         foreach ($arrForm as $key => $val) {
-            if($val == "") {
+            if ($val == "") {
                 continue;
             }
 
@@ -215,7 +215,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
                     break;
                 case 'search_category_id':
                     list($tmp_where, $tmp_bind) = $objDb->sfGetCatWhere($val);
-                    if($tmp_where != "") {
+                    if ($tmp_where != "") {
                         $where.= " AND alldtl.product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
                         $bind = array_merge((array)$bind, (array)$tmp_bind);
                     }
@@ -240,8 +240,8 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
      * @param unknown_type $globalParams
      */
     function getNo($globalParams){
-        foreach ($globalParams as $params){
-            if(isset($params['no']) && $params['no']!= ''){
+        foreach ($globalParams as $params) {
+            if (isset($params['no']) && $params['no']!= '') {
                 return intval($params['no']);
             }
         }
@@ -255,11 +255,11 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
      */
     function sortProducts($arrProduct_id,$productList){
         $products  = array();
-        foreach($productList as $item) {
+        foreach ($productList as $item) {
             $products[ $item['product_id'] ] = $item;
         }
         $arrProducts = array();
-        foreach($arrProduct_id as $product_id) {
+        foreach ($arrProduct_id as $product_id) {
             $arrProducts[] = $products[$product_id];
         }
         return $arrProducts;

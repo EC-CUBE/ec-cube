@@ -125,8 +125,8 @@ class LC_Page_Shopping extends LC_Page_Ex {
                                   $objFormParam->getValue('login_pass'))) {
 
                 // モバイルサイトで携帯アドレスの登録が無い場合、携帯アドレス登録ページへ遷移
-                if(SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
-                    if($this->hasEmailMobile($objCustomer) == false) {
+                if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
+                    if ($this->hasEmailMobile($objCustomer) == false) {
                         SC_Response_Ex::sendRedirectFromUrlPath('entry/email_mobile.php');
                         exit;
                     }
@@ -149,7 +149,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
             // ログインに失敗した場合
             else {
                 // 仮登録の場合
-                if($this->checkTempCustomer($objFormParam->getValue('login_email'))) {
+                if ($this->checkTempCustomer($objFormParam->getValue('login_email'))) {
                     if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
                         echo $this->lfGetErrorMessage(TEMP_LOGIN_ERROR);
                         exit;
@@ -509,7 +509,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
         case DEVICE_TYPE_SMARTPHONE:
         case DEVICE_TYPE_PC:
         default:
-            if(!$objCustomer->getCustomerDataFromEmailPass($login_pass, $login_email)) {
+            if (!$objCustomer->getCustomerDataFromEmailPass($login_pass, $login_email)) {
                 return false;
             } else {
                 return true;

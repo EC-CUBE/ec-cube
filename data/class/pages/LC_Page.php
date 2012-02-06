@@ -217,7 +217,7 @@ class LC_Page {
         // スキーマを定義
         if ($useSSL === true) {
             $url = HTTPS_URL . $rootPath;
-        } elseif ($useSSL === false){
+        } elseif ($useSSL === false) {
             $url = HTTP_URL . $rootPath;
         } elseif ($useSSL == 'escape') {
             if (SC_Utils_Ex::sfIsHTTPS()) {

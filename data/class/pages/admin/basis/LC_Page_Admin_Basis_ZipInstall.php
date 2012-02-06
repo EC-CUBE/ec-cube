@@ -261,7 +261,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
             }
 
             // $disp_line件ごとに進捗表示する
-            if($cntCurrentLine % $disp_line == 0 && $img_cnt < IMAGE_MAX) {
+            if ($cntCurrentLine % $disp_line == 0 && $img_cnt < IMAGE_MAX) {
                 echo '<img src="' . $img_path . 'graph_1_w.gif">';
                 SC_Utils_Ex::sfFlush();
                 $img_cnt++;

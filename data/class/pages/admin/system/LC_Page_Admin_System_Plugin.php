@@ -75,7 +75,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
 
         $mode = $this->getMode();
 
-        switch($mode) {
+        switch ($mode) {
         case 'install':
         case 'uninstall':
         case 'enable':
@@ -83,7 +83,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
             // エラーチェック
             $this->arrErr = $objFormParam->checkError();
 
-            if(count($this->arrErr) == 0) {
+            if (count($this->arrErr) == 0) {
                 $plugin_id = $objFormParam->getValue('plugin_id');
                 $plugin_code = $objFormParam->getValue('plugin_code');
 
@@ -103,16 +103,16 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
             // エラーチェック
             $this->arrErr = $this->lfCheckErrorUploadFile($plugin_code, $plugin_dir);
 
-            if(count($this->arrErr) == 0) {
+            if (count($this->arrErr) == 0) {
                 // 一時ディレクトリへアップロード
                 $this->arrErr['plugin_file'] = $objUpFile->makeTempFile('plugin_file', false);
 
-                if($this->arrErr['plugin_file'] == "") {
+                if ($this->arrErr['plugin_file'] == "") {
                     // プラグイン保存ディレクトリへ解凍
                     $this->arrErr = $this->lfUploadPlugin($objUpFile, $plugin_dir, $plugin_code, $_FILES['plugin_file']['name']);
 
                     // 完了メッセージアラート設定
-                    if(count($this->arrErr) == 0) {
+                    if (count($this->arrErr) == 0) {
                         $this->tpl_onload = "alert('プラグインをアップロードしました。');";
                     }
                 }
@@ -120,7 +120,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
             break;
         case 'up':
             $this->arrErr = $objFormParam->checkError();
-            if(count($this->arrErr) == 0) {
+            if (count($this->arrErr) == 0) {
                 $plugin_id = $objFormParam->getValue('plugin_id');
                 SC_Helper_DB_Ex::sfRankUp("dtb_plugin", "plugin_id", $plugin_id);
                 SC_Response_Ex::reload();
@@ -128,7 +128,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
             break;
         case 'down':
             $this->arrErr = $objFormParam->checkError();
-            if(count($this->arrErr) == 0) {
+            if (count($this->arrErr) == 0) {
                 $plugin_id = $objFormParam->getValue('plugin_id');
                 SC_Helper_DB_Ex::sfRankDown("dtb_plugin", "plugin_id", $plugin_id);
                 SC_Response_Ex::reload();
@@ -188,8 +188,8 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
 
         // プラグイン重複チェック
         $plugins = SC_Helper_Plugin_Ex::getAllPlugin();
-        foreach($plugins as $val) {
-            if($val['plugin_code'] == $plugin_code) {
+        foreach ($plugins as $val) {
+            if ($val['plugin_code'] == $plugin_code) {
                 $arrErr['plugin_file'] = "※ 同名のプラグインがすでに登録されています。<br/>";
             }
         }
@@ -248,15 +248,15 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         // 必須チェック
         $arrErr = $objUpFile->checkEXISTS('plugin_file');
 
-        if(count($arrErr) == 0) {
+        if (count($arrErr) == 0) {
             // プラグイン保存ディレクトリ作成
-            if(file_exists($plugin_dir)) {
+            if (file_exists($plugin_dir)) {
                 $arrErr['plugin_file'] = "※ 同名のディレクトリがすでに存在します。<br/>";
             } else {
                 mkdir($plugin_dir);
             }
 
-            if(count($arrErr) == 0) {
+            if (count($arrErr) == 0) {
                 // 一時ディレクトリからプラグイン保存ディレクトリへ移動
                 $objUpFile->moveTempFile();
 
@@ -302,7 +302,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         $arrErr = array();
         $plugin_file_path = $this->lfGetPluginFilePath($plugin_code);
 
-        if(file_exists($plugin_file_path)) {
+        if (file_exists($plugin_file_path)) {
             require_once $plugin_file_path;
         } else {
             $arrErr['plugin_error'] = "※ " . $plugin_code . ".phpが存在しないため実行できません。<br/>";
@@ -326,7 +326,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         // プラグインファイル読み込み
         $arrErr = $this->lfRequirePluginFile($plugin_code);
 
-        if(count($arrErr) == 0) {
+        if (count($arrErr) == 0) {
             $plugin = new $plugin_code();
             $arrErr = $plugin->$exec_mode($plugin_id);
         }

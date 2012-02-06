@@ -86,7 +86,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
         //支払方法の取得
         $this->arrPayment = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
 
-        switch ($this->getMode()){
+        switch ($this->getMode()) {
             case 'update':
                 switch ($objFormParam->getValue('change_status')) {
                     case '':
@@ -143,12 +143,12 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
         // 入力データを渡す。
         $arrRet = $objFormParam->getHashArray();
         $arrErr = $objFormParam->checkError();
-        if(is_null($objFormParam->getValue('search_pageno'))){
+        if (is_null($objFormParam->getValue('search_pageno'))) {
             $objFormParam->setValue('search_pageno', 1);
         }
 
-        if($this->getMode() == 'change'){
-            if(is_null($objFormParam->getValue('change_status'))){
+        if ($this->getMode() == 'change') {
+            if (is_null($objFormParam->getValue('change_status'))) {
                 $objFormParam->setValue('change_status',"");
             }
         }

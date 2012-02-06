@@ -61,7 +61,7 @@ class SC_SessionFactory {
             ? SESSION_KEEP_METHOD
             : '';
 
-        switch($type) {
+        switch ($type) {
         // セッションの維持にリクエストパラメーターを使用する
         case 'useRequest':
             $session = new SC_SessionFactory_UseRequest;

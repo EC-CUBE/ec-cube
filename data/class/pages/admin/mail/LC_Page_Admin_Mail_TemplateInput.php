@@ -74,7 +74,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
         switch ($this->getMode()) {
         case 'edit':
             // 編集
-            if ( SC_Utils_Ex::sfIsInt($_GET['template_id'])===true ){
+            if (SC_Utils_Ex::sfIsInt($_GET['template_id'])===true ) {
                 $arrMail = $objMailHelper->sfGetMailmagaTemplate($_GET['template_id']);
                 $this->arrForm = $arrMail[0];
             }
@@ -130,7 +130,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
         $sqlval['creator_id'] = $_SESSION['member_id'];
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
 
-        if ( SC_Utils_Ex::sfIsInt($template_id) ){
+        if (SC_Utils_Ex::sfIsInt($template_id) ) {
             // 更新時
             $objQuery->update("dtb_mailmaga_template",
                               $sqlval,

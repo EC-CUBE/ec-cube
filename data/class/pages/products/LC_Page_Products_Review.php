@@ -83,7 +83,7 @@ class LC_Page_Products_Review extends LC_Page_Ex {
         $objFormParam->setParam($_POST);
         $objFormParam->convParam();
 
-        switch ($this->getMode()){
+        switch ($this->getMode()) {
         case 'confirm':
             $this->arrErr = $this->lfCheckError($objFormParam);
 

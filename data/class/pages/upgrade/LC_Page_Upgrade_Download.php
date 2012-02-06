@@ -108,7 +108,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
         // リクエストを開始
         $objLog->log('* http request start');
 
-        switch($mode) {
+        switch ($mode) {
         case 'patch_download':
             $arrPostData = array(
                 'eccube_url' => HTTP_URL,

@@ -66,8 +66,8 @@ class SC_DB_DBFactory {
      * @return void|string データソース名
      */
     function getDSN($dsn = "") {
-        if(empty($dsn)) {
-            if(defined('DEFAULT_DSN')) {
+        if (empty($dsn)) {
+            if (defined('DEFAULT_DSN')) {
                 $dsn = DEFAULT_DSN;
             } else {
                 return "";

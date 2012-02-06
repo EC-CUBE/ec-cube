@@ -66,13 +66,13 @@ OwnersStore.prototype = {
             }
         //all others
         } else {
-            if(document.getElementById("TB_overlay") === null){
+            if (document.getElementById("TB_overlay") === null) {
                 $("body").append("<div id='TB_overlay'></div><div id='TB_window'></div>");
                 $("#TB_overlay").click(this.remove);
             }
         }
 
-        if(this.detectMacFF()){
+        if (this.detectMacFF()) {
             //use png overlay so hide flash
             $("#TB_overlay").addClass("TB_overlayMacFFBGHack");
         } else {
@@ -100,7 +100,7 @@ OwnersStore.prototype = {
         var ajaxContentW = TB_WIDTH - 20;
         var ajaxContentH = TB_HEIGHT - 45;
 
-        if ($("#TB_window").css("display") != "block"){
+        if ($("#TB_window").css("display") != "block") {
             $("#TB_window").append(
                 "<div id='TB_title'>"
               + "  <div id='TB_ajaxWindowTitle'></div>"

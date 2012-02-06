@@ -99,11 +99,11 @@ class SC_Image {
         $MH = $ThmMaxHeight;
         if ($tmpMH) $MH = $tmpMH; // $MHに最大縦幅セット
 
-        if (empty($FromImgPath) || empty($ToImgPath)){
+        if (empty($FromImgPath) || empty($ToImgPath)) {
             return array(0,"出力元画像パス、または出力先フォルダが指定されていません。");
         }
 
-        if (!file_exists($FromImgPath)){
+        if (!file_exists($FromImgPath)) {
             return array(0,"出力元画像が見つかりません。");
         }
 
@@ -117,18 +117,18 @@ class SC_Image {
         //アスペクト比固定処理
         $tmp_w = $size[0] / $MW;
 
-        if ($MH != 0){
+        if ($MH != 0) {
             $tmp_h = $size[1] / $MH;
         }
 
-        if ($tmp_w > 1 || $tmp_h > 1){
-            if ($MH == 0){
-                if ($tmp_w > 1){
+        if ($tmp_w > 1 || $tmp_h > 1) {
+            if ($MH == 0) {
+                if ($tmp_w > 1) {
                     $re_size[0] = $MW;
                     $re_size[1] = $size[1] * $MW / $size[0];
                 }
             } else {
-                if ($tmp_w > $tmp_h){
+                if ($tmp_w > $tmp_h) {
                     $re_size[0] = $MW;
                     $re_size[1] = $size[1] * $MW / $size[0];
                 } else {
@@ -145,12 +145,12 @@ class SC_Image {
 
         $ImgNew = imagecreatetruecolor($re_size[0],$re_size[1]);
 
-        switch($size[2]) {
+        switch ($size[2]) {
         case "1": //gif形式
-            if ($tmp_w <= 1 && $tmp_h <= 1){
+            if ($tmp_w <= 1 && $tmp_h <= 1) {
                 if ($newFileName) {
                     $ToFile = $newFileName;
-                } elseif  ($ext) {
+                } elseif ($ext) {
                     $ToFile .= "." . $ext;
                 } else {
                     $ToFile .= ".gif";

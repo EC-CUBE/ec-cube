@@ -121,7 +121,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
             if (count($this->arrErr) == 0) {
                 $where = "del_flg = 0";
                 foreach ($arrParam as $key => $val) {
-                    if($val == "") {
+                    if ($val == "") {
                         continue;
                     }
                     $this->buildQuery($key, $where, $arrval, $objFormParam, $objDb);
@@ -132,7 +132,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
                 /* -----------------------------------------------
                  * 処理を実行
                  * ----------------------------------------------- */
-                switch($this->getMode()) {
+                switch ($this->getMode()) {
                     // CSVを送信する。
                     case 'csv':
                         require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_CSV_Ex.php';
@@ -300,7 +300,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
         // カテゴリ
         case 'search_category_id':
             list($tmp_where, $tmp_Values) = $objDb->sfGetCatWhere($objFormParam->getValue($key));
-            if($tmp_where != "") {
+            if ($tmp_where != "") {
                 $where.= " AND product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
                 $arrValues = array_merge((array)$arrValues, (array)$tmp_Values);
             }
@@ -308,9 +308,9 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
         // 種別
         case 'search_status':
             $tmp_where = "";
-            foreach($objFormParam->getValue($key) as $element) {
-                if($element != "") {
-                    if(SC_Utils_Ex::isBlank($tmp_where)) {
+            foreach ($objFormParam->getValue($key) as $element) {
+                if ($element != "") {
+                    if (SC_Utils_Ex::isBlank($tmp_where)) {
                         $tmp_where .= " AND (status = ?";
                     } else {
                         $tmp_where .= " OR status = ?";
@@ -319,7 +319,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
                 }
             }
 
-            if(!SC_Utils_Ex::isBlank($tmp_where)) {
+            if (!SC_Utils_Ex::isBlank($tmp_where)) {
                 $tmp_where .= ")";
                 $where .= " $tmp_where ";
             }
@@ -342,9 +342,9 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
             break;
         // 商品ステータス
         case 'search_product_statuses':
-            if(count($objFormParam->getValue($key)) > 0) {
+            if (count($objFormParam->getValue($key)) > 0) {
                 $where .= " AND product_id IN (SELECT product_id FROM dtb_product_status WHERE product_status_id IN (";
-                foreach($objFormParam->getValue($key) as $param) {
+                foreach ($objFormParam->getValue($key) as $param) {
                     $where .= "?,";
                     $arrValues[] = $param;
                 }

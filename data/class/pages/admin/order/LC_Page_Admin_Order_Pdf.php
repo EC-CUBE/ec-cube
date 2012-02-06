@@ -93,12 +93,12 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
 
         // どんな状態の時に isset($arrRet) == trueになるんだ? これ以前に$arrRet無いが、、、、
         if (!isset($arrRet)) $arrRet = array();
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
             case 'confirm':
                 $status = $this->createPdf($this->objFormParam);
-                if($status === true){
+                if ($status === true) {
                     exit;
-                }else{
+                } else {
                     $this->arrErr = $status;
                 }
                 break;
@@ -130,7 +130,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         $arrForm['msg3'] = 'ご確認くださいますよう、お願いいたします。';
 
         // 注文番号があったら、セットする
-        if(SC_Utils_Ex::sfIsInt($order_id)) {
+        if (SC_Utils_Ex::sfIsInt($order_id)) {
             $arrForm['order_id'][0] = $order_id;
         } elseif (is_array($pdf_order_id)) {
             sort($pdf_order_id);
@@ -163,7 +163,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
             }
             $objFpdf->createPdf();
             return true;
-        }else{
+        } else {
             return $arrErr;
         }
     }
@@ -210,22 +210,22 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         $arrErr = $objFormParam->checkError();
 
         $year = $objFormParam->getValue('year');
-        if(!is_numeric($year)){
+        if (!is_numeric($year)) {
             $arrErr['year'] = "発行年は数値で入力してください。";
         }
 
         $month = $objFormParam->getValue('month');
-        if(!is_numeric($month)){
+        if (!is_numeric($month)) {
             $arrErr['month'] = "発行月は数値で入力してください。";
-        }else if(0 >= $month && 12 < $month){
+        }else if (0 >= $month && 12 < $month) {
 
             $arrErr['month'] = "発行月は1〜12の間で入力してください。";
         }
 
         $day = $objFormParam->getValue('day');
-        if(!is_numeric($day)){
+        if (!is_numeric($day)) {
             $arrErr['day'] = "発行日は数値で入力してください。";
-        }else if(0 >= $day && 31 < $day){
+        }else if (0 >= $day && 31 < $day) {
 
             $arrErr['day'] = "発行日は1〜31の間で入力してください。";
         }

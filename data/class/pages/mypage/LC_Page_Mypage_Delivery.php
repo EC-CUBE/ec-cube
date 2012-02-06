@@ -73,7 +73,7 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
         $objFormParam->setParam($_POST);
         $objFormParam->convParam();
 
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
 
         // お届け先の削除
         case 'delete':
@@ -170,7 +170,7 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
      */
     function setPref($arrOtherDeliv, $arrPref) {
         if (is_array($arrOtherDeliv)) {
-            foreach($arrOtherDeliv as $key => $arrDeliv) {
+            foreach ($arrOtherDeliv as $key => $arrDeliv) {
                 $arrOtherDeliv[$key]['prefname'] = $arrPref[$arrDeliv['pref']];
             }
         }

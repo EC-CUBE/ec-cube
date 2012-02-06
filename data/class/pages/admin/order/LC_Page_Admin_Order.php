@@ -97,7 +97,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
         $this->arrHidden = $objFormParam->getSearchArray();
         $this->arrForm = $objFormParam->getFormParamList();
 
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
         // 削除
         case 'delete':
             $this->doDelete('order_id = ?',
@@ -118,7 +118,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
             if (count($this->arrErr) == 0) {
                 $where = "del_flg = 0";
                 foreach ($arrParam as $key => $val) {
-                    if($val == "") {
+                    if ($val == "") {
                         continue;
                     }
                     $this->buildQuery($key, $where, $arrval, $objFormParam);
@@ -129,7 +129,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
                 /* -----------------------------------------------
                  * 処理を実行
                  * ----------------------------------------------- */
-                switch($this->getMode()) {
+                switch ($this->getMode()) {
                 // CSVを送信する。
                 case 'csv':
                     $this->doOutputCSV($where, $arrval,$order);
@@ -289,9 +289,9 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
             break;
         case 'search_order_sex':
             $tmp_where = "";
-            foreach($objFormParam->getValue($key) as $element) {
-                if($element != "") {
-                    if(SC_Utils_Ex::isBlank($tmp_where)) {
+            foreach ($objFormParam->getValue($key) as $element) {
+                if ($element != "") {
+                    if (SC_Utils_Ex::isBlank($tmp_where)) {
                         $tmp_where .= " AND (order_sex = ?";
                     } else {
                         $tmp_where .= " OR order_sex = ?";
@@ -300,7 +300,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
                 }
             }
 
-            if(!SC_Utils_Ex::isBlank($tmp_where)) {
+            if (!SC_Utils_Ex::isBlank($tmp_where)) {
                 $tmp_where .= ")";
                 $where .= " $tmp_where ";
             }
@@ -315,9 +315,9 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
             break;
         case 'search_payment_id':
             $tmp_where = "";
-            foreach($objFormParam->getValue($key) as $element) {
-                if($element != "") {
-                    if($tmp_where == "") {
+            foreach ($objFormParam->getValue($key) as $element) {
+                if ($element != "") {
+                    if ($tmp_where == "") {
                         $tmp_where .= " AND (payment_id = ?";
                     } else {
                         $tmp_where .= " OR payment_id = ?";
@@ -326,7 +326,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
                 }
             }
 
-            if(!SC_Utils_Ex::isBlank($tmp_where)) {
+            if (!SC_Utils_Ex::isBlank($tmp_where)) {
                 $tmp_where .= ")";
                 $where .= " $tmp_where ";
             }
@@ -416,7 +416,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
      */
     function doOutputCSV($where, $arrVal, $order) {
         require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_CSV_Ex.php';
-        if($where != "") {
+        if ($where != "") {
             $where = " WHERE $where ";
         }
 

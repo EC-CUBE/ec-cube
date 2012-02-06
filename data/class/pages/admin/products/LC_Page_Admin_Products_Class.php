@@ -74,7 +74,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
         $class_id = $objFormParam->getValue('class_id');
 
         // 要求判定
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
             // 編集処理
         case 'edit':
             //パラメーターの取得
@@ -84,7 +84,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 //新規規格追加かどうかを判定する
                 $is_insert = $this->lfCheckInsert($this->arrForm);
-                if($is_insert) {
+                if ($is_insert) {
                     $this->lfInsertClass($this->arrForm); // 新規作成
                 } else {
                     $this->lfUpdateClass($this->arrForm); // 既存編集
@@ -242,7 +242,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
         $arrErr = $objFormParam->checkError();
         if (!SC_Utils_Ex::isBlank($arrErr)) {
             return $arrErr;
-        }else{
+        } else {
             $arrForm = $objFormParam->getHashArray();
         }
 
@@ -263,9 +263,9 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
      */
     function lfCheckInsert($arrForm) {
         //class_id のあるなしで新規商品かどうかを判定
-        if (empty($arrForm['class_id'])){
+        if (empty($arrForm['class_id'])) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }

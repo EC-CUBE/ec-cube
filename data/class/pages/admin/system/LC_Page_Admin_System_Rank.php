@@ -64,7 +64,7 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex {
         $arrClean = array();
 
         // $_GET['move'] が想定値かどうかチェック
-        switch($_GET['move']) {
+        switch ($_GET['move']) {
             case 'up':
             case 'down':
                 $arrClean['move'] = $_GET['move'];
@@ -78,7 +78,7 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex {
         if (SC_Utils_Ex::sfIsInt($_GET['id'])) {
             $arrClean['id'] = $_GET['id'];
 
-            switch($arrClean['move']) {
+            switch ($arrClean['move']) {
                 case 'up':
                     $this->lfRunkUp($arrClean['id']);
                     break;
@@ -120,7 +120,7 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex {
         // ランクの最大値を取得する。
         $maxno = $objQuery->getOne("SELECT max(rank) FROM dtb_member");
         // ランクが最大値よりも小さい場合に実行する。
-        if($rank < $maxno) {
+        if ($rank < $maxno) {
             // ランクがひとつ上のIDを取得する。
             $sqlse = "SELECT member_id FROM dtb_member WHERE rank = ?";
             $up_id = $objQuery->getOne($sqlse, $rank + 1);
@@ -149,7 +149,7 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex {
         // ランクの最小値を取得する。
         $minno = $objQuery->getOne("SELECT min(rank) FROM dtb_member");
         // ランクが最大値よりも大きい場合に実行する。
-        if($rank > $minno) {
+        if ($rank > $minno) {
             // ランクがひとつ下のIDを取得する。
             $sqlse = "SELECT member_id FROM dtb_member WHERE rank = ?";
             $down_id = $objQuery->getOne($sqlse, $rank - 1);

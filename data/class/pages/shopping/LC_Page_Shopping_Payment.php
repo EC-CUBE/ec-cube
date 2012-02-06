@@ -128,7 +128,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
         // お届け日一覧の取得
         $this->arrDelivDate = $objPurchase->getDelivDate($objCartSess, $cart_key);
 
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
         /*
          * 配送業者選択時のアクション
          * モバイル端末以外の場合は, JSON 形式のデータを出力し, ajax で取得する.
@@ -291,17 +291,17 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
             return $objErr->arrErr;
         }
 
-        if($arrForm['point_check'] == '1') {
+        if ($arrForm['point_check'] == '1') {
             $objErr->doFunc(array("ポイントを使用する", "point_check"), array("EXIST_CHECK"));
             $objErr->doFunc(array("ポイント", "use_point"), array("EXIST_CHECK"));
-            if($max_point == "") {
+            if ($max_point == "") {
                 $max_point = 0;
             }
             // FIXME mobile 互換のため br は閉じない...
-            if($arrForm['use_point'] > $max_point) {
+            if ($arrForm['use_point'] > $max_point) {
                 $objErr->arrErr['use_point'] = "※ ご利用ポイントが所持ポイントを超えています。<br>";
             }
-            if(($arrForm['use_point'] * POINT_VALUE) > $subtotal) {
+            if (($arrForm['use_point'] * POINT_VALUE) > $subtotal) {
                 $objErr->arrErr['use_point'] = "※ ご利用ポイントがご購入金額を超えています。<br>";
             }
         }
@@ -345,7 +345,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
         $arrForm['order_temp_id'] = $uniqid;
         $arrForm['update_date'] = 'CURRENT_TIMESTAMP';
 
-        if($arrForm['point_check'] != '1') {
+        if ($arrForm['point_check'] != '1') {
             $arrForm['use_point'] = 0;
         }
 
@@ -443,7 +443,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      * @return string モバイル用テンプレートのパス
      */
     function getMobileMainpage($is_single_deliv = true, $mode) {
-        switch($mode) {
+        switch ($mode) {
         case 'select_deliv':
             return 'shopping/payment.tpl';
             break;

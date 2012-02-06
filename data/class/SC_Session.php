@@ -45,7 +45,7 @@ class SC_Session {
     /* コンストラクタ */
     function SC_Session() {
         // セッション情報の保存
-        if(isset($_SESSION['cert'])) {
+        if (isset($_SESSION['cert'])) {
             $this->sid = session_id();
             $this->cert = $_SESSION['cert'];
             $this->login_id  = $_SESSION['login_id'];
@@ -99,7 +99,7 @@ class SC_Session {
     /** ユニークIDの取得 **/
     function getUniqId() {
         // ユニークIDがセットされていない場合はセットする。
-        if( empty($_SESSION['uniqid']) ) {
+        if (empty($_SESSION['uniqid']) ) {
             $this->setUniqId();
         }
         return $this->GetSession('uniqid');

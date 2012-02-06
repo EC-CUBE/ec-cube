@@ -84,7 +84,7 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin_Ex {
             $post = $objFormParam->getHashArray();
         }
 
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
             case 'delete':
                 // ランク付きレコードの削除
                 $objDb->sfDeleteRankRecord("dtb_payment", "payment_id", $post['payment_id']);

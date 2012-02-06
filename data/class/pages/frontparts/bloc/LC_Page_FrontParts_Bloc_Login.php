@@ -69,7 +69,7 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc {
         $objCookie = new SC_Cookie_Ex(COOKIE_EXPIRE);
 
         // ログイン判定
-        if($objCustomer->isLoginSuccess()) {
+        if ($objCustomer->isLoginSuccess()) {
             $this->tpl_login = true;
             $this->tpl_user_point = $objCustomer->getValue('point');
             $this->tpl_name1 = $objCustomer->getValue('name01');
@@ -77,11 +77,11 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc {
         } else {
             // クッキー判定
             $this->tpl_login_email = $objCookie->getCookie('login_email');
-            if($this->tpl_login_email != '') {
+            if ($this->tpl_login_email != '') {
                 $this->tpl_login_memory = '1';
             }
             // POSTされてきたIDがある場合は優先する。
-            if( isset($_POST['login_email']) && $_POST['login_email'] != '') {
+            if (isset($_POST['login_email']) && $_POST['login_email'] != '') {
                 $this->tpl_login_email = $_POST['login_email'];
             }
         }
@@ -111,8 +111,8 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc {
 
         $current_page = $_SERVER['PHP_SELF'];
 
-        foreach($arrDisableLogout as $val) {
-            if($current_page == $val) {
+        foreach ($arrDisableLogout as $val) {
+            if ($current_page == $val) {
                 return true;
             }
          }

@@ -57,9 +57,9 @@ class LC_Page_InputZip extends LC_Page_Ex {
         // 入力エラーチェック
         $arrErr = $this->fnErrorCheck($_GET);
         // 入力エラーの場合は終了
-        if(count($arrErr) > 0) {
+        if (count($arrErr) > 0) {
             $tpl_message = "";
-            foreach($arrErr as $key => $val) {
+            foreach ($arrErr as $key => $val) {
                 $tpl_message .= preg_replace("/<br \/>/", "\n", $val);
             }
             echo $tpl_message;
@@ -74,7 +74,7 @@ class LC_Page_InputZip extends LC_Page_Ex {
             $arrAdsList = SC_Utils_Ex::sfGetAddress($zipcode);
 
             // 郵便番号が発見された場合
-            if(!empty($arrAdsList)) {
+            if (!empty($arrAdsList)) {
                 $data = $arrAdsList[0]['state']. "|". $arrAdsList[0]['city']. "|". $arrAdsList[0]['town'];
                 echo $data;
 
@@ -111,10 +111,10 @@ class LC_Page_InputZip extends LC_Page_Ex {
         // エラーチェック
         $arrErr = $objFormParam->checkError();
         // 親ウィンドウの戻り値を格納するinputタグのnameのエラーチェック
-        if ( !$this->lfInputNameCheck($arrRequest['input1']) ) {
+        if (!$this->lfInputNameCheck($arrRequest['input1']) ) {
             $arrErr['input1'] = "※ 入力形式が不正です。<br />";
         }
-        if ( !$this->lfInputNameCheck($arrRequest['input2']) ) {
+        if (!$this->lfInputNameCheck($arrRequest['input2']) ) {
             $arrErr['input2'] = "※ 入力形式が不正です。<br />";
         }
 
@@ -129,7 +129,7 @@ class LC_Page_InputZip extends LC_Page_Ex {
      */
     function lfInputNameCheck($value) {
         // 半角英数字と_（アンダーバー）, []以外の文字を使用していたらエラー
-        if(strlen($value) > 0 && !preg_match("/^[a-zA-Z0-9_\[\]]+$/", $value)) {
+        if (strlen($value) > 0 && !preg_match("/^[a-zA-Z0-9_\[\]]+$/", $value)) {
             return false;
         }
 

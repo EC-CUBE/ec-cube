@@ -86,14 +86,14 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
         }
 
         // 要求判定
-        switch($mode) {
+        switch ($mode) {
         // 編集処理
         case 'edit':
             // POST値の引き継ぎ
             $this->arrForm = $_POST;
 
-            if(count($this->arrErr) <= 0) {
-                if($post['kiyaku_id'] == "") {
+            if (count($this->arrErr) <= 0) {
+                if ($post['kiyaku_id'] == "") {
                     $this->lfInsertClass($this->arrForm, $_SESSION['member_id']);    // 新規作成
                 } else {
                     $this->lfUpdateClass($this->arrForm, $post['kiyaku_id']);    // 既存編集
@@ -218,7 +218,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
      */
     function lfCheckError($mode, $objFormParam) {
         $arrErr = $objFormParam->checkError();
-        if(!isset($arrErr['name']) && $mode == 'edit') {
+        if (!isset($arrErr['name']) && $mode == 'edit') {
             $post = $objFormParam->getHashArray();
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $arrRet = $objQuery->select("kiyaku_id, kiyaku_title", "dtb_kiyaku", "del_flg = 0 AND kiyaku_title = ?", array($post['kiyaku_title']));

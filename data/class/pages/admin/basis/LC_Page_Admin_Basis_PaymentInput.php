@@ -82,14 +82,14 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
         // Hiddenからのデータを引き継ぐ
         $this->objUpFile->setHiddenFileList($_POST);
 
-        switch($mode) {
+        switch ($mode) {
         case 'edit':
             $objFormParam->setParam($_REQUEST);
             $objFormParam->convParam();
             $post = $objFormParam->getHashArray();
             $this->arrErr = $this->lfCheckError($post, $objFormParam);
             $this->charge_flg = $post["charge_flg"];
-            if(count($this->arrErr) == 0) {
+            if (count($this->arrErr) == 0) {
                 $this->lfRegistData($post['payment_id'], $_SESSION['member_id'], $objFormParam);
                 $this->objUpFile->moveTempFile();
                 $this->tpl_onload = "location.href = './payment.php'; return;";
@@ -113,7 +113,7 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
             $objFormParam->convParam();
             $this->arrErr = $objFormParam->checkError();
             $post = $objFormParam->getHashArray();
-            if(count($this->arrErr) == 0) {
+            if (count($this->arrErr) == 0) {
                 $this->objUpFile->deleteFile($post['image_key']);
             }
             $this->tpl_payment_id = $post['payment_id'];
@@ -124,7 +124,7 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
             $objFormParam->convParam();
             $this->arrErr = $objFormParam->checkError();
             $post = $objFormParam->getHashArray();
-            if(count($this->arrErr) == 0) {
+            if (count($this->arrErr) == 0) {
                 $arrRet = $this->lfGetData($post['payment_id']);
 
                 $objFormParam->addParam("支払方法", "payment_method", STEXT_LEN, 'KVa', array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
@@ -224,12 +224,12 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
         $sqlval = array_merge($sqlval, $arrRet);
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
 
-        if($sqlval['fix'] != '1') {
+        if ($sqlval['fix'] != '1') {
             $sqlval['fix'] = 2; // 自由設定
         }
 
         // 新規登録
-        if($payment_id == "") {
+        if ($payment_id == "") {
             // INSERTの実行
             $sqlval['creator_id'] = $member_id;
             $sqlval['rank'] = $objQuery->max('rank', "dtb_payment") + 1;
@@ -260,12 +260,12 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
         $objErr->arrErr = $objFormParam->checkError();
 
         // 利用条件(下限)チェック
-        if($arrRet['rule'] < $arrPaymentData["rule_min"] and $arrPaymentData["rule_min"] != ""){
+        if ($arrRet['rule'] < $arrPaymentData["rule_min"] and $arrPaymentData["rule_min"] != "") {
             $objErr->arrErr['rule'] = "利用条件(下限)は" . $arrPaymentData["rule_min"] ."円以上にしてください。<br>";
         }
 
         // 利用条件(上限)チェック
-        if($arrRet["upper_rule"] > $arrPaymentData["upper_rule_max"] and $arrPaymentData["upper_rule_max"] != ""){
+        if ($arrRet["upper_rule"] > $arrPaymentData["upper_rule_max"] and $arrPaymentData["upper_rule_max"] != "") {
             $objErr->arrErr["upper_rule"] = "利用条件(上限)は" . $arrPaymentData["upper_rule_max"] ."円以下にしてください。<br>";
         }
 

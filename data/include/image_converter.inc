@@ -62,7 +62,7 @@ class ImageConverter {
             $info['convert'] = FALSE;
         } else {
             // 元ファイル作成
-            switch($inputImageType) {
+            switch ($inputImageType) {
                 case IMAGETYPE_GIF:
                     $tempImage = imagecreatefromgif($inputImagePath);
                     $arrTransparentColor = $this->getTransparentColor($tempImage);
@@ -192,7 +192,7 @@ class ImageConverter {
             for ($y = 0; $y <= $max_y; $y++) {
                 $color_index = imagecolorat($image, $x, $y);
                 $arrColors = imagecolorsforindex($image, $color_index);
-                if ($arrColors['alpha'] !== 0){
+                if ($arrColors['alpha'] !== 0) {
                     return $arrColors;
                 }
             }

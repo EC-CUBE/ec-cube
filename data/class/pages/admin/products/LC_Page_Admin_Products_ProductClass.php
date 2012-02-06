@@ -382,7 +382,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                 /*
                  * ダウンロード商品の必須チェック
                  */
-                if($arrValues['product_type_id'][$i] == PRODUCT_TYPE_DOWNLOAD) {
+                if ($arrValues['product_type_id'][$i] == PRODUCT_TYPE_DOWNLOAD) {
                     if (SC_Utils_Ex::isBlank($arrValues['down_filename'][$i])) {
                         $arrErr['down_filename'][$i] = "※ ダウンロード商品の場合はダウンロードファイル名を入力してください。<br />";
                     }
@@ -463,7 +463,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
 
         // 規格2が選択されていない場合、規格2名称初期化
         $class_id2 = $objFormParam->getValue('class_id2');
-        if(SC_Utils_Ex::isBlank($class_id2) == true) {
+        if (SC_Utils_Ex::isBlank($class_id2) == true) {
             $objFormParam->setValue('classcategory_name2', '');
         }
     }
@@ -626,7 +626,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                 $ext = "";
                 // チェック拡張子のピリオドの数を取得('tar.gz'の場合1個、'jpg'のように通常は0個)
                 $count_period = substr_count($checkExt, ".");
-                if($count_period > 0) {
+                if ($count_period > 0) {
                     for ($i = max(array_keys($array_ext)) - $count_period; $i < count($array_ext); $i++) {
                         $ext .= $array_ext[$i] . ".";
                     }
@@ -639,7 +639,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                 if ($ext == $checkExt) {
                     $is_error = false;
                 }
-                if($strExt == "") {
+                if ($strExt == "") {
                     $strExt .= $checkExt;
                 } else {
                     $strExt .= "・$checkExt";
@@ -712,7 +712,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
 __EOF__;
         $table = '';
         $arrParams = array();
-        if(SC_Utils_Ex::isBlank($class_id2)) {
+        if (SC_Utils_Ex::isBlank($class_id2)) {
             $table = "dtb_classcategory T1 ";
             $objQuery->setWhere("T1.class_id = ?");
             $objQuery->setOrder("T1.rank DESC");
@@ -759,8 +759,8 @@ __EOF__;
 
         $results = array();
         if (!SC_Utils_Ex::isBlank($arrClass)) {
-            foreach($arrClass as $key => $val) {
-                if($arrClassCatCount[$key] > 0) {
+            foreach ($arrClass as $key => $val) {
+                if ($arrClassCatCount[$key] > 0) {
                     $results[$key] = $arrClass[$key];
                 }
             }

@@ -75,7 +75,7 @@ class LC_Page_Entry_Complete extends LC_Page_Ex {
         }
 
         // メインテンプレートを設定
-        if(CUSTOMER_CONFIRM_MAIL == true) {
+        if (CUSTOMER_CONFIRM_MAIL == true) {
             // 仮会員登録完了
             $this->tpl_mainpage     = 'entry/complete.tpl';
         } else {

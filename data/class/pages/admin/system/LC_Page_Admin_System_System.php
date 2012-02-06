@@ -70,7 +70,7 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
         $objFormParam = new SC_FormParam_Ex();
 
         $this->initForm($objFormParam, $_GET);
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
 
         // PHP INFOを表示
         case 'info':

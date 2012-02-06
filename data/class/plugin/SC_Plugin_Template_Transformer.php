@@ -225,7 +225,7 @@ class SC_Plugin_Template_Transformer {
             // getAttributeメソッドを持つかを検証
             if (method_exists($element, 'getAttribute')) {
                 // id属性を持つ場合.
-                if ($element->hasAttribute('id')){
+                if ($element->hasAttribute('id')) {
                     // idの値を配列に格納(ex: [0] => #hoge)
                     $arrAttr[] = '#'.$element->getAttribute('id');
                 }
@@ -236,7 +236,7 @@ class SC_Plugin_Template_Transformer {
                     foreach ($arrClasses as $classname) $arrAttr[] = '.'.$classname;
                 }
                 // name属性を持つ場合.
-                if ($element->hasAttribute('name')){
+                if ($element->hasAttribute('name')) {
                     $this->arrDomHash['name'][$element->getAttribute('name')][] = $element;
                 }
             }
@@ -294,7 +294,7 @@ class SC_Plugin_Template_Transformer {
         $startIndex = is_null($parent_index) ? 0 : $parent_index;
 
         // エレメントツリーのセレクタを先ほど作成した正規表現で順に検索.
-        for($iLoop=$startIndex; $iLoop < count($this->arrElementTree); $iLoop++){
+        for ($iLoop=$startIndex; $iLoop < count($this->arrElementTree); $iLoop++) {
 
             if (preg_match($regex, $this->arrElementTree[$iLoop][0])) {
                 if (is_null($index) || $cur_idx == $index) {
@@ -337,7 +337,7 @@ class SC_Plugin_Template_Transformer {
         $objSnip->appendXML($substitute_tag);
 
         $objElement = false;
-        if(isset($this->arrElementTree[$target_key]) && $this->arrElementTree[$target_key][0]){
+        if (isset($this->arrElementTree[$target_key]) && $this->arrElementTree[$target_key][0]) {
             $objElement = &$this->arrElementTree[$target_key][1];
         }
 

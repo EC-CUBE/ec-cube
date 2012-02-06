@@ -46,12 +46,12 @@ class SC_CartSession {
     function saveCurrentCart($key_tmp, $productTypeId) {
         $this->key_tmp = "savecart_" . $key_tmp;
         // すでに情報がなければ現状のカート情報を記録しておく
-        if(count($_SESSION[$this->key_tmp]) == 0) {
+        if (count($_SESSION[$this->key_tmp]) == 0) {
             $_SESSION[$this->key_tmp] = $this->cartSession[$productTypeId];
         }
         // 1世代古いコピー情報は、削除しておく
-        foreach($_SESSION as $k => $val) {
-            if($k != $this->key_tmp && preg_match("/^savecart_/", $k)) {
+        foreach ($_SESSION as $k => $val) {
+            if ($k != $this->key_tmp && preg_match("/^savecart_/", $k)) {
                 unset($this->cartSession[$productTypeId][$k]);
             }
         }
@@ -69,7 +69,7 @@ class SC_CartSession {
     function checkChangeCart($productTypeId) {
         $change = false;
         $max = $this->getMax($productTypeId);
-        for($i = 1; $i <= $max; $i++) {
+        for ($i = 1; $i <= $max; $i++) {
             if ($this->cartSession[$productTypeId][$i]['quantity']
                 != $_SESSION[$this->key_tmp][$i]['quantity']) {
 
@@ -95,7 +95,7 @@ class SC_CartSession {
 
     // 次に割り当てるカートのIDを取得する
     function getNextCartID($productTypeId) {
-        foreach($this->cartSession[$productTypeId] as $key => $val){
+        foreach ($this->cartSession[$productTypeId] as $key => $val) {
             $arrRet[] = $this->cartSession[$productTypeId][$key]['cart_no'];
         }
         return max($arrRet) + 1;
@@ -111,7 +111,7 @@ class SC_CartSession {
      */
     function getProductTotal($id, $productTypeId) {
         $max = $this->getMax($productTypeId);
-        for($i = 0; $i <= $max; $i++) {
+        for ($i = 0; $i <= $max; $i++) {
             if(isset($this->cartSession[$productTypeId][$i]['id'])
                && $this->cartSession[$productTypeId][$i]['id'] == $id) {
 
@@ -129,7 +129,7 @@ class SC_CartSession {
     // 値のセット
     function setProductValue($id, $key, $val, $productTypeId) {
         $max = $this->getMax($productTypeId);
-        for($i = 0; $i <= $max; $i++) {
+        for ($i = 0; $i <= $max; $i++) {
             if(isset($this->cartSession[$productTypeId][$i]['id'])
                && $this->cartSession[$productTypeId][$i]['id'] == $id) {
                 $this->cartSession[$productTypeId][$i][$key] = $val;
@@ -140,10 +140,10 @@ class SC_CartSession {
     // カート内商品の最大要素番号を取得する。
     function getMax($productTypeId) {
         $max = 0;
-        if (count($this->cartSession[$productTypeId]) > 0){
-            foreach($this->cartSession[$productTypeId] as $key => $val) {
+        if (count($this->cartSession[$productTypeId]) > 0) {
+            foreach ($this->cartSession[$productTypeId] as $key => $val) {
                 if (is_numeric($key)) {
-                    if($max < $key) {
+                    if ($max < $key) {
                         $max = $key;
                     }
                 }
@@ -156,7 +156,7 @@ class SC_CartSession {
     function getTotalQuantity($productTypeId) {
         $total = 0;
         $max = $this->getMax($productTypeId);
-        for($i = 0; $i <= $max; $i++) {
+        for ($i = 0; $i <= $max; $i++) {
             $total+= $this->cartSession[$productTypeId][$i]['quantity'];
         }
         return $total;
@@ -167,7 +167,7 @@ class SC_CartSession {
         // 税込み合計
         $total = 0;
         $max = $this->getMax($productTypeId);
-        for($i = 0; $i <= $max; $i++) {
+        for ($i = 0; $i <= $max; $i++) {
 
             if (!isset($this->cartSession[$productTypeId][$i]['price'])) {
                 $this->cartSession[$productTypeId][$i]['price'] = "";
@@ -191,7 +191,7 @@ class SC_CartSession {
         // 税合計
         $total = 0;
         $max = $this->getMax($productTypeId);
-        for($i = 0; $i <= $max; $i++) {
+        for ($i = 0; $i <= $max; $i++) {
             $price = $this->cartSession[$productTypeId][$i]['price'];
             $quantity = $this->cartSession[$productTypeId][$i]['quantity'];
             $tax = SC_Helper_DB_Ex::sfTax($price);
@@ -206,7 +206,7 @@ class SC_CartSession {
         $total = 0;
         if (USE_POINT !== false) {
             $max = $this->getMax($productTypeId);
-            for($i = 0; $i <= $max; $i++) {
+            for ($i = 0; $i <= $max; $i++) {
                 $price = $this->cartSession[$productTypeId][$i]['price'];
                 $quantity = $this->cartSession[$productTypeId][$i]['quantity'];
 
@@ -232,17 +232,17 @@ class SC_CartSession {
         $productTypeId = $arrProduct['product_type_id'];
         $find = false;
         $max = $this->getMax($productTypeId);
-        for($i = 0; $i <= $max; $i++) {
+        for ($i = 0; $i <= $max; $i++) {
 
-            if($this->cartSession[$productTypeId][$i]['id'] == $product_class_id) {
+            if ($this->cartSession[$productTypeId][$i]['id'] == $product_class_id) {
                 $val = $this->cartSession[$productTypeId][$i]['quantity'] + $quantity;
-                if(strlen($val) <= INT_LEN) {
+                if (strlen($val) <= INT_LEN) {
                     $this->cartSession[$productTypeId][$i]['quantity'] += $quantity;
                 }
                 $find = true;
             }
         }
-        if(!$find) {
+        if (!$find) {
             $this->cartSession[$productTypeId][$max+1]['id'] = $product_class_id;
             $this->cartSession[$productTypeId][$max+1]['quantity'] = $quantity;
             $this->cartSession[$productTypeId][$max+1]['cart_no'] = $this->getNextCartID($productTypeId);
@@ -258,14 +258,14 @@ class SC_CartSession {
         $arrExclude = array_merge($arrExclude, $excludePaths);
         $exclude = false;
         // ページチェックを行う。
-        foreach($arrExclude as $val) {
-            if(preg_match("|" . preg_quote($val) . "|", $url)) {
+        foreach ($arrExclude as $val) {
+            if (preg_match("|" . preg_quote($val) . "|", $url)) {
                 $exclude = true;
                 break;
             }
         }
         // 除外ページでない場合は、前頁として記録する。
-        if(!$exclude) {
+        if (!$exclude) {
             $_SESSION['prev_url'] = $url;
         }
     }
@@ -278,8 +278,8 @@ class SC_CartSession {
     // キーが一致した商品の削除
     function delProductKey($keyname, $val, $productTypeId) {
         $max = count($this->cartSession[$productTypeId]);
-        for($i = 0; $i < $max; $i++) {
-            if($this->cartSession[$productTypeId][$i][$keyname] == $val) {
+        for ($i = 0; $i < $max; $i++) {
+            if ($this->cartSession[$productTypeId][$i][$keyname] == $val) {
                 unset($this->cartSession[$productTypeId][$i]);
             }
         }
@@ -334,7 +334,7 @@ class SC_CartSession {
         $objProduct = new SC_Product_Ex();
         $max = $this->getMax($productTypeId);
         $arrRet = array();
-        for($i = 0; $i <= $max; $i++) {
+        for ($i = 0; $i <= $max; $i++) {
             if(isset($this->cartSession[$productTypeId][$i]['cart_no'])
                && $this->cartSession[$productTypeId][$i]['cart_no'] != "") {
 
@@ -390,8 +390,8 @@ class SC_CartSession {
      */
     function getAllProductID($productTypeId) {
         $max = $this->getMax($productTypeId);
-        for($i = 0; $i <= $max; $i++) {
-            if($this->cartSession[$productTypeId][$i]['cart_no'] != "") {
+        for ($i = 0; $i <= $max; $i++) {
+            if ($this->cartSession[$productTypeId][$i]['cart_no'] != "") {
                 $arrRet[] = $this->cartSession[$productTypeId][$i]['id'][0];
             }
         }
@@ -406,8 +406,8 @@ class SC_CartSession {
      */
     function getAllProductClassID($productTypeId) {
         $max = $this->getMax($productTypeId);
-        for($i = 0; $i <= $max; $i++) {
-            if($this->cartSession[$productTypeId][$i]['cart_no'] != "") {
+        for ($i = 0; $i <= $max; $i++) {
+            if ($this->cartSession[$productTypeId][$i]['cart_no'] != "") {
                 $arrRet[] = $this->cartSession[$productTypeId][$i]['id'];
             }
         }
@@ -422,7 +422,7 @@ class SC_CartSession {
      */
     function delAllProducts($productTypeId) {
         $max = $this->getMax($productTypeId);
-        for($i = 0; $i <= $max; $i++) {
+        for ($i = 0; $i <= $max; $i++) {
             unset($this->cartSession[$productTypeId][$i]);
         }
     }
@@ -430,8 +430,8 @@ class SC_CartSession {
     // 商品の削除
     function delProduct($cart_no, $productTypeId) {
         $max = $this->getMax($productTypeId);
-        for($i = 0; $i <= $max; $i++) {
-            if($this->cartSession[$productTypeId][$i]['cart_no'] == $cart_no) {
+        for ($i = 0; $i <= $max; $i++) {
+            if ($this->cartSession[$productTypeId][$i]['cart_no'] == $cart_no) {
                 unset($this->cartSession[$productTypeId][$i]);
             }
         }
@@ -577,7 +577,7 @@ class SC_CartSession {
             // 商品の合計数量
             $total_quantity = $this->getTotalQuantity($productTypeId);
 
-            if($total_quantity >= DELIV_FREE_AMOUNT) {
+            if ($total_quantity >= DELIV_FREE_AMOUNT) {
                 return true;
             }
         }
@@ -586,7 +586,7 @@ class SC_CartSession {
         $arrInfo = $objDb->sfGetBasisData();
         if ($arrInfo['free_rule'] > 0) {
             // 小計が無料条件を超えている場合
-            if($subtotal >= $arrInfo['free_rule']) {
+            if ($subtotal >= $arrInfo['free_rule']) {
                 return true;
             }
         }
@@ -658,14 +658,14 @@ class SC_CartSession {
         if (USE_POINT !== false) {
             $results['add_point'] = SC_Helper_DB_Ex::sfGetAddPoint($total_point,
                                                                    $use_point);
-            if($objCustomer != "") {
+            if ($objCustomer != "") {
                 // 誕生日月であった場合
-                if($objCustomer->isBirthMonth()) {
+                if ($objCustomer->isBirthMonth()) {
                     $results['birth_point'] = BIRTH_MONTH_POINT;
                     $results['add_point'] += $results['birth_point'];
                 }
             }
-            if($results['add_point'] < 0) {
+            if ($results['add_point'] < 0) {
                 $results['add_point'] = 0;
             }
         }

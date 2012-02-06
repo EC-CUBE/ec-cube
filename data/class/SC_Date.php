@@ -113,7 +113,7 @@ class SC_Date {
     function getZeroMonth(){
 
         $month_array = array();
-        for ($i=1; $i <= 12; $i++){
+        for ($i=1; $i <= 12; $i++) {
             $val = sprintf("%02d", $i);
             $month_array[$val] = $val;
         }
@@ -125,7 +125,7 @@ class SC_Date {
 
         if ($default) $month_array[''] = '--';
 
-        for ($i=0; $i < 12; $i++){
+        for ($i=0; $i < 12; $i++) {
             $month_array[$i + 1 ] = $i + 1;
         }
         return $month_array;
@@ -136,7 +136,7 @@ class SC_Date {
 
         if ($default) $day_array[''] = '--';
 
-        for ($i=0; $i < 31; $i++){
+        for ($i=0; $i < 31; $i++) {
             $day_array[ $i + 1 ] = $i + 1;
         }
 
@@ -146,7 +146,7 @@ class SC_Date {
     function getHour(){
 
         $day_array = array();
-        for ($i=0; $i<=23; $i++){
+        for ($i=0; $i<=23; $i++) {
             $hour_array[$i] = $i;
         }
 
@@ -156,7 +156,7 @@ class SC_Date {
     function getMinutes(){
 
         $minutes_array = array();
-        for ($i=0; $i<=59; $i++){
+        for ($i=0; $i<=59; $i++) {
             $minutes_array[$i] = $i;
         }
 

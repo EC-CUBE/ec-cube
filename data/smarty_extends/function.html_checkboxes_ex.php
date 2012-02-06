@@ -53,8 +53,8 @@ function smarty_function_html_checkboxes_ex($params, &$smarty)
 
     $extra = '';
 
-    foreach($params as $_key => $_val) {
-        switch($_key) {
+    foreach ($params as $_key => $_val) {
+        switch ($_key) {
     case 'tags':
     $$_key = split("\|", $_val);
     break;
@@ -91,7 +91,7 @@ function smarty_function_html_checkboxes_ex($params, &$smarty)
                 break;
 
             default:
-                if(!is_array($_val)) {
+                if (!is_array($_val)) {
                     $extra .= ' '.$_key.'="'.smarty_function_escape_special_chars($_val).'"';
                 } else {
                     $smarty->trigger_error("html_checkboxes: extra attribute '$_key' cannot be an array", E_USER_NOTICE);
@@ -120,7 +120,7 @@ function smarty_function_html_checkboxes_ex($params, &$smarty)
 
     }
 
-    if(!empty($params['assign'])) {
+    if (!empty($params['assign'])) {
         $smarty->assign($params['assign'], $_html_result);
     } else {
         return implode("\n",$_html_result);
@@ -147,7 +147,7 @@ function smarty_function_html_checkboxes_output_ex($name, $value, $output, $sele
     $_output .= $tags[0];
 
     if ($labels) {
-    if($label_ids) {
+    if ($label_ids) {
     $_id = smarty_function_escape_special_chars(preg_replace('![^\w\-\.]!', '_', $name . '_' . $value));
     $_output .= '<label for="' . $_id . '">';
     } else {

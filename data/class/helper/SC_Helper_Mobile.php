@@ -99,7 +99,7 @@ class SC_Helper_Mobile {
      */
     function lfMobileConvertInputValue(&$value) {
         if (is_array($value)) {
-            foreach($value as $key => $val ){
+            foreach ($value as $key => $val ) {
                 $this->lfMobileConvertInputValue($value[$key]);
             }
         } else {
@@ -466,7 +466,7 @@ class SC_Helper_Mobile {
         //ファイルの拡張子からコンテンツタイプを決定する
         $file_extension = strtolower(substr(strrchr($filename,"."),1));
         $mime_type = $this->defaultMimeType;
-        if(array_key_exists($file_extension, $this->arrMimetypes)){
+        if (array_key_exists($file_extension, $this->arrMimetypes)) {
             $mime_type = $this->arrMimetypes[$file_extension];
         }
         return $mime_type;

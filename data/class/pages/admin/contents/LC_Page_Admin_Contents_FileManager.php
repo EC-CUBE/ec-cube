@@ -83,7 +83,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
         // ファイル操作クラス
         $objFileManager = new SC_Helper_FileManager_Ex();
 
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
         // フォルダ移動
         case 'move':
             $objFormParam = new SC_FormParam_Ex();
@@ -107,7 +107,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
 
             $this->arrErr = $objFormParam->checkError();
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                if($this->tryView($objFormParam)){
+                if ($this->tryView($objFormParam)) {
                     $file_url = htmlspecialchars(ereg_replace($objFormParam->getValue('top_dir'), "", $objFormParam->getValue('select_file')));
                     $tpl_onload = "win02('./file_view.php?file=". $file_url ."', 'user_data', '600', '400');";
                     $this->setTplOnLoad($tpl_onload);
@@ -124,7 +124,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
 
             $this->arrErr = $objFormParam->checkError();
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                if(is_dir($objFormParam->getValue('select_file'))) {
+                if (is_dir($objFormParam->getValue('select_file'))) {
                     $disp_error = "※ ディレクトリをダウンロードすることは出来ません。<br/>";
                     $this->setDispError('select_file', $disp_error);
                 } else {
@@ -155,7 +155,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
 
             $this->arrErr = $objFormParam->checkError();
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                if(!$this->tryCreateDir($objFileManager, $objFormParam)){
+                if (!$this->tryCreateDir($objFileManager, $objFormParam)) {
                     $disp_error = "※ ".htmlspecialchars($objFormParam->getValue('create_file'), ENT_QUOTES)."の作成に失敗しました。<br/>";
                     $this->setDispError('create_file', $disp_error);
                 } else {
@@ -316,7 +316,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
         $create_dir_flg = false;
         $create_dir = ereg_replace("/$", "", $objFormParam->getValue('now_dir'));
         // ファイル作成
-        if($objFileManager->sfCreateFile($create_dir."/".$objFormParam->getValue('create_file'), 0755)) {
+        if ($objFileManager->sfCreateFile($create_dir."/".$objFormParam->getValue('create_file'), 0755)) {
             $create_dir_flg = true;
         }
         return $create_dir_flg;
@@ -425,7 +425,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
         $dir = ereg_replace("/$", "", $dir);
         $arrDir = explode('/', $dir);
         array_pop($arrDir);
-        foreach($arrDir as $val) {
+        foreach ($arrDir as $val) {
             $parent_dir .= "$val/";
         }
         $parent_dir = ereg_replace("/$", "", $parent_dir);
@@ -454,7 +454,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
         $tpl_javascript = '';
         $arrTree = $objFileManager->sfGetFileTree($objFormParam->getValue('top_dir'), $objFormParam->getValue('tree_status'));
         $tpl_javascript .= "arrTree = new Array();\n";
-        foreach($arrTree as $arrVal) {
+        foreach ($arrTree as $arrVal) {
             $tpl_javascript .= "arrTree[".$arrVal['count']."] = new Array(".$arrVal['count'].", '".$arrVal['type']."', '".$arrVal['path']."', ".$arrVal['rank'].",";
             if ($arrVal['open']) {
                 $tpl_javascript .= "true);\n";

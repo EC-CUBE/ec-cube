@@ -86,7 +86,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
          *
          * TODO 購入遷移とMyPageで別クラスにすべき
          */
-        if (!$objCustomer->isLoginSuccess(true) && $ParentPage != MULTIPLE_URLPATH){
+        if (!$objCustomer->isLoginSuccess(true) && $ParentPage != MULTIPLE_URLPATH) {
             $this->tpl_onload = "fnUpdateParent('". $this->getLocation($_POST['ParentPage']) ."'); window.close();";
         }
 
@@ -104,7 +104,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
             case 'edit':
                 $this->arrErr = SC_Helper_Customer_Ex::sfCustomerOtherDelivErrorCheck($objFormParam);
                 // 入力エラーなし
-                if(empty($this->arrErr)) {
+                if (empty($this->arrErr)) {
 
                     // TODO ここでやるべきではない
                     if (in_array($_POST['ParentPage'], $this->validUrl)) {
@@ -119,7 +119,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
                         $this->lfRegistDataNonMember($objFormParam);
                     }
 
-                    if(SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
+                    if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
                         // モバイルの場合、元のページに遷移
                         SC_Response_Ex::sendRedirect($this->getLocation($_POST['ParentPage']));
                         exit;
@@ -131,7 +131,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
                 break;
             default :
 
-                if ($_GET['other_deliv_id'] != ""){
+                if ($_GET['other_deliv_id'] != "") {
                     $arrOtherDeliv = $this->lfGetOtherDeliv($objCustomer->getValue("customer_id"), $_SESSION['other_deliv_id']);
 
                     //不正アクセス判定

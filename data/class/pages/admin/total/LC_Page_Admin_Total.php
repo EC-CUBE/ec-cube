@@ -102,9 +102,9 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        if(isset($_GET['draw_image']) && $_GET['draw_image'] != ""){
+        if (isset($_GET['draw_image']) && $_GET['draw_image'] != "") {
             define('DRAW_IMAGE' , true);
-        }else{
+        } else {
             define('DRAW_IMAGE' , false);
         }
 
@@ -118,7 +118,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         // 検索ワードの引き継ぎ
         $this->arrHidden = $objFormParam->getSearchArray();
 
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
         case 'csv':
         case 'search':
 
@@ -137,7 +137,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
                 $this->tpl_page_type = "total/page_". $page .".tpl";
                 list($this->arrResults, $this->tpl_image) = call_user_func_array(array($this, 'lfGetOrder'.$page),
                                                                                  array($type, $sdate, $edate));
-                if($this->getMode() == 'csv') {
+                if ($this->getMode() == 'csv') {
                     // CSV出力タイトル行の取得
                     list($arrTitleCol, $arrDataCol) = $this->lfGetCSVColum($page);
                     $head = SC_Utils_Ex::sfGetCSVList($arrTitleCol);
@@ -179,13 +179,13 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $list = isset($_SESSION['total']) ? $_SESSION['total'] : "";
 
         // セッション情報に開始月度が保存されていない。
-        if(empty($_SESSION['total']['startyear_m'])) {
+        if (empty($_SESSION['total']['startyear_m'])) {
             $list['startyear_m'] = $year;
             $list['startmonth_m'] = $month;
         }
 
         // セッション情報に開始日付、終了日付が保存されていない。
-        if(empty($_SESSION['total']['startyear']) && empty($_SESSION['total']['endyear'])) {
+        if (empty($_SESSION['total']['startyear']) && empty($_SESSION['total']['endyear'])) {
             $list['startyear'] = $year;
             $list['startmonth'] = $month;
             $list['startday'] = $day;
@@ -228,11 +228,11 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $objErr->arrErr = $objFormParam->checkError();
 
         // 特殊項目チェック
-        if($objFormParam->getValue('form') == 1) {
+        if ($objFormParam->getValue('form') == 1) {
             $objErr->doFunc(array("月度", "search_startyear_m"), array("ONE_EXIST_CHECK"));
         }
 
-        if($objFormParam->getValue('form') == 2) {
+        if ($objFormParam->getValue('form') == 2) {
             $objErr->doFunc(array("期間", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array("FULL_EXIST_CHECK"));
         }
         $objErr->doFunc(array("月度", "search_startyear_m", "search_startmonth_m"), array("ALL_EXIST_CHECK"));
@@ -272,7 +272,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $arrRet = $objFormParam->getHashArray();
 
         foreach ($arrRet as $key => $val) {
-            if($val == "") {
+            if ($val == "") {
                 continue;
             }
             switch ($key) {
@@ -301,7 +301,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $ret_path = "";
 
         // 結果が0行以上ある場合のみグラフを生成する。
-        if(count($arrResults) > 0 && $this->install_GD) {
+        if (count($arrResults) > 0 && $this->install_GD) {
 
             // グラフの生成
             $arrList = SC_Utils_Ex::sfArrKeyValue($arrResults, $keyname, 'total');
@@ -313,7 +313,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
             // ラベル表示インターバルを求める
             $interval = intval(count($arrList) / 20);
-            if($interval < 1) {
+            if ($interval < 1) {
                 $interval = 1;
             }
             $objGraphLine = new SC_GraphLine();
@@ -323,7 +323,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             $objGraphLine->setXLabel(array_keys($arrList));
 
             // ラベル回転(日本語不可)
-            if($keyname == "key_day"){
+            if ($keyname == "key_day") {
                 $objGraphLine->setXLabelAngle(45);
             }
 
@@ -342,7 +342,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             $objGraphLine->drawGraph();
 
             // グラフの出力
-            if(DRAW_IMAGE){
+            if (DRAW_IMAGE) {
                 $objGraphLine->outputGraph();
                 exit();
             }
@@ -358,7 +358,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
         $ret_path = "";
         // 結果が0行以上ある場合のみグラフを生成する。
-        if(count($arrResults) > 0 && $this->install_GD) {
+        if (count($arrResults) > 0 && $this->install_GD) {
             // グラフの生成
             $arrList = SC_Utils_Ex::sfArrKeyValue($arrResults, $keyname,
                                                   'total', GRAPH_PIE_MAX,
@@ -386,7 +386,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             $objGraphPie->drawGraph();
 
             // グラフの出力
-            if(DRAW_IMAGE){
+            if (DRAW_IMAGE) {
                 $objGraphPie->outputGraph();
                 exit();
             }
@@ -402,7 +402,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $ret_path = "";
 
         // 結果が0行以上ある場合のみグラフを生成する。
-        if(count($arrResults) > 0 && $this->install_GD) {
+        if (count($arrResults) > 0 && $this->install_GD) {
             // グラフの生成
             $arrList = SC_Utils_Ex::sfArrKeyValue($arrResults, $keyname, 'total', GRAPH_PIE_MAX, GRAPH_LABEL_MAX);
 
@@ -412,7 +412,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
             $objGraphBar = new SC_GraphBar();
 
-            foreach(array_keys($arrList) as $val) {
+            foreach (array_keys($arrList) as $val) {
                 $arrKey[] = ereg_replace("～", "-", $val);
             }
 
@@ -432,7 +432,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
             $objGraphBar->drawGraph();
 
-            if(DRAW_IMAGE){
+            if (DRAW_IMAGE) {
                 $objGraphBar->outputGraph();
                 exit();
             }
@@ -446,7 +446,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
     // グラフ用のPNGファイル名
     function lfGetGraphPng($keyname) {
 
-        if($_POST['search_startyear_m'] != "") {
+        if ($_POST['search_startyear_m'] != "") {
             $pngname = sprintf("%s_%02d%02d.png", $keyname, substr($_POST['search_startyear_m'],2), $_POST['search_startmonth_m']);
         } else {
             $pngname = sprintf("%s_%02d%02d%02d_%02d%02d%02d.png", $keyname, substr($_POST['search_startyear'], 2), $_POST['search_startmonth'], $_POST['search_startday'], substr($_POST['search_endyear'],2), $_POST['search_endmonth'], $_POST['search_endday']);
@@ -458,14 +458,14 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
     function lfGetWhereMember($col_date, $sdate, $edate, $type, $col_member = "customer_id") {
         $where = "";
         // 取得日付の指定
-        if($sdate != "") {
+        if ($sdate != "") {
             if ($where != "") {
                 $where.= " AND ";
             }
             $where.= " $col_date >= '". $sdate ."'";
         }
 
-        if($edate != "") {
+        if ($edate != "") {
             if ($where != "") {
                 $where.= " AND ";
             }
@@ -474,7 +474,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         }
 
         // 会員、非会員の判定
-        switch($type) {
+        switch ($type) {
             // 全体
         case 'all':
             break;
@@ -521,10 +521,10 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
         $arrTotalResults = $objQuery->select($col, $from, $where, $arrval);
 
-        foreach(array_keys($arrTotalResults) as $key) {
+        foreach (array_keys($arrTotalResults) as $key) {
             $arrResult =& $arrTotalResults[$key];
             $member_key = $arrResult['order_sex'];
-            if($member_key != "") {
+            if ($member_key != "") {
                 $arrResult['member_name'] = (($arrResult['member']) ? '会員' : '非会員') . $this->arrSex[$member_key];
             } else {
                 $arrResult['member_name'] = "未回答";
@@ -556,7 +556,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $from = "dtb_order_detail JOIN dtb_order USING(order_id)";
 
         /*
-        if($mode != 'csv') {
+        if ($mode != 'csv') {
             $sql.= "LIMIT " . PRODUCTS_TOTAL_MAX;
         }*/
 
@@ -591,10 +591,10 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $objQuery->setOrder('total DESC');
         $arrTotalResults = $objQuery->select($col, $from, $where, $arrval);
 
-        foreach(array_keys($arrTotalResults) as $key) {
+        foreach (array_keys($arrTotalResults) as $key) {
             $arrResult =& $arrTotalResults[$key];
             $job_key = $arrResult['job'];
-            if($job_key != "") {
+            if ($job_key != "") {
                 $arrResult['job_name'] = $this->arrJob[$job_key];
             } else {
                 $arrResult['job_name'] = "未回答";
@@ -628,10 +628,10 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $objQuery->setOrder('age DESC');
         $arrTotalResults = $objQuery->select($col, $from, $where, $arrval);
 
-        foreach(array_keys($arrTotalResults) as $key) {
+        foreach (array_keys($arrTotalResults) as $key) {
             $arrResult =& $arrTotalResults[$key];
             $age_key = $arrResult['age'];
-            if($age_key != "") {
+            if ($age_key != "") {
                 $arrResult['age_name'] = $arrResult['age'] . '代';
             } else {
                 $arrResult['age_name'] = "未回答";
@@ -651,7 +651,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         list($where, $arrval) = $this->lfGetWhereMember('create_date', $sdate, $edate);
         $where .= " AND del_flg = 0 AND status <> " . ORDER_CANCEL;
 
-        switch($type){
+        switch ($type) {
         case 'month':
             $xtitle = "(月別)";
             $ytitle = "(売上合計)";
@@ -704,14 +704,14 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
         $arrDateList = $this->lfDateTimeArray($type, $st, $ed);
 
-        foreach($arrResults as $arrResult) {
+        foreach ($arrResults as $arrResult) {
             $strdate                = $arrResult['str_date'];
             $arrDateResults[$strdate] = $arrResult;
         }
 
         foreach ($arrDateList as $date) {
 
-            if(array_key_exists($date, $arrDateResults)) {
+            if (array_key_exists($date, $arrDateResults)) {
 
                 $arrRet[] = $arrDateResults[$date];
 
@@ -727,7 +727,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
      *
      */
     function lfDateTimeArray($type, $st, $ed) {
-        switch($type){
+        switch ($type) {
             case 'month':
                 $format        = 'm';
                 break;
@@ -753,9 +753,9 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             $tmp    = strtotime($st);
             $nAday  = 60*60*24;
             $edx    = strtotime($ed);
-            while( $tmp <= $edx ){
+            while ($tmp <= $edx ) {
                 $sDate = date($format, $tmp);
-                if( !in_array($sDate, $arrDateList) ){
+                if (!in_array($sDate, $arrDateList) ) {
                     $arrDateList[] = $sDate;
                 }
                 $tmp += $nAday;
@@ -769,11 +769,11 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
      */
     function lfAddTotalLine($arrResults) {
         // 検索結果が0でない場合
-        if(count($arrResults) > 0) {
+        if (count($arrResults) > 0) {
 
             // 合計の計算
             foreach ($arrResults as $arrResult) {
-                foreach(array_keys($arrResult) as $value) {
+                foreach (array_keys($arrResult) as $value) {
                     $arrTotal[$value] += $arrResult[$value];
                 }
             }
@@ -789,8 +789,8 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
     function lfGetDataColCSV($arrData, $arrDataCol) {
         $max = count($arrData);
         $csv_data = "";
-        for($i = 0; $i < $max; $i++) {
-            foreach($arrDataCol as $val) {
+        for ($i = 0; $i < $max; $i++) {
+            foreach ($arrDataCol as $val) {
                 $arrRet[$i][$val] = $arrData[$i][$val];
             }
             $csv_data.= SC_Utils_Ex::sfGetCSVList($arrRet[$i]);
@@ -799,7 +799,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
     }
 
     function lfGetCSVColum($page) {
-        switch($page) {
+        switch ($page) {
             // 商品別集計
         case 'products':
             $arrTitleCol = array(

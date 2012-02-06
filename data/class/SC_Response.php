@@ -58,7 +58,7 @@ class SC_Response{
 
     function sendHeader() {
         // HTTPのヘッダ
-        foreach ($this->header as $name => $head){
+        foreach ($this->header as $name => $head) {
             header($name.': '.$head);
         }
         if (strlen($this->statusCode) >= 1) {
@@ -112,8 +112,7 @@ class SC_Response{
                     $pattern = '/^' . preg_quote(HTTP_URL, '/') . '(.*)/';
                     $replacement = HTTPS_URL . '\1';
                     $url = preg_replace($pattern, $replacement, $url);
-                }
-                else {
+                } else {
                     $pattern = '/^' . preg_quote(HTTPS_URL, '/') . '(.*)/';
                     $replacement = HTTP_URL . '\1';
                     $url = preg_replace($pattern, $replacement, $url);

@@ -142,7 +142,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
             $this->lfAddParamSelectTemplate($objFormParam);
             $objFormParam->setParam($_POST);
             $this->arrErr = $objFormParam->checkError();
-            if (SC_Utils_Ex::isBlank($this->arrErr)){
+            if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 $this->tpl_mainpage = 'mail/index.tpl';
                 SC_Helper_Mail_Ex::sfSendMailmagazine($this->lfRegisterData($objFormParam));  // DB登録・送信
                 SC_Response_Ex::sendRedirect("./history.php");
@@ -211,8 +211,8 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      * @return array key:template_id value:サブジェクト【配信形式】
      */
     function lfGetMailTemplateList($arrTemplate){
-        if ( is_array($arrTemplate) ){
-            foreach( $arrTemplate as $line ){
+        if (is_array($arrTemplate) ) {
+            foreach ($arrTemplate as $line ) {
                 $return[$line['template_id']] = "【" . $this->arrHtmlmail[$line['mail_method']] . "】" . $line['subject'];
             }
         }
@@ -262,8 +262,8 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $emailtype="email";
         $searchmailtype = $objFormParam->getValue('search_mail_type');
         if($searchmailtype==2||$searchmailtype==4)$emailtype="email_mobile";
-        if ( is_array( $arrSendCustomer ) ){
-            foreach( $arrSendCustomer as $line ){
+        if (is_array( $arrSendCustomer ) ) {
+            foreach ($arrSendCustomer as $line ) {
                 $dtb_send_customer = array();
                 $dtb_send_customer["customer_id"] = $line["customer_id"];
                 $dtb_send_customer["send_id"] = $send_id;

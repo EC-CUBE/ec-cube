@@ -105,7 +105,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
         case 'csv':
             // エラーチェック
             $this->arrErr = $this->lfCheckError($objFormParam);
-            if (!$this->arrErr){
+            if (!$this->arrErr) {
                 // 検索条件を取得
                 list($where, $arrval) = $this->lfGetWhere($this->arrForm);
             }
@@ -145,7 +145,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
         $objErr = new SC_CheckError_Ex($arrRet);
         $objErr->arrErr = $objFormParam->checkError();
 
-        switch ($this->getMode()){
+        switch ($this->getMode()) {
         case 'search':
             $objErr->doFunc(array("投稿者", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
             $objErr->doFunc(array("開始日", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
@@ -184,10 +184,10 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
         $arrHidden = array();
         foreach ($arrForm AS $key=>$val) {
             if (preg_match("/^search_/", $key)) {
-                switch ($key){
+                switch ($key) {
                 case 'search_sex':
                     $arrHidden[$key] = SC_Utils_Ex::sfMergeParamCheckBoxes($val);
-                    if(!is_array($val)) {
+                    if (!is_array($val)) {
                         $arrForm[$key] = explode("-", $val);
                     }
                     break;
@@ -233,7 +233,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
      */
     function lfDoOutputCsv($where, $arrVal) {
         $objCSV = new SC_Helper_CSV_Ex();
-        if($where != ""){
+        if ($where != "") {
             $where = "WHERE " . $where;
         }
         $objCSV->sfDownloadCsv("4", $where, $arrVal, "", true);
@@ -249,10 +249,10 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
         //削除されていない商品を検索
         $where = "A.del_flg = 0 AND B.del_flg = 0";
 
-        foreach ($arrForm AS $key=>$val){
+        foreach ($arrForm AS $key=>$val) {
             if (empty($val)) continue;
 
-            switch ($key){
+            switch ($key) {
             case 'search_reviewer_name':
                 $val = preg_replace("/ /", "%", $val);
                 $where.= " AND reviewer_name LIKE ? ";
@@ -280,10 +280,10 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
             case 'search_sex':
                 $tmp_where = "";
                 //$val=配列の中身,$element=各キーの値(1,2)
-                if (is_array($val)){
-                    foreach($val as $element) {
-                        if($element != "") {
-                            if($tmp_where == "") {
+                if (is_array($val)) {
+                    foreach ($val as $element) {
+                        if ($element != "") {
+                            if ($tmp_where == "") {
                                 $tmp_where .= " AND (sex = ?";
                             } else {
                                 $tmp_where .= " OR sex = ?";
@@ -291,7 +291,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
                             $arrval[] = $element;
                         }
                     }
-                    if($tmp_where != "") {
+                    if ($tmp_where != "") {
                         $tmp_where .= ")";
                         $where .= " $tmp_where ";
                     }
@@ -305,7 +305,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
                 break;
 
             case 'search_startyear':
-                if (isset($_POST['search_startyear']) && isset($_POST['search_startmonth']) && isset($_POST['search_startday'])){
+                if (isset($_POST['search_startyear']) && isset($_POST['search_startmonth']) && isset($_POST['search_startday'])) {
                     $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
                     $where.= " AND A.create_date >= ? ";
                     $arrval[] = $date;
@@ -313,7 +313,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
                 break;
 
             case 'search_endyear':
-                if (isset($_POST['search_startyear']) && isset($_POST['search_startmonth']) && isset($_POST['search_startday'])){
+                if (isset($_POST['search_startyear']) && isset($_POST['search_startmonth']) && isset($_POST['search_startday'])) {
                     $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday']);
                     $end_date = date("Y/m/d",strtotime("1 day" ,strtotime($date)));
                     $where.= " AND A.create_date <= cast('$end_date' as date) ";

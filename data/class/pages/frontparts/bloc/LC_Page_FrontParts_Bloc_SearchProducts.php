@@ -93,7 +93,7 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
      */
     function lfGetProductId() {
         $product_id = '';
-        if ( isset($_GET['product_id']) && $_GET['product_id'] != '' && is_numeric($_GET['product_id']) ) {
+        if (isset($_GET['product_id']) && $_GET['product_id'] != '' && is_numeric($_GET['product_id']) ) {
             $product_id = $_GET['product_id'];
         }
         return $product_id;
@@ -106,7 +106,7 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
      */
     function lfGetCategoryId() {
         $category_id = '';
-        if ( isset($_GET['category_id']) && $_GET['category_id'] != '' && is_numeric($_GET['category_id']) ) {
+        if (isset($_GET['category_id']) && $_GET['category_id'] != '' && is_numeric($_GET['category_id']) ) {
             $category_id = $_GET['category_id'];
         }
         return $category_id;
@@ -119,7 +119,7 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
      */
     function lfGetMakerId() {
         $maker_id = '';
-        if ( isset($_GET['maker_id']) && $_GET['maker_id'] != '' && is_numeric($_GET['maker_id']) ) {
+        if (isset($_GET['maker_id']) && $_GET['maker_id'] != '' && is_numeric($_GET['maker_id']) ) {
             $maker_id = $_GET['maker_id'];
         }
         return $maker_id;
@@ -160,7 +160,7 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
         $arrCategoryList = $objDb->sfGetCategoryList('', true, '　');
         if (is_array($arrCategoryList)) {
             // 文字サイズを制限する
-            foreach($arrCategoryList as $key => $val) {
+            foreach ($arrCategoryList as $key => $val) {
                 $truncate_str = SC_Utils_Ex::sfCutString($val, SEARCH_CATEGORY_LEN, false);
                 $arrCategoryList[$key] = preg_replace('/　/u', "&nbsp;&nbsp;", $truncate_str);
             }
@@ -179,7 +179,7 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
         $arrMakerList = $objDb->sfGetMakerList('', true);
         if (is_array($arrMakerList)) {
             // 文字サイズを制限する
-            foreach($arrMakerList as $key => $val) {
+            foreach ($arrMakerList as $key => $val) {
                 $arrMakerList[$key] = SC_Utils_Ex::sfCutString($val, SEARCH_CATEGORY_LEN, false);
             }
         }

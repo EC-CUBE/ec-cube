@@ -82,7 +82,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
         $this->tpl_select = $this->getTemplateName($this->device_type_id);
         $template_code = $objFormParam->getValue('template_code');
 
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
 
         // 登録ボタン押下時
         case 'register':
@@ -202,7 +202,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
             $sql = preg_replace("/[\r\n\t]/", " " ,$sql);
             $sql_split = explode(";", $sql);
             $objQuery =& SC_Query_Ex::getSingletonInstance();
-            foreach($sql_split as $val){
+            foreach ($sql_split as $val) {
                 if (trim($val) != "") {
                     $objQuery->query($val);
                 }

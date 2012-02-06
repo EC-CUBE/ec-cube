@@ -62,7 +62,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
      */
     function action() {
         // モバイル判定
-        switch ( SC_Display_Ex::detectDevice() ) {
+        switch (SC_Display_Ex::detectDevice() ) {
             case DEVICE_TYPE_MOBILE:
                 // メインカテゴリの取得
                 $this->arrCat = $this->lfGetMainCat(true);
@@ -94,12 +94,12 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
     function lfGetSelectedCategoryId($arrRequest) {
             // 商品ID取得
         $product_id = '';
-        if ( isset($arrRequest['product_id']) && $arrRequest['product_id'] != '' && is_numeric($arrRequest['product_id']) ) {
+        if (isset($arrRequest['product_id']) && $arrRequest['product_id'] != '' && is_numeric($arrRequest['product_id']) ) {
             $product_id = $arrRequest['product_id'];
         }
         // カテゴリID取得
         $category_id = '';
-        if ( isset($arrRequest['category_id']) && $arrRequest['category_id'] != '' && is_numeric($arrRequest['category_id']) ) {
+        if (isset($arrRequest['category_id']) && $arrRequest['category_id'] != '' && is_numeric($arrRequest['category_id']) ) {
             $category_id = $arrRequest['category_id'];
         }
         // 選択中のカテゴリIDを判定する
@@ -124,7 +124,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
         $col = '*';
         $from = 'dtb_category left join dtb_category_total_count using (category_id)';
         // 登録商品数のチェック
-        if($count_check) {
+        if ($count_check) {
             $where = 'del_flg = 0 AND product_count > 0';
         } else {
             $where = 'del_flg = 0';
@@ -152,9 +152,9 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
             );
             $this->root_parent_id[] = $arrParentID[0];
             $arrDispID = array_merge($arrBrothersID, $arrChildrenID);
-            foreach($arrRet as $key => $array) {
-                foreach($arrDispID as $val) {
-                    if($array['category_id'] == $val) {
+            foreach ($arrRet as $key => $array) {
+                foreach ($arrDispID as $val) {
+                    if ($array['category_id'] == $val) {
                         $arrRet[$key]['display'] = 1;
                         break;
                     }
@@ -177,7 +177,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
         // メインカテゴリとその直下のカテゴリを取得する。
         $where = 'level <= 2 AND del_flg = 0';
         // 登録商品数のチェック
-        if($count_check) {
+        if ($count_check) {
             $where .= ' AND product_count > 0';
         }
         $objQuery->setOption('ORDER BY rank DESC');

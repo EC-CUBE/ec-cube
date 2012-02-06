@@ -76,7 +76,7 @@ class SC_Product {
             dtb_products AS alldtl
 __EOS__;
         $objQuery->setGroupBy('alldtl.product_id');
-        if(is_array($this->arrOrderData) and $objQuery->order == ""){
+        if (is_array($this->arrOrderData) and $objQuery->order == "") {
             $o_col = $this->arrOrderData['col'];
             $o_table = $this->arrOrderData['table'];
             $o_order = $this->arrOrderData['order'];
@@ -181,7 +181,7 @@ __EOS__;
 
         // 配列のキーを商品IDに
         $arrTmp = array();
-        foreach($arrProducts as $arrProduct) {
+        foreach ($arrProducts as $arrProduct) {
             $arrTmp[$arrProduct['product_id']] = $arrProduct;
         }
         $arrProducts =& $arrTmp;

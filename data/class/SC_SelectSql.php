@@ -66,15 +66,15 @@ class SC_SelectSql {
     function selectRange($from, $to, $column) {
 
         // ある単位のみ検索($from = $to)
-        if(  $from == $to ) {
+        if ($from == $to ) {
             $this->setWhere( $column ." = ?" );
             $return = array($from);
         //　~$toまで検索
-        } elseif(  strlen($from) == 0 && strlen($to) > 0 ) {
+        } elseif (strlen($from) == 0 && strlen($to) > 0 ) {
             $this->setWhere( $column ." <= ? ");
             $return = array($to);
         //　~$from以上を検索
-        } elseif(  strlen($from) > 0 && strlen($to) == 0 ) {
+        } elseif (strlen($from) > 0 && strlen($to) == 0 ) {
             $this->setWhere( $column ." >= ? ");
             $return = array($from);
         //　$from~$toの検索
@@ -101,7 +101,7 @@ class SC_SelectSql {
         $date2 = date('Y/m/d', $date2);
 
         // 開始期間だけ指定の場合
-        if( ( $from_year != "" ) && ( $from_month != "" ) && ( $from_day != "" ) && ( $to_year == "" ) && ( $to_month == "" ) && ( $to_day == "" ) ) {
+        if (( $from_year != "" ) && ( $from_month != "" ) && ( $from_day != "" ) && ( $to_year == "" ) && ( $to_month == "" ) && ( $to_day == "" ) ) {
             $this->setWhere( $column .' >= ?');
             $return[] = $date1;
         }
@@ -115,7 +115,7 @@ class SC_SelectSql {
         }
 
         // 終了期間だけ指定の場合
-        if( ( $from_year == "" ) && ( $from_month == "" ) && ( $from_day == "" ) && ( $to_year != "" ) && ( $to_month != "" ) && ( $to_day != "" ) ) {
+        if (( $from_year == "" ) && ( $from_month == "" ) && ( $from_day == "" ) && ( $to_year != "" ) && ( $to_month != "" ) && ( $to_day != "" ) ) {
             $this->setWhere( $column . ' < date(?)');
             $return[] = $date2;
         }
@@ -126,9 +126,9 @@ class SC_SelectSql {
     // checkboxなどで同一カラム内で単一、もしくは複数選択肢が有る場合　例: AND ( sex = xxx OR sex = xxx OR sex = xxx  ) AND ...
     function setItemTerm( $arr, $ItemStr ) {
 
-        foreach( $arr as $data ) {
+        foreach ($arr as $data ) {
 
-            if( count( $arr ) > 1 ) {
+            if (count( $arr ) > 1 ) {
                 if( ! is_null( $data ) ) $item .= $ItemStr . " = ? OR ";
             } else {
                 if( ! is_null( $data ) ) $item = $ItemStr . " = ?";
@@ -146,8 +146,8 @@ class SC_SelectSql {
 
         $item = " ${ItemStr} IS NULL ";
 
-        if ( $arr ){
-            foreach( $arr as $data ) {
+        if ($arr ) {
+            foreach ($arr as $data ) {
                 if ($data != "不明") {
                     $item .= " OR ${ItemStr} = ?";
                     $return[] = $data;
@@ -164,8 +164,8 @@ class SC_SelectSql {
         $count = count($arr);
         $item = " ${ItemStr} IS NULL OR ${ItemStr} = '' ";
         $i = 1;
-        if ( $arr ){
-            foreach( $arr as $data ) {
+        if ($arr ) {
+            foreach ($arr as $data ) {
                 if ($i == $count) break;
                 $item .= " OR ${ItemStr} = ?";
                 $return[] = $data;
@@ -188,14 +188,14 @@ class SC_SelectSql {
 
         $count = count( $arrWhere );
 
-        for( $i = 0; $i < $count; $i++ ) {
+        for ($i = 0; $i < $count; $i++ ) {
 
             if( isset( $arrWhere[$i]['value'] ) ) $statement .= $arrWhere[$i]['column'] ." = " . SC_Utils_Ex::sfQuoteSmart($arrWhere[$i]['value']) ." OR "  ;
         }
 
         $statement = "( " . rtrim( $statement, " OR " ) . " )";
 
-        if( $this->where ) {
+        if ($this->where ) {
 
             $this->where .= " AND " . $statement;
 
@@ -207,7 +207,7 @@ class SC_SelectSql {
 
     function setWhere($where){
         if ($where != "") {
-            if( $this->where ) {
+            if ($this->where ) {
 
                 $this->where .= " AND " . $where;
 
@@ -232,7 +232,7 @@ class SC_SelectSql {
 
     function setLimitOffset( $limit, $offset ){
 
-        if ( is_numeric($limit) and is_numeric($offset) ){
+        if (is_numeric($limit) and is_numeric($offset) ) {
 
             $this->limit = " LIMIT " .$limit;
             $this->offset = " OFFSET " .$offset;

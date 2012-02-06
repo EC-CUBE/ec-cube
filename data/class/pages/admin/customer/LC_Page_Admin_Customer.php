@@ -109,7 +109,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
 
         // 入力パラメーターチェック
         $this->arrErr = $this->lfCheckError($objFormParam);
-        if(!SC_Utils_Ex::isBlank($this->arrErr)) {
+        if (!SC_Utils_Ex::isBlank($this->arrErr)) {
             return;
         }
 
@@ -176,7 +176,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
      */
     function lfDoDeleteCustomer($customer_id) {
         $arrData = SC_Helper_Customer_Ex::sfGetCustomerDataFromId($customer_id, "del_flg = 0");
-        if(SC_Utils_Ex::isBlank($arrData)) {
+        if (SC_Utils_Ex::isBlank($arrData)) {
             //対象となるデータが見つからない。
             return false;
         }
@@ -195,7 +195,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
      */
     function lfDoResendMail($customer_id) {
         $arrData = SC_Helper_Customer_Ex::sfGetCustomerDataFromId($customer_id);
-        if(SC_Utils_Ex::isBlank($arrData) or $arrData['del_flg'] == 1) {
+        if (SC_Utils_Ex::isBlank($arrData) or $arrData['del_flg'] == 1) {
             //対象となるデータが見つからない、または削除済み
             return false;
         }

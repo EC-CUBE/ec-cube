@@ -81,13 +81,13 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex {
             $this->tpl_mode = 'insert';
         }
 
-        if(!empty($_POST)) {
+        if (!empty($_POST)) {
             // 入力値の変換
             $objFormParam->convParam();
             $this->arrErr = $this->lfCheckError($objFormParam);
 
-            if(count($this->arrErr) == 0) {
-                switch($this->getMode()) {
+            if (count($this->arrErr) == 0) {
+                switch ($this->getMode()) {
                 case 'update':
                     $this->lfUpdateData($objFormParam->getHashArray()); // 既存編集
                     break;

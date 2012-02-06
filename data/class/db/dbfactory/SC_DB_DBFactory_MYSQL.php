@@ -152,7 +152,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return string 検索条件のSQL
      */
     function getOrderTotalDaysWhereSql($type) {
-        switch($type){
+        switch ($type) {
         case 'month':
             $format = '%m';
             break;
@@ -272,10 +272,10 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return string 変換後の SQL 文
      */
     function sfChangeArrayToString($sql){
-        if(strpos(strtoupper($sql), 'ARRAY_TO_STRING') !== FALSE) {
+        if (strpos(strtoupper($sql), 'ARRAY_TO_STRING') !== FALSE) {
             preg_match_all('/ARRAY_TO_STRING.*?\(.*?ARRAY\(.*?SELECT (.+?) FROM (.+?) WHERE (.+?)\).*?\,.*?\'(.+?)\'.*?\)/is', $sql, $match, PREG_SET_ORDER);
 
-            foreach($match as $item) {
+            foreach ($match as $item) {
                 $replace = 'GROUP_CONCAT(' . $item[1] . ' SEPARATOR \'' . $item[4] . '\') FROM ' . $item[2] . ' WHERE ' . $item[3];
                 $sql = str_replace($item[0], $replace, $sql);
             }
@@ -295,9 +295,9 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
     function sfGetCreateIndexDefinition($table, $name, $definition) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrTblInfo = $objQuery->getTableInfo($table);
-        foreach($arrTblInfo as $fieldInfo) {
-            if(array_key_exists($fieldInfo['name'], $definition['fields'])) {
-                if($fieldInfo['nativetype'] == 'text') {
+        foreach ($arrTblInfo as $fieldInfo) {
+            if (array_key_exists($fieldInfo['name'], $definition['fields'])) {
+                if ($fieldInfo['nativetype'] == 'text') {
                     // TODO: text型フィールドの場合に255文字以内決めうちでインデックス列のサイズとして
                     //       指定して良いか確認は必要。
                     $definition['fields'][$fieldInfo['name']]['length'] = '255';

@@ -78,7 +78,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         $objFormParam->setParam($_POST);
         $objFormParam->convParam();
 
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
         // カテゴリ登録/編集実行
         case 'edit':
             $this->doEdit($objFormParam);
@@ -131,13 +131,13 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
                     // データが今の位置より上がった時
                     $up_count = $rankAry[$keys[1]] - $rank;
                     $decAry   = $objQuery->select("category_id", "dtb_category", "level = ? AND rank > ? AND rank <= ?", array($level, $rank, $rankAry[$keys[1]]));
-                    foreach($decAry as $value){
+                    foreach ($decAry as $value) {
                         // 上のグループから減算
                         $this->lfDownRankChilds($objQuery, "dtb_category", "parent_category_id", "category_id", $value["category_id"], $my_count);
                     }
                     // 自分のグループに加算
                     $this->lfUpRankChilds($objQuery, "dtb_category", "parent_category_id", "category_id", $keys[0], $up_count);
-                } else if($rankAry[$keys[1]] < $rank) {
+                } else if ($rankAry[$keys[1]] < $rank) {
                     // データが今の位置より下がった時
                     $down_count = 0;
                     $incAry     = $objQuery->select("category_id", "dtb_category", "level = ? AND rank < ? AND rank >= ?", array($level, $rank, $rankAry[$keys[1]]));
@@ -519,8 +519,8 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         $arrRet = $objQuery->select($col, $table, $where, array($pid));
         $max = count($arrRet);
         $down_id = "";
-        for($cnt = 0; $cnt < $max; $cnt++) {
-            if($arrRet[$cnt][$id_name] == $id) {
+        for ($cnt = 0; $cnt < $max; $cnt++) {
+            if ($arrRet[$cnt][$id_name] == $id) {
                 $down_id = $arrRet[($cnt + 1)][$id_name];
                 break;
             }
@@ -540,8 +540,8 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         $arrRet = $objQuery->select($col, $table, $where, array($pid));
         $max = count($arrRet);
         $up_id = "";
-        for($cnt = 0; $cnt < $max; $cnt++) {
-            if($arrRet[$cnt][$id_name] == $id) {
+        for ($cnt = 0; $cnt < $max; $cnt++) {
+            if ($arrRet[$cnt][$id_name] == $id) {
                 $up_id = $arrRet[($cnt - 1)][$id_name];
                 break;
             }

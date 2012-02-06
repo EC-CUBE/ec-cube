@@ -58,7 +58,7 @@ class SC_View {
         $this->_smarty->register_function('printXMLDeclaration', array("SC_Utils_Ex", 'printXMLDeclaration'));
         $this->_smarty->default_modifiers = array('script_escape');
 
-        if(ADMIN_MODE == '1') {
+        if (ADMIN_MODE == '1') {
             $this->time_start = SC_Utils_Ex::sfMicrotimeFloat();
         }
     }
@@ -81,16 +81,16 @@ class SC_View {
      * @return string
      */
     function getResponse($template, $no_error = false) {
-        if(!$no_error) {
+        if (!$no_error) {
             global $GLOBAL_ERR;
-            if(!defined('OUTPUT_ERR')) {
+            if (!defined('OUTPUT_ERR')) {
                 // GLOBAL_ERR を割り当て
                 $this->assign("GLOBAL_ERR", $GLOBAL_ERR);
                 define('OUTPUT_ERR','ON');
             }
         }
         $res =  $this->_smarty->fetch($template);
-        if(ADMIN_MODE == '1') {
+        if (ADMIN_MODE == '1') {
             $time_end = SC_Utils_Ex::sfMicrotimeFloat();
             $time = $time_end - $this->time_start;
             $res .= '処理時間: ' . sprintf('%.3f', $time) . '秒';
@@ -100,9 +100,9 @@ class SC_View {
 
     // テンプレートの処理結果を表示
     function display($template, $no_error = false) {
-        if(!$no_error) {
+        if (!$no_error) {
             global $GLOBAL_ERR;
-            if(!defined('OUTPUT_ERR')) {
+            if (!defined('OUTPUT_ERR')) {
                 // GLOBAL_ERR を割り当て
                 $this->assign("GLOBAL_ERR", $GLOBAL_ERR);
                 define('OUTPUT_ERR','ON');
@@ -110,7 +110,7 @@ class SC_View {
         }
 
         $this->_smarty->display($template);
-        if(ADMIN_MODE == '1') {
+        if (ADMIN_MODE == '1') {
             $time_end = SC_Utils_Ex::sfMicrotimeFloat();
             $time = $time_end - $this->time_start;
             echo '処理時間: ' . sprintf('%.3f', $time) . '秒';
@@ -121,7 +121,7 @@ class SC_View {
     function assignobj($obj) {
         $data = get_object_vars($obj);
 
-        foreach ($data as $key => $value){
+        foreach ($data as $key => $value) {
             $this->_smarty->assign($key, $value);
         }
     }

@@ -166,7 +166,7 @@ class LC_Page_Sitemap extends LC_Page_Ex {
         if (!empty($changefreq)) {
             printf("\t\t<changefreq>%s</changefreq>\n", $changefreq);
         }
-        if(!empty($priority)) {
+        if (!empty($priority)) {
             printf("\t\t<priority>%01.1f</priority>\n", $priority);
         }
         printf("\t</url>\n");

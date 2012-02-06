@@ -39,7 +39,7 @@ class SC_Utils {
         // インストール済みが定義されていない。
         if (!defined('ECCUBE_INSTALL')) {
             $phpself = $_SERVER['PHP_SELF'];
-            if( strpos('/install/', $phpself) === false ) {
+            if (strpos('/install/', $phpself) === false ) {
                 $path = substr($phpself, 0, strpos($phpself, basename($phpself)));
                 $install_url = SC_Utils_Ex::searchInstallerPath($path);
                 header('Location: ' . $install_url);
@@ -47,7 +47,7 @@ class SC_Utils {
             }
         }
         $path = HTML_REALDIR . 'install/' . DIR_INDEX_FILE;
-        if(file_exists($path)) {
+        if (file_exists($path)) {
             SC_Utils_Ex::sfErrorHeader('&gt;&gt; /install/' . DIR_INDEX_FILE . ' は、インストール完了後にファイルを削除してください。');
         }
     }
@@ -186,8 +186,8 @@ class SC_Utils {
     /* 認証の可否判定 */
     function sfIsSuccess($objSess, $disp_error = true) {
         $ret = $objSess->IsSuccess();
-        if($ret != SUCCESS) {
-            if($disp_error) {
+        if ($ret != SUCCESS) {
+            if ($disp_error) {
                 // エラーページの表示
                 SC_Utils_Ex::sfDispError($ret);
             }
@@ -196,7 +196,7 @@ class SC_Utils {
         // リファラーチェック(CSRFの暫定的な対策)
         // 「リファラ無」 の場合はスルー
         // 「リファラ有」 かつ 「管理画面からの遷移でない」 場合にエラー画面を表示する
-        if ( empty($_SERVER['HTTP_REFERER']) ) {
+        if (empty($_SERVER['HTTP_REFERER']) ) {
             // TODO 警告表示させる？
             // sfErrorHeader('>> referrerが無効になっています。');
         } else {
@@ -221,7 +221,7 @@ class SC_Utils {
      */
     function sfPassLen($passlen){
         $ret = "";
-        for ($i=0;$i<$passlen;true){
+        for ($i=0;$i<$passlen;true) {
             $ret.="*";
             $i++;
         }
@@ -252,7 +252,7 @@ class SC_Utils {
     function sfIsValidTransition($objSess) {
         // 前画面からPOSTされるuniqidが正しいものかどうかをチェック
         $uniqid = $objSess->getUniqId();
-        if ( !empty($_POST['uniqid']) && ($_POST['uniqid'] === $uniqid) ) {
+        if (!empty($_POST['uniqid']) && ($_POST['uniqid'] === $uniqid) ) {
             return true;
         } else {
             return false;
@@ -261,8 +261,8 @@ class SC_Utils {
 
     /* DB用日付文字列取得 */
     function sfGetTimestamp($year, $month, $day, $last = false) {
-        if($year != "" && $month != "" && $day != "") {
-            if($last) {
+        if ($year != "" && $month != "" && $day != "") {
+            if ($last) {
                 $time = "23:59:59";
             } else {
                 $time = "00:00:00";
@@ -303,14 +303,14 @@ class SC_Utils {
     }
 
     function sfGetCSVData($data, $prefix = ""){
-        if($prefix == "") {
+        if ($prefix == "") {
             $dir_name = SC_Utils_Ex::sfUpDirName();
             $file_name = $dir_name . date('ymdHis') .".csv";
         } else {
             $file_name = $prefix . date('ymdHis') .".csv";
         }
 
-        if (mb_internal_encoding() == CHAR_CODE){
+        if (mb_internal_encoding() == CHAR_CODE) {
             $data = mb_convert_encoding($data,'SJIS-Win',CHAR_CODE);
         }
 
@@ -333,7 +333,7 @@ class SC_Utils {
     function sfMergeCBValue($keyname, $max) {
         $conv = "";
         $cnt = 1;
-        for($cnt = 1; $cnt <= $max; $cnt++) {
+        for ($cnt = 1; $cnt <= $max; $cnt++) {
             if ($_POST[$keyname . $cnt] == "1") {
                 $conv.= "1";
             } else {
@@ -349,13 +349,13 @@ class SC_Utils {
      */
     function sfMergeCheckBoxes($array, $max) {
         $ret = "";
-        if(is_array($array)) {
-            foreach($array as $val) {
+        if (is_array($array)) {
+            foreach ($array as $val) {
                 $arrTmp[$val] = "1";
             }
         }
-        for($i = 1; $i <= $max; $i++) {
-            if(isset($arrTmp[$i]) && $arrTmp[$i] == "1") {
+        for ($i = 1; $i <= $max; $i++) {
+            if (isset($arrTmp[$i]) && $arrTmp[$i] == "1") {
                 $ret.= "1";
             } else {
                 $ret.= "0";
@@ -370,9 +370,9 @@ class SC_Utils {
      */
     function sfMergeParamCheckBoxes($array) {
         $ret = '';
-        if(is_array($array)) {
-            foreach($array as $val) {
-                if($ret != "") {
+        if (is_array($array)) {
+            foreach ($array as $val) {
+                if ($ret != "") {
                     $ret.= "-$val";
                 } else {
                     $ret = $val;
@@ -407,8 +407,8 @@ class SC_Utils {
     function sfSplitCheckBoxes($val) {
         $arrRet = array();
         $len = strlen($val);
-        for($i = 0; $i < $len; $i++) {
-            if(substr($val, $i, 1) == "1") {
+        for ($i = 0; $i < $len; $i++) {
+            if (substr($val, $i, 1) == "1") {
                 $arrRet[] = ($i + 1);
             }
         }
@@ -422,7 +422,7 @@ class SC_Utils {
     function sfMergeCBSearchValue($keyname, $max) {
         $conv = "";
         $cnt = 1;
-        for($cnt = 1; $cnt <= $max; $cnt++) {
+        for ($cnt = 1; $cnt <= $max; $cnt++) {
             if ($_POST[$keyname . $cnt] == "1") {
                 $conv.= "1";
             } else {
@@ -441,7 +441,7 @@ class SC_Utils {
         $len = strlen($val);
         $no = 1;
         for ($cnt = 0; $cnt < $len; $cnt++) {
-            if($keyname != "") {
+            if ($keyname != "") {
                 $arr[$keyname . $no] = substr($val, $cnt, 1);
             } else {
                 $arr[] = substr($val, $cnt, 1);
@@ -456,19 +456,19 @@ class SC_Utils {
         $arrRet = array();
         $max = count($arrList);
 
-        if($len_max != "" && $max > $len_max) {
+        if ($len_max != "" && $max > $len_max) {
             $max = $len_max;
         }
 
-        for($cnt = 0; $cnt < $max; $cnt++) {
-            if($keysize != "") {
+        for ($cnt = 0; $cnt < $max; $cnt++) {
+            if ($keysize != "") {
                 $key = SC_Utils_Ex::sfCutString($arrList[$cnt][$keyname], $keysize);
             } else {
                 $key = $arrList[$cnt][$keyname];
             }
             $val = $arrList[$cnt][$valname];
 
-            if(!isset($arrRet[$key])) {
+            if (!isset($arrRet[$key])) {
                 $arrRet[$key] = $val;
             }
 
@@ -481,19 +481,19 @@ class SC_Utils {
 
         $max = count($arrList);
 
-        if($len_max != "" && $max > $len_max) {
+        if ($len_max != "" && $max > $len_max) {
             $max = $len_max;
         }
 
-        for($cnt = 0; $cnt < $max; $cnt++) {
-            if($keysize != "") {
+        for ($cnt = 0; $cnt < $max; $cnt++) {
+            if ($keysize != "") {
                 $key = SC_Utils_Ex::sfCutString($arrList[$cnt][$keyname], $keysize);
             } else {
                 $key = $arrList[$cnt][$keyname];
             }
             $val = $arrList[$cnt][$valname];
 
-            if($connect != "") {
+            if ($connect != "") {
                 $arrRet[$key].= "$val".$connect;
             } else {
                 $arrRet[$key][] = $val;
@@ -506,7 +506,7 @@ class SC_Utils {
     function sfGetCommaList($array, $space=true, $arrPop = array()) {
         if (count($array) > 0) {
             $line = "";
-            foreach($array as $val) {
+            foreach ($array as $val) {
                 if (!in_array($val, $arrPop)) {
                     if ($space) {
                         $line .= $val . ", ";
@@ -531,12 +531,12 @@ class SC_Utils {
     function sfGetCSVList($array) {
         $line = "";
         if (count($array) > 0) {
-            foreach($array as $key => $val) {
+            foreach ($array as $key => $val) {
                 $val = mb_convert_encoding($val, CHAR_CODE, CHAR_CODE);
                 $line .= "\"".$val."\",";
             }
             $line = ereg_replace(",$", "\r\n", $line);
-        }else{
+        } else {
             return false;
         }
         return $line;
@@ -555,15 +555,15 @@ class SC_Utils {
 
         // 期間指定
         $error = 0;
-        if ( $start_month || $start_day || $start_year){
+        if ($start_month || $start_day || $start_year) {
             if ( ! checkdate($start_month, $start_day , $start_year) ) $error = 1;
         } else {
             $error = 1;
         }
-        if ( $end_month || $end_day || $end_year){
+        if ($end_month || $end_day || $end_year) {
             if ( ! checkdate($end_month ,$end_day ,$end_year) ) $error = 2;
         }
-        if ( ! $error ){
+        if (! $error ) {
             $date1 = $start_year ."/".sprintf("%02d",$start_month) ."/".sprintf("%02d",$start_day) ." 000000";
             $date2 = $end_year   ."/".sprintf("%02d",$end_month)   ."/".sprintf("%02d",$end_day)   ." 235959";
             if ($date1 > $date2) $error = 3;
@@ -580,8 +580,8 @@ class SC_Utils {
 
     // 一致した値のキー名を取得
     function sfSearchKey($array, $word, $default) {
-        foreach($array as $key => $val) {
-            if($val == $word) {
+        foreach ($array as $key => $val) {
+            if ($val == $word) {
                 return $key;
             }
         }
@@ -589,14 +589,14 @@ class SC_Utils {
     }
 
     function sfGetErrorColor($val) {
-        if($val != "") {
+        if ($val != "") {
             return "background-color:" . ERR_COLOR;
         }
         return "";
     }
 
     function sfGetEnabled($val) {
-        if( ! $val ) {
+        if (! $val ) {
             return " disabled=\"disabled\"";
         }
         return "";
@@ -629,7 +629,7 @@ class SC_Utils {
     function sfTax($price, $tax, $tax_rule) {
         $real_tax = $tax / 100;
         $ret = $price * $real_tax;
-        switch($tax_rule) {
+        switch ($tax_rule) {
         // 四捨五入
         case 1:
             $ret = round($ret);
@@ -670,7 +670,7 @@ class SC_Utils {
         $adjust = pow(10 ,$pow-1);
 
         // 整数且つ0出なければ桁数指定を行う
-        if(SC_Utils_Ex::sfIsInt($adjust) and $pow > 1){
+        if (SC_Utils_Ex::sfIsInt($adjust) and $pow > 1) {
             $ret = (round($value * $adjust)/$adjust);
         }
 
@@ -683,7 +683,7 @@ class SC_Utils {
     function sfPrePoint($price, $point_rate, $rule = POINT_RULE, $product_id = "") {
         $real_point = $point_rate / 100;
         $ret = $price * $real_point;
-        switch($rule) {
+        switch ($rule) {
         // 四捨五入
         case 1:
             $ret = round($ret);
@@ -735,7 +735,7 @@ class SC_Utils {
     function sfDispDBDate($dbdate, $time = true) {
         list($y, $m, $d, $H, $M) = preg_split("/[- :]/", $dbdate);
 
-        if(strlen($y) > 0 && strlen($m) > 0 && strlen($d) > 0) {
+        if (strlen($y) > 0 && strlen($m) > 0 && strlen($d) > 0) {
             if ($time) {
                 $str = sprintf("%04d/%02d/%02d %02d:%02d", $y, $m, $d, $H, $M);
             } else {
@@ -750,9 +750,9 @@ class SC_Utils {
     /* 配列をキー名ごとの配列に変更する */
     function sfSwapArray($array, $isColumnName = true) {
         $arrRet = array();
-        foreach($array as $key1 => $arr1) {
+        foreach ($array as $key1 => $arr1) {
             $index = 0;
-            foreach($arr1 as $key2 => $val) {
+            foreach ($arr1 as $key2 => $val) {
                 if ($isColumnName) {
                     $arrRet[$key2][$key1] = $val;
                 } else {
@@ -808,7 +808,7 @@ class SC_Utils {
         // 購入商品の合計ポイントから利用したポイントのポイント換算価値を引く方式
         $add_point = $totalpoint - intval($use_point * ($point_rate / 100));
 
-        if($add_point < 0) {
+        if ($add_point < 0) {
             $add_point = '0';
         }
         return $add_point;
@@ -830,16 +830,16 @@ class SC_Utils {
         $line = array();
         $ret = "";
 
-        while($str[$i] != "") {
+        while ($str[$i] != "") {
             $line[$cnt].=$str[$i];
             $i++;
-            if(strlen($line[$cnt]) > $size) {
+            if (strlen($line[$cnt]) > $size) {
                 $line[$cnt].="<br />";
                 $cnt++;
             }
         }
 
-        foreach($line as $val) {
+        foreach ($line as $val) {
             $ret.=$val;
         }
         return $ret;
@@ -847,10 +847,10 @@ class SC_Utils {
 
     // 二回以上繰り返されているスラッシュ[/]を一つに変換する。
     function sfRmDupSlash($istr){
-        if(ereg("^http://", $istr)) {
+        if (ereg("^http://", $istr)) {
             $str = substr($istr, 7);
             $head = "http://";
-        } else if(ereg("^https://", $istr)) {
+        } else if (ereg("^https://", $istr)) {
             $str = substr($istr, 8);
             $head = "https://";
         } else {
@@ -889,7 +889,7 @@ class SC_Utils {
 
             $ofp = fopen($outpath, "w+");
 
-            while(!feof($ifp)) {
+            while (!feof($ifp)) {
                 $line = fgets($ifp);
                 $line = mb_convert_encoding($line, $enc_type, 'auto');
                 fwrite($ofp,  $line);
@@ -907,8 +907,8 @@ class SC_Utils {
     }
 
     function sfCutString($str, $len, $byte = true, $commadisp = true) {
-        if($byte) {
-            if(strlen($str) > ($len + 2)) {
+        if ($byte) {
+            if (strlen($str) > ($len + 2)) {
                 $ret =substr($str, 0, $len);
                 $cut = substr($str, $len);
             } else {
@@ -916,7 +916,7 @@ class SC_Utils {
                 $commadisp = false;
             }
         } else {
-            if(mb_strlen($str) > ($len + 1)) {
+            if (mb_strlen($str) > ($len + 1)) {
                 $ret = mb_substr($str, 0, $len);
                 $cut = mb_substr($str, $len);
             } else {
@@ -947,7 +947,7 @@ class SC_Utils {
             }
         }
 
-        if($commadisp){
+        if ($commadisp) {
             $ret = $ret . "...";
         }
         return $ret;
@@ -965,7 +965,7 @@ class SC_Utils {
         $end_last_day = date('d', mktime(0, 0, 0, $month + 1, 0, $year));
 
         // 月の末日が締め日より少ない場合
-        if($end_last_day < $close_day) {
+        if ($end_last_day < $close_day) {
             // 締め日を月末日に合わせる
             $end_day = $end_last_day;
         } else {
@@ -1000,14 +1000,14 @@ class SC_Utils {
 
     // 再帰的に多段配列を検索して一次元配列(Hidden引渡し用配列)に変換する。
     function sfMakeHiddenArray($arrSrc, $arrDst = array(), $parent_key = "") {
-        if(is_array($arrSrc)) {
-            foreach($arrSrc as $key => $val) {
-                if($parent_key != "") {
+        if (is_array($arrSrc)) {
+            foreach ($arrSrc as $key => $val) {
+                if ($parent_key != "") {
                     $keyname = $parent_key . "[". $key . "]";
                 } else {
                     $keyname = $key;
                 }
-                if(is_array($val)) {
+                if (is_array($val)) {
                     $arrDst = SC_Utils_Ex::sfMakeHiddenArray($val, $arrDst, $keyname);
                 } else {
                     $arrDst[$keyname] = $val;
@@ -1039,7 +1039,7 @@ class SC_Utils {
 
         $max = max( count( $keys ), count( $vals ) );
         $combine_ary = array();
-        for($i=0; $i<$max; $i++) {
+        for ($i=0; $i<$max; $i++) {
             $combine_ary[$keys[$i]] = $vals[$i];
         }
         if(is_array($combine_ary)) return $combine_ary;
@@ -1052,17 +1052,17 @@ class SC_Utils {
         $max = count($arrData);
 
         $arrBrothers = array();
-        foreach($arrPID as $id) {
+        foreach ($arrPID as $id) {
             // 親IDを検索する
-            for($i = 0; $i < $max; $i++) {
-                if($arrData[$i][$id_name] == $id) {
+            for ($i = 0; $i < $max; $i++) {
+                if ($arrData[$i][$id_name] == $id) {
                     $parent = $arrData[$i][$pid_name];
                     break;
                 }
             }
             // 兄弟IDを検索する
-            for($i = 0; $i < $max; $i++) {
-                if($arrData[$i][$pid_name] == $parent) {
+            for ($i = 0; $i < $max; $i++) {
+                if ($arrData[$i][$pid_name] == $parent) {
                     $arrBrothers[] = $arrData[$i][$id_name];
                 }
             }
@@ -1076,8 +1076,8 @@ class SC_Utils {
 
         $arrChildren = array();
         // 子IDを検索する
-        for($i = 0; $i < $max; $i++) {
-            if($arrData[$i][$pid_name] == $parent) {
+        for ($i = 0; $i < $max; $i++) {
+            if ($arrData[$i][$pid_name] == $parent) {
                 $arrChildren[] = $arrData[$i][$id_name];
             }
         }
@@ -1106,19 +1106,19 @@ class SC_Utils {
         static $count = 0;
         $count++;  // 無限ループ回避
         $dir = dirname($path);
-        if(ereg("^[/]$", $dir) || ereg("^[A-Z]:[\\]$", $dir) || $count > 256) {
+        if (ereg("^[/]$", $dir) || ereg("^[A-Z]:[\\]$", $dir) || $count > 256) {
             // ルートディレクトリで終了
             return;
         } else {
-            if(is_writable(dirname($dir))) {
-                if(!file_exists($dir)) {
+            if (is_writable(dirname($dir))) {
+                if (!file_exists($dir)) {
                     mkdir($dir);
                     GC_Utils_Ex::gfPrintLog("mkdir $dir");
                 }
             } else {
                 SC_Utils_Ex::sfMakeDir($dir);
-                if(is_writable(dirname($dir))) {
-                    if(!file_exists($dir)) {
+                if (is_writable(dirname($dir))) {
+                    if (!file_exists($dir)) {
                         mkdir($dir);
                         GC_Utils_Ex::gfPrintLog("mkdir $dir");
                     }
@@ -1130,7 +1130,7 @@ class SC_Utils {
 
     // ディレクトリ以下のファイルを再帰的にコピー
     function sfCopyDir($src, $des, $mess = "", $override = false){
-        if(!is_dir($src)){
+        if (!is_dir($src)) {
             return false;
         }
 
@@ -1138,35 +1138,35 @@ class SC_Utils {
         $mod= stat($src);
 
         // ディレクトリがなければ作成する
-        if(!file_exists($des)) {
-            if(!mkdir($des, $mod[2])) {
+        if (!file_exists($des)) {
+            if (!mkdir($des, $mod[2])) {
                 echo 'path:' . $des;
             }
         }
 
         $fileArray=glob( $src."*" );
         if (is_array($fileArray)) {
-            foreach( $fileArray as $key => $data_ ){
+            foreach ($fileArray as $key => $data_ ) {
                 // CVS管理ファイルはコピーしない
-                if(ereg("/CVS/Entries", $data_)) {
+                if (ereg("/CVS/Entries", $data_)) {
                     break;
                 }
-                if(ereg("/CVS/Repository", $data_)) {
+                if (ereg("/CVS/Repository", $data_)) {
                     break;
                 }
-                if(ereg("/CVS/Root", $data_)) {
+                if (ereg("/CVS/Root", $data_)) {
                     break;
                 }
 
                 mb_ereg("^(.*[\/])(.*)",$data_, $matches);
                 $data=$matches[2];
-                if( is_dir( $data_ ) ){
+                if (is_dir( $data_ ) ) {
                     $mess = SC_Utils_Ex::sfCopyDir( $data_.'/', $des.$data.'/', $mess);
-                }else{
-                    if(!$override && file_exists($des.$data)) {
+                } else {
+                    if (!$override && file_exists($des.$data)) {
                         $mess.= $des.$data . "：ファイルが存在します\n";
                     } else {
-                        if(@copy( $data_, $des.$data)) {
+                        if (@copy( $data_, $des.$data)) {
                             $mess.= $des.$data . "：コピー成功\n";
                         } else {
                             $mess.= $des.$data . "：コピー失敗\n";
@@ -1182,19 +1182,19 @@ class SC_Utils {
 
     // 指定したフォルダ内のファイルを全て削除する
     function sfDelFile($dir){
-        if(file_exists($dir)) {
+        if (file_exists($dir)) {
             $dh = opendir($dir);
             // フォルダ内のファイルを削除
-            while($file = readdir($dh)){
+            while ($file = readdir($dh)) {
                 if ($file == "." or $file == "..") continue;
                 $del_file = $dir . "/" . $file;
-                if(is_file($del_file)){
+                if (is_file($del_file)) {
                     $ret = unlink($dir . "/" . $file);
-                }else if (is_dir($del_file)){
+                }else if (is_dir($del_file)) {
                     $ret = SC_Utils_Ex::sfDelFile($del_file);
                 }
 
-                if(!$ret){
+                if (!$ret) {
                     return $ret;
                 }
             }
@@ -1231,7 +1231,7 @@ class SC_Utils {
         //ファイルを閉じる
         fclose ($file);
         // 権限を指定
-        if($permission != "") {
+        if ($permission != "") {
             chmod($path, $permission);
         }
 
@@ -1267,12 +1267,12 @@ class SC_Utils {
 
     // @versionの記載があるファイルからバージョンを取得する。
     function sfGetFileVersion($path) {
-        if(file_exists($path)) {
+        if (file_exists($path)) {
             $src_fp = fopen($path, 'rb');
-            if($src_fp) {
+            if ($src_fp) {
                 while (!feof($src_fp)) {
                     $line = fgets($src_fp);
-                    if(ereg("@version", $line)) {
+                    if (ereg("@version", $line)) {
                         $arrLine = explode(" ", $line);
                         $version = $arrLine[5];
                     }
@@ -1293,7 +1293,7 @@ class SC_Utils {
      */
     function mbConvertKanaWithArray($array, $arrConvList) {
         foreach ($arrConvList as $key => $val) {
-            if(isset($array[$key])) {
+            if (isset($array[$key])) {
                 $array[$key] = mb_convert_kana($array[$key] ,$val);
             }
         }
@@ -1362,9 +1362,9 @@ class SC_Utils {
                 $dir = ereg_replace("/$", "", $dir);
                 // アルファベットと数字でソート
                 natcasesort($arrDir);
-                foreach($arrDir as $file) {
+                foreach ($arrDir as $file) {
                     // ./ と ../を除くファイルのみを取得
-                    if($file != "." && $file != "..") {
+                    if ($file != "." && $file != "..") {
 
                         $path = $dir."/".$file;
                         // SELECT内の見た目を整えるため指定文字数で切る
@@ -1373,7 +1373,7 @@ class SC_Utils {
                         $file_time = date("Y/m/d", filemtime($path));
 
                         // ディレクトリとファイルで格納配列を変える
-                        if(is_dir($path)) {
+                        if (is_dir($path)) {
                             $arrDirList[$cnt]['file_name'] = $file;
                             $arrDirList[$cnt]['file_path'] = $path;
                             $arrDirList[$cnt]['file_size'] = $file_size;
@@ -1403,7 +1403,7 @@ class SC_Utils {
      * 引数1 ：ディレクトリ
      */
     function sfGetDirSize($dir) {
-        if(file_exists($dir)) {
+        if (file_exists($dir)) {
             // ディレクトリの場合下層ファイルの総量を取得
             if (is_dir($dir)) {
                 $handle = opendir($dir);
@@ -1444,7 +1444,7 @@ class SC_Utils {
         // 文末の/を取り除く
         $dir = ereg_replace("/$", "", $dir);
         // 最上位層を格納(user_data/)
-        if(sfDirChildExists($dir)) {
+        if (sfDirChildExists($dir)) {
             $arrTree[$cnt]['type'] = "_parent";
         } else {
             $arrTree[$cnt]['type'] = "_child";
@@ -1453,7 +1453,7 @@ class SC_Utils {
         $arrTree[$cnt]['rank'] = 0;
         $arrTree[$cnt]['count'] = $cnt;
         // 初期表示はオープン
-        if($_POST['mode'] != '') {
+        if ($_POST['mode'] != '') {
             $arrTree[$cnt]['open'] = lfIsFileOpen($dir, $tree_status);
         } else {
             $arrTree[$cnt]['open'] = true;
@@ -1475,12 +1475,12 @@ class SC_Utils {
      */
     function sfGetFileTreeSub($dir, $default_rank, &$cnt, &$arrTree, $tree_status) {
 
-        if(file_exists($dir)) {
+        if (file_exists($dir)) {
             if ($handle = opendir("$dir")) {
                 while (false !== ($item = readdir($handle))) $arrDir[] = $item;
                 // アルファベットと数字でソート
                 natcasesort($arrDir);
-                foreach($arrDir as $item) {
+                foreach ($arrDir as $item) {
                     if ($item != "." && $item != "..") {
                         // 文末の/を取り除く
                         $dir = ereg_replace("/$", "", $dir);
@@ -1488,7 +1488,7 @@ class SC_Utils {
                         // ディレクトリのみ取得
                         if (is_dir($path)) {
                             $arrTree[$cnt]['path'] = $path;
-                            if(sfDirChildExists($path)) {
+                            if (sfDirChildExists($path)) {
                                 $arrTree[$cnt]['type'] = "_parent";
                             } else {
                                 $arrTree[$cnt]['type'] = "_child";
@@ -1518,7 +1518,7 @@ class SC_Utils {
      * 引数1 ：ディレクトリ
      */
     function sfDirChildExists($dir) {
-        if(file_exists($dir)) {
+        if (file_exists($dir)) {
             if (is_dir($dir)) {
                 $handle = opendir($dir);
                 while ($file = readdir($handle)) {
@@ -1543,7 +1543,7 @@ class SC_Utils {
      */
     function lfIsFileOpen($dir, $tree_status) {
         $arrTreeStatus = explode('\|', $tree_status);
-        if(in_array($dir, $arrTreeStatus)) {
+        if (in_array($dir, $arrTreeStatus)) {
             return true;
         }
 
@@ -1572,7 +1572,7 @@ class SC_Utils {
      */
     function sfCreateFile($file, $mode = "") {
         // 行末の/を取り除く
-        if($mode != "") {
+        if ($mode != "") {
             $ret = @mkdir($file, $mode);
         } else {
             $ret = @mkdir($file);
@@ -1591,7 +1591,7 @@ class SC_Utils {
         // バイナリモードでオープン
         $fp = @fopen($filename, 'rb' );
         //ファイル内容を全て変数に読み込む
-        if($fp) {
+        if ($fp) {
             $str = @fread($fp, filesize($filename)+1);
         }
         @fclose($fp);
@@ -1605,16 +1605,16 @@ class SC_Utils {
      * @return string
      */
     function getCSVData($array, $arrayIndex) {
-        for ($i = 0; $i < count($array); $i++){
+        for ($i = 0; $i < count($array); $i++) {
             // インデックスが設定されている場合
-            if (is_array($arrayIndex) && 0 < count($arrayIndex)){
-                for ($j = 0; $j < count($arrayIndex); $j++ ){
+            if (is_array($arrayIndex) && 0 < count($arrayIndex)) {
+                for ($j = 0; $j < count($arrayIndex); $j++ ) {
                     if ( $j > 0 ) $return .= ",";
                     $return .= "\"";
                     $return .= mb_ereg_replace("<","＜",mb_ereg_replace( "\"","\"\"",$array[$i][$arrayIndex[$j]] )) ."\"";
                 }
             } else {
-                for ($j = 0; $j < count($array[$i]); $j++ ){
+                for ($j = 0; $j < count($array[$i]); $j++ ) {
                     if ( $j > 0 ) $return .= ",";
                     $return .= "\"";
                     $return .= mb_ereg_replace("<","＜",mb_ereg_replace( "\"","\"\"",$array[$i][$j] )) ."\"";
@@ -1633,16 +1633,16 @@ class SC_Utils {
     function getTableTag($array) {
         $html = "<table>";
         $html.= "<tr>";
-        foreach($array[0] as $key => $val) {
+        foreach ($array[0] as $key => $val) {
             $html.="<th>$key</th>";
         }
         $html.= "</tr>";
 
         $cnt = count($array);
 
-        for($i = 0; $i < $cnt; $i++) {
+        for ($i = 0; $i < $cnt; $i++) {
             $html.= "<tr>";
-            foreach($array[$i] as $val) {
+            foreach ($array[$i] as $val) {
                 $html.="<td>$val</td>";
             }
             $html.= "</tr>";
@@ -1988,7 +1988,7 @@ class SC_Utils {
         if ($salt == '') {
             $salt = AUTH_MAGIC;
         }
-        if ( AUTH_TYPE == 'PLAIN') {
+        if (AUTH_TYPE == 'PLAIN') {
             $res = $str;
         } else {
             $res = hash_hmac(PASSWORD_HASH_ALGOS, $str . ":" . AUTH_MAGIC, $salt);
@@ -2008,7 +2008,7 @@ class SC_Utils {
         $res = false;
         if ($hashpass != '') {
             if (AUTH_TYPE == 'PLAIN') {
-                if($pass === $hashpass) {
+                if ($pass === $hashpass) {
                     $res = true;
                 }
             } else {
@@ -2018,7 +2018,7 @@ class SC_Utils {
                 } else {
                     $hash = SC_Utils_Ex::sfGetHashString($pass, $salt);
                 }
-                if($hash === $hashpass) {
+                if ($hash === $hashpass) {
                     $res = true;
                 }
             }

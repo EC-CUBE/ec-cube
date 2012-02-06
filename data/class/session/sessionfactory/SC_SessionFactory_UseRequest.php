@@ -49,7 +49,7 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory {
      * @param string $state
      */
     function setState($state = 'pc') {
-        switch($state) {
+        switch ($state) {
         case 'mobile':
             $this->state = new LC_UseRequest_State_Mobile;
             break;

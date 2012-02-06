@@ -83,7 +83,7 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
             }
         }
 
-        switch($mode) {
+        switch ($mode) {
         case 'delete':
             // ランク付きレコードの削除
             $objDb->sfDeleteRankRecord("dtb_deliv", "deliv_id", $_POST['deliv_id']);

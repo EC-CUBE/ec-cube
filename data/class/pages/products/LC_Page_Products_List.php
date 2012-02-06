@@ -126,7 +126,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
         $this->objNavi      = new SC_PageNavi_Ex($this->tpl_pageno, $this->tpl_linemax, $this->disp_number, 'fnNaviPage', NAVI_PMAX, $urlParam, SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE);
         $this->arrProducts  = $this->lfGetProductsList($arrSearchCondition, $this->disp_number, $this->objNavi->start_row, $this->tpl_linemax, $objProduct);
 
-        switch($this->getMode()){
+        switch ($this->getMode()) {
 
             case "json":
                    $this->arrProducts = $this->setStatusDataTo($this->arrProducts, $this->arrSTATUS, $this->arrSTATUS_IMAGE);
@@ -179,7 +179,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
 
                 //カート処理
                 $target_product_id = intval($this->arrForm['product_id']);
-                if ( $target_product_id > 0) {
+                if ($target_product_id > 0) {
                     // 商品IDの正当性チェック
                     if (!SC_Utils_Ex::sfIsInt($this->arrForm['product_id'])
                         || !SC_Helper_DB_Ex::sfIsRecord("dtb_products", "product_id", $this->arrForm['product_id'], "del_flg = 0 AND status = 1")) {
@@ -426,7 +426,7 @@ __EOS__;
         $names = preg_split("/ +/", $name);
         // 分割したキーワードを一つずつwhere文に追加
         foreach ($names as $val) {
-            if ( strlen($val) > 0 ) {
+            if (strlen($val) > 0 ) {
                 $searchCondition['where']    .= " AND ( alldtl.name ILIKE ? OR alldtl.comment3 ILIKE ?) ";
                 $searchCondition['arrval'][]  = "%$val%";
                 $searchCondition['arrval'][]  = "%$val%";
@@ -493,7 +493,7 @@ __EOS__;
     function setStatusDataTo($arrProducts, $arrStatus, $arrStatusImage){
 
         foreach ($arrProducts['productStatus'] as $product_id => $arrValues) {
-            for ($i = 0; $i < count($arrValues); $i++){
+            for ($i = 0; $i < count($arrValues); $i++) {
                 $product_status_id = $arrValues[$i];
                 if (!empty($product_status_id)) {
                     $arrProductStatus = array('status_cd' => $product_status_id,

@@ -72,7 +72,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
         // パラメーターの初期化
         $this->initForm($objFormParam, $_POST);
 
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
         case 'confirm' :
             $message = $this->lfDoChange($objFormParam);
             if (!is_array($message) && $message != "") {
@@ -118,20 +118,20 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrTarget = $this->lfGetTargetData($objFormParam);
         $message = "";
-        if(is_array($arrTarget) && count($arrTarget) == 0) {
+        if (is_array($arrTarget) && count($arrTarget) == 0) {
             $message = "window.alert('変更対象となるデータはありませんでした。');";
             return $message;
-        } elseif(!is_array($arrTarget) && $arrTarget != "") {
+        } elseif (!is_array($arrTarget) && $arrTarget != "") {
             return $arrTarget; // window.alert が返ってきているはず。
         }
 
         // 変更対象の設定変更
-        foreach($arrTarget as $item) {
+        foreach ($arrTarget as $item) {
             $index_name = $item['table_name'] . '_' . $item['column_name'] . "_key";
             $arrField = array( 'fields' => array($item['column_name'] => array()));
-            if($item['indexflag_new'] == '1') {
+            if ($item['indexflag_new'] == '1') {
                 $objQuery->createIndex($item['table_name'], $index_name, $arrField);
-            }else{
+            } else {
                 $objQuery->dropIndex($item['table_name'], $index_name);
             }
         }
@@ -149,7 +149,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
         $message = "";
 
         // 変更されている対象を走査
-        for($i = 1; $i <= count($arrIndexFlag); $i++) {
+        for ($i = 1; $i <= count($arrIndexFlag); $i++) {
             //入力値チェック
             $param = array('indexflag' => $arrIndexFlag[$i],
                             'indexflag_new' => $arrIndexFlagNew[$i],
@@ -162,12 +162,12 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
             $objErr->doFunc(array("テーブル名(" . $i . ")", 'table_name', STEXT_LEN), array("GRAPH_CHECK", "EXIST_CHECK", "MAX_LENGTH_CHECK"));
             $objErr->doFunc(array("カラム名(" . $i . ")", 'column_name', STEXT_LEN), array("GRAPH_CHECK", "EXIST_CHECK", "MAX_LENGTH_CHECK"));
             $arrErr = $objErr->arrErr;
-            if(count($arrErr) != 0) {
+            if (count($arrErr) != 0) {
                 // 通常の送信ではエラーにならないはずです。
                 $message = "window.alert('不正なデータがあったため処理を中断しました。');";
                 return $message;
             }
-            if($param['indexflag'] != $param['indexflag_new']) {
+            if ($param['indexflag'] != $param['indexflag_new']) {
                 // 入力値がデータにある対象テーブルかのチェック
                 if ($objQuery->exists('dtb_index_list', 'table_name = ? and column_name = ?', array($param['table_name'], $param['column_name']))) {
                     $arrTarget[] = $param;
@@ -190,15 +190,15 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
         $arrIndexList = $objQuery->select("table_name , column_name , recommend_flg, recommend_comment", "dtb_index_list");
 
         $table = "";
-        foreach($arrIndexList as $key => $arrIndex) {
+        foreach ($arrIndexList as $key => $arrIndex) {
             // テーブルに対するインデックス一覧を取得
-            if($table !== $arrIndex["table_name"]) {
+            if ($table !== $arrIndex["table_name"]) {
                 $table = $arrIndex["table_name"];
                 $arrIndexes = $objQuery->listTableIndexes($table);
             }
             // インデックスが設定されているかを取得
             $idx_name = $table . "_" . $arrIndex["column_name"] . "_key";
-            if(array_search($idx_name, $arrIndexes) === false) {
+            if (array_search($idx_name, $arrIndexes) === false) {
                 $arrIndexList[$key]['indexflag'] = '';
             } else {
                 $arrIndexList[$key]['indexflag'] = '1';

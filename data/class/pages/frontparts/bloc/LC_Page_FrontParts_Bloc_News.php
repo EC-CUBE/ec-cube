@@ -63,13 +63,13 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
     function action() {
 
         $objFormParam = new SC_FormParam_Ex();
-        switch($this->getMode()){
+        switch ($this->getMode()) {
             case "getList":
                 $this->lfInitNewsParam($objFormParam);
                 $objFormParam->setParam($_POST);
                 $objFormParam->convParam();
                 $this->arrErr = $objFormParam->checkError(false);
-                if(empty($this->arrErr)){
+                if (empty($this->arrErr)) {
                     $json = $this->lfGetNewsForJson($objFormParam);
                     echo $json;
                     exit;
@@ -83,7 +83,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
                 $objFormParam->setParam($_GET);
                 $objFormParam->convParam();
                 $this->arrErr = $objFormParam->checkError(false);
-                if(empty($this->arrErr)){
+                if (empty($this->arrErr)) {
                      $json = $this->lfGetNewsDetailForJson($objFormParam);
                      echo $json;
                      exit;
@@ -158,7 +158,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
 
         $dispNumber = $arrData['disp_number'];
         $pageNo = $arrData['pageno'];
-        if(!empty($dispNumber) && !empty($pageNo)){
+        if (!empty($dispNumber) && !empty($pageNo)) {
              $objQuery->setLimitOffset($dispNumber, (($pageNo - 1) * $dispNumber));
         }
 

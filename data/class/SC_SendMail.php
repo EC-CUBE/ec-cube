@@ -62,7 +62,7 @@ class SC_SendMail {
 
     // 宛先の設定
     function setTo($to, $to_name = "") {
-        if($to != "") {
+        if ($to != "") {
             $this->to = $this->getNameAddress($to_name, $to);
             $this->setRecip('To', $to);
         }
@@ -75,7 +75,7 @@ class SC_SendMail {
 
     // CCの設定
     function setCc($cc, $cc_name = "") {
-        if($cc != "") {
+        if ($cc != "") {
             $this->cc = $this->getNameAddress($cc_name, $cc);
             $this->setRecip('Cc', $cc);
         }
@@ -83,7 +83,7 @@ class SC_SendMail {
 
     // BCCの設定
     function setBCc($bcc) {
-        if($bcc != "") {
+        if ($bcc != "") {
             $this->bcc = $bcc;
             $this->setRecip('Bcc', $bcc);
         }
@@ -91,7 +91,7 @@ class SC_SendMail {
 
     // Reply-Toの設定
     function setReplyTo($reply_to) {
-        if($reply_to != "") {
+        if ($reply_to != "") {
             $this->reply_to = $reply_to;
         }
     }
@@ -139,7 +139,7 @@ class SC_SendMail {
 
     // 名前<メールアドレス>の形式を生成
     function getNameAddress($name, $mail_address) {
-            if($name != "") {
+            if ($name != "") {
                 // 制御文字を変換する。
                 $_name = $name;
                 $_name = ereg_replace("<","＜", $_name);
@@ -189,9 +189,9 @@ class SC_SendMail {
         $this->setBcc($bcc);
 
         // Errors-Toは、ほとんどのSMTPで無視され、Return-Pathが優先されるためReturn_Pathに設定する。
-        if($errors_to != "") {
+        if ($errors_to != "") {
             $this->return_path = $errors_to;
-        } else if($return_path != "") {
+        } else if ($return_path != "") {
             $this->return_path = $return_path;
         } else {
             $this->return_path = $fromaddress;
@@ -206,13 +206,13 @@ class SC_SendMail {
         $arrHeader['Subject'] = $this->subject;
         $arrHeader['From'] = $this->from;
         $arrHeader['Return-Path'] = $this->return_path;
-        if($this->reply_to != "") {
+        if ($this->reply_to != "") {
             $arrHeader['Reply-To'] = $this->reply_to;
         }
-        if($this->cc != "") {
+        if ($this->cc != "") {
             $arrHeader['Cc'] = $this->cc;
         }
-        if($this->bcc != "") {
+        if ($this->bcc != "") {
             $arrHeader['Bcc'] = $this->bcc;
         }
         $arrHeader['Date'] = date("D, j M Y H:i:s O");

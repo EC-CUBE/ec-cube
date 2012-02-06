@@ -84,7 +84,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
         $this->arrForm  = $objFormParam->getHashArray();
 
         // モードによる処理切り替え
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
 
         // 編集処理
         case 'edit':
@@ -92,8 +92,8 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
 
             // エラーチェック
             $this->arrErr = $this->lfErrorCheck($this->arrForm);
-            if(count($this->arrErr) <= 0) {
-                if($this->arrForm['maker_id'] == "") {
+            if (count($this->arrErr) <= 0) {
+                if ($this->arrForm['maker_id'] == "") {
                     // メーカー情報新規登録
                     $this->lfInsert($this->arrForm);
                 } else {
@@ -236,7 +236,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
     function lfRankChange($maker_id, $mode) {
         $objDb = new SC_Helper_DB_Ex();
 
-        switch($mode) {
+        switch ($mode) {
         case 'up':
             $objDb->sfRankUp("dtb_maker", "maker_id", $maker_id);
             break;
@@ -280,7 +280,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
         $objErr->doFunc(array("メーカー名", 'name', SMTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 
         // maker_id の正当性チェック
-        if(!empty($arrForm['maker_id'])) {
+        if (!empty($arrForm['maker_id'])) {
             $objDb = new SC_Helper_DB_Ex();
             if(!SC_Utils_Ex::sfIsInt($arrForm['maker_id']) 
               || SC_Utils_Ex::sfIsZeroFilling($arrForm['maker_id'])
@@ -290,7 +290,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
               $objErr->arrErr['maker_id'] = "※ メーカーIDが不正です<br />";
             }
         }
-        if(!isset($objErr->arrErr['name'])) {
+        if (!isset($objErr->arrErr['name'])) {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $arrMaker = array();
             $arrMaker = $objQuery->select("maker_id, name", "dtb_maker", "del_flg = 0 AND name = ?", array($arrForm['name']));

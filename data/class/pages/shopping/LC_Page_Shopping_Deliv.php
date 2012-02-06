@@ -104,7 +104,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
 
         $arrForm = $objFormParam->getHashArray();
 
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
         // 削除
         case 'delete':
             $this->doDelete($arrForm['other_deliv_id']);

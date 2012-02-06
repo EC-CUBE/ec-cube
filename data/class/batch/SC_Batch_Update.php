@@ -230,9 +230,9 @@ class SC_Batch_Update extends SC_Batch {
         }
         $arrDirs = explode("/", str_replace("\\", "/", $path));
 
-        foreach($arrDirs as $n){
+        foreach ($arrDirs as $n) {
             $dir .= $n . '/';
-            if(!file_exists($dir)) {
+            if (!file_exists($dir)) {
                 if (!@mkdir($dir)) break;
             }
         }

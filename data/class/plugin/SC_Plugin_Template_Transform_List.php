@@ -164,7 +164,7 @@ class SC_Plugin_Template_Transform_List {
      * @return void
      */
     function setHeadNaviBlocs(&$arrBlocs){
-        foreach($this->arrHeadNaviBlocsByPlugin as $key => $value){
+        foreach ($this->arrHeadNaviBlocsByPlugin as $key => $value) {
             $arrBlocs[] = array(
                 'target_id' =>$value,
                 'php_path' => $key

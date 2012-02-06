@@ -119,7 +119,7 @@ class SC_Fpdf extends PDF_Japanese {
         }
         $this->lfText(125, 80, $text, 8);  //TEL・FAX
 
-        if ( strlen($arrInfo['law_email']) > 0 ) {
+        if (strlen($arrInfo['law_email']) > 0 ) {
             $text = "Email: ".$arrInfo['law_email'];
             $this->lfText(125, 83, $text, 8);      //Email
         }
@@ -298,7 +298,7 @@ class SC_Fpdf extends PDF_Japanese {
 
     // 受注データの取得
     function lfGetOrderData($order_id) {
-        if(SC_Utils_Ex::sfIsInt($order_id)) {
+        if (SC_Utils_Ex::sfIsInt($order_id)) {
             // DBから受注情報を読み込む
             $objQuery = new SC_Query_Ex();
             $where = "order_id = ?";

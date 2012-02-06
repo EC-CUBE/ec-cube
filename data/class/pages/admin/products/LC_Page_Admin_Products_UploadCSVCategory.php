@@ -102,7 +102,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         $arrCSVFrame = $objCSV->sfGetCsvOutput($this->csv_id);
 
         // CSV構造がインポート可能かのチェック
-        if(!$objCSV->sfIsImportCSVFrame($arrCSVFrame) ) {
+        if (!$objCSV->sfIsImportCSVFrame($arrCSVFrame) ) {
             // 無効なフォーマットなので初期状態に強制変更
             $arrCSVFrame = $objCSV->sfGetCsvOutput($this->csv_id, '', array(), 'no');
             $this->tpl_is_format_default = true;
@@ -121,7 +121,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         $objFormParam->setHtmlDispNameArray();
         $this->arrTitle = $objFormParam->getHtmlDispNameArray();
 
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
         case 'csv_upload':
             $this->doUploadCsv($objFormParam, $objUpFile);
             break;
@@ -281,26 +281,26 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         // 固有の初期値調整
         $arrCSVFrame = $this->lfSetParamDefaultValue($arrCSVFrame);
         // CSV項目毎の処理
-        foreach($arrCSVFrame as $item) {
+        foreach ($arrCSVFrame as $item) {
             if($item['status'] == CSV_COLUMN_STATUS_FLG_DISABLE) continue;
             //サブクエリ構造の場合は AS名 を使用
-            if(preg_match_all('/\(.+\) as (.+)$/i', $item['col'], $match, PREG_SET_ORDER)) {
+            if (preg_match_all('/\(.+\) as (.+)$/i', $item['col'], $match, PREG_SET_ORDER)) {
                 $col = $match[0][1];
-            }else{
+            } else {
                 $col = $item['col'];
             }
             // HTML_TAG_CHECKは別途実行なので除去し、別保存しておく
-            if(strpos(strtoupper($item['error_check_types']), 'HTML_TAG_CHECK') !== FALSE) {
+            if (strpos(strtoupper($item['error_check_types']), 'HTML_TAG_CHECK') !== FALSE) {
                 $this->arrTagCheckItem[] = $item;
                 $error_check_types = str_replace('HTML_TAG_CHECK', '', $item['error_check_types']);
-            }else{
+            } else {
                 $error_check_types = $item['error_check_types'];
             }
             $arrErrorCheckTypes = explode(',', $error_check_types);
-            foreach($arrErrorCheckTypes as $key => $val) {
-                if(trim($val) == "") {
+            foreach ($arrErrorCheckTypes as $key => $val) {
+                if (trim($val) == "") {
                     unset($arrErrorCheckTypes[$key]);
-                }else{
+                } else {
                     $arrErrorCheckTypes[$key] = trim($val);
                 }
             }
@@ -328,11 +328,11 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         $objErr = new SC_CheckError_Ex($arrRet);
         $objErr->arrErr = $objFormParam->checkError(false);
         // HTMLタグチェックの実行
-        foreach($this->arrTagCheckItem as $item) {
+        foreach ($this->arrTagCheckItem as $item) {
             $objErr->doFunc(array( $item['disp_name'], $item['col'], $this->arrAllowedTag), array("HTML_TAG_CHECK"));
         }
         // このフォーム特有の複雑系のエラーチェックを行う
-        if(count($objErr->arrErr) == 0) {
+        if (count($objErr->arrErr) == 0) {
             $objErr->arrErr = $this->lfCheckErrorDetail($arrRet, $objErr->arrErr);
         }
         return $objErr->arrErr;
@@ -370,7 +370,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         // 必須入力では無い項目だが、空文字では問題のある特殊なカラム値の初期値設定
         $sqlval = $this->lfSetCategoryDefaultData($sqlval);
 
-        if($sqlval['category_id'] != "") {
+        if ($sqlval['category_id'] != "") {
             // 同じidが存在すればupdate存在しなければinsert
             $where = "category_id = ?";
             $category_exists = $objQuery->exists("dtb_category", $where, array($sqlval['category_id']));
@@ -388,7 +388,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
             }
             $category_id = $sqlval['category_id'];
             // TODO: 削除時処理
-        }else{
+        } else {
             // 新規登録
             $category_id = $this->registerCategory($sqlval['parent_category_id'],
                                         $sqlval['category_name'],
@@ -404,8 +404,8 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
      * @return array $arrCSVFrame CSV構造配列
      */
     function lfSetParamDefaultValue(&$arrCSVFrame) {
-        foreach($arrCSVFrame as $key => $val) {
-            switch($val['col']) {
+        foreach ($arrCSVFrame as $key => $val) {
+            switch ($val['col']) {
                 case 'parent_category_id':
                     $arrCSVFrame[$key]['default'] = '0';
                     break;
@@ -426,13 +426,13 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
      * @return $sqlval 登録情報配列
      */
     function lfSetCategoryDefaultData(&$sqlval) {
-        if($sqlval['del_flg'] == ""){
+        if ($sqlval['del_flg'] == "") {
             $sqlval['del_flg'] = '0'; //有効
         }
-        if($sqlval['creator_id'] == "") {
+        if ($sqlval['creator_id'] == "") {
             $sqlval['creator_id'] = $_SESSION['member_id'];
         }
-        if($sqlval['parent_category_id'] == "") {
+        if ($sqlval['parent_category_id'] == "") {
             $sqlval['parent_category_id'] = (string)"0";
         }
         return $sqlval;
@@ -449,7 +449,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         /*
         // カテゴリIDの存在チェック
-        if(!$this->lfIsDbRecord('dtb_category', 'category_id', $item)) {
+        if (!$this->lfIsDbRecord('dtb_category', 'category_id', $item)) {
             $arrErr['category_id'] = "※ 指定のカテゴリIDは、登録されていません。";
         }
         */
@@ -464,7 +464,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         // 削除フラグのチェック
         if(array_search('del_flg', $this->arrFormKeyList) !== FALSE
                 and $item['del_flg'] != "") {
-            if(!($item['del_flg'] == "0" or $item['del_flg'] == "1")) {
+            if (!($item['del_flg'] == "0" or $item['del_flg'] == "1")) {
                 $arrErr['del_flg'] = "※ 削除フラグは「0」(有効)、「1」(削除)のみが有効な値です。";
             }
         }
@@ -472,7 +472,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         if(array_search('category_name', $this->arrFormKeyList) !== FALSE
                 and $item['category_name'] != "") {
             $parent_category_id = $item['parent_category_id'];
-            if($parent_category_id == '') {
+            if ($parent_category_id == '') {
                 $parent_category_id = (string)'0';
             }
             $where = "parent_category_id = ? AND category_id <> ? AND category_name = ?";
@@ -495,7 +495,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         if (array_search('parent_category_id', $this->arrFormKeyList) !== FALSE
                 and $item['parent_category_id'] != "") {
             $level = $objQuery->get('level', "dtb_category", "category_id = ?", array($parent_category_id));
-            if($level >= LEVEL_MAX) {
+            if ($level >= LEVEL_MAX) {
                 $arrErr['parent_category_id'] = "※ " . LEVEL_MAX . "階層以上の登録はできません。";
             }
         }
@@ -541,14 +541,14 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         $arrCategory['rank']        = $rank;
         $arrCategory['level']       = $level;
         //カテゴリIDが指定されていればそれを利用する
-        if(isset($category_id)){
+        if (isset($category_id)) {
             $arrCategory['category_id'] = $category_id;
             // シーケンスの調整
             $seq_count = $objQuery->currVal('dtb_category_category_id');
-            if($seq_count < $arrCategory['category_id']){
+            if ($seq_count < $arrCategory['category_id']) {
                 $objQuery->setVal('dtb_category_category_id', $arrCategory['category_id'] + 1);
             }
-        }else{
+        } else {
             $arrCategory['category_id'] = $objQuery->nextVal('dtb_category_category_id');
         }
         $objQuery->insert("dtb_category", $arrCategory);
@@ -566,7 +566,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
     function lfGetDbFormatTimeWithLine($line_no = '') {
         $time = date("Y-m-d H:i:s");
         // 秒以下を生成
-        if($line_no != '') {
+        if ($line_no != '') {
             $microtime = sprintf("%06d", $line_no);
             $time .= ".$microtime";
         }

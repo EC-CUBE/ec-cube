@@ -151,7 +151,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
 
         $this->arrSearchHidden = $objFormParam->getSearchArray();
 
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
         case 'pre_edit':
         case 'order_id':
             break;
@@ -563,7 +563,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $subtotal = 0;
         $totalpoint = 0;
         $totaltax = 0;
-        for($i = 0; $i < $max; $i++) {
+        for ($i = 0; $i < $max; $i++) {
             // 小計の計算
             $subtotal += SC_Helper_DB_Ex::sfCalcIncTax($arrValues['price'][$i]) * $arrValues['quantity'][$i];
             // 小計の計算
@@ -664,7 +664,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $max = count($arrDetail);
         $k = 0;
         $arrStockData = array();
-        for($i = 0; $i < $max; $i++) {
+        for ($i = 0; $i < $max; $i++) {
             if (!empty($arrDetail[$i]['product_id'])) {
                 $arrPreDetail = $objQuery->select('*', "dtb_order_detail", "order_id = ? AND product_class_id = ?", array($order_id, $arrDetail[$i]['product_class_id']));
                 if (!empty($arrPreDetail) && $arrPreDetail[0]['quantity'] != $arrDetail[$i]['quantity']) {

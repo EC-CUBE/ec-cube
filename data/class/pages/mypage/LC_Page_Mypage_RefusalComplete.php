@@ -45,7 +45,7 @@ class LC_Page_Mypage_RefusalComplete extends LC_Page_Ex {
         parent::init();
         $this->tpl_title    = 'MYページ';
 
-        if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE){
+        if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
             $this->tpl_title .= '/退会手続き(完了ページ)';
         } else {
             $this->tpl_subtitle = '退会手続き(完了ページ)';

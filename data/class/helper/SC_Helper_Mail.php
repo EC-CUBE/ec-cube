@@ -82,7 +82,7 @@ class SC_Helper_Mail {
 
         $objQuery = new SC_Query_Ex();
 
-        if($subject == "" && $header == "" && $footer == "") {
+        if ($subject == "" && $header == "" && $footer == "") {
             // メールテンプレート情報の取得
             $where = "template_id = ?";
             $arrRet = $objQuery->select("subject, header, footer", "dtb_mailtemplate", $where, array($template_id));
@@ -131,11 +131,11 @@ class SC_Helper_Mail {
         $arrTplVar->arrOrder = $arrOrder;
 
         //その他決済情報
-        if($arrOrder['memo02'] != "") {
+        if ($arrOrder['memo02'] != "") {
             $arrOther = unserialize($arrOrder['memo02']);
 
-            foreach($arrOther as $other_key => $other_val){
-                if(SC_Utils_Ex::sfTrim($other_val['value']) == ""){
+            foreach ($arrOther as $other_key => $other_val) {
+                if (SC_Utils_Ex::sfTrim($other_val['value']) == "") {
                     $arrOther[$other_key]['value'] = "";
                 }
             }
@@ -169,7 +169,7 @@ class SC_Helper_Mail {
         $objSendMail->setTo($arrOrder["order_email"], $arrOrder["order_name01"] . " ". $arrOrder["order_name02"] ." 様");
 
         // 送信フラグ:trueの場合は、送信する。
-        if($send) {
+        if ($send) {
             if ($objSendMail->sendMail()) {
                 $this->sfSaveMailHistory($order_id, $template_id, $tosubject, $body);
             }
@@ -235,7 +235,7 @@ class SC_Helper_Mail {
         $sqlval['template_id'] = $template_id;
         $sqlval['send_date'] = 'CURRENT_TIMESTAMP';
         if (!isset($_SESSION['member_id'])) $_SESSION['member_id'] = "";
-        if($_SESSION['member_id'] != "") {
+        if ($_SESSION['member_id'] != "") {
             $sqlval['creator_id'] = $_SESSION['member_id'];
         } else {
             $sqlval['creator_id'] = '0';
@@ -255,7 +255,7 @@ class SC_Helper_Mail {
         $objQuery = new SC_Query_Ex();
         $arrRet = $objQuery->select($col, $from, $where, array($email));
         // 会員のメールアドレスが登録されている
-        if(!empty($arrRet[0]['customer_id'])) {
+        if (!empty($arrRet[0]['customer_id'])) {
             return true;
         }
         return false;
@@ -271,12 +271,12 @@ class SC_Helper_Mail {
      */
     function sfSendRegistMail($secret_key, $customer_id = '', $is_mobile = false) {
         // 会員データの取得
-        if(SC_Utils_Ex::sfIsInt($customer_id)) {
+        if (SC_Utils_Ex::sfIsInt($customer_id)) {
             $arrCustomerData = SC_Helper_Customer_Ex::sfGetCustomerDataFromId($customer_id);
-        }else{
+        } else {
             $arrCustomerData = SC_Helper_Customer_Ex::sfGetCustomerDataFromId('', "secret_key = ?", array($secret_key));
         }
-        if(SC_Utils_Ex::isBlank($arrCustomerData)) {
+        if (SC_Utils_Ex::isBlank($arrCustomerData)) {
             return false;
         }
 
@@ -293,7 +293,7 @@ class SC_Helper_Mail {
         $objHelperMail  = new SC_Helper_Mail_Ex();
 
         // 仮会員が有効の場合
-        if(CUSTOMER_CONFIRM_MAIL == true and $arrCustomerData['status'] == 1) {
+        if (CUSTOMER_CONFIRM_MAIL == true and $arrCustomerData['status'] == 1) {
             $subject        = $objHelperMail->sfMakeSubject('会員登録のご確認', $objMailText);
             $toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
         } else {
@@ -314,9 +314,9 @@ class SC_Helper_Mail {
             , $CONF["email01"]      // Bcc
         );
         // 宛先の設定
-        if($is_mobile) {
+        if ($is_mobile) {
             $to_addr = $arrCustomerData["email_mobile"];
-        }else{
+        } else {
             $to_addr = $arrCustomerData['email'];
         }
         $objMail->setTo($to_addr, $arrCustomerData["name01"] . $arrCustomerData["name02"] ." 様");

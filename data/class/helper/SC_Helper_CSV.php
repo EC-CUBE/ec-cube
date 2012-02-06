@@ -83,22 +83,22 @@ class SC_Helper_CSV {
         $cols = SC_Utils_Ex::sfGetCommaList($arrOutputCols, true);
 
         // TODO: 固有処理 なんかエレガントな処理にしたい
-        if($csv_id == '1') {
+        if ($csv_id == '1') {
             //商品の場合
             $objProduct = new SC_Product_Ex();
             // このWhereを足さないと無効な規格も出力される。現行仕様と合わせる為追加。
             $inner_where = 'dtb_products_class.del_flg = 0';
             $sql = $objQuery->getSql($cols, $objProduct->prdclsSQL($inner_where),$where);
-        }else if($csv_id == '2') {
+        }else if ($csv_id == '2') {
             // 会員の場合
             $sql = "SELECT " . $cols . " FROM dtb_customer " . $where;
-        }else if($csv_id == '3') {
+        }else if ($csv_id == '3') {
             // 注文の場合
             $sql = "SELECT " . $cols . " FROM dtb_order " . $where;
-        }else if($csv_id == '4') {
+        }else if ($csv_id == '4') {
             // レビューの場合
             $sql = "SELECT " . $cols . " FROM dtb_review AS A INNER JOIN dtb_products AS B on A.product_id = B.product_id " . $where;
-        }else if($csv_id == '5') {
+        }else if ($csv_id == '5') {
             // カテゴリの場合
             $sql = "SELECT " . $cols . " FROM dtb_category " . $where;
         }
@@ -121,10 +121,10 @@ class SC_Helper_CSV {
         $cols = 'no, csv_id, col, disp_name, rank, status, rw_flg, mb_convert_kana_option, size_const_type, error_check_types';
         $table = 'dtb_csv';
 
-        if(SC_Utils_Ex::sfIsInt($csv_id)){
-            if($where == "") {
+        if (SC_Utils_Ex::sfIsInt($csv_id)) {
+            if ($where == "") {
                 $where = "csv_id = ?";
-            }else{
+            } else {
                 $where = "$where AND csv_id = ?";
             }
             $arrVal[] = $csv_id;
@@ -143,7 +143,7 @@ class SC_Helper_CSV {
      */
     function sfIsImportCSVFrame(&$arrCSVFrame) {
         $result = true;
-        foreach($arrCSVFrame as $key => $val) {
+        foreach ($arrCSVFrame as $key => $val) {
             if($val['status'] != CSV_COLUMN_STATUS_FLG_ENABLE
                     and $val['rw_flg'] == CSV_COLUMN_RW_FLG_READ_WRITE
                     and $val['error_check_types'] != ""
@@ -163,7 +163,7 @@ class SC_Helper_CSV {
      */
     function sfIsUpdateCSVFrame(&$arrCSVFrame) {
         $result = true;
-        foreach($arrCSVFrame as $key => $val) {
+        foreach ($arrCSVFrame as $key => $val) {
             if($val['status'] != CSV_COLUMN_STATUS_FLG_ENABLE
                     and $val['rw_flg'] == CSV_COLUMN_RW_FLG_KEY_FIELD) {
                 //キーフィールド
@@ -181,7 +181,7 @@ class SC_Helper_CSV {
      */
     function sfGetCSVRecordCount($fp) {
         $count = 0;
-        while(!feof($fp)) {
+        while (!feof($fp)) {
             $arrCSV = fgetcsv($fp, CSV_LINE_MAX);
             $count++;
         }
@@ -223,7 +223,7 @@ class SC_Helper_CSV {
         // 実行時間を制限しない
         @set_time_limit(0);
         // ヘッダ構築
-        if(is_array($arrHeader)) {
+        if (is_array($arrHeader)) {
             $header = $this->sfArrayToCSV($arrHeader);
             $header = mb_convert_encoding($header, 'SJIS-Win');
             $header .= "\r\n";
@@ -240,11 +240,11 @@ class SC_Helper_CSV {
 
         fclose($this->fpOutput);
 
-        if($is_download) {
+        if ($is_download) {
             // CSVを送信する。
             $this->lfDownloadCSVFile($tmp_filename, $file_head . "_");
             $res = true;
-        }else{
+        } else {
             $res = SC_Utils_Ex::sfReadFile($tmp_filename);
         }
 
@@ -264,12 +264,12 @@ class SC_Helper_CSV {
      * @return string 結果行
      */
     function sfArrayToCsv($fields, $delimiter = ',', $enclosure = '"', $arrayDelimiter = '|') {
-        if( strlen($delimiter) != 1 ) {
+        if (strlen($delimiter) != 1 ) {
             trigger_error('delimiter must be a single character', E_USER_WARNING);
             return "";
         }
 
-        if( strlen($enclosure) < 1 ) {
+        if (strlen($enclosure) < 1 ) {
             trigger_error('enclosure must be a single character', E_USER_WARNING);
             return "";
         }
@@ -303,7 +303,7 @@ class SC_Helper_CSV {
      */
     function lfDownloadCsv($arrData, $prefix = ""){
 
-        if($prefix == "") {
+        if ($prefix == "") {
             $dir_name = SC_Utils_Ex::sfUpDirName();
             $file_name = $dir_name . date('ymdHis') .".csv";
         } else {

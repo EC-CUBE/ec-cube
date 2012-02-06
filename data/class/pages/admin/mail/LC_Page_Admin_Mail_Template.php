@@ -73,7 +73,7 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex {
 
         switch ($this->getMode()) {
         case 'delete':
-            if ( SC_Utils_Ex::sfIsInt($_GET['id'])===true ){
+            if (SC_Utils_Ex::sfIsInt($_GET['id'])===true ) {
                 $this->lfDeleteMailTemplate($_GET['id']);
                 $this->objDisplay->reload(null, true);
             }

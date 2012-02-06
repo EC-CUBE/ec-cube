@@ -74,7 +74,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
         $class_id = $objFormParam->getValue('class_id');
         $classcategory_id = $objFormParam->getValue('classcategory_id');
 
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
         // 登録ボタン押下
         // 新規作成 or 編集
         case 'edit':
@@ -85,7 +85,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 //新規規格追加かどうかを判定する
                 $is_insert = $this->lfCheckInsert($classcategory_id);
-                if($is_insert) {
+                if ($is_insert) {
                     //新規追加
                     $this->lfInsertClass($this->arrForm);
                 } else {
@@ -204,7 +204,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
         // 親規格IDの存在チェック
         $where = "del_flg <> 1 AND class_id = ?";
         $class_id = $objQuery->get("class_id", "dtb_class", $where, array($arrForm['class_id']));
-        if(!SC_Utils_Ex::isBlank($class_id)) {
+        if (!SC_Utils_Ex::isBlank($class_id)) {
             // INSERTする値を作成する。
             $sqlval['name'] = $arrForm['name'];
             $sqlval['class_id'] = $arrForm['class_id'];
@@ -250,7 +250,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
         $arrErr = $objFormParam->checkError();
         if (!SC_Utils_Ex::isBlank($arrErr)) {
             return $arrErr;
-        }else{
+        } else {
             $arrForm = $objFormParam->getHashArray();
         }
 
@@ -271,9 +271,9 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
      */
     function lfCheckInsert($classcategory_id) {
         //classcategory_id のあるなしで新規規格分類化かどうかを判定
-        if (empty($classcategory_id)){
+        if (empty($classcategory_id)) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }

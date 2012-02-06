@@ -49,7 +49,7 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
     function init() {
         parent::init();
         $this->tpl_mypageno = 'index';
-        if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE){
+        if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
             $this->tpl_subtitle = 'MYページ';
         } else {
             $this->tpl_subtitle = '購入履歴一覧';
@@ -87,7 +87,7 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
 
         $this->arrOrder = $this->lfGetOrderHistory($customer_id, $this->objNavi->start_row);
 
-        switch($this->getMode()){
+        switch ($this->getMode()) {
     case "getList":
                     echo SC_Utils_Ex::jsonEncode($this->arrOrder);
                     exit;

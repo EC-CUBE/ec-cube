@@ -82,7 +82,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
         //受注データの取得
         $this->tpl_arrOrderData = $objPurchase->getOrder($order_id, $objCustomer->getValue('customer_id'));
 
-        if (empty($this->tpl_arrOrderData)){
+        if (empty($this->tpl_arrOrderData)) {
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
 
@@ -136,9 +136,9 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
     function lfGetShippingDate(&$objPurchase, $order_id, $arrWDAY) {
         $arrShipping = $objPurchase->getShippings($order_id);
 
-        foreach($arrShipping as $shipping_index => $shippingData) {
-            foreach($shippingData as $key => $val) {
-                if($key == 'shipping_date' && SC_Utils_Ex::isBlank($val) == false) {
+        foreach ($arrShipping as $shipping_index => $shippingData) {
+            foreach ($shippingData as $key => $val) {
+                if ($key == 'shipping_date' && SC_Utils_Ex::isBlank($val) == false) {
                     // お届け日を整形
                     list($y, $m, $d, $w) = explode(" ", date("Y m d w" , strtotime($val)));
                     $arrShipping[$shipping_index]['shipping_date'] = sprintf("%04d/%02d/%02d(%s)", $y, $m, $d, $arrWDAY[$w]);
@@ -196,7 +196,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
     function lfSetAU($arrOrderDetails) {
         $this->isAU = false;
         // モバイル端末かつ、キャリアがAUの場合に処理を行う
-        if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE && SC_MobileUserAgent::getCarrier() == 'ezweb'){
+        if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE && SC_MobileUserAgent::getCarrier() == 'ezweb') {
             // MIMETYPE、ファイル名のセット
             $this->tpl_arrOrderDetail = $this->lfSetMimetype($arrOrderDetails);
             $this->phpsessid = $_GET['PHPSESSID'];

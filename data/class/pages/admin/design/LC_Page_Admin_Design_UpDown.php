@@ -82,7 +82,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
 
         $this->device_type_id = $objFormParam->getValue('device_type_id', DEVICE_TYPE_PC);
 
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
         // アップロードボタン押下時の処理
         case 'upload':
             $objUpFile = $this->lfInitUploadFile($objFormParam);

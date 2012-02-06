@@ -71,7 +71,7 @@ class SC_MobileImage {
             // docomoとsoftbankの場合は画像ファイル一つに利用可能なサイズの上限を計算する
             // auはHTMLのbyte数上限に画像ファイルサイズが含まれないのでimageFileSizeのまま。
             if ($carrier == 'docomo' or $carrier == 'softbank') {
-                if( $result != false && $result > 0){
+                if ($result != false && $result > 0) {
                     // 計算式：(利用端末で表示可能なcacheサイズ - HTMLのバイト数 - 変換後の画像名のバイト数(目安値) ) / HTML中の画像数
                     $temp_imagefilesize = ($cacheSize - strlen($buffer) - (140 * $result) ) / $result;
                 } else {

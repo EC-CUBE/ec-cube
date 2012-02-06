@@ -82,7 +82,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
                 $member_id = $_SESSION['member_id'];
                 $this->insertRecommendProduct($arrPost,$member_id);
                 $arrItems = $this->getRecommendProducts();
-            }else{
+            } else {
                 $arrItems = $this->setProducts($arrPost, $arrItems);
                 $this->checkRank = $arrPost['rank'];
             }
@@ -163,7 +163,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
         $arrProducts = $objQuery->select($col, $table, $where);
 
         $arrReturnProducts = array();
-        foreach( $arrProducts as $data ){
+        foreach ($arrProducts as $data ) {
             $arrReturnProducts[$data['rank']] = $data;
         }
         return $arrReturnProducts;
@@ -227,7 +227,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
         $arrProduct = $this->getProduct($arrPost['product_id']);
         if (count($arrProduct) > 0) {
             $rank = $arrPost['rank'];
-            foreach( $arrProduct as $key => $val){
+            foreach ($arrProduct as $key => $val) {
                 $arrItems[$rank][$key] = $val;
             }
             $arrItems[$rank]['rank'] = $rank;

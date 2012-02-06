@@ -77,7 +77,7 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        switch($this->getMode()) {
+        switch ($this->getMode()) {
         // 入力内容をDBへ登録する
         case 'register':
             $this->execRegisterMode();

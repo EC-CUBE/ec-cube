@@ -87,7 +87,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
             $this->tpl_mode = 'insert';
         }
 
-        if(!empty($_POST)) {
+        if (!empty($_POST)) {
 
             $objFormParam = new SC_FormParam_Ex();
             $this->lfInitParam($objFormParam, $_POST);
@@ -99,8 +99,8 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
 
             $this->arrForm = $post;
 
-            if(count($this->arrErr) == 0) {
-                switch($this->getMode()) {
+            if (count($this->arrErr) == 0) {
+                switch ($this->getMode()) {
                     // 既存編集
                     case 'update':
                         $this->lfUpdateData($this->arrForm);
@@ -114,7 +114,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
                 }
                 $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "'); window.alert('SHOPマスターの登録が完了しました。');";
             }
-            if( empty($this->arrForm['regular_holiday_ids']) ) {
+            if (empty($this->arrForm['regular_holiday_ids']) ) {
                 $this->arrSel = array();
             } else {
                 $this->arrSel = $this->arrForm['regular_holiday_ids'];
@@ -181,9 +181,9 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
     function lfUpdateData($array) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrCol = $this->lfGetCol();
-        foreach($arrCol as $val) {
+        foreach ($arrCol as $val) {
             //配列の場合は、パイプ区切りの文字列に変換
-            if(is_array($array[$val])) {
+            if (is_array($array[$val])) {
                 $sqlval[$val] = implode("|", $array[$val]);
             } else {
                 $sqlval[$val] = $array[$val];
@@ -199,7 +199,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
     function lfInsertData($array) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrCol = $this->lfGetCol();
-        foreach($arrCol as $val) {
+        foreach ($arrCol as $val) {
             $sqlval[$val] = $array[$val];
         }
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
@@ -248,7 +248,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         $objFormParam->addParam("取扱商品", "good_traded", LLTEXT_LEN, '', array("MAX_LENGTH_CHECK"));
         $objFormParam->addParam("メッセージ", 'message', LLTEXT_LEN, '', array("MAX_LENGTH_CHECK"));
 
-        if(!isset($post['downloadable_days_unlimited']) && $post['downloadable_days_unlimited'] != "1") {
+        if (!isset($post['downloadable_days_unlimited']) && $post['downloadable_days_unlimited'] != "1") {
             $objFormParam->addParam("ダウンロード可能日数", "downloadable_days", DOWNLOAD_DAYS_LEN, 'n', array("EXIST_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
         } else {
             $objFormParam->addParam("ダウンロード無制限", "downloadable_days_unlimited", array("EXIST_CHECK"));

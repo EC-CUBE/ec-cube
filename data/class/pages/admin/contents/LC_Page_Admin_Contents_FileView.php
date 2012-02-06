@@ -62,7 +62,7 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        switch($this->getMode()){
+        switch ($this->getMode()) {
             default:
                 // フォーム操作クラス
                 $objFormParam = new SC_FormParam_Ex();

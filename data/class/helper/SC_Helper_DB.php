@@ -73,19 +73,19 @@ class SC_Helper_DB {
         if(!in_array($table_name, $objQuery->listTables())) return false;
 
         // 正常に接続されている場合
-        if(!$objQuery->isError()) {
+        if (!$objQuery->isError()) {
             list($db_type) = explode(":", $dsn);
 
             // カラムリストを取得
             $columns = $objQuery->listTableFields($table_name);
 
-            if(in_array($col_name, $columns)){
+            if (in_array($col_name, $columns)) {
                 return true;
             }
         }
 
         // カラムを追加する
-        if($add){
+        if ($add) {
             $objQuery->query("ALTER TABLE $table_name ADD $col_name $col_type ");
             return true;
         }
@@ -111,7 +111,7 @@ class SC_Helper_DB {
         $exists = $objQuery->exists($table_name, $where, $arrval);
 
         // データを追加する
-        if(!$exists && $add) {
+        if (!$exists && $add) {
             $objQuery->exec($sql);
         }
         return $ret;
@@ -174,18 +174,18 @@ class SC_Helper_DB {
     /* 選択中のアイテムのルートカテゴリIDを取得する */
     function sfGetRootId() {
 
-        if(!$this->g_root_on)   {
+        if (!$this->g_root_on) {
             $this->g_root_on = true;
             $objQuery =& SC_Query_Ex::getSingletonInstance();
 
             if (!isset($_GET['product_id'])) $_GET['product_id'] = "";
             if (!isset($_GET['category_id'])) $_GET['category_id'] = "";
 
-            if(!empty($_GET['product_id']) || !empty($_GET['category_id'])) {
+            if (!empty($_GET['product_id']) || !empty($_GET['category_id'])) {
                 // 選択中のカテゴリIDを判定する
                 $category_id = $this->sfGetCategoryId($_GET['product_id'], $_GET['category_id']);
                 // ROOTカテゴリIDの取得
-                if(count($category_id) > 0) {
+                if (count($category_id) > 0) {
                     $arrRet = $this->sfGetParents('dtb_category', 'parent_category_id', 'category_id', $category_id);
                     $root_id = isset($arrRet[0]) ? $arrRet[0] : "";
                 } else {
@@ -213,7 +213,7 @@ class SC_Helper_DB {
         $objQuery = new SC_Query_Ex();
         $arrRet = $objQuery->select("customer_id", "dtb_order", "order_id = ?", array($order_id));
         $customer_id = $arrRet[0]['customer_id'];
-        if($customer_id != "" && $customer_id >= 1) {
+        if ($customer_id != "" && $customer_id >= 1) {
             $arrRet = $objQuery->select('point', "dtb_customer", "customer_id = ?", array($customer_id));
             $point = $arrRet[0]['point'];
             $rollback_point = $arrRet[0]['point'];
@@ -256,7 +256,7 @@ class SC_Helper_DB {
         $col .= " ttl.product_count";
         $from = "dtb_category as cat left join dtb_category_total_count as ttl on ttl.category_id = cat.category_id";
         // 登録商品数のチェック
-        if($count_check) {
+        if ($count_check) {
             $where = "del_flg = 0 AND product_count > 0";
         } else {
             $where = "del_flg = 0";
@@ -266,9 +266,9 @@ class SC_Helper_DB {
 
         $arrParentID = SC_Helper_DB_Ex::sfGetParents('dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
 
-        foreach($arrRet as $key => $array) {
-            foreach($arrParentID as $val) {
-                if($array['category_id'] == $val) {
+        foreach ($arrRet as $key => $array) {
+            foreach ($arrParentID as $val) {
+                if ($array['category_id'] == $val) {
                     $arrRet[$key]['display'] = 1;
                     break;
                 }
@@ -324,7 +324,7 @@ class SC_Helper_DB {
         $col .= " ttl.product_count";
         $from = "dtb_category as cat left join dtb_category_total_count as ttl on ttl.category_id = cat.category_id";
         // 登録商品数のチェック
-        if($count_check) {
+        if ($count_check) {
             $where = "del_flg = 0 AND product_count > 0";
         } else {
             $where = "del_flg = 0";
@@ -338,9 +338,9 @@ class SC_Helper_DB {
         foreach ($arrCategory_id as $pkey => $parent_category_id) {
             $arrParentID = SC_Helper_DB_Ex::sfGetParents('dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
 
-            foreach($arrParentID as $pid) {
-                foreach($arrRet as $key => $array) {
-                    if($array['category_id'] == $pid) {
+            foreach ($arrParentID as $pid) {
+                foreach ($arrRet as $key => $array) {
+                    if ($array['category_id'] == $pid) {
                         $arrCatTree[$pkey][] = $arrRet[$key];
                         break;
                     }
@@ -364,7 +364,7 @@ class SC_Helper_DB {
         $ConbName = "";
 
         // カテゴリ名称を取得する
-        foreach($arrCatID as $key => $val){
+        foreach ($arrCatID as $key => $val) {
             $sql = "SELECT category_name FROM dtb_category WHERE category_id = ?";
             $arrVal = array($val);
             $CatName = $objQuery->getOne($sql,$arrVal);
@@ -427,13 +427,13 @@ class SC_Helper_DB {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = "del_flg = 0";
 
-        if($addwhere != "") {
+        if ($addwhere != "") {
             $where.= " AND $addwhere";
         }
 
         $objQuery->setOption("ORDER BY rank DESC");
 
-        if($products_check) {
+        if ($products_check) {
             $col = "T1.category_id, category_name, level";
             $from = "dtb_category AS T1 LEFT JOIN dtb_category_total_count AS T2 ON T1.category_id = T2.category_id";
             $where .= " AND product_count > 0";
@@ -445,7 +445,7 @@ class SC_Helper_DB {
         $arrRet = $objQuery->select($col, $from, $where);
 
         $max = count($arrRet);
-        for($cnt = 0; $cnt < $max; $cnt++) {
+        for ($cnt = 0; $cnt < $max; $cnt++) {
             $id = $arrRet[$cnt]['category_id'];
             $name = $arrRet[$cnt]['category_name'];
             $arrList[$id] = str_repeat($head, $arrRet[$cnt]['level']) . $name;
@@ -483,9 +483,9 @@ class SC_Helper_DB {
         $arrRet = $objQuery->select($col, "dtb_category", $where);
         $max = count($arrRet);
 
-        for($cnt = 0; $cnt < $max; $cnt++) {
-            if($parent_zero) {
-                if($arrRet[$cnt]['level'] == LEVEL_MAX) {
+        for ($cnt = 0; $cnt < $max; $cnt++) {
+            if ($parent_zero) {
+                if ($arrRet[$cnt]['level'] == LEVEL_MAX) {
                     $arrValue[$cnt] = $arrRet[$cnt]['category_id'];
                 } else {
                     $arrValue[$cnt] = "";
@@ -650,12 +650,12 @@ class SC_Helper_DB {
     function sfCountCategory($objQuery = NULL, $is_force_all_count = false){
         $objProduct = new SC_Product_Ex();
 
-        if($objQuery == NULL) {
+        if ($objQuery == NULL) {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
         }
 
         $is_out_trans = false;
-        if(!$objQuery->inTransaction()){
+        if (!$objQuery->inTransaction()) {
             $objQuery->begin();
             $is_out_trans = true;
         }
@@ -666,7 +666,7 @@ class SC_Helper_DB {
         if (NOSTOCK_HIDDEN) {
             $where_products_class = '(stock >= 1 OR stock_unlimited = 1)';
             $from = $objProduct->alldtlSQL($where_products_class);
-        }else{
+        } else {
             $from = 'dtb_products as alldtl';
         }
 
@@ -674,9 +674,9 @@ class SC_Helper_DB {
         // 各カテゴリに所属する商品の数を集計。集計対象には子カテゴリを含まない。
 
         //まずテーブル内容の元を取得
-        if(!$is_force_all_count) {
+        if (!$is_force_all_count) {
             $arrCategoryCountOld = $objQuery->select('category_id,product_count','dtb_category_count');
-        }else{
+        } else {
             $arrCategoryCountOld = array();
         }
 
@@ -699,32 +699,32 @@ __EOS__;
         //各カテゴリ毎のデータ値において以前との差を見る
         //古いデータの構造入れ替え
         $arrOld = array();
-        foreach($arrCategoryCountOld as $item){
+        foreach ($arrCategoryCountOld as $item) {
             $arrOld[$item['category_id']] = $item['product_count'];
         }
         //新しいデータの構造入れ替え
         $arrNew = array();
-        foreach($arrCategoryCountNew as $item){
+        foreach ($arrCategoryCountNew as $item) {
             $arrNew[$item['category_id']] = $item['product_count'];
         }
 
         $arrDiffCategory_id = array();
         //新しいカテゴリ一覧から見て商品数が異なるデータが無いか確認
-        foreach($arrNew as $cid => $count){
-            if($arrOld[$cid] != $count){
+        foreach ($arrNew as $cid => $count) {
+            if ($arrOld[$cid] != $count) {
                 $arrDiffCategory_id[] = $cid;
             }
         }
         //削除カテゴリを想定して、古いカテゴリ一覧から見て商品数が異なるデータが無いか確認。
-        foreach($arrOld as $cid => $count){
-            if($arrNew[$cid] != $count && $count > 0){
+        foreach ($arrOld as $cid => $count) {
+            if ($arrNew[$cid] != $count && $count > 0) {
                 $arrDiffCategory_id[] = $cid;
             }
         }
 
         //対象IDが無ければ終了
-        if(count($arrDiffCategory_id) == 0){
-            if($is_out_trans) {
+        if (count($arrDiffCategory_id) == 0) {
+            if ($is_out_trans) {
                 $objQuery->commit();
             }
             return;
@@ -734,16 +734,16 @@ __EOS__;
         $arrDiffCategory_id = array_unique($arrDiffCategory_id);
 
         //dtb_category_countの更新 差分のあったカテゴリだけ更新する。
-        foreach($arrDiffCategory_id as $cid) {
+        foreach ($arrDiffCategory_id as $cid) {
             $sqlval = array();
             $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
             $sqlval['product_count'] = (string)$arrNew[$cid];
-            if($sqlval['product_count'] =="") {
+            if ($sqlval['product_count'] =="") {
                 $sqlval['product_count'] = (string)'0';
             }
-            if(isset($arrOld[$cid])) {
+            if (isset($arrOld[$cid])) {
                 $objQuery->update('dtb_category_count', $sqlval, 'category_id = ?', array($cid));
-            }else{
+            } else {
                 if ($is_force_all_count) {
                     $ret = $objQuery->update('dtb_category_count', $sqlval, 'category_id = ?', array($cid));
                     if ($ret > 0) {
@@ -790,21 +790,21 @@ __EOS__;
             $arrUpdateData[ $category_id ] = $objQuery->getOne($sql, $arrval);
         }
         // 更新対象だけを更新。
-        foreach($arrUpdateData as $cid => $count) {
+        foreach ($arrUpdateData as $cid => $count) {
             $sqlval = array();
             $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
             $sqlval['product_count'] = $count;
-            if($sqlval['product_count'] =="") {
+            if ($sqlval['product_count'] =="") {
                 $sqlval['product_count'] = (string)'0';
             }
             $ret = $objQuery->update('dtb_category_total_count', $sqlval, 'category_id = ?', array($cid));
-            if(!$ret) {
+            if (!$ret) {
                 $sqlval['category_id'] = $cid;
                 $ret = $objQuery->insert('dtb_category_total_count', $sqlval);
             }
         }
         // トランザクション終了処理
-        if($is_out_trans) {
+        if ($is_out_trans) {
             $objQuery->commit();
         }
     }
@@ -836,7 +836,7 @@ __EOS__;
         $arrChildren = array();
         $arrRet = array($id);
 
-        while(count($arrRet) > 0) {
+        while (count($arrRet) > 0) {
             $arrChildren = array_merge($arrChildren, $arrRet);
             $arrRet = SC_Helper_DB_Ex::sfGetChildrenArraySub($table, $pid_name, $id_name, $arrRet);
         }
@@ -896,7 +896,7 @@ __EOS__;
         $arrParents = array();
         $ret = $id;
 
-        while($ret != "0" && !SC_Utils_Ex::isBlank($ret)) {
+        while ($ret != "0" && !SC_Utils_Ex::isBlank($ret)) {
             $arrParents[] = $ret;
             $ret = SC_Helper_DB_Ex::sfGetParentsArraySub($table, $pid_name, $id_name, $ret);
         }
@@ -908,11 +908,11 @@ __EOS__;
 
     /* 子ID所属する親IDを取得する */
     function sfGetParentsArraySub($table, $pid_name, $id_name, $child) {
-        if(SC_Utils_Ex::isBlank($child)) {
+        if (SC_Utils_Ex::isBlank($child)) {
             return false;
         }
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        if(!is_array($child)) {
+        if (!is_array($child)) {
             $child = array($child);
         }
         $parent = $objQuery->get($pid_name, $table, "$id_name = ?", $child);
@@ -951,7 +951,7 @@ __EOS__;
         $objQuery->setOrder("rank DESC");
         $arrList = $objQuery->select($col, $table, $where, $arrVal);
         $count = count($arrList);
-        for($cnt = 0; $cnt < $count; $cnt++) {
+        for ($cnt = 0; $cnt < $count; $cnt++) {
             $key = $arrList[$cnt][$keyname];
             $val = $arrList[$cnt][$valname];
             $arrRet[$key] = $val;
@@ -972,7 +972,7 @@ __EOS__;
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
         $where = "$colname = ?";
-        if($andwhere != "") {
+        if ($andwhere != "") {
             $where.= " AND $andwhere";
         }
         // 対象項目のランクを取得
@@ -980,17 +980,17 @@ __EOS__;
         // ランクの最大値を取得
         $maxrank = $objQuery->max('rank', $table, $andwhere);
         // ランクが最大値よりも小さい場合に実行する。
-        if($rank < $maxrank) {
+        if ($rank < $maxrank) {
             // ランクが一つ上のIDを取得する。
             $where = "rank = ?";
-            if($andwhere != "") {
+            if ($andwhere != "") {
                 $where.= " AND $andwhere";
             }
             $uprank = $rank + 1;
             $up_id = $objQuery->get($colname, $table, $where, array($uprank));
             // ランク入れ替えの実行
             $sqlup = "UPDATE $table SET rank = ? WHERE $colname = ?";
-            if($andwhere != "") {
+            if ($andwhere != "") {
                 $sqlup.= " AND $andwhere";
             }
             $objQuery->exec($sqlup, array($rank + 1, $id));
@@ -1012,24 +1012,24 @@ __EOS__;
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
         $where = "$colname = ?";
-        if($andwhere != "") {
+        if ($andwhere != "") {
             $where.= " AND $andwhere";
         }
         // 対象項目のランクを取得
         $rank = $objQuery->get('rank', $table, $where, array($id));
 
         // ランクが1(最小値)よりも大きい場合に実行する。
-        if($rank > 1) {
+        if ($rank > 1) {
             // ランクが一つ下のIDを取得する。
             $where = "rank = ?";
-            if($andwhere != "") {
+            if ($andwhere != "") {
                 $where.= " AND $andwhere";
             }
             $downrank = $rank - 1;
             $down_id = $objQuery->get($colname, $table, $where, array($downrank));
             // ランク入れ替えの実行
             $sqlup = "UPDATE $table SET rank = ? WHERE $colname = ?";
-            if($andwhere != "") {
+            if ($andwhere != "") {
                 $sqlup.= " AND $andwhere";
             }
             $objQuery->exec($sqlup, array($rank - 1, $id));
@@ -1053,7 +1053,7 @@ __EOS__;
         $objQuery->begin();
 
         // 自身のランクを取得する
-        if($where != "") {
+        if ($where != "") {
             $getWhere = "$keyIdColumn = ? AND " . $where;
         } else {
             $getWhere = "$keyIdColumn = ?";
@@ -1063,9 +1063,9 @@ __EOS__;
         $max = $objQuery->max('rank', $tableName, $where);
 
         // 値の調整（逆順）
-        if($pos > $max) {
+        if ($pos > $max) {
             $position = 1;
-        } else if($pos < 1) {
+        } else if ($pos < 1) {
             $position = $max;
         } else {
             $position = $max - $pos + 1;
@@ -1082,7 +1082,7 @@ __EOS__;
 
         // 指定した順位の商品から移動させる商品までのrankを１つずらす
         $sql = "UPDATE $tableName SET rank = $term WHERE rank BETWEEN ? AND ?";
-        if($where != "") {
+        if ($where != "") {
             $sql.= " AND $where";
         }
 
@@ -1091,7 +1091,7 @@ __EOS__;
 
         // 指定した順位へrankを書き換える。
         $sql  = "UPDATE $tableName SET rank = ? WHERE $keyIdColumn = ? ";
-        if($where != "") {
+        if ($where != "") {
             $sql.= " AND $where";
         }
 
@@ -1118,12 +1118,12 @@ __EOS__;
         $objQuery->begin();
         // 削除レコードのランクを取得する。
         $where = "$colname = ?";
-        if($andwhere != "") {
+        if ($andwhere != "") {
             $where.= " AND $andwhere";
         }
         $rank = $objQuery->get('rank', $table, $where, array($id));
 
-        if(!$delete) {
+        if (!$delete) {
             // ランクを最下位にする、DELフラグON
             $sqlup = "UPDATE $table SET rank = 0, del_flg = 1 ";
             $sqlup.= "WHERE $colname = ?";
@@ -1135,7 +1135,7 @@ __EOS__;
 
         // 追加レコードのランクより上のレコードを一つずらす。
         $where = "rank > ?";
-        if($andwhere != "") {
+        if ($andwhere != "") {
             $where.= " AND $andwhere";
         }
         $sqlup = "UPDATE $table SET rank = (rank - 1) WHERE $where";
@@ -1158,8 +1158,8 @@ __EOS__;
         $len = count($arrId);
         $where = "";
 
-        for($cnt = 0; $cnt < $len; $cnt++) {
-            if($where == "") {
+        for ($cnt = 0; $cnt < $len; $cnt++) {
+            if ($where == "") {
                 $where = "$id_name = ?";
             } else {
                 $where.= " OR $id_name = ?";
@@ -1248,13 +1248,13 @@ __EOS__;
 
         $where = "del_flg = 0";
 
-        if($addwhere != "") {
+        if ($addwhere != "") {
             $where.= " AND $addwhere";
         }
 
-        foreach($arrCol as $val) {
-            if($val != "") {
-                if($where == "") {
+        foreach ($arrCol as $val) {
+            if ($val != "") {
+                if ($where == "") {
                     $where = "$val = ?";
                 } else {
                     $where.= " AND $val = ?";
@@ -1263,7 +1263,7 @@ __EOS__;
         }
         $ret = $objQuery->get($col, $table, $where, $arrval);
 
-        if($ret != "") {
+        if ($ret != "") {
             return true;
         }
         return false;
@@ -1338,13 +1338,13 @@ __EOS__;
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = "del_flg = 0";
 
-        if($addwhere != "") {
+        if ($addwhere != "") {
             $where.= " AND $addwhere";
         }
 
         $objQuery->setOption("ORDER BY rank DESC");
 
-        if($products_check) {
+        if ($products_check) {
             $col = "T1.maker_id, name";
             $from = "dtb_maker AS T1 LEFT JOIN dtb_maker_count AS T2 ON T1.maker_id = T2.maker_id";
             $where .= " AND product_count > 0";
@@ -1356,7 +1356,7 @@ __EOS__;
         $arrRet = $objQuery->select($col, $from, $where);
 
         $max = count($arrRet);
-        for($cnt = 0; $cnt < $max; $cnt++) {
+        for ($cnt = 0; $cnt < $max; $cnt++) {
             $id = $arrRet[$cnt]['maker_id'];
             $name = $arrRet[$cnt]['name'];
             $arrList[$id] = $name;

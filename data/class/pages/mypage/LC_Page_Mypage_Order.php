@@ -66,7 +66,7 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex {
         $arrOrderDetail = $this->lfGetOrderDetail($_POST['order_id']);
 
         //ログインしていない、またはDBに情報が無い場合
-        if (empty($arrOrderDetail)){
+        if (empty($arrOrderDetail)) {
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
 
@@ -105,7 +105,7 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex {
     function lfAddCartProducts($arrOrderDetail) {
 
         $objCartSess = new SC_CartSession_Ex();
-        foreach($arrOrderDetail as $order_row) {
+        foreach ($arrOrderDetail as $order_row) {
 
             $objCartSess->addProduct($order_row['product_class_id'],
                                      $order_row['quantity']);
