@@ -48,7 +48,7 @@ class SC_SendMail {
         $this->backend = MAIL_BACKEND;
         $this->host = SMTP_HOST;
         $this->port = SMTP_PORT;
-        mb_language( 'Japanese');
+        mb_language('Japanese');
 
         //-- PEAR::Mailを使ってメール送信オブジェクト作成
         $this->objMail =& Mail::factory($this->backend,

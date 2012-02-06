@@ -230,13 +230,13 @@ __EOS__;
         //ファイルサイズを取得する
         $file_size = filesize($realpath);
         //読み込み
-        $fp = fopen( $realpath, "rb");
+        $fp = fopen($realpath, "rb");
         if (isset($_SERVER['HTTP_RANGE'])) {
             // 二回目以降のリクエスト
             list($range_offset, $range_limit) = sscanf($_SERVER['HTTP_RANGE'], "bytes=%d-%d");
             $content_range = sprintf("bytes %d-%d/%d", $range_offset, $range_limit, $file_size);
             $content_length = $range_limit - $range_offset + 1;
-            fseek( $fp, $range_offset, SEEK_SET);
+            fseek($fp, $range_offset, SEEK_SET);
             header("HTTP/1.1 206 Partial Content");
             header("Content-Lenth: " . $content_length);
             header("Content-Range: " . $content_range);
@@ -245,7 +245,7 @@ __EOS__;
             $content_length = $file_size;
             header("Content-Length: " . $content_length);
         }
-        echo fread( $fp, $content_length) ;
+        echo fread($fp, $content_length) ;
         ob_flush();
         flush();
     }

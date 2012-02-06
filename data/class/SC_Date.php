@@ -30,8 +30,8 @@ class SC_Date {
 
     // コンストラクタ
     function SC_Date($start_year='', $end_year='') {
-        if ( $start_year)  $this->setStartYear($start_year);
-        if ( $end_year)    $this->setEndYear($end_year);
+        if ($start_year)  $this->setStartYear($start_year);
+        if ($end_year)    $this->setEndYear($end_year);
     }
 
     function setStartYear($year){
@@ -69,13 +69,13 @@ class SC_Date {
      * @param string $default_key
      */
     function getYear($year = '', $default_year = false, $default_key = '----') {
-        if ( $year) $this->setStartYear($year);
+        if ($year) $this->setStartYear($year);
 
         $year = $this->start_year;
-        if ( ! $year) $year = DATE('Y');
+        if (! $year) $year = DATE('Y');
 
         $end_year = $this->end_year;
-        if ( ! $end_year) $end_year = (DATE('Y') + 3);
+        if (! $end_year) $end_year = (DATE('Y') + 3);
 
         $year_array = array();
 
@@ -93,13 +93,13 @@ class SC_Date {
     }
 
     function getZeroYear($year = ''){
-        if ( $year) $this->setStartYear($year);
+        if ($year) $this->setStartYear($year);
 
         $year = $this->start_year;
-        if ( ! $year) $year = DATE('Y');
+        if (! $year) $year = DATE('Y');
 
         $end_year = $this->end_year;
-        if ( ! $end_year) $end_year = (DATE('Y') + 3);
+        if (! $end_year) $end_year = (DATE('Y') + 3);
 
         $year_array = array();
 

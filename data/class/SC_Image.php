@@ -185,10 +185,10 @@ class SC_Image {
 
         case "2": //jpg形式
             $ImgDefault = ImageCreateFromJpeg($FromImgPath);
-            //ImageCopyResized( $ImgNew,$ImgDefault, 0, 0, 0, 0,$re_size[0], $re_size[1],$size[0], $size[1]);
+            //ImageCopyResized($ImgNew,$ImgDefault, 0, 0, 0, 0,$re_size[0], $re_size[1],$size[0], $size[1]);
 
             if ($re_size[0] != $size[0] || $re_size[0] != $size[0]) {
-                ImageCopyResampled( $ImgNew,$ImgDefault, 0, 0, 0, 0,$re_size[0], $re_size[1],$size[0], $size[1]);
+                ImageCopyResampled($ImgNew,$ImgDefault, 0, 0, 0, 0,$re_size[0], $re_size[1],$size[0], $size[1]);
             }
 
             GC_Utils_Ex::gfDebugLog($size);

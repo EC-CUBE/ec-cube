@@ -90,7 +90,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
 
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 // エラーが無いときは登録・編集
-                $this->lfRegistData( $objFormParam, $objFormParam->getValue('template_id'));
+                $this->lfRegistData($objFormParam, $objFormParam->getValue('template_id'));
                 // 自分を再読込して、完了画面へ遷移
                 $this->objDisplay->reload(array('mode' => 'complete'));
             } else {

@@ -32,7 +32,7 @@ class SC_Customer {
     function SC_Customer() {
     }
 
-    function getCustomerDataFromEmailPass( $pass, $email, $mobile = false) {
+    function getCustomerDataFromEmailPass($pass, $email, $mobile = false) {
         // 小文字に変換
         $email = strtolower($email);
         $sql_mobile = $mobile ? ' OR email_mobile = ?' : '';

@@ -43,7 +43,7 @@ class SC_SelectSql {
     }
 
     //-- SQL分生成
-    function getSql( $mode = ""){
+    function getSql($mode = ""){
         $this->sql = $this->select ." ". $this->where ." ". $this->group ." ";
 
         // $mode == 1 は limit & offset無し
@@ -67,19 +67,19 @@ class SC_SelectSql {
 
         // ある単位のみ検索($from = $to)
         if ($from == $to) {
-            $this->setWhere( $column ." = ?");
+            $this->setWhere($column ." = ?");
             $return = array($from);
         //　~$toまで検索
         } elseif (strlen($from) == 0 && strlen($to) > 0) {
-            $this->setWhere( $column ." <= ? ");
+            $this->setWhere($column ." <= ? ");
             $return = array($to);
         //　~$from以上を検索
         } elseif (strlen($from) > 0 && strlen($to) == 0) {
-            $this->setWhere( $column ." >= ? ");
+            $this->setWhere($column ." >= ? ");
             $return = array($from);
         //　$from~$toの検索
         } else {
-            $this->setWhere( $column ." BETWEEN ? AND ?");
+            $this->setWhere($column ." BETWEEN ? AND ?");
             $return = array($from, $to);
         }
         return $return;
@@ -101,22 +101,22 @@ class SC_SelectSql {
         $date2 = date('Y/m/d', $date2);
 
         // 開始期間だけ指定の場合
-        if (( $from_year != "") && ( $from_month != "") && ( $from_day != "") && ( $to_year == "") && ( $to_month == "") && ( $to_day == "")) {
-            $this->setWhere( $column .' >= ?');
+        if (($from_year != "") && ($from_month != "") && ($from_day != "") && ($to_year == "") && ($to_month == "") && ($to_day == "")) {
+            $this->setWhere($column .' >= ?');
             $return[] = $date1;
         }
 
         //　開始～終了
-        if( ( $from_year != "") && ( $from_month != "") && ( $from_day != "") &&
-            ( $to_year != "") && ( $to_month != "") && ( $to_day != "")) {
-            $this->setWhere( $column . ' >= ? AND ' . $column . ' < date(?)');
+        if( ($from_year != "") && ($from_month != "") && ($from_day != "") &&
+            ($to_year != "") && ($to_month != "") && ($to_day != "")) {
+            $this->setWhere($column . ' >= ? AND ' . $column . ' < date(?)');
             $return[] = $date1;
             $return[] = $date2;
         }
 
         // 終了期間だけ指定の場合
-        if (( $from_year == "") && ( $from_month == "") && ( $from_day == "") && ( $to_year != "") && ( $to_month != "") && ( $to_day != "")) {
-            $this->setWhere( $column . ' < date(?)');
+        if (($from_year == "") && ($from_month == "") && ($from_day == "") && ($to_year != "") && ($to_month != "") && ($to_day != "")) {
+            $this->setWhere($column . ' < date(?)');
             $return[] = $date2;
         }
 
@@ -124,25 +124,25 @@ class SC_SelectSql {
     }
 
     // checkboxなどで同一カラム内で単一、もしくは複数選択肢が有る場合　例: AND ( sex = xxx OR sex = xxx OR sex = xxx) AND ...
-    function setItemTerm( $arr, $ItemStr) {
+    function setItemTerm($arr, $ItemStr) {
 
         foreach ($arr as $data) {
 
-            if (count( $arr) > 1) {
-                if( ! is_null( $data)) $item .= $ItemStr . " = ? OR ";
+            if (count($arr) > 1) {
+                if(! is_null($data)) $item .= $ItemStr . " = ? OR ";
             } else {
-                if( ! is_null( $data)) $item = $ItemStr . " = ?";
+                if(! is_null($data)) $item = $ItemStr . " = ?";
             }
             $return[] = $data;
         }
 
-        if( count( $arr) > 1)  $item = "( " . rtrim( $item, " OR ") . ")";
-        $this->setWhere( $item);
+        if( count($arr) > 1)  $item = "(" . rtrim($item, " OR ") . ")";
+        $this->setWhere($item);
         return $return;
     }
 
     //　NULL値が必要な場合
-    function setItemTermWithNull( $arr, $ItemStr) {
+    function setItemTermWithNull($arr, $ItemStr) {
 
         $item = " ${ItemStr} IS NULL ";
 
@@ -155,12 +155,12 @@ class SC_SelectSql {
             }
         }
 
-        $item = "( ${item}) ";
-        $this->setWhere( $item);
+        $item = "(${item}) ";
+        $this->setWhere($item);
         return $return;
     }
     // NULLもしくは''で検索する場合
-    function setItemTermWithNullAndSpace( $arr, $ItemStr) {
+    function setItemTermWithNullAndSpace($arr, $ItemStr) {
         $count = count($arr);
         $item = " ${ItemStr} IS NULL OR ${ItemStr} = '' ";
         $i = 1;
@@ -172,28 +172,28 @@ class SC_SelectSql {
                 $i ++;
             }
         }
-        $item = "( ${item}) ";
-        $this->setWhere( $item);
+        $item = "(${item}) ";
+        $this->setWhere($item);
         return $return;
     }
 
     /* 複数のカラムでORで優先検索する場合　例：　AND ( item_flag1 = xxx OR item_flag2 = xxx OR item_flag3 = xxx) AND ...
 
         配列の構造例　
-        if ( $_POST['show_site1']) $arrShowsite_1 = array( 'column' => "show_site1",
+        if ($_POST['show_site1']) $arrShowsite_1 = array('column' => "show_site1",
                                                             'value'  => $_POST['show_site1']);
 
     */
-    function setWhereByOR( $arrWhere){
+    function setWhereByOR($arrWhere){
 
-        $count = count( $arrWhere);
+        $count = count($arrWhere);
 
         for ($i = 0; $i < $count; $i++) {
 
-            if( isset( $arrWhere[$i]['value'])) $statement .= $arrWhere[$i]['column'] ." = " . SC_Utils_Ex::sfQuoteSmart($arrWhere[$i]['value']) ." OR "  ;
+            if( isset($arrWhere[$i]['value'])) $statement .= $arrWhere[$i]['column'] ." = " . SC_Utils_Ex::sfQuoteSmart($arrWhere[$i]['value']) ." OR "  ;
         }
 
-        $statement = "( " . rtrim( $statement, " OR ") . ")";
+        $statement = "(" . rtrim($statement, " OR ") . ")";
 
         if ($this->where) {
 
@@ -224,13 +224,13 @@ class SC_SelectSql {
 
     }
 
-    function setGroup( $group) {
+    function setGroup($group) {
 
         $this->group =  "GROUP BY " . $group;
 
     }
 
-    function setLimitOffset( $limit, $offset){
+    function setLimitOffset($limit, $offset){
 
         if (is_numeric($limit) and is_numeric($offset)) {
 

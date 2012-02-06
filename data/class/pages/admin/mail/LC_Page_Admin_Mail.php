@@ -56,7 +56,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $this->arrJob["不明"] = "不明";
         $this->arrSex = $masterData->getMasterData("mtb_sex");
         $this->arrPageRows = $masterData->getMasterData("mtb_page_max");
-        $this->arrHtmlmail = array( "" => "両方",  1 => 'HTML', 2 => 'TEXT');
+        $this->arrHtmlmail = array("" => "両方",  1 => 'HTML', 2 => 'TEXT');
         $this->arrMailType = $masterData->getMasterData("mtb_mail_type");
 
         // 日付プルダウン設定
@@ -262,7 +262,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $emailtype="email";
         $searchmailtype = $objFormParam->getValue('search_mail_type');
         if($searchmailtype==2||$searchmailtype==4)$emailtype="email_mobile";
-        if (is_array( $arrSendCustomer)) {
+        if (is_array($arrSendCustomer)) {
             foreach ($arrSendCustomer as $line) {
                 $dtb_send_customer = array();
                 $dtb_send_customer["customer_id"] = $line["customer_id"];

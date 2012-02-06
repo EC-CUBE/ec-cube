@@ -632,7 +632,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                     }
                     $ext = preg_replace("/.$/", "" ,$ext);
                 } else {
-                    $ext = $array_ext[ count ( $array_ext) - 1 ];
+                    $ext = $array_ext[ count ($array_ext) - 1 ];
                 }
                 $ext = strtolower($ext);
 

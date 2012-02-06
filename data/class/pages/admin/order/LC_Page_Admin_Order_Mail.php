@@ -170,7 +170,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
             $objFormParam->getValue('footer'), false);
 
             $this->tpl_subject = $objFormParam->getValue('subject');
-            $this->tpl_body = mb_convert_encoding( $objSendMail->body, CHAR_CODE, 'auto');
+            $this->tpl_body = mb_convert_encoding($objSendMail->body, CHAR_CODE, 'auto');
             $this->tpl_to = $objSendMail->tpl_to;
             $this->tpl_mainpage = 'order/mail_confirm.tpl';
             return true;

@@ -551,17 +551,17 @@ class SC_Utils {
     /*            ２．終了年月日 (YYYY/MM/DD 235959)
     /*            ３．エラー ( 0 = OK, 1 = NG)
     /*-----------------------------------------------------------------*/
-    function sfCheckSetTerm ( $start_year, $start_month, $start_day, $end_year, $end_month, $end_day) {
+    function sfCheckSetTerm ($start_year, $start_month, $start_day, $end_year, $end_month, $end_day) {
 
         // 期間指定
         $error = 0;
         if ($start_month || $start_day || $start_year) {
-            if ( ! checkdate($start_month, $start_day , $start_year)) $error = 1;
+            if (! checkdate($start_month, $start_day , $start_year)) $error = 1;
         } else {
             $error = 1;
         }
         if ($end_month || $end_day || $end_year) {
-            if ( ! checkdate($end_month ,$end_day ,$end_year)) $error = 2;
+            if (! checkdate($end_month ,$end_day ,$end_year)) $error = 2;
         }
         if (! $error) {
             $date1 = $start_year ."/".sprintf("%02d",$start_month) ."/".sprintf("%02d",$start_day) ." 000000";
@@ -1037,7 +1037,7 @@ class SC_Utils {
         $keys = array_values($arrKeys);
         $vals = array_values($arrValues);
 
-        $max = max( count( $keys), count( $vals));
+        $max = max( count($keys), count($vals));
         $combine_ary = array();
         for ($i=0; $i<$max; $i++) {
             $combine_ary[$keys[$i]] = $vals[$i];
@@ -1144,7 +1144,7 @@ class SC_Utils {
             }
         }
 
-        $fileArray=glob( $src."*");
+        $fileArray=glob($src."*");
         if (is_array($fileArray)) {
             foreach ($fileArray as $key => $data_) {
                 // CVS管理ファイルはコピーしない
@@ -1160,13 +1160,13 @@ class SC_Utils {
 
                 mb_ereg("^(.*[\/])(.*)",$data_, $matches);
                 $data=$matches[2];
-                if (is_dir( $data_)) {
-                    $mess = SC_Utils_Ex::sfCopyDir( $data_.'/', $des.$data.'/', $mess);
+                if (is_dir($data_)) {
+                    $mess = SC_Utils_Ex::sfCopyDir($data_.'/', $des.$data.'/', $mess);
                 } else {
                     if (!$override && file_exists($des.$data)) {
                         $mess.= $des.$data . "：ファイルが存在します\n";
                     } else {
-                        if (@copy( $data_, $des.$data)) {
+                        if (@copy($data_, $des.$data)) {
                             $mess.= $des.$data . "：コピー成功\n";
                         } else {
                             $mess.= $des.$data . "：コピー失敗\n";
@@ -1609,15 +1609,15 @@ class SC_Utils {
             // インデックスが設定されている場合
             if (is_array($arrayIndex) && 0 < count($arrayIndex)) {
                 for ($j = 0; $j < count($arrayIndex); $j++) {
-                    if ( $j > 0) $return .= ",";
+                    if ($j > 0) $return .= ",";
                     $return .= "\"";
-                    $return .= mb_ereg_replace("<","＜",mb_ereg_replace( "\"","\"\"",$array[$i][$arrayIndex[$j]])) ."\"";
+                    $return .= mb_ereg_replace("<","＜",mb_ereg_replace("\"","\"\"",$array[$i][$arrayIndex[$j]])) ."\"";
                 }
             } else {
                 for ($j = 0; $j < count($array[$i]); $j++) {
-                    if ( $j > 0) $return .= ",";
+                    if ($j > 0) $return .= ",";
                     $return .= "\"";
-                    $return .= mb_ereg_replace("<","＜",mb_ereg_replace( "\"","\"\"",$array[$i][$j])) ."\"";
+                    $return .= mb_ereg_replace("<","＜",mb_ereg_replace("\"","\"\"",$array[$i][$j])) ."\"";
                 }
             }
             $return .= "\n";

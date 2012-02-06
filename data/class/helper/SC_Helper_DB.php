@@ -1072,10 +1072,10 @@ __EOS__;
         }
 
         //入れ替え先の順位が入れ換え元の順位より大きい場合
-        if( $position > $rank) $term = "rank - 1";
+        if($position > $rank) $term = "rank - 1";
 
         //入れ替え先の順位が入れ換え元の順位より小さい場合
-        if( $position < $rank) $term = "rank + 1";
+        if($position < $rank) $term = "rank + 1";
 
         // XXX 入れ替え先の順位が入れ替え元の順位と同じ場合
         if (!isset($term)) $term = 'rank';
@@ -1086,8 +1086,8 @@ __EOS__;
             $sql.= " AND $where";
         }
 
-        if( $position > $rank) $objQuery->exec( $sql, array( $rank + 1, $position));
-        if( $position < $rank) $objQuery->exec( $sql, array( $position, $rank - 1));
+        if($position > $rank) $objQuery->exec($sql, array($rank + 1, $position));
+        if($position < $rank) $objQuery->exec($sql, array($position, $rank - 1));
 
         // 指定した順位へrankを書き換える。
         $sql  = "UPDATE $tableName SET rank = ? WHERE $keyIdColumn = ? ";
@@ -1095,7 +1095,7 @@ __EOS__;
             $sql.= " AND $where";
         }
 
-        $objQuery->exec( $sql, array( $position, $keyId));
+        $objQuery->exec($sql, array($position, $keyId));
         $objQuery->commit();
     }
 

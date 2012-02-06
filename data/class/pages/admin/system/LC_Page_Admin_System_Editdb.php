@@ -128,7 +128,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
         // 変更対象の設定変更
         foreach ($arrTarget as $item) {
             $index_name = $item['table_name'] . '_' . $item['column_name'] . "_key";
-            $arrField = array( 'fields' => array($item['column_name'] => array()));
+            $arrField = array('fields' => array($item['column_name'] => array()));
             if ($item['indexflag_new'] == '1') {
                 $objQuery->createIndex($item['table_name'], $index_name, $arrField);
             } else {
