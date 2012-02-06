@@ -1037,7 +1037,7 @@ class SC_Utils {
         $keys = array_values($arrKeys);
         $vals = array_values($arrValues);
 
-        $max = max( count( $keys ), count( $vals ));
+        $max = max( count( $keys), count( $vals));
         $combine_ary = array();
         for ($i=0; $i<$max; $i++) {
             $combine_ary[$keys[$i]] = $vals[$i];

@@ -101,21 +101,21 @@ class SC_SelectSql {
         $date2 = date('Y/m/d', $date2);
 
         // 開始期間だけ指定の場合
-        if (( $from_year != "" ) && ( $from_month != "" ) && ( $from_day != "" ) && ( $to_year == "" ) && ( $to_month == "" ) && ( $to_day == "")) {
+        if (( $from_year != "") && ( $from_month != "") && ( $from_day != "") && ( $to_year == "") && ( $to_month == "") && ( $to_day == "")) {
             $this->setWhere( $column .' >= ?');
             $return[] = $date1;
         }
 
         //　開始～終了
-        if( ( $from_year != "" ) && ( $from_month != "" ) && ( $from_day != "") &&
-            ( $to_year != "" ) && ( $to_month != "" ) && ( $to_day != "" )) {
+        if( ( $from_year != "") && ( $from_month != "") && ( $from_day != "") &&
+            ( $to_year != "") && ( $to_month != "") && ( $to_day != "")) {
             $this->setWhere( $column . ' >= ? AND ' . $column . ' < date(?)');
             $return[] = $date1;
             $return[] = $date2;
         }
 
         // 終了期間だけ指定の場合
-        if (( $from_year == "" ) && ( $from_month == "" ) && ( $from_day == "" ) && ( $to_year != "" ) && ( $to_month != "" ) && ( $to_day != "")) {
+        if (( $from_year == "") && ( $from_month == "") && ( $from_day == "") && ( $to_year != "") && ( $to_month != "") && ( $to_day != "")) {
             $this->setWhere( $column . ' < date(?)');
             $return[] = $date2;
         }
@@ -129,14 +129,14 @@ class SC_SelectSql {
         foreach ($arr as $data) {
 
             if (count( $arr) > 1) {
-                if( ! is_null( $data )) $item .= $ItemStr . " = ? OR ";
+                if( ! is_null( $data)) $item .= $ItemStr . " = ? OR ";
             } else {
-                if( ! is_null( $data )) $item = $ItemStr . " = ?";
+                if( ! is_null( $data)) $item = $ItemStr . " = ?";
             }
             $return[] = $data;
         }
 
-        if( count( $arr ) > 1 )  $item = "( " . rtrim( $item, " OR " ) . ")";
+        if( count( $arr) > 1)  $item = "( " . rtrim( $item, " OR ") . ")";
         $this->setWhere( $item);
         return $return;
     }
@@ -190,10 +190,10 @@ class SC_SelectSql {
 
         for ($i = 0; $i < $count; $i++) {
 
-            if( isset( $arrWhere[$i]['value'] )) $statement .= $arrWhere[$i]['column'] ." = " . SC_Utils_Ex::sfQuoteSmart($arrWhere[$i]['value']) ." OR "  ;
+            if( isset( $arrWhere[$i]['value'])) $statement .= $arrWhere[$i]['column'] ." = " . SC_Utils_Ex::sfQuoteSmart($arrWhere[$i]['value']) ." OR "  ;
         }
 
-        $statement = "( " . rtrim( $statement, " OR " ) . ")";
+        $statement = "( " . rtrim( $statement, " OR ") . ")";
 
         if ($this->where) {
 

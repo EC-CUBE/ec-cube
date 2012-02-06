@@ -732,7 +732,7 @@ function lfCheckWebError($objFormParam) {
     $objErr->doFunc(array("管理者：ログインID",'login_id',ID_MIN_LEN , ID_MAX_LEN) ,array("SPTAB_CHECK" ,"NUM_RANGE_CHECK"));
 
     // パスワードのチェック
-    $objErr->doFunc( array("管理者：パスワード",'login_pass',ID_MIN_LEN , ID_MAX_LEN ) ,array("SPTAB_CHECK" ,"NUM_RANGE_CHECK"));
+    $objErr->doFunc( array("管理者：パスワード",'login_pass',ID_MIN_LEN , ID_MAX_LEN) ,array("SPTAB_CHECK" ,"NUM_RANGE_CHECK"));
 
     // 管理機能ディレクトリのチェック
     $objErr->doFunc( array("管理機能：ディレクトリ", 'admin_dir', ID_MIN_LEN, ID_MAX_LEN), array("SPTAB_CHECK" ,"NUM_RANGE_CHECK"));
