@@ -296,7 +296,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
     }
 
     /* 折れ線グラフの作成 */
-    function lfGetGraphLine($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, $edate) {
+    function lfGetGraphLine($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, $edate, $xincline) {
 
         $ret_path = "";
 
@@ -323,7 +323,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             $objGraphLine->setXLabel(array_keys($arrList));
 
             // ラベル回転(日本語不可)
-            if ($keyname == "key_day") {
+            if ($xincline == true) {
                 $objGraphLine->setXLabelAngle(45);
             }
 
@@ -676,7 +676,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             $xtitle = "(日別)";
             $ytitle = "(売上合計)";
             $format = '%Y-%m-%d';
-
+            $xincline = true;
             break;
         }
 
@@ -691,7 +691,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
         $arrTotalResults = $this->lfAddBlankLine($arrTotalResults, $type, $sdate, $edate);
         // todo GDない場合の処理
-        $tpl_image       = $this->lfGetGraphLine($arrTotalResults, 'str_date', "term_" . $type, $xtitle, $ytitle, $sdate, $edate);
+        $tpl_image       = $this->lfGetGraphLine($arrTotalResults, 'str_date', "term_" . $type, $xtitle, $ytitle, $sdate, $edate, $xincline);
         $arrTotalResults = $this->lfAddTotalLine($arrTotalResults);
 
         return array($arrTotalResults, $tpl_image);
