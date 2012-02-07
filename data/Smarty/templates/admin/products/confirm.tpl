@@ -160,8 +160,8 @@
         </tr>
         <tr>
             <th>メーカーURL</th>
-            <td>
-                <!--{$arrForm.comment1|h|sfPutBR:$smarty.const.LINE_LIMIT_SIZE}-->
+            <td style="word-break: break-all;">
+                <!--{$arrForm.comment1|h}-->
             </td>
         </tr>
         <tr>
