@@ -90,7 +90,7 @@ class SC_Batch_Update extends SC_Batch {
 
                 // distinfo.php を読み込む
                 if ($fileName == "distinfo.php") {
-                    include_once($path);
+                    include_once $path;
                 }
 
                 // 除外ファイルをスキップ

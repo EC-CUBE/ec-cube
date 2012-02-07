@@ -27,8 +27,8 @@
  *----------------------------------------------------------------------
  */
 
-require(DATA_REALDIR . 'module/fpdf/fpdf.php');
-require(DATA_REALDIR . 'module/fpdi/japanese.php');
+require DATA_REALDIR . 'module/fpdf/fpdf.php';
+require DATA_REALDIR . 'module/fpdi/japanese.php';
 define('PDF_TEMPLATE_REALDIR', TEMPLATE_ADMIN_REALDIR . 'pdf/');
 
 class SC_Fpdf extends PDF_Japanese {

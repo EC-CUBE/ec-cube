@@ -57,7 +57,7 @@ class SC_MobileEmoji {
 
         static $arrMap;
         if (!isset($arrMap)) {
-            $arrMap = @include_once(dirname(__FILE__) . "/../include/mobile_emoji_map_$carrier.inc");
+            $arrMap = @include_once dirname(__FILE__) . "/../include/mobile_emoji_map_$carrier.inc";
         }
 
         return isset($arrMap[$index]) ? $arrMap[$index] : MOBILE_EMOJI_SUBSTITUTE;

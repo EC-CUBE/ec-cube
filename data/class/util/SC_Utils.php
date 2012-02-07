@@ -549,7 +549,7 @@ class SC_Utils {
     /*　戻値 array(１，２，３）
     /*          １．開始年月日 (YYYY/MM/DD 000000)
     /*            ２．終了年月日 (YYYY/MM/DD 235959)
-    /*            ３．エラー ( 0 = OK, 1 = NG)
+    /*            ３．エラー (0 = OK, 1 = NG)
     /*-----------------------------------------------------------------*/
     function sfCheckSetTerm ($start_year, $start_month, $start_day, $end_year, $end_month, $end_day) {
 
@@ -1850,7 +1850,7 @@ class SC_Utils {
      * @return array プラグイン情報配列
      */
     function sfGetPluginInfoArray($path) {
-        return (array)include_once(PLUGIN_REALDIR . "$path/plugin_info.php");
+        return (array)include_once PLUGIN_REALDIR . "$path/plugin_info.php";
     }
 
     /**
