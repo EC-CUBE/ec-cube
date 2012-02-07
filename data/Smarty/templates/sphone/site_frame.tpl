@@ -41,7 +41,7 @@
 <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/navi.js"></script>
 <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/win_op.js"></script>
 <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/site.js"></script>
-<script src="<!--{$TPL_URLPATH}-->js/jquery-1.5.2.min.js"></script>
+<script src="<!--{$TPL_URLPATH}-->js/jquery-1.6.4.min.js"></script>
 <script src="<!--{$TPL_URLPATH}-->js/jquery.biggerlink.js"></script>
 <script>//<![CDATA[
     $(function(){
@@ -55,12 +55,12 @@
 <script src="<!--{$TPL_URLPATH}-->js/news.js"></script>
 
 <!--{* スマートフォンカスタマイズ用CSS *}-->
-<link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->css/jquery.mobile-1.0a3.css" />
+<link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->css/jquery.mobile-1.0.1.css" />
 <link rel="stylesheet" media="screen" href="<!--{$TPL_URLPATH}-->js/jquery.facebox/facebox.css" />
 
 <!--{* スマートフォンカスタマイズ用JS *}-->
 <script src="<!--{$TPL_URLPATH}-->js/config.js"></script>
-<script src="<!--{$TPL_URLPATH}-->js/jquery.mobile-1.0a3.min.js"></script>
+<script src="<!--{$TPL_URLPATH}-->js/jquery.mobile-1.0.1.min.js"></script>
 <script src="<!--{$TPL_URLPATH}-->js/jquery.autoResizeTextAreaQ-0.1.js"></script>
 <script src="<!--{$TPL_URLPATH}-->js/jquery.flickslide.js"></script>
 <script src="<!--{$TPL_URLPATH}-->js/favorite.js"></script>

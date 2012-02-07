@@ -145,7 +145,7 @@
 <!--▲CONTENTS -->
 <script>
 function getMailDetail(send_id) {
-    $.mobile.pageLoading();
+    $.mobile.showPageLoadingMsg();
     $.ajax({
            type: "GET",
            url: "<!--{$smarty.const.ROOT_URLPATH}-->mypage/mail_view.php",
@@ -154,7 +154,7 @@ function getMailDetail(send_id) {
            dataType: "json",
            error: function(XMLHttpRequest, textStatus, errorThrown){
                alert(textStatus);
-               $.mobile.pageLoading(true);
+               $.mobile.hidePageLoadingMsg();
            },
            success: function(result){
                var maxCnt = 0;
@@ -163,11 +163,11 @@ function getMailDetail(send_id) {
                $($("#windowcolumn dl.view_detail dt").get(maxCnt)).text(result[0].subject);
                $($("#windowcolumn dl.view_detail dd").get(maxCnt)).html(result[0].mail_body.replace(/\n/g,"<br />"));
                $("#windowcolumn dl.view_detail dd").css('font-family', 'monospace');
-               $.mobile.changePage('#windowcolumn', 'slideup');
+               $.mobile.changePage('#windowcolumn', {transition: "slideup"});
                //ダイアログが開き終わるまで待機
                setTimeout( function() {
                                loadingState = 0;
-                               $.mobile.pageLoading(true);
+                               $.mobile.hidePageLoadingMsg();
                           }, 1000);
            }
 });

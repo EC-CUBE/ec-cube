@@ -46,7 +46,7 @@
 var newsPageNo = 2;
 
 function getNews(limit) {
-    $.mobile.pageLoading();
+    $.mobile.showPageLoadingMsg();
     var i = limit;
 
     $.ajax({
@@ -57,7 +57,7 @@ function getNews(limit) {
                dataType: "json",
                error: function(XMLHttpRequest, textStatus, errorThrown){
                    alert(textStatus);
-                   $.mobile.pageLoading(true);
+                   $.mobile.hidePageLoadingMsg();
                },
                success: function(result){
                    if (result.error) {
@@ -92,7 +92,7 @@ function getNews(limit) {
 
                        newsPageNo++;
                    }
-                   $.mobile.pageLoading(true);
+                   $.mobile.hidePageLoadingMsg();
                }
            });
 }
@@ -100,7 +100,7 @@ function getNews(limit) {
 var loadingState = 0;
 function getNewsDetail(newsId) {
     if (loadingState == 0) {
-        $.mobile.pageLoading();
+        $.mobile.showPageLoadingMsg();
         loadingState = 1;
         $.ajax({
                    url: "<!--{$smarty.const.ROOT_URLPATH}-->frontparts/bloc/news.php",
@@ -111,13 +111,13 @@ function getNewsDetail(newsId) {
                    dataType: "json",
                    error: function(XMLHttpRequest, textStatus, errorThrown){
                        alert(textStatus);
-                       $.mobile.pageLoading(true);
+                       $.mobile.hidePageLoadingMsg();
                        loadingState = 0;
                    },
                    success: function(result){
                        if (result.error) {
                            alert(result.error);
-                           $.mobile.pageLoading(true);
+                           $.mobile.hidePageLoadingMsg();
                            loadingState = 0;
                        }
                        else if (result[0] != null) {
@@ -142,11 +142,11 @@ function getNewsDetail(newsId) {
                                $("#newsComment").html(news.news_comment.replace(/\n/g,"<br />"));
                            }, 10);
 
-                           $.mobile.changePage('#windowcolumn', 'slideup');
+                           $.mobile.changePage('#windowcolumn', {transition: "slideup"});
                            //ダイアログが開き終わるまで待機
                            setTimeout( function() {
                                            loadingState = 0;
-                                           $.mobile.pageLoading(true);
+                                           $.mobile.hidePageLoadingMsg();
                                        }, 1000);
                        }
                    }

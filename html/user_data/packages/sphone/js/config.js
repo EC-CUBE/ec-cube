@@ -1,4 +1,5 @@
 $(document).bind("mobileinit", function(){     
-    $.mobile.ajaxFormsEnabled = false;
-    $.mobile.ajaxLinksEnabled = false;
+    $.mobile.ajaxEnabled = false;
+    $.mobile.pushStateEnabled = false;
+    $.mobile.page.prototype.options.keepNative = "select, input, textarea.bar";
 });

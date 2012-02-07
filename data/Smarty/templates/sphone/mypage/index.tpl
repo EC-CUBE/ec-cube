@@ -93,7 +93,7 @@ var url = "<!--{$smarty.const.ROOT_URLPATH}-->mypage/history.php";
 var statusImagePath = "<!--{$TPL_URLPATH}-->";
 
 function getHistory(limit) {
-    $.mobile.pageLoading();
+    $.mobile.showPageLoadingMsg();
     var i = limit;
     //送信データを準備
     var postData = {};
@@ -112,7 +112,7 @@ function getHistory(limit) {
            dataType: "json",
            error: function(XMLHttpRequest, textStatus, errorThrown){
             alert(textStatus);
-            $.mobile.pageLoading(true);
+            $.mobile.hidePageLoadingMsg();
            },
            success: function(result){
            
@@ -144,7 +144,7 @@ function getHistory(limit) {
              if (parseInt($("#historycount").text()) <= $(".arrowBox").length) {
                  $("#btn_more_history").hide();
              }
-             $.mobile.pageLoading(true);
+             $.mobile.hidePageLoadingMsg();
            }
 });
 }
