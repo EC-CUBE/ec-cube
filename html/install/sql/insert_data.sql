@@ -1126,7 +1126,6 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MAX_LOG_SIZE', '"10
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TRANSACTION_ID_NAME', '"transactionid"', 94, 'トランザクションID の名前');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('FORGOT_MAIL', '0', 95, 'パスワード忘れの確認メールを送付するか否か。(0:送信しない、1:送信する)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('HTML_TEMPLATE_SUB_MAX', '12', 96, '登録できるサブ商品の数');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LINE_LIMIT_SIZE', '60', 97, '文字数が多すぎるときに強制改行するサイズ(半角)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('BIRTH_MONTH_POINT', '0', 98, '誕生日月ポイント');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LARGE_IMAGE_WIDTH', '500', 110, '拡大画像横');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LARGE_IMAGE_HEIGHT', '500', 111, '拡大画像縦');

@@ -133,8 +133,6 @@ define('TRANSACTION_ID_NAME', "transactionid");
 define('FORGOT_MAIL', 0);
 /** 登録できるサブ商品の数 */
 define('HTML_TEMPLATE_SUB_MAX', 12);
-/** 文字数が多すぎるときに強制改行するサイズ(半角) */
-define('LINE_LIMIT_SIZE', 60);
 /** 誕生日月ポイント */
 define('BIRTH_MONTH_POINT', 0);
 /** 拡大画像横 */

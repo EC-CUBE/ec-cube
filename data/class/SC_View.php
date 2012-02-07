@@ -44,7 +44,6 @@ class SC_View {
         $this->_smarty->register_modifier('sfGetChecked',array("SC_Utils_Ex", 'sfGetChecked'));
         $this->_smarty->register_modifier('sfTrimURL', array("SC_Utils_Ex", 'sfTrimURL'));
         $this->_smarty->register_modifier('sfMultiply', array("SC_Utils_Ex", 'sfMultiply'));
-        $this->_smarty->register_modifier('sfPutBR', array("SC_Utils_Ex", 'sfPutBR'));
         $this->_smarty->register_modifier('sfRmDupSlash', array("SC_Utils_Ex", 'sfRmDupSlash'));
         $this->_smarty->register_modifier('sfCutString', array("SC_Utils_Ex", 'sfCutString'));
         $this->_smarty->plugins_dir=array('plugins', realpath(dirname(__FILE__)) . "/../smarty_extends");

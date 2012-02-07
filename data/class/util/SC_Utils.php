@@ -823,28 +823,6 @@ class SC_Utils {
         return $id . $random;
     }
 
-    /* 文字列に強制的に改行を入れる */
-    function sfPutBR($str, $size) {
-        $i = 0;
-        $cnt = 0;
-        $line = array();
-        $ret = "";
-
-        while ($str[$i] != "") {
-            $line[$cnt].=$str[$i];
-            $i++;
-            if (strlen($line[$cnt]) > $size) {
-                $line[$cnt].="<br />";
-                $cnt++;
-            }
-        }
-
-        foreach ($line as $val) {
-            $ret.=$val;
-        }
-        return $ret;
-    }
-
     // 二回以上繰り返されているスラッシュ[/]を一つに変換する。
     function sfRmDupSlash($istr){
         if (ereg("^http://", $istr)) {
