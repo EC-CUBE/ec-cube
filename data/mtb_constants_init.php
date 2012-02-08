@@ -7,16 +7,12 @@ define('SAMPLE_ADDRESS2', "番地・ビル名 (例：1-3-5)");
 define('USER_DIR', "user_data/");
 /** ユーザファイル保存先 */
 define('USER_REALDIR', HTML_REALDIR . USER_DIR);
-/** ユーザインクルードファイル保存先 */
-define('USER_INC_REALDIR', USER_REALDIR . "include/");
 /** 郵便番号専用DB */
 define('ZIP_DSN', DEFAULT_DSN);
 /** ユーザー作成ページ等 */
 define('USER_URL', HTTP_URL . USER_DIR);
 /** 認証方式 */
 define('AUTH_TYPE', "HMAC");
-/** テンプレートファイル保存先 */
-define('USER_TEMPLATE_DIR', "templates/");
 /** テンプレートファイル保存先 */
 define('USER_PACKAGE_DIR', "packages/");
 /** テンプレートファイル保存先 */
@@ -25,8 +21,6 @@ define('USER_TEMPLATE_REALDIR', USER_REALDIR . USER_PACKAGE_DIR);
 define('TEMPLATE_TEMP_REALDIR', HTML_REALDIR . "upload/temp_template/");
 /** ユーザー作成画面のデフォルトPHPファイル */
 define('USER_DEF_PHP_REALFILE', USER_REALDIR . "__default.php");
-/** その他画面のデフォルトページレイアウト */
-define('DEF_LAYOUT', "products/list.php");
 /** ダウンロードモジュール保存ディレクトリ */
 define('MODULE_DIR', "downloads/module/");
 /** ダウンロードモジュール保存ディレクトリ */
@@ -37,12 +31,6 @@ define('MAX_LIFETIME', 7200);
 define('MASTER_DATA_REALDIR', DATA_REALDIR . "cache/");
 /** アップデート管理用ファイル格納場所 */
 define('UPDATE_HTTP', "http://sv01.ec-cube.net/info/index.php");
-/** アップデート管理用CSV1行辺りの最大文字数 */
-define('UPDATE_CSV_LINE_MAX', 4096);
-/** アップデート管理用CSVカラム数 */
-define('UPDATE_CSV_COL_MAX', 13);
-/** モジュール管理用CSVカラム数 */
-define('MODULE_CSV_COL_MAX', 16);
 /** 文字コード */
 define('CHAR_CODE', "UTF-8");
 /** ロケール設定 */
@@ -53,8 +41,6 @@ define('ECCUBE_PAYMENT', "EC-CUBE");
 define('PEAR_DB_DEBUG', 9);
 /** PEAR::DBの持続的接続オプション */
 define('PEAR_DB_PERSISTENT', false);
-/** バッチを実行する最短の間隔(秒) */
-define('LOAD_BATCH_PASS', 3600);
 /** 締め日の指定(末日の場合は、31を指定してください。) */
 define('CLOSE_DAY', 31);
 /** 一般サイトエラー */
@@ -67,8 +53,6 @@ define('GRAPH_URLPATH', ROOT_URLPATH . "upload/graph_image/");
 define('GRAPH_PIE_MAX', 10);
 /** グラフのラベルの文字数 */
 define('GRAPH_LABEL_MAX', 40);
-/** 何歳まで集計の対象とするか */
-define('BAT_ORDER_AGE', 70);
 /** 商品集計で何位まで表示するか */
 define('PRODUCTS_TOTAL_MAX', 15);
 /** 1:公開 2:非公開 */
@@ -111,18 +95,12 @@ define('CERT_STRING', "7WDhcBTF");
 define('BIRTH_YEAR', 1901);
 /** クレジットカードの期限＋何年 */
 define('CREDIT_ADD_YEAR', 10);
-/** 親カテゴリのカテゴリIDの最大数 (これ以下は親カテゴリとする。) */
-define('PARENT_CAT_MAX', 12);
-/** GET値変更などのいたずらを防ぐため最大数制限を設ける。 */
-define('NUMBER_MAX', 1000000000);
 /** ポイントの計算ルール(1:四捨五入、2:切り捨て、3:切り上げ) */
 define('POINT_RULE', 2);
 /** 1ポイント当たりの値段(円) */
 define('POINT_VALUE', 1);
 /** 管理モード 1:有効　0:無効(納品時) */
 define('ADMIN_MODE', 0);
-/** 売上集計バッチモード(true:バッチで集計する ※要cron設定、false:リアルタイムで集計する) */
-define('DAILY_BATCH_MODE', false);
 /** ログファイル最大数(ログテーション) */
 define('MAX_LOG_QUANTITY', 5);
 /** 1つのログファイルに保存する最大容量(byte) */
@@ -131,8 +109,6 @@ define('MAX_LOG_SIZE', "1000000");
 define('TRANSACTION_ID_NAME', "transactionid");
 /** パスワード忘れの確認メールを送付するか否か。(0:送信しない、1:送信する) */
 define('FORGOT_MAIL', 0);
-/** 登録できるサブ商品の数 */
-define('HTML_TEMPLATE_SUB_MAX', 12);
 /** 誕生日月ポイント */
 define('BIRTH_MONTH_POINT', 0);
 /** 拡大画像横 */
@@ -155,26 +131,12 @@ define('NORMAL_SUBIMAGE_HEIGHT', 200);
 define('LARGE_SUBIMAGE_WIDTH', 500);
 /** 拡大サブ画像縦 */
 define('LARGE_SUBIMAGE_HEIGHT', 500);
-/** 一覧表示画像横 */
-define('DISP_IMAGE_WIDTH', 65);
-/** 一覧表示画像縦 */
-define('DISP_IMAGE_HEIGHT', 65);
-/** その他の画像1 */
-define('OTHER_IMAGE1_WIDTH', 500);
-/** その他の画像1 */
-define('OTHER_IMAGE1_HEIGHT', 500);
-/** HTMLメールテンプレートメール担当画像横 */
-define('HTMLMAIL_IMAGE_WIDTH', 110);
-/** HTMLメールテンプレートメール担当画像縦 */
-define('HTMLMAIL_IMAGE_HEIGHT', 120);
 /** 画像サイズ制限(KB) */
 define('IMAGE_SIZE', 1000);
 /** CSVサイズ制限(KB) */
 define('CSV_SIZE', 2000);
 /** CSVアップロード1行あたりの最大文字数 */
 define('CSV_LINE_MAX', 10000);
-/** PDFサイズ制限(KB):商品詳細ファイル等 */
-define('PDF_SIZE', 5000);
 /** ファイル管理画面アップ制限(KB) */
 define('FILE_SIZE', 10000);
 /** アップできるテンプレートファイル制限(KB) */
@@ -221,14 +183,8 @@ define('CSV_TEMP_REALDIR', DATA_REALDIR . "upload/csv/");
 define('NO_IMAGE_REALDIR', USER_TEMPLATE_REALDIR . "img/picture/img_blank.gif");
 /** システム管理トップ */
 define('ADMIN_SYSTEM_URLPATH', ROOT_URLPATH . ADMIN_DIR . "system/" . DIR_INDEX_PATH);
-/** 規格登録 */
-define('ADMIN_CLASS_REGIST_URLPATH', ROOT_URLPATH . ADMIN_DIR . "products/class.php");
 /** 郵便番号入力 */
 define('INPUT_ZIP_URLPATH', ROOT_URLPATH . "input_zip.php");
-/** 配送業者登録 */
-define('ADMIN_DELIVERY_URLPATH', ROOT_URLPATH . ADMIN_DIR . "basis/delivery.php");
-/** 支払い方法登録 */
-define('ADMIN_PAYMENT_URLPATH', ROOT_URLPATH . ADMIN_DIR . "basis/payment.php");
 /** ホーム */
 define('ADMIN_HOME_URLPATH', ROOT_URLPATH . ADMIN_DIR . "home.php");
 /** ログインページ */
@@ -294,8 +250,6 @@ define('PASSWORD_MIN_LEN', 4);
 define('PASSWORD_MAX_LEN', STEXT_LEN);
 /** 検査数値用桁数(INT) */
 define('INT_LEN', 9);
-/** クレジットカードの文字数 */
-define('CREDIT_NO_LEN', 4);
 /** 検索カテゴリ最大表示文字数(byte) */
 define('SEARCH_CATEGORY_LEN', 18);
 /** ファイル名表示文字数 */
@@ -304,8 +258,6 @@ define('FILE_NAME_LEN', 10);
 define('COOKIE_EXPIRE', 365);
 /** カテゴリ区切り文字 */
 define('SEPA_CATNAVI', " > ");
-/** カテゴリ区切り文字 */
-define('SEPA_CATLIST', " | ");
 /** 会員情報入力 */
 define('SHOPPING_URL', HTTPS_URL . "shopping/" . DIR_INDEX_PATH);
 /** 会員登録ページTOP */
@@ -318,8 +270,6 @@ define('CART_URLPATH', ROOT_URLPATH . "cart/" . DIR_INDEX_PATH);
 define('DELIV_URLPATH', ROOT_URLPATH . "shopping/deliv.php");
 /** 複数お届け先設定 */
 define('MULTIPLE_URLPATH', ROOT_URLPATH . "shopping/multiple.php");
-/** Myページトップ */
-define('URL_MYPAGE_TOP', HTTPS_URL . "mypage/login.php");
 /** 購入確認ページ */
 define('SHOPPING_CONFIRM_URLPATH', ROOT_URLPATH . "shopping/confirm.php");
 /** お支払い方法選択ページ */
@@ -332,16 +282,8 @@ define('SHOPPING_MODULE_URLPATH', ROOT_URLPATH . "shopping/load_payment_module.p
 define('P_DETAIL_URLPATH', ROOT_URLPATH . "products/detail.php?product_id=");
 /** マイページお届け先URL */
 define('MYPAGE_DELIVADDR_URLPATH', ROOT_URLPATH . "mypage/delivery.php");
-/** メールアドレス種別 */
-define('MAIL_TYPE_PC', 1);
-/** メールアドレス種別 */
-define('MAIL_TYPE_MOBILE', 2);
 /** 新着情報管理画面 開始年(西暦) */
 define('ADMIN_NEWS_STARTYEAR', 2005);
-/** 会員登録 */
-define('ENTRY_CUSTOMER_TEMP_SUBJECT', "会員仮登録が完了いたしました。");
-/** 会員登録 */
-define('ENTRY_CUSTOMER_REGIST_SUBJECT', "本会員登録が完了いたしました。");
 /** 再入会制限時間 (単位: 時間) */
 define('ENTRY_LIMIT_HOUR', 1);
 /** 関連商品表示数 */
@@ -350,10 +292,6 @@ define('RECOMMEND_PRODUCT_MAX', 6);
 define('RECOMMEND_NUM', 8);
 /** お届け可能日以降のプルダウン表示最大日数 */
 define('DELIV_DATE_END_MAX', 21);
-/** 購入時強制会員登録(1:有効　0:無効) */
-define('PURCHASE_CUSTOMER_REGIST', 0);
-/** 支払期限 */
-define('CV_PAYMENT_LIMIT', 14);
 /** 商品レビューでURL書き込みを許可するか否か */
 define('REVIEW_ALLOW_URL', 0);
 /** Pear::Mail バックエンド:mail|smtp|sendmail */
@@ -368,8 +306,6 @@ define('UPDATE_SEND_SITE_INFO', false);
 define('USE_POINT', true);
 /** 在庫無し商品の非表示(true:非表示、false:表示) */
 define('NOSTOCK_HIDDEN', false);
-/** モバイルサイトを利用するか(true:利用する、false:利用しない) (false は一部対応) */
-define('USE_MOBILE', true);
 /** 複数配送先指定機能を利用するか(true:利用する、false:利用しない) */
 define('USE_MULTIPLE_SHIPPING', true);
 /** デフォルトテンプレート名(PC) */
@@ -416,18 +352,12 @@ define('MOBILE_IMAGE_URLPATH', ROOT_URLPATH . "upload/mobile_image/");
 define('MOBILE_TOP_URLPATH', ROOT_URLPATH . DIR_INDEX_PATH);
 /** カートトップ */
 define('MOBILE_CART_URLPATH', ROOT_URLPATH . "cart/" . DIR_INDEX_PATH);
-/** 会員情報入力 */
-define('MOBILE_SHOPPING_URL', HTTPS_URL . "shopping/" . DIR_INDEX_PATH);
 /** 購入確認ページ */
 define('MOBILE_SHOPPING_CONFIRM_URLPATH', ROOT_URLPATH . "shopping/confirm.php");
 /** お支払い方法選択ページ */
 define('MOBILE_SHOPPING_PAYMENT_URLPATH', ROOT_URLPATH . "shopping/payment.php");
 /** 商品詳細(HTML出力) */
 define('MOBILE_P_DETAIL_URLPATH', ROOT_URLPATH . "products/detail.php?product_id=");
-/** 購入完了画面 */
-define('MOBILE_SHOPPING_COMPLETE_URLPATH', ROOT_URLPATH . "shopping/complete.php");
-/** モジュール追加用画面 */
-define('MOBILE_SHOPPING_MODULE_URLPATH', ROOT_URLPATH . "shopping/load_payment_module.php");
 /** セッション維持方法：useCookie|useRequest */
 define('SESSION_KEEP_METHOD', "useCookie");
 /** セッションの存続時間 (秒) */
@@ -512,8 +442,6 @@ define('DOWN_TEMP_REALDIR', DATA_REALDIR . "download/temp/");
 define('DOWN_SAVE_REALDIR', DATA_REALDIR . "download/save/");
 /** ダウンロードファイル存在エラー */
 define('DOWNFILE_NOT_FOUND', 22);
-/** ダウンロード販売機能用オンライン決済payment_id(カンマ区切り) */
-define('ONLINE_PAYMENT', "1");
 /** ダウンロード販売機能 ダウンロードファイル読み込みバイト(KB) */
 define('DOWNLOAD_BLOCK', 1024);
 /** 新規注文 */
