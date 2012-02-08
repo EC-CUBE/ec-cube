@@ -352,11 +352,11 @@ function fnDelivToggle(areaEl) {
                                    style="<!--{$arrErr[$key3]|sfGetErrorColor}-->"
                                     class="boxShort text data-role-none" />
                                      </dd>
-<!--{if $smarty.const.USE_MULTIPLE_SHIPPING !== false}-->
-     <dd class="pb">
-       <a class="btn_more" href="javascript:fnModeSubmit('multiple', '', '');">お届け先を複数指定する</a>
-       </dd>
-<!--{/if}-->
+          <!--{if $smarty.const.USE_MULTIPLE_SHIPPING !== false}-->
+            <dd class="pb">
+              <a class="btn_more" href="javascript:fnModeSubmit('multiple', '', '');">お届け先を複数指定する</a>
+            </dd>
+          <!--{/if}-->
 
 </div>
                 
