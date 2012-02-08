@@ -54,10 +54,10 @@ class LC_Page_ResizeImage extends LC_Page_Ex {
     function process() {
         $objThumb = new gdthumb();
 
-        $file = NO_IMAGE_REALDIR;
+        $file = NO_IMAGE_REALFILE;
 
-        // NO_IMAGE_REALDIR以外のファイル名が渡された場合、ファイル名のチェックを行う
-        if (strlen($_GET['image']) >= 1 && $_GET['image'] !== NO_IMAGE_REALDIR) {
+        // NO_IMAGE_REALFILE以外のファイル名が渡された場合、ファイル名のチェックを行う
+        if (strlen($_GET['image']) >= 1 && $_GET['image'] !== NO_IMAGE_REALFILE) {
 
             // ファイル名が正しく、ファイルが存在する場合だけ、$fileを設定
             if (!$this->lfCheckFileName()) {
