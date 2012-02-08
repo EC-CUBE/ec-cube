@@ -1212,6 +1212,32 @@ body > #container {
     margin-bottom: 40px;
 }
 
+/* システム設定
+----------------------------------------------- */
+/* プラグイン管理 */
+td.plugin_img {
+    border-width: 1px 0px 1px 1px;
+    
+}
+td.plugin_info {
+    border-width: 1px 1px 1px 0px;
+}
+td.plugin_info p.description {
+    margin: 8px 0 10px 5px;
+}
+
+td.plugin_info span.ec_cube_version {
+    font-style: italic;
+    font-size: 80%;
+}
+
+td.plugin_info span.plugin_name {
+    font-weight: bold;
+}
+
+td.attention_fookpoint {
+    background-color: #FEB;
+}
 
 /* フォーム
 ----------------------------------------------- */

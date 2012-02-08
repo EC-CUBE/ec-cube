@@ -21,6 +21,52 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
+<script type="text/javascript">//<![CDATA[
+    $(function() {
+
+        $('input[id^=plugin_enable]').click(function(event) {
+            var data = {};
+            
+            // モード(有効 or 無効)
+            data.mode = event.target.name;
+            // プラグインID
+            data.plugin_id = event.target.value;
+            data['<!--{$smarty.const.TRANSACTION_ID_NAME}-->'] = '<!--{$transactionid}-->';
+            $.ajax({
+                type : 'POST',
+                url : location.pathname,
+                dataType : "json",
+                data: data,
+                cache : false,
+                error : remoteException,
+                success : function(data, dataType) {
+                        alert(data.message);
+                        location.href = location.pathname;
+                }
+            });
+        });
+
+        /**
+         * 通信エラー表示.
+         */
+        function remoteException(XMLHttpRequest, textStatus, errorThrown) {
+            alert('通信中にエラーが発生しました。');
+        }
+
+    $('.update_link').click(function(event) {
+        var plugin_id = event.target.name;
+        $('div[id="plugin_update_' + plugin_id + '"]').toggle("slow");
+        });
+    });
+
+
+    function removeUpdateFile(select_id) {
+        $('input[name="update_plugin_file"]').attr("disabled", "disabled");
+        $('input[id="' + select_id + '"]').removeAttr("disabled");
+    }
+//]]>
+</script>
+
 <!--<form name="form1" id="form1" method="post" action="?">-->
 <form name="form1" method="post" action="?" enctype="multipart/form-data">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -37,79 +83,100 @@
             <td>
                 <!--{assign var=key value="plugin_file"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <input type="file" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54" size="64" <!--{if $arrErr[$key]}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->>
+                <input type="file" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box45" size="43" <!--{if $arrErr[$key]}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}--> >
+                <a class="btn-action" href="javascript:;" onclick="fnModeSubmit('install', '', '');return false;"><span class="btn-next">インストール</span></a>
             </td>
         </tr>
     </table>
 
-    <div class="btn-area">
-        <a class="btn-action" href="javascript:;" onclick="fnModeSubmit('upload', '', '');return false;"><span class="btn-next">この内容で登録する</span></a>
-    </div>
-
     <!--▼プラグイン一覧ここから-->
     <h2>プラグイン一覧</h2>
     <!--{if count($plugins) > 0}-->
-        <span class="attention"><!--{$arrErr.plugin_error}--><!--{$arrErr.mode}--><!--{$arrErr.plugin_id}--><!--{$arrErr.plugin_code}--></span>
-        <table class="list" width="900">
-            <col width="15%" />
+        <span class="attention"><!--{$arrErr.plugin_error}--><!--{$arrErr.update_plugin_file}--></span>
+        <table class="system-plugin" width="900">
             <col width="10%" />
-            <col width="25%" />
-            <col width="28%" />
-            <col width="7%" />
-            <col width="5%" />
-            <col width="5%" />
-            <col width="5%" />
+            <col width="80%" />
+            <col width="10%" />
             <tr>
-                <th>プラグイン名</th>
-                <th>作者</th>
-                <th>サイトURL</th>
-                <th>説明</th>
-                <th>商品ステータス</th>
-                <th>操作</th>
-                <th>設定</th>
-                <th>移動</th>
+                <th colspan="2">機能説明</th>
+                <th>優先度<a class="btn-action" href="javascript:;" onclick="fnModeSubmit('priority','','');return false;"><span class="btn-next">反映</span></a></th>
             </tr>
             <!--{section name=data loop=$plugins}-->
-            <tr>
-                <td><!--{$plugins[data].plugin_name|default:$plugins[data].plugin_code|h}--><!--{if $plugins[data].plugin_version != ''}--><br /><!--{$plugins[data].plugin_version|h}--><!--{/if}--></td>
-                <td><!--{$plugins[data].author|default:'-'|h}--></td>
-                <td><!--{$plugins[data].plugin_site_url|default:'-'|h}--></td>
-                <td><!--{$plugins[data].plugin_description|default:'-'|h}--></td>
-                <td class="center">
-                    <!--{if $plugins[data].enable == $smarty.const.PLUGIN_ENABLE_TRUE}-->
-                    有効
-                    <!--{elseif $plugins[data].enable == $smarty.const.PLUGIN_ENABLE_FALSE}-->
-                    無効
-                    <!--{else}-->-<!--{/if}-->
-                </td>
-                <td class="center">
-                    <!--{if $plugins[data].status == $smarty.const.PLUGIN_STATUS_UPLOADED}-->
-                    <a class="btn-normal" href="javascript:;" name="install" onclick="fnSetFormValue('plugin_id', '<!--{$plugins[data].plugin_id}-->'); fnModeSubmit('install','plugin_code','<!--{$plugins[data].plugin_code}-->'); return false;">install</a>
+            <tr <!--{if $plugins[data].enable == $smarty.const.PLUGIN_ENABLE_FALSE}--> style="background:#C9C9C9;" <!--{/if}-->>
+                <!--ロゴ-->
+                <td class="center plugin_img">
+                    <!--{if $plugins[data].plugin_site_url != '' }-->
+                        <a href="?" onclick="win03('<!--{$plugins[data].plugin_site_url|h}-->','plugin_site_url','620','760'); return false;"><img src="<!--{$smarty.const.HTTP_URL}-->plugin/<!--{$plugins[data].plugin_code}-->/logo.png"/></a>&nbsp;
                     <!--{else}-->
-                        <!--{if $plugins[data].enable == $smarty.const.PLUGIN_ENABLE_TRUE}-->
-                            <a class="btn-normal" href="javascript:;" name="disable" onclick="fnSetFormValue('plugin_id', '<!--{$plugins[data].plugin_id}-->'); fnModeSubmit('disable','plugin_code','<!--{$plugins[data].plugin_code}-->'); return false;">disable</a><br />
+                        <img src="<!--{$smarty.const.HTTP_URL}-->plugin/<!--{$plugins[data].plugin_code}-->/logo.png"/>
+                    <!--{/if}-->
+
+                </td>
+                <!--機能説明-->
+                <td class="plugin_info">
+                    
+                        <!-- プラグイン名 -->
+                            <!-- ▼plugin_site_urlが設定されている場合はリンクとして表示 -->
+                            <span class="plugin_name">
+                            <!--{if $plugins[data].plugin_site_url != '' }-->
+                                <a href="?" onclick="win03('<!--{$plugins[data].plugin_site_url|h}-->','plugin_site_url','620','760'); return false;"><!--{$plugins[data].plugin_name|default:$plugins[data].plugin_code|h}--></a>&nbsp;
+                            <!--{else}-->
+                                <!--{$plugins[data].plugin_name|default:$plugins[data].plugin_code|h}-->&nbsp;
+                            <!--{/if}-->
+                            </span>
+                        <!-- プラグインバージョン -->
+                            <!--{if $plugins[data].plugin_version != ''}--><!--{$plugins[data].plugin_version|h}--><!--{/if}-->&nbsp;
+                        <!-- 作者 -->
+                            <!--{if $plugins[data].author != ''}-->
+                                <!-- ▼author_site_urlが設定されている場合はリンクとして表示 -->
+                                <!--{if $plugins[data].author_site_url != '' }-->
+                                    (by <a href="?" onclick="win03('<!--{$plugins[data].author_site_url|h}-->','author_site_url','620','760'); return false;"><!--{$plugins[data].author|default:'-'|h}--></a>)
+                                <!--{else}-->
+                                    (by <!--{$plugins[data].author|default:'-'|h}-->)
+                                <!--{/if}-->
+                            <!--{/if}-->
+                        <br />
+                    
+                    <p class="description"><!--{$plugins[data].plugin_description|default:'-'|h}--></p>
+                    <div>
+                        <span class="ec_cube_version">対応EC-CUBEバージョン ：<!--{$plugins[data].compliant_version|default:'-'|h}--></span><br/>
+                        <!--{if $plugins[data].config_flg == true && $plugins[data].status != $smarty.const.PLUGIN_STATUS_UPLOADED}-->
+                            <a href="?" onclick="win03('<!--{$smarty.const.HTTP_URL}-->plugin/<!--{$plugins[data].plugin_code}-->/config.php','plugin_setting','620','760'); return false;">プラグイン設定</a>&nbsp;|&nbsp;
                         <!--{else}-->
-                            <a class="btn-normal" href="javascript:;" name="enable" onclick="fnSetFormValue('plugin_id', '<!--{$plugins[data].plugin_id}-->'); fnModeSubmit('enable','plugin_code','<!--{$plugins[data].plugin_code}-->'); return false;">enable</a><br />
+                            プラグイン設定&nbsp;|&nbsp;
                         <!--{/if}-->
-                            <a class="btn-normal" href="javascript:;" name="uninstall" onclick="fnSetFormValue('plugin_id', '<!--{$plugins[data].plugin_id}-->'); fnModeSubmit('uninstall','plugin_code','<!--{$plugins[data].plugin_code}-->'); return false;">uninstall</a>
-                    <!--{/if}-->
+                        <!-- アップデート -->
+                            <a class="update_link" href="#" name="<!--{$plugins[data].plugin_id}-->">アップデート</a>&nbsp;|&nbsp;
+                        <!-- 削除 -->
+                            <a  href="javascript:;" name="uninstall" onclick="fnSetFormValue('plugin_id', '<!--{$plugins[data].plugin_id}-->'); fnModeSubmit('uninstall','plugin_code','<!--{$plugins[data].plugin_code}-->'); return false;">削除</a>&nbsp;|&nbsp;
+                        <!-- 有効/無効 -->
+                            <!--{if $plugins[data].enable == $smarty.const.PLUGIN_ENABLE_TRUE}-->
+                            <input id="plugin_enable" type="checkbox" name="disable" value="<!--{$plugins[data].plugin_id}-->" id="login_memory" checked="checked">有効</input><br/>
+                            <!--{else}-->
+                            <input id="plugin_enable" type="checkbox" name="enable" value="<!--{$plugins[data].plugin_id}-->" id="login_memory" onclick="fnSetFormValue('plugin_id', '<!--{$plugins[data].plugin_id}-->'); return false;">有効にする</input><br/>
+                            <!--{/if}-->
+                            
+                            <!-- アップデートリンク押下時に表示する. -->
+                            <div id="plugin_update_<!--{$plugins[data].plugin_id}-->" style="display: none">                                
+                                <input id="update_file_<!--{$plugins[data].plugin_id}-->" name="update_plugin_file" type="file" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box30" size="30" <!--{if $arrErr[$key]}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}--> />
+                                <a class="btn-action" href="javascript:;" onclick="removeUpdateFile('update_file_<!--{$plugins[data].plugin_id}-->'); fnSetFormValue('plugin_id', '<!--{$plugins[data].plugin_id}-->'); fnModeSubmit('update','plugin_code','<!--{$plugins[data].plugin_code}-->');return false;"><span class="btn-next">アップデート</span></a>
+                            </div>
+                    </div>
                 </td>
+                <!--優先順位-->
+                <!--{assign var=key value="rank"}-->
                 <td class="center">
-                    <!--{if $plugins[data].plugin_setting_path != ''}-->
-                        <a href="?" onclick="win03('<!--{$plugins[data].plugin_setting_path}-->','plugin_setting','620','760'); return false;">設定</a>
-                    <!--{else}-->
-                        -
-                    <!--{/if}-->
-                </td>
-                <td align="center">
-                <!--{if $smarty.section.data.iteration != 1}-->
-                <a href="?" onclick="fnModeSubmit('up','plugin_id', '<!--{$plugins[data].plugin_id}-->'); return false;">上へ</a>
-                <!--{/if}-->
-                <!--{if $smarty.section.data.iteration != $smarty.section.data.last}-->
-                <a href="?" onclick="fnModeSubmit('down','plugin_id', '<!--{$plugins[data].plugin_id}-->'); return false;">下へ</a>
-                <!--{/if}-->
+                    <input type="text" name="priority[<!--{$plugins[data].plugin_id}-->]" value="<!--{$plugins[data].rank|h}-->" size="1" class="rank" /><br/>
                 </td>
             </tr>
+            <!--{if $plugins[data].conflict_message != ""}-->
+            <tr> 
+                <td class="attention_fookpoint" colspan="3">
+                    <span class="attention"><!--{$plugins[data].conflict_message}--></span>
+                </td>
+            </tr>
+            <!--{/if}-->
+            
             <!--{/section}-->
         </table>
     <!--{else}-->

@@ -1274,6 +1274,9 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_UPLOAD_REALD
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_HTML_REALDIR', 'HTML_REALDIR . "plugin/"', 605, 'プラグイン外部ファイル保存先');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_TMPL_CACHE_REALDIR', 'PLUGIN_UPLOAD_REALDIR . "templates_cache/"', 606, 'プラグイン・テンプレートキャッシュ保存先');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_DIR_PERMISSION', '0777', 607, 'プラグイン・ディレクトリパーミッション');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_TEMP_REALDIR', 'HTML_REALDIR . "upload/temp_plugin/"', 608, 'プラグインファイル一時保存先');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOADS_TEMP_DIR', 'DATA_REALDIR . "downloads/tmp/"', 609, 'アップロード一時ディレクトリ');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_HTML_URL', 'USER_URL . PLUGIN_DIR', 610, 'プラグイン 外部ファイルURL');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOAD_DAYS_LEN', '3', 700, '日数桁数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOAD_EXTENSION', '"zip,lzh,jpg,jpeg,gif,png,mp3,pdf,csv"', 701, 'ダウンロードファイル登録可能拡張子(カンマ区切り)"');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWN_SIZE', '50000', 702, 'ダウンロード販売ファイル用サイズ制限(KB)');

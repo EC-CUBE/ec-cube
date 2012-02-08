@@ -19,12 +19,16 @@ define('USER_PACKAGE_DIR', "packages/");
 define('USER_TEMPLATE_REALDIR', USER_REALDIR . USER_PACKAGE_DIR);
 /** テンプレートファイル一時保存先 */
 define('TEMPLATE_TEMP_REALDIR', HTML_REALDIR . "upload/temp_template/");
+/** プラグインファイル一時保存先 */
+define('PLUGIN_TEMP_REALDIR', HTML_REALDIR . "upload/temp_plugin/");
 /** ユーザー作成画面のデフォルトPHPファイル */
 define('USER_DEF_PHP_REALFILE', USER_REALDIR . "__default.php");
 /** ダウンロードモジュール保存ディレクトリ */
 define('MODULE_DIR', "downloads/module/");
 /** ダウンロードモジュール保存ディレクトリ */
 define('MODULE_REALDIR', DATA_REALDIR . MODULE_DIR);
+/** アップロード一時ディレクトリ */
+define('DOWNLOADS_TEMP_DIR', DATA_REALDIR . "downloads/tmp/");
 /** DBセッションの有効期限(秒) */
 define('MAX_LIFETIME', 7200);
 /** マスターデータキャッシュディレクトリ */
@@ -428,6 +432,8 @@ define('PLUGIN_HTML_REALDIR', HTML_REALDIR . "plugin/");
 define('PLUGIN_TMPL_CACHE_REALDIR', PLUGIN_UPLOAD_REALDIR . "templates_cache/");
 /** プラグイン・ディレクトリパーミッション */
 define('PLUGIN_DIR_PERMISSION', 0777);
+/** プラグイン 外部ファイルURL */
+define('PLUGIN_HTML_URL', USER_URL . PLUGIN_DIR);
 /** 日数桁数 */
 define('DOWNLOAD_DAYS_LEN', 3);
 /** ダウンロードファイル登録可能拡張子(カンマ区切り)" */

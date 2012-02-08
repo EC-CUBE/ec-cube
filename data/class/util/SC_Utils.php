@@ -2134,4 +2134,47 @@ class SC_Utils {
 
         return true;
     }
+
+    /**
+     * 指定されたパスの配下を再帰的に削除.
+     *
+     * @param string  $path       削除対象のディレクトリまたはファイルのパス
+     * @param boolean $del_myself $pathそのものを削除するか. true なら削除する.
+     * @return void
+     */
+    function deleteFile($path, $del_myself = true) {
+        $flg = false;
+        // 対象が存在するかを検証.
+        if (file_exists($path) === false) {
+            GC_Utils_Ex::gfPrintLog($path . " が存在しません.");
+        } elseif (is_dir($path)) {
+            // ディレクトリが指定された場合
+            $handle = opendir($path);
+            if (!$handle) {
+                GC_Utils_Ex::gfPrintLog($path . " が開けませんでした.");
+            }
+            while (($item = readdir($handle)) !== false) {
+                if ($item === '.' || $item === '..') continue;
+                $cur_path = $path . '/' . $item;
+                if (is_dir($cur_path)) {
+                    // ディレクトリの場合、再帰処理
+                    $flg = SC_Utils_Ex::deleteFile($cur_path);
+                } else {
+                    // ファイルの場合、unlink
+                    $flg = @unlink($cur_path);
+                }
+            }
+            closedir($handle);
+            // ディレクトリを削除
+            GC_Utils_Ex::gfPrintLog($path . " を削除します.");
+            if ($del_myself) {
+                $flg = @rmdir($path);
+            }
+        } else {
+            // ファイルが指定された場合.
+            GC_Utils_Ex::gfPrintLog($path . " を削除します.");
+            $flg = @unlink($path);
+        }
+        return $flg;
+    }
 }

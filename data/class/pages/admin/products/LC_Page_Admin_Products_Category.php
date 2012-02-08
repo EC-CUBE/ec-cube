@@ -77,7 +77,11 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         $this->initParam($objFormParam);
         $objFormParam->setParam($_POST);
         $objFormParam->convParam();
-
+        
+        // フックポイントを実行.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_products_category_action_start', array($this));
+        
         switch ($this->getMode()) {
         // カテゴリ登録/編集実行
         case 'edit':
@@ -182,6 +186,10 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         $arrBread = array();
         $objDb->findTree($this->arrTree, $parent_category_id, $arrBread);
         $this->tpl_bread_crumbs = SC_Utils_Ex::jsonEncode($arrBread);
+
+        // フックポイントを実行.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_products_category_action_end', array($this));
     }
 
     /**

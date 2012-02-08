@@ -53,11 +53,12 @@ class SC_Helper_Plugin {
 
         foreach ($arrPluginDataList as $arrPluginData) {
             // プラグイン本体ファイル名が取得したプラグインディレクトリ一覧にある事を確認
-            if (array_search($arrPluginData['class_name'], $arrPluginDirectory) !== false) {
+            if (array_search($arrPluginData['plugin_code'], $arrPluginDirectory) !== false ) {
                 // プラグイン本体ファイルをrequire.
-                require_once PLUGIN_UPLOAD_REALDIR . $arrPluginData['class_name'] . '/' . $arrPluginData['class_name'] . '.php';
+                require_once(PLUGIN_UPLOAD_REALDIR . $arrPluginData['plugin_code'] . '/' . $arrPluginData['plugin_code'] . '.php');
+                
                 // プラグインのインスタンス生成.
-                $objPlugin = new $arrPluginData['class_name']($arrPluginData);
+                $objPlugin = new $arrPluginData['plugin_code']($arrPluginData);
                 // メンバ変数にプラグインのインスタンスを登録.
                 $this->arrPluginInstances[$arrPluginData['plugin_id']] = $objPlugin;
                 $this->arrPluginIds[] = $arrPluginData['plugin_id'];
@@ -117,7 +118,7 @@ class SC_Helper_Plugin {
         $objQuery = new SC_Query_Ex();
         $col = '*';
         $table = 'dtb_plugin';
-        $where = 'enable = 1 AND del_flg = 0';
+        $where = 'enable = 1';
         // XXX 2.11.0 互換のため
         $arrCols = $objQuery->listTableFields($table);
         if (in_array('rank', $arrCols)) {
@@ -129,19 +130,60 @@ class SC_Helper_Plugin {
 
     /**
      * インストールされているプラグインを取得する。
+     * 
+     * @return array $arrRet インストールされているプラグイン.
      */
     function getAllPlugin(){
         $objQuery = new SC_Query_Ex();
         $col = '*';
         $table = 'dtb_plugin';
-        $where = 'del_flg = 0';
         // XXX 2.11.0 互換のため
         $arrCols = $objQuery->listTableFields($table);
         if (in_array('rank', $arrCols)) {
-            $objQuery->setOrder('rank DESC');
+            $objQuery->setOrder('plugin_id ASC');
         }
-        $arrRet = $objQuery->select($col,$table,$where);
+        $arrRet = $objQuery->select($col,$table);
         return $arrRet;
+    }
+
+    /**
+     * プラグインIDをキーにプラグインを取得する。
+     * 
+     * @param int $plugin_id プラグインID.
+     * @return array プラグインの基本情報.
+     */
+    function getPluginByPluginId($plugin_id){
+        $objQuery = new SC_Query_Ex();
+        $col = '*';
+        $table = 'dtb_plugin';
+        $where = 'plugin_id = ?';
+        // XXX 2.11.0 互換のため
+        $arrCols = $objQuery->listTableFields($table);
+        if (in_array('rank', $arrCols)) {
+            $objQuery->setOrder('rank ASC');
+        }
+        $arrRet = $objQuery->select($col, $table, $where, array($plugin_id));
+        return $arrRet[0];
+    }
+    
+    /**
+     * プラグインコードをキーにプラグインを取得する。
+     * 
+     * @param string $plugin_code プラグインコード.
+     * @return array プラグインの基本情報.
+     */
+    function getPluginByPluginCode($plugin_code){
+        $objQuery = new SC_Query_Ex();
+        $col = '*';
+        $table = 'dtb_plugin';
+        $where = 'plugin_code = ?';
+        // XXX 2.11.0 互換のため
+        $arrCols = $objQuery->listTableFields($table);
+        if (in_array('rank', $arrCols)) {
+            $objQuery->setOrder('rank ASC');
+        }
+        $arrRet = $objQuery->select($col, $table, $where, array($plugin_code));
+        return $arrRet[0];
     }
 
     /**
@@ -265,7 +307,7 @@ class SC_Helper_Plugin {
         }
         // キャッシュテンプレートを削除
         if ($test_mode === false) {
-            $this->unlinkRecurse(PLUGIN_TMPL_CACHE_REALDIR, false);
+            SC_Utils_Ex::deleteFile(PLUGIN_TMPL_CACHE_REALDIR, false);
         }
         $objTemplateTransformList = SC_Plugin_Template_Transform_List::getSingletonInstance();
         $objTemplateTransformList->init();
@@ -278,39 +320,6 @@ class SC_Helper_Plugin {
     }
 
     /**
-     * 指定されたパスの配下を再帰的に unlink
-     *
-     * @param string  $path       削除対象のディレクトリまたはファイルのパス
-     * @param boolean $del_myself $pathそのものを削除するか. true なら削除する.
-     * @return void
-     */
-    function unlinkRecurse($path, $del_myself = true) {
-        if (!file_exists($path)) {
-            // TODO エラー処理; パスが存在しません
-        } elseif (is_dir($path)) {
-            // ディレクトリ
-            $handle = opendir($path);
-            if (!$handle) {
-                // TODO エラー処理; ディレクトリが開けませんでした
-            }
-
-            while (($item = readdir($handle)) !== false) {
-                if ($item === '.' || $item === '..') continue;
-                $cur_path = $path . '/' . $item;
-                if (is_dir($cur_path)) SC_Helper_Plugin::unlinkRecurse($cur_path);
-                else @unlink($cur_path);
-            }
-            closedir($handle);
-
-            // ディレクトリを削除
-            if ($del_myself) @rmdir($path);
-        } else {
-            // ファイルが指定された
-            @unlink($path);
-        }
-    }
-
-    /**
      * テンプレートキャッシュファイルのフルパスを返す.
      *
      * @param string $tpl_mainpage  返すキャッシュファイルのパスの対象となるテンプレート.
@@ -318,15 +327,15 @@ class SC_Helper_Plugin {
      */
     function getPluginTemplateCachePath($objPage) {
         // main_template の差し替え
-    if (strpos($objPage->tpl_mainpage, SMARTY_TEMPLATES_REALDIR) === 0) {
-    // フルパスで指定された
-    $dir = '';
-    $default_tpl_mainpage = str_replace(SMARTY_TEMPLATES_REALDIR, '', $objPage->tpl_mainpage);
-    } else {
+        if (strpos($objPage->tpl_mainpage, SMARTY_TEMPLATES_REALDIR) === 0) {
+            // フルパスで指定された
+            $dir = '';
+            $default_tpl_mainpage = str_replace(SMARTY_TEMPLATES_REALDIR, '', $objPage->tpl_mainpage);
+        } else {
             // フロントページ or 管理画面を判定
-        $dir = ($objPage instanceof LC_Page_Admin) ? 'admin/' : TEMPLATE_NAME . '/';
-    $default_tpl_mainpage = $objPage->tpl_mainpage;
-    }
+            $dir = ($objPage instanceof LC_Page_Admin) ? 'admin/' : TEMPLATE_NAME . '/';
+            $default_tpl_mainpage = $objPage->tpl_mainpage;
+        }
         return PLUGIN_TMPL_CACHE_REALDIR . $dir . $default_tpl_mainpage;
     }
 

@@ -1138,19 +1138,25 @@ CREATE TABLE dtb_plugin (
     plugin_name text NOT NULL,
     plugin_code text NOT NULL,
     author text,
+    author_site_url text,
     plugin_site_url text,
     plugin_version text,
+    compliant_version text,    
     plugin_description text,
-    plugin_setting_path text,
-    class_name text NOT NULL,
     rank int NOT NULL DEFAULT 0,
-    status smallint NOT NULL DEFAULT 0,
     enable smallint NOT NULL DEFAULT 0,
-    del_flg smallint NOT NULL DEFAULT 0,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
     PRIMARY KEY (plugin_id)
 );
+
+CREATE TABLE dtb_plugin_hookpoint (
+    plugin_id int NOT NULL,
+    hook_point text NOT NULL,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL
+);
+
 
 CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id);
 CREATE INDEX dtb_products_class_product_id_key ON dtb_products_class(product_id);

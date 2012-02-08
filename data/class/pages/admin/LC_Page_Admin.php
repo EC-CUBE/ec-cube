@@ -64,10 +64,12 @@ class LC_Page_Admin extends LC_Page_Ex {
         // ディスプレイクラス生成
         $this->objDisplay = new SC_Display_Ex();
 
-        // スーパーフックポイントを実行.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
-        $objPlugin->doAction('lc_page_preProcess', array($this));
-
+        if($_SERVER['PHP_SELF'] !== "/admin/system/plugin.php") {
+            // スーパーフックポイントを実行.
+            $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+            $objPlugin->doAction('lc_page_preProcess', array($this));
+        }
+        
         // トランザクショントークンの検証と生成
         $this->doValidToken(true);
         $this->setTokenTo();
@@ -88,19 +90,22 @@ class LC_Page_Admin extends LC_Page_Ex {
      */
     function sendResponse() {
 
-        // HeadNaviにpluginテンプレートを追加する.
-        $objTemplateTransformList = SC_Plugin_Template_Transform_List::getSingletonInstance();
-        $objTemplateTransformList->setHeadNaviBlocs($this->arrPageLayout['HeadNavi']);
+        if($_SERVER['PHP_SELF'] !== "/admin/system/plugin.php") {
+            
+            // プラグインによってトランスフォームされたテンプレートがあればセットする
+            $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+            $plugin_tmplpath = $objPlugin->getPluginTemplateCachePath($this);
+            if (file_exists($plugin_tmplpath)) $this->tpl_mainpage = $plugin_tmplpath;
 
-        // プラグインによってトランスフォームされたテンプレートがあればセットする
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
-        $plugin_tmplpath = $objPlugin->getPluginTemplateCachePath($this);
-        if (file_exists($plugin_tmplpath)) $this->tpl_mainpage = $plugin_tmplpath;
-
-        // スーパーフックポイントを実行.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
-        $objPlugin->doAction('lc_page_process', array($this));
-
+            // スーパーフックポイントを実行.
+            $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+            $objPlugin->doAction('lc_page_process', array($this));
+            
+            // HeadNaviにpluginテンプレートを追加する.
+            $objTemplateTransformList = SC_Plugin_Template_Transform_List::getSingletonInstance();
+            $objTemplateTransformList->setHeadNaviBlocs($this->arrPageLayout['HeadNavi']);
+        }
+        
         $this->objDisplay->prepare($this, true);
         $this->objDisplay->response->write();
     }

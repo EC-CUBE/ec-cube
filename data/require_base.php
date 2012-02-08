@@ -46,6 +46,9 @@ if (!SC_Utils_Ex::sfIsInstallFunction()) {
     require_once CLASS_REALDIR . 'session/SC_SessionFactory.php';
     $sessionFactory = SC_SessionFactory::getInstance();
     $sessionFactory->initSession();
+    
+    // プラグインを読み込む
+    require_once DATA_REALDIR . 'require_plugin.php';
 
     /*
      * 管理画面の場合は認証行う.
@@ -53,7 +56,5 @@ if (!SC_Utils_Ex::sfIsInstallFunction()) {
      */
     $objSession->adminAuthorization();
 
-    // プラグインを読み込む
-    require_once DATA_REALDIR . 'require_plugin.php';
 }
 ?>

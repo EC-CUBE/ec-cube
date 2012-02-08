@@ -1138,18 +1138,23 @@ CREATE TABLE dtb_plugin (
     plugin_name varchar(255) NOT NULL,
     plugin_code varchar(255) NOT NULL,
     author varchar(255),
+    author_site_url varchar(255),
     plugin_site_url varchar(255),
     plugin_version varchar(255),
+    compliant_version varchar(255),
     plugin_description varchar(255),
-    plugin_setting_path varchar(255),
-    class_name varchar(255) NOT NULL,
     rank int NOT NULL DEFAULT 0,
-    status smallint NOT NULL DEFAULT 0,
     enable smallint NOT NULL DEFAULT 0,
-    del_flg smallint NOT NULL DEFAULT 0,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
     PRIMARY KEY (plugin_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE dtb_plugin_hookpoint (
+    plugin_id int NOT NULL,
+    hook_point varchar(255) NOT NULL,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL
 ) ENGINE=InnoDB;
 
 CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id(64));

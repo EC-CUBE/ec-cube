@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2011 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2012 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -205,6 +205,9 @@ class LC_Page_Products_List extends LC_Page_Ex {
                 $this->tpl_onload       .= 'fnOnLoad(); ';
                 break;
         }
+
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_products_list_action_end',array($this));
 
         $this->tpl_rnd          = SC_Utils_Ex::sfGetRandomString(3);
 
