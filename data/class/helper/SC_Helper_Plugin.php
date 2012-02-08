@@ -162,8 +162,8 @@ class SC_Helper_Plugin {
         if (in_array('rank', $arrCols)) {
             $objQuery->setOrder('rank ASC');
         }
-        $arrRet = $objQuery->select($col, $table, $where, array($plugin_id));
-        return $arrRet[0];
+        $plugin = $objQuery->getRow($col, $table, $where, array($plugin_id));
+        return $plugin;
     }
     
     /**
@@ -182,8 +182,8 @@ class SC_Helper_Plugin {
         if (in_array('rank', $arrCols)) {
             $objQuery->setOrder('rank ASC');
         }
-        $arrRet = $objQuery->select($col, $table, $where, array($plugin_code));
-        return $arrRet[0];
+        $plugin = $objQuery->getRow($col, $table, $where, array($plugin_code));
+        return $plugin;
     }
 
     /**

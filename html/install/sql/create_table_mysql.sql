@@ -1151,10 +1151,12 @@ CREATE TABLE dtb_plugin (
 ) ENGINE=InnoDB;
 
 CREATE TABLE dtb_plugin_hookpoint (
+    id int NOT NULL,
     plugin_id int NOT NULL,
     hook_point varchar(255) NOT NULL,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    update_date timestamp NOT NULL
+    update_date timestamp NOT NULL,
+    PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 
 CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id(64));

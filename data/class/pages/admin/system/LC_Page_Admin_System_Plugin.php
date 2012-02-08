@@ -377,7 +377,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         }
 
         // プラグイン情報をDB登録
-        if ($this->registData($plugin_code) === false) {
+        if ($this->registerData($plugin_code) === false) {
             $arrErr['plugin_file'] = "※ DB登録に失敗しました。<br/>";
             return $arrErr;
         }
@@ -560,36 +560,38 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      * @param string $plugin_code プラグインコード.
      * @return array エラー情報を格納した連想配列.
      */
-    function registData($plugin_code) {
+    function registerData($plugin_code) {
         
         // プラグイン情報をDB登録.
         // TODO：エラーチェック.
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
-        $sqlval_plugin = array();
+        $arr_sqlval_plugin = array();
         $plugin_id = $objQuery->nextVal('dtb_plugin_plugin_id');
-        $sqlval_plugin['plugin_id'] = $plugin_id;
-        $sqlval_plugin['plugin_name'] = $plugin_code::PLUGIN_NAME;
-        $sqlval_plugin['plugin_code'] = $plugin_code;
-        $sqlval_plugin['author'] = $plugin_code::AUTHOR;
-        $sqlval_plugin['plugin_site_url'] = $plugin_code::PLUGIN_SITE_URL;
-        $sqlval_plugin['plugin_version'] = $plugin_code::PLUGIN_VERSION;
-        $sqlval_plugin['compliant_version'] = $plugin_code::COMPLIANT_VERSION;
-        $sqlval_plugin['plugin_description'] = $plugin_code::DESCRIPTION;
-        $sqlval_plugin['rank'] = 1 + $objQuery->max('rank', 'dtb_plugin');
-        $sqlval_plugin['enable'] = PLUGIN_ENABLE_FALSE;
-        $sqlval_plugin['update_date'] = 'CURRENT_TIMESTAMP';
-        $objQuery->insert('dtb_plugin', $sqlval_plugin);
+        $arr_sqlval_plugin['plugin_id'] = $plugin_id;
+        $arr_sqlval_plugin['plugin_name'] = $plugin_code::PLUGIN_NAME;
+        $arr_sqlval_plugin['plugin_code'] = $plugin_code;
+        $arr_sqlval_plugin['author'] = $plugin_code::AUTHOR;
+        $arr_sqlval_plugin['plugin_site_url'] = $plugin_code::PLUGIN_SITE_URL;
+        $arr_sqlval_plugin['plugin_version'] = $plugin_code::PLUGIN_VERSION;
+        $arr_sqlval_plugin['compliant_version'] = $plugin_code::COMPLIANT_VERSION;
+        $arr_sqlval_plugin['plugin_description'] = $plugin_code::DESCRIPTION;
+        $arr_sqlval_plugin['rank'] = 1 + $objQuery->max('rank', 'dtb_plugin');
+        $arr_sqlval_plugin['enable'] = PLUGIN_ENABLE_FALSE;
+        $arr_sqlval_plugin['update_date'] = 'CURRENT_TIMESTAMP';
+        $objQuery->insert('dtb_plugin', $arr_sqlval_plugin);
 
         // フックポイントをDB登録.
         $array_hook_point = explode(",", $plugin_code::HOOK_POINTS);
         if(is_array($array_hook_point)){
             foreach ($array_hook_point as $hook_point) {
-                $sqlval_plugin_hookpoint = array();
-                $sqlval_plugin_hookpoint['plugin_id'] = $plugin_id;
-                $sqlval_plugin_hookpoint['hook_point'] = $hook_point;
-                $sqlval_plugin_hookpoint['update_date'] = 'CURRENT_TIMESTAMP';
-                $objQuery->insert('dtb_plugin_hookpoint', $sqlval_plugin_hookpoint);
+                $arr_sqlval_plugin_hookpoint = array();
+                $id = $objQuery->nextVal('dtb_plugin_hookpoint_id');
+                $arr_sqlval_plugin_hookpoint['id'] = $id;
+                $arr_sqlval_plugin_hookpoint['plugin_id'] = $plugin_id;
+                $arr_sqlval_plugin_hookpoint['hook_point'] = $hook_point;
+                $arr_sqlval_plugin_hookpoint['update_date'] = 'CURRENT_TIMESTAMP';
+                $objQuery->insert('dtb_plugin_hookpoint', $arr_sqlval_plugin_hookpoint);
             }
         }
         return $objQuery->commit();
@@ -717,6 +719,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      * @return boolean
      */
     function checkContainsFile($tar_obj, $file_path) {
+        // ファイル一覧を取得
         $arrayFile = $tar_obj->listContent();
         foreach ($arrayFile as  $value) {
             if($value["filename"] === $file_path) return true;
@@ -725,16 +728,17 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
     }
 
     /**
-     * 圧縮ファイル名と中のディレクトリ名が同じであるかをチェックします..
+     * 圧縮ファイル名と中のディレクトリ名が同じであるかをチェックします.
      *
      * @param Archive_Tar $tar_obj Archive_Tarクラスのオブジェクト
      * @param string $dir_name ディレクトリ名.
      * @return boolean
      */
     function checkUploadFileName($tar_obj, $dir_name){
+        // ファイル一覧を取得
         $arrayFile = $tar_obj->listContent();
         // ディレクトリ名と圧縮ファイル名が同じかをチェック.
-        $pattern = ("/^". $dir_name ."\/(.*?)/");
+        $pattern = ("|^". preg_quote($dir_name) ."\/(.*?)|");
         foreach ($arrayFile as $value) {
             if(preg_match($pattern, $value["filename"])) return true;
         }

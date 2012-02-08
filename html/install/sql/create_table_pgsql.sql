@@ -1151,10 +1151,12 @@ CREATE TABLE dtb_plugin (
 );
 
 CREATE TABLE dtb_plugin_hookpoint (
+    id int NOT NULL,
     plugin_id int NOT NULL,
     hook_point text NOT NULL,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    update_date timestamp NOT NULL
+    update_date timestamp NOT NULL,
+    PRIMARY KEY (plugin_id)
 );
 
 
