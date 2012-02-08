@@ -36,8 +36,8 @@ if (!defined('NAN')) {
     define('NAN', 0.0);
 }
 
-define('SOAP_LIBRARY_VERSION', '0.12.0');
-define('SOAP_LIBRARY_NAME',    'PEAR-SOAP 0.12.0-beta');
+define('SOAP_LIBRARY_VERSION', '@version@');
+define('SOAP_LIBRARY_NAME',    'PEAR-SOAP @version@-beta');
 
 // Set schema version.
 define('SOAP_XML_SCHEMA_VERSION',  'http://www.w3.org/2001/XMLSchema');
@@ -67,7 +67,6 @@ define('SOAP_DEFAULT_ENCODING',  'UTF-8');
  */
 class SOAP_Base_Object extends PEAR
 {
-
     /**
      * Supported encodings, limited by XML extension.
      *
@@ -790,7 +789,7 @@ class SOAP_Base extends SOAP_Base_Object
                 if ($isstruct) {
                     if ($this->_wsdl) {
                         // Get this child's WSDL information.
-                        // /$soapval->ns/$soapval->type/$item->ns/$item->name
+                        // /$soapval->prefix/$soapval->type/$item->prefix/$item->name
                         $child_type = $this->_wsdl->getComplexTypeChildType(
                             $soapval->namespace,
                             $soapval->name,
@@ -823,7 +822,11 @@ class SOAP_Base extends SOAP_Base_Object
                             $isstruct = false;
                             $return = array($return->{$item->name}, $d);
                         } else {
-                            $return->{$item->name} = array($return->{$item->name}, $d);
+                            if (is_array($return->{$item->name})) {
+                                $return->{$item->name} = array_merge($return->{$item->name}, array($d));
+                            } else {
+                                $return->{$item->name} = array($return->{$item->name}, $d);
+                            }
                         }
                     } else {
                         $return->{$item->name} = $this->_decode($item);
@@ -1006,12 +1009,13 @@ class SOAP_Base extends SOAP_Base_Object
         if (isset($structure->body)) {
             $data = $structure->body;
             $headers = $structure->headers;
-
+            unset($headers['']);
             return;
         } elseif (isset($structure->parts)) {
             $data = $structure->parts[0]->body;
             $headers = array_merge($structure->headers,
                                    $structure->parts[0]->headers);
+            unset($headers['']);
             if (count($structure->parts) <= 1) {
                 return;
             }
@@ -1098,7 +1102,7 @@ class SOAP_Base extends SOAP_Base_Object
 class QName
 {
     var $name = '';
-    var $ns = '';
+    var $prefix = '';
     var $namespace = '';
 
     function QName($name, $namespace = '')
@@ -1109,9 +1113,8 @@ class QName
             $this->namespace = $m[1];
         } elseif (substr_count($name, ':') == 1) {
             $s = explode(':', $name);
-            $s = array_reverse($s);
-            $this->name = $s[0];
-            $this->ns = $s[1];
+            $this->prefix = $s[0];
+            $this->name = $s[1];
             $this->namespace = $namespace;
         } else {
             $this->name = $name;
@@ -1133,8 +1136,8 @@ class QName
     {
         if ($this->namespace) {
             return '{' . $this->namespace . '}' . $this->name;
-        } elseif ($this->ns) {
-            return $this->ns . ':' . $this->name;
+        } elseif ($this->prefix) {
+            return $this->prefix . ':' . $this->name;
         }
         return $this->name;
     }

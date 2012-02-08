@@ -366,7 +366,7 @@ class SOAP_DISCO_Server extends SOAP_Base_Object {
                 $this->_wsdl['definitions']['attr']['xmlns:' . $ns_pref] = $m[1][0];
             }
             $typens = $this->namespaces[$m[1][0]];
-            $type = ereg_replace($m[0][0],'',$type);
+            $type = preg_replace('/'.$m[0][0].'/', '', $type);
         } else {
             $typens = 'xsd';
         }

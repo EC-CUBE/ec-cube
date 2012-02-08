@@ -294,6 +294,7 @@ class SOAP_Server extends SOAP_Base
         $this->headers['Content-Length'] = strlen($response);
 
         foreach ($this->headers as $k => $v) {
+            $v = str_replace(array("\r", "\n"), '', $v);
             header("$k: $v");
             $hdrs .= "$k: $v\r\n";
         }
@@ -597,8 +598,13 @@ class SOAP_Server extends SOAP_Base
             if (method_exists($this->soapobject, '__dispatch')) {
                 $map = $this->soapobject->__dispatch($this->methodname);
             } elseif (method_exists($this->soapobject, $this->methodname)) {
-                /* No map, all public functions are SOAP functions. */
-                return true;
+                if (isset($this->soapobject->__dispatch_map[$this->methodname])) {
+                    // pdp - 2011-04-29 - declared output will be copied to return_type and use in buildResult
+                    $map = $this->soapobject->__dispatch_map[$this->methodname];
+                } else {
+                    /* No map, all public functions are SOAP functions. */
+                    return true;
+                }
             }
         }
         if (!$map) {

@@ -21,6 +21,9 @@
 
 require_once 'SOAP/Server.php';
 
+require_once 'SOAP/Server/TCP/Handler.php';
+
+
 /**
  * SOAP Server Class that implements a TCP SOAP Server.
  * http://www.pocketsoap.com/specs/smtpbinding/
@@ -42,65 +45,52 @@ class SOAP_Server_TCP extends SOAP_Server {
     var $headers = array();
     var $localaddr;
     var $port;
-    var $listen;
-    var $reuse;
+    var $type;
 
     function SOAP_Server_TCP($localaddr = '127.0.0.1', $port = 10000,
-                             $listen = 5, $reuse = true)
+                             $type = 'sequential')
     {
         parent::SOAP_Server();
         $this->localaddr = $localaddr;
         $this->port = $port;
-        $this->listen = $listen;
-        $this->reuse = $reuse;
+        $this->type = $type;
     }
 
-    function run()
-    {
-        if (($sock = socket_create(AF_INET, SOCK_STREAM, 0)) < 0) {
-            return $this->_raiseSoapFault('socket_create() failed. Reason: ' . socket_strerror($sock));
+    function run($idleTimeout = null)
+    {        
+        $server = &Net_Server::create($this->type, $this->localaddr,
+                                      $this->port);
+        if (PEAR::isError($server)) {
+            echo $server->getMessage()."\n";
         }
-        if ($this->reuse &&
-            !@socket_setopt($sock, SOL_SOCKET, SO_REUSEADDR, 1)) {
-            return $this->_raiseSoapFault('socket_setopt() failed. Reason: ' . socket_strerror(socket_last_error($sock)));
-        }
-        if (($ret = socket_bind($sock, $this->localaddr, $this->port)) < 0) {
-            return $this->_raiseSoapFault('socket_bind() failed. Reason: ' . socket_strerror($ret));
-        }
-        if (($ret = socket_listen($sock, $this->listen)) < 0) {
-            return $this->_raiseSoapFault('socket_listen() failed. Reason: ' . socket_strerror($ret));
-        }
-
-        while (true) {
-            $data = null;
-            if (($msgsock = socket_accept($sock)) < 0) {
-                $this->_raiseSoapFault('socket_accept() failed. Reason: ' . socket_strerror($msgsock));
-                break;
-            }
-            while ($buf = socket_read($msgsock, 8192)) {
-                if (!$buf = trim($buf)) {
-                    continue;
-                }
-                $data .= $buf;
-            }
-
-            if ($data) {
-                $response = $this->service($data);
-                /* Write to the socket. */
-                if (!socket_write($msgsock, $response, strlen($response))) {
-                    return $this->_raiseSoapFault('Error sending response data reason ' . socket_strerror());
-                }
-            }
-
-            socket_close ($msgsock);
-        }
-
-        socket_close ($sock);
+        
+        $handler = &new SOAP_Server_TCP_Handler;
+        $handler->setSOAPServer($this);
+        
+        // hand over the object that handles server events
+        $server->setCallbackObject($handler);
+        $server->readEndCharacter = '</SOAP-ENV:Envelope>';
+        $server->setIdleTimeout($idleTimeout);
+        
+        // start the server
+        $server->start();
     }
 
     function service(&$data)
     {
         /* TODO: we need to handle attachments somehow. */
-        return $this->parseRequest($data, $attachments);
+        $response = $this->parseRequest($data);
+        if ($this->fault) {
+            $response = $this->fault->message($this->response_encoding);
+        }
+        return $response;
+    }
+    
+    function onStart()
+    {
+    }
+    
+    function onIdle()
+    {
     }
 }

@@ -117,7 +117,7 @@ class SOAP_Server_Email extends SOAP_Server {
             return $this->soapfault->getFault();
         }
 
-        $client =& new SOAP_Client(null);
+        $client = new SOAP_Client(null);
 
         return $client->parseResponse($data, $this->xml_encoding, $this->attachments);
     }

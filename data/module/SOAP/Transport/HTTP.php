@@ -269,13 +269,13 @@ class SOAP_Transport_HTTP extends SOAP_Transport
     {
         /* Largely borrowed from HTTP_Request. */
         $this->result_headers = array();
-        $headers = split("\r?\n", $headers);
+        $headers = preg_split("/\r?\n/", $headers);
         foreach ($headers as $value) {
-            if (strpos($value,':') === false) {
+            if (strpos($value, ':') === false) {
                 $this->result_headers[0] = $value;
                 continue;
             }
-            list($name, $value) = split(':', $value);
+            list($name, $value) = explode(':', $value);
             $headername = strtolower($name);
             $headervalue = trim($value);
             $this->result_headers[$headername] = $headervalue;
@@ -342,13 +342,13 @@ class SOAP_Transport_HTTP extends SOAP_Transport
         unset($this->result_headers[0]);
 
         switch($code) {
-            case 100: // Continue
+            // Continue
+            case 100:
                 $this->incoming_payload = $match[2];
                 return $this->_parseResponse();
             case 200:
             case 202:
-                $this->incoming_payload = trim($match[2]);
-                if (!strlen($this->incoming_payload)) {
+                if (!strlen(trim($match[2]))) {
                     /* Valid one-way message response. */
                     return true;
                 }

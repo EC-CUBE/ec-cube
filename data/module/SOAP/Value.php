@@ -138,11 +138,9 @@ class SOAP_Value
         $this->nqn = new QName($name);
         $this->name = $this->nqn->name;
         $this->namespace = $this->nqn->namespace;
-        if ($type) {
-            $this->tqn = new QName($type);
-            $this->type = $this->tqn->name;
-            $this->type_namespace = $this->tqn->namespace;
-        }
+        $this->tqn = new QName($type);
+        $this->type = $this->tqn->name;
+        $this->type_namespace = $this->tqn->namespace;
         $this->value = $value;
         $this->attributes = $attributes;
         $this->options = $options;

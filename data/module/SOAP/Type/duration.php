@@ -141,7 +141,7 @@ class SOAP_Type_duration
 
     function duration_to_unix($duration)
     {
-        if (ereg('(-)?P([0-9]+Y)?([0-9]+M)?([0-9]+D)?T?([0-9]+H)?([0-9]+M)?([0-9]+S)?', $duration, $regs)) {
+        if (preg_match('/(-)?P([0-9]+Y)?([0-9]+M)?([0-9]+D)?T?([0-9]+H)?([0-9]+M)?([0-9]+S)?/', $duration, $regs)) {
             return SOAP_Type_duration::mkduration($regs[1], $regs[2], $regs[3], $regs[4], $regs[5], $regs[6], $regs[7]);
         }
         return false;
@@ -149,7 +149,7 @@ class SOAP_Type_duration
 
     function is_duration($duration)
     {
-        return ereg('(-)?P([0-9]+Y)?([0-9]+M)?([0-9]+D)?T?([0-9]+H)?([0-9]+M)?([0-9]+S)?', $duration, $regs);
+        return preg_match('/(-)?P([0-9]+Y)?([0-9]+M)?([0-9]+D)?T?([0-9]+H)?([0-9]+M)?([0-9]+S)?/', $duration, $regs);
     }
 
     function _test($time)

@@ -605,8 +605,8 @@ class SOAP_Client extends SOAP_Client_Overload
                             // Type is likely a qname, split it apart, and get
                             // the type namespace from WSDL.
                             $qname = new QName($part['type']);
-                            if ($qname->ns) {
-                                $type_namespace = $this->_wsdl->namespaces[$qname->ns];
+                            if ($qname->prefix) {
+                                $type_namespace = $this->_wsdl->namespaces[$qname->prefix];
                             } elseif (isset($part['namespace'])) {
                                 $type_namespace = $this->_wsdl->namespaces[$part['namespace']];
                             } else {
