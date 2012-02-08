@@ -19,16 +19,12 @@ define('USER_PACKAGE_DIR', "packages/");
 define('USER_TEMPLATE_REALDIR', USER_REALDIR . USER_PACKAGE_DIR);
 /** テンプレートファイル一時保存先 */
 define('TEMPLATE_TEMP_REALDIR', HTML_REALDIR . "upload/temp_template/");
-/** プラグインファイル一時保存先 */
-define('PLUGIN_TEMP_REALDIR', HTML_REALDIR . "upload/temp_plugin/");
 /** ユーザー作成画面のデフォルトPHPファイル */
 define('USER_DEF_PHP_REALFILE', USER_REALDIR . "__default.php");
 /** ダウンロードモジュール保存ディレクトリ */
 define('MODULE_DIR', "downloads/module/");
 /** ダウンロードモジュール保存ディレクトリ */
 define('MODULE_REALDIR', DATA_REALDIR . MODULE_DIR);
-/** アップロード一時ディレクトリ */
-define('DOWNLOADS_TEMP_DIR', DATA_REALDIR . "downloads/tmp/");
 /** DBセッションの有効期限(秒) */
 define('MAX_LIFETIME', 7200);
 /** マスターデータキャッシュディレクトリ */
@@ -203,8 +199,6 @@ define('ADMIN_ORDER_URLPATH', ROOT_URLPATH . ADMIN_DIR . "order/" . DIR_INDEX_PA
 define('ADMIN_ORDER_MAIL_URLPATH', ROOT_URLPATH . ADMIN_DIR . "order/mail.php");
 /** ログアウトページ */
 define('ADMIN_LOGOUT_URLPATH', ROOT_URLPATH . ADMIN_DIR . "logout.php");
-/** アクセス成功 */
-define('SUCCESS', 0);
 /** メンバー管理ページ表示行数 */
 define('MEMBER_PMAX', 10);
 /** 検索ページ表示行数 */
@@ -372,46 +366,6 @@ define('OSTORE_URL', "http://store.ec-cube.net/");
 define('OSTORE_SSLURL', "https://store.ec-cube.net/");
 /** オーナーズストアログパス */
 define('OSTORE_LOG_REALFILE', DATA_REALDIR . "logs/ownersstore.log");
-/** オーナーズストア通信ステータス */
-define('OSTORE_STATUS_ERROR', "ERROR");
-/** オーナーズストア通信ステータス */
-define('OSTORE_STATUS_SUCCESS', "SUCCESS");
-/** オーナーズストア通信エラーコード */
-define('OSTORE_E_UNKNOWN', "1000");
-/** オーナーズストア通信エラーコード */
-define('OSTORE_E_INVALID_PARAM', "1001");
-/** オーナーズストア通信エラーコード */
-define('OSTORE_E_NO_CUSTOMER', "1002");
-/** オーナーズストア通信エラーコード */
-define('OSTORE_E_WRONG_URL_PASS', "1003");
-/** オーナーズストア通信エラーコード */
-define('OSTORE_E_NO_PRODUCTS', "1004");
-/** オーナーズストア通信エラーコード */
-define('OSTORE_E_NO_DL_DATA', "1005");
-/** オーナーズストア通信エラーコード */
-define('OSTORE_E_DL_DATA_OPEN', "1006");
-/** オーナーズストア通信エラーコード */
-define('OSTORE_E_DLLOG_AUTH', "1007");
-/** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_ADMIN_AUTH', "2001");
-/** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_HTTP_REQ', "2002");
-/** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_HTTP_RESP', "2003");
-/** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_FAILED_JSON_PARSE', "2004");
-/** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_NO_KEY', "2005");
-/** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_INVALID_ACCESS', "2006");
-/** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_INVALID_PARAM', "2007");
-/** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_AUTOUP_DISABLE', "2008");
-/** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_PERMISSION', "2009");
-/** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_BATCH_ERR', "2010");
 /** お気に入り商品登録(有効:1 無効:0) */
 define('OPTION_FAVOFITE_PRODUCT', 1);
 /** 画像リネーム設定 (商品画像のみ) (true:リネームする、false:リネームしない) */
@@ -432,6 +386,10 @@ define('PLUGIN_HTML_REALDIR', HTML_REALDIR . "plugin/");
 define('PLUGIN_TMPL_CACHE_REALDIR', PLUGIN_UPLOAD_REALDIR . "templates_cache/");
 /** プラグイン・ディレクトリパーミッション */
 define('PLUGIN_DIR_PERMISSION', 0777);
+/** プラグインファイル一時保存先 */
+define('PLUGIN_TEMP_REALDIR', HTML_REALDIR . "upload/temp_plugin/");
+/** アップロード一時ディレクトリ */
+define('DOWNLOADS_TEMP_DIR', DATA_REALDIR . "downloads/tmp/");
 /** プラグイン 外部ファイルURL */
 define('PLUGIN_HTML_URL', USER_URL . PLUGIN_DIR);
 /** 日数桁数 */
@@ -446,8 +404,6 @@ define('DEFAULT_PRODUCT_DOWN', 1);
 define('DOWN_TEMP_REALDIR', DATA_REALDIR . "download/temp/");
 /** ダウンロードファイル保存先 */
 define('DOWN_SAVE_REALDIR', DATA_REALDIR . "download/save/");
-/** ダウンロードファイル存在エラー */
-define('DOWNFILE_NOT_FOUND', 22);
 /** ダウンロード販売機能 ダウンロードファイル読み込みバイト(KB) */
 define('DOWNLOAD_BLOCK', 1024);
 /** 新規注文 */
@@ -484,54 +440,10 @@ define('DEVICE_TYPE_SMARTPHONE', 2);
 define('DEVICE_TYPE_PC', 10);
 /** 端末種別: 管理画面 */
 define('DEVICE_TYPE_ADMIN', 99);
-/** 配置ID: 未使用 */
-define('TARGET_ID_UNUSED', 0);
-/** 配置ID: LeftNavi */
-define('TARGET_ID_LEFT', 1);
-/** 配置ID: MainHead */
-define('TARGET_ID_MAIN_HEAD', 2);
-/** 配置ID: RightNavi */
-define('TARGET_ID_RIGHT', 3);
-/** 配置ID: MainFoot */
-define('TARGET_ID_MAIN_FOOT', 4);
-/** 配置ID: TopNavi */
-define('TARGET_ID_TOP', 5);
-/** 配置ID: BottomNavi */
-define('TARGET_ID_BOTTOM', 6);
-/** 配置ID: HeadNavi */
-define('TARGET_ID_HEAD', 7);
-/** 配置ID: HeadTopNavi */
-define('TARGET_ID_HEAD_TOP', 8);
-/** 配置ID: FooterBottomNavi */
-define('TARGET_ID_FOOTER_BOTTOM', 9);
-/** 配置ID: HeaderInternalNavi */
-define('TARGET_ID_HEADER_INTERNAL', 10);
-/** CSV入出力列設定有効無効フラグ: 有効 */
-define('CSV_COLUMN_STATUS_FLG_ENABLE', 1);
-/** CSV入出力列設定有効無効フラグ: 無効 */
-define('CSV_COLUMN_STATUS_FLG_DISABLE', 2);
-/** CSV入出力列設定読み書きフラグ: 読み書き可能 */
-define('CSV_COLUMN_RW_FLG_READ_WRITE', 1);
-/** CSV入出力列設定読み書きフラグ: 読み込みのみ可能 */
-define('CSV_COLUMN_RW_FLG_READ_ONLY', 2);
-/** CSV入出力列設定読み書きフラグ: キー列 */
-define('CSV_COLUMN_RW_FLG_KEY_FIELD', 3);
-/** 無制限フラグ： 無制限 */
-define('UNLIMITED_FLG_UNLIMITED', "1");
-/** 無制限フラグ： 制限有り */
-define('UNLIMITED_FLG_LIMITED', "0");
 /** EC-CUBE更新情報取得 (true:取得する false:取得しない) */
 define('ECCUBE_INFO', true);
 /** 外部サイトHTTP取得タイムアウト時間(秒) */
 define('HTTP_REQUEST_TIMEOUT', "5");
-/** プラグインの状態：アップロード済み */
-define('PLUGIN_STATUS_UPLOADED', "1");
-/** プラグインの状態：インストール済み */
-define('PLUGIN_STATUS_INSTALLED', "2");
-/** プラグイン有効/無効：有効 */
-define('PLUGIN_ENABLE_TRUE', "1");
-/** プラグイン有効/無効：無効 */
-define('PLUGIN_ENABLE_FALSE', "2");
 /** 郵便番号CSVのZIPアーカイブファイルの取得元 */
 define('ZIP_DOWNLOAD_URL', "http://www.post.japanpost.jp/zipcode/dl/kogaki/zip/ken_all.zip");
 /** フックポイント(プレプロセス) */

@@ -53,9 +53,9 @@ class SC_Initial {
         $this->requireInitialConfig();
         $this->defineDSN();                 // requireInitialConfig メソッドより後で実行
         $this->defineDirectoryIndex();
-        $this->defineErrorType();           // XXX 多分、もっと後で大丈夫
-        $this->defineConstants();           // defineDirectoryIndex メソッドより後で実行
-        $this->complementConstants();       // defineConstants メソッドより後で実行
+        $this->defineConstants();
+        $this->defineParameter();           // defineDirectoryIndex メソッドより後で実行
+        $this->complementParameter();       // defineConstants メソッドより後で実行
         $this->phpconfigInit();             // defineConstants メソッドより後で実行
         $this->createCacheDir();            // defineConstants メソッドより後で実行
         $this->stripslashesDeepGpc();
@@ -168,15 +168,15 @@ class SC_Initial {
     }
 
     /**
-     * 定数を設定する.
+     * パラメータを設定する.
      *
-     * mtb_constants.php を読み込んで定数を設定する.
+     * mtb_constants.php を読み込んで定数として定義する.
      * キャッシュディレクトリに存在しない場合は, 初期データからコピーする.
      *
      * @access protected
      * @return void
      */
-    function defineConstants() {
+    function defineParameter() {
 
         $errorMessage
             = '<div style="color: #F00; font-weight: bold; background-color: #FEB; text-align: center">'
@@ -214,14 +214,12 @@ class SC_Initial {
      * パラメーターの補完
      *
      * ソースのみ差し替えたバージョンアップを考慮したもの。
+     * $this->defineIfNotDefined() で定義することを想定
      *
      * @access protected
      * @return void
      */
-    function complementConstants() {
-        // 2.11.1 → 2.11.2
-        /** 郵便番号CSVのZIPアーカイブファイルの取得元 */
-        $this->defineIfNotDefined('ZIP_DOWNLOAD_URL', "http://www.post.japanpost.jp/zipcode/dl/kogaki/zip/ken_all.zip");
+    function complementParameter() {
     }
 
     /**
@@ -254,12 +252,12 @@ class SC_Initial {
     }
 
     /**
-     * エラー種別を定数定義
+     * 定数定義
      *
      * @access protected
      * @return void
      */
-    function defineErrorType() {
+    function defineConstants() {
         // LC_Page_Error用
         /** 指定商品ページがない */
         define('PRODUCT_NOT_FOUND', 1);
@@ -305,6 +303,8 @@ class SC_Initial {
         define('WRITE_FILE_ERROR', 21);
         /** DB接続エラー */
         define('DB_CONNECT_ERROR', 22);
+        /** ダウンロードファイル存在エラー */
+        define('DOWNFILE_NOT_FOUND', 22);
         /** フリーメッセージ */
         define('FREE_ERROR_MSG', 999);
 
@@ -317,6 +317,102 @@ class SC_Initial {
         define('AUTH_ERROR', 3);
         /** 不正な遷移エラー */
         define('INVALID_MOVE_ERRORR', 4);
+
+        // オーナーズストア通信関連
+        /** オーナーズストア通信ステータス */
+        define('OSTORE_STATUS_ERROR', "ERROR");
+        /** オーナーズストア通信ステータス */
+        define('OSTORE_STATUS_SUCCESS', "SUCCESS");
+        /** オーナーズストア通信エラーコード */
+        define('OSTORE_E_UNKNOWN', "1000");
+        /** オーナーズストア通信エラーコード */
+        define('OSTORE_E_INVALID_PARAM', "1001");
+        /** オーナーズストア通信エラーコード */
+        define('OSTORE_E_NO_CUSTOMER', "1002");
+        /** オーナーズストア通信エラーコード */
+        define('OSTORE_E_WRONG_URL_PASS', "1003");
+        /** オーナーズストア通信エラーコード */
+        define('OSTORE_E_NO_PRODUCTS', "1004");
+        /** オーナーズストア通信エラーコード */
+        define('OSTORE_E_NO_DL_DATA', "1005");
+        /** オーナーズストア通信エラーコード */
+        define('OSTORE_E_DL_DATA_OPEN', "1006");
+        /** オーナーズストア通信エラーコード */
+        define('OSTORE_E_DLLOG_AUTH', "1007");
+        /** オーナーズストア通信エラーコード */
+        define('OSTORE_E_C_ADMIN_AUTH', "2001");
+        /** オーナーズストア通信エラーコード */
+        define('OSTORE_E_C_HTTP_REQ', "2002");
+        /** オーナーズストア通信エラーコード */
+        define('OSTORE_E_C_HTTP_RESP', "2003");
+        /** オーナーズストア通信エラーコード */
+        define('OSTORE_E_C_FAILED_JSON_PARSE', "2004");
+        /** オーナーズストア通信エラーコード */
+        define('OSTORE_E_C_NO_KEY', "2005");
+        /** オーナーズストア通信エラーコード */
+        define('OSTORE_E_C_INVALID_ACCESS', "2006");
+        /** オーナーズストア通信エラーコード */
+        define('OSTORE_E_C_INVALID_PARAM', "2007");
+        /** オーナーズストア通信エラーコード */
+        define('OSTORE_E_C_AUTOUP_DISABLE', "2008");
+        /** オーナーズストア通信エラーコード */
+        define('OSTORE_E_C_PERMISSION', "2009");
+        /** オーナーズストア通信エラーコード */
+        define('OSTORE_E_C_BATCH_ERR', "2010");
+
+        // プラグイン関連
+        /** プラグインの状態：アップロード済み */
+        define('PLUGIN_STATUS_UPLOADED', "1");
+        /** プラグインの状態：インストール済み */
+        define('PLUGIN_STATUS_INSTALLED', "2");
+        /** プラグイン有効/無効：有効 */
+        define('PLUGIN_ENABLE_TRUE', "1");
+        /** プラグイン有効/無効：無効 */
+        define('PLUGIN_ENABLE_FALSE', "2");
+
+        // CSV入出力関連
+        /** CSV入出力列設定有効無効フラグ: 有効 */
+        define('CSV_COLUMN_STATUS_FLG_ENABLE', 1);
+        /** CSV入出力列設定有効無効フラグ: 無効 */
+        define('CSV_COLUMN_STATUS_FLG_DISABLE', 2);
+        /** CSV入出力列設定読み書きフラグ: 読み書き可能 */
+        define('CSV_COLUMN_RW_FLG_READ_WRITE', 1);
+        /** CSV入出力列設定読み書きフラグ: 読み込みのみ可能 */
+        define('CSV_COLUMN_RW_FLG_READ_ONLY', 2);
+        /** CSV入出力列設定読み書きフラグ: キー列 */
+        define('CSV_COLUMN_RW_FLG_KEY_FIELD', 3);
+
+        // 配置ID
+        /** 配置ID: 未使用 */
+        define('TARGET_ID_UNUSED', 0);
+        /** 配置ID: LeftNavi */
+        define('TARGET_ID_LEFT', 1);
+        /** 配置ID: MainHead */
+        define('TARGET_ID_MAIN_HEAD', 2);
+        /** 配置ID: RightNavi */
+        define('TARGET_ID_RIGHT', 3);
+        /** 配置ID: MainFoot */
+        define('TARGET_ID_MAIN_FOOT', 4);
+        /** 配置ID: TopNavi */
+        define('TARGET_ID_TOP', 5);
+        /** 配置ID: BottomNavi */
+        define('TARGET_ID_BOTTOM', 6);
+        /** 配置ID: HeadNavi */
+        define('TARGET_ID_HEAD', 7);
+        /** 配置ID: HeadTopNavi */
+        define('TARGET_ID_HEAD_TOP', 8);
+        /** 配置ID: FooterBottomNavi */
+        define('TARGET_ID_FOOTER_BOTTOM', 9);
+        /** 配置ID: HeaderInternalNavi */
+        define('TARGET_ID_HEADER_INTERNAL', 10);
+
+        // 他
+        /** アクセス成功 */
+        define('SUCCESS', 0);
+        /** 無制限フラグ： 無制限 */
+        define('UNLIMITED_FLG_UNLIMITED', "1");
+        /** 無制限フラグ： 制限有り */
+        define('UNLIMITED_FLG_LIMITED', "0");
     }
 
     /**
