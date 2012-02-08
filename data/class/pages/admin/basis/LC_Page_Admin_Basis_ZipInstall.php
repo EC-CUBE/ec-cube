@@ -241,21 +241,10 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
             $cntCurrentLine++;
             if ($cntCurrentLine >= $start) {
                 $sqlval = array();
-                // $sqlval['code'] = $arrCSV[0];
-                // $sqlval['old_zipcode'] = $arrCSV[1];
                 $sqlval['zipcode'] = $arrCSV[2];
-                // $sqlval['state_kana'] = $arrCSV[3];
-                // $sqlval['city_kana'] = $arrCSV[4];
-                // $sqlval['town_kana'] = $arrCSV[5];
                 $sqlval['state'] = $arrCSV[6];
                 $sqlval['city'] = $arrCSV[7];
                 $sqlval['town'] = $arrCSV[8];
-                // $sqlval['flg1'] = $arrCSV[9];
-                // $sqlval['flg2'] = $arrCSV[10];
-                // $sqlval['flg3'] = $arrCSV[11];
-                // $sqlval['flg4'] = $arrCSV[12];
-                // $sqlval['flg5'] = $arrCSV[13];
-                // $sqlval['flg6'] = $arrCSV[14];
                 $objQuery->insert("mtb_zip", $sqlval);
                 $cntInsert++;
             }

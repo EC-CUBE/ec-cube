@@ -40,21 +40,10 @@ CREATE TABLE dtb_holiday (
 );
 
 CREATE TABLE mtb_zip (
-    code text,
-    old_zipcode text,
     zipcode text,
-    state_kana text,
-    city_kana text,
-    town_kana text,
     state text,
     city text,
-    town text,
-    flg1 text,
-    flg2 text,
-    flg3 text,
-    flg4 text,
-    flg5 text,
-    flg6 text
+    town text
 );
 
 CREATE TABLE dtb_update (
