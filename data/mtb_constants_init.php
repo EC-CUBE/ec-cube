@@ -216,6 +216,8 @@ define('STEXT_LEN', 50);
 define('SMTEXT_LEN', 100);
 /** 長い項目の文字数 (住所など) */
 define('MTEXT_LEN', 200);
+/** 短文の文字数 */
+define('SLTEXT_LEN', 500);
 /** 長中文の文字数 (問い合わせなど) */
 define('MLTEXT_LEN', 1000);
 /** 長文の文字数 */
@@ -392,6 +394,8 @@ define('PLUGIN_TEMP_REALDIR', HTML_REALDIR . "upload/temp_plugin/");
 define('DOWNLOADS_TEMP_DIR', DATA_REALDIR . "downloads/tmp/");
 /** プラグイン 外部ファイルURL */
 define('PLUGIN_HTML_URL', USER_URL . PLUGIN_DIR);
+/** プラグインファイル登録可能拡張子(カンマ区切り)" */
+define('PLUGIN_EXTENSION', "tar,tar.gz");
 /** 日数桁数 */
 define('DOWNLOAD_DAYS_LEN', 3);
 /** ダウンロードファイル登録可能拡張子(カンマ区切り)" */

@@ -1213,6 +1213,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UPDATE_SEND_SITE_IN
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USE_POINT', 'true', 290, 'ポイントを利用するか(true:利用する、false:利用しない) (false は一部対応)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('NOSTOCK_HIDDEN', 'false', 291, '在庫無し商品の非表示(true:非表示、false:表示)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USE_MULTIPLE_SHIPPING', 'true', 293, '複数配送先指定機能を利用するか(true:利用する、false:利用しない)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SLTEXT_LEN', '500', 294, '短文の文字数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEFAULT_TEMPLATE_NAME', '"default"', 300, 'デフォルトテンプレート名(PC)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_DEFAULT_TEMPLATE_NAME', '"mobile"', 301, 'デフォルトテンプレート名(モバイル)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMARTPHONE_DEFAULT_TEMPLATE_NAME', '"sphone"', 302, 'デフォルトテンプレート名(スマートフォン)');
@@ -1256,6 +1257,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_DIR_PERMISSI
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_TEMP_REALDIR', 'HTML_REALDIR . "upload/temp_plugin/"', 608, 'プラグインファイル一時保存先');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOADS_TEMP_DIR', 'DATA_REALDIR . "downloads/tmp/"', 609, 'アップロード一時ディレクトリ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_HTML_URL', 'USER_URL . PLUGIN_DIR', 610, 'プラグイン 外部ファイルURL');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_EXTENSION', '"tar,tar.gz"', 611, 'プラグインファイル登録可能拡張子(カンマ区切り)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOAD_DAYS_LEN', '3', 700, '日数桁数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOAD_EXTENSION', '"zip,lzh,jpg,jpeg,gif,png,mp3,pdf,csv"', 701, 'ダウンロードファイル登録可能拡張子(カンマ区切り)"');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWN_SIZE', '50000', 702, 'ダウンロード販売ファイル用サイズ制限(KB)');
