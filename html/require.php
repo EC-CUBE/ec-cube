@@ -29,7 +29,9 @@ if (!defined('ADMIN_FUNCTION') || ADMIN_FUNCTION !== true) {
 }
 
 require_once HTML_REALDIR . 'define.php';
-while (@ob_end_flush());
+while (ob_get_level() >= 1) {
+    ob_end_clean();
+}
 require_once HTML_REALDIR . HTML2DATA_DIR . 'require_base.php';
 
 // 絵文字変換 (除去) フィルターを組み込む。

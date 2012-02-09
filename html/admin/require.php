@@ -26,6 +26,8 @@ define('HTML_REALDIR', rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') 
 define('ADMIN_FUNCTION', true);
 
 require_once HTML_REALDIR . 'define.php';
-while (@ob_end_flush());
+while (ob_get_level() >= 1) {
+    ob_end_clean();
+}
 require_once HTML_REALDIR . HTML2DATA_DIR . 'require_base.php';
 ob_start();
