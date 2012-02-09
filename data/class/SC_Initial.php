@@ -112,7 +112,6 @@ class SC_Initial {
      * @return void
      */
     function phpconfigInit() {
-        ini_set('display_errors', '1');
         ini_set('html_errors', '1');
         ini_set('mbstring.http_input', CHAR_CODE);
         ini_set('mbstring.http_output', CHAR_CODE);

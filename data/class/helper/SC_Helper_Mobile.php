@@ -231,9 +231,6 @@ class SC_Helper_Mobile {
         // 出力用のエンコーディングを Shift JIS に固定する。
         mb_http_output('SJIS-win');
 
-        // 絵文字タグを絵文字コードに変換する。
-        ob_start(array('SC_MobileEmoji_Ex', 'handler'));
-
         // 端末に合わせて画像サイズを変換する。
         ob_start(array('SC_MobileImage_Ex', 'handler'));
 

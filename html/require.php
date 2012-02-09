@@ -29,14 +29,13 @@ if (!defined('ADMIN_FUNCTION') || ADMIN_FUNCTION !== true) {
 }
 
 require_once HTML_REALDIR . 'define.php';
-require_once HTML_REALDIR . 'handle_error.php';
+while (@ob_end_flush());
 require_once HTML_REALDIR . HTML2DATA_DIR . 'require_base.php';
+
+// 絵文字変換 (除去) フィルターを組み込む。
+ob_start(array('SC_MobileEmoji', 'handler'));
 
 if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
     $objMobile = new SC_Helper_Mobile_Ex();
     $objMobile->sfMobileInit();
-    ob_start();
-} else {
-    // 絵文字変換 (除去) フィルターを組み込む。
-    ob_start(array('SC_MobileEmoji', 'handler'));
 }
