@@ -234,14 +234,14 @@ class SC_Helper_Mobile {
         // 端末に合わせて画像サイズを変換する。
         ob_start(array('SC_MobileImage_Ex', 'handler'));
 
+        // 内部エンコーディングから Shift JIS に変換する。
+        ob_start('mb_output_handler');
+
         //download.phpに対してカタカナ変換をするとファイルが壊れてしまうため回避する
         if ($_SERVER['SCRIPT_FILENAME'] != HTML_REALDIR . "mypage/download.php") {
             // 全角カタカナを半角カタカナに変換する。
-            ob_start(create_function('$buffer', 'return mb_convert_kana($buffer, "k", "SJIS-win");'));
+            ob_start(create_function('$buffer', 'return mb_convert_kana($buffer, "k");'));
         }
-
-        // 内部エンコーディングから Shift JIS に変換する。
-        ob_start('mb_output_handler');
     }
 
     /**
