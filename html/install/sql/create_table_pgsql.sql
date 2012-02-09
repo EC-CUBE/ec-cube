@@ -1153,6 +1153,8 @@ CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id);
 CREATE INDEX dtb_products_class_product_id_key ON dtb_products_class(product_id);
 CREATE INDEX dtb_order_detail_product_id_key ON dtb_order_detail(product_id);
 CREATE INDEX dtb_send_customer_customer_id_key ON dtb_send_customer(customer_id);
+CREATE INDEX dtb_plugin_plugin_id ON dtb_plugin (plugin_id);
+CREATE INDEX dtb_plugin_hookpoint_id ON dtb_plugin_hookpoint (id);
 CREATE INDEX dtb_mobile_ext_session_id_param_key_key ON dtb_mobile_ext_session_id (param_key);
 CREATE INDEX dtb_mobile_ext_session_id_param_value_key ON dtb_mobile_ext_session_id (param_value);
 CREATE INDEX dtb_mobile_ext_session_id_url_key ON dtb_mobile_ext_session_id (url);
