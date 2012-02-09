@@ -414,12 +414,12 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         }
 
         // カテゴリー登録
-        if($arrList['category_ids'] != "") {
+        if (isset($arrList['category_ids'])) {
             $arrCategory_id = explode(',', $arrList['category_ids']);
             $this->objDb->updateProductCategories($arrCategory_id, $product_id);
         }
         // 商品ステータス登録
-        if($arrList['product_statuses'] != "") {
+        if (isset($arrList['product_statuses'])) {
             $arrStatus_id = explode(',', $arrList['product_statuses']);
             $objProduct->setProductStatus($product_id, $arrStatus_id);
         }
