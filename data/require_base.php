@@ -33,28 +33,29 @@ require_once DATA_REALDIR . 'app_initial.php';
 // 各種クラス読み込み
 require_once DATA_REALDIR . 'require_classes.php';
 
-// インストール中で無い場合、
-if (!SC_Utils_Ex::sfIsInstallFunction()) {
-    // インストールチェック
-    SC_Utils_Ex::sfInitInstall();
+// 定数 SAFE が設定されている場合、DBアクセスを回避する。主に、エラー画面を意図する。
+if (!defined('SAFE') || !SAFE) {
+    // インストール中で無い場合、
+    if (!SC_Utils_Ex::sfIsInstallFunction()) {
+        // インストールチェック
+        SC_Utils_Ex::sfInitInstall();
 
-    // セッションハンドラ開始
-    require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_Session_Ex.php';
-    $objSession = new SC_Helper_Session_Ex();
+        // セッションハンドラ開始
+        require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_Session_Ex.php';
+        $objSession = new SC_Helper_Session_Ex();
 
-    // セッション初期化・開始
-    require_once CLASS_REALDIR . 'session/SC_SessionFactory.php';
-    $sessionFactory = SC_SessionFactory::getInstance();
-    $sessionFactory->initSession();
-    
-    // プラグインを読み込む
-    require_once DATA_REALDIR . 'require_plugin.php';
+        // セッション初期化・開始
+        require_once CLASS_REALDIR . 'session/SC_SessionFactory.php';
+        $sessionFactory = SC_SessionFactory::getInstance();
+        $sessionFactory->initSession();
+        
+        // プラグインを読み込む
+        require_once DATA_REALDIR . 'require_plugin.php';
 
-    /*
-     * 管理画面の場合は認証行う.
-     * 認証処理忘れ防止のため, LC_Page_Admin::init() 等ではなく, ここでチェックする.
-     */
-    $objSession->adminAuthorization();
-
+        /*
+         * 管理画面の場合は認証行う.
+         * 認証処理忘れ防止のため, LC_Page_Admin::init() 等ではなく, ここでチェックする.
+         */
+        $objSession->adminAuthorization();
+    }
 }
-?>
