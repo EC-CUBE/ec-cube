@@ -42,15 +42,6 @@ class LC_Page_Index extends LC_Page_Ex {
      * @return void
      */
     function init() {
-//        $replace_callback = create_function('$matches', 'return SC_MobileEmoji_Ex::indexToCode($matches[1]);');
-//var_dump($replace_callback);
-//exit;
-//        return preg_replace_callback('/\[emoji:(e?\d+)\]/', $replace_callback, $buffer);
-
-strpos();
-// $objQuery =& SC_Query_Ex::getSingletonInstance();
-// $objQuery->select('x', 'x');
-x();
         parent::init();
     }
 
