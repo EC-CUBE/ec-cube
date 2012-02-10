@@ -73,11 +73,11 @@ class SC_Plugin_Template_Transformer {
         }
 
         // JavaScript内にSmartyのタグが存在するものを、コメント形式に置換
-    $html = preg_replace_callback(
-    '/<script.+?\/script>/s',
-    array($this, 'captureSmartyTags2Comment'),
-    $html
-    );
+        $html = preg_replace_callback(
+            '/<script.+?\/script>/s',
+            array($this, 'captureSmartyTags2Comment'),
+            $html
+        );
 
         // HTMLタグ内にSmartyのタグが存在するものを、いったんダミーのタグに置換する
         $html = preg_replace_callback(
