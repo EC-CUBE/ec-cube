@@ -20,22 +20,22 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <header class="global_header clearfix">
-<h1><a rel="external" href="<!--{$smarty.const.ROOT_URLPATH}-->"><img src="<!--{$TPL_URLPATH}-->img/header/logo.png" width="150" height="25" alt="サイト名" /></a></h1>
-<div class="header_utility">
-<!--{* ▼HeaderInternal COLUMN*}-->
-<!--{if $arrPageLayout.HeaderInternalNavi|@count > 0}-->
-    <!--{* ▼上ナビ *}-->
-    <!--{foreach key=HeaderInternalNaviKey item=HeaderInternalNaviItem from=$arrPageLayout.HeaderInternalNavi}-->
-        <!-- ▼<!--{$HeaderInternalNaviItem.bloc_name}--> -->
-        <!--{if $HeaderInternalNaviItem.php_path != ""}-->
-            <!--{include_php file=$HeaderInternalNaviItem.php_path items=$HeaderInternalNaviItem}-->
-        <!--{else}-->
-            <!--{include file=$HeaderInternalNaviItem.tpl_path items=$HeaderInternalNaviItem}-->
+    <h1><a rel="external" href="<!--{$smarty.const.ROOT_URLPATH}-->"><img src="<!--{$TPL_URLPATH}-->img/header/logo.png" width="150" height="25" alt="<!--{$arrSiteInfo.shop_name|h}-->" /></a></h1>
+    <div class="header_utility">
+        <!--{* ▼HeaderInternal COLUMN *}-->
+        <!--{if $arrPageLayout.HeaderInternalNavi|@count > 0}-->
+            <!--{* ▼上ナビ *}-->
+            <!--{foreach key=HeaderInternalNaviKey item=HeaderInternalNaviItem from=$arrPageLayout.HeaderInternalNavi}-->
+                <!-- ▼<!--{$HeaderInternalNaviItem.bloc_name}--> -->
+                <!--{if $HeaderInternalNaviItem.php_path != ""}-->
+                    <!--{include_php file=$HeaderInternalNaviItem.php_path items=$HeaderInternalNaviItem}-->
+                <!--{else}-->
+                    <!--{include file=$HeaderInternalNaviItem.tpl_path items=$HeaderInternalNaviItem}-->
+                <!--{/if}-->
+                <!-- ▲<!--{$HeaderInternalNaviItem.bloc_name}--> -->
+            <!--{/foreach}-->
+            <!--{* ▲上ナビ *}-->
         <!--{/if}-->
-        <!-- ▲<!--{$HeaderInternalNaviItem.bloc_name}--> -->
-    <!--{/foreach}-->
-    <!--{* ▲上ナビ *}-->
-<!--{/if}-->
-<!--{* ▲HeaderInternal COLUMN*}-->
-</div>
+        <!--{* ▲HeaderInternal COLUMN *}-->
+    </div>
 </header>
