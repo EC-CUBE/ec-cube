@@ -258,7 +258,7 @@ border-top:#CCC solid 1px;
 #categorytree li:last-child,#categorytree li li:last-child{
 border-bottom:none;
 } 
-#categorytree ul li a,.categorytree > ul > li > ul > li a{
+#categorytree ul li a, .categorytree > ul > li > ul > li a{
 padding:0.6em 0;
 }
 .category_body {
@@ -346,7 +346,7 @@ width:56%;
 
 
 /*リンクカラー*/
-.category_body a:link,.category_body a:visited{
+.category_body a:link, .category_body a:visited{
 color:#000;
 text-decoration:none;
 cursor:pointer;

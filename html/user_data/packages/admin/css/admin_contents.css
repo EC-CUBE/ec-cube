@@ -176,7 +176,7 @@ table tr.last {
     text-align: center;
 }
 
-.contents-main .btn-area li, #popup .btn-area li ,.btn-area li{
+.contents-main .btn-area li, #popup .btn-area li, .btn-area li{
     margin-right: 10px;
     display: inline;
 }

@@ -224,7 +224,7 @@ margin:20px auto 0 auto;
 display:inline-block;
 vertical-align:middle;
 }
-.btn_refuse a.btn,.btn_refuse input[type="submit"].btn{
+.btn_refuse a.btn, .btn_refuse input[type="submit"].btn{
 font-size:13px!important;
 display:inline;
 }

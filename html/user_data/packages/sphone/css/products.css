@@ -45,7 +45,7 @@ background: -moz-linear-gradient(center top, #5393c5 10%,#80b6e2 100%);
 background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #5393c5),color-stop(1, #80b6e2));
 text-shadow: 0px 1px 1px rgba(0,0,0,0.5);
 }
-.pagenumberarea li a:link,.pagenumberarea li a:visited{
+.pagenumberarea li a:link, .pagenumberarea li a:visited{
 color:#000;
 }
 .pagenumberarea li a {

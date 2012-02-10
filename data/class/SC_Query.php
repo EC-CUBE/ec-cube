@@ -467,8 +467,8 @@ class SC_Query {
      * INSERT文を実行する.
      *
      * @param string $table テーブル名
-     * @param array $sqlval array('カラム名' => '値',...)の連想配列
-     * @param array $arrSql array('カラム名' => 'SQL文',...)の連想配列
+     * @param array $sqlval array('カラム名' => '値', ...)の連想配列
+     * @param array $arrSql array('カラム名' => 'SQL文', ...)の連想配列
      * @param array $arrSqlVal SQL文の中で使用するプレースホルダ配列
      * @return
      */
@@ -516,7 +516,7 @@ class SC_Query {
      * UPDATE文を実行する.
      *
      * @param string $table テーブル名
-     * @param array $sqlval array('カラム名' => '値',...)の連想配列
+     * @param array $sqlval array('カラム名' => '値', ...)の連想配列
      * @param string $where WHERE句
      * @param array $arrWhereVal WHERE句用のプレースホルダ配列 (従来は追加カラム用も兼ねていた)
      * @param array $arrRawSql 追加カラム
