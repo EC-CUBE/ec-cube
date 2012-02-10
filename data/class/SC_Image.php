@@ -147,7 +147,7 @@ class SC_Image {
         $ImgNew = imagecreatetruecolor($re_size[0],$re_size[1]);
 
         switch ($size[2]) {
-        case "1": //gif形式
+        case '1': //gif形式
             if ($tmp_w <= 1 && $tmp_h <= 1) {
                 if ($newFileName) {
                     $ToFile = $newFileName;
@@ -185,7 +185,7 @@ class SC_Image {
             ImageDestroy($ImgNew);
             return array(1,$ToFile);
 
-        case "2": //jpg形式
+        case '2': //jpg形式
             $ImgDefault = ImageCreateFromJpeg($FromImgPath);
             //ImageCopyResized($ImgNew,$ImgDefault, 0, 0, 0, 0,$re_size[0], $re_size[1],$size[0], $size[1]);
 
@@ -212,7 +212,7 @@ class SC_Image {
             $RetVal = $ToFile;
             break;
 
-        case "3": //png形式
+        case '3': //png形式
             $ImgDefault = ImageCreateFromPNG($FromImgPath);
             //ImageCopyResized($ImgNew, $ImgDefault, 0, 0, 0, 0,$re_size[0], $re_size[1],$size[0], $size[1]);
             ImageCopyResampled($ImgNew, $ImgDefault, 0, 0, 0, 0,$re_size[0], $re_size[1],$size[0], $size[1]);

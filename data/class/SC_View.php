@@ -33,28 +33,28 @@ class SC_View {
         $this->_smarty = new Smarty;
         $this->_smarty->left_delimiter = '<!--{';
         $this->_smarty->right_delimiter = '}-->';
-        $this->_smarty->register_modifier('sfDispDBDate', array("SC_Utils_Ex", 'sfDispDBDate'));
-        $this->_smarty->register_modifier('sfConvSendDateToDisp', array("SC_Utils_Ex", 'sfConvSendDateToDisp'));
-        $this->_smarty->register_modifier('sfConvSendWdayToDisp', array("SC_Utils_Ex", 'sfConvSendWdayToDisp'));
-        $this->_smarty->register_modifier('sfGetVal', array("SC_Utils_Ex", 'sfGetVal'));
-        $this->_smarty->register_modifier('sfGetErrorColor', array("SC_Utils_Ex", 'sfGetErrorColor'));
-        $this->_smarty->register_modifier('sfTrim', array("SC_Utils_Ex", 'sfTrim'));
-        $this->_smarty->register_modifier('sfCalcIncTax', array("SC_Helper_DB_Ex", 'sfCalcIncTax'));
-        $this->_smarty->register_modifier('sfPrePoint', array("SC_Utils_Ex", 'sfPrePoint'));
-        $this->_smarty->register_modifier('sfGetChecked',array("SC_Utils_Ex", 'sfGetChecked'));
-        $this->_smarty->register_modifier('sfTrimURL', array("SC_Utils_Ex", 'sfTrimURL'));
-        $this->_smarty->register_modifier('sfMultiply', array("SC_Utils_Ex", 'sfMultiply'));
-        $this->_smarty->register_modifier('sfRmDupSlash', array("SC_Utils_Ex", 'sfRmDupSlash'));
-        $this->_smarty->register_modifier('sfCutString', array("SC_Utils_Ex", 'sfCutString'));
+        $this->_smarty->register_modifier('sfDispDBDate', array('SC_Utils_Ex', 'sfDispDBDate'));
+        $this->_smarty->register_modifier('sfConvSendDateToDisp', array('SC_Utils_Ex', 'sfConvSendDateToDisp'));
+        $this->_smarty->register_modifier('sfConvSendWdayToDisp', array('SC_Utils_Ex', 'sfConvSendWdayToDisp'));
+        $this->_smarty->register_modifier('sfGetVal', array('SC_Utils_Ex', 'sfGetVal'));
+        $this->_smarty->register_modifier('sfGetErrorColor', array('SC_Utils_Ex', 'sfGetErrorColor'));
+        $this->_smarty->register_modifier('sfTrim', array('SC_Utils_Ex', 'sfTrim'));
+        $this->_smarty->register_modifier('sfCalcIncTax', array('SC_Helper_DB_Ex', 'sfCalcIncTax'));
+        $this->_smarty->register_modifier('sfPrePoint', array('SC_Utils_Ex', 'sfPrePoint'));
+        $this->_smarty->register_modifier('sfGetChecked',array('SC_Utils_Ex', 'sfGetChecked'));
+        $this->_smarty->register_modifier('sfTrimURL', array('SC_Utils_Ex', 'sfTrimURL'));
+        $this->_smarty->register_modifier('sfMultiply', array('SC_Utils_Ex', 'sfMultiply'));
+        $this->_smarty->register_modifier('sfRmDupSlash', array('SC_Utils_Ex', 'sfRmDupSlash'));
+        $this->_smarty->register_modifier('sfCutString', array('SC_Utils_Ex', 'sfCutString'));
         $this->_smarty->plugins_dir=array('plugins', realpath(dirname(__FILE__)) . "/../smarty_extends");
-        $this->_smarty->register_modifier('sfMbConvertEncoding', array("SC_Utils_Ex", 'sfMbConvertEncoding'));
-        $this->_smarty->register_modifier('sfGetEnabled', array("SC_Utils_Ex", 'sfGetEnabled'));
-        $this->_smarty->register_modifier('sfGetCategoryId', array("SC_Utils_Ex", 'sfGetCategoryId'));
-        $this->_smarty->register_modifier('sfNoImageMainList', array("SC_Utils_Ex", 'sfNoImageMainList'));
+        $this->_smarty->register_modifier('sfMbConvertEncoding', array('SC_Utils_Ex', 'sfMbConvertEncoding'));
+        $this->_smarty->register_modifier('sfGetEnabled', array('SC_Utils_Ex', 'sfGetEnabled'));
+        $this->_smarty->register_modifier('sfGetCategoryId', array('SC_Utils_Ex', 'sfGetCategoryId'));
+        $this->_smarty->register_modifier('sfNoImageMainList', array('SC_Utils_Ex', 'sfNoImageMainList'));
         // XXX register_function で登録すると if で使用できないのではないか？
-        $this->_smarty->register_function('sfIsHTTPS', array("SC_Utils_Ex", 'sfIsHTTPS'));
-        $this->_smarty->register_function('sfSetErrorStyle', array("SC_Utils_Ex", 'sfSetErrorStyle'));
-        $this->_smarty->register_function('printXMLDeclaration', array("SC_Utils_Ex", 'printXMLDeclaration'));
+        $this->_smarty->register_function('sfIsHTTPS', array('SC_Utils_Ex', 'sfIsHTTPS'));
+        $this->_smarty->register_function('sfSetErrorStyle', array('SC_Utils_Ex', 'sfSetErrorStyle'));
+        $this->_smarty->register_function('printXMLDeclaration', array('SC_Utils_Ex', 'printXMLDeclaration'));
         $this->_smarty->default_modifiers = array('script_escape');
 
         if (ADMIN_MODE == '1') {
@@ -157,8 +157,8 @@ class SC_View {
         $header_tpl = $templatePath . "header.tpl";
         $footer_tpl = $templatePath . "footer.tpl";
 
-        $this->assign("header_tpl", $header_tpl);
-        $this->assign("footer_tpl", $footer_tpl);
+        $this->assign('header_tpl', $header_tpl);
+        $this->assign('footer_tpl', $footer_tpl);
     }
 
     // デバッグ

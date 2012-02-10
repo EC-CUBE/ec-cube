@@ -223,7 +223,7 @@ class SC_SendMail {
     function getTEXTHeader() {
         $arrHeader = $this->getBaseHeader();
         $arrHeader['Content-Type'] = "text/plain; charset=\"ISO-2022-JP\"";
-        $arrHeader['Content-Transfer-Encoding'] = "7bit";
+        $arrHeader['Content-Transfer-Encoding'] = '7bit';
         return $arrHeader;
     }
 

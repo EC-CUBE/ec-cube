@@ -68,7 +68,7 @@ class SC_Helper_PageLayout {
 
         // 該当ページのブロックを取得し, 配置する
         $masterData = new SC_DB_MasterData();
-        $arrTarget = $masterData->getMasterData("mtb_target");
+        $arrTarget = $masterData->getMasterData('mtb_target');
         $arrBlocs = $this->getBlocPositions($device_type_id, $objPage->arrPageLayout['page_id']);
         // php_path, tpl_path が存在するものを, 各ターゲットに配置
         foreach (array_keys($arrTarget) as $target_id) {
@@ -185,7 +185,7 @@ __EOF__;
         // page_id が空でない場合にはdeleteを実行
         if ($page_id != '') {
             $arrPageData = $this->getPageProperties($device_type_id, $page_id);
-            $ret = $objQuery->delete("dtb_pagelayout", "page_id = ? AND device_type_id = ?", array($page_id, $device_type_id));
+            $ret = $objQuery->delete('dtb_pagelayout', "page_id = ? AND device_type_id = ?", array($page_id, $device_type_id));
             // ファイルの削除
             $this->lfDelFile($arrPageData[0]['filename'], $device_type_id);
         }

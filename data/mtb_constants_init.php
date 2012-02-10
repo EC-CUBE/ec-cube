@@ -12,7 +12,7 @@ define('ZIP_DSN', DEFAULT_DSN);
 /** ユーザー作成ページ等 */
 define('USER_URL', HTTP_URL . USER_DIR);
 /** 認証方式 */
-define('AUTH_TYPE', "HMAC");
+define('AUTH_TYPE', 'HMAC');
 /** テンプレートファイル保存先 */
 define('USER_PACKAGE_DIR', "packages/");
 /** テンプレートファイル保存先 */
@@ -80,7 +80,7 @@ define('REVIEW_REGIST_MAX', 5);
 /** デバッグモード(true：sfPrintRやDBのエラーメッセージ、ログレベルがDebugのログを出力する、false：出力しない) */
 define('DEBUG_MODE', false);
 /** 管理ユーザID(メンテナンス用表示されない。) */
-define('ADMIN_ID', "1");
+define('ADMIN_ID', '1');
 /** 会員登録時に仮会員確認メールを送信するか (true:仮会員、false:本会員) */
 define('CUSTOMER_CONFIRM_MAIL', false);
 /** ログイン画面フレーム */
@@ -90,7 +90,7 @@ define('MAIN_FRAME', "main_frame.tpl");
 /** 一般サイト画面フレーム */
 define('SITE_FRAME', "site_frame.tpl");
 /** 認証文字列 */
-define('CERT_STRING', "7WDhcBTF");
+define('CERT_STRING', '7WDhcBTF');
 /** 生年月日登録開始年 */
 define('BIRTH_YEAR', 1901);
 /** クレジットカードの期限＋何年 */
@@ -104,9 +104,9 @@ define('ADMIN_MODE', 0);
 /** ログファイル最大数(ログテーション) */
 define('MAX_LOG_QUANTITY', 5);
 /** 1つのログファイルに保存する最大容量(byte) */
-define('MAX_LOG_SIZE', "1000000");
+define('MAX_LOG_SIZE', '1000000');
 /** トランザクションID の名前 */
-define('TRANSACTION_ID_NAME', "transactionid");
+define('TRANSACTION_ID_NAME', 'transactionid');
 /** パスワード忘れの確認メールを送付するか否か。(0:送信しない、1:送信する) */
 define('FORGOT_MAIL', 0);
 /** 誕生日月ポイント */
@@ -295,11 +295,11 @@ define('DELIV_DATE_END_MAX', 21);
 /** 商品レビューでURL書き込みを許可するか否か */
 define('REVIEW_ALLOW_URL', 0);
 /** Pear::Mail バックエンド:mail|smtp|sendmail */
-define('MAIL_BACKEND', "smtp");
+define('MAIL_BACKEND', 'smtp');
 /** SMTPサーバー */
 define('SMTP_HOST', "127.0.0.1");
 /** SMTPポート */
-define('SMTP_PORT', "25");
+define('SMTP_PORT', '25');
 /** アップデート時にサイト情報を送出するか */
 define('UPDATE_SEND_SITE_INFO', false);
 /** ポイントを利用するか(true:利用する、false:利用しない) (false は一部対応) */
@@ -309,17 +309,17 @@ define('NOSTOCK_HIDDEN', false);
 /** 複数配送先指定機能を利用するか(true:利用する、false:利用しない) */
 define('USE_MULTIPLE_SHIPPING', true);
 /** デフォルトテンプレート名(PC) */
-define('DEFAULT_TEMPLATE_NAME', "default");
+define('DEFAULT_TEMPLATE_NAME', 'default');
 /** デフォルトテンプレート名(モバイル) */
-define('MOBILE_DEFAULT_TEMPLATE_NAME', "mobile");
+define('MOBILE_DEFAULT_TEMPLATE_NAME', 'mobile');
 /** デフォルトテンプレート名(スマートフォン) */
-define('SMARTPHONE_DEFAULT_TEMPLATE_NAME', "sphone");
+define('SMARTPHONE_DEFAULT_TEMPLATE_NAME', 'sphone');
 /** テンプレート名 */
-define('TEMPLATE_NAME', "default");
+define('TEMPLATE_NAME', 'default');
 /** モバイルテンプレート名 */
-define('MOBILE_TEMPLATE_NAME', "mobile");
+define('MOBILE_TEMPLATE_NAME', 'mobile');
 /** スマートフォンテンプレート名 */
-define('SMARTPHONE_TEMPLATE_NAME', "sphone");
+define('SMARTPHONE_TEMPLATE_NAME', 'sphone');
 /** SMARTYテンプレート */
 define('SMARTY_TEMPLATES_REALDIR',  DATA_REALDIR . "Smarty/templates/");
 /** SMARTYテンプレート(PC) */
@@ -359,7 +359,7 @@ define('MOBILE_SHOPPING_PAYMENT_URLPATH', ROOT_URLPATH . "shopping/payment.php")
 /** 商品詳細(HTML出力) */
 define('MOBILE_P_DETAIL_URLPATH', ROOT_URLPATH . "products/detail.php?product_id=");
 /** セッション維持方法：useCookie|useRequest */
-define('SESSION_KEEP_METHOD', "useCookie");
+define('SESSION_KEEP_METHOD', 'useCookie');
 /** セッションの存続時間 (秒) */
 define('SESSION_LIFETIME', 1800);
 /** オーナーズストアURL */
@@ -447,7 +447,7 @@ define('DEVICE_TYPE_ADMIN', 99);
 /** EC-CUBE更新情報取得 (true:取得する false:取得しない) */
 define('ECCUBE_INFO', true);
 /** 外部サイトHTTP取得タイムアウト時間(秒) */
-define('HTTP_REQUEST_TIMEOUT', "5");
+define('HTTP_REQUEST_TIMEOUT', '5');
 /** 郵便番号CSVのZIPアーカイブファイルの取得元 */
 define('ZIP_DOWNLOAD_URL', "http://www.post.japanpost.jp/zipcode/dl/kogaki/zip/ken_all.zip");
 /** フックポイント(プレプロセス) */

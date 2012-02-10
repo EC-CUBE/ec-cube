@@ -50,8 +50,8 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
         $this->tpl_subtitle = '対応状況管理';
 
         $masterData = new SC_DB_MasterData_Ex();
-        $this->arrORDERSTATUS = $masterData->getMasterData("mtb_order_status");
-        $this->arrORDERSTATUS_COLOR = $masterData->getMasterData("mtb_order_status_color");
+        $this->arrORDERSTATUS = $masterData->getMasterData('mtb_order_status');
+        $this->arrORDERSTATUS_COLOR = $masterData->getMasterData('mtb_order_status_color');
     }
 
     /**
@@ -84,7 +84,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
         //        $this->arrForm = $_POST;
 
         //支払方法の取得
-        $this->arrPayment = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
+        $this->arrPayment = $objDb->sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
 
         switch ($this->getMode()) {
             case 'update':
@@ -128,10 +128,10 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
      *  @param SC_FormParam
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("注文番号", "order_id", INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam("注文番号", 'order_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam("変更前対応状況", 'status', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("変更後対応状況", "change_status", STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("ページ番号", "search_pageno", INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam("変更後対応状況", 'change_status', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam("ページ番号", 'search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam("移動注文番号", 'move', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
     }
 
@@ -169,7 +169,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $select ="*";
-        $from = "dtb_order";
+        $from = 'dtb_order';
         $where = "del_flg = 0 AND status = ?";
         $arrval[] = $status;
         $order = "order_id DESC";
@@ -208,7 +208,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
             return false;
         }
         $masterData = new SC_DB_MasterData_Ex();
-        $arrORDERSTATUS = $masterData->getMasterData("mtb_order_status");
+        $arrORDERSTATUS = $masterData->getMasterData('mtb_order_status');
 
         $objQuery->begin();
 

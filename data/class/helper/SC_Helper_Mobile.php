@@ -437,7 +437,7 @@ class SC_Helper_Mobile {
      */
     function gfIsMobileMailAddress($address) {
         $masterData = new SC_DB_MasterData_Ex();
-        $arrMobileMailDomains = $masterData->getMasterData("mtb_mobile_domain");
+        $arrMobileMailDomains = $masterData->getMasterData('mtb_mobile_domain');
 
         foreach ($arrMobileMailDomains as $domain) {
             $domain = preg_quote($domain, '/');

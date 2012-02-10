@@ -16,7 +16,7 @@ class LC_Page_Upgrade_Base extends LC_Page_Ex {
     function isValidIP() {
         $objLog  = new LC_Upgrade_Helper_Log;
         $masterData = new SC_DB_MasterData();
-        $arrOstoreIPs = $masterData->getMasterData("mtb_ownersstore_ips");
+        $arrOstoreIPs = $masterData->getMasterData('mtb_ownersstore_ips');
 
         if (isset($_SERVER['REMOTE_ADDR'])
             && in_array($_SERVER['REMOTE_ADDR'], $arrOstoreIPs))

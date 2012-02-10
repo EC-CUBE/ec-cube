@@ -48,7 +48,7 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'basis';
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
-        $this->arrTAXRULE = $masterData->getMasterData("mtb_taxrule");
+        $this->arrTAXRULE = $masterData->getMasterData('mtb_taxrule');
         $this->tpl_maintitle = '基本情報管理';
         $this->tpl_subtitle = '配送方法設定';
     }
@@ -86,15 +86,15 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
         switch ($mode) {
         case 'delete':
             // ランク付きレコードの削除
-            $objDb->sfDeleteRankRecord("dtb_deliv", "deliv_id", $_POST['deliv_id']);
+            $objDb->sfDeleteRankRecord('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
             $this->objDisplay->reload(); // PRG pattern
             break;
         case 'up':
-            $objDb->sfRankUp("dtb_deliv", "deliv_id", $_POST['deliv_id']);
+            $objDb->sfRankUp('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
             $this->objDisplay->reload(); // PRG pattern
             break;
         case 'down':
-            $objDb->sfRankDown("dtb_deliv", "deliv_id", $_POST['deliv_id']);
+            $objDb->sfRankDown('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
             $this->objDisplay->reload(); // PRG pattern
             break;
         default:
@@ -114,7 +114,7 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
 
         $col = "deliv_id, name, service_name";
         $where = "del_flg = 0";
-        $table = "dtb_deliv";
+        $table = 'dtb_deliv';
         $objQuery->setOrder("rank DESC");
 
         return $objQuery->select($col, $table, $where);

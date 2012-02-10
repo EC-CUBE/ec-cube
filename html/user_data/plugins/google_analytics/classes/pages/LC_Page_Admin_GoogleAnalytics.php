@@ -51,23 +51,23 @@ class LC_Page_Admin_GoogleAnalytics extends LC_Page_Ex {
         $this->tpl_subno    = $this->arrPluginInfo['path'];
         $this->tpl_subtitle = "プラグイン「{$this->arrPluginInfo['name']}」の設定";
 
-        if (empty($_POST["mode"])) {
-            $_POST["mode"] = "";
+        if (empty($_POST['mode'])) {
+            $_POST['mode'] = "";
         }
 
-        if (empty($_GET["mode"])) {
-            $_GET["mode"] = "";
+        if (empty($_GET['mode'])) {
+            $_GET['mode'] = "";
         }
     }
 
     /**
      * Page のプロセス.
      *
-     * POST パラメーター "mode" が register の場合は登録処理を行う.
-     * 登録処理の後, 自ページをリロードし, GET パラメーター "mode" を付与する.
-     * 登録に成功し, GET パラメーター "mode" の値が success の場合は
+     * POST パラメーター 'mode' が register の場合は登録処理を行う.
+     * 登録処理の後, 自ページをリロードし, GET パラメーター 'mode' を付与する.
+     * 登録に成功し, GET パラメーター 'mode' の値が success の場合は
      * 「登録に成功しました」というメッセージをポップアップで表示する.
-     * 登録に失敗し, GET パラメーター "mode" の値が failure の場合は
+     * 登録に失敗し, GET パラメーター 'mode' の値が failure の場合は
      * 「登録に失敗しました」というメッセージをポップアップで表示する.
      *
      * TODO Transaction Token を使用する
@@ -78,13 +78,13 @@ class LC_Page_Admin_GoogleAnalytics extends LC_Page_Ex {
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess(new SC_Session());
 
-        switch ($_POST["mode"]) {
-        case "register":
+        switch ($_POST['mode']) {
+        case 'register':
             if ($this->register($_POST['ga_ua'])) {
-                SC_Response_Ex::reload(array("mode" => "success"), true);
+                SC_Response_Ex::reload(array('mode' => 'success'), true);
                 exit;
             } else {
-                SC_Response_Ex::reload(array("mode" => "failure"), true);
+                SC_Response_Ex::reload(array('mode' => 'failure'), true);
                 exit;
             }
             break;
@@ -92,12 +92,12 @@ class LC_Page_Admin_GoogleAnalytics extends LC_Page_Ex {
           default:
         }
 
-        switch ($_GET["mode"]) {
-        case "success":
+        switch ($_GET['mode']) {
+        case 'success':
             $this->tpl_onload .= "window.alert('登録に成功しました。');";
             break;
 
-        case "failure":
+        case 'failure':
             $this->tpl_onload .= "window.alert('登録に失敗しました。');";
             break;
 
@@ -123,7 +123,7 @@ class LC_Page_Admin_GoogleAnalytics extends LC_Page_Ex {
             . htmlspecialchars($ua, ENT_QUOTES) . "');\n?>\n";
 
         $configFile = $this->arrPluginInfo['fullpath'] . "classes/pages/ga_config.php";
-        $handle = fopen($configFile, "w");
+        $handle = fopen($configFile, 'w');
         if (!$handle) {
             return false;
         }

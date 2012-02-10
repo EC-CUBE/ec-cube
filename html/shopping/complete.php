@@ -29,6 +29,6 @@ require_once CLASS_EX_REALDIR . 'page_extends/shopping/LC_Page_Shopping_Complete
 // {{{ generate page
 
 $objPage = new LC_Page_Shopping_Complete_Ex();
-register_shutdown_function(array($objPage, "destroy"));
+register_shutdown_function(array($objPage, 'destroy'));
 $objPage->init();
 $objPage->process();

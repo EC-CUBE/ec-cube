@@ -176,9 +176,9 @@ class SC_Helper_FileManager {
         $dir = ereg_replace("/$", "", $dir);
         // 最上位層を格納(user_data/)
         if ($this->sfDirChildExists($dir)) {
-            $arrTree[$cnt]['type'] = "_parent";
+            $arrTree[$cnt]['type'] = '_parent';
         } else {
-            $arrTree[$cnt]['type'] = "_child";
+            $arrTree[$cnt]['type'] = '_child';
         }
         $arrTree[$cnt]['path'] = $dir;
         $arrTree[$cnt]['rank'] = 0;
@@ -223,9 +223,9 @@ class SC_Helper_FileManager {
                         if (is_dir($path)) {
                             $arrTree[$cnt]['path'] = $path;
                             if ($this->sfDirChildExists($path)) {
-                                $arrTree[$cnt]['type'] = "_parent";
+                                $arrTree[$cnt]['type'] = '_parent';
                             } else {
-                                $arrTree[$cnt]['type'] = "_child";
+                                $arrTree[$cnt]['type'] = '_child';
                             }
 
                             // 階層を割り出す

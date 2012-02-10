@@ -144,7 +144,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
      */
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam("規格名", 'name', STEXT_LEN, 'KVa', array('EXIST_CHECK' ,'SPTAB_CHECK' ,'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("規格ID", "class_id", INT_LEN, 'n', array('NUM_CHECK'));
+        $objFormParam->addParam("規格ID", 'class_id', INT_LEN, 'n', array('NUM_CHECK'));
     }
 
    /**
@@ -158,7 +158,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
 
         $where = "del_flg <> 1";
         $objQuery->setOrder("rank DESC");
-        $arrClass = $objQuery->select("name, class_id", "dtb_class", $where);
+        $arrClass = $objQuery->select("name, class_id", 'dtb_class', $where);
         return $arrClass;
     }
 
@@ -171,7 +171,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
     function lfGetClassName($class_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = "class_id = ?";
-        $class_name = $objQuery->get('name', "dtb_class", $where, array($class_id));
+        $class_name = $objQuery->get('name', 'dtb_class', $where, array($class_id));
         return $class_name;
     }
 
@@ -186,12 +186,12 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
         // INSERTする値を作成する。
         $sqlval['name'] = $arrForm['name'];
         $sqlval['creator_id'] = $_SESSION['member_id'];
-        $sqlval['rank'] = $objQuery->max('rank', "dtb_class") + 1;
+        $sqlval['rank'] = $objQuery->max('rank', 'dtb_class') + 1;
         $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         // INSERTの実行
         $sqlval['class_id'] = $objQuery->nextVal('dtb_class_class_id');
-        $ret = $objQuery->insert("dtb_class", $sqlval);
+        $ret = $objQuery->insert('dtb_class', $sqlval);
         return $ret;
     }
 
@@ -208,7 +208,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $where = "class_id = ?";
         // UPDATEの実行
-        $ret = $objQuery->update("dtb_class", $sqlval, $where, array($arrForm['class_id']));
+        $ret = $objQuery->update('dtb_class', $sqlval, $where, array($arrForm['class_id']));
         return $ret;
     }
 
@@ -223,9 +223,9 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
         $objDb = new SC_Helper_DB_Ex();
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        $objDb->sfDeleteRankRecord("dtb_class", "class_id", $class_id, "", true);
+        $objDb->sfDeleteRankRecord('dtb_class', 'class_id', $class_id, "", true);
         $where= "class_id = ?";
-        $ret = $objQuery->delete("dtb_classcategory", $where, array($class_id));
+        $ret = $objQuery->delete('dtb_classcategory', $where, array($class_id));
         return $ret;
     }
 
@@ -247,7 +247,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
         }
 
         $where = "del_flg = 0 AND name = ?";
-        $arrClass = $objQuery->select("class_id, name", "dtb_class", $where, array($arrForm['name']));
+        $arrClass = $objQuery->select("class_id, name", 'dtb_class', $where, array($arrForm['name']));
         // 編集中のレコード以外に同じ名称が存在する場合
         if ($arrClass[0]['class_id'] != $arrForm['class_id'] && $arrClass[0]['name'] == $arrForm['name']) {
             $arrErr['name'] = "※ 既に同じ内容の登録が存在します。<br>";
@@ -277,7 +277,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
      */
     function lfUpRank($class_id) {
         $objDb = new SC_Helper_DB_Ex();
-        $objDb->sfRankUp("dtb_class", "class_id", $class_id);
+        $objDb->sfRankUp('dtb_class', 'class_id', $class_id);
     }
     /**
      * 並び順を下げる
@@ -287,6 +287,6 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
      */
     function lfDownRank($class_id) {
         $objDb = new SC_Helper_DB_Ex();
-        $objDb->sfRankDown("dtb_class", "class_id", $class_id);
+        $objDb->sfRankDown('dtb_class', 'class_id', $class_id);
     }
 }

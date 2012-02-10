@@ -94,7 +94,7 @@ class LC_Page_Shopping_LoadPaymentModule_Test extends PHPUnit_Framework_TestCase
     function testGetModulePathIsFailure() {
         $order_id = 10000;
         $payment_id = 10000;
-        $module_path = "aaa";
+        $module_path = 'aaa';
         $this->setPayment($order_id, $payment_id, $module_path);
 
         $this->actual = $this->objPage->getModulePath($order_id);
@@ -114,7 +114,7 @@ class LC_Page_Shopping_LoadPaymentModule_Test extends PHPUnit_Framework_TestCase
                                                    'create_date' => 'CURRENT_TIMESTAMP',
                                                    'update_date' => 'CURRENT_TIMESTAMP'));
 
-        $this->objQuery->insert("dtb_payment", array('payment_id' => $order_id,
+        $this->objQuery->insert('dtb_payment', array('payment_id' => $order_id,
                                                      'module_path' => $module_path,
                                                      'creator_id' => 1,
                                                      'create_date' => 'CURRENT_TIMESTAMP',

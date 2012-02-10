@@ -65,7 +65,7 @@ class SC_Helper_Session {
       */
      function sfSessRead($id) {
          $objQuery = new SC_Query_Ex();
-         $arrRet = $objQuery->select("sess_data", "dtb_session", "sess_id = ?", array($id));
+         $arrRet = $objQuery->select('sess_data', 'dtb_session', "sess_id = ?", array($id));
          if (empty($arrRet)) {
              return '';
          } else {
@@ -82,13 +82,13 @@ class SC_Helper_Session {
       */
      function sfSessWrite($id, $sess_data) {
          $objQuery = new SC_Query_Ex();
-         $exists = $objQuery->exists("dtb_session", "sess_id = ?", array($id));
+         $exists = $objQuery->exists('dtb_session', "sess_id = ?", array($id));
          $sqlval = array();
          if ($exists) {
              // レコード更新
              $sqlval['sess_data'] = $sess_data;
              $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
-             $objQuery->update("dtb_session", $sqlval, "sess_id = ?", array($id));
+             $objQuery->update('dtb_session', $sqlval, "sess_id = ?", array($id));
          } else {
              // セッションデータがある場合は、レコード作成
              if (strlen($sess_data) > 0) {
@@ -96,7 +96,7 @@ class SC_Helper_Session {
                  $sqlval['sess_data'] = $sess_data;
                  $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
                  $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
-                 $objQuery->insert("dtb_session", $sqlval);
+                 $objQuery->insert('dtb_session', $sqlval);
              }
          }
          return true;
@@ -112,7 +112,7 @@ class SC_Helper_Session {
       */
      function sfSessDestroy($id) {
          $objQuery = new SC_Query_Ex();
-         $objQuery->delete("dtb_session", "sess_id = ?", array($id));
+         $objQuery->delete('dtb_session', "sess_id = ?", array($id));
          return true;
      }
 
@@ -127,7 +127,7 @@ class SC_Helper_Session {
          // MAX_LIFETIME以上更新されていないセッションを削除する。
          $objQuery = new SC_Query_Ex();
          $where = "update_date < current_timestamp + '-". MAX_LIFETIME . " secs'";
-         $objQuery->delete("dtb_session", $where);
+         $objQuery->delete('dtb_session', $where);
          return true;
     }
 
@@ -141,7 +141,7 @@ class SC_Helper_Session {
      * 出力する必要がある.
      *
      * 例)
-     * <input type="hidden" name="transactionid" value="この関数の返り値" />
+     * <input type='hidden' name='transactionid' value="この関数の返り値" />
      *
      * 遷移先のページで, LC_Page::isValidToken() の返り値をチェックすることにより,
      * 画面遷移の妥当性が確認できる.

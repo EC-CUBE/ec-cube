@@ -49,7 +49,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
         $this->tpl_maintitle = 'デザイン管理';
         $this->tpl_subtitle = 'レイアウト設定';
         $masterData = new SC_DB_MasterData_Ex();
-        $this->arrTarget = $masterData->getMasterData("mtb_target");
+        $this->arrTarget = $masterData->getMasterData('mtb_target');
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
     }
 
@@ -80,13 +80,13 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
         switch ($this->getMode()) {
         // 新規ブロック作成
         case 'new_bloc':
-            SC_Response_Ex::sendRedirect('bloc.php', array("device_type_id" => $this->device_type_id));
+            SC_Response_Ex::sendRedirect('bloc.php', array('device_type_id' => $this->device_type_id));
             exit;
             break;
 
         // 新規ページ作成
         case 'new_page':
-            SC_Response_Ex::sendRedirect('main_edit.php', array("device_type_id" => $this->device_type_id));
+            SC_Response_Ex::sendRedirect('main_edit.php', array('device_type_id' => $this->device_type_id));
             exit;
             break;
 
@@ -101,7 +101,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
         // 編集実行
         case 'confirm':
             $this->placingBlocs($objFormParam);
-            $arrQueryString = array("device_type_id" => $this->device_type_id, "page_id" => $this->page_id, 'msg' => 'on');
+            $arrQueryString = array('device_type_id' => $this->device_type_id, 'page_id' => $this->page_id, 'msg' => 'on');
             SC_Response_Ex::reload($arrQueryString, true);
             exit;
 
@@ -151,16 +151,16 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam, $bloc_cnt = 0) {
-        $objFormParam->addParam("ページID", "page_id", INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("端末種別ID", "device_type_id", INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("ブロック数", "bloc_cnt", INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam("ページID", 'page_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam("端末種別ID", 'device_type_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam("ブロック数", 'bloc_cnt', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
 
         for ($i = 1; $i <= $bloc_cnt; $i++) {
-            $objFormParam->addParam("ブロック名", "name_" . $i, STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'GRAPH_CHECK'));
-            $objFormParam->addParam("ブロックID", "id_" . $i, INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-            $objFormParam->addParam("ターゲットID", "target_id_" . $i, STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'ALNUM_CHECK'));
-            $objFormParam->addParam("TOP座標", "top_" . $i, INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-            $objFormParam->addParam("全ページ", "anywhere_" . $i, INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+            $objFormParam->addParam("ブロック名", 'name_' . $i, STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'GRAPH_CHECK'));
+            $objFormParam->addParam("ブロックID", 'id_' . $i, INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+            $objFormParam->addParam("ターゲットID", 'target_id_' . $i, STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'ALNUM_CHECK'));
+            $objFormParam->addParam("TOP座標", 'top_' . $i, INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+            $objFormParam->addParam("全ページ", 'anywhere_' . $i, INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         }
     }
 
@@ -255,7 +255,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
         $bloc_cnt = $objFormParam->getValue('bloc_cnt');
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
-        $objQuery->delete("dtb_blocposition", "page_id = ? AND device_type_id = ?",
+        $objQuery->delete('dtb_blocposition', "page_id = ? AND device_type_id = ?",
                           array($page_id, $device_type_id));
         $arrTargetFlip = array_flip($this->arrTarget);
         for ($i = 1; $i <= $bloc_cnt; $i++) {
@@ -285,7 +285,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
             $arrParams['bloc_id'] = $id;
             $arrParams['bloc_row'] = $objFormParam->getValue('top_' . $i);
 
-            $objQuery->insert("dtb_blocposition", $arrParams);
+            $objQuery->insert('dtb_blocposition', $arrParams);
         }
         $objQuery->commit();
     }

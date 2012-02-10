@@ -105,12 +105,12 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
 
         if (empty($this->arrErr)) {
             $this->arrValues = SC_Utils_Ex::getHash2Array(
-                                       $masterData->getDBMasterData("mtb_constants"));
+                                       $masterData->getDBMasterData('mtb_constants'));
         }
 
         // コメント, 値の配列を生成
         $this->arrComments = SC_Utils_Ex::getHash2Array(
-                                     $masterData->getDBMasterData("mtb_constants",
+                                     $masterData->getDBMasterData('mtb_constants',
                                              array('id', 'remarks', 'rank')));
 
     }
@@ -172,7 +172,7 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
     function getParamKeys(&$masterData) {
         $keys = array();
         $i = 0;
-        foreach ($masterData->getDBMasterData("mtb_constants") as $key => $val) {
+        foreach ($masterData->getDBMasterData('mtb_constants') as $key => $val) {
             $keys[$i] = $key;
             $i++;
         }

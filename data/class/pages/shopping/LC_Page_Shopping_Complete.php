@@ -64,7 +64,7 @@ class LC_Page_Shopping_Complete extends LC_Page_Ex {
      */
     function action() {
         $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
-        unset($_SESSION["order_id"]);
+        unset($_SESSION['order_id']);
     }
 
     /**

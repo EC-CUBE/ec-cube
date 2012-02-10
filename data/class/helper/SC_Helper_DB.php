@@ -136,7 +136,7 @@ class SC_Helper_DB {
             if ($col === "") {
                 $arrRet = $objQuery->select('*', 'dtb_baseinfo');
             } else {
-                $arrRet = $objQuery->select($col, "dtb_baseinfo");
+                $arrRet = $objQuery->select($col, 'dtb_baseinfo');
             }
 
             if (isset($arrRet[0])) {
@@ -157,7 +157,7 @@ class SC_Helper_DB {
     function sfGetBasisCount() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        return $objQuery->count("dtb_baseinfo");
+        return $objQuery->count('dtb_baseinfo');
     }
 
     /**
@@ -211,10 +211,10 @@ class SC_Helper_DB {
      */
     function sfGetRollbackPoint($order_id, $use_point, $add_point, $order_status) {
         $objQuery = new SC_Query_Ex();
-        $arrRet = $objQuery->select("customer_id", "dtb_order", "order_id = ?", array($order_id));
+        $arrRet = $objQuery->select('customer_id', 'dtb_order', "order_id = ?", array($order_id));
         $customer_id = $arrRet[0]['customer_id'];
         if ($customer_id != "" && $customer_id >= 1) {
-            $arrRet = $objQuery->select('point', "dtb_customer", "customer_id = ?", array($customer_id));
+            $arrRet = $objQuery->select('point', 'dtb_customer', "customer_id = ?", array($customer_id));
             $point = $arrRet[0]['point'];
             $rollback_point = $arrRet[0]['point'];
 
@@ -360,7 +360,7 @@ class SC_Helper_DB {
     function sfGetCatCombName($category_id) {
         // 商品が属するカテゴリIDを縦に取得
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $arrCatID = $this->sfGetParents("dtb_category", "parent_category_id", "category_id", $category_id);
+        $arrCatID = $this->sfGetParents('dtb_category', 'parent_category_id', 'category_id', $category_id);
         $ConbName = "";
 
         // カテゴリ名称を取得する
@@ -402,7 +402,7 @@ class SC_Helper_DB {
         // 商品が属するカテゴリIDを縦に取得
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrRet = array();
-        $arrCatID = $this->sfGetParents("dtb_category", "parent_category_id", "category_id", $category_id);
+        $arrCatID = $this->sfGetParents('dtb_category', 'parent_category_id', 'category_id', $category_id);
         $arrRet['id'] = $arrCatID[0];
 
         // カテゴリ名称を取得する
@@ -439,7 +439,7 @@ class SC_Helper_DB {
             $where .= " AND product_count > 0";
         } else {
             $col = "category_id, category_name, level";
-            $from = "dtb_category";
+            $from = 'dtb_category';
         }
 
         $arrRet = $objQuery->select($col, $from, $where);
@@ -468,7 +468,7 @@ class SC_Helper_DB {
         $col = "category_id, parent_category_id, category_name";
         $where = "del_flg = 0";
         $objQuery->setOption("ORDER BY level");
-        $arrRet = $objQuery->select($col, "dtb_category", $where);
+        $arrRet = $objQuery->select($col, 'dtb_category', $where);
         $arrCatName = array();
         foreach ($arrRet as $arrTmp) {
             $arrCatName[$arrTmp['category_id']] =
@@ -480,7 +480,7 @@ class SC_Helper_DB {
         $col = "category_id, parent_category_id, category_name, level";
         $where = "del_flg = 0";
         $objQuery->setOption("ORDER BY rank DESC");
-        $arrRet = $objQuery->select($col, "dtb_category", $where);
+        $arrRet = $objQuery->select($col, 'dtb_category', $where);
         $max = count($arrRet);
 
         for ($cnt = 0; $cnt < $max; $cnt++) {
@@ -516,12 +516,12 @@ class SC_Helper_DB {
         }
         $category_id = (int) $category_id;
         $product_id = (int) $product_id;
-        if (SC_Utils_Ex::sfIsInt($category_id) && $category_id != 0 && SC_Helper_DB_Ex::sfIsRecord("dtb_category","category_id", $category_id)) {
+        if (SC_Utils_Ex::sfIsInt($category_id) && $category_id != 0 && SC_Helper_DB_Ex::sfIsRecord('dtb_category','category_id', $category_id)) {
             $category_id = array($category_id);
-        } else if (SC_Utils_Ex::sfIsInt($product_id) && $product_id != 0 && SC_Helper_DB_Ex::sfIsRecord("dtb_products","product_id", $product_id, $status)) {
+        } else if (SC_Utils_Ex::sfIsInt($product_id) && $product_id != 0 && SC_Helper_DB_Ex::sfIsRecord('dtb_products','product_id', $product_id, $status)) {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $where = "product_id = ?";
-            $category_id = $objQuery->getCol("category_id", "dtb_product_categories", "product_id = ?", array($product_id));
+            $category_id = $objQuery->getCol('category_id', 'dtb_product_categories', "product_id = ?", array($product_id));
         } else {
             // 不正な場合は、空の配列を返す。
             $category_id = array();
@@ -538,28 +538,28 @@ class SC_Helper_DB {
      */
     function addProductBeforCategories($category_id, $product_id) {
 
-        $sqlval = array("category_id" => $category_id,
-                        "product_id" => $product_id);
+        $sqlval = array('category_id' => $category_id,
+                        'product_id' => $product_id);
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 現在の商品カテゴリを取得
         $arrCat = $objQuery->select("product_id, category_id, rank",
-                                    "dtb_product_categories",
+                                    'dtb_product_categories',
                                     "category_id = ?",
                                     array($category_id));
 
-        $max = "0";
+        $max = '0';
         foreach ($arrCat as $val) {
             // 同一商品が存在する場合は登録しない
-            if ($val["product_id"] == $product_id) {
+            if ($val['product_id'] == $product_id) {
                 return;
             }
             // 最上位ランクを取得
             $max = ($max < $val['rank']) ? $val['rank'] : $max;
         }
         $sqlval['rank'] = $max + 1;
-        $objQuery->insert("dtb_product_categories", $sqlval);
+        $objQuery->insert('dtb_product_categories', $sqlval);
     }
 
     /**
@@ -570,28 +570,28 @@ class SC_Helper_DB {
      * @return void
      */
     function addProductAfterCategories($category_id, $product_id) {
-        $sqlval = array("category_id" => $category_id,
-                        "product_id" => $product_id);
+        $sqlval = array('category_id' => $category_id,
+                        'product_id' => $product_id);
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 現在の商品カテゴリを取得
         $arrCat = $objQuery->select("product_id, category_id, rank",
-                                    "dtb_product_categories",
+                                    'dtb_product_categories',
                                     "category_id = ?",
                                     array($category_id));
 
         $min = 0;
         foreach ($arrCat as $val) {
             // 同一商品が存在する場合は登録しない
-            if ($val["product_id"] == $product_id) {
+            if ($val['product_id'] == $product_id) {
                 return;
             }
             // 最下位ランクを取得
             $min = ($min < $val['rank']) ? $val['rank'] : $min;
         }
         $sqlval['rank'] = $min;
-        $objQuery->insert("dtb_product_categories", $sqlval);
+        $objQuery->insert('dtb_product_categories', $sqlval);
     }
 
     /**
@@ -603,7 +603,7 @@ class SC_Helper_DB {
      */
     function removeProductByCategories($category_id, $product_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->delete("dtb_product_categories",
+        $objQuery->delete('dtb_product_categories',
                           "category_id = ? AND product_id = ?", array($category_id, $product_id));
     }
 
@@ -619,7 +619,7 @@ class SC_Helper_DB {
 
         // 現在のカテゴリ情報を取得
         $arrCurrentCat = $objQuery->select("product_id, category_id, rank",
-                                           "dtb_product_categories",
+                                           'dtb_product_categories',
                                            "product_id = ?",
                                            array($product_id));
 
@@ -627,8 +627,8 @@ class SC_Helper_DB {
         foreach ($arrCurrentCat as $val) {
 
             // 登録しないカテゴリを削除
-            if (!in_array($val["category_id"], $arrCategory_id)) {
-                $this->removeProductByCategories($val["category_id"], $product_id);
+            if (!in_array($val['category_id'], $arrCategory_id)) {
+                $this->removeProductByCategories($val['category_id'], $product_id);
             }
         }
 
@@ -896,7 +896,7 @@ __EOS__;
         $arrParents = array();
         $ret = $id;
 
-        while ($ret != "0" && !SC_Utils_Ex::isBlank($ret)) {
+        while ($ret != '0' && !SC_Utils_Ex::isBlank($ret)) {
             $arrParents[] = $ret;
             $ret = SC_Helper_DB_Ex::sfGetParentsArraySub($table, $pid_name, $id_name, $ret);
         }
@@ -927,7 +927,7 @@ __EOS__;
      */
     function sfGetCatWhere($category_id) {
         // 子カテゴリIDの取得
-        $arrRet = SC_Helper_DB_Ex::sfGetChildrenArray("dtb_category", "parent_category_id", "category_id", $category_id);
+        $arrRet = SC_Helper_DB_Ex::sfGetChildrenArray('dtb_category', 'parent_category_id', 'category_id', $category_id);
 
         $where = "category_id IN (" . implode(',', array_fill(0, count($arrRet), '?')) . ")";
 
@@ -1310,12 +1310,12 @@ __EOS__;
             $this->g_maker_on = true;
             $maker_id = (int) $maker_id;
             $product_id = (int) $product_id;
-            if (SC_Utils_Ex::sfIsInt($maker_id) && $maker_id != 0 && $this->sfIsRecord("dtb_maker","maker_id", $maker_id)) {
+            if (SC_Utils_Ex::sfIsInt($maker_id) && $maker_id != 0 && $this->sfIsRecord('dtb_maker','maker_id', $maker_id)) {
                 $this->g_maker_id = array($maker_id);
-            } else if (SC_Utils_Ex::sfIsInt($product_id) && $product_id != 0 && $this->sfIsRecord("dtb_products","product_id", $product_id, $status)) {
+            } else if (SC_Utils_Ex::sfIsInt($product_id) && $product_id != 0 && $this->sfIsRecord('dtb_products','product_id', $product_id, $status)) {
                 $objQuery =& SC_Query_Ex::getSingletonInstance();
                 $where = "product_id = ?";
-                $maker_id = $objQuery->getCol("maker_id", "dtb_products", "product_id = ?", array($product_id));
+                $maker_id = $objQuery->getCol('maker_id', 'dtb_products', "product_id = ?", array($product_id));
                 $this->g_maker_id = $maker_id;
             } else {
                 // 不正な場合は、空の配列を返す。
@@ -1350,7 +1350,7 @@ __EOS__;
             $where .= " AND product_count > 0";
         } else {
             $col = "maker_id, name";
-            $from = "dtb_maker";
+            $from = 'dtb_maker';
         }
 
         $arrRet = $objQuery->select($col, $from, $where);

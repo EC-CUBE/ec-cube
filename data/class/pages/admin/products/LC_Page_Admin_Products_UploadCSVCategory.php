@@ -76,7 +76,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         $this->csv_id = '5';
 
         $masterData = new SC_DB_MasterData_Ex();
-        $this->arrAllowedTag = $masterData->getMasterData("mtb_allowed_tag");
+        $this->arrAllowedTag = $masterData->getMasterData('mtb_allowed_tag');
         $this->arrTagCheckItem = array();
     }
 
@@ -373,11 +373,11 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         if ($sqlval['category_id'] != "") {
             // 同じidが存在すればupdate存在しなければinsert
             $where = "category_id = ?";
-            $category_exists = $objQuery->exists("dtb_category", $where, array($sqlval['category_id']));
+            $category_exists = $objQuery->exists('dtb_category', $where, array($sqlval['category_id']));
             if ($category_exists) {
                 // UPDATEの実行
                 $where = "category_id = ?";
-                $objQuery->update("dtb_category", $sqlval, $where, array($sqlval['category_id']));
+                $objQuery->update('dtb_category', $sqlval, $where, array($sqlval['category_id']));
             } else {
                 $sqlval['create_date'] = $arrList['update_date'];
                 // 新規登録
@@ -433,7 +433,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
             $sqlval['creator_id'] = $_SESSION['member_id'];
         }
         if ($sqlval['parent_category_id'] == "") {
-            $sqlval['parent_category_id'] = (string)"0";
+            $sqlval['parent_category_id'] = (string)'0';
         }
         return $sqlval;
     }
@@ -456,7 +456,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         // 親カテゴリIDの存在チェック
         if(array_search('parent_category_id', $this->arrFormKeyList) !== FALSE
                 and $item['parent_category_id'] != ""
-                and $item['parent_category_id'] != "0"
+                and $item['parent_category_id'] != '0'
                 and !SC_Helper_DB_Ex::sfIsRecord('dtb_category', 'category_id', array($item['parent_category_id']))
                 ) {
             $arrErr['parent_category_id'] = "※ 指定の親カテゴリID(" . $item['parent_category_id'] . ")は、存在しません。";
@@ -464,7 +464,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         // 削除フラグのチェック
         if(array_search('del_flg', $this->arrFormKeyList) !== FALSE
                 and $item['del_flg'] != "") {
-            if (!($item['del_flg'] == "0" or $item['del_flg'] == "1")) {
+            if (!($item['del_flg'] == '0' or $item['del_flg'] == '1')) {
                 $arrErr['del_flg'] = "※ 削除フラグは「0」(有効)、「1」(削除)のみが有効な値です。";
             }
         }
@@ -487,14 +487,14 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         }
         // 登録数上限チェック
         $where = "del_flg = 0";
-        $count = $objQuery->count("dtb_category", $where);
+        $count = $objQuery->count('dtb_category', $where);
         if ($count >= CATEGORY_MAX) {
             $item['category_name'] = "※ カテゴリの登録最大数を超えました。";
         }
         // 階層上限チェック
         if (array_search('parent_category_id', $this->arrFormKeyList) !== FALSE
                 and $item['parent_category_id'] != "") {
-            $level = $objQuery->get('level', "dtb_category", "category_id = ?", array($parent_category_id));
+            $level = $objQuery->get('level', 'dtb_category', "category_id = ?", array($parent_category_id));
             if ($level >= LEVEL_MAX) {
                 $arrErr['parent_category_id'] = "※ " . LEVEL_MAX . "階層以上の登録はできません。";
             }
@@ -518,11 +518,11 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         if ($parent_category_id == 0) {
             // ROOT階層で最大のランクを取得する。
             $where = "parent_category_id = ?";
-            $rank = $objQuery->max('rank', "dtb_category", $where, array($parent_category_id)) + 1;
+            $rank = $objQuery->max('rank', 'dtb_category', $where, array($parent_category_id)) + 1;
         } else {
             // 親のランクを自分のランクとする。
             $where = "category_id = ?";
-            $rank = $objQuery->get('rank', "dtb_category", $where, array($parent_category_id));
+            $rank = $objQuery->get('rank', 'dtb_category', $where, array($parent_category_id));
             // 追加レコードのランク以上のレコードを一つあげる。
             $sqlup = "UPDATE dtb_category SET rank = (rank + 1) WHERE rank >= ?";
             $objQuery->exec($sqlup, array($rank));
@@ -530,7 +530,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
 
         $where = "category_id = ?";
         // 自分のレベルを取得する(親のレベル + 1)
-        $level = $objQuery->get('level', "dtb_category", $where, array($parent_category_id)) + 1;
+        $level = $objQuery->get('level', 'dtb_category', $where, array($parent_category_id)) + 1;
 
         $arrCategory = array();
         $arrCategory['category_name'] = $category_name;
@@ -551,7 +551,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         } else {
             $arrCategory['category_id'] = $objQuery->nextVal('dtb_category_category_id');
         }
-        $objQuery->insert("dtb_category", $arrCategory);
+        $objQuery->insert('dtb_category', $arrCategory);
 
         return $arrCategory['category_id'];
     }

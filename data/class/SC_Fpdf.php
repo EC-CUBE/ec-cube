@@ -302,7 +302,7 @@ class SC_Fpdf extends PDF_Japanese {
             // DBから受注情報を読み込む
             $objQuery = new SC_Query_Ex();
             $where = "order_id = ?";
-            $arrRet = $objQuery->select("*", "dtb_order", $where, array($order_id));
+            $arrRet = $objQuery->select("*", 'dtb_order', $where, array($order_id));
             $this->arrDisp = $arrRet[0];
             list($point) = SC_Helper_Customer_Ex::sfGetCustomerPoint($order_id, $arrRet[0]['use_point'], $arrRet[0]['add_point']);
             $this->arrDisp['point'] = $point;
@@ -313,8 +313,8 @@ class SC_Fpdf extends PDF_Japanese {
             $this->arrDisp = array_merge($this->arrDisp, $arrRet);
 
             // その他支払い情報を表示
-            if($this->arrDisp["memo02"] != "") $this->arrDisp["payment_info"] = unserialize($this->arrDisp["memo02"]);
-            $this->arrDisp["payment_type"] = "お支払い";
+            if($this->arrDisp['memo02'] != "") $this->arrDisp['payment_info'] = unserialize($this->arrDisp['memo02']);
+            $this->arrDisp['payment_type'] = "お支払い";
         }
     }
 
@@ -323,8 +323,8 @@ class SC_Fpdf extends PDF_Japanese {
         $objQuery = new SC_Query_Ex();
         $col = "product_id, product_class_id, product_code, product_name, classcategory_name1, classcategory_name2, price, quantity, point_rate";
         $where = "order_id = ?";
-        $objQuery->setOrder("order_detail_id");
-        $arrRet = $objQuery->select($col, "dtb_order_detail", $where, array($order_id));
+        $objQuery->setOrder('order_detail_id');
+        $arrRet = $objQuery->select($col, 'dtb_order_detail', $where, array($order_id));
         return $arrRet;
     }
 

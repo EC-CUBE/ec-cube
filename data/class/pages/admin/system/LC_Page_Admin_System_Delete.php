@@ -136,13 +136,13 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex {
 
         // ランクの取得
         $where1 = "member_id = ?";
-        $rank = $objQuery->get('rank', "dtb_member", $where1, array($id));
+        $rank = $objQuery->get('rank', 'dtb_member', $where1, array($id));
 
         // Updateする値を作成する.
         $where2 = "rank > ? AND del_flg <> 1";
 
         // UPDATEの実行 - 削除したレコードより上のランキングを下げてRANKの空きを埋める。
-        return $objQuery->update("dtb_member", array(), $where2, array($rank), array('rank' => 'rank-1'));
+        return $objQuery->update('dtb_member', array(), $where2, array($rank), array('rank' => 'rank-1'));
     }
 
     /**
@@ -161,6 +161,6 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex {
         $where = "member_id = ?";
 
         // UPDATEの実行 - ランクを最下位にする、DELフラグON
-        return $objQuery->update("dtb_member", $sqlVal, $where, array($id));
+        return $objQuery->update('dtb_member', $sqlVal, $where, array($id));
     }
 }

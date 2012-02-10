@@ -233,7 +233,7 @@ class SC_Helper_Purchase {
      */
     function getOrderTemp($uniqId) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        return $objQuery->getRow("*", "dtb_order_temp", "order_temp_id = ?",
+        return $objQuery->getRow("*", 'dtb_order_temp', "order_temp_id = ?",
                                  array($uniqId));
     }
 
@@ -245,7 +245,7 @@ class SC_Helper_Purchase {
      */
     function getOrderTempByOrderId($order_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        return $objQuery->getRow("*", "dtb_order_temp", "order_id = ?",
+        return $objQuery->getRow("*", 'dtb_order_temp', "order_id = ?",
                                  array($order_id));
     }
 
@@ -281,9 +281,9 @@ class SC_Helper_Purchase {
             $this->copyFromCustomer($sqlval, $objCustomer);
             $sqlval['order_temp_id'] = $uniqId;
             $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
-            $objQuery->insert("dtb_order_temp", $sqlval);
+            $objQuery->insert('dtb_order_temp', $sqlval);
         } else {
-            $objQuery->update("dtb_order_temp", $sqlval, 'order_temp_id = ?',
+            $objQuery->update('dtb_order_temp', $sqlval, 'order_temp_id = ?',
                               array($uniqId));
         }
     }
@@ -498,7 +498,7 @@ class SC_Helper_Purchase {
         // 削除されていない支払方法を取得
         $where = 'del_flg = 0 AND payment_id IN (' . implode(', ', array_pad(array(), count($arrPaymentIds), '?')) . ')';
         $objQuery->setOrder("rank DESC");
-        $payments = $objQuery->select("payment_id, payment_method, rule, upper_rule, note, payment_image, charge", "dtb_payment", $where, $arrPaymentIds);
+        $payments = $objQuery->select("payment_id, payment_method, rule, upper_rule, note, payment_image, charge", 'dtb_payment', $where, $arrPaymentIds);
         foreach ($payments as $data) {
             // 下限と上限が設定されている
             if (strlen($data['rule']) != 0 && strlen($data['upper_rule']) != 0) {
@@ -588,7 +588,7 @@ class SC_Helper_Purchase {
      */
     function getDateArray($start_day, $end_day) {
         $masterData = new SC_DB_MasterData();
-        $arrWDAY = $masterData->getMasterData("mtb_wday");
+        $arrWDAY = $masterData->getMasterData('mtb_wday');
         //お届け可能日のスタート値がセットされていれば
         if ($start_day >= 1) {
             $now_time = time();
@@ -678,7 +678,7 @@ class SC_Helper_Purchase {
             // 配送日付を timestamp に変換
             if (!SC_Utils_Ex::isBlank($arrValues['shipping_date'])
                 && $convert_shipping_date) {
-                $d = mb_strcut($arrValues["shipping_date"], 0, 10);
+                $d = mb_strcut($arrValues['shipping_date'], 0, 10);
                 $arrDate = explode("/", $d);
                 $ts = mktime(0, 0, 0, $arrDate[1], $arrDate[2], $arrDate[0]);
                 $arrValues['shipping_date'] = date("Y-m-d", $ts);
@@ -807,7 +807,7 @@ class SC_Helper_Purchase {
         }
         $this->registerOrderDetail($orderParams['order_id'], $arrDetail);
 
-        $objQuery->update("dtb_order_temp", array('del_flg' => 1),
+        $objQuery->update('dtb_order_temp', array('del_flg' => 1),
                           "order_temp_id = ?",
                           array(SC_SiteSession_Ex::getUniqId()));
 
@@ -999,7 +999,7 @@ __EOS__;
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrResults = array();
         $objQuery->setOrder('shipping_id');
-        $arrShippings = $objQuery->select("*", "dtb_shipping", "order_id = ?",
+        $arrShippings = $objQuery->select("*", 'dtb_shipping', "order_id = ?",
                                           array($order_id));
         // shipping_id ごとの配列を生成する
         foreach ($arrShippings as $shipping) {
@@ -1030,7 +1030,7 @@ __EOS__;
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objProduct = new SC_Product_Ex();
         $arrResults = array();
-        $arrItems = $objQuery->select("*", "dtb_shipment_item",
+        $arrItems = $objQuery->select("*", 'dtb_shipment_item',
                                       "order_id = ? AND shipping_id = ?",
                                       array($order_id, $shipping_id));
 

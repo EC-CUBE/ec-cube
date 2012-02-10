@@ -146,8 +146,8 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
         $this->setClass(2, "色", 2, array("赤", "青", "黄", "緑"));
         $this->setClass(3, "味", 3, array());
 
-        $this->expected = array("1000" => "大きさ",
-                                "2" => "色");
+        $this->expected = array('1000' => "大きさ",
+                                '2' => "色");
         $this->actual = $this->objPage->getAllClass();
 
         $this->verify();
@@ -160,22 +160,22 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
         $this->setClass(3, "味", 3, array("甘口", "中辛", "辛口"));
 
         $this->expected = array(
-                                array("class_id1" => 1000,
-                                      "classcategory_id1" => 1000000004,
-                                      "name1" => 'LL',
-                                      "rank1" => 4),
-                                array("class_id1" => 1000,
-                                      "classcategory_id1" => 1000000003,
-                                      "name1" => 'L',
-                                      "rank1" => 3),
-                                array("class_id1" => 1000,
-                                      "classcategory_id1" => 1000000002,
-                                      "name1" => 'M',
-                                      "rank1" => 2),
-                                array("class_id1" => 1000,
-                                      "classcategory_id1" => 1000000001,
-                                      "name1" => 'S',
-                                      "rank1" => 1));
+                                array('class_id1' => 1000,
+                                      'classcategory_id1' => 1000000004,
+                                      'name1' => 'LL',
+                                      'rank1' => 4),
+                                array('class_id1' => 1000,
+                                      'classcategory_id1' => 1000000003,
+                                      'name1' => 'L',
+                                      'rank1' => 3),
+                                array('class_id1' => 1000,
+                                      'classcategory_id1' => 1000000002,
+                                      'name1' => 'M',
+                                      'rank1' => 2),
+                                array('class_id1' => 1000,
+                                      'classcategory_id1' => 1000000001,
+                                      'name1' => 'S',
+                                      'rank1' => 1));
 
         $this->actual = $this->objPage->getAllClassCategory(1000);
         $this->verify();
@@ -188,105 +188,105 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
         $this->setClass(3, "味", 3, array("甘口", "中辛", "辛口"));
 
         $this->expected = array(
-                                array("class_id1" => 1000,
-                                      "classcategory_id1" => 1000000004,
-                                      "name1" => 'LL',
-                                      "rank1" => 4,
-                                      "class_id2" => 3,
-                                      "classcategory_id2" => 3000003,
-                                      "name2" => "辛口",
-                                      "rank2" => 3),
-                                array("class_id1" => 1000,
-                                      "classcategory_id1" => 1000000004,
-                                      "name1" => 'LL',
-                                      "rank1" => 4,
-                                      "class_id2" => 3,
-                                      "classcategory_id2" => 3000002,
-                                      "name2" => "中辛",
-                                      "rank2" => 2),
-                                array("class_id1" => 1000,
-                                      "classcategory_id1" => 1000000004,
-                                      "name1" => 'LL',
-                                      "rank1" => 4,
-                                      "class_id2" => 3,
-                                      "classcategory_id2" => 3000001,
-                                      "name2" => "甘口",
-                                      "rank2" => 1),
+                                array('class_id1' => 1000,
+                                      'classcategory_id1' => 1000000004,
+                                      'name1' => 'LL',
+                                      'rank1' => 4,
+                                      'class_id2' => 3,
+                                      'classcategory_id2' => 3000003,
+                                      'name2' => "辛口",
+                                      'rank2' => 3),
+                                array('class_id1' => 1000,
+                                      'classcategory_id1' => 1000000004,
+                                      'name1' => 'LL',
+                                      'rank1' => 4,
+                                      'class_id2' => 3,
+                                      'classcategory_id2' => 3000002,
+                                      'name2' => "中辛",
+                                      'rank2' => 2),
+                                array('class_id1' => 1000,
+                                      'classcategory_id1' => 1000000004,
+                                      'name1' => 'LL',
+                                      'rank1' => 4,
+                                      'class_id2' => 3,
+                                      'classcategory_id2' => 3000001,
+                                      'name2' => "甘口",
+                                      'rank2' => 1),
 
-                                array("class_id1" => 1000,
-                                      "classcategory_id1" => 1000000003,
-                                      "name1" => 'L',
-                                      "rank1" => 3,
-                                      "class_id2" => 3,
-                                      "classcategory_id2" => 3000003,
-                                      "name2" => "辛口",
-                                      "rank2" => 3),
-                                array("class_id1" => 1000,
-                                      "classcategory_id1" => 1000000003,
-                                      "name1" => 'L',
-                                      "rank1" => 3,
-                                      "class_id2" => 3,
-                                      "classcategory_id2" => 3000002,
-                                      "name2" => "中辛",
-                                      "rank2" => 2),
-                                array("class_id1" => 1000,
-                                      "classcategory_id1" => 1000000003,
-                                      "name1" => 'L',
-                                      "rank1" => 3,
-                                      "class_id2" => 3,
-                                      "classcategory_id2" => 3000001,
-                                      "name2" => "甘口",
-                                      "rank2" => 1),
+                                array('class_id1' => 1000,
+                                      'classcategory_id1' => 1000000003,
+                                      'name1' => 'L',
+                                      'rank1' => 3,
+                                      'class_id2' => 3,
+                                      'classcategory_id2' => 3000003,
+                                      'name2' => "辛口",
+                                      'rank2' => 3),
+                                array('class_id1' => 1000,
+                                      'classcategory_id1' => 1000000003,
+                                      'name1' => 'L',
+                                      'rank1' => 3,
+                                      'class_id2' => 3,
+                                      'classcategory_id2' => 3000002,
+                                      'name2' => "中辛",
+                                      'rank2' => 2),
+                                array('class_id1' => 1000,
+                                      'classcategory_id1' => 1000000003,
+                                      'name1' => 'L',
+                                      'rank1' => 3,
+                                      'class_id2' => 3,
+                                      'classcategory_id2' => 3000001,
+                                      'name2' => "甘口",
+                                      'rank2' => 1),
 
-                                array("class_id1" => 1000,
-                                      "classcategory_id1" => 1000000002,
-                                      "name1" => 'M',
-                                      "rank1" => 2,
-                                      "class_id2" => 3,
-                                      "classcategory_id2" => 3000003,
-                                      "name2" => "辛口",
-                                      "rank2" => 3),
-                                array("class_id1" => 1000,
-                                      "classcategory_id1" => 1000000002,
-                                      "name1" => 'M',
-                                      "rank1" => 2,
-                                      "class_id2" => 3,
-                                      "classcategory_id2" => 3000002,
-                                      "name2" => "中辛",
-                                      "rank2" => 2),
-                                array("class_id1" => 1000,
-                                      "classcategory_id1" => 1000000002,
-                                      "name1" => 'M',
-                                      "rank1" => 2,
-                                      "class_id2" => 3,
-                                      "classcategory_id2" => 3000001,
-                                      "name2" => "甘口",
-                                      "rank2" => 1),
+                                array('class_id1' => 1000,
+                                      'classcategory_id1' => 1000000002,
+                                      'name1' => 'M',
+                                      'rank1' => 2,
+                                      'class_id2' => 3,
+                                      'classcategory_id2' => 3000003,
+                                      'name2' => "辛口",
+                                      'rank2' => 3),
+                                array('class_id1' => 1000,
+                                      'classcategory_id1' => 1000000002,
+                                      'name1' => 'M',
+                                      'rank1' => 2,
+                                      'class_id2' => 3,
+                                      'classcategory_id2' => 3000002,
+                                      'name2' => "中辛",
+                                      'rank2' => 2),
+                                array('class_id1' => 1000,
+                                      'classcategory_id1' => 1000000002,
+                                      'name1' => 'M',
+                                      'rank1' => 2,
+                                      'class_id2' => 3,
+                                      'classcategory_id2' => 3000001,
+                                      'name2' => "甘口",
+                                      'rank2' => 1),
 
-                                array("class_id1" => 1000,
-                                      "classcategory_id1" => 1000000001,
-                                      "name1" => 'S',
-                                      "rank1" => 1,
-                                      "class_id2" => 3,
-                                      "classcategory_id2" => 3000003,
-                                      "name2" => "辛口",
-                                      "rank2" => 3),
-                                array("class_id1" => 1000,
-                                      "classcategory_id1" => 1000000001,
-                                      "name1" => 'S',
-                                      "rank1" => 1,
-                                      "class_id2" => 3,
-                                      "classcategory_id2" => 3000002,
-                                      "name2" => "中辛",
-                                      "rank2" => 2),
-                                array("class_id1" => 1000,
-                                      "classcategory_id1" => 1000000001,
-                                      "name1" => 'S',
-                                      "rank1" => 1,
-                                      "class_id2" => 3,
-                                      "classcategory_id2" => 3000001,
-                                      "name2" => "甘口",
-                                      "rank2" => 1),
+                                array('class_id1' => 1000,
+                                      'classcategory_id1' => 1000000001,
+                                      'name1' => 'S',
+                                      'rank1' => 1,
+                                      'class_id2' => 3,
+                                      'classcategory_id2' => 3000003,
+                                      'name2' => "辛口",
+                                      'rank2' => 3),
+                                array('class_id1' => 1000,
+                                      'classcategory_id1' => 1000000001,
+                                      'name1' => 'S',
+                                      'rank1' => 1,
+                                      'class_id2' => 3,
+                                      'classcategory_id2' => 3000002,
+                                      'name2' => "中辛",
+                                      'rank2' => 2),
+                                array('class_id1' => 1000,
+                                      'classcategory_id1' => 1000000001,
+                                      'name1' => 'S',
+                                      'rank1' => 1,
+                                      'class_id2' => 3,
+                                      'classcategory_id2' => 3000001,
+                                      'name2' => "甘口",
+                                      'rank2' => 1),
                                 );
 
         $this->actual = $this->objPage->getAllClassCategory(1000, 3);
@@ -308,22 +308,22 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
 
 
         $this->expected = array(
-                                array("class_id1" => 2,
-                                      "class_id2" => 3,
-                                      "name1" => "赤",
-                                      "name2" => "甘口",
-                                      "rank1" => 1,
-                                      "rank2" => 1,
-                                      "product_class_id" => 1000,
-                                      "product_id" => 10000,
-                                      "classcategory_id1" => 2000001,
-                                      "classcategory_id2" => 3000001,
-                                      "product_code" => "product_code1000",
-                                      "stock" => null,
-                                      "stock_unlimited" => 0,
-                                      "sale_limit" => null,
-                                      "price01" => 10000,
-                                      "price02" => null));
+                                array('class_id1' => 2,
+                                      'class_id2' => 3,
+                                      'name1' => "赤",
+                                      'name2' => "甘口",
+                                      'rank1' => 1,
+                                      'rank2' => 1,
+                                      'product_class_id' => 1000,
+                                      'product_id' => 10000,
+                                      'classcategory_id1' => 2000001,
+                                      'classcategory_id2' => 3000001,
+                                      'product_code' => 'product_code1000',
+                                      'stock' => null,
+                                      'stock_unlimited' => 0,
+                                      'sale_limit' => null,
+                                      'price01' => 10000,
+                                      'price02' => null));
 
         $this->actual = $this->objPage->getProductsClassAndClasscategory($product_id);
 
@@ -339,7 +339,7 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
         $val['name'] = $name;
         $val['creator_id'] = 1;
         $val['deliv_date_id'] = 1;
-        $this->objQuery->insert("dtb_products", $val);
+        $this->objQuery->insert('dtb_products', $val);
     }
 
     function setProductsClass($product_id, $product_class_id, $class_combination_id = null) {
@@ -351,7 +351,7 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
         $val['creator_id'] = 1;
         $val['create_date'] = $this->now;
         $val['del_flg'] = 0;
-        $this->objQuery->insert("dtb_products_class", $val);
+        $this->objQuery->insert('dtb_products_class', $val);
     }
 
     function setClassCombination($class_combination_id,
@@ -361,12 +361,12 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
         $val['parent_class_combination_id'] = $parent_class_combination_id;
         $val['classcategory_id'] = $classcategory_id;
         $val['level'] = $level;
-        $this->objQuery->insert("dtb_class_combination", $val);
+        $this->objQuery->insert('dtb_class_combination', $val);
     }
 
     function clearClass() {
-        $this->objQuery->delete("dtb_class");
-        $this->objQuery->delete("dtb_classcategory");
+        $this->objQuery->delete('dtb_class');
+        $this->objQuery->delete('dtb_classcategory');
     }
 
     /**
@@ -384,13 +384,13 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
         $val['del_flg'] = 0;
         $val['rank'] = $rank;
 
-        $this->objQuery->insert("dtb_class", $val);
+        $this->objQuery->insert('dtb_class', $val);
         $i = 1;
         foreach ($classcategory as $name) {
-            $val['classcategory_id'] = $class_id . "00000" . $i;
+            $val['classcategory_id'] = $class_id . '00000' . $i;
             $val['name'] = $name;
             $val['rank'] = $i;
-            $this->objQuery->insert("dtb_classcategory", $val);
+            $this->objQuery->insert('dtb_classcategory', $val);
             $i++;
         }
     }

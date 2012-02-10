@@ -49,7 +49,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         $this->tpl_maintitle = '商品管理';
         $this->tpl_subtitle = '商品登録(商品規格)';
         $masterData = new SC_DB_MasterData_Ex();
-        $this->arrProductType = $masterData->getMasterData("mtb_product_type");
+        $this->arrProductType = $masterData->getMasterData('mtb_product_type');
         // 規格プルダウンのリスト
         $this->arrClass = $this->getAllClass();
     }
@@ -227,7 +227,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
 
         $objQuery->begin();
 
-        $arrProductsClass = $objQuery->select("*", "dtb_products_class", "product_id = ?", array($product_id));
+        $arrProductsClass = $objQuery->select("*", 'dtb_products_class', "product_id = ?", array($product_id));
         $arrExists = array();
         foreach ($arrProductsClass as $val) {
             $arrExists[$val['product_class_id']] = $val;
@@ -305,13 +305,13 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
              */
             $arrPC['product_type_id'] = SC_Utils_Ex::isBlank($arrPC['product_type_id']) ? 0 : $arrPC['product_type_id'];
 
-            $objQuery->insert("dtb_products_class", $arrPC);
+            $objQuery->insert('dtb_products_class', $arrPC);
         }
 
         // 規格無し用の商品規格を非表示に
         $arrBlank['del_flg'] = 1;
         $arrBlank['update_date'] = 'CURRENT_TIMESTAMP';
-        $objQuery->update("dtb_products_class", $arrBlank,
+        $objQuery->update('dtb_products_class', $arrBlank,
                           "product_id = ? AND class_combination_id IS NULL",
                           array($product_id));
 
@@ -329,9 +329,9 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
      */
     function lfCheckSelectClass() {
         $objErr = new SC_CheckError_Ex();
-        $objErr->doFunc(array("規格1", "class_id1"), array('EXIST_CHECK'));
-        $objErr->doFunc(array("規格", "class_id1", "select_class_id2"), array('TOP_EXIST_CHECK'));
-        $objErr->doFunc(array("規格1", "規格2", "class_id1", "class_id2"), array('DIFFERENT_CHECK'));
+        $objErr->doFunc(array("規格1", 'class_id1'), array('EXIST_CHECK'));
+        $objErr->doFunc(array("規格", 'class_id1', 'select_class_id2'), array('TOP_EXIST_CHECK'));
+        $objErr->doFunc(array("規格1", "規格2", 'class_id1', 'class_id2'), array('DIFFERENT_CHECK'));
         return $objErr->arrErr;
     }
 
@@ -573,10 +573,10 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                               array($existsCombi['class_combination_id'],
                                     $existsCombi['parent_class_combination_id']));
         }
-        $objQuery->update("dtb_products_class", array('del_flg' => 0),
+        $objQuery->update('dtb_products_class', array('del_flg' => 0),
                           "product_id = ? AND class_combination_id IS NULL",
                           array($product_id));
-        $objQuery->delete("dtb_products_class",
+        $objQuery->delete('dtb_products_class',
                           "product_id = ? AND class_combination_id IS NOT NULL",
                           array($product_id));
         $objQuery->commit();
@@ -752,7 +752,7 @@ __EOF__;
      * @return array 規格分類の登録された, すべての規格
      */
     function getAllClass() {
-        $arrClass = SC_Helper_DB_Ex::sfGetIDValueList("dtb_class", 'class_id', 'name');
+        $arrClass = SC_Helper_DB_Ex::sfGetIDValueList('dtb_class', 'class_id', 'name');
 
         // 規格分類が登録されていない規格は表示しないようにする。
         $arrClassCatCount = SC_Utils_Ex::sfGetClassCatCount();
@@ -779,7 +779,7 @@ __EOF__;
     function getProductsClass($product_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = "product_code, price01, price02, stock, stock_unlimited, sale_limit, deliv_fee, point_rate";
-        return $objQuery->getRow($col, "dtb_products_class", "product_id = ? AND class_combination_id IS NULL", array($product_id));
+        return $objQuery->getRow($col, 'dtb_products_class', "product_id = ? AND class_combination_id IS NULL", array($product_id));
     }
 
     /**

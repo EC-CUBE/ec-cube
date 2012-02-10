@@ -265,10 +265,10 @@ class SC_UploadFile {
         $arrRet = array();
         foreach ($this->keyname as $val) {
             if (isset($this->temp_file[$cnt])) {
-                $arrRet["temp_" . $val] = $this->temp_file[$cnt];
+                $arrRet['temp_' . $val] = $this->temp_file[$cnt];
             }
             if (isset($this->save_file[$cnt]) && $this->save_file[$cnt] != "") {
-                $arrRet["save_" . $val] = $this->save_file[$cnt];
+                $arrRet['save_' . $val] = $this->save_file[$cnt];
             }
             $cnt++;
         }
@@ -279,11 +279,11 @@ class SC_UploadFile {
     function setHiddenFileList($arrPOST) {
         $cnt = 0;
         foreach ($this->keyname as $val) {
-            $key = "temp_" . $val;
+            $key = 'temp_' . $val;
             if (isset($arrPOST[$key]) && !empty($arrPOST[$key])) {
                 $this->temp_file[$cnt] = $arrPOST[$key];
             }
-            $key = "save_" . $val;
+            $key = 'save_' . $val;
             if (isset($arrPOST[$key]) && !empty($arrPOST[$key])) {
                 $this->save_file[$cnt] = $arrPOST[$key];
             }
@@ -294,11 +294,11 @@ class SC_UploadFile {
     function setHiddenKikakuFileList($arrPOST) {
         $cnt = 0;
         foreach ($this->keyname as $val) {
-            $key = "temp_" . $val;
+            $key = 'temp_' . $val;
             if (isset($arrPOST[$key])) {
                 $this->temp_file[$cnt] = $arrPOST[$key];
             }
-            $key = "save_" . $val;
+            $key = 'save_' . $val;
             if (isset($arrPOST[$key]) && !empty($arrPOST[$key])) {
                 $this->save_file[$cnt] = $arrPOST[$key];
             }

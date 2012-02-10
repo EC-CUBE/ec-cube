@@ -66,9 +66,9 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        $this->arrMasterDataName = $this->getMasterDataNames(array("mtb_pref",
-                                                                   "mtb_zip",
-                                                                   "mtb_constants"));
+        $this->arrMasterDataName = $this->getMasterDataNames(array('mtb_pref',
+                                                                   'mtb_zip',
+                                                                   'mtb_constants'));
         $masterData = new SC_DB_MasterData_Ex();
 
         switch ($this->getMode()) {
@@ -133,7 +133,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
      */
     function getMasterDataNames($ignores = array()) {
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
-        $arrMasterDataName = $dbFactory->findTableNames("mtb_");
+        $arrMasterDataName = $dbFactory->findTableNames('mtb_');
 
         $i = 0;
         foreach ($arrMasterDataName as $val) {

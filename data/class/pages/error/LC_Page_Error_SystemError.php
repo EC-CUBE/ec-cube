@@ -146,7 +146,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
             $errmsg .= SC_Utils_Ex::sfBacktraceToString($this->backtrace);
         }
         // (上に該当せず)バックトレースを生成できる環境(一般的には PHP 4 >= 4.3.0, PHP 5)の場合
-        else if (function_exists("debug_backtrace")) {
+        else if (function_exists('debug_backtrace')) {
             $backtrace = debug_backtrace();
 
             // バックトレースのうち handle_error 以前は通常不要と考えられるので削除

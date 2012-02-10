@@ -42,10 +42,10 @@ define('MIDDLE_CATEGORIES_VOLUME', 2);
 define('SMALL_CATEGORIES_VOLUME', 3);
 
 /** 規格1の生成数 */
-define("CLASSCATEGORY1_VOLUME", 10);
+define('CLASSCATEGORY1_VOLUME', 10);
 
 /** 規格2の生成数 */
-define("CLASSCATEGORY2_VOLUME", 10);
+define('CLASSCATEGORY2_VOLUME', 10);
 
 /** 商品の生成数 */
 define('PRODUCTS_VOLUME', 100);
@@ -144,17 +144,17 @@ class CreateEcCubeData {
         $sqlval['creator_id'] = 2;
         $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
-        $sqlval['del_flg'] = (string) "0";
+        $sqlval['del_flg'] = (string) '0';
 
         // 大カテゴリを生成
         for ($i = 0; $i < TOP_CATEGORIES_VOLUME; $i++) {
             $sqlval['category_name'] = sprintf("Category%d00", $i);
-            $sqlval['parent_category_id'] = (string) "0";
+            $sqlval['parent_category_id'] = (string) '0';
             $sqlval['level'] = 1;
             $sqlval['rank'] = $this->lfGetTotalCategoryrank() - $count;
-            $sqlval['category_id'] = $this->objQuery->nextVal("dtb_category_category_id");
+            $sqlval['category_id'] = $this->objQuery->nextVal('dtb_category_category_id');
 
-            $this->objQuery->insert("dtb_category", $sqlval);
+            $this->objQuery->insert('dtb_category', $sqlval);
             $this->arrCategory1[] = $sqlval['category_id'];
             $count++;
             print(".");
@@ -166,9 +166,9 @@ class CreateEcCubeData {
                 $sqlval['parent_category_id'] = (string) $sqlval['category_id'];
                 $sqlval['level'] = 2;
                 $sqlval['rank'] = $this->lfGetTotalCategoryrank() - $count;
-                $sqlval['category_id'] = $this->objQuery->nextVal("dtb_category_category_id");
+                $sqlval['category_id'] = $this->objQuery->nextVal('dtb_category_category_id');
 
-                $this->objQuery->insert("dtb_category", $sqlval);
+                $this->objQuery->insert('dtb_category', $sqlval);
                 $this->arrCategory2[] = $sqlval['category_id'];
                 $count++;
                 print(".");
@@ -181,9 +181,9 @@ class CreateEcCubeData {
                     $sqlval['parent_category_id'] = (string) $sqlval['category_id'];
                     $sqlval['level'] = 3;
                     $sqlval['rank'] = $this->lfGetTotalCategoryrank() - $count;
-                    $sqlval['category_id'] = $this->objQuery->nextVal("dtb_category_category_id");
+                    $sqlval['category_id'] = $this->objQuery->nextVal('dtb_category_category_id');
 
-                    $this->objQuery->insert("dtb_category", $sqlval);
+                    $this->objQuery->insert('dtb_category', $sqlval);
                     $this->arrCategory3[] = $sqlval['category_id'];
                     $count++;
                     print(".");
@@ -206,8 +206,8 @@ class CreateEcCubeData {
             $this->objQuery->delete('dtb_class');
         }
 
-        $this->createClass("Size");
-        $this->createClass("Color");
+        $this->createClass('Size');
+        $this->createClass('Color');
         print("\n");
 
         // 規格分類データ生成
@@ -220,13 +220,13 @@ class CreateEcCubeData {
         // 規格1
         for ($i = 0; $i < CLASSCATEGORY1_VOLUME; $i++) {
             $this->createClassCategory($this->arrSize[$i],
-                                       $this->arrclass_id[0], "size");
+                                       $this->arrclass_id[0], 'size');
         }
 
         // 規格2
         for ($i = 0; $i < CLASSCATEGORY2_VOLUME; $i++) {
             $this->createClassCategory($this->arrColor[$i],
-                                       $this->arrclass_id[1], "color");
+                                       $this->arrclass_id[1], 'color');
         }
 
         print("\n");
@@ -266,7 +266,7 @@ class CreateEcCubeData {
         }
 
         for ($i = 0; $i < PRODUCTS_VOLUME; $i++) {
-            $sqlval['product_id'] = $this->objQuery->nextval("dtb_products_product_id");
+            $sqlval['product_id'] = $this->objQuery->nextval('dtb_products_product_id');
             $sqlval['name'] = sprintf("商品%d", $i);
             $sqlval['status'] = 1;
             $sqlval['comment3'] = "コメント";
@@ -276,12 +276,12 @@ class CreateEcCubeData {
             $sqlval['main_image'] = "08311202_44f6515906a41.jpg";
             $sqlval['main_large_image'] = "08311203_44f651959bcb5.jpg";
             $sqlval['sub_comment1'] = "コメント";
-            $sqlval['del_flg'] = (string) "0";
+            $sqlval['del_flg'] = (string) '0';
             $sqlval['creator_id'] = 2;
             $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
             $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
             $sqlval['deliv_date_id'] = 2;
-            $this->objQuery->insert("dtb_products", $sqlval);
+            $this->objQuery->insert('dtb_products', $sqlval);
 
             $this->arrProduct_id[] = $sqlval['product_id'];
             print("*");
@@ -297,7 +297,7 @@ class CreateEcCubeData {
      */
     function createClass($class_name) {
         // class_idを取得
-        $sqlval['class_id'] = $this->objQuery->nextVal("dtb_class_class_id");
+        $sqlval['class_id'] = $this->objQuery->nextVal('dtb_class_class_id');
         $sqlval['name'] = $class_name;
         $arrRaw['rank'] = "(SELECT x.rank FROM (SELECT CASE
                                       WHEN max(rank) + 1 IS NULL THEN 1
@@ -308,8 +308,8 @@ class CreateEcCubeData {
         $sqlval['creator_id'] = 2;
         $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
-        $sqlval['del_flg'] = (string) "0";
-        $this->objQuery->insert("dtb_class", $sqlval, $arrRaw);
+        $sqlval['del_flg'] = (string) '0';
+        $this->objQuery->insert('dtb_class', $sqlval, $arrRaw);
 
         $this->arrclass_id[] = $sqlval['class_id'];
         print("+");
@@ -322,7 +322,7 @@ class CreateEcCubeData {
      * @return void
      */
     function createClassCategory($classcategory_name, $class_id, $class_name) {
-        $sqlval['classcategory_id'] = $this->objQuery->nextVal("dtb_classcategory_classcategory_id");
+        $sqlval['classcategory_id'] = $this->objQuery->nextVal('dtb_classcategory_classcategory_id');
         $sqlval['name'] = $classcategory_name;
         $sqlval['class_id'] = $class_id;
         $arrRaw['rank'] = sprintf("(SELECT x.rank FROM (SELECT CASE
@@ -335,16 +335,16 @@ class CreateEcCubeData {
         $sqlval['creator_id'] = 2;
         $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
-        $sqlval['del_flg'] = (string) "0";
+        $sqlval['del_flg'] = (string) '0';
 
-        $this->objQuery->insert("dtb_classcategory", $sqlval, $arrRaw);
+        $this->objQuery->insert('dtb_classcategory', $sqlval, $arrRaw);
 
         switch ($class_name) {
-        case "size":
+        case 'size':
             $this->arrClassCategory_id1[] = $sqlval['classcategory_id'];
             break;
 
-        case "color":
+        case 'color':
             $this->arrClassCategory_id2[] = $sqlval['classcategory_id'];
             break;
         default:
@@ -379,20 +379,20 @@ class CreateEcCubeData {
                 $c1['classcategory_id'] = $classCategory_id1;
                 $c1['class_combination_id'] = $this->objQuery->nextVal('dtb_class_combination_class_combination_id');
                 $c1['level'] = 1;
-                $this->objQuery->insert("dtb_class_combination", $c1);
+                $this->objQuery->insert('dtb_class_combination', $c1);
 
                 $c2['classcategory_id'] = $classCategory_id2;
                 $c2['class_combination_id'] = $this->objQuery->nextVal('dtb_class_combination_class_combination_id');
                 $c2['parent_class_combination_id'] = $c1['class_combination_id'];
                 $c2['level'] = 2;
-                $this->objQuery->insert("dtb_class_combination", $c2);
+                $this->objQuery->insert('dtb_class_combination', $c2);
 
                 $sqlval['product_class_id'] =
                     $this->objQuery->nextVal('dtb_products_class_product_class_id');
                 $sqlval['product_code'] = sprintf("商品コード%d", $count);
 
                 $sqlval['class_combination_id'] = $c2['class_combination_id'];
-                $this->objQuery->insert("dtb_products_class", $sqlval);
+                $this->objQuery->insert('dtb_products_class', $sqlval);
 
                 $count++;
                 print("#");
@@ -403,7 +403,7 @@ class CreateEcCubeData {
         $sqlval['product_class_id'] = $this->objQuery->nextVal('dtb_products_class_product_class_id');
         $sqlval['class_combination_id'] = null;
         $sqlval['del_flg'] = 1;
-        $this->objQuery->insert("dtb_products_class", $sqlval);
+        $this->objQuery->insert('dtb_products_class', $sqlval);
 
         print("\n");
     }
@@ -443,7 +443,7 @@ class CreateEcCubeData {
                 $sqlval['product_id'] = $product_id;
                 $sqlval['rank'] = $count;
 
-                $this->objQuery->insert("dtb_product_categories", $sqlval);
+                $this->objQuery->insert('dtb_product_categories', $sqlval);
                 $count++;
                 print("$");
             }
@@ -459,25 +459,25 @@ class CreateEcCubeData {
                          ,"m9(27cm)"
                          ,"m8 1/2(26.5cm)"
                          ,"m8(26cm)"
-                         ,"43"
-                         ,"42"
-                         ,"41"
+                         ,'43'
+                         ,'42'
+                         ,'41'
                          ,"43(27.0cm?27.5cm)"
                          ,"42(26.5cm?27.0cm)"
                          ,"37(ladies 23.5?24cm)"
                          ,"42(約27.5cm)"
                          ,"41(約26.5cm)"
-                         ,"W36"
-                         ,"W34"
-                         ,"W32"
-                         ,"43"
-                         ,"42"
-                         ,"41"
-                         ,"m11"
-                         ,"m10"
+                         ,'W36'
+                         ,'W34'
+                         ,'W32'
+                         ,'43'
+                         ,'42'
+                         ,'41'
+                         ,'m11'
+                         ,'m10'
                          ,"m9.5"
-                         ,"m9"
-                         ,"m8"
+                         ,'m9'
+                         ,'m8'
                          ,'FREE'
                          ,'XS'
                          ,'S'
@@ -486,175 +486,175 @@ class CreateEcCubeData {
                          ,'XL'
                          ,"25-27"
                          ,"27-29"
-                         ,"W28"
-                         ,"W29"
-                         ,"W30"
-                         ,"W31"
-                         ,"W32"
-                         ,"W33"
-                         ,"W34"
-                         ,"W35"
-                         ,"W36"
-                         ,"4"
-                         ,"6"
-                         ,"8"
-                         ,"10"
-                         ,"12"
-                         ,"10cm"
-                         ,"12cm"
-                         ,"14cm"
-                         ,"16cm"
-                         ,"18cm"
-                         ,"20cm"
-                         ,"22cm"
-                         ,"24cm"
-                         ,"26cm"
-                         ,"28cm"
-                         ,"30cm"
-                         ,"32cm"
-                         ,"34cm"
-                         ,"36cm"
-                         ,"38cm"
-                         ,"40cm"
-                         ,"10g"
-                         ,"20g"
-                         ,"30g"
-                         ,"40g"
-                         ,"50g"
-                         ,"60g"
-                         ,"70g"
-                         ,"80g"
-                         ,"90g"
-                         ,"100g"
-                         ,"110g"
-                         ,"120g"
-                         ,"130g"
-                         ,"140g"
-                         ,"150g"
-                         ,"160g"
-                         ,"170g"
-                         ,"180g"
-                         ,"190g"
-                         ,"200g"
-                         ,"8inch"
-                         ,"10inch"
-                         ,"12inch"
-                         ,"14inch"
-                         ,"16inch"
-                         ,"18inch"
-                         ,"20inch"
-                         ,"22inch"
-                         ,"24inch"
-                         ,"26inch"
-                         ,"28inch"
-                         ,"30inch"
-                         ,"32inch"
-                         ,"34inch"
-                         ,"36inch"
-                         ,"38inch"
+                         ,'W28'
+                         ,'W29'
+                         ,'W30'
+                         ,'W31'
+                         ,'W32'
+                         ,'W33'
+                         ,'W34'
+                         ,'W35'
+                         ,'W36'
+                         ,'4'
+                         ,'6'
+                         ,'8'
+                         ,'10'
+                         ,'12'
+                         ,'10cm'
+                         ,'12cm'
+                         ,'14cm'
+                         ,'16cm'
+                         ,'18cm'
+                         ,'20cm'
+                         ,'22cm'
+                         ,'24cm'
+                         ,'26cm'
+                         ,'28cm'
+                         ,'30cm'
+                         ,'32cm'
+                         ,'34cm'
+                         ,'36cm'
+                         ,'38cm'
+                         ,'40cm'
+                         ,'10g'
+                         ,'20g'
+                         ,'30g'
+                         ,'40g'
+                         ,'50g'
+                         ,'60g'
+                         ,'70g'
+                         ,'80g'
+                         ,'90g'
+                         ,'100g'
+                         ,'110g'
+                         ,'120g'
+                         ,'130g'
+                         ,'140g'
+                         ,'150g'
+                         ,'160g'
+                         ,'170g'
+                         ,'180g'
+                         ,'190g'
+                         ,'200g'
+                         ,'8inch'
+                         ,'10inch'
+                         ,'12inch'
+                         ,'14inch'
+                         ,'16inch'
+                         ,'18inch'
+                         ,'20inch'
+                         ,'22inch'
+                         ,'24inch'
+                         ,'26inch'
+                         ,'28inch'
+                         ,'30inch'
+                         ,'32inch'
+                         ,'34inch'
+                         ,'36inch'
+                         ,'38inch'
                     );
 
     /** 規格2 */
-    var $arrColor = array("white"
-                         ,"whitesmoke"
-                         ,"snow"
-                         ,"ghostwhite"
-                         ,"mintcream"
-                         ,"azure"
-                         ,"ivory"
-                         ,"floralwhite"
-                         ,"aliceblue"
-                         ,"lavenderblush"
-                         ,"seashell"
-                         ,"honeydew"
-                         ,"lightyellow"
-                         ,"oldlace"
-                         ,"cornsilk"
-                         ,"linen"
-                         ,"lemonchiffon"
-                         ,"lavender"
-                         ,"beige"
-                         ,"lightgoldenrodyellow"
-                         ,"mistyrose"
-                         ,"papayawhip"
-                         ,"antiquewhite"
-                         ,"lightcyan"
-                         ,"cyan"
-                         ,"aqua"
-                         ,"darkcyan"
-                         ,"teal"
-                         ,"darkslategray"
-                         ,"turquoise"
-                         ,"paleturquoise"
-                         ,"mediumturquoise"
-                         ,"aquamarine"
-                         ,"gainsboro"
-                         ,"lightgray"
-                         ,"silver"
-                         ,"darkgray"
-                         ,"gray"
-                         ,"dimgray"
-                         ,"black"
-                         ,"powderblue"
-                         ,"lightblue"
-                         ,"lightskyblue"
-                         ,"skyblue"
-                         ,"darkturquoise"
-                         ,"deepskyblue"
-                         ,"dodgerblue"
-                         ,"royalblue"
-                         ,"cornflowerblue"
-                         ,"cadetblue"
-                         ,"lightsteelblue"
-                         ,"steelblue"
-                         ,"lightslategray"
-                         ,"slategray"
-                         ,"blue"
-                         ,"mediumblue"
-                         ,"darkblue"
-                         ,"navy"
-                         ,"midnightblue"
-                         ,"lightsalmon"
-                         ,"darksalmon"
-                         ,"salmon"
-                         ,"tomato"
-                         ,"lightcoral"
-                         ,"coral"
-                         ,"crimson"
-                         ,"red"
-                         ,"mediumorchid"
-                         ,"mediumpurple"
-                         ,"mediumslateblue"
-                         ,"slateblue"
-                         ,"blueviolet"
-                         ,"darkviolet"
-                         ,"darkorchid"
-                         ,"darkslateblue"
-                         ,"darkorchid"
-                         ,"thistle"
-                         ,"plum"
-                         ,"violet"
-                         ,"magenta"
-                         ,"fuchsia"
-                         ,"darkmagenta"
-                         ,"purple"
-                         ,"palegreen"
-                         ,"lightgreen"
-                         ,"lime"
-                         ,"limegreen"
-                         ,"forestgreen"
-                         ,"green"
-                         ,"darkgreen"
-                         ,"greenyellow"
-                         ,"chartreuse"
-                         ,"lawngreen"
-                         ,"yellowgreen"
-                         ,"olivedrab"
-                         ,"darkolivegreen"
-                         ,"mediumaquamarine"
-                         ,"mediumspringgreen"
-                         ,"springgreen"
-                         ,"darkseagreen"
+    var $arrColor = array('white'
+                         ,'whitesmoke'
+                         ,'snow'
+                         ,'ghostwhite'
+                         ,'mintcream'
+                         ,'azure'
+                         ,'ivory'
+                         ,'floralwhite'
+                         ,'aliceblue'
+                         ,'lavenderblush'
+                         ,'seashell'
+                         ,'honeydew'
+                         ,'lightyellow'
+                         ,'oldlace'
+                         ,'cornsilk'
+                         ,'linen'
+                         ,'lemonchiffon'
+                         ,'lavender'
+                         ,'beige'
+                         ,'lightgoldenrodyellow'
+                         ,'mistyrose'
+                         ,'papayawhip'
+                         ,'antiquewhite'
+                         ,'lightcyan'
+                         ,'cyan'
+                         ,'aqua'
+                         ,'darkcyan'
+                         ,'teal'
+                         ,'darkslategray'
+                         ,'turquoise'
+                         ,'paleturquoise'
+                         ,'mediumturquoise'
+                         ,'aquamarine'
+                         ,'gainsboro'
+                         ,'lightgray'
+                         ,'silver'
+                         ,'darkgray'
+                         ,'gray'
+                         ,'dimgray'
+                         ,'black'
+                         ,'powderblue'
+                         ,'lightblue'
+                         ,'lightskyblue'
+                         ,'skyblue'
+                         ,'darkturquoise'
+                         ,'deepskyblue'
+                         ,'dodgerblue'
+                         ,'royalblue'
+                         ,'cornflowerblue'
+                         ,'cadetblue'
+                         ,'lightsteelblue'
+                         ,'steelblue'
+                         ,'lightslategray'
+                         ,'slategray'
+                         ,'blue'
+                         ,'mediumblue'
+                         ,'darkblue'
+                         ,'navy'
+                         ,'midnightblue'
+                         ,'lightsalmon'
+                         ,'darksalmon'
+                         ,'salmon'
+                         ,'tomato'
+                         ,'lightcoral'
+                         ,'coral'
+                         ,'crimson'
+                         ,'red'
+                         ,'mediumorchid'
+                         ,'mediumpurple'
+                         ,'mediumslateblue'
+                         ,'slateblue'
+                         ,'blueviolet'
+                         ,'darkviolet'
+                         ,'darkorchid'
+                         ,'darkslateblue'
+                         ,'darkorchid'
+                         ,'thistle'
+                         ,'plum'
+                         ,'violet'
+                         ,'magenta'
+                         ,'fuchsia'
+                         ,'darkmagenta'
+                         ,'purple'
+                         ,'palegreen'
+                         ,'lightgreen'
+                         ,'lime'
+                         ,'limegreen'
+                         ,'forestgreen'
+                         ,'green'
+                         ,'darkgreen'
+                         ,'greenyellow'
+                         ,'chartreuse'
+                         ,'lawngreen'
+                         ,'yellowgreen'
+                         ,'olivedrab'
+                         ,'darkolivegreen'
+                         ,'mediumaquamarine'
+                         ,'mediumspringgreen'
+                         ,'springgreen'
+                         ,'darkseagreen'
                      );
 
     /**

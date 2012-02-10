@@ -366,6 +366,6 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         $where = "member_id = ?";
 
         // UPDATEの実行
-        $objQuery->update("dtb_member", $sqlVal, $where, array($member_id));
+        $objQuery->update('dtb_member', $sqlVal, $where, array($member_id));
     }
 }

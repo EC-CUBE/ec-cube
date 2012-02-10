@@ -51,10 +51,10 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
         $this->tpl_subtitle = '商品マスター';
 
         $masterData = new SC_DB_MasterData_Ex();
-        $this->arrPageMax = $masterData->getMasterData("mtb_page_max");
-        $this->arrDISP = $masterData->getMasterData("mtb_disp");
-        $this->arrSTATUS = $masterData->getMasterData("mtb_status");
-        $this->arrPRODUCTSTATUS_COLOR = $masterData->getMasterData("mtb_product_status_color");
+        $this->arrPageMax = $masterData->getMasterData('mtb_page_max');
+        $this->arrDISP = $masterData->getMasterData('mtb_disp');
+        $this->arrSTATUS = $masterData->getMasterData('mtb_status');
+        $this->arrPRODUCTSTATUS_COLOR = $masterData->getMasterData('mtb_product_status_color');
 
         $objDate = new SC_Date();
         // 登録・更新検索開始年
@@ -166,7 +166,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
                         // 各商品ごとのカテゴリIDを取得
                         if (count($this->arrProducts) > 0) {
                             foreach ($this->arrProducts as $key => $val) {
-                                $this->arrProducts[$key]['categories'] = $objDb->sfGetCategoryId($val["product_id"], 0, true);
+                                $this->arrProducts[$key]['categories'] = $objDb->sfGetCategoryId($val['product_id'], 0, true);
                                 $objDb->g_category_on = false;
                             }
                         }
@@ -230,7 +230,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
 
-        $objErr->doFunc(array("開始日", "終了日", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array('CHECK_SET_TERM'));
+        $objErr->doFunc(array("開始日", "終了日", 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_SET_TERM'));
 
         return $objErr->arrErr;
     }

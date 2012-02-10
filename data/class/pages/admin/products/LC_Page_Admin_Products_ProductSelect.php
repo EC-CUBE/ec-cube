@@ -50,7 +50,7 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
         $this->tpl_subtitle = '商品選択';
 
         $masterData = new SC_DB_MasterData_Ex();
-        $this->arrPRODUCTSTATUS_COLOR = $masterData->getMasterData("mtb_product_status_color");
+        $this->arrPRODUCTSTATUS_COLOR = $masterData->getMasterData('mtb_product_status_color');
     }
 
     /**
@@ -106,9 +106,9 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("カテゴリ", "search_category_id", STEXT_LEN, 'n');
-        $objFormParam->addParam("商品名", "search_name", STEXT_LEN, 'KVa');
-        $objFormParam->addParam("商品コード", "search_product_code", STEXT_LEN, 'KVa');
+        $objFormParam->addParam("カテゴリ", 'search_category_id', STEXT_LEN, 'n');
+        $objFormParam->addParam("商品名", 'search_name', STEXT_LEN, 'KVa');
+        $objFormParam->addParam("商品コード", 'search_product_code', STEXT_LEN, 'KVa');
     }
 
     /* 商品検索結果取得 */
@@ -147,7 +147,7 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
         if (empty($arrval)) {
             $arrval = array();
         }
-        $linemax = $objQuery->count("dtb_products", $where, $arrval);
+        $linemax = $objQuery->count('dtb_products', $where, $arrval);
         $this->tpl_linemax = $linemax;              // 何件が該当しました。表示用
 
         // ページ送りの処理

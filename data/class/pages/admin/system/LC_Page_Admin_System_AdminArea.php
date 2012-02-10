@@ -103,10 +103,10 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
         } else {
 
             $admin_dir = str_replace("/","",ADMIN_DIR);
-            $this->arrForm = array("admin_dir"=>$admin_dir,"admin_force_ssl"=>ADMIN_FORCE_SSL,"admin_allow_hosts"=>"");
+            $this->arrForm = array('admin_dir'=>$admin_dir,'admin_force_ssl'=>ADMIN_FORCE_SSL,'admin_allow_hosts'=>"");
             if (defined('ADMIN_ALLOW_HOSTS')) {
                 $allow_hosts = unserialize(ADMIN_ALLOW_HOSTS);
-                $this->arrForm["admin_allow_hosts"] = implode("\n",$allow_hosts);
+                $this->arrForm['admin_allow_hosts'] = implode("\n",$allow_hosts);
 
             }
         }
@@ -153,11 +153,11 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
             if (strpos($line,'ADMIN_DIR') !== false and ADMIN_DIR != $admin_dir) {
                 //既存ディレクトリのチェック
                 if (file_exists(HTML_REALDIR.$admin_dir) and $admin_dir != "admin/") {
-                    $arrErr["admin_dir"] .= ROOT_URLPATH.$admin_dir."は既に存在しています。別のディレクトリ名を指定してください。";
+                    $arrErr['admin_dir'] .= ROOT_URLPATH.$admin_dir."は既に存在しています。別のディレクトリ名を指定してください。";
                 }
                 //権限チェック
                 if (!is_writable(HTML_REALDIR . ADMIN_DIR)) {
-                    $arrErr["admin_dir"] .= ROOT_URLPATH.ADMIN_DIR."のディレクトリ名を変更する権限がありません。";
+                    $arrErr['admin_dir'] .= ROOT_URLPATH.ADMIN_DIR."のディレクトリ名を変更する権限がありません。";
                 }
             }
         }
@@ -186,17 +186,17 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
         $diff = 0;
         foreach ($installData as $key=>$line) {
             if (strpos($line,'ADMIN_DIR') !== false and ADMIN_DIR != $admin_dir) {
-                $installData[$key] = 'define('ADMIN_DIR',"'.$admin_dir.'");';
+                $installData[$key] = 'define("ADMIN_DIR","'.$admin_dir.'");';
                 //管理機能ディレクトリのリネーム
                 if (!rename(HTML_REALDIR.ADMIN_DIR,HTML_REALDIR.$admin_dir)) {
-                    $this->arrErr["admin_dir"] .= ROOT_URLPATH.ADMIN_DIR."のディレクトリ名を変更できませんでした。";
+                    $this->arrErr['admin_dir'] .= ROOT_URLPATH.ADMIN_DIR."のディレクトリ名を変更できませんでした。";
                     return false;
                 }
                 $diff ++;
             }
 
             if (strpos($line,'ADMIN_FORCE_SSL') !== false) {
-                $installData[$key] = 'define('ADMIN_FORCE_SSL','.$admin_force_ssl.');';
+                $installData[$key] = 'define("ADMIN_FORCE_SSL",'.$admin_force_ssl.');';
                 $diff ++;
             }
             if (strpos($line,'ADMIN_ALLOW_HOSTS') !== false and ADMIN_ALLOW_HOSTS != $admin_allow_hosts) {

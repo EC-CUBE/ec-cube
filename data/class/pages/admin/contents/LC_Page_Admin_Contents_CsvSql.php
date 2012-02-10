@@ -96,7 +96,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
             return;
             break;
         // 新規作成
-        case "new_page":
+        case 'new_page':
             // リロード
             SC_Response_Ex::reload();
             break;
@@ -110,7 +110,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
             }
             break;
         // CSV出力
-        case "csv_output":
+        case 'csv_output':
             $this->arrErr = $this->lfCheckOutputError($objFormParam);
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 $this->lfDoCsvOutput($objFormParam->getValue('csv_output_id'));
@@ -145,7 +145,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $objFormParam->addParam('CSV出力対象SQL ID', 'csv_output_id', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'), "", false);
         $objFormParam->addParam('選択テーブル', 'select_table', STEXT_LEN, 'KVa', array('GRAPH_CHECK','MAX_LENGTH_CHECK'), "", false);
         $objFormParam->addParam('名称', 'sql_name', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK','SPTAB_CHECK'));
-        $objFormParam->addParam('SQL文', 'csv_sql', "30000", 'KVa', array('MAX_LENGTH_CHECK','SPTAB_CHECK'));
+        $objFormParam->addParam('SQL文', 'csv_sql', '30000', 'KVa', array('MAX_LENGTH_CHECK','SPTAB_CHECK'));
     }
 
     /**
@@ -159,8 +159,8 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $arrErr = $objFormParam->checkError();
         // 拡張エラーチェック
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
-        $objErr->doFunc( array("名称", "sql_name"), array('EXIST_CHECK'));
-        $objErr->doFunc( array("SQL文", "csv_sql", "30000"), array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objErr->doFunc( array("名称", 'sql_name'), array('EXIST_CHECK'));
+        $objErr->doFunc( array("SQL文", 'csv_sql', '30000'), array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objErr->doFunc( array('SQL文には読み込み関係以外のSQLコマンドおよび";"記号', 'csv_sql', $this->lfGetSqlDenyList()), array('PROHIBITED_STR_CHECK'));
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
@@ -169,7 +169,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         if (SC_Utils_Ex::isBlank($arrErr)) {
             $sql_error = $this->lfCheckSQL($objFormParam->getValue('csv_sql'));
             if (!SC_Utils_Ex::isBlank($sql_error)) {
-                $arrErr["csv_sql"] = "※ SQL文が不正です。SQL文を見直してください";
+                $arrErr['csv_sql'] = "※ SQL文が不正です。SQL文を見直してください";
             }
         }
         return $arrErr;
@@ -186,7 +186,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $arrErr = $objFormParam->checkError();
         // 拡張エラーチェック
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
-        $objErr->doFunc( array("SQL文", "csv_sql", "30000"), array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objErr->doFunc( array("SQL文", 'csv_sql', '30000'), array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objErr->doFunc( array('SQL文には読み込み関係以外のSQLコマンドおよび";"記号', 'csv_sql', $this->lfGetSqlDenyList()), array('PROHIBITED_STR_CHECK'));
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
@@ -205,7 +205,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $arrErr = $objFormParam->checkError();
         // 拡張エラーチェック
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
-        $objErr->doFunc( array("SQL ID", "sql_id"), array('EXIST_CHECK'));
+        $objErr->doFunc( array("SQL ID", 'sql_id'), array('EXIST_CHECK'));
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
         }
@@ -223,7 +223,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $arrErr = $objFormParam->checkError();
         // 拡張エラーチェック
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
-        $objErr->doFunc( array("CSV出力対象SQL ID", "csv_output_id"), array('EXIST_CHECK'));
+        $objErr->doFunc( array("CSV出力対象SQL ID", 'csv_output_id'), array('EXIST_CHECK'));
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
         }
@@ -290,7 +290,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
      */
     function lfGetSqlList($where = "" , $arrVal = array()) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $table = "dtb_csv_sql";
+        $table = 'dtb_csv_sql';
         $objQuery->setOrder('sql_id');
         return $objQuery->select('*', $table, $where, $arrVal);
     }
@@ -373,7 +373,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
      */
     function lfUpdData($sql_id, $arrSqlVal) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $table = "dtb_csv_sql";
+        $table = 'dtb_csv_sql';
         $arrSqlVal['update_date'] = 'CURRENT_TIMESTAMP';
         if (SC_Utils_Ex::sfIsInt($sql_id)) {
             //データ更新
@@ -397,7 +397,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
      */
     function lfDelData($sql_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $table = "dtb_csv_sql";
+        $table = 'dtb_csv_sql';
         $where = "sql_id = ?";
         if (SC_Utils_Ex::sfIsInt($sql_id)) {
             $objQuery->delete($table, $where, array($sql_id));

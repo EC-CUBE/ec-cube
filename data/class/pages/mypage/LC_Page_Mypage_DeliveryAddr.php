@@ -114,7 +114,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
                     }
 
                     if ($objCustomer->isLoginSuccess(true)) {
-                        $this->lfRegistData($objFormParam, $objCustomer->getValue("customer_id"));
+                        $this->lfRegistData($objFormParam, $objCustomer->getValue('customer_id'));
                     } else {
                         $this->lfRegistDataNonMember($objFormParam);
                     }
@@ -132,7 +132,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
             default :
 
                 if ($_GET['other_deliv_id'] != "") {
-                    $arrOtherDeliv = $this->lfGetOtherDeliv($objCustomer->getValue("customer_id"), $_SESSION['other_deliv_id']);
+                    $arrOtherDeliv = $this->lfGetOtherDeliv($objCustomer->getValue('customer_id'), $_SESSION['other_deliv_id']);
 
                     //不正アクセス判定
                     if (!$objCustomer->isLoginSuccess(true) || count($arrOtherDeliv) == 0) {
@@ -171,7 +171,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
      */
     function lfGetOtherDeliv($customer_id, $other_deliv_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        return $objQuery->select("*", "dtb_other_deliv", "customer_id = ? AND other_deliv_id = ?", array($customer_id, $other_deliv_id));
+        return $objQuery->select("*", 'dtb_other_deliv', "customer_id = ? AND other_deliv_id = ?", array($customer_id, $other_deliv_id));
     }
 
     /* 登録実行 */
@@ -186,7 +186,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
         // 追加
         if (strlen($arrRet['other_deliv_id'] == 0)) {
             // 別のお届け先登録数の取得
-            $deliv_count = $objQuery->count("dtb_other_deliv", "customer_id = ?", array($customer_id));
+            $deliv_count = $objQuery->count('dtb_other_deliv', "customer_id = ?", array($customer_id));
             // 別のお届け先最大登録数に達している場合、エラー
             if ($deliv_count >= DELIV_ADDR_MAX) {
                 SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, "", false, '別のお届け先最大登録数に達しています。');
@@ -194,17 +194,17 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
 
             // 実行
             $sqlval['other_deliv_id'] = $objQuery->nextVal('dtb_other_deliv_other_deliv_id');
-            $objQuery->insert("dtb_other_deliv", $sqlval);
+            $objQuery->insert('dtb_other_deliv', $sqlval);
 
         // 変更
         } else {
-            $deliv_count = $objQuery->count("dtb_other_deliv","customer_id = ? AND other_deliv_id = ?" ,array($customer_id, $arrRet['other_deliv_id']));
+            $deliv_count = $objQuery->count('dtb_other_deliv',"customer_id = ? AND other_deliv_id = ?" ,array($customer_id, $arrRet['other_deliv_id']));
             if ($deliv_count != 1) {
                 SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, "", false, '一致する別のお届け先がありません。');
             }
 
             // 実行
-            $objQuery->update("dtb_other_deliv", $sqlval, "other_deliv_id = ?", array($arrRet['other_deliv_id']));
+            $objQuery->update('dtb_other_deliv', $sqlval, "other_deliv_id = ?", array($arrRet['other_deliv_id']));
         }
     }
 

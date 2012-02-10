@@ -44,7 +44,7 @@ class SC_CartSession {
 
     // 商品購入処理中のロック
     function saveCurrentCart($key_tmp, $productTypeId) {
-        $this->key_tmp = "savecart_" . $key_tmp;
+        $this->key_tmp = 'savecart_' . $key_tmp;
         // すでに情報がなければ現状のカート情報を記録しておく
         if (count($_SESSION[$this->key_tmp]) == 0) {
             $_SESSION[$this->key_tmp] = $this->cartSession[$productTypeId];

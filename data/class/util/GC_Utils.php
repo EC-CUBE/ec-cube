@@ -146,7 +146,7 @@ class GC_Utils {
      * ログメッセージに、呼び出し元関数名等の情報を付加して返します
      *
      * @param string $mess ログメッセージ
-     * @param string $log_level ログレベル("Info" or "Debug")
+     * @param string $log_level ログレベル('Info' or 'Debug')
      * @return string ログメッセージに呼び出し元関数名等の情報を付加した文字列
      */
     function gfGetLogStr($mess, $log_level='Info') {
@@ -166,7 +166,7 @@ class GC_Utils {
      *
      * 管理画面用ログ出力を行ないます
      * @param string $mess ログメッセージ
-     * @param string $log_level ログレベル("Info" or "Debug")
+     * @param string $log_level ログレベル('Info' or 'Debug')
      * @return void
      */
     function gfAdminLog($mess, $log_level='Info') {
@@ -189,7 +189,7 @@ class GC_Utils {
      *
      * フロント用ログ出力を行ないます
      * @param string $mess ログメッセージ
-     * @param string $log_level ログレベル("Info" or "Debug")
+     * @param string $log_level ログレベル('Info' or 'Debug')
      * @return void
      */
     function gfFrontLog($mess, $log_level='Info') {
@@ -291,7 +291,7 @@ class GC_Utils {
         srand((double)microtime() * 54234853);
 
         // パスワード文字列の配列を作成
-        $character = "abcdefghkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ2345679";
+        $character = 'abcdefghkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ2345679';
         $pw = preg_split("//", $character, 0, PREG_SPLIT_NO_EMPTY);
 
         $password = "";

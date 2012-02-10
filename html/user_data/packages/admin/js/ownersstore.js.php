@@ -40,48 +40,48 @@ OwnersStore.prototype = {
     // remove ajax window
     remove: function() {
         $("#TB_window").fadeOut(
-            "fast",
+            'fast',
             function(){
-                $('#TB_window,#TB_overlay,#TB_HideSelect').trigger("unload").unbind().remove();
+                $('#TB_window,#TB_overlay,#TB_HideSelect').trigger('unload').unbind().remove();
             }
         );
         $("#TB_load").remove();
         //if IE 6
-        if (typeof document.body.style.maxHeight == "undefined") {
-            $("body", "html").css({height: "auto", width: "auto"});
-            $("html").css("overflow", "");
+        if (typeof document.body.style.maxHeight == 'undefined') {
+            $('body', 'html').css({height: 'auto', width: 'auto'});
+            $('html').css('overflow', "");
         }
         return false;
     },
     // show loading page
     show_loading: function() {
         //if IE 6
-        if (typeof document.body.style.maxHeight === "undefined") {
-            $("body","html").css({height: "100%", width: "100%"});
-            $("html").css("overflow","hidden");
+        if (typeof document.body.style.maxHeight === 'undefined') {
+            $('body','html').css({height: "100%", width: "100%"});
+            $('html').css('overflow','hidden');
             //iframe to hide select elements in ie6
-            if (document.getElementById("TB_HideSelect") === null) {
-                $("body").append("<iframe id='TB_HideSelect'></iframe><div id='TB_overlay'></div><div id='TB_window'></div>");
+            if (document.getElementById('TB_HideSelect') === null) {
+                $('body').append("<iframe id='TB_HideSelect'></iframe><div id='TB_overlay'></div><div id='TB_window'></div>");
                 $("#TB_overlay").click(this.remove);
             }
         //all others
         } else {
-            if (document.getElementById("TB_overlay") === null) {
-                $("body").append("<div id='TB_overlay'></div><div id='TB_window'></div>");
+            if (document.getElementById('TB_overlay') === null) {
+                $('body').append("<div id='TB_overlay'></div><div id='TB_window'></div>");
                 $("#TB_overlay").click(this.remove);
             }
         }
 
         if (this.detectMacFF()) {
             //use png overlay so hide flash
-            $("#TB_overlay").addClass("TB_overlayMacFFBGHack");
+            $("#TB_overlay").addClass('TB_overlayMacFFBGHack');
         } else {
             //use background and opacity
-            $("#TB_overlay").addClass("TB_overlayBG");
+            $("#TB_overlay").addClass('TB_overlayBG');
         }
 
         //add and show loader to the page
-        $("body").append(
+        $('body').append(
               "<div id='TB_load'>"
             + "  <p style='color:#ffffff'>" + loading_message + "</p>"
             + "  <img src='" + loading_img.src + "' />"
@@ -100,7 +100,7 @@ OwnersStore.prototype = {
         var ajaxContentW = TB_WIDTH - 20;
         var ajaxContentH = TB_HEIGHT - 45;
 
-        if ($("#TB_window").css("display") != "block") {
+        if ($("#TB_window").css('display') != 'block') {
             $("#TB_window").append(
                 "<div id='TB_title'>"
               + "  <div id='TB_ajaxWindowTitle'></div>"
@@ -111,8 +111,8 @@ OwnersStore.prototype = {
             );
          //this means the window is already up, we are just loading new content via ajax
         } else {
-            $("#TB_ajaxContent")[0].style.width = ajaxContentW +"px";
-            $("#TB_ajaxContent")[0].style.height = ajaxContentH +"px";
+            $("#TB_ajaxContent")[0].style.width = ajaxContentW +'px';
+            $("#TB_ajaxContent")[0].style.height = ajaxContentH +'px';
             $("#TB_ajaxContent")[0].scrollTop = 0;
         }
 
@@ -126,7 +126,7 @@ OwnersStore.prototype = {
 
         $("#TB_ajaxWindowTitle").html(title);
         $("#TB_ajaxContent").html(contents);
-        $("#TB_window").css({display:"block"});
+        $("#TB_window").css({display:'block'});
 
         // DL成功時に設定ボタンを表示
         if (resp.status == 'SUCCESS' && product_id) {

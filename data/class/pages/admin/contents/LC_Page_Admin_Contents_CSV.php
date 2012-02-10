@@ -225,7 +225,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
     function lfUpdCsvOutput($csv_id, $arrData = array()) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         // ひとまず、全部使用しないで更新する
-        $table = "dtb_csv";
+        $table = 'dtb_csv';
         $where = "csv_id = ?";
         $arrWhereVal = array($csv_id);
         $arrUpdVal = array('status' => '2', 'rank' => NULL, 'update_date' => 'CURRENT_TIMESTAMP');

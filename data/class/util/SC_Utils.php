@@ -174,7 +174,7 @@ class SC_Utils {
         if (!is_null($debugMsg)) {
             $objPage->addDebugMsg($debugMsg);
         }
-        if (function_exists("debug_backtrace")) {
+        if (function_exists('debug_backtrace')) {
             $objPage->backtrace = debug_backtrace();
         }
         GC_Utils_Ex::gfPrintLog($objPage->sfGetErrMsg());
@@ -334,10 +334,10 @@ class SC_Utils {
         $conv = "";
         $cnt = 1;
         for ($cnt = 1; $cnt <= $max; $cnt++) {
-            if ($_POST[$keyname . $cnt] == "1") {
-                $conv.= "1";
+            if ($_POST[$keyname . $cnt] == '1') {
+                $conv.= '1';
             } else {
-                $conv.= "0";
+                $conv.= '0';
             }
         }
         return $conv;
@@ -351,14 +351,14 @@ class SC_Utils {
         $ret = "";
         if (is_array($array)) {
             foreach ($array as $val) {
-                $arrTmp[$val] = "1";
+                $arrTmp[$val] = '1';
             }
         }
         for ($i = 1; $i <= $max; $i++) {
-            if (isset($arrTmp[$i]) && $arrTmp[$i] == "1") {
-                $ret.= "1";
+            if (isset($arrTmp[$i]) && $arrTmp[$i] == '1') {
+                $ret.= '1';
             } else {
-                $ret.= "0";
+                $ret.= '0';
             }
         }
         return $ret;
@@ -408,7 +408,7 @@ class SC_Utils {
         $arrRet = array();
         $len = strlen($val);
         for ($i = 0; $i < $len; $i++) {
-            if (substr($val, $i, 1) == "1") {
+            if (substr($val, $i, 1) == '1') {
                 $arrRet[] = ($i + 1);
             }
         }
@@ -423,8 +423,8 @@ class SC_Utils {
         $conv = "";
         $cnt = 1;
         for ($cnt = 1; $cnt <= $max; $cnt++) {
-            if ($_POST[$keyname . $cnt] == "1") {
-                $conv.= "1";
+            if ($_POST[$keyname . $cnt] == '1') {
+                $conv.= '1';
             } else {
                 $conv.= '_';
             }
@@ -721,7 +721,7 @@ class SC_Utils {
     function sfGetProductClassId($product_id, $classcategory_id1, $classcategory_id2) {
         $where = "product_id = ?";
         $objQuery = new SC_Query_Ex();
-        $ret = $objQuery->get("product_class_id", "dtb_products_class", $where, Array($product_id));
+        $ret = $objQuery->get('product_class_id', 'dtb_products_class', $where, Array($product_id));
         return $ret;
     }
 
@@ -863,7 +863,7 @@ class SC_Utils {
         if ($ifp !== false) {
 
             $basename = basename($filepath);
-            $outpath = $out_dir . "enc_" . $basename;
+            $outpath = $out_dir . 'enc_' . $basename;
 
             $ofp = fopen($outpath, "w+");
 
@@ -1423,9 +1423,9 @@ class SC_Utils {
         $dir = ereg_replace("/$", "", $dir);
         // 最上位層を格納(user_data/)
         if (sfDirChildExists($dir)) {
-            $arrTree[$cnt]['type'] = "_parent";
+            $arrTree[$cnt]['type'] = '_parent';
         } else {
-            $arrTree[$cnt]['type'] = "_child";
+            $arrTree[$cnt]['type'] = '_child';
         }
         $arrTree[$cnt]['path'] = $dir;
         $arrTree[$cnt]['rank'] = 0;
@@ -1467,9 +1467,9 @@ class SC_Utils {
                         if (is_dir($path)) {
                             $arrTree[$cnt]['path'] = $path;
                             if (sfDirChildExists($path)) {
-                                $arrTree[$cnt]['type'] = "_parent";
+                                $arrTree[$cnt]['type'] = '_parent';
                             } else {
-                                $arrTree[$cnt]['type'] = "_child";
+                                $arrTree[$cnt]['type'] = '_child';
                             }
 
                             // 階層を割り出す

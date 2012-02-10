@@ -128,7 +128,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
         // リストア
         case 'restore_config':
-            $this->mode = "restore_config";
+            $this->mode = 'restore_config';
 
         case 'restore':
             // データベースに存在するかどうかチェック
@@ -380,7 +380,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
             $seq = $objQuery->currVal($val);
 
             $ret .= $val . ",";
-            $ret .= is_null($seq) ? "0" : $seq;
+            $ret .= is_null($seq) ? '0' : $seq;
             $ret .= "\r\n";
         }
         return $ret;
@@ -551,7 +551,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         foreach ($arrTableList as $val) {
             // バックアップテーブルは削除しない
             // XXX mtb_zip も削除不要では?
-            if ($val != "dtb_bkup") {
+            if ($val != 'dtb_bkup') {
                 $ret = $objQuery->delete($val);
                 if (PEAR::isError($ret)) return false;
             }
@@ -571,7 +571,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         }
 
         $delsql = "DELETE FROM dtb_bkup WHERE bkup_name = ?";
-        $objQuery->delete("dtb_bkup", "bkup_name = ?", array($arrForm['list_name']));
+        $objQuery->delete('dtb_bkup', "bkup_name = ?", array($arrForm['list_name']));
 
     }
 

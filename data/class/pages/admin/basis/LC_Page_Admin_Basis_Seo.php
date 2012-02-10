@@ -55,7 +55,7 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
         $this->tpl_subtitle = 'SEO管理';
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
-        $this->arrTAXRULE = $masterData->getMasterData("mtb_taxrule");
+        $this->arrTAXRULE = $masterData->getMasterData('mtb_taxrule');
         $this->arrDeviceTypeName[DEVICE_TYPE_PC] = 'PCサイト';
         $this->arrDeviceTypeName[DEVICE_TYPE_MOBILE] = 'モバイルサイト';
         $this->arrDeviceTypeName[DEVICE_TYPE_SMARTPHONE] = 'スマートフォン';

@@ -52,7 +52,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
         $this->tpl_subtitle = 'テンプレート追加';
         $this->arrErr  = array();
         $this->arrForm = array();
-        ini_set("max_execution_time", 300);
+        ini_set('max_execution_time', 300);
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
     }
@@ -133,9 +133,9 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("テンプレートコード", "template_code", STEXT_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK', 'ALNUM_CHECK'));
-        $objFormParam->addParam("テンプレート名", "template_name", STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("端末種別ID", "device_type_id", INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("テンプレートコード", 'template_code', STEXT_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK', 'ALNUM_CHECK'));
+        $objFormParam->addParam("テンプレート名", 'template_name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("端末種別ID", 'device_type_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -165,7 +165,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
 
         // DBにすでに登録されていないかチェック
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $exists = $objQuery->exists("dtb_templates", "template_code = ?", array($template_code));
+        $exists = $objQuery->exists('dtb_templates', "template_code = ?", array($template_code));
         if ($exists) {
             $arrErr['template_code'] = "※ すでに登録されているテンプレートコードです。<br/>";
         }

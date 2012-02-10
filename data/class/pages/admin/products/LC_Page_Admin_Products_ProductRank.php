@@ -175,12 +175,12 @@ __EOS__;
 
     function lfRankUp(&$objDb, $parent_category_id, $product_id) {
         $where = "category_id = " . SC_Utils_Ex::sfQuoteSmart($parent_category_id);
-        $objDb->sfRankUp("dtb_product_categories", "product_id", $product_id, $where);
+        $objDb->sfRankUp('dtb_product_categories', 'product_id', $product_id, $where);
     }
 
     function lfRankDown(&$objDb, $parent_category_id, $product_id) {
         $where = "category_id = " . SC_Utils_Ex::sfQuoteSmart($parent_category_id);
-        $objDb->sfRankDown("dtb_product_categories", "product_id", $product_id, $where);
+        $objDb->sfRankDown('dtb_product_categories', 'product_id', $product_id, $where);
     }
 
     function lfRankMove(&$objDb, $parent_category_id, $product_id) {
@@ -188,7 +188,7 @@ __EOS__;
         $input_pos = mb_convert_kana($_POST[$key], 'n');
         if (SC_Utils_Ex::sfIsInt($input_pos)) {
             $where = "category_id = " . SC_Utils_Ex::sfQuoteSmart($parent_category_id);
-            $objDb->sfMoveRank("dtb_product_categories", "product_id", $product_id, $input_pos, $where);
+            $objDb->sfMoveRank('dtb_product_categories', 'product_id', $product_id, $input_pos, $where);
         }
     }
 }

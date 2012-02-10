@@ -107,7 +107,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
             break;
         // 削除
         case 'delete':
-            $objDb->sfDeleteRankRecord("dtb_kiyaku", "kiyaku_id", $post['kiyaku_id'], "", true);
+            $objDb->sfDeleteRankRecord('dtb_kiyaku', 'kiyaku_id', $post['kiyaku_id'], "", true);
             // 再表示
             $this->objDisplay->reload();
             break;
@@ -123,12 +123,12 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
             $this->tpl_kiyaku_id = $post['kiyaku_id'];
         break;
         case 'down':
-            $objDb->sfRankDown("dtb_kiyaku", "kiyaku_id", $post['kiyaku_id']);
+            $objDb->sfRankDown('dtb_kiyaku', 'kiyaku_id', $post['kiyaku_id']);
             // 再表示
             $this->objDisplay->reload();
             break;
         case 'up':
-            $objDb->sfRankUp("dtb_kiyaku", "kiyaku_id", $post['kiyaku_id']);
+            $objDb->sfRankUp('dtb_kiyaku', 'kiyaku_id', $post['kiyaku_id']);
             // 再表示
             $this->objDisplay->reload();
             break;
@@ -157,12 +157,12 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
         $sqlval['kiyaku_title'] = $arrData['kiyaku_title'];
         $sqlval['kiyaku_text'] = $arrData['kiyaku_text'];
         $sqlval['creator_id'] = $member_id;
-        $sqlval['rank'] = $objQuery->max('rank', "dtb_kiyaku") + 1;
+        $sqlval['rank'] = $objQuery->max('rank', 'dtb_kiyaku') + 1;
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
         // INSERTの実行
         $sqlval['kiyaku_id'] = $objQuery->nextVal('dtb_kiyaku_kiyaku_id');
-        $ret = $objQuery->insert("dtb_kiyaku", $sqlval);
+        $ret = $objQuery->insert('dtb_kiyaku', $sqlval);
         return $ret;
     }
 
@@ -170,7 +170,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $where = "kiyaku_id = ?";
-        return $objQuery->select("kiyaku_text, kiyaku_title", "dtb_kiyaku", $where, array($kiyaku_id));
+        return $objQuery->select("kiyaku_text, kiyaku_title", 'dtb_kiyaku', $where, array($kiyaku_id));
     }
 
     function lfGetKiyakuList() {
@@ -178,7 +178,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
 
         $where = "del_flg <> 1";
         $objQuery->setOrder("rank DESC");
-        return $objQuery->select("kiyaku_title, kiyaku_text, kiyaku_id", "dtb_kiyaku", $where);
+        return $objQuery->select("kiyaku_title, kiyaku_text, kiyaku_id", 'dtb_kiyaku', $where);
     }
 
     /* DBへの更新 */
@@ -190,7 +190,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $where = "kiyaku_id = ?";
         // UPDATEの実行
-        $ret = $objQuery->update("dtb_kiyaku", $sqlval, $where, array($kiyaku_id));
+        $ret = $objQuery->update('dtb_kiyaku', $sqlval, $where, array($kiyaku_id));
         return $ret;
     }
 
@@ -221,7 +221,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
         if (!isset($arrErr['name']) && $mode == 'edit') {
             $post = $objFormParam->getHashArray();
             $objQuery =& SC_Query_Ex::getSingletonInstance();
-            $arrRet = $objQuery->select("kiyaku_id, kiyaku_title", "dtb_kiyaku", "del_flg = 0 AND kiyaku_title = ?", array($post['kiyaku_title']));
+            $arrRet = $objQuery->select("kiyaku_id, kiyaku_title", 'dtb_kiyaku', "del_flg = 0 AND kiyaku_title = ?", array($post['kiyaku_title']));
             // 編集中のレコード以外に同じ名称が存在する場合
             if ($arrRet[0]['kiyaku_id'] != $post['kiyaku_id'] && $arrRet[0]['kiyaku_title'] == $post['kiyaku_title']) {
                 $arrErr['name'] = "※ 既に同じ内容の登録が存在します。<br>";

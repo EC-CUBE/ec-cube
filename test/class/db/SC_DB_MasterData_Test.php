@@ -41,13 +41,13 @@ class SC_DB_MasterData_Test extends PHPUnit_Framework_TestCase {
      * SC_DB_MasterData::getMasterData() のテストケース
      */
     function testGetMasterData() {
-        $columns = array("id", "name", "rank");
+        $columns = array('id', 'name', 'rank');
         $masterData = new SC_DB_MasterData_Ex();
-        $actual = $masterData->getMasterData("mtb_pref", $columns);
+        $actual = $masterData->getMasterData('mtb_pref', $columns);
 
         $objQuery = new SC_Query();
         $objQuery->setorder($columns[2]);
-        $results = $objQuery->select($columns[0] . ", " . $columns[1], "mtb_pref");
+        $results = $objQuery->select($columns[0] . ", " . $columns[1], 'mtb_pref');
 
         $expected = array();
         foreach ($results as $result) {
@@ -62,24 +62,24 @@ class SC_DB_MasterData_Test extends PHPUnit_Framework_TestCase {
      */
     function testUpdateMasterData() {
 
-        $columns = array("id", "name", "rank");
+        $columns = array('id', 'name', 'rank');
         $masterData = new SC_DB_MasterData_Ex();
 
         // Transaction を有効にするため接続しておく
         $masterData->objQuery = new SC_Query();
         $masterData->objQuery->begin();
 
-        $expected = array("10" => "北海道", "20" => "愛知", "30" => "岐阜");
-        $masterData->updateMasterData("mtb_pref", $columns, $expected, false);
+        $expected = array('10' => "北海道", '20' => "愛知", '30' => "岐阜");
+        $masterData->updateMasterData('mtb_pref', $columns, $expected, false);
 
-        $actual = $masterData->getDBMasterData("mtb_pref", $columns);
+        $actual = $masterData->getDBMasterData('mtb_pref', $columns);
 
-        $this->assertEquals($expected["10"], $actual["10"]);
-        $this->assertEquals($expected["20"], $actual["20"]);
-        $this->assertEquals($expected["30"], $actual["30"]);
+        $this->assertEquals($expected['10'], $actual['10']);
+        $this->assertEquals($expected['20'], $actual['20']);
+        $this->assertEquals($expected['30'], $actual['30']);
 
         $masterData->objQuery->rollback();
-        $masterData->clearCache("mtb_pref");
+        $masterData->clearCache('mtb_pref');
     }
 
     /**
@@ -87,7 +87,7 @@ class SC_DB_MasterData_Test extends PHPUnit_Framework_TestCase {
      */
     function testCreateCache() {
         $masterData = new SC_DB_MasterData_Ex();
-        $masterData->clearCache("mtb_constants");
+        $masterData->clearCache('mtb_constants');
         $masterData->createCache('mtb_constants', array(), true, array('id', 'remarks'));
         $this->assertEquals(true, defined('ECCUBE_VERSION'));
     }

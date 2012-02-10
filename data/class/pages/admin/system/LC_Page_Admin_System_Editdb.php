@@ -127,7 +127,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
 
         // 変更対象の設定変更
         foreach ($arrTarget as $item) {
-            $index_name = $item['table_name'] . '_' . $item['column_name'] . "_key";
+            $index_name = $item['table_name'] . '_' . $item['column_name'] . '_key';
             $arrField = array('fields' => array($item['column_name'] => array()));
             if ($item['indexflag_new'] == '1') {
                 $objQuery->createIndex($item['table_name'], $index_name, $arrField);
@@ -186,17 +186,17 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
         // データベースからインデックス設定一覧を取得する
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder("table_name, column_name");
-        $arrIndexList = $objQuery->select("table_name , column_name , recommend_flg, recommend_comment", "dtb_index_list");
+        $arrIndexList = $objQuery->select("table_name , column_name , recommend_flg, recommend_comment", 'dtb_index_list');
 
         $table = "";
         foreach ($arrIndexList as $key => $arrIndex) {
             // テーブルに対するインデックス一覧を取得
-            if ($table !== $arrIndex["table_name"]) {
-                $table = $arrIndex["table_name"];
+            if ($table !== $arrIndex['table_name']) {
+                $table = $arrIndex['table_name'];
                 $arrIndexes = $objQuery->listTableIndexes($table);
             }
             // インデックスが設定されているかを取得
-            $idx_name = $table . '_' . $arrIndex["column_name"] . "_key";
+            $idx_name = $table . '_' . $arrIndex['column_name'] . '_key';
             if (array_search($idx_name, $arrIndexes) === false) {
                 $arrIndexList[$key]['indexflag'] = '';
             } else {

@@ -33,6 +33,6 @@ require_once CLASS_EX_REALDIR . 'page_extends/guide/LC_Page_Guide_Privacy_Ex.php
 // {{{ generate page
 
 $objPage = new LC_Page_Guide_Privacy_Ex();
-register_shutdown_function(array($objPage, "destroy"));
+register_shutdown_function(array($objPage, 'destroy'));
 $objPage->init();
 $objPage->process();

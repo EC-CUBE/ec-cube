@@ -42,11 +42,11 @@ class SC_DB_DBFactory_Test extends PHPUnit_Framework_TestCase {
         $dbFactory = SC_DB_DBFactory::getInstance();
         $objQuery = new SC_Query(DEFAULT_DSN, true, true);
         switch (DB_TYPE) {
-            case "pgsql":
+            case 'pgsql':
                 $this->assertEquals(true, preg_match("/^PostgreSQL [78].[0-9].[0-9]{1,}$/", $dbFactory->sfGetDBVersion()));
             break;
 
-            case "mysql":
+            case 'mysql':
                 $this->assertEquals(true, preg_match("/^MySQL [78].[0-9].[0-9]{1,}$/", $dbFactory->sfGetDBVersion()));
             break;
             default:
@@ -57,20 +57,20 @@ class SC_DB_DBFactory_Test extends PHPUnit_Framework_TestCase {
     function testFindTableNames() {
         $dbFactory = SC_DB_DBFactory::getInstance();
         $objQuery = new SC_Query(DEFAULT_DSN);
-        $actual = $dbFactory->findTableNames("mtb_pre");
-        $this->assertEquals("mtb_pref", $actual[0]);
+        $actual = $dbFactory->findTableNames('mtb_pre');
+        $this->assertEquals('mtb_pref', $actual[0]);
     }
 
     function testConcatColumn() {
 
-        $params = array("column1", "column2");
+        $params = array('column1', 'column2');
 
         switch (DB_TYPE) {
-        case "pgsql":
+        case 'pgsql':
             $expected = "column1 || column2";
             break;
 
-        case "mysql":
+        case 'mysql':
             $expected = "concat(column1, column2)";
             break;
 
@@ -89,14 +89,14 @@ class SC_DB_DBFactory_Test extends PHPUnit_Framework_TestCase {
     function testGetOrderYesterdaySql() {
 
         switch (DB_TYPE) {
-        case "pgsql":
+        case 'pgsql':
             $expected = "SELECT COUNT(total) FROM dtb_order "
                        . "WHERE del_flg = 0 "
                          . "AND to_char(create_date,'YYYY/MM/DD') = to_char(CURRENT_TIMESTAMP - interval '1 days','YYYY/MM/DD') "
                          . "AND status <> " . ORDER_CANCEL;
             break;
 
-        case "mysql":
+        case 'mysql':
             $expected = "SELECT COUNT(total) FROM dtb_order "
                        . "WHERE del_flg = 0 "
                          . "AND cast(create_date as date) = DATE_ADD(current_date, interval -1 day) "
@@ -117,7 +117,7 @@ class SC_DB_DBFactory_Test extends PHPUnit_Framework_TestCase {
      */
     function testGetOrderMonthSql() {
         switch (DB_TYPE) {
-        case "pgsql":
+        case 'pgsql':
             $expected =  "SELECT COUNT(total) FROM dtb_order "
                         . "WHERE del_flg = 0 "
                           . "AND to_char(create_date,'YYYY/MM') = ? "
@@ -125,7 +125,7 @@ class SC_DB_DBFactory_Test extends PHPUnit_Framework_TestCase {
                           . "AND status <> " . ORDER_CANCEL;
             break;
 
-        case "mysql":
+        case 'mysql':
             $expected = "SELECT COUNT(total) FROM dtb_order "
                        . "WHERE del_flg = 0 "
                          . "AND date_format(create_date, '%Y/%m') = ? "
@@ -147,7 +147,7 @@ class SC_DB_DBFactory_Test extends PHPUnit_Framework_TestCase {
      */
     function testGetReviewYesterdaySql() {
         switch (DB_TYPE) {
-        case "pgsql":
+        case 'pgsql':
             $expected = "SELECT COUNT(*) FROM dtb_review AS A "
                    . "LEFT JOIN dtb_products AS B "
                           . "ON A.product_id = B.product_id "
@@ -157,7 +157,7 @@ class SC_DB_DBFactory_Test extends PHPUnit_Framework_TestCase {
                          . "AND to_char(A.create_date,'YYYY/MM/DD') != to_char(CURRENT_TIMESTAMP,'YYYY/MM/DD')";
             break;
 
-        case "mysql":
+        case 'mysql':
             $expected = "SELECT COUNT(*) FROM dtb_review AS A "
                    . "LEFT JOIN dtb_products AS B "
                           . "ON A.product_id = B.product_id "

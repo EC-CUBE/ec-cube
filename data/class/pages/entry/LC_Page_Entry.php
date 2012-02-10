@@ -46,8 +46,8 @@ class LC_Page_Entry extends LC_Page_Ex {
         parent::init();
         $masterData         = new SC_DB_MasterData_Ex();
         $this->arrPref      = $masterData->getMasterData('mtb_pref');
-        $this->arrJob       = $masterData->getMasterData("mtb_job");
-        $this->arrReminder  = $masterData->getMasterData("mtb_reminder");
+        $this->arrJob       = $masterData->getMasterData('mtb_job');
+        $this->arrReminder  = $masterData->getMasterData('mtb_reminder');
 
         // 生年月日選択肢の取得
         $objDate            = new SC_Date_Ex(BIRTH_YEAR, date('Y',strtotime('now')));
@@ -154,7 +154,7 @@ class LC_Page_Entry extends LC_Page_Ex {
      */
     function lfRegistCustomerData($sqlval) {
         SC_Helper_Customer_Ex::sfEditCustomerData($sqlval);
-        return $sqlval["secret_key"];
+        return $sqlval['secret_key'];
     }
 
     /**
@@ -176,17 +176,17 @@ class LC_Page_Entry extends LC_Page_Ex {
         $arrResults['birth']    = SC_Utils_Ex::sfGetTimestamp($arrForm['year'], $arrForm['month'], $arrForm['day']);
 
         // 仮会員 1 本会員 2
-        $arrResults['status']   = (CUSTOMER_CONFIRM_MAIL == true) ? "1" : "2";
+        $arrResults['status']   = (CUSTOMER_CONFIRM_MAIL == true) ? '1' : '2';
 
         /*
          * secret_keyは、テーブルで重複許可されていない場合があるので、
          * 本会員登録では利用されないがセットしておく。
          */
-        $arrResults["secret_key"] = SC_Helper_Customer_Ex::sfGetUniqSecretKey();
+        $arrResults['secret_key'] = SC_Helper_Customer_Ex::sfGetUniqSecretKey();
 
         // 入会時ポイント
         $CONF = SC_Helper_DB_Ex::sfGetBasisData();
-        $arrResults['point'] = $CONF["welcome_point"];
+        $arrResults['point'] = $CONF['welcome_point'];
 
         if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
             // 携帯メールアドレス
@@ -208,8 +208,8 @@ class LC_Page_Entry extends LC_Page_Ex {
 
         $objMailText    = new SC_SiteView_Ex();
         $objMailText->assign('CONF', $CONF);
-        $objMailText->assign("name01", $arrForm['name01']);
-        $objMailText->assign("name02", $arrForm['name02']);
+        $objMailText->assign('name01', $arrForm['name01']);
+        $objMailText->assign('name02', $arrForm['name02']);
         $objMailText->assign('uniqid', $uniqid);
         $objMailText->assignobj($this);
 
@@ -229,16 +229,16 @@ class LC_Page_Entry extends LC_Page_Ex {
             ''                    // 宛先
             , $subject              // サブジェクト
             , $toCustomerMail       // 本文
-            , $CONF["email03"]      // 配送元アドレス
-            , $CONF["shop_name"]    // 配送元 名前
-            , $CONF["email03"]      // reply_to
-            , $CONF["email04"]      // return_path
-            , $CONF["email04"]      // Errors_to
-            , $CONF["email01"]      // Bcc
+            , $CONF['email03']      // 配送元アドレス
+            , $CONF['shop_name']    // 配送元 名前
+            , $CONF['email03']      // reply_to
+            , $CONF['email04']      // return_path
+            , $CONF['email04']      // Errors_to
+            , $CONF['email01']      // Bcc
         );
         // 宛先の設定
         $objMail->setTo($arrForm['email'],
-                        $arrForm["name01"] . $arrForm["name02"] ." 様");
+                        $arrForm['name01'] . $arrForm['name02'] ." 様");
 
         $objMail->sendMail();
     }

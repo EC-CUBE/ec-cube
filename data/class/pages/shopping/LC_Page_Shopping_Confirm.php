@@ -46,10 +46,10 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
         $this->tpl_title = "ご入力内容のご確認";
         $masterData = new SC_DB_MasterData();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
-        $this->arrSex = $masterData->getMasterData("mtb_sex");
-        $this->arrMAILMAGATYPE = $masterData->getMasterData("mtb_mail_magazine_type");
-        $this->arrReminder = $masterData->getMasterData("mtb_reminder");
-        $this->arrDeliv = SC_Helper_DB_Ex::sfGetIDValueList("dtb_deliv", "deliv_id", "service_name");
+        $this->arrSex = $masterData->getMasterData('mtb_sex');
+        $this->arrMAILMAGATYPE = $masterData->getMasterData('mtb_mail_magazine_type');
+        $this->arrReminder = $masterData->getMasterData('mtb_reminder');
+        $this->arrDeliv = SC_Helper_DB_Ex::sfGetIDValueList('dtb_deliv', 'deliv_id', 'service_name');
         $this->httpCacheControl('nocache');
     }
 
@@ -140,8 +140,8 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
             /*
              * 決済モジュールで必要なため, 受注番号を取得
              */
-            $this->arrForm["order_id"] = $objQuery->nextval("dtb_order_order_id");
-            $_SESSION["order_id"] = $this->arrForm['order_id'];
+            $this->arrForm['order_id'] = $objQuery->nextval('dtb_order_order_id');
+            $_SESSION['order_id'] = $this->arrForm['order_id'];
 
             // 集計結果を受注一時テーブルに反映
             $objPurchase->saveOrderTemp($this->tpl_uniqid, $this->arrForm,
@@ -158,7 +158,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
             // 購入完了ページ
             else {
                 $objPurchase->completeOrder(ORDER_NEW);
-                $objPurchase->sendOrderMail($this->arrForm["order_id"]);
+                $objPurchase->sendOrderMail($this->arrForm['order_id']);
                 SC_Response_Ex::sendRedirect(SHOPPING_COMPLETE_URLPATH);
             }
             exit;

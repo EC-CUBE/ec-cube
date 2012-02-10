@@ -23,7 +23,7 @@
 
 /* ※使用条件※
     ・formタグに以下を追加する。
-        <input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->">
+        <input type='hidden' name='pageno' value="<!--{$tpl_pageno}-->">
     ・ソースの最初に以下を記述する。
         $objPage->tpl_pageno = $_POST['pageno'];
     ・$func_nameに指定するJavaScriptの例

@@ -98,7 +98,7 @@ class SC_Utils_Test extends PHPUnit_Framework_TestCase {
         // greedy is false
         $this->assertFalse(SC_Utils::isBlank($nestsArray, false));
 
-        $nestsArrayIsNotBlank = array(array(array("1")));
+        $nestsArrayIsNotBlank = array(array(array('1')));
         $this->assertFalse(SC_Utils::isBlank($nestsArrayIsNotBlank));
         // greedy is false
         $this->assertFalse(SC_Utils::isBlank($nestsArrayIsNotBlank, false));

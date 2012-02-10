@@ -50,7 +50,7 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex {
         $this->tpl_subtitle = 'テンプレート設定';
 
         $masterData = new SC_DB_MasterData_Ex();
-        $this->arrMagazineType = $masterData->getMasterData("mtb_magazine_type");
+        $this->arrMagazineType = $masterData->getMasterData('mtb_magazine_type');
     }
 
     /**
@@ -100,7 +100,7 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex {
      */
     function lfDeleteMailTemplate($template_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->update("dtb_mailmaga_template",
+        $objQuery->update('dtb_mailmaga_template',
                           array('del_flg' =>1),
                           "template_id = ?",
                           array($template_id));

@@ -61,7 +61,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
         $this->tpl_mainpage = 'forgot/index.tpl';
         $this->tpl_mainno = '';
         $masterData = new SC_DB_MasterData_Ex();
-        $this->arrReminder = $masterData->getMasterData("mtb_reminder");
+        $this->arrReminder = $masterData->getMasterData('mtb_reminder');
         $this->device_type = SC_Display_Ex::detectDevice();
         $this->httpCacheControl('nocache');
         // デフォルトログインアドレスロード
@@ -149,7 +149,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = "(email Like ? OR email_mobile Like ?) AND name01 Like ? AND name02 Like ? AND del_flg = 0";
         $arrVal = array($arrForm['email'], $arrForm['email'], $arrForm['name01'], $arrForm['name02']);
-        $result = $objQuery->select("reminder, status", "dtb_customer", $where, $arrVal);
+        $result = $objQuery->select("reminder, status", 'dtb_customer', $where, $arrVal);
         if (isset($result[0]['reminder']) and isset($arrReminder[$result[0]['reminder']])) {
             // 会員状態の確認
             if ($result[0]['status'] == '2') {
@@ -194,7 +194,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
         $errmsg = '';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $cols = "customer_id, reminder, reminder_answer, salt";
-        $table = "dtb_customer";
+        $table = 'dtb_customer';
         $where = "(email Like ? OR email_mobile Like ?)"
                     . " AND name01 Like ? AND name02 Like ?"
                     . " AND status = 2 AND del_flg = 0";
@@ -255,7 +255,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
         $this->lfInitMailCheckParam($objFormParam, $device_type);
         // 秘密の質問チェックの追加
         $objFormParam->addParam("パスワード確認用の質問", 'reminder', STEXT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("パスワード確認用の質問の答え", "reminder_answer", STEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("パスワード確認用の質問の答え", 'reminder_answer', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         return;
     }
 

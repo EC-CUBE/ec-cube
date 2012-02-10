@@ -52,12 +52,12 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
-        $this->arrJob = $masterData->getMasterData("mtb_job");
+        $this->arrJob = $masterData->getMasterData('mtb_job');
         $this->arrJob["不明"] = "不明";
-        $this->arrSex = $masterData->getMasterData("mtb_sex");
-        $this->arrPageRows = $masterData->getMasterData("mtb_page_max");
+        $this->arrSex = $masterData->getMasterData('mtb_sex');
+        $this->arrPageRows = $masterData->getMasterData('mtb_page_max');
         $this->arrHtmlmail = array("" => "両方",  1 => 'HTML', 2 => 'TEXT');
-        $this->arrMailType = $masterData->getMasterData("mtb_mail_type");
+        $this->arrMailType = $masterData->getMasterData('mtb_mail_type');
 
         // 日付プルダウン設定
         $objDate = new SC_Date_Ex(BIRTH_YEAR);
@@ -150,14 +150,14 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
             break;
         // query:配信履歴から「確認」
         case 'query':
-            if (SC_Utils_Ex::sfIsInt($_GET["send_id"])) {
+            if (SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
                 $this->arrSearchData = $this->lfGetMailQuery();
             }
             $this->setTemplate('mail/query.tpl');
             break;
         // query:配信履歴から「再送信」
         case 'retry':
-            if (SC_Utils_Ex::sfIsInt($_GET["send_id"])) {
+            if (SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
                 SC_Helper_Mail_Ex::sfSendMailmagazine($_GET['send_id']);  // DB登録・送信
                 SC_Response_Ex::sendRedirect("./history.php");
             } else {
@@ -201,7 +201,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $objFormParam->addParam("メール形式", 'mail_method', INT_LEN, 'n', array('EXIST_CHECK','ALNUM_CHECK'));
         $objFormParam->addParam('Subject', 'subject', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam("本文", 'body', LLTEXT_LEN, 'KVCa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("テンプレートID", "template_id", INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
+        $objFormParam->addParam("テンプレートID", 'template_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
     }
 
     /**
@@ -247,29 +247,29 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
 
         $send_id = $objQuery->nextVal('dtb_send_history_send_id');
         $dtb_send_history = array();
-        $dtb_send_history["mail_method"] = $objFormParam->getValue('mail_method');
+        $dtb_send_history['mail_method'] = $objFormParam->getValue('mail_method');
         $dtb_send_history['subject'] = $objFormParam->getValue('subject');
         $dtb_send_history['body'] = $objFormParam->getValue('body');
-        $dtb_send_history["start_date"] = 'CURRENT_TIMESTAMP';
-        $dtb_send_history["creator_id"] = $_SESSION['member_id'];
-        $dtb_send_history["send_count"] = $send_customer_cnt;
-        $dtb_send_history["search_data"] = serialize($objFormParam->getSearchArray());
-        $dtb_send_history["update_date"] = 'CURRENT_TIMESTAMP';
-        $dtb_send_history["create_date"] = 'CURRENT_TIMESTAMP';
+        $dtb_send_history['start_date'] = 'CURRENT_TIMESTAMP';
+        $dtb_send_history['creator_id'] = $_SESSION['member_id'];
+        $dtb_send_history['send_count'] = $send_customer_cnt;
+        $dtb_send_history['search_data'] = serialize($objFormParam->getSearchArray());
+        $dtb_send_history['update_date'] = 'CURRENT_TIMESTAMP';
+        $dtb_send_history['create_date'] = 'CURRENT_TIMESTAMP';
         $dtb_send_history['send_id'] = $send_id;
-        $objQuery->insert("dtb_send_history", $dtb_send_history);
+        $objQuery->insert('dtb_send_history', $dtb_send_history);
         // 「配信メールアドレス種別」に携帯メールアドレスが指定されている場合は、携帯メールアドレスに配信
-        $emailtype="email";
+        $emailtype='email';
         $searchmailtype = $objFormParam->getValue('search_mail_type');
-        if($searchmailtype==2||$searchmailtype==4)$emailtype="email_mobile";
+        if($searchmailtype==2||$searchmailtype==4)$emailtype='email_mobile';
         if (is_array($arrSendCustomer)) {
             foreach ($arrSendCustomer as $line) {
                 $dtb_send_customer = array();
-                $dtb_send_customer["customer_id"] = $line["customer_id"];
-                $dtb_send_customer["send_id"] = $send_id;
+                $dtb_send_customer['customer_id'] = $line['customer_id'];
+                $dtb_send_customer['send_id'] = $send_id;
                 $dtb_send_customer['email'] = $line[$emailtype];
-                $dtb_send_customer['name'] = $line["name01"] . " " . $line["name02"];
-                $objQuery->insert("dtb_send_customer", $dtb_send_customer);
+                $dtb_send_customer['name'] = $line['name01'] . " " . $line['name02'];
+                $objQuery->insert('dtb_send_customer', $dtb_send_customer);
             }
         }
         return $send_id;
@@ -287,7 +287,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
 
         // 送信履歴より、送信条件確認画面
         $sql = "SELECT search_data FROM dtb_send_history WHERE send_id = ?";
-        $searchData = $objQuery->getOne($sql, array($_GET["send_id"]));
+        $searchData = $objQuery->getOne($sql, array($_GET['send_id']));
         return unserialize($searchData);
     }
 }

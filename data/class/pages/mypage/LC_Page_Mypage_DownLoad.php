@@ -115,20 +115,20 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
         $arrForm = $this->lfGetRealFileName($customer_id, $order_id, $product_id, $product_class_id);
 
         //ファイル情報が無い場合はNG
-        if ($arrForm["down_realfilename"] == "") {
+        if ($arrForm['down_realfilename'] == "") {
             SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
         }
         //ファイルそのものが無い場合もとりあえずNG
-        $realpath = DOWN_SAVE_REALDIR . $arrForm["down_realfilename"];
+        $realpath = DOWN_SAVE_REALDIR . $arrForm['down_realfilename'];
         if (!file_exists($realpath)) {
             SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
         }
         //ファイル名をエンコードする Safariの対策はUTF-8で様子を見る
-        $encoding = "Shift_JIS";
+        $encoding = 'Shift_JIS';
         if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'],'Safari')) {
             $encoding = "UTF-8";
         }
-        $sdown_filename = mb_convert_encoding($arrForm["down_filename"], $encoding, 'auto');
+        $sdown_filename = mb_convert_encoding($arrForm['down_filename'], $encoding, 'auto');
 
         // flushなどを利用しているので、現行のSC_Displayは利用できません。
         // SC_DisplayやSC_Responseに大容量ファイルレスポンスが実装されたら移行可能だと思います。
@@ -188,10 +188,10 @@ __EOS__;
 
     /* パラメーター情報の初期化 */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("customer_id", "customer_id", INT_LEN, 'n', array('EXIST_CHECK','NUM_CHECK'));
-        $objFormParam->addParam("order_id", "order_id", INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("product_id", "product_id", INT_LEN, 'n', array('EXIST_CHECK','NUM_CHECK'));
-        $objFormParam->addParam("product_class_id", "product_class_id", INT_LEN, 'n', array('EXIST_CHECK','NUM_CHECK'));
+        $objFormParam->addParam('customer_id', 'customer_id', INT_LEN, 'n', array('EXIST_CHECK','NUM_CHECK'));
+        $objFormParam->addParam('order_id', 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('product_id', 'product_id', INT_LEN, 'n', array('EXIST_CHECK','NUM_CHECK'));
+        $objFormParam->addParam('product_class_id', 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK','NUM_CHECK'));
     }
 
     /* 入力内容のチェック */
@@ -230,7 +230,7 @@ __EOS__;
         //ファイルサイズを取得する
         $file_size = filesize($realpath);
         //読み込み
-        $fp = fopen($realpath, "rb");
+        $fp = fopen($realpath, 'rb');
         if (isset($_SERVER['HTTP_RANGE'])) {
             // 二回目以降のリクエスト
             list($range_offset, $range_limit) = sscanf($_SERVER['HTTP_RANGE'], "bytes=%d-%d");

@@ -160,7 +160,7 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory {
             // AU動画音声ファイルダウンロード対策
             // キャリアがAUで、動画、音声ファイルをダウンロードする際に
             // SESSIONIDの後に余計なパラメータが付与され、セッションが無効になるケースがある
-            if (SC_MobileUserAgent::getCarrier() == "ezweb") {
+            if (SC_MobileUserAgent::getCarrier() == 'ezweb') {
                 $idArray = split("\?", $sessionId);
                 $sessionId = $idArray[0];
             }
@@ -473,7 +473,7 @@ class LC_UseRequest_State_Mobile extends LC_UseRequest_State {
      *     ['model']   => 901sh
      *     ['ip']      => 127.0.0.1
      *     ['expires'] => 1204699031
-     *     ["phone_id"]=> ****
+     *     ['phone_id']=> ****
      * )
      *
      * @return LC_UseRequest_State_Mobile

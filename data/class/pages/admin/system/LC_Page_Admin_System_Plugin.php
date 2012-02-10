@@ -78,7 +78,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         switch ($mode) {
             // インストール
             case 'install':
-                $file_key = "plugin_file";
+                $file_key = 'plugin_file';
                 $this->arrErr = $this->checkUploadFile($file_key);
                 if ($this->isError($this->arrErr) === false) {
                     $plugin_file = $_FILES[$file_key];
@@ -190,7 +190,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
 //                $objQuery =& SC_Query_Ex::getSingletonInstance();
 //                foreach ($priority_array as $key => $value) {
 //                    $sqlval['rank'] = $value;
-//                    $objQuery->update("dtb_plugin", $sqlval, "plugin_id = ?", array($key));
+//                    $objQuery->update('dtb_plugin', $sqlval, "plugin_id = ?", array($key));
 //                }
 //                break;
             default:
@@ -231,7 +231,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         $objFormParam->addParam('mode', 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('plugin_id', 'plugin_id', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('plugin_code', 'plugin_code', MTEXT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("優先順位", "priority", INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("優先順位", 'priority', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -371,14 +371,14 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         $plugin_dir = $this->getPluginDir($plugin_code);
 
         // ファイルをチェックし展開します.
-        $arrErr = $this->unpackPluginFile($plugin_file_name, $plugin_dir, $plugin_code, "plugin_file");
+        $arrErr = $this->unpackPluginFile($plugin_file_name, $plugin_dir, $plugin_code, 'plugin_file');
         if ($this->isError($arrErr) === true) {
             return $arrErr;
         }
 
         // プラグインファイルを読み込み.
         $plugin_class_file_path = $this->getPluginFilePath($plugin_code);
-        $arrErr = $this->requirePluginFile($plugin_class_file_path, "plugin_file");
+        $arrErr = $this->requirePluginFile($plugin_class_file_path, 'plugin_file');
         if ($this->isError($arrErr) === true) {
             SC_Utils_Ex::deleteFile($plugin_dir);
             return $arrErr;
@@ -406,7 +406,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         $this->makeDir($plugin_html_dir);
 
         $plugin = SC_Helper_Plugin_Ex::getPluginByPluginCode($plugin_code);
-        $arrErr = $this->execPlugin($plugin['plugin_id'], $plugin_code, "install");
+        $arrErr = $this->execPlugin($plugin['plugin_id'], $plugin_code, 'install');
 
         return $arrErr;
     }
@@ -492,7 +492,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
             return $arrErr;
         }
         // プラグインクラスファイルのUPDATE処理を実行.
-        $arrErr = $this->execPlugin($plugin_id, $plugin_code, "update");
+        $arrErr = $this->execPlugin($plugin_id, $plugin_code, 'update');
 
         // 保存ディレクトリの削除.
         SC_Utils_Ex::deleteFile($temp_plugin_dir);
@@ -562,7 +562,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         }
 
         // modeで指定されたメソッドを実行.
-        $arrErr = $this->execPlugin($plugin_id, $plugin_code, "uninstall");
+        $arrErr = $this->execPlugin($plugin_id, $plugin_code, 'uninstall');
         if ($this->isError($arrErr) === true) {
             return $arrErr;
         }
@@ -588,7 +588,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
             return $arrErr;
         }
         // 無効化処理を実行します.
-        $arrErr = $this->execPlugin($plugin_id, $plugin_code, "enable");
+        $arrErr = $this->execPlugin($plugin_id, $plugin_code, 'enable');
         if ($this->isError($arrErr) === true) {
             return $arrErr;
         }
@@ -615,7 +615,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         }
 
         // 無効化処理を実行します.
-        $arrErr = $this->execPlugin($plugin_id, $plugin_code, "disable");
+        $arrErr = $this->execPlugin($plugin_id, $plugin_code, 'disable');
         if ($this->isError($arrErr) === true) {
             return $arrErr;
         }
@@ -738,7 +738,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $where = "plugin_id = ?";
         // UPDATEの実行
-        $ret = $objQuery->update("dtb_plugin", $sqlval, $where, array($plugin_id));
+        $ret = $objQuery->update('dtb_plugin', $sqlval, $where, array($plugin_id));
         return $ret;
     }
 
@@ -755,8 +755,8 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
         $where = "plugin_id = ?";
-        $objQuery->delete("dtb_plugin", $where, array($plugin_id));
-        $objQuery->delete("dtb_plugin_hookpoint", $where, array($plugin_id));
+        $objQuery->delete('dtb_plugin', $where, array($plugin_id));
+        $objQuery->delete('dtb_plugin_hookpoint', $where, array($plugin_id));
 
         if ($objQuery->commit()) {
             if (SC_Utils_Ex::deleteFile($this->getPluginDir($plugin_code)) === false) {
@@ -800,7 +800,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         // ファイル一覧を取得
         $arrayFile = $tar_obj->listContent();
         foreach ($arrayFile as  $value) {
-            if($value["filename"] === $file_path) return true;
+            if($value['filename'] === $file_path) return true;
         }
         return false;
     }
@@ -818,7 +818,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         // ディレクトリ名と圧縮ファイル名が同じかをチェック.
         $pattern = ("|^". preg_quote($dir_name) ."\/(.*?)|");
         foreach ($arrayFile as $value) {
-            if(preg_match($pattern, $value["filename"])) return true;
+            if(preg_match($pattern, $value['filename'])) return true;
         }
         return false;;
     }
@@ -843,7 +843,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      */
     function checkConflictPlugin($plugin_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance(); 
-        $table = "dtb_plugin_hookpoint";
+        $table = 'dtb_plugin_hookpoint';
         $where = "plugin_id = ?";
         $conflictHookPoints = $objQuery->select("*", $table, $where, array($plugin_id));
 

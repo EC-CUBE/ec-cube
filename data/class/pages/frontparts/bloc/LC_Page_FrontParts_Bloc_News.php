@@ -64,7 +64,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
 
         $objFormParam = new SC_FormParam_Ex();
         switch ($this->getMode()) {
-            case "getList":
+            case 'getList':
                 $this->lfInitNewsParam($objFormParam);
                 $objFormParam->setParam($_POST);
                 $objFormParam->convParam();
@@ -78,7 +78,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
                     exit;
                 }
                 break;
-            case "getDetail":
+            case 'getDetail':
                 $this->lfInitNewsParam($objFormParam);
                 $objFormParam->setParam($_GET);
                 $objFormParam->convParam();
@@ -115,9 +115,9 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function lfInitNewsParam(&$objFormParam) {
-        $objFormParam->addParam("現在ページ", "pageno", INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
-        $objFormParam->addParam("表示件数", "disp_number", INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
-        $objFormParam->addParam("新着ID", "news_id", INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
+        $objFormParam->addParam("現在ページ", 'pageno', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
+        $objFormParam->addParam("表示件数", 'disp_number', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
+        $objFormParam->addParam("新着ID", 'news_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
     }
 
     /**
@@ -166,7 +166,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
 
         //新着情報の最大ページ数をセット
         $newsCount = $this->lfGetNewsCount();
-        $arrNewsList["news_page_count"] = ceil($newsCount / 3);
+        $arrNewsList['news_page_count'] = ceil($newsCount / 3);
 
         $json =  SC_Utils_Ex::jsonEncode($arrNewsList);    //JSON形式
 
@@ -202,7 +202,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
         $count = 0;
 
         $objQuery = SC_Query_Ex::getSingletonInstance();
-        $count = $objQuery->count("dtb_news", "del_flg = '0'");
+        $count = $objQuery->count('dtb_news', "del_flg = '0'");
 
         return $count;
     }

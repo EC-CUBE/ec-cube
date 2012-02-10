@@ -38,7 +38,7 @@ require_once '../' . ADMIN_DIR . 'require.php';
 $mode = isset($_POST['mode']) ? $_POST['mode'] : '';
 $objPage = lfPageFactory($mode);
 $objPage->init();
-register_shutdown_function(array($objPage, "destroy"));
+register_shutdown_function(array($objPage, 'destroy'));
 $objPage->process($mode);
 
 

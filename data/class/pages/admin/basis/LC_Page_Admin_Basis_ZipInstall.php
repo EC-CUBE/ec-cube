@@ -35,7 +35,7 @@ define('IMAGE_MAX', 680);
 define('ZIP_CSV_REALFILE', DATA_REALDIR . "downloads/KEN_ALL.CSV");
 
 /** UTF-8 変換済みの郵便番号CSV ファイルのパス */
-define("ZIP_CSV_UTF8_REALFILE", DATA_REALDIR . "downloads/KEN_ALL_utf-8.CSV");
+define('ZIP_CSV_UTF8_REALFILE', DATA_REALDIR . "downloads/KEN_ALL_utf-8.CSV");
 
 /**
  * 郵便番号DB登録 のページクラス.
@@ -209,7 +209,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         $img_path = USER_URL . USER_PACKAGE_DIR . "admin/img/basis/"; // 画像パスは admin 固定
 
         ?>
-        <html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+        <html xmlns="http://www.w3.org/1999/xhtml" lang='ja' xml:lang='ja'>
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHAR_CODE ?>" />
         </head>
@@ -245,7 +245,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
                 $sqlval['state'] = $arrCSV[6];
                 $sqlval['city'] = $arrCSV[7];
                 $sqlval['town'] = $arrCSV[8];
-                $objQuery->insert("mtb_zip", $sqlval);
+                $objQuery->insert('mtb_zip', $sqlval);
                 $cntInsert++;
             }
 
@@ -263,11 +263,11 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         echo '</div>' . "\n";
 
         ?>
-        <script type="text/javascript" language="javascript">
+        <script type="text/javascript" language='javascript'>
             <!--
                 // 完了画面
                 function complete() {
-                    document.open("text/html","replace");
+                    document.open("text/html",'replace');
                     document.clear();
                     document.write("<p>完了しました。<br />");
                     document.write("<?php echo $cntInsert ?> 件を追加しました。</p>");

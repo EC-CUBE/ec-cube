@@ -59,7 +59,7 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         // 名前
         if (!isset($this->arrSql['search_name'])) $this->arrSql['search_name'] = "";
         if (strlen($this->arrSql['search_name']) > 0) {
-            $this->setWhere("(" . $dbFactory->concatColumn(array("name01", "name02")) . " LIKE ?)");
+            $this->setWhere("(" . $dbFactory->concatColumn(array('name01', 'name02')) . " LIKE ?)");
             $searchName = $this->addSearchStr($this->arrSql['search_name']);
             $this->arrVal[] = mb_ereg_replace("[ 　]+","",$searchName);
         }
@@ -67,7 +67,7 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         // 名前(フリガナ)
         if (!isset($this->arrSql['search_kana'])) $this->arrSql['search_kana'] = "";
         if (strlen($this->arrSql['search_kana']) > 0) {
-            $this->setWhere("(" . $dbFactory->concatColumn(array("kana01", "kana02")) . " LIKE ?)");
+            $this->setWhere("(" . $dbFactory->concatColumn(array('kana01', 'kana02')) . " LIKE ?)");
             $searchKana = $this->addSearchStr($this->arrSql['search_kana']);
             $this->arrVal[] = mb_ereg_replace("[ 　]+","",$searchKana);
         }
@@ -82,7 +82,7 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         // 電話番号
         if (!isset($this->arrSql['search_tel'])) $this->arrSql['search_tel'] = "";
         if (is_numeric($this->arrSql['search_tel'])) {
-            $this->setWhere("(" . $dbFactory->concatColumn(array("tel01", "tel02", "tel03")) . " LIKE ?)");
+            $this->setWhere("(" . $dbFactory->concatColumn(array('tel01', 'tel02', 'tel03')) . " LIKE ?)");
             $searchTel = $this->addSearchStr($this->arrSql['search_tel']);
             $this->arrVal[] = ereg_replace("-", "", $searchTel);
         }
@@ -210,8 +210,8 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         // 購入金額指定
         if (!isset($this->arrSql['search_buy_total_from'])) $this->arrSql['search_buy_total_from'] = "";
         if (!isset($this->arrSql['search_buy_total_to'])) $this->arrSql['search_buy_total_to'] = "";
-        if (is_numeric($this->arrSql["search_buy_total_from"]) || is_numeric($this->arrSql["search_buy_total_to"])) {
-            $arrBuyTotal = $this->selectRange($this->arrSql["search_buy_total_from"], $this->arrSql["search_buy_total_to"], "buy_total");
+        if (is_numeric($this->arrSql['search_buy_total_from']) || is_numeric($this->arrSql['search_buy_total_to'])) {
+            $arrBuyTotal = $this->selectRange($this->arrSql['search_buy_total_from'], $this->arrSql['search_buy_total_to'], 'buy_total');
             foreach ($arrBuyTotal as $data) {
                 $this->arrVal[] = $data;
             }
@@ -220,8 +220,8 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         // 購入回数指定
         if (!isset($this->arrSql['search_buy_times_from'])) $this->arrSql['search_buy_times_from'] = "";
         if (!isset($this->arrSql['search_buy_times_to'])) $this->arrSql['search_buy_times_to'] = "";
-        if (is_numeric($this->arrSql["search_buy_times_from"]) || is_numeric($this->arrSql["search_buy_times_to"])) {
-            $arrBuyTimes = $this->selectRange($this->arrSql["search_buy_times_from"], $this->arrSql["search_buy_times_to"], "buy_times");
+        if (is_numeric($this->arrSql['search_buy_times_from']) || is_numeric($this->arrSql['search_buy_times_to'])) {
+            $arrBuyTimes = $this->selectRange($this->arrSql['search_buy_times_from'], $this->arrSql['search_buy_times_to'], 'buy_times');
             foreach ($arrBuyTimes as $data) {
                 $this->arrVal[] = $data;
             }
@@ -246,9 +246,9 @@ class SC_CustomerList extends SC_SelectSql_Ex {
 
         // 誕生月の検索
         if (!isset($this->arrSql['search_birth_month'])) $this->arrSql['search_birth_month'] = "";
-        if (is_numeric($this->arrSql["search_birth_month"])) {
+        if (is_numeric($this->arrSql['search_birth_month'])) {
             $this->setWhere(" EXTRACT(month from birth) = ?");
-            $this->arrVal[] = $this->arrSql["search_birth_month"];
+            $this->arrVal[] = $this->arrSql['search_birth_month'];
         }
 
         // 登録期間指定
@@ -279,7 +279,7 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         if ( (strlen($this->arrSql['search_buy_start_year']) > 0 && strlen($this->arrSql['search_buy_start_month']) > 0 && strlen($this->arrSql['search_buy_start_day']) > 0) ||
                 (strlen($this->arrSql['search_buy_end_year']) > 0 && strlen($this->arrSql['search_buy_end_month']) >0 && strlen($this->arrSql['search_buy_end_day']) > 0)) {
             $arrRegistTime = $this->selectTermRange($this->arrSql['search_buy_start_year'], $this->arrSql['search_buy_start_month'], $this->arrSql['search_buy_start_day']
-                            , $this->arrSql['search_buy_end_year'], $this->arrSql['search_buy_end_month'], $this->arrSql['search_buy_end_day'], "last_buy_date");
+                            , $this->arrSql['search_buy_end_year'], $this->arrSql['search_buy_end_month'], $this->arrSql['search_buy_end_day'], 'last_buy_date');
             foreach ($arrRegistTime as $data) {
                 $this->arrVal[] = $data;
             }

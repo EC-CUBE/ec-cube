@@ -166,8 +166,8 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("その他のお届け先ID", "other_deliv_id", INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("お届け先チェック", "deliv_check", INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("その他のお届け先ID", 'other_deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("お届け先チェック", 'deliv_check', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -179,7 +179,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
     function doDelete($other_deliv_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = "other_deliv_id = ?";
-        $objQuery->delete("dtb_other_deliv", $where, array($other_deliv_id));
+        $objQuery->delete('dtb_other_deliv', $where, array($other_deliv_id));
     }
 
     /**
@@ -196,7 +196,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
      * @return boolean お届け先チェックの値が妥当な場合 true
      */
     function registerDeliv($deliv_check, $uniqid, &$objPurchase, &$objCustomer) {
-        $this->log("register deliv. deliv_check=" . $deliv_check, "Debug");
+        $this->log("register deliv. deliv_check=" . $deliv_check, 'Debug');
         $arrValues = array();
         // 会員登録住所がチェックされている場合
         if ($deliv_check == '-1') {
@@ -208,7 +208,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
         // 別のお届け先がチェックされている場合
         elseif ($deliv_check >= 1) {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
-            $arrOtherDeliv = $objQuery->getRow("*", "dtb_other_deliv",
+            $arrOtherDeliv = $objQuery->getRow("*", 'dtb_other_deliv',
                                                "customer_id = ? AND other_deliv_id = ?",
                                                array($objCustomer->getValue('customer_id'), $deliv_check));
             if (SC_Utils_Ex::isBlank($arrOtherDeliv)) {

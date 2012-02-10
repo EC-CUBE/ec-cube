@@ -156,7 +156,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("メーカーID", "maker_id", INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("メーカーID", 'maker_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam("メーカー名", 'name', SMTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
     }
 
@@ -172,7 +172,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
         $where = "del_flg = 0";
         $objQuery->setOrder("rank DESC");
         $arrMaker = array();
-        $arrMaker = $objQuery->select("maker_id, name", "dtb_maker", $where);
+        $arrMaker = $objQuery->select("maker_id, name", 'dtb_maker', $where);
         return $arrMaker;
     }
 
@@ -187,14 +187,14 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
 
         // INSERTする値を作成する
         $sqlval['name'] = $arrForm['name'];
-        $sqlval['rank'] = $objQuery->max('rank', "dtb_maker") + 1;
+        $sqlval['rank'] = $objQuery->max('rank', 'dtb_maker') + 1;
         $sqlval['creator_id'] = $_SESSION['member_id'];
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['maker_id'] = $objQuery->nextVal('dtb_maker_maker_id');
 
         // INSERTの実行
-        $objQuery->insert("dtb_maker", $sqlval);
+        $objQuery->insert('dtb_maker', $sqlval);
     }
 
     /**
@@ -212,7 +212,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
         $where = "maker_id = ?";
 
         // UPDATEの実行
-        $objQuery->update("dtb_maker", $sqlval, $where, array($arrForm['maker_id']));
+        $objQuery->update('dtb_maker', $sqlval, $where, array($arrForm['maker_id']));
     }
 
     /**
@@ -223,7 +223,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      */
     function lfDelete($maker_id) {
         $objDb = new SC_Helper_DB_Ex();
-        $objDb->sfDeleteRankRecord("dtb_maker", "maker_id", $maker_id, "", true);
+        $objDb->sfDeleteRankRecord('dtb_maker', 'maker_id', $maker_id, "", true);
     }
 
     /**
@@ -238,11 +238,11 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
 
         switch ($mode) {
         case 'up':
-            $objDb->sfRankUp("dtb_maker", "maker_id", $maker_id);
+            $objDb->sfRankUp('dtb_maker', 'maker_id', $maker_id);
             break;
 
         case 'down':
-            $objDb->sfRankDown("dtb_maker", "maker_id", $maker_id);
+            $objDb->sfRankDown('dtb_maker', 'maker_id', $maker_id);
             break;
 
         default:
@@ -263,7 +263,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
         // 編集項目を取得する
         $where = "maker_id = ?";
         $arrMaker = array();
-        $arrMaker = $objQuery->select('name', "dtb_maker", $where, array($maker_id));
+        $arrMaker = $objQuery->select('name', 'dtb_maker', $where, array($maker_id));
         $arrForm['name'] = $arrMaker[0]['name'];
 
         return $arrForm;
@@ -293,7 +293,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
         if (!isset($objErr->arrErr['name'])) {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $arrMaker = array();
-            $arrMaker = $objQuery->select("maker_id, name", "dtb_maker", "del_flg = 0 AND name = ?", array($arrForm['name']));
+            $arrMaker = $objQuery->select("maker_id, name", 'dtb_maker', "del_flg = 0 AND name = ?", array($arrForm['name']));
 
             // 編集中のレコード以外に同じ名称が存在する場合
             if ($arrMaker[0]['maker_id'] != $arrForm['maker_id'] && $arrMaker[0]['name'] == $arrForm['name']) {

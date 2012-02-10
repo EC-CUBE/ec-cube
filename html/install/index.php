@@ -42,7 +42,7 @@ if (!defined('ADMIN_DIR')) {
 }
 
 define('INSTALL_LOG', "./temp/install.log");
-ini_set("max_execution_time", 300);
+ini_set('max_execution_time', 300);
 
 $objPage = new StdClass;
 $objPage->arrDB_TYPE = array(
@@ -119,7 +119,7 @@ case 'step2':
     $objPage->arrErr = lfCheckDBError($objDBParam);
     if (count($objPage->arrErr) == 0) {
         if ($err = renameAdminDir($objWebParam->getValue('admin_dir')) !== true) {
-            $objPage->arrErr["all"] .= $err;
+            $objPage->arrErr['all'] .= $err;
             $objPage = lfDispStep2($objPage);
         } else {
             $objPage = lfDispStep3($objPage);
@@ -137,8 +137,8 @@ case 'step3':
 
     if (count($objPage->arrErr) == 0) {
         // スキップする場合には次画面へ遷移
-        $skip = $_POST["db_skip"];
-        if ($skip == "on") {
+        $skip = $_POST['db_skip'];
+        if ($skip == 'on') {
             $objPage = lfDispStep4($objPage);
             break;
         }
@@ -228,7 +228,7 @@ case 'complete':
         $arrSendData = array();
         foreach ($_POST as $key => $val) {
             if (ereg("^senddata_*", $key)) {
-                $arrSendDataTmp = array(str_replace("senddata_", "", $key) => $val);
+                $arrSendDataTmp = array(str_replace('senddata_', "", $key) => $val);
                 $arrSendData = array_merge($arrSendData, $arrSendDataTmp);
             }
         }
@@ -552,17 +552,17 @@ function lfDispComplete($objPage) {
     $sqlval['email03'] = $objWebParam->getValue('admin_mail');
     $sqlval['email04'] = $objWebParam->getValue('admin_mail');
     $sqlval['email05'] = $objWebParam->getValue('admin_mail');
-    $sqlval['top_tpl'] = "default1";
-    $sqlval['product_tpl'] = "default1";
-    $sqlval['detail_tpl'] = "default1";
-    $sqlval['mypage_tpl'] = "default1";
+    $sqlval['top_tpl'] = 'default1';
+    $sqlval['product_tpl'] = 'default1';
+    $sqlval['detail_tpl'] = 'default1';
+    $sqlval['mypage_tpl'] = 'default1';
     $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
     $objQuery = new SC_Query($dsn);
-    $cnt = $objQuery->count("dtb_baseinfo");
+    $cnt = $objQuery->count('dtb_baseinfo');
     if ($cnt > 0) {
-        $objQuery->update("dtb_baseinfo", $sqlval);
+        $objQuery->update('dtb_baseinfo', $sqlval);
     } else {
-        $objQuery->insert("dtb_baseinfo", $sqlval);
+        $objQuery->insert('dtb_baseinfo', $sqlval);
     }
 
     // 管理者登録
@@ -588,9 +588,9 @@ function lfDispComplete($objPage) {
         $arrVal['creator_id'] = 0;
         $arrVal['authority'] = 0;
         $arrVal['rank'] = 1;
-        $objQuery->insert("dtb_member", $arrVal);
+        $objQuery->insert('dtb_member', $arrVal);
     } else {
-        $objQuery->update("dtb_member", $arrVal, 'member_id = ?', array($member_id));
+        $objQuery->update('dtb_member', $arrVal, 'member_id = ?', array($member_id));
     }
 
     $objPage->arrHidden['db_skip'] = $_POST['db_skip'];
@@ -631,8 +631,8 @@ function lfInitWebParam($objWebParam) {
         $objQuery = new SC_Query();
         $tables = $objQuery->listTables();
 
-        if (!PEAR::isError($tables) && in_array("dtb_baseinfo", $tables)) {
-            $arrRet = $objQuery->select("shop_name, email01", "dtb_baseinfo");
+        if (!PEAR::isError($tables) && in_array('dtb_baseinfo', $tables)) {
+            $arrRet = $objQuery->select("shop_name, email01", 'dtb_baseinfo');
             $shop_name = $arrRet[0]['shop_name'];
             $admin_mail = $arrRet[0]['email01'];
         }
@@ -658,16 +658,16 @@ function lfInitWebParam($objWebParam) {
         $admin_allow_hosts = '';
     }
 
-    $objWebParam->addParam("店名", "shop_name", MTEXT_LEN, "", array('EXIST_CHECK','MAX_LENGTH_CHECK'), $shop_name);
-    $objWebParam->addParam("管理者：メールアドレス", "admin_mail", null, "", array('EXIST_CHECK','EMAIL_CHECK','EMAIL_CHAR_CHECK'), $admin_mail);
-    $objWebParam->addParam("管理者：ログインID", "login_id", ID_MAX_LEN, "", array('EXIST_CHECK','SPTAB_CHECK', 'ALNUM_CHECK'));
-    $objWebParam->addParam("管理者：パスワード", "login_pass", ID_MAX_LEN, "", array('EXIST_CHECK','SPTAB_CHECK', 'ALNUM_CHECK'));
-    $objWebParam->addParam("管理機能：ディレクトリ", "admin_dir", ID_MAX_LEN, "a", array('EXIST_CHECK','SPTAB_CHECK', 'ALNUM_CHECK'), $oldAdminDir);
-    $objWebParam->addParam("管理機能：SSL制限", "admin_force_ssl", 1, "n", array('SPTAB_CHECK', 'NUM_CHECK','MAX_LENGTH_CHECK'), $admin_force_ssl);
-    $objWebParam->addParam("管理機能：IP制限", "admin_allow_hosts", LTEXT_LEN, "an", array('IP_CHECK','MAX_LENGTH_CHECK'), $admin_allow_hosts);
-    $objWebParam->addParam("URL(通常)", "normal_url", MTEXT_LEN, "", array('EXIST_CHECK','URL_CHECK','MAX_LENGTH_CHECK'), $normal_url);
-    $objWebParam->addParam("URL(セキュア)", "secure_url", MTEXT_LEN, "", array('EXIST_CHECK','URL_CHECK','MAX_LENGTH_CHECK'), $secure_url);
-    $objWebParam->addParam("ドメイン", "domain", MTEXT_LEN, "", array('MAX_LENGTH_CHECK'));
+    $objWebParam->addParam("店名", 'shop_name', MTEXT_LEN, "", array('EXIST_CHECK','MAX_LENGTH_CHECK'), $shop_name);
+    $objWebParam->addParam("管理者：メールアドレス", 'admin_mail', null, "", array('EXIST_CHECK','EMAIL_CHECK','EMAIL_CHAR_CHECK'), $admin_mail);
+    $objWebParam->addParam("管理者：ログインID", 'login_id', ID_MAX_LEN, "", array('EXIST_CHECK','SPTAB_CHECK', 'ALNUM_CHECK'));
+    $objWebParam->addParam("管理者：パスワード", 'login_pass', ID_MAX_LEN, "", array('EXIST_CHECK','SPTAB_CHECK', 'ALNUM_CHECK'));
+    $objWebParam->addParam("管理機能：ディレクトリ", 'admin_dir', ID_MAX_LEN, 'a', array('EXIST_CHECK','SPTAB_CHECK', 'ALNUM_CHECK'), $oldAdminDir);
+    $objWebParam->addParam("管理機能：SSL制限", 'admin_force_ssl', 1, 'n', array('SPTAB_CHECK', 'NUM_CHECK','MAX_LENGTH_CHECK'), $admin_force_ssl);
+    $objWebParam->addParam("管理機能：IP制限", 'admin_allow_hosts', LTEXT_LEN, 'an', array('IP_CHECK','MAX_LENGTH_CHECK'), $admin_allow_hosts);
+    $objWebParam->addParam("URL(通常)", 'normal_url', MTEXT_LEN, "", array('EXIST_CHECK','URL_CHECK','MAX_LENGTH_CHECK'), $normal_url);
+    $objWebParam->addParam("URL(セキュア)", 'secure_url', MTEXT_LEN, "", array('EXIST_CHECK','URL_CHECK','MAX_LENGTH_CHECK'), $secure_url);
+    $objWebParam->addParam("ドメイン", 'domain', MTEXT_LEN, "", array('MAX_LENGTH_CHECK'));
 
     return $objWebParam;
 }
@@ -696,21 +696,21 @@ function lfInitDBParam($objDBParam) {
     if (defined('DB_NAME')) {
         $db_name = DB_NAME;
     } else {
-        $db_name = "eccube_db";
+        $db_name = 'eccube_db';
     }
 
     if (defined('DB_USER')) {
         $db_user = DB_USER;
     } else {
-        $db_user = "eccube_db_user";
+        $db_user = 'eccube_db_user';
     }
 
-    $objDBParam->addParam("DBの種類", "db_type", INT_LEN, "", array('EXIST_CHECK','MAX_LENGTH_CHECK'), $db_type);
-    $objDBParam->addParam("DBサーバー", "db_server", MTEXT_LEN, "", array('EXIST_CHECK','MAX_LENGTH_CHECK'), $db_server);
-    $objDBParam->addParam("DBポート", "db_port", INT_LEN, "", array('MAX_LENGTH_CHECK'), $db_port);
-    $objDBParam->addParam("DB名", "db_name", MTEXT_LEN, "", array('EXIST_CHECK','MAX_LENGTH_CHECK'), $db_name);
-    $objDBParam->addParam("DBユーザ", "db_user", MTEXT_LEN, "", array('EXIST_CHECK','MAX_LENGTH_CHECK'), $db_user);
-    $objDBParam->addParam("DBパスワード", "db_password", MTEXT_LEN, "", array('EXIST_CHECK','MAX_LENGTH_CHECK'));
+    $objDBParam->addParam("DBの種類", 'db_type', INT_LEN, "", array('EXIST_CHECK','MAX_LENGTH_CHECK'), $db_type);
+    $objDBParam->addParam("DBサーバー", 'db_server', MTEXT_LEN, "", array('EXIST_CHECK','MAX_LENGTH_CHECK'), $db_server);
+    $objDBParam->addParam("DBポート", 'db_port', INT_LEN, "", array('MAX_LENGTH_CHECK'), $db_port);
+    $objDBParam->addParam("DB名", 'db_name', MTEXT_LEN, "", array('EXIST_CHECK','MAX_LENGTH_CHECK'), $db_name);
+    $objDBParam->addParam("DBユーザ", 'db_user', MTEXT_LEN, "", array('EXIST_CHECK','MAX_LENGTH_CHECK'), $db_user);
+    $objDBParam->addParam("DBパスワード", 'db_password', MTEXT_LEN, "", array('EXIST_CHECK','MAX_LENGTH_CHECK'));
 
     return $objDBParam;
 }
@@ -742,8 +742,8 @@ function lfCheckWebError($objFormParam) {
 
     $oldAdminDir = SC_Utils_Ex::sfTrimURL(ADMIN_DIR);
     $newAdminDir = $objFormParam->getValue('admin_dir');
-    if ($oldAdminDir !== $newAdminDir AND file_exists(HTML_REALDIR . $newAdminDir) and $newAdminDir != "admin") {
-        $objErr->arrErr["admin_dir"] = "※ 指定した管理機能ディレクトリは既に存在しています。別の名前を指定してください。";
+    if ($oldAdminDir !== $newAdminDir AND file_exists(HTML_REALDIR . $newAdminDir) and $newAdminDir != 'admin') {
+        $objErr->arrErr['admin_dir'] = "※ 指定した管理機能ディレクトリは既に存在しています。別の名前を指定してください。";
     }
 
     return $objErr->arrErr;
@@ -791,7 +791,7 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
     if (!file_exists($filepath)) {
         $arrErr['all'] = ">> スクリプトファイルが見つかりません";
     } else {
-        if ($fp = fopen($filepath,"r")) {
+        if ($fp = fopen($filepath,'r')) {
             $sql = fread($fp, filesize($filepath));
             fclose($fp);
         }
@@ -800,7 +800,7 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
         $objDB = MDB2::connect($dsn, $options);
         // 接続エラー
         if (!PEAR::isError($objDB)) {
-            $objDB->setCharset("utf8");
+            $objDB->setCharset('utf8');
             $sql_split = split(";",$sql);
             foreach ($sql_split as $key => $val) {
                 SC_Utils::sfFlush(true);
@@ -1033,33 +1033,33 @@ function initdirs() {
  * @return array シーケンスを使用するテーブル名とカラム名の配列
  */
 function getSequences() {
-    return array(array("dtb_best_products","best_id"),
-                 array("dtb_bloc", "bloc_id"),
-                 array("dtb_category", "category_id"),
-                 array("dtb_class", "class_id"),
-                 array("dtb_classcategory", "classcategory_id"),
-                 array("dtb_csv", "no"),
-                 array("dtb_csv_sql", "sql_id"),
-                 array("dtb_customer", "customer_id"),
-                 array("dtb_deliv", "deliv_id"),
-                 array("dtb_holiday", "holiday_id"),
-                 array("dtb_kiyaku", "kiyaku_id"),
-                 array("dtb_mail_history", "send_id"),
-                 array("dtb_maker", "maker_id"),
-                 array("dtb_member", "member_id"),
-                 array("dtb_module_update_logs", "log_id"),
-                 array("dtb_news", "news_id"),
-                 array("dtb_order", "order_id"),
-                 array("dtb_order_detail", "order_detail_id"),
-                 array("dtb_other_deliv", "other_deliv_id"),
-                 array("dtb_pagelayout", "page_id"),
-                 array("dtb_payment", "payment_id"),
-                 array("dtb_products_class", "product_class_id"),
-                 array("dtb_products", "product_id"),
-                 array("dtb_class_combination", "class_combination_id"),
-                 array("dtb_review", "review_id"),
-                 array("dtb_send_history", "send_id"),
-                 array("dtb_mailmaga_template", "template_id"));
+    return array(array('dtb_best_products','best_id'),
+                 array('dtb_bloc', 'bloc_id'),
+                 array('dtb_category', 'category_id'),
+                 array('dtb_class', 'class_id'),
+                 array('dtb_classcategory', 'classcategory_id'),
+                 array('dtb_csv', 'no'),
+                 array('dtb_csv_sql', 'sql_id'),
+                 array('dtb_customer', 'customer_id'),
+                 array('dtb_deliv', 'deliv_id'),
+                 array('dtb_holiday', 'holiday_id'),
+                 array('dtb_kiyaku', 'kiyaku_id'),
+                 array('dtb_mail_history', 'send_id'),
+                 array('dtb_maker', 'maker_id'),
+                 array('dtb_member', 'member_id'),
+                 array('dtb_module_update_logs', 'log_id'),
+                 array('dtb_news', 'news_id'),
+                 array('dtb_order', 'order_id'),
+                 array('dtb_order_detail', 'order_detail_id'),
+                 array('dtb_other_deliv', 'other_deliv_id'),
+                 array('dtb_pagelayout', 'page_id'),
+                 array('dtb_payment', 'payment_id'),
+                 array('dtb_products_class', 'product_class_id'),
+                 array('dtb_products', 'product_id'),
+                 array('dtb_class_combination', 'class_combination_id'),
+                 array('dtb_review', 'review_id'),
+                 array('dtb_send_history', 'send_id'),
+                 array('dtb_mailmaga_template', 'template_id'));
 }
 
 

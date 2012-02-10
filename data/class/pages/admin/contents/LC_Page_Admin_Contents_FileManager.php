@@ -225,7 +225,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
     function lfInitParamModeMove(&$objFormParam) {
         // 共通定義
         $this->lfInitParamCommon($objFormParam);
-        $objFormParam->addParam("選択ファイル", "select_file", MTEXT_LEN, 'a', array());
+        $objFormParam->addParam("選択ファイル", 'select_file', MTEXT_LEN, 'a', array());
     }
 
     /**
@@ -237,7 +237,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
     function lfInitParamModeView(&$objFormParam) {
         // 共通定義
         $this->lfInitParamCommon($objFormParam);
-        $objFormParam->addParam("選択ファイル", "select_file", MTEXT_LEN, 'a', array('SELECT_CHECK'));
+        $objFormParam->addParam("選択ファイル", 'select_file', MTEXT_LEN, 'a', array('SELECT_CHECK'));
     }
 
     /**
@@ -249,8 +249,8 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
     function lfInitParamModeCreate(&$objFormParam) {
         // 共通定義
         $this->lfInitParamCommon($objFormParam);
-        $objFormParam->addParam("選択ファイル", "select_file", MTEXT_LEN, 'a', array());
-        $objFormParam->addParam("作成ファイル名", "create_file", MTEXT_LEN, 'a', array('EXIST_CHECK', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
+        $objFormParam->addParam("選択ファイル", 'select_file', MTEXT_LEN, 'a', array());
+        $objFormParam->addParam("作成ファイル名", 'create_file', MTEXT_LEN, 'a', array('EXIST_CHECK', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
     }
 
     /**
@@ -260,11 +260,11 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParamCommon(&$objFormParam) {
-        $objFormParam->addParam("ルートディレクトリ", "top_dir", MTEXT_LEN, 'a', array());
-        $objFormParam->addParam("現在の階層ディレクトリ", "now_dir", MTEXT_LEN, 'a', array());
-        $objFormParam->addParam("現在の階層ファイル", "now_file", MTEXT_LEN, 'a', array());
-        $objFormParam->addParam("ツリー選択状態", "tree_status", MTEXT_LEN, 'a', array());
-        $objFormParam->addParam("ツリー選択ディレクトリ", "tree_select_file", MTEXT_LEN, 'a', array());
+        $objFormParam->addParam("ルートディレクトリ", 'top_dir', MTEXT_LEN, 'a', array());
+        $objFormParam->addParam("現在の階層ディレクトリ", 'now_dir', MTEXT_LEN, 'a', array());
+        $objFormParam->addParam("現在の階層ファイル", 'now_file', MTEXT_LEN, 'a', array());
+        $objFormParam->addParam("ツリー選択状態", 'tree_status', MTEXT_LEN, 'a', array());
+        $objFormParam->addParam("ツリー選択ディレクトリ", 'tree_select_file', MTEXT_LEN, 'a', array());
     }
 
     /*

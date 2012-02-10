@@ -116,7 +116,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
             break;
         // 削除
         case 'delete':
-            $objDb->sfDeleteRankRecord("dtb_holiday", "holiday_id", $post['holiday_id'], "", true);
+            $objDb->sfDeleteRankRecord('dtb_holiday', 'holiday_id', $post['holiday_id'], "", true);
             // 再表示
             $this->objDisplay->reload();
             break;
@@ -133,12 +133,12 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
             $this->tpl_holiday_id = $post['holiday_id'];
         break;
         case 'down':
-            $objDb->sfRankDown("dtb_holiday", "holiday_id", $post['holiday_id']);
+            $objDb->sfRankDown('dtb_holiday', 'holiday_id', $post['holiday_id']);
             // 再表示
             $this->objDisplay->reload();
             break;
         case 'up':
-            $objDb->sfRankUp("dtb_holiday", "holiday_id", $post['holiday_id']);
+            $objDb->sfRankUp('dtb_holiday', 'holiday_id', $post['holiday_id']);
             // 再表示
             $this->objDisplay->reload();
             break;
@@ -164,7 +164,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $where = "holiday_id = ?";
-        return $objQuery->select("title, month, day", "dtb_holiday", $where, array($holiday_id));
+        return $objQuery->select("title, month, day", 'dtb_holiday', $where, array($holiday_id));
     }
 
     function lfGetHolidayList() {
@@ -172,7 +172,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
 
         $where = "del_flg <> 1";
         $objQuery->setOrder("rank DESC");
-        return $objQuery->select("holiday_id, title, month, day", "dtb_holiday", $where);
+        return $objQuery->select("holiday_id, title, month, day", 'dtb_holiday', $where);
     }
 
     /* DBへの挿入 */
@@ -183,12 +183,12 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
         $sqlval['month'] = $arrData['month'];
         $sqlval['day'] = $arrData['day'];
         $sqlval['creator_id'] = $member_id;
-        $sqlval['rank'] = $objQuery->max('rank', "dtb_holiday") + 1;
+        $sqlval['rank'] = $objQuery->max('rank', 'dtb_holiday') + 1;
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
         // INSERTの実行
         $sqlval['holiday_id'] = $objQuery->nextVal('dtb_holiday_holiday_id');
-        $ret = $objQuery->insert("dtb_holiday", $sqlval);
+        $ret = $objQuery->insert('dtb_holiday', $sqlval);
         return $ret;
     }
 
@@ -202,7 +202,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $where = "holiday_id = ?";
         // UPDATEの実行
-        $ret = $objQuery->update("dtb_holiday", $sqlval, $where, array($arrData['holiday_id']));
+        $ret = $objQuery->update('dtb_holiday', $sqlval, $where, array($arrData['holiday_id']));
         return $ret;
     }
 
@@ -243,7 +243,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
                 $where .= " AND holiday_id <> ?";
                 $arrval[] = $post['holiday_id'];
             }
-            $arrRet = $objQuery->select("count(holiday_id) as count", "dtb_holiday", $where, $arrval);
+            $arrRet = $objQuery->select("count(holiday_id) as count", 'dtb_holiday', $where, $arrval);
 
             // 編集中のレコード以外に同じ日付が存在する場合
             if ($arrRet[0]['count'] > 0) {

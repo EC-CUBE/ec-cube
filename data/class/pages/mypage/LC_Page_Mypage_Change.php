@@ -47,11 +47,11 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
         $this->tpl_mypageno = 'change';
 
         $masterData         = new SC_DB_MasterData_Ex();
-        $this->arrReminder  = $masterData->getMasterData("mtb_reminder");
+        $this->arrReminder  = $masterData->getMasterData('mtb_reminder');
         $this->arrPref      = $masterData->getMasterData('mtb_pref');
-        $this->arrJob       = $masterData->getMasterData("mtb_job");
-        $this->arrMAILMAGATYPE = $masterData->getMasterData("mtb_mail_magazine_type");
-        $this->arrSex       = $masterData->getMasterData("mtb_sex");
+        $this->arrJob       = $masterData->getMasterData('mtb_job');
+        $this->arrMAILMAGATYPE = $masterData->getMasterData('mtb_mail_magazine_type');
+        $this->arrSex       = $masterData->getMasterData('mtb_sex');
         $this->httpCacheControl('nocache');
 
         // 生年月日選択肢の取得

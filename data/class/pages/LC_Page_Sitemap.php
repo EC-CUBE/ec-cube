@@ -181,7 +181,7 @@ class LC_Page_Sitemap extends LC_Page_Ex {
     function getTopPage($arrPageList) {
         $arrRet = array();
         foreach ($arrPageList as $arrPage) {
-            if ($arrPage['page_id'] == "1") {
+            if ($arrPage['page_id'] == '1') {
                 $arrRet[0] = $arrPage;
                 return $arrRet;
             }
@@ -239,7 +239,7 @@ class LC_Page_Sitemap extends LC_Page_Ex {
         $arrRet = array();
         foreach ($result as $row) {
 
-            $arrPage["update_date"] = $row['update_date'];
+            $arrPage['update_date'] = $row['update_date'];
 
             $arrPage['url'] = HTTP_URL . substr(P_DETAIL_URLPATH, strlen(ROOT_URLPATH)) . $row['product_id'];
             $arrRet[] = $arrPage;

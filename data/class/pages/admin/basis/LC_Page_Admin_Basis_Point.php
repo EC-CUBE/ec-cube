@@ -120,8 +120,8 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex {
 
     /* パラメーター情報の初期化 */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("ポイント付与率", "point_rate", PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("会員登録時付与ポイント", "welcome_point", INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam("ポイント付与率", 'point_rate', PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam("会員登録時付与ポイント", 'welcome_point', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
     }
 
     function lfUpdateData($post) {
@@ -130,7 +130,7 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex {
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         // UPDATEの実行
-        $ret = $objQuery->update("dtb_baseinfo", $sqlval);
+        $ret = $objQuery->update('dtb_baseinfo', $sqlval);
     }
 
     function lfInsertData($post) {
@@ -139,6 +139,6 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex {
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         // INSERTの実行
-        $ret = $objQuery->insert("dtb_baseinfo", $sqlval);
+        $ret = $objQuery->insert('dtb_baseinfo', $sqlval);
     }
 }

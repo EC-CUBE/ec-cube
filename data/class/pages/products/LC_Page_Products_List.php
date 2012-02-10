@@ -71,10 +71,10 @@ class LC_Page_Products_List extends LC_Page_Ex {
         parent::init();
 
         $masterData                 = new SC_DB_MasterData_Ex();
-        $this->arrSTATUS            = $masterData->getMasterData("mtb_status");
-        $this->arrSTATUS_IMAGE      = $masterData->getMasterData("mtb_status_image");
-        $this->arrDELIVERYDATE      = $masterData->getMasterData("mtb_delivery_date");
-        $this->arrPRODUCTLISTMAX    = $masterData->getMasterData("mtb_product_list_max");
+        $this->arrSTATUS            = $masterData->getMasterData('mtb_status');
+        $this->arrSTATUS_IMAGE      = $masterData->getMasterData('mtb_status_image');
+        $this->arrDELIVERYDATE      = $masterData->getMasterData('mtb_delivery_date');
+        $this->arrPRODUCTLISTMAX    = $masterData->getMasterData('mtb_product_list_max');
     }
 
     /**
@@ -128,7 +128,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
 
         switch ($this->getMode()) {
 
-            case "json":
+            case 'json':
                    $this->arrProducts = $this->setStatusDataTo($this->arrProducts, $this->arrSTATUS, $this->arrSTATUS_IMAGE);
                    $this->arrProducts = $objProduct->setPriceTaxTo($this->arrProducts);
 
@@ -182,7 +182,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
                 if ($target_product_id > 0) {
                     // 商品IDの正当性チェック
                     if (!SC_Utils_Ex::sfIsInt($this->arrForm['product_id'])
-                        || !SC_Helper_DB_Ex::sfIsRecord("dtb_products", "product_id", $this->arrForm['product_id'], "del_flg = 0 AND status = 1")) {
+                        || !SC_Helper_DB_Ex::sfIsRecord('dtb_products', 'product_id', $this->arrForm['product_id'], "del_flg = 0 AND status = 1")) {
                         SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
                     }
 
@@ -269,8 +269,8 @@ class LC_Page_Products_List extends LC_Page_Ex {
                 break;
 
             default:
-                if (strlen($searchCondition["where_category"]) >= 1) {
-                    $dtb_product_categories = "(SELECT * FROM dtb_product_categories WHERE ".$searchCondition["where_category"].")";
+                if (strlen($searchCondition['where_category']) >= 1) {
+                    $dtb_product_categories = "(SELECT * FROM dtb_product_categories WHERE ".$searchCondition['where_category'].")";
                     $arrval_order           = $searchCondition['arrvalCategory'];
                 } else {
                     $dtb_product_categories = 'dtb_product_categories';
@@ -403,20 +403,20 @@ __EOS__;
         $searchCondition = array(
             'where'             => "",
             'arrval'            => array(),
-            "where_category"    => "",
+            'where_category'    => "",
             'arrvalCategory'    => array()
         );
 
         // カテゴリからのWHERE文字列取得
-        if ($arrSearchData["category_id"] != 0) {
-            list($searchCondition["where_category"], $searchCondition['arrvalCategory']) = SC_Helper_DB_Ex::sfGetCatWhere($arrSearchData["category_id"]);
+        if ($arrSearchData['category_id'] != 0) {
+            list($searchCondition['where_category'], $searchCondition['arrvalCategory']) = SC_Helper_DB_Ex::sfGetCatWhere($arrSearchData['category_id']);
         }
         // ▼対象商品IDの抽出
         // 商品検索条件の作成（未削除、表示）
         $searchCondition['where'] = "alldtl.del_flg = 0 AND alldtl.status = 1 ";
 
-        if (strlen($searchCondition["where_category"]) >= 1) {
-            $searchCondition['where'] .= ' AND EXISTS (SELECT * FROM dtb_product_categories WHERE ' . $searchCondition["where_category"] . ' AND product_id = alldtl.product_id)';
+        if (strlen($searchCondition['where_category']) >= 1) {
+            $searchCondition['where'] .= ' AND EXISTS (SELECT * FROM dtb_product_categories WHERE ' . $searchCondition['where_category'] . ' AND product_id = alldtl.product_id)';
             $searchCondition['arrval'] = array_merge($searchCondition['arrval'], $searchCondition['arrvalCategory']);
         }
 

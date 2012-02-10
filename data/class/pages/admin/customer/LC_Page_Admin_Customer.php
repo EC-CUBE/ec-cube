@@ -52,12 +52,12 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
-        $this->arrJob = $masterData->getMasterData("mtb_job");
+        $this->arrJob = $masterData->getMasterData('mtb_job');
         $this->arrJob["不明"] = "不明";
-        $this->arrSex = $masterData->getMasterData("mtb_sex");
-        $this->arrPageMax = $masterData->getMasterData("mtb_page_max");
-        $this->arrStatus = $masterData->getMasterData("mtb_customer_status");
-        $this->arrMagazineType = $masterData->getMasterData("mtb_magazine_type");
+        $this->arrSex = $masterData->getMasterData('mtb_sex');
+        $this->arrPageMax = $masterData->getMasterData('mtb_page_max');
+        $this->arrStatus = $masterData->getMasterData('mtb_customer_status');
+        $this->arrMagazineType = $masterData->getMasterData('mtb_magazine_type');
 
         // 日付プルダウン設定
         $objDate = new SC_Date_Ex();
@@ -181,8 +181,8 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
             return false;
         }
         // XXXX: 仮会員は物理削除となっていたが論理削除に変更。
-        $arrVal["del_flg"] = "1";
-        $arrVal["update_date"] = 'CURRENT_TIMESTAMP';
+        $arrVal['del_flg'] = '1';
+        $arrVal['update_date'] = 'CURRENT_TIMESTAMP';
         SC_Helper_Customer_Ex::sfEditCustomerData($arrVal, $customer_id);
         return true;
     }

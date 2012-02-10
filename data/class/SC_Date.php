@@ -165,7 +165,7 @@ class SC_Date {
 
     function getMinutesInterval() {
 
-        $minutes_array = array("00"=>"00", "30"=>"30");
+        $minutes_array = array('00'=>'00', '30'=>'30');
         return $minutes_array;
     }
 }

@@ -134,8 +134,8 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex {
 
             // ランク入れ替えの実行
             $objQuery->begin();
-            $objQuery->update("dtb_member", $sqlVal1, $where, array($id));
-            $objQuery->update("dtb_member", $sqlVal2, $where, array($up_id));
+            $objQuery->update('dtb_member', $sqlVal1, $where, array($id));
+            $objQuery->update('dtb_member', $sqlVal2, $where, array($up_id));
             $objQuery->commit();
         }
     }
@@ -163,8 +163,8 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex {
 
             // ランク入れ替えの実行
             $objQuery->begin();
-            $objQuery->update("dtb_member", $sqlVal1, $where, array($id));
-            $objQuery->update("dtb_member", $sqlVal2, $where, array($down_id));
+            $objQuery->update('dtb_member', $sqlVal1, $where, array($id));
+            $objQuery->update('dtb_member', $sqlVal2, $where, array($down_id));
             $objQuery->commit();
         }
     }

@@ -43,11 +43,11 @@ class SC_Helper_Customer {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
 
-        $array["update_date"] = 'CURRENT_TIMESTAMP';    // 更新日
+        $array['update_date'] = 'CURRENT_TIMESTAMP';    // 更新日
 
         // salt値の生成(insert時)または取得(update時)。
         if (is_numeric($customer_id)) {
-            $salt = $objQuery->get('salt', "dtb_customer", "customer_id = ? ", array($customer_id));
+            $salt = $objQuery->get('salt', 'dtb_customer', "customer_id = ? ", array($customer_id));
 
             // 旧バージョン(2.11未満)からの移行を考慮
             if (empty($salt)) $old_version_flag = true;
@@ -70,15 +70,15 @@ class SC_Helper_Customer {
             $array['password'] = SC_Utils_Ex::sfGetHashString($array['password'], $salt);
         }
         //-- 秘密の質問の更新がある場合は暗号化
-        if ($array["reminder_answer"] == DEFAULT_PASSWORD or $array["reminder_answer"] == "") {
+        if ($array['reminder_answer'] == DEFAULT_PASSWORD or $array['reminder_answer'] == "") {
             //更新しない
-            unset($array["reminder_answer"]);
+            unset($array['reminder_answer']);
 
             // 旧バージョン(2.11未満)からの移行を考慮
             if ($old_version_flag && $is_password_updated) {
                 // パスワードが更新される場合は、平文になっている秘密の質問を暗号化する
-                $reminder_answer = $objQuery->get('reminder_answer', "dtb_customer", "customer_id = ? ", array($customer_id));
-                $array["reminder_answer"] = SC_Utils_Ex::sfGetHashString($reminder_answer, $salt);
+                $reminder_answer = $objQuery->get('reminder_answer', 'dtb_customer', "customer_id = ? ", array($customer_id));
+                $array['reminder_answer'] = SC_Utils_Ex::sfGetHashString($reminder_answer, $salt);
             }
         } else {
             // 旧バージョン(2.11未満)からの移行を考慮
@@ -86,14 +86,14 @@ class SC_Helper_Customer {
                 // パスワードが更新されない場合は、平文のままにする
                 unset($array['salt']);
             } else {
-                $array["reminder_answer"] = SC_Utils_Ex::sfGetHashString($array["reminder_answer"], $salt);
+                $array['reminder_answer'] = SC_Utils_Ex::sfGetHashString($array['reminder_answer'], $salt);
             }
         }
 
         //-- 編集登録実行
         if (is_numeric($customer_id)) {
             // 編集
-            $objQuery->update("dtb_customer", $array, "customer_id = ? ", array($customer_id));
+            $objQuery->update('dtb_customer', $array, "customer_id = ? ", array($customer_id));
         } else {
             // 新規登録
 
@@ -101,10 +101,10 @@ class SC_Helper_Customer {
             $customer_id = $objQuery->nextVal('dtb_customer_customer_id');
             $array['customer_id'] = $customer_id;
             // 作成日
-            if (is_null($array["create_date"])) {
-                $array["create_date"] = 'CURRENT_TIMESTAMP';
+            if (is_null($array['create_date'])) {
+                $array['create_date'] = 'CURRENT_TIMESTAMP';
             }
-            $objQuery->insert("dtb_customer", $array);
+            $objQuery->insert('dtb_customer', $array);
         }
 
         $objQuery->commit();
@@ -121,11 +121,11 @@ class SC_Helper_Customer {
      */
     function sfGetCustomerPoint($order_id, $use_point, $add_point) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $arrRet = $objQuery->select("customer_id", "dtb_order", "order_id = ?", array($order_id));
+        $arrRet = $objQuery->select('customer_id', 'dtb_order', "order_id = ?", array($order_id));
         $customer_id = $arrRet[0]['customer_id'];
         if ($customer_id != "" && $customer_id >= 1) {
             if (USE_POINT !== false) {
-                $arrRet = $objQuery->select('point', "dtb_customer", "customer_id = ?", array($customer_id));
+                $arrRet = $objQuery->select('point', 'dtb_customer', "customer_id = ?", array($customer_id));
                 $point = $arrRet[0]['point'];
                 $total_point = $arrRet[0]['point'] - $use_point + $add_point;
             } else {
@@ -159,7 +159,7 @@ class SC_Helper_Customer {
         }
 
         $arrRet = $objQuery->select("email, update_date, del_flg",
-            "dtb_customer",
+            'dtb_customer',
             "email = ? OR email_mobile = ? ORDER BY del_flg",
             array($email, $email));
 
@@ -220,7 +220,7 @@ class SC_Helper_Customer {
         $objQuery       =& SC_Query_Ex::getSingletonInstance();
 
         // 会員情報DB取得
-        $ret        = $objQuery->select("*","dtb_customer","customer_id=?", array($customer_id));
+        $ret        = $objQuery->select("*",'dtb_customer',"customer_id=?", array($customer_id));
         $arrForm    = $ret[0];
 
         // 確認項目に複製
@@ -256,14 +256,14 @@ class SC_Helper_Customer {
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
         if ($add_where == '') {
             $where = 'customer_id = ?';
-            $arrData = $objQuery->getRow("*", "dtb_customer", $where, array($customer_id));
+            $arrData = $objQuery->getRow("*", 'dtb_customer', $where, array($customer_id));
         } else {
             $where = $add_where;
             if (SC_Utils_Ex::sfIsInt($customer_id)) {
                 $where .= ' AND customer_id = ?';
                 $arrAddVal[] = $customer_id;
             }
-            $arrData = $objQuery->getRow("*", "dtb_customer", $where, $arrAddVal);
+            $arrData = $objQuery->getRow("*", 'dtb_customer', $where, $arrAddVal);
         }
         return $arrData;
     }
@@ -279,7 +279,7 @@ class SC_Helper_Customer {
 
         do {
             $uniqid = SC_Utils_Ex::sfGetUniqRandomId('r');
-            $exists = $objQuery->exists("dtb_customer", "secret_key = ?", array($uniqid));
+            $exists = $objQuery->exists('dtb_customer', "secret_key = ?", array($uniqid));
         } while ($exists);
         return $uniqid;
     }
@@ -300,7 +300,7 @@ class SC_Helper_Customer {
             $where .= ' AND status = 1 AND del_flg = 0';
         }
 
-        return $objQuery->get("customer_id", "dtb_customer", $where, array($uniqid));
+        return $objQuery->get('customer_id', 'dtb_customer', $where, array($uniqid));
     }
 
     /**
@@ -315,8 +315,8 @@ class SC_Helper_Customer {
         SC_Helper_Customer_Ex::sfCustomerCommonParam($objFormParam);
         SC_Helper_Customer_Ex::sfCustomerRegisterParam($objFormParam, $isAdmin);
         if ($isAdmin) {
-            $objFormParam->addParam("会員ID", "customer_id", INT_LEN, 'n', array('NUM_CHECK'));
-            $objFormParam->addParam('携帯メールアドレス', "email_mobile", null, 'a', array('NO_SPTAB', 'EMAIL_CHECK', 'SPTAB_CHECK' ,'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'));
+            $objFormParam->addParam("会員ID", 'customer_id', INT_LEN, 'n', array('NUM_CHECK'));
+            $objFormParam->addParam('携帯メールアドレス', 'email_mobile', null, 'a', array('NO_SPTAB', 'EMAIL_CHECK', 'SPTAB_CHECK' ,'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'));
             $objFormParam->addParam("会員状態", 'status', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
             $objFormParam->addParam("SHOP用メモ", 'note', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
             $objFormParam->addParam("所持ポイント", 'point', INT_LEN, 'n', array('NUM_CHECK'));
@@ -324,7 +324,7 @@ class SC_Helper_Customer {
 
         if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
             // 登録確認画面の「戻る」ボタンのためのパラメーター
-            $objFormParam->addParam("戻る", "return", '', '', array(), '', false);
+            $objFormParam->addParam("戻る", 'return', '', '', array(), '', false);
         }
     }
 
@@ -339,10 +339,10 @@ class SC_Helper_Customer {
         SC_Helper_Customer_Ex::sfCustomerCommonParam($objFormParam);
         SC_Helper_Customer_Ex::sfCustomerRegisterParam($objFormParam, false, true);
         if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE) {
-            $objFormParam->addParam('携帯メールアドレス', "email_mobile", null, 'a', array('NO_SPTAB', 'EMAIL_CHECK', 'SPTAB_CHECK' ,'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'));
-            $objFormParam->addParam('携帯メールアドレス(確認)', "email_mobile02", null, 'a', array('NO_SPTAB', 'EMAIL_CHECK','SPTAB_CHECK' , 'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'), "", false);
+            $objFormParam->addParam('携帯メールアドレス', 'email_mobile', null, 'a', array('NO_SPTAB', 'EMAIL_CHECK', 'SPTAB_CHECK' ,'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'));
+            $objFormParam->addParam('携帯メールアドレス(確認)', 'email_mobile02', null, 'a', array('NO_SPTAB', 'EMAIL_CHECK','SPTAB_CHECK' , 'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'), "", false);
         } else {
-            $objFormParam->addParam('携帯メールアドレス', "email_mobile", null, 'a', array('EXIST_CHECK', 'NO_SPTAB', 'EMAIL_CHECK', 'SPTAB_CHECK' ,'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'));
+            $objFormParam->addParam('携帯メールアドレス', 'email_mobile', null, 'a', array('EXIST_CHECK', 'NO_SPTAB', 'EMAIL_CHECK', 'SPTAB_CHECK' ,'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'));
             $objFormParam->addParam('メールアドレス', 'email', null, 'a', array('NO_SPTAB', 'EMAIL_CHECK', 'SPTAB_CHECK' ,'EMAIL_CHAR_CHECK'));
         }
     }
@@ -371,11 +371,11 @@ class SC_Helper_Customer {
         $objFormParam->addParam("お名前(名)", 'name02', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK' , 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam("お名前(フリガナ・姓)", 'kana01', STEXT_LEN, 'CKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK' ,'MAX_LENGTH_CHECK', 'KANA_CHECK'));
         $objFormParam->addParam("お名前(フリガナ・名)", 'kana02', STEXT_LEN, 'CKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK' ,'MAX_LENGTH_CHECK', 'KANA_CHECK'));
-        $objFormParam->addParam("郵便番号1", "zip01", ZIP01_LEN, 'n', array('EXIST_CHECK', 'SPTAB_CHECK' ,'NUM_CHECK', 'NUM_COUNT_CHECK'));
-        $objFormParam->addParam("郵便番号2", "zip02", ZIP02_LEN, 'n', array('EXIST_CHECK', 'SPTAB_CHECK' ,'NUM_CHECK', 'NUM_COUNT_CHECK'));
+        $objFormParam->addParam("郵便番号1", 'zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'SPTAB_CHECK' ,'NUM_CHECK', 'NUM_COUNT_CHECK'));
+        $objFormParam->addParam("郵便番号2", 'zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'SPTAB_CHECK' ,'NUM_CHECK', 'NUM_COUNT_CHECK'));
         $objFormParam->addParam("都道府県", 'pref', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("住所1", "addr01", MTEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("住所2", "addr02", MTEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("住所1", 'addr01', MTEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("住所2", 'addr02', MTEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam("お電話番号1", 'tel01', TEL_ITEM_LEN, 'n', array('EXIST_CHECK', 'SPTAB_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam("お電話番号2", 'tel02', TEL_ITEM_LEN, 'n', array('EXIST_CHECK', 'SPTAB_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam("お電話番号3", 'tel03', TEL_ITEM_LEN, 'n', array('EXIST_CHECK', 'SPTAB_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -391,14 +391,14 @@ class SC_Helper_Customer {
      */
     function sfCustomerRegisterParam(&$objFormParam, $isAdmin = false, $is_mypage = false) {
         $objFormParam->addParam("パスワード", 'password', STEXT_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("パスワード確認用の質問の答え", "reminder_answer", STEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("パスワード確認用の質問の答え", 'reminder_answer', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam("パスワード確認用の質問", 'reminder', STEXT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam("性別", 'sex', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam("職業", 'job', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam("年", 'year', 4, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
         $objFormParam->addParam("月", 'month', 2, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
         $objFormParam->addParam("日", 'day', 2, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
-        $objFormParam->addParam("メールマガジン", "mailmaga_flg", INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("メールマガジン", 'mailmaga_flg', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
         if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE) {
             $objFormParam->addParam("FAX番号1", 'fax01', TEL_ITEM_LEN, 'n', array('SPTAB_CHECK'));
@@ -407,7 +407,7 @@ class SC_Helper_Customer {
             $objFormParam->addParam('メールアドレス', 'email', null, 'a', array('NO_SPTAB', 'EXIST_CHECK', 'EMAIL_CHECK', 'SPTAB_CHECK' ,'EMAIL_CHAR_CHECK'));
             if (!$isAdmin) {
                 $objFormParam->addParam("パスワード(確認)", 'password02', STEXT_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK' ,'ALNUM_CHECK'), "", false);
-                $objFormParam->addParam('メールアドレス(確認)', "email02", null, 'a', array('NO_SPTAB', 'EXIST_CHECK', 'EMAIL_CHECK','SPTAB_CHECK' , 'EMAIL_CHAR_CHECK'), "", false);
+                $objFormParam->addParam('メールアドレス(確認)', 'email02', null, 'a', array('NO_SPTAB', 'EXIST_CHECK', 'EMAIL_CHECK','SPTAB_CHECK' , 'EMAIL_CHAR_CHECK'), "", false);
             }
         } else {
             if (!$is_mypage) {
@@ -493,8 +493,8 @@ class SC_Helper_Customer {
         $objErr = new SC_CheckError_Ex($arrParams);
         $objErr->arrErr = $objFormParam->checkError();
 
-        $objErr->doFunc(array("お電話番号", "tel01", "tel02", "tel03"),array('TEL_CHECK'));
-        $objErr->doFunc(array("郵便番号", "zip01", "zip02"), array('ALL_EXIST_CHECK'));
+        $objErr->doFunc(array("お電話番号", 'tel01', 'tel02', 'tel03'),array('TEL_CHECK'));
+        $objErr->doFunc(array("郵便番号", 'zip01', 'zip02'), array('ALL_EXIST_CHECK'));
 
         return $objErr;
     }
@@ -512,10 +512,10 @@ class SC_Helper_Customer {
         if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE) {
             if (!$isAdmin) {
                 $objErr->doFunc(array('パスワード', 'password', PASSWORD_MIN_LEN, PASSWORD_MAX_LEN) ,array('SPTAB_CHECK', 'NUM_RANGE_CHECK'));
-                $objErr->doFunc(array('パスワード', 'パスワード(確認)', 'password', "password02") ,array('EQUAL_CHECK'));
-                $objErr->doFunc(array('メールアドレス', 'メールアドレス(確認)', 'email', "email02") ,array('EQUAL_CHECK'));
+                $objErr->doFunc(array('パスワード', 'パスワード(確認)', 'password', 'password02') ,array('EQUAL_CHECK'));
+                $objErr->doFunc(array('メールアドレス', 'メールアドレス(確認)', 'email', 'email02') ,array('EQUAL_CHECK'));
             }
-            $objErr->doFunc(array("FAX番号", "fax01", "fax02", "fax03") ,array('TEL_CHECK'));
+            $objErr->doFunc(array("FAX番号", 'fax01', 'fax02', 'fax03') ,array('TEL_CHECK'));
         }
 
         if (!$isAdmin) {
@@ -588,28 +588,28 @@ class SC_Helper_Customer {
         // 拡張エラーチェック初期化
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         // 拡張エラーチェック
-        $objErr->doFunc(array("誕生日(開始日)", "search_b_start_year", "search_b_start_month", "search_b_start_day"), array('CHECK_DATE'));
-        $objErr->doFunc(array("誕生日(終了日)", "search_b_end_year", "search_b_end_month", "search_b_end_day"), array('CHECK_DATE'));
+        $objErr->doFunc(array("誕生日(開始日)", 'search_b_start_year', 'search_b_start_month', 'search_b_start_day'), array('CHECK_DATE'));
+        $objErr->doFunc(array("誕生日(終了日)", 'search_b_end_year', 'search_b_end_month', 'search_b_end_day'), array('CHECK_DATE'));
 
-        $objErr->doFunc(array("誕生日(開始日)","誕生日(終了日)", "search_b_start_year", "search_b_start_month", "search_b_start_day", "search_b_end_year", "search_b_end_month", "search_b_end_day"), array('CHECK_SET_TERM'));
-        $objErr->doFunc(array("登録・更新日(開始日)", "search_start_year", "search_start_month", "search_start_day",), array('CHECK_DATE'));
-        $objErr->doFunc(array("登録・更新日(終了日)", "search_end_year", "search_end_month", "search_end_day"), array('CHECK_DATE'));
-        $objErr->doFunc(array("登録・更新日(開始日)","登録・更新日(終了日)", "search_start_year", "search_start_month", "search_start_day", "search_end_year", "search_end_month", "search_end_day"), array('CHECK_SET_TERM'));
-        $objErr->doFunc(array("最終購入日(開始日)", "search_buy_start_year", "search_buy_start_month", "search_buy_start_day",), array('CHECK_DATE'));
-        $objErr->doFunc(array("最終購入(終了日)", "search_buy_end_year", "search_buy_end_month", "search_buy_end_day"), array('CHECK_DATE'));
+        $objErr->doFunc(array("誕生日(開始日)","誕生日(終了日)", 'search_b_start_year', 'search_b_start_month', 'search_b_start_day', 'search_b_end_year', 'search_b_end_month', 'search_b_end_day'), array('CHECK_SET_TERM'));
+        $objErr->doFunc(array("登録・更新日(開始日)", 'search_start_year', 'search_start_month', 'search_start_day',), array('CHECK_DATE'));
+        $objErr->doFunc(array("登録・更新日(終了日)", 'search_end_year', 'search_end_month', 'search_end_day'), array('CHECK_DATE'));
+        $objErr->doFunc(array("登録・更新日(開始日)","登録・更新日(終了日)", 'search_start_year', 'search_start_month', 'search_start_day', 'search_end_year', 'search_end_month', 'search_end_day'), array('CHECK_SET_TERM'));
+        $objErr->doFunc(array("最終購入日(開始日)", 'search_buy_start_year', 'search_buy_start_month', 'search_buy_start_day',), array('CHECK_DATE'));
+        $objErr->doFunc(array("最終購入(終了日)", 'search_buy_end_year', 'search_buy_end_month', 'search_buy_end_day'), array('CHECK_DATE'));
         //購入金額(from) ＞ 購入金額(to) の場合はエラーとする
-        $objErr->doFunc(array("最終購入日(開始日)","登録・更新日(終了日)", "search_buy_start_year", "search_buy_start_month", "search_buy_start_day", "search_buy_end_year", "search_buy_end_month", "search_buy_end_day"), array('CHECK_SET_TERM'));
+        $objErr->doFunc(array("最終購入日(開始日)","登録・更新日(終了日)", 'search_buy_start_year', 'search_buy_start_month', 'search_buy_start_day', 'search_buy_end_year', 'search_buy_end_month', 'search_buy_end_day'), array('CHECK_SET_TERM'));
 
-        if ((SC_Utils_Ex::sfIsInt($array["search_buy_total_from"])
-             && SC_Utils_Ex::sfIsInt($array["search_buy_total_to"]))
-             && ($array["search_buy_total_from"] > $array["buy_total_to"])) {
-            $objErr->arrErr["search_buy_total_from"] .= "※ 購入金額の指定範囲が不正です。";
+        if ((SC_Utils_Ex::sfIsInt($array['search_buy_total_from'])
+             && SC_Utils_Ex::sfIsInt($array['search_buy_total_to']))
+             && ($array['search_buy_total_from'] > $array['buy_total_to'])) {
+            $objErr->arrErr['search_buy_total_from'] .= "※ 購入金額の指定範囲が不正です。";
         }
 
-        if ((SC_Utils_Ex::sfIsInt($array["search_buy_times_from"])
-             && SC_Utils_Ex::sfIsInt($array["search_buy_times_to"]))
-             && ($array["search_buy_times_from"] > $array["search_buy_times_to"])) {
-            $objErr->arrErr["search_buy_times_from"] .= "※ 購入回数の指定範囲が不正です。";
+        if ((SC_Utils_Ex::sfIsInt($array['search_buy_times_from'])
+             && SC_Utils_Ex::sfIsInt($array['search_buy_times_to']))
+             && ($array['search_buy_times_from'] > $array['search_buy_times_to'])) {
+            $objErr->arrErr['search_buy_times_from'] .= "※ 購入回数の指定範囲が不正です。";
         }
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);

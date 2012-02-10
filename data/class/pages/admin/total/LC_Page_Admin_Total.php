@@ -46,7 +46,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         // GDライブラリのインストール判定
-        $this->install_GD = function_exists("gd_info") ? true : false;
+        $this->install_GD = function_exists('gd_info') ? true : false;
         $this->tpl_mainpage         = 'total/index.tpl';
         $this->tpl_graphsubtitle    = 'total/subtitle.tpl';
         $this->tpl_titleimage       = ROOT_URLPATH.'img/title/title_sale.jpg';
@@ -54,9 +54,9 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $this->tpl_mainno           = 'total';
 
         $masterData                 = new SC_DB_MasterData_Ex();
-        $this->arrWDAY              = $masterData->getMasterData("mtb_wday");
-        $this->arrSex               = $masterData->getMasterData("mtb_sex");
-        $this->arrJob               = $masterData->getMasterData("mtb_job");
+        $this->arrWDAY              = $masterData->getMasterData('mtb_wday');
+        $this->arrSex               = $masterData->getMasterData('mtb_sex');
+        $this->arrJob               = $masterData->getMasterData('mtb_job');
 
         // 登録・更新日検索用
         $objDate                    = new SC_Date_Ex();
@@ -173,8 +173,8 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
     /* デフォルト値の取得 */
     function lfGetDateDefault() {
         $year = date('Y');
-        $month = date("m");
-        $day = date("d");
+        $month = date('m');
+        $day = date('d');
 
         $list = isset($_SESSION['total']) ? $_SESSION['total'] : "";
 
@@ -203,15 +203,15 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $arrList = $this->lfGetDateDefault();
 
         // 月度集計
-        $objFormParam->addParam("月度", "search_startyear_m", INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startyear_m']);
-        $objFormParam->addParam("月度", "search_startmonth_m", INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startmonth_m']);
+        $objFormParam->addParam("月度", 'search_startyear_m', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startyear_m']);
+        $objFormParam->addParam("月度", 'search_startmonth_m', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startmonth_m']);
         // 期間集計
-        $objFormParam->addParam("開始日", "search_startyear", INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startyear']);
-        $objFormParam->addParam("開始日", "search_startmonth", INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startmonth']);
-        $objFormParam->addParam("開始日", "search_startday", INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startday']);
-        $objFormParam->addParam("終了日", "search_endyear", INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endyear']);
-        $objFormParam->addParam("終了日", "search_endmonth", INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endmonth']);
-        $objFormParam->addParam("終了日", "search_endday", INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endday']);
+        $objFormParam->addParam("開始日", 'search_startyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startyear']);
+        $objFormParam->addParam("開始日", 'search_startmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startmonth']);
+        $objFormParam->addParam("開始日", 'search_startday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startday']);
+        $objFormParam->addParam("終了日", 'search_endyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endyear']);
+        $objFormParam->addParam("終了日", 'search_endmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endmonth']);
+        $objFormParam->addParam("終了日", 'search_endday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endday']);
 
         // hiddenデータの取得用
         $objFormParam->addParam("", 'page');
@@ -229,16 +229,16 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
         // 特殊項目チェック
         if ($objFormParam->getValue('form') == 1) {
-            $objErr->doFunc(array("月度", "search_startyear_m"), array('ONE_EXIST_CHECK'));
+            $objErr->doFunc(array("月度", 'search_startyear_m'), array('ONE_EXIST_CHECK'));
         }
 
         if ($objFormParam->getValue('form') == 2) {
-            $objErr->doFunc(array("期間", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array('FULL_EXIST_CHECK'));
+            $objErr->doFunc(array("期間", 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('FULL_EXIST_CHECK'));
         }
-        $objErr->doFunc(array("月度", "search_startyear_m", "search_startmonth_m"), array('ALL_EXIST_CHECK'));
-        $objErr->doFunc(array("開始日", "search_startyear", "search_startmonth", "search_startday"), array('CHECK_DATE'));
-        $objErr->doFunc(array("終了日", "search_endyear", "search_endmonth", "search_endday"), array('CHECK_DATE'));
-        $objErr->doFunc(array("開始日", "終了日", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array('CHECK_SET_TERM'));
+        $objErr->doFunc(array("月度", 'search_startyear_m', 'search_startmonth_m'), array('ALL_EXIST_CHECK'));
+        $objErr->doFunc(array("開始日", 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
+        $objErr->doFunc(array("終了日", 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_DATE'));
+        $objErr->doFunc(array("開始日", "終了日", 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_SET_TERM'));
         return $objErr->arrErr;
     }
 
@@ -455,7 +455,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
     }
 
     // 会員、非会員集計のWHERE分の作成
-    function lfGetWhereMember($col_date, $sdate, $edate, $type, $col_member = "customer_id") {
+    function lfGetWhereMember($col_date, $sdate, $edate, $type, $col_member = 'customer_id') {
         $where = "";
         // 取得日付の指定
         if ($sdate != "") {
@@ -515,7 +515,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             END AS member,
             order_sex
                 ";
-        $from       = "dtb_order";
+        $from       = 'dtb_order';
 
         $objQuery->setGroupBy("member, order_sex");
 
@@ -531,7 +531,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             }
         }
 
-        $tpl_image = $this->lfGetGraphPie($arrTotalResults, "member_name", 'member', "(売上比率)", $sdate, $edate);
+        $tpl_image = $this->lfGetGraphPie($arrTotalResults, 'member_name', 'member', "(売上比率)", $sdate, $edate);
 
         return array($arrTotalResults, $tpl_image);
     }
@@ -566,7 +566,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $objQuery->setOrder('total DESC');
         $arrTotalResults = $objQuery->select($col, $from, $where, $arrval);
 
-        $tpl_image  = $this->lfGetGraphPie($arrTotalResults, "product_name", "products_" . $type, "(売上比率)", $sdate, $edate);
+        $tpl_image  = $this->lfGetGraphPie($arrTotalResults, 'product_name', 'products_' . $type, "(売上比率)", $sdate, $edate);
 
         return array($arrTotalResults, $tpl_image);
     }
@@ -601,7 +601,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             }
 
         }
-        $tpl_image     = $this->lfGetGraphPie($arrTotalResults, "job_name", "job_" . $type, "(売上比率)", $sdate, $edate);
+        $tpl_image     = $this->lfGetGraphPie($arrTotalResults, 'job_name', 'job_' . $type, "(売上比率)", $sdate, $edate);
 
         return array($arrTotalResults, $tpl_image);
     }
@@ -638,7 +638,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             }
 
         }
-        $tpl_image = $this->lfGetGraphBar($arrTotalResults, "age_name", "age_" . $type, "(年齢)", "(売上合計)", $sdate, $edate);
+        $tpl_image = $this->lfGetGraphBar($arrTotalResults, 'age_name', 'age_' . $type, "(年齢)", "(売上合計)", $sdate, $edate);
 
         return array($arrTotalResults, $tpl_image);
     }
@@ -691,7 +691,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
         $arrTotalResults = $this->lfAddBlankLine($arrTotalResults, $type, $sdate, $edate);
         // todo GDない場合の処理
-        $tpl_image       = $this->lfGetGraphLine($arrTotalResults, 'str_date', "term_" . $type, $xtitle, $ytitle, $sdate, $edate, $xincline);
+        $tpl_image       = $this->lfGetGraphLine($arrTotalResults, 'str_date', 'term_' . $type, $xtitle, $ytitle, $sdate, $edate, $xincline);
         $arrTotalResults = $this->lfAddTotalLine($arrTotalResults);
 
         return array($arrTotalResults, $tpl_image);

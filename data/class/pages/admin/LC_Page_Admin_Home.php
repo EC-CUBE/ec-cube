@@ -142,7 +142,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
     function lfGetCustomerCnt() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = "COUNT(customer_id)";
-        $table = "dtb_customer";
+        $table = 'dtb_customer';
         $where = "del_flg = 0 AND status = 2";
         return $objQuery->get($col, $table, $where);
     }
@@ -188,7 +188,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
 
         $col = "SUM(point)";
         $where = "del_flg = 0";
-        $from = "dtb_customer";
+        $from = 'dtb_customer';
         return $objQuery->get($col, $from, $where);
     }
 
@@ -228,7 +228,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $cols = "product_id, name";
-        $table = "dtb_products";
+        $table = 'dtb_products';
         $where = "product_id IN ("
                   . "SELECT product_id FROM dtb_products_class "
                   . "WHERE stock_unlimited = ? AND stock <= 0)";

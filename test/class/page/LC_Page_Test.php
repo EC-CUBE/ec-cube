@@ -116,7 +116,7 @@ class LC_Page_Test extends PHPUnit_Framework_TestCase {
         $objPage = new LC_Page();
         $_SERVER['DOCUMENT_ROOT'] = realpath(dirname(__FILE__) . "/../../../html");
 
-        $queryString = array("mode" => "update", "type" => "text");
+        $queryString = array('mode' => 'update', 'type' => 'text');
         $url = $objPage->getLocation("/abouts/index.php", $queryString);
 
         $this->assertEquals(HTTP_URL . "abouts/index.php?mode=update&type=text", $url);
@@ -132,7 +132,7 @@ class LC_Page_Test extends PHPUnit_Framework_TestCase {
         $objPage = new LC_Page();
         $_SERVER['DOCUMENT_ROOT'] = realpath(dirname(__FILE__) . "/../../../html");
 
-        $queryString = array("mode" => "update", "type" => "text");
+        $queryString = array('mode' => 'update', 'type' => 'text');
         $url = $objPage->getLocation("/abouts/index.php", $queryString, true);
 
         $this->assertEquals(HTTPS_URL . "abouts/index.php?mode=update&type=text", $url);
@@ -148,7 +148,7 @@ class LC_Page_Test extends PHPUnit_Framework_TestCase {
         $objPage = new LC_Page();
         $documentRoot = realpath(dirname(__FILE__) . "/../../../html");
 
-        $queryString = array("mode" => "update", "type" => "text");
+        $queryString = array('mode' => 'update', 'type' => 'text');
         $url = $objPage->getLocation("/abouts/index.php", array(),
                                      false, $documentRoot);
 

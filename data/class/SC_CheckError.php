@@ -573,7 +573,7 @@ class SC_CheckError {
     // value[0] = 項目名 value[1] = 判定対象
     function ZERO_CHECK($value) {
         $this->createParam($value);
-        if ($this->arrParam[$value[1]] == "0") {
+        if ($this->arrParam[$value[1]] == '0') {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "は1以上を入力してください。<br />";
         }
     }
@@ -967,8 +967,8 @@ class SC_CheckError {
         }
         if ((strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0 && strlen($this->arrParam[$value[4]]) > 0) &&  (strlen($this->arrParam[$value[5]]) > 0 || strlen($this->arrParam[$value[6]]) > 0 || strlen($this->arrParam[$value[7]]) > 0)) {
 
-            $date1 = $this->arrParam[$value[2]] .sprintf("%02d", $this->arrParam[$value[3]]) .sprintf("%02d",$this->arrParam[$value[4]]) ."000000";
-            $date2 = $this->arrParam[$value[5]] .sprintf("%02d", $this->arrParam[$value[6]]) .sprintf("%02d",$this->arrParam[$value[7]]) ."235959";
+            $date1 = $this->arrParam[$value[2]] .sprintf("%02d", $this->arrParam[$value[3]]) .sprintf("%02d",$this->arrParam[$value[4]]) .'000000';
+            $date2 = $this->arrParam[$value[5]] .sprintf("%02d", $this->arrParam[$value[6]]) .sprintf("%02d",$this->arrParam[$value[7]]) .'235959';
 
             if (($this->arrErr[$value[2]] == "" && $this->arrErr[$value[5]] == "") && $date1 > $date2) {
                 $this->arrErr[$value[2]] = "※ " .$value[0]. "と" .$value[1]. "の期間指定が不正です。<br />";

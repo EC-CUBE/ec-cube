@@ -80,12 +80,12 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase {
      */
     function testGetAll() {
         $this->createTestTable();
-        $result = $this->setTestData(1, "2", "f");
+        $result = $this->setTestData(1, '2', 'f');
 
-        $this->expected =  array(array("id" => "1",
-                                       "column1" => "1",
-                                       "column2" => "2",
-                                       "column3" => "f"));
+        $this->expected =  array(array('id' => '1',
+                                       'column1' => '1',
+                                       'column2' => '2',
+                                       'column3' => 'f'));
         $this->actual = $this->objDbConn->getAll("SELECT * FROM test_table WHERE id = ?", array(1));
 
         $this->verify();
@@ -112,9 +112,9 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase {
      */
     function testGetOne() {
         $this->createTestTable();
-        $this->setTestData(1, "2", "f");
-        $this->setTestData(1, "2", "f");
-        $this->setTestData(1, "2", "f");
+        $this->setTestData(1, '2', 'f');
+        $this->setTestData(1, '2', 'f');
+        $this->setTestData(1, '2', 'f');
 
         $this->expected = 3;
         $this->actual = $this->objDbConn->getOne("SELECT COUNT(*) FROM test_table");
@@ -128,9 +128,9 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase {
     /*
     function testGetOneIsError() {
         $this->createTestTable();
-        $this->setTestData(1, "2", "f");
-        $this->setTestData(1, "2", "f");
-        $this->setTestData(1, "2", "f");
+        $this->setTestData(1, '2', 'f');
+        $this->setTestData(1, '2', 'f');
+        $this->setTestData(1, '2', 'f');
 
         //$this->expected = new PEAR_Error();
         $this->actual = $this->objDbConn->getOne("SELECT COUNT(*) FROM xxx_table");
@@ -144,11 +144,11 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase {
      */
     function testGetRow() {
         $this->createTestTable();
-        $this->setTestData(1, "1", "f");
-        $this->setTestData(2, "2", "f");
-        $this->setTestData(3, "3", "f");
+        $this->setTestData(1, '1', 'f');
+        $this->setTestData(2, '2', 'f');
+        $this->setTestData(3, '3', 'f');
 
-        $this->expected = array("column1" => 1, "column2" => 1);
+        $this->expected = array('column1' => 1, 'column2' => 1);
         $this->actual = $this->objDbConn->getRow("SELECT column1, column2 FROM test_table WHERE id = ?", array(1));
         $this->verify();
     }
@@ -158,12 +158,12 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase {
      */
     function testGetCol() {
         $this->createTestTable();
-        $this->setTestData(1, "1", "f");
-        $this->setTestData(2, "2", "f");
-        $this->setTestData(3, "3", "f");
+        $this->setTestData(1, '1', 'f');
+        $this->setTestData(2, '2', 'f');
+        $this->setTestData(3, '3', 'f');
 
         $this->expected = array(1, 2);
-        $this->actual = $this->objDbConn->getCol("SELECT column1, column2 FROM test_table WHERE id < ?", "column1", array(3));
+        $this->actual = $this->objDbConn->getCol("SELECT column1, column2 FROM test_table WHERE id < ?", 'column1', array(3));
 
         $this->verify();
 
@@ -175,12 +175,12 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase {
     /*
     function testAutoExecuteOfInsert() {
         $this->createTestTable();
-        $result = $this->setTestData(1, "2", "f");
+        $result = $this->setTestData(1, '2', 'f');
 
-        $this->expected =  array(array("id" => "1",
-                                       "column1" => "1",
-                                       "column2" => "2",
-                                       "column3" => "f"));
+        $this->expected =  array(array('id' => '1',
+                                       'column1' => '1',
+                                       'column2' => '2',
+                                       'column3' => 'f'));
         $this->actual = $this->objDbConn->getAll("SELECT * FROM test_table");
 
         //$this->assertEquals(1, $result);
@@ -193,14 +193,14 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase {
     /*
     function testAutoExecuteOfUpdate() {
         $this->createTestTable();
-        $this->setTestData(1, "2", "f");
+        $this->setTestData(1, '2', 'f');
 
-        $data = array("id" => "1",
-                      "column1" => "2",
-                      "column2" => "3",
-                      "column3" => "t");
+        $data = array('id' => '1',
+                      'column1' => '2',
+                      'column2' => '3',
+                      'column3' => 't');
 
-        $result = $this->objDbConn->autoExecute("test_table", $data, "id = 1");
+        $result = $this->objDbConn->autoExecute('test_table', $data, "id = 1");
 
         $this->expected =  array($data);
         $this->actual = $this->objDbConn->getAll("SELECT * FROM test_table");
@@ -216,14 +216,14 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase {
     function testQuery1() {
         $this->createTestTable();
         $sql = "INSERT INTO test_table VALUES (?, ?, ?, ?)";
-        $data = array("1", "1", "1", "f");
+        $data = array('1', '1', '1', 'f');
 
         $this->objDbConn->query($sql, $data);
 
-        $this->expected =  array(array("id" => "1",
-                                       "column1" => "1",
-                                       "column2" => "1",
-                                       "column3" => "f"));
+        $this->expected =  array(array('id' => '1',
+                                       'column1' => '1',
+                                       'column2' => '1',
+                                       'column3' => 'f'));
 
         $this->actual = $this->objDbConn->getAll("SELECT * FROM test_table");
 
@@ -235,17 +235,17 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase {
      */
     function testQuery2() {
         $this->createTestTable();
-        $this->setTestData(1, "2", "f");
+        $this->setTestData(1, '2', 'f');
 
         $sql = "UPDATE test_table SET column1 = ?, column2 = ? WHERE id = ?";
-        $data = array("2", "2", "1");
+        $data = array('2', '2', '1');
 
         $this->objDbConn->query($sql, $data);
 
-        $this->expected =  array(array("id" => "1",
-                                       "column1" => "2",
-                                       "column2" => "2",
-                                       "column3" => "f"));
+        $this->expected =  array(array('id' => '1',
+                                       'column1' => '2',
+                                       'column2' => '2',
+                                       'column3' => 'f'));
 
         $this->actual = $this->objDbConn->getAll("SELECT * FROM test_table");
 

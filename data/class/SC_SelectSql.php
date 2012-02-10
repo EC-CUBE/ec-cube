@@ -180,7 +180,7 @@ class SC_SelectSql {
     /* 複数のカラムでORで優先検索する場合　例：　AND ( item_flag1 = xxx OR item_flag2 = xxx OR item_flag3 = xxx) AND ...
 
         配列の構造例　
-        if ($_POST['show_site1']) $arrShowsite_1 = array('column' => "show_site1",
+        if ($_POST['show_site1']) $arrShowsite_1 = array('column' => 'show_site1',
                                                             'value'  => $_POST['show_site1']);
 
     */

@@ -50,7 +50,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
         $this->tpl_subtitle = '受注管理';
 
         $masterData = new SC_DB_MasterData_Ex();
-        $this->arrMAILTEMPLATE = $masterData->getMasterData("mtb_mail_template");
+        $this->arrMAILTEMPLATE = $masterData->getMasterData('mtb_mail_template');
         $this->httpCacheControl('nocache');
     }
 
@@ -126,7 +126,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
         $col = "send_date, subject, template_id, send_id";
         $where = "order_id = ?";
         $objQuery->setOrder("send_date DESC");
-        return $objQuery->select($col, "dtb_mail_history", $where, array($order_id));
+        return $objQuery->select($col, 'dtb_mail_history', $where, array($order_id));
     }
 
     /**
@@ -187,7 +187,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
         if (SC_Utils_Ex::sfIsInt($objFormParam->getValue('template_id'))) {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $where = "template_id = ?";
-            $mailTemplates = $objQuery->select("subject, header, footer", "dtb_mailtemplate", $where, array($objFormParam->getValue('template_id')));
+            $mailTemplates = $objQuery->select("subject, header, footer", 'dtb_mailtemplate', $where, array($objFormParam->getValue('template_id')));
             if (!is_null($mailTemplates)) {
                 foreach (array('subject','header','footer') as $key) {
                     $objFormParam->setValue($key,$mailTemplates[$key]);
@@ -219,8 +219,8 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
         // 検索条件のパラメーターを初期化
         parent::lfInitParam($objFormParam);
 
-        $objFormParam->addParam("オーダーID", "order_id", INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("テンプレート", "template_id", INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam("オーダーID", 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam("テンプレート", 'template_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam("メールタイトル", 'subject', STEXT_LEN, 'KVa',  array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
         $objFormParam->addParam("ヘッダー", 'header', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
         $objFormParam->addParam("フッター", 'footer', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));

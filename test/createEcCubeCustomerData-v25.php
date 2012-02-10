@@ -41,7 +41,7 @@ define('CUSTOMERS_VOLUME', 100);    // ※最大値:99999までで指定して�
  * 実際にメールを受信するためには、メールサーバが別名アドレスに対応している必要があります。
  * (例えば、Gmailは別名アドレスに対応しています)
  */
-define('EMAIL_ADDRESS_ACCOUNT', "test");
+define('EMAIL_ADDRESS_ACCOUNT', 'test');
 
 /**
  * 会員メールアドレスのドメイン名
@@ -114,36 +114,36 @@ class CreateEcCubeCustomerData {
             $sqlval['name02'] = sprintf("太郎%05d", $i+1);
             $sqlval['kana01'] = "ケンショウ";
             $sqlval['kana02'] = "タロウ";
-            $sqlval['zip01'] = "101";
-            $sqlval['zip02'] = "0051";
-            $sqlval['pref'] = "13";	// 13:東京都
+            $sqlval['zip01'] = '101';
+            $sqlval['zip02'] = '0051';
+            $sqlval['pref'] = '13';	// 13:東京都
             $sqlval['addr01'] = "千代田区神田神保町";
             $sqlval['addr02'] = "1-3-5";
-            $sqlval['tel01'] = "012";
-            $sqlval['tel02'] = "3456";
-            $sqlval['tel03'] = "7890";
+            $sqlval['tel01'] = '012';
+            $sqlval['tel02'] = '3456';
+            $sqlval['tel03'] = '7890';
             $sqlval['email'] = EMAIL_ADDRESS_ACCOUNT . "+" . sprintf("%05d", $i+1) . EMAIL_ADDRESS_DOMAIN;
-            $sqlval['sex'] = "1";    // 1:男性 2:女性
-            $sqlval['password'] = "test";
-            $sqlval['reminder'] = "1";    // 1:「母親の旧姓は？」
+            $sqlval['sex'] = '1';    // 1:男性 2:女性
+            $sqlval['password'] = 'test';
+            $sqlval['reminder'] = '1';    // 1:「母親の旧姓は？」
             $sqlval['reminder_answer'] = "てすと";
-            $sqlval['mailmaga_flg'] = (string) "1";    // 1:HTMLメール＋テキストメールを受け取る 2:テキストメールを受け取る 3:受け取らない
+            $sqlval['mailmaga_flg'] = (string) '1';    // 1:HTMLメール＋テキストメールを受け取る 2:テキストメールを受け取る 3:受け取らない
 
             // 生年月日の作成
             $sqlval['birth']    = SC_Utils_Ex::sfGetTimestamp(2006, 9, 1);
 
             // 仮会員 1 本会員 2
-            $sqlval['status']   = "2";
+            $sqlval['status']   = '2';
 
             /*
              * secret_keyは、テーブルで重複許可されていない場合があるので、
              * 本会員登録では利用されないがセットしておく。
              */
-            $sqlval["secret_key"] = SC_Helper_Customer_Ex::sfGetUniqSecretKey();
+            $sqlval['secret_key'] = SC_Helper_Customer_Ex::sfGetUniqSecretKey();
 
             // 入会時ポイント
             $CONF = SC_Helper_DB_Ex::sfGetBasisData();
-            $sqlval['point'] = $CONF["welcome_point"];
+            $sqlval['point'] = $CONF['welcome_point'];
 
             // 会員データの生成
             SC_Helper_Customer_Ex::sfEditCustomerData($sqlval);

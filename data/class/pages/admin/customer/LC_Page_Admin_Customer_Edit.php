@@ -52,11 +52,11 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
-        $this->arrJob = $masterData->getMasterData("mtb_job");
-        $this->arrSex = $masterData->getMasterData("mtb_sex");
-        $this->arrReminder = $masterData->getMasterData("mtb_reminder");
-        $this->arrStatus = $masterData->getMasterData("mtb_customer_status");
-        $this->arrMailMagazineType = $masterData->getMasterData("mtb_mail_magazine_type");
+        $this->arrJob = $masterData->getMasterData('mtb_job');
+        $this->arrSex = $masterData->getMasterData('mtb_sex');
+        $this->arrReminder = $masterData->getMasterData('mtb_reminder');
+        $this->arrStatus = $masterData->getMasterData('mtb_customer_status');
+        $this->arrMailMagazineType = $masterData->getMasterData('mtb_mail_magazine_type');
 
         // 日付プルダウン設定
         $objDate = new SC_Date_Ex(BIRTH_YEAR);
@@ -66,7 +66,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
 
         // 支払い方法種別
         $objDb = new SC_Helper_DB_Ex();
-        $this->arrPayment = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
+        $this->arrPayment = $objDb->sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
     }
 
     /**
@@ -102,9 +102,9 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
                 return;
             }
             //指定会員の情報をセット
-            $this->arrForm = SC_Helper_Customer_Ex::sfGetCustomerData($objFormSearchParam->getValue("edit_customer_id"), true);
+            $this->arrForm = SC_Helper_Customer_Ex::sfGetCustomerData($objFormSearchParam->getValue('edit_customer_id'), true);
             //購入履歴情報の取得
-            list($this->tpl_linemax, $this->arrPurchaseHistory, $this->objNavi) = $this->lfPurchaseHistory($objFormSearchParam->getValue("edit_customer_id"));
+            list($this->tpl_linemax, $this->arrPurchaseHistory, $this->objNavi) = $this->lfPurchaseHistory($objFormSearchParam->getValue('edit_customer_id'));
             $this->arrPagenavi = $this->objNavi->arrPagenavi;
             $this->arrPagenavi['mode'] = 'return';
             $this->tpl_pageno = '0';
@@ -119,7 +119,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
             $this->arrForm = $objFormParam->getHashArray();
             //検索引き継ぎ用パラメーター処理
             $this->lfInitSearchParam($objFormSearchParam);
-            $objFormSearchParam->setParam($objFormParam->getValue("search_data"));
+            $objFormSearchParam->setParam($objFormParam->getValue('search_data'));
             $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
             $this->arrSearchData = $objFormSearchParam->getSearchArray();
             if (!SC_Utils_Ex::isBlank($this->arrErr) or !SC_Utils_Ex::isBlank($this->arrSearchErr)) {
@@ -138,17 +138,17 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
             $this->arrForm = $objFormParam->getHashArray();
             //検索引き継ぎ用パラメーター処理
             $this->lfInitSearchParam($objFormSearchParam);
-            $objFormSearchParam->setParam($objFormParam->getValue("search_data"));
+            $objFormSearchParam->setParam($objFormParam->getValue('search_data'));
             $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
             $this->arrSearchData = $objFormSearchParam->getSearchArray();
             if (!SC_Utils_Ex::isBlank($this->arrErr) or !SC_Utils_Ex::isBlank($this->arrSearchErr)) {
                 return;
             }
             //購入履歴情報の取得
-            list($this->tpl_linemax, $this->arrPurchaseHistory, $this->objNavi) = $this->lfPurchaseHistory($objFormParam->getValue("customer_id"), $objFormParam->getValue("search_pageno"));
+            list($this->tpl_linemax, $this->arrPurchaseHistory, $this->objNavi) = $this->lfPurchaseHistory($objFormParam->getValue('customer_id'), $objFormParam->getValue('search_pageno'));
             $this->arrPagenavi = $this->objNavi->arrPagenavi;
             $this->arrPagenavi['mode'] = 'return';
-            $this->tpl_pageno = $objFormParam->getValue("search_pageno");
+            $this->tpl_pageno = $objFormParam->getValue('search_pageno');
 
             break;
         case 'complete':
@@ -162,7 +162,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
             $this->arrForm = $objFormParam->getHashArray();
             //検索引き継ぎ用パラメーター処理
             $this->lfInitSearchParam($objFormSearchParam);
-            $objFormSearchParam->setParam($objFormParam->getValue("search_data"));
+            $objFormSearchParam->setParam($objFormParam->getValue('search_data'));
             $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
             $this->arrSearchData = $objFormSearchParam->getSearchArray();
             if (!SC_Utils_Ex::isBlank($this->arrErr) or !SC_Utils_Ex::isBlank($this->arrSearchErr)) {
@@ -176,7 +176,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
             $this->lfInitParam($objFormParam);
             $objFormParam->setParam($_POST);
             $this->lfInitSearchParam($objFormSearchParam);
-            $objFormSearchParam->setParam($objFormParam->getValue("search_data"));
+            $objFormSearchParam->setParam($objFormParam->getValue('search_data'));
             $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
             $this->arrSearchData = $objFormSearchParam->getSearchArray();
             if (!SC_Utils_Ex::isBlank($this->arrSearchErr)) {
@@ -206,9 +206,9 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         // 会員項目のパラメーター取得
         SC_Helper_Customer_Ex::sfCustomerEntryParam($objFormParam, true);
         // 検索結果一覧画面への戻り用パラメーター
-        $objFormParam->addParam("検索用データ", "search_data", "", "", array(), "", false);
+        $objFormParam->addParam("検索用データ", 'search_data', "", "", array(), "", false);
         // 会員購入履歴ページング用
-        $objFormParam->addParam("", "search_pageno", INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
+        $objFormParam->addParam("", 'search_pageno', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
     }
 
     /**
@@ -220,7 +220,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
     function lfInitSearchParam(&$objFormParam) {
         SC_Helper_Customer_Ex::sfSetSearchParam($objFormParam);
         // 初回受け入れ時用
-        $objFormParam->addParam("編集対象会員ID", "edit_customer_id", INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("編集対象会員ID", 'edit_customer_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -245,12 +245,12 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         //メアド重複チェック(共通ルーチンは使えない)
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
         $col = "email, email_mobile, customer_id";
-        $table = "dtb_customer";
+        $table = 'dtb_customer';
         $where = "del_flg <> 1 AND (email Like ? OR email_mobile Like ?)";
         $arrVal = array($objFormParam->getValue('email'), $objFormParam->getValue('email_mobile'));
-        if ($objFormParam->getValue("customer_id")) {
+        if ($objFormParam->getValue('customer_id')) {
             $where .= " AND customer_id <> ?";
-            $arrVal[] = $objFormParam->getValue("customer_id");
+            $arrVal[] = $objFormParam->getValue('customer_id');
         }
         $arrData = $objQuery->getRow($col, $table, $where, $arrVal);
         if (!SC_Utils_Ex::isBlank($arrData['email'])) {
@@ -313,13 +313,13 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         }
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $page_max = SEARCH_PMAX;
-        $table = "dtb_order";
+        $table = 'dtb_order';
         $where = "customer_id = ? AND del_flg <> 1";
         $arrVal = array($customer_id);
         //購入履歴の件数取得
         $linemax = $objQuery->count($table, $where, $arrVal);
         // ページ送りの取得
-        $objNavi = new SC_PageNavi_Ex($pageno, $linemax, $page_max, "fnNaviSearchPage2", NAVI_PMAX);
+        $objNavi = new SC_PageNavi_Ex($pageno, $linemax, $page_max, 'fnNaviSearchPage2', NAVI_PMAX);
         // 取得範囲の指定(開始行番号、行数のセット)
         $objQuery->setLimitOffset($page_max, $objNavi->start_row);
         // 表示順序

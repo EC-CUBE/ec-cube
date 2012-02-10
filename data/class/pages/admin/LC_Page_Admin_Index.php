@@ -140,7 +140,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         //パスワード、saltの取得
         $cols = "password, salt";
-        $table = "dtb_member";
+        $table = 'dtb_member';
         $where = "login_id = ? AND del_flg <> 1 AND work = 1";
         $arrData = $objQuery->getRow($cols, $table, $where, array($login_id));
         if (SC_Utils_Ex::isBlank($arrData)) {
@@ -163,7 +163,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         //メンバー情報取得
         $cols = "member_id, authority, login_date, name";
-        $table = "dtb_member";
+        $table = 'dtb_member';
         $where = "login_id = ?";
         $arrData = $objQuery->getRow($cols, $table, $where, array($login_id));
         // セッション登録
@@ -219,7 +219,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sqlval = array();
         $sqlval['login_date'] = date("Y-m-d H:i:s");
-        $table = "dtb_member";
+        $table = 'dtb_member';
         $where = "member_id = ?";
         $objQuery->update($table, $sqlval, $where, array($member_id));
     }

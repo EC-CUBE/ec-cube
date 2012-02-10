@@ -68,10 +68,10 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
     function init() {
         parent::init();
         $masterData = new SC_DB_MasterData_Ex();
-        $this->arrSTATUS = $masterData->getMasterData("mtb_status");
-        $this->arrSTATUS_IMAGE = $masterData->getMasterData("mtb_status_image");
-        $this->arrDELIVERYDATE = $masterData->getMasterData("mtb_delivery_date");
-        $this->arrRECOMMEND = $masterData->getMasterData("mtb_recommend");
+        $this->arrSTATUS = $masterData->getMasterData('mtb_status');
+        $this->arrSTATUS_IMAGE = $masterData->getMasterData('mtb_status_image');
+        $this->arrDELIVERYDATE = $masterData->getMasterData('mtb_delivery_date');
+        $this->arrRECOMMEND = $masterData->getMasterData('mtb_recommend');
     }
 
     /**
@@ -161,7 +161,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
                     exit;
                 }
                 break;
-            case "add_favorite":
+            case 'add_favorite':
                 // ログイン中のユーザが商品をお気に入りにいれる処理
                 if ($objCustomer->isLoginSuccess() === true && $this->objFormParam->getValue('favorite_product_id') > 0) {
                     $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam);
@@ -173,17 +173,17 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
                 }
                 break;
 
-            case "add_favorite_sphone":
+            case 'add_favorite_sphone':
                 // ログイン中のユーザが商品をお気に入りにいれる処理(スマートフォン用)
                 if ($objCustomer->isLoginSuccess() === true && $this->objFormParam->getValue('favorite_product_id') > 0) {
                     $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam);
                     if (count($this->arrErr) == 0) {
                         if ($this->lfRegistFavoriteProduct($this->objFormParam->getValue('favorite_product_id'),$objCustomer->getValue('customer_id'))) {
-                            print "true";
+                            print 'true';
                             exit;
                         }
                     }
-                    print "error";
+                    print 'error';
                     exit;
                 }
                 break;
@@ -362,9 +362,9 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         $classcat_find2 = false;
 
         // 規格名一覧
-        $arrClassName = SC_Helper_DB_Ex::sfGetIDValueList("dtb_class", "class_id", 'name');
+        $arrClassName = SC_Helper_DB_Ex::sfGetIDValueList('dtb_class', 'class_id', 'name');
         // 規格分類名一覧
-        $arrClassCatName = SC_Helper_DB_Ex::sfGetIDValueList("dtb_classcategory", "classcategory_id", 'name');
+        $arrClassCatName = SC_Helper_DB_Ex::sfGetIDValueList('dtb_classcategory', 'classcategory_id', 'name');
         // 商品規格情報の取得
         $arrProductsClass = $this->lfGetProductsClass($product_id);
 
@@ -420,13 +420,13 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
     /* パラメーター情報の初期化 */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("規格1", "classcategory_id1", INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("規格2", "classcategory_id2", INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("規格1", 'classcategory_id1', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("規格2", 'classcategory_id2', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam("数量", 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam("管理者ログイン", 'admin', INT_LEN, 'a', array('ALNUM_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("商品ID", "product_id", INT_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("お気に入り商品ID", "favorite_product_id", INT_LEN, 'n', array('ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("商品規格ID", "product_class_id", INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("商品ID", 'product_id', INT_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("お気に入り商品ID", 'favorite_product_id', INT_LEN, 'n', array('ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("商品規格ID", 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         // 値の取得
         $objFormParam->setParam($_REQUEST);
         // 入力値の変換
@@ -447,11 +447,11 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $objQuery->setOrder("rank DESC");
-        $arrRecommendData = $objQuery->select("recommend_product_id, comment", "dtb_recommend_products", "product_id = ?", array($product_id));
+        $arrRecommendData = $objQuery->select("recommend_product_id, comment", 'dtb_recommend_products', "product_id = ?", array($product_id));
 
         $arrRecommendProductId = array();
         foreach ($arrRecommendData as $recommend) {
-            $arrRecommendProductId[] = $recommend["recommend_product_id"];
+            $arrRecommendProductId[] = $recommend['recommend_product_id'];
         }
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -486,10 +486,10 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
             // 複数項目チェック
             if ($tpl_classcat_find1) {
-                $objErr->doFunc(array("規格1", "classcategory_id1"), array('EXIST_CHECK'));
+                $objErr->doFunc(array("規格1", 'classcategory_id1'), array('EXIST_CHECK'));
             }
             if ($tpl_classcat_find2) {
-                $objErr->doFunc(array("規格2", "classcategory_id2"), array('EXIST_CHECK'));
+                $objErr->doFunc(array("規格2", 'classcategory_id2'), array('EXIST_CHECK'));
             }
             break;
         }
@@ -502,7 +502,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         //商品ごとのレビュー情報を取得する
         $col = "create_date, reviewer_url, reviewer_name, recommend_level, title, comment";
-        $from = "dtb_review";
+        $from = 'dtb_review';
         $where = "del_flg = 0 AND status = 1 AND product_id = ? ORDER BY create_date DESC LIMIT " . REVIEW_REGIST_MAX;
         $arrval[] = $id;
         $arrReview = $objQuery->select($col, $from, $where, $arrval);
@@ -522,7 +522,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         // サブ画像の有無を判定
         $subImageFlag = false;
         for ($i = 1; $i <= PRODUCTSUB_MAX; $i++) {
-            if ($arrFile["sub_image" . $i]['filepath'] != "") {
+            if ($arrFile['sub_image' . $i]['filepath'] != "") {
                 $subImageFlag = true;
             }
         }
@@ -535,12 +535,12 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
      */
     function lfRegistFavoriteProduct($favorite_product_id,$customer_id) {
         // ログイン中のユーザが商品をお気に入りにいれる処理
-        if (!SC_Helper_DB_Ex::sfIsRecord("dtb_products", "product_id", $favorite_product_id, "del_flg = 0 AND status = 1")) {
+        if (!SC_Helper_DB_Ex::sfIsRecord('dtb_products', 'product_id', $favorite_product_id, "del_flg = 0 AND status = 1")) {
             SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
             return false;
         } else {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
-            $exists = $objQuery->exists("dtb_customer_favorite_products", "customer_id = ? AND product_id = ?", array($customer_id, $favorite_product_id));
+            $exists = $objQuery->exists('dtb_customer_favorite_products', "customer_id = ? AND product_id = ?", array($customer_id, $favorite_product_id));
 
             if (!$exists) {
                 $sqlval['customer_id'] = $customer_id;

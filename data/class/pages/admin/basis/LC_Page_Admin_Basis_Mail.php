@@ -80,7 +80,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
             $post = $objFormParam->getHashArray();
         }
 
-        $this->arrMailTEMPLATE = $masterData->getMasterData("mtb_mail_template");
+        $this->arrMailTEMPLATE = $masterData->getMasterData('mtb_mail_template');
 
         switch ($mode) {
         case 'id_set':
@@ -138,9 +138,9 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
         $template_data = $objQuery->getAll($sql, array($post['template_id']));
         if ($template_data) {
             $sql_where = "template_id = ?";
-            $objQuery->update("dtb_mailtemplate", $post, $sql_where, array(addslashes($post['template_id'])));
+            $objQuery->update('dtb_mailtemplate', $post, $sql_where, array(addslashes($post['template_id'])));
         } else {
-            $objQuery->insert("dtb_mailtemplate", $post);
+            $objQuery->insert('dtb_mailtemplate', $post);
         }
 
     }

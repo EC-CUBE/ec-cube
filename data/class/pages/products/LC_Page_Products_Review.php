@@ -56,9 +56,9 @@ class LC_Page_Products_Review extends LC_Page_Ex {
         parent::init();
 
         $masterData = new SC_DB_MasterData_Ex();
-        $this->arrRECOMMEND = $masterData->getMasterData("mtb_recommend");
-        $this->arrSex = $masterData->getMasterData("mtb_sex");
-        $this->arrReviewDenyURL = $masterData->getMasterData("mtb_review_deny_url");
+        $this->arrRECOMMEND = $masterData->getMasterData('mtb_recommend');
+        $this->arrSex = $masterData->getMasterData('mtb_sex');
+        $this->arrReviewDenyURL = $masterData->getMasterData('mtb_review_deny_url');
         $this->tpl_mainpage = 'products/review.tpl';
         $this->httpCacheControl('nocache');
     }
@@ -142,12 +142,12 @@ class LC_Page_Products_Review extends LC_Page_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("レビューID", "review_id", INT_LEN, 'aKV');
-        $objFormParam->addParam("商品ID", "product_id", INT_LEN, 'n', array('NUM_CHECK','EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("投稿者名", "reviewer_name", STEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("投稿者URL", "reviewer_url", MTEXT_LEN, 'a', array('NO_SPTAB', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'URL_CHECK'));
+        $objFormParam->addParam("レビューID", 'review_id', INT_LEN, 'aKV');
+        $objFormParam->addParam("商品ID", 'product_id', INT_LEN, 'n', array('NUM_CHECK','EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("投稿者名", 'reviewer_name', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("投稿者URL", 'reviewer_url', MTEXT_LEN, 'a', array('NO_SPTAB', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'URL_CHECK'));
         $objFormParam->addParam("性別", 'sex', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("おすすめレベル", "recommend_level", INT_LEN, 'n', array('EXIST_CHECK', 'SELECT_CHECK'));
+        $objFormParam->addParam("おすすめレベル", 'recommend_level', INT_LEN, 'n', array('EXIST_CHECK', 'SELECT_CHECK'));
         $objFormParam->addParam("タイトル", 'title', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam("コメント", 'comment', LTEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
     }
@@ -165,7 +165,7 @@ class LC_Page_Products_Review extends LC_Page_Ex {
 
         // 重複メッセージの判定
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $exists = $objQuery->exists("dtb_review","product_id = ? AND title = ? ", array($arrForm['product_id'], $arrForm['title']));
+        $exists = $objQuery->exists('dtb_review',"product_id = ? AND title = ? ", array($arrForm['product_id'], $arrForm['title']));
         if ($exists) {
             $arrErr['title'] .= "重複したタイトルは登録できません。";
         }
@@ -189,7 +189,7 @@ class LC_Page_Products_Review extends LC_Page_Ex {
     function lfGetProductName($product_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        return $objQuery->get('name', "dtb_products", "product_id = ? ", array($product_id));
+        return $objQuery->get('name', 'dtb_products', "product_id = ? ", array($product_id));
     }
 
     //登録実行
@@ -204,7 +204,7 @@ class LC_Page_Products_Review extends LC_Page_Ex {
         //-- 登録実行
         $objQuery->begin();
         $arrRegist['review_id'] = $objQuery->nextVal('dtb_review_review_id');
-        $objQuery->insert("dtb_review", $arrRegist);
+        $objQuery->insert('dtb_review', $arrRegist);
         $objQuery->commit();
     }
 }

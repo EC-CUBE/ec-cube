@@ -48,10 +48,10 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
         $this->httpCacheControl('nocache');
 
         $masterData             = new SC_DB_MasterData_Ex();
-        $this->arrMAILTEMPLATE  = $masterData->getMasterData("mtb_mail_template");
+        $this->arrMAILTEMPLATE  = $masterData->getMasterData('mtb_mail_template');
         $this->arrPref          = $masterData->getMasterData('mtb_pref');
-        $this->arrWDAY          = $masterData->getMasterData("mtb_wday");
-        $this->arrProductType   = $masterData->getMasterData("mtb_product_type");
+        $this->arrWDAY          = $masterData->getMasterData('mtb_wday');
+        $this->arrProductType   = $masterData->getMasterData('mtb_product_type');
    }
 
     /**
@@ -90,7 +90,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
 
         $this->isMultiple       = count($this->arrShipping) > 1;
         // 支払い方法の取得
-        $this->arrPayment       = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
+        $this->arrPayment       = $objDb->sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
         // 受注商品明細の取得
         $this->tpl_arrOrderDetail = $objPurchase->getOrderDetail($order_id);
         $this->tpl_arrOrderDetail = $this->setMainListImage($this->tpl_arrOrderDetail);

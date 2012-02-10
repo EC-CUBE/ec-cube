@@ -126,9 +126,9 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
             if (strlen($news_id) > 0 && is_numeric($news_id) == true) {
                 $term = $objFormParam->getValue('term');
                 if ($term == 'up') {
-                    $objDb->sfRankUp("dtb_news", "news_id", $news_id);
+                    $objDb->sfRankUp('dtb_news', 'news_id', $news_id);
                 } else if ($term == 'down') {
-                    $objDb->sfRankDown("dtb_news", "news_id", $news_id);
+                    $objDb->sfRankDown('dtb_news', 'news_id', $news_id);
                 }
                 $this->objDisplay->reload();
             }
@@ -137,7 +137,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
         //----　指定表示順位移動
             $input_pos = $this->getPostRank($news_id);
             if (SC_Utils_Ex::sfIsInt($input_pos)) {
-                $objDb->sfMoveRank("dtb_news", "news_id", $news_id, $input_pos);
+                $objDb->sfMoveRank('dtb_news', 'news_id', $news_id, $input_pos);
                 $this->objDisplay->reload();
             }
             break;
@@ -177,7 +177,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * @param Object $objFormParam
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("news_id", 'news_id');
+        $objFormParam->addParam('news_id', 'news_id');
         $objFormParam->addParam("日付(年)", 'year', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam("日付(月)", 'month', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam("日付(日)", 'day', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));

@@ -70,14 +70,14 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         $this->csv_id = '1';
 
         $masterData = new SC_DB_MasterData_Ex();
-        $this->arrDISP = $masterData->getMasterData("mtb_disp");
-        $this->arrSTATUS = $masterData->getMasterData("mtb_status");
-        $this->arrDELIVERYDATE = $masterData->getMasterData("mtb_delivery_date");
-        $this->arrProductType = $masterData->getMasterData("mtb_product_type");
-        $this->arrMaker = SC_Helper_DB_Ex::sfGetIDValueList("dtb_maker", "maker_id", 'name');
-        $this->arrPayments = SC_Helper_DB_Ex::sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
+        $this->arrDISP = $masterData->getMasterData('mtb_disp');
+        $this->arrSTATUS = $masterData->getMasterData('mtb_status');
+        $this->arrDELIVERYDATE = $masterData->getMasterData('mtb_delivery_date');
+        $this->arrProductType = $masterData->getMasterData('mtb_product_type');
+        $this->arrMaker = SC_Helper_DB_Ex::sfGetIDValueList('dtb_maker', 'maker_id', 'name');
+        $this->arrPayments = SC_Helper_DB_Ex::sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
         $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
-        $this->arrAllowedTag = $masterData->getMasterData("mtb_allowed_tag");
+        $this->arrAllowedTag = $masterData->getMasterData('mtb_allowed_tag');
         $this->arrTagCheckItem = array();
     }
 
@@ -394,13 +394,13 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         if ($sqlval['product_id'] != "") {
             // 同じidが存在すればupdate存在しなければinsert
             $where = "product_id = ?";
-            $product_exists = $objQuery->exists("dtb_products", $where, array($sqlval['product_id']));
+            $product_exists = $objQuery->exists('dtb_products', $where, array($sqlval['product_id']));
             if ($product_exists) {
-                $objQuery->update("dtb_products", $sqlval, $where, array($sqlval['product_id']));
+                $objQuery->update('dtb_products', $sqlval, $where, array($sqlval['product_id']));
             } else {
                 $sqlval['create_date'] = $arrList['update_date'];
                 // INSERTの実行
-                $objQuery->insert("dtb_products", $sqlval);
+                $objQuery->insert('dtb_products', $sqlval);
                 // シーケンスの調整
                 $seq_count = $objQuery->currVal('dtb_products_product_id');
                 if ($seq_count < $sqlval['product_id']) {
@@ -414,7 +414,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
             $product_id = $sqlval['product_id'];
             $sqlval['create_date'] = $arrList['update_date'];
             // INSERTの実行
-            $objQuery->insert("dtb_products", $sqlval);
+            $objQuery->insert('dtb_products', $sqlval);
         }
 
         // カテゴリ登録
@@ -460,12 +460,12 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
             $sqlval['product_class_id'] = $objQuery->nextVal('dtb_products_class_product_class_id');
             $sqlval['create_date'] = $arrList['update_date'];
             // INSERTの実行
-            $objQuery->insert("dtb_products_class", $sqlval);
+            $objQuery->insert('dtb_products_class', $sqlval);
             $product_class_id = $sqlval['product_class_id'];
         } else {
             // UPDATEの実行
             $where = "product_class_id = ?";
-            $objQuery->update("dtb_products_class", $sqlval, $where, array($product_class_id));
+            $objQuery->update('dtb_products_class', $sqlval, $where, array($product_class_id));
         }
         // 支払い方法登録
         if ($arrList['product_payment_ids'] != "") {
@@ -486,12 +486,12 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfRegistReccomendProducts($objQuery, $arrList, $product_id) {
-        $objQuery->delete("dtb_recommend_products", "product_id = ?", array($product_id));
+        $objQuery->delete('dtb_recommend_products', "product_id = ?", array($product_id));
         for ($i = 1; $i <= RECOMMEND_PRODUCT_MAX; $i++) {
-            $keyname = "recommend_product_id" . $i;
-            $comment_key = "recommend_comment" . $i;
+            $keyname = 'recommend_product_id' . $i;
+            $comment_key = 'recommend_comment' . $i;
             if ($arrList[$keyname] != "") {
-                $arrProduct = $objQuery->select("product_id", "dtb_products", "product_id = ?", array($arrList[$keyname]));
+                $arrProduct = $objQuery->select('product_id', 'dtb_products', "product_id = ?", array($arrList[$keyname]));
                 if ($arrProduct[0]['product_id'] != "") {
                     $arrval['product_id'] = $product_id;
                     $arrval['recommend_product_id'] = $arrProduct[0]['product_id'];
@@ -500,7 +500,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
                     $arrval['create_date'] = $arrList['update_date'];
                     $arrval['creator_id'] = $_SESSION['member_id'];
                     $arrval['rank'] = RECOMMEND_PRODUCT_MAX - $i + 1;
-                    $objQuery->insert("dtb_recommend_products", $arrval);
+                    $objQuery->insert('dtb_recommend_products', $arrval);
                 }
             }
         }
@@ -678,7 +678,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         // 削除フラグのチェック
         if(array_search('del_flg', $this->arrFormKeyList) !== FALSE
                 and $item['del_flg'] != "") {
-            if (!($item['del_flg'] == "0" or $item['del_flg'] == "1")) {
+            if (!($item['del_flg'] == '0' or $item['del_flg'] == '1')) {
                 $arrErr['del_flg'] = "※ 削除フラグは「0」(有効)、「1」(削除)のみが有効な値です。";
             }
         }

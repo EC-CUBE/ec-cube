@@ -125,7 +125,7 @@ class LC_Page_Admin extends LC_Page_Ex {
      *
      * @access protected
      * @param string $mess ログメッセージ
-     * @param string $log_level ログレベル("Info" or "Debug")
+     * @param string $log_level ログレベル('Info' or 'Debug')
      * @return void
      */
     function log($mess, $log_level) {

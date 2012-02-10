@@ -29,6 +29,6 @@ require_once CLASS_EX_REALDIR . 'page_extends/rss/LC_Page_Rss_Products_Ex.php';
 // {{{ generate page
 
 $objPage = new LC_Page_Rss_Products_Ex();
-register_shutdown_function(array($objPage, "destroy"));
+register_shutdown_function(array($objPage, 'destroy'));
 $objPage->init();
 $objPage->process();
