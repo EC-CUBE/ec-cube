@@ -53,10 +53,10 @@ class SC_Helper_Plugin {
 
         foreach ($arrPluginDataList as $arrPluginData) {
             // プラグイン本体ファイル名が取得したプラグインディレクトリ一覧にある事を確認
-            if (array_search($arrPluginData['plugin_code'], $arrPluginDirectory) !== false ) {
+            if (array_search($arrPluginData['plugin_code'], $arrPluginDirectory) !== false) {
                 // プラグイン本体ファイルをrequire.
                 require_once(PLUGIN_UPLOAD_REALDIR . $arrPluginData['plugin_code'] . '/' . $arrPluginData['plugin_code'] . '.php');
-                
+
                 // プラグインのインスタンス生成.
                 $objPlugin = new $arrPluginData['plugin_code']($arrPluginData);
                 // メンバ変数にプラグインのインスタンスを登録.
@@ -165,7 +165,7 @@ class SC_Helper_Plugin {
         $plugin = $objQuery->getRow($col, $table, $where, array($plugin_id));
         return $plugin;
     }
-    
+
     /**
      * プラグインコードをキーにプラグインを取得する。
      * 
