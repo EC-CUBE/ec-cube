@@ -47,7 +47,7 @@ class LC_Page_Admin extends LC_Page_Ex {
         //IP制限チェック
         $allow_hosts = unserialize(ADMIN_ALLOW_HOSTS);
         if (is_array($allow_hosts) && count($allow_hosts) > 0) {
-            if (array_search($_SERVER["REMOTE_ADDR"],$allow_hosts) === FALSE) {
+            if (array_search($_SERVER['REMOTE_ADDR'],$allow_hosts) === FALSE) {
                 SC_Utils_Ex::sfDispError(AUTH_ERROR);
             }
         }
@@ -55,7 +55,7 @@ class LC_Page_Admin extends LC_Page_Ex {
         //SSL制限チェック
         if (ADMIN_FORCE_SSL == TRUE) {
             if (SC_Utils_Ex::sfIsHTTPS() === false) {
-                SC_Response_Ex::sendRedirect($_SERVER["REQUEST_URI"], $_GET, FALSE, TRUE);
+                SC_Response_Ex::sendRedirect($_SERVER['REQUEST_URI'], $_GET, FALSE, TRUE);
             }
         }
 

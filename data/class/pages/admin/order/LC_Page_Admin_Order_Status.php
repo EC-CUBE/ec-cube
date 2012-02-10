@@ -128,11 +128,11 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
      *  @param SC_FormParam
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("注文番号", "order_id", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("変更前対応状況", 'status', INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("変更後対応状況", "change_status", STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("ページ番号", "search_pageno", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("移動注文番号", 'move', INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("注文番号", "order_id", INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam("変更前対応状況", 'status', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam("変更後対応状況", "change_status", STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam("ページ番号", "search_pageno", INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam("移動注文番号", 'move', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
     }
 
     /**

@@ -86,7 +86,7 @@ class SC_Initial {
         if(defined('DB_TYPE') && defined('DB_USER') && defined('DB_PASSWORD')
            && defined('DB_SERVER') && defined('DB_PORT') && defined('DB_NAME')) {
             /** サイト用DB */
-            define ("DEFAULT_DSN",
+            define ('DEFAULT_DSN',
                     DB_TYPE . "://" . DB_USER . ":" . DB_PASSWORD . "@"
                     . DB_SERVER . ":" .DB_PORT . "/" . DB_NAME);
         }
@@ -230,7 +230,7 @@ class SC_Initial {
      * @return void
      */
     function createCacheDir() {
-        if (defined("HTML_REALDIR")) {
+        if (defined('HTML_REALDIR')) {
             umask(0);
             if (!file_exists(COMPILE_REALDIR)) {
                 mkdir(COMPILE_REALDIR);
@@ -319,9 +319,9 @@ class SC_Initial {
 
         // オーナーズストア通信関連
         /** オーナーズストア通信ステータス */
-        define('OSTORE_STATUS_ERROR', "ERROR");
+        define('OSTORE_STATUS_ERROR', 'ERROR');
         /** オーナーズストア通信ステータス */
-        define('OSTORE_STATUS_SUCCESS', "SUCCESS");
+        define('OSTORE_STATUS_SUCCESS', 'SUCCESS');
         /** オーナーズストア通信エラーコード */
         define('OSTORE_E_UNKNOWN', "1000");
         /** オーナーズストア通信エラーコード */

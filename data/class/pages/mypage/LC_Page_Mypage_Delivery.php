@@ -129,7 +129,7 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
      */
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam('お届け先ID', 'other_deliv_id', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("現在ページ", "pageno", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"), "", false);
+        $objFormParam->addParam("現在ページ", "pageno", INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
     }
 
     /**

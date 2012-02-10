@@ -141,11 +141,11 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam('SQL ID', 'sql_id', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('CSV出力対象SQL ID', 'csv_output_id', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"), "", false);
-        $objFormParam->addParam('選択テーブル', 'select_table', STEXT_LEN, 'KVa', array("GRAPH_CHECK","MAX_LENGTH_CHECK"), "", false);
-        $objFormParam->addParam('名称', 'sql_name', STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK","SPTAB_CHECK"));
-        $objFormParam->addParam('SQL文', 'csv_sql', "30000", 'KVa', array("MAX_LENGTH_CHECK","SPTAB_CHECK"));
+        $objFormParam->addParam('SQL ID', 'sql_id', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('CSV出力対象SQL ID', 'csv_output_id', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'), "", false);
+        $objFormParam->addParam('選択テーブル', 'select_table', STEXT_LEN, 'KVa', array('GRAPH_CHECK','MAX_LENGTH_CHECK'), "", false);
+        $objFormParam->addParam('名称', 'sql_name', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK','SPTAB_CHECK'));
+        $objFormParam->addParam('SQL文', 'csv_sql', "30000", 'KVa', array('MAX_LENGTH_CHECK','SPTAB_CHECK'));
     }
 
     /**
@@ -159,9 +159,9 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $arrErr = $objFormParam->checkError();
         // 拡張エラーチェック
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
-        $objErr->doFunc( array("名称", "sql_name"), array("EXIST_CHECK"));
-        $objErr->doFunc( array("SQL文", "csv_sql", "30000"), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc( array('SQL文には読み込み関係以外のSQLコマンドおよび";"記号', 'csv_sql', $this->lfGetSqlDenyList()), array("PROHIBITED_STR_CHECK"));
+        $objErr->doFunc( array("名称", "sql_name"), array('EXIST_CHECK'));
+        $objErr->doFunc( array("SQL文", "csv_sql", "30000"), array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objErr->doFunc( array('SQL文には読み込み関係以外のSQLコマンドおよび";"記号', 'csv_sql', $this->lfGetSqlDenyList()), array('PROHIBITED_STR_CHECK'));
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
         }
@@ -186,8 +186,8 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $arrErr = $objFormParam->checkError();
         // 拡張エラーチェック
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
-        $objErr->doFunc( array("SQL文", "csv_sql", "30000"), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc( array('SQL文には読み込み関係以外のSQLコマンドおよび";"記号', 'csv_sql', $this->lfGetSqlDenyList()), array("PROHIBITED_STR_CHECK"));
+        $objErr->doFunc( array("SQL文", "csv_sql", "30000"), array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objErr->doFunc( array('SQL文には読み込み関係以外のSQLコマンドおよび";"記号', 'csv_sql', $this->lfGetSqlDenyList()), array('PROHIBITED_STR_CHECK'));
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
         }
@@ -205,7 +205,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $arrErr = $objFormParam->checkError();
         // 拡張エラーチェック
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
-        $objErr->doFunc( array("SQL ID", "sql_id"), array("EXIST_CHECK"));
+        $objErr->doFunc( array("SQL ID", "sql_id"), array('EXIST_CHECK'));
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
         }
@@ -223,7 +223,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $arrErr = $objFormParam->checkError();
         // 拡張エラーチェック
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
-        $objErr->doFunc( array("CSV出力対象SQL ID", "csv_output_id"), array("EXIST_CHECK"));
+        $objErr->doFunc( array("CSV出力対象SQL ID", "csv_output_id"), array('EXIST_CHECK'));
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
         }

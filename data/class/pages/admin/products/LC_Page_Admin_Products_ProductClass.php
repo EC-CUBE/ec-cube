@@ -329,9 +329,9 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
      */
     function lfCheckSelectClass() {
         $objErr = new SC_CheckError_Ex();
-        $objErr->doFunc(array("規格1", "class_id1"), array("EXIST_CHECK"));
-        $objErr->doFunc(array("規格", "class_id1", "select_class_id2"), array("TOP_EXIST_CHECK"));
-        $objErr->doFunc(array("規格1", "規格2", "class_id1", "class_id2"), array("DIFFERENT_CHECK"));
+        $objErr->doFunc(array("規格1", "class_id1"), array('EXIST_CHECK'));
+        $objErr->doFunc(array("規格", "class_id1", "select_class_id2"), array('TOP_EXIST_CHECK'));
+        $objErr->doFunc(array("規格1", "規格2", "class_id1", "class_id2"), array('DIFFERENT_CHECK'));
         return $objErr->arrErr;
     }
 
@@ -649,7 +649,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                 $this->arrErr['down_realfilename'][$index] = "※ ダウンロード販売用ファイル名で許可されている形式は、" . $strExt . "です。<br />";
             }
 
-            $uniqname = date('mdHi') . "_" . uniqid("").".";
+            $uniqname = date('mdHi') . '_' . uniqid("").".";
             $temp_file = preg_replace("/^.*\./", $uniqname, $_FILES['down_realfilename']['name'][$index]);
 
             if (move_uploaded_file($_FILES['down_realfilename']['tmp_name'][$index], DOWN_TEMP_REALDIR . $temp_file)) {

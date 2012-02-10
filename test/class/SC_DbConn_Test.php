@@ -41,11 +41,11 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase {
 
     function setUp() {
         $this->objDbConn = new SC_DbConn();
-        $this->objDbConn->query("BEGIN");
+        $this->objDbConn->query('BEGIN');
     }
 
     function tearDown() {
-        $this->objDbConn->query("ROLLBACK");
+        $this->objDbConn->query('ROLLBACK');
         $this->objDbConn = null;
     }
 

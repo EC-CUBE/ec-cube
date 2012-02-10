@@ -156,8 +156,8 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("メーカーID", "maker_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("メーカー名", 'name', SMTEXT_LEN, 'KVa', array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("メーカーID", "maker_id", INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("メーカー名", 'name', SMTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -277,7 +277,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      */
     function lfErrorCheck(&$arrForm) {
         $objErr = new SC_CheckError_Ex($arrForm);
-        $objErr->doFunc(array("メーカー名", 'name', SMTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array("メーカー名", 'name', SMTEXT_LEN), array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
 
         // maker_id の正当性チェック
         if (!empty($arrForm['maker_id'])) {

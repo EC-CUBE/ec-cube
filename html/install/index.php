@@ -26,7 +26,7 @@ define('HTML_REALDIR', rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') 
 
 require_once HTML_REALDIR . 'define.php';
 define('INSTALL_FUNCTION', true);
-define("INSTALL_INFO_URL", "http://www.ec-cube.net/install_info/index.php");
+define('INSTALL_INFO_URL', "http://www.ec-cube.net/install_info/index.php");
 while (ob_get_level() >= 1) {
     ob_end_clean();
 }
@@ -37,11 +37,11 @@ ob_start();
 $ownDir = realpath(dirname(__FILE__)) . '/';
 require_once DATA_REALDIR . 'module/HTTP/Request.php';
 
-if (!defined("ADMIN_DIR")) {
-    define("ADMIN_DIR","admin/");
+if (!defined('ADMIN_DIR')) {
+    define('ADMIN_DIR',"admin/");
 }
 
-define("INSTALL_LOG", "./temp/install.log");
+define('INSTALL_LOG', "./temp/install.log");
 ini_set("max_execution_time", 300);
 
 $objPage = new StdClass;
@@ -132,7 +132,7 @@ case 'step2':
 case 'step3':
     // 入力データを渡す。
     $arrRet =  $objDBParam->getHashArray();
-    define("DB_TYPE", $arrRet['db_type']);
+    define('DB_TYPE', $arrRet['db_type']);
     $dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
 
     if (count($objPage->arrErr) == 0) {
@@ -187,8 +187,8 @@ case 'step4':
 case 'drop':
     // 入力データを渡す。
     $arrRet =  $objDBParam->getHashArray();
-    if (!defined("DB_TYPE")) {
-        define("DB_TYPE", $arrRet['db_type']);
+    if (!defined('DB_TYPE')) {
+        define('DB_TYPE', $arrRet['db_type']);
     }
     $dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
 
@@ -513,8 +513,8 @@ function lfDispStep4($objPage) {
     if (!ereg("/$", $normal_url)) $normal_url = $normal_url . "/";
 
     $arrDbParam = $objDBParam->getHashArray();
-    if (!defined("DB_TYPE")) {
-        define("DB_TYPE", $arrDbParam['db_type']);
+    if (!defined('DB_TYPE')) {
+        define('DB_TYPE', $arrDbParam['db_type']);
     }
     $dsn = $arrDbParam['db_type']."://".$arrDbParam['db_user'].":".$arrDbParam['db_password']."@".$arrDbParam['db_server'].":".$arrDbParam['db_port']."/".$arrDbParam['db_name'];
     if (!defined('DEFAULT_DSN')) {
@@ -658,16 +658,16 @@ function lfInitWebParam($objWebParam) {
         $admin_allow_hosts = '';
     }
 
-    $objWebParam->addParam("店名", "shop_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $shop_name);
-    $objWebParam->addParam("管理者：メールアドレス", "admin_mail", null, "", array("EXIST_CHECK","EMAIL_CHECK","EMAIL_CHAR_CHECK"), $admin_mail);
-    $objWebParam->addParam("管理者：ログインID", "login_id", ID_MAX_LEN, "", array("EXIST_CHECK","SPTAB_CHECK", "ALNUM_CHECK"));
-    $objWebParam->addParam("管理者：パスワード", "login_pass", ID_MAX_LEN, "", array("EXIST_CHECK","SPTAB_CHECK", "ALNUM_CHECK"));
-    $objWebParam->addParam("管理機能：ディレクトリ", "admin_dir", ID_MAX_LEN, "a", array("EXIST_CHECK","SPTAB_CHECK", "ALNUM_CHECK"), $oldAdminDir);
-    $objWebParam->addParam("管理機能：SSL制限", "admin_force_ssl", 1, "n", array("SPTAB_CHECK", "NUM_CHECK","MAX_LENGTH_CHECK"), $admin_force_ssl);
-    $objWebParam->addParam("管理機能：IP制限", "admin_allow_hosts", LTEXT_LEN, "an", array("IP_CHECK","MAX_LENGTH_CHECK"), $admin_allow_hosts);
-    $objWebParam->addParam("URL(通常)", "normal_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $normal_url);
-    $objWebParam->addParam("URL(セキュア)", "secure_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $secure_url);
-    $objWebParam->addParam("ドメイン", "domain", MTEXT_LEN, "", array("MAX_LENGTH_CHECK"));
+    $objWebParam->addParam("店名", "shop_name", MTEXT_LEN, "", array('EXIST_CHECK','MAX_LENGTH_CHECK'), $shop_name);
+    $objWebParam->addParam("管理者：メールアドレス", "admin_mail", null, "", array('EXIST_CHECK','EMAIL_CHECK','EMAIL_CHAR_CHECK'), $admin_mail);
+    $objWebParam->addParam("管理者：ログインID", "login_id", ID_MAX_LEN, "", array('EXIST_CHECK','SPTAB_CHECK', 'ALNUM_CHECK'));
+    $objWebParam->addParam("管理者：パスワード", "login_pass", ID_MAX_LEN, "", array('EXIST_CHECK','SPTAB_CHECK', 'ALNUM_CHECK'));
+    $objWebParam->addParam("管理機能：ディレクトリ", "admin_dir", ID_MAX_LEN, "a", array('EXIST_CHECK','SPTAB_CHECK', 'ALNUM_CHECK'), $oldAdminDir);
+    $objWebParam->addParam("管理機能：SSL制限", "admin_force_ssl", 1, "n", array('SPTAB_CHECK', 'NUM_CHECK','MAX_LENGTH_CHECK'), $admin_force_ssl);
+    $objWebParam->addParam("管理機能：IP制限", "admin_allow_hosts", LTEXT_LEN, "an", array('IP_CHECK','MAX_LENGTH_CHECK'), $admin_allow_hosts);
+    $objWebParam->addParam("URL(通常)", "normal_url", MTEXT_LEN, "", array('EXIST_CHECK','URL_CHECK','MAX_LENGTH_CHECK'), $normal_url);
+    $objWebParam->addParam("URL(セキュア)", "secure_url", MTEXT_LEN, "", array('EXIST_CHECK','URL_CHECK','MAX_LENGTH_CHECK'), $secure_url);
+    $objWebParam->addParam("ドメイン", "domain", MTEXT_LEN, "", array('MAX_LENGTH_CHECK'));
 
     return $objWebParam;
 }
@@ -705,12 +705,12 @@ function lfInitDBParam($objDBParam) {
         $db_user = "eccube_db_user";
     }
 
-    $objDBParam->addParam("DBの種類", "db_type", INT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_type);
-    $objDBParam->addParam("DBサーバー", "db_server", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_server);
-    $objDBParam->addParam("DBポート", "db_port", INT_LEN, "", array("MAX_LENGTH_CHECK"), $db_port);
-    $objDBParam->addParam("DB名", "db_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_name);
-    $objDBParam->addParam("DBユーザ", "db_user", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_user);
-    $objDBParam->addParam("DBパスワード", "db_password", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+    $objDBParam->addParam("DBの種類", "db_type", INT_LEN, "", array('EXIST_CHECK','MAX_LENGTH_CHECK'), $db_type);
+    $objDBParam->addParam("DBサーバー", "db_server", MTEXT_LEN, "", array('EXIST_CHECK','MAX_LENGTH_CHECK'), $db_server);
+    $objDBParam->addParam("DBポート", "db_port", INT_LEN, "", array('MAX_LENGTH_CHECK'), $db_port);
+    $objDBParam->addParam("DB名", "db_name", MTEXT_LEN, "", array('EXIST_CHECK','MAX_LENGTH_CHECK'), $db_name);
+    $objDBParam->addParam("DBユーザ", "db_user", MTEXT_LEN, "", array('EXIST_CHECK','MAX_LENGTH_CHECK'), $db_user);
+    $objDBParam->addParam("DBパスワード", "db_password", MTEXT_LEN, "", array('EXIST_CHECK','MAX_LENGTH_CHECK'));
 
     return $objDBParam;
 }
@@ -732,13 +732,13 @@ function lfCheckWebError($objFormParam) {
     }
 
     // ログインIDチェック
-    $objErr->doFunc(array("管理者：ログインID",'login_id',ID_MIN_LEN , ID_MAX_LEN) ,array("SPTAB_CHECK" ,"NUM_RANGE_CHECK"));
+    $objErr->doFunc(array("管理者：ログインID",'login_id',ID_MIN_LEN , ID_MAX_LEN) ,array('SPTAB_CHECK' ,'NUM_RANGE_CHECK'));
 
     // パスワードのチェック
-    $objErr->doFunc( array("管理者：パスワード",'login_pass',ID_MIN_LEN , ID_MAX_LEN) ,array("SPTAB_CHECK" ,"NUM_RANGE_CHECK"));
+    $objErr->doFunc( array("管理者：パスワード",'login_pass',ID_MIN_LEN , ID_MAX_LEN) ,array('SPTAB_CHECK' ,'NUM_RANGE_CHECK'));
 
     // 管理機能ディレクトリのチェック
-    $objErr->doFunc( array("管理機能：ディレクトリ", 'admin_dir', ID_MIN_LEN, ID_MAX_LEN), array("SPTAB_CHECK" ,"NUM_RANGE_CHECK"));
+    $objErr->doFunc( array("管理機能：ディレクトリ", 'admin_dir', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK' ,'NUM_RANGE_CHECK'));
 
     $oldAdminDir = SC_Utils_Ex::sfTrimURL(ADMIN_DIR);
     $newAdminDir = $objFormParam->getValue('admin_dir');
@@ -760,8 +760,8 @@ function lfCheckDBError($objFormParam) {
     $objErr->arrErr = $objFormParam->checkError();
 
     if (count($objErr->arrErr) == 0) {
-        if (!defined("DB_TYPE")) {
-            define("DB_TYPE", $arrRet['db_type']);
+        if (!defined('DB_TYPE')) {
+            define('DB_TYPE', $arrRet['db_type']);
         }
         // 接続確認
         $dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
@@ -848,7 +848,7 @@ function lfDropSequence($arrSequences, $dsn) {
         $exists = $objManager->listSequences();
         foreach ($arrSequences as $seq) {
             SC_Utils::sfFlush(true);
-            $seq_name = $seq[0] . "_" . $seq[1];
+            $seq_name = $seq[0] . '_' . $seq[1];
             if (in_array($seq_name, $exists)) {
                 $result = $objManager->dropSequence($seq_name);
                 if (PEAR::isError($result)) {
@@ -895,7 +895,7 @@ function lfCreateSequence($arrSequences, $dsn) {
             }
             $max = $res->fetchOne();
 
-            $seq_name = $seq[0] . "_" . $seq[1];
+            $seq_name = $seq[0] . '_' . $seq[1];
             $result = $objManager->createSequence($seq_name, $max + 1);
             if (PEAR::isError($result)) {
                 $arrErr['all'] = ">> " . $result->message . "<br />";
@@ -933,9 +933,9 @@ function lfMakeConfigFile() {
 
     //管理機能SSL制限
     if ($objWebParam->getValue('admin_force_ssl') == 1 and strpos($secure_url,"https://") !== FALSE) {
-        $force_ssl = "TRUE";
+        $force_ssl = 'TRUE';
     } else {
-        $force_ssl = "FALSE";
+        $force_ssl = 'FALSE';
     }
     //管理機能IP制限
     $allow_hosts = array();

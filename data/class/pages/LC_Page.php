@@ -355,7 +355,7 @@ class LC_Page {
      * @return void
      */
     function doValidToken($is_admin = false) {
-        if ($_SERVER["REQUEST_METHOD"] == 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (!SC_Helper_Session_Ex::isValidToken(false)) {
                 if ($is_admin) {
                     SC_Utils_Ex::sfDispError(INVALID_MOVE_ERRORR);

@@ -98,7 +98,7 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("ファイル名", 'file', MTEXT_LEN, 'a', array("EXIST_CHECK"));
+        $objFormParam->addParam("ファイル名", 'file', MTEXT_LEN, 'a', array('EXIST_CHECK'));
     }
 
     /**

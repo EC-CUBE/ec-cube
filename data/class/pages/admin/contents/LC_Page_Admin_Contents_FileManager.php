@@ -237,7 +237,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
     function lfInitParamModeView(&$objFormParam) {
         // 共通定義
         $this->lfInitParamCommon($objFormParam);
-        $objFormParam->addParam("選択ファイル", "select_file", MTEXT_LEN, 'a', array("SELECT_CHECK"));
+        $objFormParam->addParam("選択ファイル", "select_file", MTEXT_LEN, 'a', array('SELECT_CHECK'));
     }
 
     /**
@@ -250,7 +250,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
         // 共通定義
         $this->lfInitParamCommon($objFormParam);
         $objFormParam->addParam("選択ファイル", "select_file", MTEXT_LEN, 'a', array());
-        $objFormParam->addParam("作成ファイル名", "create_file", MTEXT_LEN, 'a', array("EXIST_CHECK", "FILE_NAME_CHECK_BY_NOUPLOAD"));
+        $objFormParam->addParam("作成ファイル名", "create_file", MTEXT_LEN, 'a', array('EXIST_CHECK', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
     }
 
     /**

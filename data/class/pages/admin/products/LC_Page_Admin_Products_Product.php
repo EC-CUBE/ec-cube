@@ -301,7 +301,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
      * @return void
      */
     function lfInitFormParam_PreEdit(&$objFormParam, $arrPost) {
-        $objFormParam->addParam("商品ID", "product_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("商品ID", "product_id", INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->setParam($arrPost);
         $objFormParam->convParam();
     }
@@ -314,35 +314,35 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
      * @return void
      */
     function lfInitFormParam(&$objFormParam, $arrPost) {
-        $objFormParam->addParam("商品ID", "product_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("商品名", 'name', STEXT_LEN, 'KVa', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("商品カテゴリ", "category_id", INT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("公開・非公開", 'status', INT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("商品ステータス", "product_status", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("商品ID", "product_id", INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("商品名", 'name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("商品カテゴリ", "category_id", INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("公開・非公開", 'status', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("商品ステータス", "product_status", INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
         if ($this->lfGetProductClassFlag($arrPost['has_product_class']) == false) {
             // 新規登録, 規格なし商品の編集の場合
-            $objFormParam->addParam("商品種別", "product_type_id", INT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-            $objFormParam->addParam("ダウンロード商品ファイル名", "down_filename", STEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-            $objFormParam->addParam("ダウンロード商品実ファイル名", "down_realfilename", MTEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+            $objFormParam->addParam("商品種別", "product_type_id", INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+            $objFormParam->addParam("ダウンロード商品ファイル名", "down_filename", STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+            $objFormParam->addParam("ダウンロード商品実ファイル名", "down_realfilename", MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
             $objFormParam->addParam("temp_down_file", "temp_down_file", '', "", array());
             $objFormParam->addParam("save_down_file", "save_down_file", '', "", array());
-            $objFormParam->addParam("商品コード", "product_code", STEXT_LEN, 'KVna', array("EXIST_CHECK", "SPTAB_CHECK","MAX_LENGTH_CHECK"));
-            $objFormParam->addParam(NORMAL_PRICE_TITLE, "price01", PRICE_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-            $objFormParam->addParam(SALE_PRICE_TITLE, "price02", PRICE_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-            $objFormParam->addParam("在庫数", 'stock', AMOUNT_LEN, 'n', array("SPTAB_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-            $objFormParam->addParam("在庫無制限", "stock_unlimited", INT_LEN, 'n', array("SPTAB_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+            $objFormParam->addParam("商品コード", "product_code", STEXT_LEN, 'KVna', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK'));
+            $objFormParam->addParam(NORMAL_PRICE_TITLE, "price01", PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+            $objFormParam->addParam(SALE_PRICE_TITLE, "price02", PRICE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+            $objFormParam->addParam("在庫数", 'stock', AMOUNT_LEN, 'n', array('SPTAB_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+            $objFormParam->addParam("在庫無制限", "stock_unlimited", INT_LEN, 'n', array('SPTAB_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         }
-        $objFormParam->addParam("商品送料", "deliv_fee", PRICE_LEN, 'n', array("NUM_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("ポイント付与率", "point_rate", PERCENTAGE_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("発送日目安", "deliv_date_id", INT_LEN, 'n', array("NUM_CHECK"));
-        $objFormParam->addParam("販売制限数", "sale_limit", AMOUNT_LEN, 'n', array("SPTAB_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("メーカー", "maker_id", INT_LEN, 'n', array("NUM_CHECK"));
-        $objFormParam->addParam("メーカーURL", "comment1", URL_LEN, 'a', array("SPTAB_CHECK", "URL_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("検索ワード", "comment3", LLTEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("備考欄(SHOP専用)", 'note', LLTEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("一覧-メインコメント", "main_list_comment", MTEXT_LEN, 'KVa', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("詳細-メインコメント", "main_comment", LLTEXT_LEN, 'KVa', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("商品送料", "deliv_fee", PRICE_LEN, 'n', array('NUM_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("ポイント付与率", "point_rate", PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("発送日目安", "deliv_date_id", INT_LEN, 'n', array('NUM_CHECK'));
+        $objFormParam->addParam("販売制限数", "sale_limit", AMOUNT_LEN, 'n', array('SPTAB_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("メーカー", "maker_id", INT_LEN, 'n', array('NUM_CHECK'));
+        $objFormParam->addParam("メーカーURL", "comment1", URL_LEN, 'a', array('SPTAB_CHECK', 'URL_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("検索ワード", "comment3", LLTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("備考欄(SHOP専用)", 'note', LLTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("一覧-メインコメント", "main_list_comment", MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("詳細-メインコメント", "main_comment", LLTEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam("save_main_list_image", "save_main_list_image", '', "", array());
         $objFormParam->addParam("save_main_image", "save_main_image", '', "", array());
         $objFormParam->addParam("save_main_large_image", "save_main_large_image", '', "", array());
@@ -351,8 +351,8 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         $objFormParam->addParam("temp_main_large_image", "temp_main_large_image", '', "", array());
 
         for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
-            $objFormParam->addParam("詳細-サブタイトル" . $cnt, "sub_title" . $cnt, STEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-            $objFormParam->addParam("詳細-サブコメント" . $cnt, "sub_comment" . $cnt, LLTEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+            $objFormParam->addParam("詳細-サブタイトル" . $cnt, "sub_title" . $cnt, STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+            $objFormParam->addParam("詳細-サブコメント" . $cnt, "sub_comment" . $cnt, LLTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
             $objFormParam->addParam("save_sub_image" . $cnt, "save_sub_image" . $cnt, '', "", array());
             $objFormParam->addParam("save_sub_large_image" . $cnt, "save_sub_large_image" . $cnt, '', "", array());
             $objFormParam->addParam("temp_sub_image" . $cnt, "temp_sub_image" . $cnt, '', "", array());
@@ -360,15 +360,15 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         }
 
         for ($cnt = 1; $cnt <= RECOMMEND_PRODUCT_MAX; $cnt++) {
-            $objFormParam->addParam("関連商品コメント" . $cnt, "recommend_comment" . $cnt, LTEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-            $objFormParam->addParam("関連商品ID" . $cnt, "recommend_id" . $cnt, INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+            $objFormParam->addParam("関連商品コメント" . $cnt, "recommend_comment" . $cnt, LTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+            $objFormParam->addParam("関連商品ID" . $cnt, "recommend_id" . $cnt, INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
             $objFormParam->addParam("recommend_delete" . $cnt, "recommend_delete" . $cnt, '', 'n', array());
         }
 
-        $objFormParam->addParam("商品ID", "copy_product_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("商品ID", "copy_product_id", INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
-        $objFormParam->addParam("has_product_class", "has_product_class", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("product_class_id", "product_class_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("has_product_class", "has_product_class", INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("product_class_id", "product_class_id", INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
         $objFormParam->setParam($arrPost);
         $objFormParam->convParam();
@@ -405,7 +405,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
      */
     function lfInitFormParam_RecommendSelect(&$objFormParam) {
         $objFormParam->addParam("anchor_key", "anchor_key", "", "", array());
-        $objFormParam->addParam("select_recommend_no", "select_recommend_no", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("select_recommend_no", "select_recommend_no", INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -456,21 +456,21 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         $arrErr = array_merge((array)$arrErr, (array)$objUpFile->checkEXISTS());
 
         // HTMLタグ許可チェック
-        $objErr->doFunc(array("詳細-メインコメント", "main_comment", $this->arrAllowedTag), array("HTML_TAG_CHECK"));
+        $objErr->doFunc(array("詳細-メインコメント", "main_comment", $this->arrAllowedTag), array('HTML_TAG_CHECK'));
         for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
-            $objErr->doFunc(array("詳細-サブコメント" . $cnt, "sub_comment" . $cnt, $this->arrAllowedTag), array("HTML_TAG_CHECK"));
+            $objErr->doFunc(array("詳細-サブコメント" . $cnt, "sub_comment" . $cnt, $this->arrAllowedTag), array('HTML_TAG_CHECK'));
         }
 
         // 規格情報がない商品の場合のチェック
         if ($arrForm['has_product_class'] != true) {
             // 在庫必須チェック(在庫無制限ではない場合)
             if ($arrForm['stock_unlimited'] != UNLIMITED_FLG_UNLIMITED) {
-                $objErr->doFunc(array("在庫数", 'stock'), array("EXIST_CHECK"));
+                $objErr->doFunc(array("在庫数", 'stock'), array('EXIST_CHECK'));
             }
             // ダウンロード商品ファイル必須チェック(ダウンロード商品の場合)
             if ($arrForm['product_type_id'] == PRODUCT_TYPE_DOWNLOAD) {
                 $arrErr = array_merge((array)$arrErr, (array)$objDownFile->checkEXISTS());
-                $objErr->doFunc(array("ダウンロード商品ファイル名", 'down_filename'), array("EXIST_CHECK"));
+                $objErr->doFunc(array("ダウンロード商品ファイル名", 'down_filename'), array('EXIST_CHECK'));
             }
         }
 

@@ -154,7 +154,7 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex {
      */
     function lfInitParam($arrRequest) {
         $objFormParam = new SC_FormParam_Ex();
-        $objFormParam->addParam("カテゴリID", "category_id", INT_LEN, 'n', array('NUM_CHECK',"MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("カテゴリID", "category_id", INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
         // 値の取得
         $objFormParam->setParam($arrRequest);
         // 入力値の変換

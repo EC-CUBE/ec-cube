@@ -107,7 +107,7 @@ class SC_DB_DBFactory_Test extends PHPUnit_Framework_TestCase {
         }
 
         $dbFactory = SC_DB_DBFactory::getInstance();
-        $actual = $dbFactory->getOrderYesterdaySql("COUNT");
+        $actual = $dbFactory->getOrderYesterdaySql('COUNT');
 
         $this->assertEquals($expected, $actual);
     }
@@ -137,7 +137,7 @@ class SC_DB_DBFactory_Test extends PHPUnit_Framework_TestCase {
         }
 
         $dbFactory = SC_DB_DBFactory::getInstance();
-        $actual = $dbFactory->getOrderMonthSql("COUNT");
+        $actual = $dbFactory->getOrderMonthSql('COUNT');
 
         $this->assertEquals($expected, $actual);
     }

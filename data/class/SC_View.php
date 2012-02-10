@@ -84,7 +84,7 @@ class SC_View {
             global $GLOBAL_ERR;
             if (!defined('OUTPUT_ERR')) {
                 // GLOBAL_ERR を割り当て
-                $this->assign("GLOBAL_ERR", $GLOBAL_ERR);
+                $this->assign('GLOBAL_ERR', $GLOBAL_ERR);
                 define('OUTPUT_ERR','ON');
             }
         }
@@ -103,7 +103,7 @@ class SC_View {
             global $GLOBAL_ERR;
             if (!defined('OUTPUT_ERR')) {
                 // GLOBAL_ERR を割り当て
-                $this->assign("GLOBAL_ERR", $GLOBAL_ERR);
+                $this->assign('GLOBAL_ERR', $GLOBAL_ERR);
                 define('OUTPUT_ERR','ON');
             }
         }
@@ -150,7 +150,7 @@ class SC_View {
     function assignTemplatePath($device_type_id) {
 
         // テンプレート変数を割り当て
-        $this->assign("TPL_URLPATH", SC_Helper_PageLayout_Ex::getUserDir($device_type_id, true));
+        $this->assign('TPL_URLPATH', SC_Helper_PageLayout_Ex::getUserDir($device_type_id, true));
 
         // ヘッダとフッタを割り当て
         $templatePath = SC_Helper_PageLayout_Ex::getTemplatePath($device_type_id);

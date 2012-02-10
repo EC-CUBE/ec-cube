@@ -26,13 +26,13 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 require_once DATA_REALDIR . 'module/HTTP/Request.php';
 
 /** CSV ファイルの最大行数 */
-define("ZIP_CSV_LINE_MAX", 8192);
+define('ZIP_CSV_LINE_MAX', 8192);
 
 /** 画像の表示数量 */
-define("IMAGE_MAX", 680);
+define('IMAGE_MAX', 680);
 
 /** 郵便番号CSV ファイルのパス */
-define("ZIP_CSV_REALFILE", DATA_REALDIR . "downloads/KEN_ALL.CSV");
+define('ZIP_CSV_REALFILE', DATA_REALDIR . "downloads/KEN_ALL.CSV");
 
 /** UTF-8 変換済みの郵便番号CSV ファイルのパス */
 define("ZIP_CSV_UTF8_REALFILE", DATA_REALDIR . "downloads/KEN_ALL_utf-8.CSV");
@@ -194,7 +194,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
      */
     function lfInitParam($tpl_mode, &$objFormParam) {
         if ($tpl_mode == 'manual') {
-            $objFormParam->addParam("開始行", 'startRowNum', INT_LEN, 'n', array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+            $objFormParam->addParam("開始行", 'startRowNum', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         }
     }
 

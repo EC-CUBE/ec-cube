@@ -22,106 +22,106 @@
  */
 
 /** TTFフォントファイル */
-define("FONT_REALFILE", DATA_REALDIR . "fonts/wlmaru20044.ttf");
+define('FONT_REALFILE', DATA_REALDIR . "fonts/wlmaru20044.ttf");
 
 /** フォントサイズ */
-define("FONT_SIZE", 8);
+define('FONT_SIZE', 8);
 
 /** タイトルフォントサイズ */
-define("TITLE_FONT_SIZE", 11);
+define('TITLE_FONT_SIZE', 11);
 
 /** 背景幅 */
-define("BG_WIDTH", 720);
+define('BG_WIDTH', 720);
 
 /** 背景高さ */
-define("BG_HEIGHT", 400);
+define('BG_HEIGHT', 400);
 
 /** 行間 */
-define("LINE_PAD", 5);
+define('LINE_PAD', 5);
 
 /** フォント補正値(実際の描画幅/フォントサイズ) */
-define("TEXT_RATE", 0.75);
+define('TEXT_RATE', 0.75);
 
 // -----------------------------------------------------------------------------
 // 円グラフ
 // -----------------------------------------------------------------------------
 /** 円グラフ位置 */
-define("PIE_LEFT", 200);
+define('PIE_LEFT', 200);
 
 /** 円グラフ位置 */
-define("PIE_TOP", 150);
+define('PIE_TOP', 150);
 
 /** 円グラフ幅 */
-define("PIE_WIDTH", 230);
+define('PIE_WIDTH', 230);
 
 /** 円グラフ高さ */
-define("PIE_HEIGHT", 100);
+define('PIE_HEIGHT', 100);
 
 /** 円グラフ太さ */
-define("PIE_THICK", 30);
+define('PIE_THICK', 30);
 
 /** 円グラフのラベル位置を上にあげる */
-define("PIE_LABEL_UP", 20);
+define('PIE_LABEL_UP', 20);
 
 /** 値が大きいほど影が長くなる */
-define("PIE_SHADE_IMPACT", 0.1);
+define('PIE_SHADE_IMPACT', 0.1);
 
 // -----------------------------------------------------------------------------
 // 折れ線グラフ
 // -----------------------------------------------------------------------------
 /** Y軸の目盛り数 */
-define("LINE_Y_SCALE", 10);
+define('LINE_Y_SCALE', 10);
 
 /** X軸の目盛り数 */
-define("LINE_X_SCALE", 10);
+define('LINE_X_SCALE', 10);
 
 /** 線グラフ位置 */
-define("LINE_LEFT", 60);
+define('LINE_LEFT', 60);
 
 /** 線グラフ位置 */
-define("LINE_TOP", 50);
+define('LINE_TOP', 50);
 
 /** 線グラフ背景のサイズ */
-define("LINE_AREA_WIDTH", 600);
+define('LINE_AREA_WIDTH', 600);
 
 /** 線グラフ背景のサイズ */
-define("LINE_AREA_HEIGHT", 300);
+define('LINE_AREA_HEIGHT', 300);
 
 /** 線グラフマークのサイズ */
-define("LINE_MARK_SIZE", 6);
+define('LINE_MARK_SIZE', 6);
 
 /** 目盛り幅 */
-define("LINE_SCALE_SIZE", 6);
+define('LINE_SCALE_SIZE', 6);
 
 /** X軸のラベルの表示制限数 */
-define("LINE_XLABEL_MAX", 30);
+define('LINE_XLABEL_MAX', 30);
 
 /** X軸のタイトルと軸の間隔 */
-define("LINE_XTITLE_PAD", -5);
+define('LINE_XTITLE_PAD', -5);
 
 /** Y軸のタイトルと軸の間隔 */
-define("LINE_YTITLE_PAD", 15);
+define('LINE_YTITLE_PAD', 15);
 
 // -----------------------------------------------------------------------------
 //  棒グラフ
 // -----------------------------------------------------------------------------
 /** グラフと目盛りの間隔 */
-define("BAR_PAD", 6);
+define('BAR_PAD', 6);
 
 // -----------------------------------------------------------------------------
 //  タイトルラベル
 // -----------------------------------------------------------------------------
 /** 背景枠との上幅 */
-define("TITLE_TOP", 10);
+define('TITLE_TOP', 10);
 
 // -----------------------------------------------------------------------------
 //  凡例
 // -----------------------------------------------------------------------------
 /** 背景枠との上幅 */
-define("LEGEND_TOP", 10);
+define('LEGEND_TOP', 10);
 
 /** 背景枠との右幅 */
-define("LEGEND_RIGHT", 10);
+define('LEGEND_RIGHT', 10);
 
 /**
  * SC_Graph共通クラス.

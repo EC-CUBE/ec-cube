@@ -33,7 +33,7 @@ require_once(dirname(__FILE__) . "/../html/require.php");
 // {{{ constants
 
 /** 会員の生成数 */
-define("CUSTOMERS_VOLUME", 100);    // ※最大値:99999までで指定してください
+define('CUSTOMERS_VOLUME', 100);    // ※最大値:99999までで指定してください
 
 /**
  * 会員メールアドレスのアカウント名
@@ -41,12 +41,12 @@ define("CUSTOMERS_VOLUME", 100);    // ※最大値:99999までで指定して�
  * 実際にメールを受信するためには、メールサーバが別名アドレスに対応している必要があります。
  * (例えば、Gmailは別名アドレスに対応しています)
  */
-define("EMAIL_ADDRESS_ACCOUNT", "test");
+define('EMAIL_ADDRESS_ACCOUNT', "test");
 
 /**
  * 会員メールアドレスのドメイン名
  */
-define("EMAIL_ADDRESS_DOMAIN", "@localhost");
+define('EMAIL_ADDRESS_DOMAIN', "@localhost");
 
 // }}}
 // {{{ Logic

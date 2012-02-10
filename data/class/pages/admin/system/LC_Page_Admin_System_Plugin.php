@@ -231,7 +231,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         $objFormParam->addParam('mode', 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('plugin_id', 'plugin_id', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('plugin_code', 'plugin_code', MTEXT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("優先順位", "priority", INT_LEN, 'n', array("NUM_CHECK", 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("優先順位", "priority", INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -255,11 +255,11 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
     function checkUploadFile($file_key) {
         $objErr = new SC_CheckError_Ex();
         // 拡張子チェック
-        $objErr->doFunc(array('プラグインファイル', $file_key, explode(",", PLUGIN_EXTENSION)), array("FILE_EXT_CHECK"));
+        $objErr->doFunc(array('プラグインファイル', $file_key, explode(",", PLUGIN_EXTENSION)), array('FILE_EXT_CHECK'));
         // ファイルサイズチェック
-        $objErr->doFunc(array('プラグインファイル', $file_key, FILE_SIZE), array("FILE_SIZE_CHECK"));
+        $objErr->doFunc(array('プラグインファイル', $file_key, FILE_SIZE), array('FILE_SIZE_CHECK'));
         // ファイル名チェック
-        $objErr->doFunc(array('プラグインファイル', $file_key), array("FILE_NAME_CHECK"));
+        $objErr->doFunc(array('プラグインファイル', $file_key), array('FILE_NAME_CHECK'));
 
         return $objErr->arrErr;
     }
@@ -420,38 +420,38 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
     function checkPluginConstants(ReflectionClass $objReflection) {
         $arrErr = array();
 
-        if ($objReflection->getConstant("PLUGIN_NAME") === false) {
+        if ($objReflection->getConstant('PLUGIN_NAME') === false) {
             $arrErr['plugin_file'] = "※ PLUGIN_NAMEが定義されていません。<br/>";
             return $arrErr;
         }
-        if ($objReflection->getConstant("PLUGIN_VERSION") === false) {
+        if ($objReflection->getConstant('PLUGIN_VERSION') === false) {
             $arrErr['plugin_file'] = "※ PLUGIN_VERSIONが定義されていません。<br/>";
             return $arrErr;
         }
-        if ($objReflection->getConstant("COMPLIANT_VERSION") === false) {
+        if ($objReflection->getConstant('COMPLIANT_VERSION') === false) {
             $arrErr['plugin_file'] = "※ COMPLIANT_VERSIONが定義されていません。<br/>";
             return $arrErr;
         }
-        if ($objReflection->getConstant("AUTHOR") === false) {
+        if ($objReflection->getConstant('AUTHOR') === false) {
             $arrErr['plugin_file'] = "※ AUTHORが定義されていません。<br/>";
             return $arrErr;
         }
-        if ($objReflection->getConstant("DESCRIPTION") === false) {
+        if ($objReflection->getConstant('DESCRIPTION') === false) {
             $arrErr['plugin_file'] = "※ DESCRIPTIONが定義されていません。<br/>";
             return $arrErr;
         }
 
         $objErr = new SC_CheckError_Ex($objReflection->getConstants());
-        $objErr->doFunc(array('PLUGIN_NAME', 'PLUGIN_NAME', STEXT_LEN), array("MAX_LENGTH_CHECK",));
-        $objErr->doFunc(array('PLUGIN_VERSION', 'PLUGIN_VERSION', STEXT_LEN), array("MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array('COMPLIANT_VERSION', 'COMPLIANT_VERSION', STEXT_LEN), array("MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array('AUTHOR', 'AUTHOR', STEXT_LEN), array("MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array('DESCRIPTION', 'DESCRIPTION', SLTEXT_LEN), array("MAX_LENGTH_CHECK"));
-        if ($objReflection->getConstant("PLUGIN_SITE_URL") !== false) {
-            $objErr->doFunc(array('PLUGIN_SITE_URL', 'PLUGIN_SITE_URL', URL_LEN), array("MAX_LENGTH_CHECK","GRAPH_CHECK"));
+        $objErr->doFunc(array('PLUGIN_NAME', 'PLUGIN_NAME', STEXT_LEN), array('MAX_LENGTH_CHECK',));
+        $objErr->doFunc(array('PLUGIN_VERSION', 'PLUGIN_VERSION', STEXT_LEN), array('MAX_LENGTH_CHECK'));
+        $objErr->doFunc(array('COMPLIANT_VERSION', 'COMPLIANT_VERSION', STEXT_LEN), array('MAX_LENGTH_CHECK'));
+        $objErr->doFunc(array('AUTHOR', 'AUTHOR', STEXT_LEN), array('MAX_LENGTH_CHECK'));
+        $objErr->doFunc(array('DESCRIPTION', 'DESCRIPTION', SLTEXT_LEN), array('MAX_LENGTH_CHECK'));
+        if ($objReflection->getConstant('PLUGIN_SITE_URL') !== false) {
+            $objErr->doFunc(array('PLUGIN_SITE_URL', 'PLUGIN_SITE_URL', URL_LEN), array('MAX_LENGTH_CHECK','GRAPH_CHECK'));
         }
-        if ($objReflection->getConstant("AUTHOR_SITE_URL") !== false) {
-            $objErr->doFunc(array('AUTHOR_SITE_URL', 'AUTHOR_SITE_URL', URL_LEN), array("MAX_LENGTH_CHECK","GRAPH_CHECK"));
+        if ($objReflection->getConstant('AUTHOR_SITE_URL') !== false) {
+            $objErr->doFunc(array('AUTHOR_SITE_URL', 'AUTHOR_SITE_URL', URL_LEN), array('MAX_LENGTH_CHECK','GRAPH_CHECK'));
         }
         // エラー内容を出力用の配列にセットします.
         if ($this->isError($objErr->arrErr)) {
@@ -639,25 +639,25 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         $arr_sqlval_plugin = array();
         $plugin_id = $objQuery->nextVal('dtb_plugin_plugin_id');
         $arr_sqlval_plugin['plugin_id'] = $plugin_id;
-        $arr_sqlval_plugin['plugin_name'] = $objReflection->getConstant("PLUGIN_NAME");
+        $arr_sqlval_plugin['plugin_name'] = $objReflection->getConstant('PLUGIN_NAME');
         $arr_sqlval_plugin['plugin_code'] = $objReflection->getName();
-        $arr_sqlval_plugin['author'] = $objReflection->getConstant("AUTHOR");
+        $arr_sqlval_plugin['author'] = $objReflection->getConstant('AUTHOR');
         // AUTHOR_SITE_URLが定義されているか判定.
-        $author_site_url = $objReflection->getConstant("AUTHOR_SITE_URL");
+        $author_site_url = $objReflection->getConstant('AUTHOR_SITE_URL');
         if($author_site_url !== false) $arr_sqlval_plugin['author_site_url'] = $author_site_url;
         // PLUGIN_SITE_URLが定義されているか判定.
-        $plugin_site_url = $objReflection->getConstant("PLUGIN_SITE_URL");
+        $plugin_site_url = $objReflection->getConstant('PLUGIN_SITE_URL');
         if($plugin_site_url !== false) $arr_sqlval_plugin['plugin_site_url'] = $plugin_site_url;
-        $arr_sqlval_plugin['plugin_version'] = $objReflection->getConstant("PLUGIN_VERSION");
-        $arr_sqlval_plugin['compliant_version'] = $objReflection->getConstant("COMPLIANT_VERSION");
-        $arr_sqlval_plugin['plugin_description'] = $objReflection->getConstant("DESCRIPTION");
+        $arr_sqlval_plugin['plugin_version'] = $objReflection->getConstant('PLUGIN_VERSION');
+        $arr_sqlval_plugin['compliant_version'] = $objReflection->getConstant('COMPLIANT_VERSION');
+        $arr_sqlval_plugin['plugin_description'] = $objReflection->getConstant('DESCRIPTION');
         $arr_sqlval_plugin['rank'] = 1 + $objQuery->max('rank', 'dtb_plugin');
         $arr_sqlval_plugin['enable'] = PLUGIN_ENABLE_FALSE;
         $arr_sqlval_plugin['update_date'] = 'CURRENT_TIMESTAMP';
         $objQuery->insert('dtb_plugin', $arr_sqlval_plugin);
 
         // フックポイントをDB登録.
-        $hook_point = $objReflection->getConstant("HOOK_POINTS");
+        $hook_point = $objReflection->getConstant('HOOK_POINTS');
         if ($hook_point !== false) {
             $array_hook_point = explode(",", $hook_point);
             if (is_array($array_hook_point)) {

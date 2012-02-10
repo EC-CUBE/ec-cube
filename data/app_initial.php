@@ -21,19 +21,19 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-if (!defined("CLASS_REALDIR")) {
+if (!defined('CLASS_REALDIR')) {
     /** クラスパス */
-    define("CLASS_REALDIR", DATA_REALDIR . "class/");
+    define('CLASS_REALDIR', DATA_REALDIR . "class/");
 }
 
-if (!defined("CLASS_EX_REALDIR")) {
+if (!defined('CLASS_EX_REALDIR')) {
     /** クラスパス */
-    define("CLASS_EX_REALDIR", DATA_REALDIR . "class_extends/");
+    define('CLASS_EX_REALDIR', DATA_REALDIR . "class_extends/");
 }
 
-if (!defined("CACHE_REALDIR")) {
+if (!defined('CACHE_REALDIR')) {
     /** キャッシュ生成ディレクトリ */
-    define("CACHE_REALDIR", DATA_REALDIR . "cache/");
+    define('CACHE_REALDIR', DATA_REALDIR . "cache/");
 }
 
 require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_HandleError_Ex.php';

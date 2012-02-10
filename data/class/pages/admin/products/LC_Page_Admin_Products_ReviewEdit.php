@@ -119,18 +119,18 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
     function lfInitParam(&$objFormParam) {
         // 検索条件のパラメーターを初期化
         parent::lfInitParam($objFormParam);
-        $objFormParam->addParam("レビューID", "review_id", INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("レビューID", "review_id", INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam("商品名", 'name', "", "", array(), "", false);
         $objFormParam->addParam("投稿日", "create_date", "", "", array(), "", false);
 
         // 登録情報
-        $objFormParam->addParam("レビュー表示", 'status', INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("投稿者名", "reviewer_name", STEXT_LEN, 'KVa', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("投稿者URL", "reviewer_url", URL_LEN, 'KVCa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("性別", 'sex', INT_LEN, 'n', array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("おすすめレベル", "recommend_level", INT_LEN, 'n', array("SELECT_CHECK"));
-        $objFormParam->addParam("タイトル", 'title', STEXT_LEN, 'KVa', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("コメント", 'comment', LTEXT_LEN, 'KVa', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("レビュー表示", 'status', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam("投稿者名", "reviewer_name", STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("投稿者URL", "reviewer_url", URL_LEN, 'KVCa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("性別", 'sex', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam("おすすめレベル", "recommend_level", INT_LEN, 'n', array('SELECT_CHECK'));
+        $objFormParam->addParam("タイトル", 'title', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("コメント", 'comment', LTEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**

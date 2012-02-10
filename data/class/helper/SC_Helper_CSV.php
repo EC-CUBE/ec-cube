@@ -147,7 +147,7 @@ class SC_Helper_CSV {
             if($val['status'] != CSV_COLUMN_STATUS_FLG_ENABLE
                     and $val['rw_flg'] == CSV_COLUMN_RW_FLG_READ_WRITE
                     and $val['error_check_types'] != ""
-                    and strpos(strtoupper($val['error_check_types']), "EXIST_CHECK") !== FALSE) {
+                    and strpos(strtoupper($val['error_check_types']), 'EXIST_CHECK') !== FALSE) {
                 //必須フィールド
                 $result = false;
             }
@@ -242,7 +242,7 @@ class SC_Helper_CSV {
 
         if ($is_download) {
             // CSVを送信する。
-            $this->lfDownloadCSVFile($tmp_filename, $file_head . "_");
+            $this->lfDownloadCSVFile($tmp_filename, $file_head . '_');
             $res = true;
         } else {
             $res = SC_Utils_Ex::sfReadFile($tmp_filename);

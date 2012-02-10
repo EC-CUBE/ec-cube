@@ -143,8 +143,8 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("規格名", 'name', STEXT_LEN, 'KVa', array("EXIST_CHECK" ,"SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("規格ID", "class_id", INT_LEN, 'n', array("NUM_CHECK"));
+        $objFormParam->addParam("規格名", 'name', STEXT_LEN, 'KVa', array('EXIST_CHECK' ,'SPTAB_CHECK' ,'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("規格ID", "class_id", INT_LEN, 'n', array('NUM_CHECK'));
     }
 
    /**

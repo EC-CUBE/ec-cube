@@ -188,10 +188,10 @@ __EOS__;
 
     /* パラメーター情報の初期化 */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("customer_id", "customer_id", INT_LEN, 'n', array("EXIST_CHECK","NUM_CHECK"));
-        $objFormParam->addParam("order_id", "order_id", INT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("product_id", "product_id", INT_LEN, 'n', array("EXIST_CHECK","NUM_CHECK"));
-        $objFormParam->addParam("product_class_id", "product_class_id", INT_LEN, 'n', array("EXIST_CHECK","NUM_CHECK"));
+        $objFormParam->addParam("customer_id", "customer_id", INT_LEN, 'n', array('EXIST_CHECK','NUM_CHECK'));
+        $objFormParam->addParam("order_id", "order_id", INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam("product_id", "product_id", INT_LEN, 'n', array('EXIST_CHECK','NUM_CHECK'));
+        $objFormParam->addParam("product_class_id", "product_class_id", INT_LEN, 'n', array('EXIST_CHECK','NUM_CHECK'));
     }
 
     /* 入力内容のチェック */

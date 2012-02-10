@@ -100,7 +100,7 @@ class SC_FormParam {
         foreach ($this->keyname as $val) {
             $find = false;
             foreach ($this->arrCheck[$cnt] as $val) {
-                if ($val == "EXIST_CHECK") {
+                if ($val == 'EXIST_CHECK') {
                     $find = true;
                 }
             }

@@ -426,7 +426,7 @@ class SC_Utils {
             if ($_POST[$keyname . $cnt] == "1") {
                 $conv.= "1";
             } else {
-                $conv.= "_";
+                $conv.= '_';
             }
         }
         return $conv;

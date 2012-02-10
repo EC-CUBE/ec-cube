@@ -187,8 +187,8 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      */
     function lfInitParamSearchCustomer(&$objFormParam) {
         SC_Helper_Customer_Ex::sfSetSearchParam($objFormParam);
-        $objFormParam->addParam('配信形式', 'search_htmlmail', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('配信メールアドレス種別', 'search_mail_type', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
+        $objFormParam->addParam('配信形式', 'search_htmlmail', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('配信メールアドレス種別', 'search_mail_type', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -198,10 +198,10 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfAddParamSelectTemplate(&$objFormParam) {
-        $objFormParam->addParam("メール形式", 'mail_method', INT_LEN, 'n', array("EXIST_CHECK","ALNUM_CHECK"));
-        $objFormParam->addParam('Subject', 'subject', STEXT_LEN, 'KVa', array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("本文", 'body', LLTEXT_LEN, 'KVCa', array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("テンプレートID", "template_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"), "", false);
+        $objFormParam->addParam("メール形式", 'mail_method', INT_LEN, 'n', array('EXIST_CHECK','ALNUM_CHECK'));
+        $objFormParam->addParam('Subject', 'subject', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("本文", 'body', LLTEXT_LEN, 'KVCa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("テンプレートID", "template_id", INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
     }
 
     /**

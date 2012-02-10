@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-if (!defined("DATA_REALDIR")) {
-    define("DATA_REALDIR", HTML_REALDIR . HTML2DATA_DIR);
+if (!defined('DATA_REALDIR')) {
+    define('DATA_REALDIR', HTML_REALDIR . HTML2DATA_DIR);
 }
 // PHP4互換用関数読み込み(PHP_Compat)
 require_once DATA_REALDIR . 'require_compat.php';

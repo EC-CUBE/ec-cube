@@ -410,7 +410,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
     function initParam(&$objFormParam) {
         $objFormParam->addParam("親カテゴリID", "parent_category_id", null, null, array());
         $objFormParam->addParam("カテゴリID", "category_id", null, null, array());
-        $objFormParam->addParam("カテゴリ名", "category_name", STEXT_LEN, 'KVa', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("カテゴリ名", "category_name", STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**

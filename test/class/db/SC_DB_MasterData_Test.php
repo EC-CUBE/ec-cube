@@ -89,7 +89,7 @@ class SC_DB_MasterData_Test extends PHPUnit_Framework_TestCase {
         $masterData = new SC_DB_MasterData_Ex();
         $masterData->clearCache("mtb_constants");
         $masterData->createCache('mtb_constants', array(), true, array('id', 'remarks'));
-        $this->assertEquals(true, defined("ECCUBE_VERSION"));
+        $this->assertEquals(true, defined('ECCUBE_VERSION'));
     }
 }
 ?>

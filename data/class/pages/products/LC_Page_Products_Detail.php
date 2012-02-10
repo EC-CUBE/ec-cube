@@ -420,13 +420,13 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
     /* パラメーター情報の初期化 */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("規格1", "classcategory_id1", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("規格2", "classcategory_id2", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("数量", 'quantity', INT_LEN, 'n', array("EXIST_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("管理者ログイン", 'admin', INT_LEN, 'a', array('ALNUM_CHECK',"MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("商品ID", "product_id", INT_LEN, 'n', array("EXIST_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("お気に入り商品ID", "favorite_product_id", INT_LEN, 'n', array("ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("商品規格ID", "product_class_id", INT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("規格1", "classcategory_id1", INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("規格2", "classcategory_id2", INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("数量", 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("管理者ログイン", 'admin', INT_LEN, 'a', array('ALNUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("商品ID", "product_id", INT_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("お気に入り商品ID", "favorite_product_id", INT_LEN, 'n', array('ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("商品規格ID", "product_class_id", INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         // 値の取得
         $objFormParam->setParam($_REQUEST);
         // 入力値の変換
@@ -486,10 +486,10 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
             // 複数項目チェック
             if ($tpl_classcat_find1) {
-                $objErr->doFunc(array("規格1", "classcategory_id1"), array("EXIST_CHECK"));
+                $objErr->doFunc(array("規格1", "classcategory_id1"), array('EXIST_CHECK'));
             }
             if ($tpl_classcat_find2) {
-                $objErr->doFunc(array("規格2", "classcategory_id2"), array("EXIST_CHECK"));
+                $objErr->doFunc(array("規格2", "classcategory_id2"), array('EXIST_CHECK'));
             }
             break;
         }

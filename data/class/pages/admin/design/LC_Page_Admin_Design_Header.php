@@ -130,8 +130,8 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("端末種別ID", "device_type_id", INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("division", "division", STEXT_LEN, 'a', array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("端末種別ID", "device_type_id", INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("division", "division", STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam("ヘッダデータ", "header");
         $objFormParam->addParam("フッタデータ", "footer");
     }
@@ -146,7 +146,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
         $arrParams = $objFormParam->getHashArray();
         $objErr = new SC_CheckError_Ex($arrParams);
         $objErr->arrErr =& $arrErr;
-        $objErr->doFunc(array("division", "division", STEXT_LEN), array("EXIST_CHECK"));
+        $objErr->doFunc(array("division", "division", STEXT_LEN), array('EXIST_CHECK'));
         return $objErr->arrErr;
     }
 

@@ -812,7 +812,7 @@ class SC_CheckError {
     }
 
     /*　ファイル名の判定　*/
-    // 入力文字が英数字,"_","-"以外ならエラーを返す
+    // 入力文字が英数字,'_',"-"以外ならエラーを返す
     // value[0] = 項目名 value[1] = 判定対象文字列
     function FILE_NAME_CHECK($value) {
         if (isset($this->arrErr[$value[1]])) {
@@ -825,7 +825,7 @@ class SC_CheckError {
     }
 
     /*　ファイル名の判定(アップロード以外の時)　*/
-    // 入力文字が英数字,"_","-"以外ならエラーを返す
+    // 入力文字が英数字,'_',"-"以外ならエラーを返す
     // value[0] = 項目名 value[1] = 判定対象文字列
     function FILE_NAME_CHECK_BY_NOUPLOAD($value) {
         if (isset($this->arrErr[$value[1]])) {
@@ -916,14 +916,14 @@ class SC_CheckError {
         if ($this->arrParam[$value[1]] > 0) {
 
             // 年の数字チェック、最小数値制限チェック
-            $this->doFunc(array($value[0].'(年)', $value[1], BIRTH_YEAR), array("NUM_CHECK", "MIN_CHECK"));
+            $this->doFunc(array($value[0].'(年)', $value[1], BIRTH_YEAR), array('NUM_CHECK', 'MIN_CHECK'));
             // 上のチェックでエラーある場合、中断する。
             if (isset($this->arrErr[$value[1]])) {
                 return;
             }
 
             // 年の最大数値制限チェック
-            $this->doFunc(array($value[0].'(年)', $value[1], date('Y',strtotime('now'))), array("MAX_CHECK"));
+            $this->doFunc(array($value[0].'(年)', $value[1], date('Y',strtotime('now'))), array('MAX_CHECK'));
             // 上のチェックでエラーある場合、中断する。
             if (isset($this->arrErr[$value[1]])) {
                 return;
@@ -1138,7 +1138,7 @@ class SC_CheckError {
      * value[0] = 項目名 value[1] = 判定対象文字列
      * value[2] = 入力を禁止する文字列(配列)
      *
-     * @example $objErr->doFunc(array('URL', 'contents', $arrReviewDenyURL), array("PROHIBITED_STR_CHECK"));
+     * @example $objErr->doFunc(array('URL', 'contents', $arrReviewDenyURL), array('PROHIBITED_STR_CHECK'));
      */
     function PROHIBITED_STR_CHECK($value) {
         if (isset($this->arrErr[$value[1]]) || empty($this->arrParam[$value[1]])) {

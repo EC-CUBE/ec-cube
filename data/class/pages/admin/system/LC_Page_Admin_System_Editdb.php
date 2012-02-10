@@ -156,11 +156,11 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
                             'table_name' => $arrTableName[$i],
                             'column_name' => $arrColumnName[$i]);
             $objErr = new SC_CheckError_Ex($param);
-            $objErr->doFunc(array("インデックス(" . $i . ")", 'indexflag', INT_LEN), array("NUM_CHECK"));
-            $objErr->doFunc(array("インデックス変更後(" . $i . ")", 'indexflag_new', INT_LEN), array("NUM_CHECK"));
-            $objErr->doFunc(array("インデックス変更後(" . $i . ")", 'indexflag_new', INT_LEN), array("NUM_CHECK"));
-            $objErr->doFunc(array("テーブル名(" . $i . ")", 'table_name', STEXT_LEN), array("GRAPH_CHECK", "EXIST_CHECK", "MAX_LENGTH_CHECK"));
-            $objErr->doFunc(array("カラム名(" . $i . ")", 'column_name', STEXT_LEN), array("GRAPH_CHECK", "EXIST_CHECK", "MAX_LENGTH_CHECK"));
+            $objErr->doFunc(array("インデックス(" . $i . ")", 'indexflag', INT_LEN), array('NUM_CHECK'));
+            $objErr->doFunc(array("インデックス変更後(" . $i . ")", 'indexflag_new', INT_LEN), array('NUM_CHECK'));
+            $objErr->doFunc(array("インデックス変更後(" . $i . ")", 'indexflag_new', INT_LEN), array('NUM_CHECK'));
+            $objErr->doFunc(array("テーブル名(" . $i . ")", 'table_name', STEXT_LEN), array('GRAPH_CHECK', 'EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+            $objErr->doFunc(array("カラム名(" . $i . ")", 'column_name', STEXT_LEN), array('GRAPH_CHECK', 'EXIST_CHECK', 'MAX_LENGTH_CHECK'));
             $arrErr = $objErr->arrErr;
             if (count($arrErr) != 0) {
                 // 通常の送信ではエラーにならないはずです。
@@ -196,7 +196,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
                 $arrIndexes = $objQuery->listTableIndexes($table);
             }
             // インデックスが設定されているかを取得
-            $idx_name = $table . "_" . $arrIndex["column_name"] . "_key";
+            $idx_name = $table . '_' . $arrIndex["column_name"] . "_key";
             if (array_search($idx_name, $arrIndexes) === false) {
                 $arrIndexList[$key]['indexflag'] = '';
             } else {

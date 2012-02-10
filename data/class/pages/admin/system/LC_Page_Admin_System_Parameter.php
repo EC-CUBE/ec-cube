@@ -158,7 +158,7 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
         for ($i = 0; $i < count($arrKeys); $i++) {
             $objErr->doFunc(array($arrKeys[$i],
                                   $arrForm[$arrKeys[$i]]),
-                            array("EXIST_CHECK_REVERSE", "EVAL_CHECK"));
+                            array('EXIST_CHECK_REVERSE', 'EVAL_CHECK'));
         }
         return $objErr->arrErr;
     }

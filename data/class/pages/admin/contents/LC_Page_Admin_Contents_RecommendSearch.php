@@ -119,9 +119,9 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
      * @param Object $objFormParam
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("商品ID", "search_name", LTEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("商品ID", "search_category_id", INT_LEN, 'n', array("MAX_LENGTH_CHECK","NUM_CHECK"));
-        $objFormParam->addParam("ページ番号", "search_pageno", INT_LEN, 'n', array("MAX_LENGTH_CHECK","NUM_CHECK"));
+        $objFormParam->addParam("商品ID", "search_name", LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam("商品ID", "search_category_id", INT_LEN, 'n', array('MAX_LENGTH_CHECK','NUM_CHECK'));
+        $objFormParam->addParam("ページ番号", "search_pageno", INT_LEN, 'n', array('MAX_LENGTH_CHECK','NUM_CHECK'));
     }
 
     /**

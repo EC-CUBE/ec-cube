@@ -142,7 +142,7 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
 
     function testGetAllClass() {
         $this->clearClass();
-        $this->setClass(1000, "大きさ", 1, array("S", "M", "L", "LL"));
+        $this->setClass(1000, "大きさ", 1, array('S', 'M', 'L', 'LL'));
         $this->setClass(2, "色", 2, array("赤", "青", "黄", "緑"));
         $this->setClass(3, "味", 3, array());
 
@@ -155,26 +155,26 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
 
     function testGetAllClassCategory規格1のみ() {
         $this->clearClass();
-        $this->setClass(1000, "大きさ", 1, array("S", "M", "L", "LL"));
+        $this->setClass(1000, "大きさ", 1, array('S', 'M', 'L', 'LL'));
         $this->setClass(2, "色", 2, array("赤", "青", "黄", "緑"));
         $this->setClass(3, "味", 3, array("甘口", "中辛", "辛口"));
 
         $this->expected = array(
                                 array("class_id1" => 1000,
                                       "classcategory_id1" => 1000000004,
-                                      "name1" => "LL",
+                                      "name1" => 'LL',
                                       "rank1" => 4),
                                 array("class_id1" => 1000,
                                       "classcategory_id1" => 1000000003,
-                                      "name1" => "L",
+                                      "name1" => 'L',
                                       "rank1" => 3),
                                 array("class_id1" => 1000,
                                       "classcategory_id1" => 1000000002,
-                                      "name1" => "M",
+                                      "name1" => 'M',
                                       "rank1" => 2),
                                 array("class_id1" => 1000,
                                       "classcategory_id1" => 1000000001,
-                                      "name1" => "S",
+                                      "name1" => 'S',
                                       "rank1" => 1));
 
         $this->actual = $this->objPage->getAllClassCategory(1000);
@@ -183,14 +183,14 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
 
     function testGetAllClassCategory規格1と3() {
         $this->clearClass();
-        $this->setClass(1000, "大きさ", 1, array("S", "M", "L", "LL"));
+        $this->setClass(1000, "大きさ", 1, array('S', 'M', 'L', 'LL'));
         $this->setClass(2, "色", 2, array("赤", "青", "黄", "緑"));
         $this->setClass(3, "味", 3, array("甘口", "中辛", "辛口"));
 
         $this->expected = array(
                                 array("class_id1" => 1000,
                                       "classcategory_id1" => 1000000004,
-                                      "name1" => "LL",
+                                      "name1" => 'LL',
                                       "rank1" => 4,
                                       "class_id2" => 3,
                                       "classcategory_id2" => 3000003,
@@ -198,7 +198,7 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
                                       "rank2" => 3),
                                 array("class_id1" => 1000,
                                       "classcategory_id1" => 1000000004,
-                                      "name1" => "LL",
+                                      "name1" => 'LL',
                                       "rank1" => 4,
                                       "class_id2" => 3,
                                       "classcategory_id2" => 3000002,
@@ -206,7 +206,7 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
                                       "rank2" => 2),
                                 array("class_id1" => 1000,
                                       "classcategory_id1" => 1000000004,
-                                      "name1" => "LL",
+                                      "name1" => 'LL',
                                       "rank1" => 4,
                                       "class_id2" => 3,
                                       "classcategory_id2" => 3000001,
@@ -215,7 +215,7 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
 
                                 array("class_id1" => 1000,
                                       "classcategory_id1" => 1000000003,
-                                      "name1" => "L",
+                                      "name1" => 'L',
                                       "rank1" => 3,
                                       "class_id2" => 3,
                                       "classcategory_id2" => 3000003,
@@ -223,7 +223,7 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
                                       "rank2" => 3),
                                 array("class_id1" => 1000,
                                       "classcategory_id1" => 1000000003,
-                                      "name1" => "L",
+                                      "name1" => 'L',
                                       "rank1" => 3,
                                       "class_id2" => 3,
                                       "classcategory_id2" => 3000002,
@@ -231,7 +231,7 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
                                       "rank2" => 2),
                                 array("class_id1" => 1000,
                                       "classcategory_id1" => 1000000003,
-                                      "name1" => "L",
+                                      "name1" => 'L',
                                       "rank1" => 3,
                                       "class_id2" => 3,
                                       "classcategory_id2" => 3000001,
@@ -240,7 +240,7 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
 
                                 array("class_id1" => 1000,
                                       "classcategory_id1" => 1000000002,
-                                      "name1" => "M",
+                                      "name1" => 'M',
                                       "rank1" => 2,
                                       "class_id2" => 3,
                                       "classcategory_id2" => 3000003,
@@ -248,7 +248,7 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
                                       "rank2" => 3),
                                 array("class_id1" => 1000,
                                       "classcategory_id1" => 1000000002,
-                                      "name1" => "M",
+                                      "name1" => 'M',
                                       "rank1" => 2,
                                       "class_id2" => 3,
                                       "classcategory_id2" => 3000002,
@@ -256,7 +256,7 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
                                       "rank2" => 2),
                                 array("class_id1" => 1000,
                                       "classcategory_id1" => 1000000002,
-                                      "name1" => "M",
+                                      "name1" => 'M',
                                       "rank1" => 2,
                                       "class_id2" => 3,
                                       "classcategory_id2" => 3000001,
@@ -265,7 +265,7 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
 
                                 array("class_id1" => 1000,
                                       "classcategory_id1" => 1000000001,
-                                      "name1" => "S",
+                                      "name1" => 'S',
                                       "rank1" => 1,
                                       "class_id2" => 3,
                                       "classcategory_id2" => 3000003,
@@ -273,7 +273,7 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
                                       "rank2" => 3),
                                 array("class_id1" => 1000,
                                       "classcategory_id1" => 1000000001,
-                                      "name1" => "S",
+                                      "name1" => 'S',
                                       "rank1" => 1,
                                       "class_id2" => 3,
                                       "classcategory_id2" => 3000002,
@@ -281,7 +281,7 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
                                       "rank2" => 2),
                                 array("class_id1" => 1000,
                                       "classcategory_id1" => 1000000001,
-                                      "name1" => "S",
+                                      "name1" => 'S',
                                       "rank1" => 1,
                                       "class_id2" => 3,
                                       "classcategory_id2" => 3000001,
@@ -298,7 +298,7 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
         $product_class_id = 1000;
         $class_combination_id = 200;
         $this->clearClass();
-        $this->setClass(1000, "大きさ", 1, array("S", "M", "L", "LL"));
+        $this->setClass(1000, "大きさ", 1, array('S', 'M', 'L', 'LL'));
         $this->setClass(2, "色", 2, array("赤", "青", "黄", "緑"));
         $this->setClass(3, "味", 3, array("甘口", "中辛", "辛口"));
         $this->setProductsClass($product_id, $product_class_id,

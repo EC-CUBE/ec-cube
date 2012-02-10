@@ -134,7 +134,7 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
             $value = '無効';
         }
         $arrSystemInfo[] = array('title' => 'GD', 'value' => $value);
-        $arrSystemInfo[] = array('title' => 'HTTPユーザーエージェント', 'value' => $_SERVER["HTTP_USER_AGENT"]);
+        $arrSystemInfo[] = array('title' => 'HTTPユーザーエージェント', 'value' => $_SERVER['HTTP_USER_AGENT']);
 
         return $arrSystemInfo;
     }

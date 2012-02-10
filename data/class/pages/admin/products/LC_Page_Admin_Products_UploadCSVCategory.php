@@ -329,7 +329,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         $objErr->arrErr = $objFormParam->checkError(false);
         // HTMLタグチェックの実行
         foreach ($this->arrTagCheckItem as $item) {
-            $objErr->doFunc(array($item['disp_name'], $item['col'], $this->arrAllowedTag), array("HTML_TAG_CHECK"));
+            $objErr->doFunc(array($item['disp_name'], $item['col'], $this->arrAllowedTag), array('HTML_TAG_CHECK'));
         }
         // このフォーム特有の複雑系のエラーチェックを行う
         if (count($objErr->arrErr) == 0) {

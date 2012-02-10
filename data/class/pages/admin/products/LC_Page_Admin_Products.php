@@ -59,13 +59,13 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
         $objDate = new SC_Date();
         // 登録・更新検索開始年
         $objDate->setStartYear(RELEASE_YEAR);
-        $objDate->setEndYear(DATE("Y"));
+        $objDate->setEndYear(DATE('Y'));
         $this->arrStartYear = $objDate->getYear();
         $this->arrStartMonth = $objDate->getMonth();
         $this->arrStartDay = $objDate->getDay();
         // 登録・更新検索終了年
         $objDate->setStartYear(RELEASE_YEAR);
-        $objDate->setEndYear(DATE("Y"));
+        $objDate->setEndYear(DATE('Y'));
         $this->arrEndYear = $objDate->getYear();
         $this->arrEndMonth = $objDate->getMonth();
         $this->arrEndDay = $objDate->getDay();
@@ -230,7 +230,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
 
-        $objErr->doFunc(array("開始日", "終了日", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_SET_TERM"));
+        $objErr->doFunc(array("開始日", "終了日", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array('CHECK_SET_TERM'));
 
         return $objErr->arrErr;
     }
