@@ -210,7 +210,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      * @param array $arrTemplate SC_Helper_Mail_Ex::sfGetMailmagaTemplate()の戻り値
      * @return array key:template_id value:サブジェクト【配信形式】
      */
-    function lfGetMailTemplateList($arrTemplate){
+    function lfGetMailTemplateList($arrTemplate) {
         if (is_array($arrTemplate)) {
             foreach ($arrTemplate as $line) {
                 $return[$line['template_id']] = "【" . $this->arrHtmlmail[$line['mail_method']] . "】" . $line['subject'];
@@ -226,7 +226,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      * @param array $template_id テンプレートID
      * @return void
      */
-    function lfGetTemplateData(&$objFormParam, $template_id){
+    function lfGetTemplateData(&$objFormParam, $template_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder("template_id DESC");
         $where = 'template_id = ?';
@@ -239,7 +239,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      *
      * @return integer 登録した行の dtb_send_history.send_id の値
      */
-    function lfRegisterData(&$objFormParam){
+    function lfRegisterData(&$objFormParam) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         list($linemax, $arrSendCustomer, $objNavi) = SC_Helper_Customer_Ex::sfGetSearchData($objFormParam->getHashArray(), 'All');
@@ -281,7 +281,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      * @param integer $send_id　配信履歴番号
      * @return array
      */
-    function lfGetMailQuery($send_id){
+    function lfGetMailQuery($send_id) {
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 

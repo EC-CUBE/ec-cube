@@ -145,7 +145,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
      * @param array  $arrErr   エラーがあった項目用配列
      * @return void
      */
-    function lfCheckAdminArea(&$arrForm, &$arrErr){
+    function lfCheckAdminArea(&$arrForm, &$arrErr) {
         $admin_dir = trim($arrForm['admin_dir'])."/";
 
         $installData = file(CONFIG_REALFILE, FILE_IGNORE_NEW_LINES);
@@ -164,7 +164,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
     }
 
     //管理機能ディレクトリのリネームと CONFIG_REALFILE の変更
-    function lfUpdateAdminData(&$arrForm){
+    function lfUpdateAdminData(&$arrForm) {
         $admin_dir = trim($arrForm['admin_dir'])."/";
         $admin_force_ssl = 'FALSE';
         if ($arrForm['admin_force_ssl'] == 1) {

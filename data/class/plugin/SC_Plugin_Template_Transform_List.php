@@ -144,7 +144,7 @@ class SC_Plugin_Template_Transform_List {
      * @param string $url PHPファイルのURL
      * @return void
      */
-    function setHeadNavi($url){
+    function setHeadNavi($url) {
         $this->arrHeadNaviBlocsByPlugin[$url] = TARGET_ID_HEAD;
     }
 
@@ -154,7 +154,7 @@ class SC_Plugin_Template_Transform_List {
      * @param array|null $arrBlocs  配置情報を含めたブロックの配列
      * @return void
      */
-    function setHeadNaviBlocs(&$arrBlocs){
+    function setHeadNaviBlocs(&$arrBlocs) {
         foreach ($this->arrHeadNaviBlocsByPlugin as $key => $value) {
             $arrBlocs[] = array(
                 'target_id' =>$value,

@@ -87,7 +87,7 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc {
      * @param integer $disp_month 表示する月数
      * @return array $arrCalendar カレンダー情報の配列を返す
      */
-    function lfGetCalendar($disp_month = 1){
+    function lfGetCalendar($disp_month = 1) {
 
         for ($j = 0; $j <= $disp_month-1; ++$j) {
             $year = date('Y');

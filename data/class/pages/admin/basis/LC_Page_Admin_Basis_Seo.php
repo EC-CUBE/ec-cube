@@ -139,7 +139,7 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
      * @param array $arrUpdData 更新データ
      * @return integer 更新結果
      */
-    function lfUpdPageData($arrUpdData = array()){
+    function lfUpdPageData($arrUpdData = array()) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sql = "";
 
@@ -176,7 +176,7 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
      * @param array 表示データ
      * @return array 表示データ
      */
-    function lfSetData($arrPageData, $arrDispData){
+    function lfSetData($arrPageData, $arrDispData) {
 
         foreach ($arrPageData as $device_key => $arrVal) {
             foreach ($arrVal as $key => $val) {

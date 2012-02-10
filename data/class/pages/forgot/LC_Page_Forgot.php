@@ -279,7 +279,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
      *
      * FIXME: メールテンプレート編集の方に足すのが望ましい
      */
-    function lfSendMail(&$CONF, $email, $customer_name, $new_password){
+    function lfSendMail(&$CONF, $email, $customer_name, $new_password) {
         // パスワード変更お知らせメール送信
         $objMailText = new SC_SiteView_Ex(false);
         $objMailText->assign('customer_name', $customer_name);

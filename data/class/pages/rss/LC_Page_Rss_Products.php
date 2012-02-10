@@ -242,7 +242,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
      * @param integer $product_id 商品ID
      * @return array $arrProduct 取得結果を配列で返す
      */
-    function lfGetProductsDetail(&$objQuery, $product_id = 'all'){
+    function lfGetProductsDetail(&$objQuery, $product_id = 'all') {
         $objProduct = new SC_Product_Ex();
 
         // --- 商品詳細の取得
@@ -283,7 +283,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
      * @param SC_Query $objQuery DB操作クラス
      * @return array $arrProduct 取得結果を配列で返す
      */
-    function lfGetProductsAllclass(&$objQuery){
+    function lfGetProductsAllclass(&$objQuery) {
         // --- 商品一覧の取得
         $objQuery->setOrder('product_id');
         $objProduct = new SC_Product_Ex();

@@ -152,7 +152,7 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
      * @param integer $review_id レビューID
      * @return array レビュー情報
      */
-    function lfGetReviewData($review_id){
+    function lfGetReviewData($review_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $select="review_id, A.product_id, reviewer_name, sex, recommend_level, ";
         $select.="reviewer_url, title, comment, A.status, A.create_date, A.update_date, name";
@@ -172,7 +172,7 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfRegistReviewData($review_id, &$objFormParam){
+    function lfRegistReviewData($review_id, &$objFormParam) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrValues = $objFormParam->getDbArray();
         $arrValues['update_date'] = 'CURRENT_TIMESTAMP';

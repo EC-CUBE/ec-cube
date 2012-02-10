@@ -122,7 +122,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
      * @param integer template_id 更新時は指定
      * @return void
      */
-    function lfRegistData( &$objFormParam, $template_id = null){
+    function lfRegistData(&$objFormParam, $template_id = null) {
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sqlval = $objFormParam->getDbArray();

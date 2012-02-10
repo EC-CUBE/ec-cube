@@ -615,7 +615,7 @@ class SC_CheckError {
      *     [1]: 判定対象を格納している配列キー
      * @return void
      */
-    function EMAIL_CHECK($value){
+    function EMAIL_CHECK($value) {
         if (isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -665,7 +665,7 @@ class SC_CheckError {
     /*　メールアドレスに使用できる文字の判定　*/
     //　メールアドレスに使用する文字を正規表現で判定する
     //  value[0] = 項目名 value[1] = 判定対象メールアドレス
-    function EMAIL_CHAR_CHECK($value){
+    function EMAIL_CHAR_CHECK($value) {
         if (isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -678,7 +678,7 @@ class SC_CheckError {
     /*　URL形式の判定　*/
     //　URLを正規表現で判定する。デフォルトでhttp://があってもOK
     //  value[0] = 項目名 value[1] = 判定対象URL
-    function URL_CHECK($value){
+    function URL_CHECK($value) {
          if (isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -689,7 +689,7 @@ class SC_CheckError {
 
     /*　IPアドレスの判定　*/
     //  value[0] = 項目名 value[1] = 判定対象IPアドレス文字列
-    function IP_CHECK($value){
+    function IP_CHECK($value) {
         if (isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -951,7 +951,7 @@ class SC_CheckError {
     // value[5] = end_year
     // value[6] = end_month
     // value[7] = end_day
-    function CHECK_SET_TERM ($value) {
+    function CHECK_SET_TERM($value) {
 
         // 期間指定
         if (isset($this->arrErr[$value[2]]) || isset($this->arrErr[$value[5]])) {
@@ -1002,7 +1002,7 @@ class SC_CheckError {
     // value[13] = end_second
 
     /*-----------------------------------------------------------------*/
-    function CHECK_SET_TERM2 ($value) {
+    function CHECK_SET_TERM2($value) {
 
         // 期間指定
         if (isset($this->arrErr[$value[2]]) || isset($this->arrErr[$value[8]])) {
@@ -1046,7 +1046,7 @@ class SC_CheckError {
     // value[3] = start_month
     // value[4] = end_year
     // value[5] = end_month
-    function CHECK_SET_TERM3 ($value) {
+    function CHECK_SET_TERM3($value) {
 
         // 期間指定
         if (isset($this->arrErr[$value[2]]) || isset($this->arrErr[$value[4]])) {
@@ -1072,7 +1072,7 @@ class SC_CheckError {
     }
 
     //ディレクトリ存在チェック
-    function DIR_CHECK ($value) {
+    function DIR_CHECK($value) {
         if (isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -1083,7 +1083,7 @@ class SC_CheckError {
     }
 
     // ドメインチェック
-    function DOMAIN_CHECK ($value) {
+    function DOMAIN_CHECK($value) {
         if (isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -1095,7 +1095,7 @@ class SC_CheckError {
     /*　携帯メールアドレスの判定　*/
     //　メールアドレスを正規表現で判定する
     // value[0] = 項目名 value[1] = 判定対象メールアドレス
-    function MOBILE_EMAIL_CHECK($value){
+    function MOBILE_EMAIL_CHECK($value) {
         if (isset($this->arrErr[$value[1]])) {
             return;
         }
@@ -1114,7 +1114,7 @@ class SC_CheckError {
      * @access public
      * @return void
      */
-    function CHECK_REGIST_CUSTOMER_EMAIL ($value) {
+    function CHECK_REGIST_CUSTOMER_EMAIL($value) {
         if (isset($this->arrErr[$value[1]])) {
             return;
         }

@@ -41,8 +41,7 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_mainpage = 'customer/search_customer.tpl';
         $this->tpl_subtitle = '会員検索';
@@ -96,8 +95,7 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 

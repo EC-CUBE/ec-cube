@@ -632,7 +632,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
      * @param string $image_key 画像ファイルキー
      * @return void
      */
-    function lfSetScaleImage(&$objUpFile, $image_key){
+    function lfSetScaleImage(&$objUpFile, $image_key) {
         $subno = str_replace("sub_large_image", "", $image_key);
         switch ($image_key) {
         case "main_large_image":
@@ -675,7 +675,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
      * @param boolean $forced
      * @return void
      */
-    function lfMakeScaleImage(&$objUpFile, $from_key, $to_key, $forced = false){
+    function lfMakeScaleImage(&$objUpFile, $from_key, $to_key, $forced = false) {
         $arrImageKey = array_flip($objUpFile->keyname);
         $from_path = "";
 
@@ -1383,7 +1383,7 @@ __EOF__;
      * @param string $to_key
      * @return string 
      */
-    function lfGetAddSuffix($to_key){
+    function lfGetAddSuffix($to_key) {
         if( IMAGE_RENAME === true) return ;
 
         // 自動生成される画像名

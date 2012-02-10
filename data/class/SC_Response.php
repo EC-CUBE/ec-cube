@@ -70,7 +70,7 @@ class SC_Response{
         $this->header['Content-Type'] = $contentType;
     }
 
-    function setResposeBody($body){
+    function setResposeBody($body) {
         $this->body = $body;
     }
 

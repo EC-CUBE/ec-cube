@@ -191,7 +191,7 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex {
      * @param void
      * @return array
      */
-    function getOwnersStoreSettings(){
+    function getOwnersStoreSettings() {
         $table   = 'dtb_ownersstore_settings';
         $colmuns = '*';
 

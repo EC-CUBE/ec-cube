@@ -113,7 +113,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
      *
      * PDF作成フォームのデフォルト値の生成
      */
-    function createFromValues($order_id,$pdf_order_id){
+    function createFromValues($order_id,$pdf_order_id) {
         // ここが$arrFormの初登場ということを明示するため宣言する。
         $arrForm = array();
         // タイトルをセット
@@ -147,7 +147,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
      * PDFの作成
      * @param SC_FormParam $objFormParam
      */
-    function createPdf(&$objFormParam){
+    function createPdf(&$objFormParam) {
 
         $arrErr = $this->lfCheckError($objFormParam);
         $arrRet = $objFormParam->getHashArray();

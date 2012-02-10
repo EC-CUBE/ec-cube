@@ -441,7 +441,7 @@ class SC_Query {
      * @param integer $limit LIMIT 句に設定する値
      * @return SC_Query 自分自身のインスタンス
      */
-    function setLimit($limit){
+    function setLimit($limit) {
         if (is_numeric($limit)) {
             $this->option = " LIMIT " .$limit;
         }
@@ -773,7 +773,7 @@ class SC_Query {
      * @param mixed $result_types 返値の型指定またはDML実行(MDB2_PREPARE_MANIP)
      * @return array SQL の実行結果の配列
      */
-    function query($n ,$arr = array(), $ignore_err = false, $types = null, $result_types = MDB2_PREPARE_RESULT){
+    function query($n ,$arr = array(), $ignore_err = false, $types = null, $result_types = MDB2_PREPARE_RESULT) {
 
         $n = $this->dbFactory->sfChangeMySQL($n);
 
@@ -1002,7 +1002,7 @@ class SC_Query {
      * @param mixed $result_types 返値の型指定またはDML実行(MDB2_PREPARE_MANIP)
      * @return array 実行結果の配列
      */
-    function getQueryDefsFields($n ,$arr = array(), $ignore_err = false, $types = null, $result_types = MDB2_PREPARE_RESULT){
+    function getQueryDefsFields($n ,$arr = array(), $ignore_err = false, $types = null, $result_types = MDB2_PREPARE_RESULT) {
 
         $n = $this->dbFactory->sfChangeMySQL($n);
 

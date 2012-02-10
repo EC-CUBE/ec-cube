@@ -139,7 +139,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
      *
      * @return integer 会員数
      */
-    function lfGetCustomerCnt(){
+    function lfGetCustomerCnt() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = "COUNT(customer_id)";
         $table = "dtb_customer";
@@ -153,7 +153,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
      * @param string $method 取得タイプ 件数:'COUNT' or 金額:'SUM'
      * @return integer 結果数値
      */
-    function lfGetOrderYesterday($method){
+    function lfGetOrderYesterday($method) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // TODO: DBFactory使わないでも共通化できそうな気もしますが
@@ -168,7 +168,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
      * @param string $method 取得タイプ 件数:'COUNT' or 金額:'SUM'
      * @return integer 結果数値
      */
-    function lfGetOrderMonth($method){
+    function lfGetOrderMonth($method) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $month = date("Y/m", mktime());
 
@@ -197,7 +197,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
      *
      * @return integer 昨日のレビュー書き込み数
      */
-    function lfGetReviewYesterday(){
+    function lfGetReviewYesterday() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // TODO: DBFactory使わないでも共通化できそうな気もしますが
@@ -211,7 +211,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
      *
      * @return integer レビュー書き込み非表示数
      */
-    function lfGetReviewNonDisp(){
+    function lfGetReviewNonDisp() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $table = "dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id";

@@ -345,7 +345,7 @@ __EOS__;
      *
      * @return str
      */
-    function lfGetPageTitle($mode, $category_id = 0){
+    function lfGetPageTitle($mode, $category_id = 0) {
         if ($mode == 'search') {
             return "検索結果";
         } elseif ($category_id == 0) {
@@ -361,7 +361,7 @@ __EOS__;
      *
      * @return array
      */
-    function lfGetSearchConditionDisp($arrSearchData){
+    function lfGetSearchConditionDisp($arrSearchData) {
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
         $arrSearch  = array('category' => '指定なし', 'maker' => '指定なし', 'name' => '指定なし');
         // カテゴリ検索条件
@@ -386,7 +386,7 @@ __EOS__;
      *
      * @return int
      */
-    function lfGetProductAllNum($searchCondition){
+    function lfGetProductAllNum($searchCondition) {
         // 検索結果対象となる商品の数を取得
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setWhere($searchCondition['where_for_count']);
@@ -399,7 +399,7 @@ __EOS__;
      *
      * @return array
      */
-    function lfGetSearchCondition($arrSearchData){
+    function lfGetSearchCondition($arrSearchData) {
         $searchCondition = array(
             'where'             => "",
             'arrval'            => array(),
@@ -458,7 +458,7 @@ __EOS__;
      *
      * @return str
      */
-    function lfSetSelectedData(&$arrProducts, $arrForm, $arrErr, $product_id){
+    function lfSetSelectedData(&$arrProducts, $arrForm, $arrErr, $product_id) {
         $js_fnOnLoad = "";
         foreach (array_keys($arrProducts) as $key) {
             if ($arrProducts[$key]['product_id'] == $product_id) {
@@ -479,7 +479,7 @@ __EOS__;
      *
      * @return void
      */
-    function lfAddCart($arrForm, $referer){
+    function lfAddCart($arrForm, $referer) {
         $product_class_id = $arrForm['product_class_id'];
         $objCartSess = new SC_CartSession_Ex();
         $objCartSess->addProduct($product_class_id, $arrForm['quantity']);
@@ -493,7 +493,7 @@ __EOS__;
      * @param Array $arrStatusImage スタータス画像配列
      * @return Array $arrProducts 商品一覧情報
      */
-    function setStatusDataTo($arrProducts, $arrStatus, $arrStatusImage){
+    function setStatusDataTo($arrProducts, $arrStatus, $arrStatusImage) {
 
         foreach ($arrProducts['productStatus'] as $product_id => $arrValues) {
             for ($i = 0; $i < count($arrValues); $i++) {

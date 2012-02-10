@@ -114,7 +114,7 @@ class SC_Helper_Plugin {
     /**
      * 稼働中のプラグインを取得する。
      */
-    function getEnablePlugin(){
+    function getEnablePlugin() {
         $objQuery = new SC_Query_Ex();
         $col = '*';
         $table = 'dtb_plugin';
@@ -133,7 +133,7 @@ class SC_Helper_Plugin {
      * 
      * @return array $arrRet インストールされているプラグイン.
      */
-    function getAllPlugin(){
+    function getAllPlugin() {
         $objQuery = new SC_Query_Ex();
         $col = '*';
         $table = 'dtb_plugin';
@@ -152,7 +152,7 @@ class SC_Helper_Plugin {
      * @param int $plugin_id プラグインID.
      * @return array プラグインの基本情報.
      */
-    function getPluginByPluginId($plugin_id){
+    function getPluginByPluginId($plugin_id) {
         $objQuery = new SC_Query_Ex();
         $col = '*';
         $table = 'dtb_plugin';
@@ -172,7 +172,7 @@ class SC_Helper_Plugin {
      * @param string $plugin_code プラグインコード.
      * @return array プラグインの基本情報.
      */
-    function getPluginByPluginCode($plugin_code){
+    function getPluginByPluginCode($plugin_code) {
         $objQuery = new SC_Query_Ex();
         $col = '*';
         $table = 'dtb_plugin';

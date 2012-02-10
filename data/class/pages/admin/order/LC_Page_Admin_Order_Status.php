@@ -165,7 +165,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
     }
 
     // 対応状況一覧の表示
-    function lfStatusDisp($status,$pageno){
+    function lfStatusDisp($status,$pageno) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $select ="*";

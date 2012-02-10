@@ -162,7 +162,7 @@ class SC_View {
     }
 
     // デバッグ
-    function debug($var = true){
+    function debug($var = true) {
         $this->_smarty->debugging = $var;
     }
 }

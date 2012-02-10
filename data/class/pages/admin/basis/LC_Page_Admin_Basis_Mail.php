@@ -128,7 +128,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
         return $objQuery->getAll($sql, array($template_id));
     }
 
-    function lfRegistMailTemplate($post, $member_id){
+    function lfRegistMailTemplate($post, $member_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $post['creator_id'] = $member_id;

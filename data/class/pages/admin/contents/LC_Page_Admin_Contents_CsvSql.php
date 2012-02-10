@@ -244,7 +244,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
      *
      * @return array テーブル名一覧
      */
-    function lfGetTableList(){
+    function lfGetTableList() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         // 実テーブル上のカラム設定を見に行く仕様に変更 ref #476
         $arrTable = $objQuery->listTables();
@@ -270,7 +270,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
      * @param string $selectTable テーブル名
      * @return array カラム一覧の配列
      */
-    function lfGetColList($table){
+    function lfGetColList($table) {
         if (SC_Utils_Ex::isBlank($table)) {
             return array();
         }
@@ -288,7 +288,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
      * @param array $arrVal 絞り込みデータ
      * @return array 取得結果の配列
      */
-    function lfGetSqlList($where = "" , $arrVal = array()){
+    function lfGetSqlList($where = "" , $arrVal = array()) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $table = "dtb_csv_sql";
         $objQuery->setOrder('sql_id');
@@ -301,7 +301,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
      * @param string SQL文データ(頭にSELECTは入れない)
      * @return string エラー内容
      */
-    function lfCheckSQL($sql){
+    function lfCheckSQL($sql) {
         // FIXME: 意図的に new SC_Query しています。 force_runをtrueにする必要があるので.本当はqueryの引数で制御したい。ref SC_Query
         $objQuery = new SC_Query_Ex("", true);
         $err = "";
@@ -371,7 +371,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
      * @param array $arrSqlVal 更新データの配列
      * @return integer $sql_id SQL_IDを返す
      */
-    function lfUpdData($sql_id, $arrSqlVal){
+    function lfUpdData($sql_id, $arrSqlVal) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $table = "dtb_csv_sql";
         $arrSqlVal['update_date'] = 'CURRENT_TIMESTAMP';
@@ -395,7 +395,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
      * @param integer $sql_id 削除するデータのSQL_ID
      * @return boolean 実行結果 true：成功
      */
-    function lfDelData($sql_id){
+    function lfDelData($sql_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $table = "dtb_csv_sql";
         $where = "sql_id = ?";

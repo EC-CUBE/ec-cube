@@ -38,7 +38,7 @@ class GC_Utils {
      * [依存] -
      * [注釈] 引数は１，２ともカンマ区切りになっていること
      *----------------------------------------------------------------------*/
-    function gfDownloadCsv($header, $contents){
+    function gfDownloadCsv($header, $contents) {
 
         $fiest_name = date('YmdHis') .".csv";
 
@@ -64,7 +64,7 @@ class GC_Utils {
      * [依存] -
      * [注釈] -
      *----------------------------------------------------------------------*/
-    function gfSetCsv($array, $arrayIndex = ""){
+    function gfSetCsv($array, $arrayIndex = "") {
         //引数$arrayIndexは、$arrayが連想配列のときに添え字を指定してやるために使用する
 
         $return = "";
@@ -93,8 +93,7 @@ class GC_Utils {
      * [依存] -
      * [注釈] -
      *----------------------------------------------------------------------*/
-    function gfGetAge($dbdate)
-    {
+    function gfGetAge($dbdate) {
         $ty = date('Y');
         $tm = date('m');
         $td = date('d');

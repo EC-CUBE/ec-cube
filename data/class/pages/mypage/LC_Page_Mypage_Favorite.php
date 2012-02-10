@@ -157,7 +157,7 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
     }
 
     /* 仕方がない処理。。 */
-    function lfMakeWhere ($tablename, $arrProductId) {
+    function lfMakeWhere($tablename, $arrProductId) {
 
         // 取得した表示すべきIDだけを指定して情報を取得。
         $where = "";

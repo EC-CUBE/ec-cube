@@ -97,7 +97,7 @@ class LC_Page_RSS extends LC_Page_Ex {
      * @param SC_Query $objQuery DB操作クラス
      * @return array $arrNews 取得結果を配列で返す
      */
-    function lfGetNews(&$objQuery){
+    function lfGetNews(&$objQuery) {
         $col = "";
         $col .= "news_id ";        // 新着情報ID
         $col .= ",news_title ";    // 新着情報タイトル

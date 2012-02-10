@@ -167,7 +167,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
      * @param SC_Helper_PageLayout $objLayout SC_Helper_PageLayout インスタンス
      * @return array ページデータの配列
      */
-    function getTplMainpage($device_type_id, $page_id, &$objLayout){
+    function getTplMainpage($device_type_id, $page_id, &$objLayout) {
         $arrPageData = $objLayout->getPageProperties($device_type_id, $page_id);
 
         $templatePath = $objLayout->getTemplatePath($device_type_id);

@@ -812,7 +812,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      * @param string $dir_name ディレクトリ名.
      * @return boolean
      */
-    function checkUploadFileName($tar_obj, $dir_name){
+    function checkUploadFileName($tar_obj, $dir_name) {
         // ファイル一覧を取得
         $arrayFile = $tar_obj->listContent();
         // ディレクトリ名と圧縮ファイル名が同じかをチェック.
@@ -828,7 +828,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      *
      * @param string $dir_path 作成するディレクトリのパス
      */
-    function makeDir($dir_path){
+    function makeDir($dir_path) {
         // ディレクトリ作成
         if (!file_exists($dir_path)) {
              mkdir($dir_path);
@@ -841,7 +841,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      * @param int $plugin_id プラグインID
      * @return string $conflict_alert_message メッセージ
      */
-    function checkConflictPlugin($plugin_id){
+    function checkConflictPlugin($plugin_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance(); 
         $table = "dtb_plugin_hookpoint";
         $where = "plugin_id = ?";

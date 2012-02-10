@@ -77,7 +77,7 @@ class SC_Image {
      * @param integer $newFileName 新ファイル名
      * @param array 新ファイル名を格納した配列
      */
-    function MakeThumb($FromImgPath , $ToImgPath , $tmpMW , $tmpMH, $newFileName = ''){
+    function MakeThumb($FromImgPath , $ToImgPath , $tmpMW , $tmpMH, $newFileName = '') {
         // 画像の最大横幅（単位：ピクセル）
         $ThmMaxWidth = LARGE_IMAGE_WIDTH;
 
@@ -110,7 +110,8 @@ class SC_Image {
         $size = @GetImageSize($FromImgPath);
         $re_size = $size;
 
-        if (!$size[2] || $size[2] > 3){ // 画像の種類が不明 or swf
+        // 画像の種類が不明 or swf
+        if (!$size[2] || $size[2] > 3) {
             return array(0,"画像形式がサポートされていません。");
         }
 
@@ -177,7 +178,8 @@ class SC_Image {
             }
             $TmpPath = $ToImgPath.$ToFile;
             @Imagepng($ImgNew,$TmpPath);
-            if (!@file_exists($TmpPath)){ // 画像が作成されていない場合
+            // 画像が作成されていない場合
+            if (!@file_exists($TmpPath)) {
                 return array(0,"画像の出力に失敗しました。");
             }
             ImageDestroy($ImgNew);
@@ -203,7 +205,8 @@ class SC_Image {
             }
             $TmpPath = $ToImgPath.$ToFile;
             @ImageJpeg($ImgNew,$TmpPath);
-            if (!@file_exists($TmpPath)){ // 画像が作成されていない場合
+            // 画像が作成されていない場合
+            if (!@file_exists($TmpPath)) {
                 return array(0,"画像の出力に失敗しました。<br>${ImgNew}<br>${TmpPath}");
             }
             $RetVal = $ToFile;
@@ -223,7 +226,8 @@ class SC_Image {
             }
             $TmpPath = $ToImgPath.$ToFile;
             @ImagePNG($ImgNew,$TmpPath);
-            if (!@file_exists($TmpPath)){ // 画像が作成されていない場合
+            // 画像が作成されていない場合
+            if (!@file_exists($TmpPath)) {
                 return array(0,"画像の出力に失敗しました。");
             }
             $RetVal = $ToFile;

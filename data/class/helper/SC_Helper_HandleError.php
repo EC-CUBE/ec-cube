@@ -93,7 +93,7 @@ class SC_Helper_HandleError {
             case E_USER_ERROR:
                 $message = $now . " [$errfile:$errline] FATAL Error($errno) $errstr from ". $_SERVER['REMOTE_ADDR'] . "\n";
                 error_log($message, 3, $log_file_path);
-    
+
                 self::displaySystemError($errstr);
                 exit(1);
                 break;

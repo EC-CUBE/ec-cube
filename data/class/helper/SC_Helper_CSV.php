@@ -115,7 +115,7 @@ class SC_Helper_CSV {
      * @param array $order SQL の ORDER BY 句
      * @return array CSV 項目の配列
      */
-    function sfGetCsvOutput($csv_id = "", $where = '', $arrVal = array(), $order = 'rank, no'){
+    function sfGetCsvOutput($csv_id = "", $where = '', $arrVal = array(), $order = 'rank, no') {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $cols = 'no, csv_id, col, disp_name, rank, status, rw_flg, mb_convert_kana_option, size_const_type, error_check_types';
@@ -301,7 +301,7 @@ class SC_Helper_CSV {
      * @param string $prefix
      * @return void
      */
-    function lfDownloadCsv($arrData, $prefix = ""){
+    function lfDownloadCsv($arrData, $prefix = "") {
 
         if ($prefix == "") {
             $dir_name = SC_Utils_Ex::sfUpDirName();

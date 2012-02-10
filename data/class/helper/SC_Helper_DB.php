@@ -357,7 +357,7 @@ class SC_Helper_DB {
      * @param integer $category_id カテゴリID
      * @return string 親カテゴリを連結した文字列
      */
-    function sfGetCatCombName($category_id){
+    function sfGetCatCombName($category_id) {
         // 商品が属するカテゴリIDを縦に取得
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrCatID = $this->sfGetParents("dtb_category", "parent_category_id", "category_id", $category_id);
@@ -382,7 +382,7 @@ class SC_Helper_DB {
      * @param integer $category_id カテゴリID
      * @return array 指定したカテゴリIDのカテゴリ
      */
-    function sfGetCat($category_id){
+    function sfGetCat($category_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // カテゴリを取得する
@@ -398,7 +398,7 @@ class SC_Helper_DB {
      * @param integer $category_id カテゴリID
      * @return array 指定したカテゴリIDの大カテゴリ
      */
-    function sfGetFirstCat($category_id){
+    function sfGetFirstCat($category_id) {
         // 商品が属するカテゴリIDを縦に取得
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrRet = array();
@@ -647,7 +647,7 @@ class SC_Helper_DB {
      * @param boolean $is_force_all_count 全カテゴリの集計を強制する場合 true
      * @return void
      */
-    function sfCountCategory($objQuery = NULL, $is_force_all_count = false){
+    function sfCountCategory($objQuery = NULL, $is_force_all_count = false) {
         $objProduct = new SC_Product_Ex();
 
         if ($objQuery == NULL) {
@@ -1275,7 +1275,7 @@ __EOS__;
      * @param SC_Query $objQuery SC_Query インスタンス
      * @return void
      */
-    function sfCountMaker($objQuery){
+    function sfCountMaker($objQuery) {
         $sql = "";
 
         //テーブル内容の削除

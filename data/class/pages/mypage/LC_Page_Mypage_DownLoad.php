@@ -207,7 +207,7 @@ __EOS__;
      * @param string $realpath ダウンロードファイルパス
      * @param string $sdown_filename ダウンロード時の指定ファイル名
      */
-    function lfMobileHeader($realpath,$sdown_filename){
+    function lfMobileHeader($realpath,$sdown_filename) {
         $objHelperMobile = new SC_Helper_Mobile_Ex();
         //ファイルの拡張子からコンテンツタイプを取得する
         $mime_type = $objHelperMobile->getMIMEType($realpath);
@@ -224,7 +224,7 @@ __EOS__;
      * @param string $realpath ダウンロードファイルパス
      * @param string $sdown_filename ダウンロード時の指定ファイル名
      */
-    function lfMobileAuDownload($realpath,$sdown_filename){
+    function lfMobileAuDownload($realpath,$sdown_filename) {
         //モバイル用ヘッダー出力
         $this->lfMobileHeader($realpath,$sdown_filename);
         //ファイルサイズを取得する
@@ -256,7 +256,7 @@ __EOS__;
      * @param string $realpath ダウンロードファイルパス
      * @param string $sdown_filename ダウンロード時の指定ファイル名
      */
-    function lfMobileDownload($realpath,$sdown_filename){
+    function lfMobileDownload($realpath,$sdown_filename) {
         //モバイル用ヘッダー出力
         $this->lfMobileHeader($realpath,$sdown_filename);
         //ファイルサイズを取得する
@@ -314,7 +314,7 @@ __EOS__;
      * @param string $realpath ダウンロードファイルパス
      * @param string $sdown_filename ダウンロード時の指定ファイル名
      */
-    function lfDownload($realpath,$sdown_filename){
+    function lfDownload($realpath,$sdown_filename) {
         // 拡張子を取得
         $extension = pathinfo($realpath, PATHINFO_EXTENSION);
         $contentType = $this->defaultContentType;

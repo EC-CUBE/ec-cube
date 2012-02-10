@@ -83,7 +83,7 @@ class LC_Page_Error extends LC_Page_Ex {
      *
      * @return void
      */
-    function action(){
+    function action() {
         switch ($this->type) {
             case PRODUCT_NOT_FOUND:
                 $this->tpl_error="ご指定のページはございません。";

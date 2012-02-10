@@ -186,7 +186,7 @@ class LC_Page_Contact extends LC_Page_Ex {
      *
      * @return void
      */
-    function lfSendMail(&$objPage){
+    function lfSendMail(&$objPage) {
         $CONF = SC_Helper_DB_Ex::sfGetBasisData();
         $objPage->tpl_shopname = $CONF['shop_name'];
         $objPage->tpl_infoemail = $CONF['email02'];

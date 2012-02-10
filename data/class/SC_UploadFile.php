@@ -501,7 +501,7 @@ class SC_UploadFile {
      * @param int $keyname
      * @return string
      */
-    function lfGetTmpImageName($rename, $keyname = "", $uploadfile = ""){
+    function lfGetTmpImageName($rename, $keyname = "", $uploadfile = "") {
 
         if ($rename === true) {
             // 一意なIDを取得し、画像名をリネームし保存

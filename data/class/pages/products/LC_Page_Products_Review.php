@@ -193,7 +193,7 @@ class LC_Page_Products_Review extends LC_Page_Ex {
     }
 
     //登録実行
-    function lfRegistRecommendData (&$objFormParam) {
+    function lfRegistRecommendData(&$objFormParam) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrRegist = $objFormParam->getDbArray();
 

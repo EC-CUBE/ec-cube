@@ -43,7 +43,7 @@ class SC_SelectSql {
     }
 
     //-- SQL分生成
-    function getSql($mode = ""){
+    function getSql($mode = "") {
         $this->sql = $this->select ." ". $this->where ." ". $this->group ." ";
 
         // $mode == 1 は limit & offset無し
@@ -184,7 +184,7 @@ class SC_SelectSql {
                                                             'value'  => $_POST['show_site1']);
 
     */
-    function setWhereByOR($arrWhere){
+    function setWhereByOR($arrWhere) {
 
         $count = count($arrWhere);
 
@@ -205,7 +205,7 @@ class SC_SelectSql {
         }
     }
 
-    function setWhere($where){
+    function setWhere($where) {
         if ($where != "") {
             if ($this->where) {
 
@@ -218,7 +218,7 @@ class SC_SelectSql {
         }
     }
 
-    function setOrder($order){
+    function setOrder($order) {
 
             $this->order =  "ORDER BY " . $order;
 
@@ -230,7 +230,7 @@ class SC_SelectSql {
 
     }
 
-    function setLimitOffset($limit, $offset){
+    function setLimitOffset($limit, $offset) {
 
         if (is_numeric($limit) and is_numeric($offset)) {
 
@@ -239,7 +239,7 @@ class SC_SelectSql {
         }
     }
 
-    function clearSql(){
+    function clearSql() {
         $this->select = "";
         $this->where = "";
         $this->group = "";

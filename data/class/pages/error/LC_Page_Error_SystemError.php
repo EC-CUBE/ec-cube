@@ -71,7 +71,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
      *
      * @return void
      */
-    function action(){
+    function action() {
         $this->tpl_error = "システムエラーが発生しました。<br />大変お手数ですが、サイト管理者までご連絡ください。";
 
         if (DEBUG_MODE) {

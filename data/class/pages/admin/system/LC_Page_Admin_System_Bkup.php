@@ -229,7 +229,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
      * @param string $mode
      * @return $arrErr
      */
-    function lfCheckError(&$arrForm, $mode){
+    function lfCheckError(&$arrForm, $mode) {
 
         $arrVal = array();
 
@@ -267,7 +267,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
      * @param string $bkup_name
      * @return boolean|int 結果。true:成功 int:失敗 FIXME 本来は int ではなく、エラーメッセージを戻すべき
      */
-    function lfCreateBkupData($bkup_name, $work_dir){
+    function lfCreateBkupData($bkup_name, $work_dir) {
         // 実行時間を制限しない
         set_time_limit(0);
 
@@ -387,7 +387,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
     }
 
     // バックアップテーブルにデータを更新する
-    function lfUpdBkupData($data){
+    function lfUpdBkupData($data) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $arrVal = array();
@@ -399,7 +399,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
     }
 
     // バックアップテーブルからデータを取得する
-    function lfGetBkupData($where = "", $data = array()){
+    function lfGetBkupData($where = "", $data = array()) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $sql = "SELECT bkup_name, bkup_memo, create_date FROM dtb_bkup ";
@@ -420,7 +420,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
      * @param string $bkup_ext
      * @return void
      */
-    function lfRestore($bkup_name, $bkup_dir, $bkup_ext, $mode){
+    function lfRestore($bkup_name, $bkup_dir, $bkup_ext, $mode) {
         // 実行時間を制限しない
         set_time_limit(0);
 
@@ -474,7 +474,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
      * @param string $mode
      * @return void
      */
-    function lfExeInsertSQL(&$objQuery, $dir, $mode){
+    function lfExeInsertSQL(&$objQuery, $dir, $mode) {
 
         $tbl_flg = false;
         $col_flg = false;
@@ -531,7 +531,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
     }
 
     // 自動採番をセット
-    function lfSetAutoInc(&$objQuery, $csv){
+    function lfSetAutoInc(&$objQuery, $csv) {
         // csvファイルからデータの取得
         $arrCsvData = file($csv);
 
@@ -543,7 +543,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
     }
 
     // DBを全てクリアする
-    function lfDeleteAll(&$objQuery){
+    function lfDeleteAll(&$objQuery) {
         $ret = true;
 
         $arrTableList = $objQuery->listTables();

@@ -121,7 +121,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
      * 指定された注文番号のメール履歴を取得する。
      * @var int order_id
      */
-    function getMailHistory($order_id){
+    function getMailHistory($order_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = "send_date, subject, template_id, send_id";
         $where = "order_id = ?";
@@ -134,7 +134,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
      * メールを送る。
      * @param SC_FormParam $objFormParam
      */
-    function doSend(&$objFormParam){
+    function doSend(&$objFormParam) {
         $arrErr = $objFormParam->checkerror();
 
         // メールの送信
@@ -156,7 +156,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
      * 確認画面を表示する為の準備
      * @param SC_FormParam $objFormParam
      */
-    function confirm(&$objFormParam){
+    function confirm(&$objFormParam) {
         $arrErr = $objFormParam->checkerror();
         // メールの送信
         if (count($arrErr) == 0) {
@@ -183,7 +183,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
      * テンプレートの文言をフォームに入れる。
      * @param SC_FormParam $objFormParam
      */
-    function changeData(&$objFormParam){
+    function changeData(&$objFormParam) {
         if (SC_Utils_Ex::sfIsInt($objFormParam->getValue('template_id'))) {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $where = "template_id = ?";

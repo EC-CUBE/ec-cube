@@ -254,7 +254,7 @@ class LC_Page_Sitemap extends LC_Page_Ex {
      * @param array  $arrVal WHERE句の値を格納した配列
      * @return array $arrPageList ブロック情報
      */
-    function getPageData($where = '', $arrVal = ''){
+    function getPageData($where = '', $arrVal = '') {
         $objQuery = SC_Query_Ex::getSingletonInstance();     // DB操作オブジェクト
         $sql = "";                      // データ取得SQL生成用
         $arrRet = array();              // データ取得用

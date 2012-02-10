@@ -59,7 +59,7 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      * @param string $sql SQL 文
      * @return string MySQL 用に置換した SQL 文
      */
-    function sfChangeMySQL($sql){
+    function sfChangeMySQL($sql) {
         return $sql;
     }
 

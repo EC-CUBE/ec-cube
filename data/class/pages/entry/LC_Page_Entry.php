@@ -203,7 +203,7 @@ class LC_Page_Entry extends LC_Page_Ex {
      * @access private
      * @return void
      */
-    function lfSendMail($uniqid, $arrForm){
+    function lfSendMail($uniqid, $arrForm) {
         $CONF           = SC_Helper_DB_Ex::sfGetBasisData();
 
         $objMailText    = new SC_SiteView_Ex();
@@ -256,7 +256,7 @@ class LC_Page_Entry extends LC_Page_Ex {
      * @param string $referer $_SERVER['HTTP_REFERER'] のデータ
      * @return boolean kiyaku.php からの妥当な遷移であれば true
      */
-    function lfCheckReferer(&$post, $referer){
+    function lfCheckReferer(&$post, $referer) {
 
         if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE
             && empty($post)

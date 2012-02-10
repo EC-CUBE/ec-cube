@@ -34,11 +34,11 @@ class SC_Date {
         if ($end_year)    $this->setEndYear($end_year);
     }
 
-    function setStartYear($year){
+    function setStartYear($year) {
         $this->start_year = $year;
     }
 
-    function getStartYear(){
+    function getStartYear() {
         return $this->start_year;
     }
 
@@ -50,11 +50,11 @@ class SC_Date {
         return $this->end_year;
     }
 
-    function setMonth($month){
+    function setMonth($month) {
         $this->month = $month;
     }
 
-    function setDay ($day){
+    function setDay($day) {
         $this->day = $day;
     }
 
@@ -92,7 +92,7 @@ class SC_Date {
         return $year_array;
     }
 
-    function getZeroYear($year = ''){
+    function getZeroYear($year = '') {
         if ($year) $this->setStartYear($year);
 
         $year = $this->start_year;
@@ -110,7 +110,7 @@ class SC_Date {
         return $year_array;
     }
 
-    function getZeroMonth(){
+    function getZeroMonth() {
 
         $month_array = array();
         for ($i=1; $i <= 12; $i++) {
@@ -143,7 +143,7 @@ class SC_Date {
         return $day_array;
     }
 
-    function getHour(){
+    function getHour() {
 
         $day_array = array();
         for ($i=0; $i<=23; $i++) {
@@ -153,7 +153,7 @@ class SC_Date {
         return $hour_array;
     }
 
-    function getMinutes(){
+    function getMinutes() {
 
         $minutes_array = array();
         for ($i=0; $i<=59; $i++) {
@@ -163,7 +163,7 @@ class SC_Date {
         return $minutes_array;
     }
 
-    function getMinutesInterval(){
+    function getMinutesInterval() {
 
         $minutes_array = array("00"=>"00", "30"=>"30");
         return $minutes_array;

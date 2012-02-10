@@ -53,7 +53,7 @@ class SC_Display{
         }
     }
 
-    function setPrevURL(){
+    function setPrevURL() {
         // TODO SC_SiteSession で実装した方が良さげ
         $objCartSess = new SC_CartSession_Ex();
         $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
@@ -65,7 +65,7 @@ class SC_Display{
      * @param LC_Page $page LC_Page インスタンス
      * @param $is_admin boolean 管理画面を扱う場合 true
      */
-    function prepare($page, $is_admin = false){
+    function prepare($page, $is_admin = false) {
         if (!$this->deviceSeted || !is_null($this->view)) {
             $device = ($is_admin) ? DEVICE_TYPE_ADMIN : $this->detectDevice();
             $this->setDevice($device);
@@ -79,18 +79,18 @@ class SC_Display{
      *
      * SC_Response::reload() のラッパーです.
      */
-    function reload($queryString = array(), $removeQueryString = false){
+    function reload($queryString = array(), $removeQueryString = false) {
         $this->response->reload($queryString, $removeQueryString);
     }
 
-    function noAction(){
+    function noAction() {
         return;
     }
 
     /**
      * ヘッダを追加する.
      */
-    function addHeader($name, $value){
+    function addHeader($name, $value) {
         $this->response->addHeader($name, $value);
     }
 
@@ -98,7 +98,7 @@ class SC_Display{
      * デバイス毎の出力方法を自動で変更する、ファサード
      * Enter description here ...
      */
-    function setDevice($device = DEVICE_TYPE_PC){
+    function setDevice($device = DEVICE_TYPE_PC) {
 
         switch ($device) {
             case DEVICE_TYPE_MOBILE:
@@ -120,7 +120,7 @@ class SC_Display{
     /**
      * SC_View インスタンスを設定する.
      */
-    function setView($view){
+    function setView($view) {
         $this->view = $view;
     }
 
@@ -134,7 +134,7 @@ class SC_Display{
      * @static
      * @return integer 端末種別ID
      */
-    function detectDevice(){
+    function detectDevice() {
         $nu = new Net_UserAgent_Mobile();
         $su = new SC_SmartphoneUserAgent_Ex();
         $retDevice = 0;
@@ -147,15 +147,15 @@ class SC_Display{
         }
     }
 
-    function assign($val1,$val2){
+    function assign($val1,$val2) {
         $this->view->assign($val1, $val2);
     }
 
-    function assignobj($obj){
+    function assignobj($obj) {
         $this->view->assignobj($obj);
     }
 
-    function assignarray($array){
+    function assignarray($array) {
         $this->view->assignarray($array);
     }
 }

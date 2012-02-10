@@ -331,7 +331,7 @@ class SC_Helper_Mail {
      * @return　array メールテンプレート情報を格納した配列
      * @todo   表示順も引数で変更できるように
      */
-    function sfGetMailmagaTemplate($template_id = null){
+    function sfGetMailmagaTemplate($template_id = null) {
         // 初期化
         $where = '';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -357,7 +357,7 @@ class SC_Helper_Mail {
      * @param integer 特定の送信履歴を取り出したい時はsend_idを指定。未指定時は全件取得
      * @return　array 送信履歴情報を格納した配列
      */
-    function sfGetSendHistory($send_id = null){
+    function sfGetSendHistory($send_id = null) {
         // 初期化
         $where = '';
         $objQuery =& SC_Query_Ex::getSingletonInstance();

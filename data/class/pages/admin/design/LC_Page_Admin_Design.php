@@ -234,7 +234,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
      * @param SC_Helper_PageLayout $objLayout SC_Helper_PageLayout インスタンス
      * @return string プレビューを行う tpl_mainpage ファイル名
      */
-    function savePreviewData($page_id, &$objLayout){
+    function savePreviewData($page_id, &$objLayout) {
         $arrPageData = $objLayout->getPageProperties(DEVICE_TYPE_PC, $page_id);
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrPageData[0]['page_id'] = 0;

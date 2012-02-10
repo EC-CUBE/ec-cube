@@ -84,7 +84,7 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc {
      *
      * @return array $arrBestProducts 検索結果配列
      */
-    function lfGetRanking(){
+    function lfGetRanking() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objProduct = new SC_Product_Ex();
 

@@ -59,7 +59,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @param string $sql SQL 文
      * @return string MySQL 用に置換した SQL 文
      */
-    function sfChangeMySQL($sql){
+    function sfChangeMySQL($sql) {
         // 改行、タブを1スペースに変換
         $sql = preg_replace("/[\r\n\t]/"," ",$sql);
         // ILIKE検索をLIKE検索に変換する
@@ -235,7 +235,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @param string $sql SQL文
      * @return string 変換後の SQL 文
      */
-    function sfChangeILIKE($sql){
+    function sfChangeILIKE($sql) {
         $changesql = preg_replace('/(^|[^\w])ILIKE([^\w]|$)/i', '$1LIKE$2', $sql);
         return $changesql;
     }
@@ -247,7 +247,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @param string $sql SQL文
      * @return string 変換後の SQL 文
      */
-    function sfChangeRANDOM($sql){
+    function sfChangeRANDOM($sql) {
         $changesql = preg_replace('/(^|[^\w])RANDOM\(/i', '$1RAND(', $sql);
         return $changesql;
     }
@@ -259,7 +259,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @param string $sql SQL文
      * @return string 変換後の SQL 文
      */
-    function sfChangeTrunc($sql){
+    function sfChangeTrunc($sql) {
         $changesql = preg_replace('/(^|[^\w])TRUNC([^\w]|$)/i', '$1TRUNCATE$2', $sql);
         return $changesql;
     }
@@ -271,7 +271,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @param string $sql SQL文
      * @return string 変換後の SQL 文
      */
-    function sfChangeArrayToString($sql){
+    function sfChangeArrayToString($sql) {
         if (strpos(strtoupper($sql), 'ARRAY_TO_STRING') !== FALSE) {
             preg_match_all('/ARRAY_TO_STRING.*?\(.*?ARRAY\(.*?SELECT (.+?) FROM (.+?) WHERE (.+?)\).*?\,.*?\'(.+?)\'.*?\)/is', $sql, $match, PREG_SET_ORDER);
 

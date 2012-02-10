@@ -301,7 +301,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
      * @param string $val 値
      * @return void
      */
-    function setDispParam($key, $val){
+    function setDispParam($key, $val) {
         $this->$key = $val;
     }
 
@@ -312,7 +312,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
      * @param SC_FormParam $objFormParam SC_FormParamインスタンス
      * @return boolean ディレクトリ作成できたかどうか
      */
-    function tryCreateDir($objFileManager, $objFormParam){
+    function tryCreateDir($objFileManager, $objFormParam) {
         $create_dir_flg = false;
         $create_dir = ereg_replace("/$", "", $objFormParam->getValue('now_dir'));
         // ファイル作成
@@ -328,7 +328,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
      * @param SC_FormParam $objFormParam SC_FormParamインスタンス
      * @return boolean ファイル表示するかどうか
      */
-    function tryView(&$objFormParam){
+    function tryView(&$objFormParam) {
         $view_flg = false;
         $now_dir = $this->lfCheckSelectDir($objFormParam, dirname($objFormParam->getValue('select_file')));
         $objFormParam->setValue('now_dir', $now_dir);
@@ -344,7 +344,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
      * @param SC_FormParam $objFormParam SC_FormParamインスタンス
      * @return void
      */
-    function setParentDir($objFormParam){
+    function setParentDir($objFormParam) {
         $parent_dir = $this->lfGetParentDir($objFormParam->getValue('now_dir'));
         $this->setDispParam('tpl_parent_dir', $parent_dir);
     }
@@ -355,7 +355,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
      * @param SC_FormParam $objFormParam SC_FormParamインスタンス
      * @return void
      */
-    function setDispPath($objFormParam){
+    function setDispPath($objFormParam) {
         $tpl_now_dir = "";
         // Windows 環境で DIRECTORY_SEPARATOR が JavaScript に渡るとエスケープ文字と勘違いするので置換
         $html_realdir = str_replace(DIRECTORY_SEPARATOR, '/', HTML_REALDIR);
@@ -371,7 +371,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
      * @param string $value エラー内容
      * @return void
      */
-    function setDispError($key, $value){
+    function setDispError($key, $value) {
         // 既にエラーがある場合は、処理しない
         if (SC_Utils_Ex::isBlank($this->arrErr[$key])) {
             $this->arrErr[$key] = $value;
@@ -384,7 +384,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
      * @param string $tpl_onload javascript
      * @return void
      */
-    function setTplOnLoad($tpl_onload){
+    function setTplOnLoad($tpl_onload) {
         $this->tpl_onload .= $tpl_onload;
     }
 
@@ -439,7 +439,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
      * @param SC_FormParam $objFormParam SC_FormParamインスタンス
      * @return void
      */
-    function setDispTree($objFileManager, $objFormParam){
+    function setDispTree($objFileManager, $objFormParam) {
         $tpl_onload = '';
         // ツリーを表示する divタグid, ツリー配列変数名, 現在ディレクトリ, 選択ツリーhidden名, ツリー状態hidden名, mode hidden名
         $now_dir = $objFormParam->getValue('now_dir');
@@ -471,7 +471,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
      * @param object $objFormParam SC_FormParamインスタンス
      * @return void
      */
-    function setIsTopDir($objFormParam){
+    function setIsTopDir($objFormParam) {
         // トップディレクトリか調査
         $is_top_dir = false;
         // 末尾の/をとる

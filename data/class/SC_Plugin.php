@@ -9,48 +9,48 @@ class SC_Plugin
      */
     var $path;
 
-    function SC_Plugin(){
+    function SC_Plugin() {
         $this->__construct();
     }
 
-    function __construct(){
+    function __construct() {
         if (!defined(PLUGIN_REALDIR)) {
             define('PLUGIN_REALDIR', USER_REALDIR . 'plugins/');
         }
         $this->init();
     }
 
-    function init(){
+    function init() {
     }
 
-    function enable($classname){
+    function enable($classname) {
     }
 
-    function getVersion(){
+    function getVersion() {
     }
 
-    function getName(){
+    function getName() {
     }
 
-    function process(){
+    function process() {
     }
 
-    function mobileprocess(){
+    function mobileprocess() {
     }
 
-    function install(){
+    function install() {
     }
 
-    function uninstall(){
+    function uninstall() {
     }
 
-    function disablePlugin(){
+    function disablePlugin() {
         $objQuery = new SC_Query_Ex();
         $name = preg_replace("/.php/", "", __FILE__); // XXX 正規表現エスケープ漏れでは?
         $objQuery->update("dtb_plugin", array('enable'=>'0'), "plugin_name = ?", array($name));
     }
 
-    function enablePlugin(){
+    function enablePlugin() {
         $objQuery = new SC_Query_Ex();
         $name = preg_replace("/.php/", "", __FILE__); // XXX 正規表現エスケープ漏れでは?
         $objQuery->update("dtb_plugin", array('enable'=>'0'), "plugin_name = ?", array($name));
@@ -60,9 +60,9 @@ class SC_Plugin
      *
      * @return String インストール用のSQL
      */
-    function getInstallSQL(){
+    function getInstallSQL() {
     }
 
-    function getUninstallSQL(){
+    function getUninstallSQL() {
     }
 }

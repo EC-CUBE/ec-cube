@@ -134,7 +134,7 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
      * @param integer $send_id　削除したい送信履歴のID
      * @return void
      */
-    function lfDeleteHistory($send_id){
+    function lfDeleteHistory($send_id) {
             $objQuery =& SC_Query_Ex::getSingletonInstance(); 
             $objQuery->update("dtb_send_history",
                               array('del_flg' =>1),

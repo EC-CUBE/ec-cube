@@ -219,7 +219,7 @@ class SC_Utils {
      * @param string $passlen 変換する文字列
      * @return string アスタリスクへ変換した文字列
      */
-    function sfPassLen($passlen){
+    function sfPassLen($passlen) {
         $ret = "";
         for ($i=0;$i<$passlen;true) {
             $ret.="*";
@@ -233,7 +233,7 @@ class SC_Utils {
      *
      * @return bool
      */
-    function sfIsHTTPS () {
+    function sfIsHTTPS() {
         // HTTPS時には$_SERVER['HTTPS']には空でない値が入る
         // $_SERVER['HTTPS'] != 'off' はIIS用
         if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
@@ -302,7 +302,7 @@ class SC_Utils {
         return false;
     }
 
-    function sfGetCSVData($data, $prefix = ""){
+    function sfGetCSVData($data, $prefix = "") {
         if ($prefix == "") {
             $dir_name = SC_Utils_Ex::sfUpDirName();
             $file_name = $dir_name . date('ymdHis') .".csv";
@@ -551,7 +551,7 @@ class SC_Utils {
     /*            ２．終了年月日 (YYYY/MM/DD 235959)
     /*            ３．エラー (0 = OK, 1 = NG)
     /*-----------------------------------------------------------------*/
-    function sfCheckSetTerm ($start_year, $start_month, $start_day, $end_year, $end_month, $end_day) {
+    function sfCheckSetTerm($start_year, $start_month, $start_day, $end_year, $end_month, $end_day) {
 
         // 期間指定
         $error = 0;
@@ -574,7 +574,7 @@ class SC_Utils {
     }
 
     // エラー箇所の背景色を変更するためのfunction SC_Viewで読み込む
-    function sfSetErrorStyle(){
+    function sfSetErrorStyle() {
         return 'style="background-color:'.ERR_COLOR.'"';
     }
 
@@ -666,7 +666,7 @@ class SC_Utils {
     }
 
     // 桁数を指定して四捨五入
-    function sfRound($value, $pow = 0){
+    function sfRound($value, $pow = 0) {
         $adjust = pow(10 ,$pow-1);
 
         // 整数且つ0出なければ桁数指定を行う
@@ -824,7 +824,7 @@ class SC_Utils {
     }
 
     // 二回以上繰り返されているスラッシュ[/]を一つに変換する。
-    function sfRmDupSlash($istr){
+    function sfRmDupSlash($istr) {
         if (ereg("^http://", $istr)) {
             $str = substr($istr, 7);
             $head = "http://";
@@ -1066,7 +1066,7 @@ class SC_Utils {
      * SQLシングルクォート対応
      * @deprecated SC_Query::quote() を使用すること
      */
-    function sfQuoteSmart($in){
+    function sfQuoteSmart($in) {
 
         if (is_int($in) || is_double($in)) {
             return $in;
@@ -1107,7 +1107,7 @@ class SC_Utils {
     }
 
     // ディレクトリ以下のファイルを再帰的にコピー
-    function sfCopyDir($src, $des, $mess = "", $override = false){
+    function sfCopyDir($src, $des, $mess = "", $override = false) {
         if (!is_dir($src)) {
             return false;
         }
@@ -1159,7 +1159,7 @@ class SC_Utils {
     }
 
     // 指定したフォルダ内のファイルを全て削除する
-    function sfDelFile($dir){
+    function sfDelFile($dir) {
         if (file_exists($dir)) {
             $dh = opendir($dir);
             // フォルダ内のファイルを削除
@@ -1222,7 +1222,7 @@ class SC_Utils {
      * @param boolean|string $output 半角スペース256文字+改行を出力するか。または、送信する文字列を指定。
      * @return void
      */
-    function sfFlush($output = false, $sleep = 0){
+    function sfFlush($output = false, $sleep = 0) {
         // 出力をバッファリングしない(==日本語自動変換もしない)
         while (@ob_end_flush());
 

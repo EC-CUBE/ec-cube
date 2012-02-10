@@ -151,7 +151,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
      * @param array $objFormParam フォームパラメータークラス
      * @return String $json 新着情報のJSONを返す
      */
-    function lfGetNewsForJson(&$objFormParam){
+    function lfGetNewsForJson(&$objFormParam) {
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrData = $objFormParam->getHashArray();
@@ -180,7 +180,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
      * @param array $objFormParam フォームパラメータークラス
      * @return String $json 新着情報1件分のJSONを返す
      */
-    function lfGetNewsDetailForJson(&$objFormParam){
+    function lfGetNewsDetailForJson(&$objFormParam) {
 
         $objQuery = SC_Query_Ex::getSingletonInstance();
         $arrData = $objFormParam->getHashArray();
@@ -197,7 +197,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
      *
      * @return Integer $count 新着情報の件数を返す
      */
-    function lfGetNewsCount(){
+    function lfGetNewsCount() {
 
         $count = 0;
 

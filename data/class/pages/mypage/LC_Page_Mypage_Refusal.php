@@ -92,7 +92,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex {
      * @access private
      * @return void
      */
-    function lfDeleteCustomer($customer_id){
+    function lfDeleteCustomer($customer_id) {
         $objQuery = SC_Query_Ex::getSingletonInstance();
 
         $sqlval['del_flg']      = 1;

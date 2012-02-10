@@ -206,8 +206,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
         return $ret;
     }
 
-    function lfInitParam($mode, &$objFormParam)
-    {
+    function lfInitParam($mode, &$objFormParam) {
         switch ($mode) {
             case 'edit':
                 $objFormParam->addParam('タイトル', 'title', STEXT_LEN, 'KVa', array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));

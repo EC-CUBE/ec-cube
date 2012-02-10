@@ -215,7 +215,7 @@ class SC_Batch_Update extends SC_Batch {
      *
      * @param string $path 絶対パス
      */
-    function lfMkdirRecursive($path){
+    function lfMkdirRecursive($path) {
         $path = dirname($path);
 
         // HTML_REALDIR/DATA_REALDIRの判別

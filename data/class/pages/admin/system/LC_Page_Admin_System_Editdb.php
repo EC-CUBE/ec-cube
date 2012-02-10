@@ -182,8 +182,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function lfGetIndexList()
-    {
+    function lfGetIndexList() {
         // データベースからインデックス設定一覧を取得する
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder("table_name, column_name");

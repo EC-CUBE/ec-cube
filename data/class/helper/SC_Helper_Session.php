@@ -80,8 +80,7 @@ class SC_Helper_Session {
       * @param string $sess_data セッションデータの値
       * @return bool セッションの書き込みに成功した場合 true
       */
-     function sfSessWrite($id, $sess_data)
-     {
+     function sfSessWrite($id, $sess_data) {
          $objQuery = new SC_Query_Ex();
          $exists = $objQuery->exists("dtb_session", "sess_id = ?", array($id));
          $sqlval = array();

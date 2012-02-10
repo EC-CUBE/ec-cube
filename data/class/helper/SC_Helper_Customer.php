@@ -311,7 +311,7 @@ class SC_Helper_Customer {
      * @access public
      * @return void
      */
-    function sfCustomerEntryParam (&$objFormParam, $isAdmin = false) {
+    function sfCustomerEntryParam(&$objFormParam, $isAdmin = false) {
         SC_Helper_Customer_Ex::sfCustomerCommonParam($objFormParam);
         SC_Helper_Customer_Ex::sfCustomerRegisterParam($objFormParam, $isAdmin);
         if ($isAdmin) {
@@ -335,7 +335,7 @@ class SC_Helper_Customer {
      * @access public
      * @return void
      */
-    function sfCustomerMypageParam (&$objFormParam) {
+    function sfCustomerMypageParam(&$objFormParam) {
         SC_Helper_Customer_Ex::sfCustomerCommonParam($objFormParam);
         SC_Helper_Customer_Ex::sfCustomerRegisterParam($objFormParam, false, true);
         if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE) {
@@ -354,7 +354,7 @@ class SC_Helper_Customer {
      * @access public
      * @return void
      */
-    function sfCustomerOtherDelivParam (&$objFormParam) {
+    function sfCustomerOtherDelivParam(&$objFormParam) {
         SC_Helper_Customer_Ex::sfCustomerCommonParam($objFormParam);
         $objFormParam->addParam("", 'other_deliv_id');
     }
@@ -366,7 +366,7 @@ class SC_Helper_Customer {
      * @access public
      * @return void
      */
-    function sfCustomerCommonParam (&$objFormParam) {
+    function sfCustomerCommonParam(&$objFormParam) {
         $objFormParam->addParam("お名前(姓)", 'name01', STEXT_LEN, 'aKV', array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
         $objFormParam->addParam("お名前(名)", 'name02', STEXT_LEN, 'aKV', array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("お名前(フリガナ・姓)", 'kana01', STEXT_LEN, 'CKV', array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
@@ -389,7 +389,7 @@ class SC_Helper_Customer {
      * @param boolean $is_mypage マイページの場合 true
      * @return void
      */
-    function sfCustomerRegisterParam (&$objFormParam, $isAdmin = false, $is_mypage = false) {
+    function sfCustomerRegisterParam(&$objFormParam, $isAdmin = false, $is_mypage = false) {
         $objFormParam->addParam("パスワード", 'password', STEXT_LEN, 'a', array("EXIST_CHECK", "SPTAB_CHECK", "ALNUM_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("パスワード確認用の質問の答え", "reminder_answer", STEXT_LEN, 'aKV', array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("パスワード確認用の質問", 'reminder', STEXT_LEN, 'n', array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));

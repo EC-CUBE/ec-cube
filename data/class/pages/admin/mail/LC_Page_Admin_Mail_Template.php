@@ -98,7 +98,7 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex {
      * @param integer 削除したいテンプレートのID
      * @return void
      */
-    function lfDeleteMailTemplate($template_id){
+    function lfDeleteMailTemplate($template_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->update("dtb_mailmaga_template",
                           array('del_flg' =>1),

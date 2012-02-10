@@ -307,7 +307,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
      * @param array $arrParam 検索パラメーター連想配列
      * @return array( integer 全体件数, mixed 会員データ一覧配列, mixed SC_PageNaviオブジェクト)
      */
-    function lfPurchaseHistory($customer_id, $pageno = 0){
+    function lfPurchaseHistory($customer_id, $pageno = 0) {
         if (SC_Utils_Ex::isBlank($customer_id)) {
             return array('0', array(), NULL);
         }

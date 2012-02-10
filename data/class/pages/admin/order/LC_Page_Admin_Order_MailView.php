@@ -78,7 +78,7 @@ class LC_Page_Admin_Order_MailView extends LC_Page_Admin_Ex {
      * メールの履歴を取り出す。
      * @param int $send_id
      */
-    function getMailHistory($send_id){
+    function getMailHistory($send_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = "subject, mail_body";
         $where = "send_id = ?";

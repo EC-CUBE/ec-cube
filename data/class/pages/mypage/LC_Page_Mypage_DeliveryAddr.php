@@ -135,8 +135,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
                     $arrOtherDeliv = $this->lfGetOtherDeliv($objCustomer->getValue("customer_id"), $_SESSION['other_deliv_id']);
 
                     //不正アクセス判定
-                    if (!$objCustomer->isLoginSuccess(true)
-                        || count($arrOtherDeliv) == 0){
+                    if (!$objCustomer->isLoginSuccess(true) || count($arrOtherDeliv) == 0) {
                         SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
                     }
 

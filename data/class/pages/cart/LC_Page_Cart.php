@@ -207,7 +207,7 @@ class LC_Page_Cart extends LC_Page_Ex {
      *
      * @return
      */
-    function lfUpdateOrderTempid($pre_uniqid,$uniqid){
+    function lfUpdateOrderTempid($pre_uniqid,$uniqid) {
         $sqlval['order_temp_id'] = $uniqid;
         $where = "order_temp_id = ?";
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -223,7 +223,7 @@ class LC_Page_Cart extends LC_Page_Ex {
      *
      * @return void
      */
-    function lfGetCartPrevUrl(&$session,$referer){
+    function lfGetCartPrevUrl(&$session,$referer) {
         if (!preg_match("/cart/", $referer)) {
             if (!empty($session['cart_referer_url'])) {
                 $session['cart_prev_url'] = $session['cart_referer_url'];
@@ -247,7 +247,7 @@ class LC_Page_Cart extends LC_Page_Ex {
      *
      * @return void
      */
-    function lfSetCurrentCart(&$objSiteSess, &$objCartSess, $cartKey){
+    function lfSetCurrentCart(&$objSiteSess, &$objCartSess, $cartKey) {
         // 正常に登録されたことを記録しておく
         $objSiteSess->setRegistFlag();
         $pre_uniqid = $objSiteSess->getUniqId();

@@ -67,7 +67,7 @@ class LC_Page_Error_DispError extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action(){
+    function action() {
         switch ($this->type) {
             case LOGIN_ERROR:
                 $this->tpl_error="ＩＤまたはパスワードが正しくありません。<br />もう一度ご確認のうえ、再度入力してください。";
