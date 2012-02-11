@@ -41,17 +41,18 @@ class SC_Helper_HandleError {
             define('E_DEPRECATED', 8192);
         }
 
-        // エラーレベル設定
-        // 開発時は E_ALL を推奨
-        error_reporting(E_ALL & ~E_NOTICE & ~E_USER_NOTICE & ~E_DEPRECATED);
+        // エラーレベル設定 (PHPのログに対する指定であり、以降のエラーハンドリングには影響しない模様)
+        // 開発時は -1 (全て) を推奨
+        error_reporting(E_ALL & ~E_NOTICE & ~E_USER_NOTICE & ~E_DEPRECATED & ~E_STRICT);
 
         if (!defined('SAFE') || SAFE !== true || !defined('INSTALL_FUNCTION') || INSTALL_FUNCTION !== true) {
-            // E_WARNING, E_USER_WARNING を捕捉した場合にログを残すためのエラーハンドラ
-            set_error_handler(array(__CLASS__, 'handle_warning'));
+
+            // E_USER_ERROR または警告を捕捉した場合のエラーハンドラ
+            set_error_handler(array(__CLASS__, 'handle_warning'), E_USER_ERROR | E_WARNING | E_USER_WARNING | E_CORE_WARNING | E_COMPILE_WARNING);
 
             // 実質的に PHP 5.2 以降かで処理が分かれる
             if (function_exists('error_get_last')) {
-                // E_USER_ERROR を捕捉した場合にエラー画面を表示させるためのエラーハンドラ
+                // E_USER_ERROR 以外のエラーを捕捉した場合の処理用
                 register_shutdown_function(array(__CLASS__, 'handle_error'));
                 // 以降の処理では画面へのエラー表示は行なわない
                 ini_set('display_errors' , 0);
@@ -80,7 +81,6 @@ class SC_Helper_HandleError {
      *                      E_WARNING, E_USER_WARNING が発生した場合、true を返す
      */
     static function handle_warning($errno, $errstr, $errfile, $errline) {
-
         // error_reporting 設定に含まれていないエラーコードは処理しない
         if (!(error_reporting() & $errno)) {
             return;
