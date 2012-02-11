@@ -36,11 +36,42 @@ if (!defined('CACHE_REALDIR')) {
     define('CACHE_REALDIR', DATA_REALDIR . "cache/");
 }
 
-require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_HandleError_Ex.php';
+// クラスのオートローディングを定義する
+setClassAutoloader();
+
 SC_Helper_HandleError_Ex::load();
 
-require_once CLASS_EX_REALDIR . 'SC_Initial_Ex.php';
 // アプリケーション初期化処理
 $objInit = new SC_Initial_Ex();
 $objInit->init();
-?>
+
+/**
+ * クラスのオートローディングを定義する
+ */
+function setClassAutoloader() {
+    function __autoload($class) {
+        $arrClassNamePart = explode('_', $class);
+        $is_ex = end($arrClassNamePart) === 'Ex';
+        $count = count($arrClassNamePart);
+        $classpath = $is_ex ? CLASS_EX_REALDIR : CLASS_REALDIR;
+
+        if (($arrClassNamePart[0] === 'GC' || $arrClassNamePart[0] === 'SC') && $arrClassNamePart[1] === 'Utils') {
+            $classpath .= $is_ex ? 'util_extends/' : 'util/';
+        }
+        elseif ($arrClassNamePart[0] === 'SC' && $is_ex === true && $count >= 4) {
+            $classpath .= strtolower($arrClassNamePart[1]) . '_extends/';
+        }
+        elseif ($arrClassNamePart[0] === 'SC') {
+            // 処理なし
+        }
+        // PEAR用
+        // FIXME トリッキー
+        else {
+            $classpath = '';
+            $class = str_replace('_', '/', $class);
+        }
+
+        $classpath .= "$class.php";
+        require($classpath);
+    }
+}

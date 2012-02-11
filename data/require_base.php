@@ -30,9 +30,6 @@ require_once DATA_REALDIR . 'require_compat.php';
 // アプリケーション初期化処理
 require_once DATA_REALDIR . 'app_initial.php';
 
-// 各種クラス読み込み
-require_once DATA_REALDIR . 'require_classes.php';
-
 // 定数 SAFE が設定されている場合、DBアクセスを回避する。主に、エラー画面を意図する。
 if (!defined('SAFE') || !SAFE) {
     // インストール中で無い場合、
