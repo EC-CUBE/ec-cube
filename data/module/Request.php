@@ -29,4 +29,5 @@
  * @deprecated
  */
 
+trigger_error('従来互換用の HTTP_Request が読み込まれました。', E_WARNING);
 require_once DATA_REALDIR . 'module/HTTP/Request.php';
