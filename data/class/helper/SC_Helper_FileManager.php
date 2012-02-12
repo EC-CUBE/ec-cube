@@ -21,9 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
-require_once dirname(__FILE__) . '/../../module/Tar.php';
-
 /**
  * ファイル管理 のヘルパークラス.
  *

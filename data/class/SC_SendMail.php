@@ -21,8 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-require_once 'Mail.php';
-
 //--- テキスト/HTML　メール送信
 class SC_SendMail {
 

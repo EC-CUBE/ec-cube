@@ -21,10 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
-require_once CLASS_REALDIR . '../module/Net/URL.php';
-require_once CLASS_REALDIR . 'SC_Query.php';
-
 /**
  * モバイルのヘルパークラス.
  *

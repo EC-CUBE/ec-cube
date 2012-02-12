@@ -21,16 +21,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-$ownDir = realpath(dirname(__FILE__)) . '/';
-require_once $ownDir . 'SC_GraphLine.php';
-
 // 棒グラフ生成クラス
-class SC_GraphBar extends SC_GraphLine{
+class SC_Graph_Bar extends SC_Graph_Line{
     // コンストラクタ
-    function SC_GraphLine(
+    function SC_Graph_Line(
         $bgw = BG_WIDTH, $bgh = BG_HEIGHT, $left = LINE_LEFT, $top = LINE_TOP,
         $area_width = LINE_AREA_WIDTH, $area_height = LINE_AREA_HEIGHT) {
-        parent::SC_GraphLine($bgw, $bgh, $left, $top, $area_width, $area_height);
+        parent::SC_Graph_Line($bgw, $bgh, $left, $top, $area_width, $area_height);
     }
 
     // グラフの描画

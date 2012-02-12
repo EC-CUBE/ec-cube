@@ -47,6 +47,8 @@ $objInit->init();
 
 /**
  * クラスのオートローディングを定義する
+ *
+ * LC_* には対応していない。
  */
 function setClassAutoloader() {
     function __autoload($class) {
@@ -59,7 +61,13 @@ function setClassAutoloader() {
             $classpath .= $is_ex ? 'util_extends/' : 'util/';
         }
         elseif ($arrClassNamePart[0] === 'SC' && $is_ex === true && $count >= 4) {
-            $classpath .= strtolower($arrClassNamePart[1]) . '_extends/';
+            $arrClassNamePartTemp = $arrClassNamePart;
+            // FIXME クラスファイルのディレクトリ命名が変。変な現状に合わせて強引な処理をしてる。
+            $arrClassNamePartTemp[1] = $arrClassNamePartTemp[1] . '_extends';
+            $classpath .= strtolower(implode('/', array_slice($arrClassNamePartTemp, 1, -2))) . '/';
+        }
+        elseif ($arrClassNamePart[0] === 'SC' && $is_ex === false && $count >= 3) {
+            $classpath .= strtolower(implode('/', array_slice($arrClassNamePart, 1, -1))) . '/';
         }
         elseif ($arrClassNamePart[0] === 'SC') {
             // 処理なし

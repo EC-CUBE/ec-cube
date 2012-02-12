@@ -21,10 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
-require_once CLASS_REALDIR . 'db/dbfactory/SC_DB_DBFactory_MYSQL.php';
-require_once CLASS_REALDIR . 'db/dbfactory/SC_DB_DBFactory_PGSQL.php';
-
 /**
  * DBに依存した処理を抽象化するファクトリークラス.
  *

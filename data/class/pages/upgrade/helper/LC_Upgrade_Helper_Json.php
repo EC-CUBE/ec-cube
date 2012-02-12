@@ -1,5 +1,4 @@
 <?php
-require_once CLASS_REALDIR . '../module/Services/JSON.php';
 /**
  * Enter description here...
  *

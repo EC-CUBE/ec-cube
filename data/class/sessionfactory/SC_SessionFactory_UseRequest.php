@@ -21,10 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
-require_once CLASS_REALDIR . 'session/SC_SessionFactory.php';
-require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_Mobile_Ex.php';
-
 /**
  * Cookieを使用せず、リクエストパラメーターによりセッションを継続する設定を行うクラス.
  *

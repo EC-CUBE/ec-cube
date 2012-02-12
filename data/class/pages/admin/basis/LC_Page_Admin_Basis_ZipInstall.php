@@ -23,7 +23,6 @@
 
 // {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
-require_once DATA_REALDIR . 'module/HTTP/Request.php';
 
 /** CSV ファイルの最大行数 */
 define('ZIP_CSV_LINE_MAX', 8192);
@@ -345,7 +344,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
      */
    function lfDownloadZipFileFromJp() {
         // Proxy経由を可能とする。
-        // TODO Proxyの設定は「DATA_REALDIR . 'module/HTTP/Request.php'」内の「function HTTP_Request」へ記述する。いずれは、外部設定としたい。
+        // TODO Proxyの設定は「data/module/HTTP/Request.php」内の「function HTTP_Request」へ記述する。いずれは、外部設定としたい。
         $req = new HTTP_Request();
 
         $req->setURL(ZIP_DOWNLOAD_URL);

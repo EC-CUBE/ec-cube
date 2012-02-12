@@ -35,7 +35,6 @@ ob_start();
 // ▲require.php 相当
 
 $ownDir = realpath(dirname(__FILE__)) . '/';
-require_once DATA_REALDIR . 'module/HTTP/Request.php';
 
 if (!defined('ADMIN_DIR')) {
     define('ADMIN_DIR',"admin/");

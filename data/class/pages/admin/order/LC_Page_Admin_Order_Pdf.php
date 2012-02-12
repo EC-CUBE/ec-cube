@@ -23,7 +23,6 @@
 
 // {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
-require_once CLASS_REALDIR . 'SC_Fpdf.php';
 
 /**
  * 帳票出力 のページクラス.

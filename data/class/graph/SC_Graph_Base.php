@@ -124,13 +124,13 @@ define('LEGEND_TOP', 10);
 define('LEGEND_RIGHT', 10);
 
 /**
- * SC_Graph共通クラス.
+ * SC_Graph 共通クラス.
  *
  * @package Graph
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_GraphBase {
+class SC_Graph_Base {
 
     // {{{ properties
 
@@ -181,7 +181,7 @@ class SC_GraphBase {
     var $ARR_GRID_COLOR;
 
     // コンストラクタ
-    function SC_GraphBase($bgw, $bgh, $left, $top) {
+    function SC_Graph_Base($bgw, $bgh, $left, $top) {
         $this->init();
         // 画像作成
         $this->bgw = $bgw;

@@ -23,8 +23,7 @@
 
 // {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
-require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_CSV_Ex.php';
-require_once DATA_REALDIR. 'module/Tar.php';
+
 /**
  * バックアップ のページクラス.
  *

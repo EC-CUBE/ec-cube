@@ -415,7 +415,6 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
      * @return void
      */
     function doOutputCSV($where, $arrVal, $order) {
-        require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_CSV_Ex.php';
         if ($where != "") {
             $where = " WHERE $where ";
         }

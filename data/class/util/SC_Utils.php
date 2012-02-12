@@ -1671,7 +1671,6 @@ class SC_Utils {
      * @return string ランダムな文字列
      */
     function sfGetRandomString($length = 1) {
-        require_once dirname(__FILE__) . '/../../module/Text/Password.php';
         return Text_Password::create($length);
     }
 
@@ -2038,7 +2037,6 @@ class SC_Utils {
         if (function_exists('json_encode')) {
             return json_encode($value);
         } else {
-            require_once dirname(__FILE__) . '/../../module/Services/JSON.php';
             GC_Utils_Ex::gfPrintLog(' *use Services_JSON::encode(). faster than using the json_encode!');
             $objJson = new Services_JSON();
             return $objJson->encode($value);
@@ -2061,7 +2059,6 @@ class SC_Utils {
         if (function_exists('json_decode')) {
             return json_decode($json);
         } else {
-            require_once dirname(__FILE__) . '/../../module/Services/JSON.php';
             GC_Utils_Ex::gfPrintLog(' *use Services_JSON::decode(). faster than using the json_decode!');
             $objJson = new Services_JSON();
             return $objJson->decode($json);

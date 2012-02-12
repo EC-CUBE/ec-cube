@@ -22,9 +22,6 @@
  */
 // {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
-require_once CLASS_REALDIR . 'graph/SC_GraphPie.php';
-require_once CLASS_REALDIR . 'graph/SC_GraphLine.php';
-require_once CLASS_REALDIR . 'graph/SC_GraphBar.php';
 
 /**
  * 売上集計 のページクラス.
@@ -316,7 +313,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             if ($interval < 1) {
                 $interval = 1;
             }
-            $objGraphLine = new SC_GraphLine();
+            $objGraphLine = new SC_Graph_Line();
 
             // 値のセット
             $objGraphLine->setData($arrList);
@@ -368,7 +365,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             $pngname = $this->lfGetGraphPng($type);
             $path = GRAPH_REALDIR . $pngname;
 
-            $objGraphPie = new SC_GraphPie();
+            $objGraphPie = new SC_Graph_Pie();
 
             // データをセットする
             $objGraphPie->setData($arrList);
@@ -410,7 +407,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             $pngname = $this->lfGetGraphPng($type);
             $path = GRAPH_REALDIR . $pngname;
 
-            $objGraphBar = new SC_GraphBar();
+            $objGraphBar = new SC_Graph_Bar();
 
             foreach (array_keys($arrList) as $val) {
                 $arrKey[] = ereg_replace("～", "-", $val);

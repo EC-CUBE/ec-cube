@@ -21,11 +21,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-$ownDir = realpath(dirname(__FILE__)) . '/';
-require_once $ownDir . 'SC_GraphBase.php';
-
 // 折れ線グラフ生成クラス
-class SC_GraphLine extends SC_GraphBase{
+class SC_Graph_Line extends SC_Graph_Base{
     var $area_width;
     var $area_height;
     var $ygrid_on;
@@ -42,10 +39,10 @@ class SC_GraphLine extends SC_GraphBase{
     var $y_margin;
 
     // コンストラクタ
-    function SC_GraphLine(
+    function SC_Graph_Line(
         $bgw = BG_WIDTH, $bgh = BG_HEIGHT, $left = LINE_LEFT, $top = LINE_TOP,
         $area_width = LINE_AREA_WIDTH, $area_height = LINE_AREA_HEIGHT) {
-        parent::SC_GraphBase($bgw, $bgh, $left, $top);
+        parent::SC_Graph_Base($bgw, $bgh, $left, $top);
         $this->area_width = $area_width;
         $this->area_height = $area_height;
         $this->ygrid_on = true;

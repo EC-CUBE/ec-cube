@@ -21,11 +21,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-$ownDir = realpath(dirname(__FILE__)) . '/';
-require_once $ownDir . 'SC_GraphBase.php';
-
 // 円グラフ生成クラス
-class SC_GraphPie extends SC_GraphBase{
+class SC_Graph_Pie extends SC_Graph_Base{
     var $cw;
     var $ch;
     var $cz;
@@ -35,8 +32,8 @@ class SC_GraphPie extends SC_GraphBase{
     var $arrData;
 
     // コンストラクタ
-    function SC_GraphPie($bgw = BG_WIDTH, $bgh = BG_HEIGHT, $left = PIE_LEFT, $top = PIE_TOP) {
-        parent::SC_GraphBase($bgw, $bgh, $left, $top);
+    function SC_Graph_Pie($bgw = BG_WIDTH, $bgh = BG_HEIGHT, $left = PIE_LEFT, $top = PIE_TOP) {
+        parent::SC_Graph_Base($bgw, $bgh, $left, $top);
         // サイズ設定
         $this->setSize(PIE_WIDTH, PIE_HEIGHT, PIE_THICK);
         // 位置設定

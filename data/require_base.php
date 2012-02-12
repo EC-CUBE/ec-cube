@@ -38,11 +38,9 @@ if (!defined('SAFE') || !SAFE) {
         SC_Utils_Ex::sfInitInstall();
 
         // セッションハンドラ開始
-        require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_Session_Ex.php';
         $objSession = new SC_Helper_Session_Ex();
 
         // セッション初期化・開始
-        require_once CLASS_REALDIR . 'session/SC_SessionFactory.php';
         $sessionFactory = SC_SessionFactory::getInstance();
         $sessionFactory->initSession();
         

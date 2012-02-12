@@ -23,7 +23,6 @@
 
 // {{{ requires
 require_once CLASS_REALDIR . 'pages/upgrade/LC_Page_Upgrade_Base.php';
-require_once DATA_REALDIR . 'module/Tar.php';
 
 /**
  * オーナーズストアからダウンロードデータを取得する.

@@ -21,8 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-require_once realpath(dirname(__FILE__)) . '/../module/MDB2.php';
-
 /**
  * SQLの構築・実行を行う
  *

@@ -21,9 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
-require_once DATA_REALDIR . 'module/Net/URL.php';
-
 /**
  * Web Page を制御する基底クラス
  *
