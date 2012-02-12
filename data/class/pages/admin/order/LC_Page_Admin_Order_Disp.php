@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once CLASS_REALDIR . 'pages/admin/order/LC_Page_Admin_Order_Edit.php';
+require_once CLASS_EX_REALDIR . 'page_extends/admin/order/LC_Page_Admin_Order_Ex.php';
 
 /**
  * 受注情報表示 のページクラス.
