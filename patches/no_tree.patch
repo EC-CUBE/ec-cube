@@ -1,6 +1,6 @@
 Index: data/class/helper/SC_Helper_DB.php
 ===================================================================
---- data/class/helper/SC_Helper_DB.php	(revision 21433)
+--- data/class/helper/SC_Helper_DB.php	(revision 21496)
 +++ data/class/helper/SC_Helper_DB.php	(working copy)
 @@ -1437,7 +1437,7 @@
          if (!SC_Utils_Ex::sfIsInt($product_id)) return false;
@@ -13,11 +13,11 @@ Index: data/class/helper/SC_Helper_DB.php
          return $exists;
 Index: data/class/pages/admin/products/LC_Page_Admin_Products_Product.php
 ===================================================================
---- data/class/pages/admin/products/LC_Page_Admin_Products_Product.php	(revision 21433)
+--- data/class/pages/admin/products/LC_Page_Admin_Products_Product.php	(revision 21496)
 +++ data/class/pages/admin/products/LC_Page_Admin_Products_Product.php	(working copy)
 @@ -1048,32 +1048,14 @@
                      $objQuery->setOrder('product_class_id');
-                     $arrProductsClass = $objQuery->select($col, $table, $where, array($arrList["copy_product_id"]));
+                     $arrProductsClass = $objQuery->select($col, $table, $where, array($arrList['copy_product_id']));
  
 -                    // 複製元商品の規格組み合わせデータ登録
 -                    // 登録した組み合わせIDを取得
@@ -25,7 +25,7 @@ Index: data/class/pages/admin/products/LC_Page_Admin_Products_Product.php
 -
                      // 規格データ登録
                      $objQuery =& SC_Query_Ex::getSingletonInstance();
-                     foreach($arrProductsClass as $arrData) {
+                     foreach ($arrProductsClass as $arrData) {
 -                        $sqlval = array();
 +                        $sqlval = $arrData;
                          $sqlval['product_class_id'] = $objQuery->nextVal('dtb_products_class_product_class_id');
@@ -68,7 +68,7 @@ Index: data/class/pages/admin/products/LC_Page_Admin_Products_Product.php
 -        $has_class2 = $this->lfHasClass2($arrClassCombination);
 -
 -        // 規格組み合わせデータを複製登録
--        if($has_class2 == true) {
+-        if ($has_class2 == true) {
 -            // 規格2を持っている場合、規格1の組み合わせデータも取得
 -            $arrClassCombinationParent = $this->lfGetClassCombination($arrClassCombination, true);
 -
@@ -93,8 +93,8 @@ Index: data/class/pages/admin/products/LC_Page_Admin_Products_Product.php
 -    function lfHasClass2($arrClassCombination) {
 -        $has_class2 = false;
 -
--        foreach($arrClassCombination as $arrVal) {
--            if($arrVal['level'] == '2') {
+-        foreach ($arrClassCombination as $arrVal) {
+-            if ($arrVal['level'] == '2') {
 -                $has_class2 = true;
 -                break;
 -            }
@@ -113,14 +113,14 @@ Index: data/class/pages/admin/products/LC_Page_Admin_Products_Product.php
 -    function lfGetClassCombination($arrData, $is_parent = false) {
 -        $objQuery =& SC_Query_Ex::getSingletonInstance();
 -        $key = 'class_combination_id';
--        if($is_parent == true) {
+-        if ($is_parent == true) {
 -            $key = 'parent_class_combination_id';
 -        }
 -
 -        $where = 'class_combination_id IN (';
 -        $arrParam = array();
--        foreach($arrData as $arrVal) {
--            if(SC_Utils_Ex::isBlank($arrVal[$key]) == true) {
+-        foreach ($arrData as $arrVal) {
+-            if (SC_Utils_Ex::isBlank($arrVal[$key]) == true) {
 -                continue;
 -            }
 -            $where .= '?,';
@@ -144,13 +144,13 @@ Index: data/class/pages/admin/products/LC_Page_Admin_Products_Product.php
 -        $arrRetCombinationId = array();
 -
 -        // 親組み合わせIDの指定がある場合、指定された親組み合わせIDで複製登録
--        if(count($arrParentCombinationId) > 0) {
--            foreach($arrClassCombination as $key => $arrVal) {
+-        if (count($arrParentCombinationId) > 0) {
+-            foreach ($arrClassCombination as $key => $arrVal) {
 -                $arrClassCombination[$key]['parent_class_combination_id'] = $arrParentCombinationId[$arrVal['parent_class_combination_id']];
 -            }
 -        }
 -
--        foreach($arrClassCombination as $arrVal) {
+-        foreach ($arrClassCombination as $arrVal) {
 -            $sqlval = array();
 -            $sqlval['class_combination_id'] = $objQuery->nextVal('dtb_class_combination_class_combination_id');
 -            $sqlval['parent_class_combination_id'] = $arrVal['parent_class_combination_id'];
@@ -170,7 +170,7 @@ Index: data/class/pages/admin/products/LC_Page_Admin_Products_Product.php
       * @param string $to_key
 Index: data/class/pages/admin/products/LC_Page_Admin_Products_ProductClass.php
 ===================================================================
---- data/class/pages/admin/products/LC_Page_Admin_Products_ProductClass.php	(revision 21433)
+--- data/class/pages/admin/products/LC_Page_Admin_Products_ProductClass.php	(revision 21496)
 +++ data/class/pages/admin/products/LC_Page_Admin_Products_ProductClass.php	(working copy)
 @@ -236,16 +236,18 @@
          // デフォルト値として設定する値を取得しておく
@@ -234,7 +234,7 @@ Index: data/class/pages/admin/products/LC_Page_Admin_Products_ProductClass.php
 @@ -312,7 +285,7 @@
          $arrBlank['del_flg'] = 1;
          $arrBlank['update_date'] = 'CURRENT_TIMESTAMP';
-         $objQuery->update("dtb_products_class", $arrBlank,
+         $objQuery->update('dtb_products_class', $arrBlank,
 -                          "product_id = ? AND class_combination_id IS NULL",
 +                          "product_id = ? AND classcategory_id1 = 0 AND classcategory_id2 = 0",
                            array($product_id));
@@ -273,10 +273,10 @@ Index: data/class/pages/admin/products/LC_Page_Admin_Products_ProductClass.php
 -                              array($existsCombi['class_combination_id'],
 -                                    $existsCombi['parent_class_combination_id']));
 -        }
--        $objQuery->update("dtb_products_class", array('del_flg' => 0),
+-        $objQuery->update('dtb_products_class', array('del_flg' => 0),
 -                          "product_id = ? AND class_combination_id IS NULL",
 -                          array($product_id));
--        $objQuery->delete("dtb_products_class",
+-        $objQuery->delete('dtb_products_class',
 -                          "product_id = ? AND class_combination_id IS NOT NULL",
 -                          array($product_id));
 +        // 商品規格データの削除
@@ -290,45 +290,45 @@ Index: data/class/pages/admin/products/LC_Page_Admin_Products_ProductClass.php
      function getProductsClass($product_id) {
          $objQuery =& SC_Query_Ex::getSingletonInstance();
          $col = "product_code, price01, price02, stock, stock_unlimited, sale_limit, deliv_fee, point_rate";
--        return $objQuery->getRow($col, "dtb_products_class", "product_id = ? AND class_combination_id IS NULL", array($product_id));
+-        return $objQuery->getRow($col, 'dtb_products_class', "product_id = ? AND class_combination_id IS NULL", array($product_id));
 +        $where = 'product_id = ? AND classcategory_id1 = 0 AND classcategory_id2 = 0';
-+        return $objQuery->getRow($col, "dtb_products_class", $where, array($product_id));
++        return $objQuery->getRow($col, 'dtb_products_class', $where, array($product_id));
      }
  
      /**
 Index: data/class/pages/admin/products/LC_Page_Admin_Products_UploadCSV.php
 ===================================================================
---- data/class/pages/admin/products/LC_Page_Admin_Products_UploadCSV.php	(revision 21433)
+--- data/class/pages/admin/products/LC_Page_Admin_Products_UploadCSV.php	(revision 21496)
 +++ data/class/pages/admin/products/LC_Page_Admin_Products_UploadCSV.php	(working copy)
-@@ -613,6 +613,7 @@
+@@ -612,6 +612,7 @@
       */
      function lfCheckErrorDetail($item, $arrErr) {
          // 規格IDの存在チェック
 +        // FIXME 規格分類ID自体のが有効かを主眼においたチェックをすべきと感じる。
-         if(!$this->lfIsDbRecord('dtb_products_class', 'product_class_id', $item)) {
+         if (!$this->lfIsDbRecord('dtb_products_class', 'product_class_id', $item)) {
              $arrErr['product_class_id'] = "※ 指定の商品規格IDは、登録されていません。";
          }
-@@ -628,17 +629,6 @@
+@@ -627,17 +628,6 @@
                  }
              }
          }
 -        // 規格組合せIDの存在チェック
--//        if(!$this->lfIsDbRecord('dtb_class_combination', 'class_combination_id', $item)) {
+-//        if (!$this->lfIsDbRecord('dtb_class_combination', 'class_combination_id', $item)) {
 -//      SC_Utils::sfIsRecord が del_flg が無いと使えない為、個別処理
 -        if(array_search('class_combination_id', $this->arrFormKeyList) !== FALSE
--                and $item['class_combination_id'] != "" ) {
+-                and $item['class_combination_id'] != "") {
 -            $objQuery =& SC_Query_Ex::getSingletonInstance();
 -            $ret = $objQuery->get('class_combination_id', 'dtb_class_combination', 'class_combination_id = ?', array($item['class_combination_id']));
--            if($ret == "") {
+-            if ($ret == "") {
 -                $arrErr['class_combination_id'] = "※ 指定の規格組合せIDは、登録されていません。";
 -            }
 -        }
          // 表示ステータスの存在チェック
-         if(!$this->lfIsArrayRecord($this->arrDISP, 'status', $item)) {
+         if (!$this->lfIsArrayRecord($this->arrDISP, 'status', $item)) {
              $arrErr['status'] = "※ 指定の表示ステータスは、登録されていません。";
 Index: data/class/SC_Product.php
 ===================================================================
---- data/class/SC_Product.php	(revision 21433)
+--- data/class/SC_Product.php	(revision 21496)
 +++ data/class/SC_Product.php	(working copy)
 @@ -258,9 +258,9 @@
                  : '';
@@ -454,16 +454,99 @@ Index: data/class/SC_Product.php
      }
  
      /**
-@@ -788,7 +735,7 @@
+@@ -448,9 +395,8 @@
+     function getProductsClass($productClassId) {
+         $objQuery =& SC_Query_Ex::getSingletonInstance();
+         $objQuery->setWhere('product_class_id = ? AND T1.del_flg = 0');
+-        $results = $this->getProductsClassByQuery($objQuery, $productClassId);
+-        $productsClass = $this->getProductsClassFull($results);
+-        return $productsClass[0];
++        $arrRes = $this->getProductsClassByQuery($objQuery, $productClassId);
++        return $arrRes[0];
+     }
+ 
+     /**
+@@ -474,17 +420,6 @@
+     }
+ 
+     /**
+-     * 商品IDに紐づいた, 商品規格を階層ごとに取得する.
+-     *
+-     * @param array $productId 商品ID
+-     * @return array 階層ごとの商品規格の配列
+-     */
+-    function getProductsClassLevelByProductId($productId) {
+-        $results = $this->getProductsClassByProductIds(array($productId));
+-        return $this->getProductsClassLevel($results);
+-    }
+-
+-    /**
+      * 商品IDに紐づいた, 商品規格をすべての組み合わせごとに取得する.
+      *
+      * @param array $productId 商品ID
+@@ -492,51 +427,11 @@
+      * @return array すべての組み合わせの商品規格の配列
+      */
+     function getProductsClassFullByProductId($productId, $has_deleted = false) {
+-        $results = $this->getProductsClassByProductIds(array($productId), $has_deleted);
+-        return $this->getProductsClassFull($results);
++        $arrRet = $this->getProductsClassByProductIds(array($productId), $has_deleted);
++        return $arrRet;
+     }
+ 
+     /**
+-     * 商品規格の配列から, 商品規格を階層ごとに取得する.
+-     *
+-     * @access private
+-     * @param array $productsClassResults 商品規格の結果の配列
+-     * @return array 階層ごとの商品規格の配列
+-     */
+-    function getProductsClassLevel($productsClassResults) {
+-        foreach ($productsClassResults as $row) {
+-            $productsClassLevel['level' . $row['level']][] = $row;
+-        }
+-        return $productsClassLevel;
+-    }
+-
+-    /**
+-     * 商品規格の配列から, 商品規格のすべての組み合わせを取得する.
+-     *
+-     * @access private
+-     * @param array $productsClassResults 商品規格の結果の配列
+-     * @ array 階層ごとの商品規格の配列
+-     */
+-    function getProductsClassFull($productsClassResults) {
+-        $results = $this->getProductsClassLevel($productsClassResults);
+-        $productsClass = array();
+-        if (SC_Utils_Ex::isBlank($results['level1'])
+-            && SC_Utils_Ex::isBlank($results['level2'])) {
+-            return $results['level'];
+-        }
+-
+-        foreach ($results['level1'] as $level1) {
+-            foreach ($results['level2'] as $level2) {
+-                if ($level2['parent_class_combination_id'] == $level1['class_combination_id']) {
+-                    $level1 = array_merge($level1, $level2);
+-                }
+-            }
+-            $productsClass[] = $level1;
+-        }
+-        return $productsClass;
+-    }
+-
+-    /**
+      * 商品IDをキーにした, 商品ステータスIDの配列を取得する.
+      *
+      * @param array 商品ID の配列
+@@ -786,7 +681,6 @@
          (
               SELECT dtb_products.*,
                      dtb_products_class.product_class_id,
 -                    dtb_products_class.class_combination_id,
-+                    'dummy' AS class_combination_id,
                      dtb_products_class.product_type_id,
                      dtb_products_class.product_code,
                      dtb_products_class.stock,
-@@ -800,11 +747,13 @@
+@@ -798,11 +692,10 @@
                      dtb_products_class.point_rate,
                      dtb_products_class.down_filename,
                      dtb_products_class.down_realfilename,
@@ -472,17 +555,14 @@ Index: data/class/SC_Product.php
 -                    dtb_class_combination.level as classlevel,
 -                    Tpcm.classcategory_id as parent_classcategory_id,
 -                    Tpcm.level as parent_classlevel,
-+                    'dummy' AS parent_class_combination_id, -- 削除
 +                    dtb_products_class.classcategory_id1 AS classcategory_id, -- 削除
 +                    dtb_products_class.classcategory_id1,
-+                    'dummy' as classlevel, -- 削除
 +                    dtb_products_class.classcategory_id2 AS parent_classcategory_id, -- 削除
 +                    dtb_products_class.classcategory_id2,
-+                    'dummy' as parent_classlevel, -- 削除
                      Tcc1.class_id as class_id,
                      Tcc1.name as classcategory_name,
                      Tcc2.class_id as parent_class_id,
-@@ -812,14 +761,10 @@
+@@ -810,14 +703,10 @@
               FROM dtb_products
                   LEFT JOIN dtb_products_class
                       ON dtb_products.product_id = dtb_products_class.product_id
@@ -501,21 +581,21 @@ Index: data/class/SC_Product.php
  __EOS__;
 Index: html/install/index.php
 ===================================================================
---- html/install/index.php	(revision 21430)
+--- html/install/index.php	(revision 21496)
 +++ html/install/index.php	(working copy)
-@@ -1053,7 +1053,6 @@
-                  array("dtb_payment", "payment_id"),
-                  array("dtb_products_class", "product_class_id"),
-                  array("dtb_products", "product_id"),
--                 array("dtb_class_combination", "class_combination_id"),
-                  array("dtb_review", "review_id"),
-                  array("dtb_send_history", "send_id"),
-                  array("dtb_mailmaga_template", "template_id"));
+@@ -1045,7 +1045,6 @@
+         array('dtb_payment', 'payment_id'),
+         array('dtb_products_class', 'product_class_id'),
+         array('dtb_products', 'product_id'),
+-        array('dtb_class_combination', 'class_combination_id'),
+         array('dtb_review', 'review_id'),
+         array('dtb_send_history', 'send_id'),
+         array('dtb_mailmaga_template', 'template_id'),
 Index: html/install/sql/create_table_mysql.sql
 ===================================================================
---- html/install/sql/create_table_mysql.sql	(revision 21430)
+--- html/install/sql/create_table_mysql.sql	(revision 21496)
 +++ html/install/sql/create_table_mysql.sql	(working copy)
-@@ -315,7 +315,8 @@
+@@ -304,7 +304,8 @@
  CREATE TABLE dtb_products_class (
      product_class_id int  NOT NULL,
      product_id int NOT NULL,
@@ -525,7 +605,7 @@ Index: html/install/sql/create_table_mysql.sql
      product_type_id int NOT NULL DEFAULT 0,
      product_code text,
      stock numeric,
-@@ -357,14 +358,6 @@
+@@ -346,14 +347,6 @@
      PRIMARY KEY (classcategory_id)
  ) ENGINE=InnoDB;
  
@@ -542,9 +622,9 @@ Index: html/install/sql/create_table_mysql.sql
      category_name text,
 Index: html/install/sql/create_table_pgsql.sql
 ===================================================================
---- html/install/sql/create_table_pgsql.sql	(revision 21430)
+--- html/install/sql/create_table_pgsql.sql	(revision 21496)
 +++ html/install/sql/create_table_pgsql.sql	(working copy)
-@@ -315,7 +315,8 @@
+@@ -304,7 +304,8 @@
  CREATE TABLE dtb_products_class (
      product_class_id int NOT NULL,
      product_id int NOT NULL,
@@ -554,7 +634,7 @@ Index: html/install/sql/create_table_pgsql.sql
      product_type_id int NOT NULL DEFAULT 0,
      product_code text,
      stock numeric,
-@@ -357,14 +358,6 @@
+@@ -346,14 +347,6 @@
      PRIMARY KEY (classcategory_id)
  );
  
@@ -571,7 +651,7 @@ Index: html/install/sql/create_table_pgsql.sql
      category_name text,
 Index: html/install/sql/drop_table.sql
 ===================================================================
---- html/install/sql/drop_table.sql	(revision 21430)
+--- html/install/sql/drop_table.sql	(revision 21496)
 +++ html/install/sql/drop_table.sql	(working copy)
 @@ -15,7 +15,6 @@
  DROP TABLE dtb_product_status;
@@ -583,7 +663,7 @@ Index: html/install/sql/drop_table.sql
  DROP TABLE dtb_review;
 Index: html/install/sql/insert_data.sql
 ===================================================================
---- html/install/sql/insert_data.sql	(revision 21430)
+--- html/install/sql/insert_data.sql	(revision 21496)
 +++ html/install/sql/insert_data.sql	(working copy)
 @@ -236,8 +236,6 @@
  
@@ -656,7 +736,7 @@ Index: html/install/sql/insert_data.sql
  INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, create_date, update_date, del_flg) VALUES (5, 3, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 Index: test/createEcCubeData-v25.php
 ===================================================================
---- test/createEcCubeData-v25.php	(revision 21430)
+--- test/createEcCubeData-v25.php	(revision 21496)
 +++ test/createEcCubeData-v25.php	(working copy)
 @@ -57,7 +57,7 @@
  
@@ -705,7 +785,7 @@ Index: test/createEcCubeData-v25.php
 +            $sqlval['main_image'] = "nabe260.jpg";
 +            $sqlval['main_large_image'] = "nabe500.jpg";
              $sqlval['sub_comment1'] = "コメント";
-             $sqlval['del_flg'] = (string) "0";
+             $sqlval['del_flg'] = (string) '0';
              $sqlval['creator_id'] = 2;
 @@ -373,35 +372,23 @@
          $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
@@ -717,13 +797,13 @@ Index: test/createEcCubeData-v25.php
 -                $c1['classcategory_id'] = $classCategory_id1;
 -                $c1['class_combination_id'] = $this->objQuery->nextVal('dtb_class_combination_class_combination_id');
 -                $c1['level'] = 1;
--                $this->objQuery->insert("dtb_class_combination", $c1);
+-                $this->objQuery->insert('dtb_class_combination', $c1);
 -
 -                $c2['classcategory_id'] = $classCategory_id2;
 -                $c2['class_combination_id'] = $this->objQuery->nextVal('dtb_class_combination_class_combination_id');
 -                $c2['parent_class_combination_id'] = $c1['class_combination_id'];
 -                $c2['level'] = 2;
--                $this->objQuery->insert("dtb_class_combination", $c2);
+-                $this->objQuery->insert('dtb_class_combination', $c2);
 -
 -                $sqlval['product_class_id'] =
 -                    $this->objQuery->nextVal('dtb_products_class_product_class_id');
@@ -736,7 +816,7 @@ Index: test/createEcCubeData-v25.php
 +                $sqlval['classcategory_id1'] = $classcategory_id1;
 +                $sqlval['classcategory_id2'] = $classcategory_id2;
 +                $sqlval['product_code'] = 'CODE_' . $product_id . '_' . $classcategory_id1 . '_' . $classcategory_id2;
-                 $this->objQuery->insert("dtb_products_class", $sqlval);
+                 $this->objQuery->insert('dtb_products_class', $sqlval);
  
 -                $count++;
                  print("#");
@@ -750,12 +830,12 @@ Index: test/createEcCubeData-v25.php
 +        $sqlval['classcategory_id2'] = 0;
 +        $sqlval['product_code'] = 'CODE_' . $product_id;
          $sqlval['del_flg'] = 1;
-         $this->objQuery->insert("dtb_products_class", $sqlval);
+         $this->objQuery->insert('dtb_products_class', $sqlval);
  
 @@ -462,9 +449,9 @@
-                          ,"43"
-                          ,"42"
-                          ,"41"
+                          ,'43'
+                          ,'42'
+                          ,'41'
 -                         ,"43(27.0cm?27.5cm)"
 -                         ,"42(26.5cm?27.0cm)"
 -                         ,"37(ladies 23.5?24cm)"
@@ -764,4 +844,4 @@ Index: test/createEcCubeData-v25.php
 +                         ,"37(ladies 23.5～24cm)"
                           ,"42(約27.5cm)"
                           ,"41(約26.5cm)"
-                          ,"W36"
+                          ,'W36'
