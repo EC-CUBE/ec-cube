@@ -29,7 +29,7 @@
 * @author LOCKON CO.,LTD.
 * @version $Id: $
 */
-class SC_Plugin_Template_Selector {
+class SC_Plugin_TemplateSelector {
 
     var $objTransformer;
     var $arrElements;
@@ -38,11 +38,11 @@ class SC_Plugin_Template_Selector {
     /**
      * コンストラクタ
      *
-     * @param SC_Plugin_Template_Transformer $objTransformer SC_Plugin_Template_Transformerオブジェクト
+     * @param SC_Plugin_TemplateTransformList $objTransformer SC_Plugin_TemplateTransformListオブジェクト
      * @param string $current_plugin プラグイン名
      * @return void
      */
-    function __construct(SC_Plugin_Template_Transformer $objTransformer, $current_plugin) {
+    function __construct(SC_Plugin_TemplateTransformList $objTransformer, $current_plugin) {
         $this->objTransformer = $objTransformer;
         $this->current_plugin = $current_plugin;
         $this->arrElements = array();
@@ -70,12 +70,12 @@ class SC_Plugin_Template_Selector {
      * @param string  $index         インデックス（指定がある場合）
      * @param boolean $require       エレメントが見つからなかった場合、エラーとするか
      * @param string  $err_msg       エラーメッセージ
-     * @param SC_Plugin_Template_Selector $objSelector セレクタオブジェクト
+     * @param SC_Plugin_TemplateSelector $objSelector セレクタオブジェクト
      * @param string  $parent_index  セレクタ検索時の親要素の位置（子孫要素検索のため）
-     * @return SC_Plugin_Template_Selector SC_Plugin_Template_Selectorオブジェクト
+     * @return SC_Plugin_TemplateSelector SC_Plugin_TemplateSelectorオブジェクト
      */
-    function find($selector, $index = NULL, $require = true, $err_msg = NULL, SC_Plugin_Template_Selector $objSelector = NULL, $parent_index = NULL) {
-        $objSelectorChild = new SC_Plugin_Template_Selector($this->objTransformer, $this->current_plugin);
+    function find($selector, $index = NULL, $require = true, $err_msg = NULL, SC_Plugin_TemplateSelector $objSelector = NULL, $parent_index = NULL) {
+        $objSelectorChild = new SC_Plugin_TemplateSelector($this->objTransformer, $this->current_plugin);
         foreach ($this->arrElements as $key => &$objElement) {
             $this->objTransformer->find($selector, $index, false, NULL, $objSelectorChild, $objElement[0]);
         }
@@ -83,7 +83,7 @@ class SC_Plugin_Template_Selector {
             $this->objTransformer->setError(
                 $this->current_plugin,
                 $selector,
-                SC_Plugin_Template_Transformer::ERR_TARGET_ELEMENT_NOT_FOUND,
+                SC_Plugin_TemplateTransformList::ERR_TARGET_ELEMENT_NOT_FOUND,
                 $err_msg
             );
         }
@@ -95,7 +95,7 @@ class SC_Plugin_Template_Selector {
      * 要素の前にHTMLを挿入
      *
      * @param string $html_snip 挿入するHTMLの断片
-     * @return SC_Plugin_Template_Selector SC_Plugin_Template_Selectorオブジェクト
+     * @return SC_Plugin_TemplateSelector SC_Plugin_TemplateSelectorオブジェクト
      */
     function insertBefore($html_snip) {
         foreach ($this->arrElements as $key => $objElement) {
@@ -103,7 +103,7 @@ class SC_Plugin_Template_Selector {
         }
         return $this;
     }
-
+    
 
     /**
      * 要素の後にHTMLを挿入
@@ -122,7 +122,7 @@ class SC_Plugin_Template_Selector {
      * 要素の末尾にHTMLを挿入
      *
      * @param string $html_snip 挿入するHTMLの断片
-     * @return SC_Plugin_Template_Selector SC_Plugin_Template_Selectorオブジェクト
+     * @return SC_Plugin_TemplateSelector SC_Plugin_TemplateSelectorオブジェクト
      */
     function appendChild($html_snip) {
         foreach ($this->arrElements as $key => $objElement) {
@@ -130,13 +130,13 @@ class SC_Plugin_Template_Selector {
         }
         return $this;
     }
-
-
+    
+    
     /**
      * 要素を指定したHTMLに置換
      *
      * @param string $html_snip 置換後のHTMLの断片
-     * @return SC_Plugin_Template_Selector SC_Plugin_Template_Selectorオブジェクト
+     * @return SC_Plugin_TemplateSelector SC_Plugin_TemplateSelectorオブジェクト
      */
     function replaceChild($html_snip) {
         foreach ($this->arrElements as $key => &$objElement) {
@@ -144,8 +144,8 @@ class SC_Plugin_Template_Selector {
         }
         return $this;
     }
-
-
+    
+    
     /**
      * findで見つかったエレメントの数を返す
      *
@@ -154,7 +154,9 @@ class SC_Plugin_Template_Selector {
     function getFoundCount() {
         return count($this->arrElements);
     }
-
+    
 
 
 }
+
+?>

@@ -29,7 +29,7 @@
  * @author LOCKON CO.,LTD.
  * @version $Id: $
  */
-class SC_Plugin_Template_Transformer {
+class SC_Plugin_TemplateTransformList {
 
     var $objDOM;
     var $arrDomHash;
@@ -49,7 +49,7 @@ class SC_Plugin_Template_Transformer {
      * @param string $tmpl 変形前テンプレートファイルのフルパス
      * @return void
      */
-    function SC_Plugin_Template_Transformer($tmpl) {
+    function SC_Plugin_TemplateTransformList($tmpl) {
         $this->objDOM = new DOMDocument();
         $this->objDOM->strictErrorChecking = false;
         $this->snip_count = 0;
@@ -60,24 +60,24 @@ class SC_Plugin_Template_Transformer {
         // ファイルの内容を全て文字列に読み込む
         $html = file_get_contents(SMARTY_TEMPLATES_REALDIR . $tmpl);
         $err_msg = null;
-
+        
         // 対象のパスが存在するかを検証する,
         if ($html === false) {
             $err_msg = SMARTY_TEMPLATES_REALDIR . $tmpl. "は存在しないか、読み取れません";
         } elseif (!in_array(mb_detect_encoding($html), array('ASCII', 'UTF-8'))) {
             $err_msg = $tmpl. "の文字コードがUTF-8ではありません";
         }
-
+        
         if (!is_null($err_msg)) {
             // TODO エラー処理
         }
 
         // JavaScript内にSmartyのタグが存在するものを、コメント形式に置換
-        $html = preg_replace_callback(
-            '/<script.+?\/script>/s',
-            array($this, 'captureSmartyTags2Comment'),
-            $html
-        );
+		$html = preg_replace_callback(
+			'/<script.+?\/script>/s',
+			array($this, 'captureSmartyTags2Comment'),
+			$html
+		);
 
         // HTMLタグ内にSmartyのタグが存在するものを、いったんダミーのタグに置換する
         $html = preg_replace_callback(
@@ -92,7 +92,7 @@ class SC_Plugin_Template_Transformer {
             array($this, 'captureSmartyTags2Comment'),
             $html
         );
-
+        
         $html = '<meta http-equiv="content-type" content="text/html; charset=UTF-8" /><html><body><!--TemplateTransformer start-->'.$html.'<!--TemplateTransformer end--></body></html>';
         // TODO エラー処理
         @$this->objDOM->loadHTML($html);
@@ -212,20 +212,20 @@ class SC_Plugin_Template_Transformer {
      */
     function scanChild(DOMNode $objDOMElement, $parent_selector = '') {
         $objNodeList = $objDOMElement->childNodes;
-
+        
         if (is_null($objNodeList)) return;
         foreach ($objNodeList as $element) {
-
+            
             $arrAttr = array();
             // エレメントの場合、tag名を配列に入れる.
             if ($element instanceof DOMElement) {
                 $arrAttr[] = $element->tagName;
             }
-
+            
             // getAttributeメソッドを持つかを検証
             if (method_exists($element, 'getAttribute')) {
                 // id属性を持つ場合.
-                if ($element->hasAttribute('id')) {
+                if ($element->hasAttribute('id')){
                     // idの値を配列に格納(ex: [0] => #hoge)
                     $arrAttr[] = '#'.$element->getAttribute('id');
                 }
@@ -236,7 +236,7 @@ class SC_Plugin_Template_Transformer {
                     foreach ($arrClasses as $classname) $arrAttr[] = '.'.$classname;
                 }
                 // name属性を持つ場合.
-                if ($element->hasAttribute('name')) {
+                if ($element->hasAttribute('name')){
                     $this->arrDomHash['name'][$element->getAttribute('name')][] = $element;
                 }
             }
@@ -258,14 +258,14 @@ class SC_Plugin_Template_Transformer {
      * @param integer $index         インデックス（指定がある場合）
      * @param boolean $require       エレメントが見つからなかった場合、エラーとするか
      * @param string  $err_msg       エラーメッセージ
-     * @param SC_Plugin_Template_Selector $objSelector セレクタオブジェクト
+     * @param SC_Plugin_TemplateSelector $objSelector セレクタオブジェクト
      * @param string  $parent_index セレクタ検索時の親要素の位置（子孫要素検索のため）
-     * @return SC_Plugin_Template_Selector
+     * @return SC_Plugin_TemplateSelector
      */
-    function find($selector, $index = NULL, $require = true, $err_msg = NULL, SC_Plugin_Template_Selector $objSelector = NULL, $parent_index = NULL) {
+    function find($selector, $index = NULL, $require = true, $err_msg = NULL, SC_Plugin_TemplateSelector $objSelector = NULL, $parent_index = NULL) {
 
-        if (is_null($objSelector)) $objSelector = new SC_Plugin_Template_Selector($this, $this->current_plugin);
-
+        if (is_null($objSelector)) $objSelector = new SC_Plugin_TemplateSelector($this, $this->current_plugin);
+        
         // jQueryライクなセレクタを正規表現に
         $selector = preg_replace('/ *> */', ' >', $selector);
 
@@ -273,7 +273,7 @@ class SC_Plugin_Template_Transformer {
         if (!is_null($parent_index)) $regex .= preg_quote($this->arrElementTree[$parent_index][0], '/');
         // セレクターを配列にします.
         $arrSelectors = explode(' ', $selector);        
-
+        
         // セレクタから正規表現を生成.
         foreach ($arrSelectors as $sub_selector) {
             if (preg_match('/^(>?)([\w\-]+)?(#[\w\-]+)?(\.[\w\-]+)*$/', $sub_selector, $arrMatch)) {
@@ -294,8 +294,8 @@ class SC_Plugin_Template_Transformer {
         $startIndex = is_null($parent_index) ? 0 : $parent_index;
 
         // エレメントツリーのセレクタを先ほど作成した正規表現で順に検索.
-        for ($iLoop=$startIndex; $iLoop < count($this->arrElementTree); $iLoop++) {
-
+        for($iLoop=$startIndex; $iLoop < count($this->arrElementTree); $iLoop++){
+            
             if (preg_match($regex, $this->arrElementTree[$iLoop][0])) {
                 if (is_null($index) || $cur_idx == $index) {
                     // 検索にかかったエレメントをセレクターのメンバ変数の配列に入れる
@@ -309,14 +309,14 @@ class SC_Plugin_Template_Transformer {
             $this->setError(
                 $this->current_plugin,
                 $selector,
-                SC_Plugin_Template_Transformer::ERR_TARGET_ELEMENT_NOT_FOUND,
+                SC_Plugin_TemplateTransformList::ERR_TARGET_ELEMENT_NOT_FOUND,
                 $err_msg
             );
         }
-
+        
         return $objSelector;
     }
-
+    
     /**
      * DOMを用いた変形を実行する
      *
@@ -326,23 +326,23 @@ class SC_Plugin_Template_Transformer {
      * @return boolean
      */
     function setTransform($mode, $target_key, $html_snip) {
-
+        
         $substitute_tag = sprintf('<!--###%08d###-->', $this->smarty_tags_idx);
 
         $this->arrSmartyTagsOrg[$this->smarty_tags_idx] = $html_snip;
         $this->arrSmartyTagsSub[$this->smarty_tags_idx] = $substitute_tag;
         $this->smarty_tags_idx++;
-
+        
         $objSnip = $this->objDOM->createDocumentFragment();
         $objSnip->appendXML($substitute_tag);
-
+        
         $objElement = false;
-        if (isset($this->arrElementTree[$target_key]) && $this->arrElementTree[$target_key][0]) {
+        if(isset($this->arrElementTree[$target_key]) && $this->arrElementTree[$target_key][0]){
             $objElement = &$this->arrElementTree[$target_key][1];
         }
 
         if (!$objElement) return false;
-
+        
         try {
             if ($mode == 'appendChild') {
                 $objElement->appendChild($objSnip);
@@ -350,11 +350,11 @@ class SC_Plugin_Template_Transformer {
                 if (!is_object($objElement->parentNode)) return false;
                 $objElement->parentNode->insertBefore($objSnip, $objElement);
             } elseif ($mode == 'insertAfter') {
-                if ($objElement->nextSibling) {
-                     $objElement->parentNode->insertBefore($objSnip, $objElement->nextSibling);
-                } else {
-                     $objElement->parentNode->appendChild($objSnip);
-                }
+	            if ($objElement->nextSibling) {
+	                 $objElement->parentNode->insertBefore($objSnip, $objElement->nextSibling);
+	            } else {
+	                 $objElement->parentNode->appendChild($objSnip);
+	            }
             } elseif ($mode == 'replaceChild') {
                 if (!is_object($objElement->parentNode)) return false;
                 $objElement->parentNode->replaceChild($objSnip, $objElement);
@@ -365,7 +365,7 @@ class SC_Plugin_Template_Transformer {
         }
         return true;
     }
-
+    
     /**
      * セレクタエラーを記録する
      *
@@ -383,7 +383,7 @@ class SC_Plugin_Template_Transformer {
             'err_msg'     => $err_msg
         );
     }
-
+    
     /**
      * HTMLに戻して、Transform用に付けたマーカーを削除し、Smartyのタグを復元する
      *
@@ -397,7 +397,7 @@ class SC_Plugin_Template_Transformer {
                 if ($arrErr['err_msg']) {
                     $err_msg .= "<br />".$arrErr['err_msg'];
                 } else {
-                    if ($arrErr['type'] == SC_Plugin_Template_Transformer::ERR_TARGET_ELEMENT_NOT_FOUND) {
+                    if ($arrErr['type'] == SC_Plugin_TemplateTransformList::ERR_TARGET_ELEMENT_NOT_FOUND) {
                         $err_msg .= "<br />${arrErr['selector']} が存在しません";
                     } else {
                         $err_msg .= "<br />".print_r($arrErr, true);
@@ -406,7 +406,7 @@ class SC_Plugin_Template_Transformer {
             }
             // TODO エラー処理
             // ECC_Plugin_Engine::dispError(FREE_ERROR_MSG, "テンプレートの操作に失敗しました。".$err_msg);
-
+        
         } elseif ($this->snip_count) {
             $html = $this->objDOM->saveHTML();
             // 置換　$htmlの$this->arrSmartyTagsSubを$this->arrSmartyTagsOrgに置換
@@ -414,7 +414,7 @@ class SC_Plugin_Template_Transformer {
             $html = preg_replace('/^.*<\!--TemplateTransformer start-->/s', '', $html);
             $html = preg_replace('/<\!--TemplateTransformer end-->.*$/s', '', $html);
             return $html;
-
+        
         } else {
             return false;
         }
@@ -433,7 +433,7 @@ class SC_Plugin_Template_Transformer {
             // 成功し、かつ test_mode でなければファイルに書き出す
             $filepath = PLUGIN_TMPL_CACHE_REALDIR . $filename;
             $dir = dirname($filepath);
-
+            
             if (!file_exists($dir)) mkdir($dir, PLUGIN_DIR_PERMISSION, true);
             if (!file_put_contents($filepath, $html)) return false;
             return $filepath;
@@ -443,3 +443,6 @@ class SC_Plugin_Template_Transformer {
     }
 
 }
+
+
+?>

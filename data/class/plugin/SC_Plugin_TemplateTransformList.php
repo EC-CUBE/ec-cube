@@ -29,27 +29,36 @@
  * @author LOCKON CO.,LTD.
  * @version $Id: $
  */
-class SC_Plugin_Template_Transform_List {
+class SC_Plugin_TemplateTransformList {
 
-    /** トランスフォームするテンプレートの配列 */
-    var $arrConfsByTemplates = array();
-
-    /** プラグインが介入するテンプレートの配列 */
-    var $arrTemplatesByPlugin = array();
-
-    /** HeadNaviに追加するブロックの配列 */
-    var $arrHeadNaviBlocsByPlugin = array();
+    // トランスフォームするテンプレートの配列
+    var $arrConfsByTemplates;
+    var $arrTemplatesByPlugin;
+    var $arrBlocsByPlugin;
 
     /**
-     * SC_Plugin_Template_Transform_List オブジェクトを返す（Singletonパターン）
+     * SC_Plugin_TemplateTransformList オブジェクトを返す（Singletonパターン）
      *
-     * @return object SC_Plugin_Template_Transform_List
+     * @return object SC_Plugin_TemplateTransformList
      */
     function getSingletonInstance() {
-        if (!isset($GLOBALS['_SC_Plugin_Template_Transform_List_instance']) || is_null($GLOBALS['_SC_Plugin_Template_Transform_List_instance'])) {
-            $GLOBALS['_SC_Plugin_Template_Transform_List_instance'] =& new SC_Plugin_Template_Transform_List();
+        if (!isset($GLOBALS['_SC_Plugin_TemplateTransformList_instance']) || is_null($GLOBALS['_SC_Plugin_TemplateTransformList_instance'])) {
+            $GLOBALS['_SC_Plugin_TemplateTransformList_instance'] =& new SC_Plugin_TemplateTransformList();
         }
-        return $GLOBALS['_SC_Plugin_Template_Transform_List_instance'];
+        return $GLOBALS['_SC_Plugin_TemplateTransformList_instance'];
+    }
+
+    /**
+     * 初期化
+     *
+     * @return void
+     */
+    function init() {
+        $this->arrConfsByTemplates = array();
+        // プラグインが介入するテンプレートの配列
+        $this->arrTemplatesByPlugin = array();
+        // HeadNaviに追加するブロックの配列
+        $this->arrHeadNaviBlocsByPlugin = array();
     }
 
     /**
@@ -57,7 +66,7 @@ class SC_Plugin_Template_Transform_List {
      *
      * @param streing $tmpl 設定対象のテンプレートパス
      * @param SC_Plugin_Base $objPlugin プラグインオブジェクト
-     * @return SC_Plugin_Template_Transformer 指定したテンプレートを transform するための SC_Plugin_Template_Transformer オブジェクト
+     * @return SC_Plugin_TemplateTransformList 指定したテンプレートを transform するための SC_Plugin_TemplateTransformList オブジェクト
      */
     function setTemplate($tmpl, SC_Plugin_Base $objPlugin) {
         $this->arrTemplatesByPlugin[$objPlugin->arrSelfInfo['class_name']][$tmpl] = 1;
@@ -65,7 +74,7 @@ class SC_Plugin_Template_Transform_List {
         if (!is_array($this->arrConfsByTemplates)) $this->arrConfsByTemplates = array();
         if (!array_key_exists($tmpl, $this->arrConfsByTemplates)) {
             // テンプレートパスをキーにトランスフォーマのインスタンスをセット.
-            $this->arrConfsByTemplates[$tmpl] = new SC_Plugin_Template_Transformer($tmpl);
+            $this->arrConfsByTemplates[$tmpl] = new SC_Plugin_TemplateTransformList($tmpl);
         }
         // 処理を行うプラグイン名をセットする.
         $this->arrConfsByTemplates[$tmpl]->setCurrentPlugin($objPlugin->arrSelfInfo['class_name']);
@@ -77,7 +86,7 @@ class SC_Plugin_Template_Transform_List {
      *
      * @param streing $tmpl 設定対象のテンプレートのパス（adminディレクトリからの相対パス）
      * @param SC_Plugin_Base $objPlugin プラグインオブジェクト
-     * @return SC_Plugin_Template_Transformer SC_Plugin_Template_Transformer オブジェクト
+     * @return SC_Plugin_TemplateTransformList SC_Plugin_TemplateTransformList オブジェクト
      */
     function setTemplateAdmin($tmpl, SC_Plugin_Base $objPlugin) {
         return $this->setTemplate('admin/'.$tmpl, $objPlugin);
@@ -88,7 +97,7 @@ class SC_Plugin_Template_Transform_List {
      *
      * @param streing $tmpl 設定対象のテンプレートのパス（PCディレクトリからの相対パス）
      * @param SC_Plugin_Base $objPlugin プラグインオブジェクト
-     * @return SC_Plugin_Template_Transformer SC_Plugin_Template_Transformer オブジェクト
+     * @return SC_Plugin_TemplateTransformList SC_Plugin_TemplateTransformList オブジェクト
      */
     function setTemplatePC($tmpl, SC_Plugin_Base $objPlugin) {
         return $this->setTemplate(TEMPLATE_NAME.'/'.$tmpl, $objPlugin);
@@ -99,7 +108,7 @@ class SC_Plugin_Template_Transform_List {
      *
      * @param streing $tmpl 設定対象のテンプレートのパス（携帯ディレクトリからの相対パス）
      * @param SC_Plugin_Base $objPlugin プラグインオブジェクト
-     * @return SC_Plugin_Template_Transformer SC_Plugin_Template_Transformer オブジェクト
+     * @return SC_Plugin_TemplateTransformList SC_Plugin_TemplateTransformList オブジェクト
      */
     function setTemplateMobile($tmpl, SC_Plugin_Base $objPlugin) {
         return $this->setTemplate(MOBILE_TEMPLATE_NAME.'/'.$tmpl, $objPlugin);
@@ -110,7 +119,7 @@ class SC_Plugin_Template_Transform_List {
      *
      * @param streing         $tmpl      設定対象のテンプレートのパス（スマホディレクトリからの相対パス）
      * @param SC_Plugin_Base $objPlugin プラグインオブジェクト
-     * @return SC_Plugin_Template_Transformer SC_Plugin_Template_Transformer オブジェクト
+     * @return SC_Plugin_TemplateTransformList SC_Plugin_TemplateTransformList オブジェクト
      */
     function setTemplateSphone($tmpl, SC_Plugin_Base $objPlugin) {
         return $this->setTemplate(SMARTPHONE_TEMPLATE_NAME.'/'.$tmpl, $objPlugin);
@@ -144,7 +153,7 @@ class SC_Plugin_Template_Transform_List {
      * @param string $url PHPファイルのURL
      * @return void
      */
-    function setHeadNavi($url) {
+    function setHeadNavi($url){
         $this->arrHeadNaviBlocsByPlugin[$url] = TARGET_ID_HEAD;
     }
 
@@ -154,8 +163,8 @@ class SC_Plugin_Template_Transform_List {
      * @param array|null $arrBlocs  配置情報を含めたブロックの配列
      * @return void
      */
-    function setHeadNaviBlocs(&$arrBlocs) {
-        foreach ($this->arrHeadNaviBlocsByPlugin as $key => $value) {
+    function setHeadNaviBlocs(&$arrBlocs){
+        foreach($this->arrHeadNaviBlocsByPlugin as $key => $value){
             $arrBlocs[] = array(
                 'target_id' =>$value,
                 'php_path' => $key
@@ -164,3 +173,5 @@ class SC_Plugin_Template_Transform_List {
     }
 
 }
+
+?>

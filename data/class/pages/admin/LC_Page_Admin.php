@@ -101,7 +101,7 @@ class LC_Page_Admin extends LC_Page_Ex {
             $objPlugin->doAction('lc_page_process', array($this));
 
             // HeadNaviにpluginテンプレートを追加する.
-            $objTemplateTransformList = SC_Plugin_Template_Transform_List::getSingletonInstance();
+            $objTemplateTransformList = SC_Plugin_TemplateTransformList::getSingletonInstance();
             $objTemplateTransformList->setHeadNaviBlocs($this->arrPageLayout['HeadNavi']);
         }
 

@@ -120,7 +120,7 @@ class LC_Page {
     function sendResponse() {
 
         // HeadNaviにpluginテンプレートを追加する.
-        $objTemplateTransformList = SC_Plugin_Template_Transform_List::getSingletonInstance();
+        $objTemplateTransformList = SC_Plugin_TemplateTransformList::getSingletonInstance();
         $objTemplateTransformList->setHeadNaviBlocs($this->arrPageLayout['HeadNavi']);
 
         // plugin側で生成したページがあるかを検証し、ある場合は tpl_mainpage にセットする.
