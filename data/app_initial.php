@@ -45,12 +45,20 @@ SC_Helper_HandleError_Ex::load();
 $objInit = new SC_Initial_Ex();
 $objInit->init();
 
+
 /**
  * クラスのオートローディングを定義する
  *
- * LC_* には対応していない。
+ * 関数なので、このように囲う必要はないが、メインの処理フローを分かりやすくするため定義した。
+ * @return void
  */
 function setClassAutoloader() {
+    /**
+     * クラスのオートローディング本体
+     *
+     * LC_* には対応していない。
+     * @return void
+     */
     function __autoload($class) {
         $arrClassNamePart = explode('_', $class);
         $is_ex = end($arrClassNamePart) === 'Ex';
