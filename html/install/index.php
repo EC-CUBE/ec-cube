@@ -1058,7 +1058,9 @@ function getSequences() {
                  array('dtb_class_combination', 'class_combination_id'),
                  array('dtb_review', 'review_id'),
                  array('dtb_send_history', 'send_id'),
-                 array('dtb_mailmaga_template', 'template_id'));
+                 array('dtb_mailmaga_template', 'template_id'),
+                 array("dtb_plugin", "plugin_id"),
+                 array("dtb_plugin_hookpoint", "id"));
 }
 
 
