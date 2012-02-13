@@ -21,13 +21,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-/**
- * PEAR モジュール HTTP_Request の読み込みを行う
- *
- * r21237 より前の誤ったファイル配置を前提とした決済モジュールでの利用を意図している。
- * EC-CUBE 本体や一般的なカスタマイズにおいては、HTTP ディレクトリ配下の Request.php を直接利用する。
+/*
+ * r21237 より前の誤ったファイル配置を前提とした決済モジュールでのエラーを抑制する役割。
+ * 本来のファイルはオートローダーが読み込みを行う。
  * @deprecated
  */
 
 trigger_error('従来互換用の HTTP_Request が読み込まれました。', E_WARNING);
-require_once DATA_REALDIR . 'module/HTTP/Request.php';
