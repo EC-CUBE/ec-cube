@@ -83,7 +83,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                     $plugin_file = $_FILES[$file_key];
                     $plugin_file_name = $plugin_file['name'];
                     $plugin_code = $this->getPluginCode($plugin_file_name);
-
+                    
                     // 既に登録されていないか判定.
                     if ($this->isInstalledPlugin($plugin_code) === false) {
                         // インストール処理.
@@ -105,11 +105,11 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                 if ($this->isError($this->arrErr) === false) {
                     $plugin_code = $objFormParam->getValue('plugin_code');
                     $plugin_id = $objFormParam->getValue('plugin_id');
-
+                    $plugin = SC_Helper_Plugin_Ex::getPluginByPluginId($plugin_id);
+                    
                     $this->arrErr = $this->uninstallPlugin($plugin_id, $plugin_code);
                     // 完了メッセージアラート設定.
                     if ($this->isError($this->arrErr) === false) {
-                        $plugin = SC_Helper_Plugin_Ex::getPluginByPluginId($plugin_id);
                         // テンプレート再生成.
                         $this->remakeTemplate();
                         $this->tpl_onload = "alert('" . $plugin['plugin_name'] ."を削除しました。');";
@@ -181,17 +181,19 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                 break;
             // 優先度.
             case 'priority':
-                // TODO 優先度の変更処理.
-//                // 優先度を取得
-//                $priority_array = $objFormParam->getValue('priority');
-//                
-//                // 優先度の更新
-//                $objQuery =& SC_Query_Ex::getSingletonInstance();
-//                foreach ($priority_array as $key => $value) {
-//                    $sqlval['rank'] = $value;
-//                    $objQuery->update('dtb_plugin', $sqlval, "plugin_id = ?", array($key));
-//                }
-//                break;
+                // エラーチェック
+                $arrErr = $objFormParam->checkError();
+                $plugin_id = $objFormParam->getValue('plugin_id');
+                if ($this->isError($arrErr) === false) {
+                    // 優先度の更新
+                    $priority = $objFormParam->getValue('priority');
+                    $this->updatePriority($plugin_id, $priority);
+                } else {
+                    // エラーメッセージを詰め直す.
+                    $this->arrErr['priority'][$plugin_id] = $arrErr['priority'];
+                }
+                
+                break;
             default:
                 break;
         }
@@ -230,7 +232,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         $objFormParam->addParam('mode', 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('plugin_id', 'plugin_id', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('plugin_code', 'plugin_code', MTEXT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("優先順位", 'priority', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('優先度', 'priority', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -286,10 +288,10 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      */
     function checkPluginFile($file_path, $plugin_code, $key_file) {
         $arrErr = array();
-
+        
         // Archive_Tarを生成します.
         $tar_obj = new Archive_Tar($file_path);
-
+        
         // 圧縮ファイル名とディレクトリ名が同一であるかを判定します.
         if ($this->checkUploadFileName($tar_obj, $plugin_code) === false) {
             $arrErr[$key_file] = "※ 圧縮ファイル名 or フォルダ名が不正です。圧縮ファイル名とフォルダ名が同一である事を確認して下さい。<br/>";
@@ -382,7 +384,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
             SC_Utils_Ex::deleteFile($plugin_dir);
             return $arrErr;
         }
-
+        
         // リフレクションオブジェクトを生成.
         $objReflection = new ReflectionClass($plugin_code);
 
@@ -403,10 +405,10 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         // プラグインhtmlディレクトリ作成
         $plugin_html_dir = PLUGIN_HTML_REALDIR . $plugin_code;
         $this->makeDir($plugin_html_dir);
-
+        
         $plugin = SC_Helper_Plugin_Ex::getPluginByPluginCode($plugin_code);
         $arrErr = $this->execPlugin($plugin['plugin_id'], $plugin_code, 'install');
-
+        
         return $arrErr;
     }
 
@@ -534,7 +536,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         // 展開用ディレクトリを作成し、一時ディレクトリから移動
         $this->makeDir($unpack_dir);
         $objUpFile->moveTempFile();
-
+        
         // 解凍
         $update_plugin_file_path = $unpack_dir . "/" . $unpack_file_name;
         if (!SC_Helper_FileManager_Ex::unpackFile($update_plugin_file_path)) {
@@ -623,6 +625,24 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
 
         return $arrErr;
     }
+    
+    /**
+     * 優先度を更新します.
+     * 
+     * @param int $plugin_id プラグインID
+     * @param int $priority 優先度
+     * @return integer 更新件数
+     */
+    function updatePriority($plugin_id, $priority) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        // UPDATEする値を作成する。
+        $sqlval['rank'] = $priority;
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
+        $where = "plugin_id = ?";
+        // UPDATEの実行
+        $ret = $objQuery->update('dtb_plugin', $sqlval, $where, array($plugin_id));
+        return $ret;
+    }
 
     /**
      * プラグイン情報をDB登録.
@@ -702,13 +722,11 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      */
     function execPlugin($plugin_id, $plugin_code, $exec_func) {
         $arrErr = array();
-            // インスタンスの生成.
-            $objPlugin = new $plugin_code();
-            if (method_exists($objPlugin, $exec_func) === true) {
-                $arrErr = $objPlugin->$exec_func($plugin_id);
-            } else {
-                $arrErr['plugin_error'] = "※ " . $plugin_code . ".php に" . $exec_func . "が見つかりません。<br/>";
-            }
+        if (method_exists($plugin_code, $exec_func) === true) {
+            call_user_func(array($plugin_code, $exec_func), $plugin_id);
+        } else {
+            $arrErr['plugin_error'] = "※ " . $plugin_code . ".php に" . $exec_func . "が見つかりません。<br/>";
+        }
 
         return $arrErr;
     }

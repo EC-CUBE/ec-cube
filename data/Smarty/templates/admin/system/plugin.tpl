@@ -26,24 +26,31 @@
 
         $('input[id^=plugin_enable]').change(function(event) {
             var data = {};
-            
             // モード(有効 or 無効)
             data.mode = event.target.name;
-            // プラグインID
-            data.plugin_id = event.target.value;
-            data['<!--{$smarty.const.TRANSACTION_ID_NAME}-->'] = '<!--{$transactionid}-->';
-            $.ajax({
-                type : 'POST',
-                url : location.pathname,
-                dataType : "json",
-                data: data,
-                cache : false,
-                error : remoteException,
-                success : function(data, dataType) {
-                        alert(data.message);
-                        location.href = location.pathname;
-                }
-            });
+            
+            if(data.mode === 'disable') {
+                result = window.confirm('プラグインを無効しても宜しいですか？');
+            } else if(data.mode === 'enable') {
+                result = window.confirm('プラグインを有効にしても宜しいですか？');
+            }
+            if(result){
+                // プラグインID
+                data.plugin_id = event.target.value;
+                data['<!--{$smarty.const.TRANSACTION_ID_NAME}-->'] = '<!--{$transactionid}-->';
+                $.ajax({
+                    type : 'POST',
+                    url : location.pathname,
+                    dataType : "json",
+                    data: data,
+                    cache : false,
+                    error : remoteException,
+                    success : function(data, dataType) {
+                            window.location.reload();
+                            alert(data.message);
+                    }
+                });
+            }
         });
 
         /**
@@ -64,6 +71,35 @@
         $('input[name="update_plugin_file"]').attr("disabled", "disabled");
         $('input[id="' + select_id + '"]').removeAttr("disabled");
     }
+    
+    function install() {
+        if (window.confirm('プラグインをインストールしても宜しいでしょうか？')){
+            fnModeSubmit('install', '', '');
+        }
+    }
+    
+    function uninstall(plugin_id, plugin_code) {
+        if (window.confirm('一度削除したデータは元に戻せません。\nプラグインを削除しても宜しいですか？')){
+           fnSetFormValue('plugin_id', plugin_id);
+           fnModeSubmit('uninstall', 'plugin_code', plugin_code);
+        }
+    }
+    
+    function update(plugin_id, plugin_code) {
+        if (window.confirm('プラグインをアップデートしても宜しいですか？')){
+           removeUpdateFile('update_file_' + plugin_id);
+           fnSetFormValue('plugin_id', plugin_id);
+           fnModeSubmit('update','plugin_code', plugin_code);
+        }
+    }
+    
+    function priority(plugin_id) {
+        if (window.confirm('プラグインをアップデートしても宜しいですか？')){
+           fnModeSubmit('priority','plugin_id',plugin_id);
+        }
+    }
+    
+    
 //]]>
 </script>
 
@@ -73,7 +109,7 @@
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="plugin_id" value="" />
 <input type="hidden" name="plugin_code" value="" />
-
+<input type="hidden" name="priority" value="" />
 <div id="system" class="contents-main">
     <h2>プラグイン登録</h2>
     <table class="form">
@@ -83,7 +119,7 @@
                 <!--{assign var=key value="plugin_file"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input type="file" name="<!--{ $key }-->" class="box45" size="43"  style="<!--{$arrErr[$key]|sfGetErrorColor}--> <!--{if $arrErr[$key]}--> background-color:<!--{$smarty.const.ERR_COLOR|h}--><!--{/if}-->">
-                <a class="btn-action" href="javascript:;" onclick="fnModeSubmit('install', '', '');return false;"><span class="btn-next">インストール</span></a>
+                <a class="btn-action" href="javascript:;" onclick="install(); return false;"><span class="btn-next">インストール</span></a>
             </td>
         </tr>
     </table>
@@ -94,11 +130,11 @@
         <span class="attention"><!--{$arrErr.plugin_error}--></span>
         <table class="system-plugin" width="900">
             <col width="10%" />
-            <col width="80%" />
-            <col width="10%" />
+            <col width="77" />
+            <col width="13%" />
             <tr>
                 <th colspan="2">機能説明</th>
-                <th>優先度<a class="btn-action" href="javascript:;" onclick="fnModeSubmit('priority','','');return false;"><span class="btn-next">反映</span></a></th>
+                <th>優先度</th>
             </tr>
             <!--{section name=data loop=$plugins}-->
             <!--{assign var=plugin value=$plugins[data]}-->
@@ -149,25 +185,27 @@
                             <!-- アップデート -->
                                 <a class="update_link" href="#" name="<!--{$plugin.plugin_id}-->">アップデート</a>&nbsp;|&nbsp;
                             <!-- 削除 -->
-                                <a  href="javascript:;" name="uninstall" onclick="fnSetFormValue('plugin_id', '<!--{$plugin.plugin_id}-->'); fnModeSubmit('uninstall','plugin_code','<!--{$plugin.plugin_code}-->'); return false;">削除</a>&nbsp;|&nbsp;
+                                <a  href="javascript:;" name="uninstall" onclick="uninstall(<!--{$plugin.plugin_id}-->, '<!--{$plugin.plugin_code}-->'); return false;">削除</a>&nbsp;|&nbsp;
                             <!-- 有効/無効 -->
                                 <!--{if $plugin.enable == $smarty.const.PLUGIN_ENABLE_TRUE}-->
                                     <input id="plugin_enable" type="checkbox" name="disable" value="<!--{$plugin.plugin_id}-->" id="login_memory" checked="checked">有効</input><br/>
                                 <!--{else}-->
-                                    <input id="plugin_enable" type="checkbox" name="enable" value="<!--{$plugin.plugin_id}-->" id="login_memory" onclick="fnSetFormValue('plugin_id', '<!--{$plugin.plugin_id}-->'); return false;">有効にする</input><br/>
+                                    <input id="plugin_enable" type="checkbox" name="enable" value="<!--{$plugin.plugin_id}-->" id="login_memory">有効にする</input><br/>
                                 <!--{/if}-->
 
                                 <!-- アップデートリンク押下時に表示する. -->
                                 <div id="plugin_update_<!--{$plugin.plugin_id}-->" style="display: none">                                
                                     <input id="update_file_<!--{$plugin.plugin_id}-->" name="<!--{$plugin.plugin_code}-->" type="file" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box30" size="30" <!--{if $arrErr[$key]}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}--> />
-                                    <a class="btn-action" href="javascript:;" onclick="removeUpdateFile('update_file_<!--{$plugin.plugin_id}-->'); fnSetFormValue('plugin_id', '<!--{$plugin.plugin_id}-->'); fnModeSubmit('update','plugin_code','<!--{$plugin.plugin_code}-->');return false;"><span class="btn-next">アップデート</span></a>
+                                    <a class="btn-action" href="javascript:;" onclick="update(<!--{$plugin.plugin_id}-->, '<!--{$plugin.plugin_code}-->'); return false;"><span class="btn-next">アップデート</span></a>
                                 </div>
                         </div>
                 </td>
                 <!--優先順位-->
                 <!--{assign var=key value="rank"}-->
                 <td class="center">
-                    <input type="text" name="priority[<!--{$plugin.plugin_id}-->]" value="<!--{$plugin.rank|h}-->" size="1" class="rank" /><br/>
+                    <span class="attention"><!--{$arrErr.priority[$plugin.plugin_id]}--></span>
+                    <input type="text" class="center" name="priority" value="<!--{$plugin.rank|h}-->" size="1" class="rank" />
+                    <a class="btn-action" href="javascript:;" onclick="priority(<!--{$plugin.plugin_id}-->);return false;"><span class="btn-next">変更</span></a><br/>
                 </td>
             </tr>
             <!--競合アラート-->
