@@ -2,7 +2,7 @@
 お気に入りを登録する
 ------------------------------------------*/
 function fnAddFavoriteSphone(favoriteProductId) {
-    $.mobile.pageLoading();
+    $.mobile.showPageLoadingMsg();
     //送信データを準備
     var postData = {};
     $("#form1").find(':input').each(function(){  
@@ -19,7 +19,7 @@ function fnAddFavoriteSphone(favoriteProductId) {
            dataType: "text",
            error: function(XMLHttpRequest, textStatus, errorThrown){
             alert(textStatus);
-            $.mobile.pageLoading(true);
+            $.mobile.hidePageLoadingMsg();
            },
            success: function(result){
               if (result == "true") {
@@ -28,7 +28,7 @@ function fnAddFavoriteSphone(favoriteProductId) {
               } else {
                   alert("お気に入りの登録に失敗しました");
               }
-              $.mobile.pageLoading(true);
+              $.mobile.hidePageLoadingMsg();
            }
     });
 }
