@@ -258,9 +258,9 @@ __EOS__;
                 : '';
 
             // 規格1が設定されている
-            $this->classCat1_find[$productId] = (!SC_Utils_Ex::isBlank($arrProductClass[0]['classcategory_id1']));
+            $this->classCat1_find[$productId] = $arrProductClass[0]['classcategory_id1'] > 0; // 要変更ただし、他にも改修が必要となる
             // 規格2が設定されている
-            $this->classCat2_find[$productId] = (!SC_Utils_Ex::isBlank($arrProductClass[0]['classcategory_id2']));
+            $this->classCat2_find[$productId] = $arrProductClass[0]['classcategory_id2'] > 0; // 要変更ただし、他にも改修が必要となる
 
             $this->stock_find[$productId] = false;
             $classCategories = array();
@@ -315,7 +315,7 @@ __EOS__;
                 $classCats2['product_type'] = $productsClass['product_type_id'];
 
                 // #929(GC8 規格のプルダウン順序表示不具合)対応のため、2次キーは「#」を前置
-                if (SC_Utils_Ex::isBlank($productsClass1)) {
+                if (!$this->classCat1_find[$productId]) {
                     $productsClass1 = '__unselected2';
                 }
                 $classCategories[$productsClass1]['#'] = array(
@@ -355,86 +355,33 @@ __EOS__;
             T1.product_type_id,
             T1.down_filename,
             T1.down_realfilename,
-            T2.class_combination_id,
-            T2.parent_class_combination_id,
-            T2.classcategory_id,
-            T2.level,
-            T3.name AS classcategory_name,
-            T3.rank,
-            T4.name AS class_name,
-            T4.class_id
+            T3.name AS classcategory_name1,
+            T3.rank AS rank1,
+            T4.name AS class_name1,
+            T4.class_id AS class_id1,
+            T1.classcategory_id1,
+            T1.classcategory_id2,
+            dtb_classcategory2.name AS classcategory_name2,
+            dtb_classcategory2.rank AS rank2,
+            dtb_class2.name AS class_name2,
+            dtb_class2.class_id AS class_id2
 __EOS__;
         $table = <<< __EOS__
                       dtb_products_class T1
-            LEFT JOIN dtb_class_combination T2
-                   ON T1.class_combination_id = T2.class_combination_id
             LEFT JOIN dtb_classcategory T3
-                   ON T2.classcategory_id = T3.classcategory_id
+                   ON T1.classcategory_id1 = T3.classcategory_id
             LEFT JOIN dtb_class T4
                    ON T3.class_id = T4.class_id
+            LEFT JOIN dtb_classcategory dtb_classcategory2
+                   ON T1.classcategory_id2 = dtb_classcategory2.classcategory_id
+            LEFT JOIN dtb_class dtb_class2
+                   ON dtb_classcategory2.class_id = dtb_class2.class_id
 __EOS__;
 
         $objQuery->setOrder('T3.rank DESC'); // XXX
         $arrRet = $objQuery->select($col, $table, "", $params);
-        $levels = array();
-        $parents = array();
-        foreach ($arrRet as $rows) {
-            $levels[] = $rows['level'];
-            $parents[] = $rows['parent_class_combination_id'];
-        }
-        $level = max($levels);
-        $parentsClass = array();
-        // 階層分の親を取得
-        for ($i = 0; $i < $level -1; $i++) {
-            $objQuery =& SC_Query_Ex::getSingletonInstance();
-            $objQuery->setWhere('T1.class_combination_id IN (' . implode(', ', array_pad(array(), count($parents), '?')) . ')');
 
-            $col = <<< __EOS__
-                T1.class_combination_id,
-                T1.classcategory_id,
-                T1.parent_class_combination_id,
-                T1.level,
-                T2.name AS classcategory_name,
-                T2.rank,
-                T3.name AS class_name,
-                T3.class_id
-__EOS__;
-            $table = <<< __EOS__
-                          dtb_class_combination T1
-                LEFT JOIN dtb_classcategory T2
-                       ON T1.classcategory_id = T2.classcategory_id
-                LEFT JOIN dtb_class T3
-                       ON T2.class_id = T3.class_id
-__EOS__;
-
-            $objQuery->setOrder('T2.rank DESC'); // XXX
-            $arrParents = $objQuery->select($col, $table, "", $parents);
-
-            foreach ($arrParents as $rows) {
-                $parents[] = $rows['parent_class_combination_id'];
-
-                foreach ($arrRet as $child) {
-                    if ($child['parent_class_combination_id']
-                        == $rows['class_combination_id']) {
-                        $rows['product_id'] = $child['product_id'];
-                    }
-                }
-                $tmpParents[] = $rows;
-            }
-            $parentsClass = array_merge($parentsClass, $tmpParents);
-        }
-
-        // 末端から枝を作成
-        $tmpClass = array_merge($arrRet, $parentsClass);
-
-        foreach ($tmpClass as $val) {
-            $val['class_id' . $val['level']] = $val['class_id'];
-            $val['class_name' . $val['level']] = $val['class_name'];
-            $val['classcategory_name' . $val['level']] = $val['classcategory_name'];
-            $val['classcategory_id' . $val['level']] = $val['classcategory_id'];
-            $arrProductsClass[] = $val;
-        }
-        return $arrProductsClass;
+        return $arrRet;
     }
 
     /**
@@ -448,9 +395,8 @@ __EOS__;
     function getProductsClass($productClassId) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setWhere('product_class_id = ? AND T1.del_flg = 0');
-        $results = $this->getProductsClassByQuery($objQuery, $productClassId);
-        $productsClass = $this->getProductsClassFull($results);
-        return $productsClass[0];
+        $arrRes = $this->getProductsClassByQuery($objQuery, $productClassId);
+        return $arrRes[0];
     }
 
     /**
@@ -474,17 +420,6 @@ __EOS__;
     }
 
     /**
-     * 商品IDに紐づいた, 商品規格を階層ごとに取得する.
-     *
-     * @param array $productId 商品ID
-     * @return array 階層ごとの商品規格の配列
-     */
-    function getProductsClassLevelByProductId($productId) {
-        $results = $this->getProductsClassByProductIds(array($productId));
-        return $this->getProductsClassLevel($results);
-    }
-
-    /**
      * 商品IDに紐づいた, 商品規格をすべての組み合わせごとに取得する.
      *
      * @param array $productId 商品ID
@@ -492,48 +427,8 @@ __EOS__;
      * @return array すべての組み合わせの商品規格の配列
      */
     function getProductsClassFullByProductId($productId, $has_deleted = false) {
-        $results = $this->getProductsClassByProductIds(array($productId), $has_deleted);
-        return $this->getProductsClassFull($results);
-    }
-
-    /**
-     * 商品規格の配列から, 商品規格を階層ごとに取得する.
-     *
-     * @access private
-     * @param array $productsClassResults 商品規格の結果の配列
-     * @return array 階層ごとの商品規格の配列
-     */
-    function getProductsClassLevel($productsClassResults) {
-        foreach ($productsClassResults as $row) {
-            $productsClassLevel['level' . $row['level']][] = $row;
-        }
-        return $productsClassLevel;
-    }
-
-    /**
-     * 商品規格の配列から, 商品規格のすべての組み合わせを取得する.
-     *
-     * @access private
-     * @param array $productsClassResults 商品規格の結果の配列
-     * @ array 階層ごとの商品規格の配列
-     */
-    function getProductsClassFull($productsClassResults) {
-        $results = $this->getProductsClassLevel($productsClassResults);
-        $productsClass = array();
-        if (SC_Utils_Ex::isBlank($results['level1'])
-            && SC_Utils_Ex::isBlank($results['level2'])) {
-            return $results['level'];
-        }
-
-        foreach ($results['level1'] as $level1) {
-            foreach ($results['level2'] as $level2) {
-                if ($level2['parent_class_combination_id'] == $level1['class_combination_id']) {
-                    $level1 = array_merge($level1, $level2);
-                }
-            }
-            $productsClass[] = $level1;
-        }
-        return $productsClass;
+        $arrRet = $this->getProductsClassByProductIds(array($productId), $has_deleted);
+        return $arrRet;
     }
 
     /**
@@ -786,7 +681,6 @@ __EOS__;
         (
              SELECT dtb_products.*,
                     dtb_products_class.product_class_id,
-                    dtb_products_class.class_combination_id,
                     dtb_products_class.product_type_id,
                     dtb_products_class.product_code,
                     dtb_products_class.stock,
@@ -798,11 +692,10 @@ __EOS__;
                     dtb_products_class.point_rate,
                     dtb_products_class.down_filename,
                     dtb_products_class.down_realfilename,
-                    dtb_class_combination.parent_class_combination_id,
-                    dtb_class_combination.classcategory_id,
-                    dtb_class_combination.level as classlevel,
-                    Tpcm.classcategory_id as parent_classcategory_id,
-                    Tpcm.level as parent_classlevel,
+                    dtb_products_class.classcategory_id1 AS classcategory_id, -- 削除
+                    dtb_products_class.classcategory_id1,
+                    dtb_products_class.classcategory_id2 AS parent_classcategory_id, -- 削除
+                    dtb_products_class.classcategory_id2,
                     Tcc1.class_id as class_id,
                     Tcc1.name as classcategory_name,
                     Tcc2.class_id as parent_class_id,
@@ -810,14 +703,10 @@ __EOS__;
              FROM dtb_products
                  LEFT JOIN dtb_products_class
                      ON dtb_products.product_id = dtb_products_class.product_id
-                 LEFT JOIN dtb_class_combination
-                     ON dtb_products_class.class_combination_id = dtb_class_combination.class_combination_id
-                 LEFT JOIN dtb_class_combination as Tpcm
-                     ON dtb_class_combination.parent_class_combination_id = Tpcm.class_combination_id
                  LEFT JOIN dtb_classcategory as Tcc1
-                     ON dtb_class_combination.classcategory_id = Tcc1.classcategory_id
+                     ON dtb_products_class.classcategory_id1 = Tcc1.classcategory_id
                  LEFT JOIN dtb_classcategory as Tcc2
-                     ON Tpcm.classcategory_id = Tcc2.classcategory_id
+                     ON dtb_products_class.classcategory_id2 = Tcc2.classcategory_id
              $where_clause
         ) as prdcls
 __EOS__;

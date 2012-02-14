@@ -1045,7 +1045,6 @@ function getSequences() {
         array('dtb_payment', 'payment_id'),
         array('dtb_products_class', 'product_class_id'),
         array('dtb_products', 'product_id'),
-        array('dtb_class_combination', 'class_combination_id'),
         array('dtb_review', 'review_id'),
         array('dtb_send_history', 'send_id'),
         array('dtb_mailmaga_template', 'template_id'),

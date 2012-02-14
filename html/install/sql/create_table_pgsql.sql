@@ -304,7 +304,8 @@ CREATE TABLE dtb_products (
 CREATE TABLE dtb_products_class (
     product_class_id int NOT NULL,
     product_id int NOT NULL,
-    class_combination_id int,
+    classcategory_id1 int NOT NULL DEFAULT 0,
+    classcategory_id2 int NOT NULL DEFAULT 0,
     product_type_id int NOT NULL DEFAULT 0,
     product_code text,
     stock numeric,
@@ -344,14 +345,6 @@ CREATE TABLE dtb_classcategory (
     update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (classcategory_id)
-);
-
-CREATE TABLE dtb_class_combination (
-    class_combination_id int NOT NULL,
-    parent_class_combination_id int,
-    classcategory_id int NOT NULL,
-    level int,
-    PRIMARY KEY (class_combination_id)
 );
 
 CREATE TABLE dtb_category (

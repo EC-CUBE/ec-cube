@@ -1437,7 +1437,7 @@ __EOS__;
         if (!SC_Utils_Ex::sfIsInt($product_id)) return false;
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $where = 'product_id = ? AND del_flg = 0 AND class_combination_id IS NOT NULL';
+        $where = 'product_id = ? AND del_flg = 0 AND classcategory_id1 != 0 AND classcategory_id2 != 0';
         $exists = $objQuery->exists('dtb_products_class', $where, array($product_id));
 
         return $exists;

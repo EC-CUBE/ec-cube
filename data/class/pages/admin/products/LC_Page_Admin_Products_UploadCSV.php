@@ -612,6 +612,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      */
     function lfCheckErrorDetail($item, $arrErr) {
         // 規格IDの存在チェック
+        // FIXME 規格分類ID自体のが有効かを主眼においたチェックをすべきと感じる。
         if (!$this->lfIsDbRecord('dtb_products_class', 'product_class_id', $item)) {
             $arrErr['product_class_id'] = "※ 指定の商品規格IDは、登録されていません。";
         }
@@ -625,17 +626,6 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
                         , array($item['product_id'], $item['product_class_id']))) {
                     $arrErr['product_class_id'] = "※ 指定の商品IDと商品規格IDの組合せは正しくありません。";
                 }
-            }
-        }
-        // 規格組合せIDの存在チェック
-//        if (!$this->lfIsDbRecord('dtb_class_combination', 'class_combination_id', $item)) {
-//      SC_Utils::sfIsRecord が del_flg が無いと使えない為、個別処理
-        if(array_search('class_combination_id', $this->arrFormKeyList) !== FALSE
-                and $item['class_combination_id'] != "") {
-            $objQuery =& SC_Query_Ex::getSingletonInstance();
-            $ret = $objQuery->get('class_combination_id', 'dtb_class_combination', 'class_combination_id = ?', array($item['class_combination_id']));
-            if ($ret == "") {
-                $arrErr['class_combination_id'] = "※ 指定の規格組合せIDは、登録されていません。";
             }
         }
         // 表示ステータスの存在チェック

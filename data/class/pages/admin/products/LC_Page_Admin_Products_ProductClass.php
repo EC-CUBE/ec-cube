@@ -236,16 +236,18 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         // デフォルト値として設定する値を取得しておく
         $arrDefault = $this->getProductsClass($product_id);
 
-        $objQuery->delete('dtb_products_class', 'product_id = ? AND class_combination_id IS NOT NULL', array($product_id));
+        $objQuery->delete('dtb_products_class', 'product_id = ? AND (classcategory_id1 <> 0 OR classcategory_id2 <> 0)', array($product_id));
 
         for ($i = 0; $i < $total; $i++) {
             $del_flg = SC_Utils_Ex::isBlank($arrList['check'][$i]) ? 1 : 0;
             $stock_unlimited = SC_Utils_Ex::isBlank($arrList['stock_unlimited'][$i]) ? 0 : $arrList['stock_unlimited'][$i];
             $price02 = SC_Utils_Ex::isBlank($arrList['price02'][$i]) ? 0 : $arrList['price02'][$i];
             // dtb_products_class 登録/更新用
-            $registerKeys = array('product_code', 'stock',
-                                  'price01', 'product_type_id',
-                                  'down_filename', 'down_realfilename');
+            $registerKeys = array(
+                'classcategory_id1', 'classcategory_id2',
+                'product_code', 'stock', 'price01', 'product_type_id',
+                'down_filename', 'down_realfilename',
+            );
 
             $arrPC = array();
             foreach ($registerKeys as $key) {
@@ -262,35 +264,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
             $arrPC['creator_id'] = $_SESSION['member_id'];
             $arrPC['update_date'] = 'CURRENT_TIMESTAMP';
             $arrPC['del_flg'] = $del_flg;
-
-            $class_combination_id = $arrExists[$arrList['product_class_id'][$i]]['class_combination_id'];
-            $existsCombi = $objQuery->getRow('*', 'dtb_class_combination',
-                                             'class_combination_id = ?',
-                                             array($class_combination_id));
-
-            $objQuery->delete('dtb_class_combination',
-                              'class_combination_id IN (?, ?)',
-                              array($existsCombi['class_combination_id'],
-                                    $existsCombi['parent_class_combination_id']));
-
-            // 規格組み合わせを登録
-            $arrComb1['class_combination_id'] = $objQuery->nextVal('dtb_class_combination_class_combination_id');
-            $arrComb1['classcategory_id'] = $arrList['classcategory_id1'][$i];
-            $arrComb1['level'] = 1;
-            $objQuery->insert('dtb_class_combination', $arrComb1);
-
-            // 規格2も登録する場合
-            if (!SC_Utils_Ex::isBlank($arrList['classcategory_id2'][$i])) {
-                $arrComb2['class_combination_id'] = $objQuery->nextVal('dtb_class_combination_class_combination_id');
-                $arrComb2['classcategory_id'] = $arrList['classcategory_id2'][$i];
-                $arrComb2['parent_class_combination_id'] = $arrComb1['class_combination_id'];
-                $arrComb2['level'] = 2;
-                $objQuery->insert('dtb_class_combination', $arrComb2);
-
-                $arrPC['class_combination_id'] = $arrComb2['class_combination_id'];
-            } else {
-                $arrPC['class_combination_id'] = $arrComb1['class_combination_id'];
-            }
 
             $arrPC['create_date'] = 'CURRENT_TIMESTAMP';
             // 更新の場合は, product_class_id を使い回す
@@ -312,7 +285,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         $arrBlank['del_flg'] = 1;
         $arrBlank['update_date'] = 'CURRENT_TIMESTAMP';
         $objQuery->update('dtb_products_class', $arrBlank,
-                          "product_id = ? AND class_combination_id IS NULL",
+                          "product_id = ? AND classcategory_id1 = 0 AND classcategory_id2 = 0",
                           array($product_id));
 
         // 件数カウントバッチ実行
@@ -478,7 +451,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
     function doPreEdit(&$objFormParam) {
         $product_id = $objFormParam->getValue('product_id');
         $objProduct = new SC_Product_Ex();
-        $existsProductsClass = $objProduct->getProductsClassFullByProductId($product_id, true);
+        $existsProductsClass = $objProduct->getProductsClassFullByProductId($product_id);
 
         // 規格のデフォルト値(すべての組み合わせ)を取得し, フォームに反映
         $class_id1 = $existsProductsClass[0]['class_id1'];
@@ -556,29 +529,15 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $objQuery->begin();
-        $arrClassCombi = $objQuery->getCol('class_combination_id',
-                                           'dtb_products_class',
-                                           'product_id = ?', array($product_id));
 
-        foreach ($arrClassCombi as $class_combination_id) {
-            if (SC_Utils_Ex::isBlank($class_combination_id)) {
-                continue;
-            }
-            $existsCombi = $objQuery->getRow('*', 'dtb_class_combination',
-                                             'class_combination_id = ?',
-                                             array($class_combination_id));
+        // 商品規格なしデータの復元
+        $where = 'product_id = ? AND classcategory_id1 = 0 AND classcategory_id2 = 0';
+        $objQuery->update("dtb_products_class", array('del_flg' => 0), $where, array($product_id));
 
-            $objQuery->delete('dtb_class_combination',
-                              'class_combination_id IN (?, ?)',
-                              array($existsCombi['class_combination_id'],
-                                    $existsCombi['parent_class_combination_id']));
-        }
-        $objQuery->update('dtb_products_class', array('del_flg' => 0),
-                          "product_id = ? AND class_combination_id IS NULL",
-                          array($product_id));
-        $objQuery->delete('dtb_products_class',
-                          "product_id = ? AND class_combination_id IS NOT NULL",
-                          array($product_id));
+        // 商品規格データの削除
+        $where = 'product_id = ? AND (classcategory_id1 <> 0 OR classcategory_id2 <> 0)';
+        $objQuery->delete("dtb_products_class", $where, array($product_id));
+
         $objQuery->commit();
 
         // 在庫無し商品の非表示対応
@@ -779,7 +738,8 @@ __EOF__;
     function getProductsClass($product_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = "product_code, price01, price02, stock, stock_unlimited, sale_limit, deliv_fee, point_rate";
-        return $objQuery->getRow($col, 'dtb_products_class', "product_id = ? AND class_combination_id IS NULL", array($product_id));
+        $where = 'product_id = ? AND classcategory_id1 = 0 AND classcategory_id2 = 0';
+        return $objQuery->getRow($col, 'dtb_products_class', $where, array($product_id));
     }
 
     /**

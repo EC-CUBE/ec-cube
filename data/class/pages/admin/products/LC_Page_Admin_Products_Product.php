@@ -1048,32 +1048,14 @@ __EOF__;
                     $objQuery->setOrder('product_class_id');
                     $arrProductsClass = $objQuery->select($col, $table, $where, array($arrList['copy_product_id']));
 
-                    // 複製元商品の規格組み合わせデータ登録
-                    // 登録した組み合わせIDを取得
-                    $arrRetCombinationId = $this->lfRegistClassCombination($arrProductsClass);
-
                     // 規格データ登録
                     $objQuery =& SC_Query_Ex::getSingletonInstance();
                     foreach ($arrProductsClass as $arrData) {
-                        $sqlval = array();
+                        $sqlval = $arrData;
                         $sqlval['product_class_id'] = $objQuery->nextVal('dtb_products_class_product_class_id');
                         $sqlval['product_id'] = $product_id;
                         $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
-                        $sqlval['class_combination_id'] = $arrRetCombinationId[$arrData['class_combination_id']];
-                        $sqlval['product_type_id'] = $arrData['product_type_id'];
-                        $sqlval['product_code'] = $arrData['product_code'];
-                        $sqlval['stock'] = $arrData['stock'];
-                        $sqlval['stock_unlimited'] = $arrData['stock_unlimited'];
-                        $sqlval['sale_limit'] = $arrData['sale_limit'];
-                        $sqlval['price01'] = $arrData['price01'];
-                        $sqlval['price02'] = $arrData['price02'];
-                        $sqlval['deliv_fee'] = $arrData['deliv_fee'];
-                        $sqlval['point_rate'] = $arrData['point_rate'];
-                        $sqlval['creator_id'] = $arrData['creator_id'];
                         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
-                        $sqlval['down_filename'] = $arrData['down_filename'];
-                        $sqlval['down_realfilename'] = $arrData['down_realfilename'];
-                        $sqlval['del_flg'] = $arrData['del_flg'];
                         $objQuery->insert($table, $sqlval);
                     }
                 }
@@ -1263,118 +1245,6 @@ __EOF__;
             $objQuery->commit();
         }
         return !$err_flag;
-    }
-
-    /**
-     * 商品規格データを元に、規格組み合わせデータを複製登録する
-     * 
-     * @param array $arrProductsClass 商品規格データ配列
-     * @return array 登録した規格組み合わせID配列
-     */
-    function lfRegistClassCombination($arrProductsClass) {
-        $arrRetCombinationId = array();
-
-        // 規格組み合わせデータを取得
-        $arrClassCombination = $this->lfGetClassCombination($arrProductsClass);
-
-        // 規格2を持っているかチェック
-        $has_class2 = $this->lfHasClass2($arrClassCombination);
-
-        // 規格組み合わせデータを複製登録
-        if ($has_class2 == true) {
-            // 規格2を持っている場合、規格1の組み合わせデータも取得
-            $arrClassCombinationParent = $this->lfGetClassCombination($arrClassCombination, true);
-
-            // 親組み合わせデータを複製登録
-            $arrRetCombinationId = $this->lfInsertClassCombination($arrClassCombinationParent);
-            // 子組み合わせデータを複製登録
-            $arrRetCombinationId = $this->lfInsertClassCombination($arrClassCombination, $arrRetCombinationId);
-        } else {
-            // 規格1のみの場合、複製登録
-            $arrRetCombinationId = $this->lfInsertClassCombination($arrClassCombination);
-        }
-
-        return $arrRetCombinationId;
-    }
-
-    /**
-     * 規格2を持っている規格組み合わせデータであるか判定する
-     * 
-     * @param array $arrClassCombination 規格組み合わせデータ配列
-     * @return boolean true: 規格2を持っている, false: 規格1のみ
-     */
-    function lfHasClass2($arrClassCombination) {
-        $has_class2 = false;
-
-        foreach ($arrClassCombination as $arrVal) {
-            if ($arrVal['level'] == '2') {
-                $has_class2 = true;
-                break;
-            }
-        }
-
-        return $has_class2;
-    }
-
-    /**
-     * 規格組み合わせデータを取得する
-     * 
-     * @param array $arrData 組み合わせIDを含むデータ配列
-     * @param boolean $is_parent 親規格IDから抽出するフラグ(省略時: false)
-     * @return array 規格組み合わせデータ配列
-     */
-    function lfGetClassCombination($arrData, $is_parent = false) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $key = 'class_combination_id';
-        if ($is_parent == true) {
-            $key = 'parent_class_combination_id';
-        }
-
-        $where = 'class_combination_id IN (';
-        $arrParam = array();
-        foreach ($arrData as $arrVal) {
-            if (SC_Utils_Ex::isBlank($arrVal[$key]) == true) {
-                continue;
-            }
-            $where .= '?,';
-            $arrParam[] = $arrVal[$key];
-        }
-        $where = preg_replace('/,$/', ')', $where);
-        $arrClassCombination = $objQuery->select('*', 'dtb_class_combination', $where, $arrParam);
-
-        return $arrClassCombination;
-    }
-
-    /**
-     * 規格組み合わせデータを複製登録する
-     * 
-     * @param array $arrClassCombination 複製元の規格組み合わせデータ配列
-     * @param array $arrParentCombinationId 登録する親組み合わせID配列 (省略可)
-     * @return array 登録した規格組み合わせID配列
-     */
-    function lfInsertClassCombination($arrClassCombination, $arrParentCombinationId = array()) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $arrRetCombinationId = array();
-
-        // 親組み合わせIDの指定がある場合、指定された親組み合わせIDで複製登録
-        if (count($arrParentCombinationId) > 0) {
-            foreach ($arrClassCombination as $key => $arrVal) {
-                $arrClassCombination[$key]['parent_class_combination_id'] = $arrParentCombinationId[$arrVal['parent_class_combination_id']];
-            }
-        }
-
-        foreach ($arrClassCombination as $arrVal) {
-            $sqlval = array();
-            $sqlval['class_combination_id'] = $objQuery->nextVal('dtb_class_combination_class_combination_id');
-            $sqlval['parent_class_combination_id'] = $arrVal['parent_class_combination_id'];
-            $sqlval['classcategory_id'] = $arrVal['classcategory_id'];
-            $sqlval['level'] = $arrVal['level'];
-            $objQuery->insert('dtb_class_combination', $sqlval);
-
-            $arrRetCombinationId[$arrVal['class_combination_id']] = $sqlval['class_combination_id'];
-        }
-
-        return $arrRetCombinationId;
     }
 
     /**

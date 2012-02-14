@@ -242,7 +242,6 @@ class CreateEcCubeData {
         print("商品と規格の関連づけを行います...\n");
 
         if ($this->delete) {
-            $this->objQuery->delete('dtb_class_combination');
             $this->objQuery->delete('dtb_products_class');
         }
 
@@ -271,10 +270,10 @@ class CreateEcCubeData {
             $sqlval['status'] = 1;
             $sqlval['comment3'] = "コメント";
             $sqlval['main_list_comment'] = "コメント";
-            $sqlval['main_list_image'] = "08311201_44f65122ee5fe.jpg";
+            $sqlval['main_list_image'] = "nabe130.jpg";
             $sqlval['main_comment'] = "コメント";
-            $sqlval['main_image'] = "08311202_44f6515906a41.jpg";
-            $sqlval['main_large_image'] = "08311203_44f651959bcb5.jpg";
+            $sqlval['main_image'] = "nabe260.jpg";
+            $sqlval['main_large_image'] = "nabe500.jpg";
             $sqlval['sub_comment1'] = "コメント";
             $sqlval['del_flg'] = (string) '0';
             $sqlval['creator_id'] = 2;
@@ -373,35 +372,23 @@ class CreateEcCubeData {
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['del_flg'] = 0;
 
-        $count = 0;
-        foreach ($this->arrClassCategory_id1 as $classCategory_id1) {
-            foreach ($this->arrClassCategory_id2 as $classCategory_id2) {
-                $c1['classcategory_id'] = $classCategory_id1;
-                $c1['class_combination_id'] = $this->objQuery->nextVal('dtb_class_combination_class_combination_id');
-                $c1['level'] = 1;
-                $this->objQuery->insert('dtb_class_combination', $c1);
-
-                $c2['classcategory_id'] = $classCategory_id2;
-                $c2['class_combination_id'] = $this->objQuery->nextVal('dtb_class_combination_class_combination_id');
-                $c2['parent_class_combination_id'] = $c1['class_combination_id'];
-                $c2['level'] = 2;
-                $this->objQuery->insert('dtb_class_combination', $c2);
-
-                $sqlval['product_class_id'] =
-                    $this->objQuery->nextVal('dtb_products_class_product_class_id');
-                $sqlval['product_code'] = sprintf("商品コード%d", $count);
-
-                $sqlval['class_combination_id'] = $c2['class_combination_id'];
+        foreach ($this->arrClassCategory_id1 as $classcategory_id1) {
+            foreach ($this->arrClassCategory_id2 as $classcategory_id2) {
+                $sqlval['product_class_id'] = $this->objQuery->nextVal('dtb_products_class_product_class_id');
+                $sqlval['classcategory_id1'] = $classcategory_id1;
+                $sqlval['classcategory_id2'] = $classcategory_id2;
+                $sqlval['product_code'] = 'CODE_' . $product_id . '_' . $classcategory_id1 . '_' . $classcategory_id2;
                 $this->objQuery->insert('dtb_products_class', $sqlval);
 
-                $count++;
                 print("#");
             }
         }
 
         // 規格無し用
         $sqlval['product_class_id'] = $this->objQuery->nextVal('dtb_products_class_product_class_id');
-        $sqlval['class_combination_id'] = null;
+        $sqlval['classcategory_id1'] = 0;
+        $sqlval['classcategory_id2'] = 0;
+        $sqlval['product_code'] = 'CODE_' . $product_id;
         $sqlval['del_flg'] = 1;
         $this->objQuery->insert('dtb_products_class', $sqlval);
 
@@ -462,9 +449,9 @@ class CreateEcCubeData {
                          ,'43'
                          ,'42'
                          ,'41'
-                         ,"43(27.0cm?27.5cm)"
-                         ,"42(26.5cm?27.0cm)"
-                         ,"37(ladies 23.5?24cm)"
+                         ,"43(27.0cm～27.5cm)"
+                         ,"42(26.5cm～27.0cm)"
+                         ,"37(ladies 23.5～24cm)"
                          ,"42(約27.5cm)"
                          ,"41(約26.5cm)"
                          ,'W36'

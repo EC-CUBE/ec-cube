@@ -15,7 +15,6 @@ DROP TABLE dtb_products;
 DROP TABLE dtb_product_status;
 DROP TABLE dtb_class;
 DROP TABLE dtb_classcategory;
-DROP TABLE dtb_class_combination;
 DROP TABLE dtb_category;
 DROP TABLE dtb_recommend_products;
 DROP TABLE dtb_review;
