@@ -82,7 +82,7 @@ class SC_FormParam {
         $cnt = 0;
         if (!$seq) {
             foreach ($this->keyname as $val) {
-                if (isset($arrVal[$val])) {
+                if (array_key_exists($val, $arrVal)) {
                     $this->setValue($val, $arrVal[$val]);
                 }
             }
