@@ -22,7 +22,7 @@
  */
 
 /** TTFフォントファイル */
-define('FONT_REALFILE', DATA_REALDIR . "fonts/wlmaru20044.ttf");
+define('FONT_REALFILE', DATA_REALDIR . 'fonts/wlmaru20044.ttf');
 
 /** フォントサイズ */
 define('FONT_SIZE', 8);
@@ -239,12 +239,12 @@ class SC_Graph_Base {
     }
 
     // 画像を出力する
-    function outputGraph($header = true, $filename = "") {
+    function outputGraph($header = true, $filename = '') {
         if ($header) {
             header('Content-type: image/png');
         }
 
-        if ($filename != "") {
+        if ($filename != '') {
             imagepng($this->image, $filename);
         } else {
             imagepng($this->image);
@@ -289,7 +289,7 @@ class SC_Graph_Base {
          *     書いてあるのに...
          *
          */
-        $text = mb_convert_encoding($text, "EUC-JP", CHAR_CODE);
+        $text = mb_convert_encoding($text, 'EUC-JP', CHAR_CODE);
         //$text = mb_convert_encoding($text, CHAR_CODE);
         if ($color != NULL) {
             ImageTTFText($this->image, $font_size, $angle, $left, $top + $font_size, $color, FONT_REALFILE, $text);
@@ -309,7 +309,7 @@ class SC_Graph_Base {
 
     // ログを出力する
     function debugPrint($text) {
-        $text = mb_convert_encoding($text, "UTF-8", CHAR_CODE);
+        $text = mb_convert_encoding($text, 'UTF-8', CHAR_CODE);
         if (!isset($this->text_top)) {
             $this->text_top = FONT_SIZE + LINE_PAD;
         }
@@ -319,13 +319,13 @@ class SC_Graph_Base {
     }
 
     // カラーラベルを描画
-    function drawLegend($legend_max = "", $clabelbg = true) {
+    function drawLegend($legend_max = '', $clabelbg = true) {
         // 凡例が登録されていなければ中止
         if (count($this->arrLegend) <= 0) {
             return;
         }
 
-        if ($legend_max != "") {
+        if ($legend_max != '') {
             $label_max = $legend_max;
         } else {
             $label_max = count($this->arrLegend);
@@ -449,7 +449,7 @@ class SC_Graph_Base {
     /** 画像にテキストを描画する */
     function lfImageText($dst_image, $text, $font_size, $left, $top, $font, $arrRGB) {
         $color = ImageColorAllocate($dst_image, $arrRGB[0], $arrRGB[1], $arrRGB[2]);
-        $text = mb_convert_encoding($text, "UTF-8", CHAR_CODE);
+        $text = mb_convert_encoding($text, 'UTF-8', CHAR_CODE);
         // 表示角度
         $angle = 0;
         // テキスト描画

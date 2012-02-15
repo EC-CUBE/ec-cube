@@ -29,7 +29,7 @@ class SC_Image {
     function SC_Image($tmp_dir) {
         // ヘッダファイル読込
         if (!ereg("/$", $tmp_dir)) {
-            $this->tmp_dir = $tmp_dir . "/";
+            $this->tmp_dir = $tmp_dir . '/';
         } else {
             $this->tmp_dir = $tmp_dir;
         }
@@ -38,7 +38,7 @@ class SC_Image {
     //--- 一時ファイル生成(サムネイル画像生成用)
     function makeTempImage($keyname, $max_width, $max_height) {
         // 一意なIDを取得する。
-        $mainname = uniqid("").".";
+        $mainname = uniqid('').'.';
         // 拡張子以外を置き換える。
         $newFileName = ereg_replace("^.*\.",$mainname, $_FILES[$keyname]['name']);
         $result  = $this->MakeThumb($_FILES[$keyname]['tmp_name'], $this->tmp_dir , $max_width, $max_height, $newFileName);
@@ -50,20 +50,20 @@ class SC_Image {
     function moveTempImage($filename, $save_dir) {
         // コピー元ファイル、コピー先ディレクトリが存在する場合にのみ実行する
         $from_path = $this->tmp_dir.$filename;
-        $to_path = $save_dir."/".$filename;
+        $to_path = $save_dir.'/'.$filename;
         if (file_exists($from_path) && file_exists($save_dir)) {
             if (copy($from_path , $to_path)) {
                 unlink($from_path);
             }
         } else {
-            GC_Utils_Ex::gfDebugLog($from_path."->".$to_path."のcopyに失敗しました。");
+            GC_Utils_Ex::gfDebugLog($from_path.'->'.$to_path.'のcopyに失敗しました。');
         }
     }
 
     //---- 指定ファイルを削除
     function deleteImage($filename, $dir) {
-        if (file_exists($dir."/".$filename)) {
-            unlink($dir."/".$filename);
+        if (file_exists($dir.'/'.$filename)) {
+            unlink($dir.'/'.$filename);
         }
     }
 
@@ -89,7 +89,7 @@ class SC_Image {
 
         //拡張子取得
         if (!$ext) {
-            $array_ext = explode(".", $FromImgPath);
+            $array_ext = explode('.', $FromImgPath);
             $ext = $array_ext[count($array_ext) - 1];
         }
 
@@ -100,11 +100,11 @@ class SC_Image {
         if ($tmpMH) $MH = $tmpMH; // $MHに最大縦幅セット
 
         if (empty($FromImgPath) || empty($ToImgPath)) {
-            return array(0,"出力元画像パス、または出力先フォルダが指定されていません。");
+            return array(0,'出力元画像パス、または出力先フォルダが指定されていません。');
         }
 
         if (!file_exists($FromImgPath)) {
-            return array(0,"出力元画像が見つかりません。");
+            return array(0,'出力元画像が見つかりません。');
         }
 
         $size = @GetImageSize($FromImgPath);
@@ -112,7 +112,7 @@ class SC_Image {
 
         // 画像の種類が不明 or swf
         if (!$size[2] || $size[2] > 3) {
-            return array(0,"画像形式がサポートされていません。");
+            return array(0,'画像形式がサポートされていません。');
         }
 
         //アスペクト比固定処理
@@ -140,8 +140,8 @@ class SC_Image {
         }
 
         // サムネイル画像ファイル名作成処理
-        $tmp = array_pop(explode("/",$FromImgPath)); // /の一番最後を切り出し
-        $FromFileName = array_shift(explode(".",$tmp)); // .で区切られた部分を切り出し
+        $tmp = array_pop(explode('/',$FromImgPath)); // /の一番最後を切り出し
+        $FromFileName = array_shift(explode('.',$tmp)); // .で区切られた部分を切り出し
         $ToFile = $PreWord.$FromFileName; // 拡張子以外の部分までを作成
 
         $ImgNew = imagecreatetruecolor($re_size[0],$re_size[1]);
@@ -152,12 +152,12 @@ class SC_Image {
                 if ($newFileName) {
                     $ToFile = $newFileName;
                 } elseif ($ext) {
-                    $ToFile .= "." . $ext;
+                    $ToFile .= '.' . $ext;
                 } else {
-                    $ToFile .= ".gif";
+                    $ToFile .= '.gif';
                 }
                 if (!@copy($FromImgPath , $ToImgPath.$ToFile)) { // エラー処理
-                    return array(0,"ファイルのコピーに失敗しました。");
+                    return array(0,'ファイルのコピーに失敗しました。');
                 }
                 ImageDestroy($ImgNew);
                 return array(1,$ToFile);
@@ -172,15 +172,15 @@ class SC_Image {
             if ($newFileName) {
                 $ToFile = $newFileName;
             } elseif ($ext) {
-                $ToFile .= "." . $ext;
+                $ToFile .= '.' . $ext;
             } else {
-                $ToFile .= ".png";
+                $ToFile .= '.png';
             }
             $TmpPath = $ToImgPath.$ToFile;
             @Imagepng($ImgNew,$TmpPath);
             // 画像が作成されていない場合
             if (!@file_exists($TmpPath)) {
-                return array(0,"画像の出力に失敗しました。");
+                return array(0,'画像の出力に失敗しました。');
             }
             ImageDestroy($ImgNew);
             return array(1,$ToFile);
@@ -199,9 +199,9 @@ class SC_Image {
             if ($newFileName) {
                 $ToFile = $newFileName;
             } elseif ($ext) {
-                $ToFile .= "." . $ext;
+                $ToFile .= '.' . $ext;
             } else {
-                $ToFile .= ".jpg";
+                $ToFile .= '.jpg';
             }
             $TmpPath = $ToImgPath.$ToFile;
             @ImageJpeg($ImgNew,$TmpPath);
@@ -220,15 +220,15 @@ class SC_Image {
             if ($newFileName) {
                 $ToFile = $newFileName;
             } elseif ($ext) {
-                $ToFile .= "." . $ext;
+                $ToFile .= '.' . $ext;
             } else {
-                $ToFile .= ".png";
+                $ToFile .= '.png';
             }
             $TmpPath = $ToImgPath.$ToFile;
             @ImagePNG($ImgNew,$TmpPath);
             // 画像が作成されていない場合
             if (!@file_exists($TmpPath)) {
-                return array(0,"画像の出力に失敗しました。");
+                return array(0,'画像の出力に失敗しました。');
             }
             $RetVal = $ToFile;
             break;

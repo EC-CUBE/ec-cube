@@ -148,14 +148,14 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("ページID", 'page_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("端末種別ID", 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("名称", 'page_name', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('ページID', 'page_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('端末種別ID', 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('名称', 'page_name', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('URL', 'filename', STEXT_LEN, 'a', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("ヘッダチェック", 'header_chk', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("フッタチェック", 'footer_chk', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("修正フラグ", 'edit_flg', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("TPLデータ", 'tpl_data');
+        $objFormParam->addParam('ヘッダチェック', 'header_chk', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('フッタチェック', 'footer_chk', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('修正フラグ', 'edit_flg', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('TPLデータ', 'tpl_data');
      }
 
     /**
@@ -170,7 +170,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         $arrPageData = $objLayout->getPageProperties($device_type_id, $page_id);
 
         $templatePath = $objLayout->getTemplatePath($device_type_id);
-        $filename = $templatePath . $arrPageData[0]['filename'] . ".tpl";
+        $filename = $templatePath . $arrPageData[0]['filename'] . '.tpl';
         if (file_exists($filename)) {
             $arrPageData[0]['tpl_data'] = file_get_contents($filename);
         }
@@ -293,7 +293,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         $arrParams = $objFormParam->getHashArray();
         $objErr = new SC_CheckError_Ex($arrParams);
         $objErr->arrErr =& $arrErr;
-        $objErr->doFunc(array("名称", 'page_name', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objErr->doFunc(array('名称', 'page_name', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objErr->doFunc(array('URL', 'filename', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
 
         /*
@@ -311,7 +311,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
             }
         }
         if (!$valid_url) {
-            $objErr->arrErr['filename'] = "※ URLを正しく入力してください。<br />";
+            $objErr->arrErr['filename'] = '※ URLを正しく入力してください。<br />';
         }
         // 同一URLの存在チェック
         $where = 'page_id <> 0 AND device_type_id = ? AND filename = ?';

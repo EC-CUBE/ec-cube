@@ -68,7 +68,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
      */
     function action() {
 
-        if (strpos(HTTPS_URL,"https://") !== FALSE) {
+        if (strpos(HTTPS_URL,'https://') !== FALSE) {
             $this->tpl_enable_ssl = TRUE;
         }
 
@@ -102,7 +102,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
 
         } else {
 
-            $admin_dir = str_replace("/","",ADMIN_DIR);
+            $admin_dir = str_replace('/','',ADMIN_DIR);
             $this->arrForm = array('admin_dir'=>$admin_dir,'admin_force_ssl'=>ADMIN_FORCE_SSL,'admin_allow_hosts'=>"");
             if (defined('ADMIN_ALLOW_HOSTS')) {
                 $allow_hosts = unserialize(ADMIN_ALLOW_HOSTS);
@@ -146,18 +146,18 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfCheckAdminArea(&$arrForm, &$arrErr) {
-        $admin_dir = trim($arrForm['admin_dir'])."/";
+        $admin_dir = trim($arrForm['admin_dir']).'/';
 
         $installData = file(CONFIG_REALFILE, FILE_IGNORE_NEW_LINES);
         foreach ($installData as $key=>$line) {
             if (strpos($line,'ADMIN_DIR') !== false and ADMIN_DIR != $admin_dir) {
                 //既存ディレクトリのチェック
-                if (file_exists(HTML_REALDIR.$admin_dir) and $admin_dir != "admin/") {
-                    $arrErr['admin_dir'] .= ROOT_URLPATH.$admin_dir."は既に存在しています。別のディレクトリ名を指定してください。";
+                if (file_exists(HTML_REALDIR.$admin_dir) and $admin_dir != 'admin/') {
+                    $arrErr['admin_dir'] .= ROOT_URLPATH.$admin_dir.'は既に存在しています。別のディレクトリ名を指定してください。';
                 }
                 //権限チェック
                 if (!is_writable(HTML_REALDIR . ADMIN_DIR)) {
-                    $arrErr['admin_dir'] .= ROOT_URLPATH.ADMIN_DIR."のディレクトリ名を変更する権限がありません。";
+                    $arrErr['admin_dir'] .= ROOT_URLPATH.ADMIN_DIR.'のディレクトリ名を変更する権限がありません。';
                 }
             }
         }
@@ -165,7 +165,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
 
     //管理機能ディレクトリのリネームと CONFIG_REALFILE の変更
     function lfUpdateAdminData(&$arrForm) {
-        $admin_dir = trim($arrForm['admin_dir'])."/";
+        $admin_dir = trim($arrForm['admin_dir']).'/';
         $admin_force_ssl = 'FALSE';
         if ($arrForm['admin_force_ssl'] == 1) {
             $admin_force_ssl = 'TRUE';
@@ -189,7 +189,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
                 $installData[$key] = 'define("ADMIN_DIR","'.$admin_dir.'");';
                 //管理機能ディレクトリのリネーム
                 if (!rename(HTML_REALDIR.ADMIN_DIR,HTML_REALDIR.$admin_dir)) {
-                    $this->arrErr['admin_dir'] .= ROOT_URLPATH.ADMIN_DIR."のディレクトリ名を変更できませんでした。";
+                    $this->arrErr['admin_dir'] .= ROOT_URLPATH.ADMIN_DIR.'のディレクトリ名を変更できませんでした。';
                     return false;
                 }
                 $diff ++;

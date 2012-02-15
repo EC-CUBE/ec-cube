@@ -46,7 +46,7 @@ class SC_Helper_PageLayout {
      * @param integer $device_type_id 端末種別ID
      * @return void
      */
-    function sfGetPageLayout(&$objPage, $preview = false, $url = "", $device_type_id = DEVICE_TYPE_PC) {
+    function sfGetPageLayout(&$objPage, $preview = false, $url = '', $device_type_id = DEVICE_TYPE_PC) {
 
         // URLを元にページ情報を取得
         if ($preview === false) {
@@ -58,7 +58,7 @@ class SC_Helper_PageLayout {
             $arrPageData = $this->getPageProperties($device_type_id, 0);
         }
 
-        $objPage->tpl_mainpage = $this->getTemplatePath($device_type_id) . $arrPageData[0]['filename'] . ".tpl";
+        $objPage->tpl_mainpage = $this->getTemplatePath($device_type_id) . $arrPageData[0]['filename'] . '.tpl';
         $objPage->arrPageLayout =& $arrPageData[0];
 
         // ページタイトルを設定
@@ -81,8 +81,8 @@ class SC_Helper_PageLayout {
                     $objPage->arrPageLayout[$arrTarget[$target_id]][] = $arrBloc;
                 } else {
                     $error = "ブロックが見つかりません\n"
-                        . "tpl_path: " . $arrBloc['tpl_path'] . "\n"
-                        . "php_path: " . $arrBloc['php_path'];
+                        . 'tpl_path: ' . $arrBloc['tpl_path'] . "\n"
+                        . 'php_path: ' . $arrBloc['php_path'];
                     GC_Utils_Ex::gfPrintLog($error);
                 }
             }
@@ -158,9 +158,9 @@ class SC_Helper_PageLayout {
          ON bloc.bloc_id = pos.bloc_id
         AND bloc.device_type_id = pos.device_type_id
 __EOF__;
-        $where = "bloc.device_type_id = ? AND (anywhere = 1 OR pos.page_id = ?)";
+        $where = 'bloc.device_type_id = ? AND (anywhere = 1 OR pos.page_id = ?)';
         $objQuery->setOrder('target_id, bloc_row');
-        $arrBlocs = $objQuery->select("*", $table, $where,
+        $arrBlocs = $objQuery->select('*', $table, $where,
                                       array($device_type_id, $page_id));
         if ($has_realpath) {
             $this->setBlocPathTo($device_type_id, $arrBlocs);
@@ -185,7 +185,7 @@ __EOF__;
         // page_id が空でない場合にはdeleteを実行
         if ($page_id != '') {
             $arrPageData = $this->getPageProperties($device_type_id, $page_id);
-            $ret = $objQuery->delete('dtb_pagelayout', "page_id = ? AND device_type_id = ?", array($page_id, $device_type_id));
+            $ret = $objQuery->delete('dtb_pagelayout', 'page_id = ? AND device_type_id = ?', array($page_id, $device_type_id));
             // ファイルの削除
             $this->lfDelFile($arrPageData[0]['filename'], $device_type_id);
         }
@@ -254,7 +254,7 @@ __EOF__;
      * @return string テンプレートのパス
      */
     function getTemplatePath($device_type_id = DEVICE_TYPE_PC, $isUser = false) {
-        $templateName = "";
+        $templateName = '';
         switch ($device_type_id) {
         case DEVICE_TYPE_MOBILE:
             $dir = MOBILE_TEMPLATE_REALDIR;
@@ -273,7 +273,7 @@ __EOF__;
         }
         $userPath = USER_REALDIR;
         if ($isUser) {
-            $dir = $userPath . USER_PACKAGE_DIR . $templateName . "/";
+            $dir = $userPath . USER_PACKAGE_DIR . $templateName . '/';
         }
         return $dir;
     }
@@ -305,7 +305,7 @@ __EOF__;
         }
         $userDir = ROOT_URLPATH . USER_DIR;
         if ($hasPackage) {
-            return $userDir . USER_PACKAGE_DIR . $templateName . "/";
+            return $userDir . USER_PACKAGE_DIR . $templateName . '/';
         }
         return $userDir;
     }

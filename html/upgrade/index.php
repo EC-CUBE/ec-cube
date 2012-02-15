@@ -24,7 +24,7 @@
 //$_POST['mode'] = 'products_list';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header("HTTP/1.1 400 Bad Request");
+    header('HTTP/1.1 400 Bad Request');
     exit();
 }
 
@@ -63,8 +63,8 @@ function lfPageFactory($mode) {
         $class .= 'SiteCheck';
         break;
     default:
-        header("HTTP/1.1 400 Bad Request");
-        GC_Util::gfPrintLog("modeの値が正しくありません。:".$mode);
+        header('HTTP/1.1 400 Bad Request');
+        GC_Util::gfPrintLog('modeの値が正しくありません。:'.$mode);
         exit();
         break;
     }

@@ -343,7 +343,7 @@ class SC_Helper_Plugin {
             // 有効なpluginのブロック以外.
             if (!in_array($value['plugin_id'] , $this->arrPluginIds)) {
                 // 通常ブロック以外.
-                if ($value['plugin_id'] != "") {
+                if ($value['plugin_id'] != '') {
                     //　ブロック配列から削除する
                     unset ($arrBlocs[$key]);
                 }

@@ -46,13 +46,13 @@ class SC_Plugin
 
     function disablePlugin() {
         $objQuery = new SC_Query_Ex();
-        $name = preg_replace("/.php/", "", __FILE__); // XXX 正規表現エスケープ漏れでは?
+        $name = preg_replace('/.php/', '', __FILE__); // XXX 正規表現エスケープ漏れでは?
         $objQuery->update('dtb_plugin', array('enable'=>'0'), "plugin_name = ?", array($name));
     }
 
     function enablePlugin() {
         $objQuery = new SC_Query_Ex();
-        $name = preg_replace("/.php/", "", __FILE__); // XXX 正規表現エスケープ漏れでは?
+        $name = preg_replace('/.php/', '', __FILE__); // XXX 正規表現エスケープ漏れでは?
         $objQuery->update('dtb_plugin', array('enable'=>'0'), "plugin_name = ?", array($name));
     }
 

@@ -43,9 +43,9 @@ class LC_Page_RSS extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = "rss/index.tpl";
-        $this->encode = "UTF-8";
-        $this->description = "新着情報";
+        $this->tpl_mainpage = 'rss/index.tpl';
+        $this->encode = 'UTF-8';
+        $this->description = '新着情報';
     }
 
     /**
@@ -61,10 +61,10 @@ class LC_Page_RSS extends LC_Page_Ex {
         $arrNews = $this->lfGetNews($objQuery);
 
         //キャッシュしない(念のため)
-        header("pragma: no-cache");
+        header('pragma: no-cache');
 
         //XMLテキスト(これがないと正常にRSSとして認識してくれないツールがあるため)
-        header("Content-type: application/xml");
+        header('Content-type: application/xml');
 
         //新着情報をセット
         $this->arrNews = $arrNews;
@@ -98,18 +98,18 @@ class LC_Page_RSS extends LC_Page_Ex {
      * @return array $arrNews 取得結果を配列で返す
      */
     function lfGetNews(&$objQuery) {
-        $col = "";
-        $col .= "news_id ";        // 新着情報ID
-        $col .= ",news_title ";    // 新着情報タイトル
-        $col .= ",news_comment ";  // 新着情報本文
-        $col .= ",news_date ";     // 日付
-        $col .= ",news_url ";      // 新着情報URL
-        $col .= ",news_select ";   // 新着情報の区分(1:URL、2:本文)
-        $col .= ",(SELECT shop_name FROM dtb_baseinfo limit 1) AS shop_name  ";    // 店名
-        $col .= ",(SELECT email04 FROM dtb_baseinfo limit 1) AS email ";           // 代表Emailアドレス
+        $col = '';
+        $col .= 'news_id ';        // 新着情報ID
+        $col .= ',news_title ';    // 新着情報タイトル
+        $col .= ',news_comment ';  // 新着情報本文
+        $col .= ',news_date ';     // 日付
+        $col .= ',news_url ';      // 新着情報URL
+        $col .= ',news_select ';   // 新着情報の区分(1:URL、2:本文)
+        $col .= ',(SELECT shop_name FROM dtb_baseinfo limit 1) AS shop_name  ';    // 店名
+        $col .= ',(SELECT email04 FROM dtb_baseinfo limit 1) AS email ';           // 代表Emailアドレス
         $from = 'dtb_news';
         $where = "del_flg = '0'";
-        $order = "rank DESC";
+        $order = 'rank DESC';
         $objQuery->setOrder($order);
         $arrNews = $objQuery->select($col,$from,$where);
 

@@ -83,7 +83,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
         $this->old_css_name = $objFormParam->getValue('old_css_name', $this->css_name);
         $this->device_type_id = $objFormParam->getValue('device_type_id', DEVICE_TYPE_PC);
 
-        $css_dir = $objLayout->getTemplatePath($this->device_type_id, true) . "css/";
+        $css_dir = $objLayout->getTemplatePath($this->device_type_id, true) . 'css/';
         $css_path = $css_dir . $this->css_name . '.css';
 
         switch ($this->getMode()) {
@@ -147,10 +147,10 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("端末種別ID", 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("CSSファイル名", 'css_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("旧CSSファイル名", 'old_css_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("CSSデータ", 'css_data');
+        $objFormParam->addParam('端末種別ID', 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('CSSファイル名', 'css_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('旧CSSファイル名', 'old_css_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('CSSデータ', 'css_data');
 
     }
 
@@ -261,6 +261,6 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
      * @return string CSSディレクトリ
      */
     function getCSSDir($device_type_id) {
-        return SC_Helper_PageLayout_Ex::getTemplatePath($device_type_id, true) . "css/";
+        return SC_Helper_PageLayout_Ex::getTemplatePath($device_type_id, true) . 'css/';
     }
 }

@@ -53,10 +53,10 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         $this->MIDDLETEXT_MAX = MTEXT_LEN;
         $this->LONGTEXT_MAX = LTEXT_LEN;
 
-        $this->arrType[0]  = "納品書";
+        $this->arrType[0]  = '納品書';
 
-        $this->arrDownload[0] = "ブラウザに開く";
-        $this->arrDownload[1] = "ファイルに保存";
+        $this->arrDownload[0] = 'ブラウザに開く';
+        $this->arrDownload[1] = 'ファイルに保存';
     }
 
     /**
@@ -116,7 +116,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         // ここが$arrFormの初登場ということを明示するため宣言する。
         $arrForm = array();
         // タイトルをセット
-        $arrForm['title'] = "お買上げ明細書(納品書)";
+        $arrForm['title'] = 'お買上げ明細書(納品書)';
 
         // 今日の日付をセット
         $arrForm['year']  = date('Y');
@@ -181,21 +181,21 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
      *  @param SC_FormParam 
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("注文番号", 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("注文番号", 'pdf_order_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("発行日", 'year', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("発行日", 'month', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("発行日", 'day', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("帳票の種類", 'type', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("ダウンロード方法", 'download', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("帳票タイトル", 'title', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("帳票メッセージ1行目", 'msg1', STEXT_LEN*3/5, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("帳票メッセージ2行目", 'msg2', STEXT_LEN*3/5, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("帳票メッセージ3行目", 'msg3', STEXT_LEN*3/5, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("備考1行目", 'etc1', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("備考2行目", 'etc2', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("備考3行目", 'etc3', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("ポイント表記", 'disp_point', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('注文番号', 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('注文番号', 'pdf_order_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('発行日', 'year', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('発行日', 'month', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('発行日', 'day', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('帳票の種類', 'type', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('ダウンロード方法', 'download', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('帳票タイトル', 'title', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('帳票メッセージ1行目', 'msg1', STEXT_LEN*3/5, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('帳票メッセージ2行目', 'msg2', STEXT_LEN*3/5, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('帳票メッセージ3行目', 'msg3', STEXT_LEN*3/5, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('備考1行目', 'etc1', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('備考2行目', 'etc2', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('備考3行目', 'etc3', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('ポイント表記', 'disp_point', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -210,23 +210,23 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
 
         $year = $objFormParam->getValue('year');
         if (!is_numeric($year)) {
-            $arrErr['year'] = "発行年は数値で入力してください。";
+            $arrErr['year'] = '発行年は数値で入力してください。';
         }
 
         $month = $objFormParam->getValue('month');
         if (!is_numeric($month)) {
-            $arrErr['month'] = "発行月は数値で入力してください。";
+            $arrErr['month'] = '発行月は数値で入力してください。';
         }else if (0 >= $month && 12 < $month) {
 
-            $arrErr['month'] = "発行月は1〜12の間で入力してください。";
+            $arrErr['month'] = '発行月は1〜12の間で入力してください。';
         }
 
         $day = $objFormParam->getValue('day');
         if (!is_numeric($day)) {
-            $arrErr['day'] = "発行日は数値で入力してください。";
+            $arrErr['day'] = '発行日は数値で入力してください。';
         }else if (0 >= $day && 31 < $day) {
 
-            $arrErr['day'] = "発行日は1〜31の間で入力してください。";
+            $arrErr['day'] = '発行日は1〜31の間で入力してください。';
         }
 
         return $arrErr;

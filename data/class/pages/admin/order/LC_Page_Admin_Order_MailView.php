@@ -80,8 +80,8 @@ class LC_Page_Admin_Order_MailView extends LC_Page_Admin_Ex {
      */
     function getMailHistory($send_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $col = "subject, mail_body";
-        $where = "send_id = ?";
+        $col = 'subject, mail_body';
+        $where = 'send_id = ?';
         $mailHistory = $objQuery->select($col, 'dtb_mail_history', $where, array($send_id));
         return $mailHistory;
     }

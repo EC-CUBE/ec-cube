@@ -61,12 +61,12 @@ class SC_DB_DBFactory {
      * @param string $dsn データソース名
      * @return void|string データソース名
      */
-    function getDSN($dsn = "") {
+    function getDSN($dsn = '') {
         if (empty($dsn)) {
             if (defined('DEFAULT_DSN')) {
                 $dsn = DEFAULT_DSN;
             } else {
-                return "";
+                return '';
             }
         }
         return $dsn;
@@ -78,7 +78,7 @@ class SC_DB_DBFactory {
      * @param string $dsn データソース名
      * @return string データベースのバージョン
      */
-    function sfGetDBVersion($dsn = "") { return null; }
+    function sfGetDBVersion($dsn = '') { return null; }
 
     /**
      * MySQL 用の SQL 文に変更する.
@@ -142,7 +142,7 @@ class SC_DB_DBFactory {
      * @param string $expression 検索文字列
      * @return array テーブル名の配列
      */
-    function findTableNames($expression = "") { return array(); }
+    function findTableNames($expression = '') { return array(); }
 
     /**
      * インデックス作成の追加定義を取得する

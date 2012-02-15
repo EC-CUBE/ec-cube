@@ -107,7 +107,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
             $this->arrErr = $objFormParam->checkError();
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 if ($this->tryView($objFormParam)) {
-                    $file_url = htmlspecialchars(ereg_replace($objFormParam->getValue('top_dir'), "", $objFormParam->getValue('select_file')));
+                    $file_url = htmlspecialchars(ereg_replace($objFormParam->getValue('top_dir'), '', $objFormParam->getValue('select_file')));
                     $tpl_onload = "win02('./file_view.php?file=". $file_url ."', 'user_data', '600', '400');";
                     $this->setTplOnLoad($tpl_onload);
                 }
@@ -124,7 +124,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
             $this->arrErr = $objFormParam->checkError();
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 if (is_dir($objFormParam->getValue('select_file'))) {
-                    $disp_error = "※ ディレクトリをダウンロードすることは出来ません。<br/>";
+                    $disp_error = '※ ディレクトリをダウンロードすることは出来ません。<br/>';
                     $this->setDispError('select_file', $disp_error);
                 } else {
                     // ファイルダウンロード
@@ -155,7 +155,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
             $this->arrErr = $objFormParam->checkError();
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 if (!$this->tryCreateDir($objFileManager, $objFormParam)) {
-                    $disp_error = "※ ".htmlspecialchars($objFormParam->getValue('create_file'), ENT_QUOTES)."の作成に失敗しました。<br/>";
+                    $disp_error = '※ '.htmlspecialchars($objFormParam->getValue('create_file'), ENT_QUOTES)."の作成に失敗しました。<br/>";
                     $this->setDispError('create_file', $disp_error);
                 } else {
                     $tpl_onload = "alert('フォルダを作成しました。');";
@@ -224,7 +224,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
     function lfInitParamModeMove(&$objFormParam) {
         // 共通定義
         $this->lfInitParamCommon($objFormParam);
-        $objFormParam->addParam("選択ファイル", 'select_file', MTEXT_LEN, 'a', array());
+        $objFormParam->addParam('選択ファイル', 'select_file', MTEXT_LEN, 'a', array());
     }
 
     /**
@@ -236,7 +236,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
     function lfInitParamModeView(&$objFormParam) {
         // 共通定義
         $this->lfInitParamCommon($objFormParam);
-        $objFormParam->addParam("選択ファイル", 'select_file', MTEXT_LEN, 'a', array('SELECT_CHECK'));
+        $objFormParam->addParam('選択ファイル', 'select_file', MTEXT_LEN, 'a', array('SELECT_CHECK'));
     }
 
     /**
@@ -248,8 +248,8 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
     function lfInitParamModeCreate(&$objFormParam) {
         // 共通定義
         $this->lfInitParamCommon($objFormParam);
-        $objFormParam->addParam("選択ファイル", 'select_file', MTEXT_LEN, 'a', array());
-        $objFormParam->addParam("作成ファイル名", 'create_file', MTEXT_LEN, 'a', array('EXIST_CHECK', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
+        $objFormParam->addParam('選択ファイル', 'select_file', MTEXT_LEN, 'a', array());
+        $objFormParam->addParam('作成ファイル名', 'create_file', MTEXT_LEN, 'a', array('EXIST_CHECK', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
     }
 
     /**
@@ -259,11 +259,11 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParamCommon(&$objFormParam) {
-        $objFormParam->addParam("ルートディレクトリ", 'top_dir', MTEXT_LEN, 'a', array());
-        $objFormParam->addParam("現在の階層ディレクトリ", 'now_dir', MTEXT_LEN, 'a', array());
-        $objFormParam->addParam("現在の階層ファイル", 'now_file', MTEXT_LEN, 'a', array());
-        $objFormParam->addParam("ツリー選択状態", 'tree_status', MTEXT_LEN, 'a', array());
-        $objFormParam->addParam("ツリー選択ディレクトリ", 'tree_select_file', MTEXT_LEN, 'a', array());
+        $objFormParam->addParam('ルートディレクトリ', 'top_dir', MTEXT_LEN, 'a', array());
+        $objFormParam->addParam('現在の階層ディレクトリ', 'now_dir', MTEXT_LEN, 'a', array());
+        $objFormParam->addParam('現在の階層ファイル', 'now_file', MTEXT_LEN, 'a', array());
+        $objFormParam->addParam('ツリー選択状態', 'tree_status', MTEXT_LEN, 'a', array());
+        $objFormParam->addParam('ツリー選択ディレクトリ', 'tree_select_file', MTEXT_LEN, 'a', array());
     }
 
     /*
@@ -273,7 +273,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitFile(&$objUpFile) {
-        $objUpFile->addFile("ファイル", 'upload_file', array(), FILE_SIZE, true, 0, 0, false);
+        $objUpFile->addFile('ファイル', 'upload_file', array(), FILE_SIZE, true, 0, 0, false);
     }
 
     /**
@@ -315,7 +315,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
         $create_dir_flg = false;
         $create_dir = ereg_replace("/$", "", $objFormParam->getValue('now_dir'));
         // ファイル作成
-        if ($objFileManager->sfCreateFile($create_dir."/".$objFormParam->getValue('create_file'), 0755)) {
+        if ($objFileManager->sfCreateFile($create_dir.'/'.$objFormParam->getValue('create_file'), 0755)) {
             $create_dir_flg = true;
         }
         return $create_dir_flg;
@@ -355,7 +355,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
      * @return void
      */
     function setDispPath($objFormParam) {
-        $tpl_now_dir = "";
+        $tpl_now_dir = '';
         // Windows 環境で DIRECTORY_SEPARATOR が JavaScript に渡るとエスケープ文字と勘違いするので置換
         $html_realdir = str_replace(DIRECTORY_SEPARATOR, '/', HTML_REALDIR);
         $arrNowDir = preg_split('/\//', str_replace($html_realdir, '', $objFormParam->getValue('now_dir')));
@@ -420,7 +420,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
      * @return string $parent_dir 親ディレクトリ
      */
     function lfGetParentDir($dir) {
-        $parent_dir = "";
+        $parent_dir = '';
         $dir = ereg_replace("/$", "", $dir);
         $arrDir = explode('/', $dir);
         array_pop($arrDir);
@@ -454,7 +454,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
         $arrTree = $objFileManager->sfGetFileTree($objFormParam->getValue('top_dir'), $objFormParam->getValue('tree_status'));
         $tpl_javascript .= "arrTree = new Array();\n";
         foreach ($arrTree as $arrVal) {
-            $tpl_javascript .= "arrTree[".$arrVal['count']."] = new Array(".$arrVal['count'].", '".$arrVal['type']."', '".$arrVal['path']."', ".$arrVal['rank'].",";
+            $tpl_javascript .= 'arrTree['.$arrVal['count']."] = new Array(".$arrVal['count'].", '".$arrVal['type']."', '".$arrVal['path']."', ".$arrVal['rank'].",";
             if ($arrVal['open']) {
                 $tpl_javascript .= "true);\n";
             } else {

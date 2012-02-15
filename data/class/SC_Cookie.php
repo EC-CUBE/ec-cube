@@ -34,7 +34,7 @@ class SC_Cookie {
 
     // クッキー書き込み
     function setCookie($key, $val) {
-        setcookie($key, $val, $this->expire, "/", DOMAIN_NAME);
+        setcookie($key, $val, $this->expire, '/', DOMAIN_NAME);
     }
 
     // クッキー取得

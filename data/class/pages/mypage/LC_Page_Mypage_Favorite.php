@@ -160,7 +160,7 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
     function lfMakeWhere($tablename, $arrProductId) {
 
         // 取得した表示すべきIDだけを指定して情報を取得。
-        $where = "";
+        $where = '';
         if (is_array($arrProductId) && !empty($arrProductId)) {
             $where = $tablename . 'product_id IN (' . implode(',', $arrProductId) . ')';
         } else {
@@ -178,10 +178,10 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
     function lfDeleteFavoriteProduct($customer_id, $product_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        $exists = $objQuery->exists('dtb_customer_favorite_products', "customer_id = ? AND product_id = ?", array($customer_id, $product_id));
+        $exists = $objQuery->exists('dtb_customer_favorite_products', 'customer_id = ? AND product_id = ?', array($customer_id, $product_id));
 
         if ($exists) {
-            $objQuery->delete('dtb_customer_favorite_products', "customer_id = ? AND product_id = ?", array($customer_id, $product_id));
+            $objQuery->delete('dtb_customer_favorite_products', 'customer_id = ? AND product_id = ?', array($customer_id, $product_id));
         }
     }
 }

@@ -149,7 +149,7 @@ class SC_DB_MasterData {
         $i = 0;
         foreach ($masterData as $key => $val) {
             $sqlVal = array($columns[1] => $val);
-            $this->objQuery->update($name, $sqlVal, $columns[0] . " = " .  SC_Utils_Ex::sfQuoteSmart($key));
+            $this->objQuery->update($name, $sqlVal, $columns[0] . ' = ' .  SC_Utils_Ex::sfQuoteSmart($key));
             $i++;
         }
         if ($autoCommit) {
@@ -225,11 +225,11 @@ class SC_DB_MasterData {
      * @return bool 消去した場合 true
      */
     function clearCache($name) {
-        $masterDataFile = MASTER_DATA_REALDIR . $name . ".php";
+        $masterDataFile = MASTER_DATA_REALDIR . $name . '.php';
         if (is_file($masterDataFile)) {
             unlink($masterDataFile);
         }
-        $masterDataFile = MASTER_DATA_REALDIR . $name . ".serial";
+        $masterDataFile = MASTER_DATA_REALDIR . $name . '.serial';
         if (is_file($masterDataFile)) {
             unlink($masterDataFile);
         }
@@ -310,7 +310,7 @@ class SC_DB_MasterData {
         if (isset($columns[2]) && strlen($columns[2]) >= 1) {
             $this->objQuery->setOrder($columns[2]);
         }
-        $results = $this->objQuery->select($columns[0] . ", " . $columns[1], $name);
+        $results = $this->objQuery->select($columns[0] . ', ' . $columns[1], $name);
 
         // 結果を key => value 形式に格納
         $masterData = array();
@@ -352,10 +352,10 @@ class SC_DB_MasterData {
      * @return string 定数定義の文字列
      */
     function getMasterDataAsDefine($masterData, $comments = array()) {
-        $data = "";
+        $data = '';
         foreach ($masterData as $key => $val) {
             if (!empty($comments[$key])) {
-                $data .= "/** " . $comments[$key] . " */\n";
+                $data .= '/** ' . $comments[$key] . " */\n";
             }
             $data .= "define('" . $key . "', " . $val . ");\n";
         }

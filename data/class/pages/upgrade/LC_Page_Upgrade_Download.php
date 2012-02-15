@@ -192,12 +192,12 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             $tar = new Archive_Tar($dir . $filename);
             $tar->extract($exract_dir);
 
-            $objLog->log("* copy batch start");
+            $objLog->log('* copy batch start');
             @include_once CLASS_REALDIR . 'batch/SC_Batch_Update.php';
             $objBatch = new SC_Batch_Update();
             $arrCopyLog = $objBatch->execute($exract_dir);
 
-            $objLog->log("* copy batch check start");
+            $objLog->log('* copy batch check start');
             if (count($arrCopyLog['err']) > 0) {
                 $objJson->setError(OSTORE_E_C_BATCH_ERR);
                 $objJson->display();
@@ -208,19 +208,19 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             }
 
             // dtb_module_update_logの更新
-            $objLog->log("* insert dtb_module_update start");
+            $objLog->log('* insert dtb_module_update start');
             $this->registerUpdateLog($arrCopyLog, $objRet->data);
 
             // dtb_moduleの更新
-            $objLog->log("* insert/update dtb_module start");
+            $objLog->log('* insert/update dtb_module start');
             $this->updateMdlTable($objRet->data);
 
             // DB更新ファイルの読み込み、実行
-            $objLog->log("* file execute start");
+            $objLog->log('* file execute start');
             $this->fileExecute($objRet->data->product_code);
 
             // 配信サーバーへ通知
-            $objLog->log("* notify to lockon server start");
+            $objLog->log('* notify to lockon server start');
             $objReq = $this->notifyDownload($mode, $objReq->getResponseCookies());
 
             $objLog->log('* dl commit result:' . serialize($objReq));

@@ -36,15 +36,15 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         $objDb = new SC_Helper_DB_Ex();
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
 
-        if ($mode == "") {
+        if ($mode == '') {
             // 会員本登録会員で削除していない会員
-            $this->setWhere("status = 2 AND del_flg = 0 ");
+            $this->setWhere('status = 2 AND del_flg = 0 ');
             // 登録日を示すカラム
             $regdate_col = 'dtb_customer.update_date';
         }
 
         if ($mode == 'customer') {
-            $this->setWhere(" del_flg = 0 ");
+            $this->setWhere(' del_flg = 0 ');
             // 登録日を示すカラム
             $regdate_col = 'dtb_customer.update_date';
         }
@@ -52,39 +52,39 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         // 会員ID
         if (!isset($this->arrSql['search_customer_id'])) $this->arrSql['search_customer_id'] = "";
         if (strlen($this->arrSql['search_customer_id']) > 0) {
-            $this->setWhere("customer_id =  ?");
+            $this->setWhere('customer_id =  ?');
             $this->arrVal[] = $this->arrSql['search_customer_id'];
         }
 
         // 名前
         if (!isset($this->arrSql['search_name'])) $this->arrSql['search_name'] = "";
         if (strlen($this->arrSql['search_name']) > 0) {
-            $this->setWhere("(" . $dbFactory->concatColumn(array('name01', 'name02')) . " LIKE ?)");
+            $this->setWhere('(' . $dbFactory->concatColumn(array('name01', 'name02')) . " LIKE ?)");
             $searchName = $this->addSearchStr($this->arrSql['search_name']);
-            $this->arrVal[] = mb_ereg_replace("[ 　]+","",$searchName);
+            $this->arrVal[] = mb_ereg_replace('[ 　]+','',$searchName);
         }
 
         // 名前(フリガナ)
         if (!isset($this->arrSql['search_kana'])) $this->arrSql['search_kana'] = "";
         if (strlen($this->arrSql['search_kana']) > 0) {
-            $this->setWhere("(" . $dbFactory->concatColumn(array('kana01', 'kana02')) . " LIKE ?)");
+            $this->setWhere('(' . $dbFactory->concatColumn(array('kana01', 'kana02')) . " LIKE ?)");
             $searchKana = $this->addSearchStr($this->arrSql['search_kana']);
-            $this->arrVal[] = mb_ereg_replace("[ 　]+","",$searchKana);
+            $this->arrVal[] = mb_ereg_replace('[ 　]+','',$searchKana);
         }
 
         // 都道府県
         if (!isset($this->arrSql['search_pref'])) $this->arrSql['search_pref'] = "";
         if (strlen($this->arrSql['search_pref']) > 0) {
-            $this->setWhere("pref = ?");
+            $this->setWhere('pref = ?');
             $this->arrVal[] = $this->arrSql['search_pref'];
         }
 
         // 電話番号
         if (!isset($this->arrSql['search_tel'])) $this->arrSql['search_tel'] = "";
         if (is_numeric($this->arrSql['search_tel'])) {
-            $this->setWhere("(" . $dbFactory->concatColumn(array('tel01', 'tel02', 'tel03')) . " LIKE ?)");
+            $this->setWhere('(' . $dbFactory->concatColumn(array('tel01', 'tel02', 'tel03')) . " LIKE ?)");
             $searchTel = $this->addSearchStr($this->arrSql['search_tel']);
-            $this->arrVal[] = ereg_replace("-", "", $searchTel);
+            $this->arrVal[] = ereg_replace('-', '', $searchTel);
         }
 
         // 性別
@@ -99,7 +99,7 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         // 職業
         if (!isset($this->arrSql['search_job'])) $this->arrSql['search_job'] = "";
         if (is_array($this->arrSql['search_job'])) {
-            if (in_array("不明", $this->arrSql['search_job'])) {
+            if (in_array('不明', $this->arrSql['search_job'])) {
                 $arrJobVal = $this->setItemTermWithNull($this->arrSql['search_job'] ,'job');
             } else {
                 $arrJobVal = $this->setItemTerm($this->arrSql['search_job'] ,'job');
@@ -115,22 +115,22 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         if (!isset($this->arrSql['search_email'])) $this->arrSql['search_email'] = "";
         if (strlen($this->arrSql['search_email']) > 0) {
             //カンマ区切りで複数の条件指定可能に
-            $this->arrSql['search_email'] = explode(",", $this->arrSql['search_email']);
-            $sql_where = "";
+            $this->arrSql['search_email'] = explode(',', $this->arrSql['search_email']);
+            $sql_where = '';
             foreach ($this->arrSql['search_email'] as $val) {
                 $val = trim($val);
                 //検索条件を含まない
                 if ($this->arrSql['not_emailinc'] == '1') {
-                    if ($sql_where == "") {
-                        $sql_where .= "dtb_customer.email NOT ILIKE ? ";
+                    if ($sql_where == '') {
+                        $sql_where .= 'dtb_customer.email NOT ILIKE ? ';
                     } else {
-                        $sql_where .= "AND dtb_customer.email NOT ILIKE ? ";
+                        $sql_where .= 'AND dtb_customer.email NOT ILIKE ? ';
                     }
                 } else {
-                    if ($sql_where == "") {
-                        $sql_where .= "dtb_customer.email ILIKE ? ";
+                    if ($sql_where == '') {
+                        $sql_where .= 'dtb_customer.email ILIKE ? ';
                     } else {
-                        $sql_where .= "OR dtb_customer.email ILIKE ? ";
+                        $sql_where .= 'OR dtb_customer.email ILIKE ? ';
                     }
                 }
                 $searchEmail = $this->addSearchStr($val);
@@ -144,22 +144,22 @@ class SC_CustomerList extends SC_SelectSql_Ex {
 
         if (strlen($this->arrSql['search_email_mobile']) > 0) {
             //カンマ区切りで複数の条件指定可能に
-            $this->arrSql['search_email_mobile'] = explode(",", $this->arrSql['search_email_mobile']);
-            $sql_where = "";
+            $this->arrSql['search_email_mobile'] = explode(',', $this->arrSql['search_email_mobile']);
+            $sql_where = '';
             foreach ($this->arrSql['search_email_mobile'] as $val) {
                 $val = trim($val);
                 //検索条件を含まない
                 if ($this->arrSql['not_email_mobileinc'] == '1') {
-                    if ($sql_where == "") {
-                        $sql_where .= "dtb_customer.email_mobile NOT ILIKE ? ";
+                    if ($sql_where == '') {
+                        $sql_where .= 'dtb_customer.email_mobile NOT ILIKE ? ';
                     } else {
-                        $sql_where .= "AND dtb_customer.email_mobile NOT ILIKE ? ";
+                        $sql_where .= 'AND dtb_customer.email_mobile NOT ILIKE ? ';
                     }
                 } else {
-                    if ($sql_where == "") {
-                        $sql_where .= "dtb_customer.email_mobile ILIKE ? ";
+                    if ($sql_where == '') {
+                        $sql_where .= 'dtb_customer.email_mobile ILIKE ? ';
                     } else {
-                        $sql_where .= "OR dtb_customer.email_mobile ILIKE ? ";
+                        $sql_where .= 'OR dtb_customer.email_mobile ILIKE ? ';
                     }
                 }
                 $searchemail_mobile = $this->addSearchStr($val);
@@ -173,11 +173,11 @@ class SC_CustomerList extends SC_SelectSql_Ex {
             // メルマガ受け取りの選択項目がフォームに存在する場合
             if (isset($this->arrSql['search_htmlmail'])) {
                 if (SC_Utils_Ex::sfIsInt($this->arrSql['search_htmlmail'])) {
-                    $this->setWhere("mailmaga_flg = ?");
+                    $this->setWhere('mailmaga_flg = ?');
                     $this->arrVal[] = $this->arrSql['search_htmlmail'];
                 } else {
                     //　メルマガ購読拒否は省く
-                    $this->setWhere("mailmaga_flg <> 3");
+                    $this->setWhere('mailmaga_flg <> 3');
                 }
             }
         }
@@ -247,7 +247,7 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         // 誕生月の検索
         if (!isset($this->arrSql['search_birth_month'])) $this->arrSql['search_birth_month'] = "";
         if (is_numeric($this->arrSql['search_birth_month'])) {
-            $this->setWhere(" EXTRACT(month from birth) = ?");
+            $this->setWhere(' EXTRACT(month from birth) = ?');
             $this->arrVal[] = $this->arrSql['search_birth_month'];
         }
 
@@ -288,7 +288,7 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         // 購入商品コード
         if (!isset($this->arrSql['search_buy_product_code'])) $this->arrSql['search_buy_product_code'] = "";
         if (strlen($this->arrSql['search_buy_product_code']) > 0) {
-            $this->setWhere("customer_id IN (SELECT customer_id FROM dtb_order WHERE order_id IN (SELECT order_id FROM dtb_order_detail WHERE product_code LIKE ?) AND del_flg = 0)");
+            $this->setWhere('customer_id IN (SELECT customer_id FROM dtb_order WHERE order_id IN (SELECT order_id FROM dtb_order_detail WHERE product_code LIKE ?) AND del_flg = 0)');
             $search_buyproduct_code = $this->addSearchStr($this->arrSql['search_buy_product_code']);
             $this->arrVal[] = $search_buyproduct_code;
         }
@@ -296,7 +296,7 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         // 購入商品名称
         if (!isset($this->arrSql['search_buy_product_name'])) $this->arrSql['search_buy_product_name'] = "";
         if (strlen($this->arrSql['search_buy_product_name']) > 0) {
-            $this->setWhere("customer_id IN (SELECT customer_id FROM dtb_order WHERE order_id IN (SELECT order_id FROM dtb_order_detail WHERE product_name LIKE ?) AND del_flg = 0)");
+            $this->setWhere('customer_id IN (SELECT customer_id FROM dtb_order WHERE order_id IN (SELECT order_id FROM dtb_order_detail WHERE product_name LIKE ?) AND del_flg = 0)');
             $search_buyproduct_name = $this->addSearchStr($this->arrSql['search_buy_product_name']);
             $this->arrVal[] = $search_buyproduct_name;
         }
@@ -308,8 +308,8 @@ class SC_CustomerList extends SC_SelectSql_Ex {
             list($tmp_where, $tmp_arrval) = $objDb->sfGetCatWhere($this->arrSql['search_category_id']);
 
             // カテゴリで絞込みが可能の場合
-            if ($tmp_where != "") {
-                $this->setWhere(" customer_id IN (SELECT distinct customer_id FROM dtb_order WHERE order_id IN (SELECT distinct order_id FROM dtb_order_detail WHERE product_id IN (SELECT product_id FROM dtb_product_categories WHERE ".$tmp_where.") AND del_flg = 0)) ");
+            if ($tmp_where != '') {
+                $this->setWhere(' customer_id IN (SELECT distinct customer_id FROM dtb_order WHERE order_id IN (SELECT distinct order_id FROM dtb_order_detail WHERE product_id IN (SELECT product_id FROM dtb_product_categories WHERE '.$tmp_where.') AND del_flg = 0)) ');
                 $this->arrVal = array_merge((array)$this->arrVal, (array)$tmp_arrval);
             }
         }
@@ -323,12 +323,12 @@ class SC_CustomerList extends SC_SelectSql_Ex {
             }
         }
 
-        $this->setOrder("customer_id DESC");
+        $this->setOrder('customer_id DESC');
     }
 
     // 検索用SQL
     function getList() {
-        $this->select = "SELECT customer_id,name01,name02,kana01,kana02,sex,email,email_mobile,tel01,tel02,tel03,pref,status,update_date,mailmaga_flg FROM dtb_customer ";
+        $this->select = 'SELECT customer_id,name01,name02,kana01,kana02,sex,email,email_mobile,tel01,tel02,tel03,pref,status,update_date,mailmaga_flg FROM dtb_customer ';
         return $this->getSql(0);
     }
 
@@ -345,7 +345,7 @@ class SC_CustomerList extends SC_SelectSql_Ex {
 
     // 検索総数カウント用SQL
     function getListCount() {
-        $this->select = "SELECT COUNT(customer_id) FROM dtb_customer ";
+        $this->select = 'SELECT COUNT(customer_id) FROM dtb_customer ';
         return $this->getSql(1);
     }
 
@@ -354,12 +354,12 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         $this->arrColumnCSV = $arrColumnCSV;
         $i = 0;
         foreach ($this->arrColumnCSV as $val) {
-            if ($i != 0) $state .= ", ";
+            if ($i != 0) $state .= ', ';
             $state .= $val['sql'];
             $i ++;
         }
 
-        $this->select = "SELECT " .$state. " FROM dtb_customer ";
+        $this->select = 'SELECT ' .$state. ' FROM dtb_customer ';
         return $this->getSql(2);
     }
 

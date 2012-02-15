@@ -72,7 +72,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
      * @return void
      */
     function action() {
-        $this->tpl_error = "システムエラーが発生しました。<br />大変お手数ですが、サイト管理者までご連絡ください。";
+        $this->tpl_error = 'システムエラーが発生しました。<br />大変お手数ですが、サイト管理者までご連絡ください。';
 
         if (DEBUG_MODE) {
             echo '<div class="debug">';
@@ -183,9 +183,9 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
         $errmsg = '';
         $errmsg .= SC_Utils_Ex::sfGetUrl() . "\n";
         $errmsg .= "\n";
-        $errmsg .= "SERVER_ADDR: " . $_SERVER['SERVER_ADDR'] . "\n";
-        $errmsg .= "REMOTE_ADDR: " . $_SERVER['REMOTE_ADDR'] . "\n";
-        $errmsg .= "USER_AGENT: " . $_SERVER['HTTP_USER_AGENT'] . "\n";
+        $errmsg .= 'SERVER_ADDR: ' . $_SERVER['SERVER_ADDR'] . "\n";
+        $errmsg .= 'REMOTE_ADDR: ' . $_SERVER['REMOTE_ADDR'] . "\n";
+        $errmsg .= 'USER_AGENT: ' . $_SERVER['HTTP_USER_AGENT'] . "\n";
 
         return $errmsg;
     }

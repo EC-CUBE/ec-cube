@@ -227,7 +227,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
 
         $objQuery->begin();
 
-        $arrProductsClass = $objQuery->select("*", 'dtb_products_class', "product_id = ?", array($product_id));
+        $arrProductsClass = $objQuery->select('*', 'dtb_products_class', "product_id = ?", array($product_id));
         $arrExists = array();
         foreach ($arrProductsClass as $val) {
             $arrExists[$val['product_class_id']] = $val;
@@ -285,7 +285,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         $arrBlank['del_flg'] = 1;
         $arrBlank['update_date'] = 'CURRENT_TIMESTAMP';
         $objQuery->update('dtb_products_class', $arrBlank,
-                          "product_id = ? AND classcategory_id1 = 0 AND classcategory_id2 = 0",
+                          'product_id = ? AND classcategory_id1 = 0 AND classcategory_id2 = 0',
                           array($product_id));
 
         // 件数カウントバッチ実行
@@ -302,9 +302,9 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
      */
     function lfCheckSelectClass() {
         $objErr = new SC_CheckError_Ex();
-        $objErr->doFunc(array("規格1", 'class_id1'), array('EXIST_CHECK'));
-        $objErr->doFunc(array("規格", 'class_id1', 'select_class_id2'), array('TOP_EXIST_CHECK'));
-        $objErr->doFunc(array("規格1", "規格2", 'class_id1', 'class_id2'), array('DIFFERENT_CHECK'));
+        $objErr->doFunc(array('規格1', 'class_id1'), array('EXIST_CHECK'));
+        $objErr->doFunc(array('規格', 'class_id1', 'select_class_id2'), array('TOP_EXIST_CHECK'));
+        $objErr->doFunc(array('規格1', '規格2', 'class_id1', 'class_id2'), array('DIFFERENT_CHECK'));
         return $objErr->arrErr;
     }
 
@@ -350,17 +350,17 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                  * 商品種別の必須チェック
                  */
                 if (SC_Utils_Ex::isBlank($arrValues['product_type_id'][$i])) {
-                    $arrErr['product_type_id'][$i] = "※ 商品種別は、いずれかを選択してください。<br />";
+                    $arrErr['product_type_id'][$i] = '※ 商品種別は、いずれかを選択してください。<br />';
                 }
                 /*
                  * ダウンロード商品の必須チェック
                  */
                 if ($arrValues['product_type_id'][$i] == PRODUCT_TYPE_DOWNLOAD) {
                     if (SC_Utils_Ex::isBlank($arrValues['down_filename'][$i])) {
-                        $arrErr['down_filename'][$i] = "※ ダウンロード商品の場合はダウンロードファイル名を入力してください。<br />";
+                        $arrErr['down_filename'][$i] = '※ ダウンロード商品の場合はダウンロードファイル名を入力してください。<br />';
                     }
                     if (SC_Utils_Ex::isBlank($arrValues['down_realfilename'][$i])) {
-                        $arrErr['down_realfilename'][$i] = "※ ダウンロード商品の場合はダウンロード商品用ファイルをアップロードしてください。<br />";
+                        $arrErr['down_realfilename'][$i] = '※ ダウンロード商品の場合はダウンロード商品用ファイルをアップロードしてください。<br />';
                     }
                 }
                 /*
@@ -368,10 +368,10 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                  */
                 else if ($arrValues['product_type_id'][$i] == PRODUCT_TYPE_NORMAL) {
                     if (!SC_Utils_Ex::isBlank($arrValues['down_filename'][$i])) {
-                        $arrErr['down_filename'][$i] = "※ 通常商品の場合はダウンロードファイル名を設定できません。<br />";
+                        $arrErr['down_filename'][$i] = '※ 通常商品の場合はダウンロードファイル名を設定できません。<br />';
                     }
                     if (!SC_Utils_Ex::isBlank($arrValues['down_realfilename'][$i])) {
-                        $arrErr['down_realfilename'][$i] = "※ 実商品の場合はダウンロード商品用ファイルをアップロードできません。<br />ファイルを取り消してください。<br />";
+                        $arrErr['down_realfilename'][$i] = '※ 実商品の場合はダウンロード商品用ファイルをアップロードできません。<br />ファイルを取り消してください。<br />';
                     }
                 }
             }
@@ -532,11 +532,11 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
 
         // 商品規格なしデータの復元
         $where = 'product_id = ? AND classcategory_id1 = 0 AND classcategory_id2 = 0';
-        $objQuery->update("dtb_products_class", array('del_flg' => 0), $where, array($product_id));
+        $objQuery->update('dtb_products_class', array('del_flg' => 0), $where, array($product_id));
 
         // 商品規格データの削除
         $where = 'product_id = ? AND (classcategory_id1 <> 0 OR classcategory_id2 <> 0)';
-        $objQuery->delete("dtb_products_class", $where, array($product_id));
+        $objQuery->delete('dtb_products_class', $where, array($product_id));
 
         $objQuery->commit();
 
@@ -575,19 +575,19 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                 $size = $size / 1000;
                 $byte = 'MB';
             }
-            $this->arrErr['down_realfilename'][$index] = "※ ダウンロード販売用ファイル名のファイルサイズは" . $size . $byte . "以下のものを使用してください。<br />";
+            $this->arrErr['down_realfilename'][$index] = '※ ダウンロード販売用ファイル名のファイルサイズは' . $size . $byte . "以下のものを使用してください。<br />";
         } else {
-            $array_ext = explode(".", $_FILES['down_realfilename']['name'][$index]);
+            $array_ext = explode('.', $_FILES['down_realfilename']['name'][$index]);
             $is_error = true;
-            $strExt = "";
+            $strExt = '';
 
-            foreach (explode(",", DOWNLOAD_EXTENSION) as $checkExt) {
-                $ext = "";
+            foreach (explode(',', DOWNLOAD_EXTENSION) as $checkExt) {
+                $ext = '';
                 // チェック拡張子のピリオドの数を取得('tar.gz'の場合1個、'jpg'のように通常は0個)
-                $count_period = substr_count($checkExt, ".");
+                $count_period = substr_count($checkExt, '.');
                 if ($count_period > 0) {
                     for ($i = max(array_keys($array_ext)) - $count_period; $i < count($array_ext); $i++) {
-                        $ext .= $array_ext[$i] . ".";
+                        $ext .= $array_ext[$i] . '.';
                     }
                     $ext = preg_replace("/.$/", "" ,$ext);
                 } else {
@@ -598,14 +598,14 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                 if ($ext == $checkExt) {
                     $is_error = false;
                 }
-                if ($strExt == "") {
+                if ($strExt == '') {
                     $strExt .= $checkExt;
                 } else {
                     $strExt .= "・$checkExt";
                 }
             }
             if ($is_error) {
-                $this->arrErr['down_realfilename'][$index] = "※ ダウンロード販売用ファイル名で許可されている形式は、" . $strExt . "です。<br />";
+                $this->arrErr['down_realfilename'][$index] = '※ ダウンロード販売用ファイル名で許可されている形式は、' . $strExt . "です。<br />";
             }
 
             $uniqname = date('mdHi') . '_' . uniqid("").".";
@@ -672,9 +672,9 @@ __EOF__;
         $table = '';
         $arrParams = array();
         if (SC_Utils_Ex::isBlank($class_id2)) {
-            $table = "dtb_classcategory T1 ";
-            $objQuery->setWhere("T1.class_id = ?");
-            $objQuery->setOrder("T1.rank DESC");
+            $table = 'dtb_classcategory T1 ';
+            $objQuery->setWhere('T1.class_id = ?');
+            $objQuery->setOrder('T1.rank DESC');
             $arrParams = array($class_id1);
         } else {
             $col .= <<< __EOF__
@@ -684,12 +684,12 @@ __EOF__;
                 T2.name AS classcategory_name2,
                 T2.rank AS rank2
 __EOF__;
-            $table = "dtb_classcategory AS T1, dtb_classcategory AS T2";
-            $objQuery->setWhere("T1.class_id = ? AND T2.class_id = ?");
-            $objQuery->setOrder("T1.rank DESC, T2.rank DESC");
+            $table = 'dtb_classcategory AS T1, dtb_classcategory AS T2';
+            $objQuery->setWhere('T1.class_id = ? AND T2.class_id = ?');
+            $objQuery->setOrder('T1.rank DESC, T2.rank DESC');
             $arrParams = array($class_id1, $class_id2);
         }
-        return $objQuery->select($col, $table, "", $arrParams);
+        return $objQuery->select($col, $table, '', $arrParams);
     }
 
     /**
@@ -737,7 +737,7 @@ __EOF__;
      */
     function getProductsClass($product_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $col = "product_code, price01, price02, stock, stock_unlimited, sale_limit, deliv_fee, point_rate";
+        $col = 'product_code, price01, price02, stock, stock_unlimited, sale_limit, deliv_fee, point_rate';
         $where = 'product_id = ? AND classcategory_id1 = 0 AND classcategory_id2 = 0';
         return $objQuery->getRow($col, 'dtb_products_class', $where, array($product_id));
     }

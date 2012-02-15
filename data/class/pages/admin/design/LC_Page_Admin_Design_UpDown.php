@@ -120,7 +120,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
     function lfInitUploadFile($objForm) {
         $pkg_dir = SMARTY_TEMPLATES_REALDIR . $objForm->getValue('template_code');
         $objUpFile = new SC_UploadFile_Ex(TEMPLATE_TEMP_REALDIR, $pkg_dir);
-        $objUpFile->addFile("テンプレートファイル", 'template_file', array(), TEMPLATE_SIZE, true, 0, 0, false);
+        $objUpFile->addFile('テンプレートファイル', 'template_file', array(), TEMPLATE_SIZE, true, 0, 0, false);
         return $objUpFile;
     }
 
@@ -131,9 +131,9 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("テンプレートコード", 'template_code', STEXT_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK', 'ALNUM_CHECK'));
-        $objFormParam->addParam("テンプレート名", 'template_name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("端末種別ID", 'device_type_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('テンプレートコード', 'template_code', STEXT_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK', 'ALNUM_CHECK'));
+        $objFormParam->addParam('テンプレート名', 'template_name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('端末種別ID', 'device_type_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -149,7 +149,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
 
         // 同名のフォルダが存在する場合はエラー
         if (file_exists(USER_TEMPLATE_REALDIR . $template_code)) {
-            $arrErr['template_code'] = "※ 同名のファイルがすでに存在します。<br/>";
+            $arrErr['template_code'] = '※ 同名のファイルがすでに存在します。<br/>';
         }
 
         // 登録不可の文字列チェック
@@ -158,14 +158,14 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
                                SMARTPHONE_DEFAULT_TEMPLATE_NAME,
                                DEFAULT_TEMPLATE_NAME);
         if (in_array($template_code, $arrIgnoreCode)) {
-            $arrErr['template_code'] = "※ このテンプレートコードは使用できません。<br/>";
+            $arrErr['template_code'] = '※ このテンプレートコードは使用できません。<br/>';
         }
 
         // DBにすでに登録されていないかチェック
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $exists = $objQuery->exists('dtb_templates', "template_code = ?", array($template_code));
+        $exists = $objQuery->exists('dtb_templates', 'template_code = ?', array($template_code));
         if ($exists) {
-            $arrErr['template_code'] = "※ すでに登録されているテンプレートコードです。<br/>";
+            $arrErr['template_code'] = '※ すでに登録されているテンプレートコードです。<br/>';
         }
 
         /*
@@ -175,7 +175,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
         $tar = new Archive_Tar($_FILES['template_file']['tmp_name'], true);
         $arrArchive = $tar->listContent();
         if (!is_array($arrArchive)) {
-            $arrErr['template_file'] = "※ テンプレートファイルが解凍できません。許可されている形式は、tar/tar.gzです。<br />";
+            $arrErr['template_file'] = '※ テンプレートファイルが解凍できません。許可されている形式は、tar/tar.gzです。<br />';
         } else {
             $make_temp_error = $objUpFile->makeTempFile('template_file', false);
             if (!SC_Utils_Ex::isBlank($make_temp_error)) {
@@ -200,7 +200,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
         $device_type_id = $objFormParam->getValue('device_type_id');
 
         $template_dir = SMARTY_TEMPLATES_REALDIR . $template_code;
-        $compile_dir  = DATA_REALDIR . "Smarty/templates_c/" . $template_code;
+        $compile_dir  = DATA_REALDIR . 'Smarty/templates_c/' . $template_code;
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
@@ -216,14 +216,14 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
         // フォルダ作成
         if (!file_exists($template_dir)) {
             if (!mkdir($template_dir)) {
-                $this->arrErr['err'] = "※ テンプレートフォルダが作成できませんでした。<br/>";
+                $this->arrErr['err'] = '※ テンプレートフォルダが作成できませんでした。<br/>';
                 $objQuery->rollback();
                 return false;
             }
         }
         if (!file_exists($compile_dir)) {
             if (!mkdir($compile_dir)) {
-                $this->arrErr['err'] = "※ Smarty コンパイルフォルダが作成できませんでした。<br/>";
+                $this->arrErr['err'] = '※ Smarty コンパイルフォルダが作成できませんでした。<br/>';
                 $objQuery->rollback();
                 return false;
             }
@@ -233,16 +233,16 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
         $objUpFile->moveTempFile();
 
         // 解凍
-        if (!SC_Helper_FileManager_Ex::unpackFile($template_dir . "/" . $_FILES['template_file']['name'])) {
-            $this->arrErr['err'] = "※ テンプレートファイルの解凍に失敗しました。<br/>";
+        if (!SC_Helper_FileManager_Ex::unpackFile($template_dir . '/' . $_FILES['template_file']['name'])) {
+            $this->arrErr['err'] = '※ テンプレートファイルの解凍に失敗しました。<br/>';
             $objQuery->rollback();
             return false;
         }
         // ユーザデータの下のファイルをコピーする
-        $from_dir = SMARTY_TEMPLATES_REALDIR . $template_code . "/_packages/";
-        $to_dir = USER_REALDIR . "packages/" . $template_code . "/";
+        $from_dir = SMARTY_TEMPLATES_REALDIR . $template_code . '/_packages/';
+        $to_dir = USER_REALDIR . 'packages/' . $template_code . '/';
         if (!SC_Utils_Ex::recursiveMkdir($to_dir)) {
-            $this->arrErr['err'] = "※ " . $to_dir . " の作成に失敗しました。<br/>";
+            $this->arrErr['err'] = '※ ' . $to_dir . " の作成に失敗しました。<br/>";
             $objQuery->rollback();
             return false;
         }

@@ -90,13 +90,13 @@ class LC_Page_Sitemap extends LC_Page_Ex {
         $objQuery = SC_Query_Ex::getSingletonInstance();
 
         //キャッシュしない(念のため)
-        header("Paragrama: no-cache");
+        header('Paragrama: no-cache');
 
         //XMLテキスト
-        header("Content-type: application/xml; charset=utf-8");
+        header('Content-type: application/xml; charset=utf-8');
 
         // 必ず UTF-8 として出力
-        mb_http_output("UTF-8");
+        mb_http_output('UTF-8');
         ob_start('mb_output_handler');
 
         echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
@@ -156,8 +156,8 @@ class LC_Page_Sitemap extends LC_Page_Ex {
      * @see https://www.google.com/webmasters/tools/docs/ja/protocol.html#xmlTagDefinitions
      * TODO Smarty に移行すべき?
      */
-    function createSitemap($loc, $lastmod = "", $changefreq = "",
-                           $priority = "") {
+    function createSitemap($loc, $lastmod = '', $changefreq = '',
+                           $priority = '') {
         printf("\t<url>\n");
         printf("\t\t<loc>%s</loc>\n", htmlentities($loc, ENT_QUOTES, "UTF-8"));
         if (!empty($lastmod)) {
@@ -213,7 +213,7 @@ class LC_Page_Sitemap extends LC_Page_Ex {
 
         // XXX: 商品登録の無いカテゴリは除外する方が良い気もする
         $objQuery = SC_Query_Ex::getSingletonInstance();
-        $sql = "SELECT category_id FROM dtb_category WHERE del_flg = 0";
+        $sql = 'SELECT category_id FROM dtb_category WHERE del_flg = 0';
         $result = $objQuery->getAll($sql);
 
         $arrRet = array();
@@ -233,7 +233,7 @@ class LC_Page_Sitemap extends LC_Page_Ex {
      */
     function getAllDetail() {
         $objQuery = SC_Query_Ex::getSingletonInstance();
-        $sql = "SELECT product_id, update_date FROM dtb_products WHERE del_flg = 0 AND status = 1";
+        $sql = 'SELECT product_id, update_date FROM dtb_products WHERE del_flg = 0 AND status = 1';
         $result = $objQuery->getAll($sql);
 
         $arrRet = array();
@@ -256,32 +256,32 @@ class LC_Page_Sitemap extends LC_Page_Ex {
      */
     function getPageData($where = '', $arrVal = '') {
         $objQuery = SC_Query_Ex::getSingletonInstance();     // DB操作オブジェクト
-        $sql = "";                      // データ取得SQL生成用
+        $sql = '';                      // データ取得SQL生成用
         $arrRet = array();              // データ取得用
 
         // SQL生成(url と update_date 以外は不要？)
-        $sql .= " SELECT";
-        $sql .= " page_id";             // ページID
-        $sql .= " ,page_name";          // 名称
-        $sql .= " ,url";                // URL
-        $sql .= " ,filename";           // ファイル名称
-        $sql .= " ,header_chk ";        // ヘッダー使用FLG
-        $sql .= " ,footer_chk ";        // フッター使用FLG
-        $sql .= " ,author";             // authorタグ
-        $sql .= " ,description";        // descriptionタグ
-        $sql .= " ,keyword";            // keywordタグ
-        $sql .= " ,update_url";         // 更新URL
-        $sql .= " ,create_date";        // データ作成日
-        $sql .= " ,update_date";        // データ更新日
-        $sql .= " FROM ";
-        $sql .= "     dtb_pagelayout";
+        $sql .= ' SELECT';
+        $sql .= ' page_id';             // ページID
+        $sql .= ' ,page_name';          // 名称
+        $sql .= ' ,url';                // URL
+        $sql .= ' ,filename';           // ファイル名称
+        $sql .= ' ,header_chk ';        // ヘッダー使用FLG
+        $sql .= ' ,footer_chk ';        // フッター使用FLG
+        $sql .= ' ,author';             // authorタグ
+        $sql .= ' ,description';        // descriptionタグ
+        $sql .= ' ,keyword';            // keywordタグ
+        $sql .= ' ,update_url';         // 更新URL
+        $sql .= ' ,create_date';        // データ作成日
+        $sql .= ' ,update_date';        // データ更新日
+        $sql .= ' FROM ';
+        $sql .= '     dtb_pagelayout';
 
         // where句の指定があれば追加
         if ($where != '') {
-            $sql .= " WHERE " . $where;
+            $sql .= ' WHERE ' . $where;
         }
 
-        $sql .= " ORDER BY page_id";
+        $sql .= ' ORDER BY page_id';
 
         $arrPageList = $objQuery->getAll($sql, $arrVal);
 
@@ -307,10 +307,10 @@ class LC_Page_Sitemap extends LC_Page_Ex {
     function date2W3CDatetime($date) {
         $arr = array();
         // 正規表現で文字列を抽出
-        preg_match("/^([0-9]{4})-([0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2}):([0-9]{2})/",
+        preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2}):([0-9]{2})/',
              $date, $arr);
         // :TODO: time zone も取得するべき...
-        return sprintf("%04d-%02d-%02dT%02d:%02d:%02d+09:00",
+        return sprintf('%04d-%02d-%02dT%02d:%02d:%02d+09:00',
                        $arr[1], $arr[2], $arr[3], $arr[4], $arr[5], $arr[6]);
     }
 

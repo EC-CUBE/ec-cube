@@ -65,7 +65,7 @@ class SC_FormParam {
     }
 
     // パラメーターの追加
-    function addParam($disp_name, $keyname, $length = "", $convert = "", $arrCheck = array(), $default = "", $input_db = 'true') {
+    function addParam($disp_name, $keyname, $length = '', $convert = '', $arrCheck = array(), $default = "", $input_db = 'true') {
         $this->disp_name[] = $disp_name;
         $this->keyname[] = $keyname;
         $this->length[] = $length;
@@ -110,7 +110,7 @@ class SC_FormParam {
             } else {
                 $this->html_disp_name[$cnt] = $this->disp_name[$cnt];
             }
-            if ($this->default[$cnt] != "") {
+            if ($this->default[$cnt] != '') {
                 $this->html_disp_name[$cnt] .= ' [省略時初期値: ' . $this->default[$cnt] . ']';
             }
             if ($this->input_db[$cnt] == false) {
@@ -132,7 +132,7 @@ class SC_FormParam {
         $no = 1;
         for ($cnt = 0; $cnt < $count; $cnt++) {
             $key = $keyname.$no;
-            if ($arrVal[$cnt][$keyname] != "") {
+            if ($arrVal[$cnt][$keyname] != '') {
                 $this->setValue($key, $arrVal[$cnt][$keyname]);
             }
             $no++;
@@ -142,7 +142,7 @@ class SC_FormParam {
     function setDBDate($db_date, $year_key = 'year', $month_key = 'month', $day_key = 'day') {
 
         if (!empty($db_date)) {
-            list($y, $m, $d) = preg_split("/[- ]/", $db_date);
+            list($y, $m, $d) = preg_split('/[- ]/', $db_date);
             $this->setValue($year_key, $y);
             $this->setValue($month_key, $m);
             $this->setValue($day_key, $d);
@@ -179,7 +179,7 @@ class SC_FormParam {
         $cnt = 0;
         foreach ($this->keyname as $val) {
             foreach ($this->arrCheck[$cnt] as $func) {
-                if (!isset($this->param[$cnt])) $this->param[$cnt] = "";
+                if (!isset($this->param[$cnt])) $this->param[$cnt] = '';
                 switch ($func) {
                 case 'EXIST_CHECK':
                 case 'NUM_CHECK':
@@ -216,14 +216,14 @@ class SC_FormParam {
                     break;
                 // ファイルの存在チェック
                 case 'FILE_EXISTS':
-                    if ($this->param[$cnt] != "" && !file_exists($this->check_dir . $this->param[$cnt])) {
-                        $objErr->arrErr[$val] = "※ " . $this->disp_name[$cnt] . "のファイルが存在しません。<br>";
+                    if ($this->param[$cnt] != '' && !file_exists($this->check_dir . $this->param[$cnt])) {
+                        $objErr->arrErr[$val] = '※ ' . $this->disp_name[$cnt] . 'のファイルが存在しません。<br>';
                     }
                     break;
                 // ダウンロード用ファイルの存在チェック
                 case 'DOWN_FILE_EXISTS':
-                    if ($this->param[$cnt] != "" && !file_exists(DOWN_SAVE_REALDIR . $this->param[$cnt])) {
-                        $objErr->arrErr[$val] = "※ " . $this->disp_name[$cnt] . "のファイルが存在しません。<br>";
+                    if ($this->param[$cnt] != '' && !file_exists(DOWN_SAVE_REALDIR . $this->param[$cnt])) {
+                        $objErr->arrErr[$val] = '※ ' . $this->disp_name[$cnt] . 'のファイルが存在しません。<br>';
                     }
                     break;
                 default:
@@ -294,7 +294,7 @@ class SC_FormParam {
     function convParam() {
         $cnt = 0;
         foreach ($this->keyname as $val) {
-            if (!isset($this->param[$cnt])) $this->param[$cnt] = "";
+            if (!isset($this->param[$cnt])) $this->param[$cnt] = '';
             $this->recursionConvParam($this->param[$cnt], $this->convert[$cnt]);
             $cnt++;
         }
@@ -339,7 +339,7 @@ class SC_FormParam {
         $cnt = 0;
         foreach ($this->keyname as $val) {
             if ($this->input_db[$cnt]) {
-                $arrRet[$val] = isset($this->param[$cnt]) ? $this->param[$cnt] : "";
+                $arrRet[$val] = isset($this->param[$cnt]) ? $this->param[$cnt] : '';
             }
             $cnt++;
         }
@@ -382,9 +382,9 @@ class SC_FormParam {
                 $arrRet[$val]['value'] = $this->param[$cnt];
             }
 
-            if (!isset($this->param[$cnt])) $this->param[$cnt] = "";
+            if (!isset($this->param[$cnt])) $this->param[$cnt] = '';
 
-            if ($this->default[$cnt] != "" && $this->param[$cnt] == "") {
+            if ($this->default[$cnt] != '' && $this->param[$cnt] == '') {
                 $arrRet[$val]['value'] = $this->default[$cnt];
             }
 
@@ -408,7 +408,7 @@ class SC_FormParam {
         $ret = null;
         foreach ($this->keyname as $val) {
             if ($val == $keyname) {
-                $ret = isset($this->param[$cnt]) ? $this->param[$cnt] : "";
+                $ret = isset($this->param[$cnt]) ? $this->param[$cnt] : '';
                 break;
             }
             $cnt++;
@@ -436,7 +436,7 @@ class SC_FormParam {
         foreach ($this->keyname as $val) {
             if ($val == $keyname) {
                 if (isset($this->param[$cnt]) && !is_array($this->param[$cnt])) {
-                    $this->param[$cnt] = explode("-", $this->param[$cnt]);
+                    $this->param[$cnt] = explode('-', $this->param[$cnt]);
                 }
             }
             $cnt++;
@@ -452,7 +452,7 @@ class SC_FormParam {
     function trimParam($has_wide_space = true) {
         $cnt = 0;
         foreach ($this->keyname as $val) {
-            if (!isset($this->param[$cnt])) $this->param[$cnt] = "";
+            if (!isset($this->param[$cnt])) $this->param[$cnt] = '';
             $this->recursionTrim($this->param[$cnt], $has_wide_space);
             $cnt++;
         }
@@ -495,7 +495,7 @@ class SC_FormParam {
         foreach ($this->keyname as $key) {
             if (preg_match('/^' . $prefix . '/', $key)) {
                 $arrResults[$key] = isset($this->param[$cnt])
-                    ? $this->param[$cnt] : "";
+                    ? $this->param[$cnt] : '';
             }
             $cnt++;
         }
@@ -518,9 +518,9 @@ class SC_FormParam {
                 $arrRet[$cnt]['value'] = $this->param[$cnt];
             }
 
-            if (!isset($this->param[$cnt])) $this->param[$cnt] = "";
+            if (!isset($this->param[$cnt])) $this->param[$cnt] = '';
 
-            if ($this->default[$cnt] != "" && $this->param[$cnt] == "") {
+            if ($this->default[$cnt] != '' && $this->param[$cnt] == '') {
                 $arrRet[$cnt]['value'] = $this->default[$cnt];
             }
             $cnt++;

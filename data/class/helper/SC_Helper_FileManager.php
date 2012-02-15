@@ -50,13 +50,13 @@ class SC_Helper_FileManager {
                 natcasesort($arrDir);
                 foreach ($arrDir as $file) {
                     // ./ と ../を除くファイルのみを取得
-                    if ($file != "." && $file != "..") {
+                    if ($file != '.' && $file != '..') {
 
-                        $path = $dir."/".$file;
+                        $path = $dir.'/'.$file;
                         // SELECT内の見た目を整えるため指定文字数で切る
                         $file_name = SC_Utils_Ex::sfCutString($file, FILE_NAME_LEN);
                         $file_size = SC_Utils_Ex::sfCutString($this->sfGetDirSize($path), FILE_NAME_LEN);
-                        $file_time = date("Y/m/d", filemtime($path));
+                        $file_time = date('Y/m/d', filemtime($path));
 
                         // ディレクトリとファイルで格納配列を変える
                         if (is_dir($path)) {
@@ -98,7 +98,7 @@ class SC_Helper_FileManager {
                 while ($file = readdir($handle)) {
                     // 行末の/を取り除く
                     $dir = ereg_replace("/$", "", $dir);
-                    $path = $dir."/".$file;
+                    $path = $dir.'/'.$file;
                     if ($file != '..' && $file != '.' && !is_dir($path)) {
                         $bytes += filesize($path);
                     } else if (is_dir($path) && $file != '..' && $file != '.') {
@@ -112,7 +112,7 @@ class SC_Helper_FileManager {
             }
         }
         // ディレクトリ(ファイル)が存在しない場合は0byteを返す
-        if($bytes == "") $bytes = 0;
+        if($bytes == '') $bytes = 0;
 
         return $bytes;
     }
@@ -131,7 +131,7 @@ class SC_Helper_FileManager {
                 if ($handle = opendir("$dir")) {
                     $cnt = 0;
                     while (false !== ($item = readdir($handle))) {
-                        if ($item != "." && $item != "..") {
+                        if ($item != '.' && $item != '..') {
                             if (is_dir("$dir/$item")) {
                                 $this->sfDeleteDir("$dir/$item");
                             } else {
@@ -212,10 +212,10 @@ class SC_Helper_FileManager {
                 // アルファベットと数字でソート
                 natcasesort($arrDir);
                 foreach ($arrDir as $item) {
-                    if ($item != "." && $item != "..") {
+                    if ($item != '.' && $item != '..') {
                         // 文末の/を取り除く
                         $dir = ereg_replace("/$", "", $dir);
-                        $path = $dir."/".$item;
+                        $path = $dir.'/'.$item;
                         // ディレクトリのみ取得
                         if (is_dir($path)) {
                             $arrTree[$cnt]['path'] = $path;
@@ -256,7 +256,7 @@ class SC_Helper_FileManager {
                 while ($file = readdir($handle)) {
                     // 行末の/を取り除く
                     $dir = ereg_replace("/$", "", $dir);
-                    $path = $dir."/".$file;
+                    $path = $dir.'/'.$file;
                     if ($file != '..' && $file != '.' && is_dir($path)) {
                         return true;
                     }
@@ -292,10 +292,10 @@ class SC_Helper_FileManager {
      */
     function sfDownloadFile($file) {
         // ファイルの場合はダウンロードさせる
-        Header("Content-disposition: attachment; filename=".basename($file));
-        Header("Content-type: application/octet-stream; name=".basename($file));
-        Header("Cache-Control: ");
-        Header("Pragma: ");
+        Header('Content-disposition: attachment; filename='.basename($file));
+        Header('Content-type: application/octet-stream; name='.basename($file));
+        Header('Cache-Control: ');
+        Header('Pragma: ');
         echo ($this->sfReadFile($file));
     }
 
@@ -306,9 +306,9 @@ class SC_Helper_FileManager {
      * @param integer $mode パーミッション
      * @return bool ファイル作成に成功した場合 true
      */
-    function sfCreateFile($file, $mode = "") {
+    function sfCreateFile($file, $mode = '') {
         // 行末の/を取り除く
-        if ($mode != "") {
+        if ($mode != '') {
             $ret = @mkdir($file, $mode);
         } else {
             $ret = @mkdir($file);
@@ -324,7 +324,7 @@ class SC_Helper_FileManager {
      * @return string ファイルの内容
      */
     function sfReadFile($filename) {
-        $str = "";
+        $str = '';
         // バイナリモードでオープン
         $fp = @fopen($filename, 'rb');
         //ファイル内容を全て変数に読み込む
@@ -368,12 +368,12 @@ class SC_Helper_FileManager {
         // ダウンロードされるファイル名
         $dlFileName = 'tpl_package_' . $template_code . '_' . date('YmdHis') . '.tar.gz';
 
-        $debug_message = $dir . " から " . $dlFileName . " を作成します...\n";
+        $debug_message = $dir . ' から ' . $dlFileName . " を作成します...\n";
         // ファイル一覧取得
         $arrFileHash = SC_Utils_Ex::sfGetFileList($dir);
         foreach ($arrFileHash as $val) {
             $arrFileList[] = $val['file_name'];
-            $debug_message.= "圧縮：".$val['file_name']."\n";
+            $debug_message.= '圧縮：'.$val['file_name']."\n";
         }
         GC_Utils_Ex::gfPrintLog($debug_message);
 
@@ -385,10 +385,10 @@ class SC_Helper_FileManager {
             // ダウンロード用HTTPヘッダ出力
             header("Content-disposition: attachment; filename=${dlFileName}");
             header("Content-type: application/octet-stream; name=${dlFileName}");
-            header("Cache-Control: ");
-            header("Pragma: ");
+            header('Cache-Control: ');
+            header('Pragma: ');
             readfile($dlFileName);
-            unlink($dir . "/" . $dlFileName);
+            unlink($dir . '/' . $dlFileName);
             return true;
         } else {
             return false;
@@ -412,11 +412,11 @@ class SC_Helper_FileManager {
         $unpacking_name = preg_replace("/(\.tar|\.tar\.gz)$/", "", $file_name);
 
         // 指定されたフォルダ内に解凍する
-        $result = $tar->extractModify($dir. "/", $unpacking_name);
-        GC_Utils_Ex::gfPrintLog("解凍：" . $dir."/".$file_name."->".$dir."/".$unpacking_name);
+        $result = $tar->extractModify($dir. '/', $unpacking_name);
+        GC_Utils_Ex::gfPrintLog('解凍：' . $dir.'/'.$file_name."->".$dir."/".$unpacking_name);
 
         // フォルダ削除
-        SC_Utils_Ex::sfDelFile($dir . "/" . $unpacking_name);
+        SC_Utils_Ex::sfDelFile($dir . '/' . $unpacking_name);
         // 圧縮ファイル削除
         unlink($path);
         return $result;

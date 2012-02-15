@@ -43,10 +43,10 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @param string $dsn データソース名
      * @return string データベースのバージョン
      */
-    function sfGetDBVersion($dsn = "") {
+    function sfGetDBVersion($dsn = '') {
         $objQuery =& SC_Query_Ex::getSingletonInstance($dsn);
-        $val = $objQuery->getOne("select version()");
-        return "MySQL " . $val;
+        $val = $objQuery->getOne('select version()');
+        return 'MySQL ' . $val;
     }
 
     /**
@@ -88,10 +88,10 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return string 昨日の売上高・売上件数を算出する SQL
      */
     function getOrderYesterdaySql($method) {
-        return "SELECT ".$method."(total) FROM dtb_order "
-              . "WHERE del_flg = 0 "
-                . "AND cast(create_date as date) = DATE_ADD(current_date, interval -1 day) "
-                . "AND status <> " . ORDER_CANCEL;
+        return 'SELECT '.$method.'(total) FROM dtb_order '
+              . 'WHERE del_flg = 0 '
+                . 'AND cast(create_date as date) = DATE_ADD(current_date, interval -1 day) '
+                . 'AND status <> ' . ORDER_CANCEL;
     }
 
     /**
@@ -101,11 +101,11 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return string 当月の売上高・売上件数を算出する SQL
      */
     function getOrderMonthSql($method) {
-        return "SELECT ".$method."(total) FROM dtb_order "
-              . "WHERE del_flg = 0 "
+        return 'SELECT '.$method.'(total) FROM dtb_order '
+              . 'WHERE del_flg = 0 '
                 . "AND date_format(create_date, '%Y/%m') = ? "
                 . "AND date_format(create_date, '%Y/%m/%d') <> date_format(CURRENT_TIMESTAMP, '%Y/%m/%d') "
-                . "AND status <> " . ORDER_CANCEL;
+                . 'AND status <> ' . ORDER_CANCEL;
     }
 
     /**
@@ -114,13 +114,13 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return string 昨日のレビュー書き込み件数を算出する SQL
      */
     function getReviewYesterdaySql() {
-        return "SELECT COUNT(*) FROM dtb_review AS A "
-          . "LEFT JOIN dtb_products AS B "
-                 . "ON A.product_id = B.product_id "
-              . "WHERE A.del_flg = 0 "
-                . "AND B.del_flg = 0 "
-                . "AND cast(A.create_date as date) = DATE_ADD(current_date, interval -1 day) "
-                . "AND cast(A.create_date as date) != current_date";
+        return 'SELECT COUNT(*) FROM dtb_review AS A '
+          . 'LEFT JOIN dtb_products AS B '
+                 . 'ON A.product_id = B.product_id '
+              . 'WHERE A.del_flg = 0 '
+                . 'AND B.del_flg = 0 '
+                . 'AND cast(A.create_date as date) = DATE_ADD(current_date, interval -1 day) '
+                . 'AND cast(A.create_date as date) != current_date';
     }
 
     /**
@@ -129,7 +129,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return string 検索条件の SQL
      */
     function getSendHistoryWhereStartdateSql() {
-        return "start_date BETWEEN date_add(CURRENT_TIMESTAMP,INTERVAL -5 minute) AND date_add(CURRENT_TIMESTAMP,INTERVAL 5 minute)";
+        return 'start_date BETWEEN date_add(CURRENT_TIMESTAMP,INTERVAL -5 minute) AND date_add(CURRENT_TIMESTAMP,INTERVAL 5 minute)';
     }
 
     /**
@@ -139,7 +139,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return string 検索条件の SQL
      */
     function getDownloadableDaysWhereSql($dtb_order_alias = 'dtb_order') {
-        return "(SELECT IF((SELECT d1.downloadable_days_unlimited FROM dtb_baseinfo d1)=1, 1, DATE(CURRENT_TIMESTAMP) <= DATE(DATE_ADD(" . $dtb_order_alias . ".payment_date, INTERVAL (SELECT downloadable_days FROM dtb_baseinfo) DAY))))";
+        return '(SELECT IF((SELECT d1.downloadable_days_unlimited FROM dtb_baseinfo d1)=1, 1, DATE(CURRENT_TIMESTAMP) <= DATE(DATE_ADD(' . $dtb_order_alias . '.payment_date, INTERVAL (SELECT downloadable_days FROM dtb_baseinfo) DAY))))';
     }
 
     /**
@@ -195,17 +195,17 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return string 連結後の SQL 文
      */
     function concatColumn($columns) {
-        $sql = "concat(";
+        $sql = 'concat(';
         $i = 0;
         $total = count($columns);
         foreach ($columns as $column) {
             $sql .= $column;
             if ($i < $total -1) {
-                $sql .= ", ";
+                $sql .= ', ';
             }
             $i++;
         }
-        $sql .= ")";
+        $sql .= ')';
         return $sql;
     }
 
@@ -217,9 +217,9 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @param string $expression 検索文字列
      * @return array テーブル名の配列
      */
-    function findTableNames($expression = "") {
+    function findTableNames($expression = '') {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $sql = "SHOW TABLES LIKE ". $objQuery->quote("%" . $expression . "%");
+        $sql = 'SHOW TABLES LIKE '. $objQuery->quote('%' . $expression . "%");
         $arrColList = $objQuery->getAll($sql);
         $arrColList = SC_Utils_Ex::sfSwapArray($arrColList, false);
         return $arrColList[0];

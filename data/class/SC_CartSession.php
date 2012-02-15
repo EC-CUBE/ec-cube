@@ -51,7 +51,7 @@ class SC_CartSession {
         }
         // 1世代古いコピー情報は、削除しておく
         foreach ($_SESSION as $k => $val) {
-            if ($k != $this->key_tmp && preg_match("/^savecart_/", $k)) {
+            if ($k != $this->key_tmp && preg_match('/^savecart_/', $k)) {
                 unset($this->cartSession[$productTypeId][$k]);
             }
         }
@@ -60,7 +60,7 @@ class SC_CartSession {
     // 商品購入中の変更があったかをチェックする。
     function getCancelPurchase($productTypeId) {
         $ret = isset($this->cartSession[$productTypeId]['cancel_purchase'])
-            ? $this->cartSession[$productTypeId]['cancel_purchase'] : "";
+            ? $this->cartSession[$productTypeId]['cancel_purchase'] : '';
         $this->cartSession[$productTypeId]['cancel_purchase'] = false;
         return $ret;
     }
@@ -170,13 +170,13 @@ class SC_CartSession {
         for ($i = 0; $i <= $max; $i++) {
 
             if (!isset($this->cartSession[$productTypeId][$i]['price'])) {
-                $this->cartSession[$productTypeId][$i]['price'] = "";
+                $this->cartSession[$productTypeId][$i]['price'] = '';
             }
 
             $price = $this->cartSession[$productTypeId][$i]['price'];
 
             if (!isset($this->cartSession[$productTypeId][$i]['quantity'])) {
-                $this->cartSession[$productTypeId][$i]['quantity'] = "";
+                $this->cartSession[$productTypeId][$i]['quantity'] = '';
             }
             $quantity = $this->cartSession[$productTypeId][$i]['quantity'];
 
@@ -211,12 +211,12 @@ class SC_CartSession {
                 $quantity = $this->cartSession[$productTypeId][$i]['quantity'];
 
                 if (!isset($this->cartSession[$productTypeId][$i]['point_rate'])) {
-                    $this->cartSession[$productTypeId][$i]['point_rate'] = "";
+                    $this->cartSession[$productTypeId][$i]['point_rate'] = '';
                 }
                 $point_rate = $this->cartSession[$productTypeId][$i]['point_rate'];
 
                 if (!isset($this->cartSession[$productTypeId][$i]['id'][0])) {
-                    $this->cartSession[$productTypeId][$i]['id'][0] = "";
+                    $this->cartSession[$productTypeId][$i]['id'][0] = '';
                 }
                 $point = SC_Utils_Ex::sfPrePoint($price, $point_rate);
                 $total+= ($point * $quantity);
@@ -253,13 +253,13 @@ class SC_CartSession {
     function setPrevURL($url, $excludePaths = array()) {
         // 前頁として記録しないページを指定する。
         $arrExclude = array(
-            "/shopping/"
+            '/shopping/'
         );
         $arrExclude = array_merge($arrExclude, $excludePaths);
         $exclude = false;
         // ページチェックを行う。
         foreach ($arrExclude as $val) {
-            if (preg_match("|" . preg_quote($val) . "|", $url)) {
+            if (preg_match('|' . preg_quote($val) . '|', $url)) {
                 $exclude = true;
                 break;
             }
@@ -336,7 +336,7 @@ class SC_CartSession {
         $arrRet = array();
         for ($i = 0; $i <= $max; $i++) {
             if(isset($this->cartSession[$productTypeId][$i]['cart_no'])
-               && $this->cartSession[$productTypeId][$i]['cart_no'] != "") {
+               && $this->cartSession[$productTypeId][$i]['cart_no'] != '') {
 
                 // 商品情報は常に取得
                 $this->cartSession[$productTypeId][$i]['productsClass']
@@ -391,7 +391,7 @@ class SC_CartSession {
     function getAllProductID($productTypeId) {
         $max = $this->getMax($productTypeId);
         for ($i = 0; $i <= $max; $i++) {
-            if ($this->cartSession[$productTypeId][$i]['cart_no'] != "") {
+            if ($this->cartSession[$productTypeId][$i]['cart_no'] != '') {
                 $arrRet[] = $this->cartSession[$productTypeId][$i]['id'][0];
             }
         }
@@ -407,7 +407,7 @@ class SC_CartSession {
     function getAllProductClassID($productTypeId) {
         $max = $this->getMax($productTypeId);
         for ($i = 0; $i <= $max; $i++) {
-            if ($this->cartSession[$productTypeId][$i]['cart_no'] != "") {
+            if ($this->cartSession[$productTypeId][$i]['cart_no'] != '') {
                 $arrRet[] = $this->cartSession[$productTypeId][$i]['id'];
             }
         }
@@ -517,7 +517,7 @@ class SC_CartSession {
      */
     function checkProducts($productTypeId) {
         $objProduct = new SC_Product_Ex();
-        $tpl_message = "";
+        $tpl_message = '';
 
         // カート内の情報を取得
         $items = $this->getCartList($productTypeId);
@@ -537,7 +537,7 @@ class SC_CartSession {
                  */
                 $arrDeliv = SC_Helper_Purchase_Ex::getDeliv($productTypeId);
                 if (SC_Utils_Ex::isBlank($arrDeliv)) {
-                    $tpl_message .= "※「" . $product['name'] . "」はまだ配送の準備ができておりません。恐れ入りますがお問い合わせページよりお問い合わせください。\n";
+                    $tpl_message .= '※「' . $product['name'] . "」はまだ配送の準備ができておりません。恐れ入りますがお問い合わせページよりお問い合わせください。\n";
                     $this->delProduct($item['cart_no'], $productTypeId);
                 }
 
@@ -549,10 +549,10 @@ class SC_CartSession {
                     if ($limit > 0) {
                         $this->setProductValue($item['id'], 'quantity', $limit, $productTypeId);
                         $this->setProductValue($item['id'], 'total_inctax', SC_Helper_DB_Ex::sfCalcIncTax($item['price']) * $limit, $productTypeId);
-                        $tpl_message .= "※「" . $product['name'] . "」は販売制限(または在庫が不足)しております。一度に数量{$limit}を超える購入はできません。\n";
+                        $tpl_message .= '※「' . $product['name'] . "」は販売制限(または在庫が不足)しております。一度に数量{$limit}を超える購入はできません。\n";
                     } else {
                         $this->delProduct($item['cart_no'], $productTypeId);
-                        $tpl_message .= "※「" . $product['name'] . "」は売り切れました。\n";
+                        $tpl_message .= '※「' . $product['name'] . "」は売り切れました。\n";
                         continue;
                     }
                 }
@@ -617,7 +617,7 @@ class SC_CartSession {
      * @return array カートの計算結果の配列
      */
     function calculate($productTypeId, &$objCustomer, $use_point = 0,
-                       $deliv_pref = "", $charge = 0, $discount = 0, $deliv_id = 0) {
+                       $deliv_pref = '', $charge = 0, $discount = 0, $deliv_id = 0) {
         $objDb = new SC_Helper_DB_Ex();
 
         $total_point = $this->getAllProductsPoint($productTypeId);
@@ -658,7 +658,7 @@ class SC_CartSession {
         if (USE_POINT !== false) {
             $results['add_point'] = SC_Helper_DB_Ex::sfGetAddPoint($total_point,
                                                                    $use_point);
-            if ($objCustomer != "") {
+            if ($objCustomer != '') {
                 // 誕生日月であった場合
                 if ($objCustomer->isBirthMonth()) {
                     $results['birth_point'] = BIRTH_MONTH_POINT;

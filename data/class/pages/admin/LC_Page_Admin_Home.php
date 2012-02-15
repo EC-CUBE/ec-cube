@@ -120,7 +120,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
      * @return string PHPバージョン情報
      */
     function lfGetPHPVersion() {
-        return "PHP " . phpversion();
+        return 'PHP ' . phpversion();
     }
 
     /**
@@ -140,9 +140,9 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
      */
     function lfGetCustomerCnt() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $col = "COUNT(customer_id)";
+        $col = 'COUNT(customer_id)';
         $table = 'dtb_customer';
-        $where = "del_flg = 0 AND status = 2";
+        $where = 'del_flg = 0 AND status = 2';
         return $objQuery->get($col, $table, $where);
     }
 
@@ -169,7 +169,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
      */
     function lfGetOrderMonth($method) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $month = date("Y/m", mktime());
+        $month = date('Y/m', mktime());
 
         // TODO: DBFactory使わないでも共通化できそうな気もしますが
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
@@ -185,8 +185,8 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
     function lfGetTotalCustomerPoint() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        $col = "SUM(point)";
-        $where = "del_flg = 0";
+        $col = 'SUM(point)';
+        $where = 'del_flg = 0';
         $from = 'dtb_customer';
         return $objQuery->get($col, $from, $where);
     }
@@ -213,8 +213,8 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
     function lfGetReviewNonDisp() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        $table = "dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id";
-        $where = "A.del_flg = 0 AND A.status = 2 AND B.del_flg = 0";
+        $table = 'dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id';
+        $where = 'A.del_flg = 0 AND A.status = 2 AND B.del_flg = 0';
         return $objQuery->count($table, $where);
     }
 
@@ -226,11 +226,11 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
     function lfGetSoldOut() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        $cols = "product_id, name";
+        $cols = 'product_id, name';
         $table = 'dtb_products';
-        $where = "product_id IN ("
-                  . "SELECT product_id FROM dtb_products_class "
-                  . "WHERE stock_unlimited = ? AND stock <= 0)";
+        $where = 'product_id IN ('
+                  . 'SELECT product_id FROM dtb_products_class '
+                  . 'WHERE stock_unlimited = ? AND stock <= 0)';
         return $objQuery->select($cols, $table, $where, array(UNLIMITED_FLG_LIMITED));
     }
 
@@ -242,48 +242,50 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
     function lfGetNewOrder() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        $sql = "SELECT
-                    ord.order_id,
-                    ord.customer_id,
-                    ord.order_name01 AS name01,
-                    ord.order_name02 AS name02,
-                    ord.total,
-                    ord.create_date,
-                    (SELECT
-                        det.product_name
-                    FROM
-                        dtb_order_detail AS det
-                    WHERE
-                        ord.order_id = det.order_id
-                    ORDER BY det.order_detail_id
-                    LIMIT 1
-                    ) AS product_name,
-                    (SELECT
-                        pay.payment_method
-                    FROM
-                        dtb_payment AS pay
-                    WHERE
-                        ord.payment_id = pay.payment_id
-                    ) AS payment_method
-                FROM (
-                    SELECT
-                        order_id,
-                        customer_id,
-                        order_name01,
-                        order_name02,
-                        total,
-                        create_date,
-                        payment_id
-                    FROM
-                        dtb_order AS ord
-                    WHERE
-                        del_flg = 0 AND status <> " . ORDER_CANCEL . "
-                    ORDER BY
-                        create_date DESC LIMIT 10 OFFSET 0
-                ) AS ord";
-        $arrNewOrder = $objQuery->getAll($sql);
+        $sql = <<< __EOS__
+            SELECT
+                ord.order_id,
+                ord.customer_id,
+                ord.order_name01 AS name01,
+                ord.order_name02 AS name02,
+                ord.total,
+                ord.create_date,
+                (SELECT
+                    det.product_name
+                FROM
+                    dtb_order_detail AS det
+                WHERE
+                    ord.order_id = det.order_id
+                ORDER BY det.order_detail_id
+                LIMIT 1
+                ) AS product_name,
+                (SELECT
+                    pay.payment_method
+                FROM
+                    dtb_payment AS pay
+                WHERE
+                    ord.payment_id = pay.payment_id
+                ) AS payment_method
+            FROM (
+                SELECT
+                    order_id,
+                    customer_id,
+                    order_name01,
+                    order_name02,
+                    total,
+                    create_date,
+                    payment_id
+                FROM
+                    dtb_order AS ord
+                WHERE
+                    del_flg = 0 AND status <> ?
+                ORDER BY
+                    create_date DESC LIMIT 10 OFFSET 0
+            ) AS ord
+__EOS__;
+        $arrNewOrder = $objQuery->getAll($sql, ORDER_CANCEL);
         foreach ($arrNewOrder as $key => $val) {
-            $arrNewOrder[$key]['create_date'] = str_replace("-", "/", substr($val['create_date'], 0,19));
+            $arrNewOrder[$key]['create_date'] = str_replace('-', "/", substr($val['create_date'], 0,19));
 
         }
         return $arrNewOrder;
@@ -320,7 +322,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
         $arrTmpData = is_string($jsonStr) ? SC_Utils_Ex::jsonDecode($jsonStr) : null;
 
         if (empty($arrTmpData)) {
-            SC_Utils_Ex::sfErrorHeader(">> 更新情報の取得に失敗しました。");
+            SC_Utils_Ex::sfErrorHeader('>> 更新情報の取得に失敗しました。');
             return array();
         }
         $arrInfo = array();

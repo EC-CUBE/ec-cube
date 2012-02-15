@@ -43,7 +43,7 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_title = "ご利用規約";
+        $this->tpl_title = 'ご利用規約';
     }
 
     /**
@@ -95,7 +95,7 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex {
      * @return string 規約の内容をテキストエリアで表示するように整形したデータ
      */
     function lfMakeKiyakuText($arrKiyaku, $max, $offset) {
-        $this->tpl_kiyaku_text = "";
+        $this->tpl_kiyaku_text = '';
         for ($i = 0; $i < $max; $i++) {
             if ($offset !== null && ($offset - 1) <> $i) continue;
             $tpl_kiyaku_text.=$arrKiyaku[$i]['kiyaku_title'] . "\n\n";
@@ -114,8 +114,8 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex {
 
         $objQuery   = SC_Query_Ex::getSingletonInstance();
 
-        $objQuery->setOrder("rank DESC");
-        $arrKiyaku  = $objQuery->select("kiyaku_title, kiyaku_text", 'dtb_kiyaku', "del_flg <> 1");
+        $objQuery->setOrder('rank DESC');
+        $arrKiyaku  = $objQuery->select('kiyaku_title, kiyaku_text', 'dtb_kiyaku', "del_flg <> 1");
 
         return $arrKiyaku;
     }

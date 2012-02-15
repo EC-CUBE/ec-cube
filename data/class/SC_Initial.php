@@ -87,8 +87,8 @@ class SC_Initial {
            && defined('DB_SERVER') && defined('DB_PORT') && defined('DB_NAME')) {
             /** サイト用DB */
             define ('DEFAULT_DSN',
-                    DB_TYPE . "://" . DB_USER . ":" . DB_PASSWORD . "@"
-                    . DB_SERVER . ":" .DB_PORT . "/" . DB_NAME);
+                    DB_TYPE . '://' . DB_USER . ':' . DB_PASSWORD . "@"
+                    . DB_SERVER . ':' .DB_PORT . '/' . DB_NAME);
         }
     }
 
@@ -183,15 +183,15 @@ class SC_Initial {
             . ' にユーザ書込み権限(777等)を付与して下さい。</div>';
 
         // 定数を設定
-        if (is_file(CACHE_REALDIR . "mtb_constants.php")) {
+        if (is_file(CACHE_REALDIR . 'mtb_constants.php')) {
             require_once CACHE_REALDIR . 'mtb_constants.php';
 
             // キャッシュが無ければ, 初期データからコピー
-        } elseif (is_file(CACHE_REALDIR . "../mtb_constants_init.php")) {
+        } elseif (is_file(CACHE_REALDIR . '../mtb_constants_init.php')) {
 
-            $mtb_constants = file_get_contents(CACHE_REALDIR . "../mtb_constants_init.php");
+            $mtb_constants = file_get_contents(CACHE_REALDIR . '../mtb_constants_init.php');
             if (is_writable(CACHE_REALDIR)) {
-                $handle = fopen(CACHE_REALDIR . "mtb_constants.php", 'w');
+                $handle = fopen(CACHE_REALDIR . 'mtb_constants.php', 'w');
                 if (!$handle) {
                     die($errorMessage);
                 }
@@ -205,7 +205,7 @@ class SC_Initial {
                 die($errorMessage);
             }
         } else {
-            die(CACHE_REALDIR . "../mtb_constants_init.php が存在しません");
+            die(CACHE_REALDIR . '../mtb_constants_init.php が存在しません');
         }
     }
 

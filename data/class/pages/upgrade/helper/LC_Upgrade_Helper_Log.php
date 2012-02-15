@@ -41,7 +41,7 @@ class LC_Upgrade_Helper_Log {
      * @param string $mode
      */
     function end() {
-        $message = "##### end #####";
+        $message = '##### end #####';
         $this->log($message);
     }
     /**

@@ -81,7 +81,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
         // ログインチェック
         $objCustomer = new SC_Customer_Ex();
         if (!$objCustomer->isLoginSuccess(true)) {
-            SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
+            SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,'',true);
         }
 
         // パラメーターチェック
@@ -92,7 +92,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
         $objFormParam->setParam($_GET);
         $this->arrErr = $this->lfCheckError($objFormParam);
         if (count($this->arrErr)!=0) {
-            SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
+            SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,'',true);
         }
     }
 
@@ -115,18 +115,18 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
         $arrForm = $this->lfGetRealFileName($customer_id, $order_id, $product_id, $product_class_id);
 
         //ファイル情報が無い場合はNG
-        if ($arrForm['down_realfilename'] == "") {
-            SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
+        if ($arrForm['down_realfilename'] == '') {
+            SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,'',true);
         }
         //ファイルそのものが無い場合もとりあえずNG
         $realpath = DOWN_SAVE_REALDIR . $arrForm['down_realfilename'];
         if (!file_exists($realpath)) {
-            SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
+            SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,'',true);
         }
         //ファイル名をエンコードする Safariの対策はUTF-8で様子を見る
         $encoding = 'Shift_JIS';
         if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'],'Safari')) {
-            $encoding = "UTF-8";
+            $encoding = 'UTF-8';
         }
         $sdown_filename = mb_convert_encoding($arrForm['down_filename'], $encoding, 'auto');
 
@@ -178,9 +178,9 @@ __EOS__;
 __EOS__;
 
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
-        $where = "o.customer_id = ? AND o.order_id = ? AND pc.product_id = ? AND pc.product_class_id = ?";
-        $where .= " AND " . $dbFactory->getDownloadableDaysWhereSql('o');
-        $where .= " = 1";
+        $where = 'o.customer_id = ? AND o.order_id = ? AND pc.product_id = ? AND pc.product_class_id = ?';
+        $where .= ' AND ' . $dbFactory->getDownloadableDaysWhereSql('o');
+        $where .= ' = 1';
         $arrRet = $objQuery->select($col, $table, $where,
                                     array($customer_id, $order_id, $product_id, $product_class_id));
         return $arrRet[0];
@@ -212,10 +212,10 @@ __EOS__;
         //ファイルの拡張子からコンテンツタイプを取得する
         $mime_type = $objHelperMobile->getMIMEType($realpath);
         header('Content-Type: ' . $mime_type);
-        header("Content-Disposition: attachment; filename=" . $sdown_filename);
+        header('Content-Disposition: attachment; filename=' . $sdown_filename);
         header('Accept-Ranges: bytes');
-        header("Last-Modified: " . gmdate("D,d M Y H:i:s") . " GMT");
-        header("Cache-Control: public");
+        header('Last-Modified: ' . gmdate('D,d M Y H:i:s') . " GMT");
+        header('Cache-Control: public');
     }
 
     /**
@@ -233,17 +233,17 @@ __EOS__;
         $fp = fopen($realpath, 'rb');
         if (isset($_SERVER['HTTP_RANGE'])) {
             // 二回目以降のリクエスト
-            list($range_offset, $range_limit) = sscanf($_SERVER['HTTP_RANGE'], "bytes=%d-%d");
-            $content_range = sprintf("bytes %d-%d/%d", $range_offset, $range_limit, $file_size);
+            list($range_offset, $range_limit) = sscanf($_SERVER['HTTP_RANGE'], 'bytes=%d-%d');
+            $content_range = sprintf('bytes %d-%d/%d', $range_offset, $range_limit, $file_size);
             $content_length = $range_limit - $range_offset + 1;
             fseek($fp, $range_offset, SEEK_SET);
-            header("HTTP/1.1 206 Partial Content");
-            header("Content-Lenth: " . $content_length);
-            header("Content-Range: " . $content_range);
+            header('HTTP/1.1 206 Partial Content');
+            header('Content-Lenth: ' . $content_length);
+            header('Content-Range: ' . $content_range);
         } else {
             // 一回目のリクエスト
             $content_length = $file_size;
-            header("Content-Length: " . $content_length);
+            header('Content-Length: ' . $content_length);
         }
         echo fread($fp, $content_length) ;
         ob_flush();
@@ -268,9 +268,9 @@ __EOS__;
         //HTTP_RANGEがセットされていた場合
         if (isset($_SERVER['HTTP_RANGE'])) {
             // 二回目以降のリクエスト
-            list($a, $range) = explode("=",$_SERVER['HTTP_RANGE'],2);
-            list($range) = explode(",",$range,2);
-            list($range, $range_end) = explode("-", $range);
+            list($a, $range) = explode('=',$_SERVER['HTTP_RANGE'],2);
+            list($range) = explode(',',$range,2);
+            list($range, $range_end) = explode('-', $range);
             $range=intval($range);
 
             if (!$range_end) {
@@ -280,13 +280,13 @@ __EOS__;
             }
 
             $new_length = $range_end-$range+1;
-            header("HTTP/1.1 206 Partial Content");
+            header('HTTP/1.1 206 Partial Content');
             header("Content-Length: $new_length");
             header("Content-Range: bytes $range-$range_end/$file_size");
         } else {
             // 一回目のリクエスト
             $new_length=$file_size;
-            header("Content-Length: ".$file_size);
+            header('Content-Length: '.$file_size);
         }
 
         //ファイル読み込み
@@ -323,26 +323,26 @@ __EOS__;
             // 拡張ContentType対象の場合は、ContentTypeを変更
             $contentType = $this->arrContentType[$extension];
         }
-        header("Content-Type: ".$contentType);
+        header('Content-Type: '.$contentType);
         //ファイル名指定
         header('Content-Disposition: attachment; filename="' . $sdown_filename . '"');
-        header("Content-Transfer-Encoding: binary");
+        header('Content-Transfer-Encoding: binary');
         //キャッシュ無効化
-        header("Expires: Mon, 26 Nov 1962 00:00:00 GMT");
-        header("Last-Modified: " . gmdate("D,d M Y H:i:s") . " GMT");
+        header('Expires: Mon, 26 Nov 1962 00:00:00 GMT');
+        header('Last-Modified: ' . gmdate('D,d M Y H:i:s') . " GMT");
         //IE6+SSL環境下は、キャッシュ無しでダウンロードできない
-        header("Cache-Control: private");
-        header("Pragma: private");
+        header('Cache-Control: private');
+        header('Pragma: private');
         //ファイルサイズ指定
         $zv_filesize = filesize($realpath);
-        header("Content-Length: " . $zv_filesize);
+        header('Content-Length: ' . $zv_filesize);
         set_time_limit(0);
         ob_end_flush();
         flush();
         //ファイル読み込み
         $handle = fopen($realpath, 'rb');
         if ($handle === false) {
-            SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
+            SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,'',true);
             exit;
         }
         while (!feof($handle)) {

@@ -35,12 +35,12 @@ class SC_Batch_Update extends SC_Batch {
     /**
      * 変換したいファイルの拡張子をカンマ区切りで羅列.
      */
-    var $includes = "php,inc,tpl,css,sql,js,png,jpg,gif,swf,txt,doc,pdf";
+    var $includes = 'php,inc,tpl,css,sql,js,png,jpg,gif,swf,txt,doc,pdf';
 
     /**
      * 除外するファイル名をカンマ区切りで羅列.
      */
-    var $excludes = "distinfo.php";
+    var $excludes = 'distinfo.php';
 
     /**
      * バッチ処理を実行する.
@@ -48,7 +48,7 @@ class SC_Batch_Update extends SC_Batch {
      * @param string $target アップデータファイルのディレクトリパス
      * @return void
      */
-    function execute($target = ".") {
+    function execute($target = '.') {
         $msg = '';
         $oldMask = umask(0);
         $bkupDistInfoArray = array(); //バックアップファイル用のdistinfoファイル内容
@@ -83,17 +83,17 @@ class SC_Batch_Update extends SC_Batch {
                 $suffix = pathinfo($path, PATHINFO_EXTENSION);
 
                 // distinfo の変数定義
-                $distinfo = isset($distinfo) ? $distinfo : "";
+                $distinfo = isset($distinfo) ? $distinfo : '';
 
                 // distinfo.php を読み込む
-                if ($fileName == "distinfo.php") {
+                if ($fileName == 'distinfo.php') {
                     include_once $path;
                 }
 
                 // 除外ファイルをスキップ
                 if (in_array($fileName, $excludeArray)) {
-                    //$arrLog['ok'][] = "次のファイルは除外されました: " . $path;
-                    $msg = "次のファイルは除外されました: " . $path;
+                    //$arrLog['ok'][] = '次のファイルは除外されました: ' . $path;
+                    $msg = '次のファイルは除外されました: ' . $path;
                     $this->printLog($msg);
                     continue;
                 }
@@ -101,7 +101,7 @@ class SC_Batch_Update extends SC_Batch {
                 // sha1 を取得
                 $sha1 = sha1_file($path);
 
-                //$arrLog[] = $sha1 . " => " . $path;
+                //$arrLog[] = $sha1 . ' => ' . $path;
 
                 // 変換対象を順に処理
                 foreach ($includeArray as $include) {
@@ -114,14 +114,14 @@ class SC_Batch_Update extends SC_Batch {
                         if (!empty($distinfo[$sha1])) {
                             $out = $distinfo[$sha1];
                         } else {
-                            $msg = "ハッシュ値が一致しないため, コピー先が取得できません: " . $path;
+                            $msg = 'ハッシュ値が一致しないため, コピー先が取得できません: ' . $path;
                             $arrLog['err'][] = $msg;
                             $this->printLog($msg);
                             break 2;
                         }
 
                         if (file_exists($out) && $sha1 == sha1_file($out)) {
-                            $msg = "同じ内容のファイルをスキップしました: " . $out;
+                            $msg = '同じ内容のファイルをスキップしました: ' . $out;
                             $this->printLog($msg);
                             continue;
                         }
@@ -132,12 +132,12 @@ class SC_Batch_Update extends SC_Batch {
                             $bkupDistInfoArray[sha1_file($out)] = $out;
 
                             if (!@copy($out, $bkupTo)) {
-                                $msg = "バックアップファイルの作成に失敗しました: " . $out . ' -> ' . $bkupTo;
+                                $msg = 'バックアップファイルの作成に失敗しました: ' . $out . ' -> ' . $bkupTo;
                                 $arrLog['err'][] = $msg;
                                 $this->printLog($msg);
                                 break 2;
                             }
-                            $msg = "バックアップファイルの作成に成功しました: " . $out . ' -> ' . $bkupTo;
+                            $msg = 'バックアップファイルの作成に成功しました: ' . $out . ' -> ' . $bkupTo;
                             $this->printLog($msg);
                         }
 
@@ -148,7 +148,7 @@ class SC_Batch_Update extends SC_Batch {
                             $this->lfMkdirRecursive($out);
                             $handle = @fopen($out, 'w');
                             if (!$handle) {
-                                $msg = "コピー先に書き込み権限がありません: " . $out;
+                                $msg = 'コピー先に書き込み権限がありません: ' . $out;
                                 $arrLog['err'][] = $msg;
                                 $this->printLog($msg);
                                 continue;
@@ -157,13 +157,13 @@ class SC_Batch_Update extends SC_Batch {
 
                         // 取得した内容を書き込む
                         if (fwrite($handle, $contents) === false) {
-                            $msg = "コピー先に書き込み権限がありません: " . $out;
+                            $msg = 'コピー先に書き込み権限がありません: ' . $out;
                             $arrLog['err'][] = $msg;
                             $this->printLog($msg);
                             continue;
                         }
 
-                        $msg =  "ファイルのコピーに成功しました: " . $out;
+                        $msg =  'ファイルのコピーに成功しました: ' . $out;
                         $arrLog['ok'][] = $msg;
                         $this->printLog($msg);
                         // ファイルを閉じる
@@ -177,10 +177,10 @@ class SC_Batch_Update extends SC_Batch {
             $handle = @fopen($bkupPath . 'distinfo.php', 'w');
             @fwrite($handle, $src);
             @fclose($handle);
-            $msg = "distinfoファイルの作成に成功しました: " . $bkupPath . 'distinfo.php';
+            $msg = 'distinfoファイルの作成に成功しました: ' . $bkupPath . 'distinfo.php';
             $this->printLog($msg);
         } else {
-            $msg = "distinfoファイルの作成に失敗しました: " . $bkupPath . 'distinfo.php';
+            $msg = 'distinfoファイルの作成に失敗しました: ' . $bkupPath . 'distinfo.php';
             $arrLog['err'][] = $msg;
             $this->printLog($msg);
         }
@@ -223,9 +223,9 @@ class SC_Batch_Update extends SC_Batch {
             $dir = str_replace("\\", "/", DATA_REALDIR);
             $path = preg_replace("@\Q".DATA_REALDIR."\E@", "", $path);
         } else {
-            $dir = "";
+            $dir = '';
         }
-        $arrDirs = explode("/", str_replace("\\", "/", $path));
+        $arrDirs = explode('/', str_replace("\\", "/", $path));
 
         foreach ($arrDirs as $n) {
             $dir .= $n . '/';

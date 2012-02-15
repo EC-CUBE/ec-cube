@@ -45,7 +45,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
         parent::init();
         $this->tpl_mainpage = 'order/product_select.tpl';
         $this->tpl_mainno = 'order';
-        $this->tpl_subno = "";
+        $this->tpl_subno = '';
         $this->tpl_maintitle = '受注管理';
         $this->tpl_subtitle = '商品選択';
 
@@ -133,7 +133,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 表示順序
-        $order = "update_date DESC, product_id DESC";
+        $order = 'update_date DESC, product_id DESC';
         $objQuery->setOrder($order);
 
         return $objProduct->getListByProductIds($objQuery, $arrProductId);
@@ -201,27 +201,27 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
      */
     function createWhere(&$objFormParam,&$objDb) {
         $arrForm = $objFormParam->getHashArray();
-        $where = "alldtl.del_flg = 0";
+        $where = 'alldtl.del_flg = 0';
         $bind = array();
         foreach ($arrForm as $key => $val) {
-            if ($val == "") {
+            if ($val == '') {
                 continue;
             }
 
             switch ($key) {
                 case 'search_name':
-                    $where .= " AND name ILIKE ?";
-                    $bind[] = "%".$val."%";
+                    $where .= ' AND name ILIKE ?';
+                    $bind[] = '%'.$val.'%';
                     break;
                 case 'search_category_id':
                     list($tmp_where, $tmp_bind) = $objDb->sfGetCatWhere($val);
-                    if ($tmp_where != "") {
-                        $where.= " AND alldtl.product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
+                    if ($tmp_where != '') {
+                        $where.= ' AND alldtl.product_id IN (SELECT product_id FROM dtb_product_categories WHERE ' . $tmp_where . ')';
                         $bind = array_merge((array)$bind, (array)$tmp_bind);
                     }
                     break;
                 case 'search_product_code':
-                    $where .=    " AND alldtl.product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code LIKE ? AND del_flg = 0 GROUP BY product_id)";
+                    $where .=    ' AND alldtl.product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code LIKE ? AND del_flg = 0 GROUP BY product_id)';
                     $bind[] = '%'.$val.'%';
                     break;
 
@@ -278,10 +278,10 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
      * @param SC_FormParam $objFormParam
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("オーダーID", 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("商品名", 'search_name', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("カテゴリID", 'search_category_id', STEXT_LEN, 'KVa',  array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
-        $objFormParam->addParam("商品コード", 'search_product_code', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
-        $objFormParam->addParam("フッター", 'footer', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
+        $objFormParam->addParam('オーダーID', 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('商品名', 'search_name', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('カテゴリID', 'search_category_id', STEXT_LEN, 'KVa',  array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
+        $objFormParam->addParam('商品コード', 'search_product_code', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
+        $objFormParam->addParam('フッター', 'footer', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
     }
 }

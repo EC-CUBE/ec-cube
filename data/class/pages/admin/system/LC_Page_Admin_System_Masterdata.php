@@ -119,7 +119,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
             $master_data_name = $arrParams['master_data_name'];
             return $master_data_name;
         } else {
-            SC_Utils_Ex::sfDispError("");
+            SC_Utils_Ex::sfDispError('');
         }
 
     }
@@ -162,10 +162,10 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
 
             $id = $arrId[$i];
             // 空の値は無視
-            if ($arrId[$i] != "") {
+            if ($arrId[$i] != '') {
                 for ($j = $i + 1; $j < count($arrId); $j++) {
                     if ($id == $arrId[$j]) {
-                        return $id . " が重複しているため登録できません.";
+                        return $id . ' が重複しているため登録できません.';
                     }
                 }
             }
@@ -187,7 +187,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
         foreach ($arrParams['id'] as $key => $val) {
 
             // ID が空のデータは生成しない
-            if ($val != "") {
+            if ($val != '') {
                 $arrTmp[$val] = $arrParams['name'][$key];
             }
         }

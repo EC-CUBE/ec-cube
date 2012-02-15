@@ -93,7 +93,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
             // エラーチェック
             $this->arrErr = $this->lfErrorCheck($this->arrForm);
             if (count($this->arrErr) <= 0) {
-                if ($this->arrForm['maker_id'] == "") {
+                if ($this->arrForm['maker_id'] == '') {
                     // メーカー情報新規登録
                     $this->lfInsert($this->arrForm);
                 } else {
@@ -156,8 +156,8 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("メーカーID", 'maker_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("メーカー名", 'name', SMTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('メーカーID', 'maker_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('メーカー名', 'name', SMTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -169,10 +169,10 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 削除されていないメーカー情報を表示する
-        $where = "del_flg = 0";
-        $objQuery->setOrder("rank DESC");
+        $where = 'del_flg = 0';
+        $objQuery->setOrder('rank DESC');
         $arrMaker = array();
-        $arrMaker = $objQuery->select("maker_id, name", 'dtb_maker', $where);
+        $arrMaker = $objQuery->select('maker_id, name', 'dtb_maker', $where);
         return $arrMaker;
     }
 
@@ -209,7 +209,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
         // UPDATEする値を作成する
         $sqlval['name'] = $arrForm['name'];
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
-        $where = "maker_id = ?";
+        $where = 'maker_id = ?';
 
         // UPDATEの実行
         $objQuery->update('dtb_maker', $sqlval, $where, array($arrForm['maker_id']));
@@ -261,7 +261,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 編集項目を取得する
-        $where = "maker_id = ?";
+        $where = 'maker_id = ?';
         $arrMaker = array();
         $arrMaker = $objQuery->select('name', 'dtb_maker', $where, array($maker_id));
         $arrForm['name'] = $arrMaker[0]['name'];
@@ -277,7 +277,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      */
     function lfErrorCheck(&$arrForm) {
         $objErr = new SC_CheckError_Ex($arrForm);
-        $objErr->doFunc(array("メーカー名", 'name', SMTEXT_LEN), array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+        $objErr->doFunc(array('メーカー名', 'name', SMTEXT_LEN), array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
 
         // maker_id の正当性チェック
         if (!empty($arrForm['maker_id'])) {
@@ -287,17 +287,17 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
               || !$objDb->sfIsRecord('dtb_maker', 'maker_id', array($arrForm['maker_id']))) {
 
               // maker_idが指定されていて、且つその値が不正と思われる場合はエラー
-              $objErr->arrErr['maker_id'] = "※ メーカーIDが不正です<br />";
+              $objErr->arrErr['maker_id'] = '※ メーカーIDが不正です<br />';
             }
         }
         if (!isset($objErr->arrErr['name'])) {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $arrMaker = array();
-            $arrMaker = $objQuery->select("maker_id, name", 'dtb_maker', "del_flg = 0 AND name = ?", array($arrForm['name']));
+            $arrMaker = $objQuery->select('maker_id, name', 'dtb_maker', "del_flg = 0 AND name = ?", array($arrForm['name']));
 
             // 編集中のレコード以外に同じ名称が存在する場合
             if ($arrMaker[0]['maker_id'] != $arrForm['maker_id'] && $arrMaker[0]['name'] == $arrForm['name']) {
-                $objErr->arrErr['name'] = "※ 既に同じ内容の登録が存在します。<br />";
+                $objErr->arrErr['name'] = '※ 既に同じ内容の登録が存在します。<br />';
             }
         }
 

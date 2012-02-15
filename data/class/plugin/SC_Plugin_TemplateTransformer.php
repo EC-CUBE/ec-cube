@@ -63,9 +63,9 @@ class SC_Plugin_TemplateTransformer {
 
         // 対象のパスが存在するかを検証する,
         if ($html === false) {
-            $err_msg = SMARTY_TEMPLATES_REALDIR . $tmpl. "は存在しないか、読み取れません";
+            $err_msg = SMARTY_TEMPLATES_REALDIR . $tmpl. 'は存在しないか、読み取れません';
         } elseif (!in_array(mb_detect_encoding($html), array('ASCII', 'UTF-8'))) {
-            $err_msg = $tmpl. "の文字コードがUTF-8ではありません";
+            $err_msg = $tmpl. 'の文字コードがUTF-8ではありません';
         }
 
         if (!is_null($err_msg)) {
@@ -392,20 +392,20 @@ class SC_Plugin_TemplateTransformer {
     function getHTML() {
         if (count($this->arrErr)) {
             // エラーメッセージ組み立て
-            $err_msg = "";
+            $err_msg = '';
             foreach ($this->arrErr as $arrErr) {
                 if ($arrErr['err_msg']) {
-                    $err_msg .= "<br />".$arrErr['err_msg'];
+                    $err_msg .= '<br />'.$arrErr['err_msg'];
                 } else {
                     if ($arrErr['type'] == SC_Plugin_TemplateTransformList::ERR_TARGET_ELEMENT_NOT_FOUND) {
                         $err_msg .= "<br />${arrErr['selector']} が存在しません";
                     } else {
-                        $err_msg .= "<br />".print_r($arrErr, true);
+                        $err_msg .= '<br />'.print_r($arrErr, true);
                     }
                 }
             }
             // TODO エラー処理
-            // ECC_Plugin_Engine::dispError(FREE_ERROR_MSG, "テンプレートの操作に失敗しました。".$err_msg);
+            // ECC_Plugin_Engine::dispError(FREE_ERROR_MSG, 'テンプレートの操作に失敗しました。'.$err_msg);
 
         } elseif ($this->snip_count) {
             $html = $this->objDOM->saveHTML();

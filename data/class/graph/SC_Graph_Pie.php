@@ -42,8 +42,8 @@ class SC_Graph_Pie extends SC_Graph_Base{
 
     // データを360°値に変換する
     function getCircleData($array) {
-        $total = "";
-        $new_total = "";
+        $total = '';
+        $new_total = '';
         if (!is_array($array)) {
             return;
         }
@@ -63,7 +63,7 @@ class SC_Graph_Pie extends SC_Graph_Base{
             $new_total+= $ret;
             $arrRet[] = $ret;
             // パーセント表示用
-            $this->arrLabel[] = round($val * $p_rate) . " %";
+            $this->arrLabel[] = round($val * $p_rate) . ' %';
             $cnt++;
         }
         // 合計が360になるように補正しておく

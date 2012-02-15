@@ -122,7 +122,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
             $arrForm = $objFormParam->getHashArray();
             // ログインチェック
             if (!$this->lfIsLoginMember($arrForm['login_id'], $arrForm['password'])) {
-                $arrErr['password'] = "ログイン出来ません。";
+                $arrErr['password'] = 'ログイン出来ません。';
                 $this->lfSetIncorrectData($arrForm['login_id']);
             }
         }
@@ -139,9 +139,9 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
     function lfIsLoginMember($login_id, $pass) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         //パスワード、saltの取得
-        $cols = "password, salt";
+        $cols = 'password, salt';
         $table = 'dtb_member';
-        $where = "login_id = ? AND del_flg <> 1 AND work = 1";
+        $where = 'login_id = ? AND del_flg <> 1 AND work = 1';
         $arrData = $objQuery->getRow($cols, $table, $where, array($login_id));
         if (SC_Utils_Ex::isBlank($arrData)) {
             return false;
@@ -162,9 +162,9 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
     function lfDoLogin($login_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         //メンバー情報取得
-        $cols = "member_id, authority, login_date, name";
+        $cols = 'member_id, authority, login_date, name';
         $table = 'dtb_member';
-        $where = "login_id = ?";
+        $where = 'login_id = ?';
         $arrData = $objQuery->getRow($cols, $table, $where, array($login_id));
         // セッション登録
         $sid = $this->lfSetLoginSession($arrData['member_id'], $login_id, $arrData['authority'], $arrData['name'], $arrData['login_date']);
@@ -192,7 +192,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
         $objSess->SetSession('login_name', $login_name);
         $objSess->SetSession('uniqid', $objSess->getUniqId());
         if (SC_Utils_Ex::isBlank($last_login)) {
-            $objSess->SetSession('last_login', date("Y-m-d H:i:s"));
+            $objSess->SetSession('last_login', date('Y-m-d H:i:s'));
         } else {
             $objSess->SetSession('last_login', $last_login);
         }
@@ -218,9 +218,9 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
         // 最終ログイン日時更新
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sqlval = array();
-        $sqlval['login_date'] = date("Y-m-d H:i:s");
+        $sqlval['login_date'] = date('Y-m-d H:i:s');
         $table = 'dtb_member';
-        $where = "member_id = ?";
+        $where = 'member_id = ?';
         $objQuery->update($table, $sqlval, $where, array($member_id));
     }
 
@@ -233,6 +233,6 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfSetIncorrectData($error_login_id) {
-        GC_Utils_Ex::gfPrintLog($error_login_id . " password incorrect.");
+        GC_Utils_Ex::gfPrintLog($error_login_id . ' password incorrect.');
     }
 }

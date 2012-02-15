@@ -71,8 +71,8 @@ class SC_PageNavi {
         if ($all_row > 1) {
 
             //「前へ」「次へ」の設定
-            $before = "";
-            $next = "";
+            $before = '';
+            $next = '';
             if ($this->now_page > 1) {
                 $this->arrPagenavi['before'] = $this->now_page - 1;
                 $urlParamThis = str_replace('#page#', $this->arrPagenavi['before'], $urlParam);
@@ -92,7 +92,7 @@ class SC_PageNavi {
             }
 
             // 表示する最大ナビ数を決める。
-            if ($navi_max == "" || $navi_max > $this->max_page) {
+            if ($navi_max == '' || $navi_max > $this->max_page) {
                 // 制限ナビ数の指定がない。ページ最大数が制限ナビ数より少ない。
                 $disp_max = $this->max_page;
             } else {
@@ -105,7 +105,7 @@ class SC_PageNavi {
             }
 
             // 表示する最小ナビ数を決める。
-            if ($navi_max == "" || $navi_max > $this->now_page) {
+            if ($navi_max == '' || $navi_max > $this->now_page) {
                 // 制限ナビ数の指定がない。現在ページ番号が制限ナビ数より少ない。
                 $disp_min = 1;
             } else {
@@ -114,7 +114,7 @@ class SC_PageNavi {
             }
 
             $this->arrPagenavi['arrPageno'] = array();
-            $page_number = "";
+            $page_number = '';
             for ($i = $disp_min; $i <= $disp_max; $i++) {
 
                 if ($i == $this->now_page) {

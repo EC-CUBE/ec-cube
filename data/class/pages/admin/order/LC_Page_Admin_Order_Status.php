@@ -128,11 +128,11 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
      *  @param SC_FormParam
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("注文番号", 'order_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("変更前対応状況", 'status', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("変更後対応状況", 'change_status', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("ページ番号", 'search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("移動注文番号", 'move', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('注文番号', 'order_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('変更前対応状況', 'status', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('変更後対応状況', 'change_status', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('ページ番号', 'search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('移動注文番号', 'move', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
     }
 
     /**
@@ -149,7 +149,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
 
         if ($this->getMode() == 'change') {
             if (is_null($objFormParam->getValue('change_status'))) {
-                $objFormParam->setValue('change_status',"");
+                $objFormParam->setValue('change_status','');
             }
         }
 
@@ -168,11 +168,11 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
     function lfStatusDisp($status,$pageno) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        $select ="*";
+        $select ='*';
         $from = 'dtb_order';
-        $where = "del_flg = 0 AND status = ?";
+        $where = 'del_flg = 0 AND status = ?';
         $arrval[] = $status;
-        $order = "order_id DESC";
+        $order = 'order_id DESC';
 
         $linemax = $objQuery->count($from, $where, $arrval);
         $this->tpl_linemax = $linemax;

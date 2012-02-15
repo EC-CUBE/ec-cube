@@ -39,5 +39,5 @@ class SC_Batch {
      * @param mixed $argv コマンドライン引数
      * @return mixed バッチの実行結果
      */
-    function execute($argv = "") {}
+    function execute($argv = '') {}
 }

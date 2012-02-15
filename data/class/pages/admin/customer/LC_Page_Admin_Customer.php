@@ -53,7 +53,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrJob = $masterData->getMasterData('mtb_job');
-        $this->arrJob["不明"] = "不明";
+        $this->arrJob['不明'] = '不明';
         $this->arrSex = $masterData->getMasterData('mtb_sex');
         $this->arrPageMax = $masterData->getMasterData('mtb_page_max');
         $this->arrStatus = $masterData->getMasterData('mtb_customer_status');
@@ -175,7 +175,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
      * @return boolean true:成功 false:失敗
      */
     function lfDoDeleteCustomer($customer_id) {
-        $arrData = SC_Helper_Customer_Ex::sfGetCustomerDataFromId($customer_id, "del_flg = 0");
+        $arrData = SC_Helper_Customer_Ex::sfGetCustomerDataFromId($customer_id, 'del_flg = 0');
         if (SC_Utils_Ex::isBlank($arrData)) {
             //対象となるデータが見つからない。
             return false;
@@ -223,7 +223,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
      */
     function lfDoCSV($arrParam) {
         $objSelect = new SC_CustomerList_Ex($arrParam, 'customer');
-        $order = "update_date DESC, customer_id DESC";
+        $order = 'update_date DESC, customer_id DESC';
 
         $objCSV = new SC_Helper_CSV_Ex();
         list($where, $arrVal) = $objSelect->getWhere();

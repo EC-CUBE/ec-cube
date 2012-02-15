@@ -405,8 +405,8 @@ class LC_UseRequest_State_PC extends LC_UseRequest_State {
      * コンストラクタ
      * セッションのデータ構造は下のようになる.
      * $_SESSION['pc']=> array(
-     *     ['model']   => "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)"
-     *     ['ip']      => "127.0.0.1"
+     *     ['model']   => 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)'
+     *     ['ip']      => '127.0.0.1'
      *     ['expires'] => 1204699031
      * )
      *
@@ -438,7 +438,7 @@ class LC_UseRequest_State_PC extends LC_UseRequest_State {
 
             return true;
         }
-        $msg = sprintf("User agent model mismatch : %s != %s(expected), sid=%s",
+        $msg = sprintf('User agent model mismatch : %s != %s(expected), sid=%s',
                        $_SERVER['HTTP_USER_AGENT'], $ua, session_id());
         GC_Utils_Ex::gfPrintLog($msg);
         return false;

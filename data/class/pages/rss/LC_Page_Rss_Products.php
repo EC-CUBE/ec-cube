@@ -43,9 +43,9 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = "rss/products.tpl";
-        $this->encode = "UTF-8";
-        $this->title = "商品一覧情報";
+        $this->tpl_mainpage = 'rss/products.tpl';
+        $this->encode = 'UTF-8';
+        $this->title = '商品一覧情報';
     }
 
     /**
@@ -106,10 +106,10 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
         $objView->assignobj($this);
 
         //キャッシュしない(念のため)
-        header("Pragma: no-cache");
+        header('Pragma: no-cache');
 
         //XMLテキスト(これがないと正常にRSSとして認識してくれないツールがあるため)
-        header("Content-type: application/xml");
+        header('Content-type: application/xml');
         P_DETAIL_URLPATH;
 
         //画面表示

@@ -36,21 +36,21 @@ class SC_SelectSql {
     var $arrVal;
 
     //--　コンストラクタ。
-    function SC_SelectSql($array = "") {
+    function SC_SelectSql($array = '') {
         if (is_array($array)) {
             $this->arrSql = $array;
         }
     }
 
     //-- SQL分生成
-    function getSql($mode = "") {
-        $this->sql = $this->select ." ". $this->where ." ". $this->group ." ";
+    function getSql($mode = '') {
+        $this->sql = $this->select .' '. $this->where .' '. $this->group ." ";
 
         // $mode == 1 は limit & offset無し
         if ($mode == 2) {
             $this->sql .= $this->order;
         } elseif ($mode != 1) {
-            $this->sql .= $this->order . " " .$this->limit ." ". $this->offset;
+            $this->sql .= $this->order . ' ' .$this->limit .' '. $this->offset;
         }
 
         return $this->sql;
@@ -58,7 +58,7 @@ class SC_SelectSql {
 
         // 検索用
     function addSearchStr($val) {
-        $return = "%" .$val. "%";
+        $return = '%' .$val. '%';
         return $return;
     }
 
@@ -67,19 +67,19 @@ class SC_SelectSql {
 
         // ある単位のみ検索($from = $to)
         if ($from == $to) {
-            $this->setWhere($column ." = ?");
+            $this->setWhere($column .' = ?');
             $return = array($from);
         //　~$toまで検索
         } elseif (strlen($from) == 0 && strlen($to) > 0) {
-            $this->setWhere($column ." <= ? ");
+            $this->setWhere($column .' <= ? ');
             $return = array($to);
         //　~$from以上を検索
         } elseif (strlen($from) > 0 && strlen($to) == 0) {
-            $this->setWhere($column ." >= ? ");
+            $this->setWhere($column .' >= ? ');
             $return = array($from);
         //　$from~$toの検索
         } else {
-            $this->setWhere($column ." BETWEEN ? AND ?");
+            $this->setWhere($column .' BETWEEN ? AND ?');
             $return = array($from, $to);
         }
         return $return;
@@ -90,7 +90,7 @@ class SC_SelectSql {
         $return = array();
 
         // 開始期間の構築
-        $date1 = $from_year . "/" . $from_month . "/" . $from_day;
+        $date1 = $from_year . '/' . $from_month . '/' . $from_day;
 
         // 終了期間の構築
         // @see http://svn.ec-cube.net/open_trac/ticket/328
@@ -101,21 +101,21 @@ class SC_SelectSql {
         $date2 = date('Y/m/d', $date2);
 
         // 開始期間だけ指定の場合
-        if (($from_year != "") && ($from_month != "") && ($from_day != "") && ($to_year == "") && ($to_month == "") && ($to_day == "")) {
+        if (($from_year != '') && ($from_month != '') && ($from_day != "") && ($to_year == "") && ($to_month == "") && ($to_day == "")) {
             $this->setWhere($column .' >= ?');
             $return[] = $date1;
         }
 
         //　開始～終了
-        if( ($from_year != "") && ($from_month != "") && ($from_day != "") &&
-            ($to_year != "") && ($to_month != "") && ($to_day != "")) {
+        if( ($from_year != '') && ($from_month != '') && ($from_day != "") &&
+            ($to_year != '') && ($to_month != '') && ($to_day != "")) {
             $this->setWhere($column . ' >= ? AND ' . $column . ' < date(?)');
             $return[] = $date1;
             $return[] = $date2;
         }
 
         // 終了期間だけ指定の場合
-        if (($from_year == "") && ($from_month == "") && ($from_day == "") && ($to_year != "") && ($to_month != "") && ($to_day != "")) {
+        if (($from_year == '') && ($from_month == '') && ($from_day == "") && ($to_year != "") && ($to_month != "") && ($to_day != "")) {
             $this->setWhere($column . ' < date(?)');
             $return[] = $date2;
         }
@@ -129,14 +129,14 @@ class SC_SelectSql {
         foreach ($arr as $data) {
 
             if (count($arr) > 1) {
-                if(! is_null($data)) $item .= $ItemStr . " = ? OR ";
+                if(! is_null($data)) $item .= $ItemStr . ' = ? OR ';
             } else {
-                if(! is_null($data)) $item = $ItemStr . " = ?";
+                if(! is_null($data)) $item = $ItemStr . ' = ?';
             }
             $return[] = $data;
         }
 
-        if( count($arr) > 1)  $item = "(" . rtrim($item, " OR ") . ")";
+        if( count($arr) > 1)  $item = '(' . rtrim($item, ' OR ') . ")";
         $this->setWhere($item);
         return $return;
     }
@@ -148,7 +148,7 @@ class SC_SelectSql {
 
         if ($arr) {
             foreach ($arr as $data) {
-                if ($data != "不明") {
+                if ($data != '不明') {
                     $item .= " OR ${ItemStr} = ?";
                     $return[] = $data;
                 }
@@ -193,40 +193,40 @@ class SC_SelectSql {
             if( isset($arrWhere[$i]['value'])) $statement .= $arrWhere[$i]['column'] ." = " . SC_Utils_Ex::sfQuoteSmart($arrWhere[$i]['value']) ." OR "  ;
         }
 
-        $statement = "(" . rtrim($statement, " OR ") . ")";
+        $statement = '(' . rtrim($statement, ' OR ') . ")";
 
         if ($this->where) {
 
-            $this->where .= " AND " . $statement;
+            $this->where .= ' AND ' . $statement;
 
         } else {
 
-            $this->where = "WHERE " . $statement;
+            $this->where = 'WHERE ' . $statement;
         }
     }
 
     function setWhere($where) {
-        if ($where != "") {
+        if ($where != '') {
             if ($this->where) {
 
-                $this->where .= " AND " . $where;
+                $this->where .= ' AND ' . $where;
 
             } else {
 
-                $this->where = "WHERE " . $where;
+                $this->where = 'WHERE ' . $where;
             }
         }
     }
 
     function setOrder($order) {
 
-            $this->order =  "ORDER BY " . $order;
+            $this->order =  'ORDER BY ' . $order;
 
     }
 
     function setGroup($group) {
 
-        $this->group =  "GROUP BY " . $group;
+        $this->group =  'GROUP BY ' . $group;
 
     }
 
@@ -234,18 +234,18 @@ class SC_SelectSql {
 
         if (is_numeric($limit) and is_numeric($offset)) {
 
-            $this->limit = " LIMIT " .$limit;
-            $this->offset = " OFFSET " .$offset;
+            $this->limit = ' LIMIT ' .$limit;
+            $this->offset = ' OFFSET ' .$offset;
         }
     }
 
     function clearSql() {
-        $this->select = "";
-        $this->where = "";
-        $this->group = "";
-        $this->order = "";
-        $this->limit = "";
-        $this->offset = "";
+        $this->select = '';
+        $this->where = '';
+        $this->group = '';
+        $this->order = '';
+        $this->limit = '';
+        $this->offset = '';
     }
 
     function setSelect($sql) {

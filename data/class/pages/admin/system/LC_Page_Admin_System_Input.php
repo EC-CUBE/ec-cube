@@ -90,7 +90,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
 
                 $this->insertMemberData($this->arrForm);
                 // 親ウィンドウを更新後、自ウィンドウを閉じる。
-                $url = ADMIN_SYSTEM_URLPATH . "?pageno=" . $this->arrForm['pageno'];
+                $url = ADMIN_SYSTEM_URLPATH . '?pageno=' . $this->arrForm['pageno'];
                 $this->tpl_onload = "fnUpdateParent('".$url."'); window.close();";
 
             } else {
@@ -119,7 +119,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
 
                 $this->updateMemberData($this->arrForm['member_id'], $this->arrForm);
                 // 親ウィンドウを更新後、自ウィンドウを閉じる。
-                $url = ADMIN_SYSTEM_URLPATH . "?pageno=" . $this->arrForm['pageno'];
+                $url = ADMIN_SYSTEM_URLPATH . '?pageno=' . $this->arrForm['pageno'];
                 $this->tpl_onload = "fnUpdateParent('".$url."'); window.close();";
 
             } else {
@@ -140,7 +140,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
 
             // $_GET['id']（member_id）が登録済みのものかチェック。
             // 登録されていない場合は不正なものとして、新規扱いとする。
-            $clean_id = "";
+            $clean_id = '';
             $clean_mode_flg = 'new';
 
             // idが0より大きい数字で整数の場合
@@ -155,7 +155,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
             case 'edit':
                 $this->tpl_mode      = $clean_mode_flg;
                 $this->tpl_member_id = $clean_id;
-                $this->tpl_onfocus   = "fnClearText(this.name);";
+                $this->tpl_onfocus   = 'fnClearText(this.name);';
                 $this->arrForm       = $this->getMemberData($clean_id);
                 $this->arrForm['password'] = DEFAULT_PASSWORD;
                 $this->tpl_old_login_id    = $this->arrForm['login_id'];
@@ -189,7 +189,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
      * @param string $mode editの時は指定
      * @return void
      */
-    function initForm(&$objFormParam, &$arrParams, $mode = "") {
+    function initForm(&$objFormParam, &$arrParams, $mode = '') {
 
         $objFormParam->addParam('メンバーID', 'member_id', INT_LEN, 'n', array('NUM_CHECK'));
         $objFormParam->addParam('名前', 'name', STEXT_LEN, 'KV', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
@@ -225,11 +225,11 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         // ログインID・パスワードの文字数チェック
         $objErr = new SC_CheckError_Ex();
         if ($mode == 'new') {
-            $objErr->doFunc(array("パスワード", 'password', ID_MIN_LEN, ID_MAX_LEN), array('NUM_RANGE_CHECK'));
-            $objErr->doFunc(array("ログインID", 'login_id', ID_MIN_LEN, ID_MAX_LEN), array('NUM_RANGE_CHECK'));
+            $objErr->doFunc(array('パスワード', 'password', ID_MIN_LEN, ID_MAX_LEN), array('NUM_RANGE_CHECK'));
+            $objErr->doFunc(array('ログインID', 'login_id', ID_MIN_LEN, ID_MAX_LEN), array('NUM_RANGE_CHECK'));
         } elseif ($mode == 'edit') {
-            $objErr->doFunc(array("パスワード", 'password', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK' ,'NUM_RANGE_CHECK'));
-            $objErr->doFunc(array("ログインID", 'login_id', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK' ,'NUM_RANGE_CHECK'));
+            $objErr->doFunc(array('パスワード', 'password', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK' ,'NUM_RANGE_CHECK'));
+            $objErr->doFunc(array('ログインID', 'login_id', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK' ,'NUM_RANGE_CHECK'));
         }
 	$objErr->doFunc(array('パスワード', 'パスワード(確認)', 'password', 'password02') ,array('EQUAL_CHECK'));
 
@@ -239,11 +239,11 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         case 'new': 
             // 管理者名が登録済みでないか
             if ($this->memberDataExists('name = ? AND del_flg = 0', $arrParams['name'])) {
-                $arrErr['name'] = "既に登録されている名前なので利用できません。<br>";
+                $arrErr['name'] = '既に登録されている名前なので利用できません。<br>';
             }
             // ログインIDが登録済みでないか
             if ($this->memberDataExists('login_id = ? AND del_flg = 0', $arrParams['login_id'])) {
-                $arrErr['login_id'] = "既に登録されているIDなので利用できません。<br>";
+                $arrErr['login_id'] = '既に登録されているIDなので利用できません。<br>';
             }
             break;
         case 'edit':
@@ -251,7 +251,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
             if ($arrParams['login_id'] != $arrParams['old_login_id']) {
                 // ログインIDが登録済みでないか
                 if ($this->memberDataExists('login_id = ? AND del_flg = 0', $arrParams['login_id'])) {
-                    $arrErr['login_id'] = "既に登録されているIDなので利用できません。<br>";
+                    $arrErr['login_id'] = '既に登録されているIDなので利用できません。<br>';
                 }
             }
             break;
@@ -300,7 +300,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
      */
     function lfCheckPageNo($pageno) {
 
-        $clean_pageno = "";
+        $clean_pageno = '';
 
         // $pagenoが0以上の整数かチェック
         if (SC_Utils_Ex::sfIsInt($pageno) && $pageno > 0) {
@@ -368,7 +368,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
             $sqlVal['password'] = SC_Utils_Ex::sfGetHashString($arrMemberData['password'], $salt);
         }
 
-        $where = "member_id = ?";
+        $where = 'member_id = ?';
 
         // UPDATEの実行
         $objQuery->update('dtb_member', $sqlVal, $where, array($member_id));

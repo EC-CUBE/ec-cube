@@ -53,10 +53,10 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrJob = $masterData->getMasterData('mtb_job');
-        $this->arrJob["不明"] = "不明";
+        $this->arrJob['不明'] = '不明';
         $this->arrSex = $masterData->getMasterData('mtb_sex');
         $this->arrPageRows = $masterData->getMasterData('mtb_page_max');
-        $this->arrHtmlmail = array("" => "両方",  1 => 'HTML', 2 => 'TEXT');
+        $this->arrHtmlmail = array('' => '両方',  1 => 'HTML', 2 => 'TEXT');
         $this->arrMailType = $masterData->getMasterData('mtb_mail_type');
 
         // 日付プルダウン設定
@@ -145,7 +145,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 $this->tpl_mainpage = 'mail/index.tpl';
                 SC_Helper_Mail_Ex::sfSendMailmagazine($this->lfRegisterData($objFormParam));  // DB登録・送信
-                SC_Response_Ex::sendRedirect("./history.php");
+                SC_Response_Ex::sendRedirect('./history.php');
             }
             break;
         // query:配信履歴から「確認」
@@ -159,7 +159,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         case 'retry':
             if (SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
                 SC_Helper_Mail_Ex::sfSendMailmagazine($_GET['send_id']);  // DB登録・送信
-                SC_Response_Ex::sendRedirect("./history.php");
+                SC_Response_Ex::sendRedirect('./history.php');
             } else {
                 $this->tpl_onload = "window.alert('メール送信IDが正しくありません');";
             }
@@ -198,10 +198,10 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfAddParamSelectTemplate(&$objFormParam) {
-        $objFormParam->addParam("メール形式", 'mail_method', INT_LEN, 'n', array('EXIST_CHECK','ALNUM_CHECK'));
+        $objFormParam->addParam('メール形式', 'mail_method', INT_LEN, 'n', array('EXIST_CHECK','ALNUM_CHECK'));
         $objFormParam->addParam('Subject', 'subject', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("本文", 'body', LLTEXT_LEN, 'KVCa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("テンプレートID", 'template_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
+        $objFormParam->addParam('本文', 'body', LLTEXT_LEN, 'KVCa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('テンプレートID', 'template_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
     }
 
     /**
@@ -213,7 +213,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
     function lfGetMailTemplateList($arrTemplate) {
         if (is_array($arrTemplate)) {
             foreach ($arrTemplate as $line) {
-                $return[$line['template_id']] = "【" . $this->arrHtmlmail[$line['mail_method']] . "】" . $line['subject'];
+                $return[$line['template_id']] = '【' . $this->arrHtmlmail[$line['mail_method']] . "】" . $line['subject'];
             }
         }
         return $return;
@@ -228,7 +228,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      */
     function lfGetTemplateData(&$objFormParam, $template_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->setOrder("template_id DESC");
+        $objQuery->setOrder('template_id DESC');
         $where = 'template_id = ?';
         $arrResults = $objQuery->getRow('*', 'dtb_mailmaga_template', $where, array($template_id));
         $objFormParam->setParam($arrResults);
@@ -286,7 +286,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 送信履歴より、送信条件確認画面
-        $sql = "SELECT search_data FROM dtb_send_history WHERE send_id = ?";
+        $sql = 'SELECT search_data FROM dtb_send_history WHERE send_id = ?';
         $searchData = $objQuery->getOne($sql, array($_GET['send_id']));
         return unserialize($searchData);
     }

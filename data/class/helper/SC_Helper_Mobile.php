@@ -176,7 +176,7 @@ class SC_Helper_Mobile {
     /**
      * セッションデータが有効かどうかをチェックする。
      *
-     * FIXME "@" でエラーを抑制するのは良くない
+     * FIXME '@' でエラーを抑制するのは良くない
      *
      * @return boolean セッションデータが有効な場合は true、無効な場合は false を返す。
      */
@@ -188,7 +188,7 @@ class SC_Helper_Mobile {
 
         // 有効期限を過ぎていないかどうかをチェックする。
         if (intval(@$_SESSION['mobile']['expires']) < time()) {
-            GC_Utils_Ex::gfPrintLog("Session expired at " .
+            GC_Utils_Ex::gfPrintLog('Session expired at ' .
                        date('Y/m/d H:i:s', @$_SESSION['mobile']['expires']) .
                        ' : sid=' . session_id());
 
@@ -198,7 +198,7 @@ class SC_Helper_Mobile {
         // 携帯端末の機種が一致するかどうかをチェックする。
         $model = SC_MobileUserAgent_Ex::getModel();
         if (@$_SESSION['mobile']['model'] != $model) {
-            GC_Utils_Ex::gfPrintLog("User agent model mismatch : " .
+            GC_Utils_Ex::gfPrintLog('User agent model mismatch : ' .
                        "\"$model\" != \"" . @$_SESSION['mobile']['model'] .
                        '" (expected), sid=' . session_id());
             return false;
@@ -230,7 +230,7 @@ class SC_Helper_Mobile {
         ob_start('mb_output_handler');
 
         //download.phpに対してカタカナ変換をするとファイルが壊れてしまうため回避する
-        if ($_SERVER['SCRIPT_FILENAME'] != HTML_REALDIR . "mypage/download.php") {
+        if ($_SERVER['SCRIPT_FILENAME'] != HTML_REALDIR . 'mypage/download.php') {
             // 全角カタカナを半角カタカナに変換する。
             ob_start(create_function('$buffer', 'return mb_convert_kana($buffer, "k");'));
         }
@@ -453,7 +453,7 @@ class SC_Helper_Mobile {
      */
     function getMimeType($filename) {
         //ファイルの拡張子からコンテンツタイプを決定する
-        $file_extension = strtolower(substr(strrchr($filename,"."),1));
+        $file_extension = strtolower(substr(strrchr($filename,'.'),1));
         $mime_type = $this->defaultMimeType;
         if (array_key_exists($file_extension, $this->arrMimetypes)) {
             $mime_type = $this->arrMimetypes[$file_extension];

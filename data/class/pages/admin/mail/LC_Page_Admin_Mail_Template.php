@@ -102,7 +102,7 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->update('dtb_mailmaga_template',
                           array('del_flg' =>1),
-                          "template_id = ?",
+                          'template_id = ?',
                           array($template_id));
     }
 

@@ -36,13 +36,13 @@ class SC_SendMail {
     // コンストラクタ
     function SC_SendMail() {
         $this->arrRecip = array();
-        $this->to = "";
-        $this->subject = "";
-        $this->body = "";
-        $this->cc = "";
-        $this->bcc = "";
-        $this->replay_to = "";
-        $this->return_path = "";
+        $this->to = '';
+        $this->subject = '';
+        $this->body = '';
+        $this->cc = '';
+        $this->bcc = '';
+        $this->replay_to = '';
+        $this->return_path = '';
         $this->backend = MAIL_BACKEND;
         $this->host = SMTP_HOST;
         $this->port = SMTP_PORT;
@@ -59,21 +59,21 @@ class SC_SendMail {
     }
 
     // 宛先の設定
-    function setTo($to, $to_name = "") {
-        if ($to != "") {
+    function setTo($to, $to_name = '') {
+        if ($to != '') {
             $this->to = $this->getNameAddress($to_name, $to);
             $this->setRecip('To', $to);
         }
     }
 
     // 送信元の設定
-    function setFrom($from, $from_name = "") {
+    function setFrom($from, $from_name = '') {
         $this->from = $this->getNameAddress($from_name, $from);
     }
 
     // CCの設定
-    function setCc($cc, $cc_name = "") {
-        if ($cc != "") {
+    function setCc($cc, $cc_name = '') {
+        if ($cc != '') {
             $this->cc = $this->getNameAddress($cc_name, $cc);
             $this->setRecip('Cc', $cc);
         }
@@ -81,7 +81,7 @@ class SC_SendMail {
 
     // BCCの設定
     function setBCc($bcc) {
-        if ($bcc != "") {
+        if ($bcc != '') {
             $this->bcc = $bcc;
             $this->setRecip('Bcc', $bcc);
         }
@@ -89,7 +89,7 @@ class SC_SendMail {
 
     // Reply-Toの設定
     function setReplyTo($reply_to) {
-        if ($reply_to != "") {
+        if ($reply_to != '') {
             $this->reply_to = $reply_to;
         }
     }
@@ -137,11 +137,11 @@ class SC_SendMail {
 
     // 名前<メールアドレス>の形式を生成
     function getNameAddress($name, $mail_address) {
-            if ($name != "") {
+            if ($name != '') {
                 // 制御文字を変換する。
                 $_name = $name;
-                $_name = ereg_replace("<","＜", $_name);
-                $_name = ereg_replace(">","＞", $_name);
+                $_name = ereg_replace('<','＜', $_name);
+                $_name = ereg_replace('>','＞', $_name);
                 $_name = mb_encode_mimeheader($_name, 'JIS', 'B', "\n");
                 $name_address = "\"". $_name . "\"<" . $mail_address . ">";
             } else {
@@ -150,11 +150,11 @@ class SC_SendMail {
             return $name_address;
     }
 
-    function setItem($to, $subject, $body, $fromaddress, $from_name, $reply_to="", $return_path="", $errors_to="", $bcc="", $cc ="") {
+    function setItem($to, $subject, $body, $fromaddress, $from_name, $reply_to='', $return_path='', $errors_to="", $bcc="", $cc ="") {
         $this->setBase($to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc);
     }
 
-    function setItemHtml($to, $subject, $body, $fromaddress, $from_name, $reply_to="", $return_path="", $errors_to="", $bcc="", $cc ="") {
+    function setItemHtml($to, $subject, $body, $fromaddress, $from_name, $reply_to='', $return_path='', $errors_to="", $bcc="", $cc ="") {
         $this->setBase($to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc);
     }
 
@@ -170,7 +170,7 @@ class SC_SendMail {
          $cc            -> カーボンコピー
          $bcc           -> ブラインドカーボンコピー
     */
-    function setBase($to, $subject, $body, $fromaddress, $from_name, $reply_to="", $return_path="", $errors_to="", $bcc="", $cc ="") {
+    function setBase($to, $subject, $body, $fromaddress, $from_name, $reply_to='', $return_path='', $errors_to="", $bcc="", $cc ="") {
         // 宛先設定
         $this->setTo($to);
         // 件名設定
@@ -187,9 +187,9 @@ class SC_SendMail {
         $this->setBcc($bcc);
 
         // Errors-Toは、ほとんどのSMTPで無視され、Return-Pathが優先されるためReturn_Pathに設定する。
-        if ($errors_to != "") {
+        if ($errors_to != '') {
             $this->return_path = $errors_to;
-        } else if ($return_path != "") {
+        } else if ($return_path != '') {
             $this->return_path = $return_path;
         } else {
             $this->return_path = $fromaddress;
@@ -204,16 +204,16 @@ class SC_SendMail {
         $arrHeader['Subject'] = $this->subject;
         $arrHeader['From'] = $this->from;
         $arrHeader['Return-Path'] = $this->return_path;
-        if ($this->reply_to != "") {
+        if ($this->reply_to != '') {
             $arrHeader['Reply-To'] = $this->reply_to;
         }
-        if ($this->cc != "") {
+        if ($this->cc != '') {
             $arrHeader['Cc'] = $this->cc;
         }
-        if ($this->bcc != "") {
+        if ($this->bcc != '') {
             $arrHeader['Bcc'] = $this->bcc;
         }
-        $arrHeader['Date'] = date("D, j M Y H:i:s O");
+        $arrHeader['Date'] = date('D, j M Y H:i:s O');
         return $arrHeader;
     }
 
@@ -229,7 +229,7 @@ class SC_SendMail {
     function getHTMLHeader() {
         $arrHeader = $this->getBaseHeader();
         $arrHeader['Content-Type'] = "text/html; charset=\"ISO-2022-JP\"";
-        $arrHeader['Content-Transfer-Encoding'] = "ISO-2022-JP";
+        $arrHeader['Content-Transfer-Encoding'] = 'ISO-2022-JP';
         return $arrHeader;
     }
 

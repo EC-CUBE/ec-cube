@@ -86,7 +86,7 @@ class SC_Helper_HandleError {
             return;
         }
 
-        $now = date("Y/m/d H:i:s");
+        $now = date('Y/m/d H:i:s');
         // 本来 realpath() で正規化したいところだが、NULL を返すケースがあるため避けている (#1618)
         $log_file_path = DATA_REALDIR . 'logs/site.log';
         switch ($errno) {
@@ -126,15 +126,15 @@ class SC_Helper_HandleError {
      */
     static function &_fatal_error_handler(&$buffer) {
         if (preg_match('/<b>(Fatal) error<\/b>: +(.+) in <b>(.+)<\/b> on line <b>(\d+)<\/b><br \/>/i', $buffer, $matches)) {
-            $now = date("Y/m/d H:i:s");
+            $now = date('Y/m/d H:i:s');
             // 本来 realpath() で正規化したいところだが、NULL を返すケースがあるため避けている (#1618)
             $log_file_path = DATA_REALDIR . 'logs/site.log';
             $message = $now . " [$matches[3]:$matches[4]] FATAL Error: $matches[2] from ". $_SERVER['REMOTE_ADDR'] . "\n";
             error_log($message, 3, $log_file_path);
             if (DEBUG_MODE !== true) {
-                $url = HTTP_URL . "error.php";
+                $url = HTTP_URL . 'error.php';
                 if (defined('ADMIN_FUNCTION') && ADMIN_FUNCTION) {
-                    $url .= "?admin";
+                    $url .= '?admin';
                 }
                 header("Location: $url");
                 exit;
@@ -174,7 +174,7 @@ class SC_Helper_HandleError {
         $errstr = "[{$arrError[file]}:{$arrError[line]}] FATAL Error({$arrError[type]}) {$arrError[message]}";
 
         // ログの書き出し
-        $now = date("Y/m/d H:i:s");
+        $now = date('Y/m/d H:i:s');
         // 本来 realpath() で正規化したいところだが、NULL を返すケースがあるため避けている (#1618)
         $log_file_path = DATA_REALDIR . 'logs/site.log';
         error_log($now . " $errstr from ". $_SERVER['REMOTE_ADDR'] . "\n", 3, $log_file_path);

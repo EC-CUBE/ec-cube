@@ -115,7 +115,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
 
         // カテゴリ取得
         $objDb = new SC_Helper_DB_Ex();
-        $this->arrCatList = $objDb->sfGetCategoryList("level = 1");
+        $this->arrCatList = $objDb->sfGetCategoryList('level = 1');
     }
 
     /**
@@ -132,10 +132,10 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
      * @param Object $objFormParam
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("商品ID", 'product_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("カテゴリID", 'category_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("ランク", 'rank', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("コメント", 'comment', LTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('商品ID', 'product_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('カテゴリID', 'category_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('ランク', 'rank', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('コメント', 'comment', LTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**

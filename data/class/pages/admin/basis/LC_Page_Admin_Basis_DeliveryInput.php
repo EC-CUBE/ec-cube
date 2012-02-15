@@ -114,12 +114,12 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
         switch ($mode) {
             case 'edit':
                 $objFormParam->addParam('配送業者ID', 'deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam("配送業者名", 'name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam("名称", 'service_name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam("説明", 'remark', LLTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-                $objFormParam->addParam("伝票No.確認URL", 'confirm_url', URL_LEN, 'n', array('URL_CHECK', 'MAX_LENGTH_CHECK'), "http://");
-                $objFormParam->addParam("取扱商品種別", 'product_type_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam("取扱支払方法", 'payment_ids', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam('配送業者名', 'name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam('名称', 'service_name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam('説明', 'remark', LLTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+                $objFormParam->addParam('伝票No.確認URL', 'confirm_url', URL_LEN, 'n', array('URL_CHECK', 'MAX_LENGTH_CHECK'), "http://");
+                $objFormParam->addParam('取扱商品種別', 'product_type_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam('取扱支払方法', 'payment_ids', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
                 for ($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
                     $objFormParam->addParam("お届け時間$cnt", "deliv_time$cnt", STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
@@ -160,22 +160,22 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
 
         // deliv_id が決まっていた場合
-        if ($arrRet['deliv_id'] != "") {
+        if ($arrRet['deliv_id'] != '') {
             $deliv_id = $arrRet['deliv_id'];
-            $where = "deliv_id = ?";
+            $where = 'deliv_id = ?';
             $objQuery->update('dtb_deliv', $sqlval, $where, array($deliv_id));
 
             // お届け時間の登録
             $table = 'dtb_delivtime';
-            $where = "deliv_id = ? AND time_id = ?";
+            $where = 'deliv_id = ? AND time_id = ?';
             for ($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
                 $sqlval = array();
                 $keyname = 'deliv_time'.$cnt;
                 $arrval = array($deliv_id, $cnt);
                 // 既存データの有無を確認
-                $curData = $objQuery->select("*", $table, $where, $arrval);
+                $curData = $objQuery->select('*', $table, $where, $arrval);
 
-                if (strcmp($arrRet[$keyname], "") != 0) {
+                if (strcmp($arrRet[$keyname], '') != 0) {
                     $sqlval['deliv_time'] = $arrRet[$keyname];
 
                     // 入力が空ではなく、DBに情報があれば更新
@@ -199,9 +199,9 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
             if (INPUT_DELIV_FEE) {
                 for ($cnt = 1; $cnt <= DELIVFEE_MAX; $cnt++) {
                     $keyname = 'fee'.$cnt;
-                    if (strcmp($arrRet[$keyname], "") != 0) {
+                    if (strcmp($arrRet[$keyname], '') != 0) {
                         $sqlval = array('fee' => $arrRet[$keyname]);
-                        $objQuery->update('dtb_delivfee', $sqlval, "deliv_id = ? AND fee_id = ?", array($deliv_id, $cnt));
+                        $objQuery->update('dtb_delivfee', $sqlval, 'deliv_id = ? AND fee_id = ?', array($deliv_id, $cnt));
                     }
                 }
             }
@@ -218,7 +218,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
             // お届け時間の設定
             for ($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
                 $keyname = "deliv_time$cnt";
-                if ($arrRet[$keyname] != "") {
+                if ($arrRet[$keyname] != '') {
                     $sqlval['deliv_id'] = $deliv_id;
                     $sqlval['time_id'] = $cnt;
                     $sqlval['deliv_time'] = $arrRet[$keyname];
@@ -232,7 +232,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
                 // 配送料金の設定
                 for ($cnt = 1; $cnt <= DELIVFEE_MAX; $cnt++) {
                     $keyname = "fee$cnt";
-                    if ($arrRet[$keyname] != "") {
+                    if ($arrRet[$keyname] != '') {
                         $sqlval['deliv_id'] = $deliv_id;
                         $sqlval['fee'] = $arrRet[$keyname];
                         $sqlval['pref'] = $cnt;
@@ -268,20 +268,20 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
         $this->lfInitParam('edit', $objFormParam);
 
         // 配送業者一覧の取得
-        $col = "deliv_id, name, service_name, remark, confirm_url, product_type_id";
-        $where = "deliv_id = ?";
+        $col = 'deliv_id, name, service_name, remark, confirm_url, product_type_id';
+        $where = 'deliv_id = ?';
         $table = 'dtb_deliv';
         $arrRet = $objQuery->select($col, $table, $where, array($deliv_id));
         $objFormParam->setParam($arrRet[0]);
         // お届け時間の取得
         $col = 'deliv_time';
-        $where = "deliv_id = ?  ORDER BY time_id";
+        $where = 'deliv_id = ?  ORDER BY time_id';
         $table = 'dtb_delivtime';
         $arrRet = $objQuery->select($col, $table, $where, array($deliv_id));
         $objFormParam->setParamList($arrRet, 'deliv_time');
         // 配送料金の取得
         $col = 'fee';
-        $where = "deliv_id = ? ORDER BY pref";
+        $where = 'deliv_id = ? ORDER BY pref';
         $table = 'dtb_delivfee';
         $arrRet = $objQuery->select($col, $table, $where, array($deliv_id));
         $objFormParam->setParamList($arrRet, 'fee');
@@ -309,7 +309,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
             $objDb = new SC_Helper_DB_Ex();
             $ret = $objDb->sfIsRecord('dtb_deliv', 'service_name', array($arrRet['service_name']));
             if ($ret) {
-                $objErr->arrErr['name'] = "※ 同じ名称の組み合わせは登録できません。<br>";
+                $objErr->arrErr['name'] = '※ 同じ名称の組み合わせは登録できません。<br>';
             }
         }
 

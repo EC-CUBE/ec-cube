@@ -146,7 +146,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("端末種別ID", 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('端末種別ID', 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('template_code', 'template_code', STEXT_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK', 'ALNUM_CHECK'));
     }
 
@@ -198,10 +198,10 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
         if ($sql !== false) {
             // 改行、タブを1スペースに変換
             $sql = preg_replace("/[\r\n\t]/", " " ,$sql);
-            $sql_split = explode(";", $sql);
+            $sql_split = explode(';', $sql);
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             foreach ($sql_split as $val) {
-                if (trim($val) != "") {
+                if (trim($val) != '') {
                     $objQuery->query($val);
                 }
             }
@@ -218,7 +218,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
     function doDelete($template_code, $device_type_id) {
         if ($template_code == $this->getTemplateName($device_type_id)
                 || $template_code == $this->getTemplateName($device_type_id, true)) {
-            $this->arrErr['err'] = "※ デフォルトテンプレートと、選択中のテンプレートは削除出来ません<br />";
+            $this->arrErr['err'] = '※ デフォルトテンプレートと、選択中のテンプレートは削除出来ません<br />';
             return false;
         } else {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -226,16 +226,16 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
             $objQuery->delete('dtb_templates', 'template_code = ? AND device_type_id = ?',
                               array($template_code, $device_type_id));
 
-            $error =  "※ テンプレートの削除ができませんでした<br />";
+            $error =  '※ テンプレートの削除ができませんでした<br />';
             // テンプレート削除
-            $templates_dir = SMARTY_TEMPLATES_REALDIR . $template_code. "/";
+            $templates_dir = SMARTY_TEMPLATES_REALDIR . $template_code. '/';
             if (SC_Utils_Ex::sfDelFile($templates_dir) === false) {
                 $this->arrErr['err'] = $error;
                 $objQuery->rollback();
                 return false;
             }
             // ユーザーデータ削除
-            $user_dir = USER_TEMPLATE_REALDIR. $template_code. "/";
+            $user_dir = USER_TEMPLATE_REALDIR. $template_code. '/';
             if (SC_Utils_Ex::sfDelFile($user_dir) === false) {
                 $this->arrErr['err'] = $error;
                 $objQuery->rollback();
@@ -243,7 +243,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
             }
 
             // コンパイル削除
-            $templates_c_dir = DATA_REALDIR. "Smarty/templates_c/". $template_code. "/";
+            $templates_c_dir = DATA_REALDIR. 'Smarty/templates_c/'. $template_code. '/';
             if (SC_Utils_Ex::sfDelFile($templates_c_dir) === false) {
                 $this->arrErr['err'] = $error;
                 $objQuery->rollback();
@@ -272,7 +272,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
         }
 
         // 更新SQLファイルが存在する場合はブロック位置を更新
-        $sql_file = $tpl_dir . "sql/update_bloc.sql";
+        $sql_file = $tpl_dir . 'sql/update_bloc.sql';
         if (file_exists($sql_file)) {
             $this->updateBloc($sql_file);
         }
@@ -294,8 +294,8 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
      * @return boolean 成功した場合 true; 失敗した場合 false
      */
     function doDownload($template_code) {
-        $from_dir = USER_TEMPLATE_REALDIR . $template_code . "/";
-        $to_dir = SMARTY_TEMPLATES_REALDIR . $template_code . "/_packages/";
+        $from_dir = USER_TEMPLATE_REALDIR . $template_code . '/';
+        $to_dir = SMARTY_TEMPLATES_REALDIR . $template_code . '/_packages/';
         if (SC_Utils_Ex::recursiveMkdir($to_dir) === false) {
             $this->arrErr['err'] = '※ ディレクトリの作成に失敗しました<br />';
             return false;

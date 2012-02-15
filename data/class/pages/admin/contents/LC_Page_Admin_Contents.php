@@ -100,7 +100,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
                 } else {
                     $this->lfNewsInsert($arrPost,$member_id);
                 }
-                $news_id = "";
+                $news_id = '';
                 $this->tpl_onload = "window.alert('編集が完了しました');";
             } else {
                 $this->arrForm = $arrPost;
@@ -168,7 +168,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
     function lfCheckError(&$objFormParam) {
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
-        $objErr->doFunc(array("日付", 'year', 'month', 'day'), array('CHECK_DATE'));
+        $objErr->doFunc(array('日付', 'year', 'month', 'day'), array('CHECK_DATE'));
         return $objErr->arrErr;
     }
 
@@ -178,14 +178,14 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      */
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam('news_id', 'news_id');
-        $objFormParam->addParam("日付(年)", 'year', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("日付(月)", 'month', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("日付(日)", 'day', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("タイトル", 'news_title', MTEXT_LEN, 'KVa', array('EXIST_CHECK','MAX_LENGTH_CHECK','SPTAB_CHECK'));
+        $objFormParam->addParam('日付(年)', 'year', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('日付(月)', 'month', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('日付(日)', 'day', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('タイトル', 'news_title', MTEXT_LEN, 'KVa', array('EXIST_CHECK','MAX_LENGTH_CHECK','SPTAB_CHECK'));
         $objFormParam->addParam('URL', 'news_url', URL_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("本文", 'news_comment', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("別ウィンドウで開く", 'link_method', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("ランク移動", 'term', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('本文', 'news_comment', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('別ウィンドウで開く', 'link_method', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('ランク移動', 'term', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -239,7 +239,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * @return string 登録日を示す文字列
      */
     function getRegistDate($arrPost) {
-        $registDate = $arrPost['year'] ."/". $arrPost['month'] ."/". $arrPost['day'];
+        $registDate = $arrPost['year'] .'/'. $arrPost['month'] ."/". $arrPost['day'];
         return $registDate;
     }
 
@@ -320,7 +320,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * @param String $news_date
      */
     function splitNewsDate($news_date) {
-        return explode("-", $news_date);
+        return explode('-', $news_date);
     }
 
     /**
@@ -343,7 +343,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      */
     function getPostRank($news_id) {
         if (strlen($news_id) > 0 && is_numeric($news_id) == true) {
-           $key = "pos-".$news_id;
+           $key = 'pos-'.$news_id;
            $input_pos = $_POST[$key];
            return $input_pos;
         }

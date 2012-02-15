@@ -41,7 +41,7 @@ class SC_Customer {
             $arrValues[] = $email;
         }
         // 本登録された会員のみ
-        $sql = "SELECT * FROM dtb_customer WHERE (email = ?" . $sql_mobile . ") AND del_flg = 0 AND status = 2";
+        $sql = 'SELECT * FROM dtb_customer WHERE (email = ?' . $sql_mobile . ') AND del_flg = 0 AND status = 2';
         $objQuery = new SC_Query_Ex();
         $result = $objQuery->getAll($sql, $arrValues);
         if (empty($result)) {
@@ -99,8 +99,8 @@ class SC_Customer {
                  WHERE customer_id = ?
             ) AS addrs
 __EOS__;
-        $objQuery->setOrder("other_deliv_id IS NULL DESC, other_deliv_id DESC");
-        return $objQuery->select("*", $from, "", array($customer_id, $customer_id));
+        $objQuery->setOrder('other_deliv_id IS NULL DESC, other_deliv_id DESC');
+        return $objQuery->select('*', $from, '', array($customer_id, $customer_id));
     }
 
     /**
@@ -121,7 +121,7 @@ __EOS__;
 
         // 携帯端末IDが一致し、本登録された会員を検索する。
         $objQuery = new SC_Query_Ex();
-        $exists = $objQuery->exists('dtb_customer', "mobile_phone_id = ? AND del_flg = 0 AND status = 2", array($_SESSION['mobile']['phone_id']));
+        $exists = $objQuery->exists('dtb_customer', 'mobile_phone_id = ? AND del_flg = 0 AND status = 2', array($_SESSION['mobile']['phone_id']));
         return $exists;
     }
 
@@ -182,21 +182,21 @@ __EOS__;
     // パスワードを確認せずにログイン
     function setLogin($email) {
         // 本登録された会員のみ
-        $sql = "SELECT * FROM dtb_customer WHERE (email = ? OR email_mobile = ?) AND del_flg = 0 AND status = 2";
+        $sql = 'SELECT * FROM dtb_customer WHERE (email = ? OR email_mobile = ?) AND del_flg = 0 AND status = 2';
         $objQuery = new SC_Query_Ex();
         $result = $objQuery->getAll($sql, array($email, $email));
-        $data = isset($result[0]) ? $result[0] : "";
+        $data = isset($result[0]) ? $result[0] : '';
         $this->customer_data = $data;
         $this->startSession();
     }
 
     // セッション情報を最新の情報に更新する
     function updateSession() {
-        $sql = "SELECT * FROM dtb_customer WHERE customer_id = ? AND del_flg = 0";
+        $sql = 'SELECT * FROM dtb_customer WHERE customer_id = ? AND del_flg = 0';
         $customer_id = $this->getValue('customer_id');
         $objQuery = new SC_Query_Ex();
         $arrRet = $objQuery->getAll($sql, array($customer_id));
-        $this->customer_data = isset($arrRet[0]) ? $arrRet[0] : "";
+        $this->customer_data = isset($arrRet[0]) ? $arrRet[0] : '';
         $_SESSION['customer'] = $this->customer_data;
     }
 
@@ -204,7 +204,7 @@ __EOS__;
     function startSession() {
         $_SESSION['customer'] = $this->customer_data;
         // セッション情報の保存
-        GC_Utils_Ex::gfPrintLog("access : user=".$this->customer_data['customer_id'] ."\t"."ip=". $this->getRemoteHost(), CUSTOMER_LOG_REALFILE);
+        GC_Utils_Ex::gfPrintLog('access : user='.$this->customer_data['customer_id'] ."\t"."ip=". $this->getRemoteHost(), CUSTOMER_LOG_REALFILE);
     }
 
     // ログアウト　$_SESSION['customer']を解放し、ログに書き込む
@@ -216,7 +216,7 @@ __EOS__;
         $objSiteSess = new SC_SiteSession_Ex();
         $objSiteSess->unsetUniqId();
         // ログに記録する
-        GC_Utils_Ex::gfPrintLog("logout : user=".$this->customer_data['customer_id'] ."\t"."ip=". $this->getRemoteHost(), CUSTOMER_LOG_REALFILE);
+        GC_Utils_Ex::gfPrintLog('logout : user='.$this->customer_data['customer_id'] ."\t"."ip=". $this->getRemoteHost(), CUSTOMER_LOG_REALFILE);
     }
 
     // ログインに成功しているか判定する。
@@ -269,7 +269,7 @@ __EOS__;
     // 誕生日月であるかどうかの判定
     function isBirthMonth() {
         if (isset($_SESSION['customer']['birth'])) {
-            $arrRet = preg_split("|[- :/]|", $_SESSION['customer']['birth']);
+            $arrRet = preg_split('|[- :/]|', $_SESSION['customer']['birth']);
             $birth_month = intval($arrRet[1]);
             $now_month = intval(date('m'));
 
@@ -295,14 +295,14 @@ __EOS__;
         } elseif (!empty($_SERVER['REMOTE_ADDR'])) {
             return $_SERVER['REMOTE_ADDR'];
         } else {
-            return "";
+            return '';
         }
     }
 
     //受注関連の会員情報を更新
     function updateOrderSummary($customer_id) {
         $objQuery = new SC_Query_Ex();
-        $arrOrderSummary =  $objQuery->getRow("SUM( payment_total) as buy_total, COUNT(order_id) as buy_times,MAX( create_date) as last_buy_date, MIN(create_date) as first_buy_date",'dtb_order',"customer_id = ? AND del_flg = 0 AND status <> ?",array($customer_id,ORDER_CANCEL));
-        $objQuery->update('dtb_customer',$arrOrderSummary,"customer_id = ?",array($customer_id));
+        $arrOrderSummary =  $objQuery->getRow('SUM( payment_total) as buy_total, COUNT(order_id) as buy_times,MAX( create_date) as last_buy_date, MIN(create_date) as first_buy_date','dtb_order',"customer_id = ? AND del_flg = 0 AND status <> ?",array($customer_id,ORDER_CANCEL));
+        $objQuery->update('dtb_customer',$arrOrderSummary,'customer_id = ?',array($customer_id));
     }
 }

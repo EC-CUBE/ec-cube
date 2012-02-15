@@ -143,10 +143,10 @@ class LC_Page {
      */
     function sendResponseCSV($file_name, $data) {
         $this->objDisplay->prepare($this);
-        $this->objDisplay->addHeader("Content-disposition", "attachment; filename=${file_name}");
-        $this->objDisplay->addHeader("Content-type", "application/octet-stream; name=${file_name}");
-        $this->objDisplay->addHeader("Cache-Control", "");
-        $this->objDisplay->addHeader('Pragma', "");
+        $this->objDisplay->addHeader('Content-disposition', "attachment; filename=${file_name}");
+        $this->objDisplay->addHeader('Content-type', "application/octet-stream; name=${file_name}");
+        $this->objDisplay->addHeader('Cache-Control', '');
+        $this->objDisplay->addHeader('Pragma', '');
 
         $this->objDisplay->response->body = $data;
         $this->objDisplay->response->write();
@@ -165,7 +165,7 @@ class LC_Page {
             $timeEnd = SC_Utils_Ex::sfMicrotimeFloat();
             $timeExecTime = $timeEnd - $this->timeStart;
             if (defined('PAGE_DISPLAY_TIME_LOG_MIN_EXEC_TIME') && $timeExecTime >= (float)PAGE_DISPLAY_TIME_LOG_MIN_EXEC_TIME) {
-                $logMsg = sprintf("PAGE_DISPLAY_TIME_LOG [%.2fsec]", $timeExecTime);
+                $logMsg = sprintf('PAGE_DISPLAY_TIME_LOG [%.2fsec]', $timeExecTime);
                 GC_Utils_Ex::gfPrintLog($logMsg);
             }
         }
@@ -357,7 +357,7 @@ class LC_Page {
                 if ($is_admin) {
                     SC_Utils_Ex::sfDispError(INVALID_MOVE_ERRORR);
                 } else {
-                    SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
+                    SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
                 }
                 exit;
             }
@@ -385,7 +385,7 @@ class LC_Page {
      * @return void
      */
     function log($mess, $log_level) {
-        $mess = $mess . " user=" . $_SESSION['customer']['customer_id'];
+        $mess = $mess . ' user=' . $_SESSION['customer']['customer_id'];
 
         GC_Utils_Ex::gfFrontLog($mess, $log_level);
     }

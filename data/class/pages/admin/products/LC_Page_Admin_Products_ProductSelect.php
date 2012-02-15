@@ -45,7 +45,7 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
         parent::init();
         $this->tpl_mainpage = 'products/product_select.tpl';
         $this->tpl_mainno = 'products';
-        $this->tpl_subno = "";
+        $this->tpl_subno = '';
         $this->tpl_maintitle = '商品管理';
         $this->tpl_subtitle = '商品選択';
 
@@ -106,33 +106,33 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("カテゴリ", 'search_category_id', STEXT_LEN, 'n');
-        $objFormParam->addParam("商品名", 'search_name', STEXT_LEN, 'KVa');
-        $objFormParam->addParam("商品コード", 'search_product_code', STEXT_LEN, 'KVa');
+        $objFormParam->addParam('カテゴリ', 'search_category_id', STEXT_LEN, 'n');
+        $objFormParam->addParam('商品名', 'search_name', STEXT_LEN, 'KVa');
+        $objFormParam->addParam('商品コード', 'search_product_code', STEXT_LEN, 'KVa');
     }
 
     /* 商品検索結果取得 */
     function lfGetProducts(&$objDb) {
-        $where = "del_flg = 0";
+        $where = 'del_flg = 0';
 
         /* 入力エラーなし */
         foreach ($this->arrForm AS $key=>$val) {
-            if($val == "") continue;
+            if($val == '') continue;
 
             switch ($key) {
             case 'search_name':
-                $where .= " AND name ILIKE ?";
+                $where .= ' AND name ILIKE ?';
                 $arrval[] = "%$val%";
                 break;
             case 'search_category_id':
                 list($tmp_where, $tmp_arrval) = $objDb->sfGetCatWhere($val);
-                if ($tmp_where != "") {
-                    $where.= " AND product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
+                if ($tmp_where != '') {
+                    $where.= ' AND product_id IN (SELECT product_id FROM dtb_product_categories WHERE ' . $tmp_where . ')';
                     $arrval = array_merge((array)$arrval, (array)$tmp_arrval);
                 }
                 break;
             case 'search_product_code':
-                $where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code LIKE ? GROUP BY product_id)";
+                $where .= ' AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code LIKE ? GROUP BY product_id)';
                 $arrval[] = "$val%";
                 break;
             default:
@@ -140,7 +140,7 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
             }
         }
 
-        $order = "update_date DESC, product_id DESC ";
+        $order = 'update_date DESC, product_id DESC ';
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         // 行数の取得
@@ -165,7 +165,7 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
 
         // 検索結果の取得
         // FIXME 商品コードの表示
-        $arrProducts = $objQuery->select("*", SC_Product_Ex::alldtlSQL(), $where, $arrval);
+        $arrProducts = $objQuery->select('*', SC_Product_Ex::alldtlSQL(), $where, $arrval);
         return $arrProducts;
     }
 }

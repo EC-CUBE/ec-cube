@@ -23,7 +23,7 @@
  * 端末の画面解像度にあわせて画像を変換する
  */
 
-define('MOBILE_IMAGE_INC_REALDIR', realpath(dirname( __FILE__)) . "/../include/");
+define('MOBILE_IMAGE_INC_REALDIR', realpath(dirname( __FILE__)) . '/../include/');
 require_once MOBILE_IMAGE_INC_REALDIR . 'image_converter.inc';
 
 /**
@@ -56,7 +56,7 @@ class SC_MobileImage {
             if ($fp === false) {
                 return $buffer;
             }
-            while (($data = fgetcsv($fp, 1000, ",")) !== FALSE) {
+            while (($data = fgetcsv($fp, 1000, ',')) !== FALSE) {
                 if ($data[1] == $model || $data[1] == '*') {
                     $cacheSize     = $data[2];
                     $imageFileSize = $data[7];

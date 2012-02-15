@@ -40,7 +40,7 @@ class GC_Utils {
      *----------------------------------------------------------------------*/
     function gfDownloadCsv($header, $contents) {
 
-        $fiest_name = date('YmdHis') .".csv";
+        $fiest_name = date('YmdHis') .'.csv';
 
         /* HTTPヘッダの出力 */
         Header("Content-disposition: attachment; filename=${fiest_name}");
@@ -64,19 +64,19 @@ class GC_Utils {
      * [依存] -
      * [注釈] -
      *----------------------------------------------------------------------*/
-    function gfSetCsv($array, $arrayIndex = "") {
+    function gfSetCsv($array, $arrayIndex = '') {
         //引数$arrayIndexは、$arrayが連想配列のときに添え字を指定してやるために使用する
 
-        $return = "";
+        $return = '';
         for ($i=0; $i<count($array); $i++) {
 
             for ($j=0; $j<count($array[$i]); $j++) {
-                if ($j > 0) $return .= ",";
+                if ($j > 0) $return .= ',';
                 $return .= "\"";
                 if ($arrayIndex) {
-                    $return .= mb_ereg_replace("<","＜",mb_ereg_replace("\"","\"\"",$array[$i][$arrayIndex[$j]])) ."\"";
+                    $return .= mb_ereg_replace('<','＜',mb_ereg_replace("\"","\"\"",$array[$i][$arrayIndex[$j]])) ."\"";
                 } else {
-                    $return .= mb_ereg_replace("<","＜",mb_ereg_replace("\"","\"\"",$array[$i][$j])) ."\"";
+                    $return .= mb_ereg_replace('<','＜',mb_ereg_replace("\"","\"\"",$array[$i][$j])) ."\"";
                 }
             }
             $return .= "\n";
@@ -97,7 +97,7 @@ class GC_Utils {
         $ty = date('Y');
         $tm = date('m');
         $td = date('d');
-        list($by, $bm, $bd) = preg_split("/[-/ ]/", $dbdate);
+        list($by, $bm, $bd) = preg_split('/[-/ ]/', $dbdate);
         $age = $ty - $by;
         if($tm * 100 + $td < $bm * 100 + $bd) $age--;
         return $age;
@@ -114,7 +114,7 @@ class GC_Utils {
             GC_Utils_Ex::gfPrintLog(
                 "*** start Debug ***\n" .
                 print_r($obj, true) .
-                "*** end Debug ***"
+                '*** end Debug ***'
             );
         }
     }
@@ -138,7 +138,7 @@ class GC_Utils {
                 $bklv = 4;
             }
         }
-        $str = $traces[$bklv]['class'] . "::" . $traces[$bklv]['function'] . "(" . $traces[$bklv-1]['line'] . ") ";
+        $str = $traces[$bklv]['class'] . '::' . $traces[$bklv]['function'] . "(" . $traces[$bklv-1]['line'] . ") ";
         return $str;
     }
 
@@ -155,7 +155,7 @@ class GC_Utils {
 
         // ログレベル=Debugの場合は、[Debug]を先頭に付与する
         if ($log_level === 'Debug') {
-            $mess = "[Debug]" . $mess;
+            $mess = '[Debug]' . $mess;
         }
 
         return $mess;
@@ -217,9 +217,9 @@ class GC_Utils {
      *----------------------------------------------------------------------*/
     function gfPrintLog($mess, $path = '') {
         // 日付の取得
-        $today = date("Y/m/d H:i:s");
+        $today = date('Y/m/d H:i:s');
         // 出力パスの作成
-        if ($path == "") {
+        if ($path == '') {
             $path = LOG_REALFILE;
         }
 
@@ -228,9 +228,9 @@ class GC_Utils {
         $trans_tbl = array_flip ($trans_tbl);
         $mess = strtr($mess, $trans_tbl);
 
-        $fp = fopen($path, "a+");
+        $fp = fopen($path, 'a+');
         if ($fp) {
-            fwrite($fp, $today." [".$_SERVER['PHP_SELF']."] ".$mess." from ". $_SERVER['REMOTE_ADDR']. "\n");
+            fwrite($fp, $today.' ['.$_SERVER['PHP_SELF']."] ".$mess." from ". $_SERVER['REMOTE_ADDR']. "\n");
             fclose($fp);
         }
 
@@ -292,9 +292,9 @@ class GC_Utils {
 
         // パスワード文字列の配列を作成
         $character = 'abcdefghkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ2345679';
-        $pw = preg_split("//", $character, 0, PREG_SPLIT_NO_EMPTY);
+        $pw = preg_split('//', $character, 0, PREG_SPLIT_NO_EMPTY);
 
-        $password = "";
+        $password = '';
         for ($i = 0; $i<$pwLength; $i++) {
             $password .= $pw[array_rand($pw, 1)];
         }
@@ -312,16 +312,16 @@ class GC_Utils {
      *----------------------------------------------------------------------------------------------------------------------*/
 
     function gfMailHeaderAddr($str) {
-        $addrs = explode(",", $str); //アドレスを配列に入れる
+        $addrs = explode(',', $str); //アドレスを配列に入れる
         foreach ($addrs as $addr) {
             if (preg_match("/^(.+)<(.+)>$/", $addr, $matches)) {
                 //引数が「名前<メールアドレス>」の場合
-                $mailaddrs[] = mb_encode_mimeheader(trim($matches[1]))." <".trim($matches[2]).">";
+                $mailaddrs[] = mb_encode_mimeheader(trim($matches[1])).' <'.trim($matches[2]).'>';
             } else {
                 //メールアドレスのみの場合
                 $mailaddrs[] =  trim($addr);
             }
         }
-        return implode(", ", $mailaddrs); //複数アドレスはカンマ区切りにする
+        return implode(', ', $mailaddrs); //複数アドレスはカンマ区切りにする
     }
 }

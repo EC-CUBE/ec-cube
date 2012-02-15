@@ -70,7 +70,7 @@ class LC_Page_Regist extends LC_Page_Ex {
         //--　本登録完了のためにメールから接続した場合
             //-- 入力チェック
             $this->arrErr       = $this->lfErrorCheck($_GET);
-            if ($this->arrErr) SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, "", true, $this->arrErr['id']);
+            if ($this->arrErr) SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, $this->arrErr['id']);
 
             $registSecretKey    = $this->lfRegistData($_GET);   //本会員登録（フラグ変更）
             $this->lfSendRegistMail($registSecretKey);          //本会員登録完了メール送信
@@ -79,7 +79,7 @@ class LC_Page_Regist extends LC_Page_Ex {
             break;
         //--　それ以外のアクセスは無効とする
         default:
-            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, "", true, "無効なアクセスです。");
+            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, '無効なアクセスです。');
             break;
         }
     }
@@ -107,7 +107,7 @@ class LC_Page_Regist extends LC_Page_Ex {
         $arrRegist['update_date']   = 'CURRENT_TIMESTAMP';
 
         $objQuery->begin();
-        $objQuery->update('dtb_customer', $arrRegist, "secret_key = ? AND status = 1", array($array['id']));
+        $objQuery->update('dtb_customer', $arrRegist, 'secret_key = ? AND status = 1', array($array['id']));
         $objQuery->commit();
 
         return $arrRegist['secret_key'];
@@ -126,11 +126,11 @@ class LC_Page_Regist extends LC_Page_Ex {
         if (preg_match("/^[[:alnum:]]+$/", $array['id'])) {
 
             if (!is_numeric(SC_Helper_Customer_Ex::sfGetCustomerId($array['id'], true))) {
-                $objErr->arrErr['id'] = "※ 既に会員登録が完了しているか、無効なURLです。<br>";
+                $objErr->arrErr['id'] = '※ 既に会員登録が完了しているか、無効なURLです。<br>';
             }
 
         } else {
-            $objErr->arrErr['id'] = "無効なURLです。メールに記載されている本会員登録用URLを再度ご確認ください。";
+            $objErr->arrErr['id'] = '無効なURLです。メールに記載されている本会員登録用URLを再度ご確認ください。';
         }
         return $objErr->arrErr;
     }
@@ -149,7 +149,7 @@ class LC_Page_Regist extends LC_Page_Ex {
         $CONF           = SC_Helper_DB_Ex::sfGetBasisData();
 
         //-- 会員データを取得
-        $arrCustomer    = $objQuery->select("*", 'dtb_customer', "secret_key = ?", array($registSecretKey));
+        $arrCustomer    = $objQuery->select('*', 'dtb_customer', "secret_key = ?", array($registSecretKey));
         $data           = $arrCustomer[0];
         $objCustomer->setLogin($data['email']);
 
@@ -158,7 +158,7 @@ class LC_Page_Regist extends LC_Page_Ex {
         $objMailText->assign('CONF', $CONF);
         $objMailText->assign('name01', $data['name01']);
         $objMailText->assign('name02', $data['name02']);
-        $toCustomerMail = $objMailText->fetch("mail_templates/customer_regist_mail.tpl");
+        $toCustomerMail = $objMailText->fetch('mail_templates/customer_regist_mail.tpl');
         $subject = $objHelperMail->sfMakesubject('会員登録が完了しました。');
         $objMail = new SC_SendMail();
 

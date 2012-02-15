@@ -51,7 +51,7 @@ class LC_Page_Cart extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_title = "現在のカゴの中";
+        $this->tpl_title = '現在のカゴの中';
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrProductType = $masterData->getMasterData('mtb_product_type');
 
@@ -85,7 +85,7 @@ class LC_Page_Cart extends LC_Page_Ex {
         foreach ($this->cartKeys as $key) {
             // 商品購入中にカート内容が変更された。
             if ($objCartSess->getCancelPurchase($key)) {
-                $this->tpl_message = "商品購入中にカート内容が変更されましたので、お手数ですが購入手続きをやり直して下さい。";
+                $this->tpl_message = '商品購入中にカート内容が変更されましたので、お手数ですが購入手続きをやり直して下さい。';
             }
         }
 
@@ -189,12 +189,12 @@ class LC_Page_Cart extends LC_Page_Ex {
      */
     function lfInitParam($arrRequest) {
         $objFormParam = new SC_FormParam_Ex();
-        $objFormParam->addParam("カートキー", 'cartKey', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("カートナンバー", 'cart_no', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('カートキー', 'cartKey', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('カートナンバー', 'cart_no', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         // PC版での値引き継ぎ用
-        $objFormParam->addParam("カテゴリID", 'category_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('カテゴリID', 'category_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         // スマートフォン版での数量変更用
-        $objFormParam->addParam("数量", 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('数量', 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         // 値の取得
         $objFormParam->setParam($arrRequest);
         // 入力値の変換
@@ -209,7 +209,7 @@ class LC_Page_Cart extends LC_Page_Ex {
      */
     function lfUpdateOrderTempid($pre_uniqid,$uniqid) {
         $sqlval['order_temp_id'] = $uniqid;
-        $where = "order_temp_id = ?";
+        $where = 'order_temp_id = ?';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $res = $objQuery->update('dtb_order_temp', $sqlval, $where, array($pre_uniqid));
         if ($res != 1) {
@@ -224,12 +224,12 @@ class LC_Page_Cart extends LC_Page_Ex {
      * @return void
      */
     function lfGetCartPrevUrl(&$session,$referer) {
-        if (!preg_match("/cart/", $referer)) {
+        if (!preg_match('/cart/', $referer)) {
             if (!empty($session['cart_referer_url'])) {
                 $session['cart_prev_url'] = $session['cart_referer_url'];
                 unset($session['cart_referer_url']);
             } else {
-                if (preg_match("/entry/", $referer)) {
+                if (preg_match('/entry/', $referer)) {
                     $session['cart_prev_url'] = HTTPS_URL . 'entry/kiyaku.php';
                 } else {
                     $session['cart_prev_url'] = $referer;
@@ -255,7 +255,7 @@ class LC_Page_Cart extends LC_Page_Ex {
         $objSiteSess->setUniqId();
         $uniqid = $objSiteSess->getUniqId();
         // エラーリトライなどで既にuniqidが存在する場合は、設定を引き継ぐ
-        if ($pre_uniqid != "") {
+        if ($pre_uniqid != '') {
             $this->lfUpdateOrderTempid($pre_uniqid,$uniqid);
         }
         // カートを購入モードに設定

@@ -143,8 +143,8 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("規格名", 'name', STEXT_LEN, 'KVa', array('EXIST_CHECK' ,'SPTAB_CHECK' ,'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("規格ID", 'class_id', INT_LEN, 'n', array('NUM_CHECK'));
+        $objFormParam->addParam('規格名', 'name', STEXT_LEN, 'KVa', array('EXIST_CHECK' ,'SPTAB_CHECK' ,'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('規格ID', 'class_id', INT_LEN, 'n', array('NUM_CHECK'));
     }
 
    /**
@@ -156,9 +156,9 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
     function lfGetClass($arrData) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        $where = "del_flg <> 1";
-        $objQuery->setOrder("rank DESC");
-        $arrClass = $objQuery->select("name, class_id", 'dtb_class', $where);
+        $where = 'del_flg <> 1';
+        $objQuery->setOrder('rank DESC');
+        $arrClass = $objQuery->select('name, class_id', 'dtb_class', $where);
         return $arrClass;
     }
 
@@ -170,7 +170,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
      */
     function lfGetClassName($class_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $where = "class_id = ?";
+        $where = 'class_id = ?';
         $class_name = $objQuery->get('name', 'dtb_class', $where, array($class_id));
         return $class_name;
     }
@@ -206,7 +206,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
         // UPDATEする値を作成する。
         $sqlval['name'] = $arrForm['name'];
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
-        $where = "class_id = ?";
+        $where = 'class_id = ?';
         // UPDATEの実行
         $ret = $objQuery->update('dtb_class', $sqlval, $where, array($arrForm['class_id']));
         return $ret;
@@ -224,7 +224,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $objDb->sfDeleteRankRecord('dtb_class', 'class_id', $class_id, "", true);
-        $where= "class_id = ?";
+        $where= 'class_id = ?';
         $ret = $objQuery->delete('dtb_classcategory', $where, array($class_id));
         return $ret;
     }
@@ -246,11 +246,11 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
             $arrForm = $objFormParam->getHashArray();
         }
 
-        $where = "del_flg = 0 AND name = ?";
-        $arrClass = $objQuery->select("class_id, name", 'dtb_class', $where, array($arrForm['name']));
+        $where = 'del_flg = 0 AND name = ?';
+        $arrClass = $objQuery->select('class_id, name', 'dtb_class', $where, array($arrForm['name']));
         // 編集中のレコード以外に同じ名称が存在する場合
         if ($arrClass[0]['class_id'] != $arrForm['class_id'] && $arrClass[0]['name'] == $arrForm['name']) {
-            $arrErr['name'] = "※ 既に同じ内容の登録が存在します。<br>";
+            $arrErr['name'] = '※ 既に同じ内容の登録が存在します。<br>';
         }
         return $arrErr;
     }

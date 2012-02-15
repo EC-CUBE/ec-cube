@@ -69,7 +69,7 @@ class SC_Helper_CSV {
      * @param boolean $is_download true:ダウンロード用出力までさせる false:CSVの内容を返す(旧方式、メモリを食います。）
      * @return mixed $is_download = true時 成功失敗フラグ(boolean) 、$is_downalod = false時 string
      */
-    function sfDownloadCsv($csv_id, $where = "", $arrVal = array(), $order = "", $is_download = false) {
+    function sfDownloadCsv($csv_id, $where = '', $arrVal = array(), $order = '', $is_download = false) {
         // 実行時間を制限しない
         @set_time_limit(0);
 
@@ -91,16 +91,16 @@ class SC_Helper_CSV {
             $sql = $objQuery->getSql($cols, $objProduct->prdclsSQL($inner_where),$where);
         }else if ($csv_id == '2') {
             // 会員の場合
-            $sql = "SELECT " . $cols . " FROM dtb_customer " . $where;
+            $sql = 'SELECT ' . $cols . ' FROM dtb_customer ' . $where;
         }else if ($csv_id == '3') {
             // 注文の場合
-            $sql = "SELECT " . $cols . " FROM dtb_order " . $where;
+            $sql = 'SELECT ' . $cols . ' FROM dtb_order ' . $where;
         }else if ($csv_id == '4') {
             // レビューの場合
-            $sql = "SELECT " . $cols . " FROM dtb_review AS A INNER JOIN dtb_products AS B on A.product_id = B.product_id " . $where;
+            $sql = 'SELECT ' . $cols . ' FROM dtb_review AS A INNER JOIN dtb_products AS B on A.product_id = B.product_id ' . $where;
         }else if ($csv_id == '5') {
             // カテゴリの場合
-            $sql = "SELECT " . $cols . " FROM dtb_category " . $where;
+            $sql = 'SELECT ' . $cols . ' FROM dtb_category ' . $where;
         }
         // 固有処理ここまで
         return $this->sfDownloadCsvFromSql($sql, $arrVal, $this->arrSubnavi[$csv_id], $arrOutput['disp_name'], $is_download);
@@ -115,15 +115,15 @@ class SC_Helper_CSV {
      * @param array $order SQL の ORDER BY 句
      * @return array CSV 項目の配列
      */
-    function sfGetCsvOutput($csv_id = "", $where = '', $arrVal = array(), $order = 'rank, no') {
+    function sfGetCsvOutput($csv_id = '', $where = '', $arrVal = array(), $order = 'rank, no') {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $cols = 'no, csv_id, col, disp_name, rank, status, rw_flg, mb_convert_kana_option, size_const_type, error_check_types';
         $table = 'dtb_csv';
 
         if (SC_Utils_Ex::sfIsInt($csv_id)) {
-            if ($where == "") {
-                $where = "csv_id = ?";
+            if ($where == '') {
+                $where = 'csv_id = ?';
             } else {
                 $where = "$where AND csv_id = ?";
             }
@@ -146,7 +146,7 @@ class SC_Helper_CSV {
         foreach ($arrCSVFrame as $key => $val) {
             if($val['status'] != CSV_COLUMN_STATUS_FLG_ENABLE
                     and $val['rw_flg'] == CSV_COLUMN_RW_FLG_READ_WRITE
-                    and $val['error_check_types'] != ""
+                    and $val['error_check_types'] != ''
                     and strpos(strtoupper($val['error_check_types']), 'EXIST_CHECK') !== FALSE) {
                 //必須フィールド
                 $result = false;
@@ -234,7 +234,7 @@ class SC_Helper_CSV {
         //  環境要件がPHPバージョン5.1以上になったら使うように変えても良いかと
         //  fopen('php://temp/maxmemory:'. (5*1024*1024), 'r+');
         $tmp_filename = tempnam(CSV_TEMP_REALDIR, $file_head . '_csv');
-        $this->fpOutput = fopen($tmp_filename, "w+");
+        $this->fpOutput = fopen($tmp_filename, 'w+');
         fwrite($this->fpOutput, $header);
         $objQuery->doCallbackAll(array(&$this, 'cbOutputCSV'), $sql, $arrVal);
 
@@ -266,12 +266,12 @@ class SC_Helper_CSV {
     function sfArrayToCsv($fields, $delimiter = ',', $enclosure = '"', $arrayDelimiter = '|') {
         if (strlen($delimiter) != 1) {
             trigger_error('delimiter must be a single character', E_USER_WARNING);
-            return "";
+            return '';
         }
 
         if (strlen($enclosure) < 1) {
             trigger_error('enclosure must be a single character', E_USER_WARNING);
-            return "";
+            return '';
         }
 
         foreach (array_keys($fields) as $key) {
@@ -301,20 +301,20 @@ class SC_Helper_CSV {
      * @param string $prefix
      * @return void
      */
-    function lfDownloadCsv($arrData, $prefix = "") {
+    function lfDownloadCsv($arrData, $prefix = '') {
 
-        if ($prefix == "") {
+        if ($prefix == '') {
             $dir_name = SC_Utils_Ex::sfUpDirName();
-            $file_name = $dir_name . date('ymdHis') .".csv";
+            $file_name = $dir_name . date('ymdHis') .'.csv';
         } else {
-            $file_name = $prefix . date('ymdHis') .".csv";
+            $file_name = $prefix . date('ymdHis') .'.csv';
         }
 
         /* HTTPヘッダの出力 */
         Header("Content-disposition: attachment; filename=${file_name}");
         Header("Content-type: application/octet-stream; name=${file_name}");
-        Header("Cache-Control: ");
-        Header("Pragma: ");
+        Header('Cache-Control: ');
+        Header('Pragma: ');
 
         /* データを出力 */
         foreach ($arrData as $lineArray) {
@@ -331,14 +331,14 @@ class SC_Helper_CSV {
      * @param string $prefix
      * @return void
      */
-    function lfDownloadCSVFile($filepath, $prefix = "") {
-        $file_name = $prefix . date('YmdHis') . ".csv";
+    function lfDownloadCSVFile($filepath, $prefix = '') {
+        $file_name = $prefix . date('YmdHis') . '.csv';
 
         /* HTTPヘッダの出力 */
         Header("Content-disposition: attachment; filename=${file_name}");
         Header("Content-type: application/octet-stream; name=${file_name}");
-        Header("Cache-Control: ");
-        Header("Pragma: ");
+        Header('Cache-Control: ');
+        Header('Pragma: ');
 
         /* データを出力 */
         // file_get_contentsはメモリマッピングも自動的に使ってくれるので高速＆省メモリ

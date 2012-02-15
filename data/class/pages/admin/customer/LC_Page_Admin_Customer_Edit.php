@@ -206,9 +206,9 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         // 会員項目のパラメーター取得
         SC_Helper_Customer_Ex::sfCustomerEntryParam($objFormParam, true);
         // 検索結果一覧画面への戻り用パラメーター
-        $objFormParam->addParam("検索用データ", 'search_data', "", "", array(), "", false);
+        $objFormParam->addParam('検索用データ', 'search_data', "", "", array(), "", false);
         // 会員購入履歴ページング用
-        $objFormParam->addParam("", 'search_pageno', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
+        $objFormParam->addParam('', 'search_pageno', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
     }
 
     /**
@@ -220,7 +220,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
     function lfInitSearchParam(&$objFormParam) {
         SC_Helper_Customer_Ex::sfSetSearchParam($objFormParam);
         // 初回受け入れ時用
-        $objFormParam->addParam("編集対象会員ID", 'edit_customer_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('編集対象会員ID', 'edit_customer_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -244,12 +244,12 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
 
         //メアド重複チェック(共通ルーチンは使えない)
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
-        $col = "email, email_mobile, customer_id";
+        $col = 'email, email_mobile, customer_id';
         $table = 'dtb_customer';
-        $where = "del_flg <> 1 AND (email Like ? OR email_mobile Like ?)";
+        $where = 'del_flg <> 1 AND (email Like ? OR email_mobile Like ?)';
         $arrVal = array($objFormParam->getValue('email'), $objFormParam->getValue('email_mobile'));
         if ($objFormParam->getValue('customer_id')) {
-            $where .= " AND customer_id <> ?";
+            $where .= ' AND customer_id <> ?';
             $arrVal[] = $objFormParam->getValue('customer_id');
         }
         $arrData = $objQuery->getRow($col, $table, $where, $arrVal);
@@ -264,7 +264,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
             if ($arrData['email_mobile'] == $objFormParam->getValue('email_mobile')) {
                 $arrErr['email_mobile'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用している携帯アドレスです。';
             }else if ($arrData['email_mobile'] == $objFormParam->getValue('email')) {
-    if ($arrErr['email'] == "") {
+    if ($arrErr['email'] == '') {
                     $arrErr['email'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用している携帯アドレスです。';
                 }
             }
@@ -314,7 +314,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $page_max = SEARCH_PMAX;
         $table = 'dtb_order';
-        $where = "customer_id = ? AND del_flg <> 1";
+        $where = 'customer_id = ? AND del_flg <> 1';
         $arrVal = array($customer_id);
         //購入履歴の件数取得
         $linemax = $objQuery->count($table, $where, $arrVal);
@@ -323,10 +323,10 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         // 取得範囲の指定(開始行番号、行数のセット)
         $objQuery->setLimitOffset($page_max, $objNavi->start_row);
         // 表示順序
-        $order = "order_id DESC";
+        $order = 'order_id DESC';
         $objQuery->setOrder($order);
         //購入履歴情報の取得
-        $arrPurchaseHistory = $objQuery->select("*", $table, $where, $arrVal);
+        $arrPurchaseHistory = $objQuery->select('*', $table, $where, $arrVal);
 
         return array($linemax, $arrPurchaseHistory, $objNavi);
     }

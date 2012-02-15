@@ -46,7 +46,7 @@ class SC_View {
         $this->_smarty->register_modifier('sfMultiply', array('SC_Utils_Ex', 'sfMultiply'));
         $this->_smarty->register_modifier('sfRmDupSlash', array('SC_Utils_Ex', 'sfRmDupSlash'));
         $this->_smarty->register_modifier('sfCutString', array('SC_Utils_Ex', 'sfCutString'));
-        $this->_smarty->plugins_dir=array('plugins', realpath(dirname(__FILE__)) . "/../smarty_extends");
+        $this->_smarty->plugins_dir=array('plugins', realpath(dirname(__FILE__)) . '/../smarty_extends');
         $this->_smarty->register_modifier('sfMbConvertEncoding', array('SC_Utils_Ex', 'sfMbConvertEncoding'));
         $this->_smarty->register_modifier('sfGetEnabled', array('SC_Utils_Ex', 'sfGetEnabled'));
         $this->_smarty->register_modifier('sfGetCategoryId', array('SC_Utils_Ex', 'sfGetCategoryId'));
@@ -154,8 +154,8 @@ class SC_View {
 
         // ヘッダとフッタを割り当て
         $templatePath = SC_Helper_PageLayout_Ex::getTemplatePath($device_type_id);
-        $header_tpl = $templatePath . "header.tpl";
-        $footer_tpl = $templatePath . "footer.tpl";
+        $header_tpl = $templatePath . 'header.tpl';
+        $footer_tpl = $templatePath . 'footer.tpl';
 
         $this->assign('header_tpl', $header_tpl);
         $this->assign('footer_tpl', $footer_tpl);

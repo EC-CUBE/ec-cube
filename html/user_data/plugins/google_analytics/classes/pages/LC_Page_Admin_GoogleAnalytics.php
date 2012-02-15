@@ -52,11 +52,11 @@ class LC_Page_Admin_GoogleAnalytics extends LC_Page_Ex {
         $this->tpl_subtitle = "プラグイン「{$this->arrPluginInfo['name']}」の設定";
 
         if (empty($_POST['mode'])) {
-            $_POST['mode'] = "";
+            $_POST['mode'] = '';
         }
 
         if (empty($_GET['mode'])) {
-            $_GET['mode'] = "";
+            $_GET['mode'] = '';
         }
     }
 
@@ -122,7 +122,7 @@ class LC_Page_Admin_GoogleAnalytics extends LC_Page_Ex {
         $data = "<?php\ndefine('GA_UA', '" 
             . htmlspecialchars($ua, ENT_QUOTES) . "');\n?>\n";
 
-        $configFile = $this->arrPluginInfo['fullpath'] . "classes/pages/ga_config.php";
+        $configFile = $this->arrPluginInfo['fullpath'] . 'classes/pages/ga_config.php';
         $handle = fopen($configFile, 'w');
         if (!$handle) {
             return false;

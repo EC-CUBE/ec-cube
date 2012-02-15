@@ -96,7 +96,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
                 $this->arrForm = $post;
                 if ($this->arrErr) {
                     // エラーメッセージ
-                    $this->tpl_msg = "エラーが発生しました";
+                    $this->tpl_msg = 'エラーが発生しました';
 
                 } else {
                     // 正常
@@ -124,7 +124,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
     function lfGetMailTemplateByTemplateID($template_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        $sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ?";
+        $sql = 'SELECT * FROM dtb_mailtemplate WHERE template_id = ?';
         return $objQuery->getAll($sql, array($template_id));
     }
 
@@ -134,10 +134,10 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
         $post['creator_id'] = $member_id;
         $post['update_date'] = 'CURRENT_TIMESTAMP';
 
-        $sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ?";
+        $sql = 'SELECT * FROM dtb_mailtemplate WHERE template_id = ?';
         $template_data = $objQuery->getAll($sql, array($post['template_id']));
         if ($template_data) {
-            $sql_where = "template_id = ?";
+            $sql_where = 'template_id = ?';
             $objQuery->update('dtb_mailtemplate', $post, $sql_where, array(addslashes($post['template_id'])));
         } else {
             $objQuery->insert('dtb_mailtemplate', $post);

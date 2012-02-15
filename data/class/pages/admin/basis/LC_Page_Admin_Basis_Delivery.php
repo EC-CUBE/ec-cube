@@ -112,10 +112,10 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
     function lfGetDelivList() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        $col = "deliv_id, name, service_name";
-        $where = "del_flg = 0";
+        $col = 'deliv_id, name, service_name';
+        $where = 'del_flg = 0';
         $table = 'dtb_deliv';
-        $objQuery->setOrder("rank DESC");
+        $objQuery->setOrder('rank DESC');
 
         return $objQuery->select($col, $table, $where);
     }

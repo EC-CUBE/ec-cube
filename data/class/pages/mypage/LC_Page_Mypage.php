@@ -122,11 +122,11 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
     function lfGetOrderHistory($customer_id, $startno = -1) {
         $objQuery   = SC_Query_Ex::getSingletonInstance();
 
-        $col        = "order_id, create_date, payment_id, payment_total";
+        $col        = 'order_id, create_date, payment_id, payment_total';
         $from       = 'dtb_order';
-        $where      = "del_flg = 0 AND customer_id = ?";
+        $where      = 'del_flg = 0 AND customer_id = ?';
         $arrval     = array($customer_id);
-        $order      = "order_id DESC";
+        $order      = 'order_id DESC';
 
         if ($startno == -1) {
             return $objQuery->count($from, $where, $arrval);

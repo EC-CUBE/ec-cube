@@ -46,9 +46,9 @@ class SC_Query {
      * @param boolean $force_run エラーが発生しても処理を続行する場合 true
      * @param boolean $new 新規に接続を行うかどうか
      */
-    function SC_Query($dsn = "", $force_run = false, $new = false) {
+    function SC_Query($dsn = '', $force_run = false, $new = false) {
 
-        if ($dsn == "") {
+        if ($dsn == '') {
             $dsn = DEFAULT_DSN;
         }
 
@@ -89,7 +89,7 @@ class SC_Query {
      * @param boolean $new 新規に接続を行うかどうか
      * @return SC_Query シングルトンの SC_Query インスタンス
      */
-    function getSingletonInstance($dsn = "", $force_run = false, $new = false) {
+    function getSingletonInstance($dsn = '', $force_run = false, $new = false) {
         if (!isset($GLOBALS['_SC_Query_instance'])
             || is_null($GLOBALS['_SC_Query_instance'])) {
             $GLOBALS['_SC_Query_instance'] =& new SC_Query_Ex($dsn, $force_run, $new);
@@ -152,7 +152,7 @@ class SC_Query {
      * @param integer $fetchmode 使用するフェッチモード。デフォルトは MDB2_FETCHMODE_ASSOC。
      * @return array|null
      */
-    function select($col, $table, $where = "", $arrWhereVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
+    function select($col, $table, $where = '', $arrWhereVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
         $sqlse = $this->getSql($col, $table, $where, $arrWhereVal);
         return $this->getAll($sqlse, $arrWhereVal, $fetchmode);
     }
@@ -302,7 +302,7 @@ class SC_Query {
         if (strlen($where) >= 1) {
             $sqlse .= " WHERE $where";
         } elseif (strlen($this->where) >= 1) {
-            $sqlse .= " WHERE " . $this->where;
+            $sqlse .= ' WHERE ' . $this->where;
             // 実行時と同じくキャストしてから評価する (空文字を要素1の配列と評価させる意図)
             $arrWhereValForEval = (array)$arrWhereVal;
             if (empty($arrWhereValForEval)) {
@@ -341,8 +341,8 @@ class SC_Query {
     function setLimitOffset($limit, $offset = 0) {
         if (is_numeric($limit) && is_numeric($offset)) {
 
-            $option = " LIMIT " . $limit;
-            $option.= " OFFSET " . $offset;
+            $option = ' LIMIT ' . $limit;
+            $option.= ' OFFSET ' . $offset;
             $this->option .= $option;
         }
         return $this;
@@ -360,7 +360,7 @@ class SC_Query {
         if (strlen($str) == 0) {
             $this->groupby = '';
         } else {
-            $this->groupby = "GROUP BY " . $str;
+            $this->groupby = 'GROUP BY ' . $str;
         }
         return $this;
     }
@@ -374,8 +374,8 @@ class SC_Query {
      * @return SC_Query 自分自身のインスタンス
      */
     function andWhere($str) {
-        if ($this->where != "") {
-            $this->where .= " AND " . $str;
+        if ($this->where != '') {
+            $this->where .= ' AND ' . $str;
         } else {
             $this->where = $str;
         }
@@ -391,8 +391,8 @@ class SC_Query {
      * @return SC_Query 自分自身のインスタンス
      */
     function orWhere($str) {
-        if ($this->where != "") {
-            $this->where .= " OR " . $str;
+        if ($this->where != '') {
+            $this->where .= ' OR ' . $str;
         } else {
             $this->where = $str;
         }
@@ -426,7 +426,7 @@ class SC_Query {
         if (strlen($str) == 0) {
             $this->order = '';
         } else {
-            $this->order = "ORDER BY " . $str;
+            $this->order = 'ORDER BY ' . $str;
         }
         return $this;
     }
@@ -441,7 +441,7 @@ class SC_Query {
      */
     function setLimit($limit) {
         if (is_numeric($limit)) {
-            $this->option = " LIMIT " .$limit;
+            $this->option = ' LIMIT ' .$limit;
         }
         return $this;
     }
@@ -456,7 +456,7 @@ class SC_Query {
      */
     function setOffset($offset) {
         if (is_numeric($offset)) {
-            $this->offset = " OFFSET " .$offset;
+            $this->offset = ' OFFSET ' .$offset;
         }
         return $this;
     }
@@ -479,7 +479,7 @@ class SC_Query {
         if(count($sqlval) <= 0) return false;
         foreach ($sqlval as $key => $val) {
             $strcol .= $key . ',';
-            if (strcasecmp("Now()", $val) === 0) {
+            if (strcasecmp('Now()', $val) === 0) {
                 $strval .= 'Now(),';
             } else if (strcasecmp('CURRENT_TIMESTAMP', $val) === 0) {
                 $strval .= 'CURRENT_TIMESTAMP,';
@@ -500,7 +500,7 @@ class SC_Query {
         if (!$find) {
             return false;
         }
-        // 文末の","を削除
+        // 文末の','を削除
         $strcol = preg_replace("/,$/", "", $strcol);
         $strval = preg_replace("/,$/", "", $strval);
         $sqlin = "INSERT INTO $table(" . $strcol. ") VALUES (" . $strval . ")";
@@ -521,13 +521,13 @@ class SC_Query {
      * @param array $arrRawSqlVal 追加カラム用のプレースホルダ配列
      * @return
      */
-    function update($table, $sqlval, $where = "", $arrWhereVal = array(), $arrRawSql = array(), $arrRawSqlVal = array()) {
+    function update($table, $sqlval, $where = '', $arrWhereVal = array(), $arrRawSql = array(), $arrRawSqlVal = array()) {
         $arrCol = array();
         $arrVal = array();
         $find = false;
 
         foreach ($sqlval as $key => $val) {
-            if (strcasecmp("Now()", $val) === 0) {
+            if (strcasecmp('Now()', $val) === 0) {
                 $arrCol[] = $key . '= Now()';
             } else if (strcasecmp('CURRENT_TIMESTAMP', $val) === 0) {
                 $arrCol[] = $key . '= CURRENT_TIMESTAMP';
@@ -538,7 +538,7 @@ class SC_Query {
             $find = true;
         }
 
-        if ($arrRawSql != "") {
+        if ($arrRawSql != '') {
             foreach ($arrRawSql as $key => $val) {
                 $arrCol[] = "$key = $val";
             }
@@ -550,7 +550,7 @@ class SC_Query {
             return false;
         }
 
-        // 文末の","を削除
+        // 文末の','を削除
         $strcol = implode(', ', $arrCol);
 
         if (is_array($arrWhereVal)) { // 旧版との互換用
@@ -576,7 +576,7 @@ class SC_Query {
      * @param array $arrval プレースホルダに挿入する値
      * @return integer MAX文の実行結果
      */
-    function max($col, $table, $where = "", $arrval = array()) {
+    function max($col, $table, $where = '', $arrval = array()) {
         $ret = $this->get("MAX($col)", $table, $where, $arrval);
         return $ret;
     }
@@ -590,7 +590,7 @@ class SC_Query {
      * @param array $arrval プレースホルダに挿入する値
      * @return integer MIN文の実行結果
      */
-    function min($col, $table, $where = "", $arrval = array()) {
+    function min($col, $table, $where = '', $arrval = array()) {
         $ret = $this->get("MIN($col)", $table, $where, $arrval);
         return $ret;
     }
@@ -604,7 +604,7 @@ class SC_Query {
      * @param array $arrWhereVal プレースホルダに挿入する値
      * @return mixed SQL の実行結果
      */
-    function get($col, $table, $where = "", $arrWhereVal = array()) {
+    function get($col, $table, $where = '', $arrWhereVal = array()) {
         $sqlse = $this->getSql($col, $table, $where, $arrWhereVal);
         // SQL文の実行
         $ret = $this->getOne($sqlse, $arrWhereVal);
@@ -651,7 +651,7 @@ class SC_Query {
      * @param integer $fetchmode 使用するフェッチモード。デフォルトは MDB2_FETCHMODE_ASSOC。
      * @return array array('カラム名' => '値', ...)の連想配列
      */
-    function getRow($col, $table, $where = "", $arrWhereVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
+    function getRow($col, $table, $where = '', $arrWhereVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
 
         $sql = $this->getSql($col, $table, $where, $arrWhereVal);
         $sql = $this->dbFactory->sfChangeMySQL($sql);
@@ -684,7 +684,7 @@ class SC_Query {
      * @param array $arrWhereVal プレースホルダに挿入する値
      * @return array SQL の実行結果の配列
      */
-    function getCol($col, $table, $where = "", $arrWhereVal = array()) {
+    function getCol($col, $table, $where = '', $arrWhereVal = array()) {
         $sql = $this->getSql($col, $table, $where, $arrWhereVal);
         $sql = $this->dbFactory->sfChangeMySQL($sql);
 
@@ -715,7 +715,7 @@ class SC_Query {
      * @param array $arrval プレースホルダ
      * @return
      */
-    function delete($table, $where = "", $arrval = array()) {
+    function delete($table, $where = '', $arrval = array()) {
         if (strlen($where) <= 0) {
             $sqlde = "DELETE FROM $table";
         } else {
@@ -966,21 +966,21 @@ class SC_Query {
      * @param array $arrVal プレースホルダ
      * @return string トレースしたエラー文字列
      */
-    function traceError($error, $sql = "", $arrVal = false) {
+    function traceError($error, $sql = '', $arrVal = false) {
         $scheme = '';
         if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
-            $scheme = "http://";
+            $scheme = 'http://';
         } else {
-            $scheme = "https://";
+            $scheme = 'https://';
         }
 
         $err = $scheme . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "\n\n"
-            . "SERVER_ADDR: " . $_SERVER['SERVER_ADDR'] . "\n"
-            . "REMOTE_ADDR: " . $_SERVER['REMOTE_ADDR'] . "\n"
-            . "USER_AGENT: " . $_SERVER['HTTP_USER_AGENT'] . "\n\n"
-            . "SQL: " . $sql . "\n\n";
+            . 'SERVER_ADDR: ' . $_SERVER['SERVER_ADDR'] . "\n"
+            . 'REMOTE_ADDR: ' . $_SERVER['REMOTE_ADDR'] . "\n"
+            . 'USER_AGENT: ' . $_SERVER['HTTP_USER_AGENT'] . "\n\n"
+            . 'SQL: ' . $sql . "\n\n";
         if ($arrVal !== false) {
-            $err .= "PlaceHolder: " . var_export($arrVal, true) . "\n\n";
+            $err .= 'PlaceHolder: ' . var_export($arrVal, true) . "\n\n";
         }
         $err .= $error->getMessage() . "\n\n";
         $err .= $error->getUserInfo() . "\n\n";

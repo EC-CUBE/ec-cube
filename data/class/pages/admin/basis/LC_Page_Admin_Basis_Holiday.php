@@ -100,7 +100,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
 
             if (count($this->arrErr) <= 0) {
                 // 新規作成
-                if ($post['holiday_id'] == "") {
+                if ($post['holiday_id'] == '') {
                     $this->lfInsertClass($this->arrForm, $_SESSION['member_id']);
                 }
                 // 既存編集
@@ -163,16 +163,16 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
     function lfGetHolidayDataByHolidayID($holiday_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        $where = "holiday_id = ?";
-        return $objQuery->select("title, month, day", 'dtb_holiday', $where, array($holiday_id));
+        $where = 'holiday_id = ?';
+        return $objQuery->select('title, month, day', 'dtb_holiday', $where, array($holiday_id));
     }
 
     function lfGetHolidayList() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        $where = "del_flg <> 1";
-        $objQuery->setOrder("rank DESC");
-        return $objQuery->select("holiday_id, title, month, day", 'dtb_holiday', $where);
+        $where = 'del_flg <> 1';
+        $objQuery->setOrder('rank DESC');
+        return $objQuery->select('holiday_id, title, month, day', 'dtb_holiday', $where);
     }
 
     /* DBへの挿入 */
@@ -200,7 +200,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
         $sqlval['month'] = $arrData['month'];
         $sqlval['day'] = $arrData['day'];
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
-        $where = "holiday_id = ?";
+        $where = 'holiday_id = ?';
         // UPDATEの実行
         $ret = $objQuery->update('dtb_holiday', $sqlval, $where, array($arrData['holiday_id']));
         return $ret;
@@ -237,17 +237,17 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
 
         if (!isset($arrErr['date'])) {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
-            $where = "del_flg = 0 AND month = ? AND day = ?";
+            $where = 'del_flg = 0 AND month = ? AND day = ?';
             $arrval = array($post['month'], $post['day']);
             if (!empty($post['holiday_id'])) {
-                $where .= " AND holiday_id <> ?";
+                $where .= ' AND holiday_id <> ?';
                 $arrval[] = $post['holiday_id'];
             }
-            $arrRet = $objQuery->select("count(holiday_id) as count", 'dtb_holiday', $where, $arrval);
+            $arrRet = $objQuery->select('count(holiday_id) as count', 'dtb_holiday', $where, $arrval);
 
             // 編集中のレコード以外に同じ日付が存在する場合
             if ($arrRet[0]['count'] > 0) {
-                $arrErr['date'] = "※ 既に同じ日付の登録が存在します。<br>";
+                $arrErr['date'] = '※ 既に同じ日付の登録が存在します。<br>';
             }
         }
         return $arrErr;

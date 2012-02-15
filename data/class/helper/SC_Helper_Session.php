@@ -82,13 +82,13 @@ class SC_Helper_Session {
       */
      function sfSessWrite($id, $sess_data) {
          $objQuery = new SC_Query_Ex();
-         $exists = $objQuery->exists('dtb_session', "sess_id = ?", array($id));
+         $exists = $objQuery->exists('dtb_session', 'sess_id = ?', array($id));
          $sqlval = array();
          if ($exists) {
              // レコード更新
              $sqlval['sess_data'] = $sess_data;
              $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
-             $objQuery->update('dtb_session', $sqlval, "sess_id = ?", array($id));
+             $objQuery->update('dtb_session', $sqlval, 'sess_id = ?', array($id));
          } else {
              // セッションデータがある場合は、レコード作成
              if (strlen($sess_data) > 0) {
@@ -112,7 +112,7 @@ class SC_Helper_Session {
       */
      function sfSessDestroy($id) {
          $objQuery = new SC_Query_Ex();
-         $objQuery->delete('dtb_session', "sess_id = ?", array($id));
+         $objQuery->delete('dtb_session', 'sess_id = ?', array($id));
          return true;
      }
 

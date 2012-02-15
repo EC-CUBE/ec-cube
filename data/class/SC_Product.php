@@ -76,7 +76,7 @@ class SC_Product {
             dtb_products AS alldtl
 __EOS__;
         $objQuery->setGroupBy('alldtl.product_id');
-        if (is_array($this->arrOrderData) and $objQuery->order == "") {
+        if (is_array($this->arrOrderData) and $objQuery->order == '') {
             $o_col = $this->arrOrderData['col'];
             $o_table = $this->arrOrderData['table'];
             $o_order = $this->arrOrderData['order'];
@@ -92,7 +92,7 @@ __EOS__;
 __EOS__;
             $objQuery->setOrder($order);
         }
-        $results = $objQuery->select('alldtl.product_id', $table, "", $arrVal,
+        $results = $objQuery->select('alldtl.product_id', $table, '', $arrVal,
                                      MDB2_FETCHMODE_ORDERED);
         $resultValues = array();
         foreach ($results as $val) {
@@ -208,8 +208,8 @@ __EOS__;
      */
     function getDetail($productId) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $result = $objQuery->select("*", $this->alldtlSQL('product_id = ?'),
-                                    "product_id = ?",
+        $result = $objQuery->select('*', $this->alldtlSQL('product_id = ?'),
+                                    'product_id = ?',
                                     array($productId, $productId));
         return $result[0];
     }
@@ -378,7 +378,7 @@ __EOS__;
 __EOS__;
 
         $objQuery->setOrder('T3.rank DESC'); // XXX
-        $arrRet = $objQuery->select($col, $table, "", $params);
+        $arrRet = $objQuery->select($col, $table, '', $params);
 
         return $arrRet;
     }
@@ -518,7 +518,7 @@ __EOS__;
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->update('dtb_products_class', array(),
-                          "product_class_id = ?", array($productClassId),
+                          'product_class_id = ?', array($productClassId),
                           array('stock' => 'stock - ?'), array($quantity));
         // TODO エラーハンドリング
 
@@ -671,10 +671,10 @@ __EOS__;
      * @param string $where 商品詳細の WHERE 句
      * @return string 商品規格詳細の SQL
      */
-    function prdclsSQL($where = "") {
-        $where_clause = "";
+    function prdclsSQL($where = '') {
+        $where_clause = '';
         if (!SC_Utils_Ex::isBlank($where)) {
-            $where_clause = " WHERE " . $where;
+            $where_clause = ' WHERE ' . $where;
         }
         $sql = <<< __EOS__
         (

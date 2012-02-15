@@ -57,14 +57,14 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex {
 
         $order_id = $this->getOrderId();
         if ($order_id === false) {
-            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
+            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
             return;
         }
 
         $module_path = $this->getModulePath($order_id);
         if ($module_path === false) {
-            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, "", true,
-                                      "モジュールファイルの取得に失敗しました。<br />この手続きは無効となりました。");
+            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true,
+                                      'モジュールファイルの取得に失敗しました。<br />この手続きは無効となりました。');
             return;
         }
         require_once $module_path;

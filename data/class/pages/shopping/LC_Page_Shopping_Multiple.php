@@ -43,7 +43,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_title = "お届け先の複数指定";
+        $this->tpl_title = 'お届け先の複数指定';
         $this->httpCacheControl('nocache');
     }
 
@@ -96,7 +96,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
                                                  $objCustomer, $objPurchase,
                                                  $objCartSess);
                     $objSiteSess->setRegistFlag();
-                    SC_Response_Ex::sendRedirect("payment.php");
+                    SC_Response_Ex::sendRedirect('payment.php');
                     exit;
                 }
                 break;
@@ -129,19 +129,19 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("商品規格ID", 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("商品名", 'name');
-        $objFormParam->addParam("規格1", 'class_name1');
-        $objFormParam->addParam("規格2", 'class_name2');
-        $objFormParam->addParam("規格分類1", 'classcategory_name1');
-        $objFormParam->addParam("規格分類2", 'classcategory_name2');
-        $objFormParam->addParam("メイン画像", 'main_image');
-        $objFormParam->addParam("メイン一覧画像", 'main_list_image');
-        $objFormParam->addParam("販売価格", 'price');
-        $objFormParam->addParam("数量", 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
-        $objFormParam->addParam("配送先住所", 'shipping', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("カート番号", 'cart_no', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("行数", 'line_of_num', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('商品規格ID', 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('商品名', 'name');
+        $objFormParam->addParam('規格1', 'class_name1');
+        $objFormParam->addParam('規格2', 'class_name2');
+        $objFormParam->addParam('規格分類1', 'classcategory_name1');
+        $objFormParam->addParam('規格分類2', 'classcategory_name2');
+        $objFormParam->addParam('メイン画像', 'main_image');
+        $objFormParam->addParam('メイン一覧画像', 'main_list_image');
+        $objFormParam->addParam('販売価格', 'price');
+        $objFormParam->addParam('数量', 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
+        $objFormParam->addParam('配送先住所', 'shipping', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('カート番号', 'cart_no', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('行数', 'line_of_num', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
     }
 
     /**
@@ -193,7 +193,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
             foreach ($arrAddrs as $val) {
                 $other_deliv_id = SC_Utils_Ex::isBlank($val['other_deliv_id']) ? 0 : $val['other_deliv_id'];
                 $arrResults[$other_deliv_id] = $val['name01'] . $val['name02']
-                    . " " . $arrPref[$val['pref']] . $val['addr01'] . $val['addr02'];
+                    . ' ' . $arrPref[$val['pref']] . $val['addr01'] . $val['addr02'];
             }
         }
         // 非会員
@@ -201,7 +201,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
             $arrShippings = $objPurchase->getShippingTemp();
             foreach ($arrShippings as $shipping_id => $val) {
                 $arrResults[$shipping_id] = $val['shipping_name01'] . $val['shipping_name02']
-                    . " " . $arrPref[$val['shipping_pref']]
+                    . ' ' . $arrPref[$val['shipping_pref']]
                     . $val['shipping_addr01'] . $val['shipping_addr02'];
             }
         }
@@ -286,8 +286,8 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
 
             if ($objCustomer->isLoginSuccess(true)) {
                 if ($other_deliv_id != 0) {
-                    $otherDeliv = $objQuery->select("*", 'dtb_other_deliv',
-                                                    "other_deliv_id = ?",
+                    $otherDeliv = $objQuery->select('*', 'dtb_other_deliv',
+                                                    'other_deliv_id = ?',
                                                     array($other_deliv_id));
                     foreach ($otherDeliv[0] as $key => $val) {
                         $arrValues[$other_deliv_id]['shipping_' . $key] = $val;

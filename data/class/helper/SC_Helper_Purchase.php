@@ -91,7 +91,7 @@ class SC_Helper_Purchase {
 
         $this->cleanupSession($orderId, $objCartSession, $objCustomer, $cartkey);
 
-        GC_Utils_Ex::gfFrontLog("order complete. customerId=" . $customerId);
+        GC_Utils_Ex::gfFrontLog('order complete. customerId=' . $customerId);
 
     }
 
@@ -128,7 +128,7 @@ class SC_Helper_Purchase {
         $arrOrderDetail = $this->getOrderDetail($order_id);
         foreach ($arrOrderDetail as $arrDetail) {
             $objQuery->update('dtb_products_class', array(),
-                              "product_class_id = ?", array($arrDetail['product_class_id']),
+                              'product_class_id = ?', array($arrDetail['product_class_id']),
                               array('stock' => 'stock + ?'), array($arrDetail['quantity']));
         }
         if (!$in_transaction) {
@@ -233,7 +233,7 @@ class SC_Helper_Purchase {
      */
     function getOrderTemp($uniqId) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        return $objQuery->getRow("*", 'dtb_order_temp', "order_temp_id = ?",
+        return $objQuery->getRow('*', 'dtb_order_temp', "order_temp_id = ?",
                                  array($uniqId));
     }
 
@@ -245,7 +245,7 @@ class SC_Helper_Purchase {
      */
     function getOrderTempByOrderId($order_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        return $objQuery->getRow("*", 'dtb_order_temp', "order_id = ?",
+        return $objQuery->getRow('*', 'dtb_order_temp', "order_id = ?",
                                  array($order_id));
     }
 
@@ -497,8 +497,8 @@ class SC_Helper_Purchase {
 
         // 削除されていない支払方法を取得
         $where = 'del_flg = 0 AND payment_id IN (' . implode(', ', array_pad(array(), count($arrPaymentIds), '?')) . ')';
-        $objQuery->setOrder("rank DESC");
-        $payments = $objQuery->select("payment_id, payment_method, rule, upper_rule, note, payment_image, charge", 'dtb_payment', $where, $arrPaymentIds);
+        $objQuery->setOrder('rank DESC');
+        $payments = $objQuery->select('payment_id, payment_method, rule, upper_rule, note, payment_image, charge', 'dtb_payment', $where, $arrPaymentIds);
         foreach ($payments as $data) {
             // 下限と上限が設定されている
             if (strlen($data['rule']) != 0 && strlen($data['upper_rule']) != 0) {
@@ -572,11 +572,11 @@ class SC_Helper_Purchase {
             break;
             //お取り寄せ(商品入荷後)
         case '9':
-            $start_day = "";
+            $start_day = '';
             break;
         default:
             //お届け日が設定されていない場合
-            $start_day = "";
+            $start_day = '';
         }
         //お届け可能日のスタート値から、お届け日の配列を取得する
         $arrDelivDate = $this->getDateArray($start_day, DELIV_DATE_END_MAX);
@@ -597,8 +597,8 @@ class SC_Helper_Purchase {
             for ($i = $start_day; $i < $max_day; $i++) {
                 // 基本時間から日数を追加していく
                 $tmp_time = $now_time + ($i * 24 * 3600);
-                list($y, $m, $d, $w) = explode(" ", date("Y m d w", $tmp_time));
-                $val = sprintf("%04d/%02d/%02d(%s)", $y, $m, $d, $arrWDAY[$w]);
+                list($y, $m, $d, $w) = explode(' ', date('Y m d w', $tmp_time));
+                $val = sprintf('%04d/%02d/%02d(%s)', $y, $m, $d, $arrWDAY[$w]);
                 $arrDate[$val] = $val;
             }
         } else {
@@ -679,9 +679,9 @@ class SC_Helper_Purchase {
             if (!SC_Utils_Ex::isBlank($arrValues['shipping_date'])
                 && $convert_shipping_date) {
                 $d = mb_strcut($arrValues['shipping_date'], 0, 10);
-                $arrDate = explode("/", $d);
+                $arrDate = explode('/', $d);
                 $ts = mktime(0, 0, 0, $arrDate[1], $arrDate[2], $arrDate[0]);
-                $arrValues['shipping_date'] = date("Y-m-d", $ts);
+                $arrValues['shipping_date'] = date('Y-m-d', $ts);
             }
 
             // 非会員購入の場合は shipping_id が存在しない
@@ -801,14 +801,14 @@ class SC_Helper_Purchase {
             // 在庫の減少処理
             if (!$objProduct->reduceStock($p['product_class_id'], $item['quantity'])) {
                 $objQuery->rollback();
-                SC_Utils_Ex::sfDispSiteError(SOLD_OUT, "", true);
+                SC_Utils_Ex::sfDispSiteError(SOLD_OUT, '', true);
             }
             $i++;
         }
         $this->registerOrderDetail($orderParams['order_id'], $arrDetail);
 
         $objQuery->update('dtb_order_temp', array('del_flg' => 1),
-                          "order_temp_id = ?",
+                          'order_temp_id = ?',
                           array(SC_SiteSession_Ex::getUniqId()));
 
 
@@ -999,7 +999,7 @@ __EOS__;
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrResults = array();
         $objQuery->setOrder('shipping_id');
-        $arrShippings = $objQuery->select("*", 'dtb_shipping', "order_id = ?",
+        $arrShippings = $objQuery->select('*', 'dtb_shipping', "order_id = ?",
                                           array($order_id));
         // shipping_id ごとの配列を生成する
         foreach ($arrShippings as $shipping) {
@@ -1030,8 +1030,8 @@ __EOS__;
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objProduct = new SC_Product_Ex();
         $arrResults = array();
-        $arrItems = $objQuery->select("*", 'dtb_shipment_item',
-                                      "order_id = ? AND shipping_id = ?",
+        $arrItems = $objQuery->select('*', 'dtb_shipment_item',
+                                      'order_id = ? AND shipping_id = ?',
                                       array($order_id, $shipping_id));
 
         foreach ($arrItems as $key => $arrItem) {
@@ -1199,7 +1199,7 @@ __EOS__;
                               $sql_where,
                               array($order_id),
                               array('shipping_time' =>
-                                    "(SELECT deliv_time FROM dtb_delivtime WHERE time_id = dtb_shipping.time_id AND deliv_id = dtb_shipping.deliv_id)"));
+                                    '(SELECT deliv_time FROM dtb_delivtime WHERE time_id = dtb_shipping.time_id AND deliv_id = dtb_shipping.deliv_id)'));
 
         }
 
@@ -1207,7 +1207,7 @@ __EOS__;
                           $sql_where,
                           array($order_id),
                           array('payment_method' =>
-                                "(SELECT payment_method FROM dtb_payment WHERE payment_id = " . $tgt_table . ".payment_id)"));
+                                '(SELECT payment_method FROM dtb_payment WHERE payment_id = ' . $tgt_table . '.payment_id)'));
     }
 
     /**

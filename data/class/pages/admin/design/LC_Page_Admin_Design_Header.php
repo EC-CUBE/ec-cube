@@ -129,10 +129,10 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("端末種別ID", 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('端末種別ID', 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('division', 'division', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("ヘッダデータ", 'header');
-        $objFormParam->addParam("フッタデータ", 'footer');
+        $objFormParam->addParam('ヘッダデータ', 'header');
+        $objFormParam->addParam('フッタデータ', 'footer');
     }
 
     /**

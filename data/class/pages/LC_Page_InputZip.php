@@ -43,7 +43,7 @@ class LC_Page_InputZip extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_message = "住所を検索しています。";
+        $this->tpl_message = '住所を検索しています。';
     }
 
     /**
@@ -58,7 +58,7 @@ class LC_Page_InputZip extends LC_Page_Ex {
         $arrErr = $this->fnErrorCheck($_GET);
         // 入力エラーの場合は終了
         if (count($arrErr) > 0) {
-            $tpl_message = "";
+            $tpl_message = '';
             foreach ($arrErr as $key => $val) {
                 $tpl_message .= preg_replace("/<br \/>/", "\n", $val);
             }
@@ -75,12 +75,12 @@ class LC_Page_InputZip extends LC_Page_Ex {
 
             // 郵便番号が発見された場合
             if (!empty($arrAdsList)) {
-                $data = $arrAdsList[0]['state']. "|". $arrAdsList[0]['city']. "|". $arrAdsList[0]['town'];
+                $data = $arrAdsList[0]['state']. '|'. $arrAdsList[0]['city']. "|". $arrAdsList[0]['town'];
                 echo $data;
 
             // 該当無し
             } else {
-                echo "該当する住所が見つかりませんでした。";
+                echo '該当する住所が見つかりませんでした。';
             }
         }
     }
@@ -112,10 +112,10 @@ class LC_Page_InputZip extends LC_Page_Ex {
         $arrErr = $objFormParam->checkError();
         // 親ウィンドウの戻り値を格納するinputタグのnameのエラーチェック
         if (!$this->lfInputNameCheck($arrRequest['input1'])) {
-            $arrErr['input1'] = "※ 入力形式が不正です。<br />";
+            $arrErr['input1'] = '※ 入力形式が不正です。<br />';
         }
         if (!$this->lfInputNameCheck($arrRequest['input2'])) {
-            $arrErr['input2'] = "※ 入力形式が不正です。<br />";
+            $arrErr['input2'] = '※ 入力形式が不正です。<br />';
         }
 
         return $arrErr;

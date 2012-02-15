@@ -135,11 +135,11 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex {
     function renumberRank(&$objQuery, $id) {
 
         // ランクの取得
-        $where1 = "member_id = ?";
+        $where1 = 'member_id = ?';
         $rank = $objQuery->get('rank', 'dtb_member', $where1, array($id));
 
         // Updateする値を作成する.
-        $where2 = "rank > ? AND del_flg <> 1";
+        $where2 = 'rank > ? AND del_flg <> 1';
 
         // UPDATEの実行 - 削除したレコードより上のランキングを下げてRANKの空きを埋める。
         return $objQuery->update('dtb_member', array(), $where2, array($rank), array('rank' => 'rank-1'));
@@ -158,7 +158,7 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex {
         $sqlVal = array();
         $sqlVal['rank'] = 0;
         $sqlVal['del_flg'] = 1;
-        $where = "member_id = ?";
+        $where = 'member_id = ?';
 
         // UPDATEの実行 - ランクを最下位にする、DELフラグON
         return $objQuery->update('dtb_member', $sqlVal, $where, array($id));

@@ -146,7 +146,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
                 //商品一覧の表示処理
                 $strnavi            = $this->objNavi->strnavi;
                 // 表示文字列
-                $this->tpl_strnavi  = empty($strnavi) ? "&nbsp;" : $strnavi;
+                $this->tpl_strnavi  = empty($strnavi) ? '&nbsp;' : $strnavi;
 
                 // 規格1クラス名
                 $this->tpl_class_name1  = $objProduct->className1;
@@ -270,7 +270,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
 
             default:
                 if (strlen($searchCondition['where_category']) >= 1) {
-                    $dtb_product_categories = "(SELECT * FROM dtb_product_categories WHERE ".$searchCondition['where_category'].")";
+                    $dtb_product_categories = '(SELECT * FROM dtb_product_categories WHERE '.$searchCondition['where_category'].")";
                     $arrval_order           = $searchCondition['arrvalCategory'];
                 } else {
                     $dtb_product_categories = 'dtb_product_categories';
@@ -316,14 +316,14 @@ __EOS__;
 
         // 複数項目チェック
         if ($tpl_classcat_find1[$product_id]) {
-            $objErr->doFunc(array("規格1", 'classcategory_id1', INT_LEN), array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+            $objErr->doFunc(array('規格1', 'classcategory_id1', INT_LEN), array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         }
         if ($tpl_classcat_find2[$product_id]) {
-            $objErr->doFunc(array("規格2", 'classcategory_id2', INT_LEN), array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+            $objErr->doFunc(array('規格2', 'classcategory_id2', INT_LEN), array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         }
 
-        $objErr->doFunc(array("商品規格ID", 'product_class_id', INT_LEN), array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objErr->doFunc(array("数量", 'quantity', INT_LEN), array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objErr->doFunc(array('商品規格ID', 'product_class_id', INT_LEN), array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objErr->doFunc(array('数量', 'quantity', INT_LEN), array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
         return $objErr->arrErr;
     }
@@ -347,9 +347,9 @@ __EOS__;
      */
     function lfGetPageTitle($mode, $category_id = 0) {
         if ($mode == 'search') {
-            return "検索結果";
+            return '検索結果';
         } elseif ($category_id == 0) {
-            return "全商品";
+            return '全商品';
         } else {
             $arrCat = SC_Helper_DB_Ex::sfGetCat($category_id);
             return $arrCat['name'];
@@ -401,9 +401,9 @@ __EOS__;
      */
     function lfGetSearchCondition($arrSearchData) {
         $searchCondition = array(
-            'where'             => "",
+            'where'             => '',
             'arrval'            => array(),
-            'where_category'    => "",
+            'where_category'    => '',
             'arrvalCategory'    => array()
         );
 
@@ -413,7 +413,7 @@ __EOS__;
         }
         // ▼対象商品IDの抽出
         // 商品検索条件の作成（未削除、表示）
-        $searchCondition['where'] = "alldtl.del_flg = 0 AND alldtl.status = 1 ";
+        $searchCondition['where'] = 'alldtl.del_flg = 0 AND alldtl.status = 1 ';
 
         if (strlen($searchCondition['where_category']) >= 1) {
             $searchCondition['where'] .= ' AND EXISTS (SELECT * FROM dtb_product_categories WHERE ' . $searchCondition['where_category'] . ' AND product_id = alldtl.product_id)';
@@ -422,15 +422,15 @@ __EOS__;
 
         // 商品名をwhere文に
         $name = $arrSearchData['name'];
-        $name = str_replace(",", "", $name);
+        $name = str_replace(',', '', $name);
         // 全角スペースを半角スペースに変換
         $name = str_replace('　', ' ', $name);
         // スペースでキーワードを分割
-        $names = preg_split("/ +/", $name);
+        $names = preg_split('/ +/', $name);
         // 分割したキーワードを一つずつwhere文に追加
         foreach ($names as $val) {
             if (strlen($val) > 0) {
-                $searchCondition['where']    .= " AND ( alldtl.name ILIKE ? OR alldtl.comment3 ILIKE ?) ";
+                $searchCondition['where']    .= ' AND ( alldtl.name ILIKE ? OR alldtl.comment3 ILIKE ?) ';
                 $searchCondition['arrval'][]  = "%$val%";
                 $searchCondition['arrval'][]  = "%$val%";
             }
@@ -438,7 +438,7 @@ __EOS__;
 
         // メーカーらのWHERE文字列取得
         if ($arrSearchData['maker_id']) {
-            $searchCondition['where']   .= " AND alldtl.maker_id = ? ";
+            $searchCondition['where']   .= ' AND alldtl.maker_id = ? ';
             $searchCondition['arrval'][] = $arrSearchData['maker_id'];
         }
 
@@ -459,7 +459,7 @@ __EOS__;
      * @return str
      */
     function lfSetSelectedData(&$arrProducts, $arrForm, $arrErr, $product_id) {
-        $js_fnOnLoad = "";
+        $js_fnOnLoad = '';
         foreach (array_keys($arrProducts) as $key) {
             if ($arrProducts[$key]['product_id'] == $product_id) {
 

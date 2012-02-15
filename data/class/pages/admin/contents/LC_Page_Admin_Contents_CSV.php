@@ -131,7 +131,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
     function lfGetCSVColumn($csv_id, $csv_status_flg = '', $order ='rank, no') {
         $objCSV = new SC_Helper_CSV_Ex();
         if (SC_Utils_Ex::sfIsInt($csv_id)) {
-            if ($csv_status_flg !="") {
+            if ($csv_status_flg !='') {
                 $arrData = $objCSV->sfGetCsvOutput($csv_id, 'status = ?' , array($csv_status_flg), $order);
             } else {
                 $arrData = $objCSV->sfGetCsvOutput($csv_id, '', array(), $order);
@@ -225,7 +225,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         // ひとまず、全部使用しないで更新する
         $table = 'dtb_csv';
-        $where = "csv_id = ?";
+        $where = 'csv_id = ?';
         $arrWhereVal = array($csv_id);
         $arrUpdVal = array('status' => '2', 'rank' => NULL, 'update_date' => 'CURRENT_TIMESTAMP');
 
@@ -233,7 +233,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
         $objQuery->update($table, $arrUpdVal, $where, $arrWhereVal);
         // 使用するものだけ、再更新する。
         if (is_array($arrData)) {
-            $where .= " AND no = ?";
+            $where .= ' AND no = ?';
             $arrUpdVal = array('status' => '1');
             foreach ($arrData as $key => $val) {
                 $arrWhereVal = array($csv_id, $val);

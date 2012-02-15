@@ -51,8 +51,8 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_onload = "fnCheckInputPoint();";
-        $this->tpl_title = "お支払方法・お届け時間等の指定";
+        $this->tpl_onload = 'fnCheckInputPoint();';
+        $this->tpl_title = 'お支払方法・お届け時間等の指定';
         $masterData = new SC_DB_MasterData();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
     }
@@ -253,19 +253,19 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam, $deliv_only, &$arrShipping) {
-        $objFormParam->addParam("配送業者", 'deliv_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("ポイント", 'use_point', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK', 'ZERO_START'));
-        $objFormParam->addParam("その他お問い合わせ", 'message', LTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam("ポイントを使用する", 'point_check', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), '2');
+        $objFormParam->addParam('配送業者', 'deliv_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('ポイント', 'use_point', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK', 'ZERO_START'));
+        $objFormParam->addParam('その他お問い合わせ', 'message', LTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('ポイントを使用する', 'point_check', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), '2');
 
         if ($deliv_only) {
-            $objFormParam->addParam("お支払い方法", 'payment_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+            $objFormParam->addParam('お支払い方法', 'payment_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         } else {
-            $objFormParam->addParam("お支払い方法", 'payment_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+            $objFormParam->addParam('お支払い方法', 'payment_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
 
             foreach ($arrShipping as $val) {
-                $objFormParam->addParam("お届け時間", 'deliv_time_id' . $val['shipping_id'], INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-                $objFormParam->addParam("お届け日", 'deliv_date' . $val['shipping_id'], STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+                $objFormParam->addParam('お届け時間', 'deliv_time_id' . $val['shipping_id'], INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+                $objFormParam->addParam('お届け日', 'deliv_date' . $val['shipping_id'], STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
             }
         }
 
@@ -292,17 +292,17 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
         }
 
         if ($arrForm['point_check'] == '1') {
-            $objErr->doFunc(array("ポイントを使用する", 'point_check'), array('EXIST_CHECK'));
-            $objErr->doFunc(array("ポイント", 'use_point'), array('EXIST_CHECK'));
-            if ($max_point == "") {
+            $objErr->doFunc(array('ポイントを使用する', 'point_check'), array('EXIST_CHECK'));
+            $objErr->doFunc(array('ポイント', 'use_point'), array('EXIST_CHECK'));
+            if ($max_point == '') {
                 $max_point = 0;
             }
             // FIXME mobile 互換のため br は閉じない...
             if ($arrForm['use_point'] > $max_point) {
-                $objErr->arrErr['use_point'] = "※ ご利用ポイントが所持ポイントを超えています。<br>";
+                $objErr->arrErr['use_point'] = '※ ご利用ポイントが所持ポイントを超えています。<br>';
             }
             if (($arrForm['use_point'] * POINT_VALUE) > $subtotal) {
-                $objErr->arrErr['use_point'] = "※ ご利用ポイントがご購入金額を超えています。<br>";
+                $objErr->arrErr['use_point'] = '※ ご利用ポイントがご購入金額を超えています。<br>';
             }
         }
         return $objErr->arrErr;
@@ -431,7 +431,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
                 return DELIV_URLPATH;
             }
         } else {
-            return SHOPPING_URL . "?from=nonmember";
+            return SHOPPING_URL . '?from=nonmember';
         }
     }
 

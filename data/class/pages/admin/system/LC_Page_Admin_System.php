@@ -56,8 +56,8 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex {
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrAUTHORITY = $masterData->getMasterData('mtb_authority');
-        $this->arrWORK[0]   = "非稼働";
-        $this->arrWORK[1]   = "稼働";
+        $this->arrWORK[0]   = '非稼働';
+        $this->arrWORK[1]   = '稼働';
     }
 
     /**
@@ -78,11 +78,11 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex {
     function action() {
 
         // ADMIN_ID以外の管理者件数を取得
-        $linemax = $this->getMemberCount("del_flg <> 1 AND member_id <> " . ADMIN_ID);
+        $linemax = $this->getMemberCount('del_flg <> 1 AND member_id <> ' . ADMIN_ID);
 
         // ADMIN_ID以外で稼動中の管理者件数を取得
         $this->workmax
-            = $this->getMemberCount("work = 1 AND del_flg <> 1 AND member_id <> " . ADMIN_ID);
+            = $this->getMemberCount('work = 1 AND del_flg <> 1 AND member_id <> ' . ADMIN_ID);
 
         // ページ送りの処理 $_GET['pageno']が信頼しうる値かどうかチェックする。
         $pageno = $this->lfCheckPageNo($_GET['pageno']);
@@ -127,9 +127,9 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex {
      */
     function getMemberData($startno) {
         $objSql = new SC_SelectSql_Ex();
-        $objSql->setSelect("SELECT member_id,name,department,login_id,authority,rank,work FROM dtb_member");
-        $objSql->setOrder("rank DESC");
-        $objSql->setWhere("del_flg <> 1 AND member_id <> ". ADMIN_ID);
+        $objSql->setSelect('SELECT member_id,name,department,login_id,authority,rank,work FROM dtb_member');
+        $objSql->setOrder('rank DESC');
+        $objSql->setWhere('del_flg <> 1 AND member_id <> '. ADMIN_ID);
         $objSql->setLimitOffset(MEMBER_PMAX, $startno);
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -147,7 +147,7 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex {
      */
     function lfCheckPageNo($pageno) {
 
-        $clean_pageno = "";
+        $clean_pageno = '';
 
         // $pagenoが0以上の整数かチェック
         if (SC_Utils_Ex::sfIsInt($pageno) && $pageno > 0) {

@@ -69,7 +69,7 @@ class LC_Upgrade_Helper_Json extends Services_JSON {
      *
      */
     function display() {
-        header("Content-Type: text/javascript; charset=UTF-8");
+        header('Content-Type: text/javascript; charset=UTF-8');
         echo $this->encode($this->arrData);
     }
 

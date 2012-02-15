@@ -82,7 +82,7 @@ class LC_Page_Entry extends LC_Page_Ex {
 
         // PC時は規約ページからの遷移でなければエラー画面へ遷移する
         if ($this->lfCheckReferer($arrForm, $_SERVER['HTTP_REFERER']) === false) {
-            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
+            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
         }
 
         // mobile用（戻るボタンでの遷移かどうかを判定）
@@ -218,10 +218,10 @@ class LC_Page_Entry extends LC_Page_Ex {
         // 仮会員が有効の場合
         if (CUSTOMER_CONFIRM_MAIL == true) {
             $subject        = $objHelperMail->sfMakeSubject('会員登録のご確認');
-            $toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
+            $toCustomerMail = $objMailText->fetch('mail_templates/customer_mail.tpl');
         } else {
             $subject        = $objHelperMail->sfMakeSubject('会員登録のご完了');
-            $toCustomerMail = $objMailText->fetch("mail_templates/customer_regist_mail.tpl");
+            $toCustomerMail = $objMailText->fetch('mail_templates/customer_regist_mail.tpl');
         }
 
         $objMail = new SC_SendMail();

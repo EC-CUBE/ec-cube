@@ -31,10 +31,10 @@ define('ZIP_CSV_LINE_MAX', 8192);
 define('IMAGE_MAX', 680);
 
 /** 郵便番号CSV ファイルのパス */
-define('ZIP_CSV_REALFILE', DATA_REALDIR . "downloads/KEN_ALL.CSV");
+define('ZIP_CSV_REALFILE', DATA_REALDIR . 'downloads/KEN_ALL.CSV');
 
 /** UTF-8 変換済みの郵便番号CSV ファイルのパス */
-define('ZIP_CSV_UTF8_REALFILE', DATA_REALDIR . "downloads/KEN_ALL_utf-8.CSV");
+define('ZIP_CSV_UTF8_REALFILE', DATA_REALDIR . 'downloads/KEN_ALL_utf-8.CSV');
 
 /**
  * 郵便番号DB登録 のページクラス.
@@ -193,7 +193,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
      */
     function lfInitParam($tpl_mode, &$objFormParam) {
         if ($tpl_mode == 'manual') {
-            $objFormParam->addParam("開始行", 'startRowNum', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+            $objFormParam->addParam('開始行', 'startRowNum', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         }
     }
 
@@ -205,16 +205,16 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
     function insertMtbZip($start = 1) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        $img_path = USER_URL . USER_PACKAGE_DIR . "admin/img/basis/"; // 画像パスは admin 固定
+        $img_path = USER_URL . USER_PACKAGE_DIR . 'admin/img/basis/'; // 画像パスは admin 固定
 
         ?>
-        <html xmlns="http://www.w3.org/1999/xhtml" lang='ja' xml:lang='ja'>
+        <html xmlns='http://www.w3.org/1999/xhtml' lang='ja' xml:lang='ja'>
         <head>
-            <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHAR_CODE ?>" />
+            <meta http-equiv='Content-Type' content='text/html; charset=<?php echo CHAR_CODE ?>' />
         </head>
         <body>
         <p>DB 登録進捗状況</p>
-        <div style="background-color: #494E5F;">
+        <div style='background-color: #494E5F;'>
         <?php
         // 一部のIEは256バイト以上受け取ってから表示を開始する。
         SC_Utils_Ex::sfFlush(true);
@@ -262,19 +262,19 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         echo '</div>' . "\n";
 
         ?>
-        <script type="text/javascript" language='javascript'>
+        <script type='text/javascript' language='javascript'>
             <!--
                 // 完了画面
                 function complete() {
-                    document.open("text/html",'replace');
+                    document.open('text/html','replace');
                     document.clear();
-                    document.write("<p>完了しました。<br />");
+                    document.write('<p>完了しました。<br />');
                     document.write("<?php echo $cntInsert ?> 件を追加しました。</p>");
                     document.write("<p><a href='?' target='_top'>戻る</a></p>");
                     document.close();
                 }
                 // コンテンツを削除するため、タイムアウトで呼び出し。
-                setTimeout("complete()", 0);
+                setTimeout('complete()', 0);
             // -->
         </script>
         </body>

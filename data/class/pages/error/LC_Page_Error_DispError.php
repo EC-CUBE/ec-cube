@@ -70,20 +70,20 @@ class LC_Page_Error_DispError extends LC_Page_Admin_Ex {
     function action() {
         switch ($this->type) {
             case LOGIN_ERROR:
-                $this->tpl_error="ＩＤまたはパスワードが正しくありません。<br />もう一度ご確認のうえ、再度入力してください。";
+                $this->tpl_error='ＩＤまたはパスワードが正しくありません。<br />もう一度ご確認のうえ、再度入力してください。';
                 break;
             case ACCESS_ERROR:
-                $this->tpl_error="ログイン認証の有効期限切れの可能性があります。<br />もう一度ご確認のうえ、再度ログインしてください。";
+                $this->tpl_error='ログイン認証の有効期限切れの可能性があります。<br />もう一度ご確認のうえ、再度ログインしてください。';
                 break;
             case AUTH_ERROR:
-                $this->tpl_error="このページにはアクセスできません";
+                $this->tpl_error='このページにはアクセスできません';
                 SC_Response_Ex::sendHttpStatus(403);
                 break;
             case INVALID_MOVE_ERRORR:
-                $this->tpl_error="不正なページ移動です。<br />もう一度ご確認のうえ、再度入力してください。";
+                $this->tpl_error='不正なページ移動です。<br />もう一度ご確認のうえ、再度入力してください。';
                 break;
             default:
-                $this->tpl_error="エラーが発生しました。<br />もう一度ご確認のうえ、再度ログインしてください。";
+                $this->tpl_error='エラーが発生しました。<br />もう一度ご確認のうえ、再度ログインしてください。';
                 break;
         }
     }

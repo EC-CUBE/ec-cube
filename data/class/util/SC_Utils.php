@@ -67,9 +67,9 @@ class SC_Utils {
         $installer = 'install/' . DIR_INDEX_PATH;
 
         if (SC_Utils_Ex::sfIsHTTPS()) {
-            $proto = "https://";
+            $proto = 'https://';
         } else {
-            $proto = "http://";
+            $proto = 'http://';
         }
         $host = $proto . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'];
         if ($path == '/') {
@@ -123,7 +123,7 @@ class SC_Utils {
         global $GLOBAL_ERR;
         $GLOBAL_ERR.= '<div id="errorHeader">';
         $GLOBAL_ERR.= $mess;
-        $GLOBAL_ERR.= "</div>";
+        $GLOBAL_ERR.= '</div>';
         if ($print) {
             echo $GLOBAL_ERR;
         }
@@ -143,7 +143,7 @@ class SC_Utils {
     }
 
     /* サイトエラーページの表示 */
-    function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg = "") {
+    function sfDispSiteError($type, $objSiteSess = '', $return_top = false, $err_msg = '') {
 
         require_once CLASS_EX_REALDIR . 'page_extends/error/LC_Page_Error_Ex.php';
 
@@ -220,9 +220,9 @@ class SC_Utils {
      * @return string アスタリスクへ変換した文字列
      */
     function sfPassLen($passlen) {
-        $ret = "";
+        $ret = '';
         for ($i=0;$i<$passlen;true) {
-            $ret.="*";
+            $ret.='*';
             $i++;
         }
         return $ret;
@@ -261,15 +261,15 @@ class SC_Utils {
 
     /* DB用日付文字列取得 */
     function sfGetTimestamp($year, $month, $day, $last = false) {
-        if ($year != "" && $month != "" && $day != "") {
+        if ($year != '' && $month != '' && $day != "") {
             if ($last) {
-                $time = "23:59:59";
+                $time = '23:59:59';
             } else {
-                $time = "00:00:00";
+                $time = '00:00:00';
             }
-            $date = $year."-".$month."-".$day." ".$time;
+            $date = $year.'-'.$month.'-'.$day." ".$time;
         } else {
-            $date = "";
+            $date = '';
         }
         return     $date;
     }
@@ -302,12 +302,12 @@ class SC_Utils {
         return false;
     }
 
-    function sfGetCSVData($data, $prefix = "") {
-        if ($prefix == "") {
+    function sfGetCSVData($data, $prefix = '') {
+        if ($prefix == '') {
             $dir_name = SC_Utils_Ex::sfUpDirName();
-            $file_name = $dir_name . date('ymdHis') .".csv";
+            $file_name = $dir_name . date('ymdHis') .'.csv';
         } else {
-            $file_name = $prefix . date('ymdHis') .".csv";
+            $file_name = $prefix . date('ymdHis') .'.csv';
         }
 
         if (mb_internal_encoding() == CHAR_CODE) {
@@ -321,7 +321,7 @@ class SC_Utils {
     /* 1階層上のディレクトリ名を取得する */
     function sfUpDirName() {
         $path = $_SERVER['PHP_SELF'];
-        $arrVal = explode("/", $path);
+        $arrVal = explode('/', $path);
         $cnt = count($arrVal);
         return $arrVal[($cnt - 2)];
     }
@@ -331,7 +331,7 @@ class SC_Utils {
      * @deprecated
      */
     function sfMergeCBValue($keyname, $max) {
-        $conv = "";
+        $conv = '';
         $cnt = 1;
         for ($cnt = 1; $cnt <= $max; $cnt++) {
             if ($_POST[$keyname . $cnt] == '1') {
@@ -348,7 +348,7 @@ class SC_Utils {
      * @deprecated
      */
     function sfMergeCheckBoxes($array, $max) {
-        $ret = "";
+        $ret = '';
         if (is_array($array)) {
             foreach ($array as $val) {
                 $arrTmp[$val] = '1';
@@ -372,7 +372,7 @@ class SC_Utils {
         $ret = '';
         if (is_array($array)) {
             foreach ($array as $val) {
-                if ($ret != "") {
+                if ($ret != '') {
                     $ret.= "-$val";
                 } else {
                     $ret = $val;
@@ -420,7 +420,7 @@ class SC_Utils {
      * @deprecated
      */
     function sfMergeCBSearchValue($keyname, $max) {
-        $conv = "";
+        $conv = '';
         $cnt = 1;
         for ($cnt = 1; $cnt <= $max; $cnt++) {
             if ($_POST[$keyname . $cnt] == '1') {
@@ -436,12 +436,12 @@ class SC_Utils {
     /**
      * @deprecated
      */
-    function sfSplitCBValue($val, $keyname = "") {
+    function sfSplitCBValue($val, $keyname = '') {
         $arr = array();
         $len = strlen($val);
         $no = 1;
         for ($cnt = 0; $cnt < $len; $cnt++) {
-            if ($keyname != "") {
+            if ($keyname != '') {
                 $arr[$keyname . $no] = substr($val, $cnt, 1);
             } else {
                 $arr[] = substr($val, $cnt, 1);
@@ -452,16 +452,16 @@ class SC_Utils {
     }
 
     // キーと値をセットした配列を取得
-    function sfArrKeyValue($arrList, $keyname, $valname, $len_max = "", $keysize = "") {
+    function sfArrKeyValue($arrList, $keyname, $valname, $len_max = '', $keysize = '') {
         $arrRet = array();
         $max = count($arrList);
 
-        if ($len_max != "" && $max > $len_max) {
+        if ($len_max != '' && $max > $len_max) {
             $max = $len_max;
         }
 
         for ($cnt = 0; $cnt < $max; $cnt++) {
-            if ($keysize != "") {
+            if ($keysize != '') {
                 $key = SC_Utils_Ex::sfCutString($arrList[$cnt][$keyname], $keysize);
             } else {
                 $key = $arrList[$cnt][$keyname];
@@ -477,23 +477,23 @@ class SC_Utils {
     }
 
     // キーと値をセットした配列を取得(値が複数の場合)
-    function sfArrKeyValues($arrList, $keyname, $valname, $len_max = "", $keysize = "", $connect = "") {
+    function sfArrKeyValues($arrList, $keyname, $valname, $len_max = '', $keysize = '', $connect = "") {
 
         $max = count($arrList);
 
-        if ($len_max != "" && $max > $len_max) {
+        if ($len_max != '' && $max > $len_max) {
             $max = $len_max;
         }
 
         for ($cnt = 0; $cnt < $max; $cnt++) {
-            if ($keysize != "") {
+            if ($keysize != '') {
                 $key = SC_Utils_Ex::sfCutString($arrList[$cnt][$keyname], $keysize);
             } else {
                 $key = $arrList[$cnt][$keyname];
             }
             $val = $arrList[$cnt][$valname];
 
-            if ($connect != "") {
+            if ($connect != '') {
                 $arrRet[$key].= "$val".$connect;
             } else {
                 $arrRet[$key][] = $val;
@@ -505,13 +505,13 @@ class SC_Utils {
     // 配列の値をカンマ区切りで返す。
     function sfGetCommaList($array, $space=true, $arrPop = array()) {
         if (count($array) > 0) {
-            $line = "";
+            $line = '';
             foreach ($array as $val) {
                 if (!in_array($val, $arrPop)) {
                     if ($space) {
-                        $line .= $val . ", ";
+                        $line .= $val . ', ';
                     } else {
-                        $line .= $val . ",";
+                        $line .= $val . ',';
                     }
                 }
             }
@@ -529,7 +529,7 @@ class SC_Utils {
 
     /* 配列の要素をCSVフォーマットで出力する。*/
     function sfGetCSVList($array) {
-        $line = "";
+        $line = '';
         if (count($array) > 0) {
             foreach ($array as $key => $val) {
                 $val = mb_convert_encoding($val, CHAR_CODE, CHAR_CODE);
@@ -564,8 +564,8 @@ class SC_Utils {
             if (! checkdate($end_month ,$end_day ,$end_year)) $error = 2;
         }
         if (! $error) {
-            $date1 = $start_year ."/".sprintf("%02d",$start_month) ."/".sprintf("%02d",$start_day) ." 000000";
-            $date2 = $end_year   ."/".sprintf("%02d",$end_month)   ."/".sprintf("%02d",$end_day)   ." 235959";
+            $date1 = $start_year .'/'.sprintf('%02d',$start_month) ."/".sprintf("%02d",$start_day) ." 000000";
+            $date2 = $end_year   .'/'.sprintf('%02d',$end_month)   ."/".sprintf("%02d",$end_day)   ." 235959";
             if ($date1 > $date2) $error = 3;
         } else {
             $error = 1;
@@ -589,24 +589,24 @@ class SC_Utils {
     }
 
     function sfGetErrorColor($val) {
-        if ($val != "") {
-            return "background-color:" . ERR_COLOR;
+        if ($val != '') {
+            return 'background-color:' . ERR_COLOR;
         }
-        return "";
+        return '';
     }
 
     function sfGetEnabled($val) {
         if (! $val) {
             return " disabled=\"disabled\"";
         }
-        return "";
+        return '';
     }
 
     function sfGetChecked($param, $value) {
         if ((string)$param === (string)$value) {
             return "checked=\"checked\"";
         }
-        return "";
+        return '';
     }
 
     function sfTrim($str) {
@@ -680,7 +680,7 @@ class SC_Utils {
     }
 
     /* ポイント付与 */
-    function sfPrePoint($price, $point_rate, $rule = POINT_RULE, $product_id = "") {
+    function sfPrePoint($price, $point_rate, $rule = POINT_RULE, $product_id = '') {
         $real_point = $point_rate / 100;
         $ret = $price * $real_point;
         switch ($rule) {
@@ -706,10 +706,10 @@ class SC_Utils {
 
     /* 規格分類の件数取得 */
     function sfGetClassCatCount() {
-        $sql = "select count(dtb_class.class_id) as count, dtb_class.class_id ";
-        $sql.= "from dtb_class inner join dtb_classcategory on dtb_class.class_id = dtb_classcategory.class_id ";
-        $sql.= "where dtb_class.del_flg = 0 AND dtb_classcategory.del_flg = 0 ";
-        $sql.= "group by dtb_class.class_id, dtb_class.name";
+        $sql = 'select count(dtb_class.class_id) as count, dtb_class.class_id ';
+        $sql.= 'from dtb_class inner join dtb_classcategory on dtb_class.class_id = dtb_classcategory.class_id ';
+        $sql.= 'where dtb_class.del_flg = 0 AND dtb_classcategory.del_flg = 0 ';
+        $sql.= 'group by dtb_class.class_id, dtb_class.name';
         $objQuery = new SC_Query_Ex();
         $arrList = $objQuery->getAll($sql);
         // キーと値をセットした配列を取得
@@ -719,7 +719,7 @@ class SC_Utils {
     }
 
     function sfGetProductClassId($product_id, $classcategory_id1, $classcategory_id2) {
-        $where = "product_id = ?";
+        $where = 'product_id = ?';
         $objQuery = new SC_Query_Ex();
         $ret = $objQuery->get('product_class_id', 'dtb_products_class', $where, Array($product_id));
         return $ret;
@@ -733,16 +733,16 @@ class SC_Utils {
 
     /* DBから取り出した日付の文字列を調整する。*/
     function sfDispDBDate($dbdate, $time = true) {
-        list($y, $m, $d, $H, $M) = preg_split("/[- :]/", $dbdate);
+        list($y, $m, $d, $H, $M) = preg_split('/[- :]/', $dbdate);
 
         if (strlen($y) > 0 && strlen($m) > 0 && strlen($d) > 0) {
             if ($time) {
-                $str = sprintf("%04d/%02d/%02d %02d:%02d", $y, $m, $d, $H, $M);
+                $str = sprintf('%04d/%02d/%02d %02d:%02d', $y, $m, $d, $H, $M);
             } else {
-                $str = sprintf("%04d/%02d/%02d", $y, $m, $d, $H, $M);
+                $str = sprintf('%04d/%02d/%02d', $y, $m, $d, $H, $M);
             }
         } else {
-            $str = "";
+            $str = '';
         }
         return $str;
     }
@@ -815,7 +815,7 @@ class SC_Utils {
     }
 
     /* 一意かつ予測されにくいID */
-    function sfGetUniqRandomId($head = "") {
+    function sfGetUniqRandomId($head = '') {
         // 予測されないようにランダム文字列を付与する。
         $random = GC_Utils_Ex::gfMakePassword(8);
         // 同一ホスト内で一意なIDを生成
@@ -825,16 +825,16 @@ class SC_Utils {
 
     // 二回以上繰り返されているスラッシュ[/]を一つに変換する。
     function sfRmDupSlash($istr) {
-        if (ereg("^http://", $istr)) {
+        if (ereg('^http://', $istr)) {
             $str = substr($istr, 7);
-            $head = "http://";
-        } else if (ereg("^https://", $istr)) {
+            $head = 'http://';
+        } else if (ereg('^https://', $istr)) {
             $str = substr($istr, 8);
-            $head = "https://";
+            $head = 'https://';
         } else {
             $str = $istr;
         }
-        $str = ereg_replace("[/]+", "/", $str);
+        $str = ereg_replace('[/]+', '/', $str);
         $ret = $head . $str;
         return $ret;
     }
@@ -865,7 +865,7 @@ class SC_Utils {
             $basename = basename($filepath);
             $outpath = $out_dir . 'enc_' . $basename;
 
-            $ofp = fopen($outpath, "w+");
+            $ofp = fopen($outpath, 'w+');
 
             while (!feof($ifp)) {
                 $line = fgets($ifp);
@@ -926,7 +926,7 @@ class SC_Utils {
         }
 
         if ($commadisp) {
-            $ret = $ret . "...";
+            $ret = $ret . '...';
         }
         return $ret;
     }
@@ -970,18 +970,18 @@ class SC_Utils {
         $start_day = date('d', mktime(0, 0, 0, $tmp_month, $tmp_day + 1, $tmp_year));
 
         // 日付の作成
-        $start_date = sprintf("%d/%d/%d 00:00:00", $start_year, $start_month, $start_day);
-        $end_date = sprintf("%d/%d/%d 23:59:59", $end_year, $end_month, $end_day);
+        $start_date = sprintf('%d/%d/%d 00:00:00', $start_year, $start_month, $start_day);
+        $end_date = sprintf('%d/%d/%d 23:59:59', $end_year, $end_month, $end_day);
 
         return array($start_date, $end_date);
     }
 
     // 再帰的に多段配列を検索して一次元配列(Hidden引渡し用配列)に変換する。
-    function sfMakeHiddenArray($arrSrc, $arrDst = array(), $parent_key = "") {
+    function sfMakeHiddenArray($arrSrc, $arrDst = array(), $parent_key = '') {
         if (is_array($arrSrc)) {
             foreach ($arrSrc as $key => $val) {
-                if ($parent_key != "") {
-                    $keyname = $parent_key . "[". $key . "]";
+                if ($parent_key != '') {
+                    $keyname = $parent_key . '['. $key . ']';
                 } else {
                     $keyname = $key;
                 }
@@ -1107,7 +1107,7 @@ class SC_Utils {
     }
 
     // ディレクトリ以下のファイルを再帰的にコピー
-    function sfCopyDir($src, $des, $mess = "", $override = false) {
+    function sfCopyDir($src, $des, $mess = '', $override = false) {
         if (!is_dir($src)) {
             return false;
         }
@@ -1122,17 +1122,17 @@ class SC_Utils {
             }
         }
 
-        $fileArray=glob($src."*");
+        $fileArray=glob($src.'*');
         if (is_array($fileArray)) {
             foreach ($fileArray as $key => $data_) {
                 // CVS管理ファイルはコピーしない
-                if (ereg("/CVS/Entries", $data_)) {
+                if (ereg('/CVS/Entries', $data_)) {
                     break;
                 }
-                if (ereg("/CVS/Repository", $data_)) {
+                if (ereg('/CVS/Repository', $data_)) {
                     break;
                 }
-                if (ereg("/CVS/Root", $data_)) {
+                if (ereg('/CVS/Root', $data_)) {
                     break;
                 }
 
@@ -1164,10 +1164,10 @@ class SC_Utils {
             $dh = opendir($dir);
             // フォルダ内のファイルを削除
             while ($file = readdir($dh)) {
-                if ($file == "." or $file == "..") continue;
-                $del_file = $dir . "/" . $file;
+                if ($file == '.' or $file == '..') continue;
+                $del_file = $dir . '/' . $file;
                 if (is_file($del_file)) {
-                    $ret = unlink($dir . "/" . $file);
+                    $ret = unlink($dir . '/' . $file);
                 }else if (is_dir($del_file)) {
                     $ret = SC_Utils_Ex::sfDelFile($del_file);
                 }
@@ -1194,7 +1194,7 @@ class SC_Utils {
      * 戻り値：結果フラグ 成功なら true 失敗なら false
      * 説明　：ファイル書き出し
      */
-    function sfWriteFile($str, $path, $type, $permission = "") {
+    function sfWriteFile($str, $path, $type, $permission = '') {
         //ファイルを開く
         if (!($file = fopen ($path, $type))) {
             return false;
@@ -1209,7 +1209,7 @@ class SC_Utils {
         //ファイルを閉じる
         fclose ($file);
         // 権限を指定
-        if ($permission != "") {
+        if ($permission != '') {
             chmod($path, $permission);
         }
 
@@ -1250,8 +1250,8 @@ class SC_Utils {
             if ($src_fp) {
                 while (!feof($src_fp)) {
                     $line = fgets($src_fp);
-                    if (ereg("@version", $line)) {
-                        $arrLine = explode(" ", $line);
+                    if (ereg('@version', $line)) {
+                        $arrLine = explode(' ', $line);
                         $version = $arrLine[5];
                     }
                 }
@@ -1287,7 +1287,7 @@ class SC_Utils {
      */
     function arrayDefineIndexes($array, $defineIndexes) {
         foreach ($defineIndexes as $key) {
-            if (!isset($array[$key])) $array[$key] = "";
+            if (!isset($array[$key])) $array[$key] = '';
         }
         return $array;
     }
@@ -1318,7 +1318,7 @@ class SC_Utils {
      */
     function printXMLDeclaration() {
         $ua = $_SERVER['HTTP_USER_AGENT'];
-        if (!preg_match("/MSIE/", $ua) || preg_match("/MSIE 7/", $ua)) {
+        if (!preg_match('/MSIE/', $ua) || preg_match('/MSIE 7/', $ua)) {
             echo '<?xml version="1.0" encoding="' . CHAR_CODE . '"?>' . "\n";
         }
     }
@@ -1342,13 +1342,13 @@ class SC_Utils {
                 natcasesort($arrDir);
                 foreach ($arrDir as $file) {
                     // ./ と ../を除くファイルのみを取得
-                    if ($file != "." && $file != "..") {
+                    if ($file != '.' && $file != '..') {
 
-                        $path = $dir."/".$file;
+                        $path = $dir.'/'.$file;
                         // SELECT内の見た目を整えるため指定文字数で切る
                         $file_name = SC_Utils_Ex::sfCutString($file, FILE_NAME_LEN);
                         $file_size = SC_Utils_Ex::sfCutString(SC_Utils_Ex::sfGetDirSize($path), FILE_NAME_LEN);
-                        $file_time = date("Y/m/d", filemtime($path));
+                        $file_time = date('Y/m/d', filemtime($path));
 
                         // ディレクトリとファイルで格納配列を変える
                         if (is_dir($path)) {
@@ -1388,7 +1388,7 @@ class SC_Utils {
                 while ($file = readdir($handle)) {
                     // 行末の/を取り除く
                     $dir = ereg_replace("/$", "", $dir);
-                    $path = $dir."/".$file;
+                    $path = $dir.'/'.$file;
                     if ($file != '..' && $file != '.' && !is_dir($path)) {
                         $bytes += filesize($path);
                     } else if (is_dir($path) && $file != '..' && $file != '.') {
@@ -1402,7 +1402,7 @@ class SC_Utils {
             }
         }
         // ディレクトリ(ファイル)が存在しない場合は0byteを返す
-        if($bytes == "") $bytes = 0;
+        if($bytes == '') $bytes = 0;
 
         return $bytes;
     }
@@ -1459,10 +1459,10 @@ class SC_Utils {
                 // アルファベットと数字でソート
                 natcasesort($arrDir);
                 foreach ($arrDir as $item) {
-                    if ($item != "." && $item != "..") {
+                    if ($item != '.' && $item != '..') {
                         // 文末の/を取り除く
                         $dir = ereg_replace("/$", "", $dir);
-                        $path = $dir."/".$item;
+                        $path = $dir.'/'.$item;
                         // ディレクトリのみ取得
                         if (is_dir($path)) {
                             $arrTree[$cnt]['path'] = $path;
@@ -1502,7 +1502,7 @@ class SC_Utils {
                 while ($file = readdir($handle)) {
                     // 行末の/を取り除く
                     $dir = ereg_replace("/$", "", $dir);
-                    $path = $dir."/".$file;
+                    $path = $dir.'/'.$file;
                     if ($file != '..' && $file != '.' && is_dir($path)) {
                         return true;
                     }
@@ -1535,10 +1535,10 @@ class SC_Utils {
      */
     function sfDownloadFile($file) {
          // ファイルの場合はダウンロードさせる
-        Header("Content-disposition: attachment; filename=".basename($file));
-        Header("Content-type: application/octet-stream; name=".basename($file));
-        Header("Cache-Control: ");
-        Header("Pragma: ");
+        Header('Content-disposition: attachment; filename='.basename($file));
+        Header('Content-type: application/octet-stream; name='.basename($file));
+        Header('Cache-Control: ');
+        Header('Pragma: ');
         echo (sfReadFile($file));
     }
 
@@ -1548,9 +1548,9 @@ class SC_Utils {
      * 引数2 ：パーミッション
      * 説明　：ファイル作成
      */
-    function sfCreateFile($file, $mode = "") {
+    function sfCreateFile($file, $mode = '') {
         // 行末の/を取り除く
-        if ($mode != "") {
+        if ($mode != '') {
             $ret = @mkdir($file, $mode);
         } else {
             $ret = @mkdir($file);
@@ -1565,7 +1565,7 @@ class SC_Utils {
      * 説明　：ファイル読込
      */
     function sfReadFile($filename) {
-        $str = "";
+        $str = '';
         // バイナリモードでオープン
         $fp = @fopen($filename, 'rb');
         //ファイル内容を全て変数に読み込む
@@ -1587,15 +1587,15 @@ class SC_Utils {
             // インデックスが設定されている場合
             if (is_array($arrayIndex) && 0 < count($arrayIndex)) {
                 for ($j = 0; $j < count($arrayIndex); $j++) {
-                    if ($j > 0) $return .= ",";
+                    if ($j > 0) $return .= ',';
                     $return .= "\"";
-                    $return .= mb_ereg_replace("<","＜",mb_ereg_replace("\"","\"\"",$array[$i][$arrayIndex[$j]])) ."\"";
+                    $return .= mb_ereg_replace('<','＜',mb_ereg_replace("\"","\"\"",$array[$i][$arrayIndex[$j]])) ."\"";
                 }
             } else {
                 for ($j = 0; $j < count($array[$i]); $j++) {
-                    if ($j > 0) $return .= ",";
+                    if ($j > 0) $return .= ',';
                     $return .= "\"";
-                    $return .= mb_ereg_replace("<","＜",mb_ereg_replace("\"","\"\"",$array[$i][$j])) ."\"";
+                    $return .= mb_ereg_replace('<','＜',mb_ereg_replace("\"","\"\"",$array[$i][$j])) ."\"";
                 }
             }
             $return .= "\n";
@@ -1609,21 +1609,21 @@ class SC_Utils {
      * @return string
      */
     function getTableTag($array) {
-        $html = "<table>";
-        $html.= "<tr>";
+        $html = '<table>';
+        $html.= '<tr>';
         foreach ($array[0] as $key => $val) {
             $html.="<th>$key</th>";
         }
-        $html.= "</tr>";
+        $html.= '</tr>';
 
         $cnt = count($array);
 
         for ($i = 0; $i < $cnt; $i++) {
-            $html.= "<tr>";
+            $html.= '<tr>';
             foreach ($array[$i] as $val) {
                 $html.="<td>$val</td>";
             }
-            $html.= "</tr>";
+            $html.= '</tr>';
         }
         return $html;
     }
@@ -1683,9 +1683,9 @@ class SC_Utils {
         $url = '';
 
         if (SC_Utils_Ex::sfIsHTTPS()) {
-            $url = "https://";
+            $url = 'https://';
         } else {
-            $url = "http://";
+            $url = 'http://';
         }
 
         $url .= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '?' . $_SERVER['QUERY_STRING'];
@@ -1708,7 +1708,7 @@ class SC_Utils {
                 $func = $backtrace['function'];
             }
 
-            $string .= $backtrace['file'] . " " . $backtrace['line'] . ":" . $func . "\n";
+            $string .= $backtrace['file'] . ' ' . $backtrace['line'] . ":" . $func . "\n";
         }
 
         return $string;
@@ -1753,7 +1753,7 @@ class SC_Utils {
 
         // 郵便番号検索文作成
         $zipcode = mb_convert_kana($zipcode ,'n');
-        $sqlse = "SELECT state, city, town FROM mtb_zip WHERE zipcode = ?";
+        $sqlse = 'SELECT state, city, town FROM mtb_zip WHERE zipcode = ?';
 
         $data_list = $objQuery->getAll($sqlse, array($zipcode));
         if (empty($data_list)) return array();
@@ -1766,7 +1766,7 @@ class SC_Utils {
         */
         $town =  $data_list[0]['town'];
         $town = ereg_replace("（.*）$","",$town);
-        $town = ereg_replace("以下に掲載がない場合","",$town);
+        $town = ereg_replace('以下に掲載がない場合','',$town);
         $data_list[0]['town'] = $town;
         $data_list[0]['state'] = $arrREV_PREF[$data_list[0]['state']];
 
@@ -1875,7 +1875,7 @@ class SC_Utils {
     function sfMicrotimeFloat() {
         $microtime = microtime(true);
         if (is_string($microtime)) {
-            list($usec, $sec) = explode(" ", microtime());
+            list($usec, $sec) = explode(' ', microtime());
             return (float)$usec + (float)$sec;
         }
         return $microtime;
@@ -1886,7 +1886,7 @@ class SC_Utils {
      *
      * 引数 $val が空白かどうかをチェックする. 空白の場合は true.
      * 以下の文字は空白と判断する.
-     * - " " (ASCII 32 (0x20)), 通常の空白
+     * - ' ' (ASCII 32 (0x20)), 通常の空白
      * - "\t" (ASCII 9 (0x09)), タブ
      * - "\n" (ASCII 10 (0x0A)), リターン
      * - "\r" (ASCII 13 (0x0D)), 改行
@@ -1899,7 +1899,7 @@ class SC_Utils {
      * 空白と判断する.
      *
      * @param mixed $val チェック対象の変数
-     * @param boolean $greedy "貧欲"にチェックを行う場合 true
+     * @param boolean $greedy '貧欲'にチェックを行う場合 true
      * @return boolean $val が空白と判断された場合 true
      */
     function isBlank($val, $greedy = true) {
@@ -1926,7 +1926,7 @@ class SC_Utils {
         }
 
         if ($greedy) {
-            $val = preg_replace("/　/", "", $val);
+            $val = preg_replace('/　/', '', $val);
         }
 
         $val = trim($val);
@@ -1948,7 +1948,7 @@ class SC_Utils {
         $netURL = new Net_URL(HTTP_URL);
         $host = $netURL->host;
         if (!$host) return false;
-        $host = preg_quote($host, "#");
+        $host = preg_quote($host, '#');
         if (!preg_match("#^(http|https)://{$host}#i", $url)) return false;
         return true;
     }
@@ -1968,7 +1968,7 @@ class SC_Utils {
         if (AUTH_TYPE == 'PLAIN') {
             $res = $str;
         } else {
-            $res = hash_hmac(PASSWORD_HASH_ALGOS, $str . ":" . AUTH_MAGIC, $salt);
+            $res = hash_hmac(PASSWORD_HASH_ALGOS, $str . ':' . AUTH_MAGIC, $salt);
         }
         return $res;
     }
@@ -1991,7 +1991,7 @@ class SC_Utils {
             } else {
                 if (empty($salt)) {
                     // 旧バージョン(2.11未満)からの移行を考慮
-                    $hash = sha1($pass . ":" . AUTH_MAGIC);
+                    $hash = sha1($pass . ':' . AUTH_MAGIC);
                 } else {
                     $hash = SC_Utils_Ex::sfGetHashString($pass, $salt);
                 }
@@ -2143,12 +2143,12 @@ class SC_Utils {
         $flg = false;
         // 対象が存在するかを検証.
         if (file_exists($path) === false) {
-            GC_Utils_Ex::gfPrintLog($path . " が存在しません.");
+            GC_Utils_Ex::gfPrintLog($path . ' が存在しません.');
         } elseif (is_dir($path)) {
             // ディレクトリが指定された場合
             $handle = opendir($path);
             if (!$handle) {
-                GC_Utils_Ex::gfPrintLog($path . " が開けませんでした.");
+                GC_Utils_Ex::gfPrintLog($path . ' が開けませんでした.');
             }
             while (($item = readdir($handle)) !== false) {
                 if ($item === '.' || $item === '..') continue;
@@ -2163,13 +2163,13 @@ class SC_Utils {
             }
             closedir($handle);
             // ディレクトリを削除
-            GC_Utils_Ex::gfPrintLog($path . " を削除します.");
+            GC_Utils_Ex::gfPrintLog($path . ' を削除します.');
             if ($del_myself) {
                 $flg = @rmdir($path);
             }
         } else {
             // ファイルが指定された場合.
-            GC_Utils_Ex::gfPrintLog($path . " を削除します.");
+            GC_Utils_Ex::gfPrintLog($path . ' を削除します.');
             $flg = @unlink($path);
         }
         return $flg;

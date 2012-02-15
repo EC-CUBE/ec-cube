@@ -151,16 +151,16 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam, $bloc_cnt = 0) {
-        $objFormParam->addParam("ページID", 'page_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("端末種別ID", 'device_type_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam("ブロック数", 'bloc_cnt', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('ページID', 'page_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('端末種別ID', 'device_type_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('ブロック数', 'bloc_cnt', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
 
         for ($i = 1; $i <= $bloc_cnt; $i++) {
-            $objFormParam->addParam("ブロック名", 'name_' . $i, STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'GRAPH_CHECK'));
-            $objFormParam->addParam("ブロックID", 'id_' . $i, INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-            $objFormParam->addParam("ターゲットID", 'target_id_' . $i, STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'ALNUM_CHECK'));
-            $objFormParam->addParam("TOP座標", 'top_' . $i, INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-            $objFormParam->addParam("全ページ", 'anywhere_' . $i, INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+            $objFormParam->addParam('ブロック名', 'name_' . $i, STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'GRAPH_CHECK'));
+            $objFormParam->addParam('ブロックID', 'id_' . $i, INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+            $objFormParam->addParam('ターゲットID', 'target_id_' . $i, STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'ALNUM_CHECK'));
+            $objFormParam->addParam('TOP座標', 'top_' . $i, INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+            $objFormParam->addParam('全ページ', 'anywhere_' . $i, INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         }
     }
 
@@ -255,7 +255,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
         $bloc_cnt = $objFormParam->getValue('bloc_cnt');
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
-        $objQuery->delete('dtb_blocposition', "page_id = ? AND device_type_id = ?",
+        $objQuery->delete('dtb_blocposition', 'page_id = ? AND device_type_id = ?',
                           array($page_id, $device_type_id));
         $arrTargetFlip = array_flip($this->arrTarget);
         for ($i = 1; $i <= $bloc_cnt; $i++) {

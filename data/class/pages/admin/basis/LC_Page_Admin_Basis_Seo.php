@@ -141,19 +141,19 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
      */
     function lfUpdPageData($arrUpdData = array()) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $sql = "";
+        $sql = '';
 
         // SQL生成
-        $sql .= " UPDATE ";
-        $sql .= "     dtb_pagelayout ";
-        $sql .= " SET ";
-        $sql .= "     author = ? , ";
-        $sql .= "     description = ? , ";
-        $sql .= "     keyword = ? ";
-        $sql .= " WHERE ";
-        $sql .= "     device_type_id = ? ";
-        $sql .= "     AND page_id = ? ";
-        $sql .= " ";
+        $sql .= ' UPDATE ';
+        $sql .= '     dtb_pagelayout ';
+        $sql .= ' SET ';
+        $sql .= '     author = ? , ';
+        $sql .= '     description = ? , ';
+        $sql .= '     keyword = ? ';
+        $sql .= ' WHERE ';
+        $sql .= '     device_type_id = ? ';
+        $sql .= '     AND page_id = ? ';
+        $sql .= ' ';
 
         // SQL実行
         $ret = $objQuery->query($sql, $arrUpdData);

@@ -63,7 +63,7 @@ class LC_Page_Admin extends LC_Page_Ex {
 
         // ディスプレイクラス生成
         $this->objDisplay = new SC_Display_Ex();
-        if ($_SERVER['PHP_SELF'] !== ROOT_URLPATH . ADMIN_DIR . "system/plugin.php") {
+        if ($_SERVER['PHP_SELF'] !== ROOT_URLPATH . ADMIN_DIR . 'system/plugin.php') {
             // スーパーフックポイントを実行.
             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
             $objPlugin->doAction('lc_page_preProcess', array($this));
@@ -89,7 +89,7 @@ class LC_Page_Admin extends LC_Page_Ex {
      */
     function sendResponse() {
 
-        if ($_SERVER['PHP_SELF'] !== ROOT_URLPATH . ADMIN_DIR . "system/plugin.php") {
+        if ($_SERVER['PHP_SELF'] !== ROOT_URLPATH . ADMIN_DIR . 'system/plugin.php') {
 
             // プラグインによってトランスフォームされたテンプレートがあればセットする
             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
@@ -129,7 +129,7 @@ class LC_Page_Admin extends LC_Page_Ex {
      * @return void
      */
     function log($mess, $log_level) {
-        $mess = $mess . " id=" . $_SESSION['login_id'] . "(" . $_SESSION['authority'] . ")" . "[" . session_id() . "]";
+        $mess = $mess . ' id=' . $_SESSION['login_id'] . "(" . $_SESSION['authority'] . ")" . "[" . session_id() . "]";
 
         GC_Utils_Ex::gfAdminLog($mess, $log_level);
     }

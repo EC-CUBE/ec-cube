@@ -40,11 +40,11 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      * @param string $dsn データソース名
      * @return string データベースのバージョン
      */
-    function sfGetDBVersion($dsn = "") {
+    function sfGetDBVersion($dsn = '') {
         $objQuery =& SC_Query_Ex::getSingletonInstance($dsn);
-        $val = $objQuery->getOne("select version()");
-        $arrLine = explode(" " , $val);
-        return $arrLine[0] . " " . str_replace(",", "", $arrLine[1]);
+        $val = $objQuery->getOne('select version()');
+        $arrLine = explode(' ' , $val);
+        return $arrLine[0] . ' ' . str_replace(',', "", $arrLine[1]);
     }
 
     /**
@@ -67,10 +67,10 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      * @return string 昨日の売上高・売上件数を算出する SQL
      */
     function getOrderYesterdaySql($method) {
-        return "SELECT ".$method."(total) FROM dtb_order "
-              . "WHERE del_flg = 0 "
+        return 'SELECT '.$method.'(total) FROM dtb_order '
+              . 'WHERE del_flg = 0 '
                 . "AND to_char(create_date,'YYYY/MM/DD') = to_char(CURRENT_TIMESTAMP - interval '1 days','YYYY/MM/DD') "
-                . "AND status <> " . ORDER_CANCEL;
+                . 'AND status <> ' . ORDER_CANCEL;
     }
 
     /**
@@ -80,11 +80,11 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      * @return string 当月の売上高・売上件数を算出する SQL
      */
     function getOrderMonthSql($method) {
-        return "SELECT ".$method."(total) FROM dtb_order "
-              . "WHERE del_flg = 0 "
+        return 'SELECT '.$method.'(total) FROM dtb_order '
+              . 'WHERE del_flg = 0 '
                 . "AND to_char(create_date,'YYYY/MM') = ? "
                 . "AND to_char(create_date,'YYYY/MM/DD') <> to_char(CURRENT_TIMESTAMP,'YYYY/MM/DD') "
-                . "AND status <> " . ORDER_CANCEL;
+                . 'AND status <> ' . ORDER_CANCEL;
     }
 
     /**
@@ -93,11 +93,11 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      * @return string 昨日のレビュー書き込み件数を算出する SQL
      */
     function getReviewYesterdaySql() {
-        return "SELECT COUNT(*) FROM dtb_review AS A "
-          . "LEFT JOIN dtb_products AS B "
-                 . "ON A.product_id = B.product_id "
-              . "WHERE A.del_flg=0 "
-                . "AND B.del_flg = 0 "
+        return 'SELECT COUNT(*) FROM dtb_review AS A '
+          . 'LEFT JOIN dtb_products AS B '
+                 . 'ON A.product_id = B.product_id '
+              . 'WHERE A.del_flg=0 '
+                . 'AND B.del_flg = 0 '
                 . "AND to_char(A.create_date, 'YYYY/MM/DD') = to_char(CURRENT_TIMESTAMP - interval '1 days','YYYY/MM/DD') "
                 . "AND to_char(A.create_date,'YYYY/MM/DD') != to_char(CURRENT_TIMESTAMP,'YYYY/MM/DD')";
     }
@@ -121,8 +121,8 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
         $baseinfo = SC_Helper_DB_Ex::sfGetBasisData();
         //downloadable_daysにNULLが入っている場合(無期限ダウンロード可能時)もあるので、NULLの場合は0日に補正
         $downloadable_days = $baseinfo['downloadable_days'];
-        if($downloadable_days ==null || $downloadable_days == "")$downloadable_days=0;
-        return "(SELECT CASE WHEN (SELECT d1.downloadable_days_unlimited FROM dtb_baseinfo d1) = 1 AND " . $dtb_order_alias . ".payment_date IS NOT NULL THEN 1 WHEN DATE(CURRENT_TIMESTAMP) <= DATE(" . $dtb_order_alias . ".payment_date + '". $downloadable_days ." days') THEN 1 ELSE 0 END)";
+        if($downloadable_days ==null || $downloadable_days == '')$downloadable_days=0;
+        return '(SELECT CASE WHEN (SELECT d1.downloadable_days_unlimited FROM dtb_baseinfo d1) = 1 AND ' . $dtb_order_alias . '.payment_date IS NOT NULL THEN 1 WHEN DATE(CURRENT_TIMESTAMP) <= DATE(' . $dtb_order_alias . ".payment_date + '". $downloadable_days ." days') THEN 1 ELSE 0 END)";
     }
 
     /**
@@ -178,13 +178,13 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      * @return string 連結後の SQL 文
      */
     function concatColumn($columns) {
-        $sql = "";
+        $sql = '';
         $i = 0;
         $total = count($columns);
         foreach ($columns as $column) {
             $sql .= $column;
             if ($i < $total -1) {
-                $sql .= " || ";
+                $sql .= ' || ';
             }
             $i++;
         }
@@ -200,21 +200,21 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      * @param string $expression 検索文字列
      * @return array テーブル名の配列
      */
-    function findTableNames($expression = "") {
+    function findTableNames($expression = '') {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $sql = "   SELECT c.relname AS name, "
-            .  "     CASE c.relkind "
+        $sql = '   SELECT c.relname AS name, '
+            .  '     CASE c.relkind '
             .  "     WHEN 'r' THEN 'table' "
             .  "     WHEN 'v' THEN 'view' END AS type "
-            .  "     FROM pg_catalog.pg_class c "
-            .  "LEFT JOIN pg_catalog.pg_namespace n "
-            .  "       ON n.oid = c.relnamespace "
+            .  '     FROM pg_catalog.pg_class c '
+            .  'LEFT JOIN pg_catalog.pg_namespace n '
+            .  '       ON n.oid = c.relnamespace '
             .  "    WHERE c.relkind IN ('r','v') "
             .  "      AND n.nspname NOT IN ('pg_catalog', 'pg_toast') "
-            .  "      AND pg_catalog.pg_table_is_visible(c.oid) "
-            .  "      AND c.relname LIKE ?"
-            .  " ORDER BY 1,2;";
-        $arrColList = $objQuery->getAll($sql, array("%" . $expression . "%"));
+            .  '      AND pg_catalog.pg_table_is_visible(c.oid) '
+            .  '      AND c.relname LIKE ?'
+            .  ' ORDER BY 1,2;';
+        $arrColList = $objQuery->getAll($sql, array('%' . $expression . '%'));
         $arrColList = SC_Utils_Ex::sfSwapArray($arrColList, false);
         return $arrColList[0];
     }

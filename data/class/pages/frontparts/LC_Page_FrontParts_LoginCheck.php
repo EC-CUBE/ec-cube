@@ -245,7 +245,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
                 break;
             case SITE_LOGIN_ERROR:
             default:
-                $msg = "メールアドレスもしくはパスワードが正しくありません。";
+                $msg = 'メールアドレスもしくはパスワードが正しくありません。';
         }
         return SC_Utils_Ex::jsonEncode(array('login_error' => $msg));
     }

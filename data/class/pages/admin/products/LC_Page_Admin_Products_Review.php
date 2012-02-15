@@ -146,16 +146,16 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
 
         switch ($this->getMode()) {
         case 'search':
-            $objErr->doFunc(array("投稿者", 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
-            $objErr->doFunc(array("開始日", 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
-            $objErr->doFunc(array("終了日", 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_DATE'));
-            $objErr->doFunc(array("開始日", "終了日", 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_SET_TERM'));
+            $objErr->doFunc(array('投稿者', 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
+            $objErr->doFunc(array('開始日', 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
+            $objErr->doFunc(array('終了日', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_DATE'));
+            $objErr->doFunc(array('開始日', '終了日', 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_SET_TERM'));
             break;
 
         case 'complete':
-            $objErr->doFunc(array("おすすめレベル", 'recommend_level'), array('SELECT_CHECK'));
-            $objErr->doFunc(array("タイトル", 'title', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-            $objErr->doFunc(array("コメント", 'comment', LTEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+            $objErr->doFunc(array('おすすめレベル', 'recommend_level'), array('SELECT_CHECK'));
+            $objErr->doFunc(array('タイトル', 'title', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+            $objErr->doFunc(array('コメント', 'comment', LTEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
             break;
         }
         return $objErr->arrErr;
@@ -170,7 +170,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
     function lfDeleteReview($review_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sqlval['del_flg'] = 1;
-        $objQuery->update('dtb_review', $sqlval, "review_id = ?", array($review_id));
+        $objQuery->update('dtb_review', $sqlval, 'review_id = ?', array($review_id));
     }
 
     /**
@@ -182,12 +182,12 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
     function lfSetHidden($arrForm) {
         $arrHidden = array();
         foreach ($arrForm AS $key=>$val) {
-            if (preg_match("/^search_/", $key)) {
+            if (preg_match('/^search_/', $key)) {
                 switch ($key) {
                 case 'search_sex':
                     $arrHidden[$key] = SC_Utils_Ex::sfMergeParamCheckBoxes($val);
                     if (!is_array($val)) {
-                        $arrForm[$key] = explode("-", $val);
+                        $arrForm[$key] = explode('-', $val);
                     }
                     break;
                 default:
@@ -206,21 +206,21 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("投稿者名", 'search_reviewer_name', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),"",false);
-        $objFormParam->addParam("投稿者URL", 'search_reviewer_url', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),"",false);
-        $objFormParam->addParam("商品名", 'search_name', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),"",false);
-        $objFormParam->addParam("商品コード", 'search_product_code', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),"",false);
-        $objFormParam->addParam("性別", 'search_sex', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),"",false);
-        $objFormParam->addParam("おすすめレベル", 'search_recommend_level', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),"",false);
-        $objFormParam->addParam("投稿年", 'search_startyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),"",false);
-        $objFormParam->addParam("投稿月", 'search_startmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),"",false);
-        $objFormParam->addParam("投稿日", 'search_startday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),"",false);
-        $objFormParam->addParam("投稿年", 'search_endyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),"",false);
-        $objFormParam->addParam("投稿月", 'search_endmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),"",false);
-        $objFormParam->addParam("投稿日", 'search_endday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),"",false);
-        $objFormParam->addParam("最大表示件数", 'search_page_max', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),"",false);
-        $objFormParam->addParam("ページ番号件数", 'search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),"",false);
-        $objFormParam->addParam("レビューID", 'review_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),"",false);
+        $objFormParam->addParam('投稿者名', 'search_reviewer_name', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),"",false);
+        $objFormParam->addParam('投稿者URL', 'search_reviewer_url', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),"",false);
+        $objFormParam->addParam('商品名', 'search_name', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),"",false);
+        $objFormParam->addParam('商品コード', 'search_product_code', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),"",false);
+        $objFormParam->addParam('性別', 'search_sex', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),"",false);
+        $objFormParam->addParam('おすすめレベル', 'search_recommend_level', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),"",false);
+        $objFormParam->addParam('投稿年', 'search_startyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),"",false);
+        $objFormParam->addParam('投稿月', 'search_startmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),"",false);
+        $objFormParam->addParam('投稿日', 'search_startday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),"",false);
+        $objFormParam->addParam('投稿年', 'search_endyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),"",false);
+        $objFormParam->addParam('投稿月', 'search_endmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),"",false);
+        $objFormParam->addParam('投稿日', 'search_endday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),"",false);
+        $objFormParam->addParam('最大表示件数', 'search_page_max', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),"",false);
+        $objFormParam->addParam('ページ番号件数', 'search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),"",false);
+        $objFormParam->addParam('レビューID', 'review_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),"",false);
     }
 
     /**
@@ -232,10 +232,10 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
      */
     function lfDoOutputCsv($where, $arrVal) {
         $objCSV = new SC_Helper_CSV_Ex();
-        if ($where != "") {
-            $where = "WHERE " . $where;
+        if ($where != '') {
+            $where = 'WHERE ' . $where;
         }
-        $objCSV->sfDownloadCsv('4', $where, $arrVal, "", true);
+        $objCSV->sfDownloadCsv('4', $where, $arrVal, '', true);
     }
 
     /**
@@ -246,52 +246,52 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
      */
     function lfGetWhere($arrForm) {
         //削除されていない商品を検索
-        $where = "A.del_flg = 0 AND B.del_flg = 0";
+        $where = 'A.del_flg = 0 AND B.del_flg = 0';
 
         foreach ($arrForm AS $key=>$val) {
             if (empty($val)) continue;
 
             switch ($key) {
             case 'search_reviewer_name':
-                $val = preg_replace("/ /", "%", $val);
-                $where.= " AND reviewer_name LIKE ? ";
+                $val = preg_replace('/ /', '%', $val);
+                $where.= ' AND reviewer_name LIKE ? ';
                 $arrval[] = "%$val%";
                 break;
 
             case 'search_reviewer_url':
-                $val = preg_replace("/ /", "%", $val);
-                $where.= " AND reviewer_url LIKE ? ";
+                $val = preg_replace('/ /', '%', $val);
+                $where.= ' AND reviewer_url LIKE ? ';
                 $arrval[] = "%$val%";
                 break;
 
             case 'search_name':
-                $val = preg_replace("/ /", "%", $val);
-                $where.= " AND name LIKE ? ";
+                $val = preg_replace('/ /', '%', $val);
+                $where.= ' AND name LIKE ? ';
                 $arrval[] = "%$val%";
                 break;
 
             case 'search_product_code':
-                $val = preg_replace("/ /", "%", $val);
-                $where.= " AND A.product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code LIKE ?)";
+                $val = preg_replace('/ /', '%', $val);
+                $where.= ' AND A.product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code LIKE ?)';
                 $arrval[] = "%$val%";
                 break;
 
             case 'search_sex':
-                $tmp_where = "";
+                $tmp_where = '';
                 //$val=配列の中身,$element=各キーの値(1,2)
                 if (is_array($val)) {
                     foreach ($val as $element) {
-                        if ($element != "") {
-                            if ($tmp_where == "") {
-                                $tmp_where .= " AND (sex = ?";
+                        if ($element != '') {
+                            if ($tmp_where == '') {
+                                $tmp_where .= ' AND (sex = ?';
                             } else {
-                                $tmp_where .= " OR sex = ?";
+                                $tmp_where .= ' OR sex = ?';
                             }
                             $arrval[] = $element;
                         }
                     }
-                    if ($tmp_where != "") {
-                        $tmp_where .= ")";
+                    if ($tmp_where != '') {
+                        $tmp_where .= ')';
                         $where .= " $tmp_where ";
                     }
                 }
@@ -299,14 +299,14 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
                 break;
 
             case 'search_recommend_level':
-                $where.= " AND recommend_level = ? ";
+                $where.= ' AND recommend_level = ? ';
                 $arrval[] = $val;
                 break;
 
             case 'search_startyear':
                 if (isset($_POST['search_startyear']) && isset($_POST['search_startmonth']) && isset($_POST['search_startday'])) {
                     $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
-                    $where.= " AND A.create_date >= ? ";
+                    $where.= ' AND A.create_date >= ? ';
                     $arrval[] = $date;
                 }
                 break;
@@ -314,7 +314,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
             case 'search_endyear':
                 if (isset($_POST['search_startyear']) && isset($_POST['search_startmonth']) && isset($_POST['search_startday'])) {
                     $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday']);
-                    $end_date = date("Y/m/d",strtotime("1 day" ,strtotime($date)));
+                    $end_date = date('Y/m/d',strtotime('1 day' ,strtotime($date)));
                     $where.= " AND A.create_date <= cast('$end_date' as date) ";
                 }
                 break;
@@ -340,7 +340,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
 
         if (!isset($arrval)) $arrval = array();
 
-        $from = "dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id ";
+        $from = 'dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id ';
         $linemax = $objQuery->count($from, $where, $arrval);
         $this->tpl_linemax = $linemax;
 
@@ -356,13 +356,13 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
         $objQuery->setLimitOffset($page_max, $startno);
 
         // 表示順序
-        $order = "A.create_date DESC";
+        $order = 'A.create_date DESC';
         $objQuery->setOrder($order);
         //検索結果の取得
         //レビュー情報のカラムの取得
-        $col = "review_id, A.product_id, reviewer_name, sex, recommend_level, ";
-        $col .= "reviewer_url, title, comment, A.status, A.create_date, A.update_date, name";
-        $from = "dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id ";
+        $col = 'review_id, A.product_id, reviewer_name, sex, recommend_level, ';
+        $col .= 'reviewer_url, title, comment, A.status, A.create_date, A.update_date, name';
+        $from = 'dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id ';
         $arrReview = $objQuery->select($col, $from, $where, $arrval);
 
         return $arrReview;

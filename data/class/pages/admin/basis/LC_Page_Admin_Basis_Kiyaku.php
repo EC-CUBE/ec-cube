@@ -93,7 +93,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
             $this->arrForm = $_POST;
 
             if (count($this->arrErr) <= 0) {
-                if ($post['kiyaku_id'] == "") {
+                if ($post['kiyaku_id'] == '') {
                     $this->lfInsertClass($this->arrForm, $_SESSION['member_id']);    // 新規作成
                 } else {
                     $this->lfUpdateClass($this->arrForm, $post['kiyaku_id']);    // 既存編集
@@ -169,16 +169,16 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
     function lfGetKiyakuDataByKiyakuID($kiyaku_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        $where = "kiyaku_id = ?";
-        return $objQuery->select("kiyaku_text, kiyaku_title", 'dtb_kiyaku', $where, array($kiyaku_id));
+        $where = 'kiyaku_id = ?';
+        return $objQuery->select('kiyaku_text, kiyaku_title', 'dtb_kiyaku', $where, array($kiyaku_id));
     }
 
     function lfGetKiyakuList() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        $where = "del_flg <> 1";
-        $objQuery->setOrder("rank DESC");
-        return $objQuery->select("kiyaku_title, kiyaku_text, kiyaku_id", 'dtb_kiyaku', $where);
+        $where = 'del_flg <> 1';
+        $objQuery->setOrder('rank DESC');
+        return $objQuery->select('kiyaku_title, kiyaku_text, kiyaku_id', 'dtb_kiyaku', $where);
     }
 
     /* DBへの更新 */
@@ -188,7 +188,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
         $sqlval['kiyaku_title'] = $arrData['kiyaku_title'];
         $sqlval['kiyaku_text'] = $arrData['kiyaku_text'];
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
-        $where = "kiyaku_id = ?";
+        $where = 'kiyaku_id = ?';
         // UPDATEの実行
         $ret = $objQuery->update('dtb_kiyaku', $sqlval, $where, array($kiyaku_id));
         return $ret;
@@ -221,10 +221,10 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
         if (!isset($arrErr['name']) && $mode == 'edit') {
             $post = $objFormParam->getHashArray();
             $objQuery =& SC_Query_Ex::getSingletonInstance();
-            $arrRet = $objQuery->select("kiyaku_id, kiyaku_title", 'dtb_kiyaku', "del_flg = 0 AND kiyaku_title = ?", array($post['kiyaku_title']));
+            $arrRet = $objQuery->select('kiyaku_id, kiyaku_title', 'dtb_kiyaku', "del_flg = 0 AND kiyaku_title = ?", array($post['kiyaku_title']));
             // 編集中のレコード以外に同じ名称が存在する場合
             if ($arrRet[0]['kiyaku_id'] != $post['kiyaku_id'] && $arrRet[0]['kiyaku_title'] == $post['kiyaku_title']) {
-                $arrErr['name'] = "※ 既に同じ内容の登録が存在します。<br>";
+                $arrErr['name'] = '※ 既に同じ内容の登録が存在します。<br>';
             }
         }
         return $arrErr;

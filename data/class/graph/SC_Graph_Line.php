@@ -61,7 +61,7 @@ class SC_Graph_Line extends SC_Graph_Base{
     // Y軸タイトル
     function drawYTitle() {
         // Y軸にタイトルを入れる
-        if ($this->YTitle != "") {
+        if ($this->YTitle != '') {
             $text_width = $this->getTextWidth($this->YTitle, FONT_SIZE);
             $x_pos = $this->left - ($text_width / 2);
             $y_pos = $this->top - FONT_SIZE - LINE_YTITLE_PAD;
@@ -72,7 +72,7 @@ class SC_Graph_Line extends SC_Graph_Base{
     // X軸タイトル
     function drawXTitle() {
         // Y軸にタイトルを入れる
-        if ($this->XTitle != "") {
+        if ($this->XTitle != '') {
             $text_width = $this->getTextWidth($this->XTitle, FONT_SIZE);
             $x_pos = $this->left + $this->area_width - ($text_width / 2) + 30;
             $y_pos = $this->top + $this->area_height + LINE_XTITLE_PAD;

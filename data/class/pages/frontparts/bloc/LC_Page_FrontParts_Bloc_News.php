@@ -115,9 +115,9 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function lfInitNewsParam(&$objFormParam) {
-        $objFormParam->addParam("現在ページ", 'pageno', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
-        $objFormParam->addParam("表示件数", 'disp_number', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
-        $objFormParam->addParam("新着ID", 'news_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
+        $objFormParam->addParam('現在ページ', 'pageno', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
+        $objFormParam->addParam('表示件数', 'disp_number', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
+        $objFormParam->addParam('新着ID', 'news_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
     }
 
     /**
@@ -126,7 +126,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
      * @return array $arrNewsList 新着情報の配列を返す
      */
     function lfGetNews(&$objQuery) {
-        $objQuery->setOrder("rank DESC ");
+        $objQuery->setOrder('rank DESC ');
         $arrNewsList = $objQuery->select('* , cast(news_date as date) as news_date_disp', 'dtb_news' ,'del_flg = 0');
 
         // モバイルサイトのセッション保持 (#797)
@@ -185,7 +185,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
         $objQuery = SC_Query_Ex::getSingletonInstance();
         $arrData = $objFormParam->getHashArray();
         $newsId = $arrData['news_id'];
-        $arrNewsList = $objQuery->select(" * , cast(news_date as date) as news_date_disp "," dtb_news "," del_flg = '0' AND news_id = ? ", array($newsId));
+        $arrNewsList = $objQuery->select(' * , cast(news_date as date) as news_date_disp ',' dtb_news '," del_flg = '0' AND news_id = ? ", array($newsId));
 
         $json =  SC_Utils_Ex::jsonEncode($arrNewsList);    //JSON形式
 

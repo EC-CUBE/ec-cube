@@ -89,7 +89,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex {
             break;
         case 'tree':
             // カテゴリの切替は、ページ番号をクリアする。
-            $this->tpl_pageno = "";
+            $this->tpl_pageno = '';
             break;
         case 'renumber':
             $this->lfRenumber($this->arrForm['parent_category_id']);
@@ -118,11 +118,11 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex {
     function lfGetProduct($category_id) {
         // FIXME SC_Product クラスを使用した実装
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $col = "product_id, name, main_list_image, product_code_min, product_code_max, status";
+        $col = 'product_id, name, main_list_image, product_code_min, product_code_max, status';
         $objProduct = new SC_Product();
         $table = $objProduct->alldtlSQL();
-        $table.= " LEFT JOIN dtb_product_categories AS T5 USING(product_id)";
-        $where = "del_flg = 0 AND category_id = ?";
+        $table.= ' LEFT JOIN dtb_product_categories AS T5 USING(product_id)';
+        $where = 'del_flg = 0 AND category_id = ?';
 
         // 行数の取得
         $linemax = $objQuery->count($table, $where, array($category_id));
@@ -139,7 +139,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex {
         // 取得範囲の指定(開始行番号、行数のセット)
         $objQuery->setLimitOffset(SEARCH_PMAX, $startno);
 
-        $objQuery->setOrder("rank DESC, product_id DESC");
+        $objQuery->setOrder('rank DESC, product_id DESC');
 
         $arrRet = $objQuery->select($col, $table, $where, array($category_id));
         return $arrRet;
@@ -174,20 +174,20 @@ __EOS__;
     }
 
     function lfRankUp(&$objDb, $parent_category_id, $product_id) {
-        $where = "category_id = " . SC_Utils_Ex::sfQuoteSmart($parent_category_id);
+        $where = 'category_id = ' . SC_Utils_Ex::sfQuoteSmart($parent_category_id);
         $objDb->sfRankUp('dtb_product_categories', 'product_id', $product_id, $where);
     }
 
     function lfRankDown(&$objDb, $parent_category_id, $product_id) {
-        $where = "category_id = " . SC_Utils_Ex::sfQuoteSmart($parent_category_id);
+        $where = 'category_id = ' . SC_Utils_Ex::sfQuoteSmart($parent_category_id);
         $objDb->sfRankDown('dtb_product_categories', 'product_id', $product_id, $where);
     }
 
     function lfRankMove(&$objDb, $parent_category_id, $product_id) {
-        $key = "pos-".$product_id;
+        $key = 'pos-'.$product_id;
         $input_pos = mb_convert_kana($_POST[$key], 'n');
         if (SC_Utils_Ex::sfIsInt($input_pos)) {
-            $where = "category_id = " . SC_Utils_Ex::sfQuoteSmart($parent_category_id);
+            $where = 'category_id = ' . SC_Utils_Ex::sfQuoteSmart($parent_category_id);
             $objDb->sfMoveRank('dtb_product_categories', 'product_id', $product_id, $input_pos, $where);
         }
     }

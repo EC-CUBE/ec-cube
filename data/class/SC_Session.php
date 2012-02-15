@@ -57,10 +57,10 @@ class SC_Session {
             }
 
             // ログに記録する
-            GC_Utils_Ex::gfPrintLog("access : user=".$this->login_id." auth=".$this->authority." sid=".$this->sid);
+            GC_Utils_Ex::gfPrintLog('access : user='.$this->login_id.' auth='.$this->authority." sid=".$this->sid);
         } else {
             // ログに記録する
-            GC_Utils_Ex::gfPrintLog("access error.");
+            GC_Utils_Ex::gfPrintLog('access error.');
         }
     }
     /* 認証成功の判定 */
@@ -125,7 +125,7 @@ class SC_Session {
         // 最終的に、セッションを破壊する
         session_destroy();
         // ログに記録する
-        GC_Utils_Ex::gfPrintLog("logout : user=".$this->login_id." auth=".$this->authority." sid=".$this->sid);
+        GC_Utils_Ex::gfPrintLog('logout : user='.$this->login_id.' auth='.$this->authority." sid=".$this->sid);
     }
 
     // 関連セッションのみ破棄する。
@@ -138,6 +138,6 @@ class SC_Session {
         // トランザクショントークンを破棄
         SC_Helper_Session_Ex::destroyToken();
         // ログに記録する
-        GC_Utils_Ex::gfPrintLog("logout : user=".$this->login_id." auth=".$this->authority." sid=".$this->sid);
+        GC_Utils_Ex::gfPrintLog('logout : user='.$this->login_id.' auth='.$this->authority." sid=".$this->sid);
     }
 }

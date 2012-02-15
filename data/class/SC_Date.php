@@ -114,7 +114,7 @@ class SC_Date {
 
         $month_array = array();
         for ($i=1; $i <= 12; $i++) {
-            $val = sprintf("%02d", $i);
+            $val = sprintf('%02d', $i);
             $month_array[$val] = $val;
         }
         return $month_array;
