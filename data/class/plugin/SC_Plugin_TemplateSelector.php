@@ -48,7 +48,6 @@ class SC_Plugin_TemplateSelector {
         $this->arrElements = array();
     }
 
-
     /**
      * 見つかった要素をプロパティに登録
      *
@@ -90,7 +89,6 @@ class SC_Plugin_TemplateSelector {
         return $objSelectorChild;
     }
 
-
     /**
      * 要素の前にHTMLを挿入
      *
@@ -103,7 +101,6 @@ class SC_Plugin_TemplateSelector {
         }
         return $this;
     }
-    
 
     /**
      * 要素の後にHTMLを挿入
@@ -130,8 +127,7 @@ class SC_Plugin_TemplateSelector {
         }
         return $this;
     }
-    
-    
+
     /**
      * 要素を指定したHTMLに置換
      *
@@ -144,8 +140,7 @@ class SC_Plugin_TemplateSelector {
         }
         return $this;
     }
-    
-    
+
     /**
      * findで見つかったエレメントの数を返す
      *
@@ -154,9 +149,4 @@ class SC_Plugin_TemplateSelector {
     function getFoundCount() {
         return count($this->arrElements);
     }
-    
-
-
 }
-
-?>
