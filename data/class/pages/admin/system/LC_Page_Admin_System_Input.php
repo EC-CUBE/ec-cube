@@ -101,6 +101,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
 
                 // パスワードは保持しない
                 $this->arrForm['password'] = '';
+                $this->arrForm['password02'] = '';
                 // エラー情報をセットする
                 $this->arrErr = $arrErr;
             }
@@ -129,6 +130,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
 
                 // パスワードは保持しない
                 $this->arrForm['password'] = '';
+                $this->arrForm['password02'] = '';
                 // エラー情報をセットする
                 $this->arrErr = $arrErr;
             }
@@ -196,8 +198,10 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         $objFormParam->addParam('変更前ログインID', 'old_login_id', '' , '', array('ALNUM_CHECK'));
         if ($mode == 'edit' && $arrParams['password'] == DEFAULT_PASSWORD) {
             $objFormParam->addParam('パスワード', 'password', '' , '', array('EXIST_CHECK'));
+            $objFormParam->addParam('パスワード(確認)', 'password02', '' , '', array('EXIST_CHECK'));
         } else {
             $objFormParam->addParam('パスワード', 'password', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
+            $objFormParam->addParam('パスワード(確認)', 'password02', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
         }
         $objFormParam->addParam('権限', 'authority', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('稼働/非稼働', 'work', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -227,6 +231,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
             $objErr->doFunc(array("パスワード", 'password', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK' ,'NUM_RANGE_CHECK'));
             $objErr->doFunc(array("ログインID", 'login_id', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK' ,'NUM_RANGE_CHECK'));
         }
+	$objErr->doFunc(array('パスワード', 'パスワード(確認)', 'password', 'password02') ,array('EQUAL_CHECK'));
 
         $arrErr = $objErr->arrErr;
 

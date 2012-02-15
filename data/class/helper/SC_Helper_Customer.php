@@ -405,8 +405,8 @@ class SC_Helper_Customer {
             $objFormParam->addParam("FAX番号2", 'fax02', TEL_ITEM_LEN, 'n', array('SPTAB_CHECK'));
             $objFormParam->addParam("FAX番号3", 'fax03', TEL_ITEM_LEN, 'n', array('SPTAB_CHECK'));
             $objFormParam->addParam('メールアドレス', 'email', null, 'a', array('NO_SPTAB', 'EXIST_CHECK', 'EMAIL_CHECK', 'SPTAB_CHECK' ,'EMAIL_CHAR_CHECK'));
+	    $objFormParam->addParam("パスワード(確認)", 'password02', STEXT_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK' ,'ALNUM_CHECK'), "", false);
             if (!$isAdmin) {
-                $objFormParam->addParam("パスワード(確認)", 'password02', STEXT_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK' ,'ALNUM_CHECK'), "", false);
                 $objFormParam->addParam('メールアドレス(確認)', 'email02', null, 'a', array('NO_SPTAB', 'EXIST_CHECK', 'EMAIL_CHECK','SPTAB_CHECK' , 'EMAIL_CHAR_CHECK'), "", false);
             }
         } else {
@@ -512,9 +512,9 @@ class SC_Helper_Customer {
         if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE) {
             if (!$isAdmin) {
                 $objErr->doFunc(array('パスワード', 'password', PASSWORD_MIN_LEN, PASSWORD_MAX_LEN) ,array('SPTAB_CHECK', 'NUM_RANGE_CHECK'));
-                $objErr->doFunc(array('パスワード', 'パスワード(確認)', 'password', 'password02') ,array('EQUAL_CHECK'));
                 $objErr->doFunc(array('メールアドレス', 'メールアドレス(確認)', 'email', 'email02') ,array('EQUAL_CHECK'));
             }
+	    $objErr->doFunc(array('パスワード', 'パスワード(確認)', 'password', 'password02') ,array('EQUAL_CHECK'));
             $objErr->doFunc(array("FAX番号", 'fax01', 'fax02', 'fax03') ,array('TEL_CHECK'));
         }
 
