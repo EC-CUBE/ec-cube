@@ -26,32 +26,32 @@
 <link><!--{$smarty.const.HTTP_URL}--></link>
 <description><!--{$arrSiteInfo.message|sfMbConvertEncoding:$encode}--></description>
 <language>ja</language>
-<!--{section name=cnt loop=$arrProduct}-->
+<!--{foreach from=$arrProducts item=arrProduct}-->
     <item>
-        <title><!--{$arrProduct[cnt].name|h|sfMbConvertEncoding:$encode}--></title>
-        <link><!--{$smarty.const.HTTP_URL}-->products/detail.php?product_id=<!--{$arrProduct[cnt].product_id}--></link>
+        <title><!--{$arrProduct.name|h|sfMbConvertEncoding:$encode}--></title>
+        <link><!--{$smarty.const.HTTP_URL}-->products/detail.php?product_id=<!--{$arrProduct.product_id}--></link>
         <description><![CDATA[
             <div class="hproduct">
-                <a href="<!--{$smarty.const.HTTP_URL}-->products/detail.php?product_id=<!--{$arrProduct[cnt].product_id}-->" rel="product">
-                    <img src="<!--{$arrProduct[cnt].main_list_image}-->" alt="<!--{$arrProduct[cnt].product_name|h|sfMbConvertEncoding:$encode}-->" class="product-thumb" />
+                <a href="<!--{$smarty.const.HTTP_URL}-->products/detail.php?product_id=<!--{$arrProduct.product_id}-->" rel="product">
+                    <img src="<!--{$arrProduct.main_list_image}-->" alt="<!--{$arrProduct.product_name|h|sfMbConvertEncoding:$encode}-->" class="product-thumb" />
                 </a>
-                <div class="product-title"><a href="<!--{$smarty.const.HTTP_URL}-->products/detail.php?product_id=<!--{$arrProduct[cnt].product_id}-->" rel="product"><!--{$arrProduct[cnt].product_name|h|sfMbConvertEncoding:$encode}--></a></div>
-                商品コード：<!--{$arrProduct[cnt].product_code_max|h|sfMbConvertEncoding:$encode}-->
+                <div class="product-title"><a href="<!--{$smarty.const.HTTP_URL}-->products/detail.php?product_id=<!--{$arrProduct.product_id}-->" rel="product"><!--{$arrProduct.product_name|h|sfMbConvertEncoding:$encode}--></a></div>
+                商品コード：<!--{$arrProduct.product_code_max|h|sfMbConvertEncoding:$encode}-->
                 <div><!--{$smarty.const.SALE_PRICE_TITLE}-->：
                     <span class="price">
-                        <!--{if $arrProduct[cnt].price02_min == $arrProduct[cnt].price02_max}-->
-                            <!--{$arrProduct[cnt].price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+                        <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
+                            <!--{$arrProduct.price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                         <!--{else}-->
-                            <!--{$arrProduct[cnt].price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->〜<!--{$arrProduct[cnt].price02_max|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+                            <!--{$arrProduct.price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->〜<!--{$arrProduct.price02_max|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                         <!--{/if}-->円</span>
                 </div>
                 <div class="description">
-                    <!--{$arrProduct[cnt].main_list_comment|h|sfMbConvertEncoding:$encode|nl2br}-->
+                    <!--{$arrProduct.main_list_comment|h|sfMbConvertEncoding:$encode|nl2br}-->
                 </div>
             </div>
         ]]></description>
-        <pubDate><!--{$arrProduct[cnt].update_date|date_format:"%Y-%m-%dT%T+09:00"}--></pubDate>
+        <pubDate><!--{$arrProduct.update_date|date_format:"%Y-%m-%dT%T+09:00"}--></pubDate>
     </item>
-<!--{/section}-->
+<!--{/foreach}-->
 </channel>
 </rss >

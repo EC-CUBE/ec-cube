@@ -79,27 +79,28 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
         $mode = $this->getMode();
         switch ($mode) {
         case 'all':
-            $arrProduct = $this->lfGetProductsDetailData($mode, $product_id);
+            $arrProducts = $this->lfGetProductsDetailData($mode, $product_id);
             break;
         case 'list':
             if ($product_id != '' && is_numeric($product_id)) {
-                $arrProduct = $this->lfGetProductsDetailData($mode, $product_id);
+                $arrProducts = $this->lfGetProductsDetailData($mode, $product_id);
             } else {
-                $arrProduct = $this->lfGetProductsListData();
+                $arrProducts = $this->lfGetProductsListData();
             }
             break;
         default:
             if ($product_id != '' && is_numeric($product_id)) {
-                $arrProduct = $this->lfGetProductsDetailData($mode, $product_id);
+                $arrProducts = $this->lfGetProductsDetailData($mode, $product_id);
             } else {
-                $arrProduct = $this->lfGetProductsAllData();
+                $arrProducts = $this->lfGetProductsAllData();
             }
             break;
         }
 
         // 商品情報をセット
-        $this->arrProduct = $arrProduct;
-        $this->arrProductKeys = $this->lfGetProductKeys($arrProduct);
+        $this->arrProducts = $arrProducts;
+        // 従来互換 (for 2.11)
+        $this->arrProduct = &$this->arrProducts;
 
         //セットしたデータをテンプレートファイルに出力
         $objView->assignobj($this);
@@ -250,7 +251,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
             $objQuery->setOrder('product_id');
             $arrProductLsit = $objProduct->lists($objQuery);
         } else {
-            $arrProductLsit = $objProduct->getListByProductIds($objQuery, $product_id);
+            $arrProductLsit = $objProduct->getListByProductIds($objQuery, array($product_id));
         }
 
         // 各商品のカテゴリIDとランクの取得
@@ -285,6 +286,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
      */
     function lfGetProductsAllclass(&$objQuery) {
         // --- 商品一覧の取得
+        $objQuery->setWhere('del_flg = 0 AND status = 1');
         $objQuery->setOrder('product_id');
         $objProduct = new SC_Product_Ex();
         $arrProductLsit = $objProduct->lists($objQuery);
@@ -311,20 +313,4 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
         }
         return $arrProduct;
     }
-
-    /**
-     * lfGetProductKeys.
-     *
-     * @param array $arrProduct 商品データ配列
-     * @return array $arrProductKeys 商品情報のkey配列を返す
-     */
-    function lfGetProductKeys($arrProduct) {
-        $arrProductKeys = array();
-        $arrProduct = SC_Utils_Ex::sfSwapArray($arrProduct);
-        if (is_array($arrProduct)) {
-            $arrProductKeys = array_keys($arrProduct);
-        }
-        return $arrProductKeys;
-    }
-
 }
