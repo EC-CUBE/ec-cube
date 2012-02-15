@@ -29,7 +29,7 @@
  * @author LOCKON CO.,LTD.
  * @version $Id: $
  */
-class SC_Plugin_TemplateTransformList {
+class SC_Plugin_TemplateTransformer {
 
     var $objDOM;
     var $arrDomHash;
@@ -49,7 +49,7 @@ class SC_Plugin_TemplateTransformList {
      * @param string $tmpl 変形前テンプレートファイルのフルパス
      * @return void
      */
-    function SC_Plugin_TemplateTransformList($tmpl) {
+    function SC_Plugin_TemplateTransformer($tmpl) {
         $this->objDOM = new DOMDocument();
         $this->objDOM->strictErrorChecking = false;
         $this->snip_count = 0;
@@ -423,6 +423,7 @@ class SC_Plugin_TemplateTransformList {
     /**
      * 変形済みファイルを書き出す
      *
+     * @param string $filename ファイル名.
      * @param boolean $test_mode 
      * @return mixed  書き出しに成功した場合は,書き出したファイルのパス. 失敗した場合は false.
      */

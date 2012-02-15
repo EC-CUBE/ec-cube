@@ -31,9 +31,11 @@
  */
 class SC_Plugin_TemplateTransformList {
 
-    // トランスフォームするテンプレートの配列
+    // テンプレート毎のSC_Plugin_TemplateTransformerのインスタンス.
     var $arrConfsByTemplates;
+    // プラグインが介入するテンプレートの配列
     var $arrTemplatesByPlugin;
+    // HeadNaviに追加するブロックの配列
     var $arrBlocsByPlugin;
 
     /**
@@ -55,9 +57,7 @@ class SC_Plugin_TemplateTransformList {
      */
     function init() {
         $this->arrConfsByTemplates = array();
-        // プラグインが介入するテンプレートの配列
         $this->arrTemplatesByPlugin = array();
-        // HeadNaviに追加するブロックの配列
         $this->arrHeadNaviBlocsByPlugin = array();
     }
 
@@ -65,16 +65,16 @@ class SC_Plugin_TemplateTransformList {
      * 設定対象のテンプレートをセットする
      *
      * @param streing $tmpl 設定対象のテンプレートパス
-     * @param SC_Plugin_Base $objPlugin プラグインオブジェクト
-     * @return SC_Plugin_TemplateTransformList 指定したテンプレートを transform するための SC_Plugin_TemplateTransformList オブジェクト
+     * @param SC_Plugin_Base $objPlugin プラグインインスタンス
+     * @return SC_Plugin_TemplateTransformer 指定したテンプレートを transform するための SC_Plugin_TemplateTransformer オブジェクト
      */
     function setTemplate($tmpl, SC_Plugin_Base $objPlugin) {
         $this->arrTemplatesByPlugin[$objPlugin->arrSelfInfo['class_name']][$tmpl] = 1;
 
-        if (!is_array($this->arrConfsByTemplates)) $this->arrConfsByTemplates = array();
+        if (!is_array($this->arrConfsByTemplates)) $this->arrConfsByTemplates = array(); // 初期化
         if (!array_key_exists($tmpl, $this->arrConfsByTemplates)) {
             // テンプレートパスをキーにトランスフォーマのインスタンスをセット.
-            $this->arrConfsByTemplates[$tmpl] = new SC_Plugin_TemplateTransformList($tmpl);
+            $this->arrConfsByTemplates[$tmpl] = new SC_Plugin_TemplateTransformer($tmpl);
         }
         // 処理を行うプラグイン名をセットする.
         $this->arrConfsByTemplates[$tmpl]->setCurrentPlugin($objPlugin->arrSelfInfo['class_name']);
@@ -86,7 +86,7 @@ class SC_Plugin_TemplateTransformList {
      *
      * @param streing $tmpl 設定対象のテンプレートのパス（adminディレクトリからの相対パス）
      * @param SC_Plugin_Base $objPlugin プラグインオブジェクト
-     * @return SC_Plugin_TemplateTransformList SC_Plugin_TemplateTransformList オブジェクト
+     * @return SC_Plugin_TemplateTransformer SC_Plugin_TemplateTransformer オブジェクト
      */
     function setTemplateAdmin($tmpl, SC_Plugin_Base $objPlugin) {
         return $this->setTemplate('admin/'.$tmpl, $objPlugin);
@@ -97,7 +97,7 @@ class SC_Plugin_TemplateTransformList {
      *
      * @param streing $tmpl 設定対象のテンプレートのパス（PCディレクトリからの相対パス）
      * @param SC_Plugin_Base $objPlugin プラグインオブジェクト
-     * @return SC_Plugin_TemplateTransformList SC_Plugin_TemplateTransformList オブジェクト
+     * @return SC_Plugin_TemplateTransformer SC_Plugin_TemplateTransformer オブジェクト
      */
     function setTemplatePC($tmpl, SC_Plugin_Base $objPlugin) {
         return $this->setTemplate(TEMPLATE_NAME.'/'.$tmpl, $objPlugin);
@@ -108,7 +108,7 @@ class SC_Plugin_TemplateTransformList {
      *
      * @param streing $tmpl 設定対象のテンプレートのパス（携帯ディレクトリからの相対パス）
      * @param SC_Plugin_Base $objPlugin プラグインオブジェクト
-     * @return SC_Plugin_TemplateTransformList SC_Plugin_TemplateTransformList オブジェクト
+     * @return SC_Plugin_TemplateTransformer SC_Plugin_TemplateTransformer オブジェクト
      */
     function setTemplateMobile($tmpl, SC_Plugin_Base $objPlugin) {
         return $this->setTemplate(MOBILE_TEMPLATE_NAME.'/'.$tmpl, $objPlugin);
@@ -119,7 +119,7 @@ class SC_Plugin_TemplateTransformList {
      *
      * @param streing         $tmpl      設定対象のテンプレートのパス（スマホディレクトリからの相対パス）
      * @param SC_Plugin_Base $objPlugin プラグインオブジェクト
-     * @return SC_Plugin_TemplateTransformList SC_Plugin_TemplateTransformList オブジェクト
+     * @return SC_Plugin_TemplateTransformer SC_Plugin_TemplateTransformer オブジェクト
      */
     function setTemplateSphone($tmpl, SC_Plugin_Base $objPlugin) {
         return $this->setTemplate(SMARTPHONE_TEMPLATE_NAME.'/'.$tmpl, $objPlugin);
@@ -142,6 +142,7 @@ class SC_Plugin_TemplateTransformList {
      * @return void
      */
     function transformAll($test_mode = false) {
+        // SC_Plugin_TemplateTransformerの配列.
         foreach ($this->arrConfsByTemplates as $tmpl => $objTransformaer) {
             $objTransformaer->saveHTMLFile($tmpl, $test_mode);
         }

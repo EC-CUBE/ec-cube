@@ -63,10 +63,10 @@ class SC_Helper_Plugin {
                 $this->arrPluginInstances[$arrPluginData['plugin_id']] = $objPlugin;
                 $this->arrPluginIds[] = $arrPluginData['plugin_id'];
                 // ローカルフックポイントの登録.
-                $this->registLocalHookPoint($objPlugin, $arrPluginData['rank']);
+                $this->registLocalHookPoint($objPlugin, $arrPluginData['priority']);
                 // スーパーフックポイントの登録.
-                $this->registSuperHookPoint($objPlugin, HOOK_POINT_PREPROCESS, 'preProcess', $arrPluginData['rank']);
-                $this->registSuperHookPoint($objPlugin, HOOK_POINT_PROCESS, 'process', $arrPluginData['rank']);
+                $this->registSuperHookPoint($objPlugin, HOOK_POINT_PREPROCESS, 'preProcess', $arrPluginData['priority']);
+                $this->registSuperHookPoint($objPlugin, HOOK_POINT_PROCESS, 'process', $arrPluginData['priority']);
             }
         }
     }
@@ -99,9 +99,9 @@ class SC_Helper_Plugin {
         if (array_key_exists($hook_point, $this->arrRegistedPluginActions)
             && is_array($this->arrRegistedPluginActions[$hook_point])) {
 
-            ksort($this->arrRegistedPluginActions[$hook_point]);
+            krsort($this->arrRegistedPluginActions[$hook_point]);
             foreach ($this->arrRegistedPluginActions[$hook_point] as $priority => $arrFuncs) {
-
+                
                 foreach ($arrFuncs as $func) {
                     if (!is_null($func['function'])) {
                         call_user_func_array($func['function'], $arrArgs);
@@ -121,8 +121,8 @@ class SC_Helper_Plugin {
         $where = 'enable = 1';
         // XXX 2.11.0 互換のため
         $arrCols = $objQuery->listTableFields($table);
-        if (in_array('rank', $arrCols)) {
-            $objQuery->setOrder('rank DESC');
+        if (in_array('priority', $arrCols)) {
+            $objQuery->setOrder('priority DESC, plugin_id ASC');
         }
         $arrRet = $objQuery->select($col,$table,$where);
         return $arrRet;
@@ -139,7 +139,7 @@ class SC_Helper_Plugin {
         $table = 'dtb_plugin';
         // XXX 2.11.0 互換のため
         $arrCols = $objQuery->listTableFields($table);
-        if (in_array('rank', $arrCols)) {
+        if (in_array('priority', $arrCols)) {
             $objQuery->setOrder('plugin_id ASC');
         }
         $arrRet = $objQuery->select($col,$table);
@@ -157,11 +157,6 @@ class SC_Helper_Plugin {
         $col = '*';
         $table = 'dtb_plugin';
         $where = 'plugin_id = ?';
-        // XXX 2.11.0 互換のため
-        $arrCols = $objQuery->listTableFields($table);
-        if (in_array('rank', $arrCols)) {
-            $objQuery->setOrder('rank ASC');
-        }
         $plugin = $objQuery->getRow($col, $table, $where, array($plugin_id));
         return $plugin;
     }
@@ -177,11 +172,6 @@ class SC_Helper_Plugin {
         $col = '*';
         $table = 'dtb_plugin';
         $where = 'plugin_code = ?';
-        // XXX 2.11.0 互換のため
-        $arrCols = $objQuery->listTableFields($table);
-        if (in_array('rank', $arrCols)) {
-            $objQuery->setOrder('rank ASC');
-        }
         $plugin = $objQuery->getRow($col, $table, $where, array($plugin_code));
         return $plugin;
     }
@@ -309,13 +299,16 @@ class SC_Helper_Plugin {
         if ($test_mode === false) {
             SC_Utils_Ex::deleteFile(PLUGIN_TMPL_CACHE_REALDIR, false);
         }
-        $objTemplateTransformList = SC_Plugin_Template_Transform_List::getSingletonInstance();
+        $objTemplateTransformList = SC_Plugin_TemplateTransformList::getSingletonInstance();
         $objTemplateTransformList->init();
+        // プラグインのsetTemplateTransformerを実行します.
         foreach ($this->arrPluginInstances as $objPlugin) {
-            // TODO 関数チェック;
-            $objPlugin->setTemplateTransformer();
+            if(method_exists($objPlugin, 'setTemplateTransformer') === true) {
+                // SC_Plugin_TemplateTransformList::arrConfsByTemplatesにトランスフォーム情報をセットします
+                $objPlugin->setTemplateTransformer();
+            }
         }
-        // トランスフォーム実行
+        // SC_Plugin_TemplateTransformList::arrConfsByTemplatesにセットされた情報を元にトランスフォームの実行
         $objTemplateTransformList->transformAll($test_mode);
     }
 

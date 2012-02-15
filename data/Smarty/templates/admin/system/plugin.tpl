@@ -24,6 +24,10 @@
 <script type="text/javascript">//<![CDATA[
     $(function() {
 
+       /**
+        * 「有効/有効にする」チェックボタン押下時
+        * ajaxでPOSTする.
+        */
         $('input[id^=plugin_enable]').change(function(event) {
             var data = {};
             // モード(有効 or 無効)
@@ -53,31 +57,43 @@
             }
         });
 
-        /**
-         * 通信エラー表示.
-         */
-        function remoteException(XMLHttpRequest, textStatus, errorThrown) {
-            alert('通信中にエラーが発生しました。');
-        }
+   /**
+    * 通信エラー表示.
+    */
+    function remoteException(XMLHttpRequest, textStatus, errorThrown) {
+        alert('通信中にエラーが発生しました。');
+    }
 
+   /**
+    * アップデートリンク押下時の処理.
+    */
     $('.update_link').click(function(event) {
         var plugin_id = event.target.name;
         $('div[id="plugin_update_' + plugin_id + '"]').toggle("slow");
         });
     });
 
-
+   /**
+    * アプデートボタン押下時の処理.
+    * アップデート対象ファイル以外はPOSTされない様にdisabled属性を付与
+    */
     function removeUpdateFile(select_id) {
         $('input[name="update_plugin_file"]').attr("disabled", "disabled");
         $('input[id="' + select_id + '"]').removeAttr("disabled");
     }
-    
+
+   /**
+    * インストール
+    */
     function install() {
         if (window.confirm('プラグインをインストールしても宜しいでしょうか？')){
-            fnModeSubmit('install', '', '');
+            fnModeSubmit('install');
         }
     }
-    
+
+   /**
+    * アンインストール(削除)
+    */
     function uninstall(plugin_id, plugin_code) {
         if (window.confirm('一度削除したデータは元に戻せません。\nプラグインを削除しても宜しいですか？')){
            fnSetFormValue('plugin_id', plugin_id);
@@ -85,6 +101,9 @@
         }
     }
     
+   /**
+    * アップデート
+    */
     function update(plugin_id, plugin_code) {
         if (window.confirm('プラグインをアップデートしても宜しいですか？')){
            removeUpdateFile('update_file_' + plugin_id);
@@ -93,12 +112,15 @@
         }
     }
     
-    function priority(plugin_id) {
-        if (window.confirm('プラグインをアップデートしても宜しいですか？')){
-           fnModeSubmit('priority','plugin_id',plugin_id);
-        }
+
+   /**
+    * 優先度変更.
+    */
+    function priority(plugin_id, plugin_code) {
+        var priority = $("*[name=priority_" + plugin_code +"]").val();
+        fnSetFormValue('priority', priority);
+        fnModeSubmit('priority','plugin_id',plugin_id);
     }
-    
     
 //]]>
 </script>
@@ -201,11 +223,10 @@
                         </div>
                 </td>
                 <!--優先順位-->
-                <!--{assign var=key value="rank"}-->
                 <td class="center">
                     <span class="attention"><!--{$arrErr.priority[$plugin.plugin_id]}--></span>
-                    <input type="text" class="center" name="priority" value="<!--{$plugin.rank|h}-->" size="1" class="rank" />
-                    <a class="btn-action" href="javascript:;" onclick="priority(<!--{$plugin.plugin_id}-->);return false;"><span class="btn-next">変更</span></a><br/>
+                    <input type="text" class="center" name="priority_<!--{$plugin.plugin_code}-->" value="<!--{$plugin.priority|h}-->" size="1" class="priority" />
+                    <a class="btn-action" href="javascript:;" onclick="priority(<!--{$plugin.plugin_id}-->, '<!--{$plugin.plugin_code}-->');return false;"><span class="btn-next">変更</span></a><br/>
                 </td>
             </tr>
             <!--競合アラート-->

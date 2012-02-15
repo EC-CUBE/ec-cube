@@ -636,7 +636,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
     function updatePriority($plugin_id, $priority) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         // UPDATEする値を作成する。
-        $sqlval['rank'] = $priority;
+        $sqlval['priority'] = $priority;
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $where = "plugin_id = ?";
         // UPDATEの実行
@@ -670,7 +670,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         $arr_sqlval_plugin['plugin_version'] = $objReflection->getConstant('PLUGIN_VERSION');
         $arr_sqlval_plugin['compliant_version'] = $objReflection->getConstant('COMPLIANT_VERSION');
         $arr_sqlval_plugin['plugin_description'] = $objReflection->getConstant('DESCRIPTION');
-        $arr_sqlval_plugin['rank'] = 1 + $objQuery->max('rank', 'dtb_plugin');
+        $arr_sqlval_plugin['priority'] = 0;
         $arr_sqlval_plugin['enable'] = PLUGIN_ENABLE_FALSE;
         $arr_sqlval_plugin['update_date'] = 'CURRENT_TIMESTAMP';
         $objQuery->insert('dtb_plugin', $arr_sqlval_plugin);

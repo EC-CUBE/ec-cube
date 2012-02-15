@@ -1125,7 +1125,7 @@ CREATE TABLE dtb_plugin (
     plugin_version varchar(255),
     compliant_version varchar(255),
     plugin_description varchar(255),
-    rank int NOT NULL DEFAULT 0,
+    priority int NOT NULL DEFAULT 0,
     enable smallint NOT NULL DEFAULT 0,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
