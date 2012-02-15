@@ -230,7 +230,8 @@ class GC_Utils {
 
         $fp = fopen($path, 'a+');
         if ($fp) {
-            fwrite($fp, $today.' ['.$_SERVER['PHP_SELF'].'] '.$mess.' from '. $_SERVER['REMOTE_ADDR']. "\n");
+            $string = "$today [{$_SERVER['PHP_SELF']}] $mess from {$_SERVER['REMOTE_ADDR']}\n";
+            fwrite($fp, $string);
             fclose($fp);
         }
 

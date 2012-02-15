@@ -122,7 +122,17 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
         //downloadable_daysにNULLが入っている場合(無期限ダウンロード可能時)もあるので、NULLの場合は0日に補正
         $downloadable_days = $baseinfo['downloadable_days'];
         if($downloadable_days ==null || $downloadable_days == '')$downloadable_days=0;
-        return '(SELECT CASE WHEN (SELECT d1.downloadable_days_unlimited FROM dtb_baseinfo d1) = 1 AND ' . $dtb_order_alias . '.payment_date IS NOT NULL THEN 1 WHEN DATE(CURRENT_TIMESTAMP) <= DATE(' . $dtb_order_alias . ".payment_date + '". $downloadable_days ." days') THEN 1 ELSE 0 END)";
+        $sql = <<< __EOS__
+            (
+                SELECT
+                    CASE
+                        WHEN (SELECT d1.downloadable_days_unlimited FROM dtb_baseinfo d1) = 1 AND $dtb_order_alias.payment_date IS NOT NULL THEN 1
+                        WHEN DATE(CURRENT_TIMESTAMP) <= DATE($dtb_order_alias.payment_date + '$downloadable_days days') THEN 1
+                        ELSE 0
+                    END
+            )
+__EOS__;
+        return $sql;
     }
 
     /**
