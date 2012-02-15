@@ -165,7 +165,7 @@ __EOS__;
      * FIXME: 呼び出し元で設定した、SC_Query::setWhere() も有効に扱いたい。
      *
      * @param SC_Query $objQuery SC_Query インスタンス
-     * @param array|int $arrProductId 商品ID
+     * @param array $arrProductId 商品ID
      * @return array 商品一覧の配列 (キー: 商品ID)
      */
     function getListByProductIds(&$objQuery, $arrProductId = array()) {
