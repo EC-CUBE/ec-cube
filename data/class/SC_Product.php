@@ -238,91 +238,90 @@ __EOS__;
      */
     function setProductsClassByProductIds($arrProductId, $has_deleted = false) {
 
-        $arrProductsClass = array();
         foreach ($arrProductId as $productId) {
-            $arrProductClass = $this->getProductsClassFullByProductId($productId, $has_deleted);
+            $arrProductClasses = $this->getProductsClassFullByProductId($productId, $has_deleted);
 
             $classCats1 = array();
             $classCats1['__unselected'] = '選択してください';
 
             // 規格1クラス名
             $this->className1[$productId] =
-                isset($arrProductClass[0]['class_name1'])
-                ? $arrProductClass[0]['class_name1']
+                isset($arrProductClasses[0]['class_name1'])
+                ? $arrProductClasses[0]['class_name1']
                 : '';
 
             // 規格2クラス名
             $this->className2[$productId] =
-                isset($arrProductClass[0]['class_name2'])
-                ? $arrProductClass[0]['class_name2']
+                isset($arrProductClasses[0]['class_name2'])
+                ? $arrProductClasses[0]['class_name2']
                 : '';
 
             // 規格1が設定されている
-            $this->classCat1_find[$productId] = $arrProductClass[0]['classcategory_id1'] > 0; // 要変更ただし、他にも改修が必要となる
+            $this->classCat1_find[$productId] = $arrProductClasses[0]['classcategory_id1'] > 0; // 要変更ただし、他にも改修が必要となる
             // 規格2が設定されている
-            $this->classCat2_find[$productId] = $arrProductClass[0]['classcategory_id2'] > 0; // 要変更ただし、他にも改修が必要となる
+            $this->classCat2_find[$productId] = $arrProductClasses[0]['classcategory_id2'] > 0; // 要変更ただし、他にも改修が必要となる
 
             $this->stock_find[$productId] = false;
             $classCategories = array();
             $classCategories['__unselected']['__unselected']['name'] = '選択してください';
-            $classCategories['__unselected']['__unselected']['product_class_id'] = $arrProductClass[0]['product_class_id'];
+            $classCategories['__unselected']['__unselected']['product_class_id'] = $arrProductClasses[0]['product_class_id'];
             // 商品種別
-            $classCategories['__unselected']['__unselected']['product_type'] = $arrProductClass[0]['product_type_id'];
-            $this->product_class_id[$productId] = $arrProductClass[0]['product_class_id'];
+            $classCategories['__unselected']['__unselected']['product_type'] = $arrProductClasses[0]['product_type_id'];
+            $this->product_class_id[$productId] = $arrProductClasses[0]['product_class_id'];
             // 商品種別
-            $this->product_type[$productId] = $arrProductClass[0]['product_type_id'];
-            foreach ($arrProductClass as $productsClass) {
-                $classCats2 = array();
-                $productsClass1 = $productsClass['classcategory_id1'];
-                $productsClass2 = $productsClass['classcategory_id2'];
+            $this->product_type[$productId] = $arrProductClasses[0]['product_type_id'];
+            foreach ($arrProductClasses as $arrProductsClass) {
+                $arrClassCats2 = array();
+                $classcategory_id1 = $arrProductsClass['classcategory_id1'];
+                $classcategory_id2 = $arrProductsClass['classcategory_id2'];
                 // 在庫
-                $stock_find_class = ($productsClass['stock_unlimited'] || $productsClass['stock'] > 0);
+                $stock_find_class = ($arrProductsClass['stock_unlimited'] || $arrProductsClass['stock'] > 0);
 
-                $classCats2['classcategory_id2'] = $productsClass2;
-                $classCats2['name'] = $productsClass['classcategory_name2'] . ($stock_find_class ? '' : ' (品切れ中)');
+                $arrClassCats2['classcategory_id2'] = $classcategory_id2;
+                $arrClassCats2['name'] = $arrProductsClass['classcategory_name2'] . ($stock_find_class ? '' : ' (品切れ中)');
 
-                $classCats2['stock_find'] = $stock_find_class;
+                $arrClassCats2['stock_find'] = $stock_find_class;
 
                 if ($stock_find_class) {
                     $this->stock_find[$productId] = true;
                 }
 
                 if (!in_array($classcat_id1, $classCats1)) {
-                    $classCats1[$productsClass1] = $productsClass['classcategory_name1']
-                        . ($productsClass2 == 0 && !$stock_find_class ? ' (品切れ中)' : '');
+                    $classCats1[$classcategory_id1] = $arrProductsClass['classcategory_name1']
+                        . ($classcategory_id2 == 0 && !$stock_find_class ? ' (品切れ中)' : '');
                 }
 
                 // 価格
-                $classCats2['price01']
-                    = strlen($productsClass['price01'])
-                    ? number_format(SC_Helper_DB_Ex::sfCalcIncTax($productsClass['price01']))
+                $arrClassCats2['price01']
+                    = strlen($arrProductsClass['price01'])
+                    ? number_format(SC_Helper_DB_Ex::sfCalcIncTax($arrProductsClass['price01']))
                     : '';
 
-                $classCats2['price02']
-                    = strlen($productsClass['price02'])
-                    ? number_format(SC_Helper_DB_Ex::sfCalcIncTax($productsClass['price02']))
+                $arrClassCats2['price02']
+                    = strlen($arrProductsClass['price02'])
+                    ? number_format(SC_Helper_DB_Ex::sfCalcIncTax($arrProductsClass['price02']))
                     : '';
 
                 // ポイント
-                $classCats2['point']
-                    = number_format(SC_Utils_Ex::sfPrePoint($productsClass['price02'], $productsClass['point_rate']));
+                $arrClassCats2['point']
+                    = number_format(SC_Utils_Ex::sfPrePoint($arrProductsClass['price02'], $arrProductsClass['point_rate']));
 
                 // 商品コード
-                $classCats2['product_code'] = $productsClass['product_code'];
+                $arrClassCats2['product_code'] = $arrProductsClass['product_code'];
                 // 商品規格ID
-                $classCats2['product_class_id'] = $productsClass['product_class_id'];
+                $arrClassCats2['product_class_id'] = $arrProductsClass['product_class_id'];
                 // 商品種別
-                $classCats2['product_type'] = $productsClass['product_type_id'];
+                $arrClassCats2['product_type'] = $arrProductsClass['product_type_id'];
 
                 // #929(GC8 規格のプルダウン順序表示不具合)対応のため、2次キーは「#」を前置
                 if (!$this->classCat1_find[$productId]) {
-                    $productsClass1 = '__unselected2';
+                    $classcategory_id1 = '__unselected2';
                 }
-                $classCategories[$productsClass1]['#'] = array(
+                $classCategories[$classcategory_id1]['#'] = array(
                     'classcategory_id2' => '',
                     'name' => '選択してください',
                 );
-                $classCategories[$productsClass1]['#' . $productsClass2] = $classCats2;
+                $classCategories[$classcategory_id1]['#' . $classcategory_id2] = $arrClassCats2;
             }
 
             $this->classCategories[$productId] = $classCategories;
