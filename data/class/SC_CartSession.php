@@ -527,7 +527,7 @@ class SC_CartSession {
             /*
              * 表示/非表示商品のチェック
              */
-            if (SC_Utils_Ex::isBlank($product)) {
+            if (SC_Utils_Ex::isBlank($product) || $product['status'] != 1) {
                 $this->delProduct($item['cart_no'], $productTypeId);
                 $tpl_message .= "※ 現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。\n";
             } else {
