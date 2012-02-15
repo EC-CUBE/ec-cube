@@ -87,7 +87,7 @@
     */
     function install() {
         if (window.confirm('プラグインをインストールしても宜しいでしょうか？')){
-            fnModeSubmit('install');
+            fnModeSubmit('install','','');
         }
     }
 
