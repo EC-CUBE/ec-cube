@@ -23,9 +23,9 @@ $(function() {
  * 規格2のプルダウンを設定する.
  */
 function setClassCategories($form, product_id, $sele1, $sele2, selected_id2) {
-    if ($sele1) {
+    if ($sele1 && $sele1.length) {
         var classcat_id1 = $sele1.val() ? $sele1.val() : '';
-        if ($sele2) {
+        if ($sele2 && $sele1.length) {
             // 規格2の選択肢をクリア
             $sele2.children().remove();
 
