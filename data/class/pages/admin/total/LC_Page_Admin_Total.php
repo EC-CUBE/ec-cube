@@ -99,7 +99,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        if (isset($_GET['draw_image']) && $_GET['draw_image'] != "") {
+        if (isset($_GET['draw_image']) && $_GET['draw_image'] != '') {
             define('DRAW_IMAGE' , true);
         } else {
             define('DRAW_IMAGE' , false);
@@ -173,7 +173,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $month = date('m');
         $day = date('d');
 
-        $list = isset($_SESSION['total']) ? $_SESSION['total'] : "";
+        $list = isset($_SESSION['total']) ? $_SESSION['total'] : '';
 
         // セッション情報に開始月度が保存されていない。
         if (empty($_SESSION['total']['startyear_m'])) {
@@ -274,10 +274,10 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             }
             switch ($key) {
             case 'search_startyear':
-                $sdate = $objFormParam->getValue('search_startyear') . '/' . $objFormParam->getValue('search_startmonth') . "/" . $objFormParam->getValue('search_startday');
+                $sdate = $objFormParam->getValue('search_startyear') . '/' . $objFormParam->getValue('search_startmonth') . '/' . $objFormParam->getValue('search_startday');
                 break;
             case 'search_endyear':
-                $edate = $objFormParam->getValue('search_endyear') . '/' . $objFormParam->getValue('search_endmonth') . "/" . $objFormParam->getValue('search_endday');
+                $edate = $objFormParam->getValue('search_endyear') . '/' . $objFormParam->getValue('search_endmonth') . '/' . $objFormParam->getValue('search_endday');
                 break;
             case 'search_startyear_m':
                 list($sdate, $edate) = SC_Utils_Ex::sfTermMonth($objFormParam->getValue('search_startyear_m'),
@@ -331,8 +331,8 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             // メインタイトル作成
             list($sy, $sm, $sd) = preg_split('|[/ ]|' , $sdate);
             list($ey, $em, $ed) = preg_split('|[/ ]|' , $edate);
-            $start_date = $sy . '年' . $sm . '月' . $sd . "日";
-            $end_date = $ey . '年' . $em . '月' . $ed . "日";
+            $start_date = $sy . '年' . $sm . '月' . $sd . '日';
+            $end_date = $ey . '年' . $em . '月' . $ed . '日';
             $objGraphLine->drawTitle('集計期間：' . $start_date . ' - ' . $end_date);
 
             // グラフ描画
@@ -351,7 +351,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
     }
 
     // 円グラフの作成
-    function lfGetGraphPie($arrResults, $keyname, $type, $title = '', $sdate = '', $edate = "") {
+    function lfGetGraphPie($arrResults, $keyname, $type, $title = '', $sdate = '', $edate = '') {
 
         $ret_path = '';
         // 結果が0行以上ある場合のみグラフを生成する。
@@ -375,8 +375,8 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             // メインタイトル作成
             list($sy, $sm, $sd) = preg_split('|[/ ]|' , $sdate);
             list($ey, $em, $ed) = preg_split('|[/ ]|' , $edate);
-            $start_date = $sy . '年' . $sm . '月' . $sd . "日";
-            $end_date = $ey . '年' . $em . '月' . $ed . "日";
+            $start_date = $sy . '年' . $sm . '月' . $sd . '日';
+            $end_date = $ey . '年' . $em . '月' . $ed . '日';
             $objGraphPie->drawTitle('集計期間：' . $start_date . ' - ' . $end_date);
 
             // 円グラフ描画
@@ -423,8 +423,8 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             $arrKey = array_keys($arrList);
             list($sy, $sm, $sd) = preg_split('|[/ ]|' , $sdate);
             list($ey, $em, $ed) = preg_split('|[/ ]|' , $edate);
-            $start_date = $sy . '年' . $sm . '月' . $sd . "日";
-            $end_date = $ey . '年' . $em . '月' . $ed . "日";
+            $start_date = $sy . '年' . $sm . '月' . $sd . '日';
+            $end_date = $ey . '年' . $em . '月' . $ed . '日';
             $objGraphBar->drawTitle('集計期間：' . $start_date . ' - ' . $end_date);
 
             $objGraphBar->drawGraph();
@@ -528,7 +528,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             }
         }
 
-        $tpl_image = $this->lfGetGraphPie($arrTotalResults, 'member_name', 'member', "(売上比率)", $sdate, $edate);
+        $tpl_image = $this->lfGetGraphPie($arrTotalResults, 'member_name', 'member', '(売上比率)', $sdate, $edate);
 
         return array($arrTotalResults, $tpl_image);
     }
@@ -563,7 +563,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $objQuery->setOrder('total DESC');
         $arrTotalResults = $objQuery->select($col, $from, $where, $arrval);
 
-        $tpl_image  = $this->lfGetGraphPie($arrTotalResults, 'product_name', 'products_' . $type, "(売上比率)", $sdate, $edate);
+        $tpl_image  = $this->lfGetGraphPie($arrTotalResults, 'product_name', 'products_' . $type, '(売上比率)', $sdate, $edate);
 
         return array($arrTotalResults, $tpl_image);
     }
@@ -598,7 +598,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             }
 
         }
-        $tpl_image     = $this->lfGetGraphPie($arrTotalResults, 'job_name', 'job_' . $type, "(売上比率)", $sdate, $edate);
+        $tpl_image     = $this->lfGetGraphPie($arrTotalResults, 'job_name', 'job_' . $type, '(売上比率)', $sdate, $edate);
 
         return array($arrTotalResults, $tpl_image);
     }
@@ -635,7 +635,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             }
 
         }
-        $tpl_image = $this->lfGetGraphBar($arrTotalResults, 'age_name', 'age_' . $type, "(年齢)", "(売上合計)", $sdate, $edate);
+        $tpl_image = $this->lfGetGraphBar($arrTotalResults, 'age_name', 'age_' . $type, '(年齢)', '(売上合計)', $sdate, $edate);
 
         return array($arrTotalResults, $tpl_image);
     }

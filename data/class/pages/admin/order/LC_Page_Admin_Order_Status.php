@@ -102,12 +102,12 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
                 }
 
                 // 対応状況
-                $status = !is_null($objFormParam->getValue('status')) ? $objFormParam->getValue('status') : "";
+                $status = !is_null($objFormParam->getValue('status')) ? $objFormParam->getValue('status') : '';
                 break;
 
             case 'search':
                 // 対応状況
-                $status = !is_null($_POST['status']) ? $objFormParam->getValue('status') : "";
+                $status = !is_null($_POST['status']) ? $objFormParam->getValue('status') : '';
                 break;
 
             default:

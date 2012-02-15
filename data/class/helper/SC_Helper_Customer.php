@@ -47,7 +47,7 @@ class SC_Helper_Customer {
 
         // salt値の生成(insert時)または取得(update時)。
         if (is_numeric($customer_id)) {
-            $salt = $objQuery->get('salt', 'dtb_customer', "customer_id = ? ", array($customer_id));
+            $salt = $objQuery->get('salt', 'dtb_customer', 'customer_id = ? ', array($customer_id));
 
             // 旧バージョン(2.11未満)からの移行を考慮
             if (empty($salt)) $old_version_flag = true;
@@ -56,7 +56,7 @@ class SC_Helper_Customer {
             $array['salt'] = $salt;
         }
         //-- パスワードの更新がある場合は暗号化
-        if ($array['password'] == DEFAULT_PASSWORD or $array['password'] == "") {
+        if ($array['password'] == DEFAULT_PASSWORD or $array['password'] == '') {
             //更新しない
             unset($array['password']);
         } else {
@@ -70,14 +70,14 @@ class SC_Helper_Customer {
             $array['password'] = SC_Utils_Ex::sfGetHashString($array['password'], $salt);
         }
         //-- 秘密の質問の更新がある場合は暗号化
-        if ($array['reminder_answer'] == DEFAULT_PASSWORD or $array['reminder_answer'] == "") {
+        if ($array['reminder_answer'] == DEFAULT_PASSWORD or $array['reminder_answer'] == '') {
             //更新しない
             unset($array['reminder_answer']);
 
             // 旧バージョン(2.11未満)からの移行を考慮
             if ($old_version_flag && $is_password_updated) {
                 // パスワードが更新される場合は、平文になっている秘密の質問を暗号化する
-                $reminder_answer = $objQuery->get('reminder_answer', 'dtb_customer', "customer_id = ? ", array($customer_id));
+                $reminder_answer = $objQuery->get('reminder_answer', 'dtb_customer', 'customer_id = ? ', array($customer_id));
                 $array['reminder_answer'] = SC_Utils_Ex::sfGetHashString($reminder_answer, $salt);
             }
         } else {
@@ -121,11 +121,11 @@ class SC_Helper_Customer {
      */
     function sfGetCustomerPoint($order_id, $use_point, $add_point) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $arrRet = $objQuery->select('customer_id', 'dtb_order', "order_id = ?", array($order_id));
+        $arrRet = $objQuery->select('customer_id', 'dtb_order', 'order_id = ?', array($order_id));
         $customer_id = $arrRet[0]['customer_id'];
         if ($customer_id != '' && $customer_id >= 1) {
             if (USE_POINT !== false) {
-                $arrRet = $objQuery->select('point', 'dtb_customer', "customer_id = ?", array($customer_id));
+                $arrRet = $objQuery->select('point', 'dtb_customer', 'customer_id = ?', array($customer_id));
                 $point = $arrRet[0]['point'];
                 $total_point = $arrRet[0]['point'] - $use_point + $add_point;
             } else {
@@ -220,7 +220,7 @@ class SC_Helper_Customer {
         $objQuery       =& SC_Query_Ex::getSingletonInstance();
 
         // 会員情報DB取得
-        $ret        = $objQuery->select('*','dtb_customer',"customer_id=?", array($customer_id));
+        $ret        = $objQuery->select('*','dtb_customer','customer_id=?', array($customer_id));
         $arrForm    = $ret[0];
 
         // 確認項目に複製
@@ -230,7 +230,7 @@ class SC_Helper_Customer {
         // 誕生日を年月日に分ける
         if (isset($arrForm['birth'])) {
             $birth = explode(' ', $arrForm['birth']);
-            list($arrForm['year'], $arrForm['month'], $arrForm['day']) = explode("-",$birth[0]);
+            list($arrForm['year'], $arrForm['month'], $arrForm['day']) = explode('-',$birth[0]);
         }
 
         if ($mask_flg) {
@@ -340,7 +340,7 @@ class SC_Helper_Customer {
         SC_Helper_Customer_Ex::sfCustomerRegisterParam($objFormParam, false, true);
         if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE) {
             $objFormParam->addParam('携帯メールアドレス', 'email_mobile', null, 'a', array('NO_SPTAB', 'EMAIL_CHECK', 'SPTAB_CHECK' ,'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'));
-            $objFormParam->addParam('携帯メールアドレス(確認)', 'email_mobile02', null, 'a', array('NO_SPTAB', 'EMAIL_CHECK','SPTAB_CHECK' , 'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'), "", false);
+            $objFormParam->addParam('携帯メールアドレス(確認)', 'email_mobile02', null, 'a', array('NO_SPTAB', 'EMAIL_CHECK','SPTAB_CHECK' , 'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'), '', false);
         } else {
             $objFormParam->addParam('携帯メールアドレス', 'email_mobile', null, 'a', array('EXIST_CHECK', 'NO_SPTAB', 'EMAIL_CHECK', 'SPTAB_CHECK' ,'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'));
             $objFormParam->addParam('メールアドレス', 'email', null, 'a', array('NO_SPTAB', 'EMAIL_CHECK', 'SPTAB_CHECK' ,'EMAIL_CHAR_CHECK'));
@@ -395,9 +395,9 @@ class SC_Helper_Customer {
         $objFormParam->addParam('パスワード確認用の質問', 'reminder', STEXT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('性別', 'sex', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('職業', 'job', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('年', 'year', 4, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
-        $objFormParam->addParam('月', 'month', 2, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
-        $objFormParam->addParam('日', 'day', 2, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
+        $objFormParam->addParam('年', 'year', 4, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), '', false);
+        $objFormParam->addParam('月', 'month', 2, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), '', false);
+        $objFormParam->addParam('日', 'day', 2, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), '', false);
         $objFormParam->addParam('メールマガジン', 'mailmaga_flg', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
         if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE) {
@@ -405,9 +405,9 @@ class SC_Helper_Customer {
             $objFormParam->addParam('FAX番号2', 'fax02', TEL_ITEM_LEN, 'n', array('SPTAB_CHECK'));
             $objFormParam->addParam('FAX番号3', 'fax03', TEL_ITEM_LEN, 'n', array('SPTAB_CHECK'));
             $objFormParam->addParam('メールアドレス', 'email', null, 'a', array('NO_SPTAB', 'EXIST_CHECK', 'EMAIL_CHECK', 'SPTAB_CHECK' ,'EMAIL_CHAR_CHECK'));
-	    $objFormParam->addParam("パスワード(確認)", 'password02', STEXT_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK' ,'ALNUM_CHECK'), "", false);
+        $objFormParam->addParam('パスワード(確認)', 'password02', STEXT_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK' ,'ALNUM_CHECK'), '', false);
             if (!$isAdmin) {
-                $objFormParam->addParam('メールアドレス(確認)', 'email02', null, 'a', array('NO_SPTAB', 'EXIST_CHECK', 'EMAIL_CHECK','SPTAB_CHECK' , 'EMAIL_CHAR_CHECK'), "", false);
+                $objFormParam->addParam('メールアドレス(確認)', 'email02', null, 'a', array('NO_SPTAB', 'EXIST_CHECK', 'EMAIL_CHECK','SPTAB_CHECK' , 'EMAIL_CHAR_CHECK'), '', false);
             }
         } else {
             if (!$is_mypage) {
@@ -515,7 +515,7 @@ class SC_Helper_Customer {
                 $objErr->doFunc(array('メールアドレス', 'メールアドレス(確認)', 'email', 'email02') ,array('EQUAL_CHECK'));
             }
             $objErr->doFunc(array('FAX番号', 'fax01', 'fax02', 'fax03') ,array('TEL_CHECK'));
-	    $objErr->doFunc(array('パスワード', 'パスワード(確認)', 'password', 'password02') ,array('EQUAL_CHECK'));
+        $objErr->doFunc(array('パスワード', 'パスワード(確認)', 'password', 'password02') ,array('EQUAL_CHECK'));
         }
 
         if (!$isAdmin) {

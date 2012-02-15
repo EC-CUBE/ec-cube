@@ -107,7 +107,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
             break;
         // 削除
         case 'delete':
-            $objDb->sfDeleteRankRecord('dtb_kiyaku', 'kiyaku_id', $post['kiyaku_id'], "", true);
+            $objDb->sfDeleteRankRecord('dtb_kiyaku', 'kiyaku_id', $post['kiyaku_id'], '', true);
             // 再表示
             $this->objDisplay->reload();
             break;
@@ -221,7 +221,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
         if (!isset($arrErr['name']) && $mode == 'edit') {
             $post = $objFormParam->getHashArray();
             $objQuery =& SC_Query_Ex::getSingletonInstance();
-            $arrRet = $objQuery->select('kiyaku_id, kiyaku_title', 'dtb_kiyaku', "del_flg = 0 AND kiyaku_title = ?", array($post['kiyaku_title']));
+            $arrRet = $objQuery->select('kiyaku_id, kiyaku_title', 'dtb_kiyaku', 'del_flg = 0 AND kiyaku_title = ?', array($post['kiyaku_title']));
             // 編集中のレコード以外に同じ名称が存在する場合
             if ($arrRet[0]['kiyaku_id'] != $post['kiyaku_id'] && $arrRet[0]['kiyaku_title'] == $post['kiyaku_title']) {
                 $arrErr['name'] = '※ 既に同じ内容の登録が存在します。<br>';

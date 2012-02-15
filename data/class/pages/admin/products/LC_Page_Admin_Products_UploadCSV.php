@@ -222,7 +222,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
             // 列数が異なる場合はエラー
             $col_count = count($arrCSV);
             if ($col_max_count != $col_count) {
-                $this->addRowErr($line_count, '※ 項目数が' . $col_count . '個検出されました。項目数は' . $col_max_count . "個になります。");
+                $this->addRowErr($line_count, '※ 項目数が' . $col_count . '個検出されました。項目数は' . $col_max_count . '個になります。');
                 $errFlag = true;
                 break;
             }
@@ -248,7 +248,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
                 $this->lfRegistProduct($objQuery, $line_count, $objFormParam);
                 $arrParam = $objFormParam->getHashArray();
 
-                $this->addRowResult($line_count, '商品ID：'.$arrParam['product_id'] . " / 商品名：" . $arrParam['name']);
+                $this->addRowResult($line_count, '商品ID：'.$arrParam['product_id'] . ' / 商品名：' . $arrParam['name']);
             }
             SC_Utils_Ex::extendTimeOut();
         }
@@ -490,7 +490,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
             $keyname = 'recommend_product_id' . $i;
             $comment_key = 'recommend_comment' . $i;
             if ($arrList[$keyname] != '') {
-                $arrProduct = $objQuery->select('product_id', 'dtb_products', "product_id = ?", array($arrList[$keyname]));
+                $arrProduct = $objQuery->select('product_id', 'dtb_products', 'product_id = ?', array($arrList[$keyname]));
                 if ($arrProduct[0]['product_id'] != '') {
                     $arrval['product_id'] = $product_id;
                     $arrval['recommend_product_id'] = $arrProduct[0]['product_id'];
@@ -777,7 +777,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
             return false;
         }
         $count = count($arrItems);
-        $where = $tblkey .' IN (' . implode(',', array_fill(0, $count, "?")) . ")";
+        $where = $tblkey .' IN (' . implode(',', array_fill(0, $count, '?')) . ')';
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $db_count = $objQuery->count($table, $where, $arrItems);

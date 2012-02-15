@@ -112,7 +112,7 @@ __EOS__;
     function checkMobilePhoneId() {
         //docomo用にデータを取り出す。
         if (SC_MobileUserAgent_Ex::getCarrier() == 'docomo') {
-            if($_SESSION['mobile']['phone_id'] == "" && strlen($_SESSION['mobile']['phone_id']) == 0)
+            if($_SESSION['mobile']['phone_id'] == '' && strlen($_SESSION['mobile']['phone_id']) == 0)
                 $_SESSION['mobile']['phone_id'] = SC_MobileUserAgent_Ex::getId();
         }
         if (!isset($_SESSION['mobile']['phone_id']) || $_SESSION['mobile']['phone_id'] === false) {
@@ -136,7 +136,7 @@ __EOS__;
     function getCustomerDataFromMobilePhoneIdPass($pass) {
         //docomo用にデータを取り出す。
         if (SC_MobileUserAgent_Ex::getCarrier() == 'docomo') {
-            if($_SESSION['mobile']['phone_id'] == "" && strlen($_SESSION['mobile']['phone_id']) == 0)
+            if($_SESSION['mobile']['phone_id'] == '' && strlen($_SESSION['mobile']['phone_id']) == 0)
                 $_SESSION['mobile']['phone_id'] = SC_MobileUserAgent_Ex::getId();
         }
         if (!isset($_SESSION['mobile']['phone_id']) || $_SESSION['mobile']['phone_id'] === false) {
@@ -226,12 +226,12 @@ __EOS__;
             && SC_Utils_Ex::sfIsInt($_SESSION['customer']['customer_id'])) {
 
             $objQuery = new SC_Query_Ex();
-            $email = $objQuery->get('email', 'dtb_customer', "customer_id = ?", array($_SESSION['customer']['customer_id']));
+            $email = $objQuery->get('email', 'dtb_customer', 'customer_id = ?', array($_SESSION['customer']['customer_id']));
             if ($email == $_SESSION['customer']['email']) {
                 // モバイルサイトの場合は携帯のメールアドレスが登録されていることもチェックする。
                 // ただし $dont_check_email_mobile が true の場合はチェックしない。
                 if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE && !$dont_check_email_mobile) {
-                    $email_mobile = $objQuery->get('email_mobile', 'dtb_customer', "customer_id = ?", array($_SESSION['customer']['customer_id']));
+                    $email_mobile = $objQuery->get('email_mobile', 'dtb_customer', 'customer_id = ?', array($_SESSION['customer']['customer_id']));
                     return isset($email_mobile);
                 }
                 return true;
@@ -249,7 +249,7 @@ __EOS__;
             $_SESSION['customer']['point'] = $point;
             return $point;
         } else {
-            return isset($_SESSION['customer'][$keyname]) ? $_SESSION['customer'][$keyname] : "";
+            return isset($_SESSION['customer'][$keyname]) ? $_SESSION['customer'][$keyname] : '';
         }
     }
 
@@ -302,7 +302,7 @@ __EOS__;
     //受注関連の会員情報を更新
     function updateOrderSummary($customer_id) {
         $objQuery = new SC_Query_Ex();
-        $arrOrderSummary =  $objQuery->getRow('SUM( payment_total) as buy_total, COUNT(order_id) as buy_times,MAX( create_date) as last_buy_date, MIN(create_date) as first_buy_date','dtb_order',"customer_id = ? AND del_flg = 0 AND status <> ?",array($customer_id,ORDER_CANCEL));
+        $arrOrderSummary =  $objQuery->getRow('SUM( payment_total) as buy_total, COUNT(order_id) as buy_times,MAX( create_date) as last_buy_date, MIN(create_date) as first_buy_date','dtb_order','customer_id = ? AND del_flg = 0 AND status <> ?',array($customer_id,ORDER_CANCEL));
         $objQuery->update('dtb_customer',$arrOrderSummary,'customer_id = ?',array($customer_id));
     }
 }

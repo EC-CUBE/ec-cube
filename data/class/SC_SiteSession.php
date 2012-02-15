@@ -28,19 +28,19 @@ class SC_SiteSession {
         // 前ページでの登録成功判定を引き継ぐ
         $_SESSION['site']['pre_regist_success'] =
                 isset($_SESSION['site']['regist_success'])
-                    ? $_SESSION['site']['regist_success'] : "";
+                    ? $_SESSION['site']['regist_success'] : '';
 
         $_SESSION['site']['regist_success'] = false;
         $_SESSION['site']['pre_page'] =
                 isset($_SESSION['site']['now_page'])
-                    ? $_SESSION['site']['now_page'] : "";
+                    ? $_SESSION['site']['now_page'] : '';
 
         $_SESSION['site']['now_page'] = $_SERVER['PHP_SELF'];
     }
 
     /* 前ページが正当であるかの判定 */
     function isPrePage() {
-        if ($_SESSION['site']['pre_page'] != "" && $_SESSION['site']['now_page'] != "") {
+        if ($_SESSION['site']['pre_page'] != '' && $_SESSION['site']['now_page'] != '') {
             if ($_SESSION['site']['pre_regist_success'] || $_SESSION['site']['pre_page'] == $_SESSION['site']['now_page']) {
                 return true;
             }
@@ -60,7 +60,7 @@ class SC_SiteSession {
     /* ユニークIDの取得 */
     function getUniqId() {
         // ユニークIDがセットされていない場合はセットする。
-        if (!isset($_SESSION['site']['uniqid']) || $_SESSION['site']['uniqid'] == "") {
+        if (!isset($_SESSION['site']['uniqid']) || $_SESSION['site']['uniqid'] == '') {
             $this->setUniqId();
         }
         return $_SESSION['site']['uniqid'];
@@ -84,7 +84,7 @@ class SC_SiteSession {
 
     /* ユニークIDの解除 */
     function unsetUniqId() {
-        $_SESSION['site']['uniqid'] = "";
+        $_SESSION['site']['uniqid'] = '';
     }
 
     /* 登録成功を記録 */

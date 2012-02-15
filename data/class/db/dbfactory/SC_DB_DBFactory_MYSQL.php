@@ -219,7 +219,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      */
     function findTableNames($expression = '') {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $sql = 'SHOW TABLES LIKE '. $objQuery->quote('%' . $expression . "%");
+        $sql = 'SHOW TABLES LIKE '. $objQuery->quote('%' . $expression . '%');
         $arrColList = $objQuery->getAll($sql);
         $arrColList = SC_Utils_Ex::sfSwapArray($arrColList, false);
         return $arrColList[0];

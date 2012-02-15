@@ -261,13 +261,13 @@ class SC_Utils {
 
     /* DB用日付文字列取得 */
     function sfGetTimestamp($year, $month, $day, $last = false) {
-        if ($year != '' && $month != '' && $day != "") {
+        if ($year != '' && $month != '' && $day != '') {
             if ($last) {
                 $time = '23:59:59';
             } else {
                 $time = '00:00:00';
             }
-            $date = $year.'-'.$month.'-'.$day." ".$time;
+            $date = $year.'-'.$month.'-'.$day.' '.$time;
         } else {
             $date = '';
         }
@@ -477,7 +477,7 @@ class SC_Utils {
     }
 
     // キーと値をセットした配列を取得(値が複数の場合)
-    function sfArrKeyValues($arrList, $keyname, $valname, $len_max = '', $keysize = '', $connect = "") {
+    function sfArrKeyValues($arrList, $keyname, $valname, $len_max = '', $keysize = '', $connect = '') {
 
         $max = count($arrList);
 
@@ -564,8 +564,8 @@ class SC_Utils {
             if (! checkdate($end_month ,$end_day ,$end_year)) $error = 2;
         }
         if (! $error) {
-            $date1 = $start_year .'/'.sprintf('%02d',$start_month) ."/".sprintf("%02d",$start_day) ." 000000";
-            $date2 = $end_year   .'/'.sprintf('%02d',$end_month)   ."/".sprintf("%02d",$end_day)   ." 235959";
+            $date1 = $start_year .'/'.sprintf('%02d',$start_month) .'/'.sprintf('%02d',$start_day) .' 000000';
+            $date2 = $end_year   .'/'.sprintf('%02d',$end_month)   .'/'.sprintf('%02d',$end_day)   .' 235959';
             if ($date1 > $date2) $error = 3;
         } else {
             $error = 1;
@@ -1708,7 +1708,7 @@ class SC_Utils {
                 $func = $backtrace['function'];
             }
 
-            $string .= $backtrace['file'] . ' ' . $backtrace['line'] . ":" . $func . "\n";
+            $string .= $backtrace['file'] . ' ' . $backtrace['line'] . ':' . $func . "\n";
         }
 
         return $string;

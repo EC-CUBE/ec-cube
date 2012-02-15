@@ -72,7 +72,7 @@ class SC_CheckError {
             }
 
             if (!$find) {
-                $this->arrErr[$value[1]] = '※ ' . $value[0] . 'に許可されていないタグ[' . strtoupper($val) . "]が含まれています。<br />";
+                $this->arrErr[$value[1]] = '※ ' . $value[0] . 'に許可されていないタグ[' . strtoupper($val) . ']が含まれています。<br />';
                 return;
             }
         }
@@ -190,7 +190,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if ($this->arrParam[$value[2]] !== $this->arrParam[$value[3]]) {
-            $this->arrErr[$value[2]] = '※ ' . $value[0] . 'と' . $value[1] . "が一致しません。<br />";
+            $this->arrErr[$value[2]] = '※ ' . $value[0] . 'と' . $value[1] . 'が一致しません。<br />';
         }
     }
 
@@ -208,7 +208,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if ($this->arrParam[$value[2]] == $this->arrParam[$value[3]]) {
-            $this->arrErr[$value[2]] = '※ ' . $value[0] . 'と' . $value[1] . "は、同じ値を使用できません。<br />";
+            $this->arrErr[$value[2]] = '※ ' . $value[0] . 'と' . $value[1] . 'は、同じ値を使用できません。<br />';
         }
     }
 
@@ -226,7 +226,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if ($this->arrParam[$value[2]] != '' && $this->arrParam[$value[3]] != '' && ($this->arrParam[$value[2]] > $this->arrParam[$value[3]])) {
-            $this->arrErr[$value[2]] = '※ ' . $value[0] . 'は' . $value[1] . "より大きい値を入力できません。<br />";
+            $this->arrErr[$value[2]] = '※ ' . $value[0] . 'は' . $value[1] . 'より大きい値を入力できません。<br />';
         }
     }
 
@@ -244,7 +244,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if (mb_strlen($this->arrParam[$value[1]]) > $value[2]) {
-            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は' . $value[2] . "字以下で入力してください。<br />";
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は' . $value[2] . '字以下で入力してください。<br />';
         }
     }
 
@@ -262,7 +262,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if (mb_strlen($this->arrParam[$value[1]]) < $value[2]) {
-            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は' . $value[2] . "字以上で入力してください。<br />";
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は' . $value[2] . '字以上で入力してください。<br />';
         }
     }
 
@@ -280,7 +280,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if ($this->arrParam[$value[1]] > $value[2]) {
-            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は' . $value[2] . "以下で入力してください。<br />";
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は' . $value[2] . '以下で入力してください。<br />';
         }
     }
 
@@ -297,7 +297,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if ($this->arrParam[$value[1]] < $value[2]) {
-            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は' . $value[2] . "以上で入力してください。<br />";
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は' . $value[2] . '以上で入力してください。<br />';
         }
     }
 
@@ -382,7 +382,7 @@ class SC_CheckError {
         $total_count = 0;
         for ($i = 1; $i <= 3; $i++) {
             if (strlen($this->arrParam[$value[$i]]) > 0 && strlen($this->arrParam[$value[$i]]) > $telItemLen) {
-                $this->arrErr[$value[$i]] .= '※ ' . $value[0] . $i . 'は' . $telItemLen . "字以内で入力してください。<br />";
+                $this->arrErr[$value[$i]] .= '※ ' . $value[0] . $i . 'は' . $telItemLen . '字以内で入力してください。<br />';
             } else if ($this->numelicCheck($this->arrParam[$value[1]])) {
                 $this->arrErr[$value[$i]] .= '※ ' . $value[0] . $i . 'は数字で入力してください。<br />';
             }
@@ -391,7 +391,7 @@ class SC_CheckError {
 
         // 合計値チェック
         if ($total_count > $telLen) {
-            $this->arrErr[$value[3]] .= '※ ' . $value[0] . 'は' . $telLen . "文字以内で入力してください。<br />";
+            $this->arrErr[$value[3]] .= '※ ' . $value[0] . 'は' . $telLen . '文字以内で入力してください。<br />';
         }
     }
 
@@ -753,7 +753,7 @@ class SC_CheckError {
             }
         }
         if ($errFlag == 1) {
-            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'で許可されている形式は、' . $strExt . "です。<br />";
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'で許可されている形式は、' . $strExt . 'です。<br />';
         }
     }
 
@@ -807,7 +807,7 @@ class SC_CheckError {
                 $value[2] = $value[2] / 1000;
                 $byte = 'MB';
             }
-            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'のファイルサイズは' . $value[2] . $byte . "以下のものを使用してください。<br />";
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'のファイルサイズは' . $value[2] . $byte . '以下のものを使用してください。<br />';
         }
     }
 
@@ -971,7 +971,7 @@ class SC_CheckError {
             $date2 = $this->arrParam[$value[5]] .sprintf('%02d', $this->arrParam[$value[6]]) .sprintf('%02d',$this->arrParam[$value[7]]) .'235959';
 
             if (($this->arrErr[$value[2]] == '' && $this->arrErr[$value[5]] == '') && $date1 > $date2) {
-                $this->arrErr[$value[2]] = '※ ' .$value[0]. 'と' .$value[1]. "の期間指定が不正です。<br />";
+                $this->arrErr[$value[2]] = '※ ' .$value[0]. 'と' .$value[1]. 'の期間指定が不正です。<br />';
             }
         }
     }
@@ -1018,14 +1018,14 @@ class SC_CheckError {
         }
         if ((strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0 && strlen($this->arrParam[$value[4]]) > 0 && strlen($this->arrParam[$value[5]]) > 0) &&  (strlen($this->arrParam[$value[8]]) > 0 || strlen($this->arrParam[$value[9]]) > 0 || strlen($this->arrParam[$value[10]]) > 0 || strlen($this->arrParam[$value[11]]) > 0)) {
 
-            $date1 = $this->arrParam[$value[2]] .sprintf('%02d', $this->arrParam[$value[3]]) .sprintf('%02d',$this->arrParam[$value[4]]) .sprintf("%02d",$this->arrParam[$value[5]]).sprintf("%02d",$this->arrParam[$value[6]]).sprintf("%02d",$this->arrParam[$value[7]]);
-            $date2 = $this->arrParam[$value[8]] .sprintf('%02d', $this->arrParam[$value[9]]) .sprintf('%02d',$this->arrParam[$value[10]]) .sprintf("%02d",$this->arrParam[$value[11]]).sprintf("%02d",$this->arrParam[$value[12]]).sprintf("%02d",$this->arrParam[$value[13]]);
+            $date1 = $this->arrParam[$value[2]] .sprintf('%02d', $this->arrParam[$value[3]]) .sprintf('%02d',$this->arrParam[$value[4]]) .sprintf('%02d',$this->arrParam[$value[5]]).sprintf('%02d',$this->arrParam[$value[6]]).sprintf('%02d',$this->arrParam[$value[7]]);
+            $date2 = $this->arrParam[$value[8]] .sprintf('%02d', $this->arrParam[$value[9]]) .sprintf('%02d',$this->arrParam[$value[10]]) .sprintf('%02d',$this->arrParam[$value[11]]).sprintf('%02d',$this->arrParam[$value[12]]).sprintf('%02d',$this->arrParam[$value[13]]);
 
             if (($this->arrErr[$value[2]] == '' && $this->arrErr[$value[8]] == '') && $date1 > $date2) {
-                $this->arrErr[$value[2]] = '※ ' .$value[0]. 'と' .$value[1]. "の期間指定が不正です。<br />";
+                $this->arrErr[$value[2]] = '※ ' .$value[0]. 'と' .$value[1]. 'の期間指定が不正です。<br />';
             }
             if ($date1 == $date2) {
-                $this->arrErr[$value[2]] = '※ ' .$value[0]. 'と' .$value[1]. "の期間指定が不正です。<br />";
+                $this->arrErr[$value[2]] = '※ ' .$value[0]. 'と' .$value[1]. 'の期間指定が不正です。<br />';
             }
 
         }
@@ -1066,7 +1066,7 @@ class SC_CheckError {
             $date2 = $this->arrParam[$value[4]] .sprintf('%02d', $this->arrParam[$value[5]]);
 
             if (($this->arrErr[$value[2]] == '' && $this->arrErr[$value[5]] == '') && $date1 > $date2) {
-                $this->arrErr[$value[2]] = '※ ' .$value[0]. 'と' .$value[1]. "の期間指定が不正です。<br />";
+                $this->arrErr[$value[2]] = '※ ' .$value[0]. 'と' .$value[1]. 'の期間指定が不正です。<br />';
             }
         }
     }

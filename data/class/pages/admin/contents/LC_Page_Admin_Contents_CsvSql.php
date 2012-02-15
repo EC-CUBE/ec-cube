@@ -142,8 +142,8 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
      */
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam('SQL ID', 'sql_id', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('CSV出力対象SQL ID', 'csv_output_id', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'), "", false);
-        $objFormParam->addParam('選択テーブル', 'select_table', STEXT_LEN, 'KVa', array('GRAPH_CHECK','MAX_LENGTH_CHECK'), "", false);
+        $objFormParam->addParam('CSV出力対象SQL ID', 'csv_output_id', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'), '', false);
+        $objFormParam->addParam('選択テーブル', 'select_table', STEXT_LEN, 'KVa', array('GRAPH_CHECK','MAX_LENGTH_CHECK'), '', false);
         $objFormParam->addParam('名称', 'sql_name', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK','SPTAB_CHECK'));
         $objFormParam->addParam('SQL文', 'csv_sql', '30000', 'KVa', array('MAX_LENGTH_CHECK','SPTAB_CHECK'));
     }
@@ -341,7 +341,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
      */
     function lfDoCsvOutput($sql_id) {
         $arrData = $this->lfGetSqlList('sql_id = ?', array($sql_id));
-        $sql = 'SELECT ' . $arrData[0]['csv_sql'] . " ";
+        $sql = 'SELECT ' . $arrData[0]['csv_sql'] . ' ';
 
         // TODO: ヘッダ取得 SQL内にLIMIT文がある場合はLIMIT句は追加しないので重いかも
         $objQuery =& SC_Query_Ex::getSingletonInstance();

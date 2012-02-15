@@ -238,7 +238,7 @@ class LC_Page_Entry extends LC_Page_Ex {
         );
         // 宛先の設定
         $objMail->setTo($arrForm['email'],
-                        $arrForm['name01'] . $arrForm['name02'] ." 様");
+                        $arrForm['name01'] . $arrForm['name02'] .' 様');
 
         $objMail->sendMail();
     }

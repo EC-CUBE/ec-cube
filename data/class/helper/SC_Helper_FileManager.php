@@ -413,7 +413,7 @@ class SC_Helper_FileManager {
 
         // 指定されたフォルダ内に解凍する
         $result = $tar->extractModify($dir. '/', $unpacking_name);
-        GC_Utils_Ex::gfPrintLog('解凍：' . $dir.'/'.$file_name."->".$dir."/".$unpacking_name);
+        GC_Utils_Ex::gfPrintLog('解凍：' . $dir.'/'.$file_name.'->'.$dir.'/'.$unpacking_name);
 
         // フォルダ削除
         SC_Utils_Ex::sfDelFile($dir . '/' . $unpacking_name);

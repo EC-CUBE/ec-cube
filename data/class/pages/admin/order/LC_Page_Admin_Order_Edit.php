@@ -666,7 +666,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $arrStockData = array();
         for ($i = 0; $i < $max; $i++) {
             if (!empty($arrDetail[$i]['product_id'])) {
-                $arrPreDetail = $objQuery->select('*', 'dtb_order_detail', "order_id = ? AND product_class_id = ?", array($order_id, $arrDetail[$i]['product_class_id']));
+                $arrPreDetail = $objQuery->select('*', 'dtb_order_detail', 'order_id = ? AND product_class_id = ?', array($order_id, $arrDetail[$i]['product_class_id']));
                 if (!empty($arrPreDetail) && $arrPreDetail[0]['quantity'] != $arrDetail[$i]['quantity']) {
                     // 数量が変更された商品
                     $arrStockData[$k]['product_class_id'] = $arrDetail[$i]['product_class_id'];
@@ -683,7 +683,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         }
 
         // 上記の新しい商品のループでDELETEされなかった商品は、注文より削除された商品
-        $arrPreDetail = $objQuery->select('*', 'dtb_order_detail', "order_id = ?", array($order_id));
+        $arrPreDetail = $objQuery->select('*', 'dtb_order_detail', 'order_id = ?', array($order_id));
         foreach ($arrPreDetail AS $key=>$val) {
             $arrStockData[$k]['product_class_id'] = $val['product_class_id'];
             $arrStockData[$k]['quantity'] = $val['quantity'];

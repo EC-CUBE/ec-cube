@@ -189,7 +189,7 @@ class LC_Page_Products_Review extends LC_Page_Ex {
     function lfGetProductName($product_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        return $objQuery->get('name', 'dtb_products', "product_id = ? ", array($product_id));
+        return $objQuery->get('name', 'dtb_products', 'product_id = ? ', array($product_id));
     }
 
     //登録実行

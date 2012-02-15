@@ -239,7 +239,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * @return string 登録日を示す文字列
      */
     function getRegistDate($arrPost) {
-        $registDate = $arrPost['year'] .'/'. $arrPost['month'] ."/". $arrPost['day'];
+        $registDate = $arrPost['year'] .'/'. $arrPost['month'] .'/'. $arrPost['day'];
         return $registDate;
     }
 

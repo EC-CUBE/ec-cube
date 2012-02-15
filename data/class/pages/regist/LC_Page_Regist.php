@@ -149,7 +149,7 @@ class LC_Page_Regist extends LC_Page_Ex {
         $CONF           = SC_Helper_DB_Ex::sfGetBasisData();
 
         //-- 会員データを取得
-        $arrCustomer    = $objQuery->select('*', 'dtb_customer', "secret_key = ?", array($registSecretKey));
+        $arrCustomer    = $objQuery->select('*', 'dtb_customer', 'secret_key = ?', array($registSecretKey));
         $data           = $arrCustomer[0];
         $objCustomer->setLogin($data['email']);
 
@@ -173,7 +173,7 @@ class LC_Page_Regist extends LC_Page_Ex {
                             , $CONF['email04']          // Errors_to
                         );
         // 宛先の設定
-        $name = $data['name01'] . $data['name02'] ." 様";
+        $name = $data['name01'] . $data['name02'] .' 様';
         $objMail->setTo($data['email'], $name);
         $objMail->sendMail();
     }

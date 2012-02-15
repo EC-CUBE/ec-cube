@@ -325,8 +325,8 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
             $objFormParam->addParam('商品種別', 'product_type_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
             $objFormParam->addParam('ダウンロード商品ファイル名', 'down_filename', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
             $objFormParam->addParam('ダウンロード商品実ファイル名', 'down_realfilename', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-            $objFormParam->addParam('temp_down_file', 'temp_down_file', '', "", array());
-            $objFormParam->addParam('save_down_file', 'save_down_file', '', "", array());
+            $objFormParam->addParam('temp_down_file', 'temp_down_file', '', '', array());
+            $objFormParam->addParam('save_down_file', 'save_down_file', '', '', array());
             $objFormParam->addParam('商品コード', 'product_code', STEXT_LEN, 'KVna', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK'));
             $objFormParam->addParam(NORMAL_PRICE_TITLE, 'price01', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
             $objFormParam->addParam(SALE_PRICE_TITLE, 'price02', PRICE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -343,20 +343,20 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         $objFormParam->addParam('備考欄(SHOP専用)', 'note', LLTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('一覧-メインコメント', 'main_list_comment', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('詳細-メインコメント', 'main_comment', LLTEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('save_main_list_image', 'save_main_list_image', '', "", array());
-        $objFormParam->addParam('save_main_image', 'save_main_image', '', "", array());
-        $objFormParam->addParam('save_main_large_image', 'save_main_large_image', '', "", array());
-        $objFormParam->addParam('temp_main_list_image', 'temp_main_list_image', '', "", array());
-        $objFormParam->addParam('temp_main_image', 'temp_main_image', '', "", array());
-        $objFormParam->addParam('temp_main_large_image', 'temp_main_large_image', '', "", array());
+        $objFormParam->addParam('save_main_list_image', 'save_main_list_image', '', '', array());
+        $objFormParam->addParam('save_main_image', 'save_main_image', '', '', array());
+        $objFormParam->addParam('save_main_large_image', 'save_main_large_image', '', '', array());
+        $objFormParam->addParam('temp_main_list_image', 'temp_main_list_image', '', '', array());
+        $objFormParam->addParam('temp_main_image', 'temp_main_image', '', '', array());
+        $objFormParam->addParam('temp_main_large_image', 'temp_main_large_image', '', '', array());
 
         for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
             $objFormParam->addParam('詳細-サブタイトル' . $cnt, 'sub_title' . $cnt, STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
             $objFormParam->addParam('詳細-サブコメント' . $cnt, 'sub_comment' . $cnt, LLTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-            $objFormParam->addParam('save_sub_image' . $cnt, 'save_sub_image' . $cnt, '', "", array());
-            $objFormParam->addParam('save_sub_large_image' . $cnt, 'save_sub_large_image' . $cnt, '', "", array());
-            $objFormParam->addParam('temp_sub_image' . $cnt, 'temp_sub_image' . $cnt, '', "", array());
-            $objFormParam->addParam('temp_sub_large_image' . $cnt, 'temp_sub_large_image' . $cnt, '', "", array());
+            $objFormParam->addParam('save_sub_image' . $cnt, 'save_sub_image' . $cnt, '', '', array());
+            $objFormParam->addParam('save_sub_large_image' . $cnt, 'save_sub_large_image' . $cnt, '', '', array());
+            $objFormParam->addParam('temp_sub_image' . $cnt, 'temp_sub_image' . $cnt, '', '', array());
+            $objFormParam->addParam('temp_sub_large_image' . $cnt, 'temp_sub_large_image' . $cnt, '', '', array());
         }
 
         for ($cnt = 1; $cnt <= RECOMMEND_PRODUCT_MAX; $cnt++) {
@@ -382,7 +382,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
      * @return void
      */
     function lfInitFormParam_UploadImage(&$objFormParam) {
-        $objFormParam->addParam('image_key', 'image_key', "", "", array());
+        $objFormParam->addParam('image_key', 'image_key', '', '', array());
     }
 
     /**
@@ -393,7 +393,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
      * @return void
      */
     function lfInitFormParam_UploadDown(&$objFormParam) {
-        $objFormParam->addParam('down_key', 'down_key', "", "", array());
+        $objFormParam->addParam('down_key', 'down_key', '', '', array());
     }
 
     /**
@@ -404,7 +404,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
      * @return void
      */
     function lfInitFormParam_RecommendSelect(&$objFormParam) {
-        $objFormParam->addParam('anchor_key', 'anchor_key', "", "", array());
+        $objFormParam->addParam('anchor_key', 'anchor_key', '', '', array());
         $objFormParam->addParam('select_recommend_no', 'select_recommend_no', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
@@ -433,7 +433,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
      * @return void
      */
     function lfInitDownFile(&$objDownFile) {
-        $objDownFile->addFile('ダウンロード販売用ファイル', 'down_file', explode(",", DOWNLOAD_EXTENSION),DOWN_SIZE, true, 0, 0);
+        $objDownFile->addFile('ダウンロード販売用ファイル', 'down_file', explode(',', DOWNLOAD_EXTENSION),DOWN_SIZE, true, 0, 0);
     }
 
     /**

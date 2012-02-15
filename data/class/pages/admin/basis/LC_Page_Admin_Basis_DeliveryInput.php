@@ -117,7 +117,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
                 $objFormParam->addParam('配送業者名', 'name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
                 $objFormParam->addParam('名称', 'service_name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
                 $objFormParam->addParam('説明', 'remark', LLTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-                $objFormParam->addParam('伝票No.確認URL', 'confirm_url', URL_LEN, 'n', array('URL_CHECK', 'MAX_LENGTH_CHECK'), "http://");
+                $objFormParam->addParam('伝票No.確認URL', 'confirm_url', URL_LEN, 'n', array('URL_CHECK', 'MAX_LENGTH_CHECK'), 'http://');
                 $objFormParam->addParam('取扱商品種別', 'product_type_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
                 $objFormParam->addParam('取扱支払方法', 'payment_ids', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
@@ -304,7 +304,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
         $objErr = new SC_CheckError_Ex($arrRet);
         $objErr->arrErr = $objFormParam->checkError();
 
-        if (!isset($objErr->arrErr['name']) && $arrRet['deliv_id'] == "") {
+        if (!isset($objErr->arrErr['name']) && $arrRet['deliv_id'] == '') {
             // 既存チェック
             $objDb = new SC_Helper_DB_Ex();
             $ret = $objDb->sfIsRecord('dtb_deliv', 'service_name', array($arrRet['service_name']));

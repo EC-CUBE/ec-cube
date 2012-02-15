@@ -138,7 +138,7 @@ class GC_Utils {
                 $bklv = 4;
             }
         }
-        $str = $traces[$bklv]['class'] . '::' . $traces[$bklv]['function'] . "(" . $traces[$bklv-1]['line'] . ") ";
+        $str = $traces[$bklv]['class'] . '::' . $traces[$bklv]['function'] . '(' . $traces[$bklv-1]['line'] . ') ';
         return $str;
     }
 
@@ -230,7 +230,7 @@ class GC_Utils {
 
         $fp = fopen($path, 'a+');
         if ($fp) {
-            fwrite($fp, $today.' ['.$_SERVER['PHP_SELF']."] ".$mess." from ". $_SERVER['REMOTE_ADDR']. "\n");
+            fwrite($fp, $today.' ['.$_SERVER['PHP_SELF'].'] '.$mess.' from '. $_SERVER['REMOTE_ADDR']. "\n");
             fclose($fp);
         }
 

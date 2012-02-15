@@ -231,7 +231,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
             $objErr->doFunc(array('パスワード', 'password', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK' ,'NUM_RANGE_CHECK'));
             $objErr->doFunc(array('ログインID', 'login_id', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK' ,'NUM_RANGE_CHECK'));
         }
-	$objErr->doFunc(array('パスワード', 'パスワード(確認)', 'password', 'password02') ,array('EQUAL_CHECK'));
+    $objErr->doFunc(array('パスワード', 'パスワード(確認)', 'password', 'password02') ,array('EQUAL_CHECK'));
 
         $arrErr = $objErr->arrErr;
 

@@ -214,7 +214,7 @@ __EOS__;
         header('Content-Type: ' . $mime_type);
         header('Content-Disposition: attachment; filename=' . $sdown_filename);
         header('Accept-Ranges: bytes');
-        header('Last-Modified: ' . gmdate('D,d M Y H:i:s') . " GMT");
+        header('Last-Modified: ' . gmdate('D,d M Y H:i:s') . ' GMT');
         header('Cache-Control: public');
     }
 
@@ -329,7 +329,7 @@ __EOS__;
         header('Content-Transfer-Encoding: binary');
         //キャッシュ無効化
         header('Expires: Mon, 26 Nov 1962 00:00:00 GMT');
-        header('Last-Modified: ' . gmdate('D,d M Y H:i:s') . " GMT");
+        header('Last-Modified: ' . gmdate('D,d M Y H:i:s') . ' GMT');
         //IE6+SSL環境下は、キャッシュ無しでダウンロードできない
         header('Cache-Control: private');
         header('Pragma: private');

@@ -272,7 +272,7 @@ class SC_CartSession {
 
     // 前頁のURLを取得する
     function getPrevURL() {
-        return isset($_SESSION['prev_url']) ? $_SESSION['prev_url'] : "";
+        return isset($_SESSION['prev_url']) ? $_SESSION['prev_url'] : '';
     }
 
     // キーが一致した商品の削除

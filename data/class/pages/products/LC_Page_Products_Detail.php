@@ -447,7 +447,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $objQuery->setOrder('rank DESC');
-        $arrRecommendData = $objQuery->select('recommend_product_id, comment', 'dtb_recommend_products', "product_id = ?", array($product_id));
+        $arrRecommendData = $objQuery->select('recommend_product_id, comment', 'dtb_recommend_products', 'product_id = ?', array($product_id));
 
         $arrRecommendProductId = array();
         foreach ($arrRecommendData as $recommend) {
@@ -522,7 +522,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         // サブ画像の有無を判定
         $subImageFlag = false;
         for ($i = 1; $i <= PRODUCTSUB_MAX; $i++) {
-            if ($arrFile['sub_image' . $i]['filepath'] != "") {
+            if ($arrFile['sub_image' . $i]['filepath'] != '') {
                 $subImageFlag = true;
             }
         }
@@ -535,7 +535,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
      */
     function lfRegistFavoriteProduct($favorite_product_id,$customer_id) {
         // ログイン中のユーザが商品をお気に入りにいれる処理
-        if (!SC_Helper_DB_Ex::sfIsRecord('dtb_products', 'product_id', $favorite_product_id, "del_flg = 0 AND status = 1")) {
+        if (!SC_Helper_DB_Ex::sfIsRecord('dtb_products', 'product_id', $favorite_product_id, 'del_flg = 0 AND status = 1')) {
             SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
             return false;
         } else {

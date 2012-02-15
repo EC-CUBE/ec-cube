@@ -120,8 +120,8 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
         // 検索条件のパラメーターを初期化
         parent::lfInitParam($objFormParam);
         $objFormParam->addParam('レビューID', 'review_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam('商品名', 'name', "", "", array(), "", false);
-        $objFormParam->addParam('投稿日', 'create_date', "", "", array(), "", false);
+        $objFormParam->addParam('商品名', 'name', '', '', array(), '', false);
+        $objFormParam->addParam('投稿日', 'create_date', '', '', array(), '', false);
 
         // 登録情報
         $objFormParam->addParam('レビュー表示', 'status', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));

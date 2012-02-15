@@ -178,8 +178,8 @@ class SC_Helper_DB {
             $this->g_root_on = true;
             $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-            if (!isset($_GET['product_id'])) $_GET['product_id'] = "";
-            if (!isset($_GET['category_id'])) $_GET['category_id'] = "";
+            if (!isset($_GET['product_id'])) $_GET['product_id'] = '';
+            if (!isset($_GET['category_id'])) $_GET['category_id'] = '';
 
             if (!empty($_GET['product_id']) || !empty($_GET['category_id'])) {
                 // 選択中のカテゴリIDを判定する
@@ -211,10 +211,10 @@ class SC_Helper_DB {
      */
     function sfGetRollbackPoint($order_id, $use_point, $add_point, $order_status) {
         $objQuery = new SC_Query_Ex();
-        $arrRet = $objQuery->select('customer_id', 'dtb_order', "order_id = ?", array($order_id));
+        $arrRet = $objQuery->select('customer_id', 'dtb_order', 'order_id = ?', array($order_id));
         $customer_id = $arrRet[0]['customer_id'];
         if ($customer_id != '' && $customer_id >= 1) {
-            $arrRet = $objQuery->select('point', 'dtb_customer', "customer_id = ?", array($customer_id));
+            $arrRet = $objQuery->select('point', 'dtb_customer', 'customer_id = ?', array($customer_id));
             $point = $arrRet[0]['point'];
             $rollback_point = $arrRet[0]['point'];
 
@@ -521,7 +521,7 @@ class SC_Helper_DB {
         } else if (SC_Utils_Ex::sfIsInt($product_id) && $product_id != 0 && SC_Helper_DB_Ex::sfIsRecord('dtb_products','product_id', $product_id, $status)) {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $where = 'product_id = ?';
-            $category_id = $objQuery->getCol('category_id', 'dtb_product_categories', "product_id = ?", array($product_id));
+            $category_id = $objQuery->getCol('category_id', 'dtb_product_categories', 'product_id = ?', array($product_id));
         } else {
             // 不正な場合は、空の配列を返す。
             $category_id = array();
@@ -929,7 +929,7 @@ __EOS__;
         // 子カテゴリIDの取得
         $arrRet = SC_Helper_DB_Ex::sfGetChildrenArray('dtb_category', 'parent_category_id', 'category_id', $category_id);
 
-        $where = 'category_id IN (' . implode(',', array_fill(0, count($arrRet), '?')) . ")";
+        $where = 'category_id IN (' . implode(',', array_fill(0, count($arrRet), '?')) . ')';
 
         return array($where, $arrRet);
     }
@@ -1315,7 +1315,7 @@ __EOS__;
             } else if (SC_Utils_Ex::sfIsInt($product_id) && $product_id != 0 && $this->sfIsRecord('dtb_products','product_id', $product_id, $status)) {
                 $objQuery =& SC_Query_Ex::getSingletonInstance();
                 $where = 'product_id = ?';
-                $maker_id = $objQuery->getCol('maker_id', 'dtb_products', "product_id = ?", array($product_id));
+                $maker_id = $objQuery->getCol('maker_id', 'dtb_products', 'product_id = ?', array($product_id));
                 $this->g_maker_id = $maker_id;
             } else {
                 // 不正な場合は、空の配列を返す。

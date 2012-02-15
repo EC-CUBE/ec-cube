@@ -209,7 +209,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
             // 列数が異なる場合はエラー
             $col_count = count($arrCSV);
             if ($col_max_count != $col_count) {
-                $this->addRowErr($line_count, '※ 項目数が' . $col_count . '個検出されました。項目数は' . $col_max_count . "個になります。");
+                $this->addRowErr($line_count, '※ 項目数が' . $col_count . '個検出されました。項目数は' . $col_max_count . '個になります。');
                 $errFlag = true;
                 break;
             }
@@ -458,7 +458,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
                 and $item['parent_category_id'] != '0'
                 and !SC_Helper_DB_Ex::sfIsRecord('dtb_category', 'category_id', array($item['parent_category_id']))
                 ) {
-            $arrErr['parent_category_id'] = '※ 指定の親カテゴリID(' . $item['parent_category_id'] . ")は、存在しません。";
+            $arrErr['parent_category_id'] = '※ 指定の親カテゴリID(' . $item['parent_category_id'] . ')は、存在しません。';
         }
         // 削除フラグのチェック
         if(array_search('del_flg', $this->arrFormKeyList) !== FALSE
@@ -493,9 +493,9 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         // 階層上限チェック
         if (array_search('parent_category_id', $this->arrFormKeyList) !== FALSE
                 and $item['parent_category_id'] != '') {
-            $level = $objQuery->get('level', 'dtb_category', "category_id = ?", array($parent_category_id));
+            $level = $objQuery->get('level', 'dtb_category', 'category_id = ?', array($parent_category_id));
             if ($level >= LEVEL_MAX) {
-                $arrErr['parent_category_id'] = '※ ' . LEVEL_MAX . "階層以上の登録はできません。";
+                $arrErr['parent_category_id'] = '※ ' . LEVEL_MAX . '階層以上の登録はできません。';
             }
         }
         return $arrErr;

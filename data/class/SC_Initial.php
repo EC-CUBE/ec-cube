@@ -87,7 +87,7 @@ class SC_Initial {
            && defined('DB_SERVER') && defined('DB_PORT') && defined('DB_NAME')) {
             /** サイト用DB */
             define ('DEFAULT_DSN',
-                    DB_TYPE . '://' . DB_USER . ':' . DB_PASSWORD . "@"
+                    DB_TYPE . '://' . DB_USER . ':' . DB_PASSWORD . '@'
                     . DB_SERVER . ':' .DB_PORT . '/' . DB_NAME);
         }
     }

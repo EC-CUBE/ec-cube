@@ -272,11 +272,11 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
             $arrValues[] = sprintf('%%%s%%', $objFormParam->getValue($key));
             break;
         case 'search_order_name':
-            $where .= ' AND ' . $dbFactory->concatColumn(array('order_name01', 'order_name02')) . " LIKE ?";
+            $where .= ' AND ' . $dbFactory->concatColumn(array('order_name01', 'order_name02')) . ' LIKE ?';
             $arrValues[] = sprintf('%%%s%%', $objFormParam->getValue($key));
             break;
         case 'search_order_kana':
-            $where .= ' AND ' . $dbFactory->concatColumn(array('order_kana01', 'order_kana02')) . " LIKE ?";
+            $where .= ' AND ' . $dbFactory->concatColumn(array('order_kana01', 'order_kana02')) . ' LIKE ?';
             $arrValues[] = sprintf('%%%s%%', $objFormParam->getValue($key));
             break;
         case 'search_order_id1':
@@ -306,7 +306,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
             }
             break;
         case 'search_order_tel':
-            $where .= ' AND (' . $dbFactory->concatColumn(array('order_tel01', 'order_tel02', 'order_tel03')) . " LIKE ?)";
+            $where .= ' AND (' . $dbFactory->concatColumn(array('order_tel01', 'order_tel02', 'order_tel03')) . ' LIKE ?)';
             $arrValues[] = sprintf('%%%d%%', preg_replace('/[()-]+/','', $objFormParam->getValue($key)));
             break;
         case 'search_order_email':

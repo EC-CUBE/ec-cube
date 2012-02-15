@@ -69,7 +69,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objDb = new SC_Helper_DB_Ex();
 
-        $this->tpl_pageno = isset($_POST['pageno']) ? $_POST['pageno'] : "";
+        $this->tpl_pageno = isset($_POST['pageno']) ? $_POST['pageno'] : '';
 
         // 通常時は親カテゴリを0に設定する。
         $this->arrForm['parent_category_id'] =

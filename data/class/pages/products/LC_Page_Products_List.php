@@ -182,7 +182,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
                 if ($target_product_id > 0) {
                     // 商品IDの正当性チェック
                     if (!SC_Utils_Ex::sfIsInt($this->arrForm['product_id'])
-                        || !SC_Helper_DB_Ex::sfIsRecord('dtb_products', 'product_id', $this->arrForm['product_id'], "del_flg = 0 AND status = 1")) {
+                        || !SC_Helper_DB_Ex::sfIsRecord('dtb_products', 'product_id', $this->arrForm['product_id'], 'del_flg = 0 AND status = 1')) {
                         SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
                     }
 
@@ -270,7 +270,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
 
             default:
                 if (strlen($searchCondition['where_category']) >= 1) {
-                    $dtb_product_categories = '(SELECT * FROM dtb_product_categories WHERE '.$searchCondition['where_category'].")";
+                    $dtb_product_categories = '(SELECT * FROM dtb_product_categories WHERE '.$searchCondition['where_category'].')';
                     $arrval_order           = $searchCondition['arrvalCategory'];
                 } else {
                     $dtb_product_categories = 'dtb_product_categories';

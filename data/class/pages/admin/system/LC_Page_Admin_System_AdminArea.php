@@ -103,7 +103,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
         } else {
 
             $admin_dir = str_replace('/','',ADMIN_DIR);
-            $this->arrForm = array('admin_dir'=>$admin_dir,'admin_force_ssl'=>ADMIN_FORCE_SSL,'admin_allow_hosts'=>"");
+            $this->arrForm = array('admin_dir'=>$admin_dir,'admin_force_ssl'=>ADMIN_FORCE_SSL,'admin_allow_hosts'=>'');
             if (defined('ADMIN_ALLOW_HOSTS')) {
                 $allow_hosts = unserialize(ADMIN_ALLOW_HOSTS);
                 $this->arrForm['admin_allow_hosts'] = implode("\n",$allow_hosts);

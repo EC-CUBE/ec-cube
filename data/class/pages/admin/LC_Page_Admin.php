@@ -129,7 +129,7 @@ class LC_Page_Admin extends LC_Page_Ex {
      * @return void
      */
     function log($mess, $log_level) {
-        $mess = $mess . ' id=' . $_SESSION['login_id'] . "(" . $_SESSION['authority'] . ")" . "[" . session_id() . "]";
+        $mess = $mess . ' id=' . $_SESSION['login_id'] . '(' . $_SESSION['authority'] . ')' . '[' . session_id() . ']';
 
         GC_Utils_Ex::gfAdminLog($mess, $log_level);
     }

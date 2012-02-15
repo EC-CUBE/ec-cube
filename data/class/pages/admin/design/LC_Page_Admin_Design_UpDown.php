@@ -242,7 +242,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
         $from_dir = SMARTY_TEMPLATES_REALDIR . $template_code . '/_packages/';
         $to_dir = USER_REALDIR . 'packages/' . $template_code . '/';
         if (!SC_Utils_Ex::recursiveMkdir($to_dir)) {
-            $this->arrErr['err'] = '※ ' . $to_dir . " の作成に失敗しました。<br/>";
+            $this->arrErr['err'] = '※ ' . $to_dir . ' の作成に失敗しました。<br/>';
             $objQuery->rollback();
             return false;
         }

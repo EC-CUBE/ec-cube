@@ -67,7 +67,7 @@ class LC_Page_ResizeImage extends LC_Page_Ex {
             }
         }
 
-        $objThumb->Main($file, $_GET['width'], $_GET['height'], "", true);
+        $objThumb->Main($file, $_GET['width'], $_GET['height'], '', true);
     }
 
     /**

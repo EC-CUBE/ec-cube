@@ -201,7 +201,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $objFormParam->addParam('メール形式', 'mail_method', INT_LEN, 'n', array('EXIST_CHECK','ALNUM_CHECK'));
         $objFormParam->addParam('Subject', 'subject', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam('本文', 'body', LLTEXT_LEN, 'KVCa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('テンプレートID', 'template_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
+        $objFormParam->addParam('テンプレートID', 'template_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), '', false);
     }
 
     /**
@@ -213,7 +213,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
     function lfGetMailTemplateList($arrTemplate) {
         if (is_array($arrTemplate)) {
             foreach ($arrTemplate as $line) {
-                $return[$line['template_id']] = '【' . $this->arrHtmlmail[$line['mail_method']] . "】" . $line['subject'];
+                $return[$line['template_id']] = '【' . $this->arrHtmlmail[$line['mail_method']] . '】' . $line['subject'];
             }
         }
         return $return;
@@ -268,7 +268,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
                 $dtb_send_customer['customer_id'] = $line['customer_id'];
                 $dtb_send_customer['send_id'] = $send_id;
                 $dtb_send_customer['email'] = $line[$emailtype];
-                $dtb_send_customer['name'] = $line['name01'] . " " . $line['name02'];
+                $dtb_send_customer['name'] = $line['name01'] . ' ' . $line['name02'];
                 $objQuery->insert('dtb_send_customer', $dtb_send_customer);
             }
         }

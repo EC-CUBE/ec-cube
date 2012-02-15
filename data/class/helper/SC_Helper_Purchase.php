@@ -233,7 +233,7 @@ class SC_Helper_Purchase {
      */
     function getOrderTemp($uniqId) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        return $objQuery->getRow('*', 'dtb_order_temp', "order_temp_id = ?",
+        return $objQuery->getRow('*', 'dtb_order_temp', 'order_temp_id = ?',
                                  array($uniqId));
     }
 
@@ -245,7 +245,7 @@ class SC_Helper_Purchase {
      */
     function getOrderTempByOrderId($order_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        return $objQuery->getRow('*', 'dtb_order_temp', "order_id = ?",
+        return $objQuery->getRow('*', 'dtb_order_temp', 'order_id = ?',
                                  array($order_id));
     }
 
@@ -999,7 +999,7 @@ __EOS__;
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrResults = array();
         $objQuery->setOrder('shipping_id');
-        $arrShippings = $objQuery->select('*', 'dtb_shipping', "order_id = ?",
+        $arrShippings = $objQuery->select('*', 'dtb_shipping', 'order_id = ?',
                                           array($order_id));
         // shipping_id ごとの配列を生成する
         foreach ($arrShippings as $shipping) {

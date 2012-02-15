@@ -260,13 +260,13 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
         $objErr->arrErr = $objFormParam->checkError();
 
         // 利用条件(下限)チェック
-        if ($arrRet['rule'] < $arrPaymentData['rule_min'] and $arrPaymentData['rule_min'] != "") {
-            $objErr->arrErr['rule'] = '利用条件(下限)は' . $arrPaymentData['rule_min'] ."円以上にしてください。<br>";
+        if ($arrRet['rule'] < $arrPaymentData['rule_min'] and $arrPaymentData['rule_min'] != '') {
+            $objErr->arrErr['rule'] = '利用条件(下限)は' . $arrPaymentData['rule_min'] .'円以上にしてください。<br>';
         }
 
         // 利用条件(上限)チェック
-        if ($arrRet['upper_rule'] > $arrPaymentData['upper_rule_max'] and $arrPaymentData['upper_rule_max'] != "") {
-            $objErr->arrErr['upper_rule'] = '利用条件(上限)は' . $arrPaymentData['upper_rule_max'] ."円以下にしてください。<br>";
+        if ($arrRet['upper_rule'] > $arrPaymentData['upper_rule_max'] and $arrPaymentData['upper_rule_max'] != '') {
+            $objErr->arrErr['upper_rule'] = '利用条件(上限)は' . $arrPaymentData['upper_rule_max'] .'円以下にしてください。<br>';
         }
 
         // 利用条件チェック

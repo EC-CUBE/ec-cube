@@ -223,7 +223,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
         $objDb = new SC_Helper_DB_Ex();
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        $objDb->sfDeleteRankRecord('dtb_class', 'class_id', $class_id, "", true);
+        $objDb->sfDeleteRankRecord('dtb_class', 'class_id', $class_id, '', true);
         $where= 'class_id = ?';
         $ret = $objQuery->delete('dtb_classcategory', $where, array($class_id));
         return $ret;

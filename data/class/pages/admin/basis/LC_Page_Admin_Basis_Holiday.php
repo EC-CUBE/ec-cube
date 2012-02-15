@@ -116,7 +116,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
             break;
         // 削除
         case 'delete':
-            $objDb->sfDeleteRankRecord('dtb_holiday', 'holiday_id', $post['holiday_id'], "", true);
+            $objDb->sfDeleteRankRecord('dtb_holiday', 'holiday_id', $post['holiday_id'], '', true);
             // 再表示
             $this->objDisplay->reload();
             break;

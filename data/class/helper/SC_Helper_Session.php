@@ -65,7 +65,7 @@ class SC_Helper_Session {
       */
      function sfSessRead($id) {
          $objQuery = new SC_Query_Ex();
-         $arrRet = $objQuery->select('sess_data', 'dtb_session', "sess_id = ?", array($id));
+         $arrRet = $objQuery->select('sess_data', 'dtb_session', 'sess_id = ?', array($id));
          if (empty($arrRet)) {
              return '';
          } else {

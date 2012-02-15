@@ -316,7 +316,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
      */
     function getAllTemplates($device_type_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        return $objQuery->select('*', 'dtb_templates', "device_type_id = ?", array($device_type_id));
+        return $objQuery->select('*', 'dtb_templates', 'device_type_id = ?', array($device_type_id));
     }
 
     /**

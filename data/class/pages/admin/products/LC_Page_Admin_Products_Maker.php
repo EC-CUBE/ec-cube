@@ -223,7 +223,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      */
     function lfDelete($maker_id) {
         $objDb = new SC_Helper_DB_Ex();
-        $objDb->sfDeleteRankRecord('dtb_maker', 'maker_id', $maker_id, "", true);
+        $objDb->sfDeleteRankRecord('dtb_maker', 'maker_id', $maker_id, '', true);
     }
 
     /**
@@ -293,7 +293,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
         if (!isset($objErr->arrErr['name'])) {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $arrMaker = array();
-            $arrMaker = $objQuery->select('maker_id, name', 'dtb_maker', "del_flg = 0 AND name = ?", array($arrForm['name']));
+            $arrMaker = $objQuery->select('maker_id, name', 'dtb_maker', 'del_flg = 0 AND name = ?', array($arrForm['name']));
 
             // 編集中のレコード以外に同じ名称が存在する場合
             if ($arrMaker[0]['maker_id'] != $arrForm['maker_id'] && $arrMaker[0]['name'] == $arrForm['name']) {

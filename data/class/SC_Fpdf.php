@@ -106,16 +106,16 @@ class SC_Fpdf extends PDF_Japanese {
         $this->lfText(125, 60, $arrInfo['shop_name'], 8, 'B');          //ショップ名
         $this->lfText(125, 63, $arrInfo['law_url'], 8);          //URL
         $this->lfText(125, 68, $arrInfo['law_company'], 8);        //会社名
-        $text = '〒 '.$arrInfo['law_zip01']." - ".$arrInfo['law_zip02'];
+        $text = '〒 '.$arrInfo['law_zip01'].' - '.$arrInfo['law_zip02'];
         $this->lfText(125, 71, $text, 8);  //郵便番号
         $text = $this->arrPref[$arrInfo['law_pref']].$arrInfo['law_addr01'];
         $this->lfText(125, 74, $text, 8);  //都道府県+住所1
         $this->lfText(125, 77, $arrInfo['law_addr02'], 8);          //住所2
 
-        $text = 'TEL: '.$arrInfo['law_tel01']."-".$arrInfo['law_tel02']."-".$arrInfo['law_tel03'];
+        $text = 'TEL: '.$arrInfo['law_tel01'].'-'.$arrInfo['law_tel02'].'-'.$arrInfo['law_tel03'];
         //FAX番号が存在する場合、表示する
         if (strlen($arrInfo['law_fax01']) > 0) {
-            $text .= '　FAX: '.$arrInfo['law_fax01']."-".$arrInfo['law_fax02']."-".$arrInfo['law_fax03'];
+            $text .= '　FAX: '.$arrInfo['law_fax01'].'-'.$arrInfo['law_fax02'].'-'.$arrInfo['law_fax03'];
         }
         $this->lfText(125, 80, $text, 8);  //TEL・FAX
 
@@ -134,7 +134,7 @@ class SC_Fpdf extends PDF_Japanese {
         $this->lfText(27, 70, $this->arrData['msg1'], 8);  //メッセージ1
         $this->lfText(27, 74, $this->arrData['msg2'], 8);  //メッセージ2
         $this->lfText(27, 78, $this->arrData['msg3'], 8);  //メッセージ3
-        $text = '作成日: '.$this->arrData['year']."年".$this->arrData['month']."月".$this->arrData['day']."日";
+        $text = '作成日: '.$this->arrData['year'].'年'.$this->arrData['month'].'月'.$this->arrData['day'].'日';
         $this->lfText(158, 288, $text, 8);  //作成日
     }
 
@@ -143,12 +143,12 @@ class SC_Fpdf extends PDF_Japanese {
         $this->lfGetOrderData($this->arrData['order_id']);
 
         // 購入者情報
-        $text = '〒 '.$this->arrDisp['order_zip01']." - ".$this->arrDisp['order_zip02'];
+        $text = '〒 '.$this->arrDisp['order_zip01'].' - '.$this->arrDisp['order_zip02'];
         $this->lfText(23, 43, $text, 10); //購入者郵便番号
         $text = $this->arrPref[$this->arrDisp['order_pref']] . $this->arrDisp['order_addr01'];
         $this->lfText(27, 47, $text, 10); //購入者都道府県+住所1
         $this->lfText(27, 51, $this->arrDisp['order_addr02'], 10); //購入者住所2
-        $text = $this->arrDisp['order_name01'].'　'.$this->arrDisp['order_name02']."　様";
+        $text = $this->arrDisp['order_name01'].'　'.$this->arrDisp['order_name02'].'　様';
         $this->lfText(27, 59, $text, 11); //購入者氏名
 
         // お届け先情報
@@ -188,7 +188,7 @@ class SC_Fpdf extends PDF_Japanese {
                 if ($this->arrDisp['classcategory_name2'][$i] == '') {
                     $arrOrder[$i][0] .= ' ]';
                 } else {
-                    $arrOrder[$i][0] .= $this->lfConvSjis(' * '.$this->arrDisp['classcategory_name2'][$i]." ]");
+                    $arrOrder[$i][0] .= $this->lfConvSjis(' * '.$this->arrDisp['classcategory_name2'][$i].' ]');
                 }
             }
             $arrOrder[$i][1]  = number_format($data[0]);
@@ -270,7 +270,7 @@ class SC_Fpdf extends PDF_Japanese {
         ob_clean();
         if ($this->pdf_download == 1) {
             if ($this->PageNo() == 1) {
-                $filename = 'nouhinsyo-No'.$this->arrData['order_id'].".pdf";
+                $filename = 'nouhinsyo-No'.$this->arrData['order_id'].'.pdf';
             } else {
                 $filename = 'nouhinsyo.pdf';
             }

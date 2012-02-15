@@ -206,21 +206,21 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam('投稿者名', 'search_reviewer_name', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),"",false);
-        $objFormParam->addParam('投稿者URL', 'search_reviewer_url', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),"",false);
-        $objFormParam->addParam('商品名', 'search_name', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),"",false);
-        $objFormParam->addParam('商品コード', 'search_product_code', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),"",false);
-        $objFormParam->addParam('性別', 'search_sex', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),"",false);
-        $objFormParam->addParam('おすすめレベル', 'search_recommend_level', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),"",false);
-        $objFormParam->addParam('投稿年', 'search_startyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),"",false);
-        $objFormParam->addParam('投稿月', 'search_startmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),"",false);
-        $objFormParam->addParam('投稿日', 'search_startday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),"",false);
-        $objFormParam->addParam('投稿年', 'search_endyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),"",false);
-        $objFormParam->addParam('投稿月', 'search_endmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),"",false);
-        $objFormParam->addParam('投稿日', 'search_endday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),"",false);
-        $objFormParam->addParam('最大表示件数', 'search_page_max', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),"",false);
-        $objFormParam->addParam('ページ番号件数', 'search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),"",false);
-        $objFormParam->addParam('レビューID', 'review_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),"",false);
+        $objFormParam->addParam('投稿者名', 'search_reviewer_name', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),'',false);
+        $objFormParam->addParam('投稿者URL', 'search_reviewer_url', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),'',false);
+        $objFormParam->addParam('商品名', 'search_name', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),'',false);
+        $objFormParam->addParam('商品コード', 'search_product_code', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),'',false);
+        $objFormParam->addParam('性別', 'search_sex', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),'',false);
+        $objFormParam->addParam('おすすめレベル', 'search_recommend_level', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),'',false);
+        $objFormParam->addParam('投稿年', 'search_startyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),'',false);
+        $objFormParam->addParam('投稿月', 'search_startmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),'',false);
+        $objFormParam->addParam('投稿日', 'search_startday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),'',false);
+        $objFormParam->addParam('投稿年', 'search_endyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),'',false);
+        $objFormParam->addParam('投稿月', 'search_endmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),'',false);
+        $objFormParam->addParam('投稿日', 'search_endday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),'',false);
+        $objFormParam->addParam('最大表示件数', 'search_page_max', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),'',false);
+        $objFormParam->addParam('ページ番号件数', 'search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),'',false);
+        $objFormParam->addParam('レビューID', 'review_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),'',false);
     }
 
     /**
@@ -344,7 +344,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
         $linemax = $objQuery->count($from, $where, $arrval);
         $this->tpl_linemax = $linemax;
 
-        $this->tpl_pageno = isset($arrForm['search_pageno']) ? $arrForm['search_pageno'] : "";
+        $this->tpl_pageno = isset($arrForm['search_pageno']) ? $arrForm['search_pageno'] : '';
 
         // ページ送りの取得
         $objNavi = new SC_PageNavi_Ex($this->tpl_pageno, $linemax, $page_max,

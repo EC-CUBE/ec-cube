@@ -129,7 +129,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                     if ($this->isError($arrErr) === false) {
                         // テンプレート再生成.
                         $this->remakeTemplate();
-                        echo SC_Utils_Ex::jsonEncode(array('message' => $plugin['plugin_name'] . "を有効にしました。"));
+                        echo SC_Utils_Ex::jsonEncode(array('message' => $plugin['plugin_name'] . 'を有効にしました。'));
                     }
                 }
                 exit;
@@ -147,7 +147,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                     if ($this->isError($arrErr) === false) {
                         // テンプレート再生成.
                         $this->remakeTemplate();
-                        echo SC_Utils_Ex::jsonEncode(array('message' => $plugin['plugin_name'] . "を無効にしました。"));
+                        echo SC_Utils_Ex::jsonEncode(array('message' => $plugin['plugin_name'] . 'を無効にしました。'));
                     }
                 }
                 exit;
@@ -203,7 +203,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
 
         foreach ($plugins as $key => $plugin) {
             // 設定ファイルがあるかを判定.
-            $plugins[$key]['config_flg'] = $this->isContainsFile(PLUGIN_UPLOAD_REALDIR . $plugin['plugin_code'], "config.php");
+            $plugins[$key]['config_flg'] = $this->isContainsFile(PLUGIN_UPLOAD_REALDIR . $plugin['plugin_code'], 'config.php');
             if ($plugins[$key]['enable'] === PLUGIN_ENABLE_TRUE) {
                 // 競合するプラグインがあるかを判定.
                 $plugins[$key]['conflict_message']= $this->checkConflictPlugin($plugin['plugin_id']);
@@ -725,7 +725,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         if (method_exists($plugin_code, $exec_func) === true) {
             call_user_func(array($plugin_code, $exec_func), $plugin_id);
         } else {
-            $arrErr['plugin_error'] = '※ ' . $plugin_code . ".php に" . $exec_func . "が見つかりません。<br/>";
+            $arrErr['plugin_error'] = '※ ' . $plugin_code . '.php に' . $exec_func . 'が見つかりません。<br/>';
         }
 
         return $arrErr;
@@ -872,7 +872,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
             $conflictPlugins = $objQuery->select('T1.plugin_id, T2.plugin_name', $table, $where, array($conflictHookPoint['hook_point'], $conflictHookPoint['plugin_id']));
 
             foreach ($conflictPlugins as $conflictPlugin) {
-                $conflict_alert_message =+ '* ' .  $conflictPlugin['plugin_name'] . "と競合する可能性があります。<br/>";
+                $conflict_alert_message =+ '* ' .  $conflictPlugin['plugin_name'] . 'と競合する可能性があります。<br/>';
             }
         }
         return $conflict_alert_message;

@@ -150,11 +150,11 @@ class SC_SendMail {
             return $name_address;
     }
 
-    function setItem($to, $subject, $body, $fromaddress, $from_name, $reply_to='', $return_path='', $errors_to="", $bcc="", $cc ="") {
+    function setItem($to, $subject, $body, $fromaddress, $from_name, $reply_to='', $return_path='', $errors_to='', $bcc='', $cc ='') {
         $this->setBase($to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc);
     }
 
-    function setItemHtml($to, $subject, $body, $fromaddress, $from_name, $reply_to='', $return_path='', $errors_to="", $bcc="", $cc ="") {
+    function setItemHtml($to, $subject, $body, $fromaddress, $from_name, $reply_to='', $return_path='', $errors_to='', $bcc='', $cc ='') {
         $this->setBase($to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc);
     }
 
@@ -170,7 +170,7 @@ class SC_SendMail {
          $cc            -> カーボンコピー
          $bcc           -> ブラインドカーボンコピー
     */
-    function setBase($to, $subject, $body, $fromaddress, $from_name, $reply_to='', $return_path='', $errors_to="", $bcc="", $cc ="") {
+    function setBase($to, $subject, $body, $fromaddress, $from_name, $reply_to='', $return_path='', $errors_to='', $bcc='', $cc ='') {
         // 宛先設定
         $this->setTo($to);
         // 件名設定

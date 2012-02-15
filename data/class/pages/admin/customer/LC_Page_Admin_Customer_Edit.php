@@ -206,9 +206,9 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         // 会員項目のパラメーター取得
         SC_Helper_Customer_Ex::sfCustomerEntryParam($objFormParam, true);
         // 検索結果一覧画面への戻り用パラメーター
-        $objFormParam->addParam('検索用データ', 'search_data', "", "", array(), "", false);
+        $objFormParam->addParam('検索用データ', 'search_data', '', '', array(), '', false);
         // 会員購入履歴ページング用
-        $objFormParam->addParam('', 'search_pageno', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), "", false);
+        $objFormParam->addParam('', 'search_pageno', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), '', false);
     }
 
     /**

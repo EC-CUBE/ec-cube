@@ -155,7 +155,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
             $this->arrErr = $objFormParam->checkError();
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 if (!$this->tryCreateDir($objFileManager, $objFormParam)) {
-                    $disp_error = '※ '.htmlspecialchars($objFormParam->getValue('create_file'), ENT_QUOTES)."の作成に失敗しました。<br/>";
+                    $disp_error = '※ '.htmlspecialchars($objFormParam->getValue('create_file'), ENT_QUOTES).'の作成に失敗しました。<br/>';
                     $this->setDispError('create_file', $disp_error);
                 } else {
                     $tpl_onload = "alert('フォルダを作成しました。');";
@@ -454,7 +454,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
         $arrTree = $objFileManager->sfGetFileTree($objFormParam->getValue('top_dir'), $objFormParam->getValue('tree_status'));
         $tpl_javascript .= "arrTree = new Array();\n";
         foreach ($arrTree as $arrVal) {
-            $tpl_javascript .= 'arrTree['.$arrVal['count']."] = new Array(".$arrVal['count'].", '".$arrVal['type']."', '".$arrVal['path']."', ".$arrVal['rank'].",";
+            $tpl_javascript .= 'arrTree['.$arrVal['count'].'] = new Array('.$arrVal['count'].", '".$arrVal['type']."', '".$arrVal['path']."', ".$arrVal['rank'].",";
             if ($arrVal['open']) {
                 $tpl_javascript .= "true);\n";
             } else {

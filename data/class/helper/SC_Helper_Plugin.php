@@ -101,7 +101,7 @@ class SC_Helper_Plugin {
 
             krsort($this->arrRegistedPluginActions[$hook_point]);
             foreach ($this->arrRegistedPluginActions[$hook_point] as $priority => $arrFuncs) {
-                
+
                 foreach ($arrFuncs as $func) {
                     if (!is_null($func['function'])) {
                         call_user_func_array($func['function'], $arrArgs);
@@ -303,7 +303,7 @@ class SC_Helper_Plugin {
         $objTemplateTransformList->init();
         // プラグインのsetTemplateTransformerを実行します.
         foreach ($this->arrPluginInstances as $objPlugin) {
-            if(method_exists($objPlugin, 'setTemplateTransformer') === true) {
+            if (method_exists($objPlugin, 'setTemplateTransformer') === true) {
                 // SC_Plugin_TemplateTransformList::arrConfsByTemplatesにトランスフォーム情報をセットします
                 $objPlugin->setTemplateTransformer();
             }

@@ -75,7 +75,7 @@ class LC_Page_InputZip extends LC_Page_Ex {
 
             // 郵便番号が発見された場合
             if (!empty($arrAdsList)) {
-                $data = $arrAdsList[0]['state']. '|'. $arrAdsList[0]['city']. "|". $arrAdsList[0]['town'];
+                $data = $arrAdsList[0]['state']. '|'. $arrAdsList[0]['city']. '|'. $arrAdsList[0]['town'];
                 echo $data;
 
             // 該当無し

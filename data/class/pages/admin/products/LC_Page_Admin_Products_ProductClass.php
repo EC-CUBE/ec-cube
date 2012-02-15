@@ -227,7 +227,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
 
         $objQuery->begin();
 
-        $arrProductsClass = $objQuery->select('*', 'dtb_products_class', "product_id = ?", array($product_id));
+        $arrProductsClass = $objQuery->select('*', 'dtb_products_class', 'product_id = ?', array($product_id));
         $arrExists = array();
         foreach ($arrProductsClass as $val) {
             $arrExists[$val['product_class_id']] = $val;
@@ -575,7 +575,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                 $size = $size / 1000;
                 $byte = 'MB';
             }
-            $this->arrErr['down_realfilename'][$index] = '※ ダウンロード販売用ファイル名のファイルサイズは' . $size . $byte . "以下のものを使用してください。<br />";
+            $this->arrErr['down_realfilename'][$index] = '※ ダウンロード販売用ファイル名のファイルサイズは' . $size . $byte . '以下のものを使用してください。<br />';
         } else {
             $array_ext = explode('.', $_FILES['down_realfilename']['name'][$index]);
             $is_error = true;
@@ -605,19 +605,19 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                 }
             }
             if ($is_error) {
-                $this->arrErr['down_realfilename'][$index] = '※ ダウンロード販売用ファイル名で許可されている形式は、' . $strExt . "です。<br />";
+                $this->arrErr['down_realfilename'][$index] = '※ ダウンロード販売用ファイル名で許可されている形式は、' . $strExt . 'です。<br />';
             }
 
-            $uniqname = date('mdHi') . '_' . uniqid("").".";
+            $uniqname = date('mdHi') . '_' . uniqid('').'.';
             $temp_file = preg_replace("/^.*\./", $uniqname, $_FILES['down_realfilename']['name'][$index]);
 
             if (move_uploaded_file($_FILES['down_realfilename']['tmp_name'][$index], DOWN_TEMP_REALDIR . $temp_file)) {
                 $arrDownRealFiles[$index] = $temp_file;
                 $objFormParam->setValue('down_realfilename', $arrDownRealFiles);
-                GC_Utils_Ex::gfPrintLog($_FILES['down_realfilename']['name'][$index] ." -> ". realpath(DOWN_TEMP_REALDIR . $temp_file));
+                GC_Utils_Ex::gfPrintLog($_FILES['down_realfilename']['name'][$index] .' -> '. realpath(DOWN_TEMP_REALDIR . $temp_file));
             } else {
                 $objErr->arrErr[$keyname] = '※ ファイルのアップロードに失敗しました。<br />';
-                GC_Utils_Ex::gfPrintLog('File Upload Error!: ' . $_FILES['down_realfilename']['name'][$index] . " -> " . DOWN_TEMP_REALDIR . $temp_file);
+                GC_Utils_Ex::gfPrintLog('File Upload Error!: ' . $_FILES['down_realfilename']['name'][$index] . ' -> ' . DOWN_TEMP_REALDIR . $temp_file);
             }
         }
     }
