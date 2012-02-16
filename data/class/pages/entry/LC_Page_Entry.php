@@ -91,47 +91,47 @@ class LC_Page_Entry extends LC_Page_Ex {
         }
 
         switch ($this->getMode()) {
-        case 'confirm':
-            //-- 確認
-            $this->arrErr = SC_Helper_Customer_Ex::sfCustomerEntryErrorCheck($objFormParam);
-            $this->arrForm  = $objFormParam->getHashArray();
-            // 入力エラーなし
-            if (empty($this->arrErr)) {
-                //パスワード表示
-                $this->passlen      = SC_Utils_Ex::sfPassLen(strlen($this->arrForm['password']));
+            case 'confirm':
+                //-- 確認
+                $this->arrErr = SC_Helper_Customer_Ex::sfCustomerEntryErrorCheck($objFormParam);
+                $this->arrForm  = $objFormParam->getHashArray();
+                // 入力エラーなし
+                if (empty($this->arrErr)) {
+                    //パスワード表示
+                    $this->passlen      = SC_Utils_Ex::sfPassLen(strlen($this->arrForm['password']));
 
-                $this->tpl_mainpage = 'entry/confirm.tpl';
-                $this->tpl_title    = '会員登録(確認ページ)';
-            }
-            break;
-        case 'complete':
-            //-- 会員登録と完了画面
-            $this->arrErr = SC_Helper_Customer_Ex::sfCustomerEntryErrorCheck($objFormParam);
-            $this->arrForm  = $objFormParam->getHashArray();
-            if (empty($this->arrErr)) {
-
-                $uniqid             = $this->lfRegistCustomerData($this->lfMakeSqlVal($objFormParam));
-
-                $this->tpl_mainpage = 'entry/complete.tpl';
-                $this->tpl_title    = '会員登録(完了ページ)';
-                $this->lfSendMail($uniqid, $this->arrForm);
-
-                // 仮会員が無効の場合
-                if (CUSTOMER_CONFIRM_MAIL == false) {
-                    // ログイン状態にする
-                    $objCustomer = new SC_Customer_Ex();
-                    $objCustomer->setLogin($this->arrForm['email']);
+                    $this->tpl_mainpage = 'entry/confirm.tpl';
+                    $this->tpl_title    = '会員登録(確認ページ)';
                 }
+                break;
+            case 'complete':
+                //-- 会員登録と完了画面
+                $this->arrErr = SC_Helper_Customer_Ex::sfCustomerEntryErrorCheck($objFormParam);
+                $this->arrForm  = $objFormParam->getHashArray();
+                if (empty($this->arrErr)) {
 
-                // 完了ページに移動させる。
-                SC_Response_Ex::sendRedirect('complete.php', array('ci' => SC_Helper_Customer_Ex::sfGetCustomerId($uniqid)));
-            }
-            break;
-        case 'return':
-            $this->arrForm  = $objFormParam->getHashArray();
-            break;
-        default:
-            break;
+                    $uniqid             = $this->lfRegistCustomerData($this->lfMakeSqlVal($objFormParam));
+
+                    $this->tpl_mainpage = 'entry/complete.tpl';
+                    $this->tpl_title    = '会員登録(完了ページ)';
+                    $this->lfSendMail($uniqid, $this->arrForm);
+
+                    // 仮会員が無効の場合
+                    if (CUSTOMER_CONFIRM_MAIL == false) {
+                        // ログイン状態にする
+                        $objCustomer = new SC_Customer_Ex();
+                        $objCustomer->setLogin($this->arrForm['email']);
+                    }
+
+                    // 完了ページに移動させる。
+                    SC_Response_Ex::sendRedirect('complete.php', array('ci' => SC_Helper_Customer_Ex::sfGetCustomerId($uniqid)));
+                }
+                break;
+            case 'return':
+                $this->arrForm  = $objFormParam->getHashArray();
+                break;
+            default:
+                break;
         }
     }
 

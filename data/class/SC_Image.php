@@ -147,91 +147,91 @@ class SC_Image {
         $ImgNew = imagecreatetruecolor($re_size[0],$re_size[1]);
 
         switch ($size[2]) {
-        case '1': //gif形式
-            if ($tmp_w <= 1 && $tmp_h <= 1) {
+            case '1': //gif形式
+                if ($tmp_w <= 1 && $tmp_h <= 1) {
+                    if ($newFileName) {
+                        $ToFile = $newFileName;
+                    } elseif ($ext) {
+                        $ToFile .= '.' . $ext;
+                    } else {
+                        $ToFile .= '.gif';
+                    }
+                    if (!@copy($FromImgPath , $ToImgPath.$ToFile)) { // エラー処理
+                        return array(0,'ファイルのコピーに失敗しました。');
+                    }
+                    ImageDestroy($ImgNew);
+                    return array(1,$ToFile);
+                }
+
+                ImageColorAllocate($ImgNew,255,235,214); //背景色
+                $black = ImageColorAllocate($ImgNew,0,0,0);
+                $red = ImageColorAllocate($ImgNew,255,0,0);
+                Imagestring($ImgNew,4,5,5,"GIF $size[0]x$size[1]", $red);
+                ImageRectangle ($ImgNew,0,0,($re_size[0]-1),($re_size[1]-1),    $black);
+
                 if ($newFileName) {
                     $ToFile = $newFileName;
                 } elseif ($ext) {
                     $ToFile .= '.' . $ext;
                 } else {
-                    $ToFile .= '.gif';
+                    $ToFile .= '.png';
                 }
-                if (!@copy($FromImgPath , $ToImgPath.$ToFile)) { // エラー処理
-                    return array(0,'ファイルのコピーに失敗しました。');
+                $TmpPath = $ToImgPath.$ToFile;
+                @Imagepng($ImgNew,$TmpPath);
+                // 画像が作成されていない場合
+                if (!@file_exists($TmpPath)) {
+                    return array(0,'画像の出力に失敗しました。');
                 }
                 ImageDestroy($ImgNew);
                 return array(1,$ToFile);
-            }
 
-            ImageColorAllocate($ImgNew,255,235,214); //背景色
-            $black = ImageColorAllocate($ImgNew,0,0,0);
-            $red = ImageColorAllocate($ImgNew,255,0,0);
-            Imagestring($ImgNew,4,5,5,"GIF $size[0]x$size[1]", $red);
-            ImageRectangle ($ImgNew,0,0,($re_size[0]-1),($re_size[1]-1),    $black);
+            case '2': //jpg形式
+                $ImgDefault = ImageCreateFromJpeg($FromImgPath);
+                //ImageCopyResized($ImgNew,$ImgDefault, 0, 0, 0, 0,$re_size[0], $re_size[1],$size[0], $size[1]);
 
-            if ($newFileName) {
-                $ToFile = $newFileName;
-            } elseif ($ext) {
-                $ToFile .= '.' . $ext;
-            } else {
-                $ToFile .= '.png';
-            }
-            $TmpPath = $ToImgPath.$ToFile;
-            @Imagepng($ImgNew,$TmpPath);
-            // 画像が作成されていない場合
-            if (!@file_exists($TmpPath)) {
-                return array(0,'画像の出力に失敗しました。');
-            }
-            ImageDestroy($ImgNew);
-            return array(1,$ToFile);
+                if ($re_size[0] != $size[0] || $re_size[0] != $size[0]) {
+                    ImageCopyResampled($ImgNew,$ImgDefault, 0, 0, 0, 0,$re_size[0], $re_size[1],$size[0], $size[1]);
+                }
 
-        case '2': //jpg形式
-            $ImgDefault = ImageCreateFromJpeg($FromImgPath);
-            //ImageCopyResized($ImgNew,$ImgDefault, 0, 0, 0, 0,$re_size[0], $re_size[1],$size[0], $size[1]);
+                GC_Utils_Ex::gfDebugLog($size);
+                GC_Utils_Ex::gfDebugLog($re_size);
 
-            if ($re_size[0] != $size[0] || $re_size[0] != $size[0]) {
-                ImageCopyResampled($ImgNew,$ImgDefault, 0, 0, 0, 0,$re_size[0], $re_size[1],$size[0], $size[1]);
-            }
+                if ($newFileName) {
+                    $ToFile = $newFileName;
+                } elseif ($ext) {
+                    $ToFile .= '.' . $ext;
+                } else {
+                    $ToFile .= '.jpg';
+                }
+                $TmpPath = $ToImgPath.$ToFile;
+                @ImageJpeg($ImgNew,$TmpPath);
+                // 画像が作成されていない場合
+                if (!@file_exists($TmpPath)) {
+                    return array(0,"画像の出力に失敗しました。<br>${ImgNew}<br>${TmpPath}");
+                }
+                $RetVal = $ToFile;
+                break;
 
-            GC_Utils_Ex::gfDebugLog($size);
-            GC_Utils_Ex::gfDebugLog($re_size);
+            case '3': //png形式
+                $ImgDefault = ImageCreateFromPNG($FromImgPath);
+                //ImageCopyResized($ImgNew, $ImgDefault, 0, 0, 0, 0,$re_size[0], $re_size[1],$size[0], $size[1]);
+                ImageCopyResampled($ImgNew, $ImgDefault, 0, 0, 0, 0,$re_size[0], $re_size[1],$size[0], $size[1]);
 
-            if ($newFileName) {
-                $ToFile = $newFileName;
-            } elseif ($ext) {
-                $ToFile .= '.' . $ext;
-            } else {
-                $ToFile .= '.jpg';
-            }
-            $TmpPath = $ToImgPath.$ToFile;
-            @ImageJpeg($ImgNew,$TmpPath);
-            // 画像が作成されていない場合
-            if (!@file_exists($TmpPath)) {
-                return array(0,"画像の出力に失敗しました。<br>${ImgNew}<br>${TmpPath}");
-            }
-            $RetVal = $ToFile;
-            break;
-
-        case '3': //png形式
-            $ImgDefault = ImageCreateFromPNG($FromImgPath);
-            //ImageCopyResized($ImgNew, $ImgDefault, 0, 0, 0, 0,$re_size[0], $re_size[1],$size[0], $size[1]);
-            ImageCopyResampled($ImgNew, $ImgDefault, 0, 0, 0, 0,$re_size[0], $re_size[1],$size[0], $size[1]);
-
-            if ($newFileName) {
-                $ToFile = $newFileName;
-            } elseif ($ext) {
-                $ToFile .= '.' . $ext;
-            } else {
-                $ToFile .= '.png';
-            }
-            $TmpPath = $ToImgPath.$ToFile;
-            @ImagePNG($ImgNew,$TmpPath);
-            // 画像が作成されていない場合
-            if (!@file_exists($TmpPath)) {
-                return array(0,'画像の出力に失敗しました。');
-            }
-            $RetVal = $ToFile;
-            break;
+                if ($newFileName) {
+                    $ToFile = $newFileName;
+                } elseif ($ext) {
+                    $ToFile .= '.' . $ext;
+                } else {
+                    $ToFile .= '.png';
+                }
+                $TmpPath = $ToImgPath.$ToFile;
+                @ImagePNG($ImgNew,$TmpPath);
+                // 画像が作成されていない場合
+                if (!@file_exists($TmpPath)) {
+                    return array(0,'画像の出力に失敗しました。');
+                }
+                $RetVal = $ToFile;
+                break;
         }
 
         ImageDestroy($ImgDefault);

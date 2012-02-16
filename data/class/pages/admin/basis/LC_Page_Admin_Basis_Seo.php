@@ -95,26 +95,26 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
         $page_id = (isset($post['page_id'])) ? $post['page_id'] : '';
 
         switch ($mode) {
-        case 'confirm':
-            $objFormParam->setParam($_POST['meta'][$device_type_id][$page_id]);
-            $this->arrErr[$device_type_id][$page_id] = $objFormParam->checkError();
+            case 'confirm':
+                $objFormParam->setParam($_POST['meta'][$device_type_id][$page_id]);
+                $this->arrErr[$device_type_id][$page_id] = $objFormParam->checkError();
 
-            // エラーがなければデータを更新
-            if (count($this->arrErr[$device_type_id][$page_id]) == 0) {
-                $arrMETA = $objFormParam->getHashArray();
+                // エラーがなければデータを更新
+                if (count($this->arrErr[$device_type_id][$page_id]) == 0) {
+                    $arrMETA = $objFormParam->getHashArray();
 
-                // 更新データ配列生成
-                $arrUpdData = array($arrMETA['author'], $arrMETA['description'], $arrMETA['keyword'], $device_type_id, $page_id);
-                // データ更新
-                $this->lfUpdPageData($arrUpdData);
-            } else {
-                // POSTのデータを再表示
-                $arrPageData = $this->lfSetData($this->arrPageData, $_POST['meta']);
-                $this->arrPageData = $arrPageData;
-            }
-            break;
-        default:
-            break;
+                    // 更新データ配列生成
+                    $arrUpdData = array($arrMETA['author'], $arrMETA['description'], $arrMETA['keyword'], $device_type_id, $page_id);
+                    // データ更新
+                    $this->lfUpdPageData($arrUpdData);
+                } else {
+                    // POSTのデータを再表示
+                    $arrPageData = $this->lfSetData($this->arrPageData, $_POST['meta']);
+                    $this->arrPageData = $arrPageData;
+                }
+                break;
+            default:
+                break;
         }
 
         // エラーがなければデータの取得

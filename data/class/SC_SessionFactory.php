@@ -58,25 +58,25 @@ class SC_SessionFactory {
             : '';
 
         switch ($type) {
-        // セッションの維持にリクエストパラメーターを使用する
-        case 'useRequest':
-            $session = new SC_SessionFactory_UseRequest;
-            SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE
-                ? $session->setState('mobile')
-                : $session->setState('pc');
-            break;
-
-        // クッキーを使用する
-        case 'useCookie':
-            // モバイルの場合はSC_SessionFactory_UseRequestを使用する
-            if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
+            // セッションの維持にリクエストパラメーターを使用する
+            case 'useRequest':
                 $session = new SC_SessionFactory_UseRequest;
-                $session->setState('mobile');
+                SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE
+                    ? $session->setState('mobile')
+                    : $session->setState('pc');
                 break;
-            }
-        default:
-            $session = new SC_SessionFactory_UseCookie;
-            break;
+
+            // クッキーを使用する
+            case 'useCookie':
+                // モバイルの場合はSC_SessionFactory_UseRequestを使用する
+                if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
+                    $session = new SC_SessionFactory_UseRequest;
+                    $session->setState('mobile');
+                    break;
+                }
+            default:
+                $session = new SC_SessionFactory_UseCookie;
+                break;
         }
 
         return $session;

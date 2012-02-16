@@ -83,32 +83,32 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
         $this->arrMailTEMPLATE = $masterData->getMasterData('mtb_mail_template');
 
         switch ($mode) {
-        case 'id_set':
-                $result = $this->lfGetMailTemplateByTemplateID($post['template_id']);
-                if ($result) {
-                    $this->arrForm = $result[0];
-                } else {
-                    $this->arrForm['template_id'] = $post['template_id'];
-                }
-            break;
-        case 'regist':
+            case 'id_set':
+                    $result = $this->lfGetMailTemplateByTemplateID($post['template_id']);
+                    if ($result) {
+                        $this->arrForm = $result[0];
+                    } else {
+                        $this->arrForm['template_id'] = $post['template_id'];
+                    }
+                break;
+            case 'regist':
 
-                $this->arrForm = $post;
-                if ($this->arrErr) {
-                    // エラーメッセージ
-                    $this->tpl_msg = 'エラーが発生しました';
+                    $this->arrForm = $post;
+                    if ($this->arrErr) {
+                        // エラーメッセージ
+                        $this->tpl_msg = 'エラーが発生しました';
 
-                } else {
-                    // 正常
-                    $this->lfRegistMailTemplate($this->arrForm, $_SESSION['member_id']);
+                    } else {
+                        // 正常
+                        $this->lfRegistMailTemplate($this->arrForm, $_SESSION['member_id']);
 
-                    // 完了メッセージ
-                    $this->tpl_onload = "window.alert('メール設定が完了しました。テンプレートを選択して内容をご確認ください。');";
-                    unset($this->arrForm);
-                }
-            break;
-        default:
-            break;
+                        // 完了メッセージ
+                        $this->tpl_onload = "window.alert('メール設定が完了しました。テンプレートを選択して内容をご確認ください。');";
+                        unset($this->arrForm);
+                    }
+                break;
+            default:
+                break;
         }
     }
 

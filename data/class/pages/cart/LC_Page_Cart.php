@@ -93,40 +93,40 @@ class LC_Page_Cart extends LC_Page_Ex {
         $cartKey = $objFormParam->getValue('cartKey');
 
         switch ($this->mode) {
-        case 'confirm':
-            // カート内情報の取得
-            $cartList = $objCartSess->getCartList($cartKey);
-            // カート商品が1件以上存在する場合
-            if (count($cartList) > 0) {
-                // カートを購入モードに設定
-                $this->lfSetCurrentCart($objSiteSess, $objCartSess, $cartKey);
-                // 購入ページへ
-                SC_Response_Ex::sendRedirect(SHOPPING_URL);
+            case 'confirm':
+                // カート内情報の取得
+                $cartList = $objCartSess->getCartList($cartKey);
+                // カート商品が1件以上存在する場合
+                if (count($cartList) > 0) {
+                    // カートを購入モードに設定
+                    $this->lfSetCurrentCart($objSiteSess, $objCartSess, $cartKey);
+                    // 購入ページへ
+                    SC_Response_Ex::sendRedirect(SHOPPING_URL);
+                    exit;
+                }
+                break;
+            case 'up'://1個追加
+                $objCartSess->upQuantity($cart_no, $cartKey);
+                SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
                 exit;
-            }
-            break;
-        case 'up'://1個追加
-            $objCartSess->upQuantity($cart_no, $cartKey);
-            SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
-            exit;
-            break;
-        case 'down'://1個減らす
-            $objCartSess->downQuantity($cart_no, $cartKey);
-            SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
-            exit;
-            break;
-        case 'setQuantity'://数量変更
-            $objCartSess->setQuantity($objFormParam->getValue('quantity'), $cart_no, $cartKey);
-            SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
-            exit;
-            break;
-        case 'delete'://カートから削除
-            $objCartSess->delProduct($cart_no, $cartKey);
-            SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
-            exit;
-            break;
-        default:
-            break;
+                break;
+            case 'down'://1個減らす
+                $objCartSess->downQuantity($cart_no, $cartKey);
+                SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
+                exit;
+                break;
+            case 'setQuantity'://数量変更
+                $objCartSess->setQuantity($objFormParam->getValue('quantity'), $cart_no, $cartKey);
+                SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
+                exit;
+                break;
+            case 'delete'://カートから削除
+                $objCartSess->delProduct($cart_no, $cartKey);
+                SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
+                exit;
+                break;
+            default:
+                break;
         }
         $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
         $totalIncTax = 0;

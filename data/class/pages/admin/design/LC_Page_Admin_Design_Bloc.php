@@ -83,38 +83,39 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
         $objLayout = new SC_Helper_PageLayout_Ex();
 
         switch ($this->getMode()) {
-        // 登録/更新
-        case 'confirm':
-            if (!$is_error) {
-                $this->arrErr = $this->lfCheckError($objFormParam, $this->arrErr, $objLayout);
-                if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                    $result = $this->doRegister($objFormParam, $objLayout);
-                    if ($result !== false) {
-                        SC_Response_Ex::reload(array('bloc_id' => $result,
-                                                     'device_type_id' => $this->device_type_id,
+            // 登録/更新
+            case 'confirm':
+                if (!$is_error) {
+                    $this->arrErr = $this->lfCheckError($objFormParam, $this->arrErr, $objLayout);
+                    if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                        $result = $this->doRegister($objFormParam, $objLayout);
+                        if ($result !== false) {
+                            SC_Response_Ex::reload(array('bloc_id' => $result,
+                                                         'device_type_id' => $this->device_type_id,
+                                                         'msg' => 'on'), true);
+                            exit;
+                        }
+                    }
+                }
+                break;
+
+            // 削除
+            case 'delete':
+                if (!$is_error) {
+                    if ($this->doDelete($objFormParam, $objLayout)) {
+                        SC_Response_Ex::reload(array('device_type_id' => $this->device_type_id,
                                                      'msg' => 'on'), true);
                         exit;
                     }
                 }
-            }
-            break;
+                break;
 
-        // 削除
-        case 'delete':
-            if (!$is_error) {
-                if ($this->doDelete($objFormParam, $objLayout)) {
-                    SC_Response_Ex::reload(array('device_type_id' => $this->device_type_id,
-                                                 'msg' => 'on'), true);
-                    exit;
+            default:
+                if (isset($_GET['msg']) && $_GET['msg'] == 'on') {
+                    // 完了メッセージ
+                    $this->tpl_onload = "alert('登録が完了しました。');";
                 }
-            }
-            break;
-
-        default:
-            if (isset($_GET['msg']) && $_GET['msg'] == 'on') {
-                // 完了メッセージ
-                $this->tpl_onload = "alert('登録が完了しました。');";
-            }
+                break;
         }
 
         if (!$is_error) {

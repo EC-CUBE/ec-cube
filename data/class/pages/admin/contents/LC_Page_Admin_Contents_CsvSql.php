@@ -76,56 +76,56 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $objFormParam->convParam();
         $this->arrForm = $objFormParam->getHashArray();
         switch ($this->getMode()) {
-        // データの登録
-        case 'confirm':
-            $this->arrErr = $this->lfCheckConfirmError($objFormParam);
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                // データの更新
-                $this->arrForm['sql_id'] = $this->lfUpdData($objFormParam->getValue('sql_id'), $objFormParam->getDbArray());
-                // 完了メッセージ表示
-                $this->tpl_onload = "alert('登録が完了しました。');";
-            }
-            break;
-        // 確認画面
-        case 'preview':
-            $this->arrErr = $this->lfCheckPreviewError($objFormParam);
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                $this->sqlerr = $this->lfCheckSQL($objFormParam->getValue('csv_sql'));
-            }
-            $this->setTemplate('contents/csv_sql_view.tpl');
-            return;
-            break;
-        // 新規作成
-        case 'new_page':
-            // リロード
-            SC_Response_Ex::reload();
-            break;
-        // データ削除
-        case 'delete':
-            $this->arrErr = $this->lfCheckDeleteError($objFormParam);
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                $this->lfDelData($objFormParam->getValue('sql_id'));
+            // データの登録
+            case 'confirm':
+                $this->arrErr = $this->lfCheckConfirmError($objFormParam);
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    // データの更新
+                    $this->arrForm['sql_id'] = $this->lfUpdData($objFormParam->getValue('sql_id'), $objFormParam->getDbArray());
+                    // 完了メッセージ表示
+                    $this->tpl_onload = "alert('登録が完了しました。');";
+                }
+                break;
+            // 確認画面
+            case 'preview':
+                $this->arrErr = $this->lfCheckPreviewError($objFormParam);
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    $this->sqlerr = $this->lfCheckSQL($objFormParam->getValue('csv_sql'));
+                }
+                $this->setTemplate('contents/csv_sql_view.tpl');
+                return;
+
+            // 新規作成
+            case 'new_page':
+                // リロード
                 SC_Response_Ex::reload();
-                exit;
-            }
-            break;
-        // CSV出力
-        case 'csv_output':
-            $this->arrErr = $this->lfCheckOutputError($objFormParam);
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                $this->lfDoCsvOutput($objFormParam->getValue('csv_output_id'));
-                exit;
-            }
-            break;
-        default:
-            $this->arrErr = $objFormParam->checkError();
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                // 設定内容を取得する
-                $this->arrForm = $this->lfGetSqlData($objFormParam);
-                // カラム一覧を取得する
-                $this->arrColList = $this->lfGetColList($objFormParam->getValue('select_table'));
-            }
-            break;
+                break;
+            // データ削除
+            case 'delete':
+                $this->arrErr = $this->lfCheckDeleteError($objFormParam);
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    $this->lfDelData($objFormParam->getValue('sql_id'));
+                    SC_Response_Ex::reload();
+                    exit;
+                }
+                break;
+            // CSV出力
+            case 'csv_output':
+                $this->arrErr = $this->lfCheckOutputError($objFormParam);
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    $this->lfDoCsvOutput($objFormParam->getValue('csv_output_id'));
+                    exit;
+                }
+                break;
+            default:
+                $this->arrErr = $objFormParam->checkError();
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    // 設定内容を取得する
+                    $this->arrForm = $this->lfGetSqlData($objFormParam);
+                    // カラム一覧を取得する
+                    $this->arrColList = $this->lfGetColList($objFormParam->getValue('select_table'));
+                }
+                break;
         }
 
         // 登録済みSQL一覧取得

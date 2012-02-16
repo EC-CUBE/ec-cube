@@ -93,190 +93,194 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
 
         $mode = $this->getMode();
         switch ($mode) {
-        case 'pre_edit':
-        case 'copy' :
-            // パラメーター初期化(商品ID)
-            $this->lfInitFormParam_PreEdit($objFormParam, $_POST);
-            // エラーチェック
-            $this->arrErr = $objFormParam->checkError();
-            if (count($this->arrErr) > 0) {
-                SC_Utils_Ex::sfDispException();
-            }
-
-            // 商品ID取得
-            $product_id = $objFormParam->getValue('product_id');
-            // 商品データ取得
-            $arrForm = $this->lfGetFormParam_PreEdit($objUpFile, $objDownFile, $product_id);
-
-            // 複製の場合は、ダウンロード商品情報部分はコピーしない
-            if ($mode == 'copy') {
-                // ダウンロード商品ファイル名をunset
-                $arrForm['down_filename'] = '';
-
-                // $objDownFile->setDBDownFile()でsetされたダウンロードファイル名をunset
-                unset($objDownFile->save_file[0]);
-            }
-
-            // ページ表示用パラメーター設定
-            $this->arrForm = $this->lfSetViewParam_InputPage($objUpFile, $objDownFile, $arrForm);
-
-            // 商品複製の場合、画像ファイルコピー
-            if ($mode == 'copy') {
-                $this->arrForm['copy_product_id'] = $this->arrForm['product_id'];
-                $this->arrForm['product_id'] = '';
-                // 画像ファイルのコピー
-                $this->lfCopyProductImageFiles($objUpFile);
-            }
-
-            // ページonload時のJavaScript設定
-            $this->tpl_onload = $this->lfSetOnloadJavaScript_InputPage();
-            break;
-
-        case 'edit':
-            // パラメーター初期化, 取得
-            $this->lfInitFormParam($objFormParam, $_POST);
-            $arrForm = $objFormParam->getHashArray();
-            // エラーチェック
-            $this->arrErr = $this->lfCheckError_Edit($objFormParam, $objUpFile, $objDownFile, $arrForm);
-            if (count($this->arrErr) == 0) {
-                // 確認画面表示設定
-                $this->tpl_mainpage = 'products/confirm.tpl';
-                $this->arrCatList = $this->lfGetCategoryList_Edit();
-                $this->arrForm = $this->lfSetViewParam_ConfirmPage($objUpFile, $objDownFile, $arrForm);
-            } else {
-                // 入力画面表示設定
-                $this->arrForm = $this->lfSetViewParam_InputPage($objUpFile, $objDownFile, $arrForm);
-                // ページonload時のJavaScript設定
-                $this->tpl_onload = $this->lfSetOnloadJavaScript_InputPage();
-            }
-            break;
-
-        case 'complete':
-            // パラメーター初期化, 取得
-            $this->lfInitFormParam($objFormParam, $_POST);
-            $arrForm = $this->lfGetFormParam_Complete($objFormParam);
-            // エラーチェック
-            $this->arrErr = $this->lfCheckError_Edit($objFormParam, $objUpFile, $objDownFile, $arrForm);
-            if (count($this->arrErr) == 0) {
-                // DBへデータ登録
-                $product_id = $this->lfRegistProduct($objUpFile, $objDownFile, $arrForm);
-
-                // 件数カウントバッチ実行
-                $objQuery =& SC_Query_Ex::getSingletonInstance();
-                $objDb = new SC_Helper_DB_Ex();
-                $objDb->sfCountCategory($objQuery);
-                $objDb->sfCountMaker($objQuery);
-
-                // ダウンロード商品の複製時に、ダウンロード商品用ファイルを
-                // 変更すると、複製元のファイルが削除されるのを回避。
-                if (!empty($arrForm['copy_product_id'])) {
-                    $objDownFile->save_file = array();
+            case 'pre_edit':
+            case 'copy' :
+                // パラメーター初期化(商品ID)
+                $this->lfInitFormParam_PreEdit($objFormParam, $_POST);
+                // エラーチェック
+                $this->arrErr = $objFormParam->checkError();
+                if (count($this->arrErr) > 0) {
+                    SC_Utils_Ex::sfDispException();
                 }
 
-                // 一時ファイルを本番ディレクトリに移動する
-                $this->lfSaveUploadFiles($objUpFile, $objDownFile, $product_id);
+                // 商品ID取得
+                $product_id = $objFormParam->getValue('product_id');
+                // 商品データ取得
+                $arrForm = $this->lfGetFormParam_PreEdit($objUpFile, $objDownFile, $product_id);
 
-                $this->tpl_mainpage = 'products/complete.tpl';
-                $this->arrForm['product_id'] = $product_id;
-            } else {
-                // 入力画面表示設定
+                // 複製の場合は、ダウンロード商品情報部分はコピーしない
+                if ($mode == 'copy') {
+                    // ダウンロード商品ファイル名をunset
+                    $arrForm['down_filename'] = '';
+
+                    // $objDownFile->setDBDownFile()でsetされたダウンロードファイル名をunset
+                    unset($objDownFile->save_file[0]);
+                }
+
+                // ページ表示用パラメーター設定
                 $this->arrForm = $this->lfSetViewParam_InputPage($objUpFile, $objDownFile, $arrForm);
+
+                // 商品複製の場合、画像ファイルコピー
+                if ($mode == 'copy') {
+                    $this->arrForm['copy_product_id'] = $this->arrForm['product_id'];
+                    $this->arrForm['product_id'] = '';
+                    // 画像ファイルのコピー
+                    $this->lfCopyProductImageFiles($objUpFile);
+                }
+
                 // ページonload時のJavaScript設定
                 $this->tpl_onload = $this->lfSetOnloadJavaScript_InputPage();
-            }
-            break;
+                break;
 
-        // 画像のアップロード
-        case 'upload_image':
-        case 'delete_image':
-            // パラメーター初期化
-            $this->lfInitFormParam_UploadImage($objFormParam);
-            $this->lfInitFormParam($objFormParam, $_POST);
-            $arrForm = $objFormParam->getHashArray();
+            case 'edit':
+                // パラメーター初期化, 取得
+                $this->lfInitFormParam($objFormParam, $_POST);
+                $arrForm = $objFormParam->getHashArray();
+                // エラーチェック
+                $this->arrErr = $this->lfCheckError_Edit($objFormParam, $objUpFile, $objDownFile, $arrForm);
+                if (count($this->arrErr) == 0) {
+                    // 確認画面表示設定
+                    $this->tpl_mainpage = 'products/confirm.tpl';
+                    $this->arrCatList = $this->lfGetCategoryList_Edit();
+                    $this->arrForm = $this->lfSetViewParam_ConfirmPage($objUpFile, $objDownFile, $arrForm);
+                } else {
+                    // 入力画面表示設定
+                    $this->arrForm = $this->lfSetViewParam_InputPage($objUpFile, $objDownFile, $arrForm);
+                    // ページonload時のJavaScript設定
+                    $this->tpl_onload = $this->lfSetOnloadJavaScript_InputPage();
+                }
+                break;
 
-            switch ($mode) {
+            case 'complete':
+                // パラメーター初期化, 取得
+                $this->lfInitFormParam($objFormParam, $_POST);
+                $arrForm = $this->lfGetFormParam_Complete($objFormParam);
+                // エラーチェック
+                $this->arrErr = $this->lfCheckError_Edit($objFormParam, $objUpFile, $objDownFile, $arrForm);
+                if (count($this->arrErr) == 0) {
+                    // DBへデータ登録
+                    $product_id = $this->lfRegistProduct($objUpFile, $objDownFile, $arrForm);
+
+                    // 件数カウントバッチ実行
+                    $objQuery =& SC_Query_Ex::getSingletonInstance();
+                    $objDb = new SC_Helper_DB_Ex();
+                    $objDb->sfCountCategory($objQuery);
+                    $objDb->sfCountMaker($objQuery);
+
+                    // ダウンロード商品の複製時に、ダウンロード商品用ファイルを
+                    // 変更すると、複製元のファイルが削除されるのを回避。
+                    if (!empty($arrForm['copy_product_id'])) {
+                        $objDownFile->save_file = array();
+                    }
+
+                    // 一時ファイルを本番ディレクトリに移動する
+                    $this->lfSaveUploadFiles($objUpFile, $objDownFile, $product_id);
+
+                    $this->tpl_mainpage = 'products/complete.tpl';
+                    $this->arrForm['product_id'] = $product_id;
+                } else {
+                    // 入力画面表示設定
+                    $this->arrForm = $this->lfSetViewParam_InputPage($objUpFile, $objDownFile, $arrForm);
+                    // ページonload時のJavaScript設定
+                    $this->tpl_onload = $this->lfSetOnloadJavaScript_InputPage();
+                }
+                break;
+
+            // 画像のアップロード
             case 'upload_image':
-                // ファイルを一時ディレクトリにアップロード
-                $this->arrErr[$arrForm['image_key']] = $objUpFile->makeTempFile($arrForm['image_key'], IMAGE_RENAME);
-                if ($this->arrErr[$arrForm['image_key']] == '') {
-                    // 縮小画像作成
-                    $this->lfSetScaleImage($objUpFile, $arrForm['image_key']);
-                }
-                break;
             case 'delete_image':
-                // ファイル削除
-                $this->lfDeleteTempFile($objUpFile, $arrForm['image_key']);
+                // パラメーター初期化
+                $this->lfInitFormParam_UploadImage($objFormParam);
+                $this->lfInitFormParam($objFormParam, $_POST);
+                $arrForm = $objFormParam->getHashArray();
+
+                switch ($mode) {
+                    case 'upload_image':
+                        // ファイルを一時ディレクトリにアップロード
+                        $this->arrErr[$arrForm['image_key']] = $objUpFile->makeTempFile($arrForm['image_key'], IMAGE_RENAME);
+                        if ($this->arrErr[$arrForm['image_key']] == '') {
+                            // 縮小画像作成
+                            $this->lfSetScaleImage($objUpFile, $arrForm['image_key']);
+                        }
+                        break;
+                    case 'delete_image':
+                        // ファイル削除
+                        $this->lfDeleteTempFile($objUpFile, $arrForm['image_key']);
+                        break;
+                    default:
+                        break;
+                }
+
+                // 入力画面表示設定
+                $this->arrForm = $this->lfSetViewParam_InputPage($objUpFile, $objDownFile, $arrForm);
+                // ページonload時のJavaScript設定
+                $anchor_hash = $this->getAnchorHash($arrForm['image_key']);
+                $this->tpl_onload = $this->lfSetOnloadJavaScript_InputPage($anchor_hash);
                 break;
-            }
 
-            // 入力画面表示設定
-            $this->arrForm = $this->lfSetViewParam_InputPage($objUpFile, $objDownFile, $arrForm);
-            // ページonload時のJavaScript設定
-            $anchor_hash = $this->getAnchorHash($arrForm['image_key']);
-            $this->tpl_onload = $this->lfSetOnloadJavaScript_InputPage($anchor_hash);
-            break;
-
-        // ダウンロード商品ファイルアップロード
-        case 'upload_down':
-        case 'delete_down':
-            // パラメーター初期化
-            $this->lfInitFormParam_UploadDown($objFormParam);
-            $this->lfInitFormParam($objFormParam, $_POST);
-            $arrForm = $objFormParam->getHashArray();
-
-            switch ($mode) {
+            // ダウンロード商品ファイルアップロード
             case 'upload_down':
-                // ファイルを一時ディレクトリにアップロード
-                $this->arrErr[$arrForm['down_key']] = $objDownFile->makeTempDownFile();
-                break;
             case 'delete_down':
-                // ファイル削除
-                $objDownFile->deleteFile($arrForm['down_key']);
+                // パラメーター初期化
+                $this->lfInitFormParam_UploadDown($objFormParam);
+                $this->lfInitFormParam($objFormParam, $_POST);
+                $arrForm = $objFormParam->getHashArray();
+
+                switch ($mode) {
+                    case 'upload_down':
+                        // ファイルを一時ディレクトリにアップロード
+                        $this->arrErr[$arrForm['down_key']] = $objDownFile->makeTempDownFile();
+                        break;
+                    case 'delete_down':
+                        // ファイル削除
+                        $objDownFile->deleteFile($arrForm['down_key']);
+                        break;
+                    default:
+                        break;
+                }
+
+                // 入力画面表示設定
+                $this->arrForm = $this->lfSetViewParam_InputPage($objUpFile, $objDownFile, $arrForm);
+                // ページonload時のJavaScript設定
+                $anchor_hash = $this->getAnchorHash($arrForm['down_key']);
+                $this->tpl_onload = $this->lfSetOnloadJavaScript_InputPage($anchor_hash);
                 break;
-            }
 
-            // 入力画面表示設定
-            $this->arrForm = $this->lfSetViewParam_InputPage($objUpFile, $objDownFile, $arrForm);
-            // ページonload時のJavaScript設定
-            $anchor_hash = $this->getAnchorHash($arrForm['down_key']);
-            $this->tpl_onload = $this->lfSetOnloadJavaScript_InputPage($anchor_hash);
-            break;
+            // 関連商品選択
+            case 'recommend_select' :
+                // パラメーター初期化
+                $this->lfInitFormParam_RecommendSelect($objFormParam);
+                $this->lfInitFormParam($objFormParam, $_POST);
+                $arrForm = $objFormParam->getHashArray();
+                // 入力画面表示設定
+                $this->arrForm = $this->lfSetViewParam_InputPage($objUpFile, $objDownFile, $arrForm);
 
-        // 関連商品選択
-        case 'recommend_select' :
-            // パラメーター初期化
-            $this->lfInitFormParam_RecommendSelect($objFormParam);
-            $this->lfInitFormParam($objFormParam, $_POST);
-            $arrForm = $objFormParam->getHashArray();
-            // 入力画面表示設定
-            $this->arrForm = $this->lfSetViewParam_InputPage($objUpFile, $objDownFile, $arrForm);
+                // 選択された関連商品IDがすでに登録している関連商品と重複していないかチェック
+                $this->lfCheckError_RecommendSelect($this->arrForm, $this->arrErr);
 
-            // 選択された関連商品IDがすでに登録している関連商品と重複していないかチェック
-            $this->lfCheckError_RecommendSelect($this->arrForm, $this->arrErr);
+                // ページonload時のJavaScript設定
+                $anchor_hash = $this->getAnchorHash($this->arrForm['anchor_key']);
+                $this->tpl_onload = $this->lfSetOnloadJavaScript_InputPage($anchor_hash);
+                break;
 
-            // ページonload時のJavaScript設定
-            $anchor_hash = $this->getAnchorHash($this->arrForm['anchor_key']);
-            $this->tpl_onload = $this->lfSetOnloadJavaScript_InputPage($anchor_hash);
-            break;
+            // 確認ページからの戻り
+            case 'confirm_return':
+                // パラメーター初期化
+                $this->lfInitFormParam($objFormParam, $_POST);
+                $arrForm = $objFormParam->getHashArray();
+                // 入力画面表示設定
+                $this->arrForm = $this->lfSetViewParam_InputPage($objUpFile, $objDownFile, $arrForm);
+                // ページonload時のJavaScript設定
+                $this->tpl_onload = $this->lfSetOnloadJavaScript_InputPage();
+                break;
 
-        // 確認ページからの戻り
-        case 'confirm_return':
-            // パラメーター初期化
-            $this->lfInitFormParam($objFormParam, $_POST);
-            $arrForm = $objFormParam->getHashArray();
-            // 入力画面表示設定
-            $this->arrForm = $this->lfSetViewParam_InputPage($objUpFile, $objDownFile, $arrForm);
-            // ページonload時のJavaScript設定
-            $this->tpl_onload = $this->lfSetOnloadJavaScript_InputPage();
-            break;
-
-        default:
-            // 入力画面表示設定
-            $arrForm = array();
-            $this->arrForm = $this->lfSetViewParam_InputPage($objUpFile, $objDownFile, $arrForm);
-            // ページonload時のJavaScript設定
-            $this->tpl_onload = $this->lfSetOnloadJavaScript_InputPage();
-            break;
+            default:
+                // 入力画面表示設定
+                $arrForm = array();
+                $this->arrForm = $this->lfSetViewParam_InputPage($objUpFile, $objDownFile, $arrForm);
+                // ページonload時のJavaScript設定
+                $this->tpl_onload = $this->lfSetOnloadJavaScript_InputPage();
+                break;
         }
 
         // 関連商品の読み込み

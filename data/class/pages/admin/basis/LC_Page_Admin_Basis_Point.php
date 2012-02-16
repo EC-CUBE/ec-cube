@@ -88,14 +88,14 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex {
 
             if (count($this->arrErr) == 0) {
                 switch ($this->getMode()) {
-                case 'update':
-                    $this->lfUpdateData($objFormParam->getHashArray()); // 既存編集
-                    break;
-                case 'insert':
-                    $this->lfInsertData($objFormParam->getHashArray()); // 新規作成
-                    break;
-                default:
-                    break;
+                    case 'update':
+                        $this->lfUpdateData($objFormParam->getHashArray()); // 既存編集
+                        break;
+                    case 'insert':
+                        $this->lfInsertData($objFormParam->getHashArray()); // 新規作成
+                        break;
+                    default:
+                        break;
                 }
                 // 再表示
                 $this->tpl_onload = "window.alert('ポイント設定が完了しました。');";

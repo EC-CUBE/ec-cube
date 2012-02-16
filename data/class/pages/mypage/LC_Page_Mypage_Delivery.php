@@ -75,32 +75,32 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
 
         switch ($this->getMode()) {
 
-        // お届け先の削除
-        case 'delete':
-            if ($objFormParam->checkError()) {
-                SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
-                exit;
-            }
+            // お届け先の削除
+            case 'delete':
+                if ($objFormParam->checkError()) {
+                    SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
+                    exit;
+                }
 
-            $this->deleteOtherDeliv($customer_id, $objFormParam->getValue('other_deliv_id'));
-            break;
-
-        // スマートフォン版のもっと見るボタン用
-        case 'getList':
-                $arrData = $objFormParam->getHashArray();
-                //別のお届け先情報
-                $arrOtherDeliv = $this->getOtherDeliv($customer_id, (($arrData['pageno'] - 1) * SEARCH_PMAX));
-                //県名をセット
-                $arrOtherDeliv = $this->setPref($arrOtherDeliv, $this->arrPref);
-                $arrOtherDeliv['delivCount'] = count($arrOtherDeliv);
-                $this->arrOtherDeliv = $arrOtherDeliv;
-                echo SC_Utils_Ex::jsonEncode($this->arrOtherDeliv);
-                exit;
+                $this->deleteOtherDeliv($customer_id, $objFormParam->getValue('other_deliv_id'));
                 break;
 
-        // お届け先の表示
-        default:
-            break;
+            // スマートフォン版のもっと見るボタン用
+            case 'getList':
+                    $arrData = $objFormParam->getHashArray();
+                    //別のお届け先情報
+                    $arrOtherDeliv = $this->getOtherDeliv($customer_id, (($arrData['pageno'] - 1) * SEARCH_PMAX));
+                    //県名をセット
+                    $arrOtherDeliv = $this->setPref($arrOtherDeliv, $this->arrPref);
+                    $arrOtherDeliv['delivCount'] = count($arrOtherDeliv);
+                    $this->arrOtherDeliv = $arrOtherDeliv;
+                    echo SC_Utils_Ex::jsonEncode($this->arrOtherDeliv);
+                    exit;
+                    break;
+
+            // お届け先の表示
+            default:
+                break;
         }
 
         //別のお届け先情報

@@ -81,21 +81,21 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
         $this->device_type_id = $objFormParam->getValue('device_type_id', DEVICE_TYPE_PC);
 
         switch ($this->getMode()) {
-        // アップロードボタン押下時の処理
-        case 'upload':
-            $objUpFile = $this->lfInitUploadFile($objFormParam);
-            $this->arrErr = $this->lfCheckError($objFormParam, $objUpFile);
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                if ($this->doUpload($objFormParam, $objUpFile)) {
-                    $this->tpl_onload = "alert('テンプレートファイルをアップロードしました。');";
-                    $objFormParam->setValue('template_name', '');
-                    $objFormParam->setValue('template_code', '');
+            // アップロードボタン押下時の処理
+            case 'upload':
+                $objUpFile = $this->lfInitUploadFile($objFormParam);
+                $this->arrErr = $this->lfCheckError($objFormParam, $objUpFile);
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    if ($this->doUpload($objFormParam, $objUpFile)) {
+                        $this->tpl_onload = "alert('テンプレートファイルをアップロードしました。');";
+                        $objFormParam->setValue('template_name', '');
+                        $objFormParam->setValue('template_code', '');
+                    }
                 }
-            }
-            break;
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
         //サブタイトルの追加
         $this->tpl_subtitle = $this->arrDeviceType[$this->device_type_id] . '＞' . $this->tpl_subtitle;

@@ -109,63 +109,63 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
 
         // モードによる処理切り替え
         switch ($this->getMode()) {
-        // 配信先検索
-        case 'search':
-        case 'back':
-            list($this->tpl_linemax, $this->arrResults, $this->objNavi) = SC_Helper_Customer_Ex::sfGetSearchData($objFormParam->getHashArray());
-            $this->arrPagenavi = $this->objNavi->arrPagenavi;
-            break;
-        // input:検索結果画面「配信内容を設定する」押下後
-        case 'input':
-            $this->tpl_mainpage = 'mail/input.tpl';
-            break;
-        // template:テンプレート選択時
-        case 'template':
-        case 'regist_back':
-            $this->tpl_mainpage = 'mail/input.tpl';
-            if (SC_Utils_Ex::sfIsInt($_POST['template_id']) === true) {
+            // 配信先検索
+            case 'search':
+            case 'back':
+                list($this->tpl_linemax, $this->arrResults, $this->objNavi) = SC_Helper_Customer_Ex::sfGetSearchData($objFormParam->getHashArray());
+                $this->arrPagenavi = $this->objNavi->arrPagenavi;
+                break;
+            // input:検索結果画面「配信内容を設定する」押下後
+            case 'input':
+                $this->tpl_mainpage = 'mail/input.tpl';
+                break;
+            // template:テンプレート選択時
+            case 'template':
+            case 'regist_back':
+                $this->tpl_mainpage = 'mail/input.tpl';
+                if (SC_Utils_Ex::sfIsInt($_POST['template_id']) === true) {
+                    $this->lfAddParamSelectTemplate($objFormParam);
+                    $this->lfGetTemplateData($objFormParam, $_POST['template_id']);
+                    // regist_back時、subject,bodyにはテンプレートを読み込むのではなく、入力内容で上書き
+                    if($this->getMode()=='regist_back') $objFormParam->setParam($_POST);
+                }
+                break;
+            case 'regist_confirm':
+                $this->tpl_mainpage = 'mail/input.tpl';
                 $this->lfAddParamSelectTemplate($objFormParam);
-                $this->lfGetTemplateData($objFormParam, $_POST['template_id']);
-                // regist_back時、subject,bodyにはテンプレートを読み込むのではなく、入力内容で上書き
-                if($this->getMode()=='regist_back') $objFormParam->setParam($_POST);
-            }
-            break;
-        case 'regist_confirm':
-            $this->tpl_mainpage = 'mail/input.tpl';
-            $this->lfAddParamSelectTemplate($objFormParam);
-            $objFormParam->setParam($_POST);
-            $this->arrErr = $objFormParam->checkError();
-            if (SC_Utils_Ex::isBlank($this->arrErr)) $this->tpl_mainpage = 'mail/input_confirm.tpl';
-            break;
-        case 'regist_complete':
-            $this->tpl_mainpage = 'mail/input.tpl';
-            $this->lfAddParamSelectTemplate($objFormParam);
-            $objFormParam->setParam($_POST);
-            $this->arrErr = $objFormParam->checkError();
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                $this->tpl_mainpage = 'mail/index.tpl';
-                SC_Helper_Mail_Ex::sfSendMailmagazine($this->lfRegisterData($objFormParam));  // DB登録・送信
-                SC_Response_Ex::sendRedirect('./history.php');
-            }
-            break;
-        // query:配信履歴から「確認」
-        case 'query':
-            if (SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
-                $this->arrSearchData = $this->lfGetMailQuery();
-            }
-            $this->setTemplate('mail/query.tpl');
-            break;
-        // query:配信履歴から「再送信」
-        case 'retry':
-            if (SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
-                SC_Helper_Mail_Ex::sfSendMailmagazine($_GET['send_id']);  // DB登録・送信
-                SC_Response_Ex::sendRedirect('./history.php');
-            } else {
-                $this->tpl_onload = "window.alert('メール送信IDが正しくありません');";
-            }
-            break;
-        default:
-            break;
+                $objFormParam->setParam($_POST);
+                $this->arrErr = $objFormParam->checkError();
+                if (SC_Utils_Ex::isBlank($this->arrErr)) $this->tpl_mainpage = 'mail/input_confirm.tpl';
+                break;
+            case 'regist_complete':
+                $this->tpl_mainpage = 'mail/input.tpl';
+                $this->lfAddParamSelectTemplate($objFormParam);
+                $objFormParam->setParam($_POST);
+                $this->arrErr = $objFormParam->checkError();
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    $this->tpl_mainpage = 'mail/index.tpl';
+                    SC_Helper_Mail_Ex::sfSendMailmagazine($this->lfRegisterData($objFormParam));  // DB登録・送信
+                    SC_Response_Ex::sendRedirect('./history.php');
+                }
+                break;
+            // query:配信履歴から「確認」
+            case 'query':
+                if (SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
+                    $this->arrSearchData = $this->lfGetMailQuery();
+                }
+                $this->setTemplate('mail/query.tpl');
+                break;
+            // query:配信履歴から「再送信」
+            case 'retry':
+                if (SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
+                    SC_Helper_Mail_Ex::sfSendMailmagazine($_GET['send_id']);  // DB登録・送信
+                    SC_Response_Ex::sendRedirect('./history.php');
+                } else {
+                    $this->tpl_onload = "window.alert('メール送信IDが正しくありません');";
+                }
+                break;
+            default:
+                break;
         }
         $this->arrForm = $objFormParam->getFormParamList();
     }

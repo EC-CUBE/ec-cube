@@ -85,64 +85,64 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
 
         //---- 新規登録/編集登録
         switch ($this->getMode()) {
-        case 'regist':
-            $arrPost = $objFormParam->getHashArray();
-            $this->arrErr = $this->lfCheckError($objFormParam);
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                // ニュースIDの値がPOSTされて来た場合は既存データの編集とみなし、
-                // 更新メソッドを呼び出す。
-                // ニュースIDが存在しない場合は新規登録を行う。
-                $arrPost['link_method'] = $this->checkLinkMethod($arrPost['link_method']);
-                $arrPost['news_date'] = $this->getRegistDate($arrPost);
-                $member_id = $_SESSION['member_id'];
-                if (strlen($news_id) > 0 && is_numeric($news_id)) {
-                    $this->lfNewsUpdate($arrPost,$member_id);
+            case 'regist':
+                $arrPost = $objFormParam->getHashArray();
+                $this->arrErr = $this->lfCheckError($objFormParam);
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    // ニュースIDの値がPOSTされて来た場合は既存データの編集とみなし、
+                    // 更新メソッドを呼び出す。
+                    // ニュースIDが存在しない場合は新規登録を行う。
+                    $arrPost['link_method'] = $this->checkLinkMethod($arrPost['link_method']);
+                    $arrPost['news_date'] = $this->getRegistDate($arrPost);
+                    $member_id = $_SESSION['member_id'];
+                    if (strlen($news_id) > 0 && is_numeric($news_id)) {
+                        $this->lfNewsUpdate($arrPost,$member_id);
+                    } else {
+                        $this->lfNewsInsert($arrPost,$member_id);
+                    }
+                    $news_id = '';
+                    $this->tpl_onload = "window.alert('編集が完了しました');";
                 } else {
-                    $this->lfNewsInsert($arrPost,$member_id);
+                    $this->arrForm = $arrPost;
                 }
-                $news_id = '';
-                $this->tpl_onload = "window.alert('編集が完了しました');";
-            } else {
-                $this->arrForm = $arrPost;
-            }
-            break;
-        case 'search':
-            if (is_numeric($news_id)) {
-                list($this->arrForm) = $this->getNews($news_id);
-                list($this->arrForm['year'],$this->arrForm['month'],$this->arrForm['day']) = $this->splitNewsDate($this->arrForm['cast_news_date']);
-                $this->edit_mode = 'on';
-            }
-            break;
-        case 'delete':
-        //----　データ削除
-            if (is_numeric($news_id)) {
-                $pre_rank = $this->getRankByNewsId($news_id);
-                $this->computeRankForDelete($news_id,$pre_rank);
-                SC_Response_Ex::reload();             //自分にリダイレクト（再読込による誤動作防止）
-            }
-            break;
-        case 'move':
-        //----　表示順位移動
-            if (strlen($news_id) > 0 && is_numeric($news_id) == true) {
-                $term = $objFormParam->getValue('term');
-                if ($term == 'up') {
-                    $objDb->sfRankUp('dtb_news', 'news_id', $news_id);
-                } else if ($term == 'down') {
-                    $objDb->sfRankDown('dtb_news', 'news_id', $news_id);
+                break;
+            case 'search':
+                if (is_numeric($news_id)) {
+                    list($this->arrForm) = $this->getNews($news_id);
+                    list($this->arrForm['year'],$this->arrForm['month'],$this->arrForm['day']) = $this->splitNewsDate($this->arrForm['cast_news_date']);
+                    $this->edit_mode = 'on';
                 }
-                $this->objDisplay->reload();
-            }
-            break;
-        case 'moveRankSet':
-        //----　指定表示順位移動
-            $input_pos = $this->getPostRank($news_id);
-            if (SC_Utils_Ex::sfIsInt($input_pos)) {
-                $objDb->sfMoveRank('dtb_news', 'news_id', $news_id, $input_pos);
-                $this->objDisplay->reload();
-            }
-            break;
-        default:
-            break;
+                break;
+            case 'delete':
+            //----　データ削除
+                if (is_numeric($news_id)) {
+                    $pre_rank = $this->getRankByNewsId($news_id);
+                    $this->computeRankForDelete($news_id,$pre_rank);
+                    SC_Response_Ex::reload();             //自分にリダイレクト（再読込による誤動作防止）
+                }
+                break;
+            case 'move':
+            //----　表示順位移動
+                if (strlen($news_id) > 0 && is_numeric($news_id) == true) {
+                    $term = $objFormParam->getValue('term');
+                    if ($term == 'up') {
+                        $objDb->sfRankUp('dtb_news', 'news_id', $news_id);
+                    } else if ($term == 'down') {
+                        $objDb->sfRankDown('dtb_news', 'news_id', $news_id);
+                    }
+                    $this->objDisplay->reload();
+                }
+                break;
+            case 'moveRankSet':
+            //----　指定表示順位移動
+                $input_pos = $this->getPostRank($news_id);
+                if (SC_Utils_Ex::sfIsInt($input_pos)) {
+                    $objDb->sfMoveRank('dtb_news', 'news_id', $news_id, $input_pos);
+                    $this->objDisplay->reload();
+                }
+                break;
+            default:
+                break;
         }
 
         $this->arrNews = $this->getNews();

@@ -46,14 +46,14 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory {
      */
     function setState($state = 'pc') {
         switch ($state) {
-        case 'mobile':
-            $this->state = new LC_UseRequest_State_Mobile;
-            break;
+            case 'mobile':
+                $this->state = new LC_UseRequest_State_Mobile;
+                break;
 
-        case 'pc':
-        default:
-            $this->state = new LC_UseRequest_State_PC;
-            break;
+            case 'pc':
+            default:
+                $this->state = new LC_UseRequest_State_PC;
+                break;
         }
     }
 

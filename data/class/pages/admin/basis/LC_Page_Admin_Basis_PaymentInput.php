@@ -83,64 +83,64 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
         $this->objUpFile->setHiddenFileList($_POST);
 
         switch ($mode) {
-        case 'edit':
-            $objFormParam->setParam($_REQUEST);
-            $objFormParam->convParam();
-            $post = $objFormParam->getHashArray();
-            $this->arrErr = $this->lfCheckError($post, $objFormParam);
-            $this->charge_flg = $post['charge_flg'];
-            if (count($this->arrErr) == 0) {
-                $this->lfRegistData($post['payment_id'], $_SESSION['member_id'], $objFormParam);
-                $this->objUpFile->moveTempFile();
-                $this->tpl_onload = "location.href = './payment.php'; return;";
-            }
-            $this->tpl_payment_id = $post['payment_id'];
-            break;
-        // 画像のアップロード
-        case 'upload_image':
-            $objFormParam->setParam($_REQUEST);
-            $objFormParam->convParam();
-            $post = $objFormParam->getHashArray();
-            // ファイル存在チェック
-            $this->arrErr = $this->objUpFile->checkEXISTS($post['image_key']);
-            // 画像保存処理
-            $this->arrErr[$post['image_key']] = $this->objUpFile->makeTempFile($post['image_key']);
-            $this->tpl_payment_id = $post['payment_id'];
-            break;
-        // 画像の削除
-        case 'delete_image':
-            $objFormParam->setParam($_REQUEST);
-            $objFormParam->convParam();
-            $this->arrErr = $objFormParam->checkError();
-            $post = $objFormParam->getHashArray();
-            if (count($this->arrErr) == 0) {
-                $this->objUpFile->deleteFile($post['image_key']);
-            }
-            $this->tpl_payment_id = $post['payment_id'];
-            break;
+            case 'edit':
+                $objFormParam->setParam($_REQUEST);
+                $objFormParam->convParam();
+                $post = $objFormParam->getHashArray();
+                $this->arrErr = $this->lfCheckError($post, $objFormParam);
+                $this->charge_flg = $post['charge_flg'];
+                if (count($this->arrErr) == 0) {
+                    $this->lfRegistData($post['payment_id'], $_SESSION['member_id'], $objFormParam);
+                    $this->objUpFile->moveTempFile();
+                    $this->tpl_onload = "location.href = './payment.php'; return;";
+                }
+                $this->tpl_payment_id = $post['payment_id'];
+                break;
+            // 画像のアップロード
+            case 'upload_image':
+                $objFormParam->setParam($_REQUEST);
+                $objFormParam->convParam();
+                $post = $objFormParam->getHashArray();
+                // ファイル存在チェック
+                $this->arrErr = $this->objUpFile->checkEXISTS($post['image_key']);
+                // 画像保存処理
+                $this->arrErr[$post['image_key']] = $this->objUpFile->makeTempFile($post['image_key']);
+                $this->tpl_payment_id = $post['payment_id'];
+                break;
+            // 画像の削除
+            case 'delete_image':
+                $objFormParam->setParam($_REQUEST);
+                $objFormParam->convParam();
+                $this->arrErr = $objFormParam->checkError();
+                $post = $objFormParam->getHashArray();
+                if (count($this->arrErr) == 0) {
+                    $this->objUpFile->deleteFile($post['image_key']);
+                }
+                $this->tpl_payment_id = $post['payment_id'];
+                break;
 
-        case 'pre_edit':
-            $objFormParam->setParam($_REQUEST);
-            $objFormParam->convParam();
-            $this->arrErr = $objFormParam->checkError();
-            $post = $objFormParam->getHashArray();
-            if (count($this->arrErr) == 0) {
-                $arrRet = $this->lfGetData($post['payment_id']);
+            case 'pre_edit':
+                $objFormParam->setParam($_REQUEST);
+                $objFormParam->convParam();
+                $this->arrErr = $objFormParam->checkError();
+                $post = $objFormParam->getHashArray();
+                if (count($this->arrErr) == 0) {
+                    $arrRet = $this->lfGetData($post['payment_id']);
 
-                $objFormParam->addParam('支払方法', 'payment_method', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam('手数料', 'charge', PRICE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam('利用条件(～円以上)', 'rule', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam('利用条件(～円以下)', 'upper_rule', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam('固定', 'fix');
-                $objFormParam->setParam($arrRet);
+                    $objFormParam->addParam('支払方法', 'payment_method', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+                    $objFormParam->addParam('手数料', 'charge', PRICE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                    $objFormParam->addParam('利用条件(～円以上)', 'rule', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                    $objFormParam->addParam('利用条件(～円以下)', 'upper_rule', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                    $objFormParam->addParam('固定', 'fix');
+                    $objFormParam->setParam($arrRet);
 
-                $this->charge_flg = $arrRet['charge_flg'];
-                $this->objUpFile->setDBFileList($arrRet);
-            }
-            $this->tpl_payment_id = $post['payment_id'];
-            break;
-        default:
-            break;
+                    $this->charge_flg = $arrRet['charge_flg'];
+                    $this->objUpFile->setDBFileList($arrRet);
+                }
+                $this->tpl_payment_id = $post['payment_id'];
+                break;
+            default:
+                break;
         }
 
         $this->arrForm = $objFormParam->getFormParamList();

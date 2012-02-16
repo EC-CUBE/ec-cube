@@ -181,54 +181,54 @@ class SC_FormParam {
             foreach ($this->arrCheck[$cnt] as $func) {
                 if (!isset($this->param[$cnt])) $this->param[$cnt] = '';
                 switch ($func) {
-                case 'EXIST_CHECK':
-                case 'NUM_CHECK':
-                case 'EMAIL_CHECK':
-                case 'EMAIL_CHAR_CHECK':
-                case 'ALNUM_CHECK':
-                case 'GRAPH_CHECK':
-                case 'KANA_CHECK':
-                case 'URL_CHECK':
-                case 'IP_CHECK':
-                case 'SPTAB_CHECK':
-                case 'ZERO_CHECK':
-                case 'ALPHA_CHECK':
-                case 'ZERO_START':
-                case 'FIND_FILE':
-                case 'NO_SPTAB':
-                case 'DIR_CHECK':
-                case 'DOMAIN_CHECK':
-                case 'FILE_NAME_CHECK':
-                case 'MOBILE_EMAIL_CHECK':
-                case 'MAX_LENGTH_CHECK':
-                case 'MIN_LENGTH_CHECK':
-                case 'NUM_COUNT_CHECK':
-                case 'KANABLANK_CHECK':
-                case 'SELECT_CHECK':
-                case 'FILE_NAME_CHECK_BY_NOUPLOAD':
-                    $this->recursionCheck($this->disp_name[$cnt], $func,
-                                          $this->param[$cnt], $objErr->arrErr,
-                                          $val, $this->length[$cnt]);
-                    break;
-                // 小文字に変換
-                case 'CHANGE_LOWER':
-                    $this->param[$cnt] = strtolower($this->param[$cnt]);
-                    break;
-                // ファイルの存在チェック
-                case 'FILE_EXISTS':
-                    if ($this->param[$cnt] != '' && !file_exists($this->check_dir . $this->param[$cnt])) {
-                        $objErr->arrErr[$val] = '※ ' . $this->disp_name[$cnt] . 'のファイルが存在しません。<br>';
-                    }
-                    break;
-                // ダウンロード用ファイルの存在チェック
-                case 'DOWN_FILE_EXISTS':
-                    if ($this->param[$cnt] != '' && !file_exists(DOWN_SAVE_REALDIR . $this->param[$cnt])) {
-                        $objErr->arrErr[$val] = '※ ' . $this->disp_name[$cnt] . 'のファイルが存在しません。<br>';
-                    }
-                    break;
-                default:
-                    $objErr->arrErr[$val] = "※※　エラーチェック形式($func)には対応していません　※※ <br>";
-                    break;
+                    case 'EXIST_CHECK':
+                    case 'NUM_CHECK':
+                    case 'EMAIL_CHECK':
+                    case 'EMAIL_CHAR_CHECK':
+                    case 'ALNUM_CHECK':
+                    case 'GRAPH_CHECK':
+                    case 'KANA_CHECK':
+                    case 'URL_CHECK':
+                    case 'IP_CHECK':
+                    case 'SPTAB_CHECK':
+                    case 'ZERO_CHECK':
+                    case 'ALPHA_CHECK':
+                    case 'ZERO_START':
+                    case 'FIND_FILE':
+                    case 'NO_SPTAB':
+                    case 'DIR_CHECK':
+                    case 'DOMAIN_CHECK':
+                    case 'FILE_NAME_CHECK':
+                    case 'MOBILE_EMAIL_CHECK':
+                    case 'MAX_LENGTH_CHECK':
+                    case 'MIN_LENGTH_CHECK':
+                    case 'NUM_COUNT_CHECK':
+                    case 'KANABLANK_CHECK':
+                    case 'SELECT_CHECK':
+                    case 'FILE_NAME_CHECK_BY_NOUPLOAD':
+                        $this->recursionCheck($this->disp_name[$cnt], $func,
+                                              $this->param[$cnt], $objErr->arrErr,
+                                              $val, $this->length[$cnt]);
+                        break;
+                    // 小文字に変換
+                    case 'CHANGE_LOWER':
+                        $this->param[$cnt] = strtolower($this->param[$cnt]);
+                        break;
+                    // ファイルの存在チェック
+                    case 'FILE_EXISTS':
+                        if ($this->param[$cnt] != '' && !file_exists($this->check_dir . $this->param[$cnt])) {
+                            $objErr->arrErr[$val] = '※ ' . $this->disp_name[$cnt] . 'のファイルが存在しません。<br>';
+                        }
+                        break;
+                    // ダウンロード用ファイルの存在チェック
+                    case 'DOWN_FILE_EXISTS':
+                        if ($this->param[$cnt] != '' && !file_exists(DOWN_SAVE_REALDIR . $this->param[$cnt])) {
+                            $objErr->arrErr[$val] = '※ ' . $this->disp_name[$cnt] . 'のファイルが存在しません。<br>';
+                        }
+                        break;
+                    default:
+                        $objErr->arrErr[$val] = "※※　エラーチェック形式($func)には対応していません　※※ <br>";
+                        break;
                 }
             }
 

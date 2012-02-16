@@ -71,7 +71,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         // パラメーター情報の初期化
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
-        
+
         $mode = $this->getMode();        
 
         switch ($mode) {

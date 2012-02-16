@@ -86,51 +86,51 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
         // モードによる処理切り替え
         switch ($this->getMode()) {
 
-        // 編集処理
-        case 'edit':
-        // 入力文字の変換
+            // 編集処理
+            case 'edit':
+            // 入力文字の変換
 
-            // エラーチェック
-            $this->arrErr = $this->lfErrorCheck($this->arrForm);
-            if (count($this->arrErr) <= 0) {
-                if ($this->arrForm['maker_id'] == '') {
-                    // メーカー情報新規登録
-                    $this->lfInsert($this->arrForm);
+                // エラーチェック
+                $this->arrErr = $this->lfErrorCheck($this->arrForm);
+                if (count($this->arrErr) <= 0) {
+                    if ($this->arrForm['maker_id'] == '') {
+                        // メーカー情報新規登録
+                        $this->lfInsert($this->arrForm);
+                    } else {
+                        // メーカー情報編集
+                        $this->lfUpdate($this->arrForm);
+                    }
+                    // 再表示
+                    $this->objDisplay->reload();
                 } else {
-                    // メーカー情報編集
-                    $this->lfUpdate($this->arrForm);
+                    // POSTデータを引き継ぐ
+                    $this->tpl_maker_id = $this->arrForm['maker_id'];
                 }
-                // 再表示
-                $this->objDisplay->reload();
-            } else {
-                // POSTデータを引き継ぐ
+                break;
+
+            // 編集前処理
+            case 'pre_edit':
+                $this->arrForm = $this->lfPreEdit($this->arrForm, $this->arrForm['maker_id']);
                 $this->tpl_maker_id = $this->arrForm['maker_id'];
-            }
-            break;
+                break;
 
-        // 編集前処理
-        case 'pre_edit':
-            $this->arrForm = $this->lfPreEdit($this->arrForm, $this->arrForm['maker_id']);
-            $this->tpl_maker_id = $this->arrForm['maker_id'];
-            break;
+            // メーカー順変更
+            case 'up':
+            case 'down':
+                $this->lfRankChange($this->arrForm['maker_id'], $this->getMode());
+                // リロード
+                SC_Response_Ex::reload();
+                break;
 
-        // メーカー順変更
-        case 'up':
-        case 'down':
-            $this->lfRankChange($this->arrForm['maker_id'], $this->getMode());
-            // リロード
-            SC_Response_Ex::reload();
-            break;
+            // 削除
+            case 'delete':
+                $this->lfDelete($this->arrForm['maker_id']);
+                // リロード
+                SC_Response_Ex::reload();
+                break;
 
-        // 削除
-        case 'delete':
-            $this->lfDelete($this->arrForm['maker_id']);
-            // リロード
-            SC_Response_Ex::reload();
-            break;
-
-        default:
-            break;
+            default:
+                break;
         }
 
         // メーカー情報読み込み
@@ -237,16 +237,16 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
         $objDb = new SC_Helper_DB_Ex();
 
         switch ($mode) {
-        case 'up':
-            $objDb->sfRankUp('dtb_maker', 'maker_id', $maker_id);
-            break;
+            case 'up':
+                $objDb->sfRankUp('dtb_maker', 'maker_id', $maker_id);
+                break;
 
-        case 'down':
-            $objDb->sfRankDown('dtb_maker', 'maker_id', $maker_id);
-            break;
+            case 'down':
+                $objDb->sfRankDown('dtb_maker', 'maker_id', $maker_id);
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
     }
 

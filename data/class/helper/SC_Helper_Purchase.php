@@ -538,45 +538,46 @@ class SC_Helper_Purchase {
         $max_date = max($delivDateIds);
         //発送目安
         switch ($max_date) {
-        //即日発送
-        case '1':
-            $start_day = 1;
-            break;
-            //1-2日後
-        case '2':
-            $start_day = 3;
-            break;
-            //3-4日後
-        case '3':
-            $start_day = 5;
-            break;
-            //1週間以内
-        case '4':
-            $start_day = 8;
-            break;
-            //2週間以内
-        case '5':
-            $start_day = 15;
-            break;
-            //3週間以内
-        case '6':
-            $start_day = 22;
-            break;
-            //1ヶ月以内
-        case '7':
-            $start_day = 32;
-            break;
-            //2ヶ月以降
-        case '8':
-            $start_day = 62;
-            break;
-            //お取り寄せ(商品入荷後)
-        case '9':
-            $start_day = '';
-            break;
-        default:
-            //お届け日が設定されていない場合
-            $start_day = '';
+            //即日発送
+            case '1':
+                $start_day = 1;
+                break;
+                //1-2日後
+            case '2':
+                $start_day = 3;
+                break;
+                //3-4日後
+            case '3':
+                $start_day = 5;
+                break;
+                //1週間以内
+            case '4':
+                $start_day = 8;
+                break;
+                //2週間以内
+            case '5':
+                $start_day = 15;
+                break;
+                //3週間以内
+            case '6':
+                $start_day = 22;
+                break;
+                //1ヶ月以内
+            case '7':
+                $start_day = 32;
+                break;
+                //2ヶ月以降
+            case '8':
+                $start_day = 62;
+                break;
+                //お取り寄せ(商品入荷後)
+            case '9':
+                $start_day = '';
+                break;
+            default:
+                //お届け日が設定されていない場合
+                $start_day = '';
+                break;
         }
         //お届け可能日のスタート値から、お届け日の配列を取得する
         $arrDelivDate = $this->getDateArray($start_day, DELIV_DATE_END_MAX);

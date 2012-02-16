@@ -43,16 +43,16 @@ class SC_MobileUserAgent {
         }
 
         switch ($objAgent->getCarrierShortName()) {
-        case 'I':
-            return 'docomo';
-        case 'E':
-            return 'ezweb';
-        case 'V':
-            return 'softbank';
-        case 'S':
-            return 'softbank';
-        default:
-            return false;
+            case 'I':
+                return 'docomo';
+            case 'E':
+                return 'ezweb';
+            case 'V':
+                return 'softbank';
+            case 'S':
+                return 'softbank';
+            default:
+                return false;
         }
     }
 

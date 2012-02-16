@@ -82,92 +82,92 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         $objPlugin->doAction('lc_page_admin_products_category_action_start', array($this));
 
         switch ($this->getMode()) {
-        // カテゴリ登録/編集実行
-        case 'edit':
-            $this->doEdit($objFormParam);
-            break;
-        // 入力ボックスへ編集対象のカテゴリ名をセット
-        case 'pre_edit':
-            $this->doPreEdit($objFormParam);
-            break;
-        // カテゴリ削除
-        case 'delete':
-            $this->doDelete($objFormParam, $objDb);
-            break;
-        // 表示順を上へ
-        case 'up':
-            $this->doUp($objFormParam);
-            break;
-        // 表示順を下へ
-        case 'down':
-            $this->doDown($objFormParam);
-            break;
-        // FIXME r19909 によってテンプレートが削除されている
-        case 'moveByDnD':
-            // DnDしたカテゴリと移動先のセットを分解する
-            $keys = explode('-', $_POST['keySet']);
-            if ($keys[0] && $keys[1]) {
-                $objQuery = new SC_Query_Ex();
-                $objQuery->begin();
+            // カテゴリ登録/編集実行
+            case 'edit':
+                $this->doEdit($objFormParam);
+                break;
+            // 入力ボックスへ編集対象のカテゴリ名をセット
+            case 'pre_edit':
+                $this->doPreEdit($objFormParam);
+                break;
+            // カテゴリ削除
+            case 'delete':
+                $this->doDelete($objFormParam, $objDb);
+                break;
+            // 表示順を上へ
+            case 'up':
+                $this->doUp($objFormParam);
+                break;
+            // 表示順を下へ
+            case 'down':
+                $this->doDown($objFormParam);
+                break;
+            // FIXME r19909 によってテンプレートが削除されている
+            case 'moveByDnD':
+                // DnDしたカテゴリと移動先のセットを分解する
+                $keys = explode('-', $_POST['keySet']);
+                if ($keys[0] && $keys[1]) {
+                    $objQuery = new SC_Query_Ex();
+                    $objQuery->begin();
 
-                // 移動したデータのrank、level、parent_category_idを取得
-                $rank   = $objQuery->get('rank', 'dtb_category', 'category_id = ?', array($keys[0]));
-                $level  = $objQuery->get('level', 'dtb_category', 'category_id = ?', array($keys[0]));
-                $parent = $objQuery->get('parent_category_id', 'dtb_category', 'category_id = ?', array($keys[0]));
+                    // 移動したデータのrank、level、parent_category_idを取得
+                    $rank   = $objQuery->get('rank', 'dtb_category', 'category_id = ?', array($keys[0]));
+                    $level  = $objQuery->get('level', 'dtb_category', 'category_id = ?', array($keys[0]));
+                    $parent = $objQuery->get('parent_category_id', 'dtb_category', 'category_id = ?', array($keys[0]));
 
-                // 同一level内のrank配列を作成
-                $objQuery->setOption('ORDER BY rank DESC');
-                if ($level == 1) {
-                    // 第1階層の時
-                    $arrRet = $objQuery->select('rank', 'dtb_category', 'level = ?', array($level));
-                } else {
-                    // 第2階層以下の時
-                    $arrRet = $objQuery->select('rank', 'dtb_category', 'level = ? AND parent_category_id = ?', array($level, $parent));
-                }
-                for ($i = 0; $i < sizeof($arrRet); $i++) {
-                    $rankAry[$i + 1] = $arrRet[$i]['rank'];
-                }
-
-                // 移動したデータのグループ内データ数
-                $my_count = $this->lfCountChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $keys[0]);
-                if ($rankAry[$keys[1]] > $rank) {
-                    // データが今の位置より上がった時
-                    $up_count = $rankAry[$keys[1]] - $rank;
-                    $decAry   = $objQuery->select('category_id', 'dtb_category', 'level = ? AND rank > ? AND rank <= ?', array($level, $rank, $rankAry[$keys[1]]));
-                    foreach ($decAry as $value) {
-                        // 上のグループから減算
-                        $this->lfDownRankChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $value['category_id'], $my_count);
+                    // 同一level内のrank配列を作成
+                    $objQuery->setOption('ORDER BY rank DESC');
+                    if ($level == 1) {
+                        // 第1階層の時
+                        $arrRet = $objQuery->select('rank', 'dtb_category', 'level = ?', array($level));
+                    } else {
+                        // 第2階層以下の時
+                        $arrRet = $objQuery->select('rank', 'dtb_category', 'level = ? AND parent_category_id = ?', array($level, $parent));
                     }
-                    // 自分のグループに加算
-                    $this->lfUpRankChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $keys[0], $up_count);
-                } else if ($rankAry[$keys[1]] < $rank) {
-                    // データが今の位置より下がった時
-                    $down_count = 0;
-                    $incAry     = $objQuery->select('category_id', 'dtb_category', 'level = ? AND rank < ? AND rank >= ?', array($level, $rank, $rankAry[$keys[1]]));
-                    foreach ($incAry as $value) {
-                        // 下のグループに加算
-                        $this->lfUpRankChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $value['category_id'], $my_count);
-                        // 合計減算値
-                        $down_count += $this->lfCountChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $value['category_id']);
+                    for ($i = 0; $i < sizeof($arrRet); $i++) {
+                        $rankAry[$i + 1] = $arrRet[$i]['rank'];
                     }
-                    // 自分のグループから減算
-                    $this->lfDownRankChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $keys[0], $down_count);
+
+                    // 移動したデータのグループ内データ数
+                    $my_count = $this->lfCountChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $keys[0]);
+                    if ($rankAry[$keys[1]] > $rank) {
+                        // データが今の位置より上がった時
+                        $up_count = $rankAry[$keys[1]] - $rank;
+                        $decAry   = $objQuery->select('category_id', 'dtb_category', 'level = ? AND rank > ? AND rank <= ?', array($level, $rank, $rankAry[$keys[1]]));
+                        foreach ($decAry as $value) {
+                            // 上のグループから減算
+                            $this->lfDownRankChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $value['category_id'], $my_count);
+                        }
+                        // 自分のグループに加算
+                        $this->lfUpRankChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $keys[0], $up_count);
+                    } else if ($rankAry[$keys[1]] < $rank) {
+                        // データが今の位置より下がった時
+                        $down_count = 0;
+                        $incAry     = $objQuery->select('category_id', 'dtb_category', 'level = ? AND rank < ? AND rank >= ?', array($level, $rank, $rankAry[$keys[1]]));
+                        foreach ($incAry as $value) {
+                            // 下のグループに加算
+                            $this->lfUpRankChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $value['category_id'], $my_count);
+                            // 合計減算値
+                            $down_count += $this->lfCountChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $value['category_id']);
+                        }
+                        // 自分のグループから減算
+                        $this->lfDownRankChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $keys[0], $down_count);
+                    }
+                    $objQuery->commit();
                 }
-                $objQuery->commit();
-            }
-            break;
-        // カテゴリツリークリック時
-        case 'tree':
-            break;
-         // CSVダウンロード
-        case 'csv':
-            // CSVを送信する
-            $objCSV = new SC_Helper_CSV_Ex();
-            $objCSV->sfDownloadCsv('5', '', array(), '', true);
-            exit;
-            break;
-        default:
-            break;
+                break;
+            // カテゴリツリークリック時
+            case 'tree':
+                break;
+             // CSVダウンロード
+            case 'csv':
+                // CSVを送信する
+                $objCSV = new SC_Helper_CSV_Ex();
+                $objCSV->sfDownloadCsv('5', '', array(), '', true);
+                exit;
+                break;
+            default:
+                break;
         }
 
         $parent_category_id = $objFormParam->getValue('parent_category_id');

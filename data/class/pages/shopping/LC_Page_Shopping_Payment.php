@@ -129,87 +129,87 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
         $this->arrDelivDate = $objPurchase->getDelivDate($objCartSess, $cart_key);
 
         switch ($this->getMode()) {
-        /*
-         * 配送業者選択時のアクション
-         * モバイル端末以外の場合は, JSON 形式のデータを出力し, ajax で取得する.
-         */
-        case 'select_deliv':
-            $this->setFormParams($objFormParam, $arrOrderTemp, true, $this->arrShipping);
-            $objFormParam->setParam($_POST);
-            $this->arrErr = $objFormParam->checkError();
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
+            /*
+             * 配送業者選択時のアクション
+             * モバイル端末以外の場合は, JSON 形式のデータを出力し, ajax で取得する.
+             */
+            case 'select_deliv':
+                $this->setFormParams($objFormParam, $arrOrderTemp, true, $this->arrShipping);
+                $objFormParam->setParam($_POST);
+                $this->arrErr = $objFormParam->checkError();
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    $deliv_id = $objFormParam->getValue('deliv_id');
+                    $arrSelectedDeliv = $this->getSelectedDeliv($objPurchase, $objCartSess, $deliv_id);
+                    $arrSelectedDeliv['error'] = false;
+                } else {
+                    $arrSelectedDeliv = array('error' => true);
+                    $this->tpl_mainpage = 'shopping/select_deliv.tpl'; // モバイル用
+                }
+
+                if (SC_Display_Ex::detectDevice() != DEVICE_TYPE_MOBILE) {
+                    echo SC_Utils_Ex::jsonEncode($arrSelectedDeliv);
+                    exit;
+                } else {
+                    $this->arrPayment = $arrSelectedDeliv['arrPayment'];
+                    $this->arrDelivTime = $arrSelectedDeliv['arrDelivTime'];
+                }
+                break;
+
+            // 登録処理
+            case 'confirm':
+                // パラメーター情報の初期化
+                $this->setFormParams($objFormParam, $_POST, false, $this->arrShipping);
+
                 $deliv_id = $objFormParam->getValue('deliv_id');
                 $arrSelectedDeliv = $this->getSelectedDeliv($objPurchase, $objCartSess, $deliv_id);
-                $arrSelectedDeliv['error'] = false;
-            } else {
-                $arrSelectedDeliv = array('error' => true);
-                $this->tpl_mainpage = 'shopping/select_deliv.tpl'; // モバイル用
-            }
-
-            if (SC_Display_Ex::detectDevice() != DEVICE_TYPE_MOBILE) {
-                echo SC_Utils_Ex::jsonEncode($arrSelectedDeliv);
-                exit;
-            } else {
                 $this->arrPayment = $arrSelectedDeliv['arrPayment'];
                 $this->arrDelivTime = $arrSelectedDeliv['arrDelivTime'];
-            }
-            break;
 
-        // 登録処理
-        case 'confirm':
-            // パラメーター情報の初期化
-            $this->setFormParams($objFormParam, $_POST, false, $this->arrShipping);
+                $this->arrErr = $this->lfCheckError($objFormParam, $this->arrPrices['subtotal'], $this->tpl_user_point);
 
-            $deliv_id = $objFormParam->getValue('deliv_id');
-            $arrSelectedDeliv = $this->getSelectedDeliv($objPurchase, $objCartSess, $deliv_id);
-            $this->arrPayment = $arrSelectedDeliv['arrPayment'];
-            $this->arrDelivTime = $arrSelectedDeliv['arrDelivTime'];
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    $this->saveShippings($objFormParam, $this->arrDelivTime);
+                    $this->lfRegistData($this->tpl_uniqid, $objFormParam->getDbArray(), $objPurchase, $this->arrPayment);
 
-            $this->arrErr = $this->lfCheckError($objFormParam, $this->arrPrices['subtotal'], $this->tpl_user_point);
+                    // 正常に登録されたことを記録しておく
+                    $objSiteSess->setRegistFlag();
+                    // 確認ページへ移動
+                    SC_Response_Ex::sendRedirect(SHOPPING_CONFIRM_URLPATH);
+                    exit;
+                } else {
+                    // 受注一時テーブルからの情報を格納
+                    $this->img_show = $arrSelectedDeliv['img_show'];
+                    $objFormParam->setParam($objPurchase->getOrderTemp($this->tpl_uniqid));
+                }
+                break;
 
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                $this->saveShippings($objFormParam, $this->arrDelivTime);
-                $this->lfRegistData($this->tpl_uniqid, $objFormParam->getDbArray(), $objPurchase, $this->arrPayment);
+            // 前のページに戻る
+            case 'return':
 
-                // 正常に登録されたことを記録しておく
+                // 正常な推移であることを記録しておく
                 $objSiteSess->setRegistFlag();
-                // 確認ページへ移動
-                SC_Response_Ex::sendRedirect(SHOPPING_CONFIRM_URLPATH);
+                SC_Response_Ex::sendRedirect(SHOPPING_URL);
                 exit;
-            } else {
-                // 受注一時テーブルからの情報を格納
-                $this->img_show = $arrSelectedDeliv['img_show'];
-                $objFormParam->setParam($objPurchase->getOrderTemp($this->tpl_uniqid));
-            }
-            break;
+                break;
 
-        // 前のページに戻る
-        case 'return':
+            default:
+                // FIXME 前のページから戻ってきた場合は別パラメーター(mode)で処理分岐する必要があるのかもしれない
+                $this->setFormParams($objFormParam, $arrOrderTemp, false, $this->arrShipping);
 
-            // 正常な推移であることを記録しておく
-            $objSiteSess->setRegistFlag();
-            SC_Response_Ex::sendRedirect(SHOPPING_URL);
-            exit;
-            break;
+                if (!$this->is_single_deliv) {
+                    $deliv_id = $objFormParam->getValue('deliv_id');
+                } else {
+                    $deliv_id = $this->arrDeliv[0]['deliv_id'];
+                }
 
-        default:
-            // FIXME 前のページから戻ってきた場合は別パラメーター(mode)で処理分岐する必要があるのかもしれない
-            $this->setFormParams($objFormParam, $arrOrderTemp, false, $this->arrShipping);
-
-            if (!$this->is_single_deliv) {
-                $deliv_id = $objFormParam->getValue('deliv_id');
-            } else {
-                $deliv_id = $this->arrDeliv[0]['deliv_id'];
-            }
-
-            if (!SC_Utils_Ex::isBlank($deliv_id)) {
-                $objFormParam->setValue('deliv_id', $deliv_id);
-                $arrSelectedDeliv = $this->getSelectedDeliv($objPurchase, $objCartSess, $deliv_id);
-                $this->arrPayment = $arrSelectedDeliv['arrPayment'];
-                $this->arrDelivTime = $arrSelectedDeliv['arrDelivTime'];
-                $this->img_show = $arrSelectedDeliv['img_show'];
-            }
-            break;
+                if (!SC_Utils_Ex::isBlank($deliv_id)) {
+                    $objFormParam->setValue('deliv_id', $deliv_id);
+                    $arrSelectedDeliv = $this->getSelectedDeliv($objPurchase, $objCartSess, $deliv_id);
+                    $this->arrPayment = $arrSelectedDeliv['arrPayment'];
+                    $this->arrDelivTime = $arrSelectedDeliv['arrDelivTime'];
+                    $this->img_show = $arrSelectedDeliv['img_show'];
+                }
+                break;
         }
 
         // モバイル用 ポストバック処理
@@ -444,18 +444,18 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      */
     function getMobileMainpage($is_single_deliv = true, $mode) {
         switch ($mode) {
-        case 'select_deliv':
-            return 'shopping/payment.tpl';
-            break;
-
-        case 'confirm':
-        case 'return':
-        default:
-            if ($is_single_deliv) {
+            case 'select_deliv':
                 return 'shopping/payment.tpl';
-            } else {
-                return 'shopping/select_deliv.tpl';
-            }
+
+            case 'confirm':
+            case 'return':
+            default:
+                if ($is_single_deliv) {
+                    return 'shopping/payment.tpl';
+                } else {
+                    return 'shopping/select_deliv.tpl';
+                }
+                break;
         }
     }
 }

@@ -143,21 +143,21 @@ __EOS__;
      */
     function getOrderTotalDaysWhereSql($type) {
         switch ($type) {
-        case 'month':
-            $format = 'MM';
-            break;
-        case 'year':
-            $format = 'YYYY';
-            break;
-        case 'wday':
-            $format = 'Dy';
-            break;
-        case 'hour':
-            $format = 'HH24';
-            break;
-        default:
-            $format = 'YYYY-MM-DD';
-            break;
+            case 'month':
+                $format = 'MM';
+                break;
+            case 'year':
+                $format = 'YYYY';
+                break;
+            case 'wday':
+                $format = 'Dy';
+                break;
+            case 'hour':
+                $format = 'HH24';
+                break;
+            default:
+                $format = 'YYYY-MM-DD';
+                break;
         }
 
         return "to_char(create_date, '".$format."') AS str_date,

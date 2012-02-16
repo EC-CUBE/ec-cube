@@ -84,21 +84,21 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
         }
 
         switch ($mode) {
-        case 'delete':
-            // ランク付きレコードの削除
-            $objDb->sfDeleteRankRecord('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
-            $this->objDisplay->reload(); // PRG pattern
-            break;
-        case 'up':
-            $objDb->sfRankUp('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
-            $this->objDisplay->reload(); // PRG pattern
-            break;
-        case 'down':
-            $objDb->sfRankDown('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
-            $this->objDisplay->reload(); // PRG pattern
-            break;
-        default:
-            break;
+            case 'delete':
+                // ランク付きレコードの削除
+                $objDb->sfDeleteRankRecord('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
+                $this->objDisplay->reload(); // PRG pattern
+                break;
+            case 'up':
+                $objDb->sfRankUp('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
+                $this->objDisplay->reload(); // PRG pattern
+                break;
+            case 'down':
+                $objDb->sfRankDown('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
+                $this->objDisplay->reload(); // PRG pattern
+                break;
+            default:
+                break;
         }
 
         $this->arrDelivList = $this->lfGetDelivList();

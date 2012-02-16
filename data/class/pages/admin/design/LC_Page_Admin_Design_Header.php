@@ -80,18 +80,18 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
         $this->device_type_id = $objFormParam->getValue('device_type_id', DEVICE_TYPE_PC);
 
         switch ($this->getMode()) {
-        // 登録
-        case 'regist':
-            $this->arrErr = $this->lfCheckError($objFormParam, $this->arrErr);
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                if ($this->doRegister($objFormParam)) {
-                    $this->tpl_onload = "alert('登録が完了しました。');";
+            // 登録
+            case 'regist':
+                $this->arrErr = $this->lfCheckError($objFormParam, $this->arrErr);
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    if ($this->doRegister($objFormParam)) {
+                        $this->tpl_onload = "alert('登録が完了しました。');";
+                    }
                 }
-            }
-            break;
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
 
         if (!$is_error) {

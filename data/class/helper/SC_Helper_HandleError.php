@@ -105,9 +105,9 @@ class SC_Helper_HandleError {
                 $message = $now . " [$errfile:$errline] WARNING($errno) $errstr from ". $_SERVER['REMOTE_ADDR'] . "\n";
                 error_log($message, 3, $log_file_path);
                 return true;
-                break;
 
             default:
+                break;
         }
     }
 

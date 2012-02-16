@@ -82,43 +82,43 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
 
         switch ($this->getMode()) {
 
-        // 登録ボタン押下時
-        case 'register':
-            $this->arrErr = $objFormParam->checkError();
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                if ($this->doRegister($template_code, $this->device_type_id)) {
-                    $this->tpl_select = $template_code;
-                    $this->tpl_onload = "alert('登録が完了しました。');";
+            // 登録ボタン押下時
+            case 'register':
+                $this->arrErr = $objFormParam->checkError();
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    if ($this->doRegister($template_code, $this->device_type_id)) {
+                        $this->tpl_select = $template_code;
+                        $this->tpl_onload = "alert('登録が完了しました。');";
+                    }
                 }
-            }
-            break;
+                break;
 
-        // 削除ボタン押下時
-        case 'delete':
-            if ($objFormParam->checkError()) {
-                SC_Utils_Ex::sfDispError('');
-            }
-            $this->arrErr = $objFormParam->checkError();
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                if ($this->doDelete($template_code, $this->device_type_id)) {
-                    $this->tpl_onload = "alert('削除が完了しました。');";
+            // 削除ボタン押下時
+            case 'delete':
+                if ($objFormParam->checkError()) {
+                    SC_Utils_Ex::sfDispError('');
                 }
-            }
-            break;
-
-        // downloadボタン押下時
-        case 'download':
-            $this->arrErr = $objFormParam->checkError();
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                if ($this->doDownload($template_code) !== false) {
-                    // ブラウザに出力し, 終了する
-                    exit;
+                $this->arrErr = $objFormParam->checkError();
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    if ($this->doDelete($template_code, $this->device_type_id)) {
+                        $this->tpl_onload = "alert('削除が完了しました。');";
+                    }
                 }
-            }
-            break;
+                break;
 
-        default:
-            break;
+            // downloadボタン押下時
+            case 'download':
+                $this->arrErr = $objFormParam->checkError();
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    if ($this->doDownload($template_code) !== false) {
+                        // ブラウザに出力し, 終了する
+                        exit;
+                    }
+                }
+                break;
+
+            default:
+                break;
         }
 
         if (!$is_error) {
@@ -164,16 +164,17 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
 
         $defineName = 'TEMPLATE_NAME';
         switch ($device_type_id) {
-        case DEVICE_TYPE_MOBILE:
-            $defineName = 'MOBILE_' . $defineName;
-            break;
+            case DEVICE_TYPE_MOBILE:
+                $defineName = 'MOBILE_' . $defineName;
+                break;
 
-        case DEVICE_TYPE_SMARTPHONE:
-            $defineName = 'SMARTPHONE_' . $defineName;
-            break;
+            case DEVICE_TYPE_SMARTPHONE:
+                $defineName = 'SMARTPHONE_' . $defineName;
+                break;
 
-        case DEVICE_TYPE_PC:
-        default:
+            case DEVICE_TYPE_PC:
+            default:
+                break;
         }
 
         // DBのデータを更新
@@ -328,16 +329,15 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
      */
     function getTemplateName($device_type_id, $isDefault = false) {
         switch ($device_type_id) {
-        case DEVICE_TYPE_MOBILE:
-            return $isDefault ? MOBILE_DEFAULT_TEMPLATE_NAME : MOBILE_TEMPLATE_NAME;
-            break;
+            case DEVICE_TYPE_MOBILE:
+                return $isDefault ? MOBILE_DEFAULT_TEMPLATE_NAME : MOBILE_TEMPLATE_NAME;
 
-        case DEVICE_TYPE_SMARTPHONE:
-            return $isDefault ? SMARTPHONE_DEFAULT_TEMPLATE_NAME : SMARTPHONE_TEMPLATE_NAME;
-            break;
+            case DEVICE_TYPE_SMARTPHONE:
+                return $isDefault ? SMARTPHONE_DEFAULT_TEMPLATE_NAME : SMARTPHONE_TEMPLATE_NAME;
 
-        case DEVICE_TYPE_PC:
-        default:
+            case DEVICE_TYPE_PC:
+            default:
+                break;
         }
         return $isDefault ? DEFAULT_TEMPLATE_NAME : TEMPLATE_NAME;
     }

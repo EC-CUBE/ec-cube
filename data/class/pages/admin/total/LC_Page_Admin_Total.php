@@ -116,39 +116,40 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $this->arrHidden = $objFormParam->getSearchArray();
 
         switch ($this->getMode()) {
-        case 'csv':
-        case 'search':
+            case 'csv':
+            case 'search':
 
-            $this->arrErr = $this->lfCheckError($objFormParam);
-            if (empty($this->arrErr)) {
+                $this->arrErr = $this->lfCheckError($objFormParam);
+                if (empty($this->arrErr)) {
 
-                // 日付
-                list($sdate, $edate) = $this->lfSetStartEndDate($objFormParam);
+                    // 日付
+                    list($sdate, $edate) = $this->lfSetStartEndDate($objFormParam);
 
-                // ページ
-                $page = ($objFormParam->getValue('page')) ? $objFormParam->getValue('page') : 'term';
+                    // ページ
+                    $page = ($objFormParam->getValue('page')) ? $objFormParam->getValue('page') : 'term';
 
-                // 集計種類
-                $type = ($objFormParam->getValue('type')) ? $objFormParam->getValue('type'): 'all';
+                    // 集計種類
+                    $type = ($objFormParam->getValue('type')) ? $objFormParam->getValue('type'): 'all';
 
-                $this->tpl_page_type = 'total/page_'. $page .'.tpl';
-                list($this->arrResults, $this->tpl_image) = call_user_func_array(array($this, 'lfGetOrder'.$page),
-                                                                                 array($type, $sdate, $edate));
-                if ($this->getMode() == 'csv') {
-                    // CSV出力タイトル行の取得
-                    list($arrTitleCol, $arrDataCol) = $this->lfGetCSVColum($page);
-                    $head = SC_Utils_Ex::sfGetCSVList($arrTitleCol);
-                    $data = $this->lfGetDataColCSV($this->arrResults, $arrDataCol);
+                    $this->tpl_page_type = 'total/page_'. $page .'.tpl';
+                    list($this->arrResults, $this->tpl_image) = call_user_func_array(array($this, 'lfGetOrder'.$page),
+                                                                                     array($type, $sdate, $edate));
+                    if ($this->getMode() == 'csv') {
+                        // CSV出力タイトル行の取得
+                        list($arrTitleCol, $arrDataCol) = $this->lfGetCSVColum($page);
+                        $head = SC_Utils_Ex::sfGetCSVList($arrTitleCol);
+                        $data = $this->lfGetDataColCSV($this->arrResults, $arrDataCol);
 
-                    // CSVを送信する。
-                    list($fime_name, $data) = SC_Utils_Ex::sfGetCSVData($head.$data);
-                    $this->sendResponseCSV($fime_name, $data);
-                    exit;
+                        // CSVを送信する。
+                        list($fime_name, $data) = SC_Utils_Ex::sfGetCSVData($head.$data);
+                        $this->sendResponseCSV($fime_name, $data);
+                        exit;
+                    }
                 }
-            }
-            break;
-        default:
-        }
+                break;
+            default:
+                 break;
+       }
 
         // 画面宣しても日付が保存される
         $_SESSION           = $this->lfSaveDateSession($_SESSION, $this->arrHidden);

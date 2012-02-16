@@ -72,27 +72,29 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
         $masterData = new SC_DB_MasterData_Ex();
 
         switch ($this->getMode()) {
-        case 'edit':
-            // POST 文字列の妥当性チェック
-            $this->masterDataName = $this->checkMasterDataName($_POST, $this->arrMasterDataName);
-            $this->errorMessage = $this->checkUniqueID($_POST);
+            case 'edit':
+                // POST 文字列の妥当性チェック
+                $this->masterDataName = $this->checkMasterDataName($_POST, $this->arrMasterDataName);
+                $this->errorMessage = $this->checkUniqueID($_POST);
 
-            if (empty($this->errorMessage)) {
-                // 取得したデータからマスターデータを生成
-                $this->registMasterData($_POST, $masterData, $this->masterDataName);
-                $this->tpl_onload = "window.alert('マスターデータの設定が完了しました。');";
-            }
+                if (empty($this->errorMessage)) {
+                    // 取得したデータからマスターデータを生成
+                    $this->registMasterData($_POST, $masterData, $this->masterDataName);
+                    $this->tpl_onload = "window.alert('マスターデータの設定が完了しました。');";
+                }
+                // FIXME break 入れ忘れと思われる。そうでないなら、要コメント。
 
-        case 'show':
-            // POST 文字列の妥当性チェック
-            $this->masterDataName = $this->checkMasterDataName($_POST, $this->arrMasterDataName);
+            case 'show':
+                // POST 文字列の妥当性チェック
+                $this->masterDataName = $this->checkMasterDataName($_POST, $this->arrMasterDataName);
 
-            // DB からマスターデータを取得
-            $this->arrMasterData =
-                $masterData->getDbMasterData($this->masterDataName);
-            break;
+                // DB からマスターデータを取得
+                $this->arrMasterData =
+                    $masterData->getDbMasterData($this->masterDataName);
+                break;
 
-        default:
+            default:
+                break;
         }
     }
 

@@ -98,28 +98,28 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
         $this->arrHidden = $this->lfSetHidden($this->arrForm);
 
         switch ($this->getMode()) {
-        case 'delete':
-            $this->lfDeleteReview($this->arrForm['review_id']);
-        case 'search':
-        case 'csv':
-            // エラーチェック
-            $this->arrErr = $this->lfCheckError($objFormParam);
-            if (!$this->arrErr) {
+            case 'delete':
+                $this->lfDeleteReview($this->arrForm['review_id']);
+            case 'search':
+            case 'csv':
+                // エラーチェック
+                $this->arrErr = $this->lfCheckError($objFormParam);
+                if (!$this->arrErr) {
+                    // 検索条件を取得
+                    list($where, $arrval) = $this->lfGetWhere($this->arrForm);
+                }
+
+                //CSVダウンロード
+                if ($this->getMode() == 'csv') {
+                    $this->lfDoOutputCsv($where, $arrval);
+                    exit;
+                }
+
                 // 検索条件を取得
-                list($where, $arrval) = $this->lfGetWhere($this->arrForm);
-            }
-
-            //CSVダウンロード
-            if ($this->getMode() == 'csv') {
-                $this->lfDoOutputCsv($where, $arrval);
-                exit;
-            }
-
-            // 検索条件を取得
-            $this->arrReview = $this->lfGetReview($this->arrForm, $where, $arrval);
-            break;
-        default:
-            break;
+                $this->arrReview = $this->lfGetReview($this->arrForm, $where, $arrval);
+                break;
+            default:
+                break;
         }
     }
 
@@ -145,18 +145,20 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
         $objErr->arrErr = $objFormParam->checkError();
 
         switch ($this->getMode()) {
-        case 'search':
-            $objErr->doFunc(array('投稿者', 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
-            $objErr->doFunc(array('開始日', 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
-            $objErr->doFunc(array('終了日', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_DATE'));
-            $objErr->doFunc(array('開始日', '終了日', 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_SET_TERM'));
-            break;
+            case 'search':
+                $objErr->doFunc(array('投稿者', 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
+                $objErr->doFunc(array('開始日', 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
+                $objErr->doFunc(array('終了日', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_DATE'));
+                $objErr->doFunc(array('開始日', '終了日', 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_SET_TERM'));
+                break;
 
-        case 'complete':
-            $objErr->doFunc(array('おすすめレベル', 'recommend_level'), array('SELECT_CHECK'));
-            $objErr->doFunc(array('タイトル', 'title', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-            $objErr->doFunc(array('コメント', 'comment', LTEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-            break;
+            case 'complete':
+                $objErr->doFunc(array('おすすめレベル', 'recommend_level'), array('SELECT_CHECK'));
+                $objErr->doFunc(array('タイトル', 'title', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+                $objErr->doFunc(array('コメント', 'comment', LTEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+                break;
+            default:
+                break;
         }
         return $objErr->arrErr;
     }
@@ -184,15 +186,15 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
         foreach ($arrForm AS $key=>$val) {
             if (preg_match('/^search_/', $key)) {
                 switch ($key) {
-                case 'search_sex':
-                    $arrHidden[$key] = SC_Utils_Ex::sfMergeParamCheckBoxes($val);
-                    if (!is_array($val)) {
-                        $arrForm[$key] = explode('-', $val);
-                    }
-                    break;
-                default:
-                    $arrHidden[$key] = $val;
-                    break;
+                    case 'search_sex':
+                        $arrHidden[$key] = SC_Utils_Ex::sfMergeParamCheckBoxes($val);
+                        if (!is_array($val)) {
+                            $arrForm[$key] = explode('-', $val);
+                        }
+                        break;
+                    default:
+                        $arrHidden[$key] = $val;
+                        break;
                 }
             }
         }
@@ -252,72 +254,75 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
             if (empty($val)) continue;
 
             switch ($key) {
-            case 'search_reviewer_name':
-                $val = preg_replace('/ /', '%', $val);
-                $where.= ' AND reviewer_name LIKE ? ';
-                $arrval[] = "%$val%";
-                break;
+                case 'search_reviewer_name':
+                    $val = preg_replace('/ /', '%', $val);
+                    $where.= ' AND reviewer_name LIKE ? ';
+                    $arrval[] = "%$val%";
+                    break;
 
-            case 'search_reviewer_url':
-                $val = preg_replace('/ /', '%', $val);
-                $where.= ' AND reviewer_url LIKE ? ';
-                $arrval[] = "%$val%";
-                break;
+                case 'search_reviewer_url':
+                    $val = preg_replace('/ /', '%', $val);
+                    $where.= ' AND reviewer_url LIKE ? ';
+                    $arrval[] = "%$val%";
+                    break;
 
-            case 'search_name':
-                $val = preg_replace('/ /', '%', $val);
-                $where.= ' AND name LIKE ? ';
-                $arrval[] = "%$val%";
-                break;
+                case 'search_name':
+                    $val = preg_replace('/ /', '%', $val);
+                    $where.= ' AND name LIKE ? ';
+                    $arrval[] = "%$val%";
+                    break;
 
-            case 'search_product_code':
-                $val = preg_replace('/ /', '%', $val);
-                $where.= ' AND A.product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code LIKE ?)';
-                $arrval[] = "%$val%";
-                break;
+                case 'search_product_code':
+                    $val = preg_replace('/ /', '%', $val);
+                    $where.= ' AND A.product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code LIKE ?)';
+                    $arrval[] = "%$val%";
+                    break;
 
-            case 'search_sex':
-                $tmp_where = '';
-                //$val=配列の中身,$element=各キーの値(1,2)
-                if (is_array($val)) {
-                    foreach ($val as $element) {
-                        if ($element != '') {
-                            if ($tmp_where == '') {
-                                $tmp_where .= ' AND (sex = ?';
-                            } else {
-                                $tmp_where .= ' OR sex = ?';
+                case 'search_sex':
+                    $tmp_where = '';
+                    //$val=配列の中身,$element=各キーの値(1,2)
+                    if (is_array($val)) {
+                        foreach ($val as $element) {
+                            if ($element != '') {
+                                if ($tmp_where == '') {
+                                    $tmp_where .= ' AND (sex = ?';
+                                } else {
+                                    $tmp_where .= ' OR sex = ?';
+                                }
+                                $arrval[] = $element;
                             }
-                            $arrval[] = $element;
+                        }
+                        if ($tmp_where != '') {
+                            $tmp_where .= ')';
+                            $where .= " $tmp_where ";
                         }
                     }
-                    if ($tmp_where != '') {
-                        $tmp_where .= ')';
-                        $where .= " $tmp_where ";
+
+                    break;
+
+                case 'search_recommend_level':
+                    $where.= ' AND recommend_level = ? ';
+                    $arrval[] = $val;
+                    break;
+
+                case 'search_startyear':
+                    if (isset($_POST['search_startyear']) && isset($_POST['search_startmonth']) && isset($_POST['search_startday'])) {
+                        $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
+                        $where.= ' AND A.create_date >= ? ';
+                        $arrval[] = $date;
                     }
-                }
+                    break;
 
-                break;
+                case 'search_endyear':
+                    if (isset($_POST['search_startyear']) && isset($_POST['search_startmonth']) && isset($_POST['search_startday'])) {
+                        $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday']);
+                        $end_date = date('Y/m/d',strtotime('1 day' ,strtotime($date)));
+                        $where.= " AND A.create_date <= cast('$end_date' as date) ";
+                    }
+                    break;
 
-            case 'search_recommend_level':
-                $where.= ' AND recommend_level = ? ';
-                $arrval[] = $val;
-                break;
-
-            case 'search_startyear':
-                if (isset($_POST['search_startyear']) && isset($_POST['search_startmonth']) && isset($_POST['search_startday'])) {
-                    $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
-                    $where.= ' AND A.create_date >= ? ';
-                    $arrval[] = $date;
-                }
-                break;
-
-            case 'search_endyear':
-                if (isset($_POST['search_startyear']) && isset($_POST['search_startmonth']) && isset($_POST['search_startday'])) {
-                    $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday']);
-                    $end_date = date('Y/m/d',strtotime('1 day' ,strtotime($date)));
-                    $where.= " AND A.create_date <= cast('$end_date' as date) ";
-                }
-                break;
+                default:
+                    break;
             }
 
         }

@@ -38,16 +38,14 @@ class SC_DB_DBFactory {
      */
     function getInstance($db_type = DB_TYPE) {
         switch ($db_type) {
-        case 'mysql':
-            return new SC_DB_DBFactory_MYSQL();
-            break;
+            case 'mysql':
+                return new SC_DB_DBFactory_MYSQL();
 
-        case 'pgsql':
-            return new SC_DB_DBFactory_PGSQL();
-            break;
+            case 'pgsql':
+                return new SC_DB_DBFactory_PGSQL();
 
-        default:
-            return new SC_DB_DBFactory();
+            default:
+                return new SC_DB_DBFactory();
         }
     }
 

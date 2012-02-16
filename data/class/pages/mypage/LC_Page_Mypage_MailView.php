@@ -83,11 +83,12 @@ class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex {
         }
 
         switch ($this->getMode()) {
-        case 'getDetail':
-            echo SC_Utils_Ex::jsonEncode($arrMailView);
-            exit;
-            break;
-        default:
+            case 'getDetail':
+                echo SC_Utils_Ex::jsonEncode($arrMailView);
+                exit;
+                break;
+            default:
+                break;
         }
     }
 

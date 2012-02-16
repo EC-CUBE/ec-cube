@@ -79,130 +79,130 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
 
         // モードによって分岐
         switch ($this->getMode()) {
-        case 'login':
-            // --- ログイン
+            case 'login':
+                // --- ログイン
 
-            // 入力値のエラーチェック
-            $objFormParam->trimParam();
-            $objFormParam->toLower('login_email');
-            $arrErr = $objFormParam->checkError();
+                // 入力値のエラーチェック
+                $objFormParam->trimParam();
+                $objFormParam->toLower('login_email');
+                $arrErr = $objFormParam->checkError();
 
-            // エラーの場合はエラー画面に遷移
-            if (count($arrErr) > 0) {
-                if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
-                    echo $this->lfGetErrorMessage(TEMP_LOGIN_ERROR);
-                    exit;
-                } else {
-                    SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
-                    exit;
-                }
-            }
-
-            // 入力チェック後の値を取得
-            $arrForm = $objFormParam->getHashArray();
-
-            // クッキー保存判定
-            if ($arrForm['login_memory'] == '1' && $arrForm['login_email'] != '') {
-                $objCookie->setCookie('login_email', $arrForm['login_email']);
-            } else {
-                $objCookie->setCookie('login_email', '');
-            }
-
-            // 遷移先の制御
-            if (count($arrErr) == 0) {
-                // ログイン判定
-                $loginFailFlag = false;
-                if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
-                    // モバイルサイト
-                    if(!$objCustomer->getCustomerDataFromMobilePhoneIdPass($arrForm['login_pass']) &&
-                       !$objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'], true)) {
-                        $loginFailFlag = true;
-                    }
-                } else {
-                    // モバイルサイト以外
-                    if (!$objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'])) {
-                        $loginFailFlag = true;
+                // エラーの場合はエラー画面に遷移
+                if (count($arrErr) > 0) {
+                    if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
+                        echo $this->lfGetErrorMessage(TEMP_LOGIN_ERROR);
+                        exit;
+                    } else {
+                        SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
+                        exit;
                     }
                 }
 
-                // ログイン処理
-                if ($loginFailFlag == false) {
+                // 入力チェック後の値を取得
+                $arrForm = $objFormParam->getHashArray();
+
+                // クッキー保存判定
+                if ($arrForm['login_memory'] == '1' && $arrForm['login_email'] != '') {
+                    $objCookie->setCookie('login_email', $arrForm['login_email']);
+                } else {
+                    $objCookie->setCookie('login_email', '');
+                }
+
+                // 遷移先の制御
+                if (count($arrErr) == 0) {
+                    // ログイン判定
+                    $loginFailFlag = false;
                     if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
-                        // ログインが成功した場合は携帯端末IDを保存する。
-                        $objCustomer->updateMobilePhoneId();
+                        // モバイルサイト
+                        if(!$objCustomer->getCustomerDataFromMobilePhoneIdPass($arrForm['login_pass']) &&
+                           !$objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'], true)) {
+                            $loginFailFlag = true;
+                        }
+                    } else {
+                        // モバイルサイト以外
+                        if (!$objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'])) {
+                            $loginFailFlag = true;
+                        }
+                    }
 
-                        /*
-                         * email がモバイルドメインでは無く,
-                         * 携帯メールアドレスが登録されていない場合
-                         */
-                        $objMobile = new SC_Helper_Mobile_Ex();
-                        if (!$objMobile->gfIsMobileMailAddress($objCustomer->getValue('email'))) {
-                            if (!$objCustomer->hasValue('email_mobile')) {
-                                SC_Response_Ex::sendRedirectFromUrlPath('entry/email_mobile.php');
+                    // ログイン処理
+                    if ($loginFailFlag == false) {
+                        if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
+                            // ログインが成功した場合は携帯端末IDを保存する。
+                            $objCustomer->updateMobilePhoneId();
+
+                            /*
+                             * email がモバイルドメインでは無く,
+                             * 携帯メールアドレスが登録されていない場合
+                             */
+                            $objMobile = new SC_Helper_Mobile_Ex();
+                            if (!$objMobile->gfIsMobileMailAddress($objCustomer->getValue('email'))) {
+                                if (!$objCustomer->hasValue('email_mobile')) {
+                                    SC_Response_Ex::sendRedirectFromUrlPath('entry/email_mobile.php');
+                                    exit;
+                                }
+                            }
+                        }
+
+                        // --- ログインに成功した場合
+                        if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
+                            echo SC_Utils_Ex::jsonEncode(array('success' => $_POST['url']));
+                        } else {
+                            SC_Response_Ex::sendRedirect($_POST['url']);
+                        }
+                        exit;
+                    } else {
+                        // --- ログインに失敗した場合
+                        $arrForm['login_email'] = strtolower($arrForm['login_email']);
+                        $objQuery = SC_Query_Ex::getSingletonInstance();
+                        $where = '(email = ? OR email_mobile = ?) AND status = 1 AND del_flg = 0';
+                        $exists = $objQuery->exists('dtb_customer', $where, array($arrForm['login_email'], $arrForm['login_email']));
+                        // ログインエラー表示 TODO リファクタリング
+                        if ($exists) {
+                            if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
+                                echo $this->lfGetErrorMessage(TEMP_LOGIN_ERROR);
+                                exit;
+                            } else {
+                                SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
+                                exit;
+                            }
+                        } else {
+                            if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
+                                echo $this->lfGetErrorMessage(SITE_LOGIN_ERROR);
+                                exit;
+                            } else {
+                                SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
                                 exit;
                             }
                         }
                     }
-
-                    // --- ログインに成功した場合
-                    if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
-                        echo SC_Utils_Ex::jsonEncode(array('success' => $_POST['url']));
-                    } else {
-                        SC_Response_Ex::sendRedirect($_POST['url']);
-                    }
-                    exit;
                 } else {
-                    // --- ログインに失敗した場合
-                    $arrForm['login_email'] = strtolower($arrForm['login_email']);
-                    $objQuery = SC_Query_Ex::getSingletonInstance();
-                    $where = '(email = ? OR email_mobile = ?) AND status = 1 AND del_flg = 0';
-                    $exists = $objQuery->exists('dtb_customer', $where, array($arrForm['login_email'], $arrForm['login_email']));
-                    // ログインエラー表示 TODO リファクタリング
-                    if ($exists) {
-                        if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
-                            echo $this->lfGetErrorMessage(TEMP_LOGIN_ERROR);
-                            exit;
-                        } else {
-                            SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
-                            exit;
-                        }
-                    } else {
-                        if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
-                            echo $this->lfGetErrorMessage(SITE_LOGIN_ERROR);
-                            exit;
-                        } else {
-                            SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
-                            exit;
-                        }
-                    }
+                    // XXX 到達しない？
+                    // 入力エラーの場合、元のアドレスに戻す。
+                    SC_Response_Ex::sendRedirect($_POST['url']);
+                    exit;
                 }
-            } else {
-                // XXX 到達しない？
-                // 入力エラーの場合、元のアドレスに戻す。
-                SC_Response_Ex::sendRedirect($_POST['url']);
+
+                break;
+            case 'logout':
+                // --- ログアウト
+
+                // ログイン情報の解放
+                $objCustomer->EndSession();
+                // 画面遷移の制御
+                $mypage_url_search = strpos('.'.$_POST['url'], 'mypage');
+                if ($mypage_url_search == 2) {
+                    // マイページログイン中はログイン画面へ移行
+                    SC_Response_Ex::sendRedirectFromUrlPath('mypage/login.php');
+                } else {
+                    // 上記以外の場合、トップへ遷移
+                    SC_Response_Ex::sendRedirect(HTTP_URL);
+                }
                 exit;
-            }
 
-            break;
-        case 'logout':
-            // --- ログアウト
-
-            // ログイン情報の解放
-            $objCustomer->EndSession();
-            // 画面遷移の制御
-            $mypage_url_search = strpos('.'.$_POST['url'], 'mypage');
-            if ($mypage_url_search == 2) {
-                // マイページログイン中はログイン画面へ移行
-                SC_Response_Ex::sendRedirectFromUrlPath('mypage/login.php');
-            } else {
-                // 上記以外の場合、トップへ遷移
-                SC_Response_Ex::sendRedirect(HTTP_URL);
-            }
-            exit;
-
-            break;
-        default:
-            break;
+                break;
+            default:
+                break;
         }
 
     }

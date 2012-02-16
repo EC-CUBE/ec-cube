@@ -241,14 +241,13 @@ class SC_SendMail {
     function getRecip() {
         switch ($this->backend) {
             // PEAR::Mail_mail#send は、(他のメーラーバックエンドと異なり) 第1引数を To: として扱う。Cc: や Bcc: は、ヘッダー情報から処理する。
-        case 'mail':
-            return $this->to;
-            break;
-        case 'sendmail':
-        case 'smtp':
-        default:
-            return $this->arrRecip;
-            break;
+            case 'mail':
+                return $this->to;
+
+            case 'sendmail':
+            case 'smtp':
+            default:
+                return $this->arrRecip;
         }
     }
 
@@ -289,21 +288,21 @@ class SC_SendMail {
      */
     function getBackendParams($backend) {
         switch ($backend) {
-        case 'mail':
-            $arrParams = array();
-            break;
-        case 'sendmail':
-            $arrParams = array('sendmail_path' => '/usr/bin/sendmail',
-                               'sendmail_args' => '-i'
-                               );
-            break;
-        case 'smtp':
-        default:
-            $arrParams = array(
-                               'host' => $this->host,
-                               'port' => $this->port
-                               );
-            break;
+            case 'mail':
+                $arrParams = array();
+                break;
+            case 'sendmail':
+                $arrParams = array('sendmail_path' => '/usr/bin/sendmail',
+                                   'sendmail_args' => '-i'
+                                   );
+                break;
+            case 'smtp':
+            default:
+                $arrParams = array(
+                                   'host' => $this->host,
+                                   'port' => $this->port
+                                   );
+                break;
         }
         return $arrParams;
     }

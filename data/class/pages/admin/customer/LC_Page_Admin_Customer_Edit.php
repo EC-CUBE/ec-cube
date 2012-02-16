@@ -92,98 +92,98 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
 
         // モードによる処理切り替え
         switch ($this->getMode()) {
-        case 'edit_search':
-            //検索引き継ぎ用パラメーター処理
-            $this->lfInitSearchParam($objFormSearchParam);
-            $objFormSearchParam->setParam($_REQUEST);
-            $this->arrErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
-            $this->arrSearchData = $objFormSearchParam->getSearchArray();
-            if (!SC_Utils_Ex::isBlank($this->arrErr)) {
-                return;
-            }
-            //指定会員の情報をセット
-            $this->arrForm = SC_Helper_Customer_Ex::sfGetCustomerData($objFormSearchParam->getValue('edit_customer_id'), true);
-            //購入履歴情報の取得
-            list($this->tpl_linemax, $this->arrPurchaseHistory, $this->objNavi) = $this->lfPurchaseHistory($objFormSearchParam->getValue('edit_customer_id'));
-            $this->arrPagenavi = $this->objNavi->arrPagenavi;
-            $this->arrPagenavi['mode'] = 'return';
-            $this->tpl_pageno = '0';
-            break;
-        case 'confirm':
-            //パラメーター処理
-            $this->lfInitParam($objFormParam);
-            $objFormParam->setParam($_POST);
-            $objFormParam->convParam();
-            // 入力パラメーターチェック
-            $this->arrErr = $this->lfCheckError($objFormParam);
-            $this->arrForm = $objFormParam->getHashArray();
-            //検索引き継ぎ用パラメーター処理
-            $this->lfInitSearchParam($objFormSearchParam);
-            $objFormSearchParam->setParam($objFormParam->getValue('search_data'));
-            $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
-            $this->arrSearchData = $objFormSearchParam->getSearchArray();
-            if (!SC_Utils_Ex::isBlank($this->arrErr) or !SC_Utils_Ex::isBlank($this->arrSearchErr)) {
-                return;
-            }
-            // 確認画面テンプレートに切り替え
-            $this->tpl_mainpage = 'customer/edit_confirm.tpl';
-            break;
-        case 'return':
-            //パラメーター処理
-            $this->lfInitParam($objFormParam);
-            $objFormParam->setParam($_POST);
-            $objFormParam->convParam();
-            // 入力パラメーターチェック
-            $this->arrErr = $this->lfCheckError($objFormParam);
-            $this->arrForm = $objFormParam->getHashArray();
-            //検索引き継ぎ用パラメーター処理
-            $this->lfInitSearchParam($objFormSearchParam);
-            $objFormSearchParam->setParam($objFormParam->getValue('search_data'));
-            $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
-            $this->arrSearchData = $objFormSearchParam->getSearchArray();
-            if (!SC_Utils_Ex::isBlank($this->arrErr) or !SC_Utils_Ex::isBlank($this->arrSearchErr)) {
-                return;
-            }
-            //購入履歴情報の取得
-            list($this->tpl_linemax, $this->arrPurchaseHistory, $this->objNavi) = $this->lfPurchaseHistory($objFormParam->getValue('customer_id'), $objFormParam->getValue('search_pageno'));
-            $this->arrPagenavi = $this->objNavi->arrPagenavi;
-            $this->arrPagenavi['mode'] = 'return';
-            $this->tpl_pageno = $objFormParam->getValue('search_pageno');
+            case 'edit_search':
+                //検索引き継ぎ用パラメーター処理
+                $this->lfInitSearchParam($objFormSearchParam);
+                $objFormSearchParam->setParam($_REQUEST);
+                $this->arrErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
+                $this->arrSearchData = $objFormSearchParam->getSearchArray();
+                if (!SC_Utils_Ex::isBlank($this->arrErr)) {
+                    return;
+                }
+                //指定会員の情報をセット
+                $this->arrForm = SC_Helper_Customer_Ex::sfGetCustomerData($objFormSearchParam->getValue('edit_customer_id'), true);
+                //購入履歴情報の取得
+                list($this->tpl_linemax, $this->arrPurchaseHistory, $this->objNavi) = $this->lfPurchaseHistory($objFormSearchParam->getValue('edit_customer_id'));
+                $this->arrPagenavi = $this->objNavi->arrPagenavi;
+                $this->arrPagenavi['mode'] = 'return';
+                $this->tpl_pageno = '0';
+                break;
+            case 'confirm':
+                //パラメーター処理
+                $this->lfInitParam($objFormParam);
+                $objFormParam->setParam($_POST);
+                $objFormParam->convParam();
+                // 入力パラメーターチェック
+                $this->arrErr = $this->lfCheckError($objFormParam);
+                $this->arrForm = $objFormParam->getHashArray();
+                //検索引き継ぎ用パラメーター処理
+                $this->lfInitSearchParam($objFormSearchParam);
+                $objFormSearchParam->setParam($objFormParam->getValue('search_data'));
+                $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
+                $this->arrSearchData = $objFormSearchParam->getSearchArray();
+                if (!SC_Utils_Ex::isBlank($this->arrErr) or !SC_Utils_Ex::isBlank($this->arrSearchErr)) {
+                    return;
+                }
+                // 確認画面テンプレートに切り替え
+                $this->tpl_mainpage = 'customer/edit_confirm.tpl';
+                break;
+            case 'return':
+                //パラメーター処理
+                $this->lfInitParam($objFormParam);
+                $objFormParam->setParam($_POST);
+                $objFormParam->convParam();
+                // 入力パラメーターチェック
+                $this->arrErr = $this->lfCheckError($objFormParam);
+                $this->arrForm = $objFormParam->getHashArray();
+                //検索引き継ぎ用パラメーター処理
+                $this->lfInitSearchParam($objFormSearchParam);
+                $objFormSearchParam->setParam($objFormParam->getValue('search_data'));
+                $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
+                $this->arrSearchData = $objFormSearchParam->getSearchArray();
+                if (!SC_Utils_Ex::isBlank($this->arrErr) or !SC_Utils_Ex::isBlank($this->arrSearchErr)) {
+                    return;
+                }
+                //購入履歴情報の取得
+                list($this->tpl_linemax, $this->arrPurchaseHistory, $this->objNavi) = $this->lfPurchaseHistory($objFormParam->getValue('customer_id'), $objFormParam->getValue('search_pageno'));
+                $this->arrPagenavi = $this->objNavi->arrPagenavi;
+                $this->arrPagenavi['mode'] = 'return';
+                $this->tpl_pageno = $objFormParam->getValue('search_pageno');
 
-            break;
-        case 'complete':
-            //登録・保存処理
-            //パラメーター処理
-            $this->lfInitParam($objFormParam);
-            $objFormParam->setParam($_POST);
-            $objFormParam->convParam();
-            // 入力パラメーターチェック
-            $this->arrErr = $this->lfCheckError($objFormParam);
-            $this->arrForm = $objFormParam->getHashArray();
-            //検索引き継ぎ用パラメーター処理
-            $this->lfInitSearchParam($objFormSearchParam);
-            $objFormSearchParam->setParam($objFormParam->getValue('search_data'));
-            $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
-            $this->arrSearchData = $objFormSearchParam->getSearchArray();
-            if (!SC_Utils_Ex::isBlank($this->arrErr) or !SC_Utils_Ex::isBlank($this->arrSearchErr)) {
-                return;
-            }
-            $this->lfRegistData($objFormParam);
-            $this->tpl_mainpage = 'customer/edit_complete.tpl';
-            break;
-        case 'complete_return':
-            //検索引き継ぎ用パラメーター処理
-            $this->lfInitParam($objFormParam);
-            $objFormParam->setParam($_POST);
-            $this->lfInitSearchParam($objFormSearchParam);
-            $objFormSearchParam->setParam($objFormParam->getValue('search_data'));
-            $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
-            $this->arrSearchData = $objFormSearchParam->getSearchArray();
-            if (!SC_Utils_Ex::isBlank($this->arrSearchErr)) {
-                return;
-            }
-        default:
-            break;
+                break;
+            case 'complete':
+                //登録・保存処理
+                //パラメーター処理
+                $this->lfInitParam($objFormParam);
+                $objFormParam->setParam($_POST);
+                $objFormParam->convParam();
+                // 入力パラメーターチェック
+                $this->arrErr = $this->lfCheckError($objFormParam);
+                $this->arrForm = $objFormParam->getHashArray();
+                //検索引き継ぎ用パラメーター処理
+                $this->lfInitSearchParam($objFormSearchParam);
+                $objFormSearchParam->setParam($objFormParam->getValue('search_data'));
+                $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
+                $this->arrSearchData = $objFormSearchParam->getSearchArray();
+                if (!SC_Utils_Ex::isBlank($this->arrErr) or !SC_Utils_Ex::isBlank($this->arrSearchErr)) {
+                    return;
+                }
+                $this->lfRegistData($objFormParam);
+                $this->tpl_mainpage = 'customer/edit_complete.tpl';
+                break;
+            case 'complete_return':
+                //検索引き継ぎ用パラメーター処理
+                $this->lfInitParam($objFormParam);
+                $objFormParam->setParam($_POST);
+                $this->lfInitSearchParam($objFormSearchParam);
+                $objFormSearchParam->setParam($objFormParam->getValue('search_data'));
+                $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
+                $this->arrSearchData = $objFormSearchParam->getSearchArray();
+                if (!SC_Utils_Ex::isBlank($this->arrSearchErr)) {
+                    return;
+                }
+            default:
+                break;
         }
     }
 

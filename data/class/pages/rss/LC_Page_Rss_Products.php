@@ -78,23 +78,23 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
         // モードによって分岐
         $mode = $this->getMode();
         switch ($mode) {
-        case 'all':
-            $arrProducts = $this->lfGetProductsDetailData($mode, $product_id);
-            break;
-        case 'list':
-            if ($product_id != '' && is_numeric($product_id)) {
+            case 'all':
                 $arrProducts = $this->lfGetProductsDetailData($mode, $product_id);
-            } else {
-                $arrProducts = $this->lfGetProductsListData();
-            }
-            break;
-        default:
-            if ($product_id != '' && is_numeric($product_id)) {
-                $arrProducts = $this->lfGetProductsDetailData($mode, $product_id);
-            } else {
-                $arrProducts = $this->lfGetProductsAllData();
-            }
-            break;
+                break;
+            case 'list':
+                if ($product_id != '' && is_numeric($product_id)) {
+                    $arrProducts = $this->lfGetProductsDetailData($mode, $product_id);
+                } else {
+                    $arrProducts = $this->lfGetProductsListData();
+                }
+                break;
+            default:
+                if ($product_id != '' && is_numeric($product_id)) {
+                    $arrProducts = $this->lfGetProductsDetailData($mode, $product_id);
+                } else {
+                    $arrProducts = $this->lfGetProductsAllData();
+                }
+                break;
         }
 
         // 商品情報をセット

@@ -78,13 +78,13 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex {
      */
     function action() {
         switch ($this->getMode()) {
-        // 入力内容をDBへ登録する
-        case 'register':
-            $this->execRegisterMode();
-            break;
-        // 初回表示
-        default:
-            $this->execDefaultMode();
+            // 入力内容をDBへ登録する
+            case 'register':
+                $this->execRegisterMode();
+                break;
+            // 初回表示
+            default:
+                $this->execDefaultMode();
         }
     }
 

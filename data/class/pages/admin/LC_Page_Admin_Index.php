@@ -76,20 +76,20 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
         $objFormParam = new SC_FormParam_Ex();
 
         switch ($this->getMode()) {
-        case 'login':
-            //ログイン処理
-            $this->lfInitParam($objFormParam);
-            $objFormParam->setParam($_POST);
-            $this->arrErr = $this->lfCheckError($objFormParam);
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                $this->lfDoLogin($objFormParam->getValue('login_id'));
-                SC_Response_Ex::sendRedirect(ADMIN_HOME_URLPATH);
-            } else {
-                SC_Utils_Ex::sfDispError(LOGIN_ERROR);
-            }
-            break;
-        default:
-            break;
+            case 'login':
+                //ログイン処理
+                $this->lfInitParam($objFormParam);
+                $objFormParam->setParam($_POST);
+                $this->arrErr = $this->lfCheckError($objFormParam);
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    $this->lfDoLogin($objFormParam->getValue('login_id'));
+                    SC_Response_Ex::sendRedirect(ADMIN_HOME_URLPATH);
+                } else {
+                    SC_Utils_Ex::sfDispError(LOGIN_ERROR);
+                }
+                break;
+            default:
+                break;
         }
 
         // 管理者ログインテンプレートフレームの設定

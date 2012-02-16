@@ -72,14 +72,14 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
         $this->initForm($objFormParam, $_GET);
         switch ($this->getMode()) {
 
-        // PHP INFOを表示
-        case 'info':
-            phpinfo();
-            exit;
-            break;
+            // PHP INFOを表示
+            case 'info':
+                phpinfo();
+                exit;
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
 
         $this->arrSystemInfo = $this->getSystemInfo();

@@ -100,77 +100,77 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
         $this->arrForm = $objFormParam->getFormParamList();
 
         switch ($this->getMode()) {
-        case 'delete':
-            // 商品、子テーブル(商品規格)、会員お気に入り商品の削除
-            $this->doDelete('product_id = ?', array($objFormParam->getValue('product_id')));
-            // 件数カウントバッチ実行
-            $objDb->sfCountCategory($objQuery);
-            $objDb->sfCountMaker($objQuery);
-            // 削除後に検索結果を表示するため breakしない
+            case 'delete':
+                // 商品、子テーブル(商品規格)、会員お気に入り商品の削除
+                $this->doDelete('product_id = ?', array($objFormParam->getValue('product_id')));
+                // 件数カウントバッチ実行
+                $objDb->sfCountCategory($objQuery);
+                $objDb->sfCountMaker($objQuery);
+                // 削除後に検索結果を表示するため breakしない
 
-        // 検索パラメーター生成後に処理実行するため breakしない
-        case 'csv':
-        case 'delete_all':
+            // 検索パラメーター生成後に処理実行するため breakしない
+            case 'csv':
+            case 'delete_all':
 
-        case 'search':
-            $objFormParam->convParam();
-            $objFormParam->trimParam();
-            $this->arrErr = $this->lfCheckError($objFormParam);
-            $arrParam = $objFormParam->getHashArray();
+            case 'search':
+                $objFormParam->convParam();
+                $objFormParam->trimParam();
+                $this->arrErr = $this->lfCheckError($objFormParam);
+                $arrParam = $objFormParam->getHashArray();
 
-            if (count($this->arrErr) == 0) {
-                $where = 'del_flg = 0';
-                foreach ($arrParam as $key => $val) {
-                    if ($val == '') {
-                        continue;
-                    }
-                    $this->buildQuery($key, $where, $arrval, $objFormParam, $objDb);
-                }
-
-                $order = 'update_date DESC';
-
-                /* -----------------------------------------------
-                 * 処理を実行
-                 * ----------------------------------------------- */
-                switch ($this->getMode()) {
-                    // CSVを送信する。
-                    case 'csv':
-                        $objCSV = new SC_Helper_CSV_Ex();
-                        // CSVを送信する。正常終了の場合、終了。
-                        $objCSV->sfDownloadCsv(1, $where, $arrval, $order, true);
-                        exit;
-
-                    // 全件削除(ADMIN_MODE)
-                    case 'delete_all':
-                        $this->doDelete($where, $arrval);
-                        break;
-
-                    // 検索実行
-                    default:
-                        // 行数の取得
-                        $this->tpl_linemax = $this->getNumberOfLines($where, $arrval);
-                        // ページ送りの処理
-                        $page_max = SC_Utils_Ex::sfGetSearchPageMax($objFormParam->getValue('search_page_max'));
-                        // ページ送りの取得
-                        $objNavi = new SC_PageNavi_Ex($this->arrHidden['search_pageno'],
-                                                   $this->tpl_linemax, $page_max,
-                                                   'fnNaviSearchPage', NAVI_PMAX);
-                        $this->arrPagenavi = $objNavi->arrPagenavi;
-
-                        // 検索結果の取得
-                        $this->arrProducts = $this->findProducts($where, $arrval,
-                                                              $page_max, $objNavi->start_row, $order, $objProduct);
-
-                        // 各商品ごとのカテゴリIDを取得
-                        if (count($this->arrProducts) > 0) {
-                            foreach ($this->arrProducts as $key => $val) {
-                                $this->arrProducts[$key]['categories'] = $objDb->sfGetCategoryId($val['product_id'], 0, true);
-                                $objDb->g_category_on = false;
-                            }
+                if (count($this->arrErr) == 0) {
+                    $where = 'del_flg = 0';
+                    foreach ($arrParam as $key => $val) {
+                        if ($val == '') {
+                            continue;
                         }
+                        $this->buildQuery($key, $where, $arrval, $objFormParam, $objDb);
+                    }
+
+                    $order = 'update_date DESC';
+
+                    /* -----------------------------------------------
+                     * 処理を実行
+                     * ----------------------------------------------- */
+                    switch ($this->getMode()) {
+                        // CSVを送信する。
+                        case 'csv':
+                            $objCSV = new SC_Helper_CSV_Ex();
+                            // CSVを送信する。正常終了の場合、終了。
+                            $objCSV->sfDownloadCsv(1, $where, $arrval, $order, true);
+                            exit;
+
+                        // 全件削除(ADMIN_MODE)
+                        case 'delete_all':
+                            $this->doDelete($where, $arrval);
+                            break;
+
+                        // 検索実行
+                        default:
+                            // 行数の取得
+                            $this->tpl_linemax = $this->getNumberOfLines($where, $arrval);
+                            // ページ送りの処理
+                            $page_max = SC_Utils_Ex::sfGetSearchPageMax($objFormParam->getValue('search_page_max'));
+                            // ページ送りの取得
+                            $objNavi = new SC_PageNavi_Ex($this->arrHidden['search_pageno'],
+                                                       $this->tpl_linemax, $page_max,
+                                                       'fnNaviSearchPage', NAVI_PMAX);
+                            $this->arrPagenavi = $objNavi->arrPagenavi;
+
+                            // 検索結果の取得
+                            $this->arrProducts = $this->findProducts($where, $arrval,
+                                                                  $page_max, $objNavi->start_row, $order, $objProduct);
+
+                            // 各商品ごとのカテゴリIDを取得
+                            if (count($this->arrProducts) > 0) {
+                                foreach ($this->arrProducts as $key => $val) {
+                                    $this->arrProducts[$key]['categories'] = $objDb->sfGetCategoryId($val['product_id'], 0, true);
+                                    $objDb->g_category_on = false;
+                                }
+                            }
+                    }
                 }
-            }
-            break;
+                break;
         }
 
         // カテゴリの読込

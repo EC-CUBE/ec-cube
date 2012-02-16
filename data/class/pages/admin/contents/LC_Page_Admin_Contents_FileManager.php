@@ -83,100 +83,100 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
         $objFileManager = new SC_Helper_FileManager_Ex();
 
         switch ($this->getMode()) {
-        // フォルダ移動
-        case 'move':
-            $objFormParam = new SC_FormParam_Ex();
-            $this->lfInitParamModeMove($objFormParam);
-            $objFormParam->setParam($this->createSetParam($_POST));
-            $objFormParam->convParam();
+            // フォルダ移動
+            case 'move':
+                $objFormParam = new SC_FormParam_Ex();
+                $this->lfInitParamModeMove($objFormParam);
+                $objFormParam->setParam($this->createSetParam($_POST));
+                $objFormParam->convParam();
 
-            $this->arrErr = $objFormParam->checkError();
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                $now_dir = $this->lfCheckSelectDir($objFormParam, $objFormParam->getValue('tree_select_file'));
-                $objFormParam->setValue('now_dir', $now_dir);
-            }
-            break;
+                $this->arrErr = $objFormParam->checkError();
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    $now_dir = $this->lfCheckSelectDir($objFormParam, $objFormParam->getValue('tree_select_file'));
+                    $objFormParam->setValue('now_dir', $now_dir);
+                }
+                break;
 
-        // ファイル表示
-        case 'view':
-            $objFormParam = new SC_FormParam_Ex();
-            $this->lfInitParamModeView($objFormParam);
-            $objFormParam->setParam($this->createSetParam($_POST));
-            $objFormParam->convParam();
+            // ファイル表示
+            case 'view':
+                $objFormParam = new SC_FormParam_Ex();
+                $this->lfInitParamModeView($objFormParam);
+                $objFormParam->setParam($this->createSetParam($_POST));
+                $objFormParam->convParam();
 
-            $this->arrErr = $objFormParam->checkError();
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                if ($this->tryView($objFormParam)) {
-                    $file_url = htmlspecialchars(ereg_replace($objFormParam->getValue('top_dir'), '', $objFormParam->getValue('select_file')));
-                    $tpl_onload = "win02('./file_view.php?file=". $file_url ."', 'user_data', '600', '400');";
+                $this->arrErr = $objFormParam->checkError();
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    if ($this->tryView($objFormParam)) {
+                        $file_url = htmlspecialchars(ereg_replace($objFormParam->getValue('top_dir'), '', $objFormParam->getValue('select_file')));
+                        $tpl_onload = "win02('./file_view.php?file=". $file_url ."', 'user_data', '600', '400');";
+                        $this->setTplOnLoad($tpl_onload);
+                    }
+                }
+                break;
+
+            // ファイルダウンロード
+            case 'download':
+                $objFormParam = new SC_FormParam_Ex();
+                $this->lfInitParamModeView($objFormParam);
+                $objFormParam->setParam($this->createSetParam($_POST));
+                $objFormParam->convParam();
+
+                $this->arrErr = $objFormParam->checkError();
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    if (is_dir($objFormParam->getValue('select_file'))) {
+                        $disp_error = '※ ディレクトリをダウンロードすることは出来ません。<br/>';
+                        $this->setDispError('select_file', $disp_error);
+                    } else {
+                        // ファイルダウンロード
+                        $objFileManager->sfDownloadFile($objFormParam->getValue('select_file'));
+                        exit;
+                    }
+                }
+                break;
+            // ファイル削除
+            case 'delete':
+                $objFormParam = new SC_FormParam_Ex();
+                $this->lfInitParamModeView($objFormParam);
+                $objFormParam->setParam($this->createSetParam($_POST));
+                $objFormParam->convParam();
+
+                $this->arrErr = $objFormParam->checkError();
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    $objFileManager->sfDeleteDir($objFormParam->getValue('select_file'));
+                }
+                break;
+            // ファイル作成
+            case 'create':
+                $objFormParam = new SC_FormParam_Ex();
+                $this->lfInitParamModeCreate($objFormParam);
+                $objFormParam->setParam($this->createSetParam($_POST));
+                $objFormParam->convParam();
+
+                $this->arrErr = $objFormParam->checkError();
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    if (!$this->tryCreateDir($objFileManager, $objFormParam)) {
+                        $disp_error = '※ '.htmlspecialchars($objFormParam->getValue('create_file'), ENT_QUOTES).'の作成に失敗しました。<br/>';
+                        $this->setDispError('create_file', $disp_error);
+                    } else {
+                        $tpl_onload = "alert('フォルダを作成しました。');";
+                        $this->setTplOnLoad($tpl_onload);
+                    }
+                }
+                break;
+            // ファイルアップロード
+            case 'upload':
+                // 画像保存処理
+                $ret = $objUpFile->makeTempFile('upload_file', false);
+                if (SC_Utils_Ex::isBlank($ret)) {
+                    $tpl_onload = "alert('ファイルをアップロードしました。');";
                     $this->setTplOnLoad($tpl_onload);
-                }
-            }
-            break;
-
-        // ファイルダウンロード
-        case 'download':
-            $objFormParam = new SC_FormParam_Ex();
-            $this->lfInitParamModeView($objFormParam);
-            $objFormParam->setParam($this->createSetParam($_POST));
-            $objFormParam->convParam();
-
-            $this->arrErr = $objFormParam->checkError();
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                if (is_dir($objFormParam->getValue('select_file'))) {
-                    $disp_error = '※ ディレクトリをダウンロードすることは出来ません。<br/>';
-                    $this->setDispError('select_file', $disp_error);
                 } else {
-                    // ファイルダウンロード
-                    $objFileManager->sfDownloadFile($objFormParam->getValue('select_file'));
-                    exit;
+                    $this->setDispError('upload_file', $ret);
                 }
-            }
-            break;
-        // ファイル削除
-        case 'delete':
-            $objFormParam = new SC_FormParam_Ex();
-            $this->lfInitParamModeView($objFormParam);
-            $objFormParam->setParam($this->createSetParam($_POST));
-            $objFormParam->convParam();
-
-            $this->arrErr = $objFormParam->checkError();
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                $objFileManager->sfDeleteDir($objFormParam->getValue('select_file'));
-            }
-            break;
-        // ファイル作成
-        case 'create':
-            $objFormParam = new SC_FormParam_Ex();
-            $this->lfInitParamModeCreate($objFormParam);
-            $objFormParam->setParam($this->createSetParam($_POST));
-            $objFormParam->convParam();
-
-            $this->arrErr = $objFormParam->checkError();
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                if (!$this->tryCreateDir($objFileManager, $objFormParam)) {
-                    $disp_error = '※ '.htmlspecialchars($objFormParam->getValue('create_file'), ENT_QUOTES).'の作成に失敗しました。<br/>';
-                    $this->setDispError('create_file', $disp_error);
-                } else {
-                    $tpl_onload = "alert('フォルダを作成しました。');";
-                    $this->setTplOnLoad($tpl_onload);
-                }
-            }
-            break;
-        // ファイルアップロード
-        case 'upload':
-            // 画像保存処理
-            $ret = $objUpFile->makeTempFile('upload_file', false);
-            if (SC_Utils_Ex::isBlank($ret)) {
-                $tpl_onload = "alert('ファイルをアップロードしました。');";
-                $this->setTplOnLoad($tpl_onload);
-            } else {
-                $this->setDispError('upload_file', $ret);
-            }
-            break;
-        // 初期表示
-        default :
-            break;
+                break;
+            // 初期表示
+            default:
+                break;
         }
 
         // 値をテンプレートに渡す

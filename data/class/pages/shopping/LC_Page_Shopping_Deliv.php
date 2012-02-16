@@ -105,44 +105,46 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
         $arrForm = $objFormParam->getHashArray();
 
         switch ($this->getMode()) {
-        // 削除
-        case 'delete':
-            $this->doDelete($arrForm['other_deliv_id']);
-            break;
+            // 削除
+            case 'delete':
+                $this->doDelete($arrForm['other_deliv_id']);
+                break;
 
-        // 会員登録住所に送る
-        case 'customer_addr':
-            $objPurchase->unsetShippingTemp();
+            // 会員登録住所に送る
+            case 'customer_addr':
+                $objPurchase->unsetShippingTemp();
 
-            if ($this->registerDeliv($arrForm['deliv_check'], $this->tpl_uniqid,
-                                     $objPurchase, $objCustomer)) {
-                $objSiteSess->setRegistFlag();
-                SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URLPATH);
+                if ($this->registerDeliv($arrForm['deliv_check'], $this->tpl_uniqid,
+                                         $objPurchase, $objCustomer)) {
+                    $objSiteSess->setRegistFlag();
+                    SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URLPATH);
+                    exit;
+
+                } else {
+                    SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
+                }
+                break;
+
+            // 前のページに戻る
+            case 'return':
+                // 確認ページへ移動
+                SC_Response_Ex::sendRedirect(CART_URLPATH);
                 exit;
+                break;
 
-            } else {
-                SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
-            }
-            break;
+            // お届け先複数指定
+            case 'multiple':
+                // 複数配送先指定が無効な場合はエラー
+                if (USE_MULTIPLE_SHIPPING === false) {
+                    SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
+                    exit;
+                }
 
-        // 前のページに戻る
-        case 'return':
-            // 確認ページへ移動
-            SC_Response_Ex::sendRedirect(CART_URLPATH);
-            exit;
-            break;
-
-        // お届け先複数指定
-        case 'multiple':
-            // 複数配送先指定が無効な場合はエラー
-            if (USE_MULTIPLE_SHIPPING === false) {
-                SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
+                SC_Response_Ex::sendRedirect('multiple.php');
                 exit;
-            }
-
-            SC_Response_Ex::sendRedirect('multiple.php');
-            exit;
-            break;
+                break;
+            default:
+                break;
         }
 
         // 登録済み住所を取得

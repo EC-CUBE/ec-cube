@@ -46,16 +46,14 @@ class SC_DB_DBFactory_Ex extends SC_DB_DBFactory {
      */
     function getInstance($db_type = DB_TYPE) {
         switch ($db_type) {
-        case 'mysql':
-            return new SC_DB_DBFactory_MYSQL_Ex();
-            break;
+            case 'mysql':
+                return new SC_DB_DBFactory_MYSQL_Ex();
 
-        case 'pgsql':
-            return new SC_DB_DBFactory_PGSQL_Ex();
-            break;
+            case 'pgsql':
+                return new SC_DB_DBFactory_PGSQL_Ex();
 
-        default:
-            return new SC_DB_DBFactory_Ex();
+            default:
+                return new SC_DB_DBFactory_Ex();
         }
     }
 }

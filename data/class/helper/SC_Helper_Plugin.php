@@ -351,7 +351,7 @@ class SC_Helper_Plugin {
         }
         return $arrBlocs;
     }
-    
+
     /**
      * テンプレートの再生成
      *

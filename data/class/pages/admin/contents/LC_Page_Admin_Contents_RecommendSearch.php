@@ -72,32 +72,32 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
         $objFormParam->convParam();
 
         switch ($this->getMode()) {
-        case 'search':
-            // POST値の引き継ぎ
-            $this->arrErr = $this->lfCheckError($objFormParam);
-            $arrPost = $objFormParam->getHashArray();
-            // 入力された値にエラーがない場合、検索処理を行う。
-            // 検索結果の数に応じてページャの処理も入れる。
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                $objProduct = new SC_Product_Ex();
+            case 'search':
+                // POST値の引き継ぎ
+                $this->arrErr = $this->lfCheckError($objFormParam);
+                $arrPost = $objFormParam->getHashArray();
+                // 入力された値にエラーがない場合、検索処理を行う。
+                // 検索結果の数に応じてページャの処理も入れる。
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    $objProduct = new SC_Product_Ex();
 
-                $wheres = $this->createWhere($objFormParam,$objDb);
-                $this->tpl_linemax = $this->getLineCount($wheres,$objProduct);
+                    $wheres = $this->createWhere($objFormParam,$objDb);
+                    $this->tpl_linemax = $this->getLineCount($wheres,$objProduct);
 
-                $page_max = SC_Utils_Ex::sfGetSearchPageMax($arrPost['search_page_max']);
+                    $page_max = SC_Utils_Ex::sfGetSearchPageMax($arrPost['search_page_max']);
 
-                // ページ送りの取得
-                $objNavi = new SC_PageNavi_Ex($arrPost['search_pageno'], $this->tpl_linemax, $page_max, 'fnNaviSearchOnlyPage', NAVI_PMAX);
-                $this->tpl_strnavi = $objNavi->strnavi;      // 表示文字列
-                $startno = $objNavi->start_row;
+                    // ページ送りの取得
+                    $objNavi = new SC_PageNavi_Ex($arrPost['search_pageno'], $this->tpl_linemax, $page_max, 'fnNaviSearchOnlyPage', NAVI_PMAX);
+                    $this->tpl_strnavi = $objNavi->strnavi;      // 表示文字列
+                    $startno = $objNavi->start_row;
 
-                $arrProduct_id = $this->getProducts($wheres, $objProduct, $page_max, $startno);
-                $this->arrProducts = $this->getProductList($arrProduct_id,$objProduct);
-                $this->arrForm = $arrPost;
-            }
-            break;
-        default:
-            break;
+                    $arrProduct_id = $this->getProducts($wheres, $objProduct, $page_max, $startno);
+                    $this->arrProducts = $this->getProductList($arrProduct_id,$objProduct);
+                    $this->arrForm = $arrPost;
+                }
+                break;
+            default:
+                break;
         }
 
         // カテゴリ取得

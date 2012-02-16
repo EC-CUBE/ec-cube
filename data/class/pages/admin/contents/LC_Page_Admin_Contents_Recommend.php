@@ -74,40 +74,40 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
         $objFormParam->convParam();
 
         switch ($this->getMode()) {
-        case 'regist': // 商品を登録する。
-            $this->arrErr = $this->lfCheckError($objFormParam);
-            $arrPost = $objFormParam->getHashArray();
-            // 登録処理にエラーがあった場合は商品選択の時と同じ処理を行う。
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                $member_id = $_SESSION['member_id'];
-                $this->insertRecommendProduct($arrPost,$member_id);
+            case 'regist': // 商品を登録する。
+                $this->arrErr = $this->lfCheckError($objFormParam);
+                $arrPost = $objFormParam->getHashArray();
+                // 登録処理にエラーがあった場合は商品選択の時と同じ処理を行う。
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    $member_id = $_SESSION['member_id'];
+                    $this->insertRecommendProduct($arrPost,$member_id);
+                    $arrItems = $this->getRecommendProducts();
+                } else {
+                    $arrItems = $this->setProducts($arrPost, $arrItems);
+                    $this->checkRank = $arrPost['rank'];
+                }
+                $this->tpl_onload = "window.alert('編集が完了しました');";
+                break;
+            case 'delete': // 商品を削除する。
+                $this->arrErr = $this->lfCheckError($objFormParam);
+                $arrPost = $objFormParam->getHashArray();
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    $this->deleteProduct($arrPost);
+                    $arrItems = $this->getRecommendProducts();
+                }
+                $this->tpl_onload = "window.alert('削除しました');";
+                break;
+            case 'set_item': // 商品を選択する。
+                $this->arrErr = $this->lfCheckError($objFormParam);
+                $arrPost = $objFormParam->getHashArray();
+                if (SC_Utils_Ex::isBlank($this->arrErr['rank']) && SC_Utils_Ex::isBlank($this->arrErr['product_id'])) {
+                    $arrItems = $this->setProducts($arrPost, $this->getRecommendProducts());
+                    $this->checkRank = $arrPost['rank'];
+                }
+                break;
+            default:
                 $arrItems = $this->getRecommendProducts();
-            } else {
-                $arrItems = $this->setProducts($arrPost, $arrItems);
-                $this->checkRank = $arrPost['rank'];
-            }
-            $this->tpl_onload = "window.alert('編集が完了しました');";
-            break;
-        case 'delete': // 商品を削除する。
-            $this->arrErr = $this->lfCheckError($objFormParam);
-            $arrPost = $objFormParam->getHashArray();
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                $this->deleteProduct($arrPost);
-                $arrItems = $this->getRecommendProducts();
-            }
-            $this->tpl_onload = "window.alert('削除しました');";
-            break;
-        case 'set_item': // 商品を選択する。
-            $this->arrErr = $this->lfCheckError($objFormParam);
-            $arrPost = $objFormParam->getHashArray();
-            if (SC_Utils_Ex::isBlank($this->arrErr['rank']) && SC_Utils_Ex::isBlank($this->arrErr['product_id'])) {
-                $arrItems = $this->setProducts($arrPost, $this->getRecommendProducts());
-                $this->checkRank = $arrPost['rank'];
-            }
-            break;
-        default:
-            $arrItems = $this->getRecommendProducts();
-            break;
+                break;
         }
 
         $this->category_id = intval($arrPost['category_id']);

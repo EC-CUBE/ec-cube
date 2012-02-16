@@ -152,103 +152,104 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $this->arrSearchHidden = $objFormParam->getSearchArray();
 
         switch ($this->getMode()) {
-        case 'pre_edit':
-        case 'order_id':
-            break;
+            case 'pre_edit':
+            case 'order_id':
+                break;
 
-        case 'edit':
-            $objFormParam->setParam($_POST);
-            $objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError($objFormParam);
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                $message = '受注を編集しました。';
-                $order_id = $this->doRegister($order_id, $objPurchase, $objFormParam, $message, $arrValuesBefore);
-                if ($order_id >= 0) {
-                    $this->setOrderToFormParam($objFormParam, $order_id);
-                }
-                $this->tpl_onload = "window.alert('" . $message . "');";
-            }
-            break;
-
-        case 'add':
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            case 'edit':
                 $objFormParam->setParam($_POST);
                 $objFormParam->convParam();
                 $this->arrErr = $this->lfCheckError($objFormParam);
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                    $message = '受注を登録しました。';
-                    $order_id = $this->doRegister(null, $objPurchase, $objFormParam, $message, $arrValuesBefore);
+                    $message = '受注を編集しました。';
+                    $order_id = $this->doRegister($order_id, $objPurchase, $objFormParam, $message, $arrValuesBefore);
                     if ($order_id >= 0) {
-                        $this->tpl_mode = 'edit';
-                        $objFormParam->setValue('order_id', $order_id);
                         $this->setOrderToFormParam($objFormParam, $order_id);
                     }
                     $this->tpl_onload = "window.alert('" . $message . "');";
                 }
-            }
+                break;
 
-            break;
+            case 'add':
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    $objFormParam->setParam($_POST);
+                    $objFormParam->convParam();
+                    $this->arrErr = $this->lfCheckError($objFormParam);
+                    if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                        $message = '受注を登録しました。';
+                        $order_id = $this->doRegister(null, $objPurchase, $objFormParam, $message, $arrValuesBefore);
+                        if ($order_id >= 0) {
+                            $this->tpl_mode = 'edit';
+                            $objFormParam->setValue('order_id', $order_id);
+                            $this->setOrderToFormParam($objFormParam, $order_id);
+                        }
+                        $this->tpl_onload = "window.alert('" . $message . "');";
+                    }
+                }
 
-        // 再計算
-        case 'recalculate':
-        //支払い方法の選択
-        case 'payment':
-        // 配送業者の選択
-        case 'deliv':
-            $objFormParam->setParam($_POST);
-            $objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError($objFormParam);
-            break;
+                break;
 
-        // 商品削除
-        case 'delete_product':
-            $objFormParam->setParam($_POST);
-            $objFormParam->convParam();
-            $delete_no = $objFormParam->getValue('delete_no');
-            $this->doDeleteProduct($delete_no, $objFormParam);
-            $this->arrErr = $this->lfCheckError($objFormParam);
-            break;
+            // 再計算
+            case 'recalculate':
+            //支払い方法の選択
+            case 'payment':
+            // 配送業者の選択
+            case 'deliv':
+                $objFormParam->setParam($_POST);
+                $objFormParam->convParam();
+                $this->arrErr = $this->lfCheckError($objFormParam);
+                break;
 
-        // 商品追加ポップアップより商品選択
-        case 'select_product_detail':
-            $objFormParam->setParam($_POST);
-            $objFormParam->convParam();
-            $this->doRegisterProduct($objFormParam);
-            $this->arrErr = $this->lfCheckError($objFormParam);
-            break;
+            // 商品削除
+            case 'delete_product':
+                $objFormParam->setParam($_POST);
+                $objFormParam->convParam();
+                $delete_no = $objFormParam->getValue('delete_no');
+                $this->doDeleteProduct($delete_no, $objFormParam);
+                $this->arrErr = $this->lfCheckError($objFormParam);
+                break;
 
-        // 会員検索ポップアップより会員指定
-        case 'search_customer':
-            $objFormParam->setParam($_POST);
-            $objFormParam->convParam();
-            $this->setCustomerTo($objFormParam->getValue('edit_customer_id'),
-                                 $objFormParam);
-            $this->arrErr = $this->lfCheckError($objFormParam);
-            break;
+            // 商品追加ポップアップより商品選択
+            case 'select_product_detail':
+                $objFormParam->setParam($_POST);
+                $objFormParam->convParam();
+                $this->doRegisterProduct($objFormParam);
+                $this->arrErr = $this->lfCheckError($objFormParam);
+                break;
 
-        // 複数配送設定表示
-        case 'multiple':
-            $objFormParam->setParam($_POST);
-            $objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError($objFormParam);
-            break;
+            // 会員検索ポップアップより会員指定
+            case 'search_customer':
+                $objFormParam->setParam($_POST);
+                $objFormParam->convParam();
+                $this->setCustomerTo($objFormParam->getValue('edit_customer_id'),
+                                     $objFormParam);
+                $this->arrErr = $this->lfCheckError($objFormParam);
+                break;
 
-        // 複数配送設定を反映
-        case 'multiple_set_to':
-            $this->lfInitMultipleParam($objFormParam);
-            $objFormParam->setParam($_POST);
-            $objFormParam->convParam();
-            $this->setMultipleItemTo($objFormParam);
-            break;
+            // 複数配送設定表示
+            case 'multiple':
+                $objFormParam->setParam($_POST);
+                $objFormParam->convParam();
+                $this->arrErr = $this->lfCheckError($objFormParam);
+                break;
 
-        // お届け先の追加
-        case 'append_shipping':
-            $objFormParam->setParam($_POST);
-            $objFormParam->convParam();
-            $this->addShipping($objFormParam);
-            break;
+            // 複数配送設定を反映
+            case 'multiple_set_to':
+                $this->lfInitMultipleParam($objFormParam);
+                $objFormParam->setParam($_POST);
+                $objFormParam->convParam();
+                $this->setMultipleItemTo($objFormParam);
+                break;
 
-        default:
+            // お届け先の追加
+            case 'append_shipping':
+                $objFormParam->setParam($_POST);
+                $objFormParam->convParam();
+                $this->addShipping($objFormParam);
+                break;
+
+            default:
+                break;
         }
 
         $this->arrForm = $objFormParam->getFormParamList();

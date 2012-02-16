@@ -98,68 +98,70 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
         $this->arrForm = $objFormParam->getFormParamList();
 
         switch ($this->getMode()) {
-        // 削除
-        case 'delete':
-            $this->doDelete('order_id = ?',
-                            array($objFormParam->getValue('order_id')));
-            // 削除後に検索結果を表示するため breakしない
+            // 削除
+            case 'delete':
+                $this->doDelete('order_id = ?',
+                                array($objFormParam->getValue('order_id')));
+                // 削除後に検索結果を表示するため breakしない
 
-        // 検索パラメーター生成後に処理実行するため breakしない
-        case 'csv':
-        case 'delete_all':
+            // 検索パラメーター生成後に処理実行するため breakしない
+            case 'csv':
+            case 'delete_all':
 
-        // 検索パラメーターの生成
-        case 'search':
-            $objFormParam->convParam();
-            $objFormParam->trimParam();
-            $this->arrErr = $this->lfCheckError($objFormParam);
-            $arrParam = $objFormParam->getHashArray();
+            // 検索パラメーターの生成
+            case 'search':
+                $objFormParam->convParam();
+                $objFormParam->trimParam();
+                $this->arrErr = $this->lfCheckError($objFormParam);
+                $arrParam = $objFormParam->getHashArray();
 
-            if (count($this->arrErr) == 0) {
-                $where = 'del_flg = 0';
-                foreach ($arrParam as $key => $val) {
-                    if ($val == '') {
-                        continue;
+                if (count($this->arrErr) == 0) {
+                    $where = 'del_flg = 0';
+                    foreach ($arrParam as $key => $val) {
+                        if ($val == '') {
+                            continue;
+                        }
+                        $this->buildQuery($key, $where, $arrval, $objFormParam);
                     }
-                    $this->buildQuery($key, $where, $arrval, $objFormParam);
+
+                    $order = 'update_date DESC';
+
+                    /* -----------------------------------------------
+                     * 処理を実行
+                     * ----------------------------------------------- */
+                    switch ($this->getMode()) {
+                        // CSVを送信する。
+                        case 'csv':
+                            $this->doOutputCSV($where, $arrval,$order);
+                            exit;
+                            break;
+
+                        // 全件削除(ADMIN_MODE)
+                        case 'delete_all':
+                            $this->doDelete($where, $arrval);
+                            break;
+
+                        // 検索実行
+                        default:
+                            // 行数の取得
+                            $this->tpl_linemax = $this->getNumberOfLines($where, $arrval);
+                            // ページ送りの処理
+                            $page_max = SC_Utils_Ex::sfGetSearchPageMax($objFormParam->getValue('search_page_max'));
+                            // ページ送りの取得
+                            $objNavi = new SC_PageNavi_Ex($this->arrHidden['search_pageno'],
+                                                       $this->tpl_linemax, $page_max,
+                                                       'fnNaviSearchPage', NAVI_PMAX);
+                            $this->arrPagenavi = $objNavi->arrPagenavi;
+
+                            // 検索結果の取得
+                            $this->arrResults = $this->findOrders($where, $arrval,
+                                                                  $page_max, $objNavi->start_row, $order);
+                            break;
+                    }
                 }
-
-                $order = 'update_date DESC';
-
-                /* -----------------------------------------------
-                 * 処理を実行
-                 * ----------------------------------------------- */
-                switch ($this->getMode()) {
-                // CSVを送信する。
-                case 'csv':
-                    $this->doOutputCSV($where, $arrval,$order);
-                    exit;
-                    break;
-
-                // 全件削除(ADMIN_MODE)
-                case 'delete_all':
-                    $this->doDelete($where, $arrval);
-                    break;
-
-                // 検索実行
-                default:
-                    // 行数の取得
-                    $this->tpl_linemax = $this->getNumberOfLines($where, $arrval);
-                    // ページ送りの処理
-                    $page_max = SC_Utils_Ex::sfGetSearchPageMax($objFormParam->getValue('search_page_max'));
-                    // ページ送りの取得
-                    $objNavi = new SC_PageNavi_Ex($this->arrHidden['search_pageno'],
-                                               $this->tpl_linemax, $page_max,
-                                               'fnNaviSearchPage', NAVI_PMAX);
-                    $this->arrPagenavi = $objNavi->arrPagenavi;
-
-                    // 検索結果の取得
-                    $this->arrResults = $this->findOrders($where, $arrval,
-                                                          $page_max, $objNavi->start_row, $order);
-                }
-            }
-            break;
-        default:
+                break;
+            default:
+                break;
         }
     }
 
@@ -267,125 +269,126 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         switch ($key) {
 
-        case 'search_product_name':
-            $where .= ' AND EXISTS (SELECT 1 FROM dtb_order_detail od WHERE od.order_id = dtb_order.order_id AND od.product_name LIKE ?)';
-            $arrValues[] = sprintf('%%%s%%', $objFormParam->getValue($key));
-            break;
-        case 'search_order_name':
-            $where .= ' AND ' . $dbFactory->concatColumn(array('order_name01', 'order_name02')) . ' LIKE ?';
-            $arrValues[] = sprintf('%%%s%%', $objFormParam->getValue($key));
-            break;
-        case 'search_order_kana':
-            $where .= ' AND ' . $dbFactory->concatColumn(array('order_kana01', 'order_kana02')) . ' LIKE ?';
-            $arrValues[] = sprintf('%%%s%%', $objFormParam->getValue($key));
-            break;
-        case 'search_order_id1':
-            $where .= ' AND order_id >= ?';
-            $arrValues[] = sprintf('%d', $objFormParam->getValue($key));
-            break;
-        case 'search_order_id2':
-            $where .= ' AND order_id <= ?';
-            $arrValues[] = sprintf('%d', $objFormParam->getValue($key));
-            break;
-        case 'search_order_sex':
-            $tmp_where = '';
-            foreach ($objFormParam->getValue($key) as $element) {
-                if ($element != '') {
-                    if (SC_Utils_Ex::isBlank($tmp_where)) {
-                        $tmp_where .= ' AND (order_sex = ?';
-                    } else {
-                        $tmp_where .= ' OR order_sex = ?';
+            case 'search_product_name':
+                $where .= ' AND EXISTS (SELECT 1 FROM dtb_order_detail od WHERE od.order_id = dtb_order.order_id AND od.product_name LIKE ?)';
+                $arrValues[] = sprintf('%%%s%%', $objFormParam->getValue($key));
+                break;
+            case 'search_order_name':
+                $where .= ' AND ' . $dbFactory->concatColumn(array('order_name01', 'order_name02')) . ' LIKE ?';
+                $arrValues[] = sprintf('%%%s%%', $objFormParam->getValue($key));
+                break;
+            case 'search_order_kana':
+                $where .= ' AND ' . $dbFactory->concatColumn(array('order_kana01', 'order_kana02')) . ' LIKE ?';
+                $arrValues[] = sprintf('%%%s%%', $objFormParam->getValue($key));
+                break;
+            case 'search_order_id1':
+                $where .= ' AND order_id >= ?';
+                $arrValues[] = sprintf('%d', $objFormParam->getValue($key));
+                break;
+            case 'search_order_id2':
+                $where .= ' AND order_id <= ?';
+                $arrValues[] = sprintf('%d', $objFormParam->getValue($key));
+                break;
+            case 'search_order_sex':
+                $tmp_where = '';
+                foreach ($objFormParam->getValue($key) as $element) {
+                    if ($element != '') {
+                        if (SC_Utils_Ex::isBlank($tmp_where)) {
+                            $tmp_where .= ' AND (order_sex = ?';
+                        } else {
+                            $tmp_where .= ' OR order_sex = ?';
+                        }
+                        $arrValues[] = $element;
                     }
-                    $arrValues[] = $element;
                 }
-            }
 
-            if (!SC_Utils_Ex::isBlank($tmp_where)) {
-                $tmp_where .= ')';
-                $where .= " $tmp_where ";
-            }
-            break;
-        case 'search_order_tel':
-            $where .= ' AND (' . $dbFactory->concatColumn(array('order_tel01', 'order_tel02', 'order_tel03')) . ' LIKE ?)';
-            $arrValues[] = sprintf('%%%d%%', preg_replace('/[()-]+/','', $objFormParam->getValue($key)));
-            break;
-        case 'search_order_email':
-            $where .= ' AND order_email LIKE ?';
-            $arrValues[] = sprintf('%%%s%%', $objFormParam->getValue($key));
-            break;
-        case 'search_payment_id':
-            $tmp_where = '';
-            foreach ($objFormParam->getValue($key) as $element) {
-                if ($element != '') {
-                    if ($tmp_where == '') {
-                        $tmp_where .= ' AND (payment_id = ?';
-                    } else {
-                        $tmp_where .= ' OR payment_id = ?';
+                if (!SC_Utils_Ex::isBlank($tmp_where)) {
+                    $tmp_where .= ')';
+                    $where .= " $tmp_where ";
+                }
+                break;
+            case 'search_order_tel':
+                $where .= ' AND (' . $dbFactory->concatColumn(array('order_tel01', 'order_tel02', 'order_tel03')) . ' LIKE ?)';
+                $arrValues[] = sprintf('%%%d%%', preg_replace('/[()-]+/','', $objFormParam->getValue($key)));
+                break;
+            case 'search_order_email':
+                $where .= ' AND order_email LIKE ?';
+                $arrValues[] = sprintf('%%%s%%', $objFormParam->getValue($key));
+                break;
+            case 'search_payment_id':
+                $tmp_where = '';
+                foreach ($objFormParam->getValue($key) as $element) {
+                    if ($element != '') {
+                        if ($tmp_where == '') {
+                            $tmp_where .= ' AND (payment_id = ?';
+                        } else {
+                            $tmp_where .= ' OR payment_id = ?';
+                        }
+                        $arrValues[] = $element;
                     }
-                    $arrValues[] = $element;
                 }
-            }
 
-            if (!SC_Utils_Ex::isBlank($tmp_where)) {
-                $tmp_where .= ')';
-                $where .= " $tmp_where ";
-            }
-            break;
-        case 'search_total1':
-            $where .= ' AND total >= ?';
-            $arrValues[] = sprintf('%d', $objFormParam->getValue($key));
-            break;
-        case 'search_total2':
-            $where .= ' AND total <= ?';
-            $arrValues[] = sprintf('%d', $objFormParam->getValue($key));
-            break;
-        case 'search_sorderyear':
-            $date = SC_Utils_Ex::sfGetTimestamp($objFormParam->getValue('search_sorderyear'),
-                                                $objFormParam->getValue('search_sordermonth'),
-                                                $objFormParam->getValue('search_sorderday'));
-            $where.= ' AND create_date >= ?';
-            $arrValues[] = $date;
-            break;
-        case 'search_eorderyear':
-            $date = SC_Utils_Ex::sfGetTimestamp($objFormParam->getValue('search_eorderyear'),
-                                                $objFormParam->getValue('search_eordermonth'),
-                                                $objFormParam->getValue('search_eorderday'), true);
-            $where.= ' AND create_date <= ?';
-            $arrValues[] = $date;
-            break;
-        case 'search_supdateyear':
-            $date = SC_Utils_Ex::sfGetTimestamp($objFormParam->getValue('search_supdateyear'),
-                                                $objFormParam->getValue('search_supdatemonth'),
-                                                $objFormParam->getValue('search_supdateday'));
-            $where.= ' AND update_date >= ?';
-            $arrValues[] = $date;
-            break;
-        case 'search_eupdateyear':
-            $date = SC_Utils_Ex::sfGetTimestamp($objFormParam->getValue('search_eupdateyear'),
-                                                $objFormParam->getValue('search_eupdatemonth'),
-                                                $objFormParam->getValue('search_eupdateday'), true);
-            $where.= ' AND update_date <= ?';
-            $arrValues[] = $date;
-            break;
-        case 'search_sbirthyear':
-            $date = SC_Utils_Ex::sfGetTimestamp($objFormParam->getValue('search_sbirthyear'),
-                                                $objFormParam->getValue('search_sbirthmonth'),
-                                                $objFormParam->getValue('search_sbirthday'));
-            $where.= ' AND order_birth >= ?';
-            $arrValues[] = $date;
-            break;
-        case 'search_ebirthyear':
-            $date = SC_Utils_Ex::sfGetTimestamp($objFormParam->getValue('search_ebirthyear'),
-                                                $objFormParam->getValue('search_ebirthmonth'),
-                                                $objFormParam->getValue('search_ebirthday'), true);
-            $where.= ' AND order_birth <= ?';
-            $arrValues[] = $date;
-            break;
-        case 'search_order_status':
-            $where.= ' AND status = ?';
-            $arrValues[] = $objFormParam->getValue($key);
-            break;
-        default:
+                if (!SC_Utils_Ex::isBlank($tmp_where)) {
+                    $tmp_where .= ')';
+                    $where .= " $tmp_where ";
+                }
+                break;
+            case 'search_total1':
+                $where .= ' AND total >= ?';
+                $arrValues[] = sprintf('%d', $objFormParam->getValue($key));
+                break;
+            case 'search_total2':
+                $where .= ' AND total <= ?';
+                $arrValues[] = sprintf('%d', $objFormParam->getValue($key));
+                break;
+            case 'search_sorderyear':
+                $date = SC_Utils_Ex::sfGetTimestamp($objFormParam->getValue('search_sorderyear'),
+                                                    $objFormParam->getValue('search_sordermonth'),
+                                                    $objFormParam->getValue('search_sorderday'));
+                $where.= ' AND create_date >= ?';
+                $arrValues[] = $date;
+                break;
+            case 'search_eorderyear':
+                $date = SC_Utils_Ex::sfGetTimestamp($objFormParam->getValue('search_eorderyear'),
+                                                    $objFormParam->getValue('search_eordermonth'),
+                                                    $objFormParam->getValue('search_eorderday'), true);
+                $where.= ' AND create_date <= ?';
+                $arrValues[] = $date;
+                break;
+            case 'search_supdateyear':
+                $date = SC_Utils_Ex::sfGetTimestamp($objFormParam->getValue('search_supdateyear'),
+                                                    $objFormParam->getValue('search_supdatemonth'),
+                                                    $objFormParam->getValue('search_supdateday'));
+                $where.= ' AND update_date >= ?';
+                $arrValues[] = $date;
+                break;
+            case 'search_eupdateyear':
+                $date = SC_Utils_Ex::sfGetTimestamp($objFormParam->getValue('search_eupdateyear'),
+                                                    $objFormParam->getValue('search_eupdatemonth'),
+                                                    $objFormParam->getValue('search_eupdateday'), true);
+                $where.= ' AND update_date <= ?';
+                $arrValues[] = $date;
+                break;
+            case 'search_sbirthyear':
+                $date = SC_Utils_Ex::sfGetTimestamp($objFormParam->getValue('search_sbirthyear'),
+                                                    $objFormParam->getValue('search_sbirthmonth'),
+                                                    $objFormParam->getValue('search_sbirthday'));
+                $where.= ' AND order_birth >= ?';
+                $arrValues[] = $date;
+                break;
+            case 'search_ebirthyear':
+                $date = SC_Utils_Ex::sfGetTimestamp($objFormParam->getValue('search_ebirthyear'),
+                                                    $objFormParam->getValue('search_ebirthmonth'),
+                                                    $objFormParam->getValue('search_ebirthday'), true);
+                $where.= ' AND order_birth <= ?';
+                $arrValues[] = $date;
+                break;
+            case 'search_order_status':
+                $where.= ' AND status = ?';
+                $arrValues[] = $objFormParam->getValue($key);
+                break;
+            default:
+                break;
         }
     }
 

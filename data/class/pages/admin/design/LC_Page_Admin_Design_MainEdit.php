@@ -81,40 +81,41 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         $this->page_id = $objFormParam->getValue('page_id');
 
         switch ($this->getMode()) {
-        // 削除
-        case 'delete':
-            if (!$is_error) {
-                if ($objLayout->isEditablePage($this->device_type_id, $this->page_id)) {
-                    $objLayout->lfDelPageData($this->page_id, $this->device_type_id);
-                    SC_Response_Ex::reload(array('device_type_id' => $this->device_type_id,
-                                                 'msg' => 'on'), true);
-                    exit;
-                }
-            }
-            break;
-
-        // 登録/編集
-        case 'confirm':
-            if (!$is_error) {
-                $this->arrErr = $this->lfCheckError($objFormParam, $this->arrErr);
-                if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                    $result = $this->doRegister($objFormParam, $objLayout);
-                    if ($result !== false) {
-                        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
-                        $objPlugin->remakeTemplate();
+            // 削除
+            case 'delete':
+                if (!$is_error) {
+                    if ($objLayout->isEditablePage($this->device_type_id, $this->page_id)) {
+                        $objLayout->lfDelPageData($this->page_id, $this->device_type_id);
                         SC_Response_Ex::reload(array('device_type_id' => $this->device_type_id,
-                                                     'page_id' => $result,
                                                      'msg' => 'on'), true);
-                    exit;
+                        exit;
                     }
                 }
-            }
-            break;
+                break;
 
-        default:
-            if (isset($_GET['msg']) && $_GET['msg'] == 'on') {
-                $this->tpl_onload = "alert('登録が完了しました。');";
-            }
+            // 登録/編集
+            case 'confirm':
+                if (!$is_error) {
+                    $this->arrErr = $this->lfCheckError($objFormParam, $this->arrErr);
+                    if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                        $result = $this->doRegister($objFormParam, $objLayout);
+                        if ($result !== false) {
+                            $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                            $objPlugin->remakeTemplate();
+                            SC_Response_Ex::reload(array('device_type_id' => $this->device_type_id,
+                                                         'page_id' => $result,
+                                                         'msg' => 'on'), true);
+                        exit;
+                        }
+                    }
+                }
+                break;
+
+            default:
+                if (isset($_GET['msg']) && $_GET['msg'] == 'on') {
+                    $this->tpl_onload = "alert('登録が完了しました。');";
+                }
+                break;
         }
 
         if (!$is_error) {

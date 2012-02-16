@@ -83,24 +83,24 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
         $this->arrKeys = $this->getParamKeys($masterData);
 
         switch ($this->getMode()) {
-        case 'update':
-            // データの引き継ぎ
-            $this->arrForm = $_POST;
+            case 'update':
+                // データの引き継ぎ
+                $this->arrForm = $_POST;
 
-            // エラーチェック
-            $this->arrErr = $this->errorCheck($this->arrKeys, $this->arrForm);
-            // エラーの無い場合は update
-            if (empty($this->arrErr)) {
-                $this->update($this->arrKeys, $this->arrForm);
-                $this->tpl_onload = "window.alert('パラメーターの設定が完了しました。');";
-            } else {
-                $this->arrValues = SC_Utils_Ex::getHash2Array($this->arrForm,
-                                                              $this->arrKeys);
-                $this->tpl_onload = "window.alert('エラーが発生しました。入力内容をご確認下さい。');";
-            }
-            break;
-        default:
-            break;
+                // エラーチェック
+                $this->arrErr = $this->errorCheck($this->arrKeys, $this->arrForm);
+                // エラーの無い場合は update
+                if (empty($this->arrErr)) {
+                    $this->update($this->arrKeys, $this->arrForm);
+                    $this->tpl_onload = "window.alert('パラメーターの設定が完了しました。');";
+                } else {
+                    $this->arrValues = SC_Utils_Ex::getHash2Array($this->arrForm,
+                                                                  $this->arrKeys);
+                    $this->tpl_onload = "window.alert('エラーが発生しました。入力内容をご確認下さい。');";
+                }
+                break;
+            default:
+                break;
         }
 
         if (empty($this->arrErr)) {

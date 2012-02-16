@@ -66,21 +66,21 @@ class LC_Page_Regist extends LC_Page_Ex {
     function action() {
 
         switch ($this->getMode()) {
-        case 'regist':
-        //--　本登録完了のためにメールから接続した場合
-            //-- 入力チェック
-            $this->arrErr       = $this->lfErrorCheck($_GET);
-            if ($this->arrErr) SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, $this->arrErr['id']);
+            case 'regist':
+            //--　本登録完了のためにメールから接続した場合
+                //-- 入力チェック
+                $this->arrErr       = $this->lfErrorCheck($_GET);
+                if ($this->arrErr) SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, $this->arrErr['id']);
 
-            $registSecretKey    = $this->lfRegistData($_GET);   //本会員登録（フラグ変更）
-            $this->lfSendRegistMail($registSecretKey);          //本会員登録完了メール送信
+                $registSecretKey    = $this->lfRegistData($_GET);   //本会員登録（フラグ変更）
+                $this->lfSendRegistMail($registSecretKey);          //本会員登録完了メール送信
 
-            SC_Response_Ex::sendRedirect('complete.php', array('ci' => SC_Helper_Customer_Ex::sfGetCustomerId($registSecretKey)));
-            break;
-        //--　それ以外のアクセスは無効とする
-        default:
-            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, '無効なアクセスです。');
-            break;
+                SC_Response_Ex::sendRedirect('complete.php', array('ci' => SC_Helper_Customer_Ex::sfGetCustomerId($registSecretKey)));
+                break;
+            //--　それ以外のアクセスは無効とする
+            default:
+                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, '無効なアクセスです。');
+                break;
         }
     }
 

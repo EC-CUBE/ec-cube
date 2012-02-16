@@ -93,57 +93,57 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
 
         // 要求判定
         switch ($mode) {
-        // 編集処理
-        case 'edit':
-            // POST値の引き継ぎ
-            $this->arrForm = $this->arrForm = $_POST;
+            // 編集処理
+            case 'edit':
+                // POST値の引き継ぎ
+                $this->arrForm = $this->arrForm = $_POST;
 
-            if (count($this->arrErr) <= 0) {
-                // 新規作成
-                if ($post['holiday_id'] == '') {
-                    $this->lfInsertClass($this->arrForm, $_SESSION['member_id']);
+                if (count($this->arrErr) <= 0) {
+                    // 新規作成
+                    if ($post['holiday_id'] == '') {
+                        $this->lfInsertClass($this->arrForm, $_SESSION['member_id']);
+                    }
+                    // 既存編集
+                    else {
+                        $this->lfUpdateClass($this->arrForm, $post['holiday_id']);
+                    }
+                    // 再表示
+                    $this->objDisplay->reload();
+                } else {
+                    // POSTデータを引き継ぐ
+                    $this->tpl_holiday_id = $post['holiday_id'];
                 }
-                // 既存編集
-                else {
-                    $this->lfUpdateClass($this->arrForm, $post['holiday_id']);
-                }
+                break;
+            // 削除
+            case 'delete':
+                $objDb->sfDeleteRankRecord('dtb_holiday', 'holiday_id', $post['holiday_id'], '', true);
                 // 再表示
                 $this->objDisplay->reload();
-            } else {
+                break;
+            // 編集前処理
+            case 'pre_edit':
+                // 編集項目を取得する。
+                $arrHolidayData = $this->lfGetHolidayDataByHolidayID($post['holiday_id']);
+
+                // 入力項目にカテゴリ名を入力する。
+                $this->arrForm['title'] = $arrHolidayData[0]['title'];
+                $this->arrForm['month'] = $arrHolidayData[0]['month'];
+                $this->arrForm['day'] = $arrHolidayData[0]['day'];
                 // POSTデータを引き継ぐ
                 $this->tpl_holiday_id = $post['holiday_id'];
-            }
-            break;
-        // 削除
-        case 'delete':
-            $objDb->sfDeleteRankRecord('dtb_holiday', 'holiday_id', $post['holiday_id'], '', true);
-            // 再表示
-            $this->objDisplay->reload();
-            break;
-        // 編集前処理
-        case 'pre_edit':
-            // 編集項目を取得する。
-            $arrHolidayData = $this->lfGetHolidayDataByHolidayID($post['holiday_id']);
-
-            // 入力項目にカテゴリ名を入力する。
-            $this->arrForm['title'] = $arrHolidayData[0]['title'];
-            $this->arrForm['month'] = $arrHolidayData[0]['month'];
-            $this->arrForm['day'] = $arrHolidayData[0]['day'];
-            // POSTデータを引き継ぐ
-            $this->tpl_holiday_id = $post['holiday_id'];
-        break;
-        case 'down':
-            $objDb->sfRankDown('dtb_holiday', 'holiday_id', $post['holiday_id']);
-            // 再表示
-            $this->objDisplay->reload();
-            break;
-        case 'up':
-            $objDb->sfRankUp('dtb_holiday', 'holiday_id', $post['holiday_id']);
-            // 再表示
-            $this->objDisplay->reload();
-            break;
-        default:
-            break;
+                break;
+            case 'down':
+                $objDb->sfRankDown('dtb_holiday', 'holiday_id', $post['holiday_id']);
+                // 再表示
+                $this->objDisplay->reload();
+                break;
+            case 'up':
+                $objDb->sfRankUp('dtb_holiday', 'holiday_id', $post['holiday_id']);
+                // 再表示
+                $this->objDisplay->reload();
+                break;
+            default:
+                break;
         }
 
         $this->arrHoliday = $this->lfGetHolidayList();

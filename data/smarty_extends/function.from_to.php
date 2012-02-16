@@ -40,16 +40,16 @@ function smarty_function_from_to($params, &$smarty) {
 
     foreach ($params as $_key => $_val) {
         switch ($_key) {
-        case 'from':
-        case 'to':
-        case 'separator':
-        case 'escape':
-            $$_key = (string) $_val;
-            break;
+            case 'from':
+            case 'to':
+            case 'separator':
+            case 'escape':
+                $$_key = (string) $_val;
+                break;
 
-        default:
-            $smarty->trigger_error("from_to: extra attribute '$_key' is unknown.", E_USER_NOTICE);
-            break;
+            default:
+                $smarty->trigger_error("from_to: extra attribute '$_key' is unknown.", E_USER_NOTICE);
+                break;
         }
     }
 

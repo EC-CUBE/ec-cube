@@ -78,50 +78,51 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
         $this->page_id = $objFormParam->getValue('page_id', 1);
 
         switch ($this->getMode()) {
-        // 新規ブロック作成
-        case 'new_bloc':
-            SC_Response_Ex::sendRedirect('bloc.php', array('device_type_id' => $this->device_type_id));
-            exit;
-            break;
-
-        // 新規ページ作成
-        case 'new_page':
-            SC_Response_Ex::sendRedirect('main_edit.php', array('device_type_id' => $this->device_type_id));
-            exit;
-            break;
-
-        // プレビュー
-        case 'preview':
-            $this->placingBlocs($objFormParam, true);
-            $filename = $this->savePreviewData($this->page_id, $objLayout);
-            $_SESSION['preview'] = 'ON';
-            SC_Response_Ex::sendRedirectFromUrlPath('preview/' . DIR_INDEX_PATH, array('filename' => $filename));
-            exit;
-
-        // 編集実行
-        case 'confirm':
-            $this->placingBlocs($objFormParam);
-            $arrQueryString = array('device_type_id' => $this->device_type_id, 'page_id' => $this->page_id, 'msg' => 'on');
-            SC_Response_Ex::reload($arrQueryString, true);
-            exit;
-
-        break;
-
-        // データ削除処理
-        case 'delete':
-            //ベースデータでなければファイルを削除
-            if ($objLayout->isEditablePage($this->device_type_id, $this->page_id)) {
-                $objLayout->lfDelPageData($this->page_id, $this->device_type_id);
-                SC_Response_Ex::reload(array('device_type_id' => $this->device_type_id), true);
+            // 新規ブロック作成
+            case 'new_bloc':
+                SC_Response_Ex::sendRedirect('bloc.php', array('device_type_id' => $this->device_type_id));
                 exit;
-            }
-        break;
+                break;
 
-        default:
-            // 完了メッセージ表示
-            if (isset($_GET['msg']) && $_GET['msg'] == 'on') {
-                $this->tpl_onload="alert('登録が完了しました。');";
-            }
+            // 新規ページ作成
+            case 'new_page':
+                SC_Response_Ex::sendRedirect('main_edit.php', array('device_type_id' => $this->device_type_id));
+                exit;
+                break;
+
+            // プレビュー
+            case 'preview':
+                $this->placingBlocs($objFormParam, true);
+                $filename = $this->savePreviewData($this->page_id, $objLayout);
+                $_SESSION['preview'] = 'ON';
+                SC_Response_Ex::sendRedirectFromUrlPath('preview/' . DIR_INDEX_PATH, array('filename' => $filename));
+                exit;
+
+            // 編集実行
+            case 'confirm':
+                $this->placingBlocs($objFormParam);
+                $arrQueryString = array('device_type_id' => $this->device_type_id, 'page_id' => $this->page_id, 'msg' => 'on');
+                SC_Response_Ex::reload($arrQueryString, true);
+                exit;
+
+                break;
+
+            // データ削除処理
+            case 'delete':
+                //ベースデータでなければファイルを削除
+                if ($objLayout->isEditablePage($this->device_type_id, $this->page_id)) {
+                    $objLayout->lfDelPageData($this->page_id, $this->device_type_id);
+                    SC_Response_Ex::reload(array('device_type_id' => $this->device_type_id), true);
+                    exit;
+                }
+                break;
+
+            default:
+                // 完了メッセージ表示
+                if (isset($_GET['msg']) && $_GET['msg'] == 'on') {
+                    $this->tpl_onload="alert('登録が完了しました。');";
+                }
+                break;
         }
 
         $this->arrBlocs = $this->getLayout($this->device_type_id, $this->page_id, $objLayout);

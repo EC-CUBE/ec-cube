@@ -84,35 +84,36 @@ class LC_Page_Products_Review extends LC_Page_Ex {
         $objFormParam->convParam();
 
         switch ($this->getMode()) {
-        case 'confirm':
-            $this->arrErr = $this->lfCheckError($objFormParam);
+            case 'confirm':
+                $this->arrErr = $this->lfCheckError($objFormParam);
 
-            //エラーチェック
-            if (empty($this->arrErr)) {
-                //重複タイトルでない
-                $this->tpl_mainpage = 'products/review_confirm.tpl';
-            }
-            break;
+                //エラーチェック
+                if (empty($this->arrErr)) {
+                    //重複タイトルでない
+                    $this->tpl_mainpage = 'products/review_confirm.tpl';
+                }
+                break;
 
-        case 'return':
-            break;
+            case 'return':
+                break;
 
-        case 'complete':
-            $this->arrErr = $this->lfCheckError($objFormParam);
-            //エラーチェック
-            if (empty($this->arrErr)) {
-                //登録実行
-                $this->lfRegistRecommendData($objFormParam);
+            case 'complete':
+                $this->arrErr = $this->lfCheckError($objFormParam);
+                //エラーチェック
+                if (empty($this->arrErr)) {
+                    //登録実行
+                    $this->lfRegistRecommendData($objFormParam);
 
-                //レビュー書き込み完了ページへ
-                SC_Response_Ex::sendRedirect('review_complete.php');
-                exit;
-            }
-            break;
+                    //レビュー書き込み完了ページへ
+                    SC_Response_Ex::sendRedirect('review_complete.php');
+                    exit;
+                }
+                break;
 
-        default:
-            // 最初のproduct_idは、$_GETで渡ってくる。
-            $objFormParam->setParam($_GET);
+            default:
+                // 最初のproduct_idは、$_GETで渡ってくる。
+                $objFormParam->setParam($_GET);
+                break;
         }
 
         $this->arrForm = $objFormParam->getHashArray();

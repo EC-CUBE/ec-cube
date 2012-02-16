@@ -150,21 +150,21 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      */
     function getOrderTotalDaysWhereSql($type) {
         switch ($type) {
-        case 'month':
-            $format = '%m';
-            break;
-        case 'year':
-            $format = '%Y';
-            break;
-        case 'wday':
-            $format = '%a';
-            break;
-        case 'hour':
-            $format = '%H';
-            break;
-        default:
-            $format = '%Y-%m-%d';
-            break;
+            case 'month':
+                $format = '%m';
+                break;
+            case 'year':
+                $format = '%Y';
+                break;
+            case 'wday':
+                $format = '%a';
+                break;
+            case 'hour':
+                $format = '%H';
+                break;
+            default:
+                $format = '%Y-%m-%d';
+                break;
         }
 
         return " date_format(create_date, '".$format."') AS str_date,

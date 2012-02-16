@@ -72,37 +72,37 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
         $objMailHelper = new SC_Helper_Mail_Ex();
 
         switch ($this->getMode()) {
-        case 'edit':
-            // 編集
-            if (SC_Utils_Ex::sfIsInt($_GET['template_id'])===true) {
-                $arrMail = $objMailHelper->sfGetMailmagaTemplate($_GET['template_id']);
-                $this->arrForm = $arrMail[0];
-            }
-            break;
-        case 'regist':
-            // 新規登録
-            $objFormParam = new SC_FormParam_Ex();
+            case 'edit':
+                // 編集
+                if (SC_Utils_Ex::sfIsInt($_GET['template_id'])===true) {
+                    $arrMail = $objMailHelper->sfGetMailmagaTemplate($_GET['template_id']);
+                    $this->arrForm = $arrMail[0];
+                }
+                break;
+            case 'regist':
+                // 新規登録
+                $objFormParam = new SC_FormParam_Ex();
 
-            $this->lfInitParam($objFormParam);
-            $objFormParam->setParam($_POST);
-            $this->arrErr = $objFormParam->checkError();
-            $this->arrForm = $objFormParam->getHashArray();
+                $this->lfInitParam($objFormParam);
+                $objFormParam->setParam($_POST);
+                $this->arrErr = $objFormParam->checkError();
+                $this->arrForm = $objFormParam->getHashArray();
 
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                // エラーが無いときは登録・編集
-                $this->lfRegistData($objFormParam, $objFormParam->getValue('template_id'));
-                // 自分を再読込して、完了画面へ遷移
-                $this->objDisplay->reload(array('mode' => 'complete'));
-            } else {
-                $this->arrForm['template_id'] = $objFormParam->getValue('template_id');
-            }
-            break;
-        case 'complete':
-            // 完了画面表示
-            $this->tpl_mainpage = 'mail/template_complete.tpl';
-            break;
-        default:
-            break;
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    // エラーが無いときは登録・編集
+                    $this->lfRegistData($objFormParam, $objFormParam->getValue('template_id'));
+                    // 自分を再読込して、完了画面へ遷移
+                    $this->objDisplay->reload(array('mode' => 'complete'));
+                } else {
+                    $this->arrForm['template_id'] = $objFormParam->getValue('template_id');
+                }
+                break;
+            case 'complete':
+                // 完了画面表示
+                $this->tpl_mainpage = 'mail/template_complete.tpl';
+                break;
+            default:
+                break;
         }
     }
 

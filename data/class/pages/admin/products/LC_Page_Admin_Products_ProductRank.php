@@ -78,24 +78,24 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex {
             isset($_POST['product_id']) ? $_POST['product_id'] : '';
 
         switch ($this->getMode()) {
-        case 'up':
-            $this->lfRankUp($objDb, $this->arrForm['parent_category_id'], $this->arrForm['product_id']);
-            break;
-        case 'down':
-            $this->lfRankDown($objDb, $this->arrForm['parent_category_id'], $this->arrForm['product_id']);
-            break;
-        case 'move':
-            $this->lfRankMove($objDb, $this->arrForm['parent_category_id'], $this->arrForm['product_id']);
-            break;
-        case 'tree':
-            // カテゴリの切替は、ページ番号をクリアする。
-            $this->tpl_pageno = '';
-            break;
-        case 'renumber':
-            $this->lfRenumber($this->arrForm['parent_category_id']);
-            break;
-        default:
-            break;
+            case 'up':
+                $this->lfRankUp($objDb, $this->arrForm['parent_category_id'], $this->arrForm['product_id']);
+                break;
+            case 'down':
+                $this->lfRankDown($objDb, $this->arrForm['parent_category_id'], $this->arrForm['product_id']);
+                break;
+            case 'move':
+                $this->lfRankMove($objDb, $this->arrForm['parent_category_id'], $this->arrForm['product_id']);
+                break;
+            case 'tree':
+                // カテゴリの切替は、ページ番号をクリアする。
+                $this->tpl_pageno = '';
+                break;
+            case 'renumber':
+                $this->lfRenumber($this->arrForm['parent_category_id']);
+                break;
+            default:
+                break;
         }
 
         $this->arrTree = $objDb->sfGetCatTree($this->arrForm['parent_category_id']);

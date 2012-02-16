@@ -80,108 +80,108 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
         switch ($this->getMode()) {
 
-        // バックアップを作成する
-        case 'bkup':
+            // バックアップを作成する
+            case 'bkup':
 
-            // データ型エラーチェック
-            $arrErrTmp[1] = $objFormParam->checkError();
+                // データ型エラーチェック
+                $arrErrTmp[1] = $objFormParam->checkError();
 
-            // データ型に問題がない場合
-            if (SC_Utils_Ex::isBlank($arrErrTmp[1])) {
-                // データ型以外のエラーチェック
-                $arrErrTmp[2] = $this->lfCheckError($objFormParam->getHashArray(), $this->getMode());
-            }
-
-            // エラーがなければバックアップ処理を行う
-            if (SC_Utils_Ex::isBlank($arrErrTmp[1]) && SC_Utils_Ex::isBlank($arrErrTmp[2])) {
-
-                $arrData = $objFormParam->getHashArray();
-
-                $work_dir = $this->bkup_dir . $arrData['bkup_name'] . '/';
-                // バックアップデータの事前削除
-                SC_Utils_Ex::sfDelFile($work_dir);
-                // バックアップファイル作成
-                $res = $this->lfCreateBkupData($arrData['bkup_name'], $work_dir);
-                // バックアップデータの事後削除
-                SC_Utils_Ex::sfDelFile($work_dir);
-
-                $arrErrTmp[3] = array();
-                if ($res !== true) {
-                    $arrErrTmp[3]['bkup_name'] = 'バックアップに失敗しました。(' . $res . ')';
+                // データ型に問題がない場合
+                if (SC_Utils_Ex::isBlank($arrErrTmp[1])) {
+                    // データ型以外のエラーチェック
+                    $arrErrTmp[2] = $this->lfCheckError($objFormParam->getHashArray(), $this->getMode());
                 }
 
-                // DBにデータ更新
-                if (SC_Utils_Ex::isBlank($arrErrTmp[3])) {
-                    $this->lfUpdBkupData($arrData);
+                // エラーがなければバックアップ処理を行う
+                if (SC_Utils_Ex::isBlank($arrErrTmp[1]) && SC_Utils_Ex::isBlank($arrErrTmp[2])) {
+
+                    $arrData = $objFormParam->getHashArray();
+
+                    $work_dir = $this->bkup_dir . $arrData['bkup_name'] . '/';
+                    // バックアップデータの事前削除
+                    SC_Utils_Ex::sfDelFile($work_dir);
+                    // バックアップファイル作成
+                    $res = $this->lfCreateBkupData($arrData['bkup_name'], $work_dir);
+                    // バックアップデータの事後削除
+                    SC_Utils_Ex::sfDelFile($work_dir);
+
+                    $arrErrTmp[3] = array();
+                    if ($res !== true) {
+                        $arrErrTmp[3]['bkup_name'] = 'バックアップに失敗しました。(' . $res . ')';
+                    }
+
+                    // DBにデータ更新
+                    if (SC_Utils_Ex::isBlank($arrErrTmp[3])) {
+                        $this->lfUpdBkupData($arrData);
+                    } else {
+                        $arrForm = $arrData;
+                        $arrErr = $arrErrTmp[3];
+                    }
+
+                    $this->tpl_onload = "alert('バックアップ完了しました');";
                 } else {
-                    $arrForm = $arrData;
-                    $arrErr = $arrErrTmp[3];
+                    $arrForm = $objFormParam->getHashArray();
+                    $arrErr = array_merge((array)$arrErrTmp[1],(array)$arrErrTmp[2]);
+                }
+                break;
+
+            // リストア
+            case 'restore_config':
+                $this->mode = 'restore_config';
+
+            case 'restore':
+                // データベースに存在するかどうかチェック
+                $arrErr = $this->lfCheckError($objFormParam->getHashArray(), $this->getMode());
+
+                // エラーがなければリストア処理を行う
+                if (SC_Utils_Ex::isBlank($arrErr)) {
+                    $arrData = $objFormParam->getHashArray();
+                    $this->lfRestore($arrData['list_name'], $this->bkup_dir, $this->bkup_ext, $this->mode);
+                }
+                break;
+
+            // 削除
+            case 'delete':
+
+                // データベースに存在するかどうかチェック
+                $arrErr = $this->lfCheckError($objFormParam->getHashArray(), $this->getMode());
+
+                // エラーがなければリストア処理を行う
+                if (SC_Utils_Ex::isBlank($arrErr)) {
+
+                    $arrData = $objFormParam->getHashArray();
+
+                    // DBとファイルを削除
+                    $this->lfDeleteBackUp($arrData, $this->bkup_dir, $this->bkup_ext);
                 }
 
-                $this->tpl_onload = "alert('バックアップ完了しました');";
-            } else {
-                $arrForm = $objFormParam->getHashArray();
-                $arrErr = array_merge((array)$arrErrTmp[1],(array)$arrErrTmp[2]);
-            }
-            break;
-
-        // リストア
-        case 'restore_config':
-            $this->mode = 'restore_config';
-
-        case 'restore':
-            // データベースに存在するかどうかチェック
-            $arrErr = $this->lfCheckError($objFormParam->getHashArray(), $this->getMode());
-
-            // エラーがなければリストア処理を行う
-            if (SC_Utils_Ex::isBlank($arrErr)) {
-                $arrData = $objFormParam->getHashArray();
-                $this->lfRestore($arrData['list_name'], $this->bkup_dir, $this->bkup_ext, $this->mode);
-            }
-            break;
-
-        // 削除
-        case 'delete':
-
-            // データベースに存在するかどうかチェック
-            $arrErr = $this->lfCheckError($objFormParam->getHashArray(), $this->getMode());
-
-            // エラーがなければリストア処理を行う
-            if (SC_Utils_Ex::isBlank($arrErr)) {
-
-                $arrData = $objFormParam->getHashArray();
-
-                // DBとファイルを削除
-                $this->lfDeleteBackUp($arrData, $this->bkup_dir, $this->bkup_ext);
-            }
-
-            break;
-
-            // ダウンロード
-        case 'download' :
-
-            // データベースに存在するかどうかチェック
-            $arrErr = $this->lfCheckError($objFormParam->getHashArray(), $this->getMode());
-
-            // エラーがなければダウンロード処理を行う
-            if (SC_Utils_Ex::isBlank($arrErr)) {
-
-                $arrData = $objFormParam->getHashArray();
-
-                $filename = $arrData['list_name'] . $this->bkup_ext;
-                $dl_file = $this->bkup_dir.$arrData['list_name'] . $this->bkup_ext;
-
-                // ダウンロード開始
-                Header("Content-disposition: attachment; filename=${filename}");
-                Header("Content-type: application/octet-stream; name=${filename}");
-                header('Content-Length: ' .filesize($dl_file));
-                readfile ($dl_file);
-                exit();
                 break;
-            }
 
-        default:
-            break;
+                // ダウンロード
+            case 'download' :
+
+                // データベースに存在するかどうかチェック
+                $arrErr = $this->lfCheckError($objFormParam->getHashArray(), $this->getMode());
+
+                // エラーがなければダウンロード処理を行う
+                if (SC_Utils_Ex::isBlank($arrErr)) {
+
+                    $arrData = $objFormParam->getHashArray();
+
+                    $filename = $arrData['list_name'] . $this->bkup_ext;
+                    $dl_file = $this->bkup_dir.$arrData['list_name'] . $this->bkup_ext;
+
+                    // ダウンロード開始
+                    Header("Content-disposition: attachment; filename=${filename}");
+                    Header("Content-type: application/octet-stream; name=${filename}");
+                    header('Content-Length: ' .filesize($dl_file));
+                    readfile ($dl_file);
+                    exit();
+                    break;
+                }
+
+            default:
+                break;
         }
 
         // 不要になった変数を解放
@@ -233,20 +233,19 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         $arrVal = array();
 
         switch ($mode) {
-        case 'bkup':
-            $arrVal[] = $arrForm['bkup_name'];
-            break;
+            case 'bkup':
+                $arrVal[] = $arrForm['bkup_name'];
+                break;
 
-        case 'restore_config':
-        case 'restore':
-        case 'download':
-        case 'delete':
-            $arrVal[] = $arrForm['list_name'];
-            break;
+            case 'restore_config':
+            case 'restore':
+            case 'download':
+            case 'delete':
+                $arrVal[] = $arrForm['list_name'];
+                break;
 
-        default:
-            break;
-
+            default:
+                break;
         }
 
         // 重複・存在チェック

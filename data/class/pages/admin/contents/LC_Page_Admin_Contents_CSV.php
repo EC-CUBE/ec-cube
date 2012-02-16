@@ -84,20 +84,20 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
         $this->tpl_csv_id = $this->lfGetCsvId($this->tpl_subno_csv);
 
         switch ($this->getMode()) {
-        case 'confirm':
-            // 入力パラメーターチェック
-            $this->arrErr = $objFormParam->checkError();
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                // 更新
-                $this->tpl_is_update = $this->lfUpdCsvOutput($this->tpl_csv_id, $objFormParam->getValue('output_list'));
-            }
-            break;
-        case 'defaultset':
-            //初期値に戻す
-            $this->tpl_is_update = $this->lfSetDefaultCsvOutput($this->tpl_csv_id);
-            break;
-        default:
-            break;
+            case 'confirm':
+                // 入力パラメーターチェック
+                $this->arrErr = $objFormParam->checkError();
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    // 更新
+                    $this->tpl_is_update = $this->lfUpdCsvOutput($this->tpl_csv_id, $objFormParam->getValue('output_list'));
+                }
+                break;
+            case 'defaultset':
+                //初期値に戻す
+                $this->tpl_is_update = $this->lfSetDefaultCsvOutput($this->tpl_csv_id);
+                break;
+            default:
+                break;
         }
         $this->arrSelected = $this->lfGetSelected($this->tpl_csv_id);
         $this->arrOptions = $this->lfGetOptions($this->tpl_csv_id);

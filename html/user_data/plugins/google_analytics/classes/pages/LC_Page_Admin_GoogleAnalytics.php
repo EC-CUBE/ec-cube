@@ -79,29 +79,31 @@ class LC_Page_Admin_GoogleAnalytics extends LC_Page_Ex {
         SC_Utils_Ex::sfIsSuccess(new SC_Session());
 
         switch ($_POST['mode']) {
-        case 'register':
-            if ($this->register($_POST['ga_ua'])) {
-                SC_Response_Ex::reload(array('mode' => 'success'), true);
-                exit;
-            } else {
-                SC_Response_Ex::reload(array('mode' => 'failure'), true);
-                exit;
-            }
-            break;
+            case 'register':
+                if ($this->register($_POST['ga_ua'])) {
+                    SC_Response_Ex::reload(array('mode' => 'success'), true);
+                    exit;
+                } else {
+                    SC_Response_Ex::reload(array('mode' => 'failure'), true);
+                    exit;
+                }
+                break;
 
-          default:
+              default:
+                break;
         }
 
         switch ($_GET['mode']) {
-        case 'success':
-            $this->tpl_onload .= "window.alert('登録に成功しました。');";
-            break;
+            case 'success':
+                $this->tpl_onload .= "window.alert('登録に成功しました。');";
+                break;
 
-        case 'failure':
-            $this->tpl_onload .= "window.alert('登録に失敗しました。');";
-            break;
+            case 'failure':
+                $this->tpl_onload .= "window.alert('登録に失敗しました。');";
+                break;
 
-          default:
+            default:
+                break;
         }
 
         $objView = new SC_AdminView_Ex();

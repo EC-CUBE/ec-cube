@@ -630,22 +630,22 @@ class SC_Utils {
         $real_tax = $tax / 100;
         $ret = $price * $real_tax;
         switch ($tax_rule) {
-        // 四捨五入
-        case 1:
-            $ret = round($ret);
-            break;
-        // 切り捨て
-        case 2:
-            $ret = floor($ret);
-            break;
-        // 切り上げ
-        case 3:
-            $ret = ceil($ret);
-            break;
-        // デフォルト:切り上げ
-        default:
-            $ret = ceil($ret);
-            break;
+            // 四捨五入
+            case 1:
+                $ret = round($ret);
+                break;
+            // 切り捨て
+            case 2:
+                $ret = floor($ret);
+                break;
+            // 切り上げ
+            case 3:
+                $ret = ceil($ret);
+                break;
+            // デフォルト:切り上げ
+            default:
+                $ret = ceil($ret);
+                break;
         }
         return $ret;
     }
@@ -684,22 +684,22 @@ class SC_Utils {
         $real_point = $point_rate / 100;
         $ret = $price * $real_point;
         switch ($rule) {
-        // 四捨五入
-        case 1:
-            $ret = round($ret);
-            break;
-        // 切り捨て
-        case 2:
-            $ret = floor($ret);
-            break;
-        // 切り上げ
-        case 3:
-            $ret = ceil($ret);
-            break;
-        // デフォルト:切り上げ
-        default:
-            $ret = ceil($ret);
-            break;
+            // 四捨五入
+            case 1:
+                $ret = round($ret);
+                break;
+            // 切り捨て
+            case 2:
+                $ret = floor($ret);
+                break;
+            // 切り上げ
+            case 3:
+                $ret = ceil($ret);
+                break;
+            // デフォルト:切り上げ
+            default:
+                $ret = ceil($ret);
+                break;
         }
         return $ret;
     }

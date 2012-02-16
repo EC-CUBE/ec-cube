@@ -256,20 +256,21 @@ __EOF__;
     function getTemplatePath($device_type_id = DEVICE_TYPE_PC, $isUser = false) {
         $templateName = '';
         switch ($device_type_id) {
-        case DEVICE_TYPE_MOBILE:
-            $dir = MOBILE_TEMPLATE_REALDIR;
-            $templateName = MOBILE_TEMPLATE_NAME;
-            break;
+            case DEVICE_TYPE_MOBILE:
+                $dir = MOBILE_TEMPLATE_REALDIR;
+                $templateName = MOBILE_TEMPLATE_NAME;
+                break;
 
-        case DEVICE_TYPE_SMARTPHONE:
-            $dir = SMARTPHONE_TEMPLATE_REALDIR;
-            $templateName = SMARTPHONE_TEMPLATE_NAME;
-            break;
+            case DEVICE_TYPE_SMARTPHONE:
+                $dir = SMARTPHONE_TEMPLATE_REALDIR;
+                $templateName = SMARTPHONE_TEMPLATE_NAME;
+                break;
 
-        case DEVICE_TYPE_PC:
-        default:
-            $dir = TEMPLATE_REALDIR;
-            $templateName = TEMPLATE_NAME;
+            case DEVICE_TYPE_PC:
+            default:
+                $dir = TEMPLATE_REALDIR;
+                $templateName = TEMPLATE_NAME;
+                break;
         }
         $userPath = USER_REALDIR;
         if ($isUser) {

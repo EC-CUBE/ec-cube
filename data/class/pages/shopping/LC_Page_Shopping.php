@@ -109,136 +109,137 @@ class LC_Page_Shopping extends LC_Page_Ex {
         }
 
         switch ($this->getMode()) {
-        // ログイン実行
-        case 'login':
-            $this->lfInitLoginFormParam($objFormParam);
-            $objFormParam->setParam($_POST);
-            $objFormParam->trimParam();
-            $objFormParam->convParam();
-            $objFormParam->toLower('login_email');
-            $this->arrErr = $objFormParam->checkError();
+            // ログイン実行
+            case 'login':
+                $this->lfInitLoginFormParam($objFormParam);
+                $objFormParam->setParam($_POST);
+                $objFormParam->trimParam();
+                $objFormParam->convParam();
+                $objFormParam->toLower('login_email');
+                $this->arrErr = $objFormParam->checkError();
 
-            // ログイン判定
-            if (SC_Utils_Ex::isBlank($this->arrErr)
-                && $this->doLogin($objCustomer,
-                                  $objFormParam->getValue('login_email'),
-                                  $objFormParam->getValue('login_pass'))) {
+                // ログイン判定
+                if (SC_Utils_Ex::isBlank($this->arrErr)
+                    && $this->doLogin($objCustomer,
+                                      $objFormParam->getValue('login_email'),
+                                      $objFormParam->getValue('login_pass'))) {
 
-                // モバイルサイトで携帯アドレスの登録が無い場合、携帯アドレス登録ページへ遷移
-                if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
-                    if ($this->hasEmailMobile($objCustomer) == false) {
-                        SC_Response_Ex::sendRedirectFromUrlPath('entry/email_mobile.php');
+                    // モバイルサイトで携帯アドレスの登録が無い場合、携帯アドレス登録ページへ遷移
+                    if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
+                        if ($this->hasEmailMobile($objCustomer) == false) {
+                            SC_Response_Ex::sendRedirectFromUrlPath('entry/email_mobile.php');
+                            exit;
+                        }
+                    }
+                    // スマートフォンの場合はログイン成功を返す
+                    elseif (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
+                        echo SC_Utils_Ex::jsonEncode(array('success' => 
+                                                    $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
+                                                                           $objCustomer, $objPurchase,
+                                                                           $objSiteSess)));
                         exit;
                     }
-                }
-                // スマートフォンの場合はログイン成功を返す
-                elseif (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
-                    echo SC_Utils_Ex::jsonEncode(array('success' => 
-                                                $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
-                                                                       $objCustomer, $objPurchase,
-                                                                       $objSiteSess)));
+
+                    SC_Response_Ex::sendRedirect(
+                            $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
+                                                   $objCustomer, $objPurchase,
+                                                   $objSiteSess));
                     exit;
                 }
-
-                SC_Response_Ex::sendRedirect(
-                        $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
-                                               $objCustomer, $objPurchase,
-                                               $objSiteSess));
-                exit;
-            }
-            // ログインに失敗した場合
-            else {
-                // 仮登録の場合
-                if ($this->checkTempCustomer($objFormParam->getValue('login_email'))) {
-                    if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
-                        echo $this->lfGetErrorMessage(TEMP_LOGIN_ERROR);
-                        exit;
+                // ログインに失敗した場合
+                else {
+                    // 仮登録の場合
+                    if ($this->checkTempCustomer($objFormParam->getValue('login_email'))) {
+                        if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
+                            echo $this->lfGetErrorMessage(TEMP_LOGIN_ERROR);
+                            exit;
+                        } else {
+                            SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
+                            exit;
+                        }
                     } else {
-                        SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
-                        exit;
-                    }
-                } else {
-                    if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
-                        echo $this->lfGetErrorMessage(SITE_LOGIN_ERROR);
-                        exit;
-                    } else {
-                        SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
-                        exit;
+                        if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
+                            echo $this->lfGetErrorMessage(SITE_LOGIN_ERROR);
+                            exit;
+                        } else {
+                            SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
+                            exit;
+                        }
                     }
                 }
-            }
-            break;
+                break;
 
-        // お客様情報登録
-        case 'nonmember_confirm':
-            $this->tpl_mainpage = $nonmember_mainpage;
-            $this->tpl_title = $nonmember_title;
-            $this->lfInitParam($objFormParam);
-            $objFormParam->setParam($_POST);
-            $this->arrErr = $this->lfCheckError($objFormParam);
-
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                $objPurchase->unsetShippingTemp();
-                $this->lfRegistData($this->tpl_uniqid, $objPurchase,
-                                    $objCustomer, $objFormParam);
-
-                $objSiteSess->setRegistFlag();
-                SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URLPATH);
-                exit;
-            }
-            break;
-
-        // 前のページに戻る
-        case 'return':
-            SC_Response_Ex::sendRedirect(CART_URLPATH);
-            exit;
-            break;
-
-        // 複数配送ページへ遷移
-        case 'multiple':
-            // 複数配送先指定が無効な場合はエラー
-            if (USE_MULTIPLE_SHIPPING === false) {
-                SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
-                exit;
-            }
-
-            $this->lfInitParam($objFormParam);
-            $objFormParam->setParam($_POST);
-            $this->arrErr = $this->lfCheckError($objFormParam);
-
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                $objPurchase->unsetShippingTemp();
-                $this->lfRegistData($this->tpl_uniqid, $objPurchase,
-                                    $objCustomer, $objFormParam, true);
-
-                $objSiteSess->setRegistFlag();
-                SC_Response_Ex::sendRedirect(MULTIPLE_URLPATH);
-                exit;
-            }
-            $this->tpl_mainpage = $nonmember_mainpage;
-            $this->tpl_title = $nonmember_title;
-            break;
-
-        // お客様情報入力ページの表示
-        case 'nonmember':
-            $this->tpl_mainpage = $nonmember_mainpage;
-            $this->tpl_title = $nonmember_title;
-            $this->lfInitParam($objFormParam);
-            // ※breakなし
-
-        default:
-            // 前のページから戻ってきた場合は, お客様情報入力ページ
-            if (isset($_GET['from']) && $_GET['from'] == 'nonmember') {
+            // お客様情報登録
+            case 'nonmember_confirm':
                 $this->tpl_mainpage = $nonmember_mainpage;
                 $this->tpl_title = $nonmember_title;
                 $this->lfInitParam($objFormParam);
-            }
-            // 通常はログインページ
-            else {
-                $this->lfInitLoginFormParam($objFormParam);
-            }
+                $objFormParam->setParam($_POST);
+                $this->arrErr = $this->lfCheckError($objFormParam);
 
-            $this->setFormParams($objFormParam, $objPurchase, $this->tpl_uniqid);
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    $objPurchase->unsetShippingTemp();
+                    $this->lfRegistData($this->tpl_uniqid, $objPurchase,
+                                        $objCustomer, $objFormParam);
+
+                    $objSiteSess->setRegistFlag();
+                    SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URLPATH);
+                    exit;
+                }
+                break;
+
+            // 前のページに戻る
+            case 'return':
+                SC_Response_Ex::sendRedirect(CART_URLPATH);
+                exit;
+                break;
+
+            // 複数配送ページへ遷移
+            case 'multiple':
+                // 複数配送先指定が無効な場合はエラー
+                if (USE_MULTIPLE_SHIPPING === false) {
+                    SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
+                    exit;
+                }
+
+                $this->lfInitParam($objFormParam);
+                $objFormParam->setParam($_POST);
+                $this->arrErr = $this->lfCheckError($objFormParam);
+
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    $objPurchase->unsetShippingTemp();
+                    $this->lfRegistData($this->tpl_uniqid, $objPurchase,
+                                        $objCustomer, $objFormParam, true);
+
+                    $objSiteSess->setRegistFlag();
+                    SC_Response_Ex::sendRedirect(MULTIPLE_URLPATH);
+                    exit;
+                }
+                $this->tpl_mainpage = $nonmember_mainpage;
+                $this->tpl_title = $nonmember_title;
+                break;
+
+            // お客様情報入力ページの表示
+            case 'nonmember':
+                $this->tpl_mainpage = $nonmember_mainpage;
+                $this->tpl_title = $nonmember_title;
+                $this->lfInitParam($objFormParam);
+                // ※breakなし
+
+            default:
+                // 前のページから戻ってきた場合は, お客様情報入力ページ
+                if (isset($_GET['from']) && $_GET['from'] == 'nonmember') {
+                    $this->tpl_mainpage = $nonmember_mainpage;
+                    $this->tpl_title = $nonmember_title;
+                    $this->lfInitParam($objFormParam);
+                }
+                // 通常はログインページ
+                else {
+                    $this->lfInitLoginFormParam($objFormParam);
+                }
+
+                $this->setFormParams($objFormParam, $objPurchase, $this->tpl_uniqid);
+                break;
         }
 
         // 記憶したメールアドレスを取得
@@ -339,15 +340,14 @@ class LC_Page_Shopping extends LC_Page_Ex {
      */
     function getNextLocation($product_type_id, $uniqid, &$objCustomer, &$objPurchase, &$objSiteSess) {
         switch ($product_type_id) {
-        case PRODUCT_TYPE_DOWNLOAD:
-            $objPurchase->saveOrderTemp($uniqid, array(), $objCustomer);
-            $objSiteSess->setRegistFlag();
-            return 'payment.php';
-            break;
+            case PRODUCT_TYPE_DOWNLOAD:
+                $objPurchase->saveOrderTemp($uniqid, array(), $objCustomer);
+                $objSiteSess->setRegistFlag();
+                return 'payment.php';
 
-        case PRODUCT_TYPE_NORMAL:
-        default:
-            return 'deliv.php';
+            case PRODUCT_TYPE_NORMAL:
+            default:
+                return 'deliv.php';
         }
     }
 
@@ -496,24 +496,25 @@ class LC_Page_Shopping extends LC_Page_Ex {
      */
     function doLogin(&$objCustomer, $login_email, $login_pass) {
         switch (SC_Display_Ex::detectDevice()) {
-        case DEVICE_TYPE_MOBILE:
-            if(!$objCustomer->getCustomerDataFromMobilePhoneIdPass($login_pass) &&
-               !$objCustomer->getCustomerDataFromEmailPass($login_pass, $login_email, true)) {
-                return false;
-            } else {
-                $objCustomer->updateMobilePhoneId();
-                return true;
-            }
-            break;
+            case DEVICE_TYPE_MOBILE:
+                if(!$objCustomer->getCustomerDataFromMobilePhoneIdPass($login_pass) &&
+                   !$objCustomer->getCustomerDataFromEmailPass($login_pass, $login_email, true)) {
+                    return false;
+                } else {
+                    $objCustomer->updateMobilePhoneId();
+                    return true;
+                }
+                break;
 
-        case DEVICE_TYPE_SMARTPHONE:
-        case DEVICE_TYPE_PC:
-        default:
-            if (!$objCustomer->getCustomerDataFromEmailPass($login_pass, $login_email)) {
-                return false;
-            } else {
-                return true;
-            }
+            case DEVICE_TYPE_SMARTPHONE:
+            case DEVICE_TYPE_PC:
+            default:
+                if (!$objCustomer->getCustomerDataFromEmailPass($login_pass, $login_email)) {
+                    return false;
+                } else {
+                    return true;
+                }
+                break;
         }
     }
 

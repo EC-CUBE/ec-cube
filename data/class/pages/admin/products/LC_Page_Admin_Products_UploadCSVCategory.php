@@ -121,11 +121,11 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         $this->arrTitle = $objFormParam->getHtmlDispNameArray();
 
         switch ($this->getMode()) {
-        case 'csv_upload':
-            $this->doUploadCsv($objFormParam, $objUpFile);
-            break;
-        default:
-            break;
+            case 'csv_upload':
+                $this->doUploadCsv($objFormParam, $objUpFile);
+                break;
+            default:
+                break;
         }
     }
 

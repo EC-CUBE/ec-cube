@@ -82,50 +82,50 @@ class LC_Page_Contact extends LC_Page_Ex {
         $this->arrData = isset($_SESSION['customer']) ? $_SESSION['customer'] : '';
 
         switch ($this->getMode()) {
-        case 'confirm':
-            // エラーチェック
-            $this->lfInitParam($objFormParam);
-            $objFormParam->setParam($_POST);
-            $objFormParam->convParam();
-            $objFormParam->toLower('email');
-            $objFormParam->toLower('email02');
-            $this->arrErr = $this->lfCheckError($objFormParam);
-            // 入力値の取得
-            $this->arrForm = $objFormParam->getFormParamList();
+            case 'confirm':
+                // エラーチェック
+                $this->lfInitParam($objFormParam);
+                $objFormParam->setParam($_POST);
+                $objFormParam->convParam();
+                $objFormParam->toLower('email');
+                $objFormParam->toLower('email02');
+                $this->arrErr = $this->lfCheckError($objFormParam);
+                // 入力値の取得
+                $this->arrForm = $objFormParam->getFormParamList();
 
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                // エラー無しで完了画面
-                $this->tpl_mainpage = 'contact/confirm.tpl';
-                $this->tpl_title = 'お問い合わせ(確認ページ)';
-            }
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    // エラー無しで完了画面
+                    $this->tpl_mainpage = 'contact/confirm.tpl';
+                    $this->tpl_title = 'お問い合わせ(確認ページ)';
+                }
 
-            break;
+                break;
 
-        case 'return':
-            $this->lfInitParam($objFormParam);
-            $objFormParam->setParam($_POST);
-            $this->arrForm = $objFormParam->getFormParamList();
+            case 'return':
+                $this->lfInitParam($objFormParam);
+                $objFormParam->setParam($_POST);
+                $this->arrForm = $objFormParam->getFormParamList();
 
-            break;
+                break;
 
-        case 'complete':
-            $this->lfInitParam($objFormParam);
-            $objFormParam->setParam($_POST);
-            $this->arrErr = $objFormParam->checkError();
-            $this->arrForm = $objFormParam->getFormParamList();
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                $this->lfSendMail($this);
-                // 完了ページへ移動する
-                SC_Response_Ex::sendRedirect('complete.php');
-                exit;
-            } else {
-                SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
-                exit;
-            }
-            break;
+            case 'complete':
+                $this->lfInitParam($objFormParam);
+                $objFormParam->setParam($_POST);
+                $this->arrErr = $objFormParam->checkError();
+                $this->arrForm = $objFormParam->getFormParamList();
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    $this->lfSendMail($this);
+                    // 完了ページへ移動する
+                    SC_Response_Ex::sendRedirect('complete.php');
+                    exit;
+                } else {
+                    SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
+                    exit;
+                }
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
     }
 

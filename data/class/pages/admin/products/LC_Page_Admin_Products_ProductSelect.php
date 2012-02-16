@@ -78,11 +78,11 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
         $this->arrForm = $objFormParam->getHashArray();
 
         switch ($this->getMode()) {
-        case 'search':
-            $this->arrProducts = $this->lfGetProducts($objDb);
-            break;
-        default:
-            break;
+            case 'search':
+                $this->arrProducts = $this->lfGetProducts($objDb);
+                break;
+            default:
+                break;
         }
 
         // カテゴリ取得
@@ -120,23 +120,23 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
             if($val == '') continue;
 
             switch ($key) {
-            case 'search_name':
-                $where .= ' AND name ILIKE ?';
-                $arrval[] = "%$val%";
-                break;
-            case 'search_category_id':
-                list($tmp_where, $tmp_arrval) = $objDb->sfGetCatWhere($val);
-                if ($tmp_where != '') {
-                    $where.= ' AND product_id IN (SELECT product_id FROM dtb_product_categories WHERE ' . $tmp_where . ')';
-                    $arrval = array_merge((array)$arrval, (array)$tmp_arrval);
-                }
-                break;
-            case 'search_product_code':
-                $where .= ' AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code LIKE ? GROUP BY product_id)';
-                $arrval[] = "$val%";
-                break;
-            default:
-                break;
+                case 'search_name':
+                    $where .= ' AND name ILIKE ?';
+                    $arrval[] = "%$val%";
+                    break;
+                case 'search_category_id':
+                    list($tmp_where, $tmp_arrval) = $objDb->sfGetCatWhere($val);
+                    if ($tmp_where != '') {
+                        $where.= ' AND product_id IN (SELECT product_id FROM dtb_product_categories WHERE ' . $tmp_where . ')';
+                        $arrval = array_merge((array)$arrval, (array)$tmp_arrval);
+                    }
+                    break;
+                case 'search_product_code':
+                    $where .= ' AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code LIKE ? GROUP BY product_id)';
+                    $arrval[] = "$val%";
+                    break;
+                default:
+                    break;
             }
         }
 

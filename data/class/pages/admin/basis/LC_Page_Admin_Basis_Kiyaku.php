@@ -87,53 +87,53 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
 
         // 要求判定
         switch ($mode) {
-        // 編集処理
-        case 'edit':
-            // POST値の引き継ぎ
-            $this->arrForm = $_POST;
+            // 編集処理
+            case 'edit':
+                // POST値の引き継ぎ
+                $this->arrForm = $_POST;
 
-            if (count($this->arrErr) <= 0) {
-                if ($post['kiyaku_id'] == '') {
-                    $this->lfInsertClass($this->arrForm, $_SESSION['member_id']);    // 新規作成
+                if (count($this->arrErr) <= 0) {
+                    if ($post['kiyaku_id'] == '') {
+                        $this->lfInsertClass($this->arrForm, $_SESSION['member_id']);    // 新規作成
+                    } else {
+                        $this->lfUpdateClass($this->arrForm, $post['kiyaku_id']);    // 既存編集
+                    }
+                    // 再表示
+                    $this->objDisplay->reload();
                 } else {
-                    $this->lfUpdateClass($this->arrForm, $post['kiyaku_id']);    // 既存編集
+                    // POSTデータを引き継ぐ
+                    $this->tpl_kiyaku_id = $post['kiyaku_id'];
                 }
+                break;
+            // 削除
+            case 'delete':
+                $objDb->sfDeleteRankRecord('dtb_kiyaku', 'kiyaku_id', $post['kiyaku_id'], '', true);
                 // 再表示
                 $this->objDisplay->reload();
-            } else {
+                break;
+            // 編集前処理
+            case 'pre_edit':
+                // 編集項目を取得する。
+                $arrKiyakuData = $this->lfGetKiyakuDataByKiyakuID($post['kiyaku_id']);
+
+                // 入力項目にカテゴリ名を入力する。
+                $this->arrForm['kiyaku_title'] = $arrKiyakuData[0]['kiyaku_title'];
+                $this->arrForm['kiyaku_text'] = $arrKiyakuData[0]['kiyaku_text'];
                 // POSTデータを引き継ぐ
                 $this->tpl_kiyaku_id = $post['kiyaku_id'];
-            }
-            break;
-        // 削除
-        case 'delete':
-            $objDb->sfDeleteRankRecord('dtb_kiyaku', 'kiyaku_id', $post['kiyaku_id'], '', true);
-            // 再表示
-            $this->objDisplay->reload();
-            break;
-        // 編集前処理
-        case 'pre_edit':
-            // 編集項目を取得する。
-            $arrKiyakuData = $this->lfGetKiyakuDataByKiyakuID($post['kiyaku_id']);
-
-            // 入力項目にカテゴリ名を入力する。
-            $this->arrForm['kiyaku_title'] = $arrKiyakuData[0]['kiyaku_title'];
-            $this->arrForm['kiyaku_text'] = $arrKiyakuData[0]['kiyaku_text'];
-            // POSTデータを引き継ぐ
-            $this->tpl_kiyaku_id = $post['kiyaku_id'];
-        break;
-        case 'down':
-            $objDb->sfRankDown('dtb_kiyaku', 'kiyaku_id', $post['kiyaku_id']);
-            // 再表示
-            $this->objDisplay->reload();
-            break;
-        case 'up':
-            $objDb->sfRankUp('dtb_kiyaku', 'kiyaku_id', $post['kiyaku_id']);
-            // 再表示
-            $this->objDisplay->reload();
-            break;
-        default:
-            break;
+                break;
+            case 'down':
+                $objDb->sfRankDown('dtb_kiyaku', 'kiyaku_id', $post['kiyaku_id']);
+                // 再表示
+                $this->objDisplay->reload();
+                break;
+            case 'up':
+                $objDb->sfRankUp('dtb_kiyaku', 'kiyaku_id', $post['kiyaku_id']);
+                // 再表示
+                $this->objDisplay->reload();
+                break;
+            default:
+                break;
         }
 
         $this->arrKiyaku = $this->lfGetKiyakuList();

@@ -48,25 +48,25 @@ function lfPageFactory($mode) {
     $class  = $prefix;
 
     switch ($mode) {
-    case 'products_list':
-        $file  .= 'ProductsList.php';
-        $class .= 'ProductsList';
-        break;
-    case 'patch_download':
-    case 'download':
-    case 'auto_update':
-        $file  .= 'Download.php';
-        $class .= 'Download';
-        break;
-    case 'site_check':
-        $file  .= 'SiteCheck.php';
-        $class .= 'SiteCheck';
-        break;
-    default:
-        header('HTTP/1.1 400 Bad Request');
-        GC_Util::gfPrintLog('modeの値が正しくありません。:'.$mode);
-        exit();
-        break;
+        case 'products_list':
+            $file  .= 'ProductsList.php';
+            $class .= 'ProductsList';
+            break;
+        case 'patch_download':
+        case 'download':
+        case 'auto_update':
+            $file  .= 'Download.php';
+            $class .= 'Download';
+            break;
+        case 'site_check':
+            $file  .= 'SiteCheck.php';
+            $class .= 'SiteCheck';
+            break;
+        default:
+            header('HTTP/1.1 400 Bad Request');
+            GC_Util::gfPrintLog('modeの値が正しくありません。:'.$mode);
+            exit();
+            break;
     }
 
     require_once $file;

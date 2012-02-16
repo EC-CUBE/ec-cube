@@ -115,26 +115,26 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
 
         // モードによる処理切り替え
         switch ($this->getMode()) {
-        case 'delete':
-            $this->is_delete = $this->lfDoDeleteCustomer($objFormParam->getValue('edit_customer_id'));
-            list($this->tpl_linemax, $this->arrData, $this->objNavi) = $this->lfDoSearch($objFormParam->getHashArray());
-            $this->arrPagenavi = $this->objNavi->arrPagenavi;
-            break;
-        case 'resend_mail':
-            $this->is_resendmail = $this->lfDoResendMail($objFormParam->getValue('edit_customer_id'));
-            list($this->tpl_linemax, $this->arrData, $this->objNavi) = $this->lfDoSearch($objFormParam->getHashArray());
-            $this->arrPagenavi = $this->objNavi->arrPagenavi;
-            break;
-        case 'search':
-            list($this->tpl_linemax, $this->arrData, $this->objNavi) = $this->lfDoSearch($objFormParam->getHashArray());
-            $this->arrPagenavi = $this->objNavi->arrPagenavi;
-            break;
-        case 'csv':
-            $this->lfDoCSV($objFormParam->getHashArray());
-            exit;
-            break;
-        default:
-            break;
+            case 'delete':
+                $this->is_delete = $this->lfDoDeleteCustomer($objFormParam->getValue('edit_customer_id'));
+                list($this->tpl_linemax, $this->arrData, $this->objNavi) = $this->lfDoSearch($objFormParam->getHashArray());
+                $this->arrPagenavi = $this->objNavi->arrPagenavi;
+                break;
+            case 'resend_mail':
+                $this->is_resendmail = $this->lfDoResendMail($objFormParam->getValue('edit_customer_id'));
+                list($this->tpl_linemax, $this->arrData, $this->objNavi) = $this->lfDoSearch($objFormParam->getHashArray());
+                $this->arrPagenavi = $this->objNavi->arrPagenavi;
+                break;
+            case 'search':
+                list($this->tpl_linemax, $this->arrData, $this->objNavi) = $this->lfDoSearch($objFormParam->getHashArray());
+                $this->arrPagenavi = $this->objNavi->arrPagenavi;
+                break;
+            case 'csv':
+                $this->lfDoCSV($objFormParam->getHashArray());
+                exit;
+                break;
+            default:
+                break;
         }
     }
 

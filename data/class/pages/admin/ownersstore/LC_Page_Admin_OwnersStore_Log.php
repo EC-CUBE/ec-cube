@@ -68,19 +68,19 @@ class LC_Page_Admin_OwnersStore_Log extends LC_Page_Admin_Ex {
      */
     function action() {
         switch ($this->getMode()) {
-        case 'detail':
-            $objForm = $this->initParam();
-            if ($objForm->checkError()) {
-                SC_Utils_Ex::sfDispError('');
-            }
-            $this->arrLogDetail = $this->getLogDetail($objForm->getValue('log_id'));
-            if (count($this->arrLogDetail) == 0) {
-                SC_Utils_Ex::sfDispError('');
-            }
-            $this->tpl_mainpage = 'ownersstore/log_detail.tpl';
-            break;
-        default:
-            break;
+            case 'detail':
+                $objForm = $this->initParam();
+                if ($objForm->checkError()) {
+                    SC_Utils_Ex::sfDispError('');
+                }
+                $this->arrLogDetail = $this->getLogDetail($objForm->getValue('log_id'));
+                if (count($this->arrLogDetail) == 0) {
+                    SC_Utils_Ex::sfDispError('');
+                }
+                $this->tpl_mainpage = 'ownersstore/log_detail.tpl';
+                break;
+            default:
+                break;
         }
         $this->arrInstallLogs = $this->getLogs();
     }

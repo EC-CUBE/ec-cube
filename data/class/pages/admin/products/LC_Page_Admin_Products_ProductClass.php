@@ -81,73 +81,74 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
 
         switch ($this->getMode()) {
 
-        // 編集実行
-        case 'edit':
-            $this->arrErr = $this->lfCheckProductsClass($objFormParam);
+            // 編集実行
+            case 'edit':
+                $this->arrErr = $this->lfCheckProductsClass($objFormParam);
 
-            // エラーの無い場合は確認画面を表示
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                $this->tpl_mainpage = 'products/product_class_confirm.tpl';
+                // エラーの無い場合は確認画面を表示
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    $this->tpl_mainpage = 'products/product_class_confirm.tpl';
+                    $this->doDisp($objFormParam);
+                    $this->fillCheckboxesValue('stock_unlimited', $_POST['total']);
+                    $objFormParam->setParam($_POST);
+                    $objFormParam->convParam();
+                }
+                // エラーが発生した場合
+                else {
+                    $objFormParam->setParam($_POST);
+                    $objFormParam->convParam();
+                }
+                break;
+
+            // 削除
+            case 'delete':
+                $this->doDelete($objFormParam->getValue('product_id'));
+                $objFormParam->setValue('class_id1', '');
+                $objFormParam->setValue('class_id2', '');
                 $this->doDisp($objFormParam);
-                $this->fillCheckboxesValue('stock_unlimited', $_POST['total']);
+                break;
+
+            // 初期表示
+            case 'pre_edit':
+                $this->doPreEdit($objFormParam);
+                break;
+
+            // 「表示する」ボタン押下時
+            case 'disp':
+                $this->arrErr = $this->lfCheckSelectClass();
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    $this->doDisp($objFormParam);
+                    $this->initDispParam($objFormParam);
+                }
+                break;
+
+            // ダウンロード商品ファイルアップロード
+            case 'file_upload':
+                $this->doFileUpload($objFormParam);
+                break;
+
+            // ダウンロードファイルの削除
+            case 'file_delete':
+                $this->doFileDelete($objFormParam);
+                break;
+
+            // 確認画面からの戻り
+            case 'confirm_return':
+                $this->doPreEdit($objFormParam);
                 $objFormParam->setParam($_POST);
                 $objFormParam->convParam();
-            }
-            // エラーが発生した場合
-            else {
-                $objFormParam->setParam($_POST);
-                $objFormParam->convParam();
-            }
-            break;
+                break;
 
-        // 削除
-        case 'delete':
-            $this->doDelete($objFormParam->getValue('product_id'));
-            $objFormParam->setValue('class_id1', '');
-            $objFormParam->setValue('class_id2', '');
-            $this->doDisp($objFormParam);
-            break;
+            case 'complete':
+                $this->tpl_mainpage = 'products/product_class_complete.tpl';
+                $this->doUploadComplete($objFormParam);
+                $this->registerProductClass($objFormParam->getHashArray(),
+                                            $objFormParam->getValue('product_id'),
+                                            $objFormParam->getValue('total'));
+                break;
 
-        // 初期表示
-        case 'pre_edit':
-            $this->doPreEdit($objFormParam);
-            break;
-
-        // 「表示する」ボタン押下時
-        case 'disp':
-            $this->arrErr = $this->lfCheckSelectClass();
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                $this->doDisp($objFormParam);
-                $this->initDispParam($objFormParam);
-            }
-            break;
-
-        // ダウンロード商品ファイルアップロード
-        case 'file_upload':
-            $this->doFileUpload($objFormParam);
-            break;
-
-        // ダウンロードファイルの削除
-        case 'file_delete':
-            $this->doFileDelete($objFormParam);
-            break;
-
-        // 確認画面からの戻り
-        case 'confirm_return':
-            $this->doPreEdit($objFormParam);
-            $objFormParam->setParam($_POST);
-            $objFormParam->convParam();
-            break;
-
-        case 'complete':
-            $this->tpl_mainpage = 'products/product_class_complete.tpl';
-            $this->doUploadComplete($objFormParam);
-            $this->registerProductClass($objFormParam->getHashArray(),
-                                        $objFormParam->getValue('product_id'),
-                                        $objFormParam->getValue('total'));
-            break;
-
-        default:
+            default:
+                break;
         }
 
         // 登録対象の商品名を取得

@@ -68,15 +68,15 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
      */
     function action() {
         switch ($this->getMode()) {
-        case 'delete':
-            if (SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
-                // 削除時
-                $this->lfDeleteHistory($_GET['send_id']);
-                $this->objDisplay->reload(null, true);
-            }
-            break;
-        default:
-            break;
+            case 'delete':
+                if (SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
+                    // 削除時
+                    $this->lfDeleteHistory($_GET['send_id']);
+                    $this->objDisplay->reload(null, true);
+                }
+                break;
+            default:
+                break;
         }
 
         list($this->tpl_linemax, $this->arrDataList, $this->arrPagenavi) = $this->lfDoSearch($_POST['search_pageno']);

@@ -72,14 +72,14 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex {
         $objMailHelper = new SC_Helper_Mail_Ex();
 
         switch ($this->getMode()) {
-        case 'delete':
-            if (SC_Utils_Ex::sfIsInt($_GET['id'])===true) {
-                $this->lfDeleteMailTemplate($_GET['id']);
-                $this->objDisplay->reload(null, true);
-            }
-            break;
-        default:
-            break;
+            case 'delete':
+                if (SC_Utils_Ex::sfIsInt($_GET['id'])===true) {
+                    $this->lfDeleteMailTemplate($_GET['id']);
+                    $this->objDisplay->reload(null, true);
+                }
+                break;
+            default:
+                break;
         }
         $this->arrTemplates = $objMailHelper->sfGetMailmagaTemplate();
     }

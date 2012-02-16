@@ -108,22 +108,22 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
         $objLog->log('* http request start');
 
         switch ($mode) {
-        case 'patch_download':
-            $arrPostData = array(
-                'eccube_url' => HTTP_URL,
-                'public_key' => sha1($public_key . $sha1_key),
-                'sha1_key'   => $sha1_key,
-                'patch_code' => 'latest'
-            );
-            break;
-        default:
-            $arrPostData = array(
-                'eccube_url' => HTTP_URL,
-                'public_key' => sha1($public_key . $sha1_key),
-                'sha1_key'   => $sha1_key,
-                'product_id' => $this->objForm->getValue('product_id')
-            );
-            break;
+            case 'patch_download':
+                $arrPostData = array(
+                    'eccube_url' => HTTP_URL,
+                    'public_key' => sha1($public_key . $sha1_key),
+                    'sha1_key'   => $sha1_key,
+                    'patch_code' => 'latest'
+                );
+                break;
+            default:
+                $arrPostData = array(
+                    'eccube_url' => HTTP_URL,
+                    'public_key' => sha1($public_key . $sha1_key),
+                    'sha1_key'   => $sha1_key,
+                    'product_id' => $this->objForm->getValue('product_id')
+                );
+                break;
         }
 
         $objReq = $this->request($mode, $arrPostData);

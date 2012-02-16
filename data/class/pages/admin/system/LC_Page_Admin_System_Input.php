@@ -78,96 +78,96 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         $arrForm = array();
 
         switch ($this->getMode()) {
-        case 'new':
-            // パラメーターの初期化
-            $this->initForm($objFormParam, $_POST);
-
-            // エラーチェック
-            $arrErr = $this->validateData($objFormParam, $_POST, $this->getMode());
-            $this->arrForm = $objFormParam->getHashArray();
-
-            if (SC_Utils_Ex::isBlank($arrErr)) {
-
-                $this->insertMemberData($this->arrForm);
-                // 親ウィンドウを更新後、自ウィンドウを閉じる。
-                $url = ADMIN_SYSTEM_URLPATH . '?pageno=' . $this->arrForm['pageno'];
-                $this->tpl_onload = "fnUpdateParent('".$url."'); window.close();";
-
-            } else {
-                // 入力された値を保持する
-                $this->tpl_mode      = $this->getMode();
-                $this->tpl_member_id = '';
-                $this->tpl_old_login_id = '';
-
-                // パスワードは保持しない
-                $this->arrForm['password'] = '';
-                $this->arrForm['password02'] = '';
-                // エラー情報をセットする
-                $this->arrErr = $arrErr;
-            }
-            break;
-
-        case 'edit':
-            // パラメーターの初期化
-            $this->initForm($objFormParam, $_POST, $this->getMode());
-
-            // エラーチェック
-            $arrErr = $this->validateData($objFormParam, $_POST, $this->getMode());
-            $this->arrForm = $objFormParam->getHashArray();
-
-            if (SC_Utils_Ex::isBlank($arrErr)) {
-
-                $this->updateMemberData($this->arrForm['member_id'], $this->arrForm);
-                // 親ウィンドウを更新後、自ウィンドウを閉じる。
-                $url = ADMIN_SYSTEM_URLPATH . '?pageno=' . $this->arrForm['pageno'];
-                $this->tpl_onload = "fnUpdateParent('".$url."'); window.close();";
-
-            } else {
-                // 入力された値を保持する
-                $this->tpl_mode      = $this->getMode();
-                $this->tpl_member_id = $this->arrForm['member_id'];
-                $this->tpl_old_login_id = $this->arrForm['old_login_id'];
-
-                // パスワードは保持しない
-                $this->arrForm['password'] = '';
-                $this->arrForm['password02'] = '';
-                // エラー情報をセットする
-                $this->arrErr = $arrErr;
-            }
-            break;
-
-        default:
-
-            // $_GET['id']（member_id）が登録済みのものかチェック。
-            // 登録されていない場合は不正なものとして、新規扱いとする。
-            $clean_id = '';
-            $clean_mode_flg = 'new';
-
-            // idが0より大きい数字で整数の場合
-            if (isset($_GET['id']) && SC_Utils_Ex::sfIsInt($_GET['id']) && $_GET['id'] > 0) {
-                if ($this->memberDataExists('member_id = ? AND del_flg = 0', $_GET['id'])) {
-                    $clean_id = $_GET['id'];
-                    $clean_mode_flg = 'edit';
-                }
-            }
-
-            switch ($clean_mode_flg) {
-            case 'edit':
-                $this->tpl_mode      = $clean_mode_flg;
-                $this->tpl_member_id = $clean_id;
-                $this->tpl_onfocus   = 'fnClearText(this.name);';
-                $this->arrForm       = $this->getMemberData($clean_id);
-                $this->arrForm['password'] = DEFAULT_PASSWORD;
-                $this->tpl_old_login_id    = $this->arrForm['login_id'];
-                break;
-
             case 'new':
-            default:
-                $this->tpl_mode = $clean_mode_flg;
-                $this->arrForm['authority'] = -1;
+                // パラメーターの初期化
+                $this->initForm($objFormParam, $_POST);
+
+                // エラーチェック
+                $arrErr = $this->validateData($objFormParam, $_POST, $this->getMode());
+                $this->arrForm = $objFormParam->getHashArray();
+
+                if (SC_Utils_Ex::isBlank($arrErr)) {
+
+                    $this->insertMemberData($this->arrForm);
+                    // 親ウィンドウを更新後、自ウィンドウを閉じる。
+                    $url = ADMIN_SYSTEM_URLPATH . '?pageno=' . $this->arrForm['pageno'];
+                    $this->tpl_onload = "fnUpdateParent('".$url."'); window.close();";
+
+                } else {
+                    // 入力された値を保持する
+                    $this->tpl_mode      = $this->getMode();
+                    $this->tpl_member_id = '';
+                    $this->tpl_old_login_id = '';
+
+                    // パスワードは保持しない
+                    $this->arrForm['password'] = '';
+                    $this->arrForm['password02'] = '';
+                    // エラー情報をセットする
+                    $this->arrErr = $arrErr;
+                }
                 break;
-            }
-            break;
+
+            case 'edit':
+                // パラメーターの初期化
+                $this->initForm($objFormParam, $_POST, $this->getMode());
+
+                // エラーチェック
+                $arrErr = $this->validateData($objFormParam, $_POST, $this->getMode());
+                $this->arrForm = $objFormParam->getHashArray();
+
+                if (SC_Utils_Ex::isBlank($arrErr)) {
+
+                    $this->updateMemberData($this->arrForm['member_id'], $this->arrForm);
+                    // 親ウィンドウを更新後、自ウィンドウを閉じる。
+                    $url = ADMIN_SYSTEM_URLPATH . '?pageno=' . $this->arrForm['pageno'];
+                    $this->tpl_onload = "fnUpdateParent('".$url."'); window.close();";
+
+                } else {
+                    // 入力された値を保持する
+                    $this->tpl_mode      = $this->getMode();
+                    $this->tpl_member_id = $this->arrForm['member_id'];
+                    $this->tpl_old_login_id = $this->arrForm['old_login_id'];
+
+                    // パスワードは保持しない
+                    $this->arrForm['password'] = '';
+                    $this->arrForm['password02'] = '';
+                    // エラー情報をセットする
+                    $this->arrErr = $arrErr;
+                }
+                break;
+
+            default:
+
+                // $_GET['id']（member_id）が登録済みのものかチェック。
+                // 登録されていない場合は不正なものとして、新規扱いとする。
+                $clean_id = '';
+                $clean_mode_flg = 'new';
+
+                // idが0より大きい数字で整数の場合
+                if (isset($_GET['id']) && SC_Utils_Ex::sfIsInt($_GET['id']) && $_GET['id'] > 0) {
+                    if ($this->memberDataExists('member_id = ? AND del_flg = 0', $_GET['id'])) {
+                        $clean_id = $_GET['id'];
+                        $clean_mode_flg = 'edit';
+                    }
+                }
+
+                switch ($clean_mode_flg) {
+                    case 'edit':
+                        $this->tpl_mode      = $clean_mode_flg;
+                        $this->tpl_member_id = $clean_id;
+                        $this->tpl_onfocus   = 'fnClearText(this.name);';
+                        $this->arrForm       = $this->getMemberData($clean_id);
+                        $this->arrForm['password'] = DEFAULT_PASSWORD;
+                        $this->tpl_old_login_id    = $this->arrForm['login_id'];
+                        break;
+
+                    case 'new':
+                    default:
+                        $this->tpl_mode = $clean_mode_flg;
+                        $this->arrForm['authority'] = -1;
+                        break;
+                }
+                break;
         }
         $this->setTemplate($this->tpl_mainpage);
     }

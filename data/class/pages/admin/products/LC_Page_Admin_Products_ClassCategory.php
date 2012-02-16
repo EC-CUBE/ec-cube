@@ -75,52 +75,52 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
         $classcategory_id = $objFormParam->getValue('classcategory_id');
 
         switch ($this->getMode()) {
-        // 登録ボタン押下
-        // 新規作成 or 編集
-        case 'edit':
-            // パラメーター値の取得
-            $this->arrForm = $objFormParam->getHashArray();
-            // 入力パラメーターチェック
-            $this->arrErr = $this->lfCheckError($objFormParam);
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                //新規規格追加かどうかを判定する
-                $is_insert = $this->lfCheckInsert($classcategory_id);
-                if ($is_insert) {
-                    //新規追加
-                    $this->lfInsertClass($this->arrForm);
-                } else {
-                    //更新
-                    $this->lfUpdateClass($this->arrForm);
+            // 登録ボタン押下
+            // 新規作成 or 編集
+            case 'edit':
+                // パラメーター値の取得
+                $this->arrForm = $objFormParam->getHashArray();
+                // 入力パラメーターチェック
+                $this->arrErr = $this->lfCheckError($objFormParam);
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                    //新規規格追加かどうかを判定する
+                    $is_insert = $this->lfCheckInsert($classcategory_id);
+                    if ($is_insert) {
+                        //新規追加
+                        $this->lfInsertClass($this->arrForm);
+                    } else {
+                        //更新
+                        $this->lfUpdateClass($this->arrForm);
+                    }
+                    // 再表示
+                    SC_Response_Ex::reload();
                 }
-                // 再表示
+                break;
+                // 削除
+            case 'delete':
+                // ランク付きレコードの削除
+                $this->lfDeleteClassCat($class_id, $classcategory_id);
                 SC_Response_Ex::reload();
-            }
-            break;
-            // 削除
-        case 'delete':
-            // ランク付きレコードの削除
-            $this->lfDeleteClassCat($class_id, $classcategory_id);
-            SC_Response_Ex::reload();
-            break;
-            // 編集前処理
-        case 'pre_edit':
-            // 規格名を取得する。
-            $classcategory_name = $this->lfGetClassCatName($classcategory_id);
-            // 入力項目にカテゴリ名を入力する。
-            $this->arrForm['name'] = $classcategory_name;
-            break;
-        case 'down':
-            //並び順を下げる
-            $this->lfDownRank($class_id, $classcategory_id);
-            SC_Response_Ex::reload();
-            break;
-        case 'up':
-            //並び順を上げる
-            $this->lfUpRank($class_id, $classcategory_id);
-            SC_Response_Ex::reload();
-            break;
-        default:
-            break;
+                break;
+                // 編集前処理
+            case 'pre_edit':
+                // 規格名を取得する。
+                $classcategory_name = $this->lfGetClassCatName($classcategory_id);
+                // 入力項目にカテゴリ名を入力する。
+                $this->arrForm['name'] = $classcategory_name;
+                break;
+            case 'down':
+                //並び順を下げる
+                $this->lfDownRank($class_id, $classcategory_id);
+                SC_Response_Ex::reload();
+                break;
+            case 'up':
+                //並び順を上げる
+                $this->lfUpRank($class_id, $classcategory_id);
+                SC_Response_Ex::reload();
+                break;
+            default:
+                break;
         }
         //規格分類名の取得
         $this->tpl_class_name = $this->lfGetClassName($class_id);

@@ -67,21 +67,22 @@ class LC_Page_Admin_Mail_Preview extends LC_Page_Admin_Ex {
         $objMailHelper = new SC_Helper_Mail_Ex();
 
         switch ($this->getMode()) {
-        case 'template':
-            if (SC_Utils_Ex::sfIsInt($_GET['template_id'])) {
-                $arrMail = $objMailHelper->sfGetMailmagaTemplate($_GET['template_id']);
-                $this->mail = $arrMail[0];
-            }
-            break;
-        case 'history';
-            if (SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
-                $arrMail = $objMailHelper->sfGetSendHistory($_GET['send_id']);
-                $this->mail = $arrMail[0];
-            }
-            break;
-        case 'presend';
-            $this->mail['body'] = $_POST['body'];
-        default:
+            case 'template':
+                if (SC_Utils_Ex::sfIsInt($_GET['template_id'])) {
+                    $arrMail = $objMailHelper->sfGetMailmagaTemplate($_GET['template_id']);
+                    $this->mail = $arrMail[0];
+                }
+                break;
+            case 'history';
+                if (SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
+                    $arrMail = $objMailHelper->sfGetSendHistory($_GET['send_id']);
+                    $this->mail = $arrMail[0];
+                }
+                break;
+            case 'presend';
+                $this->mail['body'] = $_POST['body'];
+            default:
+                break;
         }
 
         $this->setTemplate($this->tpl_mainpage);

@@ -129,42 +129,42 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
         $this->use_module = $this->useModule($this->arrForm['payment_id']);
 
         switch ($this->getMode()) {
-        // 前のページに戻る
-        case 'return':
-            // 正常な推移であることを記録しておく
-            $objSiteSess->setRegistFlag();
-            SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URLPATH);
-            exit;
-            break;
-        case 'confirm':
-            /*
-             * 決済モジュールで必要なため, 受注番号を取得
-             */
-            $this->arrForm['order_id'] = $objQuery->nextval('dtb_order_order_id');
-            $_SESSION['order_id'] = $this->arrForm['order_id'];
+            // 前のページに戻る
+            case 'return':
+                // 正常な推移であることを記録しておく
+                $objSiteSess->setRegistFlag();
+                SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URLPATH);
+                exit;
+                break;
+            case 'confirm':
+                /*
+                 * 決済モジュールで必要なため, 受注番号を取得
+                 */
+                $this->arrForm['order_id'] = $objQuery->nextval('dtb_order_order_id');
+                $_SESSION['order_id'] = $this->arrForm['order_id'];
 
-            // 集計結果を受注一時テーブルに反映
-            $objPurchase->saveOrderTemp($this->tpl_uniqid, $this->arrForm,
-                                        $objCustomer);
+                // 集計結果を受注一時テーブルに反映
+                $objPurchase->saveOrderTemp($this->tpl_uniqid, $this->arrForm,
+                                            $objCustomer);
 
-            // 正常に登録されたことを記録しておく
-            $objSiteSess->setRegistFlag();
+                // 正常に登録されたことを記録しておく
+                $objSiteSess->setRegistFlag();
 
-            // 決済モジュールを使用する場合
-            if ($this->use_module) {
-                $objPurchase->completeOrder(ORDER_PENDING);
-                SC_Response_Ex::sendRedirect(SHOPPING_MODULE_URLPATH);
-            }
-            // 購入完了ページ
-            else {
-                $objPurchase->completeOrder(ORDER_NEW);
-                $objPurchase->sendOrderMail($this->arrForm['order_id']);
-                SC_Response_Ex::sendRedirect(SHOPPING_COMPLETE_URLPATH);
-            }
-            exit;
-            break;
-        default:
-            break;
+                // 決済モジュールを使用する場合
+                if ($this->use_module) {
+                    $objPurchase->completeOrder(ORDER_PENDING);
+                    SC_Response_Ex::sendRedirect(SHOPPING_MODULE_URLPATH);
+                }
+                // 購入完了ページ
+                else {
+                    $objPurchase->completeOrder(ORDER_NEW);
+                    $objPurchase->sendOrderMail($this->arrForm['order_id']);
+                    SC_Response_Ex::sendRedirect(SHOPPING_COMPLETE_URLPATH);
+                }
+                exit;
+                break;
+            default:
+                break;
         }
     }
 
