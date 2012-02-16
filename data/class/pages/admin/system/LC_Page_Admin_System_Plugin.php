@@ -121,40 +121,38 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
             // 有効化
             case 'enable':
                 // エラーチェック
-                $arrErr = $objFormParam->checkError();
-                if ($this->isError($arrErr) === false) {
+                $this->arrErr = $objFormParam->checkError();
+                if ($this->isError($this->arrErr) === false) {
                     $plugin_id = $objFormParam->getValue('plugin_id');
                     // プラグイン取得.
                     $plugin = SC_Helper_Plugin_Ex::getPluginByPluginId($plugin_id);
                     // ステータス更新
-                    $arrErr = $this->enablePlugin($plugin_id, $plugin['plugin_code']);                    
-                    if ($this->isError($arrErr) === false) {
+                    $this->arrErr = $this->enablePlugin($plugin_id, $plugin['plugin_code']);                    
+                    if ($this->isError($this->arrErr) === false) {
                         // テンプレート再生成.
                         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
                         $objPlugin->remakeTemplate();
-                        echo SC_Utils_Ex::jsonEncode(array('message' => $plugin['plugin_name'] . 'を有効にしました。'));
+                        $this->tpl_onload = "alert('" . $plugin['plugin_name'] . "を有効にしました。');";
                     }
                 }
-                exit;
                 break;
             // 無効化
             case 'disable':
                 // エラーチェック
-                $arrErr = $objFormParam->checkError();
-                if ($this->isError($arrErr) === false) {
+                $this->arrErr = $objFormParam->checkError();
+                if ($this->isError($this->arrErr) === false) {
                     $plugin_id = $objFormParam->getValue('plugin_id');
                     // プラグイン取得.
                     $plugin = SC_Helper_Plugin_Ex::getPluginByPluginId($plugin_id);
                     // プラグインを無効にします
-                    $arrErr = $this->disablePlugin($plugin_id, $plugin['plugin_code']);                    
-                    if ($this->isError($arrErr) === false) {
+                    $this->arrErr = $this->disablePlugin($plugin_id, $plugin['plugin_code']);                    
+                    if ($this->isError($this->arrErr) === false) {
                         // テンプレート再生成.
                         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
                         $objPlugin->remakeTemplate();
-                        echo SC_Utils_Ex::jsonEncode(array('message' => $plugin['plugin_name'] . 'を無効にしました。'));
+                        $this->tpl_onload = "alert('" . $plugin['plugin_name'] . "を無効にしました。');";
                     }
                 }
-                exit;
                 break;
             // アップデート.
             case 'update':

@@ -26,34 +26,20 @@
 
        /**
         * 「有効/有効にする」チェックボタン押下時
-        * ajaxでPOSTする.
         */
         $('input[id^=plugin_enable]').change(function(event) {
-            var data = {};
             // モード(有効 or 無効)
-            data.mode = event.target.name;
+            var mode = event.target.name;
             
-            if(data.mode === 'disable') {
+            if(mode === 'disable') {
                 result = window.confirm('プラグインを無効しても宜しいですか？');
-            } else if(data.mode === 'enable') {
+            } else if(mode === 'enable') {
                 result = window.confirm('プラグインを有効にしても宜しいですか？');
             }
-            if(result){
+            if(result === true){
                 // プラグインID
-                data.plugin_id = event.target.value;
-                data['<!--{$smarty.const.TRANSACTION_ID_NAME}-->'] = '<!--{$transactionid}-->';
-                $.ajax({
-                    type : 'POST',
-                    url : location.pathname,
-                    dataType : "json",
-                    data: data,
-                    cache : false,
-                    error : remoteException,
-                    success : function(data, dataType) {
-                            window.location.reload();
-                            alert(data.message);
-                    }
-                });
+                var plugin_id = event.target.value;
+                fnModeSubmit(mode, 'plugin_id', plugin_id);
             }
         });
 
