@@ -1179,9 +1179,9 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('RECOMMEND_PRODUCT_M
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('RECOMMEND_NUM', '8', 269, 'おすすめ商品表示数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DELIV_DATE_END_MAX', '21', 272, 'お届け可能日以降のプルダウン表示最大日数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('REVIEW_ALLOW_URL', '0', 277, '商品レビューでURL書き込みを許可するか否か');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MAIL_BACKEND', '"mail"', 285, 'Pear::Mail バックエンド:mail|smtp|sendmail');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMTP_HOST', '"127.0.0.1"', 287, 'SMTPサーバー');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMTP_PORT', '"25"', 288, 'SMTPポート');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MAIL_BACKEND', '"mail"', 285, 'Pear::Mail バックエンド:"mail"|"smtp"|"sendmail"');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMTP_HOST', '"127.0.0.1"', 287, 'SMTPサーバー (MAIL_BACKEND が "smtp" の場合のみ)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMTP_PORT', '"25"', 288, 'SMTPポート (MAIL_BACKEND が "smtp" の場合のみ)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UPDATE_SEND_SITE_INFO', 'false', 289, 'アップデート時にサイト情報を送出するか');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USE_POINT', 'true', 290, 'ポイントを利用するか(true:利用する、false:利用しない) (false は一部対応)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('NOSTOCK_HIDDEN', 'false', 291, '在庫無し商品の非表示(true:非表示、false:表示)');
@@ -1212,7 +1212,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_CART_URLPATH
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_SHOPPING_CONFIRM_URLPATH', 'ROOT_URLPATH . "shopping/confirm.php"', 413, '購入確認ページ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_SHOPPING_PAYMENT_URLPATH', 'ROOT_URLPATH . "shopping/payment.php"', 414, 'お支払い方法選択ページ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_P_DETAIL_URLPATH', 'ROOT_URLPATH . "products/detail.php?product_id="', 415, '商品詳細(HTML出力)');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SESSION_KEEP_METHOD', '"useCookie"', 418, 'セッション維持方法：useCookie|useRequest');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SESSION_KEEP_METHOD', '"useCookie"', 418, 'セッション維持方法："useCookie"|"useRequest"');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SESSION_LIFETIME', '1800', 419, 'セッションの存続時間 (秒)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OSTORE_URL', '"http://store.ec-cube.net/"', 500, 'オーナーズストアURL');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OSTORE_SSLURL', '"https://store.ec-cube.net/"', 501, 'オーナーズストアURL');

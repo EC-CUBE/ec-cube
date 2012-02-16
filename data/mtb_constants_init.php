@@ -292,11 +292,11 @@ define('RECOMMEND_NUM', 8);
 define('DELIV_DATE_END_MAX', 21);
 /** 商品レビューでURL書き込みを許可するか否か */
 define('REVIEW_ALLOW_URL', 0);
-/** Pear::Mail バックエンド:mail|smtp|sendmail */
+/** Pear::Mail バックエンド:"mail"|"smtp"|"sendmail" */
 define('MAIL_BACKEND', "mail");
-/** SMTPサーバー */
+/** SMTPサーバー (MAIL_BACKEND が "smtp" の場合のみ) */
 define('SMTP_HOST', "127.0.0.1");
-/** SMTPポート */
+/** SMTPポート (MAIL_BACKEND が "smtp" の場合のみ) */
 define('SMTP_PORT', "25");
 /** アップデート時にサイト情報を送出するか */
 define('UPDATE_SEND_SITE_INFO', false);
@@ -358,7 +358,7 @@ define('MOBILE_SHOPPING_CONFIRM_URLPATH', ROOT_URLPATH . "shopping/confirm.php")
 define('MOBILE_SHOPPING_PAYMENT_URLPATH', ROOT_URLPATH . "shopping/payment.php");
 /** 商品詳細(HTML出力) */
 define('MOBILE_P_DETAIL_URLPATH', ROOT_URLPATH . "products/detail.php?product_id=");
-/** セッション維持方法：useCookie|useRequest */
+/** セッション維持方法："useCookie"|"useRequest" */
 define('SESSION_KEEP_METHOD', "useCookie");
 /** セッションの存続時間 (秒) */
 define('SESSION_LIFETIME', 1800);
