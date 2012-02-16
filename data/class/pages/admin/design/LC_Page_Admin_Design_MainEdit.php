@@ -159,7 +159,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         $objFormParam->addParam('フッタチェック', 'footer_chk', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('修正フラグ', 'edit_flg', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('TPLデータ', 'tpl_data');
-     }
+    }
 
     /**
      * ページデータを取得する.

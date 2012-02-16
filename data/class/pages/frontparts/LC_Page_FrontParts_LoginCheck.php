@@ -114,8 +114,9 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
                     $loginFailFlag = false;
                     if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
                         // モバイルサイト
-                        if(!$objCustomer->getCustomerDataFromMobilePhoneIdPass($arrForm['login_pass']) &&
-                           !$objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'], true)) {
+                        if (!$objCustomer->getCustomerDataFromMobilePhoneIdPass($arrForm['login_pass']) &&
+                            !$objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'], true)
+                        ) {
                             $loginFailFlag = true;
                         }
                     } else {

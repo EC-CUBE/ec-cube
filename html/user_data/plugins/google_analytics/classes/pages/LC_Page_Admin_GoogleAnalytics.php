@@ -89,7 +89,7 @@ class LC_Page_Admin_GoogleAnalytics extends LC_Page_Ex {
                 }
                 break;
 
-              default:
+            default:
                 break;
         }
 

@@ -90,9 +90,12 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
                     if (SC_Utils_Ex::isBlank($this->arrErr)) {
                         $result = $this->doRegister($objFormParam, $objLayout);
                         if ($result !== false) {
-                            SC_Response_Ex::reload(array('bloc_id' => $result,
-                                                         'device_type_id' => $this->device_type_id,
-                                                         'msg' => 'on'), true);
+                            $arrPram = array(
+                                'bloc_id' => $result,
+                                'device_type_id' => $this->device_type_id,
+                                'msg' => 'on',
+                            );
+                            SC_Response_Ex::reload($arrPram, true);
                             exit;
                         }
                     }
@@ -103,8 +106,11 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
             case 'delete':
                 if (!$is_error) {
                     if ($this->doDelete($objFormParam, $objLayout)) {
-                        SC_Response_Ex::reload(array('device_type_id' => $this->device_type_id,
-                                                     'msg' => 'on'), true);
+                        $arrPram = array(
+                            'device_type_id' => $this->device_type_id,
+                            'msg' => 'on',
+                        );
+                        SC_Response_Ex::reload($arrPram, true);
                         exit;
                     }
                 }

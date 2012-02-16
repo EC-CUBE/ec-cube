@@ -360,14 +360,14 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
     function registerUpdateLog($arrLog, $objRet) {
         $objQuery = new SC_Query_Ex();
         $arrInsert = array(
-           'log_id'           => $objQuery->nextVal('dtb_module_update_logs_log_id'),
+            'log_id'      => $objQuery->nextVal('dtb_module_update_logs_log_id'),
             'module_id'   => $objRet->product_id,
             'buckup_path' => $arrLog['buckup_path'],
             'error_flg'   => count($arrLog['err']),
             'error'       => implode("\n", $arrLog['err']),
             'ok'          => implode("\n", $arrLog['ok']),
             'update_date' => 'CURRENT_TIMESTAMP',
-            'create_date' => 'CURRENT_TIMESTAMP'
+            'create_date' => 'CURRENT_TIMESTAMP',
         );
         $objQuery->insert('dtb_module_update_logs', $arrInsert);
     }

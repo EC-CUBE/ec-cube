@@ -234,11 +234,11 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         if (!isset($this->arrSql['search_b_end_year'])) $this->arrSql['search_b_end_year'] = '';
         if (!isset($this->arrSql['search_b_end_month'])) $this->arrSql['search_b_end_month'] = '';
         if (!isset($this->arrSql['search_b_end_day'])) $this->arrSql['search_b_end_day'] = '';
-        if ( (strlen($this->arrSql['search_b_start_year']) > 0 && strlen($this->arrSql['search_b_start_month']) > 0 && strlen($this->arrSql['search_b_start_day']) > 0) ||
-              strlen($this->arrSql['search_b_end_year']) > 0 && strlen($this->arrSql['search_b_end_month']) > 0 && strlen($this->arrSql['search_b_end_day']) > 0) {
+        if ((strlen($this->arrSql['search_b_start_year']) > 0 && strlen($this->arrSql['search_b_start_month']) > 0 && strlen($this->arrSql['search_b_start_day']) > 0)
+            || strlen($this->arrSql['search_b_end_year']) > 0 && strlen($this->arrSql['search_b_end_month']) > 0 && strlen($this->arrSql['search_b_end_day']) > 0) {
 
-            $arrBirth = $this->selectTermRange($this->arrSql['search_b_start_year'], $this->arrSql['search_b_start_month'], $this->arrSql['search_b_start_day']
-                      , $this->arrSql['search_b_end_year'], $this->arrSql['search_b_end_month'], $this->arrSql['search_b_end_day'], 'birth');
+            $arrBirth = $this->selectTermRange($this->arrSql['search_b_start_year'], $this->arrSql['search_b_start_month'], $this->arrSql['search_b_start_day'],
+                                               $this->arrSql['search_b_end_year'], $this->arrSql['search_b_end_month'], $this->arrSql['search_b_end_day'], 'birth');
             foreach ($arrBirth as $data) {
                 $this->arrVal[] = $data;
             }

@@ -212,7 +212,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
                 }
             }
             elseif (SC_Utils_Ex::sfIsMatchHashPassword($arrForm['reminder_answer'],
-                     $result[0]['reminder_answer'], $result[0]['salt'])) {
+                    $result[0]['reminder_answer'], $result[0]['salt'])) {
                 $is_authorized = true;
             }
 

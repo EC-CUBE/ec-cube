@@ -156,8 +156,7 @@ class LC_Page_Sitemap extends LC_Page_Ex {
      * @see https://www.google.com/webmasters/tools/docs/ja/protocol.html#xmlTagDefinitions
      * TODO Smarty に移行すべき?
      */
-    function createSitemap($loc, $lastmod = '', $changefreq = '',
-                           $priority = '') {
+    function createSitemap($loc, $lastmod = '', $changefreq = '', $priority = '') {
         printf("\t<url>\n");
         printf("\t\t<loc>%s</loc>\n", htmlentities($loc, ENT_QUOTES, "UTF-8"));
         if (!empty($lastmod)) {
@@ -307,8 +306,7 @@ class LC_Page_Sitemap extends LC_Page_Ex {
     function date2W3CDatetime($date) {
         $arr = array();
         // 正規表現で文字列を抽出
-        preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2}):([0-9]{2})/',
-             $date, $arr);
+        preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2}):([0-9]{2})/', $date, $arr);
         // :TODO: time zone も取得するべき...
         return sprintf('%04d-%02d-%02dT%02d:%02d:%02d+09:00',
                        $arr[1], $arr[2], $arr[3], $arr[4], $arr[5], $arr[6]);

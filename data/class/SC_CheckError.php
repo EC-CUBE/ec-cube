@@ -679,10 +679,10 @@ class SC_CheckError {
     //　URLを正規表現で判定する。デフォルトでhttp://があってもOK
     //  value[0] = 項目名 value[1] = 判定対象URL
     function URL_CHECK($value) {
-         if (isset($this->arrErr[$value[1]])) {
+        if (isset($this->arrErr[$value[1]])) {
             return;
         }
-         if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("@^https?://+($|[a-zA-Z0-9_~=:&\?\.\/-])+$@i", $this->arrParam[$value[1]])) {
+        if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("@^https?://+($|[a-zA-Z0-9_~=:&\?\.\/-])+$@i", $this->arrParam[$value[1]])) {
             $this->arrErr[$value[1]] = '※ ' . $value[0] . 'を正しく入力してください。<br />';
         }
     }

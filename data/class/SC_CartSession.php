@@ -112,9 +112,9 @@ class SC_CartSession {
     function getProductTotal($id, $productTypeId) {
         $max = $this->getMax($productTypeId);
         for ($i = 0; $i <= $max; $i++) {
-            if(isset($this->cartSession[$productTypeId][$i]['id'])
-               && $this->cartSession[$productTypeId][$i]['id'] == $id) {
-
+            if (isset($this->cartSession[$productTypeId][$i]['id'])
+                && $this->cartSession[$productTypeId][$i]['id'] == $id
+            ) {
                 // 税込み合計
                 $price = $this->cartSession[$productTypeId][$i]['price'];
                 $quantity = $this->cartSession[$productTypeId][$i]['quantity'];
@@ -130,8 +130,9 @@ class SC_CartSession {
     function setProductValue($id, $key, $val, $productTypeId) {
         $max = $this->getMax($productTypeId);
         for ($i = 0; $i <= $max; $i++) {
-            if(isset($this->cartSession[$productTypeId][$i]['id'])
-               && $this->cartSession[$productTypeId][$i]['id'] == $id) {
+            if (isset($this->cartSession[$productTypeId][$i]['id'])
+                && $this->cartSession[$productTypeId][$i]['id'] == $id
+            ) {
                 $this->cartSession[$productTypeId][$i][$key] = $val;
             }
         }
@@ -335,8 +336,8 @@ class SC_CartSession {
         $max = $this->getMax($productTypeId);
         $arrRet = array();
         for ($i = 0; $i <= $max; $i++) {
-            if(isset($this->cartSession[$productTypeId][$i]['cart_no'])
-               && $this->cartSession[$productTypeId][$i]['cart_no'] != '') {
+            if (isset($this->cartSession[$productTypeId][$i]['cart_no'])
+                && $this->cartSession[$productTypeId][$i]['cart_no'] != '') {
 
                 // 商品情報は常に取得
                 $this->cartSession[$productTypeId][$i]['productsClass']
@@ -345,8 +346,8 @@ class SC_CartSession {
                 $price = $this->cartSession[$productTypeId][$i]['productsClass']['price02'];
                 $this->cartSession[$productTypeId][$i]['price'] = $price;
 
-                $this->cartSession[$productTypeId][$i]['point_rate'] =
-                    $this->cartSession[$productTypeId][$i]['productsClass']['point_rate'];
+                $this->cartSession[$productTypeId][$i]['point_rate']
+                    = $this->cartSession[$productTypeId][$i]['productsClass']['point_rate'];
 
                 $quantity = $this->cartSession[$productTypeId][$i]['quantity'];
                 $incTax = SC_Helper_DB_Ex::sfCalcIncTax($price);
@@ -620,7 +621,8 @@ class SC_CartSession {
      * @return array カートの計算結果の配列
      */
     function calculate($productTypeId, &$objCustomer, $use_point = 0,
-                       $deliv_pref = '', $charge = 0, $discount = 0, $deliv_id = 0) {
+        $deliv_pref = '', $charge = 0, $discount = 0, $deliv_id = 0
+    ) {
         $objDb = new SC_Helper_DB_Ex();
 
         $total_point = $this->getAllProductsPoint($productTypeId);
@@ -659,8 +661,7 @@ class SC_CartSession {
 
         // 加算ポイントの計算
         if (USE_POINT !== false) {
-            $results['add_point'] = SC_Helper_DB_Ex::sfGetAddPoint($total_point,
-                                                                   $use_point);
+            $results['add_point'] = SC_Helper_DB_Ex::sfGetAddPoint($total_point, $use_point);
             if ($objCustomer != '') {
                 // 誕生日月であった場合
                 if ($objCustomer->isBirthMonth()) {

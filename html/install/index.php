@@ -863,7 +863,7 @@ function lfDropSequence($arrSequences, $dsn) {
  * @return array エラーが発生した場合はエラーメッセージの配列
  */
 function lfCreateSequence($arrSequences, $dsn) {
-   $arrErr = array();
+    $arrErr = array();
 
     // Debugモード指定
     $options['debug'] = PEAR_DB_DEBUG;
@@ -963,23 +963,23 @@ function lfMakeConfigFile() {
 
     // FIXME 変数出力はエスケープすべき
     $config_data = "<?php\n"
-                 . "define ('ECCUBE_INSTALL', 'ON');\n"
-                 . "define ('HTTP_URL', '"              . $normal_url . "');\n"
-                 . "define ('HTTPS_URL', '"             . $secure_url . "');\n"
-                 . "define ('ROOT_URLPATH', '"          . $url_dir . "');\n"
-                 . "define ('DOMAIN_NAME', '"           . $objWebParam->getValue('domain') . "');\n"
-                 . "define ('DB_TYPE', '"               . $objDBParam->getValue('db_type') . "');\n"
-                 . "define ('DB_USER', '"               . $objDBParam->getValue('db_user') . "');\n"
-                 . "define ('DB_PASSWORD', '"           . $objDBParam->getValue('db_password') . "');\n"
-                 . "define ('DB_SERVER', '"             . $objDBParam->getValue('db_server') . "');\n"
-                 . "define ('DB_NAME', '"               . $objDBParam->getValue('db_name') . "');\n"
-                 . "define ('DB_PORT', '"               . $objDBParam->getValue('db_port') . "');\n"
-                 . "define ('ADMIN_DIR', '"             . $objWebParam->getValue('admin_dir') . "/');\n"
-                 . "define ('ADMIN_FORCE_SSL', "        . $force_ssl . ");\n"
-                 . "define ('ADMIN_ALLOW_HOSTS', '"     . serialize($allow_hosts) . "');\n"
-                 . "define ('AUTH_MAGIC', '"            . $auth_magic . "');\n"
-                 . "define ('PASSWORD_HASH_ALGOS', '"   . $algos . "');\n"
-                 . "define ('RELEASE_YEAR', '"          . date('Y') . "');\n";
+                 . "define('ECCUBE_INSTALL', 'ON');\n"
+                 . "define('HTTP_URL', '"              . $normal_url . "');\n"
+                 . "define('HTTPS_URL', '"             . $secure_url . "');\n"
+                 . "define('ROOT_URLPATH', '"          . $url_dir . "');\n"
+                 . "define('DOMAIN_NAME', '"           . $objWebParam->getValue('domain') . "');\n"
+                 . "define('DB_TYPE', '"               . $objDBParam->getValue('db_type') . "');\n"
+                 . "define('DB_USER', '"               . $objDBParam->getValue('db_user') . "');\n"
+                 . "define('DB_PASSWORD', '"           . $objDBParam->getValue('db_password') . "');\n"
+                 . "define('DB_SERVER', '"             . $objDBParam->getValue('db_server') . "');\n"
+                 . "define('DB_NAME', '"               . $objDBParam->getValue('db_name') . "');\n"
+                 . "define('DB_PORT', '"               . $objDBParam->getValue('db_port') . "');\n"
+                 . "define('ADMIN_DIR', '"             . $objWebParam->getValue('admin_dir') . "/');\n"
+                 . "define('ADMIN_FORCE_SSL', "        . $force_ssl . ");\n"
+                 . "define('ADMIN_ALLOW_HOSTS', '"     . serialize($allow_hosts) . "');\n"
+                 . "define('AUTH_MAGIC', '"            . $auth_magic . "');\n"
+                 . "define('PASSWORD_HASH_ALGOS', '"   . $algos . "');\n"
+                 . "define('RELEASE_YEAR', '"          . date('Y') . "');\n";
 
     if ($fp = fopen(CONFIG_REALFILE, 'w')) {
         fwrite($fp, $config_data);

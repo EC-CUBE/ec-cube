@@ -63,8 +63,8 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex {
 
         $module_path = $this->getModulePath($order_id);
         if ($module_path === false) {
-            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true,
-                                      'モジュールファイルの取得に失敗しました。<br />この手続きは無効となりました。');
+            $msg = 'モジュールファイルの取得に失敗しました。<br />この手続きは無効となりました。';
+            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, $msg);
             return;
         }
         require_once $module_path;
@@ -93,10 +93,10 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sql = <<< __EOS__
             SELECT module_path
-              FROM dtb_payment T1
-              JOIN dtb_order T2
-                ON T1.payment_id = T2.payment_id
-             WHERE order_id = ?
+            FROM dtb_payment T1
+                JOIN dtb_order T2
+                    ON T1.payment_id = T2.payment_id
+            WHERE order_id = ?
 __EOS__;
         $module_path = $objQuery->getOne($sql, array($order_id));
         if (file_exists($module_path)) {

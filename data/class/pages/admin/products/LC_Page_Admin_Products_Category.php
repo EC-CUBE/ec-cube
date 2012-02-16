@@ -159,7 +159,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
             // カテゴリツリークリック時
             case 'tree':
                 break;
-             // CSVダウンロード
+            // CSVダウンロード
             case 'csv':
                 // CSVを送信する
                 $objCSV = new SC_Helper_CSV_Ex();
@@ -213,8 +213,8 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         $where = 'parent_category_id = ? AND del_flg = 0';
         $exists = $objQuery->exists('dtb_category', $where, array($category_id));
         if ($exists) {
-             $this->arrErr['category_name'] = '※ 子カテゴリが存在するため削除できません。<br/>';
-             return;
+            $this->arrErr['category_name'] = '※ 子カテゴリが存在するため削除できません。<br/>';
+            return;
         }
         // 登録商品のチェック
         $table = 'dtb_product_categories AS T1 LEFT JOIN dtb_products AS T2 ON T1.product_id = T2.product_id';

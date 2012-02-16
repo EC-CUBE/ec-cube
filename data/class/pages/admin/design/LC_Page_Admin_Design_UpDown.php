@@ -205,11 +205,13 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
 
-        $arrValues = array('template_code' => $template_code,
-                           'device_type_id' => $device_type_id,
-                           'template_name' => $template_name,
-                           'create_date' => 'CURRENT_TIMESTAMP',
-                           'update_date' => 'CURRENT_TIMESTAMP');
+        $arrValues = array(
+            'template_code' => $template_code,
+            'device_type_id' => $device_type_id,
+            'template_name' => $template_name,
+            'create_date' => 'CURRENT_TIMESTAMP',
+            'update_date' => 'CURRENT_TIMESTAMP',
+        );
         $objQuery->insert('dtb_templates', $arrValues);
 
         $is_error = false;

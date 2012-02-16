@@ -175,7 +175,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         $fp = fopen($enc_filepath, 'r');
         // 失敗した場合はエラー表示
         if (!$fp) {
-             SC_Utils_Ex::sfDispError('');
+            SC_Utils_Ex::sfDispError('');
         }
 
         // 登録先テーブル カラム情報の初期化

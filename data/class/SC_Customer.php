@@ -72,31 +72,32 @@ class SC_Customer {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $from = <<< __EOS__
-            (   SELECT NULL AS other_deliv_id,
-                       customer_id,
-                       name01, name02,
-                       kana01, kana02,
-                       zip01, zip02,
-                       pref,
-                       addr01, addr02,
-                       email, email_mobile,
-                       tel01, tel02, tel03,
-                       fax01, fax02, fax03
-                  FROM dtb_customer
-                 WHERE customer_id = ?
-             UNION ALL
+            (
+                SELECT NULL AS other_deliv_id,
+                    customer_id,
+                    name01, name02,
+                    kana01, kana02,
+                    zip01, zip02,
+                    pref,
+                    addr01, addr02,
+                    email, email_mobile,
+                    tel01, tel02, tel03,
+                    fax01, fax02, fax03
+                FROM dtb_customer
+                WHERE customer_id = ?
+                UNION ALL
                 SELECT other_deliv_id,
-                       customer_id,
-                       name01, name02,
-                       kana01, kana02,
-                       zip01, zip02,
-                       pref,
-                       addr01, addr02,
-                       NULL AS email, NULL AS email_mobile,
-                       tel01, tel02, tel03,
-                       NULL AS fax01, NULL AS fax02, NULL AS fax03
-                  FROM dtb_other_deliv
-                 WHERE customer_id = ?
+                    customer_id,
+                    name01, name02,
+                    kana01, kana02,
+                    zip01, zip02,
+                    pref,
+                    addr01, addr02,
+                    NULL AS email, NULL AS email_mobile,
+                    tel01, tel02, tel03,
+                    NULL AS fax01, NULL AS fax02, NULL AS fax03
+                FROM dtb_other_deliv
+                WHERE customer_id = ?
             ) AS addrs
 __EOS__;
         $objQuery->setOrder('other_deliv_id IS NULL DESC, other_deliv_id DESC');

@@ -102,8 +102,11 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
             case 'delete':
                 if (!$is_error) {
                     if ($this->doDelete($css_path)) {
-                        SC_Response_Ex::reload(array('device_type_id' => $this->device_type_id,
-                                                     'msg' => 'on'), true);
+                        $arrPram = array(
+                            'device_type_id' => $this->device_type_id,
+                            'msg' => 'on',
+                        );
+                        SC_Response_Ex::reload($arrPram, true);
                     }
                 }
                 break;

@@ -156,7 +156,7 @@ class LC_Page_Error extends LC_Page_Ex {
             case FREE_ERROR_MSG:
                 $this->tpl_error=$this->err_msg;
                 break;
-             default:
+            default:
                 $this->tpl_error='エラーが発生しました。';
                 break;
         }

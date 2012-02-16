@@ -275,8 +275,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      * @param SC_CartSession $objCartSess SC_CartSession インスタンス
      * @return void
      */
-    function saveMultipleShippings($uniqid, &$objFormParam, &$objCustomer,
-                                   &$objPurchase, &$objCartSess) {
+    function saveMultipleShippings($uniqid, &$objFormParam, &$objCustomer, &$objPurchase, &$objCartSess) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $arrParams = $objFormParam->getSwapArray();

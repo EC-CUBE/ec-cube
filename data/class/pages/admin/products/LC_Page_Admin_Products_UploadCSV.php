@@ -178,7 +178,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         $fp = fopen($enc_filepath, 'r');
         // 失敗した場合はエラー表示
         if (!$fp) {
-             SC_Utils_Ex::sfDispError('');
+            SC_Utils_Ex::sfDispError('');
         }
 
         // 登録先テーブル カラム情報の初期化
@@ -683,8 +683,9 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         }
 */
         // ダウンロード商品チェック
-        if(array_search('product_type_id', $this->arrFormKeyList) !== FALSE
-                 and $item['product_type_id'] == PRODUCT_TYPE_NORMAL) {
+        if (array_search('product_type_id', $this->arrFormKeyList) !== FALSE
+            && $item['product_type_id'] == PRODUCT_TYPE_NORMAL
+        ) {
             //実商品の場合
             if ($item['down_filename'] != '') {
                 $arrErr['down_filename'] = '※ 実商品の場合はダウンロードファイル名は入力できません。';
@@ -692,8 +693,9 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
             if ($item['down_realfilename'] != '') {
                 $arrErr['down_realfilename'] = '※ 実商品の場合はダウンロード商品用ファイルアップロードは入力できません。';
             }
-        }elseif(array_search('product_type_id', $this->arrFormKeyList) !== FALSE
-                and $item['product_type_id'] == PRODUCT_TYPE_DOWNLOAD) {
+        } elseif (array_search('product_type_id', $this->arrFormKeyList) !== FALSE
+                  && $item['product_type_id'] == PRODUCT_TYPE_DOWNLOAD
+        ) {
             //ダウンロード商品の場合
             if ($item['down_filename'] == '') {
                 $arrErr['down_filename'] = '※ ダウンロード商品の場合はダウンロードファイル名は必須です。';

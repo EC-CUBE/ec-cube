@@ -129,17 +129,17 @@ class LC_Page_Products_List extends LC_Page_Ex {
         switch ($this->getMode()) {
 
             case 'json':
-                   $this->arrProducts = $this->setStatusDataTo($this->arrProducts, $this->arrSTATUS, $this->arrSTATUS_IMAGE);
-                   $this->arrProducts = $objProduct->setPriceTaxTo($this->arrProducts);
+                $this->arrProducts = $this->setStatusDataTo($this->arrProducts, $this->arrSTATUS, $this->arrSTATUS_IMAGE);
+                $this->arrProducts = $objProduct->setPriceTaxTo($this->arrProducts);
 
-                   // 一覧メイン画像の指定が無い商品のための処理
-                   foreach ($this->arrProducts as $key=>$val) {
-                       $this->arrProducts[$key]['main_list_image'] = SC_Utils_Ex::sfNoImageMainList($val['main_list_image']);
-                   }
+                // 一覧メイン画像の指定が無い商品のための処理
+                foreach ($this->arrProducts as $key=>$val) {
+                    $this->arrProducts[$key]['main_list_image'] = SC_Utils_Ex::sfNoImageMainList($val['main_list_image']);
+                }
 
-                   echo SC_Utils_Ex::jsonEncode($this->arrProducts);
-                   exit;
-               break;
+                echo SC_Utils_Ex::jsonEncode($this->arrProducts);
+                exit;
+                break;
 
             default:
 
@@ -278,7 +278,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
                 $order = <<< __EOS__
                     (
                         SELECT
-                             T3.rank * 2147483648 + T2.rank
+                            T3.rank * 2147483648 + T2.rank
                         FROM
                             $dtb_product_categories T2
                             JOIN dtb_category T3
@@ -296,7 +296,7 @@ __EOS__;
         $objQuery->setLimitOffset($disp_number, $startno);
         $objQuery->setWhere($searchCondition['where']);
 
-         // 表示すべきIDとそのIDの並び順を一気に取得
+        // 表示すべきIDとそのIDの並び順を一気に取得
         $arrProductId = $objProduct->findProductIdsOrder($objQuery, array_merge($searchCondition['arrval'], $arrval_order));
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -499,9 +499,11 @@ __EOS__;
             for ($i = 0; $i < count($arrValues); $i++) {
                 $product_status_id = $arrValues[$i];
                 if (!empty($product_status_id)) {
-                    $arrProductStatus = array('status_cd' => $product_status_id,
-                                              'status_name' => $arrStatus[$product_status_id],
-                                              'status_image' =>$arrStatusImage[$product_status_id]);
+                    $arrProductStatus = array(
+                        'status_cd' => $product_status_id,
+                        'status_name' => $arrStatus[$product_status_id],
+                        'status_image' =>$arrStatusImage[$product_status_id],
+                    );
                     $arrProducts['productStatus'][$product_id][$i] = $arrProductStatus;
                 }
             }

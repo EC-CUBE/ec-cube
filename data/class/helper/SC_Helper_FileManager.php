@@ -395,7 +395,7 @@ class SC_Helper_FileManager {
         }
     }
 
-   /**
+    /**
      * tarアーカイブを解凍する.
      *
      * @param string $path アーカイブパス

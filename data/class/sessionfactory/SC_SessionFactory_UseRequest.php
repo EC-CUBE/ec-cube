@@ -111,10 +111,12 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory {
         $time = date('Y-m-d H:i:s', time() - $lifetime);
         $objQuery->delete('dtb_mobile_ext_session_id', 'create_date < ?', array($time));
 
-        $arrValues = array('session_id'  => session_id(),
-                           'param_key'   => $param_key,
-                           'param_value' => $param_value,
-                           'url'         => $url);
+        $arrValues = array(
+            'session_id'  => session_id(),
+            'param_key'   => $param_key,
+            'param_value' => $param_value,
+            'url'         => $url,
+        );
 
         $objQuery->insert('dtb_mobile_ext_session_id', $arrValues);
     }
@@ -352,14 +354,12 @@ class LC_UseRequest_State {
      */
     function validateIp() {
         $ip = $this->getIp();
-        if (!empty($_SERVER['REMOTE_ADDR'])
-         && $ip === $_SERVER['REMOTE_ADDR']) {
+        if (!empty($_SERVER['REMOTE_ADDR']) && $ip === $_SERVER['REMOTE_ADDR']) {
 
             return true;
         }
 
-        $msg = sprintf('Ip Addr mismatch : %s != %s(expected) : sid=%s',
-                       $_SERVER['REMOTE_ADDR'], $ip, session_id());
+        $msg = sprintf('Ip Addr mismatch : %s != %s(expected) : sid=%s', $_SERVER['REMOTE_ADDR'], $ip, session_id());
         GC_Utils_Ex::gfPrintLog($msg);
         return false;
     }
@@ -433,9 +433,7 @@ class LC_UseRequest_State_PC extends LC_UseRequest_State {
      */
     function validateModel() {
         $ua = $this->getModel();
-        if (!empty($_SERVER['HTTP_USER_AGENT'])
-         && $_SERVER['HTTP_USER_AGENT'] === $ua) {
-
+        if (!empty($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'] === $ua) {
             return true;
         }
         $msg = sprintf('User agent model mismatch : %s != %s(expected), sid=%s',
@@ -496,9 +494,7 @@ class LC_UseRequest_State_Mobile extends LC_UseRequest_State {
     function validateModel() {
         $modelInSession = $this->getModel();
         $model = SC_MobileUserAgent_Ex::getModel();
-        if (!empty($model)
-         && $model === $modelInSession) {
-
+        if (!empty($model) && $model === $modelInSession) {
             return true;
         }
         return false;

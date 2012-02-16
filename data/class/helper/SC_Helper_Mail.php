@@ -149,11 +149,11 @@ class SC_Helper_Mail {
         $objCustomer = new SC_Customer_Ex();
         $arrTplVar->tpl_user_point = $objCustomer->getValue('point');
 
-       if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
+        if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
             $objMailView = new SC_MobileView_Ex();
-       } else {
+        } else {
             $objMailView = new SC_SiteView_Ex();
-       }
+        }
         // メール本文の取得
         $objMailView->assignobj($arrTplVar);
         $body = $objMailView->fetch($this->arrMAILTPLPATH[$template_id]);

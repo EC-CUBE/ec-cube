@@ -66,9 +66,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        $this->arrMasterDataName = $this->getMasterDataNames(array('mtb_pref',
-                                                                   'mtb_zip',
-                                                                   'mtb_constants'));
+        $this->arrMasterDataName = $this->getMasterDataNames(array('mtb_pref', 'mtb_zip', 'mtb_constants'));
         $masterData = new SC_DB_MasterData_Ex();
 
         switch ($this->getMode()) {
@@ -199,9 +197,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
         $masterData->objQuery->begin();
         $masterData->deleteMasterData($master_data_name, false);
         // TODO カラム名はメタデータから取得した方が良い
-        $masterData->registMasterData($master_data_name,
-                                             array('id', 'name', 'rank'),
-                                             $arrTmp, false);
+        $masterData->registMasterData($master_data_name, array('id', 'name', 'rank'), $arrTmp, false);
         $masterData->objQuery->commit();
 
     }

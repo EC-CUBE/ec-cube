@@ -101,9 +101,9 @@ class LC_Page_Shopping extends LC_Page_Ex {
         // 非会員かつ, ダウンロード商品の場合はエラー表示
         else {
             if ($this->cartKey == PRODUCT_TYPE_DOWNLOAD) {
-                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, $objSiteSess, false,
-                    'ダウンロード商品を含むお買い物は、会員登録が必要です。<br/>'
-                  . 'お手数ですが、会員登録をお願いします。');
+                $msg = 'ダウンロード商品を含むお買い物は、会員登録が必要です。<br/>'
+                     . 'お手数ですが、会員登録をお願いします。';
+                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, $objSiteSess, false, $msg);
                 exit;
             }
         }
@@ -134,9 +134,9 @@ class LC_Page_Shopping extends LC_Page_Ex {
                     // スマートフォンの場合はログイン成功を返す
                     elseif (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
                         echo SC_Utils_Ex::jsonEncode(array('success' => 
-                                                    $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
-                                                                           $objCustomer, $objPurchase,
-                                                                           $objSiteSess)));
+                                                     $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
+                                                                            $objCustomer, $objPurchase,
+                                                                            $objSiteSess)));
                         exit;
                     }
 
@@ -360,8 +360,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @param boolean $isMultiple 複数配送の場合 true
      */
-    function lfRegistData($uniqid, &$objPurchase, &$objCustomer, &$objFormParam,
-                          $isMultiple = false) {
+    function lfRegistData($uniqid, &$objPurchase, &$objCustomer, &$objFormParam, $isMultiple = false) {
         $arrParams = $objFormParam->getHashArray();
         $arrValues = $objFormParam->getDbArray();
         // 登録データの作成
@@ -462,8 +461,10 @@ class LC_Page_Shopping extends LC_Page_Ex {
     function setFormParams(&$objFormParam, &$objPurchase, $uniqid) {
         $arrOrderTemp = $objPurchase->getOrderTemp($uniqid);
         if (SC_Utils_Ex::isBlank($arrOrderTemp)) {
-            $arrOrderTemp = array('order_email' => '',
-                                  'order_birth' => '');
+            $arrOrderTemp = array(
+                'order_email' => '',
+                'order_birth' => '',
+            );
         }
         $arrShippingTemp = $objPurchase->getShippingTemp();
 
@@ -497,8 +498,9 @@ class LC_Page_Shopping extends LC_Page_Ex {
     function doLogin(&$objCustomer, $login_email, $login_pass) {
         switch (SC_Display_Ex::detectDevice()) {
             case DEVICE_TYPE_MOBILE:
-                if(!$objCustomer->getCustomerDataFromMobilePhoneIdPass($login_pass) &&
-                   !$objCustomer->getCustomerDataFromEmailPass($login_pass, $login_email, true)) {
+                if (!$objCustomer->getCustomerDataFromMobilePhoneIdPass($login_pass) &&
+                    !$objCustomer->getCustomerDataFromEmailPass($login_pass, $login_email, true)
+                ) {
                     return false;
                 } else {
                     $objCustomer->updateMobilePhoneId();

@@ -343,9 +343,9 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      */
     function getPostRank($news_id) {
         if (strlen($news_id) > 0 && is_numeric($news_id) == true) {
-           $key = 'pos-'.$news_id;
-           $input_pos = $_POST[$key];
-           return $input_pos;
+            $key = 'pos-' . $news_id;
+            $input_pos = $_POST[$key];
+            return $input_pos;
         }
     }
 

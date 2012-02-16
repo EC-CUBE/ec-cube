@@ -178,7 +178,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                             }
                         } else {
                             $this->arrErr[$plugin_code] = '※ プラグインファイルが不正です。<br/>';
-                       }
+                        }
                     }
                 }
                 break;
@@ -791,7 +791,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                 // TODO エラー処理
             }       
         }
-       return $arrErr;
+        return $arrErr;
     }
 
     /**
@@ -813,7 +813,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         return false;
     }
 
-     /**
+    /**
      * アーカイブ内に指定のファイルが存在するかを判定します.
      *
      * @param Archive_Tar $tar_obj
@@ -855,7 +855,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
     function makeDir($dir_path) {
         // ディレクトリ作成
         if (!file_exists($dir_path)) {
-             mkdir($dir_path);
+            mkdir($dir_path);
         }
     }
 

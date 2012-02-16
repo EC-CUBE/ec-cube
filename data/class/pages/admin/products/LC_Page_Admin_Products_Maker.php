@@ -282,12 +282,12 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
         // maker_id の正当性チェック
         if (!empty($arrForm['maker_id'])) {
             $objDb = new SC_Helper_DB_Ex();
-            if(!SC_Utils_Ex::sfIsInt($arrForm['maker_id']) 
-              || SC_Utils_Ex::sfIsZeroFilling($arrForm['maker_id'])
-              || !$objDb->sfIsRecord('dtb_maker', 'maker_id', array($arrForm['maker_id']))) {
-
-              // maker_idが指定されていて、且つその値が不正と思われる場合はエラー
-              $objErr->arrErr['maker_id'] = '※ メーカーIDが不正です<br />';
+            if (!SC_Utils_Ex::sfIsInt($arrForm['maker_id']) 
+                || SC_Utils_Ex::sfIsZeroFilling($arrForm['maker_id'])
+                || !$objDb->sfIsRecord('dtb_maker', 'maker_id', array($arrForm['maker_id']))
+            ) {
+                // maker_idが指定されていて、且つその値が不正と思われる場合はエラー
+                $objErr->arrErr['maker_id'] = '※ メーカーIDが不正です<br />';
             }
         }
         if (!isset($objErr->arrErr['name'])) {

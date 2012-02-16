@@ -877,9 +877,9 @@ class SC_Utils {
             fclose($ifp);
         }
         // ファイルが開けなかった場合はエラーページを表示
-          else {
-              SC_Utils_Ex::sfDispError('');
-              exit;
+        else {
+            SC_Utils_Ex::sfDispError('');
+            exit;
         }
         return     $outpath;
     }
@@ -1101,7 +1101,7 @@ class SC_Utils {
                         GC_Utils_Ex::gfPrintLog("mkdir $dir");
                     }
                 }
-           }
+            }
         }
         return;
     }
@@ -1534,7 +1534,7 @@ class SC_Utils {
      * 説明　：ファイルのダウンロード
      */
     function sfDownloadFile($file) {
-         // ファイルの場合はダウンロードさせる
+        // ファイルの場合はダウンロードさせる
         Header('Content-disposition: attachment; filename='.basename($file));
         Header('Content-type: application/octet-stream; name='.basename($file));
         Header('Cache-Control: ');
@@ -1577,7 +1577,7 @@ class SC_Utils {
         return $str;
     }
 
-   /**
+    /**
      * CSV出力用データ取得
      *
      * @return string
@@ -1603,7 +1603,7 @@ class SC_Utils {
         return $return;
     }
 
-   /**
+    /**
      * 配列をテーブルタグで出力する。
      *
      * @return string
@@ -1628,7 +1628,7 @@ class SC_Utils {
         return $html;
     }
 
-   /**
+    /**
      * 一覧-メイン画像のファイル指定がない場合、専用の画像ファイルに書き換える。
      *
      * @param string &$filename ファイル名
@@ -1641,7 +1641,7 @@ class SC_Utils {
         return $filename;
     }
 
-   /**
+    /**
      * 詳細-メイン画像のファイル指定がない場合、専用の画像ファイルに書き換える。
      *
      * @param string &$filename ファイル名
@@ -1759,11 +1759,11 @@ class SC_Utils {
         if (empty($data_list)) return array();
 
         /*
-         総務省からダウンロードしたデータをそのままインポートすると
-         以下のような文字列が入っているので 対策する。
-         ・（１・１９丁目）
-         ・以下に掲載がない場合
-        */
+         * 総務省からダウンロードしたデータをそのままインポートすると
+         * 以下のような文字列が入っているので 対策する。
+         * ・（１・１９丁目）
+         * ・以下に掲載がない場合
+         */
         $town =  $data_list[0]['town'];
         $town = ereg_replace("（.*）$","",$town);
         $town = ereg_replace('以下に掲載がない場合','',$town);
@@ -1836,6 +1836,7 @@ class SC_Utils {
      * TODO 空だったときを考慮
      *
      * @return SimpleXMLElement プラグイン XML
+     * @deprecated
      */
     function sfGetPluginsXml() {
         return simplexml_load_file(PLUGIN_REALDIR . 'plugins.xml');
@@ -1846,10 +1847,11 @@ class SC_Utils {
      *
      * @param SimpleXMLElement $pluginsXml プラグイン XML
      * @return integer ファイルに書き込まれたバイト数を返します。
+     * @deprecated
      */
     function sfPutPluginsXml($pluginsXml) {
         if (version_compare(PHP_VERSION, '5.0.0', '>')) {
-           return;
+            return;
         }
 
         $xml = $pluginsXml->asXML();

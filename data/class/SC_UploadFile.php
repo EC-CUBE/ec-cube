@@ -144,14 +144,14 @@ class SC_UploadFile {
             $objErr->arrErr[$keyname] = '※ ' . $this->disp_name[$arrKeyname[$keyname]] . 'がアップロードされていません。(ファイルがアップロードできない場合は、.htaccessファイルのphp_value upload_max_filesizeを調整してください)<br />';
         } else {
             foreach ($this->keyname as $val) {
-               // 一致したキーのファイルに情報を保存する。
+                // 一致したキーのファイルに情報を保存する。
                 if ($val == $keyname) {
                     // 拡張子チェック
                     $objErr->doFunc(array($this->disp_name[$cnt], $keyname, $this->arrExt[$cnt]), array('FILE_EXT_CHECK'));
                     // ファイルサイズチェック
                     $objErr->doFunc(array($this->disp_name[$cnt], $keyname, $this->size[$cnt]), array('FILE_SIZE_CHECK'));
                     // エラーがない場合
-                   if (!isset($objErr->arrErr[$keyname])) {
+                    if (!isset($objErr->arrErr[$keyname])) {
                         // 一意なファイル名を作成する。
                         $uniqname = date('mdHi') . '_' . uniqid('').'.';
                         $this->temp_file[$cnt] = ereg_replace("^.*\.",$uniqname, $_FILES[$keyname]['name']);
@@ -226,9 +226,10 @@ class SC_UploadFile {
                 $objImage->moveTempImage($this->temp_file[$cnt], $this->save_dir);
 
                 // すでに保存ファイルがあった場合は削除する。
-                if(isset($this->save_file[$cnt])
-                   && $this->save_file[$cnt] != ''
-                   && !ereg('^sub/', $this->save_file[$cnt])) {
+                if (isset($this->save_file[$cnt])
+                    && $this->save_file[$cnt] != ''
+                    && !ereg('^sub/', $this->save_file[$cnt])
+                ) {
 
                     $objImage->deleteImage($this->save_file[$cnt], $this->save_dir);
                 }

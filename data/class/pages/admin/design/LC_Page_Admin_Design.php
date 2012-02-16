@@ -275,7 +275,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
             $arrParams['anywhere'] = intval($objFormParam->getValue('anywhere_' . $i));
             if ($arrParams['anywhere'] == 1) {
                 $exists = $objQuery->exists('dtb_blocposition', 'anywhere = 1 AND bloc_id = ? AND device_type_id = ?',
-                                          array($id, $device_type_id));
+                                            array($id, $device_type_id));
                 if ($exists) {
                     continue;
                 }

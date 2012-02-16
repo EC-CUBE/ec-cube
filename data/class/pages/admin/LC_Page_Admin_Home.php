@@ -229,8 +229,8 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
         $cols = 'product_id, name';
         $table = 'dtb_products';
         $where = 'product_id IN ('
-                  . 'SELECT product_id FROM dtb_products_class '
-                  . 'WHERE stock_unlimited = ? AND stock <= 0)';
+               . 'SELECT product_id FROM dtb_products_class '
+               . 'WHERE stock_unlimited = ? AND stock <= 0)';
         return $objQuery->select($cols, $table, $where, array(UNLIMITED_FLG_LIMITED));
     }
 

@@ -351,9 +351,9 @@ class SC_Plugin_TemplateTransformer {
                 $objElement->parentNode->insertBefore($objSnip, $objElement);
             } elseif ($mode == 'insertAfter') {
                 if ($objElement->nextSibling) {
-                     $objElement->parentNode->insertBefore($objSnip, $objElement->nextSibling);
+                    $objElement->parentNode->insertBefore($objSnip, $objElement->nextSibling);
                 } else {
-                     $objElement->parentNode->appendChild($objSnip);
+                    $objElement->parentNode->appendChild($objSnip);
                 }
             } elseif ($mode == 'replaceChild') {
                 if (!is_object($objElement->parentNode)) return false;

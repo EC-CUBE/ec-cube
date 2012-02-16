@@ -536,7 +536,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         foreach ($arrCsvData as $val) {
             $arrData = explode(',', trim($val));
 
-             $objQuery->setval($arrData[0], $arrData[1]);
+            $objQuery->setval($arrData[0], $arrData[1]);
         }
     }
 

@@ -187,8 +187,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
      */
     function useModule($payment_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $memo03 = $objQuery->get('memo03', 'dtb_payment', 'payment_id = ?',
-                                 array($payment_id));
+        $memo03 = $objQuery->get('memo03', 'dtb_payment', 'payment_id = ?', array($payment_id));
         return !SC_Utils_Ex::isBlank($memo03);
     }
 }

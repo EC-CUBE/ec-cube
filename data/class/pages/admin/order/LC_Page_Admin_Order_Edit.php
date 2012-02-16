@@ -652,14 +652,16 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         // 受注テーブルの更新
         $order_id = $objPurchase->registerOrder($order_id, $arrValues);
 
-        $arrDetail = $objFormParam->getSwapArray(array('product_id',
-                                                       'product_class_id',
-                                                       'product_code',
-                                                       'product_name',
-                                                       'price', 'quantity',
-                                                       'point_rate',
-                                                       'classcategory_name1',
-                                                       'classcategory_name2'));
+        $arrDetail = $objFormParam->getSwapArray(array(
+                'product_id',
+                'product_class_id',
+                'product_code',
+                'product_name',
+                'price', 'quantity',
+                'point_rate',
+                'classcategory_name1',
+                'classcategory_name2',
+        ));
 
         // 変更しようとしている商品情報とDBに登録してある商品情報を比較することで、更新すべき数量を計算
         $max = count($arrDetail);
@@ -797,11 +799,11 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
             $arrProduct['price'] = $arrProduct['price02'];
             $arrProduct['product_name'] = $arrProduct['name'];
 
-            $arrUpdateKeys = array('product_id', 'product_class_id',
-                                   'product_type_id', 'point_rate',
-                                   'product_code', 'product_name',
-                                   'classcategory_name1', 'classcategory_name2',
-                                   'quantity', 'price');
+            $arrUpdateKeys = array(
+                'product_id', 'product_class_id', 'product_type_id', 'point_rate',
+                'product_code', 'product_name', 'classcategory_name1', 'classcategory_name2',
+                'quantity', 'price',
+            );
             foreach ($arrUpdateKeys as $key) {
                 $arrValues = $objFormParam->getValue($key);
                 if (isset($changed_no)) {
@@ -829,11 +831,11 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
      * @return void
      */
     function doDeleteProduct($delete_no, &$objFormParam) {
-        $arrDeleteKeys = array('product_id', 'product_class_id',
-                               'product_type_id', 'point_rate',
-                               'product_code', 'product_name',
-                               'classcategory_name1', 'classcategory_name2',
-                               'quantity', 'price');
+        $arrDeleteKeys = array(
+            'product_id', 'product_class_id', 'product_type_id', 'point_rate',
+            'product_code', 'product_name', 'classcategory_name1', 'classcategory_name2',
+            'quantity', 'price',
+        );
         foreach ($arrDeleteKeys as $key) {
             $arrNewValues = array();
             $arrValues = $objFormParam->getValue($key);

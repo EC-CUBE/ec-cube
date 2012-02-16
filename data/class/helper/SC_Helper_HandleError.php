@@ -157,14 +157,16 @@ class SC_Helper_HandleError {
 
         $is_error = false;
         if (isset($arrError)) {
-             switch ($arrError['type']) {
-                 case E_ERROR:
-                 case E_PARSE:
-                 case E_CORE_ERROR:
-                 case E_COMPILE_ERROR:
-                      $is_error = true;
-                 break;
-             }
+            switch ($arrError['type']) {
+                case E_ERROR:
+                case E_PARSE:
+                case E_CORE_ERROR:
+                case E_COMPILE_ERROR:
+                    $is_error = true;
+                    break;
+                default:
+                    break;
+            }
         }
 
         if (!$is_error) {

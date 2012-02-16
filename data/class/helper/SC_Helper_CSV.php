@@ -43,20 +43,20 @@ class SC_Helper_CSV {
      */
     function init() {
         $this->arrSubnavi = array(
-                                  1 => 'product',
-                                  2 => 'customer',
-                                  3 => 'order',
-                                  4 => 'review',
-                                  5 => 'category'
-                                  );
+            1 => 'product',
+            2 => 'customer',
+            3 => 'order',
+            4 => 'review',
+            5 => 'category',
+        );
 
         $this->arrSubnaviName = array(
-                                      1 => '商品管理',
-                                      2 => '会員管理',
-                                      3 => '受注管理',
-                                      4 => 'レビュー',
-                                      5 => 'カテゴリ'
-                                      );
+            1 => '商品管理',
+            2 => '会員管理',
+            3 => '受注管理',
+            4 => 'レビュー',
+            5 => 'カテゴリ',
+        );
     }
 
     /**
@@ -283,8 +283,7 @@ class SC_Helper_CSV {
             }
 
             /* enclose a field that contains a delimiter, an enclosure character, or a newline */
-            if (
-                   is_string($field)
+            if (is_string($field)
                 && preg_match('/[' . preg_quote($delimiter) . preg_quote($enclosure) . '\\s]/', $field)
             ) {
                 $field = $enclosure . preg_replace('/' . preg_quote($enclosure) . '/', $enclosure . $enclosure, $field) . $enclosure;

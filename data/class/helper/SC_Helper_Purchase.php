@@ -233,8 +233,7 @@ class SC_Helper_Purchase {
      */
     function getOrderTemp($uniqId) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        return $objQuery->getRow('*', 'dtb_order_temp', 'order_temp_id = ?',
-                                 array($uniqId));
+        return $objQuery->getRow('*', 'dtb_order_temp', 'order_temp_id = ?', array($uniqId));
     }
 
     /**
@@ -245,8 +244,7 @@ class SC_Helper_Purchase {
      */
     function getOrderTempByOrderId($order_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        return $objQuery->getRow('*', 'dtb_order_temp', 'order_id = ?',
-                                 array($order_id));
+        return $objQuery->getRow('*', 'dtb_order_temp', 'order_id = ?', array($order_id));
     }
 
     /**
@@ -283,8 +281,7 @@ class SC_Helper_Purchase {
             $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
             $objQuery->insert('dtb_order_temp', $sqlval);
         } else {
-            $objQuery->update('dtb_order_temp', $sqlval, 'order_temp_id = ?',
-                              array($uniqId));
+            $objQuery->update('dtb_order_temp', $sqlval, 'order_temp_id = ?', array($uniqId));
         }
     }
 
@@ -417,11 +414,11 @@ class SC_Helper_Purchase {
      * @return void
      */
     function copyFromCustomer(&$dest, &$objCustomer, $prefix = 'order',
-                              $keys = array('name01', 'name02', 'kana01', 'kana02',
-                                            'sex', 'zip01', 'zip02', 'pref',
-                                            'addr01', 'addr02',
-                                            'tel01', 'tel02', 'tel03', 'job',
-                                            'birth', 'email')) {
+        $keys = array('name01', 'name02', 'kana01', 'kana02',
+            'sex', 'zip01', 'zip02', 'pref', 'addr01', 'addr02',
+            'tel01', 'tel02', 'tel03', 'job', 'birth', 'email',
+        )
+    ) {
         if ($objCustomer->isLoginSuccess(true)) {
 
             foreach ($keys as $key) {
@@ -461,11 +458,13 @@ class SC_Helper_Purchase {
      * @return void
      */
     function copyFromOrder(&$dest, $src,
-                           $prefix = 'shipping', $src_prefix = 'order',
-                           $keys = array('name01', 'name02', 'kana01', 'kana02',
-                                         'sex', 'zip01', 'zip02', 'pref',
-                                         'addr01', 'addr02',
-                                         'tel01', 'tel02', 'tel03')) {
+        $prefix = 'shipping', $src_prefix = 'order',
+        $keys = array(
+            'name01', 'name02', 'kana01', 'kana02',
+            'sex', 'zip01', 'zip02', 'pref', 'addr01', 'addr02',
+            'tel01', 'tel02', 'tel03',
+        )
+    ) {
         if (!SC_Utils_Ex::isBlank($prefix)) {
             $prefix = $prefix . '_';
         }
@@ -522,7 +521,7 @@ class SC_Helper_Purchase {
             else {
                 $arrPayment[] = $data;
             }
-          }
+        }
         return $arrPayment;
     }
 
@@ -940,22 +939,24 @@ __EOS__;
 
         }
         $col .= <<< __EOS__
-
-            CASE WHEN EXISTS(
+            CASE WHEN
+                EXISTS(
                     SELECT * FROM dtb_products
-                     WHERE product_id = T3.product_id
-                       AND del_flg = 0
-                       AND status = 1)
-                 THEN '1' ELSE '0'
-                  END AS enable,
+                    WHERE product_id = T3.product_id
+                        AND del_flg = 0
+                        AND status = 1
+                )
+                THEN '1'
+                ELSE '0'
+            END AS enable,
 __EOS__;
         $col .= $dbFactory->getDownloadableDaysWhereSql('T1') . ' AS effective';
         $from = <<< __EOS__
-                      dtb_order T1
-                 JOIN dtb_order_detail T2
-                   ON T1.order_id = T2.order_id
+            dtb_order T1
+            JOIN dtb_order_detail T2
+                ON T1.order_id = T2.order_id
             LEFT JOIN dtb_products_class T3
-                   ON T2.product_class_id = T3.product_class_id
+                ON T2.product_class_id = T3.product_class_id
 __EOS__;
         $objQuery->setOrder('T2.order_detail_id');
         return $objQuery->select($col, $from, 'T1.order_id = ?', array($order_id));

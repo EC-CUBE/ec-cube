@@ -201,8 +201,8 @@ class SC_Helper_Customer {
         $arrResults = $objQuery->getRow('email, email_mobile',
                                         'dtb_customer', 'customer_id = ?',
                                         array($customer_id));
-        $return =
-               strlen($arrResults['email']) >= 1 && $email === $arrResults['email']
+        $return
+            =  strlen($arrResults['email']) >= 1 && $email === $arrResults['email']
             || strlen($arrResults['email_mobile']) >= 1 &&  $email === $arrResults['email_mobile']
         ;
         return $return;
@@ -465,7 +465,7 @@ class SC_Helper_Customer {
         $objErr = SC_Helper_Customer_Ex::sfCustomerRegisterErrorCheck($objErr, $isAdmin);
 
         if (isset($objErr->arrErr['password'])
-             && $objFormParam->getValue('password') == DEFAULT_PASSWORD) {
+            && $objFormParam->getValue('password') == DEFAULT_PASSWORD) {
             unset($objErr->arrErr['password']);
             unset($objErr->arrErr['password02']);
         }
@@ -600,15 +600,17 @@ class SC_Helper_Customer {
         //購入金額(from) ＞ 購入金額(to) の場合はエラーとする
         $objErr->doFunc(array('最終購入日(開始日)','登録・更新日(終了日)', 'search_buy_start_year', 'search_buy_start_month', 'search_buy_start_day', 'search_buy_end_year', 'search_buy_end_month', 'search_buy_end_day'), array('CHECK_SET_TERM'));
 
-        if ((SC_Utils_Ex::sfIsInt($array['search_buy_total_from'])
-             && SC_Utils_Ex::sfIsInt($array['search_buy_total_to']))
-             && ($array['search_buy_total_from'] > $array['buy_total_to'])) {
+        if (SC_Utils_Ex::sfIsInt($array['search_buy_total_from'])
+            && SC_Utils_Ex::sfIsInt($array['search_buy_total_to'])
+            && $array['search_buy_total_from'] > $array['buy_total_to']
+        ) {
             $objErr->arrErr['search_buy_total_from'] .= '※ 購入金額の指定範囲が不正です。';
         }
 
-        if ((SC_Utils_Ex::sfIsInt($array['search_buy_times_from'])
-             && SC_Utils_Ex::sfIsInt($array['search_buy_times_to']))
-             && ($array['search_buy_times_from'] > $array['search_buy_times_to'])) {
+        if (SC_Utils_Ex::sfIsInt($array['search_buy_times_from'])
+            && SC_Utils_Ex::sfIsInt($array['search_buy_times_to'])
+            && $array['search_buy_times_from'] > $array['search_buy_times_to']
+        ) {
             $objErr->arrErr['search_buy_times_from'] .= '※ 購入回数の指定範囲が不正です。';
         }
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {

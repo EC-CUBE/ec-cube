@@ -1,134 +1,134 @@
 <?php
- /*
-  * Copyright(c) 2000-2011 LOCKON CO.,LTD. All Rights Reserved.
-  *
-  * http://www.lockon.co.jp/
-  */
+/*
+ * Copyright(c) 2000-2011 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
 
- /**
-  * セッション関連のヘルパークラス.
-  *
-  * @package Helper
-  * @author LOCKON CO.,LTD.
-  * @version $Id$
-  */
+/**
+ * セッション関連のヘルパークラス.
+ *
+ * @package Helper
+ * @author LOCKON CO.,LTD.
+ * @version $Id$
+ */
 class SC_Helper_Session {
 
     var $objDb;
 
-     // }}}
-     // {{{ constructor
+    // }}}
+    // {{{ constructor
 
-     /**
-      * デフォルトコンストラクタ.
-      *
-      * 各関数をセッションハンドラに保存する
-      */
-     function SC_Helper_Session() {
-         $this->objDb = new SC_Helper_DB_Ex();
-         session_set_save_handler(array(&$this, 'sfSessOpen'),
-                                  array(&$this, 'sfSessClose'),
-                                  array(&$this, 'sfSessRead'),
-                                  array(&$this, 'sfSessWrite'),
-                                  array(&$this, 'sfSessDestroy'),
-                                  array(&$this, 'sfSessGc'));
-     }
+    /**
+     * デフォルトコンストラクタ.
+     *
+     * 各関数をセッションハンドラに保存する
+     */
+    function SC_Helper_Session() {
+        $this->objDb = new SC_Helper_DB_Ex();
+        session_set_save_handler(array(&$this, 'sfSessOpen'),
+                                 array(&$this, 'sfSessClose'),
+                                 array(&$this, 'sfSessRead'),
+                                 array(&$this, 'sfSessWrite'),
+                                 array(&$this, 'sfSessDestroy'),
+                                 array(&$this, 'sfSessGc'));
+    }
 
-     // }}}
-     // {{{ functions
+    // }}}
+    // {{{ functions
 
-     /**
-      * セッションを開始する.
-      *
-      * @param string $save_path セッションを保存するパス(使用しない)
-      * @param string $session_name セッション名(使用しない)
-      * @return bool セッションが正常に開始された場合 true
-      */
-     function sfSessOpen($save_path, $session_name) {
-         return true;
-     }
+    /**
+     * セッションを開始する.
+     *
+     * @param string $save_path セッションを保存するパス(使用しない)
+     * @param string $session_name セッション名(使用しない)
+     * @return bool セッションが正常に開始された場合 true
+     */
+    function sfSessOpen($save_path, $session_name) {
+        return true;
+    }
 
-     /**
-      * セッションを閉じる.
-      *
-      * @return bool セッションが正常に終了した場合 true
-      */
-     function sfSessClose() {
-         return true;
-     }
+    /**
+     * セッションを閉じる.
+     *
+     * @return bool セッションが正常に終了した場合 true
+     */
+    function sfSessClose() {
+        return true;
+    }
 
-     /**
-      * セッションのデータをDBから読み込む.
-      *
-      * @param string $id セッションID
-      * @return string セッションデータの値
-      */
-     function sfSessRead($id) {
-         $objQuery = new SC_Query_Ex();
-         $arrRet = $objQuery->select('sess_data', 'dtb_session', 'sess_id = ?', array($id));
-         if (empty($arrRet)) {
-             return '';
-         } else {
-             return $arrRet[0]['sess_data'];
-         }
-     }
+    /**
+     * セッションのデータをDBから読み込む.
+     *
+     * @param string $id セッションID
+     * @return string セッションデータの値
+     */
+    function sfSessRead($id) {
+        $objQuery = new SC_Query_Ex();
+        $arrRet = $objQuery->select('sess_data', 'dtb_session', 'sess_id = ?', array($id));
+        if (empty($arrRet)) {
+            return '';
+        } else {
+            return $arrRet[0]['sess_data'];
+        }
+    }
 
-     /**
-      * セッションのデータをDBに書き込む.
-      *
-      * @param string $id セッションID
-      * @param string $sess_data セッションデータの値
-      * @return bool セッションの書き込みに成功した場合 true
-      */
-     function sfSessWrite($id, $sess_data) {
-         $objQuery = new SC_Query_Ex();
-         $exists = $objQuery->exists('dtb_session', 'sess_id = ?', array($id));
-         $sqlval = array();
-         if ($exists) {
-             // レコード更新
-             $sqlval['sess_data'] = $sess_data;
-             $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
-             $objQuery->update('dtb_session', $sqlval, 'sess_id = ?', array($id));
-         } else {
-             // セッションデータがある場合は、レコード作成
-             if (strlen($sess_data) > 0) {
-                 $sqlval['sess_id'] = $id;
-                 $sqlval['sess_data'] = $sess_data;
-                 $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
-                 $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
-                 $objQuery->insert('dtb_session', $sqlval);
-             }
-         }
-         return true;
-     }
+    /**
+     * セッションのデータをDBに書き込む.
+     *
+     * @param string $id セッションID
+     * @param string $sess_data セッションデータの値
+     * @return bool セッションの書き込みに成功した場合 true
+     */
+    function sfSessWrite($id, $sess_data) {
+        $objQuery = new SC_Query_Ex();
+        $exists = $objQuery->exists('dtb_session', 'sess_id = ?', array($id));
+        $sqlval = array();
+        if ($exists) {
+            // レコード更新
+            $sqlval['sess_data'] = $sess_data;
+            $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
+            $objQuery->update('dtb_session', $sqlval, 'sess_id = ?', array($id));
+        } else {
+            // セッションデータがある場合は、レコード作成
+            if (strlen($sess_data) > 0) {
+                $sqlval['sess_id'] = $id;
+                $sqlval['sess_data'] = $sess_data;
+                $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
+                $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
+                $objQuery->insert('dtb_session', $sqlval);
+            }
+        }
+        return true;
+    }
 
-     // セッション破棄
+    // セッション破棄
 
-     /**
-      * セッションを破棄する.
-      *
-      * @param string $id セッションID
-      * @return bool セッションを正常に破棄した場合 true
-      */
-     function sfSessDestroy($id) {
-         $objQuery = new SC_Query_Ex();
-         $objQuery->delete('dtb_session', 'sess_id = ?', array($id));
-         return true;
-     }
+    /**
+     * セッションを破棄する.
+     *
+     * @param string $id セッションID
+     * @return bool セッションを正常に破棄した場合 true
+     */
+    function sfSessDestroy($id) {
+        $objQuery = new SC_Query_Ex();
+        $objQuery->delete('dtb_session', 'sess_id = ?', array($id));
+        return true;
+    }
 
-     /**
-      * ガーベジコレクションを実行する.
-      *
-      * 引数 $maxlifetime の代りに 定数 MAX_LIFETIME を使用する.
-      *
-      * @param integer $maxlifetime セッションの有効期限(使用しない)
-      */
-     function sfSessGc($maxlifetime) {
-         // MAX_LIFETIME以上更新されていないセッションを削除する。
-         $objQuery = new SC_Query_Ex();
-         $where = "update_date < current_timestamp + '-". MAX_LIFETIME . " secs'";
-         $objQuery->delete('dtb_session', $where);
-         return true;
+    /**
+     * ガーベジコレクションを実行する.
+     *
+     * 引数 $maxlifetime の代りに 定数 MAX_LIFETIME を使用する.
+     *
+     * @param integer $maxlifetime セッションの有効期限(使用しない)
+     */
+    function sfSessGc($maxlifetime) {
+        // MAX_LIFETIME以上更新されていないセッションを削除する。
+        $objQuery = new SC_Query_Ex();
+        $where = "update_date < current_timestamp + '-". MAX_LIFETIME . " secs'";
+        $objQuery->delete('dtb_session', $where);
+        return true;
     }
 
     /**
@@ -213,13 +213,11 @@ class SC_Helper_Session {
     function adminAuthorization() {
         $masterData = new SC_DB_MasterData_Ex();
         $arrExcludes = $masterData->getMasterData('mtb_auth_excludes');
-        if (preg_match('|^' . ROOT_URLPATH . ADMIN_DIR . '|',
-                       $_SERVER['PHP_SELF'])) {
+        if (preg_match('|^' . ROOT_URLPATH . ADMIN_DIR . '|', $_SERVER['PHP_SELF'])) {
             $is_auth = true;
 
             foreach ($arrExcludes as $exclude) {
-                if (preg_match('|^' . ROOT_URLPATH . ADMIN_DIR . $exclude . '|',
-                               $_SERVER['PHP_SELF'])) {
+                if (preg_match('|^' . ROOT_URLPATH . ADMIN_DIR . $exclude . '|', $_SERVER['PHP_SELF'])) {
                     $is_auth = false;
                     break;
                 }

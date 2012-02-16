@@ -88,10 +88,10 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return string 昨日の売上高・売上件数を算出する SQL
      */
     function getOrderYesterdaySql($method) {
-        return 'SELECT '.$method.'(total) FROM dtb_order '
-              . 'WHERE del_flg = 0 '
-                . 'AND cast(create_date as date) = DATE_ADD(current_date, interval -1 day) '
-                . 'AND status <> ' . ORDER_CANCEL;
+        return 'SELECT ' . $method . '(total) FROM dtb_order '
+               . 'WHERE del_flg = 0 '
+               . 'AND cast(create_date as date) = DATE_ADD(current_date, interval -1 day) '
+               . 'AND status <> ' . ORDER_CANCEL;
     }
 
     /**
@@ -102,10 +102,10 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      */
     function getOrderMonthSql($method) {
         return 'SELECT '.$method.'(total) FROM dtb_order '
-              . 'WHERE del_flg = 0 '
-                . "AND date_format(create_date, '%Y/%m') = ? "
-                . "AND date_format(create_date, '%Y/%m/%d') <> date_format(CURRENT_TIMESTAMP, '%Y/%m/%d') "
-                . 'AND status <> ' . ORDER_CANCEL;
+               . 'WHERE del_flg = 0 '
+               . "AND date_format(create_date, '%Y/%m') = ? "
+               . "AND date_format(create_date, '%Y/%m/%d') <> date_format(CURRENT_TIMESTAMP, '%Y/%m/%d') "
+               . 'AND status <> ' . ORDER_CANCEL;
     }
 
     /**
@@ -115,12 +115,12 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      */
     function getReviewYesterdaySql() {
         return 'SELECT COUNT(*) FROM dtb_review AS A '
-          . 'LEFT JOIN dtb_products AS B '
-                 . 'ON A.product_id = B.product_id '
-              . 'WHERE A.del_flg = 0 '
-                . 'AND B.del_flg = 0 '
-                . 'AND cast(A.create_date as date) = DATE_ADD(current_date, interval -1 day) '
-                . 'AND cast(A.create_date as date) != current_date';
+               . 'LEFT JOIN dtb_products AS B '
+               . 'ON A.product_id = B.product_id '
+               . 'WHERE A.del_flg = 0 '
+               . 'AND B.del_flg = 0 '
+               . 'AND cast(A.create_date as date) = DATE_ADD(current_date, interval -1 day) '
+               . 'AND cast(A.create_date as date) != current_date';
     }
 
     /**

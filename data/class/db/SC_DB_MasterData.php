@@ -248,11 +248,10 @@ class SC_DB_MasterData {
      * @param array $masterData マスターデータ
      * @param bool $isDefine 定数を生成する場合 true
      * @param array $commentColumn [0] => キー, [1] => コメント文字列,
-                                   [2] => 表示順 を表すカラム名を格納した配列
+     *                             [2] => 表示順 を表すカラム名を格納した配列
      * @return bool キャッシュの生成に成功した場合 true
      */
-    function createCache($name, $columns = array(), $isDefine = false,
-                         $commentColumn = array()) {
+    function createCache($name, $columns = array(), $isDefine = false, $commentColumn = array()) {
 
         // マスターデータを取得
         $masterData = $this->getDbMasterData($name, $columns);
@@ -265,8 +264,7 @@ class SC_DB_MasterData {
             $data = "<?php\n";
             // 定数コメントを生成する場合
             if (!empty($commentColumn)) {
-                $data .= $this->getMasterDataAsDefine($masterData,
-                                 $this->getDbMasterData($name, $commentColumn));
+                $data .= $this->getMasterDataAsDefine($masterData, $this->getDbMasterData($name, $commentColumn));
             } else {
                 $data .= $this->getMasterDataAsDefine($masterData);
             }

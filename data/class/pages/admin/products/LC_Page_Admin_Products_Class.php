@@ -147,7 +147,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
         $objFormParam->addParam('規格ID', 'class_id', INT_LEN, 'n', array('NUM_CHECK'));
     }
 
-   /**
+    /**
      * 有効な規格情報の取得
      *
      * @param array $objFormParam フォームパラメータークラス
@@ -162,7 +162,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
         return $arrClass;
     }
 
-   /**
+    /**
      * 規格名を取得する
      *
      * @param integer $class_id 規格ID
@@ -175,7 +175,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
         return $class_name;
     }
 
-   /**
+    /**
      * 規格情報を新規登録
      *
      * @param array $arrForm フォームパラメータークラス
@@ -195,7 +195,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
         return $ret;
     }
 
-   /**
+    /**
      * 規格情報を更新
      *
      * @param array $arrForm フォームパラメータークラス
@@ -229,7 +229,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
         return $ret;
     }
 
-   /**
+    /**
      * エラーチェック
      *
      * @param array $objFormParam フォームパラメータークラス

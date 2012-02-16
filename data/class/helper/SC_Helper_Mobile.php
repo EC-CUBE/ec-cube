@@ -188,9 +188,9 @@ class SC_Helper_Mobile {
 
         // 有効期限を過ぎていないかどうかをチェックする。
         if (intval(@$_SESSION['mobile']['expires']) < time()) {
-            GC_Utils_Ex::gfPrintLog('Session expired at ' .
-                       date('Y/m/d H:i:s', @$_SESSION['mobile']['expires']) .
-                       ' : sid=' . session_id());
+            $msg = 'Session expired at ' . date('Y/m/d H:i:s', @$_SESSION['mobile']['expires'])
+                 . ' : sid=' . session_id();
+            GC_Utils_Ex::gfPrintLog($msg);
 
             return false;
         }
@@ -198,9 +198,10 @@ class SC_Helper_Mobile {
         // 携帯端末の機種が一致するかどうかをチェックする。
         $model = SC_MobileUserAgent_Ex::getModel();
         if (@$_SESSION['mobile']['model'] != $model) {
-            GC_Utils_Ex::gfPrintLog('User agent model mismatch : ' .
-                       "\"$model\" != \"" . @$_SESSION['mobile']['model'] .
-                       '" (expected), sid=' . session_id());
+            $msg = 'User agent model mismatch : '
+                 . '"$model" != "' . @$_SESSION['mobile']['model']
+                 . '" (expected), sid=' . session_id();
+            GC_Utils_Ex::gfPrintLog($msg);
             return false;
         }
 
@@ -311,8 +312,10 @@ class SC_Helper_Mobile {
 
         $objQuery->delete('dtb_mobile_kara_mail', 'session_id = ?', array($session_id));
 
-        $arrValues = array('session_id' => $session_id,
-                           'next_url'   => $next_url);
+        $arrValues = array(
+            'session_id' => $session_id,
+            'next_url'   => $next_url,
+        );
 
         $try = 10;
 
@@ -417,10 +420,12 @@ class SC_Helper_Mobile {
         $time = date('Y-m-d H:i:s', time() - MOBILE_SESSION_LIFETIME);
         $objQuery->delete('dtb_mobile_ext_session_id', 'create_date < ?', array($time));
 
-        $arrValues = array('session_id'  => session_id(),
-                           'param_key'   => $param_key,
-                           'param_value' => $param_value,
-                           'url'         => $url);
+        $arrValues = array(
+            'session_id'  => session_id(),
+            'param_key'   => $param_key,
+            'param_value' => $param_value,
+            'url'         => $url,
+        );
 
         $objQuery->insert('dtb_mobile_ext_session_id', $arrValues);
     }

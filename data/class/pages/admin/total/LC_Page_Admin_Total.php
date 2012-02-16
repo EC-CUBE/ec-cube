@@ -148,8 +148,8 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
                 }
                 break;
             default:
-                 break;
-       }
+                break;
+        }
 
         // 画面宣しても日付が保存される
         $_SESSION           = $this->lfSaveDateSession($_SESSION, $this->arrHidden);
@@ -801,93 +801,93 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             // 商品別集計
         case 'products':
             $arrTitleCol = array(
-                                 '商品コード',
-                                 '商品名',
-                                 '購入件数',
-                                 '数量',
-                                 '単価',
-                                 '金額'
-                                 );
+                '商品コード',
+                '商品名',
+                '購入件数',
+                '数量',
+                '単価',
+                '金額',
+            );
             $arrDataCol = array(
-                                'product_code',
-                                'product_name',
-                                'order_count',
-                                'products_count',
-                                'price',
-                                'total',
-                                );
+                'product_code',
+                'product_name',
+                'order_count',
+                'products_count',
+                'price',
+                'total',
+            );
             break;
             // 職業別集計
         case 'job':
             $arrTitleCol = array(
-                                 '職業',
-                                 '購入件数',
-                                 '購入合計',
-                                 '購入平均',
-                                 );
+                '職業',
+                '購入件数',
+                '購入合計',
+                '購入平均',
+            );
             $arrDataCol = array(
-                                'job_name',
-                                'order_count',
-                                'total',
-                                'total_average',
-                                );
+                'job_name',
+                'order_count',
+                'total',
+                'total_average',
+            );
             break;
             // 会員別集計
         case 'member':
             $arrTitleCol = array(
-                                 '会員',
-                                 '購入件数',
-                                 '購入合計',
-                                 '購入平均',
-                                 );
+                '会員',
+                '購入件数',
+                '購入合計',
+                '購入平均',
+            );
             $arrDataCol = array(
-                                'member_name',
-                                'order_count',
-                                'total',
-                                'total_average',
-                                );
+                'member_name',
+                'order_count',
+                'total',
+                'total_average',
+            );
             break;
             // 年代別集計
         case 'age':
             $arrTitleCol = array(
-                                 '年齢',
-                                 '購入件数',
-                                 '購入合計',
-                                 '購入平均',
-                                 );
+                '年齢',
+                '購入件数',
+                '購入合計',
+                '購入平均',
+            );
             $arrDataCol = array(
-                                'age_name',
-                                'order_count',
-                                'total',
-                                'total_average',
-                                );
+                'age_name',
+                'order_count',
+                'total',
+                'total_average',
+            );
             break;
             // 期間別集計
         default:
             $arrTitleCol = array(
-                                 '期間',
-                                 '購入件数',
-                                 '男性',
-                                 '女性',
-                                 '男性(会員)',
-                                 '男性(非会員)',
-                                 '女性(会員)',
-                                 '女性(非会員)',
-                                 '購入合計',
-                                 '購入平均',
-                                 );
+                '期間',
+                '購入件数',
+                '男性',
+                '女性',
+                '男性(会員)',
+                '男性(非会員)',
+                '女性(会員)',
+                '女性(非会員)',
+                '購入合計',
+                '購入平均',
+            );
             $arrDataCol = array(
-                                'str_date',
-                                'total_order',
-                                'men',
-                                'women',
-                                'men_member',
-                                'men_nonmember',
-                                'women_member',
-                                'women_nonmember',
-                                'total',
-                                'total_average'
-                                );
+                'str_date',
+                'total_order',
+                'men',
+                'women',
+                'men_member',
+                'men_nonmember',
+                'women_member',
+                'women_nonmember',
+                'total',
+                'total_average',
+            );
             break;
         }
 

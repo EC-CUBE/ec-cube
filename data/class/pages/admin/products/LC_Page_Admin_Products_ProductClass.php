@@ -341,10 +341,9 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                 /*
                  * 在庫数の必須チェック
                  */
-                if ((SC_Utils_Ex::isBlank($arrValues['stock_unlimited'][$i])
-                     || $arrValues['stock_unlimited'][$i] != 1)
-
-                    && SC_Utils_Ex::isBlank($arrValues['stock'][$i])) {
+                if ((SC_Utils_Ex::isBlank($arrValues['stock_unlimited'][$i]) || $arrValues['stock_unlimited'][$i] != 1)
+                    && SC_Utils_Ex::isBlank($arrValues['stock'][$i])
+                ) {
                     $arrErr['stock'][$i] = '※ 在庫数が入力されていません。<br />';
                 }
                 /*
@@ -461,17 +460,17 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         $objFormParam->setValue('class_id2', $class_id2);
         $this->doDisp($objFormParam);
 
-        /*-------------------------------------------------------------
+        /*
          * 登録済みのデータで, フォームの値を上書きする.
          *
          * 登録済みデータと, フォームの値は, 配列の形式が違うため,
          * 同じ形式の配列を生成し, マージしてフォームの値を上書きする
-         --------------------------------------------------------------*/
+         */
         $arrKeys = array('classcategory_id1', 'classcategory_id2','product_code',
-                         'classcategory_name1', 'classcategory_name2', 'stock',
-                         'stock_unlimited', 'price01', 'price02',
-                         'product_type_id', 'down_filename', 'down_realfilename',
-                         'upload_index');
+            'classcategory_name1', 'classcategory_name2', 'stock',
+            'stock_unlimited', 'price01', 'price02',
+            'product_type_id', 'down_filename', 'down_realfilename', 'upload_index',
+        );
         $arrFormValues = $objFormParam->getSwapArray($arrKeys);
         // フォームの規格1, 規格2をキーにした配列を生成
         $arrClassCatKey = array();

@@ -292,12 +292,14 @@ class SC_Helper_DB {
             return;
         } else {
             foreach ($arrTree as $key => $val) {
-               if ($val['category_id'] == $parent) {
-                    $result[] = array('category_id' => $val['category_id'],
-                                      'parent_category_id' => (int) $val['parent_category_id'],
-                                      'category_name' => $val['category_name']);
+                if ($val['category_id'] == $parent) {
+                    $result[] = array(
+                        'category_id' => $val['category_id'],
+                        'parent_category_id' => (int) $val['parent_category_id'],
+                        'category_name' => $val['category_name'],
+                    );
                     $this->findTree($arrTree, $val['parent_category_id'], $result);
-               }
+                }
             }
         }
     }
@@ -1217,12 +1219,12 @@ __EOS__;
         }
         $sql = <<< __EOS__
             SELECT T1.fee AS fee
-              FROM dtb_delivfee T1
-              JOIN dtb_deliv T2
-                ON T1.deliv_id = T2.deliv_id
-             WHERE T1.pref = ?
-               AND T1.deliv_id = ?
-               AND T2.del_flg = 0
+            FROM dtb_delivfee T1
+                JOIN dtb_deliv T2
+                    ON T1.deliv_id = T2.deliv_id
+            WHERE T1.pref = ?
+                AND T1.deliv_id = ?
+                AND T2.del_flg = 0
 __EOS__;
         $result = 0;
         foreach ($pref_id as $pref) {

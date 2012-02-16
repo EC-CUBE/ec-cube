@@ -271,8 +271,8 @@ class SC_Helper_Plugin {
                 if ( false === $priority)
                     return false;
                 $obj_idx .= isset($this->arrRegistedPluginActions[$hook_point][$priority])
-                          ? count((array)$this->arrRegistedPluginActions[$hook_point][$priority])
-                          : $filter_id_count;
+                         ? count((array)$this->arrRegistedPluginActions[$hook_point][$priority])
+                         : $filter_id_count;
                 $function[0]->wp_filter_id = $filter_id_count;
                 ++$filter_id_count;
 

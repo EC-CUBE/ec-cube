@@ -342,7 +342,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-   function lfDownloadZipFileFromJp() {
+    function lfDownloadZipFileFromJp() {
         // Proxy経由を可能とする。
         // TODO Proxyの設定は「data/module/HTTP/Request.php」内の「function HTTP_Request」へ記述する。いずれは、外部設定としたい。
         $req = new HTTP_Request();

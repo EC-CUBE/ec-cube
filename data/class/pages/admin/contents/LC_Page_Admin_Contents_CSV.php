@@ -173,7 +173,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
         return $arrData;
     }
 
-   /**
+    /**
      * デストラクタ.
      *
      * @return void

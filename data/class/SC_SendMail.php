@@ -292,16 +292,17 @@ class SC_SendMail {
                 $arrParams = array();
                 break;
             case 'sendmail':
-                $arrParams = array('sendmail_path' => '/usr/bin/sendmail',
-                                   'sendmail_args' => '-i'
-                                   );
+                $arrParams = array(
+                    'sendmail_path' => '/usr/bin/sendmail',
+                    'sendmail_args' => '-i',
+                );
                 break;
             case 'smtp':
             default:
                 $arrParams = array(
-                                   'host' => $this->host,
-                                   'port' => $this->port
-                                   );
+                    'host' => $this->host,
+                    'port' => $this->port,
+                );
                 break;
         }
         return $arrParams;

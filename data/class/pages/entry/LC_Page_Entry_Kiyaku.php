@@ -129,7 +129,7 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex {
      * @return int
      */
     function lfSetOffset($offset) {
-       return is_numeric($offset) === true ? intval($offset) : 1;
+        return is_numeric($offset) === true ? intval($offset) : 1;
     }
 
 }

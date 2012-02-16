@@ -820,23 +820,23 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         // 商品データ取得
         $col = '*';
         $table = <<< __EOF__
-                      dtb_products AS T1
+            dtb_products AS T1
             LEFT JOIN (
-                       SELECT product_id AS product_id_sub,
-                              product_code,
-                              price01,
-                              price02,
-                              deliv_fee,
-                              stock,
-                              stock_unlimited,
-                              sale_limit,
-                              point_rate,
-                              product_type_id,
-                              down_filename,
-                              down_realfilename
-                        FROM dtb_products_class
-                       ) AS T2
-                     ON T1.product_id = T2.product_id_sub
+                SELECT product_id AS product_id_sub,
+                    product_code,
+                    price01,
+                    price02,
+                    deliv_fee,
+                    stock,
+                    stock_unlimited,
+                    sale_limit,
+                    point_rate,
+                    product_type_id,
+                    down_filename,
+                    down_realfilename
+                FROM dtb_products_class
+            ) AS T2
+                ON T1.product_id = T2.product_id_sub
 __EOF__;
         $where = 'product_id = ?';
         $objQuery->setLimit('1');

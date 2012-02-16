@@ -83,12 +83,12 @@ class SC_Initial {
      * @return void
      */
     function defineDSN() {
-        if(defined('DB_TYPE') && defined('DB_USER') && defined('DB_PASSWORD')
-           && defined('DB_SERVER') && defined('DB_PORT') && defined('DB_NAME')) {
+        if (defined('DB_TYPE') && defined('DB_USER') && defined('DB_PASSWORD')
+            && defined('DB_SERVER') && defined('DB_PORT') && defined('DB_NAME')
+        ) {
+            $dsn = DB_TYPE . '://' . DB_USER . ':' . DB_PASSWORD . '@' . DB_SERVER . ':' . DB_PORT . '/' . DB_NAME;
             /** サイト用DB */
-            define ('DEFAULT_DSN',
-                    DB_TYPE . '://' . DB_USER . ':' . DB_PASSWORD . '@'
-                    . DB_SERVER . ':' .DB_PORT . '/' . DB_NAME);
+            define('DEFAULT_DSN', $dsn);
         }
     }
 

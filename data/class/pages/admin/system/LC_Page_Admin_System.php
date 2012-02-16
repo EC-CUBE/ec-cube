@@ -112,11 +112,11 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex {
      * @param string $where WHERE句
      * @return integer 件数
      */
-     function getMemberCount($where) {
+    function getMemberCount($where) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $table = 'dtb_member';
         return $objQuery->count($table, $where);
-     }
+    }
 
     /**
      * 開始行番号, 行数を指定して管理者データを取得する.
@@ -136,7 +136,7 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex {
         $arrMemberData = $objQuery->getAll($objSql->getSql());
 
         return $arrMemberData;
-     }
+    }
 
     /**
      * ページ番号が信頼しうる値かチェックする.

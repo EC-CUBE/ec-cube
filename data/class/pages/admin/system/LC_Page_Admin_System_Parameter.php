@@ -94,8 +94,7 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
                     $this->update($this->arrKeys, $this->arrForm);
                     $this->tpl_onload = "window.alert('パラメーターの設定が完了しました。');";
                 } else {
-                    $this->arrValues = SC_Utils_Ex::getHash2Array($this->arrForm,
-                                                                  $this->arrKeys);
+                    $this->arrValues = SC_Utils_Ex::getHash2Array($this->arrForm, $this->arrKeys);
                     $this->tpl_onload = "window.alert('エラーが発生しました。入力内容をご確認下さい。');";
                 }
                 break;
@@ -104,14 +103,12 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
         }
 
         if (empty($this->arrErr)) {
-            $this->arrValues = SC_Utils_Ex::getHash2Array(
-                                       $masterData->getDBMasterData('mtb_constants'));
+            $this->arrValues = SC_Utils_Ex::getHash2Array($masterData->getDBMasterData('mtb_constants'));
         }
 
         // コメント, 値の配列を生成
-        $this->arrComments = SC_Utils_Ex::getHash2Array(
-                                     $masterData->getDBMasterData('mtb_constants',
-                                             array('id', 'remarks', 'rank')));
+        $this->arrComments = SC_Utils_Ex::getHash2Array($masterData->getDBMasterData('mtb_constants',
+                                                        array('id', 'remarks', 'rank')));
 
     }
 

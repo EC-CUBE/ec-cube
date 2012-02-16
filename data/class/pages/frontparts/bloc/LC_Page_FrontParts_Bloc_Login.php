@@ -115,7 +115,7 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc {
             if ($current_page == $val) {
                 return true;
             }
-         }
+        }
         return false;
     }
 }

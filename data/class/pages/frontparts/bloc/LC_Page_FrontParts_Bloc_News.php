@@ -84,9 +84,9 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
                 $objFormParam->convParam();
                 $this->arrErr = $objFormParam->checkError(false);
                 if (empty($this->arrErr)) {
-                     $json = $this->lfGetNewsDetailForJson($objFormParam);
-                     echo $json;
-                     exit;
+                    $json = $this->lfGetNewsDetailForJson($objFormParam);
+                    echo $json;
+                    exit;
                 } else {
                     echo $this->lfGetErrors($this->arrErr);
                     exit;
@@ -108,7 +108,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
         parent::destroy();
     }
 
-   /**
+    /**
      * 新着情報パラメーター初期化
      *
      * @param array $objFormParam フォームパラメータークラス
@@ -159,7 +159,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
         $dispNumber = $arrData['disp_number'];
         $pageNo = $arrData['pageno'];
         if (!empty($dispNumber) && !empty($pageNo)) {
-             $objQuery->setLimitOffset($dispNumber, (($pageNo - 1) * $dispNumber));
+            $objQuery->setLimitOffset($dispNumber, (($pageNo - 1) * $dispNumber));
         }
 
         $arrNewsList = $this->lfGetNews($objQuery);

@@ -153,15 +153,14 @@ class SC_Helper_PageLayout {
     function getBlocPositions($device_type_id, $page_id, $has_realpath = true) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $table = <<< __EOF__
-            dtb_blocposition AS pos
-       JOIN dtb_bloc AS bloc
-         ON bloc.bloc_id = pos.bloc_id
-        AND bloc.device_type_id = pos.device_type_id
+        dtb_blocposition AS pos
+            JOIN dtb_bloc AS bloc
+                ON bloc.bloc_id = pos.bloc_id
+                    AND bloc.device_type_id = pos.device_type_id
 __EOF__;
         $where = 'bloc.device_type_id = ? AND (anywhere = 1 OR pos.page_id = ?)';
         $objQuery->setOrder('target_id, bloc_row');
-        $arrBlocs = $objQuery->select('*', $table, $where,
-                                      array($device_type_id, $page_id));
+        $arrBlocs = $objQuery->select('*', $table, $where, array($device_type_id, $page_id));
         if ($has_realpath) {
             $this->setBlocPathTo($device_type_id, $arrBlocs);
         }

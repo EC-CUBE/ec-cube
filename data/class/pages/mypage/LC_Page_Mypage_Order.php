@@ -106,9 +106,7 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex {
 
         $objCartSess = new SC_CartSession_Ex();
         foreach ($arrOrderDetail as $order_row) {
-
-            $objCartSess->addProduct($order_row['product_class_id'],
-                                     $order_row['quantity']);
+            $objCartSess->addProduct($order_row['product_class_id'], $order_row['quantity']);
         }
     }
 }

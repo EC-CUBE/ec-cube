@@ -153,13 +153,13 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
                             $page_max = SC_Utils_Ex::sfGetSearchPageMax($objFormParam->getValue('search_page_max'));
                             // ページ送りの取得
                             $objNavi = new SC_PageNavi_Ex($this->arrHidden['search_pageno'],
-                                                       $this->tpl_linemax, $page_max,
-                                                       'fnNaviSearchPage', NAVI_PMAX);
+                                                          $this->tpl_linemax, $page_max,
+                                                          'fnNaviSearchPage', NAVI_PMAX);
                             $this->arrPagenavi = $objNavi->arrPagenavi;
 
                             // 検索結果の取得
-                            $this->arrProducts = $this->findProducts($where, $arrval,
-                                                                  $page_max, $objNavi->start_row, $order, $objProduct);
+                            $this->arrProducts = $this->findProducts($where, $arrval, $page_max, $objNavi->start_row,
+                                                                     $order, $objProduct);
 
                             // 各商品ごとのカテゴリIDを取得
                             if (count($this->arrProducts) > 0) {

@@ -68,9 +68,9 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      */
     function getOrderYesterdaySql($method) {
         return 'SELECT '.$method.'(total) FROM dtb_order '
-              . 'WHERE del_flg = 0 '
-                . "AND to_char(create_date,'YYYY/MM/DD') = to_char(CURRENT_TIMESTAMP - interval '1 days','YYYY/MM/DD') "
-                . 'AND status <> ' . ORDER_CANCEL;
+               . 'WHERE del_flg = 0 '
+               . "AND to_char(create_date,'YYYY/MM/DD') = to_char(CURRENT_TIMESTAMP - interval '1 days','YYYY/MM/DD') "
+               . 'AND status <> ' . ORDER_CANCEL;
     }
 
     /**
@@ -81,10 +81,10 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      */
     function getOrderMonthSql($method) {
         return 'SELECT '.$method.'(total) FROM dtb_order '
-              . 'WHERE del_flg = 0 '
-                . "AND to_char(create_date,'YYYY/MM') = ? "
-                . "AND to_char(create_date,'YYYY/MM/DD') <> to_char(CURRENT_TIMESTAMP,'YYYY/MM/DD') "
-                . 'AND status <> ' . ORDER_CANCEL;
+               . 'WHERE del_flg = 0 '
+               . "AND to_char(create_date,'YYYY/MM') = ? "
+               . "AND to_char(create_date,'YYYY/MM/DD') <> to_char(CURRENT_TIMESTAMP,'YYYY/MM/DD') "
+               . 'AND status <> ' . ORDER_CANCEL;
     }
 
     /**
@@ -94,12 +94,12 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      */
     function getReviewYesterdaySql() {
         return 'SELECT COUNT(*) FROM dtb_review AS A '
-          . 'LEFT JOIN dtb_products AS B '
-                 . 'ON A.product_id = B.product_id '
-              . 'WHERE A.del_flg=0 '
-                . 'AND B.del_flg = 0 '
-                . "AND to_char(A.create_date, 'YYYY/MM/DD') = to_char(CURRENT_TIMESTAMP - interval '1 days','YYYY/MM/DD') "
-                . "AND to_char(A.create_date,'YYYY/MM/DD') != to_char(CURRENT_TIMESTAMP,'YYYY/MM/DD')";
+               . 'LEFT JOIN dtb_products AS B '
+               . 'ON A.product_id = B.product_id '
+               . 'WHERE A.del_flg=0 '
+               . 'AND B.del_flg = 0 '
+               . "AND to_char(A.create_date, 'YYYY/MM/DD') = to_char(CURRENT_TIMESTAMP - interval '1 days','YYYY/MM/DD') "
+               . "AND to_char(A.create_date,'YYYY/MM/DD') != to_char(CURRENT_TIMESTAMP,'YYYY/MM/DD')";
     }
 
     /**

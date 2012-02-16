@@ -70,8 +70,9 @@ class LC_Page_AbstractMypage extends LC_Page_Ex {
             }
 
             // POSTされてきたIDがある場合は優先する。
-            if(isset($_POST['login_email'])
-               && $_POST['login_email'] != '') {
+            if (isset($_POST['login_email'])
+                && $_POST['login_email'] != ''
+            ) {
                 $this->tpl_login_email = $_POST['login_email'];
             }
 

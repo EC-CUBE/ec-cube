@@ -401,16 +401,16 @@ class SC_Graph_Base {
         $this->ARR_LABELBG_COLOR = array(255,255,255);
         // グラフカラー
         $this->ARR_GRAPH_RGB = array(
-                               array(200,50,50),
-                               array(50,50,200),
-                               array(50,200,50),
-                               array(255,255,255),
-                               array(244,200,200),
-                               array(200,200,255),
-                               array(50,200,50),
-                               array(255,255,255),
-                               array(244,244,244),
-                               );
+            array(200,50,50),
+            array(50,50,200),
+            array(50,200,50),
+            array(255,255,255),
+            array(244,200,200),
+            array(200,200,255),
+            array(50,200,50),
+            array(255,255,255),
+            array(244,244,244),
+        );
         // 影の色
         $this->ARR_SHADE_COLOR = array(100,100,100);
         // 縁の色
