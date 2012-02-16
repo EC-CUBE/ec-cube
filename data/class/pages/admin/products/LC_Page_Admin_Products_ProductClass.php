@@ -320,7 +320,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         $total = $objFormParam->getValue('total');
 
         if (SC_Utils_Ex::isBlank($arrValues['check'])) {
-            $arrErr['check_empty'] = '※ 商品種別が選択されていません。<br />';
+            $arrErr['check_empty'] = '※ 規格が選択されていません。<br />';
         }
 
         for ($i = 0; $i < $total; $i++) {
