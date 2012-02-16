@@ -216,8 +216,6 @@ define('STEXT_LEN', 50);
 define('SMTEXT_LEN', 100);
 /** 長い項目の文字数 (住所など) */
 define('MTEXT_LEN', 200);
-/** 短文の文字数 */
-define('SLTEXT_LEN', 500);
 /** 長中文の文字数 (問い合わせなど) */
 define('MLTEXT_LEN', 1000);
 /** 長文の文字数 */
@@ -295,7 +293,7 @@ define('DELIV_DATE_END_MAX', 21);
 /** 商品レビューでURL書き込みを許可するか否か */
 define('REVIEW_ALLOW_URL', 0);
 /** Pear::Mail バックエンド:mail|smtp|sendmail */
-define('MAIL_BACKEND', "smtp");
+define('MAIL_BACKEND', "mail");
 /** SMTPサーバー */
 define('SMTP_HOST', "127.0.0.1");
 /** SMTPポート */
@@ -308,6 +306,8 @@ define('USE_POINT', true);
 define('NOSTOCK_HIDDEN', false);
 /** 複数配送先指定機能を利用するか(true:利用する、false:利用しない) */
 define('USE_MULTIPLE_SHIPPING', true);
+/** 短文の文字数 */
+define('SLTEXT_LEN', 500);
 /** デフォルトテンプレート名(PC) */
 define('DEFAULT_TEMPLATE_NAME', "default");
 /** デフォルトテンプレート名(モバイル) */
@@ -394,7 +394,7 @@ define('PLUGIN_TEMP_REALDIR', HTML_REALDIR . "upload/temp_plugin/");
 define('DOWNLOADS_TEMP_DIR', DATA_REALDIR . "downloads/tmp/");
 /** プラグイン 外部ファイルURL */
 define('PLUGIN_HTML_URL', USER_URL . PLUGIN_DIR);
-/** プラグインファイル登録可能拡張子(カンマ区切り)" */
+/** プラグインファイル登録可能拡張子(カンマ区切り) */
 define('PLUGIN_EXTENSION', "tar,tar.gz");
 /** 日数桁数 */
 define('DOWNLOAD_DAYS_LEN', 3);
