@@ -71,7 +71,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         // パラメーター情報の初期化
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
-
+        
         $mode = $this->getMode();        
 
         switch ($mode) {
@@ -90,7 +90,8 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                         $this->arrErr = $this->installPlugin($plugin_code, $plugin_file_name);
                         if ($this->isError($this->arrErr) === false) {
                             // テンプレート再生成.
-                            $this->remakeTemplate();
+                            $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                            $objPlugin->remakeTemplate();
                             $this->tpl_onload = "alert('プラグインをインストールしました。');";
                         }
                     } else {
@@ -111,7 +112,8 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                     // 完了メッセージアラート設定.
                     if ($this->isError($this->arrErr) === false) {
                         // テンプレート再生成.
-                        $this->remakeTemplate();
+                        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                        $objPlugin->remakeTemplate();
                         $this->tpl_onload = "alert('" . $plugin['plugin_name'] ."を削除しました。');";
                     }
                 }
@@ -128,7 +130,8 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                     $arrErr = $this->enablePlugin($plugin_id, $plugin['plugin_code']);                    
                     if ($this->isError($arrErr) === false) {
                         // テンプレート再生成.
-                        $this->remakeTemplate();
+                        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                        $objPlugin->remakeTemplate();
                         echo SC_Utils_Ex::jsonEncode(array('message' => $plugin['plugin_name'] . 'を有効にしました。'));
                     }
                 }
@@ -146,7 +149,8 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                     $arrErr = $this->disablePlugin($plugin_id, $plugin['plugin_code']);                    
                     if ($this->isError($arrErr) === false) {
                         // テンプレート再生成.
-                        $this->remakeTemplate();
+                        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                        $objPlugin->remakeTemplate();
                         echo SC_Utils_Ex::jsonEncode(array('message' => $plugin['plugin_name'] . 'を無効にしました。'));
                     }
                 }
@@ -170,7 +174,8 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                             $this->arrErr = $this->updatePlugin($plugin_code, $update_plugin_file_name, $plugin_code, $objFormParam->getValue('plugin_id'));
                             if ($this->isError($this->arrErr) === false) {
                                 // テンプレート再生成.
-                                $this->remakeTemplate();
+                                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                                $objPlugin->remakeTemplate();
                                 $this->tpl_onload = "alert('プラグインをアップデートしました。');";
                             }
                         } else {
@@ -188,6 +193,9 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                     // 優先度の更新
                     $priority = $objFormParam->getValue('priority');
                     $this->updatePriority($plugin_id, $priority);
+                    // テンプレート再生成.
+                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                    $objPlugin->remakeTemplate();
                 } else {
                     // エラーメッセージを詰め直す.
                     $this->arrErr['priority'][$plugin_id] = $arrErr['priority'];
@@ -731,15 +739,16 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         return $arrErr;
     }
 
-    /**
-     * 管理者側 テンプレート再生成
-     *
-     * @return void
-     */
-    function remakeTemplate() {
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
-        $objPlugin->remakeAllTemplates();
-    }
+//    /**
+//     * テンプレート再生成
+//     *
+//     * @return void
+//     */
+//    function remakeTemplate() {
+//        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+//        $objPlugin->remakeAllTemplates(true);
+//        $objPlugin->remakeAllTemplates();
+//    }
 
     /**
      * plugin_idをキーにdtb_pluginのstatusを更新します.

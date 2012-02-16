@@ -100,6 +100,8 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     $result = $this->doRegister($objFormParam, $objLayout);
                     if ($result !== false) {
+                        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                        $objPlugin->remakeTemplate();
                         SC_Response_Ex::reload(array('device_type_id' => $this->device_type_id,
                                                      'page_id' => $result,
                                                      'msg' => 'on'), true);

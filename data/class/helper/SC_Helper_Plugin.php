@@ -351,4 +351,14 @@ class SC_Helper_Plugin {
         }
         return $arrBlocs;
     }
+    
+    /**
+     * テンプレートの再生成
+     *
+     * @return void
+     */
+    function remakeTemplate() {
+        $this->remakeAllTemplates(true);
+        $this->remakeAllTemplates();
+    }
 }
