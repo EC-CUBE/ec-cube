@@ -145,7 +145,7 @@ var imagePath = "<!--{$smarty.const.IMAGE_SAVE_URLPATH|sfTrimURL}-->/";
 var statusImagePath = "<!--{$TPL_URLPATH}-->";
 
 function getProducts(limit) {
-    $.mobile.pageLoading();
+    $.mobile.showPageLoadingMsg();
     var i = limit;
     //送信データを準備
     var postData = {};
@@ -163,7 +163,7 @@ function getProducts(limit) {
            dataType: "json",
            error: function(XMLHttpRequest, textStatus, errorThrown){
             alert(textStatus);
-            $.mobile.pageLoading(true);
+            $.mobile.hidePageLoadingMsg();
            },
            success: function(result){
            
@@ -228,7 +228,7 @@ function getProducts(limit) {
              if (parseInt($("#productscount").text()) <= $(".list_area").length) {
                  $("#btn_more_product").hide();
              }
-             $.mobile.pageLoading(true);
+             $.mobile.hidePageLoadingMsg();
            }
 });
 }
