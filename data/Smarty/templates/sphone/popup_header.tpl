@@ -22,7 +22,7 @@
 
 <html lang="ja">
 <head>
-<meta charset="UTF-8"> 
+<meta charset="UTF-8">
 <meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
@@ -42,9 +42,9 @@
 <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/navi.js"></script>
 <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/win_op.js"></script>
 <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/site.js"></script>
-<script src="<!--{$TPL_URLPATH}-->js/jquery-1.5.2.min.js"></script>
+<script src="<!--{$TPL_URLPATH}-->js/jquery-1.6.4.min.js"></script>
 <script src="<!--{$TPL_URLPATH}-->js/jquery.biggerlink.js"></script>
-<script type="text/javascript">    
+<script type="text/javascript">
     $(function(){
         $('.recommendblock, .list_area, .newslist li, .bubbleBox, .arrowBox').biggerlink();
     });
@@ -55,11 +55,11 @@
 <script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/news.js"></script>
 
 <!--{* スマートフォンカスタマイズ用CSS *}-->
-<link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->css/jquery.mobile-1.0a3.min.css" />
+<link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->css/jquery.mobile-1.0.1.css" />
 
 <!--{* スマートフォンカスタマイズ用JS *}-->
 <script src="<!--{$TPL_URLPATH}-->js/config.js"></script>
-<script src="<!--{$TPL_URLPATH}-->js/jquery.mobile-1.0a3.min.js"></script>
+<script src="<!--{$TPL_URLPATH}-->js/jquery.mobile-1.0.1.min.js"></script>
 <script src="<!--{$TPL_URLPATH}-->js/jquery.autoResizeTextAreaQ-0.1.js"></script>
 <script src="<!--{$TPL_URLPATH}-->js/jquery.flickslide.js"></script>
 <script src="<!--{$TPL_URLPATH}-->js/favorite.js"></script>
