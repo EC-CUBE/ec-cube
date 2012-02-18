@@ -22,7 +22,6 @@
  */
 *}-->
 
-<!--▼CONTENTS-->
 <script>
     function ajaxLogin() {
         var postData = new Object;

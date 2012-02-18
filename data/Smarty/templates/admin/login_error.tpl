@@ -22,7 +22,6 @@
  */
 *}-->
 
-<!--{* ▼CONTENTS *}-->
 <div id="outside">
     <div id="out-wrap">
             <div class="logo">
@@ -48,4 +47,3 @@
     </div>
 </div>
 
-<!--{* ▲CONTENTS *}-->

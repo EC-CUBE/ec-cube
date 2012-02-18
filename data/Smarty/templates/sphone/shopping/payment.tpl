@@ -20,7 +20,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 
-<!--▼CONTENTS-->
 <script type="text/javascript">//<![CDATA[
     $(function() {
         if ($('input[name=deliv_id]:checked').val()
@@ -111,8 +110,7 @@
                 'extra_rows': 0
             });
     });
-//]]>
-</script>
+//]]></script>
 
 <!--▼コンテンツここから -->
 <section id="undercolumn">

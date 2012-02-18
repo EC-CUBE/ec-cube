@@ -21,15 +21,18 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<!--{$tpl_name|h}-->様<br>
-いつもご利用いただきありがとうございます。ご使用の携帯電話のメールアドレスをご登録ください。<br>
-<br>
-<!--{assign var=key value='email_mobile'}-->
-<form method="post" action="?">
-<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-▼メールアドレス<br>
-<font color="#ff0000"><!--{$arrErr[$key]|default:''}--></font>
-<input type="text" name="email_mobile" value="<!--{$arrForm[$key].value|h}-->" size="40" maxlength="<!--{$arrForm[$key].length}-->" istyle="3"><br>
-<center><input type="submit" value="送信"></center>
-<center><a href="<!--{$smarty.const.HTTPS_URL}-->mypage/<!--{$smarty.const.DIR_INDEX_PATH}-->?<!--{$smarty.const.SID}-->">今は登録しない</a></center>
-</form>
+
+<!--{strip}-->
+    <!--{$tpl_name|h}-->様<br>
+    いつもご利用いただきありがとうございます。ご使用の携帯電話のメールアドレスをご登録ください。<br>
+    <br>
+    <!--{assign var=key value='email_mobile'}-->
+    <form method="post" action="?">
+        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->">
+        ▼メールアドレス<br>
+        <font color="#ff0000"><!--{$arrErr[$key]|default:''}--></font>
+        <input type="text" name="email_mobile" value="<!--{$arrForm[$key].value|h}-->" size="40" maxlength="<!--{$arrForm[$key].length}-->" istyle="3"><br>
+        <center><input type="submit" value="送信"></center>
+        <center><a href="<!--{$smarty.const.HTTPS_URL}-->mypage/<!--{$smarty.const.DIR_INDEX_PATH}-->?<!--{$smarty.const.SID}-->">今は登録しない</a></center>
+    </form>
+<!--{/strip}-->

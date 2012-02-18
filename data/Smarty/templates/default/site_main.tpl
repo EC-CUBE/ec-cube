@@ -56,7 +56,6 @@
     <!--{/if}-->
     <!--{* ▲HEADER *}-->
 
-    <!--{* ▼CONTENTS *}-->
     <div id="container" class="clearfix">
 
         <!--{* ▼TOP COLUMN*}-->
@@ -124,9 +123,9 @@
             <!--{/if}-->
             <!--{* ▲メイン上部 *}-->
 
-            <!--{* ▼メイン *}-->
+            <!-- ▼メイン -->
             <!--{include file=$tpl_mainpage}-->
-            <!--{* ▲メイン *}-->
+            <!-- ▲メイン -->
 
             <!--{* ▼メイン下部 *}-->
             <!--{if $arrPageLayout.MainFoot|@count > 0}-->
@@ -181,7 +180,6 @@
         <!--{* ▲BOTTOM COLUMN*}-->
 
     </div>
-    <!--{* ▲CONTENTS *}-->
 
     <!--{* ▼FOOTER *}-->
     <!--{if $arrPageLayout.footer_chk != 2}-->

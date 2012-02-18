@@ -21,18 +21,21 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<!-- ▼本文 ここから -->
-<!--{$tpl_kiyaku_title|h}--><br>
-<br>
-<!--{$tpl_kiyaku_text|h}--><br>
-<!-- ▲本文 ここまで -->
 
-<!--{if !$tpl_kiyaku_is_first || !$tpl_kiyaku_is_last}-->
-<br>
-<!--{if !$tpl_kiyaku_is_first}-->
-<a href="kiyaku.php?page=<!--{$tpl_kiyaku_index-1}-->" accesskey="1"><!--{1|numeric_emoji}-->戻る</a><br>
-<!--{/if}-->
-<!--{if !$tpl_kiyaku_is_last}-->
-<a href="kiyaku.php?page=<!--{$tpl_kiyaku_index+1}-->" accesskey="2"><!--{2|numeric_emoji}-->進む</a>
-<!--{/if}-->
-<!--{/if}-->
+<!--{strip}-->
+    <!-- ▼本文 ここから -->
+    <!--{$tpl_kiyaku_title|h}--><br>
+    <br>
+    <!--{$tpl_kiyaku_text|h}--><br>
+    <!-- ▲本文 ここまで -->
+
+    <!--{if !$tpl_kiyaku_is_first || !$tpl_kiyaku_is_last}-->
+        <br>
+        <!--{if !$tpl_kiyaku_is_first}-->
+            <a href="kiyaku.php?page=<!--{$tpl_kiyaku_index-1}-->" accesskey="1"><!--{1|numeric_emoji}-->戻る</a><br>
+        <!--{/if}-->
+        <!--{if !$tpl_kiyaku_is_last}-->
+            <a href="kiyaku.php?page=<!--{$tpl_kiyaku_index+1}-->" accesskey="2"><!--{2|numeric_emoji}-->進む</a>
+        <!--{/if}-->
+    <!--{/if}-->
+<!--{/strip}-->

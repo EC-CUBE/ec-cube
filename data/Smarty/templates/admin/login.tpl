@@ -23,7 +23,6 @@
 *}-->
 
 
-<!--{* ▼CONTENTS *}-->
 <div id="login-wrap">
 
     <div id="login-form" class="clearfix">
@@ -43,10 +42,8 @@
 
 </div>
 <div id="copyright">Copyright &copy; 2000-<!--{$smarty.now|date_format:"%Y"}--> LOCKON CO.,LTD. All Rights Reserved.</div>
-<!--{* ▲CONTENTS *}-->
 
-<script type="text/javascript">
-//<![CDATA[
+<script type="text/javascript">//<![CDATA[
 document.form1.login_id.focus();
 $(function() {
     $('<input type="submit" />')
@@ -54,5 +51,4 @@ $(function() {
             'top' : '-1000px'})
         .appendTo('form');
 });
-//]]>
-</script>
+//]]></script>

@@ -22,24 +22,24 @@
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/facebox.js"></script>
 <link rel="stylesheet" type="text/css" href="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/facebox.css" media="screen" />
 <script type="text/javascript">//<![CDATA[
-var send = true;
+    var send = true;
 
-function fnCheckSubmit() {
-    if(send) {
-        send = false;
-        return true;
-    } else {
-        alert("只今、処理中です。しばらくお待ち下さい。");
-        return false;
+    function fnCheckSubmit() {
+        if(send) {
+            send = false;
+            return true;
+        } else {
+            alert("只今、処理中です。しばらくお待ち下さい。");
+            return false;
+        }
     }
-}
 
-$(document).ready(function() {
-    $('a.expansion').facebox({
-        loadingImage : '<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/loading.gif',
-        closeImage   : '<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/closelabel.png'
+    $(document).ready(function() {
+        $('a.expansion').facebox({
+            loadingImage : '<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/loading.gif',
+            closeImage   : '<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/closelabel.png'
+        });
     });
-});
 //]]></script>
 
 <!--CONTENTS-->
@@ -300,4 +300,3 @@ $(document).ready(function() {
         </form>
     </div>
 </div>
-<!--▲CONTENTS-->

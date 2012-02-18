@@ -22,51 +22,24 @@
  */
 *}-->
 <script type="text/javascript">//<![CDATA[
-$(function() {
-    // 無制限チェックボックスの初期化
-    $('input[id^=chk_stock_unlimited_]').each(function() {
-        var index = $(this).attr('id').replace(/^chk_stock_unlimited_/ig, '');
-        var checked = $(this).attr('checked');
-
-        if (checked) {
-            $('#stock_' + index)
-                .attr('readonly', true)
-                .css('background-color', '<!--{$smarty.const.DISABLED_RGB}-->');
-        }
-    });
-
-    // 無制限チェックボックス
-    $('input[id^=chk_stock_unlimited_]').change(function() {
-        var index = $(this).attr('id').replace(/^chk_stock_unlimited_/ig, '');
-        var checked = $(this).attr('checked');
-
-        if (checked) {
-            $('#stock_' + index)
-                .attr('readonly', true)
-                .css('background-color', '<!--{$smarty.const.DISABLED_RGB}-->');
-        } else {
-            $('#stock_' + index)
-                .attr('readonly', false)
-                .css('background-color', '');
-        }
-    });
-
-    // 1行目をコピーボタン
-    $('#copy_from_first').click(function() {
-        var check = $('#check_0').attr('checked');
-        $('input[id^=check_]').attr('checked', check);
-
-        var product_code = $('#product_code_0').val();
-        $('input[id^=product_code_]').val(product_code);
-
-        var stock = $('#stock_0').val();
-        $('input[id^=stock_]').val(stock);
-
-        var stock_unlimited = $('#chk_stock_unlimited_0').attr('checked');
+    $(function() {
+        // 無制限チェックボックスの初期化
         $('input[id^=chk_stock_unlimited_]').each(function() {
-            var checked = stock_unlimited;
             var index = $(this).attr('id').replace(/^chk_stock_unlimited_/ig, '');
-            $(this).attr('checked', checked);
+            var checked = $(this).attr('checked');
+
+            if (checked) {
+                $('#stock_' + index)
+                    .attr('readonly', true)
+                    .css('background-color', '<!--{$smarty.const.DISABLED_RGB}-->');
+            }
+        });
+
+        // 無制限チェックボックス
+        $('input[id^=chk_stock_unlimited_]').change(function() {
+            var index = $(this).attr('id').replace(/^chk_stock_unlimited_/ig, '');
+            var checked = $(this).attr('checked');
+
             if (checked) {
                 $('#stock_' + index)
                     .attr('readonly', true)
@@ -78,30 +51,56 @@ $(function() {
             }
         });
 
-        var price01 = $('#price01_0').val();
-        $('input[id^=price01_]').val(price01);
+        // 1行目をコピーボタン
+        $('#copy_from_first').click(function() {
+            var check = $('#check_0').attr('checked');
+            $('input[id^=check_]').attr('checked', check);
 
-        var price02 = $('#price02_0').val();
-        $('input[id^=price02_]').val(price02);
+            var product_code = $('#product_code_0').val();
+            $('input[id^=product_code_]').val(product_code);
 
-        var product_type_id_value = '';
-        $('input[id^=product_type_id_0_]').each(function() {
-            if ($(this).attr('checked')) {
-                product_type_id_value = $(this).val();
-            }
+            var stock = $('#stock_0').val();
+            $('input[id^=stock_]').val(stock);
+
+            var stock_unlimited = $('#chk_stock_unlimited_0').attr('checked');
+            $('input[id^=chk_stock_unlimited_]').each(function() {
+                var checked = stock_unlimited;
+                var index = $(this).attr('id').replace(/^chk_stock_unlimited_/ig, '');
+                $(this).attr('checked', checked);
+                if (checked) {
+                    $('#stock_' + index)
+                        .attr('readonly', true)
+                        .css('background-color', '<!--{$smarty.const.DISABLED_RGB}-->');
+                } else {
+                    $('#stock_' + index)
+                        .attr('readonly', false)
+                        .css('background-color', '');
+                }
+            });
+
+            var price01 = $('#price01_0').val();
+            $('input[id^=price01_]').val(price01);
+
+            var price02 = $('#price02_0').val();
+            $('input[id^=price02_]').val(price02);
+
+            var product_type_id_value = '';
+            $('input[id^=product_type_id_0_]').each(function() {
+                if ($(this).attr('checked')) {
+                    product_type_id_value = $(this).val();
+                }
+            });
+            $('input[id^=product_type_id_]').each(function() {
+                if ($(this).val() == product_type_id_value) {
+                    $(this).attr('checked', true);
+                }
+            });
+
+            var down_filename = $('#down_filename_0').val();
+            $('input[id^=down_filename_]').val(down_filename);
         });
-        $('input[id^=product_type_id_]').each(function() {
-            if ($(this).val() == product_type_id_value) {
-                $(this).attr('checked', true);
-            }
-        });
-
-        var down_filename = $('#down_filename_0').val();
-        $('input[id^=down_filename_]').val(down_filename);
     });
-});
-//]]>
-</script>
+//]]></script>
 <h2>商品規格登録</h2>
 <form name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />

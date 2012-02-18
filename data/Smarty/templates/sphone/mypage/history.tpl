@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<!--▼CONTENTS-->
+
 <section id="mypagecolumn">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
     <!--{include file=$tpl_navi}-->
@@ -147,7 +147,6 @@
     </form>
 </section>
 <!--▲検索バー -->
-<!--▲CONTENTS -->
 
 <script>
     function getMailDetail(send_id) {

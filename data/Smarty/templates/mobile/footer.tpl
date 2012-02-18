@@ -22,24 +22,28 @@
  */
 *}-->
 
+<!--{strip}-->
+    <br>
+    <br>
+    <div align="right"><a href="#top">↑このページのトップへ</a></div>
 
-<br>
-<br>
-<div align="right"><a href="#top">↑このページのトップへ</a></div>
+    <hr>
 
-<hr>
+    <a href="<!--{$smarty.const.HTTPS_URL}-->mypage/login.php?<!--{$smarty.const.SID}-->" accesskey="8" utn><!--{8|numeric_emoji}-->MYページ</a><br>
+    <a href="<!--{$smarty.const.MOBILE_CART_URLPATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごの中を見る</a><br>
+    <a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
+    <br>
 
-<a href="<!--{$smarty.const.HTTPS_URL}-->mypage/login.php?<!--{$smarty.const.SID}-->" accesskey="8" utn><!--{8|numeric_emoji}-->MYページ</a><br>
-<a href="<!--{$smarty.const.MOBILE_CART_URLPATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごの中を見る</a><br>
-<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
-<br>
-
-<table border="0" cellpadding="0" cellspacing="0" width="100%">
-<tr>
-<td align="center" bgcolor="#666666"><font color="#ffffff" size="-2">Copyright &copy;
-<!--{if $smarty.const.RELEASE_YEAR !=  $smarty.now|date_format:"%Y"}-->
-    <!--{$smarty.const.RELEASE_YEAR}-->-
-<!--{/if}-->
-<!--{$smarty.now|date_format:"%Y"}--> <!--{$arrSiteInfo.shop_name_eng|default:$arrSiteInfo.shop_name|h}--> All rights reserved.</font></td>
-</tr>
-</table>
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <td align="center" bgcolor="#666666">
+                <font color="#ffffff" size="-2">Copyright &copy;&nbsp;
+                    <!--{if $smarty.const.RELEASE_YEAR !=  $smarty.now|date_format:"%Y"}-->
+                        <!--{$smarty.const.RELEASE_YEAR}-->-
+                    <!--{/if}-->
+                    <!--{$smarty.now|date_format:"%Y"}--> <!--{$arrSiteInfo.shop_name_eng|default:$arrSiteInfo.shop_name|h}-->&nbsp;
+                    All rights reserved.</font>
+            </td>
+        </tr>
+    </table>
+<!--{/strip}-->

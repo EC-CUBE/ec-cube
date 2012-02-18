@@ -21,44 +21,42 @@
  *}-->
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/products.js"></script>
 <script type="text/javascript">//<![CDATA[
-function fnSetClassCategories(form, classcat_id2_selected) {
-    var $form = $(form);
-    var product_id = $form.find('input[name=product_id]').val();
-    var $sele1 = $form.find('select[name=classcategory_id1]');
-    var $sele2 = $form.find('select[name=classcategory_id2]');
-    setClassCategories($form, product_id, $sele1, $sele2, classcat_id2_selected);
-}
-// 並び順を変更
-function fnChangeOrderby(orderby) {
-    fnSetVal('orderby', orderby);
-    fnSetVal('pageno', 1);
-    fnSubmit();
-}
-// 表示件数を変更
-function fnChangeDispNumber(dispNumber) {
-    fnSetVal('disp_number', dispNumber);
-    fnSetVal('pageno', 1);
-    fnSubmit();
-}
-// カゴに入れる
-function fnInCart(productForm) {
-    var product_id = productForm["product_id"].value;
-    fnChangeAction("?#product" + product_id);
-    if (productForm["classcategory_id1"]) {
-        fnSetVal("classcategory_id1", productForm["classcategory_id1"].value);
+    function fnSetClassCategories(form, classcat_id2_selected) {
+        var $form = $(form);
+        var product_id = $form.find('input[name=product_id]').val();
+        var $sele1 = $form.find('select[name=classcategory_id1]');
+        var $sele2 = $form.find('select[name=classcategory_id2]');
+        setClassCategories($form, product_id, $sele1, $sele2, classcat_id2_selected);
     }
-    if (productForm["classcategory_id2"]) {
-        fnSetVal("classcategory_id2", productForm["classcategory_id2"].value);
+    // 並び順を変更
+    function fnChangeOrderby(orderby) {
+        fnSetVal('orderby', orderby);
+        fnSetVal('pageno', 1);
+        fnSubmit();
     }
-    fnSetVal("quantity", productForm["quantity"].value);
-    fnSetVal("product_id", productForm["product_id"].value);
-    fnSetVal("product_class_id", productForm["product_class_id"].value);
-    fnSubmit();
-}
-//]]>
-</script>
+    // 表示件数を変更
+    function fnChangeDispNumber(dispNumber) {
+        fnSetVal('disp_number', dispNumber);
+        fnSetVal('pageno', 1);
+        fnSubmit();
+    }
+    // カゴに入れる
+    function fnInCart(productForm) {
+        var product_id = productForm["product_id"].value;
+        fnChangeAction("?#product" + product_id);
+        if (productForm["classcategory_id1"]) {
+            fnSetVal("classcategory_id1", productForm["classcategory_id1"].value);
+        }
+        if (productForm["classcategory_id2"]) {
+            fnSetVal("classcategory_id2", productForm["classcategory_id2"].value);
+        }
+        fnSetVal("quantity", productForm["quantity"].value);
+        fnSetVal("product_id", productForm["product_id"].value);
+        fnSetVal("product_class_id", productForm["product_class_id"].value);
+        fnSubmit();
+    }
+//]]></script>
 
-<!--▼CONTENTS-->
 <div id="undercolumn">
     <form name="form1" id="form1" method="get" action="?">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -273,4 +271,3 @@ function fnInCart(productForm) {
     <!--{/foreach}-->
 
 </div>
-<!--▲CONTENTS-->

@@ -23,8 +23,7 @@
     $(function(){
         $('#category_area li.level1:last').css('border-bottom', 'none');
     });
-//]]>
-</script>
+//]]></script>
 <div class="bloc_outer">
     <div id="category_area">
         <div class="bloc_body">

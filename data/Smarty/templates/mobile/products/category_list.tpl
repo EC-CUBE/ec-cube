@@ -21,13 +21,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<!--{foreach from=$arrChildren key=i item=arrChild}-->
-<!--{if $arrChild.has_children}-->
-<!--{assign var=path value="`$smarty.const.ROOT_URLPATH`products/category_list.php"}-->
-<!--{else}-->
-<!--{assign var=path value="`$smarty.const.ROOT_URLPATH`products/list.php"}-->
-<!--{/if}-->
-<a href="<!--{$path}-->?category_id=<!--{$arrChild.category_id}-->"><!--{$arrChild.category_name|h}-->(<!--{$arrChild.product_count}-->)</a><br>
-<!--{/foreach}-->
 
-<br>
+<!--{strip}-->
+    <!--{foreach from=$arrChildren key=i item=arrChild}-->
+        <!--{if $arrChild.has_children}-->
+            <!--{assign var=path value="`$smarty.const.ROOT_URLPATH`products/category_list.php"}-->
+        <!--{else}-->
+            <!--{assign var=path value="`$smarty.const.ROOT_URLPATH`products/list.php"}-->
+        <!--{/if}-->
+        <a href="<!--{$path}-->?category_id=<!--{$arrChild.category_id}-->"><!--{$arrChild.category_name|h}-->(<!--{$arrChild.product_count}-->)</a><br>
+    <!--{/foreach}-->
+<!--{/strip}-->

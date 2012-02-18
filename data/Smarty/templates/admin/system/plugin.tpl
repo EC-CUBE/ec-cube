@@ -108,8 +108,7 @@
         fnModeSubmit('priority','plugin_id',plugin_id);
     }
 
-//]]>
-</script>
+//]]></script>
 
 <!--<form name="form1" id="form1" method="post" action="?">-->
 <form name="form1" method="post" action="?" enctype="multipart/form-data">

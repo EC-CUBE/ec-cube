@@ -71,11 +71,9 @@
             <!--{/section}-->
         </ul>
 
-        <script>
-            //<![CDATA[
+        <script>//<![CDATA[
             initCategoryList(); //カテゴリリストの初期化
-            //]]>
-        </script>
+        //]]></script>
     </nav>
 </section>
 <!-- ▲カテゴリ -->

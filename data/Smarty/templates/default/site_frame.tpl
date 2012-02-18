@@ -55,8 +55,8 @@
     $(function(){
         <!--{$tpl_onload}-->
     });
-//]]>
-</script>
+//]]></script>
+
 <!--{* ▼Head COLUMN*}-->
 <!--{if $arrPageLayout.HeadNavi|@count > 0}-->
     <!--{* ▼上ナビ *}-->

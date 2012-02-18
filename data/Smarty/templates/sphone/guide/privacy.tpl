@@ -22,7 +22,6 @@
  */
 *}-->
 
-<!--▼CONTENTS-->
 <section id="undercolumn">
     <!--☆プライバシーポリシー -->
     <h2 class="title"><!--{$tpl_title|h}--></h2>
@@ -50,4 +49,3 @@
     </form>
 </section>
 <!--▲検索バー -->
-<!--▲CONTENTS -->

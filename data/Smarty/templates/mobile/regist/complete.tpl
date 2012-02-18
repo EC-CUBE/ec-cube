@@ -21,20 +21,23 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-本登録が完了いたしました。<br>
-それではショッピングをお楽しみください。<br>
-<br>
 
-今後ともご愛顧賜りますようよろしくお願い申し上げます。<br>
-<br>
+<!--{strip}-->
+    本登録が完了いたしました。<br>
+    それではショッピングをお楽しみください。<br>
+    <br>
 
-<!--{$arrSiteInfo.company_name|h}--><br>
-TEL：<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}--> <!--{if $arrSiteInfo.business_hour != ""}-->（受付時間/<!--{$arrSiteInfo.business_hour}-->）<!--{/if}--><br>
-E-mail：<a href="mailto:<!--{$arrSiteInfo.email02|h}-->"><!--{$arrSiteInfo.email02|h}--></a><br>
+    今後ともご愛顧賜りますようよろしくお願い申し上げます。<br>
+    <br>
+
+    <!--{$arrSiteInfo.company_name|h}--><br>
+    TEL：<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}--> <!--{if $arrSiteInfo.business_hour != ""}-->（受付時間/<!--{$arrSiteInfo.business_hour}-->）<!--{/if}--><br>
+    E-mail：<a href="mailto:<!--{$arrSiteInfo.email02|h}-->"><!--{$arrSiteInfo.email02|h}--></a><br>
 
 
-<!--{if !$tpl_cart_empty}-->
-<br>
-<a href="<!--{$smarty.const.DELIV_URLPATH|h}-->">ご注文手続きへ進む</a><br>
-<br>
-<!--{/if}-->
+    <!--{if !$tpl_cart_empty}-->
+        <br>
+        <a href="<!--{$smarty.const.DELIV_URLPATH|h}-->">ご注文手続きへ進む</a><br>
+        <br>
+    <!--{/if}-->
+<!--{/strip}-->

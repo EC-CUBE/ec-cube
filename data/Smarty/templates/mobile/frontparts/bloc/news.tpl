@@ -21,14 +21,17 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<!--{if count($arrNews) > 0}-->
-<center>
-―――――――――<br>
-<!--{marquee}-->
-<!--{if $arrNews[0].news_url}--><a href="<!--{$arrNews[0].news_url|h}-->"><!--{/if}-->
-<!--{$arrNews[0].news_title|h}-->
-<!--{if $arrNews[0].news_url}--></a><!--{/if}-->
-<!--{/marquee}-->
-―――――――――<br>
-</center>
-<!--{/if}-->
+
+<!--{strip}-->
+    <!--{if count($arrNews) > 0}-->
+        <center>
+        ―――――――――<br>
+        <!--{marquee}-->
+            <!--{if $arrNews[0].news_url}--><a href="<!--{$arrNews[0].news_url|h}-->"><!--{/if}-->
+            <!--{$arrNews[0].news_title|h}-->
+            <!--{if $arrNews[0].news_url}--></a><!--{/if}-->
+        <!--{/marquee}-->
+        ―――――――――<br>
+        </center>
+    <!--{/if}-->
+<!--{/strip}-->

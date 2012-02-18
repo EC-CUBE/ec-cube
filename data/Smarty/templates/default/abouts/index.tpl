@@ -21,34 +21,32 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<!--▼CONTENTS-->
 <!--{if $objSiteInfo->data.latitude && $objSiteInfo->data.longitude}-->
-<script type="text/javascript">//<![CDATA[
-$(function() {
-    $("#maps").css({
-        'margin-top': '15px',
-        'margin-left': 'auto',
-        'margin-right': 'auto',
-        'width': '98%',
-        'height': '300px'
-    });
-    var lat = <!--{$objSiteInfo->data.latitude}-->
-    var lng = <!--{$objSiteInfo->data.longitude}-->
-    if (lat && lng) {
-        var latlng = new google.maps.LatLng(lat, lng);
-        var mapOptions = {
-            zoom: 15,
-            center: latlng,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        var map = new google.maps.Map($("#maps").get(0), mapOptions);
-        var marker = new google.maps.Marker({map: map, position: latlng});
-    } else {
-        $("#maps").remove();
-    }
-});
-//]]>
-</script>
+    <script type="text/javascript">//<![CDATA[
+        $(function() {
+            $("#maps").css({
+                'margin-top': '15px',
+                'margin-left': 'auto',
+                'margin-right': 'auto',
+                'width': '98%',
+                'height': '300px'
+            });
+            var lat = <!--{$objSiteInfo->data.latitude}-->
+            var lng = <!--{$objSiteInfo->data.longitude}-->
+            if (lat && lng) {
+                var latlng = new google.maps.LatLng(lat, lng);
+                var mapOptions = {
+                    zoom: 15,
+                    center: latlng,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                var map = new google.maps.Map($("#maps").get(0), mapOptions);
+                var marker = new google.maps.Marker({map: map, position: latlng});
+            } else {
+                $("#maps").remove();
+            }
+        });
+    //]]></script>
 <!--{/if}-->
 <div id="undercolumn">
 
@@ -126,4 +124,3 @@ $(function() {
         <div id="maps"></div>
     </div>
 </div>
-<!--▲CONTENTS-->

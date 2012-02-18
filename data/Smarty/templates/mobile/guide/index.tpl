@@ -21,10 +21,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<!-- ▼メニュー ここから -->
+
+<!-- ▼メニュー -->
 <a href="usage.php" accesskey="1"><!--{1|numeric_emoji}-->ご利用方法</a><br>
 <a href="privacy.php" accesskey="2"><!--{2|numeric_emoji}-->プライバシーポリシー</a><br>
 <a href="charge.php" accesskey="3"><!--{3|numeric_emoji}-->通信料について</a><br>
 <a href="kiyaku.php" accesskey="4"><!--{4|numeric_emoji}-->ご利用規約</a><br>
 <a href="about.php" accesskey="5"><!--{5|numeric_emoji}-->運営会社紹介</a>
-<!-- ▲メニュー ここまで -->
+<!-- ▲メニュー -->

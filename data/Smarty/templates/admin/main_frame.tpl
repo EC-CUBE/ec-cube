@@ -50,8 +50,7 @@
     $(function(){
         <!--{$tpl_onload}-->
     });
-//]]>
-</script>
+//]]></script>
 <!--{* ▼Head COLUMN*}-->
 <!--{if $arrPageLayout.HeadNavi|@count > 0}-->
     <!--{foreach key=HeadNaviKey item=HeadNaviItem from=$arrPageLayout.HeadNavi}-->
@@ -142,11 +141,9 @@
 <h1><span class="title"><!--{$tpl_maintitle|h}--><!--{if strlen($tpl_maintitle) >= 1 && strlen($tpl_subtitle) >= 1}-->＞<!--{/if}--><!--{$tpl_subtitle|h}--></span></h1>
 <!--{/if}-->
 
-<!--{* ▼CONTENTS *}-->
 <div id="contents" class="clearfix">
     <!--{include file=$tpl_mainpage}-->
 </div>
-<!--{* ▲CONTENTS *}-->
 
 <!--{* ▼FOOTER *}-->
 <div id="footer">

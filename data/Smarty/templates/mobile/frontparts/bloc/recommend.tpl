@@ -21,20 +21,21 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<!--{if count($arrBestProducts) > 0}-->
 
-<!--{foreach from=$arrBestProducts item=arrProduct name=best_products}-->
+<!--{strip}-->
+    <!--{if count($arrBestProducts) > 0}-->
 
-<!-- ▼おすすめ商品コメント ここから -->
-<a href="<!--{$smarty.const.MOBILE_P_DETAIL_URLPATH}--><!--{$arrProduct.product_id|u}-->">
-<!--{$arrProduct.comment|h|nl2br}--></a>
-<!-- ▲おすすめ商品コメント ここまで -->
+        <!--{foreach from=$arrBestProducts item=arrProduct name=best_products}-->
 
-<!--{if !$smarty.foreach.best_products.last}--><br><!--{/if}-->
-<!--{/foreach}-->
+            <a href="<!--{$smarty.const.MOBILE_P_DETAIL_URLPATH}--><!--{$arrProduct.product_id|u}-->">
+            <!--{$arrProduct.comment|h|nl2br}--></a>
 
-<br>
-<br>
-<hr>
+            <!--{if !$smarty.foreach.best_products.last}--><br><!--{/if}-->
+        <!--{/foreach}-->
 
-<!--{/if}-->
+        <br>
+        <br>
+        <hr>
+
+    <!--{/if}-->
+<!--{/strip}-->

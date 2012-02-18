@@ -1,3 +1,4 @@
+<!--{printXMLDeclaration}--><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--{*
 /*
  * This file is part of EC-CUBE
@@ -21,7 +22,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 
 <head>
@@ -40,8 +41,7 @@
 $(function(){
     <!--{$tpl_onload}-->
 });
-//]]>
-</script>
+//]]></script>
 <!--{include file='css/contents.tpl'}-->
 <title><!--{$smarty.const.ADMIN_TITLE}--> <!--{$tpl_subtitle}--></title>
 </head>

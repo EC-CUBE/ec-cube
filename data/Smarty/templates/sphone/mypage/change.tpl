@@ -22,7 +22,6 @@
  */
 *}-->
 
-<!--▼CONTENTS-->
 <section id="mypagecolumn">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
     <!--{include file=$tpl_navi}-->
@@ -59,4 +58,3 @@
     </form>
 </section>
 <!--▲検索バー -->
-<!--▲CONTENTS-->

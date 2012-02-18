@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
+
 <dt>お名前&nbsp;<span class="attention">※</span></dt>
 <dd>
     <!--{assign var=key1 value="`$prefix`name01"}-->

@@ -82,8 +82,7 @@
         $(function(){
             <!--{$tpl_onload}-->
         });
-    //]]>
-    </script>
+    //]]></script>
 </head>
 
 <body>
@@ -93,5 +92,4 @@
 
     <a name="top" id="top"></a>
 
-    <!--▼CONTENTS-->
-    <!--{if !$disable_wincol}--><div id="windowcolumn"><!--{/if}-->
+        <!--{if !$disable_wincol}--><div id="windowcolumn"><!--{/if}-->

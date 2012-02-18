@@ -22,7 +22,6 @@
  */
 *}-->
 
-<!--▼CONTENTS-->
 <!--{assign var=_site value=$arrSiteInfo}-->
 <!--{if $_site.latitude && $_site.longitude}-->
     <script type="text/javascript">//<![CDATA[
@@ -47,8 +46,7 @@
                 $("#maps").remove();
             }
         });
-    //]]>
-    </script>
+    //]]></script>
 <!--{/if}-->
 
 <section id="undercolumn">
@@ -117,4 +115,3 @@
 </section>
 <!--▲検索バー -->
 
-<!--▲CONTENTS-->

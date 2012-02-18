@@ -21,14 +21,17 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<!--{$CustomerName1|h}--> <!--{$CustomerName2|h}-->様、会員から退会をされますと、登録されているお届け先の情報など全て削除されますがよろしいでしょうか。<br>
-<br>
-<div align="center">
-<form action="?" method="post">
-    <input type="hidden" name="mode" value="complete">
-    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 
-	<input type="submit" name="complete" value="退会する">
-</form>
-</div>
-<br>
+<!--{strip}-->
+    <!--{$CustomerName1|h}--> <!--{$CustomerName2|h}-->様、会員から退会をされますと、登録されているお届け先の情報など全て削除されますがよろしいでしょうか。<br>
+    <br>
+    <div align="center">
+        <form action="?" method="post">
+            <input type="hidden" name="mode" value="complete">
+            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->">
+
+        	<input type="submit" name="complete" value="退会する">
+        </form>
+    </div>
+    <br>
+<!--{/strip}-->

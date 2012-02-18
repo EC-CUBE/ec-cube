@@ -23,104 +23,98 @@
 *}-->
 <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`admin_popup_header.tpl"}-->
 
-<script type="text/javascript">
-<!--
-self.moveTo(20,20);self.focus();
-
-function func_submit(product_id, class_name1, class_name2) {
-    var err_text = '';
-    var fm = window.opener.document.form1;
-    var fm1 = window.opener.document;
-    var class1 = "classcategory_id" + product_id + "_1";
-    var class2 = "classcategory_id" + product_id + "_2";
-
-    var class1_id = document.getElementById(class1).value;
-    var class2_id = document.getElementById(class2).value;
-    var product_class_id = document.getElementById("product_class_id" + product_id).value;
-    var opner_product_id = 'add_product_id';
-    var opner_product_class_id = 'add_product_class_id';
-    var tpl_no = '<!--{$tpl_no}-->';
-
-    if (tpl_no != '') {
-        opner_product_id = 'edit_product_id';
-        opner_product_class_id = 'edit_product_class_id';
-        fm1.getElementById("no").value = escape('<!--{$tpl_no}-->');
-    }
-    if (document.getElementById(class1).type == 'select-one' && class1_id == '__unselected') {
-        err_text = class_name1 + "を選択してください。\n";
-    }
-    if (document.getElementById(class2).type == 'select-one' && class2_id == '') {
-        err_text = err_text + class_name2 + "を選択してください。\n";
-    }
-    if (err_text != '') {
-        alert(err_text);
-        return false;
-    }
-
-    fm1.getElementById(opner_product_id).value = product_id;
-    fm1.getElementById(opner_product_class_id).value = product_class_id;
-
-    fm.mode.value = 'select_product_detail';
-    fm.anchor_key.value = 'order_products';
-    fm.submit();
-    window.close();
-
-    return true;
-}
-//-->
-</script>
-
-
 <script type="text/javascript">//<![CDATA[
-// 規格2に選択肢を割り当てる。
-function fnSetClassCategories(form, classcat_id2_selected) {
-    sele1 = form.classcategory_id1;
-    sele2 = form.classcategory_id2;
-    product_id = form.product_id.value;
+    self.moveTo(20,20);self.focus();
 
-    if (sele1) {
-        if (sele2) {
-            // 規格2の選択肢をクリア
-            count = sele2.options.length;
-            for(i = count; i >= 0; i--) {
-                sele2.options[i] = null;
-            }
+    function func_submit(product_id, class_name1, class_name2) {
+        var err_text = '';
+        var fm = window.opener.document.form1;
+        var fm1 = window.opener.document;
+        var class1 = "classcategory_id" + product_id + "_1";
+        var class2 = "classcategory_id" + product_id + "_2";
 
-            // 規格2に選択肢を割り当てる
-            classcats = productsClassCategories[product_id][sele1.value];
-            i = 0;
-            for (var classcat_id2_key in classcats) {
-                classcategory_id2 = classcats[classcat_id2_key].classcategory_id2;
-                sele2.options[i] = new Option(classcats[classcat_id2_key].name, classcategory_id2);
-                if (classcategory_id2 == classcat_id2_selected) {
-                    sele2.options[i].selected = true;
-                }
-                i++;
-            }
+        var class1_id = document.getElementById(class1).value;
+        var class2_id = document.getElementById(class2).value;
+        var product_class_id = document.getElementById("product_class_id" + product_id).value;
+        var opner_product_id = 'add_product_id';
+        var opner_product_class_id = 'add_product_class_id';
+        var tpl_no = '<!--{$tpl_no}-->';
+
+        if (tpl_no != '') {
+            opner_product_id = 'edit_product_id';
+            opner_product_class_id = 'edit_product_class_id';
+            fm1.getElementById("no").value = escape('<!--{$tpl_no}-->');
         }
-        fnCheckStock(form);
-    }
-}
+        if (document.getElementById(class1).type == 'select-one' && class1_id == '__unselected') {
+            err_text = class_name1 + "を選択してください。\n";
+        }
+        if (document.getElementById(class2).type == 'select-one' && class2_id == '') {
+            err_text = err_text + class_name2 + "を選択してください。\n";
+        }
+        if (err_text != '') {
+            alert(err_text);
+            return false;
+        }
 
-function fnCheckStock(form) {
-    product_id = form.product_id.value;
-    classcat_id1 = form.classcategory_id1.value;
-    classcat_id2 = form.classcategory_id2 ? form.classcategory_id2.value : '';
-    classcat2 = productsClassCategories[product_id][classcat_id1]['#' + classcat_id2];
-    // 商品規格
-    eleDynamic = document.getElementById('product_class_id' + product_id);
-    if (
-        classcat2
-        && typeof classcat2.product_class_id != 'undefined'
-        && String(classcat2.product_class_id).length >= 1
-    ) {
-        eleDynamic.value = classcat2.product_class_id;
-    } else {
-        eleDynamic.value = ''
+        fm1.getElementById(opner_product_id).value = product_id;
+        fm1.getElementById(opner_product_class_id).value = product_class_id;
+
+        fm.mode.value = 'select_product_detail';
+        fm.anchor_key.value = 'order_products';
+        fm.submit();
+        window.close();
+
+        return true;
     }
-}
-//]]>
-</script>
+
+    // 規格2に選択肢を割り当てる。
+    function fnSetClassCategories(form, classcat_id2_selected) {
+        sele1 = form.classcategory_id1;
+        sele2 = form.classcategory_id2;
+        product_id = form.product_id.value;
+
+        if (sele1) {
+            if (sele2) {
+                // 規格2の選択肢をクリア
+                count = sele2.options.length;
+                for(i = count; i >= 0; i--) {
+                    sele2.options[i] = null;
+                }
+
+                // 規格2に選択肢を割り当てる
+                classcats = productsClassCategories[product_id][sele1.value];
+                i = 0;
+                for (var classcat_id2_key in classcats) {
+                    classcategory_id2 = classcats[classcat_id2_key].classcategory_id2;
+                    sele2.options[i] = new Option(classcats[classcat_id2_key].name, classcategory_id2);
+                    if (classcategory_id2 == classcat_id2_selected) {
+                        sele2.options[i].selected = true;
+                    }
+                    i++;
+                }
+            }
+            fnCheckStock(form);
+        }
+    }
+
+    function fnCheckStock(form) {
+        product_id = form.product_id.value;
+        classcat_id1 = form.classcategory_id1.value;
+        classcat_id2 = form.classcategory_id2 ? form.classcategory_id2.value : '';
+        classcat2 = productsClassCategories[product_id][classcat_id1]['#' + classcat_id2];
+        // 商品規格
+        eleDynamic = document.getElementById('product_class_id' + product_id);
+        if (
+            classcat2
+            && typeof classcat2.product_class_id != 'undefined'
+            && String(classcat2.product_class_id).length >= 1
+        ) {
+            eleDynamic.value = classcat2.product_class_id;
+        } else {
+            eleDynamic.value = ''
+        }
+    }
+//]]></script>
 
 <!--▼検索フォーム-->
 <form name="form1" id="form1" method="post" action="?">

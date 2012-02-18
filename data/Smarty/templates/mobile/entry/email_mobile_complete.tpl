@@ -21,4 +21,5 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
+
 携帯電話のメールアドレスの登録が完了いたしました。

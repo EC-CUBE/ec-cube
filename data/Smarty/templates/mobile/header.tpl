@@ -20,30 +20,32 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 
-<!--▼HEADER-->
-<!--{* ▼HeaderInternal COLUMN*}-->
-<!--{if $arrPageLayout.HeaderInternalNavi|@count > 0}-->
-    <!--{* ▼上ナビ *}-->
-    <!--{foreach key=HeaderInternalNaviKey item=HeaderInternalNaviItem from=$arrPageLayout.HeaderInternalNavi}-->
-        <!-- ▼<!--{$HeaderInternalNaviItem.bloc_name}--> -->
-        <!--{if $HeaderInternalNaviItem.php_path != ""}-->
-            <!--{include_php file=$HeaderInternalNaviItem.php_path items=$HeaderInternalNaviItem}-->
-        <!--{else}-->
-            <!--{include file=$HeaderInternalNaviItem.tpl_path items=$HeaderInternalNaviItem}-->
-        <!--{/if}-->
-        <!-- ▲<!--{$HeaderInternalNaviItem.bloc_name}--> -->
-    <!--{/foreach}-->
-    <!--{* ▲上ナビ *}-->
-<!--{/if}-->
-<!--{* ▲HeaderInternal COLUMN*}-->
+<!--{strip}-->
+    <!--▼HEADER-->
+    <!--{* ▼HeaderInternal COLUMN*}-->
+    <!--{if $arrPageLayout.HeaderInternalNavi|@count > 0}-->
+        <!--{* ▼上ナビ *}-->
+        <!--{foreach key=HeaderInternalNaviKey item=HeaderInternalNaviItem from=$arrPageLayout.HeaderInternalNavi}-->
+            <!-- ▼<!--{$HeaderInternalNaviItem.bloc_name}--> -->
+            <!--{if $HeaderInternalNaviItem.php_path != ""}-->
+                <!--{include_php file=$HeaderInternalNaviItem.php_path items=$HeaderInternalNaviItem}-->
+            <!--{else}-->
+                <!--{include file=$HeaderInternalNaviItem.tpl_path items=$HeaderInternalNaviItem}-->
+            <!--{/if}-->
+            <!-- ▲<!--{$HeaderInternalNaviItem.bloc_name}--> -->
+        <!--{/foreach}-->
+        <!--{* ▲上ナビ *}-->
+    <!--{/if}-->
+    <!--{* ▲HeaderInternal COLUMN*}-->
 
-<!--{* ▼タイトル *}-->
-<!--{if $tpl_title != "" || $tpl_subtitle != ""}-->
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td bgcolor="#FFA85C" align="center"><font color="#ffffff"><!--{if $tpl_subtitle != ""}--><!--{$tpl_subtitle|h}--><!--{else}--><!--{$tpl_title|h}--><!--{/if}--></font></td>
-</tr>
-</table>
-<!--{/if}-->
-<!--{* ▲タイトル *}-->
-<!--▲HEADER-->
+    <!--{* ▼タイトル *}-->
+    <!--{if $tpl_title != "" || $tpl_subtitle != ""}-->
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td bgcolor="#FFA85C" align="center"><font color="#ffffff"><!--{if $tpl_subtitle != ""}--><!--{$tpl_subtitle|h}--><!--{else}--><!--{$tpl_title|h}--><!--{/if}--></font></td>
+            </tr>
+        </table>
+    <!--{/if}-->
+    <!--{* ▲タイトル *}-->
+    <!--▲HEADER-->
+<!--{/strip}-->

@@ -19,7 +19,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<!--▼CONTENTS-->
 <div id="undercolumn">
     <div id="undercolumn_error">
         <div class="message_area">
@@ -40,4 +39,3 @@
         </div>
     </div>
 </div>
-<!--▲CONTENTS-->

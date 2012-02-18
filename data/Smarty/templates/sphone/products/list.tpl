@@ -22,22 +22,20 @@
 
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/products.js"></script>
 <script type="text/javascript">//<![CDATA[
-// 並び順を変更
-function fnChangeOrderby(orderby) {
-    fnSetVal('orderby', orderby);
-    fnSetVal('pageno', 1);
-    fnSubmit();
-}
-// 表示件数を変更
-function fnChangeDispNumber(dispNumber) {
-    fnSetVal('disp_number', dispNumber);
-    fnSetVal('pageno', 1);
-    fnSubmit();
-}
-//]]>
-</script>
+    // 並び順を変更
+    function fnChangeOrderby(orderby) {
+        fnSetVal('orderby', orderby);
+        fnSetVal('pageno', 1);
+        fnSubmit();
+    }
+    // 表示件数を変更
+    function fnChangeDispNumber(dispNumber) {
+        fnSetVal('disp_number', dispNumber);
+        fnSetVal('pageno', 1);
+        fnSubmit();
+    }
+//]]></script>
 
-<!--▼CONTENTS-->
 <section id="product_list">
     <form name="form1" id="form1" method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -140,7 +138,6 @@ function fnChangeDispNumber(dispNumber) {
     </form>
 </section>
 <!--▲検索バー -->
-<!--▲CONTENTS-->
 
 <script>
     var pageNo = 2;

@@ -68,10 +68,8 @@
             statewhobought = 0
         }
     }
-//]]>
-</script>
+//]]></script>
 
-<!--▼CONTENTS-->
 <section id="product_detail">
 
     <!--★タイトル★-->
@@ -384,4 +382,3 @@
     </form>
 </section>
 <!--▲検索バー -->
-<!--▲CONTENTS-->

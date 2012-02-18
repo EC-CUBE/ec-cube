@@ -35,8 +35,7 @@
             return true;
         });
     });
-//]]>
-</script>
+//]]></script>
 <div class="bloc_outer">
     <div id="header_login_area" class="clearfix">
         <form name="header_login_form" id="header_login_form" method="post" action="<!--{$smarty.const.HTTPS_URL}-->frontparts/login_check.php" onsubmit="return fnCheckLogin('header_login_form')">

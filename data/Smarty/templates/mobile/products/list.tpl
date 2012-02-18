@@ -21,34 +21,37 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<!--{if $tpl_strnavi != "&nbsp;"}-->
-<!--{$tpl_strnavi}-->
-<br><br>
-<!--{/if}-->
 
-<!--{foreach from=$arrProducts key=i item=arrProduct}-->
-<!-- ▼商品 ここから -->
-<!-- 商品名 --><!--{$arrProduct.name|h}--><br>
+<!--{strip}-->
+    <!--{if $tpl_strnavi != "&nbsp;"}-->
+        <!--{$tpl_strnavi}-->
+        <br><br>
+    <!--{/if}-->
 
-<!--{$smarty.const.SALE_PRICE_TITLE}-->：
-<!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
-<!--{$arrProduct.price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->円
-<!--{else}-->
-<!--{$arrProduct.price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->円～<!--{$arrProduct.price02_max|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->円
-<!--{/if}-->
-<br>
+    <!--{foreach from=$arrProducts key=i item=arrProduct}-->
+        <!-- ▼商品 ここから -->
+        <!-- 商品名 --><!--{$arrProduct.name|h}--><br>
 
-<div align="right">
-<a href="<!--{$smarty.const.MOBILE_P_DETAIL_URLPATH}--><!--{$arrProduct.product_id|u}-->">商品詳細へ→</a>
-</div>
+        <!--{$smarty.const.SALE_PRICE_TITLE}-->：
+        <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
+            <!--{$arrProduct.price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->円
+        <!--{else}-->
+            <!--{$arrProduct.price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->円～<!--{$arrProduct.price02_max|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->円
+        <!--{/if}-->
+        <br>
 
-<br>
-<!-- ▲商品 ここまで -->
-<!--{foreachelse}-->
-該当商品がありません。<br>
-<!--{/foreach}-->
+        <div align="right">
+            <a href="<!--{$smarty.const.MOBILE_P_DETAIL_URLPATH}--><!--{$arrProduct.product_id|u}-->">商品詳細へ→</a>
+        </div>
 
-<!--{if $tpl_strnavi != "&nbsp;"}-->
-<!--{$tpl_strnavi}-->
-<br><br>
-<!--{/if}-->
+        <br>
+        <!-- ▲商品 ここまで -->
+    <!--{foreachelse}-->
+        該当商品がありません。<br>
+    <!--{/foreach}-->
+
+    <!--{if $tpl_strnavi != "&nbsp;"}-->
+        <!--{$tpl_strnavi}-->
+        <br><br>
+    <!--{/if}-->
+<!--{/strip}-->

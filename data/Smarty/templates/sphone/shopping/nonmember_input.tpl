@@ -38,10 +38,8 @@
             stateDeliv = 0
         }
     }
-    //]]>
-</script>
+//]]></script>
 
-<!--▼CONTENTS-->
 <section id="undercolumn">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
     <div class="information end">

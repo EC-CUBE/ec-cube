@@ -22,7 +22,6 @@
  */
 *}-->
 
-<!--▼CONTENTS-->
 <section id="mypagecolumn">
 
     <h2 class="title"><!--{$tpl_title|h}--></h2>

@@ -21,28 +21,31 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<form method="post" action="<!--{$smarty.const.MOBILE_SHOPPING_PAYMENT_URLPATH}-->">
-<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-<input type="hidden" name="mode" value="select_deliv">
-<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
-■配送方法 <font color="#FF0000">*</font><br>
-<!--{assign var=key value="deliv_id"}-->
-<!--{if $arrErr[$key] != ""}-->
-<font color="#FF0000"><!--{$arrErr[$key]}--></font>
-<!--{/if}-->
-<!--{section name=cnt loop=$arrDeliv}-->
-<input type="radio" name="<!--{$key}-->" value="<!--{$arrDeliv[cnt].deliv_id}-->" <!--{$arrDeliv[cnt].deliv_id|sfGetChecked:$arrForm[$key].value}-->>
-<!--{$arrDeliv[cnt].name|h}-->
-<br>
-<!--{/section}-->
-<br>
 
-<center><input type="submit" value="次へ"></center>
-</form>
+<!--{strip}-->
+    <form method="post" action="<!--{$smarty.const.MOBILE_SHOPPING_PAYMENT_URLPATH}-->">
+        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->">
+        <input type="hidden" name="mode" value="select_deliv">
+        <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
+        ■配送方法 <font color="#FF0000">*</font><br>
+        <!--{assign var=key value="deliv_id"}-->
+        <!--{if $arrErr[$key] != ""}-->
+            <font color="#FF0000"><!--{$arrErr[$key]}--></font>
+        <!--{/if}-->
+        <!--{section name=cnt loop=$arrDeliv}-->
+            <input type="radio" name="<!--{$key}-->" value="<!--{$arrDeliv[cnt].deliv_id}-->" <!--{$arrDeliv[cnt].deliv_id|sfGetChecked:$arrForm[$key].value}-->>
+            <!--{$arrDeliv[cnt].name|h}-->
+            <br>
+        <!--{/section}-->
+        <br>
 
-<form action="<!--{$tpl_back_url|h}-->" method="get">
-<!--{if $is_multiple}-->
-<input type="hidden" name="from" value="multiple">
-<!--{/if}-->
-<center><input type="submit" name="return" value="戻る"></center>
-</form>
+        <center><input type="submit" value="次へ"></center>
+    </form>
+
+    <form action="<!--{$tpl_back_url|h}-->" method="get">
+        <!--{if $is_multiple}-->
+            <input type="hidden" name="from" value="multiple">
+        <!--{/if}-->
+        <center><input type="submit" name="return" value="戻る"></center>
+    </form>
+<!--{/strip}-->

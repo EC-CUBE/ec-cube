@@ -21,30 +21,32 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=shift_jis">
-<title><!--{$arrSiteInfo.shop_name|h}--><!--{if $tpl_subtitle|strlen >= 1}-->/<!--{$tpl_subtitle|h}--><!--{elseif $tpl_title|strlen >= 1}-->/<!--{$tpl_title|h}--><!--{/if}--></title>
-<meta name="author" content="<!--{$arrPageLayout.author|h}-->">
-<meta name="description" content="<!--{$arrPageLayout.description|h}-->">
-<meta name="keywords" content="<!--{$arrPageLayout.keyword|h}-->">
-<!--{* ▼Head COLUMN*}-->
-<!--{if $arrPageLayout.HeadNavi|@count > 0}-->
-<!--{* ▼上ナビ *}-->
-<!--{foreach key=HeadNaviKey item=HeadNaviItem from=$arrPageLayout.HeadNavi}-->
-<!--{* ▼<!--{$HeadNaviItem.bloc_name}--> ここから*}-->
-<!--{if $HeadNaviItem.php_path != ""}-->
-<!--{include_php file=$HeadNaviItem.php_path items=$HeadNaviItem}-->
-<!--{else}-->
-<!--{include file=$HeadNaviItem.tpl_path items=$HeadNaviItem}-->
-<!--{/if}-->
-<!--{* ▲<!--{$HeadNaviItem.bloc_name}--> ここまで*}-->
-<!--{/foreach}-->
-<!--{* ▲上ナビ *}-->
-<!--{/if}-->
-<!--{* ▲Head COLUMN*}-->
-</head>
-<!-- ▼ ＢＯＤＹ部 スタート -->
-<!--{include file='./site_main.tpl'}-->
-<!-- ▲ ＢＯＤＹ部 エンド -->
-</html>
+<!--{strip}-->
+    <html>
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=shift_jis">
+            <title><!--{$arrSiteInfo.shop_name|h}--><!--{if $tpl_subtitle|strlen >= 1}-->/<!--{$tpl_subtitle|h}--><!--{elseif $tpl_title|strlen >= 1}-->/<!--{$tpl_title|h}--><!--{/if}--></title>
+            <meta name="author" content="<!--{$arrPageLayout.author|h}-->">
+            <meta name="description" content="<!--{$arrPageLayout.description|h}-->">
+            <meta name="keywords" content="<!--{$arrPageLayout.keyword|h}-->">
+            <!--{* ▼Head COLUMN *}-->
+            <!--{if $arrPageLayout.HeadNavi|@count > 0}-->
+                <!--{* ▼上ナビ *}-->
+                <!--{foreach key=HeadNaviKey item=HeadNaviItem from=$arrPageLayout.HeadNavi}-->
+                    <!-- ▼「<!--{$HeadNaviItem.bloc_name|h}-->」ブロック -->
+                    <!--{if $HeadNaviItem.php_path != ""}-->
+                        <!--{include_php file=$HeadNaviItem.php_path items=$HeadNaviItem}-->
+                    <!--{else}-->
+                        <!--{include file=$HeadNaviItem.tpl_path items=$HeadNaviItem}-->
+                    <!--{/if}-->
+                    <!-- ▲「<!--{$HeadNaviItem.bloc_name|h}-->」ブロック -->
+                <!--{/foreach}-->
+                <!--{* ▲上ナビ *}-->
+            <!--{/if}-->
+            <!--{* ▲Head COLUMN *}-->
+        </head>
+        <!-- ▼ ＢＯＤＹ部 スタート -->
+        <!--{include file='./site_main.tpl'}-->
+        <!-- ▲ ＢＯＤＹ部 エンド -->
+    </html>
+<!--{/strip}-->

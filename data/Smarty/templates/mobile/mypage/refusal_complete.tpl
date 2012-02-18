@@ -21,5 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
+
 退会手続きが完了致しました。<br>
 またのご利用をおまちしております。
