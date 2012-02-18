@@ -19,18 +19,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
+
 <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`popup_header.tpl" subtitle="お客様の声書き込み（完了ページ）"}-->
 
-  <div id="windowarea">
+<div id="windowarea">
     <h2 class="title">お客様の声書き込み</h2>
     <div id="completebox">
-      <p>登録が完了しました。ご利用ありがとうございました。<br />
-       弊社にて登録内容を確認後、ホームページに反映させていただきます。<br />
-       今しばらくお待ちくださいませ。</p>
+        <p>登録が完了しました。ご利用ありがとうございました。<br />
+            弊社にて登録内容を確認後、ホームページに反映させていただきます。<br />
+            今しばらくお待ちくださいませ。</p>
     </div>
     <div class="btn">
-      <a href="javascript:window.close()" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close_on.gif','b_close');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close.gif','b_close');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_close.gif" width="150" height="30" alt="閉じる" border="0" name="b_close" /></a>
+        <a href="javascript:window.close()" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close_on.gif','b_close');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close.gif','b_close');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_close.gif" width="150" height="30" alt="閉じる" border="0" name="b_close" /></a>
     </div>
-  </div>
+</div>
 
 <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`popup_footer.tpl"}-->

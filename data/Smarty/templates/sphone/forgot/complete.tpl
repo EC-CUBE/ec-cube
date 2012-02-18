@@ -29,9 +29,9 @@
 
         <div class="window_area clearfix">
             <!--{if $smarty.const.FORGOT_MAIL != 1}-->
-            <input id="completebox" type="text" value="<!--{$arrForm.new_password}-->" readonly="readonly" />
+                <input id="completebox" type="text" value="<!--{$arrForm.new_password}-->" readonly="readonly" />
             <!--{else}-->
-            <p  class="attention">ご登録メールアドレスに送付致しました。</p>
+                <p  class="attention">ご登録メールアドレスに送付致しました。</p>
             <!--{/if}-->
             <hr />
             <p>※パスワードは、MYページの「会員登録内容変更」よりご変更いただけます。</p>

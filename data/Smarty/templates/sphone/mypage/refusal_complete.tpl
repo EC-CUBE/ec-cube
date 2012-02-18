@@ -21,36 +21,39 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
+
 <!--▼CONTENTS-->
 <section id="mypagecolumn">
-       <h2 class="title"><!--{$tpl_title|h}--></h2>
-       <!--{include file = $tpl_navi}-->
+    <h2 class="title"><!--{$tpl_title|h}--></h2>
+    <!--{include file = $tpl_navi}-->
 
-       <h3 class="title_mypage"><!--{$tpl_subtitle|h}--></h3>
-       
-                            <!--★インフォメーション★-->
-       <div id="mycontentsarea">
-          <div id="completetext">
-                                             <p>退会手続きが完了いたしました。</p>
-              <p>MYページをご利用いただき誠にありがとうございました。<br />
+    <h3 class="title_mypage"><!--{$tpl_subtitle|h}--></h3>
+
+    <!--★インフォメーション★-->
+    <div id="mycontentsarea">
+        <div id="completetext">
+            <p>退会手続きが完了いたしました。</p>
+            <p>MYページをご利用いただき誠にありがとうございました。<br />
                 またのご利用を心よりお待ち申し上げます。</p>
-           </div>
-       <hr>
+        </div>
 
-           <div class="shopInformation">
-              <p><!--{$arrSiteInfo.company_name|h}--></p>
-              <p>TEL：<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}--><br />
-                 E-mail：<a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->" rel="external"><!--{$arrSiteInfo.email02|escape:'hexentity'}--></a></p>
-           </div>
-       </div><!--▲mycontentsarea -->
+        <hr>
+
+        <div class="shopInformation">
+            <p><!--{$arrSiteInfo.company_name|h}--></p>
+            <p>TEL：<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}--><br />
+                E-mail：<a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->" rel="external"><!--{$arrSiteInfo.email02|escape:'hexentity'}--></a></p>
+        </div>
+    </div><!-- /#mycontentsarea -->
 </section>
+
 <!--▼検索バー -->
 <section id="search_area">
-<form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
-<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-<input type="hidden" name="mode" value="search" />
-<input type="search" name="name" id="search" value="" placeholder="キーワードを入力" class="searchbox" >
-</form>
+    <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
+        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+        <input type="hidden" name="mode" value="search" />
+        <input type="search" name="name" id="search" value="" placeholder="キーワードを入力" class="searchbox" >
+    </form>
 </section>
 <!--▲検索バー -->
 <!--▲CONTENTS-->

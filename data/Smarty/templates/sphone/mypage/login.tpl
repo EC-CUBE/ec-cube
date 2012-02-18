@@ -21,85 +21,85 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
+
 <!--▼CONTENTS-->
 <script>
-  function ajaxLogin() {
-      var postData = new Object;
-      postData['<!--{$smarty.const.TRANSACTION_ID_NAME}-->'] = "<!--{$transactionid}-->";
-      postData['mode'] = 'login';
-      postData['login_email'] = $('input[type=email]').val();
-      postData['login_pass'] = $('input[type=password]').val();
-      postData['url'] = $('input[name=url]').val();
+    function ajaxLogin() {
+        var postData = new Object;
+        postData['<!--{$smarty.const.TRANSACTION_ID_NAME}-->'] = "<!--{$transactionid}-->";
+        postData['mode'] = 'login';
+        postData['login_email'] = $('input[type=email]').val();
+        postData['login_pass'] = $('input[type=password]').val();
+        postData['url'] = $('input[name=url]').val();
 
-      $.ajax({
-          type: "POST",
-          url: "<!--{$smarty.const.HTTPS_URL}-->frontparts/login_check.php",
-          data: postData,
-          cache: false,
-          dataType: "json",
-          error: function(XMLHttpRequest, textStatus, errorThrown){
-              alert(textStatus);
-          },
-          success: function(result){
-              if (result.success) {
-                  location.href = result.success;
-              } else {
-                  alert(result.login_error);
-              }
-          }
-      });
-  }
+        $.ajax({
+            type: "POST",
+            url: "<!--{$smarty.const.HTTPS_URL}-->frontparts/login_check.php",
+            data: postData,
+            cache: false,
+            dataType: "json",
+            error: function(XMLHttpRequest, textStatus, errorThrown){
+                alert(textStatus);
+            },
+            success: function(result){
+                if (result.success) {
+                    location.href = result.success;
+                } else {
+                    alert(result.login_error);
+                }
+            }
+        });
+    }
 </script>
-<section id="slidewindow">
 
-<h2 class="title"><!--{$tpl_title|h}--></h2>
-     <form name="login_mypage" id="login_mypage" method="post" action="javascript:;" onsubmit="return ajaxLogin();">
+<section id="slidewindow">
+    <h2 class="title"><!--{$tpl_title|h}--></h2>
+    <form name="login_mypage" id="login_mypage" method="post" action="javascript:;" onsubmit="return ajaxLogin();">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="login" />
         <input type="hidden" name="url" value="<!--{$smarty.server.REQUEST_URI|h}-->" />
 
-<div class="login_area">
+        <div class="login_area">
 
-    <div class="loginareaBox">
-          <!--{assign var=key value="login_email"}-->
-               <span class="attention"><!--{$arrErr[$key]}--></span>
-                  <input type="email" name="<!--{$key}-->" value="<!--{$tpl_login_email|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="mailtextBox data-role-none" placeholder="メールアドレス" />
+            <div class="loginareaBox">
+                <!--{assign var=key value="login_email"}-->
+                <span class="attention"><!--{$arrErr[$key]}--></span>
+                <input type="email" name="<!--{$key}-->" value="<!--{$tpl_login_email|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="mailtextBox data-role-none" placeholder="メールアドレス" />
 
-          <!--{assign var=key value="login_pass"}-->
-               <span class="attention"><!--{$arrErr[$key]}--></span>
-                  <input type="password" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="passtextBox data-role-none" placeholder="パスワード" />
+                <!--{assign var=key value="login_pass"}-->
+                <span class="attention"><!--{$arrErr[$key]}--></span>
+                <input type="password" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="passtextBox data-role-none" placeholder="パスワード" />
+            </div><!-- /.loginareaBox -->
 
-</div><!--▲loginBox -->
+            <p class="arrowRtxt"><a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->">パスワードを忘れた方</a></p>
 
-<p class="arrowRtxt"><a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->">パスワードを忘れた方</a></p>
-
-        <div class="btn_area">
-                                       <input type="submit" value="ログイン" class="btn data-role-none" name="log" id="log" />
-        </div>
-     </div><!--▲loginarea -->
+            <div class="btn_area">
+                <input type="submit" value="ログイン" class="btn data-role-none" name="log" id="log" />
+            </div>
+        </div><!-- /.login_area -->
     </form>
-                
-                <form name="member_form2" id="member_form2" method="post" action="?">
-      <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-      <input type="hidden" name="mode" value="nonmember" />
-      <div class="login_area_btm">
-        <nav>
-          <ul class="navBox">
-            <li><a rel="external" href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php">新規会員登録</a></li>
-          </ul>
-        </nav>
-       <p>会員登録をすると便利なMyページをご利用いただけます。</p>
-      </div>
-   </form>
-  </section>
-        <!--▼検索バー -->
+
+    <form name="member_form2" id="member_form2" method="post" action="?">
+        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+        <input type="hidden" name="mode" value="nonmember" />
+        <div class="login_area_btm">
+            <nav>
+                <ul class="navBox">
+                    <li><a rel="external" href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php">新規会員登録</a></li>
+                </ul>
+            </nav>
+            <p>会員登録をすると便利なMyページをご利用いただけます。</p>
+        </div>
+    </form>
+</section>
+
+<!--▼検索バー -->
 <section id="search_area">
-<form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
-<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-<input type="hidden" name="mode" value="search" />
-<input type="search" name="name" id="search" value="" placeholder="キーワードを入力" class="searchbox" >
-</form>
+    <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
+        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+        <input type="hidden" name="mode" value="search" />
+        <input type="search" name="name" id="search" value="" placeholder="キーワードを入力" class="searchbox" >
+    </form>
 </section>
 <!--▲検索バー -->
- <!--▲コンテンツここまで -->
-
+<!--▲コンテンツここまで -->

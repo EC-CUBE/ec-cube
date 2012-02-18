@@ -19,15 +19,16 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
+
 <!--{* 検索該当0件 *}-->
 <div>
-            <!--★エラーメッセージ--> 
-            <p class="error">
-            <!--{if $smarty.get.mode == "search"}-->
-                該当件数<strong>0件</strong>です。<br />
-                他の検索キーワードより再度検索をしてください。
-            <!--{else}-->
-                現在、商品はございません。
-            <!--{/if}-->
-            </p> 
+    <!--★エラーメッセージ--> 
+    <p class="error">
+        <!--{if $smarty.get.mode == "search"}-->
+            該当件数<strong>0件</strong>です。<br />
+            他の検索キーワードより再度検索をしてください。
+        <!--{else}-->
+            現在、商品はございません。
+        <!--{/if}-->
+    </p> 
 </div>

@@ -22,76 +22,76 @@
 
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->" />
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
-<meta name="format-detection" content="telephone=no">
-<meta http-equiv="Content-Script-Type" content="text/javascript" />
-<meta http-equiv="Content-Style-Type" content="text/css" />
-<!--{* 共通CSS *}-->
-<link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->css/import.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <!--{* 共通CSS *}-->
+    <link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->css/import.css" />
 
-<!--{if $tpl_page_category == "abouts"}-->
-<!--{if ($smarty.server.HTTPS != "") && ($smarty.server.HTTPS != "off")}-->
-<script src="https://maps.google.com/maps/api/js?sensor=false"></script>
-<!--{else}-->
-<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
-<!--{/if}-->
-<!--{/if}-->
-<script src="<!--{$smarty.const.ROOT_URLPATH}-->js/navi.js"></script>
-<script src="<!--{$smarty.const.ROOT_URLPATH}-->js/win_op.js"></script>
-<script src="<!--{$smarty.const.ROOT_URLPATH}-->js/site.js"></script>
-<script src="<!--{$TPL_URLPATH}-->js/jquery-1.6.4.min.js"></script>
-<script src="<!--{$TPL_URLPATH}-->js/jquery.biggerlink.js"></script>
-<script type="text/javascript">
-    $(function(){
-        $('.recommendblock, .list_area, .newslist li, .bubbleBox, .arrowBox').biggerlink();
-    });
-</script>
-<script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/btn.js"></script>
-<script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/barbutton.js"></script>
-<script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/category.js"></script>
-<script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/news.js"></script>
+    <!--{if $tpl_page_category == "abouts"}-->
+        <!--{if ($smarty.server.HTTPS != "") && ($smarty.server.HTTPS != "off")}-->
+            <script src="https://maps.google.com/maps/api/js?sensor=false"></script>
+        <!--{else}-->
+            <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+        <!--{/if}-->
+    <!--{/if}-->
+    <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/navi.js"></script>
+    <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/win_op.js"></script>
+    <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/site.js"></script>
+    <script src="<!--{$TPL_URLPATH}-->js/jquery-1.6.4.min.js"></script>
+    <script src="<!--{$TPL_URLPATH}-->js/jquery.biggerlink.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $('.recommendblock, .list_area, .newslist li, .bubbleBox, .arrowBox').biggerlink();
+        });
+    </script>
+    <script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/btn.js"></script>
+    <script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/barbutton.js"></script>
+    <script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/category.js"></script>
+    <script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/news.js"></script>
 
-<!--{* スマートフォンカスタマイズ用CSS *}-->
-<link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->css/jquery.mobile-1.0.1.css" />
+    <!--{* スマートフォンカスタマイズ用CSS *}-->
+    <link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->css/jquery.mobile-1.0.1.css" />
 
-<!--{* スマートフォンカスタマイズ用JS *}-->
-<script src="<!--{$TPL_URLPATH}-->js/config.js"></script>
-<script src="<!--{$TPL_URLPATH}-->js/jquery.mobile-1.0.1.min.js"></script>
-<script src="<!--{$TPL_URLPATH}-->js/jquery.autoResizeTextAreaQ-0.1.js"></script>
-<script src="<!--{$TPL_URLPATH}-->js/jquery.flickslide.js"></script>
-<script src="<!--{$TPL_URLPATH}-->js/favorite.js"></script>
+    <!--{* スマートフォンカスタマイズ用JS *}-->
+    <script src="<!--{$TPL_URLPATH}-->js/config.js"></script>
+    <script src="<!--{$TPL_URLPATH}-->js/jquery.mobile-1.0.1.min.js"></script>
+    <script src="<!--{$TPL_URLPATH}-->js/jquery.autoResizeTextAreaQ-0.1.js"></script>
+    <script src="<!--{$TPL_URLPATH}-->js/jquery.flickslide.js"></script>
+    <script src="<!--{$TPL_URLPATH}-->js/favorite.js"></script>
 
-<title><!--{$arrSiteInfo.shop_name|h}--><!--{if $tpl_subtitle|strlen >= 1}--> / <!--{$tpl_subtitle|h}--><!--{elseif $tpl_title|strlen >= 1}--> / <!--{$tpl_title|h}--><!--{/if}--></title>
-<!--{if $arrPageLayout.author|strlen >= 1}-->
-    <meta name="author" content="<!--{$arrPageLayout.author|h}-->" />
-<!--{/if}-->
-<!--{if $arrPageLayout.description|strlen >= 1}-->
-    <meta name="description" content="<!--{$arrPageLayout.description|h}-->" />
-<!--{/if}-->
-<!--{if $arrPageLayout.keyword|strlen >= 1}-->
-    <meta name="keywords" content="<!--{$arrPageLayout.keyword|h}-->" />
-<!--{/if}-->
-<!--{* iPhone用アイコン画像 *}-->
-<link rel="apple-touch-icon" href="<!--{$TPL_URLPATH}-->img/common/apple-touch-icon.png" />
+    <title><!--{$arrSiteInfo.shop_name|h}--><!--{if $tpl_subtitle|strlen >= 1}--> / <!--{$tpl_subtitle|h}--><!--{elseif $tpl_title|strlen >= 1}--> / <!--{$tpl_title|h}--><!--{/if}--></title>
+    <!--{if $arrPageLayout.author|strlen >= 1}-->
+        <meta name="author" content="<!--{$arrPageLayout.author|h}-->" />
+    <!--{/if}-->
+    <!--{if $arrPageLayout.description|strlen >= 1}-->
+        <meta name="description" content="<!--{$arrPageLayout.description|h}-->" />
+    <!--{/if}-->
+    <!--{if $arrPageLayout.keyword|strlen >= 1}-->
+        <meta name="keywords" content="<!--{$arrPageLayout.keyword|h}-->" />
+    <!--{/if}-->
+    <!--{* iPhone用アイコン画像 *}-->
+    <link rel="apple-touch-icon" href="<!--{$TPL_URLPATH}-->img/common/apple-touch-icon.png" />
 
-<script type="text/javascript">//<![CDATA[
-    <!--{$tpl_javascript}-->
-    $(function(){
-        <!--{$tpl_onload}-->
-    });
-//]]>
-</script>
+    <script type="text/javascript">//<![CDATA[
+        <!--{$tpl_javascript}-->
+        $(function(){
+            <!--{$tpl_onload}-->
+        });
+    //]]>
+    </script>
 </head>
 
 <body>
-<noscript>
-  <p><em>JavaScriptを有効にしてご利用下さい.</em></p>
-</noscript>
+    <noscript>
+        <p><em>JavaScriptを有効にしてご利用下さい.</em></p>
+    </noscript>
 
-<a name="top" id="top"></a>
+    <a name="top" id="top"></a>
 
-<!--▼CONTENTS-->
-<!--{if !$disable_wincol}--><div id="windowcolumn"><!--{/if}-->
+    <!--▼CONTENTS-->
+    <!--{if !$disable_wincol}--><div id="windowcolumn"><!--{/if}-->

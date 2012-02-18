@@ -21,32 +21,33 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
+
 <!--▼CONTENTS-->
 <section id="undercolumn">
     <!--☆プライバシーポリシー -->
     <h2 class="title"><!--{$tpl_title|h}--></h2>
-       <div class="inner">
-   <p>
-    <!--{if $arrSiteInfo.company_name != ''}--><!--{$arrSiteInfo.company_name|h}-->は、<!--{/if}-->
-     個人情報保護の重要性に鑑み、「個人情報の保護に関する法律」及び本プライバシーポリシーを遵守し、お客さまのプライバシー保護に努めます。
-      </p>
-        </div>
-       
-       <hr>
-    
     <div class="inner">
-          <p><em>個人情報の定義</em><br />
-             お客さま個人に関する情報(以下「個人情報」といいます)であって、お客さまのお名前、住所、電話番号など当該お客さま個人を識別することができる情報をさします。他の情報と組み合わせて照合することにより個人を識別することができる情報も含まれます。</p>
-           </div>
-           
+        <p>
+            <!--{if $arrSiteInfo.company_name != ''}--><!--{$arrSiteInfo.company_name|h}-->は、<!--{/if}-->
+            個人情報保護の重要性に鑑み、「個人情報の保護に関する法律」及び本プライバシーポリシーを遵守し、お客さまのプライバシー保護に努めます。
+        </p>
+    </div>
+
+    <hr>
+
+    <div class="inner">
+        <p><em>個人情報の定義</em><br />
+            お客さま個人に関する情報(以下「個人情報」といいます)であって、お客さまのお名前、住所、電話番号など当該お客さま個人を識別することができる情報をさします。他の情報と組み合わせて照合することにより個人を識別することができる情報も含まれます。</p>
+    </div>
 </section>
+
 <!--▼検索バー -->
 <section id="search_area">
-<form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
-<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-<input type="hidden" name="mode" value="search" />
-<input type="search" name="name" id="search" value="" placeholder="キーワードを入力" class="searchbox" >
-</form>
+    <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
+        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+        <input type="hidden" name="mode" value="search" />
+        <input type="search" name="name" id="search" value="" placeholder="キーワードを入力" class="searchbox" >
+    </form>
 </section>
 <!--▲検索バー -->
 <!--▲CONTENTS -->

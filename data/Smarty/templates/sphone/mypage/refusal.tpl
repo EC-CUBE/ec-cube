@@ -21,32 +21,34 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
+
 <!--▼CONTENTS-->
 <section id="mypagecolumn">
-      <h2 class="title"><!--{$tpl_title|h}--></h2>
-      <!--{include file=$tpl_navi}-->
+    <h2 class="title"><!--{$tpl_title|h}--></h2>
+    <!--{include file=$tpl_navi}-->
 
-      <h3 class="title_mypage"><!--{$tpl_subtitle|h}--></h3>
-          <form name="form1" method="post" action="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/refusal.php">
-              <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-              <input type="hidden" name="mode" value="confirm" />
+    <h3 class="title_mypage"><!--{$tpl_subtitle|h}--></h3>
+    <form name="form1" method="post" action="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/refusal.php">
+        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+        <input type="hidden" name="mode" value="confirm" />
 
-      <!--★インフォメーション★-->
-      <div class="refusetxt">
-          <p>会員を退会された場合には、現在保存されている購入履歴や、お届け先などの情報は、すべて削除されますがよろしいでしょうか？</p>
-         <div class="btn_area">
-              <p><input class="btn data-role-none" type="submit" value="会員退会手続き" name="refusal" id="refusal" /></p>
-         </div>
-      </div>
-          </form>
+        <!--★インフォメーション★-->
+        <div class="refusetxt">
+            <p>会員を退会された場合には、現在保存されている購入履歴や、お届け先などの情報は、すべて削除されますがよろしいでしょうか？</p>
+            <div class="btn_area">
+                <p><input class="btn data-role-none" type="submit" value="会員退会手続き" name="refusal" id="refusal" /></p>
+            </div>
+        </div>
+    </form>
 </section>
+
 <!--▼検索バー -->
 <section id="search_area">
-<form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
-<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-<input type="hidden" name="mode" value="search" />
-<input type="search" name="name" id="search" value="" placeholder="キーワードを入力" class="searchbox" >
-</form>
+    <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
+        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+        <input type="hidden" name="mode" value="search" />
+        <input type="search" name="name" id="search" value="" placeholder="キーワードを入力" class="searchbox" >
+    </form>
 </section>
 <!--▲検索バー -->
 <!--▲CONTENTS-->

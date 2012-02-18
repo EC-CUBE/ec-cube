@@ -21,10 +21,10 @@
  *}-->
 
 <nav class="header_navi">
-<ul>
- <li class="mypage"><img src="<!--{$TPL_URLPATH}-->img/header/btn_header_mypage.png" onclick="fnShowPopupmyPage(this)" width="30" height="20" alt="マイページ" /></li>
- <li class="cart"><img src="<!--{$TPL_URLPATH}-->img/header/btn_header_cart.png" onclick="fnShowPopupCart(this)" width="30" height="20" alt="カート" /></li>
-</ul>
+    <ul>
+        <li class="mypage"><img src="<!--{$TPL_URLPATH}-->img/header/btn_header_mypage.png" onclick="fnShowPopupmyPage(this)" width="30" height="20" alt="マイページ" /></li>
+        <li class="cart"><img src="<!--{$TPL_URLPATH}-->img/header/btn_header_cart.png" onclick="fnShowPopupCart(this)" width="30" height="20" alt="カート" /></li>
+    </ul>
 </nav>
 <!--!!空ボックス -->
 <div class="popup_mypage">
@@ -36,72 +36,71 @@
         <!--{/if}-->
     <!--{else}-->
         <p>ようこそ<br />
-        ゲストさん</p>
+            ゲストさん</p>
         <p><a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" rel="external">ログイン</a></p>
     <!--{/if}-->
 </div>
 
 <div class="popup_cart">
-<!--{if count($arrCartList) > 0}-->
-    <h2><a rel="external" href="<!--{$smarty.const.CART_URLPATH|h}-->">カートの中</a></h2>
-    <!--{foreach from=$arrCartList item=key}-->
-        <div class="product_type">
-            <!--{if count($arrCartList) > 1}-->
-            <p><span class="product_type">[<!--{$key.productTypeName|h}-->]</span></p>
-            <!--{/if}-->
-            <p><span class="mini">商品数:</span><span class="quantity"><!--{$key.quantity|number_format}--></span>点<br />
-                <span class="mini">合計:</span><span class="money"><!--{$key.totalInctax|number_format}--></span>円(税込)</p>
-            <hr class="dashed" />
-            <!--{if $freeRule > 0 && $key.productTypeId|h != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
-                <!--{if $key.delivFree > 0}-->
-                    <p class="attention free_money_area">あと<span class="free_money"><!--{$key.delivFree|number_format}--></span>円で送料無料</p>
-                <!--{else}-->
-                    <p class="attention free_money_area">現在、送料無料です</p>
+    <!--{if count($arrCartList) > 0}-->
+        <h2><a rel="external" href="<!--{$smarty.const.CART_URLPATH|h}-->">カートの中</a></h2>
+        <!--{foreach from=$arrCartList item=key}-->
+            <div class="product_type">
+                <!--{if count($arrCartList) > 1}-->
+                    <p><span class="product_type">[<!--{$key.productTypeName|h}-->]</span></p>
                 <!--{/if}-->
-            <!--{/if}-->
-        </div>
-    <!--{/foreach}-->
-<!--{else}-->
-   ※ 現在カート内に商品はございません。
-<!--{/if}-->
+                <p><span class="mini">商品数:</span><span class="quantity"><!--{$key.quantity|number_format}--></span>点<br />
+                    <span class="mini">合計:</span><span class="money"><!--{$key.totalInctax|number_format}--></span>円(税込)</p>
+                <hr class="dashed" />
+                <!--{if $freeRule > 0 && $key.productTypeId|h != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
+                    <!--{if $key.delivFree > 0}-->
+                        <p class="attention free_money_area">あと<span class="free_money"><!--{$key.delivFree|number_format}--></span>円で送料無料</p>
+                    <!--{else}-->
+                        <p class="attention free_money_area">現在、送料無料です</p>
+                    <!--{/if}-->
+                <!--{/if}-->
+            </div>
+        <!--{/foreach}-->
+    <!--{else}-->
+        ※ 現在カート内に商品はございません。
+    <!--{/if}-->
 </div>
 
 
 <script>
-var stateMyPage = 0;
-var stateCart = 0;
-function fnShowPopupmyPage(el) {
-    $("div.popup_mypage").css("left", $(el).offset().left - $("div.popup_mypage").width() + 15);
-    $("div.popup_mypage").toggle();
-    //表示状態の更新
-    if (stateMyPage == 0) {
-        stateMyPage = 1;
-    } else {
-        stateMyPage = 0;
-    }
-    
-    //カート情報の非表示化
-    if (stateCart == 1) {
-        $("div.popup_cart").hide();
-        stateCart = 0;
-    }
-}
+    var stateMyPage = 0;
+    var stateCart = 0;
+    function fnShowPopupmyPage(el) {
+        $("div.popup_mypage").css("left", $(el).offset().left - $("div.popup_mypage").width() + 15);
+        $("div.popup_mypage").toggle();
+        //表示状態の更新
+        if (stateMyPage == 0) {
+            stateMyPage = 1;
+        } else {
+            stateMyPage = 0;
+        }
 
-function fnShowPopupCart(el) {
-    $("div.popup_cart").css("left", $(el).offset().left - $("div.popup_cart").width() + 15);
-    $("div.popup_cart").toggle();
-    //表示状態の更新
-    if (stateCart == 0) {
-        stateCart = 1;
-    } else {
-        stateCart = 0;
+        //カート情報の非表示化
+        if (stateCart == 1) {
+            $("div.popup_cart").hide();
+            stateCart = 0;
+        }
     }
-    
-    //カート情報の非表示化
-    if (stateMyPage == 1) {
-        $("div.popup_mypage").hide();
-        stateMyPage = 0;
-    }
-}
 
+    function fnShowPopupCart(el) {
+        $("div.popup_cart").css("left", $(el).offset().left - $("div.popup_cart").width() + 15);
+        $("div.popup_cart").toggle();
+        //表示状態の更新
+        if (stateCart == 0) {
+            stateCart = 1;
+        } else {
+            stateCart = 0;
+        }
+
+        //カート情報の非表示化
+        if (stateMyPage == 1) {
+            $("div.popup_mypage").hide();
+            stateMyPage = 0;
+        }
+    }
 </script>

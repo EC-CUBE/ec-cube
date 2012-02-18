@@ -19,33 +19,35 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
+
 <!--▼CONTENTS-->
 <section id="undercolumn">
-       <h2 class="title"><!--{$tpl_title|h}--></h2>
-          <div class="intro">
-            <p><span class="attention">※</span>は必須入力項目です。</p>
-          </div>
+    <h2 class="title"><!--{$tpl_title|h}--></h2>
+    <div class="intro">
+        <p><span class="attention">※</span>は必須入力項目です。</p>
+    </div>
 
-      <form name="form1" id="form1" method="post" action="?">
-            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-            <input type="hidden" name="mode" value="confirm" />
+    <form name="form1" id="form1" method="post" action="?">
+        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+        <input type="hidden" name="mode" value="confirm" />
 
-         <dl class="form_entry">
-          <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`frontparts/form_personal_input.tpl" flgFields=3 emailMobile=false prefix=""}-->
-         </dl>
+        <dl class="form_entry">
+            <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`frontparts/form_personal_input.tpl" flgFields=3 emailMobile=false prefix=""}-->
+        </dl>
 
-         <div class="btn_area">
-          <p><input type="submit" value="確認ページへ" class="btn data-role-none" alt="確認ページへ" name="confirm" id="confirm" /></p>
-         </div>
-        </form>
+        <div class="btn_area">
+            <p><input type="submit" value="確認ページへ" class="btn data-role-none" alt="確認ページへ" name="confirm" id="confirm" /></p>
+        </div>
+    </form>
 </section>
+
 <!--▼検索バー -->
 <section id="search_area">
-<form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
-<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-<input type="hidden" name="mode" value="search" />
-<input type="search" name="name" id="search" value="" placeholder="キーワードを入力" class="searchbox" >
-</form>
+    <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
+        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+        <input type="hidden" name="mode" value="search" />
+        <input type="search" name="name" id="search" value="" placeholder="キーワードを入力" class="searchbox" >
+    </form>
 </section>
 <!--▲検索バー -->
 <!--▲CONTENTS-->

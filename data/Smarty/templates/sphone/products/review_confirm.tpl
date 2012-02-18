@@ -1,3 +1,4 @@
+<!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`popup_header.tpl" subtitle="お客様の声書き込み（確認ページ）"}-->
 <!--{*
  * This file is part of EC-CUBE
  *
@@ -19,53 +20,53 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`popup_header.tpl" subtitle="お客様の声書き込み（確認ページ）"}-->
 
-  <div id="windowarea">
+<div id="windowarea">
     <h2 class="title">お客様の声書き込み</h2>
     <form name="form1" method="post" action="?">
-      <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-      <input type="hidden" name="mode" value="complete" />
+        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+        <input type="hidden" name="mode" value="complete" />
         <!--{foreach from=$arrForm key=key item=item}-->
-        <!--{if $key ne "mode"}-->
-        <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" /><!--{/if}-->
+            <!--{if $key ne "mode"}-->
+                <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
+            <!--{/if}-->
         <!--{/foreach}-->
 
         <table summary="お客様の声書き込み">
-          <tr>
-            <th>商品名</th>
-            <td><!--{$arrForm.name|h}--></td>
-          </tr>
-          <tr>
-            <th>投稿者名<span class="attention">※</span></th>
-            <td><!--{$arrForm.reviewer_name|h}--></td>
-          </tr>
-          <tr>
-            <th>投稿者URL</th>
-            <td><!--{$arrForm.reviewer_url|h}--></td>
-          </tr>
-          <tr>
-            <th>性別</th>
-            <td><!--{if $arrForm.sex eq 1}-->男性<!--{elseif $arrForm.sex eq 2}-->女性<!--{/if}--></td>
-          </tr>
-          <tr>
-            <th>おすすめレベル<span class="attention">※</span></th>
-            <td><span class="recommend_level"><!--{$arrRECOMMEND[$arrForm.recommend_level]}--></span></td>
-          </tr>
-          <tr>
-            <th>タイトル<span class="attention">※</span></th>
-            <td><!--{$arrForm.title|h}--></td>
-          </tr>
-          <tr>
-            <th>コメント<span class="attention">※</span></th>
-            <td><!--{$arrForm.comment|h|nl2br}--></td>
-          </tr>
+            <tr>
+                <th>商品名</th>
+                <td><!--{$arrForm.name|h}--></td>
+            </tr>
+            <tr>
+                <th>投稿者名<span class="attention">※</span></th>
+                <td><!--{$arrForm.reviewer_name|h}--></td>
+            </tr>
+            <tr>
+                <th>投稿者URL</th>
+                <td><!--{$arrForm.reviewer_url|h}--></td>
+            </tr>
+            <tr>
+                <th>性別</th>
+                <td><!--{if $arrForm.sex eq 1}-->男性<!--{elseif $arrForm.sex eq 2}-->女性<!--{/if}--></td>
+            </tr>
+            <tr>
+                <th>おすすめレベル<span class="attention">※</span></th>
+                <td><span class="recommend_level"><!--{$arrRECOMMEND[$arrForm.recommend_level]}--></span></td>
+            </tr>
+            <tr>
+                <th>タイトル<span class="attention">※</span></th>
+                <td><!--{$arrForm.title|h}--></td>
+            </tr>
+            <tr>
+                <th>コメント<span class="attention">※</span></th>
+                <td><!--{$arrForm.comment|h|nl2br}--></td>
+            </tr>
         </table>
         <div class="btn">
-          <input type="image" onclick=" mode.value='return';" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_back.gif" class="box150" alt="戻る"  name="back" id="back" />
-          <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_send_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_send.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_send.gif" class="box150" alt="送信"  name="send" id="send" />
+            <input type="image" onclick=" mode.value='return';" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_back.gif" class="box150" alt="戻る"    name="back" id="back" />
+            <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_send_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_send.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_send.gif" class="box150" alt="送信"    name="send" id="send" />
         </div>
-      </form>
-    </div>
+    </form>
+</div>
 
 <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`popup_footer.tpl"}-->

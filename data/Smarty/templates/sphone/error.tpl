@@ -19,14 +19,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
- <!--▼CONTENTS-->
-    <section id="undercolumn">
-     <h2 class="title"><!--{$tpl_title|h}--></h2>
 
-<div id="errorBox">
-  <p class="error"><!--{$tpl_error}--></p>
+<!--▼CONTENTS-->
+<section id="undercolumn">
+    <h2 class="title"><!--{$tpl_title|h}--></h2>
 
-</div>
+    <div id="errorBox">
+        <p class="error"><!--{$tpl_error}--></p>
+    </div>
 </section>
-
 <!--▲CONTENTS-->
