@@ -55,6 +55,7 @@ class LC_Page_Contact extends LC_Page_Ex {
         $this->arrPref = $masterData->getMasterData('mtb_pref');
 
         if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
+            // @deprecated EC-CUBE 2.11 テンプレート互換用
             $this->CONF = SC_Helper_DB_Ex::sfGetBasisData();
         }
     }

@@ -25,11 +25,11 @@
 各種お問い合わせは、下記のお電話又はメールにてご連絡くださいませ。<br>
 <br>
 ●会社名<br>
-<!--{$CONF.company_name}--><br>
+<!--{$arrSiteInfo.company_name}--><br>
 ●電話番号<br>
-<!--{$CONF.tel01}-->-<!--{$CONF.tel02}-->-<!--{$CONF.tel03}--><br>
+<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}--><br>
 ●営業時間<br>
-<!--{$CONF.business_hour}--><br>
+<!--{$arrSiteInfo.business_hour}--><br>
 ●E-mail<br>
-<a href="mailto:<!--{$CONF.email02|u}-->"><!--{$CONF.email02|h}--></a><br>
+<a href="mailto:<!--{$arrSiteInfo.email02|u}-->"><!--{$arrSiteInfo.email02|h}--></a><br>
 ※お急ぎの場合には、お電話にてお問い合せください。
