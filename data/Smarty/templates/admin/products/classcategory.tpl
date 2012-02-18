@@ -91,4 +91,4 @@
         <a class="btn-action" href="./class.php"><span class="btn-prev">規格一覧に戻る</span></a>
     </div>
 </div>
-</form>    
+</form>

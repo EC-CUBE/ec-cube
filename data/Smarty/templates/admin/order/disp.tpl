@@ -111,7 +111,7 @@ self.moveTo(20,20);self.focus();
     </table>
     <!--▲お客様情報ここまで-->
 
-    <!--▼受注商品情報ここから-->        
+    <!--▼受注商品情報ここから-->
     <h2>受注商品情報</h2>
     <table class="list">
         <tr>
@@ -184,7 +184,7 @@ self.moveTo(20,20);self.focus();
             </tr>
         <!--{/if}-->
     </table>
-    <!--▼お届け先情報ここから-->        
+    <!--▼お届け先情報ここから-->
     <h2>お届け先情報</h2>
     <!--{if $arrForm.product_type_id.value[0] != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
     <!--{foreach name=shipping from=$arrAllShipping item=arrShipping key=shipping_index}-->

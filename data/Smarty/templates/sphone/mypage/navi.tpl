@@ -32,7 +32,7 @@
                 <li class="nav_history"><a href="./<!--{$smarty.const.DIR_INDEX_PATH}-->" class="<!--{if $tpl_mypageno == 'index'}--> selected<!--{/if}-->" rel="external">購入履歴</a></li>
                 <!--{if $smarty.const.OPTION_FAVOFITE_PRODUCT == 1}-->
                     <li class="nav_favorite"><a href="favorite.php" class="<!--{if $tpl_mypageno == 'favorite'}--> selected<!--{/if}-->" rel="external">お気に入り</a></li>
-                <!--{/if}-->                                                        
+                <!--{/if}-->
                     <li class="nav_refusal"><a href="refusal.php" class="<!--{if $tpl_mypageno == 'refusal'}--> selected<!--{/if}-->" rel="external">退会手続き</a></li>
                 <!--{else}-->
 

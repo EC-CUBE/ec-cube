@@ -72,10 +72,10 @@ self.moveTo(20,20);self.focus();
             <input type="password" name="password" size="20" class="box20" value="<!--{$arrForm.password}-->" onfocus="<!--{$tpl_onfocus}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>
             <span class="attention">※必須入力</span><br />
             ※半角英数字<!--{$smarty.const.ID_MIN_LEN}-->～<!--{$smarty.const.ID_MAX_LEN}-->文字
-	    <br />
+            <br />
             <input type="password" name="password02" size="20" class="box20" value="<!--{$arrForm.password02}-->" onfocus="<!--{$tpl_onfocus}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>
-	    <p><span class="attention mini">確認のために2度入力してください。</span></p>
-    </td>
+            <p><span class="attention mini">確認のために2度入力してください。</span></p>
+        </td>
     </tr>
     <tr>
         <th>権限</th>

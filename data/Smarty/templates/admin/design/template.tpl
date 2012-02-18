@@ -83,8 +83,8 @@ function submitRegister() {
 </div>
 </form>
 <form name="form2" method="post" action="?">
-  <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-  <input type="hidden" name="mode" value="" />
-  <input type="hidden" name="template_code" value="" />
-  <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+    <input type="hidden" name="mode" value="" />
+    <input type="hidden" name="template_code" value="" />
+    <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 </form>

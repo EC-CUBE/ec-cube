@@ -101,7 +101,7 @@
         <input type="hidden" name="page" value="<!--{$arrForm.page.value|h}-->" />
         <!--{foreach key=key item=item from=$arrHidden}-->
             <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
-        <!--{/foreach}-->    
+        <!--{/foreach}-->
 
             <!--検索結果表示テーブル-->
             <h2><!--{include file=$tpl_graphsubtitle}--></h2>
@@ -133,7 +133,7 @@
             <input type="hidden" name="page" value="<!--{$arrForm.page.value|h}-->" />
             <!--{foreach key=key item=item from=$arrHidden}-->
                 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
-            <!--{/foreach}-->    
+            <!--{/foreach}-->
             <!--検索結果表示テーブル-->
             <h2><!--{include file=$tpl_graphsubtitle}--></h2>
             <div class="message">

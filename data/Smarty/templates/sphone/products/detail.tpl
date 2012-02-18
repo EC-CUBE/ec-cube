@@ -359,7 +359,7 @@
                                     <!--{$price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                                 <!--{else}-->
                                     <!--{$price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$price02_max|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
-                                <!--{/if}--> 
+                                <!--{/if}-->
                                 円</span>
                             </p>
                         </li>

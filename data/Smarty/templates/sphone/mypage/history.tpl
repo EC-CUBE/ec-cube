@@ -125,7 +125,7 @@
                     <p>配信日：<!--{$tpl_arrMailHistory[cnt].send_date|sfDispDBDate|h}--><br />
                         <!--{assign var=key value="`$tpl_arrMailHistory[cnt].template_id`"}-->
                         通知メール：<!--{$arrMAILTEMPLATE[$key]|h}--></p>
-                    <p><a href="javascript:;" onclick="getMailDetail(<!--{$tpl_arrMailHistory[cnt].send_id}-->)" rel="external"><!--{$tpl_arrMailHistory[cnt].subject|h}--></a></p> 
+                    <p><a href="javascript:;" onclick="getMailDetail(<!--{$tpl_arrMailHistory[cnt].send_id}-->)" rel="external"><!--{$tpl_arrMailHistory[cnt].subject|h}--></a></p>
                 </div>
                 <!--▲メール -->
             <!--{/section}-->

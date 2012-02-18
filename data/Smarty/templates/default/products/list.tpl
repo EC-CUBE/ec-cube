@@ -160,7 +160,7 @@ function fnInCart(productForm) {
                 <!--▼商品ステータス-->
                 <!--{if count($productStatus[$id]) > 0}-->
                     <ul class="status_icon clearfix">
-                        <!--{foreach from=$productStatus[$id] item=status}--> 
+                        <!--{foreach from=$productStatus[$id] item=status}-->
                             <li>
                                 <img src="<!--{$TPL_URLPATH}--><!--{$arrSTATUS_IMAGE[$status]}-->" width="60" height="17" alt="<!--{$arrSTATUS[$status]}-->"/>
                             </li>

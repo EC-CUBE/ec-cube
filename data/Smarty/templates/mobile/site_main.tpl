@@ -71,7 +71,7 @@
     <!--{foreach key=MainHeadKey item=MainHeadItem from=$arrPageLayout.MainHead}-->
         <!-- ▼<!--{$MainHeadItem.bloc_name}--> -->
         <!--{if $MainHeadItem.php_path != ""}-->
-           <!--{include_php file=$MainHeadItem.php_path items=$MainHeadItem}-->
+            <!--{include_php file=$MainHeadItem.php_path items=$MainHeadItem}-->
         <!--{else}-->
             <!--{include file=$MainHeadItem.tpl_path items=$MainHeadItem}-->
         <!--{/if}-->

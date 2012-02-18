@@ -89,7 +89,7 @@ function fnChangeDispNumber(dispNumber) {
                     <!--▼商品ステータス-->
                     <!--{if count($productStatus[$id]) > 0}-->
                         <ul class="status_icon">
-                            <!--{foreach from=$productStatus[$id] item=status}--> 
+                            <!--{foreach from=$productStatus[$id] item=status}-->
                                 <li><!--{$arrSTATUS[$status]}--></li>
                             <!--{/foreach}-->
                         </ul>
@@ -101,8 +101,8 @@ function fnChangeDispNumber(dispNumber) {
 
                 <!--★商品価格★-->
                 <p>
-                    <span class="pricebox sale_price"><span class="mini">販売価格(税込):</span></span> 
-                    <span class="price"> 
+                    <span class="pricebox sale_price"><span class="mini">販売価格(税込):</span></span>
+                    <span class="price">
                         <span id="price02_default_<!--{$id}-->">
                         <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
                             <!--{$arrProduct.price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
@@ -153,8 +153,8 @@ function fnChangeDispNumber(dispNumber) {
         var i = limit;
         //送信データを準備
         var postData = {};
-        $('#form1').find(':input').each(function(){  
-            postData[$(this).attr('name')] = $(this).val();  
+        $('#form1').find(':input').each(function(){
+            postData[$(this).attr('name')] = $(this).val();
         });
         postData["mode"] = "json";
         postData["pageno"] = pageNo;
@@ -182,7 +182,7 @@ function fnChangeDispNumber(dispNumber) {
 
                         //商品写真をセット
                         $($(".list_area .listphoto img").get(maxCnt)).attr({
-                            src: "<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=" + product.main_list_image + '&width=80&height=80', 
+                            src: "<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=" + product.main_list_image + '&width=80&height=80',
                             alt: product.name
                         });
 

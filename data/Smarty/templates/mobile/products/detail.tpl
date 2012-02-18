@@ -33,24 +33,24 @@
 <center>
 <!--{if $subImageFlag == true}-->
 <br>画像
-  <!--{if ($smarty.get.image == "" || $smarty.get.image == "main_image")}-->
+    <!--{if ($smarty.get.image == "" || $smarty.get.image == "main_image")}-->
 [1]
-  <!--{else}-->
+    <!--{else}-->
 [<a href="?product_id=<!--{$smarty.get.product_id}-->&amp;image=main_image">1</a>]
-  <!--{/if}-->
-  
-  <!--{assign var=num value="2"}-->
-  <!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
-  <!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
-  <!--{if $arrFile[$key].filepath != ""}-->
+    <!--{/if}-->
+
+    <!--{assign var=num value="2"}-->
+    <!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
+    <!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
+    <!--{if $arrFile[$key].filepath != ""}-->
     <!--{if $key == $smarty.get.image}-->
 [<!--{$num}-->]
     <!--{else}-->
 [<a href="?product_id=<!--{$smarty.get.product_id}-->&amp;image=<!--{$key}-->"><!--{$num}--></a>]
     <!--{/if}-->
     <!--{assign var=num value="`$num+1`"}-->
-  <!--{/if}-->
-  <!--{/section}-->
+    <!--{/if}-->
+    <!--{/section}-->
 <br>
 <!--{/if}-->
 <br>
@@ -124,7 +124,7 @@ Pt<br>
 
 <form name="form1" method="post" action="?">
 	<input type="hidden" name="mode" value="select">
-  <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 
 	<input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->">
 <!--{if $tpl_stock_find}-->

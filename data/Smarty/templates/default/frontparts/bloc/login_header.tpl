@@ -11,14 +11,16 @@
         $login_email
             .focus(function() {
                 if ($(this).val() == 'メールアドレス') {
-                    $(this).val('')
-                           .css('color', '#000');
+                    $(this)
+                        .val('')
+                        .css('color', '#000');
                 }
             })
             .blur(function() {
                 if (!$(this).val()) {
-                    $(this).val('メールアドレス')
-                           .css('color', '#AAA');
+                    $(this)
+                        .val('メールアドレス')
+                        .css('color', '#AAA');
                 }
             });
 

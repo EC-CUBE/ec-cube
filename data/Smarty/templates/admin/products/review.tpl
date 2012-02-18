@@ -105,7 +105,7 @@
             </ul>
         </div>
     </div>
-</form>    
+</form>
 
 
 <!--{if $smarty.post.mode == 'search'}-->

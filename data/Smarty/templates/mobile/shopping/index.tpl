@@ -34,7 +34,7 @@
 
 <!--▼会員登録がお済みのお客様-->
 <form name="member_form" id="member_form" method="post" action="?">
-  <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->">
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->">
 	<input type="hidden" name="mode" value="login">
 <!--{if !$tpl_valid_phone_id}-->
 	■以前にご注文された方<br>
@@ -42,7 +42,7 @@
 	▼メールアドレス<br>
 	<!--{assign var=key value="login_email"}-->
 	<font color="#FF0000"><!--{$arrErr[$key]}--></font>
-	<input type="text" name="<!--{$key}-->" value="<!--{$tpl_login_email|h}-->" 
+	<input type="text" name="<!--{$key}-->" value="<!--{$tpl_login_email|h}-->"
 		size="40" istyle="3"><br>
 <!--{else}-->
 <input type="hidden" name="login_email" value="dummy">

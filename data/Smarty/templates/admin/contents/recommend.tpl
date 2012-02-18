@@ -54,7 +54,7 @@ function lfnCheckSetItem( rank ){
             if( ! window.confirm('さきほど選択した<!--{$checkRank|h}-->位の情報は破棄されます。宜しいでしょうか')){
                 flag = false;
             }
-        } 
+        }
     }
 
     if ( flag ){

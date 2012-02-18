@@ -85,7 +85,7 @@
 
             <p class="remark"><span class="attention"><!--{$tpl_linemax}-->件</span>が該当しました。</p>
             <div class="pager">
-              <!--{$tpl_strnavi}-->
+                <!--{$tpl_strnavi}-->
             </div>
 
             <!--{if $smarty.const.ADMIN_MODE == '1'}-->
@@ -109,7 +109,7 @@
                 <!--{assign var=rank value=$tpl_start_row}-->
                 <!--{section name=cnt loop=$arrProductsList}-->
                     <tr>
-                        <td><!--{from_to from=$arrProductsList[cnt].product_code_min to=$arrProductsList[cnt].product_code_max separator="～<br />"}--></td>                    
+                        <td><!--{from_to from=$arrProductsList[cnt].product_code_min to=$arrProductsList[cnt].product_code_max separator="～<br />"}--></td>
                         <td>
                             <!--{$arrProductsList[cnt].name|h}-->
                         </td>

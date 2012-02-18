@@ -99,10 +99,9 @@
 
 	【携帯メールアドレス】<font color="#FF0000">※</font><br>
 	<font color="#FF0000"><!--{$arrErr.email_mobile}--></font>
-	<input type="text" name="email_mobile" value="<!--{$arrForm.email_mobile|h}-->" istyle="3">
-  <br>
+	<input type="text" name="email_mobile" value="<!--{$arrForm.email_mobile|h}-->" istyle="3"><br>
 
-  <!--{* PCメールアドレス *}-->
+    <!--{* PCメールアドレス *}-->
 	<input type="hidden" name="email" value="<!--{$arrForm.email|h}-->" istyle="3">
 
 	【パスワード】<font color="#FF0000">※</font><br>

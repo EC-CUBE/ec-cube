@@ -168,7 +168,7 @@ function lfnDispChange(){
 
     </div>
     <!--検索条件設定テーブルここまで-->
-</form>  
+</form>
 
 
 <!--{if count($arrErr) == 0 and ($smarty.post.mode == 'search' or $smarty.post.mode == 'delete')}-->
@@ -298,6 +298,6 @@ function lfnDispChange(){
 
 </form>
 
-<!--★★検索結果一覧★★-->        
+<!--★★検索結果一覧★★-->
 <!--{/if}-->
 </div>

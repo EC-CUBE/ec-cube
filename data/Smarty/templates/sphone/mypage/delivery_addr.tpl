@@ -29,7 +29,7 @@
     <!--★インフォメーション★-->
     <div class="information">
         <p><span class="attention">※</span>は必須入力項目です。<br />
-            最大20件まで登録できます。</p> 
+            最大20件まで登録できます。</p>
     </div>
 
     <form name="form1" id="form1" method="post" action="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php">

@@ -96,7 +96,7 @@
         <!--{* ▲LEFT COLUMN *}-->
 
         <!--{* ▼CENTER COLUMN *}-->
-        <div 
+        <div
             <!--{if $tpl_column_num == 3}-->
                 id="three_maincolumn"
             <!--{elseif $tpl_column_num == 2}-->

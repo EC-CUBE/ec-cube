@@ -86,7 +86,7 @@
         <div class="form_area">
             <div class="information">
                 <p>お気に入りが登録されておりません。</p>
-            </div>        
+            </div>
         </div><!-- /.form_area -->
     <!--{/if}-->
 
@@ -114,8 +114,8 @@
         var i = limit;
         //送信データを準備
         var postData = {};
-        $('#form1').find(':input').each(function(){  
-            postData[$(this).attr('name')] = $(this).val();  
+        $('#form1').find(':input').each(function(){
+            postData[$(this).attr('name')] = $(this).val();
         });
         postData["mode"] = "getList";
         postData["pageno"] = pageNo;
@@ -144,7 +144,7 @@
 
                         //商品写真をセット
                         $($(".favoriteBox img.productImg").get(maxCnt)).attr({
-                            src: imagePath + product.main_list_image, 
+                            src: imagePath + product.main_list_image,
                             alt: product.name
                         });
 

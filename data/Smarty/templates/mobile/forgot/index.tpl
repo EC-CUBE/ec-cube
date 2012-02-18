@@ -50,8 +50,8 @@
 <input type="text" name="email" value="<!--{$arrForm.email|default:$tpl_login_email|h}-->" size="50" istyle="3"><br>
 <br>
 お名前：<font color="#FF0000"><!--{$arrErr.name01}--><!--{$arrErr.name02}--></font><br>
- 姓<input type="text" name="name01" value="<!--{$arrForm.name01|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" istyle="1"><br>
- 名<input type="text" name="name02" value="<!--{$arrForm.name02|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" istyle="1"><br>
+姓<input type="text" name="name01" value="<!--{$arrForm.name01|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" istyle="1"><br>
+名<input type="text" name="name02" value="<!--{$arrForm.name02|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" istyle="1"><br>
 
 <br>
 <center><input type="submit" value="次へ" name="next"></center>

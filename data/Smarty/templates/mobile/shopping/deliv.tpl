@@ -58,7 +58,7 @@
     <input type="hidden" name="other_deliv_id" value="<!--{$arrAddr[cnt].other_deliv_id}-->">
     <center><input type="submit" value="お届け先情報変更"></center>
     </form>
-    
+
     <form method="post" action="?">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">

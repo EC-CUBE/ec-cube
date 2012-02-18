@@ -58,7 +58,7 @@
         <!--{if count($cartItems) > 0}-->
 
             <!--{foreach from=$cartKeys item=key}-->
-            
+
                 <!--☆送料無料アナウンス右にスライドボタン -->
                 <!--{if $key != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
                     <!--{if $arrInfo.free_rule > 0}-->

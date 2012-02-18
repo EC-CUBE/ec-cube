@@ -1,3 +1,4 @@
+**<!--{$arrErr|@var_dump}-->
 <!--{*
  * This file is part of EC-CUBE
  *
@@ -269,7 +270,7 @@ $(document).ready(function() {
                         <script type="text/javascript">
                             var favoriteButton = $("#add_favorite_product");
                             favoriteButton.tipsy({gravity: $.fn.tipsy.autoNS, fallback: "お気に入りに登録済み", fade: true });
-                            
+
                             <!--{if $just_added_favorite == true}-->
                             favoriteButton.load(function(){$(this).tipsy("show")});
                             $(function(){

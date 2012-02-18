@@ -105,7 +105,7 @@ function func_submit( id ){
         <!--{sectionelse}-->
         <tr>
             <td colspan="4">商品が登録されていません</td>
-        </tr>    
+        </tr>
         <!--{/section}-->
     </table>
     <!--{/if}-->

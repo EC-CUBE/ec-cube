@@ -84,8 +84,8 @@
                         </td>
                         <td>
                             <!--{assign var=key value="quantity"}-->
-                            <!--{if $arrErr[$key][$index] != ''}--> 
-                                <span class="attention"><!--{$arrErr[$key][$index]}--></span> 
+                            <!--{if $arrErr[$key][$index] != ''}-->
+                                <span class="attention"><!--{$arrErr[$key][$index]}--></span>
                             <!--{/if}-->
                             <input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" class="box40" style="<!--{$arrErr[$key][$index]|sfGetErrorColor}-->" />
                         </td>

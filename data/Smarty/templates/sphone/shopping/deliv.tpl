@@ -57,7 +57,7 @@
                     <dl class="deliv_check">
                         <!--{if $smarty.section.cnt.first}-->
                             <dt class="first">
-                                <p>  
+                                <p>
                                     <input type="radio" name="deliv_check" id="chk_id_<!--{$smarty.section.cnt.iteration}-->" value="-1" <!--{if $arrForm.deliv_check.value == "" || $arrForm.deliv_check.value == -1}--> checked="checked"<!--{/if}--> class="data-role-none" />
                                     <label for="chk_id_<!--{$smarty.section.cnt.iteration}-->">会員登録住所</label>
                                 </p>

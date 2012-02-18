@@ -24,7 +24,7 @@
 <form name="member_form" id="member_form" method="post" action="../frontparts/login_check.php">
 	<input type="hidden" name="mode" value="login" >
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-    <input type="hidden" name="url" value="<!--{$smarty.server.REQUEST_URI|h}-->" />    
+    <input type="hidden" name="url" value="<!--{$smarty.server.REQUEST_URI|h}-->" />
 <!--{if !$tpl_valid_phone_id}-->
 	●メールアドレス<br>
     <!--{assign var=key value="login_email"}-->

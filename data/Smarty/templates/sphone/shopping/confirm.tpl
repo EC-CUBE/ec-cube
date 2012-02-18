@@ -137,7 +137,7 @@
                     <!--★合計★-->
                     <div class="total_area">
                         <span class="mini">合計：</span><span class="price fb"><!--{$arrForm.payment_total|number_format}--> 円</span>
-                    </div>   
+                    </div>
                 </div><!-- /.formBox -->
 
                 <!--{* ログイン済みの会員のみ *}-->
@@ -179,7 +179,7 @@
                         <!--▼フォームボックスここから -->
                         <div class="formBox">
                             <dl class="deliv_confirm">
-                                <dt>お届け先<!--{if $is_multiple}--><!--{$smarty.foreach.shippingItem.iteration}--><!--{/if}--></dt>     
+                                <dt>お届け先<!--{if $is_multiple}--><!--{$smarty.foreach.shippingItem.iteration}--><!--{/if}--></dt>
                                 <dd>
                                     <p>〒<!--{$shippingItem.shipping_zip01|h}-->-<!--{$shippingItem.shipping_zip02|h}--><br />
                                         <!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01|h}--><!--{$shippingItem.shipping_addr02|h}--></p>

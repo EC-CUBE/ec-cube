@@ -72,7 +72,7 @@
                 <li><input type="submit" value="送信" class="btn data-role-none" name="send" id="send" /></li>
                 <li><a class="btn_back" href="?" onClick="fnModeSubmit('return', '', ''); return false;">戻る</a></li>
             </ul>
-        </div> 
+        </div>
     </form>
 </section>
 

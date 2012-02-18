@@ -184,7 +184,7 @@ function fnCheckStock(form) {
                 <tr style="background:<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->;">
                     <td class="center">
                         <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|h}-->&width=65&height=65" alt="<!--{$arrRecommend[$recommend_no].name|h}-->" />
-                    </td>    
+                    </td>
                     <td>
                         <!--{assign var=codemin value=`$arrProducts[cnt].product_code_min`}-->
                         <!--{assign var=codemax value=`$arrProducts[cnt].product_code_max`}-->

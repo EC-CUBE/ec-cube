@@ -25,7 +25,7 @@
 jQuery(function(){
     $("a.btn-action").click(function(){
         $("form#form1").submit();
-        return false;   
+        return false;
     });
 });
 </script>

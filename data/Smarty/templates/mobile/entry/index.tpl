@@ -101,7 +101,7 @@
 	●メールアドレス<font color="#FF0000"> *</font><br>
 	<font color="#FF0000"><!--{$arrErr.email}--></font>
 	<input type="text" name="email" value="<!--{$arrForm.email|h}-->" istyle="3">
-  <br>
+    <br>
 
 	●パスワード<font color="#FF0000"> *</font><br>
 	（半角英数字<!--{$smarty.const.PASSWORD_MIN_LEN}-->文字以上<!--{$smarty.const.PASSWORD_MAX_LEN}-->文字以内）<br>

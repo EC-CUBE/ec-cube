@@ -24,13 +24,13 @@
 <script type="text/javascript">//<![CDATA[
     $(function() {
 
-       /**
-        * 「有効/有効にする」チェックボタン押下時
-        */
+        /**
+         * 「有効/有効にする」チェックボタン押下時
+         */
         $('input[id^=plugin_enable]').change(function(event) {
             // モード(有効 or 無効)
             var mode = event.target.name;
-            
+
             if(mode === 'disable') {
                 result = window.confirm('プラグインを無効しても宜しいですか？');
             } else if(mode === 'enable') {
@@ -43,71 +43,71 @@
             }
         });
 
-   /**
-    * 通信エラー表示.
-    */
+    /**
+     * 通信エラー表示.
+     */
     function remoteException(XMLHttpRequest, textStatus, errorThrown) {
         alert('通信中にエラーが発生しました。');
     }
 
-   /**
-    * アップデートリンク押下時の処理.
-    */
+    /**
+     * アップデートリンク押下時の処理.
+     */
     $('.update_link').click(function(event) {
         var plugin_id = event.target.name;
         $('div[id="plugin_update_' + plugin_id + '"]').toggle("slow");
         });
     });
 
-   /**
-    * アプデートボタン押下時の処理.
-    * アップデート対象ファイル以外はPOSTされない様にdisabled属性を付与
-    */
+    /**
+     * アプデートボタン押下時の処理.
+     * アップデート対象ファイル以外はPOSTされない様にdisabled属性を付与
+     */
     function removeUpdateFile(select_id) {
         $('input[name="update_plugin_file"]').attr("disabled", "disabled");
         $('input[id="' + select_id + '"]').removeAttr("disabled");
     }
 
-   /**
-    * インストール
-    */
+    /**
+     * インストール
+     */
     function install() {
         if (window.confirm('プラグインをインストールしても宜しいでしょうか？')){
             fnModeSubmit('install','','');
         }
     }
 
-   /**
-    * アンインストール(削除)
-    */
+    /**
+     * アンインストール(削除)
+     */
     function uninstall(plugin_id, plugin_code) {
         if (window.confirm('一度削除したデータは元に戻せません。\nプラグインを削除しても宜しいですか？')){
-           fnSetFormValue('plugin_id', plugin_id);
-           fnModeSubmit('uninstall', 'plugin_code', plugin_code);
+            fnSetFormValue('plugin_id', plugin_id);
+            fnModeSubmit('uninstall', 'plugin_code', plugin_code);
         }
     }
-    
-   /**
-    * アップデート
-    */
+
+    /**
+     * アップデート
+     */
     function update(plugin_id, plugin_code) {
         if (window.confirm('プラグインをアップデートしても宜しいですか？')){
-           removeUpdateFile('update_file_' + plugin_id);
-           fnSetFormValue('plugin_id', plugin_id);
-           fnModeSubmit('update','plugin_code', plugin_code);
+            removeUpdateFile('update_file_' + plugin_id);
+            fnSetFormValue('plugin_id', plugin_id);
+            fnModeSubmit('update','plugin_code', plugin_code);
         }
     }
-    
 
-   /**
-    * 優先度変更.
-    */
+
+    /**
+     * 優先度変更.
+     */
     function priority(plugin_id, plugin_code) {
         var priority = $("*[name=priority_" + plugin_code +"]").val();
         fnSetFormValue('priority', priority);
         fnModeSubmit('priority','plugin_id',plugin_id);
     }
-    
+
 //]]>
 </script>
 
@@ -202,7 +202,7 @@
                                 <!--{/if}-->
 
                                 <!-- アップデートリンク押下時に表示する. -->
-                                <div id="plugin_update_<!--{$plugin.plugin_id}-->" style="display: none">                                
+                                <div id="plugin_update_<!--{$plugin.plugin_id}-->" style="display: none">
                                     <input id="update_file_<!--{$plugin.plugin_id}-->" name="<!--{$plugin.plugin_code}-->" type="file" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box30" size="30" <!--{if $arrErr[$key]}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}--> />
                                     <a class="btn-action" href="javascript:;" onclick="update(<!--{$plugin.plugin_id}-->, '<!--{$plugin.plugin_code}-->'); return false;"><span class="btn-next">アップデート</span></a>
                                 </div>
@@ -217,7 +217,7 @@
             </tr>
             <!--競合アラート-->
             <!--{if $plugin.conflict_message != ""}-->
-            <tr> 
+            <tr>
                 <td class="attention_fookpoint" colspan="3">
                     <p class="attention"><!--{$plugin.conflict_message}--></p>
                 </td>

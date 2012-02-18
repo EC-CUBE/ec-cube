@@ -67,7 +67,7 @@
             <!--{if $arrErr[$key] != "" || $arrErr[$key_next] != ""}-->
             <tr>
                 <td colspan="4"><span class="attention"><!--{$arrErr[$key]}--><!--{$arrErr[$key_next]}--></span></td>
-            </tr>        
+            </tr>
             <!--{/if}-->
             <tr>
             <th>お届け時間<!--{$keyno}--></td>
@@ -122,12 +122,12 @@
             <!--{if $arrErr[$key] != "" || $arrErr[$key_next] != ""}-->
             <tr>
                 <td colspan="4"><span class="attention"><!--{$arrErr[$key]}--><!--{$arrErr[$key_next]}--></span></td>
-            </tr>        
+            </tr>
             <!--{/if}-->
             <tr>
             <th><!--{$arrPref[$keyno]}--></td>
             <!--{if $smarty.section.cnt.last}-->
-            <!--{assign var=colspan value="3"}-->    
+            <!--{assign var=colspan value="3"}-->
             <!--{else}-->
             <!--{assign var=colspan value="1"}-->
             <!--{/if}-->
