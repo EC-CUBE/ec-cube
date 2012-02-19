@@ -419,47 +419,49 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfRestore($bkup_name, $bkup_dir, $bkup_ext, $mode) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+
         // 実行時間を制限しない
+        // FIXME ファイル展開時に限定すべき
         set_time_limit(0);
 
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $success = true;
-
+        $bkup_filepath = $bkup_dir . $bkup_name . $bkup_ext;
         $work_dir = $bkup_dir . $bkup_name . '/';
 
         //圧縮フラグTRUEはgzip解凍をおこなう
-        $tar = new Archive_Tar($work_dir . $bkup_name . $bkup_ext, TRUE);
+        $tar = new Archive_Tar($bkup_filepath, TRUE);
 
         //指定されたフォルダ内に解凍する
-        $success = $tar->extract($work_dir . $bkup_name);
+        $success = $tar->extract($work_dir);
 
-        // 無事解凍できれば、リストアを行う
-        if ($success) {
-
-            // トランザクション開始
-            $objQuery->begin();
-
-            // DBをクリア
-            $success = $this->lfDeleteAll($objQuery);
-
-            // INSERT実行
-            if ($success) $success = $this->lfExeInsertSQL($objQuery, $work_dir, $mode);
-
-            // 自動採番の値をセット
-            if ($success) $this->lfSetAutoInc($objQuery, $work_dir . 'autoinc_data.csv');
-
-            // リストア成功ならコミット失敗ならロールバック
-            if ($success) {
-                $objQuery->commit();
-                $this->restore_msg = 'リストア終了しました。';
-                $this->restore_err = true;
-            } else {
-                $objQuery->rollback();
-                $this->restore_msg = 'リストアに失敗しました。';
-                $this->restore_name = $bkup_name;
-                $this->restore_err = false;
-            }
+        if (!$success) {
+            $msg = 'バックアップファイルの展開に失敗しました。' . "\n";
+            $msg .= '展開元: ' . $bkup_filepath . "\n";
+            $msg .= '展開先: ' . $work_dir;
+            SC_Utils_Ex::sfDispException($msg);
         }
+
+        // トランザクション開始
+        $objQuery->begin();
+
+        // INSERT実行
+        $success = $this->lfExeInsertSQL($objQuery, $work_dir, $mode);
+
+        // 自動採番の値をセット
+        if ($success) $this->lfSetAutoInc($objQuery, $work_dir . 'autoinc_data.csv');
+
+        // リストア成功ならコミット失敗ならロールバック
+        if ($success) {
+            $objQuery->commit();
+            $this->restore_msg = 'リストア終了しました。';
+            $this->restore_err = true;
+        } else {
+            $objQuery->rollback();
+            $this->restore_msg = 'リストアに失敗しました。';
+            $this->restore_name = $bkup_name;
+            $this->restore_err = false;
+        }
+        GC_Utils_Ex::gfPrintLog($this->restore_msg);
 
         // FIXME この辺りで、バックアップ時と同等の一時ファイルの削除を実行すべきでは?
     }
@@ -487,7 +489,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
             if (!preg_match('/^((dtb|mtb)_(\w+))\.csv$/', $file_name, $matches)) {
                 continue;
             }
-            var_dump($matches);
             $file_path = $dir . $file_name;
             $table = $matches[1];
 
@@ -505,7 +506,11 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
                 SC_Utils_Ex::sfDispException($file_name . ' のファイルオープンに失敗しました。');
             }
 
+            GC_Utils_Ex::gfPrintLog('リストア実行: ' . $table);
+            $objQuery->delete($table);
+
             $line = 0;
+            $arrColName = array();
             while (!feof($fp)) {
                 $line++;
                 $arrCsvLine = fgetcsv($fp, 1000000);
@@ -513,6 +518,13 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
                 // 1行目: 列名
                 if ($line === 1) {
                     $arrColName = $arrCsvLine;
+                    continue;
+                }
+
+                // 空行を無視
+                // false との比較は PHP 5.2.x Windows バグ対応
+                // 参考: http://www.php.net/manual/ja/function.fgetcsv.php#98502
+                if ($arrCsvLine === array(null) || $arrCsvLine === false) {
                     continue;
                 }
 
@@ -538,23 +550,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
             $objQuery->setval($arrData[0], $arrData[1]);
         }
-    }
-
-    // DBを全てクリアする
-    function lfDeleteAll(&$objQuery) {
-        $ret = true;
-
-        $arrTableList = $objQuery->listTables();
-
-        foreach ($arrTableList as $val) {
-            // バックアップテーブルは削除しない
-            // XXX mtb_zip も削除不要では?
-            if ($val != 'dtb_bkup') {
-                $ret = $objQuery->delete($val);
-                if (PEAR::isError($ret)) return false;
-            }
-        }
-        return true;
     }
 
     // 選択したバックアップをDBから削除
