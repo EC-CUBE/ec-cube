@@ -1,3 +1,4 @@
+<!DOCTYPE HTML>
 <!--{*
  * This file is part of EC-CUBE
  *

@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
+
 <!--{*
 オーナーズストア通信処理用のjsとcssを読み込む
 onclickなどで
@@ -30,6 +31,7 @@ OwnersStore.download();やOwnersStore.products_list();を呼び出すことで
 購入商品一覧はid="ownersstore_products_list"に出力される
 
 *}-->
+
 <link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/thickbox.css" type="text/css" media="screen" />
 <script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/ownersstore.js.php"></script>
 

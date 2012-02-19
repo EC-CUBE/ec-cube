@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
+
 <!--{if $arrForm.page.value == "term" || $arrForm.page.value == ""}-->
     <strong>期間別集計</strong>&nbsp;（
     <!--{if $smarty.post.type == 'day' || $smarty.post.type == ''}-->

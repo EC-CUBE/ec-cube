@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
+
 <div id="undercolumn">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
     <div id="undercolumn_login">

@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA    02111-1307, USA.
  */
 *}-->
+
 <style type="text/css">
 .mainbg {
     background: #fff url(<!--{$TPL_URLPATH_DEFAULT}-->img/contents/main_bg.jpg);
