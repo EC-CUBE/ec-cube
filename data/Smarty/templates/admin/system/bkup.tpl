@@ -22,6 +22,14 @@
  */
 *}-->
 
+<script>
+    function fnRestore(list_name) {
+        if (window.confirm('リストアしますか?')) {
+            document.body.style.cursor = 'wait';
+            fnModeSubmit('restore', 'list_name', list_name);
+        }
+    }
+</script>
 <form name="form1" id="form1" method="post" action="" onsubmit="return false;">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="edit" />
@@ -78,10 +86,10 @@
                     <td ><!--{$arrBkupList[cnt].bkup_name}--></td>
                     <td ><!--{$arrBkupList[cnt].bkup_memo}--></td>
                     <td align="center"><!--{$arrBkupList[cnt].create_date|sfCutString:19:true:false}--></td>
-                    <td align="center"><a href="#" onclick="document.body.style.cursor = 'wait'; fnModeSubmit('restore','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">リストア</a></td>
-                    <td align="center"><a href="#" onclick="fnModeSubmit('download','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">ダウンロード</a></td>
+                    <td align="center"><a href="#" onclick="fnRestore('<!--{$arrBkupList[cnt].bkup_name}-->'); return false;">リストア</a></td>
+                    <td align="center"><a href="#" onclick="fnModeSubmit('download','list_name','<!--{$arrBkupList[cnt].bkup_name}-->'); return false;">ダウンロード</a></td>
                     <td align="center">
-                        <a href="#" onclick="fnModeSubmit('delete','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">削除</a>
+                        <a href="#" onclick="fnModeSubmit('delete','list_name','<!--{$arrBkupList[cnt].bkup_name}-->'); return false;">削除</a>
                     </td>
                 </tr>
             <!--{/section}-->
