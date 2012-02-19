@@ -576,22 +576,6 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
             if ($sqlval['product_type_id'] == '') {
                 $sqlval['product_type_id'] = DEFAULT_PRODUCT_DOWN;
             }
-            // TODO: 在庫数、無制限フラグの扱いについて仕様がぶれているので要調整
-            if ($sqlval['stock'] == '' and $sqlval['stock_unlimited'] != UNLIMITED_FLG_UNLIMITED) {
-                //在庫数設定がされておらず、かつ無制限フラグが設定されていない場合、強制無制限
-                $sqlval['stock_unlimited'] = UNLIMITED_FLG_UNLIMITED;
-            } elseif ($sqlval['stock'] != '' and $sqlval['stock_unlimited'] != UNLIMITED_FLG_UNLIMITED) {
-                //在庫数設定時は在庫無制限フラグをクリア
-                $sqlval['stock_unlimited'] = UNLIMITED_FLG_LIMITED;
-            } elseif ($sqlval['stock'] != '' and $sqlval['stock_unlimited'] == UNLIMITED_FLG_UNLIMITED) {
-                //在庫無制限フラグ設定時は在庫数をクリア
-                $sqlval['stock'] = '';
-            }
-        } else {
-            //更新時のみ設定する項目
-            if (array_key_exists('stock_unlimited', $sqlval) and $sqlval['stock_unlimited'] == UNLIMITED_FLG_UNLIMITED) {
-                $sqlval['stock'] = '';
-            }
         }
         //共通で設定する項目
         if ($sqlval['del_flg'] == '') {
@@ -599,6 +583,26 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         }
         if ($sqlval['creator_id'] == '') {
             $sqlval['creator_id'] = $_SESSION['member_id'];
+        }
+        // 在庫無制限フラグ列を利用する場合、
+        if (array_key_exists('stock_unlimited', $sqlval)) {
+            // 在庫無制限フラグ = 無制限の場合、
+            if ($sqlval['stock_unlimited'] == UNLIMITED_FLG_UNLIMITED) {
+                $sqlval['stock'] = null;
+            }
+        } else {
+            // 在庫数設定がされていない場合、在庫無制限フラグ = 無制限
+            if (strlen($sqlval['stock']) === 0) {
+                $sqlval['stock_unlimited'] = UNLIMITED_FLG_UNLIMITED;
+            }
+            // 在庫数を入力している場合、在庫無制限フラグ = 制限有り
+            elseif (strlen($sqlval['stock']) >= 1) {
+                $sqlval['stock_unlimited'] = UNLIMITED_FLG_LIMITED;
+            }
+            // いずれにも該当しない場合、例外エラー
+            else {
+                SC_Utils_Ex::sfDispException();
+            }
         }
         return $sqlval;
     }
