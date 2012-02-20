@@ -31,12 +31,12 @@
  */
 class SC_Plugin_TemplateTransformList {
 
-    // テンプレート毎のSC_Plugin_TemplateTransformerのインスタンス.
-    var $arrConfsByTemplates;
-    // プラグインが介入するテンプレートの配列
-    var $arrTemplatesByPlugin;
-    // HeadNaviに追加するブロックの配列
-    var $arrBlocsByPlugin;
+    /** テンプレート毎のSC_Plugin_TemplateTransformerのインスタンス. */
+    var $arrConfsByTemplates = array();
+    /** プラグインが介入するテンプレートの配列 */
+    var $arrTemplatesByPlugin = array();
+    /* HeadNaviに追加するブロックの配列 */
+    var $arrHeadNaviBlocsByPlugin = array();
 
     /**
      * SC_Plugin_TemplateTransformList オブジェクトを返す（Singletonパターン）
@@ -48,17 +48,6 @@ class SC_Plugin_TemplateTransformList {
             $GLOBALS['_SC_Plugin_TemplateTransformList_instance'] =& new SC_Plugin_TemplateTransformList();
         }
         return $GLOBALS['_SC_Plugin_TemplateTransformList_instance'];
-    }
-
-    /**
-     * 初期化
-     *
-     * @return void
-     */
-    function init() {
-        $this->arrConfsByTemplates = array();
-        $this->arrTemplatesByPlugin = array();
-        $this->arrHeadNaviBlocsByPlugin = array();
     }
 
     /**
