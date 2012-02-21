@@ -303,4 +303,13 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
         }
         return $definition;
     }
+
+    /**
+     * 擬似表を表すSQL文(FROM 句)を取得する
+     *
+     * @return string
+     */
+    function getDummyFromClauseSql() {
+        return 'FROM DUAL';
+    }
 }

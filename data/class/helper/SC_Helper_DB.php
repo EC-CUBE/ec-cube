@@ -539,29 +539,17 @@ class SC_Helper_DB {
      * @return void
      */
     function addProductBeforCategories($category_id, $product_id) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $sqlval = array('category_id' => $category_id,
                         'product_id' => $product_id);
 
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $arrSql = array();
+        $arrSql['rank'] = '(SELECT COALESCE(MAX(rank), 0) FROM dtb_product_categories sub WHERE category_id = ?) + 1';
 
-        // 現在の商品カテゴリを取得
-        $arrCat = $objQuery->select('product_id, category_id, rank',
-                                    'dtb_product_categories',
-                                    'category_id = ?',
-                                    array($category_id));
-
-        $max = '0';
-        foreach ($arrCat as $val) {
-            // 同一商品が存在する場合は登録しない
-            if ($val['product_id'] == $product_id) {
-                return;
-            }
-            // 最上位ランクを取得
-            $max = ($max < $val['rank']) ? $val['rank'] : $max;
-        }
-        $sqlval['rank'] = $max + 1;
-        $objQuery->insert('dtb_product_categories', $sqlval);
+        $from_and_where = $objQuery->dbFactory->getDummyFromClauseSql();
+        $from_and_where .= ' WHERE NOT EXISTS(SELECT * FROM dtb_product_categories WHERE category_id = ? AND product_id = ?)';
+        $objQuery->insert('dtb_product_categories', $sqlval, $arrSql, array($category_id), $from_and_where, array($category_id, $product_id));
     }
 
     /**
@@ -710,6 +698,9 @@ __EOS__;
             $arrNew[$item['category_id']] = $item['product_count'];
         }
 
+        unset($arrCategoryCountOld);
+        unset($arrCategoryCountNew);
+
         $arrDiffCategory_id = array();
         //新しいカテゴリ一覧から見て商品数が異なるデータが無いか確認
         foreach ($arrNew as $cid => $count) {
@@ -757,40 +748,43 @@ __EOS__;
             }
         }
 
+        unset($arrOld);
+        unset($arrNew);
+
         //差分があったIDとその親カテゴリIDのリストを取得する
         $arrTgtCategory_id = array();
         foreach ($arrDiffCategory_id as $parent_category_id) {
             $arrTgtCategory_id[] = $parent_category_id;
             $arrParentID = $this->sfGetParents('dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
-            $arrTgtCategory_id = array_merge($arrTgtCategory_id, $arrParentID);
+            $arrTgtCategory_id = array_unique(array_merge($arrTgtCategory_id, $arrParentID));
         }
 
-        //重複を取り除く
-        $arrTgtCategory_id = array_unique($arrTgtCategory_id);
+        unset($arrDiffCategory_id);
 
         //dtb_category_total_count 集計処理開始
         //更新対象カテゴリIDだけ集計しなおす。
         $arrUpdateData = array();
+        $where_products_class = '';
+        if (NOSTOCK_HIDDEN) {
+            $where_products_class .= '(stock >= 1 OR stock_unlimited = 1)';
+        }
+        $from = $objProduct->alldtlSQL($where_products_class);
         foreach ($arrTgtCategory_id as $category_id) {
             $arrval = array();
             list($tmp_where, $tmp_arrval) = $this->sfGetCatWhere($category_id);
             if ($tmp_where != '') {
                 $sql_where_product_ids = 'product_id IN (SELECT product_id FROM dtb_product_categories WHERE ' . $tmp_where . ')';
-                $arrval = array_merge((array)$tmp_arrval, (array)$tmp_arrval);
+                $arrval = $tmp_arrval;
             } else {
                 $sql_where_product_ids = '0<>0'; // 一致させない
             }
             $where = "($sql_where) AND ($sql_where_product_ids)";
 
-            $where_products_class = '';
-            if (NOSTOCK_HIDDEN) {
-                $where_products_class .= '(stock >= 1 OR stock_unlimited = 1)';
-            }
-
-            $from = $objProduct->alldtlSQL($where_products_class);
-            $sql = "SELECT count(*) FROM $from WHERE $where ";
-            $arrUpdateData[ $category_id ] = $objQuery->getOne($sql, $arrval);
+            $arrUpdateData[$category_id] = $objQuery->count($from, $where, $arrval);
         }
+
+        unset($arrTgtCategory_id);
+
         // 更新対象だけを更新。
         foreach ($arrUpdateData as $cid => $count) {
             $sqlval = array();
@@ -860,14 +854,9 @@ __EOS__;
 
         $where = "$pid_name IN (" . implode(',', array_fill(0, count($arrPID), '?')) . ")";
 
-        $ret = $objQuery->select($id_name, $table, $where, $arrPID);
+        $return = $objQuery->getCol($id_name, $table, $where, $arrPID);
 
-        $arrChildren = array();
-        foreach ($ret as $val) {
-            $arrChildren[] = $val[$id_name];
-        }
-
-        return $arrChildren;
+        return $return;
     }
 
     /**

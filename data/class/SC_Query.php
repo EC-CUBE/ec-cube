@@ -37,7 +37,7 @@ class SC_Query {
     var $conn;
     var $groupby = '';
     var $order = '';
-    var $force_run;
+    var $force_run = false;
 
     /**
      * コンストラクタ.
@@ -468,9 +468,11 @@ class SC_Query {
      * @param array $sqlval array('カラム名' => '値', ...)の連想配列
      * @param array $arrSql array('カラム名' => 'SQL文', ...)の連想配列
      * @param array $arrSqlVal SQL文の中で使用するプレースホルダ配列
-     * @return
+     * @param string $from FROM 句・WHERE 句
+     * @param string $arrFromVal FROM 句・WHERE 句で使用するプレースホルダ配列
+     * @return integer|DB_Error 挿入件数またはDB_Error
      */
-    function insert($table, $sqlval, $arrSql = array(), $arrSqlVal = array()) {
+    function insert($table, $sqlval, $arrSql = array(), $arrSqlVal = array(), $from = '', $arrFromVal = array()) {
         $strcol = '';
         $strval = '';
         $find = false;
@@ -501,9 +503,15 @@ class SC_Query {
             return false;
         }
         // 文末の','を削除
-        $strcol = preg_replace("/,$/", "", $strcol);
-        $strval = preg_replace("/,$/", "", $strval);
-        $sqlin = "INSERT INTO $table(" . $strcol. ") VALUES (" . $strval . ")";
+        $strcol = rtrim($strcol, ',');
+        $strval = rtrim($strval, ',');
+        $sqlin = "INSERT INTO $table($strcol) SELECT $strval";
+
+        if (strlen($from) >= 1) {
+            $sqlin .= ' ' . $from;
+            $arrVal = array_merge($arrVal, $arrFromVal);
+        }
+
         // INSERT文の実行
         $ret = $this->query($sqlin, $arrVal, false, null, MDB2_PREPARE_MANIP);
 
