@@ -35,7 +35,7 @@ class SC_Plugin_TemplateTransformList {
     var $arrConfsByTemplates = array();
     /** プラグインが介入するテンプレートの配列 */
     var $arrTemplatesByPlugin = array();
-    /* HeadNaviに追加するブロックの配列 */
+    /** HeadNaviに追加するブロックの配列 */
     var $arrHeadNaviBlocsByPlugin = array();
 
     /**
