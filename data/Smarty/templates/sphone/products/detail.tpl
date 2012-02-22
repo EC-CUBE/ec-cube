@@ -161,9 +161,9 @@
                             <span class="mini"><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(税込)：</span>
                             <span id="price01_default">
                                 <!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->
-                                    <!--{$arrProduct.price01_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+                                    <!--{$arrProduct.price01_min|sfCalcIncTax|number_format}-->
                                 <!--{else}-->
-                                    <!--{$arrProduct.price01_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$arrProduct.price01_max|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+                                    <!--{$arrProduct.price01_min|sfCalcIncTax|number_format}-->～<!--{$arrProduct.price01_max|sfCalcIncTax|number_format}-->
                                 <!--{/if}--></span>
                             <span id="price01_dynamic"></span>円
                         </p>
@@ -174,9 +174,9 @@
                         <span class="mini"><!--{$smarty.const.SALE_PRICE_TITLE}-->(税込)：</span>
                         <span class="price"><span id="price02_default">
                             <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
-                                <!--{$arrProduct.price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+                                <!--{$arrProduct.price02_min|sfCalcIncTax|number_format}-->
                             <!--{else}-->
-                                <!--{$arrProduct.price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$arrProduct.price02_max|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+                                <!--{$arrProduct.price02_min|sfCalcIncTax|number_format}-->～<!--{$arrProduct.price02_max|sfCalcIncTax|number_format}-->
                             <!--{/if}-->
                         </span><span id="price02_dynamic"></span>円</span>
                     </p>
@@ -354,9 +354,9 @@
                             <h3><a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrRecommend[cnt].product_id|u}-->"><!--{$arrRecommend[cnt].name|h}--></a></h3>
                             <p class="sale_price"><span class="price">
                                 <!--{if $price02_min == $price02_max}-->
-                                    <!--{$price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+                                    <!--{$price02_min|sfCalcIncTax|number_format}-->
                                 <!--{else}-->
-                                    <!--{$price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$price02_max|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+                                    <!--{$price02_min|sfCalcIncTax|number_format}-->～<!--{$price02_max|sfCalcIncTax|number_format}-->
                                 <!--{/if}-->
                                 円</span>
                             </p>

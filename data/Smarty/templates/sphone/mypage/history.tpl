@@ -88,7 +88,7 @@
 
                             <ul>
                                 <li><span class="mini">数量：</span><!--{$quantity|h}--></li>
-                                <li class="result"><span class="mini">小計：</span><!--{$price|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|sfMultiply:$quantity|number_format}-->円</li>
+                                <li class="result"><span class="mini">小計：</span><!--{$price|sfCalcIncTax|sfMultiply:$quantity|number_format}-->円</li>
                             </ul>
                         </div>
                     </div>

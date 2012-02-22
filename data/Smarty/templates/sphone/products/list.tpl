@@ -103,9 +103,9 @@
                     <span class="price">
                         <span id="price02_default_<!--{$id}-->">
                         <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
-                            <!--{$arrProduct.price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+                            <!--{$arrProduct.price02_min|sfCalcIncTax|number_format}-->
                         <!--{else}-->
-                            <!--{$arrProduct.price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$arrProduct.price02_max|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+                            <!--{$arrProduct.price02_min|sfCalcIncTax|number_format}-->～<!--{$arrProduct.price02_max|sfCalcIncTax|number_format}-->
                         <!--{/if}-->
                         </span><span id="price02_dynamic_<!--{$id}-->">
                         </span>円

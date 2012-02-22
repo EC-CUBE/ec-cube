@@ -80,7 +80,7 @@
                             <!--{if $arrForm.classcategory_name2.value[$index] != ""}-->
                                 <!--{$arrForm.class_name2.value[$index]|h}-->：<!--{$arrForm.classcategory_name2.value[$index]|h}--><br />
                             <!--{/if}-->
-                            <!--{$arrForm.price.value[$index]|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+                            <!--{$arrForm.price.value[$index]|sfCalcIncTax|number_format}-->円
                         </td>
                         <td>
                             <!--{assign var=key value="quantity"}-->

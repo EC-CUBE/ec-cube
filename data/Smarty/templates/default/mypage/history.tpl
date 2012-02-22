@@ -78,9 +78,9 @@
                     </td>
                     <!--{assign var=price value=`$orderDetail.price`}-->
                     <!--{assign var=quantity value=`$orderDetail.quantity`}-->
-                    <td class="alignR"><!--{$price|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format|h}-->円</td>
+                    <td class="alignR"><!--{$price|sfCalcIncTax|number_format|h}-->円</td>
                     <td class="alignR"><!--{$quantity|h}--></td>
-                    <td class="alignR"><!--{$price|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|sfMultiply:$quantity|number_format}-->円</td>
+                    <td class="alignR"><!--{$price|sfCalcIncTax|sfMultiply:$quantity|number_format}-->円</td>
                 </tr>
             <!--{/foreach}-->
             <tr>
@@ -162,7 +162,7 @@
                                 <!--{/if}-->
                             </td>
                             <td class="alignR">
-                                <!--{$item.price|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+                                <!--{$item.price|sfCalcIncTax|number_format}-->円
                             </td>
                             <td class="alignC"><!--{$item.quantity}--></td>
                             <!--{* XXX 購入小計と誤差が出るためコメントアウト

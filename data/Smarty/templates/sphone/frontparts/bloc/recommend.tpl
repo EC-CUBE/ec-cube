@@ -34,7 +34,7 @@
                             <p class="mini comment"><!--{$arrBestProducts[cnt].comment|h|nl2br}--></p>
                             <!--{assign var=price01 value=`$arrBestProducts[cnt].price01_min`}-->
                             <!--{assign var=price02 value=`$arrBestProducts[cnt].price02_min`}-->
-                            <p class="sale_price"><span class="mini"><!--<span class="mini">-->販売価格(税込):<!--</span>--></span><span class="price"><!--{$price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> 円</span></p>
+                            <p class="sale_price"><span class="mini"><!--<span class="mini">-->販売価格(税込):<!--</span>--></span><span class="price"><!--{$price02|sfCalcIncTax|number_format}--> 円</span></p>
                         </div>
                     </div>
                 </li>
@@ -48,7 +48,7 @@
                                 <p class="mini comment"><!--{$arrBestProducts[$cnt2].comment|h|nl2br}--></p>
                                 <!--{assign var=price01 value=`$arrBestProducts[$cnt2].price01_min`}-->
                                 <!--{assign var=price02 value=`$arrBestProducts[$cnt2].price02_min`}-->
-                                <p class="sale_price"><span class="mini"><!--<span class="mini">-->販売価格(税込):</span><!--</span>--><span class="price"><!--{$price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> 円</span></p>
+                                <p class="sale_price"><span class="mini"><!--<span class="mini">-->販売価格(税込):</span><!--</span>--><span class="price"><!--{$price02|sfCalcIncTax|number_format}--> 円</span></p>
                             </div>
                         </div>
                     </li>

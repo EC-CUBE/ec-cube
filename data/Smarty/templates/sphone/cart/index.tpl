@@ -116,7 +116,7 @@
                                                 <!--{if $item.productsClass.classcategory_name2 != ""}-->
                                                     <span class="mini"><!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--></span><br />
                                                 <!--{/if}-->
-                                                <span class="mini">価格:</span><!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+                                                <span class="mini">価格:</span><!--{$item.productsClass.price02|sfCalcIncTax|number_format}-->円
                                             </p>
                                             <p class="btn_delete">
                                                 <img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" onClick="fnFormModeSubmit('form<!--{$key}-->', 'delete', 'cart_no', '<!--{$item.cart_no}-->');" class="pointer" width="21" height="20" alt="削除" /></p>

@@ -141,7 +141,7 @@
                             <!--{/if}-->
                         </td>
                         <td class="alignR">
-                            <!--{$item.price|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+                            <!--{$item.price|sfCalcIncTax|number_format}-->円
                         </td>
                         <td class="alignC"><!--{$item.quantity}-->
                             <ul id="quantity_level">

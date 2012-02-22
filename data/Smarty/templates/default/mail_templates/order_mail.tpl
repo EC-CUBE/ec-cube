@@ -52,7 +52,7 @@
 <!--{section name=cnt loop=$arrOrderDetail}-->
 商品コード: <!--{$arrOrderDetail[cnt].product_code}-->
 商品名: <!--{$arrOrderDetail[cnt].product_name}--> <!--{$arrOrderDetail[cnt].classcategory_name1}--> <!--{$arrOrderDetail[cnt].classcategory_name2}-->
-単価：￥ <!--{$arrOrderDetail[cnt].price|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
+単価：￥ <!--{$arrOrderDetail[cnt].price|sfCalcIncTax|number_format}-->
 数量：<!--{$arrOrderDetail[cnt].quantity}-->
 
 <!--{/section}-->
@@ -82,7 +82,7 @@
 <!--{foreach item=item name=item from=$shipping.shipment_item}-->
 商品コード: <!--{$item.product_code}-->
 商品名: <!--{$item.product_name}--> <!--{$item.classcategory_name1}--> <!--{$item.classcategory_name2}-->
-単価：￥ <!--{$item.price|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
+単価：￥ <!--{$item.price|sfCalcIncTax|number_format}-->
 数量：<!--{$item.quantity}-->
 
 <!--{/foreach}-->
