@@ -1222,10 +1222,8 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('IMAGE_RENAME', 'tru
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_DIR', '"plugins/"', 600, 'プラグインディレクトリ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_REALDIR', 'USER_REALDIR . PLUGIN_DIR', 601, 'プラグイン保存先');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_URL', 'USER_URL . PLUGIN_DIR', 602, 'プラグイン URL');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_ENGINE_REALDIR', 'DATA_REALDIR . "class/plugin/"', 603, 'プラグインエンジン');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_UPLOAD_REALDIR', 'DATA_REALDIR . "downloads/plugin/"', 604, 'プラグイン保存先');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_HTML_REALDIR', 'HTML_REALDIR . "plugin/"', 605, 'プラグイン外部ファイル保存先');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_TMPL_CACHE_REALDIR', 'PLUGIN_UPLOAD_REALDIR . "templates_cache/"', 606, 'プラグイン・テンプレートキャッシュ保存先');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_DIR_PERMISSION', '0777', 607, 'プラグイン・ディレクトリパーミッション');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_TEMP_REALDIR', 'HTML_REALDIR . "upload/temp_plugin/"', 608, 'プラグインファイル一時保存先');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOADS_TEMP_DIR', 'DATA_REALDIR . "downloads/tmp/"', 609, 'アップロード一時ディレクトリ');
