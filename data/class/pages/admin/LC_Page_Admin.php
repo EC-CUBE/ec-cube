@@ -91,18 +91,12 @@ class LC_Page_Admin extends LC_Page_Ex {
 
         if ($_SERVER['PHP_SELF'] !== ROOT_URLPATH . ADMIN_DIR . 'system/plugin.php') {
 
-            // プラグインによってトランスフォームされたテンプレートがあればセットする
+            // HeadNaviにpluginテンプレートを追加する.
             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
-            $plugin_tmplpath = $objPlugin->getPluginTemplateCachePath($this);
-            if (file_exists($plugin_tmplpath)) $this->tpl_mainpage = $plugin_tmplpath;
+            $objPlugin->setHeadNaviBlocs($this->arrPageLayout['HeadNavi']);
 
             // スーパーフックポイントを実行.
-            $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
             $objPlugin->doAction('lc_page_process', array($this));
-
-            // HeadNaviにpluginテンプレートを追加する.
-            $objTemplateTransformList = SC_Plugin_TemplateTransformList::getSingletonInstance();
-            $objTemplateTransformList->setHeadNaviBlocs($this->arrPageLayout['HeadNavi']);
         }
 
         $this->objDisplay->prepare($this, true);

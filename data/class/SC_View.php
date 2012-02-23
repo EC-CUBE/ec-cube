@@ -26,6 +26,8 @@ require_once realpath(dirname(__FILE__)) . '/../module/Smarty/libs/Smarty.class.
 class SC_View {
 
     var $_smarty;
+    
+    var $objPage;
 
     // コンストラクタ
     function SC_View($siteinfo = true) {
@@ -88,6 +90,8 @@ class SC_View {
                 define('OUTPUT_ERR','ON');
             }
         }
+        // 各filterをセットします.
+        $this->registFilter();
         $res =  $this->_smarty->fetch($template);
         if (ADMIN_MODE == '1') {
             $time_end = SC_Utils_Ex::sfMicrotimeFloat();
@@ -96,7 +100,51 @@ class SC_View {
         }
         return $res;
     }
+    
+    /**
+     * Pageオブジェクトをセットします.
+     * @param LC_Page_Ex $objPage 
+     * @return void
+     */
+    function setPage(LC_Page_Ex $objPage) {
+       $this->objPage = $objPage;
+    }
+    
+    /**
+     * Smartyのfilterをセットします. 
+     * @return void
+     */
+    function registFilter() {
+        $this->_smarty->register_prefilter(array(&$this, 'prefilter_transforme'));
+        $this->_smarty->register_outputfilter(array(&$this, 'outputfilter_transforme'));
+    }
+    
+    /**
+     * prefilter用のフィルタ関数。プラグイン用のフックポイント処理を実行
+     * @param string $source ソース
+     * @param Smarty_Compiler $smarty Smartyのコンパイラクラス
+     * @return string $source ソース
+     */
+    function prefilter_transforme($source, &$smarty) {
+        // フックポイントを実行.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('prefilterTransforme', array(&$source, $this->objPage));
+        return $source;
+    }
 
+    /**
+     * outputfilter用のフィルタ関数。プラグイン用のフックポイント処理を実行
+     * @param string $source ソース
+     * @param Smarty_Compiler $smarty Smartyのコンパイラクラス
+     * @return string $source ソース
+     */
+    function outputfilter_transforme($source, &$smarty) {
+        // フックポイントを実行.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('outputfilterTransforme', array(&$source, $this->objPage));
+        return $source;
+    }
+    
     // テンプレートの処理結果を表示
     function display($template, $no_error = false) {
         if (!$no_error) {

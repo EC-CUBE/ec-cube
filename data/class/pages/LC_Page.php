@@ -120,16 +120,10 @@ class LC_Page {
     function sendResponse() {
 
         // HeadNaviにpluginテンプレートを追加する.
-        $objTemplateTransformList = SC_Plugin_TemplateTransformList::getSingletonInstance();
-        $objTemplateTransformList->setHeadNaviBlocs($this->arrPageLayout['HeadNavi']);
-
-        // plugin側で生成したページがあるかを検証し、ある場合は tpl_mainpage にセットする.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
-        $plugin_tmplpath = $objPlugin->getPluginTemplateCachePath($this);
-        if (file_exists($plugin_tmplpath)) $this->tpl_mainpage = $plugin_tmplpath;
+        $objPlugin->setHeadNaviBlocs($this->arrPageLayout['HeadNavi']);
 
         // スーパーフックポイントを実行.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
         $objPlugin->doAction('lc_page_process', array($this));
 
         $this->objDisplay->prepare($this);

@@ -68,8 +68,9 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
     function action() {
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
+        $mode = $this->getMode();   
         // パラメーター情報の初期化
-        $this->lfInitParam($objFormParam);
+        $this->lfInitParam($objFormParam, $mode);
         $objFormParam->setParam($_POST);
 
         $mode = $this->getMode();        
@@ -89,9 +90,8 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                         // インストール処理.
                         $this->arrErr = $this->installPlugin($plugin_code, $plugin_file_name);
                         if ($this->isError($this->arrErr) === false) {
-                            // テンプレート再生成.
-                            $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
-                            $objPlugin->remakeTemplate();
+                            // コンパイルファイルのクリア処理
+                            SC_Utils_Ex::clearCompliedTemplate();
                             $this->tpl_onload = "alert('プラグインをインストールしました。');";
                         }
                     } else {
@@ -111,9 +111,8 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                     $this->arrErr = $this->uninstallPlugin($plugin_id, $plugin_code);
                     // 完了メッセージアラート設定.
                     if ($this->isError($this->arrErr) === false) {
-                        // テンプレート再生成.
-                        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
-                        $objPlugin->remakeTemplate();
+                        // コンパイルファイルのクリア処理
+                        SC_Utils_Ex::clearCompliedTemplate();
                         $this->tpl_onload = "alert('" . $plugin['plugin_name'] ."を削除しました。');";
                     }
                 }
@@ -129,9 +128,8 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                     // ステータス更新
                     $this->arrErr = $this->enablePlugin($plugin_id, $plugin['plugin_code']);                    
                     if ($this->isError($this->arrErr) === false) {
-                        // テンプレート再生成.
-                        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
-                        $objPlugin->remakeTemplate();
+                        // コンパイルファイルのクリア処理
+                        SC_Utils_Ex::clearCompliedTemplate();
                         $this->tpl_onload = "alert('" . $plugin['plugin_name'] . "を有効にしました。');";
                     }
                 }
@@ -147,9 +145,8 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                     // プラグインを無効にします
                     $this->arrErr = $this->disablePlugin($plugin_id, $plugin['plugin_code']);                    
                     if ($this->isError($this->arrErr) === false) {
-                        // テンプレート再生成.
-                        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
-                        $objPlugin->remakeTemplate();
+                        // コンパイルファイルのクリア処理
+                        SC_Utils_Ex::clearCompliedTemplate();
                         $this->tpl_onload = "alert('" . $plugin['plugin_name'] . "を無効にしました。');";
                     }
                 }
@@ -171,9 +168,8 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                             // インストール処理.
                             $this->arrErr = $this->updatePlugin($plugin_code, $update_plugin_file_name, $plugin_code, $objFormParam->getValue('plugin_id'));
                             if ($this->isError($this->arrErr) === false) {
-                                // テンプレート再生成.
-                                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
-                                $objPlugin->remakeTemplate();
+                                // コンパイルファイルのクリア処理
+                                SC_Utils_Ex::clearCompliedTemplate();
                                 $this->tpl_onload = "alert('プラグインをアップデートしました。');";
                             }
                         } else {
@@ -191,9 +187,8 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                     // 優先度の更新
                     $priority = $objFormParam->getValue('priority');
                     $this->updatePriority($plugin_id, $priority);
-                    // テンプレート再生成.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
-                    $objPlugin->remakeTemplate();
+                    // コンパイルファイルのクリア処理
+                    SC_Utils_Ex::clearCompliedTemplate();
                 } else {
                     // エラーメッセージを詰め直す.
                     $this->arrErr['priority'][$plugin_id] = $arrErr['priority'];
@@ -230,21 +225,23 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
     /**
      * パラメーター初期化.
      *
-     * @param object $objFormParam
+     * @param SC_FormParam_Ex $objFormParam
+     * @param string $mode モード
      * @return void
-     * 
      */
-    function lfInitParam(&$objFormParam) {
+    function lfInitParam(&$objFormParam, $mode) {
         $objFormParam->addParam('mode', 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('plugin_id', 'plugin_id', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('plugin_code', 'plugin_code', MTEXT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('優先度', 'priority', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        if($mode === "priority"){
+            $objFormParam->addParam('優先度', 'priority', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        }
     }
 
     /**
      * ファイルパラメーター初期化.
      *
-     * @param object $objUpFile SC_UploadFileのインスタンス.
+     * @param SC_UploadFile_Ex $objUpFile SC_UploadFileのインスタンス.
      * @param string $key 登録するキー.
      * @return void
      */
@@ -737,17 +734,6 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         return $arrErr;
     }
 
-//    /**
-//     * テンプレート再生成
-//     *
-//     * @return void
-//     */
-//    function remakeTemplate() {
-//        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
-//        $objPlugin->remakeAllTemplates(true);
-//        $objPlugin->remakeAllTemplates();
-//    }
-
     /**
      * plugin_idをキーにdtb_pluginのstatusを更新します.
      *
@@ -851,6 +837,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      * ディレクトリを作成します.
      *
      * @param string $dir_path 作成するディレクトリのパス
+     * @return void
      */
     function makeDir($dir_path) {
         // ディレクトリ作成

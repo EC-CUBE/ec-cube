@@ -2176,4 +2176,16 @@ class SC_Utils {
         }
         return $flg;
     }
+    
+   /**
+     * コンパイルファイルを削除します.
+     * @return void
+     */
+    function clearCompliedTemplate() {
+        // コンパイルファイルの削除処理
+        SC_Utils_Ex::deleteFile(COMPILE_REALDIR, false);
+        SC_Utils_Ex::deleteFile(COMPILE_ADMIN_REALDIR, false);
+        SC_Utils_Ex::deleteFile(SMARTPHONE_COMPILE_REALDIR, false);
+        SC_Utils_Ex::deleteFile(MOBILE_COMPILE_REALDIR, false);
+    }
 }

@@ -21,7 +21,4 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-require_once (PLUGIN_ENGINE_REALDIR . 'SC_Plugin_TemplateTransformList.php');
-require_once (PLUGIN_ENGINE_REALDIR . 'SC_Plugin_TemplateTransformList.php');
-require_once (PLUGIN_ENGINE_REALDIR . 'SC_Plugin_TemplateSelector.php');
 require_once (PLUGIN_UPLOAD_REALDIR . 'SC_Plugin_Base.php');

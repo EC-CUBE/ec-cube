@@ -71,9 +71,10 @@ class SC_Display{
             $this->setDevice($device);
         }
         $this->assignobj($page);
+        $this->view->setPage($page);
         $this->response->setResposeBody($this->view->getResponse($page->getTemplate()));
     }
-
+    
     /**
      * リロードを行う.
      *

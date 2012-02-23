@@ -34,7 +34,9 @@ class SC_Helper_Plugin {
     var $arrRegistedPluginActions = array();
     // プラグインのIDの配列.
     var $arrPluginIds = array();
-
+    // HeadNaviブロックの配列
+    var $arrHeadNaviBlocsByPlugin = array();
+    
     /**
      * 有効なプラグインのロード. プラグインエンジンが有効になっていない場合は
      * プラグインエンジン自身のインストール処理を起動する
@@ -284,55 +286,6 @@ class SC_Helper_Plugin {
     }
 
     /**
-     * 全てのテンプレートを再生成する
-     *
-     * @param boolean $test_mode true の場合、validate のみを行い、実際にテンプレートの再生成は行わない
-     * @return void
-     */
-    function remakeAllTemplates($test_mode = false) {
-        $this->load(); // 最新のデータを読み込みなおす
-        if (!is_writable(PLUGIN_TMPL_CACHE_REALDIR)) {
-            // TODO エラー処理;
-            exit;
-        }
-        // キャッシュテンプレートを削除
-        if ($test_mode === false) {
-            SC_Utils_Ex::deleteFile(PLUGIN_TMPL_CACHE_REALDIR, false);
-        }
-        $objTemplateTransformList = SC_Plugin_TemplateTransformList::getSingletonInstance();
-        $objTemplateTransformList->init();
-        // プラグインのsetTemplateTransformerを実行します.
-        foreach ($this->arrPluginInstances as $objPlugin) {
-            if (method_exists($objPlugin, 'setTemplateTransformer') === true) {
-                // SC_Plugin_TemplateTransformList::arrConfsByTemplatesにトランスフォーム情報をセットします
-                $objPlugin->setTemplateTransformer();
-            }
-        }
-        // SC_Plugin_TemplateTransformList::arrConfsByTemplatesにセットされた情報を元にトランスフォームの実行
-        $objTemplateTransformList->transformAll($test_mode);
-    }
-
-    /**
-     * テンプレートキャッシュファイルのフルパスを返す.
-     *
-     * @param string $tpl_mainpage  返すキャッシュファイルのパスの対象となるテンプレート.
-     * @param object $objPage  ページオブジェクト.
-     */
-    function getPluginTemplateCachePath($objPage) {
-        // main_template の差し替え
-        if (strpos($objPage->tpl_mainpage, SMARTY_TEMPLATES_REALDIR) === 0) {
-            // フルパスで指定された
-            $dir = '';
-            $default_tpl_mainpage = str_replace(SMARTY_TEMPLATES_REALDIR, '', $objPage->tpl_mainpage);
-        } else {
-            // フロントページ or 管理画面を判定
-            $dir = ($objPage instanceof LC_Page_Admin) ? 'admin/' : TEMPLATE_NAME . '/';
-            $default_tpl_mainpage = $objPage->tpl_mainpage;
-        }
-        return PLUGIN_TMPL_CACHE_REALDIR . $dir . $default_tpl_mainpage;
-    }
-
-    /**
      * ブロックの配列から有効でないpluginのブロックを除外して返します.
      *
      * @param array $arrBlocs プラグインのインストールディレクトリ
@@ -352,13 +305,28 @@ class SC_Helper_Plugin {
         return $arrBlocs;
     }
 
-    /**
-     * テンプレートの再生成
+   /**
+     * テンプレートのヘッダに追加するPHPのURLをセットする
      *
+     * @param string $url PHPファイルのURL
      * @return void
      */
-    function remakeTemplate() {
-        $this->remakeAllTemplates(true);
-        $this->remakeAllTemplates();
+    function setHeadNavi($url) {
+        $this->arrHeadNaviBlocsByPlugin[$url] = TARGET_ID_HEAD;
+    }
+
+    /**
+     * PHPのURLをテンプレートのヘッダに追加する
+     *
+     * @param array|null $arrBlocs  配置情報を含めたブロックの配列
+     * @return void
+     */
+    function setHeadNaviBlocs(&$arrBlocs) {
+        foreach ($this->arrHeadNaviBlocsByPlugin as $key => $value) {
+            $arrBlocs[] = array(
+                'target_id' =>$value,
+                'php_path' => $key
+            );
+        }
     }
 }
