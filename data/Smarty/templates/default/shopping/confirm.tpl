@@ -212,7 +212,7 @@
                         <td class="alignR">
                             <!--{$item.price|sfCalcIncTax|number_format}-->円
                         </td>
-                        <td class="alignC" id="quantity"><!--{$item.quantity}--></td>
+                        <td class="alignC"><!--{$item.quantity}--></td>
                         <!--{* XXX 購入小計と誤差が出るためコメントアウト
                         <td class="alignR"><!--{$item.total_inctax|number_format}-->円</td>
                         *}-->
