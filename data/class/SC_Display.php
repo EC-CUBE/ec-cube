@@ -74,7 +74,7 @@ class SC_Display{
         $this->view->setPage($page);
         $this->response->setResposeBody($this->view->getResponse($page->getTemplate()));
     }
-    
+
     /**
      * リロードを行う.
      *

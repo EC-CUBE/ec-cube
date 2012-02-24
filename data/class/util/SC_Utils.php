@@ -2176,7 +2176,7 @@ class SC_Utils {
         }
         return $flg;
     }
-    
+
    /**
      * コンパイルファイルを削除します.
      * @return void

@@ -26,7 +26,7 @@ require_once realpath(dirname(__FILE__)) . '/../module/Smarty/libs/Smarty.class.
 class SC_View {
 
     var $_smarty;
-    
+
     var $objPage;
 
     // コンストラクタ
@@ -100,7 +100,7 @@ class SC_View {
         }
         return $res;
     }
-    
+
     /**
      * Pageオブジェクトをセットします.
      * @param LC_Page_Ex $objPage 
@@ -109,7 +109,7 @@ class SC_View {
     function setPage(LC_Page_Ex $objPage) {
        $this->objPage = $objPage;
     }
-    
+
     /**
      * Smartyのfilterをセットします. 
      * @return void
@@ -118,7 +118,7 @@ class SC_View {
         $this->_smarty->register_prefilter(array(&$this, 'prefilter_transforme'));
         $this->_smarty->register_outputfilter(array(&$this, 'outputfilter_transforme'));
     }
-    
+
     /**
      * prefilter用のフィルタ関数。プラグイン用のフックポイント処理を実行
      * @param string $source ソース
@@ -144,7 +144,7 @@ class SC_View {
         $objPlugin->doAction('outputfilterTransforme', array(&$source, $this->objPage));
         return $source;
     }
-    
+
     // テンプレートの処理結果を表示
     function display($template, $no_error = false) {
         if (!$no_error) {

@@ -233,7 +233,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         $objFormParam->addParam('mode', 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('plugin_id', 'plugin_id', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('plugin_code', 'plugin_code', MTEXT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
-        if($mode === "priority"){
+        if ($mode === 'priority') {
             $objFormParam->addParam('優先度', 'priority', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         }
     }

@@ -36,7 +36,7 @@ class SC_Helper_Plugin {
     var $arrPluginIds = array();
     // HeadNaviブロックの配列
     var $arrHeadNaviBlocsByPlugin = array();
-    
+
     /**
      * 有効なプラグインのロード. プラグインエンジンが有効になっていない場合は
      * プラグインエンジン自身のインストール処理を起動する
