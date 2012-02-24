@@ -394,7 +394,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam('規格2', 'multiple_classcategory_name2', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
         $objFormParam->addParam('単価', 'multiple_price', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
         $objFormParam->addParam('数量', 'multiple_quantity', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
-        $objFormParam->addParam('配送先住所', 'multiple_shipping_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('お届け先', 'multiple_shipping_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
     }
 
     /**
@@ -417,7 +417,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         /*
          * 複数配送フォームの入力値を shipping_id ごとにマージ
          *
-         * $arrShipmentItem[配送先ID][商品規格ID]['shipment_(key)'] = 値
+         * $arrShipmentItem[お届け先ID][商品規格ID]['shipment_(key)'] = 値
          */
         $arrShipmentItem = array();
         foreach ($arrMultipleParams as $arrMultiple) {
@@ -433,10 +433,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         }
 
         /*
-         * フォームの配送先ごとの配列を生成
+         * フォームのお届け先ごとの配列を生成
          *
          * $arrShipmentForm['(key)'][$shipping_id][$item_index] = 値
-         * $arrProductQuantity[$shipping_id] = 配送先ごとの配送商品数量
+         * $arrProductQuantity[$shipping_id] = お届け先ごとの配送商品数量
          */
         $arrShipmentForm = array();
         $arrProductQuantity = array();
@@ -451,7 +451,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
                 $arrQuantity[$product_class_id] += $shipment_item['shipment_quantity'];
                 $item_index++;
             }
-            // 配送先ごとの配送商品数量を設定
+            // お届け先ごとの配送商品数量を設定
             $arrProductQuantity[$shipping_id] = count($arrShipmentItem[$shipping_id]);
         }
 
@@ -506,7 +506,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
          * 配送商品を設定
          *
          * $arrShipmentItem['shipment_(key)'][$shipping_id][$item_index] = 値
-         * $arrProductQuantity[$shipping_id] = 配送先ごとの配送商品数量
+         * $arrProductQuantity[$shipping_id] = お届け先ごとの配送商品数量
          */
         $arrProductQuantity = array();
         $arrShipmentItem = array();
