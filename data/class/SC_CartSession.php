@@ -722,12 +722,12 @@ class SC_CartSession {
     }
 
     /**
-     * 複数配送扱いかどうか.
+     * 複数商品種別かどうか.
      *
-     * @return boolean カートが複数配送扱いの場合 true
+     * @return boolean カートが複数商品種別の場合 true
      */
     function isMultiple() {
-        return count($this->getKeys()) > 1;
+	    return count($this->getKeys()) > 1;
     }
 
     /**
