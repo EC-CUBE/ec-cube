@@ -153,4 +153,12 @@ class SC_DB_DBFactory {
      */
     function sfGetCreateIndexDefinition($table, $name, $definition) { return $definition; }
 
+    /**
+     * 各 DB に応じた SC_Query での初期化を行う
+     *
+     * @param SC_Query $objQuery SC_Query インスタンス
+     * @return void
+     */
+    function initObjQuery(SC_Query &$objQuery) {
+    }
 }

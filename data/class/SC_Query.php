@@ -78,6 +78,7 @@ class SC_Query {
             $this->conn->setFetchMode(MDB2_FETCHMODE_ASSOC);
         }
         $this->dbFactory = SC_DB_DBFactory_Ex::getInstance();
+        $this->dbFactory->initObjQuery($this);
         $this->force_run = $force_run;
     }
 

@@ -312,4 +312,14 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
     function getDummyFromClauseSql() {
         return 'FROM DUAL';
     }
+
+    /**
+     * 各 DB に応じた SC_Query での初期化を行う
+     *
+     * @param SC_Query $objQuery SC_Query インスタンス
+     * @return void
+     */
+    function initObjQuery(SC_Query &$objQuery) {
+        $objQuery->exec('SET SESSION storage_engine = InnoDB');
+    }
 }

@@ -148,10 +148,10 @@ CREATE TABLE dtb_deliv (
 );
 
 CREATE TABLE dtb_payment_options (
-    payment_id int NOT NULL,
     deliv_id int NOT NULL,
+    payment_id int NOT NULL,
     rank int,
-    PRIMARY KEY (payment_id, deliv_id)
+    PRIMARY KEY (deliv_id, payment_id)
 );
 
 CREATE TABLE dtb_delivtime (
@@ -321,7 +321,8 @@ CREATE TABLE dtb_products_class (
     down_filename text,
     down_realfilename text,
     del_flg smallint NOT NULL DEFAULT 0,
-    PRIMARY KEY (product_class_id)
+    PRIMARY KEY (product_class_id),
+    UNIQUE (product_id, classcategory_id1, classcategory_id2)
 );
 
 CREATE TABLE dtb_class (
@@ -493,7 +494,7 @@ CREATE TABLE dtb_customer (
     reminder smallint,
     reminder_answer text,
     salt text,
-    secret_key text NOT NULL UNIQUE,
+    secret_key text NOT NULL,
     first_buy_date timestamp,
     last_buy_date timestamp,
     buy_times numeric DEFAULT 0,
@@ -506,7 +507,8 @@ CREATE TABLE dtb_customer (
     del_flg smallint NOT NULL DEFAULT 0,
     mobile_phone_id text,
     mailmaga_flg smallint,
-    PRIMARY KEY (customer_id)
+    PRIMARY KEY (customer_id),
+    UNIQUE (secret_key)
 );
 
 CREATE TABLE dtb_order (
@@ -644,7 +646,6 @@ CREATE TABLE dtb_shipping (
     shipping_zip02 text,
     shipping_addr01 text,
     shipping_addr02 text,
-    deliv_id int NOT NULL,
     time_id int,
     shipping_time text,
     shipping_num text,
@@ -756,8 +757,8 @@ CREATE TABLE dtb_bloc (
 CREATE TABLE dtb_blocposition (
     device_type_id int NOT NULL,
     page_id int NOT NULL,
-    target_id int,
-    bloc_id int,
+    target_id int NOT NULL,
+    bloc_id int NOT NULL,
     bloc_row int,
     anywhere smallint DEFAULT 0 NOT NULL,
     PRIMARY KEY (device_type_id, page_id, target_id, bloc_id)
@@ -1109,8 +1110,8 @@ CREATE TABLE dtb_session (
 );
 
 CREATE TABLE dtb_bkup (
-    bkup_name   text,
-    bkup_memo   text,
+    bkup_name text,
+    bkup_memo text,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (bkup_name)
 );
@@ -1123,7 +1124,7 @@ CREATE TABLE dtb_plugin (
     author_site_url text,
     plugin_site_url text,
     plugin_version text,
-    compliant_version text,    
+    compliant_version text,
     plugin_description text,
     priority int NOT NULL DEFAULT 0,
     enable smallint NOT NULL DEFAULT 0,
@@ -1141,6 +1142,14 @@ CREATE TABLE dtb_plugin_hookpoint (
     PRIMARY KEY (plugin_id)
 );
 
+CREATE TABLE dtb_index_list (
+    table_name text NOT NULL,
+    column_name text NOT NULL,
+    recommend_flg smallint NOT NULL DEFAULT 0,
+    recommend_comment text,
+    PRIMARY KEY (table_name, column_name)
+);
+
 
 CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id);
 CREATE INDEX dtb_products_class_product_id_key ON dtb_products_class(product_id);
@@ -1150,11 +1159,3 @@ CREATE INDEX dtb_mobile_ext_session_id_param_key_key ON dtb_mobile_ext_session_i
 CREATE INDEX dtb_mobile_ext_session_id_param_value_key ON dtb_mobile_ext_session_id (param_value);
 CREATE INDEX dtb_mobile_ext_session_id_url_key ON dtb_mobile_ext_session_id (url);
 CREATE INDEX dtb_mobile_ext_session_id_create_date_key ON dtb_mobile_ext_session_id (create_date);
-
-CREATE TABLE dtb_index_list (
-    table_name text NOT NULL,
-    column_name text NOT NULL,
-    recommend_flg smallint NOT NULL DEFAULT 0,
-    recommend_comment text,
-    PRIMARY KEY (table_name, column_name)
-);
