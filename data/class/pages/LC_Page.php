@@ -71,6 +71,9 @@ class LC_Page {
 
     /** 店舗基本情報 */
     var $arrSiteInfo;
+    
+    /** プラグインを実行フラグ */
+    var $plugin_activate_flg = true;
 
     // }}}
     // {{{ functions
@@ -93,8 +96,14 @@ class LC_Page {
         $layout->sfGetPageLayout($this, false, $_SERVER['PHP_SELF'],
                                  $this->objDisplay->detectDevice());
 
+        // プラグインを実行するかを判定します.
+        // プラグイン管理ではプラグインが実行されません
+        if ($_SERVER['PHP_SELF'] !== ROOT_URLPATH . ADMIN_DIR . 'system/plugin.php') {
+            $this->plugin_activate_flg = false;
+        }
+        
         // スーパーフックポイントを実行.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_preProcess', array($this));
 
         // 店舗基本情報取得
@@ -120,7 +129,7 @@ class LC_Page {
     function sendResponse() {
 
         // HeadNaviにpluginテンプレートを追加する.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->setHeadNaviBlocs($this->arrPageLayout['HeadNavi']);
 
         // スーパーフックポイントを実行.
@@ -168,7 +177,7 @@ class LC_Page {
 
     /**
      * テンプレート取得
-     *
+     * 
      */
     function getTemplate() {
         return $this->template;
@@ -176,7 +185,7 @@ class LC_Page {
 
     /**
      * テンプレート設定(ポップアップなどの場合)
-     *
+     * 
      */
     function setTemplate($template) {
         $this->template = $template;

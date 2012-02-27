@@ -1229,6 +1229,8 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_TEMP_REALDIR
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOADS_TEMP_DIR', 'DATA_REALDIR . "downloads/tmp/"', 609, 'アップロード一時ディレクトリ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_HTML_URL', 'USER_URL . PLUGIN_DIR', 610, 'プラグイン 外部ファイルURL');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_EXTENSION', '"tar,tar.gz"', 611, 'プラグインファイル登録可能拡張子(カンマ区切り)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR', 'DOWNLOADS_TEMP_DIR . "plugin_update/"', 612, 'プラグイン一時展開用ディレクトリ（アップデート用）');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR', 'DOWNLOADS_TEMP_DIR . "plugin_install/"', 613, 'プラグイン一時展開用ディレクトリ（インストール用）');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOAD_DAYS_LEN', '3', 700, '日数桁数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOAD_EXTENSION', '"zip,lzh,jpg,jpeg,gif,png,mp3,pdf,csv"', 701, 'ダウンロードファイル登録可能拡張子(カンマ区切り)"');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWN_SIZE', '50000', 702, 'ダウンロード販売ファイル用サイズ制限(KB)');

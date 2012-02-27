@@ -388,6 +388,10 @@ define('PLUGIN_DIR_PERMISSION', 0777);
 define('PLUGIN_TEMP_REALDIR', HTML_REALDIR . "upload/temp_plugin/");
 /** アップロード一時ディレクトリ */
 define('DOWNLOADS_TEMP_DIR', DATA_REALDIR . "downloads/tmp/");
+/** プラグイン一時展開用ディレクトリ（アップデート用） */
+define('DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR', DOWNLOADS_TEMP_DIR . "plugin_update/");
+/** プラグイン一時展開用ディレクトリ（インストール用） */
+define('DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR', DOWNLOADS_TEMP_DIR . "plugin_install/");
 /** プラグイン 外部ファイルURL */
 define('PLUGIN_HTML_URL', USER_URL . PLUGIN_DIR);
 /** プラグインファイル登録可能拡張子(カンマ区切り) */

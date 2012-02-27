@@ -127,7 +127,7 @@ class SC_View {
      */
     function prefilter_transforme($source, &$smarty) {
         // フックポイントを実行.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->objPage->plugin_activate_flg);
         $objPlugin->doAction('prefilterTransforme', array(&$source, $this->objPage));
         return $source;
     }
@@ -140,7 +140,7 @@ class SC_View {
      */
     function outputfilter_transforme($source, &$smarty) {
         // フックポイントを実行.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->objPage->plugin_activate_flg);
         $objPlugin->doAction('outputfilterTransforme', array(&$source, $this->objPage));
         return $source;
     }

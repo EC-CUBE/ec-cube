@@ -70,7 +70,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         $objFormParam = new SC_FormParam_Ex();
         $mode = $this->getMode();   
         // パラメーター情報の初期化
-        $this->lfInitParam($objFormParam, $mode);
+        $this->initParam($objFormParam, $mode);
         $objFormParam->setParam($_POST);
 
         $mode = $this->getMode();        
@@ -81,21 +81,14 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                 $file_key = 'plugin_file';
                 $this->arrErr = $this->checkUploadFile($file_key);
                 if ($this->isError($this->arrErr) === false) {
-                    $plugin_file = $_FILES[$file_key];
-                    $plugin_file_name = $plugin_file['name'];
-                    $plugin_code = $this->getPluginCode($plugin_file_name);
-
-                    // 既に登録されていないか判定.
-                    if ($this->isInstalledPlugin($plugin_code) === false) {
-                        // インストール処理.
-                        $this->arrErr = $this->installPlugin($plugin_code, $plugin_file_name);
-                        if ($this->isError($this->arrErr) === false) {
-                            // コンパイルファイルのクリア処理
-                            SC_Utils_Ex::clearCompliedTemplate();
-                            $this->tpl_onload = "alert('プラグインをインストールしました。');";
-                        }
-                    } else {
-                        $this->arrErr[$file_key] = '※ 既にインストールされているプラグインです。<br/>';
+                    $upload_file = $_FILES[$file_key];
+                    $upload_file_file_name = $upload_file['name'];
+                    // インストール処理.
+                    $this->arrErr = $this->installPlugin($upload_file_file_name, "plugin_file");
+                    if ($this->isError($this->arrErr) === false) {
+                        // コンパイルファイルのクリア処理
+                        SC_Utils_Ex::clearCompliedTemplate();
+                        $this->tpl_onload = "alert('プラグインをインストールしました。');";
                     }
                 }
                 break;
@@ -104,12 +97,9 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                 // エラーチェック
                 $this->arrErr = $objFormParam->checkError();
                 if ($this->isError($this->arrErr) === false) {
-                    $plugin_code = $objFormParam->getValue('plugin_code');
                     $plugin_id = $objFormParam->getValue('plugin_id');
                     $plugin = SC_Helper_Plugin_Ex::getPluginByPluginId($plugin_id);
-
-                    $this->arrErr = $this->uninstallPlugin($plugin_id, $plugin_code);
-                    // 完了メッセージアラート設定.
+                    $this->arrErr = $this->uninstallPlugin($plugin);
                     if ($this->isError($this->arrErr) === false) {
                         // コンパイルファイルのクリア処理
                         SC_Utils_Ex::clearCompliedTemplate();
@@ -125,8 +115,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                     $plugin_id = $objFormParam->getValue('plugin_id');
                     // プラグイン取得.
                     $plugin = SC_Helper_Plugin_Ex::getPluginByPluginId($plugin_id);
-                    // ステータス更新
-                    $this->arrErr = $this->enablePlugin($plugin_id, $plugin['plugin_code']);                    
+                    $this->arrErr = $this->enablePlugin($plugin);                    
                     if ($this->isError($this->arrErr) === false) {
                         // コンパイルファイルのクリア処理
                         SC_Utils_Ex::clearCompliedTemplate();
@@ -142,8 +131,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                     $plugin_id = $objFormParam->getValue('plugin_id');
                     // プラグイン取得.
                     $plugin = SC_Helper_Plugin_Ex::getPluginByPluginId($plugin_id);
-                    // プラグインを無効にします
-                    $this->arrErr = $this->disablePlugin($plugin_id, $plugin['plugin_code']);                    
+                    $this->arrErr = $this->disablePlugin($plugin);                    
                     if ($this->isError($this->arrErr) === false) {
                         // コンパイルファイルのクリア処理
                         SC_Utils_Ex::clearCompliedTemplate();
@@ -156,24 +144,19 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                 // エラーチェック
                 $this->arrErr = $objFormParam->checkError();
                 if ($this->isError($this->arrErr) === false) {
-                    $plugin_code = $objFormParam->getValue('plugin_code'); // アップデート対象のプラグインコード
-                    $this->arrErr = $this->checkUploadFile($plugin_code);
-
+                    $target_plugin_code = $objFormParam->getValue('plugin_code'); // アップデート対象のプラグインコード
+                    $this->arrErr = $this->checkUploadFile($target_plugin_code);
+                    
                     if ($this->isError($this->arrErr) === false) {
-                        $update_plugin_file = $_FILES[$plugin_code];
+                        $update_plugin_file = $_FILES[$target_plugin_code];
                         $update_plugin_file_name = $update_plugin_file['name']; // アップデートファイルのファイル名.
-                        $update_plugin_code = $this->getPluginCode($update_plugin_file_name); // アップデートファイルのプラグインコード.
-                        // インストールされているプラグインかを判定.
-                        if ($this->isInstalledPlugin($update_plugin_code) === true && $update_plugin_code === $plugin_code) {
-                            // インストール処理.
-                            $this->arrErr = $this->updatePlugin($plugin_code, $update_plugin_file_name, $plugin_code, $objFormParam->getValue('plugin_id'));
-                            if ($this->isError($this->arrErr) === false) {
-                                // コンパイルファイルのクリア処理
-                                SC_Utils_Ex::clearCompliedTemplate();
-                                $this->tpl_onload = "alert('プラグインをアップデートしました。');";
-                            }
-                        } else {
-                            $this->arrErr[$plugin_code] = '※ プラグインファイルが不正です。<br/>';
+                        // インストール処理.
+                        $target_plugin = SC_Helper_Plugin_Ex::getPluginByPluginCode($target_plugin_code);
+                        $this->arrErr = $this->updatePlugin($target_plugin, $update_plugin_file_name, $target_plugin_code);
+                        if ($this->isError($this->arrErr) === false) {
+                            // コンパイルファイルのクリア処理
+                            SC_Utils_Ex::clearCompliedTemplate();
+                            $this->tpl_onload = "alert('プラグインをアップデートしました。');";
                         }
                     }
                 }
@@ -229,7 +212,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      * @param string $mode モード
      * @return void
      */
-    function lfInitParam(&$objFormParam, $mode) {
+    function initParam(&$objFormParam, $mode) {
         $objFormParam->addParam('mode', 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('plugin_id', 'plugin_id', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('plugin_code', 'plugin_code', MTEXT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
@@ -245,7 +228,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      * @param string $key 登録するキー.
      * @return void
      */
-    function lfInitUploadFile(&$objUpFile, $key) {
+    function initUploadFile(&$objUpFile, $key) {
         $objUpFile->addFile('プラグインファイル', $key, explode(',', PLUGIN_EXTENSION), FILE_SIZE, true, 0, 0, false);
     }
 
@@ -280,34 +263,6 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
             return true;
         }
         return false;
-    }
-
-    /**
-     * アップロードされた圧縮ファイルが正常であるかを検証します.
-     *
-     * @param string $file_path チェックするファイルのパス
-     * @param string $plugin_code プラグインコード
-     * @return array エラー情報を格納した連想配列.
-     */
-    function checkPluginFile($file_path, $plugin_code, $key_file) {
-        $arrErr = array();
-
-        // Archive_Tarを生成します.
-        $tar_obj = new Archive_Tar($file_path);
-
-        // 圧縮ファイル名とディレクトリ名が同一であるかを判定します.
-        if ($this->checkUploadFileName($tar_obj, $plugin_code) === false) {
-            $arrErr[$key_file] = '※ 圧縮ファイル名 or フォルダ名が不正です。圧縮ファイル名とフォルダ名が同一である事を確認して下さい。<br/>';
-            return $arrErr;
-        }
-
-        // 必須となるクラスファイルが含まれているかを判定します.
-        $plugin_main_file = $plugin_code . '/' . $plugin_code . '.php';
-        if ($this->checkContainsFile($tar_obj, $plugin_main_file) === false) {
-            $arrErr[$key_file] = '※ ファイルに' .  $plugin_code . '.phpが含まれていません。<br/>';
-            return $arrErr;
-        }
-        return $arrErr;
     }
 
     /**
@@ -365,54 +320,97 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      * プラグインをインストールします.
      * 
      * @param string $plugin_code プラグインコード.
-     * @param string $plugin_file_name プラグインファイル名.
+     * @param string $key キー.
      * @return array エラー情報を格納した連想配列.
      */
-    function installPlugin($plugin_code, $plugin_file_name) {
+    function installPlugin($upload_file_file_name, $key) {
 
         $arrErr = array();
-        // 保存ディレクトリ.
-        $plugin_dir = $this->getPluginDir($plugin_code);
-
-        // ファイルをチェックし展開します.
-        $arrErr = $this->unpackPluginFile($plugin_file_name, $plugin_dir, $plugin_code, 'plugin_file');
+        // ファイルをチェックし一時展開用ディレクトリに展開します.
+        $arrErr = $this->unpackPluginFile($upload_file_file_name, DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, $key);
         if ($this->isError($arrErr) === true) {
             return $arrErr;
         }
-
-        // プラグインファイルを読み込み.
-        $plugin_class_file_path = $this->getPluginFilePath($plugin_code);
-        $arrErr = $this->requirePluginFile($plugin_class_file_path, 'plugin_file');
+        // plugin_infoを読み込み.
+        $arrErr = $this->requirePluginFile(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR . "plugin_info.php", $key);
         if ($this->isError($arrErr) === true) {
-            SC_Utils_Ex::deleteFile($plugin_dir);
+            $this->rollBack(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR);
             return $arrErr;
         }
-
+        
         // リフレクションオブジェクトを生成.
-        $objReflection = new ReflectionClass($plugin_code);
-
-        // プラグインクラスに必須となるパラメータが定義されているかチェック.
-        $arrErr = $this->checkPluginConstants($objReflection);
+        $objReflection = new ReflectionClass("plugin_info");
+        // プラグインクラスに必須となるパラメータが正常に定義されているかチェックします.
+        $arrErr = $this->checkPluginConstants($objReflection, DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR);
         if ($this->isError($arrErr) === true) {
-            SC_Utils_Ex::deleteFile($plugin_dir);
+            $this->rollBack(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR);
+            return $arrErr;
+        }
+        
+        // プラグインコード
+        $plugin_code = $objReflection->getConstant('PLUGIN_CODE');
+        // プラグイン名
+        $plugin_name = $objReflection->getConstant('PLUGIN_NAME');
+        
+        // 既にインストールされていないかを判定.
+        if ($this->isInstalledPlugin($plugin_code) === true) {
+            $this->rollBack(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR);
+            $arrErr['plugin_file'] = "※ " . $plugin_name . "は既にインストールされています。<br/>";
             return $arrErr;
         }
 
         // プラグイン情報をDB登録
         if ($this->registerData($objReflection) === false) {
-            SC_Utils_Ex::deleteFile($plugin_dir);
+            $this->rollBack(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR);
             $arrErr['plugin_file'] = '※ DB登録に失敗しました。<br/>';
             return $arrErr;
         }
+        
+        // プラグイン保存ディレクトリを作成し、一時展開用ディレクトリから移動します.
+        $plugin_dir_path = PLUGIN_UPLOAD_REALDIR . $plugin_code . "/";
+        $this->makeDir($plugin_dir_path);
+        SC_Utils_Ex::copyDirectory(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, $plugin_dir_path);
 
+        // プラグイン情報を取得
+        $plugin = SC_Helper_Plugin_Ex::getPluginByPluginCode($plugin_code);
+        
+        // クラスファイルを読み込み.
+        $plugin_class_file_path = $plugin_dir_path . $plugin['class_name'] . ".php";
+        $arrErr = $this->requirePluginFile($plugin_class_file_path, $key);
+        if ($this->isError($arrErr) === true) {
+            $this->rollBack(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, $plugin['plugin_id']);
+            return $arrErr;
+        }
         // プラグインhtmlディレクトリ作成
         $plugin_html_dir = PLUGIN_HTML_REALDIR . $plugin_code;
         $this->makeDir($plugin_html_dir);
-
-        $plugin = SC_Helper_Plugin_Ex::getPluginByPluginCode($plugin_code);
-        $arrErr = $this->execPlugin($plugin['plugin_id'], $plugin_code, 'install');
-
+        
+        $arrErr = $this->execPlugin($plugin['plugin_id'], $plugin['class_name'], 'install');
+        if ($this->isError($arrErr) === true) {
+            $this->rollBack(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, $plugin['plugin_id'], $plugin_html_dir);
+            return $arrErr;
+        }
+        
+        // 不要なファイルの削除
+        SC_Utils_EX::deleteFile(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, false);
         return $arrErr;
+    }
+    
+    /**
+     * ロールバック処理
+     * インストール失敗時などに不要な一時ファイルを削除します.
+     * 
+     * @param string $temp_dir インストール・アップデート時の一時展開用ディレクトリのパス.
+     * @param string $plugin_id プラグインID.
+     * @param string $plugin_html_dir プラグイン毎に生成されるhtmlディレクトリのパス.
+     */
+    function rollBack($temp_dir, $plugin_id = "", $plugin_html_dir ="") {
+        // 一時ディレクトリを削除.
+        SC_Utils_Ex::deleteFile($temp_dir, false);
+        // DBからプラグイン情報を削除
+        if(empty($plugin_id) === false) SC_Helper_Plugin_Ex::deletePluginByPluginId($plugin_id);
+        // htmlディレクトリを削除
+        if(empty($plugin_html_dir) === false) SC_Utils_Ex::deleteFile($plugin_html_dir, true);
     }
 
     /**
@@ -421,11 +419,21 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      * @param ReflectionClass $objReflection リフレクションオブジェクト 
      * @return array エラー情報を格納した連想配列.
      */
-    function checkPluginConstants(ReflectionClass $objReflection) {
+    function checkPluginConstants(ReflectionClass $objReflection, $unpack_dir) {
         $arrErr = array();
-
-        if ($objReflection->getConstant('PLUGIN_NAME') === false) {
+        $plugin_code = $objReflection->getConstant('PLUGIN_CODE');
+        if ($plugin_code === false) {
+            $arrErr['plugin_file'] = '※ PLUGIN_CODEが定義されていません。<br/>';
+            return $arrErr;
+        }
+        $plugin_name = $objReflection->getConstant('PLUGIN_NAME');
+        if ($plugin_name === false) {
             $arrErr['plugin_file'] = '※ PLUGIN_NAMEが定義されていません。<br/>';
+            return $arrErr;
+        }
+        $class_name = $objReflection->getConstant('CLASS_NAME') . ".php";
+        if ($class_name === false ||file_exists($unpack_dir . $class_name) === false) {
+            $arrErr['plugin_file'] = '※ CLASS_NAMEが定義されていません。またはCLASS_NAMEが正しく定義されていません。<br/>';
             return $arrErr;
         }
         if ($objReflection->getConstant('PLUGIN_VERSION') === false) {
@@ -444,9 +452,10 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
             $arrErr['plugin_file'] = '※ DESCRIPTIONが定義されていません。<br/>';
             return $arrErr;
         }
-
         $objErr = new SC_CheckError_Ex($objReflection->getConstants());
-        $objErr->doFunc(array('PLUGIN_NAME', 'PLUGIN_NAME', STEXT_LEN), array('MAX_LENGTH_CHECK',));
+        $objErr->doFunc(array('PLUGIN_CODE', 'PLUGIN_CODE', STEXT_LEN), array('MAX_LENGTH_CHECK','GRAPH_CHECK'));
+        $objErr->doFunc(array('PLUGIN_NAME', 'PLUGIN_NAME', STEXT_LEN), array('MAX_LENGTH_CHECK'));
+        $objErr->doFunc(array('CLASS_NAME', 'CLASS_NAME', STEXT_LEN), array('MAX_LENGTH_CHECK','GRAPH_CHECK'));
         $objErr->doFunc(array('PLUGIN_VERSION', 'PLUGIN_VERSION', STEXT_LEN), array('MAX_LENGTH_CHECK'));
         $objErr->doFunc(array('COMPLIANT_VERSION', 'COMPLIANT_VERSION', STEXT_LEN), array('MAX_LENGTH_CHECK'));
         $objErr->doFunc(array('AUTHOR', 'AUTHOR', STEXT_LEN), array('MAX_LENGTH_CHECK'));
@@ -470,78 +479,80 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
     /**
      * プラグインをアップデートします.
      * 
-     * @param string $plugin_code プラグインコード.
-     * @param string $plugin_file_name プラグインファイル名.
-     * @param string $file_key ファイルキー.
-     * @param string $plugin_id プラグインID.
+     * @param string $target_plugin_code アップデートするプラグインコード.
+     * @param string $upload_file_name アップロードファイル名.
      * @return array エラー情報を格納した連想配列.
      */
-    function updatePlugin($plugin_code, $plugin_file_name, $file_key, $plugin_id) {
-        // アップロードしたファイルのエラーチェック.
+    function updatePlugin($target_plugin, $upload_file_name) {
         $arrErr = array();
 
-        // 展開先ディレクトリ.
-        $temp_plugin_dir = DOWNLOADS_TEMP_DIR . $plugin_code;
-
         // ファイルをチェックし展開します.
-        $arrErr = $this->unpackPluginFile($plugin_file_name, $temp_plugin_dir, $plugin_code, $plugin_code);
+        $arrErr = $this->unpackPluginFile($upload_file_name, DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR, $target_plugin['plugin_code']);
         if ($this->isError($arrErr) === true) {
             return $arrErr;
         }
-
-        // 展開されたディレクトリからプラグインクラスファイルを読み込みます.
-        $update_plugin_class_path = $temp_plugin_dir . '/' . $plugin_code . '.php';
-        $arrErr = $this->requirePluginFile($update_plugin_class_path, $file_key);
+        
+        // plugin_infoを読み込み.
+        $arrErr = $this->requirePluginFile(DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR . "plugin_info.php", $target_plugin['plugin_code']);
         if ($this->isError($arrErr) === true) {
+            $this->rollBack(DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR);
+            return $arrErr;
+        }
+        
+        // リフレクションオブジェクトを生成.
+        $objReflection = new ReflectionClass("plugin_info");
+        // プラグインクラスに必須となるパラメータが正常に定義されているかチェックします.
+        $arrErr = $this->checkPluginConstants($objReflection, DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR);
+        if ($this->isError($arrErr) === true) {
+            $this->rollBack(DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR);
+            return $arrErr;
+        }
+        
+        // プラグインのクラス名を取得;
+         $class_name = $objReflection->getConstant('CLASS_NAME');
+        
+        // 展開されたディレクトリからプラグインクラスファイルを読み込みます.
+        $update_plugin_class_path = DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR . $class_name . '.php';
+        $arrErr = $this->requirePluginFile($update_plugin_class_path, $target_plugin['plugin_code']);
+        if ($this->isError($arrErr) === true) {
+            $this->rollBack(DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR);
             return $arrErr;
         }
         // プラグインクラスファイルのUPDATE処理を実行.
-        $arrErr = $this->execPlugin($plugin_id, $plugin_code, 'update');
-
+        $arrErr = $this->execPlugin($plugin_id, $class_name, 'update');
+        
         // 保存ディレクトリの削除.
-        SC_Utils_Ex::deleteFile($temp_plugin_dir);
-
+        SC_Utils_Ex::deleteFile(DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR, false);
+        
         return $arrErr;
     }
 
     /**
      * ファイルをアップロードし、解凍先のディレクトリに解凍します.
      * 
-     * @param string $unpack_file_name ファイル名
-     * @param string $unpack_dir 解凍ディレクトリ
-     * @param string $plugin_code プラグインコード.
+     * @param string $unpack_file_name 解凍ファイル名
+     * @param string $unpack_dir 解凍先ディレクトリ
      * @param string $file_key ファイルキー
      * @return array エラー情報を格納した連想配列.
      */
-    function unpackPluginFile($unpack_file_name, $unpack_dir, $plugin_code, $file_key) {
+    function unpackPluginFile($unpack_file_name, $unpack_dir, $file_key) {
         $arrErr = array();
         // 解凍ディレクトリディレクトリを作成し、一時ディレクトリからファイルを移動
         $objUpFile = new SC_UploadFile_Ex(PLUGIN_TEMP_REALDIR, $unpack_dir);
-        $this->lfInitUploadFile($objUpFile, $file_key);
+        $this->initUploadFile($objUpFile, $file_key);
         $arrErr = $objUpFile->makeTempFile($file_key, false);
         if ($this->isError($arrErr) === true) {
             return $arrErr;
         }
-
+        
         // 正常にアップロードされているかをチェック.
         $arrErr = $objUpFile->checkEXISTS($file_key);
         if ($this->isError($arrErr) === true) {
             return $arrErr;
         }
-
-        // 圧縮ファイルの中をチェック.
-        $plugin_file_path = PLUGIN_TEMP_REALDIR . $unpack_file_name;
-        $arrErr = $this->checkPluginFile($plugin_file_path, $plugin_code, $file_key);
-        if ($this->isError($arrErr) === true) {
-            return $arrErr;
-        }
-
-        // 展開用ディレクトリを作成し、一時ディレクトリから移動
-        $this->makeDir($unpack_dir);
         $objUpFile->moveTempFile();
-
         // 解凍
-        $update_plugin_file_path = $unpack_dir . '/' . $unpack_file_name;
+        $update_plugin_file_path = $unpack_dir . $unpack_file_name;
         if (!SC_Helper_FileManager_Ex::unpackFile($update_plugin_file_path)) {
             $arrErr['plugin_file'] = '※ 解凍に失敗しました。<br/>';
             return $arrErr;
@@ -552,26 +563,24 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
     /**
      * プラグインをアンインストールします.
      * 
-     * @param int $plugin_id プラグインID.
-     * @param string $plugin_code プラグインコード.
+     * @param array $plugin プラグイン情報を確認した連想配列.
      * @return array エラー情報を格納した連想配列.
      */
-    function uninstallPlugin($plugin_id, $plugin_code) {
+    function uninstallPlugin($plugin) {
         $arrErr = array();
         // プラグインファイルを読み込みます.
-        $plugin_class_path = $this->getPluginFilePath($plugin_code);
-        $arrErr = $this->requirePluginFile($plugin_class_path, 'plugin_error');
+        $plugin_class_file_path = PLUGIN_UPLOAD_REALDIR . $plugin['plugin_code'] . "/" . $plugin['class_name'] . ".php";
+        $arrErr = $this->requirePluginFile($plugin_class_file_path, 'plugin_error');
         if ($this->isError($arrErr) === true) {
             return $arrErr;
         }
 
-        // modeで指定されたメソッドを実行.
-        $arrErr = $this->execPlugin($plugin_id, $plugin_code, 'uninstall');
+        $arrErr = $this->execPlugin($plugin['plugin_id'], $plugin['class_name'], 'uninstall');
         if ($this->isError($arrErr) === true) {
             return $arrErr;
         }
         // プラグインの削除処理.
-        $arrErr = $this->deletePlugin($plugin_id, $plugin_code);
+        $arrErr = $this->deletePlugin($plugin['plugin_id'], $plugin['plugin_code']);
 
         return $arrErr;
     }
@@ -579,25 +588,24 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
     /**
      * プラグインを有効にします.
      * 
-     * @param int $plugin_id プラグインID.
-     * @param string $plugin_code プラグインコード.
+     * @param array $plugin プラグイン情報を確認した連想配列.
      * @return array $arrErr エラー情報を格納した連想配列.
      */
-    function enablePlugin($plugin_id, $plugin_code) {
+    function enablePlugin($plugin) {
         $arrErr = array();
         // クラスファイルを読み込み.
-        $plugin_class_path = $this->getPluginFilePath($plugin_code);
-        $arrErr = $this->requirePluginFile($plugin_class_path, 'plugin_error');
+        $plugin_class_file_path = PLUGIN_UPLOAD_REALDIR . $plugin['plugin_code'] . "/" . $plugin['class_name'] . ".php";
+        $arrErr = $this->requirePluginFile($plugin_class_file_path, 'plugin_error');
         if ($this->isError($arrErr) === true) {
             return $arrErr;
         }
-        // 無効化処理を実行します.
-        $arrErr = $this->execPlugin($plugin_id, $plugin_code, 'enable');
+        // 有効化処理を実行します.
+        $arrErr = $this->execPlugin($plugin['plugin_id'], $plugin['class_name'], 'enable');
         if ($this->isError($arrErr) === true) {
             return $arrErr;
         }
         // プラグインを有効にします.
-        $this->updatePluginEnable($plugin_id, PLUGIN_ENABLE_TRUE);
+        $this->updatePluginEnable($plugin['plugin_id'], PLUGIN_ENABLE_TRUE);
 
         return $arrErr;
     }
@@ -605,26 +613,25 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
     /**
      * プラグインを無効にします.
      * 
-     * @param int $plugin_id プラグインID.
-     * @param string $plugin_code プラグインコード.
-     * @return array エラー情報を格納した連想配列.
+     * @param array $plugin プラグイン情報を確認した連想配列.
+     * @return array $arrErr エラー情報を格納した連想配列.
      */
-    function disablePlugin($plugin_id, $plugin_code) {
+    function disablePlugin($plugin) {
         $arrErr = array();
         // クラスファイルを読み込み.
-        $plugin_class_path = $this->getPluginFilePath($plugin_code);
-        $arrErr = $this->requirePluginFile($plugin_class_path, 'plugin_error');
+        $plugin_class_file_path = PLUGIN_UPLOAD_REALDIR . $plugin['plugin_code'] . "/" . $plugin['class_name'] . ".php";
+        $arrErr = $this->requirePluginFile($plugin_class_file_path, 'plugin_error');
         if ($this->isError($arrErr) === true) {
             return $arrErr;
         }
 
         // 無効化処理を実行します.
-        $arrErr = $this->execPlugin($plugin_id, $plugin_code, 'disable');
+        $arrErr = $this->execPlugin($plugin['plugin_id'], $plugin['class_name'], 'disable');
         if ($this->isError($arrErr) === true) {
             return $arrErr;
         }
         // プラグインを無効にします.
-        $this->updatePluginEnable($plugin_id, PLUGIN_ENABLE_FALSE);
+        $this->updatePluginEnable($plugin['plugin_id'], PLUGIN_ENABLE_FALSE);
 
         return $arrErr;
     }
@@ -662,7 +669,8 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         $plugin_id = $objQuery->nextVal('dtb_plugin_plugin_id');
         $arr_sqlval_plugin['plugin_id'] = $plugin_id;
         $arr_sqlval_plugin['plugin_name'] = $objReflection->getConstant('PLUGIN_NAME');
-        $arr_sqlval_plugin['plugin_code'] = $objReflection->getName();
+        $arr_sqlval_plugin['plugin_code'] = $objReflection->getConstant('PLUGIN_CODE');
+        $arr_sqlval_plugin['class_name'] = $objReflection->getConstant('CLASS_NAME');
         $arr_sqlval_plugin['author'] = $objReflection->getConstant('AUTHOR');
         // AUTHOR_SITE_URLが定義されているか判定.
         $author_site_url = $objReflection->getConstant('AUTHOR_SITE_URL');
@@ -702,14 +710,14 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      * 
      * @param string $file_path クラスのpath
      * @param string $key エラー情報のキー.
-     * @return array エラー情報を格納した連想配列.
+     * @return array $arrErr エラー情報を格納した連想配列.
      */
     function requirePluginFile($file_path, $key) {
         $arrErr = array();
         if (file_exists($file_path)) {
             require_once $file_path;
         } else {
-            $arrErr[$key] = '※ ' . $file_path .'の読み込みに失敗しました。<br/>';
+            $arrErr[$key] = "※ " . $file_path ."の読み込みに失敗しました。<br/>";
         }
         return $arrErr;
     }
@@ -723,14 +731,13 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      * @return array $arrErr エラー情報を格納した連想配列.
      *
      */
-    function execPlugin($plugin_id, $plugin_code, $exec_func) {
+    function execPlugin($plugin_id, $class_name, $exec_func) {
         $arrErr = array();
-        if (method_exists($plugin_code, $exec_func) === true) {
-            call_user_func(array($plugin_code, $exec_func), $plugin_id);
+        if (method_exists($class_name, $exec_func) === true) {
+            call_user_func(array($class_name, $exec_func), $plugin_id);
         } else {
-            $arrErr['plugin_error'] = '※ ' . $plugin_code . '.php に' . $exec_func . 'が見つかりません。<br/>';
+            $arrErr['plugin_error'] = '※ ' . $class_name . '.php に' . $exec_func . 'が見つかりません。<br/>';
         }
-
         return $arrErr;
     }
 
@@ -816,24 +823,6 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
     }
 
     /**
-     * 圧縮ファイル名と中のディレクトリ名が同じであるかをチェックします.
-     *
-     * @param Archive_Tar $tar_obj Archive_Tarクラスのオブジェクト
-     * @param string $dir_name ディレクトリ名.
-     * @return boolean
-     */
-    function checkUploadFileName($tar_obj, $dir_name) {
-        // ファイル一覧を取得
-        $arrayFile = $tar_obj->listContent();
-        // ディレクトリ名と圧縮ファイル名が同じかをチェック.
-        $pattern = ('|^'. preg_quote($dir_name) ."\/(.*?)|");
-        foreach ($arrayFile as $value) {
-            if(preg_match($pattern, $value['filename'])) return true;
-        }
-        return false;;
-    }
-
-    /**
      * ディレクトリを作成します.
      *
      * @param string $dir_path 作成するディレクトリのパス
@@ -878,8 +867,8 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      * @param array $arrErr エラー情報を格納した連想配列.
      * @return boolean.
      */
-    function isError($arrErr) {
-        if (is_array($arrErr) && count($arrErr) > 0) {
+    function isError($error) {
+        if (is_array($error) && count($error) > 0) {
             return true;
         }
         return false;

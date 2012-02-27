@@ -43,11 +43,11 @@ class SC_Helper_Plugin {
      *
      * @return void
      */
-    function load() {
+    function load($plugin_activate_flg = true) {
 
         if (!defined('CONFIG_REALFILE') || !file_exists(CONFIG_REALFILE)) return; // インストール前
         if (SC_Utils_Ex::sfIsInstallFunction()) return; // インストール中
-
+        if ($plugin_activate_flg === false) return;
         // 有効なプラグインを取得
         $arrPluginDataList = $this->getEnablePlugin();
         // pluginディレクトリを取得
@@ -57,10 +57,10 @@ class SC_Helper_Plugin {
             // プラグイン本体ファイル名が取得したプラグインディレクトリ一覧にある事を確認
             if (array_search($arrPluginData['plugin_code'], $arrPluginDirectory) !== false) {
                 // プラグイン本体ファイルをrequire.
-                require_once PLUGIN_UPLOAD_REALDIR . $arrPluginData['plugin_code'] . '/' . $arrPluginData['plugin_code'] . '.php';
+                require_once PLUGIN_UPLOAD_REALDIR . $arrPluginData['plugin_code'] . '/' . $arrPluginData['class_name'] . '.php';
 
                 // プラグインのインスタンス生成.
-                $objPlugin = new $arrPluginData['plugin_code']($arrPluginData);
+                $objPlugin = new $arrPluginData['class_name']($arrPluginData);
                 // メンバ変数にプラグインのインスタンスを登録.
                 $this->arrPluginInstances[$arrPluginData['plugin_id']] = $objPlugin;
                 $this->arrPluginIds[] = $arrPluginData['plugin_id'];
@@ -78,10 +78,10 @@ class SC_Helper_Plugin {
      *
      * @return object SC_Helper_Pluginオブジェクト
      */
-    function getSingletonInstance() {
+    function getSingletonInstance($plugin_activate_flg = true) {
         if (!isset($GLOBALS['_SC_Helper_Plugin_instance']) || is_null($GLOBALS['_SC_Helper_Plugin_instance'])) {
             $GLOBALS['_SC_Helper_Plugin_instance'] =& new SC_Helper_Plugin_Ex();
-            $GLOBALS['_SC_Helper_Plugin_instance']->load();
+            $GLOBALS['_SC_Helper_Plugin_instance']->load($plugin_activate_flg);
         }
         return $GLOBALS['_SC_Helper_Plugin_instance'];
     }
@@ -155,7 +155,7 @@ class SC_Helper_Plugin {
      * @return array プラグインの基本情報.
      */
     function getPluginByPluginId($plugin_id) {
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '*';
         $table = 'dtb_plugin';
         $where = 'plugin_id = ?';
@@ -170,7 +170,7 @@ class SC_Helper_Plugin {
      * @return array プラグインの基本情報.
      */
     function getPluginByPluginCode($plugin_code) {
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '*';
         $table = 'dtb_plugin';
         $where = 'plugin_code = ?';
@@ -178,6 +178,20 @@ class SC_Helper_Plugin {
         return $plugin;
     }
 
+    /**
+     * プラグインIDをキーにプラグインを削除する。
+     * 
+     * @param string $plugin_id プラグインID.
+     * @return array プラグインの基本情報.
+     */
+    function deletePluginByPluginId($plugin_id) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $objQuery->begin();
+        $where = 'plugin_id = ?';
+        $objQuery->delete('dtb_plugin', $where, array($plugin_id));
+        $objQuery->delete('dtb_plugin_hookpoint', $where, array($plugin_id));
+    }
+    
     /**
      * プラグインディレクトリの取得
      *
