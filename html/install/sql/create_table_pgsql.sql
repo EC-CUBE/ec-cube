@@ -750,6 +750,7 @@ CREATE TABLE dtb_bloc (
     update_date timestamp NOT NULL,
     php_path text,
     deletable_flg smallint NOT NULL DEFAULT 1,
+    plugin_id int NOT NULL,
     PRIMARY KEY (device_type_id, bloc_id),
     UNIQUE (device_type_id, filename)
 );
@@ -1120,6 +1121,7 @@ CREATE TABLE dtb_plugin (
     plugin_id int NOT NULL,
     plugin_name text NOT NULL,
     plugin_code text NOT NULL,
+    class_name text NOT NULL,
     author text,
     author_site_url text,
     plugin_site_url text,

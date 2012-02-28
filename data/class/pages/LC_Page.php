@@ -98,7 +98,7 @@ class LC_Page {
 
         // プラグインを実行するかを判定します.
         // プラグイン管理ではプラグインが実行されません
-        if ($_SERVER['PHP_SELF'] !== ROOT_URLPATH . ADMIN_DIR . 'system/plugin.php') {
+        if ($_SERVER['PHP_SELF'] === ROOT_URLPATH . ADMIN_DIR . 'system/plugin.php') {
             $this->plugin_activate_flg = false;
         }
         
@@ -131,7 +131,7 @@ class LC_Page {
         // HeadNaviにpluginテンプレートを追加する.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->setHeadNaviBlocs($this->arrPageLayout['HeadNavi']);
-
+        
         // スーパーフックポイントを実行.
         $objPlugin->doAction('lc_page_process', array($this));
 
