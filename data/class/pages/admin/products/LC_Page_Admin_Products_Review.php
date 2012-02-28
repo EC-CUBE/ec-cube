@@ -106,17 +106,17 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
                 $this->arrErr = $this->lfCheckError($objFormParam);
                 if (!$this->arrErr) {
                     // 検索条件を取得
-                    list($where, $arrval) = $this->lfGetWhere($this->arrForm);
+                    list($where, $arrWhereVal) = $this->lfGetWhere($this->arrForm);
                 }
 
                 //CSVダウンロード
                 if ($this->getMode() == 'csv') {
-                    $this->lfDoOutputCsv($where, $arrval);
+                    $this->lfDoOutputCsv($where, $arrWhereVal);
                     exit;
                 }
 
                 // 検索条件を取得
-                $this->arrReview = $this->lfGetReview($this->arrForm, $where, $arrval);
+                $this->arrReview = $this->lfGetReview($this->arrForm, $where, $arrWhereVal);
                 break;
             default:
                 break;
@@ -229,15 +229,15 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
      * CSV ファイル出力実行
      *
      * @param string $where WHERE文
-     * @param array $arrval WHERE文の判定値
+     * @param array $arrWhereVal WHERE文の判定値
      * @return void
      */
-    function lfDoOutputCsv($where, $arrVal) {
+    function lfDoOutputCsv($where, $arrWhereVal) {
         $objCSV = new SC_Helper_CSV_Ex();
         if ($where != '') {
             $where = 'WHERE ' . $where;
         }
-        $objCSV->sfDownloadCsv('4', $where, $arrVal, '', true);
+        $objCSV->sfDownloadCsv('4', $where, $arrWhereVal, '', true);
     }
 
     /**
@@ -249,6 +249,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
     function lfGetWhere($arrForm) {
         //削除されていない商品を検索
         $where = 'A.del_flg = 0 AND B.del_flg = 0';
+        $arrWhereVal = array();
 
         foreach ($arrForm AS $key=>$val) {
             if (empty($val)) continue;
@@ -257,25 +258,25 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
                 case 'search_reviewer_name':
                     $val = preg_replace('/ /', '%', $val);
                     $where.= ' AND reviewer_name LIKE ? ';
-                    $arrval[] = "%$val%";
+                    $arrWhereVal[] = "%$val%";
                     break;
 
                 case 'search_reviewer_url':
                     $val = preg_replace('/ /', '%', $val);
                     $where.= ' AND reviewer_url LIKE ? ';
-                    $arrval[] = "%$val%";
+                    $arrWhereVal[] = "%$val%";
                     break;
 
                 case 'search_name':
                     $val = preg_replace('/ /', '%', $val);
                     $where.= ' AND name LIKE ? ';
-                    $arrval[] = "%$val%";
+                    $arrWhereVal[] = "%$val%";
                     break;
 
                 case 'search_product_code':
                     $val = preg_replace('/ /', '%', $val);
                     $where.= ' AND A.product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code LIKE ?)';
-                    $arrval[] = "%$val%";
+                    $arrWhereVal[] = "%$val%";
                     break;
 
                 case 'search_sex':
@@ -289,7 +290,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
                                 } else {
                                     $tmp_where .= ' OR sex = ?';
                                 }
-                                $arrval[] = $element;
+                                $arrWhereVal[] = $element;
                             }
                         }
                         if ($tmp_where != '') {
@@ -302,14 +303,14 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
 
                 case 'search_recommend_level':
                     $where.= ' AND recommend_level = ? ';
-                    $arrval[] = $val;
+                    $arrWhereVal[] = $val;
                     break;
 
                 case 'search_startyear':
                     if (isset($_POST['search_startyear']) && isset($_POST['search_startmonth']) && isset($_POST['search_startday'])) {
                         $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
                         $where.= ' AND A.create_date >= ? ';
-                        $arrval[] = $date;
+                        $arrWhereVal[] = $date;
                     }
                     break;
 
@@ -326,7 +327,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
             }
 
         }
-        return array($where, $arrval);
+        return array($where, $arrWhereVal);
     }
 
     /**
@@ -334,19 +335,19 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
      *
      * @param array $arrForm フォームデータ
      * @param string $where WHERE文
-     * @param array $arrval WHERE文の判定値
+     * @param array $arrWhereVal WHERE文の判定値
      * @return array レビュー一覧
      */
-    function lfGetReview($arrForm, $where, $arrval) {
+    function lfGetReview($arrForm, $where, $arrWhereVal) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // ページ送りの処理
         $page_max = SC_Utils_Ex::sfGetSearchPageMax($arrForm['search_page_max']);
 
-        if (!isset($arrval)) $arrval = array();
+        if (!isset($arrWhereVal)) $arrWhereVal = array();
 
         $from = 'dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id ';
-        $linemax = $objQuery->count($from, $where, $arrval);
+        $linemax = $objQuery->count($from, $where, $arrWhereVal);
         $this->tpl_linemax = $linemax;
 
         $this->tpl_pageno = isset($arrForm['search_pageno']) ? $arrForm['search_pageno'] : '';
@@ -368,7 +369,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
         $col = 'review_id, A.product_id, reviewer_name, sex, recommend_level, ';
         $col .= 'reviewer_url, title, comment, A.status, A.create_date, A.update_date, name';
         $from = 'dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id ';
-        $arrReview = $objQuery->select($col, $from, $where, $arrval);
+        $arrReview = $objQuery->select($col, $from, $where, $arrWhereVal);
 
         return $arrReview;
     }

@@ -113,7 +113,7 @@ class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex {
         $objQuery   = SC_Query_Ex::getSingletonInstance();
         $col        = 'subject, mail_body';
         $where      = 'send_id = ? AND customer_id = ?';
-        $arrval     = array($send_id, $customer_id);
-        return $objQuery->select($col, 'dtb_mail_history LEFT JOIN dtb_order USING(order_id)', $where, $arrval);
+        $arrWhereVal = array($send_id, $customer_id);
+        return $objQuery->select($col, 'dtb_mail_history LEFT JOIN dtb_order USING(order_id)', $where, $arrWhereVal);
     }
 }

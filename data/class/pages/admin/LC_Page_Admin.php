@@ -35,7 +35,7 @@ class LC_Page_Admin extends LC_Page_Ex {
 
     // }}}
     // {{{ functions
-    
+
     /**
      * Page を初期化する.
      *
@@ -63,16 +63,16 @@ class LC_Page_Admin extends LC_Page_Ex {
 
         // ディスプレイクラス生成
         $this->objDisplay = new SC_Display_Ex();
-        
+
         // プラグインを実行するかを判定します.
         // プラグイン管理ではプラグインが実行されません
         if ($_SERVER['PHP_SELF'] === ROOT_URLPATH . ADMIN_DIR . 'system/plugin.php') {
             $this->plugin_activate_flg = false;
         }
-        
+
         // スーパーフックポイントを実行.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        
+
         $objPlugin->doAction('lc_page_preProcess', array($this));
 
         // トランザクショントークンの検証と生成

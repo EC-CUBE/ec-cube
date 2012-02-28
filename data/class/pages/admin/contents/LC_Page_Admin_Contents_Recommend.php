@@ -199,8 +199,8 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
         $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
         $table = 'dtb_best_products';
         $where = 'category_id = ? AND rank = ?';
-        $arrval = array($arrPost['category_id'],$arrPost['rank']);
-        $objQuery->delete($table, $where, $arrval);
+        $arrWhereVal = array($arrPost['category_id'],$arrPost['rank']);
+        $objQuery->delete($table, $where, $arrWhereVal);
     }
 
     /**
@@ -213,8 +213,8 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
         $col = 'product_id,main_list_image,name';
         $table = 'dtb_products';
         $where = 'product_id = ? AND del_flg = 0';
-        $arrval = array($product_id);
-        $arrProduct = $objQuery->select($col, $table, $where, $arrval);
+        $arrWhereVal = array($product_id);
+        $arrProduct = $objQuery->select($col, $table, $where, $arrWhereVal);
         return $arrProduct[0];
     }
 

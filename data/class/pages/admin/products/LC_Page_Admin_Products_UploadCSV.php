@@ -492,14 +492,15 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
             if ($arrList[$keyname] != '') {
                 $arrProduct = $objQuery->select('product_id', 'dtb_products', 'product_id = ?', array($arrList[$keyname]));
                 if ($arrProduct[0]['product_id'] != '') {
-                    $arrval['product_id'] = $product_id;
-                    $arrval['recommend_product_id'] = $arrProduct[0]['product_id'];
-                    $arrval['comment'] = $arrList[$comment_key];
-                    $arrval['update_date'] = $arrList['update_date'];
-                    $arrval['create_date'] = $arrList['update_date'];
-                    $arrval['creator_id'] = $_SESSION['member_id'];
-                    $arrval['rank'] = RECOMMEND_PRODUCT_MAX - $i + 1;
-                    $objQuery->insert('dtb_recommend_products', $arrval);
+                    $arrWhereVal = array();
+                    $arrWhereVal['product_id'] = $product_id;
+                    $arrWhereVal['recommend_product_id'] = $arrProduct[0]['product_id'];
+                    $arrWhereVal['comment'] = $arrList[$comment_key];
+                    $arrWhereVal['update_date'] = $arrList['update_date'];
+                    $arrWhereVal['create_date'] = $arrList['update_date'];
+                    $arrWhereVal['creator_id'] = $_SESSION['member_id'];
+                    $arrWhereVal['rank'] = RECOMMEND_PRODUCT_MAX - $i + 1;
+                    $objQuery->insert('dtb_recommend_products', $arrWhereVal);
                 }
             }
         }

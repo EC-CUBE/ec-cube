@@ -103,12 +103,12 @@ class SC_Helper_DB {
      * @return bool データが存在する場合 true, データの追加に成功した場合 true,
      *               $add == false で, データが存在しない場合 false
      */
-    function sfDataExists($table_name, $where, $arrval, $dsn = '', $sql = '', $add = false) {
+    function sfDataExists($table_name, $where, $arrWhereVal, $dsn = '', $sql = '', $add = false) {
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $dsn = $dbFactory->getDSN($dsn);
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $exists = $objQuery->exists($table_name, $where, $arrval);
+        $exists = $objQuery->exists($table_name, $where, $arrWhereVal);
 
         // データを追加する
         if (!$exists && $add) {
@@ -770,17 +770,17 @@ __EOS__;
         }
         $from = $objProduct->alldtlSQL($where_products_class);
         foreach ($arrTgtCategory_id as $category_id) {
-            $arrval = array();
-            list($tmp_where, $tmp_arrval) = $this->sfGetCatWhere($category_id);
+            $arrWhereVal = array();
+            list($tmp_where, $arrTmpVal) = $this->sfGetCatWhere($category_id);
             if ($tmp_where != '') {
                 $sql_where_product_ids = 'product_id IN (SELECT product_id FROM dtb_product_categories WHERE ' . $tmp_where . ')';
-                $arrval = $tmp_arrval;
+                $arrWhereVal = $arrTmpVal;
             } else {
                 $sql_where_product_ids = '0<>0'; // 一致させない
             }
             $where = "($sql_where) AND ($sql_where_product_ids)";
 
-            $arrUpdateData[$category_id] = $objQuery->count($from, $where, $arrval);
+            $arrUpdateData[$category_id] = $objQuery->count($from, $where, $arrWhereVal);
         }
 
         unset($arrTgtCategory_id);
@@ -932,7 +932,7 @@ __EOS__;
      * @param string $keyname プライマリーキーのカラム名
      * @param string $valname データ内容のカラム名
      * @param string $where WHERE句
-     * @param array $arrval プレースホルダ
+     * @param array $arrWhereVal プレースホルダ
      * @return array SELECT ボックス用リストの配列
      */
     function sfGetIDValueList($table, $keyname, $valname, $where = '', $arrVal = array()) {
@@ -1229,11 +1229,11 @@ __EOS__;
      *
      * @param string $table テーブル名
      * @param string $col カラム名
-     * @param array $arrval 要素の配列
+     * @param array $arrVal 要素の配列
      * @param array $addwhere SQL の AND 条件である WHERE 句
      * @return bool レコードが存在する場合 true
      */
-    function sfIsRecord($table, $col, $arrval, $addwhere = '') {
+    function sfIsRecord($table, $col, $arrVal, $addwhere = '') {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrCol = preg_split('/[, ]/', $col);
 
@@ -1252,7 +1252,7 @@ __EOS__;
                 }
             }
         }
-        $ret = $objQuery->get($col, $table, $where, $arrval);
+        $ret = $objQuery->get($col, $table, $where, $arrVal);
 
         if ($ret != '') {
             return true;

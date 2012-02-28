@@ -114,6 +114,7 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
     /* 商品検索結果取得 */
     function lfGetProducts(&$objDb) {
         $where = 'del_flg = 0';
+        $arrWhereVal = array();
 
         /* 入力エラーなし */
         foreach ($this->arrForm AS $key=>$val) {
@@ -122,18 +123,18 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
             switch ($key) {
                 case 'search_name':
                     $where .= ' AND name ILIKE ?';
-                    $arrval[] = "%$val%";
+                    $arrWhereVal[] = "%$val%";
                     break;
                 case 'search_category_id':
-                    list($tmp_where, $tmp_arrval) = $objDb->sfGetCatWhere($val);
+                    list($tmp_where, $arrTmp) = $objDb->sfGetCatWhere($val);
                     if ($tmp_where != '') {
                         $where.= ' AND product_id IN (SELECT product_id FROM dtb_product_categories WHERE ' . $tmp_where . ')';
-                        $arrval = array_merge((array)$arrval, (array)$tmp_arrval);
+                        $arrWhereVal = array_merge((array)$arrWhereVal, (array)$arrTmp);
                     }
                     break;
                 case 'search_product_code':
                     $where .= ' AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code LIKE ? GROUP BY product_id)';
-                    $arrval[] = "$val%";
+                    $arrWhereVal[] = "$val%";
                     break;
                 default:
                     break;
@@ -144,10 +145,7 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         // 行数の取得
-        if (empty($arrval)) {
-            $arrval = array();
-        }
-        $linemax = $objQuery->count('dtb_products', $where, $arrval);
+        $linemax = $objQuery->count('dtb_products', $where, $arrWhereVal);
         $this->tpl_linemax = $linemax;              // 何件が該当しました。表示用
 
         // ページ送りの処理
@@ -165,7 +163,7 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
 
         // 検索結果の取得
         // FIXME 商品コードの表示
-        $arrProducts = $objQuery->select('*', SC_Product_Ex::alldtlSQL(), $where, $arrval);
+        $arrProducts = $objQuery->select('*', SC_Product_Ex::alldtlSQL(), $where, $arrWhereVal);
         return $arrProducts;
     }
 }

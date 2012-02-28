@@ -125,11 +125,11 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
         $col        = 'order_id, create_date, payment_id, payment_total';
         $from       = 'dtb_order';
         $where      = 'del_flg = 0 AND customer_id = ?';
-        $arrval     = array($customer_id);
+        $arrWhereVal = array($customer_id);
         $order      = 'order_id DESC';
 
         if ($startno == -1) {
-            return $objQuery->count($from, $where, $arrval);
+            return $objQuery->count($from, $where, $arrWhereVal);
         }
 
         $objQuery->setLimitOffset(SEARCH_PMAX, $startno);
@@ -137,6 +137,6 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
         $objQuery->setOrder($order);
 
         //購入履歴の取得
-        return $objQuery->select($col, $from, $where, $arrval);
+        return $objQuery->select($col, $from, $where, $arrWhereVal);
     }
 }

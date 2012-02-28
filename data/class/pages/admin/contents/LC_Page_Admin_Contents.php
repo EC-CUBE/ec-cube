@@ -266,13 +266,13 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
         $order = 'rank DESC';
         if (strlen($news_id) == 0) {
             $where = 'del_flg = 0';
-            $arrval = array();
+            $arrWhereVal = array();
         } else {
             $where = 'del_flg = 0 AND news_id = ?';
-            $arrval = array($news_id);
+            $arrWhereVal = array($news_id);
         }
         $objQuery->setOrder($order);
-        return $objQuery->select($col, $table, $where,$arrval);
+        return $objQuery->select($col, $table, $where, $arrWhereVal);
     }
 
     /**
@@ -284,8 +284,8 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
         $col = 'rank';
         $table = 'dtb_news';
         $where = 'del_flg = 0 AND news_id = ?';
-        $arrval = array($news_id);
-        list($rank) = $objQuery->select($col, $table, $where, $arrval);
+        $arrWhereVal = array($news_id);
+        list($rank) = $objQuery->select($col, $table, $where, $arrWhereVal);
         return $rank['rank'];
     }
 

@@ -218,8 +218,8 @@ class SC_Query {
      *
      * FIXME MDB2::exec() の実装であるべき
      */
-    function exec($str, $arrval = array()) {
-        return $this->query($str, $arrval);
+    function exec($str, $arrVal = array()) {
+        return $this->query($str, $arrVal);
     }
 
     /**
@@ -231,7 +231,7 @@ class SC_Query {
      * @param integer $fetchmode 使用するフェッチモード。デフォルトは DB_FETCHMODE_ASSOC。
      * @return boolean 結果
      */
-    function doCallbackAll($cbFunc, $sql, $arrval = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
+    function doCallbackAll($cbFunc, $sql, $arrVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
 
         $sql = $this->dbFactory->sfChangeMySQL($sql);
 
@@ -240,7 +240,7 @@ class SC_Query {
             return;
         }
 
-        $affected =& $this->execute($sth, $arrval);
+        $affected =& $this->execute($sth, $arrVal);
         if (PEAR::isError($affected) && $this->force_run) {
             return;
         }
@@ -263,7 +263,7 @@ class SC_Query {
      * @param integer $fetchmode 使用するフェッチモード。デフォルトは DB_FETCHMODE_ASSOC。
      * @return array データを含む2次元配列。失敗した場合に 0 または DB_Error オブジェクトを返します。
      */
-    function getAll($sql, $arrval = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
+    function getAll($sql, $arrVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
 
         $sql = $this->dbFactory->sfChangeMySQL($sql);
 
@@ -272,7 +272,7 @@ class SC_Query {
             return;
         }
 
-        $affected =& $this->execute($sth, $arrval);
+        $affected =& $this->execute($sth, $arrVal);
         if (PEAR::isError($affected) && $this->force_run) {
             return;
         }
@@ -582,11 +582,11 @@ class SC_Query {
      * @param string $table テーブル名
      * @param string $col カラム名
      * @param string $where 付与する WHERE 句
-     * @param array $arrval プレースホルダに挿入する値
+     * @param array $arrWhereVal プレースホルダに挿入する値
      * @return integer MAX文の実行結果
      */
-    function max($col, $table, $where = '', $arrval = array()) {
-        $ret = $this->get("MAX($col)", $table, $where, $arrval);
+    function max($col, $table, $where = '', $arrWhereVal = array()) {
+        $ret = $this->get("MAX($col)", $table, $where, $arrWhereVal);
         return $ret;
     }
 
@@ -596,11 +596,11 @@ class SC_Query {
      * @param string $table テーブル名
      * @param string $col カラム名
      * @param string $where 付与する WHERE 句
-     * @param array $arrval プレースホルダに挿入する値
+     * @param array $arrWhereVal プレースホルダに挿入する値
      * @return integer MIN文の実行結果
      */
-    function min($col, $table, $where = '', $arrval = array()) {
-        $ret = $this->get("MIN($col)", $table, $where, $arrval);
+    function min($col, $table, $where = '', $arrWhereVal = array()) {
+        $ret = $this->get("MIN($col)", $table, $where, $arrWhereVal);
         return $ret;
     }
 
@@ -624,10 +624,10 @@ class SC_Query {
      * SQL を指定して, 特定のカラムの値を取得する.
      *
      * @param string $sql 実行する SQL
-     * @param array $arrval プレースホルダに挿入する値
+     * @param array $arrVal プレースホルダに挿入する値
      * @return mixed SQL の実行結果
      */
-    function getOne($sql, $arrval = array()) {
+    function getOne($sql, $arrVal = array()) {
 
         $sql = $this->dbFactory->sfChangeMySQL($sql);
 
@@ -636,7 +636,7 @@ class SC_Query {
             return;
         }
 
-        $affected =& $this->execute($sth, $arrval);
+        $affected =& $this->execute($sth, $arrVal);
         if (PEAR::isError($affected) && $this->force_run) {
             return;
         }
@@ -721,16 +721,16 @@ class SC_Query {
      *
      * @param string $table テーブル名
      * @param string $where WHERE句
-     * @param array $arrval プレースホルダ
+     * @param array $arrWhereVal プレースホルダ
      * @return
      */
-    function delete($table, $where = '', $arrval = array()) {
+    function delete($table, $where = '', $arrWhereVal = array()) {
         if (strlen($where) <= 0) {
             $sqlde = "DELETE FROM $table";
         } else {
             $sqlde = "DELETE FROM $table WHERE $where";
         }
-        $ret = $this->query($sqlde, $arrval, false, null, MDB2_PREPARE_MANIP);
+        $ret = $this->query($sqlde, $arrWhereVal, false, null, MDB2_PREPARE_MANIP);
         return $ret;
     }
 

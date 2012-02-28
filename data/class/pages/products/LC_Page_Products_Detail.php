@@ -504,8 +504,8 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         $col = 'create_date, reviewer_url, reviewer_name, recommend_level, title, comment';
         $from = 'dtb_review';
         $where = 'del_flg = 0 AND status = 1 AND product_id = ? ORDER BY create_date DESC LIMIT ' . REVIEW_REGIST_MAX;
-        $arrval[] = $id;
-        $arrReview = $objQuery->select($col, $from, $where, $arrval);
+        $arrWhereVal = array($id);
+        $arrReview = $objQuery->select($col, $from, $where, $arrWhereVal);
         return $arrReview;
     }
 

@@ -253,7 +253,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
     /* 商品一覧の表示 */
     function lfGetProductsList($searchCondition, $disp_number, $startno, $linemax, &$objProduct) {
 
-        $arrval_order = array();
+        $arrOrderVal = array();
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         // 表示順序
@@ -271,7 +271,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
             default:
                 if (strlen($searchCondition['where_category']) >= 1) {
                     $dtb_product_categories = '(SELECT * FROM dtb_product_categories WHERE '.$searchCondition['where_category'].')';
-                    $arrval_order           = $searchCondition['arrvalCategory'];
+                    $arrOrderVal           = $searchCondition['arrvalCategory'];
                 } else {
                     $dtb_product_categories = 'dtb_product_categories';
                 }
@@ -297,7 +297,7 @@ __EOS__;
         $objQuery->setWhere($searchCondition['where']);
 
         // 表示すべきIDとそのIDの並び順を一気に取得
-        $arrProductId = $objProduct->findProductIdsOrder($objQuery, array_merge($searchCondition['arrval'], $arrval_order));
+        $arrProductId = $objProduct->findProductIdsOrder($objQuery, array_merge($searchCondition['arrval'], $arrOrderVal));
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrProducts = $objProduct->getListByProductIds($objQuery, $arrProductId);

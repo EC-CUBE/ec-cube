@@ -238,12 +238,12 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
         if (!isset($arrErr['date'])) {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $where = 'del_flg = 0 AND month = ? AND day = ?';
-            $arrval = array($post['month'], $post['day']);
+            $arrWhereVal = array($post['month'], $post['day']);
             if (!empty($post['holiday_id'])) {
                 $where .= ' AND holiday_id <> ?';
-                $arrval[] = $post['holiday_id'];
+                $arrWhereVal[] = $post['holiday_id'];
             }
-            $arrRet = $objQuery->select('count(holiday_id) as count', 'dtb_holiday', $where, $arrval);
+            $arrRet = $objQuery->select('count(holiday_id) as count', 'dtb_holiday', $where, $arrWhereVal);
 
             // 編集中のレコード以外に同じ日付が存在する場合
             if ($arrRet[0]['count'] > 0) {

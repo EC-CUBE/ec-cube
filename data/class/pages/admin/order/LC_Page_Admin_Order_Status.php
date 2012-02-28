@@ -171,10 +171,10 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
         $select ='*';
         $from = 'dtb_order';
         $where = 'del_flg = 0 AND status = ?';
-        $arrval[] = $status;
+        $arrWhereVal = array($status);
         $order = 'order_id DESC';
 
-        $linemax = $objQuery->count($from, $where, $arrval);
+        $linemax = $objQuery->count($from, $where, $arrWhereVal);
         $this->tpl_linemax = $linemax;
 
         // ページ送りの処理
@@ -194,7 +194,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
         $objQuery->setOrder($order);
 
         //検索結果の取得
-        $this->arrStatus = $objQuery->select($select, $from, $where, $arrval);
+        $this->arrStatus = $objQuery->select($select, $from, $where, $arrWhereVal);
     }
 
     /**

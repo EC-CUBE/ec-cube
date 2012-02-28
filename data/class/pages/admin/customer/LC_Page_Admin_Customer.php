@@ -181,8 +181,10 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
             return false;
         }
         // XXXX: 仮会員は物理削除となっていたが論理削除に変更。
-        $arrVal['del_flg'] = '1';
-        $arrVal['update_date'] = 'CURRENT_TIMESTAMP';
+        $arrVal = array(
+            'del_flg' => '1',
+            'update_date' => 'CURRENT_TIMESTAMP',
+        );
         SC_Helper_Customer_Ex::sfEditCustomerData($arrVal, $customer_id);
         return true;
     }

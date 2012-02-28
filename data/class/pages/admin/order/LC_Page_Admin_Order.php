@@ -117,11 +117,12 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
 
                 if (count($this->arrErr) == 0) {
                     $where = 'del_flg = 0';
+                    $arrWhereVal = array();
                     foreach ($arrParam as $key => $val) {
                         if ($val == '') {
                             continue;
                         }
-                        $this->buildQuery($key, $where, $arrval, $objFormParam);
+                        $this->buildQuery($key, $where, $arrWhereVal, $objFormParam);
                     }
 
                     $order = 'update_date DESC';
@@ -132,19 +133,19 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
                     switch ($this->getMode()) {
                         // CSVを送信する。
                         case 'csv':
-                            $this->doOutputCSV($where, $arrval,$order);
+                            $this->doOutputCSV($where, $arrWhereVal, $order);
                             exit;
                             break;
 
                         // 全件削除(ADMIN_MODE)
                         case 'delete_all':
-                            $this->doDelete($where, $arrval);
+                            $this->doDelete($where, $arrWhereVal);
                             break;
 
                         // 検索実行
                         default:
                             // 行数の取得
-                            $this->tpl_linemax = $this->getNumberOfLines($where, $arrval);
+                            $this->tpl_linemax = $this->getNumberOfLines($where, $arrWhereVal);
                             // ページ送りの処理
                             $page_max = SC_Utils_Ex::sfGetSearchPageMax($objFormParam->getValue('search_page_max'));
                             // ページ送りの取得
@@ -154,7 +155,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
                             $this->arrPagenavi = $objNavi->arrPagenavi;
 
                             // 検索結果の取得
-                            $this->arrResults = $this->findOrders($where, $arrval,
+                            $this->arrResults = $this->findOrders($where, $arrWhereVal,
                                                                   $page_max, $objNavi->start_row, $order);
                             break;
                     }

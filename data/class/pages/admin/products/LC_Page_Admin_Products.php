@@ -120,11 +120,12 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
 
                 if (count($this->arrErr) == 0) {
                     $where = 'del_flg = 0';
+                    $arrWhereVal = array();
                     foreach ($arrParam as $key => $val) {
                         if ($val == '') {
                             continue;
                         }
-                        $this->buildQuery($key, $where, $arrval, $objFormParam, $objDb);
+                        $this->buildQuery($key, $where, $arrWhereVal, $objFormParam, $objDb);
                     }
 
                     $order = 'update_date DESC';
@@ -137,18 +138,18 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
                         case 'csv':
                             $objCSV = new SC_Helper_CSV_Ex();
                             // CSVを送信する。正常終了の場合、終了。
-                            $objCSV->sfDownloadCsv(1, $where, $arrval, $order, true);
+                            $objCSV->sfDownloadCsv(1, $where, $arrWhereVal, $order, true);
                             exit;
 
                         // 全件削除(ADMIN_MODE)
                         case 'delete_all':
-                            $this->doDelete($where, $arrval);
+                            $this->doDelete($where, $arrWhereVal);
                             break;
 
                         // 検索実行
                         default:
                             // 行数の取得
-                            $this->tpl_linemax = $this->getNumberOfLines($where, $arrval);
+                            $this->tpl_linemax = $this->getNumberOfLines($where, $arrWhereVal);
                             // ページ送りの処理
                             $page_max = SC_Utils_Ex::sfGetSearchPageMax($objFormParam->getValue('search_page_max'));
                             // ページ送りの取得
@@ -158,7 +159,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
                             $this->arrPagenavi = $objNavi->arrPagenavi;
 
                             // 検索結果の取得
-                            $this->arrProducts = $this->findProducts($where, $arrval, $page_max, $objNavi->start_row,
+                            $this->arrProducts = $this->findProducts($where, $arrWhereVal, $page_max, $objNavi->start_row,
                                                                      $order, $objProduct);
 
                             // 各商品ごとのカテゴリIDを取得

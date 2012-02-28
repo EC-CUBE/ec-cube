@@ -727,7 +727,7 @@ class SC_CartSession {
      * @return boolean カートが複数商品種別の場合 true
      */
     function isMultiple() {
-	    return count($this->getKeys()) > 1;
+        return count($this->getKeys()) > 1;
     }
 
     /**

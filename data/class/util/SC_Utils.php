@@ -2188,20 +2188,20 @@ class SC_Utils {
         SC_Utils_Ex::deleteFile(SMARTPHONE_COMPILE_REALDIR, false);
         SC_Utils_Ex::deleteFile(MOBILE_COMPILE_REALDIR, false);
     }
-    
+
     /**
      * 指定されたパスの配下を再帰的にコピーします.
      * @param string $imageDir コピー元ディレクトリのパス 
      * @param string $destDir コピー先ディレクトリのパス 
      */
     function copyDirectory($source_path, $dest_path) {
-        
+
         $handle=opendir($source_path);  
-        while($filename = readdir($handle)) {
+        while ($filename = readdir($handle)) {
             if($filename === '.' || $filename === '..') continue;
             $cur_path = $source_path . $filename;
             $dest_file_path = $dest_path . $filename;
-            if(is_dir($cur_path)) {
+            if (is_dir($cur_path)) {
                 // ディレクトリの場合
                 // コピー先に無いディレクトリの場合、ディレクトリ作成.
                 if(!empty($filename) && !file_exists($dest_file_path)) mkdir($dest_file_path);

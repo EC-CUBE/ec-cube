@@ -191,7 +191,7 @@ class SC_Helper_Plugin {
         $objQuery->delete('dtb_plugin', $where, array($plugin_id));
         $objQuery->delete('dtb_plugin_hookpoint', $where, array($plugin_id));
     }
-    
+
     /**
      * プラグインディレクトリの取得
      *

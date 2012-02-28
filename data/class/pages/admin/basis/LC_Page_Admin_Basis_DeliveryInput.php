@@ -171,16 +171,16 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
             for ($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
                 $sqlval = array();
                 $keyname = 'deliv_time'.$cnt;
-                $arrval = array($deliv_id, $cnt);
+                $arrWhereVal = array($deliv_id, $cnt);
                 // 既存データの有無を確認
-                $curData = $objQuery->select('*', $table, $where, $arrval);
+                $curData = $objQuery->select('*', $table, $where, $arrWhereVal);
 
                 if (strcmp($arrRet[$keyname], '') != 0) {
                     $sqlval['deliv_time'] = $arrRet[$keyname];
 
                     // 入力が空ではなく、DBに情報があれば更新
                     if (count($curData)) {
-                        $objQuery->update($table, $sqlval, $where, $arrval);
+                        $objQuery->update($table, $sqlval, $where, $arrWhereVal);
                     }
                     // DBに情報がなければ登録
                     else {
@@ -191,7 +191,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
                 }
                 // 入力が空で、DBに情報がある場合は削除
                 else if (count($curData)) {
-                    $objQuery->delete($table, $where, $arrval);
+                    $objQuery->delete($table, $where, $arrWhereVal);
                 }
             }
 
@@ -311,7 +311,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
                 $ret = $objDb->sfIsRecord('dtb_deliv', 'service_name', array($arrRet['service_name']));
             } else {
                 $objQuery = new SC_Query_Ex();
-                $ret = (($objQuery->count('dtb_deliv', 'deliv_id != ? AND service_name = ? ', array($arrRet['deliv_id'], $arrRet['service_name'])) > 0 )? true : false);
+                $ret = (($objQuery->count('dtb_deliv', 'deliv_id != ? AND service_name = ? ', array($arrRet['deliv_id'], $arrRet['service_name'])) > 0)? true : false);
             }
             if ($ret) {
                 $objErr->arrErr['service_name'] = '※ 同じ名称の組み合わせは登録できません。<br>';
