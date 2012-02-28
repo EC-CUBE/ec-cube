@@ -75,12 +75,14 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $this->arrSearchForm1       = array('search_startyear_m', 'search_startmonth_m');
 
         // 期間別集計のkey名
-        $this->arrSearchForm2       = array('search_startyear',
-                                            'search_startmonth',
-                                            'search_startday',
-                                            'search_endyear',
-                                            'search_endmonth',
-                                            'search_endday');
+        $this->arrSearchForm2 = array(
+            'search_startyear',
+            'search_startmonth',
+            'search_startday',
+            'search_endyear',
+            'search_endmonth',
+            'search_endday',
+        );
     }
 
     /**
@@ -274,19 +276,19 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
                 continue;
             }
             switch ($key) {
-            case 'search_startyear':
-                $sdate = $objFormParam->getValue('search_startyear') . '/' . $objFormParam->getValue('search_startmonth') . '/' . $objFormParam->getValue('search_startday');
-                break;
-            case 'search_endyear':
-                $edate = $objFormParam->getValue('search_endyear') . '/' . $objFormParam->getValue('search_endmonth') . '/' . $objFormParam->getValue('search_endday');
-                break;
-            case 'search_startyear_m':
-                list($sdate, $edate) = SC_Utils_Ex::sfTermMonth($objFormParam->getValue('search_startyear_m'),
-                                                                $objFormParam->getValue('search_startmonth_m'),
-                                                                CLOSE_DAY);
-                break;
-            default:
-                break;
+                case 'search_startyear':
+                    $sdate = $objFormParam->getValue('search_startyear') . '/' . $objFormParam->getValue('search_startmonth') . '/' . $objFormParam->getValue('search_startday');
+                    break;
+                case 'search_endyear':
+                    $edate = $objFormParam->getValue('search_endyear') . '/' . $objFormParam->getValue('search_endmonth') . '/' . $objFormParam->getValue('search_endday');
+                    break;
+                case 'search_startyear_m':
+                    list($sdate, $edate) = SC_Utils_Ex::sfTermMonth($objFormParam->getValue('search_startyear_m'),
+                                                                    $objFormParam->getValue('search_startmonth_m'),
+                                                                    CLOSE_DAY);
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -474,22 +476,22 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         // 会員、非会員の判定
         switch ($type) {
             // 全体
-        case 'all':
-            break;
-        case 'member':
-            if ($where != '') {
-                $where.= ' AND ';
-            }
-            $where.= " $col_member <> 0";
-            break;
-        case 'nonmember':
-            if ($where != '') {
-                $where.= ' AND ';
-            }
-            $where.= " $col_member = 0";
-            break;
-        default:
-            break;
+            case 'all':
+                break;
+            case 'member':
+                if ($where != '') {
+                    $where.= ' AND ';
+                }
+                $where.= " $col_member <> 0";
+                break;
+            case 'nonmember':
+                if ($where != '') {
+                    $where.= ' AND ';
+                }
+                $where.= " $col_member = 0";
+                break;
+            default:
+                break;
         }
 
         return array($where, array());
@@ -499,11 +501,12 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
     function lfGetOrderMember($type, $sdate, $edate) {
         $objQuery = SC_Query_Ex::getSingletonInstance();
 
-        list($where, $arrval) = $this->lfGetWhereMember('create_date', $sdate, $edate, $type);
-        $where .= ' AND del_flg = 0 AND status <> ' . ORDER_CANCEL;
+        list($where, $arrWhereVal) = $this->lfGetWhereMember('create_date', $sdate, $edate, $type);
+        $where .= ' AND del_flg = 0 AND status <> ?';
+        $arrWhereVal[] = ORDER_CANCEL;
 
         // 会員集計の取得
-        $col        = "
+        $col = <<< __EOS__
             COUNT(order_id) AS order_count,
             SUM(total) AS total,
             AVG(total) AS total_average,
@@ -512,12 +515,13 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
                 ELSE 0
             END AS member,
             order_sex
-                ";
+__EOS__;
+
         $from       = 'dtb_order';
 
         $objQuery->setGroupBy('member, order_sex');
 
-        $arrTotalResults = $objQuery->select($col, $from, $where, $arrval);
+        $arrTotalResults = $objQuery->select($col, $from, $where, $arrWhereVal);
 
         foreach (array_keys($arrTotalResults) as $key) {
             $arrResult =& $arrTotalResults[$key];
@@ -538,18 +542,20 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
     function lfGetOrderProducts($type, $sdate, $edate) {
         $objQuery = SC_Query_Ex::getSingletonInstance();
 
-        list($where, $arrval) = $this->lfGetWhereMember('create_date', $sdate, $edate, $type);
+        list($where, $arrWhereVal) = $this->lfGetWhereMember('create_date', $sdate, $edate, $type);
 
-        $where .= ' AND dtb_order.del_flg = 0 AND dtb_order.status <> ' . ORDER_CANCEL;
+        $where .= ' AND dtb_order.del_flg = 0 AND dtb_order.status <> ?';
+        $arrWhereVal[] = ORDER_CANCEL;
 
-        $col = "
+        $col = <<< __EOS__
                 product_id,
                 product_code,
                 product_name,
                 SUM(quantity) AS products_count,
                 COUNT(order_id) AS order_count,
                 price,
-                (price * SUM(quantity)) AS total";
+                (price * SUM(quantity)) AS total
+__EOS__;
 
         $from = 'dtb_order_detail JOIN dtb_order USING(order_id)';
 
@@ -562,7 +568,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $objQuery->setGroupBy('product_id, product_name, product_code, price');
         //$objQuery->setGroupBy('product_id');
         $objQuery->setOrder('total DESC');
-        $arrTotalResults = $objQuery->select($col, $from, $where, $arrval);
+        $arrTotalResults = $objQuery->select($col, $from, $where, $arrWhereVal);
 
         $tpl_image  = $this->lfGetGraphPie($arrTotalResults, 'product_name', 'products_' . $type, '(売上比率)', $sdate, $edate);
 
@@ -572,22 +578,23 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
     /** 職業別集計 **/
     function lfGetOrderJob($type, $sdate, $edate) {
         $objQuery = SC_Query_Ex::getSingletonInstance();
-        list($where, $arrval) = $this->lfGetWhereMember('dtb_order.create_date', $sdate, $edate, $type);
+        list($where, $arrWhereVal) = $this->lfGetWhereMember('dtb_order.create_date', $sdate, $edate, $type);
 
-        $col    = '
+        $col = <<< __EOS__
             job,
             COUNT(order_id) AS order_count,
             SUM(total) AS total,
             AVG(total) AS total_average
-            ';
+__EOS__;
 
         $from   = 'dtb_order JOIN dtb_customer USING ( customer_id)';
 
-        $where .= ' AND dtb_order.del_flg = 0 AND dtb_order.status <> ' . ORDER_CANCEL;
+        $where .= ' AND dtb_order.del_flg = 0 AND dtb_order.status <> ?';
+        $arrWhereVal[] = ORDER_CANCEL;
 
         $objQuery->setGroupBy('job');
         $objQuery->setOrder('total DESC');
-        $arrTotalResults = $objQuery->select($col, $from, $where, $arrval);
+        $arrTotalResults = $objQuery->select($col, $from, $where, $arrWhereVal);
 
         foreach (array_keys($arrTotalResults) as $key) {
             $arrResult =& $arrTotalResults[$key];
@@ -609,22 +616,22 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
         $objQuery = SC_Query_Ex::getSingletonInstance();
 
-        list($where, $arrval) = $this->lfGetWhereMember('create_date', $sdate, $edate, $type);
+        list($where, $arrWhereVal) = $this->lfGetWhereMember('create_date', $sdate, $edate, $type);
 
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
-        $col = $dbFactory->getOrderTotalAgeColSql() . ' AS age,
-            COUNT(order_id) AS order_count,
-            SUM(total) AS total,
-            AVG(total) AS total_average
-            ';
+        $col = $dbFactory->getOrderTotalAgeColSql() . ' AS age';
+        $col .= ',COUNT(order_id) AS order_count';
+        $col .= ',SUM(total) AS total';
+        $col .= ',AVG(total) AS total_average';
 
         $from   = 'dtb_order';
 
-        $where .= ' AND del_flg = 0 AND status <> ' . ORDER_CANCEL;
+        $where .= ' AND del_flg = 0 AND status <> ?';
+        $arrWhereVal[] = ORDER_CANCEL;
 
         $objQuery->setGroupBy('age');
         $objQuery->setOrder('age DESC');
-        $arrTotalResults = $objQuery->select($col, $from, $where, $arrval);
+        $arrTotalResults = $objQuery->select($col, $from, $where, $arrWhereVal);
 
         foreach (array_keys($arrTotalResults) as $key) {
             $arrResult =& $arrTotalResults[$key];
@@ -646,36 +653,37 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
     function lfGetOrderTerm($type, $sdate, $edate) {
         $objQuery   = SC_Query_Ex::getSingletonInstance();
 
-        list($where, $arrval) = $this->lfGetWhereMember('create_date', $sdate, $edate);
-        $where .= ' AND del_flg = 0 AND status <> ' . ORDER_CANCEL;
+        list($where, $arrWhereVal) = $this->lfGetWhereMember('create_date', $sdate, $edate);
+        $where .= ' AND del_flg = 0 AND status <> ?';
+        $arrWhereVal[] = ORDER_CANCEL;
 
         switch ($type) {
-        case 'month':
-            $xtitle = '(月別)';
-            $ytitle = '(売上合計)';
-            $format = '%m';
-            break;
-        case 'year':
-            $xtitle = '(年別)';
-            $ytitle = '(売上合計)';
-            $format = '%Y';
-            break;
-        case 'wday':
-            $xtitle = '(曜日別)';
-            $ytitle = '(売上合計)';
-            $format = '%a';
-            break;
-        case 'hour':
-            $xtitle = '(時間別)';
-            $ytitle = '(売上合計)';
-            $format = '%H';
-            break;
-        default:
-            $xtitle = '(日別)';
-            $ytitle = '(売上合計)';
-            $format = '%Y-%m-%d';
-            $xincline = true;
-            break;
+            case 'month':
+                $xtitle = '(月別)';
+                $ytitle = '(売上合計)';
+                $format = '%m';
+                break;
+            case 'year':
+                $xtitle = '(年別)';
+                $ytitle = '(売上合計)';
+                $format = '%Y';
+                break;
+            case 'wday':
+                $xtitle = '(曜日別)';
+                $ytitle = '(売上合計)';
+                $format = '%a';
+                break;
+            case 'hour':
+                $xtitle = '(時間別)';
+                $ytitle = '(売上合計)';
+                $format = '%H';
+                break;
+            default:
+                $xtitle = '(日別)';
+                $ytitle = '(売上合計)';
+                $format = '%Y-%m-%d';
+                $xincline = true;
+                break;
         }
 
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
@@ -685,7 +693,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $objQuery->setGroupBy('str_date');
         $objQuery->setOrder('str_date');
         // 検索結果の取得
-        $arrTotalResults = $objQuery->select($col, 'dtb_order', $where);
+        $arrTotalResults = $objQuery->select($col, 'dtb_order', $where, $arrWhereVal);
 
         $arrTotalResults = $this->lfAddBlankLine($arrTotalResults, $type, $sdate, $edate);
         // todo GDない場合の処理
@@ -799,96 +807,96 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
     function lfGetCSVColum($page) {
         switch ($page) {
             // 商品別集計
-        case 'products':
-            $arrTitleCol = array(
-                '商品コード',
-                '商品名',
-                '購入件数',
-                '数量',
-                '単価',
-                '金額',
-            );
-            $arrDataCol = array(
-                'product_code',
-                'product_name',
-                'order_count',
-                'products_count',
-                'price',
-                'total',
-            );
-            break;
+            case 'products':
+                $arrTitleCol = array(
+                    '商品コード',
+                    '商品名',
+                    '購入件数',
+                    '数量',
+                    '単価',
+                    '金額',
+                );
+                $arrDataCol = array(
+                    'product_code',
+                    'product_name',
+                    'order_count',
+                    'products_count',
+                    'price',
+                    'total',
+                );
+                break;
             // 職業別集計
-        case 'job':
-            $arrTitleCol = array(
-                '職業',
-                '購入件数',
-                '購入合計',
-                '購入平均',
-            );
-            $arrDataCol = array(
-                'job_name',
-                'order_count',
-                'total',
-                'total_average',
-            );
-            break;
+            case 'job':
+                $arrTitleCol = array(
+                    '職業',
+                    '購入件数',
+                    '購入合計',
+                    '購入平均',
+                );
+                $arrDataCol = array(
+                    'job_name',
+                    'order_count',
+                    'total',
+                    'total_average',
+                );
+                break;
             // 会員別集計
-        case 'member':
-            $arrTitleCol = array(
-                '会員',
-                '購入件数',
-                '購入合計',
-                '購入平均',
-            );
-            $arrDataCol = array(
-                'member_name',
-                'order_count',
-                'total',
-                'total_average',
-            );
-            break;
+            case 'member':
+                $arrTitleCol = array(
+                    '会員',
+                    '購入件数',
+                    '購入合計',
+                    '購入平均',
+                );
+                $arrDataCol = array(
+                    'member_name',
+                    'order_count',
+                    'total',
+                    'total_average',
+                );
+                break;
             // 年代別集計
-        case 'age':
-            $arrTitleCol = array(
-                '年齢',
-                '購入件数',
-                '購入合計',
-                '購入平均',
-            );
-            $arrDataCol = array(
-                'age_name',
-                'order_count',
-                'total',
-                'total_average',
-            );
-            break;
+            case 'age':
+                $arrTitleCol = array(
+                    '年齢',
+                    '購入件数',
+                    '購入合計',
+                    '購入平均',
+                );
+                $arrDataCol = array(
+                    'age_name',
+                    'order_count',
+                    'total',
+                    'total_average',
+                );
+                break;
             // 期間別集計
-        default:
-            $arrTitleCol = array(
-                '期間',
-                '購入件数',
-                '男性',
-                '女性',
-                '男性(会員)',
-                '男性(非会員)',
-                '女性(会員)',
-                '女性(非会員)',
-                '購入合計',
-                '購入平均',
-            );
-            $arrDataCol = array(
-                'str_date',
-                'total_order',
-                'men',
-                'women',
-                'men_member',
-                'men_nonmember',
-                'women_member',
-                'women_nonmember',
-                'total',
-                'total_average',
-            );
-            break;
+            default:
+                $arrTitleCol = array(
+                    '期間',
+                    '購入件数',
+                    '男性',
+                    '女性',
+                    '男性(会員)',
+                    '男性(非会員)',
+                    '女性(会員)',
+                    '女性(非会員)',
+                    '購入合計',
+                    '購入平均',
+                );
+                $arrDataCol = array(
+                    'str_date',
+                    'total_order',
+                    'men',
+                    'women',
+                    'men_member',
+                    'men_nonmember',
+                    'women_member',
+                    'women_nonmember',
+                    'total',
+                    'total_average',
+                );
+                break;
         }
 
         return array($arrTitleCol, $arrDataCol);
