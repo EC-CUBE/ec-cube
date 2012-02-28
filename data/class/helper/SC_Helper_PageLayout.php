@@ -70,6 +70,9 @@ class SC_Helper_PageLayout {
         $masterData = new SC_DB_MasterData();
         $arrTarget = $masterData->getMasterData('mtb_target');
         $arrBlocs = $this->getBlocPositions($device_type_id, $objPage->arrPageLayout['page_id']);
+        // 無効なプラグインのブロックを取り除く.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $arrBlocs = $objPlugin->getEnableBlocs($arrBlocs);
         // php_path, tpl_path が存在するものを, 各ターゲットに配置
         foreach (array_keys($arrTarget) as $target_id) {
             foreach ($arrBlocs as $arrBloc) {
