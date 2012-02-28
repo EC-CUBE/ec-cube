@@ -1141,7 +1141,7 @@ CREATE TABLE dtb_plugin_hookpoint (
     hook_point text NOT NULL,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
-    PRIMARY KEY (plugin_id)
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE dtb_index_list (
