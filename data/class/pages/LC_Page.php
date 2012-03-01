@@ -131,7 +131,7 @@ class LC_Page {
         // HeadNaviにpluginテンプレートを追加する.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->setHeadNaviBlocs($this->arrPageLayout['HeadNavi']);
-
+        
         // スーパーフックポイントを実行.
         $objPlugin->doAction('lc_page_process', array($this));
 

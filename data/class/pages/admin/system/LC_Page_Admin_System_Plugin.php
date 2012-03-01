@@ -385,7 +385,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         $plugin_html_dir = PLUGIN_HTML_REALDIR . $plugin_code;
         $this->makeDir($plugin_html_dir);
 
-        $arrErr = $this->execPlugin($plugin['plugin_id'], $plugin['class_name'], 'install');
+        $arrErr = $this->execPlugin($plugin, $plugin['class_name'], 'install');
         if ($this->isError($arrErr) === true) {
             $this->rollBack(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, $plugin['plugin_id'], $plugin_html_dir);
             return $arrErr;
@@ -479,7 +479,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
     /**
      * プラグインをアップデートします.
      * 
-     * @param string $target_plugin_code アップデートするプラグインコード.
+     * @param string $target_plugin アップデートするプラグインコード.
      * @param string $upload_file_name アップロードファイル名.
      * @return array エラー情報を格納した連想配列.
      */
@@ -519,7 +519,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
             return $arrErr;
         }
         // プラグインクラスファイルのUPDATE処理を実行.
-        $arrErr = $this->execPlugin($plugin_id, $class_name, 'update');
+        $arrErr = $this->execPlugin($target_plugin, $class_name, 'update');
 
         // 保存ディレクトリの削除.
         SC_Utils_Ex::deleteFile(DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR, false);
@@ -575,7 +575,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
             return $arrErr;
         }
 
-        $arrErr = $this->execPlugin($plugin['plugin_id'], $plugin['class_name'], 'uninstall');
+        $arrErr = $this->execPlugin($plugin, $plugin['class_name'], 'uninstall');
         if ($this->isError($arrErr) === true) {
             return $arrErr;
         }
@@ -605,7 +605,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
             return $arrErr;
         }
         // プラグインを有効にします.
-        $this->updatePluginEnable($plugin['plugin_id'], PLUGIN_ENABLE_TRUE);
+        $this->updatePluginEnable($plugin, PLUGIN_ENABLE_TRUE);
 
         return $arrErr;
     }
@@ -631,7 +631,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
             return $arrErr;
         }
         // プラグインを無効にします.
-        $this->updatePluginEnable($plugin['plugin_id'], PLUGIN_ENABLE_FALSE);
+        $this->updatePluginEnable($plugin, PLUGIN_ENABLE_FALSE);
 
         return $arrErr;
     }
