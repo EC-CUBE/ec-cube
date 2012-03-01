@@ -147,11 +147,6 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
                 break;
         }
 
-	// 配送IDの取得
-	$shippingData = $objPurchase->getShippingTemp();
-	if($shippingData[0]['shipping_deliv_check'] != null){
-		$this->arrForm['deliv_check'] = $shippingData[0]['shipping_deliv_check'];
-	}
         // 登録済み住所を取得
         $this->arrAddr = $objCustomer->getCustomerAddress($objCustomer->getValue('customer_id'));
         $this->tpl_addrmax = count($this->arrAddr);
@@ -215,9 +210,9 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
         // 別のお届け先がチェックされている場合
         elseif ($deliv_check >= 1) {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
-            $arrOtherDeliv = $objQuery->getRow('* , ? as deliv_check', 'dtb_other_deliv',
+            $arrOtherDeliv = $objQuery->getRow('*', 'dtb_other_deliv',
                                                'customer_id = ? AND other_deliv_id = ?',
-                                               array($deliv_check, $objCustomer->getValue('customer_id'), $deliv_check));
+                                               array($objCustomer->getValue('customer_id'), $deliv_check));
             if (SC_Utils_Ex::isBlank($arrOtherDeliv)) {
                 return false;
             }
