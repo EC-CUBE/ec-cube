@@ -1130,6 +1130,10 @@ CREATE TABLE dtb_plugin (
     plugin_description text,
     priority int NOT NULL DEFAULT 0,
     enable smallint NOT NULL DEFAULT 0,
+    free_field1 text,
+    free_field2 text,
+    free_field3 text,
+    free_field4 text,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
     PRIMARY KEY (plugin_id)
