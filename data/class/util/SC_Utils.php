@@ -2191,26 +2191,37 @@ class SC_Utils {
 
     /**
      * 指定されたパスの配下を再帰的にコピーします.
-     * @param string $imageDir コピー元ディレクトリのパス 
-     * @param string $destDir コピー先ディレクトリのパス 
+     * @param string $imageDir コピー元ディレクトリのパス
+     * @param string $destDir コピー先ディレクトリのパス
+     * @return void
      */
     function copyDirectory($source_path, $dest_path) {
 
         $handle=opendir($source_path);  
         while ($filename = readdir($handle)) {
-            if($filename === '.' || $filename === '..') continue;
+            if ($filename === '.' || $filename === '..') continue;
             $cur_path = $source_path . $filename;
             $dest_file_path = $dest_path . $filename;
             if (is_dir($cur_path)) {
                 // ディレクトリの場合
                 // コピー先に無いディレクトリの場合、ディレクトリ作成.
-                if(!empty($filename) && !file_exists($dest_file_path)) mkdir($dest_file_path);
+                if (!empty($filename) && !file_exists($dest_file_path)) mkdir($dest_file_path);
                 SC_Utils_EX::copyDirectory($cur_path . '/', $dest_file_path . '/');
             } else {
-                if(file_exists($dest_file_path)) unlink($dest_file_path);
+                if (file_exists($dest_file_path)) unlink($dest_file_path);
                 copy($cur_path, $dest_file_path);
             }
         }
     }
 
+    /**
+     * 文字列を区切り文字を挟み反復する
+     * @param string $input 繰り返す文字列。
+     * @param string $multiplier input を繰り返す回数。
+     * @param string $separator 区切り文字
+     * @return string
+     */
+    function repeatStrWithSeparator($input, $multiplier, $separator = ',') {
+        return implode($separator, array_fill(0, $multiplier, $input));
+    }
 }

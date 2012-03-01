@@ -784,7 +784,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
             return false;
         }
         $count = count($arrItems);
-        $where = $tblkey .' IN (' . implode(',', array_fill(0, $count, '?')) . ')';
+        $where = $tblkey .' IN (' . SC_Utils_Ex::repeatStrWithSeparator('?', $count) . ')';
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $db_count = $objQuery->count($table, $where, $arrItems);

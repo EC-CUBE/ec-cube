@@ -852,7 +852,7 @@ __EOS__;
     function sfGetChildrenArraySub($table, $pid_name, $id_name, $arrPID) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        $where = "$pid_name IN (" . implode(',', array_fill(0, count($arrPID), '?')) . ")";
+        $where = "$pid_name IN (" . SC_Utils_Ex::repeatStrWithSeparator('?', count($arrPID)) . ')';
 
         $return = $objQuery->getCol($id_name, $table, $where, $arrPID);
 
@@ -920,7 +920,7 @@ __EOS__;
         // 子カテゴリIDの取得
         $arrRet = SC_Helper_DB_Ex::sfGetChildrenArray('dtb_category', 'parent_category_id', 'category_id', $category_id);
 
-        $where = 'category_id IN (' . implode(',', array_fill(0, count($arrRet), '?')) . ')';
+        $where = 'category_id IN (' . SC_Utils_Ex::repeatStrWithSeparator('?', count($arrRet)) . ')';
 
         return array($where, $arrRet);
     }

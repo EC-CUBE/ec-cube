@@ -172,7 +172,7 @@ __EOS__;
             return array();
         }
 
-        $where = 'alldtl.product_id IN (' . implode(',', array_fill(0, count($arrProductId), '?')) . ')';
+        $where = 'alldtl.product_id IN (' . SC_Utils_Ex::repeatStrWithSeparator('?', count($arrProductId)) . ')';
         $where .= ' AND alldtl.del_flg = 0';
 
         $objQuery->setWhere($where, $arrProductId);
@@ -409,7 +409,7 @@ __EOS__;
             return array();
         }
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $where = 'product_id IN (' . implode(', ', array_pad(array(), count($productIds), '?')) . ')';
+        $where = 'product_id IN (' . SC_Utils_Ex::repeatStrWithSeparator('?', count($productIds)) . ')';
         if (!$has_deleted) {
             $where .= ' AND T1.del_flg = 0';
         }
@@ -442,7 +442,7 @@ __EOS__;
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $cols = 'product_id, product_status_id';
         $from = 'dtb_product_status';
-        $where = 'del_flg = 0 AND product_id IN (' . implode(', ', array_pad(array(), count($productIds), '?')) . ')';
+        $where = 'del_flg = 0 AND product_id IN (' . SC_Utils_Ex::repeatStrWithSeparator('?', count($productIds)) . ')';
         $productStatus = $objQuery->select($cols, $from, $where, $productIds);
         $results = array();
         foreach ($productStatus as $status) {
