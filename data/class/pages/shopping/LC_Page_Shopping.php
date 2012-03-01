@@ -369,14 +369,14 @@ class LC_Page_Shopping extends LC_Page_Ex {
         $arrShipping = $objPurchase->extractShipping($arrParams);
 
         if ($isMultiple) {
-            $objPurchase->unsetShippingTemp(0);
-            $objPurchase->unsetShippingTemp(1);
+            $objPurchase->unsetOneShippingTemp(0);
+            $objPurchase->unsetOneShippingTemp(1);
             $objPurchase->saveShippingTemp($arrShippingOwn, 0);
             if ($arrParams['deliv_check'] == '1') {
                 $objPurchase->saveShippingTemp($arrShipping, 1);
             }
         } else {
-            $objPurchase->unsetShippingTemp();
+            $objPurchase->unsetOneShippingTemp();
             if ($arrParams['deliv_check'] == '1') {
                 $objPurchase->saveShippingTemp($arrShipping, 0);
             } else {

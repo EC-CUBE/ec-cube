@@ -407,7 +407,7 @@ class SC_Helper_Purchase {
      * @return void
      */
     function unsetShippingTemp() {
-        $this->unsetAllShippingTemp(true);
+        SC_Helper_Purchase_Ex::unsetAllShippingTemp(true);
     }
 
     /**
@@ -416,7 +416,7 @@ class SC_Helper_Purchase {
      * @param bool $multiple_temp 複数お届け先の画面戻り処理用の情報も破棄するか
      * @return void
      */
-    function unsetAllShippingTemp($multiple_temp = false) {
+    static function unsetAllShippingTemp($multiple_temp = false) {
         unset($_SESSION['shipping']);
         if ($multiple_temp) {
             unset($_SESSION['multiple_temp']);
@@ -429,7 +429,7 @@ class SC_Helper_Purchase {
      * @param integer $shipping_id 配送先ID
      * @return void
      */
-    function unsetOneShippingTemp($shipping_id) {
+    static function unsetOneShippingTemp($shipping_id) {
         unset($_SESSION['shipping'][$shipping_id]);
     }
 
