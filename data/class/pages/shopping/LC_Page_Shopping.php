@@ -178,9 +178,8 @@ class LC_Page_Shopping extends LC_Page_Ex {
                 $this->arrErr = $this->lfCheckError($objFormParam);
 
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                    $objPurchase->unsetShippingTemp();
-                    $this->lfRegistData($this->tpl_uniqid, $objPurchase,
-                                        $objCustomer, $objFormParam);
+                    $this->lfRegistData($this->tpl_uniqid, $objPurchase, $objCustomer, $objFormParam);
+                    $objPurchase->setShipmentItemTempForSole($objCartSess);
 
                     $objSiteSess->setRegistFlag();
                     SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URLPATH);
@@ -207,9 +206,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
                 $this->arrErr = $this->lfCheckError($objFormParam);
 
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                    $objPurchase->unsetShippingTemp();
-                    $this->lfRegistData($this->tpl_uniqid, $objPurchase,
-                                        $objCustomer, $objFormParam, true);
+                    $this->lfRegistData($this->tpl_uniqid, $objPurchase, $objCustomer, $objFormParam, true);
 
                     $objSiteSess->setRegistFlag();
                     SC_Response_Ex::sendRedirect(MULTIPLE_URLPATH);
@@ -354,6 +351,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
     /**
      * データの一時登録を行う.
      *
+     * 非会員向けの処理
      * @param integer $uniqid 受注一時テーブルのユニークID
      * @param SC_Helper_Purchase $objPurchase SC_Helper_Purchase インスタンス
      * @param SC_Customer $objCustomer SC_Customer インスタンス
@@ -362,42 +360,36 @@ class LC_Page_Shopping extends LC_Page_Ex {
      */
     function lfRegistData($uniqid, &$objPurchase, &$objCustomer, &$objFormParam, $isMultiple = false) {
         $arrParams = $objFormParam->getHashArray();
-        $arrValues = $objFormParam->getDbArray();
-        // 登録データの作成
-        $arrValues['order_birth'] = SC_Utils_Ex::sfGetTimestamp($arrParams['year'], $arrParams['month'], $arrParams['day']);
-        $arrValues['update_date'] = 'CURRENT_TIMESTAMP';
-        $arrValues['customer_id'] = '0';
 
-        // お届け先を指定しない場合、
-        if ($arrParams['deliv_check'] != '1') {
-            // order_* を shipping_* へコピー
-            $objPurchase->copyFromOrder($arrValues, $arrParams);
-        }
+        // 注文者をお届け先とする配列を取得
+        $arrShippingOwn = array();
+        $objPurchase->copyFromOrder($arrShippingOwn, $arrParams);
 
-        /*
-         * order_* と shipping_* をそれぞれ $_SESSION['shipping'][$shipping_id]
-         * に, shipping_* というキーで保存
-         */
-        foreach ($arrValues as $key => $val) {
-            if (preg_match('/^order_/', $key)) {
-                $arrOrder['shipping_' . str_replace('order_', '', $key)] = $val;
-            } elseif (preg_match('/^shipping_/', $key)) {
-                $arrShipping[$key] = $val;
-            }
-        }
+        // 都度入力されたお届け先
+        $arrShipping = $objPurchase->extractShipping($arrParams);
 
         if ($isMultiple) {
-            $objPurchase->saveShippingTemp($arrOrder, 0);
+            $objPurchase->unsetShippingTemp(0);
+            $objPurchase->unsetShippingTemp(1);
+            $objPurchase->saveShippingTemp($arrShippingOwn, 0);
             if ($arrParams['deliv_check'] == '1') {
                 $objPurchase->saveShippingTemp($arrShipping, 1);
             }
         } else {
+            $objPurchase->unsetShippingTemp();
             if ($arrParams['deliv_check'] == '1') {
                 $objPurchase->saveShippingTemp($arrShipping, 0);
             } else {
-                $objPurchase->saveShippingTemp($arrOrder, 0);
+                $objPurchase->saveShippingTemp($arrShippingOwn, 0);
             }
         }
+
+        $arrValues = $objFormParam->getDbArray();
+
+        // 登録データの作成
+        $arrValues['order_birth'] = SC_Utils_Ex::sfGetTimestamp($arrParams['year'], $arrParams['month'], $arrParams['day']);
+        $arrValues['update_date'] = 'CURRENT_TIMESTAMP';
+        $arrValues['customer_id'] = '0';
         $objPurchase->saveOrderTemp($uniqid, $arrValues, $objCustomer);
     }
 

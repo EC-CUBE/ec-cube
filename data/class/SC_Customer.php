@@ -212,6 +212,8 @@ __EOS__;
     function EndSession() {
         // $_SESSION['customer']の解放
         unset($_SESSION['customer']);
+        // セッションの配送情報を全て破棄する
+        SC_Helper_Purchase_Ex::unsetAllShippingTemp(true);
         // トランザクショントークンの破棄
         SC_Helper_Session_Ex::destroyToken();
         $objSiteSess = new SC_SiteSession_Ex();

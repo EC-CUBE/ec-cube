@@ -33,6 +33,12 @@
  */
 class SC_Helper_Purchase {
 
+    var $arrShippingKey = array(
+        'name01', 'name02', 'kana01', 'kana02',
+        'sex', 'zip01', 'zip02', 'pref', 'addr01', 'addr02',
+        'tel01', 'tel02', 'tel03',
+    );
+
     /**
      * 受注を完了する.
      *
@@ -72,13 +78,11 @@ class SC_Helper_Purchase {
 
         $orderTemp['status'] = $orderStatus;
         $cartkey = $objCartSession->getKey();
-        $orderId = $this->registerOrderComplete($orderTemp, $objCartSession,
-                                                $cartkey);
+        $orderId = $this->registerOrderComplete($orderTemp, $objCartSession, $cartkey);
         $isMultiple = SC_Helper_Purchase::isMultiple();
         $shippingTemp =& $this->getShippingTemp($isMultiple);
         foreach ($shippingTemp as $shippingId => $val) {
-            $this->registerShipmentItem($orderId, $shippingId,
-                                        $val['shipment_item']);
+            $this->registerShipmentItem($orderId, $shippingId, $val['shipment_item']);
         }
 
         $this->registerShipping($orderId, $shippingTemp);
@@ -311,9 +315,13 @@ class SC_Helper_Purchase {
      */
     function clearShipmentItemTemp($shipping_id = null) {
         if (is_null($shipping_id)) {
-            unset($_SESSION['shipping']);
+            if (!isset($_SESSION['shipping'][$shipping_id])) return;
+            if (!is_array($_SESSION['shipping'][$shipping_id])) return;
+            foreach (array_keys($_SESSION['shipping'][$shipping_id]) as $key) {
+                $this->clearShipmentItemTemp($key);
+            }
         } else {
-            unset($_SESSION['shipping'][$shipping_id]);
+            unset($_SESSION['shipping'][$shipping_id]['shipment_item']);
         }
     }
 
@@ -369,12 +377,13 @@ class SC_Helper_Purchase {
      * @return boolean 複数配送指定の購入の場合 true
      */
     function isMultiple() {
-        return count(SC_Helper_Purchase_Ex::getShippingTemp(true)) >= 1;
+        return count(SC_Helper_Purchase_Ex::getShippingTemp(true)) >= 2;
     }
 
     /**
      * 配送情報をセッションに保存する.
      *
+     * XXX マージする理由が不明(なんとなく便利な気はするけど)。分かる方コメントに残してください。
      * @param array $arrSrc 配送情報の連想配列
      * @param integer $shipping_id 配送先ID
      * @return void
@@ -383,21 +392,45 @@ class SC_Helper_Purchase {
         // 配送商品は引き継がない
         unset($arrSrc['shipment_item']);
 
-        if (empty($_SESSION['shipping'][$shipping_id])) {
-            $_SESSION['shipping'][$shipping_id] = $arrSrc;
-            $_SESSION['shipping'][$shipping_id]['shipping_id'] = $shipping_id;
-        } else {
-            $_SESSION['shipping'][$shipping_id] = array_merge($_SESSION['shipping'][$shipping_id], $arrSrc);
-            $_SESSION['shipping'][$shipping_id]['shipping_id'] = $shipping_id;
+        if (!isset($_SESSION['shipping'][$shipping_id])) {
+            $_SESSION['shipping'][$shipping_id] = array();
         }
+        $_SESSION['shipping'][$shipping_id] = array_merge($_SESSION['shipping'][$shipping_id], $arrSrc);
+        $_SESSION['shipping'][$shipping_id]['shipping_id'] = $shipping_id;
     }
 
     /**
      * セッションの配送情報を破棄する.
+     *
+     * @deprecated 2.12.0 から EC-CUBE 本体では使用していない。
+     * @param integer $shipping_id 配送先ID
+     * @return void
      */
     function unsetShippingTemp() {
+        $this->unsetAllShippingTemp(true);
+    }
+
+    /**
+     * セッションの配送情報を全て破棄する
+     *
+     * @param bool $multiple_temp 複数お届け先の画面戻り処理用の情報も破棄するか
+     * @return void
+     */
+    function unsetAllShippingTemp($multiple_temp = false) {
         unset($_SESSION['shipping']);
-        unset($_SESSION['multiple_temp']);
+        if ($multiple_temp) {
+            unset($_SESSION['multiple_temp']);
+        }
+    }
+
+    /**
+     * セッションの配送情報を個別に破棄する
+     *
+     * @param integer $shipping_id 配送先ID
+     * @return void
+     */
+    function unsetOneShippingTemp($shipping_id) {
+        unset($_SESSION['shipping'][$shipping_id]);
     }
 
     /**
@@ -452,30 +485,40 @@ class SC_Helper_Purchase {
      *
      * @param array $dest コピー先の配列
      * @param array $src コピー元の配列
-     * @param array $keys コピー対象のキー
+     * @param array $arrKey コピー対象のキー
      * @param string $prefix コピー先の接頭辞. デフォルト shipping
      * @param string $src_prefix コピー元の接頭辞. デフォルト order
      * @return void
      */
-    function copyFromOrder(&$dest, $src,
-        $prefix = 'shipping', $src_prefix = 'order',
-        $keys = array(
-            'name01', 'name02', 'kana01', 'kana02',
-            'sex', 'zip01', 'zip02', 'pref', 'addr01', 'addr02',
-            'tel01', 'tel02', 'tel03',
-        )
-    ) {
+    function copyFromOrder(&$dest, $src, $prefix = 'shipping', $src_prefix = 'order', $arrKey = null) {
+        if (is_null($arrKey)) {
+            $arrKey = $this->arrShippingKey;
+        }
         if (!SC_Utils_Ex::isBlank($prefix)) {
             $prefix = $prefix . '_';
         }
         if (!SC_Utils_Ex::isBlank($src_prefix)) {
             $src_prefix = $src_prefix . '_';
         }
-        foreach ($keys as $key) {
-            if (in_array($key, $keys)) {
+        foreach ($arrKey as $key) {
+            if (isset($src[$src_prefix . $key])) {
                 $dest[$prefix . $key] = $src[$src_prefix . $key];
             }
         }
+    }
+
+    /**
+     * 配送情報のみ抜き出す。
+     *
+     * @param string $arrSrc 元となる配列
+     * @return void
+     */
+    function extractShipping($arrSrc) {
+        $arrKey = array();
+        foreach($this->arrShippingKey as $key) {
+            $arrKey[] = 'shipping_' . $key;
+        }
+        return SC_Utils_Ex::sfArrayIntersectKeys($arrSrc, $arrKey);
     }
 
     /**
@@ -1285,7 +1328,26 @@ __EOS__;
         SC_SiteSession_Ex::unsetUniqId();
 
         // セッションの配送情報を破棄する.
-        $this->unsetShippingTemp();
+        $this->unsetAllShippingTemp(true);
         $objCustomer->updateSession();
+    }
+
+    /**
+     * 単一配送指定用に配送商品を設定する
+     *
+     * @param SC_CartSession $objCartSession カート情報のインスタンス
+     * @param integer $shipping_id 配送先ID
+     * @return void
+     */
+    function setShipmentItemTempForSole(&$objCartSession, $shipping_id = 0) {
+        $objCartSess = new SC_CartSession_Ex();
+
+        $this->clearShipmentItemTemp();
+
+        $arrCartList =& $objCartSession->getCartList($objCartSess->getKey());
+        foreach ($arrCartList as $arrCartRow) {
+            if ($arrCartRow['quantity'] == 0) continue;
+            $this->setShipmentItemTemp($shipping_id, $arrCartRow['id'], $arrCartRow['quantity']);
+        }
     }
 }

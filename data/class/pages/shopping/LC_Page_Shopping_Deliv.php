@@ -114,15 +114,15 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
             case 'customer_addr':
                 $objPurchase->unsetShippingTemp();
 
-                if ($this->registerDeliv($arrForm['deliv_check'], $this->tpl_uniqid,
-                                         $objPurchase, $objCustomer)) {
-                    $objSiteSess->setRegistFlag();
-                    SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URLPATH);
-                    exit;
-
-                } else {
+                $success = $this->registerDeliv($arrForm['deliv_check'], $this->tpl_uniqid, $objPurchase, $objCustomer);
+                if (!$success) {
                     SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
                 }
+
+                $objPurchase->setShipmentItemTempForSole($objCartSess);
+                $objSiteSess->setRegistFlag();
+                SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URLPATH);
+                exit;
                 break;
 
             // 前のページに戻る
