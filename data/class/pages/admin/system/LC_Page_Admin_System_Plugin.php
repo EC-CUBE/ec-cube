@@ -109,6 +109,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                 break;
             // 有効化
             case 'enable':
+ 
                 // エラーチェック
                 $this->arrErr = $objFormParam->checkError();
                 if ($this->isError($this->arrErr) === false) {
@@ -600,12 +601,12 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
             return $arrErr;
         }
         // 有効化処理を実行します.
-        $arrErr = $this->execPlugin($plugin['plugin_id'], $plugin['class_name'], 'enable');
+        $arrErr = $this->execPlugin($plugin, $plugin['class_name'], 'enable');
         if ($this->isError($arrErr) === true) {
             return $arrErr;
         }
         // プラグインを有効にします.
-        $this->updatePluginEnable($plugin, PLUGIN_ENABLE_TRUE);
+        $this->updatePluginEnable($plugin['plugin_id'], PLUGIN_ENABLE_TRUE);
 
         return $arrErr;
     }
@@ -626,12 +627,12 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         }
 
         // 無効化処理を実行します.
-        $arrErr = $this->execPlugin($plugin['plugin_id'], $plugin['class_name'], 'disable');
+        $arrErr = $this->execPlugin($plugin, $plugin['class_name'], 'disable');
         if ($this->isError($arrErr) === true) {
             return $arrErr;
         }
         // プラグインを無効にします.
-        $this->updatePluginEnable($plugin, PLUGIN_ENABLE_FALSE);
+        $this->updatePluginEnable($plugin['plugin_id'], PLUGIN_ENABLE_FALSE);
 
         return $arrErr;
     }
@@ -725,16 +726,16 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
     /**
      * インスタンスを生成し、指定のメソッドを実行する.
      *
-     * @param integer $plugin_id プラグインID
+     * @param integer $plugin プラグイン情報
      * @param string $plugin_code プラグインコード
      * @param string $exec_func 実行するメソッド名.
      * @return array $arrErr エラー情報を格納した連想配列.
      *
      */
-    function execPlugin($plugin_id, $class_name, $exec_func) {
+    function execPlugin($plugin, $class_name, $exec_func) {
         $arrErr = array();
         if (method_exists($class_name, $exec_func) === true) {
-            call_user_func(array($class_name, $exec_func), $plugin_id);
+            call_user_func(array($class_name, $exec_func), $plugin);
         } else {
             $arrErr['plugin_error'] = '※ ' . $class_name . '.php に' . $exec_func . 'が見つかりません。<br/>';
         }
