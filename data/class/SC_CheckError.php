@@ -1155,7 +1155,7 @@ class SC_CheckError {
     }
 
     /**
-     * PHPコードとして評価可能かチェックする.
+     * パラメーターとして適切な文字列かチェックする.
      *
      * @access private
      * @param array $value [0] => 項目名, [1] => 評価する文字列
@@ -1172,19 +1172,18 @@ class SC_CheckError {
     }
 
     /**
-     * $value が PHPコードとして評価可能かチェックする.
+     * パラメーターとして適切な文字列かチェックする.(サブルーチン)
      *
+     * 下記を満たす場合を真とする。
+     * ・PHPコードとして評価可能であること。
+     * ・評価した結果がスカラデータ(定数に指定できる値)であること。
+     * 本メソッドの利用や改訂にあたっては、eval 関数の危険性を意識する必要がある。
      * @access private
-     * @param mixed PHPコードとして評価する文字列
-     * @return mixed PHPコードとして評価できない場合 false,
-     *               評価可能な場合は評価した値
+     * @param string 評価する文字列
+     * @return bool パラメーターとして適切な文字列か
      */
     function evalCheck($value) {
-        // falseは、正当な式と評価する。
-        if ($value === 'false') {
-            return true;
-        }
-        return @eval('return ' . $value . ';');
+        return @eval('return is_scalar(' . $value . ');');
     }
 
     /**
