@@ -115,8 +115,8 @@ class SC_View {
      * @return void
      */
     function registFilter() {
-        $this->_smarty->register_prefilter(array(&$this, 'prefilter_transforme'));
-        $this->_smarty->register_outputfilter(array(&$this, 'outputfilter_transforme'));
+        $this->_smarty->register_prefilter(array(&$this, 'prefilter_transform'));
+        $this->_smarty->register_outputfilter(array(&$this, 'outputfilter_transform'));
     }
 
     /**
@@ -125,10 +125,10 @@ class SC_View {
      * @param Smarty_Compiler $smarty Smartyのコンパイラクラス
      * @return string $source ソース
      */
-    function prefilter_transforme($source, &$smarty) {
+    function prefilter_transform($source, &$smarty) {
         // フックポイントを実行.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->objPage->plugin_activate_flg);
-        $objPlugin->doAction('prefilterTransforme', array(&$source, $this->objPage));
+        $objPlugin->doAction('prefilterTransform', array(&$source, $this->objPage));
         return $source;
     }
 
@@ -138,10 +138,10 @@ class SC_View {
      * @param Smarty_Compiler $smarty Smartyのコンパイラクラス
      * @return string $source ソース
      */
-    function outputfilter_transforme($source, &$smarty) {
+    function outputfilter_transform($source, &$smarty) {
         // フックポイントを実行.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->objPage->plugin_activate_flg);
-        $objPlugin->doAction('outputfilterTransforme', array(&$source, $this->objPage));
+        $objPlugin->doAction('outputfilterTransform', array(&$source, $this->objPage));
         return $source;
     }
 
