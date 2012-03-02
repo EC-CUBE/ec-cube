@@ -1049,7 +1049,7 @@ function getSequences() {
         array('dtb_send_history', 'send_id'),
         array('dtb_mailmaga_template', 'template_id'),
         array('dtb_plugin', 'plugin_id'),
-        array('dtb_plugin_hookpoint', 'id'),
+        array('dtb_plugin_hookpoint', 'plugin_hookpoint_id'),
     );
 }
 
