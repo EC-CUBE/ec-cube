@@ -79,6 +79,7 @@ class SC_FormParam {
     // $arrVal  :$arrVal['keyname']・・の配列を一致したキーのインスタンスに格納する
     // $seq     :trueの場合、$arrVal[0]~の配列を登録順にインスタンスに格納する
     function setParam($arrVal, $seq = false) {
+        if (!is_array($arrVal)) return;
         $cnt = 0;
         if (!$seq) {
             foreach ($this->keyname as $val) {
