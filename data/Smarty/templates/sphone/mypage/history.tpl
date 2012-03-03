@@ -95,7 +95,7 @@
                 <!--{/foreach}-->
                 <!--▲商品 -->
 
-            </div><!--{ /.cartinarea }-->
+            </div><!--{* /.cartinarea *}-->
             <!--▲ カートの中の商品一覧 -->
 
             <div class="total_area">
