@@ -193,7 +193,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         // UPDATEの実行
         $ret = $objQuery->update('dtb_baseinfo', $sqlval);
 
-        $this->log('update done.');
+        GC_Utils_Ex::gfPrintLog('dtb_baseinfo に UPDATE を実行しました。');
     }
 
     function lfInsertData($array) {
@@ -206,7 +206,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         // INSERTの実行
         $ret = $objQuery->insert('dtb_baseinfo', $sqlval);
 
-        $this->log('insert done.');
+        GC_Utils_Ex::gfPrintLog('dtb_baseinfo に INSERT を実行しました。');
     }
 
     function lfInitParam(&$objFormParam, $post) {

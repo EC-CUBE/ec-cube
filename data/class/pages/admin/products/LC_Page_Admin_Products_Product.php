@@ -100,7 +100,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
                 // エラーチェック
                 $this->arrErr = $objFormParam->checkError();
                 if (count($this->arrErr) > 0) {
-                    SC_Utils_Ex::sfDispException();
+                    trigger_error('', E_USER_ERROR);
                 }
 
                 // 商品ID取得

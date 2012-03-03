@@ -24,6 +24,8 @@
 /**
  * 各種ユーティリティクラス.
  *
+ * このクラスはエラーハンドリング処理でも使用している。
+ * よって、このファイルで構文エラーが発生すると、EC-CUBE はエラーを捕捉できない。
  * @package Util
  * @author LOCKON CO.,LTD.
  * @version $Id$
@@ -37,12 +39,10 @@ class GC_Utils {
      * @return void
      */
     function gfDebugLog($obj) {
-        if (DEBUG_MODE === true) {
-            GC_Utils_Ex::gfPrintLog(
-                "*** start Debug ***\n" .
-                print_r($obj, true) .
-                '*** end Debug ***'
-            );
+        if (USE_VERBOSE_LOG === true) {
+            $msg = "DEBUG\n"
+                 . print_r($obj, true);
+            GC_Utils_Ex::gfPrintLog($msg, DEBUG_LOG_REALFILE);
         }
     }
 
@@ -52,31 +52,74 @@ class GC_Utils {
      * @param int $forLogInfo ログ出力用に利用するかどうか(1:ログ出力用に利用する)
      * @return string 呼び出し元クラス、関数名、行数の文字列表現
      */
-    function gfGetCallerInfo($forLogInfo=true) {
+    function gfGetCallerInfo($forLogInfo = true) {
         // バックトレースを取得する
         $traces = debug_backtrace(false);
         $bklv = 1;
         if ($forLogInfo === true) {
             $bklv = 3;
-            if( ($traces[3]['class'] === 'LC_Page'
-                || $traces[3]['class'] === 'LC_Page_Admin')
-                && $traces[3]['function'] === 'log')
-            {
+            if (($traces[3]['class'] === 'LC_Page' || $traces[3]['class'] === 'LC_Page_Admin')
+                && $traces[3]['function'] === 'log'
+            ) {
                 $bklv = 4;
             }
         }
-        $str = $traces[$bklv]['class'] . '::' . $traces[$bklv]['function'] . '(' . $traces[$bklv-1]['line'] . ') ';
+        $str = $traces[$bklv]['class'] . '::' . $traces[$bklv]['function'] . '(' . $traces[$bklv - 1]['line'] . ') ';
         return $str;
     }
 
     /**
-     * ログメッセージに、呼び出し元関数名等の情報を付加して返します
+     * デバッグ情報として必要な範囲のバックトレースを取得する
      *
-     * @param string $mess ログメッセージ
-     * @param string $log_level ログレベル('Info' or 'Debug')
-     * @return string ログメッセージに呼び出し元関数名等の情報を付加した文字列
+     * エラーハンドリングに関わる情報を切り捨てる。
      */
-    function gfGetLogStr($mess, $log_level='Info') {
+    function getDebugBacktrace($arrBacktrace = null) {
+        if (is_null($arrBacktrace)) {
+            $arrBacktrace = debug_backtrace(false);
+        }
+        $arrReturn = array();
+        foreach (array_reverse($arrBacktrace) as $arrLine) {
+            // 言語レベルの致命的エラー時。発生元の情報はトレースできない。(エラーハンドリング処理のみがトレースされる)
+            // 実質的に何も返さない(空配列を返す)意図。
+            if (strlen($arrLine['file']) === 0
+                && ($arrLine['class'] === 'SC_Helper_HandleError' || $arrLine['class'] === 'SC_Helper_HandleError_Ex')
+                && ($arrLine['function'] === 'handle_error' || $arrLine['function'] === 'handle_warning')
+            ) {
+                break 1;
+            }
+
+            $arrReturn[] = $arrLine;
+
+            // エラーハンドリング処理に引き渡した以降の情報は通常不要なので含めない。
+            if (!isset($arrLine['class']) && $arrLine['function'] === 'trigger_error') {
+                break 1;
+            }
+            if (($arrLine['class'] === 'SC_Helper_HandleError' || $arrLine['class'] === 'SC_Helper_HandleError_Ex')
+                && ($arrLine['function'] === 'handle_error' || $arrLine['function'] === 'handle_warning')
+            ) {
+                break 1;
+            }
+            if (($arrLine['class'] === 'SC_Utils' || $arrLine['class'] === 'SC_Utils_Ex')
+                && $arrLine['function'] === 'sfDispException'
+            ) {
+                break 1;
+            }
+            if (($arrLine['class'] === 'GC_Utils' || $arrLine['class'] === 'GC_Utils_Ex')
+                && $arrLine['function'] === 'gfDebugLog'
+            ) {
+                break 1;
+            }
+        }
+        return array_reverse($arrReturn);
+    }
+
+    /**
+     * 前方互換用
+     *
+     * @deprecated 2.12.0
+     */
+    function gfGetLogStr($mess, $log_level = 'Info') {
+        trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         // メッセージの前に、ログ出力元関数名とログ出力関数呼び出し部分の行数を付与
         $mess = GC_Utils::gfGetCallerInfo(true) . $mess;
 
@@ -89,78 +132,66 @@ class GC_Utils {
     }
 
     /**
-     * 管理画面用ログ出力
+     * 前方互換用
      *
-     * 管理画面用ログ出力を行ないます
-     * @param string $mess ログメッセージ
-     * @param string $log_level ログレベル('Info' or 'Debug')
-     * @return void
+     * @deprecated 2.12.0 GC_Utils_Ex::gfPrintLog を使用すること
      */
-    function gfAdminLog($mess, $log_level='Info') {
+    function gfAdminLog($mess, $log_level = 'Info') {
+        trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         // ログレベル=Debugの場合は、DEBUG_MODEがtrueの場合のみログ出力する
-        if ($log_level === 'Debug'&& DEBUG_MODE === false) {
+        if ($log_level === 'Debug' && DEBUG_MODE === false) {
             return;
         }
 
-        // ログメッセージに、呼び出し元関数名等の情報を付加する
-        $mess = GC_Utils::gfGetLogStr($mess, $log_level);
-
         // ログ出力
-        // ※現在は管理画面用・フロント用のログ出力とも、同じファイル(site.log)に出力します。
-        // 　分けたい場合は、以下の関数呼び出しの第２引数にファイルパスを指定してください
-        GC_Utils_Ex::gfPrintLog($mess);
+        GC_Utils_Ex::gfPrintLog($mess, '', true);
     }
 
     /**
-     * フロント用ログ出力
+     * 前方互換用
      *
-     * フロント用ログ出力を行ないます
-     * @param string $mess ログメッセージ
-     * @param string $log_level ログレベル('Info' or 'Debug')
-     * @return void
+     * @deprecated 2.12.0 GC_Utils_Ex::gfPrintLog を使用すること
      */
-    function gfFrontLog($mess, $log_level='Info') {
+    function gfFrontLog($mess, $log_level = 'Info') {
+        trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         // ログレベル=Debugの場合は、DEBUG_MODEがtrueの場合のみログ出力する
-        if ($log_level === 'Debug'&& DEBUG_MODE === false) {
+        if ($log_level === 'Debug' && DEBUG_MODE === false) {
             return;
         }
 
-        // ログメッセージに、呼び出し元関数名等の情報を付加する
-        $mess = GC_Utils::gfGetLogStr($mess, $log_level);
-
         // ログ出力
-        // ※現在は管理画面用・フロント用のログ出力とも、同じファイル(site.log)に出力します。
-        // 　分けたい場合は、以下の関数呼び出しの第２引数にファイルパスを指定してください
-        GC_Utils_Ex::gfPrintLog($mess);
+        GC_Utils_Ex::gfPrintLog($mess, '', true);
     }
 
-    /*----------------------------------------------------------------------
-     * [名称] gfPrintLog
-     * [概要] ログファイルに日時、処理ファイル名、メッセージを出力
-     * [引数] 表示したいメッセージ
-     * [戻値] なし
-     * [依存] なし
-     * [注釈] -
-     *----------------------------------------------------------------------*/
-    function gfPrintLog($mess, $path = '') {
+    /**
+     * ログの出力を行う
+     *
+     * エラー・警告は trigger_error() を経由して利用すること。(補足の出力は例外。)
+     * @param string $msg
+     * @param string $path
+     * @param bool $verbose 冗長な出力を行うか
+     */
+    function gfPrintLog($msg, $path = '', $verbose = USE_VERBOSE_LOG) {
         // 日付の取得
         $today = date('Y/m/d H:i:s');
         // 出力パスの作成
-        if ($path == '') {
-            $path = LOG_REALFILE;
+
+        if (strlen($path) === 0) {
+            $path = GC_Utils_Ex::isAdminFunction() ? ADMIN_LOG_REALFILE : LOG_REALFILE;
         }
 
-        // エスケープされている文字をもとに戻す
-        $trans_tbl = get_html_translation_table (HTML_ENTITIES);
-        $trans_tbl = array_flip ($trans_tbl);
-        $mess = strtr($mess, $trans_tbl);
-
-        $fp = fopen($path, 'a+');
-        if ($fp) {
-            $string = "$today [{$_SERVER['PHP_SELF']}] $mess from {$_SERVER['REMOTE_ADDR']}\n";
-            fwrite($fp, $string);
-            fclose($fp);
+        $msg = "$today [{$_SERVER['PHP_SELF']}] $msg from {$_SERVER['REMOTE_ADDR']}\n";
+        if ($verbose) {
+            if (GC_Utils_Ex::isFrontFunction()) {
+                $msg .= 'customer_id = ' . $_SESSION['customer']['customer_id'] . "\n";
+            }
+            if (GC_Utils_Ex::isAdminFunction()) {
+                $msg .= 'login_id = ' . $_SESSION['login_id'] . '(' . $_SESSION['authority'] . ')' . '[' . session_id() . ']' . "\n";
+            }
+            $msg .= GC_Utils_Ex::toStringBacktrace(GC_Utils_Ex::getDebugBacktrace());
         }
+
+        error_log($msg, 3, $path);
 
         // ログテーション
         GC_Utils_Ex::gfLogRotation(MAX_LOG_QUANTITY, MAX_LOG_SIZE, $path);
@@ -251,5 +282,110 @@ class GC_Utils {
             }
         }
         return implode(', ', $mailaddrs); //複数アドレスはカンマ区切りにする
+    }
+
+    /**
+     * バックトレースをテキスト形式で出力する
+     *
+     * 現状スタックトレースの形で出力している。
+     * @param array $arrBacktrace バックトレース
+     * @return string テキストで表現したバックトレース
+     */
+    function toStringBacktrace($arrBacktrace) {
+        $string = '';
+
+        foreach (array_reverse($arrBacktrace) as $backtrace) {
+            if (strlen($backtrace['class']) >= 1) {
+                $func = $backtrace['class'] . $backtrace['type'] . $backtrace['function'];
+            } else {
+                $func = $backtrace['function'];
+            }
+
+            $string .= $backtrace['file'] . '(' . $backtrace['line'] . '): ' . $func . "\n";
+        }
+
+        return $string;
+    }
+
+    /**
+     * エラー型から該当する定数名を取得する
+     *
+     * 該当する定数がない場合、$error_type を返す。
+     * @param integer $error_type エラー型
+     * @return string|integer エラー定数名
+     */
+    function getErrorTypeName($error_type) {
+        $arrDefinedConstants = get_defined_constants(true);
+
+        // PHP の歴史対応
+        $arrDefinedCoreConstants = array();
+        // PHP >= 5.3.1, PHP == 5.3.0 (not Windows)
+        if (isset($arrDefinedConstants['Core'])) {
+            $arrDefinedCoreConstants = $arrDefinedConstants['Core'];
+        }
+        // PHP < 5.3.0
+        elseif (isset($arrDefinedConstants['internal'])) {
+            $arrDefinedCoreConstants = $arrDefinedConstants['internal'];
+        }
+        // PHP == 5.3.0 (Windows)
+        elseif (isset($arrDefinedConstants['mhash'])) {
+            $arrDefinedCoreConstants = $arrDefinedConstants['mhash'];
+        }
+
+        foreach ($arrDefinedCoreConstants as $constant_name => $constant_value) {
+            if (substr($constant_name, 0, 2) === 'E_' && $constant_value == $error_type) {
+                return $constant_name;
+            }
+        }
+        return $error_type;
+    }
+
+    /**
+     * 現在の URL を取得する
+     *
+     * @return string 現在のURL
+     */
+    function getUrl() {
+        $url = '';
+
+        if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
+            $url = 'https://';
+        } else {
+            $url = 'http://';
+        }
+
+        $url .= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        if (strlen($_SERVER['QUERY_STRING']) >= 1) {
+            $url .= '?' . $_SERVER['QUERY_STRING'];
+        }
+
+        return $url;
+    }
+
+    /**
+     * 管理機能かを判定
+     *
+     * @return bool 管理機能か
+     */
+    function isAdminFunction() {
+        return defined('ADMIN_FUNCTION') && ADMIN_FUNCTION === true;
+    }
+
+    /**
+     * フロント機能かを判定
+     *
+     * @return bool フロント機能か
+     */
+    function isFrontFunction() {
+        return defined('FRONT_FUNCTION') && FRONT_FUNCTION === true;
+    }
+
+    /**
+     * インストール機能かを判定
+     *
+     * @return bool インストール機能か
+     */
+    function isInstallFunction() {
+        return defined('INSTALL_FUNCTION') && INSTALL_FUNCTION === true;
     }
 }

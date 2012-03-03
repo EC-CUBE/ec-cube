@@ -78,7 +78,7 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin_Ex {
 
             $arrErr = $objFormParam->checkError();
             if (!empty($this->arrErr['payment_id'])) {
-                SC_Utils_Ex::sfDispException();
+                trigger_error('', E_USER_ERROR);
                 return;
             }
             $post = $objFormParam->getHashArray();

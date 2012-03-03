@@ -33,7 +33,7 @@ require_once DATA_REALDIR . 'app_initial.php';
 // 定数 SAFE が設定されている場合、DBアクセスを回避する。主に、エラー画面を意図する。
 if (!defined('SAFE') || !SAFE) {
     // インストール中で無い場合、
-    if (!SC_Utils_Ex::sfIsInstallFunction()) {
+    if (!GC_Utils_Ex::isInstallFunction()) {
         // インストールチェック
         SC_Utils_Ex::sfInitInstall();
 

@@ -46,7 +46,7 @@ class SC_Helper_Plugin {
     function load($plugin_activate_flg = true) {
 
         if (!defined('CONFIG_REALFILE') || !file_exists(CONFIG_REALFILE)) return; // インストール前
-        if (SC_Utils_Ex::sfIsInstallFunction()) return; // インストール中
+        if (GC_Utils_Ex::isInstallFunction()) return; // インストール中
         if ($plugin_activate_flg === false) return;
         // 有効なプラグインを取得
         $arrPluginDataList = $this->getEnablePlugin();

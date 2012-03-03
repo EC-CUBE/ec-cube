@@ -1408,7 +1408,7 @@ __EOS__;
             $objQuery =& SC_Query_Ex::getSingletonInstance();
 
             $sqls = file_get_contents($sqlFilePath);
-            if ($sqls === false) SC_Utils_Ex::sfDispException('ファイルは存在するが読み込めない');
+            if ($sqls === false) trigger_error('ファイルは存在するが読み込めない', E_USER_ERROR);
 
             foreach (explode(';', $sqls) as $sql) {
                 $sql = trim($sql);

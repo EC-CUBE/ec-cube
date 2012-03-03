@@ -1072,8 +1072,9 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DELIV_ADDR_MAX', '2
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_STATUS_MAX', '50', 70, '対応状況管理画面の一覧表示件数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('REVIEW_REGIST_MAX', '5', 71, 'フロントレビュー書き込み最大数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEBUG_MODE', 'false', 72, 'デバッグモード(true：sfPrintRやDBのエラーメッセージ、ログレベルがDebugのログを出力する、false：出力しない)');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ADMIN_ID', '"1"', 73, '管理ユーザID(メンテナンス用表示されない。)');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CUSTOMER_CONFIRM_MAIL', 'false', 74, '会員登録時に仮会員確認メールを送信するか (true:仮会員、false:本会員)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USE_VERBOSE_LOG', 'DEBUG_MODE', 73, 'ログを冗長とするか(true:利用する、false:利用しない)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ADMIN_ID', '"1"', 74, '管理ユーザID(メンテナンス用表示されない。)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CUSTOMER_CONFIRM_MAIL', 'false', 75, '会員登録時に仮会員確認メールを送信するか (true:仮会員、false:本会員)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LOGIN_FRAME', '"login_frame.tpl"', 77, 'ログイン画面フレーム');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MAIN_FRAME', '"main_frame.tpl"', 78, '管理画面フレーム');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SITE_FRAME', '"site_frame.tpl"', 79, '一般サイト画面フレーム');
@@ -1113,8 +1114,12 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CATEGORY_HEAD', '">
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('START_BIRTH_YEAR', '1970', 139, '生年月日初期選択年');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('NORMAL_PRICE_TITLE', '"通常価格"', 140, '価格名称');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SALE_PRICE_TITLE', '"販売価格"', 141, '価格名称');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LOG_REALFILE', 'DATA_REALDIR . "logs/site.log"', 142, 'ログファイル');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LOG_REALFILE', 'DATA_REALDIR . "logs/site.log"', 142, '標準ログファイル');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CUSTOMER_LOG_REALFILE', 'DATA_REALDIR . "logs/customer.log"', 143, '会員ログイン ログファイル');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ADMIN_LOG_REALFILE', 'DATA_REALDIR . "logs/admin.log"', 144, '管理機能ログファイル');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEBUG_LOG_REALFILE', '""', 145, 'デバッグログファイル(未入力:標準ログファイル・管理画面ログファイル)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ERROR_LOG_REALFILE', 'DATA_REALDIR . "logs/error.log"', 146, 'エラーログファイル(未入力:標準ログファイル・管理画面ログファイル)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DB_LOG_REALFILE', 'DATA_REALDIR . "logs/db.log"', 147, 'DBログファイル');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('IMAGE_TEMP_REALDIR', 'HTML_REALDIR . "upload/temp_image/"', 150, '画像一時保存');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('IMAGE_SAVE_REALDIR', 'HTML_REALDIR . "upload/save_image/"', 151, '画像保存先');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('IMAGE_TEMP_URLPATH', 'ROOT_URLPATH . "upload/temp_image/"', 152, '画像一時保存URL');
@@ -1247,8 +1252,8 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_DELIV', '5', 
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_PENDING', '7', 806, '決済処理中');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PRODUCT_TYPE_NORMAL', '1', 900, '通常商品');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PRODUCT_TYPE_DOWNLOAD', '2', 901, 'ダウンロード商品');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SQL_QUERY_LOG_MODE', '1', 1000, 'SQLログを取得するフラグ(1:表示, 0:非表示)');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SQL_QUERY_LOG_MIN_EXEC_TIME', '2', 1001, 'SQLログを取得する時間設定(設定値以上かかった場合に取得)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SQL_QUERY_LOG_MODE', '1', 1000, 'DBログの記録モード (0:記録しない, 1:遅延時のみ記録する, 2:常に記録する)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SQL_QUERY_LOG_MIN_EXEC_TIME', '2', 1001, 'DBログで遅延とみなす実行時間(秒)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PAGE_DISPLAY_TIME_LOG_MODE', '1', 1002, 'ページ表示時間のログを取得するフラグ(1:表示, 0:非表示)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PAGE_DISPLAY_TIME_LOG_MIN_EXEC_TIME', '2', 1003, 'ページ表示時間のログを取得する時間設定(設定値以上かかった場合に取得)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEVICE_TYPE_MOBILE', '1', 1100, '端末種別: モバイル');

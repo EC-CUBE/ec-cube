@@ -91,7 +91,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
      * @return void
      */
     function sendResponse() {
-        $this->adminPage = SC_Utils_Ex::sfIsAdminFunction();
+        $this->adminPage = GC_Utils_Ex::isAdminFunction();
 
         if ($this->adminPage) {
             $this->tpl_mainpage = 'login_error.tpl';
@@ -135,40 +135,24 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
         $errmsg .= $this->lfGetErrMsgHead();
         $errmsg .= "\n";
 
+        // デバッグ用のメッセージが指定されている場合
+        if (!empty($this->arrDebugMsg)) {
+            $errmsg .= implode("\n\n", $this->arrDebugMsg) . "\n";
+        }
+
         // PEAR エラーを伴う場合
         if (!is_null($this->pearResult)) {
             $errmsg .= $this->pearResult->message . "\n\n";
             $errmsg .= $this->pearResult->userinfo . "\n\n";
-            $errmsg .= SC_Utils_Ex::sfBacktraceToString($this->pearResult->backtrace);
+            $errmsg .= GC_Utils_Ex::toStringBacktrace($this->pearResult->backtrace);
         }
         // (上に該当せず)バックトレーススタックが指定されている場合
         else if (is_array($this->backtrace)) {
-            $errmsg .= SC_Utils_Ex::sfBacktraceToString($this->backtrace);
+            $errmsg .= GC_Utils_Ex::toStringBacktrace($this->backtrace);
         }
-        // (上に該当せず)バックトレースを生成できる環境(一般的には PHP 4 >= 4.3.0, PHP 5)の場合
-        else if (function_exists('debug_backtrace')) {
-            $backtrace = debug_backtrace();
-
-            // バックトレースのうち handle_error 以前は通常不要と考えられるので削除
-            $cnt = 0;
-            $offset = 0;
-            foreach ($backtrace as $key => $arrLine) {
-                $cnt ++;
-                if (!isset($arrLine['file']) && $arrLine['function'] === 'handle_error') {
-                    $offset = $cnt;
-                    break;
-                }
-            }
-            if ($offset !== 0) {
-                $backtrace = array_slice($backtrace, $offset);
-            }
-
-            $errmsg .= SC_Utils_Ex::sfBacktraceToString($backtrace);
-        }
-
-        // デバッグ用のメッセージが指定されている場合
-        if (!empty($this->arrDebugMsg)) {
-            $errmsg .= implode("\n\n", $this->arrDebugMsg) . "\n";
+        else {
+            $arrBacktrace = GC_Utils_Ex::getDebugBacktrace();
+            $errmsg .= GC_Utils_Ex::toStringBacktrace($arrBacktrace);
         }
 
         return $errmsg;

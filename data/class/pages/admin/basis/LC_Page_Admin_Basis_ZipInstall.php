@@ -107,7 +107,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
 
         if ($this->exec) {
             if (!empty($this->arrErr)) {
-                SC_Utils_Ex::sfDispException();
+                trigger_error('', E_USER_ERROR);
             }
             switch ($this->tpl_mode) {
                 // 自動登録
@@ -286,7 +286,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         $this->convertZipCsv();
         $fp = fopen(ZIP_CSV_UTF8_REALFILE, 'r');
         if (!$fp) {
-            SC_Utils_Ex::sfDispException(ZIP_CSV_UTF8_REALFILE . ' の読み込みに失敗しました。');
+            trigger_error(ZIP_CSV_UTF8_REALFILE . ' の読み込みに失敗しました。', E_USER_ERROR);
         }
         return $fp;
     }
@@ -296,12 +296,12 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
 
         $fpr = fopen(ZIP_CSV_REALFILE, 'r');
         if (!$fpr) {
-            SC_Utils_Ex::sfDispException(ZIP_CSV_REALFILE . ' の読み込みに失敗しました。');
+            trigger_error(ZIP_CSV_REALFILE . ' の読み込みに失敗しました。', E_USER_ERROR);
         }
 
         $fpw = fopen(ZIP_CSV_UTF8_REALFILE, 'w');
         if (!$fpw) {
-            SC_Utils_Ex::sfDispException(ZIP_CSV_UTF8_REALFILE . ' を開けません。');
+            trigger_error(ZIP_CSV_UTF8_REALFILE . ' を開けません。', E_USER_ERROR);
         }
 
         while (!feof($fpr)) {
@@ -352,17 +352,17 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         // 郵便番号CSVをdownloadする。
         $res = $req->sendRequest();
         if (!$res) {
-            SC_Utils_Ex::sfDispException(ZIP_DOWNLOAD_URL . ' の取得に失敗しました。');
+            trigger_error(ZIP_DOWNLOAD_URL . ' の取得に失敗しました。', E_USER_ERROR);
         }
 
         // 郵便番号CSV(zip file)を保存する。
         $fp = fopen($this->zip_csv_temp_realfile, 'w');
         if (!$fp) {
-            SC_Utils_Ex::sfDispException($this->zip_csv_temp_realfile . ' を開けません。');
+            trigger_error($this->zip_csv_temp_realfile . ' を開けません。', E_USER_ERROR);
         }
         $res = fwrite($fp, $req->getResponseBody());
         if (!$res) {
-            SC_Utils_Ex::sfDispException($this->zip_csv_temp_realfile . ' への書き込みに失敗しました。');
+            trigger_error($this->zip_csv_temp_realfile . ' への書き込みに失敗しました。', E_USER_ERROR);
         }
     }
 
@@ -374,7 +374,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
     function lfExtractZipFile() {
         $zip = zip_open($this->zip_csv_temp_realfile);
         if (!is_resource($zip)) {
-            SC_Utils_Ex::sfDispException($this->zip_csv_temp_realfile . ' をオープンできません。');
+            trigger_error($this->zip_csv_temp_realfile . ' をオープンできません。', E_USER_ERROR);
         }
 
         do {
@@ -382,7 +382,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         } while ($entry && zip_entry_name($entry) != 'KEN_ALL.CSV');
 
         if (!$entry) {
-            SC_Utils_Ex::sfDispException($this->zip_csv_temp_realfile . ' に対象ファイルが見つかりません。');
+            trigger_error($this->zip_csv_temp_realfile . ' に対象ファイルが見つかりません。', E_USER_ERROR);
         }
 
         // 展開時の破損を考慮し、別名で一旦展開する。
@@ -390,17 +390,17 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
 
         $res = zip_entry_open($zip, $entry, 'rb');
         if (!$res) {
-            SC_Utils_Ex::sfDispException($this->zip_csv_temp_realfile . ' の展開に失敗しました。');
+            trigger_error($this->zip_csv_temp_realfile . ' の展開に失敗しました。', E_USER_ERROR);
         }
 
         $fp = fopen($tmp_csv_realfile, 'w');
         if (!$fp) {
-            SC_Utils_Ex::sfDispException($tmp_csv_realfile . ' を開けません。');
+            trigger_error($tmp_csv_realfile . ' を開けません。', E_USER_ERROR);
         }
 
         $res = fwrite($fp, zip_entry_read($entry, zip_entry_filesize($entry)));
         if ($res === FALSE) {
-            SC_Utils_Ex::sfDispException($tmp_csv_realfile . ' の書き込みに失敗しました。');
+            trigger_error($tmp_csv_realfile . ' の書き込みに失敗しました。', E_USER_ERROR);
         }
 
         fclose($fp);
@@ -409,13 +409,13 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         // CSV 削除
         $res = unlink(ZIP_CSV_REALFILE);
         if (!$res) {
-            SC_Utils_Ex::sfDispException(ZIP_CSV_REALFILE . ' を削除できません。');
+            trigger_error(ZIP_CSV_REALFILE . ' を削除できません。', E_USER_ERROR);
         }
 
         // CSV ファイル名変更
         $res = rename($tmp_csv_realfile, ZIP_CSV_REALFILE);
         if (!$res) {
-            SC_Utils_Ex::sfDispException('ファイル名を変更できません。: ' . $tmp_csv_realfile . ' -> ' . ZIP_CSV_REALFILE);
+            trigger_error('ファイル名を変更できません。: ' . $tmp_csv_realfile . ' -> ' . ZIP_CSV_REALFILE, E_USER_ERROR);
         }
     }
 

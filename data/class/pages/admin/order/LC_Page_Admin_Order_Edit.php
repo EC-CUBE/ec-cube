@@ -767,7 +767,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
 
         // 商品規格IDが指定されていない場合、例外エラーを発生
         if (strlen($product_class_id) === 0) {
-            SC_Utils_Ex::sfDispException('商品規格指定なし');
+            trigger_error('商品規格指定なし', E_USER_ERROR);
         }
 
         // 選択済みの商品であれば数量を1増やす
@@ -792,7 +792,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
 
             // 一致する商品規格がない場合、例外エラーを発生
             if (empty($arrProduct)) {
-                SC_Utils_Ex::sfDispException('商品規格一致なし');
+                trigger_error('商品規格一致なし', E_USER_ERROR);
             }
 
             $arrProduct['quantity'] = 1;

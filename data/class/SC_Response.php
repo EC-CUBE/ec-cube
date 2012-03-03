@@ -133,7 +133,7 @@ class SC_Response{
 
         // アプリケーション外へのリダイレクトは扱わない
         if (preg_match($pattern, $url) === 0) {
-            SC_Utils_Ex::sfDispException();
+            trigger_error('', E_USER_ERROR);
         }
 
         $netUrl = new Net_URL($url);

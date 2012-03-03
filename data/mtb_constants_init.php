@@ -79,6 +79,8 @@ define('ORDER_STATUS_MAX', 50);
 define('REVIEW_REGIST_MAX', 5);
 /** デバッグモード(true：sfPrintRやDBのエラーメッセージ、ログレベルがDebugのログを出力する、false：出力しない) */
 define('DEBUG_MODE', false);
+/** ログを冗長とするか(true:利用する、false:利用しない) */
+define('USE_VERBOSE_LOG', DEBUG_MODE);
 /** 管理ユーザID(メンテナンス用表示されない。) */
 define('ADMIN_ID', "1");
 /** 会員登録時に仮会員確認メールを送信するか (true:仮会員、false:本会員) */
@@ -161,10 +163,18 @@ define('START_BIRTH_YEAR', 1970);
 define('NORMAL_PRICE_TITLE', "通常価格");
 /** 価格名称 */
 define('SALE_PRICE_TITLE', "販売価格");
-/** ログファイル */
+/** 標準ログファイル */
 define('LOG_REALFILE', DATA_REALDIR . "logs/site.log");
 /** 会員ログイン ログファイル */
 define('CUSTOMER_LOG_REALFILE', DATA_REALDIR . "logs/customer.log");
+/** 管理機能ログファイル */
+define('ADMIN_LOG_REALFILE', DATA_REALDIR . "logs/admin.log");
+/** デバッグログファイル(未入力:標準ログファイル・管理画面ログファイル) */
+define('DEBUG_LOG_REALFILE', "");
+/** エラーログファイル(未入力:標準ログファイル・管理画面ログファイル) */
+define('ERROR_LOG_REALFILE', DATA_REALDIR . "logs/error.log");
+/** DBログファイル */
+define('DB_LOG_REALFILE', DATA_REALDIR . "logs/db.log");
 /** 画像一時保存 */
 define('IMAGE_TEMP_REALDIR', HTML_REALDIR . "upload/temp_image/");
 /** 画像保存先 */
@@ -388,14 +398,14 @@ define('PLUGIN_DIR_PERMISSION', 0777);
 define('PLUGIN_TEMP_REALDIR', HTML_REALDIR . "upload/temp_plugin/");
 /** アップロード一時ディレクトリ */
 define('DOWNLOADS_TEMP_DIR', DATA_REALDIR . "downloads/tmp/");
-/** プラグイン一時展開用ディレクトリ（アップデート用） */
-define('DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR', DOWNLOADS_TEMP_DIR . "plugin_update/");
-/** プラグイン一時展開用ディレクトリ（インストール用） */
-define('DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR', DOWNLOADS_TEMP_DIR . "plugin_install/");
 /** プラグイン 外部ファイルURL */
 define('PLUGIN_HTML_URL', USER_URL . PLUGIN_DIR);
 /** プラグインファイル登録可能拡張子(カンマ区切り) */
 define('PLUGIN_EXTENSION', "tar,tar.gz");
+/** プラグイン一時展開用ディレクトリ（アップデート用） */
+define('DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR', DOWNLOADS_TEMP_DIR . "plugin_update/");
+/** プラグイン一時展開用ディレクトリ（インストール用） */
+define('DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR', DOWNLOADS_TEMP_DIR . "plugin_install/");
 /** 日数桁数 */
 define('DOWNLOAD_DAYS_LEN', 3);
 /** ダウンロードファイル登録可能拡張子(カンマ区切り)" */
@@ -428,9 +438,9 @@ define('ORDER_PENDING', 7);
 define('PRODUCT_TYPE_NORMAL', 1);
 /** ダウンロード商品 */
 define('PRODUCT_TYPE_DOWNLOAD', 2);
-/** SQLログを取得するフラグ(1:表示, 0:非表示) */
+/** DBログの記録モード (0:記録しない, 1:遅延時のみ記録する, 2:常に記録する) */
 define('SQL_QUERY_LOG_MODE', 1);
-/** SQLログを取得する時間設定(設定値以上かかった場合に取得) */
+/** DBログで遅延とみなす実行時間(秒) */
 define('SQL_QUERY_LOG_MIN_EXEC_TIME', 2);
 /** ページ表示時間のログを取得するフラグ(1:表示, 0:非表示) */
 define('PAGE_DISPLAY_TIME_LOG_MODE', 1);

@@ -116,19 +116,19 @@ class LC_Page_Admin extends LC_Page_Ex {
     }
 
     /**
-     * ログ出力を行う.
+     * 前方互換用
      *
-     * ログイン中の管理者IDを含めてログ出力します.
-     *
-     * @access protected
-     * @param string $mess ログメッセージ
-     * @param string $log_level ログレベル('Info' or 'Debug')
-     * @return void
+     * @deprecated 2.12.0 GC_Utils_Ex::gfPrintLog を使用すること
      */
     function log($mess, $log_level) {
-        $mess = $mess . ' id=' . $_SESSION['login_id'] . '(' . $_SESSION['authority'] . ')' . '[' . session_id() . ']';
+        trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+        // ログレベル=Debugの場合は、DEBUG_MODEがtrueの場合のみログ出力する
+        if ($log_level === 'Debug' && DEBUG_MODE === false) {
+            return;
+        }
 
-        GC_Utils_Ex::gfAdminLog($mess, $log_level);
+        // ログ出力
+        GC_Utils_Ex::gfPrintLog($mess, '', true);
     }
 
 }

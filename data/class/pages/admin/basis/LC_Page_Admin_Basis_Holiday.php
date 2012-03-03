@@ -84,7 +84,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
 
             $this->arrErr = $this->lfCheckError($mode, $objFormParam);
             if (!empty($this->arrErr['holiday_id'])) {
-                SC_Utils_Ex::sfDispException();
+                trigger_error('', E_USER_ERROR);
                 return;
             }
 

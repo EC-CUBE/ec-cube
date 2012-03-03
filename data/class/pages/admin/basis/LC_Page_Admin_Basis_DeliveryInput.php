@@ -87,7 +87,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
                 break;
             case 'pre_edit':
                 if (count($this->arrErr) > 0) {
-                    SC_Utils_Ex::sfDispException();
+                    trigger_error('', E_USER_ERROR);
                 }
                 $this->lfGetDelivData($objFormParam);
                 break;

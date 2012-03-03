@@ -438,7 +438,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
             $msg = 'バックアップファイルの展開に失敗しました。' . "\n";
             $msg .= '展開元: ' . $bkup_filepath . "\n";
             $msg .= '展開先: ' . $work_dir;
-            SC_Utils_Ex::sfDispException($msg);
+            trigger_error($msg, E_USER_ERROR);
         }
 
         // トランザクション開始
@@ -503,7 +503,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
             // csvファイルからデータの取得
             $fp = fopen($file_path, 'r');
             if ($fp === false) {
-                SC_Utils_Ex::sfDispException($file_name . ' のファイルオープンに失敗しました。');
+                trigger_error($file_name . ' のファイルオープンに失敗しました。', E_USER_ERROR);
             }
 
             GC_Utils_Ex::gfPrintLog('リストア実行: ' . $table);

@@ -160,27 +160,13 @@ class SC_Utils {
     }
 
     /**
-     * 例外エラーページの表示
+     * 前方互換用
      *
-     * @param string $debugMsg デバッグ用のメッセージ
-     * @return void
+     * @deprecated 2.12.0 trigger_error($debugMsg, E_USER_ERROR) を使用すること
      */
     function sfDispException($debugMsg = null) {
-        require_once CLASS_EX_REALDIR . 'page_extends/error/LC_Page_Error_SystemError_Ex.php';
-
-        $objPage = new LC_Page_Error_SystemError_Ex();
-        register_shutdown_function(array($objPage, 'destroy'));
-        $objPage->init();
-        if (!is_null($debugMsg)) {
-            $objPage->addDebugMsg($debugMsg);
-        }
-        if (function_exists('debug_backtrace')) {
-            $objPage->backtrace = debug_backtrace();
-        }
-        GC_Utils_Ex::gfPrintLog($objPage->sfGetErrMsg());
-        $objPage->process();
-
-        exit();
+        trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+        trigger_error($debugMsg, E_USER_ERROR);
     }
 
     /* 認証の可否判定 */
@@ -1675,70 +1661,53 @@ class SC_Utils {
     }
 
     /**
-     * 現在の URL を取得する
+     * 前方互換用
      *
-     * @return string 現在のURL
+     * @deprecated 2.12.0 GC_Utils_Ex::getUrl を使用すること
      */
     function sfGetUrl() {
-        $url = '';
-
-        if (SC_Utils_Ex::sfIsHTTPS()) {
-            $url = 'https://';
-        } else {
-            $url = 'http://';
-        }
-
-        $url .= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '?' . $_SERVER['QUERY_STRING'];
-
-        return $url;
+        trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+        return GC_Utils_Ex::getUrl();
     }
 
     /**
-     * バックトレースをテキスト形式で出力する
+     * 前方互換用
      *
-     * @return string テキストで表現したバックトレース
+     * @deprecated 2.12.0 GC_Utils_Ex::toStringBacktrace を使用すること
      */
     function sfBacktraceToString($arrBacktrace) {
-        $string = '';
-
-        foreach (array_reverse($arrBacktrace) as $backtrace) {
-            if (strlen($backtrace['class']) >= 1) {
-                $func = $backtrace['class'] . $backtrace['type'] . $backtrace['function'];
-            } else {
-                $func = $backtrace['function'];
-            }
-
-            $string .= $backtrace['file'] . ' ' . $backtrace['line'] . ':' . $func . "\n";
-        }
-
-        return $string;
+        trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+        return GC_Utils_Ex::toStringBacktrace($arrBacktrace);
     }
 
     /**
-     * 管理機能かを判定
+     * 前方互換用
      *
-     * @return bool 管理機能か
+     * @deprecated 2.12.0 GC_Utils_Ex::isAdminFunction を使用すること
      */
     function sfIsAdminFunction() {
-        return defined('ADMIN_FUNCTION') && ADMIN_FUNCTION;
+        trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+        return GC_Utils_Ex::isAdminFunction();
     }
 
     /**
-     * フロント機能かを判定
+     * 前方互換用
      *
-     * @return bool フロント機能か
+     * @deprecated 2.12.0 GC_Utils_Ex::isFrontFunction を使用すること
      */
     function sfIsFrontFunction() {
-        return defined('FRONT_FUNCTION') && FRONT_FUNCTION;
+        trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+        return GC_Utils_Ex::isFrontFunction();
     }
 
     /**
-     * インストール機能かを判定
+     * 前方互換用
      *
-     * @return bool インストール機能か
+     * @deprecated 2.12.0 GC_Utils_Ex::isInstallFunction を使用すること
      */
     function sfIsInstallFunction() {
-        return defined('INSTALL_FUNCTION') && INSTALL_FUNCTION;
+        trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+        return GC_Utils_Ex::isInstallFunction();
     }
 
     // 郵便番号から住所の取得
@@ -1855,10 +1824,10 @@ class SC_Utils {
         }
 
         $xml = $pluginsXml->asXML();
-        if (strlen($xml) == 0) SC_Utils_Ex::sfDispException();
+        if (strlen($xml) == 0) trigger_error('', E_USER_ERROR);
 
         $return = file_put_contents(PLUGIN_REALDIR . 'plugins.xml', $pluginsXml->asXML());
-        if ($return === false) SC_Utils_Ex::sfDispException();
+        if ($return === false) trigger_error('', E_USER_ERROR);
         return $return;
     }
 
@@ -1870,7 +1839,6 @@ class SC_Utils {
      * 現在の Unix タイムスタンプを float (秒単位) でマイクロ秒まで返す
      *
      * PHP4の上位互換用途。
-     * FIXME PHP4でテストする。(現状全くテストしていない。)
      * @param SimpleXMLElement $pluginsXml プラグイン XML
      * @return integer ファイルに書き込まれたバイト数を返します。
      */

@@ -602,7 +602,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
             }
             // いずれにも該当しない場合、例外エラー
             else {
-                SC_Utils_Ex::sfDispException();
+                trigger_error('', E_USER_ERROR);
             }
         }
         return $sqlval;

@@ -198,7 +198,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
      * @return boolean お届け先チェックの値が妥当な場合 true
      */
     function registerDeliv($deliv_check, $uniqid, &$objPurchase, &$objCustomer) {
-        $this->log('register deliv. deliv_check=' . $deliv_check, 'Debug');
+        GC_Utils_Ex::gfDebugLog('register deliv. deliv_check=' . $deliv_check);
         $arrValues = array();
         // 会員登録住所がチェックされている場合
         if ($deliv_check == '-1') {

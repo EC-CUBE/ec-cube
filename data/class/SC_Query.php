@@ -923,11 +923,8 @@ class SC_Query {
     function prepare($sql, $types = null, $result_types = MDB2_PREPARE_RESULT) {
         $sth =& $this->conn->prepare($sql, $types, $result_types);
         if (PEAR::isError($sth)) {
-            if (!$this->force_run) {
-                trigger_error($this->traceError($sth, $sql), E_USER_ERROR);
-            } else {
-                error_log($this->traceError($sth, $sql), 3, LOG_REALFILE);
-            }
+            $msg = $this->traceError($sth, $sql);
+            $this->error($msg);
         }
         return $sth;
     }
@@ -941,26 +938,15 @@ class SC_Query {
      * @return MDB2_Result 結果セットのインスタンス
      */
     function execute(&$sth, $arrVal = array()) {
-        $timeStart = SC_Utils_Ex::sfMicrotimeFloat();
-        $affected =& $sth->execute((array)$arrVal);
 
-        // 一定以上時間かかったSQLの場合、ログ出力する。
-        if (defined('SQL_QUERY_LOG_MODE') && SQL_QUERY_LOG_MODE == true) {
-            $timeEnd = SC_Utils_Ex::sfMicrotimeFloat();;
-            $timeExecTime = $timeEnd - $timeStart;
-            if (defined('SQL_QUERY_LOG_MIN_EXEC_TIME') && $timeExecTime >= (float)SQL_QUERY_LOG_MIN_EXEC_TIME) {
-                $logMsg = sprintf("SQL_LOG [%.2fsec]\n%s", $timeExecTime, $sth->query) . "\n";
-                error_log($logMsg, 3, LOG_REALFILE);
-            }
-        }
+        $arrStartInfo =& $this->lfStartDbTraceLog($sth, $arrVal);
+        $affected =& $sth->execute((array)$arrVal);
+        $this->lfEndDbTraceLog($arrStartInfo, $sth, $arrVal);
 
         if (PEAR::isError($affected)) {
             $sql = isset($sth->query) ? $sth->query : '';
-            if (!$this->force_run) {
-                trigger_error($this->traceError($affected, $sql, $arrVal), E_USER_ERROR);
-            } else {
-                error_log($this->traceError($affected, $sql, $arrVal), 3, LOG_REALFILE);
-            }
+            $msg = $this->traceError($affected, $sql, $arrVal);
+            $this->error($msg);
         }
         $this->conn->last_query = stripslashes($sth->query);
         return $affected;
@@ -969,6 +955,8 @@ class SC_Query {
     /**
      * エラーの内容をトレースする.
      *
+     * XXX trigger_error で処理する場合、1024文字以内に抑える必要がある。
+     * XXX 重要な情報を先頭に置き、冗長になりすぎないように留意する。
      * @access private
      * @param PEAR::Error $error PEAR::Error インスタンス
      * @param string $sql エラーの発生した SQL 文
@@ -976,27 +964,29 @@ class SC_Query {
      * @return string トレースしたエラー文字列
      */
     function traceError($error, $sql = '', $arrVal = false) {
-        $scheme = '';
-        if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
-            $scheme = 'http://';
-        } else {
-            $scheme = 'https://';
-        }
-
-        $err = $scheme . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "\n\n"
-            . 'SERVER_ADDR: ' . $_SERVER['SERVER_ADDR'] . "\n"
-            . 'REMOTE_ADDR: ' . $_SERVER['REMOTE_ADDR'] . "\n"
-            . 'USER_AGENT: ' . $_SERVER['HTTP_USER_AGENT'] . "\n\n"
-            . 'SQL: ' . $sql . "\n\n";
+        $err = "SQL: [$sql]\n";
         if ($arrVal !== false) {
-            $err .= 'PlaceHolder: ' . var_export($arrVal, true) . "\n\n";
+            $err .= 'PlaceHolder: [' . var_export($arrVal, true) . "]\n";
         }
-        $err .= $error->getMessage() . "\n\n";
-        $err .= $error->getUserInfo() . "\n\n";
+        $err .= $error->getMessage() . "\n";
+        $err .= rtrim($error->getUserInfo()) . "\n";
 
-        $err .= SC_Utils_Ex::sfBacktraceToString($error->getBackTrace());
+        // PEAR::MDB2 内部のスタックトレースを出力する場合、下記のコメントを外す。
+        // $err .= GC_Utils_Ex::toStringBacktrace($error->getBackTrace());
 
         return $err;
+    }
+
+    /**
+     * エラー処理
+     */
+    function error($msg) {
+        $msg = "DB処理でエラーが発生しました。\n" . $msg;
+        if (!$this->force_run) {
+            trigger_error($msg, E_USER_ERROR);
+        } else {
+            GC_Utils_Ex::gfPrintLog($msg, ERROR_LOG_REALFILE, true);
+        }
     }
 
     /**
@@ -1029,4 +1019,69 @@ class SC_Query {
         return $arrRet;
     }
 
+    /**
+     * SQL の実行ログ (トレースログ) を書き出す
+     *
+     * @param string 実行するSQL文
+     * @param array $arrVal プレースホルダに挿入する配列
+     * @return void
+     */
+    private function lfStartDbTraceLog(&$objSth, &$arrVal) {
+        if (!defined('SQL_QUERY_LOG_MODE') || SQL_QUERY_LOG_MODE === 0) {
+            return;
+        }
+        $arrInfo =& $GLOBALS['_SC_Query_TraceLogInfo'];
+        if (!isset($arrInfo['http_request_id'])) {
+            $arrInfo['http_request_id'] = uniqid();
+        }
+
+        $arrStartInfo = array(
+            'http_request_id'   => $arrInfo['http_request_id'],
+            'time_start'        => SC_Utils_Ex::sfMicrotimeFloat(),
+            'count'             => ++$arrInfo['count'],
+        );
+
+        // ログモード1の場合、開始はログに出力しない
+        if (SQL_QUERY_LOG_MODE === 1) {
+            return $arrStartInfo;
+        }
+
+        $msg = "[execute start {$arrStartInfo['http_request_id']}#{$arrStartInfo['count']}]\n"
+             . 'SQL: ' . $objSth->query . "\n"
+             . 'PlaceHolder: ' . var_export($arrVal, true) . "\n";
+        GC_Utils_Ex::gfPrintLog($msg, DB_LOG_REALFILE);
+
+        return $arrStartInfo;
+    }
+
+    /**
+     * SQL の実行ログ (トレースログ) を書き出す
+     *
+     * @param string 実行するSQL文
+     * @param array $arrVal プレースホルダに挿入する配列
+     * @return void
+     */
+    private function lfEndDbTraceLog(&$arrStartInfo, &$objSth, &$arrVal) {
+        if (!defined('SQL_QUERY_LOG_MODE') || SQL_QUERY_LOG_MODE === 0) {
+            return;
+        }
+        $msg = "[execute end {$arrStartInfo['http_request_id']}#{$arrStartInfo['count']}]\n";
+
+        $timeEnd = SC_Utils_Ex::sfMicrotimeFloat();
+        $timeExecTime = $timeEnd - $arrStartInfo['time_start'];
+
+        // ログモード1の場合、
+        if (SQL_QUERY_LOG_MODE === 1) {
+            // 規定時間より速い場合、ログに出力しない
+            if (!defined('SQL_QUERY_LOG_MIN_EXEC_TIME') || $timeExecTime < (float)SQL_QUERY_LOG_MIN_EXEC_TIME) {
+                return;
+            }
+            // 開始時にログ出力していないため、ここで実行内容を出力する
+            $msg .= 'SQL: ' . $objSth->query . "\n";
+            $msg .= 'PlaceHolder: ' . var_export($arrVal, true) . "\n";
+        }
+
+        $msg .= 'execution time: ' . sprintf("%.2f sec", $timeExecTime) . "\n";
+        GC_Utils_Ex::gfPrintLog($msg, DB_LOG_REALFILE);
+    }
 }

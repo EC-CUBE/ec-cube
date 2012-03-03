@@ -24,7 +24,9 @@
 /**
  * エラーハンドリングのクラス
  *
- * @package Page
+ * 依存するクラスに構文エラーがあると、捕捉できない。よって、依存は最小に留めること。
+ * 現状 GC_Utils_Ex(GC_Utils) に依存しているため、その中で構文エラーは捕捉できない。
+ * @package Helper
  * @version $Id$
  */
 class SC_Helper_HandleError {
@@ -86,15 +88,17 @@ class SC_Helper_HandleError {
             return;
         }
 
+        $error_type_name = GC_Utils_Ex::getErrorTypeName($errno);
+
         $now = date('Y/m/d H:i:s');
         // 本来 realpath() で正規化したいところだが、NULL を返すケースがあるため避けている (#1618)
         $log_file_path = DATA_REALDIR . 'logs/site.log';
         switch ($errno) {
             case E_USER_ERROR:
-                $message = $now . " [$errfile:$errline] FATAL Error($errno) $errstr from ". $_SERVER['REMOTE_ADDR'] . "\n";
-                error_log($message, 3, $log_file_path);
+                $message = "Fatal error($error_type_name): $errstr on [$errfile($errline)]";
+                GC_Utils_Ex::gfPrintLog($message, ERROR_LOG_REALFILE, true);
 
-                self::displaySystemError($errstr);
+                SC_Helper_HandleError_Ex::displaySystemError($message);
                 exit(1);
                 break;
 
@@ -102,8 +106,8 @@ class SC_Helper_HandleError {
             case E_USER_WARNING:
             case E_CORE_WARNING:
             case E_COMPILE_WARNING:
-                $message = $now . " [$errfile:$errline] WARNING($errno) $errstr from ". $_SERVER['REMOTE_ADDR'] . "\n";
-                error_log($message, 3, $log_file_path);
+                $message = "Warning($error_type_name): $errstr on [$errfile($errline)]";
+                GC_Utils_Ex::gfPrintLog($message, ERROR_LOG_REALFILE);
                 return true;
 
             default:
@@ -125,15 +129,15 @@ class SC_Helper_HandleError {
      *                     エラーが捕捉されない場合は, 出力バッファリングの内容を返す
      */
     static function &_fatal_error_handler(&$buffer) {
-        if (preg_match('/<b>(Fatal) error<\/b>: +(.+) in <b>(.+)<\/b> on line <b>(\d+)<\/b><br \/>/i', $buffer, $matches)) {
+        if (preg_match('/<b>(Fatal error)<\/b>: +(.+) in <b>(.+)<\/b> on line <b>(\d+)<\/b><br \/>/i', $buffer, $matches)) {
             $now = date('Y/m/d H:i:s');
-            // 本来 realpath() で正規化したいところだが、NULL を返すケースがあるため避けている (#1618)
+            // realpath() で正規化したいが、NULL を返すケースがあるため避けている (#1618)
             $log_file_path = DATA_REALDIR . 'logs/site.log';
-            $message = $now . " [$matches[3]:$matches[4]] FATAL Error: $matches[2] from ". $_SERVER['REMOTE_ADDR'] . "\n";
-            error_log($message, 3, $log_file_path);
+            $message = "$matches[1]: $matches[2] on [$matches[3]($matches[4])]";
+            GC_Utils_Ex::gfPrintLog($message, ERROR_LOG_REALFILE, true);
             if (DEBUG_MODE !== true) {
                 $url = HTTP_URL . 'error.php';
-                if (defined('ADMIN_FUNCTION') && ADMIN_FUNCTION) {
+                if (defined('ADMIN_FUNCTION') && ADMIN_FUNCTION === true) {
                     $url .= '?admin';
                 }
                 header("Location: $url");
@@ -173,16 +177,15 @@ class SC_Helper_HandleError {
             return;
         }
 
-        $errstr = "[{$arrError[file]}:{$arrError[line]}] FATAL Error({$arrError[type]}) {$arrError[message]}";
+        $error_type_name = GC_Utils_Ex::getErrorTypeName($arrError['type']);
+        $errstr = "Fatal error($error_type_name): {$arrError[message]} on [{$arrError[file]}({$arrError[line]})]";
 
-        // ログの書き出し
-        $now = date('Y/m/d H:i:s');
         // 本来 realpath() で正規化したいところだが、NULL を返すケースがあるため避けている (#1618)
         $log_file_path = DATA_REALDIR . 'logs/site.log';
-        error_log($now . " $errstr from ". $_SERVER['REMOTE_ADDR'] . "\n", 3, $log_file_path);
+        GC_Utils_Ex::gfPrintLog($errstr, ERROR_LOG_REALFILE, true);
 
         // エラー画面を表示する
-        self::displaySystemError($errstr);
+        SC_Helper_HandleError_Ex::displaySystemError($errstr);
     }
 
     /**
@@ -214,11 +217,7 @@ class SC_Helper_HandleError {
         register_shutdown_function(array($objPage, 'destroy'));
         $objPage->init();
         if (isset($errstr)) {
-            $objPage->arrDebugMsg[]
-                = "▼▼▼ エラーメッセージ ▼▼▼\n"
-                . $errstr . "\n"
-                . "▲▲▲ エラーメッセージ ▲▲▲\n"
-            ;
+            $objPage->addDebugMsg($errstr);
         }
         $objPage->process();
     }
