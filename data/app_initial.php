@@ -88,6 +88,6 @@ function setClassAutoloader() {
         }
 
         $classpath .= "$class.php";
-        require($classpath);
+        include $classpath;
     }
 }
