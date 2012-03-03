@@ -66,7 +66,8 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
         $objCart = new SC_CartSession_Ex();
         $this->isMultiple = $objCart->isMultiple();
         $this->hasDownload = $objCart->hasProductType(PRODUCT_TYPE_DOWNLOAD);
-        $this->arrCartList = $this->lfGetCartData($objCart);
+        // 旧仕様との互換のため、不自然なセットとなっている
+        $this->arrCartList = array(0 => $this->lfGetCartData($objCart));
     }
 
     /**
@@ -82,22 +83,13 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
      * カートの情報を取得する
      *
      * @param SC_CartSession $objCart カートセッション管理クラス
-     * @return array $arrCartList カートデータ配列
+     * @return array カートデータ配列
      */
     function lfGetCartData(&$objCart) {
         $arrCartKeys = $objCart->getKeys();
         foreach ($arrCartKeys as $cart_key) {
-            // カート情報を取得
-            $arrCartList = $objCart->getCartList($cart_key);
             // カート内の商品ＩＤ一覧を取得
             $arrAllProductID = $objCart->getAllProductID($cart_key);
-            // 商品が1つ以上入っている場合には商品名称を取得
-            if (count($arrCartList) > 0) {
-
-                foreach ($arrCartList['productsClass'] as $key => $val) {
-                    $arrCartList[$key]['product_name'] = $val['name'];
-                }
-            }
             // 購入金額合計
             $products_total += $objCart->getAllProductsTotal($cart_key);
             // 合計数量
@@ -109,19 +101,21 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
             }
         }
 
-        $arrCartList[0]['ProductsTotal'] = $products_total;
-        $arrCartList[0]['TotalQuantity'] = $total_quantity;
+        $arrCartList = array();
+
+        $arrCartList['ProductsTotal'] = $products_total;
+        $arrCartList['TotalQuantity'] = $total_quantity;
 
         // 店舗情報の取得
         $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
-        $arrCartList[0]['free_rule'] = $arrInfo['free_rule'];
+        $arrCartList['free_rule'] = $arrInfo['free_rule'];
 
         // 送料無料までの金額
         if ($is_deliv_free) {
-            $arrCartList[0]['deliv_free'] = 0;
+            $arrCartList['deliv_free'] = 0;
         } else {
             $deliv_free = $arrInfo['free_rule'] - $products_total;
-            $arrCartList[0]['deliv_free'] = $deliv_free;
+            $arrCartList['deliv_free'] = $deliv_free;
         }
 
         return $arrCartList;
