@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<plugins>
-  <plugin>
-    <name>レコメンド</name>
-    <path>recommend</path>
-  </plugin>
-</plugins>

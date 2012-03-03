@@ -85,7 +85,7 @@ class LC_Page {
      */
     function init() {
         // 開始時刻を設定する。
-        $this->timeStart = SC_Utils_Ex::sfMicrotimeFloat();
+        $this->timeStart = microtime(true);
 
         $this->tpl_authority = $_SESSION['authority'];
 
@@ -165,7 +165,7 @@ class LC_Page {
         // 一定時間以上かかったページの場合、ログ出力する。
         // エラー画面の表示では $this->timeStart が出力されない
         if (defined('PAGE_DISPLAY_TIME_LOG_MODE') && PAGE_DISPLAY_TIME_LOG_MODE == true && isset($this->timeStart)) {
-            $timeEnd = SC_Utils_Ex::sfMicrotimeFloat();
+            $timeEnd = microtime(true);
             $timeExecTime = $timeEnd - $this->timeStart;
             if (defined('PAGE_DISPLAY_TIME_LOG_MIN_EXEC_TIME') && $timeExecTime >= (float)PAGE_DISPLAY_TIME_LOG_MIN_EXEC_TIME) {
                 $logMsg = sprintf('PAGE_DISPLAY_TIME_LOG [%.2fsec]', $timeExecTime);

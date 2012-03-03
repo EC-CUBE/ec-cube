@@ -1743,112 +1743,13 @@ class SC_Utils {
     }
 
     /**
-     * プラグインが配置されているディレクトリ(フルパス)を取得する
+     * 前方互換用
      *
-     * @param string $file プラグイン情報ファイル(info.php)のパス
-     * @return SimpleXMLElement プラグイン XML
-     */
-    function sfGetPluginFullPathByRequireFilePath($file) {
-        return str_replace('\\', '/', dirname($file)) . '/';
-    }
-
-    /**
-     * プラグインのパスを取得する
-     *
-     * @param string $pluginFullPath プラグインが配置されているディレクトリ(フルパス)
-     * @return SimpleXMLElement プラグイン XML
-     */
-    function sfGetPluginPathByPluginFullPath($pluginFullPath) {
-        return basename(rtrim($pluginFullPath, '/'));
-    }
-
-    /**
-     * プラグイン情報配列の基本形を作成する
-     *
-     * @param string $file プラグイン情報ファイル(info.php)のパス
-     * @return array プラグイン情報配列
-     */
-    function sfMakePluginInfoArray($file) {
-        $fullPath = SC_Utils_Ex::sfGetPluginFullPathByRequireFilePath($file);
-
-        return
-            array(
-                // パス
-                'path' => SC_Utils_Ex::sfGetPluginPathByPluginFullPath($fullPath),
-                // プラグイン名
-                'name' => '未定義',
-                // フルパス
-                'fullpath' => $fullPath,
-                // バージョン
-                'version' => null,
-                // 著作者
-                'auther' => '未定義',
-            )
-        ;
-    }
-
-    /**
-     * プラグイン情報配列を取得する
-     *
-     * TODO include_once を利用することで例外対応をサボタージュしているのを改善する。
-     *
-     * @param string $path プラグインのディレクトリ名
-     * @return array プラグイン情報配列
-     */
-    function sfGetPluginInfoArray($path) {
-        return (array)include_once PLUGIN_REALDIR . "$path/plugin_info.php";
-    }
-
-    /**
-     * プラグイン XML を読み込む
-     *
-     * TODO 空だったときを考慮
-     *
-     * @return SimpleXMLElement プラグイン XML
-     * @deprecated
-     */
-    function sfGetPluginsXml() {
-        return simplexml_load_file(PLUGIN_REALDIR . 'plugins.xml');
-    }
-
-    /**
-     * プラグイン XML を書き込む
-     *
-     * @param SimpleXMLElement $pluginsXml プラグイン XML
-     * @return integer ファイルに書き込まれたバイト数を返します。
-     * @deprecated
-     */
-    function sfPutPluginsXml($pluginsXml) {
-        if (version_compare(PHP_VERSION, '5.0.0', '>')) {
-            return;
-        }
-
-        $xml = $pluginsXml->asXML();
-        if (strlen($xml) == 0) trigger_error('', E_USER_ERROR);
-
-        $return = file_put_contents(PLUGIN_REALDIR . 'plugins.xml', $pluginsXml->asXML());
-        if ($return === false) trigger_error('', E_USER_ERROR);
-        return $return;
-    }
-
-    function sfLoadPluginInfo($filenamePluginInfo) {
-        return (array)include_once $filenamePluginInfo;
-    }
-
-    /**
-     * 現在の Unix タイムスタンプを float (秒単位) でマイクロ秒まで返す
-     *
-     * PHP4の上位互換用途。
-     * @param SimpleXMLElement $pluginsXml プラグイン XML
-     * @return integer ファイルに書き込まれたバイト数を返します。
+     * @deprecated 2.12.0 microtime(true) を使用する。
      */
     function sfMicrotimeFloat() {
-        $microtime = microtime(true);
-        if (is_string($microtime)) {
-            list($usec, $sec) = explode(' ', microtime());
-            return (float)$usec + (float)$sec;
-        }
-        return $microtime;
+        trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+        return microtime(true);
     }
 
     /**

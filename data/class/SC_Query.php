@@ -1037,7 +1037,7 @@ class SC_Query {
 
         $arrStartInfo = array(
             'http_request_id'   => $arrInfo['http_request_id'],
-            'time_start'        => SC_Utils_Ex::sfMicrotimeFloat(),
+            'time_start'        => microtime(true),
             'count'             => ++$arrInfo['count'],
         );
 
@@ -1067,7 +1067,7 @@ class SC_Query {
         }
         $msg = "[execute end {$arrStartInfo['http_request_id']}#{$arrStartInfo['count']}]\n";
 
-        $timeEnd = SC_Utils_Ex::sfMicrotimeFloat();
+        $timeEnd = microtime(true);
         $timeExecTime = $timeEnd - $arrStartInfo['time_start'];
 
         // ログモード1の場合、

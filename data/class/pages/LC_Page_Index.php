@@ -53,6 +53,12 @@ class LC_Page_Index extends LC_Page_Ex {
     function process() {
         parent::process();
         $this->action();
+        // class_exists('xxx');
+        // 0/0;
+        // new xxx;
+        // $objQuery = new SC_Query_Ex();
+        // $objQuery->select('***');
+        // trigger_error('試験的なエラー発生です。');
         $this->sendResponse();
     }
 

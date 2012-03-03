@@ -382,24 +382,14 @@ define('OSTORE_LOG_REALFILE', DATA_REALDIR . "logs/ownersstore.log");
 define('OPTION_FAVOFITE_PRODUCT', 1);
 /** 画像リネーム設定 (商品画像のみ) (true:リネームする、false:リネームしない) */
 define('IMAGE_RENAME', true);
-/** プラグインディレクトリ */
-define('PLUGIN_DIR', "plugins/");
-/** プラグイン保存先 */
-define('PLUGIN_REALDIR', USER_REALDIR . PLUGIN_DIR);
-/** プラグイン URL */
-define('PLUGIN_URL', USER_URL . PLUGIN_DIR);
 /** プラグイン保存先 */
 define('PLUGIN_UPLOAD_REALDIR', DATA_REALDIR . "downloads/plugin/");
 /** プラグイン外部ファイル保存先 */
 define('PLUGIN_HTML_REALDIR', HTML_REALDIR . "plugin/");
-/** プラグイン・ディレクトリパーミッション */
-define('PLUGIN_DIR_PERMISSION', 0777);
 /** プラグインファイル一時保存先 */
 define('PLUGIN_TEMP_REALDIR', HTML_REALDIR . "upload/temp_plugin/");
 /** アップロード一時ディレクトリ */
 define('DOWNLOADS_TEMP_DIR', DATA_REALDIR . "downloads/tmp/");
-/** プラグイン 外部ファイルURL */
-define('PLUGIN_HTML_URL', USER_URL . PLUGIN_DIR);
 /** プラグインファイル登録可能拡張子(カンマ区切り) */
 define('PLUGIN_EXTENSION', "tar,tar.gz");
 /** プラグイン一時展開用ディレクトリ（アップデート用） */

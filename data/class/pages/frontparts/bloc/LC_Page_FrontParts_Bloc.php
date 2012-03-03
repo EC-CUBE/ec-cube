@@ -40,7 +40,7 @@ class LC_Page_FrontParts_Bloc extends LC_Page_Ex {
      */
     function init() {
         // 開始時刻を設定する。
-        $this->timeStart = SC_Utils_Ex::sfMicrotimeFloat();
+        $this->timeStart = microtime(true);
 
         $this->tpl_authority = $_SESSION['authority'];
 

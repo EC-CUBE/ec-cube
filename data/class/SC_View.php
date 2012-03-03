@@ -60,7 +60,7 @@ class SC_View {
         $this->_smarty->default_modifiers = array('script_escape');
 
         if (ADMIN_MODE == '1') {
-            $this->time_start = SC_Utils_Ex::sfMicrotimeFloat();
+            $this->time_start = microtime(true);
         }
     }
 
@@ -94,7 +94,7 @@ class SC_View {
         $this->registFilter();
         $res =  $this->_smarty->fetch($template);
         if (ADMIN_MODE == '1') {
-            $time_end = SC_Utils_Ex::sfMicrotimeFloat();
+            $time_end = microtime(true);
             $time = $time_end - $this->time_start;
             $res .= '処理時間: ' . sprintf('%.3f', $time) . '秒';
         }
@@ -158,7 +158,7 @@ class SC_View {
 
         $this->_smarty->display($template);
         if (ADMIN_MODE == '1') {
-            $time_end = SC_Utils_Ex::sfMicrotimeFloat();
+            $time_end = microtime(true);
             $time = $time_end - $this->time_start;
             echo '処理時間: ' . sprintf('%.3f', $time) . '秒';
         }
