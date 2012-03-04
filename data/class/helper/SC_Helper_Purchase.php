@@ -78,14 +78,14 @@ class SC_Helper_Purchase {
 
         $orderTemp['status'] = $orderStatus;
         $cartkey = $objCartSession->getKey();
-        $orderId = $this->registerOrderComplete($orderTemp, $objCartSession, $cartkey);
+        $order_id = $this->registerOrderComplete($orderTemp, $objCartSession, $cartkey);
         $isMultiple = SC_Helper_Purchase::isMultiple();
         $shippingTemp =& $this->getShippingTemp($isMultiple);
         foreach ($shippingTemp as $shippingId => $val) {
-            $this->registerShipmentItem($orderId, $shippingId, $val['shipment_item']);
+            $this->registerShipmentItem($order_id, $shippingId, $val['shipment_item']);
         }
 
-        $this->registerShipping($orderId, $shippingTemp);
+        $this->registerShipping($order_id, $shippingTemp);
         $objQuery->commit();
 
         //会員情報の最終購入日、購入合計を更新
@@ -93,10 +93,9 @@ class SC_Helper_Purchase {
             SC_Customer_Ex::updateOrderSummary($customerId);
         }
 
-        $this->cleanupSession($orderId, $objCartSession, $objCustomer, $cartkey);
+        $this->cleanupSession($order_id, $objCartSession, $objCustomer, $cartkey);
 
-        GC_Utils_Ex::gfFrontLog('order complete. customerId=' . $customerId);
-
+        GC_Utils_Ex::gfPrintLog('order complete. order_id=' . $order_id);
     }
 
     /**
@@ -515,7 +514,7 @@ class SC_Helper_Purchase {
      */
     function extractShipping($arrSrc) {
         $arrKey = array();
-        foreach($this->arrShippingKey as $key) {
+        foreach ($this->arrShippingKey as $key) {
             $arrKey[] = 'shipping_' . $key;
         }
         return SC_Utils_Ex::sfArrayIntersectKeys($arrSrc, $arrKey);

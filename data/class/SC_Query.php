@@ -1081,7 +1081,7 @@ class SC_Query {
             $msg .= 'PlaceHolder: ' . var_export($arrVal, true) . "\n";
         }
 
-        $msg .= 'execution time: ' . sprintf("%.2f sec", $timeExecTime) . "\n";
+        $msg .= 'execution time: ' . sprintf('%.2f sec', $timeExecTime) . "\n";
         GC_Utils_Ex::gfPrintLog($msg, DB_LOG_REALFILE);
     }
 }

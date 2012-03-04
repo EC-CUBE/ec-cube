@@ -56,7 +56,7 @@ class SC_View {
         // XXX register_function で登録すると if で使用できないのではないか？
         $this->_smarty->register_function('sfIsHTTPS', array('SC_Utils_Ex', 'sfIsHTTPS'));
         $this->_smarty->register_function('sfSetErrorStyle', array('SC_Utils_Ex', 'sfSetErrorStyle'));
-        $this->_smarty->register_function('printXMLDeclaration', array('SC_Utils_Ex', 'printXMLDeclaration'));
+        $this->_smarty->register_function('printXMLDeclaration', array('GC_Utils_Ex', 'printXMLDeclaration'));
         $this->_smarty->default_modifiers = array('script_escape');
 
         if (ADMIN_MODE == '1') {

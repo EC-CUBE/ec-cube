@@ -105,7 +105,7 @@ class GC_Utils {
                 break 1;
             }
             if (($arrLine['class'] === 'GC_Utils' || $arrLine['class'] === 'GC_Utils_Ex')
-                && $arrLine['function'] === 'gfDebugLog'
+                && ($arrLine['function'] === 'gfDebugLog' || $arrLine['function'] === 'gfPrintLog')
             ) {
                 break 1;
             }
@@ -387,5 +387,19 @@ class GC_Utils {
      */
     function isInstallFunction() {
         return defined('INSTALL_FUNCTION') && INSTALL_FUNCTION === true;
+    }
+
+    /**
+     * XML宣言を出力する.
+     *
+     * XML宣言があると問題が発生する UA は出力しない.
+     *
+     * @return string XML宣言の文字列
+     */
+    function printXMLDeclaration() {
+        $ua = $_SERVER['HTTP_USER_AGENT'];
+        if (!preg_match('/MSIE/', $ua) || preg_match('/MSIE 7/', $ua)) {
+            echo '<?xml version="1.0" encoding="' . CHAR_CODE . '"?>' . "\n";
+        }
     }
 }
