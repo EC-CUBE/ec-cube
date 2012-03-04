@@ -1296,17 +1296,13 @@ class SC_Utils {
     }
 
     /**
-     * XML宣言を出力する.
+     * 前方互換用
      *
-     * XML宣言があると問題が発生する UA は出力しない.
-     *
-     * @return string XML宣言の文字列
+     * @deprecated 2.12.0 GC_Utils_Ex::printXMLDeclaration を使用すること
      */
     function printXMLDeclaration() {
-        $ua = $_SERVER['HTTP_USER_AGENT'];
-        if (!preg_match('/MSIE/', $ua) || preg_match('/MSIE 7/', $ua)) {
-            echo '<?xml version="1.0" encoding="' . CHAR_CODE . '"?>' . "\n";
-        }
+        trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+        GC_Utils_Ex::printXMLDeclaration();
     }
 
     /*
@@ -1731,7 +1727,7 @@ class SC_Utils {
         //（複数行HITしているので、どれに該当するか不明の為）
         $zip_cnt = count($data_list);
         if ($zip_cnt > 1) {
-            $data_list[0]['town'] = "";
+            $data_list[0]['town'] = '';
         }
         unset($zip_cnt);
 
@@ -1745,7 +1741,7 @@ class SC_Utils {
         $town =  $data_list[0]['town'];
         $town = preg_replace("/（.*）$/","",$town);
         $town = preg_replace('/以下に掲載がない場合/','',$town);
-        $town = preg_replace("/(.*?)の次に番地がくる場合/","",$town);
+        $town = preg_replace('/(.*?)の次に番地がくる場合/',"",$town);
         $data_list[0]['town'] = $town;
         $data_list[0]['state'] = $arrREV_PREF[$data_list[0]['state']];
 

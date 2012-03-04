@@ -109,7 +109,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                 break;
             // 有効化
             case 'enable':
- 
+
                 // エラーチェック
                 $this->arrErr = $objFormParam->checkError();
                 if ($this->isError($this->arrErr) === false) {
