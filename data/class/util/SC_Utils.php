@@ -1727,15 +1727,25 @@ class SC_Utils {
         $data_list = $objQuery->getAll($sqlse, array($zipcode));
         if (empty($data_list)) return array();
 
+        // $zip_cntが1より大きければtownを消す
+        //（複数行HITしているので、どれに該当するか不明の為）
+        $zip_cnt = count($data_list);
+        if ($zip_cnt > 1) {
+            $data_list[0]['town'] = "";
+        }
+        unset($zip_cnt);
+
         /*
          * 総務省からダウンロードしたデータをそのままインポートすると
          * 以下のような文字列が入っているので 対策する。
          * ・（１・１９丁目）
          * ・以下に掲載がない場合
+         * ・●●の次に番地が来る場合
          */
         $town =  $data_list[0]['town'];
-        $town = ereg_replace("（.*）$","",$town);
-        $town = ereg_replace('以下に掲載がない場合','',$town);
+        $town = preg_replace("/（.*）$/","",$town);
+        $town = preg_replace('/以下に掲載がない場合/','',$town);
+        $town = preg_replace("/(.*?)の次に番地がくる場合/","",$town);
         $data_list[0]['town'] = $town;
         $data_list[0]['state'] = $arrREV_PREF[$data_list[0]['state']];
 
