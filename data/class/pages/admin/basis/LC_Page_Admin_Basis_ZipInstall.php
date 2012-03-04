@@ -259,9 +259,9 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         fclose($fp);
 
         echo '<img src="' . $img_path . 'space_w.gif">';
-        echo '</div>' . "\n";
 
         ?>
+        </div>
         <script type='text/javascript' language='javascript'>
             <!--
                 // 完了画面
