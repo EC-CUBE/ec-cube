@@ -571,36 +571,29 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
             }
             $this->arrErr['down_realfilename'][$index] = '※ ダウンロード販売用ファイル名のファイルサイズは' . $size . $byte . '以下のものを使用してください。<br />';
         } else {
-            $array_ext = explode('.', $_FILES['down_realfilename']['name'][$index]);
-            $is_error = true;
-            $strExt = '';
+            // SC_CheckError::FILE_EXT_CHECK とのソース互換を強めるための配列
+            $value = array(
+                0 => 'ダウンロード販売用ファイル名',
+                1 => 'down_realfilename',
+                2 => explode(',', DOWNLOAD_EXTENSION),
+            );
+            // ▼SC_CheckError::FILE_EXT_CHECK から移植
+            $match = false;
+            if (strlen($_FILES[$value[1]]['name'][$index]) >= 1) {
+                $filename = $_FILES[$value[1]]['name'][$index];
 
-            foreach (explode(',', DOWNLOAD_EXTENSION) as $checkExt) {
-                $ext = '';
-                // チェック拡張子のピリオドの数を取得('tar.gz'の場合1個、'jpg'のように通常は0個)
-                $count_period = substr_count($checkExt, '.');
-                if ($count_period > 0) {
-                    for ($i = max(array_keys($array_ext)) - $count_period; $i < count($array_ext); $i++) {
-                        $ext .= $array_ext[$i] . '.';
+                foreach ($value[2] as $check_ext) {
+                    $match = preg_match('/' . preg_quote('.' . $check_ext) . '$/i', $filename) >= 1;
+                    if ($match === true) {
+                        break 1;
                     }
-                    $ext = preg_replace("/.$/", "" ,$ext);
-                } else {
-                    $ext = $array_ext[ count ($array_ext) - 1 ];
-                }
-                $ext = strtolower($ext);
-
-                if ($ext == $checkExt) {
-                    $is_error = false;
-                }
-                if ($strExt == '') {
-                    $strExt .= $checkExt;
-                } else {
-                    $strExt .= "・$checkExt";
                 }
             }
-            if ($is_error) {
-                $this->arrErr['down_realfilename'][$index] = '※ ダウンロード販売用ファイル名で許可されている形式は、' . $strExt . 'です。<br />';
+            if ($match === false) {
+                $str_ext = implode('・', $value[2]);
+                $this->arrErr[$value[1]][$index] = '※ ' . $value[0] . 'で許可されている形式は、' . $str_ext . 'です。<br />';
             }
+            // ▲SC_CheckError::FILE_EXT_CHECK から移植
 
             $uniqname = date('mdHi') . '_' . uniqid('').'.';
             $temp_file = preg_replace("/^.*\./", $uniqname, $_FILES['down_realfilename']['name'][$index]);
