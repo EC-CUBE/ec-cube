@@ -325,7 +325,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
      */
     function tryCreateDir($objFileManager, $objFormParam) {
         $create_dir_flg = false;
-        $create_dir = ereg_replace("/$", "", $objFormParam->getValue('now_dir'));
+        $create_dir = ereg_replace("/$", '', $objFormParam->getValue('now_dir'));
         // ファイル作成
         if ($objFileManager->sfCreateFile($create_dir.'/'.$objFormParam->getValue('create_file'), 0755)) {
             $create_dir_flg = true;
@@ -433,13 +433,13 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
      */
     function lfGetParentDir($dir) {
         $parent_dir = '';
-        $dir = ereg_replace("/$", "", $dir);
+        $dir = ereg_replace("/$", '', $dir);
         $arrDir = explode('/', $dir);
         array_pop($arrDir);
         foreach ($arrDir as $val) {
             $parent_dir .= "$val/";
         }
-        $parent_dir = ereg_replace("/$", "", $parent_dir);
+        $parent_dir = ereg_replace("/$", '', $parent_dir);
         return $parent_dir;
     }
 
@@ -466,7 +466,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
         $arrTree = $objFileManager->sfGetFileTree($objFormParam->getValue('top_dir'), $objFormParam->getValue('tree_status'));
         $tpl_javascript .= "arrTree = new Array();\n";
         foreach ($arrTree as $arrVal) {
-            $tpl_javascript .= 'arrTree['.$arrVal['count'].'] = new Array('.$arrVal['count'].", '".$arrVal['type']."', '".$arrVal['path']."', ".$arrVal['rank'].",";
+            $tpl_javascript .= 'arrTree['.$arrVal['count'].'] = new Array('.$arrVal['count'].", '".$arrVal['type']."', '".$arrVal['path']."', ".$arrVal['rank'].',';
             if ($arrVal['open']) {
                 $tpl_javascript .= "true);\n";
             } else {
@@ -486,8 +486,8 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
         // トップディレクトリか調査
         $is_top_dir = false;
         // 末尾の/をとる
-        $top_dir_check = ereg_replace("/$", "", $objFormParam->getValue('top_dir'));
-        $now_dir_check = ereg_replace("/$", "", $objFormParam->getValue('now_dir'));
+        $top_dir_check = ereg_replace("/$", '', $objFormParam->getValue('top_dir'));
+        $now_dir_check = ereg_replace("/$", '', $objFormParam->getValue('now_dir'));
         if($top_dir_check == $now_dir_check) $is_top_dir = true;
         $this->setDispParam('tpl_is_top_dir', $is_top_dir);
     }

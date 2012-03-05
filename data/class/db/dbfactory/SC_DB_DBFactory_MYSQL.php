@@ -58,7 +58,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      */
     function sfChangeMySQL($sql) {
         // 改行、タブを1スペースに変換
-        $sql = preg_replace("/[\r\n\t]/"," ",$sql);
+        $sql = preg_replace("/[\r\n\t]/",' ',$sql);
         // ILIKE検索をLIKE検索に変換する
         $sql = $this->sfChangeILIKE($sql);
         // RANDOM()をRAND()に変換する

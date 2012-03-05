@@ -694,7 +694,7 @@ class SC_CheckError {
             return;
         }
         //改行コードが含まれている場合には配列に変換
-        $params = str_replace("\r","",$this->arrParam[$value[1]]);
+        $params = str_replace("\r",'',$this->arrParam[$value[1]]);
         if (!empty($params)) {
             if (strpos($params,"\n") === false) {
                 $params .= "\n";

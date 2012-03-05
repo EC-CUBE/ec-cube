@@ -217,15 +217,15 @@ class SC_Batch_Update extends SC_Batch {
 
         // HTML_REALDIR/DATA_REALDIRの判別
         if (preg_match("@\Q".HTML_REALDIR."\E@", $path) > 0) {
-            $dir = str_replace("\\", "/", HTML_REALDIR);
-            $path = preg_replace("@\Q".HTML_REALDIR."\E@", "", $path);
+            $dir = str_replace("\\", '/', HTML_REALDIR);
+            $path = preg_replace("@\Q".HTML_REALDIR."\E@", '', $path);
         } elseif (preg_match("@\Q".DATA_REALDIR."\E@", $path) > 0) {
-            $dir = str_replace("\\", "/", DATA_REALDIR);
-            $path = preg_replace("@\Q".DATA_REALDIR."\E@", "", $path);
+            $dir = str_replace("\\", '/', DATA_REALDIR);
+            $path = preg_replace("@\Q".DATA_REALDIR."\E@", '', $path);
         } else {
             $dir = '';
         }
-        $arrDirs = explode('/', str_replace("\\", "/", $path));
+        $arrDirs = explode('/', str_replace("\\", '/', $path));
 
         foreach ($arrDirs as $n) {
             $dir .= $n . '/';

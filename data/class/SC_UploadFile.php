@@ -58,8 +58,8 @@ class SC_UploadFile {
 
     // ファイル管理クラス
     function SC_UploadFile($temp_dir, $save_dir) {
-        $this->temp_dir = (preg_match("|/$|", $temp_dir) == 0) ? $temp_dir. "/" : $temp_dir;
-        $this->save_dir = (preg_match("|/$|", $save_dir) == 0) ? $save_dir. "/" : $save_dir;
+        $this->temp_dir = (preg_match("|/$|", $temp_dir) == 0) ? $temp_dir. '/' : $temp_dir;
+        $this->save_dir = (preg_match("|/$|", $save_dir) == 0) ? $save_dir. '/' : $save_dir;
         $this->file_max = 0;
     }
 

@@ -209,7 +209,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
         $sql = file_get_contents($filepath);
         if ($sql !== false) {
             // 改行、タブを1スペースに変換
-            $sql = preg_replace("/[\r\n\t]/", " " ,$sql);
+            $sql = preg_replace("/[\r\n\t]/", ' ' ,$sql);
             $sql_split = explode(';', $sql);
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             foreach ($sql_split as $val) {

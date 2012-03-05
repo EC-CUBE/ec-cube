@@ -158,7 +158,7 @@ class LC_Page_Sitemap extends LC_Page_Ex {
      */
     function createSitemap($loc, $lastmod = '', $changefreq = '', $priority = '') {
         printf("\t<url>\n");
-        printf("\t\t<loc>%s</loc>\n", htmlentities($loc, ENT_QUOTES, "UTF-8"));
+        printf("\t\t<loc>%s</loc>\n", htmlentities($loc, ENT_QUOTES, 'UTF-8'));
         if (!empty($lastmod)) {
             printf("\t\t<lastmod>%s</lastmod>\n", $lastmod);
         }
