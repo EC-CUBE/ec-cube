@@ -69,9 +69,13 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_basis_delivery_action_start', array($this));
+
         $objDb = new SC_Helper_DB_Ex();
         $mode = $this->getMode();
-
+        
         if (!empty($_POST)) {
             $objFormParam = new SC_FormParam_Ex();
             $objFormParam->setParam($_POST);
@@ -87,21 +91,39 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
             case 'delete':
                 // ランク付きレコードの削除
                 $objDb->sfDeleteRankRecord('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
+                
+                // フックポイント.
+                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                $objPlugin->doAction('lc_page_admin_basis_delivery_action_delete', array($this));
+                
                 $this->objDisplay->reload(); // PRG pattern
                 break;
             case 'up':
                 $objDb->sfRankUp('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
+                
+                // フックポイント.
+                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                $objPlugin->doAction('lc_page_admin_basis_delivery_action_up', array($this));
+                
                 $this->objDisplay->reload(); // PRG pattern
                 break;
             case 'down':
                 $objDb->sfRankDown('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
+                
+                // フックポイント.
+                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                $objPlugin->doAction('lc_page_admin_basis_delivery_action_down', array($this));
+                
                 $this->objDisplay->reload(); // PRG pattern
                 break;
             default:
                 break;
         }
-
         $this->arrDelivList = $this->lfGetDelivList();
+        
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_basis_delivery_action_end', array($this));
     }
 
     /**

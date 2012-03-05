@@ -66,6 +66,9 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_system_editdb_action_start', array($this));
 
         $objFormParam = new SC_FormParam_Ex();
 
@@ -85,6 +88,10 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
 
         //インデックスの現在値を取得
         $this->arrForm = $this->lfGetIndexList();
+
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_system_editdb_action_end', array($this));
     }
 
     /**

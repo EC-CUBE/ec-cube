@@ -73,6 +73,10 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_design_updown_action_start', array($this));
+
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_REQUEST);
@@ -100,6 +104,10 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
         //サブタイトルの追加
         $this->tpl_subtitle = $this->arrDeviceType[$this->device_type_id] . '＞' . $this->tpl_subtitle;
         $this->arrForm = $objFormParam->getFormParamList();
+
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_design_updown_action_end', array($this));
     }
 
     /**

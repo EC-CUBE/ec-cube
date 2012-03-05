@@ -67,6 +67,10 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_contents_filemanager_action_start', array($this));
+
         // フォーム操作クラス
         $objFormParam = new SC_FormParam_Ex();
         // パラメーター情報の初期化
@@ -127,6 +131,10 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
                         $disp_error = '※ ディレクトリをダウンロードすることは出来ません。<br/>';
                         $this->setDispError('select_file', $disp_error);
                     } else {
+                        // フックポイント.
+                        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                        $objPlugin->doAction('lc_page_admin_contents_filemanager_action_download', array($this));
+                        
                         // ファイルダウンロード
                         $objFileManager->sfDownloadFile($objFormParam->getValue('select_file'));
                         exit;
@@ -193,6 +201,10 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
         $this->setDispParam('tpl_now_file', $objFormParam->getValue('now_dir'));
         // ディレクトリツリー表示
         $this->setDispTree($objFileManager, $objFormParam);
+
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_contents_filemanager_action_end', array($this));
     }
 
     /**

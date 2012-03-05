@@ -67,6 +67,9 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_system_adminarea_action_start', array($this));
 
         if (strpos(HTTPS_URL,'https://') !== FALSE) {
             $this->tpl_enable_ssl = TRUE;
@@ -110,6 +113,9 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
 
             }
         }
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_system_adminarea_action_end', array($this));
     }
 
     /**

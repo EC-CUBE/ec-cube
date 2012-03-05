@@ -61,6 +61,10 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_system_delete_action_start', array($this));
+
         $objFormParam = new SC_FormParam;
 
         // パラメーターの初期化
@@ -82,6 +86,11 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex {
         // リダイレクト
         $url = $this->getLocation(ADMIN_SYSTEM_URLPATH)
              . '?pageno=' . $objFormParam->getValue('pageno');
+
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_system_delete_action_end', array($this));
+
         SC_Response_Ex::sendRedirect($url);
     }
 

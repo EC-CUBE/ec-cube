@@ -67,11 +67,20 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_mail_history_action_start', array($this));
+
         switch ($this->getMode()) {
             case 'delete':
                 if (SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
                     // 削除時
                     $this->lfDeleteHistory($_GET['send_id']);
+
+                    // フックポイント.
+                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                    $objPlugin->doAction('lc_page_admin_mail_history_action_delete', array($this));
+
                     $this->objDisplay->reload(null, true);
                 }
                 break;
@@ -80,6 +89,10 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
         }
 
         list($this->tpl_linemax, $this->arrDataList, $this->arrPagenavi) = $this->lfDoSearch($_POST['search_pageno']);
+
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_mail_history_action_end', array($this));
     }
 
     /**

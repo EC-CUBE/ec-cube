@@ -94,6 +94,10 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_basis_zipinstall_action_start', array($this));
+        
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
         // パラメーター情報の初期化
@@ -146,6 +150,10 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         $this->tpl_csv_datetime = $this->lfGetCsvDatetime();
         // XXX PHP4 を切捨てたら、ダウンロードの必要性チェックなども行いたい
         // $arrHeader = get_headers(ZIP_DOWNLOAD_URL, 1);
+
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_basis_zipinstall_action_end', array($this));
     }
 
     /**

@@ -66,6 +66,10 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_products_class_action_start', array($this));
+
         $objFormParam = new SC_FormParam_Ex();
 
         $this->lfInitParam($objFormParam);
@@ -89,6 +93,10 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
                 } else {
                     $this->lfUpdateClass($this->arrForm); // 既存編集
                 }
+                // フックポイント.
+                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                $objPlugin->doAction('lc_page_admin_products_class_action_edit', array($this));
+
                 // 再表示
                 SC_Response_Ex::reload();
             }
@@ -97,6 +105,11 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
         case 'delete':
             //規格データの削除処理
             $this->lfDeleteClass($class_id);
+
+            // フックポイント.
+            $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+            $objPlugin->doAction('lc_page_admin_products_class_action_delete', array($this));
+
             // 再表示
             SC_Response_Ex::reload();
             break;
@@ -109,11 +122,21 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
             break;
         case 'down':
             $this->lfDownRank($class_id);
+
+            // フックポイント.
+            $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+            $objPlugin->doAction('lc_page_admin_products_class_action_down', array($this));
+
             // 再表示
             SC_Response_Ex::reload();
             break;
         case 'up':
             $this->lfUpRank($class_id);
+
+            // フックポイント.
+            $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+            $objPlugin->doAction('lc_page_admin_products_class_action_up', array($this));
+
             // 再表示
             SC_Response_Ex::reload();
             break;
@@ -125,6 +148,10 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
         $this->arrClassCatCount = SC_Utils_Ex::sfGetClassCatCount();
         // POSTデータを引き継ぐ
         $this->tpl_class_id = $class_id;
+
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_products_class_action_end', array($this));
     }
 
     /**

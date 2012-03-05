@@ -76,6 +76,10 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_contents_action_start', array($this));
+
         $objDb = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
@@ -118,6 +122,11 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
                 if (is_numeric($news_id)) {
                     $pre_rank = $this->getRankByNewsId($news_id);
                     $this->computeRankForDelete($news_id,$pre_rank);
+
+                    // フックポイント.
+                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                    $objPlugin->doAction('lc_page_admin_contents_action_delete', array($this));
+
                     SC_Response_Ex::reload();             //自分にリダイレクト（再読込による誤動作防止）
                 }
                 break;
@@ -130,6 +139,10 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
                     } else if ($term == 'down') {
                         $objDb->sfRankDown('dtb_news', 'news_id', $news_id);
                     }
+                    // フックポイント.
+                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                    $objPlugin->doAction('lc_page_admin_contents_action_move', array($this));
+                    
                     $this->objDisplay->reload();
                 }
                 break;
@@ -138,6 +151,11 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
                 $input_pos = $this->getPostRank($news_id);
                 if (SC_Utils_Ex::sfIsInt($input_pos)) {
                     $objDb->sfMoveRank('dtb_news', 'news_id', $news_id, $input_pos);
+
+                    // フックポイント.
+                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                    $objPlugin->doAction('lc_page_admin_contents_action_moveRankSet', array($this));
+
                     $this->objDisplay->reload();
                 }
                 break;
@@ -149,6 +167,10 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
         $this->tpl_news_id = $news_id;
         $this->line_max = count($this->arrNews);
         $this->max_rank = $this->getRankMax();
+
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_contents_action_end', array($this));
     }
 
     /**

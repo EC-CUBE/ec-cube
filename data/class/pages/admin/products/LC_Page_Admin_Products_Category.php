@@ -69,6 +69,10 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_products_category_action_start', array($this));
+
         $objDb      = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
 
@@ -76,10 +80,6 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         $this->initParam($objFormParam);
         $objFormParam->setParam($_POST);
         $objFormParam->convParam();
-
-        // フックポイントを実行.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
-        $objPlugin->doAction('lc_page_admin_products_category_action_start', array($this));
 
         switch ($this->getMode()) {
             // カテゴリ登録/編集実行
@@ -163,6 +163,11 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
             case 'csv':
                 // CSVを送信する
                 $objCSV = new SC_Helper_CSV_Ex();
+                
+                // フックポイント.
+                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                $objPlugin->doAction('lc_page_admin_products_category_action_csv', array($this));
+
                 $objCSV->sfDownloadCsv('5', '', array(), '', true);
                 exit;
                 break;
@@ -186,7 +191,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         $objDb->findTree($this->arrTree, $parent_category_id, $arrBread);
         $this->tpl_bread_crumbs = SC_Utils_Ex::jsonEncode($arrBread);
 
-        // フックポイントを実行.
+        // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
         $objPlugin->doAction('lc_page_admin_products_category_action_end', array($this));
     }

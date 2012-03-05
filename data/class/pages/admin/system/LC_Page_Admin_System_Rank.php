@@ -60,6 +60,10 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_system_rank_action_start', array($this));
+
         // チェック後のデータを格納
         $arrClean = array();
 
@@ -96,6 +100,9 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex {
         else {
             GC_Utils_Ex::gfPrintLog('error id='.$_GET['id']);
         }
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_system_rank_action_end', array($this));
 
         // ページの表示
         SC_Response_Ex::sendRedirect(ADMIN_SYSTEM_URLPATH);

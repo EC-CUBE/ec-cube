@@ -77,6 +77,10 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_basis_seo_action_start', array($this));
+
         // データの取得
         $this->arrPageData = $this->lfGetSeoPageData();
 
@@ -122,6 +126,9 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
             // データの取得
             $this->arrPageData = $this->lfGetSeoPageData();
         }
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_basis_seo_action_end', array($this));
     }
 
     /**

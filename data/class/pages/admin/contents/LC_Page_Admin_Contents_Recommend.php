@@ -68,6 +68,10 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_contents_recommend_action_start', array($this));
+        
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
@@ -116,6 +120,10 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
         // カテゴリ取得
         $objDb = new SC_Helper_DB_Ex();
         $this->arrCatList = $objDb->sfGetCategoryList('level = 1');
+
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_contents_recommend_action_end', array($this));
     }
 
     /**

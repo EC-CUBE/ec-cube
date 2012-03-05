@@ -69,6 +69,10 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_basis_tradelaw_action_start', array($this));
+        
         $objDb = new SC_Helper_DB_Ex();
 
         $objFormParam = new SC_FormParam_Ex();
@@ -107,6 +111,10 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex {
             $objFormParam->setParam($arrRet);
         }
         $this->arrForm = $objFormParam->getFormParamList();
+
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_basis_tradelaw_action_end', array($this));
     }
 
     /**

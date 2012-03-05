@@ -66,8 +66,11 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        $objDb = new SC_Helper_DB_Ex();
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_basis_point_action_start', array($this));
 
+        $objDb = new SC_Helper_DB_Ex();
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
         // パラメーター情報の初期化
@@ -107,6 +110,10 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex {
             $objFormParam->setParam($arrRet);
         }
         $this->arrForm = $objFormParam->getFormParamList();
+
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_basis_point_action_end', array($this));
     }
 
     /**

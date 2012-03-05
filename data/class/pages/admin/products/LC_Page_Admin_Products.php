@@ -88,6 +88,10 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_products_action_start', array($this));
+
         $objDb = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
         $objProduct = new SC_Product_Ex();
@@ -177,6 +181,10 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
         // カテゴリの読込
         list($this->arrCatKey, $this->arrCatVal) = $objDb->sfGetLevelCatList(false);
         $this->arrCatList = $this->lfGetIDName($this->arrCatKey, $this->arrCatVal);
+
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_products_action_end', array($this));
     }
 
     /**

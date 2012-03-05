@@ -66,6 +66,9 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_system_system_action_start', array($this));
 
         $objFormParam = new SC_FormParam_Ex();
 
@@ -83,6 +86,10 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
         }
 
         $this->arrSystemInfo = $this->getSystemInfo();
+
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_system_system_action_end', array($this));
     }
 
     /**

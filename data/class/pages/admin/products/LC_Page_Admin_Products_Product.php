@@ -76,6 +76,10 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_products_product_action_start', array($this));
+
         $objFormParam = new SC_FormParam_Ex();
 
         // アップロードファイル情報の初期化
@@ -285,6 +289,10 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
 
         // 関連商品の読み込み
         $this->arrRecommend = $this->lfGetRecommendProducts($this->arrForm);
+
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_products_product_action_end', array($this));
     }
 
     /**

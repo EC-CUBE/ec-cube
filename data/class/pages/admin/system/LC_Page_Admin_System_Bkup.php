@@ -69,7 +69,10 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_system_bkup_action_start', array($this));
+        
         $objFormParam = new SC_FormParam;
 
         // パラメーターの初期化
@@ -193,6 +196,10 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         $this->arrErr = isset($arrErr) ? $arrErr : array();
         $this->arrForm = isset($arrForm) ? $arrForm : array();
         $this->arrBkupList = $arrBkupList;
+
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_system_bkup_action_end', array($this));
     }
 
     /**

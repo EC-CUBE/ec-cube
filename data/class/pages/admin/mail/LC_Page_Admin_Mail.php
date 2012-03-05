@@ -93,6 +93,9 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_mail_action_start', array($this));
 
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
@@ -145,6 +148,11 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     $this->tpl_mainpage = 'mail/index.tpl';
                     SC_Helper_Mail_Ex::sfSendMailmagazine($this->lfRegisterData($objFormParam));  // DB登録・送信
+
+                    // フックポイント.
+                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                    $objPlugin->doAction('lc_page_admin_mail_action_regist_complete', array($this));
+
                     SC_Response_Ex::sendRedirect('./history.php');
                 }
                 break;
@@ -159,6 +167,11 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
             case 'retry':
                 if (SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
                     SC_Helper_Mail_Ex::sfSendMailmagazine($_GET['send_id']);  // DB登録・送信
+
+                    // フックポイント.
+                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                    $objPlugin->doAction('lc_page_admin_mail_action_retry', array($this));
+
                     SC_Response_Ex::sendRedirect('./history.php');
                 } else {
                     $this->tpl_onload = "window.alert('メール送信IDが正しくありません');";
@@ -168,6 +181,10 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
                 break;
         }
         $this->arrForm = $objFormParam->getFormParamList();
+
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_mail_action_end', array($this));
     }
 
     /**

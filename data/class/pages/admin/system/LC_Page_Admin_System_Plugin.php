@@ -216,7 +216,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
     function initParam(&$objFormParam, $mode) {
         $objFormParam->addParam('mode', 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('plugin_id', 'plugin_id', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('plugin_code', 'plugin_code', MTEXT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('plugin_code', 'plugin_code', MTEXT_LEN, '', array('ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
         if ($mode === 'priority') {
             $objFormParam->addParam('優先度', 'priority', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         }
@@ -371,7 +371,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         $plugin_dir_path = PLUGIN_UPLOAD_REALDIR . $plugin_code . '/';
         $this->makeDir($plugin_dir_path);
         SC_Utils_Ex::copyDirectory(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, $plugin_dir_path);
-
+        
         // プラグイン情報を取得
         $plugin = SC_Helper_Plugin_Ex::getPluginByPluginCode($plugin_code);
 
@@ -385,7 +385,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         // プラグインhtmlディレクトリ作成
         $plugin_html_dir = PLUGIN_HTML_REALDIR . $plugin_code;
         $this->makeDir($plugin_html_dir);
-
+        
         $arrErr = $this->execPlugin($plugin, $plugin['class_name'], 'install');
         if ($this->isError($arrErr) === true) {
             $this->rollBack(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, $plugin['plugin_id'], $plugin_html_dir);

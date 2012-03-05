@@ -69,6 +69,10 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_design_mainedit_action_start', array($this));
+
         $objLayout = new SC_Helper_PageLayout_Ex();
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
@@ -86,6 +90,11 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
                 if (!$is_error) {
                     if ($objLayout->isEditablePage($this->device_type_id, $this->page_id)) {
                         $objLayout->lfDelPageData($this->page_id, $this->device_type_id);
+
+                        // フックポイント.
+                        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                        $objPlugin->doAction('lc_page_admin_design_mainedit_action_delete', array($this));
+
                         SC_Response_Ex::reload(array('device_type_id' => $this->device_type_id,
                                                      'msg' => 'on'), true);
                         exit;
@@ -100,8 +109,10 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
                     if (SC_Utils_Ex::isBlank($this->arrErr)) {
                         $result = $this->doRegister($objFormParam, $objLayout);
                         if ($result !== false) {
+                            // フックポイント.
                             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
-                            $objPlugin->remakeTemplate();
+                            $objPlugin->doAction('lc_page_admin_design_mainedit_action_confirm', array($this));
+                            
                             SC_Response_Ex::reload(array('device_type_id' => $this->device_type_id,
                                                          'page_id' => $result,
                                                          'msg' => 'on'), true);
@@ -131,6 +142,10 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         }
         $this->tpl_subtitle = $this->arrDeviceType[$this->device_type_id] . '＞' . $this->tpl_subtitle;
         $this->arrForm = $objFormParam->getFormParamList();
+
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_design_mainedit_action_end', array($this));
     }
 
     /**

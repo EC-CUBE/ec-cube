@@ -69,6 +69,10 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_mail_templateinput_action_start', array($this));
+
         $objMailHelper = new SC_Helper_Mail_Ex();
 
         switch ($this->getMode()) {
@@ -91,6 +95,11 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     // エラーが無いときは登録・編集
                     $this->lfRegistData($objFormParam, $objFormParam->getValue('template_id'));
+
+                    // フックポイント.
+                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                    $objPlugin->doAction('lc_page_admin_mail_templateinput_action_regist', array($this));
+
                     // 自分を再読込して、完了画面へ遷移
                     $this->objDisplay->reload(array('mode' => 'complete'));
                 } else {
@@ -104,6 +113,9 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
             default:
                 break;
         }
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_mail_templateinput_action_end', array($this));
     }
 
     /**

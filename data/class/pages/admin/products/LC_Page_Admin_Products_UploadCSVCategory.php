@@ -95,6 +95,10 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_products_uploadcsvcategory_action_start', array($this));
+
         // CSV管理ヘルパー
         $objCSV = new SC_Helper_CSV_Ex();
         // CSV構造読み込み
@@ -127,6 +131,9 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
             default:
                 break;
         }
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_products_uploadcsvcategory_action_end', array($this));
     }
 
     /**

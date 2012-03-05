@@ -101,6 +101,10 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_total_action_start', array($this));
+
         if (isset($_GET['draw_image']) && $_GET['draw_image'] != '') {
             define('DRAW_IMAGE' , true);
         } else {
@@ -144,6 +148,11 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
                         // CSVを送信する。
                         list($fime_name, $data) = SC_Utils_Ex::sfGetCSVData($head.$data);
+
+                        // フックポイント.
+                        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                        $objPlugin->doAction('lc_page_admin_total_action_csv', array($this));
+
                         $this->sendResponseCSV($fime_name, $data);
                         exit;
                     }
@@ -159,6 +168,10 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         // 入力値の取得
         $this->arrForm      = $objFormParam->getFormParamList();
         $this->tpl_subtitle = $this->arrTitle[$objFormParam->getValue('page')];
+
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_total_action_end', array($this));
     }
 
     /**

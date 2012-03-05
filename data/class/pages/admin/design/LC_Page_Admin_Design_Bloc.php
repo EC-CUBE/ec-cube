@@ -70,6 +70,10 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_design_bloc_start', array($this));
+        
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_REQUEST);
@@ -95,6 +99,10 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
                                 'device_type_id' => $this->device_type_id,
                                 'msg' => 'on',
                             );
+                            // フックポイント.
+                            $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                            $objPlugin->doAction('lc_page_admin_design_bloc_confirm', array($this));
+                            
                             SC_Response_Ex::reload($arrPram, true);
                             exit;
                         }
@@ -110,6 +118,10 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
                             'device_type_id' => $this->device_type_id,
                             'msg' => 'on',
                         );
+                        // フックポイント.
+                        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                        $objPlugin->doAction('lc_page_admin_design_bloc_delete', array($this));
+
                         SC_Response_Ex::reload($arrPram, true);
                         exit;
                     }
@@ -138,6 +150,10 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
         }
         $this->tpl_subtitle = $this->arrDeviceType[$this->device_type_id] . '＞' . $this->tpl_subtitle;
         $this->arrForm = $objFormParam->getFormParamList();
+
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin->doAction('lc_page_admin_design_bloc_end', array($this));
     }
 
     /**
