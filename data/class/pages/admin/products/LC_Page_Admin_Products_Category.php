@@ -163,7 +163,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
             case 'csv':
                 // CSVを送信する
                 $objCSV = new SC_Helper_CSV_Ex();
-                
+
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
                 $objPlugin->doAction('lc_page_admin_products_category_action_csv', array($this));

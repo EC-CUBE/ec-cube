@@ -149,8 +149,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
         // (上に該当せず)バックトレーススタックが指定されている場合
         else if (is_array($this->backtrace)) {
             $errmsg .= GC_Utils_Ex::toStringBacktrace($this->backtrace);
-        }
-        else {
+        } else {
             $arrBacktrace = GC_Utils_Ex::getDebugBacktrace();
             $errmsg .= GC_Utils_Ex::toStringBacktrace($arrBacktrace);
         }

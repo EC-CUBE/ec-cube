@@ -97,7 +97,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
         $objPlugin->doAction('lc_page_admin_basis_zipinstall_action_start', array($this));
-        
+
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
         // パラメーター情報の初期化

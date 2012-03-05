@@ -112,7 +112,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
                             // フックポイント.
                             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
                             $objPlugin->doAction('lc_page_admin_design_mainedit_action_confirm', array($this));
-                            
+
                             SC_Response_Ex::reload(array('device_type_id' => $this->device_type_id,
                                                          'page_id' => $result,
                                                          'msg' => 'on'), true);

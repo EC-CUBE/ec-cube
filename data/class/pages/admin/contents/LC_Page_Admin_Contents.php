@@ -142,7 +142,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
                     $objPlugin->doAction('lc_page_admin_contents_action_move', array($this));
-                    
+
                     $this->objDisplay->reload();
                 }
                 break;

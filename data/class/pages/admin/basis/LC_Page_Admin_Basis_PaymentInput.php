@@ -74,7 +74,7 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
         $objPlugin->doAction('lc_page_admin_basis_paymentinput_action_start', array($this));
-        
+
         $objFormParam = new SC_FormParam_Ex();
         $mode = $this->getMode();
         $this->lfInitParam($mode, $objFormParam);

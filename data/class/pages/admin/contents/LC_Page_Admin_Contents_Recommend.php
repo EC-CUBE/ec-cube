@@ -71,7 +71,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
         $objPlugin->doAction('lc_page_admin_contents_recommend_action_start', array($this));
-        
+
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);

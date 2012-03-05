@@ -81,7 +81,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
         $objPlugin->doAction('lc_page_admin_basis_action_start', array($this));
-        
+
         $objDb = new SC_Helper_DB_Ex();
 
         if ($objDb->sfGetBasisExists()) {
@@ -131,7 +131,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
             $regular_holiday_ids = explode('|', $this->arrForm['regular_holiday_ids']);
             $this->arrForm['regular_holiday_ids'] = $regular_holiday_ids;
             $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "');";
-            
+
             // フックポイント.
             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
             $objPlugin->doAction('lc_page_admin_basis_action_end', array($this));

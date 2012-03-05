@@ -1741,7 +1741,7 @@ class SC_Utils {
         $town =  $data_list[0]['town'];
         $town = preg_replace("/（.*）$/","",$town);
         $town = preg_replace('/以下に掲載がない場合/','',$town);
-        $town = preg_replace('/(.*?)の次に番地がくる場合/',"",$town);
+        $town = preg_replace('/(.*?)の次に番地がくる場合/','',$town);
         $data_list[0]['town'] = $town;
         $data_list[0]['state'] = $arrREV_PREF[$data_list[0]['state']];
 

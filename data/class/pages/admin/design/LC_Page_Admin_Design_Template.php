@@ -116,7 +116,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
                     $objPlugin->doAction('lc_page_admin_design_template_action_download', array($this));
-                    
+
                     if ($this->doDownload($template_code) !== false) {
                         // ブラウザに出力し, 終了する
                         exit;

@@ -101,7 +101,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
                 $objPlugin->doAction('lc_page_admin_order_pdf_action_confirm', array($this));
-                
+
                 $status = $this->createPdf($this->objFormParam);
                 if ($status === true) {
                     exit;

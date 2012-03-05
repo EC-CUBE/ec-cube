@@ -108,7 +108,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
                 $objPlugin->doAction('lc_page_admin_contents_csvsql_action_new_page', array($this));
-                
+
                 // リロード
                 SC_Response_Ex::reload();
                 break;
@@ -117,11 +117,11 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
                 $this->arrErr = $this->lfCheckDeleteError($objFormParam);
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     $this->lfDelData($objFormParam->getValue('sql_id'));
-                    
+
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
                     $objPlugin->doAction('lc_page_admin_contents_csvsql_action_delete', array($this));
-                    
+
                     SC_Response_Ex::reload();
                     exit;
                 }

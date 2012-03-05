@@ -137,7 +137,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
                 $objPlugin->doAction('lc_page_admin_customer_action_csv', array($this));
-                
+
                 $this->lfDoCSV($objFormParam->getHashArray());
                 exit;
                 break;

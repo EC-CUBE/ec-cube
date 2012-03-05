@@ -64,7 +64,7 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
         $objPlugin->doAction('lc_page_admin_contents_fileview_action_start', array($this));
-        
+
         switch ($this->getMode()) {
             default:
                 // フォーム操作クラス

@@ -69,7 +69,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
         $objPlugin->doAction('lc_page_admin_basis_mail_action_start', array($this));
-        
+
         $masterData = new SC_DB_MasterData_Ex();
 
         $mode = $this->getMode();

@@ -73,7 +73,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
         $objPlugin->doAction('lc_page_admin_design_bloc_start', array($this));
-        
+
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_REQUEST);
@@ -102,7 +102,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
                             // フックポイント.
                             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
                             $objPlugin->doAction('lc_page_admin_design_bloc_confirm', array($this));
-                            
+
                             SC_Response_Ex::reload($arrPram, true);
                             exit;
                         }
