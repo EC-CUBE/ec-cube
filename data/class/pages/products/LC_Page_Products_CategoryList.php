@@ -61,6 +61,10 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_products_categorylist_action_start', array($this));
+        
         // カテゴリIDの正当性チェック
         $this->lfCheckCategoryId();
 
@@ -70,6 +74,10 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex {
         $this->arrCategory = $arrCategoryData['arrCategory'];
         $this->arrChildren = $arrCategoryData['arrChildren'];
         $this->tpl_subtitle = $this->arrCategory['category_name'];
+        
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_products_categorylist_action_end', array($this));
     }
 
     /**

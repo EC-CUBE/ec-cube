@@ -72,7 +72,10 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
      * @return void
      */
     function action() {
-
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_mypage_action_start', array($this));
+        
         $objCustomer = new SC_Customer_Ex();
         $customer_id = $objCustomer->getvalue('customer_id');
 
@@ -99,6 +102,11 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
         $this->arrPayment = SC_Helper_DB_Ex::sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
         // 1ページあたりの件数
         $this->dispNumber = SEARCH_PMAX;
+        break;
+        
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_mypage_action_end', array($this));
 
     }
 

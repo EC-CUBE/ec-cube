@@ -61,6 +61,10 @@ class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_mypage_mailview_action_start', array($this));
+        
         $objCustomer = new SC_Customer_Ex();
         if (!SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
@@ -84,12 +88,19 @@ class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex {
 
         switch ($this->getMode()) {
             case 'getDetail':
+                // フックポイント.
+                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+                $objPlugin->doAction('lc_page_mypage_mailview_action_getDetail', array($this));
+                
                 echo SC_Utils_Ex::jsonEncode($arrMailView);
                 exit;
                 break;
             default:
                 break;
         }
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_mypage_mailview_action_end', array($this));
     }
 
     /**

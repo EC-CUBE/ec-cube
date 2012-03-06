@@ -55,6 +55,10 @@ class LC_Page_AbstractMypage extends LC_Page_Ex {
      * @return void
      */
     function process() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_abstractmypage_action_start', array($this));
+        
         parent::process();
         // ログインチェック
         $objCustomer = new SC_Customer_Ex();
@@ -91,6 +95,11 @@ class LC_Page_AbstractMypage extends LC_Page_Ex {
             $this->CustomerPoint = $objCustomer->getvalue('point');
             $this->action();
         }
+        
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_abstractmypage_action_end', array($this));
+        
         $this->sendResponse();
     }
 

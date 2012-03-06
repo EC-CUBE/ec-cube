@@ -69,6 +69,10 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_mypage_deliveryaddr_action_start', array($this));
+        
         $objCustomer = new SC_Customer_Ex();
         $ParentPage  = MYPAGE_DELIVADDR_URLPATH;
 
@@ -120,6 +124,10 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
                     }
 
                     if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
+                        // フックポイント.
+                        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+                        $objPlugin->doAction('lc_page_mypage_deliveryaddr_action_edit', array($this));
+                        
                         // モバイルの場合、元のページに遷移
                         SC_Response_Ex::sendRedirect($this->getLocation($_POST['ParentPage']));
                         exit;
@@ -150,6 +158,9 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
         } else {
             $this->setTemplate('mypage/delivery_addr.tpl');
         }
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_mypage_deliveryaddr_action_end', array($this));
     }
 
     /**

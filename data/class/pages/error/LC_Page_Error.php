@@ -84,6 +84,10 @@ class LC_Page_Error extends LC_Page_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_error_action_start', array($this));
+        
         switch ($this->type) {
             case PRODUCT_NOT_FOUND:
                 $this->tpl_error='ご指定のページはございません。';
@@ -160,6 +164,9 @@ class LC_Page_Error extends LC_Page_Ex {
                 $this->tpl_error='エラーが発生しました。';
                 break;
         }
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_error_action_end', array($this));
     }
 
     /**

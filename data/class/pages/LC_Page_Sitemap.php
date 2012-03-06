@@ -87,8 +87,6 @@ class LC_Page_Sitemap extends LC_Page_Ex {
         // FIXME PCサイトのみに限定している。ある程度妥当だとは思うが、よりベターな方法はないだろうか。
         $this->arrPageList = $this->getPageData('device_type_id = ?', DEVICE_TYPE_PC);
 
-        $objQuery = SC_Query_Ex::getSingletonInstance();
-
         //キャッシュしない(念のため)
         header('Paragrama: no-cache');
 

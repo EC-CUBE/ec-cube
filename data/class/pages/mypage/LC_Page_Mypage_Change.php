@@ -75,6 +75,10 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_mypage_change_action_start', array($this));
+        
         $objCustomer = new SC_Customer_Ex();
         $customer_id = $objCustomer->getValue('customer_id');
 
@@ -113,6 +117,10 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
                 if (empty($this->arrErr)) {
                     // 会員情報の登録
                     $this->lfRegistCustomerData($objFormParam, $customer_id);
+                    
+                    // フックポイント.
+                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+                    $objPlugin->doAction('lc_page_mypage_change_action_complete', array($this));
 
                     // 完了ページに移動させる。
                     SC_Response_Ex::sendRedirect('change_complete.php');
@@ -126,6 +134,9 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
                 $this->arrForm = SC_Helper_Customer_Ex::sfGetCustomerData($customer_id);
                 break;
         }
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_mypage_change_action_end', array($this));
     }
 
     /**

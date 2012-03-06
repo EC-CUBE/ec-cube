@@ -63,17 +63,23 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex {
      * @return void
      */
     function action() {
-
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_entry_kiyaku_action_start', array($this));
+        
         $arrKiyaku = $this->lfGetKiyakuData();
         $this->max = count($arrKiyaku);
 
-        $offset    = '';
         // mobile時はGETでページ指定
         if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
             $this->offset = $this->lfSetOffset($_GET['offset']);
         }
 
         $this->tpl_kiyaku_text = $this->lfMakeKiyakuText($arrKiyaku, $this->max, $this->offset);
+        
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_entry_kiyaku_action_end', array($this));
     }
 
     /**

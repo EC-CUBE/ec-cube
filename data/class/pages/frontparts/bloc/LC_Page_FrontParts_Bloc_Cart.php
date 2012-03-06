@@ -63,11 +63,19 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_frontparts_bloc_cart_action_start', array($this));
+        
         $objCart = new SC_CartSession_Ex();
         $this->isMultiple = $objCart->isMultiple();
         $this->hasDownload = $objCart->hasProductType(PRODUCT_TYPE_DOWNLOAD);
         // 旧仕様との互換のため、不自然なセットとなっている
         $this->arrCartList = array(0 => $this->lfGetCartData($objCart));
+        
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_frontparts_bloc_cart_action_end', array($this));
     }
 
     /**

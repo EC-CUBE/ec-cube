@@ -68,6 +68,10 @@ class LC_Page_Error_DispError extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_error_disperror_start', array($this));
+        
         switch ($this->type) {
             case LOGIN_ERROR:
                 $this->tpl_error='ＩＤまたはパスワードが正しくありません。<br />もう一度ご確認のうえ、再度入力してください。';
@@ -86,6 +90,9 @@ class LC_Page_Error_DispError extends LC_Page_Admin_Ex {
                 $this->tpl_error='エラーが発生しました。<br />もう一度ご確認のうえ、再度ログインしてください。';
                 break;
         }
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_error_disperror_end', array($this));
     }
 
     /**

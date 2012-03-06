@@ -78,6 +78,10 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_mypage_download_action_start', array($this));
+        
         // ログインチェック
         $objCustomer = new SC_Customer_Ex();
         if (!$objCustomer->isLoginSuccess(true)) {
@@ -94,6 +98,9 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
         if (count($this->arrErr)!=0) {
             SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,'',true);
         }
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_mypage_download_action_end', array($this));
     }
 
     /**

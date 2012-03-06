@@ -94,7 +94,10 @@ class LC_Page_Products_List extends LC_Page_Ex {
      * @return void
      */
     function action() {
-        $objQuery   =& SC_Query_Ex::getSingletonInstance();
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_products_list_action_start', array($this));
+        
         $objProduct = new SC_Product_Ex();
 
         $this->arrForm = $_REQUEST;//時間が無いのでコレで勘弁してください。 tao_s
@@ -136,7 +139,10 @@ class LC_Page_Products_List extends LC_Page_Ex {
                 foreach ($this->arrProducts as $key=>$val) {
                     $this->arrProducts[$key]['main_list_image'] = SC_Utils_Ex::sfNoImageMainList($val['main_list_image']);
                 }
-
+                // フックポイント.
+                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+                $objPlugin->doAction('lc_page_products_list_action_json', array($this));
+                
                 echo SC_Utils_Ex::jsonEncode($this->arrProducts);
                 exit;
                 break;
@@ -190,6 +196,11 @@ class LC_Page_Products_List extends LC_Page_Ex {
                     $arrErr = $this->lfCheckError($target_product_id, $this->arrForm, $this->tpl_classcat_find1, $this->tpl_classcat_find2);
                     if (empty($arrErr)) {
                         $this->lfAddCart($this->arrForm, $_SERVER['HTTP_REFERER']);
+                        
+                        // フックポイント.
+                        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+                        $objPlugin->doAction('lc_page_products_list_action_cart', array($this));
+                        
                         SC_Response_Ex::sendRedirect(CART_URLPATH);
                         exit;
                     }
@@ -210,7 +221,10 @@ class LC_Page_Products_List extends LC_Page_Ex {
         $objPlugin->doAction('lc_page_products_list_action_end',array($this));
 
         $this->tpl_rnd          = SC_Utils_Ex::sfGetRandomString(3);
-
+        
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_products_list_action_end', array($this));
     }
 
     /**

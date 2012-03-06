@@ -63,8 +63,16 @@ class LC_Page_Shopping_Complete extends LC_Page_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_shopping_complete_action_start', array($this));
+        
         $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
         unset($_SESSION['order_id']);
+        
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_shopping_complete_action_end', array($this));
     }
 
     /**

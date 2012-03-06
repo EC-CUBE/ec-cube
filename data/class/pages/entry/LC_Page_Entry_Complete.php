@@ -63,6 +63,10 @@ class LC_Page_Entry_Complete extends LC_Page_Ex {
      * @return void
      */
     function action() {
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_entry_complete_action_start', array($this));
+        
         // カートが空かどうかを確認する。
         $objCartSess            = new SC_CartSession_Ex();
         $arrCartKeys = $objCartSess->getKeys();
@@ -82,6 +86,9 @@ class LC_Page_Entry_Complete extends LC_Page_Ex {
             // 本会員登録完了
             $this->tpl_mainpage     = 'regist/complete.tpl';
         }
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_entry_complete_action_end', array($this));
     }
 
     /**

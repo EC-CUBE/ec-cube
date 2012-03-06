@@ -61,13 +61,20 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function action() {
-
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_frontparts_bloc_recommend_action_start', array($this));
+        
         // 基本情報を渡す
         $objSiteInfo = SC_Helper_DB_Ex::sfGetBasisData();
         $this->arrInfo = $objSiteInfo->data;
 
         //おすすめ商品表示
         $this->arrBestProducts = $this->lfGetRanking();
+        
+        // フックポイント.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('lc_page_frontparts_bloc_recommend_action_end', array($this));
     }
 
     /**
