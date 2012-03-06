@@ -75,7 +75,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_error_systemerror_start', array($this));
-        
+
         $this->tpl_error = 'システムエラーが発生しました。<br />大変お手数ですが、サイト管理者までご連絡ください。';
 
         if (DEBUG_MODE) {
@@ -87,7 +87,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
             echo '<div>▲▲▲ デバッグ情報ここまで ▲▲▲</div>';
             echo '</div>';
         }
-        
+
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_error_systemerror_end', array($this));

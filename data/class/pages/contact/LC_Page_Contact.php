@@ -80,7 +80,7 @@ class LC_Page_Contact extends LC_Page_Ex {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_contact__action_start', array($this));
-        
+
         $objDb = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
 
@@ -120,11 +120,11 @@ class LC_Page_Contact extends LC_Page_Ex {
                 $this->arrForm = $objFormParam->getFormParamList();
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     $this->lfSendMail($this);
-                    
+
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                     $objPlugin->doAction('lc_page_contact__action_complete', array($this));
-                    
+
                     // 完了ページへ移動する
                     SC_Response_Ex::sendRedirect('complete.php');
                     exit;

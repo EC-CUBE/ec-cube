@@ -73,7 +73,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_shopping_confirm_action_start', array($this));
-        
+
         $objCartSess = new SC_CartSession_Ex();
         $objSiteSess = new SC_SiteSession_Ex();
         $objCustomer = new SC_Customer_Ex();
@@ -99,7 +99,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
             // フックポイント.
             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
             $objPlugin->doAction('lc_page_shopping_confirm_action_isblank', array($this));
-            
+
             SC_Response_Ex::sendRedirect(CART_URLPATH);
             exit;
         }
@@ -140,11 +140,11 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
             case 'return':
                 // 正常な推移であることを記録しておく
                 $objSiteSess->setRegistFlag();
-                
+
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('lc_page_shopping_confirm_action_return', array($this));
-                
+
                 SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URLPATH);
                 exit;
                 break;
@@ -165,22 +165,22 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
                 // 決済モジュールを使用する場合
                 if ($this->use_module) {
                     $objPurchase->completeOrder(ORDER_PENDING);
-                    
+
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                     $objPlugin->doAction('lc_page_shopping_confirm_action_confirm_module', array($this));
-                    
+
                     SC_Response_Ex::sendRedirect(SHOPPING_MODULE_URLPATH);
                 }
                 // 購入完了ページ
                 else {
                     $objPurchase->completeOrder(ORDER_NEW);
                     $objPurchase->sendOrderMail($this->arrForm['order_id']);
-                    
+
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                     $objPlugin->doAction('lc_page_shopping_confirm_action_confirm', array($this));
-                    
+
                     SC_Response_Ex::sendRedirect(SHOPPING_COMPLETE_URLPATH);
                 }
                 exit;

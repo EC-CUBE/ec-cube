@@ -65,11 +65,11 @@ class LC_Page_Mypage_ChangeComplete extends LC_Page_AbstractMypage_Ex {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_mypage_changecomplete_action_start', array($this));
-        
+
         $objCustomer = new SC_Customer_Ex();
         //セッション情報を最新の状態に更新する
         $objCustomer->updateSession();
-        
+
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_mypage_changecomplete_action_end', array($this));

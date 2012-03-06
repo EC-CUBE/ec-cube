@@ -74,7 +74,7 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex {
 
         $this->lfAddCartProducts($arrOrderDetail);
         SC_Response_Ex::sendRedirect(CART_URLPATH);
-        
+
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_mypage_order_action_end', array($this));

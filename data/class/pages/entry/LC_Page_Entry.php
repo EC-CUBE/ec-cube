@@ -77,7 +77,7 @@ class LC_Page_Entry extends LC_Page_Ex {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_entry_action_start', array($this));
-        
+
         $objFormParam = new SC_FormParam_Ex();
 
         SC_Helper_Customer_Ex::sfCustomerEntryParam($objFormParam);

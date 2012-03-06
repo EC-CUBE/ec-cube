@@ -64,7 +64,7 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_frontparts_bloc_searchproducts_action_start', array($this));
-        
+
         // 商品ID取得
         $product_id = $this -> lfGetProductId();
         // カテゴリID取得
@@ -79,7 +79,7 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
         $this->maker_id = $this->lfGetSelectedMakerId($product_id, $maker_id);
         // メーカー検索用選択リスト
         $this->arrMakerList = $this->lfGetMakerList();
-        
+
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_frontparts_bloc_searchproducts_action_end', array($this));

@@ -66,7 +66,7 @@ class LC_Page_Entry_Complete extends LC_Page_Ex {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_entry_complete_action_start', array($this));
-        
+
         // カートが空かどうかを確認する。
         $objCartSess            = new SC_CartSession_Ex();
         $arrCartKeys = $objCartSess->getKeys();

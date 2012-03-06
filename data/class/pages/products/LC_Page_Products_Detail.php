@@ -94,7 +94,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_products_detail_action_start', array($this));
-        
+
         // 会員クラス
         $objCustomer = new SC_Customer_Ex();
 
@@ -160,7 +160,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
                     $product_class_id = $this->objFormParam->getValue('product_class_id');
 
                     $objCartSess->addProduct($product_class_id, $this->objFormParam->getValue('quantity'));
-                    
+
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                     $objPlugin->doAction('lc_page_products_detail_action_cart', array($this));
@@ -178,7 +178,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
                             // フックポイント.
                             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                             $objPlugin->doAction('lc_page_products_detail_action_add_favorite', array($this));
-                            
+
                             exit;
                         }
                     }
@@ -194,7 +194,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
                             // フックポイント.
                             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                             $objPlugin->doAction('lc_page_products_detail_action_add_favorite_sphone', array($this));
-                            
+
                             print 'true';
                             exit;
                         }

@@ -81,7 +81,7 @@ class LC_Page_Products_Review extends LC_Page_Ex {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_products_review_action_start', array($this));
-        
+
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
@@ -107,7 +107,7 @@ class LC_Page_Products_Review extends LC_Page_Ex {
                 if (empty($this->arrErr)) {
                     //登録実行
                     $this->lfRegistRecommendData($objFormParam);
-                    
+
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                     $objPlugin->doAction('lc_page_products_review_action_complete', array($this));
@@ -133,7 +133,7 @@ class LC_Page_Products_Review extends LC_Page_Ex {
         }
 
         $this->setTemplate($this->tpl_mainpage);
-        
+
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_products_review_action_end', array($this));

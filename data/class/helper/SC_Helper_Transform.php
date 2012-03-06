@@ -103,7 +103,7 @@ class SC_Helper_Transform {
 
         $cur_idx = 0;
         // ツリーを初めから全検索する
-        for($iLoop=0; $iLoop < count($this->arrElementTree); $iLoop++){
+        for ($iLoop=0; $iLoop < count($this->arrElementTree); $iLoop++) {
             if (preg_match($regex, $this->arrElementTree[$iLoop][0])) {
                 // インデックスが指定されていない(見つけたエレメント全て)、もしくは指定されたインデックスなら選択する
                 if (is_null($index) || $cur_idx == $index) {
@@ -145,7 +145,7 @@ class SC_Helper_Transform {
 
             $cur_idx = 0;
             // 親エレメント位置からツリーを検索する
-            for($iLoop=$objElement[0]; $iLoop < count($this->arrElementTree); $iLoop++){
+            for ($iLoop=$objElement[0]; $iLoop < count($this->arrElementTree); $iLoop++) {
                 if (preg_match($regex, $this->arrElementTree[$iLoop][0])) {
                     // インデックスが指定されていない(見つけたエレメント全て)、もしくは指定されたインデックスなら選択する
                     if (is_null($index) || $cur_idx == $index) {
@@ -178,7 +178,7 @@ class SC_Helper_Transform {
     public function end($back_num = 1) {
         if ($this->search_depth >= $back_num) {
             $this->search_depth -= $back_num;
-        }else{
+        } else {
             $this->search_depth = 0;
         }
 
@@ -277,15 +277,15 @@ class SC_Helper_Transform {
     public function getHTML() {
         if (count($this->arrErr)) {
             // エラーメッセージ組み立て
-            $err_msg = "";
+            $err_msg = '';
             foreach ($this->arrErr as $arrErr) {
                 if ($arrErr['err_msg']) {
-                    $err_msg .= "<br />".$arrErr['err_msg'];
+                    $err_msg .= '<br />'.$arrErr['err_msg'];
                 } else {
                     if ($arrErr['type'] == self::ERR_TARGET_ELEMENT_NOT_FOUND) {
                         $err_msg .= "<br />${arrErr['selector']} が存在しません";
                     } else {
-                        $err_msg .= "<br />".print_r($arrErr, true);
+                        $err_msg .= '<br />'.print_r($arrErr, true);
                     }
                 }
             }
@@ -506,14 +506,14 @@ class SC_Helper_Transform {
         $objSnip->appendXML($substitute_tag);
 
         $objElement = false;
-        if(isset($this->arrElementTree[$target_key]) && $this->arrElementTree[$target_key][0]){
+        if (isset($this->arrElementTree[$target_key]) && $this->arrElementTree[$target_key][0]) {
             $objElement = &$this->arrElementTree[$target_key][1];
         }
 
         if (!$objElement) return false;
 
         try {
-            switch ($mode){
+            switch ($mode) {
                 case 'appendFirst':
                     if ($objElement->hasChildNodes()) {
                         $objElement->insertBefore($objSnip, $objElement->firstChild);
@@ -531,8 +531,7 @@ class SC_Helper_Transform {
                 case 'insertAfter':
                     if ($objElement->nextSibling) {
                          $objElement->parentNode->insertBefore($objSnip, $objElement->nextSibling);
-                    }
-                    else {
+                    } else {
                          $objElement->parentNode->appendChild($objSnip);
                     }
                     break;
@@ -569,5 +568,3 @@ class SC_Helper_Transform {
         );
     }
 }
-
-?>

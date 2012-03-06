@@ -154,7 +154,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                     $objPlugin->doAction('lc_page_shopping_payment_action_select_deliv', array($this));
-                    
+
                     echo SC_Utils_Ex::jsonEncode($arrSelectedDeliv);
                     exit;
                 } else {
@@ -181,11 +181,11 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
 
                     // 正常に登録されたことを記録しておく
                     $objSiteSess->setRegistFlag();
-                    
+
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                     $objPlugin->doAction('lc_page_shopping_payment_action_confirm', array($this));
-                    
+
                     // 確認ページへ移動
                     SC_Response_Ex::sendRedirect(SHOPPING_CONFIRM_URLPATH);
                     exit;
@@ -201,11 +201,11 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
 
                 // 正常な推移であることを記録しておく
                 $objSiteSess->setRegistFlag();
-                
+
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('lc_page_shopping_payment_action_return', array($this));
-                
+
                 SC_Response_Ex::sendRedirect(SHOPPING_URL);
                 exit;
                 break;
@@ -237,7 +237,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
         }
 
         $this->arrForm = $objFormParam->getFormParamList();
-        
+
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_shopping_payment_end', array($this));

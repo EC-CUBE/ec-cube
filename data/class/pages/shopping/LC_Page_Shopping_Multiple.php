@@ -67,7 +67,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_shopping_multiple_action_start', array($this));
-        
+
         $objSiteSess = new SC_SiteSession_Ex();
         $objCartSess = new SC_CartSession_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
@@ -100,11 +100,11 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
                                                  $objCustomer, $objPurchase,
                                                  $objCartSess);
                     $objSiteSess->setRegistFlag();
-                    
+
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                     $objPlugin->doAction('lc_page_shopping_multiple_action_confirm', array($this));
-                    
+
                     SC_Response_Ex::sendRedirect('payment.php');
                     exit;
                 }
@@ -119,7 +119,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
             $objFormParam->setParam($_SESSION['multiple_temp']);
         }
         $this->arrForm = $objFormParam->getFormParamList();
-        
+
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_shopping_multiple_action_end', array($this));

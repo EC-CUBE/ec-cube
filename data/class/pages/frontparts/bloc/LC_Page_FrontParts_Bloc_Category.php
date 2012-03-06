@@ -64,7 +64,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_frontparts_bloc_category_action_start', array($this));
-        
+
         // モバイル判定
         switch (SC_Display_Ex::detectDevice()) {
             case DEVICE_TYPE_MOBILE:
@@ -78,7 +78,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
                 $this->arrTree = $this->lfGetCatTree($this->tpl_category_id, true);
                 break;
         }
-        
+
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_frontparts_bloc_category_action_end', array($this));

@@ -72,7 +72,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_mypage_deliveryaddr_action_start', array($this));
-        
+
         $objCustomer = new SC_Customer_Ex();
         $ParentPage  = MYPAGE_DELIVADDR_URLPATH;
 
@@ -127,7 +127,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
                         // フックポイント.
                         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                         $objPlugin->doAction('lc_page_mypage_deliveryaddr_action_edit', array($this));
-                        
+
                         // モバイルの場合、元のページに遷移
                         SC_Response_Ex::sendRedirect($this->getLocation($_POST['ParentPage']));
                         exit;

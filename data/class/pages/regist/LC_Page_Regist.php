@@ -85,7 +85,7 @@ class LC_Page_Regist extends LC_Page_Ex {
                 SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, '無効なアクセスです。');
                 break;
         }
-        
+
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_regist_action_regist', array($this));

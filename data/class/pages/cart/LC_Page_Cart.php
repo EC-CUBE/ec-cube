@@ -77,7 +77,7 @@ class LC_Page_Cart extends LC_Page_Ex {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_cart_action_start', array($this));
-        
+
         $objCartSess = new SC_CartSession_Ex();
         $objSiteSess = new SC_SiteSession_Ex();
         $objCustomer = new SC_Customer_Ex();
@@ -104,11 +104,11 @@ class LC_Page_Cart extends LC_Page_Ex {
                 if (count($cartList) > 0) {
                     // カートを購入モードに設定
                     $this->lfSetCurrentCart($objSiteSess, $objCartSess, $cartKey);
-                    
+
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                     $objPlugin->doAction('lc_page_cart_action_confirm', array($this));
-                    
+
                     // 購入ページへ
                     SC_Response_Ex::sendRedirect(SHOPPING_URL);
                     exit;
@@ -116,41 +116,41 @@ class LC_Page_Cart extends LC_Page_Ex {
                 break;
             case 'up'://1個追加
                 $objCartSess->upQuantity($cart_no, $cartKey);
-                
+
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('lc_page_cart_action_up', array($this));
-                
+
                 SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
                 exit;
                 break;
             case 'down'://1個減らす
                 $objCartSess->downQuantity($cart_no, $cartKey);
-                
+
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('lc_page_cart_action_down', array($this));
-                
+
                 SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
                 exit;
                 break;
             case 'setQuantity'://数量変更
                 $objCartSess->setQuantity($objFormParam->getValue('quantity'), $cart_no, $cartKey);
-                
+
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('lc_page_cart_action_setQuantity', array($this));
-                
+
                 SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
                 exit;
                 break;
             case 'delete'://カートから削除
                 $objCartSess->delProduct($cart_no, $cartKey);
-                
+
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('lc_page_cart_action_delete', array($this));
-                
+
                 SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
                 exit;
                 break;
@@ -200,7 +200,7 @@ class LC_Page_Cart extends LC_Page_Ex {
 
         // すべてのカートの内容を取得する
         $this->cartItems = $objCartSess->getAllCartList();
-        
+
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_cart_action_end', array($this));

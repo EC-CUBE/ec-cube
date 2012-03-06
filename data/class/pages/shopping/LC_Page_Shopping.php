@@ -78,7 +78,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_shopping_action_start', array($this));
-        
+
         $objSiteSess = new SC_SiteSession_Ex();
         $objCartSess = new SC_CartSession_Ex();
         $objCustomer = new SC_Customer_Ex();
@@ -99,7 +99,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
             // フックポイント.
             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
             $objPlugin->doAction('lc_page_shopping_action_logined', array($this));
-            
+
             SC_Response_Ex::sendRedirect(
                     $this->getNextlocation($this->cartKey, $this->tpl_uniqid,
                                            $objCustomer, $objPurchase,
@@ -138,7 +138,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
                             // フックポイント.
                             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                             $objPlugin->doAction('lc_page_shopping_action_login_mobile', array($this));
-                            
+
                             SC_Response_Ex::sendRedirectFromUrlPath('entry/email_mobile.php');
                             exit;
                         }
@@ -148,7 +148,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
                         // フックポイント.
                         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                         $objPlugin->doAction('lc_page_shopping_action_login_smartphone', array($this));
-                        
+
                         echo SC_Utils_Ex::jsonEncode(array('success' => 
                                                      $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
                                                                             $objCustomer, $objPurchase,
@@ -201,11 +201,11 @@ class LC_Page_Shopping extends LC_Page_Ex {
                     $objPurchase->setShipmentItemTempForSole($objCartSess);
 
                     $objSiteSess->setRegistFlag();
-                    
+
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                     $objPlugin->doAction('lc_page_shopping_action_nonmember_confirm', array($this));
-                    
+
                     SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URLPATH);
                     exit;
                 }
@@ -216,7 +216,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('lc_page_shopping_action_return', array($this));
-                
+
                 SC_Response_Ex::sendRedirect(CART_URLPATH);
                 exit;
                 break;
@@ -237,11 +237,11 @@ class LC_Page_Shopping extends LC_Page_Ex {
                     $this->lfRegistData($this->tpl_uniqid, $objPurchase, $objCustomer, $objFormParam, true);
 
                     $objSiteSess->setRegistFlag();
-                    
+
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                     $objPlugin->doAction('lc_page_shopping_action_multiple', array($this));
-                    
+
                     SC_Response_Ex::sendRedirect(MULTIPLE_URLPATH);
                     exit;
                 }

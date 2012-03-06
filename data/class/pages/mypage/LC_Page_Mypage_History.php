@@ -72,7 +72,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_mypage_history_action_start', array($this));
-        
+
         $objCustomer    = new SC_Customer_Ex();
         $objDb          = new SC_Helper_DB_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
@@ -103,7 +103,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
         $this->lfSetAU($this->tpl_arrOrderDetail);
         // 受注メール送信履歴の取得
         $this->tpl_arrMailHistory = $this->lfGetMailHistory($order_id);
-        
+
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_mypage_history_action_end', array($this));

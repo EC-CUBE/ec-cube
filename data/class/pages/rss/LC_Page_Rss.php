@@ -57,7 +57,7 @@ class LC_Page_RSS extends LC_Page_Ex {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_rss_action_start', array($this));
-        
+
         $objQuery = SC_Query_Ex::getSingletonInstance();
         $objView = new SC_SiteView_Ex(false);
 
@@ -85,7 +85,7 @@ class LC_Page_RSS extends LC_Page_Ex {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_rss_action_end', array($this));
-        
+
         //画面表示
         $objView->display($this->tpl_mainpage, true);
     }

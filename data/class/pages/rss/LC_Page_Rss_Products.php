@@ -66,7 +66,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_rss_products_action_start', array($this));
-        
+
         $objView = new SC_SiteView_Ex();
 
         //店舗情報をセット
@@ -115,7 +115,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
         //XMLテキスト(これがないと正常にRSSとして認識してくれないツールがあるため)
         header('Content-type: application/xml');
         P_DETAIL_URLPATH;
-        
+
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_rss_products_action_end', array($this));

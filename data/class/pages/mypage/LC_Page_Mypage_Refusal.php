@@ -65,7 +65,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_mypage_refusal_action_start', array($this));
-        
+
         switch ($this->getMode()) {
             case 'confirm':
                 $this->tpl_mainpage     = 'mypage/refusal_confirm.tpl';
@@ -76,11 +76,11 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex {
                 $objCustomer = new SC_Customer_Ex();
                 $this->lfDeleteCustomer($objCustomer->getValue('customer_id'));
                 $objCustomer->EndSession();
-                
+
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('lc_page_mypage_refusal_action_complete', array($this));
-                
+
                 SC_Response_Ex::sendRedirect('refusal_complete.php');
 
             default:

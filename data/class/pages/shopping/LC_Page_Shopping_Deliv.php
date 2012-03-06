@@ -69,7 +69,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_shopping_deliv_action_start', array($this));
-        
+
         $objSiteSess = new SC_SiteSession_Ex();
         $objCartSess = new SC_CartSession_Ex();
         $objCustomer = new SC_Customer_Ex();
@@ -95,7 +95,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
             // フックポイント.
             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
             $objPlugin->doAction('lc_page_shopping_deliv_action_download', array($this));
-            
+
             SC_Response_Ex::sendRedirect('payment.php');
             exit;
         }
@@ -137,7 +137,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('lc_page_shopping_deliv_action_return', array($this));
-                
+
                 // 確認ページへ移動
                 SC_Response_Ex::sendRedirect(CART_URLPATH);
                 exit;
@@ -164,7 +164,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
         // 登録済み住所を取得
         $this->arrAddr = $objCustomer->getCustomerAddress($objCustomer->getValue('customer_id'));
         $this->tpl_addrmax = count($this->arrAddr);
-        
+
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_shopping_deliv_action_end', array($this));
