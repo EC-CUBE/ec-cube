@@ -172,14 +172,15 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         if ($mode == 'customer') {
             // メルマガ受け取りの選択項目がフォームに存在する場合
             if (isset($this->arrSql['search_htmlmail'])) {
-                if (SC_Utils_Ex::sfIsInt($this->arrSql['search_htmlmail'])) {
-                    $this->setWhere('mailmaga_flg = ?');
-                    $this->arrVal[] = $this->arrSql['search_htmlmail'];
-                } else {
-                    //　メルマガ購読拒否は省く
-                    $this->setWhere('mailmaga_flg <> 3');
-                }
-            }
+		    $this->setWhere('status = 2');
+		    if (SC_Utils_Ex::sfIsInt($this->arrSql['search_htmlmail'])) {
+			    $this->setWhere('mailmaga_flg = ?');
+			    $this->arrVal[] = $this->arrSql['search_htmlmail'];
+		    } else {
+			    //　メルマガ購読拒否は省く
+			    $this->setWhere('mailmaga_flg <> 3');
+		    }
+	    }
         }
 
         // 配信メールアドレス種別
