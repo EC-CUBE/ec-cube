@@ -778,7 +778,7 @@ a:hover {
 
 .pager li a:hover, .pager li.on a:hover {
     background: #f8f8f8;
-	border: 1px solid #ccc;
+    border: 1px solid #ccc;
 }
 
 
@@ -1121,7 +1121,7 @@ body > #container {
     white-space: nowrap;
 }
 #products .class-product-type label {
-   white-space: normal;
+    white-space: normal;
 }
 #products .list-info {
     padding-top: 10px;
@@ -1247,131 +1247,160 @@ div.btn,p.remark {
 /*FORM*/
 .box3 {
     width: 33px;
-}/*W3*/
+}
+/*W3*/
 
 .box6 {
     width: 54px;
-}/*W6*/
+}
+/*W6*/
 
 .box10 {
     width: 82px;
-}/*W10*/
+}
+/*W10*/
 
 .box20 {
     width: 152px;
-}/*W20*/
+}
+/*W20*/
 
 .box25 {
     width: 187px;
-}/*W25*/
+}
+/*W25*/
 
 .box30 {
     width: 222px;
-}/*W30*/
+}
+/*W30*/
 
 .box33 {
     width: 243px;
-}/*W33*/
+}
+/*W33*/
 
 .box35 {
     width: 257px;
-}/*W35*/
+}
+/*W35*/
 
 .box40 {
     width: 276px;
-}/*W40*/
+}
+/*W40*/
 
 .box45 {
     width: 341px;
-}/*W45*/
+}
+/*W45*/
 
 .box50 {
     width: 362px;
-}/*W50*/
+}
+/*W50*/
 
 .box52 {
     width: 376px;
-}/*W52*/
+}
+/*W52*/
 
 .box54 {
     width: 390px;
-}/*W54*/
+}
+/*W54*/
 
 .box60 {
     width: 432px;
-}/*W60*/
+}
+/*W60*/
 
 .box65 {
     width: 467px;
-}/*W65*/
+}
+/*W65*/
 
 .box68 {
     width: 488px;
-}/*W68*/
+}
+/*W68*/
 
 .box76 {
     width: 544px;
-}/*W76*/
+}
+/*W76*/
 
 .area40 {
     width: 302px;
     height: 134px;
-}/*W40×H8*/
+}
+/*W40×H8*/
 
 .area45 {
     width: 337px;
     height: 290px;
-}/*W40×H20*/
+}
+/*W40×H20*/
 
 .area46 {
     width: 337px;
     height: 134px;
-}/*W40×H8*/
+}
+/*W40×H8*/
 
 .area50 {
     width: 372px;
     height: 82px;
-}/*W50?H4*/
+}
+/*W50?H4*/
 
 .area55 {
     width: 407px;
     height: 82px;
-}/*W50?H4*/
+}
+/*W50?H4*/
 
 .area59 {
     width: 432px;
     height: 134px;
-}/*W59×H8*/
+}
+/*W59×H8*/
 
 .area60 {
     width: 433px;
     height: 134px;
-}/*W60?H8*/
+}
+/*W60?H8*/
 
 .area61 {
     width: 433px;
     height: 82px;
-}/*W60?H4*/
+}
+/*W60?H4*/
 
 .area65 {
     width: 444px;
     height: 290px;
-}/*W65×H20*/
+}
+/*W65×H20*/
 
 .area70 {
     width: 512px;
     height: 186px;
-}/*W70?H12*/
+}
+/*W70?H12*/
 
 .area75 {
     width: 547px;
     height: 186px;
-}/*W75?H12*/
+}
+/*W75?H12*/
 
 .area80 {
     width: 572px;
     height: 134px;
-}/*W80×H8*/
+}
+/*W80×H8*/
 
 .area90 {
     width: 650px;
@@ -1381,17 +1410,20 @@ div.btn,p.remark {
 .area96 {
     width: 694px;
     height: 420px;
-}/*W80×H30*/
+}
+/*W80×H30*/
 
 .area96_2 {
     width: 694px;
     height: 160px;
-}/*W80×H10*/
+}
+/*W80×H10*/
 
 .area99 {
     width: 715px;
     height: 523px;
-}/*W99?H40*/
+}
+/*W99?H40*/
 
 /*COLOR*/
 .red {
@@ -1425,7 +1457,7 @@ x-dummy
 ,.authority_1 #navi-design-add
 ,.authority_1 #navi-system
 ,.authority_1 #navi-ownersstore {
-/* display: none; --- IE で不具合 */
+    /* display: none; --- IE で不具合 */
     border: none;
     width: 0;
     height: 0;
@@ -1440,14 +1472,16 @@ tr.movingHandle td {
 }
 
 
-.dragHandle { /* ハンドルの設定 */
+/* ハンドルの設定 */
+.dragHandle {
     font-weight: bold;
     text-align: center;
     cursor: n-resize;
 }
 
 
-.activeHandle { /* アクティブハンドルの設定 */
+/* アクティブハンドルの設定 */
+.activeHandle {
     color: #f9a406;
 }
 
