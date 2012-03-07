@@ -602,7 +602,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                 $str_ext = implode('・', $value[2]);
                 $this->arrErr[$value[1]][$index] = '※ ' . $value[0] . 'で許可されている形式は、' . $str_ext . 'です。<br />';
             // ▲SC_CheckError::FILE_EXT_CHECK から移植
-            }else{
+            } else {
                 $uniqname = date('mdHi') . '_' . uniqid('').'.';
                 $temp_file = preg_replace("/^.*\./", $uniqname, $_FILES['down_realfilename']['name'][$index]);
 

@@ -317,7 +317,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * @param Integer $rank
      */
     function computeRankForDelete($news_id,$rank) {
-	SC_Helper_DB_Ex::sfDeleteRankRecord('dtb_news', 'news_id', $news_id);
+        SC_Helper_DB_Ex::sfDeleteRankRecord('dtb_news', 'news_id', $news_id);
     }
 
     /**
