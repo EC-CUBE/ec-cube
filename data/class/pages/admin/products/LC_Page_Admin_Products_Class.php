@@ -244,15 +244,15 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
      *
      * @param integer $class_id 規格ID
      * @param SC_Helper_DB $objDb SC_Helper_DBのインスタンス
-     * @return integer 更新件数
+     * @return integer 削除件数
      */
     function lfDeleteClass($class_id) {
         $objDb = new SC_Helper_DB_Ex();
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        $objDb->sfDeleteRankRecord('dtb_class', 'class_id', $class_id, '', true);
+        $ret = $objDb->sfDeleteRankRecord('dtb_class', 'class_id', $class_id, '', true);
         $where= 'class_id = ?';
-        $ret = $objQuery->delete('dtb_classcategory', $where, array($class_id));
+        $objQuery->delete('dtb_classcategory', $where, array($class_id));
         return $ret;
     }
 
