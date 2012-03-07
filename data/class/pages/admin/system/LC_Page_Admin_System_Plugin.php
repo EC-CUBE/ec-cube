@@ -66,7 +66,6 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        print_r(DB_LOG_REALFILE);
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
         $mode = $this->getMode();   
