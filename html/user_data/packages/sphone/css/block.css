@@ -140,7 +140,7 @@ text-align:center;
 #recommend_area div.flickSlideBottom {
 width:100%;
 margin-top:5px;
-border-top:#DBDBDB solid 1px;	
+border-top:#DBDBDB solid 1px;
 background: -moz-linear-gradient(center top, #FFFFFF 0%,#DEE4EA 95%,#FFFFFF 100%);
 background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FFFFFF),color-stop(0.95, #DEE4EA),color-stop(0, #FFFFFF));
 border-bottom-right-radius:8px;
@@ -254,10 +254,10 @@ border-top:none;
 }
 #categorytree li li:first-child{
 border-top:#CCC solid 1px;
-} 
+}
 #categorytree li:last-child,#categorytree li li:last-child{
 border-bottom:none;
-} 
+}
 #categorytree ul li a, .categorytree > ul > li > ul > li a{
 padding:0.6em 0;
 }

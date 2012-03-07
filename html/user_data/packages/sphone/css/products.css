@@ -179,7 +179,7 @@ border-radius:7px;
 -webkit-border-radius:7px;
 }
 #detailrightblock div:after {
-content: ".";  
+content: ".";
 display: block;
 clear: both;
 height: 0;

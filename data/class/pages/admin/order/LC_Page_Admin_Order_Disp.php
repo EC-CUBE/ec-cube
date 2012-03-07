@@ -325,4 +325,3 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
     }
 
 }
-?>

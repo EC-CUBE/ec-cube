@@ -126,7 +126,7 @@ table.list th {
 
 table.list th.column {
     background: url('../img/contents/table_back.png') repeat-x #f4f5f5;
-    text-align: left; 
+    text-align: left;
 }
 
 table.list .edit, table.list .delete {
@@ -1217,7 +1217,6 @@ body > #container {
 /* プラグイン管理 */
 td.plugin_img {
     border-width: 1px 0px 1px 1px;
-    
 }
 td.plugin_info {
     border-width: 1px 1px 1px 0px;
