@@ -317,24 +317,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * @param Integer $rank
      */
     function computeRankForDelete($news_id,$rank) {
-        $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->begin();
-        $table = 'dtb_news';
-        $sqlval = array();
-        $sqlval['rank'] = $rank;
-        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
-        $where = 'del_flg = 0 AND rank > ?';
-        $arrValIn = array($rank);
-        $objQuery->update($table, $sqlval, $where, $arrValIn);
-
-        $sqlval = array();
-        $sqlval['rank'] = '0';
-        $sqlval['del_flg'] = '1';
-        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
-        $where = 'news_id = ?';
-        $arrValIn = array($news_id);
-        $objQuery->update($table, $sqlval, $where, $arrValIn);
-        $objQuery->commit();
+	SC_Helper_DB_Ex::sfDeleteRankRecord('dtb_news', 'news_id', $news_id);
     }
 
     /**
