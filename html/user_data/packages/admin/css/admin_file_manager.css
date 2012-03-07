@@ -3,11 +3,11 @@
     height: 430px;
 }
 #contents-filemanager-right {
-    width:720px;
-    float:right;
+    width: 720px;
+    float: right;
 }
 
-#tree{
+#tree {
     width: 230px;
     border: 3px solid #ddd;
     padding: 10px;

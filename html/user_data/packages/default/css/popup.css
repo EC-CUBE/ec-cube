@@ -27,7 +27,7 @@ div#window_area {
     margin: 15px auto 0 auto;
     padding-bottom: 20px;
     width: 540px;
-    min-height:300px;
+    min-height: 300px;
     height: auto !important;
 }
 
@@ -103,7 +103,7 @@ div#zipsearchcolumn .btn {
     text-align: center;
 }
 
-div#zipsearch_area #completebox p{
+div#zipsearch_area #completebox p {
     padding: 60px 5px;
     text-align: center;
 }

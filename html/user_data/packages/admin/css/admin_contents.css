@@ -43,8 +43,8 @@ textarea.top {
     margin-bottom: 5px;
 }
 
-.page_rows{
-    margin-bottom:20px;
+.page_rows {
+    margin-bottom: 20px;
 }
 
 img {
@@ -70,14 +70,14 @@ h1 {
 }
 
 h1 span.title {
-    display:block;
+    display: block;
     padding-top: 2px;
     padding-left: 20px;
     background: url('../img/contents/subtitle_back.gif') no-repeat;
 }
 
 h1 span.subtitle {
-    display:block;
+    display: block;
     padding-top: 2px;
     padding-left: 10px;
 }
@@ -90,7 +90,7 @@ h2 {
     font-size: 100%;
 }
 
-h3{
+h3 {
     margin-bottom: 20px;
     padding: 5px;
     color : #fff;
@@ -167,21 +167,21 @@ table tr.last {
     width: 200px;
 }
 
-.contents-main .btn-area, #popup .btn-area, #form_edit .btn-area{
+.contents-main .btn-area, #popup .btn-area, #form_edit .btn-area {
     margin : 0 0 60px 0;
     padding: 20px 0;
     clear: both;
     width: 100%;
-    background:#f5f5f5;
+    background: #f5f5f5;
     text-align: center;
 }
 
-.contents-main .btn-area li, #popup .btn-area li, .btn-area li{
+.contents-main .btn-area li, #popup .btn-area li, .btn-area li {
     margin-right: 10px;
     display: inline;
 }
 
-.addnew{
+.addnew {
     margin-bottom: 20px;
 }
 
@@ -400,12 +400,12 @@ td.AlignLeft {
     font-size: 114%;
 }
 
-a.btn-normal:hover, a.btn-action:hover, a.btn-tool:hover{
+a.btn-normal:hover, a.btn-action:hover, a.btn-tool:hover {
     border: solid 1px #d5d7df;
     color: #6d728b;
 }
 
-a.btn-tool-format:hover{
+a.btn-tool-format:hover {
     border: solid 1px #363a47;
     color: #6b728b;
 }
@@ -734,7 +734,7 @@ a:hover {
 .subnavi-on a:hover {
     color: #000;
     background-color: #666;
-    text-decoration:none;
+    text-decoration: none;
 }
 .number-on a:visited {
     color: #fff;
@@ -846,7 +846,7 @@ body > #container {
     padding: 0;
     border: 0;
     text-align: left;
-    width:556px;
+    width: 556px;
     z-index: 2;
     background: url('../img/contents/admin_login_bg.jpg') center top repeat-x;
     -moz-box-shadow: 0 0 5px #000;/* Firefox */
@@ -1108,7 +1108,7 @@ body > #container {
 }
 
 #products-category-right .now_dir {
-    margin-bottom:20px;
+    margin-bottom: 20px;
     padding: 10px;
     border: 1px solid #ccc;
 }
@@ -1123,13 +1123,13 @@ body > #container {
 #products .class-product-type label {
    white-space: normal;
 }
-#products .list-info{
+#products .list-info {
     padding-top: 10px;
     border-top: solid 1px #ccc;
 }
 #products .list-info .btn {
     float: left;
-    margin-right:20px;
+    margin-right: 20px;
 }
 #products .list-info p {
     float: right;
@@ -1401,18 +1401,18 @@ div.btn,p.remark {
 
 /*FONT*/
 .bold {
-    font-weight:bold;
+    font-weight: bold;
 }
 
 
 /* フロート解除 */
 .clearfix:after {
-    display:block;
-    clear:both;
-    height:0;
-    line-height:0;
-    visibility:hidden;
-    content:".";
+    display: block;
+    clear: both;
+    height: 0;
+    line-height: 0;
+    visibility: hidden;
+    content: ".";
 }
 
 
@@ -1500,10 +1500,10 @@ body#popup {
 /*以下インストールページと共通■触るべからず*/
 
 #outside {
-    margin:0 auto;
-    padding:0;
-    text-align:center;
-    width:100%;
+    margin: 0 auto;
+    padding: 0;
+    text-align: center;
+    width: 100%;
 }
 
 /*以上インストールページと共通■触るべからず*/

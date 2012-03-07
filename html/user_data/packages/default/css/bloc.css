@@ -69,7 +69,7 @@
     background: url("../img/icon/ico_arrow_03.gif") no-repeat left;
     font-size: 90%;
 }
-#container .block_outer .block_body dl.formlist span{
+#container .block_outer .block_body dl.formlist span {
     vertical-align: top;
 }
 
@@ -111,11 +111,11 @@
 ▼ヘッダー上、フッター下のブロックエリア
 =============================================== */
 div#topcolumn {
-    margin:0px;
-    clear:both;
+    margin: 0px;
+    clear: both;
 }
 div#bottomcolumn {
-    margin:0px;
+    margin: 0px;
     clear: both;
 }
 
@@ -132,11 +132,11 @@ div#bottomcolumn {
 }
 #news_area .news_contents {
     padding-right: 10px;
-    max-height:260px;
+    max-height: 260px;
     height: auto !important;
     height: 260px;
-    overflow:auto;
-    overflow-y:scroll;
+    overflow: auto;
+    overflow-y: scroll;
 }
 
 #news_area dl.newslist {
@@ -180,17 +180,17 @@ div#bottomcolumn {
 /* ===============================================
 ▼カテゴリ
 =============================================== */
-#category_area .block_body{
+#category_area .block_body {
     background-color: #fffaf0;
 }
 
-#category_area li{
+#category_area li {
     padding-left: 5px;
 }
-#category_area li.level1{
+#category_area li.level1 {
     border-bottom: solid 1px #ccc;
 }
-#category_area li.level1 p{
+#category_area li.level1 p {
     padding-left: 20px;
     margin: 7px 3px;
 }
@@ -223,7 +223,7 @@ a.onlink:hover {
     margin-top: 1em;
     border: none;
 }
-#guide_area li{
+#guide_area li {
     margin-bottom: 5px;
     letter-spacing: -0.05em;
 }
@@ -319,7 +319,7 @@ div#search_area .block_body .btn {
     padding: 1px 3px;
     border-top: 1px solid #ccc;
     border-right: none;
-    text-align:center;
+    text-align: center;
 }
 #calender_area th {
     padding: 1px 3px;

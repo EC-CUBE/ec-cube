@@ -62,7 +62,7 @@ div#mynavi_area .mynavi_list {
     width: 100%;
 }
 div#mynavi_area .mynavi_list li {
-    margin:0 15px 5px 0;
+    margin: 0 15px 5px 0;
     padding-left: 15px;
     float: left;
     background: url('../img/icon/ico_arrow_01.gif') no-repeat left ;
@@ -171,7 +171,7 @@ div#undercolumn_login .login_area .inputbox .btn_area {
 ▼エラー
 =============================================== */
 div#undercolumn_error .message_area {
-    width:80%;
+    width: 80%;
     margin: 30px auto;
     padding: 30px;
     border: 1px solid #ccc;
@@ -569,7 +569,7 @@ div#customervoice_area review_bloc .review_btn {
     width: 160px;
 }
 
-div#customervoice_area ul li{
+div#customervoice_area ul li {
     padding-bottom: 15px;
     margin-bottom: 15px;
     background: url("../img/background/line_dot_01.gif") repeat-x bottom ;

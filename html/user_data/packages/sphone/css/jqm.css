@@ -8,11 +8,11 @@ style info :jqmテーマ
 /* F
 -----------------------------------------------------------------------------------------------------------*/
 .ui-bar-f {
- font-size:20px;
+ font-size: 20px;
 	border-top:none;
 	border-left:none;
 	border-right:none;
- border-bottom:#74828B solid 1px;
+ border-bottom: #74828B solid 1px;
 	background: #bbb;
 	color: #fff;
 	text-shadow: 0 1px 0 rgba(0,0,0,0.3);
@@ -51,8 +51,8 @@ style info :jqmテーマ
 	font-family: Helvetica, Arial, sans-serif;
 }
 
-.ui-body-f textarea{
-border:#4C4C4C solid 1px;
+.ui-body-f textarea {
+border: #4C4C4C solid 1px;
 }
 
 .ui-body-f .ui-link-inherit {
