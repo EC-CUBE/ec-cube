@@ -55,12 +55,12 @@
     <script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/category.js"></script>
     <script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/news.js"></script>
 
-    <!--{* スマートフォンカスタマイズ用CSS *}-->
-    <link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->css/jquery.mobile-1.0.1.css" />
+    <!--{* jQuery Mobile *}-->
+    <link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->js/jquery.mobile/jquery.mobile-1.0.1.min.css" />
+    <script src="<!--{$TPL_URLPATH}-->js/jquery.mobile/jquery.mobile-1.0.1.min.js"></script>
 
     <!--{* スマートフォンカスタマイズ用JS *}-->
     <script src="<!--{$TPL_URLPATH}-->js/config.js"></script>
-    <script src="<!--{$TPL_URLPATH}-->js/jquery.mobile-1.0.1.min.js"></script>
     <script src="<!--{$TPL_URLPATH}-->js/jquery.autoResizeTextAreaQ-0.1.js"></script>
     <script src="<!--{$TPL_URLPATH}-->js/jquery.flickslide.js"></script>
     <script src="<!--{$TPL_URLPATH}-->js/favorite.js"></script>
