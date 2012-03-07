@@ -258,6 +258,8 @@ define('PASSWORD_MIN_LEN', 4);
 define('PASSWORD_MAX_LEN', STEXT_LEN);
 /** 検査数値用桁数(INT) */
 define('INT_LEN', 9);
+/** クレジットカードの文字数 (*モジュールで使用) */ 
+define('CREDIT_NO_LEN', 4);
 /** 検索カテゴリ最大表示文字数(byte) */
 define('SEARCH_CATEGORY_LEN', 18);
 /** ファイル名表示文字数 */
@@ -300,6 +302,8 @@ define('RECOMMEND_PRODUCT_MAX', 6);
 define('RECOMMEND_NUM', 8);
 /** お届け可能日以降のプルダウン表示最大日数 */
 define('DELIV_DATE_END_MAX', 21);
+/** 支払期限 (*モジュールで使用) */ 
+define('CV_PAYMENT_LIMIT', 14); 
 /** 商品レビューでURL書き込みを許可するか否か */
 define('REVIEW_ALLOW_URL', 0);
 /** Pear::Mail バックエンド:"mail"|"smtp"|"sendmail" */
@@ -314,6 +318,8 @@ define('UPDATE_SEND_SITE_INFO', false);
 define('USE_POINT', true);
 /** 在庫無し商品の非表示(true:非表示、false:表示) */
 define('NOSTOCK_HIDDEN', false);
+/** モバイルサイトを利用するか(true:利用する、false:利用しない) (false は一部対応) (*モジュールで使用)*/ 
+define('USE_MOBILE', true);
 /** 複数配送先指定機能を利用するか(true:利用する、false:利用しない) */
 define('USE_MULTIPLE_SHIPPING', true);
 /** 短文の文字数 */
@@ -368,6 +374,8 @@ define('MOBILE_SHOPPING_CONFIRM_URLPATH', ROOT_URLPATH . "shopping/confirm.php")
 define('MOBILE_SHOPPING_PAYMENT_URLPATH', ROOT_URLPATH . "shopping/payment.php");
 /** 商品詳細(HTML出力) */
 define('MOBILE_P_DETAIL_URLPATH', ROOT_URLPATH . "products/detail.php?product_id=");
+/** 購入完了画面 (*モジュールで使用)*/
+define('MOBILE_SHOPPING_COMPLETE_URLPATH', ROOT_URLPATH . "shopping/complete.php");
 /** セッション維持方法："useCookie"|"useRequest" */
 define('SESSION_KEEP_METHOD', "useCookie");
 /** セッションの存続時間 (秒) */
