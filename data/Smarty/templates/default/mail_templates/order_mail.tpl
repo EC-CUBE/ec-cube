@@ -64,10 +64,11 @@
 ============================================
 合　計 ￥ <!--{$arrOrder.payment_total|number_format|default:0}-->
 
-
+<!--{if count($arrShipping) > 0 }-->
 ************************************************
 　配送情報
 ************************************************
+<!--{/if}-->
 
 <!--{foreach item=shipping name=shipping from=$arrShipping}-->
 ◎お届け先<!--{if count($arrShipping) > 1}--><!--{$smarty.foreach.shipping.iteration}--><!--{/if}-->
