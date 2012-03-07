@@ -81,7 +81,7 @@
 ----------------------------------------------- */
 /* 【サイド】バナーエリア_02
 ----------------------------------------------- */
-#leftcolumn .block_outer #banner_area .block_body ul li ,
+#leftcolumn .block_outer #banner_area .block_body ul li,
 #rightcolumn .block_outer #banner_area .block_body ul li {
     margin-bottom: 8px;
 }

@@ -47,8 +47,8 @@ select {
 =============================================== */
 /* ヘッダーとフッターの上下
 [注意]ブロック移動時はbloc.css内で調整が必要 */
-#topcolumn ,
-#bottomcolumn ,
+#topcolumn,
+#bottomcolumn,
 #footerbottomcolumn {
     margin: 0 auto;
     padding: 15px;
@@ -128,12 +128,12 @@ select {
 
 /* リンク指定
 ----------------------------------------------- */
-a:link ,
+a:link,
 a:visited {
     color: #39c;
     text-decoration: none;
 }
-a:link:hover ,
+a:link:hover,
 a[href]:hover {
     color: #f60;
     text-decoration: underline;
@@ -196,8 +196,8 @@ h1,h2,h3,h4,h5 {
 
 /* フォーム
 ----------------------------------------------- */
-input[type='text'] ,
-input[type='password'] ,
+input[type='text'],
+input[type='password'],
 .select {
     border: solid 1px #ccc;
     padding: 2px;
@@ -262,13 +262,13 @@ h2.title {
     font-size: 170%;
 }
 
-#one_maincolumn .sub_area h3 ,
-#two_maincolumn_right .sub_area h3 ,
-#two_maincolumn_left .sub_area h3 ,
-#three_maincolumn .sub_area h3 ,
-#undercolumn_login .login_area h3 ,
-#undercolumn_shopping h3 ,
-#mypagecolumn h3 ,
+#one_maincolumn .sub_area h3,
+#two_maincolumn_right .sub_area h3,
+#two_maincolumn_left .sub_area h3,
+#three_maincolumn .sub_area h3,
+#undercolumn_login .login_area h3,
+#undercolumn_shopping h3,
+#mypagecolumn h3,
 #undercolumn_cart h3 {
     margin: 0 0 10px 0;
     padding: 5px 0 10px;
@@ -398,7 +398,7 @@ div#header_navi ul li.entry {
 div#complete_area {
     margin-bottom: 20px;
 }
-div#complete_area .message ,
+div#complete_area .message,
 div#undercolumn_entry .message {
     margin-bottom: 20px;
     line-height: 150%;

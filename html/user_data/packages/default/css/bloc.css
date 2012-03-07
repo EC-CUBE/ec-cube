@@ -40,7 +40,7 @@
 .side_column .block_outer {
     margin: 10px 7%;
 }
-.side_column .block_body ,
+.side_column .block_body,
 .main_column .block_body {
     border: solid 1px #ccc;
     border-top: none;
@@ -77,10 +77,10 @@
 /* タイトル
 ----------------------------------------------- */
 /* タイトルの背景 白 */
-#login_area h2 ,
-#search_area h2 ,
-#calender_area h2 ,
-#cart_area h2 ,
+#login_area h2,
+#search_area h2,
+#calender_area h2,
+#cart_area h2,
 #cart h2 {
     padding: 5px 0 8px 10px;
     border-style: solid;
@@ -97,7 +97,7 @@
 }
 
 /* タイトルの背景 オレンジ */
-#recommend_area h2 ,
+#recommend_area h2,
 #news_area h2 {
     padding: 5px 0 8px 10px;
     border-style: solid;
@@ -355,7 +355,7 @@ div#search_area .block_body .btn {
 =============================================== */
 /* 共通
 ----------------------------------------------- */
-#recommend_area .block_body ,
+#recommend_area .block_body,
 #whobought_area .product_item {
     margin-bottom: 10px;
     padding: 10px 0 10px;
@@ -363,17 +363,17 @@ div#search_area .block_body .btn {
     background: url("../img/background/line_dot_01.gif") repeat-x bottom;
 }
 
-#recommend_area .block_body p ,
+#recommend_area .block_body p,
 #whobought_area .product_item p {
     margin: 0 0 5px 0;
 }
 
-#recommend_area .block_body img ,
+#recommend_area .block_body img,
 #whobought_area .product_item img {
     margin: 0 5px 0 0;
 }
 
-#recommend_area .block_body h3 ,
+#recommend_area .block_body h3,
 #whobought_area .product_item h3 {
     font-size: 100%;
     font-weight: normal;
@@ -422,16 +422,16 @@ div#search_area .block_body .btn {
 }
 
 /* メインカラム用 2カラム時*/
-#two_maincolumn_right #recommend_area .block_body .productContents ,
-#two_maincolumn_left #recommend_area .block_body .productContents ,
-#two_maincolumn_right #whobought_area .productContents ,
+#two_maincolumn_right #recommend_area .block_body .productContents,
+#two_maincolumn_left #recommend_area .block_body .productContents,
+#two_maincolumn_right #whobought_area .productContents,
 #two_maincolumn_left #whobought_area .productContents {
     float: right;
     width: 74%;
 }
 
 /* メインカラム用 3カラム時*/
-#three_maincolumn #recommend_area .block_body .productContents ,
+#three_maincolumn #recommend_area .block_body .productContents,
 #three_maincolumn #whobought_area .productContents {
     float: right;
     width: 67%;

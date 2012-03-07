@@ -16,8 +16,8 @@ style info :jqmテーマ
 	background: #bbb;
 	color: #fff;
 	text-shadow: 0 1px 0 rgba(0,0,0,0.3);
-	background-image: -moz-linear-gradient(top, 
-							#6D7481, 
+	background-image: -moz-linear-gradient(top,
+							#6D7481,
 							#494e57);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 		color-stop(0,#6D7481),
@@ -81,8 +81,8 @@ border:#4C4C4C solid 1px;
 	cursor: pointer;
 	text-shadow: 0 1px 1px 	#fff;
 	text-decoration: none;
-	background-image: -moz-linear-gradient(top, 
-							#ededed, 
+	background-image: -moz-linear-gradient(top,
+							#ededed,
 							#dadada);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 		color-stop(0, 		#ededed),
@@ -98,8 +98,8 @@ border:#4C4C4C solid 1px;
 	font-weight: bold;
 	color: #111;
 	text-shadow: 0 1px 1px	#ffffff;
-	background-image: -moz-linear-gradient(top, 
-							#eeeeee, 
+	background-image: -moz-linear-gradient(top,
+							#eeeeee,
 							#fdfdfd);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 		color-stop(0,	#eeeeee),
@@ -112,8 +112,8 @@ border:#4C4C4C solid 1px;
 	font-weight: bold;
 	color: #111;
 	text-shadow: none;
-	background-image: -moz-linear-gradient(top, 
-							#cccccc, 
+	background-image: -moz-linear-gradient(top,
+							#cccccc,
 							#eeeeee);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 		color-stop(0, #cccccc),

@@ -235,7 +235,7 @@ div.listphoto {
 }
 
 /* メインカラム用 2カラム時*/
-#two_maincolumn_right div.listrightbloc ,
+#two_maincolumn_right div.listrightbloc,
 #two_maincolumn_left div.listrightbloc {
     float: right;
     width: 80%;
@@ -343,7 +343,7 @@ div.listrightbloc .cartin_btn {
     *3カラム時 [three_maincolumn]
 
 ----------------------------------------------- */
-#detailarea ,
+#detailarea,
 .sub_area {
     margin-bottom: 20px;
     width: 100%;
@@ -375,12 +375,12 @@ div.listrightbloc .cartin_btn {
 }
 
 /* 2カラム用 */
-#two_maincolumn_left div#detailphotobloc ,
+#two_maincolumn_left div#detailphotobloc,
 #two_maincolumn_right div#detailphotobloc {
     float: left;
     width: 37%;
 }
-#two_maincolumn_left #detailrightbloc ,
+#two_maincolumn_left #detailrightbloc,
 #two_maincolumn_right #detailrightbloc {
     float: right;
     width: 63%;
@@ -395,7 +395,7 @@ div.listrightbloc .cartin_btn {
 #two_maincolumn_right p.subtext {
     margin-bottom: 20px;
 }
-#two_maincolumn_left div.subphotoimg ,
+#two_maincolumn_left div.subphotoimg,
 #two_maincolumn_right div.subphotoimg {
     float: right;
     width: 25%;
