@@ -91,9 +91,9 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
         $this->arrOrder = $this->lfGetOrderHistory($customer_id, $this->objNavi->start_row);
 
         switch ($this->getMode()) {
-    case 'getList':
-                    echo SC_Utils_Ex::jsonEncode($this->arrOrder);
-                    exit;
+            case 'getList':
+                echo SC_Utils_Ex::jsonEncode($this->arrOrder);
+                exit;
                 break;
             default:
                 break;
@@ -102,7 +102,6 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
         $this->arrPayment = SC_Helper_DB_Ex::sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
         // 1ページあたりの件数
         $this->dispNumber = SEARCH_PMAX;
-        break;
 
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
