@@ -66,6 +66,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+        print_r(DB_LOG_REALFILE);
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
         $mode = $this->getMode();   
@@ -695,7 +696,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                 foreach ($array_hook_point as $hook_point) {
                     $arr_sqlval_plugin_hookpoint = array();
                     $id = $objQuery->nextVal('dtb_plugin_hookpoint_id');
-                    $arr_sqlval_plugin_hookpoint['id'] = $id;
+                    $arr_sqlval_plugin_hookpoint['plugin_hookpoint_id'] = $id;
                     $arr_sqlval_plugin_hookpoint['plugin_id'] = $plugin_id;
                     $arr_sqlval_plugin_hookpoint['hook_point'] = $hook_point;
                     $arr_sqlval_plugin_hookpoint['update_date'] = 'CURRENT_TIMESTAMP';
