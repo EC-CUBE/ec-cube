@@ -318,7 +318,7 @@ define('UPDATE_SEND_SITE_INFO', false);
 define('USE_POINT', true);
 /** 在庫無し商品の非表示(true:非表示、false:表示) */
 define('NOSTOCK_HIDDEN', false);
-/** モバイルサイトを利用するか(true:利用する、false:利用しない) (false は一部対応) (*モジュールで使用)*/ 
+/** モバイルサイトを利用するか(true:利用する、false:利用しない) (false は一部対応) (*モジュールで使用) */ 
 define('USE_MOBILE', true);
 /** 複数配送先指定機能を利用するか(true:利用する、false:利用しない) */
 define('USE_MULTIPLE_SHIPPING', true);
@@ -374,7 +374,7 @@ define('MOBILE_SHOPPING_CONFIRM_URLPATH', ROOT_URLPATH . "shopping/confirm.php")
 define('MOBILE_SHOPPING_PAYMENT_URLPATH', ROOT_URLPATH . "shopping/payment.php");
 /** 商品詳細(HTML出力) */
 define('MOBILE_P_DETAIL_URLPATH', ROOT_URLPATH . "products/detail.php?product_id=");
-/** 購入完了画面 (*モジュールで使用)*/
+/** 購入完了画面 (*モジュールで使用) */
 define('MOBILE_SHOPPING_COMPLETE_URLPATH', ROOT_URLPATH . "shopping/complete.php");
 /** セッション維持方法："useCookie"|"useRequest" */
 define('SESSION_KEEP_METHOD', "useCookie");

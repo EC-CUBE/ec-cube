@@ -1162,8 +1162,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TEL_LEN', '12', 203
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PASSWORD_MIN_LEN', '4', 204, 'フロント画面用：パスワードの最小文字数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PASSWORD_MAX_LEN', 'STEXT_LEN', 205, 'フロント画面用：パスワードの最大文字数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('INT_LEN', '9', 206, '検査数値用桁数(INT)');
--- モジュールで使用：CREDIT_NO_LEN
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CREDIT_NO_LEN', '4', 207, 'クレジットカードの文字数'); 
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CREDIT_NO_LEN', '4', 207, 'クレジットカードの文字数 (*モジュールで使用)'); 
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SEARCH_CATEGORY_LEN', '18', 208, '検索カテゴリ最大表示文字数(byte)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('FILE_NAME_LEN', '10', 209, 'ファイル名表示文字数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('COOKIE_EXPIRE', '365', 212, 'クッキー保持期限(日)');
@@ -1185,8 +1184,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ENTRY_LIMIT_HOUR', 
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('RECOMMEND_PRODUCT_MAX', '6', 268, '関連商品表示数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('RECOMMEND_NUM', '8', 269, 'おすすめ商品表示数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DELIV_DATE_END_MAX', '21', 272, 'お届け可能日以降のプルダウン表示最大日数');
--- モジュールで使用：CV_PAYMENT_LIMIT
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CV_PAYMENT_LIMIT', '14', 275, '支払期限'); 
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CV_PAYMENT_LIMIT', '14', 275, '支払期限 (*モジュールで使用)'); 
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('REVIEW_ALLOW_URL', '0', 277, '商品レビューでURL書き込みを許可するか否か');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MAIL_BACKEND', '"mail"', 285, 'Pear::Mail バックエンド:"mail"|"smtp"|"sendmail"');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMTP_HOST', '"127.0.0.1"', 287, 'SMTPサーバー (MAIL_BACKEND が "smtp" の場合のみ)');
@@ -1194,8 +1192,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMTP_PORT', '"25"',
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UPDATE_SEND_SITE_INFO', 'false', 289, 'アップデート時にサイト情報を送出するか');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USE_POINT', 'true', 290, 'ポイントを利用するか(true:利用する、false:利用しない) (false は一部対応)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('NOSTOCK_HIDDEN', 'false', 291, '在庫無し商品の非表示(true:非表示、false:表示)');
--- モジュールで使用：USE_MOBILE
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USE_MOBILE', 'true', 292, 'モバイルサイトを利用するか(true:利用する、false:利用しない) (false は一部対応)'); 
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USE_MOBILE', 'true', 292, 'モバイルサイトを利用するか(true:利用する、false:利用しない) (false は一部対応) (*モジュールで使用)'); 
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USE_MULTIPLE_SHIPPING', 'true', 293, '複数配送先指定機能を利用するか(true:利用する、false:利用しない)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SLTEXT_LEN', '500', 294, '短文の文字数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEFAULT_TEMPLATE_NAME', '"default"', 300, 'デフォルトテンプレート名(PC)');
@@ -1223,8 +1220,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_CART_URLPATH
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_SHOPPING_CONFIRM_URLPATH', 'ROOT_URLPATH . "shopping/confirm.php"', 413, '購入確認ページ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_SHOPPING_PAYMENT_URLPATH', 'ROOT_URLPATH . "shopping/payment.php"', 414, 'お支払い方法選択ページ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_P_DETAIL_URLPATH', 'ROOT_URLPATH . "products/detail.php?product_id="', 415, '商品詳細(HTML出力)');
--- モジュールで使用：MOBILE_SHOPPING_COMPLETE_URLPATH
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_SHOPPING_COMPLETE_URLPATH', 'ROOT_URLPATH . "shopping/complete.php"', 416, '購入完了画面');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_SHOPPING_COMPLETE_URLPATH', 'ROOT_URLPATH . "shopping/complete.php"', 416, '購入完了画面 (*モジュールで使用)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SESSION_KEEP_METHOD', '"useCookie"', 418, 'セッション維持方法："useCookie"|"useRequest"');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SESSION_LIFETIME', '1800', 419, 'セッションの存続時間 (秒)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OSTORE_URL', '"http://store.ec-cube.net/"', 500, 'オーナーズストアURL');
