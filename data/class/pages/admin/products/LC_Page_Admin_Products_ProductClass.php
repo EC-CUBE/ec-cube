@@ -597,22 +597,23 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                     }
                 }
             }
+
             if ($match === false) {
                 $str_ext = implode('・', $value[2]);
                 $this->arrErr[$value[1]][$index] = '※ ' . $value[0] . 'で許可されている形式は、' . $str_ext . 'です。<br />';
-            }
             // ▲SC_CheckError::FILE_EXT_CHECK から移植
+            }else{
+                $uniqname = date('mdHi') . '_' . uniqid('').'.';
+                $temp_file = preg_replace("/^.*\./", $uniqname, $_FILES['down_realfilename']['name'][$index]);
 
-            $uniqname = date('mdHi') . '_' . uniqid('').'.';
-            $temp_file = preg_replace("/^.*\./", $uniqname, $_FILES['down_realfilename']['name'][$index]);
-
-            if (move_uploaded_file($_FILES['down_realfilename']['tmp_name'][$index], DOWN_TEMP_REALDIR . $temp_file)) {
-                $arrDownRealFiles[$index] = $temp_file;
-                $objFormParam->setValue('down_realfilename', $arrDownRealFiles);
-                GC_Utils_Ex::gfPrintLog($_FILES['down_realfilename']['name'][$index] .' -> '. realpath(DOWN_TEMP_REALDIR . $temp_file));
-            } else {
-                $objErr->arrErr[$keyname] = '※ ファイルのアップロードに失敗しました。<br />';
-                GC_Utils_Ex::gfPrintLog('File Upload Error!: ' . $_FILES['down_realfilename']['name'][$index] . ' -> ' . DOWN_TEMP_REALDIR . $temp_file);
+                if (move_uploaded_file($_FILES['down_realfilename']['tmp_name'][$index], DOWN_TEMP_REALDIR . $temp_file)) {
+                    $arrDownRealFiles[$index] = $temp_file;
+                    $objFormParam->setValue('down_realfilename', $arrDownRealFiles);
+                    GC_Utils_Ex::gfPrintLog($_FILES['down_realfilename']['name'][$index] .' -> '. realpath(DOWN_TEMP_REALDIR . $temp_file));
+                } else {
+                    $objErr->arrErr[$keyname] = '※ ファイルのアップロードに失敗しました。<br />';
+                    GC_Utils_Ex::gfPrintLog('File Upload Error!: ' . $_FILES['down_realfilename']['name'][$index] . ' -> ' . DOWN_TEMP_REALDIR . $temp_file);
+                }
             }
         }
     }
