@@ -64,11 +64,10 @@
 ============================================
 合　計 ￥ <!--{$arrOrder.payment_total|number_format|default:0}-->
 
-<!--{if count($arrShipping) > 0 }-->
+<!--{if count($arrShipping) >= 1}-->
 ************************************************
 　配送情報
 ************************************************
-<!--{/if}-->
 
 <!--{foreach item=shipping name=shipping from=$arrShipping}-->
 ◎お届け先<!--{if count($arrShipping) > 1}--><!--{$smarty.foreach.shipping.iteration}--><!--{/if}-->
@@ -88,6 +87,7 @@
 
 <!--{/foreach}-->
 <!--{/foreach}-->
+<!--{/if}-->
 <!--{if $arrOrder.customer_id && $smarty.const.USE_POINT !== false}-->
 ============================================
 <!--{* ご注文前のポイント {$tpl_user_point} pt *}-->
