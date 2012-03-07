@@ -25,9 +25,9 @@
         $('#category_area li.level1:last').css('border-bottom', 'none');
     });
 //]]></script>
-<div class="bloc_outer">
+<div class="block_outer">
     <div id="category_area">
-        <div class="bloc_body">
+        <div class="block_body">
             <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_bloc_category.gif" alt="商品カテゴリ" /></h2>
             <!--{strip}-->
                 <ul id="categorytree">

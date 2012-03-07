@@ -20,10 +20,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 
-<div class="bloc_outer">
+<div class="block_outer">
     <div id="calender_area">
     <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_bloc_calender.gif" alt="カレンダー" /></h2>
-        <div class="bloc_body">
+        <div class="block_body">
             <!--{section name=num loop=$arrCalendar}-->
                 <!--{assign var=arrCal value=`$arrCalendar[num]`}-->
                 <!--{section name=cnt loop=$arrCal}-->

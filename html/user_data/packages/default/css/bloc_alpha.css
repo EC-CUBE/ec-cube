@@ -61,19 +61,19 @@
 ************************************************ */
 /* 共通
 ----------------------------------------------- */
-#container .bloc_outer #banner_area .bloc_body {
+#container .block_outer #banner_area .block_body {
     border: none;
 }
 
 /* 【メイン】バナーエリア_02
 ----------------------------------------------- */
-.main_column .bloc_outer #banner_area .bloc_body ul {
+.main_column .block_outer #banner_area .block_body ul {
     width: 100%;
 }
-.main_column .bloc_outer #banner_area .bloc_body ul li {
+.main_column .block_outer #banner_area .block_body ul li {
     float: left;
 }
-.main_column .bloc_outer #banner_area .bloc_body ul li.sub_01{
+.main_column .block_outer #banner_area .block_body ul li.sub_01{
     padding-right: 8px;
 }
 
@@ -81,8 +81,8 @@
 ----------------------------------------------- */
 /* 【サイド】バナーエリア_02
 ----------------------------------------------- */
-#leftcolumn .bloc_outer #banner_area .bloc_body ul li ,
-#rightcolumn .bloc_outer #banner_area .bloc_body ul li {
+#leftcolumn .block_outer #banner_area .block_body ul li ,
+#rightcolumn .block_outer #banner_area .block_body ul li {
     margin-bottom: 8px;
 }
 

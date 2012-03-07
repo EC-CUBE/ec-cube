@@ -356,60 +356,30 @@
     <!--{if $arrRecommend}-->
         <div id="whobought_area">
             <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_product_recommend.jpg" alt="その他のオススメ商品" /></h2>
-
-            <!--{section name=cnt loop=$arrRecommend step=2}-->
-            <div class="whobought_bloc clearfix">
-                <!--{if $arrRecommend[cnt]}-->
-                    <!-- 左列 -->
-                    <div class="whobought_left">
-                        <div class="productImage">
-                            <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrRecommend[cnt].product_id|u}-->">
-                                <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrRecommend[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|h}-->" /></a>
-                        </div>
-                        <!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->
-                        <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
-                        <div class="productContents">
-                            <h3><a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrRecommend[cnt].product_id|u}-->"><!--{$arrRecommend[cnt].name|h}--></a></h3>
-                            <p class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}-->(税込)：<span class="price">
-                                <!--{if $price02_min == $price02_max}-->
-                                    <!--{$price02_min|sfCalcIncTax|number_format}-->
-                                <!--{else}-->
-                                    <!--{$price02_min|sfCalcIncTax|number_format}-->～<!--{$price02_max|sfCalcIncTax|number_format}-->
-                                <!--{/if}-->円</span></p>
-                            <p class="mini"><!--{$arrRecommend[cnt].comment|h|nl2br}--></p>
-                        </div>
+            <!--{foreach from=$arrRecommend item=arrItem name="arrRecommend"}-->
+                <div class="product_item">
+                    <div class="productImage">
+                        <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrItem.product_id|u}-->">
+                            <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrItem.main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrItem.name|h}-->" /></a>
                     </div>
-                    <!-- 左列 -->
-                <!--{/if}-->
-
-                <!--{assign var=cnt2 value=`$smarty.section.cnt.iteration*$smarty.section.cnt.step-1`}-->
-                <!--{if $arrRecommend[$cnt2]}-->
-                    <!-- 右列 -->
-                    <div class="whobought_right clearfix">
-                        <div class="productImage">
-                            <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrRecommend[$cnt2].product_id|u}-->">
-                                <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrRecommend[$cnt2].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[$cnt2].name|h}-->" /></a>
-                            <!--{assign var=price02_min value=`$arrRecommend[$cnt2].price02_min`}-->
-                            <!--{assign var=price02_max value=`$arrRecommend[$cnt2].price02_max`}-->
-                        </div>
-                        <div class="productContents">
-                            <h3><a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrRecommend[$cnt2].product_id|u}-->"><!--{$arrRecommend[$cnt2].name|h}--></a></h3>
-                            <p class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}-->(税込)：<span class="price">
-                                <!--{if $price02_min == $price02_max}-->
-                                    <!--{$price02_min|sfCalcIncTax|number_format}-->
-                                <!--{else}-->
-                                    <!--{$price02_min|sfCalcIncTax|number_format}-->～<!--{$price02_max|sfCalcIncTax|number_format}-->
-                                <!--{/if}-->円</span></p>
-                            <p class="mini"><!--{$arrRecommend[$cnt2].comment|h|nl2br}--></p>
-                        </div>
+                    <!--{assign var=price02_min value=`$arrItem.price02_min`}-->
+                    <!--{assign var=price02_max value=`$arrItem.price02_max`}-->
+                    <div class="productContents">
+                        <h3><a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrItem.product_id|u}-->"><!--{$arrItem.name|h}--></a></h3>
+                        <p class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}-->(税込)：<span class="price">
+                            <!--{if $price02_min == $price02_max}-->
+                                <!--{$price02_min|sfCalcIncTax|number_format}-->
+                            <!--{else}-->
+                                <!--{$price02_min|sfCalcIncTax|number_format}-->～<!--{$price02_max|sfCalcIncTax|number_format}-->
+                            <!--{/if}-->円</span></p>
+                        <p class="mini"><!--{$arrItem.comment|h|nl2br}--></p>
                     </div>
-                    <!-- 右列 -->
+                </div><!--{* /.item *}-->
+                <!--{if $smarty.foreach.arrRecommend.iteration % 2 === 0}-->
+                    <div class="clear"></div>
                 <!--{/if}-->
-            </div>
-            <!--{if $smarty.section.cnt.last}-->
-                </div>
-            <!--{/if}-->
-        <!--{/section}-->
+            <!--{/foreach}-->
+        </div>
     <!--{/if}-->
     <!--▲関連商品-->
 

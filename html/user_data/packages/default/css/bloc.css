@@ -31,25 +31,25 @@
 /* ==============================================
 ブロック共通
 /* ============================================= */
-#container .bloc_body {
+#container .block_body {
     background-color: #fff;
 }
 .side_column {
     overflow-x: hidden; /* IE6 表示乱れ防止 */
 }
-.side_column .bloc_outer {
+.side_column .block_outer {
     margin: 10px 7%;
 }
-.side_column .bloc_body ,
-.main_column .bloc_body {
+.side_column .block_body ,
+.main_column .block_body {
     border: solid 1px #ccc;
     border-top: none;
 }
-.side_column .bloc_body .box {
+.side_column .block_body .box {
     border: solid 1px #ccc;
     width: 145px;
 }
-.main_column .bloc_outer {
+.main_column .block_outer {
     margin-bottom: 20px;
 }
 
@@ -57,19 +57,19 @@
 /* リスト
 ----------------------------------------------- */
 /* ログイン 検索条件 */
-#container .bloc_outer .bloc_body dl.formlist {
+#container .block_outer .block_body dl.formlist {
     margin-bottom: 8px;
 }
-#container .bloc_outer .bloc_body dl.formlist dd {
+#container .block_outer .block_body dl.formlist dd {
     margin-bottom: 5px;
 }
-#container .bloc_outer .bloc_body dl.formlist dt {
+#container .block_outer .block_body dl.formlist dt {
     margin-bottom: 3px;
     padding-left: 15px;
     background: url("../img/icon/ico_arrow_03.gif") no-repeat left;
     font-size: 90%;
 }
-#container .bloc_outer .bloc_body dl.formlist span{
+#container .block_outer .block_body dl.formlist span{
     vertical-align: top;
 }
 
@@ -127,7 +127,7 @@ div#bottomcolumn {
 /* ===============================================
 ▼新着情報
 =============================================== */
-#news_area .bloc_body {
+#news_area .block_body {
     padding: 10px;
 }
 #news_area .news_contents {
@@ -180,7 +180,7 @@ div#bottomcolumn {
 /* ===============================================
 ▼カテゴリ
 =============================================== */
-#category_area .bloc_body{
+#category_area .block_body{
     background-color: #fffaf0;
 }
 
@@ -249,15 +249,15 @@ ul.button_like li a {
 ▼ログイン（サイド用）
 ※ヘッダー用はbloc_alpha.css内に記述
 =============================================== */
-#container div#login_area .bloc_body {
+#container div#login_area .block_body {
     padding: 10px;
 }
 
-#container div#login_area .bloc_body p {
+#container div#login_area .block_body p {
     margin-bottom: 5px;
 }
 
-#container div#login_area .bloc_body .btn {
+#container div#login_area .block_body .btn {
     text-align: center;
 }
 #container .login_area dl.formlist {
@@ -280,7 +280,7 @@ ul.button_like li a {
     vertical-align: bottom;
     text-align: left;
 }
-#container div#login_area .bloc_body .mini {
+#container div#login_area .block_body .mini {
     margin-top: 5px;
     letter-spacing: -0.01em;
 }
@@ -289,10 +289,10 @@ ul.button_like li a {
 /* ===============================================
 ▼検索
 =============================================== */
-div#search_area .bloc_body {
+div#search_area .block_body {
     padding: 10px;
 }
-div#search_area .bloc_body .btn {
+div#search_area .block_body .btn {
     text-align: center;
 }
 
@@ -304,7 +304,7 @@ div#search_area .bloc_body .btn {
     background-color: transparent;
     border: none;
 }
-#calender_area .bloc_body {
+#calender_area .block_body {
     padding: 10px 0;
     background-color: #f1f9fc;
 }
@@ -355,26 +355,26 @@ div#search_area .bloc_body .btn {
 =============================================== */
 /* 共通
 ----------------------------------------------- */
-#recommend_area .bloc_body ,
-#whobought_area .whobought_bloc {
+#recommend_area .block_body ,
+#whobought_area .product_item {
     margin-bottom: 10px;
     padding: 10px 0 10px;
     border: none;
     background: url("../img/background/line_dot_01.gif") repeat-x bottom;
 }
 
-#recommend_area .bloc_body p ,
-#whobought_area .whobought_bloc p {
+#recommend_area .block_body p ,
+#whobought_area .product_item p {
     margin: 0 0 5px 0;
 }
 
-#recommend_area .bloc_body img ,
-#whobought .whobought_bloc img {
+#recommend_area .block_body img ,
+#whobought_area .product_item img {
     margin: 0 5px 0 0;
 }
 
-#recommend_area .bloc_body h3 ,
-#whobought_area .whobought_bloc h3 {
+#recommend_area .block_body h3 ,
+#whobought_area .product_item h3 {
     font-size: 100%;
     font-weight: normal;
 }
@@ -388,14 +388,14 @@ div#search_area .bloc_body .btn {
 /* 画像
 ----------------------------------------------- */
 /* メインカラム用 */
-.main_column #recommend_area .bloc_body .productImage,
-#whobought_area .whobought_bloc .productImage {
+.main_column #recommend_area .block_body .productImage,
+#whobought_area .product_item .productImage {
     margin-bottom: 10px;
     float: left;
     width: 90px;
 }
 /* サイドカラム用 */
-.side_column #recommend_area .bloc_body .productImage {
+.side_column #recommend_area .block_body .productImage {
     float: none;
     text-align: center;
     width: auto;
@@ -405,41 +405,39 @@ div#search_area .bloc_body .btn {
 /* 左右の振り分け
 ----------------------------------------------- */
 .main_column #recommend_area .product_item,
-#whobought_area .whobought_bloc .whobought_left {
+#whobought_area .product_item {
     float: left;
     width: 47.5%;
-}
-#whobought_area .whobought_bloc .whobought_right {
-    float: right;
-    width: 47.5%;
+    padding-left: 1%;
+    padding-right: 1%;
 }
 
 
 /* 商品説明テキスト
 ----------------------------------------------- */
 /* メインカラム用 1カラム時*/
-#one_maincolumn #recommend_area .bloc_body .productContents {
+#one_maincolumn #recommend_area .block_body .productContents {
     float: right;
     width: 74%;
 }
 
 /* メインカラム用 2カラム時*/
-#two_maincolumn_right #recommend_area .bloc_body .productContents ,
-#two_maincolumn_left #recommend_area .bloc_body .productContents ,
-#two_maincolumn_right #whobought_area .whobought_bloc .productContents ,
-#two_maincolumn_left #whobought_area .whobought_bloc .productContents {
+#two_maincolumn_right #recommend_area .block_body .productContents ,
+#two_maincolumn_left #recommend_area .block_body .productContents ,
+#two_maincolumn_right #whobought_area .productContents ,
+#two_maincolumn_left #whobought_area .productContents {
     float: right;
     width: 74%;
 }
 
 /* メインカラム用 3カラム時*/
-#three_maincolumn #recommend_area .bloc_body .productContents ,
-#three_maincolumn #whobought_area .whobought_bloc .productContents {
+#three_maincolumn #recommend_area .block_body .productContents ,
+#three_maincolumn #whobought_area .productContents {
     float: right;
     width: 67%;
 }
 
 /* サイドカラム用 */
-.side_column #recommend_area .bloc_body .productContents {
+.side_column #recommend_area .block_body .productContents {
     clear: both;
 }
