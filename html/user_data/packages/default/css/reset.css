@@ -3,18 +3,73 @@
 /************************************************
  ブラウザリセット
 ************************************************ */
-html, body, div, span, applet, object, iframe, h1, h2, h3,
-h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address,
-big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend, table, caption, tbody, tfoot,
-thead, tr, th, td {
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+font,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td {
     margin: 0;
     padding: 0;
     border: 0;
 }
 
-table, caption, th, td {
+table,
+caption,
+th,
+td {
     margin: 0;
     padding: 0;
     border: 0;
@@ -25,14 +80,20 @@ table, caption, th, td {
     font-weight: normal;
 }
 
-a img, iframe {
+a img,
+iframe {
     border: none;
 }
-ol,ul,li {
+ol,
+ul,
+li {
     list-style: none;
 }
 
-input, textarea, select, button {
+input,
+textarea,
+select,
+button {
     font-size: 100%;
     font-family: inherit;
 }

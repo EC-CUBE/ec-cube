@@ -11,9 +11,11 @@ style info :スライド/ポップアップ
     background: #FFF;
     padding-bottom: 30px;
 }
-#windowcolumn h2.title,#slidewindow h2.title {
+#windowcolumn h2.title,
+#slidewindow h2.title {
 }
-#slidewindow .title_box,#windowcolumn .title_box {
+#slidewindow .title_box,
+#windowcolumn .title_box {
     margin: 0;
     padding: 0!important;
     text-align: center;
@@ -135,7 +137,8 @@ input[type="submit"].nav_nonmember {
 .navBox li:last-child {
     border-bottom: none;
 }
-.navBox li a:link, .navBox li a:visited {
+.navBox li a:link,
+.navBox li a:visited {
     color: #000;
 }
 

@@ -150,7 +150,8 @@ style info :ブロック用
     -webkit-border-bottom-left-radius: 8px;
     moz-border-bottom-left-radius: 8px;
 }
-#recommend_area div.flickSlideBottom div.bottomLeft,#recommend_area div.flickSlideBottom div.bottomRight {
+#recommend_area div.flickSlideBottom div.bottomLeft,
+#recommend_area div.flickSlideBottom div.bottomRight {
     display: table-cell;
     -webkit-box-sizing: border-box;
     -webkit-box-shadow: rgba(0, 0, 0, 0.0976562) 0px 1px 3px, rgba(255, 255, 255, 1) 0px 0px 0px inset;
@@ -255,10 +256,12 @@ style info :ブロック用
 #categorytree li li:first-child {
     border-top: #CCC solid 1px;
 }
-#categorytree li:last-child,#categorytree li li:last-child {
+#categorytree li:last-child,
+#categorytree li li:last-child {
     border-bottom: none;
 }
-#categorytree ul li a, .categorytree > ul > li > ul > li a {
+#categorytree ul li a,
+.categorytree > ul > li > ul > li a {
     padding: 0.6em 0;
 }
 .category_body {
@@ -282,7 +285,8 @@ style info :ブロック用
     background: transparent;
     text-align: right;
 }
-.category_header.plus, .category_header.minus {
+.category_header.plus,
+.category_header.minus {
     color: #FFF;
     margin: 0 6px 0 8px;
     padding-bottom: 4px;
@@ -299,7 +303,8 @@ style info :ブロック用
     -webkit-border-radius: 3px;
 }
 
-.category_header.plus > a, .category_header.minus > a {
+.category_header.plus > a,
+.category_header.minus > a {
     width: 1.5em;
     color: #FFF;
     display: inline-block;
@@ -346,12 +351,14 @@ style info :ブロック用
 
 
 /*リンクカラー*/
-.category_body a:link, .category_body a:visited {
+.category_body a:link,
+.category_body a:visited {
     color: #000;
     text-decoration: none;
     cursor: pointer;
 }
-.category_header.plus a, .category_header.minus a {
+.category_header.plus a,
+.category_header.minus a {
     color: #FFF;
 }
 

@@ -80,10 +80,13 @@ MYページナビ
     background: -moz-linear-gradient(center top, #5393c5 10%,#80b6e2 100%);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #5393c5),color-stop(1, #80b6e2));
 }
-#mypage_nav ul li.nav_delivadd,#mypage_nav ul li.nav_change {
+#mypage_nav ul li.nav_delivadd,
+#mypage_nav ul li.nav_change {
     width: 49.7%;
 }
-#mypage_nav ul li.nav_history,#mypage_nav ul li.nav_favorite,#mypage_nav ul li.nav_refusal {
+#mypage_nav ul li.nav_history,
+#mypage_nav ul li.nav_favorite,
+#mypage_nav ul li.nav_refusal {
     width: 33%;
 }
 #mypage_nav li:first-child {
@@ -93,11 +96,13 @@ MYページナビ
     border-top: #FFF solid 1px;
     border-left: none;
 }
-#mypage_nav li:nth-child(4),#mypage_nav li:nth-child(5) {
+#mypage_nav li:nth-child(4),
+#mypage_nav li:nth-child(5) {
     border-top: #FFF solid 1px;
 }
 
-#mypage_nav li:last-child,#mypage_nav li:nth-child(2) {
+#mypage_nav li:last-child,
+#mypage_nav li:nth-child(2) {
     border-right: none;
 }
 
@@ -224,7 +229,8 @@ MYページナビ
     display: inline-block;
     vertical-align: middle;
 }
-.btn_refuse a.btn, .btn_refuse input[type="submit"].btn {
+.btn_refuse a.btn,
+.btn_refuse input[type="submit"].btn {
     font-size: 13px!important;
     display: inline;
 }

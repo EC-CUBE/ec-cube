@@ -1,6 +1,29 @@
 @charset "utf-8";
-html, body, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, dt, dd, p,
-header, hgroup, section, article, aside, hgroup, footer, figure, figcaption, nav {
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+ol,
+dl,
+li,
+dt,
+dd,
+p,
+header,
+hgroup,
+section,
+article,
+aside,
+hgroup,
+footer,
+figure,
+figcaption,
+nav {
     margin: 0;
     padding: 0;
     /*font-size: 100%;*/
@@ -9,11 +32,30 @@ body {
     line-height: 1.0;
     -webkit-text-size-adjust: none;
 }
-article,aside,canvas,details,figcaption,figure,
-footer,header,hgroup,menu,nav,section,summary {
+article,
+aside,
+canvas,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+summary {
     display: block;
 }
-address,caption,cite,code,dfn,em,strong,th,var {
+address,
+caption,
+cite,
+code,
+dfn,
+em,
+strong,
+th,
+var {
     font-style: normal;
 }
 img {
@@ -24,7 +66,8 @@ img a {
     border: 0;
     text-decoration: none;
 }
-ul, ol {
+ul,
+ol {
     list-style: none;
 }
 a {
@@ -38,7 +81,8 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
-input, select {
+input,
+select {
     font-size: 100%;
 }
 

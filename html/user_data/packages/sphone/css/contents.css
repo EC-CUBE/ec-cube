@@ -63,7 +63,8 @@ style info :下層コンテンツ用(#undercolumn)
     border-bottom: #CCC solid 1px;
 }
 /*合計(フォーム下)*/
-.total_area, .result_area {
+.total_area,
+.result_area {
     padding: 10px;
     text-align: right;
     background: #F7F5F0;
@@ -187,7 +188,8 @@ style info :下層コンテンツ用(#undercolumn)
 .deliv_announce p {
     width: 80%;
 }
-.bubbleBox a:link, .bubbleBox a:visited {
+.bubbleBox a:link,
+.bubbleBox a:visited {
     color: #333;
 }
 /* -----------------------------------------------
@@ -431,7 +433,8 @@ p.check_point .box_point {
     float: right;
     display: block;
 }
-.result_area dt, .result_area dd {
+.result_area dt,
+.result_area dd {
     text-align: right;
 }
 .result_area dt {
@@ -548,12 +551,14 @@ dl.form_entry .bg_head {
     line-height: 1.3;
 }
 
-#completetext, .shopInformation {
+#completetext,
+.shopInformation {
     font-size: 14px;
     padding: 10px;
     clear: both;
 }
-#completetext p, .shopInformation p {
+#completetext p,
+.shopInformation p {
     margin-bottom: 0.5em;
     line-height: 1.3;
 }

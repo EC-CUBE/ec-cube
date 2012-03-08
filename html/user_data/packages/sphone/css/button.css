@@ -13,7 +13,8 @@ style info :ボタン用
 ul.btn_btm {
     clear: both;
 }
-.btn_area li,ul.btn_btm li {
+.btn_area li,
+ul.btn_btm li {
     margin-bottom: 12px;
 }
 .btn_area_top {
@@ -31,7 +32,10 @@ ul.btn_btm {
 /*-----------------------------------------------
 ボタン（進む系ボタン:グリーン）
 ----------------------------------------------- */
-a.btn,a.btn:link,a.btn:visited,a.btn:hover {
+a.btn,
+a.btn:link,
+a.btn:visited,
+a.btn:hover {
     color: #FFF;
     font-size: 16px;
     font-weight: bold;
@@ -75,7 +79,10 @@ input[type="submit"].btn {
 /*-----------------------------------------------
 ボタン（戻る系ボタン:グレー）
 ----------------------------------------------- */
-a.btn_back,a.btn_back:link,a.btn_back:visited,a.btn_back:hover {
+a.btn_back,
+a.btn_back:link,
+a.btn_back:visited,
+a.btn_back:hover {
     color: #FFF;
     font-size: 16px;
     font-weight: bold;
@@ -112,7 +119,11 @@ input[type="submit"].btn_back {
 /*-----------------------------------------------
 ボタン（サブ系ボタン:ライトグレー）
 ----------------------------------------------- */
-.btn_sub,a.btn_sub,a.btn_sub:link,a.btn_sub:visited,a.btn_sub:hover {
+.btn_sub,
+a.btn_sub,
+a.btn_sub:link,
+a.btn_sub:visited,
+a.btn_sub:hover {
     color: #000;
     font-size: 16px;
     padding: 5px 0;
@@ -149,7 +160,10 @@ input[type="submit"].btn_sub {
 /*-----------------------------------------------
 ボタン（追加系ボタン:ホワイト）
 ----------------------------------------------- */
-a.btn_more,a.btn_more:link,a.btn_more:visited,a.btn_more:hover {
+a.btn_more,
+a.btn_more:link,
+a.btn_more:visited,
+a.btn_more:hover {
     color: #000;
     font-size: 16px;
     padding: 5px 0;
@@ -201,7 +215,10 @@ a.btn_btm {
     -moz-transition: opacity 1s ease-int;
     cursor: pointer;
 }
-.btn_btm,a.btn_btm:link,a.btn_btm:hover,a.btn_btm:visited {
+.btn_btm,
+a.btn_btm:link,
+a.btn_btm:hover,
+a.btn_btm:visited {
     color: #FFF;
     text-decoration: none;
 }
@@ -245,7 +262,9 @@ ul.edit li {
 ul.edit li:first-child {
     margin-right: 0.8em;
 }
-a.b_edit:link,a.b_edit:visited,a.b_edit:hover {
+a.b_edit:link,
+a.b_edit:visited,
+a.b_edit:hover {
     color: #000;
     font-size: 11px;
     padding: 4px 5px;
@@ -261,7 +280,9 @@ a.b_edit:link,a.b_edit:visited,a.b_edit:hover {
     cursor: pointer;
     vertical-align: middle;
 }
-a.b_delete:link,a.b_delete:visited,a.b_delete:hover {
+a.b_delete:link,
+a.b_delete:visited,
+a.b_delete:hover {
     vertical-align: top;
     cursor: pointer;
 }
@@ -312,7 +333,8 @@ a.b_delete:link,a.b_delete:visited,a.b_delete:hover {
 /*-----------------------------------------------
 ボタン（ログイン/ウィンドウ)
 ----------------------------------------------- */
-.btn_login, .btn_close {
+.btn_login,
+.btn_close {
     width: 70%;
     margin: 10px auto;
 }

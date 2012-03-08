@@ -29,7 +29,8 @@ option {
     font-size: 100%;
 }
 
-input, textarea {
+input,
+textarea {
     margin-right: 3px;
     font-size: 100%;
 }
@@ -51,7 +52,8 @@ img {
     border: 0;
 }
 
-ul, li {
+ul,
+li {
     list-style: none;
 }
 
@@ -107,7 +109,8 @@ table {
     font-size: 100%;
 }
 
-th, td {
+th,
+td {
     padding: 5px;
     border: 1px solid #ccc;
 }
@@ -129,7 +132,8 @@ table.list th.column {
     text-align: left;
 }
 
-table.list .edit, table.list .delete {
+table.list .edit,
+table.list .delete {
     width: 10%;
 }
 
@@ -145,7 +149,8 @@ table.list th.right {
     text-align: right;
 }
 
-table.list td.id, table.list td.thumbnail {
+table.list td.id,
+table.list td.thumbnail {
     text-align: center;
 }
 
@@ -167,7 +172,9 @@ table tr.last {
     width: 200px;
 }
 
-.contents-main .btn-area, #popup .btn-area, #form_edit .btn-area {
+.contents-main .btn-area,
+#popup .btn-area,
+#form_edit .btn-area {
     margin : 0 0 60px 0;
     padding: 20px 0;
     clear: both;
@@ -176,7 +183,9 @@ table tr.last {
     text-align: center;
 }
 
-.contents-main .btn-area li, #popup .btn-area li, .btn-area li {
+.contents-main .btn-area li,
+#popup .btn-area li,
+.btn-area li {
     margin-right: 10px;
     display: inline;
 }
@@ -230,7 +239,9 @@ td.AlignLeft {
 }
 
 /*通常ボタン*/
-.btn-normal, a.btn-normal:link, a.btn-normal:visited {
+.btn-normal,
+a.btn-normal:link,
+a.btn-normal:visited {
     margin-right: 5px;
     padding: 2px 10px;
     border: solid 1px #bcbecb;
@@ -262,7 +273,9 @@ td.AlignLeft {
 
 
 /*ツールボタン 共通部分*/
-.btn-tool-format, a.btn-tool-format:link, a.btn-tool-format:visited {
+.btn-tool-format,
+a.btn-tool-format:link,
+a.btn-tool-format:visited {
     padding: 0 6px;
     border: solid 1px #6b6d87;
     display: inline-block;
@@ -293,7 +306,9 @@ td.AlignLeft {
 
 
 /*ツールボタン コンテンツ*/
-.btn-tool, a.btn-tool:link, a.btn-tool:visited {
+.btn-tool,
+a.btn-tool:link,
+a.btn-tool:visited {
     padding: 0 6px;
     border: solid 1px #999;
     display: inline-block;
@@ -323,7 +338,9 @@ td.AlignLeft {
 
 
 /*登録する・検索するボタン*/
-.btn-action, a.btn-action:link, a.btn-action:visited {
+.btn-action,
+a.btn-action:link,
+a.btn-action:visited {
     padding: 5px 10px;
     border: solid 1px #bcbecb;
     display: inline-block;
@@ -352,7 +369,9 @@ td.AlignLeft {
 }
 
 /*商品を選択するボタン(2/18追加)*/
-.btn-action-m, a.btn-action-m:link, a.btn-action-m:visited {
+.btn-action-m,
+a.btn-action-m:link,
+a.btn-action-m:visited {
     padding: 3px 10px;
     border: solid 1px #bcbecb;
     display: inline-block;
@@ -400,7 +419,9 @@ td.AlignLeft {
     font-size: 114%;
 }
 
-a.btn-normal:hover, a.btn-action:hover, a.btn-tool:hover {
+a.btn-normal:hover,
+a.btn-action:hover,
+a.btn-tool:hover {
     border: solid 1px #d5d7df;
     color: #6d728b;
 }
@@ -410,7 +431,8 @@ a.btn-tool-format:hover {
     color: #6b728b;
 }
 
-a.btn:active, a.btn-normal:active {
+a.btn:active,
+a.btn-normal:active {
     background-image: url('../img/button/white-grad-active.png');
 }
 
@@ -519,7 +541,8 @@ a:hover {
     position: relative;
 }
 
-#navi li a, #navi li a span {
+#navi li a,
+#navi li a span {
     display: block;
     _float: left;/*IE6対策*/
     cursor: pointer;
@@ -625,11 +648,18 @@ a:hover {
     background: #666;
 }
 
-#navi li.on li a, #navi li.on li a span, #navi li li.on a, #navi li li.on a span, {
+#navi li.on li a,
+#navi li.on li a span,
+#navi li li.on a,
+#navi li li.on a span,
+ {
     background: transparent;
 }
 
-#navi li.sfhover li a, #navi li.sfhover li a span, #navi li li.sfhover a, #navi li li.sfhover a span {
+#navi li.sfhover li a,
+#navi li.sfhover li a span,
+#navi li li.sfhover a,
+#navi li li.sfhover a span {
     background: transparent;
 }
 
@@ -651,7 +681,9 @@ a:hover {
     font-weight: normal;
 }
 
-#navi li li li, #navi li li a, #navi li li li a span {
+#navi li li li,
+#navi li li a,
+#navi li li li a span {
     margin-left: 0;
     display: block;
     width: 180px;
@@ -677,11 +709,19 @@ a:hover {
     _margin: -28px 0 0 187px;/*IE6応急 */
 }
 
-#navi li:hover ul ul, #navi li:hover ul ul ul, #navi li.sfhover ul ul, #navi li.sfhover ul ul ul {
+#navi li:hover ul ul,
+#navi li:hover ul ul ul,
+#navi li.sfhover ul ul,
+#navi li.sfhover ul ul ul {
     left: -9999px;
 }
 
-#navi li:hover ul, #navi li li:hover ul, #navi li li li:hover ul, #navi li.sfhover ul, #navi li li.sfhover ul, #navi li li li.sfhover ul {
+#navi li:hover ul,
+#navi li li:hover ul,
+#navi li li li:hover ul,
+#navi li.sfhover ul,
+#navi li li.sfhover ul,
+#navi li li li.sfhover ul {
     left: auto;
 }
 
@@ -776,7 +816,8 @@ a:hover {
     background: #f4f5f5;
 }
 
-.pager li a:hover, .pager li.on a:hover {
+.pager li a:hover,
+.pager li.on a:hover {
     background: #f8f8f8;
     border: 1px solid #ccc;
 }
@@ -1081,13 +1122,15 @@ body > #container {
 
 /* 商品管理
 ----------------------------------------------- */
-#products-category-left, #products-rank-left {
+#products-category-left,
+#products-rank-left {
     float: left;
     width: 285px;
     min-height: 200px;
 }
 
-#products-category-right, #products-rank-right {
+#products-category-right,
+#products-rank-right {
     margin-left: 285px;
 }
 
@@ -1100,7 +1143,8 @@ body > #container {
     min-height: 200px;
 }
 
-#products-category-left, #products-rank-left {
+#products-category-left,
+#products-rank-left {
     min-height: 200px;
     padding: 10px;
     border: 3px solid #ddd;
@@ -1160,7 +1204,8 @@ body > #container {
     table-layout: fixed;
 }
 
-.design-layout th, .design-layout td {
+.design-layout th,
+.design-layout td {
     vertical-align: top;
     text-align: center;
 }
@@ -1173,13 +1218,23 @@ body > #container {
     width: 175px;
 }
 
-.design-layout #LeftNavi, .design-layout #MainHead, .design-layout #RightNavi {
+.design-layout #LeftNavi,
+.design-layout #MainHead,
+.design-layout #RightNavi {
     width: 33.33%;
 }
 
-.design-layout #TopNavi, .design-layout #HeadNavi, .design-layout #HeaderTopNavi, .design-layout #LeftNavi,
-.design-layout #MainHead, .design-layout #MainFoot, .design-layout #RightNavi, .design-layout #BottomNavi,
-.design-layout #FooterBottomNavi, .design-layout #HeaderInternalNavi, .design-layout #Unused {
+.design-layout #TopNavi,
+.design-layout #HeadNavi,
+.design-layout #HeaderTopNavi,
+.design-layout #LeftNavi,
+.design-layout #MainHead,
+.design-layout #MainFoot,
+.design-layout #RightNavi,
+.design-layout #BottomNavi,
+.design-layout #FooterBottomNavi,
+.design-layout #HeaderInternalNavi,
+.design-layout #Unused {
     padding-bottom: 20px;
     height: 10px; /*IE6応急処置 */
 }
@@ -1241,7 +1296,8 @@ td.attention_fookpoint {
 
 /* フォーム
 ----------------------------------------------- */
-div.btn,p.remark {
+div.btn,
+p.remark {
     margin: 0 0 20px 0;
 }
 
@@ -1450,14 +1506,14 @@ div.btn,p.remark {
 
 
 /* 権限 */
-x-dummy
-,.authority_1 #navi-basis-masterdata
-,.authority_1 #navi-contents-file
-,.authority_1 #navi-design-bloc
-,.authority_1 #navi-design-template
-,.authority_1 #navi-design-add
-,.authority_1 #navi-system
-,.authority_1 #navi-ownersstore {
+x-dummy,
+.authority_1 #navi-basis-masterdata,
+.authority_1 #navi-contents-file,
+.authority_1 #navi-design-bloc,
+.authority_1 #navi-design-template,
+.authority_1 #navi-design-add,
+.authority_1 #navi-system,
+.authority_1 #navi-ownersstore {
     /* display: none; --- IE で不具合 */
     border: none;
     width: 0;
@@ -1487,7 +1543,9 @@ tr.movingHandle td {
 }
 
 
-table.layout, table.layout th, table.layout td {
+table.layout,
+table.layout th,
+table.layout td {
     margin: 0;
     padding: 0;
     border: none;
