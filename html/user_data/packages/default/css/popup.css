@@ -36,7 +36,8 @@ div#window_area p.information {
 }
 
 div#window_area .message {
-    margin-bottom: 20px;    color: #f60;
+    margin-bottom: 20px;
+    color: #f60;
     line-height: 150%;
     font-weight: bold;
     font-size: 140%;

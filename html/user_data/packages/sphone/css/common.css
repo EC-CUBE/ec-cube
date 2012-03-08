@@ -234,7 +234,8 @@ h3.subtitle {
     background: -moz-linear-gradient(center top, #96A4AF 0%,#84949F 100%);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #96A4AF),color-stop(1, #84949F));
     border-top: #74828B solid 1px;
-    border-bottom: #74828B solid 1px;vertical-align: middle;
+    border-bottom: #74828B solid 1px;
+    vertical-align: middle;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -491,7 +492,8 @@ hr.dashed {
     border: 0;
     border-top: #CCC dashed 1px;
     margin: 0.2em 0;
-padding:0;}
+    padding: 0;
+}
 .free_money_area {
     font-size: 11px;
 }

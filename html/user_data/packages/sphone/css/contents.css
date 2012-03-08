@@ -332,7 +332,6 @@ style info :下層コンテンツ用(#undercolumn)
 .delivContents ul li:first-child {
     line-height: 1.2;
     vertical-align: bottom;
-
 }
 
 /* -----------------------------------------------

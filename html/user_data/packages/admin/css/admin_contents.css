@@ -1049,7 +1049,8 @@ body > #container {
 }
 
 .home-info-item .date {
-    background: #ddd;padding: 5px 10px 0px;
+    background: #ddd;
+    padding: 5px 10px 0px;
 }
 
 .home-info-item .title {

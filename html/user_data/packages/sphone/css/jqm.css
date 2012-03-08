@@ -56,7 +56,7 @@ style info :jqmテーマ
 }
 
 .ui-body-f .ui-link-inherit {
-    color: 	#333333;
+    color: #333333;
 }
 .ui-body-f .ui-link {
     color: #4265AE;
@@ -126,10 +126,9 @@ style info :jqmテーマ
 
 .ui-link:link {
     color: #4265AE;
-
 }
 .ui-link:visited {
-    color: 					#603E7D;
+    color: #603E7D;
     font-weight: bold;
 }
 
