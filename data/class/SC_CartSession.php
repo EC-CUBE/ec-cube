@@ -623,7 +623,6 @@ class SC_CartSession {
     function calculate($productTypeId, &$objCustomer, $use_point = 0,
         $deliv_pref = '', $charge = 0, $discount = 0, $deliv_id = 0
     ) {
-        $objDb = new SC_Helper_DB_Ex();
 
         $total_point = $this->getAllProductsPoint($productTypeId);
         $results['tax'] = $this->getAllProductsTax($productTypeId);
@@ -642,7 +641,7 @@ class SC_CartSession {
         if (OPTION_DELIV_FEE == 1
             && !SC_Utils_Ex::isBlank($deliv_pref)
             && !SC_Utils_Ex::isBlank($deliv_id)) {
-            $results['deliv_fee'] += $objDb->sfGetDelivFee($deliv_pref, $deliv_id);
+            $results['deliv_fee'] += $this->sfGetDelivFee($deliv_pref, $deliv_id);
         }
 
         // 送料無料チェック
@@ -739,4 +738,33 @@ class SC_CartSession {
     function hasProductType($product_type_id) {
         return in_array($product_type_id, $this->getKeys());
     }
+
+    /**
+     * 都道府県から配送料金を取得する.
+     *
+     * @param integer|array $pref_id 都道府県ID 又は都道府県IDの配列
+     * @param integer $deliv_id 配送業者ID
+     * @return string 指定の都道府県, 配送業者の配送料金
+     */
+    function sfGetDelivFee($pref_id, $deliv_id = 0) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        if (!is_array($pref_id)) {
+            $pref_id = array($pref_id);
+        }
+        $sql = <<< __EOS__
+            SELECT T1.fee AS fee
+            FROM dtb_delivfee T1
+                JOIN dtb_deliv T2
+                    ON T1.deliv_id = T2.deliv_id
+            WHERE T1.pref = ?
+                AND T1.deliv_id = ?
+                AND T2.del_flg = 0
+__EOS__;
+        $result = 0;
+        foreach ($pref_id as $pref) {
+            $result += $objQuery->getOne($sql, array($pref, $deliv_id));
+        }
+        return $result;
+    }
+
 }
