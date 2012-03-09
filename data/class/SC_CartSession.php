@@ -553,7 +553,7 @@ class SC_CartSession {
                         $total_inctax = SC_Helper_DB_Ex::sfCalcIncTax($item['price']) * $limit;
                         $this->setProductValue($item['id'], 'total_inctax', $total_inctax, $productTypeId);
                         $tpl_message .= '※「' . $product['name'] . '」は販売制限(または在庫が不足)しております。';
-                        $tpl_message .= '一度に数量{$limit}を超える購入はできません。' . "\n";
+                        $tpl_message .= "一度に数量{$limit}を超える購入はできません。" . "\n";
                     } else {
                         $this->delProduct($item['cart_no'], $productTypeId);
                         $tpl_message .= '※「' . $product['name'] . "」は売り切れました。\n";
