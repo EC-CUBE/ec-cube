@@ -40,14 +40,14 @@ class SC_SessionFactory_UseCookie extends SC_SessionFactory {
     /**
      * セッションパラメーターの指定
      * ・ブラウザを閉じるまで有効
-     * ・すべてのパスで有効
-     *   FIXME 多分、同一ホスト名に複数の EC-CUBE をインストールした場合に望ましくない状態である。特段の事由がなければ、アプリケーションルートを指定すべきだし、あればコメントに残すべき。
+     * ・EC-CUBE ルート配下で有効
      * ・同じドメイン間で共有
+     * FIXME セッションキーのキーが PHP デフォルトのため、上位ディレクトリーで定義があると、その値で動作すると考えられる。
      **/
     function initSession() {
         ini_set('session.cache_limiter', 'none');
         if (session_id() === '') {
-            session_set_cookie_params(0, '/', DOMAIN_NAME);
+            session_set_cookie_params(0, ROOT_URLPATH, DOMAIN_NAME);
             if (!ini_get('session.auto_start')) {
                 // セッション開始
                 session_start();

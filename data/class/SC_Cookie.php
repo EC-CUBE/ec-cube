@@ -21,7 +21,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-/* 日時表示用クラス */
+/**
+ * クッキー用クラス
+ *
+ */
 class SC_Cookie {
 
     var $expire;
@@ -34,10 +37,14 @@ class SC_Cookie {
 
     // クッキー書き込み
     function setCookie($key, $val) {
-        setcookie($key, $val, $this->expire, '/', DOMAIN_NAME);
+        setcookie($key, $val, $this->expire, ROOT_URLPATH, DOMAIN_NAME);
     }
 
-    // クッキー取得
+    /**
+     * クッキー取得
+     *
+     * EC-CUBE をURLパスルート以外にインストールしている場合、上位ディレクトリの値も(劣後ではあるが)取得する点に留意。
+     */
     function getCookie($key) {
         return isset($_COOKIE[$key]) ? $_COOKIE[$key] : null;
     }

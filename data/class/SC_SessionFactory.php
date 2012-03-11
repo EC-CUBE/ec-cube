@@ -68,14 +68,14 @@ class SC_SessionFactory {
 
             // クッキーを使用する
             case 'useCookie':
+            default:
                 // モバイルの場合はSC_SessionFactory_UseRequestを使用する
                 if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
                     $session = new SC_SessionFactory_UseRequest;
                     $session->setState('mobile');
-                    break;
+                } else {
+                    $session = new SC_SessionFactory_UseCookie;
                 }
-            default:
-                $session = new SC_SessionFactory_UseCookie;
                 break;
         }
 
