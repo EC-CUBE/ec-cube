@@ -111,23 +111,6 @@ class SC_Session {
         $this->SetSession('uniqid', SC_Utils_Ex::sfGetUniqRandomId());
     }
 
-    /* セッションの破棄 */
-    function EndSession() {
-        // デフォルトは、「PHPSESSID」
-        $sname = session_name();
-        // セッション変数を全て解除する
-        $_SESSION = array();
-        // セッションを切断するにはセッションクッキーも削除する。
-        // Note: セッション情報だけでなくセッションを破壊する。
-        if (isset($_COOKIE[$sname])) {
-            setcookie($sname, '', time()-42000, '/');
-        }
-        // 最終的に、セッションを破壊する
-        session_destroy();
-        // ログに記録する
-        GC_Utils_Ex::gfPrintLog('logout : user='.$this->login_id.' auth='.$this->authority.' sid='.$this->sid);
-    }
-
     // 関連セッションのみ破棄する。
     function logout() {
         unset($_SESSION['cert']);
