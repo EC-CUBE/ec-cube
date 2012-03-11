@@ -48,10 +48,8 @@ class SC_SessionFactory_UseCookie extends SC_SessionFactory {
         ini_set('session.cache_limiter', 'none');
         if (session_id() === '') {
             session_set_cookie_params(0, ROOT_URLPATH, DOMAIN_NAME);
-            if (!ini_get('session.auto_start')) {
-                // セッション開始
-                session_start();
-            }
+            // セッション開始
+            session_start();
         }
     }
 
