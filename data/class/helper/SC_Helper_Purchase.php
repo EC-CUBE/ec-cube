@@ -568,6 +568,19 @@ class SC_Helper_Purchase {
     }
 
     /**
+     * 支払方法の詳細を取得する.
+     *
+     * @param integer $payment_id お支払い方法
+     * @return array 支払方法詳細の配列
+     */
+    function getPaymentsByPaymentsId($payment_id) {
+		$objQuery =& SC_Query_Ex::getSingletonInstance();
+        $where = 'payment_id = ? AND del_flg = 0';
+        $arrValues = array($payment_id);
+        return $objQuery->getRow('*', 'dtb_payment', $where, $arrValues);
+    }
+
+    /**
      * お届け日一覧を取得する.
      */
     function getDelivDate(&$objCartSess, $productTypeId) {

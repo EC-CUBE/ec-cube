@@ -304,6 +304,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      * @return array 入力チェック結果の配列
      */
     function lfCheckError(&$objFormParam, $subtotal, $max_point) {
+		$objPurchase = new SC_Helper_Purchase_Ex();
         // 入力データを渡す。
         $arrForm =  $objFormParam->getHashArray();
         $objErr = new SC_CheckError_Ex($arrForm);
@@ -326,6 +327,12 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
             if (($arrForm['use_point'] * POINT_VALUE) > $subtotal) {
                 $objErr->arrErr['use_point'] = '※ ご利用ポイントがご購入金額を超えています。<br>';
             }
+			// ポイント差し引き後の決済方法チェック
+			$arrPayments = $objPurchase->getPaymentsByPaymentsId($arrForm['payment_id']);
+			if ($arrPayments['rule'] > $subtotal - $arrForm['use_point'] * POINT_VALUE){
+                $objErr->arrErr['use_point'] = '※ 選択した支払方法では、ポイントは'.($subtotal - $arrPayments['rule']).'ポイントまでご利用いただけます。<br>';
+            }
+			
         }
         return $objErr->arrErr;
     }
