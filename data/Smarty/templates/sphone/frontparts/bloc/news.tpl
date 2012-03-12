@@ -129,7 +129,7 @@
                         if (news.news_url != null) {
                             $($("#windowcolumn dl.view_detail dt a").get(maxCnt)).attr("href", news.news_url);
                         } else {
-                            $($("#windowcolumn dl.view_detail dt a").get(maxCnt)).attr("href", "javascript:;");
+                            $($("#windowcolumn dl.view_detail dt a").get(maxCnt)).attr("href", "#");
                         }
 
                         //年月をセット
