@@ -48,9 +48,9 @@
         <!--{if $orderDetail.product_type_id == $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
             <!--{if $orderDetail.is_downloadable}-->
                 <!--{if $isAU == false}-->
-                    <a target="_self" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/download.php?order_id=<!--{$tpl_arrOrderData.order_id}-->&product_id=<!--{$orderDetail.product_id}-->&product_class_id=<!--{$orderDetail.product_class_id}-->">ダウンロード</a><br>
+                    <a target="_self" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/download.php?order_id=<!--{$tpl_arrOrderData.order_id}-->&amp;product_id=<!--{$orderDetail.product_id}-->&amp;product_class_id=<!--{$orderDetail.product_class_id}-->">ダウンロード</a><br>
                 <!--{else}-->
-                    <object data="<!--{$smarty.const.ROOT_URLPATH}-->mypage/download.php?order_id=<!--{$tpl_arrOrderData.order_id}-->&product_id=<!--{$orderDetail.product_id}-->&product_class_id=<!--{$orderDetail.product_class_id}-->&PHPSESSID=<!--{$phpsessid}-->" copyright="no" standby="ダウンロード" type="<!--{$orderDetail.mime_type}-->">
+                    <object data="<!--{$smarty.const.ROOT_URLPATH}-->mypage/download.php?order_id=<!--{$tpl_arrOrderData.order_id}-->&amp;product_id=<!--{$orderDetail.product_id}-->&amp;product_class_id=<!--{$orderDetail.product_class_id}-->&amp;<!--{$smarty.const.SID}-->" copyright="no" standby="ダウンロード" type="<!--{$orderDetail.mime_type}-->">
                         <param name="title" value="<!--{$orderDetail.down_filename}-->" valuetype="data">
                     </object><br>
                 <!--{/if}-->

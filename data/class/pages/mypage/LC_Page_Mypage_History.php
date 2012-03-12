@@ -207,7 +207,10 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
         if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE && SC_MobileUserAgent::getCarrier() == 'ezweb') {
             // MIMETYPE、ファイル名のセット
             $this->tpl_arrOrderDetail = $this->lfSetMimetype($arrOrderDetails);
+
+            // @deprecated 2.12.0 PHP 定数 SID を使うこと
             $this->phpsessid = $_GET['PHPSESSID'];
+
             $this->isAU = true;
         }
     }
