@@ -144,7 +144,7 @@ class SC_SendMail {
                 $_name = ereg_replace('<','＜', $_name);
                 $_name = ereg_replace('>','＞', $_name);
                 $_name = mb_encode_mimeheader($_name, 'JIS', 'B', "\n");
-                $name_address = "\"". $_name . "\"<" . $mail_address . '>';
+                $name_address = '"' . $_name . '"<' . $mail_address . '>';
             } else {
                 $name_address = $mail_address;
             }
@@ -222,14 +222,14 @@ class SC_SendMail {
     // ヘッダーを返す
     function getTEXTHeader() {
         $arrHeader = $this->getBaseHeader();
-        $arrHeader['Content-Type'] = "text/plain; charset=\"ISO-2022-JP\"";
+        $arrHeader['Content-Type'] = 'text/plain; charset="ISO-2022-JP"';
         return $arrHeader;
     }
 
     // ヘッダーを返す
     function getHTMLHeader() {
         $arrHeader = $this->getBaseHeader();
-        $arrHeader['Content-Type'] = "text/html; charset=\"ISO-2022-JP\"";
+        $arrHeader['Content-Type'] = 'text/html; charset="ISO-2022-JP"';
         return $arrHeader;
     }
 

@@ -519,7 +519,7 @@ class SC_Utils {
         if (count($array) > 0) {
             foreach ($array as $key => $val) {
                 $val = mb_convert_encoding($val, CHAR_CODE, CHAR_CODE);
-                $line .= "\"".$val."\",";
+                $line .= '"' .$val. '",';
             }
             $line = ereg_replace(",$", "\r\n", $line);
         } else {
@@ -583,14 +583,14 @@ class SC_Utils {
 
     function sfGetEnabled($val) {
         if (! $val) {
-            return " disabled=\"disabled\"";
+            return ' disabled="disabled"';
         }
         return '';
     }
 
     function sfGetChecked($param, $value) {
         if ((string)$param === (string)$value) {
-            return "checked=\"checked\"";
+            return 'checked="checked"';
         }
         return '';
     }
@@ -1557,32 +1557,6 @@ class SC_Utils {
         @fclose($fp);
 
         return $str;
-    }
-
-    /**
-     * CSV出力用データ取得
-     *
-     * @return string
-     */
-    function getCSVData($array, $arrayIndex) {
-        for ($i = 0; $i < count($array); $i++) {
-            // インデックスが設定されている場合
-            if (is_array($arrayIndex) && 0 < count($arrayIndex)) {
-                for ($j = 0; $j < count($arrayIndex); $j++) {
-                    if ($j > 0) $return .= ',';
-                    $return .= "\"";
-                    $return .= mb_ereg_replace('<','＜',mb_ereg_replace("\"","\"\"",$array[$i][$arrayIndex[$j]])) ."\"";
-                }
-            } else {
-                for ($j = 0; $j < count($array[$i]); $j++) {
-                    if ($j > 0) $return .= ',';
-                    $return .= "\"";
-                    $return .= mb_ereg_replace('<','＜',mb_ereg_replace("\"","\"\"",$array[$i][$j])) ."\"";
-                }
-            }
-            $return .= "\n";
-        }
-        return $return;
     }
 
     /**
