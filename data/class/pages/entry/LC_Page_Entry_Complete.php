@@ -85,7 +85,6 @@ class LC_Page_Entry_Complete extends LC_Page_Ex {
         } else {
             // 本会員登録完了
             SC_Response_Ex::sendRedirectFromUrlPath('regist/complete.php');
-            //$this->tpl_mainpage     = 'regist/complete.tpl';
         }
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
