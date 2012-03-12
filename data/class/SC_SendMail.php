@@ -109,6 +109,7 @@ class SC_SendMail {
 
     // 本文の設定
     function setBody($body) {
+        // iso-2022-jpだと特殊文字が？で送信されるのでJISを使用する
         $this->body = mb_convert_encoding($body, 'JIS', CHAR_CODE);
     }
 
@@ -175,7 +176,7 @@ class SC_SendMail {
         $this->setTo($to);
         // 件名設定
         $this->setSubject($subject);
-        // 本文設定(iso-2022-jpだと特殊文字が？で送信されるのでJISを使用する)
+        // 本文設定
         $this->setBody($body);
         // 送信元設定
         $this->setFrom($fromaddress, $from_name);
@@ -214,6 +215,7 @@ class SC_SendMail {
             $arrHeader['Bcc'] = $this->bcc;
         }
         $arrHeader['Date'] = date('D, j M Y H:i:s O');
+        $arrHeader['Content-Transfer-Encoding'] = '7bit';
         return $arrHeader;
     }
 
@@ -221,7 +223,6 @@ class SC_SendMail {
     function getTEXTHeader() {
         $arrHeader = $this->getBaseHeader();
         $arrHeader['Content-Type'] = "text/plain; charset=\"ISO-2022-JP\"";
-        $arrHeader['Content-Transfer-Encoding'] = '7bit';
         return $arrHeader;
     }
 
@@ -229,7 +230,6 @@ class SC_SendMail {
     function getHTMLHeader() {
         $arrHeader = $this->getBaseHeader();
         $arrHeader['Content-Type'] = "text/html; charset=\"ISO-2022-JP\"";
-        $arrHeader['Content-Transfer-Encoding'] = 'ISO-2022-JP';
         return $arrHeader;
     }
 
