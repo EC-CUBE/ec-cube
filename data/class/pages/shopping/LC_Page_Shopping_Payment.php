@@ -107,7 +107,8 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
         }
 
         // 戻り URL の設定
-        $this->tpl_back_url = $this->getPreviousURL($objCustomer->isLoginSuccess(true), $cart_key, $this->is_multiple);
+        // @deprecated 2.12.0 テンプレート直書きに戻した
+        $this->tpl_back_url = '?mode=return';
 
         $arrOrderTemp = $objPurchase->getOrderTemp($this->tpl_uniqid);
         // 正常に受注情報が格納されていない場合はカート画面へ戻す
@@ -206,7 +207,20 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('lc_page_shopping_payment_action_return', array($this));
 
-                SC_Response_Ex::sendRedirect(SHOPPING_URL);
+                $url = null;
+                if ($this->is_multiple) {
+                    $url = MULTIPLE_URLPATH . '?from=multiple';
+                } elseif ($objCustomer->isLoginSuccess(true)) {
+                    if ($product_type_id == PRODUCT_TYPE_DOWNLOAD) {
+                        $url = CART_URLPATH;
+                    } else {
+                        $url = DELIV_URLPATH;
+                    }
+                } else {
+                    $url = SHOPPING_URL . '?from=nonmember';
+                }
+
+                SC_Response_Ex::sendRedirect($url);
                 exit;
                 break;
 
@@ -436,29 +450,6 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
             return true;
         } else {
             return false;
-        }
-    }
-
-    /**
-     * 前に戻るボタンの URL を取得する.
-     *
-     * @param boolean $is_login ユーザーがログインしている場合 true
-     * @param integer $product_type_id 商品種別ID
-     * @param boolean $is_multiple 複数配送の場合 true
-     * @return string 前に戻るボタンの URL
-     */
-    function getPreviousURL($is_login = false, $product_type_id, $is_multiple) {
-        if ($is_multiple) {
-            return MULTIPLE_URLPATH . '?from=multiple';
-        }
-        if ($is_login) {
-            if ($product_type_id == PRODUCT_TYPE_DOWNLOAD) {
-                return CART_URLPATH;
-            } else {
-                return DELIV_URLPATH;
-            }
-        } else {
-            return SHOPPING_URL . '?from=nonmember';
         }
     }
 

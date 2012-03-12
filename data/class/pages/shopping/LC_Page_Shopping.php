@@ -412,9 +412,9 @@ class LC_Page_Shopping extends LC_Page_Ex {
                 $objPurchase->saveShippingTemp($arrShipping, 1);
             }
         } else {
-            $objPurchase->unsetOneShippingTemp();
+            $objPurchase->unsetAllShippingTemp(true);
             if ($arrParams['deliv_check'] == '1') {
-                $objPurchase->saveShippingTemp($arrShipping, 0);
+                $objPurchase->saveShippingTemp($arrShipping, 1);
             } else {
                 $objPurchase->saveShippingTemp($arrShippingOwn, 0);
             }
