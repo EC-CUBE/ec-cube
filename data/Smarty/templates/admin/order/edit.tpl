@@ -306,7 +306,7 @@
             <td class="right"><!--{$arrForm.subtotal.value|number_format}-->円</td>
         </tr>
         <tr>
-            <th colspan="5" class="column right">値引</th>
+            <th colspan="5" class="column right">値引き</th>
             <td class="right">
                 <!--{assign var=key value="discount"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>

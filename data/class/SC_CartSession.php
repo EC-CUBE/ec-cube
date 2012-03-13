@@ -616,7 +616,7 @@ class SC_CartSession {
      * @param integer|array $deliv_pref 配送先都道府県ID.
                                         複数に配送する場合は都道府県IDの配列
      * @param integer $charge 手数料
-     * @param integer $discount 値引
+     * @param integer $discount 値引き
      * @param integer $deliv_id 配送業者ID
      * @return array カートの計算結果の配列
      */
