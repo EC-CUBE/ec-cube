@@ -32,6 +32,10 @@ class SC_Helper_Session {
                                  array(&$this, 'sfSessWrite'),
                                  array(&$this, 'sfSessDestroy'),
                                  array(&$this, 'sfSessGc'));
+
+        // 通常よりも早い段階(オブジェクトが書きされる前)でセッションデータを書き込んでセッションを終了する
+        // XXX APC による MDB2 の破棄タイミングによる不具合を回避する目的
+        register_shutdown_function('session_write_close');
     }
 
     // }}}
