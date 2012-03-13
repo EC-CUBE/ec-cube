@@ -690,9 +690,9 @@ __EOS__;
                 dtb_products_class.point_rate,
                 dtb_products_class.down_filename,
                 dtb_products_class.down_realfilename,
-                dtb_products_class.classcategory_id1 AS classcategory_id, // 削除
+                dtb_products_class.classcategory_id1 AS classcategory_id, /* 削除 */
                 dtb_products_class.classcategory_id1,
-                dtb_products_class.classcategory_id2 AS parent_classcategory_id, // 削除
+                dtb_products_class.classcategory_id2 AS parent_classcategory_id, /* 削除 */
                 dtb_products_class.classcategory_id2,
                 Tcc1.class_id as class_id,
                 Tcc1.name as classcategory_name,
