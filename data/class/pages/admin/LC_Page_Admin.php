@@ -120,7 +120,7 @@ class LC_Page_Admin extends LC_Page_Ex {
      *
      * @deprecated 2.12.0 GC_Utils_Ex::gfPrintLog を使用すること
      */
-    function log($mess, $log_level) {
+    function log($mess, $log_level='Info') {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         // ログレベル=Debugの場合は、DEBUG_MODEがtrueの場合のみログ出力する
         if ($log_level === 'Debug' && DEBUG_MODE === false) {
@@ -128,7 +128,7 @@ class LC_Page_Admin extends LC_Page_Ex {
         }
 
         // ログ出力
-        GC_Utils_Ex::gfPrintLog($mess, '', true);
+        GC_Utils_Ex::gfPrintLog($mess, '');
     }
 
 }
