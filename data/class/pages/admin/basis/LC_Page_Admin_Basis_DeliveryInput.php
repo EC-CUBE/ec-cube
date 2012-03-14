@@ -74,7 +74,6 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
         $objPlugin->doAction('lc_page_admin_basis_deliveryinput_action_start', array($this));
 
-        $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($this->mode, $objFormParam);
         $objFormParam->setParam($_POST);
 
@@ -117,7 +116,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
 
     /* パラメーター情報の初期化 */
     function lfInitParam($mode, &$objFormParam) {
-        $objFormParam->initParam();
+        $objFormParam = new SC_FormParam_Ex();
 
         switch ($mode) {
             case 'edit':

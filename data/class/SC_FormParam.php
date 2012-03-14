@@ -31,28 +31,44 @@
  */
 class SC_FormParam {
 
-    var $param;
-    var $disp_name;
-    var $keyname;
-    var $length;
-    var $convert;
-    var $arrCheck;
-    /** 何も入力されていないときに表示する値 */
-    var $default;
-    /** DBにそのまま挿入可能か否か */
-    var $input_db;
-    var $html_disp_name;
+    /**
+     * 何も入力されていないときに表示する値
+     * キーはキー名
+     */
+    var $arrValue = array();
 
-    // コンストラクタ
-    function SC_FormParam() {
+    /** 表示名 */
+    var $disp_name = array();
+
+    /** キー名 */
+    var $keyname = array();
+
+    var $length = array();
+    var $convert = array();
+    var $arrCheck = array();
+
+    /**
+     * 何も入力されていないときに表示する値
+     * キーはキー名
+     */
+    var $arrDefault = array();
+
+    /** DBにそのまま挿入可能か否か */
+    var $input_db = array();
+
+    var $html_disp_name = array();
+
+    /**
+     * コンストラクタ
+     */
+    function __construct() {
         $this->check_dir = IMAGE_SAVE_REALDIR;
-        $this->initParam();
     }
 
     /**
-     * パラメーターの初期化
+     * 前方互換用
      *
-     * @return void
+     * @deprecated 2.12.0 #1702
      */
     function initParam() {
         $this->disp_name = array();
@@ -60,18 +76,19 @@ class SC_FormParam {
         $this->length = array();
         $this->convert = array();
         $this->arrCheck = array();
-        $this->default = array();
+        $this->arrDefault = array();
         $this->input_db = array();
     }
 
     // パラメーターの追加
-    function addParam($disp_name, $keyname, $length = '', $convert = '', $arrCheck = array(), $default = '', $input_db = 'true') {
+    function addParam($disp_name, $keyname, $length = '', $convert = '', $arrCheck = array(), $default = '', $input_db = true) {
         $this->disp_name[] = $disp_name;
         $this->keyname[] = $keyname;
         $this->length[] = $length;
         $this->convert[] = $convert;
         $this->arrCheck[] = $arrCheck;
-        $this->default[] = $default;
+        // XXX このタイミングで arrValue へ格納するほうがスマートかもしれない。しかし、バリデーションや変換の対象となるので、その良し悪しは気になる。
+        $this->arrDefault[$keyname] = $default;
         $this->input_db[] = $input_db;
     }
 
@@ -80,44 +97,38 @@ class SC_FormParam {
     // $seq     :trueの場合、$arrVal[0]~の配列を登録順にインスタンスに格納する
     function setParam($arrVal, $seq = false) {
         if (!is_array($arrVal)) return;
-        $cnt = 0;
         if (!$seq) {
-            foreach ($this->keyname as $val) {
-                if (array_key_exists($val, $arrVal)) {
-                    $this->setValue($val, $arrVal[$val]);
-                }
+            foreach ($arrVal as $key => $val) {
+                $this->setValue($key, $val);
             }
         } else {
-            foreach ($this->keyname as $val) {
-                $this->param[$cnt] = $arrVal[$cnt];
-                $cnt++;
+            foreach ($this->keyname as $index => $key) {
+                $this->setValue($key, $arrVal[$index]);
             }
         }
     }
 
     // 画面表示用タイトル生成
     function setHtmlDispNameArray() {
-        $cnt = 0;
-        foreach ($this->keyname as $val) {
+        foreach ($this->keyname as $index => $key) {
             $find = false;
-            foreach ($this->arrCheck[$cnt] as $val) {
+            foreach ($this->arrCheck[$index] as $val) {
                 if ($val == 'EXIST_CHECK') {
                     $find = true;
                 }
             }
 
             if ($find) {
-                $this->html_disp_name[$cnt] = $this->disp_name[$cnt] . '<span class="red">(※ 必須)</span>';
+                $this->html_disp_name[$index] = $this->disp_name[$index] . '<span class="red">(※ 必須)</span>';
             } else {
-                $this->html_disp_name[$cnt] = $this->disp_name[$cnt];
+                $this->html_disp_name[$index] = $this->disp_name[$index];
             }
-            if ($this->default[$cnt] != '') {
-                $this->html_disp_name[$cnt] .= ' [省略時初期値: ' . $this->default[$cnt] . ']';
+            if ($this->arrDefault[$key] != '') {
+                $this->html_disp_name[$index] .= ' [省略時初期値: ' . $this->arrDefault[$key] . ']';
             }
-            if ($this->input_db[$cnt] == false) {
-                $this->html_disp_name[$cnt] .= ' [登録・更新不可] ';
+            if ($this->input_db[$index] == false) {
+                $this->html_disp_name[$index] .= ' [登録・更新不可] ';
             }
-            $cnt++;
         }
     }
 
@@ -127,49 +138,38 @@ class SC_FormParam {
     }
 
     // 複数列パラメーターの取得
-    function setParamList($arrVal, $keyname) {
+    function setParamList($arrVal2d, $keyname) {
         // DBの件数を取得する。
-        $count = count($arrVal);
         $no = 1;
-        for ($cnt = 0; $cnt < $count; $cnt++) {
-            $key = $keyname.$no;
-            if ($arrVal[$cnt][$keyname] != '') {
-                $this->setValue($key, $arrVal[$cnt][$keyname]);
-            }
+        foreach ($arrVal2d as $arrVal) {
+            $key = $keyname . $no;
+            $this->setValue($key, $arrVal[$keyname]);
             $no++;
         }
     }
 
     function setDBDate($db_date, $year_key = 'year', $month_key = 'month', $day_key = 'day') {
-
-        if (!empty($db_date)) {
-            list($y, $m, $d) = preg_split('/[- ]/', $db_date);
-            $this->setValue($year_key, $y);
-            $this->setValue($month_key, $m);
-            $this->setValue($day_key, $d);
+        if (empty($db_date)) {
+            return;
         }
+        list($y, $m, $d) = preg_split('/[- ]/', $db_date);
+        $this->setValue($year_key, $y);
+        $this->setValue($month_key, $m);
+        $this->setValue($day_key, $d);
     }
 
     // キーに対応した値をセットする。
-    function setValue($key, $param) {
-        $cnt = 0;
-        foreach ($this->keyname as $val) {
-            if ($val == $key) {
-                $this->param[$cnt] = $param;
-                // 複数一致の場合もあるので break してはいけない。
-            }
-            $cnt++;
+    function setValue($key, $value) {
+        if (!in_array($key, $this->keyname)) {
+            // TODO 警告発生
+            return;
         }
+        $this->arrValue[$key] = $value;
     }
 
     function toLower($key) {
-        $cnt = 0;
-        foreach ($this->keyname as $val) {
-            if ($val == $key) {
-                $this->param[$cnt] = strtolower($this->param[$cnt]);
-                // 複数一致の場合もあるので break してはいけない。
-            }
-            $cnt++;
+        if (isset($this->arrValue[$key])) {
+            $this->arrValue[$key] = strtolower($this->arrValue[$key]);
         }
     }
 
@@ -177,10 +177,9 @@ class SC_FormParam {
     function checkError($br = true) {
         $objErr->arrErr = array();
 
-        $cnt = 0;
-        foreach ($this->keyname as $val) {
-            foreach ($this->arrCheck[$cnt] as $func) {
-                if (!isset($this->param[$cnt])) $this->param[$cnt] = '';
+        foreach ($this->keyname as $index => $key) {
+            foreach ($this->arrCheck[$index] as $func) {
+                $value = $this->getValue($key);
                 switch ($func) {
                     case 'EXIST_CHECK':
                     case 'NUM_CHECK':
@@ -207,36 +206,34 @@ class SC_FormParam {
                     case 'KANABLANK_CHECK':
                     case 'SELECT_CHECK':
                     case 'FILE_NAME_CHECK_BY_NOUPLOAD':
-                        $this->recursionCheck($this->disp_name[$cnt], $func,
-                                              $this->param[$cnt], $objErr->arrErr,
-                                              $val, $this->length[$cnt]);
+                        $this->recursionCheck($this->disp_name[$index], $func,
+                            $value, $objErr->arrErr, $key, $this->length[$index]);
                         break;
                     // 小文字に変換
                     case 'CHANGE_LOWER':
-                        $this->param[$cnt] = strtolower($this->param[$cnt]);
+                        $this->toLower($key);
                         break;
                     // ファイルの存在チェック
                     case 'FILE_EXISTS':
-                        if ($this->param[$cnt] != '' && !file_exists($this->check_dir . $this->param[$cnt])) {
-                            $objErr->arrErr[$val] = '※ ' . $this->disp_name[$cnt] . 'のファイルが存在しません。<br>';
+                        if ($value != '' && !file_exists($this->check_dir . $value)) {
+                            $objErr->arrErr[$key] = '※ ' . $this->disp_name[$index] . 'のファイルが存在しません。<br>';
                         }
                         break;
                     // ダウンロード用ファイルの存在チェック
                     case 'DOWN_FILE_EXISTS':
-                        if ($this->param[$cnt] != '' && !file_exists(DOWN_SAVE_REALDIR . $this->param[$cnt])) {
-                            $objErr->arrErr[$val] = '※ ' . $this->disp_name[$cnt] . 'のファイルが存在しません。<br>';
+                        if ($value != '' && !file_exists(DOWN_SAVE_REALDIR . $value)) {
+                            $objErr->arrErr[$key] = '※ ' . $this->disp_name[$index] . 'のファイルが存在しません。<br>';
                         }
                         break;
                     default:
-                        $objErr->arrErr[$val] = "※※　エラーチェック形式($func)には対応していません　※※ <br>";
+                        $objErr->arrErr[$key] = "※※　エラーチェック形式($func)には対応していません　※※ <br>";
                         break;
                 }
             }
 
-            if (isset($objErr->arrErr[$val]) && !$br) {
-                $objErr->arrErr[$val] = preg_replace("/<br(\s+\/)?>/i", '', $objErr->arrErr[$val]);
+            if (isset($objErr->arrErr[$key]) && !$br) {
+                $objErr->arrErr[$key] = preg_replace("/<br(\s+\/)?>/i", '', $objErr->arrErr[$key]);
             }
-            $cnt++;
         }
         return $objErr->arrErr;
     }
@@ -259,7 +256,8 @@ class SC_FormParam {
      * @return void
      */
     function recursionCheck($disp_name, $func, $value, &$arrErr, $error_key,
-                            $length = 0, $depth = 0, $error_last_key = null) {
+        $length = 0, $depth = 0, $error_last_key = null
+    ) {
         if (is_array($value)) {
             $depth++;
             foreach ($value as $key => $in) {
@@ -289,15 +287,14 @@ class SC_FormParam {
     /**
      * フォームの入力パラメーターに応じて, 再帰的に mb_convert_kana 関数を実行する.
      *
-     * @return voi
+     * @return void
      * @see mb_convert_kana
      */
     function convParam() {
-        $cnt = 0;
-        foreach ($this->keyname as $val) {
-            if (!isset($this->param[$cnt])) $this->param[$cnt] = '';
-            $this->recursionConvParam($this->param[$cnt], $this->convert[$cnt]);
-            $cnt++;
+        foreach ($this->keyname as $index => $key) {
+            if (isset($this->arrValue[$key])) {
+                $this->recursionConvParam($this->arrValue[$key], $this->convert[$index]);
+            }
         }
     }
 
@@ -329,7 +326,7 @@ class SC_FormParam {
         $arrRet = array();
         foreach ($this->keyname as $index => $keyname) {
             if (empty($arrKey) || in_array($keyname, $arrKey)) {
-                $arrRet[$keyname] = isset($this->param[$index]) ? $this->param[$index] : '';
+                $arrRet[$keyname] = $this->getValue($keyname);
             }
         }
         return $arrRet;
@@ -337,12 +334,10 @@ class SC_FormParam {
 
     // DB格納用配列の作成
     function getDbArray() {
-        $cnt = 0;
-        foreach ($this->keyname as $val) {
-            if ($this->input_db[$cnt]) {
-                $arrRet[$val] = isset($this->param[$cnt]) ? $this->param[$cnt] : '';
+        foreach ($this->keyname as $index => $key) {
+            if ($this->input_db[$index]) {
+                $arrRet[$key] = $this->getValue($key);
             }
-            $cnt++;
         }
         return $arrRet;
     }
@@ -371,25 +366,15 @@ class SC_FormParam {
 
     // フォームに渡す用のパラメーターを返す
     function getFormParamList() {
-        $cnt = 0;
-        foreach ($this->keyname as $val) {
-
+        foreach ($this->keyname as $index => $key) {
             // キー名
-            $arrRet[$val]['keyname'] = $this->keyname[$cnt];
+            $arrRet[$key]['keyname'] = $key;
+            // 表示名
+            $arrRet[$key]['disp_name'] = $this->disp_name[$index];
             // 文字数制限
-            $arrRet[$val]['length'] = $this->length[$cnt];
+            $arrRet[$key]['length'] = $this->length[$index];
             // 入力値
-            if (isset($this->param[$cnt])) {
-                $arrRet[$val]['value'] = $this->param[$cnt];
-            }
-
-            if (!isset($this->param[$cnt])) $this->param[$cnt] = '';
-
-            if ($this->default[$cnt] != '' && $this->param[$cnt] == '') {
-                $arrRet[$val]['value'] = $this->default[$cnt];
-            }
-
-            $cnt++;
+            $arrRet[$key]['value'] = $this->getValue($key);
         }
         return $arrRet;
     }
@@ -405,14 +390,12 @@ class SC_FormParam {
 
     // キー名と一致した値を返す
     function getValue($keyname, $default = '') {
-        $cnt = 0;
         $ret = null;
-        foreach ($this->keyname as $val) {
-            if ($val == $keyname) {
-                $ret = isset($this->param[$cnt]) ? $this->param[$cnt] : '';
+        foreach ($this->keyname as $index => $key) {
+            if ($key == $keyname) {
+                $ret = isset($this->arrValue[$key]) ? $this->arrValue[$key] : $this->arrDefault[$key];
                 break;
             }
-            $cnt++;
         }
 
         if (is_array($ret)) {
@@ -433,14 +416,12 @@ class SC_FormParam {
      * @deprecated
      */
     function splitParamCheckBoxes($keyname) {
-        $cnt = 0;
-        foreach ($this->keyname as $val) {
-            if ($val == $keyname) {
-                if (isset($this->param[$cnt]) && !is_array($this->param[$cnt])) {
-                    $this->param[$cnt] = explode('-', $this->param[$cnt]);
+        foreach ($this->keyname as $key) {
+            if ($key == $keyname) {
+                if (isset($this->arrValue[$key]) && !is_array($this->arrValue[$key])) {
+                    $this->arrValue[$key] = explode('-', $this->arrValue[$key]);
                 }
             }
-            $cnt++;
         }
     }
 
@@ -451,11 +432,8 @@ class SC_FormParam {
      * @return void
      */
     function trimParam($has_wide_space = true) {
-        $cnt = 0;
-        foreach ($this->keyname as $val) {
-            if (!isset($this->param[$cnt])) $this->param[$cnt] = '';
-            $this->recursionTrim($this->param[$cnt], $has_wide_space);
-            $cnt++;
+        foreach ($this->arrValue as &$value) {
+            $this->recursionTrim($value, $has_wide_space);
         }
     }
 
@@ -491,43 +469,32 @@ class SC_FormParam {
      * @return array 検索結果引き継ぎ用の連想配列.
      */
     function getSearchArray($prefix = 'search_') {
-        $cnt = 0;
         $arrResults = array();
-        foreach ($this->keyname as $key) {
+        foreach ($this->keyname as $index => $key) {
             if (preg_match('/^' . $prefix . '/', $key)) {
-                $arrResults[$key] = isset($this->param[$cnt])
-                    ? $this->param[$cnt] : '';
+                $arrResults[$key] = $this->getValue($key);
             }
-            $cnt++;
         }
         return $arrResults;
     }
 
-
-    // addParam の内容をそのまま返す
+    /**
+     * 前方互換用
+     *
+     * 1次キーが添字なのが特徴だったと思われる。
+     * @deprecated 2.12.0 必要ならば getFormParamList メソッドに引数を追加するなどで実現可能
+     */
     function getFormDispArray() {
-        $cnt = 0;
-        foreach ($this->keyname as $val) {
+        foreach ($this->keyname as $index => $key) {
             // キー名
-            $arrRet[$cnt]['keyname'] = $this->keyname[$cnt];
+            $arrRet[$index]['keyname'] = $key;
+            // 表示名
+            $arrRet[$index]['disp_name']  = $this->disp_name[$index];
             // 文字数制限
-            $arrRet[$cnt]['length'] = $this->length[$cnt];
-
-            $arrRet[$cnt]['disp_name']  = $this->disp_name[$cnt];
+            $arrRet[$index]['length'] = $this->length[$index];
             // 入力値
-            if (isset($this->param[$cnt])) {
-                $arrRet[$cnt]['value'] = $this->param[$cnt];
-            }
-
-            if (!isset($this->param[$cnt])) $this->param[$cnt] = '';
-
-            if ($this->default[$cnt] != '' && $this->param[$cnt] == '') {
-                $arrRet[$cnt]['value'] = $this->default[$cnt];
-            }
-            $cnt++;
+            $arrRet[$index]['value'] = $this->getValue($key);
         }
         return $arrRet;
     }
-
-
 }
