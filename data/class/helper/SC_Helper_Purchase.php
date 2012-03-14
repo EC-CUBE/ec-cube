@@ -314,12 +314,12 @@ class SC_Helper_Purchase {
      */
     function clearShipmentItemTemp($shipping_id = null) {
         if (is_null($shipping_id)) {
-            if (!isset($_SESSION['shipping'][$shipping_id])) return;
-            if (!is_array($_SESSION['shipping'][$shipping_id])) return;
-            foreach (array_keys($_SESSION['shipping'][$shipping_id]) as $key) {
+            foreach (array_keys($_SESSION['shipping']) as $key) {
                 $this->clearShipmentItemTemp($key);
             }
         } else {
+            if (!isset($_SESSION['shipping'][$shipping_id])) return;
+            if (!is_array($_SESSION['shipping'][$shipping_id])) return;
             unset($_SESSION['shipping'][$shipping_id]['shipment_item']);
         }
     }
