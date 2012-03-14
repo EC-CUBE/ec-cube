@@ -22,7 +22,30 @@
  */
 *}-->
 
-<p>直近の<!--{$line_max}-->行</p>
+<style type="text/css">
+    th {
+        width: auto;
+    }
+</style>
+
+<!--{if count($arrErr) >= 1}-->
+    <div class="attention">
+        <!--{foreach from=$arrErr item=err}-->
+            <!--{$err}-->
+        <!--{/foreach}-->
+    </div>
+<!--{/if}-->
+
+<form action="?" name="form1" style="margin-bottom: 1ex;">
+    <!--{assign var=key value="log"}-->
+    <select name="<!--{$key|h}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+        <!--{html_options options=$arrLogList selected=$arrForm[$key]}-->
+    </select>
+    <!--{assign var=key value="line_max"}-->
+    直近の<input type="text" name="<!--{$key|h}-->" value="<!--{$arrForm[$key].value|h}-->" size="6" maxlength="<!--{$arrForm[$key].length|h}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />行
+    <a class="btn-normal" href="javascript:;" onclick="form1.submit(); return false;"><span>読み込む</span></a>
+</form>
+
 <table class="list log">
     <tr>
         <th>日時</th>
