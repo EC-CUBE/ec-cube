@@ -207,10 +207,10 @@ __EOS__;
      */
     function getDetail($productId) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $result = $objQuery->select('*', $this->alldtlSQL('product_id = ?'),
+        $result = $objQuery->getRow('*', $this->alldtlSQL('product_id = ?'),
                                     'product_id = ?',
                                     array($productId, $productId));
-        return $result[0];
+        return (array)$result;
     }
 
     /**
@@ -394,7 +394,7 @@ __EOS__;
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setWhere('product_class_id = ? AND T1.del_flg = 0');
         $arrRes = $this->getProductsClassByQuery($objQuery, $productClassId);
-        return $arrRes[0];
+        return (array)$arrRes[0];
     }
 
     /**

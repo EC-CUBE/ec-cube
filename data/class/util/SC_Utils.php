@@ -737,6 +737,7 @@ class SC_Utils {
     function sfSwapArray($array, $isColumnName = true) {
         $arrRet = array();
         foreach ($array as $key1 => $arr1) {
+            if (!is_array($arr1)) break 1;
             $index = 0;
             foreach ($arr1 as $key2 => $val) {
                 if ($isColumnName) {
