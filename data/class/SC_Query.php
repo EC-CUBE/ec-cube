@@ -77,8 +77,11 @@ class SC_Query {
             $this->conn->setCharset('utf8');
             $this->conn->setFetchMode(MDB2_FETCHMODE_ASSOC);
         }
-        $this->dbFactory = SC_DB_DBFactory_Ex::getInstance();
+
+        // XXX 上書きインストール時にDBを変更するケースを想定し第1引数を与えている。
+        $this->dbFactory = SC_DB_DBFactory_Ex::getInstance($this->conn->dsn['phptype']);
         $this->dbFactory->initObjQuery($this);
+
         $this->force_run = $force_run;
     }
 

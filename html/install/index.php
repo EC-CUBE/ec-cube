@@ -119,10 +119,7 @@ switch ($mode) {
         break;
     // テーブルの作成
     case 'step3':
-        // 入力データを渡す。
-        $arrRet = $objDBParam->getHashArray();
-        define('DB_TYPE', $arrRet['db_type']);
-        $dsn = $arrRet['db_type'] . '://' . $arrRet['db_user'] . ':' . $arrRet['db_password'] . '@' . $arrRet['db_server'] . ':' . $arrRet['db_port'] . '/' . $arrRet['db_name'];
+        $arrDsn = getArrayDsn($objDBParam);
 
         if (count($objPage->arrErr) == 0) {
             // スキップする場合には次画面へ遷移
@@ -134,7 +131,7 @@ switch ($mode) {
         }
 
         // テーブルの作成
-        $objPage->arrErr = lfExecuteSQL('./sql/create_table_' . $arrRet['db_type'] . '.sql', $dsn);
+        $objPage->arrErr = lfExecuteSQL('./sql/create_table_' . $arrDsn['phptype'] . '.sql', $arrDsn);
         if (count($objPage->arrErr) == 0) {
             $objPage->tpl_message .= '○：テーブルの作成に成功しました。<br />';
         } else {
@@ -143,7 +140,7 @@ switch ($mode) {
 
         // 初期データの作成
         if (count($objPage->arrErr) == 0) {
-            $objPage->arrErr = lfExecuteSQL('./sql/insert_data.sql', $dsn);
+            $objPage->arrErr = lfExecuteSQL('./sql/insert_data.sql', $arrDsn);
             if (count($objPage->arrErr) == 0) {
                 $objPage->tpl_message .= '○：初期データの作成に成功しました。<br />';
             } else {
@@ -153,7 +150,7 @@ switch ($mode) {
 
         // シーケンスの作成
         if (count($objPage->arrErr) == 0) {
-            $objPage->arrErr = lfCreateSequence(getSequences(), $dsn);
+            $objPage->arrErr = lfCreateSequence(getSequences(), $arrDsn);
             if (count($objPage->arrErr) == 0) {
                 $objPage->tpl_message .= '○：シーケンスの作成に成功しました。<br />';
             } else {
@@ -174,16 +171,11 @@ switch ($mode) {
 
     // テーブル類削除
     case 'drop':
-        // 入力データを渡す。
-        $arrRet = $objDBParam->getHashArray();
-        if (!defined('DB_TYPE')) {
-            define('DB_TYPE', $arrRet['db_type']);
-        }
-        $dsn = $arrRet['db_type'] . '://' . $arrRet['db_user'] . ':' . $arrRet['db_password'] . '@' . $arrRet['db_server'] . ':' . $arrRet['db_port'] . '/' . $arrRet['db_name'];
+        $arrDsn = getArrayDsn($objDBParam);
 
         // テーブルの削除
         if (count($objPage->arrErr) == 0) {
-            $objPage->arrErr = lfExecuteSQL('./sql/drop_table.sql', $dsn, false);
+            $objPage->arrErr = lfExecuteSQL('./sql/drop_table.sql', $arrDsn, false);
             if (count($objPage->arrErr) == 0) {
                 $objPage->tpl_message .= '○：テーブルの削除に成功しました。<br />';
             } else {
@@ -193,7 +185,7 @@ switch ($mode) {
 
         // シーケンスの削除
         if (count($objPage->arrErr) == 0) {
-            $objPage->arrErr = lfDropSequence(getSequences(), $dsn);
+            $objPage->arrErr = lfDropSequence(getSequences(), $arrDsn);
             if (count($objPage->arrErr) == 0) {
                 $objPage->tpl_message .= '○：シーケンスの削除に成功しました。<br />';
             } else {
@@ -501,21 +493,14 @@ function lfDispStep4($objPage) {
     // 語尾に'/'をつける
     if (!ereg('/$', $normal_url)) $normal_url = $normal_url . '/';
 
-    $arrDbParam = $objDBParam->getHashArray();
-    if (!defined('DB_TYPE')) {
-        define('DB_TYPE', $arrDbParam['db_type']);
-    }
-    $dsn = $arrDbParam['db_type'] . '://' . $arrDbParam['db_user'] . ':' . $arrDbParam['db_password'] . '@' . $arrDbParam['db_server'] . ':' . $arrDbParam['db_port'] . '/' . $arrDbParam['db_name'];
-    if (!defined('DEFAULT_DSN')) {
-        define('DEFAULT_DSN', $dsn);
-    }
+    $arrDsn = getArrayDsn($objDBParam);
 
     $objPage->tpl_site_url = $normal_url;
     $objPage->tpl_shop_name = $objWebParam->getValue('shop_name');
     $objPage->tpl_cube_ver = ECCUBE_VERSION;
     $objPage->tpl_php_ver = phpversion();
-    $dbFactory = SC_DB_DBFactory_Ex::getInstance($arrDbParam['db_type']);
-    $objPage->tpl_db_ver = $dbFactory->sfGetDBVersion($dsn);
+    $dbFactory = SC_DB_DBFactory_Ex::getInstance($arrDsn['phptype']);
+    $objPage->tpl_db_ver = $dbFactory->sfGetDBVersion($arrDsn);
     $objPage->tpl_db_skip = $_POST['db_skip'];
     $objPage->tpl_mainpage = 'step4.tpl';
     $objPage->tpl_mode = 'complete';
@@ -531,10 +516,8 @@ function lfDispComplete($objPage) {
     // hiddenに入力値を保持
     $objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
 
-    // ショップマスター情報の書き込み
-    $arrRet = $objDBParam->getHashArray();
+    $arrDsn = getArrayDsn($objDBParam);
 
-    $dsn = $arrRet['db_type'] . '://' . $arrRet['db_user'] . ':' . $arrRet['db_password'] . '@' . $arrRet['db_server'] . ':' . $arrRet['db_port'] . '/' . $arrRet['db_name'];
     $sqlval['shop_name'] = $objWebParam->getValue('shop_name');
     $sqlval['email01'] = $objWebParam->getValue('admin_mail');
     $sqlval['email02'] = $objWebParam->getValue('admin_mail');
@@ -546,7 +529,7 @@ function lfDispComplete($objPage) {
     $sqlval['detail_tpl'] = 'default1';
     $sqlval['mypage_tpl'] = 'default1';
     $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
-    $objQuery = new SC_Query($dsn);
+    $objQuery = new SC_Query($arrDsn);
     $cnt = $objQuery->count('dtb_baseinfo');
     if ($cnt > 0) {
         $objQuery->update('dtb_baseinfo', $sqlval);
@@ -705,11 +688,11 @@ function lfInitDBParam($objDBParam) {
 }
 
 // 入力内容のチェック
-function lfCheckWebError($objFormParam) {
+function lfCheckWebError($objWebParam) {
     // 入力データを渡す。
-    $arrRet = $objFormParam->getHashArray();
+    $arrRet = $objWebParam->getHashArray();
     $objErr = new SC_CheckError($arrRet);
-    $objErr->arrErr = $objFormParam->checkError();
+    $objErr->arrErr = $objWebParam->checkError();
 
     // ディレクトリ名のみ取得する
     $normal_dir = ereg_replace('^https?://[a-zA-Z0-9_~=&\?\.\-]+', '', $arrRet['normal_url']);
@@ -724,13 +707,13 @@ function lfCheckWebError($objFormParam) {
     $objErr->doFunc(array('管理者：ログインID', 'login_id', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK', 'NUM_RANGE_CHECK'));
 
     // パスワードのチェック
-    $objErr->doFunc( array('管理者：パスワード', 'login_pass', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK', 'NUM_RANGE_CHECK'));
+    $objErr->doFunc(array('管理者：パスワード', 'login_pass', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK', 'NUM_RANGE_CHECK'));
 
     // 管理機能ディレクトリのチェック
-    $objErr->doFunc( array('管理機能：ディレクトリ', 'admin_dir', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK', 'NUM_RANGE_CHECK'));
+    $objErr->doFunc(array('管理機能：ディレクトリ', 'admin_dir', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK', 'NUM_RANGE_CHECK'));
 
     $oldAdminDir = SC_Utils_Ex::sfTrimURL(ADMIN_DIR);
-    $newAdminDir = $objFormParam->getValue('admin_dir');
+    $newAdminDir = $objWebParam->getValue('admin_dir');
     if ($oldAdminDir !== $newAdminDir AND file_exists(HTML_REALDIR . $newAdminDir) and $newAdminDir != 'admin') {
         $objErr->arrErr['admin_dir'] = '※ 指定した管理機能ディレクトリは既に存在しています。別の名前を指定してください。';
     }
@@ -739,29 +722,25 @@ function lfCheckWebError($objFormParam) {
 }
 
 // 入力内容のチェック
-function lfCheckDBError($objFormParam) {
+function lfCheckDBError($objDBParam) {
     global $objPage;
 
     // 入力データを渡す。
-    $arrRet = $objFormParam->getHashArray();
+    $arrRet = $objDBParam->getHashArray();
 
     $objErr = new SC_CheckError($arrRet);
-    $objErr->arrErr = $objFormParam->checkError();
+    $objErr->arrErr = $objDBParam->checkError();
 
     if (count($objErr->arrErr) == 0) {
-        if (!defined('DB_TYPE')) {
-            define('DB_TYPE', $arrRet['db_type']);
-        }
-        // 接続確認
-        $dsn = $arrRet['db_type'] . '://' . $arrRet['db_user'] . ':' . $arrRet['db_password'] . '@' . $arrRet['db_server'] . ':' . $arrRet['db_port'] . '/' . $arrRet['db_name'];
+        $arrDsn = getArrayDsn($objDBParam);
         // Debugモード指定
         $options['debug'] = PEAR_DB_DEBUG;
-        $objDB = MDB2::connect($dsn, $options);
+        $objDB = MDB2::connect($arrDsn, $options);
         // 接続成功
         if (!PEAR::isError($objDB)) {
-            $dbFactory = SC_DB_DBFactory_Ex::getInstance($arrRet['db_type']);
+            $dbFactory = SC_DB_DBFactory_Ex::getInstance($arrDsn['phptype']);
             // データベースバージョン情報の取得
-            $objPage->tpl_db_version = $dbFactory->sfGetDBVersion($dsn);
+            $objPage->tpl_db_version = $dbFactory->sfGetDBVersion($arrDsn);
         } else {
             $objErr->arrErr['all'] = '>> ' . $objDB->message . '<br />';
             // エラー文を取得する
@@ -774,7 +753,7 @@ function lfCheckDBError($objFormParam) {
 }
 
 // SQL文の実行
-function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
+function lfExecuteSQL($filepath, $arrDsn, $disp_err = true) {
     $arrErr = array();
 
     if (!file_exists($filepath)) {
@@ -786,10 +765,18 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
         }
         // Debugモード指定
         $options['debug'] = PEAR_DB_DEBUG;
-        $objDB = MDB2::connect($dsn, $options);
+        $objDB = MDB2::connect($arrDsn, $options);
         // 接続エラー
         if (!PEAR::isError($objDB)) {
             $objDB->setCharset('utf8');
+
+            // MySQL 用の初期化
+            // XXX SC_Query を使うようにすれば、この処理は不要となる
+            if ($arrDsn['phptype'] === 'mysql') {
+                $objDB->exec('SET SESSION storage_engine = InnoDB');
+                $objDB->exec("SET SESSION sql_mode = 'ANSI'");
+            }
+
             $sql_split = split(';', $sql);
             foreach ($sql_split as $key => $val) {
                 SC_Utils::sfFlush(true);
@@ -820,15 +807,15 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
  * シーケンスを削除する.
  *
  * @param array $arrSequences シーケンスのテーブル名, カラム名の配列
- * @param string $dsn データソース名
+ * @param array $arrDsn データソース名の配列
  * @return array エラーが発生した場合はエラーメッセージの配列
  */
-function lfDropSequence($arrSequences, $dsn) {
+function lfDropSequence($arrSequences, $arrDsn) {
     $arrErr = array();
 
     // Debugモード指定
     $options['debug'] = PEAR_DB_DEBUG;
-    $objDB = MDB2::connect($dsn, $options);
+    $objDB = MDB2::connect($arrDsn, $options);
     $objManager =& $objDB->loadModule('Manager');
 
     // 接続エラー
@@ -859,15 +846,15 @@ function lfDropSequence($arrSequences, $dsn) {
  * シーケンスを生成する.
  *
  * @param array $arrSequences シーケンスのテーブル名, カラム名の配列
- * @param string $dsn データソース名
+ * @param array $arrDsn データソース名の配列
  * @return array エラーが発生した場合はエラーメッセージの配列
  */
-function lfCreateSequence($arrSequences, $dsn) {
+function lfCreateSequence($arrSequences, $arrDsn) {
     $arrErr = array();
 
     // Debugモード指定
     $options['debug'] = PEAR_DB_DEBUG;
-    $objDB = MDB2::connect($dsn, $options);
+    $objDB = MDB2::connect($arrDsn, $options);
     $objManager =& $objDB->loadModule('Manager');
 
     // 接続エラー
@@ -1071,4 +1058,29 @@ function renameAdminDir($adminDir) {
         return '※ ' . HTML_REALDIR . $adminDir . 'へのリネームに失敗しました。ディレクトリの権限を確認してください。';
     }
     return true;
+}
+
+function getArrayDsn(SC_FormParam $objDBParam) {
+    $arrRet = $objDBParam->getHashArray();
+
+    if (!defined('DB_TYPE')) {
+        define('DB_TYPE', $arrRet['db_type']);
+    }
+
+    $arrDsn = array(
+        'phptype'   => $arrRet['db_type'],
+        'username'  => $arrRet['db_user'],
+        'password'  => $arrRet['db_password'],
+        'hostspec'  => $hostspec,
+        'port'      => $arrRet['db_port'],
+        'database'  => $arrRet['db_name'],
+    );
+
+    // 文字列形式の DSN との互換処理
+    if ($arrRet['db_server'] !== '+') {
+        $arrDsn['hostspec'] = $arrRet['db_server'];
+        $arrDsn['port']     = $arrRet['db_port'];
+    }
+
+    return $arrDsn;
 }
