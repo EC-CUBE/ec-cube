@@ -340,6 +340,7 @@ class SC_CartSession {
                 && $this->cartSession[$productTypeId][$i]['cart_no'] != '') {
 
                 // 商品情報は常に取得
+                // TODO 同一インスタンス内では1回のみ呼ぶようにしたい
                 $this->cartSession[$productTypeId][$i]['productsClass']
                     =& $objProduct->getDetailAndProductsClass($this->cartSession[$productTypeId][$i]['id']);
 
@@ -513,7 +514,7 @@ class SC_CartSession {
      * 3. 販売制限数のチェック
      * 4. 在庫数チェック
      *
-     * @param string $key 商品種別ID
+     * @param string $productTypeId 商品種別ID
      * @return string エラーが発生した場合はエラーメッセージ
      */
     function checkProducts($productTypeId) {
@@ -521,15 +522,14 @@ class SC_CartSession {
         $tpl_message = '';
 
         // カート内の情報を取得
-        $items = $this->getCartList($productTypeId);
-        foreach (array_keys($items) as $key) {
-            $item =& $items[$key];
-            $product =& $item['productsClass'];
+        $arrItems = $this->getCartList($productTypeId);
+        foreach ($arrItems as &$arrItem) {
+            $product =& $arrItem['productsClass'];
             /*
              * 表示/非表示商品のチェック
              */
             if (SC_Utils_Ex::isBlank($product) || $product['status'] != 1) {
-                $this->delProduct($item['cart_no'], $productTypeId);
+                $this->delProduct($arrItem['cart_no'], $productTypeId);
                 $tpl_message .= "※ 現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。\n";
             } else {
 
@@ -540,22 +540,22 @@ class SC_CartSession {
                 if (SC_Utils_Ex::isBlank($arrDeliv)) {
                     $tpl_message .= '※「' . $product['name'] . '」はまだ配送の準備ができておりません。';
                     $tpl_message .= '恐れ入りますがお問い合わせページよりお問い合わせください。' . "\n";
-                    $this->delProduct($item['cart_no'], $productTypeId);
+                    $this->delProduct($arrItem['cart_no'], $productTypeId);
                 }
 
                 /*
                  * 販売制限数, 在庫数のチェック
                  */
                 $limit = $objProduct->getBuyLimit($product);
-                if (!is_null($limit) && $item['quantity'] > $limit) {
+                if (!is_null($limit) && $arrItem['quantity'] > $limit) {
                     if ($limit > 0) {
-                        $this->setProductValue($item['id'], 'quantity', $limit, $productTypeId);
-                        $total_inctax = SC_Helper_DB_Ex::sfCalcIncTax($item['price']) * $limit;
-                        $this->setProductValue($item['id'], 'total_inctax', $total_inctax, $productTypeId);
+                        $this->setProductValue($arrItem['id'], 'quantity', $limit, $productTypeId);
+                        $total_inctax = SC_Helper_DB_Ex::sfCalcIncTax($arrItem['price']) * $limit;
+                        $this->setProductValue($arrItem['id'], 'total_inctax', $total_inctax, $productTypeId);
                         $tpl_message .= '※「' . $product['name'] . '」は販売制限(または在庫が不足)しております。';
                         $tpl_message .= "一度に数量{$limit}を超える購入はできません。\n";
                     } else {
-                        $this->delProduct($item['cart_no'], $productTypeId);
+                        $this->delProduct($arrItem['cart_no'], $productTypeId);
                         $tpl_message .= '※「' . $product['name'] . "」は売り切れました。\n";
                         continue;
                     }
@@ -589,7 +589,7 @@ class SC_CartSession {
         // 送料無料条件が設定されている場合
         $arrInfo = $objDb->sfGetBasisData();
         if ($arrInfo['free_rule'] > 0) {
-            // 小計が無料条件を超えている場合
+            // 小計が送料無料条件以上の場合
             if ($subtotal >= $arrInfo['free_rule']) {
                 return true;
             }
@@ -632,8 +632,8 @@ class SC_CartSession {
         // 商品ごとの送料を加算
         if (OPTION_PRODUCT_DELIV_FEE == 1) {
             $cartItems = $this->getCartList($productTypeId);
-            foreach ($cartItems as $item) {
-                $results['deliv_fee'] += $item['productsClass']['deliv_fee'] * $item['quantity'];
+            foreach ($cartItems as $arrItem) {
+                $results['deliv_fee'] += $arrItem['productsClass']['deliv_fee'] * $arrItem['quantity'];
             }
         }
 
