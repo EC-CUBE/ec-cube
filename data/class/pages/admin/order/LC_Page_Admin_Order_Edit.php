@@ -337,7 +337,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam('合計', 'total');
         $objFormParam->addParam('支払い合計', 'payment_total');
         $objFormParam->addParam('加算ポイント', 'add_point');
-        $objFormParam->addParam('お誕生日ポイント', 'birth_point');
+        $objFormParam->addParam('お誕生日ポイント', 'birth_point', null, 'n', array(), 0);
         $objFormParam->addParam('消費税合計', 'tax');
         $objFormParam->addParam('最終保持ポイント', 'total_point');
         $objFormParam->addParam('会員ID', 'customer_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');

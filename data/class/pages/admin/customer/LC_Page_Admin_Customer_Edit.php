@@ -97,7 +97,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         // モードによる処理切り替え
         switch ($this->getMode()) {
             case 'edit_search':
-                //検索引き継ぎ用パラメーター処理
+                // 検索引き継ぎ用パラメーター処理
                 $this->lfInitSearchParam($objFormSearchParam);
                 $objFormSearchParam->setParam($_REQUEST);
                 $this->arrErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
@@ -105,23 +105,23 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
                 if (!SC_Utils_Ex::isBlank($this->arrErr)) {
                     return;
                 }
-                //指定会員の情報をセット
+                // 指定会員の情報をセット
                 $this->arrForm = SC_Helper_Customer_Ex::sfGetCustomerData($objFormSearchParam->getValue('edit_customer_id'), true);
-                //購入履歴情報の取得
+                // 購入履歴情報の取得
                 list($this->tpl_linemax, $this->arrPurchaseHistory, $this->objNavi) = $this->lfPurchaseHistory($objFormSearchParam->getValue('edit_customer_id'));
                 $this->arrPagenavi = $this->objNavi->arrPagenavi;
                 $this->arrPagenavi['mode'] = 'return';
                 $this->tpl_pageno = '0';
                 break;
             case 'confirm':
-                //パラメーター処理
+                // パラメーター処理
                 $this->lfInitParam($objFormParam);
                 $objFormParam->setParam($_POST);
                 $objFormParam->convParam();
                 // 入力パラメーターチェック
                 $this->arrErr = $this->lfCheckError($objFormParam);
                 $this->arrForm = $objFormParam->getHashArray();
-                //検索引き継ぎ用パラメーター処理
+                // 検索引き継ぎ用パラメーター処理
                 $this->lfInitSearchParam($objFormSearchParam);
                 $objFormSearchParam->setParam($objFormParam->getValue('search_data'));
                 $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
@@ -133,14 +133,14 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
                 $this->tpl_mainpage = 'customer/edit_confirm.tpl';
                 break;
             case 'return':
-                //パラメーター処理
+                // パラメーター処理
                 $this->lfInitParam($objFormParam);
                 $objFormParam->setParam($_POST);
                 $objFormParam->convParam();
                 // 入力パラメーターチェック
                 $this->arrErr = $this->lfCheckError($objFormParam);
                 $this->arrForm = $objFormParam->getHashArray();
-                //検索引き継ぎ用パラメーター処理
+                // 検索引き継ぎ用パラメーター処理
                 $this->lfInitSearchParam($objFormSearchParam);
                 $objFormSearchParam->setParam($objFormParam->getValue('search_data'));
                 $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
@@ -148,7 +148,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
                 if (!SC_Utils_Ex::isBlank($this->arrErr) or !SC_Utils_Ex::isBlank($this->arrSearchErr)) {
                     return;
                 }
-                //購入履歴情報の取得
+                // 購入履歴情報の取得
                 list($this->tpl_linemax, $this->arrPurchaseHistory, $this->objNavi) = $this->lfPurchaseHistory($objFormParam->getValue('customer_id'), $objFormParam->getValue('search_pageno'));
                 $this->arrPagenavi = $this->objNavi->arrPagenavi;
                 $this->arrPagenavi['mode'] = 'return';
@@ -156,15 +156,15 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
 
                 break;
             case 'complete':
-                //登録・保存処理
-                //パラメーター処理
+                // 登録・保存処理
+                // パラメーター処理
                 $this->lfInitParam($objFormParam);
                 $objFormParam->setParam($_POST);
                 $objFormParam->convParam();
                 // 入力パラメーターチェック
                 $this->arrErr = $this->lfCheckError($objFormParam);
                 $this->arrForm = $objFormParam->getHashArray();
-                //検索引き継ぎ用パラメーター処理
+                // 検索引き継ぎ用パラメーター処理
                 $this->lfInitSearchParam($objFormSearchParam);
                 $objFormSearchParam->setParam($objFormParam->getValue('search_data'));
                 $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
@@ -176,9 +176,10 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
                 $this->tpl_mainpage = 'customer/edit_complete.tpl';
                 break;
             case 'complete_return':
-                //検索引き継ぎ用パラメーター処理
+                // 入力パラメーターチェック
                 $this->lfInitParam($objFormParam);
                 $objFormParam->setParam($_POST);
+                // 検索引き継ぎ用パラメーター処理
                 $this->lfInitSearchParam($objFormSearchParam);
                 $objFormSearchParam->setParam($objFormParam->getValue('search_data'));
                 $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
@@ -187,6 +188,8 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
                     return;
                 }
             default:
+                $this->lfInitParam($objFormParam);
+                $this->arrForm = $objFormParam->getHashArray();
                 break;
         }
         // フックポイント.
@@ -249,7 +252,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
     function lfCheckError(&$objFormParam) {
         $arrErr = SC_Helper_Customer_Ex::sfCustomerMypageErrorCheck($objFormParam, true);
 
-        //メアド重複チェック(共通ルーチンは使えない)
+        // メアド重複チェック(共通ルーチンは使えない)
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
         $col = 'email, email_mobile, customer_id';
         $table = 'dtb_customer';
@@ -323,7 +326,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         $table = 'dtb_order';
         $where = 'customer_id = ? AND del_flg <> 1';
         $arrVal = array($customer_id);
-        //購入履歴の件数取得
+        // 購入履歴の件数取得
         $linemax = $objQuery->count($table, $where, $arrVal);
         // ページ送りの取得
         $objNavi = new SC_PageNavi_Ex($pageno, $linemax, $page_max, 'fnNaviSearchPage2', NAVI_PMAX);
@@ -332,7 +335,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         // 表示順序
         $order = 'order_id DESC';
         $objQuery->setOrder($order);
-        //購入履歴情報の取得
+        // 購入履歴情報の取得
         $arrPurchaseHistory = $objQuery->select('*', $table, $where, $arrVal);
 
         return array($linemax, $arrPurchaseHistory, $objNavi);
