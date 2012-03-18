@@ -173,10 +173,11 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
                 $arrSelectedDeliv = $this->getSelectedDeliv($objPurchase, $objCartSess, $deliv_id);
                 $this->arrPayment = $arrSelectedDeliv['arrPayment'];
                 $this->arrDelivTime = $arrSelectedDeliv['arrDelivTime'];
+                $this->img_show = $arrSelectedDeliv['img_show'];
 
                 $this->arrErr = $this->lfCheckError($objFormParam, $this->arrPrices['subtotal'], $this->tpl_user_point);
 
-                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                if (empty($this->arrErr)) {
                     $this->saveShippings($objFormParam, $this->arrDelivTime);
                     $this->lfRegistData($this->tpl_uniqid, $objFormParam->getDbArray(), $objPurchase, $this->arrPayment);
 
@@ -190,11 +191,8 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
                     // 確認ページへ移動
                     SC_Response_Ex::sendRedirect(SHOPPING_CONFIRM_URLPATH);
                     exit;
-                } else {
-                    // 受注一時テーブルからの情報を格納
-                    $this->img_show = $arrSelectedDeliv['img_show'];
-                    $objFormParam->setParam($objPurchase->getOrderTemp($this->tpl_uniqid));
                 }
+
                 break;
 
             // 前のページに戻る
