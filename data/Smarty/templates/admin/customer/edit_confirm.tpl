@@ -60,31 +60,31 @@ function func_return(){
     <div id="customer" class="contents-main">
         <table class="form">
             <tr>
-                <th>会員ID<span class="attention"> *</span></th>
+                <th>会員ID</th>
                 <td><!--{$arrForm.customer_id|h}--></td>
             </tr>
             <tr>
-                <th>会員状態<span class="attention"> *</span></th>
+                <th>会員状態</th>
                 <td><!--{if $arrForm.status == 1}-->仮会員<!--{else}-->本会員<!--{/if}--></td>
             </tr>
             <tr>
-                <th>お名前<span class="attention"> *</span></th>
+                <th>お名前</th>
                 <td><!--{$arrForm.name01|h}--><!--{$arrForm.name02|h}-->　様</td>
             </tr>
             <tr>
-                <th>お名前(フリガナ)<span class="attention"> *</span></th>
+                <th>お名前(フリガナ)</th>
                 <td><!--{$arrForm.kana01|h}--><!--{$arrForm.kana02|h}-->　様</td>
             </tr>
             <tr>
-                <th>郵便番号<span class="attention"> *</span></th>
+                <th>郵便番号</th>
                 <td>〒 <!--{$arrForm.zip01|h}--> - <!--{$arrForm.zip02|h}--></td>
             </tr>
             <tr>
-                <th>住所<span class="attention"> *</span></td>
+                <th>住所</td>
                 <td><!--{$arrPref[$arrForm.pref]|h}--><!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}--></td>
             </tr>
             <tr>
-                <th>メールアドレス<span class="attention"> *</span></th>
+                <th>メールアドレス</th>
                 <td><!--{$arrForm.email|h}--></td>
             </tr>
             <tr>
@@ -92,7 +92,7 @@ function func_return(){
                 <td><!--{$arrForm.email_mobile|h}--></td>
             </tr>
             <tr>
-                <th>お電話番号<span class="attention"> *</span></th>
+                <th>お電話番号</th>
                 <td><!--{$arrForm.tel01|h}--> - <!--{$arrForm.tel02|h}--> - <!--{$arrForm.tel03|h}--></td>
             </tr>
             <tr>
@@ -100,7 +100,7 @@ function func_return(){
                 <td><!--{if strlen($arrForm.fax01) > 0}--><!--{$arrForm.fax01|h}--> - <!--{$arrForm.fax02|h}--> - <!--{$arrForm.fax03|h}--><!--{else}-->未登録<!--{/if}--></td>
             </tr>
             <tr>
-                <th>ご性別<span class="attention"> *</span></th>
+                <th>ご性別</th>
                 <td><!--{$arrSex[$arrForm.sex]|h}--></td>
             </tr>
             <tr>
@@ -112,18 +112,18 @@ function func_return(){
                 <td><!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}--><!--{$arrForm.year|h}-->年<!--{$arrForm.month|h}-->月<!--{$arrForm.day|h}-->日<!--{else}-->未登録<!--{/if}--></td>
             </tr>
             <tr>
-                <th>パスワード<span class="attention"> *</span></th>
+                <th>パスワード</th>
                 <td><!--{$smarty.const.DEFAULT_PASSWORD}--></td>
             </tr>
             <tr>
-                <th>パスワードを忘れたときのヒント<span class="attention"> *</span></th>
+                <th>パスワードを忘れたときのヒント</th>
                 <td>
                     質問： <!--{$arrReminder[$arrForm.reminder]|h}--><br />
                     答え： <!--{$smarty.const.DEFAULT_PASSWORD}-->
                 </td>
             </tr>
             <tr>
-                <th>メールマガジン<span class="attention"> *</span></th>
+                <th>メールマガジン</th>
                 <td><!--{if $arrForm.mailmaga_flg eq 1}-->HTML<!--{elseif $arrForm.mailmaga_flg eq 2}-->テキスト<!--{else}-->希望しない<!--{/if}--></td>
             </tr>
             <tr>
