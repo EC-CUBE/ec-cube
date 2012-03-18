@@ -24,21 +24,11 @@
 
 <script type="text/javascript">
 <!--
-
     function fnReturn() {
         document.search_form.action = './<!--{$smarty.const.DIR_INDEX_PATH}-->';
         document.search_form.submit();
         return false;
     }
-
-    function fnOrderidSubmit(order_id, order_id_value) {
-        if(order_id != "" && order_id_value != "") {
-            document.form2[order_id].value = order_id_value;
-        }
-        document.form2.action = '../order/edit.php';
-        document.form2.submit();
-    }
-
 //-->
 </script>
 
