@@ -293,7 +293,7 @@ class SC_Helper_Purchase {
      *
      * @param bool $has_shipment_item 配送商品を保有している配送先のみ返す。
      */
-    function getShippingTemp($has_shipment_item) {
+    function getShippingTemp($has_shipment_item = false) {
         if ($has_shipment_item) {
             $arrReturn = array();
             foreach ($_SESSION['shipping'] as $key => $arrVal) {
