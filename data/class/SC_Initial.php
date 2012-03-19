@@ -60,6 +60,7 @@ class SC_Initial {
         $this->createCacheDir();            // defineConstants メソッドより後で実行
         $this->stripslashesDeepGpc();
         $this->resetSuperglobalsRequest();  // stripslashesDeepGpc メソッドより後で実行
+        $this->setTimezone();               // 本当はエラーハンドラーより先に読みたい気も
     }
 
     /**
@@ -468,5 +469,14 @@ class SC_Initial {
         if (!defined($name)) {
             define($name, $value);
         }
+    }
+
+    /**
+     * タイムゾーンを設定
+     *
+     * @return void
+     */
+    function setTimezone() {
+        date_default_timezone_set('Asia/Tokyo');
     }
 }

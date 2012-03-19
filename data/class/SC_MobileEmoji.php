@@ -38,7 +38,7 @@ class SC_MobileEmoji {
      * @param string 入力
      * @return string 出力
      */
-    function handler($buffer) {
+    static function handler($buffer) {
         $replace_callback = create_function('$matches', 'return SC_MobileEmoji_Ex::indexToCode($matches[1]);');
         return preg_replace_callback('/\[emoji:(e?\d+)\]/', $replace_callback, $buffer);
     }
