@@ -159,8 +159,7 @@ class LC_Page_Cart extends LC_Page_Ex {
         }
         $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
         $totalIncTax = 0;
-        foreach (array_keys($this->cartKeys) as $index) {
-            $key = $this->cartKeys[$index];
+        foreach ($this->cartKeys as $key) {
             // カート集計処理
             $this->tpl_message = $objCartSess->checkProducts($key);
             $this->tpl_total_inctax[$key] = $objCartSess->getAllProductsTotal($key);
@@ -176,9 +175,6 @@ class LC_Page_Cart extends LC_Page_Ex {
 
             // 送料無料までの金額を計算
             $this->tpl_deliv_free[$key] = $this->arrInfo['free_rule'] - $this->tpl_total_inctax[$key];
-            if (SC_Utils_Ex::isBlank($key)) {
-                unset($this->cartKeys[$index]);
-            }
         }
 
         //商品の合計金額をセット
