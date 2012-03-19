@@ -54,7 +54,7 @@ set_time_limit(0);
 while (@ob_end_flush());
 
 $objData = new CreateEcCubeCustomerData();
-$start = microtime_float();
+$start = microtime(true);
 
 /*
  * ※このスクリプトは、会員データの作成に
@@ -70,7 +70,7 @@ $objData->createCustomers();
 
 //$objData->objQuery->rollback();
 //$objData->objQuery->commit();
-$end = microtime_float();
+$end = microtime(true);
 /* 
  * Windowsのコマンドプロンプトで文字化けしないように、
  * 標準出力に出すメッセージにはマルチバイト文字を使用しないようにした。
@@ -159,14 +159,6 @@ class CreateEcCubeCustomerData {
 
 /** テスト用スクリプトのログ出力関数 */
 function lfPrintLog($mess) {
-	$path = DATA_REALDIR . "logs/" .  basename(__FILE__, '.php') . ".log";
-	GC_Utils::gfPrintLog($mess, $path);
+    $path = DATA_REALDIR . "logs/" .  basename(__FILE__, '.php') . ".log";
+    GC_Utils::gfPrintLog($mess, $path);
 }
-
-/** PHP4対応のための microtime 関数 */
-function microtime_float() {
-    list($usec, $sec) = explode(" ", microtime());
-    return (float)$usec + (float)$sec;
-}
-
-?>

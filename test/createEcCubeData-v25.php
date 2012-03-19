@@ -56,7 +56,7 @@ set_time_limit(0);
 while (@ob_end_flush());
 
 $objData = new CreateEcCubeData();
-$start = microtime_float();
+$start = microtime(true);
 //$objData->objQuery->begin();
 
 // カテゴリ生成
@@ -75,7 +75,7 @@ $objDb->sfCountCategory(NULL, true);
 
 //$objData->objQuery->rollback();
 //$objData->objQuery->commit();
-$end = microtime_float();
+$end = microtime(true);
 print("データの生成が完了しました!\n");
 printf("所要時間 %f 秒\n", $end - $start);
 
@@ -439,210 +439,212 @@ class CreateEcCubeData {
     }
 
     /** 規格1 */
-    var $arrSize = array("m11(29cm)"
-                         ,"m10 1/2(28.5cm)"
-                         ,"m10(28cm)"
-                         ,"m9 1/2(27.5cm)"
-                         ,"m9(27cm)"
-                         ,"m8 1/2(26.5cm)"
-                         ,"m8(26cm)"
-                         ,'43'
-                         ,'42'
-                         ,'41'
-                         ,"43(27.0cm～27.5cm)"
-                         ,"42(26.5cm～27.0cm)"
-                         ,"37(ladies 23.5～24cm)"
-                         ,"42(約27.5cm)"
-                         ,"41(約26.5cm)"
-                         ,'W36'
-                         ,'W34'
-                         ,'W32'
-                         ,'43'
-                         ,'42'
-                         ,'41'
-                         ,'m11'
-                         ,'m10'
-                         ,"m9.5"
-                         ,'m9'
-                         ,'m8'
-                         ,'FREE'
-                         ,'XS'
-                         ,'S'
-                         ,'M'
-                         ,'L'
-                         ,'XL'
-                         ,"25-27"
-                         ,"27-29"
-                         ,'W28'
-                         ,'W29'
-                         ,'W30'
-                         ,'W31'
-                         ,'W32'
-                         ,'W33'
-                         ,'W34'
-                         ,'W35'
-                         ,'W36'
-                         ,'4'
-                         ,'6'
-                         ,'8'
-                         ,'10'
-                         ,'12'
-                         ,'10cm'
-                         ,'12cm'
-                         ,'14cm'
-                         ,'16cm'
-                         ,'18cm'
-                         ,'20cm'
-                         ,'22cm'
-                         ,'24cm'
-                         ,'26cm'
-                         ,'28cm'
-                         ,'30cm'
-                         ,'32cm'
-                         ,'34cm'
-                         ,'36cm'
-                         ,'38cm'
-                         ,'40cm'
-                         ,'10g'
-                         ,'20g'
-                         ,'30g'
-                         ,'40g'
-                         ,'50g'
-                         ,'60g'
-                         ,'70g'
-                         ,'80g'
-                         ,'90g'
-                         ,'100g'
-                         ,'110g'
-                         ,'120g'
-                         ,'130g'
-                         ,'140g'
-                         ,'150g'
-                         ,'160g'
-                         ,'170g'
-                         ,'180g'
-                         ,'190g'
-                         ,'200g'
-                         ,'8inch'
-                         ,'10inch'
-                         ,'12inch'
-                         ,'14inch'
-                         ,'16inch'
-                         ,'18inch'
-                         ,'20inch'
-                         ,'22inch'
-                         ,'24inch'
-                         ,'26inch'
-                         ,'28inch'
-                         ,'30inch'
-                         ,'32inch'
-                         ,'34inch'
-                         ,'36inch'
-                         ,'38inch'
-                    );
+    var $arrSize = array(
+        "m11(29cm)",
+        "m10 1/2(28.5cm)",
+        "m10(28cm)",
+        "m9 1/2(27.5cm)",
+        "m9(27cm)",
+        "m8 1/2(26.5cm)",
+        "m8(26cm)",
+        '43',
+        '42',
+        '41',
+        "43(27.0cm～27.5cm)",
+        "42(26.5cm～27.0cm)",
+        "37(ladies 23.5～24cm)",
+        "42(約27.5cm)",
+        "41(約26.5cm)",
+        'W36',
+        'W34',
+        'W32',
+        '43',
+        '42',
+        '41',
+        'm11',
+        'm10',
+        "m9.5",
+        'm9',
+        'm8',
+        'FREE',
+        'XS',
+        'S',
+        'M',
+        'L',
+        'XL',
+        "25-27",
+        "27-29",
+        'W28',
+        'W29',
+        'W30',
+        'W31',
+        'W32',
+        'W33',
+        'W34',
+        'W35',
+        'W36',
+        '4',
+        '6',
+        '8',
+        '10',
+        '12',
+        '10cm',
+        '12cm',
+        '14cm',
+        '16cm',
+        '18cm',
+        '20cm',
+        '22cm',
+        '24cm',
+        '26cm',
+        '28cm',
+        '30cm',
+        '32cm',
+        '34cm',
+        '36cm',
+        '38cm',
+        '40cm',
+        '10g',
+        '20g',
+        '30g',
+        '40g',
+        '50g',
+        '60g',
+        '70g',
+        '80g',
+        '90g',
+        '100g',
+        '110g',
+        '120g',
+        '130g',
+        '140g',
+        '150g',
+        '160g',
+        '170g',
+        '180g',
+        '190g',
+        '200g',
+        '8inch',
+        '10inch',
+        '12inch',
+        '14inch',
+        '16inch',
+        '18inch',
+        '20inch',
+        '22inch',
+        '24inch',
+        '26inch',
+        '28inch',
+        '30inch',
+        '32inch',
+        '34inch',
+        '36inch',
+        '38inch',
+    );
 
     /** 規格2 */
-    var $arrColor = array('white'
-                         ,'whitesmoke'
-                         ,'snow'
-                         ,'ghostwhite'
-                         ,'mintcream'
-                         ,'azure'
-                         ,'ivory'
-                         ,'floralwhite'
-                         ,'aliceblue'
-                         ,'lavenderblush'
-                         ,'seashell'
-                         ,'honeydew'
-                         ,'lightyellow'
-                         ,'oldlace'
-                         ,'cornsilk'
-                         ,'linen'
-                         ,'lemonchiffon'
-                         ,'lavender'
-                         ,'beige'
-                         ,'lightgoldenrodyellow'
-                         ,'mistyrose'
-                         ,'papayawhip'
-                         ,'antiquewhite'
-                         ,'lightcyan'
-                         ,'cyan'
-                         ,'aqua'
-                         ,'darkcyan'
-                         ,'teal'
-                         ,'darkslategray'
-                         ,'turquoise'
-                         ,'paleturquoise'
-                         ,'mediumturquoise'
-                         ,'aquamarine'
-                         ,'gainsboro'
-                         ,'lightgray'
-                         ,'silver'
-                         ,'darkgray'
-                         ,'gray'
-                         ,'dimgray'
-                         ,'black'
-                         ,'powderblue'
-                         ,'lightblue'
-                         ,'lightskyblue'
-                         ,'skyblue'
-                         ,'darkturquoise'
-                         ,'deepskyblue'
-                         ,'dodgerblue'
-                         ,'royalblue'
-                         ,'cornflowerblue'
-                         ,'cadetblue'
-                         ,'lightsteelblue'
-                         ,'steelblue'
-                         ,'lightslategray'
-                         ,'slategray'
-                         ,'blue'
-                         ,'mediumblue'
-                         ,'darkblue'
-                         ,'navy'
-                         ,'midnightblue'
-                         ,'lightsalmon'
-                         ,'darksalmon'
-                         ,'salmon'
-                         ,'tomato'
-                         ,'lightcoral'
-                         ,'coral'
-                         ,'crimson'
-                         ,'red'
-                         ,'mediumorchid'
-                         ,'mediumpurple'
-                         ,'mediumslateblue'
-                         ,'slateblue'
-                         ,'blueviolet'
-                         ,'darkviolet'
-                         ,'darkorchid'
-                         ,'darkslateblue'
-                         ,'darkorchid'
-                         ,'thistle'
-                         ,'plum'
-                         ,'violet'
-                         ,'magenta'
-                         ,'fuchsia'
-                         ,'darkmagenta'
-                         ,'purple'
-                         ,'palegreen'
-                         ,'lightgreen'
-                         ,'lime'
-                         ,'limegreen'
-                         ,'forestgreen'
-                         ,'green'
-                         ,'darkgreen'
-                         ,'greenyellow'
-                         ,'chartreuse'
-                         ,'lawngreen'
-                         ,'yellowgreen'
-                         ,'olivedrab'
-                         ,'darkolivegreen'
-                         ,'mediumaquamarine'
-                         ,'mediumspringgreen'
-                         ,'springgreen'
-                         ,'darkseagreen'
-                     );
+    var $arrColor = array(
+        'white',
+        'whitesmoke',
+        'snow',
+        'ghostwhite',
+        'mintcream',
+        'azure',
+        'ivory',
+        'floralwhite',
+        'aliceblue',
+        'lavenderblush',
+        'seashell',
+        'honeydew',
+        'lightyellow',
+        'oldlace',
+        'cornsilk',
+        'linen',
+        'lemonchiffon',
+        'lavender',
+        'beige',
+        'lightgoldenrodyellow',
+        'mistyrose',
+        'papayawhip',
+        'antiquewhite',
+        'lightcyan',
+        'cyan',
+        'aqua',
+        'darkcyan',
+        'teal',
+        'darkslategray',
+        'turquoise',
+        'paleturquoise',
+        'mediumturquoise',
+        'aquamarine',
+        'gainsboro',
+        'lightgray',
+        'silver',
+        'darkgray',
+        'gray',
+        'dimgray',
+        'black',
+        'powderblue',
+        'lightblue',
+        'lightskyblue',
+        'skyblue',
+        'darkturquoise',
+        'deepskyblue',
+        'dodgerblue',
+        'royalblue',
+        'cornflowerblue',
+        'cadetblue',
+        'lightsteelblue',
+        'steelblue',
+        'lightslategray',
+        'slategray',
+        'blue',
+        'mediumblue',
+        'darkblue',
+        'navy',
+        'midnightblue',
+        'lightsalmon',
+        'darksalmon',
+        'salmon',
+        'tomato',
+        'lightcoral',
+        'coral',
+        'crimson',
+        'red',
+        'mediumorchid',
+        'mediumpurple',
+        'mediumslateblue',
+        'slateblue',
+        'blueviolet',
+        'darkviolet',
+        'darkorchid',
+        'darkslateblue',
+        'darkorchid',
+        'thistle',
+        'plum',
+        'violet',
+        'magenta',
+        'fuchsia',
+        'darkmagenta',
+        'purple',
+        'palegreen',
+        'lightgreen',
+        'lime',
+        'limegreen',
+        'forestgreen',
+        'green',
+        'darkgreen',
+        'greenyellow',
+        'chartreuse',
+        'lawngreen',
+        'yellowgreen',
+        'olivedrab',
+        'darkolivegreen',
+        'mediumaquamarine',
+        'mediumspringgreen',
+        'springgreen',
+        'darkseagreen',
+    );
 
     /**
     * 総カテゴリ数を計算し、dtb_categoryに代入するrankに使う
@@ -653,11 +655,3 @@ class CreateEcCubeData {
     }
 
 }
-
-/** PHP4対応のための microtime 関数 */
-function microtime_float() {
-    list($usec, $sec) = explode(" ", microtime());
-    return (float)$usec + (float)$sec;
-}
-
-?>
