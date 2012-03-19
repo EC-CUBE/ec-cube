@@ -103,11 +103,11 @@ class SC_Display{
 
         switch ($device) {
             case DEVICE_TYPE_MOBILE:
-				if (USE_MOBILE === false) {
-					exit;
+                if (USE_MOBILE === false) {
+                    exit;
                 }
-				$this->response->setContentType('text/html');
-				$this->setView(new SC_MobileView_Ex());
+                $this->response->setContentType('text/html');
+                $this->setView(new SC_MobileView_Ex());
                 break;
             case DEVICE_TYPE_SMARTPHONE:
                 $this->setView(new SC_SmartphoneView_Ex());

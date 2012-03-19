@@ -574,7 +574,7 @@ class SC_Helper_Purchase {
      * @return array 支払方法詳細の配列
      */
     function getPaymentsByPaymentsId($payment_id) {
-		$objQuery =& SC_Query_Ex::getSingletonInstance();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = 'payment_id = ? AND del_flg = 0';
         $arrValues = array($payment_id);
         return $objQuery->getRow('*', 'dtb_payment', $where, $arrValues);
