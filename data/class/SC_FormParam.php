@@ -175,7 +175,7 @@ class SC_FormParam {
 
     // エラーチェック
     function checkError($br = true) {
-        $objErr->arrErr = array();
+        $arrErr = array();
 
         foreach ($this->keyname as $index => $key) {
             foreach ($this->arrCheck[$index] as $func) {
@@ -207,7 +207,7 @@ class SC_FormParam {
                     case 'SELECT_CHECK':
                     case 'FILE_NAME_CHECK_BY_NOUPLOAD':
                         $this->recursionCheck($this->disp_name[$index], $func,
-                            $value, $objErr->arrErr, $key, $this->length[$index]);
+                            $value, $arrErr, $key, $this->length[$index]);
                         break;
                     // 小文字に変換
                     case 'CHANGE_LOWER':
@@ -216,26 +216,26 @@ class SC_FormParam {
                     // ファイルの存在チェック
                     case 'FILE_EXISTS':
                         if ($value != '' && !file_exists($this->check_dir . $value)) {
-                            $objErr->arrErr[$key] = '※ ' . $this->disp_name[$index] . 'のファイルが存在しません。<br>';
+                            $arrErr[$key] = '※ ' . $this->disp_name[$index] . 'のファイルが存在しません。<br>';
                         }
                         break;
                     // ダウンロード用ファイルの存在チェック
                     case 'DOWN_FILE_EXISTS':
                         if ($value != '' && !file_exists(DOWN_SAVE_REALDIR . $value)) {
-                            $objErr->arrErr[$key] = '※ ' . $this->disp_name[$index] . 'のファイルが存在しません。<br>';
+                            $arrErr[$key] = '※ ' . $this->disp_name[$index] . 'のファイルが存在しません。<br>';
                         }
                         break;
                     default:
-                        $objErr->arrErr[$key] = "※※　エラーチェック形式($func)には対応していません　※※ <br>";
+                        $arrErr[$key] = "※※　エラーチェック形式($func)には対応していません　※※ <br>";
                         break;
                 }
             }
 
-            if (isset($objErr->arrErr[$key]) && !$br) {
-                $objErr->arrErr[$key] = preg_replace("/<br(\s+\/)?>/i", '', $objErr->arrErr[$key]);
+            if (isset($arrErr[$key]) && !$br) {
+                $arrErr[$key] = preg_replace("/<br(\s+\/)?>/i", '', $arrErr[$key]);
             }
         }
-        return $objErr->arrErr;
+        return $arrErr;
     }
 
     /**
