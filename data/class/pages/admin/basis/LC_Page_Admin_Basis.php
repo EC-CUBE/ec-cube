@@ -281,6 +281,6 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         $objErr->doFunc(array('緯度', 'latitude', STEXT_LEN), array('NUM_POINT_CHECK', 'MAX_LENGTH_CHECK'));
         $objErr->doFunc(array('経度', 'longitude', STEXT_LEN), array('NUM_POINT_CHECK', 'MAX_LENGTH_CHECK'));
 
-        return  array_merge((array)$arrErr, (array)$objErr->arrErr);
+        return array_merge((array)$arrErr, (array)$objErr->arrErr);
     }
 }

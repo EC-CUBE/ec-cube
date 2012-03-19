@@ -367,7 +367,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
     /* 規格選択セレクトボックスの作成 */
     function lfMakeSelect() {
-        return  'fnSetClassCategories('
+        return 'fnSetClassCategories('
             . 'document.form1, '
             . SC_Utils_Ex::jsonEncode($this->objFormParam->getValue('classcategory_id2'))
             . '); ';

@@ -166,7 +166,7 @@ function lfPrintLog($mess) {
 /** PHP4対応のための microtime 関数 */
 function microtime_float() {
     list($usec, $sec) = explode(" ", microtime());
-    return ((float)$usec + (float)$sec);
+    return (float)$usec + (float)$sec;
 }
 
 ?>

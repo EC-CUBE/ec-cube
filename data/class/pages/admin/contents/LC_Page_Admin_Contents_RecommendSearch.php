@@ -194,7 +194,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setWhere($where);
         $linemax = $objProduct->findProductCount($objQuery, $bind);
-        return  $linemax;   // 何件が該当しました。表示用
+        return $linemax;   // 何件が該当しました。表示用
     }
 
     /**

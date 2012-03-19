@@ -257,7 +257,7 @@ class SC_Utils {
         } else {
             $date = '';
         }
-        return     $date;
+        return $date;
     }
 
     /**
@@ -868,7 +868,7 @@ class SC_Utils {
             SC_Utils_Ex::sfDispError('');
             exit;
         }
-        return     $outpath;
+        return $outpath;
     }
 
     function sfCutString($str, $len, $byte = true, $commadisp = true) {
@@ -991,7 +991,7 @@ class SC_Utils {
 
     // PHPのmb_convert_encoding関数をSmartyでも使えるようにする
     function sfMbConvertEncoding($str, $encode = 'CHAR_CODE') {
-        return  mb_convert_encoding($str, $encode);
+        return mb_convert_encoding($str, $encode);
     }
 
     // 2つの配列を用いて連想配列を作成する
@@ -1928,7 +1928,7 @@ class SC_Utils {
      */
     function isAbsoluteRealPath($realpath) {
         if (strpos(PHP_OS, 'WIN') === false) {
-            return (substr($realpath, 0, 1) == '/');
+            return substr($realpath, 0, 1) == '/';
         } else {
             return preg_match('/^[a-zA-Z]:(\\\|\/)/', $realpath) ? true : false;
         }

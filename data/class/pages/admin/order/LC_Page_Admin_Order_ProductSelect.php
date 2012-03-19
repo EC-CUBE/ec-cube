@@ -163,7 +163,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
      * @param SC_Product $objProduct
      */
     function getTplJavascript(&$objProduct) {
-        return  'productsClassCategories = ' . SC_Utils_Ex::jsonEncode($objProduct->classCategories) . '; ';
+        return 'productsClassCategories = ' . SC_Utils_Ex::jsonEncode($objProduct->classCategories) . '; ';
     }
 
     /**
@@ -198,7 +198,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setWhere($where);
         $linemax = $objProduct->findProductCount($objQuery, $bind);
-        return  $linemax;   // 何件が該当しました。表示用
+        return $linemax;   // 何件が該当しました。表示用
     }
 
     /**
