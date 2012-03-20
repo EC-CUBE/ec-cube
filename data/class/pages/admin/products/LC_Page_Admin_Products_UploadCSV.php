@@ -473,11 +473,6 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
             $where = 'product_class_id = ?';
             $objQuery->update('dtb_products_class', $sqlval, $where, array($product_class_id));
         }
-        // 支払い方法登録
-        if ($arrList['product_payment_ids'] != '') {
-            $arrPayment_id = explode(',', $arrList['product_payment_ids']);
-            $objProduct->setPaymentOptions($product_class_id, $arrPayment_id);
-        }
     }
 
     /**
@@ -533,9 +528,6 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
                     break;
                 case 'product_type_id':
                     $arrCSVFrame[$key]['default'] = DEFAULT_PRODUCT_DOWN;
-                    break;
-                case 'product_payment_ids':
-                    $arrCSVFrame[$key]['default'] = implode(',',array_keys($this->arrPayments));
                     break;
                 case 'stock_unlimited':
                     $arrCSVFrame[$key]['default'] = UNLIMITED_FLG_LIMITED;
@@ -671,10 +663,6 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         // 商品ステータスIDの存在チェック
         if (!$this->lfIsArrayRecordMulti($this->arrSTATUS, 'product_statuses', $item, ',')) {
             $arrErr['product_statuses'] = '※ 指定の商品ステータスIDは、登録されていません。';
-        }
-        // 支払い方法IDの存在チェック
-        if (!$this->lfIsArrayRecordMulti($this->arrPayments, 'product_payment_ids', $item, ',')) {
-            $arrErr['product_payment_ids'] = '※ 指定の支払い方法IDは、登録されていません。';
         }
         // 削除フラグのチェック
         if(array_search('del_flg', $this->arrFormKeyList) !== FALSE
