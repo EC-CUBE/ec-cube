@@ -1071,7 +1071,6 @@ function getArrayDsn(SC_FormParam $objDBParam) {
         'phptype'   => $arrRet['db_type'],
         'username'  => $arrRet['db_user'],
         'password'  => $arrRet['db_password'],
-        'hostspec'  => $hostspec,
         'port'      => $arrRet['db_port'],
         'database'  => $arrRet['db_name'],
     );
