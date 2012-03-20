@@ -1133,8 +1133,6 @@ __EOF__;
         $objQuery = new SC_Query_Ex();
         $objDb = new SC_Helper_DB_Ex();
 
-        $product_id = $arrList['product_id'];
-
         // 配列の添字を定義
         $checkArray = array('product_class_id', 'product_id', 'product_code', 'stock', 'stock_unlimited', 'price01', 'price02', 'sale_limit', 'deliv_fee', 'point_rate' ,'product_type_id', 'down_filename', 'down_realfilename');
         $sqlval = SC_Utils_Ex::sfArrayIntersectKeys($arrList, $checkArray);
