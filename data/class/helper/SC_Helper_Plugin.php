@@ -65,10 +65,10 @@ class SC_Helper_Plugin {
                 $this->arrPluginInstances[$arrPluginData['plugin_id']] = $objPlugin;
                 $this->arrPluginIds[] = $arrPluginData['plugin_id'];
                 // ローカルフックポイントの登録.
-                $this->registLocalHookPoint($objPlugin, $arrPluginData['priority']);
+                $this->registerLocalHookPoint($objPlugin, $arrPluginData['priority']);
                 // スーパーフックポイントの登録.
-                $this->registSuperHookPoint($objPlugin, HOOK_POINT_PREPROCESS, 'preProcess', $arrPluginData['priority']);
-                $this->registSuperHookPoint($objPlugin, HOOK_POINT_PROCESS, 'process', $arrPluginData['priority']);
+                $this->registerSuperHookPoint($objPlugin, HOOK_POINT_PREPROCESS, 'preProcess', $arrPluginData['priority']);
+                $this->registerSuperHookPoint($objPlugin, HOOK_POINT_PROCESS, 'process', $arrPluginData['priority']);
             }
         }
     }
@@ -218,7 +218,7 @@ class SC_Helper_Plugin {
      * @param string $function_name 実行する関数名
      * @param string $priority 実行順
      */
-    function registSuperHookPoint($objPlugin, $hook_point, $function_name, $priority) {
+    function registerSuperHookPoint($objPlugin, $hook_point, $function_name, $priority) {
         // スーパープラグイン関数を定義しているかを検証.
         if (method_exists($objPlugin, $function_name) === true) {
             // アクションの登録
@@ -232,12 +232,12 @@ class SC_Helper_Plugin {
      * @param Object $objPlugin プラグインのインスタンス
      * @param string $priority 実行順
      */
-    function registLocalHookPoint($objPlugin, $priority) {
+    function registerLocalHookPoint($objPlugin, $priority) {
         // ローカルプラグイン関数を定義しているかを検証.
-        if (method_exists($objPlugin, 'regist') === true) {
+        if (method_exists($objPlugin, 'register') === true) {
             // アクションの登録（プラグイン側に記述）
             $objPluginHelper =& SC_Helper_Plugin::getSingletonInstance();
-            $objPlugin->regist($objPluginHelper, $priority);
+            $objPlugin->register($objPluginHelper, $priority);
         }
     }
 
