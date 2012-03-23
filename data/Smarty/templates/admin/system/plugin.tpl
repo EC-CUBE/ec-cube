@@ -186,7 +186,7 @@
                             <span class="attention"><!--{$arrErr[$plugin.plugin_code]}--></span>
                             <!-- 設定 -->
                                 <!--{if $plugin.config_flg == true && $plugin.status != $smarty.const.PLUGIN_STATUS_UPLOADED}-->
-                                    <a href="?" onclick="win03('<!--{$smarty.const.ROOT_URLPATH}-->plugin/<!--{$plugin.plugin_code}-->/config.php','plugin_setting','620','760'); return false;">プラグイン設定</a>&nbsp;|&nbsp;
+                                    <a href="?" onclick="win02('../load_plugin_config.php?plugin_id=<!--{$plugin.plugin_id}-->', 'load', 615, 400);return false;">プラグイン設定</a>&nbsp;|&nbsp;
                                 <!--{else}-->
                                     <span>プラグイン設定&nbsp;|&nbsp;</span>
                                 <!--{/if}-->
