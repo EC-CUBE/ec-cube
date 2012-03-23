@@ -843,21 +843,29 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      * @return string $conflict_alert_message メッセージ
      */
     function checkConflictPlugin($plugin_id) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance(); 
-        $table = 'dtb_plugin_hookpoint';
-        $where = 'plugin_id = ?';
-        $conflictHookPoints = $objQuery->select('*', $table, $where, array($plugin_id));
+        // フックポイントを取得します.
+        $hookPoints = $this->getHookPoint($plugin_id);
 
         $conflict_alert_message = '';
-        foreach ($conflictHookPoints as $conflictHookPoint) {
-            // 登録商品のチェック
+        $arrConflictPluginName = array();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        foreach ($hookPoints as $hookPoint) {
+            // 競合するプラグインを取得する,
             $table = 'dtb_plugin_hookpoint AS T1 LEFT JOIN dtb_plugin AS T2 ON T1.plugin_id = T2.plugin_id';
             $where = 'T1.hook_point = ? AND NOT T1.plugin_id = ? AND T2.enable = ' . PLUGIN_ENABLE_TRUE . ' GROUP BY T1.plugin_id';
-            $conflictPlugins = $objQuery->select('T1.plugin_id, T2.plugin_name', $table, $where, array($conflictHookPoint['hook_point'], $conflictHookPoint['plugin_id']));
+            $conflictPlugins = $objQuery->select('T1.plugin_id, T2.plugin_name', $table, $where, array($hookPoint['hook_point'], $hookPoint['plugin_id']));
 
-            foreach ($conflictPlugins as $conflictPlugin) {
-                $conflict_alert_message =+ '* ' .  $conflictPlugin['plugin_name'] . 'と競合する可能性があります。<br/>';
+            // プラグイン名重複を削除する為、専用の配列に格納し直す.
+            foreach($conflictPlugins as $conflictPlugin){
+                // プラグイン名が見つからなければ配列に格納
+                if( !in_array( $conflictPlugin['plugin_name'], $arrConflictPluginName ) ) {
+                    $arrConflictPluginName[] = $conflictPlugin['plugin_name'];
+                }
             }
+        }
+        // メッセージをセットします.
+        foreach ($arrConflictPluginName as $conflictPluginName) {
+            $conflict_alert_message .= '* ' .  $conflictPluginName . 'と競合する可能性があります。<br/>';
         }
         return $conflict_alert_message;
     }
@@ -873,5 +881,19 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
             return true;
         }
         return false;
+    }
+    
+    /**
+     * プラグインIDからフックポイントを取得します,
+     * 
+     * @param string $plugin_id プラグインID
+     * @return array フックポイントの連想配列.
+     */
+    function getHookPoint($plugin_id) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance(); 
+        
+        $table = 'dtb_plugin_hookpoint';
+        $where = 'plugin_id = ?';
+        return $objQuery->select('*', $table, $where, array($plugin_id));
     }
 }
