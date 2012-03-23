@@ -217,9 +217,6 @@ class LC_Page_Products_List extends LC_Page_Ex {
                 break;
         }
 
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
-        $objPlugin->doAction('lc_page_products_list_action_end',array($this));
-
         $this->tpl_rnd          = SC_Utils_Ex::sfGetRandomString(3);
 
         // フックポイント.
