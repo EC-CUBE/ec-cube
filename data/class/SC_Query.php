@@ -469,21 +469,20 @@ class SC_Query {
      * INSERT文を実行する.
      *
      * @param string $table テーブル名
-     * @param array $sqlval array('カラム名' => '値', ...)の連想配列
+     * @param array $arrVal array('カラム名' => '値', ...)の連想配列
      * @param array $arrSql array('カラム名' => 'SQL文', ...)の連想配列
      * @param array $arrSqlVal SQL文の中で使用するプレースホルダ配列
      * @param string $from FROM 句・WHERE 句
      * @param string $arrFromVal FROM 句・WHERE 句で使用するプレースホルダ配列
-     * @return integer|DB_Error 挿入件数またはDB_Error
+     * @return integer|DB_Error|boolean 挿入件数またはエラー(DB_Error, false)
      */
-    function insert($table, $sqlval, $arrSql = array(), $arrSqlVal = array(), $from = '', $arrFromVal = array()) {
+    function insert($table, $arrVal, $arrSql = array(), $arrSqlVal = array(), $from = '', $arrFromVal = array()) {
         $strcol = '';
         $strval = '';
         $find = false;
-        $arrVal = array();
+        $arrValForQuery = array();
 
-        if(count($sqlval) <= 0) return false;
-        foreach ($sqlval as $key => $val) {
+        foreach ($arrVal as $key => $val) {
             $strcol .= $key . ',';
             if (strcasecmp('Now()', $val) === 0) {
                 $strval .= 'Now(),';
@@ -491,7 +490,7 @@ class SC_Query {
                 $strval .= 'CURRENT_TIMESTAMP,';
             } else {
                 $strval .= '?,';
-                $arrVal[] = $val;
+                $arrValForQuery[] = $val;
             }
             $find = true;
         }
@@ -499,9 +498,10 @@ class SC_Query {
         foreach ($arrSql as $key => $val) {
             $strcol .= $key . ',';
             $strval .= $val . ',';
+            $find = true;
         }
 
-        $arrVal = array_merge($arrVal, $arrSqlVal);
+        $arrValForQuery = array_merge($arrValForQuery, $arrSqlVal);
 
         if (!$find) {
             return false;
@@ -513,11 +513,11 @@ class SC_Query {
 
         if (strlen($from) >= 1) {
             $sqlin .= ' ' . $from;
-            $arrVal = array_merge($arrVal, $arrFromVal);
+            $arrValForQuery = array_merge($arrValForQuery, $arrFromVal);
         }
 
         // INSERT文の実行
-        $ret = $this->query($sqlin, $arrVal, false, null, MDB2_PREPARE_MANIP);
+        $ret = $this->query($sqlin, $arrValForQuery, false, null, MDB2_PREPARE_MANIP);
 
         return $ret;
     }
@@ -526,26 +526,26 @@ class SC_Query {
      * UPDATE文を実行する.
      *
      * @param string $table テーブル名
-     * @param array $sqlval array('カラム名' => '値', ...)の連想配列
+     * @param array $arrVal array('カラム名' => '値', ...)の連想配列
      * @param string $where WHERE句
      * @param array $arrWhereVal WHERE句用のプレースホルダ配列 (従来は追加カラム用も兼ねていた)
      * @param array $arrRawSql 追加カラム
      * @param array $arrRawSqlVal 追加カラム用のプレースホルダ配列
      * @return
      */
-    function update($table, $sqlval, $where = '', $arrWhereVal = array(), $arrRawSql = array(), $arrRawSqlVal = array()) {
+    function update($table, $arrVal, $where = '', $arrWhereVal = array(), $arrRawSql = array(), $arrRawSqlVal = array()) {
         $arrCol = array();
-        $arrVal = array();
+        $arrValForQuery = array();
         $find = false;
 
-        foreach ($sqlval as $key => $val) {
+        foreach ($arrVal as $key => $val) {
             if (strcasecmp('Now()', $val) === 0) {
                 $arrCol[] = $key . '= Now()';
             } else if (strcasecmp('CURRENT_TIMESTAMP', $val) === 0) {
                 $arrCol[] = $key . '= CURRENT_TIMESTAMP';
             } else {
                 $arrCol[] = $key . '= ?';
-                $arrVal[] = $val;
+                $arrValForQuery[] = $val;
             }
             $find = true;
         }
@@ -556,7 +556,7 @@ class SC_Query {
             }
         }
 
-        $arrVal = array_merge($arrVal, $arrRawSqlVal);
+        $arrValForQuery = array_merge($arrValForQuery, $arrRawSqlVal);
 
         if (empty($arrCol)) {
             return false;
@@ -567,7 +567,7 @@ class SC_Query {
 
         if (is_array($arrWhereVal)) { // 旧版との互換用
             // プレースホルダー用に配列を追加
-            $arrVal = array_merge($arrVal, $arrWhereVal);
+            $arrValForQuery = array_merge($arrValForQuery, $arrWhereVal);
         }
 
         $sqlup = "UPDATE $table SET $strcol";
@@ -576,7 +576,7 @@ class SC_Query {
         }
 
         // UPDATE文の実行
-        return $this->query($sqlup, $arrVal, false, null, MDB2_PREPARE_MANIP);
+        return $this->query($sqlup, $arrValForQuery, false, null, MDB2_PREPARE_MANIP);
     }
 
     /**
