@@ -74,6 +74,8 @@
     	<input size="<!--{$size1}-->" type="text" name="zip01" value="<!--{if $arrForm.zip01 == ""}--><!--{$arrOtherDeliv.zip01|h}--><!--{else}--><!--{$arrForm.zip01|h}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" istyle="4">
     	&nbsp;-&nbsp;
     	<input size="<!--{$size2}-->" type="text" name="zip02" value="<!--{if $arrForm.zip02 == ""}--><!--{$arrOtherDeliv.zip02|h}--><!--{else}--><!--{$arrForm.zip02|h}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" istyle="4"><br>
+    	<input type="submit" name="submit_address" value="自動住所入力"><br>
+	郵便番号を入力後、クリックしてください。<br>
 
     	【都道府県】<font color="#FF0000">※</font><br>
     	<font color="#FF0000"><!--{$arrErr.pref}--></font>
