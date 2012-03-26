@@ -39,8 +39,7 @@ $plugin_id = isset($_GET['plugin_id']) ? $_GET['plugin_id'] : null;
 if (!empty($plugin_id) && is_numeric($plugin_id)) {
 
     GC_Utils::gfPrintLog('loading plugin ====> plugin_id = ' . $plugin_id);
-    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance(false);
-    $plugin = $objPlugin->getPluginByPluginId($plugin_id);
+    $plugin = SC_Plugin_Util_Ex::getPluginByPluginId($plugin_id);
     
     if (isset($plugin['plugin_code'])) {
         $config_path = PLUGIN_UPLOAD_REALDIR . $plugin['plugin_code'] . '/config.php';

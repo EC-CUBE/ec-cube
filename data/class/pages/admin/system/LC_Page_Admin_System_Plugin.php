@@ -98,7 +98,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                 $this->arrErr = $objFormParam->checkError();
                 if ($this->isError($this->arrErr) === false) {
                     $plugin_id = $objFormParam->getValue('plugin_id');
-                    $plugin = SC_Helper_Plugin_Ex::getPluginByPluginId($plugin_id);
+                    $plugin = SC_Plugin_Util_Ex::getPluginByPluginId($plugin_id);
                     $this->arrErr = $this->uninstallPlugin($plugin);
                     if ($this->isError($this->arrErr) === false) {
                         // コンパイルファイルのクリア処理
@@ -115,7 +115,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                 if ($this->isError($this->arrErr) === false) {
                     $plugin_id = $objFormParam->getValue('plugin_id');
                     // プラグイン取得.
-                    $plugin = SC_Helper_Plugin_Ex::getPluginByPluginId($plugin_id);
+                    $plugin = SC_Plugin_Util_Ex::getPluginByPluginId($plugin_id);
                     $this->arrErr = $this->enablePlugin($plugin);                    
                     if ($this->isError($this->arrErr) === false) {
                         // コンパイルファイルのクリア処理
@@ -131,8 +131,8 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                 if ($this->isError($this->arrErr) === false) {
                     $plugin_id = $objFormParam->getValue('plugin_id');
                     // プラグイン取得.
-                    $plugin = SC_Helper_Plugin_Ex::getPluginByPluginId($plugin_id);
-                    $this->arrErr = $this->disablePlugin($plugin);                    
+                    $plugin = SC_Plugin_Util_Ex::getPluginByPluginId($plugin_id);
+                    $this->arrErr = $this->disablePlugin($plugin);
                     if ($this->isError($this->arrErr) === false) {
                         // コンパイルファイルのクリア処理
                         SC_Utils_Ex::clearCompliedTemplate();
@@ -152,7 +152,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                         $update_plugin_file = $_FILES[$target_plugin_code];
                         $update_plugin_file_name = $update_plugin_file['name']; // アップデートファイルのファイル名.
                         // インストール処理.
-                        $target_plugin = SC_Helper_Plugin_Ex::getPluginByPluginCode($target_plugin_code);
+                        $target_plugin = SC_Plugin_Util_Ex::getPluginByPluginCode($target_plugin_code);
                         $this->arrErr = $this->updatePlugin($target_plugin, $update_plugin_file_name, $target_plugin_code);
                         if ($this->isError($this->arrErr) === false) {
                             // コンパイルファイルのクリア処理
@@ -182,9 +182,8 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
             default:
                 break;
         }
-
         // DBからプラグイン情報を取得
-        $plugins = SC_Helper_Plugin_Ex::getAllPlugin();
+        $plugins = SC_Plugin_Util_Ex::getAllPlugin();
 
         foreach ($plugins as $key => $plugin) {
             // 設定ファイルがあるかを判定.
@@ -259,7 +258,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      * @return boolean インストール済の場合true インストールされていない場合false 
      */
     function isInstalledPlugin($plugin_code) {
-        $plugin = SC_Helper_Plugin_Ex::getPluginByPluginCode($plugin_code);
+        $plugin = SC_Plugin_Util_Ex::getPluginByPluginCode($plugin_code);
         if (!empty($plugin)) {
             return true;
         }
@@ -373,7 +372,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         SC_Utils_Ex::copyDirectory(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, $plugin_dir_path);
 
         // プラグイン情報を取得
-        $plugin = SC_Helper_Plugin_Ex::getPluginByPluginCode($plugin_code);
+        $plugin = SC_Plugin_Util_Ex::getPluginByPluginCode($plugin_code);
 
         // クラスファイルを読み込み.
         $plugin_class_file_path = $plugin_dir_path . $plugin['class_name'] . '.php';
@@ -409,7 +408,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         // 一時ディレクトリを削除.
         SC_Utils_Ex::deleteFile($temp_dir, false);
         // DBからプラグイン情報を削除
-        if(empty($plugin_id) === false) SC_Helper_Plugin_Ex::deletePluginByPluginId($plugin_id);
+        if(empty($plugin_id) === false) SC_Plugin_Util_Ex::deletePluginByPluginId($plugin_id);
         // htmlディレクトリを削除
         if(empty($plugin_html_dir) === false) SC_Utils_Ex::deleteFile($plugin_html_dir, true);
     }

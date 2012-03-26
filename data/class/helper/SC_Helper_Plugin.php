@@ -49,10 +49,9 @@ class SC_Helper_Plugin {
         if (GC_Utils_Ex::isInstallFunction()) return; // インストール中
         if ($plugin_activate_flg === false) return;
         // 有効なプラグインを取得
-        $arrPluginDataList = $this->getEnablePlugin();
+        $arrPluginDataList = SC_Plugin_Util_Ex::getEnablePlugin();
         // pluginディレクトリを取得
-        $arrPluginDirectory = $this->getPluginDirectory();
-
+        $arrPluginDirectory = SC_Plugin_Util_Ex::getPluginDirectory();
         foreach ($arrPluginDataList as $arrPluginData) {
             // プラグイン本体ファイル名が取得したプラグインディレクトリ一覧にある事を確認
             if (array_search($arrPluginData['plugin_code'], $arrPluginDirectory) !== false) {
@@ -111,103 +110,6 @@ class SC_Helper_Plugin {
                 }
             }
         }
-    }
-
-    /**
-     * 稼働中のプラグインを取得する。
-     */
-    function getEnablePlugin() {
-        $objQuery = new SC_Query_Ex();
-        $col = '*';
-        $table = 'dtb_plugin';
-        $where = 'enable = 1';
-        // XXX 2.11.0 互換のため
-        $arrCols = $objQuery->listTableFields($table);
-        if (in_array('priority', $arrCols)) {
-            $objQuery->setOrder('priority DESC, plugin_id ASC');
-        }
-        $arrRet = $objQuery->select($col,$table,$where);
-        return $arrRet;
-    }
-
-    /**
-     * インストールされているプラグインを取得する。
-     * 
-     * @return array $arrRet インストールされているプラグイン.
-     */
-    function getAllPlugin() {
-        $objQuery = new SC_Query_Ex();
-        $col = '*';
-        $table = 'dtb_plugin';
-        // XXX 2.11.0 互換のため
-        $arrCols = $objQuery->listTableFields($table);
-        if (in_array('priority', $arrCols)) {
-            $objQuery->setOrder('plugin_id ASC');
-        }
-        $arrRet = $objQuery->select($col,$table);
-        return $arrRet;
-    }
-
-    /**
-     * プラグインIDをキーにプラグインを取得する。
-     * 
-     * @param int $plugin_id プラグインID.
-     * @return array プラグインの基本情報.
-     */
-    function getPluginByPluginId($plugin_id) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $col = '*';
-        $table = 'dtb_plugin';
-        $where = 'plugin_id = ?';
-        $plugin = $objQuery->getRow($col, $table, $where, array($plugin_id));
-        return $plugin;
-    }
-
-    /**
-     * プラグインコードをキーにプラグインを取得する。
-     * 
-     * @param string $plugin_code プラグインコード.
-     * @return array プラグインの基本情報.
-     */
-    function getPluginByPluginCode($plugin_code) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $col = '*';
-        $table = 'dtb_plugin';
-        $where = 'plugin_code = ?';
-        $plugin = $objQuery->getRow($col, $table, $where, array($plugin_code));
-        return $plugin;
-    }
-
-    /**
-     * プラグインIDをキーにプラグインを削除する。
-     * 
-     * @param string $plugin_id プラグインID.
-     * @return array プラグインの基本情報.
-     */
-    function deletePluginByPluginId($plugin_id) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->begin();
-        $where = 'plugin_id = ?';
-        $objQuery->delete('dtb_plugin', $where, array($plugin_id));
-        $objQuery->delete('dtb_plugin_hookpoint', $where, array($plugin_id));
-    }
-
-    /**
-     * プラグインディレクトリの取得
-     *
-     * @return array $arrPluginDirectory
-     */
-    function getPluginDirectory() {
-        $arrPluginDirectory = array();
-        if (is_dir(PLUGIN_UPLOAD_REALDIR)) {
-            if ($dh = opendir(PLUGIN_UPLOAD_REALDIR)) {
-                while (($pluginDirectory = readdir($dh)) !== false) {
-                    $arrPluginDirectory[] = $pluginDirectory;
-                }
-                closedir($dh);
-            }
-        }
-        return $arrPluginDirectory;
     }
 
     /**
