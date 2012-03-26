@@ -702,10 +702,13 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
             $to_w = $objUpFile->width[$arrImageKey[$to_key]];
             $to_h = $objUpFile->height[$arrImageKey[$to_key]];
 
-            if($forced) $objUpFile->save_file[$arrImageKey[$to_key]] = '';
+            if ($forced) {
+                $objUpFile->save_file[$arrImageKey[$to_key]] = '';
+            }
 
-            if(empty($objUpFile->temp_file[$arrImageKey[$to_key]])
-                    && empty($objUpFile->save_file[$arrImageKey[$to_key]])) {
+            if (empty($objUpFile->temp_file[$arrImageKey[$to_key]])
+                && empty($objUpFile->save_file[$arrImageKey[$to_key]])
+            ) {
                 // リネームする際は、自動生成される画像名に一意となるように、Suffixを付ける
                 $dst_file = $objUpFile->lfGetTmpImageName(IMAGE_RENAME, '', $objUpFile->temp_file[$arrImageKey[$from_key]]) . $this->lfGetAddSuffix($to_key);
                 $path = $objUpFile->makeThumb($from_path, $to_w, $to_h, $dst_file);
@@ -728,7 +731,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         $arrKeyName = $objUpFile->keyname;
 
         foreach ($arrKeyName as $key => $keyname) {
-            if($keyname != $image_key) continue;
+            if ($keyname != $image_key) continue;
 
             if (!empty($arrTempFile[$key])) {
                 $temp_file = $arrTempFile[$key];
@@ -766,9 +769,10 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
             if ($temp_file) {
                 $objImage->moveTempImage($temp_file, $objUpFile->save_dir);
                 $arrImageKey[] = $arrKeyName[$key];
-                if(!empty($arrSaveFile[$key])
-                        && !$this->lfHasSameProductImage($product_id, $arrImageKey, $arrSaveFile[$key])
-                        && !in_array($temp_file, $arrSaveFile)) {
+                if (!empty($arrSaveFile[$key])
+                    && !$this->lfHasSameProductImage($product_id, $arrImageKey, $arrSaveFile[$key])
+                    && !in_array($temp_file, $arrSaveFile)
+                ) {
                     $objImage->deleteImage($arrSaveFile[$key], $objUpFile->save_dir);
                 }
             }
@@ -1264,7 +1268,7 @@ __EOF__;
      * @return string 
      */
     function lfGetAddSuffix($to_key) {
-        if( IMAGE_RENAME === true) return ;
+        if ( IMAGE_RENAME === true) return;
 
         // 自動生成される画像名
         $dist_name = '';
@@ -1294,12 +1298,13 @@ __EOF__;
         $has_subproduct_data = false;
 
         for ($i = 1; $i <= PRODUCTSUB_MAX; $i++) {
-            if(SC_Utils_Ex::isBlank($arrSubProductData['sub_title'.$i]) == false
-                    || SC_Utils_Ex::isBlank($arrSubProductData['sub_comment'.$i]) == false
-                    || SC_Utils_Ex::isBlank($arrSubProductData['sub_image'.$i]) == false
-                    || SC_Utils_Ex::isBlank($arrSubProductData['sub_large_image'.$i]) == false
-                    || SC_Utils_Ex::isBlank($arrSubProductData['temp_sub_image'.$i]) == false
-                    || SC_Utils_Ex::isBlank($arrSubProductData['temp_sub_large_image'.$i]) == false) {
+            if (SC_Utils_Ex::isBlank($arrSubProductData['sub_title'.$i]) == false
+                || SC_Utils_Ex::isBlank($arrSubProductData['sub_comment'.$i]) == false
+                || SC_Utils_Ex::isBlank($arrSubProductData['sub_image'.$i]) == false
+                || SC_Utils_Ex::isBlank($arrSubProductData['sub_large_image'.$i]) == false
+                || SC_Utils_Ex::isBlank($arrSubProductData['temp_sub_image'.$i]) == false
+                || SC_Utils_Ex::isBlank($arrSubProductData['temp_sub_large_image'.$i]) == false
+            ) {
                 $has_subproduct_data = true;
                 break;
             }

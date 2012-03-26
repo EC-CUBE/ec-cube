@@ -144,10 +144,11 @@ class SC_Helper_CSV {
     function sfIsImportCSVFrame(&$arrCSVFrame) {
         $result = true;
         foreach ($arrCSVFrame as $key => $val) {
-            if($val['status'] != CSV_COLUMN_STATUS_FLG_ENABLE
-                    and $val['rw_flg'] == CSV_COLUMN_RW_FLG_READ_WRITE
-                    and $val['error_check_types'] != ''
-                    and strpos(strtoupper($val['error_check_types']), 'EXIST_CHECK') !== FALSE) {
+            if ($val['status'] != CSV_COLUMN_STATUS_FLG_ENABLE
+                && $val['rw_flg'] == CSV_COLUMN_RW_FLG_READ_WRITE
+                && $val['error_check_types'] != ''
+                && strpos(strtoupper($val['error_check_types']), 'EXIST_CHECK') !== FALSE
+            ) {
                 //必須フィールド
                 $result = false;
             }
@@ -164,8 +165,9 @@ class SC_Helper_CSV {
     function sfIsUpdateCSVFrame(&$arrCSVFrame) {
         $result = true;
         foreach ($arrCSVFrame as $key => $val) {
-            if($val['status'] != CSV_COLUMN_STATUS_FLG_ENABLE
-                    and $val['rw_flg'] == CSV_COLUMN_RW_FLG_KEY_FIELD) {
+            if ($val['status'] != CSV_COLUMN_STATUS_FLG_ENABLE
+                && $val['rw_flg'] == CSV_COLUMN_RW_FLG_KEY_FIELD
+            ) {
                 //キーフィールド
                 $result = false;
             }

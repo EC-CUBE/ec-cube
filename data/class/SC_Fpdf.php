@@ -313,7 +313,9 @@ class SC_Fpdf extends PDF_Japanese {
             $this->arrDisp = array_merge($this->arrDisp, $arrRet);
 
             // その他支払い情報を表示
-            if($this->arrDisp['memo02'] != '') $this->arrDisp['payment_info'] = unserialize($this->arrDisp['memo02']);
+            if ($this->arrDisp['memo02'] != '') {
+                $this->arrDisp['payment_info'] = unserialize($this->arrDisp['memo02']);
+            }
             $this->arrDisp['payment_type'] = 'お支払い';
         }
     }

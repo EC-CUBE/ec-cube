@@ -70,7 +70,7 @@ class SC_Helper_DB {
         $objQuery =& SC_Query_Ex::getSingletonInstance($dsn);
 
         // テーブルが無ければエラー
-        if(!in_array($table_name, $objQuery->listTables())) return false;
+        if (!in_array($table_name, $objQuery->listTables())) return false;
 
         // 正常に接続されている場合
         if (!$objQuery->isError()) {
@@ -1063,10 +1063,10 @@ __EOS__;
         }
 
         //入れ替え先の順位が入れ換え元の順位より大きい場合
-        if($position > $rank) $term = 'rank - 1';
+        if ($position > $rank) $term = 'rank - 1';
 
         //入れ替え先の順位が入れ換え元の順位より小さい場合
-        if($position < $rank) $term = 'rank + 1';
+        if ($position < $rank) $term = 'rank + 1';
 
         // XXX 入れ替え先の順位が入れ替え元の順位と同じ場合
         if (!isset($term)) $term = 'rank';
@@ -1077,8 +1077,8 @@ __EOS__;
             $sql.= " AND $where";
         }
 
-        if($position > $rank) $objQuery->exec($sql, array($rank + 1, $position));
-        if($position < $rank) $objQuery->exec($sql, array($position, $rank - 1));
+        if ($position > $rank) $objQuery->exec($sql, array($rank + 1, $position));
+        if ($position < $rank) $objQuery->exec($sql, array($position, $rank - 1));
 
         // 指定した順位へrankを書き換える。
         $sql  = "UPDATE $tableName SET rank = ? WHERE $keyIdColumn = ? ";

@@ -107,8 +107,9 @@ class SC_SelectSql {
         }
 
         //　開始～終了
-        if( ($from_year != '') && ($from_month != '') && ($from_day != '') &&
-            ($to_year != '') && ($to_month != '') && ($to_day != '')) {
+        if (($from_year != '') && ($from_month != '') && ($from_day != '')
+            && ($to_year != '') && ($to_month != '') && ($to_day != '')
+        ) {
             $this->setWhere($column . ' >= ? AND ' . $column . ' < date(?)');
             $return[] = $date1;
             $return[] = $date2;
@@ -129,14 +130,21 @@ class SC_SelectSql {
         foreach ($arr as $data) {
 
             if (count($arr) > 1) {
-                if(! is_null($data)) $item .= $ItemStr . ' = ? OR ';
+                if (!is_null($data)) {
+                    $item .= $ItemStr . ' = ? OR ';
+                }
             } else {
-                if(! is_null($data)) $item = $ItemStr . ' = ?';
+                if (!is_null($data)) {
+                    $item = $ItemStr . ' = ?';
+                }
             }
             $return[] = $data;
         }
 
-        if( count($arr) > 1)  $item = '(' . rtrim($item, ' OR ') . ')';
+        if (count($arr) > 1) {
+            // FIXME 多分この rtrim の使い方は不適切(偶然動作しそうだが)
+            $item = '(' . rtrim($item, ' OR ') . ')';
+        }
         $this->setWhere($item);
         return $return;
     }
@@ -189,8 +197,9 @@ class SC_SelectSql {
         $count = count($arrWhere);
 
         for ($i = 0; $i < $count; $i++) {
-
-            if( isset($arrWhere[$i]['value'])) $statement .= $arrWhere[$i]['column'] .' = ' . SC_Utils_Ex::sfQuoteSmart($arrWhere[$i]['value']) .' OR '  ;
+            if (isset($arrWhere[$i]['value'])) {
+                $statement .= $arrWhere[$i]['column'] .' = ' . SC_Utils_Ex::sfQuoteSmart($arrWhere[$i]['value']) .' OR ';
+            }
         }
 
         $statement = '(' . rtrim($statement, ' OR ') . ')';

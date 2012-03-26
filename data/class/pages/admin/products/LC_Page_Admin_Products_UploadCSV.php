@@ -307,7 +307,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         $arrCSVFrame = $this->lfSetParamDefaultValue($arrCSVFrame);
         // CSV項目毎の処理
         foreach ($arrCSVFrame as $item) {
-            if($item['status'] == CSV_COLUMN_STATUS_FLG_DISABLE) continue;
+            if ($item['status'] == CSV_COLUMN_STATUS_FLG_DISABLE) continue;
             //サブクエリ構造の場合は AS名 を使用
             if (preg_match_all('/\(.+\)\s+as\s+(.+)$/i', $item['col'], $match, PREG_SET_ORDER)) {
                 $col = $match[0][1];
@@ -621,13 +621,15 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
             $arrErr['product_class_id'] = '※ 指定の商品規格IDは、登録されていません。';
         }
         // 商品ID、規格IDの組合せチェック
-        if(array_search('product_class_id', $this->arrFormKeyList) !== FALSE
-                and $item['product_class_id'] != '') {
+        if (array_search('product_class_id', $this->arrFormKeyList) !== FALSE
+            && $item['product_class_id'] != ''
+        ) {
             if ($item['product_id'] == '') {
                 $arrErr['product_class_id'] = '※ 商品規格ID指定時には商品IDの指定が必須です。';
             } else {
-                if(!$this->objDb->sfIsRecord('dtb_products_class', 'product_id, product_class_id'
-                        , array($item['product_id'], $item['product_class_id']))) {
+                if (!$this->objDb->sfIsRecord('dtb_products_class', 'product_id, product_class_id'
+                        , array($item['product_id'], $item['product_class_id']))
+                ) {
                     $arrErr['product_class_id'] = '※ 指定の商品IDと商品規格IDの組合せは正しくありません。';
                 }
             }
@@ -650,9 +652,10 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         }
         // 関連商品IDの存在チェック
         for ($i = 1; $i <= RECOMMEND_PRODUCT_MAX; $i++) {
-            if(array_search('recommend_product_id' . $i, $this->arrFormKeyList) !== FALSE
-                    and $item['recommend_product_id' . $i] != ''
-                    and !$this->objDb->sfIsRecord('dtb_products', 'product_id', (array)$item['recommend_product_id' . $i])) {
+            if (array_search('recommend_product_id' . $i, $this->arrFormKeyList) !== FALSE
+                && $item['recommend_product_id' . $i] != ''
+                && !$this->objDb->sfIsRecord('dtb_products', 'product_id', (array)$item['recommend_product_id' . $i])
+            ) {
                 $arrErr['recommend_product_id' . $i] = "※ 指定の関連商品ID($i)は、登録されていません。";
             }
         }
@@ -665,8 +668,9 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
             $arrErr['product_statuses'] = '※ 指定の商品ステータスIDは、登録されていません。';
         }
         // 削除フラグのチェック
-        if(array_search('del_flg', $this->arrFormKeyList) !== FALSE
-                and $item['del_flg'] != '') {
+        if (array_search('del_flg', $this->arrFormKeyList) !== FALSE
+            && $item['del_flg'] != ''
+        ) {
             if (!($item['del_flg'] == '0' or $item['del_flg'] == '1')) {
                 $arrErr['del_flg'] = '※ 削除フラグは「0」(有効)、「1」(削除)のみが有効な値です。';
             }
@@ -798,10 +802,10 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      * @return boolean true:有効なデータがある false:有効ではない
      */
     function lfIsDbRecord($table, $keyname, $item) {
-        if(array_search($keyname, $this->arrFormKeyList) !== FALSE  //入力対象である
-                and $item[$keyname] != ''   // 空ではない
-                and !$this->objDb->sfIsRecord($table, $keyname, (array)$item[$keyname]) //DBに存在するか
-                ) {
+        if (array_search($keyname, $this->arrFormKeyList) !== FALSE  //入力対象である
+            && $item[$keyname] != ''   // 空ではない
+            && !$this->objDb->sfIsRecord($table, $keyname, (array)$item[$keyname]) //DBに存在するか
+        ) {
             return false;
         }
         return true;
@@ -816,10 +820,10 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      * @return boolean true:有効なデータがある false:有効ではない
      */
     function lfIsArrayRecord($arr, $keyname, $item) {
-        if(array_search($keyname, $this->arrFormKeyList) !== FALSE //入力対象である
-                and $item[$keyname] != '' // 空ではない
-                and !array_key_exists($item[$keyname], $arr) //配列に存在するか
-                ) {
+        if (array_search($keyname, $this->arrFormKeyList) !== FALSE //入力対象である
+            && $item[$keyname] != '' // 空ではない
+            && !array_key_exists($item[$keyname], $arr) //配列に存在するか
+        ) {
             return false;
         }
         return true;

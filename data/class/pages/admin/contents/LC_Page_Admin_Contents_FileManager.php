@@ -488,7 +488,9 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
         // 末尾の/をとる
         $top_dir_check = ereg_replace("/$", '', $objFormParam->getValue('top_dir'));
         $now_dir_check = ereg_replace("/$", '', $objFormParam->getValue('now_dir'));
-        if($top_dir_check == $now_dir_check) $is_top_dir = true;
+        if ($top_dir_check == $now_dir_check) {
+            $is_top_dir = true;
+        }
         $this->setDispParam('tpl_is_top_dir', $is_top_dir);
     }
 

@@ -407,7 +407,9 @@ class SC_Helper_Mail {
 
         // 現在の配信数
         $complete_count = $arrMail['complete_count'];
-        if(SC_Utils_Ex::isBlank($arrMail)) $complete_count = 0;
+        if (SC_Utils_Ex::isBlank($arrMail)) {
+            $complete_count = 0;
+        }
 
         foreach ($arrDestinationList as $arrDestination) {
 

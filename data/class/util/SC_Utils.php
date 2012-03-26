@@ -997,7 +997,7 @@ class SC_Utils {
     // 2つの配列を用いて連想配列を作成する
     function sfArrCombine($arrKeys, $arrValues) {
 
-        if(count($arrKeys) <= 0 and count($arrValues) <= 0) return array();
+        if (count($arrKeys) <= 0 and count($arrValues) <= 0) return array();
 
         $keys = array_values($arrKeys);
         $vals = array_values($arrValues);
@@ -1007,7 +1007,7 @@ class SC_Utils {
         for ($i=0; $i<$max; $i++) {
             $combine_ary[$keys[$i]] = $vals[$i];
         }
-        if(is_array($combine_ary)) return $combine_ary;
+        if (is_array($combine_ary)) return $combine_ary;
 
         return false;
     }
@@ -1385,7 +1385,9 @@ class SC_Utils {
             }
         }
         // ディレクトリ(ファイル)が存在しない場合は0byteを返す
-        if($bytes == '') $bytes = 0;
+        if ($bytes == '') {
+            $bytes = 0;
+        }
 
         return $bytes;
     }

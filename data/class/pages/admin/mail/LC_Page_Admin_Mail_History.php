@@ -113,7 +113,9 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
     function lfDoSearch($search_pageno = 1) {
 
         // 引数の初期化
-        if(SC_Utils_Ex::sfIsInt($search_pageno)===false) $search_pageno = 1;
+        if (SC_Utils_Ex::sfIsInt($search_pageno)===false) {
+            $search_pageno = 1;
+        }
         // 
         $objSelect =& SC_Query_Ex::getSingletonInstance();    // 一覧データ取得用
         $objQuery =& SC_Query_Ex::getSingletonInstance();    // 件数取得用

@@ -112,7 +112,9 @@ class SC_Helper_FileManager {
             }
         }
         // ディレクトリ(ファイル)が存在しない場合は0byteを返す
-        if($bytes == '') $bytes = 0;
+        if ($bytes == '') {
+            $bytes = 0;
+        }
 
         return $bytes;
     }

@@ -346,8 +346,9 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
      */
     function lfGetSqlData(&$objFormParam) {
         // 編集中データがある場合
-        if(!SC_Utils_Ex::isBlank($objFormParam->getValue('sql_name'))
-                or !SC_Utils_Ex::isBlank($objFormParam->getValue('csv_sql'))) {
+        if (!SC_Utils_Ex::isBlank($objFormParam->getValue('sql_name'))
+            || !SC_Utils_Ex::isBlank($objFormParam->getValue('csv_sql'))
+        ) {
             return $objFormParam->getHashArray();
         }
         $sql_id = $objFormParam->getValue('sql_id');

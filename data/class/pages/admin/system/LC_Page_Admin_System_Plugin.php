@@ -408,9 +408,13 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         // 一時ディレクトリを削除.
         SC_Utils_Ex::deleteFile($temp_dir, false);
         // DBからプラグイン情報を削除
-        if(empty($plugin_id) === false) SC_Plugin_Util_Ex::deletePluginByPluginId($plugin_id);
+        if (empty($plugin_id) === false) {
+            SC_Plugin_Util_Ex::deletePluginByPluginId($plugin_id);
+        }
         // htmlディレクトリを削除
-        if(empty($plugin_html_dir) === false) SC_Utils_Ex::deleteFile($plugin_html_dir, true);
+        if (empty($plugin_html_dir) === false) {
+            SC_Utils_Ex::deleteFile($plugin_html_dir, true);
+        }
     }
 
     /**
@@ -674,10 +678,14 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         $arr_sqlval_plugin['author'] = $objReflection->getConstant('AUTHOR');
         // AUTHOR_SITE_URLが定義されているか判定.
         $author_site_url = $objReflection->getConstant('AUTHOR_SITE_URL');
-        if($author_site_url !== false) $arr_sqlval_plugin['author_site_url'] = $author_site_url;
+        if ($author_site_url !== false) {
+            $arr_sqlval_plugin['author_site_url'] = $author_site_url;
+        }
         // PLUGIN_SITE_URLが定義されているか判定.
         $plugin_site_url = $objReflection->getConstant('PLUGIN_SITE_URL');
-        if($plugin_site_url !== false) $arr_sqlval_plugin['plugin_site_url'] = $plugin_site_url;
+        if ($plugin_site_url !== false) {
+            $arr_sqlval_plugin['plugin_site_url'] = $plugin_site_url;
+        }
         $arr_sqlval_plugin['plugin_version'] = $objReflection->getConstant('PLUGIN_VERSION');
         $arr_sqlval_plugin['compliant_version'] = $objReflection->getConstant('COMPLIANT_VERSION');
         $arr_sqlval_plugin['plugin_description'] = $objReflection->getConstant('DESCRIPTION');
@@ -817,7 +825,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         // ファイル一覧を取得
         $arrayFile = $tar_obj->listContent();
         foreach ($arrayFile as  $value) {
-            if($value['filename'] === $file_path) return true;
+            if ($value['filename'] === $file_path) return true;
         }
         return false;
     }

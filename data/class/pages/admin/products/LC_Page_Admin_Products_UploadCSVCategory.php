@@ -288,7 +288,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         $arrCSVFrame = $this->lfSetParamDefaultValue($arrCSVFrame);
         // CSV項目毎の処理
         foreach ($arrCSVFrame as $item) {
-            if($item['status'] == CSV_COLUMN_STATUS_FLG_DISABLE) continue;
+            if ($item['status'] == CSV_COLUMN_STATUS_FLG_DISABLE) continue;
             //サブクエリ構造の場合は AS名 を使用
             if (preg_match_all('/\(.+\) as (.+)$/i', $item['col'], $match, PREG_SET_ORDER)) {
                 $col = $match[0][1];
@@ -460,23 +460,25 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         }
         */
         // 親カテゴリIDの存在チェック
-        if(array_search('parent_category_id', $this->arrFormKeyList) !== FALSE
-                and $item['parent_category_id'] != ''
-                and $item['parent_category_id'] != '0'
-                and !SC_Helper_DB_Ex::sfIsRecord('dtb_category', 'category_id', array($item['parent_category_id']))
-                ) {
+        if (array_search('parent_category_id', $this->arrFormKeyList) !== FALSE
+            && $item['parent_category_id'] != ''
+            && $item['parent_category_id'] != '0'
+            && !SC_Helper_DB_Ex::sfIsRecord('dtb_category', 'category_id', array($item['parent_category_id']))
+        ) {
             $arrErr['parent_category_id'] = '※ 指定の親カテゴリID(' . $item['parent_category_id'] . ')は、存在しません。';
         }
         // 削除フラグのチェック
-        if(array_search('del_flg', $this->arrFormKeyList) !== FALSE
-                and $item['del_flg'] != '') {
+        if (array_search('del_flg', $this->arrFormKeyList) !== FALSE
+            && $item['del_flg'] != ''
+        ) {
             if (!($item['del_flg'] == '0' or $item['del_flg'] == '1')) {
                 $arrErr['del_flg'] = '※ 削除フラグは「0」(有効)、「1」(削除)のみが有効な値です。';
             }
         }
         // 重複チェック 同じカテゴリ内に同名の存在は許可されない
-        if(array_search('category_name', $this->arrFormKeyList) !== FALSE
-                and $item['category_name'] != '') {
+        if (array_search('category_name', $this->arrFormKeyList) !== FALSE
+            && $item['category_name'] != ''
+        ) {
             $parent_category_id = $item['parent_category_id'];
             if ($parent_category_id == '') {
                 $parent_category_id = (string)'0';
@@ -588,10 +590,10 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
      * @return boolean true:有効なデータがある false:有効ではない
      */
     function lfIsDbRecord($table, $keyname, $item) {
-        if(array_search($keyname, $this->arrFormKeyList) !== FALSE  //入力対象である
-                and $item[$keyname] != ''   // 空ではない
-                and !SC_Helper_DB_EX::sfIsRecord($table, $keyname, (array)$item[$keyname]) //DBに存在するか
-                ) {
+        if (array_search($keyname, $this->arrFormKeyList) !== FALSE  //入力対象である
+            && $item[$keyname] != ''   // 空ではない
+            && !SC_Helper_DB_EX::sfIsRecord($table, $keyname, (array)$item[$keyname]) //DBに存在するか
+        ) {
             return false;
         }
         return true;

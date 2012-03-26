@@ -126,7 +126,7 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
 
         /* 入力エラーなし */
         foreach ($this->arrForm AS $key=>$val) {
-            if($val == '') continue;
+            if ($val == '') continue;
 
             switch ($key) {
                 case 'search_name':

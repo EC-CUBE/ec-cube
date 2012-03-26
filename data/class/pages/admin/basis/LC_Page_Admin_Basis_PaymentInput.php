@@ -260,7 +260,9 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
         $arrPaymentData = $this->lfGetData($post['payment_id']);
 
         // 手数料を設定できない場合には、手数料を0にする
-        if($arrPaymentData['charge_flg'] == 2) $objFormParam->setValue('charge', '0');
+        if ($arrPaymentData['charge_flg'] == 2) {
+            $objFormParam->setValue('charge', '0');
+        }
 
         // 入力データを渡す。
         $arrRet =  $objFormParam->getHashArray();

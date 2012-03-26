@@ -121,7 +121,10 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
         $baseinfo = SC_Helper_DB_Ex::sfGetBasisData();
         //downloadable_daysにNULLが入っている場合(無期限ダウンロード可能時)もあるので、NULLの場合は0日に補正
         $downloadable_days = $baseinfo['downloadable_days'];
-        if($downloadable_days ==null || $downloadable_days == '')$downloadable_days=0;
+        // FIXME 怪しい比較「== null」
+        if ($downloadable_days == null || $downloadable_days == '') {
+            $downloadable_days = 0;
+        }
         $sql = <<< __EOS__
             (
                 SELECT

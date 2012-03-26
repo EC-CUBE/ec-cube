@@ -108,7 +108,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         // 入力パラメーターチェック
         $this->arrErr = SC_Helper_Customer_Ex::sfCheckErrorSearchParam($objFormParam);
         $this->arrForm = $objFormParam->getFormParamList();
-        if(!SC_Utils_Ex::isBlank($this->arrErr)) return;
+        if (!SC_Utils_Ex::isBlank($this->arrErr)) return;
 
         // モードによる処理切り替え
         switch ($this->getMode()) {
@@ -130,7 +130,9 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
                     $this->lfAddParamSelectTemplate($objFormParam);
                     $this->lfGetTemplateData($objFormParam, $_POST['template_id']);
                     // regist_back時、subject,bodyにはテンプレートを読み込むのではなく、入力内容で上書き
-                    if($this->getMode()=='regist_back') $objFormParam->setParam($_POST);
+                    if ($this->getMode()=='regist_back') {
+                        $objFormParam->setParam($_POST);
+                    }
                 }
                 break;
             case 'regist_confirm':
@@ -278,7 +280,9 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         // 「配信メールアドレス種別」に携帯メールアドレスが指定されている場合は、携帯メールアドレスに配信
         $emailtype='email';
         $searchmailtype = $objFormParam->getValue('search_mail_type');
-        if($searchmailtype==2||$searchmailtype==4)$emailtype='email_mobile';
+        if ($searchmailtype==2 || $searchmailtype==4) {
+            $emailtype='email_mobile';
+        }
         if (is_array($arrSendCustomer)) {
             foreach ($arrSendCustomer as $line) {
                 $dtb_send_customer = array();

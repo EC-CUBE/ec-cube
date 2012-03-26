@@ -349,10 +349,12 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
             $where = 'del_flg = 0 AND status = 1';
         }
 
-        if(!SC_Utils_Ex::sfIsInt($product_id)
+        if (!SC_Utils_Ex::sfIsInt($product_id)
             || SC_Utils_Ex::sfIsZeroFilling($product_id)
-            || !SC_Helper_DB_Ex::sfIsRecord('dtb_products', 'product_id', (array)$product_id, $where))
-            SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
+            || !SC_Helper_DB_Ex::sfIsRecord('dtb_products', 'product_id', (array)$product_id, $where)
+        ) {
+                SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
+        }
         return $product_id;
     }
 
