@@ -282,8 +282,6 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
                 $arrRet[ $table ] = 'データテーブル: ' . $table;
             }else if (substr($table, 0, 4) == 'mtb_') {
                 $arrRet[ $table ] = 'マスターテーブル: ' . $table;
-            }else if (substr($table, 0, 3) == 'vw_') {
-                $arrRet[ $table ] = 'ビュー: ' . $table;
             }
         }
         return $arrRet;
