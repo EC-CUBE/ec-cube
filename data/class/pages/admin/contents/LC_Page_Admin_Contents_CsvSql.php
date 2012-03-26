@@ -280,7 +280,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         foreach ($arrTable as $table) {
             if (substr($table, 0, 4) == 'dtb_') {
                 $arrRet[ $table ] = 'データテーブル: ' . $table;
-            }else if (substr($table, 0, 4) == 'mtb_') {
+            } else if (substr($table, 0, 4) == 'mtb_') {
                 $arrRet[ $table ] = 'マスターテーブル: ' . $table;
             }
         }

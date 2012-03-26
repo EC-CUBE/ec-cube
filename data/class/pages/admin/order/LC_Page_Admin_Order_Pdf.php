@@ -228,7 +228,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         $month = $objFormParam->getValue('month');
         if (!is_numeric($month)) {
             $arrErr['month'] = '発行月は数値で入力してください。';
-        }else if (0 >= $month && 12 < $month) {
+        } else if (0 >= $month && 12 < $month) {
 
             $arrErr['month'] = '発行月は1〜12の間で入力してください。';
         }
@@ -236,7 +236,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         $day = $objFormParam->getValue('day');
         if (!is_numeric($day)) {
             $arrErr['day'] = '発行日は数値で入力してください。';
-        }else if (0 >= $day && 31 < $day) {
+        } else if (0 >= $day && 31 < $day) {
 
             $arrErr['day'] = '発行日は1〜31の間で入力してください。';
         }

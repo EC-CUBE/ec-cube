@@ -266,14 +266,14 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         if (!SC_Utils_Ex::isBlank($arrData['email'])) {
             if ($arrData['email'] == $objFormParam->getValue('email')) {
                 $arrErr['email'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用しているアドレスです。';
-            }else if ($arrData['email'] == $objFormParam->getValue('email_mobile')) {
+            } else if ($arrData['email'] == $objFormParam->getValue('email_mobile')) {
                 $arrErr['email_mobile'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用しているアドレスです。';
             }
         }
         if (!SC_Utils_Ex::isBlank($arrData['email_mobile'])) {
             if ($arrData['email_mobile'] == $objFormParam->getValue('email_mobile')) {
                 $arrErr['email_mobile'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用している携帯アドレスです。';
-            }else if ($arrData['email_mobile'] == $objFormParam->getValue('email')) {
+            } else if ($arrData['email_mobile'] == $objFormParam->getValue('email')) {
     if ($arrErr['email'] == '') {
                     $arrErr['email'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用している携帯アドレスです。';
                 }

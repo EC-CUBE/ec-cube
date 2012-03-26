@@ -681,7 +681,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         if ($item['stock'] == '') {
             if (array_search('stock_unlimited', $this->arrFormKeyList) === FALSE) {
                 $arrErr['stock'] = '※ 在庫数は必須です（無制限フラグ項目がある場合のみ空欄許可）。';
-            }else if ($item['stock_unlimited'] != UNLIMITED_FLG_UNLIMITED) {
+            } else if ($item['stock_unlimited'] != UNLIMITED_FLG_UNLIMITED) {
                 $arrErr['stock'] = '※ 在庫数または在庫無制限フラグのいずれかの入力が必須です。';
             }
         }

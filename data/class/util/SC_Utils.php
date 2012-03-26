@@ -1155,7 +1155,7 @@ class SC_Utils {
                 $del_file = $dir . '/' . $file;
                 if (is_file($del_file)) {
                     $ret = unlink($dir . '/' . $file);
-                }else if (is_dir($del_file)) {
+                } else if (is_dir($del_file)) {
                     $ret = SC_Utils_Ex::sfDelFile($del_file);
                 }
 

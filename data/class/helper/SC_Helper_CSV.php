@@ -89,16 +89,16 @@ class SC_Helper_CSV {
             // このWhereを足さないと無効な規格も出力される。現行仕様と合わせる為追加。
             $inner_where = 'dtb_products_class.del_flg = 0';
             $sql = $objQuery->getSql($cols, $objProduct->prdclsSQL($inner_where),$where);
-        }else if ($csv_id == '2') {
+        } else if ($csv_id == '2') {
             // 会員の場合
             $sql = 'SELECT ' . $cols . ' FROM dtb_customer ' . $where;
-        }else if ($csv_id == '3') {
+        } else if ($csv_id == '3') {
             // 注文の場合
             $sql = 'SELECT ' . $cols . ' FROM dtb_order ' . $where;
-        }else if ($csv_id == '4') {
+        } else if ($csv_id == '4') {
             // レビューの場合
             $sql = 'SELECT ' . $cols . ' FROM dtb_review AS A INNER JOIN dtb_products AS B on A.product_id = B.product_id ' . $where;
-        }else if ($csv_id == '5') {
+        } else if ($csv_id == '5') {
             // カテゴリの場合
             $sql = 'SELECT ' . $cols . ' FROM dtb_category ' . $where;
         }
