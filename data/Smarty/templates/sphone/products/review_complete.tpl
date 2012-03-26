@@ -29,9 +29,11 @@
             弊社にて登録内容を確認後、ホームページに反映させていただきます。<br />
             今しばらくお待ちくださいませ。</p>
     </div>
-    <div class="btn">
-        <a href="javascript:window.close()" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close_on.gif','b_close');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close.gif','b_close');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_close.gif" width="150" height="30" alt="閉じる" border="0" name="b_close" /></a>
-    </div>
+    <div class="btn_area">
+            <ul class="btn_btm">
+                <li><a class="btn_back" href="javascript:window.close();" rel="external">閉じる</a></li>
+            </ul>
+        </div>
 </div>
 
 <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`popup_footer.tpl"}-->

@@ -39,11 +39,11 @@
             </tr>
             <tr>
                 <th>投稿者名<span class="attention">※</span></th>
-                <td><span class="attention"><!--{$arrErr.reviewer_name}--></span><input type="text" name="reviewer_name" value="<!--{$arrForm.reviewer_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.reviewer_name|sfGetErrorColor}-->" size="40" class="box350" /></td>
+                <td><span class="attention"><!--{$arrErr.reviewer_name}--></span><input type="text" name="reviewer_name" value="<!--{$arrForm.reviewer_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" class="boxHarf text data-role-none" placeholder="投稿者名" style="<!--{$arrErr.reviewer_name|sfGetErrorColor}-->" /></td>
             </tr>
             <tr>
                 <th>投稿者URL</th>
-                <td><span class="attention"><!--{$arrErr.reviewer_url}--></span><input type="text" name="reviewer_url" value="<!--{$arrForm.reviewer_url|h}-->" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{$arrErr.reviewer_url|sfGetErrorColor}-->" size="40" class="box350" /></td>
+                <td><span class="attention"><!--{$arrErr.reviewer_url}--></span><input type="text" name="reviewer_url" value="<!--{$arrForm.reviewer_url|h}-->" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" class="boxHarf text data-role-none"  placeholder="投稿者URL" style="<!--{$arrErr.reviewer_url|sfGetErrorColor}-->" /></td>
             </tr>
             <tr>
                 <th>性別</th>
@@ -66,20 +66,20 @@
                 <th>タイトル<span class="attention">※</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.title}--></span>
-                    <input type="text" name="title" value="<!--{$arrForm.title|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.title|sfGetErrorColor}-->" size="40" class="box350" />
+                    <input type="text" name="title" value="<!--{$arrForm.title|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" class="boxHarf text data-role-none" placeholder="タイトル" style="<!--{$arrErr.title|sfGetErrorColor}-->" />
                 </td>
             </tr>
             <tr>
                 <th>コメント<span class="attention">※</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.comment}--></span>
-                    <textarea name="comment" cols="50" rows="10" style="<!--{$arrErr.comment|sfGetErrorColor}-->" class="area350"><!--{$arrForm.comment|h}--></textarea>
+                    <textarea name="comment" cols="15" rows="10" style="<!--{$arrErr.comment|sfGetErrorColor}-->" class="textarea data-role-none" wrap="hard"><!--{$arrForm.comment|h}--></textarea>
                 </td>
             </tr>
         </table>
-        <div class="btn">
-            <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_confirm_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_confirm.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_confirm.gif" class="box150" alt="確認ページへ" name="conf" id="conf" />
-        </div>
+        <div class="btn_area">
+                <p><input type="submit" value="次へ" class="btn data-role-none" alt="次へ" name="next" id="next" /></p>
+            </div>
     </form>
 </div>
 

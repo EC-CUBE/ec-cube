@@ -62,9 +62,11 @@
                 <td><!--{$arrForm.comment|h|nl2br}--></td>
             </tr>
         </table>
-        <div class="btn">
-            <input type="image" onclick=" mode.value='return';" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_back.gif" class="box150" alt="戻る"    name="back" id="back" />
-            <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_send_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_send.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_send.gif" class="box150" alt="送信"    name="send" id="send" />
+        <div class="btn_area">
+            <ul class="btn_btm">
+                <li><input type="submit" value="完了ページへ" class="btn data-role-none" alt="完了ページへ" name="complete" id="complete" /></li>
+                <li><a class="btn_back" href="Javascript:fnModeSubmit('return', '', '');" rel="external">戻る</a></li>
+            </ul>
         </div>
     </form>
 </div>

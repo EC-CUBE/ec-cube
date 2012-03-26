@@ -56,6 +56,18 @@
             stateSub = 0
         }
     }
+    //この商品に対するお客様の声エリアの表示/非表示
+    var stateReview = 0;
+    function fnReviewToggle(areaEl, imgEl) {
+        areaEl.slideToggle(speed);
+        if (stateReview == 0) {
+            $(imgEl).attr("src", "<!--{$TPL_URLPATH}-->img/button/btn_plus.png");
+            stateReview = 1;
+        } else {
+            $(imgEl).attr("src", "<!--{$TPL_URLPATH}-->img/button/btn_minus.png");
+            stateReview = 0
+        }
+    }
     //お勧めエリアの表示/非表示
     var statewhobought = 0;
     function fnWhoboughtToggle(areaEl, imgEl) {
@@ -334,6 +346,38 @@
         </div>
     <!--{/if}-->
     <!--サブエリアここまで-->
+
+    <!--この商品に対するお客様の声-->
+    <div class="title_box_sub clearfix">
+        <h2>この商品に対するお客様の声</h2>
+            <span class="b_expand"><img src="<!--{$TPL_URLPATH}-->img/button/btn_minus.png" onclick="fnReviewToggle($('#review_bloc_area'), this);" alt=""></span>
+        </div>
+
+        <div id="review_bloc_area">
+            <div class="review_bloc clearfix">
+            <p>この商品に対するご感想をぜひお寄せください。</p>
+            <div class="review_btn">
+                <!--{if count($arrReview) < $smarty.const.REVIEW_REGIST_MAX}-->
+                    <!--★新規コメントを書き込む★-->
+                    <a href="./review.php?product_id=<!--{$arrProduct.product_id}-->" target="_blank" class="btn_sub" />新規コメントを書き込む</a>
+                <!--{/if}-->
+            </div>
+            </div>
+
+            <!--{if count($arrReview) > 0}-->
+            <ul>
+                <!--{section name=cnt loop=$arrReview}-->
+                    <li>
+                        <p class="voicetitle"><!--{$arrReview[cnt].title|h}--></p>
+                        <p class="voicedate"><!--{$arrReview[cnt].create_date|sfDispDBDate:false}-->　投稿者：<!--{if $arrReview[cnt].reviewer_url}--><a href="<!--{$arrReview[cnt].reviewer_url}-->" target="_blank"><!--{$arrReview[cnt].reviewer_name|h}--></a><!--{else}--><!--{$arrReview[cnt].reviewer_name|h}--><!--{/if}--><br />おすすめレベル：<span class="recommend_level"><!--{assign var=level value=$arrReview[cnt].recommend_level}--><!--{$arrRECOMMEND[$level]|h}--></span></p>
+                        <p class="voicecomment"><!--{$arrReview[cnt].comment|h|nl2br}--></p>
+                    </li>
+                <!--{/section}-->
+            </ul>
+            <!--{/if}-->
+        </div>
+    </div>
+    <!--お客様の声ここまで-->
 
 
     <!--▼その他おすすめ商品-->
