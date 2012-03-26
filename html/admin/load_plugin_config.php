@@ -40,10 +40,10 @@ if (!empty($plugin_id) && is_numeric($plugin_id)) {
 
     GC_Utils::gfPrintLog('loading plugin ====> plugin_id = ' . $plugin_id);
     $plugin = SC_Plugin_Util_Ex::getPluginByPluginId($plugin_id);
-    
+
     if (isset($plugin['plugin_code'])) {
         $config_path = PLUGIN_UPLOAD_REALDIR . $plugin['plugin_code'] . '/config.php';
-        
+
         if (file_exists($config_path)) {
             require_once $config_path;
             exit;

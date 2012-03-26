@@ -23,9 +23,9 @@
 
 // 棒グラフ生成クラス
 class SC_Plugin_Util {
-    
-    
-    
+
+
+
     /**
      * 稼働中のプラグインを取得する。
      */
@@ -75,8 +75,8 @@ class SC_Plugin_Util {
         $plugin = $objQuery->getRow($col, $table, $where, array($plugin_id));
         return $plugin;
     }
-    
-    
+
+
     /**
      * プラグインコードをキーにプラグインを取得する。
      * 

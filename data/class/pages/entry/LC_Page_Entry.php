@@ -96,7 +96,7 @@ class LC_Page_Entry extends LC_Page_Ex {
 
         switch ($this->getMode()) {
             case 'confirm':
-                if(isset($_POST['submit_address'])){
+                if (isset($_POST['submit_address'])) {
                     // 入力エラーチェック
                     $this->arrErr = $this->fnErrorCheck($_POST);
                     // 入力エラーの場合は終了
@@ -106,21 +106,21 @@ class LC_Page_Entry extends LC_Page_Ex {
 
                         // 郵便番号検索
                         $arrAdsList = SC_Utils_Ex::sfGetAddress($zipcode);
-    
+
                         // 郵便番号が発見された場合
                         if (!empty($arrAdsList)) {
                             $data['pref'] = $arrAdsList[0]['state'];
                             $data['addr01'] = $arrAdsList[0]['city']. $arrAdsList[0]['town'];
-			    $objFormParam->setParam($data);
+                            $objFormParam->setParam($data);
 
                             // 該当無し
                         } else {
                             $this->arrErr['zip01'] = '※該当する住所が見つかりませんでした。<br>';
                         }
                     }
-		    $this->arrForm  = $objFormParam->getHashArray();
-		    break;
-		}
+                    $this->arrForm  = $objFormParam->getHashArray();
+                    break;
+                }
 
                 //-- 確認
                 $this->arrErr = SC_Helper_Customer_Ex::sfCustomerEntryErrorCheck($objFormParam);
@@ -315,8 +315,8 @@ class LC_Page_Entry extends LC_Page_Ex {
         $objFormParam->addParam('郵便番号1', 'zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_COUNT_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('郵便番号2', 'zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_COUNT_CHECK', 'NUM_CHECK'));
         // // リクエスト値をセット
-	$arrData['zip01'] = $arrRequest['zip01'];
-	$arrData['zip02'] = $arrRequest['zip02'];
+        $arrData['zip01'] = $arrRequest['zip01'];
+        $arrData['zip02'] = $arrRequest['zip02'];
         $objFormParam->setParam($arrData);
         // エラーチェック
         $arrErr = $objFormParam->checkError();

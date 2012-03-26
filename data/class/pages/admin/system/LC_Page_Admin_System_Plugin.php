@@ -855,9 +855,9 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
             $conflictPlugins = $objQuery->select('T1.plugin_id, T2.plugin_name', $table, $where, array($hookPoint['hook_point'], $hookPoint['plugin_id']));
 
             // プラグイン名重複を削除する為、専用の配列に格納し直す.
-            foreach($conflictPlugins as $conflictPlugin){
+            foreach ($conflictPlugins as $conflictPlugin) {
                 // プラグイン名が見つからなければ配列に格納
-                if( !in_array( $conflictPlugin['plugin_name'], $arrConflictPluginName ) ) {
+                if (!in_array($conflictPlugin['plugin_name'], $arrConflictPluginName)) {
                     $arrConflictPluginName[] = $conflictPlugin['plugin_name'];
                 }
             }
@@ -881,7 +881,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         }
         return false;
     }
-    
+
     /**
      * プラグインIDからフックポイントを取得します,
      * 
@@ -890,7 +890,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      */
     function getHookPoint($plugin_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance(); 
-        
+
         $table = 'dtb_plugin_hookpoint';
         $where = 'plugin_id = ?';
         return $objQuery->select('*', $table, $where, array($plugin_id));
