@@ -465,7 +465,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $objQuery->setOrder('rank DESC');
-        $arrRecommendData = $objQuery->select('recommend_product_id, comment', 'dtb_recommend_products', 'product_id = ?', array($product_id));
+        $arrRecommendData = $objQuery->select("recommend_product_id, comment", "dtb_recommend_products as t1 left join dtb_products as t2 on t1.recommend_product_id = t2.product_id", "t1.product_id = ? and t2.del_flg = 0 and t2.status = 1", array($product_id));
 
         $arrRecommendProductId = array();
         foreach ($arrRecommendData as $recommend) {
