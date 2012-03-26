@@ -418,13 +418,15 @@ CREATE TABLE dtb_customer_favorite_products (
 CREATE TABLE dtb_category_count (
     category_id int NOT NULL,
     product_count int NOT NULL,
-    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (category_id)
 );
 
 CREATE TABLE dtb_category_total_count (
     category_id int NOT NULL,
     product_count int,
-    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (category_id)
 );
 
 CREATE TABLE dtb_news (
