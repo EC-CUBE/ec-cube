@@ -25,7 +25,7 @@
 <form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="send" />
-<input type="hidden" name="order_id" value="<!--{$tpl_order_id}-->" />
+<input type="hidden" name="order_id_array" value="<!--{$order_id_array}-->" />
 <!--{foreach key=key item=item from=$arrHidden}-->
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
 <!--{/foreach}-->
@@ -40,7 +40,11 @@
 <!--{/foreach}-->
 <div id="order" class="contents-main">
     <h2>メール配信</h2>
-
+    
+    
+    <!--{if $order_id_count != 1}-->
+    <span class="red">※本文は1通分の例です。受注情報は各メールごとに異なります</span><br /><br />
+    <!--{/if}-->
     <table class="form">
         <tr>
             <th>件名</th>

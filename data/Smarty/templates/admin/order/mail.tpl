@@ -25,7 +25,7 @@
 <form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="confirm" />
-<input type="hidden" name="order_id" value="<!--{$tpl_order_id}-->" />
+<input type="hidden" name="order_id_array" value="<!--{$order_id_array}-->" />
 <!--{foreach key=key item=item from=$arrSearchHidden}-->
     <!--{if is_array($item)}-->
         <!--{foreach item=c_item from=$item}-->
@@ -37,6 +37,8 @@
 <!--{/foreach}-->
 <div id="order" class="contents-main">
     <h2>メール配信</h2>
+    
+    <!--{if $order_id_count == 1}-->
     <table class="list">
         <tr>
             <th>処理日</th>
@@ -52,6 +54,7 @@
         </tr>
         <!--{/section}-->
     </table>
+    <!--{/if}-->
 
     <table class="form">
         <tr>

@@ -75,6 +75,42 @@
         fm.mode.value = tmpMode;
         fm.action = tmpAction;
     }
+    
+    
+    function fnSelectMailCheckSubmit(action){
+
+        var fm = document.form1;
+
+        if (!fm["mail_order_id[]"]) {
+            return false;
+        }
+
+        var checkflag = false;
+        var max = fm["mail_order_id[]"].length;
+
+        if (max) {
+            for (var i=0; i<max; i++) {
+                if(fm["mail_order_id[]"][i].checked == true){
+                    checkflag = true;
+                }
+            }
+        } else {
+            if(fm["mail_order_id[]"].checked == true) {
+                checkflag = true;
+            }
+        }
+
+        if(!checkflag){
+            alert('チェックボックスが選択されていません');
+            return false;
+        }
+        
+        fm.mode.value="mail_select";
+        fm.action=action;
+        fm.submit();
+    }
+
+
 //-->
 </script>
 <div id="order" class="contents-main">
@@ -304,6 +340,7 @@
         <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;">CSV ダウンロード</a>
         <a class="btn-normal" href="../contents/csv.php?tpl_subno_csv=order">CSV 出力項目設定</a>
         <a class="btn-normal" href="javascript:;" onclick="fnSelectCheckSubmit('pdf.php'); return false;"><span>PDF一括出力</span></a>
+        <a class="btn-normal" href="javascript:;" onclick="fnSelectMailCheckSubmit('mail.php'); return false;"><span>メール一括通知</span></a>
     </div>
     <!--{if count($arrResults) > 0}-->
 
@@ -312,15 +349,15 @@
     <!--{* 検索結果表示テーブル *}-->
         <table class="list">
         <col width="10%" />
-        <col width="10%" />
+        <col width="8%" />
         <col width="15%" />
-        <col width="10%" />
+        <col width="8%" />
         <col width="10%" />
         <col width="10%" />
         <col width="10%" />
         <col width="10%" />
         <col width="5%" />
-        <col width="5%" />
+        <col width="9%" />
         <col width="5%" />
         <!--{* ペイジェントモジュール連携用 *}-->
         <!--{assign var=path value=`$smarty.const.MODULE_REALDIR`mdl_paygent/paygent_order_index.tpl}-->
@@ -337,7 +374,7 @@
             <th>対応状況</th>
             <th><label for="pdf_check">帳票</label> <input type="checkbox" name="pdf_check" id="pdf_check" onclick="fnAllCheck(this, 'input[name=pdf_order_id[]]')" /></th>
             <th>編集</th>
-            <th>メール</th>
+            <th>メール <input type="checkbox" name="mail_check" id="mail_check" onclick="fnAllCheck(this, 'input[name=mail_order_id[]]')" /></th>
             <th>削除</th>
         </tr>
 
@@ -359,7 +396,8 @@
             <td class="center"><a href="?" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_EDIT_URLPATH}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrResults[cnt].order_id}-->'); return false;"><span class="icon_edit">編集</span></a></td>
             <td class="center">
                 <!--{if $arrResults[cnt].order_email|strlen >= 1}-->
-                    <a href="?" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_MAIL_URLPATH}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrResults[cnt].order_id}-->'); return false;"><span class="icon_mail">通知</span></a>
+                    <input type="checkbox" name="mail_order_id[]" value="<!--{$arrResults[cnt].order_id}-->" id="mail_order_id_<!--{$arrResults[cnt].order_id}-->"/><label for="mail_order_id_<!--{$arrResults[cnt].order_id}-->">一括通知</label><br>
+                    <a href="?" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_MAIL_URLPATH}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrResults[cnt].order_id}-->'); return false;"><span class="icon_mail">個別通知</span></a>
                 <!--{/if}-->
             </td>
             <td class="center"><a href="?" onclick="fnModeSubmit('delete_order', 'order_id', <!--{$arrResults[cnt].order_id}-->); return false;"><span class="icon_delete">削除</span></a></td>
