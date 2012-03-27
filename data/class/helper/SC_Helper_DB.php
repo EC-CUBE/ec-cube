@@ -608,17 +608,17 @@ class SC_Helper_DB {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 現在のカテゴリ情報を取得
-        $arrCurrentCat = $objQuery->select('product_id, category_id, rank',
+        $arrCurrentCat = $objQuery->getCol('category_id',
                                            'dtb_product_categories',
                                            'product_id = ?',
                                            array($product_id));
 
         // 登録するカテゴリ情報と比較
-        foreach ($arrCurrentCat as $val) {
+        foreach ($arrCurrentCat as $category_id) {
 
             // 登録しないカテゴリを削除
-            if (!in_array($val['category_id'], $arrCategory_id)) {
-                $this->removeProductByCategories($val['category_id'], $product_id);
+            if (!in_array($category_id, $arrCategory_id)) {
+                $this->removeProductByCategories($category_id, $product_id);
             }
         }
 
