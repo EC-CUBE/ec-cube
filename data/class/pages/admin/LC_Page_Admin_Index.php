@@ -73,7 +73,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
      */
     function action() {
         // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_admin_index_action_start', array($this));
 
         // パラメーター管理クラス
@@ -89,7 +89,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
                     $this->lfDoLogin($objFormParam->getValue('login_id'));
 
                     // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                     $objPlugin->doAction('lc_page_admin_index_action_login', array($this));
 
                     SC_Response_Ex::sendRedirect(ADMIN_HOME_URLPATH);
@@ -105,7 +105,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
         $this->setTemplate(LOGIN_FRAME);
 
         // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_admin_index_action_end', array($this));
     }
 

@@ -102,7 +102,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
      */
     function action() {
         // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_admin_total_action_start', array($this));
 
         if (isset($_GET['draw_image']) && $_GET['draw_image'] != '') {
@@ -150,7 +150,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
                         list($fime_name, $data) = SC_Utils_Ex::sfGetCSVData($head.$data);
 
                         // フックポイント.
-                        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                         $objPlugin->doAction('lc_page_admin_total_action_csv', array($this));
 
                         $this->sendResponseCSV($fime_name, $data);
@@ -170,7 +170,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $this->tpl_subtitle = $this->arrTitle[$objFormParam->getValue('page')];
 
         // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_admin_total_action_end', array($this));
     }
 

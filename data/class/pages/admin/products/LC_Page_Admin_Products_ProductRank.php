@@ -67,7 +67,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex {
      */
     function action() {
         // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_admin_products_productrank_action_start', array($this));
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -109,7 +109,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex {
         $this->tpl_bread_crumbs = SC_Utils_Ex::jsonEncode($arrBread);
 
         // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_admin_products_productrank_action_end', array($this));
     }
 

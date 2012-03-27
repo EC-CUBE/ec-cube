@@ -70,7 +70,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
      */
     function action() {
         // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_admin_design_action_start', array($this));
 
         $objLayout = new SC_Helper_PageLayout_Ex();
@@ -85,7 +85,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
             // 新規ブロック作成
             case 'new_bloc':
                 // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('lc_page_admin_design_action_new_bloc', array($this));
 
                 SC_Response_Ex::sendRedirect('bloc.php', array('device_type_id' => $this->device_type_id));
@@ -95,7 +95,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
             // 新規ページ作成
             case 'new_page':
                 // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('lc_page_admin_design_action_new_page', array($this));
 
                 SC_Response_Ex::sendRedirect('main_edit.php', array('device_type_id' => $this->device_type_id));
@@ -109,7 +109,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
                 $_SESSION['preview'] = 'ON';
 
                 // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('lc_page_admin_design_action_preview', array($this));
 
                 SC_Response_Ex::sendRedirectFromUrlPath('preview/' . DIR_INDEX_PATH, array('filename' => $filename));
@@ -121,7 +121,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
                 $arrQueryString = array('device_type_id' => $this->device_type_id, 'page_id' => $this->page_id, 'msg' => 'on');
 
                 // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('lc_page_admin_design_action_confirm', array($this));
 
                 SC_Response_Ex::reload($arrQueryString, true);
@@ -136,7 +136,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
                     $objLayout->lfDelPageData($this->page_id, $this->device_type_id);
 
                     // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                     $objPlugin->doAction('lc_page_admin_design_action_delete', array($this));
 
                     SC_Response_Ex::reload(array('device_type_id' => $this->device_type_id), true);
@@ -162,7 +162,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
         $this->tpl_subtitle = $this->arrDeviceType[$this->device_type_id] . '＞' . $this->tpl_subtitle;
 
         // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_admin_design_action_end', array($this));
     }
 

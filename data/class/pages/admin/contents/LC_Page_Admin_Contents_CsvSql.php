@@ -68,7 +68,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
      */
     function action() {
         // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_admin_contents_csvsql_action_start', array($this));
 
         // パラメーター管理クラス
@@ -99,14 +99,14 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
                 $this->setTemplate('contents/csv_sql_view.tpl');
 
                 // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('lc_page_admin_contents_csvsql_action_preview', array($this));
                 return;
 
             // 新規作成
             case 'new_page':
                 // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('lc_page_admin_contents_csvsql_action_new_page', array($this));
 
                 // リロード
@@ -119,7 +119,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
                     $this->lfDelData($objFormParam->getValue('sql_id'));
 
                     // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                     $objPlugin->doAction('lc_page_admin_contents_csvsql_action_delete', array($this));
 
                     SC_Response_Ex::reload();
@@ -131,7 +131,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
                 $this->arrErr = $this->lfCheckOutputError($objFormParam);
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                     $objPlugin->doAction('lc_page_admin_contents_csvsql_action_csv_output', array($this));
 
                     $this->lfDoCsvOutput($objFormParam->getValue('csv_output_id'));
@@ -155,7 +155,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $this->arrTableList = $this->lfGetTableList();
 
         // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_admin_contents_csvsql_action_end', array($this));
     }
 

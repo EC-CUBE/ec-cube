@@ -67,7 +67,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
      */
     function action() {
         // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_admin_basis_holiday_action_start', array($this));
 
         $objDb = new SC_Helper_DB_Ex();
@@ -112,7 +112,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
                         $this->lfUpdateClass($this->arrForm, $post['holiday_id']);
                     }
                     // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                     $objPlugin->doAction('lc_page_admin_basis_holiday_action_edit', array($this));
                     // 再表示
                     $this->objDisplay->reload();
@@ -125,7 +125,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
             case 'delete':
                 $objDb->sfDeleteRankRecord('dtb_holiday', 'holiday_id', $post['holiday_id'], '', true);
                 // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('lc_page_admin_basis_holiday_action_delete', array($this));
                 // 再表示
                 $this->objDisplay->reload();
@@ -145,7 +145,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
             case 'down':
                 $objDb->sfRankDown('dtb_holiday', 'holiday_id', $post['holiday_id']);
                 // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('lc_page_admin_basis_holiday_action_down', array($this));
                 // 再表示
                 $this->objDisplay->reload();
@@ -153,7 +153,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
             case 'up':
                 $objDb->sfRankUp('dtb_holiday', 'holiday_id', $post['holiday_id']);
                 // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('lc_page_admin_basis_holiday_action_up', array($this));
                 // 再表示
                 $this->objDisplay->reload();
@@ -167,7 +167,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
         $this->tpl_holiday_id = $holiday_id;
 
         // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_admin_basis_holiday_action_end', array($this));
     }
 

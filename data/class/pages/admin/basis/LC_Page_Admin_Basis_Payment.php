@@ -67,7 +67,7 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin_Ex {
      */
     function action() {
         // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_admin_basis_payment_action_start', array($this));
         $objDb = new SC_Helper_DB_Ex();
 
@@ -92,7 +92,7 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin_Ex {
                 // ランク付きレコードの削除
                 $objDb->sfDeleteRankRecord('dtb_payment', 'payment_id', $post['payment_id']);
                 // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('lc_page_admin_basis_payment_action_delete', array($this));
                 // 再表示
                 $this->objDisplay->reload();
@@ -100,7 +100,7 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin_Ex {
             case 'up':
                 $objDb->sfRankUp('dtb_payment', 'payment_id', $post['payment_id']);
                 // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('lc_page_admin_basis_payment_action_up', array($this));
                 // 再表示
                 $this->objDisplay->reload();
@@ -108,7 +108,7 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin_Ex {
             case 'down':
                 $objDb->sfRankDown('dtb_payment', 'payment_id', $post['payment_id']);
                 // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('lc_page_admin_basis_payment_action_down', array($this));
                 // 再表示
                 $this->objDisplay->reload();
@@ -118,7 +118,7 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin_Ex {
         $this->arrPaymentListFree = $this->lfGetPaymentList();
 
         // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_admin_basis_payment_action_end', array($this));
     }
 

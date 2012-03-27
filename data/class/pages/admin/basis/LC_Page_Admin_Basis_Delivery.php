@@ -70,7 +70,7 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
      */
     function action() {
         // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_admin_basis_delivery_action_start', array($this));
 
         $objDb = new SC_Helper_DB_Ex();
@@ -93,7 +93,7 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
                 $objDb->sfDeleteRankRecord('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
 
                 // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('lc_page_admin_basis_delivery_action_delete', array($this));
 
                 $this->objDisplay->reload(); // PRG pattern
@@ -102,7 +102,7 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
                 $objDb->sfRankUp('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
 
                 // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('lc_page_admin_basis_delivery_action_up', array($this));
 
                 $this->objDisplay->reload(); // PRG pattern
@@ -111,7 +111,7 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
                 $objDb->sfRankDown('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
 
                 // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('lc_page_admin_basis_delivery_action_down', array($this));
 
                 $this->objDisplay->reload(); // PRG pattern
@@ -122,7 +122,7 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
         $this->arrDelivList = $this->lfGetDelivList();
 
         // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_admin_basis_delivery_action_end', array($this));
     }
 

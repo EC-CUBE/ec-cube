@@ -77,7 +77,7 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex {
      */
     function action() {
         // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_admin_system_action_start', array($this));
 
         // ADMIN_ID以外の管理者件数を取得
@@ -99,7 +99,7 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex {
         $this->list_data = $this->getMemberData($objNavi->start_row);
 
         // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_admin_system_action_end', array($this));
     }
 

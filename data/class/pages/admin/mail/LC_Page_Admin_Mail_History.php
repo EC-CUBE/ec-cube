@@ -68,7 +68,7 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
      */
     function action() {
         // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_admin_mail_history_action_start', array($this));
 
         switch ($this->getMode()) {
@@ -78,7 +78,7 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
                     $this->lfDeleteHistory($_GET['send_id']);
 
                     // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                     $objPlugin->doAction('lc_page_admin_mail_history_action_delete', array($this));
 
                     $this->objDisplay->reload(null, true);
@@ -91,7 +91,7 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
         list($this->tpl_linemax, $this->arrDataList, $this->arrPagenavi) = $this->lfDoSearch($_POST['search_pageno']);
 
         // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_admin_mail_history_action_end', array($this));
     }
 

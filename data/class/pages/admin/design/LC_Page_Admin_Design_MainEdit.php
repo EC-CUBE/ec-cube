@@ -70,7 +70,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
      */
     function action() {
         // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_admin_design_mainedit_action_start', array($this));
 
         $objLayout = new SC_Helper_PageLayout_Ex();
@@ -92,7 +92,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
                         $objLayout->lfDelPageData($this->page_id, $this->device_type_id);
 
                         // フックポイント.
-                        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                         $objPlugin->doAction('lc_page_admin_design_mainedit_action_delete', array($this));
 
                         SC_Response_Ex::reload(array('device_type_id' => $this->device_type_id,
@@ -110,7 +110,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
                         $result = $this->doRegister($objFormParam, $objLayout);
                         if ($result !== false) {
                             // フックポイント.
-                            $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+                            $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                             $objPlugin->doAction('lc_page_admin_design_mainedit_action_confirm', array($this));
 
                             SC_Response_Ex::reload(array('device_type_id' => $this->device_type_id,
@@ -144,7 +144,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         $this->arrForm = $objFormParam->getFormParamList();
 
         // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_admin_design_mainedit_action_end', array($this));
     }
 

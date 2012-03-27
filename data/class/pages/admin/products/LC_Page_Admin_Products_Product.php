@@ -77,7 +77,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
      */
     function action() {
         // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_admin_products_product_action_start', array($this));
 
         $objFormParam = new SC_FormParam_Ex();
@@ -291,7 +291,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         $this->arrRecommend = $this->lfGetRecommendProducts($this->arrForm);
 
         // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance();
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('lc_page_admin_products_product_action_end', array($this));
     }
 
