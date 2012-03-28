@@ -68,7 +68,6 @@
         fm.mode.value = 'pdf';
         fm.action = action;
         fm.submit();
-        WIN.focus();
 
         // 復元
         fm.target = tmpTarget;
