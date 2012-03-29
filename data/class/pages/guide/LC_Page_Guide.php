@@ -64,11 +64,11 @@ class LC_Page_Guide extends LC_Page_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_guide_action_start', array($this));
+        $objPlugin->doAction('LC_Page_Guide_action_before', array($this));
 
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_guide_action_end', array($this));
+        $objPlugin->doAction('LC_Page_Guide_action_after', array($this));
     }
 
     /**

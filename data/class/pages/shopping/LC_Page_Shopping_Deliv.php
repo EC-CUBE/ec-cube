@@ -68,7 +68,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_shopping_deliv_action_start', array($this));
+        $objPlugin->doAction('LC_Page_Shopping_Deliv_action_before', array($this));
 
         $objSiteSess = new SC_SiteSession_Ex();
         $objCartSess = new SC_CartSession_Ex();
@@ -94,7 +94,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
             $objSiteSess->setRegistFlag();
             // フックポイント.
             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-            $objPlugin->doAction('lc_page_shopping_deliv_action_download', array($this));
+            $objPlugin->doAction('LC_Page_Shopping_Deliv_action_download', array($this));
 
             SC_Response_Ex::sendRedirect('payment.php');
             exit;
@@ -129,6 +129,11 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
 
                 $objPurchase->setShipmentItemTempForSole($objCartSess, $shipping_id);
                 $objSiteSess->setRegistFlag();
+                
+                // フックポイント.
+                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+                $objPlugin->doAction('LC_Page_Shopping_Deliv_action_customeraddr', array($this));
+                
                 SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URLPATH);
                 exit;
                 break;
@@ -137,7 +142,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
             case 'return':
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('lc_page_shopping_deliv_action_return', array($this));
+                $objPlugin->doAction('LC_Page_Shopping_Deliv_action_return', array($this));
 
                 // 確認ページへ移動
                 SC_Response_Ex::sendRedirect(CART_URLPATH);
@@ -153,7 +158,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
                 }
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('lc_page_shopping_deliv_action_multiple', array($this));
+                $objPlugin->doAction('LC_Page_Shopping_Deliv_action_multiple', array($this));
 
                 SC_Response_Ex::sendRedirect('multiple.php');
                 exit;
@@ -175,7 +180,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
 
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_shopping_deliv_action_end', array($this));
+        $objPlugin->doAction('LC_Page_Shopping_Deliv_action_after', array($this));
     }
 
     /**

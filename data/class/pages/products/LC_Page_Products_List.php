@@ -96,7 +96,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_products_list_action_start', array($this));
+        $objPlugin->doAction('LC_Page_Products_List_action_before', array($this));
 
         $objProduct = new SC_Product_Ex();
 
@@ -141,7 +141,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
                 }
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('lc_page_products_list_action_json', array($this));
+                $objPlugin->doAction('LC_Page_Products_List_action_json', array($this));
 
                 echo SC_Utils_Ex::jsonEncode($this->arrProducts);
                 exit;
@@ -199,7 +199,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
 
                         // フックポイント.
                         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                        $objPlugin->doAction('lc_page_products_list_action_cart', array($this));
+                        $objPlugin->doAction('LC_Page_Products_List_action_cart', array($this));
 
                         SC_Response_Ex::sendRedirect(CART_URLPATH);
                         exit;
@@ -221,7 +221,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
 
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_products_list_action_end', array($this));
+        $objPlugin->doAction('LC_Page_Products_List_action_after', array($this));
     }
 
     /**

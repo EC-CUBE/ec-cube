@@ -77,7 +77,7 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_mypage_change_action_start', array($this));
+        $objPlugin->doAction('LC_Page_Mypage_Change_action_before', array($this));
 
         $objCustomer = new SC_Customer_Ex();
         $customer_id = $objCustomer->getValue('customer_id');
@@ -146,7 +146,7 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
 
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('lc_page_mypage_change_action_complete', array($this));
+                    $objPlugin->doAction('LC_Page_Mypage_Change_action_complete', array($this));
 
                     // 完了ページに移動させる。
                     SC_Response_Ex::sendRedirect('change_complete.php');
@@ -162,7 +162,7 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
         }
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_mypage_change_action_end', array($this));
+        $objPlugin->doAction('LC_Page_Mypage_Change_action_after', array($this));
     }
 
     /**

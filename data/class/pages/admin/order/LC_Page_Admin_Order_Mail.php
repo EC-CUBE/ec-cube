@@ -72,7 +72,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_order_mail_action_start', array($this));
+        $objPlugin->doAction('LC_Page_Admin_Order_Mail_action_before', array($this));
         
         //一括送信用の処理
         if(array_key_exists("mail_order_id",$_POST) and $_POST['mode'] == 'mail_select'){
@@ -122,7 +122,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
                 if ($sendStatus === true) {
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('lc_page_admin_order_mail_action_send', array($this));
+                    $objPlugin->doAction('LC_Page_Admin_Order_Mail_action_send', array($this));
 
                     SC_Response_Ex::sendRedirect(ADMIN_ORDER_URLPATH);
                     exit;
@@ -136,7 +136,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
 
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('lc_page_admin_order_mail_action_confirm', array($this));
+                    $objPlugin->doAction('LC_Page_Admin_Order_Mail_action_confirm', array($this));
 
                     return ;
                 } else {
@@ -156,7 +156,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
 
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_order_mail_action_end', array($this));
+        $objPlugin->doAction('LC_Page_Admin_Order_Mail_action_after', array($this));
     }
 
     /**

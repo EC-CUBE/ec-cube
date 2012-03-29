@@ -76,7 +76,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_shopping_payment_action_start', array($this));
+        $objPlugin->doAction('LC_Page_Shopping_Payment_action_before', array($this));
 
         $objSiteSess = new SC_SiteSession_Ex();
         $objCartSess = new SC_CartSession_Ex();
@@ -154,7 +154,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
                 if (SC_Display_Ex::detectDevice() != DEVICE_TYPE_MOBILE) {
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('lc_page_shopping_payment_action_select_deliv', array($this));
+                    $objPlugin->doAction('LC_Page_Shopping_Payment_action_select_deliv', array($this));
 
                     echo SC_Utils_Ex::jsonEncode($arrSelectedDeliv);
                     exit;
@@ -186,7 +186,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
 
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('lc_page_shopping_payment_action_confirm', array($this));
+                    $objPlugin->doAction('LC_Page_Shopping_Payment_action_confirm', array($this));
 
                     // 確認ページへ移動
                     SC_Response_Ex::sendRedirect(SHOPPING_CONFIRM_URLPATH);
@@ -203,7 +203,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
 
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('lc_page_shopping_payment_action_return', array($this));
+                $objPlugin->doAction('LC_Page_Shopping_Payment_action_return', array($this));
 
                 $url = null;
                 if ($this->is_multiple) {
@@ -252,7 +252,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
 
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_shopping_payment_end', array($this));
+        $objPlugin->doAction('LC_Page_Shopping_Payment_after', array($this));
     }
 
     /**

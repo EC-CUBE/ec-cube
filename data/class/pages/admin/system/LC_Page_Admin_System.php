@@ -78,7 +78,7 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_system_action_start', array($this));
+        $objPlugin->doAction('LC_Page_Admin_System_action_before', array($this));
 
         // ADMIN_ID以外の管理者件数を取得
         $linemax = $this->getMemberCount('del_flg <> 1 AND member_id <> ' . ADMIN_ID);
@@ -100,7 +100,7 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex {
 
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_system_action_end', array($this));
+        $objPlugin->doAction('LC_Page_Admin_System_action_after', array($this));
     }
 
     /**

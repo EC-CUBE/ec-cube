@@ -69,7 +69,7 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_mypage_favorite_action_start', array($this));
+        $objPlugin->doAction('LC_Page_MyPage_Favorite_action_before', array($this));
 
         $objProduct  = new SC_Product_Ex();
         $objCustomer = new SC_Customer_Ex();
@@ -91,7 +91,7 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
 
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('lc_page_mypage_favorite_action_getList', array($this));
+                $objPlugin->doAction('LC_Page_MyPage_Favorite_action_getList', array($this));
 
                 echo SC_Utils_Ex::jsonEncode($this->arrFavorite);
                 exit;
@@ -108,7 +108,7 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
 
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_mypage_favorite_action_end', array($this));
+        $objPlugin->doAction('LC_Page_MyPage_Favorite_action_after', array($this));
     }
 
     /**

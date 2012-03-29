@@ -72,7 +72,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_design_bloc_start', array($this));
+        $objPlugin->doAction('LC_Page_Admin_Design_Bloc_before', array($this));
 
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
@@ -101,7 +101,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
                             );
                             // フックポイント.
                             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                            $objPlugin->doAction('lc_page_admin_design_bloc_confirm', array($this));
+                            $objPlugin->doAction('LC_Page_Admin_Design_Bloc_confirm', array($this));
 
                             SC_Response_Ex::reload($arrPram, true);
                             exit;
@@ -120,7 +120,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
                         );
                         // フックポイント.
                         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                        $objPlugin->doAction('lc_page_admin_design_bloc_delete', array($this));
+                        $objPlugin->doAction('LC_Page_Admin_Design_Bloc_delete', array($this));
 
                         SC_Response_Ex::reload($arrPram, true);
                         exit;
@@ -153,7 +153,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
 
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_design_bloc_end', array($this));
+        $objPlugin->doAction('LC_Page_Admin_Design_Bloc_after', array($this));
     }
 
     /**

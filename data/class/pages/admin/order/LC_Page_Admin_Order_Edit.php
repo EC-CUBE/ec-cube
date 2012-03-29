@@ -118,7 +118,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_order_edit_action_start', array($this));
+        $objPlugin->doAction('LC_Page_Admin_Order_Edit_action_before', array($this));
 
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objFormParam = new SC_FormParam_Ex();
@@ -266,7 +266,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
 
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_order_edit_action_end', array($this));
+        $objPlugin->doAction('LC_Page_Admin_Order_Edit_action_after', array($this));
     }
 
     /**

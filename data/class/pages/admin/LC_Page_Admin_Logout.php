@@ -62,13 +62,13 @@ class LC_Page_Admin_Logout extends LC_Page_Admin_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_logout_action_start', array($this));
+        $objPlugin->doAction('LC_Page_Admin_Logout_action_before', array($this));
 
         $this->lfDoLogout();
 
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_logout_action_end', array($this));
+        $objPlugin->doAction('LC_Page_Admin_Logout_action_after', array($this));
         // ログイン画面に遷移
         SC_Response_Ex::sendRedirectFromUrlPath(ADMIN_DIR . DIR_INDEX_PATH);
     }

@@ -66,7 +66,7 @@ class LC_Page_Admin_Order_MailView extends LC_Page_Admin_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_order_mailview_action_start', array($this));
+        $objPlugin->doAction('LC_Page_Admin_Order_MailView_action_before', array($this));
 
         $send_id = $_GET['send_id'];
         if (SC_Utils_Ex::sfIsInt($send_id)) {
@@ -78,7 +78,7 @@ class LC_Page_Admin_Order_MailView extends LC_Page_Admin_Ex {
 
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_order_mailview_action_end', array($this));
+        $objPlugin->doAction('LC_Page_Admin_Order_MailView_action_after', array($this));
     }
 
     /**

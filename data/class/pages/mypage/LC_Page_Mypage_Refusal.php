@@ -64,7 +64,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_mypage_refusal_action_start', array($this));
+        $objPlugin->doAction('LC_Page_Mypage_Refusal_action_before', array($this));
 
         switch ($this->getMode()) {
             case 'confirm':
@@ -79,7 +79,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex {
 
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('lc_page_mypage_refusal_action_complete', array($this));
+                $objPlugin->doAction('LC_Page_Mypage_Refusal_action_complete', array($this));
 
                 SC_Response_Ex::sendRedirect('refusal_complete.php');
 
@@ -88,7 +88,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex {
         }
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_mypage_refusal_action_end', array($this));
+        $objPlugin->doAction('LC_Page_Mypage_Refusal_action_after', array($this));
     }
 
     /**

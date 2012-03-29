@@ -72,7 +72,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_shopping_confirm_action_start', array($this));
+        $objPlugin->doAction('LC_Page_Shopping_Confirm_action_before', array($this));
 
         $objCartSess = new SC_CartSession_Ex();
         $objSiteSess = new SC_SiteSession_Ex();
@@ -98,7 +98,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
         if (!SC_Utils_Ex::isBlank($this->tpl_message)) {
             // フックポイント.
             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-            $objPlugin->doAction('lc_page_shopping_confirm_action_isblank', array($this));
+            $objPlugin->doAction('LC_Page_Shopping_Confirm_action_isblank', array($this));
 
             SC_Response_Ex::sendRedirect(CART_URLPATH);
             exit;
@@ -143,7 +143,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
 
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('lc_page_shopping_confirm_action_return', array($this));
+                $objPlugin->doAction('LC_Page_Shopping_Confirm_action_return', array($this));
 
                 SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URLPATH);
                 exit;
@@ -168,7 +168,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
 
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('lc_page_shopping_confirm_action_confirm_module', array($this));
+                    $objPlugin->doAction('LC_Page_Shopping_Confirm_action_confirm_module', array($this));
 
                     SC_Response_Ex::sendRedirect(SHOPPING_MODULE_URLPATH);
                 }
@@ -179,7 +179,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
 
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('lc_page_shopping_confirm_action_confirm', array($this));
+                    $objPlugin->doAction('LC_Page_Shopping_Confirm_action_confirm', array($this));
 
                     SC_Response_Ex::sendRedirect(SHOPPING_COMPLETE_URLPATH);
                 }
@@ -190,7 +190,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
         }
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_shopping_confirm_action_end', array($this));
+        $objPlugin->doAction('LC_Page_Shopping_Confirm_action_after', array($this));
     }
 
     /**

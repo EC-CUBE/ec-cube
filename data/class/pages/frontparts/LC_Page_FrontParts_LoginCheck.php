@@ -66,7 +66,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_frontparts_logincheck_action_start', array($this));
+        $objPlugin->doAction('LC_Page_FrontParts_LoginCheck_action_before', array($this));
 
         // 会員管理クラス
         $objCustomer = new SC_Customer_Ex();
@@ -145,7 +145,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
                                 if (!$objCustomer->hasValue('email_mobile')) {
                                     // フックポイント.
                                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                                    $objPlugin->doAction('lc_page_frontparts_logincheck_action_login_mobile', array($this));
+                                    $objPlugin->doAction('LC_Page_FrontParts_LoginCheck_action_login_mobile', array($this));
 
                                     SC_Response_Ex::sendRedirectFromUrlPath('entry/email_mobile.php');
                                     exit;
@@ -157,13 +157,13 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
                         if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
                             // フックポイント.
                             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                            $objPlugin->doAction('lc_page_frontparts_logincheck_action_login_smartphone', array($this));
+                            $objPlugin->doAction('LC_Page_FrontParts_LoginCheck_action_login_smartphone', array($this));
 
                             echo SC_Utils_Ex::jsonEncode(array('success' => $_POST['url']));
                         } else {
                             // フックポイント.
                             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                            $objPlugin->doAction('lc_page_frontparts_logincheck_action_login_pc', array($this));
+                            $objPlugin->doAction('LC_Page_FrontParts_LoginCheck_action_login_pc', array($this));
 
                             SC_Response_Ex::sendRedirect($_POST['url']);
                         }
@@ -211,14 +211,14 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
                 if ($mypage_url_search == 2) {
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('lc_page_frontparts_logincheck_action_logout_mypage', array($this));
+                    $objPlugin->doAction('LC_Page_FrontParts_LoginCheck_action_logout_mypage', array($this));
 
                     // マイページログイン中はログイン画面へ移行
                     SC_Response_Ex::sendRedirectFromUrlPath('mypage/login.php');
                 } else {
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('lc_page_frontparts_logincheck_action_logout_toppage', array($this));
+                    $objPlugin->doAction('LC_Page_FrontParts_LoginCheck_action_logout_toppage', array($this));
 
                     // 上記以外の場合、トップへ遷移
                     SC_Response_Ex::sendRedirect(HTTP_URL);
@@ -231,7 +231,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
         }
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_frontparts_logincheck_action_end', array($this));
+        $objPlugin->doAction('LC_Page_FrontParts_LoginCheck_action_after', array($this));
     }
 
     /**

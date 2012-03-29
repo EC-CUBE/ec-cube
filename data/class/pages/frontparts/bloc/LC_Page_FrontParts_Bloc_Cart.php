@@ -65,7 +65,7 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_frontparts_bloc_cart_action_start', array($this));
+        $objPlugin->doAction('LC_Page_FrontParts_Bloc_Cart_action_before', array($this));
 
         $objCart = new SC_CartSession_Ex();
         $this->isMultiple = $objCart->isMultiple();
@@ -75,7 +75,7 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
 
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_frontparts_bloc_cart_action_end', array($this));
+        $objPlugin->doAction('LC_Page_FrontParts_Bloc_Cart_action_after', array($this));
     }
 
     /**

@@ -64,13 +64,13 @@ class LC_Page_Guide_Kiyaku extends LC_Page_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_guide_kiyaku_action_start', array($this));
+        $objPlugin->doAction('LC_Page_Guide_Kiyaku_action_before', array($this));
 
         $this->lfGetKiyaku(intval($_GET['page']), $this);
 
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_guide_kiyaku_action_end', array($this));
+        $objPlugin->doAction('LC_Page_Guide_Kiyaku_action_after', array($this));
     }
 
     /**

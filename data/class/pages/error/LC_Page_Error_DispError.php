@@ -70,7 +70,7 @@ class LC_Page_Error_DispError extends LC_Page_Admin_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_error_disperror_start', array($this));
+        $objPlugin->doAction('LC_Page_Error_DispError_before', array($this));
 
         switch ($this->type) {
             case LOGIN_ERROR:
@@ -92,7 +92,7 @@ class LC_Page_Error_DispError extends LC_Page_Admin_Ex {
         }
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_error_disperror_end', array($this));
+        $objPlugin->doAction('LC_Page_Error_DispError_after', array($this));
     }
 
     /**

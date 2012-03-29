@@ -74,7 +74,7 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_products_reviewedit_action_start', array($this));
+        $objPlugin->doAction('LC_Page_Admin_Products_ReviewEdit_action_before', array($this));
 
         // パラメーター情報の初期化
         $objFormParam = new SC_FormParam_Ex();
@@ -105,7 +105,7 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
         }
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_products_reviewedit_action_end', array($this));
+        $objPlugin->doAction('LC_Page_Admin_Products_ReviewEdit_action_after', array($this));
     }
 
     /**

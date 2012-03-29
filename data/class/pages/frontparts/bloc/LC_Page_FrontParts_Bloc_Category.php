@@ -63,7 +63,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_frontparts_bloc_category_action_start', array($this));
+        $objPlugin->doAction('LC_Page_FrontParts_Bloc_Category_action_before', array($this));
 
         // モバイル判定
         switch (SC_Display_Ex::detectDevice()) {
@@ -81,7 +81,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
 
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_frontparts_bloc_category_action_end', array($this));
+        $objPlugin->doAction('LC_Page_FrontParts_Bloc_Category_action_after', array($this));
     }
 
     /**

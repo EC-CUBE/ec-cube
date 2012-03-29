@@ -73,7 +73,7 @@ class LC_Page_Admin extends LC_Page_Ex {
         // スーパーフックポイントを実行.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
 
-        $objPlugin->doAction('lc_page_preProcess', array($this));
+        $objPlugin->doAction('LC_Page_preProcess', array($this));
 
         // トランザクショントークンの検証と生成
         $this->doValidToken(true);
@@ -100,7 +100,7 @@ class LC_Page_Admin extends LC_Page_Ex {
         $objPlugin->setHeadNaviBlocs($this->arrPageLayout['HeadNavi']);
 
         // スーパーフックポイントを実行.
-        $objPlugin->doAction('lc_page_process', array($this));
+        $objPlugin->doAction('LC_Page_process', array($this));
 
         $this->objDisplay->prepare($this, true);
         $this->objDisplay->response->write();

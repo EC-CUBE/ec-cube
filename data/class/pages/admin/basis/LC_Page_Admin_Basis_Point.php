@@ -68,7 +68,7 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_basis_point_action_start', array($this));
+        $objPlugin->doAction('LC_Page_Admin_Basis_Point_action_before', array($this));
 
         $objDb = new SC_Helper_DB_Ex();
         // パラメーター管理クラス
@@ -113,7 +113,7 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex {
 
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_basis_point_action_end', array($this));
+        $objPlugin->doAction('LC_Page_Admin_Basis_Point_action_after', array($this));
     }
 
     /**

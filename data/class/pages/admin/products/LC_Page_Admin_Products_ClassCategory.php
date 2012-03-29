@@ -68,7 +68,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_products_classcategory_action_start', array($this));
+        $objPlugin->doAction('LC_Page_Admin_Products_ClassCategory_action_before', array($this));
 
         $objFormParam = new SC_FormParam_Ex();
 
@@ -98,7 +98,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
                     }
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('lc_page_admin_products_classcategory_action_edit', array($this));
+                    $objPlugin->doAction('LC_Page_Admin_Products_ClassCategory_action_edit', array($this));
 
                     // 再表示
                     SC_Response_Ex::reload();
@@ -110,7 +110,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
                 $this->lfDeleteClassCat($class_id, $classcategory_id);
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('lc_page_admin_products_classcategory_action_delete', array($this));
+                $objPlugin->doAction('LC_Page_Admin_Products_ClassCategory_action_delete', array($this));
 
                 SC_Response_Ex::reload();
                 break;
@@ -126,7 +126,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
                 $this->lfDownRank($class_id, $classcategory_id);
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('lc_page_admin_products_classcategory_action_down', array($this));
+                $objPlugin->doAction('LC_Page_Admin_Products_ClassCategory_action_down', array($this));
 
                 SC_Response_Ex::reload();
                 break;
@@ -135,7 +135,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
                 $this->lfUpRank($class_id, $classcategory_id);
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('lc_page_admin_products_classcategory_action_up', array($this));
+                $objPlugin->doAction('LC_Page_Admin_Products_ClassCategory_action_up', array($this));
 
                 SC_Response_Ex::reload();
                 break;
@@ -151,7 +151,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
 
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_products_classcategory_action_end', array($this));
+        $objPlugin->doAction('LC_Page_Admin_Products_ClassCategory_action_after', array($this));
     }
 
     /**

@@ -88,7 +88,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_products_review_action_start', array($this));
+        $objPlugin->doAction('LC_Page_Admin_Products_Review_action_before', array($this));
 
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
@@ -118,7 +118,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
                     $this->lfDoOutputCsv($where, $arrWhereVal);
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('lc_page_admin_products_review_action_csv', array($this));
+                    $objPlugin->doAction('LC_Page_Admin_Products_Review_action_csv', array($this));
 
                     exit;
                 }
@@ -132,7 +132,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
 
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_products_review_action_end', array($this));
+        $objPlugin->doAction('LC_Page_Admin_Products_Review_action_after', array($this));
     }
 
     /**

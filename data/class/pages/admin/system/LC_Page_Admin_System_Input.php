@@ -72,7 +72,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_system_input_action_start', array($this));
+        $objPlugin->doAction('LC_Page_Admin_System_Input_action_before', array($this));
 
         // ページ送りの処理 $_REQUEST['pageno']が信頼しうる値かどうかチェックする。
         $this->tpl_pageno = $this->lfCheckPageNo($_REQUEST['pageno']);
@@ -177,7 +177,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
 
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_system_input_action_end', array($this));
+        $objPlugin->doAction('LC_Page_Admin_System_Input_action_after', array($this));
     }
 
     /**

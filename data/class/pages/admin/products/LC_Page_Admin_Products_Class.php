@@ -68,7 +68,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_products_class_action_start', array($this));
+        $objPlugin->doAction('LC_Page_Admin_Products_Class_action_before', array($this));
 
         $objFormParam = new SC_FormParam_Ex();
 
@@ -95,7 +95,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
                 }
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('lc_page_admin_products_class_action_edit', array($this));
+                $objPlugin->doAction('LC_Page_Admin_Products_Class_action_edit', array($this));
 
                 // 再表示
                 SC_Response_Ex::reload();
@@ -108,7 +108,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
 
             // フックポイント.
             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-            $objPlugin->doAction('lc_page_admin_products_class_action_delete', array($this));
+            $objPlugin->doAction('LC_Page_Admin_Products_Class_action_delete', array($this));
 
             // 再表示
             SC_Response_Ex::reload();
@@ -125,7 +125,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
 
             // フックポイント.
             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-            $objPlugin->doAction('lc_page_admin_products_class_action_down', array($this));
+            $objPlugin->doAction('LC_Page_Admin_Products_Class_action_down', array($this));
 
             // 再表示
             SC_Response_Ex::reload();
@@ -135,7 +135,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
 
             // フックポイント.
             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-            $objPlugin->doAction('lc_page_admin_products_class_action_up', array($this));
+            $objPlugin->doAction('LC_Page_Admin_Products_Class_action_up', array($this));
 
             // 再表示
             SC_Response_Ex::reload();
@@ -151,7 +151,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
 
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_products_class_action_end', array($this));
+        $objPlugin->doAction('LC_Page_Admin_Products_Class_action_after', array($this));
     }
 
     /**

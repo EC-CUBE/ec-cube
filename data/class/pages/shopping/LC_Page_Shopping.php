@@ -77,7 +77,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_shopping_action_start', array($this));
+        $objPlugin->doAction('LC_Page_Shopping_action_before', array($this));
 
         $objSiteSess = new SC_SiteSession_Ex();
         $objCartSess = new SC_CartSession_Ex();
@@ -98,7 +98,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
         if ($objCustomer->isLoginSuccess(true)) {
             // フックポイント.
             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-            $objPlugin->doAction('lc_page_shopping_action_logined', array($this));
+            $objPlugin->doAction('LC_Page_Shopping_action_logined', array($this));
 
             SC_Response_Ex::sendRedirect(
                     $this->getNextlocation($this->cartKey, $this->tpl_uniqid,
@@ -137,7 +137,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
                         if ($this->hasEmailMobile($objCustomer) == false) {
                             // フックポイント.
                             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                            $objPlugin->doAction('lc_page_shopping_action_login_mobile', array($this));
+                            $objPlugin->doAction('LC_Page_Shopping_action_login_mobile', array($this));
 
                             SC_Response_Ex::sendRedirectFromUrlPath('entry/email_mobile.php');
                             exit;
@@ -147,7 +147,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
                     elseif (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
                         // フックポイント.
                         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                        $objPlugin->doAction('lc_page_shopping_action_login_smartphone', array($this));
+                        $objPlugin->doAction('LC_Page_Shopping_action_login_smartphone', array($this));
 
                         echo SC_Utils_Ex::jsonEncode(array('success' => 
                                                      $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
@@ -157,7 +157,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
                     }
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('lc_page_shopping_action_login', array($this));
+                    $objPlugin->doAction('LC_Page_Shopping_action_login', array($this));
 
                     SC_Response_Ex::sendRedirect(
                             $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
@@ -204,7 +204,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
 
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('lc_page_shopping_action_nonmember_confirm', array($this));
+                    $objPlugin->doAction('LC_Page_Shopping_action_nonmember_confirm', array($this));
 
                     SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URLPATH);
                     exit;
@@ -215,7 +215,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
             case 'return':
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('lc_page_shopping_action_return', array($this));
+                $objPlugin->doAction('LC_Page_Shopping_action_return', array($this));
 
                 SC_Response_Ex::sendRedirect(CART_URLPATH);
                 exit;
@@ -240,7 +240,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
 
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('lc_page_shopping_action_multiple', array($this));
+                    $objPlugin->doAction('LC_Page_Shopping_action_multiple', array($this));
 
                     SC_Response_Ex::sendRedirect(MULTIPLE_URLPATH);
                     exit;
@@ -287,7 +287,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
         }
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_shopping_action_end', array($this));
+        $objPlugin->doAction('LC_Page_Shopping_action_after', array($this));
     }
 
     /**

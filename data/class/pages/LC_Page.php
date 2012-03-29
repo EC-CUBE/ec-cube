@@ -104,7 +104,7 @@ class LC_Page {
 
         // スーパーフックポイントを実行.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_preProcess', array($this));
+        $objPlugin->doAction('LC_Page_preProcess', array($this));
 
         // 店舗基本情報取得
         $this->arrSiteInfo = SC_Helper_DB_Ex::sfGetBasisData();
@@ -133,7 +133,7 @@ class LC_Page {
         $objPlugin->setHeadNaviBlocs($this->arrPageLayout['HeadNavi']);
 
         // スーパーフックポイントを実行.
-        $objPlugin->doAction('lc_page_process', array($this));
+        $objPlugin->doAction('LC_Page_process', array($this));
 
         $this->objDisplay->prepare($this);
         $this->objDisplay->response->write();

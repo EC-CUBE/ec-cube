@@ -76,7 +76,7 @@ class LC_Page_Entry extends LC_Page_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_entry_action_start', array($this));
+        $objPlugin->doAction('LC_Page_Entry_action_before', array($this));
 
         $objFormParam = new SC_FormParam_Ex();
 
@@ -154,7 +154,7 @@ class LC_Page_Entry extends LC_Page_Ex {
                     }
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('lc_page_entry_action_complete', array($this));
+                    $objPlugin->doAction('LC_Page_Entry_action_complete', array($this));
 
                     // 完了ページに移動させる。
                     SC_Response_Ex::sendRedirect('complete.php', array('ci' => SC_Helper_Customer_Ex::sfGetCustomerId($uniqid)));
@@ -168,7 +168,7 @@ class LC_Page_Entry extends LC_Page_Ex {
         }
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_entry_action_end', array($this));
+        $objPlugin->doAction('LC_Page_Entry_action_after', array($this));
     }
 
     /**

@@ -64,7 +64,7 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_frontparts_bloc_calendar_action_start', array($this));
+        $objPlugin->doAction('LC_Page_FrontParts_Bloc_Calafterar_action_before', array($this));
 
         // 休日取得取得
         $this->arrHoliday = $this->lfGetHoliday();
@@ -75,7 +75,7 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc {
 
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_frontparts_bloc_calendar_action_end', array($this));
+        $objPlugin->doAction('LC_Page_FrontParts_Bloc_Calafterar_action_after', array($this));
     }
 
     /**

@@ -76,7 +76,7 @@ class LC_Page_Cart extends LC_Page_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_cart_action_start', array($this));
+        $objPlugin->doAction('LC_Page_Cart_action_before', array($this));
 
         $objCartSess = new SC_CartSession_Ex();
         $objSiteSess = new SC_SiteSession_Ex();
@@ -107,7 +107,7 @@ class LC_Page_Cart extends LC_Page_Ex {
 
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('lc_page_cart_action_confirm', array($this));
+                    $objPlugin->doAction('LC_Page_Cart_action_confirm', array($this));
 
                     // 購入ページへ
                     SC_Response_Ex::sendRedirect(SHOPPING_URL);
@@ -119,7 +119,7 @@ class LC_Page_Cart extends LC_Page_Ex {
 
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('lc_page_cart_action_up', array($this));
+                $objPlugin->doAction('LC_Page_Cart_action_up', array($this));
 
                 SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
                 exit;
@@ -129,7 +129,7 @@ class LC_Page_Cart extends LC_Page_Ex {
 
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('lc_page_cart_action_down', array($this));
+                $objPlugin->doAction('LC_Page_Cart_action_down', array($this));
 
                 SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
                 exit;
@@ -139,7 +139,7 @@ class LC_Page_Cart extends LC_Page_Ex {
 
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('lc_page_cart_action_setQuantity', array($this));
+                $objPlugin->doAction('LC_Page_Cart_action_setQuantity', array($this));
 
                 SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
                 exit;
@@ -149,7 +149,7 @@ class LC_Page_Cart extends LC_Page_Ex {
 
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('lc_page_cart_action_delete', array($this));
+                $objPlugin->doAction('LC_Page_Cart_action_delete', array($this));
 
                 SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
                 exit;
@@ -199,7 +199,7 @@ class LC_Page_Cart extends LC_Page_Ex {
 
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_cart_action_end', array($this));
+        $objPlugin->doAction('LC_Page_Cart_action_after', array($this));
     }
 
     /**

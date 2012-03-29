@@ -63,7 +63,7 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_system_delete_action_start', array($this));
+        $objPlugin->doAction('LC_Page_Admin_System_Delete_action_before', array($this));
 
         $objFormParam = new SC_FormParam;
 
@@ -89,7 +89,7 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex {
 
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_system_delete_action_end', array($this));
+        $objPlugin->doAction('LC_Page_Admin_System_Delete_action_after', array($this));
 
         SC_Response_Ex::sendRedirect($url);
     }

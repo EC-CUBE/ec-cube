@@ -72,7 +72,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_design_template_action_start', array($this));
+        $objPlugin->doAction('LC_Page_Admin_Design_Template_action_before', array($this));
 
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
@@ -115,7 +115,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('lc_page_admin_design_template_action_download', array($this));
+                    $objPlugin->doAction('LC_Page_Admin_Design_Template_action_download', array($this));
 
                     if ($this->doDownload($template_code) !== false) {
                         // ブラウザに出力し, 終了する
@@ -138,7 +138,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
 
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_design_template_action_end', array($this));
+        $objPlugin->doAction('LC_Page_Admin_Design_Template_action_after', array($this));
     }
 
     /**

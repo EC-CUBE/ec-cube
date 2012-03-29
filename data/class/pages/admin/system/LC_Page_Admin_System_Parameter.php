@@ -79,7 +79,7 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_system_parameter_action_start', array($this));
+        $objPlugin->doAction('LC_Page_Admin_System_Masterdata_action_before', array($this));
 
         $masterData = new SC_DB_MasterData_Ex();
 
@@ -115,7 +115,7 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
                                                         array('id', 'remarks', 'rank')));
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_admin_system_parameter_action_end', array($this));
+        $objPlugin->doAction('LC_Page_Admin_System_Masterdata_action_after', array($this));
 
     }
 

@@ -63,7 +63,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_frontparts_bloc_news_action_start', array($this));
+        $objPlugin->doAction('LC_Page_FrontParts_Bloc_News_action_before', array($this));
 
         $objFormParam = new SC_FormParam_Ex();
         switch ($this->getMode()) {
@@ -75,7 +75,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
                 if (empty($this->arrErr)) {
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('lc_page_frontparts_bloc_news_action_getList', array($this));
+                    $objPlugin->doAction('LC_Page_FrontParts_Bloc_News_action_getList', array($this));
 
                     $json = $this->lfGetNewsForJson($objFormParam);
                     echo $json;
@@ -93,7 +93,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
                 if (empty($this->arrErr)) {
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('lc_page_frontparts_bloc_news_action_getDetail', array($this));
+                    $objPlugin->doAction('LC_Page_FrontParts_Bloc_News_action_getDetail', array($this));
 
                     $json = $this->lfGetNewsDetailForJson($objFormParam);
                     echo $json;
@@ -110,7 +110,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
         }
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_frontparts_bloc_news_action_end', array($this));
+        $objPlugin->doAction('LC_Page_FrontParts_Bloc_News_action_after', array($this));
     }
 
     /**

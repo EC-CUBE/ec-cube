@@ -88,7 +88,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
     function action() {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_forgot_start', array($this));
+        $objPlugin->doAction('LC_Page_Forgot_before', array($this));
 
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
@@ -141,7 +141,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
         }
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('lc_page_forgot_end', array($this));
+        $objPlugin->doAction('LC_Page_Forgot_after', array($this));
     }
 
     /**
