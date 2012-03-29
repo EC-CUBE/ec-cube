@@ -50,7 +50,7 @@
     <!--{/if}-->
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="./upload_csv.php"><span class="btn-prev">戻る</span></a></li>
+            <li><a class="btn-action" href="?"><span class="btn-prev">戻る</span></a></li>
         </ul>
     </div>
 </div>

@@ -306,7 +306,7 @@ $(function() {
     </table>
 
     <h2>地図設定</h2>
-    <table id="basis-index-func">
+    <table>
         <tr>
             <th>緯度/経度情報</th>
             <td>
