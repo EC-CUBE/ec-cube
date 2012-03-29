@@ -469,7 +469,7 @@ define('HTTP_REQUEST_TIMEOUT', "5");
 /** 郵便番号CSVのZIPアーカイブファイルの取得元 */
 define('ZIP_DOWNLOAD_URL', "http://www.post.japanpost.jp/zipcode/dl/kogaki/zip/ken_all.zip");
 /** フックポイント(プレプロセス) */
-define('HOOK_POINT_PREPROCESS', lc_page_preProcess);
+define('HOOK_POINT_PREPROCESS', "LC_Page_preProcess");
 /** フックポイント(プロセス) */
-define('HOOK_POINT_PROCESS', lc_page_process);
+define('HOOK_POINT_PROCESS', "LC_Page_process");
 ?>
