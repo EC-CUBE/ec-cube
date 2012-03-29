@@ -1072,12 +1072,12 @@ function getArrayDsn(SC_FormParam $objDBParam) {
         'username'  => $arrRet['db_user'],
         'password'  => $arrRet['db_password'],
         'database'  => $arrRet['db_name'],
+        'port'      => $arrRet['db_port'],
     );
 
     // 文字列形式の DSN との互換処理
-    if ($arrRet['db_server'] !== '+') {
+    if (strlen($arrRet['db_server']) >= 1 && $arrRet['db_server'] !== '+') {
         $arrDsn['hostspec'] = $arrRet['db_server'];
-        $arrDsn['port']     = $arrRet['db_port'];
     }
 
     return $arrDsn;
