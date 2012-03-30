@@ -95,7 +95,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
             // 入力文字の変換
 
                 // エラーチェック
-                $this->arrErr = $this->lfErrorCheck($this->arrForm);
+                $this->arrErr = $this->lfErrorCheck($this->arrForm, $objFormParam);
                 if (count($this->arrErr) <= 0) {
                     if ($this->arrForm['maker_id'] == '') {
                         // メーカー情報新規登録
@@ -294,9 +294,12 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      * @param  array $arrForm メーカー情報
      * @return array $objErr->arrErr エラー内容
      */
-    function lfErrorCheck(&$arrForm) {
-        $objErr = new SC_CheckError_Ex($arrForm);
-        $objErr->doFunc(array('メーカー名', 'name', SMTEXT_LEN), array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+    function lfErrorCheck(&$arrForm, &$objFormParam) {
+
+        $arrErr = $objFormParam->checkError();
+        if (!empty($arrErr)) {
+            return $arrErr;
+        }
 
         // maker_id の正当性チェック
         if (!empty($arrForm['maker_id'])) {
@@ -306,20 +309,20 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
                 || !$objDb->sfIsRecord('dtb_maker', 'maker_id', array($arrForm['maker_id']))
             ) {
                 // maker_idが指定されていて、且つその値が不正と思われる場合はエラー
-                $objErr->arrErr['maker_id'] = '※ メーカーIDが不正です<br />';
+                $arrErr['maker_id'] = '※ メーカーIDが不正です<br />';
             }
         }
-        if (!isset($objErr->arrErr['name'])) {
+        if (!isset($arrErr['name'])) {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $arrMaker = array();
             $arrMaker = $objQuery->select('maker_id, name', 'dtb_maker', 'del_flg = 0 AND name = ?', array($arrForm['name']));
 
             // 編集中のレコード以外に同じ名称が存在する場合
             if ($arrMaker[0]['maker_id'] != $arrForm['maker_id'] && $arrMaker[0]['name'] == $arrForm['name']) {
-                $objErr->arrErr['name'] = '※ 既に同じ内容の登録が存在します。<br />';
+                $arrErr['name'] = '※ 既に同じ内容の登録が存在します。<br />';
             }
         }
 
-        return $objErr->arrErr;
+        return $arrErr;
     }
 }
