@@ -1127,7 +1127,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('IMAGE_SAVE_URLPATH'
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('IMAGE_TEMP_RSS_URL', 'HTTP_URL . "upload/temp_image/"', 154, 'RSS用画像一時保存URL');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('IMAGE_SAVE_RSS_URL', 'HTTP_URL . "upload/save_image/"', 155, 'RSS用画像保存先URL');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CSV_TEMP_REALDIR', 'DATA_REALDIR . "upload/csv/"', 156, 'エンコードCSVの一時保存先');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('NO_IMAGE_REALFILE', 'USER_TEMPLATE_REALDIR . "img/picture/img_blank.gif"', 158, '画像がない場合に表示');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('NO_IMAGE_REALFILE', 'USER_TEMPLATE_REALDIR . "default/img/picture/img_blank.gif"', 158, '画像がない場合に表示');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ADMIN_SYSTEM_URLPATH', 'ROOT_URLPATH . ADMIN_DIR . "system/" . DIR_INDEX_PATH', 159, 'システム管理トップ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('INPUT_ZIP_URLPATH', 'ROOT_URLPATH . "input_zip.php"', 161, '郵便番号入力');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ADMIN_HOME_URLPATH', 'ROOT_URLPATH . ADMIN_DIR . "home.php"', 165, 'ホーム');
