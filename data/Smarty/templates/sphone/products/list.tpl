@@ -168,59 +168,57 @@
             },
             success: function(result){
                 var productStatus = result.productStatus;
-                for (var j = 0; j < i; j++) {
-                    if (result[j] != null) {
-                        var product = result[j];
-                        var productHtml = "";
-                        var maxCnt = $(".list_area").length - 1;
-                        var productEl = $(".list_area").get(maxCnt);
-                        productEl = $(productEl).clone(true).insertAfter(productEl);
-                        maxCnt++;
+                for (var product_id in result) {
+                    if (isNaN(product_id)) continue;
+                    var product = result[product_id];
+                    var productHtml = "";
+                    var maxCnt = $(".list_area").length - 1;
+                    var productEl = $(".list_area").get(maxCnt);
+                    productEl = $(productEl).clone(true).insertAfter(productEl);
+                    maxCnt++;
 
-                        //商品写真をセット
-                        $($(".list_area .listphoto img").get(maxCnt)).attr({
-                            src: "<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=" + product.main_list_image + '&width=80&height=80',
-                            alt: product.name
-                        });
+                    //商品写真をセット
+                    $($(".list_area .listphoto img").get(maxCnt)).attr({
+                        src: "<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=" + product.main_list_image + '&width=80&height=80',
+                        alt: product.name
+                    });
 
-                        // 商品ステータスをセット
-                        var statusAreaEl = $($(".list_area div.statusArea").get(maxCnt));
-                        // 商品ステータスの削除
-                        statusAreaEl.empty();
+                    // 商品ステータスをセット
+                    var statusAreaEl = $($(".list_area div.statusArea").get(maxCnt));
+                    // 商品ステータスの削除
+                    statusAreaEl.empty();
 
-                        if (productStatus[product.product_id] != null) {
-                            var statusEl = '<ul class="status_icon">';
-                            var statusCnt = productStatus[product.product_id].length;
-                            for (var k = 0; k < statusCnt; k++) {
-                                var status = productStatus[product.product_id][k];
-                                var statusImgEl = '<li>' + status.status_name + '</li>' + "\n";
-                                statusEl += statusImgEl;
-                            }
-                            statusEl += "</ul>";
-                            statusAreaEl.append(statusEl);
+                    if (productStatus[product.product_id] != null) {
+                        var statusEl = '<ul class="status_icon">';
+                        var statusCnt = productStatus[product.product_id].length;
+                        for (var k = 0; k < statusCnt; k++) {
+                            var status = productStatus[product.product_id][k];
+                            var statusImgEl = '<li>' + status.status_name + '</li>' + "\n";
+                            statusEl += statusImgEl;
                         }
-
-                        //商品名をセット
-                        $($(".list_area a.productName").get(maxCnt)).text(product.name);
-                        $($(".list_area a.productName").get(maxCnt)).attr("href", url + product.product_id);
-
-                        //販売価格をセット
-                        var price = $($(".list_area span.price").get(maxCnt));
-                        //販売価格をクリア
-                        price.empty();
-                        var priceVale = "";
-                        //販売価格が範囲か判定
-                        if (product.price02_min == product.price02_max) {
-                            priceVale = product.price02_min_tax_format + '円';
-                        } else {
-                            priceVale = product.price02_min_tax_format + '～' + product.price02_max_tax_format + '円';
-                        }
-                        price.append(priceVale);
-
-                        //コメントをセット
-                        $($(".list_area .listcomment").get(maxCnt)).text(product.main_list_comment);
-
+                        statusEl += "</ul>";
+                        statusAreaEl.append(statusEl);
                     }
+
+                    //商品名をセット
+                    $($(".list_area a.productName").get(maxCnt)).text(product.name);
+                    $($(".list_area a.productName").get(maxCnt)).attr("href", url + product.product_id);
+
+                    //販売価格をセット
+                    var price = $($(".list_area span.price").get(maxCnt));
+                    //販売価格をクリア
+                    price.empty();
+                    var priceVale = "";
+                    //販売価格が範囲か判定
+                    if (product.price02_min == product.price02_max) {
+                        priceVale = product.price02_min_tax_format + '円';
+                    } else {
+                        priceVale = product.price02_min_tax_format + '～' + product.price02_max_tax_format + '円';
+                    }
+                    price.append(priceVale);
+
+                    //コメントをセット
+                    $($(".list_area .listcomment").get(maxCnt)).text(product.main_list_comment);
                 }
                 pageNo++;
 
