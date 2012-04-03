@@ -149,15 +149,15 @@ class SC_Query {
     /**
      * SELECT文を実行する.
      *
-     * @param string $col カラム名. 複数カラムの場合はカンマ区切りで書く
-     * @param string $table テーブル名
+     * @param string $cols カラム名. 複数カラムの場合はカンマ区切りで書く
+     * @param string $from テーブル名
      * @param string $where WHERE句
      * @param array $arrWhereVal プレースホルダ
      * @param integer $fetchmode 使用するフェッチモード。デフォルトは MDB2_FETCHMODE_ASSOC。
      * @return array|null
      */
-    function select($col, $table, $where = '', $arrWhereVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
-        $sqlse = $this->getSql($col, $table, $where, $arrWhereVal);
+    function select($cols, $from = '', $where = '', $arrWhereVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
+        $sqlse = $this->getSql($cols, $from, $where, $arrWhereVal);
         return $this->getAll($sqlse, $arrWhereVal, $fetchmode);
     }
 
@@ -293,14 +293,22 @@ class SC_Query {
      * 構築した SELECT 文を取得する.
      *
      * クラス変数から WHERE 句を組み立てる場合、$arrWhereVal を経由してプレースホルダもクラス変数のもので上書きする。
-     * @param string $col SELECT 文に含めるカラム名
-     * @param string $table SELECT 文に含めるテーブル名
+     * @param string $cols SELECT 文に含めるカラム名
+     * @param string $from SELECT 文に含めるテーブル名
      * @param string $where SELECT 文に含める WHERE 句
      * @param mixed $arrWhereVal プレースホルダ(参照)
      * @return string 構築済みの SELECT 文
      */
-    function getSql($col, $table, $where = '', &$arrWhereVal = null) {
-        $sqlse = "SELECT $col FROM $table";
+    function getSql($cols, $from = '', $where = '', &$arrWhereVal = null) {
+        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
+
+        $sqlse = "SELECT $cols";
+
+        if (strlen($from) === 0) {
+            $sqlse .= ' ' . $dbFactory->getDummyFromClauseSql();
+        } else {
+            $sqlse .= " FROM $from";
+        }
 
         // 引数の$whereを優先する。
         if (strlen($where) >= 1) {
@@ -616,7 +624,7 @@ class SC_Query {
      * @param array $arrWhereVal プレースホルダに挿入する値
      * @return mixed SQL の実行結果
      */
-    function get($col, $table, $where = '', $arrWhereVal = array()) {
+    function get($col, $table = '', $where = '', $arrWhereVal = array()) {
         $sqlse = $this->getSql($col, $table, $where, $arrWhereVal);
         // SQL文の実行
         $ret = $this->getOne($sqlse, $arrWhereVal);
@@ -663,7 +671,7 @@ class SC_Query {
      * @param integer $fetchmode 使用するフェッチモード。デフォルトは MDB2_FETCHMODE_ASSOC。
      * @return array array('カラム名' => '値', ...)の連想配列
      */
-    function getRow($col, $table, $where = '', $arrWhereVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
+    function getRow($col, $table = '', $where = '', $arrWhereVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
 
         $sql = $this->getSql($col, $table, $where, $arrWhereVal);
         $sql = $this->dbFactory->sfChangeMySQL($sql);
@@ -696,7 +704,7 @@ class SC_Query {
      * @param array $arrWhereVal プレースホルダに挿入する値
      * @return array SQL の実行結果の配列
      */
-    function getCol($col, $table, $where = '', $arrWhereVal = array()) {
+    function getCol($col, $table = '', $where = '', $arrWhereVal = array()) {
         $sql = $this->getSql($col, $table, $where, $arrWhereVal);
         $sql = $this->dbFactory->sfChangeMySQL($sql);
 
