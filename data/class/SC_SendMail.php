@@ -141,10 +141,8 @@ class SC_SendMail {
             if ($name != '') {
                 // 制御文字を変換する。
                 $_name = $name;
-                $_name = ereg_replace('<','＜', $_name);
-                $_name = ereg_replace('>','＞', $_name);
                 $_name = mb_encode_mimeheader($_name, 'JIS', 'B', "\n");
-                $name_address = '"' . $_name . '"<' . $mail_address . '>';
+                $name_address = $_name . ' <' . $mail_address . '>';
             } else {
                 $name_address = $mail_address;
             }
