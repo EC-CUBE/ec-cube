@@ -52,7 +52,6 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrProductType = $masterData->getMasterData('mtb_product_type');
         $this->arrDISP = $masterData->getMasterData('mtb_disp');
-        $this->arrCLASS = $masterData->getMasterData('mtb_class');
         $this->arrSTATUS = $masterData->getMasterData('mtb_status');
         $this->arrSTATUS_IMAGE = $masterData->getMasterData('mtb_status_image');
         $this->arrDELIVERYDATE = $masterData->getMasterData('mtb_delivery_date');

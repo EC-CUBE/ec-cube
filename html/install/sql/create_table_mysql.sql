@@ -865,13 +865,6 @@ CREATE TABLE mtb_disp (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE mtb_class (
-    id smallint,
-    name text,
-    rank smallint NOT NULL DEFAULT 0,
-    PRIMARY KEY (id)
-);
-
 CREATE TABLE mtb_status (
     id smallint,
     name text,
