@@ -1048,7 +1048,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UPDATE_HTTP', '"htt
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CHAR_CODE', '"UTF-8"', 39, '文字コード');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LOCALE', '"ja_JP.UTF-8"', 40, 'ロケール設定');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ECCUBE_PAYMENT', '"EC-CUBE"', 41, '決済モジュール付与文言');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PEAR_DB_DEBUG', '9', 42, 'PEAR::DBのデバッグモード');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PEAR_DB_DEBUG', '0', 42, 'PEAR::DBのデバッグモード');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PEAR_DB_PERSISTENT', 'false', 43, 'PEAR::DBの持続的接続オプション');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CLOSE_DAY', '31', 45, '締め日の指定(末日の場合は、31を指定してください。)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('FAVORITE_ERROR', '13', 46, '一般サイトエラー');

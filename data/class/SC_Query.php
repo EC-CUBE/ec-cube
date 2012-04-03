@@ -52,17 +52,13 @@ class SC_Query {
             $dsn = DEFAULT_DSN;
         }
 
-        // Debugモード指定
-        // 常時ONにするとメモリが解放されない。
-        // 連続クエリ実行時に問題が生じる。
-        if (DEBUG_MODE) {
-            $options['debug'] = PEAR_DB_DEBUG;
-        } else {
-            $options['debug'] = 0;
-        }
-
-        // 持続的接続オプション
-        $options['persistent'] = PEAR_DB_PERSISTENT;
+        // オプション
+        $options = array(
+            // 持続的接続
+            'persistent' => PEAR_DB_PERSISTENT,
+            // Debugモード
+            'debug' => PEAR_DB_DEBUG,
+        );
 
         // バッファリング trueにするとメモリが解放されない。
         // 連続クエリ実行時に問題が生じる。

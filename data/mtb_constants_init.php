@@ -38,7 +38,7 @@ define('LOCALE', "ja_JP.UTF-8");
 /** 決済モジュール付与文言 */
 define('ECCUBE_PAYMENT', "EC-CUBE");
 /** PEAR::DBのデバッグモード */
-define('PEAR_DB_DEBUG', 9);
+define('PEAR_DB_DEBUG', 0);
 /** PEAR::DBの持続的接続オプション */
 define('PEAR_DB_PERSISTENT', false);
 /** 締め日の指定(末日の場合は、31を指定してください。) */
