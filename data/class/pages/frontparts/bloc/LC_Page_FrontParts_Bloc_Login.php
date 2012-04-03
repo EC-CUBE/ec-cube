@@ -117,7 +117,7 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc {
         $masterData = new SC_DB_MasterData_Ex();
         $arrDisableLogout = $masterData->getMasterData('mtb_disable_logout');
 
-        $current_page = $_SERVER['PHP_SELF'];
+        $current_page = $_SERVER['SCRIPT_NAME'];
 
         foreach ($arrDisableLogout as $val) {
             if ($current_page == $val) {

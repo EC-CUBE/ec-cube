@@ -93,12 +93,12 @@ class LC_Page {
         $this->objDisplay = new SC_Display_Ex();
 
         $layout = new SC_Helper_PageLayout_Ex();
-        $layout->sfGetPageLayout($this, false, $_SERVER['PHP_SELF'],
+        $layout->sfGetPageLayout($this, false, $_SERVER['SCRIPT_NAME'],
                                  $this->objDisplay->detectDevice());
 
         // プラグインを実行するかを判定します.
         // プラグイン管理ではプラグインが実行されません
-        if ($_SERVER['PHP_SELF'] === ROOT_URLPATH . ADMIN_DIR . 'system/plugin.php') {
+        if ($_SERVER['SCRIPT_NAME'] === ROOT_URLPATH . ADMIN_DIR . 'system/plugin.php') {
             $this->plugin_activate_flg = false;
         }
 

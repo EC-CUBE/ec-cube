@@ -52,10 +52,10 @@
         </form>
         <!--{if !$smarty.section.cnt.first}-->
             <!--{* リンクにした方がすっきりしますが、お届け先削除処理がother_deliv_idをPOSTしか受け付けていないので、ボタンで統一しています *}-->
-            <!--{* <a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|h}-->&amp;other_deliv_id=<!--{$arrAddr[cnt].other_deliv_id}-->&amp;uniqid=<!--{$tpl_uniqid}-->">変更</a> *}-->
+            <!--{* <a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.SCRIPT_NAME|h}-->&amp;other_deliv_id=<!--{$arrAddr[cnt].other_deliv_id}-->&amp;uniqid=<!--{$tpl_uniqid}-->">変更</a> *}-->
             <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php">
                 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->">
-                <input type="hidden" name="page" value="<!--{$smarty.server.PHP_SELF|h}-->">
+                <input type="hidden" name="page" value="<!--{$smarty.server.SCRIPT_NAME|h}-->">
                 <input type="hidden" name="other_deliv_id" value="<!--{$arrAddr[cnt].other_deliv_id}-->">
                 <center><input type="submit" value="お届け先情報変更"></center>
             </form>

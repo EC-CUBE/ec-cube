@@ -42,7 +42,7 @@ class SC_Helper_PageLayout {
      * @access public
      * @param LC_Page $objPage LC_Page インスタンス
      * @param boolean $preview プレビュー表示の場合 true
-     * @param string $url ページのURL($_SERVER['PHP_SELF'] の情報)
+     * @param string $url ページのURL($_SERVER['SCRIPT_NAME'] の情報)
      * @param integer $device_type_id 端末種別ID
      * @return void
      */

@@ -35,7 +35,7 @@ class SC_SiteSession {
                 isset($_SESSION['site']['now_page'])
                     ? $_SESSION['site']['now_page'] : '';
 
-        $_SESSION['site']['now_page'] = $_SERVER['PHP_SELF'];
+        $_SESSION['site']['now_page'] = $_SERVER['SCRIPT_NAME'];
     }
 
     /* 前ページが正当であるかの判定 */

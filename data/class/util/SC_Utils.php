@@ -38,7 +38,7 @@ class SC_Utils {
     function sfInitInstall() {
         // インストール済みが定義されていない。
         if (!defined('ECCUBE_INSTALL')) {
-            $phpself = $_SERVER['PHP_SELF'];
+            $phpself = $_SERVER['SCRIPT_NAME'];
             if (strpos('/install/', $phpself) === false) {
                 $path = substr($phpself, 0, strpos($phpself, basename($phpself)));
                 $install_url = SC_Utils_Ex::searchInstallerPath($path);
@@ -306,7 +306,7 @@ class SC_Utils {
 
     /* 1階層上のディレクトリ名を取得する */
     function sfUpDirName() {
-        $path = $_SERVER['PHP_SELF'];
+        $path = $_SERVER['SCRIPT_NAME'];
         $arrVal = explode('/', $path);
         $cnt = count($arrVal);
         return $arrVal[($cnt - 2)];

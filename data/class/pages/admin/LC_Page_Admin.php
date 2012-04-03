@@ -66,7 +66,7 @@ class LC_Page_Admin extends LC_Page_Ex {
 
         // プラグインを実行するかを判定します.
         // プラグイン管理ではプラグインが実行されません
-        if ($_SERVER['PHP_SELF'] === ROOT_URLPATH . ADMIN_DIR . 'system/plugin.php') {
+        if ($_SERVER['SCRIPT_NAME'] === ROOT_URLPATH . ADMIN_DIR . 'system/plugin.php') {
             $this->plugin_activate_flg = false;
         }
 

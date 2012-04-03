@@ -217,11 +217,11 @@ class SC_Helper_Session {
     function adminAuthorization() {
         $masterData = new SC_DB_MasterData_Ex();
         $arrExcludes = $masterData->getMasterData('mtb_auth_excludes');
-        if (preg_match('|^' . ROOT_URLPATH . ADMIN_DIR . '|', $_SERVER['PHP_SELF'])) {
+        if (preg_match('|^' . ROOT_URLPATH . ADMIN_DIR . '|', $_SERVER['SCRIPT_NAME'])) {
             $is_auth = true;
 
             foreach ($arrExcludes as $exclude) {
-                if (preg_match('|^' . ROOT_URLPATH . ADMIN_DIR . $exclude . '|', $_SERVER['PHP_SELF'])) {
+                if (preg_match('|^' . ROOT_URLPATH . ADMIN_DIR . $exclude . '|', $_SERVER['SCRIPT_NAME'])) {
                     $is_auth = false;
                     break;
                 }

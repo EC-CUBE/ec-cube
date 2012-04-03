@@ -125,7 +125,7 @@ class SC_Response{
                 $useSsl = SC_Utils_Ex::sfIsHTTPS();
             }
             $netUrl = new Net_URL($useSsl ? HTTPS_URL : HTTP_URL);
-            $netUrl->path = dirname($_SERVER['PHP_SELF']) . '/' . $location;
+            $netUrl->path = dirname($_SERVER['SCRIPT_NAME']) . '/' . $location;
             $url = $netUrl->getUrl();
         }
 
