@@ -209,9 +209,6 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
         $arrProduct = $this->lfGetProductsAllclass($objQuery);
         // 値の整形
         foreach ($arrProduct as $key => $val) {
-            //販売価格を税込みに編集
-            $arrProduct[$key]['price02_max'] = SC_Helper_DB_Ex::sfCalcIncTax($arrProduct[$key]['price02_max']);
-            $arrProduct[$key]['price02_min'] = SC_Helper_DB_Ex::sfCalcIncTax($arrProduct[$key]['price02_min']);
             // 画像ファイルのURLセット
             if (file_exists(IMAGE_SAVE_REALDIR . $arrProduct[$key]['main_list_image'])) {
                 $dir = IMAGE_SAVE_RSS_URL;
@@ -299,7 +296,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
         $objProduct = new SC_Product_Ex();
         $arrProductLsit = $objProduct->lists($objQuery);
         // 各商品のカテゴリIDとランクの取得
-        $arrProduct = array();
+        $arrProducts = array();
         foreach ($arrProductLsit as $key => $val) {
             $sql = '';
             $sql .= ' SELECT';
@@ -316,9 +313,13 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
             $sql .= '   product_id = ?';
             $arrCategory = $objQuery->getAll($sql, array($val['product_id']));
             if (!empty($arrCategory)) {
-                $arrProduct[$key] = array_merge($val, $arrCategory[0]);
+                $arrProducts[$key] = array_merge($val, $arrCategory[0]);
             }
         }
-        return $arrProduct;
+
+        // 税込金額を設定する
+        SC_Product_Ex::setIncTaxToProducts($arrProducts);
+
+        return $arrProducts;
     }
 }

@@ -57,10 +57,10 @@
                             <a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$product_id|u}-->"><img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrFavorite[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="" width="80" height="80" class="photoL productImg" /></a>
                             <div class="favoriteContents clearfix">
                                 <h4><a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$product_id|u}-->" class="productName"><!--{$arrFavorite[cnt].name}--></a></h4>
-                                <p><span class="mini productPrice"><!--{$smarty.const.SALE_PRICE_TITLE}-->：<!--{if $arrFavorite[cnt].price02_min == $arrFavorite[cnt].price02_max}-->
-                                    <!--{$arrFavorite[cnt].price02_min|sfCalcIncTax|number_format}-->
+                                <p><span class="mini productPrice"><!--{$smarty.const.SALE_PRICE_TITLE}-->：<!--{if $arrFavorite[cnt].price02_min_inctax == $arrFavorite[cnt].price02_max_inctax}-->
+                                    <!--{$arrFavorite[cnt].price02_min_inctax|number_format}-->
                                     <!--{else}-->
-                                    <!--{$arrFavorite[cnt].price02_min|sfCalcIncTax|number_format}-->～<!--{$arrFavorite[cnt].price02_max|sfCalcIncTax|number_format}-->
+                                    <!--{$arrFavorite[cnt].price02_min_inctax|number_format}-->～<!--{$arrFavorite[cnt].price02_max_inctax|number_format}-->
                                     <!--{/if}-->円</span></p>
                                 <p class="btn_delete"><img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" width="21" height="20" alt="削除" onclick="javascript:fnModeSubmit('delete_favorite','product_id','<!--{$product_id|h}-->');" class="pointer" /></p>
                             </div>

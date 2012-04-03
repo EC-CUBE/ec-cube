@@ -32,7 +32,9 @@
                         <div class="productContents">
                             <h3><a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrBestProducts[cnt].product_id|u}-->"><!--{$arrBestProducts[cnt].name|h}--></a></h3>
                             <p class="mini comment"><!--{$arrBestProducts[cnt].comment|h|nl2br}--></p>
-                            <p class="sale_price"><span class="mini"><!--<span class="mini">-->販売価格(税込):<!--</span>--></span><span class="price"><!--{$arrBestProducts[cnt].price02_min|sfCalcIncTax|number_format}--> 円</span></p>
+                            <p class="sale_price">
+                                <span class="mini">販売価格(税込):</span><span class="price"><!--{$arrBestProducts[cnt].price02_min_inctax|number_format}--> 円</span>
+                            </p>
                         </div>
                     </div>
                 </li>

@@ -37,7 +37,7 @@
                                 <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrProduct.product_id|u}-->"><!--{$arrProduct.name|h}--></a>
                             </h3>
                             <p class="sale_price">
-                                <!--{$smarty.const.SALE_PRICE_TITLE}-->(税込)： <span class="price"><!--{$arrProduct.price02_min|sfCalcIncTax|number_format}--> 円</span>
+                                <!--{$smarty.const.SALE_PRICE_TITLE}-->(税込)： <span class="price"><!--{$arrProduct.price02_min_inctax|number_format}--> 円</span>
                             </p>
                             <p class="mini comment"><!--{$arrProduct.comment|h|nl2br}--></p>
                         </div>

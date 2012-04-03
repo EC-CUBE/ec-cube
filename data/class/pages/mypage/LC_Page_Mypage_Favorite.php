@@ -159,12 +159,15 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
         //取得している並び順で並び替え
         $arrProducts2 = array();
         foreach ($arrProducts as $item) {
-            $arrProducts2[ $item['product_id'] ] = $item;
+            $arrProducts2[$item['product_id']] = $item;
         }
         $arrProductsList = array();
         foreach ($arrProductId as $product_id) {
             $arrProductsList[] = $arrProducts2[$product_id];
         }
+
+        // 税込金額を設定する
+        SC_Product_Ex::setIncTaxToProducts($arrProductsList);
 
         return $arrProductsList;
     }

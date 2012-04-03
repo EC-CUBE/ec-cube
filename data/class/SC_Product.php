@@ -34,6 +34,7 @@ class SC_Product {
     var $arrClassName;
     /** 規格分類名一覧 */
     var $arrClassCatName;
+    /** このプロパティが保持する price01 及び price02 は、税金付与した金額である。 */
     var $classCategories = array();
     var $stock_find;
     /** 規格1クラス名 */
@@ -196,6 +197,9 @@ __EOS__;
             unset($arrTmp);
         }
 
+        // 税込金額を設定する
+        SC_Product_Ex::setIncTaxToProducts($arrProducts);
+
         return $arrProducts;
     }
 
@@ -207,10 +211,15 @@ __EOS__;
      */
     function getDetail($productId) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $result = $objQuery->getRow('*', $this->alldtlSQL('product_id = ?'),
+        $arrProduct = $objQuery->getRow('*', $this->alldtlSQL('product_id = ?'),
                                     'product_id = ?',
                                     array($productId, $productId));
-        return (array)$result;
+        $arrProduct = (array)$arrProduct;
+
+        // 税込金額を設定する
+        SC_Product_Ex::setIncTaxToProduct($arrProduct);
+
+        return $arrProduct;
     }
 
     /**
@@ -538,7 +547,7 @@ __EOS__;
      * @return array 税込金額を設定した商品情報の配列
      */
     function setPriceTaxTo($arrProducts) {
-        foreach ($arrProducts as $key=>$val) {
+        foreach ($arrProducts as $key => $val) {
             $arrProducts[$key]['price01_min_format'] = number_format($arrProducts[$key]['price01_min']);
             $arrProducts[$key]['price01_max_format'] = number_format($arrProducts[$key]['price01_max']);
             $arrProducts[$key]['price02_min_format'] = number_format($arrProducts[$key]['price02_min']);
@@ -555,6 +564,31 @@ __EOS__;
             $arrProducts[$key]['price02_max_tax_format'] = number_format($arrProducts[$key]['price02_max_tax']);
         }
         return $arrProducts;
+    }
+
+    /**
+     * 商品情報の配列に税込金額を設定する
+     *
+     * @param array $arrProducts 商品情報の配列
+     * @return void
+     */
+    static function setIncTaxToProducts(&$arrProducts) {
+        foreach ($arrProducts as &$arrProduct) {
+            SC_Product_Ex::setIncTaxToProduct($arrProduct);
+        }
+    }
+
+    /**
+     * 商品情報の配列に税込金額を設定する
+     *
+     * @param array $arrProducts 商品情報の配列
+     * @return void
+     */
+    static function setIncTaxToProduct(&$arrProduct) {
+        $arrProduct['price01_min_inctax'] = isset($arrProduct['price01_min']) ? SC_Helper_DB::sfCalcIncTax($arrProduct['price01_min']) : null;
+        $arrProduct['price01_max_inctax'] = isset($arrProduct['price01_max']) ? SC_Helper_DB::sfCalcIncTax($arrProduct['price01_max']) : null;
+        $arrProduct['price02_min_inctax'] = isset($arrProduct['price02_min']) ? SC_Helper_DB::sfCalcIncTax($arrProduct['price02_min']) : null;
+        $arrProduct['price02_max_inctax'] = isset($arrProduct['price02_max']) ? SC_Helper_DB::sfCalcIncTax($arrProduct['price02_max']) : null;
     }
 
     /**

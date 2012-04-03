@@ -161,21 +161,21 @@
                     <p class="relative_cat"><span class="mini">関連カテゴリ：</span>
                         <!--{section name=r loop=$arrRelativeCat}-->
                             <!--{section name=s loop=$arrRelativeCat[r]}-->
-                            <a rel="external" href="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php?category_id=<!--{$arrRelativeCat[r][s].category_id}-->"><!--{$arrRelativeCat[r][s].category_name}--></a>
-                            <!--{if !$smarty.section.s.last}--><!--{$smarty.const.SEPA_CATNAVI}--><!--{/if}-->
+                                <a rel="external" href="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php?category_id=<!--{$arrRelativeCat[r][s].category_id}-->"><!--{$arrRelativeCat[r][s].category_name}--></a>
+                                <!--{if !$smarty.section.s.last}--><!--{$smarty.const.SEPA_CATNAVI}--><!--{/if}-->
                             <!--{/section}--><br />
                         <!--{/section}-->
                     </p>
 
                     <!--★通常価格★-->
-                    <!--{if $arrProduct.price01_max > 0}-->
+                    <!--{if $arrProduct.price01_max_inctax > 0}-->
                         <p class="normal_price">
                             <span class="mini"><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(税込)：</span>
                             <span id="price01_default">
-                                <!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->
-                                    <!--{$arrProduct.price01_min|sfCalcIncTax|number_format}-->
+                                <!--{if $arrProduct.price01_min_inctax == $arrProduct.price01_max_inctax}-->
+                                    <!--{$arrProduct.price01_min_inctax|number_format}-->
                                 <!--{else}-->
-                                    <!--{$arrProduct.price01_min|sfCalcIncTax|number_format}-->～<!--{$arrProduct.price01_max|sfCalcIncTax|number_format}-->
+                                    <!--{$arrProduct.price01_min_inctax|number_format}-->～<!--{$arrProduct.price01_max_inctax|number_format}-->
                                 <!--{/if}--></span>
                             <span id="price01_dynamic"></span>円
                         </p>
@@ -185,10 +185,10 @@
                     <p class="sale_price">
                         <span class="mini"><!--{$smarty.const.SALE_PRICE_TITLE}-->(税込)：</span>
                         <span class="price"><span id="price02_default">
-                            <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
-                                <!--{$arrProduct.price02_min|sfCalcIncTax|number_format}-->
+                            <!--{if $arrProduct.price02_min_inctax == $arrProduct.price02_max_inctax}-->
+                                <!--{$arrProduct.price02_min_inctax|number_format}-->
                             <!--{else}-->
-                                <!--{$arrProduct.price02_min|sfCalcIncTax|number_format}-->～<!--{$arrProduct.price02_max|sfCalcIncTax|number_format}-->
+                                <!--{$arrProduct.price02_min_inctax|number_format}-->～<!--{$arrProduct.price02_max_inctax|number_format}-->
                             <!--{/if}-->
                         </span><span id="price02_dynamic"></span>円</span>
                     </p>
@@ -393,14 +393,14 @@
                     <!--{if $arrRecommend[cnt].product_id}-->
                         <li id="mainImage1<!--{$smarty.section.cnt.index}-->">
                             <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrRecommend[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|h}-->" />
-                            <!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->
-                            <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
+                            <!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min_inctax`}-->
+                            <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max_inctax`}-->
                             <h3><a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrRecommend[cnt].product_id|u}-->"><!--{$arrRecommend[cnt].name|h}--></a></h3>
                             <p class="sale_price"><span class="price">
                                 <!--{if $price02_min == $price02_max}-->
-                                    <!--{$price02_min|sfCalcIncTax|number_format}-->
+                                    <!--{$price02_min|number_format}-->
                                 <!--{else}-->
-                                    <!--{$price02_min|sfCalcIncTax|number_format}-->～<!--{$price02_max|sfCalcIncTax|number_format}-->
+                                    <!--{$price02_min|number_format}-->～<!--{$price02_max|number_format}-->
                                 <!--{/if}-->
                                 円</span>
                             </p>

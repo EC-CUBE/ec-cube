@@ -103,29 +103,29 @@
 
                         <!--▼カートの中の商品一覧 -->
                         <div class="cartinarea clearfix">
-                            <!--{foreach from=$cartItems[$key] item=item}-->
+                            <!--{foreach from=$cartItems[$key] item=arrItem}-->
                                 <!--▼商品 -->
                                 <div class="cartitemBox">
-                                    <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$item.productsClass.name|h}-->" class="photoL" />
+                                    <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrItem.productsClass.main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$arrItem.productsClass.name|h}-->" class="photoL" />
                                     <div class="cartinContents">
                                         <div>
-                                            <p><em><!--{$item.productsClass.name|h}--></em><br />
-                                                <!--{if $item.productsClass.classcategory_name1 != ""}-->
-                                                    <span class="mini"><!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--></span><br />
+                                            <p><em><!--{$arrItem.productsClass.name|h}--></em><br />
+                                                <!--{if $arrItem.productsClass.classcategory_name1 != ""}-->
+                                                    <span class="mini"><!--{$arrItem.productsClass.class_name1}-->：<!--{$arrItem.productsClass.classcategory_name1}--></span><br />
                                                 <!--{/if}-->
-                                                <!--{if $item.productsClass.classcategory_name2 != ""}-->
-                                                    <span class="mini"><!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--></span><br />
+                                                <!--{if $arrItem.productsClass.classcategory_name2 != ""}-->
+                                                    <span class="mini"><!--{$arrItem.productsClass.class_name2}-->：<!--{$arrItem.productsClass.classcategory_name2}--></span><br />
                                                 <!--{/if}-->
-                                                <span class="mini">価格:</span><!--{$item.productsClass.price02|sfCalcIncTax|number_format}-->円
+                                                <span class="mini">価格:</span><!--{$arrItem.price|sfCalcIncTax|number_format}-->円
                                             </p>
                                             <p class="btn_delete">
-                                                <img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" onClick="fnFormModeSubmit('form<!--{$key}-->', 'delete', 'cart_no', '<!--{$item.cart_no}-->');" class="pointer" width="21" height="20" alt="削除" /></p>
+                                                <img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" onClick="fnFormModeSubmit('form<!--{$key}-->', 'delete', 'cart_no', '<!--{$arrItem.cart_no}-->');" class="pointer" width="21" height="20" alt="削除" /></p>
                                         </div>
                                         <ul>
-                                            <li class="quantity"><span class="mini">数量:</span><!--{$item.quantity|number_format}--></li>
-                                            <li class="quantity_btn"><img src="<!--{$TPL_URLPATH}-->img/button/btn_plus.png" width="22" height="21" alt="＋" onclick="fnFormModeSubmit('form<!--{$key}-->', 'up','cart_no','<!--{$item.cart_no}-->'); return false" /></li>
-                                            <li class="quantity_btn"><img src="<!--{$TPL_URLPATH}-->img/button/btn_minus.png" width="22" height="21" alt="-" onclick="fnFormModeSubmit('form<!--{$key}-->', 'down','cart_no','<!--{$item.cart_no}-->'); return false" /></a></li>
-                                            <li class="result"><span class="mini">小計：</span><!--{$item.total_inctax|number_format}-->円</li>
+                                            <li class="quantity"><span class="mini">数量:</span><!--{$arrItem.quantity|number_format}--></li>
+                                            <li class="quantity_btn"><img src="<!--{$TPL_URLPATH}-->img/button/btn_plus.png" width="22" height="21" alt="＋" onclick="fnFormModeSubmit('form<!--{$key}-->', 'up','cart_no','<!--{$arrItem.cart_no}-->'); return false" /></li>
+                                            <li class="quantity_btn"><img src="<!--{$TPL_URLPATH}-->img/button/btn_minus.png" width="22" height="21" alt="-" onclick="fnFormModeSubmit('form<!--{$key}-->', 'down','cart_no','<!--{$arrItem.cart_no}-->'); return false" /></a></li>
+                                            <li class="result"><span class="mini">小計：</span><!--{$arrItem.total_inctax|number_format}-->円</li>
                                         </ul>
                                     </div>
                                 </div>

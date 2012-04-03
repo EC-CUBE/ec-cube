@@ -40,10 +40,10 @@
                 商品コード：<!--{$arrProduct.product_code_max|h|sfMbConvertEncoding:$encode}-->
                 <div><!--{$smarty.const.SALE_PRICE_TITLE}-->：
                     <span class="price">
-                        <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
-                            <!--{$arrProduct.price02_min|sfCalcIncTax|number_format}-->
+                        <!--{if $arrProduct.price02_min_inctax == $arrProduct.price02_max_inctax}-->
+                            <!--{$arrProduct.price02_min_inctax|number_format}-->
                         <!--{else}-->
-                            <!--{$arrProduct.price02_min|sfCalcIncTax|number_format}-->〜<!--{$arrProduct.price02_max|sfCalcIncTax|number_format}-->
+                            <!--{$arrProduct.price02_min_inctax|number_format}-->〜<!--{$arrProduct.price02_max_inctax|number_format}-->
                         <!--{/if}-->円</span>
                 </div>
                 <div class="description">
