@@ -858,8 +858,9 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         foreach ($hookPoints as $hookPoint) {
             // 競合するプラグインを取得する,
-            $table = 'dtb_plugin_hookpoint AS T1 LEFT JOIN dtb_plugin AS T2 ON T1.plugin_id = T2.plugin_id';
-            $where = 'T1.hook_point = ? AND NOT T1.plugin_id = ? AND T2.enable = ' . PLUGIN_ENABLE_TRUE . ' GROUP BY T1.plugin_id';
+            $table = 'dtb_plugin_hookpoint AS T1 LEFT JOIN dtb_plugin AS T2 USING(plugin_id)';
+            $where = 'T1.hook_point = ? AND NOT T1.plugin_id = ? AND T2.enable = ' . PLUGIN_ENABLE_TRUE;
+            $objQuery->setGroupBy('T1.plugin_id, T2.plugin_name');
             $conflictPlugins = $objQuery->select('T1.plugin_id, T2.plugin_name', $table, $where, array($hookPoint['hook_point'], $hookPoint['plugin_id']));
 
             // プラグイン名重複を削除する為、専用の配列に格納し直す.
