@@ -96,12 +96,6 @@ class LC_Page {
         $layout->sfGetPageLayout($this, false, $_SERVER['SCRIPT_NAME'],
                                  $this->objDisplay->detectDevice());
 
-        // プラグインを実行するかを判定します.
-        // プラグイン管理ではプラグインが実行されません
-        if ($_SERVER['SCRIPT_NAME'] === ROOT_URLPATH . ADMIN_DIR . 'system/plugin.php') {
-            $this->plugin_activate_flg = false;
-        }
-
         // スーパーフックポイントを実行.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('LC_Page_preProcess', array($this));

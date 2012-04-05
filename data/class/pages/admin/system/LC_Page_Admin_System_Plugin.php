@@ -489,41 +489,21 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      */
     function updatePlugin($target_plugin, $upload_file_name) {
         $arrErr = array();
-
+        
         // ファイルをチェックし展開します.
         $arrErr = $this->unpackPluginFile($upload_file_name, DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR, $target_plugin['plugin_code']);
         if ($this->isError($arrErr) === true) {
             return $arrErr;
         }
-
-        // plugin_infoを読み込み.
-        $arrErr = $this->requirePluginFile(DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR . 'plugin_info.php', $target_plugin['plugin_code']);
-        if ($this->isError($arrErr) === true) {
-            $this->rollBack(DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR);
-            return $arrErr;
-        }
-
-        // リフレクションオブジェクトを生成.
-        $objReflection = new ReflectionClass('plugin_info');
-        // プラグインクラスに必須となるパラメータが正常に定義されているかチェックします.
-        $arrErr = $this->checkPluginConstants($objReflection, DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR);
-        if ($this->isError($arrErr) === true) {
-            $this->rollBack(DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR);
-            return $arrErr;
-        }
-
-        // プラグインのクラス名を取得;
-         $class_name = $objReflection->getConstant('CLASS_NAME');
-
-        // 展開されたディレクトリからプラグインクラスファイルを読み込みます.
-        $update_plugin_class_path = DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR . $class_name . '.php';
-        $arrErr = $this->requirePluginFile($update_plugin_class_path, $target_plugin['plugin_code']);
+        // plugin_update.phpを読み込み.
+        $arrErr = $this->requirePluginFile(DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR . 'plugin_update.php', $target_plugin['plugin_code']);
         if ($this->isError($arrErr) === true) {
             $this->rollBack(DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR);
             return $arrErr;
         }
         // プラグインクラスファイルのUPDATE処理を実行.
-        $arrErr = $this->execPlugin($target_plugin, $class_name, 'update');
+        $objPluginUpdate = new plugin_update;
+        $arrErr = $this->execPlugin($objPluginUpdate, 'plugin_update', 'update');
 
         // 保存ディレクトリの削除.
         SC_Utils_Ex::deleteFile(DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR, false);
@@ -733,16 +713,16 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
     /**
      * インスタンスを生成し、指定のメソッドを実行する.
      *
-     * @param integer $plugin プラグイン情報
-     * @param string $plugin_code プラグインコード
+     * @param object $obj インスタンス
+     * @param string $class_name クラス名
      * @param string $exec_func 実行するメソッド名.
      * @return array $arrErr エラー情報を格納した連想配列.
      *
      */
-    function execPlugin($plugin, $class_name, $exec_func) {
+    function execPlugin($obj, $class_name, $exec_func) {
         $arrErr = array();
         if (method_exists($class_name, $exec_func) === true) {
-            call_user_func(array($class_name, $exec_func), $plugin);
+            call_user_func(array($class_name, $exec_func), $obj);
         } else {
             $arrErr['plugin_error'] = '※ ' . $class_name . '.php に' . $exec_func . 'が見つかりません。<br/>';
         }
