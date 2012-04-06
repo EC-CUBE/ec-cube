@@ -92,3 +92,5 @@ DROP TABLE dtb_payment_options;
 DROP TABLE dtb_mailmaga_template;
 DROP TABLE mtb_auth_excludes;
 DROP TABLE dtb_plugin_hookpoint;
+DROP TABLE dtb_api_config;
+DROP TABLE dtb_api_account;

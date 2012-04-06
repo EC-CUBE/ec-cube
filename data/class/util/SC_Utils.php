@@ -2076,4 +2076,17 @@ class SC_Utils {
     function repeatStrWithSeparator($input, $multiplier, $separator = ',') {
         return implode($separator, array_fill(0, $multiplier, $input));
     }
+
+    /**
+     * RFC3986に準拠したURIエンコード
+     * MEMO: PHP5.3.0未満では、~のエンコードをしてしまうための処理
+     *
+     * @param string $str 文字列
+     * @return string RFC3986エンコード文字列
+     */
+    function encodeRFC3986($str) {
+        return str_replace('%7E', '~', rawurlencode($str));
+    }
+
+
 }

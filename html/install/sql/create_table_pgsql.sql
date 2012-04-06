@@ -1151,6 +1151,31 @@ CREATE TABLE dtb_index_list (
     PRIMARY KEY (table_name, column_name)
 );
 
+CREATE TABLE dtb_api_config (
+    api_config_id int NOT NULL,
+    operation_name text NOT NULL,
+    operation_description text,
+    auth_types text NOT NULL,
+    enable smallint NOT NULL DEFAULT 0,
+    is_log smallint NOT NULL DEFAULT 0,
+    sub_data text,
+    del_flg smallint NOT NULL DEFAULT 0,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
+    PRIMARY KEY (api_config_id)
+);
+
+CREATE TABLE dtb_api_account (
+    api_account_id int NOT NULL,
+    api_access_key text NOT NULL,
+    api_secret_key text NOT NULL,
+    enable smallint NOT NULL DEFAULT 0,
+    del_flg smallint NOT NULL DEFAULT 0,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
+    PRIMARY KEY (api_account_id)
+);
+
 
 CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id);
 CREATE INDEX dtb_order_detail_product_id_key ON dtb_order_detail(product_id);
