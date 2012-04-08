@@ -57,25 +57,20 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        // 含まれているタグを抽出する
-        preg_match_all("/<([\/]?[a-z]+)/", $this->arrParam[$value[1]], $arrTag);
+        // HTMLに含まれているタグを抽出する
+        preg_match_all('/<\/?([a-z]+)/i', $this->arrParam[$value[1]], $arrTagIncludedHtml);
 
-        foreach ($arrTag[1] as $val) {
-            $find = false;
+        $arrDiffTag = array_diff($arrTagIncludedHtml[1], $value[2]);
 
-            foreach ($value[2] as $tag) {
-                $tag = preg_replace('/^\\//', '\/', $tag);
-                if (preg_match('/^' . $tag . "$/i", $val)) {
-                    $find = true;
-                    break;
-                }
-            }
+        if (empty($arrDiffTag)) return;
 
-            if (!$find) {
-                $this->arrErr[$value[1]] = '※ ' . $value[0] . 'に許可されていないタグ[' . strtoupper($val) . ']が含まれています。<br />';
-                return;
-            }
+        // 少々荒っぽいが、表示用 HTML に変換する
+        foreach ($arrDiffTag as &$tag) {
+            $tag = '[' . htmlspecialchars($tag) . ']';
         }
+        $html_diff_tag_list = implode(', ', $arrDiffTag);
+
+        $this->arrErr[$value[1]] = '※ ' . $value[0] . 'に許可されていないタグ ' . $html_diff_tag_list . ' が含まれています。<br />';
     }
 
     /**
