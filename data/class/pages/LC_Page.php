@@ -129,6 +129,13 @@ class LC_Page {
         // スーパーフックポイントを実行.
         $objPlugin->doAction('LC_Page_process', array($this));
 
+        // ページクラス名をテンプレートに渡す
+        $arrBacktrace = debug_backtrace();
+        if (strlen($this->tpl_page_class_name) === 0) {
+            $this->tpl_page_class_name = $arrBacktrace[1]['class'];
+            $this->tpl_page_class_name = preg_replace('/_Ex$/', '', $this->tpl_page_class_name);
+        }
+
         $this->objDisplay->prepare($this);
         $this->objDisplay->response->write();
     }
