@@ -42,11 +42,11 @@ $(function() {
                     $("#latitude").val(latlng.lat());
                     $("#longitude").val(latlng.lng());
                 } else {
-                    alert('住所の場所が見つかりません');
+                    alert('所在地の場所が見つかりません');
                 }
             });
         } else {
-            alert('住所の場所が見つかりません');
+            alert('所在地の場所が見つかりません');
         }
     });
 
@@ -162,11 +162,11 @@ $(function() {
                 <span class="attention"><!--{$arrErr.zip01}--></span>
                 <span class="attention"><!--{$arrErr.zip02}--></span>
                 〒 <input type="text" name="zip01" value="<!--{$arrForm.zip01|h}-->" maxlength="3" size="6" class="box6" style="<!--{if $arrErr.zip01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" /> - <input type="text" name="zip02" value="<!--{$arrForm.zip02|h}-->" maxlength="4"    size="6" class="box6" style="<!--{if $arrErr.zip02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
-                <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'zip01', 'zip02', 'pref', 'addr01'); return false;">住所入力</a>
+                <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'zip01', 'zip02', 'pref', 'addr01'); return false;">所在地入力</a>
             </td>
         </tr>
         <tr>
-            <th>SHOP住所<span class="attention"> *</span></th>
+            <th>SHOP所在地<span class="attention"> *</span></th>
             <td>
                 <p>
                     <span class="attention"><!--{$arrErr.pref}--></span>
@@ -314,7 +314,7 @@ $(function() {
                 <span class="attention"><!--{$arrErr.longitude}--></span>
                 緯度: <input type="text" name="latitude" value="<!--{$arrForm.latitude|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" style="<!--{if $arrErr.latitude != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="latitude" />
                 経度: <input type="text" name="longitude" value="<!--{$arrForm.longitude|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" style="<!--{if $arrErr.longitude != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="longitude" />
-                <a class="btn-normal" href="javascript:;" name="codeAddress" id="codeAddress" onclick="">住所より自動取得</a>
+                <a class="btn-normal" href="javascript:;" name="codeAddress" id="codeAddress" onclick="">所在地より自動取得</a>
                 <a href="#maparea" id="mapAddress">地図で設定</a>
             </td>
         </tr>

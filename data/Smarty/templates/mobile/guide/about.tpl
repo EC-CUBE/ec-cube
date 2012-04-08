@@ -34,7 +34,7 @@
     <!--{/if}-->
     <!--{if $arrSiteInfo.zip01 != ""}-->
         <br>
-        [emoji:121]住所<br>
+        [emoji:121]所在地<br>
         〒<!--{$arrSiteInfo.zip01|h}-->-<!--{$arrSiteInfo.zip02|h}--><br>
         <!--{$arrPref[$arrSiteInfo.pref]}--><!--{$arrSiteInfo.addr01|h}--><!--{$arrSiteInfo.addr02|h}--><br>
     <!--{/if}-->

@@ -103,14 +103,19 @@ class SC_Fpdf extends PDF_Japanese {
         $objDb = new SC_Helper_DB_Ex();
         $arrInfo = $objDb->sfGetBasisData();
 
-        $this->lfText(125, 60, $arrInfo['shop_name'], 8, 'B');          //ショップ名
-        $this->lfText(125, 63, $arrInfo['law_url'], 8);          //URL
-        $this->lfText(125, 68, $arrInfo['law_company'], 8);        //会社名
-        $text = '〒 '.$arrInfo['law_zip01'].' - '.$arrInfo['law_zip02'];
-        $this->lfText(125, 71, $text, 8);  //郵便番号
-        $text = $this->arrPref[$arrInfo['law_pref']].$arrInfo['law_addr01'];
-        $this->lfText(125, 74, $text, 8);  //都道府県+住所1
-        $this->lfText(125, 77, $arrInfo['law_addr02'], 8);          //住所2
+        // ショップ名
+        $this->lfText(125, 60, $arrInfo['shop_name'], 8, 'B');
+        // URL
+        $this->lfText(125, 63, $arrInfo['law_url'], 8);
+        // 会社名
+        $this->lfText(125, 68, $arrInfo['law_company'], 8);
+        // 郵便番号
+        $text = '〒 ' . $arrInfo['law_zip01'] . ' - ' . $arrInfo['law_zip02'];
+        $this->lfText(125, 71, $text, 8);
+        // 都道府県+所在地
+        $text = $this->arrPref[$arrInfo['law_pref']] . $arrInfo['law_addr01'];
+        $this->lfText(125, 74, $text, 8);
+        $this->lfText(125, 77, $arrInfo['law_addr02'], 8);
 
         $text = 'TEL: '.$arrInfo['law_tel01'].'-'.$arrInfo['law_tel02'].'-'.$arrInfo['law_tel03'];
         //FAX番号が存在する場合、表示する

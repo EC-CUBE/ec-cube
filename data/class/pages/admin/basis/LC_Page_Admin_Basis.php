@@ -226,10 +226,10 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         // 郵便番号チェック
         $objFormParam->addParam('郵便番号1', 'zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK','NUM_COUNT_CHECK'));
         $objFormParam->addParam('郵便番号2', 'zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK','NUM_COUNT_CHECK'));
-        // 住所チェック
+        // 所在地チェック
         $objFormParam->addParam('都道府県', 'pref', '', 'n', array('EXIST_CHECK'));
-        $objFormParam->addParam('住所1', 'addr01', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('住所2', 'addr02', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('所在地1', 'addr01', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('所在地2', 'addr02', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         // メールチェック
         $objFormParam->addParam('商品注文受付メールアドレス', 'email01', null, 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
         $objFormParam->addParam('問い合わせ受付メールアドレス', 'email02', null, 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));

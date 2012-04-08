@@ -73,7 +73,7 @@
 
             <!--{if strlen($objSiteInfo->data.zip01)}-->
                 <tr>
-                    <th>住所</th>
+                    <th>所在地</th>
                     <td>〒<!--{$objSiteInfo->data.zip01|h}-->-<!--{$objSiteInfo->data.zip02|h}--><br /><!--{$objSiteInfo->data.pref|h}--><!--{$objSiteInfo->data.addr01|h}--><!--{$objSiteInfo->data.addr02|h}--></td>
                 </tr>
             <!--{/if}-->
