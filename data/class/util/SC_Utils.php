@@ -989,8 +989,12 @@ class SC_Utils {
         return $time;
     }
 
-    // PHPのmb_convert_encoding関数をSmartyでも使えるようにする
-    function sfMbConvertEncoding($str, $encode = 'CHAR_CODE') {
+    /**
+     * PHPのmb_convert_encoding関数をSmartyでも使えるようにする
+     *
+     * XXX この関数を使っている箇所は、ほぼ設計誤りと思われる。変数にフェッチするか、出力時のエンコーディングで対応すべきと見受ける。
+     */
+    function sfMbConvertEncoding($str, $encode = CHAR_CODE) {
         return mb_convert_encoding($str, $encode);
     }
 
