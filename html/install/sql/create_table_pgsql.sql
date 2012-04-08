@@ -244,7 +244,7 @@ CREATE TABLE dtb_send_history (
 );
 
 CREATE TABLE dtb_send_customer (
-    customer_id int,
+    customer_id int NOT NULL,
     send_id int NOT NULL,
     email text,
     name text,
@@ -815,7 +815,8 @@ CREATE TABLE dtb_maker (
 CREATE TABLE dtb_maker_count (
     maker_id int NOT NULL,
     product_count int NOT NULL,
-    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (maker_id)
 );
 
 CREATE TABLE mtb_pref (
