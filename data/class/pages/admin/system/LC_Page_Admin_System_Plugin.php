@@ -463,7 +463,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         $objErr->doFunc(array('PLUGIN_VERSION', 'PLUGIN_VERSION', STEXT_LEN), array('MAX_LENGTH_CHECK'));
         $objErr->doFunc(array('COMPLIANT_VERSION', 'COMPLIANT_VERSION', STEXT_LEN), array('MAX_LENGTH_CHECK'));
         $objErr->doFunc(array('AUTHOR', 'AUTHOR', STEXT_LEN), array('MAX_LENGTH_CHECK'));
-        $objErr->doFunc(array('DESCRIPTION', 'DESCRIPTION', STEXT_LEN), array('MAX_LENGTH_CHECK'));
+        $objErr->doFunc(array('DESCRIPTION', 'DESCRIPTION', MTEXT_LEN), array('MAX_LENGTH_CHECK'));
         if ($objReflection->getConstant('PLUGIN_SITE_URL') !== false) {
             $objErr->doFunc(array('PLUGIN_SITE_URL', 'PLUGIN_SITE_URL', URL_LEN), array('MAX_LENGTH_CHECK','GRAPH_CHECK'));
         }
