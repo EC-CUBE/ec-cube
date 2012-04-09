@@ -756,22 +756,21 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      */
     function deletePlugin($plugin_id, $plugin_code) {
         $arrErr = array();
-
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
-        $where = 'plugin_id = ?';
-        $objQuery->delete('dtb_plugin', $where, array($plugin_id));
-        $objQuery->delete('dtb_plugin_hookpoint', $where, array($plugin_id));
+        
+        SC_Plugin_Util_Ex::deletePluginByPluginId($plugin_id);
 
-        if ($objQuery->commit()) {
-            if (SC_Utils_Ex::deleteFile($this->getPluginDir($plugin_code)) === false) {
-                // TODO エラー処理
-            } 
-
-            if (SC_Utils_Ex::deleteFile($this->getHtmlPluginDir($plugin_code)) === false) {
-                // TODO エラー処理
-            }       
+        if (SC_Utils_Ex::deleteFile($this->getPluginDir($plugin_code)) === false) {
+            // TODO エラー処理
         }
+
+        if (SC_Utils_Ex::deleteFile($this->getHtmlPluginDir($plugin_code)) === false) {
+            // TODO エラー処理
+        }
+        
+        $objQuery->commit();
+        
         return $arrErr;
     }
 

@@ -100,7 +100,6 @@ class SC_Plugin_Util {
      */
     function deletePluginByPluginId($plugin_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->begin();
         $where = 'plugin_id = ?';
         $objQuery->delete('dtb_plugin', $where, array($plugin_id));
         $objQuery->delete('dtb_plugin_hookpoint', $where, array($plugin_id));
