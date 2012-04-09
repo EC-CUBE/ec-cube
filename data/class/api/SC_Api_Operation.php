@@ -63,12 +63,12 @@ class SC_Api_Operation {
         $cols = 'password, salt';
         $table = 'dtb_member';
         $where = 'login_id = ? AND del_flg <> 1 AND work = 1';
-        $arrData = $objQuery->getRow($cols, $table, $where, array($login_id));
+        $arrData = $objQuery->getRow($cols, $table, $where, array($member_id));
         if (SC_Utils_Ex::isBlank($arrData)) {
             return false;
         }
         // ユーザー入力パスワードの判定
-        if (SC_Utils_Ex::sfIsMatchHashPassword($pass, $arrData['password'], $arrData['salt'])) {
+        if (SC_Utils_Ex::sfIsMatchHashPassword($member_password, $arrData['password'], $arrData['salt'])) {
             return true;
         }
         return false;
@@ -133,6 +133,9 @@ class SC_Api_Operation {
 
         $access_key = $arrParam['AccessKeyId'];
         $secret_key = SC_Api_Operation_Ex::getApiSecretKey($access_key);
+        if(SC_Utils_Ex::isBlank($secret_key)) {
+            return false;
+        }
 
         // バイト順に並び替え
         ksort($arrParam);
@@ -154,9 +157,7 @@ class SC_Api_Operation {
                      . strtolower($_SERVER['SERVER_NAME']) . "\n"
                      . $_SERVER['PHP_SELF'] . "\n"
                      . $check_str;
-
         $signature = base64_encode(hash_hmac('sha256', $check_str, $secret_key, true));
-
         if($signature === $arrParam['Signature']) {
             return true;
         }
@@ -189,7 +190,7 @@ class SC_Api_Operation {
      */
     protected function getApiSecretKey($access_key) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $secret_key = $objQuery->get('api_secret_key', 'dtb_api_account', 'api_access_key = ? and del_flg = 0');
+        $secret_key = $objQuery->get('api_secret_key', 'dtb_api_account', 'api_access_key = ? and enable = 1 and del_flg = 0', array($access_key));
         return $secret_key;
     }
 
@@ -200,7 +201,7 @@ class SC_Api_Operation {
      * @param array リクエストパラメータ
      * @return boolean 権限がある場合 true; 無い場合 false
      */
-    protected function checkOperationAuth($operation_name, &$arrParams, &$arrApiConfig) {
+    protected function checkOperationAuth($operation_name, &$arrParam, &$arrApiConfig) {
         if (SC_Utils_Ex::isBlank($operation_name)) {
             return false;
         }
@@ -299,7 +300,7 @@ class SC_Api_Operation {
             // API設定のロード
             $arrApiConfig = SC_Api_Utils_Ex::getApiConfig($operation_name);
 
-            if (SC_Api_Operation_Ex::checkOperationAuth($operation_name, $arrParam, $arrApiConfig)) {
+            if (SC_Api_Operation_Ex::checkOperationAuth($operation_name, $arrPost, $arrApiConfig)) {
                 SC_Api_Utils_Ex::printApiLog('Authority PASS', $start_time, $operation_name);
 
                 // オペレーション権限ＯＫ

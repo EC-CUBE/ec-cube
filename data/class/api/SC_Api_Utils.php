@@ -34,7 +34,7 @@ define('API_CLASS_REALDIR', CLASS_REALDIR . "api/operations/");
 
 class SC_Api_Utils {
 
-    /** API XML Namspase */
+    /** API XML Namspase Header */
     const API_XMLNS = 'http://www.ec-cube.net/ECCUBEApi/';
 
     /** API XML lang */
