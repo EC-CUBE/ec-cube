@@ -172,7 +172,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
      */
     function lfGetErrMsgHead() {
         $errmsg = '';
-        $errmsg .= SC_Utils_Ex::sfGetUrl() . "\n";
+        $errmsg .= GC_Utils_Ex::getUrl() . "\n";
         $errmsg .= "\n";
         $errmsg .= 'SERVER_ADDR: ' . $_SERVER['SERVER_ADDR'] . "\n";
         $errmsg .= 'REMOTE_ADDR: ' . $_SERVER['REMOTE_ADDR'] . "\n";
