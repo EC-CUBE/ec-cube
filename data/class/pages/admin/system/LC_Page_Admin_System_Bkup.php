@@ -33,6 +33,15 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  */
 class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
+    /** リストア中にエラーが発生したか */
+    var $tpl_restore_err = false;
+
+    /** 対象外とするシーケンス生成器 */
+    var $arrExcludeSequence = array(
+        'plsql_profiler_runid', // Postgres Plus Advanced Server 9.1
+        'snapshot_num',         // Postgres Plus Advanced Server 9.1
+    );
+
     // }}}
     // {{{ functions
 
@@ -81,7 +90,8 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         $arrErrTmp  = array();
         $arrForm = array();
 
-        switch ($this->getMode()) {
+        $this->mode = $this->getMode();
+        switch ($this->mode) {
 
             // バックアップを作成する
             case 'bkup':
@@ -92,7 +102,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
                 // データ型に問題がない場合
                 if (SC_Utils_Ex::isBlank($arrErrTmp[1])) {
                     // データ型以外のエラーチェック
-                    $arrErrTmp[2] = $this->lfCheckError($objFormParam->getHashArray(), $this->getMode());
+                    $arrErrTmp[2] = $this->lfCheckError($objFormParam->getHashArray(), $this->mode);
                 }
 
                 // エラーがなければバックアップ処理を行う
@@ -130,16 +140,24 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
             // リストア
             case 'restore_config':
-                $this->mode = 'restore_config';
-
             case 'restore':
                 // データベースに存在するかどうかチェック
-                $arrErr = $this->lfCheckError($objFormParam->getHashArray(), $this->getMode());
+                $arrErr = $this->lfCheckError($objFormParam->getHashArray(), $this->mode);
 
                 // エラーがなければリストア処理を行う
                 if (SC_Utils_Ex::isBlank($arrErr)) {
                     $arrData = $objFormParam->getHashArray();
-                    $this->lfRestore($arrData['list_name'], $this->bkup_dir, $this->bkup_ext, $this->mode);
+
+                    $msg = '「' . $arrData['list_name'] . '」のリストアを開始します。';
+                    GC_Utils_Ex::gfPrintLog($msg);
+
+                    $success = $this->lfRestore($arrData['list_name'], $this->bkup_dir, $this->bkup_ext, $this->mode);
+
+                    $msg = '「' . $arrData['list_name'] . '」の';
+                    $msg .= $success ? 'リストアを終了しました。' : 'リストアに失敗しました。';
+
+                    $this->tpl_restore_msg .= $msg . "\n";
+                    GC_Utils_Ex::gfPrintLog($msg);
                 }
                 break;
 
@@ -147,7 +165,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
             case 'delete':
 
                 // データベースに存在するかどうかチェック
-                $arrErr = $this->lfCheckError($objFormParam->getHashArray(), $this->getMode());
+                $arrErr = $this->lfCheckError($objFormParam->getHashArray(), $this->mode);
 
                 // エラーがなければリストア処理を行う
                 if (SC_Utils_Ex::isBlank($arrErr)) {
@@ -164,7 +182,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
             case 'download' :
 
                 // データベースに存在するかどうかチェック
-                $arrErr = $this->lfCheckError($objFormParam->getHashArray(), $this->getMode());
+                $arrErr = $this->lfCheckError($objFormParam->getHashArray(), $this->mode);
 
                 // エラーがなければダウンロード処理を行う
                 if (SC_Utils_Ex::isBlank($arrErr)) {
@@ -237,26 +255,25 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
      */
     function lfCheckError(&$arrForm, $mode) {
 
-        $arrVal = array();
-
         switch ($mode) {
             case 'bkup':
-                $arrVal[] = $arrForm['bkup_name'];
+                $name = $arrForm['bkup_name'];
                 break;
 
             case 'restore_config':
             case 'restore':
             case 'download':
             case 'delete':
-                $arrVal[] = $arrForm['list_name'];
+                $name = $arrForm['list_name'];
                 break;
 
             default:
+                trigger_error('不明な処理', E_USER_ERROR);
                 break;
         }
 
         // 重複・存在チェック
-        $ret = $this->lfGetBkupData('WHERE bkup_name = ?', $arrVal);
+        $ret = $this->lfGetBkupData('', $name);
         if (count($ret) > 0 && $mode == 'bkup') {
             $arrErr['bkup_name'] = 'バックアップ名が重複しています。別名を入力してください。';
         } elseif (count($ret) <= 0 && $mode != 'bkup') {
@@ -381,10 +398,16 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrSequences = $objQuery->listSequences();
 
-        foreach ($arrSequences as $val) {
-            $seq = $objQuery->currVal($val);
+        foreach ($arrSequences as $name) {
+            if (in_array($name, $this->arrExcludeSequence, true)) {
+                continue 1;
+            }
 
-            $ret .= $val . ',';
+            // XXX SC_Query::currVal は、PostgreSQL で nextval と等しい値を戻すケースがある。欠番を生じうるが、さして問題無いと推測している。
+            $seq = $objQuery->currVal($name);
+
+            // TODO CSV 生成の共通処理を使う
+            $ret .= $name . ',';
             $ret .= is_null($seq) ? '0' : $seq;
             $ret .= "\r\n";
         }
@@ -403,16 +426,49 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         $objQuery->insert('dtb_bkup', $arrVal);
     }
 
-    // バックアップテーブルからデータを取得する
-    function lfGetBkupData($where = '', $data = array()) {
+    /**
+     * バックアップの一覧を取得する
+     */
+    function lfGetBkupData($sql_option = '', $filter_bkup_name) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        $sql = 'SELECT bkup_name, bkup_memo, create_date FROM dtb_bkup ';
-        if ($where != '') {
-            $sql .= $where;
+        // テーブルから取得
+        $arrVal = array();
+
+        $sql = 'SELECT bkup_name, bkup_memo, create_date FROM dtb_bkup';
+        if (strlen($filter_bkup_name) >= 1) {
+            $sql .= ' WHERE bkup_name = ?';
+            $arrVal[] = $filter_bkup_name;
+        }
+        if ($sql_option != '') {
+            $sql .= ' ' . $sql_option;
         }
 
-        $ret = $objQuery->getAll($sql,$data);
+        $ret = $objQuery->getAll($sql, $arrVal);
+
+        // ファイルのみのものを取得
+        $glob = glob($this->bkup_dir . '*' . $this->bkup_ext);
+        if (is_array($glob)) {
+            foreach ($glob as $path) {
+                $bkup_name = basename($path, $this->bkup_ext);
+                if (strlen($filter_bkup_name) >= 1 && $bkup_name !== $filter_bkup_name) {
+                    continue 1;
+                }
+                unset($row);
+                foreach (array_keys($ret) as $key) {
+                    if ($ret[$key]['bkup_name'] == $bkup_name) {
+                        $row =& $ret[$key];
+                    }
+                }
+                if (!isset($row)) {
+                    $ret[] = array();
+                    $row =& $ret[array_pop(array_keys($ret))];
+                    $row['bkup_name'] = $bkup_name;
+                    $row['bkup_memo'] = '(記録なし。バックアップファイルのみ。)';
+                    $row['create_date'] = date("Y-m-d H:i:s", filemtime($path));
+                }
+            }
+        }
 
         return $ret;
     }
@@ -454,23 +510,21 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         // INSERT実行
         $success = $this->lfExeInsertSQL($objQuery, $work_dir, $mode);
 
-        // 自動採番の値をセット
-        if ($success) $this->lfSetAutoInc($objQuery, $work_dir . 'autoinc_data.csv');
+        // シーケンス生成器を復元する
+        if ($success) $this->restoreSequence($objQuery, $work_dir . 'autoinc_data.csv');
 
         // リストア成功ならコミット失敗ならロールバック
         if ($success) {
             $objQuery->commit();
-            $this->restore_msg = 'リストア終了しました。';
-            $this->restore_err = true;
+            $this->tpl_restore_err = true;
         } else {
             $objQuery->rollback();
-            $this->restore_msg = 'リストアに失敗しました。';
-            $this->restore_name = $bkup_name;
-            $this->restore_err = false;
+            $this->tpl_restore_name = $bkup_name;
         }
-        GC_Utils_Ex::gfPrintLog($this->restore_msg);
 
         // FIXME この辺りで、バックアップ時と同等の一時ファイルの削除を実行すべきでは?
+
+        return $success;
     }
 
     /**
@@ -520,7 +574,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
             $arrColName = array();
             while (!feof($fp)) {
                 $line++;
-                $arrCsvLine = fgetcsv($fp, 1000000);
+                $arrCsvLine = fgetcsv($fp, 1024 * 1024);
 
                 // 1行目: 列名
                 if ($line === 1) {
@@ -547,15 +601,24 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         return $ret;
     }
 
-    // 自動採番をセット
-    function lfSetAutoInc(&$objQuery, $csv) {
+    /**
+     * シーケンス生成器を復元する
+     */
+    function restoreSequence(&$objQuery, $csv) {
         // csvファイルからデータの取得
         $arrCsvData = file($csv);
 
-        foreach ($arrCsvData as $val) {
-            $arrData = explode(',', trim($val));
+        foreach ($arrCsvData as $line) {
+            list($name, $currval) = explode(',', trim($line));
 
-            $objQuery->setval($arrData[0], $arrData[1]);
+            if (in_array($name, $this->arrExcludeSequence, true)) {
+                continue 1;
+            }
+
+            // FIXME テーブルと同様に整合チェックを行う。また不整合時はスキップして続行する。
+
+            // XXX +1 ではなく、nextVal を呼ぶべきかも。
+            $objQuery->setVal($name, $currval + 1);
         }
     }
 

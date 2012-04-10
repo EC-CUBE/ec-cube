@@ -86,23 +86,23 @@
                     <td ><!--{$arrBkupList[cnt].bkup_name}--></td>
                     <td ><!--{$arrBkupList[cnt].bkup_memo}--></td>
                     <td align="center"><!--{$arrBkupList[cnt].create_date|sfCutString:19:true:false}--></td>
-                    <td align="center"><a href="#" onclick="fnRestore('<!--{$arrBkupList[cnt].bkup_name}-->'); return false;">リストア</a></td>
-                    <td align="center"><a href="#" onclick="fnModeSubmit('download','list_name','<!--{$arrBkupList[cnt].bkup_name}-->'); return false;">ダウンロード</a></td>
+                    <td align="center"><a href="javascript:;" onclick="fnRestore('<!--{$arrBkupList[cnt].bkup_name}-->'); return false;">リストア</a></td>
+                    <td align="center"><a href="javascript:;" onclick="fnModeSubmit('download','list_name','<!--{$arrBkupList[cnt].bkup_name}-->'); return false;">ダウンロード</a></td>
                     <td align="center">
-                        <a href="#" onclick="fnModeSubmit('delete','list_name','<!--{$arrBkupList[cnt].bkup_name}-->'); return false;">削除</a>
+                        <a href="javascript:;" onclick="fnModeSubmit('delete','list_name','<!--{$arrBkupList[cnt].bkup_name}-->'); return false;">削除</a>
                     </td>
                 </tr>
             <!--{/section}-->
         </table>
     <!--{/if}-->
 
-    <!--{if $restore_msg != ""}-->
+    <!--{if strlen($tpl_restore_msg) >= 1}-->
         <h2>実行結果</h2>
         <div class="message">
-            <!--{if $restore_err == false}-->
-                <div class="btn"><a class="btn-normal" href="javascript:;" name="restore_config" onClick="document.body.style.cursor = 'wait'; form1.mode.value='restore_config'; form1.list_name.value='<!--{$restore_name}-->'; submit(); return false;"><span>テーブル構成を無視してリストアする</span></a></div>
+            <!--{if $tpl_restore_err == false}-->
+                <div class="btn"><a class="btn-normal" href="javascript:;" name="restore_config" onClick="document.body.style.cursor = 'wait'; form1.mode.value='restore_config'; form1.list_name.value='<!--{$tpl_restore_name|h}-->'; submit(); return false;"><span>エラーを無視してリストアする</span></a></div>
             <!--{/if}-->
-            <!--{$restore_msg}-->
+            <!--{$tpl_restore_msg|h}-->
         </div>
     <!--{/if}-->
 
