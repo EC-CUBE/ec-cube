@@ -133,7 +133,7 @@ class SC_Api_Operation {
 
         $access_key = $arrParam['AccessKeyId'];
         $secret_key = SC_Api_Operation_Ex::getApiSecretKey($access_key);
-        if(SC_Utils_Ex::isBlank($secret_key)) {
+        if (SC_Utils_Ex::isBlank($secret_key)) {
             return false;
         }
 

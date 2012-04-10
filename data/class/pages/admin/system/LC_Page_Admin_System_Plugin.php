@@ -764,7 +764,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         $arrErr = array();
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
-        
+
         SC_Plugin_Util_Ex::deletePluginByPluginId($plugin_id);
 
         if (SC_Utils_Ex::deleteFile($this->getPluginDir($plugin_code)) === false) {
@@ -774,9 +774,9 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         if (SC_Utils_Ex::deleteFile($this->getHtmlPluginDir($plugin_code)) === false) {
             // TODO エラー処理
         }
-        
+
         $objQuery->commit();
-        
+
         return $arrErr;
     }
 
