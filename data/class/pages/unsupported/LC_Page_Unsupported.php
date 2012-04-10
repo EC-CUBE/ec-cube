@@ -61,7 +61,7 @@ class LC_Page_Unsupported extends LC_Page_Ex {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('LC_Page_Unsupported_action_before', array($this));
-        
+
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('LC_Page_Unsupported_action_after', array($this));

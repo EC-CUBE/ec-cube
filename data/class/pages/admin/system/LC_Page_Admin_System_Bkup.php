@@ -465,7 +465,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
                     $row =& $ret[array_pop(array_keys($ret))];
                     $row['bkup_name'] = $bkup_name;
                     $row['bkup_memo'] = '(記録なし。バックアップファイルのみ。)';
-                    $row['create_date'] = date("Y-m-d H:i:s", filemtime($path));
+                    $row['create_date'] = date('Y-m-d H:i:s', filemtime($path));
                 }
             }
         }

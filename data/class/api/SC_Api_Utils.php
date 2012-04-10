@@ -28,9 +28,9 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-define('API_UPLOAD_REALDIR', DATA_REALDIR . "downloads/api/");
-define('API_CLASS_EX_REALDIR', CLASS_EX_REALDIR . "api_extends/operations/");
-define('API_CLASS_REALDIR', CLASS_REALDIR . "api/operations/");
+define('API_UPLOAD_REALDIR', DATA_REALDIR . 'downloads/api/');
+define('API_CLASS_EX_REALDIR', CLASS_EX_REALDIR . 'api_extends/operations/');
+define('API_CLASS_REALDIR', CLASS_REALDIR . 'api/operations/');
 
 class SC_Api_Utils {
 
@@ -158,7 +158,7 @@ class SC_Api_Utils {
         $arrFiles = array();
         // Core API ディレクトリ
         if (is_dir(API_CLASS_EX_REALDIR)) {
-            if($dh = opendir(API_CLASS_EX_REALDIR)) {
+            if ($dh = opendir(API_CLASS_EX_REALDIR)) {
                 while (($file_name = readdir($dh)) !== false) {
                     if ($file_name != '.' && $file_name != '..' && substr($file_name, -4) == '.php') {
                         $arrFiles[] = API_CLASS_EX_REALDIR . $file_name;
@@ -170,7 +170,7 @@ class SC_Api_Utils {
 
         // downaloads APIディレクトリ (for Plugin)
         if (is_dir(API_UPLOAD_REALDIR)) {
-            if($dh = opendir(API_UPLOAD_REALDIR)) {
+            if ($dh = opendir(API_UPLOAD_REALDIR)) {
                 while (($file_name = readdir($dh)) !== false) {
                     if ($file_name != '.' && $file_name != '..' && substr($file_name, -4) == '.php') {
                         $arrFiles[] = API_UPLOAD_REALDIR . $file_name;
@@ -205,7 +205,7 @@ class SC_Api_Utils {
             'addDecl' => true,
             'encoding' => 'UTF-8',
             'rootName' => $response_outer_name,
-            'rootAttributes' => array( 'xmlns' => self::API_XMLNS . ECCUBE_VERSION,
+            'rootAttributes' => array('xmlns' => self::API_XMLNS . ECCUBE_VERSION,
                                         'xml:lang' => self::API_XML_LANG),
             'defaultTagName' => 'Response',
             'attributesArray' => '_attributes'

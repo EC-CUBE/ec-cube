@@ -129,11 +129,11 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
 
                 $objPurchase->setShipmentItemTempForSole($objCartSess, $shipping_id);
                 $objSiteSess->setRegistFlag();
-                
+
                 // フックポイント.
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('LC_Page_Shopping_Deliv_action_customeraddr', array($this));
-                
+
                 SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URLPATH);
                 exit;
                 break;

@@ -495,7 +495,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      */
     function updatePlugin($target_plugin, $upload_file_name) {
         $arrErr = array();
-        
+
         // ファイルをチェックし展開します.
         $arrErr = $this->unpackPluginFile($upload_file_name, DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR, $target_plugin['plugin_code']);
         if ($this->isError($arrErr) === true) {

@@ -97,7 +97,7 @@ class SC_Api_Operation {
      */
     protected function checkReferer() {
         $ret = false;
-        if(!SC_Utils_Ex::isBlank($_SERVER['HTTP_REFERER'])) {
+        if (!SC_Utils_Ex::isBlank($_SERVER['HTTP_REFERER'])) {
             $domain  = SC_Utils_Ex::sfIsHTTPS() ? HTTPS_URL : HTTP_URL;
             $pattern = sprintf('|^%s.*|', $domain);
             $referer = $_SERVER['HTTP_REFERER'];
@@ -143,7 +143,7 @@ class SC_Api_Operation {
         // 規定の文字列フォーマットを作成する
         // Refer: https://images-na.ssl-images-amazon.com/images/G/09/associates/paapi/dg/index.html?Query_QueryAuth.html
         $check_str = '';
-        foreach($arrParam as $key => $val) {
+        foreach ($arrParam as $key => $val) {
             switch ($key) {
                 case 'Signature':
                     break;
@@ -158,7 +158,7 @@ class SC_Api_Operation {
                      . $_SERVER['PHP_SELF'] . "\n"
                      . $check_str;
         $signature = base64_encode(hash_hmac('sha256', $check_str, $secret_key, true));
-        if($signature === $arrParam['Signature']) {
+        if ($signature === $arrParam['Signature']) {
             return true;
         }
         return false;
@@ -205,7 +205,7 @@ class SC_Api_Operation {
         if (SC_Utils_Ex::isBlank($operation_name)) {
             return false;
         }
-        $arrAuthTypes = explode("|", $arrApiConfig['auth_types']);
+        $arrAuthTypes = explode('|', $arrApiConfig['auth_types']);
         $result = false;
         foreach ($arrAuthTypes as $auth_type) {
             $ret = false;
@@ -248,9 +248,9 @@ class SC_Api_Operation {
                     $ret = false;
                     break;
             }
-            if($ret === true) {
+            if ($ret === true) {
                 $result = true;
-            }else{
+            } else {
                 $result = false;
                 break;  // 1つでもfalseがあれば，その時点で終了
             }
@@ -276,7 +276,7 @@ class SC_Api_Operation {
      * API実行
      *
      * @param array $arrPost リクエストパラメーター
-     * @return array( string レスポンス名, array レスポンス配列 )
+     * @return array(string レスポンス名, array レスポンス配列)
      */
     public function doApiAction($arrPost) {
         // 実行時間計測用
@@ -312,24 +312,24 @@ class SC_Api_Operation {
                     $operation_result = $objApiOperation->doAction($arrPost);
 
                     // オペレーション結果処理
-                    if($operation_result) {
+                    if ($operation_result) {
                         $arrOperationRequestValid = $objApiOperation->getRequestValidate();
                         $arrResponseBody =  $objApiOperation->getResponseArray();
                         $response_group_name = $objApiOperation->getResponseGroupName();
-                    }else{
+                    } else {
                         $arrErr = $objApiOperation->getErrorArray();
                     }
-                }else{
+                } else {
                     $arrErr['ECCUBE.Operation.NoLoad'] = 'オペレーションをロード出来ませんでした。';
                 }
-            }else{
+            } else {
                 $arrErr['ECCUBE.Authority.NoAuthority'] = 'オペレーションの実行権限がありません。';
             }
         }
 
         if (count($arrErr) == 0) {
             // 実行成功
-            $arrResponseValidSection = array( 'Request' => array(
+            $arrResponseValidSection = array('Request' => array(
                                                             'IsValid' => 'True',
                                                             $operation_name . 'Request' => $arrOperationRequestValid
                                                             )
@@ -342,14 +342,14 @@ class SC_Api_Operation {
             foreach ($arrErr as $error_code => $error_msg) {
                 $arrResponseErrorSection[] = array('Code' => $error_code, 'Message' => $error_msg);
             }
-            $arrResponseValidSection = array( 'Request' => array(
+            $arrResponseValidSection = array('Request' => array(
                                                             'IsValid' => 'False',
                                                             'Errors' => array('Error' => $arrResponseErrorSection)
                                                             )
                                             );
             if (is_object($objApiOperation)) {
                 $response_outer = $operation_name . 'Response';
-            }else{
+            } else {
                 $response_outer = 'ECCUBEApiCommonResponse';
             }
             SC_Api_Utils_Ex::printApiLog('Operation FAILED', $start_time, $response_outer);
@@ -380,7 +380,7 @@ class SC_Api_Operation {
                 'RequestId' => $start_time,
                 'Arguments' => array(),
                 );
-        foreach($arrParam as $key => $val) {
+        foreach ($arrParam as $key => $val) {
             $arrRet['Arguments'][] = array('_attributes' => array('Name' => htmlentities($key, ENT_NOQUOTES, 'UTF-8'), 'Value' => htmlentities($val, ENT_NOQUOTES, 'UTF-8')));
         }
         $arrRet['RequestProcessingTime'] = microtime(true) - $start_time;
@@ -389,7 +389,7 @@ class SC_Api_Operation {
 
     // TODO: ここらへんは SC_Displayに持って行きたい所だが・・
     public function sendApiResponse($type, $response_outer_name, &$arrResponse) {
-        switch($type) {
+        switch ($type) {
             case 'xml':
                 SC_Api_Utils_Ex::sendResponseXml($response_outer_name, $arrResponse);
                 break;

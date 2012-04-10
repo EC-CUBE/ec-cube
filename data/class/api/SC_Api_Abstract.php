@@ -105,7 +105,7 @@ abstract class SC_Api_Abstract {
         $this->objFormParam->setParam($arrParam);
         $this->objFormParam->convParam();
         $this->arrErr = $this->objFormParam->checkError(false);
-        $this->arrErr = array_merge( (array)$this->arrErr, (array)$this->checkErrorExtended($arrParam) );
+        $this->arrErr = array_merge((array)$this->arrErr, (array)$this->checkErrorExtended($arrParam));
         return $this->objFormParam->getHashArray();
     }
 

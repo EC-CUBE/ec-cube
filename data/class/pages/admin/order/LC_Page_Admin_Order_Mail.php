@@ -73,31 +73,31 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
         // フックポイント.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('LC_Page_Admin_Order_Mail_action_before', array($this));
-        
+
         //一括送信用の処理
-        if(array_key_exists("mail_order_id",$_POST) and $_POST['mode'] == 'mail_select'){
-            $_POST['order_id_array'] = implode(",",$_POST['mail_order_id']);
-        }else if(!array_key_exists("order_id_array",$_POST)){
+        if (array_key_exists('mail_order_id',$_POST) and $_POST['mode'] == 'mail_select'){
+            $_POST['order_id_array'] = implode(',',$_POST['mail_order_id']);
+        } else if(!array_key_exists('order_id_array',$_POST)){
             $_POST['order_id_array'] = $_POST['order_id'];
         }
-        
-        
+
+
         //一括送信処理変数チェック(ここですべきかは課題)
-        if(preg_match("/^[0-9|\,]*$/",$_POST['order_id_array'])){
+        if (preg_match("/^[0-9|\,]*$/",$_POST['order_id_array'])){
             $this->order_id_array = $_POST['order_id_array'];
-        }else{
+        } else {
             //エラーで元に戻す
             SC_Response_Ex::sendRedirect(ADMIN_ORDER_URLPATH);
             exit;
         }
-        
+
         //メール本文の確認例は初めの1受注とする
-        if($this->order_id_array){
-            $order_id_array = split(",",$this->order_id_array);
+        if ($this->order_id_array){
+            $order_id_array = split(',',$this->order_id_array);
             $_POST['order_id'] = intval($order_id_array[0]);
             $this->order_id_count = count($order_id_array);
         }
-        
+
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
         // パラメーター情報の初期化
@@ -178,12 +178,12 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
      */
     function doSend(&$objFormParam) {
         $arrErr = $objFormParam->checkerror();
-        
+
         // メールの送信
         if (count($arrErr) == 0) {
             // 注文受付メール(複数受注ID対応)
-            $order_id_array = explode(",",$this->order_id_array);
-            foreach($order_id_array as $order_id){
+            $order_id_array = explode(',',$this->order_id_array);
+            foreach ($order_id_array as $order_id){
                 $objMail = new SC_Helper_Mail_Ex();
                 $objSendMail = $objMail->sfSendOrderMail($order_id,
                 $objFormParam->getValue('template_id'),
