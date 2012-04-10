@@ -73,7 +73,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         $this->initParam($objFormParam, $mode);
         $objFormParam->setParam($_POST);
 
-        $mode = $this->getMode();        
+        $mode = $this->getMode(); 
 
         switch ($mode) {
             // インストール
@@ -101,6 +101,8 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                     $plugin = SC_Plugin_Util_Ex::getPluginByPluginId($plugin_id);
                     $this->arrErr = $this->uninstallPlugin($plugin);
                     if ($this->isError($this->arrErr) === false) {
+                        // TODO 全プラグインのインスタンスを保持したまま後続処理が実行されるので、全てのインスタンスを解放する。
+                        unset($GLOBALS['_SC_Helper_Plugin_instance']);
                         // コンパイルファイルのクリア処理
                         SC_Utils_Ex::clearCompliedTemplate();
                         $this->tpl_onload = "alert('" . $plugin['plugin_name'] ."を削除しました。');";
@@ -118,6 +120,8 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                     $plugin = SC_Plugin_Util_Ex::getPluginByPluginId($plugin_id);
                     $this->arrErr = $this->enablePlugin($plugin);                    
                     if ($this->isError($this->arrErr) === false) {
+                        // TODO 全プラグインのインスタンスを保持したまま後続処理が実行されるので、全てのインスタンスを解放する。
+                        unset($GLOBALS['_SC_Helper_Plugin_instance']);
                         // コンパイルファイルのクリア処理
                         SC_Utils_Ex::clearCompliedTemplate();
                         $this->tpl_onload = "alert('" . $plugin['plugin_name'] . "を有効にしました。');";
@@ -134,6 +138,8 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                     $plugin = SC_Plugin_Util_Ex::getPluginByPluginId($plugin_id);
                     $this->arrErr = $this->disablePlugin($plugin);
                     if ($this->isError($this->arrErr) === false) {
+                        // TODO 全プラグインのインスタンスを保持したまま後続処理が実行されるので、全てのインスタンスを解放する。
+                        unset($GLOBALS['_SC_Helper_Plugin_instance']);
                         // コンパイルファイルのクリア処理
                         SC_Utils_Ex::clearCompliedTemplate();
                         $this->tpl_onload = "alert('" . $plugin['plugin_name'] . "を無効にしました。');";
