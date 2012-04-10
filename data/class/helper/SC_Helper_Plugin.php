@@ -151,7 +151,7 @@ class SC_Helper_Plugin {
      * @param string   $priority   同一フックポイント内での実行優先度
      * @return boolean 成功すればtrue
      */
-    function addAction($hook_point, $function, $priority) {
+    function addAction($hook_point, $function, $priority = 0) {
         if (!is_callable($function)) {
             // TODO エラー処理;　コール可能な形式ではありません
         }
