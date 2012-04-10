@@ -770,9 +770,18 @@ class SC_Query {
      */
     function setVal($seq_name, $start) {
         $objManager =& $this->conn->loadModule('Manager');
-        // XXX エラーハンドリングを行う
-        $objManager->dropSequence($seq_name);
-        return $objManager->createSequence($seq_name, $start);
+
+        // XXX 値変更の役割のため、存在チェックは行なわない。存在しない場合、ここでエラーとなる。
+        $ret = $objManager->dropSequence($seq_name);
+        if (PEAR::isError($ret)) {
+            $this->error("setVal -> dropSequence [$seq_name]");
+        }
+
+        $ret = $objManager->createSequence($seq_name, $start);
+        if (PEAR::isError($ret)) {
+            $this->error("setVal -> createSequence [$seq_name] [$start]");
+        }
+        return $ret;
     }
 
     /**
