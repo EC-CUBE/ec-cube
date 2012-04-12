@@ -387,7 +387,7 @@ define('OSTORE_SSLURL', "https://store.ec-cube.net/");
 /** オーナーズストアログパス */
 define('OSTORE_LOG_REALFILE', DATA_REALDIR . "logs/ownersstore.log");
 /** お気に入り商品登録(有効:1 無効:0) */
-define('OPTION_FAVOFITE_PRODUCT', 1);
+define('OPTION_FAVORITE_PRODUCT', 1);
 /** 画像リネーム設定 (商品画像のみ) (true:リネームする、false:リネームしない) */
 define('IMAGE_RENAME', true);
 /** プラグインディレクトリ */ 

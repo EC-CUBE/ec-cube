@@ -254,7 +254,7 @@
             <!--{/if}-->
 
             <!--★お気に入り登録★-->
-            <!--{if $smarty.const.OPTION_FAVOFITE_PRODUCT == 1 && $tpl_login === true}-->
+            <!--{if $smarty.const.OPTION_FAVORITE_PRODUCT == 1 && $tpl_login === true}-->
                 <div class="favorite_btn">
                     <!--{assign var=add_favorite value="add_favorite`$product_id`"}-->
                     <!--{if $arrErr[$add_favorite]}-->
