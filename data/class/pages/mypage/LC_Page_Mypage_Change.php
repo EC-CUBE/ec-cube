@@ -144,6 +144,9 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
                     // 会員情報の登録
                     $this->lfRegistCustomerData($objFormParam, $customer_id);
 
+                    //セッション情報を最新の状態に更新する
+                    $objCustomer->updateSession();
+
                     // フックポイント.
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                     $objPlugin->doAction('LC_Page_Mypage_Change_action_complete', array($this));
