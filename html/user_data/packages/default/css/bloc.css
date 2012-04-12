@@ -336,6 +336,10 @@ div#search_area .block_body .btn {
 #calender_area .off {
     color: #f00;
 }
+#calender_area .today {
+    background-color: #FFF99D;
+    font-weight: bold;
+}
 #calender_area .information {
     margin-left: 10px;
     font-size: 90%;

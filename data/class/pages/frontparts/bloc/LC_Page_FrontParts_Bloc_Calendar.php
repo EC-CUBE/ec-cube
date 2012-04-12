@@ -95,6 +95,7 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc {
      */
     function lfGetCalendar($disp_month = 1) {
 
+        $today = date("Y/m/d");
         for ($j = 0; $j <= $disp_month-1; ++$j) {
             $year = date('Y');
             $month = date('n') + $j;
@@ -123,6 +124,11 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc {
                 } else {
                     $arrCalendar[$j][$i]['holiday'] = false;
                 }
+
+                if ($today === sprintf("%04d/%02d/%02d", $year, $month, $objDay->day)) {
+                    $arrCalendar[$j][$i]['today'] = true;
+                }
+
                 ++$i;
             }
         }

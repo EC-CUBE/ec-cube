@@ -38,9 +38,9 @@
                         <!--{if !$arrCal[cnt].in_month}-->
                             <td></td>
                         <!--{elseif $arrCal[cnt].holiday}-->
-                            <td class="off"><!--{$arrCal[cnt].day}--></td>
+                            <td class="off<!--{if $arrCal[cnt].today}--> today<!--{/if}-->"><!--{$arrCal[cnt].day}--></td>
                         <!--{else}-->
-                            <td><!--{$arrCal[cnt].day}--></td>
+                            <td<!--{if $arrCal[cnt].today}--> class="today"<!--{/if}-->><!--{$arrCal[cnt].day}--></td>
                         <!--{/if}-->
                         <!--{if $arrCal[cnt].last}-->
                             </tr>
