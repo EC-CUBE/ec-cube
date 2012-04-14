@@ -1037,6 +1037,8 @@ function getSequences() {
         array('dtb_mailmaga_template', 'template_id'),
         array('dtb_plugin', 'plugin_id'),
         array('dtb_plugin_hookpoint', 'plugin_hookpoint_id'),
+        array('dtb_api_config', 'api_config_id'),
+        array('dtb_api_account', 'api_account_id'),
     );
 }
 
