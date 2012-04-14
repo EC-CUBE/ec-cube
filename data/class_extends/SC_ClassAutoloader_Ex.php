@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-require_once CLASS_REALDIR . 'SC_ClassAutoLoader.php';
+require_once CLASS_REALDIR . 'SC_ClassAutoloader.php';
 
 class SC_ClassAutoloader_Ex extends SC_ClassAutoloader {
 }
