@@ -66,9 +66,6 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Basis_Mail_action_before', array($this));
 
         $masterData = new SC_DB_MasterData_Ex();
 
@@ -115,9 +112,6 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
                 break;
         }
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Basis_Mail_action_after', array($this));
     }
 
     /**

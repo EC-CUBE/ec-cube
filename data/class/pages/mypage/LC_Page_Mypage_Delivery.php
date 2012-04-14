@@ -65,9 +65,6 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Mypage_Delivery_action_before', array($this));
 
         $objCustomer    = new SC_Customer_Ex();
         $customer_id    = $objCustomer->getValue('customer_id');
@@ -83,7 +80,7 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
             case 'delete':
                 if ($objFormParam->checkError()) {
                     SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
-                    exit;
+                    SC_Response_Ex::actionExit();
                 }
 
                 $this->deleteOtherDeliv($customer_id, $objFormParam->getValue('other_deliv_id'));
@@ -99,12 +96,9 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
                     $arrOtherDeliv['delivCount'] = count($arrOtherDeliv);
                     $this->arrOtherDeliv = $arrOtherDeliv;
 
-                    // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('LC_Page_Mypage_Delivery_action_getList', array($this));
 
                     echo SC_Utils_Ex::jsonEncode($this->arrOtherDeliv);
-                    exit;
+                    SC_Response_Ex::actionExit();
                     break;
 
             // お届け先の表示
@@ -121,9 +115,7 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
         // 1ページあたりの件数
         $this->dispNumber = SEARCH_PMAX;
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Mypage_Delivery_action_after', array($this));
+
     }
 
     /**

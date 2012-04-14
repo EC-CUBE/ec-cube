@@ -63,9 +63,6 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Rss_Products_action_before', array($this));
 
         $objView = new SC_SiteView_Ex();
 
@@ -116,9 +113,6 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
         header('Content-type: application/xml');
         P_DETAIL_URLPATH;
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Rss_Products_action_after', array($this));
 
         //画面表示
         $objView->display($this->tpl_mainpage, true);

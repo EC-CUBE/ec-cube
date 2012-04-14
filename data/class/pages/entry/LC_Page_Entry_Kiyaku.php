@@ -63,9 +63,6 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Entry_Kiyaku_action_before', array($this));
 
         $arrKiyaku = $this->lfGetKiyakuData();
         $this->max = count($arrKiyaku);
@@ -77,9 +74,7 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex {
 
         $this->tpl_kiyaku_text = $this->lfMakeKiyakuText($arrKiyaku, $this->max, $this->offset);
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Entry_Kiyaku_action_after', array($this));
+
     }
 
     /**

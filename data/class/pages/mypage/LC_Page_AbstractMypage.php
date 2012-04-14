@@ -55,9 +55,6 @@ class LC_Page_AbstractMypage extends LC_Page_Ex {
      * @return void
      */
     function process() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_AbstractMypage_action_before', array($this));
 
         parent::process();
         // ログインチェック
@@ -96,9 +93,6 @@ class LC_Page_AbstractMypage extends LC_Page_Ex {
             $this->action();
         }
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_AbstractMypage_action_after', array($this));
 
         $this->sendResponse();
     }

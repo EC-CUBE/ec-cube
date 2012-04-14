@@ -66,16 +66,11 @@ class LC_Page_Order extends LC_Page_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Order_action_before', array($this));
 
         $objDb = new SC_Helper_DB_Ex();
         $this->arrOrder = $objDb->sfGetBasisData();
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Order_action_after', array($this));
+
     }
 
     /**

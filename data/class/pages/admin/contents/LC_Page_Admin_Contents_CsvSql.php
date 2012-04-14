@@ -67,10 +67,6 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Contents_CsvSql_action_before', array($this));
-
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
         // パラメーター設定
@@ -97,18 +93,10 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
                     $this->sqlerr = $this->lfCheckSQL($objFormParam->getValue('csv_sql'));
                 }
                 $this->setTemplate('contents/csv_sql_view.tpl');
-
-                // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('LC_Page_Admin_Contents_CsvSql_action_preview', array($this));
                 return;
 
             // 新規作成
             case 'new_page':
-                // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('LC_Page_Admin_Contents_CsvSql_action_new_page', array($this));
-
                 // リロード
                 SC_Response_Ex::reload();
                 break;
@@ -117,25 +105,17 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
                 $this->arrErr = $this->lfCheckDeleteError($objFormParam);
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     $this->lfDelData($objFormParam->getValue('sql_id'));
-
-                    // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('LC_Page_Admin_Contents_CsvSql_action_delete', array($this));
-
                     SC_Response_Ex::reload();
-                    exit;
+                    SC_Response_Ex::actionExit();
                 }
                 break;
             // CSV出力
             case 'csv_output':
                 $this->arrErr = $this->lfCheckOutputError($objFormParam);
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                    // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('LC_Page_Admin_Contents_CsvSql_action_csv_output', array($this));
 
                     $this->lfDoCsvOutput($objFormParam->getValue('csv_output_id'));
-                    exit;
+                    SC_Response_Ex::actionExit();
                 }
                 break;
             default:
@@ -153,10 +133,6 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $this->arrSqlList = $this->lfGetSqlList();
         // テーブル一覧を取得する
         $this->arrTableList = $this->lfGetTableList();
-
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Contents_CsvSql_action_after', array($this));
     }
 
     /**
@@ -384,7 +360,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         }
         $objCSV = new SC_Helper_CSV_Ex();
         $objCSV->sfDownloadCsvFromSql($sql, array(), 'contents', $arrHeader, true);
-        exit;
+        SC_Response_Ex::actionExit();
     }
 
     /**

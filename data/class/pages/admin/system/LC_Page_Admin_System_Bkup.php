@@ -78,9 +78,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_System_Bkup_action_before', array($this));
 
         $objFormParam = new SC_FormParam;
 
@@ -215,9 +212,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         $this->arrForm = isset($arrForm) ? $arrForm : array();
         $this->arrBkupList = $arrBkupList;
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_System_Bkup_action_after', array($this));
     }
 
     /**
@@ -592,7 +586,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
                 $arrVal = array_combine($arrColName, $arrCsvLine);
                 $objQuery->insert($table, $arrVal);
 
-                SC_Utils_Ex::extendTimeOut(); 
+                SC_Utils_Ex::extendTimeOut();
             }
 
             fclose($fp);

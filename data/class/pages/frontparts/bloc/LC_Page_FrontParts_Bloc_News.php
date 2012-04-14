@@ -61,9 +61,6 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_FrontParts_Bloc_News_action_before', array($this));
 
         $objFormParam = new SC_FormParam_Ex();
         switch ($this->getMode()) {
@@ -73,16 +70,13 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
                 $objFormParam->convParam();
                 $this->arrErr = $objFormParam->checkError(false);
                 if (empty($this->arrErr)) {
-                    // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('LC_Page_FrontParts_Bloc_News_action_getList', array($this));
 
                     $json = $this->lfGetNewsForJson($objFormParam);
                     echo $json;
-                    exit;
+                    SC_Response_Ex::actionExit();
                 } else {
                     echo $this->lfGetErrors($this->arrErr);
-                    exit;
+                    SC_Response_Ex::actionExit();
                 }
                 break;
             case 'getDetail':
@@ -91,16 +85,13 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
                 $objFormParam->convParam();
                 $this->arrErr = $objFormParam->checkError(false);
                 if (empty($this->arrErr)) {
-                    // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('LC_Page_FrontParts_Bloc_News_action_getDetail', array($this));
 
                     $json = $this->lfGetNewsDetailForJson($objFormParam);
                     echo $json;
-                    exit;
+                    SC_Response_Ex::actionExit();
                 } else {
                     echo $this->lfGetErrors($this->arrErr);
-                    exit;
+                    SC_Response_Ex::actionExit();
                 }
                 break;
             default:
@@ -108,9 +99,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
                 $this->arrNews = $this->lfGetNews(SC_Query_Ex::getSingletonInstance());
                 break;
         }
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_FrontParts_Bloc_News_action_after', array($this));
+
     }
 
     /**

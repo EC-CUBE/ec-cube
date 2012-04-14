@@ -66,7 +66,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
         $this->httpCacheControl('nocache');
         // デフォルトログインアドレスロード
         $objCookie = new SC_Cookie_Ex(COOKIE_EXPIRE);
-        $this->tpl_login_email = $objCookie->getCookie('login_email');        
+        $this->tpl_login_email = $objCookie->getCookie('login_email');
     }
 
     /**
@@ -86,9 +86,6 @@ class LC_Page_Forgot extends LC_Page_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Forgot_before', array($this));
 
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
@@ -139,9 +136,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
         if ($this->device_type == DEVICE_TYPE_PC) {
             $this->setTemplate($this->tpl_mainpage);
         }
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Forgot_after', array($this));
+
     }
 
     /**

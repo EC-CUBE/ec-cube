@@ -70,9 +70,6 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Design_Template_action_before', array($this));
 
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
@@ -113,13 +110,10 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
             case 'download':
                 $this->arrErr = $objFormParam->checkError();
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                    // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('LC_Page_Admin_Design_Template_action_download', array($this));
 
                     if ($this->doDownload($template_code) !== false) {
                         // ブラウザに出力し, 終了する
-                        exit;
+                        SC_Response_Ex::actionExit();
                     }
                 }
                 break;
@@ -136,9 +130,6 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
         }
         $this->tpl_subtitle = $this->arrDeviceType[$this->device_type_id] . '＞' . $this->tpl_subtitle;
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Design_Template_action_after', array($this));
     }
 
     /**

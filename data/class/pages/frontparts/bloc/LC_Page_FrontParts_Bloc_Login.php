@@ -64,9 +64,6 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_FrontParts_Bloc_Login_action_before', array($this));
 
         $objCustomer = new SC_Customer_Ex();
         // クッキー管理クラス
@@ -94,9 +91,7 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc {
         //スマートフォン版ログアウト処理で不正なページ移動エラーを防ぐ為、トークンをセット
         $this->transactionid = SC_Helper_Session_Ex::getToken();
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_FrontParts_Bloc_Login_action_after', array($this));
+
     }
 
     /**

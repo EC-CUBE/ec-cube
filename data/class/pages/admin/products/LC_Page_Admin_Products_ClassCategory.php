@@ -66,9 +66,6 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Products_ClassCategory_action_before', array($this));
 
         $objFormParam = new SC_FormParam_Ex();
 
@@ -96,9 +93,6 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
                         //更新
                         $this->lfUpdateClass($this->arrForm);
                     }
-                    // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('LC_Page_Admin_Products_ClassCategory_action_edit', array($this));
 
                     // 再表示
                     SC_Response_Ex::reload();
@@ -108,9 +102,6 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
             case 'delete':
                 // ランク付きレコードの削除
                 $this->lfDeleteClassCat($class_id, $classcategory_id);
-                // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('LC_Page_Admin_Products_ClassCategory_action_delete', array($this));
 
                 SC_Response_Ex::reload();
                 break;
@@ -124,18 +115,12 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
             case 'down':
                 //並び順を下げる
                 $this->lfDownRank($class_id, $classcategory_id);
-                // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('LC_Page_Admin_Products_ClassCategory_action_down', array($this));
 
                 SC_Response_Ex::reload();
                 break;
             case 'up':
                 //並び順を上げる
                 $this->lfUpRank($class_id, $classcategory_id);
-                // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('LC_Page_Admin_Products_ClassCategory_action_up', array($this));
 
                 SC_Response_Ex::reload();
                 break;
@@ -149,9 +134,6 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
         // POSTデータを引き継ぐ
         $this->tpl_classcategory_id = $classcategory_id;
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Products_ClassCategory_action_after', array($this));
     }
 
     /**

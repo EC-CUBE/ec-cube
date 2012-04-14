@@ -68,12 +68,12 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
     function action() {
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
-        $mode = $this->getMode();   
+        $mode = $this->getMode();
         // パラメーター情報の初期化
         $this->initParam($objFormParam, $mode);
         $objFormParam->setParam($_POST);
 
-        $mode = $this->getMode(); 
+        $mode = $this->getMode();
 
         switch ($mode) {
             // インストール
@@ -118,7 +118,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
                     $plugin_id = $objFormParam->getValue('plugin_id');
                     // プラグイン取得.
                     $plugin = SC_Plugin_Util_Ex::getPluginByPluginId($plugin_id);
-                    $this->arrErr = $this->enablePlugin($plugin);                    
+                    $this->arrErr = $this->enablePlugin($plugin);
                     if ($this->isError($this->arrErr) === false) {
                         // TODO 全プラグインのインスタンスを保持したまま後続処理が実行されるので、全てのインスタンスを解放する。
                         unset($GLOBALS['_SC_Helper_Plugin_instance']);
@@ -240,7 +240,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
 
     /**
      * ファイルが指定されている事をチェックします.
-     * 
+     *
      * @param string $file ファイル
      * @param string $file_key ファイルキー
      * @return array エラー情報を格納した連想配列.
@@ -261,7 +261,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      * 既にインストールされているプラグインかを判定します.
      *
      * @param string $plugin_code プラグインコード
-     * @return boolean インストール済の場合true インストールされていない場合false 
+     * @return boolean インストール済の場合true インストールされていない場合false
      */
     function isInstalledPlugin($plugin_code) {
         $plugin = SC_Plugin_Util_Ex::getPluginByPluginCode($plugin_code);
@@ -273,10 +273,10 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
 
     /**
      * ファイル名からプラグインコードを取得する.
-     * 
+     *
      * ファイル名を「.」で配列に分解.
      * 配列内から拡張子として格納される可能性のある「tar」「gz」を除外すし、再度結合する.
-     * 
+     *
      * @param string $file_name ファイル名
      * @return string $plugin_code プラグインコード.
      */
@@ -313,7 +313,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
 
     /**
      * プラグインファイルのパスを取得する.
-     * 
+     *
      * @param string $plugin_code プラグインコード
      * @return string $plugin_file_path クラスファイルのパス.
      */
@@ -324,7 +324,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
 
     /**
      * プラグインをインストールします.
-     * 
+     *
      * @param string $plugin_code プラグインコード.
      * @param string $key キー.
      * @return array エラー情報を格納した連想配列.
@@ -405,7 +405,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
     /**
      * ロールバック処理
      * インストール失敗時などに不要な一時ファイルを削除します.
-     * 
+     *
      * @param string $temp_dir インストール・アップデート時の一時展開用ディレクトリのパス.
      * @param string $plugin_id プラグインID.
      * @param string $plugin_html_dir プラグイン毎に生成されるhtmlディレクトリのパス.
@@ -425,8 +425,8 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
 
     /**
      * プラグインクラス内の定数をチェックします.
-     * 
-     * @param ReflectionClass $objReflection リフレクションオブジェクト 
+     *
+     * @param ReflectionClass $objReflection リフレクションオブジェクト
      * @return array エラー情報を格納した連想配列.
      */
     function checkPluginConstants(ReflectionClass $objReflection, $unpack_dir) {
@@ -488,7 +488,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
 
     /**
      * プラグインをアップデートします.
-     * 
+     *
      * @param string $target_plugin アップデートするプラグインコード.
      * @param string $upload_file_name アップロードファイル名.
      * @return array エラー情報を格納した連想配列.
@@ -508,7 +508,6 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
             return $arrErr;
         }
         // プラグインクラスファイルのUPDATE処理を実行.
-        $objPluginUpdate = new plugin_update;
         $arrErr = $this->execPlugin($objPluginUpdate, 'plugin_update', 'update');
 
         // 保存ディレクトリの削除.
@@ -519,7 +518,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
 
     /**
      * ファイルをアップロードし、解凍先のディレクトリに解凍します.
-     * 
+     *
      * @param string $unpack_file_name 解凍ファイル名
      * @param string $unpack_dir 解凍先ディレクトリ
      * @param string $file_key ファイルキー
@@ -552,7 +551,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
 
     /**
      * プラグインをアンインストールします.
-     * 
+     *
      * @param array $plugin プラグイン情報を確認した連想配列.
      * @return array エラー情報を格納した連想配列.
      */
@@ -577,7 +576,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
 
     /**
      * プラグインを有効にします.
-     * 
+     *
      * @param array $plugin プラグイン情報を確認した連想配列.
      * @return array $arrErr エラー情報を格納した連想配列.
      */
@@ -602,7 +601,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
 
     /**
      * プラグインを無効にします.
-     * 
+     *
      * @param array $plugin プラグイン情報を確認した連想配列.
      * @return array $arrErr エラー情報を格納した連想配列.
      */
@@ -628,7 +627,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
 
     /**
      * 優先度を更新します.
-     * 
+     *
      * @param int $plugin_id プラグインID
      * @param int $priority 優先度
      * @return integer 更新件数
@@ -647,7 +646,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
     /**
      * プラグイン情報をDB登録.
      *
-     * @param ReflectionClass $objReflection リフレクションオブジェクト 
+     * @param ReflectionClass $objReflection リフレクションオブジェクト
      * @return array エラー情報を格納した連想配列.
      */
     function registerData(ReflectionClass $objReflection) {
@@ -701,7 +700,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
 
     /**
      * ファイルを読み込む.
-     * 
+     *
      * @param string $file_path クラスのpath
      * @param string $key エラー情報のキー.
      * @return array $arrErr エラー情報を格納した連想配列.
@@ -755,7 +754,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
 
     /**
      * plugin_idをキーにdtb_plugin, dtb_plugin_hookpointから物理削除します.
-     * 
+     *
      * @param int $plugin_id プラグインID.
      * @param string $plugin_code プラグインコード.
      * @return array $arrErr エラー情報を格納した連想配列.
@@ -830,7 +829,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
 
     /**
      * フックポイントで衝突する可能性のあるプラグインを判定.メッセージを返します.
-     * 
+     *
      * @param int $plugin_id プラグインID
      * @return string $conflict_alert_message メッセージ
      */
@@ -878,12 +877,12 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
 
     /**
      * プラグインIDからフックポイントを取得します,
-     * 
+     *
      * @param string $plugin_id プラグインID
      * @return array フックポイントの連想配列.
      */
     function getHookPoint($plugin_id) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance(); 
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $table = 'dtb_plugin_hookpoint';
         $where = 'plugin_id = ?';

@@ -77,9 +77,6 @@ class LC_Page_Contact extends LC_Page_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Contact_action_before', array($this));
 
         $objDb = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
@@ -121,25 +118,20 @@ class LC_Page_Contact extends LC_Page_Ex {
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     $this->lfSendMail($this);
 
-                    // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('LC_Page_Contact_action_complete', array($this));
 
                     // 完了ページへ移動する
                     SC_Response_Ex::sendRedirect('complete.php');
-                    exit;
+                    SC_Response_Ex::actionExit();
                 } else {
                     SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
-                    exit;
+                    SC_Response_Ex::actionExit();
                 }
                 break;
 
             default:
                 break;
         }
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Contact_action_after', array($this));
+
     }
 
     /**

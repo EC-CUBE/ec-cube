@@ -61,13 +61,7 @@ class LC_Page_Mypage_Login extends LC_Page_AbstractMypage_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Mypage_Login_action_before', array($this));
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Mypage_Login_action_after', array($this));
 
         SC_Response_Ex::sendRedirect(DIR_INDEX_PATH);
     }

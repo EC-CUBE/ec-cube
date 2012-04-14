@@ -69,9 +69,6 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Mail_TemplateInput_action_before', array($this));
 
         $objMailHelper = new SC_Helper_Mail_Ex();
 
@@ -96,10 +93,6 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
                     // エラーが無いときは登録・編集
                     $this->lfRegistData($objFormParam, $objFormParam->getValue('template_id'));
 
-                    // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('LC_Page_Admin_Mail_TemplateInput_action_regist', array($this));
-
                     // 自分を再読込して、完了画面へ遷移
                     $this->objDisplay->reload(array('mode' => 'complete'));
                 } else {
@@ -113,9 +106,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
             default:
                 break;
         }
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Mail_TemplateInput_action_after', array($this));
+
     }
 
     /**
@@ -129,7 +120,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
 
     /**
      * メルマガテンプレートデータの登録・更新を行う
-     * 
+     *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @param integer template_id 更新時は指定
      * @return void

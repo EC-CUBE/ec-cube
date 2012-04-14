@@ -66,9 +66,6 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Shopping_Deliv_action_before', array($this));
 
         $objSiteSess = new SC_SiteSession_Ex();
         $objCartSess = new SC_CartSession_Ex();
@@ -92,12 +89,9 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
             $objPurchase->saveShippingTemp($sqlval);
             $objPurchase->saveOrderTemp($this->tpl_uniqid, $sqlval, $objCustomer);
             $objSiteSess->setRegistFlag();
-            // フックポイント.
-            $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-            $objPlugin->doAction('LC_Page_Shopping_Deliv_action_download', array($this));
 
             SC_Response_Ex::sendRedirect('payment.php');
-            exit;
+            SC_Response_Ex::actionExit();
         }
 
         $this->lfInitParam($objFormParam);
@@ -106,7 +100,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
         $arrErr = $objFormParam->checkError();
         if (!SC_Utils_Ex::isBlank($arrErr)) {
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
-            exit;
+            SC_Response_Ex::actionExit();
         }
 
         $arrForm = $objFormParam->getHashArray();
@@ -130,23 +124,17 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
                 $objPurchase->setShipmentItemTempForSole($objCartSess, $shipping_id);
                 $objSiteSess->setRegistFlag();
 
-                // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('LC_Page_Shopping_Deliv_action_customeraddr', array($this));
 
                 SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URLPATH);
-                exit;
+                SC_Response_Ex::actionExit();
                 break;
 
             // 前のページに戻る
             case 'return':
-                // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('LC_Page_Shopping_Deliv_action_return', array($this));
 
                 // 確認ページへ移動
                 SC_Response_Ex::sendRedirect(CART_URLPATH);
-                exit;
+                SC_Response_Ex::actionExit();
                 break;
 
             // お届け先複数指定
@@ -154,14 +142,11 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
                 // 複数配送先指定が無効な場合はエラー
                 if (USE_MULTIPLE_SHIPPING === false) {
                     SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
-                    exit;
+                    SC_Response_Ex::actionExit();
                 }
-                // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('LC_Page_Shopping_Deliv_action_multiple', array($this));
 
                 SC_Response_Ex::sendRedirect('multiple.php');
-                exit;
+                SC_Response_Ex::actionExit();
                 break;
 
             default:
@@ -178,9 +163,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
         $this->arrAddr = $objCustomer->getCustomerAddress($objCustomer->getValue('customer_id'));
         $this->tpl_addrmax = count($this->arrAddr);
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Shopping_Deliv_action_after', array($this));
+
     }
 
     /**
@@ -222,7 +205,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
      * その他のお届け先がチェックされている場合は, その他のお届け先からお届け先を取得する.
      * お届け先チェックの値が不正な場合は false を返す.
      *
-     * @param integer $other_deliv_id 
+     * @param integer $other_deliv_id
      * @param string $uniqid 受注一時テーブルのユニークID
      * @param SC_Helper_Purchase $objPurchase SC_Helper_Purchase インスタンス
      * @param SC_Customer $objCustomer SC_Customer インスタンス

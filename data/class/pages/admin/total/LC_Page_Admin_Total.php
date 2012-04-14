@@ -101,9 +101,6 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Total_action_before', array($this));
 
         if (isset($_GET['draw_image']) && $_GET['draw_image'] != '') {
             define('DRAW_IMAGE' , true);
@@ -149,12 +146,8 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
                         // CSVを送信する。
                         list($fime_name, $data) = SC_Utils_Ex::sfGetCSVData($head.$data);
 
-                        // フックポイント.
-                        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                        $objPlugin->doAction('LC_Page_Admin_Total_action_csv', array($this));
-
                         $this->sendResponseCSV($fime_name, $data);
-                        exit;
+                        SC_Response_Ex::actionExit();
                     }
                 }
                 break;
@@ -169,9 +162,6 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $this->arrForm      = $objFormParam->getFormParamList();
         $this->tpl_subtitle = $this->arrTitle[$objFormParam->getValue('page')];
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Total_action_after', array($this));
     }
 
     /**
@@ -357,7 +347,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             // グラフの出力
             if (DRAW_IMAGE) {
                 $objGraphLine->outputGraph();
-                exit();
+                SC_Response_Ex::actionExit();
             }
 
             // ファイルパスを返す
@@ -401,7 +391,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             // グラフの出力
             if (DRAW_IMAGE) {
                 $objGraphPie->outputGraph();
-                exit();
+                SC_Response_Ex::actionExit();
             }
 
             // ファイルパスを返す
@@ -447,7 +437,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
             if (DRAW_IMAGE) {
                 $objGraphBar->outputGraph();
-                exit();
+                SC_Response_Ex::actionExit();
             }
 
             // ファイルパスを返す

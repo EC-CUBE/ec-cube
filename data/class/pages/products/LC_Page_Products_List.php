@@ -94,9 +94,6 @@ class LC_Page_Products_List extends LC_Page_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Products_List_action_before', array($this));
 
         $objProduct = new SC_Product_Ex();
 
@@ -139,12 +136,9 @@ class LC_Page_Products_List extends LC_Page_Ex {
                 foreach ($this->arrProducts as $key=>$val) {
                     $this->arrProducts[$key]['main_list_image'] = SC_Utils_Ex::sfNoImageMainList($val['main_list_image']);
                 }
-                // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('LC_Page_Products_List_action_json', array($this));
 
                 echo SC_Utils_Ex::jsonEncode($this->arrProducts);
-                exit;
+                SC_Response_Ex::actionExit();
                 break;
 
             default:
@@ -197,12 +191,9 @@ class LC_Page_Products_List extends LC_Page_Ex {
                     if (empty($arrErr)) {
                         $this->lfAddCart($this->arrForm, $_SERVER['HTTP_REFERER']);
 
-                        // フックポイント.
-                        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                        $objPlugin->doAction('LC_Page_Products_List_action_cart', array($this));
 
                         SC_Response_Ex::sendRedirect(CART_URLPATH);
-                        exit;
+                        SC_Response_Ex::actionExit();
                     }
                     $js_fnOnLoad .= $this->lfSetSelectedData($this->arrProducts, $this->arrForm, $arrErr, $target_product_id);
                 } else {
@@ -219,9 +210,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
 
         $this->tpl_rnd          = SC_Utils_Ex::sfGetRandomString(3);
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Products_List_action_after', array($this));
+
     }
 
     /**

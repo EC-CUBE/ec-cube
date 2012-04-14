@@ -66,7 +66,7 @@ class LC_Page_Api_Json extends LC_Page_Ex {
 
         list($response_outer, $arrResponse) = SC_Api_Operation::doApiAction($arrParam);
         SC_Api_Operation_Ex::sendApiResponse('json', $response_outer, $arrResponse);
-        exit;
+        SC_Response_Ex::actionExit();
     }
 
     /**

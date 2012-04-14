@@ -65,9 +65,6 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Contents_RecommafterSearch_action_before', array($this));
 
         $objDb = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
@@ -108,9 +105,6 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
         $this->arrCatList = $objDb->sfGetCategoryList();
         $this->setTemplate('contents/recommend_search.tpl');
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Contents_RecommafterSearch_action_after', array($this));
     }
 
     /**
@@ -216,7 +210,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
 
     /**
      * 商品取得
-     * 
+     *
      * @param array $arrProductId
      * @param SC_Product $objProduct
      */

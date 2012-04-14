@@ -66,9 +66,7 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Basis_Payment_action_before', array($this));
+
         $objDb = new SC_Helper_DB_Ex();
 
         $mode = $this->getMode();
@@ -91,25 +89,19 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin_Ex {
             case 'delete':
                 // ランク付きレコードの削除
                 $objDb->sfDeleteRankRecord('dtb_payment', 'payment_id', $post['payment_id']);
-                // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('LC_Page_Admin_Basis_Payment_action_delete', array($this));
+
                 // 再表示
                 $this->objDisplay->reload();
                 break;
             case 'up':
                 $objDb->sfRankUp('dtb_payment', 'payment_id', $post['payment_id']);
-                // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('LC_Page_Admin_Basis_Payment_action_up', array($this));
+
                 // 再表示
                 $this->objDisplay->reload();
                 break;
             case 'down':
                 $objDb->sfRankDown('dtb_payment', 'payment_id', $post['payment_id']);
-                // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('LC_Page_Admin_Basis_Payment_action_down', array($this));
+
                 // 再表示
                 $this->objDisplay->reload();
                 break;
@@ -117,9 +109,6 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin_Ex {
         $this->arrDelivList = $objDb->sfGetIDValueList('dtb_deliv', 'deliv_id', 'service_name');
         $this->arrPaymentListFree = $this->lfGetPaymentList();
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Basis_Payment_action_after', array($this));
     }
 
     /**

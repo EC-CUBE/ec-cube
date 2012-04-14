@@ -75,9 +75,6 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Order_Pdf_action_before', array($this));
 
         $objDb = new SC_Helper_DB_Ex();
         $objDate = new SC_Date_Ex(1901);
@@ -98,13 +95,10 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         if (!isset($arrRet)) $arrRet = array();
         switch ($this->getMode()) {
             case 'confirm':
-                // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('LC_Page_Admin_Order_Pdf_action_confirm', array($this));
 
                 $status = $this->createPdf($this->objFormParam);
                 if ($status === true) {
-                    exit;
+                    SC_Response_Ex::actionExit();
                 } else {
                     $this->arrErr = $status;
                 }
@@ -115,9 +109,6 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         }
         $this->setTemplate($this->tpl_mainpage);
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Order_Pdf_action_after', array($this));
     }
 
     /**
@@ -189,8 +180,8 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
     }
 
     /**
-     *  パラメーター情報の初期化 
-     *  @param SC_FormParam 
+     *  パラメーター情報の初期化
+     *  @param SC_FormParam
      */
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam('注文番号', 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));

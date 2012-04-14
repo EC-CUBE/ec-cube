@@ -66,9 +66,6 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Products_Maker_action_before', array($this));
 
         $objFormParam = new SC_FormParam_Ex();
 
@@ -104,9 +101,6 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
                         // メーカー情報編集
                         $this->lfUpdate($this->arrForm);
                     }
-                     // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('LC_Page_Admin_Products_Maker_action_edit', array($this));
 
                     // 再表示
                     $this->objDisplay->reload();
@@ -126,9 +120,6 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
             case 'up':
             case 'down':
                 $this->lfRankChange($this->arrForm['maker_id'], $this->getMode());
-                // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('LC_Page_Admin_Products_Maker_action_down', array($this));
 
                 // リロード
                 SC_Response_Ex::reload();
@@ -137,9 +128,6 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
             // 削除
             case 'delete':
                 $this->lfDelete($this->arrForm['maker_id']);
-                // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('LC_Page_Admin_Products_Maker_action_delete', array($this));
 
                 // リロード
                 SC_Response_Ex::reload();
@@ -154,9 +142,6 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
         // POSTデータを引き継ぐ
         $this->tpl_maker_id = $maker_id;
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Products_Maker_action_after', array($this));
     }
 
     /**
@@ -304,7 +289,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
         // maker_id の正当性チェック
         if (!empty($arrForm['maker_id'])) {
             $objDb = new SC_Helper_DB_Ex();
-            if (!SC_Utils_Ex::sfIsInt($arrForm['maker_id']) 
+            if (!SC_Utils_Ex::sfIsInt($arrForm['maker_id'])
                 || SC_Utils_Ex::sfIsZeroFilling($arrForm['maker_id'])
                 || !$objDb->sfIsRecord('dtb_maker', 'maker_id', array($arrForm['maker_id']))
             ) {

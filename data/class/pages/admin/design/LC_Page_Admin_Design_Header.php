@@ -70,9 +70,6 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Design_Header_action_before', array($this));
 
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
@@ -116,9 +113,6 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
         //サブタイトルの追加
         $this->tpl_subtitle = $this->arrDeviceType[$this->device_type_id] . '＞' . $this->tpl_subtitle;
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Design_Header_action_after', array($this));
     }
 
     /**

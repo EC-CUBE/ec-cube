@@ -69,9 +69,6 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Order_ProductSelect_action_before', array($this));
 
         $objDb = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
@@ -126,14 +123,11 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
         $this->arrCatList = $objDb->sfGetCategoryList();
         $this->setTemplate($this->tpl_mainpage);
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Order_ProductSelect_action_after', array($this));
     }
 
     /**
      * 商品取得
-     * 
+     *
      * @param array $arrProductId
      * @param SC_Product $objProduct
      */

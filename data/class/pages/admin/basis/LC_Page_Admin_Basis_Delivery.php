@@ -69,9 +69,6 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Basis_Delivery_action_before', array($this));
 
         $objDb = new SC_Helper_DB_Ex();
         $mode = $this->getMode();
@@ -92,27 +89,15 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
                 // ランク付きレコードの削除
                 $objDb->sfDeleteRankRecord('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
 
-                // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('LC_Page_Admin_Basis_Delivery_action_delete', array($this));
-
                 $this->objDisplay->reload(); // PRG pattern
                 break;
             case 'up':
                 $objDb->sfRankUp('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
 
-                // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('LC_Page_Admin_Basis_Delivery_action_up', array($this));
-
                 $this->objDisplay->reload(); // PRG pattern
                 break;
             case 'down':
                 $objDb->sfRankDown('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
-
-                // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('LC_Page_Admin_Basis_Delivery_action_down', array($this));
 
                 $this->objDisplay->reload(); // PRG pattern
                 break;
@@ -121,9 +106,6 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
         }
         $this->arrDelivList = $this->lfGetDelivList();
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Basis_Delivery_action_after', array($this));
     }
 
     /**

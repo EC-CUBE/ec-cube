@@ -62,9 +62,6 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Mypage_Refusal_action_before', array($this));
 
         switch ($this->getMode()) {
             case 'confirm':
@@ -77,18 +74,13 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex {
                 $this->lfDeleteCustomer($objCustomer->getValue('customer_id'));
                 $objCustomer->EndSession();
 
-                // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('LC_Page_Mypage_Refusal_action_complete', array($this));
 
                 SC_Response_Ex::sendRedirect('refusal_complete.php');
 
             default:
                 break;
         }
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Mypage_Refusal_action_after', array($this));
+
     }
 
     /**

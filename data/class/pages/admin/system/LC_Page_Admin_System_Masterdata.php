@@ -66,9 +66,6 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_System_Masterdata_action_before', array($this));
 
         $this->arrMasterDataName = $this->getMasterDataNames(array('mtb_pref', 'mtb_zip', 'mtb_constants'));
         $masterData = new SC_DB_MasterData_Ex();
@@ -98,9 +95,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
             default:
                 break;
         }
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_System_Masterdata_action_after', array($this));
+
     }
 
     /**

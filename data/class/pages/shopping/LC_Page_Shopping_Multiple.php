@@ -64,9 +64,6 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Shopping_Multiple_action_before', array($this));
 
         $objSiteSess = new SC_SiteSession_Ex();
         $objCartSess = new SC_CartSession_Ex();
@@ -77,7 +74,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
         // 複数配送先指定が無効な場合はエラー
         if (USE_MULTIPLE_SHIPPING === false) {
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
-            exit;
+            SC_Response_Ex::actionExit();
         }
 
         $this->tpl_uniqid = $objSiteSess->getUniqId();
@@ -101,12 +98,9 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
                                                  $objCartSess);
                     $objSiteSess->setRegistFlag();
 
-                    // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('LC_Page_Shopping_Multiple_action_confirm', array($this));
 
                     SC_Response_Ex::sendRedirect('payment.php');
-                    exit;
+                    SC_Response_Ex::actionExit();
                 }
                 break;
 
@@ -120,9 +114,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
         }
         $this->arrForm = $objFormParam->getFormParamList();
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Shopping_Multiple_action_after', array($this));
+
     }
 
     /**

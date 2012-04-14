@@ -67,19 +67,12 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Mail_History_action_before', array($this));
 
         switch ($this->getMode()) {
             case 'delete':
                 if (SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
                     // 削除時
                     $this->lfDeleteHistory($_GET['send_id']);
-
-                    // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('LC_Page_Admin_Mail_History_action_delete', array($this));
 
                     $this->objDisplay->reload(null, true);
                 }
@@ -90,9 +83,6 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
 
         list($this->tpl_linemax, $this->arrDataList, $this->arrPagenavi) = $this->lfDoSearch($_POST['search_pageno']);
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Mail_History_action_after', array($this));
     }
 
     /**
@@ -106,7 +96,7 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
 
     /**
      * 実行履歴の取得
-     * 
+     *
      * @param integer $search_pageno 表示したいページ番号
      * @return array( integer 全体件数, mixed メール配信データ一覧配列, mixed SC_PageNaviオブジェクト)
      */
@@ -116,7 +106,7 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
         if (SC_Utils_Ex::sfIsInt($search_pageno)===false) {
             $search_pageno = 1;
         }
-        // 
+        //
         $objSelect =& SC_Query_Ex::getSingletonInstance();    // 一覧データ取得用
         $objQuery =& SC_Query_Ex::getSingletonInstance();    // 件数取得用
 
@@ -150,7 +140,7 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfDeleteHistory($send_id) {
-            $objQuery =& SC_Query_Ex::getSingletonInstance(); 
+            $objQuery =& SC_Query_Ex::getSingletonInstance();
             $objQuery->update('dtb_send_history',
                               array('del_flg' =>1),
                               'send_id = ?',

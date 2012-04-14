@@ -70,9 +70,6 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Design_Bloc_before', array($this));
 
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
@@ -99,12 +96,9 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
                                 'device_type_id' => $this->device_type_id,
                                 'msg' => 'on',
                             );
-                            // フックポイント.
-                            $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                            $objPlugin->doAction('LC_Page_Admin_Design_Bloc_confirm', array($this));
 
                             SC_Response_Ex::reload($arrPram, true);
-                            exit;
+                            SC_Response_Ex::actionExit();
                         }
                     }
                 }
@@ -118,12 +112,9 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
                             'device_type_id' => $this->device_type_id,
                             'msg' => 'on',
                         );
-                        // フックポイント.
-                        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                        $objPlugin->doAction('LC_Page_Admin_Design_Bloc_delete', array($this));
 
                         SC_Response_Ex::reload($arrPram, true);
-                        exit;
+                        SC_Response_Ex::actionExit();
                     }
                 }
                 break;
@@ -151,9 +142,6 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
         $this->tpl_subtitle = $this->arrDeviceType[$this->device_type_id] . '＞' . $this->tpl_subtitle;
         $this->arrForm = $objFormParam->getFormParamList();
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Design_Bloc_after', array($this));
     }
 
     /**

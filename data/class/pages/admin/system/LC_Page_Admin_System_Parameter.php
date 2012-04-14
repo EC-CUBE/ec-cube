@@ -77,9 +77,6 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_System_Masterdata_action_before', array($this));
 
         $masterData = new SC_DB_MasterData_Ex();
 
@@ -113,9 +110,6 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
         // コメント, 値の配列を生成
         $this->arrComments = SC_Utils_Ex::getHash2Array($masterData->getDBMasterData('mtb_constants',
                                                         array('id', 'remarks', 'rank')));
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_System_Masterdata_action_after', array($this));
 
     }
 

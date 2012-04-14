@@ -91,9 +91,6 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Order_action_before', array($this));
 
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
@@ -139,11 +136,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
                         case 'csv':
                             $this->doOutputCSV($where, $arrWhereVal, $order);
 
-                            // フックポイント.
-                            $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                            $objPlugin->doAction('LC_Page_Admin_Order_action_csv', array($this));
-
-                            exit;
+                            SC_Response_Ex::actionExit();
                             break;
 
                         // 全件削除(ADMIN_MODE)
@@ -173,9 +166,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
             default:
                 break;
         }
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Order_action_after', array($this));
+
     }
 
     /**

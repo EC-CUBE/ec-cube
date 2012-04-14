@@ -63,9 +63,6 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Entry_EmailMobile_action_before', array($this));
 
         $objCustomer    = new SC_Customer;
         $objFormParam   = new SC_FormParam_Ex();
@@ -89,9 +86,7 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex {
         $this->tpl_name = $objCustomer->getValue('name01');
         $this->arrForm  = $objFormParam->getFormParamList();
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Entry_EmailMobile_action_after', array($this));
+
     }
 
     /**

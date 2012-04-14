@@ -70,9 +70,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Products_ProductClass_action_before', array($this));
 
         // 商品マスターの検索条件パラメーターを初期化
         $objFormParam = new SC_FormParam_Ex();
@@ -160,9 +157,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                 $this->getProductName($objFormParam->getValue('product_id')));
         $this->arrForm = $objFormParam->getFormParamList();
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Products_ProductClass_action_after', array($this));
     }
 
     /**

@@ -78,9 +78,6 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Mypage_DownLoad_action_before', array($this));
 
         // ログインチェック
         $objCustomer = new SC_Customer_Ex();
@@ -98,9 +95,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
         if (count($this->arrErr)!=0) {
             SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,'',true);
         }
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Mypage_DownLoad_action_after', array($this));
+
     }
 
     /**
@@ -350,7 +345,7 @@ __EOS__;
         $handle = fopen($realpath, 'rb');
         if ($handle === false) {
             SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,'',true);
-            exit;
+            SC_Response_Ex::actionExit();
         }
         while (!feof($handle)) {
             echo(fread($handle, DOWNLOAD_BLOCK*1024));

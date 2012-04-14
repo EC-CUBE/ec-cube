@@ -70,9 +70,6 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_System_Input_action_before', array($this));
 
         // ページ送りの処理 $_REQUEST['pageno']が信頼しうる値かどうかチェックする。
         $this->tpl_pageno = $this->lfCheckPageNo($_REQUEST['pageno']);
@@ -175,9 +172,6 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         }
         $this->setTemplate($this->tpl_mainpage);
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_System_Input_action_after', array($this));
     }
 
     /**
@@ -244,7 +238,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         $arrErr = $objErr->arrErr;
 
         switch ($mode) {
-        case 'new': 
+        case 'new':
             // 管理者名が登録済みでないか
             if ($this->memberDataExists('name = ? AND del_flg = 0', $arrParams['name'])) {
                 $arrErr['name'] = '既に登録されている名前なので利用できません。<br>';

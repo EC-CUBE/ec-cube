@@ -71,9 +71,6 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Basis_PaymentInput_action_before', array($this));
 
         $objFormParam = new SC_FormParam_Ex();
         $mode = $this->getMode();
@@ -154,9 +151,6 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
         // HIDDEN用に配列を渡す。
         $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objUpFile->getHiddenFileList());
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Basis_PaymentInput_action_after', array($this));
     }
 
     /**

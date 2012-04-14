@@ -64,9 +64,6 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Home_action_before', array($this));
 
         // DBバージョンの取得
         $this->db_version = $this->lfGetDBVersion();
@@ -107,9 +104,6 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
         // お知らせ一覧の取得
         $this->arrInfo = $this->lfGetInfo();
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Home_action_after', array($this));
     }
 
     /**

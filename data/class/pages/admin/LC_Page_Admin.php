@@ -66,12 +66,19 @@ class LC_Page_Admin extends LC_Page_Ex {
 
         // スーパーフックポイントを実行.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-
         $objPlugin->doAction('LC_Page_preProcess', array($this));
 
         // トランザクショントークンの検証と生成
         $this->doValidToken(true);
         $this->setTokenTo();
+
+        // ローカルフックポイントを実行
+        $parent_class_name = get_parent_class($this);
+        $objPlugin->doAction($parent_class_name . '_action_before', array($this));
+        $class_name = get_class($this);
+        if ($class_name != $parent_class_name) {
+            $objPlugin->doAction($class_name . '_action_before', array($this));
+        }
     }
 
     /**
@@ -88,9 +95,16 @@ class LC_Page_Admin extends LC_Page_Ex {
      * @return void
      */
     function sendResponse() {
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        // ローカルフックポイントを実行
+        $parent_class_name = get_parent_class($this);
+        $objPlugin->doAction($parent_class_name . '_action_after', array($this));
+        $class_name = get_class($this);
+        if ($class_name != $parent_class_name) {
+            $objPlugin->doAction($class_name . '_action_after', array($this));
+        }
 
         // HeadNaviにpluginテンプレートを追加する.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->setHeadNaviBlocs($this->arrPageLayout['HeadNavi']);
 
         // スーパーフックポイントを実行.

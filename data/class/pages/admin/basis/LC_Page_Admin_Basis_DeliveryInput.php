@@ -70,9 +70,6 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Basis_DeliveryInput_action_before', array($this));
 
         $this->lfInitParam($this->mode, $objFormParam);
         $objFormParam->setParam($_POST);
@@ -100,9 +97,6 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
 
         $this->arrForm = $objFormParam->getFormParamList();
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Basis_DeliveryInput_action_after', array($this));
     }
 
     /**

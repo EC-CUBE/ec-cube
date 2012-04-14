@@ -88,9 +88,6 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Products_action_before', array($this));
 
         $objDb = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
@@ -143,7 +140,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
                             $objCSV = new SC_Helper_CSV_Ex();
                             // CSVを送信する。正常終了の場合、終了。
                             $objCSV->sfDownloadCsv(1, $where, $arrWhereVal, $order, true);
-                            exit;
+                            SC_Response_Ex::actionExit();
 
                         // 全件削除(ADMIN_MODE)
                         case 'delete_all':
@@ -182,9 +179,6 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
         list($this->arrCatKey, $this->arrCatVal) = $objDb->sfGetLevelCatList(false);
         $this->arrCatList = $this->lfGetIDName($this->arrCatKey, $this->arrCatVal);
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Products_action_after', array($this));
     }
 
     /**

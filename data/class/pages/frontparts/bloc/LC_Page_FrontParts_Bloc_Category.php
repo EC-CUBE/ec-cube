@@ -61,9 +61,6 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_FrontParts_Bloc_Category_action_before', array($this));
 
         // モバイル判定
         switch (SC_Display_Ex::detectDevice()) {
@@ -79,9 +76,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
                 break;
         }
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_FrontParts_Bloc_Category_action_after', array($this));
+
     }
 
     /**

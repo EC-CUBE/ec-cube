@@ -74,9 +74,6 @@ class LC_Page_Entry extends LC_Page_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Entry_action_before', array($this));
 
         $objFormParam = new SC_FormParam_Ex();
 
@@ -152,9 +149,6 @@ class LC_Page_Entry extends LC_Page_Ex {
                         $objCustomer = new SC_Customer_Ex();
                         $objCustomer->setLogin($this->arrForm['email']);
                     }
-                    // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('LC_Page_Entry_action_complete', array($this));
 
                     // 完了ページに移動させる。
                     SC_Response_Ex::sendRedirect('complete.php', array('ci' => SC_Helper_Customer_Ex::sfGetCustomerId($uniqid)));
@@ -166,9 +160,7 @@ class LC_Page_Entry extends LC_Page_Ex {
             default:
                 break;
         }
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Entry_action_after', array($this));
+
     }
 
     /**

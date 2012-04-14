@@ -94,9 +94,6 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Basis_ZipInstall_action_before', array($this));
 
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
@@ -123,7 +120,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
                     $this->insertMtbZip($this->arrForm['startRowNum']);
                     break;
             }
-            exit;
+            SC_Response_Ex::actionExit();
         }
 
         switch ($this->tpl_mode) {
@@ -151,9 +148,6 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         // XXX PHP4 を切捨てたら、ダウンロードの必要性チェックなども行いたい
         // $arrHeader = get_headers(ZIP_DOWNLOAD_URL, 1);
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Basis_ZipInstall_action_after', array($this));
     }
 
     /**

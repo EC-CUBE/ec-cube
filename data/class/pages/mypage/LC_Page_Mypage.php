@@ -72,9 +72,6 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_MyPage_action_before', array($this));
 
         $objCustomer = new SC_Customer_Ex();
         $customer_id = $objCustomer->getvalue('customer_id');
@@ -93,7 +90,7 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
         switch ($this->getMode()) {
             case 'getList':
                 echo SC_Utils_Ex::jsonEncode($this->arrOrder);
-                exit;
+                SC_Response_Ex::actionExit();
                 break;
             default:
                 break;
@@ -103,9 +100,6 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
         // 1ページあたりの件数
         $this->dispNumber = SEARCH_PMAX;
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_MyPage_action_after', array($this));
 
     }
 

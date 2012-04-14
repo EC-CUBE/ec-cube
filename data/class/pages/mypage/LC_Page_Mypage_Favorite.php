@@ -67,9 +67,6 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_MyPage_Favorite_action_before', array($this));
 
         $objProduct  = new SC_Product_Ex();
         $objCustomer = new SC_Customer_Ex();
@@ -89,12 +86,9 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
                 $this->arrFavorite = $this->lfGetFavoriteProduct($customer_id, $this);
                 $this->arrFavorite = $objProduct->setPriceTaxTo($this->arrFavorite);
 
-                // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('LC_Page_MyPage_Favorite_action_getList', array($this));
 
                 echo SC_Utils_Ex::jsonEncode($this->arrFavorite);
-                exit;
+                SC_Response_Ex::actionExit();
                 break;
         }
 
@@ -106,9 +100,7 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
         // 1ページあたりの件数
         $this->dispNumber = SEARCH_PMAX;
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_MyPage_Favorite_action_after', array($this));
+
     }
 
     /**

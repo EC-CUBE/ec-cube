@@ -91,9 +91,6 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Products_Detail_action_before', array($this));
 
         // 会員クラス
         $objCustomer = new SC_Customer_Ex();
@@ -161,12 +158,9 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
                     $objCartSess->addProduct($product_class_id, $this->objFormParam->getValue('quantity'));
 
-                    // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('LC_Page_Products_Detail_action_cart', array($this));
 
                     SC_Response_Ex::sendRedirect(CART_URLPATH);
-                    exit;
+                    SC_Response_Ex::actionExit();
                 }
                 break;
             case 'add_favorite':
@@ -175,11 +169,11 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
                     $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam);
                     if (count($this->arrErr) == 0) {
                         if (!$this->lfRegistFavoriteProduct($this->objFormParam->getValue('favorite_product_id'),$objCustomer->getValue('customer_id'))) {
-                            // フックポイント.
+
                             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                             $objPlugin->doAction('LC_Page_Products_Detail_action_add_favorite', array($this));
 
-                            exit;
+                            SC_Response_Ex::actionExit();
                         }
                     }
                 }
@@ -191,16 +185,16 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
                     $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam);
                     if (count($this->arrErr) == 0) {
                         if ($this->lfRegistFavoriteProduct($this->objFormParam->getValue('favorite_product_id'),$objCustomer->getValue('customer_id'))) {
-                            // フックポイント.
+
                             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                             $objPlugin->doAction('LC_Page_Products_Detail_action_add_favorite_sphone', array($this));
 
                             print 'true';
-                            exit;
+                            SC_Response_Ex::actionExit();
                         }
                     }
                     print 'error';
-                    exit;
+                    SC_Response_Ex::actionExit();
                 }
                 break;
 
@@ -323,9 +317,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
             $this->tpl_login = true;
             $this->is_favorite = SC_Helper_DB_Ex::sfDataExists('dtb_customer_favorite_products', 'customer_id = ? AND product_id = ?', array($objCustomer->getValue('customer_id'), $product_id));
         }
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Products_Detail_action_after', array($this));
+
     }
 
     /**

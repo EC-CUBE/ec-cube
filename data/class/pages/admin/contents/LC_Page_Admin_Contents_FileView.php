@@ -61,9 +61,6 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Contents_FileView_action_before', array($this));
 
         switch ($this->getMode()) {
             default:
@@ -80,10 +77,8 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex {
                 } else {
                     SC_Utils_Ex::sfDispError('');
                 }
-                // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('LC_Page_Admin_Contents_FileView_action_after', array($this));
-                exit;
+
+                SC_Response_Ex::actionExit();
             break;
         }
     }
@@ -128,7 +123,7 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex {
 
     /**
      * ファイル内容を表示する
-     * 
+     *
      * @return void
      */
     function execFileView($objFormParam) {

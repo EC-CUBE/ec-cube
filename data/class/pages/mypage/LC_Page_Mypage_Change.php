@@ -75,9 +75,6 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Mypage_Change_action_before', array($this));
 
         $objCustomer = new SC_Customer_Ex();
         $customer_id = $objCustomer->getValue('customer_id');
@@ -147,9 +144,6 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
                     //セッション情報を最新の状態に更新する
                     $objCustomer->updateSession();
 
-                    // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('LC_Page_Mypage_Change_action_complete', array($this));
 
                     // 完了ページに移動させる。
                     SC_Response_Ex::sendRedirect('change_complete.php');
@@ -163,9 +157,7 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
                 $this->arrForm = SC_Helper_Customer_Ex::sfGetCustomerData($customer_id);
                 break;
         }
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Mypage_Change_action_after', array($this));
+
     }
 
     /**

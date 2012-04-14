@@ -64,9 +64,6 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_FrontParts_LoginCheck_action_before', array($this));
 
         // 会員管理クラス
         $objCustomer = new SC_Customer_Ex();
@@ -95,10 +92,10 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
                 if (count($arrErr) > 0) {
                     if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
                         echo $this->lfGetErrorMessage(TEMP_LOGIN_ERROR);
-                        exit;
+                        SC_Response_Ex::actionExit();
                     } else {
                         SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
-                        exit;
+                        SC_Response_Ex::actionExit();
                     }
                 }
 
@@ -143,31 +140,22 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
                             $objMobile = new SC_Helper_Mobile_Ex();
                             if (!$objMobile->gfIsMobileMailAddress($objCustomer->getValue('email'))) {
                                 if (!$objCustomer->hasValue('email_mobile')) {
-                                    // フックポイント.
-                                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                                    $objPlugin->doAction('LC_Page_FrontParts_LoginCheck_action_login_mobile', array($this));
 
                                     SC_Response_Ex::sendRedirectFromUrlPath('entry/email_mobile.php');
-                                    exit;
+                                    SC_Response_Ex::actionExit();
                                 }
                             }
                         }
 
                         // --- ログインに成功した場合
                         if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
-                            // フックポイント.
-                            $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                            $objPlugin->doAction('LC_Page_FrontParts_LoginCheck_action_login_smartphone', array($this));
 
                             echo SC_Utils_Ex::jsonEncode(array('success' => $_POST['url']));
                         } else {
-                            // フックポイント.
-                            $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                            $objPlugin->doAction('LC_Page_FrontParts_LoginCheck_action_login_pc', array($this));
 
                             SC_Response_Ex::sendRedirect($_POST['url']);
                         }
-                        exit;
+                        SC_Response_Ex::actionExit();
                     } else {
                         // --- ログインに失敗した場合
                         $arrForm['login_email'] = strtolower($arrForm['login_email']);
@@ -178,18 +166,18 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
                         if ($exists) {
                             if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
                                 echo $this->lfGetErrorMessage(TEMP_LOGIN_ERROR);
-                                exit;
+                                SC_Response_Ex::actionExit();
                             } else {
                                 SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
-                                exit;
+                                SC_Response_Ex::actionExit();
                             }
                         } else {
                             if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
                                 echo $this->lfGetErrorMessage(SITE_LOGIN_ERROR);
-                                exit;
+                                SC_Response_Ex::actionExit();
                             } else {
                                 SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
-                                exit;
+                                SC_Response_Ex::actionExit();
                             }
                         }
                     }
@@ -197,7 +185,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
                     // XXX 到達しない？
                     // 入力エラーの場合、元のアドレスに戻す。
                     SC_Response_Ex::sendRedirect($_POST['url']);
-                    exit;
+                    SC_Response_Ex::actionExit();
                 }
 
                 break;
@@ -209,29 +197,21 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
                 // 画面遷移の制御
                 $mypage_url_search = strpos('.'.$_POST['url'], 'mypage');
                 if ($mypage_url_search == 2) {
-                    // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('LC_Page_FrontParts_LoginCheck_action_logout_mypage', array($this));
 
                     // マイページログイン中はログイン画面へ移行
                     SC_Response_Ex::sendRedirectFromUrlPath('mypage/login.php');
                 } else {
-                    // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('LC_Page_FrontParts_LoginCheck_action_logout_toppage', array($this));
 
                     // 上記以外の場合、トップへ遷移
                     SC_Response_Ex::sendRedirect(HTTP_URL);
                 }
-                exit;
+                SC_Response_Ex::actionExit();
 
                 break;
             default:
                 break;
         }
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_FrontParts_LoginCheck_action_after', array($this));
+
     }
 
     /**

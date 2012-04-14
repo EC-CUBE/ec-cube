@@ -66,9 +66,6 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Basis_Kiyaku_action_before', array($this));
 
         $objDb = new SC_Helper_DB_Ex();
 
@@ -102,9 +99,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
                     } else {
                         $this->lfUpdateClass($this->arrForm, $post['kiyaku_id']);    // 既存編集
                     }
-                    // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('LC_Page_Admin_Basis_Kiyaku_action_edit', array($this));
+
                     // 再表示
                     $this->objDisplay->reload();
                 } else {
@@ -115,9 +110,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
             // 削除
             case 'delete':
                 $objDb->sfDeleteRankRecord('dtb_kiyaku', 'kiyaku_id', $post['kiyaku_id'], '', true);
-                // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('LC_Page_Admin_Basis_Kiyaku_action_delete', array($this));
+
                 // 再表示
                 $this->objDisplay->reload();
                 break;
@@ -134,17 +127,13 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
                 break;
             case 'down':
                 $objDb->sfRankDown('dtb_kiyaku', 'kiyaku_id', $post['kiyaku_id']);
-                // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('LC_Page_Admin_Basis_Kiyaku_action_down', array($this));
+
                 // 再表示
                 $this->objDisplay->reload();
                 break;
             case 'up':
                 $objDb->sfRankUp('dtb_kiyaku', 'kiyaku_id', $post['kiyaku_id']);
-                // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('LC_Page_Admin_Basis_Kiyaku_action_up', array($this));
+
                 // 再表示
                 $this->objDisplay->reload();
                 break;
@@ -156,9 +145,6 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
         // POSTデータを引き継ぐ
         $this->tpl_kiyaku_id = $kiyaku_id;
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Basis_Kiyaku_action_after', array($this));
     }
 
     /**

@@ -75,9 +75,6 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Products_Product_action_before', array($this));
 
         $objFormParam = new SC_FormParam_Ex();
 
@@ -289,9 +286,6 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         // 関連商品の読み込み
         $this->arrRecommend = $this->lfGetRecommendProducts($this->arrForm);
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Products_Product_action_after', array($this));
     }
 
     /**
@@ -422,7 +416,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
     /**
      * アップロードファイルパラメーター情報の初期化
      * - 画像ファイル用
-     * 
+     *
      * @param object $objUpFile SC_UploadFileインスタンス
      * @return void
      */
@@ -449,7 +443,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
 
     /**
      * フォーム入力パラメーターのエラーチェック
-     * 
+     *
      * @param object $objFormParam SC_FormParamインスタンス
      * @param object $objUpFile SC_UploadFileインスタンス
      * @param object $objDownFile SC_UploadFileインスタンス
@@ -538,7 +532,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
     /**
      * フォームパラメーター取得
      * - 編集/複製モード
-     * 
+     *
      * @param object $objUpFile SC_UploadFileインスタンス
      * @param object $objDownFile SC_UploadFileインスタンス
      * @param integer $product_id 商品ID
@@ -560,7 +554,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
     /**
      * フォームパラメーター取得
      * - 登録モード
-     * 
+     *
      * @param object $objFormParam SC_FormParamインスタンス
      * @return array フォームパラメーター配列
      */
@@ -638,7 +632,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
 
     /**
      * 縮小した画像をセットする
-     * 
+     *
      * @param object $objUpFile SC_UploadFileインスタンス
      * @param string $image_key 画像ファイルキー
      * @return void
@@ -664,7 +658,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
 
     /**
      * 画像ファイルのコピー
-     * 
+     *
      * @param object $objUpFile SC_UploadFileインスタンス
      * @return void
      */
@@ -751,7 +745,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
 
     /**
      * アップロードファイルを保存する
-     * 
+     *
      * @param object $objUpFile SC_UploadFileインスタンス
      * @param object $objDownFile SC_UploadFileインスタンス
      * @param integer $product_id 商品ID
@@ -820,7 +814,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
 
     /**
      * DBから商品データを取得する
-     * 
+     *
      * @param integer $product_id 商品ID
      * @return array 商品データ配列
      */
@@ -883,7 +877,7 @@ __EOF__;
 
     /**
      * DBから関連商品データを取得する
-     * 
+     *
      * @param integer $product_id 商品ID
      * @return array 関連商品データ配列
      */
@@ -910,7 +904,7 @@ __EOF__;
 
     /**
      * 関連商品データ表示用配列を取得する
-     * 
+     *
      * @param string $arrForm フォーム入力パラメーター配列
      * @return array 関連商品データ配列
      */
@@ -937,7 +931,7 @@ __EOF__;
     /**
      * 表示用カテゴリマスターデータ配列を取得する
      * - 編集モード
-     * 
+     *
      * @param void
      * @return array カテゴリマスターデータ配列
      */
@@ -955,7 +949,7 @@ __EOF__;
 
     /**
      * 入力フォームパラメーターの規格ありなしフラグを判定
-     * 
+     *
      * @param string $has_product_class 入力フォームパラメーターの規格ありなしフラグ
      * @return boolean true: 規格あり, false: 規格なし
      */
@@ -980,7 +974,7 @@ __EOF__;
 
     /**
      * DBに商品データを登録する
-     * 
+     *
      * @param object $objUpFile SC_UploadFileインスタンス
      * @param object $objDownFile SC_UploadFileインスタンス
      * @param array $arrList フォーム入力パラメーター配列
@@ -1178,7 +1172,7 @@ __EOF__;
 
     /**
      * DBに関連商品データを登録する
-     * 
+     *
      * @param object $objQuery SC_Queryインスタンス
      * @param string $arrList フォーム入力パラメーター配列
      * @param integer $product_id 登録する商品ID
@@ -1211,7 +1205,7 @@ __EOF__;
 
     /**
      * 規格データをコピーする
-     * 
+     *
      * @param array $arrList フォーム入力パラメーター配列
      * @param object $objQuery SC_Queryインスタンス
      * @return boolean エラーフラグ
@@ -1262,9 +1256,9 @@ __EOF__;
 
     /**
      * リネームする際は、自動生成される画像名に一意となるように、Suffixを付ける
-     * 
+     *
      * @param string $to_key
-     * @return string 
+     * @return string
      */
     function lfGetAddSuffix($to_key) {
         if ( IMAGE_RENAME === true) return;
@@ -1289,7 +1283,7 @@ __EOF__;
     /**
      * サブ情報の登録があるかを取得する
      * タイトル, コメント, 画像のいずれかに登録があれば「あり」と判定する
-     * 
+     *
      * @param array $arrSubProductData サブ情報配列
      * @return boolean true: サブ情報あり, false: サブ情報なし
      */
@@ -1315,9 +1309,9 @@ __EOF__;
     /**
      * アンカーハッシュ文字列を取得する
      * アンカーキーをサニタイジングする
-     * 
+     *
      * @param string $anchor_key フォーム入力パラメーターで受け取ったアンカーキー
-     * @return <type> 
+     * @return <type>
      */
     function getAnchorHash($anchor_key) {
         if ($anchor_key != '') {

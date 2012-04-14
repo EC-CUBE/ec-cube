@@ -106,6 +106,16 @@ class LC_Page {
         // トランザクショントークンの検証と生成
         $this->doValidToken();
         $this->setTokenTo();
+
+        // ローカルフックポイントを実行
+        $parent_class_name = get_parent_class($this);
+        if ($parent_class_name != 'LC_Page') {
+            $objPlugin->doAction($parent_class_name . '_action_before', array($this));
+        }
+        $class_name = get_class($this);
+        if ($parent_class_name != 'LC_Page' && $class_name != $parent_class_name) {
+            $objPlugin->doAction($class_name . '_action_before', array($this));
+        }
     }
 
     /**
@@ -121,9 +131,18 @@ class LC_Page {
      * @return void
      */
     function sendResponse() {
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        // ローカルフックポイントを実行
+        $parent_class_name = get_parent_class($this);
+        if ($parent_class_name != 'LC_Page') {
+            $objPlugin->doAction($parent_class_name . '_action_after', array($this));
+        }
+        $class_name = get_class($this);
+        if ($parent_class_name != 'LC_Page' && $class_name != $parent_class_name) {
+            $objPlugin->doAction($class_name . '_action_after', array($this));
+        }
 
         // HeadNaviにpluginテンプレートを追加する.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->setHeadNaviBlocs($this->arrPageLayout['HeadNavi']);
 
         // スーパーフックポイントを実行.
@@ -154,7 +173,7 @@ class LC_Page {
 
         $this->objDisplay->response->body = $data;
         $this->objDisplay->response->write();
-        exit;
+        SC_Response_Ex::actionExit();
     }
 
     /**
@@ -178,7 +197,7 @@ class LC_Page {
 
     /**
      * テンプレート取得
-     * 
+     *
      */
     function getTemplate() {
         return $this->template;
@@ -186,7 +205,7 @@ class LC_Page {
 
     /**
      * テンプレート設定(ポップアップなどの場合)
-     * 
+     *
      */
     function setTemplate($template) {
         $this->template = $template;
@@ -363,7 +382,7 @@ class LC_Page {
                 } else {
                     SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
                 }
-                exit;
+                SC_Response_Ex::actionExit();
             }
         }
     }

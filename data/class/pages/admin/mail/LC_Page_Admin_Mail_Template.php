@@ -69,9 +69,6 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Mail_Template_action_before', array($this));
 
         $objMailHelper = new SC_Helper_Mail_Ex();
 
@@ -79,10 +76,6 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex {
             case 'delete':
                 if (SC_Utils_Ex::sfIsInt($_GET['id'])===true) {
                     $this->lfDeleteMailTemplate($_GET['id']);
-
-                    // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('LC_Page_Admin_Mail_Template_action_delete', array($this));
 
                     $this->objDisplay->reload(null, true);
                 }
@@ -92,9 +85,6 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex {
         }
         $this->arrTemplates = $objMailHelper->sfGetMailmagaTemplate();
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Mail_Template_action_after', array($this));
     }
 
     /**

@@ -67,9 +67,6 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Contents_FileManager_action_before', array($this));
 
         // フォーム操作クラス
         $objFormParam = new SC_FormParam_Ex();
@@ -131,13 +128,10 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
                         $disp_error = '※ ディレクトリをダウンロードすることは出来ません。<br/>';
                         $this->setDispError('select_file', $disp_error);
                     } else {
-                        // フックポイント.
-                        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                        $objPlugin->doAction('LC_Page_Admin_Contents_FileManager_action_download', array($this));
 
                         // ファイルダウンロード
                         $objFileManager->sfDownloadFile($objFormParam->getValue('select_file'));
-                        exit;
+                        SC_Response_Ex::actionExit();
                     }
                 }
                 break;
@@ -202,9 +196,6 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
         // ディレクトリツリー表示
         $this->setDispTree($objFileManager, $objFormParam);
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Admin_Contents_FileManager_action_after', array($this));
     }
 
     /**
@@ -307,7 +298,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
 
     /**
      * テンプレートに値を渡す
-     * 
+     *
      * @param string $key キー名
      * @param string $val 値
      * @return void
@@ -391,7 +382,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
 
     /**
      * javascriptをテンプレートに渡す
-     * 
+     *
      * @param string $tpl_onload javascript
      * @return void
      */
@@ -427,7 +418,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
 
     /**
      * 親ディレクトリ取得
-     * 
+     *
      * @param string $dir 現在いるディレクトリ
      * @return string $parent_dir 親ディレクトリ
      */

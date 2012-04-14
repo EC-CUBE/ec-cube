@@ -75,9 +75,6 @@ class LC_Page_Shopping extends LC_Page_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Shopping_action_before', array($this));
 
         $objSiteSess = new SC_SiteSession_Ex();
         $objCartSess = new SC_CartSession_Ex();
@@ -96,15 +93,12 @@ class LC_Page_Shopping extends LC_Page_Ex {
 
         // ログイン済みの場合は次画面に遷移
         if ($objCustomer->isLoginSuccess(true)) {
-            // フックポイント.
-            $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-            $objPlugin->doAction('LC_Page_Shopping_action_logined', array($this));
 
             SC_Response_Ex::sendRedirect(
                     $this->getNextlocation($this->cartKey, $this->tpl_uniqid,
                                            $objCustomer, $objPurchase,
                                            $objSiteSess));
-            exit;
+            SC_Response_Ex::actionExit();
         }
         // 非会員かつ, ダウンロード商品の場合はエラー表示
         else {
@@ -112,7 +106,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
                 $msg = 'ダウンロード商品を含むお買い物は、会員登録が必要です。<br/>'
                      . 'お手数ですが、会員登録をお願いします。';
                 SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, $objSiteSess, false, $msg);
-                exit;
+                SC_Response_Ex::actionExit();
             }
         }
 
@@ -135,35 +129,26 @@ class LC_Page_Shopping extends LC_Page_Ex {
                     // モバイルサイトで携帯アドレスの登録が無い場合、携帯アドレス登録ページへ遷移
                     if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
                         if ($this->hasEmailMobile($objCustomer) == false) {
-                            // フックポイント.
-                            $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                            $objPlugin->doAction('LC_Page_Shopping_action_login_mobile', array($this));
 
                             SC_Response_Ex::sendRedirectFromUrlPath('entry/email_mobile.php');
-                            exit;
+                            SC_Response_Ex::actionExit();
                         }
                     }
                     // スマートフォンの場合はログイン成功を返す
                     elseif (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
-                        // フックポイント.
-                        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                        $objPlugin->doAction('LC_Page_Shopping_action_login_smartphone', array($this));
 
-                        echo SC_Utils_Ex::jsonEncode(array('success' => 
+                        echo SC_Utils_Ex::jsonEncode(array('success' =>
                                                      $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
                                                                             $objCustomer, $objPurchase,
                                                                             $objSiteSess)));
-                        exit;
+                        SC_Response_Ex::actionExit();
                     }
-                    // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('LC_Page_Shopping_action_login', array($this));
 
                     SC_Response_Ex::sendRedirect(
                             $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
                                                    $objCustomer, $objPurchase,
                                                    $objSiteSess));
-                    exit;
+                    SC_Response_Ex::actionExit();
                 }
                 // ログインに失敗した場合
                 else {
@@ -171,18 +156,18 @@ class LC_Page_Shopping extends LC_Page_Ex {
                     if ($this->checkTempCustomer($objFormParam->getValue('login_email'))) {
                         if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
                             echo $this->lfGetErrorMessage(TEMP_LOGIN_ERROR);
-                            exit;
+                            SC_Response_Ex::actionExit();
                         } else {
                             SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
-                            exit;
+                            SC_Response_Ex::actionExit();
                         }
                     } else {
                         if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
                             echo $this->lfGetErrorMessage(SITE_LOGIN_ERROR);
-                            exit;
+                            SC_Response_Ex::actionExit();
                         } else {
                             SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
-                            exit;
+                            SC_Response_Ex::actionExit();
                         }
                     }
                 }
@@ -202,23 +187,17 @@ class LC_Page_Shopping extends LC_Page_Ex {
 
                     $objSiteSess->setRegistFlag();
 
-                    // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('LC_Page_Shopping_action_nonmember_confirm', array($this));
 
                     SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URLPATH);
-                    exit;
+                    SC_Response_Ex::actionExit();
                 }
                 break;
 
             // 前のページに戻る
             case 'return':
-                // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('LC_Page_Shopping_action_return', array($this));
 
                 SC_Response_Ex::sendRedirect(CART_URLPATH);
-                exit;
+                SC_Response_Ex::actionExit();
                 break;
 
             // 複数配送ページへ遷移
@@ -226,7 +205,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
                 // 複数配送先指定が無効な場合はエラー
                 if (USE_MULTIPLE_SHIPPING === false) {
                     SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
-                    exit;
+                    SC_Response_Ex::actionExit();
                 }
 
                 $this->lfInitParam($objFormParam);
@@ -238,12 +217,9 @@ class LC_Page_Shopping extends LC_Page_Ex {
 
                     $objSiteSess->setRegistFlag();
 
-                    // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('LC_Page_Shopping_action_multiple', array($this));
 
                     SC_Response_Ex::sendRedirect(MULTIPLE_URLPATH);
-                    exit;
+                    SC_Response_Ex::actionExit();
                 }
                 $this->tpl_mainpage = $nonmember_mainpage;
                 $this->tpl_title = $nonmember_title;
@@ -285,9 +261,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
         if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
             $this->tpl_valid_phone_id = $objCustomer->checkMobilePhoneId();
         }
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Shopping_action_after', array($this));
+
     }
 
     /**

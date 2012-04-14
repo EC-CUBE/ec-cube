@@ -64,9 +64,6 @@ class LC_Page_Regist extends LC_Page_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Regist_action_before', array($this));
 
         switch ($this->getMode()) {
             case 'regist':
@@ -86,9 +83,7 @@ class LC_Page_Regist extends LC_Page_Ex {
                 break;
         }
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Regist_action_regist', array($this));
+
     }
 
     /**

@@ -83,6 +83,27 @@ class SC_Response{
     }
 
     /**
+     * アプリケーションのexit処理をする。以降の出力は基本的に停止する。
+     * 各クラス内部で勝手にexitするな！
+    */
+    function actionExit() {
+        // ローカルフックポイント処理
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $arrBacktrace = debug_backtrace();
+        if (is_object($arrBacktrace[0]['object'])) {
+            $parent_class_name = get_parent_class($arrBacktrace[0]['object']);
+            $objPlugin->doAction($parent_class_name . '_action_' . $arrBacktrace[0]['object']->getMode(), array($arrBacktrace[0]['object']));
+            $class_name = get_class($arrBacktrace[0]['object']);
+            if ($class_name != $parent_class_name) {
+                $objPlugin->doAction($class_name . '_action_' . $arrBacktrace[0]['object']->getMode(), array($arrBacktrace[0]['object']));
+            }
+        }
+
+        exit;
+        // exitしてますが、実際は、LC_Page::destroy() が呼ばれるはず
+    }
+
+    /**
      * アプリケーション内でリダイレクトする
      *
      * 内部で生成する URL の searchpart は、下記の順で上書きしていく。(後勝ち)
@@ -97,6 +118,19 @@ class SC_Response{
      * @static
      */
     function sendRedirect($location, $arrQueryString = array(), $inheritQueryString = false, $useSsl = null) {
+
+        // ローカルフックポイント処理
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+
+        $arrBacktrace = debug_backtrace();
+        if (is_object($arrBacktrace[0]['object'])) {
+            $parent_class_name = get_parent_class($arrBacktrace[0]['object']);
+            $objPlugin->doAction($parent_class_name . '_action_' . $arrBacktrace[0]['object']->getMode(), array($arrBacktrace[0]['object']));
+            $class_name = get_class($arrBacktrace[0]['object']);
+            if ($class_name != $parent_class_name) {
+                $objPlugin->doAction($class_name . '_action_' . $arrBacktrace[0]['object']->getMode(), array($this));
+            }
+        }
 
         // url-path → URL 変換
         if ($location[0] === '/') {

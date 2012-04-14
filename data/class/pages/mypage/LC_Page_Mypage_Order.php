@@ -60,9 +60,6 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Mypage_Order_action_before', array($this));
 
         //受注詳細データの取得
         $arrOrderDetail = $this->lfGetOrderDetail($_POST['order_id']);
@@ -75,9 +72,7 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex {
         $this->lfAddCartProducts($arrOrderDetail);
         SC_Response_Ex::sendRedirect(CART_URLPATH);
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Mypage_Order_action_after', array($this));
+
     }
 
     /**

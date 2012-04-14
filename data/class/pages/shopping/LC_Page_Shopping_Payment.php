@@ -74,9 +74,6 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      * @return void
      */
     function action() {
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Shopping_Payment_action_before', array($this));
 
         $objSiteSess = new SC_SiteSession_Ex();
         $objCartSess = new SC_CartSession_Ex();
@@ -114,14 +111,14 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
         // 正常に受注情報が格納されていない場合はカート画面へ戻す
         if (SC_Utils_Ex::isBlank($arrOrderTemp)) {
             SC_Response_Ex::sendRedirect(CART_URLPATH);
-            exit;
+            SC_Response_Ex::actionExit();
         }
 
         // カート内商品の妥当性チェック
         $this->tpl_message = $objCartSess->checkProducts($cart_key);
         if (strlen($this->tpl_message) >= 1) {
             SC_Response_Ex::sendRedirect(CART_URLPATH);
-            exit;
+            SC_Response_Ex::actionExit();
         }
 
         /*
@@ -152,12 +149,9 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
                 }
 
                 if (SC_Display_Ex::detectDevice() != DEVICE_TYPE_MOBILE) {
-                    // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('LC_Page_Shopping_Payment_action_select_deliv', array($this));
 
                     echo SC_Utils_Ex::jsonEncode($arrSelectedDeliv);
-                    exit;
+                    SC_Response_Ex::actionExit();
                 } else {
                     $this->arrPayment = $arrSelectedDeliv['arrPayment'];
                     $this->arrDelivTime = $arrSelectedDeliv['arrDelivTime'];
@@ -184,13 +178,10 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
                     // 正常に登録されたことを記録しておく
                     $objSiteSess->setRegistFlag();
 
-                    // フックポイント.
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('LC_Page_Shopping_Payment_action_confirm', array($this));
 
                     // 確認ページへ移動
                     SC_Response_Ex::sendRedirect(SHOPPING_CONFIRM_URLPATH);
-                    exit;
+                    SC_Response_Ex::actionExit();
                 }
 
                 break;
@@ -201,9 +192,6 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
                 // 正常な推移であることを記録しておく
                 $objSiteSess->setRegistFlag();
 
-                // フックポイント.
-                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                $objPlugin->doAction('LC_Page_Shopping_Payment_action_return', array($this));
 
                 $url = null;
                 if ($this->is_multiple) {
@@ -219,7 +207,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
                 }
 
                 SC_Response_Ex::sendRedirect($url);
-                exit;
+                SC_Response_Ex::actionExit();
                 break;
 
             default:
@@ -250,9 +238,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
 
         $this->arrForm = $objFormParam->getFormParamList();
 
-        // フックポイント.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_Shopping_Payment_after', array($this));
+
     }
 
     /**
