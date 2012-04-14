@@ -36,8 +36,12 @@ if (!defined('CACHE_REALDIR')) {
     define('CACHE_REALDIR', DATA_REALDIR . "cache/");
 }
 
+// クラスのオートローディングに対応するフックを入れるために、ここに入れる必要あり
+require_once(CLASS_EX_REALDIR . 'helper_extends/SC_Helper_Plugin_Ex.php');
+
 // クラスのオートローディングを定義する
-setClassAutoloader();
+require_once(CLASS_EX_REALDIR . '/SC_ClassAutoloader_Ex.php');
+spl_autoload_register(array('SC_ClassAutoloader_Ex', 'autoload'));
 
 SC_Helper_HandleError_Ex::load();
 
@@ -45,49 +49,3 @@ SC_Helper_HandleError_Ex::load();
 $objInit = new SC_Initial_Ex();
 $objInit->init();
 
-
-/**
- * クラスのオートローディングを定義する
- *
- * 関数なので、このように囲う必要はないが、メインの処理フローを分かりやすくするため定義した。
- * @return void
- */
-function setClassAutoloader() {
-    /**
-     * クラスのオートローディング本体
-     *
-     * LC_* には対応していない。
-     * @return void
-     */
-    function __autoload($class) {
-        $arrClassNamePart = explode('_', $class);
-        $is_ex = end($arrClassNamePart) === 'Ex';
-        $count = count($arrClassNamePart);
-        $classpath = $is_ex ? CLASS_EX_REALDIR : CLASS_REALDIR;
-
-        if (($arrClassNamePart[0] === 'GC' || $arrClassNamePart[0] === 'SC') && $arrClassNamePart[1] === 'Utils') {
-            $classpath .= $is_ex ? 'util_extends/' : 'util/';
-        }
-        elseif ($arrClassNamePart[0] === 'SC' && $is_ex === true && $count >= 4) {
-            $arrClassNamePartTemp = $arrClassNamePart;
-            // FIXME クラスファイルのディレクトリ命名が変。変な現状に合わせて強引な処理をしてる。
-            $arrClassNamePartTemp[1] = $arrClassNamePartTemp[1] . '_extends';
-            $classpath .= strtolower(implode('/', array_slice($arrClassNamePartTemp, 1, -2))) . '/';
-        }
-        elseif ($arrClassNamePart[0] === 'SC' && $is_ex === false && $count >= 3) {
-            $classpath .= strtolower(implode('/', array_slice($arrClassNamePart, 1, -1))) . '/';
-        }
-        elseif ($arrClassNamePart[0] === 'SC') {
-            // 処理なし
-        }
-        // PEAR用
-        // FIXME トリッキー
-        else {
-            $classpath = '';
-            $class = str_replace('_', '/', $class);
-        }
-
-        $classpath .= "$class.php";
-        include $classpath;
-    }
-}
