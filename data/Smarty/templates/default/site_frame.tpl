@@ -50,6 +50,7 @@
 <!--{if $arrPageLayout.keyword|strlen >= 1}-->
     <meta name="keywords" content="<!--{$arrPageLayout.keyword|h}-->" />
 <!--{/if}-->
+<link rel="shortcut icon" ="" href="<!--{$TPL_URLPATH}-->img/common/favicon.ico" />
 
 <script type="text/javascript">//<![CDATA[
     <!--{$tpl_javascript}-->
