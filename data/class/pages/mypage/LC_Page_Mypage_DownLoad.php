@@ -161,7 +161,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
      * @return array 商品情報の配列
      */
     function lfGetRealFileName($customer_id, $order_id, $product_id, $product_class_id) {
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = <<< __EOS__
             pc.product_id AS product_id,
             pc.product_class_id AS product_class_id,

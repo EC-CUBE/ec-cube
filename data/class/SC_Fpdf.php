@@ -305,7 +305,7 @@ class SC_Fpdf extends PDF_Japanese {
     function lfGetOrderData($order_id) {
         if (SC_Utils_Ex::sfIsInt($order_id)) {
             // DBから受注情報を読み込む
-            $objQuery = new SC_Query_Ex();
+            $objQuery =& SC_Query_Ex::getSingletonInstance();
             $where = 'order_id = ?';
             $arrRet = $objQuery->select('*', 'dtb_order', $where, array($order_id));
             $this->arrDisp = $arrRet[0];
@@ -327,7 +327,7 @@ class SC_Fpdf extends PDF_Japanese {
 
     // 受注詳細データの取得
     function lfGetOrderDetail($order_id) {
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = 'product_id, product_class_id, product_code, product_name, classcategory_name1, classcategory_name2, price, quantity, point_rate';
         $where = 'order_id = ?';
         $objQuery->setOrder('order_detail_id');

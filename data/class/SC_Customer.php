@@ -42,7 +42,7 @@ class SC_Customer {
         }
         // 本登録された会員のみ
         $sql = 'SELECT * FROM dtb_customer WHERE (email = ?' . $sql_mobile . ') AND del_flg = 0 AND status = 2';
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $result = $objQuery->getAll($sql, $arrValues);
         if (empty($result)) {
             return false;
@@ -122,7 +122,7 @@ __EOS__;
         }
 
         // 携帯端末IDが一致し、本登録された会員を検索する。
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $exists = $objQuery->exists('dtb_customer', 'mobile_phone_id = ? AND del_flg = 0 AND status = 2', array($_SESSION['mobile']['phone_id']));
         return $exists;
     }
@@ -148,7 +148,7 @@ __EOS__;
 
         // 携帯端末IDが一致し、本登録された会員を検索する。
         $sql = 'SELECT * FROM dtb_customer WHERE mobile_phone_id = ? AND del_flg = 0 AND status = 2';
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         @list($data) = $objQuery->getAll($sql, array($_SESSION['mobile']['phone_id']));
 
         // パスワードが合っている場合は、会員情報をcustomer_dataに格納してtrueを返す。
@@ -174,7 +174,7 @@ __EOS__;
             return;
         }
 
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sqlval = array('mobile_phone_id' => $_SESSION['mobile']['phone_id']);
         $where = 'customer_id = ? AND del_flg = 0 AND status = 2';
         $objQuery->update('dtb_customer', $sqlval, $where, array($this->customer_data['customer_id']));
@@ -186,7 +186,7 @@ __EOS__;
     function setLogin($email) {
         // 本登録された会員のみ
         $sql = 'SELECT * FROM dtb_customer WHERE (email = ? OR email_mobile = ?) AND del_flg = 0 AND status = 2';
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $result = $objQuery->getAll($sql, array($email, $email));
         $data = isset($result[0]) ? $result[0] : '';
         $this->customer_data = $data;
@@ -197,7 +197,7 @@ __EOS__;
     function updateSession() {
         $sql = 'SELECT * FROM dtb_customer WHERE customer_id = ? AND del_flg = 0';
         $customer_id = $this->getValue('customer_id');
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrRet = $objQuery->getAll($sql, array($customer_id));
         $this->customer_data = isset($arrRet[0]) ? $arrRet[0] : '';
         $_SESSION['customer'] = $this->customer_data;
@@ -230,7 +230,7 @@ __EOS__;
         if (isset($_SESSION['customer']['customer_id'])
             && SC_Utils_Ex::sfIsInt($_SESSION['customer']['customer_id'])
         ) {
-            $objQuery = new SC_Query_Ex();
+            $objQuery =& SC_Query_Ex::getSingletonInstance();
             $email = $objQuery->get('email', 'dtb_customer', 'customer_id = ?', array($_SESSION['customer']['customer_id']));
             if ($email == $_SESSION['customer']['email']) {
                 // モバイルサイトの場合は携帯のメールアドレスが登録されていることもチェックする。
@@ -306,7 +306,7 @@ __EOS__;
 
     //受注関連の会員情報を更新
     function updateOrderSummary($customer_id) {
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrOrderSummary =  $objQuery->getRow('SUM( payment_total) as buy_total, COUNT(order_id) as buy_times,MAX( create_date) as last_buy_date, MIN(create_date) as first_buy_date','dtb_order','customer_id = ? AND del_flg = 0 AND status <> ?',array($customer_id,ORDER_CANCEL));
         $objQuery->update('dtb_customer',$arrOrderSummary,'customer_id = ?',array($customer_id));
     }

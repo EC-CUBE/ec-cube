@@ -81,7 +81,7 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory {
         $url = $matches[1];
         $lifetime = $this->state->getLifeTime();
         $time = date('Y-m-d H:i:s', time() - $lifetime);
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         foreach ($_REQUEST as $key => $value) {
             $session_id = $objQuery->get('session_id', 'dtb_mobile_ext_session_id',
@@ -104,7 +104,7 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory {
      * @return void
      */
     function setExtSessionId($param_key, $param_value, $url) {
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // GC
         $lifetime = $this->state->getLifeTime();

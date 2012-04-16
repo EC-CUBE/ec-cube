@@ -807,7 +807,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         }
         $where .= ')';
 
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $exists = $objQuery->exists('dtb_products', $where, $sqlval);
         return $exists;
     }
@@ -1127,7 +1127,7 @@ __EOF__;
      * @return void
      */
     function lfInsertDummyProductClass($arrList) {
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objDb = new SC_Helper_DB_Ex();
 
         // 配列の添字を定義
@@ -1160,7 +1160,7 @@ __EOF__;
      * @return void
      */
     function lfUpdateProductClass($arrList) {
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sqlval = array();
 
         $sqlval['deliv_fee'] = $arrList['deliv_fee'];

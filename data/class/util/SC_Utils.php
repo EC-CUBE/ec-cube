@@ -696,7 +696,7 @@ class SC_Utils {
         $sql.= 'from dtb_class inner join dtb_classcategory on dtb_class.class_id = dtb_classcategory.class_id ';
         $sql.= 'where dtb_class.del_flg = 0 AND dtb_classcategory.del_flg = 0 ';
         $sql.= 'group by dtb_class.class_id, dtb_class.name';
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrList = $objQuery->getAll($sql);
         // キーと値をセットした配列を取得
         $arrRet = SC_Utils_Ex::sfArrKeyValue($arrList, 'class_id', 'count');
@@ -706,7 +706,7 @@ class SC_Utils {
 
     function sfGetProductClassId($product_id, $classcategory_id1, $classcategory_id2) {
         $where = 'product_id = ?';
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $ret = $objQuery->get('product_class_id', 'dtb_products_class', $where, Array($product_id));
         return $ret;
     }
@@ -1690,7 +1690,7 @@ class SC_Utils {
     // 郵便番号から住所の取得
     function sfGetAddress($zipcode) {
 
-        $objQuery = new SC_Query_Ex(ZIP_DSN);
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $masterData = new SC_DB_MasterData_Ex();
         $arrPref = $masterData->getMasterData('mtb_pref');

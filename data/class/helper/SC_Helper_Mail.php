@@ -45,7 +45,7 @@ class SC_Helper_Mail {
     /* DBに登録されたテンプレートメールの送信 */
     function sfSendTemplateMail($to, $to_name, $template_id, &$objPage, $from_address = '', $from_name = '', $reply_to = '', $bcc = '') {
 
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         // メールテンプレート情報の取得
         $where = 'template_id = ?';
         $arrRet = $objQuery->select('subject, header, footer', 'dtb_mailtemplate', $where, array($template_id));
@@ -80,7 +80,7 @@ class SC_Helper_Mail {
         $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
         $arrTplVar->arrInfo = $arrInfo;
 
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         if ($subject == '' && $header == '' && $footer == '') {
             // メールテンプレート情報の取得
@@ -242,7 +242,7 @@ class SC_Helper_Mail {
         }
         $sqlval['mail_body'] = $body;
 
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sqlval['send_id'] = $objQuery->nextVal('dtb_mail_history_send_id');
         $objQuery->insert('dtb_mail_history', $sqlval);
     }
@@ -252,7 +252,7 @@ class SC_Helper_Mail {
         $col = 'email, mailmaga_flg, customer_id';
         $from = 'dtb_customer';
         $where = '(email = ? OR email_mobile = ?) AND status = 2 AND del_flg = 0';
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrRet = $objQuery->select($col, $from, $where, array($email));
         // 会員のメールアドレスが登録されている
         if (!empty($arrRet[0]['customer_id'])) {

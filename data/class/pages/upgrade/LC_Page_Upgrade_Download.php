@@ -264,7 +264,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
     function updateMdlTable($objRet) {
         $table = 'dtb_module';
         $where = 'module_id = ?';
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $exists = $objQuery->exists($table, $where, array($objRet->product_id));
         if ($exists) {
@@ -358,7 +358,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
     }
 
     function registerUpdateLog($arrLog, $objRet) {
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrInsert = array(
             'log_id'      => $objQuery->nextVal('dtb_module_update_logs_log_id'),
             'module_id'   => $objRet->product_id,

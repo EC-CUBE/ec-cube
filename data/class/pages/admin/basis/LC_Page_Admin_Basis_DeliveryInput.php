@@ -311,7 +311,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
             if ($arrRet['deliv_id'] == '') {
                 $ret = $objDb->sfIsRecord('dtb_deliv', 'service_name', array($arrRet['service_name']));
             } else {
-                $objQuery = new SC_Query_Ex();
+                $objQuery =& SC_Query_Ex::getSingletonInstance();
                 $ret = (($objQuery->count('dtb_deliv', 'deliv_id != ? AND service_name = ? ', array($arrRet['deliv_id'], $arrRet['service_name'])) > 0)? true : false);
             }
             if ($ret) {

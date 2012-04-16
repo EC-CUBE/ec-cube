@@ -204,7 +204,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
      */
     function lfStatusMove($statusId, $arrOrderId) {
         $objPurchase = new SC_Helper_Purchase_Ex();
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         if (!isset($arrOrderId) || !is_array($arrOrderId)) {
             return false;
@@ -228,7 +228,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
      * 受注テーブルの論理削除
      */
     function lfDelete($arrOrderId) {
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         if (!isset($arrOrderId) || !is_array($arrOrderId)) {
             return false;

@@ -105,7 +105,7 @@ class SC_DB_MasterData {
 
         $columns = $this->getDefaultColumnName($columns);
 
-        $this->objQuery = new SC_Query_Ex();
+        $this->objQuery =& SC_Query_Ex::getSingletonInstance();
         if ($autoCommit) {
             $this->objQuery->begin();
         }
@@ -140,7 +140,7 @@ class SC_DB_MasterData {
 
         $columns = $this->getDefaultColumnName($columns);
 
-        $this->objQuery = new SC_Query_Ex();
+        $this->objQuery =& SC_Query_Ex::getSingletonInstance();
         if ($autoCommit) {
             $this->objQuery->begin();
         }
@@ -174,7 +174,7 @@ class SC_DB_MasterData {
 
         $columns = $this->getDefaultColumnName();
 
-        $this->objQuery = new SC_Query_Ex();
+        $this->objQuery =& SC_Query_Ex::getSingletonInstance();
         if ($autoCommit) {
             $this->objQuery->begin();
         }
@@ -203,7 +203,7 @@ class SC_DB_MasterData {
      * @return integer マスターデータの削除数
      */
     function deleteMasterData($name, $autoCommit = true) {
-        $this->objQuery = new SC_Query_Ex();
+        $this->objQuery =& SC_Query_Ex::getSingletonInstance();
         if ($autoCommit) {
             $this->objQuery->begin();
         }
@@ -304,7 +304,7 @@ class SC_DB_MasterData {
 
         $columns = $this->getDefaultColumnName($columns);
 
-        $this->objQuery = new SC_Query_Ex();
+        $this->objQuery =& SC_Query_Ex::getSingletonInstance();
         if (isset($columns[2]) && strlen($columns[2]) >= 1) {
             $this->objQuery->setOrder($columns[2]);
         }

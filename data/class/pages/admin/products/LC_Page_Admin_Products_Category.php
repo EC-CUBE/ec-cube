@@ -104,7 +104,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
                 // DnDしたカテゴリと移動先のセットを分解する
                 $keys = explode('-', $_POST['keySet']);
                 if ($keys[0] && $keys[1]) {
-                    $objQuery = new SC_Query_Ex();
+                    $objQuery =& SC_Query_Ex::getSingletonInstance();
                     $objQuery->begin();
 
                     // 移動したデータのrank、level、parent_category_idを取得

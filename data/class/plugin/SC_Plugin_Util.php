@@ -28,7 +28,7 @@ class SC_Plugin_Util {
      * 稼働中のプラグインを取得する。
      */
     function getEnablePlugin() {
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '*';
         $table = 'dtb_plugin';
         $where = 'enable = 1';
@@ -47,7 +47,7 @@ class SC_Plugin_Util {
      * @return array $arrRet インストールされているプラグイン.
      */
     function getAllPlugin() {
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '*';
         $table = 'dtb_plugin';
         // XXX 2.11.0 互換のため

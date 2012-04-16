@@ -35,7 +35,7 @@ class LC_Page_Upgrade_Base extends LC_Page_Ex {
      */
     function autoUpdateEnable($product_id) {
         $where = 'module_id = ?';
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrRet = $objQuery->select('auto_update_flg', 'dtb_module', $where, array($product_id));
 
         if (isset($arrRet[0]['auto_update_flg'])
@@ -94,7 +94,7 @@ class LC_Page_Upgrade_Base extends LC_Page_Ex {
     }
 
     function getPublicKey() {
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrRet = $objQuery->select('*', 'dtb_ownersstore_settings');
         return isset($arrRet[0]['public_key'])
             ? $arrRet[0]['public_key']

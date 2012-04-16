@@ -210,7 +210,7 @@ class SC_Helper_DB {
      * @return array オーダー前ポイントの配列
      */
     function sfGetRollbackPoint($order_id, $use_point, $add_point, $order_status) {
-        $objQuery = new SC_Query_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrRet = $objQuery->select('customer_id', 'dtb_order', 'order_id = ?', array($order_id));
         $customer_id = $arrRet[0]['customer_id'];
         if ($customer_id != '' && $customer_id >= 1) {
