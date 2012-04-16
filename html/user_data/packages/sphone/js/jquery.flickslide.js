@@ -61,13 +61,15 @@
                                 $('.resizable').css('width',styles.width);
                                 $('.slideMask').css('height',$('.move').outerHeight())
                                                .css('width',styles.width-1);
-                                maxX = Number(
-                                    $(settings.parentArea + ' .flickSlideContainer li.slideUnit').length-1) * Number(
-                                        getComputedStyle(
-                                            $(settings.parentArea + ' .flickSlideContainer li.slideUnit').get(0))
-                                            .width.replace('px',''))*-1;
+                                if($('#whobought_area').size()>0){
+                                    maxX = Number(
+                                        $(settings.parentArea + ' .flickSlideContainer li.slideUnit').length-1) * Number(
+                                            getComputedStyle(
+                                                $(settings.parentArea + ' .flickSlideContainer li.slideUnit').get(0))
+                                                .width.replace('px',''))*-1;
 
-                                $('div.flickSlideContainer ul.move').get(0).style.webkitTransform = 'translate3d(0,0,0)';
+                                    $('div.flickSlideContainer ul.move').get(0).style.webkitTransform = 'translate3d(0,0,0)';
+                                }
                                 currentX=0;
                                 slideCount=0;
                                 slidePager();
