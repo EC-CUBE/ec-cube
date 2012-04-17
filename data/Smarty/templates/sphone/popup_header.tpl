@@ -75,6 +75,8 @@
     <!--{if $arrPageLayout.keyword|strlen >= 1}-->
         <meta name="keywords" content="<!--{$arrPageLayout.keyword|h}-->" />
     <!--{/if}-->
+    <link rel="shortcut icon" href="<!--{$TPL_URLPATH}-->img/common/favicon.ico" />
+    <link rel="icon" type="image/vnd.microsoft.icon" href="<!--{$TPL_URLPATH}-->img/common/favicon.ico" />
     <!--{* iPhone用アイコン画像 *}-->
     <link rel="apple-touch-icon" href="<!--{$TPL_URLPATH}-->img/common/apple-touch-icon.png" />
 
