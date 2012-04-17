@@ -23,7 +23,7 @@
 
 class SC_InstallView extends SC_View_Ex {
     function SC_InstallView($template_dir, $compile_dir = COMPILE_REALDIR) {
-        parent::SC_View(false);
+        parent::SC_View();
         $this->_smarty->template_dir = $template_dir;
         $this->_smarty->compile_dir = $compile_dir;
     }
