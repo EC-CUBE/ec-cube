@@ -466,4 +466,6 @@ define('ZIP_DOWNLOAD_URL', "http://www.post.japanpost.jp/zipcode/dl/kogaki/zip/k
 define('HOOK_POINT_PREPROCESS', "LC_Page_preProcess");
 /** フックポイント(プロセス) */
 define('HOOK_POINT_PROCESS', "LC_Page_process");
+/** SMARTYコンパイルモード */
+define('SMARTY_FORCE_COMPILE_MODE', false);
 ?>

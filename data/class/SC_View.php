@@ -62,6 +62,12 @@ class SC_View {
         if (ADMIN_MODE == '1') {
             $this->time_start = microtime(true);
         }
+
+        if(SMARTY_FORCE_COMPILE_MODE === true) {
+            $this->_smarty->force_compile = true;
+        } else {
+            $this->_smarty->force_compile = false;
+        }
     }
 
     // テンプレートに値を割り当てる
