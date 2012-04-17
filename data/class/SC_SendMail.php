@@ -142,7 +142,8 @@ class SC_SendMail {
                 // 制御文字を変換する。
                 $_name = $name;
                 $_name = mb_encode_mimeheader($_name, 'JIS', 'B', "\n");
-                $name_address = $_name . ' <' . $mail_address . '>';
+                $_name = str_replace('"', '\"', $_name);
+                $name_address = sprintf('"%s" <%s>', $_name, $mail_address);
             } else {
                 $name_address = $mail_address;
             }
