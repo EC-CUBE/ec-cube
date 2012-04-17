@@ -84,7 +84,7 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         if (is_numeric($this->arrSql['search_tel'])) {
             $this->setWhere('(' . $dbFactory->concatColumn(array('tel01', 'tel02', 'tel03')) . ' LIKE ?)');
             $searchTel = $this->addSearchStr($this->arrSql['search_tel']);
-            $this->arrVal[] = ereg_replace('-', '', $searchTel);
+            $this->arrVal[] = str_replace('-', '', $searchTel);
         }
 
         // 性別

@@ -502,9 +502,9 @@ class SC_Utils {
                 }
             }
             if ($space) {
-                $line = ereg_replace(", $", '', $line);
+                $line = preg_replace("/, $/", '', $line);
             } else {
-                $line = ereg_replace(",$", '', $line);
+                $line = preg_replace("/,$/", '', $line);
             }
             return $line;
         } else {
@@ -521,7 +521,7 @@ class SC_Utils {
                 $val = mb_convert_encoding($val, CHAR_CODE, CHAR_CODE);
                 $line .= '"' .$val. '",';
             }
-            $line = ereg_replace(",$", "\r\n", $line);
+            $line = preg_replace("/,$/", "\r\n", $line);
         } else {
             return false;
         }
@@ -713,7 +713,7 @@ class SC_Utils {
 
     /* 文末の「/」をなくす */
     function sfTrimURL($url) {
-        $ret = ereg_replace("[/]+$", '', $url);
+        $ret = rtrim($url, '/');
         return $ret;
     }
 
@@ -812,16 +812,16 @@ class SC_Utils {
 
     // 二回以上繰り返されているスラッシュ[/]を一つに変換する。
     function sfRmDupSlash($istr) {
-        if (ereg('^http://', $istr)) {
+        if (preg_match('|^http://|', $istr)) {
             $str = substr($istr, 7);
             $head = 'http://';
-        } else if (ereg('^https://', $istr)) {
+        } else if (preg_match('|^https://|', $istr)) {
             $str = substr($istr, 8);
             $head = 'https://';
         } else {
             $str = $istr;
         }
-        $str = ereg_replace('[/]+', '/', $str);
+        $str = preg_replace('|[/]+|', '/', $str);
         $ret = $head . $str;
         return $ret;
     }
@@ -984,7 +984,7 @@ class SC_Utils {
 
     // DB取得日時をタイムに変換
     function sfDBDatetoTime($db_date) {
-        $date = ereg_replace("\..*$",'',$db_date);
+        $date = preg_replace("|\..*$|",'',$db_date);
         $time = strtotime($date);
         return $time;
     }
@@ -1075,7 +1075,7 @@ class SC_Utils {
         static $count = 0;
         $count++;  // 無限ループ回避
         $dir = dirname($path);
-        if (ereg("^[/]$", $dir) || ereg("^[A-Z]:[\\]$", $dir) || $count > 256) {
+        if (preg_match("|^[/]$|", $dir) || preg_match("|^[A-Z]:[\\]$|", $dir) || $count > 256) {
             // ルートディレクトリで終了
             return;
         } else {
@@ -1117,13 +1117,13 @@ class SC_Utils {
         if (is_array($fileArray)) {
             foreach ($fileArray as $key => $data_) {
                 // CVS管理ファイルはコピーしない
-                if (ereg('/CVS/Entries', $data_)) {
+                if (strpos($data_, '/CVS/Entries') !== false) {
                     break;
                 }
-                if (ereg('/CVS/Repository', $data_)) {
+                if (strpos($data_, '/CVS/Repository') !== false) {
                     break;
                 }
-                if (ereg('/CVS/Root', $data_)) {
+                if (strpos($data_, '/CVS/Root') !== false) {
                     break;
                 }
 
@@ -1241,7 +1241,7 @@ class SC_Utils {
             if ($src_fp) {
                 while (!feof($src_fp)) {
                     $line = fgets($src_fp);
-                    if (ereg('@version', $line)) {
+                    if (strpos($line, '@version') !== false) {
                         $arrLine = explode(' ', $line);
                         $version = $arrLine[5];
                     }
@@ -1324,7 +1324,7 @@ class SC_Utils {
                 $cnt = 0;
                 // 行末の/を取り除く
                 while (($file = readdir($dh)) !== false) $arrDir[] = $file;
-                $dir = ereg_replace("/$", '', $dir);
+                $dir = rtrim($dir, '/');
                 // アルファベットと数字でソート
                 natcasesort($arrDir);
                 foreach ($arrDir as $file) {
@@ -1374,7 +1374,7 @@ class SC_Utils {
                 $handle = opendir($dir);
                 while ($file = readdir($handle)) {
                     // 行末の/を取り除く
-                    $dir = ereg_replace("/$", '', $dir);
+                    $dir = rtrim($dir, '/');
                     $path = $dir.'/'.$file;
                     if ($file != '..' && $file != '.' && !is_dir($path)) {
                         $bytes += filesize($path);
@@ -1409,7 +1409,7 @@ class SC_Utils {
         $default_rank = count(explode('/', $dir));
 
         // 文末の/を取り除く
-        $dir = ereg_replace("/$", '', $dir);
+        $dir = rtrim($dir, '/');
         // 最上位層を格納(user_data/)
         if (sfDirChildExists($dir)) {
             $arrTree[$cnt]['type'] = '_parent';
@@ -1450,7 +1450,7 @@ class SC_Utils {
                 foreach ($arrDir as $item) {
                     if ($item != '.' && $item != '..') {
                         // 文末の/を取り除く
-                        $dir = ereg_replace("/$", '', $dir);
+                        $dir = rtrim($dir, '/');
                         $path = $dir.'/'.$item;
                         // ディレクトリのみ取得
                         if (is_dir($path)) {
@@ -1490,7 +1490,7 @@ class SC_Utils {
                 $handle = opendir($dir);
                 while ($file = readdir($handle)) {
                     // 行末の/を取り除く
-                    $dir = ereg_replace("/$", '', $dir);
+                    $dir = rtrim($dir, '/');
                     $path = $dir.'/'.$file;
                     if ($file != '..' && $file != '.' && is_dir($path)) {
                         return true;

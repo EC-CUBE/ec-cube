@@ -58,8 +58,8 @@ class SC_UploadFile {
 
     // ファイル管理クラス
     function SC_UploadFile($temp_dir, $save_dir) {
-        $this->temp_dir = (preg_match("|/$|", $temp_dir) == 0) ? $temp_dir. '/' : $temp_dir;
-        $this->save_dir = (preg_match("|/$|", $save_dir) == 0) ? $save_dir. '/' : $save_dir;
+        $this->temp_dir = rtrim($temp_dir, '/') . '/';
+        $this->save_dir = rtrim($save_dir, '/') . '/';
         $this->file_max = 0;
     }
 
@@ -116,7 +116,7 @@ class SC_UploadFile {
                             // 一意なファイル名を作成する。
                             if ($rename) {
                                 $uniqname = date('mdHi') . '_' . uniqid('').'.';
-                                $this->temp_file[$cnt] = ereg_replace("^.*\.",$uniqname, $_FILES[$keyname]['name']);
+                                $this->temp_file[$cnt] = preg_replace("/^.*\./", $uniqname, $_FILES[$keyname]['name']);
                             } else {
                                 $this->temp_file[$cnt] = $_FILES[$keyname]['name'];
                             }
@@ -154,7 +154,7 @@ class SC_UploadFile {
                     if (!isset($objErr->arrErr[$keyname])) {
                         // 一意なファイル名を作成する。
                         $uniqname = date('mdHi') . '_' . uniqid('').'.';
-                        $this->temp_file[$cnt] = ereg_replace("^.*\.",$uniqname, $_FILES[$keyname]['name']);
+                        $this->temp_file[$cnt] = preg_replace("/^.*\./", $uniqname, $_FILES[$keyname]['name']);
                         set_time_limit(0);
                         $result  = copy($_FILES[$keyname]['tmp_name'], $this->temp_dir . $this->temp_file[$cnt]);
                         GC_Utils_Ex::gfPrintLog($result.' -> '. $this->temp_dir . $this->temp_file[$cnt]);
@@ -228,7 +228,7 @@ class SC_UploadFile {
                 // すでに保存ファイルがあった場合は削除する。
                 if (isset($this->save_file[$cnt])
                     && $this->save_file[$cnt] != ''
-                    && !ereg('^sub/', $this->save_file[$cnt])
+                    && !preg_match('|^sub/|', $this->save_file[$cnt])
                 ) {
 
                     $objImage->deleteImage($this->save_file[$cnt], $this->save_dir);
@@ -248,7 +248,7 @@ class SC_UploadFile {
                 // すでに保存ファイルがあった場合は削除する。
                 if (isset($this->save_file[$cnt])
                     && $this->save_file[$cnt] != ''
-                    && !ereg('^sub/', $this->save_file[$cnt])
+                    && !preg_match('|^sub/|', $this->save_file[$cnt])
                 ) {
                     $objImage->deleteImage($this->save_file[$cnt], $this->save_dir);
                 }
@@ -310,20 +310,14 @@ class SC_UploadFile {
         $cnt = 0;
         foreach ($this->keyname as $val) {
             if (isset($this->temp_file[$cnt]) && $this->temp_file[$cnt] != '') {
-                // ファイルパスチェック(パスのスラッシュ/が連続しないようにする。)
-                if (ereg("/$", $temp_url)) {
-                    $arrRet[$val]['filepath'] = $temp_url . $this->temp_file[$cnt];
-                } else {
-                    $arrRet[$val]['filepath'] = $temp_url . '/' . $this->temp_file[$cnt];
-                }
+                // パスのスラッシュ/が連続しないようにする。
+                $arrRet[$val]['filepath'] = rtrim($temp_url, '/') . '/' . $this->temp_file[$cnt];
+
                 $arrRet[$val]['real_filepath'] = $this->temp_dir . $this->temp_file[$cnt];
             } elseif (isset($this->save_file[$cnt]) && $this->save_file[$cnt] != '') {
-                // ファイルパスチェック(パスのスラッシュ/が連続しないようにする。)
-                if (ereg("/$", $save_url)) {
-                    $arrRet[$val]['filepath'] = $save_url . $this->save_file[$cnt];
-                } else {
-                    $arrRet[$val]['filepath'] = $save_url . '/' . $this->save_file[$cnt];
-                }
+                // パスのスラッシュ/が連続しないようにする。
+                $arrRet[$val]['filepath'] = rtrim($save_url, '/') . '/' . $this->save_file[$cnt];
+
                 $arrRet[$val]['real_filepath'] = $this->save_dir . $this->save_file[$cnt];
             }
             if (isset($arrRet[$val]['filepath']) && !empty($arrRet[$val]['filepath'])) {
@@ -437,7 +431,7 @@ class SC_UploadFile {
         $cnt = 0;
         foreach ($this->keyname as $val) {
             if ($arrVal[$val] != '') {
-                if ($this->save_file[$cnt] == '' && !ereg('^sub/', $arrVal[$val])) {
+                if ($this->save_file[$cnt] == '' && !preg_match('|^sub/|', $arrVal[$val])) {
                     $objImage->deleteImage($arrVal[$val], $this->save_dir);
                 }
             }
@@ -450,7 +444,7 @@ class SC_UploadFile {
         $objImage = new SC_Image_Ex($this->temp_dir);
         $cnt = 0;
         if ($arrVal['down_realfilename'] != '') {
-            if ($this->save_file[$cnt] == '' && !ereg('^sub/', $arrVal['down_realfilename'])) {
+            if ($this->save_file[$cnt] == '' && !preg_match('|^sub/|', $arrVal['down_realfilename'])) {
                 $objImage->deleteImage($arrVal['down_realfilename'], $this->save_dir);
             }
         }

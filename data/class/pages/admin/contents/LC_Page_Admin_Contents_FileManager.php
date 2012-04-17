@@ -108,7 +108,8 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
                 $this->arrErr = $objFormParam->checkError();
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     if ($this->tryView($objFormParam)) {
-                        $file_url = htmlspecialchars(ereg_replace($objFormParam->getValue('top_dir'), '', $objFormParam->getValue('select_file')));
+                        $pattern = '/' . preg_quote($objFormParam->getValue('top_dir'), '/') . '/';
+                        $file_url = htmlspecialchars(preg_replace($pattern, '', $objFormParam->getValue('select_file')));
                         $tpl_onload = "win02('./file_view.php?file=". $file_url ."', 'user_data', '600', '400');";
                         $this->setTplOnLoad($tpl_onload);
                     }
@@ -316,7 +317,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
      */
     function tryCreateDir($objFileManager, $objFormParam) {
         $create_dir_flg = false;
-        $create_dir = ereg_replace("/$", '', $objFormParam->getValue('now_dir'));
+        $create_dir = rtrim($objFormParam->getValue('now_dir'), '/');
         // ファイル作成
         if ($objFileManager->sfCreateFile($create_dir.'/'.$objFormParam->getValue('create_file'), 0755)) {
             $create_dir_flg = true;
@@ -424,13 +425,13 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
      */
     function lfGetParentDir($dir) {
         $parent_dir = '';
-        $dir = ereg_replace("/$", '', $dir);
+        $dir = rtrim($dir, '/');
         $arrDir = explode('/', $dir);
         array_pop($arrDir);
         foreach ($arrDir as $val) {
             $parent_dir .= "$val/";
         }
-        $parent_dir = ereg_replace("/$", '', $parent_dir);
+        $parent_dir = rtrim($parent_dir, '/');
         return $parent_dir;
     }
 
@@ -477,8 +478,8 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
         // トップディレクトリか調査
         $is_top_dir = false;
         // 末尾の/をとる
-        $top_dir_check = ereg_replace("/$", '', $objFormParam->getValue('top_dir'));
-        $now_dir_check = ereg_replace("/$", '', $objFormParam->getValue('now_dir'));
+        $top_dir_check = rtrim($objFormParam->getValue('top_dir'), '/');
+        $now_dir_check = rtrim($objFormParam->getValue('now_dir'), '/');
         if ($top_dir_check == $now_dir_check) {
             $is_top_dir = true;
         }

@@ -45,7 +45,7 @@ class SC_Helper_FileManager {
                 $cnt = 0;
                 // 行末の/を取り除く
                 while (($file = readdir($dh)) !== false) $arrDir[] = $file;
-                $dir = ereg_replace("/$", '', $dir);
+                $dir = rtrim($dir, '/');
                 // アルファベットと数字でソート
                 natcasesort($arrDir);
                 foreach ($arrDir as $file) {
@@ -97,7 +97,7 @@ class SC_Helper_FileManager {
                 $handle = opendir($dir);
                 while ($file = readdir($handle)) {
                     // 行末の/を取り除く
-                    $dir = ereg_replace("/$", '', $dir);
+                    $dir = rtrim($dir, '/');
                     $path = $dir.'/'.$file;
                     if ($file != '..' && $file != '.' && !is_dir($path)) {
                         $bytes += filesize($path);
@@ -172,7 +172,7 @@ class SC_Helper_FileManager {
         $default_rank = count(explode('/', $dir));
 
         // 文末の/を取り除く
-        $dir = ereg_replace("/$", '', $dir);
+        $dir = rtrim($dir, '/');
         // 最上位層を格納(user_data/)
         if ($this->sfDirChildExists($dir)) {
             $arrTree[$cnt]['type'] = '_parent';
@@ -216,7 +216,7 @@ class SC_Helper_FileManager {
                 foreach ($arrDir as $item) {
                     if ($item != '.' && $item != '..') {
                         // 文末の/を取り除く
-                        $dir = ereg_replace("/$", '', $dir);
+                        $dir = rtrim($dir, '/');
                         $path = $dir.'/'.$item;
                         // ディレクトリのみ取得
                         if (is_dir($path)) {
@@ -257,7 +257,7 @@ class SC_Helper_FileManager {
                 $handle = opendir($dir);
                 while ($file = readdir($handle)) {
                     // 行末の/を取り除く
-                    $dir = ereg_replace("/$", '', $dir);
+                    $dir = rtrim($dir, '/');
                     $path = $dir.'/'.$file;
                     if ($file != '..' && $file != '.' && is_dir($path)) {
                         return true;

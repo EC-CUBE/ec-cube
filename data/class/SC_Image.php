@@ -28,11 +28,7 @@ class SC_Image {
 
     function SC_Image($tmp_dir) {
         // ヘッダファイル読込
-        if (!ereg("/$", $tmp_dir)) {
-            $this->tmp_dir = $tmp_dir . '/';
-        } else {
-            $this->tmp_dir = $tmp_dir;
-        }
+        $this->tmp_dir = rtrim($tmp_dir, '/') . '/';
     }
 
     //--- 一時ファイル生成(サムネイル画像生成用)
@@ -40,7 +36,7 @@ class SC_Image {
         // 一意なIDを取得する。
         $mainname = uniqid('').'.';
         // 拡張子以外を置き換える。
-        $newFileName = ereg_replace("^.*\.",$mainname, $_FILES[$keyname]['name']);
+        $newFileName = preg_replace("/^.*\./", $mainname, $_FILES[$keyname]['name']);
         $result  = $this->MakeThumb($_FILES[$keyname]['tmp_name'], $this->tmp_dir , $max_width, $max_height, $newFileName);
         GC_Utils_Ex::gfDebugLog($result);
         return $newFileName;
