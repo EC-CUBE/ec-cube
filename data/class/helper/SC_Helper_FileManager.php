@@ -120,44 +120,6 @@ class SC_Helper_FileManager {
     }
 
     /**
-     * 指定したディレクトリ又はファイルを削除する.
-     *
-     * @param string $dir 削除するディレクトリ又はファイル
-     * @return void
-     */
-    function sfDeleteDir($dir) {
-        $arrResult = array();
-        if (file_exists($dir)) {
-            // ディレクトリかチェック
-            if (is_dir($dir)) {
-                if ($handle = opendir("$dir")) {
-                    $cnt = 0;
-                    while (false !== ($item = readdir($handle))) {
-                        if ($item != '.' && $item != '..') {
-                            if (is_dir("$dir/$item")) {
-                                $this->sfDeleteDir("$dir/$item");
-                            } else {
-                                $arrResult[$cnt]['result'] = @unlink("$dir/$item");
-                                $arrResult[$cnt]['file_name'] = "$dir/$item";
-                            }
-                        }
-                        $cnt++;
-                    }
-                }
-                closedir($handle);
-                $arrResult[$cnt]['result'] = @rmdir($dir);
-                $arrResult[$cnt]['file_name'] = "$dir/$item";
-            } else {
-                // ファイル削除
-                $arrResult[0]['result'] = @unlink("$dir");
-                $arrResult[0]['file_name'] = "$dir";
-            }
-        }
-
-        return $arrResult;
-    }
-
-    /**
      * ツリー生成用配列取得(javascriptに渡す用).
      *
      * @param string $dir ディレクトリ
@@ -372,7 +334,7 @@ class SC_Helper_FileManager {
 
         $debug_message = $dir . ' から ' . $dlFileName . " を作成します...\n";
         // ファイル一覧取得
-        $arrFileHash = SC_Utils_Ex::sfGetFileList($dir);
+        $arrFileHash = SC_Helper_FileManager_Ex::sfGetFileList($dir);
         foreach ($arrFileHash as $val) {
             $arrFileList[] = $val['file_name'];
             $debug_message.= '圧縮：'.$val['file_name']."\n";
@@ -418,9 +380,52 @@ class SC_Helper_FileManager {
         GC_Utils_Ex::gfPrintLog('解凍：' . $dir.'/'.$file_name.'->'.$dir.'/'.$unpacking_name);
 
         // フォルダ削除
-        SC_Utils_Ex::sfDelFile($dir . '/' . $unpacking_name);
+        SC_Helper_FileManager_Ex::deleteFile($dir . '/' . $unpacking_name);
         // 圧縮ファイル削除
         unlink($path);
         return $result;
+    }
+
+    /**
+     * 指定されたパスの配下を再帰的に削除.
+     *
+     * @param string  $path       削除対象のディレクトリまたはファイルのパス
+     * @param boolean $del_myself $pathそのものを削除するか. true なら削除する.
+     * @return void
+     */
+    function deleteFile($path, $del_myself = true) {
+        $flg = false;
+        // 対象が存在するかを検証.
+        if (file_exists($path) === false) {
+            GC_Utils_Ex::gfPrintLog($path . ' が存在しません.');
+        } elseif (is_dir($path)) {
+            // ディレクトリが指定された場合
+            $handle = opendir($path);
+            if (!$handle) {
+                GC_Utils_Ex::gfPrintLog($path . ' が開けませんでした.');
+            }
+            while (($item = readdir($handle)) !== false) {
+                if ($item === '.' || $item === '..') continue;
+                $cur_path = $path . '/' . $item;
+                if (is_dir($cur_path)) {
+                    // ディレクトリの場合、再帰処理
+                    $flg = SC_Helper_FileManager_Ex::deleteFile($cur_path);
+                } else {
+                    // ファイルの場合、unlink
+                    $flg = @unlink($cur_path);
+                }
+            }
+            closedir($handle);
+            // ディレクトリを削除
+            GC_Utils_Ex::gfPrintLog($path . ' を削除します.');
+            if ($del_myself) {
+                $flg = @rmdir($path);
+            }
+        } else {
+            // ファイルが指定された場合.
+            GC_Utils_Ex::gfPrintLog($path . ' を削除します.');
+            $flg = @unlink($path);
+        }
+        return $flg;
     }
 }

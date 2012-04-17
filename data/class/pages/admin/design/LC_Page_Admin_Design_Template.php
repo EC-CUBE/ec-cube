@@ -232,14 +232,14 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
             $error =  '※ テンプレートの削除ができませんでした<br />';
             // テンプレート削除
             $templates_dir = SMARTY_TEMPLATES_REALDIR . $template_code. '/';
-            if (SC_Utils_Ex::sfDelFile($templates_dir) === false) {
+            if (SC_Helper_FileManager_Ex::deleteFile($templates_dir) === false) {
                 $this->arrErr['err'] = $error;
                 $objQuery->rollback();
                 return false;
             }
             // ユーザーデータ削除
             $user_dir = USER_TEMPLATE_REALDIR. $template_code. '/';
-            if (SC_Utils_Ex::sfDelFile($user_dir) === false) {
+            if (SC_Helper_FileManager_Ex::deleteFile($user_dir) === false) {
                 $this->arrErr['err'] = $error;
                 $objQuery->rollback();
                 return false;
@@ -247,7 +247,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
 
             // コンパイル削除
             $templates_c_dir = DATA_REALDIR. 'Smarty/templates_c/'. $template_code. '/';
-            if (SC_Utils_Ex::sfDelFile($templates_c_dir) === false) {
+            if (SC_Helper_FileManager_Ex::deleteFile($templates_c_dir) === false) {
                 $this->arrErr['err'] = $error;
                 $objQuery->rollback();
                 return false;

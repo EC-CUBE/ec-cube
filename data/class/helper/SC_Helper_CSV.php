@@ -247,7 +247,7 @@ class SC_Helper_CSV {
             $this->lfDownloadCSVFile($tmp_filename, $file_head . '_');
             $res = true;
         } else {
-            $res = SC_Utils_Ex::sfReadFile($tmp_filename);
+            $res = SC_Helper_FileManager_Ex::sfReadFile($tmp_filename);
         }
 
         //テンポラリファイル削除

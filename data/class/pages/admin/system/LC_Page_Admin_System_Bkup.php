@@ -109,11 +109,11 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
                     $work_dir = $this->bkup_dir . $arrData['bkup_name'] . '/';
                     // バックアップデータの事前削除
-                    SC_Utils_Ex::sfDelFile($work_dir);
+                    SC_Helper_FileManager_Ex::deleteFile($work_dir);
                     // バックアップファイル作成
                     $res = $this->lfCreateBkupData($arrData['bkup_name'], $work_dir);
                     // バックアップデータの事後削除
-                    SC_Utils_Ex::sfDelFile($work_dir);
+                    SC_Helper_FileManager_Ex::deleteFile($work_dir);
 
                     $arrErrTmp[3] = array();
                     if ($res !== true) {

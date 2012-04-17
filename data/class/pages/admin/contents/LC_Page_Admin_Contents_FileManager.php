@@ -145,7 +145,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
 
                 $this->arrErr = $objFormParam->checkError();
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                    $objFileManager->sfDeleteDir($objFormParam->getValue('select_file'));
+                    $objFileManager->deleteFile($objFormParam->getValue('select_file'));
                 }
                 break;
             // ファイル作成

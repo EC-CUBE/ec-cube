@@ -398,7 +398,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         }
 
         // 不要なファイルの削除
-        SC_Utils_EX::deleteFile(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, false);
+        SC_Helper_FileManager_EX::deleteFile(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, false);
         return $arrErr;
     }
 
@@ -412,14 +412,14 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      */
     function rollBack($temp_dir, $plugin_id = '', $plugin_html_dir ='') {
         // 一時ディレクトリを削除.
-        SC_Utils_Ex::deleteFile($temp_dir, false);
+        SC_Helper_FileManager_Ex::deleteFile($temp_dir, false);
         // DBからプラグイン情報を削除
         if (empty($plugin_id) === false) {
             SC_Plugin_Util_Ex::deletePluginByPluginId($plugin_id);
         }
         // htmlディレクトリを削除
         if (empty($plugin_html_dir) === false) {
-            SC_Utils_Ex::deleteFile($plugin_html_dir, true);
+            SC_Helper_FileManager_Ex::deleteFile($plugin_html_dir, true);
         }
     }
 
@@ -511,7 +511,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
         $arrErr = $this->execPlugin($objPluginUpdate, 'plugin_update', 'update');
 
         // 保存ディレクトリの削除.
-        SC_Utils_Ex::deleteFile(DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR, false);
+        SC_Helper_FileManager_Ex::deleteFile(DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR, false);
 
         return $arrErr;
     }
@@ -766,11 +766,11 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
 
         SC_Plugin_Util_Ex::deletePluginByPluginId($plugin_id);
 
-        if (SC_Utils_Ex::deleteFile($this->getPluginDir($plugin_code)) === false) {
+        if (SC_Helper_FileManager_Ex::deleteFile($this->getPluginDir($plugin_code)) === false) {
             // TODO エラー処理
         }
 
-        if (SC_Utils_Ex::deleteFile($this->getHtmlPluginDir($plugin_code)) === false) {
+        if (SC_Helper_FileManager_Ex::deleteFile($this->getHtmlPluginDir($plugin_code)) === false) {
             // TODO エラー処理
         }
 
