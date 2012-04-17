@@ -261,11 +261,11 @@ class SC_SendMail {
         $recip = $this->getRecip();
         // メール送信
         $result = $this->objMail->send($recip, $header, $this->body);
-            if (PEAR::isError($result)) {
-                GC_Utils_Ex::gfPrintLog($result->getMessage());
-                GC_Utils_Ex::gfDebugLog($header);
-                return false;
-            }
+        if (PEAR::isError($result)) {
+            GC_Utils_Ex::gfPrintLog($result->getMessage());
+            GC_Utils_Ex::gfDebugLog($header);
+            return false;
+        }
         return true;
     }
 
