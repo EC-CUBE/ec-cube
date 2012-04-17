@@ -79,7 +79,7 @@ class SC_Helper_Plugin {
      */
     function getSingletonInstance($plugin_activate_flg = true) {
         if (!isset($GLOBALS['_SC_Helper_Plugin_instance']) || is_null($GLOBALS['_SC_Helper_Plugin_instance'])) {
-            $GLOBALS['_SC_Helper_Plugin_instance'] =& new SC_Helper_Plugin_Ex();
+            $GLOBALS['_SC_Helper_Plugin_instance'] = new SC_Helper_Plugin_Ex();
             $GLOBALS['_SC_Helper_Plugin_instance']->load($plugin_activate_flg);
         }
         return $GLOBALS['_SC_Helper_Plugin_instance'];
