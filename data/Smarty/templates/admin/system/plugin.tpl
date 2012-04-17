@@ -150,7 +150,7 @@
                 <!--ロゴ-->
                 <td class="center plugin_img">
                     <!--{if $plugin.plugin_site_url != '' }-->
-                        <a href="?" onclick="win03('<!--{$plugin.plugin_site_url|h}-->','plugin_site_url','620','760'); return false;"><img src="<!--{$smarty.const.ROOT_URLPATH}-->plugin/<!--{$plugin.plugin_code}-->/logo.png"width="65" height="65"/></a>&nbsp;
+                        <a href="?" onclick="win03('<!--{$plugin.plugin_site_url|h}-->','plugin_site_url','620','760'); return false;"><img src="<!--{$smarty.const.PLUGIN_HTML_URLPATH}--><!--{$plugin.plugin_code}-->/logo.png"width="65" height="65"/></a>&nbsp;
                     <!--{else}-->
                         <img src="<!--{$smarty.const.ROOT_URLPATH}-->plugin/<!--{$plugin.plugin_code}-->/logo.png"/>
                     <!--{/if}-->

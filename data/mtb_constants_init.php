@@ -390,30 +390,24 @@ define('OSTORE_LOG_REALFILE', DATA_REALDIR . "logs/ownersstore.log");
 define('OPTION_FAVORITE_PRODUCT', 1);
 /** 画像リネーム設定 (商品画像のみ) (true:リネームする、false:リネームしない) */
 define('IMAGE_RENAME', true);
-/** プラグインディレクトリ */ 
+/** (2.11用)プラグインディレクトリ(モジュールで使用) */ 
 define('PLUGIN_DIR', "plugins/"); 
-/** プラグイン保存先 */ 
+/** (2.11用)プラグイン保存先(モジュールで使用) */ 
 define('PLUGIN_REALDIR', USER_REALDIR . PLUGIN_DIR); 
-/** プラグイン URL */ 
-define('PLUGIN_URL', USER_URL . PLUGIN_DIR); 
-/** プラグイン保存先 */ 
+/** プラグイン保存先ディレクトリ */ 
 define('PLUGIN_UPLOAD_REALDIR', DATA_REALDIR . "downloads/plugin/"); 
-/** プラグイン外部ファイル保存先 */ 
-define('PLUGIN_HTML_REALDIR', HTML_REALDIR . "plugin/"); 
-/** プラグイン・ディレクトリパーミッション */ 
-define('PLUGIN_DIR_PERMISSION', 0777); 
+/** プラグイン保存先ディレクトリ(html) */ 
+define('PLUGIN_HTML_REALDIR', HTML_REALDIR . "plugin/");
 /** プラグインファイル一時保存先 */ 
 define('PLUGIN_TEMP_REALDIR', HTML_REALDIR . "upload/temp_plugin/"); 
-/** アップロード一時ディレクトリ */ 
-define('DOWNLOADS_TEMP_DIR', DATA_REALDIR . "downloads/tmp/"); 
-/** プラグイン 外部ファイルURL */ 
-define('PLUGIN_HTML_URL', USER_URL . PLUGIN_DIR); 
 /** プラグインファイル登録可能拡張子(カンマ区切り) */ 
 define('PLUGIN_EXTENSION', "tar,tar.gz"); 
 /** プラグイン一時展開用ディレクトリ（アップデート用） */
-define('DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR', DOWNLOADS_TEMP_DIR . "plugin_update/");
+define('DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR', DATA_REALDIR . "downloads/tmp/plugin_update/");
 /** プラグイン一時展開用ディレクトリ（インストール用） */
-define('DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR', DOWNLOADS_TEMP_DIR . "plugin_install/");
+define('DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR', DATA_REALDIR . "downloads/tmp/plugin_install/");
+/** プラグインURL */ 
+define('PLUGIN_HTML_URLPATH' ,ROOT_URLPATH . "plugin/");
 /** 日数桁数 */
 define('DOWNLOAD_DAYS_LEN', 3);
 /** ダウンロードファイル登録可能拡張子(カンマ区切り)" */
