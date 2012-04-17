@@ -1149,37 +1149,6 @@ class SC_Utils {
         return $mess;
     }
 
-    /*
-     * 関数名：sfWriteFile
-     * 引数1 ：書き込むデータ
-     * 引数2 ：ファイルパス
-     * 引数3 ：書き込みタイプ
-     * 引数4 ：パーミッション
-     * 戻り値：結果フラグ 成功なら true 失敗なら false
-     * 説明　：ファイル書き出し
-     */
-    function sfWriteFile($str, $path, $type, $permission = '') {
-        //ファイルを開く
-        if (!($file = fopen ($path, $type))) {
-            return false;
-        }
-
-        //ファイルロック
-        flock ($file, LOCK_EX);
-        //ファイルの書き込み
-        fputs ($file, $str);
-        //ファイルロックの解除
-        flock ($file, LOCK_UN);
-        //ファイルを閉じる
-        fclose ($file);
-        // 権限を指定
-        if ($permission != '') {
-            chmod($path, $permission);
-        }
-
-        return true;
-    }
-
     /**
      * ブラウザに強制的に送出する
      *
