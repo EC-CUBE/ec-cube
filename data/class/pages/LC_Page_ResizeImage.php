@@ -51,23 +51,38 @@ class LC_Page_ResizeImage extends LC_Page_Ex {
      * @return void
      */
     function process() {
-        $objThumb = new gdthumb();
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction.
+     *
+     * @return void
+     */
+    function action() {
+        $objFormParam = new SC_FormParam_Ex();
+        $this->lfInitParam($objFormParam);
+        $objFormParam->setParam($_GET);
+        $arrForm  = $objFormParam->getHashArray();
 
         $file = NO_IMAGE_REALFILE;
 
         // NO_IMAGE_REALFILE以外のファイル名が渡された場合、ファイル名のチェックを行う
-        if (strlen($_GET['image']) >= 1 && $_GET['image'] !== NO_IMAGE_REALFILE) {
+        if (strlen($arrForm['image']) >= 1
+            && $arrForm['image'] !== NO_IMAGE_REALFILE) {
 
             // ファイル名が正しく、ファイルが存在する場合だけ、$fileを設定
             if (!$this->lfCheckFileName()) {
-                GC_Utils_Ex::gfPrintLog('invalid access :resize_image.php $_GET[\'image\']=' . $_GET['image']);
-            }
-            else if (file_exists(IMAGE_SAVE_REALDIR . $_GET['image'])) {
-                $file = IMAGE_SAVE_REALDIR . $_GET['image'];
+                GC_Utils_Ex::gfPrintLog('invalid access :resize_image.php image=' . $arrForm['image']);
+            } elseif (file_exists(IMAGE_SAVE_REALDIR . $arrForm['image'])) {
+                $file = IMAGE_SAVE_REALDIR . $arrForm['image'];
             }
         }
 
-        $objThumb->Main($file, $_GET['width'], $_GET['height'], '', true);
+        // リサイズ画像の出力
+        $this->lfOutputImage($file, $arrForm['width'], $arrForm['height']);
     }
 
     /**
@@ -77,6 +92,12 @@ class LC_Page_ResizeImage extends LC_Page_Ex {
      */
     function destroy() {
         parent::destroy();
+    }
+
+    function lfInitParam(&$objFormParam) {
+        $objFormParam->addParam('画像ファイル名', 'image', STEXT_LEN, 'a',  array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('画像の幅', 'width', STEXT_LEN, 'n',  array('NUM_CHECK'));
+        $objFormParam->addParam('画像の高さ', 'width', STEXT_LEN, 'n',  array('NUM_CHECK'));
     }
 
     /**
@@ -93,5 +114,19 @@ class LC_Page_ResizeImage extends LC_Page_Ex {
         } else {
             return true;
         }
+    }
+
+    /**
+     * 画像の出力
+     *
+     * @param string $file 画像ファイル名
+     * @param integer $width 画像の幅
+     * @param integer $height 画像の高さ
+     * 
+     * @return void
+     */
+    function lfOutputImage($file, $width, $height) {
+        $objThumb = new gdthumb();
+        $objThumb->Main($file, $width, $height, '', true);
     }
 }
