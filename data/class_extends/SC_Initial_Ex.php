@@ -33,13 +33,4 @@ require_once CLASS_REALDIR . 'SC_Initial.php';
  * @version $Id$
  */
 class SC_Initial_Ex extends SC_Initial {
-
-    // {{{ constructor
-
-    /**
-     * コンストラクタ
-     */
-    function SC_Initial_Ex() {
-        parent::SC_Initial();
-    }
 }

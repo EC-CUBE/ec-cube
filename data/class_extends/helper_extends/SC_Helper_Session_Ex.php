@@ -34,14 +34,4 @@ require_once CLASS_REALDIR . 'helper/SC_Helper_Session.php';
  * @version $Id:SC_Helper_Session_Ex.php 16741 2007-11-08 00:43:24Z adachi $
  */
 class SC_Helper_Session_Ex extends SC_Helper_Session {
-
-    // }}}
-    // {{{ constructors
-
-    /**
-     * デフォルトコンストラクタ.
-     */
-    function SC_Helper_Session_Ex() {
-        parent::SC_Helper_Session();
-    }
 }

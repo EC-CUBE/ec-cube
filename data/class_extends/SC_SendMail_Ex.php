@@ -34,7 +34,4 @@ require_once CLASS_REALDIR . 'SC_SendMail.php';
  * @version $Id$
  */
 class SC_SendMail_Ex extends SC_SendMail {
-    function SC_SendMail_Ex() {
-        parent::SC_SendMail();
-    }
 }
