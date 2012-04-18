@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once CLASS_REALDIR . 'pages/mypage/LC_Page_Mypage_Download.php';
+require_once CLASS_REALDIR . 'pages/mypage/LC_Page_Mypage_DownLoad.php';
 
 /**
  * ダウンロード商品ダウンロード のページクラス(拡張).

@@ -23,7 +23,7 @@
 
 // {{{ requires
 require_once '../require.php';
-require_once CLASS_REALDIR . 'pages/mypage/LC_Page_Mypage_DownLoad.php';
+require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_Mypage_DownLoad_Ex.php';
 
 // }}}
 // {{{ generate page
