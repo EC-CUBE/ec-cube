@@ -122,5 +122,18 @@ class SC_MobileUserAgent {
             return true;
         }
     }
-
+    
+    /**
+     * EC-CUBE がサポートする携帯キャリアかどうかを判別する。 (モジュールで使用)
+     * 
+     * @return boolean サポートしている場合は true、それ以外の場合は false を返す。 
+     */
+    function isMobile() { 
+        $objAgent =& Net_UserAgent_Mobile::singleton(); 
+        if (Net_UserAgent_Mobile::isError($objAgent)) { 
+            return false; 
+        } else { 
+            return $objAgent->isDoCoMo() || $objAgent->isEZweb() || $objAgent->isVodafone(); 
+        } 
+    }
 }
