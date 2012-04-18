@@ -1,10 +1,10 @@
 <?php
 /*
- * This file is part of EC CUORE
+ * This file is part of EC-CUBE
  *
- * Copyright(c) 2009 CUORE CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2011 LOCKON CO.,LTD. All Rights Reserved.
  *
- * http://ec.cuore.jp/
+ * http://www.lockon.co.jp/
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,14 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
-require_once '../require.php';
-require_once CLASS_REALDIR . 'pages/mypage/LC_Page_Mypage_DownLoad.php';
+require_once CLASS_REALDIR . 'sessionfactory/SC_SessionFactory_UseCookie.php';
 
-// }}}
-// {{{ generate page
-
-$objPage = new LC_Page_Mypage_DownLoad_Ex();
-register_shutdown_function(array($objPage, 'destroy'));
-$objPage->init();
-$objPage->process();
+class SC_SessionFactory_UseCookie_Ex extends SC_SessionFactory_UseCookie {
+}

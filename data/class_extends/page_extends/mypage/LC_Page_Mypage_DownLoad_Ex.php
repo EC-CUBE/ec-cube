@@ -21,37 +21,47 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+// {{{ requires
+require_once CLASS_REALDIR . 'pages/mypage/LC_Page_Mypage_Download.php';
+
 /**
- * APIの基本クラス
+ * ダウンロード商品ダウンロード のページクラス(拡張).
  *
- * @package Api
+ * LC_Page_Mypage_Download をカスタマイズする場合はこのクラスを編集する.
+ *
+ * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id: LC_Page_Mypage_Download_Ex.php $
  */
-require_once CLASS_EX_REALDIR . 'api_extends/SC_Api_Abstract_Ex.php';
+class LC_Page_Mypage_Download_Ex extends LC_Page_Mypage_Download {
 
-class API_Default extends SC_Api_Abstract_Ex {
+    // }}}
+    // {{{ functions
 
-    protected $operation_name = 'Default';
-    protected $operation_description = 'Default Operation';
-    protected $default_auth_types = '99';
-    protected $default_enable = '1';
-    protected $default_is_log = '0';
-    protected $default_sub_data = '';
-
-    public function doAction($arrParam) {
-        $this->arrResponse = array('DefaultEmpty' => array());
-        return true;
+    /**
+     * Page を初期化する.
+     *
+     * @return void
+     */
+    function init() {
+        parent::init();
     }
 
-    public function getRequestValidate() {
-        return array('DefaultResponse' => array());
+    /**
+     * Page のプロセス.
+     *
+     * @return void
+     */
+    function process() {
+        parent::process();
     }
 
-    public function getResponseGroupName() {
-        return 'DefaultResponse';
-    }
-
-    protected function lfInitParam(&$objFormParam) {
+    /**
+     * デストラクタ.
+     *
+     * @return void
+     */
+    function destroy() {
+        parent::destroy();
     }
 }

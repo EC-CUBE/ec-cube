@@ -157,7 +157,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         $this->arrForm = $arrRet;
         // エラー入力なし
         if (count($arrErr) == 0) {
-            $objFpdf = new SC_Fpdf($arrRet['download'], $arrRet['title']);
+            $objFpdf = new SC_Fpdf_Ex($arrRet['download'], $arrRet['title']);
             foreach ($arrRet['order_id'] AS $key => $val) {
                 $arrPdfData = $arrRet;
                 $arrPdfData['order_id'] = $val;

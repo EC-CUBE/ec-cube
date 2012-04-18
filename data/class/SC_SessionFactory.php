@@ -60,7 +60,7 @@ class SC_SessionFactory {
         switch ($type) {
             // セッションの維持にリクエストパラメーターを使用する
             case 'useRequest':
-                $session = new SC_SessionFactory_UseRequest;
+                $session = new SC_SessionFactory_UseRequest_Ex;
                 SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE
                     ? $session->setState('mobile')
                     : $session->setState('pc');
@@ -71,10 +71,10 @@ class SC_SessionFactory {
             default:
                 // モバイルの場合はSC_SessionFactory_UseRequestを使用する
                 if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
-                    $session = new SC_SessionFactory_UseRequest;
+                    $session = new SC_SessionFactory_UseRequest_Ex;
                     $session->setState('mobile');
                 } else {
-                    $session = new SC_SessionFactory_UseCookie;
+                    $session = new SC_SessionFactory_UseCookie_Ex;
                 }
                 break;
         }

@@ -28,9 +28,9 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-require_once CLASS_REALDIR . 'api/SC_Api_Abstract.php';
+require_once CLASS_EX_REALDIR . 'api_extends/SC_Api_Abstract_Ex.php';
 
-class API_CartClear extends SC_Api_Abstract {
+class API_CartClear extends SC_Api_Abstract_Ex {
 
     protected $operation_name = 'CartClear';
     protected $operation_description = 'カートのクリア';

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once CLASS_REALDIR . 'pages/frontparts/bloc/LC_Page_FrontParts_Bloc.php';
+require_once CLASS_EX_REALDIR . 'page_extends/frontparts/bloc/LC_Page_FrontParts_Bloc_Ex.php';
 
 /**
  * カート のページクラス.
@@ -31,7 +31,7 @@ require_once CLASS_REALDIR . 'pages/frontparts/bloc/LC_Page_FrontParts_Bloc.php'
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_FrontParts_Bloc_Cart.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
+class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc_Ex {
 
     // }}}
     // {{{ functions

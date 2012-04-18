@@ -22,7 +22,7 @@
  */
 
 // 棒グラフ生成クラス
-class SC_Graph_Bar extends SC_Graph_Line{
+class SC_Graph_Bar extends SC_Graph_Line_Ex{
     // コンストラクタ
     function __construct(
         $bgw = BG_WIDTH, $bgh = BG_HEIGHT, $left = LINE_LEFT, $top = LINE_TOP,

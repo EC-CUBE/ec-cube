@@ -32,7 +32,7 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_SessionFactory_UseRequest extends SC_SessionFactory {
+class SC_SessionFactory_UseRequest extends SC_SessionFactory_Ex {
 
     var $state = null;
 

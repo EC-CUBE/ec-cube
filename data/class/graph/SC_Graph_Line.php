@@ -22,7 +22,7 @@
  */
 
 // 折れ線グラフ生成クラス
-class SC_Graph_Line extends SC_Graph_Base{
+class SC_Graph_Line extends SC_Graph_Base_Ex{
     var $area_width;
     var $area_height;
     var $ygrid_on;

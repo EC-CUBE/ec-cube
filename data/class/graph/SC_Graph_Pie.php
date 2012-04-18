@@ -22,7 +22,7 @@
  */
 
 // 円グラフ生成クラス
-class SC_Graph_Pie extends SC_Graph_Base{
+class SC_Graph_Pie extends SC_Graph_Base_Ex{
     var $cw;
     var $ch;
     var $cz;

@@ -23,7 +23,7 @@
 
 // {{{ requires
 define('CALENDAR_ROOT', DATA_REALDIR.'module/Calendar'.DIRECTORY_SEPARATOR);
-require_once CLASS_REALDIR . 'pages/frontparts/bloc/LC_Page_FrontParts_Bloc.php';
+require_once CLASS_EX_REALDIR . 'page_extends/frontparts/bloc/LC_Page_FrontParts_Bloc_Ex.php';
 
 /**
  * Calendar のページクラス.
@@ -32,7 +32,7 @@ require_once CLASS_REALDIR . 'pages/frontparts/bloc/LC_Page_FrontParts_Bloc.php'
  * @author LOCKON CO.,LTD.
  * @version $ $
  */
-class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc {
+class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex {
 
     // }}}
     // {{{ functions

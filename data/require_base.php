@@ -41,7 +41,7 @@ if (!defined('SAFE') || !SAFE) {
         $objSession = new SC_Helper_Session_Ex();
 
         // セッション初期化・開始
-        $sessionFactory = SC_SessionFactory::getInstance();
+        $sessionFactory = SC_SessionFactory_Ex::getInstance();
         $sessionFactory->initSession();
         
         // プラグインを読み込む

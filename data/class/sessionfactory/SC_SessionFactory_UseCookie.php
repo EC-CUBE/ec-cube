@@ -32,7 +32,7 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_SessionFactory_UseCookie extends SC_SessionFactory {
+class SC_SessionFactory_UseCookie extends SC_SessionFactory_Ex {
 
     // }}}
     // {{{ functions
