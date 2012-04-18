@@ -30,7 +30,7 @@
  * @author LOCKON CO.,LTD.
  * @version $Id: $
  */
-class SC_Plugin_Base {
+abstract class SC_Plugin_Base {
 
     var $arrSelfInfo;
 
@@ -43,8 +43,44 @@ class SC_Plugin_Base {
     function SC_Plugin_Base (array $arrSelfInfo) {
         $this->arrSelfInfo = $arrSelfInfo;
     }
-
+    /**
+     * インストール
+     * installはプラグインのインストール時に実行されます.
+     * 引数にはdtb_pluginのプラグイン情報が渡されます.
+     *
+     * @param array $arrPlugin plugin_infoを元にDBに登録されたプラグイン情報(dtb_plugin)
+     * @return void
+     */
+    abstract function install($arrPlugin);
+    
+    /**
+     * アンインストール
+     * uninstallはアンインストール時に実行されます.
+     * 引数にはdtb_pluginのプラグイン情報が渡されます.
+     * 
+     * @param array $arrPlugin プラグイン情報の連想配列(dtb_plugin)
+     * @return void
+     */
+    abstract function uninstall($arrPlugin);
+    
+    /**
+     * 稼働
+     * enableはプラグインを有効にした際に実行されます.
+     * 引数にはdtb_pluginのプラグイン情報が渡されます.
+     *
+     * @param array $arrPlugin プラグイン情報の連想配列(dtb_plugin)
+     * @return void
+     */
+    abstract function enable($arrPlugin);
+    
+    /**
+     * 停止
+     * disableはプラグインを無効にした際に実行されます.
+     * 引数にはdtb_pluginのプラグイン情報が渡されます.
+     *
+     * @param array $arrPlugin プラグイン情報の連想配列(dtb_plugin)
+     * @return void
+     */
+    abstract function disable($arrPlugin);
 }
-
-
 ?>
