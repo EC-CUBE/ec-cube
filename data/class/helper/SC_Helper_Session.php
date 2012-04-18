@@ -24,7 +24,7 @@ class SC_Helper_Session {
      *
      * 各関数をセッションハンドラに保存する
      */
-    function SC_Helper_Session() {
+    function __construct() {
         $this->objDb = new SC_Helper_DB_Ex();
         session_set_save_handler(array(&$this, 'sfSessOpen'),
                                  array(&$this, 'sfSessClose'),

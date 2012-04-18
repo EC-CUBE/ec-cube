@@ -36,7 +36,7 @@ class SC_SelectSql {
     var $arrVal;
 
     //--　コンストラクタ。
-    function SC_SelectSql($array = '') {
+    function __construct($array = '') {
         if (is_array($array)) {
             $this->arrSql = $array;
         }

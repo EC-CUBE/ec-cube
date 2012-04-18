@@ -43,7 +43,7 @@ class SC_Session {
     var $uniqid;
 
     /* コンストラクタ */
-    function SC_Session() {
+    function __construct() {
         // セッション情報の保存
         if (isset($_SESSION['cert'])) {
             $this->sid = session_id();

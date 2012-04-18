@@ -34,7 +34,7 @@ class SC_Initial {
     /**
      * コンストラクタ.
      */
-    function SC_Initial() {
+    function __construct() {
 
         /** EC-CUBEのバージョン */
         define('ECCUBE_VERSION', '2.12.0-beta');

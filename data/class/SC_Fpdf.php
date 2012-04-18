@@ -32,7 +32,7 @@ require DATA_REALDIR . 'module/fpdi/japanese.php';
 define('PDF_TEMPLATE_REALDIR', TEMPLATE_ADMIN_REALDIR . 'pdf/');
 
 class SC_Fpdf extends PDF_Japanese {
-    function SC_Fpdf($download, $title, $tpl_pdf = 'nouhinsyo1.pdf') {
+    function __construct($download, $title, $tpl_pdf = 'nouhinsyo1.pdf') {
         $this->FPDF();
         // デフォルトの設定
         $this->tpl_pdf = PDF_TEMPLATE_REALDIR . $tpl_pdf;  // テンプレートファイル

@@ -29,7 +29,7 @@ class SC_Date {
     var $end_year;
 
     // コンストラクタ
-    function SC_Date($start_year='', $end_year='') {
+    function __construct($start_year='', $end_year='') {
         if ($start_year)  $this->setStartYear($start_year);
         if ($end_year)    $this->setEndYear($end_year);
     }

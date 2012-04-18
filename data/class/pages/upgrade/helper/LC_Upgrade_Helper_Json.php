@@ -17,7 +17,7 @@ class LC_Upgrade_Helper_Json extends Services_JSON {
      *
      * @return SC_Upgrade_Helper_Json
      */
-    function LC_Upgrade_Helper_Json() {
+    function __construct() {
         parent::Services_JSON();
     }
 

@@ -34,7 +34,7 @@ class SC_SendMail {
     var $objMail;
 
     // コンストラクタ
-    function SC_SendMail() {
+    function __construct() {
         $this->arrRecip = array();
         $this->to = '';
         $this->subject = '';

@@ -57,7 +57,7 @@ class SC_UploadFile {
     var $image = array();
 
     // ファイル管理クラス
-    function SC_UploadFile($temp_dir, $save_dir) {
+    function __construct($temp_dir, $save_dir) {
         $this->temp_dir = rtrim($temp_dir, '/') . '/';
         $this->save_dir = rtrim($save_dir, '/') . '/';
         $this->file_max = 0;

@@ -46,7 +46,7 @@ class SC_Helper_Transform {
      * @param string $source 変形対象のテンプレート
      * @return void
      */
-    public function SC_Helper_Transform($source) {
+    public function __construct($source) {
         $this->objDOM = new DOMDocument();
         $this->objDOM->strictErrorChecking = false;
         $this->snip_count      = 0;

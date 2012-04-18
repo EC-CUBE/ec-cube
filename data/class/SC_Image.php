@@ -26,7 +26,7 @@ class SC_Image {
 
     var $tmp_dir;
 
-    function SC_Image($tmp_dir) {
+    function __construct($tmp_dir) {
         // ヘッダファイル読込
         $this->tmp_dir = rtrim($tmp_dir, '/') . '/';
     }

@@ -24,7 +24,7 @@
 /* カートセッション管理クラス */
 class SC_SiteSession {
     /* コンストラクタ */
-    function SC_SiteSession() {
+    function __construct() {
         // 前ページでの登録成功判定を引き継ぐ
         $_SESSION['site']['pre_regist_success'] =
                 isset($_SESSION['site']['regist_success'])

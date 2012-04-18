@@ -46,7 +46,7 @@ class SC_Display{
      * const('ADMIN',99);
      */
 
-    function SC_Display($hasPrevURL = true) {
+    function __construct($hasPrevURL = true) {
         $this->response = new SC_Response_Ex();
         if ($hasPrevURL) {
             $this->setPrevURL();

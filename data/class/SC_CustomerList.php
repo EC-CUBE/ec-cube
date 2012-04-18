@@ -28,8 +28,8 @@ class SC_CustomerList extends SC_SelectSql_Ex {
 
     var $arrColumnCSV;
 
-    function SC_CustomerList($array, $mode = '') {
-        parent::SC_SelectSql($array);
+    function __construct($array, $mode = '') {
+        parent::__construct($array);
 
         $masterData = new SC_DB_MasterData_Ex();
 

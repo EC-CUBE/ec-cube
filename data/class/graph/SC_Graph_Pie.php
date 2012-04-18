@@ -32,8 +32,8 @@ class SC_Graph_Pie extends SC_Graph_Base{
     var $arrData;
 
     // コンストラクタ
-    function SC_Graph_Pie($bgw = BG_WIDTH, $bgh = BG_HEIGHT, $left = PIE_LEFT, $top = PIE_TOP) {
-        parent::SC_Graph_Base($bgw, $bgh, $left, $top);
+    function __construct($bgw = BG_WIDTH, $bgh = BG_HEIGHT, $left = PIE_LEFT, $top = PIE_TOP) {
+        parent::__construct($bgw, $bgh, $left, $top);
         // サイズ設定
         $this->setSize(PIE_WIDTH, PIE_HEIGHT, PIE_THICK);
         // 位置設定

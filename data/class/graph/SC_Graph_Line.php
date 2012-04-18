@@ -39,10 +39,10 @@ class SC_Graph_Line extends SC_Graph_Base{
     var $y_margin;
 
     // コンストラクタ
-    function SC_Graph_Line(
+    function __construct(
         $bgw = BG_WIDTH, $bgh = BG_HEIGHT, $left = LINE_LEFT, $top = LINE_TOP,
         $area_width = LINE_AREA_WIDTH, $area_height = LINE_AREA_HEIGHT) {
-        parent::SC_Graph_Base($bgw, $bgh, $left, $top);
+        parent::__construct($bgw, $bgh, $left, $top);
         $this->area_width = $area_width;
         $this->area_height = $area_height;
         $this->ygrid_on = true;

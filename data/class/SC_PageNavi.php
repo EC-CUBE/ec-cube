@@ -41,7 +41,7 @@ class SC_PageNavi {
     var $arrPagenavi = array(); // ページ
 
     // コンストラクタ
-    function SC_PageNavi($now_page, $all_row, $page_row, $func_name, $navi_max = NAVI_PMAX, $urlParam = '', $display_number = true) {
+    function __construct($now_page, $all_row, $page_row, $func_name, $navi_max = NAVI_PMAX, $urlParam = '', $display_number = true) {
         $this->arrPagenavi['mode'] = 'search';
 
         //現在ページ($now_page)が正しい数値でない場合

@@ -28,7 +28,7 @@ class SC_Helper_CSV {
     /**
      * デフォルトコンストラクタ.
      */
-    function SC_Helper_CSV() {
+    function __construct() {
         $this->init();
     }
 

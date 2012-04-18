@@ -45,9 +45,6 @@ class SC_Response{
      */
     var $encoding;
 
-    function SC_Response() {
-    }
-
     /**
      * レスポンス出力を書き込む.
      */

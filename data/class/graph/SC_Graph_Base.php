@@ -181,7 +181,7 @@ class SC_Graph_Base {
     var $ARR_GRID_COLOR;
 
     // コンストラクタ
-    function SC_Graph_Base($bgw, $bgh, $left, $top) {
+    function __construct($bgw, $bgh, $left, $top) {
         $this->init();
         // 画像作成
         $this->bgw = $bgw;

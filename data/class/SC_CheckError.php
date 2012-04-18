@@ -31,7 +31,7 @@ class SC_CheckError {
     var $arrParam;
 
     // チェック対象の値が含まれる配列をセットする。
-    function SC_CheckError($array = '') {
+    function __construct($array = '') {
         if ($array != '') {
             $this->arrParam = $array;
         } else {

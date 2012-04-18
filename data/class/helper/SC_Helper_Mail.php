@@ -36,7 +36,7 @@ class SC_Helper_Mail {
     /**
      * コンストラクタ.
      */
-    function SC_Helper_Mail() {
+    function __construct() {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrMAILTPLPATH =  $masterData->getMasterData('mtb_mail_tpl_path');
         $this->arrPref = $masterData->getMasterData('mtb_pref');

@@ -29,9 +29,6 @@ class SC_Customer {
     /** 会員情報 */
     var $customer_data;
 
-    function SC_Customer() {
-    }
-
     function getCustomerDataFromEmailPass($pass, $email, $mobile = false) {
         // 小文字に変換
         $email = strtolower($email);

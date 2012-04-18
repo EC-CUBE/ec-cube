@@ -46,7 +46,7 @@ class SC_Query {
      * @param boolean $force_run エラーが発生しても処理を続行する場合 true
      * @param boolean $new 新規に接続を行うかどうか
      */
-    function SC_Query($dsn = '', $force_run = false, $new = false) {
+    function __construct($dsn = '', $force_run = false, $new = false) {
 
         if ($dsn == '') {
             $dsn = DEFAULT_DSN;
