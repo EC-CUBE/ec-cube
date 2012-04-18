@@ -40,7 +40,7 @@ abstract class SC_Plugin_Base {
      * @param array $arrSelfInfo 自身のプラグイン情報
      * @return void
      */
-    function SC_Plugin_Base (array $arrSelfInfo) {
+    function __construct(array $arrSelfInfo) {
         $this->arrSelfInfo = $arrSelfInfo;
     }
     /**
