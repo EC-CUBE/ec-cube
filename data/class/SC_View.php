@@ -30,8 +30,11 @@ class SC_View {
     var $objPage;
 
     // コンストラクタ
-    function SC_View() {
+    function __construct() {
+        $this->init();
+    }
 
+    function init() {
         $this->_smarty = new Smarty;
         $this->_smarty->left_delimiter = '<!--{';
         $this->_smarty->right_delimiter = '}-->';

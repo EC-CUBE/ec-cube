@@ -22,18 +22,26 @@
  */
 
 class SC_SiteView extends SC_View_Ex {
-    function SC_SiteView($setPrevURL = true) {
-        parent::SC_View();
+    function __construct($setPrevURL = true) {
+        parent::__construct();
+
+        if ($setPrevURL) {
+            $this->setPrevURL();
+        }
+    }
+
+    function init() {
+        parent::init();
 
         $this->_smarty->template_dir = TEMPLATE_REALDIR;
         $this->_smarty->compile_dir = COMPILE_REALDIR;
 
         $this->assignTemplatePath(DEVICE_TYPE_PC);
         $this->initpath();
+    }
 
-        if ($setPrevURL) {
+    function setPrevURL() {
             $objCartSess = new SC_CartSession_Ex();
             $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
-        }
     }
 }

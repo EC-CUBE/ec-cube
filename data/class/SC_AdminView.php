@@ -22,8 +22,13 @@
  */
 
 class SC_AdminView extends SC_View_Ex {
-    function SC_AdminView() {
-        parent::SC_View();
+    function __construct() {
+        parent::__construct();
+    }
+
+    function init() {
+        parent::init();
+
         $this->_smarty->template_dir = TEMPLATE_ADMIN_REALDIR;
         $this->_smarty->compile_dir = COMPILE_ADMIN_REALDIR;
         $this->assign('TPL_URLPATH_DEFAULT', ROOT_URLPATH . USER_DIR . USER_PACKAGE_DIR . DEFAULT_TEMPLATE_NAME . '/');
