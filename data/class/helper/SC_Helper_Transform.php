@@ -36,6 +36,8 @@ class SC_Helper_Transform {
     protected $arrElementTree;
     protected $arrSelectElements;
     protected $html_source;
+    protected $header_source;
+    protected $footer_source;
     protected $search_depth;
 
     const ERR_TARGET_ELEMENT_NOT_FOUND = 1;
@@ -55,12 +57,20 @@ class SC_Helper_Transform {
         $this->arrElementTree  = array();
         $this->arrSelectElements = array();
         $this->html_source = $source;
+        $this->header_source = NULL;
+        $this->footer_source = NULL;
         $this->search_depth = 0;
 
         if (!in_array(mb_detect_encoding($source), array('ASCII', 'UTF-8'))) {
             SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, 'テンプレートの文字コードがUTF-8ではありません');
         }
-
+        
+        // Smartyのコメントを削除
+        $source = preg_replace(
+            '/<\!--{\*.+?\*\}-->/s',
+            '',
+            $source
+        );
         // JavaScript内にSmartyのタグが存在するものを、コメント形式に置換
         $source = preg_replace_callback(
             '/<script.+?\/script>/s',
@@ -80,6 +90,13 @@ class SC_Helper_Transform {
             $source
         );
 
+        // BODYタグの外側は退避させる
+        if (preg_match('/^(.*?<body[^>]*>)(.+)(<\/body>.*)$/is', $source, $arrMatches)) {
+            $this->header_source = $arrMatches[1];
+            $source = $arrMatches[2];
+            $this->footer_source = $arrMatches[3];
+        }
+        
         $source = '<meta http-equiv="content-type" content="text/html; charset=UTF-8" /><html><body><!--TemplateTransformer start-->'.$source.'<!--TemplateTransformer end--></body></html>';
         @$this->objDOM->loadHTML($source);
         $this->lfScanChild($this->objDOM);
@@ -293,9 +310,10 @@ class SC_Helper_Transform {
             SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, 'テンプレートの操作に失敗しました。' . $err_msg);
         } elseif ($this->snip_count) {
             $html = $this->objDOM->saveHTML();
-            $html = str_replace($this->arrSmartyTagsSub, $this->arrSmartyTagsOrg, $html);
             $html = preg_replace('/^.*<\!--TemplateTransformer start-->/s', '', $html);
             $html = preg_replace('/<\!--TemplateTransformer end-->.*$/s', '', $html);
+            $html = $this->header_source.$html.$this->footer_source;
+            $html = str_replace($this->arrSmartyTagsSub, $this->arrSmartyTagsOrg, $html);
             return $html;
         } else {
             return $this->html_source;
