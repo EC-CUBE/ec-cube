@@ -94,6 +94,11 @@ class SC_MobileImage {
 
             // HTML中のIMGタグを変換後のファイルパスに置換する
             foreach ($images[1] as $key => $path) {
+                // resize_image.phpは除外
+                if (stripos($path, ROOT_URLPATH . 'resize_image.php') !== FALSE) {
+                    break;
+                }
+
                 $realpath = html_entity_decode($path, ENT_QUOTES);
                 $realpath = preg_replace('|^' . ROOT_URLPATH . '|', HTML_REALDIR, $realpath);
                 $converted = $imageConverter->execute($realpath);

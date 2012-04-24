@@ -53,7 +53,6 @@ class LC_Page_ResizeImage extends LC_Page_Ex {
     function process() {
         parent::process();
         $this->action();
-        $this->sendResponse();
     }
 
     /**
