@@ -1,16 +1,5 @@
 @charset "utf-8";
 
-* {
-    margin: 0;
-    padding: 0;
-}
-
-
-/* 上記による Fierfox 2 崩れ対応 */
-option {
-    margin-right: 0.5em;
-}
-
 html {
     height: 100%;
 }
@@ -32,7 +21,6 @@ option {
 input,
 textarea {
     margin-right: 3px;
-    font-size: 100%;
 }
 
 select {
@@ -46,15 +34,6 @@ textarea.top {
 
 .page_rows {
     margin-bottom: 20px;
-}
-
-img {
-    border: 0;
-}
-
-ul,
-li {
-    list-style: none;
 }
 
 hr {
