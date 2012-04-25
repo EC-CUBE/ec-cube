@@ -234,9 +234,9 @@ define('LTEXT_LEN', 3000);
 define('LLTEXT_LEN', 99999);
 /** URLの文字長 */
 define('URL_LEN', 1024);
-/** 管理画面用：ID・パスワードの文字数制限 */
+/** 管理画面用：ID・パスワードの最大文字数 */
 define('ID_MAX_LEN', STEXT_LEN);
-/** 管理画面用：ID・パスワードの文字数制限 */
+/** 管理画面用：ID・パスワードの最小文字数 */
 define('ID_MIN_LEN', 4);
 /** 金額桁数 */
 define('PRICE_LEN', 8);

@@ -1128,8 +1128,8 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MLTEXT_LEN', '1000'
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LTEXT_LEN', '3000', 192, '長文の文字数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LLTEXT_LEN', '99999', 193, '超長文の文字数 (メルマガなど)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('URL_LEN', '1024', 194, 'URLの文字長');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ID_MAX_LEN', 'STEXT_LEN', 195, '管理画面用：ID・パスワードの文字数制限');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ID_MIN_LEN', '4', 196, '管理画面用：ID・パスワードの文字数制限');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ID_MAX_LEN', 'STEXT_LEN', 195, '管理画面用：ID・パスワードの最大文字数');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ID_MIN_LEN', '4', 196, '管理画面用：ID・パスワードの最小文字数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PRICE_LEN', '8', 197, '金額桁数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PERCENTAGE_LEN', '3', 198, '率桁数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('AMOUNT_LEN', '6', 199, '在庫数、販売制限数');
