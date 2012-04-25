@@ -22,46 +22,13 @@
  */
 
 // {{{ requires
-require_once CLASS_REALDIR . 'pages/admin/ownersstore/LC_Page_Admin_OwnersStore.php';
+require_once '../require.php';
+require_once CLASS_EX_REALDIR . 'page_extends/admin/ownersstore/LC_Page_Admin_OwnersStore_Module_Ex.php';
 
-/**
- * オーナーズストア管理：購入商品一覧 のページクラス(拡張).
- *
- * LC_Page_Admin_OwnersStore をカスタマイズする場合はこのクラスを編集する.
- *
- * @package Page
- * @author LOCKON CO.,LTD.
- * @version $Id$
- */
-class LC_Page_Admin_OwnersStore_Ex extends LC_Page_Admin_OwnersStore {
+// }}}
+// {{{ generate page
 
-    // }}}
-    // {{{ functions
-
-    /**
-     * Page を初期化する.
-     *
-     * @return void
-     */
-    function init() {
-        parent::init();
-    }
-
-    /**
-     * Page のプロセス.
-     *
-     * @return void
-     */
-    function process() {
-        parent::process();
-    }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
-    }
-}
+$objPage = new LC_Page_Admin_OwnersStore_Module_Ex();
+$objPage->init();
+$objPage->process();
+register_shutdown_function(array($objPage, 'destroy'));

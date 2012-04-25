@@ -22,18 +22,19 @@
  */
 
 // {{{ requires
-require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
-
+require_once CLASS_REALDIR . 'pages/admin/ownersstore/LC_Page_Admin_OwnersStore_Module.php';
+    
 /**
- * EC-CUBEアプリケーション管理 のページクラス.
+ * オーナーズストア：モジュール管理 のページクラス(拡張).
+ *
+ * LC_Page_Admin_OwnersStore をカスタマイズする場合はこのクラスを編集する.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
+class LC_Page_Admin_OwnersStore_Module_Ex extends LC_Page_Admin_OwnersStore_Module {
 
-    var $tpl_subno = 'index';
     // }}}
     // {{{ functions
 
@@ -44,12 +45,6 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
      */
     function init() {
         parent::init();
-
-        $this->tpl_mainpage = 'ownersstore/index.tpl';
-        $this->tpl_mainno   = 'ownersstore';
-        $this->tpl_subno    = 'index';
-        $this->tpl_maintitle = 'オーナーズストア';
-        $this->tpl_subtitle = '購入商品一覧';
     }
 
     /**
@@ -58,17 +53,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
      * @return void
      */
     function process() {
-        $this->action();
-        $this->sendResponse();
-    }
-
-    /**
-     * Page のアクション.
-     *
-     * @return void
-     */
-    function action() {
-        // nothing.
+        parent::process();
     }
 
     /**

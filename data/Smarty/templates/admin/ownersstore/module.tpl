@@ -44,7 +44,7 @@ OwnersStore.download();やOwnersStore.products_list();を呼び出すことで
     <!--購入商品一覧ここまで-->
 
     <div class="btn">
-        <a class="btn-normal" href="javascript:;" onclick="OwnersStore.products_list();return false;"><span>購入商品一覧を取得する</span></a>
+        <a class="btn-normal" href="javascript:;" onclick="OwnersStore.products_list();return false;"><span>モジュール一覧を取得する</span></a>
     </div>
 
     <div id="ownersstore_index">
