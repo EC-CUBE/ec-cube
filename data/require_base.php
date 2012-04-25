@@ -43,9 +43,6 @@ if (!defined('SAFE') || !SAFE) {
         // セッション初期化・開始
         $sessionFactory = SC_SessionFactory_Ex::getInstance();
         $sessionFactory->initSession();
-        
-        // プラグインを読み込む
-        require_once DATA_REALDIR . 'require_plugin.php';
 
         /*
          * 管理画面の場合は認証行う.
