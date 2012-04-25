@@ -31,7 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
+class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
 
     // }}}
     // {{{ functions
@@ -43,10 +43,10 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = 'system/plugin.tpl';
-        $this->tpl_subno    = 'plugin';
-        $this->tpl_mainno   = 'system';
-        $this->tpl_maintitle = 'システム設定';
+        $this->tpl_mainpage = 'ownersstore/plugin.tpl';
+        $this->tpl_subno    = 'index';
+        $this->tpl_mainno   = 'ownersstore';
+        $this->tpl_maintitle = 'オーナーズストア';
         $this->tpl_subtitle = 'プラグイン管理';
     }
 

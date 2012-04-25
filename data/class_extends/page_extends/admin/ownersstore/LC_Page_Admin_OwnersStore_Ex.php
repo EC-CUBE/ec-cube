@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once CLASS_REALDIR . 'pages/admin/system/LC_Page_Admin_System_Plugin.php';
+require_once CLASS_REALDIR . 'pages/admin/ownersstore/LC_Page_Admin_OwnersStore.php';
 
 /**
  * システム管理 のページクラス(拡張).
@@ -33,7 +33,7 @@ require_once CLASS_REALDIR . 'pages/admin/system/LC_Page_Admin_System_Plugin.php
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_System_Plugin_Ex extends LC_Page_Admin_System_Plugin {
+class LC_Page_Admin_OwnersStore_Ex extends LC_Page_Admin_OwnersStore {
 
     // }}}
     // {{{ functions
