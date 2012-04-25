@@ -25,7 +25,7 @@
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
- * EC-CUBEアプリケーション管理 のページクラス.
+ * オーナーズストア：モジュール管理のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.

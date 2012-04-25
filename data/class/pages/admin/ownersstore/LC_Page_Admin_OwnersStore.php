@@ -25,7 +25,7 @@
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
- * システム情報 のページクラス.
+ * オーナーズストア：プラグイン管理 のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.

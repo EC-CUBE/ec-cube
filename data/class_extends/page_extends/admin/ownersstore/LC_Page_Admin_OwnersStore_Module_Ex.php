@@ -27,7 +27,7 @@ require_once CLASS_REALDIR . 'pages/admin/ownersstore/LC_Page_Admin_OwnersStore_
 /**
  * オーナーズストア：モジュール管理 のページクラス(拡張).
  *
- * LC_Page_Admin_OwnersStore をカスタマイズする場合はこのクラスを編集する.
+ * LC_Page_Admin_OwnersStore_Module をカスタマイズする場合はこのクラスを編集する.
  *
  * @package Page
  * @author LOCKON CO.,LTD.

@@ -25,7 +25,7 @@
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
- * アプリケーション管理:インストールログ のページクラス.
+ * オーナーズストア：インストールログ のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.

@@ -25,9 +25,9 @@
 require_once CLASS_REALDIR . 'pages/admin/ownersstore/LC_Page_Admin_OwnersStore.php';
 
 /**
- * システム管理 のページクラス(拡張).
+ * オーナーズストア：プラグイン管理 のページクラス(拡張).
  *
- * LC_Page_Admin_System をカスタマイズする場合はこのクラスを編集する.
+ * LC_Page_Admin_OwnersStore をカスタマイズする場合はこのクラスを編集する.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
