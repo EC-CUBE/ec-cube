@@ -158,6 +158,11 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
                         SC_Response_Ex::actionExit();
                     } else {
                         // --- ログインに失敗した場合
+
+                        // ブルートフォースアタック対策
+                        // ログイン失敗時に遅延させる
+                        sleep(LOGIN_RETRY_INTERVAL);
+
                         $arrForm['login_email'] = strtolower($arrForm['login_email']);
                         $objQuery = SC_Query_Ex::getSingletonInstance();
                         $where = '(email = ? OR email_mobile = ?) AND status = 1 AND del_flg = 0';

@@ -87,6 +87,10 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
 
                     SC_Response_Ex::sendRedirect(ADMIN_HOME_URLPATH);
                 } else {
+                    // ブルートフォースアタック対策
+                    // ログイン失敗時に遅延させる
+                    sleep(LOGIN_RETRY_INTERVAL);
+
                     SC_Utils_Ex::sfDispError(LOGIN_ERROR);
                 }
                 break;

@@ -468,4 +468,6 @@ define('HOOK_POINT_PREPROCESS', "LC_Page_preProcess");
 define('HOOK_POINT_PROCESS', "LC_Page_process");
 /** SMARTYコンパイルモード */
 define('SMARTY_FORCE_COMPILE_MODE', false);
+/** ログイン失敗時の遅延時間(秒)(ブルートフォースアタック対策) */
+define('LOGIN_RETRY_INTERVAL', 2);
 ?>

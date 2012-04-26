@@ -1245,6 +1245,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ZIP_DOWNLOAD_URL', 
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('HOOK_POINT_PREPROCESS', 'LC_Page_preProcess', 1301, 'フックポイント(プレプロセス)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('HOOK_POINT_PROCESS', 'LC_Page_process', 1302, 'フックポイント(プロセス)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMARTY_FORCE_COMPILE_MODE', 'false', 1401, 'SMARTYコンパイルモード');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LOGIN_RETRY_INTERVAL', '2', 1411, 'ログイン失敗時の遅延時間(秒)(ブルートフォースアタック対策)');
 
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_customer', 'email_mobile', 0, '会員数増加時のログイン処理速度を向上させたいときに試してみてください');
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_products', 'name', 2, '商品名検索速度を向上させたいときに試してみてください');
