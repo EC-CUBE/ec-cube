@@ -58,6 +58,10 @@ function func_submit( id ){
             </td>
         </tr>
         <tr>
+            <th>商品コード</th>
+            <td><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code}-->" size="35" class="box35" /></td>
+        </tr>
+		<tr>
             <th>商品名</th>
             <td><input type="text" name="search_name" value="<!--{$arrForm.search_name}-->" size="35" class="box35" /></td>
         </tr>
@@ -68,7 +72,7 @@ function func_submit( id ){
         </ul>
     </div>
     <!--{* ▼検索結果表示 *}-->
-    <!--{if $tpl_linemax}-->
+    <!--{if is_numeric($tpl_linemax)}-->
     <p><!--{$tpl_linemax}-->件が該当しました。</p>
     <!--{$tpl_strnavi}-->
 
@@ -83,15 +87,16 @@ function func_submit( id ){
             <th>商品名</th>
             <th>決定</th>
         </tr>
-        <!--{section name=cnt loop=$arrProducts}-->
-        <!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
+
+        <!--{foreach name=loop from=$arrProducts item=arr}-->
+        <!--▼商品<!--{$smarty.foreach.loop.iteration}-->-->
         <tr>
             <td class="center">
-                <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|h}-->&width=65&height=65" alt="" />
+                <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arr.main_list_image|sfNoImageMainList|h}-->&width=65&height=65" alt="" />
             </td>
             <td>
-                <!--{assign var=codemin value=`$arrProducts[cnt].product_code_min`}-->
-                <!--{assign var=codemax value=`$arrProducts[cnt].product_code_max`}-->
+			    <!--{assign var=codemin value=`$arr.product_code_min`}-->
+                <!--{assign var=codemax value=`$arr.product_code_max`}-->
                 <!--{* 商品コード *}-->
                 <!--{if $codemin != $codemax}-->
                     <!--{$codemin|h}-->～<!--{$codemax|h}-->
@@ -99,15 +104,17 @@ function func_submit( id ){
                     <!--{$codemin|h}-->
                 <!--{/if}-->
             </td>
-            <td><!--{$arrProducts[cnt].name|h}--></td>
-            <td class="center"><a href="" onClick="return func_submit(<!--{$arrProducts[cnt].product_id}-->)">決定</a></td>
+            <td><!--{$arr.name|h}--></td>
+            <td class="center"><a href="" onClick="return func_submit(<!--{$arr.product_id}-->)">決定</a></td>
         </tr>
-        <!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
-        <!--{sectionelse}-->
+        <!--▲商品<!--{$smarty.foreach.loop.iteration}-->-->	
+        <!--{/foreach}-->
+        <!--{if !$tpl_linemax>0}-->
         <tr>
             <td colspan="4">商品が登録されていません</td>
         </tr>
-        <!--{/section}-->
+        <!--{/if}-->
+		
     </table>
     <!--{/if}-->
     <!--{* ▲検索結果表示 *}-->
