@@ -65,6 +65,10 @@ class LC_Page_Error extends LC_Page_Ex {
         $this->tpl_title = 'エラー';
         // ディスプレイクラス生成
         $this->objDisplay = new SC_Display_Ex();
+
+        // transformでフックしているばあいに, 再度エラーが発生するため, コールバックを無効化.
+        $objHelperPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+        $objHelperPlugin->arrRegistedPluginActions = array();
     }
 
     /**
