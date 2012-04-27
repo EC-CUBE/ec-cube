@@ -73,7 +73,7 @@ class LC_Page {
     var $arrSiteInfo;
 
     /** プラグインを実行フラグ */
-    var $plugin_activate_flg = true;
+    var $plugin_activate_flg = PLUGIN_ACTIVATE_FLAG;
 
     // }}}
     // {{{ functions

@@ -1244,6 +1244,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('HTTP_REQUEST_TIMEOU
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ZIP_DOWNLOAD_URL', '"http://www.post.japanpost.jp/zipcode/dl/kogaki/zip/ken_all.zip"', 1224, '郵便番号CSVのZIPアーカイブファイルの取得元');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('HOOK_POINT_PREPROCESS', 'LC_Page_preProcess', 1301, 'フックポイント(プレプロセス)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('HOOK_POINT_PROCESS', 'LC_Page_process', 1302, 'フックポイント(プロセス)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_ACTIVATE_FLAG', 'true', 1303, 'プラグインのロード可否フラグ)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMARTY_FORCE_COMPILE_MODE', 'false', 1401, 'SMARTYコンパイルモード');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LOGIN_RETRY_INTERVAL', '2', 1411, 'ログイン失敗時の遅延時間(秒)(ブルートフォースアタック対策)');
 
