@@ -346,6 +346,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
 
         // リフレクションオブジェクトを生成.
         $objReflection = new ReflectionClass('plugin_info');
+        $arrPluginInfo = $this->getPluginInfo($objReflection);
         // プラグインクラスに必須となるパラメータが正常に定義されているかチェックします.
         $arrErr = $this->checkPluginConstants($objReflection, DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR);
         if ($this->isError($arrErr) === true) {
@@ -354,9 +355,9 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         }
 
         // プラグインコード
-        $plugin_code = $objReflection->getConstant('PLUGIN_CODE');
+        $plugin_code = $arrPluginInfo['PLUGIN_CODE'];
         // プラグイン名
-        $plugin_name = $objReflection->getConstant('PLUGIN_NAME');
+        $plugin_name = $arrPluginInfo['PLUGIN_NAME'];
 
         // 既にインストールされていないかを判定.
         if ($this->isInstalledPlugin($plugin_code) === true) {
@@ -366,7 +367,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         }
 
         // プラグイン情報をDB登録
-        if ($this->registerData($objReflection) === false) {
+        if ($this->registerData($arrPluginInfo) === false) {
             $this->rollBack(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR);
             $arrErr['plugin_file'] = '※ DB登録に失敗しました。<br/>';
             return $arrErr;
@@ -424,6 +425,43 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
     }
 
     /**
+     * プラグイン情報を取得します.
+     * 
+     * @param ReflectionClass $objReflection
+     * @return array プラグイン情報の配列
+     */
+    function getPluginInfo(ReflectionClass $objReflection) {
+        $arrStaticProps = $objReflection->getStaticProperties();
+        $arrConstants   = $objReflection->getConstants();
+
+        $arrPluginInfoKey = array(
+            'PLUGIN_CODE',
+            'PLUGIN_NAME',
+            'CLASS_NAME',
+            'PLUGIN_VERSION',
+            'COMPLIANT_VERSION',
+            'AUTHOR',
+            'DESCRIPTION',
+            'PLUGIN_SITE_URL',
+            'AUTHOR_SITE_URL',
+            'HOOK_POINTS',
+        );
+        $arrPluginInfo = array();
+        foreach ($arrPluginInfoKey as $key) {
+            // クラス変数での定義を優先
+            if (isset($arrStaticProps[$key])) {
+                $arrPluginInfo[$key] = $arrStaticProps[$key];
+            // クラス変数定義がなければ, クラス定数での定義を読み込み.
+            } elseif ($arrConstants[$key]) {
+                $arrPluginInfo[$key] = $arrConstants[$key];
+            } else {
+                $arrPluginInfo[$key] = null;
+            }
+        }
+        return $arrPluginInfo;
+    }
+    
+    /**
      * プラグインクラス内の定数をチェックします.
      *
      * @param ReflectionClass $objReflection リフレクションオブジェクト
@@ -431,38 +469,43 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
      */
     function checkPluginConstants(ReflectionClass $objReflection, $unpack_dir) {
         $arrErr = array();
-        $plugin_code = $objReflection->getConstant('PLUGIN_CODE');
-        if ($plugin_code === false) {
+        // プラグイン情報を取得
+        $arrPluginInfo = $this->getPluginInfo($objReflection);
+
+        if (!isset($arrPluginInfo['PLUGIN_CODE'])) {
             $arrErr['plugin_file'] = '※ PLUGIN_CODEが定義されていません。<br/>';
             return $arrErr;
         }
-        $plugin_name = $objReflection->getConstant('PLUGIN_NAME');
-        if ($plugin_name === false) {
+        if (!isset($arrPluginInfo['PLUGIN_NAME'])) {
             $arrErr['plugin_file'] = '※ PLUGIN_NAMEが定義されていません。<br/>';
             return $arrErr;
         }
-        $class_name = $objReflection->getConstant('CLASS_NAME') . '.php';
-        if ($class_name === false ||file_exists($unpack_dir . $class_name) === false) {
-            $arrErr['plugin_file'] = '※ CLASS_NAMEが定義されていません。またはCLASS_NAMEが正しく定義されていません。<br/>';
+        if (!isset($arrPluginInfo['CLASS_NAME'])) {
+            $arrErr['plugin_file'] = '※ CLASS_NAMEが定義されていません。<br/>';
             return $arrErr;
         }
-        if ($objReflection->getConstant('PLUGIN_VERSION') === false) {
+        $class_path = $unpack_dir . $arrPluginInfo['CLASS_NAME'] . '.php';
+        if (file_exists($class_path) === false) {
+            $arrErr['plugin_file'] = '※ CLASS_NAMEが正しく定義されていません。<br/>';
+            return $arrErr;
+        }
+        if (!isset($arrPluginInfo['PLUGIN_VERSION'])) {
             $arrErr['plugin_file'] = '※ PLUGIN_VERSIONが定義されていません。<br/>';
             return $arrErr;
         }
-        if ($objReflection->getConstant('COMPLIANT_VERSION') === false) {
+        if (!isset($arrPluginInfo['COMPLIANT_VERSION'])) {
             $arrErr['plugin_file'] = '※ COMPLIANT_VERSIONが定義されていません。<br/>';
             return $arrErr;
         }
-        if ($objReflection->getConstant('AUTHOR') === false) {
+        if (!isset($arrPluginInfo['AUTHOR'])) {
             $arrErr['plugin_file'] = '※ AUTHORが定義されていません。<br/>';
             return $arrErr;
         }
-        if ($objReflection->getConstant('DESCRIPTION') === false) {
+        if (!isset($arrPluginInfo['DESCRIPTION'])) {
             $arrErr['plugin_file'] = '※ DESCRIPTIONが定義されていません。<br/>';
             return $arrErr;
         }
-        $objErr = new SC_CheckError_Ex($objReflection->getConstants());
+        $objErr = new SC_CheckError_Ex($arrPluginInfo);
         $objErr->doFunc(array('PLUGIN_CODE', 'PLUGIN_CODE', STEXT_LEN), array('MAX_LENGTH_CHECK','GRAPH_CHECK'));
         $objErr->doFunc(array('PLUGIN_NAME', 'PLUGIN_NAME', STEXT_LEN), array('MAX_LENGTH_CHECK'));
         $objErr->doFunc(array('CLASS_NAME', 'CLASS_NAME', STEXT_LEN), array('MAX_LENGTH_CHECK','GRAPH_CHECK'));
@@ -470,10 +513,10 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         $objErr->doFunc(array('COMPLIANT_VERSION', 'COMPLIANT_VERSION', STEXT_LEN), array('MAX_LENGTH_CHECK'));
         $objErr->doFunc(array('AUTHOR', 'AUTHOR', STEXT_LEN), array('MAX_LENGTH_CHECK'));
         $objErr->doFunc(array('DESCRIPTION', 'DESCRIPTION', MTEXT_LEN), array('MAX_LENGTH_CHECK'));
-        if ($objReflection->getConstant('PLUGIN_SITE_URL') !== false) {
+        if (isset($arrPluginInfo['PLUGIN_SITE_URL'])) {
             $objErr->doFunc(array('PLUGIN_SITE_URL', 'PLUGIN_SITE_URL', URL_LEN), array('MAX_LENGTH_CHECK','GRAPH_CHECK'));
         }
-        if ($objReflection->getConstant('AUTHOR_SITE_URL') !== false) {
+        if (isset($arrPluginInfo['AUTHOR_SITE_URL'])) {
             $objErr->doFunc(array('AUTHOR_SITE_URL', 'AUTHOR_SITE_URL', URL_LEN), array('MAX_LENGTH_CHECK','GRAPH_CHECK'));
         }
         // エラー内容を出力用の配列にセットします.
@@ -508,7 +551,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
             return $arrErr;
         }
         // プラグインクラスファイルのUPDATE処理を実行.
-        $arrErr = $this->execPlugin($objPluginUpdate, 'plugin_update', 'update');
+        $arrErr = $this->execPlugin($target_plugin, 'plugin_update', 'update');
 
         // 保存ディレクトリの削除.
         SC_Helper_FileManager_Ex::deleteFile(DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR, false);
@@ -646,10 +689,10 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
     /**
      * プラグイン情報をDB登録.
      *
-     * @param ReflectionClass $objReflection リフレクションオブジェクト
+     * @param array $arrPluginInfo プラグイン情報を格納した連想配列.
      * @return array エラー情報を格納した連想配列.
      */
-    function registerData(ReflectionClass $objReflection) {
+    function registerData($arrPluginInfo) {
 
         // プラグイン情報をDB登録.
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -657,39 +700,55 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         $arr_sqlval_plugin = array();
         $plugin_id = $objQuery->nextVal('dtb_plugin_plugin_id');
         $arr_sqlval_plugin['plugin_id'] = $plugin_id;
-        $arr_sqlval_plugin['plugin_name'] = $objReflection->getConstant('PLUGIN_NAME');
-        $arr_sqlval_plugin['plugin_code'] = $objReflection->getConstant('PLUGIN_CODE');
-        $arr_sqlval_plugin['class_name'] = $objReflection->getConstant('CLASS_NAME');
-        $arr_sqlval_plugin['author'] = $objReflection->getConstant('AUTHOR');
+        $arr_sqlval_plugin['plugin_name'] = $arrPluginInfo['PLUGIN_NAME'];
+        $arr_sqlval_plugin['plugin_code'] = $arrPluginInfo['PLUGIN_CODE'];
+        $arr_sqlval_plugin['class_name'] = $arrPluginInfo['CLASS_NAME'];
+        $arr_sqlval_plugin['author'] = $arrPluginInfo['AUTHOR'];
         // AUTHOR_SITE_URLが定義されているか判定.
-        $author_site_url = $objReflection->getConstant('AUTHOR_SITE_URL');
-        if ($author_site_url !== false) {
-            $arr_sqlval_plugin['author_site_url'] = $author_site_url;
+        $author_site_url = $arrPluginInfo['AUTHOR_SITE_URL'];
+        if ($author_site_url !== null) {
+            $arr_sqlval_plugin['author_site_url'] = $arrPluginInfo['AUTHOR'];
         }
         // PLUGIN_SITE_URLが定義されているか判定.
-        $plugin_site_url = $objReflection->getConstant('PLUGIN_SITE_URL');
-        if ($plugin_site_url !== false) {
+        $plugin_site_url = $arrPluginInfo['PLUGIN_SITE_URL'];
+        if ($plugin_site_url !== null) {
             $arr_sqlval_plugin['plugin_site_url'] = $plugin_site_url;
         }
-        $arr_sqlval_plugin['plugin_version'] = $objReflection->getConstant('PLUGIN_VERSION');
-        $arr_sqlval_plugin['compliant_version'] = $objReflection->getConstant('COMPLIANT_VERSION');
-        $arr_sqlval_plugin['plugin_description'] = $objReflection->getConstant('DESCRIPTION');
+        $arr_sqlval_plugin['plugin_version'] = $arrPluginInfo['PLUGIN_VERSION'];
+        $arr_sqlval_plugin['compliant_version'] = $arrPluginInfo['COMPLIANT_VERSION'];
+        $arr_sqlval_plugin['plugin_description'] = $arrPluginInfo['DESCRIPTION'];
         $arr_sqlval_plugin['priority'] = 0;
         $arr_sqlval_plugin['enable'] = PLUGIN_ENABLE_FALSE;
         $arr_sqlval_plugin['update_date'] = 'CURRENT_TIMESTAMP';
         $objQuery->insert('dtb_plugin', $arr_sqlval_plugin);
 
         // フックポイントをDB登録.
-        $hook_point = $objReflection->getConstant('HOOK_POINTS');
-        if ($hook_point !== false) {
-            $array_hook_point = explode(',', $hook_point);
-            if (is_array($array_hook_point)) {
-                foreach ($array_hook_point as $hook_point) {
+        $hook_point = $arrPluginInfo['HOOK_POINTS'];
+        if ($hook_point !== null) {
+            /**
+             * FIXME コードが重複しているため、要修正
+             */
+            // フックポイントが配列で定義されている場合
+            if (is_array($hook_point)) {
+                foreach ($hook_point as $h) {
                     $arr_sqlval_plugin_hookpoint = array();
                     $id = $objQuery->nextVal('dtb_plugin_hookpoint_plugin_hookpoint_id');
                     $arr_sqlval_plugin_hookpoint['plugin_hookpoint_id'] = $id;
                     $arr_sqlval_plugin_hookpoint['plugin_id'] = $plugin_id;
-                    $arr_sqlval_plugin_hookpoint['hook_point'] = $hook_point;
+                    $arr_sqlval_plugin_hookpoint['hook_point'] = $h[0];
+                    $arr_sqlval_plugin_hookpoint['callback'] = $h[1];
+                    $arr_sqlval_plugin_hookpoint['update_date'] = 'CURRENT_TIMESTAMP';
+                    $objQuery->insert('dtb_plugin_hookpoint', $arr_sqlval_plugin_hookpoint);
+                }
+            // 文字列定義の場合
+            } else {
+                $array_hook_point = explode(',', $hook_point);
+                foreach ($array_hook_point as $h) {
+                    $arr_sqlval_plugin_hookpoint = array();
+                    $id = $objQuery->nextVal('dtb_plugin_hookpoint_plugin_hookpoint_id');
+                    $arr_sqlval_plugin_hookpoint['plugin_hookpoint_id'] = $id;
+                    $arr_sqlval_plugin_hookpoint['plugin_id'] = $plugin_id;
+                    $arr_sqlval_plugin_hookpoint['hook_point'] = $h;
                     $arr_sqlval_plugin_hookpoint['update_date'] = 'CURRENT_TIMESTAMP';
                     $objQuery->insert('dtb_plugin_hookpoint', $arr_sqlval_plugin_hookpoint);
                 }

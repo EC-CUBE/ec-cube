@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2011 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2012 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -32,7 +32,7 @@
  */
 abstract class SC_Plugin_Base {
 
-    var $arrSelfInfo;
+    protected $arrSelfInfo;
 
     /**
      * コンストラクタ
@@ -82,5 +82,23 @@ abstract class SC_Plugin_Base {
      * @return void
      */
     abstract function disable($arrPlugin);
+
+    /**
+     * プラグインヘルパーへ, コールバックメソッドを登録します.
+     *
+     * @param object $objPluginHelper
+     * @param integer $priority
+     */
+    function register(SC_Helper_Plugin $objHelperPlugin, $priority) {
+        if (isset($this->arrSelfInfo['plugin_hook_point'])) {
+            $arrHookPoints = $this->arrSelfInfo['plugin_hook_point'];
+            foreach ($arrHookPoints as $hook_point) {
+                if (isset($hook_point['callback'])) {
+                    $hook_point_name = $hook_point['hook_point'];
+                    $callback_name   = $hook_point['callback'];
+                    $objHelperPlugin->addAction($hook_point_name, array($this, $callback_name), $priority);
+                }
+            }
+        }
+    }
 }
-?>

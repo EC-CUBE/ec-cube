@@ -38,6 +38,14 @@ class SC_Plugin_Util {
             $objQuery->setOrder('priority DESC, plugin_id ASC');
         }
         $arrRet = $objQuery->select($col,$table,$where);
+        
+        // プラグインフックポイントを取得.
+        $max = count($arrRet);
+        for ($i = 0; $i < $max; $i++) {
+            $plugin_id = $arrRet[$i]['plugin_id'];
+            $arrHookPoint = SC_Plugin_Util::getPluginHookPoint($plugin_id);
+            $arrRet[$i]['plugin_hook_point'] = $arrHookPoint;
+        }
         return $arrRet;
     }
 
@@ -119,5 +127,19 @@ class SC_Plugin_Util {
             }
         }
         return $arrPluginDirectory;
+    }
+    
+    /**
+     * プラグインIDをキーに, プラグインフックポイントを取得する.
+     *
+     * @param integer $plugin_id
+     * @return array フックポイントの一覧
+     */
+    function getPluginHookPoint($plugin_id) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $cols = '*';
+        $from = 'dtb_plugin_hookpoint';
+        $where = 'plugin_id = ?';
+        return $objQuery->select($cols, $from, $where, array($plugin_id));
     }
 }
