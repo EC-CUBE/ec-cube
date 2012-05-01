@@ -68,13 +68,30 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
         $objFormParam->convParam();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $objDb = new SC_Helper_DB_Ex();
 
         switch ($this->getMode()) {
+            case 'down': //商品の並び替えをする。おすすめはデータベースの登録が昇順なので、Modeを逆にする。
+                $arrRet = $objQuery->select("best_id", "dtb_best_products", "rank = ?", array($_POST["rank"])); //おすすめidの取得
+                $best_id = $arrRet[0]["best_id"];
+                $objDb->sfRankUp('dtb_best_products','best_id',$best_id);
+                $arrPost = $objFormParam->getHashArray();
+                $arrItems = $this->getRecommendProducts();
+                break;
+            
+            case 'up': //商品の並び替えをする。おすすめのみデータベースの登録が昇順なので、Modeを逆にする。
+                $arrRet = $objQuery->select("best_id", "dtb_best_products", "rank = ?", array($_POST["rank"])); //おすすめidの取得
+                $best_id = $arrRet[0]["best_id"];
+                $objDb->sfRankDown('dtb_best_products','best_id',$best_id);
+                $arrPost = $objFormParam->getHashArray();
+                $arrItems = $this->getRecommendProducts();
+                break;
+
             case 'regist': // 商品を登録する。
                 $this->arrErr = $this->lfCheckError($objFormParam);
                 $arrPost = $objFormParam->getHashArray();

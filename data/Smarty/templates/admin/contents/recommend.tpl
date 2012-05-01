@@ -63,9 +63,24 @@ function lfnCheckSetItem( rank ){
     }
 }
 
+function lfnSortItem(mode,data){
+    var flag = true;
+    var checkRank = '<!--{$checkRank|h}-->';
+    if ( checkRank ){
+        if( ! window.confirm('さきほど選択した<!--{$checkRank|h}-->位の情報は破棄されます。宜しいでしょうか')){
+            flag = false;
+        }
+    }
+	
+    if ( flag ){
+        document.form1["mode"].value = mode;
+        document.form1["rank"].value = data;
+        document.form1.submit();
+    }
+}
+
 //-->
 </script>
-
 
         <!--{section name=cnt loop=$tpl_disp_max}-->
 
@@ -80,6 +95,7 @@ function lfnCheckSetItem( rank ){
             <th>商品/コメント</th>
             <th>編集</th>
             <th>削除</th>
+			<th>並び替え</th>
         </tr>
 
         <tr>
@@ -134,6 +150,15 @@ function lfnCheckSetItem( rank ){
                         <a href="javascript:;" onClick="return fnInsertValAndSubmit( document.form<!--{$smarty.section.cnt.iteration}-->, 'mode', 'delete', '削除します。宜しいですか' )">削除</a>
                 <!--{else}-->
                     - -
+                <!--{/if}-->
+            </td>
+            <td>
+                <!--{* 移動 *}-->
+                <!--{if $smarty.section.cnt.iteration != 1 && $arrItems[$smarty.section.cnt.iteration].product_id}-->
+                    <a href="?" onclick="lfnSortItem('up',<!--{$arrItems[$smarty.section.cnt.iteration].rank}-->); return false;">上へ</a><br>&nbsp;
+                <!--{/if}-->
+                <!--{if $smarty.section.cnt.iteration != $tpl_disp_max && $arrItems[$smarty.section.cnt.iteration].product_id}-->
+                    <a href="?" onclick="lfnSortItem('down',<!--{$arrItems[$smarty.section.cnt.iteration].rank}-->); return false;">下へ</a>
                 <!--{/if}-->
             </td>
         </tr>
