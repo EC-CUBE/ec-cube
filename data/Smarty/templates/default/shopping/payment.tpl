@@ -241,7 +241,7 @@
         <!--{if $tpl_login == 1 && $smarty.const.USE_POINT !== false}-->
             <div class="point_area">
                 <h3>ポイント使用の指定</h3>
-                    <p><span class="attention">1ポイントを1円</span>として使用する事ができます。<br />
+                    <p><span class="attention">1ポイントを<!--{$smarty.const.POINT_VALUE|number_format}-->円</span>として使用する事ができます。<br />
                         使用する場合は、「ポイントを使用する」にチェックを入れた後、使用するポイントをご記入ください。
                     </p>
                     <div class="point_announce">
