@@ -77,6 +77,8 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
 
         // リクエスト値をフォームにセット
         $objFormParam->setParam($_POST);
+        
+        $url = htmlspecialchars($_POST['url']);
 
         // モードによって分岐
         switch ($this->getMode()) {
@@ -108,7 +110,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
                 } else {
                     $objCookie->setCookie('login_email', '');
                 }
-
+                
                 // 遷移先の制御
                 if (count($arrErr) == 0) {
                     // ログイン判定
@@ -149,12 +151,10 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
 
                         // --- ログインに成功した場合
                         if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
-
-                            echo SC_Utils_Ex::jsonEncode(array('success' => $_POST['url']));
+                            echo SC_Utils_Ex::jsonEncode(array('success' => $url));
                         } else {
-
-                            SC_Response_Ex::sendRedirect($_POST['url']);
-                        }
+                            SC_Response_Ex::sendRedirect($url);
+                        }                        
                         SC_Response_Ex::actionExit();
                     } else {
                         // --- ログインに失敗した場合
@@ -189,7 +189,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
                 } else {
                     // XXX 到達しない？
                     // 入力エラーの場合、元のアドレスに戻す。
-                    SC_Response_Ex::sendRedirect($_POST['url']);
+                    SC_Response_Ex::sendRedirect($url);
                     SC_Response_Ex::actionExit();
                 }
 
@@ -200,7 +200,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
                 // ログイン情報の解放
                 $objCustomer->EndSession();
                 // 画面遷移の制御
-                $mypage_url_search = strpos('.'.$_POST['url'], 'mypage');
+                $mypage_url_search = strpos('.'.$url, 'mypage');
                 if ($mypage_url_search == 2) {
 
                     // マイページログイン中はログイン画面へ移行
