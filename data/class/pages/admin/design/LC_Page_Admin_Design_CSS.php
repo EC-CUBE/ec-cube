@@ -120,7 +120,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
                 break;
         }
 
-        if (!$is_error) {
+        if (!$is_error && $this->checkPath($this->css_name)) {
             // CSSファイルの読み込み
             if (!SC_Utils_Ex::isBlank($this->css_name)) {
                 $objFormParam->setValue('css_data', file_get_contents($css_path));
@@ -130,7 +130,6 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
         } else {
             // 画面にエラー表示しないため, ログ出力
             GC_Utils_Ex::gfPrintLog('Error: ' . print_r($this->arrErr, true));
-
         }
         $this->tpl_subtitle = $this->arrDeviceType[$this->device_type_id] . '＞' . $this->tpl_subtitle;
         $this->arrForm = $objFormParam->getFormParamList();
@@ -268,5 +267,18 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
      */
     function getCSSDir($device_type_id) {
         return SC_Helper_PageLayout_Ex::getTemplatePath($device_type_id, true) . 'css/';
+    }
+    
+    /**
+     * 文字列に[./]表記がないかをチェックします
+     * @param string $str
+     * @return boolean 
+     */
+    function checkPath($str) {
+        // 含む場合はfalse
+        if (preg_match('|\./|', $str)) {
+            return false;
+        }
+        return true;
     }
 }
