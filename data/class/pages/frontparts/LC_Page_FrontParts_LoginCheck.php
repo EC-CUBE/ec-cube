@@ -78,7 +78,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
         // リクエスト値をフォームにセット
         $objFormParam->setParam($_POST);
         
-        $url = htmlspecialchars($_POST['url']);
+        $url = htmlspecialchars($_POST['url'], ENT_QUOTES);
 
         // モードによって分岐
         switch ($this->getMode()) {
