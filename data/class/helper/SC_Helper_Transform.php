@@ -71,18 +71,28 @@ class SC_Helper_Transform {
             '',
             $source
         );
+
+        // headタグの内側を退避
+        $source = preg_replace_callback(
+            '/(<head[^>]*>)(.+)(<\/head>)/is',
+            array($this, 'lfCaptureHeadTags2Comment'),
+            $source
+        );
+
         // JavaScript内にSmartyのタグが存在するものを、コメント形式に置換
         $source = preg_replace_callback(
             '/<script.+?\/script>/s',
             array($this, 'lfCaptureSmartyTags2Comment'),
             $source
         );
+
         // HTMLタグ内にSmartyのタグが存在するものを、まず置換する
         $source = preg_replace_callback(
             '/<(?:[^<>]*?(?:(<\!--\{.+?\}-->)|(?R))[^<>]*?)*?>/s',
             array($this, 'lfCaptureSmartyTagsInTag'),
             $source
         );
+
         // 通常のノードに属する部分を、コメント形式に置換
         $source = preg_replace_callback(
             '/<\!--{.+?\}-->/s',
@@ -90,14 +100,19 @@ class SC_Helper_Transform {
             $source
         );
 
-        // BODYタグの外側は退避させる
-        if (preg_match('/^(.*?<body[^>]*>)(.+)(<\/body>.*)$/is', $source, $arrMatches)) {
+        // HTMLタグの有無、BODYタグの有無で動作を切り替える
+        if (preg_match('/^(.*?)(<html[^>]*>.+<\/html>)(.*?)$/is', $source, $arrMatches)) {
             $this->header_source = $arrMatches[1];
             $source = $arrMatches[2];
             $this->footer_source = $arrMatches[3];
         }
+        elseif (preg_match('/^.*?<body[^>]*>.+<\/body>.*$/is', $source)) {
+            $source = '<meta http-equiv="content-type" content="text/html; charset=UTF-8" /><html><!--TemplateTransformer start-->'.$source.'<!--TemplateTransformer end--></html>';
+        }
+        else {
+            $source = '<meta http-equiv="content-type" content="text/html; charset=UTF-8" /><html><body><!--TemplateTransformer start-->'.$source.'<!--TemplateTransformer end--></body></html>';
+        }
         
-        $source = '<meta http-equiv="content-type" content="text/html; charset=UTF-8" /><html><body><!--TemplateTransformer start-->'.$source.'<!--TemplateTransformer end--></body></html>';
         @$this->objDOM->loadHTML($source);
         $this->lfScanChild($this->objDOM);
     }
@@ -310,8 +325,15 @@ class SC_Helper_Transform {
             SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, 'テンプレートの操作に失敗しました。' . $err_msg);
         } elseif ($this->snip_count) {
             $html = $this->objDOM->saveHTML();
+            $html = preg_replace('/^.*(<html[^>]*>)/s', '$1', $html);
+            $html = preg_replace('/(<\/html>).*$/s', '$1', $html);
             $html = preg_replace('/^.*<\!--TemplateTransformer start-->/s', '', $html);
             $html = preg_replace('/<\!--TemplateTransformer end-->.*$/s', '', $html);
+            $html = preg_replace(
+                '/<\!--TemplateTransformerSnip start-->.*?<\!--TemplateTransformerSnip end-->/s',
+                '',
+                $html
+            );
             $html = $this->header_source.$html.$this->footer_source;
             $html = str_replace($this->arrSmartyTagsSub, $this->arrSmartyTagsOrg, $html);
             return $html;
@@ -337,6 +359,29 @@ class SC_Helper_Transform {
         $this->arrSmartyTagsSub[$this->smarty_tags_idx] = $substitute_tag;
         $this->smarty_tags_idx++;
         return $substitute_tag;
+    }
+
+
+    /**
+     * DOMの処理の邪魔になるSmartyのタグを代理文字に置換する preg_replace_callback のコールバック関数
+     *
+     * コメント形式への置換
+     *
+     * @param array $arrMatches マッチしたタグの情報
+     * @return string 代わりの文字列
+     */
+    protected function lfCaptureHeadTags2Comment(array $arrMatches) {
+        $substitute_tag = sprintf('<!--###%08d###-->', $this->smarty_tags_idx);
+        $this->arrSmartyTagsOrg[$this->smarty_tags_idx] = $arrMatches[2];
+        $this->arrSmartyTagsSub[$this->smarty_tags_idx] = $substitute_tag;
+        $this->smarty_tags_idx++;
+
+        // 文字化け防止用のMETAを入れておく
+        $content_type_tag = '<!--TemplateTransformerSnip start-->';
+        $content_type_tag .= '<meta http-equiv="content-type" content="text/html; charset=UTF-8" />'; 
+        $content_type_tag .= '<!--TemplateTransformerSnip end-->';
+
+        return $arrMatches[1].$content_type_tag.$substitute_tag.$arrMatches[3];
     }
 
 
@@ -383,7 +428,11 @@ class SC_Helper_Transform {
      * @return string 代わりの文字列
      */
     protected function lfCaptureSmartyTagsInQuote(array $arrMatches) {
-        $html = preg_replace_callback('/###TEMP(\d{8})###/s', array($this, 'lfCaptureSmartyTags2Value'), $arrMatches[0]);
+        $html = preg_replace_callback(
+            '/###TEMP(\d{8})###/s',
+            array($this, 'lfCaptureSmartyTags2Value'),
+            $arrMatches[0]
+        );
         return $html;
     }
 
