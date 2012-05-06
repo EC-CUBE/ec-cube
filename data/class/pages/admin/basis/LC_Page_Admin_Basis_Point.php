@@ -137,6 +137,7 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex {
     function lfInsertData($post) {
         // 入力データを渡す。
         $sqlval = $post;
+        $sqlval['id'] = 1;
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         // INSERTの実行

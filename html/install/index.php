@@ -518,6 +518,7 @@ function lfDispComplete($objPage) {
 
     $arrDsn = getArrayDsn($objDBParam);
 
+    $sqlval['id'] = 1;
     $sqlval['shop_name'] = $objWebParam->getValue('shop_name');
     $sqlval['email01'] = $objWebParam->getValue('admin_mail');
     $sqlval['email02'] = $objWebParam->getValue('admin_mail');

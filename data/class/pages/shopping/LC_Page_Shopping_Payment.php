@@ -327,8 +327,8 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
             }
             // ポイント差し引き後の決済方法チェック
             $arrPayments = $objPurchase->getPaymentsByPaymentsId($arrForm['payment_id']);
-            if ($arrPayments['rule'] > $subtotal - $arrForm['use_point'] * POINT_VALUE) {
-                $objErr->arrErr['use_point'] = '※ 選択した支払方法では、ポイントは'.($subtotal - $arrPayments['rule']).'ポイントまでご利用いただけます。<br>';
+            if ($arrPayments['rule_max'] > $subtotal - $arrForm['use_point'] * POINT_VALUE) {
+                $objErr->arrErr['use_point'] = '※ 選択した支払方法では、ポイントは'.($subtotal - $arrPayments['rule_max']).'ポイントまでご利用いただけます。<br>';
             }
         }
         return $objErr->arrErr;

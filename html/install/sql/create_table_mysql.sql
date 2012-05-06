@@ -11,7 +11,8 @@ create table dtb_module_update_logs(
 );
 
 CREATE TABLE dtb_ownersstore_settings (
-    public_key text
+    public_key text,
+    PRIMARY KEY(public_key(64))
 );
 
 CREATE TABLE dtb_kiyaku (
@@ -40,10 +41,12 @@ CREATE TABLE dtb_holiday (
 );
 
 CREATE TABLE mtb_zip (
+    zip_id int,
     zipcode text,
     state text,
     city text,
-    town text
+    town text,
+    PRIMARY KEY (zip_id)
 );
 
 CREATE TABLE dtb_update (
@@ -65,6 +68,7 @@ CREATE TABLE dtb_update (
 );
 
 CREATE TABLE dtb_baseinfo (
+    id int,
     company_name text,
     company_kana text,
     zip01 text,
@@ -128,7 +132,8 @@ CREATE TABLE dtb_baseinfo (
     latitude text,
     longitude text,
     downloadable_days numeric DEFAULT 30,
-    downloadable_days_unlimited smallint
+    downloadable_days_unlimited smallint,
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE dtb_deliv (
@@ -173,7 +178,7 @@ CREATE TABLE dtb_payment (
     payment_id int NOT NULL,
     payment_method text,
     charge numeric,
-    rule numeric,
+    rule_max numeric,
     rank int,
     note text,
     fix smallint,
@@ -386,7 +391,8 @@ CREATE TABLE dtb_recommend_products (
     status smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    update_date timestamp NOT NULL
+    update_date timestamp NOT NULL,
+    PRIMARY KEY (recommend_product_id)
 );
 
 CREATE TABLE dtb_review (
@@ -627,7 +633,8 @@ CREATE TABLE dtb_order_temp (
     memo08 text,
     memo09 text,
     memo10 text,
-    session text
+    session text,
+    PRIMARY KEY (order_temp_id(64))
 );
 
 CREATE TABLE dtb_shipping (
@@ -1084,7 +1091,8 @@ CREATE TABLE dtb_mobile_ext_session_id (
     param_key text,
     param_value text,
     url text,
-    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (session_id(255))
 );
 
 CREATE TABLE dtb_module (
@@ -1095,7 +1103,8 @@ CREATE TABLE dtb_module (
     auto_update_flg smallint NOT NULL DEFAULT 0,
     del_flg smallint NOT NULL DEFAULT 0,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    update_date timestamp NOT NULL
+    update_date timestamp NOT NULL,
+    PRIMARY KEY (module_id)
 );
 
 CREATE TABLE dtb_session (

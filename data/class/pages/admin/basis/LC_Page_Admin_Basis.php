@@ -203,6 +203,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         foreach ($arrCol as $val) {
             $sqlval[$val] = $array[$val];
         }
+        $sqlval['id'] = 1;
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         // INSERTの実行
         $ret = $objQuery->insert('dtb_baseinfo', $sqlval);

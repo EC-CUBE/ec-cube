@@ -62,7 +62,7 @@
             <tr>
                 <th>利用条件(円)</th>
                 <td>
-                    <!--{assign var=key_from value="rule"}-->
+                    <!--{assign var=key_from value="rule_max"}-->
                     <!--{assign var=key_to value="upper_rule"}-->
                     <span class="attention"><!--{$arrErr[$key_from]}--></span>
                     <span class="attention"><!--{$arrErr[$key_to]}--></span>
