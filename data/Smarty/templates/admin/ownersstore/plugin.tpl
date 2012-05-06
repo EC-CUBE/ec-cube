@@ -191,7 +191,7 @@
                                     <span>プラグイン設定&nbsp;|&nbsp;</span>
                                 <!--{/if}-->
                             <!-- アップデート -->
-                                <a class="update_link" href="#" name="<!--{$plugin.plugin_id}-->">アップデート</a>&nbsp;|&nbsp;
+                                <a class="update_link" href="javascript:;" name="<!--{$plugin.plugin_id}-->">アップデート</a>&nbsp;|&nbsp;
                             <!-- 削除 -->
                                 <a  href="javascript:;" name="uninstall" onclick="uninstall(<!--{$plugin.plugin_id}-->, '<!--{$plugin.plugin_code}-->'); return false;">削除</a>&nbsp;|&nbsp;
                             <!-- 有効/無効 -->
