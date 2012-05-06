@@ -105,7 +105,7 @@ FROM
         module_name
     FROM
         dtb_module
-    ) AS modules USING(module_id)
+    ) AS modules ON dtb_module_update_logs.module_id = modules.module_id
 ORDER BY update_date DESC
 END;
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -131,7 +131,7 @@ FROM
         module_name
     FROM
         dtb_module
-    ) AS modules USING(module_id)
+    ) AS modules ON dtb_module_update_logs.module_id = modules.module_id
 WHERE
     log_id = ?
 END;

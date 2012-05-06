@@ -555,12 +555,12 @@ __EOS__;
                 product_code,
                 product_name,
                 SUM(quantity) AS products_count,
-                COUNT(order_id) AS order_count,
+                COUNT(dtb_order_detail.order_id) AS order_count,
                 price,
                 (price * SUM(quantity)) AS total
 __EOS__;
 
-        $from = 'dtb_order_detail JOIN dtb_order USING(order_id)';
+        $from = 'dtb_order_detail JOIN dtb_order ON dtb_order_detail.order_id = dtb_order.order_id';
 
         /*
         if ($mode != 'csv') {
@@ -590,7 +590,7 @@ __EOS__;
             AVG(total) AS total_average
 __EOS__;
 
-        $from   = 'dtb_order JOIN dtb_customer USING ( customer_id)';
+        $from   = 'dtb_order JOIN dtb_customer ON dtb_order.customer_id = dtb_customer.customer_id';
 
         $where .= ' AND dtb_order.del_flg = 0 AND dtb_order.status <> ?';
         $arrWhereVal[] = ORDER_CANCEL;

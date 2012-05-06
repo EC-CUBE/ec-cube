@@ -120,10 +120,10 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex {
     function lfGetProduct($category_id) {
         // FIXME SC_Product クラスを使用した実装
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $col = 'product_id, name, main_list_image, product_code_min, product_code_max, status';
+        $col = 'alldtl.product_id, name, main_list_image, product_code_min, product_code_max, status';
         $objProduct = new SC_Product();
         $table = $objProduct->alldtlSQL();
-        $table.= ' LEFT JOIN dtb_product_categories AS T5 USING(product_id)';
+        $table.= ' LEFT JOIN dtb_product_categories AS T5 ON alldtl.product_id = T5.product_id';
         $where = 'del_flg = 0 AND category_id = ?';
 
         // 行数の取得

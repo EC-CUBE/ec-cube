@@ -94,8 +94,8 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex {
         $order_count    = $objQuery->count('dtb_order', 'order_id = ? and customer_id = ?', array($order_id, $customer_id));
         if ($order_count != 1) return array();
 
-        $col    = 'product_class_id, quantity';
-        $table  = 'dtb_order_detail LEFT JOIN dtb_products_class USING(product_class_id)';
+        $col    = 'dtb_order_detail.product_class_id, quantity';
+        $table  = 'dtb_order_detail LEFT JOIN dtb_products_class ON dtb_order_detail.product_class_id = dtb_products_class.product_class_id';
         $where  = 'order_id = ?';
         $objQuery->setOrder('order_detail_id');
         $arrOrderDetail = $objQuery->select($col, $table, $where, array($order_id));

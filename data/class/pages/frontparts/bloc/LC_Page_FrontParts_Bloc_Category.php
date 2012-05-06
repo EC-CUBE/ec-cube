@@ -125,7 +125,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objDb = new SC_Helper_DB_Ex();
         $col = '*';
-        $from = 'dtb_category left join dtb_category_total_count using (category_id)';
+        $from = 'dtb_category left join dtb_category_total_count ON dtb_category.category_id = dtb_category_total_count.category_id';
         // 登録商品数のチェック
         if ($count_check) {
             $where = 'del_flg = 0 AND product_count > 0';
@@ -176,7 +176,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex {
     function lfGetMainCat($count_check = false) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '*';
-        $from = 'dtb_category left join dtb_category_total_count using (category_id)';
+        $from = 'dtb_category left join dtb_category_total_count ON dtb_category.category_id = dtb_category_total_count.category_id';
         // メインカテゴリとその直下のカテゴリを取得する。
         $where = 'level <= 2 AND del_flg = 0';
         // 登録商品数のチェック

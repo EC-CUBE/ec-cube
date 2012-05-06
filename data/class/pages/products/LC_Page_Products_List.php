@@ -282,7 +282,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
                         FROM
                             $dtb_product_categories T2
                             JOIN dtb_category T3
-                                USING (category_id)
+                              ON T2.category_id = T3.category_id
                         WHERE T2.product_id = alldtl.product_id
                         ORDER BY T3.rank DESC, T2.rank DESC
                         LIMIT 1
