@@ -471,5 +471,5 @@ define('PLUGIN_ACTIVATE_FLAG', true);
 /** SMARTYコンパイルモード */
 define('SMARTY_FORCE_COMPILE_MODE', false);
 /** ログイン失敗時の遅延時間(秒)(ブルートフォースアタック対策) */
-define('LOGIN_RETRY_INTERVAL', 2);
+define('LOGIN_RETRY_INTERVAL', 0);
 ?>
