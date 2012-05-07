@@ -1735,5 +1735,68 @@ class SC_Utils {
         return str_replace('%7E', '~', rawurlencode($str));
     }
 
+    /**
+     * メッセージエイリアスを翻訳する.
+     *
+     * @param string $string メッセージエイリアス
+     * @param array $args 置換用のパラメーター
+     * @param array $options オプション
+     * @return string 表示するメッセージ
+     */
+    function t($string, $args = array(), $options = array()) {
+        // 言語コードが指定されていなければ、サイトの言語コードを使用する
+        if (empty($options['lang_code'])) {
+            $options['lang_code'] = LANG_CODE;
+        }
+        // 機種IDが指定されていなければ、機種を判別する
+        if (empty($options['device_type_id'])) {
+            $options['device_type_id'] = SC_Display_Ex::detectDevice();
+        }
 
+        // メッセージエイリアスに対応する、指定言語の文字列を取得
+        $translated = SC_Helper_Locale_Ex::get_locale($string, $options['lang_code'], $options['device_type_id']);
+
+        // パラメーターが指定されていれば、メッセージを置換する
+        if (empty($args)) {
+          return $translated;
+        }
+        else {
+          return strtr($translated, $args);
+        }
+    }
+
+    /**
+     * メッセージエイリアス翻訳の複数形対応.
+     *
+     * @param integer $count 表示する数値
+     * @param string $single メッセージエイリアス（単数）
+     * @param string $plural メッセージエイリアス（複数）
+     * @param array $args 置換用のパラメーター
+     * @param array $options オプション
+     * @return string 表示するメッセージ
+     */
+    function t_plural($count, $single, $plural, $args = array(), $options = array()) {
+        $args[':count'] = $count;
+
+        // 言語コードが指定されていなければ、サイトの言語コードを使用する
+        if (empty($options['lang_code'])) {
+            $options['lang_code'] = LANG_CODE;
+        }
+        // 機種IDが指定されていなければ、機種を判別する
+        if (empty($options['device_type_id'])) {
+            $options['device_type_id'] = SC_Display_Ex::detectDevice();
+        }
+
+        // 適切な複数形の書式を判定
+        $index = SC_Helper_Locale_Ex::get_plural_index($count, $options['lang_code']);
+
+        // pluralの文字列はnull文字で結合されている
+        $key = $single . chr(0) . $plural;
+        // メッセージエイリアスに対応する、指定言語の文字列を取得
+        $translated = SC_Helper_Locale_Ex::get_locale($key, $options['lang_code'], $options['device_type_id']);
+        // null文字で分割
+        $list = explode(chr(0), $translated);
+
+        return strtr($list[$index], $args);
+    }
 }

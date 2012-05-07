@@ -1,0 +1,20 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: EC-CUBE Core\n"
+"POT-Creation-Date: 2012-05-07 13:39+0900\n"
+"PO-Revision-Date: 2012-05-07 19:10+0900\n"
+"Last-Translator: PineRay <matsuda@cyber-will.co.jp>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+msgid "TEST"
+msgstr "テスト"
+
+msgid "SINGLE"
+msgid_plural "PLURAL"
+msgstr[0] "ひとつ"
+msgstr[1] ":count個"
+
