@@ -46,7 +46,7 @@ self.moveTo(20,20);self.focus();
         <th>名前</th>
         <td>
             <!--{if $arrErr.name}--><span class="attention"><!--{$arrErr.name}--></span><!--{/if}-->
-            <input type="text" name="name" size="30" class="box30" value="<!--{$arrForm.name}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
+            <input type="text" name="name" size="30" class="box30" value="<!--{$arrForm.name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
             <span class="attention">※必須入力</span>
         </td>
     </tr>
@@ -54,14 +54,14 @@ self.moveTo(20,20);self.focus();
         <th>所属</th>
         <td>
             <!--{if $arrErr.department}--><span class="attention"><!--{$arrErr.department}--></span><!--{/if}-->
-            <input type="text" name="department" size="30" class="box30" value="<!--{$arrForm.department}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
+            <input type="text" name="department" size="30" class="box30" value="<!--{$arrForm.department|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
         </td>
     </tr>
     <tr>
         <th>ログインＩＤ</th>
         <td>
             <!--{if $arrErr.login_id}--><span class="attention"><!--{$arrErr.login_id}--></span><!--{/if}-->
-            <input type="text" name="login_id" size="20" class="box20"    value="<!--{$arrForm.login_id}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>
+            <input type="text" name="login_id" size="20" class="box20"    value="<!--{$arrForm.login_id|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>
             <span class="attention">※必須入力</span><br />
             ※半角英数字<!--{$smarty.const.ID_MIN_LEN}-->～<!--{$smarty.const.ID_MAX_LEN}-->文字
         </td>
