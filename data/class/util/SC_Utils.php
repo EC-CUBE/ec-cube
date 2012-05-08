@@ -1776,7 +1776,8 @@ class SC_Utils {
      * @return string 表示するメッセージ
      */
     function t_plural($count, $single, $plural, $args = array(), $options = array()) {
-        $args[':count'] = $count;
+        // 置換用のパラメーターに数値を追加
+        $args[':count'] = number_format($count);
 
         // 言語コードが指定されていなければ、サイトの言語コードを使用する
         if (empty($options['lang_code'])) {
