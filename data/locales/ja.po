@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13:39+0900\n"
-"PO-Revision-Date: 2012-05-07 19:10+0900\n"
+"PO-Revision-Date: 2012-05-08 15:41+0900\n"
 "Last-Translator: PineRay <matsuda@cyber-will.co.jp>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -10,11 +10,170 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
-msgid "TEST"
-msgstr "テスト"
+msgid "SC_CHECKERROR_HTML_TAG_CHECK"
+msgstr "※ :fieldに許可されていないタグ :tag が含まれています。<br />"
 
-msgid "SINGLE"
-msgid_plural "PLURAL"
-msgstr[0] "ひとつ"
-msgstr[1] ":count個"
+msgid "SC_CHECKERROR_EXIST_CHECK_INPUT"
+msgstr "※ :fieldが入力されていません。<br />"
+
+msgid "SC_CHECKERROR_EXIST_CHECK_SELECT"
+msgstr "※ :fieldが選択されていません。<br />"
+
+msgid "SC_CHECKERROR_EXIST_CHECK_REVERSE"
+msgstr "※ :fieldが入力されていません。<br />"
+
+msgid "SC_CHECKERROR_SPTAB_CHECK"
+msgstr "※ :fieldにスペース、タブ、改行のみの入力はできません。<br />"
+
+msgid "SC_CHECKERROR_NO_SPTAB"
+msgstr "※ :fieldにスペース、タブ、改行は含めないで下さい。<br />"
+
+msgid "SC_CHECKERROR_ZERO_START"
+msgstr "※ :fieldに0で始まる数値が入力されています。<br />"
+
+msgid "SC_CHECKERROR_SELECT_CHECK"
+msgstr "※ :fieldが選択されていません。<br />"
+
+msgid "SC_CHECKERROR_EQUAL_CHECK"
+msgstr "※ :field_1stと:field_2ndが一致しません。<br />"
+
+msgid "SC_CHECKERROR_DIFFERENT_CHECK"
+msgstr "※ :field_1stと:field_2ndは、同じ値を使用できません。<br />"
+
+msgid "SC_CHECKERROR_GREATER_CHECK"
+msgstr "※ :field_1stは:field_2ndより大きい値を入力できません。<br />"
+
+msgid "SC_CHECKERROR_MAX_LENGTH_CHECK"
+msgstr "※ :fieldは:length字以下で入力してください。<br />"
+
+msgid "SC_CHECKERROR_MIN_LENGTH_CHECK_SINGLE"
+msgid_plural "SC_CHECKERROR_MIN_LENGTH_CHECK_PLURAL"
+msgstr[0] "※ :fieldは:count字以上で入力してください。<br />"
+msgstr[1] "※ :fieldは:count字以上で入力してください。<br />"
+
+msgid "SC_CHECKERROR_MAX_CHECK"
+msgstr "※ :fieldは:length以下で入力してください。<br />"
+
+msgid "SC_CHECKERROR_MIN_CHECK_SINGLE"
+msgid_plural "SC_CHECKERROR_MIN_CHECK_PLURAL"
+msgstr[0] "※ :fieldは:count以上で入力してください。<br />"
+msgstr[1] "※ :fieldは:count以上で入力してください。<br />"
+
+msgid "SC_CHECKERROR_NUM_CHECK"
+msgstr "※ :fieldは数字で入力してください。<br />"
+
+msgid "SC_CHECKERROR_NUM_POINT_CHECK"
+msgstr "※ :fieldは数字で入力してください。<br />"
+
+msgid "SC_CHECKERROR_ALPHA_CHECK"
+msgstr "※ :fieldは半角英字で入力してください。<br />"
+
+msgid "SC_CHECKERROR_TEL_CHECK_EXIST"
+msgstr "※ :fieldはすべての項目を入力してください。<br />"
+
+msgid "SC_CHECKERROR_TEL_CHECK_MAX_LENGTH"
+msgstr "※ :fieldは:length字以内で入力してください。<br />"
+
+msgid "SC_CHECKERROR_TEL_CHECK_NUM"
+msgstr "※ :fieldは数字で入力してください。<br />"
+
+msgid "SC_CHECKERROR_TEL_CHECK_SUM"
+msgstr "※ :fieldは:length文字以内で入力してください。<br />"
+
+msgid "SC_CHECKERROR_FULL_EXIST_CHECK"
+msgstr "※ :fieldが入力されていません。<br />"
+
+msgid "SC_CHECKERROR_ALL_EXIST_CHECK"
+msgstr "※ :fieldはすべての項目を入力して下さい。<br />"
+
+msgid "SC_CHECKERROR_ONE_EXIST_CHECK"
+msgstr "※ :fieldが入力されていません。<br />"
+
+msgid "SC_CHECKERROR_TOP_EXIST_CHECK"
+msgstr "※ :fieldは先頭の項目から順番に入力して下さい。<br />"
+
+msgid "SC_CHECKERROR_KANA_CHECK"
+msgstr "※ :fieldはカタカナで入力してください。<br />"
+
+msgid "SC_CHECKERROR_KANABLANK_CHECK"
+msgstr "※ :fieldはカタカナで入力してください。<br />"
+
+msgid "SC_CHECKERROR_ALNUM_CHECK"
+msgstr "※ :fieldは英数字で入力してください。<br />"
+
+msgid "SC_CHECKERROR_GRAPH_CHECK"
+msgstr "※ :fieldは英数記号で入力してください。<br />"
+
+msgid "SC_CHECKERROR_ZERO_CHECK"
+msgstr "※ :fieldは1以上を入力してください。<br />"
+
+msgid "SC_CHECKERROR_NUM_RANGE_CHECK_SINGLE"
+msgid_plural "SC_CHECKERROR_NUM_RANGE_CHECK_PLURAL"
+msgstr[0] "※ :fieldは:count桁～:digit_max桁で入力して下さい。<br />"
+msgstr[1] "※ :fieldは:count桁～:digit_max桁で入力して下さい。<br />"
+
+msgid "SC_CHECKERROR_NUM_COUNT_CHECK_SINGLE"
+msgid_plural "SC_CHECKERROR_NUM_COUNT_CHECK_PLURAL"
+msgstr[0] "※ :fieldは:count桁で入力して下さい。<br />"
+msgstr[1] "※ :fieldは:count桁で入力して下さい。<br />"
+
+msgid "SC_CHECKERROR_EMAIL_CHECK"
+msgstr "※ :fieldの形式が不正です。<br />"
+
+msgid "SC_CHECKERROR_EMAIL_CHAR_CHECK"
+msgstr "※ :fieldに使用する文字を正しく入力してください。<br />"
+
+msgid "SC_CHECKERROR_URL_CHECK"
+msgstr "※ :fieldを正しく入力してください。<br />"
+
+msgid "SC_CHECKERROR_IP_CHECK"
+msgstr "※ :fieldに正しい形式のIPアドレスを入力してください。<br />"
+
+msgid "SC_CHECKERROR_FILE_EXT_CHECK"
+msgstr "※ :fieldで許可されている形式は、:extです。<br />"
+
+msgid "SC_CHECKERROR_FIND_FILE"
+msgstr "※ :pathが見つかりません。<br />"
+
+msgid "SC_CHECKERROR_FILE_EXIST_CHECK"
+msgstr "※ :fieldをアップロードして下さい。<br />"
+
+msgid "SC_CHECKERROR_FILE_SIZE_CHECK"
+msgstr "※ :fieldのファイルサイズは:size:unit以下のものを使用してください。<br />"
+
+msgid "SC_CHECKERROR_FILE_NAME_CHECK"
+msgstr "※ :fieldのファイル名に日本語やスペースは使用しないで下さい。<br />"
+
+msgid "SC_CHECKERROR_CHECK_DATE_ALL_EXIST"
+msgstr "※ :fieldはすべての項目を入力して下さい。<br />"
+
+msgid "SC_CHECKERROR_CHECK_DATE_PROPER"
+msgstr "※ :fieldが正しくありません。<br />"
+
+msgid "SC_CHECKERROR_CHECK_SET_TERM_PROPER"
+msgstr "※ :fieldを正しく指定してください。<br />"
+
+msgid "SC_CHECKERROR_CHECK_SET_TERM_RANGE"
+msgstr "※ :startと:endの期間指定が不正です。<br />"
+
+msgid "SC_CHECKERROR_DIR_CHECK"
+msgstr "※ 指定した:fieldは存在しません。<br />"
+
+msgid "SC_CHECKERROR_DOMAIN_CHECK"
+msgstr "※ :fieldの形式が不正です。<br />"
+
+msgid "SC_CHECKERROR_MOBILE_EMAIL_CHECK"
+msgstr "※ :fieldは携帯電話のものではありません。<br />"
+
+msgid "SC_CHECKERROR_CHECK_REGIST_CUSTOMER_EMAIL_EXIST"
+msgstr "※ すでに会員登録で使用されている:fieldです。<br />"
+
+msgid "SC_CHECKERROR_CHECK_REGIST_CUSTOMER_EMAIL_INTERVAL"
+msgstr "※ 退会から一定期間の間は、同じ:fieldを使用することはできません。<br />"
+
+msgid "SC_CHECKERROR_PROHIBITED_STR_CHECK"
+msgstr "※ :fieldは入力できません。<br />"
+
+msgid "SC_CHECKERROR_EVAL_CHECK"
+msgstr "※ :field の形式が不正です。<br />"
 
