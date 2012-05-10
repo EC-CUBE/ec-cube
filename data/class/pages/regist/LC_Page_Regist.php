@@ -148,6 +148,7 @@ class LC_Page_Regist extends LC_Page_Ex {
         $objQuery       = SC_Query_Ex::getSingletonInstance();
         $objCustomer    = new SC_Customer_Ex();
         $objHelperMail  = new SC_Helper_Mail_Ex();
+        $objHelperMail->setPage($this);
         $CONF           = SC_Helper_DB_Ex::sfGetBasisData();
 
         //-- 会員データを取得
@@ -157,6 +158,7 @@ class LC_Page_Regist extends LC_Page_Ex {
 
         //--　メール送信
         $objMailText    = new SC_SiteView_Ex();
+        $objMailText->setPage($this);
         $objMailText->assign('CONF', $CONF);
         $objMailText->assign('name01', $data['name01']);
         $objMailText->assign('name02', $data['name02']);

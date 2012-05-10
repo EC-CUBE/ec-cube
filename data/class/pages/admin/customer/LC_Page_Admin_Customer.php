@@ -205,6 +205,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
         }
         // 登録メール再送
         $objHelperMail = new SC_Helper_Mail_Ex();
+        $objHelperMail->setPage($this);
         $objHelperMail->sfSendRegistMail($arrData['secret_key'], $customer_id);
         return true;
     }

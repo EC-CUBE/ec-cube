@@ -76,7 +76,9 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
         $objCustomer = new SC_Customer_Ex();
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objPurchase = new SC_Helper_Purchase_Ex();
-
+        $objHelperMail = new SC_Helper_Mail();
+        $objHelperMail->setPage($this);
+        
         $this->is_multiple = $objPurchase->isMultiple();
 
         // 前のページで正しく登録手続きが行われた記録があるか判定
@@ -163,8 +165,10 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
                 // 購入完了ページ
                 else {
                     $objPurchase->completeOrder(ORDER_NEW);
-                    $objPurchase->sendOrderMail($this->arrForm['order_id']);
-
+                    $template_id = SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE ? 2 : 1;
+                    $objHelperMail->sfSendOrderMail(
+                            $this->arrForm['order_id'],
+                            $template_id);
 
                     SC_Response_Ex::sendRedirect(SHOPPING_COMPLETE_URLPATH);
                 }

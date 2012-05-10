@@ -34,6 +34,13 @@ class SC_Helper_Mail {
     var $arrMAILTPLPATH;
 
     /**
+     * LC_Pageオブジェクト.
+     * 
+     * @var LC_Page
+     */
+    protected $objPage;
+
+    /**
      * コンストラクタ.
      */
     function __construct() {
@@ -42,6 +49,24 @@ class SC_Helper_Mail {
         $this->arrPref = $masterData->getMasterData('mtb_pref');
     }
 
+    /**
+     * LC_Pageオブジェクトをセットします.
+     * 
+     * @param LC_Page $objPage
+     */
+    function setPage(LC_Page $objPage) {
+        $this->objPage = $objPage;
+    }
+
+    /**
+     * LC_Pageオブジェクトを返します.
+     * 
+     * @return LC_Page
+     */
+    function getPage() {
+        return $this->objPage;
+    }
+    
     /* DBに登録されたテンプレートメールの送信 */
     function sfSendTemplateMail($to, $to_name, $template_id, &$objPage, $from_address = '', $from_name = '', $reply_to = '', $bcc = '') {
 
@@ -56,6 +81,7 @@ class SC_Helper_Mail {
         $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
 
         $objMailView = new SC_SiteView_Ex();
+        $objMailView->setPage($this->getPage());
         // メール本文の取得
         $objMailView->assignobj($objPage);
         $body = $objMailView->fetch($this->arrMAILTPLPATH[$template_id]);
@@ -149,12 +175,14 @@ class SC_Helper_Mail {
         $objCustomer = new SC_Customer_Ex();
         $arrTplVar->tpl_user_point = $objCustomer->getValue('point');
 
+        $objMailView = null;
         if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
             $objMailView = new SC_MobileView_Ex();
         } else {
             $objMailView = new SC_SiteView_Ex();
         }
         // メール本文の取得
+        $objMailView->setPage($this->getPage());
         $objMailView->assignobj($arrTplVar);
         $body = $objMailView->fetch($this->arrMAILTPLPATH[$template_id]);
 
@@ -181,6 +209,7 @@ class SC_Helper_Mail {
     // テンプレートを使用したメールの送信
     function sfSendTplMail($to, $tmp_subject, $tplpath, &$objPage) {
         $objMailView = new SC_SiteView_Ex();
+        $objMailView->setPage($this->getPage());
         $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
         // メール本文の取得
         $objPage->tpl_shopname=$arrInfo['shop_name'];
@@ -216,6 +245,7 @@ class SC_Helper_Mail {
     function sfMakeSubject($subject, &$objMailView) {
         if (empty($objMailView)) {
             $objMailView = new SC_SiteView_Ex();
+            $objMailView->setPage($this->getPage());
         }
         $objTplAssign = new stdClass;
 
@@ -283,6 +313,7 @@ class SC_Helper_Mail {
         $CONF = SC_Helper_DB_Ex::sfGetBasisData();
 
         $objMailText = new SC_SiteView_Ex();
+        $objMailText->setPage($this->getPage());
         $objMailText->assign('CONF', $CONF);
         $objMailText->assign('name01', $arrCustomerData['name01']);
         $objMailText->assign('name02', $arrCustomerData['name02']);

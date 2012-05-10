@@ -71,6 +71,8 @@ class SC_View {
         } else {
             $this->_smarty->force_compile = false;
         }
+        // 各filterをセットします.
+        $this->registFilter();
     }
 
     // テンプレートに値を割り当てる
@@ -99,8 +101,6 @@ class SC_View {
                 define('OUTPUT_ERR','ON');
             }
         }
-        // 各filterをセットします.
-        $this->registFilter();
         $res =  $this->_smarty->fetch($template);
         if (ADMIN_MODE == '1') {
             $time_end = microtime(true);
@@ -135,9 +135,11 @@ class SC_View {
      * @return string $source ソース
      */
     function prefilter_transform($source, &$smarty) {
-        // フックポイントを実行.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->objPage->plugin_activate_flg);
-        $objPlugin->doAction('prefilterTransform', array(&$source, $this->objPage, $smarty->_current_file));
+        if (!is_null($this->objPage)) {
+            // フックポイントを実行.
+            $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->objPage->plugin_activate_flg);
+            $objPlugin->doAction('prefilterTransform', array(&$source, $this->objPage, $smarty->_current_file));
+        }
         return $source;
     }
 
@@ -148,9 +150,11 @@ class SC_View {
      * @return string $source ソース
      */
     function outputfilter_transform($source, &$smarty) {
-        // フックポイントを実行.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->objPage->plugin_activate_flg);
-        $objPlugin->doAction('outputfilterTransform', array(&$source, $this->objPage, $smarty->_current_file));
+        if (!is_null($this->objPage)) {
+            // フックポイントを実行.
+            $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->objPage->plugin_activate_flg);
+            $objPlugin->doAction('outputfilterTransform', array(&$source, $this->objPage, $smarty->_current_file));
+        }
         return $source;
     }
 

@@ -235,6 +235,7 @@ class LC_Page_Entry extends LC_Page_Ex {
         $CONF           = SC_Helper_DB_Ex::sfGetBasisData();
 
         $objMailText    = new SC_SiteView_Ex();
+        $objMailText->setPage($this);
         $objMailText->assign('CONF', $CONF);
         $objMailText->assign('name01', $arrForm['name01']);
         $objMailText->assign('name02', $arrForm['name02']);
@@ -242,6 +243,7 @@ class LC_Page_Entry extends LC_Page_Ex {
         $objMailText->assignobj($this);
 
         $objHelperMail  = new SC_Helper_Mail_Ex();
+        $objHelperMail->setPage($this);
 
         // 仮会員が有効の場合
         if (CUSTOMER_CONFIRM_MAIL == true) {

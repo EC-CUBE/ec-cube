@@ -171,6 +171,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
             $order_id_array = explode(',',$this->order_id_array);
             foreach ($order_id_array as $order_id){
                 $objMail = new SC_Helper_Mail_Ex();
+                $objMail->setPage($this);
                 $objSendMail = $objMail->sfSendOrderMail($order_id,
                 $objFormParam->getValue('template_id'),
                 $objFormParam->getValue('subject'),
@@ -193,12 +194,13 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
         if (count($arrErr) == 0) {
             // 注文受付メール(送信なし)
             $objMail = new SC_Helper_Mail_Ex();
+            $objMail->setPage($this);
             $objSendMail = $objMail->sfSendOrderMail(
-            $objFormParam->getValue('order_id'),
-            $objFormParam->getValue('template_id'),
-            $objFormParam->getValue('subject'),
-            $objFormParam->getValue('header'),
-            $objFormParam->getValue('footer'), false);
+                $objFormParam->getValue('order_id'),
+                $objFormParam->getValue('template_id'),
+                $objFormParam->getValue('subject'),
+                $objFormParam->getValue('header'),
+                $objFormParam->getValue('footer'), false);
 
             $this->tpl_subject = $objFormParam->getValue('subject');
             $this->tpl_body = mb_convert_encoding($objSendMail->body, CHAR_CODE, 'auto');

@@ -196,6 +196,7 @@ class LC_Page_Contact extends LC_Page_Ex {
         $objPage->tpl_shopname = $CONF['shop_name'];
         $objPage->tpl_infoemail = $CONF['email02'];
         $helperMail = new SC_Helper_Mail_Ex();
+        $helperMail->setPage($this);
         $helperMail->sfSendTemplateMail(
             $objPage->arrForm['email']['value'],            // to
             $objPage->arrForm['name01']['value'] .' 様',    // to_name
