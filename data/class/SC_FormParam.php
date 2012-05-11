@@ -539,4 +539,20 @@ class SC_FormParam {
             $this->param = array_merge($this->param);
         }
     }
+
+    /**
+     * パラメーター定義の上書き
+     *
+     * @param string $keyname キー名
+     * @param string $target 上書きしたい項目名(disp_name,length,convert等)
+     * @param mixed $value 指定した内容に上書きする
+     */
+    function overwriteParam($keyname, $target, $value)
+    {
+        $index = array_search($keyname, $this->keyname);
+
+        if ($index !== FALSE) {
+            $this->{$target}[$index] = $value;
+        }
+    }
 }
