@@ -60,7 +60,14 @@
             <!--{foreach from=$tpl_arrOrderDetail item=orderDetail}-->
                 <tr>
                     <td><!--{$orderDetail.product_code|h}--></td>
-                    <td><a<!--{if $orderDetail.enable}--> href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$orderDetail.product_id|u}-->"<!--{/if}-->><!--{$orderDetail.product_name|h}--></a></td>
+                    <td><a<!--{if $orderDetail.enable}--> href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$orderDetail.product_id|u}-->"<!--{/if}-->><!--{$orderDetail.product_name|h}--></a><br />
+                        <!--{if $orderDetail.classcategory_name1 != ""}-->
+                            <!--{$orderDetail.classcategory_name1|h}--><br />
+                        <!--{/if}-->
+                        <!--{if $orderDetail.classcategory_name2 != ""}-->
+                            <!--{$orderDetail.classcategory_name2|h}-->
+                        <!--{/if}-->
+                    </td>
                     <td class="alignC">
                     <!--{if $orderDetail.product_type_id == $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
                         <!--{if $orderDetail.is_downloadable}-->
