@@ -232,9 +232,9 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
      */
     function initParam(&$objFormParam, &$arrParams) {
 
-        $objFormParam->addParam('バックアップ名', 'bkup_name', STEXT_LEN, 'a', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB', 'ALNUM_CHECK'));
+        $objFormParam->addParam('バックアップ名', 'bkup_name', STEXT_LEN, 'a', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
         $objFormParam->addParam('バックアップメモ', 'bkup_memo', MTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('バックアップ名(リスト)', 'list_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'NO_SPTAB', 'ALNUM_CHECK'));
+        $objFormParam->addParam('バックアップ名(リスト)', 'list_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'NO_SPTAB', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
         $objFormParam->setParam($arrParams);
         $objFormParam->convParam();
 
@@ -541,7 +541,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
         $objDir = dir($dir);
         while (false !== ($file_name = $objDir->read())) {
-            if (!preg_match('/^((dtb|mtb)_(\w+))\.csv$/', $file_name, $matches)) {
+            if (!preg_match('/^((dtb|mtb|plg)_(\w+))\.csv$/', $file_name, $matches)) {
                 continue;
             }
             $file_path = $dir . $file_name;
