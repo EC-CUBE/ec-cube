@@ -114,6 +114,12 @@ class CreateEcCubeData {
      */
     function CreateEcCubeData() {
         $this->objQuery = new SC_Query();
+
+        // コマンドライン引数 --delete
+        $arrOption = getopt('', array('delete'));
+        if (isset($arrOption['delete'])) {
+            $this->delete = true;
+        }
     }
 
     /**
