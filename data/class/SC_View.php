@@ -66,11 +66,7 @@ class SC_View {
             $this->time_start = microtime(true);
         }
 
-        if(SMARTY_FORCE_COMPILE_MODE === true) {
-            $this->_smarty->force_compile = true;
-        } else {
-            $this->_smarty->force_compile = false;
-        }
+        $this->_smarty->force_compile = SMARTY_FORCE_COMPILE_MODE === true;
         // 各filterをセットします.
         $this->registFilter();
     }

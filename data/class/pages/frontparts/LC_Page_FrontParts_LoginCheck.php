@@ -77,7 +77,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
 
         // リクエスト値をフォームにセット
         $objFormParam->setParam($_POST);
-        
+
         $url = htmlspecialchars($_POST['url'], ENT_QUOTES);
 
         // モードによって分岐
@@ -110,7 +110,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
                 } else {
                     $objCookie->setCookie('login_email', '');
                 }
-                
+
                 // 遷移先の制御
                 if (count($arrErr) == 0) {
                     // ログイン判定

@@ -52,7 +52,7 @@ abstract class SC_Plugin_Base {
      * @return void
      */
     abstract function install($arrPlugin);
-    
+
     /**
      * アンインストール
      * uninstallはアンインストール時に実行されます.
@@ -62,7 +62,7 @@ abstract class SC_Plugin_Base {
      * @return void
      */
     abstract function uninstall($arrPlugin);
-    
+
     /**
      * 稼働
      * enableはプラグインを有効にした際に実行されます.
@@ -72,7 +72,7 @@ abstract class SC_Plugin_Base {
      * @return void
      */
     abstract function enable($arrPlugin);
-    
+
     /**
      * 停止
      * disableはプラグインを無効にした際に実行されます.

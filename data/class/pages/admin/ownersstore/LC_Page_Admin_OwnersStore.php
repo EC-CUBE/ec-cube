@@ -460,7 +460,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         }
         return $arrPluginInfo;
     }
-    
+
     /**
      * プラグインクラス内の定数をチェックします.
      *

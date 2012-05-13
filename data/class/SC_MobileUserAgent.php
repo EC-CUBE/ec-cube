@@ -122,7 +122,7 @@ class SC_MobileUserAgent {
             return true;
         }
     }
-    
+
     /**
      * EC-CUBE がサポートする携帯キャリアかどうかを判別する。 
      * 

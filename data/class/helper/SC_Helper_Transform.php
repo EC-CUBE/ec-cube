@@ -64,7 +64,7 @@ class SC_Helper_Transform {
         if (!in_array(mb_detect_encoding($source), array('ASCII', 'UTF-8'))) {
             SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, 'テンプレートの文字コードがUTF-8ではありません');
         }
-        
+
         // Smartyのコメントを削除
         $source = preg_replace(
             '/<\!--{\*.+?\*\}-->/s',
@@ -112,7 +112,7 @@ class SC_Helper_Transform {
         else {
             $source = '<meta http-equiv="content-type" content="text/html; charset=UTF-8" /><html><body><!--TemplateTransformer start-->'.$source.'<!--TemplateTransformer end--></body></html>';
         }
-        
+
         @$this->objDOM->loadHTML($source);
         $this->lfScanChild($this->objDOM);
     }

@@ -38,7 +38,7 @@ class SC_Plugin_Util {
             $objQuery->setOrder('priority DESC, plugin_id ASC');
         }
         $arrRet = $objQuery->select($col,$table,$where);
-        
+
         // プラグインフックポイントを取得.
         $max = count($arrRet);
         for ($i = 0; $i < $max; $i++) {
@@ -128,7 +128,7 @@ class SC_Plugin_Util {
         }
         return $arrPluginDirectory;
     }
-    
+
     /**
      * プラグインIDをキーに, プラグインフックポイントを取得する.
      *

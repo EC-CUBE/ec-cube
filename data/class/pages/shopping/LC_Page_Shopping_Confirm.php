@@ -78,7 +78,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objHelperMail = new SC_Helper_Mail();
         $objHelperMail->setPage($this);
-        
+
         $this->is_multiple = $objPurchase->isMultiple();
 
         // 前のページで正しく登録手続きが行われた記録があるか判定

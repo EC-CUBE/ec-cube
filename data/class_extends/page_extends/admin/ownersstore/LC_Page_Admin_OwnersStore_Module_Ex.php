@@ -23,7 +23,7 @@
 
 // {{{ requires
 require_once CLASS_REALDIR . 'pages/admin/ownersstore/LC_Page_Admin_OwnersStore_Module.php';
-    
+
 /**
  * オーナーズストア：モジュール管理 のページクラス(拡張).
  *

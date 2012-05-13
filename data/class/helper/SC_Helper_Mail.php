@@ -66,7 +66,7 @@ class SC_Helper_Mail {
     function getPage() {
         return $this->objPage;
     }
-    
+
     /* DBに登録されたテンプレートメールの送信 */
     function sfSendTemplateMail($to, $to_name, $template_id, &$objPage, $from_address = '', $from_name = '', $reply_to = '', $bcc = '') {
 

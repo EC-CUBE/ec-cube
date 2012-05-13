@@ -49,9 +49,9 @@ class SC_Helper_FPDI extends PDF_Japanese {
             }
             else {
                 $b2 = '';
-                if(is_int(strpos($border, 'L')))
+                if (is_int(strpos($border, 'L')))
                     $b2 .= 'L';
-                if(is_int(strpos($border, 'R')))
+                if (is_int(strpos($border, 'R')))
                     $b2 .= 'R';
                 $b = is_int(strpos($border, 'T')) ? $b2.'T' : $b2;
             }

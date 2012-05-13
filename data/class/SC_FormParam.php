@@ -503,8 +503,7 @@ class SC_FormParam {
      * addParamの逆の関数
      * カスタマイズおよびプラグインで使用されるのを想定
      */
-    function removeParam($keyname)
-    {
+    function removeParam($keyname) {
         $index = array_search($keyname, $this->keyname);
 
         if ($index !== FALSE) {
@@ -547,8 +546,7 @@ class SC_FormParam {
      * @param string $target 上書きしたい項目名(disp_name,length,convert等)
      * @param mixed $value 指定した内容に上書きする
      */
-    function overwriteParam($keyname, $target, $value)
-    {
+    function overwriteParam($keyname, $target, $value) {
         $index = array_search($keyname, $this->keyname);
 
         if ($index !== FALSE) {

@@ -268,7 +268,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
     function getCSSDir($device_type_id) {
         return SC_Helper_PageLayout_Ex::getTemplatePath($device_type_id, true) . 'css/';
     }
-    
+
     /**
      * 文字列に[./]表記がないかをチェックします
      * @param string $str

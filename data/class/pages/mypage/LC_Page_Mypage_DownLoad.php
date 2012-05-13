@@ -95,7 +95,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
         if (count($this->arrErr)!=0) {
             SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,'',true);
         }
-        
+
     }
 
     /**
@@ -105,10 +105,10 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
      * @return void
      */
     function sendResponse() {
-        // TODO sendResponseをオーバーライドしている為、afterフックポイントが実行されない.直接実行する.(#1790 )
+        // TODO sendResponseをオーバーライドしている為、afterフックポイントが実行されない.直接実行する.(#1790)
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('LC_Page_Mypage_DownLoad_action_after', array($this));
-        
+
         $this->objDisplay->noAction();
 
         // パラメーター取得

@@ -291,7 +291,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
 
         $objHelperMail = new SC_Helper_Mail_Ex();
         $objHelperMail->setPage($this);
-        
+
         // メール送信オブジェクトによる送信処理
         $objMail = new SC_SendMail();
         $objMail->setItem(
