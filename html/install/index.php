@@ -52,6 +52,9 @@ $objPage->arrDB_PORT = array(
     'pgsql' => '',
     'mysql' => '',
 );
+$objPage->arrMailBackend = array('mail' => 'mail',
+                                 'smtp' => 'SMTP',
+                                 'sendmail' => 'sendmail');
 
 $objDb = new SC_Helper_DB_Ex();
 
@@ -629,6 +632,22 @@ function lfInitWebParam($objWebParam) {
         $admin_allow_hosts = '';
     }
 
+    if (defined('MAIL_BACKEND')) {
+        $mail_backend = MAIL_BACKEND;
+    }
+    if (defined('SMTP_HOST')) {
+        $smtp_host = SMTP_HOST;
+    }
+    if (defined('SMTP_PORT')) {
+        $smtp_port = SMTP_PORT;
+    }
+    if (defined('SMTP_USER')) {
+        $smtp_user = SMTP_USER;
+    }
+    if (defined('SMTP_PASSWORD')) {
+        $smtp_password = SMTP_PASSWORD;
+    }
+
     $objWebParam->addParam('店名', 'shop_name', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $shop_name);
     $objWebParam->addParam('管理者：メールアドレス', 'admin_mail', null, '', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'), $admin_mail);
     $objWebParam->addParam('管理者：ログインID', 'login_id', ID_MAX_LEN, '', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'));
@@ -639,6 +658,11 @@ function lfInitWebParam($objWebParam) {
     $objWebParam->addParam('URL(通常)', 'normal_url', MTEXT_LEN, '', array('EXIST_CHECK', 'URL_CHECK', 'MAX_LENGTH_CHECK'), $normal_url);
     $objWebParam->addParam('URL(セキュア)', 'secure_url', MTEXT_LEN, '', array('EXIST_CHECK', 'URL_CHECK', 'MAX_LENGTH_CHECK'), $secure_url);
     $objWebParam->addParam('ドメイン', 'domain', MTEXT_LEN, '', array('MAX_LENGTH_CHECK'));
+    $objWebParam->addParam('メーラーバックエンド', 'mail_backend', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'EXIST_CHECK'), $mail_backend);
+    $objWebParam->addParam('SMTPホスト', 'smtp_host', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'), $smtp_host);
+    $objWebParam->addParam('SMTPポート', 'smtp_port', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $smtp_port);
+    $objWebParam->addParam('SMTPユーザー', 'smtp_user', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'), $smtp_user);
+    $objWebParam->addParam('SMTPパスワード', 'smtp_password', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'), $smtp_password);
 
     return $objWebParam;
 }
@@ -961,7 +985,12 @@ function lfMakeConfigFile() {
                  . "define('ADMIN_ALLOW_HOSTS', '"     . serialize($allow_hosts) . "');\n"
                  . "define('AUTH_MAGIC', '"            . $auth_magic . "');\n"
                  . "define('PASSWORD_HASH_ALGOS', '"   . $algos . "');\n"
-                 . "define('RELEASE_YEAR', '"          . date('Y') . "');\n";
+                 . "define('RELEASE_YEAR', '"          . date('Y') . "');\n"
+                 . "define('MAIL_BACKEND', '"          . $objWebParam->getValue('mail_backend') . "');\n"
+                 . "define('SMTP_HOST', '"             . $objWebParam->getValue('smtp_host') . "');\n"
+                 . "define('SMTP_PORT', '"             . $objWebParam->getValue('smtp_port') . "');\n"
+                 . "define('SMTP_USER', '"             . $objWebParam->getValue('smtp_user') . "');\n"
+                 . "define('SMTP_PASSWORD', '"         . $objWebParam->getValue('smtp_password') . "');\n";
 
     if ($fp = fopen(CONFIG_REALFILE, 'w')) {
         fwrite($fp, $config_data);

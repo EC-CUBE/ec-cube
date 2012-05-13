@@ -19,6 +19,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
+<script type="text/javascript">
+$(function() {
+    $('.option').hide();
+    if ($('input[name=mail_backend]').val() == 'smtp') {
+        $('.smtp').attr('disabled', false);
+    } else {
+        $('.smtp').attr('disabled', true);
+    }
+    $('#options').click(function() {
+        $('.option').slideToggle();
+    });
+    $('input[name=mail_backend]').change(function() {
+        if ($(this).val() == 'smtp') {
+            $('.smtp').attr('disabled', false);
+        } else {
+            $('.smtp').attr('disabled', true);
+        }
+    });
+});
+</script>
 <form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="mode" value="<!--{$tpl_mode}-->" />
 <input type="hidden" name="step" value="0" />
@@ -141,6 +161,62 @@
                 </td>
             </tr>
         </table>
+
+        <p><a href="javascript:;" id="options">&gt;&gt; オプション設定</a></p>
+        <div class="option">
+            <h2>メールサーバーの設定(オプション)</h2>
+            <table>
+                <col width="30%" />
+                <col width="70%" />
+                <tr>
+                    <th>メーラーバックエンド<span class="attention">※</span></th>
+                    <td>
+                      <!--{assign var=key value="mail_backend"}-->
+                      <span class="attention"><!--{$arrErr[$key]}--></span>
+                      <!--{html_radios name=$key options=$arrMailBackend selected=$arrForm[$key].value|h}--><br />
+                      <span class="ex-text">mail - PHP の組込関数 mail() を使用して送信します。<br />
+                      SMTP - SMTP サーバに直接接続してメールを送信します。<br />
+                      sendmail - sendmail プログラムにより送信します。</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>SMTP ホスト<span class="attention">※</span></th>
+                    <td>
+                      <!--{assign var=key value="smtp_host"}-->
+                      <span class="attention"><!--{$arrErr[$key]}--></span>
+                      <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="smtp" /><br />
+                      <span class="ex-text">メーラーバックエンドが SMTP の場合のみ指定します。</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>SMTP ポート<span class="attention">※</span></th>
+                    <td>
+                      <!--{assign var=key value="smtp_port"}-->
+                      <span class="attention"><!--{$arrErr[$key]}--></span>
+                      <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="5" class="smtp" /><br />
+                      <span class="ex-text">メーラーバックエンドが SMTP の場合のみ指定します。</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>SMTP ユーザー</th>
+                    <td>
+                      <!--{assign var=key value="smtp_user"}-->
+                      <span class="attention"><!--{$arrErr[$key]}--></span>
+                      <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="smtp" /><br />
+                      <span class="ex-text">メーラーバックエンドが SMTP の場合で、SMTP-AUTH 使用時のみ指定します。</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>SMTP パスワード</th>
+                    <td>
+                      <!--{assign var=key value="smtp_password"}-->
+                      <span class="attention"><!--{$arrErr[$key]}--></span>
+                      <input type="password" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="smtp" /><br />
+                      <span class="ex-text">メーラーバックエンドが SMTP の場合で、SMTP-AUTH 使用時のみ指定します。</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 </div>
 <div class="btn-area-top"></div>

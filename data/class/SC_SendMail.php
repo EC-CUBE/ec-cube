@@ -302,6 +302,14 @@ class SC_SendMail {
                     'host' => $this->host,
                     'port' => $this->port,
                 );
+                if (defined('SMTP_USER')
+                    && defined('SMTP_PASSWORD')
+                    && !SC_Utils_Ex::isBlank(SMTP_USER)
+                    && !SC_Utils_Ex::isBlank(SMTP_PASSWORD)) {
+                    $arrParams['auth'] = true;
+                    $arrParams['username'] = SMTP_USER;
+                    $arrParams['password'] = SMTP_PASSWORD;
+                }
                 break;
         }
         return $arrParams;

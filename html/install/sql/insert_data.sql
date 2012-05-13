@@ -1164,9 +1164,6 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('RECOMMEND_NUM', '8'
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DELIV_DATE_END_MAX', '21', 272, 'お届け可能日以降のプルダウン表示最大日数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CV_PAYMENT_LIMIT', '14', 275, '支払期限 (*モジュールで使用)'); 
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('REVIEW_ALLOW_URL', '0', 277, '商品レビューでURL書き込みを許可するか否か');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MAIL_BACKEND', '"mail"', 285, 'Pear::Mail バックエンド:"mail"|"smtp"|"sendmail"');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMTP_HOST', '"127.0.0.1"', 287, 'SMTPサーバー (MAIL_BACKEND が "smtp" の場合のみ)');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMTP_PORT', '"25"', 288, 'SMTPポート (MAIL_BACKEND が "smtp" の場合のみ)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UPDATE_SEND_SITE_INFO', 'false', 289, 'アップデート時にサイト情報を送出するか');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USE_POINT', 'true', 290, 'ポイントを利用するか(true:利用する、false:利用しない) (false は一部対応)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('NOSTOCK_HIDDEN', 'false', 291, '在庫無し商品の非表示(true:非表示、false:表示)');

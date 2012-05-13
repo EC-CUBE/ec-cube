@@ -306,12 +306,6 @@ define('DELIV_DATE_END_MAX', 21);
 define('CV_PAYMENT_LIMIT', 14); 
 /** 商品レビューでURL書き込みを許可するか否か */
 define('REVIEW_ALLOW_URL', 0);
-/** Pear::Mail バックエンド:"mail"|"smtp"|"sendmail" */
-define('MAIL_BACKEND', "mail");
-/** SMTPサーバー (MAIL_BACKEND が "smtp" の場合のみ) */
-define('SMTP_HOST', "127.0.0.1");
-/** SMTPポート (MAIL_BACKEND が "smtp" の場合のみ) */
-define('SMTP_PORT', "25");
 /** アップデート時にサイト情報を送出するか */
 define('UPDATE_SEND_SITE_INFO', false);
 /** ポイントを利用するか(true:利用する、false:利用しない) (false は一部対応) */
