@@ -30,8 +30,6 @@ class SC_SelectSql {
     var $where;
     var $order;
     var $group;
-    var $limit;
-    var $offset;
     var $arrSql;
     var $arrVal;
 
@@ -46,11 +44,8 @@ class SC_SelectSql {
     function getSql($mode = '') {
         $this->sql = $this->select .' '. $this->where .' '. $this->group .' ';
 
-        // $mode == 1 は limit & offset無し
         if ($mode == 2) {
             $this->sql .= $this->order;
-        } elseif ($mode != 1) {
-            $this->sql .= $this->order . ' ' .$this->limit .' '. $this->offset;
         }
 
         return $this->sql;
@@ -239,22 +234,11 @@ class SC_SelectSql {
 
     }
 
-    function setLimitOffset($limit, $offset) {
-
-        if (is_numeric($limit) and is_numeric($offset)) {
-
-            $this->limit = ' LIMIT ' .$limit;
-            $this->offset = ' OFFSET ' .$offset;
-        }
-    }
-
     function clearSql() {
         $this->select = '';
         $this->where = '';
         $this->group = '';
         $this->order = '';
-        $this->limit = '';
-        $this->offset = '';
     }
 
     function setSelect($sql) {

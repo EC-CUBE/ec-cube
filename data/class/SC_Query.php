@@ -347,7 +347,6 @@ class SC_Query {
      * SELECT 文に付与する LIMIT, OFFSET 句を設定する.
      *
      * この関数で設定した値は SC_Query::getSql() で使用されます.
-     * TODO MDB2::setLimit() を使用する
      *
      * @param integer $limit LIMIT 句に付与する値
      * @param integer $offset OFFSET 句に付与する値
@@ -355,10 +354,7 @@ class SC_Query {
      */
     function setLimitOffset($limit, $offset = 0) {
         if (is_numeric($limit) && is_numeric($offset)) {
-
-            $option = ' LIMIT ' . $limit;
-            $option.= ' OFFSET ' . $offset;
-            $this->option .= $option;
+            $this->conn->setLimit($limit, $offset);
         }
         return $this;
     }
@@ -456,7 +452,7 @@ class SC_Query {
      */
     function setLimit($limit) {
         if (is_numeric($limit)) {
-            $this->option = ' LIMIT ' .$limit;
+            $this->conn->setLimit($limit);
         }
         return $this;
     }
@@ -466,12 +462,12 @@ class SC_Query {
      *
      * この関数で設定した値は SC_Query::getSql() で使用されます.
      *
-     * @param integer $offset LIMIT 句に設定する値
+     * @param integer $offset OFFSET 句に設定する値
      * @return SC_Query 自分自身のインスタンス
      */
     function setOffset($offset) {
         if (is_numeric($offset)) {
-            $this->offset = ' OFFSET ' .$offset;
+            $this->conn->setLimit($this->conn->limit, $offset);
         }
         return $this;
     }

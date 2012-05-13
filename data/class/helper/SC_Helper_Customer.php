@@ -636,11 +636,12 @@ class SC_Helper_Customer {
         }
         $offset = intval($page_max) * (intval($disp_pageno) - 1);
         if ($limitMode == '') {
-    $objSelect->setLimitOffset($page_max, $offset);
+            $objQuery->setLimitOffset($page_max, $offset);
         }
         $arrData = $objQuery->getAll($objSelect->getList(), $objSelect->arrVal);
 
         // 該当全体件数の取得
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $linemax = $objQuery->getOne($objSelect->getListCount(), $objSelect->arrVal);
 
         // ページ送りの取得
