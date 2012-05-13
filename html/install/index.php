@@ -634,6 +634,8 @@ function lfInitWebParam($objWebParam) {
 
     if (defined('MAIL_BACKEND')) {
         $mail_backend = MAIL_BACKEND;
+    } else {
+        $mail_backend = 'mail';
     }
     if (defined('SMTP_HOST')) {
         $smtp_host = SMTP_HOST;

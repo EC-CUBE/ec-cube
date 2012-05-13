@@ -180,7 +180,7 @@ $(function() {
                     </td>
                 </tr>
                 <tr>
-                    <th>SMTP ホスト<span class="attention">※</span></th>
+                    <th>SMTP ホスト</th>
                     <td>
                       <!--{assign var=key value="smtp_host"}-->
                       <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -189,7 +189,7 @@ $(function() {
                     </td>
                 </tr>
                 <tr>
-                    <th>SMTP ポート<span class="attention">※</span></th>
+                    <th>SMTP ポート</th>
                     <td>
                       <!--{assign var=key value="smtp_port"}-->
                       <span class="attention"><!--{$arrErr[$key]}--></span>
