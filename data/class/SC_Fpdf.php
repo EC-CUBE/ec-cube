@@ -21,17 +21,15 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-/*----------------------------------------------------------------------
- * [名称] SC_Fpdf
- * [概要] pdfファイルを表示する。
- *----------------------------------------------------------------------
+/**
+ * PDF 納品書を出力する
+ *
+ * TODO ページクラスとすべき要素を多々含んでいるように感じる。
  */
 
-require DATA_REALDIR . 'module/fpdf/fpdf.php';
-require DATA_REALDIR . 'module/fpdi/japanese.php';
 define('PDF_TEMPLATE_REALDIR', TEMPLATE_ADMIN_REALDIR . 'pdf/');
 
-class SC_Fpdf extends PDF_Japanese {
+class SC_Fpdf extends SC_Helper_FPDI {
     function __construct($download, $title, $tpl_pdf = 'nouhinsyo1.pdf') {
         $this->FPDF();
         // デフォルトの設定
@@ -43,18 +41,16 @@ class SC_Fpdf extends PDF_Japanese {
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->width_cell = array(110.3,12,21.7,24.5);
 
-        $this->label_cell[] = $this->lfConvSjis('商品名 / 商品コード / [ 規格 ]');
-        $this->label_cell[] = $this->lfConvSjis('数量');
-        $this->label_cell[] = $this->lfConvSjis('単価');
-        $this->label_cell[] = $this->lfConvSjis('金額(税込)');
+        $this->label_cell[] = '商品名 / 商品コード / [ 規格 ]';
+        $this->label_cell[] = '数量';
+        $this->label_cell[] = '単価';
+        $this->label_cell[] = '金額(税込)';
 
         $this->arrMessage = array(
             'このたびはお買上げいただきありがとうございます。',
             '下記の内容にて納品させていただきます。',
             'ご確認くださいますよう、お願いいたします。'
         );
-
-        $this->lfAddGothicFont();
 
         // SJISフォント
         $this->AddSJISFont();
@@ -162,17 +158,17 @@ class SC_Fpdf extends PDF_Japanese {
         $this->lfText(25, 135, $this->arrDisp['order_id'], 10); //注文番号
 
         $this->SetFont('Gothic', 'B', 15);
-        $this->Cell(0, 10, $this->lfConvSjis($this->tpl_title), 0, 2, 'C', 0, '');  //文書タイトル（納品書・請求書）
+        $this->Cell(0, 10, $this->tpl_title, 0, 2, 'C', 0, '');  //文書タイトル（納品書・請求書）
         $this->Cell(0, 66, '', 0, 2, 'R', 0, '');
         $this->Cell(5, 0, '', 0, 0, 'R', 0, '');
         $this->SetFont('SJIS', 'B', 15);
-        $this->Cell(67, 8, $this->lfConvSjis(number_format($this->arrDisp['payment_total']).' 円'), 0, 2, 'R', 0, '');
+        $this->Cell(67, 8, number_format($this->arrDisp['payment_total']).' 円', 0, 2, 'R', 0, '');
         $this->Cell(0, 45, '', 0, 2, '', 0, '');
 
         $this->SetFont('SJIS', '', 8);
 
-        $monetary_unit = $this->lfConvSjis('円');
-        $point_unit = $this->lfConvSjis('Pt');
+        $monetary_unit = '円';
+        $point_unit = 'Pt';
 
         // 購入商品情報
         for ($i = 0; $i < count($this->arrDisp['quantity']); $i++) {
@@ -186,14 +182,14 @@ class SC_Fpdf extends PDF_Japanese {
             // 小計（商品毎）
             $data[2] = $data[0] * $data[1];
 
-            $arrOrder[$i][0]  = $this->lfConvSjis($this->arrDisp['product_name'][$i].' / ');
-            $arrOrder[$i][0] .= $this->lfConvSjis($this->arrDisp['product_code'][$i].' / ');
+            $arrOrder[$i][0]  = $this->arrDisp['product_name'][$i].' / ';
+            $arrOrder[$i][0] .= $this->arrDisp['product_code'][$i].' / ';
             if ($this->arrDisp['classcategory_name1'][$i]) {
-                $arrOrder[$i][0] .= $this->lfConvSjis(' [ '.$this->arrDisp['classcategory_name1'][$i]);
+                $arrOrder[$i][0] .= ' [ '.$this->arrDisp['classcategory_name1'][$i];
                 if ($this->arrDisp['classcategory_name2'][$i] == '') {
                     $arrOrder[$i][0] .= ' ]';
                 } else {
-                    $arrOrder[$i][0] .= $this->lfConvSjis(' * '.$this->arrDisp['classcategory_name2'][$i].' ]');
+                    $arrOrder[$i][0] .= ' * '.$this->arrDisp['classcategory_name2'][$i].' ]';
                 }
             }
             $arrOrder[$i][1]  = number_format($data[0]);
@@ -210,31 +206,31 @@ class SC_Fpdf extends PDF_Japanese {
         $i++;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
-        $arrOrder[$i][2] = $this->lfConvSjis('商品合計');
+        $arrOrder[$i][2] = '商品合計';
         $arrOrder[$i][3] = number_format($this->arrDisp['subtotal']).$monetary_unit;
 
         $i++;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
-        $arrOrder[$i][2] = $this->lfConvSjis('送料');
+        $arrOrder[$i][2] = '送料';
         $arrOrder[$i][3] = number_format($this->arrDisp['deliv_fee']).$monetary_unit;
 
         $i++;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
-        $arrOrder[$i][2] = $this->lfConvSjis('手数料');
+        $arrOrder[$i][2] = '手数料';
         $arrOrder[$i][3] = number_format($this->arrDisp['charge']).$monetary_unit;
 
         $i++;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
-        $arrOrder[$i][2] = $this->lfConvSjis('値引き');
+        $arrOrder[$i][2] = '値引き';
         $arrOrder[$i][3] = '- '.number_format(($this->arrDisp['use_point'] * POINT_VALUE) + $this->arrDisp['discount']).$monetary_unit;
 
         $i++;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
-        $arrOrder[$i][2] = $this->lfConvSjis('請求金額');
+        $arrOrder[$i][2] = '請求金額';
         $arrOrder[$i][3] = number_format($this->arrDisp['payment_total']).$monetary_unit;
 
         // ポイント表記
@@ -248,13 +244,13 @@ class SC_Fpdf extends PDF_Japanese {
             $i++;
             $arrOrder[$i][0] = '';
             $arrOrder[$i][1] = '';
-            $arrOrder[$i][2] = $this->lfConvSjis('利用ポイント');
+            $arrOrder[$i][2] = '利用ポイント';
             $arrOrder[$i][3] = number_format($this->arrDisp['use_point']).$point_unit;
 
             $i++;
             $arrOrder[$i][0] = '';
             $arrOrder[$i][1] = '';
-            $arrOrder[$i][2] = $this->lfConvSjis('加算ポイント');
+            $arrOrder[$i][2] = '加算ポイント';
             $arrOrder[$i][3] = number_format($this->arrDisp['add_point']).$point_unit;
         }
 
@@ -264,10 +260,10 @@ class SC_Fpdf extends PDF_Japanese {
     function setEtcData() {
         $this->Cell(0, 10, '', 0, 1, 'C', 0, '');
         $this->SetFont('Gothic', 'B', 9);
-        $this->MultiCell(0, 6, $this->lfConvSjis('＜ 備 考 ＞'), 'T', 2, 'L', 0, '');  //備考
+        $this->MultiCell(0, 6, '＜ 備 考 ＞', 'T', 2, 'L', 0, '');  //備考
         $this->Ln();
         $this->SetFont('SJIS', '', 8);
-        $this->MultiCell(0, 4, $this->lfConvSjis($this->arrData['etc1']."\n".$this->arrData['etc2']."\n".$this->arrData['etc3']), '', 2, 'L', 0, '');  //備考
+        $this->MultiCell(0, 4, $this->arrData['etc1']."\n".$this->arrData['etc2']."\n".$this->arrData['etc3'], '', 2, 'L', 0, '');  //備考
     }
 
     function createPdf() {
@@ -295,7 +291,7 @@ class SC_Fpdf extends PDF_Japanese {
         $bak_font_size = $this->FontSizePt;
 
         $this->SetFont('', $style, $size);
-        $this->Text($x, $y, $this->lfConvSjis($text));
+        $this->Text($x, $y, $text);
 
         // 復元
         $this->SetFont('', $bak_font_style, $bak_font_size);
@@ -333,32 +329,5 @@ class SC_Fpdf extends PDF_Japanese {
         $objQuery->setOrder('order_detail_id');
         $arrRet = $objQuery->select($col, 'dtb_order_detail', $where, array($order_id));
         return $arrRet;
-    }
-
-    // 文字コードSJIS変換 -> japanese.phpで使用出来る文字コードはSJIS-winのみ
-    function lfConvSjis($conv_str) {
-        return mb_convert_encoding($conv_str, 'SJIS-win', CHAR_CODE);
-    }
-
-    /**
-     * ゴシックフォントを定義
-     *
-     * @return void
-     */
-    function lfAddGothicFont() {
-        $cw = $GLOBALS['SJIS_widths'];
-        $c_map = '90msp-RKSJ-H';
-        $registry = array('ordering'=>'Japan1','supplement'=>2);
-        $this->AddCIDFonts('Gothic', 'KozGoPro-Medium-Acro,MS-PGothic,Osaka', $cw, $c_map, $registry);
-    }
-
-    /**
-     * フッター
-     *
-     * 現状の PDF_Japanese#Footer の動作によって、生成される PDF がエラーとなるケースがあり、
-     * そのエラーを抑える意図。
-     * @return void
-     */
-    function Footer() {
     }
 }
