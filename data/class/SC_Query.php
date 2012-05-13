@@ -48,8 +48,15 @@ class SC_Query {
      */
     function __construct($dsn = '', $force_run = false, $new = false) {
 
-        if ($dsn == '') {
-            $dsn = DEFAULT_DSN;
+        if ($dsn == "") {
+            $dsn = array('phptype'  => DB_TYPE,
+                         'username' => DB_USER,
+                         'password' => DB_PASSWORD,
+                         'protocol' => 'tcp',
+                         'hostspec' => DB_SERVER,
+                         'port'     => DB_PORT,
+                         'database' => DB_NAME
+                         );
         }
 
         // オプション

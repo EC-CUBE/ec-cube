@@ -7,8 +7,6 @@ define('SAMPLE_ADDRESS2', "番地・ビル名 (例：1-3-5)");
 define('USER_DIR', "user_data/");
 /** ユーザファイル保存先 */
 define('USER_REALDIR', HTML_REALDIR . USER_DIR);
-/** 郵便番号専用DB */
-define('ZIP_DSN', DEFAULT_DSN);
 /** ユーザー作成ページ等 */
 define('USER_URL', HTTP_URL . USER_DIR);
 /** 認証方式 */

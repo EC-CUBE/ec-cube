@@ -1014,7 +1014,6 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SAMPLE_ADDRESS1', '
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SAMPLE_ADDRESS2', '"番地・ビル名 (例：1-3-5)"', 2, 'フロント表示関連');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USER_DIR', '"user_data/"', 3, 'ユーザファイル保存先');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USER_REALDIR', 'HTML_REALDIR . USER_DIR', 4, 'ユーザファイル保存先');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ZIP_DSN', 'DEFAULT_DSN', 8, '郵便番号専用DB');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USER_URL', 'HTTP_URL . USER_DIR', 9, 'ユーザー作成ページ等');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('AUTH_TYPE', '"HMAC"', 10, '認証方式');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USER_PACKAGE_DIR', '"packages/"', 17, 'テンプレートファイル保存先');

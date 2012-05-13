@@ -82,6 +82,7 @@ class SC_Initial {
      *
      * @access protected
      * @return void
+     * @deprecated 下位互換用
      */
     function defineDSN() {
         if (defined('DB_TYPE') && defined('DB_USER') && defined('DB_PASSWORD')
@@ -89,6 +90,7 @@ class SC_Initial {
         ) {
             $dsn = DB_TYPE . '://' . DB_USER . ':' . DB_PASSWORD . '@' . DB_SERVER . ':' . DB_PORT . '/' . DB_NAME;
             /** サイト用DB */
+            // ここで生成した DSN は使用せず, SC_Query のコンストラクタでパラメータを設定する.
             define('DEFAULT_DSN', $dsn);
         }
     }

@@ -52,17 +52,24 @@ class SC_DB_DBFactory {
     /**
      * データソース名を取得する.
      *
-     * 引数 $dsn が空の場合は, DEFAULT_DSN の値を返す.
+     * 引数 $dsn が空でデータソースが定義済みの場合はDB接続パラメータの連想配列を返す
      * DEFAULT_DSN が未定義の場合は void となる.
      * $dsn が空ではない場合は, $dsn の値を返す.
      *
-     * @param string $dsn データソース名
-     * @return void|string データソース名
+     * @param mixed $dsn データソース名
+     * @return mixed データソース名またはDB接続パラメータの連想配列
      */
     function getDSN($dsn = '') {
         if (empty($dsn)) {
             if (defined('DEFAULT_DSN')) {
-                $dsn = DEFAULT_DSN;
+                $dsn = array('phptype'  => DB_TYPE,
+                             'username' => DB_USER,
+                             'password' => DB_PASSWORD,
+                             'protocol' => 'tcp',
+                             'hostspec' => DB_SERVER,
+                             'port'     => DB_PORT,
+                             'database' => DB_NAME
+                             );
             } else {
                 return '';
             }
