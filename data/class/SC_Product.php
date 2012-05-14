@@ -608,8 +608,8 @@ __EOS__;
          */
         $sql = <<< __EOS__
             (
-                SELECT 0
-                    ,dtb_products.product_id
+                SELECT
+                     dtb_products.product_id
                     ,dtb_products.name
                     ,dtb_products.maker_id
                     ,dtb_products.status
