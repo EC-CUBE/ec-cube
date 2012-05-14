@@ -122,9 +122,14 @@ class SC_Helper_Mail {
         }
 
         // 受注情報の取得
+        $where = 'order_id = ? AND del_flg = 0';
+        $arrOrder = $objQuery->getRow('*', 'dtb_order', $where, array($order_id));
+
+        if (empty($arrOrder)) {
+            trigger_error("該当する受注が存在しない。(注文番号: $order_id)", E_USER_ERROR);
+        }
+
         $where = 'order_id = ?';
-        $arrRet = $objQuery->select('*', 'dtb_order', $where, array($order_id));
-        $arrOrder = $arrRet[0];
         $objQuery->setOrder('order_detail_id');
         $arrTplVar->arrOrderDetail = $objQuery->select('*', 'dtb_order_detail', $where, array($order_id));
 
