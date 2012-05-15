@@ -141,7 +141,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex {
         // 取得範囲の指定(開始行番号、行数のセット)
         $objQuery->setLimitOffset(SEARCH_PMAX, $startno);
 
-        $objQuery->setOrder('rank DESC, product_id DESC');
+        $objQuery->setOrder('rank DESC, alldtl.product_id DESC');
 
         $arrRet = $objQuery->select($col, $table, $where, array($category_id));
         return $arrRet;
