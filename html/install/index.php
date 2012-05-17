@@ -703,7 +703,7 @@ function lfInitDBParam($objDBParam) {
     }
 
     $objDBParam->addParam('DBの種類', 'db_type', INT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $db_type);
-    $objDBParam->addParam('DBサーバー', 'db_server', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $db_server);
+    $objDBParam->addParam('DBサーバー', 'db_server', MTEXT_LEN, '', array('MAX_LENGTH_CHECK'), $db_server);
     $objDBParam->addParam('DBポート', 'db_port', INT_LEN, '', array('MAX_LENGTH_CHECK'), $db_port);
     $objDBParam->addParam('DB名', 'db_name', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $db_name);
     $objDBParam->addParam('DBユーザ', 'db_user', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $db_user);
