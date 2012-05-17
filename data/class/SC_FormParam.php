@@ -63,6 +63,15 @@ class SC_FormParam {
      */
     function __construct() {
         $this->check_dir = IMAGE_SAVE_REALDIR;
+        
+        // SC_FormParamのフックポイント
+        // TODO: debug_backtrace以外にいい方法があれば良いが、一旦これで
+        $backtraces = debug_backtrace();
+        // 呼び出し元のクラスを取得
+        $class = $backtraces[1]['class'];
+        $objPage = $backtraces[1]['object'];
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($objPage->plugin_activate_flg);
+        $objPlugin->doAction('SC_FormParam_construct', array($class, $this));
     }
 
     /**
