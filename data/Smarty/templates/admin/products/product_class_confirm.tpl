@@ -27,12 +27,14 @@
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <!--{foreach key=key item=items from=$arrForm}-->
-    <!--{if is_array($items.value)}-->
-        <!--{foreach key=index item=item from=$items.value}-->
-            <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$item|h}-->" />
-        <!--{/foreach}-->
-    <!--{else}-->
-        <input type="hidden" name="<!--{$key}-->" value="<!--{$items.value|h}-->" />
+    <!--{if !array_key_exists($key, $arrSearchHidden)}-->
+        <!--{if is_array($items.value)}-->
+            <!--{foreach key=index item=item from=$items.value}-->
+                <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$item|h}-->" />
+            <!--{/foreach}-->
+        <!--{else}-->
+            <input type="hidden" name="<!--{$key}-->" value="<!--{$items.value|h}-->" />
+        <!--{/if}-->
     <!--{/if}-->
 <!--{/foreach}-->
 
