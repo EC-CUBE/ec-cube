@@ -448,7 +448,8 @@ class SC_Helper_Purchase {
     function copyFromCustomer(&$dest, &$objCustomer, $prefix = 'order',
         $keys = array('name01', 'name02', 'kana01', 'kana02',
             'sex', 'zip01', 'zip02', 'pref', 'addr01', 'addr02',
-            'tel01', 'tel02', 'tel03', 'job', 'birth', 'email',
+            'tel01', 'tel02', 'tel03', 'fax01', 'fax02', 'fax03',
+            'job', 'birth', 'email',
         )
     ) {
         if ($objCustomer->isLoginSuccess(true)) {

@@ -195,6 +195,20 @@
             </td>
         </tr>
         <tr>
+            <th>FAX</th>
+            <td>
+                <!--{assign var=key1 value="order_fax01"}-->
+                <!--{assign var=key2 value="order_fax02"}-->
+                <!--{assign var=key3 value="order_fax03"}-->
+                <span class="attention"><!--{$arrErr[$key1]}--></span>
+                <span class="attention"><!--{$arrErr[$key2]}--></span>
+                <span class="attention"><!--{$arrErr[$key3]}--></span>
+                <input type="text" name="<!--{$arrForm[$key1].keyname}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="6" class="box6" /> -
+                <input type="text" name="<!--{$arrForm[$key2].keyname}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="6" class="box6" /> -
+                <input type="text" name="<!--{$arrForm[$key3].keyname}-->" value="<!--{$arrForm[$key3].value|h}-->" maxlength="<!--{$arrForm[$key3].length}-->" style="<!--{$arrErr[$key3]|sfGetErrorColor}-->" size="6" class="box6" />
+            </td>
+        </tr>
+        <tr>
             <th>住所</th>
             <td>
                 <!--{assign var=key1 value="order_zip01"}-->
