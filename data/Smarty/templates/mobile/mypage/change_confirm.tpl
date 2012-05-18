@@ -41,6 +41,9 @@
     	〒<!--{$arrForm.zip01|h}--> - <!--{$arrForm.zip02|h}--><br>
     	<!--{$arrPref[$arrForm.pref]|h}--><!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}--><br>
     	<!--{$arrForm.tel01|h}-->-<!--{$arrForm.tel02|h}-->-<!--{$arrForm.tel03|h}--><br>
+    	<!--{if $arrForm.fax01 > 0}-->
+    	    <!--{$arrForm.fax01|h}-->-<!--{$arrForm.fax02|h}-->-<!--{$arrForm.fax03|h}--><br>
+    	<!--{/if}-->
     	<br>
 
     	【携帯ﾒｰﾙｱﾄﾞﾚｽ】<br>

@@ -695,6 +695,9 @@ CREATE TABLE dtb_other_deliv (
     tel01 text,
     tel02 text,
     tel03 text,
+    fax01 text,
+    fax02 text,
+    fax03 text,
     PRIMARY KEY (other_deliv_id)
 );
 

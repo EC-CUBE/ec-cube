@@ -122,6 +122,11 @@
         <!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01|h}--><!--{$shippingItem.shipping_addr02|h}--><br>
         ●電話番号<br>
         <!--{$shippingItem.shipping_tel01}-->-<!--{$shippingItem.shipping_tel02}-->-<!--{$shippingItem.shipping_tel03}--><br>
+        <!--{if $shippingItem.shipping_fax01 > 0}-->
+            ●FAX番号<br>
+            <!--{$shippingItem.shipping_fax01}-->-<!--{$shippingItem.shipping_fax02}-->-<!--{$shippingItem.shipping_fax03}--><br>
+        <!--{/if}-->
+        <br>
     <!--{/foreach}-->
 
     <hr>

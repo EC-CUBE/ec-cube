@@ -203,6 +203,14 @@
                         <td><!--{$shippingItem.shipping_tel01}-->-<!--{$shippingItem.shipping_tel02}-->-<!--{$shippingItem.shipping_tel03}--></td>
                     </tr>
                     <tr>
+                        <th class="alignL">FAX番号</th>
+                        <td>
+                            <!--{if $shippingItem.shipping_fax01 > 0}-->
+                                <!--{$shippingItem.shipping_fax01}-->-<!--{$shippingItem.shipping_fax02}-->-<!--{$shippingItem.shipping_fax03}-->
+                            <!--{/if}-->
+                        </td>
+                    </tr>
+                    <tr>
                         <th class="alignL">お届け日</th>
                         <td><!--{$shippingItem.shipping_date|default:'指定なし'|h}--></td>
                     </tr>

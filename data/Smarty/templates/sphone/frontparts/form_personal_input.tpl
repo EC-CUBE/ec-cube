@@ -83,18 +83,18 @@
     <input type="tel" name="<!--{$key1}-->" value="<!--{$arrForm[$key1]|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="<!--{$key2}-->" value="<!--{$arrForm[$key2]|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="<!--{$key3}-->" value="<!--{$arrForm[$key3]|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" class="boxShort text data-role-none" />
 </dd>
 
-<!--{if $flgFields > 1}-->
+<dt>FAX</dt>
+<dd>
+    <!--{assign var=key1 value="`$prefix`fax01"}-->
+    <!--{assign var=key2 value="`$prefix`fax02"}-->
+    <!--{assign var=key3 value="`$prefix`fax03"}-->
+    <!--{if $arrErr[$key1] || $arrErr[$key2] || $arrErr[$key3]}-->
+        <div class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--><!--{$arrErr[$key3]}--></div>
+    <!--{/if}-->
+    <input type="tel" name="<!--{$key1}-->" value="<!--{$arrForm[$key1]|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="<!--{$key2}-->" value="<!--{$arrForm[$key2]|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="<!--{$key3}-->" value="<!--{$arrForm[$key3]|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" class="boxShort text data-role-none" />
+</dd>
 
-    <dt>FAX</dt>
-    <dd>
-        <!--{assign var=key1 value="`$prefix`fax01"}-->
-        <!--{assign var=key2 value="`$prefix`fax02"}-->
-        <!--{assign var=key3 value="`$prefix`fax03"}-->
-        <!--{if $arrErr[$key1] || $arrErr[$key2] || $arrErr[$key3]}-->
-            <div class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--><!--{$arrErr[$key3]}--></div>
-        <!--{/if}-->
-        <input type="tel" name="<!--{$key1}-->" value="<!--{$arrForm[$key1]|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="<!--{$key2}-->" value="<!--{$arrForm[$key2]|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="<!--{$key3}-->" value="<!--{$arrForm[$key3]|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" class="boxShort text data-role-none" />
-    </dd>
+<!--{if $flgFields > 1}-->
 
     <dt>メールアドレス&nbsp;<span class="attention">※</span></dt>
     <dd>

@@ -43,6 +43,9 @@
         df['shipping_tel01[0]'].value = df.order_tel01.value;
         df['shipping_tel02[0]'].value = df.order_tel02.value;
         df['shipping_tel03[0]'].value = df.order_tel03.value;
+        df['shipping_fax01[0]'].value = df.order_fax01.value;
+        df['shipping_fax02[0]'].value = df.order_fax02.value;
+        df['shipping_fax03[0]'].value = df.order_fax03.value;
         df['shipping_pref[0]'].value = df.order_pref.value;
         df['shipping_addr01[0]'].value = df.order_addr01.value;
         df['shipping_addr02[0]'].value = df.order_addr02.value;
@@ -484,6 +487,20 @@
                     <!--{assign var=key1 value="shipping_tel01"}-->
                     <!--{assign var=key2 value="shipping_tel02"}-->
                     <!--{assign var=key3 value="shipping_tel03"}-->
+                    <span class="attention"><!--{$arrErr[$key1][$shipping_index]}--></span>
+                    <span class="attention"><!--{$arrErr[$key2][$shipping_index]}--></span>
+                    <span class="attention"><!--{$arrErr[$key3][$shipping_index]}--></span>
+                    <input type="text" name="<!--{$key1}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key1]|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1][$shipping_index]|sfGetErrorColor}-->" size="6" class="box6" /> -
+                    <input type="text" name="<!--{$key2}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key2]|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2][$shipping_index]|sfGetErrorColor}-->" size="6" class="box6" /> -
+                    <input type="text" name="<!--{$key3}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key3]|h}-->" maxlength="<!--{$arrForm[$key3].length}-->" style="<!--{$arrErr[$key3][$shipping_index]|sfGetErrorColor}-->" size="6" class="box6" />
+                </td>
+            </tr>
+            <tr>
+                <th>FAX</th>
+                <td>
+                    <!--{assign var=key1 value="shipping_fax01"}-->
+                    <!--{assign var=key2 value="shipping_fax02"}-->
+                    <!--{assign var=key3 value="shipping_fax03"}-->
                     <span class="attention"><!--{$arrErr[$key1][$shipping_index]}--></span>
                     <span class="attention"><!--{$arrErr[$key2][$shipping_index]}--></span>
                     <span class="attention"><!--{$arrErr[$key3][$shipping_index]}--></span>

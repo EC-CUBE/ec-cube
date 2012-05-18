@@ -101,6 +101,15 @@
     	&nbsp;-&nbsp;
     	<input type="text" size="<!--{$size}-->" name="tel03" value="<!--{$arrForm.tel03|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" istyle="4"><br>
 
+    	【FAX番号】<br>
+    	<font color="#FF0000"><!--{$arrErr.fax01}--><!--{$arrErr.fax02}--><!--{$arrErr.fax03}--></font>
+    	<!--{assign var="size" value="`$smarty.const.TEL_ITEM_LEN+2`"}-->
+    	<input type="text" size="<!--{$size}-->" name="fax01" value="<!--{$arrForm.fax01|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" istyle="4">
+    	&nbsp;-&nbsp;
+    	<input type="text" size="<!--{$size}-->" name="fax02" value="<!--{$arrForm.fax02|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" istyle="4">
+    	&nbsp;-&nbsp;
+    	<input type="text" size="<!--{$size}-->" name="fax03" value="<!--{$arrForm.fax03|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" istyle="4"><br>
+
     	【携帯メールアドレス】<font color="#FF0000">※</font><br>
     	<font color="#FF0000"><!--{$arrErr.email_mobile}--></font>
     	<input type="text" name="email_mobile" value="<!--{$arrForm.email_mobile|h}-->" istyle="3"><br>
