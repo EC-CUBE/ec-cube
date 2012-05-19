@@ -72,7 +72,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         // パラメーター情報の初期化
         $this->initParam($objFormParam, $mode);
         $objFormParam->setParam($_POST);
-
+ 
         $mode = $this->getMode();
 
         switch ($mode) {
@@ -606,7 +606,19 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         if ($this->isError($arrErr) === true) {
             return $arrErr;
         }
-
+        
+        // プラグインが有効な場合に無効化処理を実行
+        if($plugin['enable'] == PLUGIN_ENABLE_TRUE){
+            // 無効化処理を実行します.
+            $arrErr = $this->execPlugin($plugin, $plugin['class_name'], 'disable');
+            if ($this->isError($arrErr) === true) {
+                return $arrErr;
+            }
+            // プラグインを無効にします.
+            $this->updatePluginEnable($plugin['plugin_id'], PLUGIN_ENABLE_FALSE);
+        }
+        
+        // アンインストール処理を実行します.
         $arrErr = $this->execPlugin($plugin, $plugin['class_name'], 'uninstall');
         if ($this->isError($arrErr) === true) {
             return $arrErr;
