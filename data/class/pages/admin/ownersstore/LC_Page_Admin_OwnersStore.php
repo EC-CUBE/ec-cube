@@ -544,6 +544,20 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         if ($this->isError($arrErr) === true) {
             return $arrErr;
         }
+        // plugin_infoを読み込み.
+        $arrErr = $this->requirePluginFile(DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR . 'plugin_info.php', $target_plugin['plugin_code']);
+        if ($this->isError($arrErr) === true) {
+            $this->rollBack(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR);
+            return $arrErr;
+        }
+        // リフレクションオブジェクトを生成.
+        $objReflection = new ReflectionClass('plugin_info');
+        $arrPluginInfo = $this->getPluginInfo($objReflection);
+        if ($arrPluginInfo['PLUGIN_CODE'] != $target_plugin['plugin_code']) {
+            $arrErr[$target_plugin['plugin_code']] = '※ プラグインコードが一致しません。<br/>';
+            return $arrErr;
+        }
+        
         // plugin_update.phpを読み込み.
         $arrErr = $this->requirePluginFile(DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR . 'plugin_update.php', $target_plugin['plugin_code']);
         if ($this->isError($arrErr) === true) {
