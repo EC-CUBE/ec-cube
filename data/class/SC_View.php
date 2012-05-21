@@ -111,7 +111,7 @@ class SC_View {
      * @param LC_Page_Ex $objPage 
      * @return void
      */
-    function setPage(LC_Page_Ex $objPage) {
+    function setPage($objPage) {
        $this->objPage = $objPage;
     }
 
