@@ -95,7 +95,7 @@ class LC_Page {
         $layout = new SC_Helper_PageLayout_Ex();
         $layout->sfGetPageLayout($this, false, $_SERVER['SCRIPT_NAME'],
                                  $this->objDisplay->detectDevice());
-
+        
         // スーパーフックポイントを実行.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('LC_Page_preProcess', array($this));
@@ -106,16 +106,9 @@ class LC_Page {
         // トランザクショントークンの検証と生成
         $this->doValidToken();
         $this->setTokenTo();
-
-        // ローカルフックポイントを実行
-        $parent_class_name = get_parent_class($this);
-        if ($parent_class_name != 'LC_Page') {
-            $objPlugin->doAction($parent_class_name . '_action_before', array($this));
-        }
-        $class_name = get_class($this);
-        if ($parent_class_name != 'LC_Page' && $class_name != $parent_class_name) {
-            $objPlugin->doAction($class_name . '_action_before', array($this));
-        }
+        
+        // ローカルフックポイントを実行.
+        $this->doLocalHookpointBefore($objPlugin);
     }
 
     /**
@@ -132,15 +125,8 @@ class LC_Page {
      */
     function sendResponse() {
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        // ローカルフックポイントを実行
-        $parent_class_name = get_parent_class($this);
-        if ($parent_class_name != 'LC_Page') {
-            $objPlugin->doAction($parent_class_name . '_action_after', array($this));
-        }
-        $class_name = get_class($this);
-        if ($parent_class_name != 'LC_Page' && $class_name != $parent_class_name) {
-            $objPlugin->doAction($class_name . '_action_after', array($this));
-        }
+        // ローカルフックポイントを実行.
+        $this->doLocalHookpointAfter($objPlugin);
 
         // HeadNaviにpluginテンプレートを追加する.
         $objPlugin->setHeadNaviBlocs($this->arrPageLayout['HeadNavi']);
@@ -158,7 +144,7 @@ class LC_Page {
         $this->objDisplay->prepare($this);
         $this->objDisplay->response->write();
     }
-
+    
     /**
      * Page のレスポンス送信(ダウンロード).
      *
@@ -192,9 +178,44 @@ class LC_Page {
                 GC_Utils_Ex::gfPrintLog($logMsg);
             }
         }
-
     }
-
+    
+    /**
+     * ローカルフックポイントを生成し、実行します.
+     * 
+     * @param SC_Helper_Plugin_Ex $objPlugin 
+     * @return void
+     */
+    function doLocalHookpointBefore(SC_Helper_Plugin_Ex $objPlugin){
+        // ローカルフックポイントを実行
+        $parent_class_name = get_parent_class($this);
+        if ($parent_class_name != 'LC_Page') {
+            $objPlugin->doAction($parent_class_name . '_action_before', array($this));
+        }
+        $class_name = get_class($this);
+        if ($parent_class_name != 'LC_Page' && $class_name != $parent_class_name) {
+            $objPlugin->doAction($class_name . '_action_before', array($this));
+        }
+    }
+    
+    /**
+     * ローカルフックポイントを生成し、実行します.
+     * 
+     * @param SC_Helper_Plugin_Ex $objPlugin 
+     * @return void
+     */
+    function doLocalHookpointAfter(SC_Helper_Plugin_Ex $objPlugin){
+        // ローカルフックポイントを実行
+        $parent_class_name = get_parent_class($this);
+        if ($parent_class_name != 'LC_Page') {
+            $objPlugin->doAction($parent_class_name . '_action_after', array($this));
+        }
+        $class_name = get_class($this);
+        if ($parent_class_name != 'LC_Page' && $class_name != $parent_class_name) {
+            $objPlugin->doAction($class_name . '_action_after', array($this));
+        }
+    }
+    
     /**
      * テンプレート取得
      *
