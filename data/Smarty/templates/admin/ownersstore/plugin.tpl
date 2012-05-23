@@ -89,7 +89,7 @@
     }
 
     /**
-     * アップデート
+     * アップデート処理
      */
     function update(plugin_id, plugin_code) {
         if (window.confirm('プラグインをアップデートしても宜しいですか？')){
@@ -103,7 +103,7 @@
     /**
      * 優先度変更.
      */
-    function priority(plugin_id, plugin_code) {
+    function update_priority(plugin_id, plugin_code) {
         var priority = $("*[name=priority_" + plugin_code +"]").val();
         fnSetFormValue('priority', priority);
         fnModeSubmit('priority','plugin_id',plugin_id);
@@ -212,7 +212,7 @@
                 <td class="center">
                     <span class="attention"><!--{$arrErr.priority[$plugin.plugin_id]}--></span>
                     <input type="text" class="center" name="priority_<!--{$plugin.plugin_code}-->" value="<!--{$plugin.priority|h}-->" size="1" class="priority" />
-                    <a class="btn-action" href="javascript:;" onclick="priority(<!--{$plugin.plugin_id}-->, '<!--{$plugin.plugin_code}-->');return false;"><span class="btn-next">変更</span></a><br/>
+                    <a class="btn-action" href="javascript:;" onclick="update_priority(<!--{$plugin.plugin_id}-->, '<!--{$plugin.plugin_code}-->'); return false;"><span class="btn-next">変更</span></a><br/>
                 </td>
             </tr>
             <!--競合アラート-->
