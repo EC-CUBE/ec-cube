@@ -330,7 +330,9 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
      * @return array エラー情報を格納した連想配列.
      */
     function installPlugin($upload_file_file_name, $key) {
-
+        // インストール前に不要なファイルを消しておきます.
+        SC_Helper_FileManager_Ex::deleteFile(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, false);
+        
         $arrErr = array();
         // ファイルをチェックし一時展開用ディレクトリに展開します.
         $arrErr = $this->unpackPluginFile($upload_file_file_name, DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, $key);
@@ -399,7 +401,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         }
 
         // 不要なファイルの削除
-        SC_Helper_FileManager_EX::deleteFile(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, false);
+        SC_Helper_FileManager_Ex::deleteFile(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, false);
         return $arrErr;
     }
 
@@ -537,6 +539,9 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
      * @return array エラー情報を格納した連想配列.
      */
     function updatePlugin($target_plugin, $upload_file_name) {
+        // アップデート前に不要なファイルを消しておきます.
+        SC_Helper_FileManager_Ex::deleteFile(DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR, false);
+        
         $arrErr = array();
 
         // ファイルをチェックし展開します.
