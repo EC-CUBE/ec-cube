@@ -42,7 +42,7 @@
     <h2>メール配信</h2>
     
     
-    <!--{if $order_id_count != 1}-->
+    <!--{if $order_id_count > 1}-->
     <span class="red">※本文は1通分の例です。受注情報は各メールごとに異なります</span><br /><br />
     <!--{/if}-->
     <table class="form">

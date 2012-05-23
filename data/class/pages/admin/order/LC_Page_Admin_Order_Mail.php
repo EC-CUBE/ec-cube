@@ -70,27 +70,27 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
      * @return void
      */
     function action() {
-
+        $post = $_POST;
         //一括送信用の処理
-        if (array_key_exists('mail_order_id',$_POST) and $_POST['mode'] == 'mail_select'){
-            $_POST['order_id_array'] = implode(',',$_POST['mail_order_id']);
-        } else if(!array_key_exists('order_id_array',$_POST)){
-            $_POST['order_id_array'] = $_POST['order_id'];
+        if (array_key_exists('mail_order_id',$post) and $post['mode'] == 'mail_select'){
+            $post['order_id_array'] = implode(',',$post['mail_order_id']);
+        } else if(!array_key_exists('order_id_array',$post)){
+            $post['order_id_array'] = $post['order_id'];
         }
 
         //一括送信処理変数チェック(ここですべきかは課題)
-        if (preg_match("/^[0-9|\,]*$/",$_POST['order_id_array'])){
-            $this->order_id_array = $_POST['order_id_array'];
+        if (preg_match("/^[0-9|\,]*$/",$post['order_id_array'])){
+            $this->order_id_array = $post['order_id_array'];
         } else {
             //エラーで元に戻す
             SC_Response_Ex::sendRedirect(ADMIN_ORDER_URLPATH);
             SC_Response_Ex::actionExit();
         }
-
+        
         //メール本文の確認例は初めの1受注とする
-        if ($this->order_id_array){
+        if (!SC_Utils_Ex::isBlank($this->order_id_array)){
             $order_id_array = split(',',$this->order_id_array);
-            $_POST['order_id'] = intval($order_id_array[0]);
+            $post['order_id'] = intval($order_id_array[0]);
             $this->order_id_count = count($order_id_array);
         }
 
@@ -100,7 +100,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
         $this->lfInitParam($objFormParam);
 
         // POST値の取得
-        $objFormParam->setParam($_POST);
+        $objFormParam->setParam($post);
         $objFormParam->convParam();
         $this->tpl_order_id = $objFormParam->getValue('order_id');
 
