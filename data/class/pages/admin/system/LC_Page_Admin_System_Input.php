@@ -159,6 +159,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
                         $this->tpl_onfocus   = 'fnClearText(this.name);';
                         $this->arrForm       = $this->getMemberData($clean_id);
                         $this->arrForm['password'] = DEFAULT_PASSWORD;
+                        $this->arrForm['password02'] = DEFAULT_PASSWORD;
                         $this->tpl_old_login_id    = $this->arrForm['login_id'];
                         break;
 
