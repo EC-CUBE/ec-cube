@@ -424,7 +424,8 @@ class Net_UserAgent_Mobile
             'blackberry9800', // Torch
             'webOS',          // Palm Pre Experimental
             'incognito',      // Other iPhone browser
-            'webmate'         // Other iPhone browser
+            'webmate',         // Other iPhone browser
+            'Windows Phone OS' // Windows Phone
         );
 
         $pattern = implode("|", $useragents);
