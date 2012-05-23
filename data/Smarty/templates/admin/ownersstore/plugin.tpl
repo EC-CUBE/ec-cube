@@ -196,9 +196,9 @@
                                 <a  href="javascript:;" name="uninstall" onclick="uninstall(<!--{$plugin.plugin_id}-->, '<!--{$plugin.plugin_code}-->'); return false;">削除</a>&nbsp;|&nbsp;
                             <!-- 有効/無効 -->
                                 <!--{if $plugin.enable == $smarty.const.PLUGIN_ENABLE_TRUE}-->
-                                    <input id="plugin_enable" type="checkbox" name="disable" value="<!--{$plugin.plugin_id}-->" id="login_memory" checked="checked">有効</input><br/>
+                                    <label><input id="plugin_enable" type="checkbox" name="disable" value="<!--{$plugin.plugin_id}-->" id="login_memory" checked="checked">有効</input></label><br/>
                                 <!--{else}-->
-                                    <input id="plugin_enable" type="checkbox" name="enable" value="<!--{$plugin.plugin_id}-->" id="login_memory">有効にする</input><br/>
+                                    <label><input id="plugin_enable" type="checkbox" name="enable" value="<!--{$plugin.plugin_id}-->" id="login_memory">有効にする</input></label><br/>
                                 <!--{/if}-->
 
                                 <!-- アップデートリンク押下時に表示する. -->
