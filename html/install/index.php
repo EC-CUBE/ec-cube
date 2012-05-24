@@ -987,7 +987,6 @@ function lfMakeConfigFile() {
                  . "define('ADMIN_ALLOW_HOSTS', '"     . serialize($allow_hosts) . "');\n"
                  . "define('AUTH_MAGIC', '"            . $auth_magic . "');\n"
                  . "define('PASSWORD_HASH_ALGOS', '"   . $algos . "');\n"
-                 . "define('RELEASE_YEAR', '"          . date('Y') . "');\n"
                  . "define('MAIL_BACKEND', '"          . $objWebParam->getValue('mail_backend') . "');\n"
                  . "define('SMTP_HOST', '"             . $objWebParam->getValue('smtp_host') . "');\n"
                  . "define('SMTP_PORT', '"             . $objWebParam->getValue('smtp_port') . "');\n"
