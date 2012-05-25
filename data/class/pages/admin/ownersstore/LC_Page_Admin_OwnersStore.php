@@ -190,8 +190,15 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         }
         // DBからプラグイン情報を取得
         $plugins = SC_Plugin_Util_Ex::getAllPlugin();
-
+        
         foreach ($plugins as $key => $plugin) {
+            // ロゴファイルへのパスを生成（ロゴが無い場合はNO_IMAGEを表示）
+            if(file_exists(PLUGIN_HTML_REALDIR . $plugins[$key]['plugin_code'] . "/logo.png") === true){
+                $plugins[$key]['logo'] = ROOT_URLPATH . "plugin/" . $plugins[$key]['plugin_code'] . "/logo.png";
+            } else {
+                $plugins[$key]['logo'] = IMAGE_SAVE_URLPATH . "noimage_plugin_list.gif";
+            }
+            
             // 設定ファイルがあるかを判定.
             $plugins[$key]['config_flg'] = $this->isContainsFile(PLUGIN_UPLOAD_REALDIR . $plugin['plugin_code'], 'config.php');
             if ($plugins[$key]['enable'] === PLUGIN_ENABLE_TRUE) {

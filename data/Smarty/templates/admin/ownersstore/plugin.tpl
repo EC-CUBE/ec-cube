@@ -150,9 +150,9 @@
                 <!--ロゴ-->
                 <td class="center plugin_img">
                     <!--{if $plugin.plugin_site_url != '' }-->
-                        <a href="?" onclick="win03('<!--{$plugin.plugin_site_url|h}-->','plugin_site_url','620','760'); return false;"><img src="<!--{$smarty.const.PLUGIN_HTML_URLPATH}--><!--{$plugin.plugin_code}-->/logo.png"width="65" height="65"/></a>&nbsp;
+                        <a href="?" onclick="win03('<!--{$plugin.plugin_site_url|h}-->','plugin_site_url','620','760'); return false;"><img src="<!--{$plugin.logo}-->" width="65" height="65"/></a>&nbsp;
                     <!--{else}-->
-                        <img src="<!--{$smarty.const.ROOT_URLPATH}-->plugin/<!--{$plugin.plugin_code}-->/logo.png"/>
+                        <img src="<!--{$plugin.logo}-->" width="65" height="65"/>
                     <!--{/if}-->
 
                 </td>
@@ -213,6 +213,7 @@
                     <span class="attention"><!--{$arrErr.priority[$plugin.plugin_id]}--></span>
                     <input type="text" class="center" name="priority_<!--{$plugin.plugin_code}-->" value="<!--{$plugin.priority|h}-->" size="1" class="priority" />
                     <a class="btn-action" href="javascript:;" onclick="update_priority(<!--{$plugin.plugin_id}-->, '<!--{$plugin.plugin_code}-->'); return false;"><span class="btn-next">変更</span></a><br/>
+                    <span><!--{$plugin.priority_message}--></span>
                 </td>
             </tr>
             <!--競合アラート-->
