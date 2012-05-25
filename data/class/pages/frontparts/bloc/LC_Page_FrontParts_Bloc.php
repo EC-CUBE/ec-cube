@@ -49,14 +49,11 @@ class LC_Page_FrontParts_Bloc extends LC_Page_Ex {
 
         $this->setTplMainpage($this->blocItems['tpl_path']);
         
-        // スーパーフックポイントを実行.
-        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_preProcess', array($this));
-
         // トランザクショントークンの検証と生成
         $this->setTokenTo();
         
         // ローカルフックポイントを実行.
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $this->doLocalHookpointBefore($objPlugin);
     }
 
