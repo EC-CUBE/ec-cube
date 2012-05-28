@@ -30,6 +30,6 @@
  */
 require_once CLASS_REALDIR . 'api/SC_Api_Abstract.php';
 
-class SC_Api_Abstract_Ex extends SC_Api_Abstract {
+abstract class SC_Api_Abstract_Ex extends SC_Api_Abstract {
 
 }
