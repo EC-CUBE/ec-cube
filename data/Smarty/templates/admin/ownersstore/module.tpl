@@ -48,7 +48,7 @@ OwnersStore.download();やOwnersStore.products_list();を呼び出すことで
     </div>
 
     <div id="ownersstore_index">
-        <iframe src="<!--{$smarty.const.OSTORE_SSLURL}-->info/" style="width:950px;height:600px;" scrolling="no" marginwidth="0" marginheight="0" frameborder="0"></iframe>
+        <iframe src="<!--{$smarty.const.OSTORE_SSLURL}-->store_info/" style="width:950px;height:600px;" scrolling="no" marginwidth="0" marginheight="0" frameborder="0"></iframe>
     </div>
 </div>
 </form>

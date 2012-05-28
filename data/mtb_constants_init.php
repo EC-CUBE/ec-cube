@@ -28,7 +28,7 @@ define('MAX_LIFETIME', 7200);
 /** マスターデータキャッシュディレクトリ */
 define('MASTER_DATA_REALDIR', DATA_REALDIR . "cache/");
 /** アップデート管理用ファイル格納場所 */
-define('UPDATE_HTTP', "http://sv01.ec-cube.net/info/index.php");
+define('UPDATE_HTTP', "http://www.ec-cube.net/info/index.php");
 /** 文字コード */
 define('CHAR_CODE', "UTF-8");
 /** ロケール設定 */
@@ -375,9 +375,9 @@ define('SESSION_KEEP_METHOD', "useCookie");
 /** セッションの存続時間 (秒) */
 define('SESSION_LIFETIME', 1800);
 /** オーナーズストアURL */
-define('OSTORE_URL', "http://store.ec-cube.net/");
+define('OSTORE_URL', "http://www.ec-cube.net/");
 /** オーナーズストアURL */
-define('OSTORE_SSLURL', "https://store.ec-cube.net/");
+define('OSTORE_SSLURL', "https://www.ec-cube.net/");
 /** オーナーズストアログパス */
 define('OSTORE_LOG_REALFILE', DATA_REALDIR . "logs/ownersstore.log");
 /** お気に入り商品登録(有効:1 無効:0) */
