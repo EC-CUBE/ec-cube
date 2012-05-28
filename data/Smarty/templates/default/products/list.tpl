@@ -56,6 +56,16 @@
         fnSetVal("product_class_id", productForm["product_class_id"].value);
         fnSubmit();
     }
+    
+    $(function() {
+	var selector = $("div.navi").find("a");
+    	selector.each(function(){
+	    	var fn = $(this).attr("onclick");
+		    var addfn = "function(){fnSetVal('product_id', '');}" + fn;
+		    //alert(addfn);
+		    $(this).attr("onclick", addfn);
+ 	    });
+    });
 //]]></script>
 
 <div id="undercolumn">
