@@ -378,7 +378,6 @@ function lfDispStep0($objPage) {
             mkdir($path);
         }
         $path = DATA_REALDIR . 'downloads/tmp';
-        var_dump($path);
         if (!file_exists($path)) {
             mkdir($path);
         }
