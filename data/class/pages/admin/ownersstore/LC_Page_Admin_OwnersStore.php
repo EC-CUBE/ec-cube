@@ -611,7 +611,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         $objUpFile->moveTempFile();
         // 解凍
         $update_plugin_file_path = $unpack_dir . $unpack_file_name;
-        if (!SC_Helper_FileManager_Ex::unpackFile($update_plugin_file_path)) {
+        if (!$this->unpackPluginArchive($update_plugin_file_path)) {
             $arrErr['plugin_file'] = '※ 解凍に失敗しました。<br/>';
             return $arrErr;
         }
@@ -829,6 +829,29 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
             $arrErr['plugin_error'] = '※ ' . $class_name . '.php に' . $exec_func . 'が見つかりません。<br/>';
         }
         return $arrErr;
+    }
+    
+    /**
+     * プラグインアーカイブを解凍する.
+     *
+     * @param string $path アーカイブパス
+     * @return boolean Archive_Tar::extractModify()のエラー
+     */
+    function unpackPluginArchive($path) {
+        // 圧縮フラグTRUEはgzip解凍をおこなう
+        $tar = new Archive_Tar($path, true);
+
+        $dir = dirname($path);
+        $file_name = basename($path);
+
+        // 拡張子を切り取る
+        $unpacking_name = preg_replace("/(\.tar|\.tar\.gz)$/", '', $file_name);
+
+        // 指定されたフォルダ内に解凍する
+        $result = $tar->extractModify($dir. '/', $unpacking_name);
+        GC_Utils_Ex::gfPrintLog('解凍：' . $dir.'/'.$file_name.'->'.$dir.'/'.$unpacking_name);
+
+        return $result;
     }
 
     /**
