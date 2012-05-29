@@ -55,7 +55,7 @@ class SC_Helper_FileManager {
                         $path = $dir.'/'.$file;
                         // SELECT内の見た目を整えるため指定文字数で切る
                         $file_name = SC_Utils_Ex::sfCutString($file, FILE_NAME_LEN);
-                        $file_size = SC_Utils_Ex::sfCutString($this->sfGetDirSize($path), FILE_NAME_LEN);
+                        $file_size = SC_Utils_Ex::sfCutString(SC_Helper_FileManager::sfGetDirSize($path), FILE_NAME_LEN);
                         $file_time = date('Y/m/d', filemtime($path));
 
                         // ディレクトリとファイルで格納配列を変える
@@ -103,7 +103,7 @@ class SC_Helper_FileManager {
                         $bytes += filesize($path);
                     } else if (is_dir($path) && $file != '..' && $file != '.') {
                         // 下層ファイルのバイト数を取得する為、再帰的に呼び出す。
-                        $bytes += $this->sfGetDirSize($path);
+                        $bytes += SC_Helper_FileManager::sfGetDirSize($path);
                     }
                 }
             } else {
