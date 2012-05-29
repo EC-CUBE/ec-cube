@@ -373,6 +373,19 @@ function lfDispStep0($objPage) {
     else {
         $objPage->tpl_mode = 'step0';
         umask(0);
+        $path = HTML_REALDIR . 'plugin';
+        if (!file_exists($path)) {
+            mkdir($path);
+        }
+        $path = DATA_REALDIR . 'downloads/tmp';
+        var_dump($path);
+        if (!file_exists($path)) {
+            mkdir($path);
+        }
+        $path = DATA_REALDIR . 'downloads/tmp/plugin_install';
+        if (!file_exists($path)) {
+            mkdir($path);
+        }
         $path = HTML_REALDIR . 'upload/temp_template';
         if (!file_exists($path)) {
             mkdir($path);
