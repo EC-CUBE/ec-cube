@@ -373,6 +373,10 @@ function lfDispStep0($objPage) {
     else {
         $objPage->tpl_mode = 'step0';
         umask(0);
+        $path = DATA_REALDIR . 'downloads/plugin';
+        if (!file_exists($path)) {
+            mkdir($path);
+        }
         $path = HTML_REALDIR . 'plugin';
         if (!file_exists($path)) {
             mkdir($path);
