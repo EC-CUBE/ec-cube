@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2012 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2011 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -137,4 +137,7 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
         // 表示順序
         $objQuery->setOrder($order);
 
-        //
+        //購入履歴の取得
+        return $objQuery->select($col, $from, $where, $arrWhereVal);
+    }
+}

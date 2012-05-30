@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2012 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2011 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -54,4 +54,26 @@
                                 <th>メタタグ:Keywords</th>
                                 <td>
                                 <span class="attention"><!--{$arrErr[$item.device_type_id][$item.page_id].keyword}--></span>
-                                <input type="text" name="meta[<!--{$item.device_type_id}-->][<!--{$item.page_id}-->][keyword]" value="<!--{$item.keyword|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style='<!--{if $arrErr[$item.page_id].keyword != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->' /><span class="attention"> (上
+                                <input type="text" name="meta[<!--{$item.device_type_id}-->][<!--{$item.page_id}-->][keyword]" value="<!--{$item.keyword|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style='<!--{if $arrErr[$item.page_id].keyword != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->' /><span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span></td>
+                            </tr>
+                        </table>
+
+                        <div class="btn-area">
+                            <ul>
+                                <li><a class="btn-action" href="javascript:;" onclick="document.form1.device_type_id.value = <!--{$item.device_type_id}-->; document.form1.page_id.value = <!--{$item.page_id}-->; fnFormModeSubmit('form1', 'confirm', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <!-- <!--{$item.page_name}--> ここまで -->
+                <!--{/foreach}-->
+            <!--{/if}-->
+        <!--{/foreach}-->
+    <!--{else}-->
+        <div class="no-data">
+            表示するデータがありません
+        </div>
+    <!--{/if}-->
+
+</div>
+</form>

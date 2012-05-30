@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2012 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2011 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -137,4 +137,43 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
             $data[$key] = $arrForm[$key];
         }
 
-        // DB
+        // DBのデータを更新
+        $masterData->updateMasterData('mtb_constants', array(), $data);
+
+        // キャッシュを生成
+        $masterData->createCache('mtb_constants', array(), true, array('id', 'remarks'));
+    }
+
+    /**
+     * エラーチェックを行う.
+     *
+     * @access private
+     * @param array $arrForm $_POST 値
+     * @return void
+     */
+    function errorCheck(&$arrKeys, &$arrForm) {
+        $objErr = new SC_CheckError_Ex($arrForm);
+        for ($i = 0; $i < count($arrKeys); $i++) {
+            $objErr->doFunc(array($arrKeys[$i],
+                                  $arrForm[$arrKeys[$i]]),
+                            array('EXIST_CHECK_REVERSE', 'EVAL_CHECK'));
+        }
+        return $objErr->arrErr;
+    }
+
+    /**
+     * パラメーターのキーを配列で返す.
+     *
+     * @access private
+     * @return array パラメーターのキーの配列
+     */
+    function getParamKeys(&$masterData) {
+        $keys = array();
+        $i = 0;
+        foreach ($masterData->getDBMasterData('mtb_constants') as $key => $val) {
+            $keys[$i] = $key;
+            $i++;
+        }
+        return $keys;
+    }
+}

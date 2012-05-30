@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2012 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2011 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -148,4 +148,21 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex {
     }
 
     /**
-     * レコードの削除(削
+     * レコードの削除(削除フラグをONにする).
+     *
+     * @param object $objQuery
+     * @param integer $id 削除対象のmember_id
+     * @return void|UPDATE の結果フラグ
+     */
+    function deleteRecode(&$objQuery, $id) {
+
+        // Updateする値を作成する.
+        $sqlVal = array();
+        $sqlVal['rank'] = 0;
+        $sqlVal['del_flg'] = 1;
+        $where = 'member_id = ?';
+
+        // UPDATEの実行 - ランクを最下位にする、DELフラグON
+        return $objQuery->update('dtb_member', $sqlVal, $where, array($id));
+    }
+}

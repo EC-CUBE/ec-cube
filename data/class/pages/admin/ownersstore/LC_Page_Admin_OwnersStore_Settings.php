@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2012 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2011 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -147,4 +147,59 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex {
     }
 
     /**
-     * registerアク
+     * registerアクションのパラメーターを検証する.
+     *
+     * @param void
+     * @return array エラー情報を格納した連想配列
+     */
+    function validateRegistermode() {
+        return $this->objForm->checkError();
+    }
+
+    /**
+     * defaultアクションの実行.
+     * DBから登録内容を取得し表示する.
+     *
+     * @param void
+     * @return void
+     */
+    function execDefaultMode() {
+        $this->arrForm = $this->getOwnersStoreSettings();
+    }
+
+    /**
+     * DBへ入力内容を登録する.
+     *
+     * @param array $arrSettingsData ｵｰﾅｰｽﾞｽﾄｱ設定の連想配列
+     * @return void
+     */
+    function registerOwnersStoreSettings($arrSettingsData) {
+        $table = 'dtb_ownersstore_settings';
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $exists = $objQuery->exists($table);
+
+        if ($exists) {
+            $objQuery->update($table, $arrSettingsData);
+        } else {
+            $objQuery->insert($table, $arrSettingsData);
+        }
+    }
+
+    /**
+     * DBから登録内容を取得する.
+     *
+     * @param void
+     * @return array
+     */
+    function getOwnersStoreSettings() {
+        $table   = 'dtb_ownersstore_settings';
+        $colmuns = '*';
+
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $arrRet = $objQuery->select($colmuns, $table);
+
+        if (isset($arrRet[0])) return $arrRet[0];
+
+        return array();
+    }
+}

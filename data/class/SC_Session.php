@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2012 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2011 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -120,4 +120,7 @@ class SC_Session {
         unset($_SESSION['uniqid']);
         // トランザクショントークンを破棄
         SC_Helper_Session_Ex::destroyToken();
-        // ログに記
+        // ログに記録する
+        GC_Utils_Ex::gfPrintLog('logout : user='.$this->login_id.' auth='.$this->authority.' sid='.$this->sid);
+    }
+}

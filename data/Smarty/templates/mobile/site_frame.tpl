@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2012 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2011 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -32,4 +32,22 @@
             <meta name="keywords" content="<!--{$arrPageLayout.keyword|h}-->">
             <!--{* ▼Head COLUMN *}-->
             <!--{if $arrPageLayout.HeadNavi|@count > 0}-->
-                <!--{* ▼上ナ�
+                <!--{* ▼上ナビ *}-->
+                <!--{foreach key=HeadNaviKey item=HeadNaviItem from=$arrPageLayout.HeadNavi}-->
+                    <!-- ▼「<!--{$HeadNaviItem.bloc_name|h}-->」ブロック -->
+                    <!--{if $HeadNaviItem.php_path != ""}-->
+                        <!--{include_php file=$HeadNaviItem.php_path items=$HeadNaviItem}-->
+                    <!--{else}-->
+                        <!--{include file=$HeadNaviItem.tpl_path items=$HeadNaviItem}-->
+                    <!--{/if}-->
+                    <!-- ▲「<!--{$HeadNaviItem.bloc_name|h}-->」ブロック -->
+                <!--{/foreach}-->
+                <!--{* ▲上ナビ *}-->
+            <!--{/if}-->
+            <!--{* ▲Head COLUMN *}-->
+        </head>
+        <!-- ▼ ＢＯＤＹ部 スタート -->
+        <!--{include file='./site_main.tpl'}-->
+        <!-- ▲ ＢＯＤＹ部 エンド -->
+    </html>
+<!--{/strip}-->
