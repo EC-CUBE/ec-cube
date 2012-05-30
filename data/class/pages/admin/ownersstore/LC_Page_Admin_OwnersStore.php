@@ -745,7 +745,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         // AUTHOR_SITE_URLが定義されているか判定.
         $author_site_url = $arrPluginInfo['AUTHOR_SITE_URL'];
         if ($author_site_url !== null) {
-            $arr_sqlval_plugin['author_site_url'] = $arrPluginInfo['AUTHOR'];
+            $arr_sqlval_plugin['author_site_url'] = $arrPluginInfo['AUTHOR_SITE_URL'];
         }
         // PLUGIN_SITE_URLが定義されているか判定.
         $plugin_site_url = $arrPluginInfo['PLUGIN_SITE_URL'];
