@@ -377,6 +377,10 @@ function lfDispStep0($objPage) {
         if (!file_exists($path)) {
             mkdir($path);
         }
+        $path = HTML_REALDIR . 'upload/temp_plugin';
+        if (!file_exists($path)) {
+            mkdir($path);
+        }
         $path = DATA_REALDIR . 'downloads/tmp';
         if (!file_exists($path)) {
             mkdir($path);
