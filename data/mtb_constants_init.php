@@ -93,8 +93,8 @@ define('SITE_FRAME', "site_frame.tpl");
 define('CERT_STRING', "7WDhcBTF");
 /** 生年月日登録開始年 */
 define('BIRTH_YEAR', 1901);
-/** 本システムの稼働開始年 */ 
-define('RELEASE_YEAR', 2005); 
+/** 本システムの稼働開始年 */
+define('RELEASE_YEAR', 2005);
 /** クレジットカードの期限＋何年 */
 define('CREDIT_ADD_YEAR', 10);
 /** ポイントの計算ルール(1:四捨五入、2:切り捨て、3:切り上げ) */
@@ -190,7 +190,7 @@ define('IMAGE_SAVE_RSS_URL', HTTP_URL . "upload/save_image/");
 /** エンコードCSVの一時保存先 */
 define('CSV_TEMP_REALDIR', DATA_REALDIR . "upload/csv/");
 /** 画像がない場合に表示 */
-define('NO_IMAGE_REALFILE', USER_TEMPLATE_REALDIR . "img/picture/img_blank.gif");
+define('NO_IMAGE_REALFILE', USER_TEMPLATE_REALDIR . "default/img/picture/img_blank.gif");
 /** システム管理トップ */
 define('ADMIN_SYSTEM_URLPATH', ROOT_URLPATH . ADMIN_DIR . "system/" . DIR_INDEX_PATH);
 /** 郵便番号入力 */
@@ -258,7 +258,7 @@ define('PASSWORD_MIN_LEN', 4);
 define('PASSWORD_MAX_LEN', STEXT_LEN);
 /** 検査数値用桁数(INT) */
 define('INT_LEN', 9);
-/** クレジットカードの文字数 (*モジュールで使用) */ 
+/** クレジットカードの文字数 (*モジュールで使用) */
 define('CREDIT_NO_LEN', 4);
 /** 検索カテゴリ最大表示文字数(byte) */
 define('SEARCH_CATEGORY_LEN', 18);
@@ -302,8 +302,8 @@ define('RECOMMEND_PRODUCT_MAX', 6);
 define('RECOMMEND_NUM', 8);
 /** お届け可能日以降のプルダウン表示最大日数 */
 define('DELIV_DATE_END_MAX', 21);
-/** 支払期限 (*モジュールで使用) */ 
-define('CV_PAYMENT_LIMIT', 14); 
+/** 支払期限 (*モジュールで使用) */
+define('CV_PAYMENT_LIMIT', 14);
 /** 商品レビューでURL書き込みを許可するか否か */
 define('REVIEW_ALLOW_URL', 0);
 /** アップデート時にサイト情報を送出するか */
@@ -312,7 +312,7 @@ define('UPDATE_SEND_SITE_INFO', false);
 define('USE_POINT', true);
 /** 在庫無し商品の非表示(true:非表示、false:表示) */
 define('NOSTOCK_HIDDEN', false);
-/** モバイルサイトを利用するか(true:利用する、false:利用しない) (false は一部対応) (*モジュールで使用) */ 
+/** モバイルサイトを利用するか(true:利用する、false:利用しない) (false は一部対応) (*モジュールで使用) */
 define('USE_MOBILE', true);
 /** 複数配送先指定機能を利用するか(true:利用する、false:利用しない) */
 define('USE_MULTIPLE_SHIPPING', true);
@@ -384,24 +384,24 @@ define('OSTORE_LOG_REALFILE', DATA_REALDIR . "logs/ownersstore.log");
 define('OPTION_FAVORITE_PRODUCT', 1);
 /** 画像リネーム設定 (商品画像のみ) (true:リネームする、false:リネームしない) */
 define('IMAGE_RENAME', true);
-/** (2.11用)プラグインディレクトリ(モジュールで使用) */ 
-define('PLUGIN_DIR', "plugins/"); 
-/** (2.11用)プラグイン保存先(モジュールで使用) */ 
-define('PLUGIN_REALDIR', USER_REALDIR . PLUGIN_DIR); 
-/** プラグイン保存先ディレクトリ */ 
-define('PLUGIN_UPLOAD_REALDIR', DATA_REALDIR . "downloads/plugin/"); 
-/** プラグイン保存先ディレクトリ(html) */ 
+/** (2.11用)プラグインディレクトリ(モジュールで使用) */
+define('PLUGIN_DIR', "plugins/");
+/** (2.11用)プラグイン保存先(モジュールで使用) */
+define('PLUGIN_REALDIR', USER_REALDIR . PLUGIN_DIR);
+/** プラグイン保存先ディレクトリ */
+define('PLUGIN_UPLOAD_REALDIR', DATA_REALDIR . "downloads/plugin/");
+/** プラグイン保存先ディレクトリ(html) */
 define('PLUGIN_HTML_REALDIR', HTML_REALDIR . "plugin/");
-/** プラグインファイル一時保存先 */ 
-define('PLUGIN_TEMP_REALDIR', HTML_REALDIR . "upload/temp_plugin/"); 
-/** プラグインファイル登録可能拡張子(カンマ区切り) */ 
-define('PLUGIN_EXTENSION', "tar,tar.gz"); 
+/** プラグインファイル一時保存先 */
+define('PLUGIN_TEMP_REALDIR', HTML_REALDIR . "upload/temp_plugin/");
+/** プラグインファイル登録可能拡張子(カンマ区切り) */
+define('PLUGIN_EXTENSION', "tar,tar.gz");
 /** プラグイン一時展開用ディレクトリ（アップデート用） */
 define('DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR', DATA_REALDIR . "downloads/tmp/plugin_update/");
 /** プラグイン一時展開用ディレクトリ（インストール用） */
 define('DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR', DATA_REALDIR . "downloads/tmp/plugin_install/");
-/** プラグインURL */ 
-define('PLUGIN_HTML_URLPATH' ,ROOT_URLPATH . "plugin/");
+/** プラグインURL */
+define('PLUGIN_HTML_URLPATH', ROOT_URLPATH . "plugin/");
 /** 日数桁数 */
 define('DOWNLOAD_DAYS_LEN', 3);
 /** ダウンロードファイル登録可能拡張子(カンマ区切り)" */
