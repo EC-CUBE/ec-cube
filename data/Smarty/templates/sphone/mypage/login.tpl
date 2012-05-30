@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2011 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2012 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -87,18 +87,4 @@
                     <li><a rel="external" href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php">新規会員登録</a></li>
                 </ul>
             </nav>
-            <p>会員登録をすると便利なMyページをご利用いただけます。</p>
-        </div>
-    </form>
-</section>
-
-<!--▼検索バー -->
-<section id="search_area">
-    <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
-        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-        <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="キーワードを入力" class="searchbox" >
-    </form>
-</section>
-<!--▲検索バー -->
-<!--▲コンテンツここまで -->
+            <p>会員登録をすると便

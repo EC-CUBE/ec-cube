@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2011 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2012 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -93,52 +93,4 @@ class SC_PageNavi {
 
             // 表示する最大ナビ数を決める。
             if ($navi_max == '' || $navi_max > $this->max_page) {
-                // 制限ナビ数の指定がない。ページ最大数が制限ナビ数より少ない。
-                $disp_max = $this->max_page;
-            } else {
-                // 現在のページ＋制限ナビ数が表示される。
-                $disp_max = $this->now_page + $navi_max - 1;
-                // ページ最大数を超えている場合は、ページ最大数に合わせる。
-                if ($disp_max > $this->max_page) {
-                    $disp_max = $this->max_page;
-                }
-            }
-
-            // 表示する最小ナビ数を決める。
-            if ($navi_max == '' || $navi_max > $this->now_page) {
-                // 制限ナビ数の指定がない。現在ページ番号が制限ナビ数より少ない。
-                $disp_min = 1;
-            } else {
-                // 現在のページ-制限ナビ数が表示される。
-                $disp_min = $this->now_page - $navi_max + 1;
-            }
-
-            $this->arrPagenavi['arrPageno'] = array();
-            $page_number = '';
-            for ($i = $disp_min; $i <= $disp_max; $i++) {
-
-                if ($i == $this->now_page) {
-                    $page_number .= "<strong>$i</strong>";
-                } else {
-                    $urlParamThis = str_replace('#page#', $i, $urlParam);
-                    $urlParamThis = htmlentities($urlParamThis, ENT_QUOTES);
-                    $page_number .= "<a href=\"?$urlParamThis\" onclick=\"$func_name('$i'); return false;\">$i</a>";
-                }
-
-                $page_number .= ' ';
-
-                $this->arrPagenavi['arrPageno'][$i] = $i;
-            }
-
-            if ($before && $next) {
-                $this->strnavi = $before .(($display_number) ? $page_number : ' | ') .$next;
-            } else if ($before || $next) {
-                $this->strnavi = $before .(($display_number) ? $page_number : '') .$next;
-            }
-        } else {
-            $this->arrPagenavi['arrPageno'][0] = 1;
-            $this->arrPagenavi['before'] = 1;
-            $this->arrPagenavi['next'] = 1;
-        }
-    }
-}
+                // 制限ナビ数の指定がない。ページ最大

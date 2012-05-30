@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2011 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2012 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -132,83 +132,4 @@ class SC_Graph_Pie extends SC_Graph_Base_Ex{
                 if ($arrRad[$j] > 0) {
                     $end = $start + $arrRad[$j];
                     if ($start == 0 && $end == 360) {
-                        // -90~270で指定すると円が描画できないので0~360に指定
-                        imagearc($this->image, $x, $i, $w, $h, 0, 360, $this->arrDarkColor[($j % $dc_max)]);
-                    } else {
-                        // -90°は12時の位置から開始するように補正している
-                        imagearc($this->image, $x, $i, $w, $h, $start - 90, $end - 90, $this->arrDarkColor[($j % $dc_max)]);
-                    }
-                    $start = $end;
-                }
-            }
-        }
-        // 底面の描画
-        imagearc($this->image, $x, $y + $z, $w, $h, 0, 180 , $this->flame_color);
-
-        // 上面の描画
-        $start = 0;
-        for ($i = 0; $i < $rd_max; $i++) {
-            $end = $start + $arrRad[$i];
-            if ($start == 0 && $end == 360) {
-                // -90~270で指定すると円が描画できないので0~360に指定
-                imagefilledarc($this->image, $x, $y, $w, $h, 0, 360, $this->arrColor[($i % $c_max)], IMG_ARC_PIE);
-            } else {
-                // -90°は12時の位置から開始するように補正している。
-                imagefilledarc($this->image, $x, $y, $w, $h, $start - 90, $end - 90, $this->arrColor[($i % $c_max)], IMG_ARC_PIE);
-            }
-            $start = $end;
-        }
-
-        // 上面の縁取り
-        $start = 0;
-        for ($i = 0; $i < $rd_max; $i++) {
-            $end = $start + $arrRad[$i];
-            if ($start == 0 && $end == 360) {
-                // -90~270で指定すると円が描画できないので0~360に指定
-                imagearc($this->image, $x, $y, $w, $h, 0, 360 , $this->flame_color);
-            }
-            // -90°は12時の位置から開始するように補正している。
-            imagefilledarc($this->image, $x, $y, $w, $h, $start - 90, $end - 90, $this->flame_color, IMG_ARC_EDGED|IMG_ARC_NOFILL);
-            $start = $end;
-        }
-
-        // 側面の縁取り
-        imageline($this->image, $x + ($w / 2), $y, $x + ($w / 2), $y + $z, $this->flame_color);
-        imageline($this->image, $x - ($w / 2), $y, $x - ($w / 2), $y + $z, $this->flame_color);
-        $start = 0;
-        for ($i = 0; $i < $rd_max; $i++) {
-            $end = $start + $arrRad[$i];
-            // 前面のみ
-            if ($end > 90 && $end < 270) {
-                list($ax, $ay) = $this->lfGetArcPos($x, $y, $w, $h, $end);
-                // ラインのずれを補正する
-                if ($end > 180) {
-                    $ax = $ax + 1;
-                }
-                imageline($this->image, $ax, $ay, $ax, $ay + $z, $this->flame_color);
-            }
-            $start = $end;
-        }
-
-        // ラベルの描画
-        $this->drawLabel($arrRad);
-        // 凡例の描画
-        $this->drawLegend(count($this->arrData));
-    }
-
-    // 円グラフのラベルを描画する
-    function drawLabel($arrRad) {
-        $rd_max = count($arrRad);
-        $start = 0;
-        for ($i = 0; $i < $rd_max; $i++) {
-            $center = $start + ($arrRad[$i] / 2);
-            $end = $start + $arrRad[$i];
-            list($sx, $sy) = $this->lfGetArcPos($this->cx, $this->cy, ($this->cw / 1.5), ($this->ch / 1.5), $center);
-            list($ex, $ey) = $this->lfGetArcPos($this->cx, $this->cy, ($this->cw * 1.5), ($this->ch * 1.5), $center);
-            // 指示線の描画
-            imageline($this->image, $sx, $sy, $ex + 2, $ey - PIE_LABEL_UP, $this->flame_color);
-            $this->setText(FONT_SIZE, $ex - 10, $ey - PIE_LABEL_UP - FONT_SIZE, $this->arrLabel[$i], NULL, 0, true);
-            $start = $end;
-        }
-    }
-}
+                        // -90~270で指定

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2011 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2012 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -72,22 +72,4 @@
 
     <br>
 
-    ■新しいお届け先を追加する<br>
-    <form method="post" action="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php">
-    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->">
-    <input type="hidden" name="ParentPage" value="<!--{$smarty.const.DELIV_URLPATH}-->">
-    <center><input type="submit" value="新規登録"></center>
-    </form>
-
-    <!--{if $smarty.const.USE_MULTIPLE_SHIPPING !== false}-->
-        <br>
-
-        ■お届け先を複数指定する<br>
-        <form method="post" action="?">
-            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->">
-            <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
-            <input type="hidden" name="mode" value="multiple">
-            <center><input type="submit" value="複数お届け先"></center>
-        </form>
-    <!--{/if}-->
-<!--{/strip}-->
+    ■新しいお届け先を追加す

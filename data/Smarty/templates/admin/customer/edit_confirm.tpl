@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2011 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2012 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -104,42 +104,4 @@ function func_return(){
                 <td><!--{$arrSex[$arrForm.sex]|h}--></td>
             </tr>
             <tr>
-                <th>ご職業</th>
-                <td><!--{$arrJob[$arrForm.job]|default:"未登録"|h}--></td>
-            </tr>
-            <tr>
-                <th>生年月日</th>
-                <td><!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}--><!--{$arrForm.year|h}-->年<!--{$arrForm.month|h}-->月<!--{$arrForm.day|h}-->日<!--{else}-->未登録<!--{/if}--></td>
-            </tr>
-            <tr>
-                <th>パスワード</th>
-                <td><!--{$smarty.const.DEFAULT_PASSWORD}--></td>
-            </tr>
-            <tr>
-                <th>パスワードを忘れたときのヒント</th>
-                <td>
-                    質問： <!--{$arrReminder[$arrForm.reminder]|h}--><br />
-                    答え： <!--{$smarty.const.DEFAULT_PASSWORD}-->
-                </td>
-            </tr>
-            <tr>
-                <th>メールマガジン</th>
-                <td><!--{if $arrForm.mailmaga_flg eq 1}-->HTML<!--{elseif $arrForm.mailmaga_flg eq 2}-->テキスト<!--{else}-->希望しない<!--{/if}--></td>
-            </tr>
-            <tr>
-                <th>SHOP用メモ</th>
-                <td><!--{$arrForm.note|h|nl2br|default:"未登録"}--></td>
-            </tr>
-            <tr>
-                <th>所持ポイント</td>
-                <td><!--{$arrForm.point|default:"0"|h}--> pt</td>
-            </tr>
-        </table>
-        <div class="btn-area">
-            <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="func_return(); return false;"><span class="btn-prev">編集画面に戻る</span></a></li>
-                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'complete', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
-            </ul>
-        </div>
-    </div>
-</form>
+                <th>

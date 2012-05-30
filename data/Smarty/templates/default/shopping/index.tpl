@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2011 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2012 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -64,44 +64,4 @@
             </div>
             <p>
                 ※パスワードを忘れた方は<a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->" onclick="win01('<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->','forget','600','460'); return false;" target="_blank">こちら</a>からパスワードの再発行を行ってください。<br />
-                ※メールアドレスを忘れた方は、お手数ですが、<a href="<!--{$smarty.const.ROOT_URLPATH}-->contact/<!--{$smarty.const.DIR_INDEX_PATH}-->">お問い合わせページ</a>からお問い合わせください。
-            </p>
-        </div>
-        </form>
-        <div class="login_area">
-            <h3>まだ会員登録されていないお客様</h3>
-
-
-            <h4>会員登録をする</h4>
-            <p class="inputtext">会員登録をすると便利なMyページをご利用いただけます。<br />
-                また、ログインするだけで、毎回お名前や住所などを入力することなくスムーズにお買い物をお楽しみいただけます。
-            </p>
-            <div class="inputbox">
-                <div class="btn_area">
-                    <ul>
-                        <li>
-                            <a href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_on.jpg','b_gotoentry');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry.jpg','b_gotoentry');">
-                            <img src="<!--{$TPL_URLPATH}-->img/button/btn_entry.jpg" alt="会員登録をする" border="0" name="b_gotoentry" /></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <h4>会員登録をせずに購入手続きへ進む</h4>
-            <p class="inputtext">会員登録をせずに購入手続きをされたい方は、下記よりお進みください。</p>
-            <form name="member_form2" id="member_form2" method="post" action="?">
-            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-            <input type="hidden" name="mode" value="nonmember" />
-            <div class="inputbox">
-                <div class="btn_area">
-                    <ul>
-                        <li>
-                            <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_buystep_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_buystep.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_buystep.jpg" alt="購入手続きへ" name="buystep" id="buystep" />
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            </form>
-        </div>
-    </div>
-</div>
+                ※メールアドレスを忘れた方は、お
