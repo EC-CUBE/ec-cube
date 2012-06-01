@@ -807,7 +807,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
             if(strpos($result, 'Errors parsing') !== false){
                 $arrErr[$key] = '※ ' . $file_path .'のソース内にエラーが発見されました<br/>';
             } else {
-                require $file_path;
+                require_once $file_path;
             }
         } else {
             $arrErr[$key] = '※ ' . $file_path .'の読み込みに失敗しました。<br/>';
