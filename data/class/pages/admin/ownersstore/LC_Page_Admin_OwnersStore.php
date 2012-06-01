@@ -801,7 +801,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
     function requirePluginFile($file_path, $key) {
         $arrErr = array();
         if (file_exists($file_path)) {
-            //requireだとファイルの存在チェックしかできないのでexecで実行してみる(syntax errorが見れる)
+            //requireだとファイルの存在チェックしかできないのでexecで実行してみる(syntax errorが見られる)
             $result = exec("php -l " . $file_path);
             //Errors parsingがあったらエラーを投げる
             if(strpos($result, 'Errors parsing') !== false){
