@@ -27,8 +27,8 @@ define('HTML_REALDIR', rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') 
 require_once HTML_REALDIR . 'define.php';
 define('INSTALL_FUNCTION', true);
 define('INSTALL_INFO_URL', 'http://www.ec-cube.net/install_info/index.php');
-while (ob_get_level() >= 1) {
-    ob_end_clean();
+if (ob_get_level() > 0) {
+    while (ob_end_clean());
 }
 require_once HTML_REALDIR . HTML2DATA_DIR . 'require_base.php';
 ob_start();
