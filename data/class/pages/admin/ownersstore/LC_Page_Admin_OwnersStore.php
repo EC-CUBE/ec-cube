@@ -340,6 +340,9 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         // インストール前に不要なファイルを消しておきます.
         SC_Helper_FileManager_Ex::deleteFile(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, false);
         
+        //シンタックスエラーがあるtar.gzをアップ後、削除するとたまにディレクトリが消えるので追加
+        $this->makeDir(PLUGIN_UPLOAD_REALDIR);
+
         $arrErr = array();
         // ファイルをチェックし一時展開用ディレクトリに展開します.
         $arrErr = $this->unpackPluginFile($upload_file_file_name, DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, $key);
@@ -628,10 +631,6 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         $arrErr = array();
         // プラグインファイルを読み込みます.
         $plugin_class_file_path = PLUGIN_UPLOAD_REALDIR . $plugin['plugin_code'] . '/' . $plugin['class_name'] . '.php';
-        $arrErr = $this->requirePluginFile($plugin_class_file_path, 'plugin_error');
-        if ($this->isError($arrErr) === true) {
-            return $arrErr;
-        }
         
         // プラグインが有効な場合に無効化処理を実行
         if($plugin['enable'] == PLUGIN_ENABLE_TRUE){
@@ -646,9 +645,6 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         
         // アンインストール処理を実行します.
         $arrErr = $this->execPlugin($plugin, $plugin['class_name'], 'uninstall');
-        if ($this->isError($arrErr) === true) {
-            return $arrErr;
-        }
         // プラグインの削除処理.
         $arrErr = $this->deletePlugin($plugin['plugin_id'], $plugin['plugin_code']);
 
@@ -805,7 +801,14 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
     function requirePluginFile($file_path, $key) {
         $arrErr = array();
         if (file_exists($file_path)) {
-            require_once $file_path;
+            //requireだとファイルの存在チェックしかできないのでexecで実行してみる(syntax errorが見れる)
+            $result = exec("php -l " . $file_path);
+            //Errors parsingがあったらエラーを投げる
+            if(strpos($result, 'Errors parsing') !== false){
+                $arrErr[$key] = '※ ' . $file_path .'のソース内にエラーが発見されました<br/>';
+            } else {
+                require $file_path;
+            }
         } else {
             $arrErr[$key] = '※ ' . $file_path .'の読み込みに失敗しました。<br/>';
         }
