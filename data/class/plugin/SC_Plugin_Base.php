@@ -36,7 +36,7 @@ abstract class SC_Plugin_Base {
 
     /**
      * コンストラクタ
-     * 
+     *
      * @param array $arrSelfInfo 自身のプラグイン情報
      * @return void
      */
@@ -57,7 +57,7 @@ abstract class SC_Plugin_Base {
      * アンインストール
      * uninstallはアンインストール時に実行されます.
      * 引数にはdtb_pluginのプラグイン情報が渡されます.
-     * 
+     *
      * @param array $arrPlugin プラグイン情報の連想配列(dtb_plugin)
      * @return void
      */
@@ -101,4 +101,14 @@ abstract class SC_Plugin_Base {
             }
         }
     }
+
+    /**
+     * このプラグインのプラグイン情報を返す。
+     *
+     * @return array $arrSelfInfo 自身のプラグイン情報
+     */
+    function getPluginInfo() {
+        return $this->arrSelfInfo;
+    }
+
 }
