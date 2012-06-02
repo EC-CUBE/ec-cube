@@ -39,4 +39,3 @@ if (!function_exists('hash_algos')) {
 if (!function_exists('hash_hmac')) {
     require_once DATA_REALDIR . 'module/Compat/Compat/Function/hash_hmac.php';
 }
-?>
