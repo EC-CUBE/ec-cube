@@ -344,6 +344,11 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         $this->makeDir(PLUGIN_UPLOAD_REALDIR);
 
         $arrErr = array();
+        // 必須拡張モジュールのチェック
+        $arrErr = SC_Plugin_Util_Ex::checkExtension();
+        if ($this->isError($arrErr) === true) {
+            return $arrErr;
+        }
         // ファイルをチェックし一時展開用ディレクトリに展開します.
         $arrErr = $this->unpackPluginFile($upload_file_file_name, DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, $key);
         if ($this->isError($arrErr) === true) {

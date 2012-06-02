@@ -142,4 +142,29 @@ class SC_Plugin_Util {
         $where = 'plugin_id = ?';
         return $objQuery->select($cols, $from, $where, array($plugin_id));
     }
+
+    /**
+     * プラグイン利用に必須のモジュールチェック
+     *
+     * @param array|null $arrBlocs  配置情報を含めたブロックの配列
+     * @return void
+     */
+    function checkExtension() {
+        // プラグイン利用に必須のモジュール
+        // 'EC-CUBEバージョン' => array('モジュール名')
+        $arrRequireExtension = array(
+                                     '2.12.0' => array('dom'),
+                                    );
+        // 必須拡張モジュールのチェック
+        $arrErr = array();
+        if (is_array($arrRequireExtension[ECCUBE_VERSION])) {
+            foreach ($arrRequireExtension[ECCUBE_VERSION] AS $val) {
+                if (!extension_loaded($val)) {
+                    $arrErr[$val] = "※ プラグインを利用するには、拡張モジュール「${val}」が必要です。<br />";
+                }
+            }
+        }
+        return $arrErr;
+    }
+
 }
