@@ -94,7 +94,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
             $objFormParam->setParam($_POST);
             $objFormParam->convParam();
 
-            $this->arrErr = $this->lfErrorCheck($objFormParam);
+            $this->arrErr = $this->lfCheckError($objFormParam);
             $post = $objFormParam->getHashArray();
 
             $this->arrForm = $post;
@@ -262,7 +262,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
     }
 
     // 入力エラーチェック
-    function lfErrorCheck(&$objFormParam) {
+    function lfCheckError(&$objFormParam) {
         $arrErr = $objFormParam->checkError();
         $post = $objFormParam->getHashArray();
 

@@ -92,7 +92,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
             // 入力文字の変換
 
                 // エラーチェック
-                $this->arrErr = $this->lfErrorCheck($this->arrForm, $objFormParam);
+                $this->arrErr = $this->lfCheckError($this->arrForm, $objFormParam);
                 if (count($this->arrErr) <= 0) {
                     if ($this->arrForm['maker_id'] == '') {
                         // メーカー情報新規登録
@@ -279,7 +279,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      * @param  array $arrForm メーカー情報
      * @return array $objErr->arrErr エラー内容
      */
-    function lfErrorCheck(&$arrForm, &$objFormParam) {
+    function lfCheckError(&$arrForm, &$objFormParam) {
 
         $arrErr = $objFormParam->checkError();
         if (!empty($arrErr)) {

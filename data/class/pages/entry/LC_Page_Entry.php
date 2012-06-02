@@ -95,7 +95,7 @@ class LC_Page_Entry extends LC_Page_Ex {
             case 'confirm':
                 if (isset($_POST['submit_address'])) {
                     // 入力エラーチェック
-                    $this->arrErr = $this->fnErrorCheck($_POST);
+                    $this->arrErr = $this->lfCheckError($_POST);
                     // 入力エラーの場合は終了
                     if (count($this->arrErr) == 0) {
                         // 郵便番号検索文作成
@@ -302,7 +302,7 @@ class LC_Page_Entry extends LC_Page_Ex {
      * @param array $arrRequest リクエスト値($_GET)
      * @return array $arrErr エラーメッセージ配列
      */
-    function fnErrorCheck($arrRequest) {
+    function lfCheckError($arrRequest) {
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
         // パラメーター情報の初期化
