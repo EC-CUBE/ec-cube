@@ -63,7 +63,10 @@ class SC_Helper_Transform {
 
         $encoding = mb_detect_encoding($source);
         if (!in_array($encoding, array('ASCII', 'UTF-8'))) {
-            $msg = 'テンプレートの文字コードが「' . $encoding . '」です。UTF-8 のみ利用できます。';
+            if ($encoding === false) {
+                $encoding = '検出不能';
+            }
+            $msg = 'テンプレートの文字コードが「' . $encoding . '」です。「UTF-8」のみ利用できます。';
             SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, $msg);
         }
 
