@@ -139,6 +139,9 @@ class SC_Initial {
             // See also: http://php.net/manual/ja/function.setlocale.php
             setlocale(LC_ALL, '');
         }
+
+        // #1849 (文字エンコーディングの検出を制御する)
+        mb_detect_order(array('UTF-8', 'SJIS-win'));
     }
 
     /**
