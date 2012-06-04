@@ -309,13 +309,13 @@ define('REVIEW_ALLOW_URL', 0);
 /** アップデート時にサイト情報を送出するか */
 define('UPDATE_SEND_SITE_INFO', false);
 /** ポイントを利用するか(true:利用する、false:利用しない) (false は一部対応) */
-define('USE_POINT', true);
+define('USE_POINT', false);
 /** 在庫無し商品の非表示(true:非表示、false:表示) */
 define('NOSTOCK_HIDDEN', false);
 /** モバイルサイトを利用するか(true:利用する、false:利用しない) (false は一部対応) (*モジュールで使用) */
 define('USE_MOBILE', true);
 /** 複数配送先指定機能を利用するか(true:利用する、false:利用しない) */
-define('USE_MULTIPLE_SHIPPING', true);
+define('USE_MULTIPLE_SHIPPING', false);
 /** 短文の文字数 */
 define('SLTEXT_LEN', 500);
 /** デフォルトテンプレート名(PC) */
