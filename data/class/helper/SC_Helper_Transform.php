@@ -61,8 +61,10 @@ class SC_Helper_Transform {
         $this->footer_source = NULL;
         $this->search_depth = 0;
 
-        if (!in_array(mb_detect_encoding($source), array('ASCII', 'UTF-8'))) {
-            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, 'テンプレートの文字コードがUTF-8ではありません');
+        $encoding = mb_detect_encoding($source);
+        if (!in_array($encoding, array('ASCII', 'UTF-8'))) {
+            $msg = 'テンプレートの文字コードが「' . $encoding . '」です。UTF-8 のみ利用できます。';
+            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, $msg);
         }
 
         // Smartyのコメントを削除
