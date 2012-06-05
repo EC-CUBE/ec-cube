@@ -242,7 +242,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
             $cntCurrentLine++;
             if ($cntCurrentLine >= $start) {
                 $sqlval = array();
-                $sqlval['zip_id'] = $cntInsert;
+                $sqlval['zip_id'] = $cntCurrentLine;
                 $sqlval['zipcode'] = $arrCSV[2];
                 $sqlval['state'] = $arrCSV[6];
                 $sqlval['city'] = $arrCSV[7];
