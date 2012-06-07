@@ -112,7 +112,9 @@
         ) {
             eleDynamic.value = classcat2.product_class_id;
         } else {
-            eleDynamic.value = ''
+            // 規格が1つのみの場合
+            classcat1 = productsClassCategories[product_id][classcat_id1]['#0'];
+            eleDynamic.value = classcat1.product_class_id;
         }
     }
 //]]></script>
