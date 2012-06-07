@@ -451,7 +451,7 @@ class SC_UploadFile {
     }
 
     // 必須判定
-    function checkEXISTS($keyname = '') {
+    function checkExists($keyname = '') {
         $cnt = 0;
         $arrRet = array();
         foreach ($this->keyname as $val) {

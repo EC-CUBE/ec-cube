@@ -458,7 +458,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         $arrErr = $objFormParam->checkError();
 
         // アップロードファイル必須チェック
-        $arrErr = array_merge((array)$arrErr, (array)$objUpFile->checkEXISTS());
+        $arrErr = array_merge((array)$arrErr, (array)$objUpFile->checkExists());
 
         // HTMLタグ許可チェック
         $objErr->doFunc(array('詳細-メインコメント', 'main_comment', $this->arrAllowedTag), array('HTML_TAG_CHECK'));
@@ -474,7 +474,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
             }
             // ダウンロード商品ファイル必須チェック(ダウンロード商品の場合)
             if ($arrForm['product_type_id'] == PRODUCT_TYPE_DOWNLOAD) {
-                $arrErr = array_merge((array)$arrErr, (array)$objDownFile->checkEXISTS());
+                $arrErr = array_merge((array)$arrErr, (array)$objDownFile->checkExists());
                 $objErr->doFunc(array('ダウンロード商品ファイル名', 'down_filename'), array('EXIST_CHECK'));
             }
         }

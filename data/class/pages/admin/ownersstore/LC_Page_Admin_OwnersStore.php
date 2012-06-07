@@ -612,7 +612,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         }
 
         // 正常にアップロードされているかをチェック.
-        $arrErr = $objUpFile->checkEXISTS($file_key);
+        $arrErr = $objUpFile->checkExists($file_key);
         if ($this->isError($arrErr) === true) {
             return $arrErr;
         }

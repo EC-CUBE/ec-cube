@@ -103,7 +103,7 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
                 $objFormParam->convParam();
                 $post = $objFormParam->getHashArray();
                 // ファイル存在チェック
-                $this->arrErr = $this->objUpFile->checkEXISTS($post['image_key']);
+                $this->arrErr = $this->objUpFile->checkExists($post['image_key']);
                 // 画像保存処理
                 $this->arrErr[$post['image_key']] = $this->objUpFile->makeTempFile($post['image_key']);
                 $this->tpl_payment_id = $post['payment_id'];
