@@ -9,7 +9,7 @@ $(function() {
                       setClassCategories($form, product_id, $sele1, $sele2);
 
                       // 規格1のみの場合
-                      if ($sele2.val() == undefined) {
+                      if (!$sele2.length) {
                           checkStock($form, product_id, $sele1.val(), '0');
                       }
                   });
