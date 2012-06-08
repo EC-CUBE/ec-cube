@@ -6,11 +6,13 @@ $(function() {
                       var product_id = $form.find('input[name=product_id]').val();
                       var $sele1 = $(this);
                       var $sele2 = $form.find('select[name=classcategory_id2]');
-                      setClassCategories($form, product_id, $sele1, $sele2);
-
+                      
                       // 規格1のみの場合
                       if (!$sele2.length) {
                           checkStock($form, product_id, $sele1.val(), '0');
+                      // 規格2ありの場合
+                      } else {
+                          setClassCategories($form, product_id, $sele1, $sele2);
                       }
                   });
 
