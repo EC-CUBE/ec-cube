@@ -91,7 +91,6 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
      * @return void
      */
     function action() {
-//        var_dump($_REQUEST);
         // 会員クラス
         $objCustomer = new SC_Customer_Ex();
 
