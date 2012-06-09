@@ -38,6 +38,7 @@ class SC_Query {
     var $groupby = '';
     var $order = '';
     var $force_run = false;
+    static $arrInstance = array();
 
     /**
      * コンストラクタ.
@@ -97,16 +98,16 @@ class SC_Query {
      * @return SC_Query シングルトンの SC_Query インスタンス
      */
     function getSingletonInstance($dsn = '', $force_run = false, $new = false) {
-        if (!isset($GLOBALS['_SC_Query_instance'])
-            || is_null($GLOBALS['_SC_Query_instance'])) {
-            $GLOBALS['_SC_Query_instance'] =& new SC_Query_Ex($dsn, $force_run, $new);
+        if (!isset(SC_Query_Ex::$arrInstance[$dsn])) {
+            SC_Query_Ex::$arrInstance[$dsn] =& new SC_Query_Ex($dsn, $force_run, $new);
         }
-        $GLOBALS['_SC_Query_instance']->where = '';
-        $GLOBALS['_SC_Query_instance']->arrWhereVal = array();
-        $GLOBALS['_SC_Query_instance']->order = '';
-        $GLOBALS['_SC_Query_instance']->groupby = '';
-        $GLOBALS['_SC_Query_instance']->option = '';
-        return $GLOBALS['_SC_Query_instance'];
+        /*
+         * 歴史的な事情で、このメソッドの呼び出し元は参照で受け取る確率がある。
+         * 退避しているインスタンスをそのまま返すと、退避している SC_Query の
+         * プロパティを直接書き換えることになる。これを回避するため、クローンを返す。
+         * 厳密な意味でのシングルトンではないが、パフォーマンス的に大差は無い。
+         */
+        return clone SC_Query_Ex::$arrInstance[$dsn];
     }
 
     /**
