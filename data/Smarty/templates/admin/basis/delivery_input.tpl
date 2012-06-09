@@ -32,28 +32,28 @@
 
     <table>
         <tr>
-            <th>配送業者名<span class="attention"> *</span></td>
+            <th>配送業者名<span class="attention"> *</span></th>
             <td colspan="3">
             <!--{assign var=key value="name"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /></td>
         </tr>
         <tr>
-            <th>名称<span class="attention"> *</span></td>
+            <th>名称<span class="attention"> *</span></th>
             <td colspan="3">
             <!--{assign var=key value="service_name"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /></td>
         </tr>
         <tr>
-            <th>説明</td>
+            <th>説明</th>
             <td colspan="3">
             <!--{assign var=key value="remark"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <textarea name="<!--{$arrForm[$key].keyname}-->" cols="60" rows="8" class="area60" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key].value|h}--></textarea></td>
         </tr>
         <tr>
-            <th>伝票No.URL</td>
+            <th>伝票No.URL</th>
             <td colspan="3">
             <!--{assign var=key value="confirm_url"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -71,7 +71,7 @@
             </tr>
             <!--{/if}-->
             <tr>
-            <th>お届け時間<!--{$keyno}--></td>
+            <th>お届け時間<!--{$keyno}--></th>
             <!--{if $smarty.section.cnt.last}-->
             <!--{assign var=colspan value="3"}-->
             <!--{else}-->
@@ -80,7 +80,7 @@
             <td colspan="<!--{$colspan}-->">
             <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="20" class="box20" /></td>
         <!--{else}-->
-            <th>お届け時間<!--{$keyno}--></td>
+            <th>お届け時間<!--{$keyno}--></th>
             <td><input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" size="20" class="box20" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /> </td>
             </tr>
         <!--{/if}-->
@@ -126,7 +126,7 @@
             </tr>
             <!--{/if}-->
             <tr>
-            <th><!--{$arrPref[$keyno]}--></td>
+            <th><!--{$arrPref[$keyno]}--></th>
             <!--{if $smarty.section.cnt.last}-->
             <!--{assign var=colspan value="3"}-->
             <!--{else}-->
@@ -135,7 +135,7 @@
             <td width="247" colspan="<!--{$colspan}-->">
             <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" size="20" class="box20" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /> 円</td>
         <!--{else}-->
-            <th><!--{$arrPref[$keyno]}--></td>
+            <th><!--{$arrPref[$keyno]}--></th>
             <td width="248"><input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" size="20" class="box20" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /> 円</td>
             </tr>
         <!--{/if}-->

@@ -45,19 +45,19 @@
         <h2>システム情報</h2>
         <table summary="システム情報" class="shop-info">
             <tr>
-                <th>EC-CUBEバージョン</td>
+                <th>EC-CUBEバージョン</th>
                 <td><!--{$smarty.const.ECCUBE_VERSION}--></td>
             </tr>
             <tr>
-                <th>PHPバージョン</td>
+                <th>PHPバージョン</th>
                 <td><!--{$php_version}--></td>
             </tr>
             <tr>
-                <th>DBバージョン</td>
+                <th>DBバージョン</th>
                 <td><!--{$db_version}--></td>
             </tr>
             <tr>
-                <th>詳細</td>
+                <th>詳細</th>
                 <td><a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->system/system.php">システム設定＞システム情報</a></td>
             </tr>
         </table>
@@ -67,39 +67,39 @@
         <h2>ショップの状況</h2>
         <table summary="ショップの状況" class="shop-info">
             <tr>
-                <th>現在の会員数</td>
+                <th>現在の会員数</th>
                 <td><!--{$customer_cnt|default:"0"|number_format}-->名</td>
             </tr>
             <tr>
-                <th>昨日の売上高</td>
+                <th>昨日の売上高</th>
                 <td><!--{$order_yesterday_amount|default:"0"|number_format}-->円</td>
             </tr>
             <tr>
-                <th>昨日の売上件数</td>
+                <th>昨日の売上件数</th>
                 <td><!--{$order_yesterday_cnt|default:"0"|number_format}-->件</td>
             </tr>
             <tr>
-                <th><span>今月の売上高</span><span>(昨日まで) </span></td>
+                <th><span>今月の売上高</span><span>(昨日まで) </span></th>
                 <td><!--{$order_month_amount|default:"0"|number_format}-->円</td>
             </tr>
             <tr>
-                <th><span>今月の売上件数 </span><span>(昨日まで) </span></td>
+                <th><span>今月の売上件数 </span><span>(昨日まで) </span></th>
                 <td><!--{$order_month_cnt|default:"0"|number_format}-->件</td>
             </tr>
             <tr>
-                <th>昨日のレビュー書き込み数</td>
-                <td><!--{$review_yesterday_cnt|default:"0"}-->件</td>
+                <th>昨日のレビュー書き込み数</th>
+                <td><!--{$review_yesterday_cnt|default:"0"}-->件</th>
             </tr>
             <tr>
-                <th>会員の保持ポイント合計</td>
+                <th>会員の保持ポイント合計</th>
                 <td><!--{$customer_point|default:"0"}-->pt</td>
             </tr>
             <tr>
-                <th>レビュー書き込み非表示数</td>
+                <th>レビュー書き込み非表示数</th>
                 <td><!--{$review_nondisp_cnt|default:"0"}-->件</td>
             </tr>
             <tr>
-                <th>品切れ商品</td>
+                <th>品切れ商品</th>
                 <td>
                 <!--{section name=i loop=$arrSoldout}-->
                 <!--{$arrSoldout[i].product_id}-->:<!--{$arrSoldout[i].name|h}--><br />

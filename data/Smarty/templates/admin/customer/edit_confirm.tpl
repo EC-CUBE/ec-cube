@@ -80,7 +80,7 @@ function func_return(){
                 <td>〒 <!--{$arrForm.zip01|h}--> - <!--{$arrForm.zip02|h}--></td>
             </tr>
             <tr>
-                <th>住所</td>
+                <th>住所</th>
                 <td><!--{$arrPref[$arrForm.pref]|h}--><!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}--></td>
             </tr>
             <tr>
@@ -131,7 +131,7 @@ function func_return(){
                 <td><!--{$arrForm.note|h|nl2br|default:"未登録"}--></td>
             </tr>
             <tr>
-                <th>所持ポイント</td>
+                <th>所持ポイント</th>
                 <td><!--{$arrForm.point|default:"0"|h}--> pt</td>
             </tr>
         </table>
