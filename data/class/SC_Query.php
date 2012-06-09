@@ -98,8 +98,9 @@ class SC_Query {
      * @return SC_Query シングルトンの SC_Query インスタンス
      */
     function getSingletonInstance($dsn = '', $force_run = false, $new = false) {
-        if (!isset(SC_Query_Ex::$arrInstance[$dsn])) {
-            SC_Query_Ex::$arrInstance[$dsn] =& new SC_Query_Ex($dsn, $force_run, $new);
+        $key_str = serialize($dsn);
+        if (!isset(SC_Query_Ex::$arrInstance[$key_str])) {
+            SC_Query_Ex::$arrInstance[$key_str] =& new SC_Query_Ex($dsn, $force_run, $new);
         }
         /*
          * 歴史的な事情で、このメソッドの呼び出し元は参照で受け取る確率がある。
@@ -107,7 +108,7 @@ class SC_Query {
          * プロパティを直接書き換えることになる。これを回避するため、クローンを返す。
          * 厳密な意味でのシングルトンではないが、パフォーマンス的に大差は無い。
          */
-        return clone SC_Query_Ex::$arrInstance[$dsn];
+        return clone SC_Query_Ex::$arrInstance[$key_str];
     }
 
     /**
