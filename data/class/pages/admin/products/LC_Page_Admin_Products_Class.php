@@ -156,10 +156,9 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
     /**
      * 有効な規格情報の取得
      *
-     * @param array $objFormParam フォームパラメータークラス
      * @return array 規格情報
      */
-    function lfGetClass($arrData) {
+    function lfGetClass() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $where = 'del_flg <> 1';
