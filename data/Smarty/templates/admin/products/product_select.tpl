@@ -32,6 +32,7 @@ function func_submit( id ){
     var fm = window.opener.document.form1;
     var no = escape('<!--{$smarty.get.no|h}-->');
     fm['recommend_id' + no].value = id;
+    fm.select_recommend_no.value = no;
     fm.mode.value = 'recommend_select';
     fm.anchor_key.value = 'recommend_no' + no;
     fm.submit();
