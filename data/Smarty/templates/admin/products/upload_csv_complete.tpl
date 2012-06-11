@@ -31,7 +31,7 @@
             <tr>
                 <td>
                     <!--{foreach item=err from=$arrRowErr}-->
-                        <span class="attention"><!--{$err}--></span>
+                        <span class="attention"><!--{$err}--></span></br>
                     <!--{/foreach}-->
                 </td>
             </tr>

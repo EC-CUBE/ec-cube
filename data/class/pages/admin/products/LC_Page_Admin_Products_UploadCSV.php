@@ -645,13 +645,25 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         if (!$this->lfIsArrayRecord($this->arrProductType, 'product_type_id', $item)) {
             $arrErr['product_type_id'] = '※ 指定の商品種別IDは、登録されていません。';
         }
-        // 関連商品IDの存在チェック
+        // 関連商品IDのチェック
+        $arrRecommendProductUnique = array();
         for ($i = 1; $i <= RECOMMEND_PRODUCT_MAX; $i++) {
-            if (array_search('recommend_product_id' . $i, $this->arrFormKeyList) !== FALSE
-                && $item['recommend_product_id' . $i] != ''
-                && !$this->objDb->sfIsRecord('dtb_products', 'product_id', (array)$item['recommend_product_id' . $i])
-            ) {
-                $arrErr['recommend_product_id' . $i] = "※ 指定の関連商品ID($i)は、登録されていません。";
+            $recommend_product_id_key = 'recommend_product_id' . $i;
+            if ((array_search($recommend_product_id_key, $this->arrFormKeyList) !== FALSE)
+             && ($item[$recommend_product_id_key] != '') ) {
+
+                // 商品IDの存在チェック
+                if (!$this->objDb->sfIsRecord('dtb_products', 'product_id', (array)$item[$recommend_product_id_key])) {
+                    $arrErr[$recommend_product_id_key] = "※ 指定の関連商品ID($i)は、登録されていません。";
+                    continue;
+                }
+                // 商品IDの重複チェック
+                $recommend_product_id = $item[$recommend_product_id_key];
+                if (isset($arrRecommendProductUnique[$recommend_product_id])) {
+                    $arrErr[$recommend_product_id_key] = "※ 指定の関連商品ID($i)は、すでに登録されています。";
+                } else {
+                    $arrRecommendProductUnique[$recommend_product_id] = true;
+                }
             }
         }
         // カテゴリIDの存在チェック
