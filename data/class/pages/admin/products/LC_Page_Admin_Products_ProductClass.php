@@ -638,8 +638,10 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
     function doUploadComplete(&$objFormParam) {
         $objImage = new SC_Image_Ex(DOWN_TEMP_REALDIR);
         $arrRealFileName = $objFormParam->getValue('down_realfilename');
-        foreach ($arrRealFileName as $real_file_name) {
-            $objImage->moveTempImage($real_file_name, DOWN_SAVE_REALDIR);
+        if (is_array($arrRealFileName)) {
+            foreach ($arrRealFileName as $real_file_name) {
+                $objImage->moveTempImage($real_file_name, DOWN_SAVE_REALDIR);
+            }
         }
     }
 
