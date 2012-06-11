@@ -39,6 +39,10 @@
         <!--{foreach item=statusVal from=$item}-->
             <input type="hidden" name="<!--{$key}-->[]" value="<!--{$statusVal|h}-->" />
         <!--{/foreach}-->
+    <!--{elseif $key == 'arrCategoryId'}-->
+        <!--{* nop *}-->
+    <!--{elseif $key == 'arrFile'}-->
+        <!--{* nop *}-->
     <!--{else}-->
         <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
     <!--{/if}-->
