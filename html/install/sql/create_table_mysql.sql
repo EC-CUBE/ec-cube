@@ -392,7 +392,7 @@ CREATE TABLE dtb_recommend_products (
     creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
-    PRIMARY KEY (recommend_product_id)
+    PRIMARY KEY (product_id, recommend_product_id)
 );
 
 CREATE TABLE dtb_review (
