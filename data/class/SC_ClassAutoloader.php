@@ -68,9 +68,8 @@ class SC_ClassAutoloader {
         // プラグイン向けフックポイント
         // MEMO: プラグインのローダーがDB接続を必要とするため、SC_Queryがロードされた後のみ呼び出される。
         //       プラグイン情報のキャッシュ化が行われれば、全部にフックさせることを可能に？
-        if (isset($GLOBALS['_SC_Query_instance'])
-            && !is_null($GLOBALS['_SC_Query_instance'])) {
-            $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance(true);
+        $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance(true);
+        if (is_object($objPlugin)) {
 
             // 元の設定を一時保存
             $plugin_class = $class;
