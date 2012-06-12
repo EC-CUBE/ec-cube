@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13:39+0900\n"
-"PO-Revision-Date: 2012-05-08 15:41+0900\n"
-"Last-Translator: PineRay <matsuda@cyber-will.co.jp>\n"
+"PO-Revision-Date: 2012-06-12 21:21+0900\n"
+"Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -176,4 +176,19 @@ msgstr "※ :fieldは入力できません。<br />"
 
 msgid "SC_CHECKERROR_EVAL_CHECK"
 msgstr "※ :field の形式が不正です。<br />"
+
+msgid "SC_FORMPARAM_CHECKERROR_FILE_EXISTS"
+msgstr "※ :nameのファイルが存在しません。<br>"
+
+msgid "SC_FORMPARAM_CHECKERROR_DEFAULT"
+msgstr "※※　エラーチェック形式(:function)には対応していません　※※ <br>"
+
+msgid "SC_FORMPARAM_SETHTMLDISPNAMEARRAY_REQUIRED"
+msgstr ":name<span class=\"red\">(※ 必須)</span>"
+
+msgid "SC_FORMPARAM_SETHTMLDISPNAMEARRAY_DEFAULT"
+msgstr " [省略時初期値: :default]"
+
+msgid "SC_FORMPARAM_SETHTMLDISPNAMEARRAY_PROTECTED"
+msgstr " [登録・更新不可] "
 
