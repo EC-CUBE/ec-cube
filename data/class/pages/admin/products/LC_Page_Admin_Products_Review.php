@@ -97,18 +97,23 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
 
         $this->arrForm = $objFormParam->getHashArray();
         $this->arrHidden = $this->lfSetHidden($this->arrForm);
+		
+		// 入力パラメーターチェック
+		$this->arrErr = $this->lfCheckError($objFormParam);
+		if(!SC_Utils_Ex::isBlank($this->arrErr)) {
+            return;
+        }
 
         switch ($this->getMode()) {
             case 'delete':
                 $this->lfDeleteReview($this->arrForm['review_id']);
             case 'search':
             case 'csv':
-                // エラーチェック
-                $this->arrErr = $this->lfCheckError($objFormParam);
-                if (!$this->arrErr) {
-                    // 検索条件を取得
-                    list($where, $arrWhereVal) = $this->lfGetWhere($this->arrForm);
-                }
+                
+				// 検索条件を取得
+				list($where, $arrWhereVal) = $this->lfGetWhere($this->arrForm);
+				// 検索結果を取得
+				$this->arrReview = $this->lfGetReview($this->arrForm, $where, $arrWhereVal);
 
                 //CSVダウンロード
                 if ($this->getMode() == 'csv') {
@@ -116,9 +121,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
 
                     SC_Response_Ex::actionExit();
                 }
-
-                // 検索条件を取得
-                $this->arrReview = $this->lfGetReview($this->arrForm, $where, $arrWhereVal);
+				
                 break;
             default:
                 break;
