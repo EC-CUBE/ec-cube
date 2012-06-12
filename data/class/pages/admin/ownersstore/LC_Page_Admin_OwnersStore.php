@@ -832,7 +832,10 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
     function execPlugin($obj, $class_name, $exec_func) {
         $arrErr = array();
         if (method_exists($class_name, $exec_func) === true) {
-            call_user_func(array($class_name, $exec_func), $obj);
+            $ret = call_user_func(array($class_name, $exec_func), $obj);
+            if (!(is_null($ret) || $ret === true)) {
+                $arrErr[$obj['plugin_code']] = $ret;
+            }
         } else {
             $arrErr['plugin_error'] = '※ ' . $class_name . '.php に' . $exec_func . 'が見つかりません。<br/>';
         }
