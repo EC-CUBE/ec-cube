@@ -29,8 +29,6 @@ define('MAX_LIFETIME', 7200);
 define('MASTER_DATA_REALDIR', DATA_REALDIR . "cache/");
 /** アップデート管理用ファイル格納場所 */
 define('UPDATE_HTTP', "http://www.ec-cube.net/info/index.php");
-/** 言語コード */
-define('LANG_CODE', "ja");
 /** 文字コード */
 define('CHAR_CODE', "UTF-8");
 /** ロケール設定 */

@@ -70,7 +70,7 @@ class SC_CheckError {
         }
         $html_diff_tag_list = implode(', ', $arrDiffTag);
 
-        $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_HTML_TAG_CHECK', array(':field' => $value[0], ':tag' => $html_diff_tag_list));
+        $this->arrErr[$value[1]] = '※ ' . $value[0] . 'に許可されていないタグ ' . $html_diff_tag_list . ' が含まれています。<br />';
     }
 
     /**
@@ -86,9 +86,9 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (!is_array($this->arrParam[$value[1]]) && strlen($this->arrParam[$value[1]]) == 0) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_EXIST_CHECK_INPUT', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'が入力されていません。<br />';
         } else if (is_array($this->arrParam[$value[1]]) && count($this->arrParam[$value[1]]) == 0) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_EXIST_CHECK_SELECT', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'が選択されていません。<br />';
         }
     }
 
@@ -105,7 +105,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[0]]) == 0) {
-            $this->arrErr[$value[0]] = SC_Utils_Ex::t('SC_CHECKERROR_EXIST_CHECK_REVERSE', array(':field' => $value[1]));
+            $this->arrErr[$value[0]] = '※ ' . $value[0] . 'が入力されていません。<br />';
         }
     }
 
@@ -122,7 +122,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) != 0 && preg_match("/^[ 　\t\r\n]+$/", $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_SPTAB_CHECK', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'にスペース、タブ、改行のみの入力はできません。<br />';
         }
     }
 
@@ -139,7 +139,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) != 0 && preg_match("/[　 \t\r\n]+/u", $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_NO_SPTAB', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'にスペース、タブ、改行は含めないで下さい。<br />';
         }
     }
 
@@ -150,7 +150,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) != 0 && preg_match("/^[0]+[0-9]+$/", $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_ZERO_START', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'に0で始まる数値が入力されています。<br />';
         }
     }
 
@@ -167,7 +167,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) == 0) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_SELECT_CHECK', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'が選択されていません。<br />';
         }
     }
 
@@ -185,7 +185,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if ($this->arrParam[$value[2]] !== $this->arrParam[$value[3]]) {
-            $this->arrErr[$value[2]] = SC_Utils_Ex::t('SC_CHECKERROR_EQUAL_CHECK', array(':field_1st' => $value[0], ':field_2nd' => $value[1]));
+            $this->arrErr[$value[2]] = '※ ' . $value[0] . 'と' . $value[1] . 'が一致しません。<br />';
         }
     }
 
@@ -203,7 +203,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if ($this->arrParam[$value[2]] == $this->arrParam[$value[3]]) {
-            $this->arrErr[$value[2]] = SC_Utils_Ex::t('SC_CHECKERROR_DIFFERENT_CHECK', array(':field_1st' => $value[0], ':field_2nd' => $value[1]));
+            $this->arrErr[$value[2]] = '※ ' . $value[0] . 'と' . $value[1] . 'は、同じ値を使用できません。<br />';
         }
     }
 
@@ -221,7 +221,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if ($this->arrParam[$value[2]] != '' && $this->arrParam[$value[3]] != '' && ($this->arrParam[$value[2]] > $this->arrParam[$value[3]])) {
-            $this->arrErr[$value[2]] = SC_Utils_Ex::t('SC_CHECKERROR_GREATER_CHECK', array(':field_1st' => $value[0], ':field_2nd' => $value[1]));
+            $this->arrErr[$value[2]] = '※ ' . $value[0] . 'は' . $value[1] . 'より大きい値を入力できません。<br />';
         }
     }
 
@@ -239,7 +239,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if (mb_strlen($this->arrParam[$value[1]]) > $value[2]) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_MAX_LENGTH_CHECK', array(':field' => $value[0], ':length' => $value[2]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は' . $value[2] . '字以下で入力してください。<br />';
         }
     }
 
@@ -257,7 +257,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if (mb_strlen($this->arrParam[$value[1]]) < $value[2]) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t_plural($value[2], 'SC_CHECKERROR_MIN_LENGTH_CHECK_SINGLE', 'SC_CHECKERROR_MIN_LENGTH_CHECK_PLURAL', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は' . $value[2] . '字以上で入力してください。<br />';
         }
     }
 
@@ -275,7 +275,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if ($this->arrParam[$value[1]] > $value[2]) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_MAX_CHECK', array(':field' => $value[0], ':length' => $value[2]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は' . $value[2] . '以下で入力してください。<br />';
         }
     }
 
@@ -292,7 +292,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if ($this->arrParam[$value[1]] < $value[2]) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t_plural($value[2], 'SC_CHECKERROR_MIN_CHECK_SINGLE', 'SC_CHECKERROR_MIN_CHECK_PLURAL', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は' . $value[2] . '以上で入力してください。<br />';
         }
     }
 
@@ -309,7 +309,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if ($this->numelicCheck($this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_NUM_CHECK', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は数字で入力してください。<br />';
         }
     }
 
@@ -326,7 +326,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) > 0 && !is_numeric($this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_NUM_POINT_CHECK', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は数字で入力してください。<br />';
         }
     }
 
@@ -336,7 +336,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) > 0 && !ctype_alpha($this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_ALPHA_CHECK', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は半角英字で入力してください。<br />';
         }
     }
 
@@ -371,22 +371,22 @@ class SC_CheckError {
 
         // すべての項目が満たされていない場合を判定(一部だけ入力されている状態)
         if ($cnt > 0 && $cnt < 3) {
-            $this->arrErr[$value[1]] .= SC_Utils_Ex::t('SC_CHECKERROR_TEL_CHECK_EXIST', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] .= '※ ' . $value[0] . 'はすべての項目を入力してください。<br />';
         }
 
         $total_count = 0;
         for ($i = 1; $i <= 3; $i++) {
             if (strlen($this->arrParam[$value[$i]]) > 0 && strlen($this->arrParam[$value[$i]]) > $telItemLen) {
-                $this->arrErr[$value[$i]] .= SC_Utils_Ex::t('SC_CHECKERROR_TEL_CHECK_MAX_LENGTH', array(':field' => $value[0] . $i, ':length' => $telItemLen));
+                $this->arrErr[$value[$i]] .= '※ ' . $value[0] . $i . 'は' . $telItemLen . '字以内で入力してください。<br />';
             } else if ($this->numelicCheck($this->arrParam[$value[1]])) {
-                $this->arrErr[$value[$i]] .= SC_Utils_Ex::t('SC_CHECKERROR_TEL_CHECK_NUM', array(':field' => $value[0] . $i));
+                $this->arrErr[$value[$i]] .= '※ ' . $value[0] . $i . 'は数字で入力してください。<br />';
             }
             $total_count += strlen($this->arrParam[$value[$i]]);
         }
 
         // 合計値チェック
         if ($total_count > $telLen) {
-            $this->arrErr[$value[3]] .= SC_Utils_Ex::t('SC_CHECKERROR_TEL_CHECK_SUM', array(':field' => $value[0], ':length' => $telLen));
+            $this->arrErr[$value[3]] .= '※ ' . $value[0] . 'は' . $telLen . '文字以内で入力してください。<br />';
         }
     }
 
@@ -414,7 +414,7 @@ class SC_CheckError {
         }
 
         if ($blank) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_FULL_EXIST_CHECK', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'が入力されていません。<br />';
         }
     }
 
@@ -445,7 +445,7 @@ class SC_CheckError {
         }
 
         if ($blank && $input) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_ALL_EXIST_CHECK', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'はすべての項目を入力して下さい。<br />';
         }
     }
 
@@ -473,7 +473,7 @@ class SC_CheckError {
         }
 
         if (!$input) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_ONE_EXIST_CHECK', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'が入力されていません。<br />';
         }
     }
 
@@ -507,7 +507,7 @@ class SC_CheckError {
         }
 
         if ($error) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_TOP_EXIST_CHECK', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は先頭の項目から順番に入力して下さい。<br />';
         }
     }
 
@@ -520,7 +520,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^[ァ-ヶｦ-ﾟー]+$/u", $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_KANA_CHECK', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'はカタカナで入力してください。<br />';
         }
     }
 
@@ -533,7 +533,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^([　 \t\r\n]|[ァ-ヶ]|[ー])+$/u", $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_KANABLANK_CHECK', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'はカタカナで入力してください。<br />';
         }
     }
 
@@ -546,7 +546,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) > 0 && !ctype_alnum($this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_ALNUM_CHECK', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は英数字で入力してください。<br />';
         }
     }
 
@@ -559,7 +559,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^[[:graph:]|[:space:]]+$/i", $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_GRAPH_CHECK', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は英数記号で入力してください。<br />';
         }
     }
 
@@ -569,7 +569,7 @@ class SC_CheckError {
     function ZERO_CHECK($value) {
         $this->createParam($value);
         if ($this->arrParam[$value[1]] == '0') {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_ZERO_CHECK', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は1以上を入力してください。<br />';
         }
     }
 
@@ -584,7 +584,7 @@ class SC_CheckError {
         // $this->arrParam[$value[0]] = mb_convert_kana($this->arrParam[$value[0]], 'n');
         $count = strlen($this->arrParam[$value[1]]);
         if (($count > 0) && $value[2] > $count || $value[3] < $count) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t_plural($value[2], 'SC_CHECKERROR_NUM_RANGE_CHECK_SINGLE', 'SC_CHECKERROR_NUM_RANGE_CHECK_PLURAL', array(':field' => $value[0], ':digit_max' => $value[3]));
+            $this->arrErr[$value[1]] =  "※ $value[0]は$value[2]桁～$value[3]桁で入力して下さい。<br />";
         }
     }
 
@@ -598,7 +598,7 @@ class SC_CheckError {
         $this->createParam($value);
         $count = strlen($this->arrParam[$value[1]]);
         if (($count > 0) && $count != $value[2]) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t_plural($value[2], 'SC_CHECKERROR_NUM_COUNT_CHECK_SINGLE', 'SC_CHECKERROR_NUM_COUNT_CHECK_PLURAL', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] =  "※ $value[0]は$value[2]桁で入力して下さい。<br />";
         }
     }
 
@@ -647,7 +647,7 @@ class SC_CheckError {
         }
 
         if (!preg_match($regexp, $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_EMAIL_CHECK', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'の形式が不正です。<br />';
             return;
         }
 
@@ -666,7 +666,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^[a-zA-Z0-9_\.@\+\?-]+$/i",$this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_EMAIL_CHAR_CHECK', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'に使用する文字を正しく入力してください。<br />';
         }
     }
 
@@ -678,7 +678,7 @@ class SC_CheckError {
             return;
         }
         if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("@^https?://+($|[a-zA-Z0-9_~=:&\?\.\/-])+$@i", $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_URL_CHECK', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'を正しく入力してください。<br />';
         }
     }
 
@@ -698,7 +698,7 @@ class SC_CheckError {
             foreach ($params as $param) {
                 $param = trim($param);
                 if (long2ip(ip2long($param)) != trim($param) && !empty($param)) {
-                    $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_IP_CHECK', array(':field' => $value[0]));
+                    $this->arrErr[$value[1]] = '※ ' . $value[0] . 'に正しい形式のIPアドレスを入力してください。<br />';
                 }
             }
         }
@@ -726,7 +726,7 @@ class SC_CheckError {
         }
         if ($match === false) {
             $str_ext = implode('・', $value[2]);
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_FILE_EXT_CHECK', array(':field' => $value[0], ':ext' => $str_ext));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'で許可されている形式は、' . $str_ext . 'です。<br />';
         }
     }
 
@@ -749,7 +749,7 @@ class SC_CheckError {
         $path = str_replace('//', '/', $path);
 
         if ($this->arrParam[$value[1]] != '' && !file_exists($path)) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_FIND_FILE', array(':path' => $path));
+            $this->arrErr[$value[1]] = '※ ' . $path . 'が見つかりません。<br />';
         }
     }
 
@@ -762,7 +762,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (!($_FILES[$value[1]]['size'] != '' && $_FILES[$value[1]]['size'] > 0)) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_FILE_EXIST_CHECK', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'をアップロードして下さい。<br />';
         }
     }
 
@@ -780,7 +780,7 @@ class SC_CheckError {
                 $value[2] = $value[2] / 1000;
                 $byte = 'MB';
             }
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_FILE_SIZE_CHECK', array(':field' => $value[0], ':size' => $value[2], ':unit' => $byte));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'のファイルサイズは' . $value[2] . $byte . '以下のものを使用してください。<br />';
         }
     }
 
@@ -793,7 +793,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($_FILES[$value[1]]['name']) > 0 && !preg_match("/^[[:alnum:]_\.-]+$/i", $_FILES[$value[1]]['name'])) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_FILE_NAME_CHECK', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'のファイル名に日本語やスペースは使用しないで下さい。<br />';
         }
     }
 
@@ -806,7 +806,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^[[:alnum:]_\.-]+$/i", $this->arrParam[$value[1]]) || preg_match('/[\\]/' ,$this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_FILE_NAME_CHECK', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'のファイル名に日本語やスペースは使用しないで下さい。<br />';
         }
     }
 
@@ -824,9 +824,9 @@ class SC_CheckError {
         if ($this->arrParam[$value[1]] > 0 || $this->arrParam[$value[2]] > 0 || $this->arrParam[$value[3]] > 0) {
             // 年月日のどれかが入力されていない。
             if (!(strlen($this->arrParam[$value[1]]) > 0 && strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0)) {
-                $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_CHECK_DATE_ALL_EXIST', array(':field' => $value[0]));
+                $this->arrErr[$value[1]] = '※ ' . $value[0] . 'はすべての項目を入力して下さい。<br />';
             } else if (! checkdate($this->arrParam[$value[2]], $this->arrParam[$value[3]], $this->arrParam[$value[1]])) {
-                $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_CHECK_DATE_PROPER', array(':field' => $value[0]));
+                $this->arrErr[$value[1]] = '※ ' . $value[0] . 'が正しくありません。<br />';
             }
         }
     }
@@ -847,9 +847,9 @@ class SC_CheckError {
         if ($this->arrParam[$value[1]] > 0 || $this->arrParam[$value[2]] > 0 || $this->arrParam[$value[3]] > 0 || $this->arrParam[$value[4]] >= 0 || $this->arrParam[$value[5]] >= 0) {
             // 年月日時のどれかが入力されていない。
             if (!(strlen($this->arrParam[$value[1]]) > 0 && strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0 && strlen($this->arrParam[$value[4]]) > 0 && strlen($this->arrParam[$value[5]]) > 0)) {
-                $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_CHECK_DATE_ALL_EXIST', array(':field' => $value[0]));
+                $this->arrErr[$value[1]] = '※ ' . $value[0] . 'はすべての項目を入力して下さい。<br />';
             } else if (! checkdate($this->arrParam[$value[2]], $this->arrParam[$value[3]], $this->arrParam[$value[1]])) {
-                $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_CHECK_DATE_PROPER', array(':field' => $value[0]));
+                $this->arrErr[$value[1]] = '※ ' . $value[0] . 'が正しくありません。<br />';
             }
         }
     }
@@ -867,9 +867,9 @@ class SC_CheckError {
         if ($this->arrParam[$value[1]] > 0 || $this->arrParam[$value[2]] > 0) {
             // 年月日時のどれかが入力されていない。
             if (!(strlen($this->arrParam[$value[1]]) > 0 && strlen($this->arrParam[$value[2]]) > 0)) {
-                $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_CHECK_DATE_ALL_EXIST', array(':field' => $value[0]));
+                $this->arrErr[$value[1]] = '※ ' . $value[0] . 'はすべての項目を入力して下さい。<br />';
             } else if (! checkdate($this->arrParam[$value[2]], 1, $this->arrParam[$value[1]])) {
-                $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_CHECK_DATE_PROPER', array(':field' => $value[0]));
+                $this->arrErr[$value[1]] = '※ ' . $value[0] . 'が正しくありません。<br />';
             }
         }
     }
@@ -933,10 +933,10 @@ class SC_CheckError {
         $this->createParam($value);
         $error = 0;
         if ((strlen($this->arrParam[$value[2]]) > 0 || strlen($this->arrParam[$value[3]]) > 0 || strlen($this->arrParam[$value[4]]) > 0) && ! checkdate($this->arrParam[$value[3]], $this->arrParam[$value[4]], $this->arrParam[$value[2]])) {
-            $this->arrErr[$value[2]] = SC_Utils_Ex::t('SC_CHECKERROR_CHECK_SET_TERM_PROPER', array(':field' => $value[0]));
+            $this->arrErr[$value[2]] = '※ ' . $value[0] . 'を正しく指定してください。<br />';
         }
         if ((strlen($this->arrParam[$value[5]]) > 0 || strlen($this->arrParam[$value[6]]) > 0 || strlen($this->arrParam[$value[7]]) > 0) && ! checkdate($this->arrParam[$value[6]], $this->arrParam[$value[7]], $this->arrParam[$value[5]])) {
-            $this->arrErr[$value[5]] = SC_Utils_Ex::t('SC_CHECKERROR_CHECK_SET_TERM_PROPER', array(':field' => $value[1]));
+            $this->arrErr[$value[5]] = '※ ' . $value[1] . 'を正しく指定してください。<br />';
         }
         if ((strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0 && strlen($this->arrParam[$value[4]]) > 0) &&  (strlen($this->arrParam[$value[5]]) > 0 || strlen($this->arrParam[$value[6]]) > 0 || strlen($this->arrParam[$value[7]]) > 0)) {
 
@@ -944,7 +944,7 @@ class SC_CheckError {
             $date2 = $this->arrParam[$value[5]] .sprintf('%02d', $this->arrParam[$value[6]]) .sprintf('%02d',$this->arrParam[$value[7]]) .'235959';
 
             if (($this->arrErr[$value[2]] == '' && $this->arrErr[$value[5]] == '') && $date1 > $date2) {
-                $this->arrErr[$value[2]] = SC_Utils_Ex::t('SC_CHECKERROR_CHECK_SET_TERM_RANGE', array(':start' => $value[0], ':end' => $value[1]));
+                $this->arrErr[$value[2]] = '※ ' .$value[0]. 'と' .$value[1]. 'の期間指定が不正です。<br />';
             }
         }
     }
@@ -984,10 +984,10 @@ class SC_CheckError {
         $this->createParam($value);
         $error = 0;
         if ((strlen($this->arrParam[$value[2]]) > 0 || strlen($this->arrParam[$value[3]]) > 0 || strlen($this->arrParam[$value[4]]) > 0 || strlen($this->arrParam[$value[5]]) > 0) && ! checkdate($this->arrParam[$value[3]], $this->arrParam[$value[4]], $this->arrParam[$value[2]])) {
-            $this->arrErr[$value[2]] = SC_Utils_Ex::t('SC_CHECKERROR_CHECK_SET_TERM_PROPER', array(':field' => $value[0]));
+            $this->arrErr[$value[2]] = '※ ' . $value[0] . 'を正しく指定してください。<br />';
         }
         if ((strlen($this->arrParam[$value[8]]) > 0 || strlen($this->arrParam[$value[9]]) > 0 || strlen($this->arrParam[$value[10]]) > 0 || strlen($this->arrParam[$value[11]]) > 0) && ! checkdate($this->arrParam[$value[9]], $this->arrParam[$value[10]], $this->arrParam[$value[8]])) {
-            $this->arrErr[$value[8]] = SC_Utils_Ex::t('SC_CHECKERROR_CHECK_SET_TERM_PROPER', array(':field' => $value[1]));
+            $this->arrErr[$value[8]] = '※ ' . $value[1] . 'を正しく指定してください。<br />';
         }
         if ((strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0 && strlen($this->arrParam[$value[4]]) > 0 && strlen($this->arrParam[$value[5]]) > 0) &&  (strlen($this->arrParam[$value[8]]) > 0 || strlen($this->arrParam[$value[9]]) > 0 || strlen($this->arrParam[$value[10]]) > 0 || strlen($this->arrParam[$value[11]]) > 0)) {
 
@@ -995,10 +995,10 @@ class SC_CheckError {
             $date2 = $this->arrParam[$value[8]] .sprintf('%02d', $this->arrParam[$value[9]]) .sprintf('%02d',$this->arrParam[$value[10]]) .sprintf('%02d',$this->arrParam[$value[11]]).sprintf('%02d',$this->arrParam[$value[12]]).sprintf('%02d',$this->arrParam[$value[13]]);
 
             if (($this->arrErr[$value[2]] == '' && $this->arrErr[$value[8]] == '') && $date1 > $date2) {
-                $this->arrErr[$value[2]] = SC_Utils_Ex::t('SC_CHECKERROR_CHECK_SET_TERM_RANGE', array(':start' => $value[0], ':end' => $value[1]));
+                $this->arrErr[$value[2]] = '※ ' .$value[0]. 'と' .$value[1]. 'の期間指定が不正です。<br />';
             }
             if ($date1 == $date2) {
-                $this->arrErr[$value[2]] = SC_Utils_Ex::t('SC_CHECKERROR_CHECK_SET_TERM_RANGE', array(':start' => $value[0], ':end' => $value[1]));
+                $this->arrErr[$value[2]] = '※ ' .$value[0]. 'と' .$value[1]. 'の期間指定が不正です。<br />';
             }
 
         }
@@ -1028,10 +1028,10 @@ class SC_CheckError {
         $this->createParam($value);
         $error = 0;
         if ((strlen($this->arrParam[$value[2]]) > 0 || strlen($this->arrParam[$value[3]]) > 0) && ! checkdate($this->arrParam[$value[3]], 1, $this->arrParam[$value[2]])) {
-            $this->arrErr[$value[2]] = SC_Utils_Ex::t('SC_CHECKERROR_CHECK_SET_TERM_PROPER', array(':field' => $value[0]));
+            $this->arrErr[$value[2]] = '※ ' . $value[0] . 'を正しく指定してください。<br />';
         }
         if ((strlen($this->arrParam[$value[4]]) > 0 || strlen($this->arrParam[$value[5]]) > 0) && ! checkdate($this->arrParam[$value[5]], 1, $this->arrParam[$value[4]])) {
-            $this->arrErr[$value[4]] = SC_Utils_Ex::t('SC_CHECKERROR_CHECK_SET_TERM_PROPER', array(':field' => $value[1]));
+            $this->arrErr[$value[4]] = '※ ' . $value[1] . 'を正しく指定してください。<br />';
         }
         if ((strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0 && (strlen($this->arrParam[$value[4]]) > 0 || strlen($this->arrParam[$value[5]]) > 0))) {
 
@@ -1039,7 +1039,7 @@ class SC_CheckError {
             $date2 = $this->arrParam[$value[4]] .sprintf('%02d', $this->arrParam[$value[5]]);
 
             if (($this->arrErr[$value[2]] == '' && $this->arrErr[$value[5]] == '') && $date1 > $date2) {
-                $this->arrErr[$value[2]] = SC_Utils_Ex::t('SC_CHECKERROR_CHECK_SET_TERM_RANGE', array(':start' => $value[0], ':end' => $value[1]));
+                $this->arrErr[$value[2]] = '※ ' .$value[0]. 'と' .$value[1]. 'の期間指定が不正です。<br />';
             }
         }
     }
@@ -1051,7 +1051,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (!is_dir($this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_DIR_CHECK', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ 指定した' . $value[0] . 'は存在しません。<br />';
         }
     }
 
@@ -1061,7 +1061,7 @@ class SC_CheckError {
             return;
         }
         if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^\.[^.]+\..+/i", $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_DOMAIN_CHECK', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'の形式が不正です。<br />';
         }
     }
 
@@ -1075,7 +1075,7 @@ class SC_CheckError {
         $this->createParam($value);
         $objMobile = new SC_Helper_Mobile_Ex();
         if (strlen($this->arrParam[$value[1]]) > 0 && !$objMobile->gfIsMobileMailAddress($this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_MOBILE_EMAIL_CHECK', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は携帯電話のものではありません。<br />';
         }
     }
 
@@ -1096,10 +1096,10 @@ class SC_CheckError {
         $register_user_flg =  SC_Helper_Customer_Ex::sfCheckRegisterUserFromEmail($this->arrParam[$value[1]]);
         switch ($register_user_flg) {
             case 1:
-                $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_CHECK_REGIST_CUSTOMER_EMAIL_EXIST', array(':field' => $value[0]));
+                $this->arrErr[$value[1]] .= '※ すでに会員登録で使用されている' . $value[0] . 'です。<br />';
                 break;
             case 2:
-                $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_CHECK_REGIST_CUSTOMER_EMAIL_INTERVAL', array(':field' => $value[0]));
+                $this->arrErr[$value[1]] .= '※ 退会から一定期間の間は、同じ' . $value[0] . 'を使用することはできません。<br />';
                 break;
             default:
                 break;
@@ -1123,7 +1123,7 @@ class SC_CheckError {
 
         $pattern = '/' . join('|', $prohibitedStr) . '/i';
         if (preg_match_all($pattern, $this->arrParam[$value[1]], $matches)) {
-            $this->arrErr[$value[1]] = SC_Utils_Ex::t('SC_CHECKERROR_PROHIBITED_STR_CHECK', array(':field' => $value[0]));
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は入力できません。<br />';
         }
     }
 
@@ -1140,7 +1140,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if ($this->evalCheck($value[1]) === false) {
-            $this->arrErr[$value[0]] = SC_Utils_Ex::t('SC_CHECKERROR_EVAL_CHECK', array(':field' => $value[0]));
+            $this->arrErr[$value[0]] = '※ ' . $value[0] . ' の形式が不正です。<br />';
         }
     }
 
