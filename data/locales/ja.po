@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13:39+0900\n"
-"PO-Revision-Date: 2012-06-12 21:21+0900\n"
+"PO-Revision-Date: 2012-06-13 08:48+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -191,4 +191,16 @@ msgstr " [省略時初期値: :default]"
 
 msgid "SC_FORMPARAM_SETHTMLDISPNAMEARRAY_PROTECTED"
 msgstr " [登録・更新不可] "
+
+msgid "SC_CARTSESSION_CHECKPRODUCTS_UNABLE"
+msgstr "※ 現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。"
+
+msgid "SC_CARTSESSION_CHECKPRODUCTS_UNDELIVERABLE"
+msgstr "※「:product」はまだ配送の準備ができておりません。恐れ入りますがお問い合わせページよりお問い合わせください。"
+
+msgid "SC_CARTSESSION_CHECKPRODUCTS_LIMIT"
+msgstr "※「:product」は販売制限(または在庫が不足)しております。一度に数量:limitを超える購入はできません。"
+
+msgid "SC_CARTSESSION_CHECKPRODUCTS_SOLDOUT"
+msgstr "※「:product」は売り切れました。"
 
