@@ -283,11 +283,11 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
     /**
      * テンプレートに渡す値を整形する
      *
-     * @param array $_POST $_POST
+     * @param array $arrVal $_POST
      * @return array $setParam テンプレートに渡す値
      */
-    function createSetParam($_POST) {
-        $setParam = $_POST;
+    function createSetParam($arrVal) {
+        $setParam = $arrVal;
         // Windowsの場合は, ディレクトリの区切り文字を\から/に変換する
         $setParam['top_dir'] = (strpos(PHP_OS, 'WIN') === false) ? USER_REALDIR : str_replace('\\', '/', USER_REALDIR);
         // 初期表示はルートディレクトリ(user_data/)を表示
