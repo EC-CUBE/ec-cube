@@ -71,7 +71,9 @@ class SC_FormParam {
         $class = $backtraces[1]['class'];
         $objPage = $backtraces[1]['object'];
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($objPage->plugin_activate_flg);
-        $objPlugin->doAction('SC_FormParam_construct', array($class, $this));
+        if (is_object($objPlugin)) {
+            $objPlugin->doAction('SC_FormParam_construct', array($class, $this));
+        }
     }
 
     /**
