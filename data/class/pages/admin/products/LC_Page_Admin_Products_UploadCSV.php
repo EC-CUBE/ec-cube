@@ -270,7 +270,6 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         // 商品件数カウント関数の実行
         $this->objDb->sfCountCategory($objQuery);
         $this->objDb->sfCountMaker($objQuery);
-        return;
     }
 
     /**
