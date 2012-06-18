@@ -423,7 +423,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
     /**
      * バックアップの一覧を取得する
      */
-    function lfGetBkupData($sql_option = '', $filter_bkup_name) {
+    function lfGetBkupData($sql_option = '', $filter_bkup_name = '') {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // テーブルから取得
