@@ -58,7 +58,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         // HTMLに含まれているタグを抽出する
-        preg_match_all('/<\/?([a-z]+)/i', $this->arrParam[$value[1]], $arrTagIncludedHtml);
+        preg_match_all('/<\/?([a-z]+)/i', $this->arrParam[$value[1]], $arrTagIncludedHtml = array());
 
         $arrDiffTag = array_diff($arrTagIncludedHtml[1], $value[2]);
 
@@ -629,21 +629,20 @@ class SC_CheckError {
         $qcontent      = "(?:$qtext|$quoted_pair)";
         $quoted_string = "\"$qcontent*\"";
         $atext         = '[a-zA-Z0-9!#$%&\'*+\-\/\=?^_`{|}~]';
-        $dot_atom_text = "$atext+(?:[.]$atext+)*";
-        $dot_atom      = $dot_atom_text;
+        $dot_atom      = "$atext+(?:[.]$atext+)*";
         $local_part    = "(?:$dot_atom|$quoted_string)";
         $domain        = $dot_atom;
-        $addr_spec     = "${local_part}[@]$domain";
+        $addr_spec     = "{$local_part}[@]$domain";
 
         $dot_atom_loose   = "$atext+(?:[.]|$atext)*";
         $local_part_loose = "(?:$dot_atom_loose|$quoted_string)";
-        $addr_spec_loose  = "${local_part_loose}[@]$domain";
+        $addr_spec_loose  = "{$local_part_loose}[@]$domain";
 
         if (RFC_COMPLIANT_EMAIL_CHECK) {
-            $regexp = "/\A${addr_spec}\z/";
+            $regexp = "/\A{$addr_spec}\z/";
         } else {
             // 携帯メールアドレス用に、..や.@を許容する。
-            $regexp = "/\A${addr_spec_loose}\z/";
+            $regexp = "/\A{$addr_spec_loose}\z/";
         }
 
         if (!preg_match($regexp, $this->arrParam[$value[1]])) {
@@ -931,7 +930,6 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        $error = 0;
         if ((strlen($this->arrParam[$value[2]]) > 0 || strlen($this->arrParam[$value[3]]) > 0 || strlen($this->arrParam[$value[4]]) > 0) && ! checkdate($this->arrParam[$value[3]], $this->arrParam[$value[4]], $this->arrParam[$value[2]])) {
             $this->arrErr[$value[2]] = '※ ' . $value[0] . 'を正しく指定してください。<br />';
         }
@@ -982,7 +980,6 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        $error = 0;
         if ((strlen($this->arrParam[$value[2]]) > 0 || strlen($this->arrParam[$value[3]]) > 0 || strlen($this->arrParam[$value[4]]) > 0 || strlen($this->arrParam[$value[5]]) > 0) && ! checkdate($this->arrParam[$value[3]], $this->arrParam[$value[4]], $this->arrParam[$value[2]])) {
             $this->arrErr[$value[2]] = '※ ' . $value[0] . 'を正しく指定してください。<br />';
         }
@@ -1026,7 +1023,6 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        $error = 0;
         if ((strlen($this->arrParam[$value[2]]) > 0 || strlen($this->arrParam[$value[3]]) > 0) && ! checkdate($this->arrParam[$value[3]], 1, $this->arrParam[$value[2]])) {
             $this->arrErr[$value[2]] = '※ ' . $value[0] . 'を正しく指定してください。<br />';
         }
@@ -1122,7 +1118,7 @@ class SC_CheckError {
         $prohibitedStr = str_replace(array('|', '/'), array('\|', '\/'), $value[2]);
 
         $pattern = '/' . join('|', $prohibitedStr) . '/i';
-        if (preg_match_all($pattern, $this->arrParam[$value[1]], $matches)) {
+        if (preg_match_all($pattern, $targetStr, $matches = array())) {
             $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は入力できません。<br />';
         }
     }

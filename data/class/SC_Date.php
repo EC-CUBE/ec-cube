@@ -145,7 +145,7 @@ class SC_Date {
 
     function getHour() {
 
-        $day_array = array();
+        $hour_array = array();
         for ($i=0; $i<=23; $i++) {
             $hour_array[$i] = $i;
         }

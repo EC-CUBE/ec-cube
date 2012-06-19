@@ -335,7 +335,7 @@ class SC_FormParam {
      */
     function getHashArray($arrKey = array()) {
         $arrRet = array();
-        foreach ($this->keyname as $index => $keyname) {
+        foreach ($this->keyname as $keyname) {
             if (empty($arrKey) || in_array($keyname, $arrKey)) {
                 $arrRet[$keyname] = $this->getValue($keyname);
             }
@@ -345,12 +345,13 @@ class SC_FormParam {
 
     // DB格納用配列の作成
     function getDbArray() {
+        $dbArray = array();
         foreach ($this->keyname as $index => $key) {
             if ($this->input_db[$index]) {
-                $arrRet[$key] = $this->getValue($key);
+                $dbArray[$key] = $this->getValue($key);
             }
         }
-        return $arrRet;
+        return $dbArray;
     }
 
     /**
@@ -377,17 +378,18 @@ class SC_FormParam {
 
     // フォームに渡す用のパラメーターを返す
     function getFormParamList() {
+        $formParamList = array();
         foreach ($this->keyname as $index => $key) {
             // キー名
-            $arrRet[$key]['keyname'] = $key;
+            $formParamList[$key]['keyname'] = $key;
             // 表示名
-            $arrRet[$key]['disp_name'] = $this->disp_name[$index];
+            $formParamList[$key]['disp_name'] = $this->disp_name[$index];
             // 文字数制限
-            $arrRet[$key]['length'] = $this->length[$index];
+            $formParamList[$key]['length'] = $this->length[$index];
             // 入力値
-            $arrRet[$key]['value'] = $this->getValue($key);
+            $formParamList[$key]['value'] = $this->getValue($key);
         }
-        return $arrRet;
+        return $formParamList;
     }
 
     /**
@@ -402,7 +404,7 @@ class SC_FormParam {
     // キー名と一致した値を返す
     function getValue($keyname, $default = '') {
         $ret = null;
-        foreach ($this->keyname as $index => $key) {
+        foreach ($this->keyname as $key) {
             if ($key == $keyname) {
                 $ret = isset($this->arrValue[$key]) ? $this->arrValue[$key] : $this->arrDefault[$key];
                 break;
@@ -481,7 +483,7 @@ class SC_FormParam {
      */
     function getSearchArray($prefix = 'search_') {
         $arrResults = array();
-        foreach ($this->keyname as $index => $key) {
+        foreach ($this->keyname as $key) {
             if (preg_match('/^' . $prefix . '/', $key)) {
                 $arrResults[$key] = $this->getValue($key);
             }
@@ -496,17 +498,18 @@ class SC_FormParam {
      * @deprecated 2.12.0 必要ならば getFormParamList メソッドに引数を追加するなどで実現可能
      */
     function getFormDispArray() {
+        $formDispArray = array();
         foreach ($this->keyname as $index => $key) {
             // キー名
-            $arrRet[$index]['keyname'] = $key;
+            $formDispArray[$index]['keyname'] = $key;
             // 表示名
-            $arrRet[$index]['disp_name']  = $this->disp_name[$index];
+            $formDispArray[$index]['disp_name']  = $this->disp_name[$index];
             // 文字数制限
-            $arrRet[$index]['length'] = $this->length[$index];
+            $formDispArray[$index]['length'] = $this->length[$index];
             // 入力値
-            $arrRet[$index]['value'] = $this->getValue($key);
+            $formDispArray[$index]['value'] = $this->getValue($key);
         }
-        return $arrRet;
+        return $formDispArray;
     }
 
     /**
@@ -520,7 +523,7 @@ class SC_FormParam {
         if ($index !== FALSE) {
             // $this->paramに歯抜けが存在する場合は、NULLで埋めておく。
             // 最後に配列を詰める際に、全ての項目が埋まっている必要がある。
-            foreach ($this->keyname as $key => $val) {
+            foreach (array_keys($this->keyname) as $key) {
                 if (!isset($this->param[$key])) {
                     $this->param[$key] = NULL;
                 }

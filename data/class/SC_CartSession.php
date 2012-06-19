@@ -50,7 +50,7 @@ class SC_CartSession {
             $_SESSION[$this->key_tmp] = $this->cartSession[$productTypeId];
         }
         // 1世代古いコピー情報は、削除しておく
-        foreach ($_SESSION as $k => $val) {
+        foreach (array_keys($_SESSION) as $k) {
             if ($k != $this->key_tmp && preg_match('/^savecart_/', $k)) {
                 unset($this->cartSession[$productTypeId][$k]);
             }
@@ -86,7 +86,7 @@ class SC_CartSession {
         if ($change) {
             // 一時カートのクリア
             unset($_SESSION[$this->key_tmp]);
-            $this->cartSession[$productTypeId][$key]['cancel_purchase'] = true;
+            $this->cartSession[$productTypeId]['cancel_purchase'] = true;
         } else {
             $this->cartSession[$productTypeId]['cancel_purchase'] = false;
         }
@@ -95,10 +95,11 @@ class SC_CartSession {
 
     // 次に割り当てるカートのIDを取得する
     function getNextCartID($productTypeId) {
-        foreach ($this->cartSession[$productTypeId] as $key => $val) {
-            $arrRet[] = $this->cartSession[$productTypeId][$key]['cart_no'];
+        $count = array();
+        foreach (array_keys($this->cartSession[$productTypeId]) as $key) {
+            $count[] = $this->cartSession[$productTypeId][$key]['cart_no'];
         }
-        return max($arrRet) + 1;
+        return max($count) + 1;
     }
 
     /**
@@ -142,7 +143,7 @@ class SC_CartSession {
     function getMax($productTypeId) {
         $max = 0;
         if (count($this->cartSession[$productTypeId]) > 0) {
-            foreach ($this->cartSession[$productTypeId] as $key => $val) {
+            foreach (array_keys($this->cartSession[$productTypeId]) as $key) {
                 if (is_numeric($key)) {
                     if ($max < $key) {
                         $max = $key;
@@ -392,12 +393,13 @@ class SC_CartSession {
      */
     function getAllProductID($productTypeId) {
         $max = $this->getMax($productTypeId);
+        $productIDs = array();
         for ($i = 0; $i <= $max; $i++) {
             if ($this->cartSession[$productTypeId][$i]['cart_no'] != '') {
-                $arrRet[] = $this->cartSession[$productTypeId][$i]['id'][0];
+                $productIDs[] = $this->cartSession[$productTypeId][$i]['id'][0];
             }
         }
-        return $arrRet;
+        return $productIDs;
     }
 
     /**
@@ -408,12 +410,13 @@ class SC_CartSession {
      */
     function getAllProductClassID($productTypeId) {
         $max = $this->getMax($productTypeId);
+        $productClassIDs = array();
         for ($i = 0; $i <= $max; $i++) {
             if ($this->cartSession[$productTypeId][$i]['cart_no'] != '') {
-                $arrRet[] = $this->cartSession[$productTypeId][$i]['id'];
+                $productClassIDs[] = $this->cartSession[$productTypeId][$i]['id'];
             }
         }
-        return $arrRet;
+        return $productClassIDs;
     }
 
     /**
@@ -496,7 +499,7 @@ class SC_CartSession {
      * @return integer 商品規格ID
      */
     function getProductClassId($cart_no, $productTypeId) {
-        for ($i = 0; $i <= $max; $i++) {
+        for ($i = 0; $i < count($this->cartSession[$productTypeId]); $i++) {
             if ($this->cartSession[$productTypeId][$i]['cart_no'] == $cart_no) {
                 return $this->cartSession[$productTypeId][$i]['id'];
             }
@@ -624,6 +627,7 @@ class SC_CartSession {
         $deliv_pref = '', $charge = 0, $discount = 0, $deliv_id = 0
     ) {
 
+        $results = array();
         $total_point = $this->getAllProductsPoint($productTypeId);
         $results['tax'] = $this->getAllProductsTax($productTypeId);
         $results['subtotal'] = $this->getAllProductsTotal($productTypeId);
