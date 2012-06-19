@@ -163,6 +163,7 @@ class SC_Helper_FPDI extends PDF_Japanese {
         $this->SetFont('');
         // Data
         $fill = 0;
+        $h = 4;
         foreach ($data as $row) {
             $h = 4;
             $i = 0;

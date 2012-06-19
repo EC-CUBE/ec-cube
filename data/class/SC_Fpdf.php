@@ -63,7 +63,7 @@ class SC_Fpdf extends SC_Helper_FPDI {
         $this->SetMargins(15, 20);
 
         // PDFを読み込んでページ数を取得
-        $pageno = $this->setSourceFile($this->tpl_pdf);
+        $this->pageno = $this->setSourceFile($this->tpl_pdf);
     }
 
     function setData($arrData) {
@@ -80,7 +80,6 @@ class SC_Fpdf extends SC_Helper_FPDI {
 
         if (SC_Utils_Ex::sfIsInt($arrData['order_id'])) {
             $this->disp_mode = true;
-            $order_id = $arrData['order_id'];
         }
 
         // テンプレート内容の位置、幅を調整 ※useTemplateに引数を与えなければ100%表示がデフォルト
@@ -140,6 +139,7 @@ class SC_Fpdf extends SC_Helper_FPDI {
     }
 
     function setOrderData() {
+        $arrOrder = array();
         // DBから受注情報を読み込む
         $this->lfGetOrderData($this->arrData['order_id']);
 

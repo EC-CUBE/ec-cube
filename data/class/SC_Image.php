@@ -84,10 +84,8 @@ class SC_Image {
         $PreWord = $head;
 
         //拡張子取得
-        if (!$ext) {
-            $array_ext = explode('.', $FromImgPath);
-            $ext = $array_ext[count($array_ext) - 1];
-        }
+        $array_ext = explode('.', $FromImgPath);
+        $ext = $array_ext[count($array_ext) - 1];
 
         $MW = $ThmMaxWidth;
         if ($tmpMW) $MW = $tmpMW; // $MWに最大横幅セット

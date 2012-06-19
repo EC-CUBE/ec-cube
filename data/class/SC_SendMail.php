@@ -199,6 +199,7 @@ class SC_SendMail {
     // ヘッダーを返す
     function getBaseHeader() {
         //-- 送信するメールの内容と送信先
+        $arrHeader = array();
         $arrHeader['MIME-Version'] = '1.0';
         $arrHeader['To'] = $this->to;
         $arrHeader['Subject'] = $this->subject;

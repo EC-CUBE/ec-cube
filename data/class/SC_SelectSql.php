@@ -121,7 +121,7 @@ class SC_SelectSql {
 
     // checkboxなどで同一カラム内で単一、もしくは複数選択肢が有る場合　例: AND ( sex = xxx OR sex = xxx OR sex = xxx) AND ...
     function setItemTerm($arr, $ItemStr) {
-
+        $return = array();
         foreach ($arr as $data) {
 
             if (count($arr) > 1) {
@@ -146,36 +146,37 @@ class SC_SelectSql {
 
     //　NULL値が必要な場合
     function setItemTermWithNull($arr, $ItemStr) {
-
-        $item = " ${ItemStr} IS NULL ";
+        $return = array();
+        $item = " {$ItemStr} IS NULL ";
 
         if ($arr) {
             foreach ($arr as $data) {
                 if ($data != '不明') {
-                    $item .= " OR ${ItemStr} = ?";
+                    $item .= " OR {$ItemStr} = ?";
                     $return[] = $data;
                 }
             }
         }
 
-        $item = "(${item}) ";
+        $item = "({$item}) ";
         $this->setWhere($item);
         return $return;
     }
     // NULLもしくは''で検索する場合
     function setItemTermWithNullAndSpace($arr, $ItemStr) {
+        $return = array();
         $count = count($arr);
-        $item = " ${ItemStr} IS NULL OR ${ItemStr} = '' ";
+        $item = " {$ItemStr} IS NULL OR {$ItemStr} = '' ";
         $i = 1;
         if ($arr) {
             foreach ($arr as $data) {
                 if ($i == $count) break;
-                $item .= " OR ${ItemStr} = ?";
+                $item .= " OR {$ItemStr} = ?";
                 $return[] = $data;
                 $i ++;
             }
         }
-        $item = "(${item}) ";
+        $item = "({$item}) ";
         $this->setWhere($item);
         return $return;
     }

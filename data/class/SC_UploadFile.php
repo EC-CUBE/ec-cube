@@ -217,10 +217,9 @@ class SC_UploadFile {
 
     // 一時ファイルを保存ディレクトリに移す
     function moveTempFile() {
-        $cnt = 0;
         $objImage = new SC_Image_Ex($this->temp_dir);
 
-        foreach ($this->keyname as $val) {
+        for ($cnt = 0; $cnt < count($this->keyname); $cnt++) {
             if (isset($this->temp_file[$cnt]) && $this->temp_file[$cnt] != '') {
 
                 $objImage->moveTempImage($this->temp_file[$cnt], $this->save_dir);
@@ -234,15 +233,13 @@ class SC_UploadFile {
                     $objImage->deleteImage($this->save_file[$cnt], $this->save_dir);
                 }
             }
-            $cnt++;
         }
     }
 
     // ダウンロード一時ファイルを保存ディレクトリに移す
     function moveTempDownFile() {
-        $cnt = 0;
         $objImage = new SC_Image_Ex($this->temp_dir);
-        foreach ($this->keyname as $val) {
+        for ($cnt = 0; $cnt < count($this->keyname); $cnt++) {
             if (isset($this->temp_file[$cnt]) && $this->temp_file[$cnt] != '') {
                 $objImage->moveTempImage($this->temp_file[$cnt], $this->save_dir);
                 // すでに保存ファイルがあった場合は削除する。
@@ -253,7 +250,6 @@ class SC_UploadFile {
                     $objImage->deleteImage($this->save_file[$cnt], $this->save_dir);
                 }
             }
-            $cnt++;
         }
     }
 
@@ -346,14 +342,12 @@ class SC_UploadFile {
     // フォームに渡す用のダウンロードファイル情報を返す
     function getFormDownFile() {
         $arrRet = '';
-        $cnt = 0;
-        foreach ($this->keyname as $val) {
+        for ($cnt = 0; $cnt < count($this->keyname); $cnt++) {
             if (isset($this->temp_file[$cnt]) && $this->temp_file[$cnt] != '') {
                 $arrRet = $this->temp_file[$cnt];
             } elseif (isset($this->save_file[$cnt]) && $this->save_file[$cnt] != '') {
                 $arrRet = $this->save_file[$cnt];
             }
-            $cnt++;
         }
         return $arrRet;
     }
@@ -374,15 +368,16 @@ class SC_UploadFile {
     // DB保存用のファイル名配列を返す
     function getDBFileList() {
         $cnt = 0;
+        $dbFileList = array();
         foreach ($this->keyname as $val) {
             if (isset($this->temp_file[$cnt]) && $this->temp_file[$cnt] != '') {
-                $arrRet[$val] = $this->temp_file[$cnt];
+                $dbFileList[$val] = $this->temp_file[$cnt];
             } else {
-                $arrRet[$val] = isset($this->save_file[$cnt]) ? $this->save_file[$cnt] : '';
+                $dbFileList[$val] = isset($this->save_file[$cnt]) ? $this->save_file[$cnt] : '';
             }
             $cnt++;
         }
-        return $arrRet;
+        return $dbFileList;
     }
 
     // DBで保存されたファイル名配列をセットする
@@ -404,13 +399,11 @@ class SC_UploadFile {
     }
 
     // DBで保存されたダウンロードファイル名をセットする(setDBDownFileと統合予定)
-    function setPostFileList($arrPost,$arrVal) {
-        $cnt = 0;
-        foreach ($this->keyname as $val) {
+    function setPostFileList($arrPost) {
+        for ($cnt = 0;$cnt < count($this->keyname); $cnt++) {
             if (isset($arrPost['temp_down_realfilename:' . ($cnt+1)])) {
                 $this->temp_file[$cnt] = $arrPost['temp_down_realfilename:' . ($cnt+1)];
             }
-            $cnt++;
         }
     }
 

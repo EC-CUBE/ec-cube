@@ -77,7 +77,7 @@ class SC_View {
     }
 
     // テンプレートの処理結果を取得
-    function fetch($template, $no_error=false) {
+    function fetch($template) {
         return $this->_smarty->fetch($template);
     }
 
@@ -191,7 +191,7 @@ class SC_View {
 
     /* サイト初期設定 */
     function initpath() {
-
+        $array = array();
         $array['tpl_mainnavi'] = realpath(dirname(__FILE__)) . '/../Smarty/templates/frontparts/mainnavi.tpl';
 
         $objDb = new SC_Helper_DB_Ex();

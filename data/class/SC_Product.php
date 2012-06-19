@@ -547,7 +547,7 @@ __EOS__;
      * @return array 税込金額を設定した商品情報の配列
      */
     function setPriceTaxTo($arrProducts) {
-        foreach ($arrProducts as $key => $val) {
+        foreach (array_keys($arrProducts) as $key) {
             $arrProducts[$key]['price01_min_format'] = number_format($arrProducts[$key]['price01_min']);
             $arrProducts[$key]['price01_max_format'] = number_format($arrProducts[$key]['price01_max']);
             $arrProducts[$key]['price02_min_format'] = number_format($arrProducts[$key]['price02_min']);
@@ -598,7 +598,6 @@ __EOS__;
      * @return string 商品詳細の SQL
      */
     function alldtlSQL($where_products_class = '') {
-        $where_clause = '';
         if (!SC_Utils_Ex::isBlank($where_products_class)) {
             $where_products_class = 'AND (' . $where_products_class . ')';
         }
