@@ -64,7 +64,7 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex {
      */
     function action() {
 
-        $objCustomer    = new SC_Customer;
+        $objCustomer    = new SC_Customer_Ex();
         $objFormParam   = new SC_FormParam_Ex();
 
         $this->lfInitParam($objFormParam);
