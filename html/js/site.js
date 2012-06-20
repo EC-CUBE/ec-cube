@@ -302,13 +302,9 @@ function fnChangeDisabled(list, color) {
 function fnCheckLogin(formname) {
     var lstitem = new Array();
 
-    if(formname == 'login_mypage'){
-    lstitem[0] = 'mypage_login_email';
-    lstitem[1] = 'mypage_login_pass';
-    }else{
     lstitem[0] = 'login_email';
     lstitem[1] = 'login_pass';
-    }
+
     var max = lstitem.length;
     var errflg = false;
     var cnt = 0;
@@ -325,6 +321,8 @@ function fnCheckLogin(formname) {
     if(errflg == true) {
         alert('メールアドレス/パスワードを入力して下さい。');
         return false;
+    } else {
+        return true;
     }
 }
 
