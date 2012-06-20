@@ -123,6 +123,10 @@ class LC_Page_Products_List extends LC_Page_Ex {
         $arrSearchCondition = $this->lfGetSearchCondition($this->arrSearchData);
         $this->tpl_linemax  = $this->lfGetProductAllNum($arrSearchCondition);
         $urlParam           = "category_id={$this->arrSearchData['category_id']}&pageno=#page#";
+        // モバイルの場合に検索条件をURLの引数に追加
+        if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
+            $urlParam .= "&mode={$this->mode}&name={$this->arrSearchData['name']}&orderby={$this->orderby}";
+        }
         $this->objNavi      = new SC_PageNavi_Ex($this->tpl_pageno, $this->tpl_linemax, $this->disp_number, 'fnNaviPage', NAVI_PMAX, $urlParam, SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE);
         $this->arrProducts  = $this->lfGetProductsList($arrSearchCondition, $this->disp_number, $this->objNavi->start_row, $this->tpl_linemax, $objProduct);
 
