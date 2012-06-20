@@ -41,6 +41,9 @@ class LC_Page_Cart extends LC_Page_Ex {
     /** 動作モード */
     var $mode;
 
+    /** メッセージ */
+    public $tpl_message = "";
+
     // }}}
     // {{{ functions
 
@@ -86,7 +89,7 @@ class LC_Page_Cart extends LC_Page_Ex {
         foreach ($this->cartKeys as $key) {
             // 商品購入中にカート内容が変更された。
             if ($objCartSess->getCancelPurchase($key)) {
-                $this->tpl_message = '商品購入中にカート内容が変更されましたので、お手数ですが購入手続きをやり直して下さい。';
+                $this->tpl_message .= "商品購入中にカート内容が変更されましたので、お手数ですが購入手続きをやり直して下さい。\n";
             }
         }
 
@@ -143,7 +146,7 @@ class LC_Page_Cart extends LC_Page_Ex {
         $totalIncTax = 0;
         foreach ($this->cartKeys as $key) {
             // カート集計処理
-            $this->tpl_message = $objCartSess->checkProducts($key);
+            $this->tpl_message .= $objCartSess->checkProducts($key);
             $this->tpl_total_inctax[$key] = $objCartSess->getAllProductsTotal($key);
             $totalIncTax += $this->tpl_total_inctax[$key];
             $this->tpl_total_tax[$key] = $objCartSess->getAllProductsTax($key);
