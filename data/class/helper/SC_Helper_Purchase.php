@@ -121,6 +121,7 @@ class SC_Helper_Purchase {
             $objQuery->begin();
         }
 
+        $arrParams = array();
         $arrParams['status'] = $orderStatus;
         if ($is_delete) {
             $arrParams['del_flg'] = 1;
@@ -270,6 +271,7 @@ class SC_Helper_Purchase {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         // 存在するカラムのみを対象とする
         $cols = $objQuery->listTableFields('dtb_order_temp');
+        $sqlval = array();
         foreach ($params as $key => $val) {
             if (in_array($key, $cols)) {
                 $sqlval[$key] = $val;
@@ -541,6 +543,7 @@ class SC_Helper_Purchase {
         $where = 'del_flg = 0 AND payment_id IN (' . SC_Utils_Ex::repeatStrWithSeparator('?', count($arrPaymentIds)) . ')';
         $objQuery->setOrder('rank DESC');
         $payments = $objQuery->select('payment_id, payment_method, rule_max, upper_rule, note, payment_image, charge', 'dtb_payment', $where, $arrPaymentIds);
+        $arrPayment = array();
         foreach ($payments as $data) {
             // 下限と上限が設定されている
             if (strlen($data['rule_max']) != 0 && strlen($data['upper_rule']) != 0) {
@@ -841,6 +844,7 @@ class SC_Helper_Purchase {
         // 詳細情報を生成
         $objProduct = new SC_Product_Ex();
         $i = 0;
+        $arrDetail = array();
         foreach ($cartItems as $item) {
             $p =& $item['productsClass'];
             $arrDetail[$i]['order_id'] = $orderParams['order_id'];
@@ -1067,7 +1071,6 @@ __EOS__;
         }
 
         if ($has_items) {
-            $objProduct = new SC_Product_Ex();
             foreach (array_keys($arrResults) as $shipping_id) {
                 $arrResults[$shipping_id]['shipment_item']
                         =& $this->getShipmentItems($order_id, $shipping_id);
@@ -1135,7 +1138,7 @@ __EOS__;
      * @param array $sqlval 更新後の値をリファレンスさせるためのパラメーター
      * @return void
      */
-    function sfUpdateOrderStatus($orderId, $newStatus = null, $newAddPoint = null, $newUsePoint = null, &$sqlval) {
+    function sfUpdateOrderStatus($orderId, $newStatus = null, $newAddPoint = null, $newUsePoint = null, &$sqlval = array()) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrOrderOld = $objQuery->getRow('status, add_point, use_point, customer_id', 'dtb_order', 'order_id = ?', array($orderId));
 
@@ -1330,6 +1333,8 @@ __EOS__;
      * セッション情報を破棄しないカスタマイズを、モジュール側で
      * 加える機会を与える.
      *
+     * $orderId が使われていない。
+     * 
      * @param integer $orderId 注文番号
      * @param SC_CartSession $objCartSession カート情報のインスタンス
      * @param SC_Customer $objCustomer SC_Customer インスタンス

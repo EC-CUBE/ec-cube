@@ -143,7 +143,7 @@ class SC_Helper_CSV {
      */
     function sfIsImportCSVFrame(&$arrCSVFrame) {
         $result = true;
-        foreach ($arrCSVFrame as $key => $val) {
+        foreach ($arrCSVFrame as $val) {
             if ($val['status'] != CSV_COLUMN_STATUS_FLG_ENABLE
                 && $val['rw_flg'] == CSV_COLUMN_RW_FLG_READ_WRITE
                 && $val['error_check_types'] != ''
@@ -164,7 +164,7 @@ class SC_Helper_CSV {
      */
     function sfIsUpdateCSVFrame(&$arrCSVFrame) {
         $result = true;
-        foreach ($arrCSVFrame as $key => $val) {
+        foreach ($arrCSVFrame as $val) {
             if ($val['status'] != CSV_COLUMN_STATUS_FLG_ENABLE
                 && $val['rw_flg'] == CSV_COLUMN_RW_FLG_KEY_FIELD
             ) {
@@ -336,8 +336,8 @@ class SC_Helper_CSV {
         $file_name = $prefix . date('YmdHis') . '.csv';
 
         /* HTTPヘッダの出力 */
-        Header("Content-disposition: attachment; filename=${file_name}");
-        Header("Content-type: application/octet-stream; name=${file_name}");
+        Header("Content-disposition: attachment; filename={$file_name}");
+        Header("Content-type: application/octet-stream; name={$file_name}");
         Header('Cache-Control: ');
         Header('Pragma: ');
 

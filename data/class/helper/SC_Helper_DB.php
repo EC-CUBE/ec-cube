@@ -74,8 +74,6 @@ class SC_Helper_DB {
 
         // 正常に接続されている場合
         if (!$objQuery->isError()) {
-            list($db_type) = explode(':', $dsn);
-
             // カラムリストを取得
             $columns = $objQuery->listTableFields($table_name);
 
@@ -110,11 +108,16 @@ class SC_Helper_DB {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $exists = $objQuery->exists($table_name, $where, $arrWhereVal);
 
-        // データを追加する
-        if (!$exists && $add) {
-            $objQuery->exec($sql);
+        // データが存在する場合 TRUE
+        if ($exists) {
+            return TRUE;
+        // $add が TRUE の場合はデータを追加する
+        } elseif ($add) {
+            return $objQuery->exec($sql);
+        // $add が FALSE で、データが存在しない場合 FALSE
+        } else {
+            return FALSE;
         }
-        return $ret;
     }
 
     /**
@@ -128,9 +131,9 @@ class SC_Helper_DB {
      * @return array 店舗基本情報の配列
      */
     function sfGetBasisData($force = false, $col = '') {
-        static $data;
+        static $data = array();
 
-        if ($force || !isset($data)) {
+        if ($force || empty($data)) {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
 
             if ($col === '') {
@@ -176,7 +179,6 @@ class SC_Helper_DB {
 
         if (!$this->g_root_on) {
             $this->g_root_on = true;
-            $objQuery =& SC_Query_Ex::getSingletonInstance();
 
             if (!isset($_GET['product_id'])) $_GET['product_id'] = '';
             if (!isset($_GET['category_id'])) $_GET['category_id'] = '';
@@ -291,7 +293,7 @@ class SC_Helper_DB {
         if ($result[count($result) - 1]['parent_category_id'] === 0) {
             return;
         } else {
-            foreach ($arrTree as $key => $val) {
+            foreach ($arrTree as $val) {
                 if ($val['category_id'] == $parent) {
                     $result[] = array(
                         'category_id' => $val['category_id'],
@@ -366,7 +368,7 @@ class SC_Helper_DB {
         $ConbName = '';
 
         // カテゴリ名称を取得する
-        foreach ($arrCatID as $key => $val) {
+        foreach ($arrCatID as $val) {
             $sql = 'SELECT category_name FROM dtb_category WHERE category_id = ?';
             $arrVal = array($val);
             $CatName = $objQuery->getOne($sql,$arrVal);
@@ -447,6 +449,7 @@ class SC_Helper_DB {
         $arrRet = $objQuery->select($col, $from, $where);
 
         $max = count($arrRet);
+        $arrList = array();
         for ($cnt = 0; $cnt < $max; $cnt++) {
             $id = $arrRet[$cnt]['category_id'];
             $name = $arrRet[$cnt]['category_name'];
@@ -485,6 +488,8 @@ class SC_Helper_DB {
         $arrRet = $objQuery->select($col, 'dtb_category', $where);
         $max = count($arrRet);
 
+        $arrValue = array();
+        $arrOutput = array();
         for ($cnt = 0; $cnt < $max; $cnt++) {
             if ($parent_zero) {
                 if ($arrRet[$cnt]['level'] == LEVEL_MAX) {
@@ -522,7 +527,6 @@ class SC_Helper_DB {
             $category_id = array($category_id);
         } else if (SC_Utils_Ex::sfIsInt($product_id) && $product_id != 0 && SC_Helper_DB_Ex::sfIsRecord('dtb_products','product_id', $product_id, $status)) {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
-            $where = 'product_id = ?';
             $category_id = $objQuery->getCol('category_id', 'dtb_product_categories', 'product_id = ?', array($product_id));
         } else {
             // 不正な場合は、空の配列を返す。
@@ -942,6 +946,7 @@ __EOS__;
         $objQuery->setOrder('rank DESC');
         $arrList = $objQuery->select($col, $table, $where, $arrVal);
         $count = count($arrList);
+        $arrRet = array();
         for ($cnt = 0; $cnt < $count; $cnt++) {
             $key = $arrList[$cnt][$keyname];
             $val = $arrList[$cnt][$valname];
@@ -1277,7 +1282,6 @@ __EOS__;
                 $this->g_maker_id = array($maker_id);
             } else if (SC_Utils_Ex::sfIsInt($product_id) && $product_id != 0 && $this->sfIsRecord('dtb_products','product_id', $product_id, $status)) {
                 $objQuery =& SC_Query_Ex::getSingletonInstance();
-                $where = 'product_id = ?';
                 $maker_id = $objQuery->getCol('maker_id', 'dtb_products', 'product_id = ?', array($product_id));
                 $this->g_maker_id = $maker_id;
             } else {
@@ -1319,6 +1323,7 @@ __EOS__;
         $arrRet = $objQuery->select($col, $from, $where);
 
         $max = count($arrRet);
+        $arrList = array();
         for ($cnt = 0; $cnt < $max; $cnt++) {
             $id = $arrRet[$cnt]['maker_id'];
             $name = $arrRet[$cnt]['name'];
@@ -1342,6 +1347,7 @@ __EOS__;
 
     /**
      * 店舗基本情報に基づいて税金付与した金額を返す
+     * SC_Utils_Ex::sfCalcIncTax とどちらか統一したほうが良い
      *
      * @param integer $price 計算対象の金額
      * @return integer 税金付与した金額

@@ -182,8 +182,6 @@ __EOF__;
      */
     function lfDelPageData($page_id, $device_type_id = DEVICE_TYPE_PC) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $arrDelData = array();      // 抽出データ用
-
         // page_id が空でない場合にはdeleteを実行
         if ($page_id != '') {
             $arrPageData = $this->getPageProperties($device_type_id, $page_id);
@@ -324,7 +322,7 @@ __EOF__;
      * @param array $arrBlocs 設定するブロックの配列
      * @return void
      */
-    function setBlocPathTo($device_type_id = DEVICE_TYPE_PC, &$arrBlocs) {
+    function setBlocPathTo($device_type_id = DEVICE_TYPE_PC, &$arrBlocs = array()) {
         foreach (array_keys($arrBlocs) as $key) {
             $arrBloc =& $arrBlocs[$key];
             $arrBloc['php_path'] = SC_Utils_Ex::isBlank($arrBloc['php_path']) ? '' : HTML_REALDIR . $arrBloc['php_path'];

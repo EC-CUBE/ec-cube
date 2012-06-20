@@ -90,9 +90,6 @@ class SC_Helper_HandleError {
 
         $error_type_name = GC_Utils_Ex::getErrorTypeName($errno);
 
-        $now = date('Y/m/d H:i:s');
-        // 本来 realpath() で正規化したいところだが、NULL を返すケースがあるため避けている (#1618)
-        $log_file_path = DATA_REALDIR . 'logs/site.log';
         switch ($errno) {
             case E_USER_ERROR:
                 $message = "Fatal error($error_type_name): $errstr on [$errfile($errline)]";
@@ -129,10 +126,7 @@ class SC_Helper_HandleError {
      *                     エラーが捕捉されない場合は, 出力バッファリングの内容を返す
      */
     static function &_fatal_error_handler(&$buffer) {
-        if (preg_match('/<b>(Fatal error)<\/b>: +(.+) in <b>(.+)<\/b> on line <b>(\d+)<\/b><br \/>/i', $buffer, $matches)) {
-            $now = date('Y/m/d H:i:s');
-            // realpath() で正規化したいが、NULL を返すケースがあるため避けている (#1618)
-            $log_file_path = DATA_REALDIR . 'logs/site.log';
+        if (preg_match('/<b>(Fatal error)<\/b>: +(.+) in <b>(.+)<\/b> on line <b>(\d+)<\/b><br \/>/i', $buffer, $matches = array())) {
             $message = "$matches[1]: $matches[2] on [$matches[3]($matches[4])]";
             GC_Utils_Ex::gfPrintLog($message, ERROR_LOG_REALFILE, true);
             if (DEBUG_MODE !== true) {
@@ -180,8 +174,6 @@ class SC_Helper_HandleError {
         $error_type_name = GC_Utils_Ex::getErrorTypeName($arrError['type']);
         $errstr = "Fatal error($error_type_name): {$arrError[message]} on [{$arrError[file]}({$arrError[line]})]";
 
-        // 本来 realpath() で正規化したいところだが、NULL を返すケースがあるため避けている (#1618)
-        $log_file_path = DATA_REALDIR . 'logs/site.log';
         GC_Utils_Ex::gfPrintLog($errstr, ERROR_LOG_REALFILE, true);
 
         // エラー画面を表示する

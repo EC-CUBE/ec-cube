@@ -140,7 +140,7 @@ class SC_Helper_Mail {
             $objQuery->setOrder('shipping_id');
             $arrItems = $objQuery->select('*', 'dtb_shipment_item', 'order_id = ? AND shipping_id = ?',
                                           array($order_id, $arrRet[$key]['shipping_id']));
-            foreach ($arrItems as $itemKey => $arrDetail) {
+            foreach ($arrItems as $arrDetail) {
                 foreach ($arrDetail as $detailKey => $detailVal) {
                     $arrRet[$key]['shipment_item'][$arrDetail['product_class_id']][$detailKey] = $detailVal;
                 }
@@ -265,6 +265,7 @@ class SC_Helper_Mail {
 
     // メール配信履歴への登録
     function sfSaveMailHistory($order_id, $template_id, $subject, $body) {
+        $sqlval = array();
         $sqlval['subject'] = $subject;
         $sqlval['order_id'] = $order_id;
         $sqlval['template_id'] = $template_id;

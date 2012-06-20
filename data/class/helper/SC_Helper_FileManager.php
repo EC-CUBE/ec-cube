@@ -41,8 +41,10 @@ class SC_Helper_FileManager {
         $arrDirList = array();
 
         if (is_dir($dir)) {
-            if ($dh = opendir($dir)) {
+            $dh = opendir($dir);
+            if ($dh) {
                 $cnt = 0;
+                $arrDir = array();
                 // 行末の/を取り除く
                 while (($file = readdir($dh)) !== false) $arrDir[] = $file;
                 $dir = rtrim($dir, '/');
@@ -54,7 +56,6 @@ class SC_Helper_FileManager {
 
                         $path = $dir.'/'.$file;
                         // SELECT内の見た目を整えるため指定文字数で切る
-                        $file_name = SC_Utils_Ex::sfCutString($file, FILE_NAME_LEN);
                         $file_size = SC_Utils_Ex::sfCutString(SC_Helper_FileManager::sfGetDirSize($path), FILE_NAME_LEN);
                         $file_time = date('Y/m/d', filemtime($path));
 
@@ -171,7 +172,9 @@ class SC_Helper_FileManager {
     function sfGetFileTreeSub($dir, $default_rank, &$cnt, &$arrTree, $tree_status) {
 
         if (file_exists($dir)) {
-            if ($handle = opendir("$dir")) {
+            $handle = opendir($dir);
+            if ($handle) {
+                $arrDir = array();
                 while (false !== ($item = readdir($handle))) $arrDir[] = $item;
                 // アルファベットと数字でソート
                 natcasesort($arrDir);
@@ -335,6 +338,7 @@ class SC_Helper_FileManager {
         $debug_message = $dir . ' から ' . $dlFileName . " を作成します...\n";
         // ファイル一覧取得
         $arrFileHash = SC_Helper_FileManager_Ex::sfGetFileList($dir);
+        $arrFileList = array();
         foreach ($arrFileHash as $val) {
             $arrFileList[] = $val['file_name'];
             $debug_message.= '圧縮：'.$val['file_name']."\n";

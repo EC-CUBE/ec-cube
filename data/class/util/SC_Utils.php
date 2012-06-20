@@ -335,6 +335,7 @@ class SC_Utils {
      */
     function sfMergeCheckBoxes($array, $max) {
         $ret = '';
+        $arrTmp = array();
         if (is_array($array)) {
             foreach ($array as $val) {
                 $arrTmp[$val] = '1';
@@ -471,6 +472,7 @@ class SC_Utils {
             $max = $len_max;
         }
 
+        $keyValues = array();
         for ($cnt = 0; $cnt < $max; $cnt++) {
             if ($keysize != '') {
                 $key = SC_Utils_Ex::sfCutString($arrList[$cnt][$keyname], $keysize);
@@ -480,12 +482,12 @@ class SC_Utils {
             $val = $arrList[$cnt][$valname];
 
             if ($connect != '') {
-                $arrRet[$key].= "$val".$connect;
+                $keyValues[$key].= "$val".$connect;
             } else {
-                $arrRet[$key][] = $val;
+                $keyValues[$key][] = $val;
             }
         }
-        return $arrRet;
+        return $keyValues;
     }
 
     // 配列の値をカンマ区切りで返す。
@@ -517,7 +519,7 @@ class SC_Utils {
     function sfGetCSVList($array) {
         $line = '';
         if (count($array) > 0) {
-            foreach ($array as $key => $val) {
+            foreach ($array as $val) {
                 $val = mb_convert_encoding($val, CHAR_CODE, CHAR_CODE);
                 $line .= '"' .$val. '",';
             }
@@ -665,7 +667,15 @@ class SC_Utils {
         return $ret;
     }
 
-    /* ポイント付与 */
+    /**
+     * ポイント付与
+     * $product_id が使われていない。
+     * @param int $price
+     * @param float $point_rate
+     * @param int $rule
+     * @param int $product_id
+     * @return int 
+     */
     function sfPrePoint($price, $point_rate, $rule = POINT_RULE, $product_id = '') {
         $real_point = $point_rate / 100;
         $ret = $price * $real_point;
@@ -704,6 +714,13 @@ class SC_Utils {
         return $arrRet;
     }
 
+    /**
+     * $classcategory_id1 と $classcategory_id2 が使用されていない。
+     * @param int $product_id
+     * @param int $classcategory_id1
+     * @param int $classcategory_id2
+     * @return int 
+     */
     function sfGetProductClassId($product_id, $classcategory_id1, $classcategory_id2) {
         $where = 'product_id = ?';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -923,9 +940,6 @@ class SC_Utils {
         $end_year = $year;
         $end_month = $month;
 
-        // 開始月が終了月と同じか否か
-        $same_month = false;
-
         // 該当月の末日を求める。
         $end_last_day = date('d', mktime(0, 0, 0, $month + 1, 0, $year));
 
@@ -1115,7 +1129,7 @@ class SC_Utils {
 
         $fileArray=glob($src.'*');
         if (is_array($fileArray)) {
-            foreach ($fileArray as $key => $data_) {
+            foreach ($fileArray as $data_) {
                 // CVS管理ファイルはコピーしない
                 if (strpos($data_, '/CVS/Entries') !== false) {
                     break;

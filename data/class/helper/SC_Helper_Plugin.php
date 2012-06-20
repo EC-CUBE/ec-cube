@@ -108,7 +108,7 @@ class SC_Helper_Plugin {
             && is_array($this->arrRegistedPluginActions[$hook_point])) {
 
             krsort($this->arrRegistedPluginActions[$hook_point]);
-            foreach ($this->arrRegistedPluginActions[$hook_point] as $priority => $arrFuncs) {
+            foreach ($this->arrRegistedPluginActions[$hook_point] as $arrFuncs) {
 
                 foreach ($arrFuncs as $func) {
                     if (!is_null($func['function'])) {

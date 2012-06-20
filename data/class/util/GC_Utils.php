@@ -272,6 +272,7 @@ class GC_Utils {
 
     function gfMailHeaderAddr($str) {
         $addrs = explode(',', $str); //アドレスを配列に入れる
+        $mailaddrs = array();
         foreach ($addrs as $addr) {
             if (preg_match("/^(.+)<(.+)>$/", $addr, $matches)) {
                 //引数が「名前<メールアドレス>」の場合

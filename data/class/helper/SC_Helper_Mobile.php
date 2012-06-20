@@ -95,7 +95,7 @@ class SC_Helper_Mobile {
      */
     function lfMobileConvertInputValue(&$value) {
         if (is_array($value)) {
-            foreach ($value as $key => $val) {
+            foreach (array_keys($value) as $key) {
                 $this->lfMobileConvertInputValue($value[$key]);
             }
         } else {
@@ -125,7 +125,7 @@ class SC_Helper_Mobile {
      *                     取得できなかった場合は null を返す。
      */
     function lfMobileGetExtSessionId() {
-        if (!preg_match('|^' . ROOT_URLPATH . '(.*)$|', $_SERVER['SCRIPT_NAME'], $matches)) {
+        if (!preg_match('|^' . ROOT_URLPATH . '(.*)$|', $_SERVER['SCRIPT_NAME'], $matches = array())) {
             return null;
         }
 
