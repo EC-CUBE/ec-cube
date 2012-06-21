@@ -142,11 +142,15 @@ class CreateEcCubeData {
 
         if ($this->delete) {
             $this->objQuery->delete('dtb_category');
+            $existingMaxRank = 0;
+        } else {
+            $existingMaxRank = $this->objQuery->max('rank','dtb_category');
         }
 
         $count = 0;
 
         // 全カテゴリ共通の値
+        $sqlval = array();
         $sqlval['creator_id'] = 2;
         $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
@@ -157,7 +161,7 @@ class CreateEcCubeData {
             $sqlval['category_name'] = sprintf("Category%d00", $i);
             $sqlval['parent_category_id'] = (string) '0';
             $sqlval['level'] = 1;
-            $sqlval['rank'] = $this->lfGetTotalCategoryrank() - $count;
+            $sqlval['rank'] = $this->lfGetTotalCategoryrank($existingMaxRank) - $count;
             $sqlval['category_id'] = $this->objQuery->nextVal('dtb_category_category_id');
 
             $this->objQuery->insert('dtb_category', $sqlval);
@@ -165,13 +169,14 @@ class CreateEcCubeData {
             $count++;
             print(".");
 
+            $top_category_id = $sqlval['category_id'];
             // 中カテゴリを生成
             for ($j = 0; $j < MIDDLE_CATEGORIES_VOLUME; $j++) {
                 $sqlval['category_name'] = sprintf("Category%d%d0", $i,
                                                    $j + MIDDLE_CATEGORIES_VOLUME);
-                $sqlval['parent_category_id'] = (string) $sqlval['category_id'];
+                $sqlval['parent_category_id'] = (string) $top_category_id;
                 $sqlval['level'] = 2;
-                $sqlval['rank'] = $this->lfGetTotalCategoryrank() - $count;
+                $sqlval['rank'] = $this->lfGetTotalCategoryrank($existingMaxRank) - $count;
                 $sqlval['category_id'] = $this->objQuery->nextVal('dtb_category_category_id');
 
                 $this->objQuery->insert('dtb_category', $sqlval);
@@ -179,14 +184,15 @@ class CreateEcCubeData {
                 $count++;
                 print(".");
 
+                $middle_category_id = $sqlval['category_id'];
                 // 小カテゴリを生成
                 for ($k = 0; $k < SMALL_CATEGORIES_VOLUME; $k++) {
                     $sqlval['category_name'] = sprintf("Category%d%d%d",
                                                        $i, $j,
                                                        $k + SMALL_CATEGORIES_VOLUME);
-                    $sqlval['parent_category_id'] = (string) $sqlval['category_id'];
+                    $sqlval['parent_category_id'] = (string) $middle_category_id;
                     $sqlval['level'] = 3;
-                    $sqlval['rank'] = $this->lfGetTotalCategoryrank() - $count;
+                    $sqlval['rank'] = $this->lfGetTotalCategoryrank($existingMaxRank) - $count;
                     $sqlval['category_id'] = $this->objQuery->nextVal('dtb_category_category_id');
 
                     $this->objQuery->insert('dtb_category', $sqlval);
@@ -271,6 +277,7 @@ class CreateEcCubeData {
         }
 
         for ($i = 0; $i < PRODUCTS_VOLUME; $i++) {
+            $sqlval = array();
             $sqlval['product_id'] = $this->objQuery->nextval('dtb_products_product_id');
             $sqlval['name'] = sprintf("商品%d", $i);
             $sqlval['status'] = 1;
@@ -301,6 +308,8 @@ class CreateEcCubeData {
      * @return void
      */
     function createClass($class_name) {
+        $sqlval = array();
+        $arrRaw = array();
         // class_idを取得
         $sqlval['class_id'] = $this->objQuery->nextVal('dtb_class_class_id');
         $sqlval['name'] = $class_name;
@@ -327,6 +336,8 @@ class CreateEcCubeData {
      * @return void
      */
     function createClassCategory($classcategory_name, $class_id, $class_name) {
+        $sqlval = array();
+        $arrRaw = array();
         $sqlval['classcategory_id'] = $this->objQuery->nextVal('dtb_classcategory_classcategory_id');
         $sqlval['name'] = $classcategory_name;
         $sqlval['class_id'] = $class_id;
@@ -367,6 +378,7 @@ class CreateEcCubeData {
 
         printf("商品ID %d の商品規格を生成しています...\n", $product_id);
 
+        $sqlval = array();
         $sqlval['product_id'] = $product_id;
         $sqlval['product_type_id'] = 1;
         $sqlval['stock_unlimited'] = 1;
@@ -655,9 +667,9 @@ class CreateEcCubeData {
     /**
     * 総カテゴリ数を計算し、dtb_categoryに代入するrankに使う
     */
-    function lfGetTotalCategoryrank(){
-        $TotalCategoryrank = (TOP_CATEGORIES_VOLUME * MIDDLE_CATEGORIES_VOLUME * SMALL_CATEGORIES_VOLUME) + (MIDDLE_CATEGORIES_VOLUME * TOP_CATEGORIES_VOLUME) + TOP_CATEGORIES_VOLUME;
-    return $TotalCategoryrank;
+    function lfGetTotalCategoryrank($existingMaxRank = 0){
+        $TotalCategoryrank = (TOP_CATEGORIES_VOLUME * MIDDLE_CATEGORIES_VOLUME * SMALL_CATEGORIES_VOLUME) + (MIDDLE_CATEGORIES_VOLUME * TOP_CATEGORIES_VOLUME) + TOP_CATEGORIES_VOLUME + $existingMaxRank;
+        return $TotalCategoryrank;
     }
 
 }
