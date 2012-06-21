@@ -48,7 +48,7 @@
     </table>
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'confirm', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
         </ul>
     </div>
 
@@ -69,7 +69,7 @@
                 <td><!--{* 規格名 *}--><!--{$arrKiyaku[cnt].kiyaku_title|h}--></td>
                 <td align="center">
                     <!--{if $tpl_kiyaku_id != $arrKiyaku[cnt].kiyaku_id}-->
-                    <a href="?" onclick="fnModeSubmit('pre_edit', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;">編集</a>
+                    <a href="?" onclick="fnSetFormSubmit('form1', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;">編集</a>
                     <!--{else}-->
                     編集中
                     <!--{/if}-->
