@@ -50,9 +50,9 @@ class SC_CartSession {
             $_SESSION[$this->key_tmp] = $this->cartSession[$productTypeId];
         }
         // 1世代古いコピー情報は、削除しておく
-        foreach (array_keys($_SESSION) as $k) {
-            if ($k != $this->key_tmp && preg_match('/^savecart_/', $k)) {
-                unset($this->cartSession[$productTypeId][$k]);
+        foreach ($_SESSION as $key => $value) {
+            if ($key != $this->key_tmp && preg_match('/^savecart_/', $key)) {
+                unset($this->cartSession[$productTypeId][$key]);
             }
         }
     }
@@ -96,7 +96,7 @@ class SC_CartSession {
     // 次に割り当てるカートのIDを取得する
     function getNextCartID($productTypeId) {
         $count = array();
-        foreach (array_keys($this->cartSession[$productTypeId]) as $key) {
+        foreach ($this->cartSession[$productTypeId] as $key => $value) {
             $count[] = $this->cartSession[$productTypeId][$key]['cart_no'];
         }
         return max($count) + 1;
@@ -143,7 +143,7 @@ class SC_CartSession {
     function getMax($productTypeId) {
         $max = 0;
         if (count($this->cartSession[$productTypeId]) > 0) {
-            foreach (array_keys($this->cartSession[$productTypeId]) as $key) {
+            foreach ($this->cartSession[$productTypeId] as $key => $value) {
                 if (is_numeric($key)) {
                     if ($max < $key) {
                         $max = $key;
@@ -319,7 +319,7 @@ class SC_CartSession {
         );
 
         // 必要な項目以外を削除。
-        foreach (array_keys($arrProductsClass) as $key) {
+        foreach ($arrProductsClass as $key => $value) {
             if (!isset($arrNecessaryItems[$key])) {
                 unset($arrProductsClass[$key]);
             }
@@ -378,7 +378,7 @@ class SC_CartSession {
         $i = 0;
         foreach ($cartKeys as $key) {
             $cartItems = $this->getCartList($key);
-            foreach (array_keys($cartItems) as $itemKey) {
+            foreach ($cartItems as $itemKey => $itemValue) {
                 $cartItem =& $cartItems[$itemKey];
                 $results[$key][$i] =& $cartItem;
                 $i++;

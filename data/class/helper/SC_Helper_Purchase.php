@@ -316,7 +316,7 @@ class SC_Helper_Purchase {
      */
     function clearShipmentItemTemp($shipping_id = null) {
         if (is_null($shipping_id)) {
-            foreach (array_keys($_SESSION['shipping']) as $key) {
+            foreach ($_SESSION['shipping'] as $key => $value) {
                 $this->clearShipmentItemTemp($key);
             }
         } else {
@@ -1035,7 +1035,7 @@ __EOS__;
      * @return void
      */
     function setDownloadableFlgTo(&$arrOrderDetail) {
-        foreach (array_keys($arrOrderDetail) as $key) {
+        foreach ($arrOrderDetail as $key => $value) {
             // 販売価格が 0 円
             if ($arrOrderDetail[$key]['price'] == '0') {
                 $arrOrderDetail[$key]['is_downloadable'] = true;
@@ -1071,7 +1071,7 @@ __EOS__;
         }
 
         if ($has_items) {
-            foreach (array_keys($arrResults) as $shipping_id) {
+            foreach ($arrResults as $shipping_id => $value) {
                 $arrResults[$shipping_id]['shipment_item']
                         =& $this->getShipmentItems($order_id, $shipping_id);
             }

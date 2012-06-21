@@ -317,7 +317,7 @@ class SC_FormParam {
      */
     function recursionConvParam(&$value, $convert) {
         if (is_array($value)) {
-            foreach (array_keys($value) as $key) {
+            foreach ($value as $key => $val) {
                 $this->recursionConvParam($value[$key], $convert);
             }
         } else {
@@ -412,7 +412,7 @@ class SC_FormParam {
         }
 
         if (is_array($ret)) {
-            foreach (array_keys($ret) as $key) {
+            foreach ($ret as $key => $value) {
                 if (SC_Utils_Ex::isBlank($ret[$key])) {
                     $ret[$key] = $default;
                 }
@@ -460,7 +460,7 @@ class SC_FormParam {
     function recursionTrim(&$value, $has_wide_space = true) {
         $pattern = '/^[ 　\r\n\t]*(.*?)[ 　\r\n\t]*$/u';
         if (is_array($value)) {
-            foreach (array_keys($value) as $key) {
+            foreach ($value as $key => $val) {
                 $this->recursionTrim($value[$key], $convert);
             }
         } else {
@@ -523,7 +523,7 @@ class SC_FormParam {
         if ($index !== FALSE) {
             // $this->paramに歯抜けが存在する場合は、NULLで埋めておく。
             // 最後に配列を詰める際に、全ての項目が埋まっている必要がある。
-            foreach (array_keys($this->keyname) as $key) {
+            foreach ($this->keyname as $key => $value) {
                 if (!isset($this->param[$key])) {
                     $this->param[$key] = NULL;
                 }

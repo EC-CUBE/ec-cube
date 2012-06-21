@@ -449,7 +449,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
                     continue 1;
                 }
                 unset($row);
-                foreach (array_keys($ret) as $key) {
+                foreach ($ret as $key => $value) {
                     if ($ret[$key]['bkup_name'] == $bkup_name) {
                         $row =& $ret[$key];
                     }

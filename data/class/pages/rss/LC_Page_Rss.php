@@ -116,7 +116,7 @@ class LC_Page_RSS extends LC_Page_Ex {
         $arrNews = $objQuery->select($col,$from,$where);
 
         // RSS用に変換
-        foreach (array_keys($arrNews) as $key) {
+        foreach ($arrNews as $key => $value) {
             $netUrlHttpUrl = new Net_URL(HTTP_URL);
 
             $row =& $arrNews[$key];

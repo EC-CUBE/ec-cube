@@ -283,7 +283,7 @@ class LC_Page_Sitemap extends LC_Page_Ex {
         $arrPageList = $objQuery->getAll($sql, $arrVal);
 
         // URL にプロトコルの記載が無い場合、HTTP_URL を前置する。
-        foreach (array_keys($arrPageList) as $key) {
+        foreach ($arrPageList as $key => $value) {
             $arrPage =& $arrPageList[$key];
             if (!preg_match('|^https?://|i', $arrPage['url'])) {
                 $arrPage['url'] = HTTP_URL . $arrPage['url'];

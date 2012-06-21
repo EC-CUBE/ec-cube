@@ -496,7 +496,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         $select_recommend_no = $arrForm['select_recommend_no'];
         $select_recommend_id = $arrForm['recommend_id' . $select_recommend_no];
 
-        foreach (array_keys($arrForm) as $key) {
+        foreach ($arrForm as $key => $value) {
             if (preg_match('/^recommend_id/', $key)) {
                 if ($select_recommend_no == preg_replace('/^recommend_id/', '', $key)) {
                     continue;

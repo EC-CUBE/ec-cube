@@ -159,7 +159,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
         $cartLists =& $objCartSess->getCartList($objCartSess->getKey());
         $arrItems = array();
         $index = 0;
-        foreach (array_keys($cartLists) as $key) {
+        foreach ($cartLists as $key => $value) {
             $arrProductsClass = $cartLists[$key]['productsClass'];
             $quantity = (int) $cartLists[$key]['quantity'];
             for ($i = 0; $i < $quantity; $i++) {

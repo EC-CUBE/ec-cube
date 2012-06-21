@@ -783,7 +783,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         // 選択済みの商品であれば数量を1増やす
         $exists = false;
         $arrExistsProductClassIds = $objFormParam->getValue('product_class_id');
-        foreach (array_keys($arrExistsProductClassIds) as $key) {
+        foreach ($arrExistsProductClassIds as $key => $value) {
             $exists_product_class_id = $arrExistsProductClassIds[$key];
             if ($exists_product_class_id == $product_class_id) {
                 $exists = true;

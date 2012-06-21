@@ -136,7 +136,7 @@ class SC_Helper_Mail {
         $objProduct = new SC_Product_Ex();
         $objQuery->setOrder('shipping_id');
         $arrRet = $objQuery->select('*', 'dtb_shipping', 'order_id = ?', array($order_id));
-        foreach (array_keys($arrRet) as $key) {
+        foreach ($arrRet as $key => $value) {
             $objQuery->setOrder('shipping_id');
             $arrItems = $objQuery->select('*', 'dtb_shipment_item', 'order_id = ? AND shipping_id = ?',
                                           array($order_id, $arrRet[$key]['shipping_id']));

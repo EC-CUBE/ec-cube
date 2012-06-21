@@ -347,7 +347,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
          * SC_Purchase::getShippingTemp() で取得して,
          * リファレンスで代入すると, セッションに添字を追加できない？
          */
-        foreach (array_keys($_SESSION['shipping']) as $key) {
+        foreach ($_SESSION['shipping'] as $key => $value) {
             $shipping_id = $_SESSION['shipping'][$key]['shipping_id'];
             $time_id = $objFormParam->getValue('deliv_time_id' . $shipping_id);
             $_SESSION['shipping'][$key]['deliv_id'] = $deliv_id;

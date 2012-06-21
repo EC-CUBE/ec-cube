@@ -415,8 +415,8 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
             $objGraphBar = new SC_Graph_Bar();
 
-            foreach (array_keys($arrList) as $val) {
-                $arrKey[] = mb_ereg_replace('～', '-', $val);
+            foreach ($arrList as $key => $value) {
+                $arrKey[] = mb_ereg_replace('～', '-', $key);
             }
 
             // グラフ描画
@@ -526,7 +526,7 @@ __EOS__;
 
         $arrTotalResults = $objQuery->select($col, $from, $where, $arrWhereVal);
 
-        foreach (array_keys($arrTotalResults) as $key) {
+        foreach ($arrTotalResults as $key => $value) {
             $arrResult =& $arrTotalResults[$key];
             $member_key = $arrResult['order_sex'];
             if ($member_key != '') {
@@ -599,7 +599,7 @@ __EOS__;
         $objQuery->setOrder('total DESC');
         $arrTotalResults = $objQuery->select($col, $from, $where, $arrWhereVal);
 
-        foreach (array_keys($arrTotalResults) as $key) {
+        foreach ($arrTotalResults as $key => $value) {
             $arrResult =& $arrTotalResults[$key];
             $job_key = $arrResult['job'];
             if ($job_key != '') {
@@ -636,7 +636,7 @@ __EOS__;
         $objQuery->setOrder('age DESC');
         $arrTotalResults = $objQuery->select($col, $from, $where, $arrWhereVal);
 
-        foreach (array_keys($arrTotalResults) as $key) {
+        foreach ($arrTotalResults as $key => $value) {
             $arrResult =& $arrTotalResults[$key];
             $age_key = $arrResult['age'];
             if ($age_key != '') {
@@ -782,8 +782,8 @@ __EOS__;
 
             // 合計の計算
             foreach ($arrResults as $arrResult) {
-                foreach (array_keys($arrResult) as $value) {
-                    $arrTotal[$value] += $arrResult[$value];
+                foreach ($arrResult as $key => $value) {
+                    $arrTotal[$key] += $arrResult[$key];
                 }
             }
             // 平均値の計算

@@ -134,7 +134,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex {
 
         // モバイルサイトのセッション保持 (#797)
         if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
-            foreach (array_keys($arrNewsList) as $key) {
+            foreach ($arrNewsList as $key => $value) {
                 $arrRow =& $arrNewsList[$key];
                 if (SC_Utils_Ex::isAppInnerUrl($arrRow['news_url'])) {
                     $netUrl = new Net_URL($arrRow['news_url']);

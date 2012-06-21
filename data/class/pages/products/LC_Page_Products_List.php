@@ -464,7 +464,7 @@ __EOS__;
      */
     function lfSetSelectedData(&$arrProducts, $arrForm, $arrErr, $product_id) {
         $js_fnOnLoad = '';
-        foreach (array_keys($arrProducts) as $key) {
+        foreach ($arrProducts as $key => $value) {
             if ($arrProducts[$key]['product_id'] == $product_id) {
 
                 $arrProducts[$key]['product_class_id']  = $arrForm['product_class_id'];

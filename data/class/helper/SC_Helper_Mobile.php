@@ -95,7 +95,7 @@ class SC_Helper_Mobile {
      */
     function lfMobileConvertInputValue(&$value) {
         if (is_array($value)) {
-            foreach (array_keys($value) as $key) {
+            foreach ($value as $key => $val) {
                 $this->lfMobileConvertInputValue($value[$key]);
             }
         } else {

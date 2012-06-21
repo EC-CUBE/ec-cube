@@ -276,7 +276,7 @@ class SC_Helper_CSV {
             return '';
         }
 
-        foreach (array_keys($fields) as $key) {
+        foreach ($fields as $key => $value) {
             $field =& $fields[$key];
 
             // 配列を「|」区切りの文字列に変換する
