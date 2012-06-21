@@ -1029,10 +1029,10 @@ function lfMakeConfigFile() {
 $alldirs = array();
 function listdirs($dir) {
     global $alldirs;
+    $alldirs[] = $dir;
     $dirs = glob($dir . '/*');
     if (is_array($dirs) && count($dirs) > 0) {
         foreach ($dirs as $d) {
-            $alldirs[] = $d;
             listdirs($d);
         }
     }
