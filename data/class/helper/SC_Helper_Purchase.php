@@ -255,8 +255,6 @@ class SC_Helper_Purchase {
      * 受注一時情報を保存する.
      *
      * 既存のデータが存在しない場合は新規保存. 存在する場合は更新する.
-     * 既存のデータが存在せず, ユーザーがログインしている場合は,
-     * 会員情報をコピーする.
      *
      * @param integer $uniqId 受注一時情報ID
      * @param array $params 登録する受注情報の配列
@@ -279,9 +277,10 @@ class SC_Helper_Purchase {
         }
 
         $sqlval['session'] = serialize($_SESSION);
+        // 注文者の情報を常に最新に保つ
+        $this->copyFromCustomer($sqlval, $objCustomer);
         $exists = $this->getOrderTemp($uniqId);
         if (SC_Utils_Ex::isBlank($exists)) {
-            $this->copyFromCustomer($sqlval, $objCustomer);
             $sqlval['order_temp_id'] = $uniqId;
             $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
             $objQuery->insert('dtb_order_temp', $sqlval);
