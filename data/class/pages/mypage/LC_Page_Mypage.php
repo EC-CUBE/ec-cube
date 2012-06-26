@@ -54,6 +54,9 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
         } else {
             $this->tpl_subtitle = '購入履歴一覧';
         }
+        $masterData = new SC_DB_MasterData();
+        $this->arrCustomerOrderStatus = $masterData->getMasterData('mtb_customer_order_status');
+        
         $this->httpCacheControl('nocache');
     }
 
@@ -99,8 +102,8 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
         $this->arrPayment = SC_Helper_DB_Ex::sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
         // 1ページあたりの件数
         $this->dispNumber = SEARCH_PMAX;
-
-
+        
+        
     }
 
     /**
@@ -123,7 +126,7 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
     function lfGetOrderHistory($customer_id, $startno = -1) {
         $objQuery   = SC_Query_Ex::getSingletonInstance();
 
-        $col        = 'order_id, create_date, payment_id, payment_total';
+        $col        = 'order_id, create_date, payment_id, payment_total, status';
         $from       = 'dtb_order';
         $where      = 'del_flg = 0 AND customer_id = ?';
         $arrWhereVal = array($customer_id);

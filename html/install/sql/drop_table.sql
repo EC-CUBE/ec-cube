@@ -58,6 +58,7 @@ DROP TABLE mtb_permission;
 DROP TABLE mtb_page_max;
 DROP TABLE mtb_order_status_color;
 DROP TABLE mtb_order_status;
+DROP TABLE mtb_customer_order_status;
 DROP TABLE mtb_mail_type;
 DROP TABLE mtb_mail_tpl_path;
 DROP TABLE mtb_mail_template;

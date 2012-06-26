@@ -845,6 +845,14 @@ INSERT INTO mtb_order_status_color (id, name, rank) VALUES (5, '#BFDFFF', 4);
 INSERT INTO mtb_order_status_color (id, name, rank) VALUES (6, '#FFFFAB', 5);
 INSERT INTO mtb_order_status_color (id, name, rank) VALUES (7, '#FFCCCC', 6);
 
+INSERT INTO mtb_customer_order_status (id, name, rank) VALUES (7, '注文未完了', 0);
+INSERT INTO mtb_customer_order_status (id, name, rank) VALUES (1, '注文受付', 1);
+INSERT INTO mtb_customer_order_status (id, name, rank) VALUES (2, '入金待ち', 2);
+INSERT INTO mtb_customer_order_status (id, name, rank) VALUES (6, '注文受付', 3);
+INSERT INTO mtb_customer_order_status (id, name, rank) VALUES (3, 'キャンセル', 4);
+INSERT INTO mtb_customer_order_status (id, name, rank) VALUES (4, '注文受付', 5);
+INSERT INTO mtb_customer_order_status (id, name, rank) VALUES (5, '発送済み', 6);
+
 INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1000', '不明なエラーが発生しました。', 0);
 INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1001', '不正なパラメーターが送信されました。', 1);
 INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1002', '認証に失敗しました。<br />・仮会員の方は、本会員登録を行ってください<br />・認証キーが正しく設定されているか確認してください', 2);
