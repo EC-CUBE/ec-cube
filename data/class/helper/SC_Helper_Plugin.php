@@ -77,7 +77,7 @@ class SC_Helper_Plugin {
      *
      * @return object SC_Helper_Pluginオブジェクト
      */
-    function getSingletonInstance($plugin_activate_flg = true) {
+    static function getSingletonInstance($plugin_activate_flg = true) {
         if (!isset($GLOBALS['_SC_Helper_Plugin_instance']) || is_null($GLOBALS['_SC_Helper_Plugin_instance'])) {
             // プラグインのローダーがDB接続を必要とするため、
             // SC_Queryインスタンス生成後のみオブジェクトを生成する。
