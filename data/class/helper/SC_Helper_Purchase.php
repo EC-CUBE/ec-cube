@@ -261,7 +261,7 @@ class SC_Helper_Purchase {
      * @param SC_Customer $objCustomer SC_Customer インスタンス
      * @return array void
      */
-    function saveOrderTemp($uniqId, $params, &$objCustomer) {
+    function saveOrderTemp($uniqId, $params, &$objCustomer = NULL) {
         if (SC_Utils_Ex::isBlank($uniqId)) {
             return;
         }
@@ -277,8 +277,10 @@ class SC_Helper_Purchase {
         }
 
         $sqlval['session'] = serialize($_SESSION);
-        // 注文者の情報を常に最新に保つ
-        $this->copyFromCustomer($sqlval, $objCustomer);
+        if (!empty($objCustomer)) {
+            // 注文者の情報を常に最新に保つ
+            $this->copyFromCustomer($sqlval, $objCustomer);
+        }
         $exists = $this->getOrderTemp($uniqId);
         if (SC_Utils_Ex::isBlank($exists)) {
             $sqlval['order_temp_id'] = $uniqId;
