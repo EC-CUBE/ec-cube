@@ -1252,6 +1252,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('HOOK_POINT_PROCESS'
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_ACTIVATE_FLAG', 'true', 1303, 'プラグインのロード可否フラグ)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMARTY_FORCE_COMPILE_MODE', 'false', 1401, 'SMARTYコンパイルモード');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LOGIN_RETRY_INTERVAL', '0', 1411, 'ログイン失敗時の遅延時間(秒)(ブルートフォースアタック対策)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MYPAGE_ORDER_STATUS_DISP_FLAG', 'true', 1412, 'MYページ：ご注文状況表示フラグ');
 
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_customer', 'email_mobile', 0, '会員数増加時のログイン処理速度を向上させたいときに試してみてください');
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_products', 'name', 2, '商品名検索速度を向上させたいときに試してみてください');

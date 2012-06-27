@@ -51,7 +51,9 @@
                     <th class="alignC">注文番号</th>
                     <th class="alignC">お支払い方法</th>
                     <th class="alignC">合計金額</th>
+                    <!--{if $smarty.const.MYPAGE_ORDER_STATUS_DISP_FLAG }-->
                     <th class="alignC">ご注文状況</th>
+                    <!--{/if}-->
                     <th class="alignC">詳細</th>
                 </tr>
                 <!--{section name=cnt loop=$arrOrder}-->
@@ -61,11 +63,14 @@
                         <!--{assign var=payment_id value="`$arrOrder[cnt].payment_id`"}-->
                         <td class="alignC"><!--{$arrPayment[$payment_id]|h}--></td>
                         <td class="alignR"><!--{$arrOrder[cnt].payment_total|number_format}-->円</td>
-                        <!--{assign var=order_status_id value="`$arrOrder[cnt].status`"}-->
-                        <!--{if $order_status_id != $smarty.const.ORDER_PENDING }-->
-                        <td class="alignC"><!--{$arrCustomerOrderStatus[$order_status_id]|h}--></td>
-                        <!--{else}-->
-                        <td class="alignC attention"><!--{$arrCustomerOrderStatus[$order_status_id]|h}--></td>
+                        
+                        <!--{if $smarty.const.MYPAGE_ORDER_STATUS_DISP_FLAG }-->
+                            <!--{assign var=order_status_id value="`$arrOrder[cnt].status`"}-->
+                            <!--{if $order_status_id != $smarty.const.ORDER_PENDING }-->
+                            <td class="alignC"><!--{$arrCustomerOrderStatus[$order_status_id]|h}--></td>
+                            <!--{else}-->
+                            <td class="alignC attention"><!--{$arrCustomerOrderStatus[$order_status_id]|h}--></td>
+                            <!--{/if}-->
                         <!--{/if}-->
                         <td class="alignC"><a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/history.php?order_id=<!--{$arrOrder[cnt].order_id}-->">詳細</a></td>
                     </tr>
