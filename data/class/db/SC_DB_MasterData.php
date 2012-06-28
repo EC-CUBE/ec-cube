@@ -268,7 +268,7 @@ class SC_DB_MasterData {
             } else {
                 $data .= $this->getMasterDataAsDefine($masterData);
             }
-            $data .=  "?>\n";
+            $data .=  "\n";
 
         // 配列を生成する場合
         } else {
