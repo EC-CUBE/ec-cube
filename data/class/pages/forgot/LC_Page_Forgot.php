@@ -293,7 +293,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
         $objHelperMail->setPage($this);
 
         // メール送信オブジェクトによる送信処理
-        $objMail = new SC_SendMail();
+        $objMail = new SC_SendMail_Ex();
         $objMail->setItem(
             '' //宛先
             , $objHelperMail->sfMakeSubject('パスワードを変更いたしました。')

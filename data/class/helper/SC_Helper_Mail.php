@@ -338,7 +338,7 @@ class SC_Helper_Mail {
             $toCustomerMail = $objMailText->fetch('mail_templates/customer_regist_mail.tpl');
         }
 
-        $objMail = new SC_SendMail();
+        $objMail = new SC_SendMail_Ex();
         $objMail->setItem(
             ''                    // 宛先
             , $subject              // サブジェクト

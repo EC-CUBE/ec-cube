@@ -254,7 +254,7 @@ class LC_Page_Entry extends LC_Page_Ex {
             $toCustomerMail = $objMailText->fetch('mail_templates/customer_regist_mail.tpl');
         }
 
-        $objMail = new SC_SendMail();
+        $objMail = new SC_SendMail_Ex();
         $objMail->setItem(
             ''                    // 宛先
             , $subject              // サブジェクト
