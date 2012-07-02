@@ -76,7 +76,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
         $objCustomer = new SC_Customer_Ex();
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objPurchase = new SC_Helper_Purchase_Ex();
-        $objHelperMail = new SC_Helper_Mail();
+        $objHelperMail = new SC_Helper_Mail_Ex();
         $objHelperMail->setPage($this);
 
         $this->is_multiple = $objPurchase->isMultiple();
