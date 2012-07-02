@@ -647,7 +647,7 @@ class SC_Helper_Purchase {
      * お届け可能日のスタート値から, お届け日の配列を取得する.
      */
     function getDateArray($start_day, $end_day) {
-        $masterData = new SC_DB_MasterData();
+        $masterData = new SC_DB_MasterData_Ex();
         $arrWDAY = $masterData->getMasterData('mtb_wday');
         //お届け可能日のスタート値がセットされていれば
         if ($start_day >= 1) {

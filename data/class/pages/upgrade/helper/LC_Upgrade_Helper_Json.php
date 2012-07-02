@@ -43,7 +43,7 @@ class LC_Upgrade_Helper_Json extends Services_JSON {
      * @param unknown_type $errMessage
      */
     function setError($errCode) {
-        $masterData = new SC_DB_MasterData();
+        $masterData = new SC_DB_MasterData_Ex();
         $arrOStoreErrMsg = $masterData->getMasterData('mtb_ownersstore_err');
 
         $this->arrData['status']  = OSTORE_STATUS_ERROR;

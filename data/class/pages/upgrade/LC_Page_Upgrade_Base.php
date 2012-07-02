@@ -14,7 +14,7 @@ require_once CLASS_REALDIR . 'pages/upgrade/helper/LC_Upgrade_Helper_Json.php';
 class LC_Page_Upgrade_Base extends LC_Page_Ex {
     function isValidIP() {
         $objLog  = new LC_Upgrade_Helper_Log;
-        $masterData = new SC_DB_MasterData();
+        $masterData = new SC_DB_MasterData_Ex();
         $arrOstoreIPs = $masterData->getMasterData('mtb_ownersstore_ips');
 
         if (isset($_SERVER['REMOTE_ADDR'])

@@ -187,7 +187,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      * @return array 配送住所のプルダウン用連想配列
      */
     function getDelivAddrs(&$objCustomer, &$objPurchase, $uniqid) {
-        $masterData = new SC_DB_MasterData();
+        $masterData = new SC_DB_MasterData_Ex();
         $arrPref = $masterData->getMasterData('mtb_pref');
 
         $arrResults = array('' => '選択してください');

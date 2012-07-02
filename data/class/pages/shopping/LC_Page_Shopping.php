@@ -44,7 +44,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
     function init() {
         parent::init();
         $this->tpl_title = 'ログイン';
-        $masterData = new SC_DB_MasterData();
+        $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrSex = $masterData->getMasterData('mtb_sex');
         $this->arrJob = $masterData->getMasterData('mtb_job');

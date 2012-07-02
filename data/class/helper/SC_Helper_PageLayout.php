@@ -67,7 +67,7 @@ class SC_Helper_PageLayout {
         }
 
         // 該当ページのブロックを取得し, 配置する
-        $masterData = new SC_DB_MasterData();
+        $masterData = new SC_DB_MasterData_Ex();
         $arrTarget = $masterData->getMasterData('mtb_target');
         $arrBlocs = $this->getBlocPositions($device_type_id, $objPage->arrPageLayout['page_id']);
         // 無効なプラグインのブロックを取り除く.
