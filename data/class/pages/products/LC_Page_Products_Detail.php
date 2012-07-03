@@ -148,53 +148,15 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
         switch ($this->mode) {
             case 'cart':
-                $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam,
-                                                    $this->tpl_classcat_find1,
-                                                    $this->tpl_classcat_find2);
-                if (count($this->arrErr) == 0) {
-                    $objCartSess = new SC_CartSession_Ex();
-                    $product_class_id = $this->objFormParam->getValue('product_class_id');
-
-                    $objCartSess->addProduct($product_class_id, $this->objFormParam->getValue('quantity'));
-
-
-                    SC_Response_Ex::sendRedirect(CART_URLPATH);
-                    SC_Response_Ex::actionExit();
-                }
+                $this->doCart();
                 break;
+
             case 'add_favorite':
-                // ログイン中のユーザが商品をお気に入りにいれる処理
-                if ($objCustomer->isLoginSuccess() === true && $this->objFormParam->getValue('favorite_product_id') > 0) {
-                    $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam);
-                    if (count($this->arrErr) == 0) {
-                        if (!$this->lfRegistFavoriteProduct($this->objFormParam->getValue('favorite_product_id'),$objCustomer->getValue('customer_id'))) {
-
-                            $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                            $objPlugin->doAction('LC_Page_Products_Detail_action_add_favorite', array($this));
-
-                            SC_Response_Ex::actionExit();
-                        }
-                    }
-                }
+                $this->doAddFavorite($objCustomer);
                 break;
 
             case 'add_favorite_sphone':
-                // ログイン中のユーザが商品をお気に入りにいれる処理(スマートフォン用)
-                if ($objCustomer->isLoginSuccess() === true && $this->objFormParam->getValue('favorite_product_id') > 0) {
-                    $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam);
-                    if (count($this->arrErr) == 0) {
-                        if ($this->lfRegistFavoriteProduct($this->objFormParam->getValue('favorite_product_id'),$objCustomer->getValue('customer_id'))) {
-
-                            $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                            $objPlugin->doAction('LC_Page_Products_Detail_action_add_favorite_sphone', array($this));
-
-                            print 'true';
-                            SC_Response_Ex::actionExit();
-                        }
-                    }
-                    print 'error';
-                    SC_Response_Ex::actionExit();
-                }
+                $this->doAddFavoriteSphone($objCustomer);
                 break;
 
             case 'select':
@@ -208,9 +170,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
                 break;
 
             default:
-                // カート「戻るボタン」用に保持
-                $netURL = new Net_URL();
-                $_SESSION['cart_referer_url'] = $netURL->getURL();
+                $this->doDefault();
                 break;
         }
 
@@ -218,77 +178,23 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
             switch ($this->mode) {
                 case 'select':
-                    // 規格1が設定されている場合
-                    if ($this->tpl_classcat_find1) {
-                        // templateの変更
-                        $this->tpl_mainpage = 'products/select_find1.tpl';
-                        break;
-                    }
-
-                    // 数量の入力を行う
-                    $this->tpl_mainpage = 'products/select_item.tpl';
+                    $this->doMobileSelect();
                     break;
 
                 case 'select2':
-                    $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam,$this->tpl_classcat_find1,$this->tpl_classcat_find2);
-
-                    // 規格1が設定されていて、エラーを検出した場合
-                    if ($this->tpl_classcat_find1 and $this->arrErr['classcategory_id1']) {
-                        // templateの変更
-                        $this->tpl_mainpage = 'products/select_find1.tpl';
-                        break;
-                    }
-
-                    // 規格2が設定されている場合
-                    if ($this->tpl_classcat_find2) {
-                        $this->arrErr = array();
-
-                        $this->tpl_mainpage = 'products/select_find2.tpl';
-                        break;
-                    }
+                    $this->doMobileSelect2();
+                    break;
                     
                 case 'selectItem':
-                    $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam,$this->tpl_classcat_find1,$this->tpl_classcat_find2);
-
-                    // 規格2が設定されていて、エラーを検出した場合
-                    if ($this->tpl_classcat_find2 and $this->arrErr['classcategory_id2']) {
-                        // templateの変更
-                        $this->tpl_mainpage = 'products/select_find2.tpl';
-                        break;
-                    }
-
-                    $value1 = $this->objFormParam->getValue('classcategory_id1');
-                    
-                    // 規格2が設定されている場合.
-                    if (SC_Utils_Ex::isBlank($this->objFormParam->getValue('classcategory_id2')) == false){
-                        $value2 = '#' . $this->objFormParam->getValue('classcategory_id2');
-                    } else {
-                        $value2 = '#0';
-                    }
-                    
-                    if (strlen($value1) === 0) {
-                        $value1 = '__unselected';
-                    }
-
-                    $this->tpl_product_class_id = $objProduct->classCategories[$product_id][$value1][$value2]['product_class_id'];
-
-                    // この段階では、数量の入力チェックエラーを出させない。
-                    unset($this->arrErr['quantity']);
-
-                    // 数量の入力を行う
-                    $this->tpl_mainpage = 'products/select_item.tpl';
+                    $this->doMobileSelectItem();
                     break;
 
                 case 'cart':
-                    // この段階でエラーが出る場合は、数量の入力エラーのはず
-                    if (count($this->arrErr)) {
-                        // 数量の入力を行う
-                        $this->tpl_mainpage = 'products/select_item.tpl';
-                    }
+                    $this->doMobileCart();
                     break;
 
                 default:
-                    $this->tpl_mainpage = 'products/detail.tpl';
+                    $this->doMobileDefault();
                     break;
             }
         }
@@ -575,5 +481,181 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
             $this->just_added_favorite = true;
             return true;
         }
+    }
+
+    /**
+     * Add product(s) into the cart.
+     * 
+     * @return void 
+     */
+    function doCart() {
+        $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam,
+                                            $this->tpl_classcat_find1,
+                                            $this->tpl_classcat_find2);
+        if (count($this->arrErr) == 0) {
+            $objCartSess = new SC_CartSession_Ex();
+            $product_class_id = $this->objFormParam->getValue('product_class_id');
+
+            $objCartSess->addProduct($product_class_id, $this->objFormParam->getValue('quantity'));
+
+
+            SC_Response_Ex::sendRedirect(CART_URLPATH);
+            SC_Response_Ex::actionExit();
+        }
+    }
+
+    /**
+     * Add product to authenticated user's favorites.
+     *
+     * @param type $objCustomer 
+     * @return void
+     */
+    function doAddFavorite(&$objCustomer) {
+        // ログイン中のユーザが商品をお気に入りにいれる処理
+        if ($objCustomer->isLoginSuccess() === true && $this->objFormParam->getValue('favorite_product_id') > 0) {
+            $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam);
+            if (count($this->arrErr) == 0) {
+                if (!$this->lfRegistFavoriteProduct($this->objFormParam->getValue('favorite_product_id'),$objCustomer->getValue('customer_id'))) {
+
+                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+                    $objPlugin->doAction('LC_Page_Products_Detail_action_add_favorite', array($this));
+
+                    SC_Response_Ex::actionExit();
+                }
+            }
+        }
+    }
+
+    /**
+     * Add product to authenticated user's favorites. (for Smart phone)
+     *
+     * @param type $objCustomer 
+     * @return void
+     */
+    function doAddFavoriteSphone($objCustomer) {
+        // ログイン中のユーザが商品をお気に入りにいれる処理(スマートフォン用)
+        if ($objCustomer->isLoginSuccess() === true && $this->objFormParam->getValue('favorite_product_id') > 0) {
+            $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam);
+            if (count($this->arrErr) == 0) {
+                if ($this->lfRegistFavoriteProduct($this->objFormParam->getValue('favorite_product_id'),$objCustomer->getValue('customer_id'))) {
+
+                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+                    $objPlugin->doAction('LC_Page_Products_Detail_action_add_favorite_sphone', array($this));
+
+                    print 'true';
+                    SC_Response_Ex::actionExit();
+                }
+            }
+            print 'error';
+            SC_Response_Ex::actionExit();
+        }
+    }
+
+    /**
+     * 
+     * 
+     * @return void 
+     */
+    function doDefault() {
+        // カート「戻るボタン」用に保持
+        $netURL = new Net_URL();
+        $_SESSION['cart_referer_url'] = $netURL->getURL();
+    }
+
+    /**
+     * 
+     * @return void
+     */
+    function doMobileSelect() {
+        // 規格1が設定されている場合
+        if ($this->tpl_classcat_find1) {
+            // templateの変更
+            $this->tpl_mainpage = 'products/select_find1.tpl';
+            return;
+        }
+
+        // 数量の入力を行う
+        $this->tpl_mainpage = 'products/select_item.tpl';
+    }
+
+    /**
+     *
+     * @return type 
+     */
+    function doMobileSelect2() {
+        $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam,$this->tpl_classcat_find1,$this->tpl_classcat_find2);
+
+        // 規格1が設定されていて、エラーを検出した場合
+        if ($this->tpl_classcat_find1 and $this->arrErr['classcategory_id1']) {
+            // templateの変更
+            $this->tpl_mainpage = 'products/select_find1.tpl';
+            return;
+        }
+
+        // 規格2が設定されている場合
+        if ($this->tpl_classcat_find2) {
+            $this->arrErr = array();
+
+            $this->tpl_mainpage = 'products/select_find2.tpl';
+            return;
+        }
+
+        $this->doMobileSelectItem();
+    }
+
+    /**
+     * 
+     * @return void
+     */
+    function doMobileSelectItem() {
+        $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam,$this->tpl_classcat_find1,$this->tpl_classcat_find2);
+
+        // 規格2が設定されていて、エラーを検出した場合
+        if ($this->tpl_classcat_find2 and $this->arrErr['classcategory_id2']) {
+            // templateの変更
+            $this->tpl_mainpage = 'products/select_find2.tpl';
+            break;
+        }
+
+        $value1 = $this->objFormParam->getValue('classcategory_id1');
+
+        // 規格2が設定されている場合.
+        if (SC_Utils_Ex::isBlank($this->objFormParam->getValue('classcategory_id2')) == false){
+            $value2 = '#' . $this->objFormParam->getValue('classcategory_id2');
+        } else {
+            $value2 = '#0';
+        }
+
+        if (strlen($value1) === 0) {
+            $value1 = '__unselected';
+        }
+
+        $this->tpl_product_class_id = $objProduct->classCategories[$product_id][$value1][$value2]['product_class_id'];
+
+        // この段階では、数量の入力チェックエラーを出させない。
+        unset($this->arrErr['quantity']);
+
+        // 数量の入力を行う
+        $this->tpl_mainpage = 'products/select_item.tpl';
+    }
+
+    /**
+     *
+     * @return void 
+     */
+    function doMobileCart() {
+        // この段階でエラーが出る場合は、数量の入力エラーのはず
+        if (count($this->arrErr)) {
+            // 数量の入力を行う
+            $this->tpl_mainpage = 'products/select_item.tpl';
+        }
+    }
+
+    /**
+     *
+     * @return void 
+     */
+    function doMobileDefault() {
+        $this->tpl_mainpage = 'products/detail.tpl';
     }
 }

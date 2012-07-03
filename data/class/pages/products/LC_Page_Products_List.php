@@ -134,82 +134,11 @@ class LC_Page_Products_List extends LC_Page_Ex {
         switch ($this->getMode()) {
 
             case 'json':
-                $this->arrProducts = $this->setStatusDataTo($this->arrProducts, $this->arrSTATUS, $this->arrSTATUS_IMAGE);
-                $this->arrProducts = $objProduct->setPriceTaxTo($this->arrProducts);
-
-                // 一覧メイン画像の指定が無い商品のための処理
-                foreach ($this->arrProducts as $key=>$val) {
-                    $this->arrProducts[$key]['main_list_image'] = SC_Utils_Ex::sfNoImageMainList($val['main_list_image']);
-                }
-
-                echo SC_Utils_Ex::jsonEncode($this->arrProducts);
-                SC_Response_Ex::actionExit();
+                $this->doJson($objProduct);
                 break;
 
             default:
-
-                //商品一覧の表示処理
-                $strnavi            = $this->objNavi->strnavi;
-                // 表示文字列
-                $this->tpl_strnavi  = empty($strnavi) ? '&nbsp;' : $strnavi;
-
-                // 規格1クラス名
-                $this->tpl_class_name1  = $objProduct->className1;
-
-                // 規格2クラス名
-                $this->tpl_class_name2  = $objProduct->className2;
-
-                // 規格1
-                $this->arrClassCat1     = $objProduct->classCats1;
-
-                // 規格1が設定されている
-                $this->tpl_classcat_find1 = $objProduct->classCat1_find;
-                // 規格2が設定されている
-                $this->tpl_classcat_find2 = $objProduct->classCat2_find;
-
-                $this->tpl_stock_find       = $objProduct->stock_find;
-                $this->tpl_product_class_id = $objProduct->product_class_id;
-                $this->tpl_product_type     = $objProduct->product_type;
-
-                // 商品ステータスを取得
-                $this->productStatus = $this->arrProducts['productStatus'];
-                unset($this->arrProducts['productStatus']);
-                $this->tpl_javascript .= 'var productsClassCategories = ' . SC_Utils_Ex::jsonEncode($objProduct->classCategories) . ';';
-                //onloadスクリプトを設定. 在庫ありの商品のみ出力する
-                foreach ($this->arrProducts as $arrProduct) {
-                    if ($arrProduct['stock_unlimited_max'] || $arrProduct['stock_max'] > 0) {
-                        $js_fnOnLoad .= "fnSetClassCategories(document.product_form{$arrProduct['product_id']});";
-                    }
-                }
-
-                //カート処理
-                $target_product_id = intval($this->arrForm['product_id']);
-                if ($target_product_id > 0) {
-                    // 商品IDの正当性チェック
-                    if (!SC_Utils_Ex::sfIsInt($this->arrForm['product_id'])
-                        || !SC_Helper_DB_Ex::sfIsRecord('dtb_products', 'product_id', $this->arrForm['product_id'], 'del_flg = 0 AND status = 1')) {
-                        SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
-                    }
-
-                    // 入力内容のチェック
-                    $arrErr = $this->lfCheckError($target_product_id, $this->arrForm, $this->tpl_classcat_find1, $this->tpl_classcat_find2);
-                    if (empty($arrErr)) {
-                        $this->lfAddCart($this->arrForm, $_SERVER['HTTP_REFERER']);
-
-
-                        SC_Response_Ex::sendRedirect(CART_URLPATH);
-                        SC_Response_Ex::actionExit();
-                    }
-                    $js_fnOnLoad .= $this->lfSetSelectedData($this->arrProducts, $this->arrForm, $arrErr, $target_product_id);
-                } else {
-                    // カート「戻るボタン」用に保持
-                    $netURL = new Net_URL();
-                    //該当メソッドが無いため、$_SESSIONに直接セット
-                    $_SESSION['cart_referer_url'] = $netURL->getURL();
-                }
-
-                $this->tpl_javascript   .= 'function fnOnLoad(){' . $js_fnOnLoad . '}';
-                $this->tpl_onload       .= 'fnOnLoad(); ';
+                $this->doDefault($objProduct);
                 break;
         }
 
@@ -514,5 +443,93 @@ __EOS__;
             }
         }
         return $arrProducts;
+    }
+
+    /**
+     *
+     * @param type $objProduct 
+     * @return void
+     */
+    function doJson(&$objProduct) {
+        $this->arrProducts = $this->setStatusDataTo($this->arrProducts, $this->arrSTATUS, $this->arrSTATUS_IMAGE);
+        $this->arrProducts = $objProduct->setPriceTaxTo($this->arrProducts);
+
+        // 一覧メイン画像の指定が無い商品のための処理
+        foreach ($this->arrProducts as $key=>$val) {
+            $this->arrProducts[$key]['main_list_image'] = SC_Utils_Ex::sfNoImageMainList($val['main_list_image']);
+        }
+
+        echo SC_Utils_Ex::jsonEncode($this->arrProducts);
+        SC_Response_Ex::actionExit();
+    }
+
+    /**
+     *
+     * @param type $objProduct 
+     * @return void
+     */
+    function doDefault(&$objProduct) {
+        //商品一覧の表示処理
+        $strnavi            = $this->objNavi->strnavi;
+        // 表示文字列
+        $this->tpl_strnavi  = empty($strnavi) ? '&nbsp;' : $strnavi;
+
+        // 規格1クラス名
+        $this->tpl_class_name1  = $objProduct->className1;
+
+        // 規格2クラス名
+        $this->tpl_class_name2  = $objProduct->className2;
+
+        // 規格1
+        $this->arrClassCat1     = $objProduct->classCats1;
+
+        // 規格1が設定されている
+        $this->tpl_classcat_find1 = $objProduct->classCat1_find;
+        // 規格2が設定されている
+        $this->tpl_classcat_find2 = $objProduct->classCat2_find;
+
+        $this->tpl_stock_find       = $objProduct->stock_find;
+        $this->tpl_product_class_id = $objProduct->product_class_id;
+        $this->tpl_product_type     = $objProduct->product_type;
+
+        // 商品ステータスを取得
+        $this->productStatus = $this->arrProducts['productStatus'];
+        unset($this->arrProducts['productStatus']);
+        $this->tpl_javascript .= 'var productsClassCategories = ' . SC_Utils_Ex::jsonEncode($objProduct->classCategories) . ';';
+        //onloadスクリプトを設定. 在庫ありの商品のみ出力する
+        foreach ($this->arrProducts as $arrProduct) {
+            if ($arrProduct['stock_unlimited_max'] || $arrProduct['stock_max'] > 0) {
+                $js_fnOnLoad .= "fnSetClassCategories(document.product_form{$arrProduct['product_id']});";
+            }
+        }
+
+        //カート処理
+        $target_product_id = intval($this->arrForm['product_id']);
+        if ($target_product_id > 0) {
+            // 商品IDの正当性チェック
+            if (!SC_Utils_Ex::sfIsInt($this->arrForm['product_id'])
+                || !SC_Helper_DB_Ex::sfIsRecord('dtb_products', 'product_id', $this->arrForm['product_id'], 'del_flg = 0 AND status = 1')) {
+                SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
+            }
+
+            // 入力内容のチェック
+            $arrErr = $this->lfCheckError($target_product_id, $this->arrForm, $this->tpl_classcat_find1, $this->tpl_classcat_find2);
+            if (empty($arrErr)) {
+                $this->lfAddCart($this->arrForm, $_SERVER['HTTP_REFERER']);
+
+
+                SC_Response_Ex::sendRedirect(CART_URLPATH);
+                SC_Response_Ex::actionExit();
+            }
+            $js_fnOnLoad .= $this->lfSetSelectedData($this->arrProducts, $this->arrForm, $arrErr, $target_product_id);
+        } else {
+            // カート「戻るボタン」用に保持
+            $netURL = new Net_URL();
+            //該当メソッドが無いため、$_SESSIONに直接セット
+            $_SESSION['cart_referer_url'] = $netURL->getURL();
+        }
+
+        $this->tpl_javascript   .= 'function fnOnLoad(){' . $js_fnOnLoad . '}';
+        $this->tpl_onload       .= 'fnOnLoad(); ';
     }
 }
