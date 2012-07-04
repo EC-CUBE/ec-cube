@@ -252,4 +252,16 @@ class SC_Helper_Plugin {
             );
         }
     }
+
+    /**
+     * Utility function to set a hook point.
+     *
+     * @param type $hook_point  hook point
+     * @param type $arrArgs     argument passing to callback function
+     * @param type $plugin_activate_flg 
+     */
+    public static function hook($hook_point, $arrArgs = array(), $plugin_activate_flg = PLUGIN_ACTIVATE_FLAG) {
+        $objPlugin = SC_Helper_Plugin::getSingletonInstance($plugin_activate_flg);
+        $objPlugin->doAction($hook_point, $arrArgs);
+    }
 }
