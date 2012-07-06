@@ -988,7 +988,7 @@ __EOF__;
         $checkArray = array('name', 'status',
                             'main_list_comment', 'main_comment',
                             'deliv_fee', 'comment1', 'comment2', 'comment3',
-                            'comment4', 'comment5', 'comment6', 'main_list_comment',
+                            'comment4', 'comment5', 'comment6',
                             'sale_limit', 'deliv_date_id', 'maker_id', 'note');
         $arrList = SC_Utils_Ex::arrayDefineIndexes($arrList, $checkArray);
 
@@ -1003,7 +1003,6 @@ __EOF__;
         $sqlval['comment4'] = $arrList['comment4'];
         $sqlval['comment5'] = $arrList['comment5'];
         $sqlval['comment6'] = $arrList['comment6'];
-        $sqlval['main_list_comment'] = $arrList['main_list_comment'];
         $sqlval['deliv_date_id'] = $arrList['deliv_date_id'];
         $sqlval['maker_id'] = $arrList['maker_id'];
         $sqlval['note'] = $arrList['note'];
