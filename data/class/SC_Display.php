@@ -129,25 +129,29 @@ class SC_Display{
     }
 
     /**
-     * 機種を判別する。
+     * Detect the viewing device.
      *
-     * SC_Display::MOBILE = ガラケー = 1
-     * SC_Display::SMARTPHONE = スマホ = 2
+     * SC_Display::MOBILE = k-tai = 1
+     * SC_Display::SMARTPHONE = smart phone = 2
      * SC_Display::PC = PC = 10
      *
      * @static
-     * @return integer 端末種別ID
+     * @param   $reset  boolean
+     * @return  integer Device Type ID
      */
-    function detectDevice() {
-        $nu = new Net_UserAgent_Mobile();
-        $su = new SC_SmartphoneUserAgent_Ex();
-        if ($nu->isMobile()) {
-            return DEVICE_TYPE_MOBILE;
-        } elseif ($su->isSmartphone()) {
-            return DEVICE_TYPE_SMARTPHONE;
-        } else {
-            return DEVICE_TYPE_PC;
+    public static function detectDevice($reset = FALSE) {
+        if (empty(SC_Display_Ex::$device) || $reset) {
+            $nu = new Net_UserAgent_Mobile();
+            $su = new SC_SmartphoneUserAgent_Ex();
+            if ($nu->isMobile()) {
+                SC_Display_Ex::$device = DEVICE_TYPE_MOBILE;
+            } elseif ($su->isSmartphone()) {
+                SC_Display_Ex::$device = DEVICE_TYPE_SMARTPHONE;
+            } else {
+                SC_Display_Ex::$device = DEVICE_TYPE_PC;
+            }
         }
+        return SC_Display_Ex::$device;
     }
 
     function assign($val1,$val2) {
