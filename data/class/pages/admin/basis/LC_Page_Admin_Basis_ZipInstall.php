@@ -140,6 +140,15 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
                 // 進捗・完了画面を表示しない
                 $this->tpl_mode = null;
                 break;
+
+            // 自動登録時の郵便番号CSV更新
+            // XXX iframe内にエラー表示しない様、ここでlfDownloadZipFileFromJp()を呼ぶ。
+            case 'auto';
+                if (!$this->tpl_skip_update_csv) {
+                    $this->lfDownloadZipFileFromJp();
+                    $this->lfExtractZipFile();
+                }
+                break;
         }
 
         $this->tpl_line = $this->countZipCsv();
@@ -162,11 +171,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
     function lfAutoCommitZip() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        if (!$this->tpl_skip_update_csv) {
-            $this->lfDownloadZipFileFromJp();
-            $this->lfExtractZipFile();
-        }
-
+        // DB更新
         $objQuery->begin();
         $this->lfDeleteZip();
         $this->insertMtbZip();
