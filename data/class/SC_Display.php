@@ -31,7 +31,9 @@ class SC_Display{
 
     var $response;
 
-    var $device;
+    /** 端末種別を保持する */
+    // XXX プロパティとして保持する必要があるのか疑問。
+    static $device;
 
     /** SC_View インスタンス */
     var $view;
@@ -129,18 +131,18 @@ class SC_Display{
     }
 
     /**
-     * Detect the viewing device.
+     * 端末種別を判別する。
      *
-     * SC_Display::MOBILE = k-tai = 1
-     * SC_Display::SMARTPHONE = smart phone = 2
+     * SC_Display::MOBILE = ガラケー = 1
+     * SC_Display::SMARTPHONE = スマホ = 2
      * SC_Display::PC = PC = 10
      *
      * @static
      * @param   $reset  boolean
-     * @return  integer Device Type ID
+     * @return integer 端末種別ID
      */
     public static function detectDevice($reset = FALSE) {
-        if (empty(SC_Display_Ex::$device) || $reset) {
+        if (is_null(SC_Display_Ex::$device) || $reset) {
             $nu = new Net_UserAgent_Mobile();
             $su = new SC_SmartphoneUserAgent_Ex();
             if ($nu->isMobile()) {
