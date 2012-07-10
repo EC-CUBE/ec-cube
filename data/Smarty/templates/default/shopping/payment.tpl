@@ -204,36 +204,38 @@
             <p class="select-msg">ご希望の方は、お届け時間を選択してください。</p>
             <p class="non-select-msg">まずはじめに、配送方法を選択ください。</p>
             <!--{foreach item=shippingItem name=shippingItem from=$arrShipping}-->
-            <!--{assign var=index value=$shippingItem.shipping_id}-->
-            <div class="delivdate top">
-                <!--{if $is_multiple}-->
-                    <span class="st">▼<!--{$shippingItem.shipping_name01}--><!--{$shippingItem.shipping_name02}-->
-                    <!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01}--><!--{$shippingItem.shipping_addr02}--></span><br/>
-                <!--{/if}-->
-                <!--★お届け日★-->
-                <!--{assign var=key value="deliv_date`$index`"}-->
-                <span class="attention"><!--{$arrErr[$key]}--></span>
-                お届け日：
-                <!--{if !$arrDelivDate}-->
-                    ご指定頂けません。
-                <!--{else}-->
+			<!--{if $shippingItem.shipping_id !== null }-->
+                <!--{assign var=index value=$shippingItem.shipping_id}-->
+                <div class="delivdate top">
+                    <!--{if $is_multiple}-->
+                        <span class="st">▼<!--{$shippingItem.shipping_name01}--><!--{$shippingItem.shipping_name02}-->
+                        <!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01}--><!--{$shippingItem.shipping_addr02}--></span><br/>
+                    <!--{/if}-->
+                    <!--★お届け日★-->
+                    <!--{assign var=key value="deliv_date`$index`"}-->
+                    <span class="attention"><!--{$arrErr[$key]}--></span>
+                    お届け日：
+                    <!--{if !$arrDelivDate}-->
+                        ご指定頂けません。
+                    <!--{else}-->
+                        <select name="<!--{$key}-->" id="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+                            <option value="" selected="">指定なし</option>
+                            <!--{assign var=shipping_date_value value=$arrForm[$key].value|default:$shippingItem.shipping_date}-->
+                            <!--{html_options options=$arrDelivDate selected=$shipping_date_value}-->
+                        </select>&nbsp;
+                    <!--{/if}-->
+                    <!--★お届け時間★-->
+                    <!--{assign var=key value="deliv_time_id`$index`"}-->
+                    <span class="attention"><!--{$arrErr[$key]}--></span>
+                    お届け時間：
                     <select name="<!--{$key}-->" id="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
                         <option value="" selected="">指定なし</option>
-                        <!--{assign var=shipping_date_value value=$arrForm[$key].value|default:$shippingItem.shipping_date}-->
-                        <!--{html_options options=$arrDelivDate selected=$shipping_date_value}-->
-                    </select>&nbsp;
-                <!--{/if}-->
-                <!--★お届け時間★-->
-                <!--{assign var=key value="deliv_time_id`$index`"}-->
-                <span class="attention"><!--{$arrErr[$key]}--></span>
-                お届け時間：
-                <select name="<!--{$key}-->" id="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-                    <option value="" selected="">指定なし</option>
-                    <!--{assign var=shipping_time_value value=$arrForm[$key].value|default:$shippingItem.time_id}-->
-                    <!--{html_options options=$arrDelivTime selected=$shipping_time_value}-->
-                </select>
-            </div>
-            <!--{/foreach}-->
+                        <!--{assign var=shipping_time_value value=$arrForm[$key].value|default:$shippingItem.time_id}-->
+                        <!--{html_options options=$arrDelivTime selected=$shipping_time_value}-->
+                    </select>
+                </div>
+            <!--{/if}-->
+			<!--{/foreach}-->
         </div>
         <!--{/if}-->
 
