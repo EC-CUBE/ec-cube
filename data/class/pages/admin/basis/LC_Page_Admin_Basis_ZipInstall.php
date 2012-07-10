@@ -359,7 +359,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
 
         // 郵便番号CSVをdownloadする。
         $res = $req->sendRequest();
-        if (!$res) {
+        if (!$res || strlen($res) > 1) {
             trigger_error(ZIP_DOWNLOAD_URL . ' の取得に失敗しました。', E_USER_ERROR);
         }
 
