@@ -209,6 +209,9 @@ __EOS__;
 
     // ログアウト　$_SESSION['customer']を解放し、ログに書き込む
     function EndSession() {
+        // セッション情報破棄の前にcustomer_idを保存
+        $customer_id = $_SESSION['customer']['customer_id'];
+
         // $_SESSION['customer']の解放
         unset($_SESSION['customer']);
         // セッションの配送情報を全て破棄する
@@ -217,8 +220,11 @@ __EOS__;
         SC_Helper_Session_Ex::destroyToken();
         $objSiteSess = new SC_SiteSession_Ex();
         $objSiteSess->unsetUniqId();
+
         // ログに記録する
-        GC_Utils_Ex::gfPrintLog('logout : user='.$this->customer_data['customer_id'] ."\t".'ip='. $this->getRemoteHost(), CUSTOMER_LOG_REALFILE, false);
+        $log = sprintf("logout : user=%d\tip=%s",
+            $customer_id, $this->getRemoteHost());
+        GC_Utils_Ex::gfPrintLog($log, CUSTOMER_LOG_REALFILE, false);
     }
 
     // ログインに成功しているか判定する。
