@@ -636,6 +636,10 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         $arrErr = array();
         // プラグインファイルを読み込みます.
         $plugin_class_file_path = PLUGIN_UPLOAD_REALDIR . $plugin['plugin_code'] . '/' . $plugin['class_name'] . '.php';
+        $arrErr = $this->requirePluginFile($plugin_class_file_path, 'plugin_error');
+        if ($this->isError($arrErr) === true) {
+            return $arrErr;
+        }
         
         // プラグインが有効な場合に無効化処理を実行
         if($plugin['enable'] == PLUGIN_ENABLE_TRUE){
