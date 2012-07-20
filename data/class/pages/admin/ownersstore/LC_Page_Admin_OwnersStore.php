@@ -183,7 +183,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
                     // エラーメッセージを詰め直す.
                     $this->arrErr['priority'][$plugin_id] = $arrErr['priority'];
                 }
-
+                
                 break;
             default:
                 break;
@@ -345,7 +345,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
 
         $arrErr = array();
         // 必須拡張モジュールのチェック
-        $arrErr = SC_Plugin_Util_Ex::checkExtension();
+        $arrErr = SC_Plugin_Util_Ex::checkExtension($key);
         if ($this->isError($arrErr) === true) {
             return $arrErr;
         }
@@ -382,7 +382,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
             $arrErr['plugin_file'] = '※ ' . $plugin_name . 'は既にインストールされています。<br/>';
             return $arrErr;
         }
-
+        
         // プラグイン情報をDB登録
         if ($this->registerData($arrPluginInfo) === false) {
             $this->rollBack(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR);

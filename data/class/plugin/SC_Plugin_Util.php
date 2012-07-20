@@ -146,9 +146,10 @@ class SC_Plugin_Util {
     /**
      * プラグイン利用に必須のモジュールチェック
      *
+     * @param string $key  エラー情報を格納するキー
      * @return array $arrErr エラー情報を格納した連想配列.
      */
-    function checkExtension() {
+    function checkExtension($key) {
         // プラグイン利用に必須のモジュール
         // 'EC-CUBEバージョン' => array('モジュール名')
         $arrRequireExtension = array(
@@ -161,7 +162,7 @@ class SC_Plugin_Util {
         if (is_array($arrRequireExtension[ECCUBE_VERSION])) {
             foreach ($arrRequireExtension[ECCUBE_VERSION] AS $val) {
                 if (!extension_loaded($val)) {
-                    $arrErr[$val] = "※ プラグインを利用するには、拡張モジュール「${val}」が必要です。<br />";
+                    $arrErr[$key] .= "※ プラグインを利用するには、拡張モジュール「${val}」が必要です。<br />";
                 }
             }
         }
