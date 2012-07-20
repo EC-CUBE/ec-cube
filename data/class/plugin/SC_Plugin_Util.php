@@ -146,14 +146,15 @@ class SC_Plugin_Util {
     /**
      * プラグイン利用に必須のモジュールチェック
      *
-     * @param array|null $arrBlocs  配置情報を含めたブロックの配列
-     * @return void
+     * @return array $arrErr エラー情報を格納した連想配列.
      */
     function checkExtension() {
         // プラグイン利用に必須のモジュール
         // 'EC-CUBEバージョン' => array('モジュール名')
         $arrRequireExtension = array(
                                      '2.12.0' => array('dom'),
+                                     '2.12.1' => array('dom'),
+                                     '2.12.2' => array('dom')
                                     );
         // 必須拡張モジュールのチェック
         $arrErr = array();
@@ -166,5 +167,5 @@ class SC_Plugin_Util {
         }
         return $arrErr;
     }
-
+    
 }
