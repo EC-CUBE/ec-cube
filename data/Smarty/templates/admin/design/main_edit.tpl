@@ -67,7 +67,7 @@ function fnTargetSelf(){
                     <!--{$smarty.const.HTTP_URL|h}--><!--{$arrForm[$key].value|h}-->.php
                     <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" />
                 <!--{else}-->
-                    <!--{$smarty.const.USER_URL|h}--><input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length|h}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ime-mode: disabled;" size="40" class="box40" />.php<span class="attention"> (上限<!--{$arrForm[$key].length|h}-->文字)</span>
+                    <!--{$smarty.const.USER_URL|h}--><input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length|h}-->" style="ime-mode: disabled;<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box40" />.php<span class="attention"> (上限<!--{$arrForm[$key].length|h}-->文字)</span>
                 <!--{/if}-->
                 <!--{if $arrErr[$key] != ""}-->
                     <div class="attention">
