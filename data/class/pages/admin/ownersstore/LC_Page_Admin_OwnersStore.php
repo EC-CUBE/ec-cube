@@ -810,14 +810,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
     function requirePluginFile($file_path, $key) {
         $arrErr = array();
         if (file_exists($file_path)) {
-            //requireだとファイルの存在チェックしかできないのでexecで実行してみる(syntax errorが見られる)
-            $result = exec("php -l " . $file_path);
-            //Errors parsingがあったらエラーを投げる
-            if(strpos($result, 'Errors parsing') !== false){
-                $arrErr[$key] = '※ ' . $file_path .'のソース内にエラーが発見されました<br/>';
-            } else {
-                require_once $file_path;
-            }
+            require_once $file_path; 
         } else {
             $arrErr[$key] = '※ ' . $file_path .'の読み込みに失敗しました。<br/>';
         }
