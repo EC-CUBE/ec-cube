@@ -161,7 +161,7 @@ class SC_Helper_PageLayout {
                 ON bloc.bloc_id = pos.bloc_id
                     AND bloc.device_type_id = pos.device_type_id
 __EOF__;
-        $where = 'bloc.device_type_id = ? AND (anywhere = 1 OR pos.page_id = ?)';
+        $where = 'bloc.device_type_id = ? AND ((anywhere = 1 AND pos.page_id != 0) OR pos.page_id = ?)';
         $objQuery->setOrder('target_id, bloc_row');
         $arrBlocs = $objQuery->select('*', $table, $where, array($device_type_id, $page_id));
         if ($has_realpath) {
