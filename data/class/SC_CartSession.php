@@ -387,19 +387,11 @@ class SC_CartSession {
         return $results;
     }
 
-    // カート内にある商品ＩＤを全て取得する
     /**
      * @deprected getAllProductClassID を使用して下さい
      */
     function getAllProductID($productTypeId) {
-        $max = $this->getMax($productTypeId);
-        $productIDs = array();
-        for ($i = 0; $i <= $max; $i++) {
-            if ($this->cartSession[$productTypeId][$i]['cart_no'] != '') {
-                $productIDs[] = $this->cartSession[$productTypeId][$i]['id'][0];
-            }
-        }
-        return $productIDs;
+        trigger_error('正しく動作しないメソッドが呼び出されました。', E_USER_ERROR);
     }
 
     /**
