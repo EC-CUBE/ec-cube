@@ -91,8 +91,6 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc_Ex {
     function lfGetCartData(&$objCart) {
         $arrCartKeys = $objCart->getKeys();
         foreach ($arrCartKeys as $cart_key) {
-            // カート内の商品ＩＤ一覧を取得
-            $arrAllProductID = $objCart->getAllProductID($cart_key);
             // 購入金額合計
             $products_total += $objCart->getAllProductsTotal($cart_key);
             // 合計数量
