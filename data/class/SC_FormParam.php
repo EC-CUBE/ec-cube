@@ -63,7 +63,7 @@ class SC_FormParam {
      */
     function __construct() {
         $this->check_dir = IMAGE_SAVE_REALDIR;
-        
+
         // SC_FormParamのフックポイント
         // TODO: debug_backtrace以外にいい方法があれば良いが、一旦これで
         $backtraces = debug_backtrace();

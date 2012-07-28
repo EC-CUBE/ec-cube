@@ -649,7 +649,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         for ($i = 1; $i <= RECOMMEND_PRODUCT_MAX; $i++) {
             $recommend_product_id_key = 'recommend_product_id' . $i;
             if ((array_search($recommend_product_id_key, $this->arrFormKeyList) !== FALSE)
-             && ($item[$recommend_product_id_key] != '') ) {
+             && ($item[$recommend_product_id_key] != '')) {
 
                 // 商品IDの存在チェック
                 if (!$this->objDb->sfIsRecord('dtb_products', 'product_id', (array)$item[$recommend_product_id_key])) {

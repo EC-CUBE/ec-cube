@@ -86,7 +86,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
             SC_Response_Ex::sendRedirect(ADMIN_ORDER_URLPATH);
             SC_Response_Ex::actionExit();
         }
-        
+
         //メール本文の確認例は初めの1受注とする
         if (!SC_Utils_Ex::isBlank($this->order_id_array)){
             $order_id_array = split(',',$this->order_id_array);

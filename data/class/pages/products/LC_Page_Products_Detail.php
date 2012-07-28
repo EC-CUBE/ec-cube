@@ -109,7 +109,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
         $objProduct = new SC_Product_Ex();
         $objProduct->setProductsClassByProductIds(array($product_id));
-        
+
         // 規格1クラス名
         $this->tpl_class_name1 = $objProduct->className1[$product_id];
 
@@ -246,7 +246,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
                         $this->tpl_mainpage = 'products/select_find2.tpl';
                         break;
                     }
-                    
+
                 case 'selectItem':
                     $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam,$this->tpl_classcat_find1,$this->tpl_classcat_find2);
 
@@ -258,14 +258,14 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
                     }
 
                     $value1 = $this->objFormParam->getValue('classcategory_id1');
-                    
+
                     // 規格2が設定されている場合.
                     if (SC_Utils_Ex::isBlank($this->objFormParam->getValue('classcategory_id2')) == false){
                         $value2 = '#' . $this->objFormParam->getValue('classcategory_id2');
                     } else {
                         $value2 = '#0';
                     }
-                    
+
                     if (strlen($value1) === 0) {
                         $value1 = '__unselected';
                     }

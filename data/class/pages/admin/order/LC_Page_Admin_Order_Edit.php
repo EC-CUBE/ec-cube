@@ -808,7 +808,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
             $arrProduct['quantity'] = 1;
             $arrProduct['price'] = $arrProduct['price02'];
             $arrProduct['product_name'] = $arrProduct['name'];
-            
+
             $arrUpdateKeys = array(
                 'product_id', 'product_class_id', 'product_type_id', 'point_rate',
                 'product_code', 'product_name', 'classcategory_name1', 'classcategory_name2',
@@ -817,10 +817,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
             foreach ($arrUpdateKeys as $key) {
                 $arrValues = $objFormParam->getValue($key);
                 // FIXME getValueで文字列が返る場合があるので配列であるかをチェック
-                if(!is_array($arrValues)) {
+                if (!is_array($arrValues)) {
                     $arrValues = array();
                 }
-                
+
                 if (isset($changed_no)) {
                     $arrValues[$changed_no] = $arrProduct[$key];
                 } else {

@@ -50,7 +50,7 @@ class SC_Query {
      */
     function __construct($dsn = '', $force_run = false, $new = false) {
 
-        if ($dsn == "") {
+        if ($dsn == '') {
             $dsn = array('phptype'  => DB_TYPE,
                          'username' => DB_USER,
                          'password' => DB_PASSWORD,

@@ -42,7 +42,7 @@ class LC_Page_Cart extends LC_Page_Ex {
     var $mode;
 
     /** メッセージ */
-    public $tpl_message = "";
+    public $tpl_message = '';
 
     // }}}
     // {{{ functions

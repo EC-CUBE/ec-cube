@@ -72,7 +72,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         // パラメーター情報の初期化
         $this->initParam($objFormParam, $mode);
         $objFormParam->setParam($_POST);
- 
+
         $mode = $this->getMode();
 
         switch ($mode) {
@@ -183,22 +183,22 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
                     // エラーメッセージを詰め直す.
                     $this->arrErr['priority'][$plugin_id] = $arrErr['priority'];
                 }
-                
+
                 break;
             default:
                 break;
         }
         // DBからプラグイン情報を取得
         $plugins = SC_Plugin_Util_Ex::getAllPlugin();
-        
+
         foreach ($plugins as $key => $plugin) {
             // ロゴファイルへのパスを生成（ロゴが無い場合はNO_IMAGEを表示）
-            if(file_exists(PLUGIN_HTML_REALDIR . $plugins[$key]['plugin_code'] . "/logo.png") === true){
-                $plugins[$key]['logo'] = ROOT_URLPATH . "plugin/" . $plugins[$key]['plugin_code'] . "/logo.png";
+            if (file_exists(PLUGIN_HTML_REALDIR . $plugins[$key]['plugin_code'] . '/logo.png') === true){
+                $plugins[$key]['logo'] = ROOT_URLPATH . 'plugin/' . $plugins[$key]['plugin_code'] . '/logo.png';
             } else {
-                $plugins[$key]['logo'] = IMAGE_SAVE_URLPATH . "noimage_plugin_list.gif";
+                $plugins[$key]['logo'] = IMAGE_SAVE_URLPATH . 'noimage_plugin_list.gif';
             }
-            
+
             // 設定ファイルがあるかを判定.
             $plugins[$key]['config_flg'] = $this->isContainsFile(PLUGIN_UPLOAD_REALDIR . $plugin['plugin_code'], 'config.php');
             if ($plugins[$key]['enable'] === PLUGIN_ENABLE_TRUE) {
@@ -339,7 +339,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
     function installPlugin($upload_file_file_name, $key) {
         // インストール前に不要なファイルを消しておきます.
         SC_Helper_FileManager_Ex::deleteFile(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, false);
-        
+
         //シンタックスエラーがあるtar.gzをアップ後、削除するとたまにディレクトリが消えるので追加
         $this->makeDir(PLUGIN_UPLOAD_REALDIR);
 
@@ -382,7 +382,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
             $arrErr['plugin_file'] = '※ ' . $plugin_name . 'は既にインストールされています。<br/>';
             return $arrErr;
         }
-        
+
         // プラグイン情報をDB登録
         if ($this->registerData($arrPluginInfo) === false) {
             $this->rollBack(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR);
@@ -556,7 +556,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
     function updatePlugin($target_plugin, $upload_file_name) {
         // アップデート前に不要なファイルを消しておきます.
         SC_Helper_FileManager_Ex::deleteFile(DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR, false);
-        
+
         $arrErr = array();
 
         // ファイルをチェックし展開します.
@@ -577,7 +577,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
             $arrErr[$target_plugin['plugin_code']] = '※ プラグインコードが一致しません。<br/>';
             return $arrErr;
         }
-        
+
         // plugin_update.phpを読み込み.
         $arrErr = $this->requirePluginFile(DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR . 'plugin_update.php', $target_plugin['plugin_code']);
         if ($this->isError($arrErr) === true) {
@@ -640,9 +640,9 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         if ($this->isError($arrErr) === true) {
             return $arrErr;
         }
-        
+
         // プラグインが有効な場合に無効化処理を実行
-        if($plugin['enable'] == PLUGIN_ENABLE_TRUE){
+        if ($plugin['enable'] == PLUGIN_ENABLE_TRUE){
             // 無効化処理を実行します.
             $arrErr = $this->execPlugin($plugin, $plugin['class_name'], 'disable');
             if ($this->isError($arrErr) === true) {
@@ -651,7 +651,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
             // プラグインを無効にします.
             $this->updatePluginEnable($plugin['plugin_id'], PLUGIN_ENABLE_FALSE);
         }
-        
+
         // アンインストール処理を実行します.
         $arrErr = $this->execPlugin($plugin, $plugin['class_name'], 'uninstall');
         // プラグインの削除処理.
@@ -838,7 +838,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         }
         return $arrErr;
     }
-    
+
     /**
      * プラグインアーカイブを解凍する.
      *

@@ -48,10 +48,10 @@ class LC_Page_FrontParts_Bloc extends LC_Page_Ex {
         $this->objDisplay = new SC_Display_Ex();
 
         $this->setTplMainpage($this->blocItems['tpl_path']);
-        
+
         // トランザクショントークンの検証と生成
         $this->setTokenTo();
-        
+
         // ローカルフックポイントを実行.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $this->doLocalHookpointBefore($objPlugin);

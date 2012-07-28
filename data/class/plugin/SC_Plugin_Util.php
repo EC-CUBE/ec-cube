@@ -168,5 +168,4 @@ class SC_Plugin_Util {
         }
         return $arrErr;
     }
-    
 }

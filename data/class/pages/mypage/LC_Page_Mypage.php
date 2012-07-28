@@ -56,7 +56,7 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
         }
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrCustomerOrderStatus = $masterData->getMasterData('mtb_customer_order_status');
-        
+
         $this->httpCacheControl('nocache');
     }
 
@@ -102,8 +102,6 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
         $this->arrPayment = SC_Helper_DB_Ex::sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
         // 1ページあたりの件数
         $this->dispNumber = SEARCH_PMAX;
-        
-        
     }
 
     /**

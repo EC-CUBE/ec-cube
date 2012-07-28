@@ -292,11 +292,11 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
             $arrParams['page_id'] = $page_id;
             $arrParams['bloc_id'] = $id;
             $arrParams['bloc_row'] = $objFormParam->getValue('top_' . $i);
-            
+
             if ($arrParams['page_id'] == 0) {
                 $arrParams['anywhere'] = 0;
             }
-            
+
             $objQuery->insert('dtb_blocposition', $arrParams);
         }
         $objQuery->commit();
