@@ -30,7 +30,7 @@ class SC_Cookie {
     var $expire;
 
     // コンストラクタ
-    function __construct($day = 365) {
+    function __construct($day = COOKIE_EXPIRE) {
         // 有効期限
         $this->expire = time() + ($day * 24 * 3600);
     }

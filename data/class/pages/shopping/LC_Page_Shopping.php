@@ -79,7 +79,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
         $objSiteSess = new SC_SiteSession_Ex();
         $objCartSess = new SC_CartSession_Ex();
         $objCustomer = new SC_Customer_Ex();
-        $objCookie = new SC_Cookie_Ex(COOKIE_EXPIRE);
+        $objCookie = new SC_Cookie_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objFormParam = new SC_FormParam_Ex();
 
