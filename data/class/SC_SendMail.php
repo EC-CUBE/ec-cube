@@ -264,7 +264,10 @@ class SC_SendMail {
         // メール送信
         $result = $this->objMail->send($recip, $header, $this->body);
         if (PEAR::isError($result)) {
-            GC_Utils_Ex::gfPrintLog($result->getMessage());
+            // XXX Windows 環境では SJIS でメッセージを受け取るようなので変換する。
+            $msg = mb_convert_encoding($result->getMessage(), CHAR_CODE, 'auto');
+            $msg = 'メール送信に失敗しました。[' . $msg . ']';
+            trigger_error($msg, E_USER_WARNING);
             GC_Utils_Ex::gfDebugLog($header);
             return false;
         }
