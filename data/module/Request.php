@@ -27,4 +27,4 @@
  * @deprecated
  */
 
-trigger_error('従来互換用の HTTP_Request が読み込まれました。', E_WARNING);
+trigger_error('従来互換用の HTTP_Request が読み込まれました。', E_USER_WARNING);

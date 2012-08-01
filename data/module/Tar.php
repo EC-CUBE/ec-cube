@@ -27,4 +27,4 @@
  * @deprecated
  */
 
-trigger_error('従来互換用の Archive_Tar が読み込まれました。', E_WARNING);
+trigger_error('従来互換用の Archive_Tar が読み込まれました。', E_USER_WARNING);
