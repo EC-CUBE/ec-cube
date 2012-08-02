@@ -72,7 +72,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
             $this->tpl_enable_ssl = TRUE;
         }
 
-        $objFormParam = new SC_FormParam;
+        $objFormParam = new SC_FormParam_Ex;
 
         // パラメーターの初期化
         $this->initParam($objFormParam, $_POST);

@@ -67,7 +67,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex {
      */
     function action() {
 
-        $objFormParam = new SC_FormParam;
+        $objFormParam = new SC_FormParam_Ex;
 
         // パラメーター情報初期化
         $this->lfInitParam($objFormParam);

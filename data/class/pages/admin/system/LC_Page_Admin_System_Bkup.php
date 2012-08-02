@@ -79,7 +79,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
      */
     function action() {
 
-        $objFormParam = new SC_FormParam;
+        $objFormParam = new SC_FormParam_Ex;
 
         // パラメーターの初期化
         $this->initParam($objFormParam, $_POST);
