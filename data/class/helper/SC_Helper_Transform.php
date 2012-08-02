@@ -552,9 +552,12 @@ class SC_Helper_Transform {
      * @return void
      */
     protected function lfAddElement($elementNo, array &$arrElement) {
-        if (!array_key_exists($arrElement[0], $this->arrSelectElements[$this->search_depth])) {
+        if(is_array($this->arrSelectElements[$this->search_depth]) && array_key_exists($arrElement[0], $this->arrSelectElements[$this->search_depth])) {
+            //nop
+        } else {
             $this->arrSelectElements[$this->search_depth][$arrElement[0]] = array($elementNo, &$arrElement[1]);
         }
+        
     }
 
 
