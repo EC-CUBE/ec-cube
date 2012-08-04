@@ -113,8 +113,13 @@ class SC_SendMail {
         $this->body = mb_convert_encoding($body, 'JIS', CHAR_CODE);
     }
 
-    // SMTPサーバーの設定
+    /**
+     * 前方互換用
+     *
+     * @deprecated 2.12.2 (#1912)
+     */
     function setHost($host) {
+        trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         $this->host = $host;
         $arrHost = array(
                 'host' => $this->host,
@@ -125,8 +130,13 @@ class SC_SendMail {
 
     }
 
-    // SMTPポートの設定
+    /**
+     * 前方互換用
+     *
+     * @deprecated 2.12.2 (#1912)
+     */
     function setPort($port) {
+        trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         $this->port = $port;
         $arrHost = array(
                 'host' => $this->host,
