@@ -110,8 +110,7 @@ class SC_Helper_Transform {
             $this->header_source = $arrMatches[1];
             $source = $arrMatches[2];
             $this->footer_source = $arrMatches[3];
-        }
-        elseif (preg_match('/^.*?<body[^>]*>.+<\/body>.*$/is', $source)) {
+        } elseif (preg_match('/^.*?<body[^>]*>.+<\/body>.*$/is', $source)) {
             $source = '<meta http-equiv="content-type" content="text/html; charset=UTF-8" /><html><!--TemplateTransformer start-->'.$source.'<!--TemplateTransformer end--></html>';
         }
         else {

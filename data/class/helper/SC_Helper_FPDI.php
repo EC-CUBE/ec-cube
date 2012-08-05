@@ -88,8 +88,7 @@ class SC_Helper_FPDI extends PDF_Japanese {
                 if ($o == 32) {
                     $sep=$i;
                 }
-            }
-            elseif($o >= 161 && $o <= 223) {
+            } elseif ($o >= 161 && $o <= 223) {
                 // Half-width katakana
                 $l += 500;
                 $n = 1;
