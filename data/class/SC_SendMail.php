@@ -21,19 +21,23 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-//--- テキスト/HTML　メール送信
+// テキスト/HTML　メール送信
 class SC_SendMail {
 
-    var $to;            //  送信先
-    var $subject;       //  題名
-    var $body;          //  本文
+    var $to;            // 送信先
+    var $subject;       // 題名
+    var $body;          // 本文
     var $cc;            // CC
     var $bcc;           // BCC
     var $replay_to;     // replay_to
     var $return_path;   // return_path
     var $objMail;
 
-    // コンストラクタ
+    /**
+     * コンストラクタ
+     *
+     * @return void
+     */
     function __construct() {
         $this->arrRecip = array();
         $this->to = '';
@@ -46,11 +50,14 @@ class SC_SendMail {
         $this->backend = MAIL_BACKEND;
         $this->host = SMTP_HOST;
         $this->port = SMTP_PORT;
-        mb_language('Japanese');
 
-        //-- PEAR::Mailを使ってメール送信オブジェクト作成
+        // PEAR::Mailを使ってメール送信オブジェクト作成
         $this->objMail =& Mail::factory($this->backend,
                                         $this->getBackendParams($this->backend));
+        if (PEAR::isError($this->objMail)) {
+            // XXX 環境によっては文字エンコードに差異がないか些か心配
+            trigger_error($this->objMail->getMessage(), E_USER_ERROR);
+        }
     }
 
     // 送信先の設定
@@ -102,9 +109,7 @@ class SC_SendMail {
     // 件名の設定
     function setSubject($subject) {
         $this->subject = mb_encode_mimeheader($subject, 'JIS', 'B', "\n");
-        $this->subject = str_replace("\x0D\x0A", "\n", $this->subject);
-        $this->subject = str_replace("\x0D", "\n", $this->subject);
-        $this->subject = str_replace("\x0A", "\n", $this->subject);
+        $this->subject = str_replace(array("\r\n", "\r"), "\n", $this->subject);
     }
 
     // 本文の設定
@@ -125,7 +130,7 @@ class SC_SendMail {
                 'host' => $this->host,
                 'port' => $this->port
         );
-        //-- PEAR::Mailを使ってメール送信オブジェクト作成
+        // PEAR::Mailを使ってメール送信オブジェクト作成
         $this->objMail =& Mail::factory('smtp', $arrHost);
 
     }
@@ -142,7 +147,7 @@ class SC_SendMail {
                 'host' => $this->host,
                 'port' => $this->port
         );
-        //-- PEAR::Mailを使ってメール送信オブジェクト作成
+        // PEAR::Mailを使ってメール送信オブジェクト作成
         $this->objMail =& Mail::factory('smtp', $arrHost);
     }
 
@@ -208,7 +213,7 @@ class SC_SendMail {
 
     // ヘッダーを返す
     function getBaseHeader() {
-        //-- 送信するメールの内容と送信先
+        // 送信するメールの内容と送信先
         $arrHeader = array();
         $arrHeader['MIME-Version'] = '1.0';
         $arrHeader['To'] = $this->to;
@@ -304,14 +309,15 @@ class SC_SendMail {
             case 'mail':
                 $arrParams = array();
                 break;
+
             case 'sendmail':
                 $arrParams = array(
                     'sendmail_path' => '/usr/bin/sendmail',
                     'sendmail_args' => '-i',
                 );
                 break;
+
             case 'smtp':
-            default:
                 $arrParams = array(
                     'host' => $this->host,
                     'port' => $this->port,
@@ -325,6 +331,10 @@ class SC_SendMail {
                     $arrParams['password'] = SMTP_PASSWORD;
                 }
                 break;
+
+            default:
+                trigger_error('不明なバックエンド。[$backend = ' . var_export($backend, true) . ']', E_USER_ERROR);
+                exit;
         }
         return $arrParams;
     }
