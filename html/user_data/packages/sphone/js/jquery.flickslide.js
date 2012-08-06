@@ -68,7 +68,7 @@
                                                 $(settings.parentArea + ' .flickSlideContainer li.slideUnit').get(0))
                                                 .width.replace('px',''))*-1;
 
-                                    $('div.flickSlideContainer ul.move').get(0).style.webkitTransform = 'translate3d(0,0,0)';
+                                    $('div.flickSlideContainer ul.move').get(0).style.webkitTransform = 'translate(0,0)';
                                 }
                                 currentX=0;
                                 slideCount=0;
@@ -79,7 +79,7 @@
                         },orientationChangeDelay);
          }
          function lotation(){
-             //if(slideLock===0){var slideUnitWidth=slideObj.children('li.slideUnit').outerWidth();slideObj.get(0).style.webkitTransition='-webkit-transform 0.6s ease-out';diffX=-151;if(currentX===maxX){slideObj.get(0).style.webkitTransform='translate3d(0, 0, 0)';currentX=0;slideCount=0;slidePager();}else{currentX=currentX-slideUnitWidth;slideObj.get(0).style.webkitTransform='translate3d('+currentX+'px, 0, 0)';slideCount++;slidePager();}}
+             //if(slideLock===0){var slideUnitWidth=slideObj.children('li.slideUnit').outerWidth();slideObj.get(0).style.webkitTransition='-webkit-transform 0.6s ease-out';diffX=-151;if(currentX===maxX){slideObj.get(0).style.webkitTransform='translate(0, 0)';currentX=0;slideCount=0;slidePager();}else{currentX=currentX-slideUnitWidth;slideObj.get(0).style.webkitTransform='translate('+currentX+'px, 0)';slideCount++;slidePager();}}
              //slideLock=0;slideTimer=setTimeout(lotation,slideDuration);
          }
          function slidePager(){
@@ -118,12 +118,12 @@
                             slideObj.get(0).style.webkitTransition='-webkit-transform 0.6s ease-out';
                             if(settings.direction==='prev'){
                                 if(currentX==0){
-                                    slideObj.get(0).style.webkitTransform='translate3d(0, 0, 0)';
+                                    slideObj.get(0).style.webkitTransform='translate(0, 0)';
                                     slideTimer=setTimeout(lotation,slideDuration);
                                     slideLock=0;
                                 }else{
                                     currentX = currentX+slideUnitWidth;
-                                    slideObj.get(0).style.webkitTransform = 'translate3d('+currentX+'px, 0, 0)';
+                                    slideObj.get(0).style.webkitTransform = 'translate('+currentX+'px, 0)';
                                     slideCount--;
                                     slidePager();
                                     slideTimer=setTimeout(lotation,slideDuration);
@@ -131,12 +131,12 @@
                                 }
                             }else if(settings.direction==='next'){
                                 if(currentX===maxX){
-                                    slideObj.get(0).style.webkitTransform='translate3d('+maxX+'px, 0, 0)';
+                                    slideObj.get(0).style.webkitTransform='translate('+maxX+'px, 0)';
                                     slideTimer=setTimeout(lotation,slideDuration);
                                     slideLock=0;
                                 }else{
                                     currentX=currentX-slideUnitWidth;
-                                    slideObj.get(0).style.webkitTransform='translate3d('+currentX+'px, 0, 0)';
+                                    slideObj.get(0).style.webkitTransform='translate('+currentX+'px, 0)';
                                     slideCount++;
                                     slidePager();
                                     slideTimer=setTimeout(lotation,slideDuration);
@@ -173,7 +173,7 @@
                          e.preventDefault();
                          moveX=Number(currentX+diffX);
                          slideObj.css('-webkit-transition','none');
-                         slideObj.get(0).style.webkitTransform='translate3d( '+moveX+'px, 0, 0)';
+                         slideObj.get(0).style.webkitTransform='translate( '+moveX+'px, 0)';
                      }
                  }else if(e.type=="touchend"){
                      var endTime=(new Date()).getTime();
@@ -185,28 +185,28 @@
                      }
                      if(diffX>settings.targetWidth||(diffX>60&&diffTime<400&&orientationChangeDelay===0)){
                          if(currentX==0){
-                             slideObj.get(0).style.webkitTransform='translate3d(0, 0, 0)';
+                             slideObj.get(0).style.webkitTransform='translate(0, 0)';
                          }else{
                              currentX=currentX+slideUnitWidth;
-                             slideObj.get(0).style.webkitTransform='translate3d('+currentX+'px, 0, 0)';
+                             slideObj.get(0).style.webkitTransform='translate('+currentX+'px, 0)';
                              slideCount--;
                              slidePager();
                          }
                      }else if(diffX<(settings.targetWidth*-1)||(diffX<-60&&diffTime<400&&orientationChangeDelay===0)){
                          if(currentX===maxX){
-                             slideObj.get(0).style.webkitTransform='translate3d('+maxX+'px, 0, 0)';
+                             slideObj.get(0).style.webkitTransform='translate('+maxX+'px, 0)';
                          }else{
                              currentX=currentX-slideUnitWidth;
-                             slideObj.get(0).style.webkitTransform='translate3d('+currentX+'px, 0, 0)';
+                             slideObj.get(0).style.webkitTransform='translate('+currentX+'px, 0)';
                              slideCount++;slidePager();
                          }
                      }else{
                          if(currentX===0){
-                             slideObj.get(0).style.webkitTransform='translate3d(0, 0, 0)';
+                             slideObj.get(0).style.webkitTransform='translate(0, 0)';
                          }else if(currentX===maxX){
-                             slideObj.get(0).style.webkitTransform='translate3d('+maxX+'px, 0, 0)';
+                             slideObj.get(0).style.webkitTransform='translate('+maxX+'px, 0)';
                          }else{
-                             slideObj.get(0).style.webkitTransform='translate3d('+currentX+'px, 0, 0)';
+                             slideObj.get(0).style.webkitTransform='translate('+currentX+'px, 0)';
                          }
                      }
                      slideTimer=setTimeout(lotation,slideDuration);slideLock=0;}}

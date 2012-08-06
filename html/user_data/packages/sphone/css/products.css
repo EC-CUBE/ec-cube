@@ -351,7 +351,7 @@ ul.status_icon li {
     list-style: none;
     width: 2000px;
     -webkit-transition: all 0.6s ease-in-out;
-    -webkit-transform: translate3d(0,0,0);
+    -webkit-transform: translate(0,0);
     -webkit-transition-duration: 400ms;
     -webkit-transition-property: -webkit-transform;
     margin: 0;
@@ -511,7 +511,7 @@ ul.status_icon li {
     top: 0;
     list-style: none;
     -webkit-transition: all 0.6s ease-in-out;
-    -webkit-transform: translate3d(0,0,0);
+    -webkit-transform: translate(0,0);
     /*-webkit-transition-duration: 400ms;
     -webkit-transition-property: -webkit-transform;
     */
