@@ -98,6 +98,13 @@ class SC_MobileUserAgent {
     /**
      * EC-CUBE がサポートする携帯端末かどうかを判別する。
      *
+     * 以下の条件に該当する場合は, false を返す.
+     *
+     * - 携帯端末だと判別されたが, ユーザーエージェントが解析不能な場合
+     * - J-PHONE C4型(パケット非対応)
+     * - EzWeb で WAP2 以外の端末
+     * - DoCoMo 501i, 502i, 209i, 210i, SH821i, N821i, P821i, P651ps, R691i, F671i, SH251i, SH251iS
+     *
      * @return boolean サポートしている場合は true、それ以外の場合は false を返す。
      */
     function isSupported() {
