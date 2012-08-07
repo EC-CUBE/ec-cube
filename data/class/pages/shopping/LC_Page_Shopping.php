@@ -183,7 +183,10 @@ class LC_Page_Shopping extends LC_Page_Ex {
 
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     $this->lfRegistData($this->tpl_uniqid, $objPurchase, $objCustomer, $objFormParam);
-                    $objPurchase->setShipmentItemTempForSole($objCartSess);
+
+                    $arrParams = $objFormParam->getHashArray();
+                    $shipping_id = $arrParams['deliv_check'] == '1' ? 1 : 0;
+                    $objPurchase->setShipmentItemTempForSole($objCartSess, $shipping_id);
 
                     $objSiteSess->setRegistFlag();
 
