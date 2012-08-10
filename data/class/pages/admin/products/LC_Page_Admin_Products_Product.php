@@ -1061,6 +1061,9 @@ __EOF__;
                     foreach ($arrProductsClass as $arrData) {
                         $sqlval = $arrData;
                         $sqlval['product_class_id'] = $objQuery->nextVal('dtb_products_class_product_class_id');
+                        $sqlval['deliv_fee'] = $arrList['deliv_fee'];
+                        $sqlval['point_rate'] = $arrList['point_rate'];
+                        $sqlval['sale_limit'] = $arrList['sale_limit'];
                         $sqlval['product_id'] = $product_id;
                         $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
                         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
