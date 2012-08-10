@@ -52,7 +52,7 @@ class SC_CartSession {
         // 1世代古いコピー情報は、削除しておく
         foreach ($_SESSION as $key => $value) {
             if ($key != $this->key_tmp && preg_match('/^savecart_/', $key)) {
-                unset($this->cartSession[$productTypeId][$key]);
+                unset($_SESSION[$key]);
             }
         }
     }
