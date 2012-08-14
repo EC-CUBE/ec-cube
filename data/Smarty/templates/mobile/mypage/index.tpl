@@ -53,6 +53,16 @@
             <!--{$arrPayment[$payment_id]|h}--><br>
             ▽合計金額<br>
             <font color="#ff0000"><!--{$arrOrder[cnt].payment_total|number_format}-->円</font><br>
+            ▽ご注文状況<br>
+            <!--{if $smarty.const.MYPAGE_ORDER_STATUS_DISP_FLAG }-->
+                <!--{assign var=order_status_id value="`$arrOrder[cnt].status`"}-->
+                <!--{if $order_status_id != $smarty.const.ORDER_PENDING }-->
+                    <!--{$arrCustomerOrderStatus[$order_status_id]|h}--><br>
+                <!--{else}-->
+                    <font color="#ff0000"><!--{$arrCustomerOrderStatus[$order_status_id]|h}--></font><br>
+                <!--{/if}-->
+            <!--{/if}-->
+            
             <div align="right"><a href="./history.php?order_id=<!--{$arrOrder[cnt].order_id}-->">→詳細を見る</a></div><br>
         <!--{/section}-->
         <hr>
