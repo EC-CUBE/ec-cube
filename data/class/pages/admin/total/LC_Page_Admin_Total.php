@@ -808,6 +808,10 @@ __EOS__;
             foreach ($arrDataCol as $val) {
                 $arrRet[$i][$val] = $arrData[$i][$val];
             }
+            // 期間別集計の合計行の「期間」項目に不要な値が表示されてしまわない様、'合計'と表示する
+            if ( ($i === $max -1) && isset($arrRet[$i]['str_date']) ) {
+                $arrRet[$i]['str_date'] = '合計';
+            }
             $csv_data.= SC_Utils_Ex::sfGetCSVList($arrRet[$i]);
         }
         return $csv_data;
