@@ -199,33 +199,31 @@ class SC_Helper_Purchase {
      * @return void
      */
     function verifyChangeCart($uniqId, &$objCartSession) {
-        $cartKeys = $objCartSession->getKeys();
+        $cartKey = $objCartSession->getKey();
 
         // カート内が空でないか
-        if (SC_Utils_Ex::isBlank($cartKeys)) {
+        if (SC_Utils_Ex::isBlank($cartKey)) {
             SC_Response_Ex::sendRedirect(CART_URLPATH);
             exit;
         }
 
-        foreach ($cartKeys as $cartKey) {
-            // 初回のみカートの内容を保存
-            $objCartSession->saveCurrentCart($uniqId, $cartKey);
+        // 初回のみカートの内容を保存
+        $objCartSession->saveCurrentCart($uniqId, $cartKey);
 
-            /*
-             * POSTのユニークIDとセッションのユニークIDを比較
-             *(ユニークIDがPOSTされていない場合はスルー)
-             */
-            if (!SC_SiteSession_Ex::checkUniqId()) {
-                SC_Utils_Ex::sfDispSiteError(CANCEL_PURCHASE);
-                exit;
-            }
+        /*
+         * POSTのユニークIDとセッションのユニークIDを比較
+         *(ユニークIDがPOSTされていない場合はスルー)
+         */
+        if (!SC_SiteSession_Ex::checkUniqId()) {
+            SC_Utils_Ex::sfDispSiteError(CANCEL_PURCHASE);
+            exit;
+        }
 
-            // 購入ボタンを押してから変化がないか
-            $quantity = $objCartSession->getTotalQuantity($cartKey);
-            if ($objCartSession->checkChangeCart($cartKey) || !($quantity > 0)) {
-                SC_Response_Ex::sendRedirect(CART_URLPATH);
-                exit;
-            }
+        // 購入ボタンを押してから変化がないか
+        $quantity = $objCartSession->getTotalQuantity($cartKey);
+        if ($objCartSession->checkChangeCart($cartKey) || !($quantity > 0)) {
+            SC_Response_Ex::sendRedirect(CART_URLPATH);
+            exit;
         }
     }
 
