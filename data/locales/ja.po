@@ -1,0 +1,179 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: EC-CUBE Core\n"
+"POT-Creation-Date: 2012-05-07 13T_39+0900\n"
+"PO-Revision-Date: 2012-08-21 16:44+0900\n"
+"Last-Translator: PineRay <matsuda@cyber-will.co.jp>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+msgid "SC_CHECKERROR_HTML_TAG_CHECK"
+msgstr "※ T_FIELDに許可されていないタグ T_TAG が含まれています。<br />"
+
+msgid "SC_CHECKERROR_EXIST_CHECK_INPUT"
+msgstr "※ T_FIELDが入力されていません。<br />"
+
+msgid "SC_CHECKERROR_EXIST_CHECK_SELECT"
+msgstr "※ T_FIELDが選択されていません。<br />"
+
+msgid "SC_CHECKERROR_EXIST_CHECK_REVERSE"
+msgstr "※ T_FIELDが入力されていません。<br />"
+
+msgid "SC_CHECKERROR_SPTAB_CHECK"
+msgstr "※ T_FIELDにスペース、タブ、改行のみの入力はできません。<br />"
+
+msgid "SC_CHECKERROR_NO_SPTAB"
+msgstr "※ T_FIELDにスペース、タブ、改行は含めないで下さい。<br />"
+
+msgid "SC_CHECKERROR_ZERO_START"
+msgstr "※ T_FIELDに0で始まる数値が入力されています。<br />"
+
+msgid "SC_CHECKERROR_SELECT_CHECK"
+msgstr "※ T_FIELDが選択されていません。<br />"
+
+msgid "SC_CHECKERROR_EQUAL_CHECK"
+msgstr "※ T_FIELD_1STとT_FIELD_2NDが一致しません。<br />"
+
+msgid "SC_CHECKERROR_DIFFERENT_CHECK"
+msgstr "※ T_FIELD_1STとT_FIELD_2NDは、同じ値を使用できません。<br />"
+
+msgid "SC_CHECKERROR_GREATER_CHECK"
+msgstr "※ T_FIELD_1STはT_FIELD_2NDより大きい値を入力できません。<br />"
+
+msgid "SC_CHECKERROR_MAX_LENGTH_CHECK"
+msgstr "※ T_FIELDはT_LENGTH字以下で入力してください。<br />"
+
+msgid "SC_CHECKERROR_MIN_LENGTH_CHECK_SINGLE"
+msgid_plural "SC_CHECKERROR_MIN_LENGTH_CHECK_PLURAL"
+msgstr[0] "※ T_FIELDはT_COUNT字以上で入力してください。<br />"
+msgstr[1] "※ T_FIELDはT_COUNT字以上で入力してください。<br />"
+
+msgid "SC_CHECKERROR_MAX_CHECK"
+msgstr "※ T_FIELDはT_LENGTH以下で入力してください。<br />"
+
+msgid "SC_CHECKERROR_MIN_CHECK_SINGLE"
+msgid_plural "SC_CHECKERROR_MIN_CHECK_PLURAL"
+msgstr[0] "※ T_FIELDはT_COUNT以上で入力してください。<br />"
+msgstr[1] "※ T_FIELDはT_COUNT以上で入力してください。<br />"
+
+msgid "SC_CHECKERROR_NUM_CHECK"
+msgstr "※ T_FIELDは数字で入力してください。<br />"
+
+msgid "SC_CHECKERROR_NUM_POINT_CHECK"
+msgstr "※ T_FIELDは数字で入力してください。<br />"
+
+msgid "SC_CHECKERROR_ALPHA_CHECK"
+msgstr "※ T_FIELDは半角英字で入力してください。<br />"
+
+msgid "SC_CHECKERROR_TEL_CHECK_EXIST"
+msgstr "※ T_FIELDはすべての項目を入力してください。<br />"
+
+msgid "SC_CHECKERROR_TEL_CHECK_MAX_LENGTH"
+msgstr "※ T_FIELDはT_LENGTH字以内で入力してください。<br />"
+
+msgid "SC_CHECKERROR_TEL_CHECK_NUM"
+msgstr "※ T_FIELDは数字で入力してください。<br />"
+
+msgid "SC_CHECKERROR_TEL_CHECK_SUM"
+msgstr "※ T_FIELDはT_LENGTH文字以内で入力してください。<br />"
+
+msgid "SC_CHECKERROR_FULL_EXIST_CHECK"
+msgstr "※ T_FIELDが入力されていません。<br />"
+
+msgid "SC_CHECKERROR_ALL_EXIST_CHECK"
+msgstr "※ T_FIELDはすべての項目を入力して下さい。<br />"
+
+msgid "SC_CHECKERROR_ONE_EXIST_CHECK"
+msgstr "※ T_FIELDが入力されていません。<br />"
+
+msgid "SC_CHECKERROR_TOP_EXIST_CHECK"
+msgstr "※ T_FIELDは先頭の項目から順番に入力して下さい。<br />"
+
+msgid "SC_CHECKERROR_KANA_CHECK"
+msgstr "※ T_FIELDはカタカナで入力してください。<br />"
+
+msgid "SC_CHECKERROR_KANABLANK_CHECK"
+msgstr "※ T_FIELDはカタカナで入力してください。<br />"
+
+msgid "SC_CHECKERROR_ALNUM_CHECK"
+msgstr "※ T_FIELDは英数字で入力してください。<br />"
+
+msgid "SC_CHECKERROR_GRAPH_CHECK"
+msgstr "※ T_FIELDは英数記号で入力してください。<br />"
+
+msgid "SC_CHECKERROR_ZERO_CHECK"
+msgstr "※ T_FIELDは1以上を入力してください。<br />"
+
+msgid "SC_CHECKERROR_NUM_RANGE_CHECK_SINGLE"
+msgid_plural "SC_CHECKERROR_NUM_RANGE_CHECK_PLURAL"
+msgstr[0] "※ T_FIELDはT_COUNT桁～T_DIGIT_MAX桁で入力して下さい。<br />"
+msgstr[1] "※ T_FIELDはT_COUNT桁～T_DIGIT_MAX桁で入力して下さい。<br />"
+
+msgid "SC_CHECKERROR_NUM_COUNT_CHECK_SINGLE"
+msgid_plural "SC_CHECKERROR_NUM_COUNT_CHECK_PLURAL"
+msgstr[0] "※ T_FIELDはT_COUNT桁で入力して下さい。<br />"
+msgstr[1] "※ T_FIELDはT_COUNT桁で入力して下さい。<br />"
+
+msgid "SC_CHECKERROR_EMAIL_CHECK"
+msgstr "※ T_FIELDの形式が不正です。<br />"
+
+msgid "SC_CHECKERROR_EMAIL_CHAR_CHECK"
+msgstr "※ T_FIELDに使用する文字を正しく入力してください。<br />"
+
+msgid "SC_CHECKERROR_URL_CHECK"
+msgstr "※ T_FIELDを正しく入力してください。<br />"
+
+msgid "SC_CHECKERROR_IP_CHECK"
+msgstr "※ T_FIELDに正しい形式のIPアドレスを入力してください。<br />"
+
+msgid "SC_CHECKERROR_FILE_EXT_CHECK"
+msgstr "※ T_FIELDで許可されている形式は、T_EXTです。<br />"
+
+msgid "SC_CHECKERROR_FIND_FILE"
+msgstr "※ T_PATHが見つかりません。<br />"
+
+msgid "SC_CHECKERROR_FILE_EXIST_CHECK"
+msgstr "※ T_FIELDをアップロードして下さい。<br />"
+
+msgid "SC_CHECKERROR_FILE_SIZE_CHECK"
+msgstr "※ T_FIELDのファイルサイズはT_SIZET_UNIT以下のものを使用してください。<br />"
+
+msgid "SC_CHECKERROR_FILE_NAME_CHECK"
+msgstr "※ T_FIELDのファイル名に日本語やスペースは使用しないで下さい。<br />"
+
+msgid "SC_CHECKERROR_CHECK_DATE_ALL_EXIST"
+msgstr "※ T_FIELDはすべての項目を入力して下さい。<br />"
+
+msgid "SC_CHECKERROR_CHECK_DATE_PROPER"
+msgstr "※ T_FIELDが正しくありません。<br />"
+
+msgid "SC_CHECKERROR_CHECK_SET_TERM_PROPER"
+msgstr "※ T_FIELDを正しく指定してください。<br />"
+
+msgid "SC_CHECKERROR_CHECK_SET_TERM_RANGE"
+msgstr "※ T_STARTとT_ENDの期間指定が不正です。<br />"
+
+msgid "SC_CHECKERROR_DIR_CHECK"
+msgstr "※ 指定したT_FIELDは存在しません。<br />"
+
+msgid "SC_CHECKERROR_DOMAIN_CHECK"
+msgstr "※ T_FIELDの形式が不正です。<br />"
+
+msgid "SC_CHECKERROR_MOBILE_EMAIL_CHECK"
+msgstr "※ T_FIELDは携帯電話のものではありません。<br />"
+
+msgid "SC_CHECKERROR_CHECK_REGIST_CUSTOMER_EMAIL_EXIST"
+msgstr "※ すでに会員登録で使用されているT_FIELDです。<br />"
+
+msgid "SC_CHECKERROR_CHECK_REGIST_CUSTOMER_EMAIL_INTERVAL"
+msgstr "※ 退会から一定期間の間は、同じT_FIELDを使用することはできません。<br />"
+
+msgid "SC_CHECKERROR_PROHIBITED_STR_CHECK"
+msgstr "※ T_FIELDは入力できません。<br />"
+
+msgid "SC_CHECKERROR_EVAL_CHECK"
+msgstr "※ T_FIELDの形式が不正です。<br />"
+
