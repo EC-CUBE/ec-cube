@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2012-08-21 16:44+0900\n"
+"PO-Revision-Date: 2012-08-27 16:27+0900\n"
 "Last-Translator: PineRay <matsuda@cyber-will.co.jp>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -176,4 +176,34 @@ msgstr "※ T_FIELDは入力できません。<br />"
 
 msgid "SC_CHECKERROR_EVAL_CHECK"
 msgstr "※ T_FIELDの形式が不正です。<br />"
+
+msgid "SC_FORMPARAM_CHECKERROR_FILE_EXISTS"
+msgstr "※ T_NAMEのファイルが存在しません。<br />"
+
+msgid "SC_FORMPARAM_CHECKERROR_DEFAULT"
+msgstr "※※　エラーチェック形式(T_FUNCTION)には対応していません　※※ <br />"
+
+msgid "SC_FORMPARAM_SETHTMLDISPNAMEARRAY_REQUIRED"
+msgstr "T_NAME<span class=\"red\">(※ 必須)</span>"
+
+msgid "SC_FORMPARAM_SETHTMLDISPNAMEARRAY_DEFAULT"
+msgstr " [省略時初期値: T_DEFAULT]"
+
+msgid "SC_FORMPARAM_SETHTMLDISPNAMEARRAY_PROTECTED"
+msgstr " [登録・更新不可] "
+
+msgid "SC_CARTSESSION_UNWORKABLE_METHOD_CALLED"
+msgstr "正しく動作しないメソッドが呼び出されました。"
+
+msgid "SC_CARTSESSION_CHECKPRODUCTS_UNABLE"
+msgstr "※ 現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。"
+
+msgid "SC_CARTSESSION_CHECKPRODUCTS_UNDELIVERABLE"
+msgstr "※「T_PRODUCT」はまだ配送の準備ができておりません。恐れ入りますがお問い合わせページよりお問い合わせください。"
+
+msgid "SC_CARTSESSION_CHECKPRODUCTS_LIMIT"
+msgstr "※「T_PRODUCT」は販売制限(または在庫が不足)しております。一度に数量T_LIMITを超える購入はできません。"
+
+msgid "SC_CARTSESSION_CHECKPRODUCTS_SOLDOUT"
+msgstr "※「T_PRODUCT」は売り切れました。"
 

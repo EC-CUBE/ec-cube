@@ -391,7 +391,7 @@ class SC_CartSession {
      * @deprected getAllProductClassID を使用して下さい
      */
     function getAllProductID($productTypeId) {
-        trigger_error('正しく動作しないメソッドが呼び出されました。', E_USER_ERROR);
+        trigger_error(SC_I18n_Ex::t('SC_CARTSESSION_UNWORKABLE_METHOD_CALLED'), E_USER_ERROR);
     }
 
     /**
@@ -525,7 +525,7 @@ class SC_CartSession {
              */
             if (SC_Utils_Ex::isBlank($product) || $product['status'] != 1) {
                 $this->delProduct($arrItem['cart_no'], $productTypeId);
-                $tpl_message .= "※ 現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。\n";
+                $tpl_message .= SC_I18n_Ex::t('SC_CARTSESSION_CHECKPRODUCTS_UNABLE');
             } else {
 
                 /*
@@ -533,8 +533,7 @@ class SC_CartSession {
                  */
                 $arrDeliv = SC_Helper_Purchase_Ex::getDeliv($productTypeId);
                 if (SC_Utils_Ex::isBlank($arrDeliv)) {
-                    $tpl_message .= '※「' . $product['name'] . '」はまだ配送の準備ができておりません。';
-                    $tpl_message .= '恐れ入りますがお問い合わせページよりお問い合わせください。' . "\n";
+                    $tpl_message .= SC_I18n_Ex::t('SC_CARTSESSION_CHECKPRODUCTS_UNDELIVERABLE', array('T_PRODUCT' => $product['name']));
                     $this->delProduct($arrItem['cart_no'], $productTypeId);
                 }
 
@@ -547,11 +546,10 @@ class SC_CartSession {
                         $this->setProductValue($arrItem['id'], 'quantity', $limit, $productTypeId);
                         $total_inctax = SC_Helper_DB_Ex::sfCalcIncTax($arrItem['price']) * $limit;
                         $this->setProductValue($arrItem['id'], 'total_inctax', $total_inctax, $productTypeId);
-                        $tpl_message .= '※「' . $product['name'] . '」は販売制限(または在庫が不足)しております。';
-                        $tpl_message .= "一度に数量{$limit}を超える購入はできません。\n";
+                        $tpl_message .= SC_I18n_Ex::t('SC_CARTSESSION_CHECKPRODUCTS_LIMIT', array('T_PRODUCT' => $product['name'], 'T_LIMIT' => $limit));
                     } else {
                         $this->delProduct($arrItem['cart_no'], $productTypeId);
-                        $tpl_message .= '※「' . $product['name'] . "」は売り切れました。\n";
+                        $tpl_message .= SC_I18n_Ex::t('SC_CARTSESSION_CHECKPRODUCTS_SOLDOUT', array('T_PRODUCT' => $product['name']));
                         continue;
                     }
                 }

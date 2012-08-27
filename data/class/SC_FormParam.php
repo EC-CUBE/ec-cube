@@ -130,15 +130,15 @@ class SC_FormParam {
             }
 
             if ($find) {
-                $this->html_disp_name[$index] = $this->disp_name[$index] . '<span class="red">(※ 必須)</span>';
+                $this->html_disp_name[$index] = SC_I18n_Ex::t('SC_FORMPARAM_SETHTMLDISPNAMEARRAY_REQUIRED', array('T_NAME' => $this->disp_name[$index]));
             } else {
                 $this->html_disp_name[$index] = $this->disp_name[$index];
             }
             if ($this->arrDefault[$key] != '') {
-                $this->html_disp_name[$index] .= ' [省略時初期値: ' . $this->arrDefault[$key] . ']';
+                $this->html_disp_name[$index] .= SC_I18n_Ex::t('SC_FORMPARAM_SETHTMLDISPNAMEARRAY_DEFAULT', array('T_DEFAULT' => $this->arrDefault[$key]));
             }
             if ($this->input_db[$index] == false) {
-                $this->html_disp_name[$index] .= ' [登録・更新不可] ';
+                $this->html_disp_name[$index] .= SC_I18n_Ex::t('SC_FORMPARAM_SETHTMLDISPNAMEARRAY_PROTECTED');
             }
         }
     }
@@ -227,17 +227,17 @@ class SC_FormParam {
                     // ファイルの存在チェック
                     case 'FILE_EXISTS':
                         if ($value != '' && !file_exists($this->check_dir . $value)) {
-                            $arrErr[$key] = '※ ' . $this->disp_name[$index] . 'のファイルが存在しません。<br>';
+                            $arrErr[$key] = SC_I18n_Ex::t('SC_FORMPARAM_CHECKERROR_FILE_EXISTS', array('T_NAME' => $this->disp_name[$index]));
                         }
                         break;
                     // ダウンロード用ファイルの存在チェック
                     case 'DOWN_FILE_EXISTS':
                         if ($value != '' && !file_exists(DOWN_SAVE_REALDIR . $value)) {
-                            $arrErr[$key] = '※ ' . $this->disp_name[$index] . 'のファイルが存在しません。<br>';
+                            $arrErr[$key] = SC_I18n_Ex::t('SC_FORMPARAM_CHECKERROR_FILE_EXISTS', array('T_NAME' => $this->disp_name[$index]));
                         }
                         break;
                     default:
-                        $arrErr[$key] = "※※　エラーチェック形式($func)には対応していません　※※ <br>";
+                        $arrErr[$key] = SC_I18n_Ex::t('SC_FORMPARAM_CHECKERROR_DEFAULT', array('T_FUNCTION' => $func));
                         break;
                 }
             }
