@@ -296,7 +296,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
                     break;
             }
             // 月度集計の場合に、集計期間が本日日付で上書きされてしまうのを回避するため
-            if ( ($objFormParam->getValue('form') == 1) && ( $out_flg == 1 ) ) {
+            if (($objFormParam->getValue('form') == 1) && ($out_flg == 1 )) {
                 break;
             }
         }
@@ -809,7 +809,7 @@ __EOS__;
                 $arrRet[$i][$val] = $arrData[$i][$val];
             }
             // 期間別集計の合計行の「期間」項目に不要な値が表示されてしまわない様、'合計'と表示する
-            if ( ($i === $max -1) && isset($arrRet[$i]['str_date']) ) {
+            if (($i === $max -1) && isset($arrRet[$i]['str_date'])) {
                 $arrRet[$i]['str_date'] = '合計';
             }
             $csv_data.= SC_Utils_Ex::sfGetCSVList($arrRet[$i]);
