@@ -76,13 +76,6 @@
         <input type="hidden" name="disp_number" value="<!--{$disp_number|h}-->" />
         <input type="hidden" name="pageno" value="<!--{$tpl_pageno|h}-->" />
         <!--{* ▲ページナビ関連 *}-->
-        <!--{* ▼注文関連 *}-->
-        <input type="hidden" name="product_id" value="" />
-        <input type="hidden" name="classcategory_id1" value="" />
-        <input type="hidden" name="classcategory_id2" value="" />
-        <input type="hidden" name="product_class_id" value="" />
-        <input type="hidden" name="quantity" value="" />
-        <!--{* ▲注文関連 *}-->
         <input type="hidden" name="rnd" value="<!--{$tpl_rnd|h}-->" />
     </form>
 
