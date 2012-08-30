@@ -627,7 +627,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
             $ret = unlink($del_file);
         }
 
-        $delsql = 'DELETE FROM dtb_bkup WHERE bkup_name = ?';
         $objQuery->delete('dtb_bkup', 'bkup_name = ?', array($arrForm['list_name']));
 
     }
