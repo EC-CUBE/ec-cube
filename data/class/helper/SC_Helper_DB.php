@@ -984,13 +984,24 @@ __EOS__;
             }
             $uprank = $rank + 1;
             $up_id = $objQuery->get($colname, $table, $where, array($uprank));
+
             // ランク入れ替えの実行
-            $sqlup = "UPDATE $table SET rank = ? WHERE $colname = ?";
+            $where = "$colname = ?";
             if ($andwhere != '') {
-                $sqlup.= " AND $andwhere";
+                $where .= " AND $andwhere";
             }
-            $objQuery->exec($sqlup, array($rank + 1, $id));
-            $objQuery->exec($sqlup, array($rank, $up_id));
+
+            $sqlval = array(
+                'rank' => $rank + 1,
+            );
+            $arrWhereVal = array($id);
+            $objQuery->update($table, $sqlval, $where, $arrWhereVal);
+
+            $sqlval = array(
+                'rank' => $rank,
+            );
+            $arrWhereVal = array($up_id);
+            $objQuery->update($table, $sqlval, $where, $arrWhereVal);
         }
         $objQuery->commit();
     }
@@ -1023,13 +1034,24 @@ __EOS__;
             }
             $downrank = $rank - 1;
             $down_id = $objQuery->get($colname, $table, $where, array($downrank));
+
             // ランク入れ替えの実行
-            $sqlup = "UPDATE $table SET rank = ? WHERE $colname = ?";
+            $where = "$colname = ?";
             if ($andwhere != '') {
-                $sqlup.= " AND $andwhere";
+                $where .= " AND $andwhere";
             }
-            $objQuery->exec($sqlup, array($rank - 1, $id));
-            $objQuery->exec($sqlup, array($rank, $down_id));
+
+            $sqlval = array(
+                'rank' => $rank - 1,
+            );
+            $arrWhereVal = array($id);
+            $objQuery->update($table, $sqlval, $where, $arrWhereVal);
+
+            $sqlval = array(
+                'rank' => $rank,
+            );
+            $arrWhereVal = array($down_id);
+            $objQuery->update($table, $sqlval, $where, $arrWhereVal);
         }
         $objQuery->commit();
     }
@@ -1077,21 +1099,35 @@ __EOS__;
         if (!isset($term)) $term = 'rank';
 
         // 指定した順位の商品から移動させる商品までのrankを１つずらす
-        $sql = "UPDATE $tableName SET rank = $term WHERE rank BETWEEN ? AND ?";
+        $sqlval = array();
+        $arrRawSql = array(
+            'rank' => $term,
+        );
+        $str_where = 'rank BETWEEN ? AND ?';
         if ($where != '') {
-            $sql.= " AND $where";
+            $str_where .= " AND $where";
         }
 
-        if ($position > $rank) $objQuery->exec($sql, array($rank + 1, $position));
-        if ($position < $rank) $objQuery->exec($sql, array($position, $rank - 1));
+        if ($position > $rank) {
+            $arrWhereVal = array($rank + 1, $position);
+            $objQuery->update($tableName, $sqlval, $str_where, $arrWhereVal, $arrRawSql);
+        }
+        if ($position < $rank) {
+            $arrWhereVal = array($position, $rank - 1);
+            $objQuery->update($tableName, $sqlval, $str_where, $arrWhereVal, $arrRawSql);
+        }
 
         // 指定した順位へrankを書き換える。
-        $sql  = "UPDATE $tableName SET rank = ? WHERE $keyIdColumn = ? ";
+        $sqlval = array(
+            'rank' => $position,
+        );
+        $str_where = "$keyIdColumn = ?";
         if ($where != '') {
-            $sql.= " AND $where";
+            $str_where .= " AND $where";
         }
+        $arrWhereVal = array($keyId);
+        $objQuery->update($tableName, $sqlval, $str_where, $arrWhereVal);
 
-        $objQuery->exec($sql, array($position, $keyId));
         $objQuery->commit();
     }
 
@@ -1121,21 +1157,29 @@ __EOS__;
 
         if (!$delete) {
             // ランクを最下位にする、DELフラグON
-            $sqlup = "UPDATE $table SET rank = 0, del_flg = 1 ";
-            $sqlup.= "WHERE $colname = ?";
-            // UPDATEの実行
-            $objQuery->exec($sqlup, array($id));
+            $sqlval = array(
+                'rank'      => 0,
+                'del_flg'   => 1,
+            );
+            $where = "$colname = ?";
+            $arrWhereVal = array($id);
+            $objQuery->update($table, $sqlval, $where, $arrWhereVal);
         } else {
             $objQuery->delete($table, "$colname = ?", array($id));
         }
 
         // 追加レコードのランクより上のレコードを一つずらす。
+        $sqlval = array();
         $where = 'rank > ?';
         if ($andwhere != '') {
-            $where.= " AND $andwhere";
+            $where .= " AND $andwhere";
         }
-        $sqlup = "UPDATE $table SET rank = (rank - 1) WHERE $where";
-        $objQuery->exec($sqlup, array($rank));
+        $arrWhereVal = array($rank);
+        $arrRawSql = array(
+            'rank' => '(rank - 1)',
+        );
+        $objQuery->update($table, $sqlval, $where, $arrWhereVal, $arrRawSql);
+
         $objQuery->commit();
     }
 
@@ -1169,6 +1213,8 @@ __EOS__;
 
     /**
      * カテゴリ変更時の移動処理を行う.
+     * 
+     * ※この関数って、どこからも呼ばれていないのでは？？
      *
      * @param SC_Query $objQuery SC_Query インスタンス
      * @param string $table テーブル名
@@ -1185,18 +1231,26 @@ __EOS__;
         }
         // 旧カテゴリでのランク削除処理
         // 移動レコードのランクを取得する。
+        $sqlval = array();
         $where = "$id_name = ?";
         $rank = $objQuery->get('rank', $table, $where, array($id));
         // 削除レコードのランクより上のレコードを一つ下にずらす。
         $where = "rank > ? AND $cat_name = ?";
-        $sqlup = "UPDATE $table SET rank = (rank - 1) WHERE $where";
-        $objQuery->exec($sqlup, array($rank, $old_catid));
+        $arrWhereVal = array($rank, $old_catid);
+        $arrRawSql = array(
+            'rank' => '(rank - 1)',
+        );
+        $objQuery->update($table, $sqlval, $where, $arrWhereVal, $arrRawSql);
+
         // 新カテゴリでの登録処理
         // 新カテゴリの最大ランクを取得する。
         $max_rank = $objQuery->max('rank', $table, "$cat_name = ?", array($new_catid)) + 1;
+        $sqlval = array(
+            'rank' => $max_rank,
+        );
         $where = "$id_name = ?";
-        $sqlup = "UPDATE $table SET rank = ? WHERE $where";
-        $objQuery->exec($sqlup, array($max_rank, $id));
+        $arrWhereVal = array($id);
+        $objQuery->update($table, $sqlval, $where, $arrWhereVal);
     }
 
     /**

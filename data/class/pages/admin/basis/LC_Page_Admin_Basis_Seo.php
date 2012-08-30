@@ -143,24 +143,20 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
      */
     function lfUpdPageData($arrUpdData = array()) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $sql = '';
 
-        // SQL生成
-        $sql .= ' UPDATE ';
-        $sql .= '     dtb_pagelayout ';
-        $sql .= ' SET ';
-        $sql .= '     author = ? , ';
-        $sql .= '     description = ? , ';
-        $sql .= '     keyword = ? ';
-        $sql .= ' WHERE ';
-        $sql .= '     device_type_id = ? ';
-        $sql .= '     AND page_id = ? ';
-        $sql .= ' ';
+        $table = 'dtb_pagelayout';
+        $sqlval = array(
+            'author'        => $arrUpdData[0],
+            'description'   => $arrUpdData[1],
+            'keyword'       => $arrUpdData[2],
+        );
+        $where = 'device_type_id = ? AND page_id = ?';
+        $arrWhereVal = array(
+            $arrUpdData[3],
+            $arrUpdData[4],
+        );
 
-        // SQL実行
-        $ret = $objQuery->query($sql, $arrUpdData);
-
-        return $ret;
+        return $objQuery->update($table, $sqlval, $where, $arrWhereVal);
     }
 
     function lfInitParam($mode, &$objFormParam) {

@@ -468,8 +468,11 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
             $where = 'category_id = ?';
             $rank = $objQuery->get('rank', 'dtb_category', $where, array($parent_category_id));
             // 追加レコードのランク以上のレコードを一つあげる。
-            $sqlup = 'UPDATE dtb_category SET rank = (rank + 1) WHERE rank >= ?';
-            $objQuery->exec($sqlup, array($rank));
+            $where = 'rank >= ?';
+            $arrRawSql = array(
+                'rank' => '(rank + 1)',
+            );
+            $objQuery->update('dtb_category', array(), $where, array($rank), $arrRawSql);
         }
 
         $where = 'category_id = ?';
@@ -563,10 +566,11 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         // 子ID一覧を取得
         $arrRet = $objDb->sfGetChildrenArray($table, $pid_name, $id_name, $id);
         $line = SC_Utils_Ex::sfGetCommaList($arrRet);
-        $sql = "UPDATE $table SET rank = (rank + $count) WHERE $id_name IN ($line) ";
-        $sql.= 'AND del_flg = 0';
-        $ret = $objQuery->exec($sql);
-        return $ret;
+        $where = "$id_name IN ($line) AND del_flg = 0";
+        $arrRawVal = array(
+            'rank' => "(rank + $count)",
+        );
+        return $objQuery->update($table, array(), $where, array(), $arrRawVal);
     }
 
     function lfDownRankChilds($objQuery, $table, $pid_name, $id_name, $id, $count) {
@@ -574,9 +578,10 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         // 子ID一覧を取得
         $arrRet = $objDb->sfGetChildrenArray($table, $pid_name, $id_name, $id);
         $line = SC_Utils_Ex::sfGetCommaList($arrRet);
-        $sql = "UPDATE $table SET rank = (rank - $count) WHERE $id_name IN ($line) ";
-        $sql.= 'AND del_flg = 0';
-        $ret = $objQuery->exec($sql);
-        return $ret;
+        $where = "$id_name IN ($line) AND del_flg = 0";
+        $arrRawVal = array(
+            'rank' => "(rank - $count)",
+        );
+        return $objQuery->update($table, array(), $where, array(), $arrRawVal);
     }
 }
