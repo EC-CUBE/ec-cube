@@ -49,12 +49,12 @@
         var hiddenValues = ['mode','category_id','maker_id','name','orderby','disp_number','pageno','rnd'];
         $.each(hiddenValues, function(){
             // 商品別のフォームに検索条件の値があれば上書き
-            if (cartForm.has('input[name='+this+']')) {
+            if (cartForm.has('input[name='+this+']').length != 0) {
                 cartForm.find('input[name='+this+']').val(searchForm.find('input[name='+this+']').val());
             }
             // なければ追加
             else {
-                cartForm.append($("<input/>").attr("name", this).val(searchForm.find('input[name='+this+']').val()));
+                cartForm.append($('<input type="hidden" />').attr("name", this).val(searchForm.find('input[name='+this+']').val()));
             }
         });
         // 商品別のフォームを送信
