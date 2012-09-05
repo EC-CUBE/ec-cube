@@ -250,4 +250,17 @@ __EOS__;
     function getDummyFromClauseSql() {
         return '';
     }
+
+    /**
+     * テーブル一覧を取得する
+     *
+     * MDB2_Driver_Manager_pgsql#listTables の不具合回避を目的として独自実装している。
+     * @return array テーブル名の配列
+     */
+    function listTables(SC_Query &$objQuery) {
+        $col = 'tablename';
+        $from = 'pg_tables';
+        $where = "schemaname NOT IN ('pg_catalog', 'information_schema', 'sys')";
+        return $objQuery->getCol($col, $from, $where);
+    }
 }
