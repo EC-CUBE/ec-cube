@@ -352,7 +352,7 @@ __EOS__;
             SC_Response_Ex::actionExit();
         }
         while (!feof($handle)) {
-            echo(fread($handle, DOWNLOAD_BLOCK*1024));
+            echo fread($handle, DOWNLOAD_BLOCK*1024);
             ob_flush();
             flush();
         }
