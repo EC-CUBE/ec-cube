@@ -284,9 +284,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
      * @return boolean|int 結果。true:成功 int:失敗 FIXME 本来は int ではなく、エラーメッセージを戻すべき
      */
     function lfCreateBkupData($bkup_name, $work_dir) {
-        // 実行時間を制限しない
-        set_time_limit(0);
-
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $csv_autoinc = '';
         $arrData = array();
@@ -377,6 +374,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         }
         $line .= SC_Helper_CSV_Ex::sfArrayToCsv($data);
         $line .= "\n";
+        SC_Utils_Ex::extendTimeOut();
         return fwrite($this->fpOutput, $line);
     }
 
@@ -478,10 +476,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
     function lfRestore($bkup_name, $bkup_dir, $bkup_ext, $mode) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        // 実行時間を制限しない
-        // FIXME ファイル展開時に限定すべき
-        set_time_limit(0);
-
         $bkup_filepath = $bkup_dir . $bkup_name . $bkup_ext;
         $work_dir = $bkup_dir . $bkup_name . '/';
 
@@ -517,6 +511,8 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         }
 
         // FIXME この辺りで、バックアップ時と同等の一時ファイルの削除を実行すべきでは?
+
+        SC_Utils_Ex::extendTimeOut();
 
         return $success;
     }
