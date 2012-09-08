@@ -28,9 +28,6 @@ require_once CLASS_EX_REALDIR . 'page_extends/rss/LC_Page_Rss_Products_Ex.php';
 // }}}
 // {{{ generate page
 
-// @deprecated 2.12.3 html/rss/products.php が正しい。
-trigger_error('前方互換用ファイルが使用されました。', E_USER_WARNING);
-
 $objPage = new LC_Page_Rss_Products_Ex();
 register_shutdown_function(array($objPage, 'destroy'));
 $objPage->init();
