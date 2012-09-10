@@ -300,9 +300,6 @@
                 <!--{if $arrProduct[$ikey]|strlen >= 1}-->
                     <div class="subtext"><!--★サブテキスト★--><!--{$arrProduct[$ckey]|nl2br_html}--></div>
                     <div class="subphotoimg">
-                        <!--{if $arrProduct[$lkey]|strlen >= 1}-->
-                            <a href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct[$lkey]|h}-->" class="expansion" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_expansion_on.gif', 'expansion_<!--{$lkey|h}-->');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_expansion.gif', 'expansion_<!--{$lkey|h}-->');" target="_blank" >
-                        <!--{/if}-->
                         <img src="<!--{$arrFile[$ikey].filepath}-->" alt="<!--{$arrProduct.name|h}-->" width="<!--{$arrFile[$ikey].width}-->" height="<!--{$arrFile[$ikey].height}-->" />
                         <!--{if $arrProduct[$lkey]|strlen >= 1}--></a>
                             <span class="mini">
