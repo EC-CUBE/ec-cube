@@ -260,6 +260,8 @@ class SC_Helper_Mail {
         $objTplAssign->tpl_mailtitle=$subject;
         $objMailView->assignobj($objTplAssign);
         $subject = $objMailView->fetch('mail_templates/mail_title.tpl');
+        // #1940 (SC_Helper_Mail#sfMakeSubject 先頭に改行を含む値を返す) 対応
+        $subject = trim($subject);
         return $subject;
     }
 
