@@ -45,6 +45,7 @@
 
 ■住所　　：<!--{$arrPref[$arrForm.pref.value]}--><!--{$arrForm.addr01.value}--><!--{$arrForm.addr02.value}-->
 ■電話番号：<!--{$arrForm.tel01.value}-->-<!--{$arrForm.tel02.value}-->-<!--{$arrForm.tel03.value}-->
+■メールアドレス：<!--{$arrForm.email.value}-->
 ■お問い合わせの内容
 <!--{$arrForm.contents.value}-->
 <!--{$tpl_footer}-->
