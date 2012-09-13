@@ -101,7 +101,7 @@ class SC_View {
         if (ADMIN_MODE == '1') {
             $time_end = microtime(true);
             $time = $time_end - $this->time_start;
-            $res .= '処理時間: ' . sprintf('%.3f', $time) . '秒';
+            $res .= SC_I18n_Ex::t('SC_VIEW_RESPONSE_TIME', array('T_TIME' => sprintf('%.3f', $time)));
         }
         return $res;
     }
@@ -169,7 +169,7 @@ class SC_View {
         if (ADMIN_MODE == '1') {
             $time_end = microtime(true);
             $time = $time_end - $this->time_start;
-            echo '処理時間: ' . sprintf('%.3f', $time) . '秒';
+            echo SC_I18n_Ex::t('SC_VIEW_RESPONSE_TIME', array('T_TIME' => sprintf('%.3f', $time)));
         }
     }
 

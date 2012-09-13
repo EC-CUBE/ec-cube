@@ -151,7 +151,7 @@ class SC_SelectSql {
 
         if ($arr) {
             foreach ($arr as $data) {
-                if ($data != '不明') {
+                if ($data != SC_I18n_Ex::t('SC_SELECTSQL_UNKNOWN')) {
                     $item .= " OR {$ItemStr} = ?";
                     $return[] = $data;
                 }

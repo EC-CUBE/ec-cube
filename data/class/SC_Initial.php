@@ -182,10 +182,7 @@ class SC_Initial {
      */
     function defineParameter() {
 
-        $errorMessage
-            = '<div style="color: #F00; font-weight: bold; background-color: #FEB; text-align: center">'
-            . CACHE_REALDIR
-            . ' にユーザ書込み権限(777等)を付与して下さい。</div>';
+        $errorMessage = SC_I18n_Ex::t('SC_INITIAL_ERROR_UNWRITABLE', array('T_CACHE_REALDIR' => CACHE_REALDIRIR));
 
         // 定数を設定
         if (is_file(CACHE_REALDIR . 'mtb_constants.php')) {
@@ -210,7 +207,7 @@ class SC_Initial {
                 die($errorMessage);
             }
         } else {
-            die(CACHE_REALDIR . '../mtb_constants_init.php が存在しません');
+            die(SC_I18n_Ex::t('SC_INITIAL_ERROR_NOT_FOUND', array('T_CACHE_REALDIR' => CACHE_REALDIR)));
         }
     }
 

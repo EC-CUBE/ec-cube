@@ -124,7 +124,7 @@ class SC_SendMail {
      * @deprecated 2.12.2 (#1912)
      */
     function setHost($host) {
-        trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+        trigger_error(SC_I18n_Ex::t('SC_SENDMAIL_FORWARD_COMPATIBILITY'), E_USER_WARNING);
         $this->host = $host;
         $arrHost = array(
                 'host' => $this->host,
@@ -141,7 +141,7 @@ class SC_SendMail {
      * @deprecated 2.12.2 (#1912)
      */
     function setPort($port) {
-        trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+        trigger_error(SC_I18n_Ex::t('SC_SENDMAIL_FORWARD_COMPATIBILITY'), E_USER_WARNING);
         $this->port = $port;
         $arrHost = array(
                 'host' => $this->host,
@@ -280,8 +280,8 @@ class SC_SendMail {
         $result = $this->objMail->send($recip, $header, $this->body);
         if (PEAR::isError($result)) {
             // XXX Windows 環境では SJIS でメッセージを受け取るようなので変換する。
-            $msg = mb_convert_encoding($result->getMessage(), CHAR_CODE, 'auto');
-            $msg = 'メール送信に失敗しました。[' . $msg . ']';
+            $tokens = array('T_MESSAGE' => mb_convert_encoding($result->getMessage(), CHAR_CODE, 'auto'));
+            $msg = SC_I18n_Ex::t('SC_SENDMAIL_FAIL_TO_SEND', $tokens);
             trigger_error($msg, E_USER_WARNING);
             GC_Utils_Ex::gfDebugLog($header);
             return false;
@@ -333,7 +333,7 @@ class SC_SendMail {
                 break;
 
             default:
-                trigger_error('不明なバックエンド。[$backend = ' . var_export($backend, true) . ']', E_USER_ERROR);
+                trigger_error(SC_I18n_Ex::t('SC_SENDMAIL_UNKNOWN_BACKEND', array('T_BACKEND' => var_export($backend, true))), E_USER_ERROR);
                 exit;
         }
         return $arrParams;

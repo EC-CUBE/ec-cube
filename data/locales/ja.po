@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2012-09-13 09:20+0900\n"
+"PO-Revision-Date: 2012-09-13 21:35+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -284,4 +284,49 @@ msgstr "画像形式がサポートされていません。"
 
 msgid "SC_IMAGE_ERROR_OUTPUT_FAILED"
 msgstr "画像の出力に失敗しました。"
+
+msgid "SC_INITIAL_ERROR_UNWRITABLE"
+msgstr "<div style=\"color: #F00; font-weight: bold; background-color: #FEB; text-align: center\">T_CACHE_REALDIR にユーザ書込み権限(777等)を付与して下さい。</div>"
+
+msgid "SC_INITIAL_ERROR_NOT_FOUND"
+msgstr "T_CACHE_REALDIR../mtb_constants_init.php が存在しません"
+
+msgid "SC_PAGENAVI_BEFORE"
+msgstr "&lt;&lt;前へ"
+
+msgid "SC_PAGENAVI_NEXT"
+msgstr "次へ&gt;&gt;"
+
+msgid "SC_PRODUCT_UNSELECTED"
+msgstr "選択してください"
+
+msgid "SC_PRODUCT_SOLDOUT"
+msgstr "(品切れ中)"
+
+msgid "SC_QUERY_ERROR"
+msgstr "DB処理でエラーが発生しました。"
+
+msgid "SC_SELECTSQL_UNKNOWN"
+msgstr "不明"
+
+msgid "SC_SENDMAIL_FORWARD_COMPATIBILITY"
+msgstr "前方互換用メソッドが使用されました。"
+
+msgid "SC_SENDMAIL_UNKNOWN_BACKEND"
+msgstr "不明なバックエンド。[$backend = T_BACKEND]"
+
+msgid "SC_SENDMAIL_FAIL_TO_SEND"
+msgstr "メール送信に失敗しました。[T_MESSAGE]"
+
+msgid "SC_VIEW_RESPONSE_TIME"
+msgstr "処理時間: T_TIME秒"
+
+msgid "SC_UPLOADFILE_NOT_UPLOADED"
+msgstr "※ T_DISPNAMEがアップロードされていません。<br />"
+
+msgid "SC_UPLOADFILE_NOT_UPLOADED_WITH_NOTE"
+msgstr "※ T_DISPNAMEがアップロードされていません。(ファイルがアップロードできない場合は、.htaccessファイルのphp_value upload_max_filesizeを調整してください)<br />"
+
+msgid "SC_UPLOADFILE_FAIL_TO_UPLOAD"
+msgstr "※ ファイルのアップロードに失敗しました。<br />"
 

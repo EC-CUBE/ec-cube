@@ -95,7 +95,7 @@ class SC_UploadFile {
         $arrKeyname = array_flip($this->keyname);
 
         if (!($_FILES[$keyname]['size'] > 0)) {
-            $objErr->arrErr[$keyname] = '※ ' . $this->disp_name[$arrKeyname[$keyname]] . 'がアップロードされていません。<br />';
+            $objErr->arrErr[$keyname] = SC_I18n_Ex::t('SC_UPLOADFILE_NOT_UPLOADED', array('T_DISPNAME' => $this->disp_name[$arrKeyname[$keyname]]));
         } else {
             foreach ($this->keyname as $val) {
                 // 一致したキーのファイルに情報を保存する。
@@ -123,7 +123,7 @@ class SC_UploadFile {
                             if (move_uploaded_file($_FILES[$keyname]['tmp_name'], $this->temp_dir . $this->temp_file[$cnt])) {
                                 GC_Utils_Ex::gfPrintLog($_FILES[$keyname]['name'].' -> '. $this->temp_dir . $this->temp_file[$cnt]);
                             } else {
-                                $objErr->arrErr[$keyname] = '※ ファイルのアップロードに失敗しました。<br />';
+                                $objErr->arrErr[$keyname] = SC_I18n_Ex::t('SC_UPLOADFILE_FAIL_TO_UPLOAD');
                                 GC_Utils_Ex::gfPrintLog('File Upload Error!: ' . $_FILES[$keyname]['name'].' -> '. $this->temp_dir . $this->temp_file[$cnt]);
                             }
                         }
@@ -141,7 +141,7 @@ class SC_UploadFile {
         $cnt = 0;
         $arrKeyname = array_flip($this->keyname);
         if (!($_FILES[$keyname]['size'] > 0)) {
-            $objErr->arrErr[$keyname] = '※ ' . $this->disp_name[$arrKeyname[$keyname]] . 'がアップロードされていません。(ファイルがアップロードできない場合は、.htaccessファイルのphp_value upload_max_filesizeを調整してください)<br />';
+            $objErr->arrErr[$keyname] = SC_I18n_Ex::t('SC_UPLOADFILE_NOT_UPLOADED_WITH_NOTE', array('T_DISPNAME' => $this->disp_name[$arrKeyname[$keyname]]));
         } else {
             foreach ($this->keyname as $val) {
                 // 一致したキーのファイルに情報を保存する。
@@ -456,7 +456,7 @@ class SC_UploadFile {
                     if ($this->save_file[$cnt] == ''
                         &&  $this->temp_file[$cnt] == ''
                     ) {
-                        $arrRet[$val] = '※ ' . $this->disp_name[$cnt] . 'がアップロードされていません。<br>';
+                        $arrRet[$val] = SC_I18n_Ex::t('SC_UPLOADFILE_NOT_UPLOADED', array('T_DISPNAME' => $this->disp_name[$cnt]));
                     }
                 }
             }
