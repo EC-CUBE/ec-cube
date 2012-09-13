@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2012-08-27 16:27+0900\n"
-"Last-Translator: PineRay <matsuda@cyber-will.co.jp>\n"
+"PO-Revision-Date: 2012-09-13 09:20+0900\n"
+"Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -206,4 +206,82 @@ msgstr "※「T_PRODUCT」は販売制限(または在庫が不足)しており�
 
 msgid "SC_CARTSESSION_CHECKPRODUCTS_SOLDOUT"
 msgstr "※「T_PRODUCT」は売り切れました。"
+
+msgid "SC_FPDF_LABEL_PRODUCT_NAME"
+msgstr "商品名 / 商品コード / [ 規格 ]"
+
+msgid "SC_FPDF_LABEL_PRODUCT_QTY"
+msgstr "数量"
+
+msgid "SC_FPDF_LABEL_PRODUCT_PRICE"
+msgstr "単価"
+
+msgid "SC_FPDF_LABEL_PRODUCT_SUBTOTAL"
+msgstr "金額(税込)"
+
+msgid "SC_FPDF_LABEL_PRODUCT_TOTAL"
+msgstr "商品合計"
+
+msgid "SC_FPDF_LABEL_DELIV_FEE"
+msgstr "送料"
+
+msgid "SC_FPDF_LABEL_CHARGE"
+msgstr "手数料"
+
+msgid "SC_FPDF_LABEL_DISCOUNT"
+msgstr "値引き"
+
+msgid "SC_FPDF_LABEL_PAYMENT_TOTAL"
+msgstr "請求金額"
+
+msgid "SC_FPDF_LABEL_USE_POINT"
+msgstr "利用ポイント"
+
+msgid "SC_FPDF_LABEL_ADD_POINT"
+msgstr "加算ポイント"
+
+msgid "SC_FPDF_LABEL_ETC"
+msgstr "＜ 備 考 ＞"
+
+msgid "SC_FPDF_LABEL_PAYMENT_TYPE"
+msgstr "お支払い"
+
+msgid "SC_FPDF_MESSAGE_1"
+msgstr "このたびはお買上げいただきありがとうございます。"
+
+msgid "SC_FPDF_MESSAGE_2"
+msgstr "下記の内容にて納品させていただきます。"
+
+msgid "SC_FPDF_MESSAGE_3"
+msgstr "ご確認くださいますよう、お願いいたします。"
+
+msgid "SC_FPDF_CREATED_DATE"
+msgstr "作成日: T_YEAR年T_MONTH月T_DAY日"
+
+msgid "SC_FPDF_PRICE_FORMAT"
+msgstr "T_PRICE T_UNIT"
+
+msgid "SC_FPDF_MONETARY_UNIT"
+msgstr "円"
+
+msgid "SC_FPDF_POINT_UNIT"
+msgstr "Pt"
+
+msgid "SC_IMAGE_ERROR_COPY_FAILED"
+msgstr "ファイルのコピーに失敗しました。"
+
+msgid "SC_IMAGE_ERROR_COPY_FAILED_PATH"
+msgstr "T_FROM->T_TOのcopyに失敗しました。"
+
+msgid "SC_IMAGE_ERROR_NOT_APPOINTED"
+msgstr "出力元画像パス、または出力先フォルダが指定されていません。"
+
+msgid "SC_IMAGE_ERROR_NOT_FOUND"
+msgstr "出力元画像が見つかりません。"
+
+msgid "SC_IMAGE_ERROR_NOT_SUPPORTED"
+msgstr "画像形式がサポートされていません。"
+
+msgid "SC_IMAGE_ERROR_OUTPUT_FAILED"
+msgstr "画像の出力に失敗しました。"
 

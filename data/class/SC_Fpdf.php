@@ -41,15 +41,15 @@ class SC_Fpdf extends SC_Helper_FPDI {
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->width_cell = array(110.3,12,21.7,24.5);
 
-        $this->label_cell[] = '商品名 / 商品コード / [ 規格 ]';
-        $this->label_cell[] = '数量';
-        $this->label_cell[] = '単価';
-        $this->label_cell[] = '金額(税込)';
+        $this->label_cell[] = SC_I18n_Ex::t('SC_FPDF_LABEL_PRODUCT_NAME');
+        $this->label_cell[] = SC_I18n_Ex::t('SC_FPDF_LABEL_PRODUCT_QTY');
+        $this->label_cell[] = SC_I18n_Ex::t('SC_FPDF_LABEL_PRODUCT_PRICE');
+        $this->label_cell[] = SC_I18n_Ex::t('SC_FPDF_LABEL_PRODUCT_SUBTOTAL');
 
         $this->arrMessage = array(
-            'このたびはお買上げいただきありがとうございます。',
-            '下記の内容にて納品させていただきます。',
-            'ご確認くださいますよう、お願いいたします。'
+            SC_I18n_Ex::t('SC_FPDF_MESSAGE_1'),
+            SC_I18n_Ex::t('SC_FPDF_MESSAGE_2'),
+            SC_I18n_Ex::t('SC_FPDF_MESSAGE_3')
         );
 
         // SJISフォント
@@ -134,7 +134,12 @@ class SC_Fpdf extends SC_Helper_FPDI {
         $this->lfText(27, 70, $this->arrData['msg1'], 8);  //メッセージ1
         $this->lfText(27, 74, $this->arrData['msg2'], 8);  //メッセージ2
         $this->lfText(27, 78, $this->arrData['msg3'], 8);  //メッセージ3
-        $text = '作成日: '.$this->arrData['year'].'年'.$this->arrData['month'].'月'.$this->arrData['day'].'日';
+        $tokens = array(
+            'T_YEAR' => $this->arrData['year'],
+            'T_MONTH' => $this->arrData['month'],
+            'T_DAY' => $this->arrData['day']
+        );
+        $text = SC_I18n_Ex::t('SC_FPDF_CREATED_DATE', $tokens);
         $this->lfText(158, 288, $text, 8);  //作成日
     }
 
@@ -162,13 +167,17 @@ class SC_Fpdf extends SC_Helper_FPDI {
         $this->Cell(0, 66, '', 0, 2, 'R', 0, '');
         $this->Cell(5, 0, '', 0, 0, 'R', 0, '');
         $this->SetFont('SJIS', 'B', 15);
-        $this->Cell(67, 8, number_format($this->arrDisp['payment_total']).' 円', 0, 2, 'R', 0, '');
+        $tokens = array(
+            'T_PRICE' => number_format($this->arrDisp['payment_total']),
+            'T_UNIT' => SC_I18n_Ex::t('SC_FPDF_MONETARY_UNIT')
+        );
+        $this->Cell(67, 8, SC_I18n_Ex::t('SC_FPDF_PRICE_FORMAT', $tokens), 0, 2, 'R', 0, '');
         $this->Cell(0, 45, '', 0, 2, '', 0, '');
 
         $this->SetFont('SJIS', '', 8);
 
-        $monetary_unit = '円';
-        $point_unit = 'Pt';
+        $monetary_unit = SC_I18n_Ex::t('SC_FPDF_MONETARY_UNIT');
+        $point_unit = SC_I18n_Ex::t('SC_FPDF_POINT_UNIT');
 
         // 購入商品情報
         for ($i = 0; $i < count($this->arrDisp['quantity']); $i++) {
@@ -206,31 +215,31 @@ class SC_Fpdf extends SC_Helper_FPDI {
         $i++;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
-        $arrOrder[$i][2] = '商品合計';
+        $arrOrder[$i][2] = SC_I18n_Ex::t('SC_FPDF_LABEL_PRODUCT_TOTAL');
         $arrOrder[$i][3] = number_format($this->arrDisp['subtotal']).$monetary_unit;
 
         $i++;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
-        $arrOrder[$i][2] = '送料';
+        $arrOrder[$i][2] = SC_I18n_Ex::t('SC_FPDF_LABEL_DELIV_FEE');
         $arrOrder[$i][3] = number_format($this->arrDisp['deliv_fee']).$monetary_unit;
 
         $i++;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
-        $arrOrder[$i][2] = '手数料';
+        $arrOrder[$i][2] = SC_I18n_Ex::t('SC_FPDF_LABEL_CHARGE');
         $arrOrder[$i][3] = number_format($this->arrDisp['charge']).$monetary_unit;
 
         $i++;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
-        $arrOrder[$i][2] = '値引き';
+        $arrOrder[$i][2] = SC_I18n_Ex::t('SC_FPDF_LABEL_DISCOUNT');
         $arrOrder[$i][3] = '- '.number_format(($this->arrDisp['use_point'] * POINT_VALUE) + $this->arrDisp['discount']).$monetary_unit;
 
         $i++;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
-        $arrOrder[$i][2] = '請求金額';
+        $arrOrder[$i][2] = SC_I18n_Ex::t('SC_FPDF_LABEL_PAYMENT_TOTAL');
         $arrOrder[$i][3] = number_format($this->arrDisp['payment_total']).$monetary_unit;
 
         // ポイント表記
@@ -244,13 +253,13 @@ class SC_Fpdf extends SC_Helper_FPDI {
             $i++;
             $arrOrder[$i][0] = '';
             $arrOrder[$i][1] = '';
-            $arrOrder[$i][2] = '利用ポイント';
+            $arrOrder[$i][2] = SC_I18n_Ex::t('SC_FPDF_LABEL_USE_POINT');
             $arrOrder[$i][3] = number_format($this->arrDisp['use_point']).$point_unit;
 
             $i++;
             $arrOrder[$i][0] = '';
             $arrOrder[$i][1] = '';
-            $arrOrder[$i][2] = '加算ポイント';
+            $arrOrder[$i][2] = SC_I18n_Ex::t('SC_FPDF_LABEL_ADD_POINT');
             $arrOrder[$i][3] = number_format($this->arrDisp['add_point']).$point_unit;
         }
 
@@ -260,7 +269,7 @@ class SC_Fpdf extends SC_Helper_FPDI {
     function setEtcData() {
         $this->Cell(0, 10, '', 0, 1, 'C', 0, '');
         $this->SetFont('Gothic', 'B', 9);
-        $this->MultiCell(0, 6, '＜ 備 考 ＞', 'T', 2, 'L', 0, '');  //備考
+        $this->MultiCell(0, 6, SC_I18n_Ex::t('SC_FPDF_LABEL_ETC'), 'T', 2, 'L', 0, '');  //備考
         $this->Ln();
         $this->SetFont('SJIS', '', 8);
         $this->MultiCell(0, 4, $this->arrData['etc1']."\n".$this->arrData['etc2']."\n".$this->arrData['etc3'], '', 2, 'L', 0, '');  //備考
@@ -317,7 +326,7 @@ class SC_Fpdf extends SC_Helper_FPDI {
             if ($this->arrDisp['memo02'] != '') {
                 $this->arrDisp['payment_info'] = unserialize($this->arrDisp['memo02']);
             }
-            $this->arrDisp['payment_type'] = 'お支払い';
+            $this->arrDisp['payment_type'] = SC_I18n_Ex::t('SC_FPDF_LABEL_PAYMENT_TYPE');
         }
     }
 
