@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2012-09-13 21:35+0900\n"
+"PO-Revision-Date: 2012-09-14 09:26+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -329,4 +329,100 @@ msgstr "※ T_DISPNAMEがアップロードされていません。(ファイル
 
 msgid "SC_UPLOADFILE_FAIL_TO_UPLOAD"
 msgstr "※ ファイルのアップロードに失敗しました。<br />"
+
+msgid "SC_API_OPERATION_NO_LOAD"
+msgstr "オペレーションをロード出来ませんでした。"
+
+msgid "SC_API_OPERATION_NO_AUTHORITY"
+msgstr "オペレーションの実行権限がありません。"
+
+msgid "API_ADDRFROMZIP_DESC"
+msgstr "郵便番号から住所を検索します。"
+
+msgid "API_BROWSENODELOOKP_DESC"
+msgstr "カテゴリ取得"
+
+msgid "API_CARTADD_DESC"
+msgstr "カートへの商品追加"
+
+msgid "API_CARTCLEAR_DESC"
+msgstr "カートのクリア"
+
+msgid "API_CARTCREATE_DESC"
+msgstr "カートの新規作成"
+
+msgid "API_GARTGET_DESC"
+msgstr "カートの取得"
+
+msgid "API_CARTMODIFY_DESC"
+msgstr "カートの修正"
+
+msgid "API_ITEMLOOKUP_DESC"
+msgstr "商品詳細情報を取得します。"
+
+msgid "API_ITEMLOOKUP_ERROR"
+msgstr "※ 要求された情報は見つかりませんでした。"
+
+msgid "API_ITEMSEARCH_DESC"
+msgstr "商品検索・商品一覧情報を取得します。"
+
+msgid "API_ITEMSEARCH_ERROR"
+msgstr "※ 要求された情報は見つかりませんでした。"
+
+msgid "PARAM_LABEL_ZIP1"
+msgstr "郵便番号1"
+
+msgid "PARAM_LABEL_ZIP2"
+msgstr "郵便番号2"
+
+msgid "PARAM_LABEL_BROWSENODEID"
+msgstr "対象カテゴリID"
+
+msgid "PARAM_LABEL_RESPONSEGROUP"
+msgstr "返答種別"
+
+msgid "PARAM_LABEL_CONDITION"
+msgstr "商品コンディション"
+
+msgid "PARAM_LABEL_IDTYPE"
+msgstr "商品ID種別"
+
+msgid "PARAM_LABEL_ITEMID"
+msgstr "指定ID"
+
+msgid "PARAM_LABEL_RELATEDITEMSPAGE"
+msgstr "関連商品数"
+
+msgid "PARAM_LABEL_RELATIONSHIPTYPE"
+msgstr "関連商品種別"
+
+msgid "PARAM_LABEL_REVIEWPAGE"
+msgstr "レビューページ番号"
+
+msgid "PARAM_LABEL_REVIEWSORT"
+msgstr "レビューページソート"
+
+msgid "PARAM_LABEL_TAGPAGE"
+msgstr "関連タグページ"
+
+msgid "PARAM_LABEL_TAGSPERPAGE"
+msgstr "関連タグページ数"
+
+msgid "PARAM_LABEL_TAGSORT"
+msgstr "関連タグソート"
+
+msgid "PARAM_LABEL_BROWSENODE"
+msgstr "カテゴリID"
+
+msgid "PARAM_LABEL_KEYWORDS"
+msgstr "キーワード"
+
+msgid "PARAM_LABEL_MANUFACTURER"
+msgstr "メーカー名"
+
+msgid "PARAM_LABEL_ITEMPAGE"
+msgstr "ページ番号"
+
+msgid "PARAM_LABEL_SORT"
+msgstr "ソート"
 

@@ -55,7 +55,7 @@ abstract class SC_Api_Abstract {
     protected $status = true;
     protected $arrErr = array();
 
-    final public function __construct() {}
+    public function __construct() {}
 
     final public function __destruct() {}
 

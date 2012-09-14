@@ -33,11 +33,16 @@ require_once CLASS_EX_REALDIR . 'api_extends/SC_Api_Abstract_Ex.php';
 class API_CartClear extends SC_Api_Abstract_Ex {
 
     protected $operation_name = 'CartClear';
-    protected $operation_description = 'カートのクリア';
+    protected $operation_description = '';
     protected $default_auth_types = self::API_AUTH_TYPE_SESSION_TOKEN;
     protected $default_enable = '0';
     protected $default_is_log = '0';
     protected $default_sub_data = '';
+
+    public function __construct() {
+        parent::__construct();
+        $this->operation_description = SC_I18n_Ex::t('API_CARTCLEAR_DESC');
+    }
 
     public function doAction($arrParam) {
         $this->arrResponse = array(

@@ -33,11 +33,16 @@ require_once CLASS_EX_REALDIR . 'api_extends/SC_Api_Abstract_Ex.php';
 class API_BrowseNodeLookup extends SC_Api_Abstract_Ex {
 
     protected $operation_name = 'BrowseNodeLookup';
-    protected $operation_description = 'カテゴリ取得';
+    protected $operation_description = '';
     protected $default_auth_types = self::API_AUTH_TYPE_OPEN;
     protected $default_enable = '1';
     protected $default_is_log = '0';
     protected $default_sub_data = '';
+
+    public function __construct() {
+        parent::__construct();
+        $this->operation_description = SC_I18n_Ex::t('API_BROWSENODELOOKP_DESC');
+    }
 
     public function doAction($arrParam) {
         $arrRequest = $this->doInitParam($arrParam);
@@ -104,8 +109,8 @@ class API_BrowseNodeLookup extends SC_Api_Abstract_Ex {
     }
 
     protected function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam('対象カテゴリID', 'BrowseNodeId', INT_LEN, 'a', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('返答種別', 'ResponseGroup', INT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BROWSENODEID'), 'BrowseNodeId', INT_LEN, 'a', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_RESPONSEGROUP'), 'ResponseGroup', INT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     public function getResponseGroupName() {

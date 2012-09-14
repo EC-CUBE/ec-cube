@@ -33,11 +33,16 @@ require_once CLASS_EX_REALDIR . 'api_extends/SC_Api_Abstract_Ex.php';
 class API_ItemSearch extends SC_Api_Abstract_Ex {
 
     protected $operation_name = 'ItemSearch';
-    protected $operation_description = '商品検索・商品一覧情報を取得します。';
+    protected $operation_description = '';
     protected $default_auth_types = self::API_AUTH_TYPE_OPEN;
     protected $default_enable = '1';
     protected $default_is_log = '0';
     protected $default_sub_data = '';
+
+    public function __construct() {
+        parent::__construct();
+        $this->operation_description = SC_I18n_Ex::t('API_ITEMSEARCH_DESC');
+    }
 
     public function doAction($arrParam) {
         $arrRequest = $this->doInitParam($arrParam);
@@ -84,7 +89,7 @@ class API_ItemSearch extends SC_Api_Abstract_Ex {
 
                 return true;
             } else {
-                $this->addError('ItemSearch.Error', '※ 要求された情報は見つかりませんでした。');
+                $this->addError('ItemSearch.Error', SC_I18n_Ex::t('API_ITEMSEARCH_ERROR'));
             }
         }
 
@@ -92,11 +97,11 @@ class API_ItemSearch extends SC_Api_Abstract_Ex {
     }
 
     protected function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam('カテゴリID', 'BrowseNode', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('キーワード', 'Keywords', STEXT_LEN, 'a', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('メーカー名', 'Manufacturer', STEXT_LEN, 'a', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('ページ番号', 'ItemPage', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('ソート', 'Sort', STEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BROWSENODE'), 'BrowseNode', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_KEYWORDS'), 'Keywords', STEXT_LEN, 'a', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_MANUFACTURER'), 'Manufacturer', STEXT_LEN, 'a', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ITEMPAGE'), 'ItemPage', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_SORT'), 'Sort', STEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     public function getResponseGroupName() {

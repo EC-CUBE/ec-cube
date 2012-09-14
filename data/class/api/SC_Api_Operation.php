@@ -320,10 +320,10 @@ class SC_Api_Operation {
                         $arrErr = $objApiOperation->getErrorArray();
                     }
                 } else {
-                    $arrErr['ECCUBE.Operation.NoLoad'] = 'オペレーションをロード出来ませんでした。';
+                    $arrErr['ECCUBE.Operation.NoLoad'] = SC_I18n_Ex::t('SC_API_OPERATION_NO_LOAD');
                 }
             } else {
-                $arrErr['ECCUBE.Authority.NoAuthority'] = 'オペレーションの実行権限がありません。';
+                $arrErr['ECCUBE.Authority.NoAuthority'] = SC_I18n_Ex::t('SC_API_OPERATION_NO_AUTHORITY');
             }
         }
 
