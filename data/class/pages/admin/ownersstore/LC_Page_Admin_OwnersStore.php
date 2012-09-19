@@ -858,7 +858,9 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         // 指定されたフォルダ内に解凍する
         $result = $tar->extractModify($dir. '/', $unpacking_name);
         GC_Utils_Ex::gfPrintLog('解凍：' . $dir.'/'.$file_name.'->'.$dir.'/'.$unpacking_name);
-
+        // 解凍元のファイルを削除する.
+        unlink($path);
+        
         return $result;
     }
 
