@@ -34,8 +34,14 @@
 
             if(mode === 'disable') {
                 result = window.confirm('プラグインを無効しても宜しいですか？');
+                if(result === false) {
+                    $(event.target).attr("checked", "checked");
+                }
             } else if(mode === 'enable') {
                 result = window.confirm('プラグインを有効にしても宜しいですか？');
+                if(result === false) {
+                    $(event.target).attr("checked", "");
+                }
             }
             if(result === true){
                 // プラグインID
