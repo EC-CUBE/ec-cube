@@ -73,8 +73,6 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         $this->initParam($objFormParam, $mode);
         $objFormParam->setParam($_POST);
 
-        $mode = $this->getMode();
-
         switch ($mode) {
             // インストール
             case 'install':
@@ -149,7 +147,9 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
                 // エラーチェック
                 $this->arrErr = $objFormParam->checkError();
                 if ($this->isError($this->arrErr) === false) {
-                    $target_plugin_code = $objFormParam->getValue('plugin_code'); // アップデート対象のプラグインコード
+                    $plugin_id = $objFormParam->getValue('plugin_id');
+                    $plugin = SC_Plugin_Util_Ex::getPluginByPluginId($plugin_id);
+                    $target_plugin_code = $plugin['plugin_code']; // アップデート対象のプラグインコード
                     $this->arrErr = $this->checkUploadFile($target_plugin_code);
 
                     if ($this->isError($this->arrErr) === false) {
@@ -226,7 +226,6 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
     function initParam(&$objFormParam, $mode) {
         $objFormParam->addParam('mode', 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('plugin_id', 'plugin_id', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('plugin_code', 'plugin_code', MTEXT_LEN, '', array('ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
         if ($mode === 'priority') {
             $objFormParam->addParam('優先度', 'priority', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         }
