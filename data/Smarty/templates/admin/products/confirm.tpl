@@ -76,7 +76,7 @@
             <td>
                 <!--{foreach from=$arrForm.product_status item=status}-->
                     <!--{if $status != ""}-->
-                        <img src="<!--{$TPL_URLPATH_DEFAULT}--><!--{$arrSTATUS_IMAGE[$status]}-->">
+                        <img src="<!--{$TPL_URLPATH_PC}--><!--{$arrSTATUS_IMAGE[$status]}-->">
                     <!--{/if}-->
                 <!--{/foreach}-->
             </td>
