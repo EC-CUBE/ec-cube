@@ -51,11 +51,11 @@ class SC_Helper_CSV {
         );
 
         $this->arrSubnaviName = array(
-            1 => '商品管理',
-            2 => '会員管理',
-            3 => '受注管理',
-            4 => 'レビュー',
-            5 => 'カテゴリ',
+            1 => SC_I18n_Ex::t('SC_HELPER_CSV_SUBNAVI_PRODUCT'),
+            2 => SC_I18n_Ex::t('SC_HELPER_CSV_SUBNAVI_CUSTOMER'),
+            3 => SC_I18n_Ex::t('SC_HELPER_CSV_SUBNAVI_ORDER'),
+            4 => SC_I18n_Ex::t('SC_HELPER_CSV_SUBNAVI_REVIEW'),
+            5 => SC_I18n_Ex::t('SC_HELPER_CSV_SUBNAVI_CATEGORY'),
         );
     }
 
