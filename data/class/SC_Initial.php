@@ -181,15 +181,14 @@ class SC_Initial {
      * @return void
      */
     function defineParameter() {
-
-        $errorMessage = SC_I18n_Ex::t('SC_INITIAL_ERROR_UNWRITABLE', array('T_CACHE_REALDIR' => CACHE_REALDIRIR));
-
         // 定数を設定
         if (is_file(CACHE_REALDIR . 'mtb_constants.php')) {
             require_once CACHE_REALDIR . 'mtb_constants.php';
 
             // キャッシュが無ければ, 初期データからコピー
         } elseif (is_file(CACHE_REALDIR . '../mtb_constants_init.php')) {
+
+            $errorMessage = SC_I18n_Ex::t('SC_INITIAL_ERROR_UNWRITABLE', array('T_CACHE_REALDIR' => CACHE_REALDIRIR));
 
             $mtb_constants = file_get_contents(CACHE_REALDIR . '../mtb_constants_init.php');
             if (is_writable(CACHE_REALDIR)) {
@@ -207,7 +206,7 @@ class SC_Initial {
                 die($errorMessage);
             }
         } else {
-            die(SC_I18n_Ex::t('SC_INITIAL_ERROR_NOT_FOUND', array('T_CACHE_REALDIR' => CACHE_REALDIR)));
+            die(SC_I18n_Ex::t('SC_INITIAL_ERROR_NOT_FOUND', array('T_CACHE_REALDIR' => CACHE_REALDIR), array('lang_code' => 'ja', 'device_type_id' => 10)));
         }
     }
 
