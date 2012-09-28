@@ -194,7 +194,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
             if (file_exists(PLUGIN_HTML_REALDIR . $plugins[$key]['plugin_code'] . '/logo.png') === true){
                 $plugins[$key]['logo'] = ROOT_URLPATH . 'plugin/' . $plugins[$key]['plugin_code'] . '/logo.png';
             } else {
-                $plugins[$key]['logo'] = IMAGE_SAVE_URLPATH . 'noimage_plugin_list.gif';
+                $plugins[$key]['logo'] = IMAGE_SAVE_URLPATH . 'noimage_plugin_list.png';
             }
 
             // 設定ファイルがあるかを判定.
