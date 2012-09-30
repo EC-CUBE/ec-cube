@@ -46,7 +46,7 @@ class SC_I18n {
             $options['lang_code'] = LANG_CODE;
         }
         // If device type ID is not specified, detect the viewing device.
-        if (empty($options['device_type_id'])) {
+        if (!isset($options['device_type_id']) || ($options['device_type_id'] !== FALSE && !strlen($options['device_type_id']))) {
             $options['device_type_id'] = SC_Display_Ex::detectDevice();
         }
 
@@ -84,7 +84,7 @@ class SC_I18n {
             $options['lang_code'] = LANG_CODE;
         }
         // If device type ID is not specified, detect the viewing device.
-        if (empty($options['device_type_id'])) {
+        if (!isset($options['device_type_id']) || ($options['device_type_id'] !== FALSE && !strlen($options['device_type_id']))) {
             $options['device_type_id'] = SC_Display_Ex::detectDevice();
         }
 

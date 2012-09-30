@@ -206,7 +206,7 @@ class SC_Initial {
                 die($errorMessage);
             }
         } else {
-            die(SC_I18n_Ex::t('SC_INITIAL_ERROR_NOT_FOUND', array('T_CACHE_REALDIR' => CACHE_REALDIR), array('lang_code' => 'ja', 'device_type_id' => 10)));
+            die(SC_I18n_Ex::t('SC_INITIAL_ERROR_NOT_FOUND', array('T_CACHE_REALDIR' => CACHE_REALDIR), array('lang_code' => 'ja', 'device_type_id' => FALSE)));
         }
     }
 

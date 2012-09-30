@@ -46,7 +46,7 @@ class SC_Helper_Locale {
      * @param   integer $device_type_id     device type ID
      * @return  string  a string corresponding with message alias
      */
-    function get_locale($string, $lang_code = LANG_CODE, $device_type_id = DEVICE_TYPE_PC) {
+    function get_locale($string, $lang_code = LANG_CODE, $device_type_id = FALSE) {
         // Get string list of specified language.
         $translations = $this->get_translations($lang_code, $device_type_id);
         // Whether a string which corresponding with alias is exist.
@@ -65,9 +65,10 @@ class SC_Helper_Locale {
      * @param   integer $device_type_id device type ID
      * @return  array   strings
      */
-    function get_translations($lang_code = LANG_CODE, $device_type_id = DEVICE_TYPE_PC) {
+    function get_translations($lang_code = LANG_CODE, $device_type_id = FALSE) {
+        $translations_key = "translations_" . $lang_code . "_" . $device_type_id;
         // If the strings of specified language is not loaded
-        if (empty($this->_translations[$lang_code][$device_type_id])) {
+        if (empty($this->_translations[$translations_key])) {
             $translations = array();
 
             // Get a list of files to load.
@@ -82,10 +83,10 @@ class SC_Helper_Locale {
                 $translations = array_merge($translations, $gettext->cache_translations);
             }
 
-            $this->_translations[$lang_code][$device_type_id] = $translations;
+            $this->_translations[$translations_key] = $translations;
         }
 
-        return $this->_translations[$lang_code][$device_type_id];
+        return $this->_translations[$translations_key];
     }
 
     /**
@@ -95,7 +96,7 @@ class SC_Helper_Locale {
      * @param   integer $device_type_id device type ID
      * @return  array   file list
      */
-    function get_locale_file_list($lang_code = LANG_CODE, $device_type_id = DEVICE_TYPE_PC) {
+    function get_locale_file_list($lang_code = LANG_CODE, $device_type_id = FALSE) {
         $file_list = array();
 
         // Path to the EC-CUBE Core locale file.
@@ -122,10 +123,12 @@ class SC_Helper_Locale {
         }
 
         // Path to the template locale file.
-        $template_locale_path = HTML_REALDIR . SC_Helper_PageLayout_Ex::getUserDir($device_type_id, true) . "locales/{$lang_code}.mo";
-        // If a locale file of specified language is exist, add to the file list.
-        if (file_exists($template_locale_path)) {
-            $file_list[] = $template_locale_path;
+        if ($device_type_id !== FALSE) {
+            $template_locale_path = HTML_REALDIR . SC_Helper_PageLayout_Ex::getUserDir($device_type_id, true) . "locales/{$lang_code}.mo";
+            // If a locale file of specified language is exist, add to the file list.
+            if (file_exists($template_locale_path)) {
+                $file_list[] = $template_locale_path;
+            }
         }
 
         return $file_list;
