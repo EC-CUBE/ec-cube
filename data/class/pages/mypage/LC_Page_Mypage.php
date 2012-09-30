@@ -31,7 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.p
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
+class LC_Page_Mypage extends LC_Page_AbstractMypage_Ex {
 
     // {{{ properties
 
