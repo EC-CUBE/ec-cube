@@ -46,7 +46,11 @@ class SC_Helper_Locale {
      * @param   integer $device_type_id     device type ID
      * @return  string  a string corresponding with message alias
      */
-    function get_locale($string, $lang_code = LANG_CODE, $device_type_id = FALSE) {
+    function get_locale($string, $lang_code = FALSE, $device_type_id = FALSE) {
+        // Set language code when it is not set.
+        if ($lang_code === FALSE) {
+            $lang_code = LANG_CODE;
+        }
         // Get string list of specified language.
         $translations = $this->get_translations($lang_code, $device_type_id);
         // Whether a string which corresponding with alias is exist.
@@ -65,7 +69,7 @@ class SC_Helper_Locale {
      * @param   integer $device_type_id device type ID
      * @return  array   strings
      */
-    function get_translations($lang_code = LANG_CODE, $device_type_id = FALSE) {
+    function get_translations($lang_code, $device_type_id = FALSE) {
         $translations_key = "translations_" . $lang_code . "_" . $device_type_id;
         // If the strings of specified language is not loaded
         if (empty($this->_translations[$translations_key])) {
@@ -96,7 +100,7 @@ class SC_Helper_Locale {
      * @param   integer $device_type_id device type ID
      * @return  array   file list
      */
-    function get_locale_file_list($lang_code = LANG_CODE, $device_type_id = FALSE) {
+    function get_locale_file_list($lang_code, $device_type_id = FALSE) {
         $file_list = array();
 
         // Path to the EC-CUBE Core locale file.
@@ -107,17 +111,19 @@ class SC_Helper_Locale {
         }
 
         // Get a list of enabled plugins.
-        $arrPluginDataList = SC_Plugin_Util_Ex::getEnablePlugin();
-        // Get the plugins directory.
-        $arrPluginDirectory = SC_Plugin_Util_Ex::getPluginDirectory();
-        foreach ($arrPluginDataList as $arrPluginData) {
-            // Check that the plugin filename is contained in the list of plugins directory.
-            if (array_search($arrPluginData['plugin_code'], $arrPluginDirectory) !== false) {
-                // Path to the plugin locale file.
-                $plugin_locale_path = PLUGIN_UPLOAD_REALDIR . $arrPluginData['plugin_code'] . "/locales/{$lang_code}.mo";
-                // If a locale file of specified language is exist, add to the file list.
-                if (file_exists($plugin_locale_path)) {
-                    $file_list[] = $plugin_locale_path;
+        if (defined(PLUGIN_UPLOAD_REALDIR)) {
+            $arrPluginDataList = SC_Plugin_Util_Ex::getEnablePlugin();
+            // Get the plugins directory.
+            $arrPluginDirectory = SC_Plugin_Util_Ex::getPluginDirectory();
+            foreach ($arrPluginDataList as $arrPluginData) {
+                // Check that the plugin filename is contained in the list of plugins directory.
+                if (array_search($arrPluginData['plugin_code'], $arrPluginDirectory) !== false) {
+                    // Path to the plugin locale file.
+                    $plugin_locale_path = PLUGIN_UPLOAD_REALDIR . $arrPluginData['plugin_code'] . "/locales/{$lang_code}.mo";
+                    // If a locale file of specified language is exist, add to the file list.
+                    if (file_exists($plugin_locale_path)) {
+                        $file_list[] = $plugin_locale_path;
+                    }
                 }
             }
         }
@@ -141,7 +147,11 @@ class SC_Helper_Locale {
      * @param string    $lang_code  language code
      * @return integer  index
      */
-    function get_plural_index($count, $lang_code = LANG_CODE) {
+    function get_plural_index($count, $lang_code = FALSE) {
+        // Set language code when it is not set.
+        if ($lang_code === FALSE) {
+            $lang_code = LANG_CODE;
+        }
         // Get a formula
         $string = $this->get_plural_forms($lang_code);
         $string = str_replace('nplurals', "\$total", $string);
@@ -163,7 +173,7 @@ class SC_Helper_Locale {
      * @param   string  $lang_code  language code
      * @return  string  formula
      */
-    function get_plural_forms($lang_code = LANG_CODE) {
+    function get_plural_forms($lang_code) {
         // If formula is empty, include the file.
         if(empty($this->_plural_forms)){
             $this->_plural_forms = @include_once DATA_REALDIR . "include/plural_forms.inc";
