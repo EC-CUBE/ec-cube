@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2012-09-28 21:23+0900\n"
+"PO-Revision-Date: 2012-10-01 09:26+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -387,6 +387,24 @@ msgstr "※ 購入金額の指定範囲が不正です。"
 msgid "SC_HELPER_CUSTOMER_INVALID_TIMES_RANGE"
 msgstr "※ 購入回数の指定範囲が不正です。"
 
+msgid "SC_HELPER_DB_FILE_UNREADABLE"
+msgstr "ファイルは存在するが読み込めない"
+
+msgid "SC_HELPER_MAIL_ORDER_NOT_EXISTS"
+msgstr "該当する受注が存在しない。(注文番号: T_ORDER_ID)"
+
+msgid "SC_HELPER_MAIL_DELIVERED"
+msgstr "下記メールの配信が完了しました。"
+
+msgid "SC_HELPER_MAIL_REGIST_CONFIRM"
+msgstr "会員登録のご確認"
+
+msgid "SC_HELPER_MAIL_REGIST_COMPLETE"
+msgstr "会員登録のご完了"
+
+msgid "SC_HELPER_PAGELAYOUT_BLOCK_NOTFOUND"
+msgstr "ブロックが見つかりません"
+
 msgid "API_ADDRFROMZIP_DESC"
 msgstr "郵便番号から住所を検索します。"
 
@@ -674,4 +692,10 @@ msgstr "購入商品コード"
 
 msgid "PARAM_LABEL_CATEGORY"
 msgstr "カテゴリー"
+
+msgid "FORMAT_DATE_LONG"
+msgstr "Y年m月d日H時i分"
+
+msgid "FORMAT_NAME_FULL_SIR"
+msgstr "T_LASTNAME T_FIRSTNAME 様"
 

@@ -1386,7 +1386,7 @@ __EOS__;
             $objQuery =& SC_Query_Ex::getSingletonInstance();
 
             $sqls = file_get_contents($sqlFilePath);
-            if ($sqls === false) trigger_error('ファイルは存在するが読み込めない', E_USER_ERROR);
+            if ($sqls === false) trigger_error(SC_I18n_Ex::t('SC_HELPER_DB_FILE_UNREADABLE'), E_USER_ERROR);
 
             foreach (explode(';', $sqls) as $sql) {
                 $sql = trim($sql);

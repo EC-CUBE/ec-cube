@@ -83,7 +83,7 @@ class SC_Helper_PageLayout {
                     || is_file($arrBloc['tpl_path'])) {
                     $objPage->arrPageLayout[$arrTarget[$target_id]][] = $arrBloc;
                 } else {
-                    $error = "ブロックが見つかりません\n"
+                    $error = SC_I18n_Ex::t('SC_HELPER_PAGELAYOUT_BLOCK_NOTFOUND') ."\n"
                         . 'tpl_path: ' . $arrBloc['tpl_path'] . "\n"
                         . 'php_path: ' . $arrBloc['php_path'];
                     GC_Utils_Ex::gfPrintLog($error);
