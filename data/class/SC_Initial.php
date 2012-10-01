@@ -188,9 +188,8 @@ class SC_Initial {
             // キャッシュが無ければ, 初期データからコピー
         } elseif (is_file(CACHE_REALDIR . '../mtb_constants_init.php')) {
 
-            $errorMessage = SC_I18n_Ex::t('SC_INITIAL_ERROR_UNWRITABLE', array('T_CACHE_REALDIR' => CACHE_REALDIRIR));
-
             $mtb_constants = file_get_contents(CACHE_REALDIR . '../mtb_constants_init.php');
+            $errorMessage = SC_I18n_Ex::t('SC_INITIAL_ERROR_UNWRITABLE', array('T_CACHE_REALDIR' => CACHE_REALDIR));
             if (is_writable(CACHE_REALDIR)) {
                 $handle = fopen(CACHE_REALDIR . 'mtb_constants.php', 'w');
                 if (!$handle) {
