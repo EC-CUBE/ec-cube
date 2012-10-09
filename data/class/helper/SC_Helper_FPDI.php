@@ -166,10 +166,8 @@ class SC_Helper_FPDI extends PDF_Japanese {
         foreach ($data as $row) {
             $h = 4;
             $i = 0;
-            $y = $this->y;
             $this->Cell(5, $h, '', 0, 0, '', 0, '');
             foreach ($row as $col) {
-                $this->y = $y;
                 // FIXME 汎用的ではない処理。この指定は呼び出し元で行うようにしたい。
                 if ($i == 0) {
                     $align = 'L';
