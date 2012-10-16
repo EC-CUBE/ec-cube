@@ -1749,5 +1749,53 @@ class SC_Utils {
         return str_replace('%7E', '~', rawurlencode($str));
     }
 
+    /**
+     * マルチバイト対応の trim
+     *
+     * @param string $str 入力文字列
+     * @param string $charlist 削除する文字を指定
+     * @return string 変更後の文字列
+     */
+    static function trim($str, $charlist = null) {
+        $re = SC_Utils_Ex::getTrimPregPattern($charlist);
+        return preg_replace('/(^' . $re . ')|(' . $re . '$)/us', '', $str);
+    }
 
+    /**
+     * マルチバイト対応の ltrim
+     *
+     * @param string $str 入力文字列
+     * @param string $charlist 削除する文字を指定
+     * @return string 変更後の文字列
+     */
+    static function ltrim($str, $charlist = null) {
+        $re = SC_Utils_Ex::getTrimPregPattern($charlist);
+        return preg_replace('/^' . $re . '/us', '', $str);
+    }
+
+    /**
+     * マルチバイト対応の rtrim
+     *
+     * @param string $str 入力文字列
+     * @param string $charlist 削除する文字を指定
+     * @return string 変更後の文字列
+     */
+    static function rtrim($str, $charlist = null) {
+        $re = SC_Utils_Ex::getTrimPregPattern($charlist);
+        return preg_replace('/' . $re . '$/us', '', $str);
+    }
+
+    /**
+     * 文字列のトリム処理で使用する PCRE のパターン
+     *
+     * @param string $charlist 削除する文字を指定
+     * @return string パターン
+     */
+    static function getTrimPregPattern($charlist = null) {
+        if (is_null($charlist)) {
+            return '\s+';
+        } else {
+            return '[' . preg_quote($charlist, '/') . ']+';
+        }
+    }
 }
