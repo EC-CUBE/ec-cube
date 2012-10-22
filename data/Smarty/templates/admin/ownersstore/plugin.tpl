@@ -33,7 +33,7 @@
             var mode = event.target.name;
 
             if(mode === 'disable') {
-                result = window.confirm('プラグインを無効しても宜しいですか？');
+                result = window.confirm('プラグインを無効にしても宜しいですか？');
                 if(result === false) {
                     $(event.target).attr("checked", "checked");
                 }
