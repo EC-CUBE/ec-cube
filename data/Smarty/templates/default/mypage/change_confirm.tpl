@@ -43,23 +43,23 @@
             <col width="30%" />
             <col width="70%" />
             <tr>
-                <th>お名前<span class="attention">※</span></th>
+                <th>お名前</th>
                 <td><!--{$arrForm.name01|h}-->　<!--{$arrForm.name02|h}--></td>
             </tr>
             <tr>
-                <th>お名前(フリガナ)<span class="attention">※</span></th>
+                <th>お名前(フリガナ)</th>
                 <td><!--{$arrForm.kana01|h}-->　<!--{$arrForm.kana02|h}--></td>
             </tr>
             <tr>
-                <th>郵便番号<span class="attention">※</span></th>
+                <th>郵便番号</th>
                 <td><!--{$arrForm.zip01}-->-<!--{$arrForm.zip02}--></td>
             </tr>
             <tr>
-                <th>住所<span class="attention">※</span></th>
+                <th>住所</th>
                 <td><!--{$arrPref[$arrForm.pref]}--><!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}--></td>
             </tr>
             <tr>
-                <th>電話番号<span class="attention">※</span></th>
+                <th>電話番号</th>
                 <td><!--{$arrForm.tel01|h}-->-<!--{$arrForm.tel02}-->-<!--{$arrForm.tel03}--></td>
             </tr>
             <tr>
@@ -67,7 +67,7 @@
                 <td><!--{if strlen($arrForm.fax01) > 0}--><!--{$arrForm.fax01}-->-<!--{$arrForm.fax02}-->-<!--{$arrForm.fax03}--><!--{else}-->未登録<!--{/if}--></td>
             </tr>
             <tr>
-                <th>メールアドレス<span class="attention">※</span></th>
+                <th>メールアドレス</th>
                 <td><a href="<!--{$arrForm.email|escape:'hex'}-->"><!--{$arrForm.email|escape:'hexentity'}--></a></td>
             </tr>
             <tr>
@@ -81,7 +81,7 @@
                 </td>
             </tr>
             <tr>
-                <th>性別<span class="attention">※</span></th>
+                <th>性別</th>
                 <td><!--{$arrSex[$arrForm.sex]}--></td>
             </tr>
             <tr>
@@ -93,17 +93,17 @@
                 <td><!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}--><!--{$arrForm.year|h}-->年<!--{$arrForm.month|h}-->月<!--{$arrForm.day|h}-->日<!--{else}-->未登録<!--{/if}--></td>
             </tr>
             <tr>
-                <th>希望するパスワード<span class="attention">※</span><br />
+                <th>希望するパスワード<br />
                 </th>
                 <td><!--{$passlen}--></td>
             </tr>
             <tr>
-                <th>パスワードを忘れた時のヒント<span class="attention">※</span></th>
+                <th>パスワードを忘れた時のヒント</th>
                 <td>質問：&nbsp;<!--{$arrReminder[$arrForm.reminder]|h}--><br />
                         答え：&nbsp;<!--{$arrForm.reminder_answer|h}--></td>
             </tr>
             <tr>
-                <th>メールマガジン送付について<span class="attention">※</span></th>
+                <th>メールマガジン送付について</th>
                 <td><!--{$arrMAILMAGATYPE[$arrForm.mailmaga_flg]}--></td>
             </tr>
         </table>

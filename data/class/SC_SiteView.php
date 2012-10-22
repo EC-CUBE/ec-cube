@@ -37,7 +37,6 @@ class SC_SiteView extends SC_View_Ex {
         $this->_smarty->compile_dir = COMPILE_REALDIR;
 
         $this->assignTemplatePath(DEVICE_TYPE_PC);
-        $this->initpath();
     }
 
     function setPrevURL() {

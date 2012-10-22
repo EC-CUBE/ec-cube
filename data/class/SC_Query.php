@@ -838,8 +838,7 @@ class SC_Query {
      * @return array テーブル名の配列
      */
     function listTables() {
-        $objManager =& $this->conn->loadModule('Manager');
-        return $objManager->listTables();
+        return $this->dbFactory->listTables($this);
     }
 
     /**

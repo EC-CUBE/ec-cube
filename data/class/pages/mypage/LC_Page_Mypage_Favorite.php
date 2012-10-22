@@ -125,7 +125,11 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
         $objProduct     = new SC_Product_Ex();
 
         $objQuery->setOrder('create_date DESC');
-        $arrProductId  = $objQuery->getCol('product_id', 'dtb_customer_favorite_products', 'customer_id = ?', array($customer_id));
+        $where = 'customer_id = ?';
+        if (NOSTOCK_HIDDEN) {
+            $where .= ' AND EXISTS(SELECT * FROM dtb_products_class WHERE product_id = dtb_customer_favorite_products.product_id AND del_flg = 0 AND (stock >= 1 OR stock_unlimited = 1))';
+        }
+        $arrProductId  = $objQuery->getCol('product_id', 'dtb_customer_favorite_products', $where, array($customer_id));
 
         $objQuery       =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setWhere($this->lfMakeWhere('alldtl.', $arrProductId));
@@ -174,10 +178,6 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
         } else {
             // 一致させない
             $where = '0<>0';
-        }
-        // 在庫無し商品の非表示
-        if (NOSTOCK_HIDDEN) {
-            $where .= ' AND (stock_max >= 1 OR stock_unlimited_max = 1)';
         }
         return $where;
     }

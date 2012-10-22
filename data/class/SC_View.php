@@ -189,16 +189,6 @@ class SC_View {
         }
     }
 
-    /* サイト初期設定 */
-    function initpath() {
-        $array = array();
-        $array['tpl_mainnavi'] = realpath(dirname(__FILE__)) . '/../Smarty/templates/frontparts/mainnavi.tpl';
-
-        $objDb = new SC_Helper_DB_Ex();
-        $array['tpl_root_id'] = $objDb->sfGetRootId();
-        $this->assignarray($array);
-    }
-
     /**
      * テンプレートパスをアサインする.
      *

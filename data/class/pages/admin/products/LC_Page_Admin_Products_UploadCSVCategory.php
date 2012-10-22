@@ -527,8 +527,11 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
             $where = 'category_id = ?';
             $rank = $objQuery->get('rank', 'dtb_category', $where, array($parent_category_id));
             // 追加レコードのランク以上のレコードを一つあげる。
-            $sqlup = 'UPDATE dtb_category SET rank = (rank + 1) WHERE rank >= ?';
-            $objQuery->exec($sqlup, array($rank));
+            $where = 'rank >= ?';
+            $arrRawSql = array(
+                'rank' => '(rank + 1)',
+            );
+            $objQuery->update('dtb_category', array(), $where, array($rank), $arrRawSql);
         }
 
         $where = 'category_id = ?';

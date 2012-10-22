@@ -70,9 +70,6 @@ class SC_Helper_CSV {
      * @return mixed $is_download = true時 成功失敗フラグ(boolean) 、$is_downalod = false時 string
      */
     function sfDownloadCsv($csv_id, $where = '', $arrVal = array(), $order = '', $is_download = false) {
-        // 実行時間を制限しない
-        @set_time_limit(0);
-
         // CSV出力タイトル行の作成
         $arrOutput = SC_Utils_Ex::sfSwapArray($this->sfGetCsvOutput($csv_id, 'status = ' . CSV_COLUMN_STATUS_FLG_ENABLE));
         if (count($arrOutput) <= 0) return false; // 失敗終了
@@ -206,6 +203,7 @@ class SC_Helper_CSV {
         $line = mb_convert_encoding($line, 'SJIS-Win');
         $line .= "\r\n";
         fwrite($this->fpOutput, $line);
+        SC_Utils_Ex::extendTimeOut();
         return true;
     }
 
@@ -222,8 +220,6 @@ class SC_Helper_CSV {
     function sfDownloadCsvFromSql($sql, $arrVal = array(), $file_head = 'csv', $arrHeader = array(), $is_download = false) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        // 実行時間を制限しない
-        @set_time_limit(0);
         // ヘッダ構築
         if (is_array($arrHeader)) {
             $header = $this->sfArrayToCSV($arrHeader);

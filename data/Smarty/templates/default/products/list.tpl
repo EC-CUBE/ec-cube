@@ -49,12 +49,12 @@
         var hiddenValues = ['mode','category_id','maker_id','name','orderby','disp_number','pageno','rnd'];
         $.each(hiddenValues, function(){
             // 商品別のフォームに検索条件の値があれば上書き
-            if (cartForm.has('input[name='+this+']')) {
+            if (cartForm.has('input[name='+this+']').length != 0) {
                 cartForm.find('input[name='+this+']').val(searchForm.find('input[name='+this+']').val());
             }
             // なければ追加
             else {
-                cartForm.append($("<input/>").attr("name", this).val(searchForm.find('input[name='+this+']').val()));
+                cartForm.append($('<input type="hidden" />').attr("name", this).val(searchForm.find('input[name='+this+']').val()));
             }
         });
         // 商品別のフォームを送信
@@ -76,13 +76,6 @@
         <input type="hidden" name="disp_number" value="<!--{$disp_number|h}-->" />
         <input type="hidden" name="pageno" value="<!--{$tpl_pageno|h}-->" />
         <!--{* ▲ページナビ関連 *}-->
-        <!--{* ▼注文関連 *}-->
-        <input type="hidden" name="product_id" value="" />
-        <input type="hidden" name="classcategory_id1" value="" />
-        <input type="hidden" name="classcategory_id2" value="" />
-        <input type="hidden" name="product_class_id" value="" />
-        <input type="hidden" name="quantity" value="" />
-        <!--{* ▲注文関連 *}-->
         <input type="hidden" name="rnd" value="<!--{$tpl_rnd|h}-->" />
     </form>
 

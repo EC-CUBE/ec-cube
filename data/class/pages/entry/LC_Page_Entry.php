@@ -139,8 +139,6 @@ class LC_Page_Entry extends LC_Page_Ex {
 
                     $uniqid             = $this->lfRegistCustomerData($this->lfMakeSqlVal($objFormParam));
 
-                    $this->tpl_mainpage = 'entry/complete.tpl';
-                    $this->tpl_title    = '会員登録(完了ページ)';
                     $this->lfSendMail($uniqid, $this->arrForm);
 
                     // 仮会員が無効の場合

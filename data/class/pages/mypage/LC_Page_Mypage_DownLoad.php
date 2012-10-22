@@ -342,9 +342,6 @@ __EOS__;
         //ファイルサイズ指定
         $zv_filesize = filesize($realpath);
         header('Content-Length: ' . $zv_filesize);
-        set_time_limit(0);
-        ob_end_flush();
-        flush();
         //ファイル読み込み
         $handle = fopen($realpath, 'rb');
         if ($handle === false) {
@@ -352,9 +349,9 @@ __EOS__;
             SC_Response_Ex::actionExit();
         }
         while (!feof($handle)) {
-            echo(fread($handle, DOWNLOAD_BLOCK*1024));
-            ob_flush();
-            flush();
+            echo fread($handle, DOWNLOAD_BLOCK*1024);
+            SC_Utils_Ex::sfFlush();
+            SC_Utils_Ex::extendTimeOut();
         }
         fclose($handle);
     }

@@ -451,11 +451,11 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         // 商品規格登録情報を生成する。
         // 商品規格テーブルのカラムに存在しているもののうち、Form投入設定されていないデータは上書きしない。
         $sqlval = SC_Utils_Ex::sfArrayIntersectKeys($arrList, $this->arrProductClassColumn);
-        // 必須入力では無い項目だが、空文字では問題のある特殊なカラム値の初期値設定
-        $sqlval = $this->lfSetProductClassDefaultData($sqlval);
 
         if ($product_class_id == '') {
             // 新規登録
+            // 必須入力では無い項目だが、空文字では問題のある特殊なカラム値の初期値設定
+            $sqlval = $this->lfSetProductClassDefaultData($sqlval);
             $sqlval['product_id'] = $product_id;
             $sqlval['product_class_id'] = $objQuery->nextVal('dtb_products_class_product_class_id');
             $sqlval['create_date'] = $arrList['update_date'];
@@ -464,6 +464,8 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
             $product_class_id = $sqlval['product_class_id'];
         } else {
             // UPDATEの実行
+            // 必須入力では無い項目だが、空文字では問題のある特殊なカラム値の初期値設定
+            $sqlval = $this->lfSetProductClassDefaultData($sqlval, true);
             $where = 'product_class_id = ?';
             $objQuery->update('dtb_products_class', $sqlval, $where, array($product_class_id));
         }
@@ -559,9 +561,10 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      * 商品規格データ登録前に特殊な値の持ち方をする部分のデータ部分の初期値補正を行う
      *
      * @param array $sqlval 商品登録情報配列
+     * @param boolean $upload_flg 更新フラグ(更新の場合true)
      * @return $sqlval 登録情報配列
      */
-    function lfSetProductClassDefaultData(&$sqlval) {
+    function lfSetProductClassDefaultData(&$sqlval, $upload_flg) {
         //新規登録時のみ設定する項目
         if ($sqlval['product_class_id'] == '') {
             if ($sqlval['point_rate'] == '') {
@@ -578,6 +581,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         if ($sqlval['creator_id'] == '') {
             $sqlval['creator_id'] = $_SESSION['member_id'];
         }
+
         // 在庫無制限フラグ列を利用する場合、
         if (array_key_exists('stock_unlimited', $sqlval)) {
             // 在庫無制限フラグ = 無制限の場合、
@@ -585,9 +589,12 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
                 $sqlval['stock'] = null;
             }
         } else {
-            // 在庫数設定がされていない場合、在庫無制限フラグ = 無制限
-            if (strlen($sqlval['stock']) === 0) {
-                $sqlval['stock_unlimited'] = UNLIMITED_FLG_UNLIMITED;
+            // 初期登録の場合は、在庫数設定がされていない場合、在庫無制限フラグ = 無制限。
+            if (strlen($sqlval['stock']) === 0){
+                //更新の場合は、sqlvalのキーにstockがある場合のみ対象
+                if(!$upload_flg or ($upload_flg and array_key_exists('stock', $sqlval))) {
+                    $sqlval['stock_unlimited'] = UNLIMITED_FLG_UNLIMITED;
+                }
             }
             // 在庫数を入力している場合、在庫無制限フラグ = 制限有り
             elseif (strlen($sqlval['stock']) >= 1) {

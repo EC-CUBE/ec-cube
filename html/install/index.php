@@ -196,6 +196,17 @@ switch ($mode) {
             }
         }
 
+        //マスターデータのキャッシュを削除
+        $cache_dir = '../../data/cache/';
+        $res_dir = opendir( $cache_dir );
+        while( $file_name = readdir( $res_dir ) ){
+            //dummy以外は削除
+            if($file_name != 'dummy'){
+                unlink($cache_dir . $file_name);
+            }
+        }
+        closedir( $res_dir );
+
         $objPage = lfDispStep3($objPage);
         break;
     // 完了画面

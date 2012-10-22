@@ -168,4 +168,14 @@ class SC_DB_DBFactory {
      */
     function initObjQuery(SC_Query &$objQuery) {
     }
+
+    /**
+     * テーブル一覧を取得する
+     *
+     * @return array テーブル名の配列
+     */
+    function listTables(SC_Query &$objQuery) {
+        $objManager =& $objQuery->conn->loadModule('Manager');
+        return $objManager->listTables();
+    }
 }

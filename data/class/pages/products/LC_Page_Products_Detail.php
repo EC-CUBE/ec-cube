@@ -608,16 +608,28 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
      * @return void
      */
     function doMobileSelectItem() {
-        $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam,$this->tpl_classcat_find1,$this->tpl_classcat_find2);
+        $objProduct = new SC_Product_Ex();
+
+        $this->arrErr = $this->lfCheckError($this->mode, $this->objFormParam, $this->tpl_classcat_find1, $this->tpl_classcat_find2);
+
+        // この段階では、商品規格ID・数量の入力チェックエラーを出させない。
+        // FIXME: エラーチェックの定義で mode で定義を分岐する方が良いように感じる
+        unset($this->arrErr['product_class_id']);
+        unset($this->arrErr['quantity']);
 
         // 規格2が設定されていて、エラーを検出した場合
-        if ($this->tpl_classcat_find2 and $this->arrErr['classcategory_id2']) {
+        if ($this->tpl_classcat_find2 and !empty($this->arrErr)) {
             // templateの変更
             $this->tpl_mainpage = 'products/select_find2.tpl';
-            break;
+            return;
         }
 
+        $product_id = $this->objFormParam->getValue('product_id');
+
         $value1 = $this->objFormParam->getValue('classcategory_id1');
+        if (strlen($value1) === 0) {
+            $value1 = '__unselected';
+        }
 
         // 規格2が設定されている場合.
         if (SC_Utils_Ex::isBlank($this->objFormParam->getValue('classcategory_id2')) == false){
@@ -626,14 +638,8 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
             $value2 = '#0';
         }
 
-        if (strlen($value1) === 0) {
-            $value1 = '__unselected';
-        }
-
+        $objProduct->setProductsClassByProductIds(array($product_id));
         $this->tpl_product_class_id = $objProduct->classCategories[$product_id][$value1][$value2]['product_class_id'];
-
-        // この段階では、数量の入力チェックエラーを出させない。
-        unset($this->arrErr['quantity']);
 
         // 数量の入力を行う
         $this->tpl_mainpage = 'products/select_item.tpl';

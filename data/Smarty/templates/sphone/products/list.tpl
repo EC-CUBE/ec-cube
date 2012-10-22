@@ -46,11 +46,6 @@
         <input type="hidden" name="orderby" value="<!--{$orderby|h}-->" />
         <input type="hidden" name="disp_number" value="<!--{$disp_number|h}-->" />
         <input type="hidden" name="pageno" value="<!--{$tpl_pageno|h}-->" />
-        <input type="hidden" name="product_id" value="" />
-        <input type="hidden" name="classcategory_id1" value="" />
-        <input type="hidden" name="classcategory_id2" value="" />
-        <input type="hidden" name="product_class_id" value="" />
-        <input type="hidden" name="quantity" value="" />
         <input type="hidden" name="rnd" value="<!--{$tpl_rnd|h}-->" />
     </form>
 

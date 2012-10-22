@@ -155,9 +155,9 @@ class SC_UploadFile {
                         // 一意なファイル名を作成する。
                         $uniqname = date('mdHi') . '_' . uniqid('').'.';
                         $this->temp_file[$cnt] = preg_replace("/^.*\./", $uniqname, $_FILES[$keyname]['name']);
-                        set_time_limit(0);
                         $result  = copy($_FILES[$keyname]['tmp_name'], $this->temp_dir . $this->temp_file[$cnt]);
                         GC_Utils_Ex::gfPrintLog($result.' -> '. $this->temp_dir . $this->temp_file[$cnt]);
+                        SC_Utils_Ex::extendTimeOut();
                     }
                 }
                 $cnt++;

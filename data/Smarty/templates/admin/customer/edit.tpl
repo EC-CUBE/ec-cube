@@ -149,7 +149,7 @@
                 </td>
             </tr>
             <tr>
-                <th>ご性別<span class="attention"> *</span></th>
+                <th>性別<span class="attention"> *</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.sex}--></span>
                     <span <!--{if $arrErr.sex != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->>

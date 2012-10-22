@@ -266,13 +266,19 @@ class SC_Fpdf extends SC_Helper_FPDI {
         $this->FancyTable($this->label_cell, $arrOrder, $this->width_cell);
     }
 
+    /**
+     * 備考の出力を行う
+     *
+     * @param string $str 入力文字列
+     * @return string 変更後の文字列
+     */
     function setEtcData() {
         $this->Cell(0, 10, '', 0, 1, 'C', 0, '');
         $this->SetFont('Gothic', 'B', 9);
         $this->MultiCell(0, 6, SC_I18n_Ex::t('SC_FPDF_LABEL_ETC'), 'T', 2, 'L', 0, '');  //備考
-        $this->Ln();
         $this->SetFont('SJIS', '', 8);
-        $this->MultiCell(0, 4, $this->arrData['etc1']."\n".$this->arrData['etc2']."\n".$this->arrData['etc3'], '', 2, 'L', 0, '');  //備考
+        $text = SC_Utils_Ex::rtrim($this->arrData['etc1'] . "\n" . $this->arrData['etc2'] . "\n" . $this->arrData['etc3']);
+        $this->MultiCell(0, 4, $text, '', 2, 'L', 0, '');
     }
 
     function createPdf() {
