@@ -41,7 +41,7 @@ class API_ItemLookup extends SC_Api_Abstract_Ex {
 
     public function __construct() {
         parent::__construct();
-        $this->operation_description = SC_I18n_Ex::t('API_ITEMLOOKUP_DESC');
+        $this->operation_description = SC_I18n_Ex::t('API_ItemLookup_001');
     }
 
     public function doAction($arrParam) {
@@ -72,7 +72,7 @@ class API_ItemLookup extends SC_Api_Abstract_Ex {
                 $this->setResponse('ItemAttributes', $arrProduct);
                 return true;
             } else {
-                $this->addError('ItemLookup.Error', SC_I18n_Ex::t('API_ITEMLOOKUP_ERROR'));
+                $this->addError('ItemLookup.Error', SC_I18n_Ex::t('API_ItemLookup_002'));
             }
         }
 

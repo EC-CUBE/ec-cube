@@ -2,440 +2,454 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2012-10-01 09:26+0900\n"
+"PO-Revision-Date: 2012-10-29 16:51+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Generator: Poedit 1.5.4\n"
 
-msgid "SC_CHECKERROR_HTML_TAG_CHECK"
+msgid "SC_CheckError_001"
 msgstr "※ T_FIELDに許可されていないタグ T_TAG が含まれています。<br />"
 
-msgid "SC_CHECKERROR_EXIST_CHECK_INPUT"
+msgid "SC_CheckError_002"
 msgstr "※ T_FIELDが入力されていません。<br />"
 
-msgid "SC_CHECKERROR_EXIST_CHECK_SELECT"
+msgid "SC_CheckError_003"
 msgstr "※ T_FIELDが選択されていません。<br />"
 
-msgid "SC_CHECKERROR_EXIST_CHECK_REVERSE"
+msgid "SC_CheckError_004"
 msgstr "※ T_FIELDが入力されていません。<br />"
 
-msgid "SC_CHECKERROR_SPTAB_CHECK"
+msgid "SC_CheckError_005"
 msgstr "※ T_FIELDにスペース、タブ、改行のみの入力はできません。<br />"
 
-msgid "SC_CHECKERROR_NO_SPTAB"
+msgid "SC_CheckError_006"
 msgstr "※ T_FIELDにスペース、タブ、改行は含めないで下さい。<br />"
 
-msgid "SC_CHECKERROR_ZERO_START"
+msgid "SC_CheckError_007"
 msgstr "※ T_FIELDに0で始まる数値が入力されています。<br />"
 
-msgid "SC_CHECKERROR_SELECT_CHECK"
+msgid "SC_CheckError_008"
 msgstr "※ T_FIELDが選択されていません。<br />"
 
-msgid "SC_CHECKERROR_EQUAL_CHECK"
+msgid "SC_CheckError_009"
 msgstr "※ T_FIELD_1STとT_FIELD_2NDが一致しません。<br />"
 
-msgid "SC_CHECKERROR_DIFFERENT_CHECK"
+msgid "SC_CheckError_010"
 msgstr "※ T_FIELD_1STとT_FIELD_2NDは、同じ値を使用できません。<br />"
 
-msgid "SC_CHECKERROR_GREATER_CHECK"
+msgid "SC_CheckError_011"
 msgstr "※ T_FIELD_1STはT_FIELD_2NDより大きい値を入力できません。<br />"
 
-msgid "SC_CHECKERROR_MAX_LENGTH_CHECK"
+msgid "SC_CheckError_012"
 msgstr "※ T_FIELDはT_LENGTH字以下で入力してください。<br />"
 
-msgid "SC_CHECKERROR_MIN_LENGTH_CHECK_SINGLE"
-msgid_plural "SC_CHECKERROR_MIN_LENGTH_CHECK_PLURAL"
+msgid "SC_CheckError_013_SINGLE"
+msgid_plural "SC_CheckError_013_PLURAL"
 msgstr[0] "※ T_FIELDはT_COUNT字以上で入力してください。<br />"
 msgstr[1] "※ T_FIELDはT_COUNT字以上で入力してください。<br />"
 
-msgid "SC_CHECKERROR_MAX_CHECK"
+msgid "SC_CheckError_014"
 msgstr "※ T_FIELDはT_LENGTH以下で入力してください。<br />"
 
-msgid "SC_CHECKERROR_MIN_CHECK_SINGLE"
-msgid_plural "SC_CHECKERROR_MIN_CHECK_PLURAL"
+msgid "SC_CheckError_015_SINGLE"
+msgid_plural "SC_CheckError_015_PLURAL"
 msgstr[0] "※ T_FIELDはT_COUNT以上で入力してください。<br />"
 msgstr[1] "※ T_FIELDはT_COUNT以上で入力してください。<br />"
 
-msgid "SC_CHECKERROR_NUM_CHECK"
+msgid "SC_CheckError_016"
 msgstr "※ T_FIELDは数字で入力してください。<br />"
 
-msgid "SC_CHECKERROR_NUM_POINT_CHECK"
+msgid "SC_CheckError_017"
 msgstr "※ T_FIELDは数字で入力してください。<br />"
 
-msgid "SC_CHECKERROR_ALPHA_CHECK"
+msgid "SC_CheckError_018"
 msgstr "※ T_FIELDは半角英字で入力してください。<br />"
 
-msgid "SC_CHECKERROR_TEL_CHECK_EXIST"
+msgid "SC_CheckError_019"
 msgstr "※ T_FIELDはすべての項目を入力してください。<br />"
 
-msgid "SC_CHECKERROR_TEL_CHECK_MAX_LENGTH"
+msgid "SC_CheckError_020"
 msgstr "※ T_FIELDはT_LENGTH字以内で入力してください。<br />"
 
-msgid "SC_CHECKERROR_TEL_CHECK_NUM"
+msgid "SC_CheckError_021"
 msgstr "※ T_FIELDは数字で入力してください。<br />"
 
-msgid "SC_CHECKERROR_TEL_CHECK_SUM"
+msgid "SC_CheckError_022"
 msgstr "※ T_FIELDはT_LENGTH文字以内で入力してください。<br />"
 
-msgid "SC_CHECKERROR_FULL_EXIST_CHECK"
+msgid "SC_CheckError_023"
 msgstr "※ T_FIELDが入力されていません。<br />"
 
-msgid "SC_CHECKERROR_ALL_EXIST_CHECK"
+msgid "SC_CheckError_024"
 msgstr "※ T_FIELDはすべての項目を入力して下さい。<br />"
 
-msgid "SC_CHECKERROR_ONE_EXIST_CHECK"
+msgid "SC_CheckError_025"
 msgstr "※ T_FIELDが入力されていません。<br />"
 
-msgid "SC_CHECKERROR_TOP_EXIST_CHECK"
+msgid "SC_CheckError_026"
 msgstr "※ T_FIELDは先頭の項目から順番に入力して下さい。<br />"
 
-msgid "SC_CHECKERROR_KANA_CHECK"
+msgid "SC_CheckError_027"
 msgstr "※ T_FIELDはカタカナで入力してください。<br />"
 
-msgid "SC_CHECKERROR_KANABLANK_CHECK"
+msgid "SC_CheckError_028"
 msgstr "※ T_FIELDはカタカナで入力してください。<br />"
 
-msgid "SC_CHECKERROR_ALNUM_CHECK"
+msgid "SC_CheckError_029"
 msgstr "※ T_FIELDは英数字で入力してください。<br />"
 
-msgid "SC_CHECKERROR_GRAPH_CHECK"
+msgid "SC_CheckError_030"
 msgstr "※ T_FIELDは英数記号で入力してください。<br />"
 
-msgid "SC_CHECKERROR_ZERO_CHECK"
+msgid "SC_CheckError_031"
 msgstr "※ T_FIELDは1以上を入力してください。<br />"
 
-msgid "SC_CHECKERROR_NUM_RANGE_CHECK_SINGLE"
-msgid_plural "SC_CHECKERROR_NUM_RANGE_CHECK_PLURAL"
+msgid "SC_CheckError_032_SINGLE"
+msgid_plural "SC_CheckError_032_PLURAL"
 msgstr[0] "※ T_FIELDはT_COUNT桁～T_DIGIT_MAX桁で入力して下さい。<br />"
 msgstr[1] "※ T_FIELDはT_COUNT桁～T_DIGIT_MAX桁で入力して下さい。<br />"
 
-msgid "SC_CHECKERROR_NUM_COUNT_CHECK_SINGLE"
-msgid_plural "SC_CHECKERROR_NUM_COUNT_CHECK_PLURAL"
+msgid "SC_CheckError_033_SINGLE"
+msgid_plural "SC_CheckError_033_PLURAL"
 msgstr[0] "※ T_FIELDはT_COUNT桁で入力して下さい。<br />"
 msgstr[1] "※ T_FIELDはT_COUNT桁で入力して下さい。<br />"
 
-msgid "SC_CHECKERROR_EMAIL_CHECK"
+msgid "SC_CheckError_034"
 msgstr "※ T_FIELDの形式が不正です。<br />"
 
-msgid "SC_CHECKERROR_EMAIL_CHAR_CHECK"
+msgid "SC_CheckError_035"
 msgstr "※ T_FIELDに使用する文字を正しく入力してください。<br />"
 
-msgid "SC_CHECKERROR_URL_CHECK"
+msgid "SC_CheckError_036"
 msgstr "※ T_FIELDを正しく入力してください。<br />"
 
-msgid "SC_CHECKERROR_IP_CHECK"
+msgid "SC_CheckError_037"
 msgstr "※ T_FIELDに正しい形式のIPアドレスを入力してください。<br />"
 
-msgid "SC_CHECKERROR_FILE_EXT_CHECK"
+msgid "SC_CheckError_038"
 msgstr "※ T_FIELDで許可されている形式は、T_EXTです。<br />"
 
-msgid "SC_CHECKERROR_FIND_FILE"
+msgid "SC_CheckError_039"
 msgstr "※ T_PATHが見つかりません。<br />"
 
-msgid "SC_CHECKERROR_FILE_EXIST_CHECK"
+msgid "SC_CheckError_040"
 msgstr "※ T_FIELDをアップロードして下さい。<br />"
 
-msgid "SC_CHECKERROR_FILE_SIZE_CHECK"
-msgstr "※ T_FIELDのファイルサイズはT_SIZET_UNIT以下のものを使用してください。<br />"
+msgid "SC_CheckError_041"
+msgstr ""
+"※ T_FIELDのファイルサイズはT_SIZET_UNIT以下のものを使用してください。<br />"
 
-msgid "SC_CHECKERROR_FILE_NAME_CHECK"
+msgid "SC_CheckError_042"
 msgstr "※ T_FIELDのファイル名に日本語やスペースは使用しないで下さい。<br />"
 
-msgid "SC_CHECKERROR_CHECK_DATE_ALL_EXIST"
+msgid "SC_CheckError_043"
 msgstr "※ T_FIELDはすべての項目を入力して下さい。<br />"
 
-msgid "SC_CHECKERROR_CHECK_DATE_PROPER"
+msgid "SC_CheckError_044"
 msgstr "※ T_FIELDが正しくありません。<br />"
 
-msgid "SC_CHECKERROR_CHECK_SET_TERM_PROPER"
+msgid "SC_CheckError_045"
 msgstr "※ T_FIELDを正しく指定してください。<br />"
 
-msgid "SC_CHECKERROR_CHECK_SET_TERM_RANGE"
+msgid "SC_CheckError_046"
 msgstr "※ T_STARTとT_ENDの期間指定が不正です。<br />"
 
-msgid "SC_CHECKERROR_DIR_CHECK"
+msgid "SC_CheckError_047"
 msgstr "※ 指定したT_FIELDは存在しません。<br />"
 
-msgid "SC_CHECKERROR_DOMAIN_CHECK"
+msgid "SC_CheckError_048"
 msgstr "※ T_FIELDの形式が不正です。<br />"
 
-msgid "SC_CHECKERROR_MOBILE_EMAIL_CHECK"
+msgid "SC_CheckError_049"
 msgstr "※ T_FIELDは携帯電話のものではありません。<br />"
 
-msgid "SC_CHECKERROR_CHECK_REGIST_CUSTOMER_EMAIL_EXIST"
+msgid "SC_CheckError_050"
 msgstr "※ すでに会員登録で使用されているT_FIELDです。<br />"
 
-msgid "SC_CHECKERROR_CHECK_REGIST_CUSTOMER_EMAIL_INTERVAL"
-msgstr "※ 退会から一定期間の間は、同じT_FIELDを使用することはできません。<br />"
+msgid "SC_CheckError_051"
+msgstr ""
+"※ 退会から一定期間の間は、同じT_FIELDを使用することはできません。<br />"
 
-msgid "SC_CHECKERROR_PROHIBITED_STR_CHECK"
+msgid "SC_CheckError_052"
 msgstr "※ T_FIELDは入力できません。<br />"
 
-msgid "SC_CHECKERROR_EVAL_CHECK"
+msgid "SC_CheckError_053"
 msgstr "※ T_FIELDの形式が不正です。<br />"
 
-msgid "SC_FORMPARAM_CHECKERROR_FILE_EXISTS"
+msgid "SC_FormParam_001"
 msgstr "※ T_NAMEのファイルが存在しません。<br />"
 
-msgid "SC_FORMPARAM_CHECKERROR_DEFAULT"
+msgid "SC_FormParam_002"
 msgstr "※※　エラーチェック形式(T_FUNCTION)には対応していません　※※ <br />"
 
-msgid "SC_FORMPARAM_SETHTMLDISPNAMEARRAY_REQUIRED"
+msgid "SC_FormParam_003"
 msgstr "T_NAME<span class=\"red\">(※ 必須)</span>"
 
-msgid "SC_FORMPARAM_SETHTMLDISPNAMEARRAY_DEFAULT"
+msgid "SC_FormParam_004"
 msgstr " [省略時初期値: T_DEFAULT]"
 
-msgid "SC_FORMPARAM_SETHTMLDISPNAMEARRAY_PROTECTED"
+msgid "SC_FormParam_005"
 msgstr " [登録・更新不可] "
 
-msgid "SC_CARTSESSION_UNWORKABLE_METHOD_CALLED"
+msgid "SC_CartSession_001"
 msgstr "正しく動作しないメソッドが呼び出されました。"
 
-msgid "SC_CARTSESSION_CHECKPRODUCTS_UNABLE"
-msgstr "※ 現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。"
+msgid "SC_CartSession_002"
+msgstr ""
+"※ 現時点で販売していない商品が含まれておりました。該当商品をカートから削除し"
+"ました。"
 
-msgid "SC_CARTSESSION_CHECKPRODUCTS_UNDELIVERABLE"
-msgstr "※「T_PRODUCT」はまだ配送の準備ができておりません。恐れ入りますがお問い合わせページよりお問い合わせください。"
+msgid "SC_CartSession_003"
+msgstr ""
+"※「T_PRODUCT」はまだ配送の準備ができておりません。恐れ入りますがお問い合わせ"
+"ページよりお問い合わせください。"
 
-msgid "SC_CARTSESSION_CHECKPRODUCTS_LIMIT"
-msgstr "※「T_PRODUCT」は販売制限(または在庫が不足)しております。一度に数量T_LIMITを超える購入はできません。"
+msgid "SC_CartSession_004"
+msgstr ""
+"※「T_PRODUCT」は販売制限(または在庫が不足)しております。一度に数量T_LIMITを超"
+"える購入はできません。"
 
-msgid "SC_CARTSESSION_CHECKPRODUCTS_SOLDOUT"
+msgid "SC_CartSession_005"
 msgstr "※「T_PRODUCT」は売り切れました。"
 
-msgid "SC_FPDF_LABEL_PRODUCT_NAME"
+msgid "SC_Fpdf_001"
 msgstr "商品名 / 商品コード / [ 規格 ]"
 
-msgid "SC_FPDF_LABEL_PRODUCT_QTY"
+msgid "SC_Fpdf_002"
 msgstr "数量"
 
-msgid "SC_FPDF_LABEL_PRODUCT_PRICE"
+msgid "SC_Fpdf_003"
 msgstr "単価"
 
-msgid "SC_FPDF_LABEL_PRODUCT_SUBTOTAL"
+msgid "SC_Fpdf_004"
 msgstr "金額(税込)"
 
-msgid "SC_FPDF_LABEL_PRODUCT_TOTAL"
+msgid "SC_Fpdf_005"
 msgstr "商品合計"
 
-msgid "SC_FPDF_LABEL_DELIV_FEE"
+msgid "SC_Fpdf_006"
 msgstr "送料"
 
-msgid "SC_FPDF_LABEL_CHARGE"
+msgid "SC_Fpdf_007"
 msgstr "手数料"
 
-msgid "SC_FPDF_LABEL_DISCOUNT"
+msgid "SC_Fpdf_008"
 msgstr "値引き"
 
-msgid "SC_FPDF_LABEL_PAYMENT_TOTAL"
+msgid "SC_Fpdf_009"
 msgstr "請求金額"
 
-msgid "SC_FPDF_LABEL_USE_POINT"
+msgid "SC_Fpdf_010"
 msgstr "利用ポイント"
 
-msgid "SC_FPDF_LABEL_ADD_POINT"
+msgid "SC_Fpdf_011"
 msgstr "加算ポイント"
 
-msgid "SC_FPDF_LABEL_ETC"
+msgid "SC_Fpdf_012"
 msgstr "＜ 備 考 ＞"
 
-msgid "SC_FPDF_LABEL_PAYMENT_TYPE"
+msgid "SC_Fpdf_013"
 msgstr "お支払い"
 
-msgid "SC_FPDF_MESSAGE_1"
+msgid "SC_Fpdf_014"
 msgstr "このたびはお買上げいただきありがとうございます。"
 
-msgid "SC_FPDF_MESSAGE_2"
+msgid "SC_Fpdf_015"
 msgstr "下記の内容にて納品させていただきます。"
 
-msgid "SC_FPDF_MESSAGE_3"
+msgid "SC_Fpdf_016"
 msgstr "ご確認くださいますよう、お願いいたします。"
 
-msgid "SC_FPDF_CREATED_DATE"
+msgid "SC_Fpdf_017"
 msgstr "作成日: T_YEAR年T_MONTH月T_DAY日"
 
-msgid "SC_FPDF_PRICE_FORMAT"
+msgid "SC_Fpdf_018"
 msgstr "T_PRICE T_UNIT"
 
-msgid "SC_FPDF_MONETARY_UNIT"
+msgid "SC_Fpdf_019"
 msgstr "円"
 
-msgid "SC_FPDF_POINT_UNIT"
+msgid "SC_Fpdf_020"
 msgstr "Pt"
 
-msgid "SC_IMAGE_ERROR_COPY_FAILED"
+msgid "SC_Image_001"
 msgstr "ファイルのコピーに失敗しました。"
 
-msgid "SC_IMAGE_ERROR_COPY_FAILED_PATH"
+msgid "SC_Image_002"
 msgstr "T_FROM->T_TOのcopyに失敗しました。"
 
-msgid "SC_IMAGE_ERROR_NOT_APPOINTED"
+msgid "SC_Image_003"
 msgstr "出力元画像パス、または出力先フォルダが指定されていません。"
 
-msgid "SC_IMAGE_ERROR_NOT_FOUND"
+msgid "SC_Image_004"
 msgstr "出力元画像が見つかりません。"
 
-msgid "SC_IMAGE_ERROR_NOT_SUPPORTED"
+msgid "SC_Image_005"
 msgstr "画像形式がサポートされていません。"
 
-msgid "SC_IMAGE_ERROR_OUTPUT_FAILED"
+msgid "SC_Image_006"
 msgstr "画像の出力に失敗しました。"
 
-msgid "SC_INITIAL_ERROR_UNWRITABLE"
-msgstr "<div style=\"color: #F00; font-weight: bold; background-color: #FEB; text-align: center\">T_CACHE_REALDIR にユーザ書込み権限(777等)を付与して下さい。</div>"
+msgid "SC_Initial_001"
+msgstr ""
+"<div style=\"color: #F00; font-weight: bold; background-color: #FEB; text-"
+"align: center\">T_CACHE_REALDIR にユーザ書込み権限(777等)を付与して下さい。</"
+"div>"
 
-msgid "SC_INITIAL_ERROR_NOT_FOUND"
+msgid "SC_Initial_002"
 msgstr "T_CACHE_REALDIR../mtb_constants_init.php が存在しません"
 
-msgid "SC_PAGENAVI_BEFORE"
+msgid "SC_PageNavi_001"
 msgstr "&lt;&lt;前へ"
 
-msgid "SC_PAGENAVI_NEXT"
+msgid "SC_PageNavi_002"
 msgstr "次へ&gt;&gt;"
 
-msgid "SC_PRODUCT_UNSELECTED"
+msgid "SC_Product_001"
 msgstr "選択してください"
 
-msgid "SC_PRODUCT_SOLDOUT"
+msgid "SC_Product_002"
 msgstr "(品切れ中)"
 
-msgid "SC_QUERY_ERROR"
+msgid "SC_Query_001"
 msgstr "DB処理でエラーが発生しました。"
 
-msgid "SC_SELECTSQL_UNKNOWN"
+msgid "SC_SelectSql_001"
 msgstr "不明"
 
-msgid "SC_SENDMAIL_FORWARD_COMPATIBILITY"
+msgid "SC_SendMail_001"
 msgstr "前方互換用メソッドが使用されました。"
 
-msgid "SC_SENDMAIL_UNKNOWN_BACKEND"
+msgid "SC_SendMail_002"
 msgstr "不明なバックエンド。[$backend = T_BACKEND]"
 
-msgid "SC_SENDMAIL_FAIL_TO_SEND"
+msgid "SC_SendMail_003"
 msgstr "メール送信に失敗しました。[T_MESSAGE]"
 
-msgid "SC_VIEW_RESPONSE_TIME"
+msgid "SC_View_001"
 msgstr "処理時間: T_TIME秒"
 
-msgid "SC_UPLOADFILE_NOT_UPLOADED"
+msgid "SC_UploadFile_001"
 msgstr "※ T_DISPNAMEがアップロードされていません。<br />"
 
-msgid "SC_UPLOADFILE_NOT_UPLOADED_WITH_NOTE"
-msgstr "※ T_DISPNAMEがアップロードされていません。(ファイルがアップロードできない場合は、.htaccessファイルのphp_value upload_max_filesizeを調整してください)<br />"
+msgid "SC_UploadFile_002"
+msgstr ""
+"※ T_DISPNAMEがアップロードされていません。(ファイルがアップロードできない場合"
+"は、.htaccessファイルのphp_value upload_max_filesizeを調整してください)<br />"
 
-msgid "SC_UPLOADFILE_FAIL_TO_UPLOAD"
+msgid "SC_UploadFile_003"
 msgstr "※ ファイルのアップロードに失敗しました。<br />"
 
-msgid "SC_API_OPERATION_NO_LOAD"
+msgid "SC_Api_Operation_001"
 msgstr "オペレーションをロード出来ませんでした。"
 
-msgid "SC_API_OPERATION_NO_AUTHORITY"
+msgid "SC_Api_Operation_002"
 msgstr "オペレーションの実行権限がありません。"
 
-msgid "SC_BATCH_UPDATE_FAIL_MAKEBACKUPDIR"
+msgid "SC_Batch_Update_001"
 msgstr "バックアップディレクトリの作成に失敗しました"
 
-msgid "SC_BATCH_UPDATE_EXCLUDE_FILE"
+msgid "SC_Batch_Update_002"
 msgstr "次のファイルは除外されました: "
 
-msgid "SC_BATCH_UPDATE_HASH_UNMATCH"
+msgid "SC_Batch_Update_003"
 msgstr "ハッシュ値が一致しないため, コピー先が取得できません: "
 
-msgid "SC_BATCH_UPDATE_SKIP_SAME"
+msgid "SC_Batch_Update_004"
 msgstr "同じ内容のファイルをスキップしました: "
 
-msgid "SC_BATCH_UPDATE_FAIL_MAKEBACKUPFILE"
+msgid "SC_Batch_Update_005"
 msgstr "バックアップファイルの作成に失敗しました: "
 
-msgid "SC_BATCH_UPDATE_UNWRITABLE"
+msgid "SC_Batch_Update_006"
 msgstr "コピー先に書き込み権限がありません: "
 
-msgid "SC_BATCH_UPDATE_SUCCESS_FILECOPY"
+msgid "SC_Batch_Update_007"
 msgstr "ファイルのコピーに成功しました: "
 
-msgid "SC_BATCH_UPDATE_SUCCESS_MAKEDISTINFO"
+msgid "SC_Batch_Update_008"
 msgstr "distinfoファイルの作成に成功しました: "
 
-msgid "SC_BATCH_UPDATE_FAIL_MAKEDISTINFO"
+msgid "SC_Batch_Update_009"
 msgstr "distinfoファイルの作成に失敗しました: "
 
-msgid "SC_HELPER_CSV_SUBNAVI_PRODUCT"
+msgid "SC_Helper_CSV_001"
 msgstr "商品管理"
 
-msgid "SC_HELPER_CSV_SUBNAVI_CUSTOMER"
+msgid "SC_Helper_CSV_002"
 msgstr "会員管理"
 
-msgid "SC_HELPER_CSV_SUBNAVI_ORDER"
+msgid "SC_Helper_CSV_003"
 msgstr "受注管理"
 
-msgid "SC_HELPER_CSV_SUBNAVI_REVIEW"
+msgid "SC_Helper_CSV_004"
 msgstr "レビュー"
 
-msgid "SC_HELPER_CSV_SUBNAVI_CATEGORY"
+msgid "SC_Helper_CSV_005"
 msgstr "カテゴリ"
 
-msgid "SC_HELPER_CUSTOMER_EMAIL_EXISTS"
+msgid "SC_Helper_Customer_001"
 msgstr "※ すでに会員登録で使用されているメールアドレスです。<br />"
 
-msgid "SC_HELPER_CUSTOMER_INVALID_TOTAL_RANGE"
+msgid "SC_Helper_Customer_002"
 msgstr "※ 購入金額の指定範囲が不正です。"
 
-msgid "SC_HELPER_CUSTOMER_INVALID_TIMES_RANGE"
+msgid "SC_Helper_Customer_003"
 msgstr "※ 購入回数の指定範囲が不正です。"
 
-msgid "SC_HELPER_DB_FILE_UNREADABLE"
+msgid "SC_Helper_DB_001"
 msgstr "ファイルは存在するが読み込めない"
 
-msgid "SC_HELPER_MAIL_ORDER_NOT_EXISTS"
+msgid "SC_Helper_Mail_001"
 msgstr "該当する受注が存在しない。(注文番号: T_ORDER_ID)"
 
-msgid "SC_HELPER_MAIL_DELIVERED"
+msgid "SC_Helper_Mail_002"
 msgstr "下記メールの配信が完了しました。"
 
-msgid "SC_HELPER_MAIL_REGIST_CONFIRM"
+msgid "SC_Helper_Mail_003"
 msgstr "会員登録のご確認"
 
-msgid "SC_HELPER_MAIL_REGIST_COMPLETE"
+msgid "SC_Helper_Mail_004"
 msgstr "会員登録のご完了"
 
-msgid "SC_HELPER_PAGELAYOUT_BLOCK_NOTFOUND"
+msgid "SC_Helper_PageLayout_001"
 msgstr "ブロックが見つかりません"
 
-msgid "API_ADDRFROMZIP_DESC"
+msgid "API_AddrFromZip_001"
 msgstr "郵便番号から住所を検索します。"
 
-msgid "API_BROWSENODELOOKP_DESC"
+msgid "API_BrowseNodeLookup_001"
 msgstr "カテゴリ取得"
 
-msgid "API_CARTADD_DESC"
+msgid "API_CartAdd_001"
 msgstr "カートへの商品追加"
 
-msgid "API_CARTCLEAR_DESC"
+msgid "API_CartClear_001"
 msgstr "カートのクリア"
 
-msgid "API_CARTCREATE_DESC"
+msgid "API_CartCreate_001"
 msgstr "カートの新規作成"
 
-msgid "API_GARTGET_DESC"
+msgid "API_CartGet_001"
 msgstr "カートの取得"
 
-msgid "API_CARTMODIFY_DESC"
+msgid "API_CartModify_001"
 msgstr "カートの修正"
 
-msgid "API_ITEMLOOKUP_DESC"
+msgid "API_ItemLookup_001"
 msgstr "商品詳細情報を取得します。"
 
-msgid "API_ITEMLOOKUP_ERROR"
+msgid "API_ItemLookup_002"
 msgstr "※ 要求された情報は見つかりませんでした。"
 
-msgid "API_ITEMSEARCH_DESC"
+msgid "API_ItemSearch_001"
 msgstr "商品検索・商品一覧情報を取得します。"
 
-msgid "API_ITEMSEARCH_ERROR"
+msgid "API_ItemSearch_002"
 msgstr "※ 要求された情報は見つかりませんでした。"
 
 msgid "PARAM_LABEL_EMAIL"
@@ -698,4 +712,3 @@ msgstr "Y年m月d日H時i分"
 
 msgid "FORMAT_NAME_FULL_SIR"
 msgstr "T_LASTNAME T_FIRSTNAME 様"
-

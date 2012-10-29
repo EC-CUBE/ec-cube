@@ -25,7 +25,7 @@ class SC_I18n {
 
     /**
      * Store the instance of SC_Helper_Locale_Ex.
-     * @var object 
+     * @var SC_Helper_Locale
      */
     static $_instance = NULL;
 
@@ -52,7 +52,7 @@ class SC_I18n {
 
         // Get a string of specified language which corresponds to the message alias.
         $translated = $helper->get_locale($string, $options['lang_code'], $options['device_type_id']);
-
+        
         // If parameters are set, translate a message.
         if (empty($tokens)) {
           return $translated;

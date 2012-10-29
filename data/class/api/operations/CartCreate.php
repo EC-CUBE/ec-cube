@@ -41,7 +41,7 @@ class API_CartCreate extends SC_Api_Abstract_Ex {
 
     public function __construct() {
         parent::__construct();
-        $this->operation_description = SC_I18n_Ex::t('API_CARTCREATE_DESC');
+        $this->operation_description = SC_I18n_Ex::t('API_CartCreate_001');
     }
 
     public function doAction($arrParam) {

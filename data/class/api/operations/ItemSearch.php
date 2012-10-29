@@ -41,7 +41,7 @@ class API_ItemSearch extends SC_Api_Abstract_Ex {
 
     public function __construct() {
         parent::__construct();
-        $this->operation_description = SC_I18n_Ex::t('API_ITEMSEARCH_DESC');
+        $this->operation_description = SC_I18n_Ex::t('API_ItemSearch_001');
     }
 
     public function doAction($arrParam) {
@@ -89,7 +89,7 @@ class API_ItemSearch extends SC_Api_Abstract_Ex {
 
                 return true;
             } else {
-                $this->addError('ItemSearch.Error', SC_I18n_Ex::t('API_ITEMSEARCH_ERROR'));
+                $this->addError('ItemSearch.Error', SC_I18n_Ex::t('API_ItemSearch_002'));
             }
         }
 

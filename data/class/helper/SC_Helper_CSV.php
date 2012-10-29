@@ -51,11 +51,11 @@ class SC_Helper_CSV {
         );
 
         $this->arrSubnaviName = array(
-            1 => SC_I18n_Ex::t('SC_HELPER_CSV_SUBNAVI_PRODUCT'),
-            2 => SC_I18n_Ex::t('SC_HELPER_CSV_SUBNAVI_CUSTOMER'),
-            3 => SC_I18n_Ex::t('SC_HELPER_CSV_SUBNAVI_ORDER'),
-            4 => SC_I18n_Ex::t('SC_HELPER_CSV_SUBNAVI_REVIEW'),
-            5 => SC_I18n_Ex::t('SC_HELPER_CSV_SUBNAVI_CATEGORY'),
+            1 => SC_I18n_Ex::t('SC_Helper_CSV_001'),
+            2 => SC_I18n_Ex::t('SC_Helper_CSV_002'),
+            3 => SC_I18n_Ex::t('SC_Helper_CSV_003'),
+            4 => SC_I18n_Ex::t('SC_Helper_CSV_004'),
+            5 => SC_I18n_Ex::t('SC_Helper_CSV_005'),
         );
     }
 

@@ -70,7 +70,7 @@ class SC_CheckError {
         }
         $html_diff_tag_list = implode(', ', $arrDiffTag);
 
-        $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_HTML_TAG_CHECK', array('T_FIELD' => $value[0], 'T_TAG' => $html_diff_tag_list));
+        $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_001', array('T_FIELD' => $value[0], 'T_TAG' => $html_diff_tag_list));
     }
 
     /**
@@ -86,9 +86,9 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (!is_array($this->arrParam[$value[1]]) && strlen($this->arrParam[$value[1]]) == 0) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_EXIST_CHECK_INPUT', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_002', array('T_FIELD' => $value[0]));
         } else if (is_array($this->arrParam[$value[1]]) && count($this->arrParam[$value[1]]) == 0) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_EXIST_CHECK_SELECT', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_003', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -105,7 +105,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[0]]) == 0) {
-            $this->arrErr[$value[0]] = SC_I18n_Ex::t('SC_CHECKERROR_EXIST_CHECK_REVERSE', array('T_FIELD' => $value[1]));
+            $this->arrErr[$value[0]] = SC_I18n_Ex::t('SC_CheckError_004', array('T_FIELD' => $value[1]));
         }
     }
 
@@ -122,7 +122,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) != 0 && preg_match("/^[ 　\t\r\n]+$/", $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_SPTAB_CHECK', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_005', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -139,7 +139,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) != 0 && preg_match("/[　 \t\r\n]+/u", $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_NO_SPTAB', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_006', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -150,7 +150,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) != 0 && preg_match("/^[0]+[0-9]+$/", $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_ZERO_START', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_007', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -167,7 +167,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) == 0) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_SELECT_CHECK', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_008', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -185,7 +185,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if ($this->arrParam[$value[2]] !== $this->arrParam[$value[3]]) {
-            $this->arrErr[$value[2]] = SC_I18n_Ex::t('SC_CHECKERROR_EQUAL_CHECK', array('T_FIELD_1ST' => $value[0], 'T_FIELD_2ND' => $value[1]));
+            $this->arrErr[$value[2]] = SC_I18n_Ex::t('SC_CheckError_009', array('T_FIELD_1ST' => $value[0], 'T_FIELD_2ND' => $value[1]));
         }
     }
 
@@ -203,7 +203,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if ($this->arrParam[$value[2]] == $this->arrParam[$value[3]]) {
-            $this->arrErr[$value[2]] = SC_I18n_Ex::t('SC_CHECKERROR_DIFFERENT_CHECK', array('T_FIELD_1ST' => $value[0], 'T_FIELD_2ND' => $value[1]));
+            $this->arrErr[$value[2]] = SC_I18n_Ex::t('SC_CheckError_010', array('T_FIELD_1ST' => $value[0], 'T_FIELD_2ND' => $value[1]));
         }
     }
 
@@ -221,7 +221,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if ($this->arrParam[$value[2]] != '' && $this->arrParam[$value[3]] != '' && ($this->arrParam[$value[2]] > $this->arrParam[$value[3]])) {
-            $this->arrErr[$value[2]] = SC_I18n_Ex::t('SC_CHECKERROR_GREATER_CHECK', array('T_FIELD_1ST' => $value[0], 'T_FIELD_2ND' => $value[1]));
+            $this->arrErr[$value[2]] = SC_I18n_Ex::t('SC_CheckError_011', array('T_FIELD_1ST' => $value[0], 'T_FIELD_2ND' => $value[1]));
         }
     }
 
@@ -239,7 +239,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if (mb_strlen($this->arrParam[$value[1]]) > $value[2]) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_MAX_LENGTH_CHECK', array('T_FIELD' => $value[0], 'T_LENGTH' => $value[2]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_012', array('T_FIELD' => $value[0], 'T_LENGTH' => $value[2]));
         }
     }
 
@@ -257,7 +257,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if (mb_strlen($this->arrParam[$value[1]]) < $value[2]) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t_plural($value[2], 'SC_CHECKERROR_MIN_LENGTH_CHECK_SINGLE', 'SC_CHECKERROR_MIN_LENGTH_CHECK_PLURAL', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t_plural($value[2], 'SC_CheckError_013', 'SC_CheckError_013_PLURAL', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -275,7 +275,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if ($this->arrParam[$value[1]] > $value[2]) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_MAX_CHECK', array('T_FIELD' => $value[0], 'T_LENGTH' => $value[2]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_014', array('T_FIELD' => $value[0], 'T_LENGTH' => $value[2]));
         }
     }
 
@@ -292,7 +292,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if ($this->arrParam[$value[1]] < $value[2]) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t_plural($value[2], 'SC_CHECKERROR_MIN_CHECK_SINGLE', 'SC_CHECKERROR_MIN_CHECK_PLURAL', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t_plural($value[2], 'SC_CheckError_015_SINGLE', 'SC_CheckError_015_PLURAL', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -309,7 +309,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if ($this->numelicCheck($this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_NUM_CHECK', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_016', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -326,7 +326,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) > 0 && !is_numeric($this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_NUM_POINT_CHECK', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_017', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -336,7 +336,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) > 0 && !ctype_alpha($this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_ALPHA_CHECK', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_018', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -371,22 +371,22 @@ class SC_CheckError {
 
         // すべての項目が満たされていない場合を判定(一部だけ入力されている状態)
         if ($cnt > 0 && $cnt < 3) {
-            $this->arrErr[$value[1]] .= SC_I18n_Ex::t('SC_CHECKERROR_TEL_CHECK_EXIST', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] .= SC_I18n_Ex::t('SC_CheckError_019', array('T_FIELD' => $value[0]));
         }
 
         $total_count = 0;
         for ($i = 1; $i <= 3; $i++) {
             if (strlen($this->arrParam[$value[$i]]) > 0 && strlen($this->arrParam[$value[$i]]) > $telItemLen) {
-                $this->arrErr[$value[$i]] .= SC_I18n_Ex::t('SC_CHECKERROR_TEL_CHECK_MAX_LENGTH', array('T_FIELD' => $value[0] . $i, 'T_LENGTH' => $telItemLen));
+                $this->arrErr[$value[$i]] .= SC_I18n_Ex::t('SC_CheckError_020', array('T_FIELD' => $value[0] . $i, 'T_LENGTH' => $telItemLen));
             } else if ($this->numelicCheck($this->arrParam[$value[1]])) {
-                $this->arrErr[$value[$i]] .= SC_I18n_Ex::t('SC_CHECKERROR_TEL_CHECK_NUM', array('T_FIELD' => $value[0] . $i));
+                $this->arrErr[$value[$i]] .= SC_I18n_Ex::t('SC_CheckError_021', array('T_FIELD' => $value[0] . $i));
             }
             $total_count += strlen($this->arrParam[$value[$i]]);
         }
 
         // 合計値チェック
         if ($total_count > $telLen) {
-            $this->arrErr[$value[3]] .= SC_I18n_Ex::t('SC_CHECKERROR_TEL_CHECK_SUM', array('T_FIELD' => $value[0], 'T_LENGTH' => $telLen));
+            $this->arrErr[$value[3]] .= SC_I18n_Ex::t('SC_CheckError_022', array('T_FIELD' => $value[0], 'T_LENGTH' => $telLen));
         }
     }
 
@@ -414,7 +414,7 @@ class SC_CheckError {
         }
 
         if ($blank) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_FULL_EXIST_CHECK', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_023', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -445,7 +445,7 @@ class SC_CheckError {
         }
 
         if ($blank && $input) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_ALL_EXIST_CHECK', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_024', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -473,7 +473,7 @@ class SC_CheckError {
         }
 
         if (!$input) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_ONE_EXIST_CHECK', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_025', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -507,7 +507,7 @@ class SC_CheckError {
         }
 
         if ($error) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_TOP_EXIST_CHECK', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_026', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -520,7 +520,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^[ァ-ヶｦ-ﾟー]+$/u", $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_KANA_CHECK', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_027', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -533,7 +533,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^([　 \t\r\n]|[ァ-ヶ]|[ー])+$/u", $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_KANABLANK_CHECK', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_028', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -546,7 +546,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) > 0 && !ctype_alnum($this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_ALNUM_CHECK', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_029', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -559,7 +559,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^[[:graph:]|[:space:]]+$/i", $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_GRAPH_CHECK', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_030', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -569,7 +569,7 @@ class SC_CheckError {
     function ZERO_CHECK($value) {
         $this->createParam($value);
         if ($this->arrParam[$value[1]] == '0') {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_ZERO_CHECK', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_031', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -584,7 +584,7 @@ class SC_CheckError {
         // $this->arrParam[$value[0]] = mb_convert_kana($this->arrParam[$value[0]], 'n');
         $count = strlen($this->arrParam[$value[1]]);
         if (($count > 0) && $value[2] > $count || $value[3] < $count) {
-            $this->arrErr[$value[1]] =  SC_I18n_Ex::t_plural($value[2], 'SC_CHECKERROR_NUM_RANGE_CHECK_SINGLE', 'SC_CHECKERROR_NUM_RANGE_CHECK_PLURAL', array('T_FIELD' => $value[0], 'T_DIGIT_MAX' => $value[3]));
+            $this->arrErr[$value[1]] =  SC_I18n_Ex::t_plural($value[2], 'SC_CheckError_032_SINGLE', 'SC_CheckError_032_PLURAL', array('T_FIELD' => $value[0], 'T_DIGIT_MAX' => $value[3]));
         }
     }
 
@@ -598,7 +598,7 @@ class SC_CheckError {
         $this->createParam($value);
         $count = strlen($this->arrParam[$value[1]]);
         if (($count > 0) && $count != $value[2]) {
-            $this->arrErr[$value[1]] =  SC_I18n_Ex::t_plural($value[2], 'SC_CHECKERROR_NUM_COUNT_CHECK_SINGLE', 'SC_CHECKERROR_NUM_COUNT_CHECK_PLURAL', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] =  SC_I18n_Ex::t_plural($value[2], 'SC_CheckError_033_SINGLE', 'SC_CheckError_033_PLURAL', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -646,7 +646,7 @@ class SC_CheckError {
         }
 
         if (!preg_match($regexp, $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_EMAIL_CHECK', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_034', array('T_FIELD' => $value[0]));
             return;
         }
 
@@ -665,7 +665,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^[a-zA-Z0-9_\.@\+\?-]+$/i",$this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_EMAIL_CHAR_CHECK', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_035', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -677,7 +677,7 @@ class SC_CheckError {
             return;
         }
         if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("@^https?://+($|[a-zA-Z0-9_~=:&\?\.\/-])+$@i", $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_URL_CHECK', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_036', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -697,7 +697,7 @@ class SC_CheckError {
             foreach ($params as $param) {
                 $param = trim($param);
                 if (long2ip(ip2long($param)) != trim($param) && !empty($param)) {
-                    $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_IP_CHECK', array('T_FIELD' => $value[0]));
+                    $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_037', array('T_FIELD' => $value[0]));
                 }
             }
         }
@@ -725,7 +725,7 @@ class SC_CheckError {
         }
         if ($match === false) {
             $str_ext = implode('・', $value[2]);
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_FILE_EXT_CHECK', array('T_FIELD' => $value[0], 'T_EXT' => $str_ext));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_038', array('T_FIELD' => $value[0], 'T_EXT' => $str_ext));
         }
     }
 
@@ -748,7 +748,7 @@ class SC_CheckError {
         $path = str_replace('//', '/', $path);
 
         if ($this->arrParam[$value[1]] != '' && !file_exists($path)) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_FIND_FILE', array('T_PATH' => $path));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_039', array('T_PATH' => $path));
         }
     }
 
@@ -761,7 +761,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (!($_FILES[$value[1]]['size'] != '' && $_FILES[$value[1]]['size'] > 0)) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_FILE_EXIST_CHECK', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_040', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -779,7 +779,7 @@ class SC_CheckError {
                 $value[2] = $value[2] / 1000;
                 $byte = 'MB';
             }
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_FILE_SIZE_CHECK', array('T_FIELD' => $value[0], 'T_SIZE' => $value[2], 'T_UNIT' => $byte));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_041', array('T_FIELD' => $value[0], 'T_SIZE' => $value[2], 'T_UNIT' => $byte));
         }
     }
 
@@ -792,7 +792,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($_FILES[$value[1]]['name']) > 0 && !preg_match("/^[[:alnum:]_\.-]+$/i", $_FILES[$value[1]]['name'])) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_FILE_NAME_CHECK', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_042', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -805,7 +805,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^[[:alnum:]_\.-]+$/i", $this->arrParam[$value[1]]) || preg_match('/[\\]/' ,$this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_FILE_NAME_CHECK', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_043', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -823,9 +823,9 @@ class SC_CheckError {
         if ($this->arrParam[$value[1]] > 0 || $this->arrParam[$value[2]] > 0 || $this->arrParam[$value[3]] > 0) {
             // 年月日のどれかが入力されていない。
             if (!(strlen($this->arrParam[$value[1]]) > 0 && strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0)) {
-                $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_CHECK_DATE_ALL_EXIST', array('T_FIELD' => $value[0]));
+                $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_024', array('T_FIELD' => $value[0]));
             } else if (! checkdate($this->arrParam[$value[2]], $this->arrParam[$value[3]], $this->arrParam[$value[1]])) {
-                $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_CHECK_DATE_PROPER', array('T_FIELD' => $value[0]));
+                $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_044', array('T_FIELD' => $value[0]));
             }
         }
     }
@@ -846,9 +846,9 @@ class SC_CheckError {
         if ($this->arrParam[$value[1]] > 0 || $this->arrParam[$value[2]] > 0 || $this->arrParam[$value[3]] > 0 || $this->arrParam[$value[4]] >= 0 || $this->arrParam[$value[5]] >= 0) {
             // 年月日時のどれかが入力されていない。
             if (!(strlen($this->arrParam[$value[1]]) > 0 && strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0 && strlen($this->arrParam[$value[4]]) > 0 && strlen($this->arrParam[$value[5]]) > 0)) {
-                $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_CHECK_DATE_ALL_EXIST', array('T_FIELD' => $value[0]));
+                $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_024', array('T_FIELD' => $value[0]));
             } else if (! checkdate($this->arrParam[$value[2]], $this->arrParam[$value[3]], $this->arrParam[$value[1]])) {
-                $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_CHECK_DATE_PROPER', array('T_FIELD' => $value[0]));
+                $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_044', array('T_FIELD' => $value[0]));
             }
         }
     }
@@ -866,9 +866,9 @@ class SC_CheckError {
         if ($this->arrParam[$value[1]] > 0 || $this->arrParam[$value[2]] > 0) {
             // 年月日時のどれかが入力されていない。
             if (!(strlen($this->arrParam[$value[1]]) > 0 && strlen($this->arrParam[$value[2]]) > 0)) {
-                $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_CHECK_DATE_ALL_EXIST', array('T_FIELD' => $value[0]));
+                $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_024', array('T_FIELD' => $value[0]));
             } else if (! checkdate($this->arrParam[$value[2]], 1, $this->arrParam[$value[1]])) {
-                $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_CHECK_DATE_PROPER', array('T_FIELD' => $value[0]));
+                $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_044', array('T_FIELD' => $value[0]));
             }
         }
     }
@@ -931,10 +931,10 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if ((strlen($this->arrParam[$value[2]]) > 0 || strlen($this->arrParam[$value[3]]) > 0 || strlen($this->arrParam[$value[4]]) > 0) && ! checkdate($this->arrParam[$value[3]], $this->arrParam[$value[4]], $this->arrParam[$value[2]])) {
-            $this->arrErr[$value[2]] = SC_I18n_Ex::t('SC_CHECKERROR_CHECK_SET_TERM_PROPER', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[2]] = SC_I18n_Ex::t('SC_CheckError_045', array('T_FIELD' => $value[0]));
         }
         if ((strlen($this->arrParam[$value[5]]) > 0 || strlen($this->arrParam[$value[6]]) > 0 || strlen($this->arrParam[$value[7]]) > 0) && ! checkdate($this->arrParam[$value[6]], $this->arrParam[$value[7]], $this->arrParam[$value[5]])) {
-            $this->arrErr[$value[5]] = SC_I18n_Ex::t('SC_CHECKERROR_CHECK_SET_TERM_PROPER', array('T_FIELD' => $value[1]));
+            $this->arrErr[$value[5]] = SC_I18n_Ex::t('SC_CheckError_045', array('T_FIELD' => $value[1]));
         }
         if ((strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0 && strlen($this->arrParam[$value[4]]) > 0) &&  (strlen($this->arrParam[$value[5]]) > 0 || strlen($this->arrParam[$value[6]]) > 0 || strlen($this->arrParam[$value[7]]) > 0)) {
 
@@ -942,7 +942,7 @@ class SC_CheckError {
             $date2 = $this->arrParam[$value[5]] .sprintf('%02d', $this->arrParam[$value[6]]) .sprintf('%02d',$this->arrParam[$value[7]]) .'235959';
 
             if (($this->arrErr[$value[2]] == '' && $this->arrErr[$value[5]] == '') && $date1 > $date2) {
-                $this->arrErr[$value[2]] = SC_I18n_Ex::t('SC_CHECKERROR_CHECK_SET_TERM_RANGE', array('T_START' => $value[0], 'T_END' => $value[1]));
+                $this->arrErr[$value[2]] = SC_I18n_Ex::t('SC_CheckError_046', array('T_START' => $value[0], 'T_END' => $value[1]));
             }
         }
     }
@@ -981,10 +981,10 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if ((strlen($this->arrParam[$value[2]]) > 0 || strlen($this->arrParam[$value[3]]) > 0 || strlen($this->arrParam[$value[4]]) > 0 || strlen($this->arrParam[$value[5]]) > 0) && ! checkdate($this->arrParam[$value[3]], $this->arrParam[$value[4]], $this->arrParam[$value[2]])) {
-            $this->arrErr[$value[2]] = SC_I18n_Ex::t('SC_CHECKERROR_CHECK_SET_TERM_PROPER', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[2]] = SC_I18n_Ex::t('SC_CheckError_045', array('T_FIELD' => $value[0]));
         }
         if ((strlen($this->arrParam[$value[8]]) > 0 || strlen($this->arrParam[$value[9]]) > 0 || strlen($this->arrParam[$value[10]]) > 0 || strlen($this->arrParam[$value[11]]) > 0) && ! checkdate($this->arrParam[$value[9]], $this->arrParam[$value[10]], $this->arrParam[$value[8]])) {
-            $this->arrErr[$value[8]] = SC_I18n_Ex::t('SC_CHECKERROR_CHECK_SET_TERM_PROPER', array('T_FIELD' => $value[1]));
+            $this->arrErr[$value[8]] = SC_I18n_Ex::t('SC_CheckError_045', array('T_FIELD' => $value[1]));
         }
         if ((strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0 && strlen($this->arrParam[$value[4]]) > 0 && strlen($this->arrParam[$value[5]]) > 0) &&  (strlen($this->arrParam[$value[8]]) > 0 || strlen($this->arrParam[$value[9]]) > 0 || strlen($this->arrParam[$value[10]]) > 0 || strlen($this->arrParam[$value[11]]) > 0)) {
 
@@ -992,10 +992,10 @@ class SC_CheckError {
             $date2 = $this->arrParam[$value[8]] .sprintf('%02d', $this->arrParam[$value[9]]) .sprintf('%02d',$this->arrParam[$value[10]]) .sprintf('%02d',$this->arrParam[$value[11]]).sprintf('%02d',$this->arrParam[$value[12]]).sprintf('%02d',$this->arrParam[$value[13]]);
 
             if (($this->arrErr[$value[2]] == '' && $this->arrErr[$value[8]] == '') && $date1 > $date2) {
-                $this->arrErr[$value[2]] = SC_I18n_Ex::t('SC_CHECKERROR_CHECK_SET_TERM_RANGE', array('T_START' => $value[0], 'T_END' => $value[1]));
+                $this->arrErr[$value[2]] = SC_I18n_Ex::t('SC_CheckError_046', array('T_START' => $value[0], 'T_END' => $value[1]));
             }
             if ($date1 == $date2) {
-                $this->arrErr[$value[2]] = SC_I18n_Ex::t('SC_CHECKERROR_CHECK_SET_TERM_RANGE', array('T_START' => $value[0], 'T_END' => $value[1]));
+                $this->arrErr[$value[2]] = SC_I18n_Ex::t('SC_CheckError_046', array('T_START' => $value[0], 'T_END' => $value[1]));
             }
 
         }
@@ -1024,10 +1024,10 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if ((strlen($this->arrParam[$value[2]]) > 0 || strlen($this->arrParam[$value[3]]) > 0) && ! checkdate($this->arrParam[$value[3]], 1, $this->arrParam[$value[2]])) {
-            $this->arrErr[$value[2]] = SC_I18n_Ex::t('SC_CHECKERROR_CHECK_SET_TERM_PROPER', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[2]] = SC_I18n_Ex::t('SC_CheckError_045', array('T_FIELD' => $value[0]));
         }
         if ((strlen($this->arrParam[$value[4]]) > 0 || strlen($this->arrParam[$value[5]]) > 0) && ! checkdate($this->arrParam[$value[5]], 1, $this->arrParam[$value[4]])) {
-            $this->arrErr[$value[4]] = SC_I18n_Ex::t('SC_CHECKERROR_CHECK_SET_TERM_PROPER', array('T_FIELD' => $value[1]));
+            $this->arrErr[$value[4]] = SC_I18n_Ex::t('SC_CheckError_045', array('T_FIELD' => $value[1]));
         }
         if ((strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0 && (strlen($this->arrParam[$value[4]]) > 0 || strlen($this->arrParam[$value[5]]) > 0))) {
 
@@ -1035,7 +1035,7 @@ class SC_CheckError {
             $date2 = $this->arrParam[$value[4]] .sprintf('%02d', $this->arrParam[$value[5]]);
 
             if (($this->arrErr[$value[2]] == '' && $this->arrErr[$value[5]] == '') && $date1 > $date2) {
-                $this->arrErr[$value[2]] = SC_I18n_Ex::t('SC_CHECKERROR_CHECK_SET_TERM_RANGE', array('T_START' => $value[0], 'T_END' => $value[1]));
+                $this->arrErr[$value[2]] = SC_I18n_Ex::t('SC_CheckError_046', array('T_START' => $value[0], 'T_END' => $value[1]));
             }
         }
     }
@@ -1047,7 +1047,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (!is_dir($this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_DIR_CHECK', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_047', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -1057,7 +1057,7 @@ class SC_CheckError {
             return;
         }
         if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^\.[^.]+\..+/i", $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_DOMAIN_CHECK', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_048', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -1071,7 +1071,7 @@ class SC_CheckError {
         $this->createParam($value);
         $objMobile = new SC_Helper_Mobile_Ex();
         if (strlen($this->arrParam[$value[1]]) > 0 && !$objMobile->gfIsMobileMailAddress($this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_MOBILE_EMAIL_CHECK', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_049', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -1092,10 +1092,10 @@ class SC_CheckError {
         $register_user_flg =  SC_Helper_Customer_Ex::sfCheckRegisterUserFromEmail($this->arrParam[$value[1]]);
         switch ($register_user_flg) {
             case 1:
-                $this->arrErr[$value[1]] .= SC_I18n_Ex::t('SC_CHECKERROR_CHECK_REGIST_CUSTOMER_EMAIL_EXIST', array('T_FIELD' => $value[0]));
+                $this->arrErr[$value[1]] .= SC_I18n_Ex::t('SC_CheckError_050', array('T_FIELD' => $value[0]));
                 break;
             case 2:
-                $this->arrErr[$value[1]] .= SC_I18n_Ex::t('SC_CHECKERROR_CHECK_REGIST_CUSTOMER_EMAIL_INTERVAL', array('T_FIELD' => $value[0]));
+                $this->arrErr[$value[1]] .= SC_I18n_Ex::t('SC_CheckError_051', array('T_FIELD' => $value[0]));
                 break;
             default:
                 break;
@@ -1119,7 +1119,7 @@ class SC_CheckError {
 
         $pattern = '/' . join('|', $prohibitedStr) . '/i';
         if (preg_match_all($pattern, $targetStr, $matches = array())) {
-            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CHECKERROR_PROHIBITED_STR_CHECK', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = SC_I18n_Ex::t('SC_CheckError_052', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -1136,7 +1136,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if ($this->evalCheck($value[1]) === false) {
-            $this->arrErr[$value[0]] = SC_I18n_Ex::t('SC_CHECKERROR_EVAL_CHECK', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[0]] = SC_I18n_Ex::t('SC_CheckError_053', array('T_FIELD' => $value[0]));
         }
     }
 

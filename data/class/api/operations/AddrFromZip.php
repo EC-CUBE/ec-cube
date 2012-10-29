@@ -41,7 +41,7 @@ class API_AddrFromZip extends SC_Api_Abstract_Ex {
 
     public function __construct() {
         parent::__construct();
-        $this->operation_description = SC_I18n_Ex::t('API_ADDRFROMZIP_DESC');
+        $this->operation_description = SC_I18n_Ex::t('API_AddrFromZip_001');
     }
 
     public function doAction($arrParam) {

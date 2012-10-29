@@ -1002,7 +1002,7 @@ class SC_Query {
      * エラー処理
      */
     function error($msg) {
-        $msg = SC_I18n_Ex::t('SC_QUERY_ERROR') . "\n" . $msg;
+        $msg = SC_I18n_Ex::t('SC_Query_001') . "\n" . $msg;
         if (!$this->force_run) {
             trigger_error($msg, E_USER_ERROR);
         } else {

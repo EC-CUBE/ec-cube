@@ -320,10 +320,10 @@ class SC_Api_Operation {
                         $arrErr = $objApiOperation->getErrorArray();
                     }
                 } else {
-                    $arrErr['ECCUBE.Operation.NoLoad'] = SC_I18n_Ex::t('SC_API_OPERATION_NO_LOAD');
+                    $arrErr['ECCUBE.Operation.NoLoad'] = SC_I18n_Ex::t('SC_Api_Operation_001');
                 }
             } else {
-                $arrErr['ECCUBE.Authority.NoAuthority'] = SC_I18n_Ex::t('SC_API_OPERATION_NO_AUTHORITY');
+                $arrErr['ECCUBE.Authority.NoAuthority'] = SC_I18n_Ex::t('SC_Api_Operation_002');
             }
         }
 

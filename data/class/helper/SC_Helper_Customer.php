@@ -438,11 +438,11 @@ class SC_Helper_Customer {
         $objCustomer = new SC_Customer_Ex();
         if ($objCustomer->isLoginSuccess(true)
             && SC_Helper_Customer_Ex::sfCustomerEmailDuplicationCheck($objCustomer->getValue('customer_id'), $objFormParam->getValue('email'))) {
-            $objErr->arrErr['email'] .= SC_I18n_Ex::t('SC_HELPER_CUSTOMER_EMAIL_EXISTS');
+            $objErr->arrErr['email'] .= SC_I18n_Ex::t('SC_Helper_Customer_001');
         }
         if ($objCustomer->isLoginSuccess(true)
             && SC_Helper_Customer_Ex::sfCustomerEmailDuplicationCheck($objCustomer->getValue('customer_id'), $objFormParam->getValue('email_mobile'))) {
-            $objErr->arrErr['email_mobile'] .= SC_I18n_Ex::t('SC_HELPER_CUSTOMER_EMAIL_EXISTS');
+            $objErr->arrErr['email_mobile'] .= SC_I18n_Ex::t('SC_Helper_Customer_001');
         }
 
         return $objErr->arrErr;
@@ -603,14 +603,14 @@ class SC_Helper_Customer {
             && SC_Utils_Ex::sfIsInt($array['search_buy_total_to'])
             && $array['search_buy_total_from'] > $array['buy_total_to']
         ) {
-            $objErr->arrErr['search_buy_total_from'] .= SC_I18n_Ex::t('SC_HELPER_CUSTOMER_INVALID_TOTAL_RANGE');
+            $objErr->arrErr['search_buy_total_from'] .= SC_I18n_Ex::t('SC_Helper_Customer_002');
         }
 
         if (SC_Utils_Ex::sfIsInt($array['search_buy_times_from'])
             && SC_Utils_Ex::sfIsInt($array['search_buy_times_to'])
             && $array['search_buy_times_from'] > $array['search_buy_times_to']
         ) {
-            $objErr->arrErr['search_buy_times_from'] .= SC_I18n_Ex::t('SC_HELPER_CUSTOMER_INVALID_TIMES_RANGE');
+            $objErr->arrErr['search_buy_times_from'] .= SC_I18n_Ex::t('SC_Helper_Customer_003');
         }
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
