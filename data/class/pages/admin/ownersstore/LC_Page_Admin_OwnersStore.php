@@ -224,10 +224,10 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
      * @return void
      */
     function initParam(&$objFormParam, $mode) {
-        $objFormParam->addParam('mode', 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('plugin_id', 'plugin_id', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_MODE_ALP'), 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PLUGIN_ID'), 'plugin_id', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         if ($mode === 'priority') {
-            $objFormParam->addParam('優先度', 'priority', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRIORITY'), 'priority', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         }
     }
 
@@ -252,11 +252,11 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
     function checkUploadFile($file_key) {
         $objErr = new SC_CheckError_Ex();
         // 拡張子チェック
-        $objErr->doFunc(array('プラグインファイル', $file_key, explode(',', PLUGIN_EXTENSION)), array('FILE_EXT_CHECK'));
+        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_PLUGIN_FILE'), $file_key, explode(',', PLUGIN_EXTENSION)), array('FILE_EXT_CHECK'));
         // ファイルサイズチェック
-        $objErr->doFunc(array('プラグインファイル', $file_key, FILE_SIZE), array('FILE_SIZE_CHECK'));
+        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_PLUGIN_FILE'), $file_key, FILE_SIZE), array('FILE_SIZE_CHECK'));
         // ファイル名チェック
-        $objErr->doFunc(array('プラグインファイル', $file_key), array('FILE_NAME_CHECK'));
+        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_PLUGIN_FILE'), $file_key), array('FILE_NAME_CHECK'));
 
         return $objErr->arrErr;
     }

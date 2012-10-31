@@ -232,9 +232,9 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
      */
     function initParam(&$objFormParam, &$arrParams) {
 
-        $objFormParam->addParam('バックアップ名', 'bkup_name', STEXT_LEN, 'a', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
-        $objFormParam->addParam('バックアップメモ', 'bkup_memo', MTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('バックアップ名(リスト)', 'list_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'NO_SPTAB', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BACKUP_NAME'), 'bkup_name', STEXT_LEN, 'a', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BACKUP_MEMO'), 'bkup_memo', MTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BACKUP_NAME_LIST'), 'list_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'NO_SPTAB', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
         $objFormParam->setParam($arrParams);
         $objFormParam->convParam();
 

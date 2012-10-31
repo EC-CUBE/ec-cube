@@ -131,10 +131,10 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam('端末種別ID', 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('division', 'division', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('ヘッダデータ', 'header');
-        $objFormParam->addParam('フッタデータ', 'footer');
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DEVICE_TYPE_ID'), 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DIVISION_ALP'), 'division', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_HEADER_DATA'), 'header');
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FOOTER_DATA'), 'footer');
     }
 
     /**
@@ -147,7 +147,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
         $arrParams = $objFormParam->getHashArray();
         $objErr = new SC_CheckError_Ex($arrParams);
         $objErr->arrErr =& $arrErr;
-        $objErr->doFunc(array('division', 'division', STEXT_LEN), array('EXIST_CHECK'));
+        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_DIVISION_ALP'), 'division', STEXT_LEN), array('EXIST_CHECK'));
         return $objErr->arrErr;
     }
 

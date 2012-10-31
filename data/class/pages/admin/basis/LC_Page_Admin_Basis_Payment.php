@@ -73,7 +73,7 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin_Ex {
 
         if (!empty($_POST)) {
             $objFormParam = new SC_FormParam_Ex();
-            $objFormParam->addParam('配送業者ID', 'payment_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DELIVERY_ID'), 'payment_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
             $objFormParam->setParam($_POST);
             $objFormParam->convParam();
 

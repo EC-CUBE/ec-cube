@@ -228,7 +228,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
     function lfInitParamModeMove(&$objFormParam) {
         // 共通定義
         $this->lfInitParamCommon($objFormParam);
-        $objFormParam->addParam('選択ファイル', 'select_file', MTEXT_LEN, 'a', array());
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_SELECT_FILE'), 'select_file', MTEXT_LEN, 'a', array());
     }
 
     /**
@@ -240,7 +240,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
     function lfInitParamModeView(&$objFormParam) {
         // 共通定義
         $this->lfInitParamCommon($objFormParam);
-        $objFormParam->addParam('選択ファイル', 'select_file', MTEXT_LEN, 'a', array('SELECT_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_SELECT_FILE'), 'select_file', MTEXT_LEN, 'a', array('SELECT_CHECK'));
     }
 
     /**
@@ -252,8 +252,8 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
     function lfInitParamModeCreate(&$objFormParam) {
         // 共通定義
         $this->lfInitParamCommon($objFormParam);
-        $objFormParam->addParam('選択ファイル', 'select_file', MTEXT_LEN, 'a', array());
-        $objFormParam->addParam('作成ファイル名', 'create_file', MTEXT_LEN, 'a', array('EXIST_CHECK', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_SELECT_FILE'), 'select_file', MTEXT_LEN, 'a', array());
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CREATE_FILE'), 'create_file', MTEXT_LEN, 'a', array('EXIST_CHECK', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
     }
 
     /**
@@ -263,11 +263,11 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParamCommon(&$objFormParam) {
-        $objFormParam->addParam('ルートディレクトリ', 'top_dir', MTEXT_LEN, 'a', array());
-        $objFormParam->addParam('現在の階層ディレクトリ', 'now_dir', MTEXT_LEN, 'a', array());
-        $objFormParam->addParam('現在の階層ファイル', 'now_file', MTEXT_LEN, 'a', array());
-        $objFormParam->addParam('ツリー選択状態', 'tree_status', MTEXT_LEN, 'a', array());
-        $objFormParam->addParam('ツリー選択ディレクトリ', 'tree_select_file', MTEXT_LEN, 'a', array());
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ROOT_DIR'), 'top_dir', MTEXT_LEN, 'a', array());
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_NOW_DIR'), 'now_dir', MTEXT_LEN, 'a', array());
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_NOW_FILE'), 'now_file', MTEXT_LEN, 'a', array());
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TREE_STATUS'), 'tree_status', MTEXT_LEN, 'a', array());
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TREE_SELECT_FILE'), 'tree_select_file', MTEXT_LEN, 'a', array());
     }
 
     /*
@@ -277,7 +277,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitFile(&$objUpFile) {
-        $objUpFile->addFile('ファイル', 'upload_file', array(), FILE_SIZE, true, 0, 0, false);
+        $objUpFile->addFile(SC_I18n_Ex::t('PARAM_LABEL_FILE'), 'upload_file', array(), FILE_SIZE, true, 0, 0, false);
     }
 
     /**

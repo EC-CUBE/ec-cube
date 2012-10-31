@@ -159,16 +159,16 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam, $bloc_cnt = 0) {
-        $objFormParam->addParam('ページID', 'page_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam('端末種別ID', 'device_type_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam('ブロック数', 'bloc_cnt', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PAGE_ID'), 'page_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DEVICE_TYPE_ID'), 'device_type_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BLOC_CNT'), 'bloc_cnt', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
 
         for ($i = 1; $i <= $bloc_cnt; $i++) {
-            $objFormParam->addParam('ブロック名', 'name_' . $i, STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'GRAPH_CHECK'));
-            $objFormParam->addParam('ブロックID', 'id_' . $i, INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-            $objFormParam->addParam('ターゲットID', 'target_id_' . $i, STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'ALNUM_CHECK'));
-            $objFormParam->addParam('TOP座標', 'top_' . $i, INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-            $objFormParam->addParam('全ページ', 'anywhere_' . $i, INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BLOC_NAME'), 'name_' . $i, STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'GRAPH_CHECK'));
+            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BLOC_ID'), 'id_' . $i, INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TARGET_ID'), 'target_id_' . $i, STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'ALNUM_CHECK'));
+            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TOP'), 'top_' . $i, INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FULL_PAGE'), 'anywhere_' . $i, INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         }
     }
 

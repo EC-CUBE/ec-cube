@@ -133,19 +133,19 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam('商品規格ID', 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam('商品名', 'name');
-        $objFormParam->addParam('規格1', 'class_name1');
-        $objFormParam->addParam('規格2', 'class_name2');
-        $objFormParam->addParam('規格分類1', 'classcategory_name1');
-        $objFormParam->addParam('規格分類2', 'classcategory_name2');
-        $objFormParam->addParam('メイン画像', 'main_image');
-        $objFormParam->addParam('メイン一覧画像', 'main_list_image');
-        $objFormParam->addParam('販売価格', 'price');
-        $objFormParam->addParam('数量', 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
-        $objFormParam->addParam('お届け先', 'shipping', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam('カート番号', 'cart_no', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam('行数', 'line_of_num', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_CLASS_ID'), 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_NAME'), 'name');
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CLASS1'), 'class_name1');
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CLASS2'), 'class_name2');
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CLASSCATEGORY1'), 'classcategory_name1');
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CLASSCATEGORY2'), 'classcategory_name2');
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_MAIN_IMAGE'), 'main_image');
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_MAIN_LIST_IMAGE'), 'main_list_image');
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_SELLPRICE'), 'price');
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_QUANTITY'), 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_DELIV_ADDRESSEE'), 'shipping', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CART_NO'), 'cart_no', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_LINE_NUM'), 'line_of_num', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
     }
 
     /**

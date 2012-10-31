@@ -214,14 +214,14 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
     function lfInitParam($mode, &$objFormParam) {
         switch ($mode) {
             case 'confirm':
-                $objFormParam->addParam('規約タイトル', 'kiyaku_title', SMTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
-                $objFormParam->addParam('規約内容', 'kiyaku_text', MLTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_KIYAKU_TITLE'), 'kiyaku_title', SMTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_KIYAKU_TEXT'), 'kiyaku_text', MLTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
             case 'delete':
             case 'pre_edit':
             case 'down':
             case 'up':
             default:
-                $objFormParam->addParam('規約ID', 'kiyaku_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_KIYAKU_ID'), 'kiyaku_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
                 break;
         }
     }

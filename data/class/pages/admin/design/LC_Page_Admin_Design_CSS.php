@@ -152,10 +152,10 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam('端末種別ID', 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('CSSファイル名', 'css_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('旧CSSファイル名', 'old_css_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('CSSデータ', 'css_data');
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DEVICE_TYPE_ID'), 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CSS_FILE_NAME'), 'css_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CSS_OLD_FILE_NAME'), 'old_css_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CSS_DATA'), 'css_data');
 
     }
 
@@ -234,7 +234,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
         $arrParams = $objFormParam->getHashArray();
         $objErr = new SC_CheckError_Ex($arrParams);
         $objErr->arrErr =& $arrErr;
-        $objErr->doFunc(array('CSSファイル名', 'css_name', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK','FILE_NAME_CHECK_BY_NOUPLOAD'));
+        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_CSS_FILE_NAME'), 'css_name', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK','FILE_NAME_CHECK_BY_NOUPLOAD'));
 
         $device_type_id = $objFormParam->getValue('device_type_id');
         $css_name = $objFormParam->getValue('css_name');

@@ -152,15 +152,15 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
 
         switch ($this->getMode()) {
             case 'search':
-                $objErr->doFunc(array('開始日', 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
-                $objErr->doFunc(array('終了日', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_DATE'));
-                $objErr->doFunc(array('開始日', '終了日', 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_SET_TERM'));
+                $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_START_DAY'), 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
+                $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_END_DAY'), 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_DATE'));
+                $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_START_DAY'), SC_I18n_Ex::t('PARAM_LABEL_END_DAY'), 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_SET_TERM'));
                 break;
 
             case 'complete':
-                $objErr->doFunc(array('おすすめレベル', 'recommend_level'), array('SELECT_CHECK'));
-                $objErr->doFunc(array('タイトル', 'title', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-                $objErr->doFunc(array('コメント', 'comment', LTEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+                $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_RECOMMEND_LEVEL'), 'recommend_level'), array('SELECT_CHECK'));
+                $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_TITLE'), 'title', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+                $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_COMMENT'), 'comment', LTEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
                 break;
             default:
                 break;
@@ -213,21 +213,21 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam('投稿者名', 'search_reviewer_name', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),'',false);
-        $objFormParam->addParam('投稿者URL', 'search_reviewer_url', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),'',false);
-        $objFormParam->addParam('商品名', 'search_name', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),'',false);
-        $objFormParam->addParam('商品コード', 'search_product_code', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),'',false);
-        $objFormParam->addParam('性別', 'search_sex', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),'',false);
-        $objFormParam->addParam('おすすめレベル', 'search_recommend_level', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),'',false);
-        $objFormParam->addParam('投稿年', 'search_startyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),'',false);
-        $objFormParam->addParam('投稿月', 'search_startmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),'',false);
-        $objFormParam->addParam('投稿日', 'search_startday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),'',false);
-        $objFormParam->addParam('投稿年', 'search_endyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),'',false);
-        $objFormParam->addParam('投稿月', 'search_endmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),'',false);
-        $objFormParam->addParam('投稿日', 'search_endday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),'',false);
-        $objFormParam->addParam('最大表示件数', 'search_page_max', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),'',false);
-        $objFormParam->addParam('ページ番号件数', 'search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),'',false);
-        $objFormParam->addParam('レビューID', 'review_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),'',false);
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_REVIEWER_NAME'), 'search_reviewer_name', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),'',false);
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_REVIEWER_URL'), 'search_reviewer_url', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),'',false);
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_NAME'), 'search_name', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),'',false);
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_CODE'), 'search_product_code', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),'',false);
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_SEX'), 'search_sex', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),'',false);
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_RECOMMEND_LEVEL'), 'search_recommend_level', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),'',false);
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_POST_YEAR'), 'search_startyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),'',false);
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_POST_MONTH'), 'search_startmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),'',false);
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_POST_DATE'), 'search_startday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),'',false);
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_POST_YEAR'), 'search_endyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),'',false);
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_POST_MONTH'), 'search_endmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),'',false);
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_POST_DATE'), 'search_endday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),'',false);
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_MAX_DISP_NUM'), 'search_page_max', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),'',false);
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PAGE_NUM'), 'search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),'',false);
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_REVIEW_ID'), 'review_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),'',false);
     }
 
     /**

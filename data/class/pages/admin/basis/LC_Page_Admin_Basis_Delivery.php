@@ -136,7 +136,7 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
             case 'delete':
             case 'up':
             case 'down':
-                $objFormParam->addParam('配送業者ID', 'deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DELIVERY_ID'), 'deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
                 $objFormParam->convParam();
 

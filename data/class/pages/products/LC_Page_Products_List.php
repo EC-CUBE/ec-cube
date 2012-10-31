@@ -250,14 +250,14 @@ __EOS__;
 
         // 複数項目チェック
         if ($tpl_classcat_find1[$product_id]) {
-            $objErr->doFunc(array('規格1', 'classcategory_id1', INT_LEN), array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+            $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_CLASS1'), 'classcategory_id1', INT_LEN), array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         }
         if ($tpl_classcat_find2[$product_id]) {
-            $objErr->doFunc(array('規格2', 'classcategory_id2', INT_LEN), array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+            $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_CLASS2'), 'classcategory_id2', INT_LEN), array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         }
 
-        $objErr->doFunc(array('商品規格ID', 'product_class_id', INT_LEN), array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objErr->doFunc(array('数量', 'quantity', INT_LEN), array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_CLASS_ID'), 'product_class_id', INT_LEN), array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_QUANTITY'), 'quantity', INT_LEN), array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
         return $objErr->arrErr;
     }

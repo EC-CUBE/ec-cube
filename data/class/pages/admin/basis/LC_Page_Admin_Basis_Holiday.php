@@ -215,15 +215,15 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
     function lfInitParam($mode, &$objFormParam) {
         switch ($mode) {
             case 'edit':
-                $objFormParam->addParam('タイトル', 'title', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
-                $objFormParam->addParam('月', 'month', INT_LEN, 'n', array('SELECT_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
-                $objFormParam->addParam('日', 'day', INT_LEN, 'n', array('SELECT_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TITLE'), 'title', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_MONTH'), 'month', INT_LEN, 'n', array('SELECT_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DAY'), 'day', INT_LEN, 'n', array('SELECT_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
                 // breakしない
             case 'delete':
             case 'pre_edit':
             case 'down':
             case 'up':
-                $objFormParam->addParam('定休日ID', 'holiday_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_REGULAR_HOLIDAY_ID'), 'holiday_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
                 break;
             default:
                 break;

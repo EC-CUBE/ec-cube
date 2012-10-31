@@ -200,7 +200,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
      */
     function lfInitParam($tpl_mode, &$objFormParam) {
         if ($tpl_mode == 'manual') {
-            $objFormParam->addParam('開始行', 'startRowNum', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_STARTROWNUM'), 'startRowNum', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         }
     }
 

@@ -109,7 +109,7 @@ class API_BrowseNodeLookup extends SC_Api_Abstract_Ex {
     }
 
     protected function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BROWSENODEID'), 'BrowseNodeId', INT_LEN, 'a', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CATEGORY_ID'), 'BrowseNodeId', INT_LEN, 'a', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_RESPONSEGROUP'), 'ResponseGroup', INT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
     }
 

@@ -103,7 +103,7 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
      * @return void
      */
     function initForm(&$objFormParam, &$arrParams) {
-        $objFormParam->addParam('mode', 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_MODE_ALP'), 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->setParam($arrParams);
     }
 

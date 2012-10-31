@@ -150,12 +150,12 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
     function lfInitParam($mode, &$objFormParam) {
         switch ($mode) {
             case 'regist':
-                $objFormParam->addParam('メールタイトル', 'subject', MTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
-                $objFormParam->addParam('ヘッダー', 'header', LTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
-                $objFormParam->addParam('フッター', 'footer', LTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
-                $objFormParam->addParam('テンプレート', 'template_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_MAIL_SUBJECT'), 'subject', MTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_HEADER'), 'header', LTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FOOTER'), 'footer', LTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TEMPLATE'), 'template_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
             case 'id_set':
-                $objFormParam->addParam('テンプレート', 'template_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TEMPLATE'), 'template_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
                 break;
             default:
                 break;

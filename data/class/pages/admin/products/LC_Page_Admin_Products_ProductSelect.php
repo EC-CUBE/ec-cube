@@ -108,9 +108,9 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam('カテゴリ', 'search_category_id', STEXT_LEN, 'n');
-        $objFormParam->addParam('商品名', 'search_name', STEXT_LEN, 'KVa');
-        $objFormParam->addParam('商品コード', 'search_product_code', STEXT_LEN, 'KVa');
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CATEGORY'), 'search_category_id', STEXT_LEN, 'n');
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_NAME'), 'search_name', STEXT_LEN, 'KVa');
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_CODE'), 'search_product_code', STEXT_LEN, 'KVa');
     }
 
     /* 商品検索結果取得 */

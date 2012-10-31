@@ -367,10 +367,10 @@ class SC_Helper_Customer {
      * @return void
      */
     function sfCustomerCommonParam(&$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_LASTNAME'), 'name01', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK' ,'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FIRSTNAME'), 'name02', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK' , 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_LASTKANA'), 'kana01', STEXT_LEN, 'CKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK' ,'MAX_LENGTH_CHECK', 'KANA_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FIRSTKANA'), 'kana02', STEXT_LEN, 'CKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK' ,'MAX_LENGTH_CHECK', 'KANA_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_LASTNAME'), 'name01', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK' ,'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_FIRSTNAME'), 'name02', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK' , 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_LASTKANA'), 'kana01', STEXT_LEN, 'CKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK' ,'MAX_LENGTH_CHECK', 'KANA_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_FIRSTKANA'), 'kana02', STEXT_LEN, 'CKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK' ,'MAX_LENGTH_CHECK', 'KANA_CHECK'));
         $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ZIP1'), 'zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'SPTAB_CHECK' ,'NUM_CHECK', 'NUM_COUNT_CHECK'));
         $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ZIP2'), 'zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'SPTAB_CHECK' ,'NUM_CHECK', 'NUM_COUNT_CHECK'));
         $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PREF'), 'pref', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));
@@ -493,8 +493,8 @@ class SC_Helper_Customer {
         $objErr = new SC_CheckError_Ex($arrParams);
         $objErr->arrErr = $objFormParam->checkError();
 
-        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_TEL'), 'tel01', 'tel02', 'tel03'),array('TEL_CHECK'));
-        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_FAX'), 'fax01', 'fax02', 'fax03') ,array('TEL_CHECK'));
+        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_TEL_NUMBER'), 'tel01', 'tel02', 'tel03'),array('TEL_CHECK'));
+        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_FAX_NUMBER'), 'fax01', 'fax02', 'fax03') ,array('TEL_CHECK'));
         $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_ZIP'), 'zip01', 'zip02'), array('ALL_EXIST_CHECK'));
 
         return $objErr;
@@ -535,8 +535,8 @@ class SC_Helper_Customer {
      */
     function sfSetSearchParam(&$objFormParam) {
         $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_ID'), 'search_customer_id', ID_MAX_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_NAME'), 'search_name', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_KANA'), 'search_kana', STEXT_LEN, 'CKV', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'KANABLANK_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_NAME'), 'search_name', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_KANA'), 'search_kana', STEXT_LEN, 'CKV', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'KANABLANK_CHECK'));
         $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PREF'), 'search_pref', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BD_START_YEAR'), 'search_b_start_year', 4, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BD_START_MONTH'), 'search_b_start_month', 2, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
@@ -547,17 +547,17 @@ class SC_Helper_Customer {
         $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BIRTH_MONTH'), 'search_birth_month', 2, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_EMAIL'), 'search_email', MTEXT_LEN, 'a', array('SPTAB_CHECK', 'EMAIL_CHAR_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_EMAIL_MOBILE'), 'search_email_mobile', MTEXT_LEN, 'a', array('SPTAB_CHECK', 'EMAIL_CHAR_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TEL'), 'search_tel', TEL_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TEL_NUMBER'), 'search_tel', TEL_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BUY_TOTAL_FROM'), 'search_buy_total_from', PRICE_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BUY_TOTAL_TO'), 'search_buy_total_to', PRICE_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BUY_TIMES_FROM'), 'search_buy_times_from', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BUY_TIMES_TO'), 'search_buy_times_to', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_START_YEAR'), 'search_start_year', 4, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_START_MONTH'), 'search_start_month', 2, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_START_DAY'), 'search_start_day', 2, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_END_YEAR'), 'search_end_year', 4, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_END_MONTH'), 'search_end_month', 2, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_END_DAY'), 'search_end_day', 2, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_UPDATE_START_YEAR'), 'search_start_year', 4, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_UPDATE_START_MONTH'), 'search_start_month', 2, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_UPDATE_START_DAY'), 'search_start_day', 2, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_UPDATE_END_YEAR'), 'search_end_year', 4, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_UPDATE_END_MONTH'), 'search_end_month', 2, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_UPDATE_END_DAY'), 'search_end_day', 2, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PAGE_MAX'), 'search_page_max', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'), SEARCH_PMAX, false);
         $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PAGE_NO'), 'search_pageno', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'), 1, false);
         $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BUY_START_YEAR'), 'search_buy_start_year', 4, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
@@ -591,9 +591,9 @@ class SC_Helper_Customer {
         $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_BD_END_DAY'), 'search_b_end_year', 'search_b_end_month', 'search_b_end_day'), array('CHECK_DATE'));
 
         $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_BD_START_DAY'),SC_I18n_Ex::t('PARAM_LABEL_BD_END_DAY'), 'search_b_start_year', 'search_b_start_month', 'search_b_start_day', 'search_b_end_year', 'search_b_end_month', 'search_b_end_day'), array('CHECK_SET_TERM'));
-        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_START_DAY'), 'search_start_year', 'search_start_month', 'search_start_day',), array('CHECK_DATE'));
-        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_END_DAY'), 'search_end_year', 'search_end_month', 'search_end_day'), array('CHECK_DATE'));
-        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_START_DAY'),SC_I18n_Ex::t('PARAM_LABEL_END_DAY'), 'search_start_year', 'search_start_month', 'search_start_day', 'search_end_year', 'search_end_month', 'search_end_day'), array('CHECK_SET_TERM'));
+        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_UPDATE_START_DAY'), 'search_start_year', 'search_start_month', 'search_start_day',), array('CHECK_DATE'));
+        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_UPDATE_END_DAY'), 'search_end_year', 'search_end_month', 'search_end_day'), array('CHECK_DATE'));
+        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_UPDATE_START_DAY'),SC_I18n_Ex::t('PARAM_LABEL_UPDATE_END_DAY'), 'search_start_year', 'search_start_month', 'search_start_day', 'search_end_year', 'search_end_month', 'search_end_day'), array('CHECK_SET_TERM'));
         $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_BUY_START_DAY'), 'search_buy_start_year', 'search_buy_start_month', 'search_buy_start_day',), array('CHECK_DATE'));
         $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_BUY_END_DAY'), 'search_buy_end_year', 'search_buy_end_month', 'search_buy_end_day'), array('CHECK_DATE'));
         // 開始 > 終了 の場合はエラーとする

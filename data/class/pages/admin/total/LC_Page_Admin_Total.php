@@ -206,15 +206,15 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $arrList = $this->lfGetDateDefault();
 
         // 月度集計
-        $objFormParam->addParam('月度', 'search_startyear_m', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startyear_m']);
-        $objFormParam->addParam('月度', 'search_startmonth_m', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startmonth_m']);
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_MONTHLY'), 'search_startyear_m', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startyear_m']);
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_MONTHLY'), 'search_startmonth_m', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startmonth_m']);
         // 期間集計
-        $objFormParam->addParam('開始日', 'search_startyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startyear']);
-        $objFormParam->addParam('開始日', 'search_startmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startmonth']);
-        $objFormParam->addParam('開始日', 'search_startday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startday']);
-        $objFormParam->addParam('終了日', 'search_endyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endyear']);
-        $objFormParam->addParam('終了日', 'search_endmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endmonth']);
-        $objFormParam->addParam('終了日', 'search_endday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endday']);
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_START_DAY'), 'search_startyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startyear']);
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_START_DAY'), 'search_startmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startmonth']);
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_START_DAY'), 'search_startday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startday']);
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_END_DAY'), 'search_endyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endyear']);
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_END_DAY'), 'search_endmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endmonth']);
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_END_DAY'), 'search_endday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endday']);
 
         // hiddenデータの取得用
         $objFormParam->addParam('', 'page');
@@ -232,16 +232,16 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
         // 特殊項目チェック
         if ($objFormParam->getValue('form') == 1) {
-            $objErr->doFunc(array('月度', 'search_startyear_m'), array('ONE_EXIST_CHECK'));
+            $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_MONTHLY'), 'search_startyear_m'), array('ONE_EXIST_CHECK'));
         }
 
         if ($objFormParam->getValue('form') == 2) {
-            $objErr->doFunc(array('期間', 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('FULL_EXIST_CHECK'));
+            $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_PERIOD'), 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('FULL_EXIST_CHECK'));
         }
-        $objErr->doFunc(array('月度', 'search_startyear_m', 'search_startmonth_m'), array('ALL_EXIST_CHECK'));
-        $objErr->doFunc(array('開始日', 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
-        $objErr->doFunc(array('終了日', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_DATE'));
-        $objErr->doFunc(array('開始日', '終了日', 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_SET_TERM'));
+        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_MONTHLY'), 'search_startyear_m', 'search_startmonth_m'), array('ALL_EXIST_CHECK'));
+        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_START_DAY'), 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
+        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_END_DAY'), 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_DATE'));
+        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_START_DAY'), SC_I18n_Ex::t('PARAM_LABEL_END_DAY'), 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_SET_TERM'));
         return $objErr->arrErr;
     }
 

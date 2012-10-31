@@ -194,21 +194,21 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
      */
     function initForm(&$objFormParam, &$arrParams, $mode = '') {
 
-        $objFormParam->addParam('メンバーID', 'member_id', INT_LEN, 'n', array('NUM_CHECK'));
-        $objFormParam->addParam('名前', 'name', STEXT_LEN, 'KV', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('所属', 'department', STEXT_LEN, 'KV', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('ログインID', 'login_id', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
-        $objFormParam->addParam('変更前ログインID', 'old_login_id', '' , '', array('ALNUM_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_MEMBER_ID'), 'member_id', INT_LEN, 'n', array('NUM_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_NAME'), 'name', STEXT_LEN, 'KV', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DEPARTMENT'), 'department', STEXT_LEN, 'KV', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_LOGIN_ID'), 'login_id', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_OLD_LOGIN_ID'), 'old_login_id', '' , '', array('ALNUM_CHECK'));
         if ($mode == 'edit' && $arrParams['password'] == DEFAULT_PASSWORD) {
-            $objFormParam->addParam('パスワード', 'password', '' , '', array('EXIST_CHECK'));
-            $objFormParam->addParam('パスワード(確認)', 'password02', '' , '', array('EXIST_CHECK'));
+            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PASSWORD'), 'password', '' , '', array('EXIST_CHECK'));
+            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PASSWORD_CONFIRM'), 'password02', '' , '', array('EXIST_CHECK'));
         } else {
-            $objFormParam->addParam('パスワード', 'password', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
-            $objFormParam->addParam('パスワード(確認)', 'password02', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
+            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PASSWORD'), 'password', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
+            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PASSWORD_CONFIRM'), 'password02', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
         }
-        $objFormParam->addParam('権限', 'authority', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('稼働/非稼働', 'work', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('ページ', 'pageno', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_AUTHORITY'), 'authority', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_WORK'), 'work', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PAGE'), 'pageno', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
         $objFormParam->setParam($arrParams);
         $objFormParam->convParam();
@@ -228,13 +228,13 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         // ログインID・パスワードの文字数チェック
         $objErr = new SC_CheckError_Ex();
         if ($mode == 'new') {
-            $objErr->doFunc(array('パスワード', 'password', ID_MIN_LEN, ID_MAX_LEN), array('NUM_RANGE_CHECK'));
-            $objErr->doFunc(array('ログインID', 'login_id', ID_MIN_LEN, ID_MAX_LEN), array('NUM_RANGE_CHECK'));
+            $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_PASSWORD'), 'password', ID_MIN_LEN, ID_MAX_LEN), array('NUM_RANGE_CHECK'));
+            $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_LOGIN_ID'), 'login_id', ID_MIN_LEN, ID_MAX_LEN), array('NUM_RANGE_CHECK'));
         } elseif ($mode == 'edit') {
-            $objErr->doFunc(array('パスワード', 'password', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK' ,'NUM_RANGE_CHECK'));
-            $objErr->doFunc(array('ログインID', 'login_id', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK' ,'NUM_RANGE_CHECK'));
+            $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_PASSWORD'), 'password', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK' ,'NUM_RANGE_CHECK'));
+            $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_LOGIN_ID'), 'login_id', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK' ,'NUM_RANGE_CHECK'));
         }
-    $objErr->doFunc(array('パスワード', 'パスワード(確認)', 'password', 'password02') ,array('EQUAL_CHECK'));
+    $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_PASSWORD'), SC_I18n_Ex::t('PARAM_LABEL_PASSWORD_CONFIRM'), 'password', 'password02') ,array('EQUAL_CHECK'));
 
         $arrErr = $objErr->arrErr;
 

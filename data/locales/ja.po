@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2012-10-29 18:18+0900\n"
+"PO-Revision-Date: 2012-10-31 19:27+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -465,22 +465,49 @@ msgid "PARAM_LABEL_EMAIL_MOBILE_CONFIRM"
 msgstr "携帯メールアドレス(確認)"
 
 msgid "PARAM_LABEL_NAME"
+msgstr "名前"
+
+msgid "PARAM_LABEL_CUSTOMER_NAME"
 msgstr "お名前"
 
-msgid "PARAM_LABEL_LASTNAME"
+msgid "PARAM_LABEL_CUSTOMER_NAME1"
+msgstr "お名前1"
+
+msgid "PARAM_LABEL_CUSTOMER_NAME2"
+msgstr "お名前2"
+
+msgid "PARAM_LABEL_CUSTOMER_LASTNAME"
 msgstr "お名前(姓)"
 
-msgid "PARAM_LABEL_FIRSTNAME"
+msgid "PARAM_LABEL_CUSTOMER_FIRSTNAME"
 msgstr "お名前(名)"
 
-msgid "PARAM_LABEL_KANA"
+msgid "PARAM_LABEL_CUSTOMER_KANA"
 msgstr "お名前(フリガナ)"
 
-msgid "PARAM_LABEL_LASTKANA"
+msgid "PARAM_LABEL_CUSTOMER_LASTKANA"
 msgstr "お名前(フリガナ・姓)"
 
-msgid "PARAM_LABEL_FIRSTKANA"
+msgid "PARAM_LABEL_CUSTOMER_FIRSTKANA"
 msgstr "お名前(フリガナ・名)"
+
+msgid "PARAM_LABEL_ORDER_LASTNAME"
+msgstr "注文者 お名前(姓)"
+
+msgid "PARAM_LABEL_ORDER_FIRSTNAME"
+msgstr "注文者 お名前(名)"
+
+msgid "PARAM_LABEL_ORDER_LASTKANA"
+msgstr "注文者 お名前(フリガナ・姓)"
+
+msgid "PARAM_LABEL_ORDER_FIRSTKANA"
+msgstr "注文者 お名前(フリガナ・名)"
+
+msgid "PARAM_LABEL_ORDER_NAME"
+msgstr "注文者 お名前"
+
+msgid "PARAM_LABEL_ORDER_KANA"
+msgstr "注文者 お名前(フリガナ)"
 
 msgid "PARAM_LABEL_PREF"
 msgstr "都道府県"
@@ -492,6 +519,9 @@ msgid "PARAM_LABEL_ADDR2"
 msgstr "住所2"
 
 msgid "PARAM_LABEL_TEL"
+msgstr "TEL"
+
+msgid "PARAM_LABEL_TEL_NUMBER"
 msgstr "電話番号"
 
 msgid "PARAM_LABEL_TEL1"
@@ -503,7 +533,19 @@ msgstr "電話番号2"
 msgid "PARAM_LABEL_TEL3"
 msgstr "電話番号3"
 
+msgid "PARAM_LABEL_CUSTOMER_TEL1"
+msgstr "お電話番号1"
+
+msgid "PARAM_LABEL_CUSTOMER_TEL2"
+msgstr "お電話番号2"
+
+msgid "PARAM_LABEL_CUSTOMER_TEL3"
+msgstr "お電話番号3"
+
 msgid "PARAM_LABEL_FAX"
+msgstr "FAX"
+
+msgid "PARAM_LABEL_FAX_NUMBER"
 msgstr "FAX番号"
 
 msgid "PARAM_LABEL_FAX1"
@@ -593,7 +635,7 @@ msgstr "関連タグページ数"
 msgid "PARAM_LABEL_TAGSORT"
 msgstr "関連タグソート"
 
-msgid "PARAM_LABEL_BROWSENODE"
+msgid "PARAM_LABEL_CATEGORY_ID"
 msgstr "カテゴリID"
 
 msgid "PARAM_LABEL_KEYWORDS"
@@ -619,6 +661,18 @@ msgstr "SHOP用メモ"
 
 msgid "PARAM_LABEL_CUSTOMER_POINT"
 msgstr "所持ポイント"
+
+msgid "PARAM_LABEL_ADD_POINT"
+msgstr "加算ポイント"
+
+msgid "PARAM_LABEL_BIRTH_POINT"
+msgstr "お誕生日ポイント"
+
+msgid "PARAM_LABEL_TOTAL_POINT"
+msgstr "最終保持ポイント"
+
+msgid "PARAM_LABEL_NOW_POINT"
+msgstr "現在のポイント"
 
 msgid "PARAM_LABEL_RETURN"
 msgstr "戻る"
@@ -656,22 +710,22 @@ msgstr "購入回数(開始)"
 msgid "PARAM_LABEL_BUY_TIMES_TO"
 msgstr "購入回数(終了)"
 
-msgid "PARAM_LABEL_START_YEAR"
+msgid "PARAM_LABEL_UPDATE_START_YEAR"
 msgstr "登録・更新日(開始年)"
 
-msgid "PARAM_LABEL_START_MONTH"
+msgid "PARAM_LABEL_UPDATE_START_MONTH"
 msgstr "登録・更新日(開始月)"
 
-msgid "PARAM_LABEL_START_DAY"
+msgid "PARAM_LABEL_UPDATE_START_DAY"
 msgstr "登録・更新日(開始日)"
 
-msgid "PARAM_LABEL_END_YEAR"
+msgid "PARAM_LABEL_UPDATE_END_YEAR"
 msgstr "登録・更新日(終了年)"
 
-msgid "PARAM_LABEL_END_MONTH"
+msgid "PARAM_LABEL_UPDATE_END_MONTH"
 msgstr "登録・更新日(終了月)"
 
-msgid "PARAM_LABEL_END_DAY"
+msgid "PARAM_LABEL_UPDATE_END_DAY"
 msgstr "登録・更新日(終了日)"
 
 msgid "PARAM_LABEL_PAGE_MAX"
@@ -698,6 +752,9 @@ msgstr "最終購入日(終了月)"
 msgid "PARAM_LABEL_BUY_END_DAY"
 msgstr "最終購入日(終了日)"
 
+msgid "PARAM_LABEL_BUY_PRODUCT"
+msgstr "購入商品"
+
 msgid "PARAM_LABEL_BUY_PRODUCT_NAME"
 msgstr "購入商品名"
 
@@ -705,7 +762,1015 @@ msgid "PARAM_LABEL_BUY_PRODUCT_CODE"
 msgstr "購入商品コード"
 
 msgid "PARAM_LABEL_CATEGORY"
-msgstr "カテゴリー"
+msgstr "カテゴリ"
+
+msgid "PARAM_LABEL_COMPANY_NAME"
+msgstr "会社名"
+
+msgid "PARAM_LABEL_COMPANY_KANA"
+msgstr "会社名(フリガナ)"
+
+msgid "PARAM_LABEL_SHOP_NAME"
+msgstr "店名"
+
+msgid "PARAM_LABEL_SHOP_KANA"
+msgstr "店名(フリガナ)"
+
+msgid "PARAM_LABEL_SHOP_NAME_ENG"
+msgstr "店名(英語表記)"
+
+msgid "PARAM_LABEL_ZIP01"
+msgstr "郵便番号1"
+
+msgid "PARAM_LABEL_ZIP02"
+msgstr "郵便番号2"
+
+msgid "PARAM_LABEL_ADDR01"
+msgstr "所在地1"
+
+msgid "PARAM_LABEL_ADDR02"
+msgstr "所在地2"
+
+msgid "PARAM_LABEL_EMAIL01"
+msgstr "商品注文受付メールアドレス"
+
+msgid "PARAM_LABEL_EMAIL02"
+msgstr "問い合わせ受付メールアドレス"
+
+msgid "PARAM_LABEL_EMAIL03"
+msgstr "メール送信元メールアドレス"
+
+msgid "PARAM_LABEL_EMAIL04"
+msgstr "送信エラー受付メールアドレス"
+
+msgid "PARAM_LABEL_TAX"
+msgstr "消費税率"
+
+msgid "PARAM_LABEL_TAX_RULE"
+msgstr "課税規則"
+
+msgid "PARAM_LABEL_FREE_RULE"
+msgstr "送料無料条件"
+
+msgid "PARAM_LABEL_BUSINESS_HOUR"
+msgstr "店舗営業時間"
+
+msgid "PARAM_LABEL_GOOD_TRADED"
+msgstr "取扱商品"
+
+msgid "PARAM_LABEL_MESSAGE"
+msgstr "メッセージ"
+
+msgid "PARAM_LABEL_DOWNLOADABLE_DAYS"
+msgstr "ダウンロード可能日数"
+
+msgid "PARAM_LABEL_DOWNLOADABLE_DAYS_UNLIMITED"
+msgstr "ダウンロード無制限"
+
+msgid "PARAM_LABEL_LATITUDE"
+msgstr "緯度"
+
+msgid "PARAM_LABEL_LONGITUDE"
+msgstr "経度"
+
+msgid "PARAM_LABEL_REGULAR_HOLIDAY"
+msgstr "定休日"
+
+msgid "PARAM_LABEL_REGULAR_HOLIDAY_ID"
+msgstr "定休日ID"
+
+msgid "PARAM_LABEL_CONTACT"
+msgstr "お問い合わせ内容"
+
+msgid "PARAM_LABEL_CONTACT_MESSAGE"
+msgstr "その他お問い合わせ"
+
+msgid "PARAM_LABEL_MEMORY"
+msgstr "記憶する"
+
+msgid "PARAM_LABEL_LOGIN_ID"
+msgstr "ログインID"
+
+msgid "PARAM_LABEL_SELLER"
+msgstr "販売業者"
+
+msgid "PARAM_LABEL_MANAGER"
+msgstr "運営責任者"
+
+msgid "PARAM_LABEL_URL"
+msgstr "URL"
+
+msgid "PARAM_LABEL_TITLE"
+msgstr "タイトル"
+
+msgid "PARAM_LABEL_REQUIRED_FEE"
+msgstr "必要料金"
+
+msgid "PARAM_LABEL_TO_ORDER"
+msgstr "注文方法"
+
+msgid "PARAM_LABEL_PAYMENT_METHOD"
+msgstr "支払方法"
+
+msgid "PARAM_LABEL_PAYMENT_METHOD2"
+msgstr "支払い方法"
+
+msgid "PARAM_LABEL_CUSTOMER_PAYMENT_METHOD"
+msgstr "お支払い方法"
+
+msgid "PARAM_LABEL_CUSTOMER_PAYMENT_METHOD_NAME"
+msgstr "お支払方法名称"
+
+msgid "PARAM_LABEL_CHARGE"
+msgstr "手数料"
+
+msgid "PARAM_LABEL_DELIV_FEE"
+msgstr "送料"
+
+msgid "PARAM_LABEL_PRODUCT_DELIV_FEE"
+msgstr "商品送料"
+
+msgid "PARAM_LABEL_DISCOUNT"
+msgstr "値引き"
+
+msgid "PARAM_LABEL_USE_POINT"
+msgstr "利用ポイント"
+
+msgid "PARAM_LABEL_POINT"
+msgstr "ポイント"
+
+msgid "PARAM_LABEL_USING_POINT"
+msgstr "ポイントを使用する"
+
+msgid "PARAM_LABEL_DELIV"
+msgstr "配送業者"
+
+msgid "PARAM_LABEL_RULE_MAX"
+msgstr "利用条件(～円以上)"
+
+msgid "PARAM_LABEL_UPPER_RULE"
+msgstr "利用条件(～円以下)"
+
+msgid "PARAM_LABEL_FIX"
+msgstr "固定"
+
+msgid "PARAM_LABEL_LOGO_IMG"
+msgstr "ロゴ画像"
+
+msgid "PARAM_LABEL_IMG_KEY"
+msgstr "画像キー"
+
+msgid "PARAM_LABEL_PAYMENT_ID"
+msgstr "支払いID"
+
+msgid "PARAM_LABEL_CHARGE_FLG"
+msgstr "課金フラグ"
+
+msgid "PARAM_LABEL_CUSTOMER_DELIV_ID"
+msgstr "お届け先ID"
+
+msgid "PARAM_LABEL_CUSTOMER_DELIV_ADDRESSEE"
+msgstr "お届け先"
+
+msgid "PARAM_LABEL_CUSTOMER_DELIV_TIME"
+msgstr "お届け時間"
+
+msgid "PARAM_LABEL_CUSTOMER_DELIV_DATE"
+msgstr "お届け日"
+
+msgid "PARAM_LABEL_CUSTOMER_DELIV_TIME_ID"
+msgstr "お届け時間ID"
+
+msgid "PARAM_LABEL_CUSTOMER_DELIV_DATE_YEAR"
+msgstr "お届け日(年)"
+
+msgid "PARAM_LABEL_CUSTOMER_DELIV_DATE_MONTH"
+msgstr "お届け日(月)"
+
+msgid "PARAM_LABEL_CUSTOMER_DELIV_DATE_DAY"
+msgstr "お届け日(日)"
+
+msgid "PARAM_LABEL_CUSTOMER_DELIV_CHECK"
+msgstr "お届け先チェック"
+
+msgid "PARAM_LABEL_OTHER_DELIV_ID"
+msgstr "その他のお届け先ID"
+
+msgid "PARAM_LABEL_OTHER_DELIV"
+msgstr "別のお届け先"
+
+msgid "PARAM_LABEL_SHIPPING_PRODUCT_QUANTITY"
+msgstr "配送商品数量"
+
+msgid "PARAM_LABEL_SHIPPING_ID"
+msgstr "配送ID"
+
+msgid "PARAM_LABEL_SHIPPING_QUANTITY"
+msgstr "配送数"
+
+msgid "PARAM_LABEL_ORDER_STATUS"
+msgstr "対応状況"
+
+msgid "PARAM_LABEL_PRODUCT_TYPE_ID"
+msgstr "商品種別ID"
+
+msgid "PARAM_LABEL_PRICE"
+msgstr "単価"
+
+msgid "PARAM_LABEL_QUANTITY"
+msgstr "数量"
+
+msgid "PARAM_LABEL_SELL_PRICE"
+msgstr "販売価格"
+
+msgid "PARAM_LABEL_CART_NO"
+msgstr "カート番号"
+
+msgid "PARAM_LABEL_CART_NUMBER"
+msgstr "カートナンバー"
+
+msgid "PARAM_LABEL_LINE_NUM"
+msgstr "行数"
+
+msgid "PARAM_LABEL_MAIN_LIST_IMAGE"
+msgstr "メイン一覧画像"
+
+msgid "PARAM_LABEL_LIST_MAIN_IMAGE"
+msgstr "一覧-メイン画像"
+
+msgid "PARAM_LABEL_MAIN_IMAGE"
+msgstr "メイン画像"
+
+msgid "PARAM_LABEL_DETAIL_MAIN_IMAGE"
+msgstr "詳細-メイン画像"
+
+msgid "PARAM_LABEL_PRODUCT_NAME"
+msgstr "商品名"
+
+msgid "PARAM_LABEL_PRODUCT_CLASS_ID_ALP"
+msgstr "product_class_id"
+
+msgid "PARAM_LABEL_PRODUCT_CLASS_ID"
+msgstr "商品規格ID"
+
+msgid "PARAM_LABEL_CLASS"
+msgstr "規格"
+
+msgid "PARAM_LABEL_CLASS1"
+msgstr "規格1"
+
+msgid "PARAM_LABEL_CLASS2"
+msgstr "規格2"
+
+msgid "PARAM_LABEL_CLASS_ID"
+msgstr "規格ID"
+
+msgid "PARAM_LABEL_CLASS_ID1"
+msgstr "規格ID1"
+
+msgid "PARAM_LABEL_CLASS_ID2"
+msgstr "規格ID2"
+
+msgid "PARAM_LABEL_CLASS_NAME"
+msgstr "規格名"
+
+msgid "PARAM_LABEL_CLASS_NAME1"
+msgstr "規格名1"
+
+msgid "PARAM_LABEL_CLASS_NAME2"
+msgstr "規格名2"
+
+msgid "PARAM_LABEL_CLASSCATEGORY1"
+msgstr "規格分類1"
+
+msgid "PARAM_LABEL_CLASSCATEGORY2"
+msgstr "規格分類2"
+
+msgid "PARAM_LABEL_CLASSCATEGORY_NAME"
+msgstr "規格分類名"
+
+msgid "PARAM_LABEL_CLASSCATEGORY_ID"
+msgstr "規格分類ID"
+
+msgid "PARAM_LABEL_CLASS_TOTAL"
+msgstr "商品規格数"
+
+msgid "PARAM_LABEL_ADD_PRODUCT_CLASS_ID"
+msgstr "追加商品規格ID"
+
+msgid "PARAM_LABEL_EDIT_PRODUCT_CLASS_ID"
+msgstr "修正商品規格ID"
+
+msgid "PARAM_LABEL_STOCK"
+msgstr "在庫数"
+
+msgid "PARAM_LABEL_PRODUCT_TYPE"
+msgstr "商品種別"
+
+msgid "PARAM_LABEL_DEL_FLG"
+msgstr "削除フラグ"
+
+msgid "PARAM_LABEL_DOWN_FILENAME"
+msgstr "ダウンロード販売用ファイル名"
+
+msgid "PARAM_LABEL_DOWN_FILE"
+msgstr "ダウンロード販売用ファイル"
+
+msgid "PARAM_LABEL_DOWN_PRODUCT_FILENAME"
+msgstr "ダウンロード商品ファイル名"
+
+msgid "PARAM_LABEL_CHECK_BOX"
+msgstr "チェックボックス"
+
+msgid "PARAM_LABEL_FILE_UPLOAD_KEY"
+msgstr "ファイルアップロード用キー"
+
+msgid "PARAM_LABEL_PRODUCT_CODE"
+msgstr "商品コード"
+
+msgid "PARAM_LABEL_PRODUCT_ID"
+msgstr "商品ID"
+
+msgid "PARAM_LABEL_PRODUCT_CATEGORY"
+msgstr "商品カテゴリ"
+
+msgid "PARAM_LABEL_PRODUCT_PUBLIC_STATUS"
+msgstr "公開・非公開"
+
+msgid "PARAM_LABEL_PRODUCT_STATUS"
+msgstr "商品ステータス"
+
+msgid "PARAM_LABEL_AGE1"
+msgstr "年齢1"
+
+msgid "PARAM_LABEL_AGE2"
+msgstr "年齢2"
+
+msgid "PARAM_LABEL_TOTAL_PRICE1"
+msgstr "購入金額1"
+
+msgid "PARAM_LABEL_TOTAL_PRICE2"
+msgstr "購入金額2"
+
+msgid "PARAM_LABEL_START_YEAR"
+msgstr "開始年"
+
+msgid "PARAM_LABEL_START_MONTH"
+msgstr "開始月"
+
+msgid "PARAM_LABEL_START_DAY"
+msgstr "開始日"
+
+msgid "PARAM_LABEL_END_YEAR"
+msgstr "終了年"
+
+msgid "PARAM_LABEL_END_MONTH"
+msgstr "終了月"
+
+msgid "PARAM_LABEL_END_DAY"
+msgstr "終了日"
+
+msgid "PARAM_LABEL_PAGENO"
+msgstr "ページ送り番号"
+
+msgid "PARAM_LABEL_FOOTER"
+msgstr "フッター"
+
+msgid "PARAM_LABEL_HEADER"
+msgstr "ヘッダー"
+
+msgid "PARAM_LABEL_TEMPLATE"
+msgstr "テンプレート"
+
+msgid "PARAM_LABEL_TEMPLATE_NAME"
+msgstr "テンプレート名"
+
+msgid "PARAM_LABEL_TEMPLATE_CODE"
+msgstr "テンプレートコード"
+
+msgid "PARAM_LABEL_TPL_CODE"
+msgstr "template_code"
+
+msgid "PARAM_LABEL_TEMPLATE_FILE"
+msgstr "テンプレートファイル"
+
+msgid "PARAM_LABEL_MAIL_SUBJECT"
+msgstr "メールタイトル"
+
+msgid "PARAM_LABEL_PARENT_CATEGORY_ID"
+msgstr "親カテゴリID"
+
+msgid "PARAM_LABEL_CATEGORY_NAME"
+msgstr "カテゴリ名"
+
+msgid "PARAM_LABEL_CURRENT"
+msgstr "現在ページ"
+
+msgid "PARAM_LABEL_NEW_ID"
+msgstr "新着ID"
+
+msgid "PARAM_LABEL_ADMIN_LOGIN"
+msgstr "管理者ログイン"
+
+msgid "PARAM_LABEL_FAVORITE_PRODUCT_ID"
+msgstr "お気に入り商品ID"
+
+msgid "PARAM_LABEL_CARTKEY"
+msgstr "カートキー"
+
+msgid "PARAM_LABEL_MONTHLY"
+msgstr "月度"
+
+msgid "PARAM_LABEL_PERIOD"
+msgstr "期間"
+
+msgid "PARAM_LABEL_THE_NAME"
+msgstr "名称"
+
+msgid "PARAM_LABEL_PAGE_ID"
+msgstr "ページID"
+
+msgid "PARAM_LABEL_DEVICE_TYPE_ID"
+msgstr "端末種別ID"
+
+msgid "PARAM_LABEL_DEVICE_TYPE"
+msgstr "端末種別"
+
+msgid "PARAM_LABEL_HEADER_DATA"
+msgstr "ヘッダデータ"
+
+msgid "PARAM_LABEL_FOOTER_DATA"
+msgstr "フッタデータ"
+
+msgid "PARAM_LABEL_CSS_FILE_NAME"
+msgstr "CSSファイル名"
+
+msgid "PARAM_LABEL_CSS_OLD_FILE_NAME"
+msgstr "旧CSSファイル名"
+
+msgid "PARAM_LABEL_"
+msgstr "CSSデータ"
+
+msgid "PARAM_LABEL_BLOC_ID"
+msgstr "ブロックID"
+
+msgid "PARAM_LABEL_BLOC_NAME"
+msgstr "ブロック名"
+
+msgid "PARAM_LABEL_BLOC_CNT"
+msgstr "ブロック数"
+
+msgid "PARAM_LABEL_BLOC_DATA"
+msgstr "ブロックデータ"
+
+msgid "PARAM_LABEL_TARGET_ID"
+msgstr "ターゲットID"
+
+msgid "PARAM_LABEL_TOP"
+msgstr "TOP座標"
+
+msgid "PARAM_LABEL_FULL_PAGE"
+msgstr "全ページ"
+
+msgid "PARAM_LABEL_FILE_NAME"
+msgstr "ファイル名"
+
+msgid "PARAM_LABEL_DELIVERY_ID"
+msgstr "配送業者ID"
+
+msgid "PARAM_LABEL_DELIVERY_NAME"
+msgstr "配送業者名"
+
+msgid "PARAM_LABEL_DESCRIPTION"
+msgstr "説明"
+
+msgid "PARAM_LABEL_SLIP_CONFIRM_URL"
+msgstr "伝票No.確認URL"
+
+msgid "PARAM_LABEL_HANDLE_PRODUCT_TYPE"
+msgstr "取扱商品種別"
+
+msgid "PARAM_LABEL_HANDLE_PAYMENT_METHOD"
+msgstr "取扱支払方法"
+
+msgid "PARAM_LABEL_KIYAKU_TITLE"
+msgstr "規約タイトル"
+
+msgid "PARAM_LABEL_KIYAKU_TEXT"
+msgstr "規約内容"
+
+msgid "PARAM_LABEL_KIYAKU_ID"
+msgstr "規約ID"
+
+msgid "PARAM_LABEL_POINT_RATE"
+msgstr "ポイント付与率"
+
+msgid "PARAM_LABEL_WELCOME_POINT"
+msgstr "会員登録時付与ポイント"
+
+msgid "PARAM_LABEL_DOWN_PRODUCT_REAL_FILENAME"
+msgstr "ダウンロード商品実ファイル名"
+
+msgid "PARAM_LABEL_STOCK_UNLIMITED"
+msgstr "在庫無制限"
+
+msgid "PARAM_LABEL_TEMP_DOWN_FILE"
+msgstr "temp_down_file"
+
+msgid "PARAM_LABEL_SAVE_DOWN_FILE"
+msgstr "save_down_file"
+
+msgid "PARAM_LABEL_DELIV_DATE"
+msgstr "発送日目安"
+
+msgid "PARAM_LABEL_MAKER"
+msgstr "メーカー"
+
+msgid "PARAM_LABEL_MAKER_ID"
+msgstr "メーカーID"
+
+msgid "PARAM_LABEL_MAKER_NAME"
+msgstr "メーカー名"
+
+msgid "PARAM_LABEL_MAKER_URL"
+msgstr "メーカーURL"
+
+msgid "PARAM_LABEL_SALE_LIMIT"
+msgstr "販売制限数"
+
+msgid "PARAM_LABEL_SEARCH_WORD"
+msgstr "検索ワード"
+
+msgid "PARAM_LABEL_SHOP_NOTE"
+msgstr "備考欄(SHOP専用)"
+
+msgid "PARAM_LABEL_MAIN_LIST_COMMENT"
+msgstr "一覧-メインコメント"
+
+msgid "PARAM_LABEL_MAIN_COMMENT"
+msgstr "詳細-メインコメント"
+
+msgid "PARAM_LABEL_SAVE_MAIN_LIST_IMAGE"
+msgstr "save_main_list_image"
+
+msgid "PARAM_LABEL_SAVE_MAIN_IMAGE"
+msgstr "save_main_image"
+
+msgid "PARAM_LABEL_SAVE_MAIN_LARGE_IMAGE"
+msgstr "save_main_large_image"
+
+msgid "PARAM_LABEL_TEMP_MAIN_LIST_IMAGE"
+msgstr "temp_main_list_image"
+
+msgid "PARAM_LABEL_TEMP_MAIN_IMAGE"
+msgstr "temp_main_image"
+
+msgid "PARAM_LABEL_TEMP_MAIN_LARGE_IMAGE"
+msgstr "temp_main_large_image"
+
+msgid "PARAM_LABEL_HAS_PRODUCT_CLASS"
+msgstr "has_product_class"
+
+msgid "PARAM_LABEL_IMAGE_KEY"
+msgstr "image_key"
+
+msgid "PARAM_LABEL_DOWN_KEY"
+msgstr "down_key"
+
+msgid "PARAM_LABEL_SELECT_RECOMMEND_NO"
+msgstr "select_recommend_no"
+
+msgid "PARAM_LABEL_MAIN_LARGE_IMAGE"
+msgstr "詳細-メイン拡大画像"
+
+msgid "PARAM_LABEL_DEVICE_ID"
+msgstr "デバイスID"
+
+msgid "PARAM_LABEL_META_AUTHOR"
+msgstr "メタタグ:Author"
+
+msgid "PARAM_LABEL_META_DESCRIPTION"
+msgstr "メタタグ:Description"
+
+msgid "PARAM_LABEL_META_KEYWORDS"
+msgstr "メタタグ:Keywords"
+
+msgid "PARAM_LABEL_PAYMENT_LIMIT"
+msgstr "支払期限"
+
+msgid "PARAM_LABEL_DELIVERY_TIME"
+msgstr "引き渡し時期"
+
+msgid "PARAM_LABEL_ABOUT_RETURNED_PRODUCTS"
+msgstr "返品・交換について"
+
+msgid "PARAM_LABEL_STARTROWNUM"
+msgstr "開始行"
+
+msgid "PARAM_LABEL_NEWS_ID"
+msgstr "news_id"
+
+msgid "PARAM_LABEL_DATE"
+msgstr "日付"
+
+msgid "PARAM_LABEL_DATE_YEAR"
+msgstr "日付(年)"
+
+msgid "PARAM_LABEL_DATE_MONTH"
+msgstr "日付(月)"
+
+msgid "PARAM_LABEL_DATE_DAY"
+msgstr "日付(日)"
+
+msgid "PARAM_LABEL_BODY_TEXT"
+msgstr "本文"
+
+msgid "PARAM_LABEL_OPEN_OTHER_WINDOW"
+msgstr "別ウィンドウで開く"
+
+msgid "PARAM_LABEL_MOVE_RANK"
+msgstr "ランク移動"
+
+msgid "PARAM_LABEL_EDIT_TYPE"
+msgstr "編集種別"
+
+msgid "PARAM_LABEL_OUTPUT_SETTINGS_LIST"
+msgstr "出力設定リスト"
+
+msgid "PARAM_LABEL_SQL_ID"
+msgstr "SQL ID"
+
+msgid "PARAM_LABEL_CSV_OUTPUT_ID"
+msgstr "CSV出力対象SQL ID"
+
+msgid "PARAM_LABEL_SELECT_TABLE"
+msgstr "選択テーブル"
+
+msgid "PARAM_LABEL_SQL"
+msgstr "SQL文"
+
+msgid "PARAM_LABEL_SELECT_FILE"
+msgstr "選択ファイル"
+
+msgid "PARAM_LABEL_CREATE_FILE"
+msgstr "作成ファイル名"
+
+msgid "PARAM_LABEL_FILE"
+msgstr "ファイル"
+
+msgid "PARAM_LABEL_ROOT_DIR"
+msgstr "ルートディレクトリ"
+
+msgid "PARAM_LABEL_NOW_DIR"
+msgstr "現在の階層ディレクトリ"
+
+msgid "PARAM_LABEL_NOW_FILE"
+msgstr "現在の階層ファイル"
+
+msgid "PARAM_LABEL_TREE_STATUS"
+msgstr "ツリー選択状態"
+
+msgid "PARAM_LABEL_TREE_SELECT_FILE"
+msgstr "'ツリー選択ディレクトリ'"
+
+msgid "PARAM_LABEL_RANK"
+msgstr "ランク"
+
+msgid "PARAM_LABEL_COMMENT"
+msgstr "コメント"
+
+msgid "PARAM_LABEL_EDIT_CUSTOMER_ID"
+msgstr "編集対象会員ID"
+
+msgid "PARAM_LABEL_SEARCH_DATA"
+msgstr "検索用データ"
+
+msgid "PARAM_LABEL_HEADER_CHK"
+msgstr "ヘッダチェック"
+
+msgid "PARAM_LABEL_FOOTER_CHK"
+msgstr "フッタチェック"
+
+msgid "PARAM_LABEL_EDIT_FLG"
+msgstr "修正フラグ"
+
+msgid "PARAM_LABEL_TPL_DATA"
+msgstr "TPLデータ"
+
+msgid "PARAM_LABEL_ID"
+msgstr "ID"
+
+msgid "PARAM_LABEL_PASSWORD_ALP"
+msgstr "PASSWORD"
+
+msgid "PARAM_LABEL_DELIVERY_MAIL_FORMAT"
+msgstr "配信形式"
+
+msgid "PARAM_LABEL_DELIVERY_MAIL_TYPE"
+msgstr "配信メールアドレス種別"
+
+msgid "PARAM_LABEL_MAIL_METHOD"
+msgstr "メール形式"
+
+msgid "PARAM_LABEL_SUBJECT"
+msgstr "Subject"
+
+msgid "PARAM_LABEL_TEMPLATE_ID"
+msgstr "テンプレートID"
+
+msgid "PARAM_LABEL_ORDER_NUMBER"
+msgstr "注文番号"
+
+msgid "PARAM_LABEL_ORDER_NUMBER1"
+msgstr "注文番号1"
+
+msgid "PARAM_LABEL_ORDER_NUMBER2"
+msgstr "注文番号2"
+
+msgid "PARAM_LABEL_ORDER_ID"
+msgstr "受注ID"
+
+msgid "PARAM_LABEL_ORDERID"
+msgstr "オーダーID"
+
+msgid "PARAM_LABEL_MEMBER_NAME1"
+msgstr "会員名1"
+
+msgid "PARAM_LABEL_MEMBER_NAME2"
+msgstr "会員名2"
+
+msgid "PARAM_LABEL_MEMBER_KANA1"
+msgstr "会員名カナ1"
+
+msgid "PARAM_LABEL_MEMBER_KANA2"
+msgstr "会員名カナ2"
+
+msgid "PARAM_LABEL_NOTE"
+msgstr "メモ"
+
+msgid "PARAM_LABEL_DELETE_NO"
+msgstr "削除用項番"
+
+msgid "PARAM_LABEL_SUBTOTAL"
+msgstr "小計"
+
+msgid "PARAM_LABEL_TOTAL"
+msgstr "合計"
+
+msgid "PARAM_LABEL_PAYMENT_TOTAL"
+msgstr "支払い合計"
+
+msgid "PARAM_LABEL_TAX_TOTAL"
+msgstr "消費税合計"
+
+msgid "PARAM_LABEL_BEFORE_POINT"
+msgstr "受注前ポイント"
+
+msgid "PARAM_LABEL_ORDER_DATE"
+msgstr "受注日"
+
+msgid "PARAM_LABEL_SHIPPING_DATE"
+msgstr "発送日"
+
+msgid "PARAM_LABEL_REMARKS"
+msgstr "備考"
+
+msgid "PARAM_LABEL_PAYMENT_DATE"
+msgstr "入金日"
+
+msgid "PARAM_LABEL_PRODUCT_NO"
+msgstr "商品項番"
+
+msgid "PARAM_LABEL_ANCHOR_KEY_ALP"
+msgstr "anchor_key"
+
+msgid "PARAM_LABEL_ANCHOR_KEY"
+msgstr "アンカーキー"
+
+msgid "PARAM_LABEL_HOW_TO_DOWNLOAD"
+msgstr "ダウンロード方法"
+
+msgid "PARAM_LABEL_OUTPUT_DATE"
+msgstr "発行日"
+
+msgid "PARAM_LABEL_ORDER_PDF_TYPE"
+msgstr "帳票の種類"
+
+msgid "PARAM_LABEL_ORDER_PDF_TITLE"
+msgstr "帳票タイトル"
+
+msgid "PARAM_LABEL_ORDER_PDF_MSG1"
+msgstr "帳票メッセージ1行目"
+
+msgid "PARAM_LABEL_ORDER_PDF_MSG2"
+msgstr "帳票メッセージ2行目"
+
+msgid "PARAM_LABEL_ORDER_PDF_MSG3"
+msgstr "帳票メッセージ3行目"
+
+msgid "PARAM_LABEL_ORDER_PDF_NOTE1"
+msgstr "備考1行目"
+
+msgid "PARAM_LABEL_ORDER_PDF_NOTE2"
+msgstr "備考2行目"
+
+msgid "PARAM_LABEL_ORDER_PDF_NOTE3"
+msgstr "備考3行目"
+
+msgid "PARAM_LABEL_DISP_POINT"
+msgstr "ポイント表記"
+
+msgid "PARAM_LABEL_BEFORE_ORDER_STATUS"
+msgstr "変更前対応状況"
+
+msgid "PARAM_LABEL_AFTER_ORDER_STATUS"
+msgstr "変更後対応状況"
+
+msgid "PARAM_LABEL_MOVE_ORDER_NUMBER"
+msgstr "移動注文番号"
+
+msgid "PARAM_LABEL_MODE"
+msgstr "モード"
+
+msgid "PARAM_LABEL_MODE_ALP"
+msgstr "mode"
+
+msgid "PARAM_LABEL_PLUGIN_ID"
+msgstr "plugin_id"
+
+msgid "PARAM_LABEL_PRIORITY"
+msgstr "優先度"
+
+msgid "PARAM_LABEL_TYPE"
+msgstr "種別"
+
+msgid "PARAM_LABEL_REVIEWER_NAME"
+msgstr "投稿者名"
+
+msgid "PARAM_LABEL_REVIEWER_URL"
+msgstr "投稿者URL"
+
+msgid "PARAM_LABEL_RECOMMEND_LEVEL"
+msgstr "おすすめレベル"
+
+msgid "PARAM_LABEL_REVIEW_ID"
+msgstr "レビューID"
+
+msgid "PARAM_LABEL_POST_DATE"
+msgstr "投稿日"
+
+msgid "PARAM_LABEL_DISP_REVIEWE"
+msgstr "レビュー表示"
+
+msgid "PARAM_LABEL_POST_YEAR"
+msgstr "投稿年"
+
+msgid "PARAM_LABEL_POST_MONTH"
+msgstr "投稿月"
+
+msgid "PARAM_LABEL_MAX_DISP_NUM"
+msgstr "最大表示件数"
+
+msgid "PARAM_LABEL_PAGE_NUM"
+msgstr "ページ番号件数"
+
+msgid "PARAM_LABEL_DIR_NAME"
+msgstr "ディレクトリ名"
+
+msgid "PARAM_LABEL_SSL_LIMIT"
+msgstr "SSL制限"
+
+msgid "PARAM_LABEL_IP_LIMIT"
+msgstr "IP制限"
+
+msgid "PARAM_LABEL_BACKUP_NAME"
+msgstr "バックアップ名"
+
+msgid "PARAM_LABEL_BACKUP_MEMO"
+msgstr "バックアップメモ"
+
+msgid "PARAM_LABEL_BACKUP_NAME_LIST"
+msgstr "バックアップ名(リスト)"
+
+msgid "PARAM_LABEL_TABLE_NAME"
+msgstr "テーブル名"
+
+msgid "PARAM_LABEL_COLUMN_NAME"
+msgstr "カラム名"
+
+msgid "PARAM_LABEL_INDEX"
+msgstr "インデックス"
+
+msgid "PARAM_LABEL_INDEX_CHANGE"
+msgstr "インデックス（変更後）"
+
+msgid "PARAM_LABEL_MEMBER_ID"
+msgstr "メンバーID"
+
+msgid "PARAM_LABEL_DEPARTMENT"
+msgstr "所属"
+
+msgid "PARAM_LABEL_OLD_LOGIN_ID"
+msgstr "変更前ログインID"
+
+msgid "PARAM_LABEL_AUTHORITY"
+msgstr "権限"
+
+msgid "PARAM_LABEL_WORK"
+msgstr "稼働/非稼働"
+
+msgid "PARAM_LABEL_PAGE"
+msgstr "ページ"
+
+msgid "PARAM_LABEL_PASSWORD_REMINDER"
+msgstr "パスワード確認用の質問"
+
+msgid "PARAM_LABEL_PASSWORD_REMINDER_ANSWER"
+msgstr "パスワード確認用の質問の答え"
+
+msgid "PARAM_LABEL_IMG_FILE_NAME"
+msgstr "画像ファイル名"
+
+msgid "PARAM_LABEL_IMG_WIDTH"
+msgstr "画像の幅"
+
+msgid "PARAM_LABEL_HEIGHT"
+msgstr "画像の高さ"
+
+msgid "PARAM_LABEL_DIVISION_ALP"
+msgstr "division"
+
+msgid "PARAM_LABEL_SEARCH_PAGENO_ALP"
+msgstr "pageno"
+
+msgid "PARAM_LABEL_ID_ALP"
+msgstr "id"
+
+msgid "PARAM_LABEL_CUSTOMER_ID_ALP"
+msgstr "customer_id"
+
+msgid "PARAM_LABEL_ORDER_ID_ALP"
+msgstr "order_id"
+
+msgid "PARAM_LABEL_PRODUCT_ID_ALP"
+msgstr "product_id"
+
+msgid "PARAM_LABEL_OPERATION"
+msgstr "Operation"
+
+msgid "PARAM_LABEL_SERVICE"
+msgstr "Service"
+
+msgid "PARAM_LABEL_STYLE"
+msgstr "Style"
+
+msgid "PARAM_LABEL_VALIDATE"
+msgstr "Validate"
+
+msgid "PARAM_LABEL_VERSION"
+msgstr "Version"
+
+msgid "PARAM_LABEL_PLUGIN_FILE"
+msgstr "プラグインファイル"
+
+msgid "PARAM_LABEL_START"
+msgstr "開始"
+
+msgid "PARAM_LABEL_END"
+msgstr "終了"
+
+msgid "PARAM_LABEL_DETAIL_SUBTITLE_COUNT"
+msgstr "詳細-サブタイトルT_FIELD"
+
+msgid "PARAM_LABEL_DETAIL_SUBCOMMENT_COUNT"
+msgstr "詳細-サブコメントT_FIELD"
+
+msgid "PARAM_LABEL_SAVE_SUB_IMAGE_CNT_ALP"
+msgstr "save_sub_imageT_FIELD"
+
+msgid "PARAM_LABEL_SAVE_SUB_LARGE_IMAGE_CNT_ALP"
+msgstr "save_sub_large_imageT_FIELD"
+
+msgid "PARAM_LABEL_TEMP_SUB_IMAGE_CNT_ALP"
+msgstr "temp_sub_imageT_FIELD"
+
+msgid "PARAM_LABEL_TEMP_SUB_LARGE_IMAGE_CNT_ALP"
+msgstr "temp_sub_large_imageT_FIELD"
+
+msgid "PARAM_LABEL_RECOMMEND_COMMENT_CNT"
+msgstr "関連商品コメントT_FIELD"
+
+msgid "PARAM_LABEL_RECOMMEND_ID_CNT"
+msgstr "関連商品IDT_FIELD"
+
+msgid "PARAM_LABEL_RECOMMEND_DELETE_CNT"
+msgstr "recommend_deleteT_FIELD"
+
+msgid "PARAM_LABEL_DETAIL_SUB_IMAGE_CNT"
+msgstr "詳細-サブ画像T_FIELD"
+
+msgid "PARAM_LABEL_DETAIL_SUB_LARGE_IMAGE_CNT"
+msgstr "詳細-サブ拡大画像T_FIELD"
 
 msgid "FORMAT_DATE_LONG"
 msgstr "Y年m月d日H時i分"

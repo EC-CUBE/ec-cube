@@ -117,8 +117,8 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam('編集種別', 'tpl_subno_csv', STEXT_LEN, 'a', array('ALNUM_CHECK', 'MAX_LENGTH_CHECK'), 'product');
-        $objFormParam->addParam('出力設定リスト', 'output_list', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK', 'EXIST_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_EDIT_TYPE'), 'tpl_subno_csv', STEXT_LEN, 'a', array('ALNUM_CHECK', 'MAX_LENGTH_CHECK'), 'product');
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_OUTPUT_SETTINGS_LIST'), 'output_list', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK', 'EXIST_CHECK'));
         //デフォルト値で上書き
         $objFormParam->setParam(array('tpl_subno_csv' => 'product'));
     }

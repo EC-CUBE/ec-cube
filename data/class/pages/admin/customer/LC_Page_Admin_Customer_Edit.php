@@ -211,7 +211,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         // 会員項目のパラメーター取得
         SC_Helper_Customer_Ex::sfCustomerEntryParam($objFormParam, true);
         // 検索結果一覧画面への戻り用パラメーター
-        $objFormParam->addParam('検索用データ', 'search_data', '', '', array(), '', false);
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_SEARCH_DATA'), 'search_data', '', '', array(), '', false);
         // 会員購入履歴ページング用
         $objFormParam->addParam('', 'search_pageno', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), '', false);
     }
@@ -225,7 +225,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
     function lfInitSearchParam(&$objFormParam) {
         SC_Helper_Customer_Ex::sfSetSearchParam($objFormParam);
         // 初回受け入れ時用
-        $objFormParam->addParam('編集対象会員ID', 'edit_customer_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_EDIT_CUSTOMER_ID'), 'edit_customer_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**

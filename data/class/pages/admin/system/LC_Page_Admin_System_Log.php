@@ -103,8 +103,8 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam('ファイル', 'log', null, '', array());
-        $objFormParam->addParam('行数', 'line_max', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), 50);
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FILE'), 'log', null, '', array());
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_LINE_NUM'), 'line_max', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), 50);
     }
 
     /**

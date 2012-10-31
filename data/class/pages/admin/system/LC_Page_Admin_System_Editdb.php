@@ -106,11 +106,11 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
      */
     function initForm(&$objFormParam, &$arrParams) {
 
-        $objFormParam->addParam('モード', 'mode', INT_LEN, 'n', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('テーブル名', 'table_name');
-        $objFormParam->addParam('カラム名', 'column_name');
-        $objFormParam->addParam('インデックス', 'indexflag');
-        $objFormParam->addParam('インデックス（変更後）', 'indexflag_new');
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_MODE'), 'mode', INT_LEN, 'n', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TABLE_NAME'), 'table_name');
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_COLUMN_NAME'), 'column_name');
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_INDEX'), 'indexflag');
+        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_INDEX_CHANGE'), 'indexflag_new');
         $objFormParam->setParam($arrParams);
 
     }
