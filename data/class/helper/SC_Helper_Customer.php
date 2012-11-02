@@ -348,18 +348,6 @@ class SC_Helper_Customer {
     }
 
     /**
-     * お届け先フォーム初期化
-     *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @access public
-     * @return void
-     */
-    function sfCustomerOtherDelivParam(&$objFormParam) {
-        SC_Helper_Customer_Ex::sfCustomerCommonParam($objFormParam);
-        $objFormParam->addParam('', 'other_deliv_id');
-    }
-
-    /**
      * 会員共通
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
@@ -414,11 +402,6 @@ class SC_Helper_Customer {
                 $objFormParam->addParam('メールアドレス', 'email', null, 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'NO_SPTAB' ,'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'));
             }
         }
-    }
-
-    function sfCustomerOtherDelivErrorCheck(&$objFormParam) {
-        $objErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck($objFormParam);
-        return $objErr->arrErr;
     }
 
     /**

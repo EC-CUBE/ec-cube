@@ -70,6 +70,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objCustomer = new SC_Customer_Ex();
         $objFormParam = new SC_FormParam_Ex();
+        $objAddress = new SC_Helper_Address_Ex();
 
         // 複数配送先指定が無効な場合はエラー
         if (USE_MULTIPLE_SHIPPING === false) {
@@ -80,7 +81,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
         $this->tpl_uniqid = $objSiteSess->getUniqId();
 
         $this->addrs = $this->getDelivAddrs($objCustomer, $objPurchase,
-                                            $this->tpl_uniqid);
+                                            $objAddress, $this->tpl_uniqid);
         $this->tpl_addrmax = count($this->addrs);
         $this->lfInitParam($objFormParam);
 
@@ -95,7 +96,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
                     $_SESSION['multiple_temp'] = $objFormParam->getHashArray();
                     $this->saveMultipleShippings($this->tpl_uniqid, $objFormParam,
                                                  $objCustomer, $objPurchase,
-                                                 $objCartSess);
+                                                 $objCartSess, $objAddress);
                     $objSiteSess->setRegistFlag();
 
 
@@ -186,14 +187,32 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      * @param integer $uniqid 受注一時テーブルのユニークID
      * @return array 配送住所のプルダウン用連想配列
      */
-    function getDelivAddrs(&$objCustomer, &$objPurchase, $uniqid) {
+    function getDelivAddrs(&$objCustomer, &$objPurchase, &$objAddress, $uniqid) {
         $masterData = new SC_DB_MasterData_Ex();
         $arrPref = $masterData->getMasterData('mtb_pref');
 
         $arrResults = array('' => '選択してください');
         // 会員ログイン時
         if ($objCustomer->isLoginSuccess(true)) {
-            $arrAddrs = $objCustomer->getCustomerAddress($objCustomer->getValue('customer_id'));
+            $addr = array(
+                array(
+                    'other_deliv_id'    => NULL,
+                    'customer_id'       => $objCustomer->getValue('customer_id'),
+                    'name01'            => $objCustomer->getValue('name01'),
+                    'name02'            => $objCustomer->getValue('name02'),
+                    'kana01'            => $objCustomer->getValue('kana01'),
+                    'kana02'            => $objCustomer->getValue('kana02'),
+                    'zip01'             => $objCustomer->getValue('zip01'),
+                    'zip02'             => $objCustomer->getValue('zip02'),
+                    'pref'              => $objCustomer->getValue('pref'),
+                    'addr01'            => $objCustomer->getValue('addr01'),
+                    'addr02'            => $objCustomer->getValue('addr02'),
+                    'tel01'             => $objCustomer->getValue('tel01'),
+                    'tel02'             => $objCustomer->getValue('tel02'),
+                    'tel03'             => $objCustomer->getValue('tel03'),
+                )
+            );
+            $arrAddrs = array_merge($addr, $objAddress->getList($objCustomer->getValue('customer_id')));
             foreach ($arrAddrs as $val) {
                 $other_deliv_id = SC_Utils_Ex::isBlank($val['other_deliv_id']) ? 0 : $val['other_deliv_id'];
                 $arrResults[$other_deliv_id] = $val['name01'] . $val['name02']
@@ -279,7 +298,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      * @param SC_CartSession $objCartSess SC_CartSession インスタンス
      * @return void
      */
-    function saveMultipleShippings($uniqid, &$objFormParam, &$objCustomer, &$objPurchase, &$objCartSess) {
+    function saveMultipleShippings($uniqid, &$objFormParam, &$objCustomer, &$objPurchase, &$objCartSess, &$objAddress) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $arrParams = $objFormParam->getSwapArray();
@@ -289,10 +308,8 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
 
             if ($objCustomer->isLoginSuccess(true)) {
                 if ($other_deliv_id != 0) {
-                    $otherDeliv = $objQuery->select('*', 'dtb_other_deliv',
-                                                    'other_deliv_id = ?',
-                                                    array($other_deliv_id));
-                    foreach ($otherDeliv[0] as $key => $val) {
+                    $otherDeliv = $objAddress->getAddress($objCustomer->getValue('customer_id'), $other_deliv_id);
+                    foreach ($otherDeliv as $key => $val) {
                         $arrValues[$other_deliv_id]['shipping_' . $key] = $val;
                     }
                 } else {
