@@ -85,9 +85,9 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
         switch ($this->getMode()) {
             // 登録
             case 'complete':
-                $this->arrErr = $this->lfCheckError($objFormParam);
+                $this->arrErr = $objFormParam->checkError();
                 // エラー無し
-                if (!$this->arrErr) {
+                if (!SC_Utils_Ex::isBlank($this->arrErr)) {
                     // レビュー情報の更新
                     $this->lfRegistReviewData($this->arrForm['review_id'], $objFormParam);
                     // レビュー情報のDB取得
@@ -133,19 +133,6 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
         $objFormParam->addParam('おすすめレベル', 'recommend_level', INT_LEN, 'n', array('SELECT_CHECK'));
         $objFormParam->addParam('タイトル', 'title', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('コメント', 'comment', LTEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-    }
-
-    /**
-     * フォーム入力パラメーターエラーチェック
-     *
-     * @param array $objFormParam フォームパラメータークラス
-     * @return array エラー配列
-     */
-    function lfCheckError(&$objFormParam) {
-        $arrErr = $objFormParam->checkError();
-        if (!SC_Utils_Ex::isBlank($arrErr)) {
-            return $arrErr;
-        }
     }
 
     /**
