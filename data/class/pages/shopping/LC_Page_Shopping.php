@@ -127,7 +127,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
 
                     // モバイルサイトで携帯アドレスの登録が無い場合、携帯アドレス登録ページへ遷移
                     if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
-                        if ($this->hasEmailMobile($objCustomer) == false) {
+                        if (!$objCustomer->hasValue('email_mobile')) {
 
                             SC_Response_Ex::sendRedirectFromUrlPath('entry/email_mobile.php');
                             SC_Response_Ex::actionExit();
@@ -484,22 +484,6 @@ class LC_Page_Shopping extends LC_Page_Ex {
         }
         $objFormParam->setValue('order_email02', $arrOrderTemp['order_email']);
         $objFormParam->setDBDate($arrOrderTemp['order_birth']);
-    }
-
-    /**
-     * ログインした会員の携帯メールアドレス登録があるかどうか
-     *
-     * ログインした会員の携帯メールアドレスの存在をチェックする
-     *
-     * @param SC_Customer $objCustomer SC_Customer インスタンス
-     * @return boolean 会員の携帯メールアドレス登録がある場合 true
-     */
-    function hasEmailMobile(&$objCustomer) {
-        $objMobile = new SC_Helper_Mobile_Ex();
-        if ($objCustomer->hasValue('email_mobile')) {
-            return true;
-        }
-        return false;
     }
 
     /**
