@@ -313,4 +313,41 @@ __EOS__;
         $arrOrderSummary =  $objQuery->getRow('SUM( payment_total) as buy_total, COUNT(order_id) as buy_times,MAX( create_date) as last_buy_date, MIN(create_date) as first_buy_date','dtb_order','customer_id = ? AND del_flg = 0 AND status <> ?',array($customer_id,ORDER_CANCEL));
         $objQuery->update('dtb_customer',$arrOrderSummary,'customer_id = ?',array($customer_id));
     }
+
+    /**
+     * ログインを実行する.
+     *
+     * ログインを実行し, 成功した場合はユーザー情報をセッションに格納し,
+     * true を返す.
+     * モバイル端末の場合は, 携帯端末IDを保存する.
+     * ログインに失敗した場合は, false を返す.
+     *
+     * @param string $login_email ログインメールアドレス
+     * @param string $login_pass ログインパスワード
+     * @return boolean ログインに成功した場合 true; 失敗した場合 false
+     */
+    function doLogin($login_email, $login_pass) {
+        switch (SC_Display_Ex::detectDevice()) {
+            case DEVICE_TYPE_MOBILE:
+                if (!$this->is->getCustomerDataFromMobilePhoneIdPass($login_pass) &&
+                    !$this->getCustomerDataFromEmailPass($login_pass, $login_email, true)
+                ) {
+                    return false;
+                } else {
+                    $this->updateMobilePhoneId();
+                    return true;
+                }
+                break;
+
+            case DEVICE_TYPE_SMARTPHONE:
+            case DEVICE_TYPE_PC:
+            default:
+                if (!$this->getCustomerDataFromEmailPass($login_pass, $login_email)) {
+                    return false;
+                } else {
+                    return true;
+                }
+                break;
+        }
+    }
 }
