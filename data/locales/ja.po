@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2012-10-31 19:27+0900\n"
+"PO-Revision-Date: 2012-11-03 16:32+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1777,3 +1777,420 @@ msgstr "Y年m月d日H時i分"
 
 msgid "FORMAT_NAME_FULL_SIR"
 msgstr "T_LASTNAME T_FIRSTNAME 様"
+
+msgid "LC_Page_Abouts_001"
+msgstr "当サイトについて"
+
+msgid "LC_Page_Cart_001"
+msgstr "現在のカゴの中"
+
+msgid "LC_Page_Cart_002"
+msgstr ""
+"商品購入中にカート内容が変更されましたので、お手数ですが購入手続きをやり直し"
+"て下さい。"
+
+msgid "LC_Page_Contact_001"
+msgstr "お問い合わせ"
+
+msgid "LC_Page_Contact_002"
+msgstr "お問い合わせ(入力ページ)"
+
+msgid "LC_Page_Contact_003"
+msgstr "お問い合わせ(確認ページ)"
+
+msgid "LC_Page_Contact_004"
+msgstr "T_FIELD 様)"
+
+msgid "LC_Page_Contact_Complete_001"
+msgstr "お問い合わせ(完了ページ)"
+
+msgid "LC_Page_Entry_001"
+msgstr "※該当する住所が見つかりませんでした。<br />"
+
+msgid "LC_Page_Entry_002"
+msgstr "会員登録(確認ページ)"
+
+msgid "LC_Page_Entry_003"
+msgstr "会員登録のご確認"
+
+msgid "LC_Page_Entry_004"
+msgstr "会員登録のご完了"
+
+msgid "LC_Page_Entry_005"
+msgstr "※ 入力形式が不正です。<br />"
+
+msgid "LC_Page_Entry_006"
+msgstr "※ 入力形式が不正です。<br />"
+
+msgid "LC_Page_Entry_007"
+msgstr "T_FIELD01 T_FIELD02 様"
+
+msgid "LC_Page_InputZip_001"
+msgstr "住所を検索しています。"
+
+msgid "LC_Page_InputZip_002"
+msgstr "該当する住所が見つかりませんでした。"
+
+msgid "LC_Page_InputZip_003"
+msgstr "※ 入力形式が不正です。<br />"
+
+msgid "LC_Page_InputZip_004"
+msgstr "※ 入力形式が不正です。<br />"
+
+msgid "LC_Page_Entry_EmailMobile_001"
+msgstr "携帯メール登録完了"
+
+msgid "LC_Page_Entry_Kiyaku_001"
+msgstr "ご利用規約"
+
+msgid "LC_Page_Error_001"
+msgstr "エラー"
+
+msgid "LC_Page_Error_002"
+msgstr "ご指定のページはございません。"
+
+msgid "LC_Page_Error_003"
+msgstr "不正なページ移動です。"
+
+msgid "LC_Page_Error_004"
+msgstr "カートに商品ががありません。"
+
+msgid "LC_Page_Error_005"
+msgstr "購入処理中は、カートに商品を追加することはできません。"
+
+msgid "LC_Page_Error_006"
+msgstr ""
+"この手続きは無効となりました。以下の要因が考えられます。<br />・セッション情"
+"報の有効期限が切れてる場合<br />・購入手続き中に新しい購入手続きを実行した場"
+"合<br />・すでに購入手続きを完了している場合"
+
+msgid "LC_Page_Error_007"
+msgstr "ご指定のカテゴリは存在しません。"
+
+msgid "LC_Page_Error_008"
+msgstr "メールアドレスもしくはパスワードが正しくありません。"
+
+msgid "LC_Page_Error_009"
+msgstr ""
+"メールアドレスもしくはパスワードが正しくありません。<br />本登録がお済みでな"
+"い場合は、仮登録メールに記載されている<br />URLより本登録を行ってください。"
+
+msgid "LC_Page_Error_010"
+msgstr "不正なアクセスです。"
+
+msgid "LC_Page_Error_011"
+msgstr ""
+"申し訳ございませんが、ご購入の直前で売り切れた商品があります。この手続きは無"
+"効となりました。"
+
+msgid "LC_Page_Error_012"
+msgstr ""
+"申し訳ございませんが、カート内の商品情報の取得に失敗しました。この手続きは無"
+"効となりました。"
+
+msgid "LC_Page_Error_013"
+msgstr ""
+"申し訳ございませんが、ポイントが不足しております。この手続きは無効となりまし"
+"た。"
+
+msgid "LC_Page_Error_014"
+msgstr "既にお気に入りに追加されている商品です"
+
+msgid "LC_Page_Error_015"
+msgstr ""
+"ファイルの解凍に失敗しました。\n"
+"指定のディレクトリに書き込み権限が与えられていない可能性があります。"
+
+msgid "LC_Page_Error_016"
+msgstr "ファイルのFTPダウンロードに失敗しました。"
+
+msgid "LC_Page_Error_017"
+msgstr "FTPログインに失敗しました。"
+
+msgid "LC_Page_Error_018"
+msgstr "FTPログインに失敗しました。"
+
+msgid "LC_Page_Error_019"
+msgstr ""
+"DBの作成に失敗しました。\n"
+"指定のユーザーには、DB作成の権限が与えられていない可能性があります。"
+
+msgid "LC_Page_Error_020"
+msgstr ""
+"ータベース構造のインポートに失敗しました。\n"
+"sqlファイルが壊れている可能性があります。"
+
+msgid "LC_Page_Error_021"
+msgstr "指定のパスに、設定ファイルが存在しません。"
+
+msgid "LC_Page_Error_022"
+msgstr ""
+"設定ファイルに書き込めません。\n"
+"設定ファイルに書き込み権限を与えてください。"
+
+msgid "LC_Page_Error_023"
+msgstr ""
+"ダウンロードファイルが存在しません。<br />申し訳ございませんが、店舗までお問"
+"合わせ下さい。"
+
+msgid "LC_Page_Error_024"
+msgstr "エラーが発生しました。"
+
+msgid "LC_Page_Error_DispError_001"
+msgstr "ログインエラー"
+
+msgid "LC_Page_Error_DispError_002"
+msgstr ""
+"ＩＤまたはパスワードが正しくありません。<br />もう一度ご確認のうえ、再度入力"
+"してください。"
+
+msgid "LC_Page_Error_DispError_003"
+msgstr ""
+"ログイン認証の有効期限切れの可能性があります。<br />もう一度ご確認のうえ、再"
+"度ログインしてください。"
+
+msgid "LC_Page_Error_DispError_004"
+msgstr "このページにはアクセスできません"
+
+msgid "LC_Page_Error_DispError_005"
+msgstr ""
+"不正なページ移動です。<br />もう一度ご確認のうえ、再度入力してください。"
+
+msgid "LC_Page_Error_DispError_006"
+msgstr ""
+"エラーが発生しました。<br />もう一度ご確認のうえ、再度ログインしてください。"
+
+msgid "LC_Page_Error_SystemError_001"
+msgstr "システムエラー"
+
+msgid "LC_Page_Error_SystemError_002"
+msgstr ""
+"システムエラーが発生しました。<br />大変お手数ですが、サイト管理者までご連絡"
+"ください。"
+
+msgid "LC_Page_Error_SystemError_003"
+msgstr "▼▼▼ デバッグ情報ここから ▼▼▼"
+
+msgid "LC_Page_Error_SystemError_004"
+msgstr "▲▲▲ デバッグ情報ここまで ▲▲▲"
+
+msgid "LC_Page_Forgot_001"
+msgstr "パスワードを忘れた方"
+
+msgid "LC_Page_Forgot_002"
+msgstr ""
+"ご入力のemailアドレスは現在仮登録中です。<br/>登録の際にお送りしたメールのURL"
+"にアクセスし、<br/>本会員登録をお願いします。"
+
+msgid "LC_Page_Forgot_003"
+msgstr "お名前に間違いがあるか、このメールアドレスは登録されていません。"
+
+msgid "LC_Page_Forgot_004"
+msgstr "秘密の質問が一致しませんでした。"
+
+msgid "LC_Page_Forgot_005"
+msgstr "秘密の質問が一致しませんでした。"
+
+msgid "LC_Page_Forgot_006"
+msgstr "パスワードを変更いたしました。"
+
+msgid "LC_Page_Forgot_007"
+msgstr "T_FIELD 様"
+
+msgid "LC_Page_FrontParts_LoginCheck_001"
+msgstr ""
+"メールアドレスもしくはパスワードが正しくありません。\n"
+"本登録がお済みでない場合は、仮登録メールに記載されているURLより本登録を行って"
+"ください。"
+
+msgid "LC_Page_FrontParts_LoginCheck_002"
+msgstr "メールアドレスもしくはパスワードが正しくありません。"
+
+msgid "LC_Page_AbstractMypage_001"
+msgstr "MYページ"
+
+msgid "LC_Page_AbstractMypage_002"
+msgstr "MYページ(ログイン)"
+
+msgid "LC_Page_MyPage_001"
+msgstr "MYページ"
+
+msgid "LC_Page_MyPage_002"
+msgstr "購入履歴一覧"
+
+msgid "LC_Page_Mypage_Change_001"
+msgstr "会員登録内容変更(入力ページ)"
+
+msgid "LC_Page_Mypage_Change_002"
+msgstr "※該当する住所が見つかりませんでした。<br />"
+
+msgid "LC_Page_Mypage_Change_003"
+msgstr "会員登録(確認ページ)"
+
+msgid "LC_Page_Mypage_Change_004"
+msgstr "会員登録内容変更(確認ページ)"
+
+msgid "LC_Page_Mypage_Change_005"
+msgstr "※ 入力形式が不正です。<br />"
+
+msgid "LC_Page_Mypage_Change_006"
+msgstr "※ 入力形式が不正です。<br />"
+
+msgid "LC_Page_Mypage_ChangeComplete_001"
+msgstr "会員登録内容変更(完了ページ)"
+
+msgid "LC_Page_Mypage_Delivery_001"
+msgstr "お届け先追加･変更"
+
+msgid "LC_Page_Mypage_DeliveryAddr_001"
+msgstr "お届け先の追加･変更"
+
+msgid "LC_Page_Mypage_DeliveryAddr_002"
+msgstr "別のお届け先最大登録数に達しています。"
+
+msgid "LC_Page_Mypage_DeliveryAddr_003"
+msgstr "一致する別のお届け先がありません。"
+
+msgid "LC_Page_Mypage_DeliveryAddr_004"
+msgstr "別のお届け先最大登録数に達しています。"
+
+msgid "LC_Page_MyPage_Favorite_001"
+msgstr "お気に入り一覧"
+
+msgid "LC_Page_Mypage_History_001"
+msgstr "購入履歴詳細"
+
+msgid "LC_Page_Mypage_MailView_001"
+msgstr "メール履歴詳細"
+
+msgid "LC_Page_Mypage_Refusal_001"
+msgstr "退会手続き(入力ページ)"
+
+msgid "LC_Page_Mypage_Refusal_002"
+msgstr "退会手続き(確認ページ)"
+
+msgid "LC_Page_Mypage_RefusalComplete_001"
+msgstr "MYページ"
+
+msgid "LC_Page_Mypage_RefusalComplete_002"
+msgstr "/退会手続き(完了ページ)"
+
+msgid "LC_Page_Mypage_RefusalComplete_003"
+msgstr "退会手続き(完了ページ)"
+
+msgid "LC_Page_Order_001"
+msgstr "特定商取引に関する法律に基づく表記"
+
+msgid "LC_Page_Products_Detail_001"
+msgstr "※ この商品は既にお気に入りに追加されています。<br />"
+
+msgid "LC_Page_Products_List_001"
+msgstr "指定なし"
+
+msgid "LC_Page_Products_List_002"
+msgstr "指定なし"
+
+msgid "LC_Page_Products_List_003"
+msgstr "指定なし"
+
+msgid "LC_Page_Products_Review_001"
+msgstr "重複したタイトルは登録できません。"
+
+msgid "LC_Page_Regist_001"
+msgstr "無効なアクセスです。"
+
+msgid "LC_Page_Regist_002"
+msgstr "※ 既に会員登録が完了しているか、無効なURLです。<br />"
+
+msgid "LC_Page_Regist_003"
+msgstr ""
+"※ 無効なURLです。メールに記載されている本会員登録用URLを再度ご確認ください。"
+
+msgid "LC_Page_Regist_004"
+msgstr "会員登録が完了しました。"
+
+msgid "LC_Page_Regist_005"
+msgstr "T_FIELD01 T_FIELD02 様"
+
+msgid "LC_Page_Regist_Complete_001"
+msgstr "会員登録(完了ページ)"
+
+msgid "LC_Page_RSS_001"
+msgstr "新着情報"
+
+msgid "LC_Page_Rss_Products_001"
+msgstr "商品一覧情報"
+
+msgid "LC_Page_Rss_Products_002"
+msgstr "在庫無制限"
+
+msgid "LC_Page_Shopping_001"
+msgstr "ログイン"
+
+msgid "LC_Page_Shopping_002"
+msgstr "お客様情報入力"
+
+msgid "LC_Page_Shopping_003"
+msgstr ""
+"ダウンロード商品を含むお買い物は、会員登録が必要です。<br />お手数ですが、会"
+"員登録をお願いします。"
+
+msgid "LC_Page_Shopping_004"
+msgstr ""
+"メールアドレスもしくはパスワードが正しくありません。\n"
+"本登録がお済みでない場合は、仮登録メールに記載されているURLより本登録を行って"
+"ください。"
+
+msgid "LC_Page_Shopping_005"
+msgstr "メールアドレスもしくはパスワードが正しくありません。"
+
+msgid "LC_Page_Shopping_Complete_001"
+msgstr "ご注文完了"
+
+msgid "LC_Page_Shopping_Confirm_001"
+msgstr "ご入力内容のご確認"
+
+msgid "LC_Page_Shopping_Deliv_001"
+msgstr "お届け先の指定"
+
+msgid "LC_Page_Shopping_LoadPaymentModule_001"
+msgstr ""
+"モジュールファイルの取得に失敗しました。<br />この手続きは無効となりました。"
+
+msgid "LC_Page_Shopping_Multiple_001"
+msgstr "お届け先の複数指定"
+
+msgid "LC_Page_Shopping_Multiple_002"
+msgstr "選択してください"
+
+msgid "LC_Page_Shopping_Multiple_003"
+msgstr "※ 数量が0の場合、お届け先を入力できません。<br />"
+
+msgid "LC_Page_Shopping_Multiple_004"
+msgstr "※ お届け先が入力されていません。<br />"
+
+msgid "LC_Page_Shopping_Multiple_005"
+msgstr "※ 数量合計を「T_FIELD」にしてください。<br />"
+
+msgid "LC_Page_Shopping_Payment_001"
+msgstr "お支払方法・お届け時間等の指定"
+
+msgid "LC_Page_Shopping_Payment_002"
+msgstr "※ ご利用ポイントが所持ポイントを超えています。<br />"
+
+msgid "LC_Page_Shopping_Payment_003"
+msgstr "※ ご利用ポイントがご購入金額を超えています。<br />"
+
+msgid "LC_Page_Shopping_Payment_004"
+msgstr ""
+"※ 選択した支払方法では、ポイントは(T_FIELD01 - T_FIELD01)ポイントまでご利用い"
+"ただけます。<br />"
+
+msgid "LC_Page_Unsupported_001"
+msgstr "未対応デバイス"
+
+msgid "LC_Page_Upgrade_Download_001"
+msgstr "インストール/アップデートに成功しました。"
+
+msgid "LC_Page_001"
+msgstr "前方互換用メソッドが使用されました。"

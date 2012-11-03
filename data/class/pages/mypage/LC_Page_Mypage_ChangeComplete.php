@@ -43,7 +43,7 @@ class LC_Page_Mypage_ChangeComplete extends LC_Page_AbstractMypage_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_subtitle = '会員登録内容変更(完了ページ)';
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Mypage_ChangeComplete_001');
         $this->tpl_mypageno = 'change';
     }
 

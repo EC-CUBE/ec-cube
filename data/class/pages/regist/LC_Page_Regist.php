@@ -79,7 +79,7 @@ class LC_Page_Regist extends LC_Page_Ex {
                 break;
             //--　それ以外のアクセスは無効とする
             default:
-                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, '無効なアクセスです。');
+                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, SC_I18n_Ex::t('LC_Page_Regist_001'));
                 break;
         }
 
@@ -128,11 +128,11 @@ class LC_Page_Regist extends LC_Page_Ex {
         if (preg_match("/^[[:alnum:]]+$/", $array['id'])) {
 
             if (!is_numeric(SC_Helper_Customer_Ex::sfGetCustomerId($array['id'], true))) {
-                $objErr->arrErr['id'] = '※ 既に会員登録が完了しているか、無効なURLです。<br>';
+                $objErr->arrErr['id'] = SC_I18n_Ex::t('LC_Page_Regist_002');
             }
 
         } else {
-            $objErr->arrErr['id'] = '無効なURLです。メールに記載されている本会員登録用URLを再度ご確認ください。';
+            $objErr->arrErr['id'] = SC_I18n_Ex::t('LC_Page_Regist_003');
         }
         return $objErr->arrErr;
     }
@@ -163,7 +163,7 @@ class LC_Page_Regist extends LC_Page_Ex {
         $objMailText->assign('name01', $data['name01']);
         $objMailText->assign('name02', $data['name02']);
         $toCustomerMail = $objMailText->fetch('mail_templates/customer_regist_mail.tpl');
-        $subject = $objHelperMail->sfMakesubject('会員登録が完了しました。');
+        $subject = $objHelperMail->sfMakesubject(SC_I18n_Ex::t('LC_Page_Regist_004'));
         $objMail = new SC_SendMail_Ex();
 
         $objMail->setItem(
@@ -177,7 +177,9 @@ class LC_Page_Regist extends LC_Page_Ex {
                             , $CONF['email04']          // Errors_to
         );
         // 宛先の設定
-        $name = $data['name01'] . $data['name02'] .' 様';
+        $name = SC_I18n_Ex::t('LC_Page_Regist_005',
+                              array('T_FIELD01' => $data['name01'],
+                                    'T_FIELD02' => $data['name02']));
         $objMail->setTo($data['email'], $name);
         $objMail->sendMail();
     }

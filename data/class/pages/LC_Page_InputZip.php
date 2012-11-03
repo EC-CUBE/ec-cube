@@ -44,6 +44,7 @@ class LC_Page_InputZip extends LC_Page_Ex {
     function init() {
         parent::init();
         $this->tpl_message = '住所を検索しています。';
+        $this->tpl_message = SC_I18n_Ex::t('LC_Page_InputZip_001');
     }
 
     /**
@@ -79,7 +80,9 @@ class LC_Page_InputZip extends LC_Page_Ex {
 
             // 該当無し
             } else {
-                echo '該当する住所が見つかりませんでした。';
+                //echo '該当する住所が見つかりませんでした。';
+                echo SC_I18n_Ex::t('LC_Page_InputZip_002');
+                
             }
         }
     }
@@ -111,10 +114,12 @@ class LC_Page_InputZip extends LC_Page_Ex {
         $arrErr = $objFormParam->checkError();
         // 親ウィンドウの戻り値を格納するinputタグのnameのエラーチェック
         if (!$this->lfInputNameCheck($arrRequest['input1'])) {
-            $arrErr['input1'] = '※ 入力形式が不正です。<br />';
+            //$arrErr['input1'] = '※ 入力形式が不正です。<br />';
+            $arrErr['input1'] = SC_I18n_Ex::t('LC_Page_InputZip_003');
         }
         if (!$this->lfInputNameCheck($arrRequest['input2'])) {
-            $arrErr['input2'] = '※ 入力形式が不正です。<br />';
+            //$arrErr['input2'] = '※ 入力形式が不正です。<br />';
+            $arrErr['input2'] = SC_I18n_Ex::t('LC_Page_InputZip_004');
         }
 
         return $arrErr;

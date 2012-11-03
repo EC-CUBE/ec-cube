@@ -43,7 +43,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_title = 'ログイン';
+        $this->tpl_title = SC_I18n_Ex::t('LC_Page_Shopping_001');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrSex = $masterData->getMasterData('mtb_sex');
@@ -84,7 +84,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
         $objFormParam = new SC_FormParam_Ex();
 
         $nonmember_mainpage = 'shopping/nonmember_input.tpl';
-        $nonmember_title = 'お客様情報入力';
+        $nonmember_title = SC_I18n_Ex::t('LC_Page_Shopping_002');
 
         $this->tpl_uniqid = $objSiteSess->getUniqId();
         $objPurchase->verifyChangeCart($this->tpl_uniqid, $objCartSess);
@@ -103,8 +103,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
         // 非会員かつ, ダウンロード商品の場合はエラー表示
         else {
             if ($this->cartKey == PRODUCT_TYPE_DOWNLOAD) {
-                $msg = 'ダウンロード商品を含むお買い物は、会員登録が必要です。<br/>'
-                     . 'お手数ですが、会員登録をお願いします。';
+                $msg = SC_I18n_Ex::t('LC_Page_Shopping_003');
                 SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, $objSiteSess, false, $msg);
                 SC_Response_Ex::actionExit();
             }
@@ -567,11 +566,11 @@ class LC_Page_Shopping extends LC_Page_Ex {
     function lfGetErrorMessage($error) {
         switch ($error) {
             case TEMP_LOGIN_ERROR:
-                $msg = "メールアドレスもしくはパスワードが正しくありません。\n本登録がお済みでない場合は、仮登録メールに記載されているURLより本登録を行ってください。";
+                $msg = SC_I18n_Ex::t('LC_Page_Shopping_004');
                 break;
             case SITE_LOGIN_ERROR:
             default:
-                $msg = 'メールアドレスもしくはパスワードが正しくありません。';
+                $msg = SC_I18n_Ex::t('LC_Page_Shopping_005');
         }
         return SC_Utils_Ex::jsonEncode(array('login_error' => $msg));
     }

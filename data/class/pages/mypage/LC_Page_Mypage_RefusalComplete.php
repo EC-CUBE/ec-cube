@@ -43,12 +43,12 @@ class LC_Page_Mypage_RefusalComplete extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_title    = 'MYページ';
+        $this->tpl_title    = SC_I18n_Ex::t('LC_Page_Mypage_RefusalComplete_001');
 
         if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
-            $this->tpl_title .= '/退会手続き(完了ページ)';
+            $this->tpl_title .= SC_I18n_Ex::t('LC_Page_Mypage_RefusalComplete_002');
         } else {
-            $this->tpl_subtitle = '退会手続き(完了ページ)';
+            $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Mypage_RefusalComplete_003');
         }
         $this->tpl_navi     = SC_Helper_PageLayout::getTemplatePath(SC_Display_Ex::detectDevice()) . 'mypage/navi.tpl';
         $this->tpl_mypageno = 'refusal';

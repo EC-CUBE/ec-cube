@@ -43,7 +43,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_title = 'お届け先の複数指定';
+        $this->tpl_title = SC_I18n_Ex::t('LC_Page_Shopping_Multiple_001');
         $this->httpCacheControl('nocache');
     }
 
@@ -190,7 +190,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
         $masterData = new SC_DB_MasterData_Ex();
         $arrPref = $masterData->getMasterData('mtb_pref');
 
-        $arrResults = array('' => '選択してください');
+        $arrResults = array('' => SC_I18n_Ex::t('LC_Page_Shopping_Multiple_002'));
         // 会員ログイン時
         if ($objCustomer->isLoginSuccess(true)) {
             $arrAddrs = $objCustomer->getCustomerAddress($objCustomer->getValue('customer_id'));
@@ -233,11 +233,11 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
             foreach ($arrParams as $index => $arrParam) {
                 // 数量0で、お届け先を選択している場合
                 if ($arrParam['quantity'] == 0 && !SC_Utils_Ex::isBlank($arrParam['shipping'])) {
-                    $arrErr['shipping'][$index] = '※ 数量が0の場合、お届け先を入力できません。<br />';;
+                    $arrErr['shipping'][$index] = SC_I18n_Ex::t('LC_Page_Shopping_Multiple_003');
                 }
                 // 数量の入力があり、お届け先を選択していない場合
                 if ($arrParam['quantity'] > 0 && SC_Utils_Ex::isBlank($arrParam['shipping'])) {
-                    $arrErr['shipping'][$index] = '※ お届け先が入力されていません。<br />';
+                    $arrErr['shipping'][$index] = SC_I18n_Ex::t('LC_Page_Shopping_Multiple_004');
                 }
             }
         }
@@ -258,7 +258,8 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
                 if ($arrCartRow['quantity'] != $arrQuantity[$product_class_id]) {
                     foreach ($arrParams as $index => $arrParam) {
                         if ($arrParam['product_class_id'] == $product_class_id) {
-                            $arrErr['quantity'][$index] = '※ 数量合計を「' . $arrCartRow['quantity'] .'」にしてください。<br />';
+                            $arrErr['quantity'][$index] = SC_I18n_Ex::t('LC_Page_Shopping_Multiple_005', array('T_FIELD' => $arrCartRow['quantity']));
+                            
                         }
                     }
                 }

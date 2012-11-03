@@ -45,7 +45,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
         parent::init();
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
-        $this->tpl_title = 'お届け先の指定';
+        $this->tpl_title = SC_I18n_Ex::t('LC_Page_Shopping_Deliv_001');
         $this->httpCacheControl('nocache');
     }
 

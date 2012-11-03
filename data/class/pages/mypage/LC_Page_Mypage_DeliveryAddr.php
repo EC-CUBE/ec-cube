@@ -43,7 +43,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_title    = 'お届け先の追加･変更';
+        $this->tpl_title    = SC_I18n_Ex::t('LC_Page_Mypage_DeliveryAddr_001');
         $masterData         = new SC_DB_MasterData_Ex();
         $this->arrPref      = $masterData->getMasterData('mtb_pref');
         $this->httpCacheControl('nocache');
@@ -192,7 +192,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
             $deliv_count = $objQuery->count('dtb_other_deliv', 'customer_id = ?', array($customer_id));
             // 別のお届け先最大登録数に達している場合、エラー
             if ($deliv_count >= DELIV_ADDR_MAX) {
-                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, '別のお届け先最大登録数に達しています。');
+                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, SC_I18n_Ex::t('LC_Page_Mypage_DeliveryAddr_002'));
             }
 
             // 実行
@@ -203,7 +203,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
         } else {
             $deliv_count = $objQuery->count('dtb_other_deliv','customer_id = ? AND other_deliv_id = ?' ,array($customer_id, $arrRet['other_deliv_id']));
             if ($deliv_count != 1) {
-                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, '一致する別のお届け先がありません。');
+                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, SC_I18n_Ex::t('LC_Page_Mypage_DeliveryAddr_003'));
             }
 
             // 実行
@@ -217,7 +217,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
             $arrRegist['shipping_' . $key ] = $val;
         }
         if (count($_SESSION['shipping']) >= DELIV_ADDR_MAX) {
-            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, '別のお届け先最大登録数に達しています。');
+            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, SC_I18n_Ex::t('LC_Page_Mypage_DeliveryAddr_004'));
         } else {
             $_SESSION['shipping'][] = $arrRegist;
         }

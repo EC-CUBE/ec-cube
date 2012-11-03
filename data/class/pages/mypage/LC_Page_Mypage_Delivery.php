@@ -43,7 +43,7 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_subtitle = 'お届け先追加･変更';
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Mypage_Delivery_001');
         $this->tpl_mypageno = 'delivery';
         $masterData         = new SC_DB_MasterData_Ex();
         $this->arrPref      = $masterData->getMasterData('mtb_pref');

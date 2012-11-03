@@ -57,7 +57,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_title = 'パスワードを忘れた方';
+        $this->tpl_title = SC_I18n_Ex::t('LC_Page_Forgot_001');
         $this->tpl_mainpage = 'forgot/index.tpl';
         $this->tpl_mainno = '';
         $masterData = new SC_DB_MasterData_Ex();
@@ -159,10 +159,10 @@ class LC_Page_Forgot extends LC_Page_Ex {
                 $arrForm['reminder'] = $result[0]['reminder'];
             } else if ($result[0]['status'] == '1') {
                 // 仮会員
-                $errmsg = 'ご入力のemailアドレスは現在仮登録中です。<br/>登録の際にお送りしたメールのURLにアクセスし、<br/>本会員登録をお願いします。';
+                $errmsg = SC_I18n_Ex::t('LC_Page_Forgot_002');
             }
         } else {
-            $errmsg = 'お名前に間違いがあるか、このメールアドレスは登録されていません。';
+            $errmsg = SC_I18n_Ex::t('LC_Page_Forgot_003');
         }
         return $errmsg;
     }
@@ -234,13 +234,13 @@ class LC_Page_Forgot extends LC_Page_Ex {
                 $arrForm['new_password'] = $new_password;
             } else {
                 // 秘密の答えが一致しなかった
-                $errmsg = '秘密の質問が一致しませんでした。';
+                $errmsg = SC_I18n_Ex::t('LC_Page_Forgot_004');
             }
         } else {
             //不正なアクセス リマインダー値が前画面と異なる。
             // 新リファクタリング基準ではここで遷移は不許可なのでエラー表示
             //SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
-            $errmsg = '秘密の質問が一致しませんでした。';
+            $errmsg = SC_I18n_Ex::t('LC_Page_Forgot_005');
         }
         return $errmsg;
     }
@@ -296,7 +296,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
         $objMail = new SC_SendMail_Ex();
         $objMail->setItem(
             '' //宛先
-            , $objHelperMail->sfMakeSubject('パスワードを変更いたしました。')
+            , $objHelperMail->sfMakeSubject(SC_I18n_Ex::t('LC_Page_Forgot_006'))
             , $toCustomerMail //本文
             , $CONF['email03'] //配送元アドレス
             , $CONF['shop_name'] // 配送元名
@@ -304,7 +304,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
             , $CONF['email04'] //return_path
             , $CONF['email04'] // errors_to
             );
-        $objMail->setTo($email, $customer_name . ' 様');
+        $objMail->setTo($email, SC_I18n_Ex::t('LC_Page_Forgot_007', array('T_FIELD' => $customer_name)));
         $objMail->sendMail();
         return;
     }

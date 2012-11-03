@@ -44,7 +44,7 @@ class LC_Page_AbstractMypage extends LC_Page_Ex {
     function init() {
         parent::init();
         // mypage 共通
-        $this->tpl_title        = 'MYページ';
+        $this->tpl_title        = SC_I18n_Ex::t('LC_Page_AbstractMypage_001');
         $this->tpl_navi         = 'mypage/navi.tpl';
         $this->tpl_mainno       = 'mypage';
     }
@@ -81,7 +81,7 @@ class LC_Page_AbstractMypage extends LC_Page_Ex {
             if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
                 $this->tpl_valid_phone_id = $objCustomer->checkMobilePhoneId();
             }
-            $this->tpl_title        = 'MYページ(ログイン)';
+            $this->tpl_title        = SC_I18n_Ex::t('LC_Page_AbstractMypage_002');
             $this->tpl_mainpage     = 'mypage/login.tpl';
 
         } else {

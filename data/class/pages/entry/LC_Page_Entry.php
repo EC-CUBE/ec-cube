@@ -112,7 +112,7 @@ class LC_Page_Entry extends LC_Page_Ex {
 
                             // 該当無し
                         } else {
-                            $this->arrErr['zip01'] = '※該当する住所が見つかりませんでした。<br>';
+                            $this->arrErr['zip01'] = SC_I18n_Ex::t('LC_Page_Entry_001');
                         }
                     }
                     $this->arrForm  = $objFormParam->getHashArray();
@@ -128,7 +128,7 @@ class LC_Page_Entry extends LC_Page_Ex {
                     $this->passlen      = SC_Utils_Ex::sfPassLen(strlen($this->arrForm['password']));
 
                     $this->tpl_mainpage = 'entry/confirm.tpl';
-                    $this->tpl_title    = '会員登録(確認ページ)';
+                    $this->tpl_title    = SC_I18n_Ex::t('LC_Page_Entry_002');
                 }
                 break;
             case 'complete':
@@ -245,10 +245,10 @@ class LC_Page_Entry extends LC_Page_Ex {
 
         // 仮会員が有効の場合
         if (CUSTOMER_CONFIRM_MAIL == true) {
-            $subject        = $objHelperMail->sfMakeSubject('会員登録のご確認');
+            $subject        = $objHelperMail->sfMakeSubject(SC_I18n_Ex::t('LC_Page_Entry_003'));
             $toCustomerMail = $objMailText->fetch('mail_templates/customer_mail.tpl');
         } else {
-            $subject        = $objHelperMail->sfMakeSubject('会員登録のご完了');
+            $subject        = $objHelperMail->sfMakeSubject(SC_I18n_Ex::t('LC_Page_Entry_004'));
             $toCustomerMail = $objMailText->fetch('mail_templates/customer_regist_mail.tpl');
         }
 
@@ -266,7 +266,7 @@ class LC_Page_Entry extends LC_Page_Ex {
         );
         // 宛先の設定
         $objMail->setTo($arrForm['email'],
-                        $arrForm['name01'] . $arrForm['name02'] .' 様');
+                        SC_I18n_Ex::t('LC_Page_Entry_007', array('T_FIELD01' => $arrForm['name01'], 'T_FIELD02' => $arrForm['name02'])));
 
         $objMail->sendMail();
     }
@@ -314,10 +314,10 @@ class LC_Page_Entry extends LC_Page_Ex {
         $arrErr = $objFormParam->checkError();
         // 親ウィンドウの戻り値を格納するinputタグのnameのエラーチェック
         if (!$this->lfInputNameCheck($addData['zip01'])) {
-            $arrErr['zip01'] = '※ 入力形式が不正です。<br />';
+            $arrErr['zip01'] = SC_I18n_Ex::t('LC_Page_Entry_005');
         }
         if (!$this->lfInputNameCheck($arrdata['zip02'])) {
-            $arrErr['zip02'] = '※ 入力形式が不正です。<br />';
+            $arrErr['zip02'] = SC_I18n_Ex::t('LC_Page_Entry_006');
         }
 
         return $arrErr;

@@ -43,7 +43,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_title = 'ご入力内容のご確認';
+        $this->tpl_title = SC_I18n_Ex::t('LC_Page_Shopping_Confirm_001');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrSex = $masterData->getMasterData('mtb_sex');

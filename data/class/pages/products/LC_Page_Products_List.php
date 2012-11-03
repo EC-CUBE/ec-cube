@@ -297,7 +297,10 @@ __EOS__;
      */
     function lfGetSearchConditionDisp($arrSearchData) {
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
-        $arrSearch  = array('category' => '指定なし', 'maker' => '指定なし', 'name' => '指定なし');
+        $arrSearch  = array(
+            'category' => SC_I18n_Ex::t('LC_Page_Products_List_001'),
+            'maker'    => SC_I18n_Ex::t('LC_Page_Products_List_002'),
+            'name'     => SC_I18n_Ex::t('LC_Page_Products_List_003'));
         // カテゴリ検索条件
         if ($arrSearchData['category_id'] > 0) {
             $arrSearch['category']  = $objQuery->get('category_name', 'dtb_category', 'category_id = ?', array($arrSearchData['category_id']));

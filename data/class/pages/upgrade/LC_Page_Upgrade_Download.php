@@ -227,7 +227,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
 
             $productData = $objRet->data;
             $productData->dl_file = '';
-            $objJson->setSUCCESS($productData, 'インストール/アップデートに成功しました。');
+            $objJson->setSUCCESS($productData, SC_I18n_Ex::t('LC_Page_Upgrade_Download_001'));
             $objJson->display();
             $objLog->end();
             return;

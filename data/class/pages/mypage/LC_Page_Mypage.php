@@ -50,9 +50,11 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
         parent::init();
         $this->tpl_mypageno = 'index';
         if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
-            $this->tpl_subtitle = 'MYページ';
+            $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_MyPage_001');
+
+
         } else {
-            $this->tpl_subtitle = '購入履歴一覧';
+            $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_MyPage_002');
         }
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrCustomerOrderStatus = $masterData->getMasterData('mtb_customer_order_status');

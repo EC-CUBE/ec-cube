@@ -54,7 +54,7 @@ class LC_Page_Cart extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_title = '現在のカゴの中';
+        $this->tpl_title = SC_I18n_Ex::t('LC_Page_Cart_001');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrProductType = $masterData->getMasterData('mtb_product_type');
 
@@ -89,7 +89,7 @@ class LC_Page_Cart extends LC_Page_Ex {
         foreach ($this->cartKeys as $key) {
             // 商品購入中にカート内容が変更された。
             if ($objCartSess->getCancelPurchase($key)) {
-                $this->tpl_message .= "商品購入中にカート内容が変更されましたので、お手数ですが購入手続きをやり直して下さい。\n";
+                $this->tpl_message .= SC_I18n_Ex::t('LC_Page_Cart_002');
             }
         }
 

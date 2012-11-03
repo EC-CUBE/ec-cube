@@ -43,7 +43,7 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_subtitle = '会員登録内容変更(入力ページ)';
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Mypage_Change_001');
         $this->tpl_mypageno = 'change';
 
         $masterData         = new SC_DB_MasterData_Ex();
@@ -112,7 +112,7 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
                         }
                         // 該当無し
                         else {
-                            $this->arrErr['zip01'] = '※該当する住所が見つかりませんでした。<br>';
+                            $this->arrErr['zip01'] =  SC_I18n_Ex::t('LC_Page_Mypage_Change_002');
                         }
                     }
                     $this->arrForm  = $objFormParam->getHashArray();
@@ -127,8 +127,8 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
                     $this->passlen      = SC_Utils_Ex::sfPassLen(strlen($this->arrForm['password']));
 
                     $this->tpl_mainpage = 'mypage/change_confirm.tpl';
-                    $this->tpl_title    = '会員登録(確認ページ)';
-                    $this->tpl_subtitle = '会員登録内容変更(確認ページ)';
+                    $this->tpl_title    = SC_I18n_Ex::t('LC_Page_Mypage_Change_003');
+                    $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Mypage_Change_004');
                 }
                 break;
             // 会員登録と完了画面
@@ -205,10 +205,10 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
         $arrErr = $objFormParam->checkError();
         // 親ウィンドウの戻り値を格納するinputタグのnameのエラーチェック
         if (!$this->lfInputNameCheck($addData['zip01'])) {
-            $arrErr['zip01'] = '※ 入力形式が不正です。<br />';
+            $arrErr['zip01'] =  SC_I18n_Ex::t('LC_Page_Mypage_Change_005');
         }
         if (!$this->lfInputNameCheck($arrdata['zip02'])) {
-            $arrErr['zip02'] = '※ 入力形式が不正です。<br />';
+            $arrErr['zip02'] =  SC_I18n_Ex::t('LC_Page_Mypage_Change_006');
         }
 
         return $arrErr;

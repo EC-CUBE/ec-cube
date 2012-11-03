@@ -62,7 +62,7 @@ class LC_Page_Error extends LC_Page_Ex {
      */
     function init() {
         $this->tpl_mainpage = 'error.tpl';
-        $this->tpl_title = 'エラー';
+        $this->tpl_title = SC_I18n_Ex::t('LC_Page_Error_001');
         // ディスプレイクラス生成
         $this->objDisplay = new SC_Display_Ex();
 
@@ -91,78 +91,78 @@ class LC_Page_Error extends LC_Page_Ex {
 
         switch ($this->type) {
             case PRODUCT_NOT_FOUND:
-                $this->tpl_error='ご指定のページはございません。';
+                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_002');
                 SC_Response_Ex::sendHttpStatus(404);
                 break;
             case PAGE_ERROR:
-                $this->tpl_error='不正なページ移動です。';
+                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_003');
                 break;
             case CART_EMPTY:
-                $this->tpl_error='カートに商品ががありません。';
+                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_004');
                 break;
             case CART_ADD_ERROR:
-                $this->tpl_error='購入処理中は、カートに商品を追加することはできません。';
+                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_005');
                 break;
             case CANCEL_PURCHASE:
-                $this->tpl_error='この手続きは無効となりました。以下の要因が考えられます。<br />・セッション情報の有効期限が切れてる場合<br />・購入手続き中に新しい購入手続きを実行した場合<br />・すでに購入手続きを完了している場合';
+                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_006');
                 break;
             case CATEGORY_NOT_FOUND:
-                $this->tpl_error='ご指定のカテゴリは存在しません。';
+                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_007');
                 SC_Response_Ex::sendHttpStatus(404);
                 break;
             case SITE_LOGIN_ERROR:
-                $this->tpl_error='メールアドレスもしくはパスワードが正しくありません。';
+                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_008');
                 break;
             case TEMP_LOGIN_ERROR:
-                $this->tpl_error='メールアドレスもしくはパスワードが正しくありません。<br />本登録がお済みでない場合は、仮登録メールに記載されている<br />URLより本登録を行ってください。';
+                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_009');
                 break;
             case CUSTOMER_ERROR:
-                $this->tpl_error='不正なアクセスです。';
+                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_010');
                 break;
             case SOLD_OUT:
-                $this->tpl_error='申し訳ございませんが、ご購入の直前で売り切れた商品があります。この手続きは無効となりました。';
+                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_011');
                 break;
             case CART_NOT_FOUND:
-                $this->tpl_error='申し訳ございませんが、カート内の商品情報の取得に失敗しました。この手続きは無効となりました。';
+                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_012');
                 break;
             case LACK_POINT:
-                $this->tpl_error='申し訳ございませんが、ポイントが不足しております。この手続きは無効となりました。';
+                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_013');
                 break;
             case FAVORITE_ERROR:
-                $this->tpl_error='既にお気に入りに追加されている商品です。';
+                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_014');
                 break;
             case EXTRACT_ERROR:
-                $this->tpl_error="ファイルの解凍に失敗しました。\n指定のディレクトリに書き込み権限が与えられていない可能性があります。";
+                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_015');
                 break;
             case FTP_DOWNLOAD_ERROR:
-                $this->tpl_error='ファイルのFTPダウンロードに失敗しました。';
+                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_016');
                 break;
             case FTP_LOGIN_ERROR:
-                $this->tpl_error='FTPログインに失敗しました。';
+                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_017');
                 break;
             case FTP_CONNECT_ERROR:
-                $this->tpl_error='FTPログインに失敗しました。';
+                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_018');
                 break;
             case CREATE_DB_ERROR:
-                $this->tpl_error="DBの作成に失敗しました。\n指定のユーザーには、DB作成の権限が与えられていない可能性があります。";
+                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_019');
                 break;
             case DB_IMPORT_ERROR:
-                $this->tpl_error="データベース構造のインポートに失敗しました。\nsqlファイルが壊れている可能性があります。";
+                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_020');
                 break;
             case FILE_NOT_FOUND:
-                $this->tpl_error='指定のパスに、設定ファイルが存在しません。';
+                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_021');
                 break;
             case WRITE_FILE_ERROR:
-                $this->tpl_error="設定ファイルに書き込めません。\n設定ファイルに書き込み権限を与えてください。";
+                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_022');
                 break;
             case DOWNFILE_NOT_FOUND:
-                $this->tpl_error='ダウンロードファイルが存在しません。<br />申し訳ございませんが、店舗までお問合わせ下さい。';
+                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_023');
                 break;
             case FREE_ERROR_MSG:
                 $this->tpl_error=$this->err_msg;
                 break;
             default:
-                $this->tpl_error='エラーが発生しました。';
+                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_024');
                 break;
         }
 

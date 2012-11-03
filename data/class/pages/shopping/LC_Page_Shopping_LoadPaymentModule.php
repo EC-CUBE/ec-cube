@@ -63,7 +63,7 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex {
 
         $module_path = $this->getModulePath($order_id);
         if ($module_path === false) {
-            $msg = 'モジュールファイルの取得に失敗しました。<br />この手続きは無効となりました。';
+            $msg = SC_I18n_Ex::t('LC_Page_Shopping_LoadPaymentModule_001');
             SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, $msg);
             return;
         }

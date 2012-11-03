@@ -45,7 +45,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
         parent::init();
         $this->tpl_mainpage = 'rss/products.tpl';
         $this->encode = 'UTF-8';
-        $this->title = '商品一覧情報';
+        $this->title = SC_I18n_Ex::t('LC_Page_Rss_Products_001');
     }
 
     /**
@@ -111,8 +111,6 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
 
         //XMLテキスト(これがないと正常にRSSとして認識してくれないツールがあるため)
         header('Content-type: application/xml');
-        P_DETAIL_URLPATH;
-
 
         //画面表示
         $objView->display($this->tpl_mainpage, true);
@@ -172,7 +170,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
             );
             // 在庫無制限
             if ($arrProduct[$key]['stock_unlimited'] == 1) {
-                $arrProduct[$key]['stock_unlimited'] = '在庫無制限';
+                $arrProduct[$key]['stock_unlimited'] = SC_I18n_Ex::t('LC_Page_Rss_Products_002');
             } else {
                 $arrProduct[$key]['stock_unlimited'] = NULL;
             }

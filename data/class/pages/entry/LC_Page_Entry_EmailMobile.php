@@ -79,7 +79,7 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex {
 
                 $objCustomer->setValue('email_mobile', $email_mobile);
                 $this->tpl_mainpage = 'entry/email_mobile_complete.tpl';
-                $this->tpl_title = '携帯メール登録完了';
+                $this->tpl_title = SC_I18n_Ex::t('LC_Page_Entry_EmailMobile_001');
             }
         }
 

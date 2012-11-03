@@ -43,7 +43,7 @@ class LC_Page_Unsupported extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_title = '未対応デバイス';
+        $this->tpl_title = SC_I18n_Ex::t('LC_Page_Unsupported_001');
     }
 
     /**

@@ -43,7 +43,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_subtitle = '退会手続き(入力ページ)';
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Mypage_Refusal_001');
         $this->tpl_mypageno = 'refusal';
     }
 
@@ -66,7 +66,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex {
         switch ($this->getMode()) {
             case 'confirm':
                 $this->tpl_mainpage     = 'mypage/refusal_confirm.tpl';
-                $this->tpl_subtitle     = '退会手続き(確認ページ)';
+                $this->tpl_subtitle     = SC_I18n_Ex::t('LC_Page_Mypage_Refusal_002');
                 break;
 
             case 'complete':

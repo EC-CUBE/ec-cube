@@ -253,11 +253,11 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
     function lfGetErrorMessage($error) {
         switch ($error) {
             case TEMP_LOGIN_ERROR:
-                $msg = "メールアドレスもしくはパスワードが正しくありません。\n本登録がお済みでない場合は、仮登録メールに記載されているURLより本登録を行ってください。";
+                $msg = SC_I18n_Ex::t('LC_Page_FrontParts_LoginCheck_001');
                 break;
             case SITE_LOGIN_ERROR:
             default:
-                $msg = 'メールアドレスもしくはパスワードが正しくありません。';
+                $msg = SC_I18n_Ex::t('LC_Page_FrontParts_LoginCheck_002');
         }
         return SC_Utils_Ex::jsonEncode(array('login_error' => $msg));
     }

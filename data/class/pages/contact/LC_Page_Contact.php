@@ -44,9 +44,11 @@ class LC_Page_Contact extends LC_Page_Ex {
     function init() {
         parent::init();
         if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
-            $this->tpl_title = 'お問い合わせ';
+            $this->tpl_title = SC_I18n_Ex::t('LC_Page_Contact_001');
+            //$this->tpl_title = 'お問い合わせ';
         } else {
-            $this->tpl_title = 'お問い合わせ(入力ページ)';
+            $this->tpl_title = SC_I18n_Ex::t('LC_Page_Contact_002');
+            //$this->tpl_title = 'お問い合わせ(入力ページ)';
         }
         $this->tpl_page_category = 'contact';
         $this->httpCacheControl('nocache');
@@ -98,7 +100,8 @@ class LC_Page_Contact extends LC_Page_Ex {
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     // エラー無しで完了画面
                     $this->tpl_mainpage = 'contact/confirm.tpl';
-                    $this->tpl_title = 'お問い合わせ(確認ページ)';
+                    //$this->tpl_title = 'お問い合わせ(確認ページ)';
+                    $this->tpl_title = SC_I18n_Ex::t('LC_Page_Contact_003');
                 }
 
                 break;
@@ -199,7 +202,7 @@ class LC_Page_Contact extends LC_Page_Ex {
         $helperMail->setPage($this);
         $helperMail->sfSendTemplateMail(
             $objPage->arrForm['email']['value'],            // to
-            $objPage->arrForm['name01']['value'] .' 様',    // to_name
+            SC_I18n_Ex::t('LC_Page_Contact_004', array('T_FIELD' => $objPage->arrForm['name01']['value'])), // to_name
             5,                                              // template_id
             $objPage,                                       // objPage
             $CONF['email03'],                               // from_address
