@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2012-11-03 20:05+0900\n"
+"PO-Revision-Date: 2012-11-03 20:11+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -2325,6 +2325,160 @@ msgstr "インストール/アップデートに成功しました。"
 
 msgid "LC_Page_001"
 msgstr "前方互換用メソッドが使用されました。"
+
+msgid "LC_Page_Install_001"
+msgstr "T_FIELDにユーザ書込み権限(777, 707等)を付与して下さい"
+
+msgid "LC_Page_Install_002"
+msgstr "○：テーブルの作成に成功しました。<br />'"
+
+msgid "LC_Page_Install_003"
+msgstr "×：テーブルの作成に失敗しました。<br />"
+
+msgid "LC_Page_Install_004"
+msgstr "○：初期データの作成に成功しました。<br />"
+
+msgid "LC_Page_Install_005"
+msgstr "×：初期データの作成に失敗しました。<br />"
+
+msgid "LC_Page_Install_006"
+msgstr "○：シーケンスの作成に成功しました。<br />"
+
+msgid "LC_Page_Install_007"
+msgstr "×：シーケンスの作成に失敗しました。<br />"
+
+msgid "LC_Page_Install_008"
+msgstr "○：テーブルの削除に成功しました。<br />"
+
+msgid "LC_Page_Install_009"
+msgstr "×：テーブルの削除に失敗しました。<br />"
+
+msgid "LC_Page_Install_010"
+msgstr "○：シーケンスの削除に成功しました。<br />"
+
+msgid "LC_Page_Install_011"
+msgstr "×：シーケンスの削除に失敗しました。<br />"
+
+msgid "LC_Page_Install_012"
+msgstr ""
+">> ×：T_FIELD01(T_FIELD02)\n"
+"ユーザ書込み権限(777, 707等)を付与して下さい。"
+
+msgid "LC_Page_Install_013"
+msgstr ""
+">> ×：T_FIELD01(T_FIELD02)\n"
+"ユーザ書込み権限(666, 606等)を付与して下さい。"
+
+msgid "LC_Page_Install_014"
+msgstr ">> ×：T_FIELD が見つかりません。"
+
+msgid "LC_Page_Install_015"
+msgstr ">> ×：PHPのセーフモードが有効になっています。"
+
+msgid "LC_Page_Install_016"
+msgstr ""
+">> ×：PHPの設定ディレクティブ「magic_quotes_gpc」が有効になっています。"
+
+msgid "LC_Page_Install_017"
+msgstr ">> ○：アクセス権限は正常です。"
+
+msgid "LC_Page_Install_018"
+msgstr "店名"
+
+msgid "LC_Page_Install_019"
+msgstr "管理者：メールアドレス"
+
+msgid "LC_Page_Install_020"
+msgstr "管理者：ログインID"
+
+msgid "LC_Page_Install_021"
+msgstr "管理者：パスワード"
+
+msgid "LC_Page_Install_022"
+msgstr "管理機能：ディレクトリ"
+
+msgid "LC_Page_Install_023"
+msgstr "管理機能：SSL制限"
+
+msgid "LC_Page_Install_024"
+msgstr "管理機能：IP制限"
+
+msgid "LC_Page_Install_025"
+msgstr "URL(通常)"
+
+msgid "LC_Page_Install_026"
+msgstr "URL(セキュア)"
+
+msgid "LC_Page_Install_027"
+msgstr "ドメイン"
+
+msgid "LC_Page_Install_028"
+msgstr "メーラーバックエンド"
+
+msgid "LC_Page_Install_029"
+msgstr "SMTPホスト"
+
+msgid "LC_Page_Install_030"
+msgstr "SMTPポート"
+
+msgid "LC_Page_Install_031"
+msgstr "SMTPユーザー"
+
+msgid "LC_Page_Install_032"
+msgstr "SMTPパスワード"
+
+msgid "LC_Page_Install_033"
+msgstr "DBの種類"
+
+msgid "LC_Page_Install_034"
+msgstr "DBサーバー"
+
+msgid "LC_Page_Install_035"
+msgstr "DBポート"
+
+msgid "LC_Page_Install_036"
+msgstr "DB名"
+
+msgid "LC_Page_Install_037"
+msgstr "DBユーザ"
+
+msgid "LC_Page_Install_038"
+msgstr "DBパスワード"
+
+msgid "LC_Page_Install_039"
+msgstr "※ URLに異なる階層を指定することはできません。"
+
+msgid "LC_Page_Install_040"
+msgstr "※ URLに異なる階層を指定することはできません。"
+
+msgid "LC_Page_Install_041"
+msgstr "管理者：ログインID"
+
+msgid "LC_Page_Install_042"
+msgstr "管理者：パスワード"
+
+msgid "LC_Page_Install_043"
+msgstr "管理機能：ディレクトリ"
+
+msgid "LC_Page_Install_044"
+msgstr ""
+"※ 指定した管理機能ディレクトリは既に存在しています。別の名前を指定してくださ"
+"い。"
+
+msgid "LC_Page_Install_045"
+msgstr ">> スクリプトファイルが見つかりません"
+
+msgid "LC_Page_Install_046"
+msgstr ">> テーブル構成の変更に失敗しました。<br />"
+
+msgid "LC_Page_Install_047"
+msgstr ""
+"※ 指定した管理機能ディレクトリは既に存在しています。別の名前を指定してくださ"
+"い。"
+
+msgid "LC_Page_Install_048"
+msgstr ""
+"※ T_FIELDへのリネームに失敗しました。ディレクトリの権限を確認してください。"
 
 msgid "LC_Page_Admin_Basis_001"
 msgstr "基本情報管理"

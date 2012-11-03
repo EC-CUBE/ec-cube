@@ -62,7 +62,7 @@ $objDb = new SC_Helper_DB_Ex();
 $temp_dir = $ownDir . 'temp';
 
 if (!is_writable($temp_dir)) {
-    SC_Utils_Ex::sfErrorHeader($temp_dir . 'にユーザ書込み権限(777, 707等)を付与して下さい。', true);
+    SC_Utils_Ex::sfErrorHeader(SC_I18n_Ex::t('LC_Page_Install_001', array('T_FIELD' => $temp_dir)), true);
     exit;
 }
 
@@ -136,18 +136,18 @@ switch ($mode) {
         // テーブルの作成
         $objPage->arrErr = lfExecuteSQL('./sql/create_table_' . $arrDsn['phptype'] . '.sql', $arrDsn);
         if (count($objPage->arrErr) == 0) {
-            $objPage->tpl_message .= '○：テーブルの作成に成功しました。<br />';
+            $objPage->tpl_message .= SC_I18n_Ex::t('LC_Page_Install_002');
         } else {
-            $objPage->tpl_message .= '×：テーブルの作成に失敗しました。<br />';
+            $objPage->tpl_message .= SC_I18n_Ex::t('LC_Page_Install_003');
         }
 
         // 初期データの作成
         if (count($objPage->arrErr) == 0) {
             $objPage->arrErr = lfExecuteSQL('./sql/insert_data.sql', $arrDsn);
             if (count($objPage->arrErr) == 0) {
-                $objPage->tpl_message .= '○：初期データの作成に成功しました。<br />';
+                $objPage->tpl_message .= SC_I18n_Ex::t('LC_Page_Install_004');
             } else {
-                $objPage->tpl_message .= '×：初期データの作成に失敗しました。<br />';
+                $objPage->tpl_message .= SC_I18n_Ex::t('LC_Page_Install_005');
             }
         }
 
@@ -155,9 +155,9 @@ switch ($mode) {
         if (count($objPage->arrErr) == 0) {
             $objPage->arrErr = lfCreateSequence(getSequences(), $arrDsn);
             if (count($objPage->arrErr) == 0) {
-                $objPage->tpl_message .= '○：シーケンスの作成に成功しました。<br />';
+                $objPage->tpl_message .= SC_I18n_Ex::t('LC_Page_Install_006');
             } else {
-                $objPage->tpl_message .= '×：シーケンスの作成に失敗しました。<br />';
+                $objPage->tpl_message .= SC_I18n_Ex::t('LC_Page_Install_007');
             }
         }
 
@@ -180,9 +180,9 @@ switch ($mode) {
         if (count($objPage->arrErr) == 0) {
             $objPage->arrErr = lfExecuteSQL('./sql/drop_table.sql', $arrDsn, false);
             if (count($objPage->arrErr) == 0) {
-                $objPage->tpl_message .= '○：テーブルの削除に成功しました。<br />';
+                $objPage->tpl_message .= SC_I18n_Ex::t('LC_Page_Install_008');
             } else {
-                $objPage->tpl_message .= '×：テーブルの削除に失敗しました。<br />';
+                $objPage->tpl_message .= SC_I18n_Ex::t('LC_Page_Install_009');
             }
         }
 
@@ -190,9 +190,9 @@ switch ($mode) {
         if (count($objPage->arrErr) == 0) {
             $objPage->arrErr = lfDropSequence(getSequences(), $arrDsn);
             if (count($objPage->arrErr) == 0) {
-                $objPage->tpl_message .= '○：シーケンスの削除に成功しました。<br />';
+                $objPage->tpl_message .= SC_I18n_Ex::t('LC_Page_Install_010');
             } else {
-                $objPage->tpl_message .= '×：シーケンスの削除に失敗しました。<br />';
+                $objPage->tpl_message .= SC_I18n_Ex::t('LC_Page_Install_011');
             }
         }
 
@@ -346,33 +346,33 @@ function lfDispStep0($objPage) {
                 // ディレクトリの場合
                 if (is_dir($path)) {
                     if (!is_writable($path)) {
-                        $mess .= ">> ×：$real_path($filemode) \nユーザ書込み権限(777, 707等)を付与して下さい。\n";
+                        $mess .= SC_I18n_Ex::t('LC_Page_Install_012', array('T_FIELD01' => $real_path, 'T_FIELD02' => $filemode));
                         $hasErr = true;
                     } else {
                         GC_Utils_Ex::gfPrintLog('WRITABLE：' . $path, INSTALL_LOG);
                     }
                 } else {
                     if (!is_writable($path)) {
-                        $mess .= ">> ×：$real_path($filemode) \nユーザ書込み権限(666, 606等)を付与して下さい。\n";
+                        $mess .= SC_I18n_Ex::t('LC_Page_Install_013', array('T_FIELD01' => $real_path, 'T_FIELD02' => $filemode));
                         $hasErr = true;
                     } else {
                         GC_Utils_Ex::gfPrintLog('WRITABLE：' . $path, INSTALL_LOG);
                     }
                 }
             } else {
-                $mess .= ">> ×：$path が見つかりません。\n";
+                $mess .= SC_I18n_Ex::t('LC_Page_Install_014', array('T_FIELD' => $path));
                 $hasErr = true;
             }
         }
     }
 
     if (ini_get('safe_mode')) {
-        $mess .= ">> ×：PHPのセーフモードが有効になっています。\n";
+        $mess .= SC_I18n_Ex::t('LC_Page_Install_015');
         $hasErr = true;
     }
 
     if (get_magic_quotes_gpc()) {
-        $mess .= ">> ×：PHPの設定ディレクティブ「magic_quotes_gpc」が有効になっています。\n";
+        $mess .= SC_I18n_Ex::t('LC_Page_Install_016');
         $hasErr = true;
     }
 
@@ -436,7 +436,7 @@ function lfDispStep0($objPage) {
         if (!file_exists($path)) {
             mkdir($path);
         }
-        $mess .= '>> ○：アクセス権限は正常です。';
+        $mess .= SC_I18n_Ex::t('LC_Page_Install_017');
     }
 
     $objPage->mess = $mess;
@@ -681,21 +681,21 @@ function lfInitWebParam($objWebParam) {
         $smtp_password = SMTP_PASSWORD;
     }
 
-    $objWebParam->addParam('店名', 'shop_name', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $shop_name);
-    $objWebParam->addParam('管理者：メールアドレス', 'admin_mail', null, '', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'), $admin_mail);
-    $objWebParam->addParam('管理者：ログインID', 'login_id', ID_MAX_LEN, '', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'));
-    $objWebParam->addParam('管理者：パスワード', 'login_pass', ID_MAX_LEN, '', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'));
-    $objWebParam->addParam('管理機能：ディレクトリ', 'admin_dir', ID_MAX_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'), $oldAdminDir);
-    $objWebParam->addParam('管理機能：SSL制限', 'admin_force_ssl', 1, 'n', array('SPTAB_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'), $admin_force_ssl);
-    $objWebParam->addParam('管理機能：IP制限', 'admin_allow_hosts', LTEXT_LEN, 'an', array('IP_CHECK', 'MAX_LENGTH_CHECK'), $admin_allow_hosts);
-    $objWebParam->addParam('URL(通常)', 'normal_url', MTEXT_LEN, '', array('EXIST_CHECK', 'URL_CHECK', 'MAX_LENGTH_CHECK'), $normal_url);
-    $objWebParam->addParam('URL(セキュア)', 'secure_url', MTEXT_LEN, '', array('EXIST_CHECK', 'URL_CHECK', 'MAX_LENGTH_CHECK'), $secure_url);
-    $objWebParam->addParam('ドメイン', 'domain', MTEXT_LEN, '', array('MAX_LENGTH_CHECK'));
-    $objWebParam->addParam('メーラーバックエンド', 'mail_backend', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'EXIST_CHECK'), $mail_backend);
-    $objWebParam->addParam('SMTPホスト', 'smtp_host', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'), $smtp_host);
-    $objWebParam->addParam('SMTPポート', 'smtp_port', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $smtp_port);
-    $objWebParam->addParam('SMTPユーザー', 'smtp_user', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'), $smtp_user);
-    $objWebParam->addParam('SMTPパスワード', 'smtp_password', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'), $smtp_password);
+    $objWebParam->addParam(SC_I18n_Ex::t('LC_Page_Install_018'), 'shop_name', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $shop_name);
+    $objWebParam->addParam(SC_I18n_Ex::t('LC_Page_Install_019'), 'admin_mail', null, '', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'), $admin_mail);
+    $objWebParam->addParam(SC_I18n_Ex::t('LC_Page_Install_020'), 'login_id', ID_MAX_LEN, '', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'));
+    $objWebParam->addParam(SC_I18n_Ex::t('LC_Page_Install_021'), 'login_pass', ID_MAX_LEN, '', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'));
+    $objWebParam->addParam(SC_I18n_Ex::t('LC_Page_Install_022'), 'admin_dir', ID_MAX_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'), $oldAdminDir);
+    $objWebParam->addParam(SC_I18n_Ex::t('LC_Page_Install_023'), 'admin_force_ssl', 1, 'n', array('SPTAB_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'), $admin_force_ssl);
+    $objWebParam->addParam(SC_I18n_Ex::t('LC_Page_Install_024'), 'admin_allow_hosts', LTEXT_LEN, 'an', array('IP_CHECK', 'MAX_LENGTH_CHECK'), $admin_allow_hosts);
+    $objWebParam->addParam(SC_I18n_Ex::t('LC_Page_Install_025'), 'normal_url', MTEXT_LEN, '', array('EXIST_CHECK', 'URL_CHECK', 'MAX_LENGTH_CHECK'), $normal_url);
+    $objWebParam->addParam(SC_I18n_Ex::t('LC_Page_Install_026'), 'secure_url', MTEXT_LEN, '', array('EXIST_CHECK', 'URL_CHECK', 'MAX_LENGTH_CHECK'), $secure_url);
+    $objWebParam->addParam(SC_I18n_Ex::t('LC_Page_Install_027'), 'domain', MTEXT_LEN, '', array('MAX_LENGTH_CHECK'));
+    $objWebParam->addParam(SC_I18n_Ex::t('LC_Page_Install_028'), 'mail_backend', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'EXIST_CHECK'), $mail_backend);
+    $objWebParam->addParam(SC_I18n_Ex::t('LC_Page_Install_029'), 'smtp_host', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'), $smtp_host);
+    $objWebParam->addParam(SC_I18n_Ex::t('LC_Page_Install_030'), 'smtp_port', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $smtp_port);
+    $objWebParam->addParam(SC_I18n_Ex::t('LC_Page_Install_031'), 'smtp_user', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'), $smtp_user);
+    $objWebParam->addParam(SC_I18n_Ex::t('LC_Page_Install_032'), 'smtp_password', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'), $smtp_password);
 
     return $objWebParam;
 }
@@ -733,12 +733,12 @@ function lfInitDBParam($objDBParam) {
         $db_user = 'eccube_db_user';
     }
 
-    $objDBParam->addParam('DBの種類', 'db_type', INT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $db_type);
-    $objDBParam->addParam('DBサーバー', 'db_server', MTEXT_LEN, '', array('MAX_LENGTH_CHECK'), $db_server);
-    $objDBParam->addParam('DBポート', 'db_port', INT_LEN, '', array('MAX_LENGTH_CHECK'), $db_port);
-    $objDBParam->addParam('DB名', 'db_name', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $db_name);
-    $objDBParam->addParam('DBユーザ', 'db_user', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $db_user);
-    $objDBParam->addParam('DBパスワード', 'db_password', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+    $objDBParam->addParam(SC_I18n_Ex::t('LC_Page_Install_033'), 'db_type', INT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $db_type);
+    $objDBParam->addParam(SC_I18n_Ex::t('LC_Page_Install_034'), 'db_server', MTEXT_LEN, '', array('MAX_LENGTH_CHECK'), $db_server);
+    $objDBParam->addParam(SC_I18n_Ex::t('LC_Page_Install_035'), 'db_port', INT_LEN, '', array('MAX_LENGTH_CHECK'), $db_port);
+    $objDBParam->addParam(SC_I18n_Ex::t('LC_Page_Install_036'), 'db_name', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $db_name);
+    $objDBParam->addParam(SC_I18n_Ex::t('LC_Page_Install_037'), 'db_user', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $db_user);
+    $objDBParam->addParam(SC_I18n_Ex::t('LC_Page_Install_038'), 'db_password', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
 
     return $objDBParam;
 }
@@ -755,23 +755,23 @@ function lfCheckWebError($objWebParam) {
     $secure_dir = preg_replace('|^https?://[a-zA-Z0-9_~=&\?\.\-]+|', '', $arrRet['secure_url']);
 
     if ($normal_dir != $secure_dir) {
-        $objErr->arrErr['normal_url'] = '※ URLに異なる階層を指定することはできません。';
-        $objErr->arrErr['secure_url'] = '※ URLに異なる階層を指定することはできません。';
+        $objErr->arrErr['normal_url'] = SC_I18n_Ex::t('LC_Page_Install_039');
+        $objErr->arrErr['secure_url'] = SC_I18n_Ex::t('LC_Page_Install_040');
     }
 
     // ログインIDチェック
-    $objErr->doFunc(array('管理者：ログインID', 'login_id', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK', 'NUM_RANGE_CHECK'));
+    $objErr->doFunc(array(SC_I18n_Ex::t('LC_Page_Install_041'), 'login_id', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK', 'NUM_RANGE_CHECK'));
 
     // パスワードのチェック
-    $objErr->doFunc(array('管理者：パスワード', 'login_pass', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK', 'NUM_RANGE_CHECK'));
+    $objErr->doFunc(array(SC_I18n_Ex::t('LC_Page_Install_042'), 'login_pass', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK', 'NUM_RANGE_CHECK'));
 
     // 管理機能ディレクトリのチェック
-    $objErr->doFunc(array('管理機能：ディレクトリ', 'admin_dir', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK', 'NUM_RANGE_CHECK'));
+    $objErr->doFunc(array(SC_I18n_Ex::t('LC_Page_Install_043'), 'admin_dir', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK', 'NUM_RANGE_CHECK'));
 
     $oldAdminDir = SC_Utils_Ex::sfTrimURL(ADMIN_DIR);
     $newAdminDir = $objWebParam->getValue('admin_dir');
     if ($oldAdminDir !== $newAdminDir AND file_exists(HTML_REALDIR . $newAdminDir) and $newAdminDir != 'admin') {
-        $objErr->arrErr['admin_dir'] = '※ 指定した管理機能ディレクトリは既に存在しています。別の名前を指定してください。';
+        $objErr->arrErr['admin_dir'] = SC_I18n_Ex::t('LC_Page_Install_044');
     }
 
     return $objErr->arrErr;
@@ -813,7 +813,7 @@ function lfExecuteSQL($filepath, $arrDsn, $disp_err = true) {
     $arrErr = array();
 
     if (!file_exists($filepath)) {
-        $arrErr['all'] = '>> スクリプトファイルが見つかりません';
+        $arrErr['all'] = SC_I18n_Ex::t('LC_Page_Install_045');
     } else {
         if ($fp = fopen($filepath, 'r')) {
             $sql = fread($fp, filesize($filepath));
@@ -843,7 +843,7 @@ function lfExecuteSQL($filepath, $arrDsn, $disp_err = true) {
                         // エラー文を取得する
                         preg_match('/\[(.*)\]/', $ret->userinfo, $arrKey);
                         $arrErr['all'] .= $arrKey[0] . '<br />';
-                        $objPage->update_mess .= '>> テーブル構成の変更に失敗しました。<br />';
+                        $objPage->update_mess .= SC_I18n_Ex::t('LC_Page_Install_046');
                         GC_Utils_Ex::gfPrintLog($ret->userinfo, INSTALL_LOG);
                         break;
                     } else {
@@ -1110,10 +1110,10 @@ function renameAdminDir($adminDir) {
         return true;
     }
     if (file_exists(HTML_REALDIR . $adminDir)) {
-        return '※ 指定した管理機能ディレクトリは既に存在しています。別の名前を指定してください。';
+        return SC_I18n_Ex::t('LC_Page_Install_047');
     }
     if (!rename(HTML_REALDIR . $oldAdminDir, HTML_REALDIR . $adminDir)) {
-        return '※ ' . HTML_REALDIR . $adminDir . 'へのリネームに失敗しました。ディレクトリの権限を確認してください。';
+        return  SC_I18n_Ex::t('LC_Page_Install_048', array('T_FIELD' => HTML_REALDIR . $adminDir));
     }
     return true;
 }
