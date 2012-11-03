@@ -129,7 +129,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
             $arrForm = $objFormParam->getHashArray();
             // ログインチェック
             if (!$this->lfIsLoginMember($arrForm['login_id'], $arrForm['password'])) {
-                $arrErr['password'] = 'ログイン出来ません。';
+                $arrErr['password'] = SC_I18n_Ex::t('LC_Page_Admin_Index_001');
                 $this->lfSetIncorrectData($arrForm['login_id']);
             }
         }

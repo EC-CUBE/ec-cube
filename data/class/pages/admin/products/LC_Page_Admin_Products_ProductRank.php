@@ -46,8 +46,8 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'products/product_rank.tpl';
         $this->tpl_mainno = 'products';
         $this->tpl_subno = 'product_rank';
-        $this->tpl_maintitle = '商品管理';
-        $this->tpl_subtitle = '商品並び替え';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_007');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Products_ProductRank_001');
     }
 
     /**

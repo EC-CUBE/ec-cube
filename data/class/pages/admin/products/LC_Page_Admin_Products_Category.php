@@ -45,8 +45,8 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_maintitle = '商品管理';
-        $this->tpl_subtitle = 'カテゴリ登録';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_007');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Products_Category_001');
         $this->tpl_mainpage = 'products/category.tpl';
         $this->tpl_mainno = 'products';
         $this->tpl_subno  = 'category';
@@ -208,7 +208,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         $where = 'parent_category_id = ? AND del_flg = 0';
         $exists = $objQuery->exists('dtb_category', $where, array($category_id));
         if ($exists) {
-            $this->arrErr['category_name'] = '※ 子カテゴリが存在するため削除できません。<br/>';
+            $this->arrErr['category_name'] = SC_I18n_Ex::t('LC_Page_Admin_Products_Category_002');
             return;
         }
         // 登録商品のチェック
@@ -216,7 +216,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         $where = 'T1.category_id = ? AND T2.del_flg = 0';
         $exists = $objQuery->exists($table, $where, array($category_id));
         if ($exists) {
-            $this->arrErr['category_name'] = '※ カテゴリ内に商品が存在するため削除できません。<br/>';
+            $this->arrErr['category_name'] = SC_I18n_Ex::t('LC_Page_Admin_Products_Category_003');
             return;
         }
 
@@ -311,13 +311,13 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
             $where = 'del_flg = 0';
             $count = $objQuery->count('dtb_category', $where);
             if ($count >= CATEGORY_MAX) {
-                $arrErr['category_name'] = '※ カテゴリの登録最大数を超えました。<br/>';
+                $arrErr['category_name'] = SC_I18n_Ex::t('LC_Page_Admin_Products_Category_004');
                 return $arrErr;
             }
 
             // 階層上限チェック
             if ($this->isOverLevel($parent_category_id)) {
-                $arrErr['category_name'] = '※ ' . LEVEL_MAX . '階層以上の登録はできません。<br/>';
+                $arrErr['category_name'] = SC_I18n_Ex::t('LC_Page_Admin_Products_Category_005', array('T_FIELD' => LEVEL_MAX));
                 return $arrErr;
             }
         }
@@ -334,7 +334,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         }
         $exists = $objQuery->exists('dtb_category', $where, $arrWhereVal);
         if ($exists) {
-            $arrErr['category_name'] = '※ 既に同じ内容の登録が存在します。<br/>';
+            $arrErr['category_name'] = SC_I18n_Ex::t('LC_Page_Admin_Products_Category_006');
             return $arrErr;
         }
 

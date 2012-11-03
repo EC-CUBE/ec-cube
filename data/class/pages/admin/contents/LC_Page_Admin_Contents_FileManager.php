@@ -46,8 +46,8 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'contents/file_manager.tpl';
         $this->tpl_mainno = 'contents';
         $this->tpl_subno = 'file';
-        $this->tpl_maintitle = 'コンテンツ管理';
-        $this->tpl_subtitle = 'ファイル管理';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_005');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Contents_FileManager_002');
 
     }
 
@@ -126,7 +126,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
                 $this->arrErr = $objFormParam->checkError();
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     if (is_dir($objFormParam->getValue('select_file'))) {
-                        $disp_error = '※ ディレクトリをダウンロードすることは出来ません。<br/>';
+                        $disp_error = SC_I18n_Ex::t('LC_Page_Admin_Contents_FileManager_003');
                         $this->setDispError('select_file', $disp_error);
                     } else {
 
@@ -158,10 +158,10 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
                 $this->arrErr = $objFormParam->checkError();
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     if (!$this->tryCreateDir($objFileManager, $objFormParam)) {
-                        $disp_error = '※ '.htmlspecialchars($objFormParam->getValue('create_file'), ENT_QUOTES).'の作成に失敗しました。<br/>';
+                        $disp_error = SC_I18n_Ex::t('LC_Page_Admin_Contents_FileManager_005', array('T_FILED', htmlspecialchars($objFormParam->getValue('create_file'), ENT_QUOTES)));
                         $this->setDispError('create_file', $disp_error);
                     } else {
-                        $tpl_onload = "alert('フォルダを作成しました。');";
+                        $tpl_onload = "alert('" . SC_I18n_Ex::t('ALERT_009') . "');";
                         $this->setTplOnLoad($tpl_onload);
                     }
                 }
@@ -171,7 +171,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
                 // 画像保存処理
                 $ret = $objUpFile->makeTempFile('upload_file', false);
                 if (SC_Utils_Ex::isBlank($ret)) {
-                    $tpl_onload = "alert('ファイルをアップロードしました。');";
+                    $tpl_onload = "alert('" . SC_I18n_Ex::t('ALERT_010') . "');";
                     $this->setTplOnLoad($tpl_onload);
                 } else {
                     $this->setDispError('upload_file', $ret);

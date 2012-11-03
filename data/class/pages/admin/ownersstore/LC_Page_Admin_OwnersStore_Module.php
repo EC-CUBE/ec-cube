@@ -48,8 +48,8 @@ class LC_Page_Admin_OwnersStore_Module extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'ownersstore/module.tpl';
         $this->tpl_mainno   = 'ownersstore';
         $this->tpl_subno    = 'module';
-        $this->tpl_maintitle = 'オーナーズストア';
-        $this->tpl_subtitle = 'モジュール管理';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_008');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_OwnersStore_Module_001');
     }
 
     /**

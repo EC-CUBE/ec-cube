@@ -45,7 +45,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'home.tpl';
-        $this->tpl_subtitle = 'ホーム';
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Home_001');
     }
 
     /**
@@ -324,7 +324,7 @@ __EOS__;
         $arrTmpData = is_string($jsonStr) ? SC_Utils_Ex::jsonDecode($jsonStr) : null;
 
         if (empty($arrTmpData)) {
-            SC_Utils_Ex::sfErrorHeader('>> 更新情報の取得に失敗しました。');
+            SC_Utils_Ex::sfErrorHeader(SC_I18n_Ex::t('LC_Page_Admin_Home_002'));
             return array();
         }
         $arrInfo = array();

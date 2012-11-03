@@ -46,8 +46,8 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'basis/point.tpl';
         $this->tpl_subno = 'point';
         $this->tpl_mainno = 'basis';
-        $this->tpl_maintitle = '基本情報管理';
-        $this->tpl_subtitle = 'ポイント設定';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_006');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Basis_Point_002');
     }
 
     /**
@@ -98,7 +98,7 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex {
                         break;
                 }
                 // 再表示
-                $this->tpl_onload = "window.alert('ポイント設定が完了しました。');";
+                $this->tpl_onload = "window.alert('" . SC_I18n_Ex::t('ALERT_007') . "');";
             }
         } else {
             $arrCol = $objFormParam->getKeyList(); // キー名一覧を取得

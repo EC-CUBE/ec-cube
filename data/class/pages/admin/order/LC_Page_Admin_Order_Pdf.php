@@ -46,17 +46,17 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'order/pdf_input.tpl';
         $this->tpl_mainno = 'order';
         $this->tpl_subno = 'pdf';
-        $this->tpl_maintitle = '受注管理';
-        $this->tpl_subtitle = '帳票出力';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_001');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Order_Pdf_001');
 
         $this->SHORTTEXT_MAX = STEXT_LEN;
         $this->MIDDLETEXT_MAX = MTEXT_LEN;
         $this->LONGTEXT_MAX = LTEXT_LEN;
 
-        $this->arrType[0]  = '納品書';
+        $this->arrType[0]  = SC_I18n_Ex::t('LC_Page_Admin_Order_Pdf_002');
 
-        $this->arrDownload[0] = 'ブラウザに開く';
-        $this->arrDownload[1] = 'ファイルに保存';
+        $this->arrDownload[0] = SC_I18n_Ex::t('LC_Page_Admin_Order_Pdf_003');
+        $this->arrDownload[1] = SC_I18n_Ex::t('LC_Page_Admin_Order_Pdf_004');
     }
 
     /**
@@ -119,7 +119,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         // ここが$arrFormの初登場ということを明示するため宣言する。
         $arrForm = array();
         // タイトルをセット
-        $arrForm['title'] = 'お買上げ明細書(納品書)';
+        $arrForm['title'] = SC_I18n_Ex::t('LC_Page_Admin_Order_Pdf_005');
 
         // 今日の日付をセット
         $arrForm['year']  = date('Y');
@@ -127,9 +127,9 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         $arrForm['day']   = date('d');
 
         // メッセージ
-        $arrForm['msg1'] = 'このたびはお買上げいただきありがとうございます。';
-        $arrForm['msg2'] = '下記の内容にて納品させていただきます。';
-        $arrForm['msg3'] = 'ご確認くださいますよう、お願いいたします。';
+        $arrForm['msg1'] = SC_I18n_Ex::t('LC_Page_Admin_Order_Pdf_006');
+        $arrForm['msg2'] = SC_I18n_Ex::t('LC_Page_Admin_Order_Pdf_007');
+        $arrForm['msg3'] = SC_I18n_Ex::t('LC_Page_Admin_Order_Pdf_008');
 
         // 注文番号があったら、セットする
         if (SC_Utils_Ex::sfIsInt($order_id)) {
@@ -213,23 +213,23 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
 
         $year = $objFormParam->getValue('year');
         if (!is_numeric($year)) {
-            $arrErr['year'] = '発行年は数値で入力してください。';
+            $arrErr['year'] = SC_I18n_Ex::t('LC_Page_Admin_Order_Pdf_009');
         }
 
         $month = $objFormParam->getValue('month');
         if (!is_numeric($month)) {
-            $arrErr['month'] = '発行月は数値で入力してください。';
+            $arrErr['month'] = SC_I18n_Ex::t('LC_Page_Admin_Order_Pdf_010');
         } else if (0 >= $month && 12 < $month) {
 
-            $arrErr['month'] = '発行月は1〜12の間で入力してください。';
+            $arrErr['month'] = SC_I18n_Ex::t('LC_Page_Admin_Order_Pdf_011');
         }
 
         $day = $objFormParam->getValue('day');
         if (!is_numeric($day)) {
-            $arrErr['day'] = '発行日は数値で入力してください。';
+            $arrErr['day'] = SC_I18n_Ex::t('LC_Page_Admin_Order_Pdf_012');
         } else if (0 >= $day && 31 < $day) {
 
-            $arrErr['day'] = '発行日は1〜31の間で入力してください。';
+            $arrErr['day'] = SC_I18n_Ex::t('LC_Page_Admin_Order_Pdf_013');
         }
 
         return $arrErr;

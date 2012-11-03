@@ -50,7 +50,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrAUTHORITY = $masterData->getMasterData('mtb_authority');
 
-        $this->tpl_subtitle = 'メンバー登録/編集';
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_System_Input_001');
         $this->httpCacheControl('nocache');
     }
 
@@ -242,11 +242,11 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         case 'new':
             // 管理者名が登録済みでないか
             if ($this->memberDataExists('name = ? AND del_flg = 0', $arrParams['name'])) {
-                $arrErr['name'] = '既に登録されている名前なので利用できません。<br>';
+                $arrErr['name'] = SC_I18n_Ex::t('LC_Page_Admin_System_Input_002');
             }
             // ログインIDが登録済みでないか
             if ($this->memberDataExists('login_id = ? AND del_flg = 0', $arrParams['login_id'])) {
-                $arrErr['login_id'] = '既に登録されているIDなので利用できません。<br>';
+                $arrErr['login_id'] = SC_I18n_Ex::t('LC_Page_Admin_System_Input_003');
             }
             break;
         case 'edit':
@@ -254,7 +254,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
             if ($arrParams['login_id'] != $arrParams['old_login_id']) {
                 // ログインIDが登録済みでないか
                 if ($this->memberDataExists('login_id = ? AND del_flg = 0', $arrParams['login_id'])) {
-                    $arrErr['login_id'] = '既に登録されているIDなので利用できません。<br>';
+                    $arrErr['login_id'] = SC_I18n_Ex::t('LC_Page_Admin_System_Input_004');
                 }
             }
             break;

@@ -47,8 +47,8 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'order';
         $this->tpl_subno = 'index';
         $this->tpl_pager = 'pager.tpl';
-        $this->tpl_maintitle = '受注管理';
-        $this->tpl_subtitle = '受注管理';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_001');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Order_001');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrORDERSTATUS = $masterData->getMasterData('mtb_order_status');

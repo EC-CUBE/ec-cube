@@ -46,8 +46,8 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'order/product_select.tpl';
         $this->tpl_mainno = 'order';
         $this->tpl_subno = '';
-        $this->tpl_maintitle = '受注管理';
-        $this->tpl_subtitle = '商品選択';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_001');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Order_ProductSelect_001');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPRODUCTSTATUS_COLOR = $masterData->getMasterData('mtb_product_status_color');

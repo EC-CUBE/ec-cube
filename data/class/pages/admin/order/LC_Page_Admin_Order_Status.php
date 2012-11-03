@@ -46,8 +46,8 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'order/status.tpl';
         $this->tpl_mainno = 'order';
         $this->tpl_subno = 'status';
-        $this->tpl_maintitle = '受注管理';
-        $this->tpl_subtitle = '対応状況管理';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_001');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Order_Status_001');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrORDERSTATUS = $masterData->getMasterData('mtb_order_status');
@@ -220,7 +220,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
 
         $objQuery->commit();
 
-        $this->tpl_onload = "window.alert('選択項目を" . $arrORDERSTATUS[$statusId] . "へ移動しました。');";
+        $this->tpl_onload = "window.alert('" . SC_I18n_Ex::t('ALERT_014', array('T_FIELD' => $arrORDERSTATUS[$statusId])) . "');";
         return true;
     }
 
@@ -247,7 +247,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
 
         $objQuery->commit();
 
-        $this->tpl_onload = "window.alert('選択項目を削除しました。');";
+        $this->tpl_onload = "window.alert('" . SC_I18n_Ex::t('ALERT_015') . "');";
         return true;
     }
 }

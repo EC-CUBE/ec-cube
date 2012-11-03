@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2012-11-03 16:32+0900\n"
+"PO-Revision-Date: 2012-11-03 20:05+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -613,6 +613,9 @@ msgstr "商品ID種別"
 
 msgid "PARAM_LABEL_ITEMID"
 msgstr "指定ID"
+
+msgid "PARAM_LABEL_CSV_FILE"
+msgstr "CSVファイル"
 
 msgid "PARAM_LABEL_RELATEDITEMSPAGE"
 msgstr "関連商品数"
@@ -1772,6 +1775,134 @@ msgstr "詳細-サブ画像T_FIELD"
 msgid "PARAM_LABEL_DETAIL_SUB_LARGE_IMAGE_CNT"
 msgstr "詳細-サブ拡大画像T_FIELD"
 
+msgid "PARAM_LABEL_CSV_SQL"
+msgstr "SQL文には読み込み関係以外のSQLコマンドおよび\";\"記号"
+
+msgid "PARAM_LABEL_PUBLIC_KEY"
+msgstr "認証キー"
+
+msgid "ALERT_001"
+msgstr "編集が完了しました"
+
+msgid "ALERT_002"
+msgstr "削除しました"
+
+msgid "ALERT_003"
+msgstr "正常に更新されました。"
+
+msgid "ALERT_004"
+msgstr "登録が完了しました。"
+
+msgid "ALERT_005"
+msgstr "配送方法設定が完了しました。"
+
+msgid "ALERT_006"
+msgstr "メール設定が完了しました。テンプレートを選択して内容をご確認ください。"
+
+msgid "ALERT_007"
+msgstr "ポイント設定が完了しました。"
+
+msgid "ALERT_008"
+msgstr "特定商取引法の登録が完了しました。"
+
+msgid "ALERT_009"
+msgstr "フォルダを作成しました。"
+
+msgid "ALERT_010"
+msgstr "ファイルをアップロードしました。"
+
+msgid "ALERT_011"
+msgstr "削除が完了しました。"
+
+msgid "ALERT_012"
+msgstr "テンプレートファイルをアップロードしました。"
+
+msgid "ALERT_013"
+msgstr "メール送信IDが正しくありません"
+
+msgid "ALERT_014"
+msgstr "選択項目をT_FIELDへ移動しました。"
+
+msgid "ALERT_015"
+msgstr "選択項目を削除しました。"
+
+msgid "ALERT_016"
+msgstr "プラグインをインストールしました。"
+
+msgid "ALERT_017"
+msgstr "T_FIELDを削除しました。"
+
+msgid "ALERT_018"
+msgstr "T_FIELDを有効にしました。"
+
+msgid "ALERT_019"
+msgstr "T_FIELDを無効にしました。"
+
+msgid "ALERT_020"
+msgstr "プラグインをアップデートしました。"
+
+msgid "ALERT_021"
+msgstr "登録しました。"
+
+msgid "ALERT_022"
+msgstr ""
+"管理機能の設定を変更しました。URLを変更した場合は、新しいURLにアクセスしてく"
+"ださい。"
+
+msgid "ALERT_023"
+msgstr "設定内容に誤りがあります。設定内容を確認してください。"
+
+msgid "ALERT_024"
+msgstr "バックアップ完了しました"
+
+msgid "ALERT_025"
+msgstr "変更対象となるデータはありませんでした。"
+
+msgid "ALERT_026"
+msgstr "インデックスの変更が完了しました。"
+
+msgid "ALERT_027"
+msgstr "不正なデータがあったため処理を中断しました。"
+
+msgid "ALERT_028"
+msgstr "マスターデータの設定が完了しました。"
+
+msgid "ALERT_029"
+msgstr "パラメーターの設定が完了しました。"
+
+msgid "ALERT_030"
+msgstr "エラーが発生しました。入力内容をご確認下さい。"
+
+msgid "TPL_MAINTITLE_001"
+msgstr "受注管理"
+
+msgid "TPL_MAINTITLE_002"
+msgstr "メルマガ管理"
+
+msgid "TPL_MAINTITLE_003"
+msgstr "デザイン管理"
+
+msgid "TPL_MAINTITLE_004"
+msgstr "会員管理"
+
+msgid "TPL_MAINTITLE_005"
+msgstr "コンテンツ管理"
+
+msgid "TPL_MAINTITLE_006"
+msgstr "基本情報管理"
+
+msgid "TPL_MAINTITLE_007"
+msgstr "商品管理"
+
+msgid "TPL_MAINTITLE_008"
+msgstr "オーナーズストア"
+
+msgid "TPL_MAINTITLE_009"
+msgstr "システム設定"
+
+msgid "TPL_MAINTITLE_010"
+msgstr "売上集計"
+
 msgid "FORMAT_DATE_LONG"
 msgstr "Y年m月d日H時i分"
 
@@ -2194,3 +2325,912 @@ msgstr "インストール/アップデートに成功しました。"
 
 msgid "LC_Page_001"
 msgstr "前方互換用メソッドが使用されました。"
+
+msgid "LC_Page_Admin_Basis_001"
+msgstr "基本情報管理"
+
+msgid "LC_Page_Admin_Basis_002"
+msgstr "SHOPマスター"
+
+msgid "LC_Page_Admin_Basis_003"
+msgstr "日"
+
+msgid "LC_Page_Admin_Basis_004"
+msgstr "月"
+
+msgid "LC_Page_Admin_Basis_005"
+msgstr "火"
+
+msgid "LC_Page_Admin_Basis_006"
+msgstr "水"
+
+msgid "LC_Page_Admin_Basis_007"
+msgstr "木"
+
+msgid "LC_Page_Admin_Basis_008"
+msgstr "金"
+
+msgid "LC_Page_Admin_Basis_009"
+msgstr "土"
+
+msgid "LC_Page_Admin_Basis_011"
+msgstr "SHOPマスターの登録が完了しました。"
+
+msgid "LC_Page_Admin_Basis_012"
+msgstr "dtb_baseinfo に UPDATE を実行しました。"
+
+msgid "LC_Page_Admin_Basis_013"
+msgstr "dtb_baseinfo に INSERT を実行しました。"
+
+msgid "LC_Page_Admin_Basis_Delivery_001"
+msgstr "基本情報管理"
+
+msgid "LC_Page_Admin_Basis_Delivery_002"
+msgstr "配送方法設定"
+
+msgid "LC_Page_Admin_Basis_DeliveryInput_001"
+msgstr "基本情報管理"
+
+msgid "LC_Page_Admin_Basis_DeliveryInput_002"
+msgstr "配送方法設定"
+
+msgid "LC_Page_Admin_Basis_DeliveryInput_004"
+msgstr "お届け時間T_FIELD"
+
+msgid "LC_Page_Admin_Basis_DeliveryInput_005"
+msgstr "配送料金T_FIELD"
+
+msgid "LC_Page_Admin_Basis_DeliveryInput_006"
+msgstr "※ 同じ名称の組み合わせは登録できません。<br>"
+
+msgid "LC_Page_Admin_Basis_Holiday_001"
+msgstr "基本情報管理"
+
+msgid "LC_Page_Admin_Basis_Holiday_002"
+msgstr "定休日管理"
+
+msgid "LC_Page_Admin_Basis_Holiday_003"
+msgstr "※ 既に同じ日付の登録が存在します。<br>"
+
+msgid "LC_Page_Admin_Basis_Kiyaku_001"
+msgstr "基本情報管理"
+
+msgid "LC_Page_Admin_Basis_Kiyaku_002"
+msgstr "会員規約設定"
+
+msgid "LC_Page_Admin_Basis_Kiyaku_004"
+msgstr "※ 既に同じ内容の登録が存在します。<br>"
+
+msgid "LC_Page_Admin_Basis_Mail_001"
+msgstr "基本情報管理"
+
+msgid "LC_Page_Admin_Basis_Mail_002"
+msgstr "メール設定"
+
+msgid "LC_Page_Admin_Basis_Mail_003"
+msgstr "エラーが発生しました"
+
+msgid "LC_Page_Admin_Basis_Payment_001"
+msgstr "基本情報管理"
+
+msgid "LC_Page_Admin_Basis_Payment_002"
+msgstr "支払方法設定"
+
+msgid "LC_Page_Admin_Basis_PaymentInput_001"
+msgstr "基本情報管理"
+
+msgid "LC_Page_Admin_Basis_PaymentInput_002"
+msgstr "支払方法設定"
+
+msgid "LC_Page_Admin_Basis_PaymentInput_003"
+msgstr "利用条件(下限)はT_FIELD円以上にしてください。<br>"
+
+msgid "LC_Page_Admin_Basis_PaymentInput_004"
+msgstr "利用条件(上限)はT_FIELD円以下にしてください。<br>"
+
+msgid "LC_Page_Admin_Basis_Point_001"
+msgstr "基本情報管理"
+
+msgid "LC_Page_Admin_Basis_Point_002"
+msgstr "ポイント設定"
+
+msgid "LC_Page_Admin_Basis_Seo_001"
+msgstr "基本情報管理"
+
+msgid "LC_Page_Admin_Basis_Seo_002"
+msgstr "SEO管理"
+
+msgid "LC_Page_Admin_Basis_Seo_003"
+msgstr "PCサイト"
+
+msgid "LC_Page_Admin_Basis_Seo_004"
+msgstr "モバイルサイト"
+
+msgid "LC_Page_Admin_Basis_Seo_005"
+msgstr "スマートフォン"
+
+msgid "LC_Page_Admin_Basis_Tradelaw_001"
+msgstr "基本情報管理"
+
+msgid "LC_Page_Admin_Basis_Tradelaw_002"
+msgstr "特定商取引法"
+
+msgid "LC_Page_Admin_Basis_ZipInstall_001"
+msgstr "基本情報管理"
+
+msgid "LC_Page_Admin_Basis_ZipInstall_002"
+msgstr "郵便番号DB登録"
+
+msgid "LC_Page_Admin_Basis_ZipInstall_003"
+msgstr "'<p>完了しました。<br />'"
+
+msgid "LC_Page_Admin_Basis_ZipInstall_004"
+msgstr "件を追加しました。</p>"
+
+msgid "LC_Page_Admin_Basis_ZipInstall_005"
+msgstr "<p><a href='?' target='_top'>戻る</a></p>"
+
+msgid "LC_Page_Admin_Basis_ZipInstall_006"
+msgstr "T_FIELD の読み込みに失敗しました。"
+
+msgid "LC_Page_Admin_Basis_ZipInstall_007"
+msgstr "T_FIELD を開けません。"
+
+msgid "LC_Page_Admin_Basis_ZipInstall_008"
+msgstr "T_FIELD の取得に失敗しました。"
+
+msgid "LC_Page_Admin_Basis_ZipInstall_009"
+msgstr "T_FIELD への書き込みに失敗しました。"
+
+msgid "LC_Page_Admin_Basis_ZipInstall_010"
+msgstr " をオープンできません。"
+
+msgid "LC_Page_Admin_Basis_ZipInstall_011"
+msgstr "T_FIELD に対象ファイルが見つかりません。"
+
+msgid "LC_Page_Admin_Basis_ZipInstall_012"
+msgstr "T_FIELD の展開に失敗しました。"
+
+msgid "LC_Page_Admin_Basis_ZipInstall_013"
+msgstr " を削除できません。"
+
+msgid "LC_Page_Admin_Basis_ZipInstall_014"
+msgstr "ファイル名を変更できません。: T_FIELD1 -> TFIELF2"
+
+msgid "LC_Page_Admin_Contents_001"
+msgstr "コンテンツ管理"
+
+msgid "LC_Page_Admin_Contents_002"
+msgstr "新着情報管理"
+
+msgid "LC_Page_Admin_Contents_CSV_001"
+msgstr "コンテンツ管理"
+
+msgid "LC_Page_Admin_Contents_CSV_002"
+msgstr "CSV出力設定"
+
+msgid "LC_Page_Admin_Contents_CsvSql_001"
+msgstr "コンテンツ管理"
+
+msgid "LC_Page_Admin_Contents_CsvSql_002"
+msgstr "CSV出力設定"
+
+msgid "LC_Page_Admin_Contents_CsvSql_005"
+msgstr "'※ SQL文が不正です。SQL文を見直してください'"
+
+msgid "LC_Page_Admin_Contents_CsvSql_006"
+msgstr "データテーブル: T_FIELD"
+
+msgid "LC_Page_Admin_Contents_CsvSql_007"
+msgstr "マスターテーブル: T_FIELD"
+
+msgid "LC_Page_Admin_Contents_FileManager_001"
+msgstr "コンテンツ管理"
+
+msgid "LC_Page_Admin_Contents_FileManager_002"
+msgstr "ファイル管理"
+
+msgid "LC_Page_Admin_Contents_FileManager_003"
+msgstr "'※ ディレクトリをダウンロードすることは出来ません。<br/>'"
+
+msgid "LC_Page_Admin_Contents_FileManager_005"
+msgstr "※ T_FIELDの作成に失敗しました。<br/>"
+
+msgid "LC_Page_Admin_Contents_Recommend_001"
+msgstr "コンテンツ管理"
+
+msgid "LC_Page_Admin_Contents_Recommend_002"
+msgstr "おすすめ商品管理"
+
+msgid "LC_Page_Admin_Contents_RecommendSearch_001"
+msgstr "商品検索"
+
+msgid "LC_Page_Admin_Customer_001"
+msgstr "会員管理"
+
+msgid "LC_Page_Admin_Customer_002"
+msgstr "会員マスター"
+
+msgid "LC_Page_Admin_Customer_003"
+msgstr "不明"
+
+msgid "LC_Page_Admin_Customer_Edit_001"
+msgstr "会員管理"
+
+msgid "LC_Page_Admin_Customer_Edit_002"
+msgstr "会員登録"
+
+msgid "LC_Page_Admin_Customer_Edit_003"
+msgstr "※ すでに他の会員(ID:T_FIELD)が使用しているアドレスです。"
+
+msgid "LC_Page_Admin_Customer_Edit_004"
+msgstr "※ すでに他の会員(ID:T_FIELD)が使用している携帯アドレスです。"
+
+msgid "LC_Page_Admin_Customer_SearchCustomer_001"
+msgstr "会員検索"
+
+msgid "LC_Page_Admin_Design_001"
+msgstr "デザイン管理"
+
+msgid "LC_Page_Admin_Design_002"
+msgstr "レイアウト設定"
+
+msgid "LC_Page_Admin_Design_Bloc_001"
+msgstr "デザイン管理"
+
+msgid "LC_Page_Admin_Design_Bloc_002"
+msgstr "ブロック設定"
+
+msgid "LC_Page_Admin_Design_Bloc_003"
+msgstr "※ ブロックの書き込みに失敗しました<br />"
+
+msgid "LC_Page_Admin_Design_Bloc_004"
+msgstr "※ ブロックの削除に失敗しました<br />"
+
+msgid "LC_Page_Admin_Design_Bloc_005"
+msgstr ""
+"※ 同じファイル名のデータが存在しています。別のファイル名を入力してください。"
+"<br />"
+
+msgid "LC_Page_Admin_Design_CSS_001"
+msgstr "デザイン管理"
+
+msgid "LC_Page_Admin_Design_CSS_002"
+msgstr "CSS設定"
+
+msgid "LC_Page_Admin_Design_CSS_003"
+msgstr "※ 旧ファイルの削除に失敗しました<br />"
+
+msgid "LC_Page_Admin_Design_CSS_004"
+msgstr "※ CSSの書き込みに失敗しました<br />"
+
+msgid "LC_Page_Admin_Design_CSS_005"
+msgstr "※ CSSの削除に失敗しました<br />"
+
+msgid "LC_Page_Admin_Design_CSS_006"
+msgstr ""
+"※ 同じファイル名のデータが存在しています。別の名称を付けてください。<br />"
+
+msgid "LC_Page_Admin_Design_Header_001"
+msgstr "デザイン管理"
+
+msgid "LC_Page_Admin_Design_Header_002"
+msgstr "ヘッダー/フッター設定"
+
+msgid "LC_Page_Admin_Design_Header_003"
+msgstr "※ ファイルの取得に失敗しました<br />"
+
+msgid "LC_Page_Admin_Design_Header_004"
+msgstr "※ ファイルの書き込みに失敗しました<br />"
+
+msgid "LC_Page_Admin_Design_MainEdit_001"
+msgstr "デザイン管理"
+
+msgid "LC_Page_Admin_Design_MainEdit_002"
+msgstr "ページ詳細設定"
+
+msgid "LC_Page_Admin_Design_MainEdit_003"
+msgstr "※ PHPファイルの作成に失敗しました<br />"
+
+msgid "LC_Page_Admin_Design_MainEdit_004"
+msgstr "※ TPLファイルの書き込みに失敗しました<br />"
+
+msgid "LC_Page_Admin_Design_MainEdit_005"
+msgstr "※ URLを正しく入力してください。<br />"
+
+msgid "LC_Page_Admin_Design_MainEdit_006"
+msgstr "※ 同じURLのデータが存在しています。別のURLを入力してください。<br />"
+
+msgid "LC_Page_Admin_Design_Template_001"
+msgstr "デザイン管理"
+
+msgid "LC_Page_Admin_Design_Template_002"
+msgstr "テンプレート設定"
+
+msgid "LC_Page_Admin_Design_Template_003"
+msgstr "※ デフォルトテンプレートと、選択中のテンプレートは削除出来ません<br />"
+
+msgid "LC_Page_Admin_Design_Template_004"
+msgstr "※ テンプレートの削除ができませんでした<br />"
+
+msgid "LC_Page_Admin_Design_Template_005"
+msgstr "※ T_FIELDが見つかりません<br />"
+
+msgid "LC_Page_Admin_Design_Template_006"
+msgstr "※ ディレクトリの作成に失敗しました<br />"
+
+msgid "LC_Page_Admin_Design_Template_007"
+msgstr "※ アーカイブファイルの作成に失敗しました<br />"
+
+msgid "LC_Page_Admin_Design_UpDown_001"
+msgstr "デザイン管理"
+
+msgid "LC_Page_Admin_Design_UpDown_002"
+msgstr "テンプレート追加"
+
+msgid "LC_Page_Admin_Design_UpDown_003"
+msgstr "※ 同名のファイルがすでに存在します。<br/>"
+
+msgid "LC_Page_Admin_Design_UpDown_004"
+msgstr "※ このテンプレートコードは使用できません。<br/>"
+
+msgid "LC_Page_Admin_Design_UpDown_005"
+msgstr "※ すでに登録されているテンプレートコードです。<br/>"
+
+msgid "LC_Page_Admin_Design_UpDown_006"
+msgstr ""
+"※ テンプレートファイルが解凍できません。許可されている形式は、tar/tar.gzで"
+"す。<br />"
+
+msgid "LC_Page_Admin_Design_UpDown_007"
+msgstr "※ テンプレートフォルダが作成できませんでした。<br/>"
+
+msgid "LC_Page_Admin_Design_UpDown_008"
+msgstr "※ Smarty コンパイルフォルダが作成できませんでした。<br/>"
+
+msgid "LC_Page_Admin_Design_UpDown_009"
+msgstr "※ テンプレートファイルの解凍に失敗しました。<br/>"
+
+msgid "LC_Page_Admin_Design_UpDown_010"
+msgstr "※ T_FIELD の作成に失敗しました。<br/>"
+
+msgid "LC_Page_Admin_Mail_001"
+msgstr "メルマガ管理"
+
+msgid "LC_Page_Admin_Mail_002"
+msgstr "配信内容設定"
+
+msgid "LC_Page_Admin_Mail_003"
+msgstr "不明"
+
+msgid "LC_Page_Admin_Mail_004"
+msgstr "両方"
+
+msgid "LC_Page_Admin_Mail_005"
+msgstr "HTML"
+
+msgid "LC_Page_Admin_Mail_006"
+msgstr "TEXT"
+
+msgid "LC_Page_Admin_Mail_History_001"
+msgstr "メルマガ管理"
+
+msgid "LC_Page_Admin_Mail_History_002"
+msgstr "配信履歴"
+
+msgid "LC_Page_Admin_Mail_Preview_001"
+msgstr "プレビュー"
+
+msgid "LC_Page_Admin_Mail_Template_001"
+msgstr "メルマガ管理"
+
+msgid "LC_Page_Admin_Mail_Template_002"
+msgstr "テンプレート設定"
+
+msgid "LC_Page_Admin_Mail_TemplateInput_001"
+msgstr "メルマガ管理"
+
+msgid "LC_Page_Admin_Mail_TemplateInput_002"
+msgstr "テンプレート設定"
+
+msgid "LC_Page_Admin_Order_001"
+msgstr "受注管理"
+
+msgid "LC_Page_Admin_Order_Disp_001"
+msgstr "受注情報表示"
+
+msgid "LC_Page_Admin_Order_Edit_001"
+msgstr "受注登録"
+
+msgid "LC_Page_Admin_Order_Edit_002"
+msgstr "受注を登録しました。"
+
+msgid "LC_Page_Admin_Order_Edit_003"
+msgstr "受注を編集しました。"
+
+msgid "LC_Page_Admin_Order_Edit_004"
+msgstr "なし"
+
+msgid "LC_Page_Admin_Order_Edit_005"
+msgstr ""
+"T_FIELD1/(T_FIELD2)/(T_FIELD3) の在庫が不足しています。 設定できる数量は"
+"「T_FIELD4」までです。<br />'"
+
+msgid "LC_Page_Admin_Order_Edit_006"
+msgstr "合計額がマイナス表示にならないように調整して下さい。<br />"
+
+msgid "LC_Page_Admin_Order_Edit_007"
+msgstr "お支払い合計額がマイナス表示にならないように調整して下さい。<br />"
+
+msgid "LC_Page_Admin_Order_Edit_008"
+msgstr "最終保持ポイントがマイナス表示にならないように調整して下さい。<br />"
+
+msgid "LC_Page_Admin_Order_Mail_001"
+msgstr "受注管理"
+
+msgid "LC_Page_Admin_Order_MailView_001"
+msgstr "受注管理メール確認"
+
+msgid "LC_Page_Admin_Order_Multiple_001"
+msgstr "複数配送設定"
+
+msgid "LC_Page_Admin_Order_Pdf_001"
+msgstr "帳票出力"
+
+msgid "LC_Page_Admin_Order_Pdf_002"
+msgstr "納品書"
+
+msgid "LC_Page_Admin_Order_Pdf_003"
+msgstr "ブラウザに開く"
+
+msgid "LC_Page_Admin_Order_Pdf_004"
+msgstr "ファイルに保存"
+
+msgid "LC_Page_Admin_Order_Pdf_005"
+msgstr "お買上げ明細書(納品書)"
+
+msgid "LC_Page_Admin_Order_Pdf_006"
+msgstr "このたびはお買上げいただきありがとうございます。"
+
+msgid "LC_Page_Admin_Order_Pdf_007"
+msgstr "下記の内容にて納品させていただきます。"
+
+msgid "LC_Page_Admin_Order_Pdf_008"
+msgstr "ご確認くださいますよう、お願いいたします。"
+
+msgid "LC_Page_Admin_Order_Pdf_009"
+msgstr "発行年は数値で入力してください。"
+
+msgid "LC_Page_Admin_Order_Pdf_010"
+msgstr "発行月は数値で入力してください。"
+
+msgid "LC_Page_Admin_Order_Pdf_011"
+msgstr "発行月は1012の間で入力してください。"
+
+msgid "LC_Page_Admin_Order_Pdf_012"
+msgstr "発行日は数値で入力してください。"
+
+msgid "LC_Page_Admin_Order_Pdf_013"
+msgstr "発行日は1031の間で入力してください。"
+
+msgid "LC_Page_Admin_Order_ProductSelect_001"
+msgstr "商品選択"
+
+msgid "LC_Page_Admin_Order_Status_001"
+msgstr "対応状況管理"
+
+msgid "LC_Page_Admin_OwnersStore_001"
+msgstr "プラグイン管理"
+
+msgid "LC_Page_Admin_OwnersStore_002"
+msgstr "※ T_FIELDは既にインストールされています。<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_003"
+msgstr "※ DB登録に失敗しました。<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_004"
+msgstr "※ PLUGIN_CODEが定義されていません。<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_005"
+msgstr "※ PLUGIN_NAMEが定義されていません。<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_006"
+msgstr "※ CLASS_NAMEが定義されていません。<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_007"
+msgstr "※ CLASS_NAMEが正しく定義されていません。<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_008"
+msgstr "※ PLUGIN_VERSIONが定義されていません。<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_009"
+msgstr "※ COMPLIANT_VERSIONが定義されていません。<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_010"
+msgstr "※ AUTHORが定義されていません。<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_011"
+msgstr "※ DESCRIPTIONが定義されていません。<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_012"
+msgstr "※ プラグインコードが一致しません。<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_013"
+msgstr "※ 解凍に失敗しました。<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_014"
+msgstr "※ T_FIELDの読み込みに失敗しました。<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_015"
+msgstr "※ T_FIELD1.php にT_FIELD2が見つかりません。<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_016"
+msgstr "解凍："
+
+msgid "LC_Page_Admin_OwnersStore_017"
+msgstr "* T_FIELDと競合する可能性があります。<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_Log_001"
+msgstr "ログ管理"
+
+msgid "LC_Page_Admin_OwnersStore_Module_001"
+msgstr "モジュール管理"
+
+msgid "LC_Page_Admin_OwnersStore_Settings_001"
+msgstr "認証キー設定"
+
+msgid "LC_Page_Admin_Products_001"
+msgstr "商品マスター"
+
+msgid "LC_Page_Admin_Products_Category_001"
+msgstr "カテゴリ登録"
+
+msgid "LC_Page_Admin_Products_Category_002"
+msgstr "※ 子カテゴリが存在するため削除できません。<br/>"
+
+msgid "LC_Page_Admin_Products_Category_003"
+msgstr "※ カテゴリ内に商品が存在するため削除できません。<br/>"
+
+msgid "LC_Page_Admin_Products_Category_004"
+msgstr "※ カテゴリの登録最大数を超えました。<br/>"
+
+msgid "LC_Page_Admin_Products_Category_005"
+msgstr "※ T_FIELD階層以上の登録はできません。<br/>"
+
+msgid "LC_Page_Admin_Products_Category_006"
+msgstr "※ 既に同じ内容の登録が存在します。<br/>"
+
+msgid "LC_Page_Admin_Products_Class_001"
+msgstr "規格管理"
+
+msgid "LC_Page_Admin_Products_Class_002"
+msgstr "※ 既に同じ内容の登録が存在します。<br>"
+
+msgid "LC_Page_Admin_Products_ClassCategory_001"
+msgstr "規格管理＞分類登録"
+
+msgid "LC_Page_Admin_Products_ClassCategory_002"
+msgstr "※ 既に同じ内容の登録が存在します。<br>"
+
+msgid "LC_Page_Admin_Products_Maker_001"
+msgstr "メーカー登録"
+
+msgid "LC_Page_Admin_Products_Maker_002"
+msgstr "※ メーカーIDが不正です<br />"
+
+msgid "LC_Page_Admin_Products_Maker_003"
+msgstr "※ 既に同じ内容の登録が存在します。<br />"
+
+msgid "LC_Page_Admin_Products_Product_001"
+msgstr "商品登録"
+
+msgid "LC_Page_Admin_Products_Product_002"
+msgstr "※ すでに登録されている関連商品です。<br />"
+
+msgid "LC_Page_Admin_Products_ProductClass_001"
+msgstr "商品登録(商品規格)"
+
+msgid "LC_Page_Admin_Products_ProductClass_002"
+msgstr "※ 規格が選択されていません。<br />"
+
+msgid "LC_Page_Admin_Products_ProductClass_003"
+msgstr "※ T_FIELDが入力されていません。<br />"
+
+msgid "LC_Page_Admin_Products_ProductClass_004"
+msgstr "※ 在庫数が入力されていません。<br />"
+
+msgid "LC_Page_Admin_Products_ProductClass_005"
+msgstr "※ 商品種別は、いずれかを選択してください。<br />"
+
+msgid "LC_Page_Admin_Products_ProductClass_006"
+msgstr ""
+"※ ダウンロード商品の場合はダウンロードファイル名を入力してください。<br />"
+
+msgid "LC_Page_Admin_Products_ProductClass_007"
+msgstr ""
+"※ ダウンロード商品の場合はダウンロード商品用ファイルをアップロードしてくださ"
+"い。<br />"
+
+msgid "LC_Page_Admin_Products_ProductClass_008"
+msgstr "※ 通常商品の場合はダウンロードファイル名を設定できません。<br />"
+
+msgid "LC_Page_Admin_Products_ProductClass_009"
+msgstr ""
+"※ 実商品の場合はダウンロード商品用ファイルをアップロードできません。<br />"
+"ファイルを取り消してください。<br />"
+
+msgid "LC_Page_Admin_Products_ProductClass_010"
+msgstr "※ ファイルがアップロードされていません"
+
+msgid "LC_Page_Admin_Products_ProductClass_011"
+msgstr ""
+"※ ダウンロード販売用ファイル名のファイルサイズはT_FIELD1T_FIELD2以下のものを"
+"使用してください。<br />'"
+
+msgid "LC_Page_Admin_Products_ProductClass_012"
+msgstr "ダウンロード販売用ファイル名"
+
+msgid "LC_Page_Admin_Products_ProductClass_013"
+msgstr "※ T_FIELD1で許可されている形式は、T_FIELD2です。<br />"
+
+msgid "LC_Page_Admin_Products_ProductClass_014"
+msgstr "※ ファイルのアップロードに失敗しました。<br />"
+
+msgid "LC_Page_Admin_Products_ProductRank_001"
+msgstr "商品並び替え"
+
+msgid "LC_Page_Admin_Products_ProductSelect_001"
+msgstr "商品選択"
+
+msgid "LC_Page_Admin_Products_Review_001"
+msgstr "レビュー管理"
+
+msgid "LC_Page_Admin_Products_ReviewEdit_001"
+msgstr "レビュー管理"
+
+msgid "LC_Page_Admin_Products_UploadCSV_001"
+msgstr "商品登録CSV"
+
+msgid "LC_Page_Admin_Products_UploadCSV_002"
+msgstr "T_FIELD1行目：T_FIELD2"
+
+msgid "LC_Page_Admin_Products_UploadCSV_003"
+msgstr "※ 項目数がT_FIELD1個検出されました。項目数はT_FIELD2個になります。"
+
+msgid "LC_Page_Admin_Products_UploadCSV_004"
+msgstr "商品ID：T_FIELD1 / 商品名：T_FIELD2"
+
+msgid "LC_Page_Admin_Products_UploadCSV_005"
+msgstr "※ 指定の商品規格IDは、登録されていません。"
+
+msgid "LC_Page_Admin_Products_UploadCSV_006"
+msgstr "※ 商品規格ID指定時には商品IDの指定が必須です。"
+
+msgid "LC_Page_Admin_Products_UploadCSV_007"
+msgstr "※ 指定の商品IDと商品規格IDの組合せは正しくありません。"
+
+msgid "LC_Page_Admin_Products_UploadCSV_008"
+msgstr "※ 指定の表示ステータスは、登録されていません。"
+
+msgid "LC_Page_Admin_Products_UploadCSV_009"
+msgstr "※ 指定のメーカーIDは、登録されていません。"
+
+msgid "LC_Page_Admin_Products_UploadCSV_010"
+msgstr "※ 指定の発送日目安IDは、登録されていません。"
+
+msgid "LC_Page_Admin_Products_UploadCSV_011"
+msgstr "※ 指定の商品種別IDは、登録されていません。"
+
+msgid "LC_Page_Admin_Products_UploadCSV_012"
+msgstr "※ 指定の関連商品ID(T_FIELD)は、登録されていません。"
+
+msgid "LC_Page_Admin_Products_UploadCSV_013"
+msgstr "※ 指定の関連商品ID(T_FIELD)は、すでに登録されています。"
+
+msgid "LC_Page_Admin_Products_UploadCSV_014"
+msgstr "※ 指定のカテゴリIDは、登録されていません。"
+
+msgid "LC_Page_Admin_Products_UploadCSV_015"
+msgstr "※ 指定の商品ステータスIDは、登録されていません。"
+
+msgid "LC_Page_Admin_Products_UploadCSV_016"
+msgstr "※ 削除フラグは「0」(有効)、「1」(削除)のみが有効な値です。"
+
+msgid "LC_Page_Admin_Products_UploadCSV_017"
+msgstr "※ 実商品の場合はダウンロードファイル名は入力できません。"
+
+msgid "LC_Page_Admin_Products_UploadCSV_018"
+msgstr ""
+"※ 実商品の場合はダウンロード商品用ファイルアップロードは入力できません。"
+
+msgid "LC_Page_Admin_Products_UploadCSV_019"
+msgstr "※ ダウンロード商品の場合はダウンロードファイル名は必須です。"
+
+msgid "LC_Page_Admin_Products_UploadCSV_020"
+msgstr ""
+"※ ダウンロード商品の場合はダウンロード商品用ファイルアップロードは必須です。"
+
+msgid "LC_Page_Admin_Products_UploadCSVCategory_001"
+msgstr "カテゴリ登録CSV"
+
+msgid "LC_Page_Admin_Products_UploadCSVCategory_002"
+msgstr "T_FIELD1行目：T_FIELD2"
+
+msgid "LC_Page_Admin_Products_UploadCSVCategory_003"
+msgstr "※ 項目数がT_FIELD1個検出されました。項目数はT_FIELD2個になります。"
+
+msgid "LC_Page_Admin_Products_UploadCSVCategory_004"
+msgstr "カテゴリID：T_FIELD1 / カテゴリ名：T_FIELD2"
+
+msgid "LC_Page_Admin_Products_UploadCSVCategory_005"
+msgstr "※ 指定の親カテゴリID(T_FIELD)は、存在しません。"
+
+msgid "LC_Page_Admin_Products_UploadCSVCategory_006"
+msgstr "※ 削除フラグは「0」(有効)、「1」(削除)のみが有効な値です。"
+
+msgid "LC_Page_Admin_Products_UploadCSVCategory_007"
+msgstr "※ 既に同名のカテゴリが存在します。"
+
+msgid "LC_Page_Admin_Products_UploadCSVCategory_008"
+msgstr "※ カテゴリの登録最大数を超えました。"
+
+msgid "LC_Page_Admin_Products_UploadCSVCategory_009"
+msgstr "※ T_FIELD階層以上の登録はできません。"
+
+msgid "LC_Page_Admin_System_001"
+msgstr "メンバー管理"
+
+msgid "LC_Page_Admin_System_002"
+msgstr "非稼働"
+
+msgid "LC_Page_Admin_System_003"
+msgstr "稼働"
+
+msgid "LC_Page_Admin_System_AdminArea_001"
+msgstr "管理画面設定"
+
+msgid "LC_Page_Admin_System_AdminArea_002"
+msgstr "T_FIELD を変更する権限がありません。"
+
+msgid "LC_Page_Admin_System_AdminArea_003"
+msgstr "T_FIELDは既に存在しています。別のディレクトリ名を指定してください。"
+
+msgid "LC_Page_Admin_System_AdminArea_004"
+msgstr "T_FIELDのディレクトリ名を変更する権限がありません。"
+
+msgid "LC_Page_Admin_System_AdminArea_005"
+msgstr "T_FIELDのディレクトリ名を変更できませんでした。"
+
+msgid "LC_Page_Admin_System_Bkup_001"
+msgstr "バックアップ管理"
+
+msgid "LC_Page_Admin_System_Bkup_002"
+msgstr "バックアップに失敗しました。(T_FIELD)"
+
+msgid "LC_Page_Admin_System_Bkup_003"
+msgstr "「T_FIELD」のリストアを開始します。"
+
+msgid "LC_Page_Admin_System_Bkup_004-1"
+msgstr "「T_FIELD」の"
+
+msgid "LC_Page_Admin_System_Bkup_004-2"
+msgstr "リストアを終了しました。"
+
+msgid "LC_Page_Admin_System_Bkup_004-3"
+msgstr "リストアに失敗しました。"
+
+msgid "LC_Page_Admin_System_Bkup_005"
+msgstr "バックアップ名が重複しています。別名を入力してください。"
+
+msgid "LC_Page_Admin_System_Bkup_006"
+msgstr ""
+"選択されたデータがみつかりませんでした。既に削除されている可能性があります。"
+
+msgid "LC_Page_Admin_System_Bkup_007"
+msgstr "(記録なし。バックアップファイルのみ。)"
+
+msgid "LC_Page_Admin_System_Bkup_008"
+msgstr ""
+"バックアップファイルの展開に失敗しました。\n"
+" "
+
+msgid "LC_Page_Admin_System_Bkup_009"
+msgstr ""
+"展開元: T_FIELD \n"
+" "
+
+msgid "LC_Page_Admin_System_Bkup_010"
+msgstr "展開先: T_FIELD"
+
+msgid "LC_Page_Admin_System_Bkup_011"
+msgstr "T_FIELD のファイルオープンに失敗しました。"
+
+msgid "LC_Page_Admin_System_Bkup_012"
+msgstr "リストア実行: T_FIELD"
+
+msgid "LC_Page_Admin_System_Editdb_001"
+msgstr "高度なデータベース管理"
+
+msgid "LC_Page_Admin_System_Input_001"
+msgstr "メンバー登録/編集"
+
+msgid "LC_Page_Admin_System_Input_002"
+msgstr "既に登録されている名前なので利用できません。<br>"
+
+msgid "LC_Page_Admin_System_Input_003"
+msgstr "既に登録されているIDなので利用できません。<br>"
+
+msgid "LC_Page_Admin_System_Input_004"
+msgstr "既に登録されているIDなので利用できません。<br>"
+
+msgid "LC_Page_Admin_System_Log_001"
+msgstr "EC-CUBE ログ表示"
+
+msgid "LC_Page_Admin_System_Log_002"
+msgstr "不正なログが指定されました。"
+
+msgid "LC_Page_Admin_System_Log_003"
+msgstr "標準ログファイル"
+
+msgid "LC_Page_Admin_System_Log_004"
+msgstr "会員ログイン ログファイル"
+
+msgid "LC_Page_Admin_System_Log_005"
+msgstr "管理機能ログファイル"
+
+msgid "LC_Page_Admin_System_Log_006"
+msgstr "デバッグログファイル"
+
+msgid "LC_Page_Admin_System_Log_007"
+msgstr "エラーログファイル"
+
+msgid "LC_Page_Admin_System_Log_008"
+msgstr "DBログファイル"
+
+msgid "LC_Page_Admin_System_Masterdata_001"
+msgstr "マスターデータ管理"
+
+msgid "LC_Page_Admin_System_Masterdata_002"
+msgstr "T_FIELD が重複しているため登録できません."
+
+msgid "LC_Page_Admin_System_Parameter"
+msgstr "パラメーター設定"
+
+msgid "LC_Page_Admin_System_System_001"
+msgstr "システム情報"
+
+msgid "LC_Page_Admin_System_System_002"
+msgstr "EC-CUBE"
+
+msgid "LC_Page_Admin_System_System_003"
+msgstr "サーバーOS"
+
+msgid "LC_Page_Admin_System_System_004"
+msgstr "DBサーバー"
+
+msgid "LC_Page_Admin_System_System_005"
+msgstr "WEBサーバー"
+
+msgid "LC_Page_Admin_System_System_006"
+msgstr "有効"
+
+msgid "LC_Page_Admin_System_System_007"
+msgstr "無効"
+
+msgid "LC_Page_Admin_System_System_008"
+msgstr "GD"
+
+msgid "LC_Page_Admin_System_System_009"
+msgstr "HTTPユーザーエージェント"
+
+msgid "LC_Page_Admin_001"
+msgstr "前方互換用メソッドが使用されました。"
+
+msgid "LC_Page_Admin_Home_001"
+msgstr "ホーム"
+
+msgid "LC_Page_Admin_Home_002"
+msgstr ">> 更新情報の取得に失敗しました。"
+
+msgid "LC_Page_Admin_Index_001"
+msgstr "ログイン出来ません。"

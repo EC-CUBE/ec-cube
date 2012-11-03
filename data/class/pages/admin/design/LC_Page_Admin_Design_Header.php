@@ -48,8 +48,8 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
         $this->footer_row = 13;
         $this->tpl_subno = 'header';
         $this->tpl_mainno = 'design';
-        $this->tpl_maintitle = 'デザイン管理';
-        $this->tpl_subtitle = 'ヘッダー/フッター設定';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_003');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Design_Header_002');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
     }
@@ -86,7 +86,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
                 $this->arrErr = $this->lfCheckError($objFormParam, $this->arrErr);
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     if ($this->doRegister($objFormParam)) {
-                        $this->tpl_onload = "alert('登録が完了しました。');";
+                        $this->tpl_onload = "alert('" . SC_I18n_Ex::t('ALERT_004') . "');";
                     }
                 }
                 break;
@@ -100,7 +100,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
             $header_path = $this->getTemplatePath($this->device_type_id, 'header');
             $footer_path = $this->getTemplatePath($this->device_type_id, 'footer');
             if ($header_path === false || $footer_path === false) {
-                $this->arrErr['err'] = '※ ファイルの取得に失敗しました<br />';
+                $this->arrErr['err'] = SC_I18n_Ex::t('LC_Page_Admin_Design_Header_003');
             } else {
                 $this->header_data = file_get_contents($header_path);
                 $this->footer_data = file_get_contents($footer_path);
@@ -165,7 +165,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
         $tpl_path = $this->getTemplatePath($objFormParam->getValue('device_type_id'), $division);
         if ($tpl_path === false
             || !SC_Helper_FileManager_Ex::sfWriteFile($tpl_path, $contents)) {
-            $this->arrErr['err'] = '※ ファイルの書き込みに失敗しました<br />';
+            $this->arrErr['err'] = SC_I18n_Ex::t('LC_Page_Admin_Design_Header_004');
             return false;
         }
         return true;

@@ -51,8 +51,8 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'basis/payment_input.tpl';
         $this->tpl_mainno = 'basis';
         $this->tpl_subno = 'payment';
-        $this->tpl_maintitle = '基本情報管理';
-        $this->tpl_subtitle = '支払方法設定';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_006');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Basis_PaymentInput_002');
     }
 
     /**
@@ -265,12 +265,12 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
 
         // 利用条件(下限)チェック
         if ($arrRet['rule_max'] < $arrPaymentData['rule_min'] and $arrPaymentData['rule_min'] != '') {
-            $objErr->arrErr['rule'] = '利用条件(下限)は' . $arrPaymentData['rule_min'] .'円以上にしてください。<br>';
+            $objErr->arrErr['rule'] = SC_I18n_Ex::t('LC_Page_Admin_Basis_PaymentInput_003', array('T_FIELD', $arrPaymentData['rule_min']));
         }
 
         // 利用条件(上限)チェック
         if ($arrRet['upper_rule'] > $arrPaymentData['upper_rule_max'] and $arrPaymentData['upper_rule_max'] != '') {
-            $objErr->arrErr['upper_rule'] = '利用条件(上限)は' . $arrPaymentData['upper_rule_max'] .'円以下にしてください。<br>';
+            $objErr->arrErr['rule'] = SC_I18n_Ex::t('LC_Page_Admin_Basis_PaymentInput_004', array('T_FIELD', $arrPaymentData['upper_rule_max']));
         }
 
         // 利用条件チェック

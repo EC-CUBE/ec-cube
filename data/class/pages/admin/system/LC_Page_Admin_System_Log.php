@@ -45,8 +45,8 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'system/log.tpl';
         $this->tpl_subno    = 'log';
         $this->tpl_mainno   = 'system';
-        $this->tpl_maintitle = 'システム設定';
-        $this->tpl_subtitle = 'EC-CUBE ログ表示';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_009');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_System_Log_001');
         $this->line_max     = 50;
     }
 
@@ -166,7 +166,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex {
         if (defined($const_name = $log_name . '_LOG_REALFILE')) {
             return constant($const_name);
         }
-        trigger_error('不正なログが指定されました。', E_USER_ERROR);
+        trigger_error(SC_I18n_Ex::t('LC_Page_Admin_System_Log_002'), E_USER_ERROR);
     }
 
     /**
@@ -176,20 +176,20 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex {
      * @return void
      */
     function loadLogList() {
-        $this->arrLogList[''] = '標準ログファイル';
-        $this->arrLogList['CUSTOMER'] = '会員ログイン ログファイル';
-        $this->arrLogList['ADMIN'] = '管理機能ログファイル';
+        $this->arrLogList[''] = SC_I18n_Ex::t('LC_Page_Admin_System_Log_003');
+        $this->arrLogList['CUSTOMER'] = SC_I18n_Ex::t('LC_Page_Admin_System_Log_004');
+        $this->arrLogList['ADMIN'] = SC_I18n_Ex::t('LC_Page_Admin_System_Log_005');
 
         if (defined('DEBUG_LOG_REALFILE') && strlen(DEBUG_LOG_REALFILE) >= 1) {
-            $this->arrLogList['DEBUG'] = 'デバッグログファイル';
+            $this->arrLogList['DEBUG'] = SC_I18n_Ex::t('LC_Page_Admin_System_Log_006');
         }
 
         if (defined('ERROR_LOG_REALFILE') && strlen(ERROR_LOG_REALFILE) >= 1) {
-            $this->arrLogList['ERROR'] = 'エラーログファイル';
+            $this->arrLogList['ERROR'] = SC_I18n_Ex::t('LC_Page_Admin_System_Log_007');
         }
 
         if (defined('DB_LOG_REALFILE') && strlen(DB_LOG_REALFILE) >= 1) {
-            $this->arrLogList['DB'] = 'DBログファイル';
+            $this->arrLogList['DB'] = SC_I18n_Ex::t('LC_Page_Admin_System_Log_008');
         }
     }
 }

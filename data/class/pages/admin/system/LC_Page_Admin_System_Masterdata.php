@@ -46,8 +46,8 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'system/masterdata.tpl';
         $this->tpl_subno = 'masterdata';
         $this->tpl_mainno = 'system';
-        $this->tpl_maintitle = 'システム設定';
-        $this->tpl_subtitle = 'マスターデータ管理';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_009');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_System_Masterdata_001');
     }
 
     /**
@@ -79,7 +79,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
                 if (empty($this->errorMessage)) {
                     // 取得したデータからマスターデータを生成
                     $this->registMasterData($_POST, $masterData, $this->masterDataName);
-                    $this->tpl_onload = "window.alert('マスターデータの設定が完了しました。');";
+                    $this->tpl_onload = "window.alert('" . SC_I18n_Ex::t('ALERT_028') . "');";
                 }
                 // FIXME break 入れ忘れと思われる。そうでないなら、要コメント。
 
@@ -167,7 +167,8 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
             if ($arrId[$i] != '') {
                 for ($j = $i + 1; $j < count($arrId); $j++) {
                     if ($id == $arrId[$j]) {
-                        return $id . ' が重複しているため登録できません.';
+                        return SC_I18n_Ex::t('LC_Page_Admin_System_Masterdata_002', array('T_FIELD' => $id));
+                        
                     }
                 }
             }

@@ -51,8 +51,8 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrRECOMMEND = $masterData->getMasterData('mtb_recommend');
-        $this->tpl_maintitle = '商品管理';
-        $this->tpl_subtitle = 'レビュー管理';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_007');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Products_ReviewEdit_001');
         $this->arrSex = $masterData->getMasterData('mtb_sex');
     }
 
@@ -92,7 +92,7 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
                     $this->lfRegistReviewData($this->arrForm['review_id'], $objFormParam);
                     // レビュー情報のDB取得
                     $this->arrForm = $this->lfGetReviewData($this->arrForm['review_id']);
-                    $this->tpl_onload = "alert('登録が完了しました。');";
+                    $this->tpl_onload = "alert('" . SC_I18n_Ex::t('ALERT_004') . "');";
                 }
                 break;
             default:

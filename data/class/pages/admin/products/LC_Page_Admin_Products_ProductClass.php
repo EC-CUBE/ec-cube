@@ -46,8 +46,8 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'products/product_class.tpl';
         $this->tpl_mainno = 'products';
         $this->tpl_subno = 'product';
-        $this->tpl_maintitle = '商品管理';
-        $this->tpl_subtitle = '商品登録(商品規格)';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_007');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_001');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrProductType = $masterData->getMasterData('mtb_product_type');
         // 規格プルダウンのリスト
@@ -323,7 +323,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         $total = $objFormParam->getValue('total');
 
         if (SC_Utils_Ex::isBlank($arrValues['check'])) {
-            $arrErr['check_empty'] = '※ 規格が選択されていません。<br />';
+            $arrErr['check_empty'] = SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_002');
         }
 
         for ($i = 0; $i < $total; $i++) {
@@ -338,7 +338,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                  * 販売価格の必須チェック
                  */
                 if (SC_Utils_Ex::isBlank($arrValues['price02'][$i])) {
-                    $arrErr['price02'][$i] = '※ ' . SALE_PRICE_TITLE . 'が入力されていません。<br />';
+                    $arrErr['price02'][$i] = SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_003', array('T_FIELD' => SALE_PRICE_TITLE));
                 }
                 /*
                  * 在庫数の必須チェック
@@ -346,23 +346,23 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                 if ((SC_Utils_Ex::isBlank($arrValues['stock_unlimited'][$i]) || $arrValues['stock_unlimited'][$i] != 1)
                     && SC_Utils_Ex::isBlank($arrValues['stock'][$i])
                 ) {
-                    $arrErr['stock'][$i] = '※ 在庫数が入力されていません。<br />';
+                    $arrErr['stock'][$i] = SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_004');
                 }
                 /*
                  * 商品種別の必須チェック
                  */
                 if (SC_Utils_Ex::isBlank($arrValues['product_type_id'][$i])) {
-                    $arrErr['product_type_id'][$i] = '※ 商品種別は、いずれかを選択してください。<br />';
+                    $arrErr['product_type_id'][$i] = SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_005');
                 }
                 /*
                  * ダウンロード商品の必須チェック
                  */
                 if ($arrValues['product_type_id'][$i] == PRODUCT_TYPE_DOWNLOAD) {
                     if (SC_Utils_Ex::isBlank($arrValues['down_filename'][$i])) {
-                        $arrErr['down_filename'][$i] = '※ ダウンロード商品の場合はダウンロードファイル名を入力してください。<br />';
+                        $arrErr['down_filename'][$i] = SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_006');
                     }
                     if (SC_Utils_Ex::isBlank($arrValues['down_realfilename'][$i])) {
-                        $arrErr['down_realfilename'][$i] = '※ ダウンロード商品の場合はダウンロード商品用ファイルをアップロードしてください。<br />';
+                        $arrErr['down_realfilename'][$i] = SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_007');
                     }
                 }
                 /*
@@ -370,10 +370,10 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                  */
                 else if ($arrValues['product_type_id'][$i] == PRODUCT_TYPE_NORMAL) {
                     if (!SC_Utils_Ex::isBlank($arrValues['down_filename'][$i])) {
-                        $arrErr['down_filename'][$i] = '※ 通常商品の場合はダウンロードファイル名を設定できません。<br />';
+                        $arrErr['down_filename'][$i] = SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_008');
                     }
                     if (!SC_Utils_Ex::isBlank($arrValues['down_realfilename'][$i])) {
-                        $arrErr['down_realfilename'][$i] = '※ 実商品の場合はダウンロード商品用ファイルをアップロードできません。<br />ファイルを取り消してください。<br />';
+                        $arrErr['down_realfilename'][$i] = SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_009');
                     }
                 }
             }
@@ -563,7 +563,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         $arrDownRealFiles = $objFormParam->getValue('down_realfilename');
 
         if ($_FILES['down_realfilename']['size'][$index] <= 0) {
-            $this->arrErr['down_realfilename'][$index] = '※ ファイルがアップロードされていません';
+            $this->arrErr['down_realfilename'][$index] = SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_010');
         } else if ($_FILES['down_realfilename']['size'][$index] > DOWN_SIZE *  1024) {
             $size = DOWN_SIZE;
             $byte = 'KB';
@@ -571,11 +571,11 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                 $size = $size / 1000;
                 $byte = 'MB';
             }
-            $this->arrErr['down_realfilename'][$index] = '※ ダウンロード販売用ファイル名のファイルサイズは' . $size . $byte . '以下のものを使用してください。<br />';
+            SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_011', array('T_FIELD1' => $size, 'T_FIELD2' => $byte));
         } else {
             // SC_CheckError::FILE_EXT_CHECK とのソース互換を強めるための配列
             $value = array(
-                0 => 'ダウンロード販売用ファイル名',
+                0 => SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_012'),
                 1 => 'down_realfilename',
                 2 => explode(',', DOWNLOAD_EXTENSION),
             );
@@ -594,7 +594,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
 
             if ($match === false) {
                 $str_ext = implode('・', $value[2]);
-                $this->arrErr[$value[1]][$index] = '※ ' . $value[0] . 'で許可されている形式は、' . $str_ext . 'です。<br />';
+                SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_013', array('T_FIELD1' => $value[0], 'T_FIELD2' => $str_ext));
             // ▲SC_CheckError::FILE_EXT_CHECK から移植
             } else {
                 $uniqname = date('mdHi') . '_' . uniqid('').'.';
@@ -605,7 +605,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                     $objFormParam->setValue('down_realfilename', $arrDownRealFiles);
                     GC_Utils_Ex::gfPrintLog($_FILES['down_realfilename']['name'][$index] .' -> '. realpath(DOWN_TEMP_REALDIR . $temp_file));
                 } else {
-                    $objErr->arrErr[$keyname] = '※ ファイルのアップロードに失敗しました。<br />';
+                    $objErr->arrErr[$keyname] = SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_014');
                     GC_Utils_Ex::gfPrintLog('File Upload Error!: ' . $_FILES['down_realfilename']['name'][$index] . ' -> ' . DOWN_TEMP_REALDIR . $temp_file);
                 }
             }

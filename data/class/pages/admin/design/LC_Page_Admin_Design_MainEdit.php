@@ -47,8 +47,8 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         $this->text_row     = 13;
         $this->tpl_subno = 'main_edit';
         $this->tpl_mainno = 'design';
-        $this->tpl_maintitle = 'デザイン管理';
-        $this->tpl_subtitle = 'ページ詳細設定';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_003');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Design_MainEdit_002');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
     }
@@ -114,7 +114,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
 
             default:
                 if (isset($_GET['msg']) && $_GET['msg'] == 'on') {
-                    $this->tpl_onload = "alert('登録が完了しました。');";
+                    $this->tpl_onload = "alert('" . SC_I18n_Ex::t('ALERT_004') . "');";
                 }
                 break;
         }
@@ -219,7 +219,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         if (SC_Utils_Ex::isBlank($arrParams['page_id'])
             || $objLayout->isEditablePage($arrParams['device_type_id'], $arrParams['page_id'])) {
             if (!$this->createPHPFile($filename)) {
-                $this->arrErr['err'] = '※ PHPファイルの作成に失敗しました<br />';
+                $this->arrErr['err'] = SC_I18n_Ex::t('LC_Page_Admin_Design_MainEdit_003');
                 $objQuery->rollback();
                 return false;
             }
@@ -234,7 +234,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         }
 
         if (!SC_Helper_FileManager_Ex::sfWriteFile($tpl_path, $arrParams['tpl_data'])) {
-            $this->arrErr['err'] = '※ TPLファイルの書き込みに失敗しました<br />';
+            $this->arrErr['err'] = SC_I18n_Ex::t('LC_Page_Admin_Design_MainEdit_004');
             $objQuery->rollback();
             return false;
         }
@@ -316,7 +316,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
             }
         }
         if (!$valid_url) {
-            $objErr->arrErr['filename'] = '※ URLを正しく入力してください。<br />';
+            $objErr->arrErr['filename'] = SC_I18n_Ex::t('LC_Page_Admin_Design_MainEdit_005');
         }
         // 同一URLの存在チェック
         $where = 'page_id <> 0 AND device_type_id = ? AND filename = ?';
@@ -330,7 +330,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $exists = $objQuery->exists('dtb_pagelayout', $where, $arrValues);
         if ($exists) {
-            $objErr->arrErr['filename'] = '※ 同じURLのデータが存在しています。別のURLを入力してください。<br />';
+            $objErr->arrErr['filename'] = SC_I18n_Ex::t('LC_Page_Admin_Design_MainEdit_006');
         }
         return $objErr->arrErr;
     }

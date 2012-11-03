@@ -45,8 +45,8 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
         parent::init();
         $this->tpl_mainpage = 'basis/holiday.tpl';
         $this->tpl_subno = 'holiday';
-        $this->tpl_maintitle = '基本情報管理';
-        $this->tpl_subtitle = '定休日管理';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_006');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Basis_Holiday_002');
         $this->tpl_mainno = 'basis';
     }
 
@@ -253,7 +253,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
 
             // 編集中のレコード以外に同じ日付が存在する場合
             if ($arrRet[0]['count'] > 0) {
-                $arrErr['date'] = '※ 既に同じ日付の登録が存在します。<br>';
+                $arrErr['date'] = SC_I18n_Ex::t('LC_Page_Admin_Basis_Holiday_003');
             }
         }
         return $arrErr;

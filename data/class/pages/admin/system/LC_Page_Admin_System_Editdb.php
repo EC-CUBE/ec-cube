@@ -46,8 +46,8 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'system/editdb.tpl';
         $this->tpl_subno    = 'editdb';
         $this->tpl_mainno   = 'system';
-        $this->tpl_maintitle = 'システム設定';
-        $this->tpl_subtitle = '高度なデータベース管理';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_009');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_System_Editdb_001');
     }
 
     /**
@@ -120,7 +120,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
         $arrTarget = $this->lfGetTargetData($objFormParam);
         $message = '';
         if (is_array($arrTarget) && count($arrTarget) == 0) {
-            $message = "window.alert('変更対象となるデータはありませんでした。');";
+            $message = "window.alert('" . SC_I18n_Ex::t('ALERT_025') . "');";
             return $message;
         } elseif (!is_array($arrTarget) && $arrTarget != '') {
             return $arrTarget; // window.alert が返ってきているはず。
@@ -136,7 +136,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
                 $objQuery->dropIndex($item['table_name'], $index_name);
             }
         }
-        $message = "window.alert('インデックスの変更が完了しました。');";
+        $message = "window.alert('" . SC_I18n_Ex::t('ALERT_026') . "');";
         return $message;
     }
 
@@ -165,7 +165,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
             $arrErr = $objErr->arrErr;
             if (count($arrErr) != 0) {
                 // 通常の送信ではエラーにならないはずです。
-                $message = "window.alert('不正なデータがあったため処理を中断しました。');";
+                $message = "window.alert('" . SC_I18n_Ex::t('ALERT_027') . "');";
                 return $message;
             }
             if ($param['indexflag'] != $param['indexflag_new']) {

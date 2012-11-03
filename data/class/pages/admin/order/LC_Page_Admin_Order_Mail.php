@@ -46,8 +46,8 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
         $this->tpl_mainpage = 'order/mail.tpl';
         $this->tpl_mainno = 'order';
         $this->tpl_subno = 'index';
-        $this->tpl_maintitle = '受注管理';
-        $this->tpl_subtitle = '受注管理';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_001');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Order_Mail_001');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrMAILTEMPLATE = $masterData->getMasterData('mtb_mail_template');

@@ -47,16 +47,16 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'mail';
         $this->tpl_subno = 'index';
         $this->tpl_pager = 'pager.tpl';
-        $this->tpl_maintitle = 'メルマガ管理';
-        $this->tpl_subtitle = '配信内容設定';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_002');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Mail_002');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrJob = $masterData->getMasterData('mtb_job');
-        $this->arrJob['不明'] = '不明';
+        $this->arrJob[SC_I18n_Ex::t('LC_Page_Admin_Mail_003')] = SC_I18n_Ex::t('LC_Page_Admin_Mail_003');
         $this->arrSex = $masterData->getMasterData('mtb_sex');
         $this->arrPageRows = $masterData->getMasterData('mtb_page_max');
-        $this->arrHtmlmail = array('' => '両方',  1 => 'HTML', 2 => 'TEXT');
+        $this->arrHtmlmail = array('' => SC_I18n_Ex::t('LC_Page_Admin_Mail_004'),  1 => SC_I18n_Ex::t('LC_Page_Admin_Mail_005'), 2 => SC_I18n_Ex::t('LC_Page_Admin_Mail_006'));
         $this->arrMailType = $masterData->getMasterData('mtb_mail_type');
 
         // 日付プルダウン設定
@@ -165,7 +165,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
 
                     SC_Response_Ex::sendRedirect('./history.php');
                 } else {
-                    $this->tpl_onload = "window.alert('メール送信IDが正しくありません');";
+                    $this->tpl_onload = "window.alert('" . SC_I18n_Ex::t('ALERT_013') . "');";
                 }
                 break;
             default:

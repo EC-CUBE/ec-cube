@@ -46,8 +46,8 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'system/system.tpl';
         $this->tpl_subno    = 'system';
         $this->tpl_mainno   = 'system';
-        $this->tpl_maintitle = 'システム設定';
-        $this->tpl_subtitle = 'システム情報';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_009');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_System_System_001');
     }
 
     /**
@@ -116,10 +116,10 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
         $objDB = SC_DB_DBFactory_Ex::getInstance();
 
         $arrSystemInfo = array(
-            array('title' => 'EC-CUBE',     'value' => ECCUBE_VERSION),
-            array('title' => 'サーバーOS',    'value' => php_uname()),
-            array('title' => 'DBサーバー',    'value' => $objDB->sfGetDBVersion()),
-            array('title' => 'WEBサーバー',   'value' => $_SERVER['SERVER_SOFTWARE']),
+            array('title' => SC_I18n_Ex::t('LC_Page_Admin_System_System_002'),     'value' => ECCUBE_VERSION),
+            array('title' => SC_I18n_Ex::t('LC_Page_Admin_System_System_003'),    'value' => php_uname()),
+            array('title' => SC_I18n_Ex::t('LC_Page_Admin_System_System_004'),    'value' => $objDB->sfGetDBVersion()),
+            array('title' => SC_I18n_Ex::t('LC_Page_Admin_System_System_005'),   'value' => $_SERVER['SERVER_SOFTWARE']),
         );
 
         $value = phpversion() . ' (' . implode(', ', get_loaded_extensions()) . ')';
@@ -130,12 +130,12 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
             foreach (gd_info() as $key => $val) {
                 $arrValue[] = "$key => $val";
             }
-            $value = '有効 (' . implode(', ', $arrValue) . ')';
+            $value = SC_I18n_Ex::t('LC_Page_Admin_System_System_006') . ' (' . implode(', ', $arrValue) . ')';
         } else {
-            $value = '無効';
+            $value = SC_I18n_Ex::t('LC_Page_Admin_System_System_007');
         }
-        $arrSystemInfo[] = array('title' => 'GD', 'value' => $value);
-        $arrSystemInfo[] = array('title' => 'HTTPユーザーエージェント', 'value' => $_SERVER['HTTP_USER_AGENT']);
+        $arrSystemInfo[] = array('title' => SC_I18n_Ex::t('LC_Page_Admin_System_System_008'), 'value' => $value);
+        $arrSystemInfo[] = array('title' => SC_I18n_Ex::t('LC_Page_Admin_System_System_009'), 'value' => $_SERVER['HTTP_USER_AGENT']);
 
         return $arrSystemInfo;
     }

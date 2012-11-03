@@ -46,8 +46,8 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'mail/template.tpl';
         $this->tpl_mainno = 'mail';
         $this->tpl_subno = 'template';
-        $this->tpl_maintitle = 'メルマガ管理';
-        $this->tpl_subtitle = 'テンプレート設定';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_002');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Mail_Template_002');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrMagazineType = $masterData->getMasterData('mtb_magazine_type');

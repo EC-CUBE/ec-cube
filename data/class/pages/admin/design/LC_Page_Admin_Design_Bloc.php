@@ -48,8 +48,8 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
         $this->text_row = 13;
         $this->tpl_subno = 'bloc';
         $this->tpl_mainno = 'design';
-        $this->tpl_maintitle = 'デザイン管理';
-        $this->tpl_subtitle = 'ブロック設定';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_003');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Design_Bloc_002');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
     }
@@ -122,7 +122,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
             default:
                 if (isset($_GET['msg']) && $_GET['msg'] == 'on') {
                     // 完了メッセージ
-                    $this->tpl_onload = "alert('登録が完了しました。');";
+                    $this->tpl_onload = "alert('" . SC_I18n_Ex::t('ALERT_004') . "');";
                 }
                 break;
         }
@@ -240,7 +240,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
 
         $bloc_path = $bloc_dir . $arrValues['tpl_path'];
         if (!SC_Helper_FileManager_Ex::sfWriteFile($bloc_path, $arrParams['bloc_html'])) {
-            $this->arrErr['err'] = '※ ブロックの書き込みに失敗しました<br />';
+            $this->arrErr['err'] = SC_I18n_Ex::t('LC_Page_Admin_Design_Bloc_003');
             $objQuery->rollback();
             return false;
         }
@@ -284,7 +284,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
         }
 
         if ($is_error) {
-            $this->arrErr['err'] = '※ ブロックの削除に失敗しました<br />';
+            $this->arrErr['err'] = SC_I18n_Ex::t('LC_Page_Admin_Design_Bloc_004');
             $objQuery->rollback();
             return false;
         }
@@ -315,7 +315,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
         }
         $arrBloc = $objLayout->getBlocs($arrParams['device_type_id'], $where, $arrValues);
         if (!SC_Utils_Ex::isBlank($arrBloc)) {
-            $objErr->arrErr['filename'] = '※ 同じファイル名のデータが存在しています。別のファイル名を入力してください。<br />';
+            $objErr->arrErr['filename'] = SC_I18n_Ex::t('LC_Page_Admin_Design_Bloc_005');
         }
         return $objErr->arrErr;
     }

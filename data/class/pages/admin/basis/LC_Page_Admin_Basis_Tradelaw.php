@@ -49,8 +49,8 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrTAXRULE = $masterData->getMasterData('mtb_taxrule');
-        $this->tpl_maintitle = '基本情報管理';
-        $this->tpl_subtitle = '特定商取引法';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_006');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Basis_Tradelaw_002');
     }
 
     /**
@@ -99,7 +99,7 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex {
                         break;
                 }
                 // 再表示
-                $this->tpl_onload = "window.alert('特定商取引法の登録が完了しました。');";
+                $this->tpl_onload = "window.alert('" . SC_I18n_Ex::t('ALERT_008') . "');";
             }
         } else {
             $arrCol = $objFormParam->getKeyList(); // キー名一覧を取得

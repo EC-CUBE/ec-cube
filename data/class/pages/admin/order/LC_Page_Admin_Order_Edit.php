@@ -78,8 +78,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         parent::init();
         $this->tpl_mainpage = 'order/edit.tpl';
         $this->tpl_mainno = 'order';
-        $this->tpl_maintitle = '受注管理';
-        $this->tpl_subtitle = '受注登録';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_001');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Order_Edit_001');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
@@ -165,7 +165,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
                 $objFormParam->convParam();
                 $this->arrErr = $this->lfCheckError($objFormParam);
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                    $message = '受注を編集しました。';
+                    $message = SC_I18n_Ex::t('LC_Page_Admin_Order_Edit_003');
                     $order_id = $this->doRegister($order_id, $objPurchase, $objFormParam, $message, $arrValuesBefore);
                     if ($order_id >= 0) {
                         $this->setOrderToFormParam($objFormParam, $order_id);
@@ -180,7 +180,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
                     $objFormParam->convParam();
                     $this->arrErr = $this->lfCheckError($objFormParam);
                     if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                        $message = '受注を登録しました。';
+                        $message = SC_I18n_Ex::t('LC_Page_Admin_Order_Edit_002');
                         $order_id = $this->doRegister(null, $objPurchase, $objFormParam, $message, $arrValuesBefore);
                         if ($order_id >= 0) {
                             $this->tpl_mode = 'edit';
@@ -592,12 +592,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
             if ($arrProduct['stock_unlimited'] != '1'
                 && $arrProduct['stock'] < $arrValues['quantity'][$i] - $arrOrderDetail['quantity'][$i]) {
                 $class_name1 = $arrValues['classcategory_name1'][$i];
-                $class_name1 = SC_Utils_Ex::isBlank($class_name1) ? 'なし' : $class_name1;
+                $class_name1 = SC_Utils_Ex::isBlank($class_name1) ? SC_I18n_Ex::t('LC_Page_Admin_Order_Edit_004') : $class_name1;
                 $class_name2 = $arrValues['classcategory_name2'][$i];
-                $class_name2 = SC_Utils_Ex::isBlank($class_name2) ? 'なし' : $class_name2;
-                $arrErr['quantity'][$i] .= $arrValues['product_name'][$i]
-                    . '/(' . $class_name1 . ')/(' . $class_name2 . ') の在庫が不足しています。 設定できる数量は「'
-                    . ($arrOrderDetail['quantity'][$i] + $arrProduct['stock']) . '」までです。<br />';
+                $class_name2 = SC_Utils_Ex::isBlank($class_name2) ? SC_I18n_Ex::t('LC_Page_Admin_Order_Edit_004') : $class_name2;                
+                $arrErr['quantity'][$i] .= SC_I18n_Ex::t('LC_Page_Admin_Order_Edit_005', array('T_FIELD1' => $arrValues['product_name'][$i], 'T_FIELD2' => $class_name1,'T_FIELD3' => $class_name1, 'T_FIELD4' => ($arrOrderDetail['quantity'][$i] + $arrProduct['stock'])));
             }
         }
 
@@ -617,15 +615,15 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $arrValues['total_point'] = $objFormParam->getValue('point') - $arrValues['use_point'];
 
         if ($arrValues['total'] < 0) {
-            $arrErr['total'] = '合計額がマイナス表示にならないように調整して下さい。<br />';
+            $arrErr['total'] = SC_I18n_Ex::t('LC_Page_Admin_Order_Edit_006');
         }
 
         if ($arrValues['payment_total'] < 0) {
-            $arrErr['payment_total'] = 'お支払い合計額がマイナス表示にならないように調整して下さい。<br />';
+            $arrErr['payment_total'] = SC_I18n_Ex::t('LC_Page_Admin_Order_Edit_007');
         }
 
         if ($arrValues['total_point'] < 0) {
-            $arrErr['use_point'] = '最終保持ポイントがマイナス表示にならないように調整して下さい。<br />';
+            $arrErr['use_point'] = SC_I18n_Ex::t('LC_Page_Admin_Order_Edit_008');
         }
 
         $objFormParam->setParam($arrValues);

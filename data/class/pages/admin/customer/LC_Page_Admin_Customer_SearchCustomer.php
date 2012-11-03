@@ -44,7 +44,7 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'customer/search_customer.tpl';
-        $this->tpl_subtitle = '会員検索';
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Customer_SearchCustomer_001');
         $this->httpCacheControl('nocache');
     }
 

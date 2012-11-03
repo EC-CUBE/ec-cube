@@ -46,8 +46,8 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'contents/csv.tpl';
         $this->tpl_subno = 'csv';
         $this->tpl_mainno = 'contents';
-        $this->tpl_maintitle = 'コンテンツ管理';
-        $this->tpl_subtitle = 'CSV出力設定';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_005');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Contents_CSV_002');
 
         $objCSV = new SC_Helper_CSV_Ex();
         $this->arrSubnavi = $objCSV->arrSubnavi; // 別名
@@ -105,7 +105,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
         $this->tpl_subtitle .= '＞' . $this->arrSubnaviName[ $this->tpl_csv_id ];
 
         if ($this->tpl_is_update) {
-            $this->tpl_onload = "window.alert('正常に更新されました。');";
+            $this->tpl_onload = "window.alert('" . SC_I18n_Ex::t('ALERT_003') . "');";
         }
 
     }

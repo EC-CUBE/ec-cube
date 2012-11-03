@@ -49,8 +49,8 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrTAXRULE = $masterData->getMasterData('mtb_taxrule');
-        $this->tpl_maintitle = '基本情報管理';
-        $this->tpl_subtitle = '配送方法設定';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_006');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Basis_Delivery_002');
     }
 
     /**

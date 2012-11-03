@@ -70,8 +70,8 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'products/upload_csv_category.tpl';
         $this->tpl_mainno   = 'products';
         $this->tpl_subno    = 'upload_csv_category';
-        $this->tpl_maintitle = '商品管理';
-        $this->tpl_subtitle = 'カテゴリ登録CSV';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_007');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSVCategory_001');
         $this->csv_id = '5';
 
         $masterData = new SC_DB_MasterData_Ex();
@@ -139,7 +139,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
      * @return void
      */
     function addRowResult($line_count, $message) {
-        $this->arrRowResult[] = $line_count . '行目：' . $message;
+        $this->arrRowResult[] = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSVCategory_002', array('T_FIELD1' => $line_count, 'T_FIELD2' => $message));
     }
 
     /**
@@ -150,7 +150,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
      * @return void
      */
     function addRowErr($line_count, $message) {
-        $this->arrRowErr[] = $line_count . '行目：' . $message;
+        $this->arrRowErr[] = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSVCategory_002', array('T_FIELD1' => $line_count, 'T_FIELD2' => $message));
     }
 
     /**
@@ -211,7 +211,8 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
             // 列数が異なる場合はエラー
             $col_count = count($arrCSV);
             if ($col_max_count != $col_count) {
-                $this->addRowErr($line_count, '※ 項目数が' . $col_count . '個検出されました。項目数は' . $col_max_count . '個になります。');
+                $this->addRowErr($line_count, SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSVCategory_003', array('T_FIELD1' => $col_count, 'T_FIELD2' => $col_max_count)));
+                
                 $errFlag = true;
                 break;
             }
@@ -234,7 +235,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
             }
 
             $category_id = $this->lfRegistCategory($objQuery, $line_count, $objFormParam);
-            $this->addRowResult($line_count, 'カテゴリID：'.$category_id . ' / カテゴリ名：' . $objFormParam->getValue('category_name'));
+            $this->addRowResult($line_count, SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSVCategory_004', array('T_FIELD1' => $category_id, 'T_FIELD2' => $objFormParam->getValue('category_name'))));
         }
 
         // 実行結果画面を表示
@@ -269,7 +270,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitFile(&$objUpFile) {
-        $objUpFile->addFile('CSVファイル', 'csv_file', array('csv'), CSV_SIZE, true, 0, 0, false);
+        $objUpFile->addFile(SC_I18n_Ex::t('PARAM_LABEL_CSV_FILE'), 'csv_file', array('csv'), CSV_SIZE, true, 0, 0, false);
     }
 
     /**
@@ -460,14 +461,14 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
             && $item['parent_category_id'] != '0'
             && !SC_Helper_DB_Ex::sfIsRecord('dtb_category', 'category_id', array($item['parent_category_id']))
         ) {
-            $arrErr['parent_category_id'] = '※ 指定の親カテゴリID(' . $item['parent_category_id'] . ')は、存在しません。';
+            $arrErr['parent_category_id'] = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSVCategory_005', array('T_FIELD' => $item['parent_category_id']));
         }
         // 削除フラグのチェック
         if (array_search('del_flg', $this->arrFormKeyList) !== FALSE
             && $item['del_flg'] != ''
         ) {
             if (!($item['del_flg'] == '0' or $item['del_flg'] == '1')) {
-                $arrErr['del_flg'] = '※ 削除フラグは「0」(有効)、「1」(削除)のみが有効な値です。';
+                $arrErr['del_flg'] = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSVCategory_006');
             }
         }
         // 重複チェック 同じカテゴリ内に同名の存在は許可されない
@@ -485,21 +486,21 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
                                 $item['category_id'],
                                 $item['category_name']));
             if ($exists) {
-                $arrErr['category_name'] = '※ 既に同名のカテゴリが存在します。';
+                $arrErr['category_name'] = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSVCategory_007');
             }
         }
         // 登録数上限チェック
         $where = 'del_flg = 0';
         $count = $objQuery->count('dtb_category', $where);
         if ($count >= CATEGORY_MAX) {
-            $item['category_name'] = '※ カテゴリの登録最大数を超えました。';
+            $item['category_name'] = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSVCategory_008');
         }
         // 階層上限チェック
         if (array_search('parent_category_id', $this->arrFormKeyList) !== FALSE
                 and $item['parent_category_id'] != '') {
             $level = $objQuery->get('level', 'dtb_category', 'category_id = ?', array($parent_category_id));
             if ($level >= LEVEL_MAX) {
-                $arrErr['parent_category_id'] = '※ ' . LEVEL_MAX . '階層以上の登録はできません。';
+                $arrErr['parent_category_id'] = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSVCategory_009', array('T_FIELD' => LEVEL_MAX));
             }
         }
         return $arrErr;

@@ -47,8 +47,8 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
         $this->area_row = 30;
         $this->tpl_subno = 'css';
         $this->tpl_mainno = 'design';
-        $this->tpl_maintitle = 'デザイン管理';
-        $this->tpl_subtitle = 'CSS設定';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_003');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Design_CSS_002');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
     }
@@ -95,7 +95,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
                     if (SC_Utils_Ex::isBlank($this->arrErr)) {
                         if ($this->doRegister($css_dir, $this->css_name, $this->old_css_name, $css_path,
                                               $objFormParam->getValue('css_data'))) {
-                            $this->tpl_onload = "alert('登録が完了しました。');";
+                            $this->tpl_onload = "alert('" . SC_I18n_Ex::t('ALERT_004') . "');";
                         }
                     }
                 }
@@ -115,7 +115,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
             default:
                 if (isset($_GET['msg']) && $_GET['msg'] == 'on') {
                     // 完了メッセージ
-                    $this->tpl_onload = "alert('登録が完了しました。');";
+                    $this->tpl_onload = "alert('" . SC_I18n_Ex::t('ALERT_004') . "');";
                 }
                 break;
         }
@@ -177,13 +177,13 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
         if (!SC_Utils_Ex::isBlank($old_css_name)
             && $old_css_name != $css_name) {
             if (!unlink($css_dir . $old_css_name . '.css')) {
-                $this->arrErr['err'] = '※ 旧ファイルの削除に失敗しました<br />';
+                $this->arrErr['err'] = SC_I18n_Ex::t('LC_Page_Admin_Design_CSS_003');
                 return false;
             }
         }
 
         if (!SC_Helper_FileManager_Ex::sfWriteFile($css_path, $css_data)) {
-            $this->arrErr['err'] = '※ CSSの書き込みに失敗しました<br />';
+            $this->arrErr['err'] = SC_I18n_Ex::t('LC_Page_Admin_Design_CSS_004');
             return false;
         }
         return true;
@@ -197,7 +197,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
      */
     function doDelete($css_path) {
         if (!unlink($css_path)) {
-            $this->arrErr['err'] = '※ CSSの削除に失敗しました<br />';
+            $this->arrErr['err'] = SC_I18n_Ex::t('LC_Page_Admin_Design_CSS_005');
             return false;
         }
         return true;
@@ -253,7 +253,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
                 }
             }
             if ($is_error) {
-                $objErr->arrErr['css_name'] = '※ 同じファイル名のデータが存在しています。別の名称を付けてください。<br />';
+                $objErr->arrErr['css_name'] = SC_I18n_Ex::t('LC_Page_Admin_Design_CSS_006');
             }
         }
         return $objErr->arrErr;

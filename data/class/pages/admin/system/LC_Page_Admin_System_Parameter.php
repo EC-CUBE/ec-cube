@@ -57,8 +57,8 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'system/parameter.tpl';
         $this->tpl_subno = 'parameter';
         $this->tpl_mainno = 'system';
-        $this->tpl_maintitle = 'システム設定';
-        $this->tpl_subtitle = 'パラメーター設定';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_009');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_System_Parameter');
     }
 
     /**
@@ -93,10 +93,10 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
                 // エラーの無い場合は update
                 if (empty($this->arrErr)) {
                     $this->update($this->arrKeys, $this->arrForm);
-                    $this->tpl_onload = "window.alert('パラメーターの設定が完了しました。');";
+                    $this->tpl_onload = "window.alert('" . SC_I18n_Ex::t('ALERT_029') . "');";
                 } else {
                     $this->arrValues = SC_Utils_Ex::getHash2Array($this->arrForm, $this->arrKeys);
-                    $this->tpl_onload = "window.alert('エラーが発生しました。入力内容をご確認下さい。');";
+                    $this->tpl_onload = "window.alert('" . SC_I18n_Ex::t('ALERT_030') . "');";
                 }
                 break;
             default:

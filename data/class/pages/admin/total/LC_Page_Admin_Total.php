@@ -47,7 +47,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $this->tpl_mainpage         = 'total/index.tpl';
         $this->tpl_graphsubtitle    = 'total/subtitle.tpl';
         $this->tpl_titleimage       = ROOT_URLPATH.'img/title/title_sale.jpg';
-        $this->tpl_maintitle = '売上集計';
+        $this->tpl_maintitle = $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_010');
         $this->tpl_mainno           = 'total';
 
         $masterData                 = new SC_DB_MasterData_Ex();

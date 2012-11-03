@@ -42,7 +42,7 @@ class LC_Page_Admin_Mail_Preview extends LC_Page_Admin_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_subtitle = 'プレビュー';
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Mail_Preview_001');
         $this->tpl_mainpage = 'mail/preview.tpl';
     }
 

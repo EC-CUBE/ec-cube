@@ -45,8 +45,8 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
         parent::init();
         $this->tpl_mainpage = 'products/class.tpl';
         $this->tpl_subno = 'class';
-        $this->tpl_subtitle = '規格管理';
-        $this->tpl_maintitle = '商品管理';
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Products_Class_001');
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_007');
         $this->tpl_mainno = 'products';
     }
 
@@ -255,7 +255,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
         $arrClass = $objQuery->select('class_id, name', 'dtb_class', $where, array($arrForm['name']));
         // 編集中のレコード以外に同じ名称が存在する場合
         if ($arrClass[0]['class_id'] != $arrForm['class_id'] && $arrClass[0]['name'] == $arrForm['name']) {
-            $arrErr['name'] = '※ 既に同じ内容の登録が存在します。<br>';
+            $arrErr['name'] = SC_I18n_Ex::t('LC_Page_Admin_Products_Class_002');
         }
         return $arrErr;
     }

@@ -46,8 +46,8 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'contents/recommend.tpl';
         $this->tpl_mainno = 'contents';
         $this->tpl_subno = 'recommend';
-        $this->tpl_maintitle = 'コンテンツ管理';
-        $this->tpl_subtitle = 'おすすめ商品管理';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_005');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Contents_Recommend_002');
         //最大登録数の表示
         $this->tpl_disp_max = RECOMMEND_NUM;
     }
@@ -104,7 +104,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
                     $arrItems = $this->setProducts($arrPost, $arrItems);
                     $this->checkRank = $arrPost['rank'];
                 }
-                $this->tpl_onload = "window.alert('編集が完了しました');";
+                $this->tpl_onload = "window.alert('" . SC_I18n_Ex::t('ALERT_001') . "');";
                 break;
             case 'delete': // 商品を削除する。
                 $this->arrErr = $this->lfCheckError($objFormParam);
@@ -113,7 +113,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
                     $this->deleteProduct($arrPost);
                     $arrItems = $this->getRecommendProducts();
                 }
-                $this->tpl_onload = "window.alert('削除しました');";
+                $this->tpl_onload = "window.alert('" . SC_I18n_Ex::t('ALERT_002') . "');";
                 break;
             case 'set_item': // 商品を選択する。
                 $this->arrErr = $this->lfCheckError($objFormParam);

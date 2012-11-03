@@ -45,8 +45,8 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
         parent::init();
         $this->tpl_mainpage = 'products/maker.tpl';
         $this->tpl_subno = 'maker';
-        $this->tpl_maintitle = '商品管理';
-        $this->tpl_subtitle = 'メーカー登録';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_007');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Products_Maker_001');
         $this->tpl_mainno = 'products';
     }
 
@@ -294,7 +294,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
                 || !$objDb->sfIsRecord('dtb_maker', 'maker_id', array($arrForm['maker_id']))
             ) {
                 // maker_idが指定されていて、且つその値が不正と思われる場合はエラー
-                $arrErr['maker_id'] = '※ メーカーIDが不正です<br />';
+                $arrErr['maker_id'] = SC_I18n_Ex::t('LC_Page_Admin_Products_Maker_002');
             }
         }
         if (!isset($arrErr['name'])) {
@@ -304,7 +304,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
 
             // 編集中のレコード以外に同じ名称が存在する場合
             if ($arrMaker[0]['maker_id'] != $arrForm['maker_id'] && $arrMaker[0]['name'] == $arrForm['name']) {
-                $arrErr['name'] = '※ 既に同じ内容の登録が存在します。<br />';
+                $arrErr['name'] = SC_I18n_Ex::t('LC_Page_Admin_Products_Maker_003');
             }
         }
 

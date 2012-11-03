@@ -51,8 +51,8 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
             'month' => date('n'),
             'day' => date('j'),
         );
-        $this->tpl_maintitle = 'コンテンツ管理';
-        $this->tpl_subtitle = '新着情報管理';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_005');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Contents_002');
         //---- 日付プルダウン設定
         $objDate = new SC_Date_Ex(ADMIN_NEWS_STARTYEAR);
         $this->arrYear = $objDate->getYear();
@@ -102,7 +102,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
                         $this->lfNewsInsert($arrPost,$member_id);
                     }
                     $news_id = '';
-                    $this->tpl_onload = "window.alert('編集が完了しました');";
+                    $this->tpl_onload = "window.alert('" . SC_I18n_Ex::t('ALERT_001') . "');";
                 } else {
                     $this->arrForm = $arrPost;
                 }

@@ -46,7 +46,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'contents';
         $this->tpl_subno = '';
 
-        $this->tpl_subtitle = '商品検索';
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Contents_RecommendSearch_001');
     }
 
     /**

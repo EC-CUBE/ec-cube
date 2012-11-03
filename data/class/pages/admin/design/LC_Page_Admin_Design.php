@@ -46,8 +46,8 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'design/index.tpl';
         $this->tpl_subno = 'layout';
         $this->tpl_mainno = 'design';
-        $this->tpl_maintitle = 'デザイン管理';
-        $this->tpl_subtitle = 'レイアウト設定';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_003');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Design_002');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrTarget = $masterData->getMasterData('mtb_target');
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
@@ -126,7 +126,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
             default:
                 // 完了メッセージ表示
                 if (isset($_GET['msg']) && $_GET['msg'] == 'on') {
-                    $this->tpl_onload="alert('登録が完了しました。');";
+                    $this->tpl_onload="alert('" . SC_I18n_Ex::t('ALERT_004') . "');";
                 }
                 break;
         }

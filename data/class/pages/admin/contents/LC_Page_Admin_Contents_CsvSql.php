@@ -47,8 +47,8 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $this->tpl_subno = 'csv';
         $this->tpl_subno_csv = 'csv_sql';
         $this->tpl_mainno = 'contents';
-        $this->tpl_maintitle = 'コンテンツ管理';
-        $this->tpl_subtitle = 'CSV出力設定';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_005');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Contents_CsvSql_002');
     }
 
     /**
@@ -83,7 +83,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
                     // データの更新
                     $this->arrForm['sql_id'] = $this->lfUpdData($objFormParam->getValue('sql_id'), $objFormParam->getDbArray());
                     // 完了メッセージ表示
-                    $this->tpl_onload = "alert('登録が完了しました。');";
+                    $this->tpl_onload = "alert('" . SC_I18n_Ex::t('ALERT_004') . "');";
                 }
                 break;
             // 確認画面
@@ -162,7 +162,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_THE_NAME'), 'sql_name'), array('EXIST_CHECK'));
         $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_SQL'), 'csv_sql', '30000'), array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objErr->doFunc(array('SQL文には読み込み関係以外のSQLコマンドおよび";"記号', 'csv_sql', $this->lfGetSqlDenyList()), array('PROHIBITED_STR_CHECK'));
+        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_CSV_SQL'), 'csv_sql', $this->lfGetSqlDenyList()), array('PROHIBITED_STR_CHECK'));
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
         }
@@ -170,7 +170,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         if (SC_Utils_Ex::isBlank($arrErr)) {
             $sql_error = $this->lfCheckSQL($objFormParam->getValue('csv_sql'));
             if (!SC_Utils_Ex::isBlank($sql_error)) {
-                $arrErr['csv_sql'] = '※ SQL文が不正です。SQL文を見直してください';
+                $arrErr['csv_sql'] = SC_I18n_Ex::t('LC_Page_Admin_Contents_CsvSql_005');
             }
         }
         return $arrErr;
@@ -188,7 +188,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         // 拡張エラーチェック
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->doFunc( array(SC_I18n_Ex::t('PARAM_LABEL_SQL'), 'csv_sql', '30000'), array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objErr->doFunc( array('SQL文には読み込み関係以外のSQLコマンドおよび";"記号', 'csv_sql', $this->lfGetSqlDenyList()), array('PROHIBITED_STR_CHECK'));
+        $objErr->doFunc( array(SC_I18n_Ex::t('PARAM_LABEL_CSV_SQL'), 'csv_sql', $this->lfGetSqlDenyList()), array('PROHIBITED_STR_CHECK'));
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
         }
@@ -224,7 +224,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $arrErr = $objFormParam->checkError();
         // 拡張エラーチェック
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
-        $objErr->doFunc( array('CSV出力対象SQL ID', 'csv_output_id'), array('EXIST_CHECK'));
+        $objErr->doFunc( array(SC_I18n_Ex::t('PARAM_LABEL_CSV_OUTPUT_ID'), 'csv_output_id'), array('EXIST_CHECK'));
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
         }
@@ -255,9 +255,9 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $arrRet = array();
         foreach ($arrTable as $table) {
             if (substr($table, 0, 4) == 'dtb_') {
-                $arrRet[ $table ] = 'データテーブル: ' . $table;
+                $arrRet[ $table ] = SC_I18n_Ex::t('LC_Page_Admin_Contents_CsvSql_006', array('T_FIELD' => $table));
             } else if (substr($table, 0, 4) == 'mtb_') {
-                $arrRet[ $table ] = 'マスターテーブル: ' . $table;
+                $arrRet[ $table ] = SC_I18n_Ex::t('LC_Page_Admin_Contents_CsvSql_007', array('T_FIELD' => $table));
             }
         }
         return $arrRet;

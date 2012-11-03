@@ -46,8 +46,8 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'system/adminarea.tpl';
         $this->tpl_subno = 'adminarea';
         $this->tpl_mainno = 'system';
-        $this->tpl_maintitle = 'システム設定';
-        $this->tpl_subtitle = '管理画面設定';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_009');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_System_AdminArea_001');
         $this->tpl_enable_ssl = FALSE;
     }
 
@@ -86,7 +86,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
 
             //設定ファイルの権限チェック
             if (!is_writable(CONFIG_REALFILE)) {
-                $arrErr['all'] = CONFIG_REALFILE . ' を変更する権限がありません。';
+                $arrErr['all'] = SC_I18n_Ex::t('LC_Page_Admin_System_AdminArea_002', array('T_FIELD' => CONFIG_REALFILE));
             }
 
             //管理画面ディレクトリのチェック
@@ -94,9 +94,9 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
 
             if (SC_Utils_Ex::isBlank($arrErr) && $this->lfUpdateAdminData($this->arrForm)) {
 
-                $this->tpl_onload = "window.alert('管理機能の設定を変更しました。URLを変更した場合は、新しいURLにアクセスしてください。');";
+                $this->tpl_onload = "window.alert('" . SC_I18n_Ex::t('ALERT_022') . "');";
             } else {
-                $this->tpl_onload = "window.alert('設定内容に誤りがあります。設定内容を確認してください。');";
+                $this->tpl_onload = "window.alert('" . SC_I18n_Ex::t('ALERT_023') . "');";
                 $this->arrErr = array_merge($arrErr, $this->arrErr);
             }
 
@@ -154,11 +154,13 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
             if (strpos($line,'ADMIN_DIR') !== false and ADMIN_DIR != $admin_dir) {
                 //既存ディレクトリのチェック
                 if (file_exists(HTML_REALDIR.$admin_dir) and $admin_dir != 'admin/') {
-                    $arrErr['admin_dir'] .= ROOT_URLPATH.$admin_dir.'は既に存在しています。別のディレクトリ名を指定してください。';
+                    $arrErr['admin_dir'] .= SC_I18n_Ex::t('LC_Page_Admin_System_AdminArea_003', array('T_FIELD' => OOT_URLPATH.$admin_dir));
+                    
                 }
                 //権限チェック
                 if (!is_writable(HTML_REALDIR . ADMIN_DIR)) {
-                    $arrErr['admin_dir'] .= ROOT_URLPATH.ADMIN_DIR.'のディレクトリ名を変更する権限がありません。';
+                    $arrErr['admin_dir'] .= SC_I18n_Ex::t('LC_Page_Admin_System_AdminArea_004', array('T_FIELD' => ROOT_URLPATH.ADMIN_DIR));
+                    
                 }
             }
         }
@@ -190,7 +192,8 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
                 $installData[$key] = 'define("ADMIN_DIR","'.$admin_dir.'");';
                 //管理機能ディレクトリのリネーム
                 if (!rename(HTML_REALDIR.ADMIN_DIR,HTML_REALDIR.$admin_dir)) {
-                    $this->arrErr['admin_dir'] .= ROOT_URLPATH.ADMIN_DIR.'のディレクトリ名を変更できませんでした。';
+                    $this->arrErr['admin_dir'] .= SC_I18n_Ex::t('LC_Page_Admin_System_AdminArea_005', array('T_FIELD' => ROOT_URLPATH.ADMIN_DIR));
+                    
                     return false;
                 }
                 $diff ++;

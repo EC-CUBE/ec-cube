@@ -49,17 +49,17 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrTAXRULE = $masterData->getMasterData('mtb_taxrule');
-        $this->tpl_maintitle = '基本情報管理';
-        $this->tpl_subtitle = 'SHOPマスター';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_006');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Basis_002');;
 
         //定休日用配列
-        $this->arrRegularHoliday[0] = '日';
-        $this->arrRegularHoliday[1] = '月';
-        $this->arrRegularHoliday[2] = '火';
-        $this->arrRegularHoliday[3] = '水';
-        $this->arrRegularHoliday[4] = '木';
-        $this->arrRegularHoliday[5] = '金';
-        $this->arrRegularHoliday[6] = '土';
+        $this->arrRegularHoliday[0] = SC_I18n_Ex::t('LC_Page_Admin_Basis_003');
+        $this->arrRegularHoliday[1] = SC_I18n_Ex::t('LC_Page_Admin_Basis_004');
+        $this->arrRegularHoliday[2] = SC_I18n_Ex::t('LC_Page_Admin_Basis_005');
+        $this->arrRegularHoliday[3] = SC_I18n_Ex::t('LC_Page_Admin_Basis_006');
+        $this->arrRegularHoliday[4] = SC_I18n_Ex::t('LC_Page_Admin_Basis_007');
+        $this->arrRegularHoliday[5] = SC_I18n_Ex::t('LC_Page_Admin_Basis_008');
+        $this->arrRegularHoliday[6] = SC_I18n_Ex::t('LC_Page_Admin_Basis_009');
     }
 
     /**
@@ -112,7 +112,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
                     default:
                         break;
                 }
-                $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "'); window.alert('SHOPマスターの登録が完了しました。');";
+                $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "'); window.alert(" . SC_I18n_Ex::t('LC_Page_Admin_Basis_011') .");";
             }
             if (empty($this->arrForm['regular_holiday_ids'])) {
                 $this->arrSel = array();
@@ -194,7 +194,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         // UPDATEの実行
         $ret = $objQuery->update('dtb_baseinfo', $sqlval);
 
-        GC_Utils_Ex::gfPrintLog('dtb_baseinfo に UPDATE を実行しました。');
+        GC_Utils_Ex::gfPrintLog(SC_I18n_Ex::t('LC_Page_Admin_Basis_012'));
     }
 
     function lfInsertData($array) {
@@ -208,7 +208,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         // INSERTの実行
         $ret = $objQuery->insert('dtb_baseinfo', $sqlval);
 
-        GC_Utils_Ex::gfPrintLog('dtb_baseinfo に INSERT を実行しました。');
+        GC_Utils_Ex::gfPrintLog(SC_I18n_Ex::t('LC_Page_Admin_Basis_013'));
     }
 
     function lfInitParam(&$objFormParam, $post) {

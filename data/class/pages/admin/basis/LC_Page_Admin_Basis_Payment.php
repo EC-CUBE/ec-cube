@@ -46,8 +46,8 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'basis/payment.tpl';
         $this->tpl_mainno = 'basis';
         $this->tpl_subno = 'payment';
-        $this->tpl_maintitle = '基本情報管理';
-        $this->tpl_subtitle = '支払方法設定';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_006');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Basis_Payment_002');
     }
 
     /**

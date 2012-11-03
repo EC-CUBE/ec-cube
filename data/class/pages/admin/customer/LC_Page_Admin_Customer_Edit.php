@@ -47,8 +47,8 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'customer';
         $this->tpl_subno = 'index';
         $this->tpl_pager = 'pager.tpl';
-        $this->tpl_maintitle = '会員管理';
-        $this->tpl_subtitle = '会員登録';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_004');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Customer_Edit_002');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
@@ -260,17 +260,17 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         $arrData = $objQuery->getRow($col, $table, $where, $arrVal);
         if (!SC_Utils_Ex::isBlank($arrData['email'])) {
             if ($arrData['email'] == $objFormParam->getValue('email')) {
-                $arrErr['email'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用しているアドレスです。';
+                $arrErr['email'] = SC_I18n_Ex::t('LC_Page_Admin_Customer_Edit_003', array('T_FIELD' => $arrData['customer_id']));
             } else if ($arrData['email'] == $objFormParam->getValue('email_mobile')) {
-                $arrErr['email_mobile'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用しているアドレスです。';
+                $arrErr['email_mobile'] = SC_I18n_Ex::t('LC_Page_Admin_Customer_Edit_003', array('T_FIELD' => $arrData['customer_id']));
             }
         }
         if (!SC_Utils_Ex::isBlank($arrData['email_mobile'])) {
             if ($arrData['email_mobile'] == $objFormParam->getValue('email_mobile')) {
-                $arrErr['email_mobile'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用している携帯アドレスです。';
+                $arrErr['email_mobile'] = SC_I18n_Ex::t('LC_Page_Admin_Customer_Edit_004', array('T_FIELD' => $arrData['customer_id']));
             } else if ($arrData['email_mobile'] == $objFormParam->getValue('email')) {
     if ($arrErr['email'] == '') {
-                    $arrErr['email'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用している携帯アドレスです。';
+                    $arrErr['email'] = SC_I18n_Ex::t('LC_Page_Admin_Customer_Edit_004', array('T_FIELD' => $arrData['customer_id']));
                 }
             }
         }

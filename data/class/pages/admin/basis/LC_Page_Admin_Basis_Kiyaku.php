@@ -45,8 +45,8 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
         parent::init();
         $this->tpl_mainpage = 'basis/kiyaku.tpl';
         $this->tpl_subno = 'kiyaku';
-        $this->tpl_maintitle = '基本情報管理';
-        $this->tpl_subtitle = '会員規約設定';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_006');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Basis_Kiyaku_002');
         $this->tpl_mainno = 'basis';
     }
 
@@ -130,7 +130,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
             default:
                 if (isset($_GET['msg']) && $_GET['msg'] == 'on') {
                     // 完了メッセージ
-                    $this->tpl_onload = "alert('登録が完了しました。');";
+                    $this->tpl_onload = "alert('" . SC_I18n_Ex::t('ALERT_004') . "');";
                 }
                 break;
         }
@@ -240,7 +240,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
             $arrRet = $objQuery->select('kiyaku_id, kiyaku_title', 'dtb_kiyaku', 'del_flg = 0 AND kiyaku_title = ?', array($post['kiyaku_title']));
             // 編集中のレコード以外に同じ名称が存在する場合
             if ($arrRet[0]['kiyaku_id'] != $post['kiyaku_id'] && $arrRet[0]['kiyaku_title'] == $post['kiyaku_title']) {
-                $arrErr['name'] = '※ 既に同じ内容の登録が存在します。<br>';
+                $arrErr['name'] = SC_I18n_Ex::t('LC_Page_Admin_Basis_Kiyaku_004');
             }
         }
         return $arrErr;

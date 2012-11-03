@@ -46,8 +46,8 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'basis/mail.tpl';
         $this->tpl_mainno = 'basis';
         $this->tpl_subno = 'mail';
-        $this->tpl_maintitle = '基本情報管理';
-        $this->tpl_subtitle = 'メール設定';
+        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_006');
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Basis_Mail_002');
     }
 
     /**
@@ -97,14 +97,14 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
                     $this->arrForm = $post;
                     if ($this->arrErr) {
                         // エラーメッセージ
-                        $this->tpl_msg = 'エラーが発生しました';
+                        $this->tpl_msg = SC_I18n_Ex::t('LC_Page_Admin_Basis_Mail_003');
 
                     } else {
                         // 正常
                         $this->lfRegistMailTemplate($this->arrForm, $_SESSION['member_id']);
 
                         // 完了メッセージ
-                        $this->tpl_onload = "window.alert('メール設定が完了しました。テンプレートを選択して内容をご確認ください。');";
+                        $this->tpl_onload = "window.alert('" .SC_I18n_Ex::t('ALERT_006'). "');";
                         unset($this->arrForm);
                     }
                 break;

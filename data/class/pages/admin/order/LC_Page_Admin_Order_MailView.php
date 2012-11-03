@@ -44,7 +44,7 @@ class LC_Page_Admin_Order_MailView extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'order/mail_view.tpl';
-        $this->tpl_subtitle = '受注管理メール確認';
+        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Order_MailView_001');
         $this->httpCacheControl('nocache');
     }
 
