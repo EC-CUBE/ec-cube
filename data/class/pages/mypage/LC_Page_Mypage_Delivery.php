@@ -84,7 +84,7 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
                     SC_Response_Ex::actionExit();
                 }
 
-                $objAddress->deleteAddress($customer_id, $objFormParam->getValue('other_deliv_id'));
+                $objAddress->delete($objFormParam->getValue('other_deliv_id'));
                 break;
 
             // スマートフォン版のもっと見るボタン用

@@ -135,7 +135,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
             default :
 
                 if ($_GET['other_deliv_id'] != '') {
-                    $arrOtherDeliv = $objAddress->getAddress($objCustomer->getValue('customer_id'), $_SESSION['other_deliv_id']);
+                    $arrOtherDeliv = $objAddress->get($_SESSION['other_deliv_id']);
 
                     //不正アクセス判定
                     if (!$objCustomer->isLoginSuccess(true) || !$arrOtherDeliv) {
@@ -170,9 +170,10 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
         $arrRet     = $objFormParam->getHashArray();
         $sqlval     = $objFormParam->getDbArray();
 
+        $sqlval['other_deliv_id'] = $arrRet['other_deliv_id'];
         $sqlval['customer_id'] = $customer_id;
 
-        $objAddress->registAddress($customer_id, $sqlval, $arrRet['other_deliv_id']);
+        $objAddress->save($sqlval);
     }
 
     function lfRegistDataNonMember($objFormParam) {
