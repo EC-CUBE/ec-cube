@@ -635,4 +635,17 @@ class SC_Helper_Customer {
                                     NAVI_PMAX);
         return array($linemax, $arrData, $objNavi);
     }
+
+    /**
+     * 仮会員かどうかを判定する.
+     *
+     * @param string $login_email メールアドレス
+     * @return boolean 仮会員の場合 true
+     */
+    public function checkTempCustomer($login_email) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $where = 'email = ? AND status = 1 AND del_flg = 0';
+        $exists = $objQuery->exists('dtb_customer', $where, array($login_email));
+        return $exists;
+    }
 }

@@ -152,7 +152,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
                 // ログインに失敗した場合
                 else {
                     // 仮登録の場合
-                    if ($this->checkTempCustomer($objFormParam->getValue('login_email'))) {
+                    if (SC_Helper_Customer_Ex::checkTempCustomer($objFormParam->getValue('login_email'))) {
                         if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
                             echo $this->lfGetErrorMessage(TEMP_LOGIN_ERROR);
                             SC_Response_Ex::actionExit();
@@ -484,19 +484,6 @@ class LC_Page_Shopping extends LC_Page_Ex {
         }
         $objFormParam->setValue('order_email02', $arrOrderTemp['order_email']);
         $objFormParam->setDBDate($arrOrderTemp['order_birth']);
-    }
-
-    /**
-     * 仮会員かどうかを判定する.
-     *
-     * @param string $login_email メールアドレス
-     * @return boolean 仮会員の場合 true
-     */
-    function checkTempCustomer($login_email) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $where = 'email = ? AND status = 1 AND del_flg = 0';
-        $exists = $objQuery->exists('dtb_customer', $where, array($login_email));
-        return $exists;
     }
 
     /**
