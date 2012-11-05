@@ -129,7 +129,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
         }
 
         // 決済モジュールを使用するかどうか
-        $this->use_module = $this->useModule($this->arrForm['payment_id']);
+        $this->use_module = SC_Helper_Payment_Ex::useModule($this->arrForm['payment_id']);
 
         switch ($this->getMode()) {
             // 前のページに戻る
@@ -187,19 +187,5 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
      */
     function destroy() {
         parent::destroy();
-    }
-
-    /**
-     * 決済モジュールを使用するかどうか.
-     *
-     * dtb_payment.memo03 に値が入っている場合は決済モジュールと見なす.
-     *
-     * @param integer $payment_id 支払い方法ID
-     * @return boolean 決済モジュールを使用する支払い方法の場合 true
-     */
-    function useModule($payment_id) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $memo03 = $objQuery->get('memo03', 'dtb_payment', 'payment_id = ?', array($payment_id));
-        return !SC_Utils_Ex::isBlank($memo03);
     }
 }
