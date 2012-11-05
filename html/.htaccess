@@ -2,7 +2,7 @@
 
 php_value mbstring.language Japanese
 php_flag mbstring.encoding_translation off
-php_value output_handler NULL
+php_value output_handler none
 php_flag magic_quotes_gpc off
 php_flag session.auto_start 0
 
