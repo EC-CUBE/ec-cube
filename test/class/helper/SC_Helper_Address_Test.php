@@ -80,6 +80,9 @@ class SC_Helper_Address_Test extends PHPUnit_Framework_TestCase
         $this->assertEquals($update_test, $updated_address['addr02']);
     }
 
+    /**
+     * @depends testSave
+     */
     function testGet() {
         // testSave のテストが通っていること前提
         $sqlval = $this->dummy;
@@ -99,6 +102,9 @@ class SC_Helper_Address_Test extends PHPUnit_Framework_TestCase
         $this->assertTrue($result);
     }
 
+    /**
+     * @depends testSave
+     */
     function testGetList() {
         // testSave のテストが通っていること前提
         $sqlval = $this->dummy;
@@ -122,6 +128,9 @@ class SC_Helper_Address_Test extends PHPUnit_Framework_TestCase
         $this->assertTrue($found);
     }
 
+    /**
+     * @depends testSave
+     */
     function testDelete() {
         // testSave のテストが通っていること前提
         $sqlval = $this->dummy;
