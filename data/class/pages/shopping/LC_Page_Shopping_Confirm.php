@@ -74,7 +74,6 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
         $objCartSess = new SC_CartSession_Ex();
         $objSiteSess = new SC_SiteSession_Ex();
         $objCustomer = new SC_Customer_Ex();
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objHelperMail = new SC_Helper_Mail_Ex();
         $objHelperMail->setPage($this);
@@ -145,7 +144,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
                 /*
                  * 決済モジュールで必要なため, 受注番号を取得
                  */
-                $this->arrForm['order_id'] = $objQuery->nextval('dtb_order_order_id');
+                $this->arrForm['order_id'] = $objPurchase->getNextOrderID();
                 $_SESSION['order_id'] = $this->arrForm['order_id'];
 
                 // 集計結果を受注一時テーブルに反映
