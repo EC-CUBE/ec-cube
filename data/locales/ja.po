@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2012-11-03 20:11+0900\n"
+"PO-Revision-Date: 2012-11-07 17:35+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -871,6 +871,9 @@ msgstr "必要料金"
 
 msgid "PARAM_LABEL_TO_ORDER"
 msgstr "注文方法"
+
+msgid "PARAM_LABEL_PAYMENT_METHOD_ID"
+msgstr "支払方法ID"
 
 msgid "PARAM_LABEL_PAYMENT_METHOD"
 msgstr "支払方法"
