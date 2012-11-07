@@ -71,24 +71,49 @@ class SC_ClassAutoloader {
             // 元の設定を一時保存
             $plugin_class = $class;
             $plugin_classpath = $classpath;
+
             $objPlugin->doAction('loadClassFileChange', array(&$plugin_class, &$plugin_classpath));
+
             // FIXME: トリッキーな処理で _Ex ファイルを無視しないようにする（無視するとユーザーカスタマイズで分かりにくい)
             //        SC_XXXX_Ex がロードされる場合にextendsのchainを
             //        SC_XXXX_Ex -> SC_XXXX から、 SC_XXXX_Ex -> $class (-> SC_XXXX) と変える。
             //        そうでない場合は、直接置き換えと想定して帰ってきたクラスをロードする
-            if ($plugin_class !== $class) {
+            if (is_array($plugin_class) && count($plugin_class) > 0) {
+                $arrPluginClassName = $plugin_class;
+                $arrPluginClassPath = $plugin_classpath;
+
+                foreach ($arrPluginClassName as $key => $plugin_class) {
+                    $plugin_classpath = $arrPluginClassPath[$key];
+
+                    if ($is_ex) {
+                        // Ex ファイルへのフックの場合のみチェイン変更する。
+
+                        if ($parent_classname) {
+                            $exp = "/(class[ ]+{$plugin_class}[ ]+extends +)[a-zA-Z_\-]+( *{?)/";
+                            $replace = '$1' . $parent_classname . '$2';
+
+                            $base_class_str = file_get_contents($plugin_classpath);
+                            $base_class_str = str_replace(array('<?php', '?>'), '', $base_class_str);
+                            $base_class_str = preg_replace($exp, $replace, $base_class_str, 1);
+                            eval($base_class_str);
+                        } else {
+                            include $plugin_classpath;
+                        }
+
+                        $parent_classname = $plugin_class;
+                    } else {
+                        include $plugin_classpath;
+                    }
+                }
+
                 if ($is_ex) {
-                    // Ex ファイルへのフックの場合のみチェイン変更する。
-                    $exp = "/(class[ ]+{$class}[ ]+extends +)[a-zA-Z_\-]+( *{)/";
-                    $replace = '$1' . $plugin_class . '$2';
+                    $exp = "/(class[ ]+{$class}[ ]+extends +)[a-zA-Z_\-]+( *{?)/";
+                    $replace = '$1' . $parent_classname . '$2';
                     $base_class_str = file_get_contents($classpath);
                     $base_class_str = str_replace(array('<?php', '?>'), '', $base_class_str);
                     $base_class_str = preg_replace($exp, $replace, $base_class_str, 1);
-                    include $plugin_classpath;
                     eval($base_class_str);
                     return;
-                } else {
-                    include $plugin_classpath;
                 }
             }
         }
