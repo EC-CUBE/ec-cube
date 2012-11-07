@@ -72,6 +72,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
         $objCustomer = new SC_Customer_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objFormParam = new SC_FormParam_Ex();
+        $objAddress = new SC_Helper_Address_Ex();
 
         $this->tpl_uniqid = $objSiteSess->getUniqId();
         $objPurchase->verifyChangeCart($this->tpl_uniqid, $objCartSess);
@@ -108,7 +109,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
         switch ($this->getMode()) {
             // 削除
             case 'delete':
-                $this->doDelete($arrForm['other_deliv_id']);
+                $objAddress->delete($arrForm['other_deliv_id']);
                 break;
 
             // 会員登録住所に送る
@@ -116,7 +117,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
                 $objPurchase->unsetShippingTemp();
 
                 $shipping_id = $arrForm['deliv_check'] == -1 ? 0 : $arrForm['deliv_check'];
-                $success = $this->registerDeliv($shipping_id, $this->tpl_uniqid, $objPurchase, $objCustomer);
+                $success = $this->registerDeliv($shipping_id, $this->tpl_uniqid, $objPurchase, $objCustomer, $objAddress);
                 if (!$success) {
                     SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
                 }
@@ -160,7 +161,25 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
         }
 
         // 登録済み住所を取得
-        $this->arrAddr = $objCustomer->getCustomerAddress($objCustomer->getValue('customer_id'));
+        $addr = array(
+            array(
+                'other_deliv_id'    => NULL,
+                'customer_id'       => $objCustomer->getValue('customer_id'),
+                'name01'            => $objCustomer->getValue('name01'),
+                'name02'            => $objCustomer->getValue('name02'),
+                'kana01'            => $objCustomer->getValue('kana01'),
+                'kana02'            => $objCustomer->getValue('kana02'),
+                'zip01'             => $objCustomer->getValue('zip01'),
+                'zip02'             => $objCustomer->getValue('zip02'),
+                'pref'              => $objCustomer->getValue('pref'),
+                'addr01'            => $objCustomer->getValue('addr01'),
+                'addr02'            => $objCustomer->getValue('addr02'),
+                'tel01'             => $objCustomer->getValue('tel01'),
+                'tel02'             => $objCustomer->getValue('tel02'),
+                'tel03'             => $objCustomer->getValue('tel03'),
+            )
+        );
+        $this->arrAddr = array_merge($addr, $objAddress->getList($objCustomer->getValue('customer_id')));
         $this->tpl_addrmax = count($this->arrAddr);
 
 
@@ -187,18 +206,6 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
     }
 
     /**
-     * その他のお届け先情報を削除する.
-     *
-     * @param integer $other_deliv_id その他のお届け先ID
-     * @return void
-     */
-    function doDelete($other_deliv_id) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $where = 'other_deliv_id = ?';
-        $objQuery->delete('dtb_other_deliv', $where, array($other_deliv_id));
-    }
-
-    /**
      * お届け先チェックの値に応じて, お届け先情報を保存する.
      *
      * 会員住所がチェックされている場合は, 会員情報からお届け先を取得する.
@@ -211,7 +218,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
      * @param SC_Customer $objCustomer SC_Customer インスタンス
      * @return boolean お届け先チェックの値が妥当な場合 true
      */
-    function registerDeliv($other_deliv_id, $uniqid, &$objPurchase, &$objCustomer) {
+    function registerDeliv($other_deliv_id, $uniqid, &$objPurchase, &$objCustomer, $objAddress) {
         GC_Utils_Ex::gfDebugLog('register deliv. deliv_check=' . $deliv_check);
         $arrValues = array();
         // 会員登録住所がチェックされている場合
@@ -220,11 +227,8 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
         }
         // 別のお届け先がチェックされている場合
         else {
-            $objQuery =& SC_Query_Ex::getSingletonInstance();
-            $arrOtherDeliv = $objQuery->getRow('*', 'dtb_other_deliv',
-                                               'customer_id = ? AND other_deliv_id = ?',
-                                               array($objCustomer->getValue('customer_id'), $other_deliv_id));
-            if (empty($arrOtherDeliv)) {
+            $arrOtherDeliv = $objAddress->get($other_deliv_id);
+            if (!$arrOtherDeliv) {
                 return false;
             }
 

@@ -57,51 +57,6 @@ class SC_Customer {
     }
 
     /**
-     * 会員の登録住所を取得する.
-     *
-     * 配列の1番目に会員登録住所, 追加登録住所が存在する場合は2番目以降に
-     * 設定される.
-     *
-     * @param integer $customer_id 会員ID
-     * @return array 会員登録住所, 追加登録住所の配列
-     */
-    function getCustomerAddress($customer_id) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-
-        $from = <<< __EOS__
-            (
-                SELECT NULL AS other_deliv_id,
-                    customer_id,
-                    name01, name02,
-                    kana01, kana02,
-                    zip01, zip02,
-                    pref,
-                    addr01, addr02,
-                    email, email_mobile,
-                    tel01, tel02, tel03,
-                    fax01, fax02, fax03
-                FROM dtb_customer
-                WHERE customer_id = ?
-                UNION ALL
-                SELECT other_deliv_id,
-                    customer_id,
-                    name01, name02,
-                    kana01, kana02,
-                    zip01, zip02,
-                    pref,
-                    addr01, addr02,
-                    NULL AS email, NULL AS email_mobile,
-                    tel01, tel02, tel03,
-                    NULL AS fax01, NULL AS fax02, NULL AS fax03
-                FROM dtb_other_deliv
-                WHERE customer_id = ?
-            ) AS addrs
-__EOS__;
-        $objQuery->setOrder('other_deliv_id IS NULL DESC, other_deliv_id DESC');
-        return $objQuery->select('*', $from, '', array($customer_id, $customer_id));
-    }
-
-    /**
      * 携帯端末IDが一致する会員が存在するかどうかをチェックする。
      * FIXME
      * @return boolean 該当する会員が存在する場合は true、それ以外の場合
@@ -312,5 +267,42 @@ __EOS__;
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrOrderSummary =  $objQuery->getRow('SUM( payment_total) as buy_total, COUNT(order_id) as buy_times,MAX( create_date) as last_buy_date, MIN(create_date) as first_buy_date','dtb_order','customer_id = ? AND del_flg = 0 AND status <> ?',array($customer_id,ORDER_CANCEL));
         $objQuery->update('dtb_customer',$arrOrderSummary,'customer_id = ?',array($customer_id));
+    }
+
+    /**
+     * ログインを実行する.
+     *
+     * ログインを実行し, 成功した場合はユーザー情報をセッションに格納し,
+     * true を返す.
+     * モバイル端末の場合は, 携帯端末IDを保存する.
+     * ログインに失敗した場合は, false を返す.
+     *
+     * @param string $login_email ログインメールアドレス
+     * @param string $login_pass ログインパスワード
+     * @return boolean ログインに成功した場合 true; 失敗した場合 false
+     */
+    function doLogin($login_email, $login_pass) {
+        switch (SC_Display_Ex::detectDevice()) {
+            case DEVICE_TYPE_MOBILE:
+                if (!$this->is->getCustomerDataFromMobilePhoneIdPass($login_pass) &&
+                    !$this->getCustomerDataFromEmailPass($login_pass, $login_email, true)
+                ) {
+                    return false;
+                } else {
+                    $this->updateMobilePhoneId();
+                    return true;
+                }
+                break;
+
+            case DEVICE_TYPE_SMARTPHONE:
+            case DEVICE_TYPE_PC:
+            default:
+                if (!$this->getCustomerDataFromEmailPass($login_pass, $login_email)) {
+                    return false;
+                } else {
+                    return true;
+                }
+                break;
+        }
     }
 }

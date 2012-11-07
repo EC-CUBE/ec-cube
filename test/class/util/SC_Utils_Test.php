@@ -149,7 +149,7 @@ class SC_Utils_Test extends PHPUnit_Framework_TestCase {
 
     function testRecursiveMkdir() {
         $tmp_dir = sys_get_temp_dir();
-        $dir = 'foo/bar';
+        $dir = '/foo/bar';
         $results = false;
         if (is_dir($tmp_dir . $dir)) {
             rmdir($tmp_dir . '/foo/bar');

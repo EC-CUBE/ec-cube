@@ -904,7 +904,7 @@ class SC_Helper_Purchase {
             $objQuery->update($table, $arrValues, $where, array($order_id));
         } else {
             if (SC_Utils_Ex::isBlank($order_id)) {
-                $order_id = $objQuery->nextVal('dtb_order_order_id');
+                $order_id = $this->getNextOrderID();
             }
             /*
              * 新規受付の場合は対応状況 null で insert し,
@@ -1366,5 +1366,15 @@ __EOS__;
             if ($arrCartRow['quantity'] == 0) continue;
             $this->setShipmentItemTemp($shipping_id, $arrCartRow['id'], $arrCartRow['quantity']);
         }
+    }
+
+    /**
+     * 新規受注の注文IDを返す
+     *
+     * @return integer
+     */
+    public function getNextOrderID() {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        return $objQuery->nextVal('dtb_order_order_id');
     }
 }

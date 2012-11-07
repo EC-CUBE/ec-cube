@@ -71,6 +71,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
     function action() {
 
         $objCustomer = new SC_Customer_Ex();
+        $objAddress  = new SC_Helper_Address_Ex();
         $ParentPage  = MYPAGE_DELIVADDR_URLPATH;
 
         // GETでページを指定されている場合には指定ページに戻す
@@ -96,14 +97,14 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
 
         // パラメーター管理クラス,パラメーター情報の初期化
         $objFormParam   = new SC_FormParam_Ex();
-        SC_Helper_Customer_Ex::sfCustomerOtherDelivParam($objFormParam);
+        $objAddress->setFormParam($objFormParam);
         $objFormParam->setParam($_POST);
         $this->arrForm  = $objFormParam->getHashArray();
 
         switch ($this->getMode()) {
             // 入力は必ずedit
             case 'edit':
-                $this->arrErr = SC_Helper_Customer_Ex::sfCustomerOtherDelivErrorCheck($objFormParam);
+                $this->arrErr = $objAddress->errorCheck($objFormParam);
                 // 入力エラーなし
                 if (empty($this->arrErr)) {
 
@@ -115,7 +116,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
                     }
 
                     if ($objCustomer->isLoginSuccess(true)) {
-                        $this->lfRegistData($objFormParam, $objCustomer->getValue('customer_id'));
+                        $this->lfRegistData($objAddress, $objFormParam, $objCustomer->getValue('customer_id'));
                     } else {
                         $this->lfRegistDataNonMember($objFormParam);
                     }
@@ -134,15 +135,15 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
             default :
 
                 if ($_GET['other_deliv_id'] != '') {
-                    $arrOtherDeliv = $this->lfGetOtherDeliv($objCustomer->getValue('customer_id'), $_SESSION['other_deliv_id']);
+                    $arrOtherDeliv = $objAddress->get($_SESSION['other_deliv_id']);
 
                     //不正アクセス判定
-                    if (!$objCustomer->isLoginSuccess(true) || count($arrOtherDeliv) == 0) {
+                    if (!$objCustomer->isLoginSuccess(true) || !$arrOtherDeliv) {
                         SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
                     }
 
                     //別のお届け先情報取得
-                    $this->arrForm = $arrOtherDeliv[0];
+                    $this->arrForm = $arrOtherDeliv;
                 }
                 break;
         }
@@ -164,51 +165,15 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
         parent::destroy();
     }
 
-    /**
-     * ほかのお届け先を取得する
-     *
-     * @param mixed $customer_id
-     * @param mixed $other_deliv_id
-     * @access private
-     * @return array()
-     */
-    function lfGetOtherDeliv($customer_id, $other_deliv_id) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        return $objQuery->select('*', 'dtb_other_deliv', 'customer_id = ? AND other_deliv_id = ?', array($customer_id, $other_deliv_id));
-    }
-
     /* 登録実行 */
-    function lfRegistData($objFormParam, $customer_id) {
-        $objQuery   =& SC_Query_Ex::getSingletonInstance();
-
+    function lfRegistData($objAddress, $objFormParam, $customer_id) {
         $arrRet     = $objFormParam->getHashArray();
         $sqlval     = $objFormParam->getDbArray();
 
+        $sqlval['other_deliv_id'] = $arrRet['other_deliv_id'];
         $sqlval['customer_id'] = $customer_id;
 
-        // 追加
-        if (strlen($arrRet['other_deliv_id'] == 0)) {
-            // 別のお届け先登録数の取得
-            $deliv_count = $objQuery->count('dtb_other_deliv', 'customer_id = ?', array($customer_id));
-            // 別のお届け先最大登録数に達している場合、エラー
-            if ($deliv_count >= DELIV_ADDR_MAX) {
-                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, SC_I18n_Ex::t('LC_Page_Mypage_DeliveryAddr_002'));
-            }
-
-            // 実行
-            $sqlval['other_deliv_id'] = $objQuery->nextVal('dtb_other_deliv_other_deliv_id');
-            $objQuery->insert('dtb_other_deliv', $sqlval);
-
-        // 変更
-        } else {
-            $deliv_count = $objQuery->count('dtb_other_deliv','customer_id = ? AND other_deliv_id = ?' ,array($customer_id, $arrRet['other_deliv_id']));
-            if ($deliv_count != 1) {
-                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, SC_I18n_Ex::t('LC_Page_Mypage_DeliveryAddr_003'));
-            }
-
-            // 実行
-            $objQuery->update('dtb_other_deliv', $sqlval, 'other_deliv_id = ?', array($arrRet['other_deliv_id']));
-        }
+        $objAddress->save($sqlval);
     }
 
     function lfRegistDataNonMember($objFormParam) {

@@ -325,7 +325,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_PUBLIC_STATUS'), 'status', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_STATUS'), 'product_status', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
-        if ($this->lfGetProductClassFlag($arrPost['has_product_class']) == false) {
+        if (!$arrPost['has_product_class']) {
             // 新規登録, 規格なし商品の編集の場合
             $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_TYPE'), 'product_type_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
             $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DOWN_PRODUCT_FILENAME'), 'down_filename', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
@@ -948,20 +948,6 @@ __EOF__;
     }
 
     /**
-     * 入力フォームパラメーターの規格ありなしフラグを判定
-     *
-     * @param string $has_product_class 入力フォームパラメーターの規格ありなしフラグ
-     * @return boolean true: 規格あり, false: 規格なし
-     */
-    function lfGetProductClassFlag($has_product_class) {
-        if ($has_product_class == '1') {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * ページonload用JavaScriptを取得する
      * - 入力画面
      *
@@ -1034,7 +1020,7 @@ __EOF__;
 
             // 複製商品の場合には規格も複製する
             if ($arrList['copy_product_id'] != '' && SC_Utils_Ex::sfIsInt($arrList['copy_product_id'])) {
-                if ($this->lfGetProductClassFlag($arrList['has_product_class']) == false) {
+                if (!$arrList['has_product_class']) {
                     //規格なしの場合、複製は価格等の入力が発生しているため、その内容で追加登録を行う
                     $this->lfCopyProductClass($arrList, $objQuery);
                 } else {

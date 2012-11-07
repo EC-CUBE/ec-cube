@@ -121,13 +121,12 @@ class LC_Page_Shopping extends LC_Page_Ex {
 
                 // ログイン判定
                 if (SC_Utils_Ex::isBlank($this->arrErr)
-                    && $this->doLogin($objCustomer,
-                                      $objFormParam->getValue('login_email'),
-                                      $objFormParam->getValue('login_pass'))) {
+                    && $objCustomer->doLogin($objFormParam->getValue('login_email'),
+                                             $objFormParam->getValue('login_pass'))) {
 
                     // モバイルサイトで携帯アドレスの登録が無い場合、携帯アドレス登録ページへ遷移
                     if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
-                        if ($this->hasEmailMobile($objCustomer) == false) {
+                        if (!$objCustomer->hasValue('email_mobile')) {
 
                             SC_Response_Ex::sendRedirectFromUrlPath('entry/email_mobile.php');
                             SC_Response_Ex::actionExit();
@@ -152,7 +151,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
                 // ログインに失敗した場合
                 else {
                     // 仮登録の場合
-                    if ($this->checkTempCustomer($objFormParam->getValue('login_email'))) {
+                    if (SC_Helper_Customer_Ex::checkTempCustomer($objFormParam->getValue('login_email'))) {
                         if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
                             echo $this->lfGetErrorMessage(TEMP_LOGIN_ERROR);
                             SC_Response_Ex::actionExit();
@@ -484,73 +483,6 @@ class LC_Page_Shopping extends LC_Page_Ex {
         }
         $objFormParam->setValue('order_email02', $arrOrderTemp['order_email']);
         $objFormParam->setDBDate($arrOrderTemp['order_birth']);
-    }
-
-    /**
-     * ログインを実行する.
-     *
-     * ログインを実行し, 成功した場合はユーザー情報をセッションに格納し,
-     * true を返す.
-     * モバイル端末の場合は, 携帯端末IDを保存する.
-     * ログインに失敗した場合は, false を返す.
-     *
-     * @param SC_Customer $objCustomer SC_Customer インスタンス
-     * @param string $login_email ログインメールアドレス
-     * @param string $login_pass ログインパスワード
-     * @return boolean ログインに成功した場合 true; 失敗した場合 false
-     */
-    function doLogin(&$objCustomer, $login_email, $login_pass) {
-        switch (SC_Display_Ex::detectDevice()) {
-            case DEVICE_TYPE_MOBILE:
-                if (!$objCustomer->getCustomerDataFromMobilePhoneIdPass($login_pass) &&
-                    !$objCustomer->getCustomerDataFromEmailPass($login_pass, $login_email, true)
-                ) {
-                    return false;
-                } else {
-                    $objCustomer->updateMobilePhoneId();
-                    return true;
-                }
-                break;
-
-            case DEVICE_TYPE_SMARTPHONE:
-            case DEVICE_TYPE_PC:
-            default:
-                if (!$objCustomer->getCustomerDataFromEmailPass($login_pass, $login_email)) {
-                    return false;
-                } else {
-                    return true;
-                }
-                break;
-        }
-    }
-
-    /**
-     * ログインした会員の携帯メールアドレス登録があるかどうか
-     *
-     * ログインした会員の携帯メールアドレスの存在をチェックする
-     *
-     * @param SC_Customer $objCustomer SC_Customer インスタンス
-     * @return boolean 会員の携帯メールアドレス登録がある場合 true
-     */
-    function hasEmailMobile(&$objCustomer) {
-        $objMobile = new SC_Helper_Mobile_Ex();
-        if ($objCustomer->hasValue('email_mobile')) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * 仮会員かどうかを判定する.
-     *
-     * @param string $login_email メールアドレス
-     * @return boolean 仮会員の場合 true
-     */
-    function checkTempCustomer($login_email) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $where = 'email = ? AND status = 1 AND del_flg = 0';
-        $exists = $objQuery->exists('dtb_customer', $where, array($login_email));
-        return $exists;
     }
 
     /**

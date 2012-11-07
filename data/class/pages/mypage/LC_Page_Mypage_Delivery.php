@@ -68,6 +68,7 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
 
         $objCustomer    = new SC_Customer_Ex();
         $customer_id    = $objCustomer->getValue('customer_id');
+        $objAddress     = new SC_Helper_Address_Ex();
         $objFormParam   = new SC_FormParam_Ex();
 
         $this->lfInitParam($objFormParam);
@@ -83,14 +84,14 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
                     SC_Response_Ex::actionExit();
                 }
 
-                $this->deleteOtherDeliv($customer_id, $objFormParam->getValue('other_deliv_id'));
+                $objAddress->delete($objFormParam->getValue('other_deliv_id'));
                 break;
 
             // スマートフォン版のもっと見るボタン用
             case 'getList':
                     $arrData = $objFormParam->getHashArray();
                     //別のお届け先情報
-                    $arrOtherDeliv = $this->getOtherDeliv($customer_id, (($arrData['pageno'] - 1) * SEARCH_PMAX));
+                    $arrOtherDeliv = $objAddress->getList($customer_id, (($arrData['pageno'] - 1) * SEARCH_PMAX));
                     //県名をセット
                     $arrOtherDeliv = $this->setPref($arrOtherDeliv, $this->arrPref);
                     $arrOtherDeliv['delivCount'] = count($arrOtherDeliv);
@@ -107,7 +108,7 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
         }
 
         //別のお届け先情報
-        $this->arrOtherDeliv = $this->getOtherDeliv($customer_id);
+        $this->arrOtherDeliv = $objAddress->getList($customer_id);
 
         //お届け先登録数
         $this->tpl_linemax = count($this->arrOtherDeliv);
@@ -135,35 +136,6 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_DELIV_ID'), 'other_deliv_id', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CURRENT PAGE'), 'pageno', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), '', false);
-    }
-
-    /**
-     * お届け先の取得
-     *
-     * @param integer $customerId
-     * @param integer $startno
-     * @return array
-     */
-    function getOtherDeliv($customer_id, $startno = '') {
-        $objQuery   =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->setOrder('other_deliv_id DESC');
-        //スマートフォン用の処理
-        if ($startno != '') {
-            $objQuery->setLimitOffset(SEARCH_PMAX, $startno);
-        }
-        return $objQuery->select('*', 'dtb_other_deliv', 'customer_id = ?', array($customer_id));
-    }
-
-    /**
-     * お届け先の削除
-     *
-     * @param integer $customerId
-     * @param integer $delivId
-     */
-    function deleteOtherDeliv($customer_id, $deliv_id) {
-        $where      = 'customer_id = ? AND other_deliv_id = ?';
-        $objQuery   =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->delete('dtb_other_deliv', $where, array($customer_id, $deliv_id));
     }
 
     /**

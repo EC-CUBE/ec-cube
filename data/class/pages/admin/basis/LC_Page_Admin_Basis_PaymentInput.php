@@ -72,6 +72,7 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
      */
     function action() {
 
+        $objPayment = new SC_Helper_Payment_Ex();
         $objFormParam = new SC_FormParam_Ex();
         $mode = $this->getMode();
         $this->lfInitParam($mode, $objFormParam);
@@ -88,10 +89,10 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
                 $objFormParam->setParam($_REQUEST);
                 $objFormParam->convParam();
                 $post = $objFormParam->getHashArray();
-                $this->arrErr = $this->lfCheckError($post, $objFormParam);
+                $this->arrErr = $this->lfCheckError($post, $objFormParam, $objPayment);
                 $this->charge_flg = $post['charge_flg'];
                 if (count($this->arrErr) == 0) {
-                    $this->lfRegistData($post['payment_id'], $_SESSION['member_id'], $objFormParam);
+                    $this->lfRegistData($objFormParam, $objPayment, $_SESSION['member_id'], $post['payment_id']);
                     $this->objUpFile->moveTempFile();
                     $this->tpl_onload = "location.href = './payment.php'; return;";
                 }
@@ -126,7 +127,7 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
                 $this->arrErr = $objFormParam->checkError();
                 $post = $objFormParam->getHashArray();
                 if (count($this->arrErr) == 0) {
-                    $arrRet = $this->lfGetData($post['payment_id']);
+                    $arrRet = $objPayment->get($post['payment_id']);
 
                     $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PAYMENT_METHOD'), 'payment_method', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
                     $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CHARGE'), 'charge', PRICE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -209,49 +210,28 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
         }
     }
 
-    /* DBからデータを読み込む */
-    function lfGetData($payment_id) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $where = 'payment_id = ?';
-        $arrRet = $objQuery->select('*', 'dtb_payment', $where, array($payment_id));
-        return $arrRet[0];
-    }
-
     /* DBへデータを登録する */
-    function lfRegistData($payment_id = '', $member_id, &$objFormParam) {
+    function lfRegistData(&$objFormParam, SC_Helper_Payment_Ex $objPayment, $member_id, $payment_id = '') {
 
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $sqlval = $objFormParam->getHashArray();
-        $arrRet = $this->objUpFile->getDBFileList(); // ファイル名の取得
-        $sqlval = array_merge($sqlval, $arrRet);
+        $sqlval = array_merge($objFormParam->getHashArray(), $this->objUpFile->getDBFileList());
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
+        $sqlval['payment_id'] = $payment_id;
+        $sqlval['creator_id'] = $member_id;
 
         if ($sqlval['fix'] != '1') {
             $sqlval['fix'] = 2; // 自由設定
         }
 
-        // 新規登録
-        if ($payment_id == '') {
-            // INSERTの実行
-            $sqlval['creator_id'] = $member_id;
-            $sqlval['rank'] = $objQuery->max('rank', 'dtb_payment') + 1;
-            $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
-            $sqlval['payment_id'] = $objQuery->nextVal('dtb_payment_payment_id');
-            $objQuery->insert('dtb_payment', $sqlval);
-        // 既存編集
-        } else {
-            $where = 'payment_id = ?';
-            $objQuery->update('dtb_payment', $sqlval, $where, array($payment_id));
-        }
+        $objPayment->save($sqlval);
     }
 
     /*　利用条件の数値チェック */
 
     /* 入力内容のチェック */
-    function lfCheckError($post, $objFormParam) {
+    function lfCheckError($post, $objFormParam, SC_Helper_Payment_Ex $objPayment) {
 
         // DBのデータを取得
-        $arrPaymentData = $this->lfGetData($post['payment_id']);
+        $arrPaymentData = $objPayment->get($post['payment_id']);
 
         // 手数料を設定できない場合には、手数料を0にする
         if ($arrPaymentData['charge_flg'] == 2) {
