@@ -43,7 +43,11 @@ class SC_I18n {
 
         // If language code is not specified, use site default.
         if (empty($options['lang_code'])) {
-            $options['lang_code'] = LANG_CODE;
+            if (defined(LANG_CODE)) {
+                $options['lang_code'] = LANG_CODE;
+            } else {
+                $options['lang_code'] = 'en';
+            }
         }
         // If device type ID is not specified, detect the viewing device.
         if (!isset($options['device_type_id']) || ($options['device_type_id'] !== FALSE && !strlen($options['device_type_id']))) {
@@ -81,7 +85,11 @@ class SC_I18n {
 
         // If language code is not specified, use site default.
         if (empty($options['lang_code'])) {
-            $options['lang_code'] = LANG_CODE;
+            if (defined(LANG_CODE)) {
+                $options['lang_code'] = LANG_CODE;
+            } else {
+                $options['lang_code'] = 'en';
+            }
         }
         // If device type ID is not specified, detect the viewing device.
         if (!isset($options['device_type_id']) || ($options['device_type_id'] !== FALSE && !strlen($options['device_type_id']))) {

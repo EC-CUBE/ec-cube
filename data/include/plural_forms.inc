@@ -4,5 +4,6 @@
  */
 
 return array(
-    'ja' => "nplurals=2; plural=(n!=1);"
+    'en' => "nplurals=2; plural=(n!=1);",
+    'ja' => "nplurals=2; plural=(n!=1);",
 );

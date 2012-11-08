@@ -49,16 +49,24 @@ class SC_Helper_Locale {
     function get_locale($string, $lang_code = FALSE, $device_type_id = FALSE) {
         // Set language code when it is not set.
         if ($lang_code === FALSE) {
-            $lang_code = LANG_CODE;
+            if (defined(LANG_CODE)) {
+                $lang_code = LANG_CODE;
+            } else {
+                $lang_code = 'en';
+            }
         }
         // Get string list of specified language.
-        $translations = $this->get_translations($lang_code, $device_type_id);
-        // Whether a string which corresponding with alias is exist.
-        if (isset($translations[$string])) {
-            return $translations[$string];
-        }
-        else {
+        if ($lang_code == 'en') {
             return $string;
+        } else {
+            $translations = $this->get_translations($lang_code, $device_type_id);
+            // Whether a string which corresponding with alias is exist.
+            if (isset($translations[$string])) {
+                return $translations[$string];
+            }
+            else {
+                return $string;
+            }
         }
     }
 
@@ -150,7 +158,11 @@ class SC_Helper_Locale {
     function get_plural_index($count, $lang_code = FALSE) {
         // Set language code when it is not set.
         if ($lang_code === FALSE) {
-            $lang_code = LANG_CODE;
+            if (defined(LANG_CODE)) {
+                $lang_code = LANG_CODE;
+            } else {
+                $lang_code = 'en';
+            }
         }
         // Get a formula
         $string = $this->get_plural_forms($lang_code);
