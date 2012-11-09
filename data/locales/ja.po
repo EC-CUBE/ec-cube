@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2012-11-07 17:35+0900\n"
+"PO-Revision-Date: 2012-11-09 17:51+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -3379,6 +3379,123 @@ msgstr "GD"
 
 msgid "LC_Page_Admin_System_System_009"
 msgstr "HTTPユーザーエージェント"
+
+msgid "LC_Page_Admin_Total_001"
+msgstr "期間別集計"
+
+msgid "LC_Page_Admin_Total_002"
+msgstr "期間別集計"
+
+msgid "LC_Page_Admin_Total_003"
+msgstr "商品別集計"
+
+msgid "LC_Page_Admin_Total_004"
+msgstr "年代別集計"
+
+msgid "LC_Page_Admin_Total_005"
+msgstr "職業別集計"
+
+msgid "LC_Page_Admin_Total_006"
+msgstr "会員別集計"
+
+msgid "LC_Page_Admin_Total_007"
+msgstr "T_FIELD1年T_FIELD2月T_FIELD3日'"
+
+msgid "LC_Page_Admin_Total_008"
+msgstr "集計期間：T_FIELD1 - T_FIELD2"
+
+msgid "LC_Page_Admin_Total_009"
+msgstr "会員"
+
+msgid "LC_Page_Admin_Total_010"
+msgstr "非会員"
+
+msgid "LC_Page_Admin_Total_011"
+msgstr "未回答"
+
+msgid "LC_Page_Admin_Total_012"
+msgstr "T_FIELD代'"
+
+msgid "LC_Page_Admin_Total_013"
+msgstr "(年齢)"
+
+msgid "LC_Page_Admin_Total_014"
+msgstr "(売上合計)"
+
+msgid "LC_Page_Admin_Total_015"
+msgstr "(月別)"
+
+msgid "LC_Page_Admin_Total_016"
+msgstr "(年別)"
+
+msgid "LC_Page_Admin_Total_017"
+msgstr "(曜日別)"
+
+msgid "LC_Page_Admin_Total_018"
+msgstr "(時間別)"
+
+msgid "LC_Page_Admin_Total_019"
+msgstr "(日別)"
+
+msgid "LC_Page_Admin_Total_020"
+msgstr "合計"
+
+msgid "LC_Page_Admin_Total_021"
+msgstr "商品コード"
+
+msgid "LC_Page_Admin_Total_022"
+msgstr "商品名"
+
+msgid "LC_Page_Admin_Total_023"
+msgstr "購入件数"
+
+msgid "LC_Page_Admin_Total_024"
+msgstr "数量"
+
+msgid "LC_Page_Admin_Total_025"
+msgstr "単価"
+
+msgid "LC_Page_Admin_Total_026"
+msgstr "金額"
+
+msgid "LC_Page_Admin_Total_027"
+msgstr "職業"
+
+msgid "LC_Page_Admin_Total_028"
+msgstr "購入合計"
+
+msgid "LC_Page_Admin_Total_029"
+msgstr "購入平均"
+
+msgid "LC_Page_Admin_Total_030"
+msgstr "会員"
+
+msgid "LC_Page_Admin_Total_031"
+msgstr "年齢"
+
+msgid "LC_Page_Admin_Total_032"
+msgstr "期間"
+
+msgid "LC_Page_Admin_Total_033"
+msgstr "男性"
+
+msgid "LC_Page_Admin_Total_034"
+msgstr "女性"
+
+msgid "LC_Page_Admin_Total_035"
+msgstr "男性(会員)"
+
+msgid "LC_Page_Admin_Total_036"
+msgstr "男性(非会員)"
+
+msgid "LC_Page_Admin_Total_037"
+msgstr "女性(会員)"
+
+msgid "LC_Page_Admin_Total_038"
+msgstr "女性(非会員)"
+
+msgid "LC_Page_Admin_Total_039"
+msgstr "(売上比率)"
 
 msgid "LC_Page_Admin_001"
 msgstr "前方互換用メソッドが使用されました。"
