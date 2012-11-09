@@ -336,6 +336,13 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
             }
         }
 
+        //不必要な配送先を削除
+        foreach ($_SESSION['shipping'] as $id=>$arrShipping) {
+            if(!isset($arrShipping['shipment_item'])){
+                $objPurchase->unsetOneShippingTemp($id);
+            }
+        }
+
         // $arrValues[0] には, 購入者の情報が格納されている
         $objPurchase->saveOrderTemp($uniqid, $arrValues[0], $objCustomer);
     }
