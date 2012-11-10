@@ -296,7 +296,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
                     break;
             }
             // 月度集計の場合に、集計期間が本日日付で上書きされてしまうのを回避するため
-            if (($objFormParam->getValue('form') == 1) && ($out_flg == 1 )) {
+            if (($objFormParam->getValue('form') == 1) && ($out_flg == 1)) {
                 break;
             }
         }

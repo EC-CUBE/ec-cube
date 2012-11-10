@@ -337,10 +337,10 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
     function installPlugin($archive_file_name, $key) {
         // 一時展開ディレクトリにファイルがある場合は事前に削除.
         $arrFileHash = SC_Helper_FileManager_Ex::sfGetFileList(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR);
-        if(count($arrFileHash) > 0) {
+        if (count($arrFileHash) > 0) {
             SC_Helper_FileManager_Ex::deleteFile(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, false);
         }
-        
+
         //シンタックスエラーがあるtar.gzをアップ後、削除するとたまにディレクトリが消えるので追加
         $this->makeDir(PLUGIN_UPLOAD_REALDIR);
 
@@ -857,7 +857,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         GC_Utils_Ex::gfPrintLog('解凍：' . $dir.'/'.$file_name.'->'.$dir.'/'.$unpacking_name);
         // 解凍元のファイルを削除する.
         unlink($path);
-        
+
         return $result;
     }
 
