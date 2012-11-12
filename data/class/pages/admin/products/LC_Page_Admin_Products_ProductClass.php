@@ -243,7 +243,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
 
         for ($i = 0; $i < $total; $i++) {
             $del_flg = SC_Utils_Ex::isBlank($arrList['check'][$i]) ? 1 : 0;
-            $stock_unlimited = SC_Utils_Ex::isBlank($arrList['stock_unlimited'][$i]) ? 0 : $arrList['stock_unlimited'][$i];
             $price02 = SC_Utils_Ex::isBlank($arrList['price02'][$i]) ? 0 : $arrList['price02'][$i];
             // dtb_products_class 登録/更新用
             $registerKeys = array(
@@ -260,7 +259,12 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
             $arrPC['sale_limit'] = $arrDefault['sale_limit'];
             $arrPC['deliv_fee'] = $arrDefault['deliv_fee'];
             $arrPC['point_rate'] = $arrDefault['point_rate'];
-            $arrPC['stock_unlimited'] = $stock_unlimited;
+            if ($arrList['stock_unlimited'][$i] == 1) {
+                $arrPC['stock_unlimited'] = 1;
+                $arrPC['stock'] = null;
+            } else {
+                $arrPC['stock_unlimited'] = 0;
+            }
             $arrPC['price02'] = $price02;
 
             // 該当関数が無いため, セッションの値を直接代入

@@ -27,14 +27,12 @@ function openOrClose(tgt){
 ------------------------------------------*/
 function listopen(lv, num){
     var tgt = document.getElementsByClassName("level" + lv)[num];
-    var cnt = 0;
     //次のレベルをサーチ → 次のレベルのリストをオープンする
     for(var i=0; i < document.getElementsByClassName("level" + (lv+1)).length; i++){
         var next_tgt = document.getElementsByClassName("level" + (lv+1))[i];
         //li
         if (next_tgt.parentNode == tgt || next_tgt.parentNode.parentNode == tgt){
             openOrClose(next_tgt);
-            cnt++;
         }
     }
     //次のレベルをサーチ → 表示ボタンの状態を変更
@@ -42,28 +40,22 @@ function listopen(lv, num){
         var next_tgt = tgt.childNodes[i];
         //ul
         if(next_tgt.tagName == "UL"){
-        if(next_tgt.style.height == "0px"){
-            //for(var i=0; i<next_tgt.parentNode.childNodes.length; i++){
+            if(next_tgt.style.height == "0px"){
                 if(event.srcElement.parentNode.className == "category_header plus"){
                     event.srcElement.innerText = '−';
                     event.srcElement.parentNode.className = "category_header minus";
                 }
-            //}
-            next_tgt.style.height = "auto"; //1.5*cnt + "em";
-            next_tgt.style.marginTop = 0;
-            next_tgt.style.marginBottom = 0;
-        }
-        else{
-            for(var i=0; i<next_tgt.parentNode.childNodes.length; i++){
-                if(event.srcElement.parentNode.className == "category_header minus"){
-                    event.srcElement.innerText = '＋';
-                    event.srcElement.parentNode.className = "category_header plus";
-                }
+                next_tgt.style.height = "auto";
             }
-            next_tgt.style.height = "0px";
-            next_tgt.style.marginTop = 0;
-            next_tgt.style.marginBottom = 0;
-        }
+            else{
+                for(var i=0; i<next_tgt.parentNode.childNodes.length; i++){
+                    if(event.srcElement.parentNode.className == "category_header minus"){
+                        event.srcElement.innerText = '＋';
+                        event.srcElement.parentNode.className = "category_header plus";
+                    }
+                }
+                next_tgt.style.height = "0px";
+            }
         }
     }
 }

@@ -149,9 +149,6 @@ class LC_Page_Cart extends LC_Page_Ex {
             $this->tpl_message .= $objCartSess->checkProducts($key);
             $this->tpl_total_inctax[$key] = $objCartSess->getAllProductsTotal($key);
             $totalIncTax += $this->tpl_total_inctax[$key];
-            $this->tpl_total_tax[$key] = $objCartSess->getAllProductsTax($key);
-            // ポイント合計
-            $this->tpl_total_point[$key] = $objCartSess->getAllProductsPoint($key);
 
             $this->arrData[$key] = $objCartSess->calculate($key, $objCustomer);
 

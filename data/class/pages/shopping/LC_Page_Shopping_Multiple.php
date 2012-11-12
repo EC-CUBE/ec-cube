@@ -338,7 +338,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
 
         //不必要な配送先を削除
         foreach ($_SESSION['shipping'] as $id=>$arrShipping) {
-            if(!isset($arrShipping['shipment_item'])){
+            if (!isset($arrShipping['shipment_item'])){
                 $objPurchase->unsetOneShippingTemp($id);
             }
         }

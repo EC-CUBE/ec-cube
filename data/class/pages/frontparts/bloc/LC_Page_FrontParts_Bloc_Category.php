@@ -155,12 +155,9 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex {
             );
             $this->root_parent_id[] = $arrParentID[0];
             $arrDispID = array_merge($arrBrothersID, $arrChildrenID);
-            foreach ($arrRet as $key => $array) {
-                foreach ($arrDispID as $val) {
-                    if ($array['category_id'] == $val) {
-                        $arrRet[$key]['display'] = 1;
-                        break;
-                    }
+            foreach ($arrRet as &$arrCategory) {
+                if (in_array($arrCategory['category_id'], $arrDispID)) {
+                    $arrCategory['display'] = 1;
                 }
             }
         }

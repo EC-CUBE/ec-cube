@@ -908,7 +908,7 @@ class SC_Helper_Purchase {
             }
             /*
              * 新規受付の場合は対応状況 null で insert し,
-             * sfUpdateOrderStatus で ORDER_NEW に変更する.
+             * sfUpdateOrderStatus で引数で受け取った値に変更する.
              */
             $status = $arrValues['status'];
             $arrValues['status'] = null;

@@ -592,7 +592,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
             // 初期登録の場合は、在庫数設定がされていない場合、在庫無制限フラグ = 無制限。
             if (strlen($sqlval['stock']) === 0){
                 //更新の場合は、sqlvalのキーにstockがある場合のみ対象
-                if(!$upload_flg or ($upload_flg and array_key_exists('stock', $sqlval))) {
+                if (!$upload_flg or ($upload_flg and array_key_exists('stock', $sqlval))) {
                     $sqlval['stock_unlimited'] = UNLIMITED_FLG_UNLIMITED;
                 }
             }
