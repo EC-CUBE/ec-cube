@@ -86,45 +86,32 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex {
      * カレンダー情報取得.
      *
      * @param integer $disp_month 表示する月数
-     * @return array $arrCalendar カレンダー情報の配列を返す
+     * @return array カレンダー情報の配列を返す
      */
     function lfGetCalendar($disp_month = 1) {
-
+        $arrCalendar = array();
         $today = date('Y/m/d');
-        for ($j = 0; $j <= $disp_month-1; ++$j) {
-            $year = date('Y');
-            $month = date('n') + $j;
-            if ($month > 12) {
-                $month = $month%12;
-                $year = $year + $month%12;
-            }
+
+        for ($j = 0; $j <= $disp_month - 1; $j++) {
+            $time = mktime(0, 0, 0, date('n') + $j, 1);
+            $year = date('Y', $time);
+            $month = date('n', $time);
 
             $objMonth = new Calendar_Month_Weekdays($year, $month, 0);
             $objMonth->build();
             $i = 0;
             while ($objDay = $objMonth->fetch()) {
-                if ($month == $objDay->month) {
-                    $arrCalendar[$j][$i]['in_month'] = true;
-                } else {
-                    $arrCalendar[$j][$i]['in_month'] = false;
-                }
-                $arrCalendar[$j][$i]['first'] = $objDay->first;
-                $arrCalendar[$j][$i]['last'] = $objDay->last;
-                $arrCalendar[$j][$i]['empty'] = $objDay->empty;
-                $arrCalendar[$j][$i]['year'] = $year;
-                $arrCalendar[$j][$i]['month'] = $month;
-                $arrCalendar[$j][$i]['day'] = $objDay->day;
-                if ($this->lfCheckHoliday($year, $month, $objDay->day)) {
-                    $arrCalendar[$j][$i]['holiday'] = true;
-                } else {
-                    $arrCalendar[$j][$i]['holiday'] = false;
-                }
+                $arrCalendar[$j][$i]['in_month']    = $month == $objDay->month;
+                $arrCalendar[$j][$i]['first']       = $objDay->first;
+                $arrCalendar[$j][$i]['last']        = $objDay->last;
+                $arrCalendar[$j][$i]['empty']       = $objDay->empty;
+                $arrCalendar[$j][$i]['year']        = $year;
+                $arrCalendar[$j][$i]['month']       = $month;
+                $arrCalendar[$j][$i]['day']         = $objDay->day;
+                $arrCalendar[$j][$i]['holiday']     = $this->lfCheckHoliday($year, $month, $objDay->day);
+                $arrCalendar[$j][$i]['today']       = $today === sprintf('%04d/%02d/%02d', $year, $month, $objDay->day);
 
-                if ($today === sprintf('%04d/%02d/%02d', $year, $month, $objDay->day)) {
-                    $arrCalendar[$j][$i]['today'] = true;
-                }
-
-                ++$i;
+                $i++;
             }
         }
 
