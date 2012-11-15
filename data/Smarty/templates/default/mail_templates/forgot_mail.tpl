@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-
 パスワードを変更いたしました。
 
 新しいパスワード：<!--{$new_password}-->
