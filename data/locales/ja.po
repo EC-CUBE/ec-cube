@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2012-11-09 17:51+0900\n"
+"PO-Revision-Date: 2012-11-16 16:17+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -3508,3 +3508,44 @@ msgstr ">> 更新情報の取得に失敗しました。"
 
 msgid "LC_Page_Admin_Index_001"
 msgstr "ログイン出来ません。"
+
+msgid "SC_Helper_Address_001"
+msgstr "顧客IDを正しく指定して下さい"
+
+msgid "SC_Helper_Address_002"
+msgstr "別のお届け先最大登録数に達しています。"
+
+msgid "SC_Helper_Address_003"
+msgstr "一致する別のお届け先がありません。"
+
+msgid "SC_Helper_Transform_001"
+msgstr "検出不能"
+
+msgid "C_Helper_Transform_003"
+msgstr "<br />T_FIELD が存在しません"
+
+msgid "SC_Helper_Transform_004"
+msgstr "テンプレートの操作に失敗しました。T_FIELD"
+
+msgid "SC_Helper_Transform_005"
+msgstr "テンプレートの操作に失敗しました。"
+
+msgid "SC_Utils_001"
+msgstr ""
+"'&gt;&gt; /install/T_FIELD は、インストール完了後にファイルを削除してくださ"
+"い。'"
+
+msgid "SC_Utils_002"
+msgstr "前方互換用メソッドが使用されました。"
+
+msgid "SC_Utils_003"
+msgstr "T_FIELD01T_FIELD02：ファイルが存在します"
+
+msgid "SC_Utils_004"
+msgstr "T_FIELD01T_FIELD02：コピー成功"
+
+msgid "SC_Utils_005"
+msgstr "T_FIELD01T_FIELD02：コピー失敗"
+
+msgid "GC_Utils_001"
+msgstr "前方互換用メソッドが使用されました。"

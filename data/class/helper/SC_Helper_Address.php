@@ -43,7 +43,8 @@ class SC_Helper_Address
 
         // 顧客IDのチェック
         if (is_null($customer_id) || !is_numeric($customer_id) || !preg_match("/^\d+$/", $customer_id)) {
-            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, '顧客IDを正しく指定して下さい。');
+            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, t("SC_Helper_Address_001"));
+                        
         }
         // 追加
         if (strlen($other_deliv_id == 0)) {
@@ -51,7 +52,7 @@ class SC_Helper_Address
             $deliv_count = $objQuery->count('dtb_other_deliv', 'customer_id = ?', array($customer_id));
             // 別のお届け先最大登録数に達している場合、エラー
             if ($deliv_count >= DELIV_ADDR_MAX) {
-                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, '別のお届け先最大登録数に達しています。');
+                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, t("SC_Helper_Address_002"));
             }
 
             // 実行
@@ -62,7 +63,7 @@ class SC_Helper_Address
         } else {
             $deliv_count = $objQuery->count('dtb_other_deliv','other_deliv_id = ?' ,array($other_deliv_id));
             if ($deliv_count != 1) {
-                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, '一致する別のお届け先がありません。');
+                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, t("SC_Helper_Address_003"));
             }
 
             // 実行

@@ -48,7 +48,7 @@ class SC_Utils {
         }
         $path = HTML_REALDIR . 'install/' . DIR_INDEX_FILE;
         if (file_exists($path)) {
-            SC_Utils_Ex::sfErrorHeader('&gt;&gt; /install/' . DIR_INDEX_FILE . ' は、インストール完了後にファイルを削除してください。');
+            SC_Utils_Ex::sfErrorHeader(t('SC_Utils_001', array('T_FIELD' => DIR_INDEX_FILE)));
         }
     }
 
@@ -165,7 +165,7 @@ class SC_Utils {
      * @deprecated 2.12.0 trigger_error($debugMsg, E_USER_ERROR) を使用すること
      */
     function sfDispException($debugMsg = null) {
-        trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+        trigger_error(t("SC_Utils_002"), E_USER_WARNING);
         trigger_error($debugMsg, E_USER_ERROR);
     }
 
@@ -1147,12 +1147,12 @@ class SC_Utils {
                     $mess = SC_Utils_Ex::sfCopyDir($data_.'/', $des.$data.'/', $mess);
                 } else {
                     if (!$override && file_exists($des.$data)) {
-                        $mess.= $des.$data . "：ファイルが存在します\n";
+                        $mess.= t('SC_Utils_003', array('T_FIELD01' => $des, 'T_FIELD02' => $data));
                     } else {
                         if (@copy($data_, $des.$data)) {
-                            $mess.= $des.$data . "：コピー成功\n";
+                            $mess.= t('SC_Utils_004', array('T_FIELD01' => $des, 'T_FIELD02' => $data));
                         } else {
-                            $mess.= $des.$data . "：コピー失敗\n";
+                            $mess.= t('SC_Utils_005', array('T_FIELD01' => $des, 'T_FIELD02' => $data));
                         }
                     }
                     $mod=stat($data_);
@@ -1262,7 +1262,7 @@ class SC_Utils {
      * @deprecated 2.12.0 GC_Utils_Ex::printXMLDeclaration を使用すること
      */
     function printXMLDeclaration() {
-        trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+        trigger_error(t("SC_Utils_002"), E_USER_WARNING);
         GC_Utils_Ex::printXMLDeclaration();
     }
 
@@ -1343,7 +1343,7 @@ class SC_Utils {
      * @deprecated 2.12.0 GC_Utils_Ex::getUrl を使用すること
      */
     function sfGetUrl() {
-        trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+        trigger_error(t("SC_Utils_002"), E_USER_WARNING);
         return GC_Utils_Ex::getUrl();
     }
 
@@ -1353,7 +1353,7 @@ class SC_Utils {
      * @deprecated 2.12.0 GC_Utils_Ex::toStringBacktrace を使用すること
      */
     function sfBacktraceToString($arrBacktrace) {
-        trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+        trigger_error(t("SC_Utils_002"), E_USER_WARNING);
         return GC_Utils_Ex::toStringBacktrace($arrBacktrace);
     }
 
@@ -1363,7 +1363,7 @@ class SC_Utils {
      * @deprecated 2.12.0 GC_Utils_Ex::isAdminFunction を使用すること
      */
     function sfIsAdminFunction() {
-        trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+        trigger_error(t("SC_Utils_002"), E_USER_WARNING);
         return GC_Utils_Ex::isAdminFunction();
     }
 
@@ -1373,7 +1373,7 @@ class SC_Utils {
      * @deprecated 2.12.0 GC_Utils_Ex::isFrontFunction を使用すること
      */
     function sfIsFrontFunction() {
-        trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+        trigger_error(t("SC_Utils_002"), E_USER_WARNING);
         return GC_Utils_Ex::isFrontFunction();
     }
 
@@ -1383,7 +1383,7 @@ class SC_Utils {
      * @deprecated 2.12.0 GC_Utils_Ex::isInstallFunction を使用すること
      */
     function sfIsInstallFunction() {
-        trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+        trigger_error(t("SC_Utils_002"), E_USER_WARNING);
         return GC_Utils_Ex::isInstallFunction();
     }
 
@@ -1435,7 +1435,7 @@ class SC_Utils {
      * @deprecated 2.12.0 microtime(true) を使用する。
      */
     function sfMicrotimeFloat() {
-        trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+        trigger_error(t("SC_Utils_002"), E_USER_WARNING);
         return microtime(true);
     }
 
