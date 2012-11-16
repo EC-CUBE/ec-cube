@@ -34,32 +34,46 @@ require DATA_REALDIR . 'module/Locale/gettext.php';
  */
 class SC_Helper_Locale {
 
-     public $_translations = array();
+    /**
+     * Store the instance of SC_Helper_Locale_Ex.
+     * @var SC_Helper_Locale
+     */
+     static $_instance = NULL;
 
-     public $_plural_forms = array();
+     public $_translations = array();
 
      /**
      * Return a string which corresponding with message alias.
      *
-     * @param   string  $string             message alias
-     * @param   string  $lang_code          language code
-     * @param   integer $device_type_id     device type ID
+     * @param   string  $string     message alias
+     * @param   array   $options    options
      * @return  string  a string corresponding with message alias
      */
-    function get_locale($string, $lang_code = FALSE, $device_type_id = FALSE) {
-        // Set language code when it is not set.
-        if ($lang_code === FALSE) {
-            if (defined(LANG_CODE)) {
-                $lang_code = LANG_CODE;
-            } else {
-                $lang_code = 'en';
-            }
+     public static function get_locale($string, &$options) {
+        is_null(SC_Helper_Locale_Ex::$_instance) and SC_Helper_Locale_Ex::$_instance = new SC_Helper_Locale_Ex();
+
+        // If language code is not specified, use site default.
+        if (empty($options['lang_code'])) {
+            $lang_code = $options['lang_code'] = defined('LANG_CODE') ? LANG_CODE : 'en';
+        } else {
+            $lang_code = $options['lang_code'];
         }
+        // If device type ID is not specified, detect the viewing device.
+        if (!isset($options['device_type_id']) || ($options['device_type_id'] !== FALSE && !strlen($options['device_type_id']))) {
+            if (method_exists('SC_Display_Ex', 'detectDevice')) {
+                $device_type_id = SC_Display_Ex::detectDevice();
+            } else {
+                $device_type_id = FALSE;
+            }
+        } else {
+            $device_type_id = $options['device_type_id'];
+        }
+
         // Get string list of specified language.
         if ($lang_code == 'en') {
             return $string;
         } else {
-            $translations = $this->get_translations($lang_code, $device_type_id);
+            $translations = SC_Helper_Locale_Ex::$_instance->get_translations($lang_code, $device_type_id);
             // Whether a string which corresponding with alias is exist.
             if (isset($translations[$string])) {
                 return $translations[$string];
@@ -68,6 +82,23 @@ class SC_Helper_Locale {
                 return $string;
             }
         }
+    }
+
+    /**
+     * Return a string which corresponding with message alias.
+     *
+     * @param   string  $single     message alias (single)
+     * @param   string  $plural     message alias (plural)
+     * @param   array   $options    options
+     * @return  array
+     */
+    public static function get_locale_plural($single, $plural, &$options) {
+        // Plural strings are coupled with a null character.
+        $key = $single . chr(0) . $plural;
+        // Get a string of specified language which corresponds to the message alias.
+        $translated = SC_Helper_Locale_Ex::get_locale($key, $options);
+        // Divide with a null character.
+        return explode(chr(0), $translated);
     }
 
     /**
@@ -146,51 +177,5 @@ class SC_Helper_Locale {
         }
 
         return $file_list;
-    }
-
-    /**
-     * Determine appropriate plural form.
-     *
-     * @param integer   $count      counter
-     * @param string    $lang_code  language code
-     * @return integer  index
-     */
-    function get_plural_index($count, $lang_code = FALSE) {
-        // Set language code when it is not set.
-        if ($lang_code === FALSE) {
-            if (defined(LANG_CODE)) {
-                $lang_code = LANG_CODE;
-            } else {
-                $lang_code = 'en';
-            }
-        }
-        // Get a formula
-        $string = $this->get_plural_forms($lang_code);
-        $string = str_replace('nplurals', "\$total", $string);
-        $string = str_replace("n", $count, $string);
-        $string = str_replace('plural', "\$plural", $string);
-
-        $total = 0;
-        $plural = 0;
-
-        eval("$string");
-        if ($plural >= $total) $plural = $total - 1;
-
-        return $plural;
-    }
-
-    /**
-     * Get a formula to determine appropriate plural form.
-     *
-     * @param   string  $lang_code  language code
-     * @return  string  formula
-     */
-    function get_plural_forms($lang_code) {
-        // If formula is empty, include the file.
-        if(empty($this->_plural_forms)){
-            $this->_plural_forms = @include_once DATA_REALDIR . "include/plural_forms.inc";
-        }
-
-        return $this->_plural_forms[$lang_code];
     }
 }

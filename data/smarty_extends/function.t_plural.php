@@ -18,6 +18,12 @@
  * @return string
  */
 function smarty_function_t_plural($params, &$smarty) {
+    // 多言語対応用の関数が定義されていなければエラーを出力
+    if (!function_exists('t_plural')) {
+        $smarty->_trigger_fatal_error("[plugin] function 't_plural' is not defined");
+        return;
+    }
+
     // 書式判定用の数値が無ければエラーを出力
     if (empty($params['counter'])) {
         $smarty->_trigger_fatal_error("[plugin] parameter 'counter' cannot be empty");
@@ -53,5 +59,5 @@ function smarty_function_t_plural($params, &$smarty) {
         unset($params['device_type_id']);
     }
 
-    return SC_I18n_Ex::t_plural($counter, $single, $plural, $params, $options);
+    return t_plural($counter, $single, $plural, $params, $options);
 }

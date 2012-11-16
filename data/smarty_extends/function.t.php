@@ -18,6 +18,12 @@
  * @return string
  */
 function smarty_function_t($params, &$smarty) {
+    // 多言語対応用の関数が定義されていなければエラーを出力
+    if (!function_exists('t')) {
+        $smarty->_trigger_fatal_error("[plugin] function 't' is not defined");
+        return;
+    }
+
     // エイリアスが無ければエラーを出力
     if (empty($params['string'])) {
         $smarty->_trigger_fatal_error("[plugin] parameter 'string' cannot be empty");
@@ -39,5 +45,5 @@ function smarty_function_t($params, &$smarty) {
         unset($params['device_type_id']);
     }
 
-    return SC_I18n_Ex::t($string, $params, $options);
+    return t($string, $params, $options);
 }
