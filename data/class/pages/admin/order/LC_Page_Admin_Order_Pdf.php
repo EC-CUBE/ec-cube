@@ -46,17 +46,17 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'order/pdf_input.tpl';
         $this->tpl_mainno = 'order';
         $this->tpl_subno = 'pdf';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_001');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Order_Pdf_001');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_001');
+        $this->tpl_subtitle = t('LC_Page_Admin_Order_Pdf_001');
 
         $this->SHORTTEXT_MAX = STEXT_LEN;
         $this->MIDDLETEXT_MAX = MTEXT_LEN;
         $this->LONGTEXT_MAX = LTEXT_LEN;
 
-        $this->arrType[0]  = SC_I18n_Ex::t('LC_Page_Admin_Order_Pdf_002');
+        $this->arrType[0]  = t('LC_Page_Admin_Order_Pdf_002');
 
-        $this->arrDownload[0] = SC_I18n_Ex::t('LC_Page_Admin_Order_Pdf_003');
-        $this->arrDownload[1] = SC_I18n_Ex::t('LC_Page_Admin_Order_Pdf_004');
+        $this->arrDownload[0] = t('LC_Page_Admin_Order_Pdf_003');
+        $this->arrDownload[1] = t('LC_Page_Admin_Order_Pdf_004');
     }
 
     /**
@@ -119,7 +119,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         // ここが$arrFormの初登場ということを明示するため宣言する。
         $arrForm = array();
         // タイトルをセット
-        $arrForm['title'] = SC_I18n_Ex::t('LC_Page_Admin_Order_Pdf_005');
+        $arrForm['title'] = t('LC_Page_Admin_Order_Pdf_005');
 
         // 今日の日付をセット
         $arrForm['year']  = date('Y');
@@ -127,9 +127,9 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         $arrForm['day']   = date('d');
 
         // メッセージ
-        $arrForm['msg1'] = SC_I18n_Ex::t('LC_Page_Admin_Order_Pdf_006');
-        $arrForm['msg2'] = SC_I18n_Ex::t('LC_Page_Admin_Order_Pdf_007');
-        $arrForm['msg3'] = SC_I18n_Ex::t('LC_Page_Admin_Order_Pdf_008');
+        $arrForm['msg1'] = t('LC_Page_Admin_Order_Pdf_006');
+        $arrForm['msg2'] = t('LC_Page_Admin_Order_Pdf_007');
+        $arrForm['msg3'] = t('LC_Page_Admin_Order_Pdf_008');
 
         // 注文番号があったら、セットする
         if (SC_Utils_Ex::sfIsInt($order_id)) {
@@ -184,21 +184,21 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
      *  @param SC_FormParam
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ORDER_NUMBER'), 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ORDER_NUMBER'), 'pdf_order_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_OUTPUT_DATE'), 'year', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_OUTPUT_DATE'), 'month', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_OUTPUT_DATE'), 'day', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ORDER_PDF_TYPE'), 'type', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_HOW_TO_DOWNLOAD'), 'download', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ORDER_PDF_TITLE'), 'title', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ORDER_PDF_MSG1'), 'msg1', STEXT_LEN*3/5, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ORDER_PDF_MSG2'), 'msg2', STEXT_LEN*3/5, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ORDER_PDF_MSG3'), 'msg3', STEXT_LEN*3/5, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ORDER_PDF_NOTE1'), 'etc1', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ORDER_PDF_NOTE2'), 'etc2', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ORDER_PDF_NOTE3'), 'etc3', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DISP_POINT'), 'disp_point', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ORDER_NUMBER'), 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ORDER_NUMBER'), 'pdf_order_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_OUTPUT_DATE'), 'year', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_OUTPUT_DATE'), 'month', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_OUTPUT_DATE'), 'day', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_TYPE'), 'type', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_HOW_TO_DOWNLOAD'), 'download', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_TITLE'), 'title', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_MSG1'), 'msg1', STEXT_LEN*3/5, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_MSG2'), 'msg2', STEXT_LEN*3/5, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_MSG3'), 'msg3', STEXT_LEN*3/5, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_NOTE1'), 'etc1', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_NOTE2'), 'etc2', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_NOTE3'), 'etc3', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_DISP_POINT'), 'disp_point', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -213,23 +213,23 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
 
         $year = $objFormParam->getValue('year');
         if (!is_numeric($year)) {
-            $arrErr['year'] = SC_I18n_Ex::t('LC_Page_Admin_Order_Pdf_009');
+            $arrErr['year'] = t('LC_Page_Admin_Order_Pdf_009');
         }
 
         $month = $objFormParam->getValue('month');
         if (!is_numeric($month)) {
-            $arrErr['month'] = SC_I18n_Ex::t('LC_Page_Admin_Order_Pdf_010');
+            $arrErr['month'] = t('LC_Page_Admin_Order_Pdf_010');
         } else if (0 >= $month && 12 < $month) {
 
-            $arrErr['month'] = SC_I18n_Ex::t('LC_Page_Admin_Order_Pdf_011');
+            $arrErr['month'] = t('LC_Page_Admin_Order_Pdf_011');
         }
 
         $day = $objFormParam->getValue('day');
         if (!is_numeric($day)) {
-            $arrErr['day'] = SC_I18n_Ex::t('LC_Page_Admin_Order_Pdf_012');
+            $arrErr['day'] = t('LC_Page_Admin_Order_Pdf_012');
         } else if (0 >= $day && 31 < $day) {
 
-            $arrErr['day'] = SC_I18n_Ex::t('LC_Page_Admin_Order_Pdf_013');
+            $arrErr['day'] = t('LC_Page_Admin_Order_Pdf_013');
         }
 
         return $arrErr;

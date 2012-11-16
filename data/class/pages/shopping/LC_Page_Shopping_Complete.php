@@ -43,7 +43,7 @@ class LC_Page_Shopping_Complete extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_title = SC_I18n_Ex::t('LC_Page_Shopping_Complete_001');
+        $this->tpl_title = t('LC_Page_Shopping_Complete_001');
     }
 
     /**

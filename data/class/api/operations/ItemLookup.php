@@ -41,7 +41,7 @@ class API_ItemLookup extends SC_Api_Abstract_Ex {
 
     public function __construct() {
         parent::__construct();
-        $this->operation_description = SC_I18n_Ex::t('API_ItemLookup_001');
+        $this->operation_description = t('API_ItemLookup_001');
     }
 
     public function doAction($arrParam) {
@@ -72,7 +72,7 @@ class API_ItemLookup extends SC_Api_Abstract_Ex {
                 $this->setResponse('ItemAttributes', $arrProduct);
                 return true;
             } else {
-                $this->addError('ItemLookup.Error', SC_I18n_Ex::t('API_ItemLookup_002'));
+                $this->addError('ItemLookup.Error', t('API_ItemLookup_002'));
             }
         }
 
@@ -87,23 +87,23 @@ class API_ItemLookup extends SC_Api_Abstract_Ex {
         case 'product_class_id':
         default:
             $objErr = new SC_CheckError_Ex($arrParam);
-            $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_ITEMID'), 'ItemId', INT_LEN), array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+            $objErr->doFunc(array(t('PARAM_LABEL_ITEMID'), 'ItemId', INT_LEN), array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
             $this->addError($objErr->arrErr);
             break;
         }
     }
 
     protected function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CONDITION'), 'Condition', STEXT_LEN, 'a', array('ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_IDTYPE'), 'IdType', STEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ITEMID'), 'ItemId', STEXT_LEN, 'a', array('EXIST_CHECK', 'GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_RELATEDITEMSPAGE'), 'RelatedItemsPage', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_RELATIONSHIPTYPE'), 'RelationshipType', STEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_REVIEWPAGE'), 'ReviewPage', INT_LEN, 'N', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_REVIEWSORT'), 'ReviewSort', STEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TAGPAGE'), 'TagPage', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TAGSPERPAGE'), 'TagsPerPage', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TAGSORT'), 'TagSort', STEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CONDITION'), 'Condition', STEXT_LEN, 'a', array('ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_IDTYPE'), 'IdType', STEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ITEMID'), 'ItemId', STEXT_LEN, 'a', array('EXIST_CHECK', 'GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_RELATEDITEMSPAGE'), 'RelatedItemsPage', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_RELATIONSHIPTYPE'), 'RelationshipType', STEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_REVIEWPAGE'), 'ReviewPage', INT_LEN, 'N', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_REVIEWSORT'), 'ReviewSort', STEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_TAGPAGE'), 'TagPage', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_TAGSPERPAGE'), 'TagsPerPage', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_TAGSORT'), 'TagSort', STEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     public function getResponseGroupName() {

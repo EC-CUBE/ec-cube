@@ -78,8 +78,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         parent::init();
         $this->tpl_mainpage = 'order/edit.tpl';
         $this->tpl_mainno = 'order';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_001');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Order_Edit_001');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_001');
+        $this->tpl_subtitle = t('LC_Page_Admin_Order_Edit_001');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
@@ -165,7 +165,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
                 $objFormParam->convParam();
                 $this->arrErr = $this->lfCheckError($objFormParam);
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                    $message = SC_I18n_Ex::t('LC_Page_Admin_Order_Edit_003');
+                    $message = t('LC_Page_Admin_Order_Edit_003');
                     $order_id = $this->doRegister($order_id, $objPurchase, $objFormParam, $message, $arrValuesBefore);
                     if ($order_id >= 0) {
                         $this->setOrderToFormParam($objFormParam, $order_id);
@@ -180,7 +180,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
                     $objFormParam->convParam();
                     $this->arrErr = $this->lfCheckError($objFormParam);
                     if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                        $message = SC_I18n_Ex::t('LC_Page_Admin_Order_Edit_002');
+                        $message = t('LC_Page_Admin_Order_Edit_002');
                         $order_id = $this->doRegister(null, $objPurchase, $objFormParam, $message, $arrValuesBefore);
                         if ($order_id >= 0) {
                             $this->tpl_mode = 'edit';
@@ -286,108 +286,108 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         parent::lfInitParam($objFormParam);
 
         // お客様情報
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ORDER_LASTNAME'), 'order_name01', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ORDER_FIRSTNAME'), 'order_name02', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ORDER_LASTKANA'), 'order_kana01', STEXT_LEN, 'KVCa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ORDER_FIRSTKANA'), 'order_kana02', STEXT_LEN, 'KVCa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_EMAIL'), 'order_email', null, 'KVCa', array('NO_SPTAB', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ZIP01'), 'order_zip01', ZIP01_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ZIP02'), 'order_zip02', ZIP02_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PREF'), 'order_pref', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ADDR1'), 'order_addr01', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ADDR2'), 'order_addr02', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TEL1'), 'order_tel01', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TEL2'), 'order_tel02', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TEL3'), 'order_tel03', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FAX1'), 'order_fax01', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FAX2'), 'order_fax02', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FAX3'), 'order_fax03', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ORDER_LASTNAME'), 'order_name01', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ORDER_FIRSTNAME'), 'order_name02', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ORDER_LASTKANA'), 'order_kana01', STEXT_LEN, 'KVCa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ORDER_FIRSTKANA'), 'order_kana02', STEXT_LEN, 'KVCa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_EMAIL'), 'order_email', null, 'KVCa', array('NO_SPTAB', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ZIP01'), 'order_zip01', ZIP01_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ZIP02'), 'order_zip02', ZIP02_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PREF'), 'order_pref', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ADDR1'), 'order_addr01', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ADDR2'), 'order_addr02', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_TEL1'), 'order_tel01', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_TEL2'), 'order_tel02', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_TEL3'), 'order_tel03', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_FAX1'), 'order_fax01', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_FAX2'), 'order_fax02', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_FAX3'), 'order_fax03', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
 
         // 受注商品情報
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DISCOUNT'), 'discount', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DELIV_FEE'), 'deliv_fee', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CHARGE'), 'charge', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
+        $objFormParam->addParam(t('PARAM_LABEL_DISCOUNT'), 'discount', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
+        $objFormParam->addParam(t('PARAM_LABEL_DELIV_FEE'), 'deliv_fee', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
+        $objFormParam->addParam(t('PARAM_LABEL_CHARGE'), 'charge', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
 
         // ポイント機能ON時のみ
         if (USE_POINT !== false) {
-            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_USE_POINT'), 'use_point', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+            $objFormParam->addParam(t('PARAM_LABEL_USE_POINT'), 'use_point', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         }
 
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DELIV'), 'deliv_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_PAYMENT_METHOD'), 'payment_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ORDER_STATUS'), 'status', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_PAYMENT_METHOD_NAME'), 'payment_method');
+        $objFormParam->addParam(t('PARAM_LABEL_DELIV'), 'deliv_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_PAYMENT_METHOD'), 'payment_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ORDER_STATUS'), 'status', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_PAYMENT_METHOD_NAME'), 'payment_method');
 
         // 受注詳細情報
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_TYPE_ID'), 'product_type_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRICE'), 'price', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_QUANTITY'), 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_ID'), 'product_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_CLASS_ID'), 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_POINT_RATE'), 'point_rate');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_CODE'), 'product_code');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_NAME'), 'product_name');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CLASS_NAME1'), 'classcategory_name1');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CLASS_NAME2'), 'classcategory_name2');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_NOTE'), 'note', MTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DELETE_NO'), 'delete_no', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_TYPE_ID'), 'product_type_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
+        $objFormParam->addParam(t('PARAM_LABEL_PRICE'), 'price', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
+        $objFormParam->addParam(t('PARAM_LABEL_QUANTITY'), 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_ID'), 'product_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CLASS_ID'), 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
+        $objFormParam->addParam(t('PARAM_LABEL_POINT_RATE'), 'point_rate');
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CODE'), 'product_code');
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_NAME'), 'product_name');
+        $objFormParam->addParam(t('PARAM_LABEL_CLASS_NAME1'), 'classcategory_name1');
+        $objFormParam->addParam(t('PARAM_LABEL_CLASS_NAME2'), 'classcategory_name2');
+        $objFormParam->addParam(t('PARAM_LABEL_NOTE'), 'note', MTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_DELETE_NO'), 'delete_no', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
 
         // DB読込用
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_SUBTOTAL'), 'subtotal');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TOTAL'), 'total');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PAYMENT_TOTAL'), 'payment_total');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ADD_POINT'), 'add_point');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BIRTH_POINT'), 'birth_point', null, 'n', array(), 0);
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TAX_TOTAL'), 'tax');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TOTAL_POINT'), 'total_point');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_ID'), 'customer_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_ID'), 'edit_customer_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_NOW_POINT'), 'customer_point');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BEFORE_POINT'), 'point');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ORDER_NUMBER'), 'order_id');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ORDER_DATE'), 'create_date');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_SHIPPING_DATE'), 'commit_date');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_REMARKS'), 'message');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PAYMENT_DATE'), 'payment_date');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DEVICE_TYPE'), 'device_type_id');
+        $objFormParam->addParam(t('PARAM_LABEL_SUBTOTAL'), 'subtotal');
+        $objFormParam->addParam(t('PARAM_LABEL_TOTAL'), 'total');
+        $objFormParam->addParam(t('PARAM_LABEL_PAYMENT_TOTAL'), 'payment_total');
+        $objFormParam->addParam(t('PARAM_LABEL_ADD_POINT'), 'add_point');
+        $objFormParam->addParam(t('PARAM_LABEL_BIRTH_POINT'), 'birth_point', null, 'n', array(), 0);
+        $objFormParam->addParam(t('PARAM_LABEL_TAX_TOTAL'), 'tax');
+        $objFormParam->addParam(t('PARAM_LABEL_TOTAL_POINT'), 'total_point');
+        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_ID'), 'customer_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
+        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_ID'), 'edit_customer_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
+        $objFormParam->addParam(t('PARAM_LABEL_NOW_POINT'), 'customer_point');
+        $objFormParam->addParam(t('PARAM_LABEL_BEFORE_POINT'), 'point');
+        $objFormParam->addParam(t('PARAM_LABEL_ORDER_NUMBER'), 'order_id');
+        $objFormParam->addParam(t('PARAM_LABEL_ORDER_DATE'), 'create_date');
+        $objFormParam->addParam(t('PARAM_LABEL_SHIPPING_DATE'), 'commit_date');
+        $objFormParam->addParam(t('PARAM_LABEL_REMARKS'), 'message');
+        $objFormParam->addParam(t('PARAM_LABEL_PAYMENT_DATE'), 'payment_date');
+        $objFormParam->addParam(t('PARAM_LABEL_DEVICE_TYPE'), 'device_type_id');
 
         // 複数情報
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_SHIPPING_QUANTITY'), 'shipping_quantity', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_SHIPPING_ID'), 'shipping_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), 0);
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_LASTNAME'), 'shipping_name01', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_FIRSTNAME'), 'shipping_name02', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_LASTKANA'), 'shipping_kana01', STEXT_LEN, 'KVCa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_FIRSTKANA'), 'shipping_kana02', STEXT_LEN, 'KVCa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ZIP01'), 'shipping_zip01', ZIP01_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ZIP02'), 'shipping_zip02', ZIP02_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PREF'), 'shipping_pref', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ADDR1'), 'shipping_addr01', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ADDR2'), 'shipping_addr02', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TEL1'), 'shipping_tel01', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TEL2'), 'shipping_tel02', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TEL3'), 'shipping_tel03', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FAX1'), 'shipping_fax01', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FAX2'), 'shipping_fax02', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FAX3'), 'shipping_fax03', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_DELIV_TIME_ID'), 'time_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_DELIV_DATE_YEAR'), 'shipping_date_year', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_DELIV_DATE_MONTH'), 'shipping_date_month', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_DELIV_DATE_DAY'), 'shipping_date_day', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_DELIV_DATE'), 'shipping_date', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_SHIPPING_PRODUCT_QUANTITY'), 'shipping_product_quantity', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_SHIPPING_QUANTITY'), 'shipping_quantity', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
+        $objFormParam->addParam(t('PARAM_LABEL_SHIPPING_ID'), 'shipping_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), 0);
+        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_LASTNAME'), 'shipping_name01', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_FIRSTNAME'), 'shipping_name02', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_LASTKANA'), 'shipping_kana01', STEXT_LEN, 'KVCa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_FIRSTKANA'), 'shipping_kana02', STEXT_LEN, 'KVCa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ZIP01'), 'shipping_zip01', ZIP01_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ZIP02'), 'shipping_zip02', ZIP02_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PREF'), 'shipping_pref', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ADDR1'), 'shipping_addr01', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ADDR2'), 'shipping_addr02', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_TEL1'), 'shipping_tel01', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_TEL2'), 'shipping_tel02', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_TEL3'), 'shipping_tel03', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_FAX1'), 'shipping_fax01', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_FAX2'), 'shipping_fax02', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_FAX3'), 'shipping_fax03', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_DELIV_TIME_ID'), 'time_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_DELIV_DATE_YEAR'), 'shipping_date_year', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_DELIV_DATE_MONTH'), 'shipping_date_month', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_DELIV_DATE_DAY'), 'shipping_date_day', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_DELIV_DATE'), 'shipping_date', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_SHIPPING_PRODUCT_QUANTITY'), 'shipping_product_quantity', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
 
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_CLASS_ID'), 'shipment_product_class_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_CODE'), 'shipment_product_code');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_NAME'), 'shipment_product_name');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CLASS_NAME1'), 'shipment_classcategory_name1');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CLASS_NAME2'), 'shipment_classcategory_name2');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRICE'), 'shipment_price', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_QUANTITY'), 'shipment_quantity', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CLASS_ID'), 'shipment_product_class_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CODE'), 'shipment_product_code');
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_NAME'), 'shipment_product_name');
+        $objFormParam->addParam(t('PARAM_LABEL_CLASS_NAME1'), 'shipment_classcategory_name1');
+        $objFormParam->addParam(t('PARAM_LABEL_CLASS_NAME2'), 'shipment_classcategory_name2');
+        $objFormParam->addParam(t('PARAM_LABEL_PRICE'), 'shipment_price', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
+        $objFormParam->addParam(t('PARAM_LABEL_QUANTITY'), 'shipment_quantity', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
 
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_NO'), 'no', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ADD_PRODUCT_CLASS_ID'), 'add_product_class_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_EDIT_PRODUCT_CLASS_ID'), 'edit_product_class_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ANCHOR_KEY'), 'anchor_key', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_NO'), 'no', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ADD_PRODUCT_CLASS_ID'), 'add_product_class_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_EDIT_PRODUCT_CLASS_ID'), 'edit_product_class_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ANCHOR_KEY'), 'anchor_key', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -397,14 +397,14 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
      * @return void
      */
     function lfInitMultipleParam(&$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_CLASS_ID'), 'multiple_product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_CODE'), 'multiple_product_code', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_NAME'), 'multiple_product_name', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CLASS1'), 'multiple_classcategory_name1', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CLASS2'), 'multiple_classcategory_name2', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRICE'), 'multiple_price', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_QUANTITY'), 'multiple_quantity', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_DELIV_ADDRESSEE'), 'multiple_shipping_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CLASS_ID'), 'multiple_product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CODE'), 'multiple_product_code', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_NAME'), 'multiple_product_name', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
+        $objFormParam->addParam(t('PARAM_LABEL_CLASS1'), 'multiple_classcategory_name1', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
+        $objFormParam->addParam(t('PARAM_LABEL_CLASS2'), 'multiple_classcategory_name2', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
+        $objFormParam->addParam(t('PARAM_LABEL_PRICE'), 'multiple_price', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
+        $objFormParam->addParam(t('PARAM_LABEL_QUANTITY'), 'multiple_quantity', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
+        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_DELIV_ADDRESSEE'), 'multiple_shipping_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
     }
 
     /**
@@ -592,10 +592,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
             if ($arrProduct['stock_unlimited'] != '1'
                 && $arrProduct['stock'] < $arrValues['quantity'][$i] - $arrOrderDetail['quantity'][$i]) {
                 $class_name1 = $arrValues['classcategory_name1'][$i];
-                $class_name1 = SC_Utils_Ex::isBlank($class_name1) ? SC_I18n_Ex::t('LC_Page_Admin_Order_Edit_004') : $class_name1;
+                $class_name1 = SC_Utils_Ex::isBlank($class_name1) ? t('LC_Page_Admin_Order_Edit_004') : $class_name1;
                 $class_name2 = $arrValues['classcategory_name2'][$i];
-                $class_name2 = SC_Utils_Ex::isBlank($class_name2) ? SC_I18n_Ex::t('LC_Page_Admin_Order_Edit_004') : $class_name2;                
-                $arrErr['quantity'][$i] .= SC_I18n_Ex::t('LC_Page_Admin_Order_Edit_005', array('T_FIELD1' => $arrValues['product_name'][$i], 'T_FIELD2' => $class_name1,'T_FIELD3' => $class_name1, 'T_FIELD4' => ($arrOrderDetail['quantity'][$i] + $arrProduct['stock'])));
+                $class_name2 = SC_Utils_Ex::isBlank($class_name2) ? t('LC_Page_Admin_Order_Edit_004') : $class_name2;                
+                $arrErr['quantity'][$i] .= t('LC_Page_Admin_Order_Edit_005', array('T_FIELD1' => $arrValues['product_name'][$i], 'T_FIELD2' => $class_name1,'T_FIELD3' => $class_name1, 'T_FIELD4' => ($arrOrderDetail['quantity'][$i] + $arrProduct['stock'])));
             }
         }
 
@@ -615,15 +615,15 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $arrValues['total_point'] = $objFormParam->getValue('point') - $arrValues['use_point'];
 
         if ($arrValues['total'] < 0) {
-            $arrErr['total'] = SC_I18n_Ex::t('LC_Page_Admin_Order_Edit_006');
+            $arrErr['total'] = t('LC_Page_Admin_Order_Edit_006');
         }
 
         if ($arrValues['payment_total'] < 0) {
-            $arrErr['payment_total'] = SC_I18n_Ex::t('LC_Page_Admin_Order_Edit_007');
+            $arrErr['payment_total'] = t('LC_Page_Admin_Order_Edit_007');
         }
 
         if ($arrValues['total_point'] < 0) {
-            $arrErr['use_point'] = SC_I18n_Ex::t('LC_Page_Admin_Order_Edit_008');
+            $arrErr['use_point'] = t('LC_Page_Admin_Order_Edit_008');
         }
 
         $objFormParam->setParam($arrValues);

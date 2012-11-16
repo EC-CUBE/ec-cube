@@ -94,9 +94,9 @@ class LC_Page_ResizeImage extends LC_Page_Ex {
     }
 
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_IMG_FILE_NAME'), 'image', STEXT_LEN, 'a',  array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_IMG_WIDTH'), 'width', STEXT_LEN, 'n',  array('NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_HEIGHT'), 'height', STEXT_LEN, 'n',  array('NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_IMG_FILE_NAME'), 'image', STEXT_LEN, 'a',  array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_IMG_WIDTH'), 'width', STEXT_LEN, 'n',  array('NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_HEIGHT'), 'height', STEXT_LEN, 'n',  array('NUM_CHECK'));
     }
 
     /**

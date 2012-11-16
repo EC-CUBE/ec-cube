@@ -55,8 +55,8 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'system/bkup.tpl';
         $this->tpl_mainno = 'system';
         $this->tpl_subno = 'bkup';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_009');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_System_Bkup_001');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_009');
+        $this->tpl_subtitle = t('LC_Page_Admin_System_Bkup_001');
 
         $this->bkup_dir = DATA_REALDIR . 'downloads/backup/';
         $this->bkup_ext = '.tar.gz';
@@ -117,7 +117,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
                     $arrErrTmp[3] = array();
                     if ($res !== true) {
-                        $arrErrTmp[3]['bkup_name'] = SC_I18n_Ex::t('LC_Page_Admin_System_Bkup_002', array('T_FIELD' => $res));
+                        $arrErrTmp[3]['bkup_name'] = t('LC_Page_Admin_System_Bkup_002', array('T_FIELD' => $res));
                     }
 
                     // DBにデータ更新
@@ -128,7 +128,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
                         $arrErr = $arrErrTmp[3];
                     }
 
-                    $this->tpl_onload = "alert('" . SC_I18n_Ex::t('ALERT_024') . "');";
+                    $this->tpl_onload = "alert('" . t('ALERT_024') . "');";
                 } else {
                     $arrForm = $objFormParam->getHashArray();
                     $arrErr = array_merge((array)$arrErrTmp[1],(array)$arrErrTmp[2]);
@@ -145,13 +145,13 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
                 if (SC_Utils_Ex::isBlank($arrErr)) {
                     $arrData = $objFormParam->getHashArray();
 
-                    $msg = SC_I18n_Ex::t('LC_Page_Admin_System_Bkup_003', array('T_FIELD' => $arrData['list_name']));
+                    $msg = t('LC_Page_Admin_System_Bkup_003', array('T_FIELD' => $arrData['list_name']));
                     GC_Utils_Ex::gfPrintLog($msg);
 
                     $success = $this->lfRestore($arrData['list_name'], $this->bkup_dir, $this->bkup_ext, $this->mode);
 
-                    $msg = SC_I18n_Ex::t('LC_Page_Admin_System_Bkup_004-1', array('T_FIELD' => $arrData['list_name']));
-                    $msg .= $success ? SC_I18n_Ex::t('LC_Page_Admin_System_Bkup_004-2') : SC_I18n_Ex::t('LC_Page_Admin_System_Bkup_004-3');
+                    $msg = t('LC_Page_Admin_System_Bkup_004-1', array('T_FIELD' => $arrData['list_name']));
+                    $msg .= $success ? t('LC_Page_Admin_System_Bkup_004-2') : t('LC_Page_Admin_System_Bkup_004-3');
 
                     $this->tpl_restore_msg .= $msg . "\n";
                     GC_Utils_Ex::gfPrintLog($msg);
@@ -232,9 +232,9 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
      */
     function initParam(&$objFormParam, &$arrParams) {
 
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BACKUP_NAME'), 'bkup_name', STEXT_LEN, 'a', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BACKUP_MEMO'), 'bkup_memo', MTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BACKUP_NAME_LIST'), 'list_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'NO_SPTAB', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
+        $objFormParam->addParam(t('PARAM_LABEL_BACKUP_NAME'), 'bkup_name', STEXT_LEN, 'a', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
+        $objFormParam->addParam(t('PARAM_LABEL_BACKUP_MEMO'), 'bkup_memo', MTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_BACKUP_NAME_LIST'), 'list_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'NO_SPTAB', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
         $objFormParam->setParam($arrParams);
         $objFormParam->convParam();
 
@@ -269,9 +269,9 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         // 重複・存在チェック
         $ret = $this->lfGetBkupData('', $name);
         if (count($ret) > 0 && $mode == 'bkup') {
-            $arrErr['bkup_name'] = SC_I18n_Ex::t('LC_Page_Admin_System_Bkup_005');
+            $arrErr['bkup_name'] = t('LC_Page_Admin_System_Bkup_005');
         } elseif (count($ret) <= 0 && $mode != 'bkup') {
-            $arrErr['list_name'] = SC_I18n_Ex::t('LC_Page_Admin_System_Bkup_006');
+            $arrErr['list_name'] = t('LC_Page_Admin_System_Bkup_006');
         }
 
         return $arrErr;
@@ -456,7 +456,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
                     $ret[] = array();
                     $row =& $ret[array_pop(array_keys($ret))];
                     $row['bkup_name'] = $bkup_name;
-                    $row['bkup_memo'] = SC_I18n_Ex::t('LC_Page_Admin_System_Bkup_007');
+                    $row['bkup_memo'] = t('LC_Page_Admin_System_Bkup_007');
                     $row['create_date'] = date('Y-m-d H:i:s', filemtime($path));
                 }
             }
@@ -486,9 +486,9 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         $success = $tar->extract($work_dir);
 
         if (!$success) {
-            $msg = SC_I18n_Ex::t('LC_Page_Admin_System_Bkup_008');
-            $msg .= SC_I18n_Ex::t('LC_Page_Admin_System_Bkup_009', array('T_FIELD' => $bkup_filepath));
-            $msg .= SC_I18n_Ex::t('LC_Page_Admin_System_Bkup_010', array('T_FIELD' => $work_dir));
+            $msg = t('LC_Page_Admin_System_Bkup_008');
+            $msg .= t('LC_Page_Admin_System_Bkup_009', array('T_FIELD' => $bkup_filepath));
+            $msg .= t('LC_Page_Admin_System_Bkup_010', array('T_FIELD' => $work_dir));
             trigger_error($msg, E_USER_ERROR);
         }
 
@@ -554,10 +554,10 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
             // csvファイルからデータの取得
             $fp = fopen($file_path, 'r');
             if ($fp === false) {
-                trigger_error(SC_I18n_Ex::t('LC_Page_Admin_System_Bkup_011', array('T_FIELD' => $file_name)), E_USER_ERROR);
+                trigger_error(t('LC_Page_Admin_System_Bkup_011', array('T_FIELD' => $file_name)), E_USER_ERROR);
             }
 
-            GC_Utils_Ex::gfPrintLog(SC_I18n_Ex::t('LC_Page_Admin_System_Bkup_012', array('T_FIELD' => $table)));
+            GC_Utils_Ex::gfPrintLog(t('LC_Page_Admin_System_Bkup_012', array('T_FIELD' => $table)));
             $objQuery->delete($table);
 
             $line = 0;

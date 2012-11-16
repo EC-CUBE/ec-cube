@@ -54,7 +54,7 @@ class LC_Page_Cart extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_title = SC_I18n_Ex::t('LC_Page_Cart_001');
+        $this->tpl_title = t('LC_Page_Cart_001');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrProductType = $masterData->getMasterData('mtb_product_type');
 
@@ -89,7 +89,7 @@ class LC_Page_Cart extends LC_Page_Ex {
         foreach ($this->cartKeys as $key) {
             // 商品購入中にカート内容が変更された。
             if ($objCartSess->getCancelPurchase($key)) {
-                $this->tpl_message .= SC_I18n_Ex::t('LC_Page_Cart_002');
+                $this->tpl_message .= t('LC_Page_Cart_002');
             }
         }
 
@@ -198,12 +198,12 @@ class LC_Page_Cart extends LC_Page_Ex {
      */
     function lfInitParam($arrRequest) {
         $objFormParam = new SC_FormParam_Ex();
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CARTKEY'), 'cartKey', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CART_NUMBER'), 'cart_no', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CARTKEY'), 'cartKey', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CART_NUMBER'), 'cart_no', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         // PC版での値引き継ぎ用
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CATEGORY_ID'), 'category_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CATEGORY_ID'), 'category_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         // スマートフォン版での数量変更用
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_QUANTITY'), 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_QUANTITY'), 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         // 値の取得
         $objFormParam->setParam($arrRequest);
         // 入力値の変換

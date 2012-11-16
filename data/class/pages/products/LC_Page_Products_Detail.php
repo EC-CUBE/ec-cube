@@ -263,9 +263,9 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
     /* ファイル情報の初期化 */
     function lfInitFile($objUpFile) {
-        $objUpFile->addFile(SC_I18n_Ex::t('PARAM_LABEL_DETAIL_MAIN_IMAGE'), 'main_image', array('jpg'), IMAGE_SIZE);
+        $objUpFile->addFile(t('PARAM_LABEL_DETAIL_MAIN_IMAGE'), 'main_image', array('jpg'), IMAGE_SIZE);
         for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
-            $objUpFile->addFile(SC_I18n_Ex::t('PARAM_LABEL_DETAIL_SUB_IMAGE_CNT', array('T_FIELD' => $cnt)), "sub_image$cnt", array('jpg'), IMAGE_SIZE);
+            $objUpFile->addFile(t('PARAM_LABEL_DETAIL_SUB_IMAGE_CNT', array('T_FIELD' => $cnt)), "sub_image$cnt", array('jpg'), IMAGE_SIZE);
         }
         return $objUpFile;
     }
@@ -343,13 +343,13 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
     /* パラメーター情報の初期化 */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CLASS1'), 'classcategory_id1', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CLASS2'), 'classcategory_id2', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_QUANTITY'), 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ADMIN_LOGIN'), 'admin', INT_LEN, 'a', array('ALNUM_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_ID'), 'product_id', INT_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FAVORITE_PRODUCT_ID'), 'favorite_product_id', INT_LEN, 'n', array('ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_CLASS_ID'), 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CLASS1'), 'classcategory_id1', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CLASS2'), 'classcategory_id2', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_QUANTITY'), 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ADMIN_LOGIN'), 'admin', INT_LEN, 'a', array('ALNUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_ID'), 'product_id', INT_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_FAVORITE_PRODUCT_ID'), 'favorite_product_id', INT_LEN, 'n', array('ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CLASS_ID'), 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         // 値の取得
         $objFormParam->setParam($_REQUEST);
         // 入力値の変換
@@ -398,7 +398,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
             $objErr = new SC_CheckError_Ex();
             $customer_id = $objCustomer->getValue('customer_id');
             if (SC_Helper_DB_Ex::sfDataExists('dtb_customer_favorite_products', 'customer_id = ? AND product_id = ?', array($customer_id, $favorite_product_id))) {
-                $objErr->arrErr['add_favorite'.$favorite_product_id] = SC_I18n_Ex::t('LC_Page_Products_Detail_001');
+                $objErr->arrErr['add_favorite'.$favorite_product_id] = t('LC_Page_Products_Detail_001');
             }
             break;
         default:
@@ -409,10 +409,10 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
             // 複数項目チェック
             if ($tpl_classcat_find1) {
-                $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_CLASS1'), 'classcategory_id1'), array('EXIST_CHECK'));
+                $objErr->doFunc(array(t('PARAM_LABEL_CLASS1'), 'classcategory_id1'), array('EXIST_CHECK'));
             }
             if ($tpl_classcat_find2) {
-                $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_CLASS2'), 'classcategory_id2'), array('EXIST_CHECK'));
+                $objErr->doFunc(array(t('PARAM_LABEL_CLASS2'), 'classcategory_id2'), array('EXIST_CHECK'));
             }
             break;
         }

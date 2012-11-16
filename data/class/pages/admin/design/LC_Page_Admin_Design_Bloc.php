@@ -48,8 +48,8 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
         $this->text_row = 13;
         $this->tpl_subno = 'bloc';
         $this->tpl_mainno = 'design';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_003');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Design_Bloc_002');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_003');
+        $this->tpl_subtitle = t('LC_Page_Admin_Design_Bloc_002');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
     }
@@ -122,7 +122,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
             default:
                 if (isset($_GET['msg']) && $_GET['msg'] == 'on') {
                     // 完了メッセージ
-                    $this->tpl_onload = "alert('" . SC_I18n_Ex::t('ALERT_004') . "');";
+                    $this->tpl_onload = "alert('" . t('ALERT_004') . "');";
                 }
                 break;
         }
@@ -160,11 +160,11 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BLOC_ID'), 'bloc_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DEVICE_TYPE_ID'), 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BLOC_NAME'), 'bloc_name', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FILE_NAME'), 'filename', STEXT_LEN, 'a', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BLOC_DATA'), 'bloc_html');
+        $objFormParam->addParam(t('PARAM_LABEL_BLOC_ID'), 'bloc_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_DEVICE_TYPE_ID'), 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_BLOC_NAME'), 'bloc_name', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_FILE_NAME'), 'filename', STEXT_LEN, 'a', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_BLOC_DATA'), 'bloc_html');
     }
 
     /**
@@ -240,7 +240,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
 
         $bloc_path = $bloc_dir . $arrValues['tpl_path'];
         if (!SC_Helper_FileManager_Ex::sfWriteFile($bloc_path, $arrParams['bloc_html'])) {
-            $this->arrErr['err'] = SC_I18n_Ex::t('LC_Page_Admin_Design_Bloc_003');
+            $this->arrErr['err'] = t('LC_Page_Admin_Design_Bloc_003');
             $objQuery->rollback();
             return false;
         }
@@ -284,7 +284,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
         }
 
         if ($is_error) {
-            $this->arrErr['err'] = SC_I18n_Ex::t('LC_Page_Admin_Design_Bloc_004');
+            $this->arrErr['err'] = t('LC_Page_Admin_Design_Bloc_004');
             $objQuery->rollback();
             return false;
         }
@@ -302,8 +302,8 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
         $arrParams = $objFormParam->getHashArray();
         $objErr = new SC_CheckError_Ex($arrParams);
         $objErr->arrErr =& $arrErr;
-        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_BLOC_NAME'), 'bloc_name', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_FILE_NAME'), 'filename', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK','FILE_NAME_CHECK_BY_NOUPLOAD'));
+        $objErr->doFunc(array(t('PARAM_LABEL_BLOC_NAME'), 'bloc_name', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objErr->doFunc(array(t('PARAM_LABEL_FILE_NAME'), 'filename', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK','FILE_NAME_CHECK_BY_NOUPLOAD'));
 
         $where = 'filename = ?';
         $arrValues = array($arrParams['filename']);
@@ -315,7 +315,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
         }
         $arrBloc = $objLayout->getBlocs($arrParams['device_type_id'], $where, $arrValues);
         if (!SC_Utils_Ex::isBlank($arrBloc)) {
-            $objErr->arrErr['filename'] = SC_I18n_Ex::t('LC_Page_Admin_Design_Bloc_005');
+            $objErr->arrErr['filename'] = t('LC_Page_Admin_Design_Bloc_005');
         }
         return $objErr->arrErr;
     }

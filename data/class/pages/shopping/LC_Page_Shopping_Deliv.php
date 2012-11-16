@@ -45,7 +45,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
         parent::init();
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
-        $this->tpl_title = SC_I18n_Ex::t('LC_Page_Shopping_Deliv_001');
+        $this->tpl_title = t('LC_Page_Shopping_Deliv_001');
         $this->httpCacheControl('nocache');
     }
 
@@ -201,8 +201,8 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_OTHER_DELIV_ID'), 'other_deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_DELIV_CHECK'), 'deliv_check', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_OTHER_DELIV_ID'), 'other_deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_DELIV_CHECK'), 'deliv_check', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
     }
 
     /**

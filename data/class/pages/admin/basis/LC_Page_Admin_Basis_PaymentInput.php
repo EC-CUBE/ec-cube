@@ -51,8 +51,8 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'basis/payment_input.tpl';
         $this->tpl_mainno = 'basis';
         $this->tpl_subno = 'payment';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_006');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Basis_PaymentInput_002');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_006');
+        $this->tpl_subtitle = t('LC_Page_Admin_Basis_PaymentInput_002');
     }
 
     /**
@@ -129,11 +129,11 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
                 if (count($this->arrErr) == 0) {
                     $arrRet = $objPayment->get($post['payment_id']);
 
-                    $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PAYMENT_METHOD'), 'payment_method', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-                    $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CHARGE'), 'charge', PRICE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                    $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_RULE_MAX'), 'rule_max', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                    $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_UPPER_RULE'), 'upper_rule', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                    $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FIX'), 'fix');
+                    $objFormParam->addParam(t('PARAM_LABEL_PAYMENT_METHOD'), 'payment_method', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+                    $objFormParam->addParam(t('PARAM_LABEL_CHARGE'), 'charge', PRICE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                    $objFormParam->addParam(t('PARAM_LABEL_RULE_MAX'), 'rule_max', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                    $objFormParam->addParam(t('PARAM_LABEL_UPPER_RULE'), 'upper_rule', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                    $objFormParam->addParam(t('PARAM_LABEL_FIX'), 'fix');
                     $objFormParam->setParam($arrRet);
 
                     $this->charge_flg = $arrRet['charge_flg'];
@@ -165,7 +165,7 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
 
     /* ファイル情報の初期化 */
     function lfInitFile() {
-        $this->objUpFile->addFile(SC_I18n_Ex::t('PARAM_LABEL_LOGO_IMG'), 'payment_image', array('gif','jpeg','jpg','png'), IMAGE_SIZE, false, CLASS_IMAGE_WIDTH, CLASS_IMAGE_HEIGHT);
+        $this->objUpFile->addFile(t('PARAM_LABEL_LOGO_IMG'), 'payment_image', array('gif','jpeg','jpg','png'), IMAGE_SIZE, false, CLASS_IMAGE_WIDTH, CLASS_IMAGE_HEIGHT);
         return $this->objUpFile;
     }
 
@@ -174,37 +174,37 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
 
         switch ($mode) {
             case 'edit':
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PAYMENT_METHOD'), 'payment_method', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CHARGE'), 'charge', PRICE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_RULE_MAX'), 'rule_max', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_UPPER_RULE'), 'upper_rule', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FIX'), 'fix');
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PAYMENT_ID'), 'payment_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CHARGE_FLG'), 'charge_flg', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_PAYMENT_METHOD'), 'payment_method', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_CHARGE'), 'charge', PRICE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_RULE_MAX'), 'rule_max', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_UPPER_RULE'), 'upper_rule', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_FIX'), 'fix');
+                $objFormParam->addParam(t('PARAM_LABEL_PAYMENT_ID'), 'payment_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_CHARGE_FLG'), 'charge_flg', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
                 break;
             case 'upload_image':
             case 'delete_image':
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PAYMENT_ID'), 'payment_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PAYMENT_METHOD'), 'payment_method', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CHARGE'), 'charge', PRICE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_RULE_MAX'), 'rule_max', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_UPPER_RULE'), 'upper_rule', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FIX'), 'fix');
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_IMG_KEY'), 'image_key', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_PAYMENT_ID'), 'payment_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_PAYMENT_METHOD'), 'payment_method', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_CHARGE'), 'charge', PRICE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_RULE_MAX'), 'rule_max', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_UPPER_RULE'), 'upper_rule', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_FIX'), 'fix');
+                $objFormParam->addParam(t('PARAM_LABEL_IMG_KEY'), 'image_key', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
 
                 break;
             case 'pre_edit':
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PAYMENT_ID'), 'payment_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CHARGE_FLG'), 'charge_flg', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_PAYMENT_ID'), 'payment_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_CHARGE_FLG'), 'charge_flg', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
                 break;
 
             default:
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PAYMENT_METHOD'), 'payment_method', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CHARGE'), 'charge', PRICE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_RULE_MAX'), 'rule_max', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_UPPER_RULE'), 'upper_rule', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FIX'), 'fix');
+                $objFormParam->addParam(t('PARAM_LABEL_PAYMENT_METHOD'), 'payment_method', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_CHARGE'), 'charge', PRICE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_RULE_MAX'), 'rule_max', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_UPPER_RULE'), 'upper_rule', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_FIX'), 'fix');
 
                 break;
         }
@@ -245,16 +245,16 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
 
         // 利用条件(下限)チェック
         if ($arrRet['rule_max'] < $arrPaymentData['rule_min'] and $arrPaymentData['rule_min'] != '') {
-            $objErr->arrErr['rule'] = SC_I18n_Ex::t('LC_Page_Admin_Basis_PaymentInput_003', array('T_FIELD', $arrPaymentData['rule_min']));
+            $objErr->arrErr['rule'] = t('LC_Page_Admin_Basis_PaymentInput_003', array('T_FIELD', $arrPaymentData['rule_min']));
         }
 
         // 利用条件(上限)チェック
         if ($arrRet['upper_rule'] > $arrPaymentData['upper_rule_max'] and $arrPaymentData['upper_rule_max'] != '') {
-            $objErr->arrErr['rule'] = SC_I18n_Ex::t('LC_Page_Admin_Basis_PaymentInput_004', array('T_FIELD', $arrPaymentData['upper_rule_max']));
+            $objErr->arrErr['rule'] = t('LC_Page_Admin_Basis_PaymentInput_004', array('T_FIELD', $arrPaymentData['upper_rule_max']));
         }
 
         // 利用条件チェック
-        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_RULE_MAX'), SC_I18n_Ex::t('PARAM_LABEL_UPPER_RULE'), 'rule_max', 'upper_rule'), array('GREATER_CHECK'));
+        $objErr->doFunc(array(t('PARAM_LABEL_RULE_MAX'), t('PARAM_LABEL_UPPER_RULE'), 'rule_max', 'upper_rule'), array('GREATER_CHECK'));
 
         return $objErr->arrErr;
     }

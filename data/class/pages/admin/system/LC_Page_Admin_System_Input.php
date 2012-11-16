@@ -50,7 +50,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrAUTHORITY = $masterData->getMasterData('mtb_authority');
 
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_System_Input_001');
+        $this->tpl_subtitle = t('LC_Page_Admin_System_Input_001');
         $this->httpCacheControl('nocache');
     }
 
@@ -194,21 +194,21 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
      */
     function initForm(&$objFormParam, &$arrParams, $mode = '') {
 
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_MEMBER_ID'), 'member_id', INT_LEN, 'n', array('NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_NAME'), 'name', STEXT_LEN, 'KV', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DEPARTMENT'), 'department', STEXT_LEN, 'KV', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_LOGIN_ID'), 'login_id', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_OLD_LOGIN_ID'), 'old_login_id', '' , '', array('ALNUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_MEMBER_ID'), 'member_id', INT_LEN, 'n', array('NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_NAME'), 'name', STEXT_LEN, 'KV', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_DEPARTMENT'), 'department', STEXT_LEN, 'KV', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_LOGIN_ID'), 'login_id', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_OLD_LOGIN_ID'), 'old_login_id', '' , '', array('ALNUM_CHECK'));
         if ($mode == 'edit' && $arrParams['password'] == DEFAULT_PASSWORD) {
-            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PASSWORD'), 'password', '' , '', array('EXIST_CHECK'));
-            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PASSWORD_CONFIRM'), 'password02', '' , '', array('EXIST_CHECK'));
+            $objFormParam->addParam(t('PARAM_LABEL_PASSWORD'), 'password', '' , '', array('EXIST_CHECK'));
+            $objFormParam->addParam(t('PARAM_LABEL_PASSWORD_CONFIRM'), 'password02', '' , '', array('EXIST_CHECK'));
         } else {
-            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PASSWORD'), 'password', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
-            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PASSWORD_CONFIRM'), 'password02', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
+            $objFormParam->addParam(t('PARAM_LABEL_PASSWORD'), 'password', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
+            $objFormParam->addParam(t('PARAM_LABEL_PASSWORD_CONFIRM'), 'password02', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
         }
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_AUTHORITY'), 'authority', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_WORK'), 'work', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PAGE'), 'pageno', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_AUTHORITY'), 'authority', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_WORK'), 'work', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PAGE'), 'pageno', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
         $objFormParam->setParam($arrParams);
         $objFormParam->convParam();
@@ -228,13 +228,13 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         // ログインID・パスワードの文字数チェック
         $objErr = new SC_CheckError_Ex();
         if ($mode == 'new') {
-            $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_PASSWORD'), 'password', ID_MIN_LEN, ID_MAX_LEN), array('NUM_RANGE_CHECK'));
-            $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_LOGIN_ID'), 'login_id', ID_MIN_LEN, ID_MAX_LEN), array('NUM_RANGE_CHECK'));
+            $objErr->doFunc(array(t('PARAM_LABEL_PASSWORD'), 'password', ID_MIN_LEN, ID_MAX_LEN), array('NUM_RANGE_CHECK'));
+            $objErr->doFunc(array(t('PARAM_LABEL_LOGIN_ID'), 'login_id', ID_MIN_LEN, ID_MAX_LEN), array('NUM_RANGE_CHECK'));
         } elseif ($mode == 'edit') {
-            $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_PASSWORD'), 'password', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK' ,'NUM_RANGE_CHECK'));
-            $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_LOGIN_ID'), 'login_id', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK' ,'NUM_RANGE_CHECK'));
+            $objErr->doFunc(array(t('PARAM_LABEL_PASSWORD'), 'password', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK' ,'NUM_RANGE_CHECK'));
+            $objErr->doFunc(array(t('PARAM_LABEL_LOGIN_ID'), 'login_id', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK' ,'NUM_RANGE_CHECK'));
         }
-    $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_PASSWORD'), SC_I18n_Ex::t('PARAM_LABEL_PASSWORD_CONFIRM'), 'password', 'password02') ,array('EQUAL_CHECK'));
+    $objErr->doFunc(array(t('PARAM_LABEL_PASSWORD'), t('PARAM_LABEL_PASSWORD_CONFIRM'), 'password', 'password02') ,array('EQUAL_CHECK'));
 
         $arrErr = $objErr->arrErr;
 
@@ -242,11 +242,11 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         case 'new':
             // 管理者名が登録済みでないか
             if ($this->memberDataExists('name = ? AND del_flg = 0', $arrParams['name'])) {
-                $arrErr['name'] = SC_I18n_Ex::t('LC_Page_Admin_System_Input_002');
+                $arrErr['name'] = t('LC_Page_Admin_System_Input_002');
             }
             // ログインIDが登録済みでないか
             if ($this->memberDataExists('login_id = ? AND del_flg = 0', $arrParams['login_id'])) {
-                $arrErr['login_id'] = SC_I18n_Ex::t('LC_Page_Admin_System_Input_003');
+                $arrErr['login_id'] = t('LC_Page_Admin_System_Input_003');
             }
             break;
         case 'edit':
@@ -254,7 +254,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
             if ($arrParams['login_id'] != $arrParams['old_login_id']) {
                 // ログインIDが登録済みでないか
                 if ($this->memberDataExists('login_id = ? AND del_flg = 0', $arrParams['login_id'])) {
-                    $arrErr['login_id'] = SC_I18n_Ex::t('LC_Page_Admin_System_Input_004');
+                    $arrErr['login_id'] = t('LC_Page_Admin_System_Input_004');
                 }
             }
             break;

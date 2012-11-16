@@ -46,8 +46,8 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'order/product_select.tpl';
         $this->tpl_mainno = 'order';
         $this->tpl_subno = '';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_001');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Order_ProductSelect_001');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_001');
+        $this->tpl_subtitle = t('LC_Page_Admin_Order_ProductSelect_001');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPRODUCTSTATUS_COLOR = $masterData->getMasterData('mtb_product_status_color');
@@ -280,10 +280,10 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
      * @param SC_FormParam $objFormParam
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ORDERID'), 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_NAME'), 'search_name', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CATEGORY_ID'), 'search_category_id', STEXT_LEN, 'KVa',  array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_CODE'), 'search_product_code', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FOOTER'), 'footer', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ORDERID'), 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_NAME'), 'search_name', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CATEGORY_ID'), 'search_category_id', STEXT_LEN, 'KVa',  array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CODE'), 'search_product_code', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_FOOTER'), 'footer', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
     }
 }

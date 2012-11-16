@@ -62,7 +62,7 @@ class LC_Page_Error extends LC_Page_Ex {
      */
     function init() {
         $this->tpl_mainpage = 'error.tpl';
-        $this->tpl_title = SC_I18n_Ex::t('LC_Page_Error_001');
+        $this->tpl_title = t('LC_Page_Error_001');
         // ディスプレイクラス生成
         $this->objDisplay = new SC_Display_Ex();
 
@@ -91,78 +91,78 @@ class LC_Page_Error extends LC_Page_Ex {
 
         switch ($this->type) {
             case PRODUCT_NOT_FOUND:
-                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_002');
+                $this->tpl_error=t('LC_Page_Error_002');
                 SC_Response_Ex::sendHttpStatus(404);
                 break;
             case PAGE_ERROR:
-                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_003');
+                $this->tpl_error=t('LC_Page_Error_003');
                 break;
             case CART_EMPTY:
-                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_004');
+                $this->tpl_error=t('LC_Page_Error_004');
                 break;
             case CART_ADD_ERROR:
-                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_005');
+                $this->tpl_error=t('LC_Page_Error_005');
                 break;
             case CANCEL_PURCHASE:
-                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_006');
+                $this->tpl_error=t('LC_Page_Error_006');
                 break;
             case CATEGORY_NOT_FOUND:
-                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_007');
+                $this->tpl_error=t('LC_Page_Error_007');
                 SC_Response_Ex::sendHttpStatus(404);
                 break;
             case SITE_LOGIN_ERROR:
-                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_008');
+                $this->tpl_error=t('LC_Page_Error_008');
                 break;
             case TEMP_LOGIN_ERROR:
-                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_009');
+                $this->tpl_error=t('LC_Page_Error_009');
                 break;
             case CUSTOMER_ERROR:
-                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_010');
+                $this->tpl_error=t('LC_Page_Error_010');
                 break;
             case SOLD_OUT:
-                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_011');
+                $this->tpl_error=t('LC_Page_Error_011');
                 break;
             case CART_NOT_FOUND:
-                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_012');
+                $this->tpl_error=t('LC_Page_Error_012');
                 break;
             case LACK_POINT:
-                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_013');
+                $this->tpl_error=t('LC_Page_Error_013');
                 break;
             case FAVORITE_ERROR:
-                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_014');
+                $this->tpl_error=t('LC_Page_Error_014');
                 break;
             case EXTRACT_ERROR:
-                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_015');
+                $this->tpl_error=t('LC_Page_Error_015');
                 break;
             case FTP_DOWNLOAD_ERROR:
-                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_016');
+                $this->tpl_error=t('LC_Page_Error_016');
                 break;
             case FTP_LOGIN_ERROR:
-                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_017');
+                $this->tpl_error=t('LC_Page_Error_017');
                 break;
             case FTP_CONNECT_ERROR:
-                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_018');
+                $this->tpl_error=t('LC_Page_Error_018');
                 break;
             case CREATE_DB_ERROR:
-                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_019');
+                $this->tpl_error=t('LC_Page_Error_019');
                 break;
             case DB_IMPORT_ERROR:
-                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_020');
+                $this->tpl_error=t('LC_Page_Error_020');
                 break;
             case FILE_NOT_FOUND:
-                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_021');
+                $this->tpl_error=t('LC_Page_Error_021');
                 break;
             case WRITE_FILE_ERROR:
-                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_022');
+                $this->tpl_error=t('LC_Page_Error_022');
                 break;
             case DOWNFILE_NOT_FOUND:
-                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_023');
+                $this->tpl_error=t('LC_Page_Error_023');
                 break;
             case FREE_ERROR_MSG:
                 $this->tpl_error=$this->err_msg;
                 break;
             default:
-                $this->tpl_error=SC_I18n_Ex::t('LC_Page_Error_024');
+                $this->tpl_error=t('LC_Page_Error_024');
                 break;
         }
 

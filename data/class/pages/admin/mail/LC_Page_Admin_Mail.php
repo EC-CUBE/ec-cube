@@ -47,16 +47,16 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'mail';
         $this->tpl_subno = 'index';
         $this->tpl_pager = 'pager.tpl';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_002');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Mail_002');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_002');
+        $this->tpl_subtitle = t('LC_Page_Admin_Mail_002');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrJob = $masterData->getMasterData('mtb_job');
-        $this->arrJob[SC_I18n_Ex::t('LC_Page_Admin_Mail_003')] = SC_I18n_Ex::t('LC_Page_Admin_Mail_003');
+        $this->arrJob[t('LC_Page_Admin_Mail_003')] = t('LC_Page_Admin_Mail_003');
         $this->arrSex = $masterData->getMasterData('mtb_sex');
         $this->arrPageRows = $masterData->getMasterData('mtb_page_max');
-        $this->arrHtmlmail = array('' => SC_I18n_Ex::t('LC_Page_Admin_Mail_004'),  1 => SC_I18n_Ex::t('LC_Page_Admin_Mail_005'), 2 => SC_I18n_Ex::t('LC_Page_Admin_Mail_006'));
+        $this->arrHtmlmail = array('' => t('LC_Page_Admin_Mail_004'),  1 => t('LC_Page_Admin_Mail_005'), 2 => t('LC_Page_Admin_Mail_006'));
         $this->arrMailType = $masterData->getMasterData('mtb_mail_type');
 
         // 日付プルダウン設定
@@ -165,7 +165,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
 
                     SC_Response_Ex::sendRedirect('./history.php');
                 } else {
-                    $this->tpl_onload = "window.alert('" . SC_I18n_Ex::t('ALERT_013') . "');";
+                    $this->tpl_onload = "window.alert('" . t('ALERT_013') . "');";
                 }
                 break;
             default:
@@ -192,8 +192,8 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      */
     function lfInitParamSearchCustomer(&$objFormParam) {
         SC_Helper_Customer_Ex::sfSetSearchParam($objFormParam);
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DELIVERY_MAIL_FORMAT'), 'search_htmlmail', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DELIVERY_MAIL_TYPE'), 'search_mail_type', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_DELIVERY_MAIL_FORMAT'), 'search_htmlmail', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_DELIVERY_MAIL_TYPE'), 'search_mail_type', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -203,10 +203,10 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfAddParamSelectTemplate(&$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_MAIL_METHOD'), 'mail_method', INT_LEN, 'n', array('EXIST_CHECK','ALNUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_SUBJECT'), 'subject', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BODY_TEXT'), 'body', LLTEXT_LEN, 'KVCa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TEMPLATE_ID'), 'template_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), '', false);
+        $objFormParam->addParam(t('PARAM_LABEL_MAIL_METHOD'), 'mail_method', INT_LEN, 'n', array('EXIST_CHECK','ALNUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_SUBJECT'), 'subject', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_BODY_TEXT'), 'body', LLTEXT_LEN, 'KVCa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_TEMPLATE_ID'), 'template_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), '', false);
     }
 
     /**

@@ -45,8 +45,8 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'design/template.tpl';
         $this->tpl_subno    = 'template';
         $this->tpl_mainno   = 'design';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_003');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Design_Template_002');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_003');
+        $this->tpl_subtitle = t('LC_Page_Admin_Design_Template_002');
         $this->arrErr  = array();
         $this->arrForm = array();
         ini_set('max_execution_time', 300);
@@ -88,7 +88,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     if ($this->doRegister($template_code, $this->device_type_id)) {
                         $this->tpl_select = $template_code;
-                        $this->tpl_onload = "alert('" . SC_I18n_Ex::t('ALERT_004') . "');";
+                        $this->tpl_onload = "alert('" . t('ALERT_004') . "');";
                     }
                 }
                 break;
@@ -101,7 +101,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
                 $this->arrErr = $objFormParam->checkError();
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     if ($this->doDelete($template_code, $this->device_type_id)) {
-                        $this->tpl_onload = "alert('" . SC_I18n_Ex::t('ALERT_011') . "');";
+                        $this->tpl_onload = "alert('" . t('ALERT_011') . "');";
                     }
                 }
                 break;
@@ -148,8 +148,8 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DEVICE_TYPE_ID'), 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TPL_CODE'), 'template_code', STEXT_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK', 'ALNUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_DEVICE_TYPE_ID'), 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_TPL_CODE'), 'template_code', STEXT_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK', 'ALNUM_CHECK'));
     }
 
     /**
@@ -221,7 +221,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
     function doDelete($template_code, $device_type_id) {
         if ($template_code == $this->getTemplateName($device_type_id)
                 || $template_code == $this->getTemplateName($device_type_id, true)) {
-            $this->arrErr['err'] = SC_I18n_Ex::t('LC_Page_Admin_Design_Template_003');
+            $this->arrErr['err'] = t('LC_Page_Admin_Design_Template_003');
             return false;
         } else {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -229,7 +229,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
             $objQuery->delete('dtb_templates', 'template_code = ? AND device_type_id = ?',
                               array($template_code, $device_type_id));
 
-            $error =  SC_I18n_Ex::t('LC_Page_Admin_Design_Template_004');
+            $error =  t('LC_Page_Admin_Design_Template_004');
             // テンプレート削除
             $templates_dir = SMARTY_TEMPLATES_REALDIR . $template_code. '/';
             if (SC_Helper_FileManager_Ex::deleteFile($templates_dir) === false) {
@@ -270,7 +270,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
 
         $tpl_dir = USER_TEMPLATE_REALDIR . $template_code . '/';
         if (!is_dir($tpl_dir)) {
-            $this->arrErr['err'] = SC_I18n_Ex::t('LC_Page_Admin_Design_Template_005', array('T_FIELD' => $tpl_dir));
+            $this->arrErr['err'] = t('LC_Page_Admin_Design_Template_005', array('T_FIELD' => $tpl_dir));
             return false;
         }
 
@@ -300,12 +300,12 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
         $from_dir = USER_TEMPLATE_REALDIR . $template_code . '/';
         $to_dir = SMARTY_TEMPLATES_REALDIR . $template_code . '/_packages/';
         if (SC_Utils_Ex::recursiveMkdir($to_dir) === false) {
-            $this->arrErr['err'] = SC_I18n_Ex::t('LC_Page_Admin_Design_Template_006');
+            $this->arrErr['err'] = t('LC_Page_Admin_Design_Template_006');
             return false;
         }
         SC_Utils_Ex::sfCopyDir($from_dir, $to_dir);
         if (SC_Helper_FileManager_Ex::downloadArchiveFiles(SMARTY_TEMPLATES_REALDIR . $template_code, $template_code) === false) {
-            $this->arrErr['err'] = SC_I18n_Ex::t('LC_Page_Admin_Design_Template_007');
+            $this->arrErr['err'] = t('LC_Page_Admin_Design_Template_007');
             return false;
         }
         return true;

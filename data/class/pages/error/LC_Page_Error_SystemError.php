@@ -53,7 +53,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
      */
     function init() {
         parent::init();
-        $this->tpl_title = SC_I18n_Ex::t('LC_Page_Error_SystemError_001');
+        $this->tpl_title = t('LC_Page_Error_SystemError_001');
     }
 
     /**
@@ -73,15 +73,15 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
      */
     function action() {
 
-        $this->tpl_error = SC_I18n_Ex::t('LC_Page_Error_SystemError_002');
+        $this->tpl_error = t('LC_Page_Error_SystemError_002');
 
         if (DEBUG_MODE) {
             echo '<div class="debug">';
-            echo '<div>' . SC_I18n_Ex::t('LC_Page_Error_SystemError_003') .'</div>';
+            echo '<div>' . t('LC_Page_Error_SystemError_003') .'</div>';
             echo '<pre>';
             echo htmlspecialchars($this->sfGetErrMsg(), ENT_QUOTES, CHAR_CODE);
             echo '</pre>';
-            echo '<div>' . SC_I18n_Ex::t('LC_Page_Error_SystemError_004') . '</div>';
+            echo '<div>' . t('LC_Page_Error_SystemError_004') . '</div>';
             echo '</div>';
         }
 

@@ -219,9 +219,9 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_MEMORY'), 'login_memory', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_EMAIL'), 'login_email', MTEXT_LEN, 'a', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PASSWORD'), 'login_pass', PASSWORD_MAX_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_MEMORY'), 'login_memory', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_EMAIL'), 'login_email', MTEXT_LEN, 'a', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PASSWORD'), 'login_pass', PASSWORD_MAX_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -237,11 +237,11 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
     function lfGetErrorMessage($error) {
         switch ($error) {
             case TEMP_LOGIN_ERROR:
-                $msg = SC_I18n_Ex::t('LC_Page_FrontParts_LoginCheck_001');
+                $msg = t('LC_Page_FrontParts_LoginCheck_001');
                 break;
             case SITE_LOGIN_ERROR:
             default:
-                $msg = SC_I18n_Ex::t('LC_Page_FrontParts_LoginCheck_002');
+                $msg = t('LC_Page_FrontParts_LoginCheck_002');
         }
         return SC_Utils_Ex::jsonEncode(array('login_error' => $msg));
     }

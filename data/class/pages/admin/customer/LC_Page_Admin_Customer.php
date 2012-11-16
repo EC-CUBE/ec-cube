@@ -47,13 +47,13 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'customer';
         $this->tpl_subno = 'index';
         $this->tpl_pager = 'pager.tpl';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_004');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Customer_002');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_004');
+        $this->tpl_subtitle = t('LC_Page_Admin_Customer_002');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrJob = $masterData->getMasterData('mtb_job');
-        $this->arrJob[SC_I18n_Ex::t('LC_Page_Admin_Customer_003')] = SC_I18n_Ex::t('LC_Page_Admin_Customer_003');
+        $this->arrJob[t('LC_Page_Admin_Customer_003')] = t('LC_Page_Admin_Customer_003');
         $this->arrSex = $masterData->getMasterData('mtb_sex');
         $this->arrPageMax = $masterData->getMasterData('mtb_page_max');
         $this->arrStatus = $masterData->getMasterData('mtb_customer_status');
@@ -158,7 +158,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
      */
     function lfInitParam(&$objFormParam) {
         SC_Helper_Customer_Ex::sfSetSearchParam($objFormParam);
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_EDIT_CUSTOMER_ID'), 'edit_customer_id', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_EDIT_CUSTOMER_ID'), 'edit_customer_id', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
     }
 
     /**

@@ -46,8 +46,8 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'basis/point.tpl';
         $this->tpl_subno = 'point';
         $this->tpl_mainno = 'basis';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_006');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Basis_Point_002');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_006');
+        $this->tpl_subtitle = t('LC_Page_Admin_Basis_Point_002');
     }
 
     /**
@@ -98,7 +98,7 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex {
                         break;
                 }
                 // 再表示
-                $this->tpl_onload = "window.alert('" . SC_I18n_Ex::t('ALERT_007') . "');";
+                $this->tpl_onload = "window.alert('" . t('ALERT_007') . "');";
             }
         } else {
             $arrCol = $objFormParam->getKeyList(); // キー名一覧を取得
@@ -121,8 +121,8 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex {
 
     /* パラメーター情報の初期化 */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_POINT_RATE'), 'point_rate', PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_WELCOME_POINT'), 'welcome_point', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_POINT_RATE'), 'point_rate', PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_WELCOME_POINT'), 'welcome_point', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
     }
 
     function lfUpdateData($post) {

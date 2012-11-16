@@ -49,17 +49,17 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrTAXRULE = $masterData->getMasterData('mtb_taxrule');
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_006');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Basis_002');;
+        $this->tpl_maintitle = t('TPL_MAINTITLE_006');
+        $this->tpl_subtitle = t('LC_Page_Admin_Basis_002');;
 
         //定休日用配列
-        $this->arrRegularHoliday[0] = SC_I18n_Ex::t('LC_Page_Admin_Basis_003');
-        $this->arrRegularHoliday[1] = SC_I18n_Ex::t('LC_Page_Admin_Basis_004');
-        $this->arrRegularHoliday[2] = SC_I18n_Ex::t('LC_Page_Admin_Basis_005');
-        $this->arrRegularHoliday[3] = SC_I18n_Ex::t('LC_Page_Admin_Basis_006');
-        $this->arrRegularHoliday[4] = SC_I18n_Ex::t('LC_Page_Admin_Basis_007');
-        $this->arrRegularHoliday[5] = SC_I18n_Ex::t('LC_Page_Admin_Basis_008');
-        $this->arrRegularHoliday[6] = SC_I18n_Ex::t('LC_Page_Admin_Basis_009');
+        $this->arrRegularHoliday[0] = t('LC_Page_Admin_Basis_003');
+        $this->arrRegularHoliday[1] = t('LC_Page_Admin_Basis_004');
+        $this->arrRegularHoliday[2] = t('LC_Page_Admin_Basis_005');
+        $this->arrRegularHoliday[3] = t('LC_Page_Admin_Basis_006');
+        $this->arrRegularHoliday[4] = t('LC_Page_Admin_Basis_007');
+        $this->arrRegularHoliday[5] = t('LC_Page_Admin_Basis_008');
+        $this->arrRegularHoliday[6] = t('LC_Page_Admin_Basis_009');
     }
 
     /**
@@ -112,7 +112,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
                     default:
                         break;
                 }
-                $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "'); window.alert(" . SC_I18n_Ex::t('LC_Page_Admin_Basis_011') .");";
+                $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "'); window.alert(" . t('LC_Page_Admin_Basis_011') .");";
             }
             if (empty($this->arrForm['regular_holiday_ids'])) {
                 $this->arrSel = array();
@@ -194,7 +194,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         // UPDATEの実行
         $ret = $objQuery->update('dtb_baseinfo', $sqlval);
 
-        GC_Utils_Ex::gfPrintLog(SC_I18n_Ex::t('LC_Page_Admin_Basis_012'));
+        GC_Utils_Ex::gfPrintLog(t('LC_Page_Admin_Basis_012'));
     }
 
     function lfInsertData($array) {
@@ -208,57 +208,57 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         // INSERTの実行
         $ret = $objQuery->insert('dtb_baseinfo', $sqlval);
 
-        GC_Utils_Ex::gfPrintLog(SC_I18n_Ex::t('LC_Page_Admin_Basis_013'));
+        GC_Utils_Ex::gfPrintLog(t('LC_Page_Admin_Basis_013'));
     }
 
     function lfInitParam(&$objFormParam, $post) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_COMPANY_NAME'), 'company_name', STEXT_LEN, 'KVa',  array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_COMPANY_KANA'), 'company_kana', STEXT_LEN, 'KVC',  array('KANA_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_COMPANY_NAME'), 'company_name', STEXT_LEN, 'KVa',  array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_COMPANY_KANA'), 'company_kana', STEXT_LEN, 'KVC',  array('KANA_CHECK','MAX_LENGTH_CHECK'));
 
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_SHOP_NAME'), 'shop_name', STEXT_LEN, 'KVa', array('EXIST_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_SHOP_KANA'), 'shop_kana',  STEXT_LEN, 'KVC', array('KANA_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_SHOP_NAME_ENG'), 'shop_name_eng',MTEXT_LEN, 'a', array('GRAPH_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_SHOP_NAME'), 'shop_name', STEXT_LEN, 'KVa', array('EXIST_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_SHOP_KANA'), 'shop_kana',  STEXT_LEN, 'KVC', array('KANA_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_SHOP_NAME_ENG'), 'shop_name_eng',MTEXT_LEN, 'a', array('GRAPH_CHECK','MAX_LENGTH_CHECK'));
         // 郵便番号チェック
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ZIP01'), 'zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK','NUM_COUNT_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ZIP02'), 'zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK','NUM_COUNT_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ZIP01'), 'zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK','NUM_COUNT_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ZIP02'), 'zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK','NUM_COUNT_CHECK'));
         // 所在地チェック
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PREF'), 'pref', '', 'n', array('EXIST_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ADDR01'), 'addr01', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ADDR02'), 'addr02', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PREF'), 'pref', '', 'n', array('EXIST_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ADDR01'), 'addr01', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ADDR02'), 'addr02', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         // メールチェック
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_EMAIL01'), 'email01', null, 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_EMAIL02'), 'email02', null, 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_EMAIL03'), 'email03', null, 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_EMAIL04'), 'email04', null, 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_EMAIL01'), 'email01', null, 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_EMAIL02'), 'email02', null, 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_EMAIL03'), 'email03', null, 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_EMAIL04'), 'email04', null, 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
 
         // 電話番号
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TEL01'), 'tel01', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TEL02'), 'tel02', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TEL03'), 'tel03', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_TEL01'), 'tel01', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_TEL02'), 'tel02', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_TEL03'), 'tel03', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
         // FAX番号
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FAX01'), 'fax01', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FAX02'), 'fax02', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FAX03'), 'fax03', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_FAX01'), 'fax01', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_FAX02'), 'fax02', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_FAX03'), 'fax03', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
         // その他
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TAX'), 'tax', PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TAX_RULE'), 'tax_rule', PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FREE_RULE'), 'free_rule', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BUSINESS_HOUR'), 'business_hour', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_TAX'), 'tax', PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_TAX_RULE'), 'tax_rule', PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_FREE_RULE'), 'free_rule', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_BUSINESS_HOUR'), 'business_hour', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
 
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_GOOD_TRADED'), 'good_traded', LLTEXT_LEN, '', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_MESSAGE'), 'message', LLTEXT_LEN, '', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_GOOD_TRADED'), 'good_traded', LLTEXT_LEN, '', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_MESSAGE'), 'message', LLTEXT_LEN, '', array('MAX_LENGTH_CHECK'));
 
         if (!isset($post['downloadable_days_unlimited']) && $post['downloadable_days_unlimited'] != '1') {
-            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DOWNLOADABLE_DAYS'), 'downloadable_days', DOWNLOAD_DAYS_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+            $objFormParam->addParam(t('PARAM_LABEL_DOWNLOADABLE_DAYS'), 'downloadable_days', DOWNLOAD_DAYS_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         } else {
-            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DOWNLOADABLE_DAYS_UNLIMITED'), 'downloadable_days_unlimited', array('EXIST_CHECK'));
+            $objFormParam->addParam(t('PARAM_LABEL_DOWNLOADABLE_DAYS_UNLIMITED'), 'downloadable_days_unlimited', array('EXIST_CHECK'));
         }
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_LATITUDE'), 'latitude', STEXT_LEN, '',  array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_LONGITUDE'), 'longitude', STEXT_LEN, '',  array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_LATITUDE'), 'latitude', STEXT_LEN, '',  array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_LONGITUDE'), 'longitude', STEXT_LEN, '',  array('MAX_LENGTH_CHECK'));
 
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_REGULAR_HOLIDAY'), 'regular_holiday_ids', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_REGULAR_HOLIDAY'), 'regular_holiday_ids', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
     }
 
     // 入力エラーチェック
@@ -267,14 +267,14 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         $post = $objFormParam->getHashArray();
 
         $objErr = new SC_CheckError_Ex($post);
-        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_ZIP'), 'zip01', 'zip02'), array('ALL_EXIST_CHECK'));
+        $objErr->doFunc(array(t('PARAM_LABEL_ZIP'), 'zip01', 'zip02'), array('ALL_EXIST_CHECK'));
 
         // 電話番号チェック
-        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_TEL'), 'tel01', 'tel02', 'tel03'), array('TEL_CHECK'));
-        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_FAX_NUMBER'), 'fax01', 'fax02', 'fax03'), array('TEL_CHECK'));
+        $objErr->doFunc(array(t('PARAM_LABEL_TEL'), 'tel01', 'tel02', 'tel03'), array('TEL_CHECK'));
+        $objErr->doFunc(array(t('PARAM_LABEL_FAX_NUMBER'), 'fax01', 'fax02', 'fax03'), array('TEL_CHECK'));
 
-        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_LATITUDE'), 'latitude', STEXT_LEN), array('NUM_POINT_CHECK', 'MAX_LENGTH_CHECK'));
-        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_LONGITUDE'), 'longitude', STEXT_LEN), array('NUM_POINT_CHECK', 'MAX_LENGTH_CHECK'));
+        $objErr->doFunc(array(t('PARAM_LABEL_LATITUDE'), 'latitude', STEXT_LEN), array('NUM_POINT_CHECK', 'MAX_LENGTH_CHECK'));
+        $objErr->doFunc(array(t('PARAM_LABEL_LONGITUDE'), 'longitude', STEXT_LEN), array('NUM_POINT_CHECK', 'MAX_LENGTH_CHECK'));
 
         return array_merge((array)$arrErr, (array)$objErr->arrErr);
     }

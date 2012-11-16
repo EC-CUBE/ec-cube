@@ -46,8 +46,8 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'products/product_class.tpl';
         $this->tpl_mainno = 'products';
         $this->tpl_subno = 'product';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_007');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_001');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_007');
+        $this->tpl_subtitle = t('LC_Page_Admin_Products_ProductClass_001');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrProductType = $masterData->getMasterData('mtb_product_type');
         // 規格プルダウンのリスト
@@ -176,46 +176,46 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
      */
     function initParam(&$objFormParam) {
         // 商品マスター検索パラメーター引き継ぎ
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_ID'), 'product_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CATEGORY_ID'), 'category_id', STEXT_LEN, 'n', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PAGENO'),'search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PAGE_MAX'), 'search_page_max', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_ID'), 'search_product_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_CODE'), 'search_product_code', STEXT_LEN, 'KVna', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_NAME'), 'search_name', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CATEGORY'), 'search_category_id', STEXT_LEN, 'n', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TYPE'), 'search_status', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_START_YEAR'), 'search_startyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_START_MONTH'), 'search_startmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_START_DAY'), 'search_startday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_END_YEAR'), 'search_endyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_END_MONTH'), 'search_endmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_END_DAY'), 'search_endday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_STATUS'), 'search_product_statuses', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_ID'), 'product_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CATEGORY_ID'), 'category_id', STEXT_LEN, 'n', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PAGENO'),'search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PAGE_MAX'), 'search_page_max', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_ID'), 'search_product_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CODE'), 'search_product_code', STEXT_LEN, 'KVna', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_NAME'), 'search_name', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CATEGORY'), 'search_category_id', STEXT_LEN, 'n', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_TYPE'), 'search_status', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_START_YEAR'), 'search_startyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_START_MONTH'), 'search_startmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_START_DAY'), 'search_startday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_END_YEAR'), 'search_endyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_END_MONTH'), 'search_endmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_END_DAY'), 'search_endday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_STATUS'), 'search_product_statuses', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
 
         // 規格プルダウン
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CLASS1'), 'class_id1', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CLASS2'), 'class_id2', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CLASS1'), 'class_id1', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CLASS2'), 'class_id2', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
 
         // 商品規格
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CLASS_TOTAL'), 'total', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_NAME'), 'product_name', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_CODE'), 'product_code', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CLASS_ID1'), 'classcategory_id1', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CLASS_ID2'), 'classcategory_id2', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CLASS_NAME1'), 'classcategory_name1', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CLASS_NAME2'), 'classcategory_name2', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_CLASS_ID'), 'product_class_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_STOCK'), 'stock', AMOUNT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_STOCK'), 'stock_unlimited', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CLASS_TOTAL'), 'total', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_NAME'), 'product_name', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CODE'), 'product_code', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CLASS_ID1'), 'classcategory_id1', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CLASS_ID2'), 'classcategory_id2', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CLASS_NAME1'), 'classcategory_name1', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CLASS_NAME2'), 'classcategory_name2', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CLASS_ID'), 'product_class_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_STOCK'), 'stock', AMOUNT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_STOCK'), 'stock_unlimited', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(NORMAL_PRICE_TITLE, 'price01', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(SALE_PRICE_TITLE, 'price02', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_TYPE'), 'product_type_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DEL_FLG'), 'del_flg', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DOWN_FILENAME'), 'down_filename', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DOWN_FILENAME'), 'down_realfilename', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CHECK_BOX'), 'check', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FILE_UPLOAD_KEY'), 'upload_index', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_TYPE'), 'product_type_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_DEL_FLG'), 'del_flg', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_DOWN_FILENAME'), 'down_filename', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_DOWN_FILENAME'), 'down_realfilename', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CHECK_BOX'), 'check', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_FILE_UPLOAD_KEY'), 'upload_index', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -309,9 +309,9 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
      */
     function lfCheckSelectClass() {
         $objErr = new SC_CheckError_Ex();
-        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_CLASS1'), 'class_id1'), array('EXIST_CHECK'));
-        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_CLASS'), 'class_id1', 'select_class_id2'), array('TOP_EXIST_CHECK'));
-        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_CLASS1'), SC_I18n_Ex::t('PARAM_LABEL_CLASS2'), 'class_id1', 'class_id2'), array('DIFFERENT_CHECK'));
+        $objErr->doFunc(array(t('PARAM_LABEL_CLASS1'), 'class_id1'), array('EXIST_CHECK'));
+        $objErr->doFunc(array(t('PARAM_LABEL_CLASS'), 'class_id1', 'select_class_id2'), array('TOP_EXIST_CHECK'));
+        $objErr->doFunc(array(t('PARAM_LABEL_CLASS1'), t('PARAM_LABEL_CLASS2'), 'class_id1', 'class_id2'), array('DIFFERENT_CHECK'));
         return $objErr->arrErr;
     }
 
@@ -327,7 +327,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         $total = $objFormParam->getValue('total');
 
         if (SC_Utils_Ex::isBlank($arrValues['check'])) {
-            $arrErr['check_empty'] = SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_002');
+            $arrErr['check_empty'] = t('LC_Page_Admin_Products_ProductClass_002');
         }
 
         for ($i = 0; $i < $total; $i++) {
@@ -342,7 +342,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                  * 販売価格の必須チェック
                  */
                 if (SC_Utils_Ex::isBlank($arrValues['price02'][$i])) {
-                    $arrErr['price02'][$i] = SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_003', array('T_FIELD' => SALE_PRICE_TITLE));
+                    $arrErr['price02'][$i] = t('LC_Page_Admin_Products_ProductClass_003', array('T_FIELD' => SALE_PRICE_TITLE));
                 }
                 /*
                  * 在庫数の必須チェック
@@ -350,23 +350,23 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                 if ((SC_Utils_Ex::isBlank($arrValues['stock_unlimited'][$i]) || $arrValues['stock_unlimited'][$i] != 1)
                     && SC_Utils_Ex::isBlank($arrValues['stock'][$i])
                 ) {
-                    $arrErr['stock'][$i] = SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_004');
+                    $arrErr['stock'][$i] = t('LC_Page_Admin_Products_ProductClass_004');
                 }
                 /*
                  * 商品種別の必須チェック
                  */
                 if (SC_Utils_Ex::isBlank($arrValues['product_type_id'][$i])) {
-                    $arrErr['product_type_id'][$i] = SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_005');
+                    $arrErr['product_type_id'][$i] = t('LC_Page_Admin_Products_ProductClass_005');
                 }
                 /*
                  * ダウンロード商品の必須チェック
                  */
                 if ($arrValues['product_type_id'][$i] == PRODUCT_TYPE_DOWNLOAD) {
                     if (SC_Utils_Ex::isBlank($arrValues['down_filename'][$i])) {
-                        $arrErr['down_filename'][$i] = SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_006');
+                        $arrErr['down_filename'][$i] = t('LC_Page_Admin_Products_ProductClass_006');
                     }
                     if (SC_Utils_Ex::isBlank($arrValues['down_realfilename'][$i])) {
-                        $arrErr['down_realfilename'][$i] = SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_007');
+                        $arrErr['down_realfilename'][$i] = t('LC_Page_Admin_Products_ProductClass_007');
                     }
                 }
                 /*
@@ -374,10 +374,10 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                  */
                 else if ($arrValues['product_type_id'][$i] == PRODUCT_TYPE_NORMAL) {
                     if (!SC_Utils_Ex::isBlank($arrValues['down_filename'][$i])) {
-                        $arrErr['down_filename'][$i] = SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_008');
+                        $arrErr['down_filename'][$i] = t('LC_Page_Admin_Products_ProductClass_008');
                     }
                     if (!SC_Utils_Ex::isBlank($arrValues['down_realfilename'][$i])) {
-                        $arrErr['down_realfilename'][$i] = SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_009');
+                        $arrErr['down_realfilename'][$i] = t('LC_Page_Admin_Products_ProductClass_009');
                     }
                 }
             }
@@ -567,7 +567,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         $arrDownRealFiles = $objFormParam->getValue('down_realfilename');
 
         if ($_FILES['down_realfilename']['size'][$index] <= 0) {
-            $this->arrErr['down_realfilename'][$index] = SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_010');
+            $this->arrErr['down_realfilename'][$index] = t('LC_Page_Admin_Products_ProductClass_010');
         } else if ($_FILES['down_realfilename']['size'][$index] > DOWN_SIZE *  1024) {
             $size = DOWN_SIZE;
             $byte = 'KB';
@@ -575,11 +575,11 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                 $size = $size / 1000;
                 $byte = 'MB';
             }
-            SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_011', array('T_FIELD1' => $size, 'T_FIELD2' => $byte));
+            t('LC_Page_Admin_Products_ProductClass_011', array('T_FIELD1' => $size, 'T_FIELD2' => $byte));
         } else {
             // SC_CheckError::FILE_EXT_CHECK とのソース互換を強めるための配列
             $value = array(
-                0 => SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_012'),
+                0 => t('LC_Page_Admin_Products_ProductClass_012'),
                 1 => 'down_realfilename',
                 2 => explode(',', DOWNLOAD_EXTENSION),
             );
@@ -598,7 +598,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
 
             if ($match === false) {
                 $str_ext = implode('・', $value[2]);
-                SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_013', array('T_FIELD1' => $value[0], 'T_FIELD2' => $str_ext));
+                t('LC_Page_Admin_Products_ProductClass_013', array('T_FIELD1' => $value[0], 'T_FIELD2' => $str_ext));
             // ▲SC_CheckError::FILE_EXT_CHECK から移植
             } else {
                 $uniqname = date('mdHi') . '_' . uniqid('').'.';
@@ -609,7 +609,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                     $objFormParam->setValue('down_realfilename', $arrDownRealFiles);
                     GC_Utils_Ex::gfPrintLog($_FILES['down_realfilename']['name'][$index] .' -> '. realpath(DOWN_TEMP_REALDIR . $temp_file));
                 } else {
-                    $objErr->arrErr[$keyname] = SC_I18n_Ex::t('LC_Page_Admin_Products_ProductClass_014');
+                    $objErr->arrErr[$keyname] = t('LC_Page_Admin_Products_ProductClass_014');
                     GC_Utils_Ex::gfPrintLog('File Upload Error!: ' . $_FILES['down_realfilename']['name'][$index] . ' -> ' . DOWN_TEMP_REALDIR . $temp_file);
                 }
             }

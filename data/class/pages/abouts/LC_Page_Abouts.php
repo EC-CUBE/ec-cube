@@ -44,7 +44,7 @@ class LC_Page_Abouts extends LC_Page_Ex {
     function init() {
         parent::init();
         $this->tpl_page_category = 'abouts';
-        $this->tpl_title = SC_I18n_Ex::t('LC_Page_Abouts_001');
+        $this->tpl_title = t('LC_Page_Abouts_001');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
     }

@@ -44,7 +44,7 @@ class LC_Page_InputZip extends LC_Page_Ex {
     function init() {
         parent::init();
         $this->tpl_message = '住所を検索しています。';
-        $this->tpl_message = SC_I18n_Ex::t('LC_Page_InputZip_001');
+        $this->tpl_message = t('LC_Page_InputZip_001');
     }
 
     /**
@@ -81,7 +81,7 @@ class LC_Page_InputZip extends LC_Page_Ex {
             // 該当無し
             } else {
                 //echo '該当する住所が見つかりませんでした。';
-                echo SC_I18n_Ex::t('LC_Page_InputZip_002');
+                echo t('LC_Page_InputZip_002');
                 
             }
         }
@@ -106,8 +106,8 @@ class LC_Page_InputZip extends LC_Page_Ex {
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
         // パラメーター情報の初期化
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ZIP01'), 'zip1', ZIP01_LEN, 'n', array('NUM_COUNT_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ZIP02'), 'zip2', ZIP02_LEN, 'n', array('NUM_COUNT_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ZIP01'), 'zip1', ZIP01_LEN, 'n', array('NUM_COUNT_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ZIP02'), 'zip2', ZIP02_LEN, 'n', array('NUM_COUNT_CHECK', 'NUM_CHECK'));
         // // リクエスト値をセット
         $objFormParam->setParam($arrRequest);
         // エラーチェック
@@ -115,11 +115,11 @@ class LC_Page_InputZip extends LC_Page_Ex {
         // 親ウィンドウの戻り値を格納するinputタグのnameのエラーチェック
         if (!$this->lfInputNameCheck($arrRequest['input1'])) {
             //$arrErr['input1'] = '※ 入力形式が不正です。<br />';
-            $arrErr['input1'] = SC_I18n_Ex::t('LC_Page_InputZip_003');
+            $arrErr['input1'] = t('LC_Page_InputZip_003');
         }
         if (!$this->lfInputNameCheck($arrRequest['input2'])) {
             //$arrErr['input2'] = '※ 入力形式が不正です。<br />';
-            $arrErr['input2'] = SC_I18n_Ex::t('LC_Page_InputZip_004');
+            $arrErr['input2'] = t('LC_Page_InputZip_004');
         }
 
         return $arrErr;

@@ -41,7 +41,7 @@ class API_CartClear extends SC_Api_Abstract_Ex {
 
     public function __construct() {
         parent::__construct();
-        $this->operation_description = SC_I18n_Ex::t('API_CartClear_001');
+        $this->operation_description = t('API_CartClear_001');
     }
 
     public function doAction($arrParam) {

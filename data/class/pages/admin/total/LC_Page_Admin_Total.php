@@ -47,7 +47,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $this->tpl_mainpage         = 'total/index.tpl';
         $this->tpl_graphsubtitle    = 'total/subtitle.tpl';
         $this->tpl_titleimage       = ROOT_URLPATH.'img/title/title_sale.jpg';
-        $this->tpl_maintitle = $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_010');
+        $this->tpl_maintitle = $this->tpl_maintitle = t('TPL_MAINTITLE_010');
         $this->tpl_mainno           = 'total';
 
         $masterData                 = new SC_DB_MasterData_Ex();
@@ -64,12 +64,12 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $this->arrDay               = $objDate->getDay();
 
         // ページタイトル todo あとでなおす
-        $this->arrTitle['']         = SC_I18n_Ex::t('LC_Page_Admin_Total_001');
-        $this->arrTitle['term']     = SC_I18n_Ex::t('LC_Page_Admin_Total_002');
-        $this->arrTitle['products'] = SC_I18n_Ex::t('LC_Page_Admin_Total_003');
-        $this->arrTitle['age']      = SC_I18n_Ex::t('LC_Page_Admin_Total_004');
-        $this->arrTitle['job']      = SC_I18n_Ex::t('LC_Page_Admin_Total_005');
-        $this->arrTitle['member']   = SC_I18n_Ex::t('LC_Page_Admin_Total_006');
+        $this->arrTitle['']         = t('LC_Page_Admin_Total_001');
+        $this->arrTitle['term']     = t('LC_Page_Admin_Total_002');
+        $this->arrTitle['products'] = t('LC_Page_Admin_Total_003');
+        $this->arrTitle['age']      = t('LC_Page_Admin_Total_004');
+        $this->arrTitle['job']      = t('LC_Page_Admin_Total_005');
+        $this->arrTitle['member']   = t('LC_Page_Admin_Total_006');
 
         // 月度集計のkey名
         $this->arrSearchForm1       = array('search_startyear_m', 'search_startmonth_m');
@@ -206,15 +206,15 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $arrList = $this->lfGetDateDefault();
 
         // 月度集計
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_MONTHLY'), 'search_startyear_m', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startyear_m']);
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_MONTHLY'), 'search_startmonth_m', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startmonth_m']);
+        $objFormParam->addParam(t('PARAM_LABEL_MONTHLY'), 'search_startyear_m', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startyear_m']);
+        $objFormParam->addParam(t('PARAM_LABEL_MONTHLY'), 'search_startmonth_m', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startmonth_m']);
         // 期間集計
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_START_DAY'), 'search_startyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startyear']);
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_START_DAY'), 'search_startmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startmonth']);
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_START_DAY'), 'search_startday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startday']);
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_END_DAY'), 'search_endyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endyear']);
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_END_DAY'), 'search_endmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endmonth']);
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_END_DAY'), 'search_endday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endday']);
+        $objFormParam->addParam(t('PARAM_LABEL_START_DAY'), 'search_startyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startyear']);
+        $objFormParam->addParam(t('PARAM_LABEL_START_DAY'), 'search_startmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startmonth']);
+        $objFormParam->addParam(t('PARAM_LABEL_START_DAY'), 'search_startday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startday']);
+        $objFormParam->addParam(t('PARAM_LABEL_END_DAY'), 'search_endyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endyear']);
+        $objFormParam->addParam(t('PARAM_LABEL_END_DAY'), 'search_endmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endmonth']);
+        $objFormParam->addParam(t('PARAM_LABEL_END_DAY'), 'search_endday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endday']);
 
         // hiddenデータの取得用
         $objFormParam->addParam('', 'page');
@@ -232,16 +232,16 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
         // 特殊項目チェック
         if ($objFormParam->getValue('form') == 1) {
-            $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_MONTHLY'), 'search_startyear_m'), array('ONE_EXIST_CHECK'));
+            $objErr->doFunc(array(t('PARAM_LABEL_MONTHLY'), 'search_startyear_m'), array('ONE_EXIST_CHECK'));
         }
 
         if ($objFormParam->getValue('form') == 2) {
-            $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_PERIOD'), 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('FULL_EXIST_CHECK'));
+            $objErr->doFunc(array(t('PARAM_LABEL_PERIOD'), 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('FULL_EXIST_CHECK'));
         }
-        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_MONTHLY'), 'search_startyear_m', 'search_startmonth_m'), array('ALL_EXIST_CHECK'));
-        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_START_DAY'), 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
-        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_END_DAY'), 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_DATE'));
-        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_START_DAY'), SC_I18n_Ex::t('PARAM_LABEL_END_DAY'), 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_SET_TERM'));
+        $objErr->doFunc(array(t('PARAM_LABEL_MONTHLY'), 'search_startyear_m', 'search_startmonth_m'), array('ALL_EXIST_CHECK'));
+        $objErr->doFunc(array(t('PARAM_LABEL_START_DAY'), 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
+        $objErr->doFunc(array(t('PARAM_LABEL_END_DAY'), 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_DATE'));
+        $objErr->doFunc(array(t('PARAM_LABEL_START_DAY'), t('PARAM_LABEL_END_DAY'), 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_SET_TERM'));
         return $objErr->arrErr;
     }
 
@@ -343,9 +343,9 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             // メインタイトル作成
             list($sy, $sm, $sd) = preg_split('|[/ ]|' , $sdate);
             list($ey, $em, $ed) = preg_split('|[/ ]|' , $edate);
-            $start_date = SC_I18n_Ex::t('LC_Page_Admin_Total_007', array('T_FIELD1' => $sy, 'T_FIELD2' => $sm, 'T_FIELD3' => $sd));
-            $end_date = SC_I18n_Ex::t('LC_Page_Admin_Total_007', array('T_FIELD1' => $ey, 'T_FIELD2' => $em, 'T_FIELD3' => $ed));
-            $objGraphLine->drawTitle(SC_I18n_Ex::t('LC_Page_Admin_Total_008', array('T_FIELD1' => $start_date, 'T_FIELD2' => $end_date)));
+            $start_date = t('LC_Page_Admin_Total_007', array('T_FIELD1' => $sy, 'T_FIELD2' => $sm, 'T_FIELD3' => $sd));
+            $end_date = t('LC_Page_Admin_Total_007', array('T_FIELD1' => $ey, 'T_FIELD2' => $em, 'T_FIELD3' => $ed));
+            $objGraphLine->drawTitle(t('LC_Page_Admin_Total_008', array('T_FIELD1' => $start_date, 'T_FIELD2' => $end_date)));
 
             // グラフ描画
             $objGraphLine->drawGraph();
@@ -387,10 +387,10 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             // メインタイトル作成
             list($sy, $sm, $sd) = preg_split('|[/ ]|' , $sdate);
             list($ey, $em, $ed) = preg_split('|[/ ]|' , $edate);
-            $start_date = SC_I18n_Ex::t('LC_Page_Admin_Total_007', array('T_FIELD1' => $sy, 'T_FIELD2' => $sm, 'T_FIELD3' => $sd));
-            $end_date = SC_I18n_Ex::t('LC_Page_Admin_Total_007', array('T_FIELD1' => $ey, 'T_FIELD2' => $em, 'T_FIELD3' => $ed));
+            $start_date = t('LC_Page_Admin_Total_007', array('T_FIELD1' => $sy, 'T_FIELD2' => $sm, 'T_FIELD3' => $sd));
+            $end_date = t('LC_Page_Admin_Total_007', array('T_FIELD1' => $ey, 'T_FIELD2' => $em, 'T_FIELD3' => $ed));
             
-            $objGraphPie->drawTitle(SC_I18n_Ex::t('LC_Page_Admin_Total_008', array('T_FIELD1' => $start_date, 'T_FIELD2' => $end_date)));
+            $objGraphPie->drawTitle(t('LC_Page_Admin_Total_008', array('T_FIELD1' => $start_date, 'T_FIELD2' => $end_date)));
 
             // 円グラフ描画
             $objGraphPie->drawGraph();
@@ -436,9 +436,9 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             $arrKey = array_keys($arrList);
             list($sy, $sm, $sd) = preg_split('|[/ ]|' , $sdate);
             list($ey, $em, $ed) = preg_split('|[/ ]|' , $edate);
-            $start_date = SC_I18n_Ex::t('LC_Page_Admin_Total_007', array('T_FIELD1' => $sy, 'T_FIELD2' => $sm, 'T_FIELD3' => $sd));
-            $end_date = SC_I18n_Ex::t('LC_Page_Admin_Total_007', array('T_FIELD1' => $ey, 'T_FIELD2' => $em, 'T_FIELD3' => $ed));
-            $objGraphBar->drawTitle(SC_I18n_Ex::t('LC_Page_Admin_Total_008', array('T_FIELD1' => $start_date, 'T_FIELD2' => $end_date)));
+            $start_date = t('LC_Page_Admin_Total_007', array('T_FIELD1' => $sy, 'T_FIELD2' => $sm, 'T_FIELD3' => $sd));
+            $end_date = t('LC_Page_Admin_Total_007', array('T_FIELD1' => $ey, 'T_FIELD2' => $em, 'T_FIELD3' => $ed));
+            $objGraphBar->drawTitle(t('LC_Page_Admin_Total_008', array('T_FIELD1' => $start_date, 'T_FIELD2' => $end_date)));
 
             $objGraphBar->drawGraph();
 
@@ -537,13 +537,13 @@ __EOS__;
             $arrResult =& $arrTotalResults[$key];
             $member_key = $arrResult['order_sex'];
             if ($member_key != '') {
-                $arrResult['member_name'] = (($arrResult['member']) ? SC_I18n_Ex::t('LC_Page_Admin_Total_009') : SC_I18n_Ex::t('LC_Page_Admin_Total_010')) . $this->arrSex[$member_key];
+                $arrResult['member_name'] = (($arrResult['member']) ? t('LC_Page_Admin_Total_009') : t('LC_Page_Admin_Total_010')) . $this->arrSex[$member_key];
             } else {
-                $arrResult['member_name'] = SC_I18n_Ex::t('LC_Page_Admin_Total_011');
+                $arrResult['member_name'] = t('LC_Page_Admin_Total_011');
             }
         }
 
-        $tpl_image = $this->lfGetGraphPie($arrTotalResults, 'member_name', 'member', SC_I18n_Ex::t('LC_Page_Admin_Total_039'), $sdate, $edate);
+        $tpl_image = $this->lfGetGraphPie($arrTotalResults, 'member_name', 'member', t('LC_Page_Admin_Total_039'), $sdate, $edate);
 
         return array($arrTotalResults, $tpl_image);
     }
@@ -580,7 +580,7 @@ __EOS__;
         $objQuery->setOrder('total DESC');
         $arrTotalResults = $objQuery->select($col, $from, $where, $arrWhereVal);
 
-        $tpl_image  = $this->lfGetGraphPie($arrTotalResults, 'product_name', 'products_' . $type, SC_I18n_Ex::t('LC_Page_Admin_Total_039'), $sdate, $edate);
+        $tpl_image  = $this->lfGetGraphPie($arrTotalResults, 'product_name', 'products_' . $type, t('LC_Page_Admin_Total_039'), $sdate, $edate);
 
         return array($arrTotalResults, $tpl_image);
     }
@@ -612,11 +612,11 @@ __EOS__;
             if ($job_key != '') {
                 $arrResult['job_name'] = $this->arrJob[$job_key];
             } else {
-                $arrResult['job_name'] = SC_I18n_Ex::t('LC_Page_Admin_Total_011');
+                $arrResult['job_name'] = t('LC_Page_Admin_Total_011');
             }
 
         }
-        $tpl_image     = $this->lfGetGraphPie($arrTotalResults, 'job_name', 'job_' . $type, SC_I18n_Ex::t('LC_Page_Admin_Total_039'), $sdate, $edate);
+        $tpl_image     = $this->lfGetGraphPie($arrTotalResults, 'job_name', 'job_' . $type, t('LC_Page_Admin_Total_039'), $sdate, $edate);
 
         return array($arrTotalResults, $tpl_image);
     }
@@ -647,13 +647,13 @@ __EOS__;
             $arrResult =& $arrTotalResults[$key];
             $age_key = $arrResult['age'];
             if ($age_key != '') {
-                $arrResult['age_name'] = SC_I18n_Ex::t('LC_Page_Admin_Total_012', array('T_FIELD' => $arrResult['age']));
+                $arrResult['age_name'] = t('LC_Page_Admin_Total_012', array('T_FIELD' => $arrResult['age']));
             } else {
-                $arrResult['age_name'] = SC_I18n_Ex::t('LC_Page_Admin_Total_011');
+                $arrResult['age_name'] = t('LC_Page_Admin_Total_011');
             }
 
         }
-        $tpl_image = $this->lfGetGraphBar($arrTotalResults, 'age_name', 'age_' . $type, SC_I18n_Ex::t('LC_Page_Admin_Total_013'), SC_I18n_Ex::t('LC_Page_Admin_Total_014'), $sdate, $edate);
+        $tpl_image = $this->lfGetGraphBar($arrTotalResults, 'age_name', 'age_' . $type, t('LC_Page_Admin_Total_013'), t('LC_Page_Admin_Total_014'), $sdate, $edate);
 
         return array($arrTotalResults, $tpl_image);
     }
@@ -669,28 +669,28 @@ __EOS__;
 
         switch ($type) {
             case 'month':
-                $xtitle = SC_I18n_Ex::t('LC_Page_Admin_Total_015');
-                $ytitle = SC_I18n_Ex::t('LC_Page_Admin_Total_014');
+                $xtitle = t('LC_Page_Admin_Total_015');
+                $ytitle = t('LC_Page_Admin_Total_014');
                 $format = '%m';
                 break;
             case 'year':
-                $xtitle = SC_I18n_Ex::t('LC_Page_Admin_Total_016');
-                $ytitle = SC_I18n_Ex::t('LC_Page_Admin_Total_014');
+                $xtitle = t('LC_Page_Admin_Total_016');
+                $ytitle = t('LC_Page_Admin_Total_014');
                 $format = '%Y';
                 break;
             case 'wday':
-                $xtitle = SC_I18n_Ex::t('LC_Page_Admin_Total_017');
-                $ytitle = SC_I18n_Ex::t('LC_Page_Admin_Total_014');
+                $xtitle = t('LC_Page_Admin_Total_017');
+                $ytitle = t('LC_Page_Admin_Total_014');
                 $format = '%a';
                 break;
             case 'hour':
-                $xtitle = SC_I18n_Ex::t('LC_Page_Admin_Total_018');
-                $ytitle = SC_I18n_Ex::t('LC_Page_Admin_Total_014');
+                $xtitle = t('LC_Page_Admin_Total_018');
+                $ytitle = t('LC_Page_Admin_Total_014');
                 $format = '%H';
                 break;
             default:
-                $xtitle = SC_I18n_Ex::t('LC_Page_Admin_Total_019');
-                $ytitle = SC_I18n_Ex::t('LC_Page_Admin_Total_014');
+                $xtitle = t('LC_Page_Admin_Total_019');
+                $ytitle = t('LC_Page_Admin_Total_014');
                 $format = '%Y-%m-%d';
                 $xincline = true;
                 break;
@@ -811,7 +811,7 @@ __EOS__;
             }
             // 期間別集計の合計行の「期間」項目に不要な値が表示されてしまわない様、'合計'と表示する
             if (($i === $max -1) && isset($arrRet[$i]['str_date'])) {
-                $arrRet[$i]['str_date'] = SC_I18n_Ex::t('LC_Page_Admin_Total_020');
+                $arrRet[$i]['str_date'] = t('LC_Page_Admin_Total_020');
             }
             $csv_data.= SC_Utils_Ex::sfGetCSVList($arrRet[$i]);
         }
@@ -823,12 +823,12 @@ __EOS__;
             // 商品別集計
             case 'products':
                 $arrTitleCol = array(
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_021'),
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_022'),
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_023'),
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_024'),
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_025'),
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_026'),
+                    t('LC_Page_Admin_Total_021'),
+                    t('LC_Page_Admin_Total_022'),
+                    t('LC_Page_Admin_Total_023'),
+                    t('LC_Page_Admin_Total_024'),
+                    t('LC_Page_Admin_Total_025'),
+                    t('LC_Page_Admin_Total_026'),
                 );
                 $arrDataCol = array(
                     'product_code',
@@ -842,10 +842,10 @@ __EOS__;
             // 職業別集計
             case 'job':
                 $arrTitleCol = array(
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_027'),
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_023'),
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_028'),
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_029'),
+                    t('LC_Page_Admin_Total_027'),
+                    t('LC_Page_Admin_Total_023'),
+                    t('LC_Page_Admin_Total_028'),
+                    t('LC_Page_Admin_Total_029'),
                 );
                 $arrDataCol = array(
                     'job_name',
@@ -857,10 +857,10 @@ __EOS__;
             // 会員別集計
             case 'member':
                 $arrTitleCol = array(
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_030'),
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_023'),
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_028'),
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_029'),
+                    t('LC_Page_Admin_Total_030'),
+                    t('LC_Page_Admin_Total_023'),
+                    t('LC_Page_Admin_Total_028'),
+                    t('LC_Page_Admin_Total_029'),
                 );
                 $arrDataCol = array(
                     'member_name',
@@ -872,10 +872,10 @@ __EOS__;
             // 年代別集計
             case 'age':
                 $arrTitleCol = array(
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_031'),
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_023'),
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_028'),
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_029'),
+                    t('LC_Page_Admin_Total_031'),
+                    t('LC_Page_Admin_Total_023'),
+                    t('LC_Page_Admin_Total_028'),
+                    t('LC_Page_Admin_Total_029'),
                 );
                 $arrDataCol = array(
                     'age_name',
@@ -887,16 +887,16 @@ __EOS__;
             // 期間別集計
             default:
                 $arrTitleCol = array(
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_032'),
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_023'),
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_033'),
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_034'),
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_035'),
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_036'),
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_037'),
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_038'),
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_028'),
-                    SC_I18n_Ex::t('LC_Page_Admin_Total_029'),
+                    t('LC_Page_Admin_Total_032'),
+                    t('LC_Page_Admin_Total_023'),
+                    t('LC_Page_Admin_Total_033'),
+                    t('LC_Page_Admin_Total_034'),
+                    t('LC_Page_Admin_Total_035'),
+                    t('LC_Page_Admin_Total_036'),
+                    t('LC_Page_Admin_Total_037'),
+                    t('LC_Page_Admin_Total_038'),
+                    t('LC_Page_Admin_Total_028'),
+                    t('LC_Page_Admin_Total_029'),
                 );
                 $arrDataCol = array(
                     'str_date',

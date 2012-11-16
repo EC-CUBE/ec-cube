@@ -391,7 +391,7 @@ class SC_CartSession {
      * @deprected getAllProductClassID を使用して下さい
      */
     function getAllProductID($productTypeId) {
-        trigger_error(SC_I18n_Ex::t('SC_CartSession_001'), E_USER_ERROR);
+        trigger_error(t('SC_CartSession_001'), E_USER_ERROR);
     }
 
     /**
@@ -525,7 +525,7 @@ class SC_CartSession {
              */
             if (SC_Utils_Ex::isBlank($product) || $product['status'] != 1) {
                 $this->delProduct($arrItem['cart_no'], $productTypeId);
-                $tpl_message .= SC_I18n_Ex::t('SC_CartSession_002');
+                $tpl_message .= t('SC_CartSession_002');
             } else {
 
                 /*
@@ -533,7 +533,7 @@ class SC_CartSession {
                  */
                 $arrDeliv = SC_Helper_Purchase_Ex::getDeliv($productTypeId);
                 if (SC_Utils_Ex::isBlank($arrDeliv)) {
-                    $tpl_message .= SC_I18n_Ex::t('SC_CartSession_003', array('T_PRODUCT' => $product['name']));
+                    $tpl_message .= t('SC_CartSession_003', array('T_PRODUCT' => $product['name']));
                     $this->delProduct($arrItem['cart_no'], $productTypeId);
                 }
 
@@ -546,10 +546,10 @@ class SC_CartSession {
                         $this->setProductValue($arrItem['id'], 'quantity', $limit, $productTypeId);
                         $total_inctax = SC_Helper_DB_Ex::sfCalcIncTax($arrItem['price']) * $limit;
                         $this->setProductValue($arrItem['id'], 'total_inctax', $total_inctax, $productTypeId);
-                        $tpl_message .= SC_I18n_Ex::t('SC_CartSession_004', array('T_PRODUCT' => $product['name'], 'T_LIMIT' => $limit));
+                        $tpl_message .= t('SC_CartSession_004', array('T_PRODUCT' => $product['name'], 'T_LIMIT' => $limit));
                     } else {
                         $this->delProduct($arrItem['cart_no'], $productTypeId);
-                        $tpl_message .= SC_I18n_Ex::t('SC_CartSession_005', array('T_PRODUCT' => $product['name']));
+                        $tpl_message .= t('SC_CartSession_005', array('T_PRODUCT' => $product['name']));
                         continue;
                     }
                 }

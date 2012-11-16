@@ -47,8 +47,8 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'customer';
         $this->tpl_subno = 'index';
         $this->tpl_pager = 'pager.tpl';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_004');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Customer_Edit_002');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_004');
+        $this->tpl_subtitle = t('LC_Page_Admin_Customer_Edit_002');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
@@ -211,7 +211,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         // 会員項目のパラメーター取得
         SC_Helper_Customer_Ex::sfCustomerEntryParam($objFormParam, true);
         // 検索結果一覧画面への戻り用パラメーター
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_SEARCH_DATA'), 'search_data', '', '', array(), '', false);
+        $objFormParam->addParam(t('PARAM_LABEL_SEARCH_DATA'), 'search_data', '', '', array(), '', false);
         // 会員購入履歴ページング用
         $objFormParam->addParam('', 'search_pageno', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), '', false);
     }
@@ -225,7 +225,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
     function lfInitSearchParam(&$objFormParam) {
         SC_Helper_Customer_Ex::sfSetSearchParam($objFormParam);
         // 初回受け入れ時用
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_EDIT_CUSTOMER_ID'), 'edit_customer_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_EDIT_CUSTOMER_ID'), 'edit_customer_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -260,17 +260,17 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         $arrData = $objQuery->getRow($col, $table, $where, $arrVal);
         if (!SC_Utils_Ex::isBlank($arrData['email'])) {
             if ($arrData['email'] == $objFormParam->getValue('email')) {
-                $arrErr['email'] = SC_I18n_Ex::t('LC_Page_Admin_Customer_Edit_003', array('T_FIELD' => $arrData['customer_id']));
+                $arrErr['email'] = t('LC_Page_Admin_Customer_Edit_003', array('T_FIELD' => $arrData['customer_id']));
             } else if ($arrData['email'] == $objFormParam->getValue('email_mobile')) {
-                $arrErr['email_mobile'] = SC_I18n_Ex::t('LC_Page_Admin_Customer_Edit_003', array('T_FIELD' => $arrData['customer_id']));
+                $arrErr['email_mobile'] = t('LC_Page_Admin_Customer_Edit_003', array('T_FIELD' => $arrData['customer_id']));
             }
         }
         if (!SC_Utils_Ex::isBlank($arrData['email_mobile'])) {
             if ($arrData['email_mobile'] == $objFormParam->getValue('email_mobile')) {
-                $arrErr['email_mobile'] = SC_I18n_Ex::t('LC_Page_Admin_Customer_Edit_004', array('T_FIELD' => $arrData['customer_id']));
+                $arrErr['email_mobile'] = t('LC_Page_Admin_Customer_Edit_004', array('T_FIELD' => $arrData['customer_id']));
             } else if ($arrData['email_mobile'] == $objFormParam->getValue('email')) {
     if ($arrErr['email'] == '') {
-                    $arrErr['email'] = SC_I18n_Ex::t('LC_Page_Admin_Customer_Edit_004', array('T_FIELD' => $arrData['customer_id']));
+                    $arrErr['email'] = t('LC_Page_Admin_Customer_Edit_004', array('T_FIELD' => $arrData['customer_id']));
                 }
             }
         }

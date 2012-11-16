@@ -45,7 +45,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
         parent::init();
         $this->tpl_mainpage = 'rss/products.tpl';
         $this->encode = 'UTF-8';
-        $this->title = SC_I18n_Ex::t('LC_Page_Rss_Products_001');
+        $this->title = t('LC_Page_Rss_Products_001');
     }
 
     /**
@@ -170,7 +170,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
             );
             // 在庫無制限
             if ($arrProduct[$key]['stock_unlimited'] == 1) {
-                $arrProduct[$key]['stock_unlimited'] = SC_I18n_Ex::t('LC_Page_Rss_Products_002');
+                $arrProduct[$key]['stock_unlimited'] = t('LC_Page_Rss_Products_002');
             } else {
                 $arrProduct[$key]['stock_unlimited'] = NULL;
             }

@@ -126,7 +126,7 @@ class SC_Helper_Mail {
         $arrOrder = $objQuery->getRow('*', 'dtb_order', $where, array($order_id));
 
         if (empty($arrOrder)) {
-            trigger_error(SC_I18n_Ex::t('SC_Helper_Mail_001', array('T_ORDER_ID' => $order_id)), E_USER_ERROR);
+            trigger_error(t('SC_Helper_Mail_001', array('T_ORDER_ID' => $order_id)), E_USER_ERROR);
         }
 
         $where = 'order_id = ?';
@@ -199,7 +199,7 @@ class SC_Helper_Mail {
         $tosubject = $this->sfMakeSubject($tmp_subject, $objMailView);
 
         $objSendMail->setItem('', $tosubject, $body, $from, $arrInfo['shop_name'], $from, $error, $error, $bcc);
-        $objSendMail->setTo($arrOrder['order_email'], SC_I18n_Ex::t('FORMAT_NAME_FULL_SIR', array('T_LASTNAME' => $arrOrder['order_name01'], 'T_FIRSTNAME' => $arrOrder['order_name02'])));
+        $objSendMail->setTo($arrOrder['order_email'], t('FORMAT_NAME_FULL_SIR', array('T_LASTNAME' => $arrOrder['order_name01'], 'T_FIRSTNAME' => $arrOrder['order_name02'])));
 
         // 送信フラグ:trueの場合は、送信する。
         if ($send) {
@@ -333,10 +333,10 @@ class SC_Helper_Mail {
 
         // 仮会員が有効の場合
         if (CUSTOMER_CONFIRM_MAIL == true and $arrCustomerData['status'] == 1) {
-            $subject        = $objHelperMail->sfMakeSubject(SC_I18n_Ex::t('SC_Helper_Mail_003'), $objMailText);
+            $subject        = $objHelperMail->sfMakeSubject(t('SC_Helper_Mail_003'), $objMailText);
             $toCustomerMail = $objMailText->fetch('mail_templates/customer_mail.tpl');
         } else {
-            $subject        = $objHelperMail->sfMakeSubject(SC_I18n_Ex::t('SC_Helper_Mail_004'), $objMailText);
+            $subject        = $objHelperMail->sfMakeSubject(t('SC_Helper_Mail_004'), $objMailText);
             $toCustomerMail = $objMailText->fetch('mail_templates/customer_regist_mail.tpl');
         }
 
@@ -358,7 +358,7 @@ class SC_Helper_Mail {
         } else {
             $to_addr = $arrCustomerData['email'];
         }
-        $objMail->setTo($to_addr, SC_I18n_Ex::t('FORMAT_NAME_FULL_SIR', array('T_LASTNAME' => $arrCustomerData['name01'], 'T_FIRSTNAME' => $arrCustomerData['name02'])));
+        $objMail->setTo($to_addr, t('FORMAT_NAME_FULL_SIR', array('T_LASTNAME' => $arrCustomerData['name01'], 'T_FIRSTNAME' => $arrCustomerData['name02'])));
 
         $objMail->sendMail();
         return true;
@@ -499,7 +499,7 @@ class SC_Helper_Mail {
                           array($send_id));
 
         // 送信完了　報告メール
-        $compSubject = date(SC_I18n_Ex::t('FORMAT_DATE_LONG')) . ' '. SC_I18n_Ex::t('SC_Helper_Mail_002');
+        $compSubject = date(t('FORMAT_DATE_LONG')) . ' '. t('SC_Helper_Mail_002');
         // 管理者宛に変更
         $objMail->setTo($objSite['email03']);
         $objMail->setSubject($compSubject);

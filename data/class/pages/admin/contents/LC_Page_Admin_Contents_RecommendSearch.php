@@ -46,7 +46,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'contents';
         $this->tpl_subno = '';
 
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Contents_RecommendSearch_001');
+        $this->tpl_subtitle = t('LC_Page_Admin_Contents_RecommendSearch_001');
     }
 
     /**
@@ -121,10 +121,10 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
      * @param Object $objFormParam
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_ID'), 'search_name', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_ID'), 'search_category_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK','NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_CODE'), 'search_product_code', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PAGE_NO'), 'search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK','NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_ID'), 'search_name', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_ID'), 'search_category_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK','NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CODE'), 'search_product_code', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PAGE_NO'), 'search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK','NUM_CHECK'));
     }
 
     /**

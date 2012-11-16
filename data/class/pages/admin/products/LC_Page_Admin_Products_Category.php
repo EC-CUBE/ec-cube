@@ -45,8 +45,8 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_007');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Products_Category_001');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_007');
+        $this->tpl_subtitle = t('LC_Page_Admin_Products_Category_001');
         $this->tpl_mainpage = 'products/category.tpl';
         $this->tpl_mainno = 'products';
         $this->tpl_subno  = 'category';
@@ -208,7 +208,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         $where = 'parent_category_id = ? AND del_flg = 0';
         $exists = $objQuery->exists('dtb_category', $where, array($category_id));
         if ($exists) {
-            $this->arrErr['category_name'] = SC_I18n_Ex::t('LC_Page_Admin_Products_Category_002');
+            $this->arrErr['category_name'] = t('LC_Page_Admin_Products_Category_002');
             return;
         }
         // 登録商品のチェック
@@ -216,7 +216,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         $where = 'T1.category_id = ? AND T2.del_flg = 0';
         $exists = $objQuery->exists($table, $where, array($category_id));
         if ($exists) {
-            $this->arrErr['category_name'] = SC_I18n_Ex::t('LC_Page_Admin_Products_Category_003');
+            $this->arrErr['category_name'] = t('LC_Page_Admin_Products_Category_003');
             return;
         }
 
@@ -311,13 +311,13 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
             $where = 'del_flg = 0';
             $count = $objQuery->count('dtb_category', $where);
             if ($count >= CATEGORY_MAX) {
-                $arrErr['category_name'] = SC_I18n_Ex::t('LC_Page_Admin_Products_Category_004');
+                $arrErr['category_name'] = t('LC_Page_Admin_Products_Category_004');
                 return $arrErr;
             }
 
             // 階層上限チェック
             if ($this->isOverLevel($parent_category_id)) {
-                $arrErr['category_name'] = SC_I18n_Ex::t('LC_Page_Admin_Products_Category_005', array('T_FIELD' => LEVEL_MAX));
+                $arrErr['category_name'] = t('LC_Page_Admin_Products_Category_005', array('T_FIELD' => LEVEL_MAX));
                 return $arrErr;
             }
         }
@@ -334,7 +334,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         }
         $exists = $objQuery->exists('dtb_category', $where, $arrWhereVal);
         if ($exists) {
-            $arrErr['category_name'] = SC_I18n_Ex::t('LC_Page_Admin_Products_Category_006');
+            $arrErr['category_name'] = t('LC_Page_Admin_Products_Category_006');
             return $arrErr;
         }
 
@@ -402,9 +402,9 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
      * @return void
      */
     function initParam(&$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PARENT_CATEGORY_ID'), 'parent_category_id', null, null, array());
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CATEGORY_ID'), 'category_id', null, null, array());
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CATEGORY_NAME'), 'category_name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PARENT_CATEGORY_ID'), 'parent_category_id', null, null, array());
+        $objFormParam->addParam(t('PARAM_LABEL_CATEGORY_ID'), 'category_id', null, null, array());
+        $objFormParam->addParam(t('PARAM_LABEL_CATEGORY_NAME'), 'category_name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**

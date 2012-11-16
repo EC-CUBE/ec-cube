@@ -46,8 +46,8 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'basis/payment.tpl';
         $this->tpl_mainno = 'basis';
         $this->tpl_subno = 'payment';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_006');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Basis_Payment_002');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_006');
+        $this->tpl_subtitle = t('LC_Page_Admin_Basis_Payment_002');
     }
 
     /**
@@ -71,7 +71,7 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin_Ex {
 
         if (!empty($_POST)) {
             $objFormParam = new SC_FormParam_Ex();
-            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PAYMENT_METHOD_ID'), 'payment_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+            $objFormParam->addParam(t('PARAM_LABEL_PAYMENT_METHOD_ID'), 'payment_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
             $objFormParam->setParam($_POST);
             $objFormParam->convParam();
 

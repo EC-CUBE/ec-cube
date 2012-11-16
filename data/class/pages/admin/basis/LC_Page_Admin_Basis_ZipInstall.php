@@ -69,8 +69,8 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         parent::init();
         $this->tpl_mainpage = 'basis/zip_install.tpl';
         $this->tpl_subno = 'zip_install';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_006');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Basis_ZipInstall_002');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_006');
+        $this->tpl_subtitle = t('LC_Page_Admin_Basis_ZipInstall_002');
         $this->tpl_mainno = 'basis';
 
         $this->tpl_mode = $this->getMode();
@@ -200,7 +200,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
      */
     function lfInitParam($tpl_mode, &$objFormParam) {
         if ($tpl_mode == 'manual') {
-            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_STARTROWNUM'), 'startRowNum', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+            $objFormParam->addParam(t('PARAM_LABEL_STARTROWNUM'), 'startRowNum', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         }
     }
 
@@ -276,9 +276,9 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
                 function complete() {
                     document.open('text/html','replace');
                     document.clear();
-                    document.write(SC_I18n_Ex::t('LC_Page_Admin_Basis_ZipInstall_003'));
-                    document.write("<?php echo $cntInsert ?> " . SC_I18n_Ex::t('LC_Page_Admin_Basis_ZipInstall_004'));
-                    document.write(SC_I18n_Ex::t('LC_Page_Admin_Basis_ZipInstall_005'));
+                    document.write(t('LC_Page_Admin_Basis_ZipInstall_003'));
+                    document.write("<?php echo $cntInsert ?> " . t('LC_Page_Admin_Basis_ZipInstall_004'));
+                    document.write(t('LC_Page_Admin_Basis_ZipInstall_005'));
                     document.close();
                 }
                 // コンテンツを削除するため、タイムアウトで呼び出し。
@@ -294,7 +294,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         $this->convertZipCsv();
         $fp = fopen(ZIP_CSV_UTF8_REALFILE, 'r');
         if (!$fp) {
-            trigger_error(SC_I18n_Ex::t('LC_Page_Admin_Basis_ZipInstall_006', array('T_FIELD', ZIP_CSV_UTF8_REALFILE)), E_USER_ERROR);
+            trigger_error(t('LC_Page_Admin_Basis_ZipInstall_006', array('T_FIELD', ZIP_CSV_UTF8_REALFILE)), E_USER_ERROR);
         }
         return $fp;
     }
@@ -304,12 +304,12 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
 
         $fpr = fopen(ZIP_CSV_REALFILE, 'r');
         if (!$fpr) {
-            trigger_error(SC_I18n_Ex::t('LC_Page_Admin_Basis_ZipInstall_006', array('T_FIELD', ZIP_CSV_REALFILE)), E_USER_ERROR);
+            trigger_error(t('LC_Page_Admin_Basis_ZipInstall_006', array('T_FIELD', ZIP_CSV_REALFILE)), E_USER_ERROR);
         }
 
         $fpw = fopen(ZIP_CSV_UTF8_REALFILE, 'w');
         if (!$fpw) {
-            trigger_error(SC_I18n_Ex::t('LC_Page_Admin_Basis_ZipInstall_007', array('T_FIELD' => ZIP_CSV_UTF8_REALFILE)), E_USER_ERROR);
+            trigger_error(t('LC_Page_Admin_Basis_ZipInstall_007', array('T_FIELD' => ZIP_CSV_UTF8_REALFILE)), E_USER_ERROR);
         }
 
         while (!feof($fpr)) {
@@ -360,17 +360,17 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         // 郵便番号CSVをdownloadする。
         $res = $req->sendRequest();
         if (!$res || strlen($res) > 1) {
-            trigger_error(SC_I18n_Ex::t('LC_Page_Admin_Basis_ZipInstall_008', array('T_FIELD', ZIP_DOWNLOAD_URL)), E_USER_ERROR);
+            trigger_error(t('LC_Page_Admin_Basis_ZipInstall_008', array('T_FIELD', ZIP_DOWNLOAD_URL)), E_USER_ERROR);
         }
 
         // 郵便番号CSV(zip file)を保存する。
         $fp = fopen($this->zip_csv_temp_realfile, 'w');
         if (!$fp) {
-            trigger_error(SC_I18n_Ex::t('LC_Page_Admin_Basis_ZipInstall_007', array('T_FIELD' => $this->zip_csv_temp_realfile)), E_USER_ERROR);
+            trigger_error(t('LC_Page_Admin_Basis_ZipInstall_007', array('T_FIELD' => $this->zip_csv_temp_realfile)), E_USER_ERROR);
         }
         $res = fwrite($fp, $req->getResponseBody());
         if (!$res) {
-            trigger_error(SC_I18n_Ex::t('LC_Page_Admin_Basis_ZipInstall_009', array('T_FIELD' => $this->zip_csv_temp_realfile)), E_USER_ERROR);
+            trigger_error(t('LC_Page_Admin_Basis_ZipInstall_009', array('T_FIELD' => $this->zip_csv_temp_realfile)), E_USER_ERROR);
         }
     }
 
@@ -382,7 +382,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
     function lfExtractZipFile() {
         $zip = zip_open($this->zip_csv_temp_realfile);
         if (!is_resource($zip)) {
-            trigger_error(SC_I18n_Ex::t(SC_I18n_Ex::t('LC_Page_Admin_Basis_ZipInstall_010', array('T_FIELD' => $this->zip_csv_temp_realfile))), E_USER_ERROR);
+            trigger_error(t(t('LC_Page_Admin_Basis_ZipInstall_010', array('T_FIELD' => $this->zip_csv_temp_realfile))), E_USER_ERROR);
         }
 
         do {
@@ -390,7 +390,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         } while ($entry && zip_entry_name($entry) != 'KEN_ALL.CSV');
 
         if (!$entry) {
-            trigger_error(SC_I18n_Ex::t(SC_I18n_Ex::t('LC_Page_Admin_Basis_ZipInstall_011', array('T_FIELD' => $this->zip_csv_temp_realfile))), E_USER_ERROR);
+            trigger_error(t(t('LC_Page_Admin_Basis_ZipInstall_011', array('T_FIELD' => $this->zip_csv_temp_realfile))), E_USER_ERROR);
         }
 
         // 展開時の破損を考慮し、別名で一旦展開する。
@@ -398,18 +398,18 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
 
         $res = zip_entry_open($zip, $entry, 'rb');
         if (!$res) {
-            trigger_error(SC_I18n_Ex::t('LC_Page_Admin_Basis_ZipInstall_012', array('T_FIELD' => $this->zip_csv_temp_realfile)), E_USER_ERROR);
+            trigger_error(t('LC_Page_Admin_Basis_ZipInstall_012', array('T_FIELD' => $this->zip_csv_temp_realfile)), E_USER_ERROR);
         }
 
         $fp = fopen($tmp_csv_realfile, 'w');
         if (!$fp) {
             
-            trigger_error(SC_I18n_Ex::t('LC_Page_Admin_Basis_ZipInstall_007', array('T_FIELD' => $tmp_csv_realfile)), E_USER_ERROR);
+            trigger_error(t('LC_Page_Admin_Basis_ZipInstall_007', array('T_FIELD' => $tmp_csv_realfile)), E_USER_ERROR);
         }
 
         $res = fwrite($fp, zip_entry_read($entry, zip_entry_filesize($entry)));
         if ($res === FALSE) {
-            trigger_error(SC_I18n_Ex::t('LC_Page_Admin_Basis_ZipInstall_009', array('T_FIELD' => $tmp_csv_realfile)), E_USER_ERROR);
+            trigger_error(t('LC_Page_Admin_Basis_ZipInstall_009', array('T_FIELD' => $tmp_csv_realfile)), E_USER_ERROR);
         }
 
         fclose($fp);
@@ -418,13 +418,13 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         // CSV 削除
         $res = unlink(ZIP_CSV_REALFILE);
         if (!$res) {
-            trigger_error(SC_I18n_Ex::t('LC_Page_Admin_Basis_ZipInstall_013', array('T_FIELD' => ZIP_CSV_REALFILE)), E_USER_ERROR);
+            trigger_error(t('LC_Page_Admin_Basis_ZipInstall_013', array('T_FIELD' => ZIP_CSV_REALFILE)), E_USER_ERROR);
         }
 
         // CSV ファイル名変更
         $res = rename($tmp_csv_realfile, ZIP_CSV_REALFILE);
         if (!$res) {
-            trigger_error(SC_I18n_Ex::t('LC_Page_Admin_Basis_ZipInstall_014', array('T_FIELD1' => $tmp_csv_realfile, 'T_FIELD2' => ZIP_CSV_REALFILE)), E_USER_ERROR);
+            trigger_error(t('LC_Page_Admin_Basis_ZipInstall_014', array('T_FIELD1' => $tmp_csv_realfile, 'T_FIELD2' => ZIP_CSV_REALFILE)), E_USER_ERROR);
         }
     }
 

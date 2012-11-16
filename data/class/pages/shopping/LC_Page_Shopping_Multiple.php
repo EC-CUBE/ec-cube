@@ -43,7 +43,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_title = SC_I18n_Ex::t('LC_Page_Shopping_Multiple_001');
+        $this->tpl_title = t('LC_Page_Shopping_Multiple_001');
         $this->httpCacheControl('nocache');
     }
 
@@ -134,19 +134,19 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_CLASS_ID'), 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_NAME'), 'name');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CLASS1'), 'class_name1');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CLASS2'), 'class_name2');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CLASSCATEGORY1'), 'classcategory_name1');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CLASSCATEGORY2'), 'classcategory_name2');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_MAIN_IMAGE'), 'main_image');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_MAIN_LIST_IMAGE'), 'main_list_image');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_SELLPRICE'), 'price');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_QUANTITY'), 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_DELIV_ADDRESSEE'), 'shipping', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CART_NO'), 'cart_no', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_LINE_NUM'), 'line_of_num', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CLASS_ID'), 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_NAME'), 'name');
+        $objFormParam->addParam(t('PARAM_LABEL_CLASS1'), 'class_name1');
+        $objFormParam->addParam(t('PARAM_LABEL_CLASS2'), 'class_name2');
+        $objFormParam->addParam(t('PARAM_LABEL_CLASSCATEGORY1'), 'classcategory_name1');
+        $objFormParam->addParam(t('PARAM_LABEL_CLASSCATEGORY2'), 'classcategory_name2');
+        $objFormParam->addParam(t('PARAM_LABEL_MAIN_IMAGE'), 'main_image');
+        $objFormParam->addParam(t('PARAM_LABEL_MAIN_LIST_IMAGE'), 'main_list_image');
+        $objFormParam->addParam(t('PARAM_LABEL_SELLPRICE'), 'price');
+        $objFormParam->addParam(t('PARAM_LABEL_QUANTITY'), 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
+        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_DELIV_ADDRESSEE'), 'shipping', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CART_NO'), 'cart_no', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_LINE_NUM'), 'line_of_num', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
     }
 
     /**
@@ -191,7 +191,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
         $masterData = new SC_DB_MasterData_Ex();
         $arrPref = $masterData->getMasterData('mtb_pref');
 
-        $arrResults = array('' => SC_I18n_Ex::t('LC_Page_Shopping_Multiple_002'));
+        $arrResults = array('' => t('LC_Page_Shopping_Multiple_002'));
         // 会員ログイン時
         if ($objCustomer->isLoginSuccess(true)) {
             $addr = array(
@@ -252,11 +252,11 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
             foreach ($arrParams as $index => $arrParam) {
                 // 数量0で、お届け先を選択している場合
                 if ($arrParam['quantity'] == 0 && !SC_Utils_Ex::isBlank($arrParam['shipping'])) {
-                    $arrErr['shipping'][$index] = SC_I18n_Ex::t('LC_Page_Shopping_Multiple_003');
+                    $arrErr['shipping'][$index] = t('LC_Page_Shopping_Multiple_003');
                 }
                 // 数量の入力があり、お届け先を選択していない場合
                 if ($arrParam['quantity'] > 0 && SC_Utils_Ex::isBlank($arrParam['shipping'])) {
-                    $arrErr['shipping'][$index] = SC_I18n_Ex::t('LC_Page_Shopping_Multiple_004');
+                    $arrErr['shipping'][$index] = t('LC_Page_Shopping_Multiple_004');
                 }
             }
         }
@@ -277,7 +277,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
                 if ($arrCartRow['quantity'] != $arrQuantity[$product_class_id]) {
                     foreach ($arrParams as $index => $arrParam) {
                         if ($arrParam['product_class_id'] == $product_class_id) {
-                            $arrErr['quantity'][$index] = SC_I18n_Ex::t('LC_Page_Shopping_Multiple_005', array('T_FIELD' => $arrCartRow['quantity']));
+                            $arrErr['quantity'][$index] = t('LC_Page_Shopping_Multiple_005', array('T_FIELD' => $arrCartRow['quantity']));
                             
                         }
                     }

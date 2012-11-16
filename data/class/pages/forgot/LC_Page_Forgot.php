@@ -57,7 +57,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_title = SC_I18n_Ex::t('LC_Page_Forgot_001');
+        $this->tpl_title = t('LC_Page_Forgot_001');
         $this->tpl_mainpage = 'forgot/index.tpl';
         $this->tpl_mainno = '';
         $masterData = new SC_DB_MasterData_Ex();
@@ -159,10 +159,10 @@ class LC_Page_Forgot extends LC_Page_Ex {
                 $arrForm['reminder'] = $result[0]['reminder'];
             } else if ($result[0]['status'] == '1') {
                 // 仮会員
-                $errmsg = SC_I18n_Ex::t('LC_Page_Forgot_002');
+                $errmsg = t('LC_Page_Forgot_002');
             }
         } else {
-            $errmsg = SC_I18n_Ex::t('LC_Page_Forgot_003');
+            $errmsg = t('LC_Page_Forgot_003');
         }
         return $errmsg;
     }
@@ -175,12 +175,12 @@ class LC_Page_Forgot extends LC_Page_Ex {
      * @return void
      */
     function lfInitMailCheckParam(&$objFormParam, $device_type) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_LASTNAME'), 'name01', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK' ,'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_FIRSTNAME'), 'name02', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK' , 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_LASTNAME'), 'name01', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK' ,'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_FIRSTNAME'), 'name02', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK' , 'MAX_LENGTH_CHECK'));
         if ($device_type === DEVICE_TYPE_MOBILE) {
-            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_EMAIL'), 'email', null, 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'NO_SPTAB' ,'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'));
+            $objFormParam->addParam(t('PARAM_LABEL_EMAIL'), 'email', null, 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'NO_SPTAB' ,'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'));
         } else {
-            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_EMAIL'), 'email', null, 'a', array('NO_SPTAB', 'EXIST_CHECK', 'EMAIL_CHECK', 'SPTAB_CHECK' ,'EMAIL_CHAR_CHECK'));
+            $objFormParam->addParam(t('PARAM_LABEL_EMAIL'), 'email', null, 'a', array('NO_SPTAB', 'EXIST_CHECK', 'EMAIL_CHECK', 'SPTAB_CHECK' ,'EMAIL_CHAR_CHECK'));
         }
         return;
     }
@@ -234,13 +234,13 @@ class LC_Page_Forgot extends LC_Page_Ex {
                 $arrForm['new_password'] = $new_password;
             } else {
                 // 秘密の答えが一致しなかった
-                $errmsg = SC_I18n_Ex::t('LC_Page_Forgot_004');
+                $errmsg = t('LC_Page_Forgot_004');
             }
         } else {
             //不正なアクセス リマインダー値が前画面と異なる。
             // 新リファクタリング基準ではここで遷移は不許可なのでエラー表示
             //SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
-            $errmsg = SC_I18n_Ex::t('LC_Page_Forgot_005');
+            $errmsg = t('LC_Page_Forgot_005');
         }
         return $errmsg;
     }
@@ -256,8 +256,8 @@ class LC_Page_Forgot extends LC_Page_Ex {
         // メールチェックと同等のチェックを再度行う
         $this->lfInitMailCheckParam($objFormParam, $device_type);
         // 秘密の質問チェックの追加
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PASSWORD_REMINDER'), 'reminder', STEXT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PASSWORD_REMINDER_ANSWER'), 'reminder_answer', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PASSWORD_REMINDER'), 'reminder', STEXT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PASSWORD_REMINDER_ANSWER'), 'reminder_answer', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         return;
     }
 
@@ -296,7 +296,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
         $objMail = new SC_SendMail_Ex();
         $objMail->setItem(
             '' //宛先
-            , $objHelperMail->sfMakeSubject(SC_I18n_Ex::t('LC_Page_Forgot_006'))
+            , $objHelperMail->sfMakeSubject(t('LC_Page_Forgot_006'))
             , $toCustomerMail //本文
             , $CONF['email03'] //配送元アドレス
             , $CONF['shop_name'] // 配送元名
@@ -304,7 +304,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
             , $CONF['email04'] //return_path
             , $CONF['email04'] // errors_to
             );
-        $objMail->setTo($email, SC_I18n_Ex::t('LC_Page_Forgot_007', array('T_FIELD' => $customer_name)));
+        $objMail->setTo($email, t('LC_Page_Forgot_007', array('T_FIELD' => $customer_name)));
         $objMail->sendMail();
         return;
     }

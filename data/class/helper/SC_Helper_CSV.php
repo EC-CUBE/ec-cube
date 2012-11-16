@@ -51,11 +51,11 @@ class SC_Helper_CSV {
         );
 
         $this->arrSubnaviName = array(
-            1 => SC_I18n_Ex::t('SC_Helper_CSV_001'),
-            2 => SC_I18n_Ex::t('SC_Helper_CSV_002'),
-            3 => SC_I18n_Ex::t('SC_Helper_CSV_003'),
-            4 => SC_I18n_Ex::t('SC_Helper_CSV_004'),
-            5 => SC_I18n_Ex::t('SC_Helper_CSV_005'),
+            1 => t('SC_Helper_CSV_001'),
+            2 => t('SC_Helper_CSV_002'),
+            3 => t('SC_Helper_CSV_003'),
+            4 => t('SC_Helper_CSV_004'),
+            5 => t('SC_Helper_CSV_005'),
         );
     }
 

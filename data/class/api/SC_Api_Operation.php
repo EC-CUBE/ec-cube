@@ -265,11 +265,11 @@ class SC_Api_Operation {
      * @return void
      */
     protected function setApiBaseParam(&$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_OPERATION'), 'Operation', STEXT_LEN, 'an', array('EXIST_CHECK', 'GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_SERVICE'), 'Service', STEXT_LEN, 'an', array('EXIST_CHECK', 'GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_STYLE'), 'Style', STEXT_LEN, 'an', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_VALIDATE'), 'Validate', STEXT_LEN, 'an', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_VERSION'), 'Version', STEXT_LEN, 'an', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_OPERATION'), 'Operation', STEXT_LEN, 'an', array('EXIST_CHECK', 'GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_SERVICE'), 'Service', STEXT_LEN, 'an', array('EXIST_CHECK', 'GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_STYLE'), 'Style', STEXT_LEN, 'an', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_VALIDATE'), 'Validate', STEXT_LEN, 'an', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_VERSION'), 'Version', STEXT_LEN, 'an', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -320,10 +320,10 @@ class SC_Api_Operation {
                         $arrErr = $objApiOperation->getErrorArray();
                     }
                 } else {
-                    $arrErr['ECCUBE.Operation.NoLoad'] = SC_I18n_Ex::t('SC_Api_Operation_001');
+                    $arrErr['ECCUBE.Operation.NoLoad'] = t('SC_Api_Operation_001');
                 }
             } else {
-                $arrErr['ECCUBE.Authority.NoAuthority'] = SC_I18n_Ex::t('SC_Api_Operation_002');
+                $arrErr['ECCUBE.Authority.NoAuthority'] = t('SC_Api_Operation_002');
             }
         }
 

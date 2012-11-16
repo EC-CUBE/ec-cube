@@ -46,8 +46,8 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'design/index.tpl';
         $this->tpl_subno = 'layout';
         $this->tpl_mainno = 'design';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_003');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Design_002');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_003');
+        $this->tpl_subtitle = t('LC_Page_Admin_Design_002');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrTarget = $masterData->getMasterData('mtb_target');
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
@@ -126,7 +126,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
             default:
                 // 完了メッセージ表示
                 if (isset($_GET['msg']) && $_GET['msg'] == 'on') {
-                    $this->tpl_onload="alert('" . SC_I18n_Ex::t('ALERT_004') . "');";
+                    $this->tpl_onload="alert('" . t('ALERT_004') . "');";
                 }
                 break;
         }
@@ -159,16 +159,16 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam, $bloc_cnt = 0) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PAGE_ID'), 'page_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DEVICE_TYPE_ID'), 'device_type_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BLOC_CNT'), 'bloc_cnt', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PAGE_ID'), 'page_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_DEVICE_TYPE_ID'), 'device_type_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_BLOC_CNT'), 'bloc_cnt', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
 
         for ($i = 1; $i <= $bloc_cnt; $i++) {
-            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BLOC_NAME'), 'name_' . $i, STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'GRAPH_CHECK'));
-            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BLOC_ID'), 'id_' . $i, INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TARGET_ID'), 'target_id_' . $i, STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'ALNUM_CHECK'));
-            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TOP'), 'top_' . $i, INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-            $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FULL_PAGE'), 'anywhere_' . $i, INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+            $objFormParam->addParam(t('PARAM_LABEL_BLOC_NAME'), 'name_' . $i, STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'GRAPH_CHECK'));
+            $objFormParam->addParam(t('PARAM_LABEL_BLOC_ID'), 'id_' . $i, INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+            $objFormParam->addParam(t('PARAM_LABEL_TARGET_ID'), 'target_id_' . $i, STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'ALNUM_CHECK'));
+            $objFormParam->addParam(t('PARAM_LABEL_TOP'), 'top_' . $i, INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+            $objFormParam->addParam(t('PARAM_LABEL_FULL_PAGE'), 'anywhere_' . $i, INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         }
     }
 

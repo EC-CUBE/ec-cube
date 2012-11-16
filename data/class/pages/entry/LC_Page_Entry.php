@@ -112,7 +112,7 @@ class LC_Page_Entry extends LC_Page_Ex {
 
                             // 該当無し
                         } else {
-                            $this->arrErr['zip01'] = SC_I18n_Ex::t('LC_Page_Entry_001');
+                            $this->arrErr['zip01'] = t('LC_Page_Entry_001');
                         }
                     }
                     $this->arrForm  = $objFormParam->getHashArray();
@@ -128,7 +128,7 @@ class LC_Page_Entry extends LC_Page_Ex {
                     $this->passlen      = SC_Utils_Ex::sfPassLen(strlen($this->arrForm['password']));
 
                     $this->tpl_mainpage = 'entry/confirm.tpl';
-                    $this->tpl_title    = SC_I18n_Ex::t('LC_Page_Entry_002');
+                    $this->tpl_title    = t('LC_Page_Entry_002');
                 }
                 break;
             case 'complete':
@@ -245,10 +245,10 @@ class LC_Page_Entry extends LC_Page_Ex {
 
         // 仮会員が有効の場合
         if (CUSTOMER_CONFIRM_MAIL == true) {
-            $subject        = $objHelperMail->sfMakeSubject(SC_I18n_Ex::t('LC_Page_Entry_003'));
+            $subject        = $objHelperMail->sfMakeSubject(t('LC_Page_Entry_003'));
             $toCustomerMail = $objMailText->fetch('mail_templates/customer_mail.tpl');
         } else {
-            $subject        = $objHelperMail->sfMakeSubject(SC_I18n_Ex::t('LC_Page_Entry_004'));
+            $subject        = $objHelperMail->sfMakeSubject(t('LC_Page_Entry_004'));
             $toCustomerMail = $objMailText->fetch('mail_templates/customer_regist_mail.tpl');
         }
 
@@ -266,7 +266,7 @@ class LC_Page_Entry extends LC_Page_Ex {
         );
         // 宛先の設定
         $objMail->setTo($arrForm['email'],
-                        SC_I18n_Ex::t('LC_Page_Entry_007', array('T_FIELD01' => $arrForm['name01'], 'T_FIELD02' => $arrForm['name02'])));
+                        t('LC_Page_Entry_007', array('T_FIELD01' => $arrForm['name01'], 'T_FIELD02' => $arrForm['name02'])));
 
         $objMail->sendMail();
     }
@@ -304,8 +304,8 @@ class LC_Page_Entry extends LC_Page_Ex {
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
         // パラメーター情報の初期化
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ZIP01'), 'zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_COUNT_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ZIP02'), 'zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_COUNT_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ZIP01'), 'zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_COUNT_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ZIP02'), 'zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_COUNT_CHECK', 'NUM_CHECK'));
         // // リクエスト値をセット
         $arrData['zip01'] = $arrRequest['zip01'];
         $arrData['zip02'] = $arrRequest['zip02'];
@@ -314,10 +314,10 @@ class LC_Page_Entry extends LC_Page_Ex {
         $arrErr = $objFormParam->checkError();
         // 親ウィンドウの戻り値を格納するinputタグのnameのエラーチェック
         if (!$this->lfInputNameCheck($addData['zip01'])) {
-            $arrErr['zip01'] = SC_I18n_Ex::t('LC_Page_Entry_005');
+            $arrErr['zip01'] = t('LC_Page_Entry_005');
         }
         if (!$this->lfInputNameCheck($arrdata['zip02'])) {
-            $arrErr['zip02'] = SC_I18n_Ex::t('LC_Page_Entry_006');
+            $arrErr['zip02'] = t('LC_Page_Entry_006');
         }
 
         return $arrErr;

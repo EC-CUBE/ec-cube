@@ -46,8 +46,8 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'contents/file_manager.tpl';
         $this->tpl_mainno = 'contents';
         $this->tpl_subno = 'file';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_005');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Contents_FileManager_002');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_005');
+        $this->tpl_subtitle = t('LC_Page_Admin_Contents_FileManager_002');
 
     }
 
@@ -126,7 +126,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
                 $this->arrErr = $objFormParam->checkError();
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     if (is_dir($objFormParam->getValue('select_file'))) {
-                        $disp_error = SC_I18n_Ex::t('LC_Page_Admin_Contents_FileManager_003');
+                        $disp_error = t('LC_Page_Admin_Contents_FileManager_003');
                         $this->setDispError('select_file', $disp_error);
                     } else {
 
@@ -158,10 +158,10 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
                 $this->arrErr = $objFormParam->checkError();
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     if (!$this->tryCreateDir($objFileManager, $objFormParam)) {
-                        $disp_error = SC_I18n_Ex::t('LC_Page_Admin_Contents_FileManager_005', array('T_FILED', htmlspecialchars($objFormParam->getValue('create_file'), ENT_QUOTES)));
+                        $disp_error = t('LC_Page_Admin_Contents_FileManager_005', array('T_FILED', htmlspecialchars($objFormParam->getValue('create_file'), ENT_QUOTES)));
                         $this->setDispError('create_file', $disp_error);
                     } else {
-                        $tpl_onload = "alert('" . SC_I18n_Ex::t('ALERT_009') . "');";
+                        $tpl_onload = "alert('" . t('ALERT_009') . "');";
                         $this->setTplOnLoad($tpl_onload);
                     }
                 }
@@ -171,7 +171,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
                 // 画像保存処理
                 $ret = $objUpFile->makeTempFile('upload_file', false);
                 if (SC_Utils_Ex::isBlank($ret)) {
-                    $tpl_onload = "alert('" . SC_I18n_Ex::t('ALERT_010') . "');";
+                    $tpl_onload = "alert('" . t('ALERT_010') . "');";
                     $this->setTplOnLoad($tpl_onload);
                 } else {
                     $this->setDispError('upload_file', $ret);
@@ -228,7 +228,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
     function lfInitParamModeMove(&$objFormParam) {
         // 共通定義
         $this->lfInitParamCommon($objFormParam);
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_SELECT_FILE'), 'select_file', MTEXT_LEN, 'a', array());
+        $objFormParam->addParam(t('PARAM_LABEL_SELECT_FILE'), 'select_file', MTEXT_LEN, 'a', array());
     }
 
     /**
@@ -240,7 +240,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
     function lfInitParamModeView(&$objFormParam) {
         // 共通定義
         $this->lfInitParamCommon($objFormParam);
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_SELECT_FILE'), 'select_file', MTEXT_LEN, 'a', array('SELECT_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_SELECT_FILE'), 'select_file', MTEXT_LEN, 'a', array('SELECT_CHECK'));
     }
 
     /**
@@ -252,8 +252,8 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
     function lfInitParamModeCreate(&$objFormParam) {
         // 共通定義
         $this->lfInitParamCommon($objFormParam);
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_SELECT_FILE'), 'select_file', MTEXT_LEN, 'a', array());
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CREATE_FILE'), 'create_file', MTEXT_LEN, 'a', array('EXIST_CHECK', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
+        $objFormParam->addParam(t('PARAM_LABEL_SELECT_FILE'), 'select_file', MTEXT_LEN, 'a', array());
+        $objFormParam->addParam(t('PARAM_LABEL_CREATE_FILE'), 'create_file', MTEXT_LEN, 'a', array('EXIST_CHECK', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
     }
 
     /**
@@ -263,11 +263,11 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParamCommon(&$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ROOT_DIR'), 'top_dir', MTEXT_LEN, 'a', array());
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_NOW_DIR'), 'now_dir', MTEXT_LEN, 'a', array());
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_NOW_FILE'), 'now_file', MTEXT_LEN, 'a', array());
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TREE_STATUS'), 'tree_status', MTEXT_LEN, 'a', array());
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TREE_SELECT_FILE'), 'tree_select_file', MTEXT_LEN, 'a', array());
+        $objFormParam->addParam(t('PARAM_LABEL_ROOT_DIR'), 'top_dir', MTEXT_LEN, 'a', array());
+        $objFormParam->addParam(t('PARAM_LABEL_NOW_DIR'), 'now_dir', MTEXT_LEN, 'a', array());
+        $objFormParam->addParam(t('PARAM_LABEL_NOW_FILE'), 'now_file', MTEXT_LEN, 'a', array());
+        $objFormParam->addParam(t('PARAM_LABEL_TREE_STATUS'), 'tree_status', MTEXT_LEN, 'a', array());
+        $objFormParam->addParam(t('PARAM_LABEL_TREE_SELECT_FILE'), 'tree_select_file', MTEXT_LEN, 'a', array());
     }
 
     /*
@@ -277,7 +277,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitFile(&$objUpFile) {
-        $objUpFile->addFile(SC_I18n_Ex::t('PARAM_LABEL_FILE'), 'upload_file', array(), FILE_SIZE, true, 0, 0, false);
+        $objUpFile->addFile(t('PARAM_LABEL_FILE'), 'upload_file', array(), FILE_SIZE, true, 0, 0, false);
     }
 
     /**

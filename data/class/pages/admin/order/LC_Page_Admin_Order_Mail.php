@@ -46,8 +46,8 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
         $this->tpl_mainpage = 'order/mail.tpl';
         $this->tpl_mainno = 'order';
         $this->tpl_subno = 'index';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_001');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Order_Mail_001');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_001');
+        $this->tpl_subtitle = t('LC_Page_Admin_Order_Mail_001');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrMAILTEMPLATE = $masterData->getMasterData('mtb_mail_template');
@@ -251,9 +251,9 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
     function lfInitParam(&$objFormParam) {
         // 検索条件のパラメーターを初期化
         parent::lfInitParam($objFormParam);
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TEMPLATE'), 'template_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_MAIL_SUBJECT'), 'subject', STEXT_LEN, 'KVa',  array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_HEADER'), 'header', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FOOTER'), 'footer', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_TEMPLATE'), 'template_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_MAIL_SUBJECT'), 'subject', STEXT_LEN, 'KVa',  array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_HEADER'), 'header', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_FOOTER'), 'footer', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
     }
 }

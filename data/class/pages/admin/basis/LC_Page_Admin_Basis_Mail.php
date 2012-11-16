@@ -46,8 +46,8 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'basis/mail.tpl';
         $this->tpl_mainno = 'basis';
         $this->tpl_subno = 'mail';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_006');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Basis_Mail_002');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_006');
+        $this->tpl_subtitle = t('LC_Page_Admin_Basis_Mail_002');
     }
 
     /**
@@ -97,14 +97,14 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
                     $this->arrForm = $post;
                     if ($this->arrErr) {
                         // エラーメッセージ
-                        $this->tpl_msg = SC_I18n_Ex::t('LC_Page_Admin_Basis_Mail_003');
+                        $this->tpl_msg = t('LC_Page_Admin_Basis_Mail_003');
 
                     } else {
                         // 正常
                         $this->lfRegistMailTemplate($this->arrForm, $_SESSION['member_id']);
 
                         // 完了メッセージ
-                        $this->tpl_onload = "window.alert('" .SC_I18n_Ex::t('ALERT_006'). "');";
+                        $this->tpl_onload = "window.alert('" .t('ALERT_006'). "');";
                         unset($this->arrForm);
                     }
                 break;
@@ -150,12 +150,12 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
     function lfInitParam($mode, &$objFormParam) {
         switch ($mode) {
             case 'regist':
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_MAIL_SUBJECT'), 'subject', MTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_HEADER'), 'header', LTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FOOTER'), 'footer', LTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TEMPLATE'), 'template_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_MAIL_SUBJECT'), 'subject', MTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_HEADER'), 'header', LTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_FOOTER'), 'footer', LTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_TEMPLATE'), 'template_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
             case 'id_set':
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TEMPLATE'), 'template_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_TEMPLATE'), 'template_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
                 break;
             default:
                 break;

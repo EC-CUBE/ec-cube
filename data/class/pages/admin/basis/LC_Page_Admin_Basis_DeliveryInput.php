@@ -49,8 +49,8 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrProductType = $masterData->getMasterData('mtb_product_type');
         $this->arrPayments = SC_Helper_DB_Ex::sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_006');;
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Basis_DeliveryInput_002');;
+        $this->tpl_maintitle = t('TPL_MAINTITLE_006');;
+        $this->tpl_subtitle = t('LC_Page_Admin_Basis_DeliveryInput_002');;
         $this->mode = $this->getMode();
     }
 
@@ -82,7 +82,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
             case 'edit':
                 if (count($this->arrErr) == 0) {
                     $objFormParam->setValue('deliv_id', $this->lfRegistData($objFormParam->getHashArray(), $_SESSION['member_id']));
-                    $this->tpl_onload = "window.alert('" . SC_I18n_Ex::t('ALERT_005') ."');";
+                    $this->tpl_onload = "window.alert('" . t('ALERT_005') ."');";
                 }
                 break;
             case 'pre_edit':
@@ -114,27 +114,27 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
 
         switch ($mode) {
             case 'edit':
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DELIVERY_ID'), 'deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DELIVERY_NAME'), 'name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_THE_NAME'), 'service_name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DESCRIPTION'), 'remark', LLTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_SLIP_CONFIRM_URL'), 'confirm_url', URL_LEN, 'n', array('URL_CHECK', 'MAX_LENGTH_CHECK'), 'http://');
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_HANDLE_PRODUCT_TYPE'), 'product_type_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_HANDLE_PAYMENT_METHOD'), 'payment_ids', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_DELIVERY_ID'), 'deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_DELIVERY_NAME'), 'name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_THE_NAME'), 'service_name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_DESCRIPTION'), 'remark', LLTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_SLIP_CONFIRM_URL'), 'confirm_url', URL_LEN, 'n', array('URL_CHECK', 'MAX_LENGTH_CHECK'), 'http://');
+                $objFormParam->addParam(t('PARAM_LABEL_HANDLE_PRODUCT_TYPE'), 'product_type_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_HANDLE_PAYMENT_METHOD'), 'payment_ids', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
                 for ($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
-                    $objFormParam->addParam(SC_I18n_Ex::t('LC_Page_Admin_Basis_DeliveryInput_004', array('T_FIELD' => $cnt)), "deliv_time$cnt", STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+                    $objFormParam->addParam(t('LC_Page_Admin_Basis_DeliveryInput_004', array('T_FIELD' => $cnt)), "deliv_time$cnt", STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
                 }
 
                 if (INPUT_DELIV_FEE) {
                     for ($cnt = 1; $cnt <= DELIVFEE_MAX; $cnt++) {
-                        $objFormParam->addParam(SC_I18n_Ex::t('LC_Page_Admin_Basis_DeliveryInput_005', array('T_FIELD' => $cnt)), "fee$cnt", PRICE_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+                        $objFormParam->addParam(t('LC_Page_Admin_Basis_DeliveryInput_005', array('T_FIELD' => $cnt)), "fee$cnt", PRICE_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
                     }
                 }
                 break;
 
             case 'pre_edit':
-                $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DELIVERY_ID'), 'deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('PARAM_LABEL_DELIVERY_ID'), 'deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
                 break;
 
             default:
@@ -315,7 +315,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
                 $ret = (($objQuery->count('dtb_deliv', 'deliv_id != ? AND service_name = ? ', array($arrRet['deliv_id'], $arrRet['service_name'])) > 0)? true : false);
             }
             if ($ret) {
-                $objErr->arrErr['service_name'] = SC_I18n_Ex::t('LC_Page_Admin_Basis_DeliveryInput_006');
+                $objErr->arrErr['service_name'] = t('LC_Page_Admin_Basis_DeliveryInput_006');
             }
         }
 

@@ -45,7 +45,7 @@ class LC_Page_RSS extends LC_Page_Ex {
         parent::init();
         $this->tpl_mainpage = 'rss/index.tpl';
         $this->encode = 'UTF-8';
-        $this->description = SC_I18n_Ex::t('LC_Page_RSS_001');
+        $this->description = t('LC_Page_RSS_001');
     }
 
     /**

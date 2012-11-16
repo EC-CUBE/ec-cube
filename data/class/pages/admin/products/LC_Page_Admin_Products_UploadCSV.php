@@ -64,8 +64,8 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'products/upload_csv.tpl';
         $this->tpl_mainno = 'products';
         $this->tpl_subno = 'upload_csv';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_007');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSV_001');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_007');
+        $this->tpl_subtitle = t('LC_Page_Admin_Products_UploadCSV_001');
         $this->csv_id = '1';
 
         $masterData = new SC_DB_MasterData_Ex();
@@ -142,7 +142,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      * @return void
      */
     function addRowResult($line_count, $message) {
-        $this->arrRowResult[] = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSV_002', array('T_FIELD1' => $line_count, 'T_FIELD2' => $message));
+        $this->arrRowResult[] = t('LC_Page_Admin_Products_UploadCSV_002', array('T_FIELD1' => $line_count, 'T_FIELD2' => $message));
     }
 
     /**
@@ -153,7 +153,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      * @return void
      */
     function addRowErr($line_count, $message) {
-        $this->arrRowErr[] = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSV_002', array('T_FIELD1' => $line_count, 'T_FIELD2' => $message));
+        $this->arrRowErr[] = t('LC_Page_Admin_Products_UploadCSV_002', array('T_FIELD1' => $line_count, 'T_FIELD2' => $message));
     }
 
     /**
@@ -224,7 +224,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
             // 列数が異なる場合はエラー
             $col_count = count($arrCSV);
             if ($col_max_count != $col_count) {
-                $this->addRowErr($line_count, SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSV_003', array('T_FIELD1' => $col_count, 'T_FIELD2' => $col_max_count)));
+                $this->addRowErr($line_count, t('LC_Page_Admin_Products_UploadCSV_003', array('T_FIELD1' => $col_count, 'T_FIELD2' => $col_max_count)));
                 $errFlag = true;
                 break;
             }
@@ -250,7 +250,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
                 $this->lfRegistProduct($objQuery, $line_count, $objFormParam);
                 $arrParam = $objFormParam->getHashArray();
 
-                $this->addRowResult($line_count, SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSV_004', array('T_FIELD1' => $arrParam['product_id'], 'T_FIELD2' => $arrParam['name'])));
+                $this->addRowResult($line_count, t('LC_Page_Admin_Products_UploadCSV_004', array('T_FIELD1' => $arrParam['product_id'], 'T_FIELD2' => $arrParam['name'])));
             }
             SC_Utils_Ex::extendTimeOut();
         }
@@ -287,7 +287,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitFile(&$objUpFile) {
-        $objUpFile->addFile(SC_I18n_Ex::t('PARAM_LABEL_CSV_FILE'), 'csv_file', array('csv'), CSV_SIZE, true, 0, 0, false);
+        $objUpFile->addFile(t('PARAM_LABEL_CSV_FILE'), 'csv_file', array('csv'), CSV_SIZE, true, 0, 0, false);
     }
 
     /**
@@ -619,37 +619,37 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         // 規格IDの存在チェック
         // FIXME 規格分類ID自体のが有効かを主眼においたチェックをすべきと感じる。
         if (!$this->lfIsDbRecord('dtb_products_class', 'product_class_id', $item)) {
-            $arrErr['product_class_id'] = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSV_005');
+            $arrErr['product_class_id'] = t('LC_Page_Admin_Products_UploadCSV_005');
         }
         // 商品ID、規格IDの組合せチェック
         if (array_search('product_class_id', $this->arrFormKeyList) !== FALSE
             && $item['product_class_id'] != ''
         ) {
             if ($item['product_id'] == '') {
-                $arrErr['product_class_id'] = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSV_006');
+                $arrErr['product_class_id'] = t('LC_Page_Admin_Products_UploadCSV_006');
             } else {
                 if (!$this->objDb->sfIsRecord('dtb_products_class', 'product_id, product_class_id'
                         , array($item['product_id'], $item['product_class_id']))
                 ) {
-                    $arrErr['product_class_id'] = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSV_007');
+                    $arrErr['product_class_id'] = t('LC_Page_Admin_Products_UploadCSV_007');
                 }
             }
         }
         // 表示ステータスの存在チェック
         if (!$this->lfIsArrayRecord($this->arrDISP, 'status', $item)) {
-            $arrErr['status'] = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSV_008');
+            $arrErr['status'] = t('LC_Page_Admin_Products_UploadCSV_008');
         }
         // メーカーIDの存在チェック
         if (!$this->lfIsArrayRecord($this->arrMaker, 'maker_id', $item)) {
-            $arrErr['maker_id'] = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSV_009');
+            $arrErr['maker_id'] = t('LC_Page_Admin_Products_UploadCSV_009');
         }
         // 発送日目安IDの存在チェック
         if (!$this->lfIsArrayRecord($this->arrDELIVERYDATE, 'deliv_date_id', $item)) {
-            $arrErr['deliv_date_id'] = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSV_010');
+            $arrErr['deliv_date_id'] = t('LC_Page_Admin_Products_UploadCSV_010');
         }
         // 発送日目安IDの存在チェック
         if (!$this->lfIsArrayRecord($this->arrProductType, 'product_type_id', $item)) {
-            $arrErr['product_type_id'] = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSV_011');
+            $arrErr['product_type_id'] = t('LC_Page_Admin_Products_UploadCSV_011');
         }
         // 関連商品IDのチェック
         $arrRecommendProductUnique = array();
@@ -660,13 +660,13 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
 
                 // 商品IDの存在チェック
                 if (!$this->objDb->sfIsRecord('dtb_products', 'product_id', (array)$item[$recommend_product_id_key])) {
-                    $arrErr[$recommend_product_id_key] = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSV_012', array('T_FIELD' => $i));
+                    $arrErr[$recommend_product_id_key] = t('LC_Page_Admin_Products_UploadCSV_012', array('T_FIELD' => $i));
                     continue;
                 }
                 // 商品IDの重複チェック
                 $recommend_product_id = $item[$recommend_product_id_key];
                 if (isset($arrRecommendProductUnique[$recommend_product_id])) {
-                    $arrErr[$recommend_product_id_key] = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSV_013', array('T_FIELD' => $i));
+                    $arrErr[$recommend_product_id_key] = t('LC_Page_Admin_Products_UploadCSV_013', array('T_FIELD' => $i));
                     
                 } else {
                     $arrRecommendProductUnique[$recommend_product_id] = true;
@@ -675,18 +675,18 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         }
         // カテゴリIDの存在チェック
         if (!$this->lfIsDbRecordMulti('dtb_category', 'category_id', 'category_ids', $item, ',')) {
-            $arrErr['category_ids'] = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSV_014');
+            $arrErr['category_ids'] = t('LC_Page_Admin_Products_UploadCSV_014');
         }
         // 商品ステータスIDの存在チェック
         if (!$this->lfIsArrayRecordMulti($this->arrSTATUS, 'product_statuses', $item, ',')) {
-            $arrErr['product_statuses'] = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSV_015');
+            $arrErr['product_statuses'] = t('LC_Page_Admin_Products_UploadCSV_015');
         }
         // 削除フラグのチェック
         if (array_search('del_flg', $this->arrFormKeyList) !== FALSE
             && $item['del_flg'] != ''
         ) {
             if (!($item['del_flg'] == '0' or $item['del_flg'] == '1')) {
-                $arrErr['del_flg'] = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSV_016');
+                $arrErr['del_flg'] = t('LC_Page_Admin_Products_UploadCSV_016');
             }
         }
 /*
@@ -706,20 +706,20 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         ) {
             //実商品の場合
             if ($item['down_filename'] != '') {
-                $arrErr['down_filename'] = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSV_017');
+                $arrErr['down_filename'] = t('LC_Page_Admin_Products_UploadCSV_017');
             }
             if ($item['down_realfilename'] != '') {
-                $arrErr['down_realfilename'] = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSV_018');
+                $arrErr['down_realfilename'] = t('LC_Page_Admin_Products_UploadCSV_018');
             }
         } elseif (array_search('product_type_id', $this->arrFormKeyList) !== FALSE
                   && $item['product_type_id'] == PRODUCT_TYPE_DOWNLOAD
         ) {
             //ダウンロード商品の場合
             if ($item['down_filename'] == '') {
-                $arrErr['down_filename'] = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSV_019');
+                $arrErr['down_filename'] = t('LC_Page_Admin_Products_UploadCSV_019');
             }
             if ($item['down_realfilename'] == '') {
-                $arrErr['down_realfilename'] = SC_I18n_Ex::t('LC_Page_Admin_Products_UploadCSV_020');
+                $arrErr['down_realfilename'] = t('LC_Page_Admin_Products_UploadCSV_020');
             }
         }
         return $arrErr;

@@ -46,8 +46,8 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'design/up_down.tpl';
         $this->tpl_subno    = 'up_down';
         $this->tpl_mainno   = 'design';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_003');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Design_UpDown_002');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_003');
+        $this->tpl_subtitle = t('LC_Page_Admin_Design_UpDown_002');
         $this->arrErr  = array();
         $this->arrForm = array();
         ini_set('max_execution_time', 300);
@@ -88,7 +88,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
                 $this->arrErr = $this->lfCheckError($objFormParam, $objUpFile);
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     if ($this->doUpload($objFormParam, $objUpFile)) {
-                        $this->tpl_onload = "alert('" . SC_I18n_Ex::t('ALERT_012') . "');";
+                        $this->tpl_onload = "alert('" . t('ALERT_012') . "');";
                         $objFormParam->setValue('template_name', '');
                         $objFormParam->setValue('template_code', '');
                     }
@@ -122,7 +122,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
     function lfInitUploadFile($objForm) {
         $pkg_dir = SMARTY_TEMPLATES_REALDIR . $objForm->getValue('template_code');
         $objUpFile = new SC_UploadFile_Ex(TEMPLATE_TEMP_REALDIR, $pkg_dir);
-        $objUpFile->addFile(SC_I18n_Ex::t('PARAM_LABEL_TEMPLATE_FILE'), 'template_file', array(), TEMPLATE_SIZE, true, 0, 0, false);
+        $objUpFile->addFile(t('PARAM_LABEL_TEMPLATE_FILE'), 'template_file', array(), TEMPLATE_SIZE, true, 0, 0, false);
         return $objUpFile;
     }
 
@@ -133,9 +133,9 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TEMPLATE_CODE'), 'template_code', STEXT_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK', 'ALNUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TEMPLATE_NAME'), 'template_name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DEVICE_TYPE_ID'), 'device_type_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_TEMPLATE_CODE'), 'template_code', STEXT_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK', 'ALNUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_TEMPLATE_NAME'), 'template_name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_DEVICE_TYPE_ID'), 'device_type_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -151,7 +151,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
 
         // 同名のフォルダが存在する場合はエラー
         if (file_exists(USER_TEMPLATE_REALDIR . $template_code)) {
-            $arrErr['template_code'] = SC_I18n_Ex::t('LC_Page_Admin_Design_UpDown_003');
+            $arrErr['template_code'] = t('LC_Page_Admin_Design_UpDown_003');
         }
 
         // 登録不可の文字列チェック
@@ -160,14 +160,14 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
                                SMARTPHONE_DEFAULT_TEMPLATE_NAME,
                                DEFAULT_TEMPLATE_NAME);
         if (in_array($template_code, $arrIgnoreCode)) {
-            $arrErr['template_code'] = SC_I18n_Ex::t('LC_Page_Admin_Design_UpDown_004');
+            $arrErr['template_code'] = t('LC_Page_Admin_Design_UpDown_004');
         }
 
         // DBにすでに登録されていないかチェック
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $exists = $objQuery->exists('dtb_templates', 'template_code = ?', array($template_code));
         if ($exists) {
-            $arrErr['template_code'] = SC_I18n_Ex::t('LC_Page_Admin_Design_UpDown_005');
+            $arrErr['template_code'] = t('LC_Page_Admin_Design_UpDown_005');
         }
 
         /*
@@ -177,7 +177,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
         $tar = new Archive_Tar($_FILES['template_file']['tmp_name'], true);
         $arrArchive = $tar->listContent();
         if (!is_array($arrArchive)) {
-            $arrErr['template_file'] = SC_I18n_Ex::t('LC_Page_Admin_Design_UpDown_006');
+            $arrErr['template_file'] = t('LC_Page_Admin_Design_UpDown_006');
         } else {
             $make_temp_error = $objUpFile->makeTempFile('template_file', false);
             if (!SC_Utils_Ex::isBlank($make_temp_error)) {
@@ -220,14 +220,14 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
         // フォルダ作成
         if (!file_exists($template_dir)) {
             if (!mkdir($template_dir)) {
-                $this->arrErr['err'] = SC_I18n_Ex::t('LC_Page_Admin_Design_UpDown_007');
+                $this->arrErr['err'] = t('LC_Page_Admin_Design_UpDown_007');
                 $objQuery->rollback();
                 return false;
             }
         }
         if (!file_exists($compile_dir)) {
             if (!mkdir($compile_dir)) {
-                $this->arrErr['err'] = SC_I18n_Ex::t('LC_Page_Admin_Design_UpDown_008');
+                $this->arrErr['err'] = t('LC_Page_Admin_Design_UpDown_008');
                 $objQuery->rollback();
                 return false;
             }
@@ -238,7 +238,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
 
         // 解凍
         if (!SC_Helper_FileManager_Ex::unpackFile($template_dir . '/' . $_FILES['template_file']['name'])) {
-            $this->arrErr['err'] = SC_I18n_Ex::t('LC_Page_Admin_Design_UpDown_009');
+            $this->arrErr['err'] = t('LC_Page_Admin_Design_UpDown_009');
             $objQuery->rollback();
             return false;
         }
@@ -246,7 +246,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
         $from_dir = SMARTY_TEMPLATES_REALDIR . $template_code . '/_packages/';
         $to_dir = USER_REALDIR . 'packages/' . $template_code . '/';
         if (!SC_Utils_Ex::recursiveMkdir($to_dir)) {
-            $this->arrErr['err'] = SC_I18n_Ex::t('LC_Page_Admin_Design_UpDown_010', array('T_FIELD' => $to_dir));
+            $this->arrErr['err'] = t('LC_Page_Admin_Design_UpDown_010', array('T_FIELD' => $to_dir));
             
             $objQuery->rollback();
             return false;

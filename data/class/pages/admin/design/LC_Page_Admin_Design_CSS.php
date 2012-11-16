@@ -47,8 +47,8 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
         $this->area_row = 30;
         $this->tpl_subno = 'css';
         $this->tpl_mainno = 'design';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_003');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Design_CSS_002');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_003');
+        $this->tpl_subtitle = t('LC_Page_Admin_Design_CSS_002');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
     }
@@ -95,7 +95,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
                     if (SC_Utils_Ex::isBlank($this->arrErr)) {
                         if ($this->doRegister($css_dir, $this->css_name, $this->old_css_name, $css_path,
                                               $objFormParam->getValue('css_data'))) {
-                            $this->tpl_onload = "alert('" . SC_I18n_Ex::t('ALERT_004') . "');";
+                            $this->tpl_onload = "alert('" . t('ALERT_004') . "');";
                         }
                     }
                 }
@@ -115,7 +115,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
             default:
                 if (isset($_GET['msg']) && $_GET['msg'] == 'on') {
                     // 完了メッセージ
-                    $this->tpl_onload = "alert('" . SC_I18n_Ex::t('ALERT_004') . "');";
+                    $this->tpl_onload = "alert('" . t('ALERT_004') . "');";
                 }
                 break;
         }
@@ -152,10 +152,10 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DEVICE_TYPE_ID'), 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CSS_FILE_NAME'), 'css_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CSS_OLD_FILE_NAME'), 'old_css_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CSS_DATA'), 'css_data');
+        $objFormParam->addParam(t('PARAM_LABEL_DEVICE_TYPE_ID'), 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CSS_FILE_NAME'), 'css_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CSS_OLD_FILE_NAME'), 'old_css_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CSS_DATA'), 'css_data');
 
     }
 
@@ -177,13 +177,13 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
         if (!SC_Utils_Ex::isBlank($old_css_name)
             && $old_css_name != $css_name) {
             if (!unlink($css_dir . $old_css_name . '.css')) {
-                $this->arrErr['err'] = SC_I18n_Ex::t('LC_Page_Admin_Design_CSS_003');
+                $this->arrErr['err'] = t('LC_Page_Admin_Design_CSS_003');
                 return false;
             }
         }
 
         if (!SC_Helper_FileManager_Ex::sfWriteFile($css_path, $css_data)) {
-            $this->arrErr['err'] = SC_I18n_Ex::t('LC_Page_Admin_Design_CSS_004');
+            $this->arrErr['err'] = t('LC_Page_Admin_Design_CSS_004');
             return false;
         }
         return true;
@@ -197,7 +197,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
      */
     function doDelete($css_path) {
         if (!unlink($css_path)) {
-            $this->arrErr['err'] = SC_I18n_Ex::t('LC_Page_Admin_Design_CSS_005');
+            $this->arrErr['err'] = t('LC_Page_Admin_Design_CSS_005');
             return false;
         }
         return true;
@@ -234,7 +234,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
         $arrParams = $objFormParam->getHashArray();
         $objErr = new SC_CheckError_Ex($arrParams);
         $objErr->arrErr =& $arrErr;
-        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_CSS_FILE_NAME'), 'css_name', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK','FILE_NAME_CHECK_BY_NOUPLOAD'));
+        $objErr->doFunc(array(t('PARAM_LABEL_CSS_FILE_NAME'), 'css_name', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK','FILE_NAME_CHECK_BY_NOUPLOAD'));
 
         $device_type_id = $objFormParam->getValue('device_type_id');
         $css_name = $objFormParam->getValue('css_name');
@@ -253,7 +253,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
                 }
             }
             if ($is_error) {
-                $objErr->arrErr['css_name'] = SC_I18n_Ex::t('LC_Page_Admin_Design_CSS_006');
+                $objErr->arrErr['css_name'] = t('LC_Page_Admin_Design_CSS_006');
             }
         }
         return $objErr->arrErr;

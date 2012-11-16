@@ -51,13 +51,13 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex {
         $this->tpl_mainno   = 'system';
         $this->tpl_subno    = 'index';
         $this->tpl_onload   = 'fnGetRadioChecked();';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_009');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_System_001');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_009');
+        $this->tpl_subtitle = t('LC_Page_Admin_System_001');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrAUTHORITY = $masterData->getMasterData('mtb_authority');
-        $this->arrWORK[0]   = SC_I18n_Ex::t('LC_Page_Admin_System_002');
-        $this->arrWORK[1]   = SC_I18n_Ex::t('LC_Page_Admin_System_003');
+        $this->arrWORK[0]   = t('LC_Page_Admin_System_002');
+        $this->arrWORK[1]   = t('LC_Page_Admin_System_003');
     }
 
     /**

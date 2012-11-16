@@ -46,8 +46,8 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'contents/csv.tpl';
         $this->tpl_subno = 'csv';
         $this->tpl_mainno = 'contents';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_005');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Contents_CSV_002');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_005');
+        $this->tpl_subtitle = t('LC_Page_Admin_Contents_CSV_002');
 
         $objCSV = new SC_Helper_CSV_Ex();
         $this->arrSubnavi = $objCSV->arrSubnavi; // 別名
@@ -105,7 +105,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
         $this->tpl_subtitle .= '＞' . $this->arrSubnaviName[ $this->tpl_csv_id ];
 
         if ($this->tpl_is_update) {
-            $this->tpl_onload = "window.alert('" . SC_I18n_Ex::t('ALERT_003') . "');";
+            $this->tpl_onload = "window.alert('" . t('ALERT_003') . "');";
         }
 
     }
@@ -117,8 +117,8 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_EDIT_TYPE'), 'tpl_subno_csv', STEXT_LEN, 'a', array('ALNUM_CHECK', 'MAX_LENGTH_CHECK'), 'product');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_OUTPUT_SETTINGS_LIST'), 'output_list', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK', 'EXIST_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_EDIT_TYPE'), 'tpl_subno_csv', STEXT_LEN, 'a', array('ALNUM_CHECK', 'MAX_LENGTH_CHECK'), 'product');
+        $objFormParam->addParam(t('PARAM_LABEL_OUTPUT_SETTINGS_LIST'), 'output_list', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK', 'EXIST_CHECK'));
         //デフォルト値で上書き
         $objFormParam->setParam(array('tpl_subno_csv' => 'product'));
     }

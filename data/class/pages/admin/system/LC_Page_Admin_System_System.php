@@ -46,8 +46,8 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'system/system.tpl';
         $this->tpl_subno    = 'system';
         $this->tpl_mainno   = 'system';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_009');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_System_System_001');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_009');
+        $this->tpl_subtitle = t('LC_Page_Admin_System_System_001');
     }
 
     /**
@@ -103,7 +103,7 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
      * @return void
      */
     function initForm(&$objFormParam, &$arrParams) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_MODE_ALP'), 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_MODE_ALP'), 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->setParam($arrParams);
     }
 
@@ -116,10 +116,10 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
         $objDB = SC_DB_DBFactory_Ex::getInstance();
 
         $arrSystemInfo = array(
-            array('title' => SC_I18n_Ex::t('LC_Page_Admin_System_System_002'),     'value' => ECCUBE_VERSION),
-            array('title' => SC_I18n_Ex::t('LC_Page_Admin_System_System_003'),    'value' => php_uname()),
-            array('title' => SC_I18n_Ex::t('LC_Page_Admin_System_System_004'),    'value' => $objDB->sfGetDBVersion()),
-            array('title' => SC_I18n_Ex::t('LC_Page_Admin_System_System_005'),   'value' => $_SERVER['SERVER_SOFTWARE']),
+            array('title' => t('LC_Page_Admin_System_System_002'),     'value' => ECCUBE_VERSION),
+            array('title' => t('LC_Page_Admin_System_System_003'),    'value' => php_uname()),
+            array('title' => t('LC_Page_Admin_System_System_004'),    'value' => $objDB->sfGetDBVersion()),
+            array('title' => t('LC_Page_Admin_System_System_005'),   'value' => $_SERVER['SERVER_SOFTWARE']),
         );
 
         $value = phpversion() . ' (' . implode(', ', get_loaded_extensions()) . ')';
@@ -130,12 +130,12 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
             foreach (gd_info() as $key => $val) {
                 $arrValue[] = "$key => $val";
             }
-            $value = SC_I18n_Ex::t('LC_Page_Admin_System_System_006') . ' (' . implode(', ', $arrValue) . ')';
+            $value = t('LC_Page_Admin_System_System_006') . ' (' . implode(', ', $arrValue) . ')';
         } else {
-            $value = SC_I18n_Ex::t('LC_Page_Admin_System_System_007');
+            $value = t('LC_Page_Admin_System_System_007');
         }
-        $arrSystemInfo[] = array('title' => SC_I18n_Ex::t('LC_Page_Admin_System_System_008'), 'value' => $value);
-        $arrSystemInfo[] = array('title' => SC_I18n_Ex::t('LC_Page_Admin_System_System_009'), 'value' => $_SERVER['HTTP_USER_AGENT']);
+        $arrSystemInfo[] = array('title' => t('LC_Page_Admin_System_System_008'), 'value' => $value);
+        $arrSystemInfo[] = array('title' => t('LC_Page_Admin_System_System_009'), 'value' => $_SERVER['HTTP_USER_AGENT']);
 
         return $arrSystemInfo;
     }

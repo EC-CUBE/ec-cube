@@ -48,8 +48,8 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
         $this->footer_row = 13;
         $this->tpl_subno = 'header';
         $this->tpl_mainno = 'design';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_003');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Design_Header_002');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_003');
+        $this->tpl_subtitle = t('LC_Page_Admin_Design_Header_002');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
     }
@@ -86,7 +86,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
                 $this->arrErr = $this->lfCheckError($objFormParam, $this->arrErr);
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     if ($this->doRegister($objFormParam)) {
-                        $this->tpl_onload = "alert('" . SC_I18n_Ex::t('ALERT_004') . "');";
+                        $this->tpl_onload = "alert('" . t('ALERT_004') . "');";
                     }
                 }
                 break;
@@ -100,7 +100,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
             $header_path = $this->getTemplatePath($this->device_type_id, 'header');
             $footer_path = $this->getTemplatePath($this->device_type_id, 'footer');
             if ($header_path === false || $footer_path === false) {
-                $this->arrErr['err'] = SC_I18n_Ex::t('LC_Page_Admin_Design_Header_003');
+                $this->arrErr['err'] = t('LC_Page_Admin_Design_Header_003');
             } else {
                 $this->header_data = file_get_contents($header_path);
                 $this->footer_data = file_get_contents($footer_path);
@@ -131,10 +131,10 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DEVICE_TYPE_ID'), 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DIVISION_ALP'), 'division', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_HEADER_DATA'), 'header');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_FOOTER_DATA'), 'footer');
+        $objFormParam->addParam(t('PARAM_LABEL_DEVICE_TYPE_ID'), 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_DIVISION_ALP'), 'division', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_HEADER_DATA'), 'header');
+        $objFormParam->addParam(t('PARAM_LABEL_FOOTER_DATA'), 'footer');
     }
 
     /**
@@ -147,7 +147,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
         $arrParams = $objFormParam->getHashArray();
         $objErr = new SC_CheckError_Ex($arrParams);
         $objErr->arrErr =& $arrErr;
-        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_DIVISION_ALP'), 'division', STEXT_LEN), array('EXIST_CHECK'));
+        $objErr->doFunc(array(t('PARAM_LABEL_DIVISION_ALP'), 'division', STEXT_LEN), array('EXIST_CHECK'));
         return $objErr->arrErr;
     }
 
@@ -165,7 +165,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
         $tpl_path = $this->getTemplatePath($objFormParam->getValue('device_type_id'), $division);
         if ($tpl_path === false
             || !SC_Helper_FileManager_Ex::sfWriteFile($tpl_path, $contents)) {
-            $this->arrErr['err'] = SC_I18n_Ex::t('LC_Page_Admin_Design_Header_004');
+            $this->arrErr['err'] = t('LC_Page_Admin_Design_Header_004');
             return false;
         }
         return true;

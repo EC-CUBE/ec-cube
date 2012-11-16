@@ -51,14 +51,14 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'basis/seo.tpl';
         $this->tpl_subno = 'seo';
         $this->tpl_mainno = 'basis';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_006');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Basis_Seo_002');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_006');
+        $this->tpl_subtitle = t('LC_Page_Admin_Basis_Seo_002');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrTAXRULE = $masterData->getMasterData('mtb_taxrule');
-        $this->arrDeviceTypeName[DEVICE_TYPE_PC] = SC_I18n_Ex::t('LC_Page_Admin_Basis_Seo_003');
-        $this->arrDeviceTypeName[DEVICE_TYPE_MOBILE] = SC_I18n_Ex::t('LC_Page_Admin_Basis_Seo_004');
-        $this->arrDeviceTypeName[DEVICE_TYPE_SMARTPHONE] = SC_I18n_Ex::t('LC_Page_Admin_Basis_Seo_005');
+        $this->arrDeviceTypeName[DEVICE_TYPE_PC] = t('LC_Page_Admin_Basis_Seo_003');
+        $this->arrDeviceTypeName[DEVICE_TYPE_MOBILE] = t('LC_Page_Admin_Basis_Seo_004');
+        $this->arrDeviceTypeName[DEVICE_TYPE_SMARTPHONE] = t('LC_Page_Admin_Basis_Seo_005');
     }
 
     /**
@@ -160,11 +160,11 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
     }
 
     function lfInitParam($mode, &$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DEVICE_ID'), 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PAGE_ID'), 'page_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_META_AUTHOR'), 'author', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_META_DESCRIPTION'), 'description', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_KEYWORDS'), 'keyword', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_DEVICE_ID'), 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PAGE_ID'), 'page_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_META_AUTHOR'), 'author', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_META_DESCRIPTION'), 'description', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_KEYWORDS'), 'keyword', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
     }
 
     /**

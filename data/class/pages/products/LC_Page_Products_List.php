@@ -250,14 +250,14 @@ __EOS__;
 
         // 複数項目チェック
         if ($tpl_classcat_find1[$product_id]) {
-            $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_CLASS1'), 'classcategory_id1', INT_LEN), array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+            $objErr->doFunc(array(t('PARAM_LABEL_CLASS1'), 'classcategory_id1', INT_LEN), array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         }
         if ($tpl_classcat_find2[$product_id]) {
-            $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_CLASS2'), 'classcategory_id2', INT_LEN), array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+            $objErr->doFunc(array(t('PARAM_LABEL_CLASS2'), 'classcategory_id2', INT_LEN), array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         }
 
-        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_CLASS_ID'), 'product_class_id', INT_LEN), array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_QUANTITY'), 'quantity', INT_LEN), array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objErr->doFunc(array(t('PARAM_LABEL_PRODUCT_CLASS_ID'), 'product_class_id', INT_LEN), array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objErr->doFunc(array(t('PARAM_LABEL_QUANTITY'), 'quantity', INT_LEN), array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
         return $objErr->arrErr;
     }
@@ -298,9 +298,9 @@ __EOS__;
     function lfGetSearchConditionDisp($arrSearchData) {
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
         $arrSearch  = array(
-            'category' => SC_I18n_Ex::t('LC_Page_Products_List_001'),
-            'maker'    => SC_I18n_Ex::t('LC_Page_Products_List_002'),
-            'name'     => SC_I18n_Ex::t('LC_Page_Products_List_003'));
+            'category' => t('LC_Page_Products_List_001'),
+            'maker'    => t('LC_Page_Products_List_002'),
+            'name'     => t('LC_Page_Products_List_003'));
         // カテゴリ検索条件
         if ($arrSearchData['category_id'] > 0) {
             $arrSearch['category']  = $objQuery->get('category_name', 'dtb_category', 'category_id = ?', array($arrSearchData['category_id']));

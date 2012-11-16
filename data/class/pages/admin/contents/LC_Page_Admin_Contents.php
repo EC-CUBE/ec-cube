@@ -51,8 +51,8 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
             'month' => date('n'),
             'day' => date('j'),
         );
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_005');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Contents_002');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_005');
+        $this->tpl_subtitle = t('LC_Page_Admin_Contents_002');
         //---- 日付プルダウン設定
         $objDate = new SC_Date_Ex(ADMIN_NEWS_STARTYEAR);
         $this->arrYear = $objDate->getYear();
@@ -102,7 +102,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
                         $this->lfNewsInsert($arrPost,$member_id);
                     }
                     $news_id = '';
-                    $this->tpl_onload = "window.alert('" . SC_I18n_Ex::t('ALERT_001') . "');";
+                    $this->tpl_onload = "window.alert('" . t('ALERT_001') . "');";
                 } else {
                     $this->arrForm = $arrPost;
                 }
@@ -173,7 +173,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
     function lfCheckError(&$objFormParam) {
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
-        $objErr->doFunc(array(SC_I18n_Ex::t('PARAM_LABEL_DATE'), 'year', 'month', 'day'), array('CHECK_DATE'));
+        $objErr->doFunc(array(t('PARAM_LABEL_DATE'), 'year', 'month', 'day'), array('CHECK_DATE'));
         return $objErr->arrErr;
     }
 
@@ -182,15 +182,15 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * @param Object $objFormParam
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_NEWS_ID'), 'news_id');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DATE_YEAR'), 'year', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DATE_MONTH'), 'month', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_DATE_DAY'), 'day', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_TITLE'), 'news_title', MTEXT_LEN, 'KVa', array('EXIST_CHECK','MAX_LENGTH_CHECK','SPTAB_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_URL'), 'news_url', URL_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_BODY_TEXT'), 'news_comment', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_OPEN_OTHER_WINDOW'), 'link_method', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_MOVE_RANK'), 'term', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_NEWS_ID'), 'news_id');
+        $objFormParam->addParam(t('PARAM_LABEL_DATE_YEAR'), 'year', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_DATE_MONTH'), 'month', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_DATE_DAY'), 'day', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_TITLE'), 'news_title', MTEXT_LEN, 'KVa', array('EXIST_CHECK','MAX_LENGTH_CHECK','SPTAB_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_URL'), 'news_url', URL_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_BODY_TEXT'), 'news_comment', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_OPEN_OTHER_WINDOW'), 'link_method', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_MOVE_RANK'), 'term', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**

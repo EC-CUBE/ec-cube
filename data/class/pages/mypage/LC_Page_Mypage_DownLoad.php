@@ -194,10 +194,10 @@ __EOS__;
 
     /* パラメーター情報の初期化 */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CUSTOMER_ID_ALP'), 'customer_id', INT_LEN, 'n', array('EXIST_CHECK','NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_ORDER_ID_ALP'), 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_ID_ALP'), 'product_id', INT_LEN, 'n', array('EXIST_CHECK','NUM_CHECK'));
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_CLASS_ID_ALP'), 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK','NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_ID_ALP'), 'customer_id', INT_LEN, 'n', array('EXIST_CHECK','NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ORDER_ID_ALP'), 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_ID_ALP'), 'product_id', INT_LEN, 'n', array('EXIST_CHECK','NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CLASS_ID_ALP'), 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK','NUM_CHECK'));
     }
 
     /* 入力内容のチェック */

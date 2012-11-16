@@ -46,8 +46,8 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'products/product_select.tpl';
         $this->tpl_mainno = 'products';
         $this->tpl_subno = '';
-        $this->tpl_maintitle = SC_I18n_Ex::t('TPL_MAINTITLE_007');
-        $this->tpl_subtitle = SC_I18n_Ex::t('LC_Page_Admin_Products_ProductSelect_001');
+        $this->tpl_maintitle = t('TPL_MAINTITLE_007');
+        $this->tpl_subtitle = t('LC_Page_Admin_Products_ProductSelect_001');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPRODUCTSTATUS_COLOR = $masterData->getMasterData('mtb_product_status_color');
@@ -108,9 +108,9 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_CATEGORY'), 'search_category_id', STEXT_LEN, 'n');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_NAME'), 'search_name', STEXT_LEN, 'KVa');
-        $objFormParam->addParam(SC_I18n_Ex::t('PARAM_LABEL_PRODUCT_CODE'), 'search_product_code', STEXT_LEN, 'KVa');
+        $objFormParam->addParam(t('PARAM_LABEL_CATEGORY'), 'search_category_id', STEXT_LEN, 'n');
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_NAME'), 'search_name', STEXT_LEN, 'KVa');
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CODE'), 'search_product_code', STEXT_LEN, 'KVa');
     }
 
     /* 商品検索結果取得 */

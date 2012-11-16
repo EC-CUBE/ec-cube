@@ -124,7 +124,7 @@ class SC_SendMail {
      * @deprecated 2.12.2 (#1912)
      */
     function setHost($host) {
-        trigger_error(SC_I18n_Ex::t('SC_SendMail_001'), E_USER_WARNING);
+        trigger_error(t('SC_SendMail_001'), E_USER_WARNING);
         $this->host = $host;
         $arrHost = array(
                 'host' => $this->host,
@@ -141,7 +141,7 @@ class SC_SendMail {
      * @deprecated 2.12.2 (#1912)
      */
     function setPort($port) {
-        trigger_error(SC_I18n_Ex::t('SC_SendMail_001'), E_USER_WARNING);
+        trigger_error(t('SC_SendMail_001'), E_USER_WARNING);
         $this->port = $port;
         $arrHost = array(
                 'host' => $this->host,
@@ -281,7 +281,7 @@ class SC_SendMail {
         if (PEAR::isError($result)) {
             // XXX Windows 環境では SJIS でメッセージを受け取るようなので変換する。
             $tokens = array('T_MESSAGE' => mb_convert_encoding($result->getMessage(), CHAR_CODE, 'auto'));
-            $msg = SC_I18n_Ex::t('SC_SendMail_003', $tokens);
+            $msg = t('SC_SendMail_003', $tokens);
             trigger_error($msg, E_USER_WARNING);
             GC_Utils_Ex::gfDebugLog($header);
             return false;
@@ -333,7 +333,7 @@ class SC_SendMail {
                 break;
 
             default:
-                trigger_error(SC_I18n_Ex::t('SC_SendMail_002', array('T_BACKEND' => var_export($backend, true))), E_USER_ERROR);
+                trigger_error(t('SC_SendMail_002', array('T_BACKEND' => var_export($backend, true))), E_USER_ERROR);
                 exit;
         }
         return $arrParams;
