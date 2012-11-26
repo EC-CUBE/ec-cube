@@ -46,8 +46,6 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'system/adminarea.tpl';
         $this->tpl_subno = 'adminarea';
         $this->tpl_mainno = 'system';
-        $this->tpl_maintitle = 'システム設定';
-        $this->tpl_subtitle = '管理画面設定';
         $this->tpl_maintitle = t('TPL_MAINTITLE_009');
         $this->tpl_subtitle = t('LC_Page_Admin_System_AdminArea_001');
         $this->tpl_enable_ssl = FALSE;
