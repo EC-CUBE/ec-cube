@@ -147,19 +147,19 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfCheckAdminArea(&$arrForm, &$arrErr) {
-        $admin_dir = trim($arrForm['admin_dir']).'/';
+        $admin_dir = trim($arrForm['admin_dir']) . '/';
 
         $installData = file(CONFIG_REALFILE, FILE_IGNORE_NEW_LINES);
         foreach ($installData as $key=>$line) {
             if (strpos($line,'ADMIN_DIR') !== false and ADMIN_DIR != $admin_dir) {
                 //既存ディレクトリのチェック
                 if (file_exists(HTML_REALDIR.$admin_dir) and $admin_dir != 'admin/') {
-                    $arrErr['admin_dir'] .= t('LC_Page_Admin_System_AdminArea_003', array('T_FIELD' => OOT_URLPATH.$admin_dir));
+                    $arrErr['admin_dir'] .= t('LC_Page_Admin_System_AdminArea_003', array('T_FIELD' => ROOT_URLPATH . $admin_dir));
                     
                 }
                 //権限チェック
                 if (!is_writable(HTML_REALDIR . ADMIN_DIR)) {
-                    $arrErr['admin_dir'] .= t('LC_Page_Admin_System_AdminArea_004', array('T_FIELD' => ROOT_URLPATH.ADMIN_DIR));
+                    $arrErr['admin_dir'] .= t('LC_Page_Admin_System_AdminArea_004', array('T_FIELD' => ROOT_URLPATH . ADMIN_DIR));
                     
                 }
             }
@@ -168,12 +168,12 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
 
     //管理機能ディレクトリのリネームと CONFIG_REALFILE の変更
     function lfUpdateAdminData(&$arrForm) {
-        $admin_dir = trim($arrForm['admin_dir']).'/';
-        $admin_force_ssl = 'FALSE';
+        $admin_dir = trim($arrForm['admin_dir']) . '/';
+        $admin_force_ssl = 'false';
         if ($arrForm['admin_force_ssl'] == 1) {
-            $admin_force_ssl = 'TRUE';
+            $admin_force_ssl = 'true';
         }
-        $admin_allow_hosts = explode("\n",$arrForm['admin_allow_hosts']);
+        $admin_allow_hosts = explode("\n", $arrForm['admin_allow_hosts']);
         foreach ($admin_allow_hosts as $key=>$host) {
             $host = trim($host);
             if (strlen($host) >= 8) {
@@ -189,10 +189,10 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
         $diff = 0;
         foreach ($installData as $key=>$line) {
             if (strpos($line,'ADMIN_DIR') !== false and ADMIN_DIR != $admin_dir) {
-                $installData[$key] = 'define("ADMIN_DIR","'.$admin_dir.'");';
+                $installData[$key] = 'define("ADMIN_DIR", "' . $admin_dir . '");';
                 //管理機能ディレクトリのリネーム
                 if (!rename(HTML_REALDIR.ADMIN_DIR,HTML_REALDIR.$admin_dir)) {
-                    $this->arrErr['admin_dir'] .= t('LC_Page_Admin_System_AdminArea_005', array('T_FIELD' => ROOT_URLPATH.ADMIN_DIR));
+                    $this->arrErr['admin_dir'] .= t('LC_Page_Admin_System_AdminArea_005', array('T_FIELD' => ROOT_URLPATH . ADMIN_DIR));
                     
                     return false;
                 }
@@ -200,11 +200,11 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
             }
 
             if (strpos($line,'ADMIN_FORCE_SSL') !== false) {
-                $installData[$key] = 'define("ADMIN_FORCE_SSL",'.$admin_force_ssl.');';
+                $installData[$key] = 'define("ADMIN_FORCE_SSL", ' . $admin_force_ssl.');';
                 $diff ++;
             }
             if (strpos($line,'ADMIN_ALLOW_HOSTS') !== false and ADMIN_ALLOW_HOSTS != $admin_allow_hosts) {
-                $installData[$key] = "define('ADMIN_ALLOW_HOSTS','".$admin_allow_hosts."');";
+                $installData[$key] = "define('ADMIN_ALLOW_HOSTS', '" . $admin_allow_hosts."');";
                 $diff ++;
             }
         }

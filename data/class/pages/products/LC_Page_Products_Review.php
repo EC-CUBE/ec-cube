@@ -123,7 +123,7 @@ class LC_Page_Products_Review extends LC_Page_Ex {
         //商品名の取得
         $this->arrForm['name'] = $this->lfGetProductName($this->arrForm['product_id']);
         if (empty($this->arrForm['name'])) {
-            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR);
+            SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
         }
 
         $this->setTemplate($this->tpl_mainpage);
@@ -194,7 +194,7 @@ class LC_Page_Products_Review extends LC_Page_Ex {
     function lfGetProductName($product_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        return $objQuery->get('name', 'dtb_products', 'product_id = ? ', array($product_id));
+        return $objQuery->get('name', 'dtb_products', 'product_id = ? AND del_flg = 0 AND status = 1', array($product_id));
     }
 
     //登録実行
