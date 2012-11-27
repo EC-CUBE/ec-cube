@@ -79,9 +79,9 @@
     <!--★販売価格★-->
     <font color="#FF0000"><!--{$smarty.const.SALE_PRICE_TITLE}-->(税込)：
         <!--{if $arrProduct.price02_min_inctax == $arrProduct.price02_max_inctax}-->
-        	<!--{$arrProduct.price02_min_inctax|number_format}-->
+            <!--{$arrProduct.price02_min_inctax|number_format}-->
         <!--{else}-->
-        	<!--{$arrProduct.price02_min_inctax|number_format}-->～<!--{$arrProduct.price02_max_inctax|number_format}-->
+            <!--{$arrProduct.price02_min_inctax|number_format}-->～<!--{$arrProduct.price02_max_inctax|number_format}-->
         <!--{/if}-->
         円</font>
     <br>
@@ -126,15 +126,15 @@
     <br>
 
     <form name="form1" method="post" action="?">
-    	<input type="hidden" name="mode" value="select">
+        <input type="hidden" name="mode" value="select">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->">
 
-    	<input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->">
+        <input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->">
         <!--{if $tpl_stock_find}-->
-        	<!--★商品を選ぶ★-->
-        	<center><input type="submit" name="select" id="cart" value="この商品を選ぶ"></center>
+            <!--★商品を選ぶ★-->
+            <center><input type="submit" name="select" id="cart" value="この商品を選ぶ"></center>
         <!--{else}-->
-        	<font color="#FF0000">申し訳ございませんが､只今品切れ中です｡</font>
+            <font color="#FF0000">申し訳ございませんが､只今品切れ中です｡</font>
         <!--{/if}-->
     </form>
 <!--{/strip}-->

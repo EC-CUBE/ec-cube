@@ -32,7 +32,7 @@
     <!--{$tpl_kiyaku_text|h|nl2br}--><br>
 
     <!--{if $max >= $offset+1}-->
-    	<a href="kiyaku.php?offset=<!--{$offset+1}-->">次へ→</a><br><br>
+        <a href="kiyaku.php?offset=<!--{$offset+1}-->">次へ→</a><br><br>
     <!--{/if}-->
 
     <a href="<!--{$smarty.const.HTTPS_URL}-->entry/<!--{$smarty.const.DIR_INDEX_PATH}-->?<!--{$smarty.const.SID}-->" accesskey="1"><!--{1|numeric_emoji}-->同意して登録へ</a><br>

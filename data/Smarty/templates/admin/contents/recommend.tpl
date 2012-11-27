@@ -71,7 +71,7 @@ function lfnSortItem(mode,data){
             flag = false;
         }
     }
-	
+    
     if ( flag ){
         document.form1["mode"].value = mode;
         document.form1["rank"].value = data;
@@ -95,7 +95,7 @@ function lfnSortItem(mode,data){
             <th>商品/コメント</th>
             <th>編集</th>
             <th>削除</th>
-			<th>並び替え</th>
+            <th>並び替え</th>
         </tr>
 
         <tr>

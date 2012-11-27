@@ -29,7 +29,7 @@
         (新規ご登録)<br>
         <form name="member_form" id="member_form" method="post" action="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php">
             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->">
-        	<div align="center"><input type="submit" value="新規登録"></div><br>
+            <div align="center"><input type="submit" value="新規登録"></div><br>
         </form>
         <!--▲まだ会員登録されていないお客様-->
     <!--{/if}-->
@@ -37,22 +37,22 @@
     <!--▼会員登録がお済みのお客様-->
     <form name="member_form" id="member_form" method="post" action="?">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->">
-    	<input type="hidden" name="mode" value="login">
+        <input type="hidden" name="mode" value="login">
         <!--{if !$tpl_valid_phone_id}-->
-        	■以前にご注文された方<br>
-        	(モバイル又はPCでご登録済み)<br>
-        	▼メールアドレス<br>
-        	<!--{assign var=key value="login_email"}-->
-        	<font color="#FF0000"><!--{$arrErr[$key]}--></font>
-        	<input type="text" name="<!--{$key}-->" value="<!--{$tpl_login_email|h}-->" size="40" istyle="3"><br>
+            ■以前にご注文された方<br>
+            (モバイル又はPCでご登録済み)<br>
+            ▼メールアドレス<br>
+            <!--{assign var=key value="login_email"}-->
+            <font color="#FF0000"><!--{$arrErr[$key]}--></font>
+            <input type="text" name="<!--{$key}-->" value="<!--{$tpl_login_email|h}-->" size="40" istyle="3"><br>
         <!--{else}-->
             <input type="hidden" name="login_email" value="dummy">
         <!--{/if}-->
-    	▼パスワード<br>
-    	<!--{assign var=key value="login_pass"}--><font color="#FF0000"><!--{$arrErr[$key]}--></font>
-    	<input type="password" name="<!--{$key}-->" size="40" istyle="3"><br>
-    	<center><input type="submit" value="送信" name="log"></center><br>
-    	<a href="<!--{$smarty.const.ROOT_URLPATH}-->forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->">パスワードをお忘れの方はこちら</a><br>
+        ▼パスワード<br>
+        <!--{assign var=key value="login_pass"}--><font color="#FF0000"><!--{$arrErr[$key]}--></font>
+        <input type="password" name="<!--{$key}-->" size="40" istyle="3"><br>
+        <center><input type="submit" value="送信" name="log"></center><br>
+        <a href="<!--{$smarty.const.ROOT_URLPATH}-->forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->">パスワードをお忘れの方はこちら</a><br>
     </form>
     <!--▲会員登録がお済のお客様-->
 <!--{/strip}-->
