@@ -62,7 +62,7 @@
             <dt>メールアドレス</dt>
             <dd><a href="mailto:<!--{$arrForm.email.value|escape:'hex'}-->"><!--{$arrForm.email.value|escape:'hexentity'}--></a></dd>
 
-            <dt>お問い合わせ内容<br /><span class="mini">（全角1000字以下）</span></dt>
+            <dt>お問い合わせ内容</dt>
             <dd><!--{$arrForm.contents.value|h|nl2br}--></dd>
         </dl>
 
