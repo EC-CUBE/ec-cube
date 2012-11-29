@@ -174,7 +174,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
      */
     function getRecommendProducts() {
         $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $col = 'dtb_products.name,dtb_products.main_list_image,dtb_best_products.*';
+        $col = 'dtb_products.name,dtb_products.main_list_image,dtb_products.del_flg as p_del_flg,dtb_best_products.*';
         $table = 'dtb_best_products INNER JOIN dtb_products ON dtb_best_products.product_id = dtb_products.product_id';
         $where = 'dtb_best_products.del_flg = 0';
         $order = 'rank';
