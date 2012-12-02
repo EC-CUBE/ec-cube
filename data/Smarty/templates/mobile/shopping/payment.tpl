@@ -82,7 +82,7 @@
         <!--{if $arrErr[$key] != ""}-->
             <font color="#FF0000"><!--{$arrErr[$key]}--></font>
         <!--{/if}-->
-        <textarea cols="20" rows="2" name="<!--{$key}-->"><!--{$arrForm[$key].value|h}--></textarea>
+        <textarea cols="20" rows="2" name="<!--{$key}-->"><!--{"\n"}--><!--{$arrForm[$key].value|h}--></textarea>
         <br>
         <br>
 

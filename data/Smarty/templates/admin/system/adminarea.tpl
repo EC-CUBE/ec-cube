@@ -64,7 +64,7 @@ jQuery(function(){
             <td>
                 <!--{assign var=key value="admin_allow_hosts"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key]|h}--></textarea>
+                <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{"\n"}--><!--{$arrForm[$key]|h}--></textarea>
                 <span class="attention"> (上限<!--{$smarty.const.LTEXT_LEN}-->文字)</span><br />
                 <span>※管理機能へのアクセスを特定のIPアドレスからの接続のみに制限します。<br />
                 アクセスを許可するIPアドレスを1行づつ入力してください。何も入力しない場合は全てを許可します。</span><br />

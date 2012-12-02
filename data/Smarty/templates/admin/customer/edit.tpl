@@ -220,7 +220,7 @@
                 <th>SHOP用メモ</th>
                 <td>
                     <span class="attention"><!--{$arrErr.note}--></span>
-                    <textarea name="note" maxlength="<!--{$smarty.const.LTEXT_LEN}-->" <!--{if $arrErr.note != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> cols="60" rows="8" class="area60"><!--{$arrForm.note|h}--></textarea>
+                    <textarea name="note" maxlength="<!--{$smarty.const.LTEXT_LEN}-->" <!--{if $arrErr.note != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> cols="60" rows="8" class="area60"><!--{"\n"}--><!--{$arrForm.note|h}--></textarea>
                 </td>
             </tr>
             <tr>

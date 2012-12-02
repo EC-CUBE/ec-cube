@@ -65,7 +65,7 @@
             <td>
                 <!--{assign var=key value="body"}-->
                 <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
-                <textarea name="body" cols="90" rows="40" class="area90" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key].value|h}--></textarea>
+                <textarea name="body" cols="90" rows="40" class="area90" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{"\n"}--><!--{$arrForm[$key].value|h}--></textarea>
             </td>
         </tr>
     </table>

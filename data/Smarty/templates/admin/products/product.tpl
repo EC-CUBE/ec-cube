@@ -252,7 +252,7 @@ function selectAll(target) {
             <th>検索ワード<br />※複数の場合は、カンマ( , )区切りで入力して下さい</th>
             <td>
                 <span class="attention"><!--{$arrErr.comment3}--></span>
-                <textarea name="comment3" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr.comment3|sfGetErrorColor}-->"><!--{$arrForm.comment3|h}--></textarea><br />
+                <textarea name="comment3" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr.comment3|sfGetErrorColor}-->"><!--{"\n"}--><!--{$arrForm.comment3|h}--></textarea><br />
                 <span class="attention"> (上限<!--{$smarty.const.LLTEXT_LEN}-->文字)</span>
             </td>
         </tr>
@@ -260,7 +260,7 @@ function selectAll(target) {
             <th>備考欄(SHOP専用)</th>
             <td>
                 <span class="attention"><!--{$arrErr.note}--></span>
-                <textarea name="note" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr.note|sfGetErrorColor}-->"><!--{$arrForm.note|h}--></textarea><br />
+                <textarea name="note" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr.note|sfGetErrorColor}-->"><!--{"\n"}--><!--{$arrForm.note|h}--></textarea><br />
                 <span class="attention"> (上限<!--{$smarty.const.LLTEXT_LEN}-->文字)</span>
             </td>
         </tr>
@@ -268,7 +268,7 @@ function selectAll(target) {
             <th>一覧-メインコメント<span class="attention"> *</span></th>
             <td>
                 <span class="attention"><!--{$arrErr.main_list_comment}--></span>
-                <textarea name="main_list_comment" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{if $arrErr.main_list_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" cols="60" rows="8" class="area60"><!--{$arrForm.main_list_comment|h}--></textarea><br />
+                <textarea name="main_list_comment" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{if $arrErr.main_list_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" cols="60" rows="8" class="area60"><!--{"\n"}--><!--{$arrForm.main_list_comment|h}--></textarea><br />
                 <span class="attention"> (上限<!--{$smarty.const.MTEXT_LEN}-->文字)</span>
             </td>
         </tr>
@@ -276,7 +276,7 @@ function selectAll(target) {
             <th>詳細-メインコメント<span class="attention">(タグ許可)*</span></th>
             <td>
                 <span class="attention"><!--{$arrErr.main_comment}--></span>
-                <textarea name="main_comment" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{if $arrErr.main_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" cols="60" rows="8" class="area60"><!--{$arrForm.main_comment|h}--></textarea><br />
+                <textarea name="main_comment" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{if $arrErr.main_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" cols="60" rows="8" class="area60"><!--{"\n"}--><!--{$arrForm.main_comment|h}--></textarea><br />
                 <span class="attention"> (上限<!--{$smarty.const.LLTEXT_LEN}-->文字)</span>
             </td>
         </tr>
@@ -353,7 +353,7 @@ function selectAll(target) {
             <!--{assign var=key value="sub_comment`$smarty.section.cnt.iteration`"}-->
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <textarea name="sub_comment<!--{$smarty.section.cnt.iteration}-->" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|h}--></textarea><br />
+                <textarea name="sub_comment<!--{$smarty.section.cnt.iteration}-->" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{"\n"}--><!--{$arrForm[$key]|h}--></textarea><br />
                 <span class="attention"> (上限<!--{$smarty.const.LLTEXT_LEN}-->文字)</span>
             </td>
         </tr>
@@ -422,7 +422,7 @@ function selectAll(target) {
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 商品コード:<!--{$arrRecommend[$recommend_no].product_code_min}--><br />
                 商品名:<!--{$arrRecommend[$recommend_no].name|h}--><br />
-                <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrRecommend[$recommend_no].comment|h}--></textarea><br />
+                <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{"\n"}--><!--{$arrRecommend[$recommend_no].comment|h}--></textarea><br />
                 <span class="attention"> (上限<!--{$smarty.const.LTEXT_LEN}-->文字)</span>
             </td>
         </tr>

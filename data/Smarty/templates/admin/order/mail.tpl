@@ -81,7 +81,7 @@
             <td>
                 <!--{assign var=key value="header"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <textarea    name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" cols="75" rows="12" class="area75"><!--{$arrForm[$key].value|h}--></textarea>
+                <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" cols="75" rows="12" class="area75"><!--{"\n"}--><!--{$arrForm[$key].value|h}--></textarea>
             </td>
         </tr>
         <tr>
@@ -92,7 +92,7 @@
             <td>
                 <!--{assign var=key value="footer"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <textarea    name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" cols="75" rows="12" class="area75"><!--{$arrForm[$key].value|h}--></textarea>
+                <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" cols="75" rows="12" class="area75"><!--{"\n"}--><!--{$arrForm[$key].value|h}--></textarea>
             </td>
         </tr>
     </table>

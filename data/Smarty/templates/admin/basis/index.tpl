@@ -246,7 +246,7 @@ $(function() {
             <td>
                 <!--{assign var=key value="good_traded"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key]|h}--></textarea>
+                <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{"\n"}--><!--{$arrForm[$key]|h}--></textarea>
                 <span class="attention"> (上限<!--{$smarty.const.LLTEXT_LEN}-->文字)</span>
             </td>
         </tr>
@@ -255,7 +255,7 @@ $(function() {
             <td>
                 <!--{assign var=key value="message"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key]|h}--></textarea>
+                <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{"\n"}--><!--{$arrForm[$key]|h}--></textarea>
                 <span class="attention"> (上限<!--{$smarty.const.LLTEXT_LEN}-->文字)</span>
             </td>
         </tr>
