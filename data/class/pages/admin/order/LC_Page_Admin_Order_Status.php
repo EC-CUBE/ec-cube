@@ -82,7 +82,6 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
         $objFormParam->convParam();
 
         $this->arrForm = $objFormParam->getHashArray();
-        //        $this->arrForm = $_POST;
 
         //支払方法の取得
         $this->arrPayment = $objDb->sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
@@ -90,35 +89,28 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
         switch ($this->getMode()) {
             case 'update':
                 switch ($objFormParam->getValue('change_status')) {
-                    case '':
-                        break;
-                        // 削除
+                    // 削除
                     case 'delete':
                         $this->lfDelete($objFormParam->getValue('move'));
                         break;
-                        // 更新
+                    // 更新
                     default:
                         $this->lfStatusMove($objFormParam->getValue('change_status'), $objFormParam->getValue('move'));
                         break;
                 }
-
-                // 対応状況
-                $status = !is_null($objFormParam->getValue('status')) ? $objFormParam->getValue('status') : '';
                 break;
 
             case 'search':
-                // 対応状況
-                $status = !is_null($_POST['status']) ? $objFormParam->getValue('status') : '';
-                break;
-
             default:
-                // 対応状況
-                //デフォルトで新規受付一覧表示
-                $status = ORDER_NEW;
                 break;
         }
 
         // 対応状況
+        $status = $objFormParam->getValue('status');
+        if (strlen($status) === 0) {
+                //デフォルトで新規受付一覧表示
+                $status = ORDER_NEW;
+        }
         $this->SelectedStatus = $status;
         //検索結果の表示
         $this->lfStatusDisp($status, $objFormParam->getValue('search_pageno'));
@@ -132,9 +124,11 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam(t('PARAM_LABEL_ORDER_NUMBER'), 'order_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_BEFORE_ORDER_STATUS'), 'status', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_AFTER_ORDER_STATUS'), 'change_status', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_PAGE_NO'), 'search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_MOVE_ORDER_NUMBER'), 'move', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+		if ($this->getMode() == 'update') {
+        	$objFormParam->addParam(t('PARAM_LABEL_AFTER_ORDER_STATUS'), 'change_status', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        	$objFormParam->addParam(t('PARAM_LABEL_MOVE_ORDER_NUMBER'), 'move', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        }
     }
 
     /**
@@ -148,13 +142,6 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
         if (is_null($objFormParam->getValue('search_pageno'))) {
             $objFormParam->setValue('search_pageno', 1);
         }
-
-        if ($this->getMode() == 'change') {
-            if (is_null($objFormParam->getValue('change_status'))) {
-                $objFormParam->setValue('change_status','');
-            }
-        }
-
     }
 
     /**

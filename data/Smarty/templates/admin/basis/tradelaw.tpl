@@ -34,7 +34,9 @@
             <!--{if $arrErr[$key]}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <!--{/if}-->
-            <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length}--></span></td>
+            <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" />
+			<span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length}--></span>
+		</td>
         </tr>
         <tr>
             <th><!--{t string="tpl_105"}--><span class="attention"> *</span></th>
@@ -64,8 +66,8 @@
         <tr>
             <th><!--{t string="tpl_107"}--><span class="attention"> *</span></th>
             <td>
-                    <!--{assign var=key value="law_pref"}-->
-                    <!--{if $arrErr[$key]}-->
+                <!--{assign var=key value="law_pref"}-->
+                <!--{if $arrErr[$key]}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
                     <!--{/if}-->
                     <select class="top" name="<!--{$arrForm[$key].keyname}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
@@ -91,33 +93,33 @@
         <tr>
             <th><!--{t string="tpl_037"}--><span class="attention"> *</span></th>
             <td>
-            <!--{assign var=key1 value="law_tel01"}-->
-            <!--{assign var=key2 value="law_tel02"}-->
-            <!--{assign var=key3 value="law_tel03"}-->
-            <!--{if $arrErr[$key1] || $arrErr[$key2] || $arrErr[$key3]}-->
-            <span class="attention"><!--{$arrErr[$key1]}--></span>
-            <span class="attention"><!--{$arrErr[$key2]}--></span>
-            <span class="attention"><!--{$arrErr[$key3]}--></span>
-            <!--{/if}-->
-            <input type="text" name="<!--{$arrForm[$key1].keyname}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="6" class="box6" /> -
-            <input type="text" name="<!--{$arrForm[$key2].keyname}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"    size="6" class="box6" /> -
-            <input type="text" name="<!--{$arrForm[$key3].keyname}-->" value="<!--{$arrForm[$key3].value|h}-->" maxlength="<!--{$arrForm[$key3].length}-->" style="<!--{$arrErr[$key3]|sfGetErrorColor}-->" size="6" class="box6" />
+                <!--{assign var=key1 value="law_tel01"}-->
+                <!--{assign var=key2 value="law_tel02"}-->
+                <!--{assign var=key3 value="law_tel03"}-->
+                <!--{if $arrErr[$key1] || $arrErr[$key2] || $arrErr[$key3]}-->
+                    <span class="attention"><!--{$arrErr[$key1]}--></span>
+                    <span class="attention"><!--{$arrErr[$key2]}--></span>
+                    <span class="attention"><!--{$arrErr[$key3]}--></span>
+                <!--{/if}-->
+                <input type="text" name="<!--{$arrForm[$key1].keyname}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="6" class="box6" /> -
+                <input type="text" name="<!--{$arrForm[$key2].keyname}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"    size="6" class="box6" /> -
+                <input type="text" name="<!--{$arrForm[$key3].keyname}-->" value="<!--{$arrForm[$key3].value|h}-->" maxlength="<!--{$arrForm[$key3].length}-->" style="<!--{$arrErr[$key3]|sfGetErrorColor}-->" size="6" class="box6" />
             </td>
         </tr>
         <tr>
             <th><!--{t string="tpl_039"}--></th>
             <td>
-            <!--{assign var=key1 value="law_fax01"}-->
-            <!--{assign var=key2 value="law_fax02"}-->
-            <!--{assign var=key3 value="law_fax03"}-->
-            <!--{if $arrErr[$key1] || $arrErr[$key2] || $arrErr[$key3]}-->
-            <span class="attention"><!--{$arrErr[$key1]}--></span>
-            <span class="attention"><!--{$arrErr[$key2]}--></span>
-            <span class="attention"><!--{$arrErr[$key3]}--></span>
-            <!--{/if}-->
-            <input type="text" name="<!--{$arrForm[$key1].keyname}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="6" class="box6" /> -
-            <input type="text" name="<!--{$arrForm[$key2].keyname}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="6" class="box6" /> -
-            <input type="text" name="<!--{$arrForm[$key3].keyname}-->" value="<!--{$arrForm[$key3].value|h}-->" maxlength="<!--{$arrForm[$key3].length}-->" style="<!--{$arrErr[$key3]|sfGetErrorColor}-->" size="6" class="box6" />
+                <!--{assign var=key1 value="law_fax01"}-->
+                <!--{assign var=key2 value="law_fax02"}-->
+                <!--{assign var=key3 value="law_fax03"}-->
+                <!--{if $arrErr[$key1] || $arrErr[$key2] || $arrErr[$key3]}-->
+                    <span class="attention"><!--{$arrErr[$key1]}--></span>
+                    <span class="attention"><!--{$arrErr[$key2]}--></span>
+                    <span class="attention"><!--{$arrErr[$key3]}--></span>
+                <!--{/if}-->
+                <input type="text" name="<!--{$arrForm[$key1].keyname}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="6" class="box6" /> -
+                <input type="text" name="<!--{$arrForm[$key2].keyname}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="6" class="box6" /> -
+                <input type="text" name="<!--{$arrForm[$key3].keyname}-->" value="<!--{$arrForm[$key3].value|h}-->" maxlength="<!--{$arrForm[$key3].length}-->" style="<!--{$arrErr[$key3]|sfGetErrorColor}-->" size="6" class="box6" />
             </td>
         </tr>
         <tr>

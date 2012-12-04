@@ -71,7 +71,7 @@ function lfnSortItem(mode,data){
             flag = false;
         }
     }
-	
+    
     if ( flag ){
         document.form1["mode"].value = mode;
         document.form1["rank"].value = data;
@@ -110,6 +110,9 @@ function lfnSortItem(mode,data){
                             </div>
                             <div class="table-detail">
                                 <div class="detail-name"><!--{t string="tpl_188"}-->： <!--{$arrItems[$smarty.section.cnt.iteration].name|h}--></div>
+                                <!--{if $arrItems[$smarty.section.cnt.iteration].p_del_flg == '1'}-->
+                                    <div class="attention">※<!--{$arrItems[$smarty.section.cnt.iteration].name|h}-->は販売商品から削除されています。</div>
+                                <!--{/if}-->
                                     <div class="detail-form">
                                         <form name="form<!--{$smarty.section.cnt.iteration}-->" id="form<!--{$smarty.section.cnt.iteration}-->" method="post" action="?">
                                             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -118,7 +121,7 @@ function lfnSortItem(mode,data){
                                             <input type="hidden" name="category_id" value="<!--{$category_id|h}-->" />
                                             <input type="hidden" name="rank" value="<!--{$arrItems[$smarty.section.cnt.iteration].rank|h}-->" />
                                             <span class="attention"><!--{$arrErr[$smarty.section.cnt.iteration].comment}--></span>
-                                            <textarea class="top" name="comment" cols="45" rows="4" style="width: 586px; height: 80px; <!--{$arrErr[$smarty.section.cnt.iteration].comment|sfGetErrorColor}-->" <!--{$arrItems[$smarty.section.cnt.iteration].product_id|sfGetEnabled}-->><!--{$arrItems[$smarty.section.cnt.iteration].comment|h}--></textarea>
+                                            <textarea class="top" name="comment" cols="45" rows="4" style="width: 586px; height: 80px; <!--{$arrErr[$smarty.section.cnt.iteration].comment|sfGetErrorColor}-->" <!--{$arrItems[$smarty.section.cnt.iteration].product_id|sfGetEnabled}-->><!--{"\n"}--><!--{$arrItems[$smarty.section.cnt.iteration].comment|h}--></textarea>
                                         </form>
                                     </div>
                                 </div>

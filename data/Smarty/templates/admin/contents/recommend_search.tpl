@@ -61,7 +61,7 @@ function func_submit( id ){
             <th><!--{t string="tpl_192"}--></th>
             <td><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code}-->" size="35" class="box35" /></td>
         </tr>
-		<tr>
+        <tr>
             <th><!--{t string="tpl_189"}--></th>
             <td><input type="text" name="search_name" value="<!--{$arrForm.search_name}-->" size="35" class="box35" /></td>
         </tr>
@@ -95,7 +95,7 @@ function func_submit( id ){
                 <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arr.main_list_image|sfNoImageMainList|h}-->&width=65&height=65" alt="" />
             </td>
             <td>
-			    <!--{assign var=codemin value=`$arr.product_code_min`}-->
+                <!--{assign var=codemin value=`$arr.product_code_min`}-->
                 <!--{assign var=codemax value=`$arr.product_code_max`}-->
                 <!--{* 商品コード *}-->
                 <!--{if $codemin != $codemax}-->
@@ -107,14 +107,14 @@ function func_submit( id ){
             <td><!--{$arr.name|h}--></td>
             <td class="center"><a href="" onClick="return func_submit(<!--{$arr.product_id}-->)"><!--{t string="tpl_196"}--></a></td>
         </tr>
-        <!--▲商品<!--{$smarty.foreach.loop.iteration}-->-->	
+        <!--▲商品<!--{$smarty.foreach.loop.iteration}-->-->    
         <!--{/foreach}-->
         <!--{if !$tpl_linemax>0}-->
         <tr>
             <td colspan="4"><!--{t string="tpl_197"}--></td>
         </tr>
         <!--{/if}-->
-		
+        
     </table>
     <!--{/if}-->
     <!--{* ▲検索結果表示 *}-->

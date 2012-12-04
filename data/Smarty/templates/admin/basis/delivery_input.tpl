@@ -50,7 +50,7 @@
             <td colspan="3">
             <!--{assign var=key value="remark"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
-            <textarea name="<!--{$arrForm[$key].keyname}-->" cols="60" rows="8" class="area60" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key].value|h}--></textarea></td>
+            <textarea name="<!--{$arrForm[$key].keyname}-->" cols="60" rows="8" class="area60" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{"\n"}--><!--{$arrForm[$key].value|h}--></textarea></td>
         </tr>
         <tr>
             <th><!--{t string="tpl_011"}--></th>

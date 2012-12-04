@@ -558,7 +558,7 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^[[:graph:]|[:space:]]+$/i", $this->arrParam[$value[1]])) {
+        if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^[[:graph:][:space:]]+$/i", $this->arrParam[$value[1]])) {
             $this->arrErr[$value[1]] = t('SC_CheckError_030', array('T_FIELD' => $value[0]));
         }
     }

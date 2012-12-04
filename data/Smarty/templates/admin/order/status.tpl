@@ -101,7 +101,6 @@
             </tr>
             <!--{/section}-->
         </table>
-        <input type="hidden" name="move[]" value="" />
 
         <p><!--{$tpl_strnavi}--></p>
 
@@ -119,15 +118,14 @@
 <script type="text/javascript">
 <!--
 function fnSelectCheckSubmit(){
-
     var selectflag = 0;
     var fm = document.form1;
 
-    if(fm.change_status.options[document.form1.change_status.selectedIndex].value == ""){
-    selectflag = 1;
+    if (fm.change_status.options[document.form1.change_status.selectedIndex].value == "") {
+        selectflag = 1;
     }
 
-    if(selectflag == 1){
+    if (selectflag == 1) {
         alert('<!--{t string="tpl_438"}-->');
         return false;
     }
@@ -135,26 +133,26 @@ function fnSelectCheckSubmit(){
     var checkflag = 0;
     var max = fm["move[]"].length;
 
-    if(max) {
+    if (max) {
         for (i=0;i<max;i++){
-            if(fm["move[]"][i].checked == true){
+            if(fm["move[]"][i].checked == true) {
                 checkflag = 1;
             }
         }
     } else {
-        if(fm["move[]"].checked == true) {
+        if (fm["move[]"].checked == true) {
             checkflag = 1;
         }
     }
 
-    if(checkflag == 0){
+    if (checkflag == 0){
         alert(<!--{t string="tpl_398"}-->);
         return false;
     }
 
-    if(selectflag == 0 && checkflag == 1){
-    document.form1.mode.value = 'update';
-    document.form1.submit();
+    if (selectflag == 0 && checkflag == 1) {
+        document.form1.mode.value = 'update';
+        document.form1.submit();
     }
 }
 //-->

@@ -95,7 +95,7 @@
             <th>コメント <span class="attention">*</span></th>
             <td>
                 <!--{if $arrErr.comment}--><span class="attention"><!--{$arrErr.comment}--></span><!--{/if}-->
-                <textarea name="comment" rows="20" cols="60" class="area60" wrap="soft" style="<!--{$arrErr.comment|sfGetErrorColor}-->" ><!--{$arrForm.comment|h}--></textarea>
+                <textarea name="comment" rows="20" cols="60" class="area60" wrap="soft" style="<!--{$arrErr.comment|sfGetErrorColor}-->" ><!--{"\n"}--><!--{$arrForm.comment|h}--></textarea>
             </td>
         </tr>
     </table>

@@ -51,7 +51,7 @@
             <th><!--{t string="tpl_271"}--></th>
             <td>
                 <!--{assign var=key value="css_data"}-->
-                <textarea id="css" class="top" name="<!--{$key}-->" cols="90" rows=<!--{$area_row}--> align="left" style="width: 650px;"><!--{$arrForm[$key].value|h}--></textarea>
+                <textarea id="css" class="top" name="<!--{$key}-->" cols="90" rows=<!--{$area_row}--> align="left" style="width: 650px;"><!--{"\n"}--><!--{$arrForm[$key].value|h}--></textarea>
                 <input type="hidden" name="area_row" value="<!--{$area_row}-->" />
                 <div class="btn">
                     <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#css', 50, 30); return false;"><!--{t string="tpl_266"}--></a>

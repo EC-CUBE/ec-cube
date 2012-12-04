@@ -45,7 +45,7 @@
         <tr>
             <th><!--{t string="tpl_333"}--><span class="attention"> *</span><br /><!--{t string="tpl_332"}--></th>
             <td>
-                <textarea name="body" cols="90" rows="40" class="area90 top" <!--{if $arrErr.body}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{$arrForm.body|h}--></textarea>
+                <textarea name="body" cols="90" rows="40" class="area90 top" <!--{if $arrErr.body}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{"\n"}--><!--{$arrForm.body|h}--></textarea>
                 <!--{if $arrErr.body}--><br /><span class="attention"><!--{$arrErr.body}--></span><!--{/if}-->
                 <div>
                     <a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','body','cnt_footer'); return false;" name="next" id="next"><span><!--{t string="tpl_354"}--></span></a>

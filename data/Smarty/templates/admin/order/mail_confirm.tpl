@@ -26,8 +26,8 @@
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="send" />
 <input type="hidden" name="order_id_array" value="<!--{$order_id_array}-->" />
-<!--{foreach key=key item=item from=$arrHidden}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
+<!--{foreach key=key item=item from=$arrForm}-->
+<input type="hidden" name="<!--{$key}-->" value="<!--{$item.value|h}-->" />
 <!--{/foreach}-->
 <!--{foreach key=key item=item from=$arrSearchHidden}-->
     <!--{if is_array($item)}-->

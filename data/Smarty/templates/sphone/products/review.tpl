@@ -73,7 +73,7 @@
                 <th>コメント<span class="attention">※</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.comment}--></span>
-                    <textarea name="comment" cols="15" rows="10" style="<!--{$arrErr.comment|sfGetErrorColor}-->" class="textarea data-role-none" wrap="hard"><!--{$arrForm.comment|h}--></textarea>
+                    <textarea name="comment" cols="15" rows="10" style="<!--{$arrErr.comment|sfGetErrorColor}-->" class="textarea data-role-none" wrap="hard"><!--{"\n"}--><!--{$arrForm.comment|h}--></textarea>
                 </td>
             </tr>
         </table>

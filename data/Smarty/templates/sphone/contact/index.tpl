@@ -138,7 +138,7 @@
             <dt>お問い合わせ内容&nbsp;<span class="attention">※</span>
                 <span class="mini">（全角<!--{$smarty.const.MLTEXT_LEN}-->字以下）</span></dt>
             <dd><span class="attention"><!--{$arrErr.contents}--></span>
-                <textarea name="contents" id="contents" class="textarea data-role-none" rows="4" cols="42" style="<!--{$arrErr.contents|sfGetErrorColor}-->"><!--{$arrForm.contents.value|h}--></textarea>
+                <textarea name="contents" id="contents" class="textarea data-role-none" rows="4" cols="42" style="<!--{$arrErr.contents|sfGetErrorColor}-->"><!--{"\n"}--><!--{$arrForm.contents.value|h}--></textarea>
             </dd>
 
         </dl>
