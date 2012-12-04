@@ -39,59 +39,59 @@
     <!--▼CSS設定ここから-->
     <table class="form">
         <tr>
-            <th>CSSファイル名</th>
+            <th><!--{t string="tpl_270"}--></th>
             <td>
                 <!--{assign var=key value="css_name"}-->
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" />.css
-                <span class="attention"> (上限<!--{$arrForm[$key].length}-->文字)</span>
+                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length}--></span>
                 <!--{if $arrErr[$key] != ""}--> <div class="attention"><!--{$arrErr[$key]}--></div> <!--{/if}-->
             </td>
         </tr>
         <tr>
-            <th>CSS内容</th>
+            <th><!--{t string="tpl_271"}--></th>
             <td>
                 <!--{assign var=key value="css_data"}-->
                 <textarea id="css" class="top" name="<!--{$key}-->" cols="90" rows=<!--{$area_row}--> align="left" style="width: 650px;"><!--{$arrForm[$key].value|h}--></textarea>
                 <input type="hidden" name="area_row" value="<!--{$area_row}-->" />
                 <div class="btn">
-                    <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#css', 50, 30); return false;">拡大</a>
+                    <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#css', 50, 30); return false;"><!--{t string="tpl_266"}--></a>
                 </div>
             </td>
         </tr>
     </table>
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form_css','confirm','',''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form_css','confirm','',''); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
         </ul>
     </div>
     <!--▲CSS設定　ここまで-->
 
     <!--▼CSSファイル一覧　ここから-->
-    <h2>編集可能CSSファイル</h2>
+    <h2><!--{t string="tpl_272"}--></h2>
     <div class="btn addnew">
-        <a class="btn-normal" href="?device_type_id=<!--{$device_type_id|h}-->"><span>CSSを新規入力</span></a>
+        <a class="btn-normal" href="?device_type_id=<!--{$device_type_id|h}-->"><span><!--{t string="tpl_273"}--></span></a>
     </div>
     <table class="list" id="design-css-list">
         <tr>
-            <th class="name">ファイル名</th>
-            <th class="menu edit">編集</th>
-            <th class="action delete">削除</th>
+            <th class="name"><!--{t string="tpl_167"}--></th>
+            <th class="menu edit"><!--{t string="tpl_003"}--></th>
+            <th class="action delete"><!--{t string="tpl_004"}--></th>
         </tr>
         <!--{if count($arrCSSList) > 0}-->
         <!--{foreach key=key item=item from=$arrCSSList}-->
         <tr>
             <td style="background:<!--{if $item.css_name == $css_name}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;"><!--{$item.file_name|h}--></td>
             <td class="center" style="background:<!--{if $item.css_name == $css_name}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
-                <a href="?css_name=<!--{$item.css_name|h}-->&amp;device_type_id=<!--{$device_type_id|h}-->">編集</a>
+                <a href="?css_name=<!--{$item.css_name|h}-->&amp;device_type_id=<!--{$device_type_id|h}-->"><!--{t string="tpl_003"}--></a>
             </td>
             <td class="center" style="background:<!--{if $item.css_name == $css_name}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
-                <a href="javascript:;" onclick="fnFormModeSubmit('form_css','delete','css_name','<!--{$item.css_name|h}-->'); return false;">削除</a>
+                <a href="javascript:;" onclick="fnFormModeSubmit('form_css','delete','css_name','<!--{$item.css_name|h}-->'); return false;"><!--{t string="tpl_004"}--></a>
             </td>
         </tr>
         <!--{/foreach}-->
         <!--{else}-->
         <tr>
-            <td colspan="3">CSSファイルが存在しません。</td>
+            <td colspan="3"><!--{t string="tpl_274"}--></td>
         </tr>
         <!--{/if}-->
     </table>

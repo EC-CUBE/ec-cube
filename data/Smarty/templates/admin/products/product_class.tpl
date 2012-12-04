@@ -102,7 +102,7 @@
         });
     });
 //]]></script>
-<h2>商品規格登録</h2>
+<h2><!--{t string="tpl_598"}--></h2>
 <form name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <!--{foreach key=key item=item from=$arrSearchHidden}-->
@@ -123,11 +123,11 @@
 
     <table>
         <tr>
-            <th>商品名</th>
+            <th><!--{t string="tpl_189"}--></th>
             <td><!--{$arrForm.product_name.value|h}--></td>
         </tr>
         <tr>
-            <th>規格1<span class="attention">*</span></th>
+            <th><!--{t string="tpl_371"}--><span class="attention">*</span></th>
             <td>
                 <!--{assign var=key value="class_id1"}-->
                 <!--{if $arrErr[$key]}-->
@@ -135,20 +135,20 @@
                 <!--{/if}-->
 
                 <select name="<!--{$key}-->">
-                    <option value="">選択してください</option>
+                    <option value=""><!--{t string="tpl_068"}--></option>
                     <!--{html_options options=$arrClass selected=$arrForm[$key].value}-->
                 </select>
             </td>
         </tr>
         <tr>
-            <th>規格2</th>
+            <th><!--{t string="tpl_374"}--></th>
             <td>
                 <!--{assign var=key value="class_id2"}-->
                 <!--{if $arrErr[$key]}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{/if}-->
                 <select name="<!--{$key}-->">
-                    <option value="">選択してください</option>
+                    <option value=""><!--{t string="tpl_068"}--></option>
                     <!--{html_options options=$arrClass selected=$arrForm[$key].value}-->
                 </select>
             </td>
@@ -156,10 +156,10 @@
     </table>
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URLPATH}-->'); fnModeSubmit('search','',''); return false;" ><span class="btn-prev">検索結果へ戻る</span></a></li>
-            <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('disp','',''); return false;"><span class="btn-next">表示する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URLPATH}-->'); fnModeSubmit('search','',''); return false;" ><span class="btn-prev"><!--{t string="tpl_071"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('disp','',''); return false;"><span class="btn-next"><!--{t string="tpl_599"}--></span></a></li>
         <!--{if $arrForm.total.value > 0}-->
-            <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('delete','',''); return false;"><span class="btn-next">削除する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('delete','',''); return false;"><span class="btn-next"><!--{t string="tpl_600"}--></span></a></li>
         <!--{/if}-->
         </ul>
     </div>
@@ -173,8 +173,8 @@
     <!--{/foreach}-->
 
     <div class="list-info clearfix">
-        <div class="btn"><a class="btn-normal" href="javascript:;" id="copy_from_first"><span>一行目のデータをコピーする</span></a></div>
-        <p><span class="bold">アップロード可能な拡張子：</span><!--{$smarty.const.DOWNLOAD_EXTENSION}-->(パラメーター DOWNLOAD_EXTENSION)</p>
+        <div class="btn"><a class="btn-normal" href="javascript:;" id="copy_from_first"><span><!--{t string="tpl_602"}--></span></a></div>
+        <p><!--{t string="tpl_601" T_FIELD=$smarty.const.DOWNLOAD_EXTENSION}--></p>
     </div>
 
     <!--{if $arrErr.check_empty}-->
@@ -193,16 +193,16 @@
         <col width="8%" />
         <col width="8%" />
         <tr>
-            <th><input type="checkbox" onclick="fnAllCheck(this, 'input[name^=check]')" id="allCheck" /> <label for="allCheck"><br>登録</label></th>
-            <th>規格1<br>(<!--{$arrClass[$class_id1]|default:"未選択"|h}-->)</th>
-            <th>規格2<br>(<!--{$arrClass[$class_id2]|default:"未選択"|h}-->)</th>
-            <th>商品コード</th>
-            <th>在庫数<span class="attention">*</span></th>
-            <th><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(円)</th>
-            <th><!--{$smarty.const.SALE_PRICE_TITLE}-->(円)<span class="attention">*</span></th>
-            <th>商品種別<span class="attention">*</span></th>
-            <th>ダウンロード<br>ファイル名<span class="red"><br>上限<!--{$smarty.const.STEXT_LEN}-->文字</span></th>
-            <th>ダウンロード商品用<br>ファイル</th>
+            <th><input type="checkbox" onclick="fnAllCheck(this, 'input[name^=check]')" id="allCheck" /> <label for="allCheck"><br><!--{t string="tpl_488"}--></label></th>
+            <th><!--{t string="tpl_371"}--><br>(<!--{$arrClass[$class_id1]|default:"未選択"|h}-->)</th>
+            <th><!--{t string="tpl_374"}--><br>(<!--{$arrClass[$class_id2]|default:"未選択"|h}-->)</th>
+            <th><!--{t string="tpl_192"}--></th>
+            <th><!--{t string="tpl_557"}--><span class="attention">*</span></th>
+            <th><!--{t string="tpl_603" T_FIELD=$smarty.const.NORMAL_PRICE_TITLE}--></th>
+            <th><!--{t string="tpl_603" T_FIELD=$smarty.const.SALE_PRICE_TITLE}--><span class="attention">*</span></th>
+            <th><!--{t string="tpl_014"}--><span class="attention">*</span></th>
+            <th><!--{t string="tpl_604"}--><span class="red"><br><!--{t string="tpl_606" T_FIELD=$smarty.const.STEXT_LEN}--></span></th>
+            <th><!--{t string="tpl_605"}--></th>
         </tr>
         <!--{section name=cnt loop=$arrForm.total.value}-->
             <!--{assign var=index value=$smarty.section.cnt.index}-->
@@ -254,7 +254,7 @@
                     <!--{if $arrErr[$key][$index]}-->
                         <span class="attention"><!--{$arrErr[$key][$index]}--></span>
                     <!--{/if}-->
-                    <input type="checkbox" name="<!--{$key}-->[<!--{$index}-->]" value="1" <!--{if $arrForm[$key].value[$index] == "1"}-->checked="checked"<!--{/if}--> id="chk_<!--{$key}-->_<!--{$index}-->" /><label for="chk_<!--{$key}-->_<!--{$index}-->">無制限</label>
+                    <input type="checkbox" name="<!--{$key}-->[<!--{$index}-->]" value="1" <!--{if $arrForm[$key].value[$index] == "1"}-->checked="checked"<!--{/if}--> id="chk_<!--{$key}-->_<!--{$index}-->" /><label for="chk_<!--{$key}-->_<!--{$index}-->"><!--{t string="tpl_053"}--></label>
                 </td>
                 <td class="center">
                     <!--{assign var=key value="price01"}-->
@@ -294,10 +294,10 @@
                     <!--{if $arrForm[$key].value[$index] != ""}-->
                         <!--{$arrForm[$key].value[$index]|h}--><br />
                         <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" />
-                        <a href="?" onclick="fnFormModeSubmit('form1', 'file_delete', 'upload_index', '<!--{$index}-->'); return false;">[ファイルの取り消し]</a>
+                        <a href="?" onclick="fnFormModeSubmit('form1', 'file_delete', 'upload_index', '<!--{$index}-->'); return false;"><!--{t string="tpl_587}--></a>
                     <!--{else}-->
                     <input type="file" name="<!--{$key}-->[<!--{$index}-->]" size="10" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /><br />
-                    <a class="btn-normal" href="javascript:;" name="btn" onclick="fnFormModeSubmit('form1', 'file_upload', 'upload_index', '<!--{$index}-->'); return false;">アップロード</a>
+                    <a class="btn-normal" href="javascript:;" name="btn" onclick="fnFormModeSubmit('form1', 'file_upload', 'upload_index', '<!--{$index}-->'); return false;"><!--{t string="tpl_085"}--></a>
                     <!--{/if}-->
                 </td>
             </tr>
@@ -306,7 +306,7 @@
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next">確認ページへ</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_228"}--></span></a></li>
         </ul>
     </div>
 

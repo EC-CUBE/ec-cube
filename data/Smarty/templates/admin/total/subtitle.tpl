@@ -23,98 +23,98 @@
 *}-->
 
 <!--{if $arrForm.page.value == "term" || $arrForm.page.value == ""}-->
-    <strong>期間別集計</strong>&nbsp;（
+    <strong><!--{t string="tpl_510"}--></strong>&nbsp;（
     <!--{if $smarty.post.type == 'day' || $smarty.post.type == ''}-->
-        <span class="over">日別</span>&nbsp;
+        <span class="over"><!--{t string="tpl_515"}--></span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'day');">日別</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'day');"><!--{t string="tpl_515"}--></a>&nbsp;
     <!--{/if}-->
     <!--{if $smarty.post.type == 'month'}-->
-        <span class="over">月別</span>&nbsp;
+        <span class="over"><!--{t string="tpl_516"}--></span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'month');">月別</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'month');"><!--{t string="tpl_516"}--></a>&nbsp;
     <!--{/if}-->
     <!--{if $smarty.post.type == 'year'}-->
-        <span class="over">年別</span>&nbsp;
+        <span class="over"><!--{t string="tpl_517"}--></span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'year');">年別</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'year');"><!--{t string="tpl_517"}--></a>&nbsp;
     <!--{/if}-->
     <!--{if $smarty.post.type == 'wday'}-->
-        <span class="over">曜日別</span>&nbsp;
+        <span class="over"><!--{t string="tpl_518"}--></span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'wday');">曜日別</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'wday');"><!--{t string="tpl_518"}--></a>&nbsp;
     <!--{/if}-->
     <!--{if $smarty.post.type == 'hour'}-->
-        <span class="over">時間別</span>&nbsp;
+        <span class="over"><!--{t string="tpl_519"}--></span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'hour');">時間別</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'hour');"><!--{t string="tpl_519"}--></a>&nbsp;
     <!--{/if}-->
     ）
 <!--{/if}-->
 
 <!--{if $arrForm.page.value == "products"}-->
-    <strong>商品別集計</strong>&nbsp;（
+    <strong><!--{t string="tpl_511"}--></strong>&nbsp;（
     <!--{if $smarty.post.type == 'all' || $smarty.post.type == ''}-->
-        <span class="over">全体</span>&nbsp;
+        <span class="over"><!--{t string="tpl_520"}--></span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'all');">全体</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'all');"><!--{t string="tpl_520"}--></a>&nbsp;
     <!--{/if}-->
     <!--{if $smarty.post.type == 'member'}-->
-        <span class="over">会員</span>&nbsp;
+        <span class="over"><!--{t string="tpl_521"}--></span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'member');">会員</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'member');"><!--{t string="tpl_521"}--></a>&nbsp;
     <!--{/if}-->
     <!--{if $smarty.post.type == 'nonmember'}-->
-        <span class="over">非会員</span>&nbsp;
+        <span class="over"><!--{t string="tpl_522"}--></span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'nonmember');">非会員</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'nonmember');"><!--{t string="tpl_522"}--></a>&nbsp;
     <!--{/if}-->
     ）
 <!--{/if}-->
 
 <!--{if $arrForm.page.value == "age"}-->
-    <strong>年代別集計</strong>&nbsp;（
+    <strong><!--{t string="tpl_512"}--></strong>&nbsp;（
     <!--{if $smarty.post.type == 'all' || $smarty.post.type == ''}-->
-        <span class="over">全体</span>&nbsp;
+        <span class="over"><!--{t string="tpl_520"}--></span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'all');">全体</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'all');"><!--{t string="tpl_520"}--></a>&nbsp;
     <!--{/if}-->
     <!--{if $smarty.post.type == 'member'}-->
-        <span class="over">会員</span>&nbsp;
+        <span class="over"><!--{t string="tpl_521"}--></span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'member');">会員</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'member');"><!--{t string="tpl_521"}--></a>&nbsp;
     <!--{/if}-->
     <!--{if $smarty.post.type == 'nonmember'}-->
-        <span class="over">非会員</span>&nbsp;
+        <span class="over"><!--{t string="tpl_522"}--></span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'nonmember');">非会員</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'nonmember');"><!--{t string="tpl_522"}--></a>&nbsp;
     <!--{/if}-->
     ）
 <!--{/if}-->
 
 <!--{if $arrForm.page.value == "job"}-->
-    <strong>職業別集計</strong>&nbsp;（
-    <span class="over">全体</span>
+    <strong><!--{t string="tpl_513"}--></strong>&nbsp;（
+    <span class="over"><!--{t string="tpl_520"}--></span>
     ）
     <!--{*（
     <!--{if $smarty.post.type == 'all' || $smarty.post.type == ''}-->
-        <span class="over">全体</span>&nbsp;
+        <span class="over"><!--{t string="tpl_520"}--></span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'all');">全体</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'all');"><!--{t string="tpl_520"}--></a>&nbsp;
     <!--{/if}-->
     <!--{if $smarty.post.type == 'member'}-->
-        <span class="over">会員</span>&nbsp;
+        <span class="over"><!--{t string="tpl_521"}--></span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'member');">会員</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'member');"><!--{t string="tpl_521"}--></a>&nbsp;
     <!--{/if}-->
     <!--{if $smarty.post.type == 'nonmember'}-->
-        <span class="over">非会員</span>&nbsp;
+        <span class="over"><!--{t string="tpl_522"}--></span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'nonmember');">非会員</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'nonmember');"><!--{t string="tpl_522"}--></a>&nbsp;
     <!--{/if}-->
     ）*}-->
 <!--{/if}-->
 
 <!--{if $arrForm.page.value == "member"}-->
-    <strong>会員別集計</strong>
+    <strong><!--{t string="tpl_514"}--></strong>
 <!--{/if}-->

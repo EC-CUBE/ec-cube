@@ -35,57 +35,57 @@
     <!--▼編集テーブルここから-->
     <table>
         <tr>
-            <th>商品名</th>
+            <th><!--{t string="tpl_189"}--></th>
             <td><!--{$arrForm.name|h}-->
             <input type="hidden" name="name" value="<!--{$arrForm.name|h}-->">
             </td>
         </tr>
         <tr>
-            <th>投稿日</th>
+            <th><!--{t string="tpl_618"}--></th>
             <td><!--{$arrForm.create_date|sfDispDBDate}-->
             <input type="hidden" name="create_date" value="<!--{$arrForm.create_date|h}-->">
             </td>
         </tr>
         <tr>
-            <th>レビュー表示</th>
+            <th><!--{t string="tpl_621"}--></th>
             <td>
                 <!--{if $arrErr.status}--><span class="attention"><!--{$arrErr.status}--></span><!--{/if}-->
-                <input type="radio" name="status" value="2" <!--{if $arrForm.status eq 2}-->checked<!--{/if}-->>非表示<!--{if $arrForm.status eq 2 && !$tpl_status_change}--><!--{else}--><input type="radio" name="status" value="1" <!--{if $arrForm.status eq 1}-->checked<!--{/if}-->>表示<!--{/if}-->
+                <input type="radio" name="status" value="2" <!--{if $arrForm.status eq 2}-->checked<!--{/if}-->><!--{t string="tpl_620"}--><!--{if $arrForm.status eq 2 && !$tpl_status_change}--><!--{else}--><input type="radio" name="status" value="1" <!--{if $arrForm.status eq 1}-->checked<!--{/if}-->><!--{t string="tpl_170"}--><!--{/if}-->
             </td>
         </tr>
         <tr>
-            <th>投稿者名 <span class="attention">*</span></th>
+            <th><!--{t string="tpl_615"}--> <span class="attention">*</span></th>
             <td>
                 <!--{if $arrErr.reviewer_name}--><span class="attention"><!--{$arrErr.reviewer_name}--></span><!--{/if}-->
                 <input type="text" class="box60" name="reviewer_name" value="<!--{$arrForm.reviewer_name|h}-->" style="<!--{$arrErr.reviewer_name|sfGetErrorColor}-->" size=30>
             </td>
         </tr>
         <tr>
-            <th>投稿者URL</th>
+            <th><!--{t string="tpl_616"}--></th>
             <td>
                 <!--{if $arrErr.reviewer_url}--><span class="attention"><!--{$arrErr.reviewer_url}--></span><!--{/if}-->
                 <input type="text" class="box60" name="reviewer_url" maxlength="<!--{$smarty.const.URL_LEN}-->" value="<!--{$arrForm.reviewer_url|h}-->" style="<!--{$arrErr.reviewer_url|sfGetErrorColor}-->" size=30>
             </td>
         </tr>
         <tr>
-            <th>性別</th>
+            <th><!--{t string="tpl_215"}--></th>
             <td><!--{html_radios_ex name="sex" options=$arrSex selected=$arrForm.sex}--></td>
         </tr>
         <tr>
-            <th>おすすめレベル <span class="attention">*</span></th>
+            <th><!--{t string="tpl_617"}--> <span class="attention">*</span></th>
             <td>
                 <!--{assign var=key value="recommend_level"}-->
                 <!--{if $arrErr[$key]}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{/if}-->
                 <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" >
-                <option value="" selected="selected">選択してください</option>
+                <option value="" selected="selected"><!--{t string="tpl_068"}--></option>
                 <!--{html_options options=$arrRECOMMEND selected=$arrForm[$key]}-->
                 </select>
             </td>
         </tr>
         <tr>
-            <th>タイトル <span class="attention">*</span></th>
+            <th><!--{t string="tpl_022"}--> <span class="attention">*</span></th>
             <td>
                 <!--{if $arrErr.title}--><span class="attention"><!--{$arrErr.title}--></span><!--{/if}-->
                 <input type="text" class="box60" name="title" value="<!--{$arrForm.title|h}-->" style="<!--{$arrErr.title|sfGetErrorColor}-->" size=30><span class="attention">
@@ -103,8 +103,8 @@
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="document.form1.action='./review.php'; fnModeSubmit('search','',''); return false;" ><span class="btn-prev">検索画面に戻る</span></a></li>
-            <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('complete','',''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="document.form1.action='./review.php'; fnModeSubmit('search','',''); return false;" ><span class="btn-prev"><!--{t string="tpl_227"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('complete','',''); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
         </ul>
     </div>
 </div>

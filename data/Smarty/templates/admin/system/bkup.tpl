@@ -24,7 +24,7 @@
 
 <script>
     function fnRestore(list_name) {
-        if (window.confirm('リストアしますか?')) {
+        if (window.confirm('<!--{t string="tpl_646"}-->')) {
             document.body.style.cursor = 'wait';
             fnModeSubmit('restore', 'list_name', list_name);
         }
@@ -36,35 +36,34 @@
 <input type="hidden" name="list_name" value="" />
 <div id="system" class="contents-main">
     <p class="remark">
-        データベースのバックアップを行います。<br />
-        テンプレートファイル等はバックアップされません。
+        <!--{t string="tpl_647"}-->
     </p>
     <table class="form">
         <tr>
-            <th>バックアップ名<span class="attention"> *</span></th>
+            <th><!--{t string="tpl_648"}--><span class="attention"> *</span></th>
             <td>
                 <!--{if $arrErr.bkup_name}-->
                 <span class="attention"><!--{$arrErr.bkup_name}--></span>
                 <!--{/if}-->
-                <input type="text" name="bkup_name" value="<!--{$arrForm.bkup_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.bkup_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" /><span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
+                <input type="text" name="bkup_name" value="<!--{$arrForm.bkup_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.bkup_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" /><span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.STEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
-            <th>バックアップメモ</th>
+            <th><!--{t string="tpl_649"}--></th>
             <td>
                 <!--{if $arrErr.bkup_memo}-->
                     <span class="attention"><!--{$arrErr.bkup_memo}--></span>
                 <!--{/if}-->
                 <textarea name="bkup_memo" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" cols="60" rows="5" class="area60" style="<!--{if $arrErr.bkup_memo != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" ><!--{$arrForm.bkup_memo|h}--></textarea>
-                <span class="attention"> (上限<!--{$smarty.const.MTEXT_LEN}-->文字)</span>
+                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.MTEXT_LEN}--></span>
             </td>
         </tr>
     </table>
 
-    <div class="btn"><a class="btn-normal" href="javascript:;" name="cre_bkup" onclick="document.body.style.cursor = 'wait'; form1.mode.value='bkup'; document.form1.submit(); return false;"><span>バックアップデータを作成する</span></a></div>
+    <div class="btn"><a class="btn-normal" href="javascript:;" name="cre_bkup" onclick="document.body.style.cursor = 'wait'; form1.mode.value='bkup'; document.form1.submit(); return false;"><span><!--{t string="tpl_650"}--></span></a></div>
 
 
-    <h2>バックアップ一覧</h2>
+    <h2><!--{t string="tpl_651"}--></h2>
 
 
     <!--{if $arrErr.list_name}-->
@@ -74,22 +73,22 @@
     <!--{if count($arrBkupList) > 0}-->
         <table class="list">
             <tr>
-                <th>バックアップ名</th>
-                <th>バックアップメモ</th>
-                <th>作成日</th>
-                <th>リストア</th>
-                <th>ダウンロード</th>
-                <th class="delete">削除</th>
+                <th><!--{t string="tpl_648"}--></th>
+                <th><!--{t string="tpl_649"}--></th>
+                <th><!--{t string="tpl_351"}--></th>
+                <th><!--{t string="tpl_652"}--></th>
+                <th><!--{t string="tpl_302"}--></th>
+                <th class="delete"><!--{t string="tpl_004"}--></th>
             </tr>
             <!--{section name=cnt loop=$arrBkupList}-->
                 <tr>
                     <td ><!--{$arrBkupList[cnt].bkup_name}--></td>
                     <td ><!--{$arrBkupList[cnt].bkup_memo}--></td>
                     <td align="center"><!--{$arrBkupList[cnt].create_date|sfCutString:19:true:false}--></td>
-                    <td align="center"><a href="javascript:;" onclick="fnRestore('<!--{$arrBkupList[cnt].bkup_name}-->'); return false;">リストア</a></td>
-                    <td align="center"><a href="javascript:;" onclick="fnModeSubmit('download','list_name','<!--{$arrBkupList[cnt].bkup_name}-->'); return false;">ダウンロード</a></td>
+                    <td align="center"><a href="javascript:;" onclick="fnRestore('<!--{$arrBkupList[cnt].bkup_name}-->'); return false;"><!--{t string="tpl_652"}--></a></td>
+                    <td align="center"><a href="javascript:;" onclick="fnModeSubmit('download','list_name','<!--{$arrBkupList[cnt].bkup_name}-->'); return false;"><!--{t string="tpl_302"}--></a></td>
                     <td align="center">
-                        <a href="javascript:;" onclick="fnModeSubmit('delete','list_name','<!--{$arrBkupList[cnt].bkup_name}-->'); return false;">削除</a>
+                        <a href="javascript:;" onclick="fnModeSubmit('delete','list_name','<!--{$arrBkupList[cnt].bkup_name}-->'); return false;"><!--{t string="tpl_004"}--></a>
                     </td>
                 </tr>
             <!--{/section}-->
@@ -97,10 +96,10 @@
     <!--{/if}-->
 
     <!--{if strlen($tpl_restore_msg) >= 1}-->
-        <h2>実行結果</h2>
+        <h2><!--{t string="tpl_653"}--></h2>
         <div class="message">
             <!--{if $tpl_restore_err == false}-->
-                <div class="btn"><a class="btn-normal" href="javascript:;" name="restore_config" onClick="document.body.style.cursor = 'wait'; form1.mode.value='restore_config'; form1.list_name.value='<!--{$tpl_restore_name|h}-->'; submit(); return false;"><span>エラーを無視してリストアする</span></a></div>
+                <div class="btn"><a class="btn-normal" href="javascript:;" name="restore_config" onClick="document.body.style.cursor = 'wait'; form1.mode.value='restore_config'; form1.list_name.value='<!--{$tpl_restore_name|h}-->'; submit(); return false;"><span><!--{t string="tpl_654"}--></span></a></div>
             <!--{/if}-->
             <!--{$tpl_restore_msg|h}-->
         </div>

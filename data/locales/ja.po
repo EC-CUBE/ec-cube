@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2012-11-16 16:17+0900\n"
+"PO-Revision-Date: 2012-12-04 19:32+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -2032,8 +2032,8 @@ msgstr "既にお気に入りに追加されている商品です"
 
 msgid "LC_Page_Error_015"
 msgstr ""
-"ファイルの解凍に失敗しました。\n"
-"指定のディレクトリに書き込み権限が与えられていない可能性があります。"
+"ファイルの解凍に失敗しました。\\n指定のディレクトリに書き込み権限が与えられて"
+"いない可能性があります。"
 
 msgid "LC_Page_Error_016"
 msgstr "ファイルのFTPダウンロードに失敗しました。"
@@ -2046,21 +2046,20 @@ msgstr "FTPログインに失敗しました。"
 
 msgid "LC_Page_Error_019"
 msgstr ""
-"DBの作成に失敗しました。\n"
-"指定のユーザーには、DB作成の権限が与えられていない可能性があります。"
+"DBの作成に失敗しました。\\n指定のユーザーには、DB作成の権限が与えられていない"
+"可能性があります。"
 
 msgid "LC_Page_Error_020"
 msgstr ""
-"ータベース構造のインポートに失敗しました。\n"
-"sqlファイルが壊れている可能性があります。"
+"ータベース構造のインポートに失敗しました。\\nsqlファイルが壊れている可能性が"
+"あります。"
 
 msgid "LC_Page_Error_021"
 msgstr "指定のパスに、設定ファイルが存在しません。"
 
 msgid "LC_Page_Error_022"
 msgstr ""
-"設定ファイルに書き込めません。\n"
-"設定ファイルに書き込み権限を与えてください。"
+"設定ファイルに書き込めません。\\n設定ファイルに書き込み権限を与えてください。"
 
 msgid "LC_Page_Error_023"
 msgstr ""
@@ -2133,9 +2132,8 @@ msgstr "T_FIELD 様"
 
 msgid "LC_Page_FrontParts_LoginCheck_001"
 msgstr ""
-"メールアドレスもしくはパスワードが正しくありません。\n"
-"本登録がお済みでない場合は、仮登録メールに記載されているURLより本登録を行って"
-"ください。"
+"メールアドレスもしくはパスワードが正しくありません。\\n本登録がお済みでない場"
+"合は、仮登録メールに記載されているURLより本登録を行ってください。"
 
 msgid "LC_Page_FrontParts_LoginCheck_002"
 msgstr "メールアドレスもしくはパスワードが正しくありません。"
@@ -2271,9 +2269,8 @@ msgstr ""
 
 msgid "LC_Page_Shopping_004"
 msgstr ""
-"メールアドレスもしくはパスワードが正しくありません。\n"
-"本登録がお済みでない場合は、仮登録メールに記載されているURLより本登録を行って"
-"ください。"
+"メールアドレスもしくはパスワードが正しくありません。\\n本登録がお済みでない場"
+"合は、仮登録メールに記載されているURLより本登録を行ってください。"
 
 msgid "LC_Page_Shopping_005"
 msgstr "メールアドレスもしくはパスワードが正しくありません。"
@@ -2364,13 +2361,11 @@ msgstr "×：シーケンスの削除に失敗しました。<br />"
 
 msgid "LC_Page_Install_012"
 msgstr ""
-">> ×：T_FIELD01(T_FIELD02)\n"
-"ユーザ書込み権限(777, 707等)を付与して下さい。"
+">> ×：T_FIELD01(T_FIELD02)\\nユーザ書込み権限(777, 707等)を付与して下さい。"
 
 msgid "LC_Page_Install_013"
 msgstr ""
-">> ×：T_FIELD01(T_FIELD02)\n"
-"ユーザ書込み権限(666, 606等)を付与して下さい。"
+">> ×：T_FIELD01(T_FIELD02)\\nユーザ書込み権限(666, 606等)を付与して下さい。"
 
 msgid "LC_Page_Install_014"
 msgstr ">> ×：T_FIELD が見つかりません。"
@@ -3287,14 +3282,10 @@ msgid "LC_Page_Admin_System_Bkup_007"
 msgstr "(記録なし。バックアップファイルのみ。)"
 
 msgid "LC_Page_Admin_System_Bkup_008"
-msgstr ""
-"バックアップファイルの展開に失敗しました。\n"
-" "
+msgstr "バックアップファイルの展開に失敗しました。\\n "
 
 msgid "LC_Page_Admin_System_Bkup_009"
-msgstr ""
-"展開元: T_FIELD \n"
-" "
+msgstr "展開元: T_FIELD \\n "
 
 msgid "LC_Page_Admin_System_Bkup_010"
 msgstr "展開先: T_FIELD"
@@ -3549,3 +3540,2118 @@ msgstr "T_FIELD01T_FIELD02：コピー失敗"
 
 msgid "GC_Utils_001"
 msgstr "前方互換用メソッドが使用されました。"
+
+msgid "tpl_001"
+msgstr "配送業者"
+
+msgid "tpl_002"
+msgstr "名称"
+
+msgid "tpl_003"
+msgstr "編集"
+
+msgid "tpl_004"
+msgstr "削除"
+
+msgid "tpl_005"
+msgstr "移動"
+
+msgid "tpl_006"
+msgstr "配送方法・配送料を新規入力"
+
+msgid "tpl_007"
+msgstr "配送方法を新規入力"
+
+msgid "tpl_008"
+msgstr "配送方法登録"
+
+msgid "tpl_009"
+msgstr "配送業者名"
+
+msgid "tpl_010"
+msgstr "説明"
+
+msgid "tpl_011"
+msgstr "伝票No.URL"
+
+msgid "tpl_012"
+msgstr "お届け時間T_FIELD"
+
+msgid "tpl_013"
+msgstr "取扱商品種別"
+
+msgid "tpl_014"
+msgstr "商品種別"
+
+msgid "tpl_015"
+msgstr "取扱支払方法"
+
+msgid "tpl_016"
+msgstr "支払方法"
+
+msgid "tpl_017"
+msgstr "配送料登録"
+
+msgid "tpl_019"
+msgstr "反映"
+
+msgid "tpl_020"
+msgstr "前のページに戻る"
+
+msgid "tpl_021"
+msgstr "この内容で登録する"
+
+msgid "tpl_022"
+msgstr "タイトル"
+
+msgid "tpl_023"
+msgstr "(上限T_FIELD文字)"
+
+msgid "tpl_024"
+msgstr "日付"
+
+msgid "tpl_025"
+msgstr "振替休日は自動設定されないので、振替え先の日付を設定してください。"
+
+msgid "tpl_026"
+msgstr "編集中"
+
+msgid "tpl_027"
+msgstr "基本情報"
+
+msgid "tpl_028"
+msgstr "会社名"
+
+msgid "tpl_029"
+msgstr "会社名(フリガナ)"
+
+msgid "tpl_030"
+msgstr "店名"
+
+msgid "tpl_031"
+msgstr "店名(フリガナ)"
+
+msgid "tpl_032"
+msgstr "店名(英語表記)"
+
+msgid "tpl_033"
+msgstr "郵便番号"
+
+msgid "tpl_034"
+msgstr "所在地入力"
+
+msgid "tpl_035"
+msgstr "SHOP所在地"
+
+msgid "tpl_036"
+msgstr "都道府県を選択"
+
+msgid "tpl_037"
+msgstr "TEL"
+
+msgid "tpl_038"
+msgstr "FAX"
+
+msgid "tpl_039"
+msgstr "店舗営業時間"
+
+msgid "tpl_040"
+msgstr "商品注文受付<br />メールアドレス"
+
+msgid "tpl_041"
+msgstr "問い合わせ受付<br />メールアドレス"
+
+msgid "tpl_042"
+msgstr "メール送信元<br />メールアドレス"
+
+msgid "tpl_043"
+msgstr "送信エラー受付<br />メールアドレス"
+
+msgid "tpl_044"
+msgstr "取扱商品"
+
+msgid "tpl_045"
+msgstr "メッセージ"
+
+msgid "tpl_046"
+msgstr "定休日設定"
+
+msgid "tpl_047"
+msgstr "定休日"
+
+msgid "tpl_048"
+msgstr "SHOP機能"
+
+msgid "tpl_049"
+msgstr "消費税率"
+
+msgid "tpl_050"
+msgstr "課税規則"
+
+msgid "tpl_051"
+msgstr "送料無料条件"
+
+msgid "tpl_052"
+msgstr "ダウンロード可能日数"
+
+msgid "tpl_053"
+msgstr "無制限"
+
+msgid "tpl_054"
+msgstr "地図設定"
+
+msgid "tpl_055"
+msgstr "緯度/経度情報"
+
+msgid "tpl_056"
+msgstr "緯度: "
+
+msgid "tpl_057"
+msgstr "経度: "
+
+msgid "tpl_058"
+msgstr "所在地より自動取得"
+
+msgid "tpl_059"
+msgstr "地図で設定"
+
+msgid "tpl_060"
+msgstr "この位置を入力"
+
+msgid "tpl_061"
+msgstr "'所在地の場所が見つかりません'"
+
+msgid "tpl_062"
+msgstr "規約タイトル"
+
+msgid "tpl_063"
+msgstr "規約内容"
+
+msgid "tpl_064"
+msgstr ""
+"'内容が変更されています。続行すれば変更内容は破棄されます。宜しいでしょう"
+"か？'"
+
+msgid "tpl_065"
+msgstr "テンプレート"
+
+msgid "tpl_066"
+msgstr "メールタイトル"
+
+msgid "tpl_067"
+msgstr "ヘッダー"
+
+msgid "tpl_068"
+msgstr "選択してください"
+
+msgid "tpl_069"
+msgstr "動的データ挿入部分"
+
+msgid "tpl_070"
+msgstr "フッター"
+
+msgid "tpl_071"
+msgstr "検索結果へ戻る"
+
+msgid "tpl_072"
+msgstr "文字数カウント"
+
+msgid "tpl_073"
+msgstr "支払方法を新規入力"
+
+msgid "tpl_074"
+msgstr "ID"
+
+msgid "tpl_075"
+msgstr "手数料（円）"
+
+msgid "tpl_076"
+msgstr "利用条件"
+
+msgid "tpl_077"
+msgstr "上へ"
+
+msgid "tpl_078"
+msgstr "下へ"
+
+msgid "tpl_079"
+msgstr "支払方法登録・編集"
+
+msgid "tpl_080"
+msgstr "手数料"
+
+msgid "tpl_081"
+msgstr "設定できません"
+
+msgid "tpl_082"
+msgstr "利用条件(円)"
+
+msgid "tpl_083"
+msgstr "ロゴ画像"
+
+msgid "tpl_084"
+msgstr "画像の取り消し"
+
+msgid "tpl_085"
+msgstr "アップロード"
+
+msgid "tpl_086"
+msgstr "ポイント付与率（初期値）"
+
+msgid "tpl_087"
+msgstr "小数点以下切り捨て"
+
+msgid "tpl_088"
+msgstr "会員登録時付与ポイント"
+
+msgid "tpl_089"
+msgstr "メタタグ:Author"
+
+msgid "tpl_090"
+msgstr "メタタグ:Description"
+
+msgid "tpl_091"
+msgstr "メタタグ:Keywords"
+
+msgid "tpl_092"
+msgstr "表示するデータがありません"
+
+msgid "tpl_093"
+msgstr "'登録しても宜しいですか'"
+
+msgid "tpl_094"
+msgstr "SHOPマスター"
+
+msgid "tpl_095"
+msgstr "特定商取引法"
+
+msgid "tpl_096"
+msgstr "配送方法設定"
+
+msgid "tpl_097"
+msgstr "支払方法設定"
+
+msgid "tpl_098"
+msgstr "ポイント設定"
+
+msgid "tpl_099"
+msgstr "メール設定"
+
+msgid "tpl_100"
+msgstr "SEO管理"
+
+msgid "tpl_101"
+msgstr "会員規約設定"
+
+msgid "tpl_102"
+msgstr "郵便番号DB登録"
+
+msgid "tpl_103"
+msgstr "定休日管理"
+
+msgid "tpl_104"
+msgstr "販売業者"
+
+msgid "tpl_105"
+msgstr "運営責任者"
+
+msgid "tpl_106"
+msgstr "〒"
+
+msgid "tpl_107"
+msgstr "所在地"
+
+msgid "tpl_108"
+msgstr "メールアドレス"
+
+msgid "tpl_109"
+msgstr "URL"
+
+msgid "tpl_110"
+msgstr "リンク"
+
+msgid "tpl_111"
+msgstr "本文作成"
+
+msgid "tpl_112"
+msgstr "別ウィンドウで開く"
+
+msgid "tpl_113"
+msgstr "上限3000文字"
+
+msgid "tpl_114"
+msgstr "新着情報一覧"
+
+msgid "tpl_115"
+msgstr "順位"
+
+msgid "tpl_116"
+msgstr "商品代金以外の必要料金"
+
+msgid "tpl_117"
+msgstr "注文方法"
+
+msgid "tpl_118"
+msgstr "支払期限"
+
+msgid "tpl_119"
+msgstr "引き渡し時期"
+
+msgid "tpl_120"
+msgstr "返品・交換について"
+
+msgid "tpl_121"
+msgstr "保存されている郵便番号CSVの更新日時: T_FIELD"
+
+msgid "tpl_122"
+msgstr "郵便番号CSVには T_FIELD 行のデータがあります。"
+
+msgid "tpl_123"
+msgstr "郵便番号DBには T_FIELD 行のデータがあります。"
+
+msgid "tpl_124"
+msgstr "登録を行なってください。"
+
+msgid "tpl_125"
+msgstr "行数に差異があります。登録に異常がある恐れがあります。"
+
+msgid "tpl_126"
+msgstr ""
+"通常は、[自動登録] を利用してください。<br />ただし、タイムアウトしてしまう環"
+"境では、タイムアウトした後に [手動登録] を正常に完了するまで繰り返してくださ"
+"い。"
+
+msgid "tpl_127"
+msgstr "自動登録"
+
+msgid "tpl_128"
+msgstr ""
+"下の [削除] [郵便番号CSV更新] [DB手動登録] を順に実行します。ただし、タイムア"
+"ウトした場合、DBは元の状態に戻ります。"
+
+msgid "tpl_129"
+msgstr ""
+" 下の [削除] [DB手動登録] を順に実行します。ただし、タイムアウトした場合、DB"
+"は元の状態に戻ります。"
+
+msgid "tpl_130"
+msgstr "自動登録"
+
+msgid "tpl_131"
+msgstr "DB手動登録"
+
+msgid "tpl_132"
+msgstr ""
+"指定した行数から郵便番号を登録します。タイムアウトした場合、直前まで登録され"
+"ます。"
+
+msgid "tpl_133"
+msgstr "手動登録"
+
+msgid "tpl_134"
+msgstr "開始行"
+
+msgid "tpl_135"
+msgstr "郵便番号CSV更新"
+
+msgid "tpl_136"
+msgstr "ご利用頂けません。"
+
+msgid "tpl_137"
+msgstr "※ パラメーター ZIP_DOWNLOAD_URL が未設定です。"
+
+msgid "tpl_138"
+msgstr "※ PHP 拡張モジュール「zip」が無効です。"
+
+msgid "tpl_139"
+msgstr "日本郵便の WEB サイトから、郵便番号CSVを取得します。"
+
+msgid "tpl_140"
+msgstr "更新"
+
+msgid "tpl_141"
+msgstr ""
+"全ての郵便番号を削除します。再登録するまで、住所自動入力は機能しなくなりま"
+"す。"
+
+msgid "tpl_142"
+msgstr "'CSV出力しない項目'"
+
+msgid "tpl_143"
+msgstr "'CSV出力する項目'"
+
+msgid "tpl_144"
+msgstr "'一番上'"
+
+msgid "tpl_145"
+msgstr "'一番下'"
+
+msgid "tpl_146"
+msgstr "'一つ上'"
+
+msgid "tpl_147"
+msgstr "'一つ下'"
+
+msgid "tpl_148"
+msgstr "'項目順序'"
+
+msgid "tpl_149"
+msgstr "'初期設定で登録しても宜しいですか'"
+
+msgid "tpl_150"
+msgstr "※ 正常に更新されました。"
+
+msgid "tpl_151"
+msgstr "初期設定に戻して登録"
+
+msgid "tpl_152"
+msgstr "SQL一覧"
+
+msgid "tpl_153"
+msgstr "CSV出力"
+
+msgid "tpl_154"
+msgstr "SQL設定"
+
+msgid "tpl_155"
+msgstr "新規入力"
+
+msgid "tpl_156"
+msgstr "SQLを新規入力"
+
+msgid "tpl_157"
+msgstr "最初のSELECTは記述しないでください。"
+
+msgid "tpl_158"
+msgstr "SQL文"
+
+msgid "tpl_159"
+msgstr "構文エラーを確認する"
+
+msgid "tpl_160"
+msgstr "テーブル一覧"
+
+msgid "tpl_161"
+msgstr "項目一覧"
+
+msgid "tpl_162"
+msgstr "エラー内容"
+
+msgid "tpl_163"
+msgstr "エラーはありません"
+
+msgid "tpl_164"
+msgstr "ファイルのアップロード"
+
+msgid "tpl_165"
+msgstr "フォルダ作成"
+
+msgid "tpl_166"
+msgstr "作成"
+
+msgid "tpl_167"
+msgstr "ファイル名"
+
+msgid "tpl_168"
+msgstr "サイズ"
+
+msgid "tpl_169"
+msgstr "更新日付"
+
+msgid "tpl_170"
+msgstr "表示"
+
+msgid "tpl_171"
+msgstr "ダウンロード"
+
+msgid "tpl_172"
+msgstr "この内容で編集しても宜しいですか？"
+
+msgid "tpl_173"
+msgstr "この内容で登録しても宜しいですか？"
+
+msgid "tpl_174"
+msgstr "この新着情報を削除しても宜しいですか？"
+
+msgid "tpl_175"
+msgstr "移動順位は１つだけ入力してください。"
+
+msgid "tpl_176"
+msgstr "移動順位を入力してください。"
+
+msgid "tpl_177"
+msgstr "移動順位は4桁以内で入力してください。"
+
+msgid "tpl_178"
+msgstr "移動順位は数字で入力してください。"
+
+msgid "tpl_179"
+msgstr "移動させる番号が重複しています。"
+
+msgid "tpl_180"
+msgstr "移動順位は0以上で入力してください。"
+
+msgid "tpl_181"
+msgstr "入力された順位は、登録数の最大値を超えています。"
+
+msgid "tpl_182"
+msgstr "現在データはありません。"
+
+msgid "tpl_183"
+msgstr "コメントを入力して下さい。"
+
+msgid "tpl_184"
+msgstr "内容を登録しても宜しいですか"
+
+msgid "tpl_185"
+msgstr "さきほど選択したT_FIELD位の情報は破棄されます。宜しいでしょうか"
+
+msgid "tpl_186"
+msgstr "順位"
+
+msgid "tpl_187"
+msgstr "商品/コメント"
+
+msgid "tpl_188"
+msgstr "商品名"
+
+msgid "tpl_189"
+msgstr "商品を選択する"
+
+msgid "tpl_190"
+msgstr "削除します。宜しいです"
+
+msgid "tpl_191"
+msgstr "カテゴリ"
+
+msgid "tpl_192"
+msgstr "商品コード"
+
+msgid "tpl_193"
+msgstr "検索を開始"
+
+msgid "tpl_194"
+msgstr "T_FIELD件が該当しました。"
+
+msgid "tpl_195"
+msgstr "商品画像"
+
+msgid "tpl_196"
+msgstr "決定"
+
+msgid "tpl_197"
+msgstr "商品が登録されていません"
+
+msgid "tpl_198"
+msgstr "新着情報管理"
+
+msgid "tpl_199"
+msgstr "おすすめ商品管理"
+
+msgid "tpl_200"
+msgstr "ファイル管理"
+
+msgid "tpl_201"
+msgstr "CSV出力項目設定"
+
+msgid "tpl_202"
+msgstr "商品管理"
+
+msgid "tpl_203"
+msgstr "会員管理"
+
+msgid "tpl_204"
+msgstr "受注管理"
+
+msgid "tpl_205"
+msgstr "レビュー"
+
+msgid "tpl_206"
+msgstr "高度な設定"
+
+msgid "tpl_207"
+msgstr "会員ID"
+
+msgid "tpl_208"
+msgstr "お名前"
+
+msgid "tpl_209"
+msgstr "会員状態"
+
+msgid "tpl_210"
+msgstr "お名前(フリガナ)"
+
+msgid "tpl_211"
+msgstr "住所入力"
+
+msgid "tpl_212"
+msgstr "住所"
+
+msgid "tpl_213"
+msgstr "携帯メールアドレス"
+
+msgid "tpl_214"
+msgstr "電話番号"
+
+msgid "tpl_215"
+msgstr "性別"
+
+msgid "tpl_216"
+msgstr "ご職業"
+
+msgid "tpl_217"
+msgstr "生年月日"
+
+msgid "tpl_218"
+msgstr "パスワード"
+
+msgid "tpl_219"
+msgstr "半角英数小文字T_FIELD1～T_FIELD2文字（記号不可）"
+
+msgid "tpl_220"
+msgstr "確認のために2度入力してください。"
+
+msgid "tpl_221"
+msgstr "パスワードを忘れたときのヒント"
+
+msgid "tpl_222"
+msgstr "質問"
+
+msgid "tpl_223"
+msgstr "答え"
+
+msgid "tpl_224"
+msgstr "メールマガジン"
+
+msgid "tpl_225"
+msgstr "SHOP用メモ"
+
+msgid "tpl_226"
+msgstr "所持ポイント"
+
+msgid "tpl_227"
+msgstr "検索画面に戻る"
+
+msgid "tpl_228"
+msgstr "確認ページへ"
+
+msgid "tpl_229"
+msgstr "購入履歴一覧"
+
+msgid "tpl_230"
+msgstr "<span class='attention'>T_FIELD件</span>&nbsp;が該当しました。"
+
+msgid "tpl_231"
+msgstr "注文番号"
+
+msgid "tpl_232"
+msgstr "購入金額"
+
+msgid "tpl_233"
+msgstr "発送日"
+
+msgid "tpl_234"
+msgstr "未発送"
+
+msgid "tpl_235"
+msgstr "購入履歴はありません。"
+
+msgid "tpl_236"
+msgstr "登録が完了致しました。"
+
+msgid "tpl_237"
+msgstr "続けて登録を行う"
+
+msgid "tpl_238"
+msgstr "仮会員"
+
+msgid "tpl_239"
+msgstr "本会員"
+
+msgid "tpl_240"
+msgstr "T_FIELD1T_FIELD2　様"
+
+msgid "tpl_241"
+msgstr "お電話番号"
+
+msgid "tpl_242"
+msgstr "未登録"
+
+msgid "tpl_243"
+msgstr "パスワードを忘れたときのヒント"
+
+msgid "tpl_244"
+msgstr "HTML"
+
+msgid "tpl_245"
+msgstr "テキスト"
+
+msgid "tpl_246"
+msgstr "希望しない"
+
+msgid "tpl_247"
+msgstr "編集画面に戻る"
+
+msgid "tpl_248"
+msgstr "この会員情報を削除しても宜しいですか？"
+
+msgid "tpl_249"
+msgstr "仮登録メールを再送しても宜しいですか？"
+
+msgid "tpl_250"
+msgstr "検索条件設定"
+
+msgid "tpl_251"
+msgstr "検索結果表示件数"
+
+msgid "tpl_252"
+msgstr "この条件で検索する"
+
+msgid "tpl_253"
+msgstr "検索結果一覧"
+
+msgid "tpl_254"
+msgstr "CSV ダウンロード"
+
+msgid "tpl_255"
+msgstr "CSV 出力項目設定"
+
+msgid "tpl_256"
+msgstr "種別"
+
+msgid "tpl_257"
+msgstr "お名前/(フリガナ)"
+
+msgid "tpl_258"
+msgstr "都道府県"
+
+msgid "tpl_259"
+msgstr "仮登録メール再送"
+
+msgid "tpl_260"
+msgstr "仮"
+
+msgid "tpl_261"
+msgstr "本"
+
+msgid "tpl_262"
+msgstr "会員情報が存在しません。"
+
+msgid "tpl_263"
+msgstr "会員マスター"
+
+msgid "tpl_264"
+msgstr "会員登録"
+
+msgid "tpl_265"
+msgstr "ブロック名"
+
+msgid "tpl_266"
+msgstr "拡大"
+
+msgid "tpl_267"
+msgstr "登録する"
+
+msgid "tpl_268"
+msgstr "編集可能ブロック"
+
+msgid "tpl_269"
+msgstr "ブロックを新規入力"
+
+msgid "tpl_270"
+msgstr "CSSファイル名"
+
+msgid "tpl_271"
+msgstr "CSS内容"
+
+msgid "tpl_272"
+msgstr "編集可能CSSファイル"
+
+msgid "tpl_273"
+msgstr "CSSを新規入力"
+
+msgid "tpl_274"
+msgstr "CSSファイルが存在しません。"
+
+msgid "tpl_275"
+msgstr "ヘッダー編集"
+
+msgid "tpl_276"
+msgstr "フッター編集"
+
+msgid "tpl_277"
+msgstr "全ページ"
+
+msgid "tpl_278"
+msgstr "ヘッダー部"
+
+msgid "tpl_279"
+msgstr "メイン"
+
+msgid "tpl_280"
+msgstr "フッター部"
+
+msgid "tpl_281"
+msgstr "未使用ブロック"
+
+msgid "tpl_282"
+msgstr "プレビュー"
+
+msgid "tpl_283"
+msgstr "編集可能ページ一覧"
+
+msgid "tpl_284"
+msgstr "レイアウト"
+
+msgid "tpl_285"
+msgstr "ページを新規入力"
+
+msgid "tpl_286"
+msgstr "ページ詳細"
+
+msgid "tpl_287"
+msgstr "共通のヘッダーを使用する"
+
+msgid "tpl_288"
+msgstr "共通のフッターを使用する"
+
+msgid "tpl_289"
+msgstr "レイアウト設定"
+
+msgid "tpl_290"
+msgstr "ページ詳細設定"
+
+msgid "tpl_291"
+msgstr "ブロック設定"
+
+msgid "tpl_292"
+msgstr "ヘッダー/フッター設定"
+
+msgid "tpl_293"
+msgstr "CSS設定"
+
+msgid "tpl_294"
+msgstr "テンプレート設定"
+
+msgid "tpl_295"
+msgstr "PC"
+
+msgid "tpl_296"
+msgstr "モバイル"
+
+msgid "tpl_297"
+msgstr "スマートフォン"
+
+msgid "tpl_298"
+msgstr ""
+"テンプレートを選択し、「この内容で登録する」ボタンを押すと、<br />選択したテ"
+"ンプレートへデザインを変更することが出来ます。"
+
+msgid "tpl_299"
+msgstr "選択"
+
+msgid "tpl_300"
+msgstr "名前"
+
+msgid "tpl_301"
+msgstr "保存先"
+
+msgid "tpl_302"
+msgstr "ダウンロード"
+
+msgid "tpl_303"
+msgstr "テンプレートを変更します。"
+
+msgid "tpl_304"
+msgstr ""
+"テンプレートパッケージのアップロードを行います。<br />アップロードしたパッ"
+"ケージは、「テンプレート設定」で選択できるようになります。"
+
+msgid "tpl_305"
+msgstr "テンプレートコード"
+
+msgid "tpl_306"
+msgstr "テンプレート名"
+
+msgid "tpl_307"
+msgstr "テンプレートファイル"
+
+msgid "tpl_308"
+msgstr "※ファイル形式は.tar/.tar.gzのみ"
+
+msgid "tpl_309"
+msgstr "配信開始時刻"
+
+msgid "tpl_310"
+msgstr "配信終了時刻"
+
+msgid "tpl_311"
+msgstr "Subject"
+
+msgid "tpl_312"
+msgstr "配信条件"
+
+msgid "tpl_313"
+msgstr "配信総数"
+
+msgid "tpl_314"
+msgstr "配信済数"
+
+msgid "tpl_315"
+msgstr "配信失敗数"
+
+msgid "tpl_316"
+msgstr "未配信数"
+
+msgid "tpl_317"
+msgstr "再試行"
+
+msgid "tpl_318"
+msgstr "確認"
+
+msgid "tpl_319"
+msgstr "未配信と配信失敗となった宛先に再送信を試みますか?"
+
+msgid "tpl_320"
+msgstr "実行"
+
+msgid "tpl_321"
+msgstr "配信履歴を削除しても宜しいでしょうか"
+
+msgid "tpl_322"
+msgstr "配信履歴はありません"
+
+msgid "tpl_323"
+msgstr "配信内容設定へ戻る"
+
+msgid "tpl_324"
+msgstr "配信先検索条件設定"
+
+msgid "tpl_325"
+msgstr "配信形式"
+
+msgid "tpl_326"
+msgstr "配信メールアドレス種別"
+
+msgid "tpl_327"
+msgstr "検索結果をすべて削除"
+
+msgid "tpl_328"
+msgstr "配信内容を設定する"
+
+msgid "tpl_329"
+msgstr "希望配信"
+
+msgid "tpl_330"
+msgstr "登録・更新日"
+
+msgid "tpl_331"
+msgstr "テンプレート選択"
+
+msgid "tpl_332"
+msgstr "（名前差し込み時は {name} といれてください）"
+
+msgid "tpl_333"
+msgstr "本文"
+
+msgid "tpl_334"
+msgstr "HTMLで確認"
+
+msgid "tpl_335"
+msgstr "テンプレート設定画面へ戻る"
+
+msgid "tpl_336"
+msgstr "配信する"
+
+msgid "tpl_337"
+msgstr "(未指定)"
+
+msgid "tpl_338"
+msgstr "誕生月"
+
+msgid "tpl_339"
+msgstr "誕生日"
+
+msgid "tpl_340"
+msgstr "職業"
+
+msgid "tpl_341"
+msgstr "購入回数"
+
+msgid "tpl_342"
+msgstr "最終購入日"
+
+msgid "tpl_343"
+msgstr "購入商品名"
+
+msgid "tpl_344"
+msgstr "購入商品コード"
+
+msgid "tpl_346"
+msgstr "(削除済みカテゴリ)"
+
+msgid "tpl_347"
+msgstr "ウインドウを閉じる"
+
+msgid "tpl_348"
+msgstr "配信内容設定"
+
+msgid "tpl_349"
+msgstr "配信履歴"
+
+msgid "tpl_350"
+msgstr "テンプレートを新規入力"
+
+msgid "tpl_351"
+msgstr "作成日"
+
+msgid "tpl_352"
+msgstr "メール形式"
+
+msgid "tpl_353"
+msgstr "テンプレート一覧に戻る"
+
+msgid "tpl_354"
+msgstr "文字数カウント"
+
+msgid "tpl_355"
+msgstr "テンプレート追加"
+
+msgid "tpl_356"
+msgstr "並び替え"
+
+msgid "tpl_357"
+msgstr "おすすめ商品"
+
+msgid "tpl_358"
+msgstr "入力文字数："
+
+msgid "tpl_359"
+msgstr "受注日"
+
+msgid "tpl_360"
+msgstr "対応状況"
+
+msgid "tpl_361"
+msgstr "入金日"
+
+msgid "tpl_362"
+msgstr "注文者情報"
+
+msgid "tpl_363"
+msgstr "(非会員)"
+
+msgid "tpl_364"
+msgstr "お名前(カナ)"
+
+msgid "tpl_365"
+msgstr "備考"
+
+msgid "tpl_366"
+msgstr "現在ポイント"
+
+msgid "tpl_367"
+msgstr "端末種別"
+
+msgid "tpl_368"
+msgstr "受注商品情報"
+
+msgid "tpl_369"
+msgstr "計算結果の確認"
+
+msgid "tpl_370"
+msgstr "※ 商品が選択されていません。"
+
+msgid "tpl_371"
+msgstr "規格1"
+
+msgid "tpl_372"
+msgstr "単価"
+
+msgid "tpl_373"
+msgstr "数量"
+
+msgid "tpl_374"
+msgstr "規格2"
+
+msgid "tpl_375"
+msgstr "税込み価格"
+
+msgid "tpl_376"
+msgstr "小計"
+
+msgid "tpl_377"
+msgstr "値引き"
+
+msgid "tpl_378"
+msgstr "送料"
+
+msgid "tpl_379"
+msgstr "合計"
+
+msgid "tpl_380"
+msgstr "お支払い合計"
+
+msgid "tpl_381"
+msgstr "使用ポイント"
+
+msgid "tpl_382"
+msgstr "お誕生日ポイント"
+
+msgid "tpl_383"
+msgstr "加算ポイント"
+
+msgid "tpl_384"
+msgstr "お届け先情報"
+
+msgid "tpl_385"
+msgstr "お届け先"
+
+msgid "tpl_386"
+msgstr "お届け時間"
+
+msgid "tpl_387"
+msgstr "お届け日"
+
+msgid "tpl_388"
+msgstr "指定無し"
+
+msgid "tpl_389"
+msgstr "お支払方法"
+
+msgid "tpl_390"
+msgstr "T_FIELD情報"
+
+msgid "tpl_391"
+msgstr "メモ"
+
+msgid "tpl_392"
+msgstr "閉じる"
+
+msgid "tpl_393"
+msgstr "お客様情報へお届けする"
+
+msgid "tpl_394"
+msgstr "お届け先を新規追加"
+
+msgid "tpl_395"
+msgstr "複数のお届け先を指定する"
+
+msgid "tpl_396"
+msgstr "※ T_FIELDに変更時には、在庫数を手動で戻してください。"
+
+msgid "tpl_397"
+msgstr "帳票出力"
+
+msgid "tpl_398"
+msgstr "'チェックボックスが選択されていません'"
+
+msgid "tpl_399"
+msgstr "更新日"
+
+msgid "tpl_400"
+msgstr "購入商品"
+
+msgid "tpl_401"
+msgstr "PDF一括出力"
+
+msgid "tpl_402"
+msgstr "メール一括通知"
+
+msgid "tpl_403"
+msgstr "購入金額(円)"
+
+msgid "tpl_404"
+msgstr "全商品発送日"
+
+msgid "tpl_405"
+msgstr "帳票"
+
+msgid "tpl_406"
+msgstr "一括出力"
+
+msgid "tpl_407"
+msgstr "個別出力"
+
+msgid "tpl_408"
+msgstr "一括通知"
+
+msgid "tpl_409"
+msgstr "個別通知"
+
+msgid "tpl_410"
+msgstr "メール配信"
+
+msgid "tpl_411"
+msgstr "処理日"
+
+msgid "tpl_412"
+msgstr "通知メール"
+
+msgid "tpl_413"
+msgstr "件名"
+
+msgid "tpl_414"
+msgstr "送信内容を確認"
+
+msgid "tpl_415"
+msgstr "※本文は1通分の例です。受注情報は各メールごとに異なります"
+
+msgid "tpl_416"
+msgstr "前のページへ戻る"
+
+msgid "tpl_417"
+msgstr "メール送信"
+
+msgid "tpl_418"
+msgstr "ウインドウを閉じる"
+
+msgid "tpl_419"
+msgstr "帳票の作成"
+
+msgid "tpl_420"
+msgstr "発行日"
+
+msgid "tpl_421"
+msgstr "帳票の種類"
+
+msgid "tpl_422"
+msgstr "ダウンロード方法"
+
+msgid "tpl_423"
+msgstr "帳票タイトル"
+
+msgid "tpl_424"
+msgstr "※未入力時はデフォルトのタイトルが表示されます。"
+
+msgid "tpl_425"
+msgstr "帳票メッセージ"
+
+msgid "tpl_426"
+msgstr "1行目："
+
+msgid "tpl_427"
+msgstr "2行目："
+
+msgid "tpl_428"
+msgstr "3行目："
+
+msgid "tpl_429"
+msgstr "※未入力時はデフォルトのメッセージが表示されます。"
+
+msgid "tpl_430"
+msgstr "※未入力時は表示されません。"
+
+msgid "tpl_431"
+msgstr "ポイント表記"
+
+msgid "tpl_432"
+msgstr "する"
+
+msgid "tpl_433"
+msgstr "しない"
+
+msgid "tpl_434"
+msgstr "※「する」を選択されても、お客様が非会員の場合は表示されません。"
+
+msgid "tpl_435"
+msgstr "この内容で作成する"
+
+msgid "tpl_436"
+msgstr "※ T_FIELDを入力して下さい。"
+
+msgid "tpl_437"
+msgstr "該当するデータはありません。"
+
+msgid "tpl_438"
+msgstr "セレクトボックスが選択されていません"
+
+msgid "tpl_439"
+msgstr "抽出条件"
+
+msgid "tpl_440"
+msgstr "対応状況変更"
+
+msgid "tpl_441"
+msgstr "※ T_FIELDもしくは、削除に変更時には、在庫数を手動で戻してください。"
+
+msgid "tpl_442"
+msgstr "購入金額（円）"
+
+msgid "tpl_443"
+msgstr "未入金"
+
+msgid "tpl_444"
+msgstr "受注登録"
+
+msgid "tpl_445"
+msgstr "対応状況管理"
+
+msgid "tpl_446"
+msgstr "モジュール名"
+
+msgid "tpl_447"
+msgstr "ステータス"
+
+msgid "tpl_448"
+msgstr "日時"
+
+msgid "tpl_449"
+msgstr "詳細"
+
+msgid "tpl_450"
+msgstr "失敗"
+
+msgid "tpl_451"
+msgstr "成功"
+
+msgid "tpl_452"
+msgstr "バックアップパス"
+
+msgid "tpl_453"
+msgstr "一覧へ戻る"
+
+msgid "tpl_454"
+msgstr "読み込む"
+
+msgid "tpl_455"
+msgstr "パス"
+
+msgid "tpl_456"
+msgstr "内容"
+
+msgid "tpl_457"
+msgstr "モジュール一覧を取得する"
+
+msgid "tpl_458"
+msgstr "プラグインを無効にしても宜しいですか？"
+
+msgid "tpl_459"
+msgstr "プラグインを有効にしても宜しいですか？"
+
+msgid "tpl_460"
+msgstr "通信中にエラーが発生しました。"
+
+msgid "tpl_461"
+msgstr "プラグインをインストールしても宜しいでしょうか？"
+
+msgid "tpl_462"
+msgstr ""
+"一度削除したデータは元に戻せません。\\nプラグインを削除しても宜しいですか？"
+
+msgid "tpl_463"
+msgstr "プラグインをアップデートしても宜しいですか？"
+
+msgid "tpl_464"
+msgstr "プラグイン登録"
+
+msgid "tpl_465"
+msgstr "プラグイン"
+
+msgid "tpl_466"
+msgstr "インストール"
+
+msgid "tpl_467"
+msgstr "プラグイン一覧"
+
+msgid "tpl_468"
+msgstr "機能説明"
+
+msgid "tpl_469"
+msgstr "優先度"
+
+msgid "tpl_470"
+msgstr "対応EC-CUBEバージョン ："
+
+msgid "tpl_471"
+msgstr "プラグイン設定"
+
+msgid "tpl_472"
+msgstr "アップデート"
+
+msgid "tpl_473"
+msgstr "有効"
+
+msgid "tpl_474"
+msgstr "有効にする"
+
+msgid "tpl_475"
+msgstr "変更"
+
+msgid "tpl_476"
+msgstr "登録されているプラグインはありません。"
+
+msgid "tpl_477"
+msgstr "ロゴ"
+
+msgid "tpl_478"
+msgstr "導入バージョン"
+
+msgid "tpl_479"
+msgstr "インストール"
+
+msgid "tpl_480"
+msgstr "設定"
+
+msgid "tpl_481"
+msgstr "購入ステータス"
+
+msgid "tpl_482"
+msgstr "認証キーの設定"
+
+msgid "tpl_483"
+msgstr "プラグイン管理"
+
+msgid "tpl_484"
+msgstr "モジュール管理"
+
+msgid "tpl_485"
+msgstr "認証キー設定"
+
+msgid "tpl_486"
+msgstr "ログ管理"
+
+msgid "tpl_487"
+msgstr "ホーム"
+
+msgid "tpl_488"
+msgstr "登録"
+
+msgid "tpl_489"
+msgstr "（上限T_FIELD文字）"
+
+msgid "tpl_490"
+msgstr "カテゴリ名"
+
+msgid "tpl_491"
+msgstr "この階層には、カテゴリが登録されていません。"
+
+msgid "tpl_492"
+msgstr "規格名"
+
+msgid "tpl_493"
+msgstr "分類名"
+
+msgid "tpl_494"
+msgstr "規格名 (登録数)"
+
+msgid "tpl_495"
+msgstr "分類登録"
+
+msgid "tpl_496"
+msgstr "規格一覧に戻る"
+
+msgid "tpl_497"
+msgstr "この商品の規格を登録する"
+
+msgid "tpl_498"
+msgstr "商品カテゴリ"
+
+msgid "tpl_499"
+msgstr "公開・非公開"
+
+msgid "tpl_500"
+msgstr "T_FIELD円"
+
+msgid "tpl_501"
+msgstr "区分"
+
+msgid "tpl_502"
+msgstr "金額"
+
+msgid "tpl_503"
+msgstr "期間"
+
+msgid "tpl_504"
+msgstr "男性"
+
+msgid "tpl_505"
+msgstr "女性"
+
+msgid "tpl_506"
+msgstr "男性(会員)"
+
+msgid "tpl_507"
+msgstr "男性<br />(非会員)"
+
+msgid "tpl_508"
+msgstr "女性(会員)"
+
+msgid "tpl_509"
+msgstr "女性<br />(非会員)"
+
+msgid "tpl_510"
+msgstr "期間別集計"
+
+msgid "tpl_511"
+msgstr "商品別集計"
+
+msgid "tpl_512"
+msgstr "年代別集計"
+
+msgid "tpl_513"
+msgstr "職業別集計"
+
+msgid "tpl_514"
+msgstr "会員別集計"
+
+msgid "tpl_515"
+msgstr "日別"
+
+msgid "tpl_516"
+msgstr "月別"
+
+msgid "tpl_517"
+msgstr "年別"
+
+msgid "tpl_518"
+msgstr "曜日別"
+
+msgid "tpl_519"
+msgstr "時間別"
+
+msgid "tpl_520"
+msgstr "全体"
+
+msgid "tpl_521"
+msgstr "会員"
+
+msgid "tpl_522"
+msgstr "非会員"
+
+msgid "tpl_523"
+msgstr "JavaScript を有効にしてご利用下さい."
+
+msgid "tpl_524"
+msgstr "システム設定＞システム情報"
+
+msgid "tpl_525"
+msgstr "EC-CUBEバージョン"
+
+msgid "tpl_526"
+msgstr "PHPバージョン"
+
+msgid "tpl_527"
+msgstr "DBバージョン"
+
+msgid "tpl_528"
+msgstr "ショップの状況"
+
+msgid "tpl_529"
+msgstr "現在の会員数"
+
+msgid "tpl_530"
+msgstr "昨日の売上高"
+
+msgid "tpl_531"
+msgstr "昨日の売上件数"
+
+msgid "tpl_532"
+msgstr "<span>今月の売上高</span><span>(昨日まで) </span>"
+
+msgid "tpl_533"
+msgstr "<span>今月の売上件数 </span><span>(昨日まで) </span>"
+
+msgid "tpl_534"
+msgstr "昨日のレビュー書き込み数"
+
+msgid "tpl_535"
+msgstr "会員の保持ポイント合計"
+
+msgid "tpl_536"
+msgstr "レビュー書き込み非表示数"
+
+msgid "tpl_537"
+msgstr "品切れ商品"
+
+msgid "tpl_538"
+msgstr "新規受付一覧"
+
+msgid "tpl_539"
+msgstr "ログインページに戻る"
+
+msgid "tpl_540"
+msgstr "管理機能"
+
+msgid "tpl_541"
+msgstr "ADMIN_MODE ON"
+
+msgid "tpl_542"
+msgstr "ログイン"
+
+msgid "tpl_543"
+msgstr "LOGOUT"
+
+msgid "tpl_544"
+msgstr "基本情報管理"
+
+msgid "tpl_545"
+msgstr "売上集計"
+
+msgid "tpl_546"
+msgstr "メルマガ管理"
+
+msgid "tpl_547"
+msgstr "コンテンツ管理"
+
+msgid "tpl_548"
+msgstr "デザイン管理"
+
+msgid "tpl_549"
+msgstr "システム設定"
+
+msgid "tpl_550"
+msgstr "オーナーズストア"
+
+msgid "tpl_551"
+msgstr "Copyright &copy; 2000-T_FIELD LOCKON CO.,LTD. All Rights Reserved."
+
+msgid "tpl_552"
+msgstr "PAGE TOP"
+
+msgid "tpl_553"
+msgstr "SITE CHECK"
+
+msgid "tpl_554"
+msgstr "商品ステータス"
+
+msgid "tpl_555"
+msgstr "ダウンロード商品ファイル名"
+
+msgid "tpl_556"
+msgstr "ダウンロード商品用<BR />ファイル"
+
+msgid "tpl_557"
+msgstr "在庫数"
+
+msgid "tpl_558"
+msgstr "商品送料"
+
+msgid "tpl_559"
+msgstr "ポイント付与率"
+
+msgid "tpl_560"
+msgstr "発送日目安"
+
+msgid "tpl_561"
+msgstr "販売制限数"
+
+msgid "tpl_562"
+msgstr "メーカー"
+
+msgid "tpl_563"
+msgstr "メーカーURL"
+
+msgid "tpl_564"
+msgstr "検索ワード"
+
+msgid "tpl_565"
+msgstr "備考欄(SHOP専用)"
+
+msgid "tpl_566"
+msgstr "一覧-メインコメント"
+
+msgid "tpl_567"
+msgstr "詳細-メインコメント"
+
+msgid "tpl_568"
+msgstr "一覧-メイン画像"
+
+msgid "tpl_569"
+msgstr "詳細-メイン画像"
+
+msgid "tpl_570"
+msgstr "詳細-メイン拡大画像"
+
+msgid "tpl_571"
+msgstr "詳細-サブタイトル（T_FIELD）"
+
+msgid "tpl_572"
+msgstr "詳細-サブコメント（T_FIELD）"
+
+msgid "tpl_573"
+msgstr "詳細-サブ画像（T_FIELD）"
+
+msgid "tpl_574"
+msgstr "詳細-サブ拡大画像（T_FIELD）"
+
+msgid "tpl_575"
+msgstr "関連商品(T_FIELD)"
+
+msgid "tpl_576"
+msgstr "コメント:"
+
+msgid "tpl_577"
+msgstr "商品ID"
+
+msgid "tpl_578"
+msgstr "カテゴリ表示"
+
+msgid "tpl_579"
+msgstr "URL表示"
+
+msgid "tpl_580"
+msgstr "価格(円)"
+
+msgid "tpl_581"
+msgstr "在庫"
+
+msgid "tpl_582"
+msgstr "規格"
+
+msgid "tpl_583"
+msgstr "複製"
+
+msgid "tpl_584"
+msgstr "カテゴリ ⇔ URL"
+
+msgid "tpl_585"
+msgstr "メーカー名"
+
+msgid "tpl_586"
+msgstr "ダウンロード商品用<br />ファイルアップロード"
+
+msgid "tpl_587"
+msgstr "[ファイルの取り消し]"
+
+msgid "tpl_588"
+msgstr "登録可能拡張子：T_FIELD　(パラメーター DOWNLOAD_EXTENSION)"
+
+msgid "tpl_589"
+msgstr "(半角数字で入力)"
+
+msgid "tpl_590"
+msgstr "※現在無効です"
+
+msgid "tpl_591"
+msgstr "(パラメーター OPTION_PRODUCT_DELIV_FEE)"
+
+msgid "tpl_592"
+msgstr "検索ワード<br />※複数の場合は、カンマ( , )区切りで入力して下さい"
+
+msgid "tpl_593"
+msgstr "サブ情報"
+
+msgid "tpl_594"
+msgstr "(タグ許可)"
+
+msgid "tpl_595"
+msgstr "サブ情報表示/非表示"
+
+msgid "tpl_596"
+msgstr "関連商品表示/非表示"
+
+msgid "tpl_597"
+msgstr "関連商品"
+
+msgid "tpl_598"
+msgstr "商品規格登録"
+
+msgid "tpl_599"
+msgstr "表示する"
+
+msgid "tpl_600"
+msgstr "削除する"
+
+msgid "tpl_601"
+msgstr ""
+"<span class='bold'>アップロード可能な拡張子：</span>T_FIELD(パラメーター "
+"DOWNLOAD_EXTENSION)"
+
+msgid "tpl_602"
+msgstr "一行目のデータをコピーする"
+
+msgid "tpl_603"
+msgstr "T_FIELD(円)"
+
+msgid "tpl_604"
+msgstr "ダウンロード<br>ファイル名"
+
+msgid "tpl_605"
+msgstr "ダウンロード商品用<br>ファイル"
+
+msgid "tpl_606"
+msgstr "上限T_FIELD文字"
+
+msgid "tpl_607"
+msgstr "ダウンロードファイル名"
+
+msgid "tpl_608"
+msgstr "ダウンロード商品用ファイルアップロード"
+
+msgid "tpl_609"
+msgstr "規格が選択されていません。"
+
+msgid "tpl_610"
+msgstr "前へ戻る"
+
+msgid "tpl_611"
+msgstr "<span class='attention'>T_FIELD件</span>が該当しました。"
+
+msgid "tpl_612"
+msgstr "内部順位再割り当て"
+
+msgid "tpl_613"
+msgstr "(非公開)"
+
+msgid "tpl_614"
+msgstr "カテゴリを選択してください。"
+
+msgid "tpl_615"
+msgstr "投稿者名"
+
+msgid "tpl_616"
+msgstr "投稿者URL"
+
+msgid "tpl_617"
+msgstr "おすすめレベル"
+
+msgid "tpl_618"
+msgstr "投稿日"
+
+msgid "tpl_619"
+msgstr "表示・非表示"
+
+msgid "tpl_620"
+msgstr "非表示"
+
+msgid "tpl_621"
+msgstr "レビュー表示"
+
+msgid "tpl_622"
+msgstr "商品マスター"
+
+msgid "tpl_623"
+msgstr "商品登録"
+
+msgid "tpl_624"
+msgstr "商品登録CSV"
+
+msgid "tpl_625"
+msgstr "規格管理"
+
+msgid "tpl_626"
+msgstr "カテゴリ登録"
+
+msgid "tpl_627"
+msgstr "カテゴリ登録CSV"
+
+msgid "tpl_628"
+msgstr "メーカー登録"
+
+msgid "tpl_629"
+msgstr "商品並び替え"
+
+msgid "tpl_630"
+msgstr "レビュー管理"
+
+msgid "tpl_631"
+msgstr "[値：T_FIELD]"
+
+msgid "tpl_632"
+msgstr "CSVファイル"
+
+msgid "tpl_633"
+msgstr "(1行目タイトル行)"
+
+msgid "tpl_634"
+msgstr "登録情報"
+
+msgid "tpl_635"
+msgstr "T_FIELD1項目：T_FIELD2"
+
+msgid "tpl_636"
+msgstr "この内容で登録する"
+
+msgid "tpl_637"
+msgstr "戻る"
+
+msgid "tpl_638"
+msgstr "CSV登録を実行しました。"
+
+msgid "tpl_639"
+msgstr ""
+"間違った設定を適用すると管理画面にアクセス出来なくなる可能性があります。<br/>"
+"良く解らない場合はこの設定は変更しないでください。"
+
+msgid "tpl_640"
+msgstr "管理機能設定"
+
+msgid "tpl_641"
+msgstr "ディレクトリ名"
+
+msgid "tpl_642"
+msgstr "SSL制限"
+
+msgid "tpl_643"
+msgstr "IP制限"
+
+msgid "tpl_644"
+msgstr "SSLを強制する。"
+
+msgid "tpl_645"
+msgstr ""
+"※管理機能へのアクセスを特定のIPアドレスからの接続のみに制限します。<br />アク"
+"セスを許可するIPアドレスを1行づつ入力してください。何も入力しない場合は全てを"
+"許可します。"
+
+msgid "tpl_646"
+msgstr "リストアしますか?"
+
+msgid "tpl_647"
+msgstr ""
+"データベースのバックアップを行います。<br />テンプレートファイル等はバック"
+"アップされません。"
+
+msgid "tpl_648"
+msgstr "バックアップ名"
+
+msgid "tpl_649"
+msgstr "バックアップメモ"
+
+msgid "tpl_650"
+msgstr "バックアップデータを作成する"
+
+msgid "tpl_651"
+msgstr "バックアップ一覧"
+
+msgid "tpl_652"
+msgstr "リストア"
+
+msgid "tpl_653"
+msgstr "実行結果"
+
+msgid "tpl_654"
+msgstr "エラーを無視してリストアする"
+
+msgid "tpl_655"
+msgstr "変更する"
+
+msgid "tpl_656"
+msgstr "インデックス"
+
+msgid "tpl_657"
+msgstr "テーブル名"
+
+msgid "tpl_658"
+msgstr "カラム名"
+
+msgid "tpl_659"
+msgstr "ON"
+
+msgid "tpl_660"
+msgstr "OFF"
+
+msgid "tpl_661"
+msgstr "メンバーを新規入力"
+
+msgid "tpl_662"
+msgstr "権限"
+
+msgid "tpl_663"
+msgstr "所属"
+
+msgid "tpl_664"
+msgstr "稼働"
+
+msgid "tpl_665"
+msgstr "メンバー登録/編集"
+
+msgid "tpl_666"
+msgstr "※必須入力"
+
+msgid "tpl_667"
+msgstr "ログインＩＤ"
+
+msgid "tpl_668"
+msgstr "※半角英数字T_FIELD1～T_FIELD2文字"
+
+msgid "tpl_669"
+msgstr "稼働/非稼働"
+
+msgid "tpl_670"
+msgstr "非稼働"
+
+msgid "tpl_671"
+msgstr ""
+"マスターデータの値を設定できます。<br />重複したIDを登録することはできませ"
+"ん。<br />空のIDを登録すると、値は削除されます。<br />設定値によってはサイト"
+"が機能しなくなる場合もありますので、十分ご注意下さい。"
+
+msgid "tpl_672"
+msgstr "値："
+
+msgid "tpl_673"
+msgstr "追加のデータ"
+
+msgid "tpl_674"
+msgstr ""
+"パラメーターの値がPHP定数として設定されます。<br />文字列は「&quot;」で囲んで"
+"下さい。<br />設定値によってはサイトが機能しなくなる場合もありますので、十分"
+"ご注意下さい。"
+
+msgid "tpl_675"
+msgstr "定数名"
+
+msgid "tpl_676"
+msgstr "パラメーター値"
+
+msgid "tpl_677"
+msgstr "メンバー管理"
+
+msgid "tpl_678"
+msgstr "バックアップ管理"
+
+msgid "tpl_679"
+msgstr "パラメーター設定"
+
+msgid "tpl_680"
+msgstr "マスターデータ管理"
+
+msgid "tpl_681"
+msgstr "管理画面設定"
+
+msgid "tpl_682"
+msgstr "システム情報"
+
+msgid "tpl_683"
+msgstr "EC-CUBE ログ表示"
+
+msgid "tpl_684"
+msgstr "高度なデータベース管理"
+
+msgid "tpl_685"
+msgstr "概要"
+
+msgid "tpl_686"
+msgstr "PHP情報"
+
+msgid "tpl_687"
+msgstr "月度集計"
+
+msgid "tpl_688"
+msgstr "月度で集計する"
+
+msgid "tpl_689"
+msgstr "期間集計"
+
+msgid "tpl_690"
+msgstr "期間で集計する"
+
+msgid "tpl_691"
+msgstr "年齢"
+
+msgid "tpl_692"
+msgstr "購入件数"
+
+msgid "tpl_693"
+msgstr "購入合計"
+
+msgid "tpl_700"
+msgstr "購入平均"
+
+msgid "tpl_701"
+msgstr "T_FIELD件"
+
+msgid "tpl_702"
+msgstr "T_FIELD 円"

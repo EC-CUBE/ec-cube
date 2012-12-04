@@ -42,64 +42,64 @@
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 
         <!--{* システム情報ここから *}-->
-        <h2>システム情報</h2>
+        <h2><!--{t string="tpl_682"}--></h2>
         <table summary="システム情報" class="shop-info">
             <tr>
-                <th>EC-CUBEバージョン</th>
+                <th><!--{t string="tpl_525"}--></th>
                 <td><!--{$smarty.const.ECCUBE_VERSION}--></td>
             </tr>
             <tr>
-                <th>PHPバージョン</th>
+                <th><!--{t string="tpl_526"}--></th>
                 <td><!--{$php_version}--></td>
             </tr>
             <tr>
-                <th>DBバージョン</th>
+                <th><!--{t string="tpl_527"}--></th>
                 <td><!--{$db_version}--></td>
             </tr>
             <tr>
-                <th>詳細</th>
-                <td><a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->system/system.php">システム設定＞システム情報</a></td>
+                <th><!--{t string="tpl_449"}--></th>
+                <td><a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->system/system.php"><!--{t string="tpl_524"}--></a></td>
             </tr>
         </table>
         <!--{* システム情報ここまで *}-->
 
         <!--{* ショップの状況ここから *}-->
-        <h2>ショップの状況</h2>
+        <h2><!--{t string="tpl_528"}--></h2>
         <table summary="ショップの状況" class="shop-info">
             <tr>
-                <th>現在の会員数</th>
+                <th><!--{t string="tpl_529"}--></th>
                 <td><!--{$customer_cnt|default:"0"|number_format}-->名</td>
             </tr>
             <tr>
-                <th>昨日の売上高</th>
-                <td><!--{$order_yesterday_amount|default:"0"|number_format}-->円</td>
+                <th><!--{t string="tpl_530"}--></th>
+                <td><!--{t string="tpl_500" T_FIELD=$order_yesterday_amount|default:"0"|number_format}--></td>
             </tr>
             <tr>
-                <th>昨日の売上件数</th>
-                <td><!--{$order_yesterday_cnt|default:"0"|number_format}-->件</td>
+                <th><!--{t string="tpl_531"}--></th>
+                <td><!--{t string="tpl_701" T_FIELD=$order_yesterday_cnt|default:"0"|number_format}--></td>
             </tr>
             <tr>
-                <th><span>今月の売上高</span><span>(昨日まで) </span></th>
-                <td><!--{$order_month_amount|default:"0"|number_format}-->円</td>
+                <th><!--{t string="tpl_532"}--></th>
+                <td><!--{t string="tpl_500" T_FIELD=$order_month_amount|default:"0"|number_format}--></td>
             </tr>
             <tr>
-                <th><span>今月の売上件数 </span><span>(昨日まで) </span></th>
-                <td><!--{$order_month_cnt|default:"0"|number_format}-->件</td>
+                <th><!--{t string="tpl_533"}--></th>
+                <td><!--{t string="tpl_701" T_FIELD=$order_month_cnt|default:"0"|number_format}--></td>
             </tr>
             <tr>
-                <th>昨日のレビュー書き込み数</th>
-                <td><!--{$review_yesterday_cnt|default:"0"}-->件</th>
+                <th><!--{t string="tpl_534"}--></th>
+                <td><!--{t string="tpl_701" T_FIELD=$review_yesterday_cnt|default:"0"}--></th>
             </tr>
             <tr>
-                <th>会員の保持ポイント合計</th>
+                <th><!--{t string="tpl_535"}--></th>
                 <td><!--{$customer_point|default:"0"}-->pt</td>
             </tr>
             <tr>
-                <th>レビュー書き込み非表示数</th>
-                <td><!--{$review_nondisp_cnt|default:"0"}-->件</td>
+                <th><!--{t string="tpl_536"}--></th>
+                <td><!--{t string="tpl_701" T_FIELD=$review_nondisp_cnt|default:"0"}--></td>
             </tr>
             <tr>
-                <th>品切れ商品</th>
+                <th><!--{t string="tpl_537"}--></th>
                 <td>
                 <!--{section name=i loop=$arrSoldout}-->
                 <!--{$arrSoldout[i].product_id}-->:<!--{$arrSoldout[i].name|h}--><br />
@@ -110,14 +110,14 @@
         <!--{* ショップの状況ここまで *}-->
 
         <!--{* 新規受付一覧ここから *}-->
-        <h2>新規受付一覧</h2>
+        <h2><!--{t string="tpl_538"}--></h2>
         <table summary="新規受付一覧" id="home-order">
             <tr>
-                <th class="center">受注日</th>
-                <th class="center">お名前</th>
-                <th class="center">購入商品</th>
-                <th class="center">支払方法</th>
-                <th class="center">購入金額(円)</th>
+                <th class="center"><!--{t string="tpl_359"}--></th>
+                <th class="center"><!--{t string="tpl_208"}--></th>
+                <th class="center"><!--{t string="tpl_400"}--></th>
+                <th class="center"><!--{t string="tpl_016"}--></th>
+                <th class="center"><!--{t string="tpl_403"}--></th>
             </tr>
             <!--{section name=i loop=$arrNewOrder}-->
             <tr>
@@ -125,7 +125,7 @@
                 <td><!--{$arrNewOrder[i].name01|h}--> <!--{$arrNewOrder[i].name02|h}--></td>
                 <td><!--{$arrNewOrder[i].product_name|h}--></td>
                 <td><!--{$arrNewOrder[i].payment_method|h}--></td>
-                <td class="right"><!--{$arrNewOrder[i].total|number_format}-->円</td>
+                <td class="right"><!--{t string="tpl_500" T_FIELD=$arrNewOrder[i].total|number_format}--></td>
             </tr>
             <!--{/section}-->
         </table>

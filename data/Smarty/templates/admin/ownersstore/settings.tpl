@@ -32,7 +32,7 @@
     <p class="remark"><span class="attention">※認証キーは<a href="<!--{$smarty.const.OSTORE_URL}-->" target="_blank">EC-CUBEオーナーズストア</a>で取得できます。</span></p>
     <table class="form">
         <tr>
-            <th>認証キーの設定</th>
+            <th><!--{t string="tpl_482"}--></th>
             <td>
                 <!--{assign var="key" value="public_key"}-->
                 <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
@@ -45,7 +45,7 @@
     <!--登録ボタンここから-->
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'register', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'register', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
         </ul>
     </div>
     <!--登録ボタンここまで-->

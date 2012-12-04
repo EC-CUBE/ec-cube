@@ -51,24 +51,24 @@ function winSubmitMail(URL,formName,Winname,Wwidth,Wheight){
 <div id="mail" class="contents-main">
     <table class="form">
         <tr>
-            <th>Subject<span class="attention"> *</span></th>
+            <th><!--{t string="tpl_311"}--><span class="attention"> *</span></th>
             <td><!--{$arrForm.subject.value|h}--></td>
         </tr>
         <!--{if $arrForm.mail_method.value ne 2}-->
             <tr>
-                <td colspan="2"><a href="javascript:;" onClick="winSubmitMail('','form2','preview',650,700); return false;">HTMLで確認</a>
+                <td colspan="2"><a href="javascript:;" onClick="winSubmitMail('','form2','preview',650,700); return false;"><!--{t string="tpl_334"}--></a>
             </tr>
         <!--{/if}-->
         <tr>
-            <th>本文<span class="attention"> *</span><br />（名前差し込み時は {name} といれてください）</th>
+            <th><!--{t string="tpl_333"}--><span class="attention"> *</span><br /><!--{t string="tpl_332"}--></th>
             <td><!--{$arrForm.body.value|h|nl2br}--></td>
         </tr>
     </table>
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" name="subm02" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_back', '' ); return false;"><span class="btn-prev">テンプレート設定画面へ戻る</span></a></li>
-            <li><a class="btn-action" href="javascript:;" name="subm03" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' ); return false;"><span class="btn-next">配信する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" name="subm02" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_back', '' ); return false;"><span class="btn-prev"><!--{t string="tpl_335"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" name="subm03" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' ); return false;"><span class="btn-next"><!--{t string="tpl_336"}--></span></a></li>
         </ul>
     </div>
 </div>

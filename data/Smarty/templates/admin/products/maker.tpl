@@ -30,19 +30,19 @@
 
         <table class="form">
             <tr>
-                <th>メーカー名<span class="attention"> *</span></th>
+                <th><!--{t string="tpl_585"}--><span class="attention"> *</span></th>
                 <td>
                     <!--{if $arrErr.maker_id}--><span class="attention"><!--{$arrErr.maker_id}--></span><br /><!--{/if}-->
                     <!--{if $arrErr.name}--><span class="attention"><!--{$arrErr.name}--></span><!--{/if}-->
                     <input type="text" name="name" value="<!--{$arrForm.name|h}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="" size="60" class="box60"/>
-                    <span class="attention"> (上限<!--{$smarty.const.SMTEXT_LEN}-->文字)</span>
+                    <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.SMTEXT_LEN}--></span>
                 </td>
             </tr>
         </table>
 
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
             </ul>
         </div>
         <!--{if count($arrMaker) > 0}-->
@@ -53,11 +53,11 @@
             <col width="10%" />
             <col width="20%" />
             <tr>
-                <th>ID</th>
-                <th>メーカー</th>
-                <th class="edit">編集</th>
-                <th class="delete">削除</th>
-                <th>移動</th>
+                <th><!--{t string="tpl_074"}--></th>
+                <th><!--{t string="tpl_562"}--></th>
+                <th class="edit"><!--{t string="tpl_003"}--></th>
+                <th class="delete"><!--{t string="tpl_004"}--></th>
+                <th><!--{t string="tpl_005"}--></th>
             </tr>
             <!--{section name=cnt loop=$arrMaker}-->
             <tr style="background:<!--{if $tpl_maker_id != $arrMaker[cnt].maker_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->;">
@@ -66,24 +66,24 @@
                 <td><!--{$arrMaker[cnt].name|h}--></td>
                 <td class="center">
                     <!--{if $tpl_maker_id != $arrMaker[cnt].maker_id}-->
-                    <a href="?" onclick="fnModeSubmit('pre_edit', 'maker_id', <!--{$arrMaker[cnt].maker_id}-->); return false;">編集</a>
+                    <a href="?" onclick="fnModeSubmit('pre_edit', 'maker_id', <!--{$arrMaker[cnt].maker_id}-->); return false;"><!--{t string="tpl_003"}--></a>
                     <!--{else}-->
-                    編集中
+                    <!--{t string="tpl_026"}-->
                     <!--{/if}-->
                 </td>
                 <td class="center">
                     <!--{if $arrClassCatCount[$class_id] > 0}-->
                     -
                     <!--{else}-->
-                    <a href="?" onclick="fnModeSubmit('delete', 'maker_id', <!--{$arrMaker[cnt].maker_id}-->); return false;">削除</a>
+                    <a href="?" onclick="fnModeSubmit('delete', 'maker_id', <!--{$arrMaker[cnt].maker_id}-->); return false;"><!--{t string="tpl_004"}--></a>
                     <!--{/if}-->
                 </td>
                 <td class="center">
                     <!--{if $smarty.section.cnt.iteration != 1}-->
-                    <a href="?" onclick="fnModeSubmit('up', 'maker_id', <!--{$arrMaker[cnt].maker_id}-->); return false;" />上へ</a>
+                    <a href="?" onclick="fnModeSubmit('up', 'maker_id', <!--{$arrMaker[cnt].maker_id}-->); return false;" /><!--{t string="tpl_077"}--></a>
                     <!--{/if}-->
                     <!--{if $smarty.section.cnt.iteration != $smarty.section.cnt.last}-->
-                    <a href="?" onclick="fnModeSubmit('down', 'maker_id', <!--{$arrMaker[cnt].maker_id}-->); return false;" />下へ</a>
+                    <a href="?" onclick="fnModeSubmit('down', 'maker_id', <!--{$arrMaker[cnt].maker_id}-->); return false;" /><!--{t string="tpl_078"}--></a>
                     <!--{/if}-->
                 </td>
             </tr>

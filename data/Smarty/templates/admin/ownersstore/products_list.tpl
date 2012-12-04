@@ -24,12 +24,12 @@
 
 <table id="ownersstore-products-list" class="list center">
     <tr>
-        <th>ロゴ</th>
-        <th>商品名</th>
-        <th>導入バージョン</th>
-        <th>インストール</th>
-        <th>設定</th>
-        <th>購入ステータス</th>
+        <th><!--{t string="tpl_477"}--></th>
+        <th><!--{t string="tpl_189"}--></th>
+        <th><!--{t string="tpl_478"}--></th>
+        <th><!--{t string="tpl_479"}--></th>
+        <th><!--{t string="tpl_480"}--></th>
+        <th><!--{t string="tpl_481"}--></th>
     </tr>
     <!--{foreach from=$arrProducts item=product name=products_list_loop}-->
         <tr>
@@ -58,12 +58,12 @@
                     <!--{* 新バージョンが公開している場合 はアップデートボタン表示 *}-->
                     <!--{if $product.version_up_flg}-->
                         <span class="icon_confirm">
-                        <a href="#" onclick="OwnersStore.download(<!--{$product.product_id|h}-->);return false;">アップデート</a>
+                        <a href="#" onclick="OwnersStore.download(<!--{$product.product_id|h}-->);return false;"><!--{t string="tpl_472"}--></a>
                         </span>
                     <!--{* それ以外ならダウンロードボタン表示 *}-->
                     <!--{else}-->
                         <span class="icon_confirm">
-                        <a href="#" onclick="OwnersStore.download(<!--{$product.product_id|h}-->);return false;">ダウンロード</a>
+                        <a href="#" onclick="OwnersStore.download(<!--{$product.product_id|h}-->);return false;"><!--{t string="tpl_302"}--></a>
                         </span>
                     <!--{/if}-->
                     </div>
@@ -74,13 +74,13 @@
                     <!--{if $product.installed_flg}-->
                         <span class="icon_confirm">
                         <a href="#" onclick="win02('../load_module_config.php?module_id=<!--{$product.product_id}-->', 'load', 615, 400);return false;">
-                            設定</a>
+                            <!--{t string="tpl_480"}--></a>
                         </span>
                     <!--{else}-->
                         <div id='ownersstore_settings<!--{$product.product_id|h}-->' style="display:none">
                         <span class="icon_confirm">
                         <a href="#" onclick="win02('../load_module_config.php?module_id=<!--{$product.product_id}-->', 'load', 615, 400);return false;">
-                            設定</a>
+                            <!--{t string="tpl_480"}--></a>
                         </span>
                         </div>
                         <div id='ownersstore_settings_default<!--{$product.product_id|h}-->' style="display:bloc">--</div>

@@ -35,16 +35,15 @@ jQuery(function(){
 <!--{* ▼登録テーブルここから *}-->
 <div id="system" class="contents-main">
     <div class="notice">
-        <p class="remark"><span class="attention">間違った設定を適用すると管理画面にアクセス出来なくなる可能性があります。<br/>
-        良く解らない場合はこの設定は変更しないでください。</span></p>
+        <p class="remark"><span class="attention"><!--{t string="tpl_639"}--></span></p>
         <!--{if $arrErr.all}-->
             <p class="error"><!--{$arrErr.all|h}--></p>
         <!--{/if}-->
     </div>
-    <h2>管理機能設定</h2>
+    <h2><!--{t string="tpl_640"}--></h2>
     <table id="basis-index-admin">
         <tr>
-            <th>ディレクトリ名</th>
+            <th><!--{t string="tpl_641"}--></th>
             <td>
                 <!--{assign var=key value="admin_dir"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -52,22 +51,22 @@ jQuery(function(){
             </td>
         </tr>
         <tr>
-            <th>SSL制限</th>
+            <th><!--{t string="tpl_642"}--></th>
             <td>
                 <!--{assign var=key value="admin_force_ssl"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <input type="checkbox" name="<!--{$key}-->" value="1" id="<!--{$key}-->" <!--{if $arrForm[$key] == 1}-->checked="checked"<!--{/if}--><!--{if !$tpl_enable_ssl}--> disabled="disabled"<!--{/if}--> /><label for="<!--{$key}-->">SSLを強制する。</label>
+                <input type="checkbox" name="<!--{$key}-->" value="1" id="<!--{$key}-->" <!--{if $arrForm[$key] == 1}-->checked="checked"<!--{/if}--><!--{if !$tpl_enable_ssl}--> disabled="disabled"<!--{/if}--> /><label for="<!--{$key}-->"><!--{t string="tpl_644"}--></label>
             </td>
         </tr>
         <tr>
-            <th>IP制限</th>
+            <th><!--{t string="tpl_643"}--></th>
             <td>
                 <!--{assign var=key value="admin_allow_hosts"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key]|h}--></textarea>
-                <span class="attention"> (上限<!--{$smarty.const.LTEXT_LEN}-->文字)</span><br />
-                <span>※管理機能へのアクセスを特定のIPアドレスからの接続のみに制限します。<br />
-                アクセスを許可するIPアドレスを1行づつ入力してください。何も入力しない場合は全てを許可します。</span><br />
+                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.LTEXT_LEN}--></span><br />
+                
+                <span><!--{t string="tpl_645"}--></span><br />
             </td>
         </tr>
     </table>
@@ -75,14 +74,14 @@ jQuery(function(){
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="#"><span class="btn-next">この内容で登録する</span></a></li>
+            <li><a class="btn-action" href="#"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
         </ul>
     </div>
 </div>
 <div style="display: none">
     <div id="maparea">
         <div id="maps" style="width: 300px; height: 300px"></div>
-        <a class="btn-normal" href="javascript:;" id="inputPoint">この位置を入力</a>
+        <a class="btn-normal" href="javascript:;" id="inputPoint"><!--{t string="tpl_060"}--></a>
     </div>
 </div>
 <!--{* ▲登録テーブルここまで *}-->

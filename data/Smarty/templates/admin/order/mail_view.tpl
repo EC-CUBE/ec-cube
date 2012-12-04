@@ -35,7 +35,7 @@
 
 <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="window.close(); return false;"><span class="btn-next">ウインドウを閉じる</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="window.close(); return false;"><span class="btn-next"><!--{t string="tpl_418"}--></span></a></li>
         </ul>
     </div>
 

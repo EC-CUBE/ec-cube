@@ -51,7 +51,7 @@ $(function(){
 
 <body id="popup">
 <noscript>
-    <p>JavaScript を有効にしてご利用下さい.</p>
+    <p><!--{t string="tpl_523"}--></p>
 </noscript>
 <div id="popup-header">
     <div id="popup-logo"><img src="<!--{$TPL_URLPATH}-->img/header/logo_popup.jpg" width="99" height="15" alt="EC-CUBE" /></div>

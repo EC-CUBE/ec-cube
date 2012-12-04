@@ -26,13 +26,13 @@
 <form name="search_form" id="search_form" method="post" action="?">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="search" />
-    <h2>配信先検索条件設定</h2>
+    <h2><!--{t string="tpl_324"}--></h2>
 
     <!--{* 検索条件設定テーブルここから *}-->
     <table>
         <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`/adminparts/form_customer_search.tpl"}-->
         <tr>
-            <th>配信形式</th>
+            <th><!--{t string="tpl_325"}--></th>
             <td colspan="3">
                 <!--{assign var=key value="search_htmlmail"}-->
                 <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
@@ -40,7 +40,7 @@
             </td>
         </tr>
         <tr>
-            <th>配信メールアドレス種別</th>
+            <th><!--{t string="tpl_326"}--></th>
             <td colspan="3">
                 <!--{assign var=key value="search_mail_type"}-->
                 <!--{html_radios name=$key options=$arrMailType separator="<br />" selected=$arrForm[$key].value|default:1}-->
@@ -50,14 +50,14 @@
     <!--{* 検索条件設定テーブルここまで *}-->
 
     <div class="btn">
-        <p class="page_rows">検索結果表示件数
+        <p class="page_rows"><!--{t string="tpl_251"}-->
         <!--{assign var=key value="search_page_max"}-->
         <select name="<!--{$key}-->">
             <!--{html_options options=$arrPageRows selected=$arrForm[$key]}-->
         </select> 件</p>
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next">この条件で検索する</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_252"}--></span></a></li>
             </ul>
         </div>
     </div>
@@ -79,14 +79,14 @@
 <!--{/if}-->
 <!--{/foreach}-->
 
-    <h2>検索結果一覧</h2>
+    <h2><!--{t string="tpl_253"}--></h2>
     <div class="btn">
-        <span class="attention"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。
+        <!--検索結果数--><!--{t string="tpl_230" T_FIELD=$tpl_linemax}-->
         <!--{if $smarty.const.ADMIN_MODE == '1'}-->
-            <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><span>検索結果をすべて削除</span></a>
+            <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><span><!--{t string="tpl_327"}--></span></a>
         <!--{/if}-->
         <!--{if $tpl_linemax > 0}-->
-            <a class="btn-normal" href="javascript:;" onclick="document.form1['mode'].value='input'; document.form1.submit(); return false;"><span>配信内容を設定する</span></a>
+            <a class="btn-normal" href="javascript:;" onclick="document.form1['mode'].value='input'; document.form1.submit(); return false;"><span><!--{t string="tpl_328"}--></span></a>
         <!--{/if}-->
     </div>
     <!--{if count($arrResults) > 0}-->
@@ -101,11 +101,11 @@
     <col width="15%" />
     <col width="15%" />
         <tr>
-            <th>会員ID</th>
-            <th>名前</th>
-            <th>メールアドレス</th>
-            <th>希望配信</th>
-            <th>登録・更新日</th>
+            <th><!--{t string="tpl_207"}--></th>
+            <th><!--{t string="tpl_300"}--></th>
+            <th><!--{t string="tpl_108"}--></th>
+            <th><!--{t string="tpl_329"}--></th>
+            <th><!--{t string="tpl_330"}--></th>
         </tr>
         <!--{section name=i loop=$arrResults}-->
         <tr>

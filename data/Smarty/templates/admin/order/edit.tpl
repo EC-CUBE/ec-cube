@@ -102,61 +102,61 @@
     <table class="form">
         <!--{if $tpl_mode != 'add'}-->
         <tr>
-            <th>帳票出力</th>
-            <td><a class="btn-normal" href="javascript:;" onclick="win02('pdf.php?order_id=<!--{$arrForm.order_id.value|h}-->','pdf','615','650'); return false;">帳票出力</a></td>
+            <th><!--{t string="tpl_397"}--></th>
+            <td><a class="btn-normal" href="javascript:;" onclick="win02('pdf.php?order_id=<!--{$arrForm.order_id.value|h}-->','pdf','615','650'); return false;"><!--{t string="tpl_397"}--></a></td>
         </tr>
         <!--{/if}-->
         <tr>
-            <th>注文番号</th>
+            <th><!--{t string="tpl_231"}--></th>
             <td><!--{$arrForm.order_id.value|h}--></td>
         </tr>
         <tr>
-            <th>受注日</th>
+            <th><!--{t string="tpl_359"}--></th>
             <td><!--{$arrForm.create_date.value|sfDispDBDate|h}--><input type="hidden" name="create_date" value="<!--{$arrForm.create_date.value|h}-->" /></td>
         </tr>
         <tr>
-            <th>対応状況</th>
+            <th><!--{t string="tpl_360"}--></th>
             <td>
                 <!--{assign var=key value="status"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-                    <option value="">選択してください</option>
+                    <option value=""><!--{t string="tpl_068"}--></option>
                     <!--{html_options options=$arrORDERSTATUS selected=$arrForm[$key].value}-->
                 </select><br />
                 <!--{if $smarty.get.mode != 'add'}-->
-                    <span class="attention">※ <!--{$arrORDERSTATUS[$smarty.const.ORDER_CANCEL]}-->に変更時には、在庫数を手動で戻してください。</span>
+                    <span class="attention"><!--{t string="tpl_396" T_FIELD=$arrORDERSTATUS[$smarty.const.ORDER_CANCEL]}--></span>
                 <!--{/if}-->
             </td>
         </tr>
         <tr>
-            <th>入金日</th>
+            <th><!--{t string="tpl_361"}--></th>
             <td><!--{$arrForm.payment_date.value|sfDispDBDate|default:"未入金"|h}--></td>
         </tr>
         <tr>
-            <th>発送日</th>
+            <th><!--{t string="tpl_233"}--></th>
             <td><!--{$arrForm.commit_date.value|sfDispDBDate|default:"未発送"|h}--></td>
         </tr>
     </table>
 
-    <h2>注文者情報
+    <h2><!--{t string="tpl_362"}-->
         <!--{if $tpl_mode == 'add'}-->
             <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnOpenWindow('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->customer/search_customer.php','search','600','650'); return false;">会員検索</a>
         <!--{/if}-->
     </h2>
     <table class="form">
         <tr>
-            <th>会員ID</th>
+            <th><!--{t string="tpl_207"}--></th>
             <td>
                 <!--{if $arrForm.customer_id.value > 0}-->
                     <!--{$arrForm.customer_id.value|h}-->
                     <input type="hidden" name="customer_id" value="<!--{$arrForm.customer_id.value|h}-->" />
                 <!--{else}-->
-                    (非会員)
+                    <!--{t string="tpl_363"}-->
                 <!--{/if}-->
             </td>
         </tr>
         <tr>
-            <th>お名前</th>
+            <th><!--{t string="tpl_208"}--></th>
             <td>
                 <!--{assign var=key1 value="order_name01"}-->
                 <!--{assign var=key2 value="order_name02"}-->
@@ -166,7 +166,7 @@
             </td>
         </tr>
         <tr>
-            <th>お名前(フリガナ)</th>
+            <th><!--{t string="tpl_210"}--></th>
             <td>
                 <!--{assign var=key1 value="order_kana01"}-->
                 <!--{assign var=key2 value="order_kana02"}-->
@@ -176,7 +176,7 @@
             </td>
         </tr>
         <tr>
-            <th>メールアドレス</th>
+            <th><!--{t string="tpl_108"}--></th>
             <td>
                 <!--{assign var=key1 value="order_email"}-->
                 <span class="attention"><!--{$arrErr[$key1]}--></span>
@@ -184,7 +184,7 @@
             </td>
         </tr>
         <tr>
-            <th>TEL</th>
+            <th><!--{t string="tpl_037"}--></th>
             <td>
                 <!--{assign var=key1 value="order_tel01"}-->
                 <!--{assign var=key2 value="order_tel02"}-->
@@ -198,7 +198,7 @@
             </td>
         </tr>
         <tr>
-            <th>FAX</th>
+            <th><!--{t string="tpl_039"}--></th>
             <td>
                 <!--{assign var=key1 value="order_fax01"}-->
                 <!--{assign var=key2 value="order_fax02"}-->
@@ -212,20 +212,20 @@
             </td>
         </tr>
         <tr>
-            <th>住所</th>
+            <th><!--{t string="tpl_212"}--></th>
             <td>
                 <!--{assign var=key1 value="order_zip01"}-->
                 <!--{assign var=key2 value="order_zip02"}-->
                 <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
-                〒
+                <!--{t string="tpl_106"}-->
                 <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="6" class="box6" />
                 -
                 <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="6" class="box6" />
-                <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'order_zip01', 'order_zip02', 'order_pref', 'order_addr01'); return false;">住所入力</a><br />
+                <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'order_zip01', 'order_zip02', 'order_pref', 'order_addr01'); return false;"><!--{t string="tpl_211"}--></a><br />
                 <!--{assign var=key value="order_pref"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <select class="top" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-                    <option value="" selected="">都道府県を選択</option>
+                    <option value="" selected=""><!--{t string="tpl_036"}--></option>
                     <!--{html_options options=$arrPref selected=$arrForm[$key].value}-->
                 </select><br />
                 <!--{assign var=key value="order_addr01"}-->
@@ -237,22 +237,22 @@
             </td>
         </tr>
         <tr>
-            <th>備考</th>
+            <th><!--{t string="tpl_365"}--></th>
             <td><!--{$arrForm.message.value|h|nl2br}--></td>
         </tr>
         <tr>
-            <th>現在ポイント</th>
+            <th><!--{t string="tpl_366"}--></th>
             <td>
                 <!--{if $arrForm.customer_id > 0}-->
                     <!--{$arrForm.customer_point.value|number_format}-->
                     pt
                 <!--{else}-->
-                    (非会員)
+                    <!--{t string="tpl_363"}-->
             <!--{/if}-->
             </td>
         </tr>
         <tr>
-            <th>端末種別</th>
+            <th><!--{t string="tpl_367"}--></th>
             <td><!--{$arrDeviceType[$arrForm.device_type_id.value]|h}--></td>
         </tr>
 
@@ -262,23 +262,23 @@
     <!--▼受注商品情報ここから-->
     <a name="order_products"></a>
     <h2 id="order_products">
-        受注商品情報
-        <a class="btn-normal" href="javascript:;" name="recalculate" onclick="fnModeSubmit('recalculate','anchor_key','order_products');">計算結果の確認</a>
+        <!--{t string="tpl_368"}-->
+        <a class="btn-normal" href="javascript:;" name="recalculate" onclick="fnModeSubmit('recalculate','anchor_key','order_products');"><!--{t string="tpl_369"}--></a>
         <a class="btn-normal" href="javascript:;" name="add_product" onclick="win03('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php?order_id=<!--{$arrForm.order_id.value|h}-->', 'search', '615', '500'); return false;">商品の追加</a>
     </h2>
 
     <!--{if $arrErr.product_id}-->
-        <span class="attention">※ 商品が選択されていません。</span>
+        <span class="attention"><!--{t string="tpl_370"}--></span>
     <!--{/if}-->
 
     <table class="list" id="order-edit-products">
         <tr>
-            <th class="id">商品コード</th>
-            <th class="name">商品名/規格1/規格2</th>
-            <th class="price">単価</th>
-            <th class="qty">数量</th>
-            <th class="price">税込み価格</th>
-            <th class="price">小計</th>
+            <th class="id"><!--{t string="tpl_192"}--></th>
+            <th class="name"><!--{t string="tpl_189"}-->/<!--{t string="tpl_371"}-->/<!--{t string="tpl_374"}--></th>
+            <th class="price"><!--{t string="tpl_372"}--></th>
+            <th class="qty"><!--{t string="tpl_373"}--></th>
+            <th class="price"><!--{t string="tpl_375"}--></th>
+            <th class="price"><!--{t string="tpl_376"}--></th>
         </tr>
         <!--{section name=cnt loop=$arrForm.quantity.value}-->
         <!--{assign var=product_index value="`$smarty.section.cnt.index`"}-->
@@ -295,7 +295,7 @@
                 <br />
                 <a class="btn-normal" href="javascript:;" name="change" onclick="win03('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php?no=<!--{$product_index}-->&amp;order_id=<!--{$arrForm.order_id.value|h}-->', 'search', '615', '500'); return false;">変更</a>
                 <!--{if count($arrForm.quantity.value) > 1}-->
-                    <a class="btn-normal" href="javascript:;" name="delete" onclick="fnSetFormVal('form1', 'delete_no', <!--{$product_index}-->); fnModeSubmit('delete_product','anchor_key','order_products'); return false;">削除</a>
+                    <a class="btn-normal" href="javascript:;" name="delete" onclick="fnSetFormVal('form1', 'delete_no', <!--{$product_index}-->); fnModeSubmit('delete_product','anchor_key','order_products'); return false;"><!--{t string="tpl_004"}--></a>
                 <!--{/if}-->
             <input type="hidden" name="product_type_id[<!--{$product_index}-->]" value="<!--{$arrForm.product_type_id.value[$product_index]|h}-->" id="product_type_id_<!--{$product_index}-->" />
             <input type="hidden" name="product_id[<!--{$product_index}-->]" value="<!--{$arrForm.product_id.value[$product_index]|h}-->" id="product_id_<!--{$product_index}-->" />
@@ -314,16 +314,16 @@
             </td>
             <!--{assign var=price value=`$arrForm.price.value[$product_index]`}-->
             <!--{assign var=quantity value=`$arrForm.quantity.value[$product_index]`}-->
-            <td class="right"><!--{$price|sfCalcIncTax|number_format}--> 円</td>
-            <td class="right"><!--{$price|sfCalcIncTax|sfMultiply:$quantity|number_format}-->円</td>
+            <td class="right"><!--{t string="tpl_702" T_FIELD=$price|sfCalcIncTax|number_format}--></td>
+            <td class="right"><!--{t string="tpl_500" T_FIELD=$price|sfCalcIncTax|sfMultiply:$quantity|number_format}--></td>
         </tr>
         <!--{/section}-->
         <tr>
-            <th colspan="5" class="column right">小計</th>
-            <td class="right"><!--{$arrForm.subtotal.value|number_format}-->円</td>
+            <th colspan="5" class="column right"><!--{t string="tpl_376"}--></th>
+            <td class="right"><!--{t string="tpl_500" T_FIELD=$arrForm.subtotal.value|number_format}--></td>
         </tr>
         <tr>
-            <th colspan="5" class="column right">値引き</th>
+            <th colspan="5" class="column right"><!--{t string="tpl_377"}--></th>
             <td class="right">
                 <!--{assign var=key value="discount"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -332,7 +332,7 @@
             </td>
         </tr>
         <tr>
-            <th colspan="5" class="column right">送料</th>
+            <th colspan="5" class="column right"><!--{t string="tpl_378"}--></th>
             <td class="right">
                 <!--{assign var=key value="deliv_fee"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -341,7 +341,7 @@
             </td>
         </tr>
         <tr>
-            <th colspan="5" class="column right">手数料</th>
+            <th colspan="5" class="column right"><!--{t string="tpl_080"}--></th>
             <td class="right">
                 <!--{assign var=key value="charge"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -350,23 +350,22 @@
             </td>
         </tr>
         <tr>
-            <th colspan="5" class="column right">合計</th>
+            <th colspan="5" class="column right"><!--{t string="tpl_379"}--></th>
             <td class="right">
                 <span class="attention"><!--{$arrErr.total}--></span>
-                <!--{$arrForm.total.value|number_format}--> 円
+                <!--{t string="tpl_702" T_FIELD=$arrForm.total.value|number_format}-->
             </td>
         </tr>
         <tr>
-            <th colspan="5" class="column right">お支払い合計</th>
+            <th colspan="5" class="column right"><!--{t string="tpl_380"}--></th>
             <td class="right">
                 <span class="attention"><!--{$arrErr.payment_total}--></span>
-                <!--{$arrForm.payment_total.value|number_format}-->
-                円
+                <!--{t string="tpl_702" T_FIELD=$arrForm.payment_total.value|number_format}-->
             </td>
         </tr>
         <!--{if $smarty.const.USE_POINT !== false}-->
             <tr>
-                <th colspan="5" class="column right">使用ポイント</th>
+                <th colspan="5" class="column right"><!--{t string="tpl_381"}--></th>
                 <td class="right">
                     <!--{assign var=key value="use_point"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -376,7 +375,7 @@
             </tr>
             <!--{if $arrForm.birth_point.value > 0}-->
             <tr>
-                <th colspan="5" class="column right">お誕生日ポイント</th>
+                <th colspan="5" class="column right"><!--{t string="tpl_382"}--></th>
                 <td class="right">
                     <!--{$arrForm.birth_point.value|number_format}-->
                     pt
@@ -384,7 +383,7 @@
             </tr>
             <!--{/if}-->
             <tr>
-                <th colspan="5" class="column right">加算ポイント</th>
+                <th colspan="5" class="column right"><!--{t string="tpl_383"}--></th>
                 <td class="right">
                     <!--{$arrForm.add_point.value|number_format|default:0}-->
                     pt
@@ -396,19 +395,19 @@
     <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" />
     <!--▼お届け先情報ここから-->
     <a name="shipping"></a>
-    <h2>お届け先情報
+    <h2><!--{t string="tpl_384"}-->
     <!--{if $arrForm.shipping_quantity.value <= 1}-->
-        <a class="btn-normal" href="javascript:;" onclick="fnCopyFromOrderData();">お客様情報へお届けする</a>
+        <a class="btn-normal" href="javascript:;" onclick="fnCopyFromOrderData();"><!--{t string="tpl_393"}--></a>
     <!--{/if}-->
     <!--{if $smarty.const.USE_MULTIPLE_SHIPPING !== false}-->
-        <a class="btn-normal" href="javascript:;"  onclick="fnAppendShipping();">お届け先を新規追加</a>
-        <a class="btn-normal" href="javascript:;" onclick="fnMultiple();">複数のお届け先を指定する</a>
+        <a class="btn-normal" href="javascript:;"  onclick="fnAppendShipping();"><!--{t string="tpl_394"}--></a>
+        <a class="btn-normal" href="javascript:;" onclick="fnMultiple();"><!--{t string="tpl_395"}--></a>
     <!--{/if}-->
     </h2>
 
     <!--{foreach name=shipping from=$arrAllShipping item=arrShipping key=shipping_index}-->
         <!--{if $arrForm.shipping_quantity.value > 1}-->
-            <h3>お届け先<!--{$smarty.foreach.shipping.iteration}--></h3>
+            <h3><!--{t string="tpl_385"}--><!--{$smarty.foreach.shipping.iteration}--></h3>
         <!--{/if}-->
         <!--{assign var=key value="shipping_id"}-->
         <input type="hidden" name="<!--{$key}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key]|default:"0"|h}-->" id="<!--{$key}-->_<!--{$shipping_index}-->" />
@@ -419,10 +418,10 @@
             <!--{if count($arrShipping.shipment_product_class_id) > 0}-->
                 <table class="list" id="order-edit-products">
                     <tr>
-                        <th class="id">商品コード</th>
-                        <th class="name">商品名/規格1/規格2</th>
-                        <th class="price">単価</th>
-                        <th class="qty">数量</th>
+                        <th class="id"><!--{t string="tpl_192"}--></th>
+                        <th class="name"><!--{t string="tpl_189"}-->/<!--{t string="tpl_371"}-->/<!--{t string="tpl_374"}--></th>
+                        <th class="price"><!--{t string="tpl_372"}--></th>
+                        <th class="qty"><!--{t string="tpl_373"}--></th>
                     </tr>
                     <!--{section name=item loop=$arrShipping.shipment_product_class_id|@count}-->
                         <!--{assign var=item_index value="`$smarty.section.item.index`"}-->
@@ -446,7 +445,7 @@
                             </td>
                             <td class="right">
                                 <!--{assign var=key value="shipment_price"}-->
-                                <!--{$arrShipping[$key][$item_index]|sfCalcIncTax|number_format}-->円
+                                <!--{t string="tpl_500" T_FIELD=$arrShipping[$key][$item_index]|sfCalcIncTax|number_format}-->
                                 <input type="hidden" name="<!--{$key}-->[<!--{$shipping_index}-->][<!--{$item_index}-->]" value="<!--{$arrShipping[$key][$item_index]|h}-->" />
                             </td>
                             <td class="right">
@@ -462,7 +461,7 @@
 
         <table class="form">
             <tr>
-                <th>お名前</th>
+                <th><!--{t string="tpl_208"}--></th>
                 <td>
                     <!--{assign var=key1 value="shipping_name01"}-->
                     <!--{assign var=key2 value="shipping_name02"}-->
@@ -472,7 +471,7 @@
                 </td>
             </tr>
             <tr>
-                <th>お名前(フリガナ)</th>
+                <th><!--{t string="tpl_210"}--></th>
                 <td>
                     <!--{assign var=key1 value="shipping_kana01"}-->
                     <!--{assign var=key2 value="shipping_kana02"}-->
@@ -482,7 +481,7 @@
                 </td>
             </tr>
             <tr>
-                <th>TEL</th>
+                <th><!--{t string="tpl_037"}--></th>
                 <td>
                     <!--{assign var=key1 value="shipping_tel01"}-->
                     <!--{assign var=key2 value="shipping_tel02"}-->
@@ -496,7 +495,7 @@
                 </td>
             </tr>
             <tr>
-                <th>FAX</th>
+                <th><!--{t string="tpl_039"}--></th>
                 <td>
                     <!--{assign var=key1 value="shipping_fax01"}-->
                     <!--{assign var=key2 value="shipping_fax02"}-->
@@ -510,20 +509,20 @@
                 </td>
             </tr>
             <tr>
-                <th>住所</th>
+                <th><!--{t string="tpl_212"}--></th>
                 <td>
                     <!--{assign var=key1 value="shipping_zip01"}-->
                     <!--{assign var=key2 value="shipping_zip02"}-->
                     <span class="attention"><!--{$arrErr[$key1][$shipping_index]}--><!--{$arrErr[$key2][$shipping_index]}--></span>
-                    〒
+                    <!--{t string="tpl_106"}-->
                     <input type="text" name="<!--{$key1}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key1]|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1][$shipping_index]|sfGetErrorColor}-->" size="6" class="box6" />
                     -
                     <input type="text" name="<!--{$key2}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key2]|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2][$shipping_index]|sfGetErrorColor}-->" size="6" class="box6" />
-                    <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'shipping_zip01[<!--{$shipping_index}-->]', 'shipping_zip02[<!--{$shipping_index}-->]', 'shipping_pref[<!--{$shipping_index}-->]', 'shipping_addr01[<!--{$shipping_index}-->]'); return false;">住所入力</a><br />
+                    <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'shipping_zip01[<!--{$shipping_index}-->]', 'shipping_zip02[<!--{$shipping_index}-->]', 'shipping_pref[<!--{$shipping_index}-->]', 'shipping_addr01[<!--{$shipping_index}-->]'); return false;"><!--{t string="tpl_211"}--></a><br />
                     <!--{assign var=key value="shipping_pref"}-->
                     <span class="attention"><!--{$arrErr[$key][$shipping_index]}--></span>
                     <select class="top" name="<!--{$key}-->[<!--{$shipping_index}-->]" style="<!--{$arrErr[$key][$shipping_index]|sfGetErrorColor}-->">
-                        <option value="" selected="">都道府県を選択</option>
+                        <option value="" selected=""><!--{t string="tpl_036"}--></option>
                         <!--{html_options options=$arrPref selected=$arrShipping[$key]}-->
                     </select><br />
                     <!--{assign var=key value="shipping_addr01"}-->
@@ -535,18 +534,18 @@
                 </td>
             </tr>
             <tr>
-                <th>お届け時間</th>
+                <th><!--{t string="tpl_386"}--></th>
                 <td>
                     <!--{assign var=key value="time_id"}-->
                     <span class="attention"><!--{$arrErr[$key][$shipping_index]}--></span>
                     <select name="<!--{$key}-->[<!--{$shipping_index}-->]" style="<!--{$arrErr[$key][$shipping_index]|sfGetErrorColor}-->">
-                        <option value="" selected="0">指定無し</option>
+                        <option value="" selected="0"><!--{t string="tpl_388"}--></option>
                         <!--{html_options options=$arrDelivTime selected=$arrShipping[$key]}-->
                     </select>
                 </td>
             </tr>
             <tr>
-                <th>お届け日</th>
+                <th><!--{t string="tpl_387"}--></th>
                 <td>
                     <!--{assign var=key1 value="shipping_date_year"}-->
                     <!--{assign var=key2 value="shipping_date_month"}-->
@@ -573,23 +572,23 @@
     <a name="deliv"></a>
     <table class="form">
         <tr>
-            <th>配送業者<br /><span class="attention">(配送業者の変更に伴う送料の変更は手動にてお願いします。)</span></th>
+            <th><!--{t string="tpl_001"}--><br /><span class="attention">(配送業者の変更に伴う送料の変更は手動にてお願いします。)</span></th>
             <td>
                 <!--{assign var=key value="deliv_id"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onchange="fnModeSubmit('deliv','anchor_key','deliv');">
-                    <option value="" selected="">選択してください</option>
+                    <option value="" selected=""><!--{t string="tpl_068"}--></option>
                     <!--{html_options options=$arrDeliv selected=$arrForm[$key].value}-->
                 </select>
             </td>
         </tr>
         <tr>
-            <th>お支払方法<br /><span class="attention">(お支払方法の変更に伴う手数料の変更は手動にてお願いします。)</span></th>
+            <th><!--{t string="tpl_389"}--><br /><span class="attention">(お支払方法の変更に伴う手数料の変更は手動にてお願いします。)</span></th>
             <td>
                 <!--{assign var=key value="payment_id"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onchange="fnModeSubmit('payment','anchor_key','deliv');">
-                    <option value="" selected="">選択してください</option>
+                    <option value="" selected=""><!--{t string="tpl_068"}--></option>
                     <!--{html_options options=$arrPayment selected=$arrForm[$key].value}-->
                 </select>
             </td>
@@ -597,7 +596,7 @@
 
         <!--{if $arrForm.payment_info|@count > 0}-->
         <tr>
-            <th><!--{$arrForm.payment_type}-->情報</th>
+            <th><!--{t string="tpl_390" T_FIELD=$arrForm.payment_type}--></th>
             <td>
                 <!--{foreach key=key item=item from=$arrForm.payment_info}-->
                 <!--{if $key != "title"}--><!--{if $item.name != ""}--><!--{$item.name}-->：<!--{/if}--><!--{$item.value}--><br/><!--{/if}-->
@@ -607,7 +606,7 @@
         <!--{/if}-->
 
         <tr>
-            <th>メモ</th>
+            <th><!--{t string="tpl_391"}--></th>
             <td>
                 <!--{assign var=key value="note"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -620,9 +619,9 @@
     <div class="btn-area">
         <ul>
             <!--{if count($arrSearchHidden) > 0}-->
-            <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_URLPATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev">検索画面に戻る</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_URLPATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev"><!--{t string="tpl_227"}--></span></a></li>
             <!--{/if}-->
-            <li><a class="btn-action" href="javascript:;" onclick="return fnFormConfirm(); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="return fnFormConfirm(); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
         </ul>
     </div>
 </div>

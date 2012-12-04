@@ -41,8 +41,7 @@ function confirmSubmit(mode, msg) {
 <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 <div id="disign" class="contents-main">
     <p class="remark">
-        テンプレートパッケージのアップロードを行います。<br />
-        アップロードしたパッケージは、「テンプレート設定」で選択できるようになります。
+        <!--{t string="tpl_304"}-->
     </p>
 
     <!--{if $arrErr.err != ""}-->
@@ -54,7 +53,7 @@ function confirmSubmit(mode, msg) {
     <table>
         <!--{assign var=key value="template_code"}-->
         <tr>
-            <th>テンプレートコード</th>
+            <th><!--{t string="tpl_305"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54">
@@ -62,7 +61,7 @@ function confirmSubmit(mode, msg) {
         </tr>
         <!--{assign var=key value="template_name"}-->
         <tr>
-            <th>テンプレート名</th>
+            <th><!--{t string="tpl_306"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54">
@@ -70,8 +69,8 @@ function confirmSubmit(mode, msg) {
         </tr>
         <!--{assign var=key value="template_file"}-->
         <tr>
-            <th>テンプレートファイル<br/>
-                <span class="attention"><span class="fs14n">※ファイル形式は.tar/.tar.gzのみ</span></span>
+            <th><!--{t string="tpl_307"}--><br/>
+                <span class="attention"><span class="fs14n"><!--{t string="tpl_308"}--></span></span>
             </th>
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -80,7 +79,7 @@ function confirmSubmit(mode, msg) {
         </tr>
     </table>
     <div class="btn-area">
-        <a class="btn-action" href="javascript:;" onclick="fnModeSubmit('upload', '', '');return false;"><span class="btn-next">この内容で登録する</span></a>
+        <a class="btn-action" href="javascript:;" onclick="fnModeSubmit('upload', '', '');return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a>
     </div>
 </div>
 </form>

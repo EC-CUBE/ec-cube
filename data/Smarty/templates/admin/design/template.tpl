@@ -25,7 +25,7 @@
 <script type="text/javascript"><!--
 function submitRegister() {
     var form = document.form1;
-    var msg    = "テンプレートを変更します。";
+    var msg    = "<!--{t string="tpl_303"}-->";
 
     if (window.confirm(msg)) {
         form['mode'].value = 'register';
@@ -42,8 +42,7 @@ function submitRegister() {
 <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 <div id="design" class="contents-main">
     <p class="remark">
-        テンプレートを選択し、「この内容で登録する」ボタンを押すと、<br />
-        選択したテンプレートへデザインを変更することが出来ます。
+        <!--{t string="tpl_298"}-->
     </p>
 
     <!--{if $arrErr.err != ""}-->
@@ -59,11 +58,11 @@ function submitRegister() {
         <col width="10%" />
         <col width="5%" />
         <tr>
-            <th>選択</th>
-            <th>名前</th>
-            <th>保存先</th>
-            <th>ダウンロード</th>
-            <th class="delete">削除</th>
+            <th><!--{t string="tpl_299"}--></th>
+            <th><!--{t string="tpl_300"}--></th>
+            <th><!--{t string="tpl_301"}--></th>
+            <th><!--{t string="tpl_302"}--></th>
+            <th class="delete"><!--{t string="tpl_004"}--></th>
         </tr>
         <!--{foreach from=$templates item=tpl}-->
         <!--{assign var=tplcode value=$tpl.template_code}-->
@@ -71,14 +70,14 @@ function submitRegister() {
             <td><input type="radio" name="template_code" value="<!--{$tplcode|h}-->" <!--{if $tplcode == $tpl_select}-->checked="checked"<!--{/if}--> /></td>
             <td class="left"><!--{$tpl.template_name|h}--></td>
             <td class="left">data/Smarty/templates/<!--{$tplcode|h}-->/</td>
-            <td><span class="icon_confirm"><a href="javascript:;" onClick="fnFormModeSubmit('form2', 'download','template_code','<!--{$tplcode}-->');return false;">ダウンロード</a></span></td>
-            <td><span class="icon_delete"><a href="javascript:;" onClick="fnFormModeSubmit('form2', 'delete','template_code','<!--{$tplcode}-->');return false;">削除</a></span></td>
+            <td><span class="icon_confirm"><a href="javascript:;" onClick="fnFormModeSubmit('form2', 'download','template_code','<!--{$tplcode}-->');return false;"><!--{t string="tpl_302"}--></a></span></td>
+            <td><span class="icon_delete"><a href="javascript:;" onClick="fnFormModeSubmit('form2', 'delete','template_code','<!--{$tplcode}-->');return false;"><!--{t string="tpl_004"}--></a></span></td>
         </tr>
         <!--{/foreach}-->
     </table>
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="submitRegister();return false;"><span class="btn-next">この内容で登録する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="submitRegister();return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
         </ul>
     </div>
 </div>

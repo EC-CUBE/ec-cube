@@ -44,17 +44,17 @@ function lfPopwinSubmit(formName) {
     <input type="hidden" name="order_id[]" value="<!--{$order_id|h}-->">
 <!--{/foreach}-->
 
-<h2><!--コンテンツタイトル-->帳票の作成</h2>
+<h2><!--コンテンツタイトル--><!--{t string="tpl_419"}--></h2>
 
 <table class="form">
     <col width="20%" />
     <col width="80%" />
     <tr>
-        <th>注文番号</th>
+        <th><!--{t string="tpl_231"}--></th>
         <td><!--{$arrForm.order_id|@join:', '}--></td>
     </tr>
     <tr>
-        <th>発行日<span class="attention">※</span></th>
+        <th><!--{t string="tpl_420"}--><span class="attention">※</span></th>
         <td><!--{if $arrErr.year}--><span class="attention"><!--{$arrErr.year}--></span><!--{/if}-->
             <select name="year">
             <!--{html_options options=$arrYear selected=$arrForm.year}-->
@@ -68,7 +68,7 @@ function lfPopwinSubmit(formName) {
         </td>
     </tr>
     <tr>
-        <th>帳票の種類</th>
+        <th><!--{t string="tpl_421"}--></th>
         <td><!--{if $arrErr.download}--><span class="attention"><!--{$arrErr.download}--></span><!--{/if}-->
             <select name="type">
             <!--{html_options options=$arrType selected=$arrForm.type}-->
@@ -76,7 +76,7 @@ function lfPopwinSubmit(formName) {
         </td>
     </tr>
     <tr>
-        <th>ダウンロード方法</th>
+        <th><!--{t string="tpl_422"}--></th>
         <td><!--{if $arrErr.download}--><span class="attention"><!--{$arrErr.download}--></span><!--{/if}-->
             <select name="download">
             <!--{html_options options=$arrDownload selected=$arrForm.download}-->
@@ -84,40 +84,40 @@ function lfPopwinSubmit(formName) {
         </td>
     </tr>
     <tr>
-        <th>帳票タイトル</th>
+        <th><!--{t string="tpl_423"}--></th>
         <td><!--{if $arrErr.title}--><span class="attention"><!--{$arrErr.title}--></span><!--{/if}-->
             <input type="text" name="title" size="40" value="<!--{$arrForm.title}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
-            <span style="font-size: 80%;">※未入力時はデフォルトのタイトルが表示されます。</span><br />
+            <span style="font-size: 80%;"><!--{t string="tpl_424"}--></span><br />
         </td>
     </tr>
     <tr>
-        <th>帳票メッセージ</th>
+        <th><!--{t string="tpl_425"}--></th>
         <td><!--{if $arrErr.msg1}--><span class="attention"><!--{$arrErr.msg1}--></span><!--{/if}-->
-            1行目：<input type="text" name="msg1" size="40" value="<!--{$arrForm.msg1|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN*3/5}-->"/><br />
+            <!--{t string="tpl_426"}--><input type="text" name="msg1" size="40" value="<!--{$arrForm.msg1|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN*3/5}-->"/><br />
             <!--{if $arrErr.msg2}--><span class="attention"><!--{$arrErr.msg1}--></span><!--{/if}-->
-            2行目：<input type="text" name="msg2" size="40" value="<!--{$arrForm.msg2|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN*3/5}-->"/><br />
+            <!--{t string="tpl_427"}--><input type="text" name="msg2" size="40" value="<!--{$arrForm.msg2|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN*3/5}-->"/><br />
             <!--{if $arrErr.msg3}--><span class="attention"><!--{$arrErr.msg3}--></span><!--{/if}-->
-            3行目：<input type="text" name="msg3" size="40" value="<!--{$arrForm.msg3|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN*3/5}-->"/><br />
-            <span style="font-size: 80%;">※未入力時はデフォルトのメッセージが表示されます。</span><br />
+            <!--{t string="tpl_428"}--><input type="text" name="msg3" size="40" value="<!--{$arrForm.msg3|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN*3/5}-->"/><br />
+            <span style="font-size: 80%;"><!--{t string="tpl_429"}--></span><br />
         </td>
     </tr>
     <tr>
-        <th>備考</th>
+        <th><!--{t string="tpl_365"}--></th>
         <td>
-            1行目：<input type="text" name="etc1" size="40" value="" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
+            <!--{t string="tpl_426"}--><input type="text" name="etc1" size="40" value="" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
             <!--{if $arrErr.etc2}--><span class="attention"><!--{$arrErr.msg1}--></span><!--{/if}-->
-            2行目：<input type="text" name="etc2" size="40" value="" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
+            <!--{t string="tpl_427"}--><input type="text" name="etc2" size="40" value="" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
             <!--{if $arrErr.etc3}--><span class="attention"><!--{$arrErr.msg3}--></span><!--{/if}-->
-            3行目：<input type="text" name="etc3" size="40" value="" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
-            <span style="font-size: 80%;">※未入力時は表示されません。</span><br />
+            <!--{t string="tpl_428"}--><input type="text" name="etc3" size="40" value="" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
+            <span style="font-size: 80%;"><!--{t string="tpl_430"}--></span><br />
         </td>
     </tr>
     <!--{if $smarty.const.USE_POINT !== false}-->
         <tr>
-            <th>ポイント表記</th>
+            <th><!--{t string="tpl_431"}--></th>
             <td>
-                <input type="radio" name="disp_point" value="1" checked="checked" />する　<input type="radio" name="disp_point" value="0" />しない<br />
-                <span style="font-size: 80%;">※「する」を選択されても、お客様が非会員の場合は表示されません。</span>
+                <input type="radio" name="disp_point" value="1" checked="checked" /><!--{t string="tpl_432"}-->　<input type="radio" name="disp_point" value="0" /><!--{t string="tpl_433"}--><br />
+                <span style="font-size: 80%;"><!--{t string="tpl_434"}--></span>
             </td>
         </tr>
     <!--{else}-->
@@ -127,7 +127,7 @@ function lfPopwinSubmit(formName) {
 
 <div class="btn-area">
     <ul>
-        <li><a class="btn-action" href="javascript:;" onclick="return lfPopwinSubmit('form1');"><span class="btn-next">この内容で作成する</span></a></li>
+        <li><a class="btn-action" href="javascript:;" onclick="return lfPopwinSubmit('form1');"><span class="btn-next"><!--{t string="tpl_435"}--></span></a></li>
     </ul>
 </div>
 

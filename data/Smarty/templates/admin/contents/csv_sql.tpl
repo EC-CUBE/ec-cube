@@ -47,7 +47,7 @@ function fnTargetSelf(){
 <input type="hidden" name="csv_output_id" value="" />
 <input type="hidden" name="select_table" value="" />
 <div id="admin-contents" class="contents-main">
-    <h2>SQL一覧</h2>
+    <h2><!--{t string="tpl_152"}--></h2>
 
     <!--{if $arrSqlList}-->
         <table id="contents-csv-sqllist" class="list center">
@@ -58,8 +58,8 @@ function fnTargetSelf(){
                     </td>
                     <td>
                         <div class="btn">
-                            <a class="btn-normal" href="javascript:;" name='csv' onclick="fnTargetSelf(); fnFormModeSubmit('form1','csv_output','csv_output_id',<!--{$item.sql_id}-->); return false;"><span>CSV出力</span></a>
-                            <a class="btn-normal" href="javascript:;" name='del' onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','sql_id',<!--{$item.sql_id}-->); return false;"><span>削除</span></a>
+                            <a class="btn-normal" href="javascript:;" name='csv' onclick="fnTargetSelf(); fnFormModeSubmit('form1','csv_output','csv_output_id',<!--{$item.sql_id}-->); return false;"><span><!--{t string="tpl_153"}--></span></a>
+                            <a class="btn-normal" href="javascript:;" name='del' onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','sql_id',<!--{$item.sql_id}-->); return false;"><span><!--{t string="tpl_004"}--></span></a>
                         </div>
                     </td>
                 </tr>
@@ -68,22 +68,22 @@ function fnTargetSelf(){
     <!--{/if}-->
 
     <div class="btn addnew">
-        <a class="btn-normal" href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','',''); return false;"><span>SQLを新規入力</span></a>
+        <a class="btn-normal" href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','',''); return false;"><span><!--{t string="tpl_156"}--></span></a>
     </div>
 
 
-    <h2>SQL設定<!--{if $arrForm.sql_id != ""}-->(編集中:<!--{$arrForm.sql_name|h}-->)<!--{else}-->(新規入力)<!--{/if}--></h2>
+    <h2><!--{t string="tpl_154"}--><!--{if $arrForm.sql_id != ""}-->(<!--{t string="tpl_026"}-->:<!--{$arrForm.sql_name|h}-->)<!--{else}-->(<!--{t string="tpl_155"}-->)<!--{/if}--></h2>
     <table id="contents-csv-sqlset" class="form">
         <tr>
-            <th>名称<span class="attention"> *</span></th>
+            <th><!--{t string="tpl_002"}--><span class="attention"> *</span></th>
             <td>
                 <span class="attention"><!--{$arrErr.sql_name}--></span>
                 <input type="text" name="sql_name" value="<!--{$arrForm.sql_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />
-                <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
+                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.STEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
-            <th align="center">SQL文<span class="attention"> *</span><br /> (最初のSELECTは記述しないでください。)</td>
+            <th align="center"><!--{t string="tpl_158"}--><span class="attention"> *</span><br /> (<!--{t string="tpl_157"}-->)</td>
             <td align="left">
                 <span class="attention"><!--{$arrErr.csv_sql}--></span>
                 <div>
@@ -94,24 +94,24 @@ function fnTargetSelf(){
     </table>
 
     <div class="btn">
-        <a class="btn-normal" href="javascript:;" name="subm" onclick="doPreview(); return false;"><span>構文エラーを確認する</span></a>
+        <a class="btn-normal" href="javascript:;" name="subm" onclick="doPreview(); return false;"><span><!--{t string="tpl_159"}--></span></a>
     </div>
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" name="subm" onclick="fnTargetSelf(); fnFormModeSubmit('form1', 'confirm', '', '')"><span class="btn-next">この内容で登録する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" name="subm" onclick="fnTargetSelf(); fnFormModeSubmit('form1', 'confirm', '', '')"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
         </ul>
     </div>
 
 
 
     <div id="contents-csv-sqltbl">
-        <h3>テーブル一覧</h3>
+        <h3><!--{t string="tpl_160"}--></h3>
         <select name="arrTableList[]" size="20" style="width:325px; height:300px;" onChange="mode.value=''; select_table.value=this.value; submit();" onDblClick="csv_sql.value = csv_sql.value +' , ' + this.value;">
             <!--{html_options options=$arrTableList selected=$arrForm.select_table}-->
         </select>
     </div>
     <div id="contents-csv-sqlcol">
-        <h3>項目一覧</h3>
+        <h3><!--{t string="tpl_161"}--></h3>
         <select name="arrColList[]" size="20" style="width:325px; height:300px;" onDblClick="csv_sql.value = csv_sql.value +' , ' + this.value;">
             <!--{html_options options=$arrColList}-->
         </select>

@@ -27,15 +27,13 @@
 <input type="hidden" name="mode" value="update" />
 <div id="basis" class="contents-main">
     <p class="remark attention">
-        パラメーターの値がPHP定数として設定されます。<br />
-        文字列は「&quot;」で囲んで下さい。<br />
-        設定値によってはサイトが機能しなくなる場合もありますので、十分ご注意下さい。
+        <!--{t string="tpl_674"}-->
     </p>
 
     <table class="list">
         <tr>
-            <th>定数名</th>
-            <th>パラメーター値</th>
+            <th><!--{t string="tpl_675"}--></th>
+            <th><!--{t string="tpl_676"}--></th>
         </tr>
         <!--{section name=cnt loop=$arrKeys}-->
             <tr>
@@ -58,7 +56,7 @@
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'update', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'update', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
         </ul>
     </div>
 </div>

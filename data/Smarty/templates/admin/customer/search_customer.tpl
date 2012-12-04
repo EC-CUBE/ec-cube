@@ -49,7 +49,7 @@ function func_submit(customer_id){
     <col width="20%" />
     <col width="80%" />
     <tr>
-        <th class="colmun">会員ID</th>
+        <th class="colmun"><!--{t string="tpl_207"}--></th>
         <td width="287" colspan="2">
             <!--{assign var=key value="search_customer_id"}-->
             <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
@@ -57,7 +57,7 @@ function func_submit(customer_id){
         </td>
     </tr>
     <tr>
-        <th class="colmun">お名前</th>
+        <th class="colmun"><!--{t string="tpl_208"}--></th>
         <td>
             <!--{assign var=key value="search_name"}-->
             <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
@@ -65,7 +65,7 @@ function func_submit(customer_id){
         </td>
     </tr>
     <tr class="n">
-        <th class="colmun">お名前(フリガナ)</th>
+        <th class="colmun"><!--{t string="tpl_210"}--></th>
         <td>
         <!--{assign var=key value="search_kana"}-->
         <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
@@ -76,7 +76,7 @@ function func_submit(customer_id){
 
 <div class="btn-area">
     <ul>
-        <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', ''); return false;" name="subm"><span class="btn-next">検索を開始</span></a></li>
+        <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', ''); return false;" name="subm"><span class="btn-next"><!--{t string="tpl_193"}--></span></a></li>
     </ul>
 </div>
 
@@ -84,16 +84,16 @@ function func_submit(customer_id){
 <!--{if $smarty.post.mode == 'search'}-->
     <!--▼検索結果表示-->
         <!--{if $tpl_linemax > 0}-->
-        <p><!--{$tpl_linemax}-->件が該当しました。<!--{$tpl_strnavi}--></p>
+        <p><!--{t string="tpl_194"　T_FIELD=$tpl_linemax}--><!--{$tpl_strnavi}--></p>
         <!--{/if}-->
 
     <!--▼検索後表示部分-->
     <table class="list">
         <tr>
-            <th>会員ID</th>
-            <th>お名前(フリガナ)</th>
-            <th>TEL</th>
-            <th>決定</th>
+            <th><!--{t string="tpl_207"}--></th>
+            <th><!--{t string="tpl_210"}--></th>
+            <th><!--{t string="tpl_037"}--></th>
+            <th><!--{t string="tpl_196"}--></th>
         </tr>
         <!--{section name=cnt loop=$arrCustomer}-->
         <!--▼会員<!--{$smarty.section.cnt.iteration}-->-->
@@ -103,12 +103,12 @@ function func_submit(customer_id){
             </td>
             <td><!--{$arrCustomer[cnt].name01|h}--><!--{$arrCustomer[cnt].name02|h}-->(<!--{$arrCustomer[cnt].kana01|h}--><!--{$arrCustomer[cnt].kana02|h}-->)</td>
             <td><!--{$arrCustomer[cnt].tel01|h}-->-<!--{$arrCustomer[cnt].tel02|h}-->-<!--{$arrCustomer[cnt].tel03|h}--></td>
-            <td align="center"><a href="" onClick="return func_submit(<!--{$arrCustomer[cnt].customer_id|h}-->)">決定</a></td>
+            <td align="center"><a href="" onClick="return func_submit(<!--{$arrCustomer[cnt].customer_id|h}-->)"><!--{t string="tpl_196"}--></a></td>
         </tr>
         <!--▲会員<!--{$smarty.section.cnt.iteration}-->-->
         <!--{sectionelse}-->
         <tr>
-            <td colspan="4">会員情報が存在しません。</td>
+            <td colspan="4"><!--{t string="tpl_262"}--></td>
         </tr>
         <!--{/section}-->
     </table>

@@ -37,7 +37,7 @@ function lfnDispChange(){
             disp_id = 'disp_cat'+i;
             $('#' + disp_id).css("display", "none");
 
-            $('#' + inner_id).html('    URL <a href="#" onClick="lfnDispChange();"> &gt;&gt; カテゴリ表示<\/a>');
+            $('#' + inner_id).html('    URL <a href="#" onClick="lfnDispChange();"> &gt;&gt; <!--{t string="tpl_578"}--><\/a>');
         }
     }else{
         for (i = 1; i <= cnt; i++) {
@@ -47,7 +47,7 @@ function lfnDispChange(){
             disp_id = 'disp_cat'+i;
             $('#' + disp_id).css("display", "");
 
-            $('#' + inner_id).html('    カテゴリ <a href="#" onClick="lfnDispChange();"> &gt;&gt; URL表示<\/a>');
+            $('#' + inner_id).html('    <!--{t string="tpl_191"}--> <a href="#" onClick="lfnDispChange();"> &gt;&gt; <!--{t string="tpl_579"}--><\/a>');
         }
     }
 
@@ -60,12 +60,12 @@ function lfnDispChange(){
 <form name="search_form" id="search_form" method="post" action="?">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="search" />
-    <h2>検索条件設定</h2>
+    <h2><!--{t string="tpl_250"}--></h2>
 
     <!--検索条件設定テーブルここから-->
     <table>
         <tr>
-            <th>商品ID</th>
+            <th><!--{t string="tpl_577"}--></th>
             <td colspan="3">
                 <!--{assign var=key value="search_product_id"}-->
                 <!--{if $arrErr[$key]}-->
@@ -75,7 +75,7 @@ function lfnDispChange(){
             </td>
         </tr>
         <tr>
-            <th>商品コード</th>
+            <th><!--{t string="tpl_192"}--></th>
             <td>
                 <!--{assign var=key value="search_product_code"}-->
                 <!--{if $arrErr[$key]}-->
@@ -83,7 +83,7 @@ function lfnDispChange(){
                 <!--{/if}-->
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" />
             </td>
-            <th>商品名</th>
+            <th><!--{t string="tpl_189"}--></th>
             <td>
                 <!--{assign var=key value="search_name"}-->
                 <!--{if $arrErr[$key]}-->
@@ -93,16 +93,16 @@ function lfnDispChange(){
             </td>
         </tr>
         <tr>
-            <th>カテゴリ</th>
+            <th><!--{t string="tpl_191"}--></th>
             <td>
                 <!--{assign var=key value="search_category_id"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-                <option value="">選択してください</option>
+                <option value=""><!--{t string="tpl_068"}--></option>
                 <!--{html_options options=$arrCatList selected=$arrForm[$key].value}-->
                 </select>
             </td>
-            <th>種別</th>
+            <th><!--{t string="tpl_256"}--></th>
             <td>
                 <!--{assign var=key value="search_status"}-->
                 <span class="attention"><!--{$arrErr[$key]|h}--></span>
@@ -110,7 +110,7 @@ function lfnDispChange(){
             </td>
         </tr>
         <tr>
-            <th>登録・更新日</th>
+            <th><!--{t string="tpl_330"}--></th>
             <td colspan="3">
                 <!--{if $arrErr.search_startyear || $arrErr.search_endyear}-->
                     <span class="attention"><!--{$arrErr.search_startyear}--></span>
@@ -143,7 +143,7 @@ function lfnDispChange(){
             </td>
         </tr>
         <tr>
-            <th>商品ステータス</th>
+            <th><!--{t string="tpl_554"}--></th>
             <td colspan="3">
             <!--{assign var=key value="search_product_statuses"}-->
             <span class="attention"><!--{$arrErr[$key]|h}--></span>
@@ -152,7 +152,7 @@ function lfnDispChange(){
         </tr>
     </table>
     <div class="btn">
-        <p class="page_rows">検索結果表示件数
+        <p class="page_rows"><!--{t string="tpl_251"}-->
         <!--{assign var=key value="search_page_max"}-->
         <!--{if $arrErr[$key]}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -163,7 +163,7 @@ function lfnDispChange(){
 
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next">この条件で検索する</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_252"}--></span></a></li>
             </ul>
         </div>
 
@@ -189,15 +189,15 @@ function lfnDispChange(){
             <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
         <!--{/if}-->
     <!--{/foreach}-->
-    <h2>検索結果一覧</h2>
+    <h2><!--{t string="tpl_253"}--></h2>
     <div class="btn">
-        <span class="attention"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。
+        <!--検索結果数--><!--{t string="tpl_230" T_FIELD=$tpl_linemax}-->
         <!--検索結果-->
         <!--{if $smarty.const.ADMIN_MODE == '1'}-->
-            <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;">検索結果をすべて削除</a>
+            <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><!--{t string="tpl_327"}--></a>
         <!--{/if}-->
-        <a class="btn-tool" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;">CSV ダウンロード</a>
-        <a class="btn-tool" href="../contents/csv.php?tpl_subno_csv=product">CSV 出力項目設定</a>
+        <a class="btn-tool" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;"><!--{t string="tpl_254"}--></a>
+        <a class="btn-tool" href="../contents/csv.php?tpl_subno_csv=product"><!--{t string="tpl_255"}--></a>
     </div>
     <!--{if count($arrProducts) > 0}-->
 
@@ -218,23 +218,23 @@ function lfnDispChange(){
             <col width="5%" />
             <col width="5%" />
             <tr>
-                <th rowspan="2">商品ID</th>
-                <th rowspan="2">商品画像</th>
-                <th rowspan="2">商品コード</th>
-                <th rowspan="2">価格(円)</th>
-                <th>商品名</th>
-                <th rowspan="2">在庫</th>
-                <th rowspan="2">種別</th>
-                <th rowspan="2">編集</th>
-                <th rowspan="2">確認</th>
+                <th rowspan="2"><!--{t string="tpl_577"}--></th>
+                <th rowspan="2"><!--{t string="tpl_195"}--></th>
+                <th rowspan="2"><!--{t string="tpl_192"}--></th>
+                <th rowspan="2"><!--{t string="tpl_580"}--></th>
+                <th><!--{t string="tpl_189"}--></th>
+                <th rowspan="2"><!--{t string="tpl_581"}--></th>
+                <th rowspan="2"><!--{t string="tpl_256"}--></th>
+                <th rowspan="2"><!--{t string="tpl_003"}--></th>
+                <th rowspan="2"><!--{t string="tpl_318"}--></th>
                 <!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
-                <th rowspan="2">規格</th>
+                <th rowspan="2"><!--{t string="tpl_582"}--></th>
                 <!--{/if}-->
-                <th rowspan="2">削除</th>
-                <th rowspan="2">複製</th>
+                <th rowspan="2"><!--{t string="tpl_004"}--></th>
+                <th rowspan="2"><!--{t string="tpl_583"}--></th>
             </tr>
             <tr>
-                <th nowrap><a href="#" onClick="lfnDispChange(); return false;">カテゴリ ⇔ URL</a></th>
+                <th nowrap><a href="#" onClick="lfnDispChange(); return false;"><!--{t string="tpl_584"}--></a></th>
             </tr>
 
             <!--{section name=cnt loop=$arrProducts}-->
@@ -259,20 +259,20 @@ function lfnDispChange(){
                     <!--{* 在庫 *}-->
                     <!--{* XXX 複数規格でかつ、全ての在庫数量が等しい場合は先頭に「各」と入れたれたら良いと思う。 *}-->
                     <td class="menu" rowspan="2">
-                        <!--{if $arrProducts[cnt].stock_unlimited_min}-->無制限<!--{else}--><!--{$arrProducts[cnt].stock_min|number_format}--><!--{/if}-->
+                        <!--{if $arrProducts[cnt].stock_unlimited_min}--><!--{t string="tpl_053"}--><!--{else}--><!--{$arrProducts[cnt].stock_min|number_format}--><!--{/if}-->
                         <!--{if $arrProducts[cnt].stock_unlimited_min != $arrProducts[cnt].stock_unlimited_max || $arrProducts[cnt].stock_min != $arrProducts[cnt].stock_max}-->
-                            <br />～ <!--{if $arrProducts[cnt].stock_unlimited_max}-->無制限<!--{else}--><!--{$arrProducts[cnt].stock_max|number_format}--><!--{/if}-->
+                            <br />～ <!--{if $arrProducts[cnt].stock_unlimited_max}--><!--{t string="tpl_053"}--><!--{else}--><!--{$arrProducts[cnt].stock_max|number_format}--><!--{/if}-->
                         <!--{/if}-->            </td>
                     <!--{* 表示 *}-->
                     <!--{assign var=key value=$arrProducts[cnt].status}-->
                     <td class="menu" rowspan="2"><!--{$arrDISP[$key]}--></td>
-                    <td class="menu" rowspan="2"><span class="icon_edit"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >編集</a></span></td>
-                    <td class="menu" rowspan="2"><span class="icon_confirm"><a href="<!--{$smarty.const.HTTP_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->&amp;admin=on" target="_blank">確認</a></span></td>
+                    <td class="menu" rowspan="2"><span class="icon_edit"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" ><!--{t string="tpl_003"}--></a></span></td>
+                    <td class="menu" rowspan="2"><span class="icon_confirm"><a href="<!--{$smarty.const.HTTP_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->&amp;admin=on" target="_blank"><!--{t string="tpl_318"}--></a></span></td>
                     <!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
-                    <td class="menu" rowspan="2"><span class="icon_class"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnChangeAction('./product_class.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >規格</a></span></td>
+                    <td class="menu" rowspan="2"><span class="icon_class"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnChangeAction('./product_class.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" ><!--{t string="tpl_582"}--></a></span></td>
                     <!--{/if}-->
-                    <td class="menu" rowspan="2"><span class="icon_delete"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;">削除</a></span></td>
-                    <td class="menu" rowspan="2"><span class="icon_copy"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('copy', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >複製</a></span></td>
+                    <td class="menu" rowspan="2"><span class="icon_delete"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;"><!--{t string="tpl_004"}--></a></span></td>
+                    <td class="menu" rowspan="2"><span class="icon_copy"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('copy', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" ><!--{t string="tpl_583"}--></a></span></td>
                 </tr>
                 <tr style="background:<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->;">
                     <td>

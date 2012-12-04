@@ -50,26 +50,26 @@ function func_submit( id ){
 <input name="search_pageno" type="hidden" value="" />
 <table>
     <tr>
-        <th>カテゴリ</th>
+        <th><!--{t string="tpl_191"}--></th>
         <td>
             <select name="search_category_id">
-                <option value="" selected="selected">選択してください</option>
+                <option value="" selected="selected"><!--{t string="tpl_068"}--></option>
                 <!--{html_options options=$arrCatList selected=$arrForm.search_category_id}-->
             </select>
         </td>
     </tr>
     <tr>
-        <th>商品名</th>
+        <th><!--{t string="tpl_189"}--></th>
         <td><input type="text" name="search_name" value="<!--{$arrForm.search_name|h}-->" size="35" class="box35" /></td>
     </tr>
 </table>
 <div class="btn-area">
-    <a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', ''); return false;" name="subm"><span class="btn-next">検索を開始</span></a>
+    <a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', ''); return false;" name="subm"><span class="btn-next"><!--{t string="tpl_193"}--></span></a>
 </div>
 
 <!--▼検索結果表示-->
 <!--{if $tpl_linemax}-->
-    <p><!--{$tpl_linemax}-->件が該当しました。</p>
+    <p><!--{t string="tpl_194"　T_FIELD=$tpl_linemax}--></p>
     <!--{* ▼ページナビ *}-->
     <!--{$tpl_strnavi}-->
     <!--{* ▲ページナビ *}-->
@@ -77,10 +77,10 @@ function func_submit( id ){
     <!--{* ▼検索後表示部分 *}-->
     <table class="list">
         <tr>
-            <th>商品画像</th>
-            <th>商品コード</th>
-            <th>商品名</th>
-            <th>決定</th>
+            <th><!--{t string="tpl_195"}--></th>
+            <th><!--{t string="tpl_192"}--></th>
+            <th><!--{t string="tpl_189"}--></th>
+            <th><!--{t string="tpl_196"}--></th>
         </tr>
         <!--{section name=cnt loop=$arrProducts}-->
             <!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
@@ -96,12 +96,12 @@ function func_submit( id ){
                     <!--{/if}-->
                 </td>
                 <td><!--{$arrProducts[cnt].name|h}--></td>
-                <td align="center"><a href="#" onclick="return func_submit(<!--{$arrProducts[cnt].product_id|h}-->)">決定</a></td>
+                <td align="center"><a href="#" onclick="return func_submit(<!--{$arrProducts[cnt].product_id|h}-->)"><!--{t string="tpl_196"}--></a></td>
             </tr>
             <!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
             <!--{sectionelse}-->
             <tr>
-                <td colspan="4">商品が登録されていません</td>
+                <td colspan="4"><!--{t string="tpl_197"}--></td>
             </tr>
         <!--{/section}-->
     </table>

@@ -31,7 +31,7 @@
             <form name="form1" id="form1" method="post" action="?">
             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
             <input type="hidden" name="mode" value="login" />
-            <p><label for="login_id">ID</label></p>
+            <p><label for="login_id"><!--{t string="tpl_074"}--></label></p>
             <input type="text" name="login_id" size="20" class="box25" />
             <p><label for="password">PASSWORD</label></p>
             <input type="password" name="password" size="20" class="box25" />

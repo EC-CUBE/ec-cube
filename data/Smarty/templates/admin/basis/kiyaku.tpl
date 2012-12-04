@@ -29,26 +29,26 @@
 <div id="basis" class="contents-main">
     <table class="form">
         <tr>
-            <th>規約タイトル<span class="attention"> *</span></th>
+            <th><!--{t string="tpl_062"}--><span class="attention"> *</span></th>
             <td>
                 <span class="attention"><!--{$arrErr.kiyaku_title}--></span>
                 <span class="attention"><!--{$arrErr.name}--></span>
                 <input type="text" name="kiyaku_title" value="<!--{$arrForm.kiyaku_title|h}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="<!--{if $arrErr.kiyaku_title != "" || $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60"/>
-                <span class="attention"> (上限<!--{$smarty.const.SMTEXT_LEN}-->文字)</span>
+                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.SMTEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
-            <th>規約内容<span class="attention"> *</span></th>
+            <th><!--{t string="tpl_063"}--><span class="attention"> *</span></th>
             <td>
             <span class="attention"><!--{$arrErr.kiyaku_text}--></span>
             <textarea name="kiyaku_text" maxlength="<!--{$smarty.const.MLTEXT_LEN}-->" cols="60" rows="8" class="area60" style="<!--{if $arrErr.kiyaku_text != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" ><!--{$arrForm.kiyaku_text|h}--></textarea>
-            <span class="attention"> (上限<!--{$smarty.const.MLTEXT_LEN}-->文字)</span>
+            <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.MLTEXT_LEN}--></span>
             </td>
         </tr>
     </table>
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'confirm', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'confirm', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
         </ul>
     </div>
 
@@ -58,10 +58,10 @@
         <col width="10%" />
         <col width="15%" />
         <tr>
-            <th>規約タイトル</th>
-            <th>編集</th>
-            <th>削除</th>
-            <th>移動</th>
+            <th><!--{t string="tpl_062"}--></th>
+            <th><!--{t string="tpl_003"}--></th>
+            <th><!--{t string="tpl_004"}--></th>
+            <th><!--{t string="tpl_005"}--></th>
         </tr>
         <!--{section name=cnt loop=$arrKiyaku}-->
             <tr style="background:<!--{if $tpl_kiyaku_id != $arrKiyaku[cnt].kiyaku_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->;">
@@ -69,24 +69,24 @@
                 <td><!--{* 規格名 *}--><!--{$arrKiyaku[cnt].kiyaku_title|h}--></td>
                 <td align="center">
                     <!--{if $tpl_kiyaku_id != $arrKiyaku[cnt].kiyaku_id}-->
-                    <a href="?" onclick="fnSetFormSubmit('form1', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;">編集</a>
+                    <a href="?" onclick="fnSetFormSubmit('form1', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;"><!--{t string="tpl_003"}--></a>
                     <!--{else}-->
-                    編集中
+                    <!--{t string="tpl_026"}-->
                     <!--{/if}-->
                 </td>
                 <td align="center">
                     <!--{if $arrClassCatCount[$class_id] > 0}-->
                     -
                     <!--{else}-->
-                    <a href="?" onclick="fnModeSubmit('delete', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;">削除</a>
+                    <a href="?" onclick="fnModeSubmit('delete', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;"><!--{t string="tpl_004"}--></a>
                     <!--{/if}-->
                 </td>
                 <td align="center">
                     <!--{if $smarty.section.cnt.iteration != 1}-->
-                    <a href="?" onclick="fnModeSubmit('up', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;">上へ</a>
+                    <a href="?" onclick="fnModeSubmit('up', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;"><!--{t string="tpl_077"}--></a>
                     <!--{/if}-->
                     <!--{if $smarty.section.cnt.iteration != $smarty.section.cnt.last}-->
-                    <a href="?" onclick="fnModeSubmit('down', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;">下へ</a>
+                    <a href="?" onclick="fnModeSubmit('down', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;"><!--{t string="tpl_078"}--></a>
                     <!--{/if}-->
                 </td>
             </tr>

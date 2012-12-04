@@ -82,23 +82,23 @@ function selectAll(target) {
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
 <!--{/foreach}-->
 <div id="products" class="contents-main">
-    <h2>基本情報</h2>
+    <h2><!--{t string="tpl_027"}--></h2>
 
     <table class="form">
         <tr>
-            <th>商品ID</th>
+            <th><!--{t string="tpl_577"}--></th>
             <td><!--{$arrForm.product_id|h}--></td>
         </tr>
         <tr>
-            <th>商品名<span class="attention"> *</span></th>
+            <th><!--{t string="tpl_189"}--><span class="attention"> *</span></th>
             <td>
                 <span class="attention"><!--{$arrErr.name}--></span>
                 <input type="text" name="name" value="<!--{$arrForm.name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />
-                <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
+                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.STEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
-            <th>商品カテゴリ<span class="attention"> *</span></th>
+            <th><!--{t string="tpl_498"}--><span class="attention"> *</span></th>
             <td>
                 <span class="attention"><!--{$arrErr.category_id}--></span>
                 <table class="layout">
@@ -108,8 +108,8 @@ function selectAll(target) {
                             </select>
                         </td>
                         <td style="padding: 15px;">
-                            <a class="btn-normal" href="javascript:;" name="on_select" onclick="fnMoveSelect('category_id_unselect','category_id'); return false;">&nbsp;&nbsp;&lt;-&nbsp;登録&nbsp;&nbsp;</a><br /><br />
-                            <a class="btn-normal" href="javascript:;" name="un_select" onclick="fnMoveSelect('category_id','category_id_unselect'); return false;">&nbsp;&nbsp;削除&nbsp;-&gt;&nbsp;&nbsp;</a>
+                            <a class="btn-normal" href="javascript:;" name="on_select" onclick="fnMoveSelect('category_id_unselect','category_id'); return false;">&nbsp;&nbsp;&lt;-&nbsp;<!--{t string="tpl_488"}-->&nbsp;&nbsp;</a><br /><br />
+                            <a class="btn-normal" href="javascript:;" name="un_select" onclick="fnMoveSelect('category_id','category_id_unselect'); return false;">&nbsp;&nbsp;<!--{t string="tpl_004"}-->&nbsp;-&gt;&nbsp;&nbsp;</a>
                         </td>
                         <td>
                             <select name="category_id_unselect[]" id="category_id_unselect" onchange="" size="10" style="height: 120px; min-width: 200px;" multiple>
@@ -121,52 +121,52 @@ function selectAll(target) {
             </td>
         </tr>
         <tr>
-            <th>公開・非公開<span class="attention"> *</span></th>
+            <th><!--{t string="tpl_499"}--><span class="attention"> *</span></th>
             <td>
                 <!--{html_radios name="status" options=$arrDISP selected=$arrForm.status separator='&nbsp;&nbsp;'}-->
             </td>
         </tr>
         <tr>
-            <th>商品ステータス</th>
+            <th><!--{t string="tpl_554"}--></th>
             <td>
                 <!--{html_checkboxes name="product_status" options=$arrSTATUS selected=$arrForm.product_status separator='&nbsp;&nbsp;'}-->
             </td>
         </tr>
         <!--{if $arrForm.has_product_class == false}-->
         <tr>
-            <th>商品種別<span class="attention"> *</span></th>
+            <th><!--{t string="tpl_014"}--><span class="attention"> *</span></th>
             <td>
                 <!--{html_radios name="product_type_id" options=$arrProductType selected=$arrForm.product_type_id separator='&nbsp;&nbsp;'}-->
             </td>
         </tr>
         <tr>
-            <th>ダウンロード商品ファイル名<span class="attention"> *</span></th>
+            <th><!--{t string="tpl_555"}--><span class="attention"> *</span></th>
             <td>
                 <span class="attention"><!--{$arrErr.down_filename}--></span>
                 <input type="text" name="down_filename" value="<!--{$arrForm.down_filename|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.down_filename != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" />
-                <span class="red"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
+                <span class="red"> <!--{t string="tpl_023" T_FIELD=$smarty.const.STEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
             <!--{assign var=key value="down_file"}-->
-            <th>ダウンロード商品用<br />ファイルアップロード<span class="attention"> *</span></th>
+            <th><!--{t string="tpl_586"}--><span class="attention"> *</span></th>
             <td>
                 <a name="<!--{$key}-->"></a>
                 <span class="attention"><!--{$arrErr[$key]}--><!--{$arrErr.down_realfilename}--></span>
                     <!--{if $arrForm.down_realfilename != ""}-->
                         <!--{$arrForm.down_realfilename|h}--><input type="hidden" name="down_realfilename" value="<!--{$arrForm.down_realfilename|h}-->">
-                        <a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_down', 'down_key', '<!--{$key}-->'); return false;">[ファイルの取り消し]</a><br>
+                        <a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_down', 'down_key', '<!--{$key}-->'); return false;"><!--{t string="tpl_587}--></a><br>
                     <!--{/if}-->
                     <input type="file" name="down_file" size="40" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-                    <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_down', 'down_key', '<!--{$key}-->'); return false;">アップロード</a><br />登録可能拡張子：<!--{$smarty.const.DOWNLOAD_EXTENSION}-->　(パラメーター DOWNLOAD_EXTENSION)
+                    <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_down', 'down_key', '<!--{$key}-->'); return false;"><!--{t string="tpl_085"}--></a><br /><!--{t string="tpl_588" T_FIELD=$smarty.const.DOWNLOAD_EXTENSION}-->
             </td>
         </tr>
         <tr>
-            <th>商品コード<span class="attention"> *</span></th>
+            <th><!--{t string="tpl_192"}--><span class="attention"> *</span></th>
             <td>
                 <span class="attention"><!--{$arrErr.product_code}--></span>
                 <input type="text" name="product_code" value="<!--{$arrForm.product_code|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.product_code != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />
-                <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
+                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.STEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -174,7 +174,7 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr.price01}--></span>
                 <input type="text" name="price01" value="<!--{$arrForm.price01|h}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" style="<!--{if $arrErr.price01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>円
-                <span class="attention"> (半角数字で入力)</span>
+                <span class="attention"> <!--{t string="tpl_589"}--></span>
             </td>
         </tr>
         <tr>
@@ -182,102 +182,102 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr.price02}--></span>
                 <input type="text" name="price02" value="<!--{$arrForm.price02|h}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" style="<!--{if $arrErr.price02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>円
-                <span class="attention"> (半角数字で入力)</span>
+                <span class="attention"> <!--{t string="tpl_589"}--></span>
             </td>
         </tr>
         <tr>
-            <th>在庫数<span class="attention"> *</span></th>
+            <th><!--{t string="tpl_557"}--><span class="attention"> *</span></th>
             <td>
                 <span class="attention"><!--{$arrErr.stock}--></span>
                 <input type="text" name="stock" value="<!--{$arrForm.stock|h}-->" size="6" class="box6" maxlength="<!--{$smarty.const.AMOUNT_LEN}-->" style="<!--{if $arrErr.stock != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
-                <input type="checkbox" name="stock_unlimited" value="1" <!--{if $arrForm.stock_unlimited == "1"}-->checked<!--{/if}--> onclick="fnCheckStockLimit('<!--{$smarty.const.DISABLED_RGB}-->');"/>無制限
+                <input type="checkbox" name="stock_unlimited" value="1" <!--{if $arrForm.stock_unlimited == "1"}-->checked<!--{/if}--> onclick="fnCheckStockLimit('<!--{$smarty.const.DISABLED_RGB}-->');"/><!--{t string="tpl_053"}-->
             </td>
         </tr>
         <!--{/if}-->
 
         <tr>
-            <th>商品送料</th>
+            <th><!--{t string="tpl_558"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.deliv_fee}--></span>
                 <input type="text" name="deliv_fee" value="<!--{$arrForm.deliv_fee|h}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" style="<!--{if $arrErr.deliv_fee != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>円
-                <span class="attention"> (半角数字で入力)</span>
-                <!--{if $smarty.const.OPTION_PRODUCT_DELIV_FEE != 1}--><br /><span class="attention">※現在無効です</span> (パラメーター OPTION_PRODUCT_DELIV_FEE)<!--{/if}-->
+                <span class="attention"> <!--{t string="tpl_589"}--></span>
+                <!--{if $smarty.const.OPTION_PRODUCT_DELIV_FEE != 1}--><br /><span class="attention"><!--{t string="tpl_590"}--></span> <!--{t string="tpl_591"}--><!--{/if}-->
             </td>
         </tr>
         <tr>
-            <th>ポイント付与率<span class="attention"> *</span></th>
+            <th><!--{t string="tpl_559"}--><span class="attention"> *</span></th>
             <td>
                 <span class="attention"><!--{$arrErr.point_rate}--></span>
                 <input type="text" name="point_rate" value="<!--{$arrForm.point_rate|default:$arrForm.arrInfo.point_rate|h}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PERCENTAGE_LEN}-->" style="<!--{if $arrErr.point_rate != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>％
-                <span class="attention"> (半角数字で入力)</span>
+                <span class="attention"> <!--{t string="tpl_589"}--></span>
             </td>
         </tr>
         <tr>
-            <th>発送日目安</th>
+            <th><!--{t string="tpl_560"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.deliv_date_id}--></span>
                 <select name="deliv_date_id" style="<!--{$arrErr.deliv_date_id|sfGetErrorColor}-->">
-                    <option value="">選択してください</option>
+                    <option value=""><!--{t string="tpl_068"}--></option>
                     <!--{html_options options=$arrDELIVERYDATE selected=$arrForm.deliv_date_id}-->
                 </select>
             </td>
         </tr>
         <tr>
-            <th>販売制限数</th>
+            <th><!--{t string="tpl_561"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.sale_limit}--></span>
                 <input type="text" name="sale_limit" value="<!--{$arrForm.sale_limit|h}-->" size="6" class="box6" maxlength="<!--{$smarty.const.AMOUNT_LEN}-->" style="<!--{if $arrErr.sale_limit != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
-                <span class="attention"> (半角数字で入力)</span>
+                <span class="attention"> <!--{t string="tpl_589"}--></span>
             </td>
         </tr>
         <tr>
-            <th>メーカー</th>
+            <th><!--{t string="tpl_562"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.maker_id}--></span>
                 <select name="maker_id" style="<!--{$arrErr.maker_id|sfGetErrorColor}-->">
-                    <option value="">選択してください</option>
+                    <option value=""><!--{t string="tpl_068"}--></option>
                     <!--{html_options options=$arrMaker selected=$arrForm.maker_id}-->
                 </select>
             </td>
         </tr>
         <tr>
-            <th>メーカーURL</th>
+            <th><!--{t string="tpl_563"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.comment1}--></span>
                 <input type="text" name="comment1" value="<!--{$arrForm.comment1|h}-->" maxlength="<!--{$smarty.const.URL_LEN}-->" size="60" class="box60" style="<!--{$arrErr.comment1|sfGetErrorColor}-->" />
-                <span class="attention"> (上限<!--{$smarty.const.URL_LEN}-->文字)</span>
+                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.URL_LEN}--></span>
             </td>
         </tr>
         <tr>
-            <th>検索ワード<br />※複数の場合は、カンマ( , )区切りで入力して下さい</th>
+            <th><!--{t string="tpl_592"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.comment3}--></span>
                 <textarea name="comment3" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr.comment3|sfGetErrorColor}-->"><!--{$arrForm.comment3|h}--></textarea><br />
-                <span class="attention"> (上限<!--{$smarty.const.LLTEXT_LEN}-->文字)</span>
+                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.LLTEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
-            <th>備考欄(SHOP専用)</th>
+            <th><!--{t string="tpl_565"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.note}--></span>
                 <textarea name="note" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr.note|sfGetErrorColor}-->"><!--{$arrForm.note|h}--></textarea><br />
-                <span class="attention"> (上限<!--{$smarty.const.LLTEXT_LEN}-->文字)</span>
+                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.LLTEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
-            <th>一覧-メインコメント<span class="attention"> *</span></th>
+            <th><!--{t string="tpl_566"}--><span class="attention"> *</span></th>
             <td>
                 <span class="attention"><!--{$arrErr.main_list_comment}--></span>
                 <textarea name="main_list_comment" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{if $arrErr.main_list_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" cols="60" rows="8" class="area60"><!--{$arrForm.main_list_comment|h}--></textarea><br />
-                <span class="attention"> (上限<!--{$smarty.const.MTEXT_LEN}-->文字)</span>
+                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.MTEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
-            <th>詳細-メインコメント<span class="attention">(タグ許可)*</span></th>
+            <th><!--{t string="tpl_567"}--><span class="attention"><!--{t string="tpl_594"}-->*</span></th>
             <td>
                 <span class="attention"><!--{$arrErr.main_comment}--></span>
                 <textarea name="main_comment" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{if $arrErr.main_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" cols="60" rows="8" class="area60"><!--{$arrForm.main_comment|h}--></textarea><br />
-                <span class="attention"> (上限<!--{$smarty.const.LLTEXT_LEN}-->文字)</span>
+                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.LLTEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -289,10 +289,10 @@ function selectAll(target) {
                 <a name="main_large_image"></a>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->
-                <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
+                <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[<!--{t string="tpl_084"}-->]</a><br />
                 <!--{/if}-->
                 <input type="file" name="main_list_image" size="40" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-                <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;">アップロード</a>
+                <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;"><!--{t string="tpl_085"}--></a>
             </td>
         </tr>
         <tr>
@@ -301,10 +301,10 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->
-                <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
+                <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[<!--{t string="tpl_084"}-->]</a><br />
                 <!--{/if}-->
                 <input type="file" name="main_image" size="40" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-                <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;">アップロード</a>
+                <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;"><!--{t string="tpl_085"}--></a>
             </td>
         </tr>
         <tr>
@@ -313,10 +313,10 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->
-                <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
+                <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[<!--{t string="tpl_084"}-->]</a><br />
                 <!--{/if}-->
                 <input type="file" name="<!--{$key}-->" size="40" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-                <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;">アップロード</a>
+                <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;"><!--{t string="tpl_085"}--></a>
             </td>
         </tr>
     </table>
@@ -327,7 +327,7 @@ function selectAll(target) {
     <!--{/if}-->
 
     <div class="btn">
-        <a class="btn-normal" href="javascript:;" onclick="selectAll('category_id'); lfDispSwitch('sub_detail'); return false;"><span>サブ情報表示/非表示</span></a>
+        <a class="btn-normal" href="javascript:;" onclick="selectAll('category_id'); lfDispSwitch('sub_detail'); return false;"><span><!--{t string="tpl_595"}--></span></a>
     </div>
 
     <!--{if $arrForm.sub_find == true}-->
@@ -335,26 +335,26 @@ function selectAll(target) {
     <!--{else}-->
     <div id="sub_detail" style="display:none">
     <!--{/if}-->
-    <h2>サブ情報</h2>
+    <h2><!--{t string="tpl_593"}--></h2>
     <table class="form">
         <!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
         <!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
         <tr>
-            <th>詳細-サブタイトル(<!--{$smarty.section.cnt.iteration}-->)</th>
+            <th><!--{t string="tpl_467" T_FIELD=$smarty.section.cnt.iteration}--></th>
             <!--{assign var=key value="sub_title`$smarty.section.cnt.iteration`"}-->
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input type="text" name="sub_title<!--{$smarty.section.cnt.iteration}-->" value="<!--{$arrForm[$key]|h}-->" size="60" class="box60" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"/>
-                <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
+                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.STEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
-            <th>詳細-サブコメント(<!--{$smarty.section.cnt.iteration}-->)<span class="attention">(タグ許可)</span></th>
+            <th><!--{t string="tpl_468" T_FIELD=$smarty.section.cnt.iteration}--><span class="attention"><!--{t string="tpl_594"}--></span></th>
             <!--{assign var=key value="sub_comment`$smarty.section.cnt.iteration`"}-->
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <textarea name="sub_comment<!--{$smarty.section.cnt.iteration}-->" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|h}--></textarea><br />
-                <span class="attention"> (上限<!--{$smarty.const.LLTEXT_LEN}-->文字)</span>
+                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.LLTEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -366,10 +366,10 @@ function selectAll(target) {
                 <a name="<!--{$largekey}-->"></a>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->
-                <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
+                <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[<!--{t string="tpl_084"}-->]</a><br />
                 <!--{/if}-->
                 <input type="file" name="<!--{$key}-->" size="40" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"/>
-                <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;">アップロード</a>
+                <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;"><!--{t string="tpl_085"}--></a>
             </td>
         </tr>
         <tr>
@@ -378,10 +378,10 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->
-                <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
+                <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[<!--{t string="tpl_084"}-->]</a><br />
                 <!--{/if}-->
                 <input type="file" name="<!--{$key}-->" size="40" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"/>
-                <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;">アップロード</a>
+                <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;"><!--{t string="tpl_085"}--></a>
             </td>
         </tr>
         <!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
@@ -390,7 +390,7 @@ function selectAll(target) {
     </div>
 
     <div class="btn">
-        <a class="btn-normal" href="javascript:;" onclick="selectAll('category_id'); lfDispSwitch('recommend_select'); return false;"><span>関連商品表示/非表示</span></a>
+        <a class="btn-normal" href="javascript:;" onclick="selectAll('category_id'); lfDispSwitch('recommend_select'); return false;"><span><!--{t string="tpl_596"}--></span></a>
     </div>
 
     <!--{if $smarty.const.OPTION_RECOMMEND == 1}-->
@@ -399,7 +399,7 @@ function selectAll(target) {
     <!--{else}-->
     <div id="recommend_select" style="display:none">
     <!--{/if}-->
-    <h2>関連商品</h2>
+    <h2><!--{t string="tpl_597"}--></h2>
     <table class="form">
         <!--▼関連商品-->
         <!--{section name=cnt loop=$smarty.const.RECOMMEND_PRODUCT_MAX}-->
@@ -407,7 +407,7 @@ function selectAll(target) {
         <tr>
             <!--{assign var=key value="recommend_id`$smarty.section.cnt.iteration`"}-->
             <!--{assign var=anckey value="recommend_no`$smarty.section.cnt.iteration`"}-->
-            <th>関連商品(<!--{$smarty.section.cnt.iteration}-->)<br />
+            <th><!--{t string="tpl_575" T_FIELD=$smarty.section.cnt.iteration}--><br />
                 <!--{if $arrRecommend[$recommend_no].product_id}-->
                     <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrRecommend[$recommend_no].main_list_image|sfNoImageMainList|h}-->&width=65&height=65" alt="<!--{$arrRecommend[$recommend_no].name|h}-->" />
                 <!--{/if}-->
@@ -415,15 +415,15 @@ function selectAll(target) {
             <td>
                 <a name="<!--{$anckey}-->"></a>
                 <input type="hidden" name="<!--{$key}-->" value="<!--{$arrRecommend[$recommend_no].product_id|h}-->" />
-                <a class="btn-normal" href="javascript:;" name="change" onclick="selectAll('category_id'); win03('./product_select.php?no=<!--{$smarty.section.cnt.iteration}-->', 'search', '615', '500'); return false;">変更</a>
+                <a class="btn-normal" href="javascript:;" name="change" onclick="selectAll('category_id'); win03('./product_select.php?no=<!--{$smarty.section.cnt.iteration}-->', 'search', '615', '500'); return false;"><!--{t string="tpl_475"}--></a>
                 <!--{assign var=key value="recommend_delete`$smarty.section.cnt.iteration`"}-->
-                <input type="checkbox" name="<!--{$key}-->" value="1" />削除<br />
+                <input type="checkbox" name="<!--{$key}-->" value="1" /><!--{t string="tpl_004"}--><br />
                 <!--{assign var=key value="recommend_comment`$smarty.section.cnt.iteration`"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                商品コード:<!--{$arrRecommend[$recommend_no].product_code_min}--><br />
-                商品名:<!--{$arrRecommend[$recommend_no].name|h}--><br />
+                <!--{t string="tpl_192"}-->:<!--{$arrRecommend[$recommend_no].product_code_min}--><br />
+                <!--{t string="tpl_189"}-->:<!--{$arrRecommend[$recommend_no].name|h}--><br />
                 <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrRecommend[$recommend_no].comment|h}--></textarea><br />
-                <span class="attention"> (上限<!--{$smarty.const.LTEXT_LEN}-->文字)</span>
+                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.LTEXT_LEN}--></span>
             </td>
         </tr>
         <!--{/section}-->
@@ -436,10 +436,10 @@ function selectAll(target) {
         <!--{if count($arrSearchHidden) > 0}-->
         <!--▼検索結果へ戻る-->
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URLPATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev">検索画面に戻る</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URLPATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev"><!--{t string="tpl_227"}--></span></a></li>
         <!--▲検索結果へ戻る-->
         <!--{/if}-->
-            <li><a class="btn-action" href="javascript:;" onclick="selectAll('category_id'); document.form1.submit(); return false;"><span class="btn-next">確認ページへ</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="selectAll('category_id'); document.form1.submit(); return false;"><span class="btn-next"><!--{t string="tpl_228"}--></span></a></li>
         </ul>
     </div>
 </div>

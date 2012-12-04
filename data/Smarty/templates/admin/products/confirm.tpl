@@ -51,13 +51,13 @@
 
     <table>
         <tr>
-            <th>商品名</th>
+            <th><!--{t string="tpl_189"}--></th>
             <td>
                 <!--{$arrForm.name|h}-->
             </td>
         </tr>
         <tr>
-            <th>商品カテゴリ</th>
+            <th><!--{t string="tpl_498"}--></th>
             <td>
                 <!--{section name=cnt loop=$arrForm.arrCategoryId}-->
                     <!--{assign var=key value=$arrForm.arrCategoryId[cnt]}-->
@@ -66,13 +66,13 @@
             </td>
         </tr>
         <tr>
-            <th>公開・非公開</th>
+            <th><!--{t string="tpl_499"}--></th>
             <td>
                 <!--{$arrDISP[$arrForm.status]}-->
             </td>
         </tr>
         <tr>
-            <th>商品ステータス</th>
+            <th><!--{t string="tpl_554"}--></th>
             <td>
                 <!--{foreach from=$arrForm.product_status item=status}-->
                     <!--{if $status != ""}-->
@@ -84,19 +84,19 @@
 
         <!--{if $arrForm.has_product_class != true}-->
             <tr>
-                <th>商品種別</th>
+                <th><!--{t string="tpl_014"}--></th>
                 <td>
                     <!--{$arrProductType[$arrForm.product_type_id]}-->
                 </td>
             </tr>
             <tr>
-                <th>ダウンロード商品ファイル名</th>
+                <th><!--{t string="tpl_555"}--></th>
                 <td>
                     <!--{$arrForm.down_filename|h}-->
                 </td>
             </tr>
             <tr>
-                <th>ダウンロード商品用<BR />ファイル</th>
+                <th><!--{t string="tpl_556"}--></th>
                 <td>
                     <!--{if $arrForm.down_realfilename != ""}-->
                         <!--{$arrForm.down_realfilename|h}-->
@@ -104,7 +104,7 @@
                 </td>
             </tr>
             <tr>
-                <th>商品コード</th>
+                <th><!--{t string="tpl_192"}--></th>
                 <td>
                     <!--{$arrForm.product_code|h}-->
                 </td>
@@ -112,20 +112,20 @@
             <tr>
                 <th><!--{$smarty.const.NORMAL_PRICE_TITLE}--></th>
                 <td>
-                    <!--{if strlen($arrForm.price01) >= 1}--><!--{$arrForm.price01|h}--> 円<!--{/if}-->
+                    <!--{if strlen($arrForm.price01) >= 1}--><!--{t string="tpl_702" T_FIELD=$arrForm.price01|h}--><!--{/if}-->
                 </td>
             </tr>
             <tr>
                 <th><!--{$smarty.const.SALE_PRICE_TITLE}--></th>
                 <td>
-                    <!--{if strlen($arrForm.price02) >= 1}--><!--{$arrForm.price02|h}--> 円<!--{/if}-->
+                    <!--{if strlen($arrForm.price02) >= 1}--><!--{t string="tpl_702" T_FIELD=$arrForm.price02|h}--><!--{/if}-->
                 </td>
             </tr>
             <tr>
-                <th>在庫数</th>
+                <th><!--{t string="tpl_557"}--></th>
                 <td>
                     <!--{if $arrForm.stock_unlimited == 1}-->
-                        無制限
+                        <!--{t string="tpl_053"}-->
                     <!--{else}-->
                         <!--{$arrForm.stock|h}-->
                     <!--{/if}-->
@@ -134,67 +134,67 @@
         <!--{/if}-->
 
         <tr>
-            <th>商品送料</th>
+            <th><!--{t string="tpl_558"}--></th>
             <td>
-                <!--{if strlen($arrForm.deliv_fee) >= 1}--><!--{$arrForm.deliv_fee|h}--> 円<!--{/if}-->
+                <!--{if strlen($arrForm.deliv_fee) >= 1}--><!--{t string="tpl_702" T_FIELD=$arrForm.deliv_fee|h}--><!--{/if}-->
             </td>
         </tr>
         <tr>
-            <th>ポイント付与率</th>
+            <th><!--{t string="tpl_559"}--></th>
             <td>
                 <!--{if strlen($arrForm.point_rate) >= 1}--><!--{$arrForm.point_rate|h}--> ％<!--{/if}-->
             </td>
         </tr>
         <tr>
-            <th>発送日目安</th>
+            <th><!--{t string="tpl_560"}--></th>
             <td>
                 <!--{$arrDELIVERYDATE[$arrForm.deliv_date_id]|h}-->
             </td>
         </tr>
         <tr>
-            <th>販売制限数</th>
+            <th><!--{t string="tpl_561"}--></th>
             <td>
                 <!--{$arrForm.sale_limit|default:'無制限'|h}-->
             </td>
         </tr>
         <tr>
-            <th>メーカー</th>
+            <th><!--{t string="tpl_562"}--></th>
             <td>
                 <!--{$arrMaker[$arrForm.maker_id]|h}-->
             </td>
         </tr>
         <tr>
-            <th>メーカーURL</th>
+            <th><!--{t string="tpl_563"}--></th>
             <td style="word-break: break-all;">
                 <!--{$arrForm.comment1|h}-->
             </td>
         </tr>
         <tr>
-            <th>検索ワード</th>
+            <th><!--{t string="tpl_564"}--></th>
             <td>
                 <!--{$arrForm.comment3|h}-->
             </td>
         </tr>
         <tr>
-            <th>備考欄(SHOP専用)</th>
+            <th><!--{t string="tpl_565"}--></th>
             <td>
                 <!--{$arrForm.note|h|nl2br}-->
             </td>
         </tr>
         <tr>
-            <th>一覧-メインコメント</th>
+            <th><!--{t string="tpl_566"}--></th>
             <td>
                 <!--{$arrForm.main_list_comment|h|nl2br}-->
             </td>
         </tr>
         <tr>
-            <th>詳細-メインコメント</th>
+            <th><!--{t string="tpl_567"}--></th>
             <td>
                 <!--{$arrForm.main_comment|nl2br_html}-->
             </td>
         </tr>
         <tr>
-            <th>一覧-メイン画像</th>
+            <th><!--{t string="tpl_568"}--></th>
             <td>
                 <!--{assign var=key value="main_list_image"}-->
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->
@@ -203,7 +203,7 @@
             </td>
         </tr>
         <tr>
-            <th>詳細-メイン画像</th>
+            <th><!--{t string="tpl_569"}--></th>
             <td>
                 <!--{assign var=key value="main_image"}-->
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->
@@ -212,7 +212,7 @@
             </td>
         </tr>
         <tr>
-            <th>詳細-メイン拡大画像</th>
+            <th><!--{t string="tpl_570"}--></th>
             <td>
                 <!--{assign var=key value="main_large_image"}-->
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->
@@ -229,21 +229,21 @@
         <!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
             <!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
             <tr>
-                <th>詳細-サブタイトル（<!--{$smarty.section.cnt.iteration}-->）</th>
+                <th><!--{t string="tpl_571" T_FIELD=$smarty.section.cnt.iteration}--></th>
                 <td>
                     <!--{assign var=key value="sub_title`$smarty.section.cnt.iteration`"}-->
                     <!--{$arrForm[$key]|h}-->
                 </td>
             </tr>
             <tr>
-                <th>詳細-サブコメント（<!--{$smarty.section.cnt.iteration}-->）</th>
+                <th><!--{t string="tpl_572" T_FIELD=$smarty.section.cnt.iteration}--></th>
                 <td>
                     <!--{assign var=key value="sub_comment`$smarty.section.cnt.iteration`"}-->
                     <!--{$arrForm[$key]|nl2br_html}-->
                 </td>
             </tr>
             <tr>
-                <th>詳細-サブ画像（<!--{$smarty.section.cnt.iteration}-->）</th>
+                <th><!--{t string="tpl_573" T_FIELD=$smarty.section.cnt.iteration}--></th>
                 <td>
                     <!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
                     <!--{if $arrForm.arrFile[$key].filepath != ""}-->
@@ -252,7 +252,7 @@
                 </td>
             </tr>
             <tr>
-                <th>詳細-サブ拡大画像（<!--{$smarty.section.cnt.iteration}-->）</th>
+                <th><!--{t string="tpl_574" T_FIELD=$smarty.section.cnt.iteration}--></th>
                 <td>
                     <!--{assign var=key value="sub_large_image`$smarty.section.cnt.iteration`"}-->
                     <!--{if $arrForm.arrFile[$key].filepath != ""}-->
@@ -268,16 +268,16 @@
             <!--{section name=cnt loop=$smarty.const.RECOMMEND_PRODUCT_MAX}-->
             <!--{assign var=recommend_no value="`$smarty.section.cnt.iteration`"}-->
                 <tr>
-                    <th>関連商品(<!--{$smarty.section.cnt.iteration}-->)<br />
+                    <th><!--{t string="tpl_575" T_FIELD=$smarty.section.cnt.iteration}--><br />
                         <!--{if $arrRecommend[$recommend_no].product_id|strlen >= 1}-->
                             <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrRecommend[$recommend_no].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[$recommend_no].name|h}-->">
                         <!--{/if}-->
                     </th>
                     <td>
                         <!--{if $arrRecommend[$recommend_no].product_id|strlen >= 1}-->
-                            商品コード:<!--{$arrRecommend[$recommend_no].product_code_min}--><br />
-                            商品名:<!--{$arrRecommend[$recommend_no].name|h}--><br />
-                            コメント:<br />
+                            <!--{t string="tpl_192"}-->:<!--{$arrRecommend[$recommend_no].product_code_min}--><br />
+                            <!--{t string="tpl_189"}-->:<!--{$arrRecommend[$recommend_no].name|h}--><br />
+                            <!--{t string="tpl_576"}--><br />
                             <!--{$arrRecommend[$recommend_no].comment|h|nl2br}-->
                         <!--{/if}-->
                     </td>
@@ -289,8 +289,8 @@
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('confirm_return','',''); return false;"><span class="btn-prev">前のページに戻る</span></a></li>
-            <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('confirm_return','',''); return false;"><span class="btn-prev"><!--{t string="tpl_020"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
         </ul>
     </div>
 </div>

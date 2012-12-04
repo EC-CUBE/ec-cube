@@ -39,27 +39,27 @@
     <!--{/if}-->
 <!--{/foreach}-->
 <div id="order" class="contents-main">
-    <h2>メール配信</h2>
+    <h2><!--{t string="tpl_410"}--></h2>
     
     
     <!--{if $order_id_count > 1}-->
-    <span class="red">※本文は1通分の例です。受注情報は各メールごとに異なります</span><br /><br />
+    <span class="red"><!--{t string="tpl_415"}--></span><br /><br />
     <!--{/if}-->
     <table class="form">
         <tr>
-            <th>件名</th>
+            <th><!--{t string="tpl_413"}--></th>
             <td><!--{$tpl_subject|h}--></td>
         </tr>
         <tr>
-            <th>本文</th>
+            <th><!--{t string="tpl_333"}--></th>
             <td><!--{$tpl_body|h|nl2br}--></td>
         </tr>
     </table>
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('return', '', ''); return false;"><span class="btn-prev">前のページへ戻る</span></a></li>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'send', '', ''); return false;"><span class="btn-next">メール送信</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('return', '', ''); return false;"><span class="btn-prev"><!--{t string="tpl_416"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'send', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_417"}--></span></a></li>
         </ul>
     </div>
 </div>

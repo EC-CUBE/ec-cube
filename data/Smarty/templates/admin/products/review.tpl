@@ -26,37 +26,37 @@
 <form name="search_form" method="post" action="?" >
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="search" />
-    <h2>検索条件設定</h2>
+    <h2><!--{t string="tpl_250"}--></h2>
 
     <!--検索条件設定テーブルここから-->
     <table>
         <tr>
-            <th>投稿者名</th>
+            <th><!--{t string="tpl_615"}--></th>
             <td><input type="text" name="search_reviewer_name" value="<!--{$arrForm.search_reviewer_name|h}-->" size="30" class="box30" /></td>
-            <th>投稿者URL</th>
+            <th><!--{t string="tpl_616"}--></th>
             <td><input type="text" name="search_reviewer_url" value="<!--{$arrForm.search_reviewer_url|h}-->" size="30" class="box30" /></td>
         </tr>
         <tr>
-            <th>商品名</th>
+            <th><!--{t string="tpl_189"}--></th>
             <td><input type="text" name="search_name" value="<!--{$arrForm.search_name|h}-->" size="30" class="box30" /></td>
-            <th>商品コード</th>
+            <th><!--{t string="tpl_192"}--></th>
             <td><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code|h}-->" size="30" class="box30" /></td>
         </tr>
         <tr>
-            <th>性別</th>
+            <th><!--{t string="tpl_215"}--></th>
             <!--{assign var=key value=search_sex}-->
             <td><!--{html_checkboxes name="$key" options=$arrSex selected=$arrForm[$key]}--></td>
-            <th>おすすめレベル</th>
+            <th><!--{t string="tpl_617"}--></th>
             <td>
                 <!--{assign var=key value=search_recommend_level}-->
                 <select name="<!--{$key}-->">
-                    <option value="" selected="selected">選択してください</option>
+                    <option value="" selected="selected"><!--{t string="tpl_068"}--></option>
                     <!--{html_options options=$arrRECOMMEND selected=$arrForm[$key].value|h}-->
                 </select>
             </td>
         </tr>
         <tr>
-            <th>投稿日</th>
+            <th><!--{t string="tpl_618"}--></th>
             <td colspan="3">
                 <!--{if $arrErr.search_startyear || $arrErr.search_endyear}-->
                     <span class="attention"><!--{$arrErr.search_startyear}--></span>
@@ -91,7 +91,7 @@
     </table>
 
     <div class="btn">
-        <p class="page_rows">検索結果表示件数
+        <p class="page_rows"><!--{t string="tpl_251"}-->
         <!--{assign var=key value="search_page_max"}-->
         <!--{if $arrErr[$key]}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -102,7 +102,7 @@
         <div class="btn-area">
             <ul>
                 <li>
-                    <a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next">この条件で検索する</span></a></li>
+                    <a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_252"}--></span></a></li>
             </ul>
         </div>
     </div>
@@ -122,13 +122,13 @@
             <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
         <!--{/if}-->
     <!--{/foreach}-->
-    <h2>検索結果一覧</h2>
+    <h2><!--{t string="tpl_253"}--></h2>
     <div class="btn">
-        <span class="attention"><!--検索結果数--><!--{$tpl_linemax|h}-->件</span>&nbsp;が該当しました。
+        <!--検索結果数--><!--{t string="tpl_230" T_FIELD=$tpl_linemax}-->
         <!--{if $smarty.const.ADMIN_MODE == '1'}-->
-            <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><span>検索結果をすべて削除</span></a>
+            <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><span><!--{t string="tpl_327"}--></span></a>
         <!--{/if}-->
-        <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;"><span>CSV ダウンロード</span></a>
+        <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;"><span><!--{t string="tpl_254"}--></span></a>
     </div>
     <!--{if $arrReview > 0 & $tpl_linemax > 0}-->
 
@@ -137,13 +137,13 @@
         <!--検索結果表示テーブル-->
         <table id="products-review-result" class="list">
             <tr>
-                <th>投稿日</th>
-                <th>投稿者名</th>
-                <th>商品名</th>
-                <th>おすすめレベル</th>
-                <th>表示・非表示</th>
-                <th class="edit">編集</th>
-                <th class="delete">削除</th>
+                <th><!--{t string="tpl_618"}--></th>
+                <th><!--{t string="tpl_615"}--></th>
+                <th><!--{t string="tpl_189"}--></th>
+                <th><!--{t string="tpl_617"}--></th>
+                <th><!--{t string="tpl_619"}--></th>
+                <th class="edit"><!--{t string="tpl_003"}--></th>
+                <th class="delete"><!--{t string="tpl_004"}--></th>
             </tr>
 
             <!--{section name=cnt loop=$arrReview}-->
@@ -153,9 +153,9 @@
                     <td><!--{$arrReview[cnt].name|h}--></td>
                     <!--{assign var=key value="`$arrReview[cnt].recommend_level`"}-->
                     <td><!--{$arrRECOMMEND[$key]|h}--></td>
-                    <td class="menu"><!--{if $arrReview[cnt].status eq 1}-->表示<!--{elseif $arrReview[cnt].status eq 2}-->非表示<!--{/if}--></td>
-                    <td class="menu"><a href="javascript:;" onclick="fnChangeAction('./review_edit.php'); fnModeSubmit('','review_id','<!--{$arrReview[cnt].review_id}-->'); return false;">編集</a></td>
-                    <td class="menu"><a href="javascript:;" onclick="fnModeSubmit('delete','review_id','<!--{$arrReview[cnt].review_id}-->'); return false;">削除</a></td>
+                    <td class="menu"><!--{if $arrReview[cnt].status eq 1}--><!--{t string="tpl_170"}--><!--{elseif $arrReview[cnt].status eq 2}--><!--{t string="tpl_620"}--><!--{/if}--></td>
+                    <td class="menu"><a href="javascript:;" onclick="fnChangeAction('./review_edit.php'); fnModeSubmit('','review_id','<!--{$arrReview[cnt].review_id}-->'); return false;"><!--{t string="tpl_003"}--></a></td>
+                    <td class="menu"><a href="javascript:;" onclick="fnModeSubmit('delete','review_id','<!--{$arrReview[cnt].review_id}-->'); return false;"><!--{t string="tpl_004"}--></a></td>
                 </tr>
             <!--{/section}-->
         </table>

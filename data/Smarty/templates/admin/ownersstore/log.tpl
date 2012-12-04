@@ -30,20 +30,20 @@
 
     <table class="list center">
         <tr>
-            <th>モジュール名</th>
-            <th>ステータス</th>
-            <th>日時</th>
-            <th>詳細</th>
+            <th><!--{t string="tpl_446"}--></th>
+            <th><!--{t string="tpl_447"}--></th>
+            <th><!--{t string="tpl_448"}--></th>
+            <th><!--{t string="tpl_449"}--></th>
             <!--{*<th>復元</th>*}-->
         </tr>
         <!--{foreach from=$arrInstallLogs item=log name=log_loop}-->
             <tr>
                 <td class="left"><!--{$log.module_name|h}--></td>
-                <td><!--{if $log.error_flg}-->失敗<!--{else}-->成功<!--{/if}--></td>
+                <td><!--{if $log.error_flg}--><!--{t string="tpl_450"}--><!--{else}--><!--{t string="tpl_451"}--><!--{/if}--></td>
                 <td class="left"><!--{$log.update_date|sfDispDBDate|h}--></td>
                 <td>
                         <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->ownersstore/log.php?mode=detail&amp;log_id=<!--{$log.log_id}-->">
-                        詳細</a>
+                        <!--{t string="tpl_449"}--></a>
                 </td>
                 <!--{*<td><!--{$log.log_id}--></td>*}-->
             </tr>

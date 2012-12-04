@@ -24,7 +24,7 @@
 
 <div id="products" class="contents-main">
     <div class="message">
-        <span>CSV登録を実行しました。</span>
+        <span><!--{t string="tpl_638"}--></span>
     </div>
     <!--{if $arrRowErr}-->
         <table class="form">
@@ -50,7 +50,7 @@
     <!--{/if}-->
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="?"><span class="btn-prev">戻る</span></a></li>
+            <li><a class="btn-action" href="?"><span class="btn-prev"><!--{t string="tpl_637"}--></span></a></li>
         </ul>
     </div>
 </div>

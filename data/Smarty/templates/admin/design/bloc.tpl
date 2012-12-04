@@ -38,20 +38,20 @@
         <!--{* ▼ブロック設定 *}-->
         <table>
             <tr>
-                <th>ブロック名</th>
+                <th><!--{t string="tpl_265"}--></th>
                 <td>
                     <!--{assign var=key value="bloc_name"}-->
                     <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" />
-                    <span class="attention"> (上限<!--{$arrForm[$key].length}-->文字)</span>
+                    <span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length}--></span>
                     <!--{if $arrErr[$key] != ""}--> <div class="attention"><!--{$arrErr[$key]}--></div> <!--{/if}-->
                 </td>
             </tr>
             <tr>
-                <th>ファイル名</th>
+                <th><!--{t string="tpl_167"}--></th>
                 <td>
                     <!--{assign var=key value="filename"}-->
                     <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" />.tpl
-                    <span class="attention"> (上限<!--{$arrForm[$key].length}-->文字)</span>
+                    <span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length}--></span>
                     <!--{if $arrErr[$key] != ""}--> <div class="attention"><!--{$arrErr[$key]}--></div> <!--{/if}-->
                 </td>
             </tr>
@@ -61,38 +61,38 @@
                     <textarea class="top" id="<!--{$key}-->" name="<!--{$key}-->" rows="<!--{$text_row}-->" style="width: 99%;"><!--{$arrForm[$key].value|smarty:nodefaults|h}--></textarea>
                     <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
                     <div>
-                        <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#bloc_html', 50, 13); return false;">拡大</a>
+                        <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#bloc_html', 50, 13); return false;"><!--{t string="tpl_266"}--></a>
                     </div>
                 </td>
             </tr>
         </table>
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_bloc','confirm','',''); return false;"><span class="btn-next">登録する</span></a></li>
+                <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_bloc','confirm','',''); return false;"><span class="btn-next"><!--{t string="tpl_267"}--></span></a></li>
             </ul>
         </div>
         <!--{* ▲ブロック設定 *}-->
 
         <!--{* ▼ブロック一覧 *}-->
-        <h2>編集可能ブロック</h2>
+        <h2><!--{t string="tpl_268"}--></h2>
         <div class="btn addnew">
-            <a class="btn-normal" href="?device_type_id=<!--{$device_type_id|h}-->"><span>ブロックを新規入力</span></a>
+            <a class="btn-normal" href="?device_type_id=<!--{$device_type_id|h}-->"><span><!--{t string="tpl_269"}--></span></a>
         </div>
         <table class="list">
             <tr>
-                <th>名称</th>
-                <th class="edit">編集</th>
-                <th class="delete">削除</th>
+                <th><!--{t string="tpl_002"}--></th>
+                <th class="edit"><!--{t string="tpl_003"}--></th>
+                <th class="delete"><!--{t string="tpl_004"}--></th>
             </tr>
             <!--{foreach key=key item=item from=$arrBlocList}-->
                 <tr style="background-color:<!--{if $item.bloc_id == $bloc_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
                     <td><!--{$item.bloc_name}--></td>
                     <td class="center">
-                        <a href="?bloc_id=<!--{$item.bloc_id|h}-->&amp;device_type_id=<!--{$device_type_id|h}-->" >編集</a>
+                        <a href="?bloc_id=<!--{$item.bloc_id|h}-->&amp;device_type_id=<!--{$device_type_id|h}-->" ><!--{t string="tpl_003"}--></a>
                     </td>
                     <td class="center">
                         <!--{if $item.deletable_flg == 1}-->
-                            <a href="javascript:;" onclick="fnFormModeSubmit('form_bloc','delete','bloc_id',<!--{$item.bloc_id|h}-->);">削除</a>
+                            <a href="javascript:;" onclick="fnFormModeSubmit('form_bloc','delete','bloc_id',<!--{$item.bloc_id|h}-->);"><!--{t string="tpl_004"}--></a>
                             <input type="hidden" value="<!--{$item.bloc_id|h}-->" name="del_id<!--{$item.bloc_id|h}-->" />
                         <!--{/if}-->
                     </td>

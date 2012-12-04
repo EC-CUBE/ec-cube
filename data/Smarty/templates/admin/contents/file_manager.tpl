@@ -59,29 +59,29 @@
     <div id="contents-filemanager-right">
         <table class="now_dir">
             <tr>
-                <th>ファイルのアップロード</th>
+                <th><!--{t string="tpl_164"}--></th>
                 <td>
                     <!--{if $arrErr.upload_file}--><span class="attention"><!--{$arrErr.upload_file}--></span><!--{/if}-->
-                    <input type="file" name="upload_file" size="40" <!--{if $arrErr.upload_file}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->><a class="btn-normal" href="javascript:;" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;">アップロード</a>
+                    <input type="file" name="upload_file" size="40" <!--{if $arrErr.upload_file}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->><a class="btn-normal" href="javascript:;" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;"><!--{t string="tpl_085"}--></a>
                 </td>
             </tr>
             <tr>
-                <th>フォルダ作成</th>
+                <th><!--{t string="tpl_165"}--></th>
                 <td>
                     <!--{if $arrErr.create_file}--><span class="attention"><!--{$arrErr.create_file}--></span><!--{/if}-->
-                    <input type="text" name="create_file" value="" style="width:336px;<!--{if $arrErr.create_file}--> background-color:<!--{$smarty.const.ERR_COLOR|h}--><!--{/if}-->"><a class="btn-normal" href="javascript:;" onclick="setTreeStatus('tree_status');fnModeSubmit('create','',''); return false;">作成</a>
+                    <input type="text" name="create_file" value="" style="width:336px;<!--{if $arrErr.create_file}--> background-color:<!--{$smarty.const.ERR_COLOR|h}--><!--{/if}-->"><a class="btn-normal" href="javascript:;" onclick="setTreeStatus('tree_status');fnModeSubmit('create','',''); return false;"><!--{t string="tpl_166"}--></a>
                 </td>
             </tr>
         </table>
         <h2><!--{* jQuery で挿入される *}--></h2>
         <table class="list">
             <tr>
-                <th>ファイル名</th>
-                <th>サイズ</th>
-                <th>更新日付</th>
-                <th class="edit">表示</th>
-                <th>ダウンロード</th>
-                <th class="delete">削除</th>
+                <th><!--{t string="tpl_167"}--></th>
+                <th><!--{t string="tpl_168"}--></th>
+                <th><!--{t string="tpl_169"}--></th>
+                <th class="edit"><!--{t string="tpl_170"}--></th>
+                <th><!--{t string="tpl_171"}--></th>
+                <th class="delete"><!--{t string="tpl_004"}--></th>
             </tr>
             <!--{if !$tpl_is_top_dir}-->
                 <tr id="parent_dir" onclick="fnSetFormVal('form1', 'select_file', '<!--{$tpl_parent_dir|h}-->');fnSelectFile('parent_dir', '#808080');" onDblClick="setTreeStatus('tree_status');fnDbClick(arrTree, '<!--{$tpl_parent_dir|h}-->', true, '<!--{$tpl_now_dir|h}-->', true)" style="">
@@ -114,11 +114,11 @@
                     </td>
                     <!--{if $arrFileList[cnt].is_dir}-->
                         <td class="center">
-                            <a href="javascript:;" onclick="fnSetFormVal('form1', 'tree_select_file', '<!--{$arrFileList[cnt].file_path}-->');fnSelectFile('<!--{$id}-->', '#808080');fnModeSubmit('move','',''); return false;">表示</a>
+                            <a href="javascript:;" onclick="fnSetFormVal('form1', 'tree_select_file', '<!--{$arrFileList[cnt].file_path}-->');fnSelectFile('<!--{$id}-->', '#808080');fnModeSubmit('move','',''); return false;"><!--{t string="tpl_170"}--></a>
                         </td>
                     <!--{else}-->
                         <td class="center">
-                            <a href="javascript:;" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|h}-->');fnSelectFile('<!--{$id}-->', '#808080');fnModeSubmit('view','',''); return false;">表示</a>
+                            <a href="javascript:;" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|h}-->');fnSelectFile('<!--{$id}-->', '#808080');fnModeSubmit('view','',''); return false;"><!--{t string="tpl_170"}--></a>
                         </td>
                     <!--{/if}-->
                     <!--{if $arrFileList[cnt].is_dir}-->
@@ -126,11 +126,11 @@
                         <td class="center">-</td>
                     <!--{else}-->
                         <td class="center">
-                            <a href="javascript:;" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|h}-->');fnSelectFile('<!--{$id}-->', '#808080');setTreeStatus('tree_status');fnModeSubmit('download','',''); return false;">ダウンロード</a>
+                            <a href="javascript:;" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|h}-->');fnSelectFile('<!--{$id}-->', '#808080');setTreeStatus('tree_status');fnModeSubmit('download','',''); return false;"><!--{t string="tpl_171"}--></a>
                         </td>
                     <!--{/if}-->
                     <td class="center">
-                        <a href="javascript:;" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|h}-->');fnSelectFile('<!--{$id}-->', '#808080');setTreeStatus('tree_status');fnModeSubmit('delete','',''); return false;">削除</a>
+                        <a href="javascript:;" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|h}-->');fnSelectFile('<!--{$id}-->', '#808080');setTreeStatus('tree_status');fnModeSubmit('delete','',''); return false;"><!--{t string="tpl_004"}--></a>
                     </td>
                 </tr>
             <!--{/section}-->

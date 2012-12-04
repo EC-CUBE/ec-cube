@@ -36,14 +36,14 @@
     <!--{/if}-->
 <!--{/foreach}-->
 <div id="order" class="contents-main">
-    <h2>メール配信</h2>
+    <h2><!--{t string="tpl_410"}--></h2>
     
     <!--{if $order_id_count == 1}-->
     <table class="list">
         <tr>
-            <th>処理日</th>
-            <th>通知メール</th>
-            <th>件名</th>
+            <th><!--{t string="tpl_411"}--></th>
+            <th><!--{t string="tpl_412"}--></th>
+            <th><!--{t string="tpl_413"}--></th>
         </tr>
         <!--{section name=cnt loop=$arrMailHistory}-->
         <tr class="center">
@@ -58,18 +58,18 @@
 
     <table class="form">
         <tr>
-            <th>テンプレート<span class="attention"> *</span></th>
+            <th><!--{t string="tpl_065"}--><span class="attention"> *</span></th>
             <td>
                 <!--{assign var=key value="template_id"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <select name="template_id" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onchange="fnModeSubmit('change', '', '');">
-                <option value="" selected="selected">選択してください</option>
+                <option value="" selected="selected"><!--{t string="tpl_068"}--></option>
                 <!--{html_options options=$arrMAILTEMPLATE selected=$arrForm[$key].value|h}-->
                 </select>
             </td>
         </tr>
         <tr>
-            <th>メールタイトル<span class="attention"> *</span></th>
+            <th><!--{t string="tpl_066"}--><span class="attention"> *</span></th>
             <td>
                 <!--{assign var=key value="subject"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -77,7 +77,7 @@
             </td>
         </tr>
         <tr>
-            <th>ヘッダー</th>
+            <th><!--{t string="tpl_067"}--></th>
             <td>
                 <!--{assign var=key value="header"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -85,10 +85,10 @@
             </td>
         </tr>
         <tr>
-            <td colspan="2" class="center">動的データ挿入部分</td>
+            <td colspan="2" class="center"><!--{t string="tpl_069"}--></td>
         </tr>
         <tr>
-            <th>フッター</th>
+            <th><!--{t string="tpl_070"}--></th>
             <td>
                 <!--{assign var=key value="footer"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -98,8 +98,8 @@
     </table>
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_URLPATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev">検索結果へ戻る</span></a></li>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', '', 'mode', 'confirm'); return false;"><span class="btn-next">送信内容を確認</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_URLPATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev"><!--{t string="tpl_071"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', '', 'mode', 'confirm'); return false;"><span class="btn-next"><!--{t string="tpl_414"}--></span></a></li>
         </ul>
     </div>
 </div>

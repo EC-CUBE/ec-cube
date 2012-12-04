@@ -1,27 +1,27 @@
 <tr>
-    <th>会員ID</th>
+    <th><!--{t string="tpl_207"}--></th>
     <td>
     <!--{assign var=key value="search_customer_id"}-->
     <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
     <input type="text" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key].value|h}-->" size="30" class="box30" <!--{if $arrErr[$key]}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
-    <th>都道府県</th>
+    <th><!--{t string="tpl_258"}--></th>
     <td>
         <!--{assign var=key value="search_pref"}-->
         <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
         <select class="top" name="<!--{$key}-->">
-            <option value="" selected="selected" <!--{if $arrErr[$key]}--><!--{sfSetErrorStyle}--><!--{/if}-->>都道府県を選択</option>
+            <option value="" selected="selected" <!--{if $arrErr[$key]}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{t string="tpl_036"}--></option>
             <!--{html_options options=$arrPref selected=$arrForm[$key].value}-->
         </select>
     </td>
 </tr>
 <tr>
-    <th>お名前</th>
+    <th><!--{t string="tpl_208"}--></th>
     <td>
             <!--{assign var=key value="search_name"}-->
             <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
             <input type="text" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key].value|h}-->" size="30" class="box30" <!--{if $arrErr[$key]}--><!--{sfSetErrorStyle}--><!--{/if}--> />
     </td>
-    <th>お名前(フリガナ)</th>
+    <th><!--{t string="tpl_210"}--></th>
     <td>
         <!--{assign var=key value="search_kana"}-->
         <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
@@ -29,12 +29,12 @@
     </td>
 </tr>
 <tr>
-    <th>性別</th>
+    <th><!--{t string="tpl_215"}--></th>
     <td>
         <!--{assign var=key value="search_sex"}-->
         <!--{html_checkboxes name=$key options=$arrSex separator="&nbsp;" selected=$arrForm[$key].value}-->
     </td>
-    <th>誕生月</th>
+    <th><!--{t string="tpl_338"}--></th>
     <td>
         <!--{assign var=key value="search_birth_month"}-->
         <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
@@ -45,7 +45,7 @@
     </td>
 </tr>
 <tr>
-    <th>誕生日</th>
+    <th><!--{t string="tpl_339"}--></th>
     <td colspan="3">
     <!--{assign var=errkey1 value="search_b_start_year"}-->
     <!--{assign var=errkey2 value="search_b_end_year"}-->
@@ -83,7 +83,7 @@
     </td>
 </tr>
 <tr>
-    <th>メールアドレス</th>
+    <th><!--{t string="tpl_108"}--></th>
     <td colspan="3">
     <!--{assign var=key value="search_email"}-->
     <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
@@ -91,27 +91,27 @@
     </td>
 </tr>
 <tr>
-    <th>携帯メールアドレス</th>
+    <th><!--{t string="tpl_213"}--></th>
     <td colspan="3">
         <!--{assign var=key value="search_email_mobile"}-->
         <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
         <input type="text" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key].value|h}-->" size="60" class="box60" <!--{if $arrErr[$key]}--><!--{sfSetErrorStyle}--><!--{/if}-->/></td>
 </tr>
 <tr>
-    <th>電話番号</th>
+    <th><!--{t string="tpl_214"}--></th>
     <td colspan="3">
         <!--{assign var=key value="search_tel"}-->
         <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
         <input type="text" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key].value|h}-->" size="60" class="box60" /></td>
 </tr>
 <tr>
-    <th>職業</th>
+    <th><!--{t string="tpl_340"}--></th>
     <td colspan="3">
         <!--{assign var=key value="search_job"}-->
         <!--{html_checkboxes name=$key options=$arrJob separator="&nbsp;" selected=$arrForm[$key].value}--></td>
 </tr>
 <tr>
-    <th>購入金額</th>
+    <th><!--{t string="tpl_232"}--></th>
     <td>
         <!--{assign var=key1 value="search_buy_total_from"}-->
         <!--{assign var=key2 value="search_buy_total_to"}-->
@@ -121,7 +121,7 @@
         <input type="text" name="<!--{$key1}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key1].value|h}-->" size="6" class="box6" <!--{if $arrErr[$key1] || $arrErr[$key2]}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 円 ～
         <input type="text" name="<!--{$key2}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key2].value|h}-->" size="6" class="box6" <!--{if $arrErr[$key1] || $arrErr[$key2]}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 円
     </td>
-    <th>購入回数</th>
+    <th><!--{t string="tpl_341"}--></th>
     <td>
         <!--{assign var=key1 value="search_buy_times_from"}-->
         <!--{assign var=key2 value="search_buy_times_to"}-->
@@ -132,7 +132,7 @@
     <input type="text" name="<!--{$key2}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key2].value|h}-->" size="6" class="box6" <!--{if $arrErr[$key1] || $arrErr[$key2]}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 回</td>
 </tr>
 <tr>
-    <th>登録・更新日</th>
+    <th><!--{t string="tpl_330"}--></th>
     <td colspan="3">
     <!--{assign var=errkey1 value="search_start_year"}-->
     <!--{assign var=errkey2 value="search_end_year"}-->
@@ -170,7 +170,7 @@
     </td>
 </tr>
 <tr>
-    <th>最終購入日</th>
+    <th><!--{t string="tpl_342"}--></th>
     <td colspan="3">
     <!--{assign var=errkey1 value="search_buy_start_year"}-->
     <!--{assign var=errkey2 value="search_buy_end_year"}-->
@@ -208,7 +208,7 @@
     </td>
 </tr>
 <tr>
-    <th>購入商品名</th>
+    <th><!--{t string="tpl_343"}--></th>
     <td>
         <!--{assign var=key value="search_buy_product_name"}-->
         <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
@@ -216,7 +216,7 @@
         <input type="text" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key].value|h}-->" size="30" class="box30" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"/>
         </span>
     </td>
-    <th>購入商品コード</th>
+    <th><!--{t string="tpl_344"}--></th>
     <td>
         <!--{assign var=key value="search_buy_product_code"}-->
         <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
@@ -224,11 +224,11 @@
     </td>
 </tr>
 <tr>
-    <th>カテゴリ</th>
+    <th><!--{t string="tpl_191"}--></th>
     <td colspan="3">
         <!--{assign var=key value="search_category_id"}-->
         <select name="<!--{$key}-->" <!--{if $arrErr[$errkey]}--><!--{sfSetErrorStyle}--><!--{/if}-->>
-            <option value="">選択してください</option>
+            <option value=""><!--{t string="tpl_068"}--></option>
             <!--{html_options options=$arrCatList selected=$arrForm[$key].value}-->
         </select>
     </td>

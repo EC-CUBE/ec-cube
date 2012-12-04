@@ -29,7 +29,7 @@
 <input type="hidden" name="search_pageno" value="<!--{$tpl_pageno}-->" >
 <input type="hidden" name="order_id" value="" />
 <div id="order" class="contents-main">
-    <h2>抽出条件</h2>
+    <h2><!--{t string="tpl_439"}--></h2>
         <div class="btn">
         <!--{foreach key=key item=item from=$arrORDERSTATUS}-->
             <a
@@ -42,25 +42,25 @@
             ><!--{$item}--></a>
         <!--{/foreach}-->
         </div>
-    <h2>対応状況変更</h2>
+    <h2><!--{t string="tpl_440"}--></h2>
     <!--{* 登録テーブルここから *}-->
     <!--{if $tpl_linemax > 0}-->
         <div class="btn">
             <select name="change_status">
-                <option value="" selected="selected" style="<!--{$Errormes|sfGetErrorColor}-->" >選択してください</option>
+                <option value="" selected="selected" style="<!--{$Errormes|sfGetErrorColor}-->" ><!--{t string="tpl_068"}--></option>
                 <!--{foreach key=key item=item from=$arrORDERSTATUS}-->
                 <!--{if $key ne $SelectedStatus}-->
                 <option value="<!--{$key}-->" ><!--{$item}--></option>
                 <!--{/if}-->
                 <!--{/foreach}-->
-                <option value="delete">削除</option>
+                <option value="delete"><!--{t string="tpl_004"}--></option>
             </select>
-            <a class="btn-normal" href="javascript:;" onclick="fnSelectCheckSubmit(); return false;"><span>移動</span></a>
+            <a class="btn-normal" href="javascript:;" onclick="fnSelectCheckSubmit(); return false;"><span><!--{t string="tpl_005"}--></span></a>
         </div>
-        <span class="attention">※ <!--{$arrORDERSTATUS[$smarty.const.ORDER_CANCEL]}-->もしくは、削除に変更時には、在庫数を手動で戻してください。</span><br />
+        <span class="attention"><!--{t string="tpl_441" T_FIELD=$arrORDERSTATUS[$smarty.const.ORDER_CANCEL]}--></span><br />
 
         <p class="remark">
-            <!--{$tpl_linemax}-->件が該当しました。
+            <!--{t string="tpl_194"　T_FIELD=$tpl_linemax}-->
             <!--{$tpl_strnavi}-->
         </p>
 
@@ -75,15 +75,15 @@
             <col width="12%" />
             <col width="12%" />
             <tr>
-                <th><label for="move_check">選択</label> <input type="checkbox" name="move_check" id="move_check" onclick="fnAllCheck(this, 'input[name=move[]]')" /></th>
-                <th>対応状況</th>
-                <th>注文番号</th>
-                <th>受注日</th>
-                <th>お名前</th>
-                <th>支払方法</th>
-                <th>購入金額（円）</th>
-                <th>入金日</th>
-                <th>発送日</th>
+                <th><label for="move_check"><!--{t string="tpl_299"}--></label> <input type="checkbox" name="move_check" id="move_check" onclick="fnAllCheck(this, 'input[name=move[]]')" /></th>
+                <th><!--{t string="tpl_360"}--></th>
+                <th><!--{t string="tpl_231"}--></th>
+                <th><!--{t string="tpl_359"}--></th>
+                <th><!--{t string="tpl_208"}--></th>
+                <th><!--{t string="tpl_016"}--></th>
+                <th><!--{t string="tpl_442"}--></th>
+                <th><!--{t string="tpl_361"}--></th>
+                <th><!--{t string="tpl_233"}--></th>
             </tr>
             <!--{section name=cnt loop=$arrStatus}-->
             <!--{assign var=status value="`$arrStatus[cnt].status`"}-->
@@ -96,8 +96,8 @@
                 <!--{assign var=payment_id value=`$arrStatus[cnt].payment_id`}-->
                 <td><!--{$arrPayment[$payment_id]|h}--></td>
                 <td class="right"><!--{$arrStatus[cnt].total|number_format}--></td>
-                <td><!--{if $arrStatus[cnt].payment_date != ""}--><!--{$arrStatus[cnt].payment_date|sfDispDBDate:false}--><!--{else}-->未入金<!--{/if}--></td>
-                <td><!--{if $arrStatus[cnt].status eq 5}--><!--{$arrStatus[cnt].commit_date|sfDispDBDate:false}--><!--{else}-->未発送<!--{/if}--></td>
+                <td><!--{if $arrStatus[cnt].payment_date != ""}--><!--{$arrStatus[cnt].payment_date|sfDispDBDate:false}--><!--{else}--><!--{t string="tpl_443"}--><!--{/if}--></td>
+                <td><!--{if $arrStatus[cnt].status eq 5}--><!--{$arrStatus[cnt].commit_date|sfDispDBDate:false}--><!--{else}--><!--{t string="tpl_234"}--><!--{/if}--></td>
             </tr>
             <!--{/section}-->
         </table>
@@ -107,7 +107,7 @@
 
     <!--{elseif $arrStatus != "" & $tpl_linemax == 0}-->
         <div class="message">
-            該当するデータはありません。
+            <!--{t string="tpl_437"}-->
         </div>
     <!--{/if}-->
 
@@ -128,7 +128,7 @@ function fnSelectCheckSubmit(){
     }
 
     if(selectflag == 1){
-        alert('セレクトボックスが選択されていません');
+        alert('<!--{t string="tpl_438"}-->');
         return false;
     }
     var i;
@@ -148,7 +148,7 @@ function fnSelectCheckSubmit(){
     }
 
     if(checkflag == 0){
-        alert('チェックボックスが選択されていません');
+        alert(<!--{t string="tpl_398"}-->);
         return false;
     }
 

@@ -43,14 +43,14 @@
     </select>
     <!--{assign var=key value="line_max"}-->
     直近の<input type="text" name="<!--{$key|h}-->" value="<!--{$arrForm[$key].value|h}-->" size="6" maxlength="<!--{$arrForm[$key].length|h}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />行
-    <a class="btn-normal" href="javascript:;" onclick="form1.submit(); return false;"><span>読み込む</span></a>
+    <a class="btn-normal" href="javascript:;" onclick="form1.submit(); return false;"><span><!--{t string="tpl_454"}--></span></a>
 </form>
 
 <table class="list log">
     <tr>
-        <th>日時</th>
-        <th>パス</th>
-        <th>内容</th>
+        <th><!--{t string="tpl_448"}--></th>
+        <th><!--{t string="tpl_455"}--></th>
+        <th><!--{t string="tpl_456"}--></th>
     </tr>
     <!--{foreach from=$tpl_ec_log item=line}-->
         <tr>

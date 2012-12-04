@@ -32,7 +32,7 @@
 <link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/admin_contents.css" type="text/css" media="all" />
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery-1.4.2.min.js"></script>
-<title>管理機能</title>
+<title><!--{t string="tpl_540"}--></title>
 <link rel="shortcut icon" href="<!--{$TPL_URLPATH}-->img/common/favicon.ico" />
 <link rel="icon" type="image/vnd.microsoft.icon" href="<!--{$TPL_URLPATH}-->img/common/favicon.ico" />
 <script type="text/javascript">//<![CDATA[
@@ -47,7 +47,7 @@
 <body>
 <!--{$GLOBAL_ERR}-->
 <noscript>
-    <p>JavaScript を有効にしてご利用下さい.</p>
+    <p><!--{t string="tpl_523"}--></p>
 </noscript>
 <div id="login">
 

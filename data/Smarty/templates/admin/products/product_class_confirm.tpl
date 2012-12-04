@@ -22,7 +22,7 @@
  */
 *}-->
 
-<h2>確認</h2>
+<h2><!--{t string="tpl_318"}--></h2>
 <form name="form1" id="form1" method="post" action="?" enctype="multipart/form-data">
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -57,15 +57,15 @@
         <!--{assign var=class_id2 value=$arrForm[$key2].value|h}-->
         <table class="list">
                 <tr>
-                <th>規格1(<!--{$arrClass[$class_id1]|default:"未選択"|h}-->)</th>
-                <th>規格2(<!--{$arrClass[$class_id2]|default:"未選択"|h}-->)</th>
-                <th>商品コード</th>
-                <th>在庫数</th>
-                <th><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(円)</th>
-                <th><!--{$smarty.const.SALE_PRICE_TITLE}-->(円)</th>
-                <th>商品種別</th>
-                <th>ダウンロードファイル名</th>
-                <th>ダウンロード商品用ファイルアップロード</th>
+                <th><!--{t string="tpl_371"}-->(<!--{$arrClass[$class_id1]|default:"未選択"|h}-->)</th>
+                <th><!--{t string="tpl_374"}-->(<!--{$arrClass[$class_id2]|default:"未選択"|h}-->)</th>
+                <th><!--{t string="tpl_192"}--></th>
+                <th><!--{t string="tpl_557"}--></th>
+                <th><!--{t string="tpl_603" T_FIELD=$smarty.const.NORMAL_PRICE_TITLE}--></th>
+                <th><!--{t string="tpl_603" T_FIELD=$smarty.const.SALE_PRICE_TITLE}--></th>
+                <th><!--{t string="tpl_014"}--></th>
+                <th><!--{t string="tpl_607"}--></th>
+                <th><!--{t string="tpl_608"}--></th>
             </tr>
             <!--{section name=cnt loop=$arrForm.total.value}-->
                 <!--{assign var=index value=$smarty.section.cnt.index}-->
@@ -82,7 +82,7 @@
                         <!--{assign var=key2 value="stock_unlimited"}-->
                         <td class="right">
                             <!--{if $arrForm[$key2].value[$index] == 1}-->
-                                無制限
+                                <!--{t string="tpl_053"}-->
                             <!--{else}-->
                                 <!--{$arrForm[$key1].value[$index]|h}-->
                             <!--{/if}-->
@@ -106,14 +106,14 @@
             <!--{/section}-->
         </table>
     <!--{else}-->
-        <div class="message">規格が選択されていません。</div>
+        <div class="message"><!--{t string="tpl_609"}--></div>
     <!--{/if}-->
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'confirm_return','',''); return false"><span class="btn-prev">前へ戻る</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'confirm_return','',''); return false"><span class="btn-prev"><!--{t string="tpl_610"}--></span></a></li>
         <!--{if count($arrForm.check.value) > 0}-->
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'complete','',''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'complete','',''); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
         <!--{/if}-->
         </ul>
     </div>

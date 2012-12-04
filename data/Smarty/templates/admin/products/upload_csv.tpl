@@ -1,4 +1,4 @@
-<!--{*
+0<!--{*
 /*
  * This file is part of EC-CUBE
  *
@@ -32,7 +32,7 @@
             <!--{foreach key=key item=item from=$arrCSVErr}-->
                 <span class="attention"><!--{$item}-->
                 <!--{if $key != 'blank'}-->
-                    [値：<!--{$arrParam[$key]}-->]
+                    <!--{t string="tpl_631" T_FIELD=$arrParam[$key]}-->
                 <!--{/if}-->
                 </span><br />
             <!--{/foreach}-->
@@ -42,19 +42,19 @@
     <!--▼登録テーブルここから-->
     <table>
         <tr>
-            <th>CSVファイル</th>
+            <th><!--{t string="tpl_632"}--></th>
             <td>
                 <!--{if $arrErr.csv_file}-->
                     <span class="attention"><!--{$arrErr.csv_file}--></span>
                 <!--{/if}-->
-                <input type="file" name="csv_file" size="40" /><span class="attention">(1行目タイトル行)</span>
+                <input type="file" name="csv_file" size="40" /><span class="attention"><!--{t string="tpl_633"}--></span>
             </td>
         </tr>
         <tr>
-            <th>登録情報</th>
+            <th><!--{t string="tpl_634"}--></th>
             <td>
                 <!--{foreach name=title key=key item=item from=$arrTitle}-->
-                    <!--{$smarty.foreach.title.iteration}-->項目：<!--{$item}--><br />
+                    <!--{t string="tpl_635" T_FIELD1=$smarty.foreach.title.iteration T_FIELD2=$item}--><br />
                 <!--{/foreach}-->
             </td>
         </tr>
@@ -62,7 +62,7 @@
     <!--▲登録テーブルここまで-->
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'csv_upload', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'csv_upload', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_636"}--></span></a></li>
         </ul>
     </div>
 </div>

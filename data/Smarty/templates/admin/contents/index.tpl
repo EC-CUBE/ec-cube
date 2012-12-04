@@ -26,7 +26,7 @@
 <!--
 
 function func_regist(url) {
-    res = confirm('この内容で<!--{if $edit_mode eq "on"}-->編集<!--{else}-->登録<!--{/if}-->しても宜しいですか？');
+    res = confirm('<!--{if $edit_mode eq "on"}--><!--{t string="tpl_172"}--><!--{else}--><!--{t string="tpl_173"}--><!--{/if}-->');
     if(res == true) {
         document.form1.mode.value = 'regist';
         document.form1.submit();
@@ -42,7 +42,7 @@ function func_edit(news_id) {
 }
 
 function func_del(news_id) {
-    res = confirm('この新着情報を削除しても宜しいですか？');
+    res = confirm('<!--{t string="tpl_174"}-->');
     if(res == true) {
         document.form1.mode.value = "delete";
         document.form1.news_id.value = news_id;
@@ -75,25 +75,25 @@ function moving(news_id,rank, max_rank) {
     }
 
     if ( j > 1) {
-        alert( '移動順位は１つだけ入力してください。' );
+        alert( '<!--{t string="tpl_175"}-->' );
         return false;
     } else if( ! val ) {
-        alert( '移動順位を入力してください。' );
+        alert( '<!--{t string="tpl_176"}-->' );
         return false;
     } else if( val.length > 4){
-        alert( '移動順位は4桁以内で入力してください。' );
+        alert( '<!--{t string="tpl_177"}-->' );
         return false;
     } else if( val.match(/[0-9]+/g) != val){
-        alert( '移動順位は数字で入力してください。' );
+        alert( '<!--{t string="tpl_178"}-->' );
         return false;
     } else if( val == rank ){
-        alert( '移動させる番号が重複しています。' );
+        alert( '<!--{t string="tpl_179"}-->' );
         return false;
     } else if( val == 0 ){
-        alert( '移動順位は0以上で入力してください。' );
+        alert( '<!--{t string="tpl_180"}-->' );
         return false;
     } else if( val > max_rank ){
-        alert( '入力された順位は、登録数の最大値を超えています。' );
+        alert( '<!--{t string="tpl_181"}-->' );
         return false;
     } else {
         ml.moveposition.value = val;
@@ -117,7 +117,7 @@ function moving(news_id,rank, max_rank) {
     <!--{* ▼登録テーブルここから *}-->
     <table>
         <tr>
-            <th>日付<span class="attention"> *</span></th>
+            <th><!--{t string="tpl_024"}--><span class="attention"> *</span></th>
             <td>
                 <!--{if $arrErr.year || $arrErr.month || $arrErr.day}--><span class="attention"><!--{$arrErr.year}--><!--{$arrErr.month}--><!--{$arrErr.day}--></span><!--{/if}-->
                 <select name="year" <!--{if $arrErr.year || $arrErr.month || $arrErr.day }-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->>
@@ -135,31 +135,31 @@ function moving(news_id,rank, max_rank) {
             </td>
         </tr>
         <tr>
-            <th>タイトル<span class="attention"> *</span></th>
+            <th><!--{t string="tpl_022"}--><span class="attention"> *</span></th>
             <td>
                 <!--{if $arrErr.news_title}--><span class="attention"><!--{$arrErr.news_title}--></span><!--{/if}-->
                 <textarea name="news_title" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" <!--{if $arrErr.news_title}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->><!--{$arrForm.news_title|h}--></textarea><br />
-                <span class="attention"> (上限<!--{$smarty.const.MTEXT_LEN}-->文字)</span>
+                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.MTEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
-            <th>URL</th>
+            <th><!--{t string="tpl_109"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.news_url}--></span>
                 <input type="text" name="news_url" size="60" class="box60"    value="<!--{$arrForm.news_url|h}-->" <!--{if $arrErr.news_url}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}--> maxlength="<!--{$smarty.const.URL_LEN}-->" />
-                <span class="attention"> (上限<!--{$smarty.const.URL_LEN}-->文字)</span>
+                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.URL_LEN}--></span>
             </td>
         </tr>
         <tr>
-            <th>リンク</th>
-            <td><label><input type="checkbox" name="link_method" value="2" <!--{if $arrForm.link_method eq 2}--> checked <!--{/if}--> /> 別ウィンドウで開く</label></td>
+            <th><!--{t string="tpl_110"}--></th>
+            <td><label><input type="checkbox" name="link_method" value="2" <!--{if $arrForm.link_method eq 2}--> checked <!--{/if}--> /> <!--{t string="tpl_112"}--></label></td>
         </tr>
         <tr>
-            <th>本文作成</th>
+            <th><!--{t string="tpl_111"}--></th>
             <td>
                 <!--{if $arrErr.news_comment}--><span class="attention"><!--{$arrErr.news_comment}--></span><!--{/if}-->
                 <textarea name="news_comment" cols="60" rows="8" wrap="soft" class="area60" maxlength="<!--{$smarty.const.LTEXT_LEN}-->" style="background-color:<!--{if $arrErr.news_comment}--><!--{$smarty.const.ERR_COLOR|h}--><!--{/if}-->"><!--{$arrForm.news_comment|h}--></textarea><br />
-                <span class="attention"> (上限3000文字)</span>
+                <span class="attention"> (<!--{t string="tpl_113"}-->)</span>
             </td>
         </tr>
     </table>
@@ -167,12 +167,12 @@ function moving(news_id,rank, max_rank) {
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="return func_regist();"><span class="btn-next">この内容で登録する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="return func_regist();"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
         </ul>
     </div>
 </form>
 
-    <h2>新着情報一覧</h2>
+    <h2><!--{t string="tpl_114"}--></h2>
     <!--{if $arrErr.moveposition}-->
     <p><span class="attention"><!--{$arrErr.moveposition}--></span></p>
     <!--{/if}-->
@@ -192,12 +192,12 @@ function moving(news_id,rank, max_rank) {
         <col width="5%" />
         <col width="25%" />
         <tr>
-            <th>順位</th>
-            <th>日付</th>
-            <th>タイトル</th>
-            <th class="edit">編集</th>
-            <th class="delete">削除</th>
-            <th>移動</th>
+            <th><!--{t string="tpl_115"}--></th>
+            <th><!--{t string="tpl_024"}--></th>
+            <th><!--{t string="tpl_022"}--></th>
+            <th class="edit"><!--{t string="tpl_003"}--></th>
+            <th class="delete"><!--{t string="tpl_004"}--></th>
+            <th><!--{t string="tpl_005"}--></th>
         </tr>
         <!--{section name=data loop=$arrNews}-->
         <tr style="background:<!--{if $arrNews[data].news_id != $tpl_news_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->;" class="center">
@@ -213,22 +213,22 @@ function moving(news_id,rank, max_rank) {
             </td>
             <td>
                 <!--{if $arrNews[data].news_id != $tpl_news_id}-->
-                <a href="#" onclick="return func_edit('<!--{$arrNews[data].news_id|h}-->');">編集</a>
+                <a href="#" onclick="return func_edit('<!--{$arrNews[data].news_id|h}-->');"><!--{t string="tpl_003"}--></a>
                 <!--{else}-->
-                編集中
+                <!--{t string="tpl_026"}-->
                 <!--{/if}-->
             </td>
-            <td><a href="#" onclick="return func_del('<!--{$arrNews[data].news_id|h}-->');">削除</a></td>
+            <td><a href="#" onclick="return func_del('<!--{$arrNews[data].news_id|h}-->');"><!--{t string="tpl_004"}--></a></td>
             <td>
             <!--{if count($arrNews) != 1}-->
-            <input type="text" name="pos-<!--{$arrNews[data].news_id|h}-->" size="3" class="box3" />番目へ<a href="?" onclick="fnFormModeSubmit('move', 'moveRankSet','news_id', '<!--{$arrNews[data].news_id|h}-->'); return false;">移動</a><br />
+            <input type="text" name="pos-<!--{$arrNews[data].news_id|h}-->" size="3" class="box3" />番目へ<a href="?" onclick="fnFormModeSubmit('move', 'moveRankSet','news_id', '<!--{$arrNews[data].news_id|h}-->'); return false;"><!--{t string="tpl_005"}--></a><br />
             <!--{/if}-->
-            <!--{if $arrNews[data].rank ne $max_rank}--><a href="#" onclick="return func_rankMove('up', '<!--{$arrNews[data].news_id|h}-->', '<!--{$max_rank|h}-->');">上へ</a><!--{/if}-->　<!--{if $arrNews[data].rank ne 1}--><a href="#" onclick="return func_rankMove('down', '<!--{$arrNews[data].news_id|h}-->', '<!--{$max_rank|h}-->');">下へ</a><!--{/if}-->
+            <!--{if $arrNews[data].rank ne $max_rank}--><a href="#" onclick="return func_rankMove('up', '<!--{$arrNews[data].news_id|h}-->', '<!--{$max_rank|h}-->');"><!--{t string="tpl_077"}--></a><!--{/if}-->　<!--{if $arrNews[data].rank ne 1}--><a href="#" onclick="return func_rankMove('down', '<!--{$arrNews[data].news_id|h}-->', '<!--{$max_rank|h}-->');"><!--{t string="tpl_078"}--></a><!--{/if}-->
             </td>
         </tr>
         <!--{sectionelse}-->
         <tr class="center">
-            <td colspan="6">現在データはありません。</td>
+            <td colspan="6"><!--{t string="tpl_182"}--></td>
         </tr>
         <!--{/section}-->
     </table>

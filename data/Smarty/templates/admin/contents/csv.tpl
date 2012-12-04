@@ -30,13 +30,13 @@ $().ready(function() {
     $('#output_list').multiselect2side({
         selectedPosition: 'right',
         moveOptions: true,
-        labelsx: 'CSV出力しない項目',
-        labeldx: 'CSV出力する項目',
-        labelTop: '一番上',
-        labelBottom: '一番下',
-        labelUp: '一つ上',
-        labelDown: '一つ下',
-        labelSort: '項目順序'
+        labelsx: <!--{t string="tpl_142"}-->,
+        labeldx: <!--{t string="tpl_143"}-->,
+        labelTop: <!--{t string="tpl_144"}-->,
+        labelBottom: <!--{t string="tpl_145"}-->,
+        labelUp: <!--{t string="tpl_146"}-->,
+        labelDown: <!--{t string="tpl_147"}-->,
+        labelSort: <!--{t string="tpl_148"}-->
     });
     // multiselect2side の初期選択を解除
     $('.ms2side__div select').val(null);
@@ -46,7 +46,7 @@ $().ready(function() {
 });
 
 function lfFormModeDefautSetSubmit(form, mode) {
-    if (!window.confirm('初期設定で登録しても宜しいですか')) {
+    if (!window.confirm(<!--{t string="tpl_149"}-->)) {
         return;
     }
     return fnSetFormSubmit(form, 'mode', mode);
@@ -60,7 +60,7 @@ function lfFormModeDefautSetSubmit(form, mode) {
 <input type="hidden" name="tpl_subno_csv" value="<!--{$tpl_subno_csv|h}-->" />
 <div id="admin-contents" class="contents-main">
     <!--{if $tpl_is_update}-->
-    <span class="attention">※ 正常に更新されました。</span>
+    <span class="attention"><!--{t string="tpl_150"}--></span>
     <!--{/if}-->
     <span class="attention"><!--{$arrErr.tpl_subno_csv}--></span>
     <div class="ms2side__area">
@@ -72,8 +72,8 @@ function lfFormModeDefautSetSubmit(form, mode) {
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'confirm', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
-            <li><a class="btn-action" href="javascript:;" onclick="lfFormModeDefautSetSubmit('form1', 'defaultset', '', ''); return false;"><span class="btn-next">初期設定に戻して登録</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'confirm', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="lfFormModeDefautSetSubmit('form1', 'defaultset', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_151"}--></span></a></li>
         </ul>
     </div>
 

@@ -29,52 +29,57 @@
     <form name="form1" id="form1" method="get" action="?" onsubmit="return false;">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="">
-        <p>保存されている郵便番号CSVの更新日時: <!--{$tpl_csv_datetime|h}--></p>
-        <p>郵便番号CSVには <!--{$tpl_line|h}--> 行のデータがあります。</p>
-        <p>郵便番号DBには <!--{$tpl_count_mtb_zip|h}--> 行のデータがあります。</p>
+        <p><!--{t string="tpl_121" T_FIELD=$tpl_csv_datetime|h}--></p>
+        <p><!--{t string="tpl_122" T_FIELD=$tpl_line|h}--></p>
+        <p><!--{t string="tpl_123" T_FIELD=$tpl_count_mtb_zip|h}--></p>
         <!--{if $tpl_count_mtb_zip == 0}-->
-            <p class="attention">登録を行なってください。</p>
+            <p class="attention"><!--{t string="tpl_124"}--></p>
         <!--{elseif $tpl_line <> $tpl_count_mtb_zip}-->
-            <p class="attention">行数に差異があります。登録に異常がある恐れがあります。</p>
+            <p class="attention"><!--{t string="tpl_125"}--></p>
         <!--{/if}-->
 
         <div class="basis-zip-item info">
-            <p>通常は、[自動登録] を利用してください。<br />
-                ただし、タイムアウトしてしまう環境では、タイムアウトした後に [手動登録] を正常に完了するまで繰り返してください。</p>
+            <p><!--{t string="tpl_126"}--></p>
         </div>
 
         <div class="basis-zip-item">
-            <h2>自動登録</h2>
-            <p>下の [削除] <!--{if !$tpl_skip_update_csv}-->[郵便番号CSV更新] <!--{/if}-->[DB手動登録] を順に実行します。ただし、タイムアウトした場合、DBは元の状態に戻ります。</p>
-            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('auto', '', ''); return false;"><span class="btn-next">自動登録</span></a></p>
+            <h2><!--{t string="tpl_127"}--></h2>
+            <p>
+                <!--{if !$tpl_skip_update_csv}-->
+                    <!--{t string="tpl_128"}-->
+                <!--{else}-->
+                    <!--{t string="tpl_129"}-->
+                <!--{/if}-->
+            </p>
+            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('auto', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_130"}--></span></a></p>
         </div>
 
         <div class="basis-zip-item">
-            <h2>DB手動登録</h2>
-            <p>指定した行数から郵便番号を登録します。タイムアウトした場合、直前まで登録されます。</p>
-            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('manual', '', ''); return false;"><span class="btn-next">手動登録</span></a>　開始行: <input type="text" name="startRowNum" value="<!--{$arrForm.startRowNum|default:$tpl_count_mtb_zip+1|h}-->" size="8"><span class="attention"><!--{$arrErr.startRowNum}--></span></p>
+            <h2><!--{t string="tpl_131"}--></h2>
+            <p><!--{t string="tpl_132"}--></p>
+            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('manual', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_133"}--></span></a>　<!--{t string="tpl_134"}-->: <input type="text" name="startRowNum" value="<!--{$arrForm.startRowNum|default:$tpl_count_mtb_zip+1|h}-->" size="8"><span class="attention"><!--{$arrErr.startRowNum}--></span></p>
         </div>
 
         <div class="basis-zip-item">
-            <h2>郵便番号CSV更新</h2>
+            <h2><!--{t string="tpl_135"}--></h2>
             <!--{if $tpl_skip_update_csv}-->
-                ご利用頂けません。
+                <!--{t string="tpl_136"}-->
                 <!--{if $tpl_zip_download_url_empty}-->
-                    <p class="attention">※ パラメーター ZIP_DOWNLOAD_URL が未設定です。</p>
+                    <p class="attention"><!--{t string="tpl_137"}--></p>
                 <!--{/if}-->
                 <!--{if $tpl_zip_function_not_exists}-->
-                    <p class="attention">※ PHP 拡張モジュール「zip」が無効です。</p>
+                    <p class="attention"><!--{t string="tpl_138"}--></p>
                 <!--{/if}-->
             <!--{else}-->
-                <p>日本郵便の WEB サイトから、郵便番号CSVを取得します。</p>
-                <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('update_csv', '', ''); return false;"><span class="btn-next">更新</span></a><span class="attention"><!--{$arrErr.startRowNum}--></span></p>
+                <p><!--{t string="tpl_139"}--></p>
+                <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('update_csv', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_140"}--></span></a><span class="attention"><!--{$arrErr.startRowNum}--></span></p>
             <!--{/if}-->
         </div>
 
         <div class="basis-zip-item end">
-            <h2>削除</h2>
-            <p>全ての郵便番号を削除します。再登録するまで、住所自動入力は機能しなくなります。</p>
-            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete', '', ''); return false;"><span class="btn-next">削除</span></a></p>
+            <h2><!--{t string="tpl_004"}--></h2>
+            <p><!--{t string="tpl_141"}--></p>
+            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_004"}--></span></a></p>
         </div>
     </form>
 <!--{else}-->

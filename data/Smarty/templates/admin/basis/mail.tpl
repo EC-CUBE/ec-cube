@@ -31,7 +31,7 @@ function setFlag(){
 }
 function checkFlagAndSubmit(){
     if ( flag == 1 ){
-        if( confirm("内容が変更されています。続行すれば変更内容は破棄されます。宜しいでしょうか？") ){
+        if( confirm(<!--{t string="tpl_064"}-->) ){
             fnSetvalAndSubmit( 'form1', 'mode', 'id_set' );
         } else {
             return false;
@@ -51,20 +51,20 @@ function checkFlagAndSubmit(){
 <div id="basis" class="contents-main">
     <table>
         <tr>
-            <th>テンプレート<span class="attention"> *</span></th>
+            <th><!--{t string="tpl_065"}--><span class="attention"> *</span></th>
             <td>
             <!--{assign var=key value="template_id"}-->
             <!--{if $arrErr[$key]}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <!--{/if}-->
             <select name="template_id" onChange="return checkFlagAndSubmit();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-            <option value="" selected="selected">選択してください</option>
+            <option value="" selected="selected"><!--{t string="tpl_068"}--></option>
             <!--{html_options options=$arrMailTEMPLATE selected=$arrForm[$key]}-->
             </select>
             </td>
         </tr>
         <tr>
-            <th>メールタイトル<span class="attention"> *</span></th>
+            <th><!--{t string="tpl_066"}--><span class="attention"> *</span></th>
             <td>
             <!--{assign var=key value="subject"}-->
             <!--{if $arrErr[$key]}-->
@@ -74,40 +74,38 @@ function checkFlagAndSubmit(){
             </td>
         </tr>
         <tr>
-            <th>ヘッダー</th>
+            <th><!--{t string="tpl_067"}--></th>
             <td>
             <!--{assign var=key value="header"}-->
             <!--{if $arrErr[$key]}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <!--{/if}-->
             <textarea name="header" cols="75" rows="12" class="area75" onChange="setFlag();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|h}--></textarea><br />
-            <span class="attention"> (上限<!--{$smarty.const.LTEXT_LEN}-->文字)
+            <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.LTEXT_LEN}-->
             </span>
             <div>
-                <a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','header','cnt_header'); return false;"><span>文字数カウント</span></a>
-                今までに入力したのは
+                <a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','header','cnt_header'); return false;"><span><!--{t string="tpl_072"}--></span></a>
+                <!--{t string="tpl_358"}-->
                 <input type="text" name="cnt_header" size="4" class="box4" readonly = true style="text-align:right" />
-                文字です。
             </div>
             </td>
         </tr>
         <tr>
-            <th colspan="2" align="center">動的データ挿入部分</th>
+            <th colspan="2" align="center"><!--{t string="tpl_069"}--></th>
         </tr>
         <tr>
-            <th>フッター</th>
+            <th><!--{t string="tpl_070"}--></th>
             <td>
             <!--{assign var=key value="footer"}-->
             <!--{if $arrErr[$key]}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <!--{/if}-->
             <textarea name="footer" cols="75" rows="12" class="area75" onChange="setFlag();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|h}--></textarea><br />
-            <span class="attention"> (上限<!--{$smarty.const.LTEXT_LEN}-->文字)</span>
+            <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.LTEXT_LEN}--></span>
             <div>
-                <a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','footer','cnt_footer'); return false;"><span>文字数カウント</span></a>
-                今までに入力したのは
+                <a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','footer','cnt_footer'); return false;"><span><!--{t string="tpl_072"}--></span></a>
+                <!--{t string="tpl_358"}-->
                 <input type="text" name="cnt_footer" size="4" class="box4" readonly = true style="text-align:right" />
-                文字です。
             </div>
             </td>
         </tr>
@@ -115,7 +113,7 @@ function checkFlagAndSubmit(){
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'regist', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'regist', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
         </ul>
     </div>
 </div>

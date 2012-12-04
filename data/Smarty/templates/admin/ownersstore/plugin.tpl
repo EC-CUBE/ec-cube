@@ -33,12 +33,12 @@
             var mode = event.target.name;
 
             if(mode === 'disable') {
-                result = window.confirm('プラグインを無効にしても宜しいですか？');
+                result = window.confirm('<!--{t string="tpl_458"}-->');
                 if(result === false) {
                     $(event.target).attr("checked", "checked");
                 }
             } else if(mode === 'enable') {
-                result = window.confirm('プラグインを有効にしても宜しいですか？');
+                result = window.confirm('<!--{t string="tpl_459"}-->');
                 if(result === false) {
                     $(event.target).attr("checked", "");
                 }
@@ -54,7 +54,7 @@
      * 通信エラー表示.
      */
     function remoteException(XMLHttpRequest, textStatus, errorThrown) {
-        alert('通信中にエラーが発生しました。');
+        alert('<!--{t string="tpl_460"}-->');
     }
 
     /**
@@ -79,7 +79,7 @@
      * インストール
      */
     function install() {
-        if (window.confirm('プラグインをインストールしても宜しいでしょうか？')){
+        if (window.confirm('<!--{t string="tpl_461" kaigyo_escape=true}-->')){
             fnModeSubmit('install','','');
         }
     }
@@ -88,7 +88,7 @@
      * アンインストール(削除)
      */
     function uninstall(plugin_id, plugin_code) {
-        if (window.confirm('一度削除したデータは元に戻せません。\nプラグインを削除しても宜しいですか？')){
+        if (window.confirm('<!--{t string="tpl_462"}-->')){
             fnSetFormValue('plugin_id', plugin_id);
             fnModeSubmit('uninstall', 'plugin_code', plugin_code);
         }
@@ -98,7 +98,7 @@
      * アップデート処理
      */
     function update(plugin_id, plugin_code) {
-        if (window.confirm('プラグインをアップデートしても宜しいですか？')){
+        if (window.confirm('<!--{t string="tpl_463"}-->')){
             removeUpdateFile('update_file_' + plugin_id);
             fnSetFormValue('plugin_id', plugin_id);
             fnModeSubmit('update','plugin_code', plugin_code);
@@ -125,21 +125,21 @@
 <input type="hidden" name="plugin_code" value="" />
 <input type="hidden" name="priority" value="" />
 <div id="system" class="contents-main">
-    <h2>プラグイン登録</h2>
+    <h2><!--{t string="tpl_464"}--></h2>
     <table class="form">
         <tr>
-            <th>プラグイン<span class="attention"> *</span></th>
+            <th><!--{t string="tpl_465"}--><span class="attention"> *</span></th>
             <td>
                 <!--{assign var=key value="plugin_file"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input type="file" name="<!--{ $key }-->" class="box45" size="43"  style="<!--{$arrErr[$key]|sfGetErrorColor}--> <!--{if $arrErr[$key]}--> background-color:<!--{$smarty.const.ERR_COLOR|h}--><!--{/if}-->">
-                <a class="btn-action" href="javascript:;" onclick="install(); return false;"><span class="btn-next">インストール</span></a>
+                <a class="btn-action" href="javascript:;" onclick="install(); return false;"><span class="btn-next"><!--{t string="tpl_466"}--></span></a>
             </td>
         </tr>
     </table>
 
     <!--▼プラグイン一覧ここから-->
-    <h2>プラグイン一覧</h2>
+    <h2><!--{t string="tpl_467"}--></h2>
     <!--{if count($plugins) > 0}-->
         <span class="attention"><!--{$arrErr.plugin_error}--></span>
         <table class="system-plugin" width="900">
@@ -147,8 +147,8 @@
             <col width="77" />
             <col width="13%" />
             <tr>
-                <th colspan="2">機能説明</th>
-                <th>優先度</th>
+                <th colspan="2"><!--{t string="tpl_468"}--></th>
+                <th><!--{t string="tpl_469"}--></th>
             </tr>
             <!--{section name=data loop=$plugins}-->
             <!--{assign var=plugin value=$plugins[data]}-->
@@ -188,29 +188,29 @@
                         <!-- 説明 -->
                             <p class="description"><!--{$plugin.plugin_description|default:'-'|h}--></p>
                         <div>
-                            <span class="ec_cube_version">対応EC-CUBEバージョン ：<!--{$plugin.compliant_version|default:'-'|h}--></span><br/>
+                            <span class="ec_cube_version"><!--{t string="tpl_470"}--><!--{$plugin.compliant_version|default:'-'|h}--></span><br/>
                             <span class="attention"><!--{$arrErr[$plugin.plugin_code]}--></span>
                             <!-- 設定 -->
                                 <!--{if $plugin.config_flg == true && $plugin.status != $smarty.const.PLUGIN_STATUS_UPLOADED}-->
-                                    <a href="?" onclick="win02('../load_plugin_config.php?plugin_id=<!--{$plugin.plugin_id}-->', 'load', 615, 400);return false;">プラグイン設定</a>&nbsp;|&nbsp;
+                                    <a href="?" onclick="win02('../load_plugin_config.php?plugin_id=<!--{$plugin.plugin_id}-->', 'load', 615, 400);return false;"><!--{t string="tpl_471"}--></a>&nbsp;|&nbsp;
                                 <!--{else}-->
-                                    <span>プラグイン設定&nbsp;|&nbsp;</span>
+                                    <span><!--{t string="tpl_471"}-->&nbsp;|&nbsp;</span>
                                 <!--{/if}-->
                             <!-- アップデート -->
-                                <a class="update_link" href="javascript:;" name="<!--{$plugin.plugin_id}-->">アップデート</a>&nbsp;|&nbsp;
+                                <a class="update_link" href="javascript:;" name="<!--{$plugin.plugin_id}-->"><!--{t string="tpl_472"}--></a>&nbsp;|&nbsp;
                             <!-- 削除 -->
-                                <a  href="javascript:;" name="uninstall" onclick="uninstall(<!--{$plugin.plugin_id}-->, '<!--{$plugin.plugin_code}-->'); return false;">削除</a>&nbsp;|&nbsp;
+                                <a  href="javascript:;" name="uninstall" onclick="uninstall(<!--{$plugin.plugin_id}-->, '<!--{$plugin.plugin_code}-->'); return false;"><!--{t string="tpl_004"}--></a>&nbsp;|&nbsp;
                             <!-- 有効/無効 -->
                                 <!--{if $plugin.enable == $smarty.const.PLUGIN_ENABLE_TRUE}-->
-                                    <label><input id="plugin_enable" type="checkbox" name="disable" value="<!--{$plugin.plugin_id}-->" id="login_memory" checked="checked">有効</input></label><br/>
+                                    <label><input id="plugin_enable" type="checkbox" name="disable" value="<!--{$plugin.plugin_id}-->" id="login_memory" checked="checked"><!--{t string="tpl_473"}--></input></label><br/>
                                 <!--{else}-->
-                                    <label><input id="plugin_enable" type="checkbox" name="enable" value="<!--{$plugin.plugin_id}-->" id="login_memory">有効にする</input></label><br/>
+                                    <label><input id="plugin_enable" type="checkbox" name="enable" value="<!--{$plugin.plugin_id}-->" id="login_memory"><!--{t string="tpl_474"}--></input></label><br/>
                                 <!--{/if}-->
 
                                 <!-- アップデートリンク押下時に表示する. -->
                                 <div id="plugin_update_<!--{$plugin.plugin_id}-->" style="display: none">
                                     <input id="update_file_<!--{$plugin.plugin_id}-->" name="<!--{$plugin.plugin_code}-->" type="file" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box30" size="30" <!--{if $arrErr[$key]}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}--> />
-                                    <a class="btn-action" href="javascript:;" onclick="update(<!--{$plugin.plugin_id}-->, '<!--{$plugin.plugin_code}-->'); return false;"><span class="btn-next">アップデート</span></a>
+                                    <a class="btn-action" href="javascript:;" onclick="update(<!--{$plugin.plugin_id}-->, '<!--{$plugin.plugin_code}-->'); return false;"><span class="btn-next"><!--{t string="tpl_472"}--></span></a>
                                 </div>
                         </div>
                 </td>
@@ -218,7 +218,7 @@
                 <td class="center">
                     <span class="attention"><!--{$arrErr.priority[$plugin.plugin_id]}--></span>
                     <input type="text" class="center" name="priority_<!--{$plugin.plugin_code}-->" value="<!--{$plugin.priority|h}-->" size="1" class="priority" />
-                    <a class="btn-action" href="javascript:;" onclick="update_priority(<!--{$plugin.plugin_id}-->, '<!--{$plugin.plugin_code}-->'); return false;"><span class="btn-next">変更</span></a><br/>
+                    <a class="btn-action" href="javascript:;" onclick="update_priority(<!--{$plugin.plugin_id}-->, '<!--{$plugin.plugin_code}-->'); return false;"><span class="btn-next"><!--{t string="tpl_475"}--></span></a><br/>
                     <span><!--{$plugin.priority_message}--></span>
                 </td>
             </tr>
@@ -233,7 +233,7 @@
             <!--{/section}-->
         </table>
     <!--{else}-->
-        <span>登録されているプラグインはありません。</span>
+        <span><!--{t string="tpl_476"}--></span>
     <!--{/if}-->
 </div>
 </form>

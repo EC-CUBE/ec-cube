@@ -71,12 +71,12 @@
         <table class="form">
             <!--{if $arrForm.customer_id}-->
             <tr>
-                <th>会員ID<span class="attention"> *</span></th>
+                <th><!--{t string="tpl_207"}--><span class="attention"> *</span></th>
                 <td><!--{$arrForm.customer_id|h}--></td>
             </tr>
             <!--{/if}-->
             <tr>
-                <th>会員状態<span class="attention"> *</span></th>
+                <th><!--{t string="tpl_209"}--><span class="attention"> *</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.status}--></span>
                     <span <!--{if $arrErr.status != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->>
@@ -85,33 +85,33 @@
                 </td>
             </tr>
             <tr>
-                <th>お名前<span class="attention"> *</span></th>
+                <th><!--{t string="tpl_208"}--><span class="attention"> *</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.name01}--><!--{$arrErr.name02}--></span>
                     <input type="text" name="name01" value="<!--{$arrForm.name01|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.name01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />&nbsp;&nbsp;<input type="text" name="name02" value="<!--{$arrForm.name02|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.name02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                 </td>
             </tr>
             <tr>
-                <th>お名前(フリガナ)<span class="attention"> *</span></th>
+                <th><!--{t string="tpl_210"}--><span class="attention"> *</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.kana01}--><!--{$arrErr.kana02}--></span>
                     <input type="text" name="kana01" value="<!--{$arrForm.kana01|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.kana01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />&nbsp;&nbsp;<input type="text" name="kana02" value="<!--{$arrForm.kana02|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.kana02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                 </td>
             </tr>
             <tr>
-                <th>郵便番号<span class="attention"> *</span></th>
+                <th><!--{t string="tpl_033"}--><span class="attention"> *</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.zip01}--><!--{$arrErr.zip02}--></span>
-                    〒 <input type="text" name="zip01" value="<!--{$arrForm.zip01|h}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" size="6" class="box6" maxlength="3" <!--{if $arrErr.zip01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="zip02" value="<!--{$arrForm.zip02|h}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" size="6" class="box6" maxlength="4" <!--{if $arrErr.zip02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
-                    <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'zip01', 'zip02', 'pref', 'addr01'); return false;">住所入力</a>
+                    <!--{t string="tpl_106"}--> <input type="text" name="zip01" value="<!--{$arrForm.zip01|h}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" size="6" class="box6" maxlength="3" <!--{if $arrErr.zip01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="zip02" value="<!--{$arrForm.zip02|h}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" size="6" class="box6" maxlength="4" <!--{if $arrErr.zip02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                    <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'zip01', 'zip02', 'pref', 'addr01'); return false;"><!--{t string="tpl_211"}--></a>
                 </td>
             </tr>
             <tr>
-                <th>住所<span class="attention"> *</span></th>
+                <th><!--{t string="tpl_212"}--><span class="attention"> *</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.pref}--><!--{$arrErr.addr01}--><!--{$arrErr.addr02}--></span>
                     <select class="top" name="pref" <!--{if $arrErr.pref != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->>
-                        <option class="top" value="" selected="selected">都道府県を選択</option>
+                        <option class="top" value="" selected="selected"><!--{t string="tpl_036"}--></option>
                         <!--{html_options options=$arrPref selected=$arrForm.pref}-->
                     </select><br />
                     <input type="text" name="addr01" value="<!--{$arrForm.addr01|h}-->" size="60" class="box60" <!--{if $arrErr.addr01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /><br />
@@ -121,35 +121,35 @@
                 </td>
             </tr>
             <tr>
-                <th>メールアドレス<span class="attention"> *</span></th>
+                <th><!--{t string="tpl_108"}--><span class="attention"> *</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.email}--></span>
                     <input type="text" name="email" value="<!--{$arrForm.email|h}-->" size="60" class="box60" <!--{if $arrErr.email != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                 </td>
             </tr>
             <tr>
-                <th>携帯メールアドレス</th>
+                <th><!--{t string="tpl_213"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.email_mobile}--></span>
                     <input type="text" name="email_mobile" value="<!--{$arrForm.email_mobile|h}-->" size="60" class="box60" <!--{if $arrErr.email_mobile != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                 </td>
             </tr>
             <tr>
-                <th>電話番号<span class="attention"> *</span></th>
+                <th><!--{t string="tpl_214"}--><span class="attention"> *</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.tel01}--><!--{$arrErr.tel02}--><!--{$arrErr.tel03}--></span>
                     <input type="text" name="tel01" value="<!--{$arrForm.tel01|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.tel01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="tel02" value="<!--{$arrForm.tel02|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.tel01 != "" || $arrErr.tel02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="tel03" value="<!--{$arrForm.tel03|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.tel01 != "" || $arrErr.tel03 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                 </td>
             </tr>
             <tr>
-                <th>FAX</th>
+                <th><!--{t string="tpl_039"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.fax01}--><!--{$arrErr.fax02}--><!--{$arrErr.fax03}--></span>
                     <input type="text" name="fax01" value="<!--{$arrForm.fax01|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.fax01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="fax02" value="<!--{$arrForm.fax02|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.fax01 != "" || $arrErr.fax02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="fax03" value="<!--{$arrForm.fax03|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.fax01 != "" || $arrErr.fax03 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                 </td>
             </tr>
             <tr>
-                <th>性別<span class="attention"> *</span></th>
+                <th><!--{t string="tpl_215"}--><span class="attention"> *</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.sex}--></span>
                     <span <!--{if $arrErr.sex != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->>
@@ -158,17 +158,17 @@
                 </td>
             </tr>
             <tr>
-                <th>ご職業</th>
+                <th><!--{t string="tpl_216"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.job}--></span>
                     <select name="job" <!--{if $arrErr.job != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> >
-                    <option value="" selected="selected">選択してください</option>
+                    <option value="" selected="selected"><!--{t string="tpl_068"}--></option>
                     <!--{html_options options=$arrJob selected=$arrForm.job}-->
                     </select>
                 </td>
             </tr>
             <tr>
-                <th>生年月日</th>
+                <th><!--{t string="tpl_217"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.year}--></span>
                     <select name="year" <!--{if $arrErr.year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> >
@@ -186,29 +186,29 @@
                 </td>
             </tr>
             <tr>
-                <th>パスワード<span class="attention"> *</span></th>
+                <th><!--{t string="tpl_218"}--><span class="attention"> *</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.password}--><!--{$arrErr.password02}--></span>
-                    <input type="password" name="password" value="<!--{$arrForm.password|h}-->" size="30" class="box30" <!--{if $arrErr.password != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />　半角英数小文字<!--{$smarty.const.PASSWORD_MIN_LEN}-->～<!--{$smarty.const.PASSWORD_MAX_LEN}-->文字（記号不可）<br />
+                    <input type="password" name="password" value="<!--{$arrForm.password|h}-->" size="30" class="box30" <!--{if $arrErr.password != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />　<!--{t string="tpl_219" T_FIELD1=$smarty.const.PASSWORD_MIN_LEN T_FIELD2=$smarty.const.PASSWORD_MAX_LEN}--><br />
                     <input type="password" name="password02" value="<!--{$arrForm.password02|h}-->" size="30" class="box30" <!--{if $arrErr.password02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
-                    <p><span class="attention mini">確認のために2度入力してください。</span></p>
+                    <p><span class="attention mini"><!--{t string="tpl_220"}--></span></p>
                 </td>
             </tr>
             <tr>
-                <th>パスワードを忘れたときのヒント<span class="attention"> *</span></th>
+                <th><!--{t string="tpl_221"}--><span class="attention"> *</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.reminder}--><!--{$arrErr.reminder_answer}--></span>
-                    質問：
+                    <!--{t string="tpl_222"}-->：
                     <select class="top" name="reminder" <!--{if $arrErr.reminder != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> >
-                        <option value="" selected="selected">選択してください</option>
+                        <option value="" selected="selected"><!--{t string="tpl_068"}--></option>
                         <!--{html_options options=$arrReminder selected=$arrForm.reminder}-->
                     </select><br />
-                    答え：
+                    <!--{t string="tpl_223"}-->：
                     <input type="text" name="reminder_answer" value="<!--{$arrForm.reminder_answer|h}-->" size="30" class="box30" <!--{if $arrErr.reminder_answer != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                 </td>
             </tr>
             <tr>
-                <th>メールマガジン<span class="attention"> *</span></th>
+                <th><!--{t string="tpl_224"}--><span class="attention"> *</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.mailmaga_flg}--></span>
                     <span <!--{if $arrErr.mailmaga_flg != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->>
@@ -217,14 +217,14 @@
                 </td>
             </tr>
             <tr>
-                <th>SHOP用メモ</th>
+                <th><!--{t string="tpl_225"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.note}--></span>
                     <textarea name="note" maxlength="<!--{$smarty.const.LTEXT_LEN}-->" <!--{if $arrErr.note != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> cols="60" rows="8" class="area60"><!--{$arrForm.note|h}--></textarea>
                 </td>
             </tr>
             <tr>
-                <th>所持ポイント<span class="attention"> *</span></th>
+                <th><!--{t string="tpl_226"}--><span class="attention"> *</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.point}--></span>
                     <input type="text" name="point" value="<!--{$arrForm.point|h}-->" maxlength="<!--{$smarty.const.TEL_LEN}-->" size="6" class="box6" <!--{if $arrErr.point != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> pt
@@ -234,8 +234,8 @@
 
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="return fnReturn();"><span class="btn-prev">検索画面に戻る</span></a></li>
-                <li><a class="btn-action" href="javascript:;" onclick="fnSetFormSubmit('form1', 'mode', 'confirm'); return false;"><span class="btn-next">確認ページへ</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="return fnReturn();"><span class="btn-prev"><!--{t string="tpl_227"}--></span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="fnSetFormSubmit('form1', 'mode', 'confirm'); return false;"><span class="btn-next"><!--{t string="tpl_228"}--></span></a></li>
             </ul>
         </div>
 
@@ -243,27 +243,27 @@
         <input type="hidden" name="search_pageno" value="<!--{$tpl_pageno}-->">
         <input type="hidden" name="edit_customer_id" value="<!--{$edit_customer_id}-->" >
 
-        <h2>購入履歴一覧</h2>
+        <h2><!--{t string="tpl_229"}--></h2>
         <!--{if $tpl_linemax > 0}-->
-        <p><span class="attention"><!--購入履歴一覧--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。</p>
+        <p><!--購入履歴一覧--><!--{t string="tpl_230" T_FIELD=$tpl_linemax}--></p>
 
         <!--{include file=$tpl_pager}-->
 
             <!--{* 購入履歴一覧表示テーブル *}-->
             <table class="list">
                 <tr>
-                    <th>日付</th>
-                    <th>注文番号</th>
-                    <th>購入金額</th>
-                    <th>発送日</th>
-                    <th>支払方法</th>
+                    <th><!--{t string="tpl_024"}--></th>
+                    <th><!--{t string="tpl_231"}--></th>
+                    <th><!--{t string="tpl_232"}--></th>
+                    <th><!--{t string="tpl_233"}--></th>
+                    <th><!--{t string="tpl_016"}--></th>
                 </tr>
                 <!--{section name=cnt loop=$arrPurchaseHistory}-->
                     <tr>
                         <td><!--{$arrPurchaseHistory[cnt].create_date|sfDispDBDate}--></td>
                         <td class="center"><a href="../order/edit.php?order_id=<!--{$arrPurchaseHistory[cnt].order_id}-->" ><!--{$arrPurchaseHistory[cnt].order_id}--></a></td>
-                        <td class="center"><!--{$arrPurchaseHistory[cnt].payment_total|number_format}-->円</td>
-                        <td class="center"><!--{if $arrPurchaseHistory[cnt].status eq 5}--><!--{$arrPurchaseHistory[cnt].commit_date|sfDispDBDate}--><!--{else}-->未発送<!--{/if}--></td>
+                        <td class="center"><!--{t string="tpl_500" T_FIELD=$arrPurchaseHistory[cnt].payment_total|number_format}--></td>
+                        <td class="center"><!--{if $arrPurchaseHistory[cnt].status eq 5}--><!--{$arrPurchaseHistory[cnt].commit_date|sfDispDBDate}--><!--{else}--><!--{t string="tpl_234"}--><!--{/if}--></td>
                         <!--{assign var=payment_id value="`$arrPurchaseHistory[cnt].payment_id`"}-->
                         <td class="center"><!--{$arrPayment[$payment_id]|h}--></td>
                     </tr>
@@ -271,7 +271,7 @@
             </table>
             <!--{* 購入履歴一覧表示テーブル *}-->
         <!--{else}-->
-            <div class="message">購入履歴はありません。</div>
+            <div class="message"><!--{t string="tpl_235"}--></div>
         <!--{/if}-->
 
     </div>

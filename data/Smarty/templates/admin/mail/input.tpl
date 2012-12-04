@@ -38,12 +38,12 @@
 <div id="mail" class="contents-main">
     <table class="form">
         <tr>
-            <th>テンプレート選択<span class="attention"> *</span></th>
+            <th><!--{t string="tpl_331"}--><span class="attention"> *</span></th>
             <td>
                 <!--{assign var=key value="template_id"}-->
                 <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
                 <select name="<!--{$key}-->" onchange="return fnInsertValAndSubmit( document.form1, 'mode', 'template', '' ) " style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-                <option value="" selected="selected">選択してください</option>
+                <option value="" selected="selected"><!--{t string="tpl_068"}--></option>
                 <!--{html_options options=$arrTemplate selected=$arrForm[$key].value}-->
                 </select>
             </td>
@@ -53,7 +53,7 @@
     <!--{if $arrForm.template_id.value}-->
     <table class="form">
         <tr>
-            <th>Subject<span class="attention"> *</span></th>
+            <th><!--{t string="tpl_311"}--><span class="attention"> *</span></th>
             <td>
                 <!--{assign var=key value="subject"}-->
                 <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
@@ -61,7 +61,7 @@
             </td>
         </tr>
         <tr>
-            <th>本文<span class="attention"> *</span><br />（名前差し込み時は {name} といれてください）</th>
+            <th><!--{t string="tpl_333"}--><span class="attention"> *</span><br /><!--{t string="tpl_332"}--></th>
             <td>
                 <!--{assign var=key value="body"}-->
                 <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
@@ -73,8 +73,8 @@
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'back', '' ); return false;"><span class="btn-prev">検索画面に戻る</span></a></li>
-            <li><a class="btn-action" href="javascript:;" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_confirm', '' ); return false;" ><span class="btn-next">確認ページへ</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'back', '' ); return false;"><span class="btn-prev"><!--{t string="tpl_227"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_confirm', '' ); return false;" ><span class="btn-next"><!--{t string="tpl_228"}--></span></a></li>
         </ul>
     </div>
 </div>

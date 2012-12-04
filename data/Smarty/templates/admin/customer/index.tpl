@@ -26,7 +26,7 @@
 <!--
 
     function fnDelete(customer_id) {
-        if (confirm('この会員情報を削除しても宜しいですか？')) {
+        if (confirm('<!--{t string="tpl_248"}-->')) {
             document.form1.mode.value = "delete"
             document.form1['edit_customer_id'].value = customer_id;
             document.form1.submit();
@@ -44,7 +44,7 @@
     }
 
     function fnReSendMail(customer_id) {
-        if (confirm('仮登録メールを再送しても宜しいですか？')) {
+        if (confirm('<!--{t string="tpl_249"}-->')) {
             document.form1.mode.value = "resend_mail"
             document.form1['edit_customer_id'].value = customer_id;
             document.form1.submit();
@@ -60,24 +60,24 @@
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="search" />
 
-    <h2>検索条件設定</h2>
+    <h2><!--{t string="tpl_250"}--></h2>
 
     <!--検索条件設定テーブルここから-->
     <table class="form">
         <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`/adminparts/form_customer_search.tpl"}-->
         <tr>
-            <th>会員状態</th>
+            <th><!--{t string="tpl_209"}--></th>
             <td colspan="3"><!--{html_checkboxes name="search_status" options=$arrStatus separator="&nbsp;" selected=$arrForm.search_status.value}--></td>
         </tr>
     </table>
     <div class="btn">
-        <p class="page_rows">検索結果表示件数
+        <p class="page_rows"><!--{t string="tpl_251"}-->
         <select name="search_page_max">
             <!--{html_options options=$arrPageMax selected=$arrForm.search_page_max}-->
         </select> 件</p>
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next">この条件で検索する</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_252"}--></span></a></li>
             </ul>
         </div>
     </div>
@@ -99,12 +99,12 @@
     <!--{/if}-->
 <!--{/foreach}-->
 
-    <h2>検索結果一覧</h2>
+    <h2><!--{t string="tpl_253"}--></h2>
     <div class="btn">
-        <span class="attention"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。
+        <!--検索結果数--><!--{t string="tpl_230" T_FIELD=$tpl_linemax}-->
         <!--検索結果-->
-        <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;">CSV ダウンロード</a>
-        <a class="btn-normal" href="javascript:;" onclick="location.href='../contents/csv.php?tpl_subno_csv=customer'">CSV 出力項目設定</a>
+        <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;"><!--{t string="tpl_254"}--></a>
+        <a class="btn-normal" href="javascript:;" onclick="location.href='../contents/csv.php?tpl_subno_csv=customer'"><!--{t string="tpl_255"}--></a>
     </div>
     <!--{if count($arrData) > 0}-->
 
@@ -120,31 +120,31 @@
         <col width="7%" />
         <col width="7%" />
         <tr>
-            <th rowspan="2">種別</th>
-            <th>会員ID</th>
-            <th rowspan="2">お名前/(フリガナ)</th>
-            <th rowspan="2">性別</th>
-            <th>TEL</th>
-            <th rowspan="2">編集</th>
-            <th rowspan="2">削除</th>
+            <th rowspan="2"><!--{t string="tpl_256"}--></th>
+            <th><!--{t string="tpl_207"}--></th>
+            <th rowspan="2"><!--{t string="tpl_257"}--></th>
+            <th rowspan="2"><!--{t string="tpl_215"}--></th>
+            <th><!--{t string="tpl_037"}--></th>
+            <th rowspan="2"><!--{t string="tpl_003"}--></th>
+            <th rowspan="2"><!--{t string="tpl_004"}--></th>
         </tr>
         <tr>
-            <th>都道府県</th>
-            <th>メールアドレス</th>
+            <th><!--{t string="tpl_258"}--></th>
+            <th><!--{t string="tpl_108"}--></th>
         </tr>
         <!--{foreach from=$arrData item=row}-->
             <tr>
-                <td class="center" rowspan="2"><!--{if $row.status eq 1}-->仮<!--{else}-->本<!--{/if}--></td>
+                <td class="center" rowspan="2"><!--{if $row.status eq 1}--><!--{t string="tpl_260"}--><!--{else}--><!--{t string="tpl_261"}--><!--{/if}--></td>
                 <td><!--{$row.customer_id|h}--></td>
                 <td rowspan="2"><!--{$row.name01|h}--> <!--{$row.name02|h}--><br>(<!--{$row.kana01|h}--> <!--{$row.kana02|h}-->)</td>
                 <td class="center" rowspan="2"><!--{$arrSex[$row.sex]|h}--></td>
                 <td><!--{$row.tel01|h}-->-<!--{$row.tel02|h}-->-<!--{$row.tel03|h}--></td>
-                <td class="center" rowspan="2"><span class="icon_edit"><a href="#" onclick="return fnEdit('<!--{$row.customer_id|h}-->');">編集</a></span></td>
-                <td class="center" rowspan="2"><span class="icon_delete"><a href="#" onclick="return fnDelete('<!--{$row.customer_id|h}-->');">削除</a></span></td>
+                <td class="center" rowspan="2"><span class="icon_edit"><a href="#" onclick="return fnEdit('<!--{$row.customer_id|h}-->');"><!--{t string="tpl_003"}--></a></span></td>
+                <td class="center" rowspan="2"><span class="icon_delete"><a href="#" onclick="return fnDelete('<!--{$row.customer_id|h}-->');"><!--{t string="tpl_004"}--></a></span></td>
             </tr>
             <tr>
                 <td><!--{assign var=pref value=$row.pref}--><!--{$arrPref[$pref]}--></td>
-                <td><!--{mailto address=$row.email encode="javascript"}--></a><!--{if $row.status eq 1}--><br /><a href="#" onclick="return fnReSendMail('<!--{$row.customer_id|h}-->');">仮登録メール再送</a><!--{/if}--></td>
+                <td><!--{mailto address=$row.email encode="javascript"}--></a><!--{if $row.status eq 1}--><br /><a href="#" onclick="return fnReSendMail('<!--{$row.customer_id|h}-->');"><!--{t string="tpl_259"}--></a><!--{/if}--></td>
             </tr>
         <!--{/foreach}-->
     </table>

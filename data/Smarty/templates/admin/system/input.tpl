@@ -37,73 +37,73 @@ self.moveTo(20,20);self.focus();
 <input type="hidden" name="pageno" value="<!--{$tpl_pageno|h}-->">
 <input type="hidden" name="old_login_id" value="<!--{$tpl_old_login_id|h}-->">
 
-<h2>メンバー登録/編集</h2>
+<h2><!--{t string="tpl_665"}--></h2>
 
 <table>
     <col width="20%" />
     <col width="80%" />
     <tr>
-        <th>名前</th>
+        <th><!--{t string="tpl_300"}--></th>
         <td>
             <!--{if $arrErr.name}--><span class="attention"><!--{$arrErr.name}--></span><!--{/if}-->
             <input type="text" name="name" size="30" class="box30" value="<!--{$arrForm.name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
-            <span class="attention">※必須入力</span>
+            <span class="attention"><!--{t string="tpl_666"}--></span>
         </td>
     </tr>
     <tr>
-        <th>所属</th>
+        <th><!--{t string="tpl_663"}--></th>
         <td>
             <!--{if $arrErr.department}--><span class="attention"><!--{$arrErr.department}--></span><!--{/if}-->
             <input type="text" name="department" size="30" class="box30" value="<!--{$arrForm.department|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
         </td>
     </tr>
     <tr>
-        <th>ログインＩＤ</th>
+        <th><!--{t string="tpl_667"}--></th>
         <td>
             <!--{if $arrErr.login_id}--><span class="attention"><!--{$arrErr.login_id}--></span><!--{/if}-->
             <input type="text" name="login_id" size="20" class="box20"    value="<!--{$arrForm.login_id|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>
-            <span class="attention">※必須入力</span><br />
-            ※半角英数字<!--{$smarty.const.ID_MIN_LEN}-->～<!--{$smarty.const.ID_MAX_LEN}-->文字
+            <span class="attention"><!--{t string="tpl_666"}--></span><br />
+            <!--{t string="tpl_668" T_FIELD1=$smarty.const.ID_MIN_LEN T_FIELD2=$smarty.const.ID_MAX_LEN}-->
         </td>
     </tr>
     <tr>
-        <th>パスワード</th>
+        <th><!--{t string="tpl_218"}--></th>
         <td>
             <!--{if $arrErr.password}--><span class="attention"><!--{$arrErr.password}--><!--{$arrErr.password02}--></span><!--{/if}-->
             <input type="password" name="password" size="20" class="box20" value="<!--{$arrForm.password}-->" onfocus="<!--{$tpl_onfocus}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>
-            <span class="attention">※必須入力</span><br />
-            ※半角英数字<!--{$smarty.const.ID_MIN_LEN}-->～<!--{$smarty.const.ID_MAX_LEN}-->文字
+            <span class="attention"><!--{t string="tpl_666"}--></span><br />
+            <!--{t string="tpl_668" T_FIELD1=$smarty.const.ID_MIN_LEN T_FIELD2=$smarty.const.ID_MAX_LEN}-->
             <br />
             <input type="password" name="password02" size="20" class="box20" value="<!--{$arrForm.password02}-->" onfocus="<!--{$tpl_onfocus}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>
-            <p><span class="attention mini">確認のために2度入力してください。</span></p>
+            <p><span class="attention mini"><!--{t string="tpl_220"}--></span></p>
         </td>
     </tr>
     <tr>
-        <th>権限</th>
+        <th><!--{t string="tpl_662"}--></th>
         <td>
             <!--{if $arrErr.authority}--><span class="attention"><!--{$arrErr.authority}--></span><!--{/if}-->
             <select name="authority">
-                <option value="">選択してください</option>
+                <option value=""><!--{t string="tpl_068"}--></option>
                 <!--{html_options options=$arrAUTHORITY selected=$arrForm.authority}-->
             </select>
-            <span class="attention">※必須入力</span>
+            <span class="attention"><!--{t string="tpl_666"}--></span>
         </td>
     </tr>
     <tr>
-        <th>稼働/非稼働</th>
+        <th><!--{t string="tpl_669"}--></th>
         <td>
             <!--{if $arrErr.work}--><span class="attention"><!--{$arrErr.work}--></span><!--{/if}-->
             <!--{assign var=key value="work"}-->
-            <input type="radio" id="<!--{$key}-->_1" name="<!--{$key}-->" value="1" style="<!--{$arrErr.work|sfGetErrorColor}-->" <!--{$arrForm.work|sfGetChecked:1}--> /><label for="<!--{$key}-->_1">稼働</label>
-            <input type="radio" id="<!--{$key}-->_0" name="<!--{$key}-->" value="0" style="<!--{$arrErr.work|sfGetErrorColor}-->" <!--{$arrForm.work|sfGetChecked:0}--> /><label for="<!--{$key}-->_0">非稼働</label>
-            <span class="attention">※必須入力</span>
+            <input type="radio" id="<!--{$key}-->_1" name="<!--{$key}-->" value="1" style="<!--{$arrErr.work|sfGetErrorColor}-->" <!--{$arrForm.work|sfGetChecked:1}--> /><label for="<!--{$key}-->_1"><!--{t string="tpl_664"}--></label>
+            <input type="radio" id="<!--{$key}-->_0" name="<!--{$key}-->" value="0" style="<!--{$arrErr.work|sfGetErrorColor}-->" <!--{$arrForm.work|sfGetChecked:0}--> /><label for="<!--{$key}-->_0"><!--{t string="tpl_670"}--></label>
+            <span class="attention"><!--{t string="tpl_666"}--></span>
         </td>
     </tr>
 </table>
 
 <div class="btn-area">
     <ul>
-        <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', '<!--{$tpl_mode|h}-->', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+        <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', '<!--{$tpl_mode|h}-->', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
     </ul>
 </div>
 </form>

@@ -26,11 +26,11 @@
 
 <table class="form">
     <tr>
-        <th>SQL文</th>
+        <th><!--{t string="tpl_159"}--></th>
         <td>SELECT <!--{$arrForm.csv_sql|h|nl2br}--></td>
     </tr>
     <tr>
-        <th>エラー内容</th>
+        <th><!--{t string="tpl_162"}--></th>
         <td>
             <!--{if $arrErr}-->
                 <!--{foreach key=key item=item from=$arrErr key=key}-->
@@ -40,7 +40,7 @@
             <!--{if $sqlerr != ""}-->
                 <!--{$sqlerr|h|nl2br}-->
             <!--{elseif !$arrErr}-->
-                エラーはありません
+                <!--{t string="tpl_163"}-->
             <!--{/if}-->
         </td>
     </tr>

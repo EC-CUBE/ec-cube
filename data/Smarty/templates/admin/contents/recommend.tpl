@@ -34,13 +34,13 @@ function lfnCheckSubmit( fm ){
     */
     if ( ! fm["comment"].value ){
         if ( err ) err += '';
-        err += 'コメントを入力して下さい。';
+        err += '<!--{t string="tpl_183"}-->';
     }
     if ( err ){
         alert(err);
         return false;
     } else {
-        if(window.confirm('内容を登録しても宜しいですか')){
+        if(window.confirm('<!--{t string="tpl_184"}-->')){
                 fm.submit();
                 return true;
         }
@@ -52,7 +52,7 @@ function lfnCheckSetItem( rank ){
     var checkRank = '<!--{$checkRank|h}-->';
     if ( checkRank ){
         if ( rank != checkRank ){
-            if( ! window.confirm('さきほど選択した<!--{$checkRank|h}-->位の情報は破棄されます。宜しいでしょうか')){
+            if( ! window.confirm('<!--{t string="tpl_185" T_FIELD=$checkRank|h}-->')){
                 flag = false;
             }
         }
@@ -67,7 +67,7 @@ function lfnSortItem(mode,data){
     var flag = true;
     var checkRank = '<!--{$checkRank|h}-->';
     if ( checkRank ){
-        if( ! window.confirm('さきほど選択した<!--{$checkRank|h}-->位の情報は破棄されます。宜しいでしょうか')){
+        if( ! window.confirm('<!--{t string="tpl_185" T_FIELD=$checkRank|h}-->')){
             flag = false;
         }
     }
@@ -91,15 +91,15 @@ function lfnSortItem(mode,data){
         <col width="7%" />
         <col width="7%" />
         <tr>
-            <th>順位</th>
-            <th>商品/コメント</th>
-            <th>編集</th>
-            <th>削除</th>
-			<th>並び替え</th>
+            <th><!--{t string="tpl_186"}--></th>
+            <th><!--{t string="tpl_187"}--></th>
+            <th><!--{t string="tpl_003"}--></th>
+            <th><!--{t string="tpl_004"}--></th>
+			<th><!--{t string="tpl_356"}--></th>
         </tr>
 
         <tr>
-            <td>おすすめ商品(<!--{$smarty.section.cnt.iteration}-->)</td>
+            <td><!--{t string="tpl_357"}-->(<!--{$smarty.section.cnt.iteration}-->)</td>
                 <!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->
                     <td>
                         <div id="table-wrap" class="clearfix">
@@ -109,7 +109,7 @@ function lfnSortItem(mode,data){
                                 <!--{/if}-->
                             </div>
                             <div class="table-detail">
-                                <div class="detail-name">商品名： <!--{$arrItems[$smarty.section.cnt.iteration].name|h}--></div>
+                                <div class="detail-name"><!--{t string="tpl_188"}-->： <!--{$arrItems[$smarty.section.cnt.iteration].name|h}--></div>
                                     <div class="detail-form">
                                         <form name="form<!--{$smarty.section.cnt.iteration}-->" id="form<!--{$smarty.section.cnt.iteration}-->" method="post" action="?">
                                             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -127,7 +127,7 @@ function lfnSortItem(mode,data){
                     </td>
                 <!--{else}-->
                     <td class="AlignLeft">
-                        <a class="btn-action-m" href="javascript:;" onclick="lfnCheckSetItem('<!--{$smarty.section.cnt.iteration}-->'); return false;" target="_blank"><span class="btn-next">商品を選択する</span></a>
+                        <a class="btn-action-m" href="javascript:;" onclick="lfnCheckSetItem('<!--{$smarty.section.cnt.iteration}-->'); return false;" target="_blank"><span class="btn-next"><!--{t string="tpl_189"}--></span></a>
                         <form name="form<!--{$smarty.section.cnt.iteration}-->" id="form<!--{$smarty.section.cnt.iteration}-->" method="post" action="?">
                             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
                             <input type="hidden" name="mode" value="regist" />
@@ -140,14 +140,14 @@ function lfnSortItem(mode,data){
             <td>
                 <!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->
                     <a href="javascript:;" onclick="lfnCheckSetItem('<!--{$smarty.section.cnt.iteration}-->'); return false;" target="_blank">
-                        編集</a>
+                        <!--{t string="tpl_003"}--></a>
                 <!--{else}-->
                     - -
                 <!--{/if}-->
             </td>
             <td>
                 <!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->
-                        <a href="javascript:;" onClick="return fnInsertValAndSubmit( document.form<!--{$smarty.section.cnt.iteration}-->, 'mode', 'delete', '削除します。宜しいですか' )">削除</a>
+                        <a href="javascript:;" onClick="return fnInsertValAndSubmit( document.form<!--{$smarty.section.cnt.iteration}-->, 'mode', 'delete', '<!--{t string="tpl_190"}-->' )"><!--{t string="tpl_004"}--></a>
                 <!--{else}-->
                     - -
                 <!--{/if}-->
@@ -155,10 +155,10 @@ function lfnSortItem(mode,data){
             <td>
                 <!--{* 移動 *}-->
                 <!--{if $smarty.section.cnt.iteration != 1 && $arrItems[$smarty.section.cnt.iteration].product_id}-->
-                    <a href="?" onclick="lfnSortItem('up',<!--{$arrItems[$smarty.section.cnt.iteration].rank}-->); return false;">上へ</a><br>&nbsp;
+                    <a href="?" onclick="lfnSortItem('up',<!--{$arrItems[$smarty.section.cnt.iteration].rank}-->); return false;"><!--{t string="tpl_077"}--></a><br>&nbsp;
                 <!--{/if}-->
                 <!--{if $smarty.section.cnt.iteration != $tpl_disp_max && $arrItems[$smarty.section.cnt.iteration].product_id}-->
-                    <a href="?" onclick="lfnSortItem('down',<!--{$arrItems[$smarty.section.cnt.iteration].rank}-->); return false;">下へ</a>
+                    <a href="?" onclick="lfnSortItem('down',<!--{$arrItems[$smarty.section.cnt.iteration].rank}-->); return false;"><!--{t string="tpl_078"}--></a>
                 <!--{/if}-->
             </td>
         </tr>
@@ -166,7 +166,7 @@ function lfnSortItem(mode,data){
         <tr><td colspan="4" class="no-border-w" height="20"></td></tr>
         <!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->
         <tr><td colspan="4" class="no-border">
-        <a class="btn-action" href="javascript:;" onclick="lfnCheckSubmit(document.form<!--{$smarty.section.cnt.iteration}-->); return false;"><span class="btn-next">この内容で登録する</span></a>
+        <a class="btn-action" href="javascript:;" onclick="lfnCheckSubmit(document.form<!--{$smarty.section.cnt.iteration}-->); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a>
         </td>
         </tr>
         <!--{/if}-->

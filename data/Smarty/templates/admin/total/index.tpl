@@ -26,7 +26,7 @@
     <!--{* 検索条件設定テーブルここから *}-->
     <table summary="検索条件設定テーブル" class="input-form form">
         <tr>
-            <th>月度集計</th>
+            <th><!--{t string="tpl_687"}--></th>
             <td>
                 <form name="search_form1" id="search_form1" method="post" action="?">
                     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -44,12 +44,12 @@
                     <select name="search_startmonth_m" style="<!--{$arrErr.search_startyear_m|sfGetErrorColor}-->">
                         <!--{html_options options=$arrMonth selected=$arrForm.search_startmonth_m.value}-->
                     </select>月度 (<!--{if $smarty.const.CLOSE_DAY == 31}-->末<!--{else}--><!--{$smarty.const.CLOSE_DAY}--><!--{/if}-->日締め)
-                    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('search_form1', 'search', '', ''); return false;" name="subm">月度で集計する</a>
+                    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('search_form1', 'search', '', ''); return false;" name="subm"><!--{t string="tpl_688"}--></a>
                 </form>
             </td>
         </tr>
         <tr>
-            <th>期間集計</th>
+            <th><!--{t string="tpl_689"}--></th>
             <td>
                 <form name="search_form2" id="search_form2" method="post" action="?">
                     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -85,7 +85,7 @@
                         <option value="">--</option>
                         <!--{html_options options=$arrDay selected=$arrForm.search_endday.value|h}-->
                     </select>日
-                    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('search_form2', 'search', '', ''); return false;" name="subm">期間で集計する</a>
+                    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('search_form2', 'search', '', ''); return false;" name="subm"><!--{t string="tpl_690"}--></a>
                 </form>
             </td>
         </tr>
@@ -139,7 +139,7 @@
             <!--検索結果表示テーブル-->
             <h2><!--{include file=$tpl_graphsubtitle}--></h2>
             <div class="message">
-                該当するデータはありません。
+                <!--{t string="tpl_437"}-->
             </div>
             <!--検索結果表示テーブル-->
             </form>

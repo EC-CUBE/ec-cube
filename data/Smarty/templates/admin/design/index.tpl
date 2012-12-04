@@ -52,7 +52,7 @@ function fnTargetSelf(){
                                 <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
                                 <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
                                 <!--{$item.name}-->
-                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{if $item.anywhere == 1}-->checked="checked"<!--{/if}--> />全ページ)</label>
+                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{if $item.anywhere == 1}-->checked="checked"<!--{/if}--> /><!--{t string="tpl_277"}-->)</label>
                             </div>
                             <!--{assign var="firstflg" value=true}-->
                         <!--{/if}-->
@@ -75,7 +75,7 @@ function fnTargetSelf(){
                                 <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
                                 <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
                                 <!--{$item.name}-->
-                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{if $item.anywhere == 1}-->checked="checked"<!--{/if}--> />全ページ)</label>
+                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{if $item.anywhere == 1}-->checked="checked"<!--{/if}--> /><!--{t string="tpl_277"}-->)</label>
                             </div>
                             <!--{assign var="firstflg" value=true}-->
                         <!--{/if}-->
@@ -85,7 +85,7 @@ function fnTargetSelf(){
             </tr>
             <tr>
                 <!-- ★☆★ ヘッダ内部ナビテーブル ☆★☆ -->
-                <th id="layout-header">ヘッダー部</th>
+                <th id="layout-header"><!--{t string="tpl_278"}--></th>
                 <td colspan="2" id="<!--{$arrTarget[$smarty.const.TARGET_ID_HEADER_INTERNAL]}-->" class="ui-sortable">
                     <!--{assign var="firstflg" value=false}-->
                     <!--{foreach key=key item=item from=$arrBlocs name="bloc_loop"}-->
@@ -96,7 +96,7 @@ function fnTargetSelf(){
                                 <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
                                 <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
                                 <!--{$item.name}-->
-                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{if $item.anywhere == 1}-->checked="checked"<!--{/if}--> />全ページ)</label>
+                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{if $item.anywhere == 1}-->checked="checked"<!--{/if}--> /><!--{t string="tpl_277"}-->)</label>
                             </div>
                             <!--{assign var="firstflg" value=true}-->
                         <!--{/if}-->
@@ -116,7 +116,7 @@ function fnTargetSelf(){
                                 <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
                                 <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
                                 <!--{$item.name}-->
-                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{if $item.anywhere == 1}-->checked="checked"<!--{/if}--> />全ページ)</label>
+                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{if $item.anywhere == 1}-->checked="checked"<!--{/if}--> /><!--{t string="tpl_277"}-->)</label>
                             </div>
                             <!--{assign var="firstflg" value=true}-->
                         <!--{/if}-->
@@ -138,7 +138,7 @@ function fnTargetSelf(){
                                     <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
                                     <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
                                     <!--{$item.name}-->
-                                    <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{if $item.anywhere == 1}-->checked="checked"<!--{/if}--> />全ページ)</label>
+                                    <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{if $item.anywhere == 1}-->checked="checked"<!--{/if}--> /><!--{t string="tpl_277"}-->)</label>
                                 </div>
                                 <!--{assign var="firstflg" value=true}-->
                             <!--{/if}-->
@@ -148,7 +148,7 @@ function fnTargetSelf(){
                 <!--{* メイン上部テーブルここまで *}-->
                 <!--{* メインここから *}-->
                 <tr>
-                    <th colspan="3" id="layout-main">メイン</th>
+                    <th colspan="3" id="layout-main"><!--{t string="tpl_279"}--></th>
                 </tr>
                 <!--{* メインここまで *}-->
                 <!--{* メイン下部ここから *}-->
@@ -163,7 +163,7 @@ function fnTargetSelf(){
                                     <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
                                     <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
                                     <!--{$item.name}-->
-                                    <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{if $item.anywhere == 1}-->checked="checked"<!--{/if}--> />全ページ)</label>
+                                    <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{if $item.anywhere == 1}-->checked="checked"<!--{/if}--> /><!--{t string="tpl_277"}-->)</label>
                                 </div>
                                 <!--{assign var="firstflg" value=true}-->
                             <!--{/if}-->
@@ -183,7 +183,7 @@ function fnTargetSelf(){
                                     <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
                                     <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
                                     <!--{$item.name}-->
-                                    <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{if $item.anywhere == 1}-->checked="checked"<!--{/if}--> />全ページ)</label>
+                                    <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{if $item.anywhere == 1}-->checked="checked"<!--{/if}--> /><!--{t string="tpl_277"}-->)</label>
                                 </div>
                                 <!--{assign var="firstflg" value=true}-->
                             <!--{/if}-->
@@ -201,7 +201,7 @@ function fnTargetSelf(){
                                     <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
                                     <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
                                     <!--{$item.name}-->
-                                    <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{if $item.anywhere == 1}-->checked="checked"<!--{/if}--> />全ページ)</label>
+                                    <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{if $item.anywhere == 1}-->checked="checked"<!--{/if}--> /><!--{t string="tpl_277"}-->)</label>
                                 </div>
                                 <!--{assign var="firstflg" value=true}-->
                             <!--{/if}-->
@@ -219,7 +219,7 @@ function fnTargetSelf(){
                                     <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
                                     <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
                                     <!--{$item.name}-->
-                                    <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{if $item.anywhere == 1}-->checked="checked"<!--{/if}--> />全ページ)</label>
+                                    <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{if $item.anywhere == 1}-->checked="checked"<!--{/if}--> /><!--{t string="tpl_277"}-->)</label>
                                 </div>
                                 <!--{assign var="firstflg" value=true}-->
                             <!--{/if}-->
@@ -229,7 +229,7 @@ function fnTargetSelf(){
                 </tr>
                 <!--{* メインここから *}-->
                 <tr>
-                    <th id="layout-main">メイン</th>
+                    <th id="layout-main"><!--{t string="tpl_279"}--></th>
                 </tr>
                 <!--{* メインここまで *}-->
                 <!--{* メイン下部ここから *}-->
@@ -244,7 +244,7 @@ function fnTargetSelf(){
                                     <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
                                     <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
                                     <!--{$item.name}-->
-                                    <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{if $item.anywhere == 1}-->checked="checked"<!--{/if}--> />全ページ)</label>
+                                    <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{if $item.anywhere == 1}-->checked="checked"<!--{/if}--> /><!--{t string="tpl_277"}-->)</label>
                                 </div>
                                 <!--{assign var="firstflg" value=true}-->
                             <!--{/if}-->
@@ -265,7 +265,7 @@ function fnTargetSelf(){
                                 <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
                                 <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
                                 <!--{$item.name}-->
-                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{if $item.anywhere == 1}-->checked="checked"<!--{/if}--> />全ページ)</label>
+                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{if $item.anywhere == 1}-->checked="checked"<!--{/if}--> /><!--{t string="tpl_277"}-->)</label>
                             </div>
                             <!--{assign var="firstflg" value=true}-->
                         <!--{/if}-->
@@ -274,7 +274,7 @@ function fnTargetSelf(){
                 <!-- ★☆★ 下部ナビテーブル ☆★☆ -->
             </tr>
             <tr>
-                <th colspan="3" id="layout-footer">フッター部</th>
+                <th colspan="3" id="layout-footer"><!--{t string="tpl_280"}--></th>
             </tr>
             <tr>
                 <!-- ★☆★ フッタより下部ナビテーブル ☆★☆ -->
@@ -288,7 +288,7 @@ function fnTargetSelf(){
                                 <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
                                 <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
                                 <!--{$item.name}-->
-                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{if $item.anywhere == 1}-->checked="checked"<!--{/if}--> />全ページ)</label>
+                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{if $item.anywhere == 1}-->checked="checked"<!--{/if}--> /><!--{t string="tpl_277"}-->)</label>
                             </div>
                             <!--{assign var="firstflg" value=true}-->
                         <!--{/if}-->
@@ -304,7 +304,7 @@ function fnTargetSelf(){
     <div style="float: left; width: 25%;" align="center">
         <table id="design-layout-unused" class="design-layout">
             <tr>
-                <th>未使用ブロック</th>
+                <th><!--{t string="tpl_281"}--></th>
             </tr>
             <tr>
                 <td id="<!--{$arrTarget[$smarty.const.TARGET_ID_UNUSED]}-->" class="ui-sortable" style="width: 145px;">
@@ -317,7 +317,7 @@ function fnTargetSelf(){
                                 <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
                                 <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
                                 <!--{$item.name}-->
-                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{if $item.anywhere == 1}-->checked="checked"<!--{/if}--> />全ページ)</label>
+                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{if $item.anywhere == 1}-->checked="checked"<!--{/if}--> /><!--{t string="tpl_277"}-->)</label>
                             </div>
                             <!--{assign var="firstflg" value=true}-->
                         <!--{/if}-->
@@ -325,30 +325,30 @@ function fnTargetSelf(){
                 </td>
             </tr>
         </table>
-        <div class="btn"><a class="btn-normal" href="javascript:;" onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_bloc','',''); return false;"><span>ブロックを新規入力</span></a></div>
+        <div class="btn"><a class="btn-normal" href="javascript:;" onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_bloc','',''); return false;"><span><!--{t string="tpl_269"}--></span></a></div>
     </div>
     <!--{* ▲未使用ブロックここまで *}-->
         <div class="btn-area">
             <ul>
             <!--{if $device_type_id == $smarty.const.DEVICE_TYPE_PC}-->
-                <li><a class="btn-action" href="javascript:;" name='preview' onclick="doPreview();"><span class="btn-prev">プレビュー</span></a></li>
+                <li><a class="btn-action" href="javascript:;" name='preview' onclick="doPreview();"><span class="btn-prev"><!--{t string="tpl_282"}--></span></a></li>
             <!--{/if}-->
-                <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','confirm','',''); return false;"><span class="btn-next">登録する</span></a></li>
+                <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','confirm','',''); return false;"><span class="btn-next"><!--{t string="tpl_267"}--></span></a></li>
             </ul>
         </div>
     <!--▲レイアウト編集　ここまで-->
 
     <!--▼ページ一覧　ここから-->
-    <h2 style="clear: both;">編集可能ページ一覧</h2>
+    <h2 style="clear: both;"><!--{t string="tpl_283"}--></h2>
     <div class="btn addnew">
-        <a class="btn-normal" href="javascript:;" onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','',''); return false;"><span>ページを新規入力</span></a>
+        <a class="btn-normal" href="javascript:;" onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','',''); return false;"><span><!--{t string="tpl_285"}--></span></a>
     </div>
     <table class="list">
     <tr>
-        <th>名称</th>
-        <th class="edit">レイアウト</th>
-        <th class="edit center">ページ詳細</th>
-        <th class="delete center">削除</th>
+        <th><!--{t string="tpl_002"}--></th>
+        <th class="edit"><!--{t string="tpl_284"}--></th>
+        <th class="edit center"><!--{t string="tpl_286"}--></th>
+        <th class="delete center"><!--{t string="tpl_004"}--></th>
     </tr>
     <!--{foreach key=key item=item from=$arrEditPage}-->
         <tr style="background-color:<!--{if $item.page_id == $page_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
@@ -356,16 +356,16 @@ function fnTargetSelf(){
                 <!--{$item.page_name}-->
             </td>
             <td class="center">
-                <a href="?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->" >編集</a>
+                <a href="?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->" ><!--{t string="tpl_003"}--></a>
             </td>
             <td class="center">
                 <!--{if $item.filename|strlen >= 1}-->
-                    <a href="main_edit.php?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->">編集</a>
+                    <a href="main_edit.php?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->"><!--{t string="tpl_003"}--></a>
                 <!--{/if}-->
             </td>
             <td class="center">
                 <!--{if $item.edit_flg == 1}-->
-                    <a href="#" onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','page_id','<!--{$item.page_id|h}-->'); return false;">削除</a>
+                    <a href="#" onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','page_id','<!--{$item.page_id|h}-->'); return false;"><!--{t string="tpl_004"}--></a>
                 <!--{/if}-->
             </td>
         </tr>

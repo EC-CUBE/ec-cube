@@ -24,16 +24,16 @@
 
 <table id="total-term" class="list">
     <tr>
-        <th>期間</th>
-        <th>購入件数</th>
-        <th>男性</th>
-        <th>女性</th>
-        <th>男性(会員)</th>
-        <th>男性<br />(非会員)</th>
-        <th>女性(会員)</th>
-        <th>女性<br />(非会員)</th>
-        <th>購入合計</th>
-        <th>購入平均</th>
+        <th><!--{t string="tpl_503"}--></th>
+        <th><!--{t string="tpl_692"}--></th>
+        <th><!--{t string="tpl_504"}--></th>
+        <th><!--{t string="tpl_505"}--></th>
+        <th><!--{t string="tpl_506"}--></th>
+        <th><!--{t string="tpl_507"}--></th>
+        <th><!--{t string="tpl_508"}--></th>
+        <th><!--{t string="tpl_509"}--></th>
+        <th><!--{t string="tpl_693"}--></th>
+        <th><!--{t string="tpl_700"}--></th>
     </tr>
 
     <!--{section name=cnt loop=$arrResults}-->
@@ -58,31 +58,31 @@
             <!--{if !$smarty.section.cnt.last}-->
                 <td class="center"><!--{*期間*}--><!--{$arrResults[cnt].str_date}--></td>
             <!--{else}-->
-                <td class="center"><!--{*期間*}-->合計</td>
+                <td class="center"><!--{*期間*}--><!--{t string="tpl_379"}--></td>
             <!--{/if}-->
 
-            <td class="right"><!--{*購入件数*}--><!--{$arrResults[cnt].total_order|number_format}-->件</td>
+            <td class="right"><!--{*購入件数*}--><!--{t string="tpl_701" T_FIELD=$arrResults[cnt].total_order|number_format}--></td>
             <td class="right"><!--{*男性*}--><!--{$arrResults[cnt].men|number_format}--></td>
             <td class="right"><!--{*女性*}--><!--{$arrResults[cnt].women|number_format}--></td>
             <td class="right"><!--{*男性(会員)*}--><!--{$arrResults[cnt].men_member|number_format}--></td>
             <td class="right"><!--{*男性(非会員)*}--><!--{$arrResults[cnt].men_nonmember|number_format}--></td>
             <td class="right"><!--{*女性(会員)*}--><!--{$arrResults[cnt].women_member|number_format}--></td>
             <td class="right"><!--{*女性(非会員)*}--><!--{$arrResults[cnt].women_nonmember|number_format}--></td>
-            <td class="right"><!--{*購入合計*}--><!--{$arrResults[cnt].total|number_format}-->円</td>
-            <td class="right"><!--{*購入平均*}--><!--{$arrResults[cnt].total_average|number_format}-->円</td>
+            <td class="right"><!--{*購入合計*}--><!--{t string="tpl_500" T_FIELD=$arrResults[cnt].total|number_format}--></td>
+            <td class="right"><!--{*購入平均*}--><!--{t string="tpl_500" T_FIELD=$arrResults[cnt].total_average|number_format}--></td>
         </tr>
     <!--{/section}-->
 
     <tr>
-        <th>期間</th>
-        <th>購入件数</th>
-        <th>男性</th>
-        <th>女性</th>
-        <th>男性(会員)</th>
-        <th>男性<br />(非会員)</th>
-        <th>女性(会員)</th>
-        <th>女性<br />(非会員)</th>
-        <th>購入合計</th>
-        <th>購入平均</th>
+        <th><!--{t string="tpl_503"}--></th>
+        <th><!--{t string="tpl_692"}--></th>
+        <th><!--{t string="tpl_504"}--></th>
+        <th><!--{t string="tpl_505"}--></th>
+        <th><!--{t string="tpl_506"}--></th>
+        <th><!--{t string="tpl_507"}--></th>
+        <th><!--{t string="tpl_508"}--></th>
+        <th><!--{t string="tpl_509"}--></th>
+        <th><!--{t string="tpl_693"}--></th>
+        <th><!--{t string="tpl_700"}--></th>
     </tr>
 </table>

@@ -26,7 +26,7 @@
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="confirm" />
     <div class="btn">
-        <a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('index_form', 'confirm', '', '');"><span class="btn-next">変更する</span></a>
+        <a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('index_form', 'confirm', '', '');"><span class="btn-next"><!--{t string="tpl_655"}--></span></a>
     </div>
     <table class="list">
         <col width="5%" />
@@ -35,14 +35,14 @@
         <col width="25%" />
         <col width="40%" />
         <tr>
-            <th colspan="2">インデックス</th>
-            <th rowspan="2">テーブル名</th>
-            <th rowspan="2">カラム名</th>
-            <th rowspan="2">説明</th>
+            <th colspan="2"><!--{t string="tpl_656"}--></th>
+            <th rowspan="2"><!--{t string="tpl_657"}--></th>
+            <th rowspan="2"><!--{t string="tpl_658"}--></th>
+            <th rowspan="2"><!--{t string="tpl_010"}--></th>
         </tr>
         <tr>
-            <th>ON</th>
-            <th>OFF</th>
+            <th><!--{t string="tpl_659"}--></th>
+            <th><!--{t string="tpl_660"}--></th>
         </tr>
 
         <!--{section name=cnt loop=$arrForm}-->
@@ -59,5 +59,5 @@
         <!--{/section}-->
     </table>
 
-    <a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('index_form', 'confirm', '', ''); return false;"><span class="btn-next">変更する</span></a>
+    <a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('index_form', 'confirm', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_655"}--></span></a>
 </form>

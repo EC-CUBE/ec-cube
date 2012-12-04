@@ -33,95 +33,95 @@ self.moveTo(20,20);self.focus();
     <!--▼お客様情報ここから-->
     <table class="form">
         <tr>
-            <th>注文番号</th>
+            <th><!--{t string="tpl_231"}--></th>
             <td><!--{$arrForm.order_id.value|h}--></td>
             <input type="hidden" name="order_id" value="<!--{$arrForm.order_id.value|h}-->" />
         </tr>
         <tr>
-            <th>受注日</th>
+            <th><!--{t string="tpl_359"}--></th>
             <td><!--{$arrForm.create_date.value|sfDispDBDate|h}--></td>
         </tr>
         <tr>
-            <th>対応状況</th>
+            <th><!--{t string="tpl_360"}--></th>
             <td><!--{$arrORDERSTATUS[$arrForm.status.value]|h}--></td>
         </tr>
         <tr>
-            <th>入金日</th>
+            <th><!--{t string="tpl_361"}--></th>
             <td><!--{$arrForm.payment_date.value|sfDispDBDate|default:"未入金"}--></td>
         </tr>
         <tr>
-            <th>発送日</th>
+            <th><!--{t string="tpl_233"}--></th>
             <td><!--{$arrForm.commit_date.value|sfDispDBDate|default:"未発送"}--></td>
         </tr>
     </table>
 
-    <h2>注文者情報</h2>
+    <h2><!--{t string="tpl_362"}--></h2>
     <table class="form">
         <tr>
-            <th>会員ID</th>
+            <th><!--{t string="tpl_207"}--></th>
             <td>
                 <!--{if $arrForm.customer_id.value > 0}-->
                     <!--{$arrForm.customer_id.value|h}-->
                 <!--{else}-->
-                    (非会員)
+                    <!--{t string="tpl_363"}-->
                 <!--{/if}-->
             </td>
         </tr>
         <tr>
-            <th>お名前</th>
+            <th><!--{t string="tpl_208"}--></th>
             <td><!--{$arrForm.order_name01.value|h}-->　<!--{$arrForm.order_name02.value|h}--></td>
         </tr>
         <tr>
-            <th>お名前(カナ)</th>
+            <th><!--{t string="tpl_364"}--></th>
             <td><!--{$arrForm.order_kana01.value|h}-->　<!--{$arrForm.order_kana02.value|h}--></td>
         </tr>
         <tr>
-            <th>メールアドレス</th>
+            <th><!--{t string="tpl_108"}--></th>
             <td><!--{$arrForm.order_email.value|h}--></td>
         </tr>
         <tr>
-            <th>TEL</th>
+            <th><!--{t string="tpl_037"}--></th>
             <td><!--{$arrForm.order_tel01.value|h}--> - <!--{$arrForm.order_tel02.value|h}--> - <!--{$arrForm.order_tel03.value|h}--></td>
         </tr>
         <tr>
-            <th>住所</th>
+            <th><!--{t string="tpl_212"}--></th>
             <td>
-                〒　<!--{$arrForm.order_zip01.value|h}--> - <!--{$arrForm.order_zip02.value|h}--><br />
+                <!--{t string="tpl_106"}-->　<!--{$arrForm.order_zip01.value|h}--> - <!--{$arrForm.order_zip02.value|h}--><br />
                 <!--{$arrPref[$arrForm.order_pref.value]|h}--><!--{$arrForm.order_addr01.value|h}--><!--{$arrForm.order_addr02.value|h}-->
             </td>
         </tr>
         <tr>
-            <th>備考</th>
+            <th><!--{t string="tpl_365"}--></th>
             <td><!--{$arrForm.message.value|h|nl2br}--></td>
         </tr>
         <tr>
-            <th>現在ポイント</th>
+            <th><!--{t string="tpl_366"}--></th>
             <td>
                 <!--{if $arrForm.customer_id >0}-->
                     <!--{$arrForm.customer_point.value|number_format}-->
                     pt
                 <!--{else}-->
-                    (非会員)
+                    <!--{t string="tpl_363"}-->
                 <!--{/if}-->
             </td>
         </tr>
         <tr>
-            <th>端末種別</th>
+            <th><!--{t string="tpl_367"}--></th>
             <td><!--{$arrDeviceType[$arrForm.device_type_id.value]|h}--></td>
         </tr>
     </table>
     <!--▲お客様情報ここまで-->
 
     <!--▼受注商品情報ここから-->
-    <h2>受注商品情報</h2>
+    <h2><!--{t string="tpl_368"}--></h2>
     <table class="list">
         <tr>
-            <th class="id">商品コード</th>
-            <th class="name">商品名/規格1/規格2</th>
-            <th class="price">単価</th>
-            <th class="qty">数量</th>
-            <th class="price">税込み価格</th>
-            <th class="price">小計</th>
+            <th class="id"><!--{t string="tpl_192"}--></th>
+            <th class="name"><!--{t string="tpl_189"}-->/<!--{t string="tpl_371"}-->/<!--{t string="tpl_374"}--></th>
+            <th class="price"><!--{t string="tpl_372"}--></th>
+            <th class="qty"><!--{t string="tpl_373"}--></th>
+            <th class="price"><!--{t string="tpl_375"}--></th>
+            <th class="price"><!--{t string="tpl_376"}--></th>
         </tr>
         <!--{section name=cnt loop=$arrForm.quantity.value}-->
         <!--{assign var=product_index value="`$smarty.section.cnt.index`"}-->
@@ -133,64 +133,64 @@ self.moveTo(20,20);self.focus();
                 <!--{$arrForm.product_name.value[$product_index]|h}-->/<!--{$arrForm.classcategory_name1.value[$product_index]|default:"(なし)"|h}-->/<!--{$arrForm.classcategory_name2.value[$product_index]|default:"(なし)"|h}-->
             </td>
             <td align="center">
-                    <!--{$arrForm.price.value[$product_index]|h}-->円
+                    <!--{t string="tpl_702" T_FIELD=$arrForm.price.value[$product_index]|h}-->
                 </td>
             <td align="center">
                 <!--{$arrForm.quantity.value[$product_index]|h}-->
             </td>
                 <!--{assign var=price value=`$arrForm.price.value[$product_index]`}-->
                 <!--{assign var=quantity value=`$arrForm.quantity.value[$product_index]`}-->
-                <td class="right"><!--{$price|sfCalcIncTax|number_format}--> 円</td>
-                <td class="right"><!--{$price|sfCalcIncTax|sfMultiply:$quantity|number_format}-->円</td>
+                <td class="right"><!--{t string="tpl_702" T_FIELD=$price|sfCalcIncTax|number_format}--></td>
+                <td class="right"><!--{t string="tpl_702" T_FIELD=$price|sfCalcIncTax|sfMultiply:$quantity|number_format}--></td>
         </tr>
         <!--{/section}-->
         <tr>
-            <th colspan="5" class="column right">小計</th>
-            <td class="right"><!--{$arrForm.subtotal.value|number_format}-->円</td>
+            <th colspan="5" class="column right"><!--{t string="tpl_376"}--></th>
+            <td class="right"><!--{t string="tpl_500" T_FIELD=$arrForm.subtotal.value|number_format}--></td>
         </tr>
         <tr>
-            <th colspan="5" class="column right">値引き</th>
-            <td class="right"><!--{$arrForm.discount.value|h}-->円</td>
+            <th colspan="5" class="column right"><!--{t string="tpl_377"}--></th>
+            <td class="right"><!--{t string="tpl_500" T_FIELD=$arrForm.discount.value|h}--></td>
         </tr>
         <tr>
-            <th colspan="5" class="column right">送料</th>
-            <td class="right"><!--{$arrForm.deliv_fee.value|h}-->円</td>
+            <th colspan="5" class="column right"><!--{t string="tpl_378"}--></th>
+            <td class="right"><!--{t string="tpl_500" T_FIELD=$arrForm.deliv_fee.value|h}--></td>
         </tr>
         <tr>
-            <th colspan="5" class="column right">手数料</th>
-            <td class="right"><!--{$arrForm.charge.value|h}-->円</td>
+            <th colspan="5" class="column right"><!--{t string="tpl_080"}--></th>
+            <td class="right"><!--{t string="tpl_500" T_FIELD=$arrForm.charge.value|h}--></td>
         </tr>
         <tr>
-            <th colspan="5" class="column right">合計</th>
-            <td class="right"><!--{$arrForm.total.value|number_format}--> 円</td>
+            <th colspan="5" class="column right"><!--{t string="tpl_379"}--></th>
+            <td class="right"><!--{t string="tpl_702" T_FIELD=$arrForm.total.value|number_format}--></td>
         </tr>
         <tr>
-            <th colspan="5" class="column right">お支払い合計</th>
-            <td class="right"><!--{$arrForm.payment_total.value|number_format}--> 円</td>
+            <th colspan="5" class="column right"><!--{t string="tpl_380"}--></th>
+            <td class="right"><!--{t string="tpl_702" T_FIELD=$arrForm.payment_total.value|number_format}--></td>
         </tr>
         <!--{if $smarty.const.USE_POINT !== false}-->
             <tr>
-                <th colspan="5" class="column right">使用ポイント</th>
+                <th colspan="5" class="column right"><!--{t string="tpl_381"}--></th>
                 <td class="right"><!--{$arrForm.use_point.value|default:0|h}-->pt</td>
             </tr>
             <!--{if $arrForm.birth_point.value > 0}-->
                 <tr>
-                    <th colspan="5" class="column right">お誕生日ポイント</th>
+                    <th colspan="5" class="column right"><!--{t string="tpl_382"}--></th>
                     <td class="right"><!--{$arrForm.birth_point.value|number_format}-->pt</td>
                 </tr>
             <!--{/if}-->
             <tr>
-                <th colspan="5" class="column right">加算ポイント</th>
+                <th colspan="5" class="column right"><!--{t string="tpl_383"}--></th>
                 <td class="right"><!--{$arrForm.add_point.value|number_format|default:0}-->pt</td>
             </tr>
         <!--{/if}-->
     </table>
     <!--▼お届け先情報ここから-->
-    <h2>お届け先情報</h2>
+    <h2><!--{t string="tpl_384"}--></h2>
     <!--{if $arrForm.product_type_id.value[0] != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
     <!--{foreach name=shipping from=$arrAllShipping item=arrShipping key=shipping_index}-->
         <!--{if $arrForm.shipping_quantity.value > 1}-->
-            <h3>お届け先<!--{$smarty.foreach.shipping.iteration}--></h3>
+            <h3><!--{t string="tpl_385"}--><!--{$smarty.foreach.shipping.iteration}--></h3>
         <!--{/if}-->
         <!--{assign var=key value="shipping_id"}-->
         <!--{if $arrForm.shipping_quantity.value > 1}-->
@@ -198,10 +198,10 @@ self.moveTo(20,20);self.focus();
             <!--{if count($arrShipping.shipment_product_class_id) > 0}-->
                 <table class="list" id="order-edit-products">
                     <tr>
-                        <th class="id">商品コード</th>
-                        <th class="name">商品名/規格1/規格2</th>
-                        <th class="price">単価</th>
-                        <th class="qty">数量</th>
+                        <th class="id"><!--{t string="tpl_192"}--></th>
+                        <th class="name"><!--{t string="tpl_189"}-->/<!--{t string="tpl_371"}-->/<!--{t string="tpl_374"}--></th>
+                        <th class="price"><!--{t string="tpl_372"}--></th>
+                        <th class="qty"><!--{t string="tpl_373"}--></th>
                     </tr>
                     <!--{section name=item loop=$arrShipping.shipment_product_class_id|@count}-->
                         <!--{assign var=item_index value="`$smarty.section.item.index`"}-->
@@ -218,7 +218,7 @@ self.moveTo(20,20);self.focus();
                             </td>
                             <td class="right">
                                 <!--{assign var=key value="shipment_price"}-->
-                                <!--{$arrShipping[$key][$item_index]|sfCalcIncTax|number_format}-->円
+                                <!--{t string="tpl_500" T_FIELD=$arrShipping[$key][$item_index]|sfCalcIncTax|number_format}-->
                             </td>
                             <td class="right">
                                 <!--{assign var=key value="shipment_quantity"}-->
@@ -232,7 +232,7 @@ self.moveTo(20,20);self.focus();
 
         <table class="form">
             <tr>
-                <th>お名前</th>
+                <th><!--{t string="tpl_208"}--></th>
                 <td>
                     <!--{assign var=key1 value="shipping_name01"}-->
                     <!--{assign var=key2 value="shipping_name02"}-->
@@ -240,7 +240,7 @@ self.moveTo(20,20);self.focus();
                 </td>
             </tr>
             <tr>
-                <th>お名前(カナ)</th>
+                <th><!--{t string="tpl_364"}--></th>
                 <td>
                     <!--{assign var=key1 value="shipping_kana01"}-->
                     <!--{assign var=key2 value="shipping_kana02"}-->
@@ -248,7 +248,7 @@ self.moveTo(20,20);self.focus();
                 </td>
             </tr>
             <tr>
-                <th>TEL</th>
+                <th><!--{t string="tpl_037"}--></th>
                 <td>
                     <!--{assign var=key1 value="shipping_tel01"}-->
                     <!--{assign var=key2 value="shipping_tel02"}-->
@@ -259,11 +259,11 @@ self.moveTo(20,20);self.focus();
                 </td>
             </tr>
             <tr>
-                <th>住所</th>
+                <th><!--{t string="tpl_212"}--></th>
                 <td>
                     <!--{assign var=key1 value="shipping_zip01"}-->
                     <!--{assign var=key2 value="shipping_zip02"}-->
-                    〒
+                    <!--{t string="tpl_106"}-->
                     <!--{$arrShipping[$key1]|h}-->
                     -
                     <!--{$arrShipping[$key2]|h}-->
@@ -276,19 +276,19 @@ self.moveTo(20,20);self.focus();
                 </td>
             </tr>
             <tr>
-                <th>お届け時間</th>
+                <th><!--{t string="tpl_386"}--></th>
                 <td>
                     <!--{$arrDelivTime[$arrShipping.time_id]|default:"指定無し"}-->
                 </td>
             </tr>
             <tr>
-                <th>お届け日</th>
+                <th><!--{t string="tpl_387"}--></th>
                 <td>
                     <!--{assign var=key1 value="shipping_date_year"}-->
                     <!--{assign var=key2 value="shipping_date_month"}-->
                     <!--{assign var=key3 value="shipping_date_day"}-->
                     <!--{if $arrShipping[$key1] == "" && $arrShipping[$key2] == "" && $arrShipping[$key3] == ""}-->
-                        指定無し
+                        <!--{t string="tpl_388"}-->
                     <!--{else}-->
                     <!--{$arrShipping[$key1]}-->年
                     <!--{$arrShipping[$key2]}-->月
@@ -305,13 +305,13 @@ self.moveTo(20,20);self.focus();
         <a name="deliv"></a>
         <table class="form">
             <tr>
-                <th>配送業者</th>
+                <th><!--{t string="tpl_001"}--></th>
                 <td>
                     <!--{$arrDeliv[$arrForm.deliv_id.value]|h}-->
                 </td>
             </tr>
             <tr>
-                <th>お支払方法</th>
+                <th><!--{t string="tpl_389"}--></th>
                 <td>
                     <!--{$arrPayment[$arrForm.payment_id.value]|h}-->
                 </td>
@@ -319,7 +319,7 @@ self.moveTo(20,20);self.focus();
 
             <!--{if $arrForm.payment_info|@count > 0}-->
             <tr>
-                <th><!--{$arrForm.payment_type}-->情報</th>
+                <th><!--{t string="tpl_390" T_FIELD=$arrForm.payment_type}--></th>
                 <td>
                     <!--{foreach key=key item=item from=$arrForm.payment_info}-->
                     <!--{if $key != "title"}--><!--{if $item.name != ""}--><!--{$item.name}-->：<!--{/if}--><!--{$item.value}--><br/><!--{/if}-->
@@ -329,7 +329,7 @@ self.moveTo(20,20);self.focus();
             <!--{/if}-->
 
             <tr>
-                <th>メモ</th>
+                <th><!--{t string="tpl_391"}--></th>
                 <td>
                     <!--{$arrForm.note.value|h|nl2br}-->
                 </td>
@@ -338,7 +338,7 @@ self.moveTo(20,20);self.focus();
 
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="window.close(); return false;"><span class="btn-next">閉じる</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="window.close(); return false;"><span class="btn-next"><!--{t string="tpl_392"}--></span></a></li>
             </ul>
         </div>
 

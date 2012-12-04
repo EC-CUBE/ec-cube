@@ -48,7 +48,7 @@
         }
 
         if(!checkflag){
-            alert('チェックボックスが選択されていません');
+            alert(<!--{t string="tpl_398"}-->);
             return false;
         }
 
@@ -100,7 +100,7 @@
         }
 
         if(!checkflag){
-            alert('チェックボックスが選択されていません');
+            alert(<!--{t string="tpl_398"}-->);
             return false;
         }
         
@@ -116,11 +116,11 @@
 <form name="search_form" id="search_form" method="post" action="?">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="search" />
-    <h2>検索条件設定</h2>
+    <h2><!--{t string="tpl_250"}--></h2>
     <!--{* 検索条件設定テーブルここから *}-->
     <table>
         <tr>
-            <th>注文番号</th>
+            <th><!--{t string="tpl_231"}--></th>
             <td>
                 <!--{assign var=key1 value="search_order_id1"}-->
                 <!--{assign var=key2 value="search_order_id2"}-->
@@ -130,24 +130,24 @@
                 ～
                 <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="6" class="box6" />
             </td>
-            <th>対応状況</th>
+            <th><!--{t string="tpl_360"}--></th>
             <td>
                 <!--{assign var=key value="search_order_status"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-                <option value="">選択してください</option>
+                <option value=""><!--{t string="tpl_068"}--></option>
                 <!--{html_options options=$arrORDERSTATUS selected=$arrForm[$key].value}-->
                 </select>
             </td>
         </tr>
         <tr>
-            <th>お名前</th>
+            <th><!--{t string="tpl_208"}--></th>
             <td>
             <!--{assign var=key value="search_order_name"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" />
             </td>
-            <th>お名前(フリガナ)</th>
+            <th><!--{t string="tpl_210"}--></th>
             <td>
             <!--{assign var=key value="search_order_kana"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -155,13 +155,13 @@
             </td>
         </tr>
         <tr>
-            <th>メールアドレス</th>
+            <th><!--{t string="tpl_108"}--></th>
             <td>
                 <!--{assign var=key value="search_order_email"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" />
             </td>
-            <th>TEL</th>
+            <th><!--{t string="tpl_037"}--></th>
             <td>
                 <!--{assign var=key value="search_order_tel"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -169,7 +169,7 @@
             </td>
         </tr>
         <tr>
-            <th>生年月日</th>
+            <th><!--{t string="tpl_217"}--></th>
             <td colspan="3">
                 <span class="attention"><!--{$arrErr.search_sbirthyear}--></span>
                 <span class="attention"><!--{$arrErr.search_ebirthyear}--></span>
@@ -200,7 +200,7 @@
             </td>
         </tr>
         <tr>
-            <th>性別</th>
+            <th><!--{t string="tpl_215"}--></th>
             <td colspan="3">
             <!--{assign var=key value="search_order_sex"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -208,7 +208,7 @@
             </td>
         </tr>
         <tr>
-            <th>支払方法</th>
+            <th><!--{t string="tpl_016"}--></th>
             <td colspan="3">
             <!--{assign var=key value="search_payment_id"}-->
             <span class="attention"><!--{$arrErr[$key]|h}--></span>
@@ -216,7 +216,7 @@
             </td>
         </tr>
         <tr>
-            <th>受注日</th>
+            <th><!--{t string="tpl_359"}--></th>
             <td colspan="3">
                 <!--{if $arrErr.search_sorderyear}--><span class="attention"><!--{$arrErr.search_sorderyear}--></span><!--{/if}-->
                 <!--{if $arrErr.search_eorderyear}--><span class="attention"><!--{$arrErr.search_eorderyear}--></span><!--{/if}-->
@@ -247,7 +247,7 @@
             </td>
         </tr>
         <tr>
-            <th>更新日</th>
+            <th><!--{t string="tpl_399"}--></th>
             <td colspan="3">
                 <!--{if $arrErr.search_supdateyear}--><span class="attention"><!--{$arrErr.search_supdateyear}--></span><!--{/if}-->
                 <!--{if $arrErr.search_eupdateyear}--><span class="attention"><!--{$arrErr.search_eupdateyear}--></span><!--{/if}-->
@@ -278,7 +278,7 @@
             </td>
         </tr>
         <tr>
-            <th>購入金額</th>
+            <th><!--{t string="tpl_232"}--></th>
             <td>
                 <!--{assign var=key1 value="search_total1"}-->
                 <!--{assign var=key2 value="search_total2"}-->
@@ -289,7 +289,7 @@
                 <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="6" class="box6" />
                 円
             </td>
-            <th>購入商品</th>
+            <th><!--{t string="tpl_400"}--></th>
             <td>
                 <!--{assign var=key value="search_product_name"}-->
                 <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
@@ -299,7 +299,7 @@
     </table>
 
     <div class="btn">
-        <p class="page_rows">検索結果表示件数
+        <p class="page_rows"><!--{t string="tpl_251"}-->
         <!--{assign var=key value="search_page_max"}-->
         <span class="attention"><!--{$arrErr[$key]}--></span>
         <select name="<!--{$arrForm[$key].keyname}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
@@ -307,7 +307,7 @@
         </select> 件</p>
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next">この条件で検索する</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_252"}--></span></a></li>
             </ul>
         </div>
     </div>
@@ -330,16 +330,16 @@
         <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
     <!--{/if}-->
 <!--{/foreach}-->
-    <h2>検索結果一覧</h2>
+    <h2><!--{t string="tpl_253"}--></h2>
         <div class="btn">
-        <span class="attention"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。
+        <!--検索結果数--><!--{t string="tpl_230" T_FIELD=$tpl_linemax}-->
         <!--{if $smarty.const.ADMIN_MODE == '1'}-->
-        <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><span>検索結果をすべて削除</span></a>
+        <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><span><!--{t string="tpl_327"}--></span></a>
         <!--{/if}-->
-        <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;">CSV ダウンロード</a>
-        <a class="btn-normal" href="../contents/csv.php?tpl_subno_csv=order">CSV 出力項目設定</a>
-        <a class="btn-normal" href="javascript:;" onclick="fnSelectCheckSubmit('pdf.php'); return false;"><span>PDF一括出力</span></a>
-        <a class="btn-normal" href="javascript:;" onclick="fnSelectMailCheckSubmit('mail.php'); return false;"><span>メール一括通知</span></a>
+        <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;"><!--{t string="tpl_254"}--></a>
+        <a class="btn-normal" href="../contents/csv.php?tpl_subno_csv=order"><!--{t string="tpl_255"}--></a>
+        <a class="btn-normal" href="javascript:;" onclick="fnSelectCheckSubmit('pdf.php'); return false;"><span><!--{t string="tpl_401"}--></span></a>
+        <a class="btn-normal" href="javascript:;" onclick="fnSelectMailCheckSubmit('mail.php'); return false;"><span><!--{t string="tpl_402"}--></span></a>
     </div>
     <!--{if count($arrResults) > 0}-->
 
@@ -364,17 +364,17 @@
             <!--{include file=$path}-->
         <!--{else}-->
         <tr>
-            <th>受注日</th>
-            <th>注文番号</th>
-            <th>お名前</th>
-            <th>支払方法</th>
-            <th>購入金額(円)</th>
-            <th>全商品発送日</th>
-            <th>対応状況</th>
-            <th><label for="pdf_check">帳票</label> <input type="checkbox" name="pdf_check" id="pdf_check" onclick="fnAllCheck(this, 'input[name=pdf_order_id[]]')" /></th>
-            <th>編集</th>
+            <th><!--{t string="tpl_359"}--></th>
+            <th><!--{t string="tpl_231"}--></th>
+            <th><!--{t string="tpl_208"}--></th>
+            <th><!--{t string="tpl_016"}--></th>
+            <th><!--{t string="tpl_403"}--></th>
+            <th><!--{t string="tpl_404"}--></th>
+            <th><!--{t string="tpl_360"}--></th>
+            <th><label for="pdf_check"><!--{t string="tpl_405"}--></label> <input type="checkbox" name="pdf_check" id="pdf_check" onclick="fnAllCheck(this, 'input[name=pdf_order_id[]]')" /></th>
+            <th><!--{t string="tpl_003"}--></th>
             <th>メール <input type="checkbox" name="mail_check" id="mail_check" onclick="fnAllCheck(this, 'input[name=mail_order_id[]]')" /></th>
-            <th>削除</th>
+            <th><!--{t string="tpl_004"}--></th>
         </tr>
 
         <!--{section name=cnt loop=$arrResults}-->
@@ -389,17 +389,17 @@
             <td class="center"><!--{$arrResults[cnt].commit_date|sfDispDBDate|default:"未発送"}--></td>
             <td class="center"><!--{$arrORDERSTATUS[$status]}--></td>
             <td class="center">
-                <input type="checkbox" name="pdf_order_id[]" value="<!--{$arrResults[cnt].order_id}-->" id="pdf_order_id_<!--{$arrResults[cnt].order_id}-->"/><label for="pdf_order_id_<!--{$arrResults[cnt].order_id}-->">一括出力</label><br>
-                <a href="./" onClick="win02('pdf.php?order_id=<!--{$arrResults[cnt].order_id}-->','pdf_input','620','650'); return false;"><span class="icon_class">個別出力</span></a>
+                <input type="checkbox" name="pdf_order_id[]" value="<!--{$arrResults[cnt].order_id}-->" id="pdf_order_id_<!--{$arrResults[cnt].order_id}-->"/><label for="pdf_order_id_<!--{$arrResults[cnt].order_id}-->"><!--{t string="tpl_406"}--></label><br>
+                <a href="./" onClick="win02('pdf.php?order_id=<!--{$arrResults[cnt].order_id}-->','pdf_input','620','650'); return false;"><span class="icon_class"><!--{t string="tpl_407"}--></span></a>
             </td>
-            <td class="center"><a href="?" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_EDIT_URLPATH}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrResults[cnt].order_id}-->'); return false;"><span class="icon_edit">編集</span></a></td>
+            <td class="center"><a href="?" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_EDIT_URLPATH}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrResults[cnt].order_id}-->'); return false;"><span class="icon_edit"><!--{t string="tpl_003"}--></span></a></td>
             <td class="center">
                 <!--{if $arrResults[cnt].order_email|strlen >= 1}-->
-                    <input type="checkbox" name="mail_order_id[]" value="<!--{$arrResults[cnt].order_id}-->" id="mail_order_id_<!--{$arrResults[cnt].order_id}-->"/><label for="mail_order_id_<!--{$arrResults[cnt].order_id}-->">一括通知</label><br>
-                    <a href="?" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_MAIL_URLPATH}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrResults[cnt].order_id}-->'); return false;"><span class="icon_mail">個別通知</span></a>
+                    <input type="checkbox" name="mail_order_id[]" value="<!--{$arrResults[cnt].order_id}-->" id="mail_order_id_<!--{$arrResults[cnt].order_id}-->"/><label for="mail_order_id_<!--{$arrResults[cnt].order_id}-->"><!--{t string="tpl_408"}--></label><br>
+                    <a href="?" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_MAIL_URLPATH}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrResults[cnt].order_id}-->'); return false;"><span class="icon_mail"><!--{t string="tpl_409"}--></span></a>
                 <!--{/if}-->
             </td>
-            <td class="center"><a href="?" onclick="fnModeSubmit('delete_order', 'order_id', <!--{$arrResults[cnt].order_id}-->); return false;"><span class="icon_delete">削除</span></a></td>
+            <td class="center"><a href="?" onclick="fnModeSubmit('delete_order', 'order_id', <!--{$arrResults[cnt].order_id}-->); return false;"><span class="icon_delete"><!--{t string="tpl_004"}--></span></a></td>
         </tr>
         <!--{/section}-->
         <!--{/if}-->

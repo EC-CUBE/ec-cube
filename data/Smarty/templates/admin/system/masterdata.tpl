@@ -30,7 +30,7 @@
         <select name="master_data_name" id="master_data_name">
         <!--{html_options output=$arrMasterDataName values=$arrMasterDataName selected=$masterDataName}-->
         </select>
-        <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'show', '', ''); return false;"><span>選択</span></a>
+        <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'show', '', ''); return false;"><span><!--{t string="tpl_299"}--></span></a>
     </div>
     </form>
 
@@ -41,10 +41,7 @@
         <input type="hidden" name="mode" value="edit" />
         <input type="hidden" name="master_data_name" value="<!--{$masterDataName}-->" />
         <p class="remark attention">
-            マスターデータの値を設定できます。<br />
-            重複したIDを登録することはできません。<br />
-            空のIDを登録すると、値は削除されます。<br />
-            設定値によってはサイトが機能しなくなる場合もありますので、十分ご注意下さい。
+            <!--{t string="tpl_671"}-->
         </p>
         <!--{if $errorMessage != ""}-->
             <div class="message">
@@ -55,22 +52,22 @@
         <table class="form">
             <!--{foreach from=$arrMasterData item=val key=key}-->
                 <tr>
-                    <th>ID：<input type="text" name="id[]" value="<!--{$key|h}-->" size="6" /></th>
-                    <td>値：<input type="text" name="name[]" value="<!--{$val|h}-->" style="" size="60" class="box60" /></td>
+                    <th><!--{t string="tpl_074"}-->：<input type="text" name="id[]" value="<!--{$key|h}-->" size="6" /></th>
+                    <td><!--{t string="tpl_672"}--><input type="text" name="name[]" value="<!--{$val|h}-->" style="" size="60" class="box60" /></td>
                 </tr>
             <!--{/foreach}-->
         </table>
 
-        <h2>追加のデータ</h2>
+        <h2><!--{t string="tpl_673"}--></h2>
         <table class="form">
             <tr>
-                <th>ID：<input type="text" name="id[]" size="6" /></th>
-                <td>値：<input type="text" name="name[]" style="" size="60" class="box60" /></td>
+                <th><!--{t string="tpl_074"}-->：<input type="text" name="id[]" size="6" /></th>
+                <td><!--{t string="tpl_672"}--><input type="text" name="name[]" style="" size="60" class="box60" /></td>
             </tr>
         </table>
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="document.form2.submit(); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="document.form2.submit(); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
             </ul>
         </div>
 

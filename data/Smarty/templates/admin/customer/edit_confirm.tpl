@@ -60,85 +60,85 @@ function func_return(){
     <div id="customer" class="contents-main">
         <table class="form">
             <tr>
-                <th>会員ID</th>
+                <th><!--{t string="tpl_207"}--></th>
                 <td><!--{$arrForm.customer_id|h}--></td>
             </tr>
             <tr>
-                <th>会員状態</th>
-                <td><!--{if $arrForm.status == 1}-->仮会員<!--{else}-->本会員<!--{/if}--></td>
+                <th><!--{t string="tpl_209"}--></th>
+                <td><!--{if $arrForm.status == 1}--><!--{t string="tpl_238"}--><!--{else}--><!--{t string="tpl_239"}--><!--{/if}--></td>
             </tr>
             <tr>
-                <th>お名前</th>
-                <td><!--{$arrForm.name01|h}--><!--{$arrForm.name02|h}-->　様</td>
+                <th><!--{t string="tpl_208"}--></th>
+                <td><!--{t string="tpl_240" T_FIELD1=$arrForm.name01|h T_FIELD2=$arrForm.name02|h}--></td>
             </tr>
             <tr>
-                <th>お名前(フリガナ)</th>
-                <td><!--{$arrForm.kana01|h}--><!--{$arrForm.kana02|h}-->　様</td>
+                <th><!--{t string="tpl_210"}--></th>
+                <td><!--{t string="tpl_240" T_FIELD1=$arrForm.kana01|h T_FIELD2=$arrForm.kana02|h}--></td>
             </tr>
             <tr>
-                <th>郵便番号</th>
-                <td>〒 <!--{$arrForm.zip01|h}--> - <!--{$arrForm.zip02|h}--></td>
+                <th><!--{t string="tpl_033"}--></th>
+                <td><!--{t string="tpl_106"}--> <!--{$arrForm.zip01|h}--> - <!--{$arrForm.zip02|h}--></td>
             </tr>
             <tr>
-                <th>住所</th>
+                <th><!--{t string="tpl_212"}--></th>
                 <td><!--{$arrPref[$arrForm.pref]|h}--><!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}--></td>
             </tr>
             <tr>
-                <th>メールアドレス</th>
+                <th><!--{t string="tpl_108"}--></th>
                 <td><!--{$arrForm.email|h}--></td>
             </tr>
             <tr>
-                <th>携帯メールアドレス</th>
+                <th><!--{t string="tpl_213"}--></th>
                 <td><!--{$arrForm.email_mobile|h}--></td>
             </tr>
             <tr>
-                <th>お電話番号</th>
+                <th><!--{t string="tpl_241"}--></th>
                 <td><!--{$arrForm.tel01|h}--> - <!--{$arrForm.tel02|h}--> - <!--{$arrForm.tel03|h}--></td>
             </tr>
             <tr>
-                <th>FAX</th>
-                <td><!--{if strlen($arrForm.fax01) > 0}--><!--{$arrForm.fax01|h}--> - <!--{$arrForm.fax02|h}--> - <!--{$arrForm.fax03|h}--><!--{else}-->未登録<!--{/if}--></td>
+                <th><!--{t string="tpl_039"}--></th>
+                <td><!--{if strlen($arrForm.fax01) > 0}--><!--{$arrForm.fax01|h}--> - <!--{$arrForm.fax02|h}--> - <!--{$arrForm.fax03|h}--><!--{else}--><!--{t string="tpl_242"}--><!--{/if}--></td>
             </tr>
             <tr>
-                <th>性別</th>
+                <th><!--{t string="tpl_215"}--></th>
                 <td><!--{$arrSex[$arrForm.sex]|h}--></td>
             </tr>
             <tr>
-                <th>ご職業</th>
+                <th><!--{t string="tpl_216"}--></th>
                 <td><!--{$arrJob[$arrForm.job]|default:"未登録"|h}--></td>
             </tr>
             <tr>
-                <th>生年月日</th>
-                <td><!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}--><!--{$arrForm.year|h}-->年<!--{$arrForm.month|h}-->月<!--{$arrForm.day|h}-->日<!--{else}-->未登録<!--{/if}--></td>
+                <th><!--{t string="tpl_217"}--></th>
+                <td><!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}--><!--{$arrForm.year|h}-->年<!--{$arrForm.month|h}-->月<!--{$arrForm.day|h}-->日<!--{else}--><!--{t string="tpl_242"}--><!--{/if}--></td>
             </tr>
             <tr>
-                <th>パスワード</th>
+                <th><!--{t string="tpl_218"}--></th>
                 <td><!--{$smarty.const.DEFAULT_PASSWORD}--></td>
             </tr>
             <tr>
-                <th>パスワードを忘れたときのヒント</th>
+                <th><!--{t string="tpl_243"}--></th>
                 <td>
-                    質問： <!--{$arrReminder[$arrForm.reminder]|h}--><br />
-                    答え： <!--{$smarty.const.DEFAULT_PASSWORD}-->
+                    <!--{t string="tpl_222"}-->： <!--{$arrReminder[$arrForm.reminder]|h}--><br />
+                    <!--{t string="tpl_223"}-->： <!--{$smarty.const.DEFAULT_PASSWORD}-->
                 </td>
             </tr>
             <tr>
-                <th>メールマガジン</th>
-                <td><!--{if $arrForm.mailmaga_flg eq 1}-->HTML<!--{elseif $arrForm.mailmaga_flg eq 2}-->テキスト<!--{else}-->希望しない<!--{/if}--></td>
+                <th><!--{t string="tpl_224"}--></th>
+                <td><!--{if $arrForm.mailmaga_flg eq 1}--><!--{t string="tpl_244"}--><!--{elseif $arrForm.mailmaga_flg eq 2}--><!--{t string="tpl_245"}--><!--{else}--><!--{t string="tpl_246"}--><!--{/if}--></td>
             </tr>
             <tr>
-                <th>SHOP用メモ</th>
+                <th><!--{t string="tpl_225"}--></th>
                 <td><!--{$arrForm.note|h|nl2br|default:"未登録"}--></td>
             </tr>
             <tr>
-                <th>所持ポイント</th>
+                <th><!--{t string="tpl_226"}--></th>
                 <td><!--{$arrForm.point|default:"0"|h}--> pt</td>
             </tr>
         </table>
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="func_return(); return false;"><span class="btn-prev">編集画面に戻る</span></a></li>
-                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'complete', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="func_return(); return false;"><span class="btn-prev"><!--{t string="tpl_247"}--></span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'complete', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
             </ul>
         </div>
     </div>

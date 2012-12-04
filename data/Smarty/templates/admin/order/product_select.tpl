@@ -48,6 +48,7 @@
         }
         if (document.getElementById(class1).type == 'select-one' && class1_id == '__unselected') {
             err_text = class_name1 + "を選択してください。\n";
+            err_text = class_name1 + "を選択してください。\n";
         }
         if (document.getElementById(class2).type == 'select-one' && class2_id == '') {
             err_text = err_text + class_name2 + "を選択してください。\n";
@@ -130,33 +131,33 @@
     <col width="20%" />
     <col width="80%" />
     <tr>
-        <th>カテゴリ</th>
+        <th><!--{t string="tpl_191"}--></th>
         <td>
             <select name="search_category_id">
-                <option value="" selected="selected">選択してください</option>
+                <option value="" selected="selected"><!--{t string="tpl_068"}--></option>
                 <!--{html_options options=$arrCatList selected=$arrForm.search_category_id}-->
             </select>
         </td>
     </tr>
     <tr>
-        <th>商品名</th>
+        <th><!--{t string="tpl_189"}--></th>
         <td><input type="text" name="search_name" value="<!--{$arrForm.search_name|h}-->" size="35" class="box35" /></td>
     </tr>
     <tr>
-        <th>商品コード</th>
+        <th><!--{t string="tpl_192"}--></th>
         <td><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code|h}-->" size="35" class="box35" /></td>
     </tr>
 </table>
 <div class="btn-area">
     <ul>
-        <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', ''); return false;"><span class="btn-next">検索を開始</span></a></li>
+        <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_193"}--></span></a></li>
     </ul>
 </div>
 </form>
 <!--▼検索結果表示-->
 <!--{if $tpl_linemax}-->
     <p>
-        <!--{$tpl_linemax}-->件が該当しました。
+        <!--{t string="tpl_194"　T_FIELD=$tpl_linemax}-->
         <!--{$tpl_strnavi}-->
     </p>
 
@@ -167,10 +168,10 @@
     <col width="50%" />
     <col width="10%" />
         <tr>
-            <th class="image">商品画像</th>
-            <th class="id">商品コード</th>
-            <th class="name">商品名</th>
-            <th class="action">決定</th>
+            <th class="image"><!--{t string="tpl_195"}--></th>
+            <th class="id"><!--{t string="tpl_192"}--></th>
+            <th class="name"><!--{t string="tpl_189"}--></th>
+            <th class="action"><!--{t string="tpl_196"}--></th>
         </tr>
         <!--{section name=cnt loop=$arrProducts}-->
             <!--{assign var=id value=$arrProducts[cnt].product_id}-->
@@ -205,7 +206,7 @@
                                     <!--{html_options options=$arrClassCat1[$id] selected=$arrForm[$class1]}-->
                                 </select>
                                 <!--{if $arrErr[$class1] != ""}-->
-                                <br /><span class="attention">※ <!--{$tpl_class_name1[$id]}-->を入力して下さい。</span>
+                                <br /><span class="attention"><!--{t string="tpl_436" T_FIELD=$tpl_class_name1[$id]}--></span>
                                 <!--{/if}-->
                             </dd>
                         </dl>
@@ -219,7 +220,7 @@
                             <dd>
                                 <select name="classcategory_id2" id="<!--{$class2}-->" style="<!--{$arrErr[$class2]|sfGetErrorColor}-->" onchange="fnCheckStock(this.form);"></select>
                                 <!--{if $arrErr[$class2] != ""}-->
-                                <br /><span class="attention">※ <!--{$tpl_class_name2[$id]}-->を入力して下さい。</span>
+                                <br /><span class="attention"><!--{t string="tpl_436" T_FIELD=$tpl_class_name2[$id]}--></span>
                                 <!--{/if}-->
                             </dd>
                         </dl>
@@ -230,13 +231,13 @@
                         <input type="hidden" name="product_class_id<!--{$id|h}-->" id="product_class_id<!--{$id|h}-->" value="<!--{$tpl_product_class_id[$id]}-->" />
                         <input type="hidden" name="product_type" id="product_type<!--{$id|h}-->" value="<!--{$tpl_product_type[$id]}-->" />
                     </td>
-                    <td class="center"><a href="javascript:;" onclick="return func_submit('<!--{$arrProducts[cnt].product_id}-->', '<!--{$tpl_class_name1[$id]}-->', '<!--{$tpl_class_name2[$id]}-->'); return false;">決定</a></td>
+                    <td class="center"><a href="javascript:;" onclick="return func_submit('<!--{$arrProducts[cnt].product_id}-->', '<!--{$tpl_class_name1[$id]}-->', '<!--{$tpl_class_name2[$id]}-->'); return false;"><!--{t string="tpl_196"}--></a></td>
                 </tr>
                 <!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
             </form>
         <!--{sectionelse}-->
             <tr>
-                <td colspan="4">商品が登録されていません</td>
+                <td colspan="4"><!--{t string="tpl_197"}--></td>
             </tr>
         <!--{/section}-->
     </table>

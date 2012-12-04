@@ -30,13 +30,13 @@
         <div class="complete-top"></div>
         <div class="contents">
             <div class="message">
-                登録が完了致しました。
+                <!--{t string="tpl_236"}-->
             </div>
         </div>
         <div class="btn-area-top"></div>
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="./template.php"><span class="btn-prev">テンプレート一覧に戻る</span></a></li>
+                <li><a class="btn-action" href="./template.php"><span class="btn-prev"><!--{t string="tpl_353"}--></span></a></li>
             </ul>
         </div>
         <div class="btn-area-bottom"></div>

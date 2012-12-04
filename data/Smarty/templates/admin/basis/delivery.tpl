@@ -30,7 +30,15 @@
     <div class="btn">
         <ul>
             <li><a class="btn-action" href="javascript:;" name="subm2" onclick="fnChangeAction('./delivery_input.php'); fnModeSubmit('pre_edit','',''); return false;">
-                <span class="btn-next">配送方法<!--{if $smarty.const.INPUT_DELIV_FEE}-->・配送料<!--{/if}-->を新規入力</span></a></li>
+                <span class="btn-next">
+                    <!--{if $smarty.const.INPUT_DELIV_FEE}-->
+                        <!--{t string="tpl_006"}-->
+                    <!--{else}-->
+                        <!--{t string="tpl_007"}-->
+                    <!--{/if}-->
+                </span>
+                </a>
+            </li>
         </ul>
     </div>
     <table class="list">
@@ -40,26 +48,26 @@
         <col width="10%" />
         <col width="15%" />
         <tr>
-            <th>配送業者</th>
-            <th>名称</th>
-            <th>編集</th>
-            <th>削除</th>
-            <th>移動</th>
+            <th><!--{t string="tpl_001"}--></th>
+            <th><!--{t string="tpl_002"}--></th>
+            <th><!--{t string="tpl_003"}--></th>
+            <th><!--{t string="tpl_004"}--></th>
+            <th><!--{t string="tpl_005"}--></th>
         </tr>
         <!--{section name=cnt loop=$arrDelivList}-->
             <tr>
                 <td><!--{$arrDelivList[cnt].name|h}--></td>
                 <td><!--{$arrDelivList[cnt].service_name|h}--></td>
                 <td align="center"><a href="?" onclick="fnChangeAction('./delivery_input.php'); fnModeSubmit('pre_edit', 'deliv_id', <!--{$arrDelivList[cnt].deliv_id}-->); return false;">
-                    編集</a></td>
+                    <!--{t string="tpl_003"}--></a></td>
                 <td align="center"><a href="?" onclick="fnModeSubmit('delete', 'deliv_id', <!--{$arrDelivList[cnt].deliv_id}-->); return false;">
-                    削除</a></td>
+                    <!--{t string="tpl_004"}--></a></td>
                 <td align="center">
                 <!--{if $smarty.section.cnt.iteration != 1}-->
-                <a href="?" onclick="fnModeSubmit('up','deliv_id', '<!--{$arrDelivList[cnt].deliv_id}-->'); return false;">上へ</a>
+                <a href="?" onclick="fnModeSubmit('up','deliv_id', '<!--{$arrDelivList[cnt].deliv_id}-->'); return false;"><!--{t string="tpl_077"}--></a>
                 <!--{/if}-->
                 <!--{if $smarty.section.cnt.iteration != $smarty.section.cnt.last}-->
-                <a href="?" onclick="fnModeSubmit('down','deliv_id', '<!--{$arrDelivList[cnt].deliv_id}-->'); return false;">下へ</a>
+                <a href="?" onclick="fnModeSubmit('down','deliv_id', '<!--{$arrDelivList[cnt].deliv_id}-->'); return false;"><!--{t string="tpl_078"}--></a>
                 <!--{/if}-->
                 </td>
             </tr>

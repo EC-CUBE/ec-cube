@@ -38,13 +38,13 @@
 <input type="hidden" name="keySet" value="">
 <div id="products" class="contents-main">
     <div class="btn">
-        <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;">CSV ダウンロード</a>
-        <a class="btn-normal" href='../contents/csv.php?tpl_subno_csv=category'>CSV 出力項目設定</a>
+        <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;"><!--{t string="tpl_254"}--></a>
+        <a class="btn-normal" href='../contents/csv.php?tpl_subno_csv=category'><!--{t string="tpl_255"}--></a>
     </div>
 
     <!--{* ▼画面左 *}-->
     <div id="products-category-left">
-        <a href="?"><img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ">&nbsp;ホーム</a><br />
+        <a href="?"><img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ">&nbsp;<!--{t string="tpl_487"}--></a><br />
         <!--{section name=cnt loop=$arrTree}-->
             <!--{assign var=level value="`$arrTree[cnt].level`}-->
 
@@ -96,7 +96,7 @@
                 <span class="attention"><!--{$arrErr.category_name}--></span>
                 <!--{/if}-->
                 <input type="text" name="category_name" value="<!--{$arrForm.category_name|h}-->" size="30" class="box30" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
-                <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('edit','',''); return false;"><span class="btn-next">登録</span></a><span class="attention">&nbsp;（上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+                <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('edit','',''); return false;"><span class="btn-next"><!--{t string="tpl_488"}--></span></a><span class="attention">&nbsp;<!--{t string="tpl_489" T_FIELD=$smarty.const.STEXT_LEN}--></span>
         </div>
 
         <h2><!--{* jQuery で挿入される *}--></h2>
@@ -109,11 +109,11 @@
             <col width="10%" />
             <col width="25%" />
             <tr class="nodrop nodrag">
-                <th>ID</th>
-                <th>カテゴリ名</th>
-                <th class="edit">編集</th>
-                <th class="delete">削除</th>
-                <th>移動</th>
+                <th><!--{t string="tpl_074"}--></th>
+                <th><!--{t string="tpl_490"}--></th>
+                <th class="edit"><!--{t string="tpl_003"}--></th>
+                <th class="delete"><!--{t string="tpl_004"}--></th>
+                <th><!--{t string="tpl_005"}--></th>
             </tr>
 
             <!--{section name=cnt loop=$arrList}-->
@@ -128,21 +128,21 @@
                 </td>
                 <td class="center">
                     <!--{if $arrForm.category_id != $arrList[cnt].category_id}-->
-                    <a href="?" onclick="fnModeSubmit('pre_edit', 'category_id', <!--{$arrList[cnt].category_id}-->); return false;">編集</a>
+                    <a href="?" onclick="fnModeSubmit('pre_edit', 'category_id', <!--{$arrList[cnt].category_id}-->); return false;"><!--{t string="tpl_003"}--></a>
                     <!--{else}-->
-                    編集中
+                    <!--{t string="tpl_026"}-->
                     <!--{/if}-->
                 </td>
                 <td class="center">
-                    <a href="?" onclick="fnModeSubmit('delete', 'category_id', <!--{$arrList[cnt].category_id}-->); return false;">削除</a>
+                    <a href="?" onclick="fnModeSubmit('delete', 'category_id', <!--{$arrList[cnt].category_id}-->); return false;"><!--{t string="tpl_004"}--></a>
                 </td>
                 <td class="center">
                 <!--{* 移動 *}-->
                 <!--{if $smarty.section.cnt.iteration != 1}-->
-                <a href="?" onclick="fnModeSubmit('up','category_id', <!--{$arrList[cnt].category_id}-->); return false;">上へ</a>
+                <a href="?" onclick="fnModeSubmit('up','category_id', <!--{$arrList[cnt].category_id}-->); return false;"><!--{t string="tpl_077"}--></a>
                 <!--{/if}-->
                 <!--{if $smarty.section.cnt.iteration != $smarty.section.cnt.last}-->
-                <a href="?" onclick="fnModeSubmit('down','category_id', <!--{$arrList[cnt].category_id}-->); return false;">下へ</a>
+                <a href="?" onclick="fnModeSubmit('down','category_id', <!--{$arrList[cnt].category_id}-->); return false;"><!--{t string="tpl_078"}--></a>
                 <!--{/if}-->
                 </td>
 
@@ -150,7 +150,7 @@
             <!--{/section}-->
         </table>
         <!--{else}-->
-        <p>この階層には、カテゴリが登録されていません。</p>
+        <p><!--{t string="tpl_491"}--></p>
         <!--{/if}-->
     </div>
     <!--{* ▲画面右 *}-->

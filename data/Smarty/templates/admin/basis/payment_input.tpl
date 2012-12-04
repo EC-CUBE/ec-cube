@@ -33,13 +33,13 @@
 <!--{/foreach}-->
 <input type="hidden" name="charge_flg" value="<!--{$charge_flg}-->" />
 <div id="basis" class="contents-main">
-    <h2>支払方法登録・編集</h2>
+    <h2><!--{t string="tpl_079"}--></h2>
 
         <table class="form">
         <col width="20%" />
         <col width="80%" />
             <tr>
-                <th>支払方法<span class="attention"> *</span></th>
+                <th><!--{t string="tpl_016"}--><span class="attention"> *</span></th>
                 <td>
                     <!--{assign var=key value="payment_method"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -47,10 +47,10 @@
                 </td>
             </tr>
             <tr>
-                <th>手数料<span class="attention"> *</span></th>
+                <th><!--{t string="tpl_080"}--><span class="attention"> *</span></th>
                 <td>
                     <!--{if $charge_flg == 2}-->
-                        設定できません
+                        <!--{t string="tpl_081"}-->
                     <!--{else}-->
                         <!--{assign var=key value="charge"}-->
                         <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -60,7 +60,7 @@
                 </td>
             </tr>
             <tr>
-                <th>利用条件(円)</th>
+                <th><!--{t string="tpl_082"}--></th>
                 <td>
                     <!--{assign var=key_from value="rule_max"}-->
                     <!--{assign var=key_to value="upper_rule"}-->
@@ -74,23 +74,23 @@
                 </td>
             </tr>
             <tr>
-                <th>ロゴ画像</th>
+                <th><!--{t string="tpl_083"}--></th>
                 <td>
                     <!--{assign var=key value="payment_image"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
                     <!--{if $arrFile[$key].filepath != ""}-->
-                    <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->">　<br /><a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
+                    <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->">　<br /><a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[<!--{t string="tpl_084"}-->]</a><br />
                     <!--{/if}-->
                     <input type="file" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-                    <a class="btn-normal" href="javascript:;" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;">アップロード</a>
+                    <a class="btn-normal" href="javascript:;" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;"><!--{t string="tpl_085"}--></a>
                 </td>
             </tr>
         </table>
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="location.href='./payment.php';"><span class="btn-prev">前のページに戻る</span></a></li>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="location.href='./payment.php';"><span class="btn-prev"><!--{t string="tpl_020"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
         </ul>
     </div>
 </div>

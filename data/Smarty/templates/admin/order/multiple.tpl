@@ -159,10 +159,10 @@ function func_submit() {
 <table summary="配送情報" class="list">
     <thead>
         <tr>
-            <th>商品コード</th>
-            <th>商品名/規格1/規格2</th>
-            <th>数量</th>
-            <th>お届け先</th>
+            <th><!--{t string="tpl_192"}--></th>
+            <th><!--{t string="tpl_189"}-->/<!--{t string="tpl_371"}-->/<!--{t string="tpl_374"}--></th>
+            <th><!--{t string="tpl_373"}--></th>
+            <th><!--{t string="tpl_385"}--></th>
         </tr>
     </thead>
     <tbody>
@@ -170,7 +170,7 @@ function func_submit() {
 </table>
 <div class="btn-area">
     <ul>
-        <li><a class="btn-action" href="javascript:;" onclick="func_submit(); return false;"><span class="btn-next">決定</span></a></li>
+        <li><a class="btn-action" href="javascript:;" onclick="func_submit(); return false;"><span class="btn-next"><!--{t string="tpl_196"}--></span></a></li>
     </ul>
 </div>
 </form>

@@ -28,17 +28,17 @@
 <div id="basis" class="contents-main">
     <table>
         <tr>
-            <th>ポイント付与率（初期値）<span class="attention"> *</span></th>
+            <th><!--{t string="tpl_086"}--><span class="attention"> *</span></th>
             <td>
                 <!--{assign var=key value="point_rate"}-->
                 <!--{if $arrErr[$key]}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{/if}-->
                 <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box6" />
-                ％　小数点以下切り捨て</td>
+                ％　<!--{t string="tpl_087"}--></td>
         </tr>
         <tr>
-            <th>会員登録時付与ポイント<span class="attention"> *</span></th>
+            <th><!--{t string="tpl_088"}--><span class="attention"> *</span></th>
             <td>
                 <!--{assign var=key value="welcome_point"}-->
                 <!--{if $arrErr[$key]}-->
@@ -51,7 +51,7 @@
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('point_form', '<!--{$tpl_mode}-->', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('point_form', '<!--{$tpl_mode}-->', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
         </ul>
     </div>
 </div>

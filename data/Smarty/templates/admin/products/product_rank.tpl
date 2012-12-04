@@ -42,7 +42,7 @@
 
     <!--{* ▼画面左 *}-->
     <div id="products-rank-left">
-        <a href="?"><img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ">&nbsp;ホーム</a><br />
+        <a href="?"><img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ">&nbsp;<!--{t string="tpl_487"}--></a><br />
         <!--{section name=cnt loop=$arrTree}-->
             <!--{assign var=level value="`$arrTree[cnt].level`}-->
 
@@ -83,13 +83,13 @@
         <h2><!--{* jQuery で挿入される *}--></h2>
         <!--{if count($arrProductsList) > 0}-->
 
-            <p class="remark"><span class="attention"><!--{$tpl_linemax}-->件</span>が該当しました。</p>
+            <p class="remark"><!--{t string="tpl_611" T_FIELD=$tpl_linemax}--></p>
             <div class="pager">
                 <!--{$tpl_strnavi}-->
             </div>
 
             <!--{if $smarty.const.ADMIN_MODE == '1'}-->
-                <p class="right"><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('renumber', '', ''); return false;">内部順位再割り当て</a></p>
+                <p class="right"><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('renumber', '', ''); return false;"><!--{t string="tpl_612"}--></a></p>
             <!--{/if}-->
 
             <table class="list" id="categoryTable">
@@ -99,11 +99,11 @@
                 <col width="7.5%" />
                 <col width="15%" />
                 <tr class="nodrop nodrag">
-                    <th>商品コード</th>
-                    <th>商品名</th>
-                    <th>商品画像</th>
-                    <th>順位</th>
-                    <th>移動</th>
+                    <th><!--{t string="tpl_192"}--></th>
+                    <th><!--{t string="tpl_189"}--></th>
+                    <th><!--{t string="tpl_195"}--></th>
+                    <th><!--{t string="tpl_186"}--></th>
+                    <th><!--{t string="tpl_005"}--></th>
                 </tr>
 
                 <!--{assign var=rank value=$tpl_start_row}-->
@@ -120,25 +120,25 @@
                         <!--{assign var=rank value=`$rank+1`}-->
                         <td align="center">
                             <!--{$rank}-->
-                            <!--{if $arrProductsList[cnt].status == "2"}--><br />(非公開)<!--{/if}-->
+                            <!--{if $arrProductsList[cnt].status == "2"}--><br /><!--{t string="tpl_613"}--><!--{/if}-->
                         </td>
                         <td align="center">
                         <!--{* 移動 *}-->
                         <!--{if !(count($arrProductsList) == 1 && $rank == 1)}-->
-                        <input type="text" name="pos-<!--{$arrProductsList[cnt].product_id}-->" size="3" class="box3" />番目へ<a href="?" onclick="fnModeSubmit('move','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;">移動</a><br />
+                        <input type="text" name="pos-<!--{$arrProductsList[cnt].product_id}-->" size="3" class="box3" />番目へ<a href="?" onclick="fnModeSubmit('move','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;"><!--{t string="tpl_005"}--></a><br />
                         <!--{/if}-->
                         <!--{if !($smarty.section.cnt.first && $tpl_disppage eq 1)}-->
-                        <a href="?" onclick="fnModeSubmit('up','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;">上へ</a>
+                        <a href="?" onclick="fnModeSubmit('up','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;"><!--{t string="tpl_077"}--></a>
                         <!--{/if}-->
                         <!--{if !($smarty.section.cnt.last && $tpl_disppage eq $tpl_pagemax)}-->
-                        <a href="?" onclick="fnModeSubmit('down','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;">下へ</a>
+                        <a href="?" onclick="fnModeSubmit('down','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;"><!--{t string="tpl_078"}--></a>
                         <!--{/if}-->
                         </td>
                     </tr>
                 <!--{/section}-->
             </table>
         <!--{else}-->
-            <p>カテゴリを選択してください。</p>
+            <p><!--{t string="tpl_614"}--></p>
         <!--{/if}-->
     </div>
     <!--▲画面右-->

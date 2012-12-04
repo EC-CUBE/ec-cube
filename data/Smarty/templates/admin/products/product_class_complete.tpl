@@ -39,14 +39,14 @@
         <div class="complete-top"></div>
         <div class="contents">
             <div class="message">
-                登録が完了致しました。
+                <!--{t string="tpl_236"}-->
             </div>
         </div>
         <div class="btn-area-top"></div>
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URLPATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev">検索結果へ戻る</span></a></li>
-                <li><a class="btn-action" href="./product.php"><span class="btn-next">続けて登録を行う</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URLPATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev"><!--{t string="tpl_071"}--></span></a></li>
+                <li><a class="btn-action" href="./product.php"><span class="btn-next"><!--{t string="tpl_237"}--></span></a></li>
             </ul>
         </div>
         <div class="btn-area-bottom"></div>

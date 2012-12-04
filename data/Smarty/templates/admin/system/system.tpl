@@ -22,7 +22,7 @@
  */
 *}-->
 
-<h2>概要</h2>
+<h2><!--{t string="tpl_685"}--></h2>
 <table border="0" cellspacing="1" cellpadding="8" summary=" ">
     <!--{foreach from=$arrSystemInfo item=info}-->
         <tr>
@@ -36,5 +36,5 @@
     <!--{/foreach}-->
 </table>
 
-<h2>PHP情報</h2>
+<h2><!--{t string="tpl_686"}--></h2>
 <iframe src="?mode=info" height="500" frameborder="0" style="width: 100%;"></iframe>
