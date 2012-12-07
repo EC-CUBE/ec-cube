@@ -284,7 +284,7 @@ class SC_Customer {
     function doLogin($login_email, $login_pass) {
         switch (SC_Display_Ex::detectDevice()) {
             case DEVICE_TYPE_MOBILE:
-                if (!$this->is->getCustomerDataFromMobilePhoneIdPass($login_pass) &&
+                if (!$this->getCustomerDataFromMobilePhoneIdPass($login_pass) &&
                     !$this->getCustomerDataFromEmailPass($login_pass, $login_email, true)
                 ) {
                     return false;
