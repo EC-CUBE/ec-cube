@@ -110,9 +110,6 @@ function lfnSortItem(mode,data){
                             </div>
                             <div class="table-detail">
                                 <div class="detail-name">商品名： <!--{$arrItems[$smarty.section.cnt.iteration].name|h}--></div>
-                                <!--{if $arrItems[$smarty.section.cnt.iteration].p_del_flg == '1'}-->
-                                    <div class="attention">※<!--{$arrItems[$smarty.section.cnt.iteration].name|h}-->は販売商品から削除されています。</div>
-                                <!--{/if}-->
                                     <div class="detail-form">
                                         <form name="form<!--{$smarty.section.cnt.iteration}-->" id="form<!--{$smarty.section.cnt.iteration}-->" method="post" action="?">
                                             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
