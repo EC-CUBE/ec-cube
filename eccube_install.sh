@@ -2,159 +2,169 @@
 
 ######################################################################
 #
-# EC-CUBE の再インストールを行う shell スクリプト
+# EC-CUBE のインストールを行う shell スクリプト
 #
-# ※ PostgreSQL 専用
 #
-# 1. 既存の EC-CUBE サイトを移動(PREFIX.YYYYMMDD)
-# 2. SVNリポジトリより checkout(tags/EC_CUBE_VERSION)
-# 3. パーミッション変更
-# 4. html/install/sql 配下の SQL を実行
-# 5. 管理者権限をアップデート
-# 6. data/install.php を生成
+# #処理内容
+# 1. パーミッション変更
+# 2. html/install/sql 配下の SQL を実行
+# 3. 管理者権限をアップデート
+# 4. data/config/config.php を生成
 #
 # 使い方
 #
-# # ./ec_cube_install.sh /install/path/to/eccube eccube-2.4.1
+# # ./ec_cube_install.sh mysql
 #
-# この場合の DocumentRoot は, /install/path/to/eccube/html になります.
 #
 # 開発コミュニティの関連スレッド
 # http://xoops.ec-cube.net/modules/newbb/viewtopic.php?topic_id=4918&forum=14&post_id=23090#forumpost23090
 #
 #######################################################################
 
-PREFIX=${PREFIX:-"$1"}
-EC_CUBE_VERSION=${EC_CUBE_VERSION:-"$2"}
-
-ADMIN_MAIL=${ADMIN_MAIL:-"shop@ec-cube.net"}
-SHOP_NAME=${SHOP_NAME:-"ロックオンのふとんやさん"}
-INSTALL_PHP="data/install.php"
-SITE_URL=${SITE_URL:-"http://demo2.ec-cube.net/"}
-SSL_URL=${SSL_URL:-"http://demo2.ec-cube.net/"}
+#######################################################################
+# Configuration 
+#-- Shop Configuration
+CONFIG_PHP="data/config/config.php"
+ADMIN_MAIL=${ADMIN_MAIL:-"admin@example.com"}
+SHOP_NAME=${SHOP_NAME:-"EC-CUBE SHOP"}
+HTTP_URL=${HTTP_URL:-"http://test.local"}
+HTTPS_URL=${HTTPS_URL:-"http://test.local/"}
 DOMAIN_NAME=${DOMAIN_NAME:-""}
+ADMINPASS="f6b126507a5d00dbdbb0f326fe855ddf84facd57c5603ffdf7e08fbb46bd633c"
+AUTH_MAGIC="droucliuijeanamiundpnoufrouphudrastiokec"
 
-TODAY=`date "+%Y%m%d"`
+DBTYPE=$1;
 
-SVN=svn
-SVN_USER=guest
-SVN_PASSWD=lh1jNhUn
+case "${DBTYPE}" in
+"pgsql" ) 
+    #-- DB Seting Postgres
+    PSQL=psql
+    PGUSER=postgres
+    DROPDB=dropdb
+    CREATEDB=createdb
+    DBSERVER="127.0.0.1"
+    DBNAME=cube212_dev
+    DBUSER=cube212_dev_user
+    DBPASS=password
+    DBPORT=5432
+;;
+"mysql" ) 
+    #-- DB Seting MySQL
+    MYSQL=mysql
+    ROOTUSER=root
+    ROOTPASS=arigato36
+    DBSERVER="127.0.0.1"
+    DBNAME=cube212_dev
+    DBUSER=cube212_dev_user
+    DBPASS=password
+    DBPORT=3306
+;;
+* ) echo "ERROR:: argument is invaid"
+exit
+;;
+esac
 
-REPOSITORY="https://svn.ec-cube.net/open/tags/"
 
-PGUSER=postgres
-DROPDB=dropdb
-CREATEDB=createdb
-PSQL=psql
-
-DBSERVER="127.0.0.1"
-DBNAME=demo2_db
-DBUSER=demo2_db_user
-DBPASS=password
-DBPORT=5432
-
-OPTIONAL_SQL_FILE=optional.sql
-
+#######################################################################
+# Install 
 
 echo "PREFIX=${PREFIX}"
 echo "EC_CUBE_VERSION=${EC_CUBE_VERSION}"
 
-if [ -d ${PREFIX} ]
-then
-    echo "backup old version..."
-    mv ${PREFIX} "${PREFIX}.${TODAY}"
-fi
+#-- Update Permissions
+echo "update permissions..."
+chmod -R 777 "./html"
+chmod 755 "./data"
+chmod -R 777 "./data/Smarty"
+chmod -R 777 "./data/cache"
+chmod -R 777 "./data/class"
+chmod -R 755 "./data/class_extends"
+chmod 777 "./data/config"
+chmod -R 777 "./data/download"
+chmod -R 777 "./data/downloads"
+chmod 755 "./data/fonts"
+chmod 755 "./data/include"
+chmod 777 "./data/logs"
+chmod -R 777 "./data/module"
+chmod 755 "./data/smarty_extends"
+chmod 777 "./data/upload"
+chmod 777 "./data/upload/csv"
 
+#-- Setup Database
+SQL_DIR="./html/install/sql"
+OPTIONAL_SQL_FILE=optional.sql
 if [ -f ${OPTIONAL_SQL_FILE} ]
 then
     echo "remove optional SQL"
     rm ${OPTIONAL_SQL_FILE}
 fi
 
-echo "checkout sources from svn.ec-cube.net..."
-${SVN} checkout --username ${SVN_USER} --password ${SVN_PASSWD} \
-    "${REPOSITORY}/${EC_CUBE_VERSION}" ${PREFIX}
-
-echo "update permissions..."
-chmod -R 777 "${PREFIX}/data/cache"
-chmod -R 777 "${PREFIX}/data/class"
-chmod -R 777 "${PREFIX}/data/Smarty"
-chmod -R 777 "${PREFIX}/data/logs"
-chmod -R 777 "${PREFIX}/data/downloads"
-chmod -R 777 "${PREFIX}/html/install/temp"
-chmod -R 777 "${PREFIX}/html/user_data"
-chmod -R 777 "${PREFIX}/html/cp"
-chmod -R 777 "${PREFIX}/html/upload"
-
-#echo "dropdb..."
-#su ${PGUSER} -c "${DROPDB} ${DBNAME}"
-
-#echo "createdb..."
-#su ${PGUSER} -c "${CREATEDB} -U ${DBUSER} ${DBNAME}"
-
-SQL_DIR="${PREFIX}/html/install/sql"
-
-echo "drop view..."
-su ${PGUSER} -c "${PSQL} -U ${DBUSER} -f ${SQL_DIR}/drop_view.sql ${DBNAME}"
-
-echo "drop tables..."
-su ${PGUSER} -c "${PSQL} -U ${DBUSER} -f ${SQL_DIR}/drop_table.sql ${DBNAME}"
-su ${PGUSER} -c "${PSQL} -U ${DBUSER} -c 'DROP TABLE dtb_session;' ${DBNAME}"
-su ${PGUSER} -c "${PSQL} -U ${DBUSER} -c 'DROP TABLE dtb_module;' ${DBNAME}"
-su ${PGUSER} -c "${PSQL} -U ${DBUSER} -c 'DROP TABLE dtb_campaign_order;' ${DBNAME}"
-su ${PGUSER} -c "${PSQL} -U ${DBUSER} -c 'DROP TABLE dtb_mobile_kara_mail;' ${DBNAME}"
-su ${PGUSER} -c "${PSQL} -U ${DBUSER} -c 'DROP TABLE dtb_mobile_ext_session_id;' ${DBNAME}"
-su ${PGUSER} -c "${PSQL} -U ${DBUSER} -c 'DROP TABLE dtb_site_control;' ${DBNAME}"
-su ${PGUSER} -c "${PSQL} -U ${DBUSER} -c 'DROP TABLE dtb_trackback;' ${DBNAME}"
-
-echo "create table..."
-su ${PGUSER} -c "${PSQL} -U ${DBUSER} -f ${SQL_DIR}/create_table_pgsql.sql ${DBNAME}"
-
-echo "create_view..."
-su ${PGUSER} -c "${PSQL} -U ${DBUSER} -f ${SQL_DIR}/create_view.sql ${DBNAME}"
-
-echo "adding tables..."
-su ${PGUSER} -c "${PSQL} -U ${DBUSER} -f ${SQL_DIR}/add/dtb_campaign_order_pgsql.sql ${DBNAME}"
-su ${PGUSER} -c "${PSQL} -U ${DBUSER} -f ${SQL_DIR}/add/dtb_mobile_ext_session_id_pgsql.sql ${DBNAME}"
-su ${PGUSER} -c "${PSQL} -U ${DBUSER} -f ${SQL_DIR}/add/dtb_mobile_kara_mail_pgsql.sql ${DBNAME}"
-su ${PGUSER} -c "${PSQL} -U ${DBUSER} -f ${SQL_DIR}/add/dtb_module_pgsql.sql ${DBNAME}"
-su ${PGUSER} -c "${PSQL} -U ${DBUSER} -f ${SQL_DIR}/add/dtb_session_pgsql.sql ${DBNAME}"
-su ${PGUSER} -c "${PSQL} -U ${DBUSER} -f ${SQL_DIR}/add/dtb_site_control_pgsql.sql ${DBNAME}"
-su ${PGUSER} -c "${PSQL} -U ${DBUSER} -f ${SQL_DIR}/add/dtb_trackback_pgsql.sql ${DBNAME}"
-
-echo "insert data..."
-su ${PGUSER} -c "${PSQL} -U ${DBUSER} -f ${SQL_DIR}/insert_data.sql ${DBNAME}"
-
 echo "create optional SQL..."
-echo "INSERT INTO dtb_member (member_id, login_id, password, authority, creator_id) VALUES ('1', 'admin', '2c19f4a742398150cecc80b3e76b673a35b8c19c', '0', '0');" >> ${OPTIONAL_SQL_FILE}
-echo "INSERT INTO dtb_baseinfo (shop_name, email01, email02, email03, email04, email05, top_tpl, product_tpl, detail_tpl, mypage_tpl) VALUES ('${SHOP_NAME}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', 'default1', 'default1', 'default1', 'default1');" >> ${OPTIONAL_SQL_FILE}
-echo "execute optional SQL..."
-su ${PGUSER} -c "${PSQL} -U ${DBUSER} -f ${OPTIONAL_SQL_FILE} ${DBNAME}"
+echo "INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date) VALUES (2, 'admin', '${ADMINPASS}', '${AUTH_MAGIC}', '1', '0', '0', '0', '1', current_timestamp);" >> ${OPTIONAL_SQL_FILE}
+echo "INSERT INTO dtb_baseinfo (id, shop_name, email01, email02, email03, email04, email05, top_tpl, product_tpl, detail_tpl, mypage_tpl, update_date) VALUES (1, '${SHOP_NAME}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', 'default1', 'default1', 'default1', 'default1', current_timestamp);" >> ${OPTIONAL_SQL_FILE}
+
+
+case "${DBTYPE}" in
+"pgsql" ) 
+    # PostgreSQL
+    echo "dropdb..."
+    su ${PGUSER} -c "${DROPDB} ${DBNAME}"
+    echo "createdb..."
+    su ${PGUSER} -c "${CREATEDB} -U ${DBUSER} ${DBNAME}"
+    echo "create table..."
+    su ${PGUSER} -c "${PSQL} -U ${DBUSER} -f ${SQL_DIR}/create_table_pgsql.sql ${DBNAME}"
+    echo "insert data..."
+    su ${PGUSER} -c "${PSQL} -U ${DBUSER} -f ${SQL_DIR}/insert_data.sql ${DBNAME}"
+    echo "execute optional SQL..."
+    su ${PGUSER} -c "${PSQL} -U ${DBUSER} -f ${OPTIONAL_SQL_FILE} ${DBNAME}"
+;;
+"mysql" ) 
+    # MySQL
+    echo "dropdb..."
+    ${MYSQL} -u ${ROOTUSER} -p${ROOTPASS} -e "drop database ${DBNAME}"
+    echo "createdb..."
+    ${MYSQL} -u ${ROOTUSER} -p${ROOTPASS} -e "create database ${DBNAME}"
+    #echo "grant user..."
+    #${MYSQL} -u ${ROOTUSER} -p${ROOTPASS} -e "GRANT ALL ON ${DBNAME}.* TO '${DBUSER}'@'%' IDENTIFIED BY '${DBPASS}'"
+    echo "create table..."
+    ${MYSQL} -u ${DBUSER} -p${DBPASS} ${DBNAME} < ${SQL_DIR}/create_table_mysql.sql
+    echo "insert data..."
+    ${MYSQL} -u ${DBUSER} -p${DBPASS} ${DBNAME} < ${SQL_DIR}/insert_data.sql
+    echo "execute optional SQL..."
+    ${MYSQL} -u ${DBUSER} -p${DBPASS} ${DBNAME} < ${OPTIONAL_SQL_FILE}
+;;
+esac
+
+#-- Setup Initial Data
 
 echo "copy images..."
-cp -rv "${PREFIX}/html/install/save_image" "${PREFIX}/html/upload/"
+cp -rv "./html/install/save_image" "./html/upload/"
 
-echo "creating ${INSTALL_PHP}..."
-cat > "${PREFIX}/${INSTALL_PHP}" <<EOF
+echo "creating ${CONFIG_PHP}..."
+cat > "./${CONFIG_PHP}" <<EOF
 <?php
-define ('ECCUBE_INSTALL', 'ON');
-define ('HTML_PATH', '${PREFIX}/html/');
-define ('SITE_URL', '${SITE_URL}');
-define ('SSL_URL', '${SSL_URL}');
-define ('URL_DIR', '/');
-define ('DOMAIN_NAME', '${DOMAIN_NAME}');
-define ('DB_TYPE', 'pgsql');
-define ('DB_USER', '${DBUSER}');
-define ('DB_PASSWORD', '${DBPASS}');
-define ('DB_SERVER', '${DBSERVER}');
-define ('DB_NAME', '${DBNAME}');
-define ('DB_PORT', '${DBPORT}');
-define ('DATA_PATH', '${PREFIX}/data/');
-define ('MOBILE_HTML_PATH', HTML_PATH . 'mobile/');
-define ('MOBILE_SITE_URL', SITE_URL . 'mobile/');
-define ('MOBILE_SSL_URL', SSL_URL . 'mobile/');
-define ('MOBILE_URL_DIR', URL_DIR . 'mobile/');
-?>
+define('ECCUBE_INSTALL', 'ON');
+define('HTTP_URL', '${HTTP_URL}');
+define('HTTPS_URL', '${HTTPS_URL}');
+define('ROOT_URLPATH', '/');
+define('DOMAIN_NAME', '${DOMAIN_NAME}');
+define('DB_TYPE', '${DBTYPE}');
+define('DB_USER', '${DBUSER}');
+define('DB_PASSWORD', '${DBPASS}');
+define('DB_SERVER', '${DBSERVER}');
+define('DB_NAME', '${DBNAME}');
+define('DB_PORT', '${DBPORT}');
+define('ADMIN_DIR', 'admin/');
+define('ADMIN_FORCE_SSL', FALSE);
+define('ADMIN_ALLOW_HOSTS', 'a:0:{}');
+define('AUTH_MAGIC', '${AUTH_MAGIC}');
+define('PASSWORD_HASH_ALGOS', 'sha256');
+define('MAIL_BACKEND', 'mail');
+define('SMTP_HOST', '');
+define('SMTP_PORT', '');
+define('SMTP_USER', '');
+define('SMTP_PASSWORD', '');
+
 EOF
 
 echo "Finished Successful!"
