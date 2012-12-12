@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2012-12-04 19:32+0900\n"
+"PO-Revision-Date: 2012-12-12 15:28+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -3547,6 +3547,9 @@ msgstr "配送業者"
 msgid "tpl_002"
 msgstr "名称"
 
+msgid "tpl_002_1"
+msgstr "名称<span class='attention'> *</span>"
+
 msgid "tpl_003"
 msgstr "編集"
 
@@ -3565,8 +3568,8 @@ msgstr "配送方法を新規入力"
 msgid "tpl_008"
 msgstr "配送方法登録"
 
-msgid "tpl_009"
-msgstr "配送業者名"
+msgid "tpl_009_1"
+msgstr "配送業者名<span class='attention'> *</span>"
 
 msgid "tpl_010"
 msgstr "説明"
@@ -3583,11 +3586,17 @@ msgstr "取扱商品種別"
 msgid "tpl_014"
 msgstr "商品種別"
 
+msgid "tpl_014_1"
+msgstr "商品種別<span class='attention'> *</span>"
+
 msgid "tpl_015"
 msgstr "取扱支払方法"
 
 msgid "tpl_016"
 msgstr "支払方法"
+
+msgid "tpl_016_1"
+msgstr "支払方法<span class='attention'> *</span>"
 
 msgid "tpl_017"
 msgstr "配送料登録"
@@ -3604,11 +3613,17 @@ msgstr "この内容で登録する"
 msgid "tpl_022"
 msgstr "タイトル"
 
+msgid "tpl_022_1"
+msgstr "タイトル<span class='attention'> *</span>"
+
 msgid "tpl_023"
 msgstr "(上限T_FIELD文字)"
 
 msgid "tpl_024"
 msgstr "日付"
+
+msgid "tpl_024_1"
+msgstr "日付<span class='attention'> *</span>"
 
 msgid "tpl_025"
 msgstr "振替休日は自動設定されないので、振替え先の日付を設定してください。"
@@ -3625,8 +3640,8 @@ msgstr "会社名"
 msgid "tpl_029"
 msgstr "会社名(フリガナ)"
 
-msgid "tpl_030"
-msgstr "店名"
+msgid "tpl_030_1"
+msgstr "店名<span class='attention'> *</span>"
 
 msgid "tpl_031"
 msgstr "店名(フリガナ)"
@@ -3637,17 +3652,23 @@ msgstr "店名(英語表記)"
 msgid "tpl_033"
 msgstr "郵便番号"
 
+msgid "tpl_033_1"
+msgstr "郵便番号<span class='attention'> *</span>"
+
 msgid "tpl_034"
 msgstr "所在地入力"
 
 msgid "tpl_035"
-msgstr "SHOP所在地"
+msgstr "SHOP所在地<span class='attention'> *</span>"
 
 msgid "tpl_036"
 msgstr "都道府県を選択"
 
 msgid "tpl_037"
 msgstr "TEL"
+
+msgid "tpl_037_1"
+msgstr "TEL<span class='attention'> *</span>"
 
 msgid "tpl_038"
 msgstr "FAX"
@@ -3656,16 +3677,16 @@ msgid "tpl_039"
 msgstr "店舗営業時間"
 
 msgid "tpl_040"
-msgstr "商品注文受付<br />メールアドレス"
+msgstr "商品注文受付<br />メールアドレス<span class='attention'> *</span>"
 
 msgid "tpl_041"
-msgstr "問い合わせ受付<br />メールアドレス"
+msgstr "問い合わせ受付<br />メールアドレス<span class='attention'> *</span>"
 
 msgid "tpl_042"
-msgstr "メール送信元<br />メールアドレス"
+msgstr "メール送信元<br />メールアドレス<span class='attention'> *</span>"
 
 msgid "tpl_043"
-msgstr "送信エラー受付<br />メールアドレス"
+msgstr "送信エラー受付<br />メールアドレス<span class='attention'> *</span>"
 
 msgid "tpl_044"
 msgstr "取扱商品"
@@ -3683,10 +3704,10 @@ msgid "tpl_048"
 msgstr "SHOP機能"
 
 msgid "tpl_049"
-msgstr "消費税率"
+msgstr "消費税率<span class='attention'> *</span>"
 
 msgid "tpl_050"
-msgstr "課税規則"
+msgstr "課税規則<span class='attention'> *</span>"
 
 msgid "tpl_051"
 msgstr "送料無料条件"
@@ -3724,8 +3745,11 @@ msgstr "'所在地の場所が見つかりません'"
 msgid "tpl_062"
 msgstr "規約タイトル"
 
+msgid "tpl_062_1"
+msgstr "規約タイトル<span class='attention'> *</span>"
+
 msgid "tpl_063"
-msgstr "規約内容"
+msgstr "規約内容<span class='attention'> *</span>"
 
 msgid "tpl_064"
 msgstr ""
@@ -3733,10 +3757,10 @@ msgstr ""
 "か？'"
 
 msgid "tpl_065"
-msgstr "テンプレート"
+msgstr "テンプレート<span class='attention'> *</span>"
 
 msgid "tpl_066"
-msgstr "メールタイトル"
+msgstr "メールタイトル<span class='attention'> *</span>"
 
 msgid "tpl_067"
 msgstr "ヘッダー"
@@ -3780,6 +3804,9 @@ msgstr "支払方法登録・編集"
 msgid "tpl_080"
 msgstr "手数料"
 
+msgid "tpl_080_1"
+msgstr "手数料<span class='attention'> *</span>"
+
 msgid "tpl_081"
 msgstr "設定できません"
 
@@ -3796,13 +3823,13 @@ msgid "tpl_085"
 msgstr "アップロード"
 
 msgid "tpl_086"
-msgstr "ポイント付与率（初期値）"
+msgstr "ポイント付与率（初期値）<span class='attention'> *</span>"
 
 msgid "tpl_087"
 msgstr "小数点以下切り捨て"
 
 msgid "tpl_088"
-msgstr "会員登録時付与ポイント"
+msgstr "会員登録時付与ポイント<span class='attention'> *</span>"
 
 msgid "tpl_089"
 msgstr "メタタグ:Author"
@@ -3850,22 +3877,28 @@ msgid "tpl_103"
 msgstr "定休日管理"
 
 msgid "tpl_104"
-msgstr "販売業者"
+msgstr "販売業者<span class='attention'> *</span>"
 
 msgid "tpl_105"
-msgstr "運営責任者"
+msgstr "運営責任者<span class='attention'> *</span>"
 
 msgid "tpl_106"
 msgstr "〒"
 
 msgid "tpl_107"
-msgstr "所在地"
+msgstr "所在地<span class='attention'> *</span>"
 
 msgid "tpl_108"
 msgstr "メールアドレス"
 
+msgid "tpl_108_1"
+msgstr "メールアドレス<span class='attention'> *</span>"
+
 msgid "tpl_109"
 msgstr "URL"
+
+msgid "tpl_109_1"
+msgstr "URL<span class='attention'> *</span>"
 
 msgid "tpl_110"
 msgstr "リンク"
@@ -3886,19 +3919,19 @@ msgid "tpl_115"
 msgstr "順位"
 
 msgid "tpl_116"
-msgstr "商品代金以外の必要料金"
+msgstr "商品代金以外の必要料金<span class='attention'> *</span>"
 
 msgid "tpl_117"
-msgstr "注文方法"
+msgstr "注文方法<span class='attention'> *</span>"
 
 msgid "tpl_118"
-msgstr "支払期限"
+msgstr "支払期限<span class='attention'> *</span>"
 
 msgid "tpl_119"
-msgstr "引き渡し時期"
+msgstr "引き渡し時期<span class='attention'> *</span>"
 
 msgid "tpl_120"
-msgstr "返品・交換について"
+msgstr "返品・交換について<span class='attention'> *</span>"
 
 msgid "tpl_121"
 msgstr "保存されている郵便番号CSVの更新日時: T_FIELD"
@@ -4025,6 +4058,11 @@ msgstr "最初のSELECTは記述しないでください。"
 msgid "tpl_158"
 msgstr "SQL文"
 
+msgid "tpl_158_1"
+msgstr ""
+"SQL文<span class='attention'> *</span><br /> (最初のSELECTは記述しないでくだ"
+"さい。)"
+
 msgid "tpl_159"
 msgstr "構文エラーを確認する"
 
@@ -4118,6 +4156,9 @@ msgstr "商品名"
 msgid "tpl_189"
 msgstr "商品を選択する"
 
+msgid "tpl_189_1"
+msgstr "商品を選択する<span class='attention'> *</span>"
+
 msgid "tpl_190"
 msgstr "削除します。宜しいです"
 
@@ -4126,6 +4167,9 @@ msgstr "カテゴリ"
 
 msgid "tpl_192"
 msgstr "商品コード"
+
+msgid "tpl_192_1"
+msgstr "商品コード<span class='attention'> *</span>"
 
 msgid "tpl_193"
 msgstr "検索を開始"
@@ -4172,14 +4216,26 @@ msgstr "高度な設定"
 msgid "tpl_207"
 msgstr "会員ID"
 
+msgid "tpl_207_1"
+msgstr "会員ID<span class='attention'> *</span>"
+
 msgid "tpl_208"
 msgstr "お名前"
+
+msgid "tpl_208_1"
+msgstr "お名前<span class='attention'> *</span>"
 
 msgid "tpl_209"
 msgstr "会員状態"
 
+msgid "tpl_209_1"
+msgstr "会員状態<span class='attention'> *</span>"
+
 msgid "tpl_210"
 msgstr "お名前(フリガナ)"
+
+msgid "tpl_210_1"
+msgstr "お名前(フリガナ)<span class='attention'> *</span>"
 
 msgid "tpl_211"
 msgstr "住所入力"
@@ -4187,14 +4243,23 @@ msgstr "住所入力"
 msgid "tpl_212"
 msgstr "住所"
 
+msgid "tpl_212_1"
+msgstr "住所<span class='attention'> *</span>"
+
 msgid "tpl_213"
 msgstr "携帯メールアドレス"
 
 msgid "tpl_214"
 msgstr "電話番号"
 
+msgid "tpl_214_1"
+msgstr "電話番号<span class='attention'> *</span>"
+
 msgid "tpl_215"
 msgstr "性別"
+
+msgid "tpl_215_1"
+msgstr "性別<span class='attention'> *</span>"
 
 msgid "tpl_216"
 msgstr "ご職業"
@@ -4205,6 +4270,9 @@ msgstr "生年月日"
 msgid "tpl_218"
 msgstr "パスワード"
 
+msgid "tpl_218_1"
+msgstr "パスワード<span class='attention'> *</span>"
+
 msgid "tpl_219"
 msgstr "半角英数小文字T_FIELD1～T_FIELD2文字（記号不可）"
 
@@ -4213,6 +4281,9 @@ msgstr "確認のために2度入力してください。"
 
 msgid "tpl_221"
 msgstr "パスワードを忘れたときのヒント"
+
+msgid "tpl_221_1"
+msgstr "パスワードを忘れたときのヒント<span class='attention'> *</span>"
 
 msgid "tpl_222"
 msgstr "質問"
@@ -4223,11 +4294,17 @@ msgstr "答え"
 msgid "tpl_224"
 msgstr "メールマガジン"
 
+msgid "tpl_224_1"
+msgstr "メールマガジン<span class='attention'> *</span>"
+
 msgid "tpl_225"
 msgstr "SHOP用メモ"
 
 msgid "tpl_226"
 msgstr "所持ポイント"
+
+msgid "tpl_226_1"
+msgstr "所持ポイント<span class='attention'> *</span>"
 
 msgid "tpl_227"
 msgstr "検索画面に戻る"
@@ -4488,6 +4565,9 @@ msgstr "配信終了時刻"
 msgid "tpl_311"
 msgstr "Subject"
 
+msgid "tpl_311_1"
+msgstr "Subject<span class='attention'> *</span>"
+
 msgid "tpl_312"
 msgstr "配信条件"
 
@@ -4546,13 +4626,15 @@ msgid "tpl_330"
 msgstr "登録・更新日"
 
 msgid "tpl_331"
-msgstr "テンプレート選択"
-
-msgid "tpl_332"
-msgstr "（名前差し込み時は {name} といれてください）"
+msgstr "テンプレート選択<span class='attention'> *</span>"
 
 msgid "tpl_333"
 msgstr "本文"
+
+msgid "tpl_333_1"
+msgstr ""
+"本文<span class='attention'> *</span><br />（名前差し込み時は {name} といれて"
+"ください）"
 
 msgid "tpl_334"
 msgstr "HTMLで確認"
@@ -4607,6 +4689,9 @@ msgstr "作成日"
 
 msgid "tpl_352"
 msgstr "メール形式"
+
+msgid "tpl_352_1"
+msgstr "メール形式<span class='attention'> *</span>"
 
 msgid "tpl_353"
 msgstr "テンプレート一覧に戻る"
@@ -4946,7 +5031,7 @@ msgid "tpl_464"
 msgstr "プラグイン登録"
 
 msgid "tpl_465"
-msgstr "プラグイン"
+msgstr "プラグイン<span class='attention'> *</span>"
 
 msgid "tpl_466"
 msgstr "インストール"
@@ -5029,8 +5114,14 @@ msgstr "この階層には、カテゴリが登録されていません。"
 msgid "tpl_492"
 msgstr "規格名"
 
+msgid "tpl_492_1"
+msgstr "規格名<span class='attention'> *</span>"
+
 msgid "tpl_493"
 msgstr "分類名"
+
+msgid "tpl_493_1"
+msgstr "分類名<span class='attention'> *</span>"
 
 msgid "tpl_494"
 msgstr "規格名 (登録数)"
@@ -5047,8 +5138,14 @@ msgstr "この商品の規格を登録する"
 msgid "tpl_498"
 msgstr "商品カテゴリ"
 
+msgid "tpl_498_1"
+msgstr "商品カテゴリ<span class='attention'> *</span>"
+
 msgid "tpl_499"
 msgstr "公開・非公開"
+
+msgid "tpl_499_1"
+msgstr "公開・非公開<span class='attention'> *</span>"
 
 msgid "tpl_500"
 msgstr "T_FIELD円"
@@ -5218,17 +5315,26 @@ msgstr "商品ステータス"
 msgid "tpl_555"
 msgstr "ダウンロード商品ファイル名"
 
+msgid "tpl_555_1"
+msgstr "ダウンロード商品ファイル名<span class='attention'> *</span>"
+
 msgid "tpl_556"
 msgstr "ダウンロード商品用<BR />ファイル"
 
 msgid "tpl_557"
 msgstr "在庫数"
 
+msgid "tpl_557_1"
+msgstr "在庫数<span class='attention'> *</span>"
+
 msgid "tpl_558"
 msgstr "商品送料"
 
 msgid "tpl_559"
 msgstr "ポイント付与率"
+
+msgid "tpl_559_1"
+msgstr "ポイント付与率<span class='attention'> *</span>"
 
 msgid "tpl_560"
 msgstr "発送日目安"
@@ -5250,6 +5356,9 @@ msgstr "備考欄(SHOP専用)"
 
 msgid "tpl_566"
 msgstr "一覧-メインコメント"
+
+msgid "tpl_566_1"
+msgstr "一覧-メインコメント<span class='attention'> *</span>"
 
 msgid "tpl_567"
 msgstr "詳細-メインコメント"
@@ -5306,10 +5415,11 @@ msgid "tpl_584"
 msgstr "カテゴリ ⇔ URL"
 
 msgid "tpl_585"
-msgstr "メーカー名"
+msgstr "メーカー名<span class='attention'> *</span>"
 
 msgid "tpl_586"
-msgstr "ダウンロード商品用<br />ファイルアップロード"
+msgstr ""
+"ダウンロード商品用<br />ファイルアップロード<span class='attention'> *</span>"
 
 msgid "tpl_587"
 msgstr "[ファイルの取り消し]"
@@ -5505,6 +5615,9 @@ msgstr ""
 
 msgid "tpl_648"
 msgstr "バックアップ名"
+
+msgid "tpl_648_1"
+msgstr "バックアップ名<span class='attention'> *</span>"
 
 msgid "tpl_649"
 msgstr "バックアップメモ"

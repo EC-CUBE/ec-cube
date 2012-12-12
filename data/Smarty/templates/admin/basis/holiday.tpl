@@ -30,7 +30,7 @@
 
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_022"}--><span class="attention"> *</span></th>
+            <th><!--{t string="tpl_022"}--></th>
             <td>
                 <!--{if $arrErr.title}--><span class="attention"><!--{$arrErr.title}--></span><!--{/if}-->
                 <input type="text" name="title" value="<!--{$arrForm.title|h}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="" size="60" class="box60"/>
@@ -38,7 +38,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_024"}--><span class="attention"> *</span></th>
+            <th><!--{t string="tpl_024_1"}--></th>
             <td>
                 <!--{if $arrErr.date || $arrErr.month || $arrErr.day}-->
                 <span class="attention"><!--{$arrErr.date}--></span>

@@ -71,12 +71,12 @@
         <table class="form">
             <!--{if $arrForm.customer_id}-->
             <tr>
-                <th><!--{t string="tpl_207"}--><span class="attention"> *</span></th>
+                <th><!--{t string="tpl_207_1"}--></th>
                 <td><!--{$arrForm.customer_id|h}--></td>
             </tr>
             <!--{/if}-->
             <tr>
-                <th><!--{t string="tpl_209"}--><span class="attention"> *</span></th>
+                <th><!--{t string="tpl_209_1"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.status}--></span>
                     <span <!--{if $arrErr.status != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->>
@@ -85,21 +85,21 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_208"}--><span class="attention"> *</span></th>
+                <th><!--{t string="tpl_208_1"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.name01}--><!--{$arrErr.name02}--></span>
                     <input type="text" name="name01" value="<!--{$arrForm.name01|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.name01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />&nbsp;&nbsp;<input type="text" name="name02" value="<!--{$arrForm.name02|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.name02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_210"}--><span class="attention"> *</span></th>
+                <th><!--{t string="tpl_210_1"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.kana01}--><!--{$arrErr.kana02}--></span>
                     <input type="text" name="kana01" value="<!--{$arrForm.kana01|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.kana01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />&nbsp;&nbsp;<input type="text" name="kana02" value="<!--{$arrForm.kana02|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.kana02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_033"}--><span class="attention"> *</span></th>
+                <th><!--{t string="tpl_033_1"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.zip01}--><!--{$arrErr.zip02}--></span>
                     <!--{t string="tpl_106"}--> <input type="text" name="zip01" value="<!--{$arrForm.zip01|h}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" size="6" class="box6" maxlength="3" <!--{if $arrErr.zip01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="zip02" value="<!--{$arrForm.zip02|h}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" size="6" class="box6" maxlength="4" <!--{if $arrErr.zip02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
@@ -107,7 +107,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_212"}--><span class="attention"> *</span></th>
+                <th><!--{t string="tpl_212_1"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.pref}--><!--{$arrErr.addr01}--><!--{$arrErr.addr02}--></span>
                     <select class="top" name="pref" <!--{if $arrErr.pref != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->>
@@ -121,7 +121,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_108"}--><span class="attention"> *</span></th>
+                <th><!--{t string="tpl_108_1"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.email}--></span>
                     <input type="text" name="email" value="<!--{$arrForm.email|h}-->" size="60" class="box60" <!--{if $arrErr.email != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
@@ -135,7 +135,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_214"}--><span class="attention"> *</span></th>
+                <th><!--{t string="tpl_214_1"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.tel01}--><!--{$arrErr.tel02}--><!--{$arrErr.tel03}--></span>
                     <input type="text" name="tel01" value="<!--{$arrForm.tel01|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.tel01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="tel02" value="<!--{$arrForm.tel02|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.tel01 != "" || $arrErr.tel02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="tel03" value="<!--{$arrForm.tel03|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.tel01 != "" || $arrErr.tel03 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
@@ -149,7 +149,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_215"}--><span class="attention"> *</span></th>
+                <th><!--{t string="tpl_215_1"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.sex}--></span>
                     <span <!--{if $arrErr.sex != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->>
@@ -186,7 +186,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_218"}--><span class="attention"> *</span></th>
+                <th><!--{t string="tpl_218_1"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.password}--><!--{$arrErr.password02}--></span>
                     <input type="password" name="password" value="<!--{$arrForm.password|h}-->" size="30" class="box30" <!--{if $arrErr.password != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />　<!--{t string="tpl_219" T_FIELD1=$smarty.const.PASSWORD_MIN_LEN T_FIELD2=$smarty.const.PASSWORD_MAX_LEN}--><br />
@@ -195,7 +195,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_221"}--><span class="attention"> *</span></th>
+                <th><!--{t string="tpl_221_1"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.reminder}--><!--{$arrErr.reminder_answer}--></span>
                     <!--{t string="tpl_222"}-->：
@@ -208,7 +208,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_224"}--><span class="attention"> *</span></th>
+                <th><!--{t string="tpl_224_1"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.mailmaga_flg}--></span>
                     <span <!--{if $arrErr.mailmaga_flg != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->>
@@ -224,7 +224,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_226"}--><span class="attention"> *</span></th>
+                <th><!--{t string="tpl_226_1"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.point}--></span>
                     <input type="text" name="point" value="<!--{$arrForm.point|h}-->" maxlength="<!--{$smarty.const.TEL_LEN}-->" size="6" class="box6" <!--{if $arrErr.point != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> pt

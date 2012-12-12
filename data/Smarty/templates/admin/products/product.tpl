@@ -90,7 +90,7 @@ function selectAll(target) {
             <td><!--{$arrForm.product_id|h}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_189"}--><span class="attention"> *</span></th>
+            <th><!--{t string="tpl_189_1"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.name}--></span>
                 <input type="text" name="name" value="<!--{$arrForm.name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />
@@ -98,7 +98,7 @@ function selectAll(target) {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_498"}--><span class="attention"> *</span></th>
+            <th><!--{t string="tpl_498_1"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.category_id}--></span>
                 <table class="layout">
@@ -121,7 +121,7 @@ function selectAll(target) {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_499"}--><span class="attention"> *</span></th>
+            <th><!--{t string="tpl_499_1"}--></th>
             <td>
                 <!--{html_radios name="status" options=$arrDISP selected=$arrForm.status separator='&nbsp;&nbsp;'}-->
             </td>
@@ -134,13 +134,13 @@ function selectAll(target) {
         </tr>
         <!--{if $arrForm.has_product_class == false}-->
         <tr>
-            <th><!--{t string="tpl_014"}--><span class="attention"> *</span></th>
+            <th><!--{t string="tpl_014_1"}--></th>
             <td>
                 <!--{html_radios name="product_type_id" options=$arrProductType selected=$arrForm.product_type_id separator='&nbsp;&nbsp;'}-->
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_555"}--><span class="attention"> *</span></th>
+            <th><!--{t string="tpl_555_1"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.down_filename}--></span>
                 <input type="text" name="down_filename" value="<!--{$arrForm.down_filename|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.down_filename != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" />
@@ -149,7 +149,7 @@ function selectAll(target) {
         </tr>
         <tr>
             <!--{assign var=key value="down_file"}-->
-            <th><!--{t string="tpl_586"}--><span class="attention"> *</span></th>
+            <th><!--{t string="tpl_586"}--></th>
             <td>
                 <a name="<!--{$key}-->"></a>
                 <span class="attention"><!--{$arrErr[$key]}--><!--{$arrErr.down_realfilename}--></span>
@@ -162,7 +162,7 @@ function selectAll(target) {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_192"}--><span class="attention"> *</span></th>
+            <th><!--{t string="tpl_192_1"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.product_code}--></span>
                 <input type="text" name="product_code" value="<!--{$arrForm.product_code|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.product_code != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />
@@ -186,7 +186,7 @@ function selectAll(target) {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_557"}--><span class="attention"> *</span></th>
+            <th><!--{t string="tpl_557_1"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.stock}--></span>
                 <input type="text" name="stock" value="<!--{$arrForm.stock|h}-->" size="6" class="box6" maxlength="<!--{$smarty.const.AMOUNT_LEN}-->" style="<!--{if $arrErr.stock != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
@@ -205,7 +205,7 @@ function selectAll(target) {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_559"}--><span class="attention"> *</span></th>
+            <th><!--{t string="tpl_559_1"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.point_rate}--></span>
                 <input type="text" name="point_rate" value="<!--{$arrForm.point_rate|default:$arrForm.arrInfo.point_rate|h}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PERCENTAGE_LEN}-->" style="<!--{if $arrErr.point_rate != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>％
@@ -265,7 +265,7 @@ function selectAll(target) {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_566"}--><span class="attention"> *</span></th>
+            <th><!--{t string="tpl_566_1"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.main_list_comment}--></span>
                 <textarea name="main_list_comment" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{if $arrErr.main_list_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" cols="60" rows="8" class="area60"><!--{"\n"}--><!--{$arrForm.main_list_comment|h}--></textarea><br />

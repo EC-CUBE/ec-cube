@@ -38,7 +38,7 @@
 <div id="mail" class="contents-main">
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_331"}--><span class="attention"> *</span></th>
+            <th><!--{t string="tpl_331"}--></th>
             <td>
                 <!--{assign var=key value="template_id"}-->
                 <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
@@ -53,7 +53,7 @@
     <!--{if $arrForm.template_id.value}-->
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_311"}--><span class="attention"> *</span></th>
+            <th><!--{t string="tpl_311_1"}--></th>
             <td>
                 <!--{assign var=key value="subject"}-->
                 <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
@@ -61,7 +61,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_333"}--><span class="attention"> *</span><br /><!--{t string="tpl_332"}--></th>
+            <th><!--{t string="tpl_333_1"}--></th>
             <td>
                 <!--{assign var=key value="body"}-->
                 <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->

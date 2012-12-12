@@ -40,7 +40,7 @@
     </p>
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_648"}--><span class="attention"> *</span></th>
+            <th><!--{t string="tpl_648_1"}--></th>
             <td>
                 <!--{if $arrErr.bkup_name}-->
                 <span class="attention"><!--{$arrErr.bkup_name}--></span>

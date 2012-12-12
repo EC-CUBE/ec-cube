@@ -128,7 +128,7 @@
     <h2><!--{t string="tpl_464"}--></h2>
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_465"}--><span class="attention"> *</span></th>
+            <th><!--{t string="tpl_465"}--></th>
             <td>
                 <!--{assign var=key value="plugin_file"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>

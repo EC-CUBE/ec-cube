@@ -75,7 +75,7 @@ function fnTargetSelf(){
     <h2><!--{t string="tpl_154"}--><!--{if $arrForm.sql_id != ""}-->(<!--{t string="tpl_026"}-->:<!--{$arrForm.sql_name|h}-->)<!--{else}-->(<!--{t string="tpl_155"}-->)<!--{/if}--></h2>
     <table id="contents-csv-sqlset" class="form">
         <tr>
-            <th><!--{t string="tpl_002"}--><span class="attention"> *</span></th>
+            <th><!--{t string="tpl_002_1"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.sql_name}--></span>
                 <input type="text" name="sql_name" value="<!--{$arrForm.sql_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />
@@ -83,7 +83,7 @@ function fnTargetSelf(){
             </td>
         </tr>
         <tr>
-            <th align="center"><!--{t string="tpl_158"}--><span class="attention"> *</span><br /> (<!--{t string="tpl_157"}-->)</td>
+            <th align="center"><!--{t string="tpl_158_1"}--></td>
             <td align="left">
                 <span class="attention"><!--{$arrErr.csv_sql}--></span>
                 <div>

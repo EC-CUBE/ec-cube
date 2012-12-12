@@ -28,7 +28,7 @@
 <div id="basis" class="contents-main">
     <table>
         <tr>
-            <th><!--{t string="tpl_086"}--><span class="attention"> *</span></th>
+            <th><!--{t string="tpl_086"}--></th>
             <td>
                 <!--{assign var=key value="point_rate"}-->
                 <!--{if $arrErr[$key]}-->
@@ -38,7 +38,7 @@
                 ％　<!--{t string="tpl_087"}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_088"}--><span class="attention"> *</span></th>
+            <th><!--{t string="tpl_088"}--></th>
             <td>
                 <!--{assign var=key value="welcome_point"}-->
                 <!--{if $arrErr[$key]}-->

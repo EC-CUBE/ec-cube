@@ -39,7 +39,7 @@
         <col width="20%" />
         <col width="80%" />
             <tr>
-                <th><!--{t string="tpl_016"}--><span class="attention"> *</span></th>
+                <th><!--{t string="tpl_016_1"}--></th>
                 <td>
                     <!--{assign var=key value="payment_method"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -47,7 +47,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_080"}--><span class="attention"> *</span></th>
+                <th><!--{t string="tpl_080_1"}--></th>
                 <td>
                     <!--{if $charge_flg == 2}-->
                         <!--{t string="tpl_081"}-->

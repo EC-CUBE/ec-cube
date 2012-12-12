@@ -51,7 +51,7 @@ function winSubmitMail(URL,formName,Winname,Wwidth,Wheight){
 <div id="mail" class="contents-main">
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_311"}--><span class="attention"> *</span></th>
+            <th><!--{t string="tpl_311_1"}--></th>
             <td><!--{$arrForm.subject.value|h}--></td>
         </tr>
         <!--{if $arrForm.mail_method.value ne 2}-->
@@ -60,7 +60,7 @@ function winSubmitMail(URL,formName,Winname,Wwidth,Wheight){
             </tr>
         <!--{/if}-->
         <tr>
-            <th><!--{t string="tpl_333"}--><span class="attention"> *</span><br /><!--{t string="tpl_332"}--></th>
+            <th><!--{t string="tpl_333_1"}--></th>
             <td><!--{$arrForm.body.value|h|nl2br}--></td>
         </tr>
     </table>

@@ -197,10 +197,10 @@
             <th><!--{t string="tpl_371"}--><br>(<!--{$arrClass[$class_id1]|default:"未選択"|h}-->)</th>
             <th><!--{t string="tpl_374"}--><br>(<!--{$arrClass[$class_id2]|default:"未選択"|h}-->)</th>
             <th><!--{t string="tpl_192"}--></th>
-            <th><!--{t string="tpl_557"}--><span class="attention">*</span></th>
+            <th><!--{t string="tpl_557_1"}--></th>
             <th><!--{t string="tpl_603" T_FIELD=$smarty.const.NORMAL_PRICE_TITLE}--></th>
             <th><!--{t string="tpl_603" T_FIELD=$smarty.const.SALE_PRICE_TITLE}--><span class="attention">*</span></th>
-            <th><!--{t string="tpl_014"}--><span class="attention">*</span></th>
+            <th><!--{t string="tpl_014_1"}--></th>
             <th><!--{t string="tpl_604"}--><span class="red"><br><!--{t string="tpl_606" T_FIELD=$smarty.const.STEXT_LEN}--></span></th>
             <th><!--{t string="tpl_605"}--></th>
         </tr>

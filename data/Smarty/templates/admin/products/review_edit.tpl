@@ -85,7 +85,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_022"}--> <span class="attention">*</span></th>
+            <th><!--{t string="tpl_022_1"}--></th>
             <td>
                 <!--{if $arrErr.title}--><span class="attention"><!--{$arrErr.title}--></span><!--{/if}-->
                 <input type="text" class="box60" name="title" value="<!--{$arrForm.title|h}-->" style="<!--{$arrErr.title|sfGetErrorColor}-->" size=30><span class="attention">

@@ -117,7 +117,7 @@ function moving(news_id,rank, max_rank) {
     <!--{* ▼登録テーブルここから *}-->
     <table>
         <tr>
-            <th><!--{t string="tpl_024"}--><span class="attention"> *</span></th>
+            <th><!--{t string="tpl_024_1"}--></th>
             <td>
                 <!--{if $arrErr.year || $arrErr.month || $arrErr.day}--><span class="attention"><!--{$arrErr.year}--><!--{$arrErr.month}--><!--{$arrErr.day}--></span><!--{/if}-->
                 <select name="year" <!--{if $arrErr.year || $arrErr.month || $arrErr.day }-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->>
@@ -135,7 +135,7 @@ function moving(news_id,rank, max_rank) {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_022"}--><span class="attention"> *</span></th>
+            <th><!--{t string="tpl_022_1"}--></th>
             <td>
                 <!--{if $arrErr.news_title}--><span class="attention"><!--{$arrErr.news_title}--></span><!--{/if}-->
                 <textarea name="news_title" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" <!--{if $arrErr.news_title}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->><!--{"\n"}--><!--{$arrForm.news_title|h}--></textarea><br />
