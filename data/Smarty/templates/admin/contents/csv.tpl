@@ -30,13 +30,13 @@ $().ready(function() {
     $('#output_list').multiselect2side({
         selectedPosition: 'right',
         moveOptions: true,
-        labelsx: <!--{t string="tpl_142"}-->,
-        labeldx: <!--{t string="tpl_143"}-->,
-        labelTop: <!--{t string="tpl_144"}-->,
-        labelBottom: <!--{t string="tpl_145"}-->,
-        labelUp: <!--{t string="tpl_146"}-->,
-        labelDown: <!--{t string="tpl_147"}-->,
-        labelSort: <!--{t string="tpl_148"}-->
+        labelsx: '<!--{t string="tpl_142"}-->',
+        labeldx: '<!--{t string="tpl_143"}-->',
+        labelTop: '<!--{t string="tpl_144"}-->',
+        labelBottom: '<!--{t string="tpl_145"}-->',
+        labelUp: '<!--{t string="tpl_146"}-->',
+        labelDown: '<!--{t string="tpl_147"}-->',
+        labelSort: '<!--{t string="tpl_148"}-->'
     });
     // multiselect2side の初期選択を解除
     $('.ms2side__div select').val(null);
@@ -46,7 +46,7 @@ $().ready(function() {
 });
 
 function lfFormModeDefautSetSubmit(form, mode) {
-    if (!window.confirm(<!--{t string="tpl_149"}-->)) {
+    if (!window.confirm('<!--{t string="tpl_149"}-->')) {
         return;
     }
     return fnSetFormSubmit(form, 'mode', mode);

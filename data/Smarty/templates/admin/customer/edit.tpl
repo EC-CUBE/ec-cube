@@ -198,12 +198,12 @@
                 <th><!--{t string="tpl_221_1"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.reminder}--><!--{$arrErr.reminder_answer}--></span>
-                    <!--{t string="tpl_222"}-->：
+                    <!--{t string="tpl_222"}-->
                     <select class="top" name="reminder" <!--{if $arrErr.reminder != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> >
                         <option value="" selected="selected"><!--{t string="tpl_068"}--></option>
                         <!--{html_options options=$arrReminder selected=$arrForm.reminder}-->
                     </select><br />
-                    <!--{t string="tpl_223"}-->：
+                    <!--{t string="tpl_223"}-->
                     <input type="text" name="reminder_answer" value="<!--{$arrForm.reminder_answer|h}-->" size="30" class="box30" <!--{if $arrErr.reminder_answer != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                 </td>
             </tr>

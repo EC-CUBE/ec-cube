@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2012-12-12 16:22+0900\n"
+"PO-Revision-Date: 2012-12-13 21:04+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -3740,7 +3740,7 @@ msgid "tpl_060"
 msgstr "この位置を入力"
 
 msgid "tpl_061"
-msgstr "'所在地の場所が見つかりません'"
+msgstr "所在地の場所が見つかりません"
 
 msgid "tpl_062"
 msgstr "規約タイトル"
@@ -3753,8 +3753,7 @@ msgstr "規約内容<span class='attention'> *</span>"
 
 msgid "tpl_064"
 msgstr ""
-"'内容が変更されています。続行すれば変更内容は破棄されます。宜しいでしょう"
-"か？'"
+"内容が変更されています。続行すれば変更内容は破棄されます。宜しいでしょうか？"
 
 msgid "tpl_065"
 msgstr "テンプレート<span class='attention'> *</span>"
@@ -3910,7 +3909,7 @@ msgid "tpl_112"
 msgstr "別ウィンドウで開く"
 
 msgid "tpl_113"
-msgstr "上限3000文字"
+msgstr "(上限3000文字)"
 
 msgid "tpl_114"
 msgstr "新着情報一覧"
@@ -4008,28 +4007,28 @@ msgstr ""
 "す。"
 
 msgid "tpl_142"
-msgstr "'CSV出力しない項目'"
+msgstr "CSV出力しない項目"
 
 msgid "tpl_143"
-msgstr "'CSV出力する項目'"
+msgstr "CSV出力する項目"
 
 msgid "tpl_144"
-msgstr "'一番上'"
+msgstr "一番上"
 
 msgid "tpl_145"
-msgstr "'一番下'"
+msgstr "一番下"
 
 msgid "tpl_146"
-msgstr "'一つ上'"
+msgstr "一つ上"
 
 msgid "tpl_147"
-msgstr "'一つ下'"
+msgstr "一つ下"
 
 msgid "tpl_148"
-msgstr "'項目順序'"
+msgstr "項目順序"
 
 msgid "tpl_149"
-msgstr "'初期設定で登録しても宜しいですか'"
+msgstr "初期設定で登録しても宜しいですか"
 
 msgid "tpl_150"
 msgstr "※ 正常に更新されました。"
@@ -4042,12 +4041,6 @@ msgstr "SQL一覧"
 
 msgid "tpl_153"
 msgstr "CSV出力"
-
-msgid "tpl_154"
-msgstr "SQL設定"
-
-msgid "tpl_155"
-msgstr "新規入力"
 
 msgid "tpl_156"
 msgstr "SQLを新規入力"
@@ -4151,7 +4144,7 @@ msgid "tpl_187"
 msgstr "商品/コメント"
 
 msgid "tpl_188"
-msgstr "商品名"
+msgstr "商品名："
 
 msgid "tpl_189"
 msgstr "商品を選択する"
@@ -4286,10 +4279,10 @@ msgid "tpl_221_1"
 msgstr "パスワードを忘れたときのヒント<span class='attention'> *</span>"
 
 msgid "tpl_222"
-msgstr "質問"
+msgstr "質問："
 
 msgid "tpl_223"
-msgstr "答え"
+msgstr "答え："
 
 msgid "tpl_224"
 msgstr "メールマガジン"
@@ -4829,7 +4822,7 @@ msgid "tpl_397"
 msgstr "帳票出力"
 
 msgid "tpl_398"
-msgstr "'チェックボックスが選択されていません'"
+msgstr "チェックボックスが選択されていません"
 
 msgid "tpl_399"
 msgstr "更新日"
@@ -5768,3 +5761,21 @@ msgstr "T_FIELD件"
 
 msgid "tpl_702"
 msgstr "T_FIELD 円"
+
+msgid "tpl_703"
+msgstr "SQL設定(編集中:T_FIELD)"
+
+msgid "tpl_704"
+msgstr "SQL設定(新規入力)"
+
+msgid "tpl_705"
+msgstr "詳細-サブ画像(T_FIELD1)<br />[T_FIELD2×T_FIELD3]"
+
+msgid "tpl_706"
+msgstr "詳細-サブ拡大画像(T_FIELD1)<br />[T_FIELD2×T_FIELD3]"
+
+msgid "tpl_707"
+msgstr "※T_FIELDは販売商品から削除されています。"
+
+msgid "tpl_708"
+msgstr "※全国一律送料設定(円):"

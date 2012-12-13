@@ -118,8 +118,8 @@ function func_return(){
             <tr>
                 <th><!--{t string="tpl_243"}--></th>
                 <td>
-                    <!--{t string="tpl_222"}-->： <!--{$arrReminder[$arrForm.reminder]|h}--><br />
-                    <!--{t string="tpl_223"}-->： <!--{$smarty.const.DEFAULT_PASSWORD}-->
+                    <!--{t string="tpl_222"}--> <!--{$arrReminder[$arrForm.reminder]|h}--><br />
+                    <!--{t string="tpl_223"}--> <!--{$smarty.const.DEFAULT_PASSWORD}-->
                 </td>
             </tr>
             <tr>

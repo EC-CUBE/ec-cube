@@ -70,9 +70,14 @@ function fnTargetSelf(){
     <div class="btn addnew">
         <a class="btn-normal" href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','',''); return false;"><span><!--{t string="tpl_156"}--></span></a>
     </div>
-
-
-    <h2><!--{t string="tpl_154"}--><!--{if $arrForm.sql_id != ""}-->(<!--{t string="tpl_026"}-->:<!--{$arrForm.sql_name|h}-->)<!--{else}-->(<!--{t string="tpl_155"}-->)<!--{/if}--></h2>
+    <h2>
+        <!--{if $arrForm.sql_id != ""}-->
+            <!--{t string="tpl_703" T_FIELD=$arrForm.sql_name|h}-->
+        <!--{else}-->
+            <!--{t string="tpl_704"}-->
+        <!--{/if}-->
+    </h2>
+    
     <table id="contents-csv-sqlset" class="form">
         <tr>
             <th><!--{t string="tpl_002_1"}--></th>

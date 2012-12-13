@@ -359,7 +359,7 @@ function selectAll(target) {
         </tr>
         <tr>
             <!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
-            <th>詳細-サブ画像(<!--{$smarty.section.cnt.iteration}-->)<br />[<!--{$smarty.const.NORMAL_SUBIMAGE_WIDTH}-->×<!--{$smarty.const.NORMAL_SUBIMAGE_HEIGHT}-->]</th>
+            <th><!--{t string="tpl_705" T_FIELD1=$smarty.section.cnt.iteration T_FIELD2=$smarty.const.NORMAL_SUBIMAGE_WIDTH T_FIELD3=$smarty.const.NORMAL_SUBIMAGE_HEIGHT}--></th>
             <td>
                 <a name="<!--{$key}-->"></a>
                 <!--{assign var=largekey value="sub_large_image`$smarty.section.cnt.iteration`"}-->
@@ -374,7 +374,7 @@ function selectAll(target) {
         </tr>
         <tr>
             <!--{assign var=key value="sub_large_image`$smarty.section.cnt.iteration`"}-->
-            <th>詳細-サブ拡大画像(<!--{$smarty.section.cnt.iteration}-->)<br />[<!--{$smarty.const.LARGE_SUBIMAGE_WIDTH}-->×<!--{$smarty.const.LARGE_SUBIMAGE_HEIGHT}-->]</th>
+            <th><!--{t string="tpl_706" T_FIELD1=$smarty.section.cnt.iteration T_FIELD2=$smarty.const.LARGE_SUBIMAGE_WIDTH T_FIELD3=$smarty.const.LARGE_SUBIMAGE_HEIGHT}--></th>
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->

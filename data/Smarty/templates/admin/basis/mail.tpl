@@ -31,7 +31,7 @@ function setFlag(){
 }
 function checkFlagAndSubmit(){
     if ( flag == 1 ){
-        if( confirm(<!--{t string="tpl_064"}-->) ){
+        if( confirm('<!--{t string="tpl_064"}-->') ){
             fnSetvalAndSubmit( 'form1', 'mode', 'id_set' );
         } else {
             return false;

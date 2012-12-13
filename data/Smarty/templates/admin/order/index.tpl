@@ -48,7 +48,7 @@
         }
 
         if(!checkflag){
-            alert(<!--{t string="tpl_398"}-->);
+            alert('<!--{t string="tpl_398"}-->');
             return false;
         }
 
@@ -100,7 +100,7 @@
         }
 
         if(!checkflag){
-            alert(<!--{t string="tpl_398"}-->);
+            alert('<!--{t string="tpl_398"}-->');
             return false;
         }
         

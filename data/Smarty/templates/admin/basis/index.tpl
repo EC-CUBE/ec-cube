@@ -42,11 +42,11 @@ $(function() {
                     $("#latitude").val(latlng.lat());
                     $("#longitude").val(latlng.lng());
                 } else {
-                    alert(<!--{t string="tpl_061"}-->);
+                    alert('<!--{t string="tpl_061"}-->');
                 }
             });
         } else {
-            alert(<!--{t string="tpl_061"}-->);
+            alert('<!--{t string="tpl_061"}-->');
         }
     });
 

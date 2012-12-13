@@ -146,7 +146,7 @@ function fnSelectCheckSubmit(){
     }
 
     if (checkflag == 0){
-        alert(<!--{t string="tpl_398"}-->);
+        alert('<!--{t string="tpl_398"}-->');
         return false;
     }
 

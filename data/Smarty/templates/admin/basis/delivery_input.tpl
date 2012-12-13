@@ -112,7 +112,7 @@
     <!--{if $smarty.const.INPUT_DELIV_FEE}-->
     <h2><!--{t string="tpl_017"}--></h2>
     <div class="btn">
-        ※全国一律送料 <input type='text' name='fee_all' class='box10' /> 円に設定する　<a class="btn-normal" href="javascript:;" onclick="fnSetDelivFee(<!--{$smarty.const.DELIVFEE_MAX}-->); return false;"><span><!--{t string="tpl_019"}--></span></a>
+        <!--{t string="tpl_708"}--> <input type='text' name='fee_all' class='box10' />　<a class="btn-normal" href="javascript:;" onclick="fnSetDelivFee(<!--{$smarty.const.DELIVFEE_MAX}-->); return false;"><span><!--{t string="tpl_019"}--></span></a>
     </div>
     <table>
         <!--{section name=cnt loop=$smarty.const.DELIVFEE_MAX}-->
