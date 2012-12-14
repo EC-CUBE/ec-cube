@@ -12,7 +12,10 @@
 # 4. data/config/config.php を生成
 #
 # 使い方
-#
+# Configurationの内容を自分の環境に併せて修正
+# PostgreSQLの場合は、DBユーザーを予め作成しておいて
+# # ./ec_cube_install.sh pgsql
+# MySQLはMYSQLのRoot以外のユーザーで実行する場合は、128行目をコメントアウトして
 # # ./ec_cube_install.sh mysql
 #
 #
@@ -52,7 +55,7 @@ case "${DBTYPE}" in
     #-- DB Seting MySQL
     MYSQL=mysql
     ROOTUSER=root
-    ROOTPASS=arigato36
+    ROOTPASS=password
     DBSERVER="127.0.0.1"
     DBNAME=cube212_dev
     DBUSER=cube212_dev_user
@@ -67,9 +70,6 @@ esac
 
 #######################################################################
 # Install 
-
-echo "PREFIX=${PREFIX}"
-echo "EC_CUBE_VERSION=${EC_CUBE_VERSION}"
 
 #-- Update Permissions
 echo "update permissions..."
