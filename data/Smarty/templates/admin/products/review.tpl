@@ -73,7 +73,8 @@
                 <select name="search_startday" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
                     <option value="">--</option>
                     <!--{html_options options=$arrStartDay selected=$arrForm.search_startday|h}-->
-                </select>日～
+                </select>日
+                <!--{t string="-"}-->
                 <select name="search_endyear" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
                     <option value="">----</option>
                     <!--{html_options options=$arrEndYear selected=$arrForm.search_endyear|h}-->
@@ -92,13 +93,16 @@
 
     <div class="btn">
         <p class="page_rows"><!--{t string="tpl_251"}-->
-        <!--{assign var=key value="search_page_max"}-->
-        <!--{if $arrErr[$key]}-->
-            <span class="attention"><!--{$arrErr[$key]}--></span>
-        <!--{/if}-->
-        <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-        <!--{html_options options=$arrPageMax selected=$arrForm.search_page_max|h}-->
-        </select> 件</p>
+            <!--{assign var=key value="search_page_max"}-->
+            <!--{if $arrErr[$key]}-->
+                <span class="attention"><!--{$arrErr[$key]}--></span>
+            <!--{/if}-->
+            <!--{t string="record_prefix"}-->
+            <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+            <!--{html_options options=$arrPageMax selected=$arrForm.search_page_max|h}-->
+            </select> 
+            <!--{t string="record_suffix"}-->
+        </p>
         <div class="btn-area">
             <ul>
                 <li>

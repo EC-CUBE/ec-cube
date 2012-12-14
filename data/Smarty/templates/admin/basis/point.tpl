@@ -35,7 +35,7 @@
                     <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{/if}-->
                 <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box6" />
-                ％　<!--{t string="tpl_087"}--></td>
+                <!--{t string="%"}-->　<!--{t string="tpl_087"}--></td>
         </tr>
         <tr>
             <th><!--{t string="tpl_088"}--></th>
@@ -44,8 +44,10 @@
                 <!--{if $arrErr[$key]}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{/if}-->
+                <!--{t string="pt_prefix"}-->
                 <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box6" />
-            pt</td>
+                <!--{t string="pt_suffix"}-->
+            </td>
         </tr>
     </table>
 

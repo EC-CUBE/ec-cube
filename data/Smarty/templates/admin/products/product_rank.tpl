@@ -125,7 +125,7 @@
                         <td align="center">
                         <!--{* 移動 *}-->
                         <!--{if !(count($arrProductsList) == 1 && $rank == 1)}-->
-                        <input type="text" name="pos-<!--{$arrProductsList[cnt].product_id}-->" size="3" class="box3" />番目へ<a href="?" onclick="fnModeSubmit('move','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;"><!--{t string="tpl_005"}--></a><br />
+                        <input type="text" name="pos-<!--{$arrProductsList[cnt].product_id}-->" size="3" class="box3" /><!--{t string="tpl_713"}--><a href="?" onclick="fnModeSubmit('move','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;"><!--{t string="tpl_005"}--></a><br />
                         <!--{/if}-->
                         <!--{if !($smarty.section.cnt.first && $tpl_disppage eq 1)}-->
                         <a href="?" onclick="fnModeSubmit('up','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;"><!--{t string="tpl_077"}--></a>

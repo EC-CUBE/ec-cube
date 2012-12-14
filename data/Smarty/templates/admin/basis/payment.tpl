@@ -60,8 +60,8 @@
                 <td class="right"><!--{$arrPaymentListFree[cnt].charge|number_format|h}--></td>
             <!--{/if}-->
             <td class="center">
-                <!--{if $arrPaymentListFree[cnt].rule_max > 0}--><!--{$arrPaymentListFree[cnt].rule_max|number_format|h}--><!--{else}-->0<!--{/if}-->円
-                <!--{if $arrPaymentListFree[cnt].upper_rule > 0}-->～<!--{$arrPaymentListFree[cnt].upper_rule|number_format|h}-->円<!--{elseif $arrPaymentListFree[cnt].upper_rule == "0"}--><!--{else}-->～無制限<!--{/if}--></td>
+                <!--{t string="currency_prefix"}--><!--{if $arrPaymentListFree[cnt].rule_max > 0}--><!--{$arrPaymentListFree[cnt].rule_max|number_format|h}--><!--{else}-->0<!--{/if}--><!--{t string="currency_suffix"}-->
+                <!--{if $arrPaymentListFree[cnt].upper_rule > 0}--><!--{t string="-"}--><!--{t string="currency_prefix"}--><!--{$arrPaymentListFree[cnt].upper_rule|number_format|h}--><!--{t string="currency_suffix"}--><!--{elseif $arrPaymentListFree[cnt].upper_rule == "0"}--><!--{else}-->～無制限<!--{/if}--></td>
             <td class="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="?" onclick="fnChangeAction('./payment_input.php'); fnModeSubmit('pre_edit', 'payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;"><!--{t string="tpl_003"}--></a><!--{else}-->-<!--{/if}--></td>
             <td class="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="?" onclick="fnModeSubmit('delete', 'payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;"><!--{t string="tpl_004"}--></a><!--{else}-->-<!--{/if}--></td>
             <td class="center">

@@ -75,7 +75,7 @@ self.moveTo(20,20);self.focus();
             <th><!--{t string="tpl_339"}--></th>
             <td>
             <!--{if $arrSearchData.search_b_start_year}-->
-                <!--{$arrSearchData.search_b_start_year}-->年<!--{$arrSearchData.search_b_start_month}-->月<!--{$arrSearchData.search_b_start_day}-->日&nbsp;～
+                <!--{$arrSearchData.search_b_start_year}-->年<!--{$arrSearchData.search_b_start_month}-->月<!--{$arrSearchData.search_b_start_day}-->日&nbsp;<!--{t string="-"}-->
                 <!--{if $arrSearchData.search_b_end_year}-->&nbsp;<!--{$arrSearchData.search_b_end_year}-->年<!--{$arrSearchData.search_b_end_month}-->月<!--{$arrSearchData.search_b_end_day}-->日<!--{/if}-->
             <!--{else}--><!--{t string="tpl_337"}--><!--{/if}-->
             </td>
@@ -106,22 +106,23 @@ self.moveTo(20,20);self.focus();
         <tr>
             <th><!--{t string="tpl_232"}--></th>
             <td>
-                <!--{if $arrSearchData.search_buy_total_from == null}--><!--{t string="tpl_337"}--><!--{else}--><!--{t string="tpl_500" T_FIELD=$arrSearchData.search_buy_total_from|h}--><!--{/if}--> ～
+                <!--{if $arrSearchData.search_buy_total_from == null}--><!--{t string="tpl_337"}--><!--{else}--><!--{t string="tpl_500" T_FIELD=$arrSearchData.search_buy_total_from|h}--><!--{/if}--> <!--{t string="-"}-->
                 <!--{if $arrSearchData.search_buy_total_to == null}--><!--{t string="tpl_337"}--><!--{else}--><!--{t string="tpl_500" T_FIELD=$arrSearchData.search_buy_total_to|h}--><!--{/if}-->
             </td>
         </tr>
         <tr>
             <th><!--{t string="tpl_341"}--></th>
             <td>
-                <!--{if $arrSearchData.search_buy_times_from == null}--><!--{t string="tpl_337"}--><!--{else}--><!--{$arrSearchData.search_buy_times_from|h}-->回<!--{/if}--> ～
-                <!--{if $arrSearchData.search_buy_times_to == null}--><!--{t string="tpl_337"}--><!--{else}--><!--{$arrSearchData.search_buy_times_to|h}-->回<!--{/if}-->
+                <!--{if $arrSearchData.search_buy_times_from == null}--><!--{t string="tpl_337"}--><!--{else}--><!--{t string="times_prefix"}--><!--{$arrSearchData.search_buy_times_from|h}--><!--{t string="times_suffix"}--><!--{/if}--> 
+                <!--{t string="-"}-->
+                <!--{if $arrSearchData.search_buy_times_to == null}--><!--{t string="tpl_337"}--><!--{else}--><!--{t string="times_prefix"}--><!--{$arrSearchData.search_buy_times_to|h}--><!--{t string="times_suffix"}--><!--{/if}-->
             </td>
         </tr>
         <tr>
             <th><!--{t string="tpl_330"}--></th>
             <td>
             <!--{if $arrSearchData.search_start_year}-->
-                <!--{$arrSearchData.search_start_year}-->年<!--{$arrSearchData.search_start_month}-->月<!--{$arrSearchData.search_start_day}-->日&nbsp;～
+                <!--{$arrSearchData.search_start_year}-->年<!--{$arrSearchData.search_start_month}-->月<!--{$arrSearchData.search_start_day}-->日&nbsp;<!--{t string="-"}-->
                 <!--{if $arrSearchData.search_end_year}-->&nbsp;<!--{$arrSearchData.search_end_year}-->年<!--{$arrSearchData.search_end_month}-->月<!--{$arrSearchData.search_end_day}-->日<!--{/if}-->
             <!--{else}--><!--{t string="tpl_337"}--><!--{/if}-->
             </td>
@@ -130,7 +131,7 @@ self.moveTo(20,20);self.focus();
             <th><!--{t string="tpl_342"}--></th>
             <td>
             <!--{if $arrSearchData.search_buy_start_year}-->
-                <!--{$arrSearchData.search_buy_start_year}-->年<!--{$arrSearchData.search_buy_start_month}-->月<!--{$arrSearchData.search_buy_start_day}-->日&nbsp;～
+                <!--{$arrSearchData.search_buy_start_year}-->年<!--{$arrSearchData.search_buy_start_month}-->月<!--{$arrSearchData.search_buy_start_day}-->日&nbsp;<!--{t string="-"}-->
                 <!--{if $arrSearchData.search_buy_end_year}-->&nbsp;<!--{$arrSearchData.search_buy_end_year}-->年<!--{$arrSearchData.search_buy_end_month}-->月<!--{$arrSearchData.search_buy_end_day}-->日<!--{/if}-->
             <!--{else}--><!--{t string="tpl_337"}--><!--{/if}-->
             </td>

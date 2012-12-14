@@ -54,8 +54,9 @@
                     <!--{else}-->
                         <!--{assign var=key value="charge"}-->
                         <span class="attention"><!--{$arrErr[$key]}--></span>
+                        <!--{t string="currency_prefix"}-->
                         <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" size="10" class="box10" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-                        円
+                        <!--{t string="currency_suffix"}-->
                     <!--{/if}-->
                 </td>
             </tr>
@@ -66,11 +67,13 @@
                     <!--{assign var=key_to value="upper_rule"}-->
                     <span class="attention"><!--{$arrErr[$key_from]}--></span>
                     <span class="attention"><!--{$arrErr[$key_to]}--></span>
+                    <!--{t string="currency_prefix"}-->
                     <input type="text" name="<!--{$arrForm[$key_from].keyname}-->" value="<!--{$arrForm[$key_from].value|h}-->" size="10" class="box10" maxlength="<!--{$arrForm[$key_from].length}-->" style="<!--{$arrErr[$key_from]|sfGetErrorColor}-->" />
-                    円
-                    ～
+                    <!--{t string="currency_suffix"}-->
+                    <!--{t string="-"}-->
+                    <!--{t string="currency_prefix"}-->
                     <input type="text" name="<!--{$arrForm[$key_to].keyname}-->" value="<!--{$arrForm[$key_to].value|h}-->" size="10" class="box10" maxlength="<!--{$arrForm[$key_to].length}-->" style="<!--{$arrErr[$key_to]|sfGetErrorColor}-->" />
-                    円
+                    <!--{t string="currency_suffix"}-->
                 </td>
             </tr>
             <tr>

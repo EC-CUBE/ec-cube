@@ -127,7 +127,8 @@ function lfnDispChange(){
                 <select name="search_startday" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
                 <option value="">--</option>
                 <!--{html_options options=$arrStartDay selected=$arrForm.search_startday.value}-->
-                </select>日～
+                </select>日
+                <!--{t string="-"}-->
                 <select name="search_endyear" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
                 <option value="">----</option>
                 <!--{html_options options=$arrEndYear selected=$arrForm.search_endyear.value}-->
@@ -153,13 +154,16 @@ function lfnDispChange(){
     </table>
     <div class="btn">
         <p class="page_rows"><!--{t string="tpl_251"}-->
-        <!--{assign var=key value="search_page_max"}-->
-        <!--{if $arrErr[$key]}-->
-            <span class="attention"><!--{$arrErr[$key]}--></span>
-        <!--{/if}-->
-        <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-            <!--{html_options options=$arrPageMax selected=$arrForm.search_page_max.value}-->
-        </select> 件</p>
+            <!--{assign var=key value="search_page_max"}-->
+            <!--{if $arrErr[$key]}-->
+                <span class="attention"><!--{$arrErr[$key]}--></span>
+            <!--{/if}-->
+            <!--{t string="record_prefix"}-->
+            <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+                <!--{html_options options=$arrPageMax selected=$arrForm.search_page_max.value}-->
+            </select> 
+            <!--{t string="record_suffix"}-->
+        </p>
 
         <div class="btn-area">
             <ul>
@@ -246,14 +250,14 @@ function lfnDispChange(){
                     <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65">            </td>
                     <td rowspan="2"><!--{$arrProducts[cnt].product_code_min|h}-->
                         <!--{if $arrProducts[cnt].product_code_min != $arrProducts[cnt].product_code_max}-->
-                            <br />～ <!--{$arrProducts[cnt].product_code_max|h}-->
+                            <br /><!--{t string="-"}--> <!--{$arrProducts[cnt].product_code_max|h}-->
                         <!--{/if}-->
                     </td>
                     <!--{* 価格 *}-->
                     <td rowspan="2" class="right">
                         <!--{$arrProducts[cnt].price02_min|number_format}-->
                         <!--{if $arrProducts[cnt].price02_min != $arrProducts[cnt].price02_max}-->
-                            <br />～ <!--{$arrProducts[cnt].price02_max|number_format}-->
+                            <br /><!--{t string="-"}--> <!--{$arrProducts[cnt].price02_max|number_format}-->
                         <!--{/if}-->            </td>
                     <td><!--{$arrProducts[cnt].name|h}--></td>
                     <!--{* 在庫 *}-->
@@ -261,7 +265,7 @@ function lfnDispChange(){
                     <td class="menu" rowspan="2">
                         <!--{if $arrProducts[cnt].stock_unlimited_min}--><!--{t string="tpl_053"}--><!--{else}--><!--{$arrProducts[cnt].stock_min|number_format}--><!--{/if}-->
                         <!--{if $arrProducts[cnt].stock_unlimited_min != $arrProducts[cnt].stock_unlimited_max || $arrProducts[cnt].stock_min != $arrProducts[cnt].stock_max}-->
-                            <br />～ <!--{if $arrProducts[cnt].stock_unlimited_max}--><!--{t string="tpl_053"}--><!--{else}--><!--{$arrProducts[cnt].stock_max|number_format}--><!--{/if}-->
+                            <br /><!--{t string="-"}--> <!--{if $arrProducts[cnt].stock_unlimited_max}--><!--{t string="tpl_053"}--><!--{else}--><!--{$arrProducts[cnt].stock_max|number_format}--><!--{/if}-->
                         <!--{/if}-->            </td>
                     <!--{* 表示 *}-->
                     <!--{assign var=key value=$arrProducts[cnt].status}-->

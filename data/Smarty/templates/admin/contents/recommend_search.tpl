@@ -99,7 +99,7 @@ function func_submit( id ){
                 <!--{assign var=codemax value=`$arr.product_code_max`}-->
                 <!--{* 商品コード *}-->
                 <!--{if $codemin != $codemax}-->
-                    <!--{$codemin|h}-->～<!--{$codemax|h}-->
+                    <!--{$codemin|h}--><!--{t string="-"}--><!--{$codemax|h}-->
                 <!--{else}-->
                     <!--{$codemin|h}-->
                 <!--{/if}-->

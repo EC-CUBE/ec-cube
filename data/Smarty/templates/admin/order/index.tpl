@@ -127,7 +127,7 @@
                 <span class="attention"><!--{$arrErr[$key1]}--></span>
                 <span class="attention"><!--{$arrErr[$key2]}--></span>
                 <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="6" class="box6" />
-                ～
+                <!--{t string="-"}-->
                 <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="6" class="box6" />
             </td>
             <th><!--{t string="tpl_360"}--></th>
@@ -184,7 +184,8 @@
                 <select name="search_sbirthday" style="<!--{$arrErr.search_sbirthyear|sfGetErrorColor}-->">
                 <option value="">--</option>
                 <!--{html_options options=$arrDay selected=$arrForm.search_sbirthday.value}-->
-                </select>日～
+                </select>日
+                <!--{t string="-"}-->
                 <select name="search_ebirthyear" style="<!--{$arrErr.search_ebirthyear|sfGetErrorColor}-->">
                 <option value="">----</option>
                 <!--{html_options options=$arrBirthYear selected=$arrForm.search_ebirthyear.value}-->
@@ -231,7 +232,8 @@
                 <select name="search_sorderday" style="<!--{$arrErr.search_sorderyear|sfGetErrorColor}-->">
                 <option value="">--</option>
                 <!--{html_options options=$arrDay selected=$arrForm.search_sorderday.value}-->
-                </select>日～
+                </select>日
+                <!--{t string="-"}-->
                 <select name="search_eorderyear" style="<!--{$arrErr.search_eorderyear|sfGetErrorColor}-->">
                 <option value="">----</option>
                 <!--{html_options options=$arrRegistYear selected=$arrForm.search_eorderyear.value}-->
@@ -262,7 +264,8 @@
                 <select name="search_supdateday" style="<!--{$arrErr.search_supdateyear|sfGetErrorColor}-->">
                     <option value="">--</option>
                     <!--{html_options options=$arrDay selected=$arrForm.search_supdateday.value}-->
-                </select>日～
+                </select>日
+                <!--{t string="-"}-->
                 <select name="search_eupdateyear" style="<!--{$arrErr.search_eupdateyear|sfGetErrorColor}-->">
                     <option value="">----</option>
                     <!--{html_options options=$arrRegistYear selected=$arrForm.search_eupdateyear.value}-->
@@ -284,10 +287,13 @@
                 <!--{assign var=key2 value="search_total2"}-->
                 <span class="attention"><!--{$arrErr[$key1]}--></span>
                 <span class="attention"><!--{$arrErr[$key2]}--></span>
+                <!--{t string="currency_prefix"}-->
                 <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="6" class="box6" />
-                円 ～
+                <!--{t string="currency_suffix"}-->
+                <!--{t string="-"}-->
+                <!--{t string="currency_prefix"}-->
                 <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="6" class="box6" />
-                円
+                <!--{t string="currency_suffix"}-->
             </td>
             <th><!--{t string="tpl_400"}--></th>
             <td>
@@ -300,11 +306,14 @@
 
     <div class="btn">
         <p class="page_rows"><!--{t string="tpl_251"}-->
-        <!--{assign var=key value="search_page_max"}-->
-        <span class="attention"><!--{$arrErr[$key]}--></span>
-        <select name="<!--{$arrForm[$key].keyname}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-        <!--{html_options options=$arrPageMax selected=$arrForm[$key].value}-->
-        </select> 件</p>
+            <!--{assign var=key value="search_page_max"}-->
+            <span class="attention"><!--{$arrErr[$key]}--></span>
+            <!--{t string="record_prefix"}-->
+            <select name="<!--{$arrForm[$key].keyname}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+            <!--{html_options options=$arrPageMax selected=$arrForm[$key].value}-->
+            </select> 
+            <!--{t string="record_suffix"}-->
+        </p>
         <div class="btn-area">
             <ul>
                 <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_252"}--></span></a></li>

@@ -244,8 +244,9 @@
             <th><!--{t string="tpl_366"}--></th>
             <td>
                 <!--{if $arrForm.customer_id > 0}-->
+                    <!--{t string="pt_prefix"}-->
                     <!--{$arrForm.customer_point.value|number_format}-->
-                    pt
+                    <!--{t string="pt_suffix"}-->
                 <!--{else}-->
                     <!--{t string="tpl_363"}-->
             <!--{/if}-->
@@ -305,7 +306,7 @@
             <td align="center">
                 <!--{assign var=key value="price"}-->
                 <span class="attention"><!--{$arrErr[$key][$product_index]}--></span>
-                <input type="text" name="<!--{$key}-->[<!--{$product_index}-->]" value="<!--{$arrForm[$key].value[$product_index]|h}-->" size="6" class="box6" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key][$product_index]|sfGetErrorColor}-->" id="<!--{$key}-->_<!--{$product_index}-->" /> 円
+                <!--{t string="currency_prefix"}--><input type="text" name="<!--{$key}-->[<!--{$product_index}-->]" value="<!--{$arrForm[$key].value[$product_index]|h}-->" size="6" class="box6" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key][$product_index]|sfGetErrorColor}-->" id="<!--{$key}-->_<!--{$product_index}-->" /> <!--{t string="currency_suffix"}-->
             </td>
             <td align="center">
                 <!--{assign var=key value="quantity"}-->
@@ -314,7 +315,7 @@
             </td>
             <!--{assign var=price value=`$arrForm.price.value[$product_index]`}-->
             <!--{assign var=quantity value=`$arrForm.quantity.value[$product_index]`}-->
-            <td class="right"><!--{t string="tpl_702" T_FIELD=$price|sfCalcIncTax|number_format}--></td>
+            <td class="right"><!--{t string="currency_prefix"}--><!--{$price|sfCalcIncTax|number_format}--><!--{t string="currency_suffix"}--></td>
             <td class="right"><!--{t string="tpl_500" T_FIELD=$price|sfCalcIncTax|sfMultiply:$quantity|number_format}--></td>
         </tr>
         <!--{/section}-->
@@ -327,8 +328,9 @@
             <td class="right">
                 <!--{assign var=key value="discount"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
+                <!--{t string="currency_prefix"}-->
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="5" class="box6" />
-                円
+                <!--{t string="currency_suffix"}-->
             </td>
         </tr>
         <tr>
@@ -336,8 +338,9 @@
             <td class="right">
                 <!--{assign var=key value="deliv_fee"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
+                <!--{t string="currency_prefix"}-->
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="5" class="box6" />
-                円
+                <!--{t string="currency_suffix"}-->
             </td>
         </tr>
         <tr>
@@ -345,22 +348,23 @@
             <td class="right">
                 <!--{assign var=key value="charge"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
+                <!--{t string="currency_prefix"}-->
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="5" class="box6" />
-                円
+                <!--{t string="currency_suffix"}-->
             </td>
         </tr>
         <tr>
             <th colspan="5" class="column right"><!--{t string="tpl_379"}--></th>
             <td class="right">
                 <span class="attention"><!--{$arrErr.total}--></span>
-                <!--{t string="tpl_702" T_FIELD=$arrForm.total.value|number_format}-->
+                <!--{t string="currency_prefix"}--><!--{$arrForm.total.value|number_format}--><!--{t string="currency_suffix"}-->
             </td>
         </tr>
         <tr>
             <th colspan="5" class="column right"><!--{t string="tpl_380"}--></th>
             <td class="right">
                 <span class="attention"><!--{$arrErr.payment_total}--></span>
-                <!--{t string="tpl_702" T_FIELD=$arrForm.payment_total.value|number_format}-->
+                <!--{t string="currency_prefix"}--><!--{$arrForm.payment_total.value|number_format}--><!--{t string="currency_suffix"}-->
             </td>
         </tr>
         <!--{if $smarty.const.USE_POINT !== false}-->
@@ -369,24 +373,27 @@
                 <td class="right">
                     <!--{assign var=key value="use_point"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
+                    <!--{t string="pt_prefix"}-->
                     <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|default:0|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="5" class="box6" />
-                    pt
+                    <!--{t string="pt_suffix"}-->
                 </td>
             </tr>
             <!--{if $arrForm.birth_point.value > 0}-->
             <tr>
                 <th colspan="5" class="column right"><!--{t string="tpl_382"}--></th>
                 <td class="right">
+                    <!--{t string="pt_prefix"}-->
                     <!--{$arrForm.birth_point.value|number_format}-->
-                    pt
+                    <!--{t string="pt_suffix"}-->
                 </td>
             </tr>
             <!--{/if}-->
             <tr>
                 <th colspan="5" class="column right"><!--{t string="tpl_383"}--></th>
                 <td class="right">
+                    <!--{t string="pt_prefix"}-->
                     <!--{$arrForm.add_point.value|number_format|default:0}-->
-                    pt
+                    <!--{t string="pt_suffix"}-->
                 </td>
             </tr>
         <!--{/if}-->

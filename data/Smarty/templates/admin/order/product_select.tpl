@@ -188,7 +188,7 @@
                         <!--{assign var=codemax value=`$arrProducts[cnt].product_code_max`}-->
                         <!--{* 商品コード *}-->
                         <!--{if $codemin != $codemax}-->
-                            <!--{$codemin|h}-->～<!--{$codemax|h}-->
+                            <!--{$codemin|h}--><!--{t string="-"}--><!--{$codemax|h}-->
                         <!--{else}-->
                             <!--{$codemin|h}-->
                         <!--{/if}-->

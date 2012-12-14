@@ -92,7 +92,7 @@ function func_submit( id ){
                 <td>
                     <!--{$arrProducts[cnt].product_code_min|h}-->
                     <!--{if $arrProducts[cnt].product_code_min != $arrProducts[cnt].product_code_max}-->
-                        ～ <!--{$arrProducts[cnt].product_code_max|h}-->
+                        <!--{t string="-"}--> <!--{$arrProducts[cnt].product_code_max|h}-->
                     <!--{/if}-->
                 </td>
                 <td><!--{$arrProducts[cnt].name|h}--></td>

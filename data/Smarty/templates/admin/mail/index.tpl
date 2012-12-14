@@ -51,10 +51,13 @@
 
     <div class="btn">
         <p class="page_rows"><!--{t string="tpl_251"}-->
-        <!--{assign var=key value="search_page_max"}-->
-        <select name="<!--{$key}-->">
-            <!--{html_options options=$arrPageRows selected=$arrForm[$key]}-->
-        </select> 件</p>
+            <!--{assign var=key value="search_page_max"}-->
+            <!--{t string="record_prefix"}-->
+            <select name="<!--{$key}-->">
+                <!--{html_options options=$arrPageRows selected=$arrForm[$key]}-->
+            </select> 
+            <!--{t string="record_suffix"}-->
+        </p>
         <div class="btn-area">
             <ul>
                 <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_252"}--></span></a></li>

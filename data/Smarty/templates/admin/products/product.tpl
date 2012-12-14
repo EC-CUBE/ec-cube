@@ -173,15 +173,17 @@ function selectAll(target) {
             <th><!--{$smarty.const.NORMAL_PRICE_TITLE}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.price01}--></span>
-                <input type="text" name="price01" value="<!--{$arrForm.price01|h}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" style="<!--{if $arrErr.price01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>円
+                <!--{t string="currency_prefix"}--><input type="text" name="price01" value="<!--{$arrForm.price01|h}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" style="<!--{if $arrErr.price01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/><!--{t string="currency_suffix"}-->
                 <span class="attention"> <!--{t string="tpl_589"}--></span>
             </td>
         </tr>
         <tr>
-            <th><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="attention"> *</span></th>
+            <th><!--{t string="tpl_709" T_FIELD=$smarty.const.SALE_PRICE_TITLE}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.price02}--></span>
-                <input type="text" name="price02" value="<!--{$arrForm.price02|h}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" style="<!--{if $arrErr.price02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>円
+                <!--{t string="currency_prefix"}-->
+                <input type="text" name="price02" value="<!--{$arrForm.price02|h}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" style="<!--{if $arrErr.price02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
+                <!--{t string="currency_suffix"}-->
                 <span class="attention"> <!--{t string="tpl_589"}--></span>
             </td>
         </tr>
@@ -199,7 +201,9 @@ function selectAll(target) {
             <th><!--{t string="tpl_558"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.deliv_fee}--></span>
-                <input type="text" name="deliv_fee" value="<!--{$arrForm.deliv_fee|h}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" style="<!--{if $arrErr.deliv_fee != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>円
+                <!--{t string="currency_prefix"}-->
+                <input type="text" name="deliv_fee" value="<!--{$arrForm.deliv_fee|h}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" style="<!--{if $arrErr.deliv_fee != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
+                <!--{t string="currency_suffix"}-->
                 <span class="attention"> <!--{t string="tpl_589"}--></span>
                 <!--{if $smarty.const.OPTION_PRODUCT_DELIV_FEE != 1}--><br /><span class="attention"><!--{t string="tpl_590"}--></span> <!--{t string="tpl_591"}--><!--{/if}-->
             </td>
@@ -208,7 +212,7 @@ function selectAll(target) {
             <th><!--{t string="tpl_559_1"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.point_rate}--></span>
-                <input type="text" name="point_rate" value="<!--{$arrForm.point_rate|default:$arrForm.arrInfo.point_rate|h}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PERCENTAGE_LEN}-->" style="<!--{if $arrErr.point_rate != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>％
+                <input type="text" name="point_rate" value="<!--{$arrForm.point_rate|default:$arrForm.arrInfo.point_rate|h}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PERCENTAGE_LEN}-->" style="<!--{if $arrErr.point_rate != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/><!--{t string="%"}-->
                 <span class="attention"> <!--{t string="tpl_589"}--></span>
             </td>
         </tr>
@@ -282,7 +286,7 @@ function selectAll(target) {
         </tr>
         <tr>
             <!--{assign var=key value="main_list_image"}-->
-            <th>一覧-メイン画像<br />[<!--{$smarty.const.SMALL_IMAGE_WIDTH}-->×<!--{$smarty.const.SMALL_IMAGE_HEIGHT}-->]</th>
+            <th><!--{t string="tpl_710" T_FIELD1=$smarty.const.SMALL_IMAGE_WIDTH T_FIELD2=$smarty.const.SMALL_IMAGE_HEIGHT }--></th>
             <td>
                 <a name="<!--{$key}-->"></a>
                 <a name="main_image"></a>
@@ -297,7 +301,7 @@ function selectAll(target) {
         </tr>
         <tr>
             <!--{assign var=key value="main_image"}-->
-            <th>詳細-メイン画像<br />[<!--{$smarty.const.NORMAL_IMAGE_WIDTH}-->×<!--{$smarty.const.NORMAL_IMAGE_HEIGHT}-->]</th>
+            <th><!--{t string="tpl_711" T_FIELD1=$smarty.const.NORMAL_IMAGE_WIDTH T_FIELD2=$smarty.const.NORMAL_IMAGE_HEIGHT }--></th>
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->
@@ -309,7 +313,7 @@ function selectAll(target) {
         </tr>
         <tr>
             <!--{assign var=key value="main_large_image"}-->
-            <th>詳細-メイン拡大画像<br />[<!--{$smarty.const.LARGE_IMAGE_WIDTH}-->×<!--{$smarty.const.LARGE_IMAGE_HEIGHT}-->]</th>
+            <th><!--{t string="tpl_712" T_FIELD1=$smarty.const.LARGE_IMAGE_WIDTH T_FIELD2=$smarty.const.LARGE_IMAGE_HEIGHT }--></th>
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->

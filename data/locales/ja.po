@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2012-12-13 21:04+0900\n"
+"PO-Revision-Date: 2012-12-14 16:15+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -5759,9 +5759,6 @@ msgstr "購入平均"
 msgid "tpl_701"
 msgstr "T_FIELD件"
 
-msgid "tpl_702"
-msgstr "T_FIELD 円"
-
 msgid "tpl_703"
 msgstr "SQL設定(編集中:T_FIELD)"
 
@@ -5779,3 +5776,54 @@ msgstr "※T_FIELDは販売商品から削除されています。"
 
 msgid "tpl_708"
 msgstr "※全国一律送料設定(円):"
+
+msgid "tpl_709"
+msgstr "T_FIELD<span class='attention'> *</span>"
+
+msgid "tpl_710"
+msgstr "一覧-メイン画像<br />[T_FIELD1×T_FIELD2]"
+
+msgid "tpl_711"
+msgstr "詳細-メイン画像<br />[T_FIELD1×T_FIELD2]"
+
+msgid "tpl_712"
+msgstr "詳細-メイン拡大画像<br />[T_FIELD1×T_FIELD2]"
+
+msgid "tpl_713"
+msgstr "番目へ"
+
+msgid "tpl_714"
+msgstr "円以上購入時無料"
+
+msgid "tpl_715"
+msgstr "日間有効"
+
+msgid "-"
+msgstr "～"
+
+msgid "%"
+msgstr "％"
+
+msgid "currency_prefix"
+msgstr " "
+
+msgid "currency_suffix"
+msgstr "円"
+
+msgid "times_prefix"
+msgstr " "
+
+msgid "times_suffix"
+msgstr "回"
+
+msgid "record_prefix"
+msgstr " "
+
+msgid "record_suffix"
+msgstr "件"
+
+msgid "pt_prefix"
+msgstr " "
+
+msgid "pt_suffix"
+msgstr "pt"

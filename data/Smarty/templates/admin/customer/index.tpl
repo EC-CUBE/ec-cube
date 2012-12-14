@@ -72,9 +72,12 @@
     </table>
     <div class="btn">
         <p class="page_rows"><!--{t string="tpl_251"}-->
-        <select name="search_page_max">
-            <!--{html_options options=$arrPageMax selected=$arrForm.search_page_max}-->
-        </select> 件</p>
+            <!--{t string="record_prefix"}-->
+            <select name="search_page_max">
+                <!--{html_options options=$arrPageMax selected=$arrForm.search_page_max}-->
+            </select> 
+            <!--{t string="record_suffix"}-->
+        </p>
         <div class="btn-area">
             <ul>
                 <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_252"}--></span></a></li>

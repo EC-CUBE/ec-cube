@@ -92,7 +92,7 @@
             </tr>
             <tr>
                 <th><!--{t string="tpl_535"}--></th>
-                <td><!--{$customer_point|default:"0"}-->pt</td>
+                <td><!--{t string="pt_prefix"}--><!--{$customer_point|default:"0"}--><!--{t string="pt_suffix"}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_536"}--></th>

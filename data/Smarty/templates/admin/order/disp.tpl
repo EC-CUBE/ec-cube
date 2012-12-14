@@ -98,8 +98,9 @@ self.moveTo(20,20);self.focus();
             <th><!--{t string="tpl_366"}--></th>
             <td>
                 <!--{if $arrForm.customer_id >0}-->
+                    <!--{t string="pt_prefix"}-->
                     <!--{$arrForm.customer_point.value|number_format}-->
-                    pt
+                    <!--{t string="pt_suffix"}-->
                 <!--{else}-->
                     <!--{t string="tpl_363"}-->
                 <!--{/if}-->
@@ -133,15 +134,15 @@ self.moveTo(20,20);self.focus();
                 <!--{$arrForm.product_name.value[$product_index]|h}-->/<!--{$arrForm.classcategory_name1.value[$product_index]|default:"(なし)"|h}-->/<!--{$arrForm.classcategory_name2.value[$product_index]|default:"(なし)"|h}-->
             </td>
             <td align="center">
-                    <!--{t string="tpl_702" T_FIELD=$arrForm.price.value[$product_index]|h}-->
+                    <!--{t string="currency_prefix"}--><!--{$arrForm.price.value[$product_index]|h}--><!--{t string="currency_suffix"}-->
                 </td>
             <td align="center">
                 <!--{$arrForm.quantity.value[$product_index]|h}-->
             </td>
                 <!--{assign var=price value=`$arrForm.price.value[$product_index]`}-->
                 <!--{assign var=quantity value=`$arrForm.quantity.value[$product_index]`}-->
-                <td class="right"><!--{t string="tpl_702" T_FIELD=$price|sfCalcIncTax|number_format}--></td>
-                <td class="right"><!--{t string="tpl_702" T_FIELD=$price|sfCalcIncTax|sfMultiply:$quantity|number_format}--></td>
+                <td class="right"><!--{t string="currency_prefix"}--><!--{$price|sfCalcIncTax|number_format}--><!--{t string="currency_suffix"}--></td>
+                <td class="right"><!--{t string="currency_prefix"}--><!--{$price|sfCalcIncTax|sfMultiply:$quantity|number_format}--><!--{t string="currency_suffix"}--></td>
         </tr>
         <!--{/section}-->
         <tr>
@@ -162,26 +163,26 @@ self.moveTo(20,20);self.focus();
         </tr>
         <tr>
             <th colspan="5" class="column right"><!--{t string="tpl_379"}--></th>
-            <td class="right"><!--{t string="tpl_702" T_FIELD=$arrForm.total.value|number_format}--></td>
+            <td class="right"><!--{t string="currency_prefix"}--><!--{$arrForm.total.value|number_format}--><!--{t string="currency_suffix"}--></td>
         </tr>
         <tr>
             <th colspan="5" class="column right"><!--{t string="tpl_380"}--></th>
-            <td class="right"><!--{t string="tpl_702" T_FIELD=$arrForm.payment_total.value|number_format}--></td>
+            <td class="right"><!--{t string="currency_prefix"}--><!--{$arrForm.payment_total.value|number_format}--><!--{t string="currency_suffix"}--></td>
         </tr>
         <!--{if $smarty.const.USE_POINT !== false}-->
             <tr>
                 <th colspan="5" class="column right"><!--{t string="tpl_381"}--></th>
-                <td class="right"><!--{$arrForm.use_point.value|default:0|h}-->pt</td>
+                <td class="right"><!--{t string="pt_prefix"}--><!--{$arrForm.use_point.value|default:0|h}--><!--{t string="pt_suffix"}--></td>
             </tr>
             <!--{if $arrForm.birth_point.value > 0}-->
                 <tr>
                     <th colspan="5" class="column right"><!--{t string="tpl_382"}--></th>
-                    <td class="right"><!--{$arrForm.birth_point.value|number_format}-->pt</td>
+                    <td class="right"><!--{t string="pt_prefix"}--><!--{$arrForm.birth_point.value|number_format}--><!--{t string="pt_suffix"}--></td>
                 </tr>
             <!--{/if}-->
             <tr>
                 <th colspan="5" class="column right"><!--{t string="tpl_383"}--></th>
-                <td class="right"><!--{$arrForm.add_point.value|number_format|default:0}-->pt</td>
+                <td class="right"><!--{t string="pt_prefix"}--><!--{$arrForm.add_point.value|number_format|default:0}--><!--{t string="pt_suffix"}--></td>
             </tr>
         <!--{/if}-->
     </table>

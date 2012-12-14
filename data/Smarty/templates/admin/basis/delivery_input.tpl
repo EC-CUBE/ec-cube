@@ -135,10 +135,10 @@
             <!--{assign var=colspan value="1"}-->
             <!--{/if}-->
             <td width="247" colspan="<!--{$colspan}-->">
-            <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" size="20" class="box20" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /> 円</td>
+            <!--{t string="currency_prefix"}--> <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" size="20" class="box20" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /> <!--{t string="currency_suffix"}--></td>
         <!--{else}-->
             <th><!--{$arrPref[$keyno]}--></th>
-            <td width="248"><input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" size="20" class="box20" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /> 円</td>
+            <td width="248"><!--{t string="currency_prefix"}--><input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" size="20" class="box20" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /> <!--{t string="currency_suffix"}--></td>
             </tr>
         <!--{/if}-->
         <!--{/section}-->

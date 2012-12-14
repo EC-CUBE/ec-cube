@@ -112,13 +112,13 @@
             <tr>
                 <th><!--{$smarty.const.NORMAL_PRICE_TITLE}--></th>
                 <td>
-                    <!--{if strlen($arrForm.price01) >= 1}--><!--{t string="tpl_702" T_FIELD=$arrForm.price01|h}--><!--{/if}-->
+                    <!--{if strlen($arrForm.price01) >= 1}--><!--{t string="currency_prefix"}--><!--{$arrForm.price01|h}--><!--{t string="currency_suffix"}--><!--{/if}-->
                 </td>
             </tr>
             <tr>
                 <th><!--{$smarty.const.SALE_PRICE_TITLE}--></th>
                 <td>
-                    <!--{if strlen($arrForm.price02) >= 1}--><!--{t string="tpl_702" T_FIELD=$arrForm.price02|h}--><!--{/if}-->
+                    <!--{if strlen($arrForm.price02) >= 1}--><!--{t string="currency_prefix"}--><!--{$arrForm.price02|h}--><!--{t string="currency_suffix"}--><!--{/if}-->
                 </td>
             </tr>
             <tr>
@@ -136,13 +136,13 @@
         <tr>
             <th><!--{t string="tpl_558"}--></th>
             <td>
-                <!--{if strlen($arrForm.deliv_fee) >= 1}--><!--{t string="tpl_702" T_FIELD=$arrForm.deliv_fee|h}--><!--{/if}-->
+                <!--{if strlen($arrForm.deliv_fee) >= 1}--><!--{t string="currency_prefix"}--><!--{$arrForm.deliv_fee|h}--><!--{t string="currency_suffix"}--><!--{/if}-->
             </td>
         </tr>
         <tr>
             <th><!--{t string="tpl_559"}--></th>
             <td>
-                <!--{if strlen($arrForm.point_rate) >= 1}--><!--{$arrForm.point_rate|h}--> ％<!--{/if}-->
+                <!--{if strlen($arrForm.point_rate) >= 1}--><!--{$arrForm.point_rate|h}--> <!--{t string="%"}--><!--{/if}-->
             </td>
         </tr>
         <tr>

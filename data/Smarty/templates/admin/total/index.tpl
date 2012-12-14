@@ -72,7 +72,8 @@
                     <select name="search_startday" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
                         <option value="">--</option>
                         <!--{html_options options=$arrDay selected=$arrForm.search_startday.value|h}-->
-                    </select>日～
+                    </select>日
+                    <!--{t string="-"}-->
                     <select name="search_endyear" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
                         <option value="">----</option>
                         <!--{html_options options=$arrYear selected=$arrForm.search_endyear.value|h}-->

@@ -132,7 +132,7 @@ function func_return(){
             </tr>
             <tr>
                 <th><!--{t string="tpl_226"}--></th>
-                <td><!--{$arrForm.point|default:"0"|h}--> pt</td>
+                <td><!--{t string="pt_prefix"}--><!--{$arrForm.point|default:"0"|h}--> <!--{t string="pt_suffix"}--></td>
             </tr>
         </table>
         <div class="btn-area">
