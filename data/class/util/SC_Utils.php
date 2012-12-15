@@ -971,7 +971,7 @@ class SC_Utils {
         $start_day = date('d', mktime(0, 0, 0, $tmp_month, $tmp_day + 1, $tmp_year));
 
         // 日付の作成
-        $start_date = sprintf('%d/%d/%d 00:00:00', $start_year, $start_month, $start_day);
+        $start_date = sprintf('%d/%d/%d', $start_year, $start_month, $start_day);
         $end_date = sprintf('%d/%d/%d 23:59:59', $end_year, $end_month, $end_day);
 
         return array($start_date, $end_date);
