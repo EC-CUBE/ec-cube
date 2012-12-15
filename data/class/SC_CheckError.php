@@ -404,9 +404,9 @@ class SC_CheckError {
             }
         }
 
+        // すべての項目が入力されていない場合はエラーとする。
         $blank = false;
 
-        // すべての項目がブランクでないか、すべての項目が入力されていない場合はエラーとする。
         for ($i = 1; $i < $max; $i++) {
             if (strlen($this->arrParam[$value[$i]]) <= 0) {
                 $blank = true;
