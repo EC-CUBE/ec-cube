@@ -1,11 +1,11 @@
 <?php
 
 $HOME = realpath(dirname(__FILE__)) . "/../../../..";
-require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_BaseTest.php");
+require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_TestiBase.php");
 /**
  *
  */
-class SC_Helper_Purchase_getShippingPrefTest extends SC_Helper_Purchase_BaseTest {
+class SC_Helper_Purchase_getShippingPrefTest extends SC_Helper_Purchase_TestBase {
 
   protected function setUp() {
     parent::setUp();
