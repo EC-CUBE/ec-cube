@@ -112,8 +112,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $objFormParam = new SC_FormParam_Ex();
         // パラメーター情報の初期化
         $this->lfInitParam($objFormParam);
-        $objFormParam->setParam($_POST);
-        $objFormParam->setParam($_GET);
+        $objFormParam->setParam($_REQUEST);
 
         // 検索ワードの引き継ぎ
         $this->arrHidden = $objFormParam->getSearchArray();
@@ -135,6 +134,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
                     $type = ($objFormParam->getValue('type')) ? $objFormParam->getValue('type'): 'all';
 
                     $this->tpl_page_type = 'total/page_'. $page .'.tpl';
+                    // FIXME 可読性が低いので call_user_func_array を使わない (またはメソッド名を1つの定数値とする) 実装に。
                     list($this->arrResults, $this->tpl_image) = call_user_func_array(array($this, 'lfGetOrder'.$page),
                                                                                      array($type, $sdate, $edate));
                     if ($this->getMode() == 'csv') {
@@ -206,42 +206,46 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $arrList = $this->lfGetDateDefault();
 
         // 月度集計
-        $objFormParam->addParam('月度', 'search_startyear_m', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startyear_m']);
-        $objFormParam->addParam('月度', 'search_startmonth_m', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startmonth_m']);
+        $objFormParam->addParam('月度(年)', 'search_startyear_m', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startyear_m']);
+        $objFormParam->addParam('月度(月)', 'search_startmonth_m', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startmonth_m']);
         // 期間集計
-        $objFormParam->addParam('開始日', 'search_startyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startyear']);
-        $objFormParam->addParam('開始日', 'search_startmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startmonth']);
-        $objFormParam->addParam('開始日', 'search_startday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startday']);
-        $objFormParam->addParam('終了日', 'search_endyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endyear']);
-        $objFormParam->addParam('終了日', 'search_endmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endmonth']);
-        $objFormParam->addParam('終了日', 'search_endday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endday']);
+        $objFormParam->addParam('期間(開始日)', 'search_startyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startyear']);
+        $objFormParam->addParam('期間(開始日)', 'search_startmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startmonth']);
+        $objFormParam->addParam('期間(開始日)', 'search_startday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startday']);
+        $objFormParam->addParam('期間(終了日)', 'search_endyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endyear']);
+        $objFormParam->addParam('期間(終了日)', 'search_endmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endmonth']);
+        $objFormParam->addParam('期間(終了日)', 'search_endday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endday']);
 
         // hiddenデータの取得用
         $objFormParam->addParam('', 'page');
         $objFormParam->addParam('', 'type');
         $objFormParam->addParam('', 'mode');
-        $objFormParam->addParam('', 'form');
+        $objFormParam->addParam('', 'search_form');
     }
 
     /* 入力内容のチェック */
     function lfCheckError(&$objFormParam) {
 
         $objFormParam->convParam();
-        $objErr         = new SC_CheckError_Ex();
+        $objErr         = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
 
         // 特殊項目チェック
-        if ($objFormParam->getValue('form') == 1) {
-            $objErr->doFunc(array('月度', 'search_startyear_m'), array('ONE_EXIST_CHECK'));
+
+        // 月度集計
+        if ($objFormParam->getValue('search_form') == 1) {
+            $objErr->doFunc(array('月度', 'search_startyear_m', 'search_startmonth_m'), array('FULL_EXIST_CHECK'));
         }
 
-        if ($objFormParam->getValue('form') == 2) {
-            $objErr->doFunc(array('期間', 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('FULL_EXIST_CHECK'));
+        // 期間集計
+        if ($objFormParam->getValue('search_form') == 2) {
+            $objErr->doFunc(array('期間(開始日)', 'search_startyear', 'search_startmonth', 'search_startday'), array('FULL_EXIST_CHECK'));
+            $objErr->doFunc(array('期間(終了日)', 'search_endyear', 'search_endmonth', 'search_endday'), array('FULL_EXIST_CHECK'));
+            $objErr->doFunc(array('期間(開始日)', 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
+            $objErr->doFunc(array('期間(終了日)', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_DATE'));
+            $objErr->doFunc(array('期間(開始日)', '期間(終了日)', 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_SET_TERM'));
         }
-        $objErr->doFunc(array('月度', 'search_startyear_m', 'search_startmonth_m'), array('ALL_EXIST_CHECK'));
-        $objErr->doFunc(array('開始日', 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
-        $objErr->doFunc(array('終了日', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_DATE'));
-        $objErr->doFunc(array('開始日', '終了日', 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_SET_TERM'));
+
         return $objErr->arrErr;
     }
 
@@ -271,34 +275,18 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
     /* フォームで入力された日付を適切な形にする */
     function lfSetStartEndDate(&$objFormParam) {
-
         $arrRet = $objFormParam->getHashArray();
-        $out_flg = 0;
 
-        foreach ($arrRet as $key => $val) {
-            if ($val == '') {
-                continue;
-            }
-            switch ($key) {
-                case 'search_startyear':
-                    $sdate = $objFormParam->getValue('search_startyear') . '/' . $objFormParam->getValue('search_startmonth') . '/' . $objFormParam->getValue('search_startday');
-                    break;
-                case 'search_endyear':
-                    $edate = $objFormParam->getValue('search_endyear') . '/' . $objFormParam->getValue('search_endmonth') . '/' . $objFormParam->getValue('search_endday');
-                    break;
-                case 'search_startyear_m':
-                    list($sdate, $edate) = SC_Utils_Ex::sfTermMonth($objFormParam->getValue('search_startyear_m'),
-                                                                    $objFormParam->getValue('search_startmonth_m'),
-                                                                    CLOSE_DAY);
-                    $out_flg = 1;
-                    break;
-                default:
-                    break;
-            }
-            // 月度集計の場合に、集計期間が本日日付で上書きされてしまうのを回避するため
-            if (($objFormParam->getValue('form') == 1) && ($out_flg == 1)) {
-                break;
-            }
+        // 月度集計
+        if ($arrRet['search_form'] == 1) {
+            list($sdate, $edate) = SC_Utils_Ex::sfTermMonth($arrRet['search_startyear_m'],
+                                                            $arrRet['search_startmonth_m'],
+                                                            CLOSE_DAY);
+        }
+        // 期間集計
+        elseif ($arrRet['search_form'] == 2) {
+            $sdate = $arrRet['search_startyear'] . '/' . $arrRet['search_startmonth'] . '/' . $arrRet['search_startday'];
+            $edate = $arrRet['search_endyear'] . '/' . $arrRet['search_endmonth'] . '/' . $arrRet['search_endday'];
         }
 
         return array($sdate, $edate);

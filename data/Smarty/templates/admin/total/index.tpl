@@ -31,7 +31,7 @@
                 <form name="search_form1" id="search_form1" method="post" action="?">
                     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
                     <input type="hidden" name="mode" value="search" />
-                    <input type="hidden" name="form" value="1" />
+                    <input type="hidden" name="search_form" value="1" />
                     <input type="hidden" name="page" value="<!--{$arrForm.page.value|h}-->" />
                     <input type="hidden" name="type" value="<!--{$smarty.post.type|h}-->" />
                     <!--{if $arrErr.search_startyear_m || $arrErr.search_endyear_m}-->
@@ -54,7 +54,7 @@
                 <form name="search_form2" id="search_form2" method="post" action="?">
                     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
                     <input type="hidden" name="mode" value="search" />
-                    <input type="hidden" name="form" value="2" />
+                    <input type="hidden" name="search_form" value="2" />
                     <input type="hidden" name="page" value="<!--{$arrForm.page.value|h}-->" />
                     <input type="hidden" name="type" value="<!--{$smarty.post.type|h}-->" />
                     <!--{if $arrErr.search_startyear || $arrErr.search_endyear}-->
@@ -98,7 +98,6 @@
         <form name="form1" id="form1" method="post" action="?">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="hidden" name="form" value="<!--{$arrForm.form.value|h}-->" />
         <input type="hidden" name="type" value="<!--{$arrForm.type.value|h}-->" />
         <input type="hidden" name="page" value="<!--{$arrForm.page.value|h}-->" />
         <!--{foreach key=key item=item from=$arrHidden}-->
@@ -116,7 +115,7 @@
                 <!--{if $install_GD}-->
                 <div id="graph-image">
                     <!--{* <img src="<!--{$tpl_image}-->?<!--{$cashtime}-->" alt="グラフ"> *}-->
-                    <img src="?draw_image=true&amp;type=<!--{$smarty.post.type|h}-->&amp;mode=search&amp;page=<!--{$smarty.post.page|h}-->&amp;search_startyear_m=<!--{$smarty.post.search_startyear_m|h}-->&amp;search_startmonth_m=<!--{$smarty.post.search_startmonth_m|h}-->&amp;search_startyear=<!--{$smarty.post.search_startyear|h}-->&amp;search_startmonth=<!--{$smarty.post.search_startmonth|h}-->&amp;search_startday=<!--{$smarty.post.search_startday|h}-->&amp;search_endyear=<!--{$smarty.post.search_endyear|h}-->&amp;search_endmonth=<!--{$smarty.post.search_endmonth|h}-->&amp;search_endday=<!--{$smarty.post.search_endday|h}-->" alt="グラフ" />
+                    <img src="?draw_image=true&amp;type=<!--{$smarty.post.type|h}-->&amp;mode=search&amp;search_form=<!--{$smarty.post.search_form|h}-->&amp;page=<!--{$smarty.post.page|h}-->&amp;search_startyear_m=<!--{$smarty.post.search_startyear_m|h}-->&amp;search_startmonth_m=<!--{$smarty.post.search_startmonth_m|h}-->&amp;search_startyear=<!--{$smarty.post.search_startyear|h}-->&amp;search_startmonth=<!--{$smarty.post.search_startmonth|h}-->&amp;search_startday=<!--{$smarty.post.search_startday|h}-->&amp;search_endyear=<!--{$smarty.post.search_endyear|h}-->&amp;search_endmonth=<!--{$smarty.post.search_endmonth|h}-->&amp;search_endday=<!--{$smarty.post.search_endday|h}-->" alt="グラフ" />
                 </div>
                 <!--{/if}-->
             <!--{* グラフ表示 *}-->
