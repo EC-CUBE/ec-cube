@@ -5,7 +5,7 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
 /**
  *
  */
-class SC_Utils_Test extends Common_TestCase {
+class SC_Utils_sfGetRandomStringTest extends Common_TestCase {
 
   protected function setUp() {
     parent::setUp();
