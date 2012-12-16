@@ -108,15 +108,15 @@ case "${DBTYPE}" in
 "pgsql" ) 
     # PostgreSQL
     echo "dropdb..."
-    su ${PGUSER} -c "${DROPDB} ${DBNAME}"
+    sudo -u ${PGUSER} ${DROPDB} ${DBNAME}
     echo "createdb..."
-    su ${PGUSER} -c "${CREATEDB} -U ${DBUSER} ${DBNAME}"
+    sudo -u ${PGUSER} ${CREATEDB} -U ${DBUSER} ${DBNAME}
     echo "create table..."
-    su ${PGUSER} -c "${PSQL} -U ${DBUSER} -f ${SQL_DIR}/create_table_pgsql.sql ${DBNAME}"
+    sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} -f ${SQL_DIR}/create_table_pgsql.sql ${DBNAME}
     echo "insert data..."
-    su ${PGUSER} -c "${PSQL} -U ${DBUSER} -f ${SQL_DIR}/insert_data.sql ${DBNAME}"
+    sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} -f ${SQL_DIR}/insert_data.sql ${DBNAME}
     echo "execute optional SQL..."
-    su ${PGUSER} -c "${PSQL} -U ${DBUSER} -f ${OPTIONAL_SQL_FILE} ${DBNAME}"
+    sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} -f ${OPTIONAL_SQL_FILE} ${DBNAME}
 ;;
 "mysql" ) 
     # MySQL
