@@ -25,7 +25,7 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
  */
 
 /**
- * SC_Helper_Purchaset::getPaymentsByPaymentsId()のテストクラス.
+ * SC_Helper_Purchase::getPaymentsByPaymentsId()のテストクラス.
  *
  *
  * @author Hiroko Tamagawa

@@ -25,18 +25,18 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
  */
 
 /**
- * SC_Helper_Purchase::getDelivTime()のテストクラス.
+ * SC_Helper_Purchase::getOrderTemp()のテストクラス.
  *
  *
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Helper_Purchase_getDelivTimeTest extends SC_Helper_Purchase_TestBase {
+class SC_Helper_Purchase_getOrderTempTest extends SC_Helper_Purchase_TestBase {
 
 
   protected function setUp() {
     parent::setUp();
-    $this->setUpDelivTime();
+    $this->setUpOrderTemp();
   }
 
   protected function tearDown() {
@@ -44,28 +44,27 @@ class SC_Helper_Purchase_getDelivTimeTest extends SC_Helper_Purchase_TestBase {
   }
 
   /////////////////////////////////////////
-  public function testGetDelivTime_存在しない配送業者IDを指定した場合_結果が空になる() {
-    $deliv_id = '100'; // 存在しないID
+  public function testGetOrderTemp_存在しない受注IDを指定した場合_結果が空になる() {
+    $order_id = '9999';
 
-    $this->expected = array();
-    $helper = new SC_Helper_Purchase();
-    $this->actual = $helper->getDelivTime($deliv_id);
+    $this->expected = null;
+    $this->actual = SC_Helper_Purchase::getOrderTemp($order_id);
 
-    $this->verify('お届け時間');
+    $this->verify();
   }
 
-  public function testGetDelivTime_存在する配送業者IDを指定した場合_結果が正しい順序で取得できる() {
-    $deliv_id = '1001';
-  
-    $this->expected = array(
-      '1' => '午前',
-      '2' => '午後'
-    );
+  public function testGetOrderTemp_存在する受注IDを指定した場合_対応する結果が取得できる() {
+    $order_temp_id = '1002';
 
-    $helper = new SC_Helper_Purchase();
-    $this->actual = $helper->getDelivTime($deliv_id);
-    
-    $this->verify('お届け時間');
+    $this->expected = array(
+      'order_temp_id' => '1002',
+      'customer_id' => '1002',
+      'order_name01' => '受注情報02'
+    );
+    $result = SC_Helper_Purchase::getOrderTemp($order_temp_id);
+    $this->actual = Test_Utils::mapArray($result, array('order_temp_id', 'customer_id', 'order_name01'));
+
+    $this->verify();
   }
 
   //////////////////////////////////////////

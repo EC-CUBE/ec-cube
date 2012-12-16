@@ -25,7 +25,7 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
  */
 
 /**
- * SC_Helper_Purchaset::getDeliv()のテストクラス.
+ * SC_Helper_Purchase::getDeliv()のテストクラス.
  *
  *
  * @author Hiroko Tamagawa
