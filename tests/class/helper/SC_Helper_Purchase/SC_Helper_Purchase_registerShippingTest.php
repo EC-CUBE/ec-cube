@@ -17,7 +17,7 @@ class SC_Helper_Purchase_registerShippingTempTest extends SC_Helper_Purchase_Tes
   }
 
   /////////////////////////////////////////
-  public function testRegsiterShipping_元々存在しない受注IDの場合_新規にデータが作られる() {
+  public function testRegisterShipping_元々存在しない受注IDの場合_新規にデータが作られる() {
     $order_id = '10';
     $arrParams = array(
         '20' =>
