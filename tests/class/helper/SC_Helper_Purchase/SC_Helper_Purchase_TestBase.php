@@ -112,6 +112,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
         array(
           'product_class_id' => '1001',
           'product_id' => '1001',
+          'product_type_id' => '1001',
           'product_code' => 'code1001',
           'classcategory_id1' => '1001',
           'classcategory_id2' => '1002',
@@ -122,6 +123,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
         array(
           'product_class_id' => '1002',
           'product_id' => '1002',
+          'product_type_id' => '1002',
           'del_flg' => '0'
         )
       );
@@ -160,11 +162,15 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
    $products = array(
      array(
        'product_id' => '1001',
-       'name' => '製品名1001'
+       'name' => '製品名1001',
+       'del_flg' => '0',
+       'status' => '1'
      ),
      array(
        'product_id' => '1002',
-       'name' => '製品名1002'
+       'name' => '製品名1002',
+       'del_flg' => '0',
+       'status' => '2'
      )
    );
 
@@ -192,6 +198,31 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
        'deliv_id' => '1001',
        'payment_id' => '1002',
        'rank' => '1'
+     ),
+     array(
+       'deliv_id' => '1003',
+       'payment_id' => '3001',
+       'rank' => '1'
+     ),
+     array(
+       'deliv_id' => '1003',
+       'payment_id' => '3002',
+       'rank' => '2'
+     ),
+     array(
+       'deliv_id' => '1003',
+       'payment_id' => '3003',
+       'rank' => '3'
+     ),
+     array(
+       'deliv_id' => '1003',
+       'payment_id' => '3004',
+       'rank' => '4'
+     ),
+     array(
+       'deliv_id' => '1003',
+       'payment_id' => '3005',
+       'rank' => '5'
      )
    );
 
@@ -281,6 +312,31 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
      array(
        'payment_id' => '1003',
        'payment_method' => '支払方法1003'
+     ),
+     array(
+       'payment_id' => '3001',
+       'payment_method' => '支払方法3001',
+       'del_flg' => '1'
+     ),
+     array(
+       'payment_id' => '3002',
+       'payment_method' => '支払方法3002'
+     ),
+     array(
+       'payment_id' => '3003',
+       'payment_method' => '支払方法3003',
+       'rule_max' => 10000
+     ),
+     array(
+       'payment_id' => '3004',
+       'payment_method' => '支払方法3004',
+       'upper_rule' => 20000
+     ),
+     array(
+       'payment_id' => '3005',
+       'payment_method' => '支払方法3005',
+       'rule_max' => 12000,
+       'upper_rule' => 21000
      )
    );
 
@@ -288,5 +344,96 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
      $this->objQuery->insert('dtb_payment', $item);
    }
  }
+
+ /**
+  * DBに受注情報を設定します.
+  */
+  protected function setUpOrder() {
+    $order = array(
+      array(
+        'order_id' => '1001',
+        'customer_id' => '1001',
+        'order_name01' => '受注情報01',
+        'status' => '3',
+        'payment_date' => '2032-12-31 01:20:30' // 日付が変わっても良いように、遠い未来に設定
+      ),
+      array(
+        'order_id' => '1002',
+        'customer_id' => '1002',
+        'order_name01' => '受注情報02'
+      )
+    );
+
+    foreach ($order as $item) {
+      $this->objQuery->insert('dtb_order', $item);
+    }
+  }
+
+ /**
+  * DBに受注一時情報を設定します.
+  */
+  protected function setUpOrderTemp() {
+    $order = array(
+      array(
+        'order_temp_id' => '1001',
+        'customer_id' => '1001',
+        'order_name01' => '受注情報01'
+      ),
+      array(
+        'order_temp_id' => '1002',
+        'customer_id' => '1002',
+        'order_name01' => '受注情報02'
+      )
+    );
+
+    foreach ($order as $item) {
+      $this->objQuery->insert('dtb_order_temp', $item);
+    }
+  }
+
+ /**
+  * DBに受注詳細を設定します.
+  */
+ protected function setUpOrderDetail() {
+   $order_detail = array(
+     array(
+       'order_detail_id' => '1001',
+       'order_id' => '1001',
+       'product_id' => '1002',
+       'product_class_id' => '1002',
+       'product_code' => 'pc1002',
+       'product_name' => '製品名1002',
+       'classcategory_name1' => 'cat10021',
+       'classcategory_name2' => 'cat10022',
+       'price' => 3000,
+       'quantity' => 10,
+       'point_rate' => 5
+     ),
+     array(
+       'order_detail_id' => '1002',
+       'order_id' => '1001',
+       'product_id' => '1001',
+       'product_class_id' => '1001',
+       'product_code' => 'pc1001',
+       'product_name' => '製品名1001',
+       'classcategory_name1' => 'cat10011',
+       'classcategory_name2' => 'cat10012',
+       'price' => 4000,
+       'quantity' => 15,
+       'point_rate' => 6
+     ),
+     array(
+       'order_detail_id' => '1003',
+       'order_id' => '1002',
+       'product_id' => '1001',
+       'product_class_id' => '1001'
+     )
+   );
+
+   foreach ($order_detail as $item) {
+     $this->objQuery->insert('dtb_order_detail', $item);
+   }
+ }
+
 }
 
