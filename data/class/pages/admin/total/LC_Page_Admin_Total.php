@@ -112,8 +112,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $objFormParam = new SC_FormParam_Ex();
         // パラメーター情報の初期化
         $this->lfInitParam($objFormParam);
-        $objFormParam->setParam($_POST);
-        $objFormParam->setParam($_GET);
+        $objFormParam->setParam($_REQUEST);
 
         // 検索ワードの引き継ぎ
         $this->arrHidden = $objFormParam->getSearchArray();
@@ -135,6 +134,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
                     $type = ($objFormParam->getValue('type')) ? $objFormParam->getValue('type'): 'all';
 
                     $this->tpl_page_type = 'total/page_'. $page .'.tpl';
+                    // FIXME 可読性が低いので call_user_func_array を使わない (またはメソッド名を1つの定数値とする) 実装に。
                     list($this->arrResults, $this->tpl_image) = call_user_func_array(array($this, 'lfGetOrder'.$page),
                                                                                      array($type, $sdate, $edate));
                     if ($this->getMode() == 'csv') {
@@ -220,23 +220,30 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $objFormParam->addParam('', 'page');
         $objFormParam->addParam('', 'type');
         $objFormParam->addParam('', 'mode');
-        $objFormParam->addParam('', 'form');
+        $objFormParam->addParam('', 'search_form');
     }
 
     /* 入力内容のチェック */
     function lfCheckError(&$objFormParam) {
 
         $objFormParam->convParam();
-        $objErr         = new SC_CheckError_Ex();
+        $objErr         = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
 
         // 特殊項目チェック
-        if ($objFormParam->getValue('form') == 1) {
-            $objErr->doFunc(array(t('PARAM_LABEL_MONTHLY'), 'search_startyear_m'), array('ONE_EXIST_CHECK'));
+
+        // 月度集計
+        if ($objFormParam->getValue('search_form') == 1) {
+            $objErr->doFunc(array(t('PARAM_LABEL_MONTHLY'), 'search_startyear_m', 'search_startmonth_m'), array('FULL_EXIST_CHECK'));
         }
 
-        if ($objFormParam->getValue('form') == 2) {
-            $objErr->doFunc(array(t('PARAM_LABEL_PERIOD'), 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('FULL_EXIST_CHECK'));
+        // 期間集計
+        if ($objFormParam->getValue('search_form') == 2) {
+            $objErr->doFunc(array(t('PARAM_LABEL_PERIOD_1', 'search_startyear', 'search_startmonth', 'search_startday'), array('FULL_EXIST_CHECK'));
+            $objErr->doFunc(array(t('PARAM_LABEL_PERIOD_2', 'search_endyear', 'search_endmonth', 'search_endday'), array('FULL_EXIST_CHECK'));
+            $objErr->doFunc(array(t('PARAM_LABEL_PERIOD_1', 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
+            $objErr->doFunc(array(t('PARAM_LABEL_PERIOD_2', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_DATE'));
+            $objErr->doFunc(array(t('PARAM_LABEL_PERIOD_1', t('PARAM_LABEL_PERIOD_2', 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_SET_TERM'));
         }
         $objErr->doFunc(array(t('PARAM_LABEL_MONTHLY'), 'search_startyear_m', 'search_startmonth_m'), array('ALL_EXIST_CHECK'));
         $objErr->doFunc(array(t('PARAM_LABEL_START_DAY'), 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
@@ -271,34 +278,18 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
     /* フォームで入力された日付を適切な形にする */
     function lfSetStartEndDate(&$objFormParam) {
-
         $arrRet = $objFormParam->getHashArray();
-        $out_flg = 0;
 
-        foreach ($arrRet as $key => $val) {
-            if ($val == '') {
-                continue;
-            }
-            switch ($key) {
-                case 'search_startyear':
-                    $sdate = $objFormParam->getValue('search_startyear') . '/' . $objFormParam->getValue('search_startmonth') . '/' . $objFormParam->getValue('search_startday');
-                    break;
-                case 'search_endyear':
-                    $edate = $objFormParam->getValue('search_endyear') . '/' . $objFormParam->getValue('search_endmonth') . '/' . $objFormParam->getValue('search_endday');
-                    break;
-                case 'search_startyear_m':
-                    list($sdate, $edate) = SC_Utils_Ex::sfTermMonth($objFormParam->getValue('search_startyear_m'),
-                                                                    $objFormParam->getValue('search_startmonth_m'),
-                                                                    CLOSE_DAY);
-                    $out_flg = 1;
-                    break;
-                default:
-                    break;
-            }
-            // 月度集計の場合に、集計期間が本日日付で上書きされてしまうのを回避するため
-            if (($objFormParam->getValue('form') == 1) && ($out_flg == 1)) {
-                break;
-            }
+        // 月度集計
+        if ($arrRet['search_form'] == 1) {
+            list($sdate, $edate) = SC_Utils_Ex::sfTermMonth($arrRet['search_startyear_m'],
+                                                            $arrRet['search_startmonth_m'],
+                                                            CLOSE_DAY);
+        }
+        // 期間集計
+        elseif ($arrRet['search_form'] == 2) {
+            $sdate = $arrRet['search_startyear'] . '/' . $arrRet['search_startmonth'] . '/' . $arrRet['search_startday'];
+            $edate = $arrRet['search_endyear'] . '/' . $arrRet['search_endmonth'] . '/' . $arrRet['search_endday'];
         }
 
         return array($sdate, $edate);

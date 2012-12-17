@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpunit>
+  <filter>
+    <!-- カバレッジ測定の対象になるファイルを設定します。
+         ローカルの環境に応じて編集してください -->
+    <blacklist>
+        <directory suffix=".php">/usr/local/lib</directory>
+        <directory suffix=".php">../tests/class</directory>
+        <directory suffix=".php">../data/module</directory>
+    </blacklist>
+    <whitelist addUncoveredFileFromWhitelist="true">
+        <directory suffix=".php">data/class/</directory>
+        <directory suffix=".php">data/class_extends/</directory>
+    </whitelist>
+  </filter>
+</phpunit>

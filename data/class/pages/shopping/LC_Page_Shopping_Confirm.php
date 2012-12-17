@@ -103,6 +103,10 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
         $this->arrCartItems = $objCartSess->getCartList($this->cartKey);
         // 合計金額
         $this->tpl_total_inctax[$this->cartKey] = $objCartSess->getAllProductsTotal($this->cartKey);
+        // 税額
+        $this->tpl_total_tax[$this->cartKey] = $objCartSess->getAllProductsTax($this->cartKey);
+        // ポイント合計
+        $this->tpl_total_point[$this->cartKey] = $objCartSess->getAllProductsPoint($this->cartKey);
 
         // 一時受注テーブルの読込
         $arrOrderTemp = $objPurchase->getOrderTemp($this->tpl_uniqid);

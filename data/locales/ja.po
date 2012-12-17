@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2012-12-14 16:15+0900\n"
+"PO-Revision-Date: 2012-12-17 14:15+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1189,6 +1189,12 @@ msgstr "月度"
 
 msgid "PARAM_LABEL_PERIOD"
 msgstr "期間"
+
+msgid "PARAM_LABEL_PERIOD_1"
+msgstr "期間(開始日)"
+
+msgid "PARAM_LABEL_PERIOD_2"
+msgstr "期間(終了日)"
 
 msgid "PARAM_LABEL_THE_NAME"
 msgstr "名称"
@@ -5770,9 +5776,6 @@ msgstr "詳細-サブ画像(T_FIELD1)<br />[T_FIELD2×T_FIELD3]"
 
 msgid "tpl_706"
 msgstr "詳細-サブ拡大画像(T_FIELD1)<br />[T_FIELD2×T_FIELD3]"
-
-msgid "tpl_707"
-msgstr "※T_FIELDは販売商品から削除されています。"
 
 msgid "tpl_708"
 msgstr "※全国一律送料設定(円):"

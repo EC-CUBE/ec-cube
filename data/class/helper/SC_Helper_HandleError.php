@@ -47,7 +47,7 @@ class SC_Helper_HandleError {
         // 開発時は -1 (全て) を推奨
         error_reporting(E_ALL & ~E_NOTICE & ~E_USER_NOTICE & ~E_DEPRECATED & ~E_STRICT);
 
-        if (!defined('SAFE') || SAFE !== true || !defined('INSTALL_FUNCTION') || INSTALL_FUNCTION !== true) {
+        if (!(defined('SAFE') && SAFE === true) && !(defined('INSTALL_FUNCTION') && INSTALL_FUNCTION === true)) {
 
             // E_USER_ERROR または警告を捕捉した場合のエラーハンドラ
             set_error_handler(array(__CLASS__, 'handle_warning'), E_USER_ERROR | E_WARNING | E_USER_WARNING | E_CORE_WARNING | E_COMPILE_WARNING);
