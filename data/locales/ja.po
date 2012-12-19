@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2012-12-17 14:15+0900\n"
+"PO-Revision-Date: 2012-12-19 20:01+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -5800,6 +5800,36 @@ msgstr "円以上購入時無料"
 
 msgid "tpl_715"
 msgstr "日間有効"
+
+msgid "tpl_716"
+msgstr "直近の行："
+
+msgid "tpl_717"
+msgstr "コメント <span class='attention'>*</span>"
+
+msgid "tpl_718"
+msgstr "お届け先住所が入力されていません。"
+
+msgid "tpl_719"
+msgstr "メール"
+
+msgid "tpl_720"
+msgstr "(配送業者の変更に伴う送料の変更は手動にてお願いします。)"
+
+msgid "tpl_721"
+msgstr "(お支払方法の変更に伴う手数料の変更は手動にてお願いします。)"
+
+msgid "tpl_722"
+msgstr "商品の追加"
+
+msgid "tpl_723"
+msgstr "変更"
+
+msgid "tpl_724"
+msgstr "会員検索"
+
+msgid "tpl_725"
+msgstr "T_FIELD名"
 
 msgid "-"
 msgstr "～"

@@ -140,7 +140,7 @@
 
     <h2><!--{t string="tpl_362"}-->
         <!--{if $tpl_mode == 'add'}-->
-            <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnOpenWindow('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->customer/search_customer.php','search','600','650'); return false;">会員検索</a>
+            <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnOpenWindow('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->customer/search_customer.php','search','600','650'); return false;"><!--{t string="tpl_724"}--></a>
         <!--{/if}-->
     </h2>
     <table class="form">
@@ -265,7 +265,7 @@
     <h2 id="order_products">
         <!--{t string="tpl_368"}-->
         <a class="btn-normal" href="javascript:;" name="recalculate" onclick="fnModeSubmit('recalculate','anchor_key','order_products');"><!--{t string="tpl_369"}--></a>
-        <a class="btn-normal" href="javascript:;" name="add_product" onclick="win03('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php?order_id=<!--{$arrForm.order_id.value|h}-->', 'search', '615', '500'); return false;">商品の追加</a>
+        <a class="btn-normal" href="javascript:;" name="add_product" onclick="win03('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php?order_id=<!--{$arrForm.order_id.value|h}-->', 'search', '615', '500'); return false;"><!--{t string="tpl_722"}--></a>
     </h2>
 
     <!--{if $arrErr.product_id}-->
@@ -294,7 +294,7 @@
                 <input type="hidden" name="classcategory_name1[<!--{$product_index}-->]" value="<!--{$arrForm.classcategory_name1.value[$product_index]|h}-->" id="classcategory_name1_<!--{$product_index}-->" />
                 <input type="hidden" name="classcategory_name2[<!--{$product_index}-->]" value="<!--{$arrForm.classcategory_name2.value[$product_index]|h}-->" id="classcategory_name2_<!--{$product_index}-->" />
                 <br />
-                <a class="btn-normal" href="javascript:;" name="change" onclick="win03('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php?no=<!--{$product_index}-->&amp;order_id=<!--{$arrForm.order_id.value|h}-->', 'search', '615', '500'); return false;">変更</a>
+                <a class="btn-normal" href="javascript:;" name="change" onclick="win03('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php?no=<!--{$product_index}-->&amp;order_id=<!--{$arrForm.order_id.value|h}-->', 'search', '615', '500'); return false;"><!--{t string="tpl_723"}--></a>
                 <!--{if count($arrForm.quantity.value) > 1}-->
                     <a class="btn-normal" href="javascript:;" name="delete" onclick="fnSetFormVal('form1', 'delete_no', <!--{$product_index}-->); fnModeSubmit('delete_product','anchor_key','order_products'); return false;"><!--{t string="tpl_004"}--></a>
                 <!--{/if}-->
@@ -579,7 +579,7 @@
     <a name="deliv"></a>
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_001"}--><br /><span class="attention">(配送業者の変更に伴う送料の変更は手動にてお願いします。)</span></th>
+            <th><!--{t string="tpl_001"}--><br /><span class="attention"><!--{t string="tpl_720"}--></span></th>
             <td>
                 <!--{assign var=key value="deliv_id"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -590,7 +590,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_389"}--><br /><span class="attention">(お支払方法の変更に伴う手数料の変更は手動にてお願いします。)</span></th>
+            <th><!--{t string="tpl_389"}--><br /><span class="attention"><!--{t string="tpl_721"}--></span></th>
             <td>
                 <!--{assign var=key value="payment_id"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>

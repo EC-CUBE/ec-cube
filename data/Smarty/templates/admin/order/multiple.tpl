@@ -46,7 +46,7 @@ $(function() {
     // 都道府県の入力チェック
     shipping_pref.each(function() {
         if (!$(this).val()) {
-            alert('お届け先住所が入力されていません。');
+            alert('<!--{t string="tpl_718"}-->');
             window.close();
             return;
         }

@@ -68,7 +68,7 @@
         <table summary="ショップの状況" class="shop-info">
             <tr>
                 <th><!--{t string="tpl_529"}--></th>
-                <td><!--{$customer_cnt|default:"0"|number_format}-->名</td>
+                <td><!--{t string="tpl_725" T_FIELD=$customer_cnt|default:"0"|number_format}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_530"}--></th>
