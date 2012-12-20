@@ -44,7 +44,7 @@
 
     <!--{* ▼画面左 *}-->
     <div id="products-category-left">
-        <a href="?"><img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ">&nbsp;<!--{t string="tpl_487"}--></a><br />
+        <a href="?"><img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="Folder">&nbsp;<!--{t string="tpl_487"}--></a><br />
         <!--{section name=cnt loop=$arrTree}-->
             <!--{assign var=level value="`$arrTree[cnt].level`}-->
 
@@ -62,13 +62,13 @@
             <!--{if $arrTree[cnt].level != $smarty.const.LEVEL_MAX}-->
                 <a href="?" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrTree[cnt].category_id}-->); return false;">
                 <!--{if $arrForm.parent_category_id == $arrTree[cnt].category_id}-->
-                    <img src="<!--{$TPL_URLPATH}-->img/contents/folder_open.gif" alt="フォルダ">
+                    <img src="<!--{$TPL_URLPATH}-->img/contents/folder_open.gif" alt="Folder">
                 <!--{else}-->
-                    <img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ">
+                    <img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="Folder">
                 <!--{/if}-->
                 <!--{$disp_name|sfCutString:10:false|h}--></a><br />
             <!--{else}-->
-                <img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ">
+                <img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="Folder">
                 <!--{$disp_name|sfCutString:10:false|h}--></a><br />
             <!--{/if}-->
 

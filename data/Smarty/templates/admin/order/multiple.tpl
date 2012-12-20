@@ -156,7 +156,7 @@ function func_submit() {
 <input name="anchor_key" type="hidden" value="" />
 <input name="search_pageno" type="hidden" value="" />
 <input name="no" type="hidden" value="<!--{$tpl_no}-->" />
-<table summary="配送情報" class="list">
+<table summary="Delivery information" class="list">
     <thead>
         <tr>
             <th><!--{t string="tpl_192"}--></th>

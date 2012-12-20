@@ -43,7 +43,7 @@
 
         <!--{* システム情報ここから *}-->
         <h2><!--{t string="tpl_682"}--></h2>
-        <table summary="システム情報" class="shop-info">
+        <table summary="System information" class="shop-info">
             <tr>
                 <th><!--{t string="tpl_525"}--></th>
                 <td><!--{$smarty.const.ECCUBE_VERSION}--></td>
@@ -65,7 +65,7 @@
 
         <!--{* ショップの状況ここから *}-->
         <h2><!--{t string="tpl_528"}--></h2>
-        <table summary="ショップの状況" class="shop-info">
+        <table summary="Shop status" class="shop-info">
             <tr>
                 <th><!--{t string="tpl_529"}--></th>
                 <td><!--{t string="tpl_725" T_FIELD=$customer_cnt|default:"0"|number_format}--></td>
@@ -111,7 +111,7 @@
 
         <!--{* 新規受付一覧ここから *}-->
         <h2><!--{t string="tpl_538"}--></h2>
-        <table summary="新規受付一覧" id="home-order">
+        <table summary="List of new orders received" id="home-order">
             <tr>
                 <th class="center"><!--{t string="tpl_359"}--></th>
                 <th class="center"><!--{t string="tpl_208"}--></th>

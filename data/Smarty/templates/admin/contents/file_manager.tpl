@@ -86,7 +86,7 @@
             <!--{if !$tpl_is_top_dir}-->
                 <tr id="parent_dir" onclick="fnSetFormVal('form1', 'select_file', '<!--{$tpl_parent_dir|h}-->');fnSelectFile('parent_dir', '#808080');" onDblClick="setTreeStatus('tree_status');fnDbClick(arrTree, '<!--{$tpl_parent_dir|h}-->', true, '<!--{$tpl_now_dir|h}-->', true)" style="">
                     <td>
-                        <img src="<!--{$TPL_URLPATH}-->img/contents/folder_parent.gif" alt="フォルダ">&nbsp;..
+                        <img src="<!--{$TPL_URLPATH}-->img/contents/folder_parent.gif" alt="Folder">&nbsp;..
                     </td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
@@ -100,7 +100,7 @@
                 <tr id="<!--{$id}-->" style="">
                     <td class="file-name" onDblClick="setTreeStatus('tree_status');fnDbClick(arrTree, '<!--{$arrFileList[cnt].file_path|h}-->', <!--{if $arrFileList[cnt].is_dir|h}-->true<!--{else}-->false<!--{/if}-->, '<!--{$tpl_now_dir|h}-->', false)">
                         <!--{if $arrFileList[cnt].is_dir}-->
-                            <img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ">
+                            <img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="Folder">
                         <!--{else}-->
                             <img src="<!--{$TPL_URLPATH}-->img/contents/file.gif">
                         <!--{/if}-->

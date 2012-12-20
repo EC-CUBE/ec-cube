@@ -57,7 +57,7 @@
         <div class="basis-zip-item">
             <h2><!--{t string="tpl_131"}--></h2>
             <p><!--{t string="tpl_132"}--></p>
-            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('manual', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_133"}--></span></a>　<!--{t string="tpl_134"}-->: <input type="text" name="startRowNum" value="<!--{$arrForm.startRowNum|default:$tpl_count_mtb_zip+1|h}-->" size="8"><span class="attention"><!--{$arrErr.startRowNum}--></span></p>
+            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('manual', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_133"}--></span></a> <!--{t string="tpl_134"}-->: <input type="text" name="startRowNum" value="<!--{$arrForm.startRowNum|default:$tpl_count_mtb_zip+1|h}-->" size="8"><span class="attention"><!--{$arrErr.startRowNum}--></span></p>
         </div>
 
         <div class="basis-zip-item">
