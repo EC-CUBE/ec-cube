@@ -1,4 +1,4 @@
-0<!--{*
+<!--{*
 /*
  * This file is part of EC-CUBE
  *
