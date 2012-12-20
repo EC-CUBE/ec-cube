@@ -7,12 +7,14 @@
 
 
 /**
- * Smarty default_t modifier plugin
+ * Smarty default_t_plural modifier plugin
  *
  * Type:     modifier<br>
- * Name:     default_t<br>
+ * Name:     default_t_plural<br>
  * Purpose:  designate translatable default value for empty variables
  * @author   pineray 松田光貴 <matsudaterutaka at gmail dot com>
+ * @param string
+ * @param integer
  * @param string
  * @param string
  * @return string
