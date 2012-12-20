@@ -239,11 +239,11 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
         // 期間集計
         if ($objFormParam->getValue('search_form') == 2) {
-            $objErr->doFunc(array(t('PARAM_LABEL_PERIOD_1', 'search_startyear', 'search_startmonth', 'search_startday'), array('FULL_EXIST_CHECK'));
-            $objErr->doFunc(array(t('PARAM_LABEL_PERIOD_2', 'search_endyear', 'search_endmonth', 'search_endday'), array('FULL_EXIST_CHECK'));
-            $objErr->doFunc(array(t('PARAM_LABEL_PERIOD_1', 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
-            $objErr->doFunc(array(t('PARAM_LABEL_PERIOD_2', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_DATE'));
-            $objErr->doFunc(array(t('PARAM_LABEL_PERIOD_1', t('PARAM_LABEL_PERIOD_2', 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_SET_TERM'));
+            $objErr->doFunc(array(t('PARAM_LABEL_PERIOD_1'), 'search_startyear', 'search_startmonth', 'search_startday'), array('FULL_EXIST_CHECK'));
+            $objErr->doFunc(array(t('PARAM_LABEL_PERIOD_2'), 'search_endyear', 'search_endmonth', 'search_endday'), array('FULL_EXIST_CHECK'));
+            $objErr->doFunc(array(t('PARAM_LABEL_PERIOD_1'), 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
+            $objErr->doFunc(array(t('PARAM_LABEL_PERIOD_2'), 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_DATE'));
+            $objErr->doFunc(array(t('PARAM_LABEL_PERIOD_1'), t('PARAM_LABEL_PERIOD_2'), 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_SET_TERM'));
         }
         $objErr->doFunc(array(t('PARAM_LABEL_MONTHLY'), 'search_startyear_m', 'search_startmonth_m'), array('ALL_EXIST_CHECK'));
         $objErr->doFunc(array(t('PARAM_LABEL_START_DAY'), 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
