@@ -1,0 +1,597 @@
+@charset "utf-8";
+/* ===================================================================
+CSS information
+
+file name  :contents.css
+style info :コンテンツ用(商品一覧/検索結果/商品詳細)
+
+=================================================================== */
+/* -----------------------------------------------
+商品一覧・商品詳細・商品検索結果共通
+----------------------------------------------- */
+.pagenumberarea {
+    margin-top: 10px;
+    padding: 10px 0;
+    box-shadow: 0 1px 1px 1px rgba(255,255,255,1) inset;
+    -webkit-box-shadow: 0 1px 1px 0 rgba(255,255,255,1) inset;
+    -moz-box-shadow: 0 1px 1px rgba(255,255,255,1) inset;
+    border-top: 1px solid #CCC;
+    border-bottom: 1px solid #CCC;
+    background: #EEE;
+    display: block;
+}
+.pagenumberarea ul {
+    width: 95%;
+    margin: 0 auto;
+    border: #A9ABAD solid 1px;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    display: block;
+}
+.pagenumberarea li {
+    color: #000;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    display: inline;
+    float: left;
+    width: 50%;
+    text-align: center;
+    color: #FFF;
+    background: #5393c5;
+    background: -moz-linear-gradient(center top, #5393c5 10%,#80b6e2 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #5393c5),color-stop(1, #80b6e2));
+    text-shadow: 0px 1px 1px rgba(0,0,0,0.5);
+}
+.pagenumberarea li a:link,
+.pagenumberarea li a:visited {
+    color: #000;
+}
+.pagenumberarea li a {
+    color: #FFF;
+    display: block;
+    padding: 5px 0;
+    text-decoration: none;
+    text-shadow: 1px 1px 1px rgba(255,255,255,1);
+}
+.pagenumberarea li.on_number {
+    color: #FFF;
+    display: block;
+    padding: 5px 0;
+    text-shadow: 0px 1px 1px rgba(0,0,0,0.5);
+}
+.pagenumberarea li:first-child {
+    border-radius: 5px 0 0 5px;
+    -moz-border-radius: 5px 0 0 5px;
+    -webkit-border-radius: 5px 0 0 5px;
+}
+.pagenumberarea li:last-child {
+    border-radius: 0 5px 5px 0;
+    -moz-border-radius: 0 5px 5px 0;
+    -webkit-border-radius: 0 5px 5px 0;
+}
+.pagenumberarea li:first-child a {
+    border-radius: 5px 0 0 5px;
+    -moz-border-radius: 5px 0 0 5px;
+    -webkit-border-radius: 5px 0 0 5px;
+    border-right: #A9ABAD solid 1px;
+    text-shadow: 1px 1px 1px rgba(255,255,255,1);
+    background: #FDFDfD;
+    background: -moz-linear-gradient(center top, #FDFDFD 0%,#D7DDE3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FDFDFD),color-stop(1, #D7DDE3));
+}
+.pagenumberarea li:last-child a {
+    border-radius: 0 5px 5px 0;
+    -moz-border-radius: 0 5px 5px 0;
+    -webkit-border-radius: 0 5px 5px 0;
+    border-left: #FFF solid 1px;
+    text-shadow: 1px 1px 1px rgba(255,255,255,1);
+    background: #FDFDfD;
+    background: -moz-linear-gradient(center top, #FDFDFD 0%,#D7DDE3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FDFDFD),color-stop(1, #D7DDE3));
+    box-shadow: 1px 0px 1px 1px rgba(255,255,255,1) inset;
+    -webkit-box-shadow: 1px 0px 1px 0px rgba(255,255,255,1) inset;
+    -moz-box-shadow: 1px 1px 1px 0px rgba(255,255,255,1) inset;
+}
+.pagenumberarea li.on_number {
+    color: #FFF;
+    text-shadow: 0px 1px 1px rgba(0,0,0,0.5);
+    background: #5393c5;
+    background: -moz-linear-gradient(center top, #5393c5 10%,#80b6e2 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #5393c5),color-stop(1, #80b6e2));
+}
+ul.status_icon {
+    clear: both;
+}
+ul.status_icon li {
+    color: #FFF;
+    background: #9AAABD;
+    display: inline;
+    float: left;
+    margin-right :5px;
+    margin-bottom: 2px;
+    padding: 2px 5px;
+    font-size: 11px;
+    text-shadow: none;
+}
+/* -----------------------------------------------
+商品一覧
+----------------------------------------------- */
+#product_list {
+    padding-bottom: 35px;
+}
+
+/* アイテムリスト(div)の処理
+----------------------------------------------- */
+.list_area {
+    margin: 0;
+    padding: 10px 5px 15px 10px;
+    background-color: #FEFEFE;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FEFEFE),color-stop(1, #EEEEEE));
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FEFEFE),color-stop(1, #EEEEEE));
+    border-top: #FFF solid 1px;
+    border-bottom: #CCC solid 1px;
+    display: block;
+    clear: both;
+    position: relative;
+    cursor: pointer;
+}
+.list_area ul.status_icon {
+    margin-bottom: 5px;
+}
+.listphoto {
+    margin: 0 10px 10px 0;
+    float: left;
+    clear: left;
+}
+.listrightblock {
+    width: 67%;
+    float: right;
+    padding-right: 10px;
+}
+.listrightblock h3 {
+    font-size: 15px;
+    clear: both;
+}
+.listrightblock .listcomment {
+    line-height: 1.4;
+}
+
+/* -----------------------------------------------
+商品詳細
+----------------------------------------------- */
+#product_detail {
+    padding-bottom: 35px;
+}
+/*商品情報*/
+#detailarea {
+    background: #F0F0F1;
+    padding: 20px 10px 35px 10px;
+}
+#detailrightblock {
+    margin-top: 25px;
+    padding: 0;
+    background: #FFF;
+    border: #CCC solid 1px;
+    border-radius: 7px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+}
+#detailrightblock div:after {
+    content: ".";
+    display: block;
+    clear: both;
+    height: 0;
+    visibility: hidden;
+}
+#detailrightblock div {
+    border-bottom: #CCC solid 1px;
+}
+#detailrightblock div#cartbtn_default {
+    border-bottom: none;
+}
+#detailrightblock div:last-child {
+    border-bottom: none;
+    border-radius: 0 0 7px 7px;
+    -moz-border-radius: 0 0 7px 7px;
+    -webkit-border-radius: 0 0 7px 7px;
+}
+/* 商品ステータスアイコン */
+#detailrightblock .status_icon {
+    padding: 10px 12px;
+    border-bottom: #CCC solid 1px;
+}
+/*商品情報（テキストなど）*/
+#detailrightblock .product_detail {
+    padding: 12px;
+    border-bottom: #CCC solid 1px;
+}
+#detailrightblock h3 {
+    font-size: 14px;
+    clear: both;
+}
+#detailrightblock .price {
+    font-size: 14px;
+}
+#detailrightblock .normal_price {
+    font-size: 11px;
+}
+.relative_cat {
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+/*商品情報（規格部分）*/
+.cart_area {
+    padding: 12px;
+}
+.cart_area dl {
+    margin: 0;
+    padding: 0;
+}
+.cart_area dt {
+    margin: 0;
+    font-weight: bold;
+    line-height: 1.3;
+}
+.cart_area dd {
+    padding: 0;
+    clear: both;
+    padding-bottom: 5px;
+}
+.cart_area dd:last-child {
+    padding-bottom: 0;
+}
+
+/*商品情報（数量）*/
+.cartin_btn {
+    padding: 15px 15px 15px 8px;
+    background: #F1F0E7;
+    border-top: #FFF solid 1px;
+}
+.cartin_btn dl {
+    width: 40%;
+    float: left;
+    clear: left;
+}
+.cartin_btn dt {
+    width: 2em;
+    float: left;
+    padding: 15px 5px 0 5px;
+    line-height: 1.1;
+    font-weight: bold;
+}
+.cartin_btn dd {
+    width: 3.2em;
+    display: inline;
+    float: left;
+    padding-top: 5px;
+}
+.detail_quantity dd .quantitybox {
+    width: 3em;
+}
+.cartbtn_default {
+    width: 54%;
+    float: right;
+    clear: right;
+}
+
+/*お気に入り*/
+.btn_favorite {
+    padding: 10px 15px;
+    background: #F1F0E7;
+}
+/*サブエリア*/
+.subarea {
+    padding: 0 10px 20px 10px;
+    margin-bottom: 15px;
+    border-bottom: #CCC solid 1px;
+    clear: both;
+}
+.subarea h3 {
+    margin-bottom: 10px;
+    padding: 5px 0;
+    border-bottom: #CCC solid 1px;
+    clear: both;
+}
+.subphotoimg {
+    margin-left: 10px;
+    float: right;
+    clear: right;
+}
+#sub_area div:last-child {
+    border-bottom: none;
+}
+/*商品詳細メイン画像スライド*/
+#detailphotoblock {
+    width: 100%;
+    background-color: #ffffff;
+    text-align: center;
+    -webkit-box-shadow: 1px 5px 5px #ccc;
+    -moz-box-shadow: 1px 5px 5px #ccc;
+    position: relative;
+}
+#detailphotoblock div.moveWrap {
+    width: 200px;
+    height: 220px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    -webkit-box-sizing: border-box;
+}
+#detailphotoblock ul.moveWrapBG {
+    width: 200px;
+    height: auto;
+    visibility: hidden;
+    display: inline-block;
+    position: relative;
+    -webkit-box-sizing: border-box;
+    margin: 0 auto;
+    padding: 0;
+}
+#detailphotoblock li {
+    width: 200px;
+}
+#detailphotoblock div.slideMask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    /*border:4px #FFF solid;*/
+    -webkit-box-sizing: border-box;
+    margin-right: 0!important;
+}
+#detailphotoblock div.moveWrap>ul.move {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    left: 0;
+    top: 0;
+    list-style: none;
+    width: 2000px;
+    -webkit-transition: all 0.6s ease-in-out;
+    -webkit-transform: translate3d(0,0,0);
+    -webkit-transition-duration: 400ms;
+    -webkit-transition-property: -webkit-transform;
+    margin: 0;
+    padding: 0;
+    display: none;
+}
+#detailphotoblock div.moveWrap>ul.move li.slideUnit {
+    margin: 0px;
+    padding: 0;
+    float: left;
+    list-style: none;
+    text-align: center;
+    -webkit-box-sizing: border-box;
+}
+#detailphotoblock li.slideUnit>div {
+    padding: 0px;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    -webkit-box-sizing: border-box;
+}
+
+.flickSlideContainer {
+}
+
+#detailphotoblock div.flickSlideBottom {
+    width: 100%;
+}
+#detailphotoblock div.flickSlideBottom div.bottomLeft,
+#detailphotoblock div.flickSlideBottom div.bottomRight {
+    padding: 0 10px;
+    display: table-cell;
+    vertical-align: middle;
+}
+#detailphotoblock div.flickSlideBottom div.bottomRight {
+    font-size: 24px;
+    font-weight: bold;
+    color: #7F7F7F;
+    background-color: transparent;
+    right: 5px;
+    top: 100px;
+    position: absolute;
+}
+#detailphotoblock div.flickSlideBottom div.bottomLeft {
+    font-size: 24px;
+    font-weight: bold;
+    color: #7F7F7F;
+    background-color: transparent;
+    left: 5px;
+    top: 100px;
+    position: absolute;
+}
+#detailphotoblock div.flickSlideBottom div.bottomLeft:after {
+    font-size: 12px;
+    padding: 5px;
+    text-align: left;
+    display: table-cell;
+}
+#detailphotoblock div.flickSlideBottom div.bottomLeft:before {
+    padding: 5px;
+    text-align: left;
+    display: table-cell;
+}
+#detailphotoblock div.flickSlideBottom div.bottomRight:before {
+    font-size: 12px;
+    padding: 5px;
+    text-align: right;
+    display: table-cell;
+}
+#detailphotoblock div.flickSlideBottom div.bottomRight:after {
+    padding: 5px;
+    text-align: right;
+    display: table-cell;
+}
+#detailphotoblock div.flickSlideBottom ul.slidePager {
+    display: block;
+    width: auto;
+    text-align: center;
+    margin: 0 auto;;
+    padding: 0;
+}
+#detailphotoblock div.flickSlideBottom ul.slidePager li.slidePagerPointer {
+    font-size: 11px;
+    width: 6px;
+    height: 6px;
+    margin: 0 6px 10px 6px;
+    display: inline-block;
+    background-color: #CCC;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+}
+#detailphotoblock div.flickSlideBottom ul.slidePager li.slidePagerPointer.active {
+    background-color: #333;
+}
+
+/*その他オススメ商品スライド*/
+#product_detail .title_box_sub:last-child {
+    margin-top: 20px;
+}
+#whobought_area {
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    clear: both;
+    position: relative;
+}
+#whobought_area h3 {
+    clear: both;
+    line-height: 1.2;
+}
+/*liの長さ追加*/
+#whobought_area li {
+    width: 80px;
+}
+#whobought_area li img {
+    margin-bottom: 5px;
+    clear: both;
+}
+#whobought_area .sale_price {
+    clear: both;
+    float: right;
+    text-align: right;
+}
+#whobought_area div.moveWrap {
+    width: 80%;
+    height: auto;
+    position: relative;
+    margin: 0 auto;
+    overflow: hidden;
+    -webkit-box-sizing: border-box;
+}
+#whobought_area ul.moveWrapBG {
+    width: auto;
+    height: auto;
+    display: inline-block;
+    position: relative;
+    visibility: hidden;
+    -webkit-box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+#whobought_area div.slideMask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 4px #FFF solid;
+    -webkit-box-sizing: border-box;
+    margin-right: 1px;
+}
+#whobought_area div.moveWrap>ul.move {
+    width: 600px;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    left: 0;
+    top: 0;
+    list-style: none;
+    -webkit-transition: all 0.6s ease-in-out;
+    -webkit-transform: translate3d(0,0,0);
+    /*-webkit-transition-duration: 400ms;
+    -webkit-transition-property: -webkit-transform;
+    */
+    margin: 0;
+    padding: 0;
+    display: none;
+}
+#whobought_area div.moveWrap>ul.move li.slideUnit {
+    width: 85px!important;
+    float: left;
+    display: inline;
+    list-style: none;
+    padding: 4px 8px 4px 0;
+    margin-right: 0px;
+    -webkit-box-sizing: border-box;
+}
+#whobought_area li.slideUnit>div {
+    padding: 4px;
+    display: inline;
+    vertical-align: middle;
+    -webkit-box-sizing: border-box;
+}
+#whobought_area div.flickSlideBottom {
+    width: 100%;
+    margin-top: 5px;
+}
+#whobought_area div.flickSlideBottom div.bottomLeft,
+#whobought_area div.flickSlideBottom div.bottomRight {
+    padding: 0 10px;
+    display: table-cell;
+    vertical-align: middle;
+}
+#whobought_area div.flickSlideBottom div.bottomRight {
+    font-size: 16px;
+    font-weight: bold;
+    color: #7F7F7F;
+    background-color: transparent;
+    right: 0;
+    top: 80px;
+    position: absolute;
+}
+#whobought_area div.flickSlideBottom div.bottomLeft {
+    font-size: 16px;
+    font-weight: bold;
+    color: #7F7F7F;
+    background-color: transparent;
+    left: 0;
+    top: 80px;
+    position: absolute;
+}
+#whobought_area div.flickSlideBottom div.bottomLeft:after {
+    font-size: 10px;
+    padding: 0;
+    text-align: left;
+    display: table-cell;
+}
+#whobought_area div.flickSlideBottom div.bottomLeft:before {
+    padding: 0;
+    text-align: left;
+    display: table-cell;
+}
+#whobought_area div.flickSlideBottom div.bottomRight:before {
+    font-size: 10px;
+    padding: 0;
+    text-align: right;
+    display: table-cell;
+}
+#whobought_area div.flickSlideBottom div.bottomRight:after {
+    padding: 0;
+    text-align: right;
+    display: table-cell;
+}
+#whobought_area div.flickSlideBottom ul.slidePager {
+    display: block;
+    width: auto;
+    text-align: center;
+    margin: 0 auto;
+    padding: 0;
+}
+#whobought_area div.flickSlideBottom ul.slidePager li.slidePagerPointer {
+    display: none;
+}
+

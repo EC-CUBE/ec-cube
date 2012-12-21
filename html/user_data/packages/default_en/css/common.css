@@ -1,0 +1,493 @@
+@charset "utf-8";
+
+/************************************************
+ 共通設定
+************************************************ */
+body {
+    color: #666;
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+    background-color: #f5f5f5;
+    font-size: 72.5%;
+    line-height: 150%;
+    letter-spacing: 0.1em;
+}
+
+select {
+    border: solid 1px #ccc;
+}
+
+/*写真*/
+.picture {
+    border: 1px solid #ccc;
+}
+
+
+/* ==============================================
+ フレーム
+=============================================== */
+/* 全体を包括 */
+.frame_outer {
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+}
+
+/* コンテンツ */
+#container {
+    margin: 0 auto;
+    padding: 0 0 30px 0;
+    width: 980px;
+    background: #fff;
+    text-align: left;
+}
+
+
+/* ==============================================
+ カラム指定
+=============================================== */
+/* ヘッダーとフッターの上下
+[注意]ブロック移動時はbloc.css内で調整が必要 */
+#topcolumn,
+#bottomcolumn,
+#footerbottomcolumn {
+    margin: 0 auto;
+    padding: 15px;
+    width: 950px;
+    background: #fff;
+    text-align: left;
+}
+
+/* 中央カラム */
+.main_column {
+    padding: 10px 0 20px;
+}
+
+/* サイドカラム */
+#leftcolumn {
+    float: left;
+    width: 20%;
+}
+#rightcolumn {
+    float: right;
+    width: 20%;
+}
+
+/* 1カラム設定 */
+#one_maincolumn {
+    margin: 0 auto;
+    width: 80%;
+}
+
+/* 2カラム設定 (メイン部が左) */
+#two_maincolumn_left {
+    padding-left: 1.5%;
+    float: left;
+    width: 78%;
+}
+
+/* 2カラム設定 (メイン部が右) */
+#two_maincolumn_right {
+    padding-right: 1.5%;
+    width: 78%;
+    float: right;
+}
+
+/* 3カラム設定 */
+#three_maincolumn {
+    padding-left: 0.5%;
+    width: 59%;
+    float: left;
+}
+
+/* 下層コンテンツ */
+#undercolumn {
+    width: 100%;
+    margin: 0 0 30px 0;
+}
+
+
+/* ==============================================
+ ユーティリティ
+=============================================== */
+/* フロート回り込み解除
+----------------------------------------------- */
+.clearfix:after {
+    display: block;
+    clear: both;
+    height: 0px;
+    line-height: 0px;
+    visibility: hidden;
+    content: ".";
+}
+.clearfix {
+    display: block; /* for IE8 */
+}
+.clear {
+    clear: both;
+}
+
+/* リンク指定
+----------------------------------------------- */
+a:link,
+a:visited {
+    color: #39c;
+    text-decoration: none;
+}
+a:link:hover,
+a[href]:hover {
+    color: #f60;
+    text-decoration: underline;
+}
+
+
+/* フォント
+----------------------------------------------- */
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-size: 100%;
+    line-height: 150%;
+}
+.sale_price {
+    color: #f00;
+}
+.normal_price {
+    font-size: 90%;
+}
+.point {
+    color: #f00;
+    font-weight: bold;
+}
+.user_name {
+    font-weight: bold;
+}
+.recommend_level {
+    color: #ecbd00;
+}
+
+.attention {
+    color: #f00;
+}
+.attentionSt {
+    color: #f00;
+    font-weight: bold;
+}
+.st {
+    font-weight: bold;
+}
+.mini {
+    font-size: 90%;
+}
+
+
+/* 行揃え
+----------------------------------------------- */
+.alignC {
+    text-align: center;
+}
+.alignR {
+    text-align: right;
+}
+.alignL {
+    text-align: left;
+}
+.pricetd em {
+    font-weight: bold;
+}
+
+
+/* フォーム
+----------------------------------------------- */
+input[type='text'],
+input[type='password'],
+.select {
+    border: solid 1px #ccc;
+    padding: 2px;
+}
+
+.box40 {
+    width: 40px;
+}
+.box60 {
+    width: 60px;
+}
+.box100 {
+    width: 100px;
+}
+.box120 {
+    width: 120px;
+}
+.box140 {
+    width: 140px;
+}
+.box145 {
+    width: 145px;
+}
+.box150 {
+    width: 150px;
+}
+.box240 {
+    width: 240px;
+}
+.box300 {
+    width: 300px;
+}
+.box320 {
+    width: 320px;
+}
+.box350 {
+    width: 350px;
+}
+.box380 {
+    width: 380px;
+}
+
+/* フォームが縦に重なり合う場合に併用する余白 */
+.top {
+    margin-bottom: 5px;
+}
+
+.ng_top {
+    margin-bottom: 0 !important;
+}
+
+
+/* タイトル
+----------------------------------------------- */
+h2.title {
+    margin-bottom: 10px;
+    padding: 8px;
+    border-top: solid 1px #ebeced;
+    color: #f60;
+    background: url("../img/background/bg_tit_sub_01.jpg") repeat-x left bottom;
+    background-color: #fef3d8;
+    font-size: 170%;
+}
+
+#one_maincolumn .sub_area h3,
+#two_maincolumn_right .sub_area h3,
+#two_maincolumn_left .sub_area h3,
+#three_maincolumn .sub_area h3,
+#undercolumn_login .login_area h3,
+#undercolumn_shopping h3,
+#mypagecolumn h3,
+#undercolumn_cart h3 {
+    margin: 0 0 10px 0;
+    padding: 5px 0 10px;
+    color: #f60;
+    background: url("../img/background/line_01.gif") repeat-x left bottom;
+    font-size: 120%;
+}
+
+div#undercolumn_login .login_area h4 {
+    padding-left: 15px;
+    background: url("../img/icon/ico_arrow_05.gif") no-repeat left;
+}
+
+
+/* ==============================================
+ ヘッダー
+=============================================== */
+/* レイアウト
+----------------------------------------------- */
+#header_wrap {
+    border-top: solid 3px #f90;
+    min-height: 82px;
+    background: url("../img/common/bg_header.gif") repeat-x bottom #fffaf0;
+}
+#header {
+    margin: auto;
+    width: 980px;
+}
+#logo_area {
+    padding-left: 10px;
+    float: left;
+    width: 390px;
+    text-align: left;
+}
+#header_utility {
+    float: right;
+    width: 580px;
+}
+
+#errorHeader {
+    color: #F00;
+    font-weight: bold;
+    font-size: 12px;
+    background-color: #FEB;
+    text-align: center;
+    padding: 5px;
+}
+
+/* ロゴ
+----------------------------------------------- */
+#site_description {
+    font-size: 90%;
+}
+#logo_area h1 {
+    width: 378px;
+    height: 33px;
+}
+#logo_area h1 span {
+    display: none; /* テキストロゴ非表示 */
+}
+
+
+/* ヘッダーナビ
+----------------------------------------------- */
+div#header_navi {
+    float: right;
+    width: 409px;
+    height: 38px;
+}
+div#header_navi ul li {
+    display: block;
+    float: left;
+}
+div#header_navi ul li.mypage,
+div#header_navi ul li.entry {
+    margin-top: 6px;
+}
+
+
+/* ==============================================
+ フッター
+=============================================== */
+#footer_wrap {
+    margin: 0 auto;
+    width: 980px;
+    height: 80px;
+    background: #fff;
+}
+#footer {
+    margin: auto;
+    padding-top: 10px;
+    border-top: solid 1px #ccc;
+    width: 950px;
+}
+#pagetop {
+    width: 210px;
+    float: right;
+    text-align: right;
+}
+#copyright {
+    width: 740px;
+    float: left;
+    text-align: left;
+    font-size: 97%;
+}
+
+
+/* ==============================================
+ パーツ
+=============================================== */
+/* ボタン
+----------------------------------------------- */
+.btn_area {
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+}
+
+.btn_area li {
+    padding-right: 10px;
+    display: inline;
+}
+
+
+/* 完了メッセージ
+----------------------------------------------- */
+div#complete_area {
+    margin-bottom: 20px;
+}
+div#complete_area .message,
+div#undercolumn_entry .message {
+    margin-bottom: 20px;
+    line-height: 150%;
+    font-weight: bold;
+    font-size: 120%;
+}
+div#complete_area .shop_information {
+    margin-top: 40px;
+    padding: 20px 0 0 0;
+    border-top: solid 1px #ccc;
+}
+div#complete_area .shop_information .name {
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 140%;
+}
+
+
+/* Tipsy
+----------------------------------------------- */
+.tipsy {
+    padding: 5px;
+    font-size: 10px;
+    position: absolute;
+    z-index: 100000;
+}
+.tipsy-inner {
+    padding: 5px 8px 4px 8px;
+    background-color: black;
+    color: white;
+    max-width: 200px;
+    text-align: center;
+}
+.tipsy-inner {
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+.tipsy-arrow {
+    position: absolute;
+    background: url('../img/ajax/tipsy.gif') no-repeat top left;
+    width: 9px;
+    height: 5px;
+}
+.tipsy-n .tipsy-arrow {
+    top: 0;
+    left: 50%;
+    margin-left: -4px;
+}
+.tipsy-nw .tipsy-arrow {
+    top: 0;
+    left: 10px;
+}
+.tipsy-ne .tipsy-arrow {
+    top: 0;
+    right: 10px;
+}
+.tipsy-s .tipsy-arrow {
+    bottom: 0;
+    left: 50%;
+    margin-left: -4px;
+    background-position: bottom left;
+}
+.tipsy-sw .tipsy-arrow {
+    bottom: 0;
+    left: 10px;
+    background-position: bottom left;
+}
+.tipsy-se .tipsy-arrow {
+    bottom: 0;
+    right: 10px;
+    background-position: bottom left;
+}
+.tipsy-e .tipsy-arrow {
+    top: 50%;
+    margin-top: -4px;
+    right: 0;
+    width: 5px;
+    height: 9px;
+    background-position: top right;
+}
+.tipsy-w .tipsy-arrow {
+    top: 50%;
+    margin-top: -4px;
+    left: 0;
+    width: 5px;
+    height: 9px;
+}

@@ -1,0 +1,340 @@
+@charset "utf-8";
+/* ===================================================================
+CSS information
+
+file name  :button.css
+style info :ボタン用
+
+=================================================================== */
+.btn_area {
+    padding: 10px;
+    clear: both;
+}
+ul.btn_btm {
+    clear: both;
+}
+.btn_area li,
+ul.btn_btm li {
+    margin-bottom: 12px;
+}
+.btn_area_top {
+    box-shadow: 0 1px 1px 1px rgba(255,255,255,1) inset;
+    -webkit-box-shadow: 0 1px 1px 0 rgba(255,255,255,1) inset;
+    -moz-box-shadow: 0 1px 1px rgba(255,255,255,1) inset;
+    border-top: 1px solid #CCC;
+    border-bottom: 1px solid #CCC;
+    background: #EEE;
+    display: block;
+    clear: both;
+    margin-bottom: 10px;
+    padding: 10px 0;
+}
+/*-----------------------------------------------
+ボタン（進む系ボタン:グリーン）
+----------------------------------------------- */
+a.btn,
+a.btn:link,
+a.btn:visited,
+a.btn:hover {
+    color: #FFF;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    padding: 10px;
+    text-shadow: 0 -1px 1px rgba(0,0,0,1);
+    border: 1px solid #A9ABAD;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    display: block;
+    background: #B4DF34;
+    background: -moz-linear-gradient(center top, #B4DF34 0%,#669222 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #B4DF34),color-stop(1, #669222));
+    cursor: pointer;
+    -webkit-transition: opacity 0.5s ease-in;
+    -moz-transition: opacity 0.5s ease-in;
+}
+input[type="submit"].btn {
+    width: 100%;
+    color: #FFF;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    padding: 10px;
+    text-shadow: 0 -1px 1px rgba(0,0,0,1);
+    border: 1px solid #A9ABAD;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    display: block;
+    background: #B4DF34;
+    background: -moz-linear-gradient(center top, #B4DF34 0%,#669222 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #B4DF34),color-stop(1, #669222));
+    cursor: pointer;
+    -webkit-transition: opacity 0.5s ease-in;
+    -moz-transition: opacity 0.5s ease-in;
+}
+/*-----------------------------------------------
+ボタン（戻る系ボタン:グレー）
+----------------------------------------------- */
+a.btn_back,
+a.btn_back:link,
+a.btn_back:visited,
+a.btn_back:hover {
+    color: #FFF;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    text-shadow: 0 -1px 1px rgba(0,0,0,1);
+    border: 1px solid #A9ABAD;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    display: block;
+    padding: 5px 0;
+    background: #999999;
+    background: -moz-linear-gradient(center top, #C5C5C5 0%,#999999 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #C5C5C5),color-stop(1, #999999));
+}
+input[type="submit"].btn_back {
+    color: #FFF;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    text-shadow: 0 -1px 1px rgba(0,0,0,1);
+    border: 1px solid #A9ABAD;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    display: block;
+    padding: 5px 0;
+    background: #999999;
+    background: -moz-linear-gradient(center top, #C5C5C5 0%,#999999 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #C5C5C5),color-stop(1, #999999));
+}
+/*-----------------------------------------------
+ボタン（サブ系ボタン:ライトグレー）
+----------------------------------------------- */
+.btn_sub,
+a.btn_sub,
+a.btn_sub:link,
+a.btn_sub:visited,
+a.btn_sub:hover {
+    color: #000;
+    font-size: 16px;
+    padding: 5px 0;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    text-shadow: 0 -1px 1px rgba(255,255,255,1);
+    border: 1px solid #A9ABAD;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    display: block;
+    background: #FDFDfD;
+    background: -moz-linear-gradient(center top, #FDFDFD 0%,#D7DDE3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FDFDFD),color-stop(1, #D7DDE3));
+}
+input[type="submit"].btn_sub {
+    color: #000;
+    font-size: 16px;
+    padding: 5px 0;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    text-shadow: 0 -1px 1px rgba(0,0,0,0.3);
+    border: 1px solid #A9ABAD;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    display: block;
+    background: #FDFDfD;
+    background: -moz-linear-gradient(center top, #FDFDFD 0%,#D7DDE3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FDFDFD),color-stop(1, #D7DDE3));
+}
+/*-----------------------------------------------
+ボタン（追加系ボタン:ホワイト）
+----------------------------------------------- */
+a.btn_more,
+a.btn_more:link,
+a.btn_more:visited,
+a.btn_more:hover {
+    color: #000;
+    font-size: 16px;
+    padding: 5px 0;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    border: 1px solid #A9ABAD;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    display: block;
+    background: #FFF;
+    clear: both;
+    margin: 10px 0;
+}
+input[type="submit"].btn_more {
+    color: #000;
+    font-size: 16px;
+    padding: 5px 0;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    border: 1px solid #A9ABAD;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    display: block;
+    background: #FFF;
+    clear: both;
+}
+/*-----------------------------------------------
+ボタン（フッター）
+----------------------------------------------- */
+a.btn_btm {
+    width: 150px;
+    text-align: center;
+    color: #FFF;
+    background-color: #000;
+    background: -moz-linear-gradient(center top, #5E5E5E 0%,#232323 48%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #5E5E5E),color-stop(0.48, #232323));
+    border: #303030 solid 1px;
+    text-shadow: 0 -1px 1px rgba(0,0,0,0.5);
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    padding: 5px;
+    margin: 10px auto;
+    transition: background-color 1s ease-in;
+    -webkit-transition: background-color 1s ease-in;
+    -moz-transition: opacity 1s ease-int;
+    cursor: pointer;
+}
+.btn_btm,
+a.btn_btm:link,
+a.btn_btm:hover,
+a.btn_btm:visited {
+    color: #FFF;
+    text-decoration: none;
+}
+input[type="submit"].btn_btm {
+    width: 150px;
+    text-align: center;
+    color: #FFF;
+    background-color: #000;
+    background: -moz-linear-gradient(center top, #5E5E5E 0%,#232323 48%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #5E5E5E),color-stop(0.48, #232323));
+    border: #303030 solid 1px;
+    text-shadow: 0 -1px 1px rgba(0,0,0,0.5);
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    padding: 5px;
+    margin: 10px auto;
+    transition: background-color 1s ease-in;
+    -webkit-transition: background-color 1s ease-in;
+    -moz-transition: opacity 1s ease-int;
+    cursor: pointer;
+}
+/*-----------------------------------------------
+ボタン小（編集/削除）
+----------------------------------------------- */
+ul.edit {
+    float: right;
+    clear: right;
+    display: inline;
+    vertical-align: top;
+    line-height: 1;
+    position: absolute;
+    right: 10px;
+    top: 15px;
+}
+ul.edit li {
+    display: inline;
+    float: left;
+    line-height: 1;
+    vertical-align: middle;
+}
+ul.edit li:first-child {
+    margin-right: 0.8em;
+}
+a.b_edit:link,
+a.b_edit:visited,
+a.b_edit:hover {
+    color: #000;
+    font-size: 11px;
+    padding: 4px 5px;
+    border: #CCC solid 1px;
+    border-radius: 12px;
+    -moz-border-radius: 12px;
+    -webkit-border-radius: 12px;
+    background: #D7DDE3;
+    background: -moz-linear-gradient(center top, #FFFFFF 0%,#D7DDE3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FFFFFF),color-stop(1, #D7DDE3));
+    display: inline;
+    text-align: center;
+    cursor: pointer;
+    vertical-align: middle;
+}
+a.b_delete:link,
+a.b_delete:visited,
+a.b_delete:hover {
+    vertical-align: top;
+    cursor: pointer;
+}
+/*-----------------------------------------------
+ボタン（商品詳細:カゴに入れる）
+----------------------------------------------- */
+.cartbtn_default {
+    width: 50%!important;
+    font-size: 15px;
+    padding: 10px 0;
+    background: #669222;
+    background: -moz-linear-gradient(center top, #B4DF34 0%,#669222 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #B4DF34),color-stop(1, #669222));
+}
+
+/*-----------------------------------------------
+ボタン（商品詳細:お気に入り)
+----------------------------------------------- */
+.btn_favorite .btn_sub {
+    width: auto;
+    display: block;
+}
+.btn_favorite p {
+    text-align: center;
+}
+/*-----------------------------------------------
+ボタン（新しいお届け先を追加する)
+----------------------------------------------- */
+.addbtn {
+    margin: 0 30px;
+    padding: 5px 0;
+}
+/*-----------------------------------------------
+ボタン（トップページへ)
+----------------------------------------------- */
+.btn_s {
+    width: 12em;
+    padding: 10px 0!important;
+    margin: 10px auto;
+    clear: both;
+}
+/*-----------------------------------------------
+ボタン（住所自動入力)
+----------------------------------------------- */
+.btn_inputzip {
+    margin: 12px 0 5px 0;
+}
+/*-----------------------------------------------
+ボタン（ログイン/ウィンドウ)
+----------------------------------------------- */
+.btn_login,
+.btn_close {
+    width: 70%;
+    margin: 10px auto;
+}

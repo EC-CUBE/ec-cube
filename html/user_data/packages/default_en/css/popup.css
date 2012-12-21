@@ -1,0 +1,111 @@
+@charset "utf-8";
+
+/************************************************
+ ポップアップウィンドウ
+************************************************ */
+/* 共通
+----------------------------------------------- */
+div#windowcolumn {
+    border-top: solid 3px #f90;
+    width: 560px;
+    height: 100%;
+    margin: 15px 15px 0 15px;
+    background: #fff;
+}
+
+div#windowcolumn h2 {
+    margin-bottom: 10px;
+    padding: 8px;
+    border-top: solid 1px #ebeced;
+    color: #f60;
+    background: url("../img/background/bg_tit_sub_01.jpg") repeat-x left bottom;
+    background-color: #fef3d8;
+    font-size: 170%;
+}
+
+div#window_area {
+    margin: 15px auto 0 auto;
+    padding-bottom: 20px;
+    width: 540px;
+    min-height: 300px;
+    height: auto !important;
+}
+
+div#window_area p.information {
+    margin-bottom: 20px;
+}
+
+div#window_area .message {
+    margin-bottom: 20px;
+    color: #f60;
+    line-height: 150%;
+    font-weight: bold;
+    font-size: 140%;
+}
+div#window_area table {
+    width: 540px;
+}
+
+/* お客様の声の書き込み、新しいお届け先の追加・変更
+----------------------------------------------- */
+div#window_area #forgot {
+    margin: 0 auto;
+    padding: 20px;
+    width: 440px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+div#window_area #forgot .mailaddres {
+    margin-bottom: 10px;
+}
+
+div#window_area #forgot p {
+    text-align: center;
+}
+
+
+/* 商品詳細拡大写真、カート拡大写真
+----------------------------------------------- */
+div#bigimage,
+div#cartimage {
+    margin-top: 15px;
+    background-color: #fff;
+    text-align: center;
+}
+
+div#bigimage img,
+div#cartimage img {
+    padding: 10px;
+    background-color: #fff;
+}
+
+/* 郵便番号検索
+----------------------------------------------- */
+div#zipsearchcolumn {
+    margin: 15px auto 0 auto;
+    border-top: 5px solid #ffa85c;
+    border-bottom: 5px solid #ffa85c;
+    width: 460px;
+    background-color: #fff;
+}
+
+div#zipsearchcolumn h2 {
+    margin: 0 0 15px 0;
+    width: 460px;
+}
+
+div#zipsearch_area {
+    margin: 15px auto 0 auto;
+    width: 460px;
+}
+
+div#zipsearchcolumn .btn {
+    margin: 15px 0 30px 0;
+    text-align: center;
+}
+
+div#zipsearch_area #completebox p {
+    padding: 60px 5px;
+    text-align: center;
+}
+

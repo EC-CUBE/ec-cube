@@ -1,0 +1,88 @@
+@charset "utf-8";
+
+/************************************************
+ インヘッダーブロック
+************************************************ */
+#headerInternalColumn {
+    margin-top: 5px;
+    float: right;
+    width: 520px;
+    height: 35px;
+}
+
+/* ログイン（ヘッダー用）
+----------------------------------------------- */
+#header_login_area {
+    padding: 0 10px;
+    border: solid 1px #ffc979;
+    height: 30px;
+    background: #fef3d3;
+    letter-spacing: -0.075em;
+}
+#header_login_area ul.formlist {
+    margin-top: 5px;
+}
+#header_login_area ul.formlist li {
+    float: left;
+}
+#header_login_area ul.formlist li.mail {
+    padding-left: 28px;
+    width: 155px;
+    background: url("../img/common/ico_arrow_login.gif") no-repeat left;
+    font-size: 90%;
+}
+#header_login_area ul.formlist li.password {
+    padding-right: 5px;
+}
+#header_login_area ul.formlist li.login_memory {
+    padding-right: 5px;
+    font-size: 90%;
+}
+#header_login_area ul.formlist li.forgot {
+    margin-top: 3px;
+    padding-right: 5px;
+    font-size: 90%;
+}
+#header_login_area ul.formlist li.btn {
+    padding-right: 5px;
+    width: 53px;
+}
+#header_login_area p.btn {
+    height: 20px;
+    padding: 5px 0;
+    vertical-align: middle;
+}
+#header_login_area p.btn input[type=image] {
+    vertical-align: middle;
+}
+
+/* ***********************************************
+追加ブロック
+************************************************ */
+/* 共通
+----------------------------------------------- */
+#container .block_outer #banner_area .block_body {
+    border: none;
+}
+
+/* 【メイン】バナーエリア_02
+----------------------------------------------- */
+.main_column .block_outer #banner_area .block_body ul {
+    width: 100%;
+}
+.main_column .block_outer #banner_area .block_body ul li {
+    float: left;
+}
+.main_column .block_outer #banner_area .block_body ul li.sub_01 {
+    padding-right: 8px;
+}
+
+/* 【サイド】バナーエリア_01
+----------------------------------------------- */
+/* 【サイド】バナーエリア_02
+----------------------------------------------- */
+#leftcolumn .block_outer #banner_area .block_body ul li,
+#rightcolumn .block_outer #banner_area .block_body ul li {
+    margin-bottom: 8px;
+}
+

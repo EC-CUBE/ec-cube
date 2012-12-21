@@ -1,0 +1,447 @@
+@charset "utf-8";
+
+/************************************************
+ ブロック用
+************************************************ */
+/*** 目次 ***
+
+▼ブロック共通
+リスト
+タイトル
+ヘッダー上、フッター下のブロックエリア
+
+▼各機能ブロックの指定
+-新着情報
+-現在のカゴの中
+-カテゴリ
+-ガイドリンク
+-ログイン（サイド用）
+-検索
+-カレンダー
+-おすすめ商品
+    *メインカラム用 1カラム時 [one_maincolumn]
+    *メインカラム用 2カラム時 [two_maincolumn_left]
+                              [two_maincolumn_right]
+    *メインカラム用 3カラム時 [three_maincolumn]
+    *サイドカラム用           [side_column]
+    *商品詳細のオススメ商品   [whobought_area]
+ */
+
+
+/* ==============================================
+ブロック共通
+/* ============================================= */
+#container .block_body {
+    background-color: #fff;
+}
+.side_column {
+    overflow-x: hidden; /* IE6 表示乱れ防止 */
+}
+.side_column .block_outer {
+    margin: 10px 7%;
+}
+.side_column .block_body,
+.main_column .block_body {
+    border: solid 1px #ccc;
+    border-top: none;
+}
+.side_column .block_body .box {
+    border: solid 1px #ccc;
+    width: 145px;
+}
+.main_column .block_outer {
+    margin-bottom: 20px;
+}
+
+
+/* リスト
+----------------------------------------------- */
+/* ログイン 検索条件 */
+#container .block_outer .block_body dl.formlist {
+    margin-bottom: 8px;
+}
+#container .block_outer .block_body dl.formlist dd {
+    margin-bottom: 5px;
+}
+#container .block_outer .block_body dl.formlist dt {
+    margin-bottom: 3px;
+    padding-left: 15px;
+    background: url("../img/icon/ico_arrow_03.gif") no-repeat left;
+    font-size: 90%;
+}
+#container .block_outer .block_body dl.formlist span {
+    vertical-align: top;
+}
+
+
+/* タイトル
+----------------------------------------------- */
+/* タイトルの背景 白 */
+#login_area h2,
+#search_area h2,
+#calender_area h2,
+#cart_area h2,
+#cart h2 {
+    padding: 5px 0 8px 10px;
+    border-style: solid;
+    border-color: #f90 #ccc #ccc;
+    border-width: 1px 1px 0;
+    background: url('../img/background/bg_tit_bloc_01.jpg') repeat-x left bottom;
+    font-size: 14px;
+}
+#category_area h2 {
+    border-top: solid 1px #f90;
+    background: url('../img/background/bg_tit_bloc_01.jpg') repeat-x left bottom;
+    padding: 5px 0 8px 10px;
+    font-size: 14px;
+}
+
+/* タイトルの背景 オレンジ */
+#recommend_area h2,
+#news_area h2 {
+    padding: 5px 0 8px 10px;
+    border-style: solid;
+    border-color: #f90 #ccc #ccc;
+    border-width: 1px 1px 0;
+    background: url('../img/background/bg_btn_bloc_02.jpg') repeat-x left bottom #fef3d8;
+}
+
+
+/* ==============================================
+▼ヘッダー上、フッター下のブロックエリア
+=============================================== */
+div#topcolumn {
+    margin: 0px;
+    clear: both;
+}
+div#bottomcolumn {
+    margin: 0px;
+    clear: both;
+}
+
+
+/* ***********************************************
+▼各機能ブロックの指定
+/*********************************************** */
+
+/* ===============================================
+▼新着情報
+=============================================== */
+#news_area .block_body {
+    padding: 10px;
+}
+#news_area .news_contents {
+    padding-right: 10px;
+    max-height: 260px;
+    height: auto !important;
+    height: 260px;
+    overflow: auto;
+    overflow-y: scroll;
+}
+
+#news_area dl.newslist {
+    background: url("../img/background/line_dot_01.gif") repeat-x bottom;
+}
+#news_area dl.newslist dt {
+    margin-bottom: 5px;
+}
+#news_area dl.newslist dd {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+#news_area dl.end {
+    padding: 10px 0;
+    background: url("") no-repeat bottom;
+}
+
+
+/* ===============================================
+▼現在のカゴの中
+=============================================== */
+#cart_area .information {
+    padding: 10px;
+}
+#cart_area .postage {
+    margin-top: 10px;
+    padding-top: 10px;
+    background: url("../img/background/line_dot_01.gif") repeat-x top;
+}
+#cart_area .postage .point_announce {
+    padding: 2px 0 2px 20px;
+    background: url("../img/icon/ico_price.gif") no-repeat left top;
+}
+#cart_area .btn {
+    padding: 10px 0;
+    background: url("../img/background/line_dot_01.gif") repeat-x top #f7f7e6;
+    text-align: center;
+}
+
+
+/* ===============================================
+▼カテゴリ
+=============================================== */
+#category_area .block_body {
+    background-color: #fffaf0;
+}
+
+#category_area li {
+    padding-left: 5px;
+}
+#category_area li.level1 {
+    border-bottom: solid 1px #ccc;
+}
+#category_area li.level1 p {
+    padding-left: 20px;
+    margin: 7px 3px;
+}
+#category_area li.level1 p {
+    background: url("../img/icon/ico_arrow_01.gif") 2px 3px no-repeat;
+}
+#category_area li.level1 li p {
+    background: url("../img/icon/ico_level.gif") 7px 7px no-repeat;
+}
+#category_area li a {
+    display: block;
+    padding: 0;
+}
+a.onlink:link {
+    color: #f00;
+    text-decoration: underline;
+}
+a.onlink:visited {
+    color: #f00;
+}
+a.onlink:hover {
+    color: #f00;
+}
+
+
+/* ===============================================
+▼ガイドリンク
+=============================================== */
+#guide_area {
+    margin-top: 1em;
+    border: none;
+}
+#guide_area li {
+    margin-bottom: 5px;
+    letter-spacing: -0.05em;
+}
+ul.button_like li {
+    margin: 0;
+    padding: 0 0 1px 0;
+    background: url("../img/background/bg_btn_list.jpg") bottom repeat-x;
+}
+ul.button_like li a {
+    margin: 0;
+    padding: 10px 15px 10px 10px;
+    border: 1px solid;
+    border-bottom: none;
+    border-color: #ccc;
+    display: block;
+    background: url("../img/icon/ico_arrow_02.gif") no-repeat right;
+    text-decoration: none;
+    outline: none;
+}
+
+
+/* ===============================================
+▼ログイン（サイド用）
+※ヘッダー用はbloc_alpha.css内に記述
+=============================================== */
+#container div#login_area .block_body {
+    padding: 10px;
+}
+
+#container div#login_area .block_body p {
+    margin-bottom: 5px;
+}
+
+#container div#login_area .block_body .btn {
+    text-align: center;
+}
+#container .login_area dl.formlist {
+    margin-bottom: 8px;
+    width: 420px;
+}
+#container .login_area dl.formlist dt {
+    margin-bottom: 3px;
+    padding-left: 15px;
+    color: #333;
+    background: url("../img/icon/ico_arrow_03.gif") no-repeat left;
+    width: 90px;
+    float: left;
+    font-size: 90%;
+}
+#container .login_area dl.formlist dd {
+    margin-bottom: 5px;
+    float: right;
+    width: 300px;
+    vertical-align: bottom;
+    text-align: left;
+}
+#container div#login_area .block_body .mini {
+    margin-top: 5px;
+    letter-spacing: -0.01em;
+}
+
+
+/* ===============================================
+▼検索
+=============================================== */
+div#search_area .block_body {
+    padding: 10px;
+}
+div#search_area .block_body .btn {
+    text-align: center;
+}
+
+
+/* ===============================================
+▼カレンダー
+=============================================== */
+#calender_area {
+    background-color: transparent;
+    border: none;
+}
+#calender_area .block_body {
+    padding: 10px 0;
+    background-color: #f1f9fc;
+}
+#calender_area table {
+    background: #fff;
+    border: none;
+    width: 150px;
+    margin: 0 auto 5px;
+    font-size: 90%;
+}
+#calender_area table td {
+    padding: 1px 3px;
+    border-top: 1px solid #ccc;
+    border-right: none;
+    text-align: center;
+}
+#calender_area th {
+    padding: 1px 3px;
+    background: #fff;
+    border: none;
+    text-align: center;
+}
+#calender_area table .month {
+    margin-bottom: 5px;
+    padding-left: 12px;
+    background: url("../img/icon/ico_arrow_04.gif") no-repeat left;
+    font-size: 120%;
+}
+#calender_area .off {
+    color: #f00;
+}
+#calender_area .today {
+    background-color: #FFF99D;
+    font-weight: bold;
+}
+#calender_area .information {
+    margin-left: 10px;
+    font-size: 90%;
+}
+
+
+/* ===============================================
+▼おすすめ商品
+=============================================== */
+/*
+   tplファイルのマークアップが同じ項目
+   メインカラム用 2カラム時 [two_maincolumn_left]
+                            [two_maincolumn_right]
+   メインカラム用 3カラム時 [three_maincolumn]
+   サイドカラム用           [side_column]
+   商品詳細のオススメ商品   [whobought_area]
+=============================================== */
+/* 共通
+----------------------------------------------- */
+#recommend_area .block_body,
+#whobought_area .product_item {
+    margin-bottom: 10px;
+    padding: 10px 0 10px;
+    border: none;
+    background: url("../img/background/line_dot_01.gif") repeat-x bottom;
+}
+
+#recommend_area .block_body p,
+#whobought_area .product_item p {
+    margin: 0 0 5px 0;
+}
+
+#recommend_area .block_body img,
+#whobought_area .product_item img {
+    margin: 0 5px 0 0;
+}
+
+#recommend_area .block_body h3,
+#whobought_area .product_item h3 {
+    font-size: 100%;
+    font-weight: normal;
+}
+
+/* サイドカラム用 */
+.side_column #recommend_area .product_item {
+    margin-bottom: 10px;
+}
+
+
+/* 画像
+----------------------------------------------- */
+/* メインカラム用 */
+.main_column #recommend_area .block_body .productImage,
+#whobought_area .product_item .productImage {
+    margin-bottom: 10px;
+    float: left;
+    width: 90px;
+}
+/* サイドカラム用 */
+.side_column #recommend_area .block_body .productImage {
+    float: none;
+    text-align: center;
+    width: auto;
+}
+
+
+/* 左右の振り分け
+----------------------------------------------- */
+.main_column #recommend_area .product_item,
+#whobought_area .product_item {
+    float: left;
+    width: 47.5%;
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+
+/* 商品説明テキスト
+----------------------------------------------- */
+/* メインカラム用 1カラム時*/
+#one_maincolumn #recommend_area .block_body .productContents {
+    float: right;
+    width: 74%;
+}
+
+/* メインカラム用 2カラム時*/
+#two_maincolumn_right #recommend_area .block_body .productContents,
+#two_maincolumn_left #recommend_area .block_body .productContents,
+#two_maincolumn_right #whobought_area .productContents,
+#two_maincolumn_left #whobought_area .productContents {
+    float: right;
+    width: 74%;
+}
+
+/* メインカラム用 3カラム時*/
+#three_maincolumn #recommend_area .block_body .productContents,
+#three_maincolumn #whobought_area .productContents {
+    float: right;
+    width: 67%;
+}
+
+/* サイドカラム用 */
+.side_column #recommend_area .block_body .productContents {
+    clear: both;
+}
