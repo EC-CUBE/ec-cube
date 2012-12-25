@@ -31,6 +31,7 @@ class User_Utils {
     $customer = array_merge(self::getDefaultCustomer(), $customer);
     $_SESSION['customer']['customer_id'] = $customer['customer_id'];
     $_SESSION['customer']['email'] = $customer['email'];
+//    $objQuery->delete('dtb_customer', 'customer_id = ?', array($customer['customer_id']));
     $objQuery->insert('dtb_customer', $customer);
   }
 

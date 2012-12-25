@@ -69,6 +69,12 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
         'order_id' => '2',
         'shipping_name01' => '配送情報02',
         'shipping_date' => '2011-10-01'
+      ),
+      array(
+        'shipping_id' => '1002',
+        'order_id' => '1002',
+        'shipping_time' => '午後',
+        'time_id' => '1'
       )
     );
 
@@ -241,24 +247,28 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
        'product_type_id' => '1001',
        'name' => '配送業者del',
        'rank' => '1',
+       'creator_id' => '1',
        'del_flg' => '1'
      ),
      array(
        'deliv_id' => '1001',
        'product_type_id' => '1001',
        'name' => '配送業者01',
+       'creator_id' => '1',
        'rank' => '2'
      ),
      array(
        'deliv_id' => '1002',
        'product_type_id' => '1001',
        'name' => '配送業者02',
+       'creator_id' => '1',
        'rank' => '3'
      ),
      array( // 商品種別違い
        'deliv_id' => '1004',
        'product_type_id' => '2001',
        'name' => '配送業者21',
+       'creator_id' => '1',
        'rank' => '4'
      ),
    );
@@ -360,7 +370,10 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
       array(
         'order_id' => '1002',
         'customer_id' => '1002',
-        'order_name01' => '受注情報02'
+        'order_name01' => '受注情報02',
+        'payment_id' => '1002',
+        'payment_method' => '支払方法1001',
+        'deliv_id' => '1002'
       )
     );
 
@@ -382,7 +395,9 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
       array(
         'order_temp_id' => '1002',
         'customer_id' => '1002',
-        'order_name01' => '受注情報02'
+        'order_name01' => '受注情報02',
+        'payment_id' => '1002',
+        'payment_method' => '支払方法1001'
       )
     );
 
