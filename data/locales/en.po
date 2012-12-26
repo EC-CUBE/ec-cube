@@ -1,0 +1,5936 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: EC-CUBE Core\n"
+"POT-Creation-Date: 2012-05-07 13T_39+0900\n"
+"PO-Revision-Date: 2012-12-26 18:34+0900\n"
+"Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Generator: Poedit 1.5.4\n"
+
+msgid "SC_CheckError_001"
+msgstr "* T_TAG, a tag that is not permitted, is included in T_FIELD. <br />"
+
+msgid "SC_CheckError_002"
+msgstr "* T_FIELD is not input. <br />"
+
+msgid "SC_CheckError_003"
+msgstr "* T_FIELD is not selected. <br />"
+
+msgid "SC_CheckError_004"
+msgstr "* T_FIELD is not input. <br />"
+
+msgid "SC_CheckError_005"
+msgstr ""
+"* Inputs consisting only of spaces, tabs and line breaks are not possible in "
+"T_FIELD. <br />"
+
+msgid "SC_CheckError_006"
+msgstr "* Do not include spaces, tabs or line breaks in T_FIELD. <br />"
+
+msgid "SC_CheckError_007"
+msgstr "* A numerical value that starts with 0 is input for T_FIELD. <br />"
+
+msgid "SC_CheckError_008"
+msgstr "* T_FIELD is not selected. <br />"
+
+msgid "SC_CheckError_009"
+msgstr "* T_FIELD_1ST and T_FIELD_2ND do not match. <br />"
+
+msgid "SC_CheckError_010"
+msgstr ""
+"* The same value cannot be used for T_FIELD_1ST and T_FIELD_2ND. <br />"
+
+msgid "SC_CheckError_011"
+msgstr ""
+"* It is not possible to input a larger value for T_FIELD_1ST than for "
+"T_FIELD_2ND. <br />"
+
+msgid "SC_CheckError_012"
+msgstr "* For T_FIELD, input T_LENGTH  characters or less. <br />"
+
+msgid "SC_CheckError_013_SINGLE"
+msgid_plural "SC_CheckError_013_PLURAL"
+msgstr[0] "* For T_FIELD, input T_COUNT characters or more. <br />"
+msgstr[1] "* For T_FIELD, input T_COUNT characters or more. <br />"
+
+msgid "SC_CheckError_014"
+msgstr "* For T_FIELD, input T_LENGTH or smaller. <br />"
+
+msgid "SC_CheckError_015_SINGLE"
+msgid_plural "SC_CheckError_015_PLURAL"
+msgstr[0] "* Input T_COUNT or higher for T_FIELD. <br />"
+msgstr[1] "* Input T_COUNT or higher for T_FIELD. <br />"
+
+msgid "SC_CheckError_016"
+msgstr "* Input numbers for T_FIELD. <br />"
+
+msgid "SC_CheckError_017"
+msgstr "* Input numbers for T_FIELD. <br />"
+
+msgid "SC_CheckError_018"
+msgstr "* Input half-width alphabetical characters for T_FIELD. <br />"
+
+msgid "SC_CheckError_019"
+msgstr "* Input all items for T_FIELD. <br />"
+
+msgid "SC_CheckError_020"
+msgstr "* For T_FIELD, input within a character length of T_LENGTH. <br />"
+
+msgid "SC_CheckError_021"
+msgstr "* Input numbers for T_FIELD. <br />"
+
+msgid "SC_CheckError_022"
+msgstr "* For T_FIELD, input within a text length of T_LENGTH. <br />"
+
+msgid "SC_CheckError_023"
+msgstr "* T_FIELD is not input. <br />"
+
+msgid "SC_CheckError_024"
+msgstr "* Input all items for T_FIELD. <br />"
+
+msgid "SC_CheckError_025"
+msgstr "* T_FIELD is not input. <br />"
+
+msgid "SC_CheckError_026"
+msgstr "* Input items in order, starting at the beginning. <br />"
+
+msgid "SC_CheckError_027"
+msgstr "* For T_FIELD, input using katakana characters. <br />"
+
+msgid "SC_CheckError_028"
+msgstr "* For T_FIELD, input using katakana characters. <br />"
+
+msgid "SC_CheckError_029"
+msgstr "* Input using alphanumeric characters for T_FIELD. <br />"
+
+msgid "SC_CheckError_030"
+msgstr "* Input using alphanumeric symbols for T_FIELD. <br />"
+
+msgid "SC_CheckError_031"
+msgstr "* Input at least 1 for T_FIELD. <br />"
+
+msgid "SC_CheckError_032_SINGLE"
+msgid_plural "SC_CheckError_032_PLURAL"
+msgstr[0] "* For T_FIELD, input between T_COUNT to T_DIGIT_MAX digits. <br />"
+msgstr[1] "* For T_FIELD, input between T_COUNT to T_DIGIT_MAX digits. <br />"
+
+msgid "SC_CheckError_033_SINGLE"
+msgid_plural "SC_CheckError_033_PLURAL"
+msgstr[0] "* For T_FIELD, input T_COUNT digit(s). <br />"
+msgstr[1] "* For T_FIELD, input T_COUNT digit(s). <br />"
+
+msgid "SC_CheckError_034"
+msgstr "* The T_FIELD format is inappropriate. <br />"
+
+msgid "SC_CheckError_035"
+msgstr "* Input the characters to be used in T_FIELD correctly. <br />"
+
+msgid "SC_CheckError_036"
+msgstr "* Input T_FIELD correctly. <br />"
+
+msgid "SC_CheckError_037"
+msgstr "* Input an IP address in the proper format in T_FIELD. <br />"
+
+msgid "SC_CheckError_038"
+msgstr "* The format permitted for T_FIELD is T_EXT. <br />"
+
+msgid "SC_CheckError_039"
+msgstr "* T_PATH cannot be found. <br />"
+
+msgid "SC_CheckError_040"
+msgstr "* Upload T_FIELD. <br />"
+
+msgid "SC_CheckError_041"
+msgstr ""
+"* For the T_FIELD file size, use a size that is T_SIZET_UNIT or less. <br />"
+
+msgid "SC_CheckError_042"
+msgstr "* Do not use Japanese or spaces in the file name for T_FIELD. <br />"
+
+msgid "SC_CheckError_043"
+msgstr "* Input all items for T_FIELD. <br />"
+
+msgid "SC_CheckError_044"
+msgstr "* T_FIELD is not correct. <br />"
+
+msgid "SC_CheckError_045"
+msgstr "* Specify T_FIELD correctly. <br />"
+
+msgid "SC_CheckError_046"
+msgstr "* The period specification for T_START and T_END is inadequate. <br />"
+
+msgid "SC_CheckError_047"
+msgstr "* The designated T_FIELD does not exist. <br />"
+
+msgid "SC_CheckError_048"
+msgstr "* The T_FIELD format is inappropriate. <br />"
+
+msgid "SC_CheckError_049"
+msgstr "* T_FIELD is not for mobile phones. <br />"
+
+msgid "SC_CheckError_050"
+msgstr "* This is a T_FIELD already used in member registration. <br />"
+
+msgid "SC_CheckError_051"
+msgstr ""
+"* For a certain period of time after membership withdrawal, it is not "
+"possible to use the same T_FIELD. <br />"
+
+msgid "SC_CheckError_052"
+msgstr "* T_FIELD cannot be input. <br />"
+
+msgid "SC_CheckError_053"
+msgstr "* The T_FIELD format is inappropriate. <br />"
+
+msgid "SC_FormParam_001"
+msgstr "* The file T_NAME does not exist. <br />"
+
+msgid "SC_FormParam_002"
+msgstr "* Does not support the error check format (T_FUNCTION) **<br />"
+
+msgid "SC_FormParam_003"
+msgstr "T_NAME<span class=\"red\">(* Required)</span>"
+
+msgid "SC_FormParam_004"
+msgstr " [Default value: T_DEFAULT]"
+
+msgid "SC_FormParam_005"
+msgstr " [Registration/update not possible] "
+
+msgid "SC_CartSession_001"
+msgstr "A method that is not operating properly has been called."
+
+msgid "SC_CartSession_002"
+msgstr ""
+"* There was a product that is not being sold at this point in time. The "
+"product was deleted from your cart."
+
+msgid "SC_CartSession_003"
+msgstr ""
+"* Preparations for delivery have not yet been made for T_PRODUCT. Please "
+"inquire using the Inquiry page."
+
+msgid "SC_CartSession_004"
+msgstr ""
+"* There is a sale restriction (or inventory shortage) for T_PRODUCT. It is "
+"not possible to purchase a quantity that exceeds T_LIMIT in a single "
+"purchase."
+
+msgid "SC_CartSession_005"
+msgstr "* T_PRODUCT is sold out."
+
+msgid "SC_Fpdf_001"
+msgstr "Product name / Product code / [Specification]"
+
+msgid "SC_Fpdf_002"
+msgstr "Quantity"
+
+msgid "SC_Fpdf_003"
+msgstr "Unit price"
+
+msgid "SC_Fpdf_004"
+msgstr "Amount (including tax)"
+
+msgid "SC_Fpdf_005"
+msgstr "Product total"
+
+msgid "SC_Fpdf_006"
+msgstr "Shipping fee"
+
+msgid "SC_Fpdf_007"
+msgstr "Processing fee"
+
+msgid "SC_Fpdf_008"
+msgstr "Discount"
+
+msgid "SC_Fpdf_009"
+msgstr "Billing amount"
+
+msgid "SC_Fpdf_010"
+msgstr "Used points"
+
+msgid "SC_Fpdf_011"
+msgstr "Points added"
+
+msgid "SC_Fpdf_012"
+msgstr "<Remarks>"
+
+msgid "SC_Fpdf_013"
+msgstr "Payment"
+
+msgid "SC_Fpdf_014"
+msgstr "Thank you for your purchase."
+
+msgid "SC_Fpdf_015"
+msgstr "Delivery will be  carried out based on the contents below."
+
+msgid "SC_Fpdf_016"
+msgstr "Please confirm."
+
+msgid "SC_Fpdf_017"
+msgstr "Creation date: T_YEAR年T_MONTH月T_DAY日"
+
+msgid "SC_Fpdf_018"
+msgstr "T_PRICE T_UNIT"
+
+msgid "SC_Fpdf_019"
+msgstr "円"
+
+msgid "SC_Fpdf_020"
+msgstr "Pt"
+
+msgid "SC_Image_001"
+msgstr "File copying failed."
+
+msgid "SC_Image_002"
+msgstr "Copying of T_FROM->T_TO failed."
+
+msgid "SC_Image_003"
+msgstr ""
+"The output source image path or the output destination folder has not been "
+"designated."
+
+msgid "SC_Image_004"
+msgstr "The output source image was not found."
+
+msgid "SC_Image_005"
+msgstr "The image format is not supported."
+
+msgid "SC_Image_006"
+msgstr "Image output failed."
+
+msgid "SC_Initial_001"
+msgstr ""
+"<div style=\"color: #F00; font-weight: bold; background-color: #FEB; text-"
+"align: center\">Please grant T_CACHE_REALDIR user write access (777, etc.)</"
+"div>"
+
+msgid "SC_Initial_002"
+msgstr "T_CACHE_REALDIR../mtb_constants_init.php does not exist"
+
+msgid "SC_PageNavi_001"
+msgstr "&lt;&lt;Back"
+
+msgid "SC_PageNavi_002"
+msgstr "Next&gt;&gt;"
+
+msgid "SC_Product_001"
+msgstr "Please make a selection"
+
+msgid "SC_Product_002"
+msgstr "(Sold out)"
+
+msgid "SC_Query_001"
+msgstr "An error occurred in DB processing."
+
+msgid "SC_SelectSql_001"
+msgstr "Unknown"
+
+msgid "SC_SendMail_001"
+msgstr "A method for upward compatibility was used."
+
+msgid "SC_SendMail_002"
+msgstr "Unknown backend.[$backend = T_BACKEND]"
+
+msgid "SC_SendMail_003"
+msgstr "E-mail sending failed.[T_MESSAGE]"
+
+msgid "SC_View_001"
+msgstr "Processing time: T_TIME seconds"
+
+msgid "SC_UploadFile_001"
+msgstr "* T_DISPNAME is not uploaded. <br />"
+
+msgid "SC_UploadFile_002"
+msgstr ""
+"* T_DISPNAME is not uploaded. (If you cannot upload the file, adjust "
+"php_value upload_max_filesize for the .htaccess file)<br />"
+
+msgid "SC_UploadFile_003"
+msgstr "* File upload failed. <br />"
+
+msgid "SC_Api_Operation_001"
+msgstr "The operation could not be loaded."
+
+msgid "SC_Api_Operation_002"
+msgstr "You do not have execution authority for the operation."
+
+msgid "SC_Batch_Update_001"
+msgstr "Creation of backup directory failed"
+
+msgid "SC_Batch_Update_002"
+msgstr "The following file was excluded: "
+
+msgid "SC_Batch_Update_003"
+msgstr ""
+"The hash value does not match and the copy destination cannot be retrieved: "
+
+msgid "SC_Batch_Update_004"
+msgstr "Files with the same contents were skipped: "
+
+msgid "SC_Batch_Update_005"
+msgstr "Creation of backup file failed: "
+
+msgid "SC_Batch_Update_006"
+msgstr "The copying destination does not have write access: "
+
+msgid "SC_Batch_Update_007"
+msgstr "File copying was successful: "
+
+msgid "SC_Batch_Update_008"
+msgstr "distinfo file creation was successful: "
+
+msgid "SC_Batch_Update_009"
+msgstr "distinfo file creation failed: "
+
+msgid "SC_Helper_CSV_001"
+msgstr "Product management"
+
+msgid "SC_Helper_CSV_002"
+msgstr "Member management"
+
+msgid "SC_Helper_CSV_003"
+msgstr "Order receipt management"
+
+msgid "SC_Helper_CSV_004"
+msgstr "Review"
+
+msgid "SC_Helper_CSV_005"
+msgstr "Category"
+
+msgid "SC_Helper_Customer_001"
+msgstr ""
+"* This is an e-mail address already used in member registration. <br />"
+
+msgid "SC_Helper_Customer_002"
+msgstr "* The specified range for the purchase amount is inadequate."
+
+msgid "SC_Helper_Customer_003"
+msgstr "* The specified range for number of purchases is inadequate."
+
+msgid "SC_Helper_DB_001"
+msgstr "The file exists but cannot be read"
+
+msgid "SC_Helper_Mail_001"
+msgstr "No applicable order exists. (Order number: T_ORDER_ID)"
+
+msgid "SC_Helper_Mail_002"
+msgstr "The e-mail below has been sent."
+
+msgid "SC_Helper_Mail_003"
+msgstr "Confirmation of member registration"
+
+msgid "SC_Helper_Mail_004"
+msgstr "Completion of member registration"
+
+msgid "SC_Helper_PageLayout_001"
+msgstr "The block cannot be found"
+
+msgid "API_AddrFromZip_001"
+msgstr "Search for an address from the postal code."
+
+msgid "API_BrowseNodeLookup_001"
+msgstr "Category retrieval"
+
+msgid "API_CartAdd_001"
+msgstr "Add product to cart"
+
+msgid "API_CartClear_001"
+msgstr "Empty cart"
+
+msgid "API_CartCreate_001"
+msgstr "Newly create cart"
+
+msgid "API_CartGet_001"
+msgstr "Cart retrieval"
+
+msgid "API_CartModify_001"
+msgstr "Cart repair"
+
+msgid "API_ItemLookup_001"
+msgstr "Product details information will be retrieved"
+
+msgid "API_ItemLookup_002"
+msgstr "* The requested information was not found."
+
+msgid "API_ItemSearch_001"
+msgstr "Product search and product list information are retrieved."
+
+msgid "API_ItemSearch_002"
+msgstr "* The requested information was not found."
+
+msgid "PARAM_LABEL_EMAIL"
+msgstr "E-mail address"
+
+msgid "PARAM_LABEL_EMAIL_CONFIRM"
+msgstr "E-mail address (confirmation)"
+
+msgid "PARAM_LABEL_EMAIL_MOBILE"
+msgstr "Mobile e-mail address"
+
+msgid "PARAM_LABEL_EMAIL_MOBILE_CONFIRM"
+msgstr "Mobile e-mail address (confirmation)"
+
+msgid "PARAM_LABEL_NAME"
+msgstr "Name"
+
+msgid "PARAM_LABEL_CUSTOMER_NAME"
+msgstr "Name"
+
+msgid "PARAM_LABEL_CUSTOMER_NAME1"
+msgstr "Name 1"
+
+msgid "PARAM_LABEL_CUSTOMER_NAME2"
+msgstr "Name 2"
+
+msgid "PARAM_LABEL_CUSTOMER_LASTNAME"
+msgstr "Name (last name)"
+
+msgid "PARAM_LABEL_CUSTOMER_FIRSTNAME"
+msgstr "Name (first name)"
+
+msgid "PARAM_LABEL_CUSTOMER_KANA"
+msgstr "お名前(フリガナ)"
+
+msgid "PARAM_LABEL_CUSTOMER_LASTKANA"
+msgstr "お名前(フリガナ・姓)"
+
+msgid "PARAM_LABEL_CUSTOMER_FIRSTKANA"
+msgstr "お名前(フリガナ・名)"
+
+msgid "PARAM_LABEL_ORDER_LASTNAME"
+msgstr "Name of orderer (last name)"
+
+msgid "PARAM_LABEL_ORDER_FIRSTNAME"
+msgstr "Name of orderer (first name)"
+
+msgid "PARAM_LABEL_ORDER_LASTKANA"
+msgstr "注文者 お名前(フリガナ・姓)"
+
+msgid "PARAM_LABEL_ORDER_FIRSTKANA"
+msgstr "注文者 お名前(フリガナ・名)"
+
+msgid "PARAM_LABEL_ORDER_NAME"
+msgstr "Name of orderer"
+
+msgid "PARAM_LABEL_ORDER_KANA"
+msgstr "注文者 お名前(フリガナ)"
+
+msgid "PARAM_LABEL_PREF"
+msgstr "Prefecture"
+
+msgid "PARAM_LABEL_ADDR1"
+msgstr "Address 1"
+
+msgid "PARAM_LABEL_ADDR2"
+msgstr "Address 2"
+
+msgid "PARAM_LABEL_TEL"
+msgstr "TEL"
+
+msgid "PARAM_LABEL_TEL_NUMBER"
+msgstr "Telephone number"
+
+msgid "PARAM_LABEL_TEL1"
+msgstr "Telephone number 1"
+
+msgid "PARAM_LABEL_TEL2"
+msgstr "Telephone number 2"
+
+msgid "PARAM_LABEL_TEL3"
+msgstr "Telephone number 3"
+
+msgid "PARAM_LABEL_CUSTOMER_TEL1"
+msgstr "Telephone number 1"
+
+msgid "PARAM_LABEL_CUSTOMER_TEL2"
+msgstr "Telephone number 2"
+
+msgid "PARAM_LABEL_CUSTOMER_TEL3"
+msgstr "Telephone number 3"
+
+msgid "PARAM_LABEL_FAX"
+msgstr "FAX"
+
+msgid "PARAM_LABEL_FAX_NUMBER"
+msgstr "Fax number"
+
+msgid "PARAM_LABEL_FAX1"
+msgstr "Fax number 1"
+
+msgid "PARAM_LABEL_FAX2"
+msgstr "Fax number 2"
+
+msgid "PARAM_LABEL_FAX3"
+msgstr "Fax number 3"
+
+msgid "PARAM_LABEL_ZIP"
+msgstr "Postal code"
+
+msgid "PARAM_LABEL_ZIP1"
+msgstr "Postal code 1"
+
+msgid "PARAM_LABEL_ZIP2"
+msgstr "Postal code 2"
+
+msgid "PARAM_LABEL_PASSWORD"
+msgstr "Password"
+
+msgid "PARAM_LABEL_PASSWORD_CONFIRM"
+msgstr "Password (confirmation)"
+
+msgid "PARAM_LABEL_REMINDER"
+msgstr "Question for confirming password"
+
+msgid "PARAM_LABEL_REMINDER_ANSWER"
+msgstr "Answer to question for confirming password"
+
+msgid "PARAM_LABEL_SEX"
+msgstr "Gender"
+
+msgid "PARAM_LABEL_JOB"
+msgstr "Occupation"
+
+msgid "PARAM_LABEL_BIRTHDAY"
+msgstr "Date of birth"
+
+msgid "PARAM_LABEL_YEAR"
+msgstr "年"
+
+msgid "PARAM_LABEL_MONTH"
+msgstr "月"
+
+msgid "PARAM_LABEL_DAY"
+msgstr "日"
+
+msgid "PARAM_LABEL_MAILMAGAZINE"
+msgstr "Mail magazine"
+
+msgid "PARAM_LABEL_BROWSENODEID"
+msgstr "Applicable category ID"
+
+msgid "PARAM_LABEL_RESPONSEGROUP"
+msgstr "Response type"
+
+msgid "PARAM_LABEL_CONDITION"
+msgstr "Product condition"
+
+msgid "PARAM_LABEL_IDTYPE"
+msgstr "Product ID type"
+
+msgid "PARAM_LABEL_ITEMID"
+msgstr "Designated ID"
+
+msgid "PARAM_LABEL_CSV_FILE"
+msgstr "CSV file"
+
+msgid "PARAM_LABEL_RELATEDITEMSPAGE"
+msgstr "Related product quantity"
+
+msgid "PARAM_LABEL_RELATIONSHIPTYPE"
+msgstr "Related product type"
+
+msgid "PARAM_LABEL_REVIEWPAGE"
+msgstr "Review page number"
+
+msgid "PARAM_LABEL_REVIEWSORT"
+msgstr "Review page sort"
+
+msgid "PARAM_LABEL_TAGPAGE"
+msgstr "Related tag pages"
+
+msgid "PARAM_LABEL_TAGSPERPAGE"
+msgstr "Number of related tag pages"
+
+msgid "PARAM_LABEL_TAGSORT"
+msgstr "関連タグソート"
+
+msgid "PARAM_LABEL_CATEGORY_ID"
+msgstr "Category ID"
+
+msgid "PARAM_LABEL_KEYWORDS"
+msgstr "Keyword"
+
+msgid "PARAM_LABEL_MANUFACTURER"
+msgstr "Manufacturer name"
+
+msgid "PARAM_LABEL_ITEMPAGE"
+msgstr "Page number"
+
+msgid "PARAM_LABEL_SORT"
+msgstr "Sort"
+
+msgid "PARAM_LABEL_CUSTOMER_ID"
+msgstr "Member ID"
+
+msgid "PARAM_LABEL_CUSTOMER_STATUS"
+msgstr "Member status"
+
+msgid "PARAM_LABEL_CUSTOMER_NOTE"
+msgstr "Memo for SHOP"
+
+msgid "PARAM_LABEL_CUSTOMER_POINT"
+msgstr "Points in possession"
+
+msgid "PARAM_LABEL_ADD_POINT"
+msgstr "Points added"
+
+msgid "PARAM_LABEL_BIRTH_POINT"
+msgstr "Birthday points"
+
+msgid "PARAM_LABEL_TOTAL_POINT"
+msgstr "Final number of points registered"
+
+msgid "PARAM_LABEL_NOW_POINT"
+msgstr "Current points"
+
+msgid "PARAM_LABEL_RETURN"
+msgstr "Go back"
+
+msgid "PARAM_LABEL_BD_START_YEAR"
+msgstr "Birthday (start year)"
+
+msgid "PARAM_LABEL_BD_START_MONTH"
+msgstr "Birthday (start month)"
+
+msgid "PARAM_LABEL_BD_START_DAY"
+msgstr "Birthday (start date)"
+
+msgid "PARAM_LABEL_BD_END_YEAR"
+msgstr "Birthday (end year)"
+
+msgid "PARAM_LABEL_BD_END_MONTH"
+msgstr "Birthday (end month)"
+
+msgid "PARAM_LABEL_BD_END_DAY"
+msgstr "Birthday (end date)"
+
+msgid "PARAM_LABEL_BIRTH_MONTH"
+msgstr "誕生月"
+
+msgid "PARAM_LABEL_BUY_TOTAL_FROM"
+msgstr "Purchase amount (start)"
+
+msgid "PARAM_LABEL_BUY_TOTAL_TO"
+msgstr "Purchase amount (end)"
+
+msgid "PARAM_LABEL_BUY_TIMES_FROM"
+msgstr "Purchase frequency (start)"
+
+msgid "PARAM_LABEL_BUY_TIMES_TO"
+msgstr "Purchase frequency (end)"
+
+msgid "PARAM_LABEL_UPDATE_START_YEAR"
+msgstr "Registration/update date (start year)"
+
+msgid "PARAM_LABEL_UPDATE_START_MONTH"
+msgstr "Registration/update date (start month)"
+
+msgid "PARAM_LABEL_UPDATE_START_DAY"
+msgstr "Registration/update date (start date)"
+
+msgid "PARAM_LABEL_UPDATE_END_YEAR"
+msgstr "Registration/update date (end year)"
+
+msgid "PARAM_LABEL_UPDATE_END_MONTH"
+msgstr "Registration/update date (end month)"
+
+msgid "PARAM_LABEL_UPDATE_END_DAY"
+msgstr "Registration/update date (end date)"
+
+msgid "PARAM_LABEL_PAGE_MAX"
+msgstr "Number of items displayed"
+
+msgid "PARAM_LABEL_PAGE_NO"
+msgstr "Page number"
+
+msgid "PARAM_LABEL_BUY_START_YEAR"
+msgstr "Final purchase date (start year)"
+
+msgid "PARAM_LABEL_BUY_START_MONTH"
+msgstr "Final purchase date (start month)"
+
+msgid "PARAM_LABEL_BUY_START_DAY"
+msgstr "Final purchase date (start day)"
+
+msgid "PARAM_LABEL_BUY_END_YEAR"
+msgstr "Final purchase date (end year)"
+
+msgid "PARAM_LABEL_BUY_END_MONTH"
+msgstr "Final purchase date (end month)"
+
+msgid "PARAM_LABEL_BUY_END_DAY"
+msgstr "Final purchase date (end day)"
+
+msgid "PARAM_LABEL_BUY_PRODUCT"
+msgstr "Purchased product"
+
+msgid "PARAM_LABEL_BUY_PRODUCT_NAME"
+msgstr "Purchased product name"
+
+msgid "PARAM_LABEL_BUY_PRODUCT_CODE"
+msgstr "Purchased product code"
+
+msgid "PARAM_LABEL_CATEGORY"
+msgstr "Category"
+
+msgid "PARAM_LABEL_COMPANY_NAME"
+msgstr "Company name"
+
+msgid "PARAM_LABEL_COMPANY_KANA"
+msgstr "会社名(フリガナ)"
+
+msgid "PARAM_LABEL_SHOP_NAME"
+msgstr "Store name"
+
+msgid "PARAM_LABEL_SHOP_KANA"
+msgstr "店名(フリガナ)"
+
+msgid "PARAM_LABEL_SHOP_NAME_ENG"
+msgstr "Store name (in English)"
+
+msgid "PARAM_LABEL_ZIP01"
+msgstr "Postal code 1"
+
+msgid "PARAM_LABEL_ZIP02"
+msgstr "Postal code 2"
+
+msgid "PARAM_LABEL_ADDR01"
+msgstr "Location 1"
+
+msgid "PARAM_LABEL_ADDR02"
+msgstr "Location 2"
+
+msgid "PARAM_LABEL_EMAIL01"
+msgstr "Product order receipt e-mail address"
+
+msgid "PARAM_LABEL_EMAIL02"
+msgstr "E-mail address for receiving inquiries"
+
+msgid "PARAM_LABEL_EMAIL03"
+msgstr "E-mail address of sender"
+
+msgid "PARAM_LABEL_EMAIL04"
+msgstr "E-mail address for receiving sending errors"
+
+msgid "PARAM_LABEL_TAX"
+msgstr "Consumption sales tax rate"
+
+msgid "PARAM_LABEL_TAX_RULE"
+msgstr "Taxation rules"
+
+msgid "PARAM_LABEL_FREE_RULE"
+msgstr "Conditions for free shipping"
+
+msgid "PARAM_LABEL_BUSINESS_HOUR"
+msgstr "Store business hours"
+
+msgid "PARAM_LABEL_GOOD_TRADED"
+msgstr "Available products"
+
+msgid "PARAM_LABEL_MESSAGE"
+msgstr "Message"
+
+msgid "PARAM_LABEL_DOWNLOADABLE_DAYS"
+msgstr "Number of days during which download is possible"
+
+msgid "PARAM_LABEL_DOWNLOADABLE_DAYS_UNLIMITED"
+msgstr "Unlimited downloads"
+
+msgid "PARAM_LABEL_LATITUDE"
+msgstr "Latitude"
+
+msgid "PARAM_LABEL_LONGITUDE"
+msgstr "Longitude"
+
+msgid "PARAM_LABEL_REGULAR_HOLIDAY"
+msgstr "Regular holiday"
+
+msgid "PARAM_LABEL_REGULAR_HOLIDAY_ID"
+msgstr "Regular holiday ID"
+
+msgid "PARAM_LABEL_CONTACT"
+msgstr "Details of inquiry"
+
+msgid "PARAM_LABEL_CONTACT_MESSAGE"
+msgstr "Other inquiries"
+
+msgid "PARAM_LABEL_MEMORY"
+msgstr "Record"
+
+msgid "PARAM_LABEL_LOGIN_ID"
+msgstr "Login ID"
+
+msgid "PARAM_LABEL_SELLER"
+msgstr "Distributor"
+
+msgid "PARAM_LABEL_MANAGER"
+msgstr "Operation director"
+
+msgid "PARAM_LABEL_URL"
+msgstr "URL"
+
+msgid "PARAM_LABEL_TITLE"
+msgstr "Title"
+
+msgid "PARAM_LABEL_REQUIRED_FEE"
+msgstr "Necessary fees"
+
+msgid "PARAM_LABEL_TO_ORDER"
+msgstr "Order method"
+
+msgid "PARAM_LABEL_PAYMENT_METHOD_ID"
+msgstr "Payment method ID"
+
+msgid "PARAM_LABEL_PAYMENT_METHOD"
+msgstr "Payment method"
+
+msgid "PARAM_LABEL_PAYMENT_METHOD2"
+msgstr "Payment method"
+
+msgid "PARAM_LABEL_CUSTOMER_PAYMENT_METHOD"
+msgstr "Payment method"
+
+msgid "PARAM_LABEL_CUSTOMER_PAYMENT_METHOD_NAME"
+msgstr "Payment method name"
+
+msgid "PARAM_LABEL_CHARGE"
+msgstr "Processing fee"
+
+msgid "PARAM_LABEL_DELIV_FEE"
+msgstr "Shipping fee"
+
+msgid "PARAM_LABEL_PRODUCT_DELIV_FEE"
+msgstr "Product shipping fee"
+
+msgid "PARAM_LABEL_DISCOUNT"
+msgstr "Discount"
+
+msgid "PARAM_LABEL_USE_POINT"
+msgstr "Used points"
+
+msgid "PARAM_LABEL_POINT"
+msgstr "Points"
+
+msgid "PARAM_LABEL_USING_POINT"
+msgstr "Use points"
+
+msgid "PARAM_LABEL_DELIV"
+msgstr "Delivery company"
+
+msgid "PARAM_LABEL_RULE_MAX"
+msgstr "Usage conditions(～円以上)"
+
+msgid "PARAM_LABEL_UPPER_RULE"
+msgstr "Usage conditions(～円以下)"
+
+msgid "PARAM_LABEL_FIX"
+msgstr "Fixed"
+
+msgid "PARAM_LABEL_LOGO_IMG"
+msgstr "Logo image"
+
+msgid "PARAM_LABEL_IMG_KEY"
+msgstr "Image key"
+
+msgid "PARAM_LABEL_PAYMENT_ID"
+msgstr "Payment ID"
+
+msgid "PARAM_LABEL_CHARGE_FLG"
+msgstr "Billing flag"
+
+msgid "PARAM_LABEL_CUSTOMER_DELIV_ID"
+msgstr "Delivery destination ID"
+
+msgid "PARAM_LABEL_CUSTOMER_DELIV_ADDRESSEE"
+msgstr "Delivery destination"
+
+msgid "PARAM_LABEL_CUSTOMER_DELIV_TIME"
+msgstr "Delivery time"
+
+msgid "PARAM_LABEL_CUSTOMER_DELIV_DATE"
+msgstr "Delivery date"
+
+msgid "PARAM_LABEL_CUSTOMER_DELIV_TIME_ID"
+msgstr "Delivery time ID"
+
+msgid "PARAM_LABEL_CUSTOMER_DELIV_DATE_YEAR"
+msgstr "Delivery date (Year)"
+
+msgid "PARAM_LABEL_CUSTOMER_DELIV_DATE_MONTH"
+msgstr "Delivery date (Month)"
+
+msgid "PARAM_LABEL_CUSTOMER_DELIV_DATE_DAY"
+msgstr "Delivery date (Date)"
+
+msgid "PARAM_LABEL_CUSTOMER_DELIV_CHECK"
+msgstr "Delivery destination check"
+
+msgid "PARAM_LABEL_OTHER_DELIV_ID"
+msgstr "Other delivery destination IDs"
+
+msgid "PARAM_LABEL_OTHER_DELIV"
+msgstr "Separate shipping destination"
+
+msgid "PARAM_LABEL_SHIPPING_PRODUCT_QUANTITY"
+msgstr "Quantity of delivered products"
+
+msgid "PARAM_LABEL_SHIPPING_ID"
+msgstr "Delivery ID"
+
+msgid "PARAM_LABEL_SHIPPING_QUANTITY"
+msgstr "Delivery quantity"
+
+msgid "PARAM_LABEL_ORDER_STATUS"
+msgstr "Response status"
+
+msgid "PARAM_LABEL_PRODUCT_TYPE_ID"
+msgstr "Product type ID"
+
+msgid "PARAM_LABEL_PRICE"
+msgstr "Unit price"
+
+msgid "PARAM_LABEL_QUANTITY"
+msgstr "Quantity"
+
+msgid "PARAM_LABEL_SELL_PRICE"
+msgstr "Sales price"
+
+msgid "PARAM_LABEL_CART_NO"
+msgstr "Cart number"
+
+msgid "PARAM_LABEL_CART_NUMBER"
+msgstr "Cart number"
+
+msgid "PARAM_LABEL_LINE_NUM"
+msgstr "Number of lines"
+
+msgid "PARAM_LABEL_MAIN_LIST_IMAGE"
+msgstr "Main list image"
+
+msgid "PARAM_LABEL_LIST_MAIN_IMAGE"
+msgstr "List - Main images"
+
+msgid "PARAM_LABEL_MAIN_IMAGE"
+msgstr "Main image"
+
+msgid "PARAM_LABEL_DETAIL_MAIN_IMAGE"
+msgstr "Details - Main image"
+
+msgid "PARAM_LABEL_PRODUCT_NAME"
+msgstr "Product name"
+
+msgid "PARAM_LABEL_PRODUCT_CLASS_ID_ALP"
+msgstr "product_class_id"
+
+msgid "PARAM_LABEL_PRODUCT_CLASS_ID"
+msgstr "Product specification ID"
+
+msgid "PARAM_LABEL_CLASS"
+msgstr "Standard"
+
+msgid "PARAM_LABEL_CLASS1"
+msgstr "Standard 1"
+
+msgid "PARAM_LABEL_CLASS2"
+msgstr "Standard 2"
+
+msgid "PARAM_LABEL_CLASS_ID"
+msgstr "Standard ID"
+
+msgid "PARAM_LABEL_CLASS_ID1"
+msgstr "Standard ID 1"
+
+msgid "PARAM_LABEL_CLASS_ID2"
+msgstr "Standard ID 2"
+
+msgid "PARAM_LABEL_CLASS_NAME"
+msgstr "Standard name"
+
+msgid "PARAM_LABEL_CLASS_NAME1"
+msgstr "Standard name 1"
+
+msgid "PARAM_LABEL_CLASS_NAME2"
+msgstr "Standard name 2"
+
+msgid "PARAM_LABEL_CLASSCATEGORY1"
+msgstr "Standard category 1"
+
+msgid "PARAM_LABEL_CLASSCATEGORY2"
+msgstr "Standard category 2"
+
+msgid "PARAM_LABEL_CLASSCATEGORY_NAME"
+msgstr "Standard category name"
+
+msgid "PARAM_LABEL_CLASSCATEGORY_ID"
+msgstr "New specification category ID"
+
+msgid "PARAM_LABEL_CLASS_TOTAL"
+msgstr "Product specification number"
+
+msgid "PARAM_LABEL_ADD_PRODUCT_CLASS_ID"
+msgstr "Additional product specification ID"
+
+msgid "PARAM_LABEL_EDIT_PRODUCT_CLASS_ID"
+msgstr "Repair product specification ID"
+
+msgid "PARAM_LABEL_STOCK"
+msgstr "Inventory count"
+
+msgid "PARAM_LABEL_PRODUCT_TYPE"
+msgstr "Product type"
+
+msgid "PARAM_LABEL_DEL_FLG"
+msgstr "Deletion flag"
+
+msgid "PARAM_LABEL_DOWN_FILENAME"
+msgstr "File name for download sales"
+
+msgid "PARAM_LABEL_DOWN_FILE"
+msgstr "File for download sales"
+
+msgid "PARAM_LABEL_DOWN_PRODUCT_FILENAME"
+msgstr "Downloaded product file name"
+
+msgid "PARAM_LABEL_CHECK_BOX"
+msgstr "Checkbox"
+
+msgid "PARAM_LABEL_FILE_UPLOAD_KEY"
+msgstr "File upload key"
+
+msgid "PARAM_LABEL_PRODUCT_CODE"
+msgstr "Product code"
+
+msgid "PARAM_LABEL_PRODUCT_ID"
+msgstr "Product ID"
+
+msgid "PARAM_LABEL_PRODUCT_CATEGORY"
+msgstr "Product category"
+
+msgid "PARAM_LABEL_PRODUCT_PUBLIC_STATUS"
+msgstr "Disclosed/not disclosed"
+
+msgid "PARAM_LABEL_PRODUCT_STATUS"
+msgstr "Product status"
+
+msgid "PARAM_LABEL_AGE1"
+msgstr "Age 1"
+
+msgid "PARAM_LABEL_AGE2"
+msgstr "Age 2"
+
+msgid "PARAM_LABEL_TOTAL_PRICE1"
+msgstr "Purchase amount 1"
+
+msgid "PARAM_LABEL_TOTAL_PRICE2"
+msgstr "Purchase amount 2"
+
+msgid "PARAM_LABEL_START_YEAR"
+msgstr "Start year"
+
+msgid "PARAM_LABEL_START_MONTH"
+msgstr "Start month"
+
+msgid "PARAM_LABEL_START_DAY"
+msgstr "Start day"
+
+msgid "PARAM_LABEL_END_YEAR"
+msgstr "Completion year"
+
+msgid "PARAM_LABEL_END_MONTH"
+msgstr "Completion month"
+
+msgid "PARAM_LABEL_END_DAY"
+msgstr "Completion date"
+
+msgid "PARAM_LABEL_PAGENO"
+msgstr "Page feed number"
+
+msgid "PARAM_LABEL_FOOTER"
+msgstr "Footer"
+
+msgid "PARAM_LABEL_HEADER"
+msgstr "Header"
+
+msgid "PARAM_LABEL_TEMPLATE"
+msgstr "Template"
+
+msgid "PARAM_LABEL_TEMPLATE_NAME"
+msgstr "Template name"
+
+msgid "PARAM_LABEL_TEMPLATE_CODE"
+msgstr "Template code"
+
+msgid "PARAM_LABEL_TPL_CODE"
+msgstr "template_code"
+
+msgid "PARAM_LABEL_TEMPLATE_FILE"
+msgstr "Template file"
+
+msgid "PARAM_LABEL_MAIL_SUBJECT"
+msgstr "E-mail title"
+
+msgid "PARAM_LABEL_PARENT_CATEGORY_ID"
+msgstr "New category ID"
+
+msgid "PARAM_LABEL_CATEGORY_NAME"
+msgstr "Category name"
+
+msgid "PARAM_LABEL_CURRENT"
+msgstr "Current page"
+
+msgid "PARAM_LABEL_NEW_ID"
+msgstr "New ID"
+
+msgid "PARAM_LABEL_ADMIN_LOGIN"
+msgstr "Administrator login"
+
+msgid "PARAM_LABEL_FAVORITE_PRODUCT_ID"
+msgstr "Favorite product ID"
+
+msgid "PARAM_LABEL_CARTKEY"
+msgstr "Cart key"
+
+msgid "PARAM_LABEL_MONTHLY"
+msgstr "月度"
+
+msgid "PARAM_LABEL_PERIOD"
+msgstr "Period"
+
+msgid "PARAM_LABEL_PERIOD_1"
+msgstr "Period (Start day)"
+
+msgid "PARAM_LABEL_PERIOD_2"
+msgstr "Period (end day)"
+
+msgid "PARAM_LABEL_THE_NAME"
+msgstr "Name"
+
+msgid "PARAM_LABEL_PAGE_ID"
+msgstr "Page ID"
+
+msgid "PARAM_LABEL_DEVICE_TYPE_ID"
+msgstr "Terminal type ID"
+
+msgid "PARAM_LABEL_DEVICE_TYPE"
+msgstr "Terminal type"
+
+msgid "PARAM_LABEL_HEADER_DATA"
+msgstr "Header data"
+
+msgid "PARAM_LABEL_FOOTER_DATA"
+msgstr "Footer data"
+
+msgid "PARAM_LABEL_CSS_FILE_NAME"
+msgstr "CSS file name"
+
+msgid "PARAM_LABEL_CSS_OLD_FILE_NAME"
+msgstr "Old CSS file name"
+
+msgid "PARAM_LABEL_"
+msgstr "CSS data"
+
+msgid "PARAM_LABEL_BLOC_ID"
+msgstr "Block ID"
+
+msgid "PARAM_LABEL_BLOC_NAME"
+msgstr "Block name"
+
+msgid "PARAM_LABEL_BLOC_CNT"
+msgstr "Block number"
+
+msgid "PARAM_LABEL_BLOC_DATA"
+msgstr "Block data"
+
+msgid "PARAM_LABEL_TARGET_ID"
+msgstr "Target ID"
+
+msgid "PARAM_LABEL_TOP"
+msgstr "TOP coordinate"
+
+msgid "PARAM_LABEL_FULL_PAGE"
+msgstr "All pages"
+
+msgid "PARAM_LABEL_FILE_NAME"
+msgstr "File name"
+
+msgid "PARAM_LABEL_DELIVERY_ID"
+msgstr "Delivery company ID"
+
+msgid "PARAM_LABEL_DELIVERY_NAME"
+msgstr "Delivery company name"
+
+msgid "PARAM_LABEL_DESCRIPTION"
+msgstr "Explanation"
+
+msgid "PARAM_LABEL_SLIP_CONFIRM_URL"
+msgstr "Voucher No. confirmation URL"
+
+msgid "PARAM_LABEL_HANDLE_PRODUCT_TYPE"
+msgstr "Available product types"
+
+msgid "PARAM_LABEL_HANDLE_PAYMENT_METHOD"
+msgstr "Available payment methods"
+
+msgid "PARAM_LABEL_KIYAKU_TITLE"
+msgstr "Agreement title"
+
+msgid "PARAM_LABEL_KIYAKU_TEXT"
+msgstr "Agreement contents"
+
+msgid "PARAM_LABEL_KIYAKU_ID"
+msgstr "Agreement ID"
+
+msgid "PARAM_LABEL_POINT_RATE"
+msgstr "Point grant rate"
+
+msgid "PARAM_LABEL_WELCOME_POINT"
+msgstr "Points granted during member registration"
+
+msgid "PARAM_LABEL_DOWN_PRODUCT_REAL_FILENAME"
+msgstr "Downloaded product actual file name"
+
+msgid "PARAM_LABEL_STOCK_UNLIMITED"
+msgstr "Unlimited inventory"
+
+msgid "PARAM_LABEL_TEMP_DOWN_FILE"
+msgstr "temp_down_file"
+
+msgid "PARAM_LABEL_SAVE_DOWN_FILE"
+msgstr "save_down_file"
+
+msgid "PARAM_LABEL_DELIV_DATE"
+msgstr "Shipment date Target"
+
+msgid "PARAM_LABEL_MAKER"
+msgstr "Manufacturer"
+
+msgid "PARAM_LABEL_MAKER_ID"
+msgstr "Manufacturer ID"
+
+msgid "PARAM_LABEL_MAKER_NAME"
+msgstr "Manufacturer name"
+
+msgid "PARAM_LABEL_MAKER_URL"
+msgstr "Manufacturer URL"
+
+msgid "PARAM_LABEL_SALE_LIMIT"
+msgstr "Number of sales restrictions"
+
+msgid "PARAM_LABEL_SEARCH_WORD"
+msgstr "Search word"
+
+msgid "PARAM_LABEL_SHOP_NOTE"
+msgstr "Remarks column (for SHOP)"
+
+msgid "PARAM_LABEL_MAIN_LIST_COMMENT"
+msgstr "List - Main comments"
+
+msgid "PARAM_LABEL_MAIN_COMMENT"
+msgstr "Details - Main comment"
+
+msgid "PARAM_LABEL_SAVE_MAIN_LIST_IMAGE"
+msgstr "save_main_list_image"
+
+msgid "PARAM_LABEL_SAVE_MAIN_IMAGE"
+msgstr "save_main_image"
+
+msgid "PARAM_LABEL_SAVE_MAIN_LARGE_IMAGE"
+msgstr "save_main_large_image"
+
+msgid "PARAM_LABEL_TEMP_MAIN_LIST_IMAGE"
+msgstr "temp_main_list_image"
+
+msgid "PARAM_LABEL_TEMP_MAIN_IMAGE"
+msgstr "temp_main_image"
+
+msgid "PARAM_LABEL_TEMP_MAIN_LARGE_IMAGE"
+msgstr "temp_main_large_image"
+
+msgid "PARAM_LABEL_HAS_PRODUCT_CLASS"
+msgstr "has_product_class"
+
+msgid "PARAM_LABEL_IMAGE_KEY"
+msgstr "image_key"
+
+msgid "PARAM_LABEL_DOWN_KEY"
+msgstr "down_key"
+
+msgid "PARAM_LABEL_SELECT_RECOMMEND_NO"
+msgstr "select_recommend_no"
+
+msgid "PARAM_LABEL_MAIN_LARGE_IMAGE"
+msgstr "Details - Main enlarged image"
+
+msgid "PARAM_LABEL_DEVICE_ID"
+msgstr "Device ID"
+
+msgid "PARAM_LABEL_META_AUTHOR"
+msgstr "Meta tag: Author"
+
+msgid "PARAM_LABEL_META_DESCRIPTION"
+msgstr "Meta tag: Description"
+
+msgid "PARAM_LABEL_META_KEYWORDS"
+msgstr "Meta tag: Keywords"
+
+msgid "PARAM_LABEL_PAYMENT_LIMIT"
+msgstr "Payment deadline"
+
+msgid "PARAM_LABEL_DELIVERY_TIME"
+msgstr "Delivery period"
+
+msgid "PARAM_LABEL_ABOUT_RETURNED_PRODUCTS"
+msgstr "Returns and exchanges"
+
+msgid "PARAM_LABEL_STARTROWNUM"
+msgstr "Start line"
+
+msgid "PARAM_LABEL_NEWS_ID"
+msgstr "news_id"
+
+msgid "PARAM_LABEL_DATE"
+msgstr "Date"
+
+msgid "PARAM_LABEL_DATE_YEAR"
+msgstr "Date (year)"
+
+msgid "PARAM_LABEL_DATE_MONTH"
+msgstr "Date (month)"
+
+msgid "PARAM_LABEL_DATE_DAY"
+msgstr "Date (day)"
+
+msgid "PARAM_LABEL_BODY_TEXT"
+msgstr "Text"
+
+msgid "PARAM_LABEL_OPEN_OTHER_WINDOW"
+msgstr "Open in separate window"
+
+msgid "PARAM_LABEL_MOVE_RANK"
+msgstr "Rank shift"
+
+msgid "PARAM_LABEL_EDIT_TYPE"
+msgstr "Edit type"
+
+msgid "PARAM_LABEL_OUTPUT_SETTINGS_LIST"
+msgstr "Output settings list"
+
+msgid "PARAM_LABEL_SQL_ID"
+msgstr "SQL ID"
+
+msgid "PARAM_LABEL_CSV_OUTPUT_ID"
+msgstr "SQL ID subject to CSV output "
+
+msgid "PARAM_LABEL_SELECT_TABLE"
+msgstr "Selected table"
+
+msgid "PARAM_LABEL_SQL"
+msgstr "SQL text"
+
+msgid "PARAM_LABEL_SELECT_FILE"
+msgstr "Selected file"
+
+msgid "PARAM_LABEL_CREATE_FILE"
+msgstr "Created file name"
+
+msgid "PARAM_LABEL_FILE"
+msgstr "File"
+
+msgid "PARAM_LABEL_ROOT_DIR"
+msgstr "Route directory"
+
+msgid "PARAM_LABEL_NOW_DIR"
+msgstr "Current hierarchy directory"
+
+msgid "PARAM_LABEL_NOW_FILE"
+msgstr "Current hierarchy file"
+
+msgid "PARAM_LABEL_TREE_STATUS"
+msgstr "Tree selection status"
+
+msgid "PARAM_LABEL_TREE_SELECT_FILE"
+msgstr "'Tree selection directory'"
+
+msgid "PARAM_LABEL_RANK"
+msgstr "Rank"
+
+msgid "PARAM_LABEL_COMMENT"
+msgstr "Comment"
+
+msgid "PARAM_LABEL_EDIT_CUSTOMER_ID"
+msgstr "Member ID subject to editing"
+
+msgid "PARAM_LABEL_SEARCH_DATA"
+msgstr "Data for searching"
+
+msgid "PARAM_LABEL_HEADER_CHK"
+msgstr "Header check"
+
+msgid "PARAM_LABEL_FOOTER_CHK"
+msgstr "Footer check"
+
+msgid "PARAM_LABEL_EDIT_FLG"
+msgstr "Repair flag"
+
+msgid "PARAM_LABEL_TPL_DATA"
+msgstr "TPL data"
+
+msgid "PARAM_LABEL_ID"
+msgstr "ID"
+
+msgid "PARAM_LABEL_PASSWORD_ALP"
+msgstr "PASSWORD"
+
+msgid "PARAM_LABEL_DELIVERY_MAIL_FORMAT"
+msgstr "Delivery format"
+
+msgid "PARAM_LABEL_DELIVERY_MAIL_TYPE"
+msgstr "Type of delivery e-mail address"
+
+msgid "PARAM_LABEL_MAIL_METHOD"
+msgstr "E-mail format"
+
+msgid "PARAM_LABEL_SUBJECT"
+msgstr "Subject"
+
+msgid "PARAM_LABEL_TEMPLATE_ID"
+msgstr "Template ID"
+
+msgid "PARAM_LABEL_ORDER_NUMBER"
+msgstr "Order number"
+
+msgid "PARAM_LABEL_ORDER_NUMBER1"
+msgstr "Order number 1"
+
+msgid "PARAM_LABEL_ORDER_NUMBER2"
+msgstr "Order number 2"
+
+msgid "PARAM_LABEL_ORDER_ID"
+msgstr "Order receipt ID"
+
+msgid "PARAM_LABEL_ORDERID"
+msgstr "Order ID"
+
+msgid "PARAM_LABEL_MEMBER_NAME1"
+msgstr "Member name 1"
+
+msgid "PARAM_LABEL_MEMBER_NAME2"
+msgstr "Member name 2"
+
+msgid "PARAM_LABEL_MEMBER_KANA1"
+msgstr "会員名カナ1"
+
+msgid "PARAM_LABEL_MEMBER_KANA2"
+msgstr "会員名カナ2"
+
+msgid "PARAM_LABEL_NOTE"
+msgstr "Memo"
+
+msgid "PARAM_LABEL_DELETE_NO"
+msgstr "Item number for deletion"
+
+msgid "PARAM_LABEL_SUBTOTAL"
+msgstr "Subtotal"
+
+msgid "PARAM_LABEL_TOTAL"
+msgstr "Total"
+
+msgid "PARAM_LABEL_PAYMENT_TOTAL"
+msgstr "Payment total"
+
+msgid "PARAM_LABEL_TAX_TOTAL"
+msgstr "Total consumption sales tax"
+
+msgid "PARAM_LABEL_BEFORE_POINT"
+msgstr "Points before order receipt"
+
+msgid "PARAM_LABEL_ORDER_DATE"
+msgstr "Date of order receipt"
+
+msgid "PARAM_LABEL_SHIPPING_DATE"
+msgstr "Shipment date"
+
+msgid "PARAM_LABEL_REMARKS"
+msgstr "Remarks"
+
+msgid "PARAM_LABEL_PAYMENT_DATE"
+msgstr "Date of deposit"
+
+msgid "PARAM_LABEL_PRODUCT_NO"
+msgstr "Product item number"
+
+msgid "PARAM_LABEL_ANCHOR_KEY_ALP"
+msgstr "anchor_key"
+
+msgid "PARAM_LABEL_ANCHOR_KEY"
+msgstr "Anchor key"
+
+msgid "PARAM_LABEL_HOW_TO_DOWNLOAD"
+msgstr "Download method"
+
+msgid "PARAM_LABEL_OUTPUT_DATE"
+msgstr "Issuance date"
+
+msgid "PARAM_LABEL_ORDER_PDF_TYPE"
+msgstr "Ledger type"
+
+msgid "PARAM_LABEL_ORDER_PDF_TITLE"
+msgstr "Ledger title"
+
+msgid "PARAM_LABEL_ORDER_PDF_MSG1"
+msgstr "Ledger message line 1"
+
+msgid "PARAM_LABEL_ORDER_PDF_MSG2"
+msgstr "Ledger message line 2"
+
+msgid "PARAM_LABEL_ORDER_PDF_MSG3"
+msgstr "Ledger message line 3"
+
+msgid "PARAM_LABEL_ORDER_PDF_NOTE1"
+msgstr "Remarks line 1"
+
+msgid "PARAM_LABEL_ORDER_PDF_NOTE2"
+msgstr "Remarks line 2"
+
+msgid "PARAM_LABEL_ORDER_PDF_NOTE3"
+msgstr "Remarks line 3"
+
+msgid "PARAM_LABEL_DISP_POINT"
+msgstr "Point notation"
+
+msgid "PARAM_LABEL_BEFORE_ORDER_STATUS"
+msgstr "Response status before change"
+
+msgid "PARAM_LABEL_AFTER_ORDER_STATUS"
+msgstr "Response status after change"
+
+msgid "PARAM_LABEL_MOVE_ORDER_NUMBER"
+msgstr "Move order number"
+
+msgid "PARAM_LABEL_MODE"
+msgstr "Mode"
+
+msgid "PARAM_LABEL_MODE_ALP"
+msgstr "mode"
+
+msgid "PARAM_LABEL_PLUGIN_ID"
+msgstr "plugin_id"
+
+msgid "PARAM_LABEL_PRIORITY"
+msgstr "Priority"
+
+msgid "PARAM_LABEL_TYPE"
+msgstr "Type"
+
+msgid "PARAM_LABEL_REVIEWER_NAME"
+msgstr "Poster name"
+
+msgid "PARAM_LABEL_REVIEWER_URL"
+msgstr "Poster URL"
+
+msgid "PARAM_LABEL_RECOMMEND_LEVEL"
+msgstr "Recommendation level"
+
+msgid "PARAM_LABEL_REVIEW_ID"
+msgstr "Review ID"
+
+msgid "PARAM_LABEL_POST_DATE"
+msgstr "Post date"
+
+msgid "PARAM_LABEL_DISP_REVIEWE"
+msgstr "Review display"
+
+msgid "PARAM_LABEL_POST_YEAR"
+msgstr "Post year"
+
+msgid "PARAM_LABEL_POST_MONTH"
+msgstr "Post month"
+
+msgid "PARAM_LABEL_MAX_DISP_NUM"
+msgstr "Maximum number of items that can be displayed"
+
+msgid "PARAM_LABEL_PAGE_NUM"
+msgstr "Number of page number items"
+
+msgid "PARAM_LABEL_DIR_NAME"
+msgstr "Directory name"
+
+msgid "PARAM_LABEL_SSL_LIMIT"
+msgstr "SSL restrictions"
+
+msgid "PARAM_LABEL_IP_LIMIT"
+msgstr "IP restriction"
+
+msgid "PARAM_LABEL_BACKUP_NAME"
+msgstr "Backup name"
+
+msgid "PARAM_LABEL_BACKUP_MEMO"
+msgstr "Backup memo"
+
+msgid "PARAM_LABEL_BACKUP_NAME_LIST"
+msgstr "Backup name (list)"
+
+msgid "PARAM_LABEL_TABLE_NAME"
+msgstr "Table name"
+
+msgid "PARAM_LABEL_COLUMN_NAME"
+msgstr "Column name"
+
+msgid "PARAM_LABEL_INDEX"
+msgstr "Index"
+
+msgid "PARAM_LABEL_INDEX_CHANGE"
+msgstr "Index (after change)"
+
+msgid "PARAM_LABEL_MEMBER_ID"
+msgstr "Member ID"
+
+msgid "PARAM_LABEL_DEPARTMENT"
+msgstr "Affiliation"
+
+msgid "PARAM_LABEL_OLD_LOGIN_ID"
+msgstr "Login ID before change"
+
+msgid "PARAM_LABEL_AUTHORITY"
+msgstr "Access"
+
+msgid "PARAM_LABEL_WORK"
+msgstr "Operating/Not operating"
+
+msgid "PARAM_LABEL_PAGE"
+msgstr "Page"
+
+msgid "PARAM_LABEL_PASSWORD_REMINDER"
+msgstr "Question for confirming password"
+
+msgid "PARAM_LABEL_PASSWORD_REMINDER_ANSWER"
+msgstr "Answer to question for confirming password"
+
+msgid "PARAM_LABEL_IMG_FILE_NAME"
+msgstr "Image file name"
+
+msgid "PARAM_LABEL_IMG_WIDTH"
+msgstr "Image width"
+
+msgid "PARAM_LABEL_HEIGHT"
+msgstr "Image height"
+
+msgid "PARAM_LABEL_DIVISION_ALP"
+msgstr "division"
+
+msgid "PARAM_LABEL_SEARCH_PAGENO_ALP"
+msgstr "pageno"
+
+msgid "PARAM_LABEL_ID_ALP"
+msgstr "id"
+
+msgid "PARAM_LABEL_CUSTOMER_ID_ALP"
+msgstr "customer_id"
+
+msgid "PARAM_LABEL_ORDER_ID_ALP"
+msgstr "order_id"
+
+msgid "PARAM_LABEL_PRODUCT_ID_ALP"
+msgstr "product_id"
+
+msgid "PARAM_LABEL_OPERATION"
+msgstr "Operation"
+
+msgid "PARAM_LABEL_SERVICE"
+msgstr "Service"
+
+msgid "PARAM_LABEL_STYLE"
+msgstr "Style"
+
+msgid "PARAM_LABEL_VALIDATE"
+msgstr "Validate"
+
+msgid "PARAM_LABEL_VERSION"
+msgstr "Version"
+
+msgid "PARAM_LABEL_PLUGIN_FILE"
+msgstr "Plug-in file"
+
+msgid "PARAM_LABEL_START"
+msgstr "Start"
+
+msgid "PARAM_LABEL_END"
+msgstr "Complete"
+
+msgid "PARAM_LABEL_DETAIL_SUBTITLE_COUNT"
+msgstr "Details - Sub title T_FIELD"
+
+msgid "PARAM_LABEL_DETAIL_SUBCOMMENT_COUNT"
+msgstr "Details - Sub comment T_FIELD"
+
+msgid "PARAM_LABEL_SAVE_SUB_IMAGE_CNT_ALP"
+msgstr "save_sub_imageT_FIELD"
+
+msgid "PARAM_LABEL_SAVE_SUB_LARGE_IMAGE_CNT_ALP"
+msgstr "save_sub_large_imageT_FIELD"
+
+msgid "PARAM_LABEL_TEMP_SUB_IMAGE_CNT_ALP"
+msgstr "temp_sub_imageT_FIELD"
+
+msgid "PARAM_LABEL_TEMP_SUB_LARGE_IMAGE_CNT_ALP"
+msgstr "temp_sub_large_imageT_FIELD"
+
+msgid "PARAM_LABEL_RECOMMEND_COMMENT_CNT"
+msgstr "Related product comment T_FILED"
+
+msgid "PARAM_LABEL_RECOMMEND_ID_CNT"
+msgstr "Related product IDT_FIELD"
+
+msgid "PARAM_LABEL_RECOMMEND_DELETE_CNT"
+msgstr "recommend_deleteT_FIELD"
+
+msgid "PARAM_LABEL_DETAIL_SUB_IMAGE_CNT"
+msgstr "Details - Sub image T_FIELD"
+
+msgid "PARAM_LABEL_DETAIL_SUB_LARGE_IMAGE_CNT"
+msgstr "Details - Sub enlarged image T_FIELD"
+
+msgid "PARAM_LABEL_CSV_SQL"
+msgstr ""
+"In SQL text, commands other than those related to reading and \";\" symbols"
+
+msgid "PARAM_LABEL_PUBLIC_KEY"
+msgstr "Authentication key"
+
+msgid "ALERT_001"
+msgstr "Editing is complete"
+
+msgid "ALERT_002"
+msgstr "Deletion was successful"
+
+msgid "ALERT_003"
+msgstr "Update successful."
+
+msgid "ALERT_004"
+msgstr "Registration is complete."
+
+msgid "ALERT_005"
+msgstr "Delivery method settings are complete."
+
+msgid "ALERT_006"
+msgstr ""
+"E-mail settings are complete. Select a template and check the contents."
+
+msgid "ALERT_007"
+msgstr "Point settings are complete."
+
+msgid "ALERT_008"
+msgstr ""
+"Registration of the Act on Specified Commercial Transactions is complete."
+
+msgid "ALERT_009"
+msgstr "The folder was created."
+
+msgid "ALERT_010"
+msgstr "The file was uploaded."
+
+msgid "ALERT_011"
+msgstr "Deletion is complete."
+
+msgid "ALERT_012"
+msgstr "The template file was uploaded."
+
+msgid "ALERT_013"
+msgstr "The e-mail sending ID is not correct."
+
+msgid "ALERT_014"
+msgstr "The selected item was moved to T_FIELD."
+
+msgid "ALERT_015"
+msgstr "The selected item was deleted."
+
+msgid "ALERT_016"
+msgstr "The plug-in was installed."
+
+msgid "ALERT_017"
+msgstr "T_FIELD was deleted."
+
+msgid "ALERT_018"
+msgstr "T_FIELD was activated."
+
+msgid "ALERT_019"
+msgstr "T_FIELD was invalidated."
+
+msgid "ALERT_020"
+msgstr "The plug-in was updated."
+
+msgid "ALERT_021"
+msgstr "Registration is complete."
+
+msgid "ALERT_022"
+msgstr ""
+"Management function settings were revised. If the URL was changed, access "
+"the new URL."
+
+msgid "ALERT_023"
+msgstr "There is an error in the settings details. Check the settings details."
+
+msgid "ALERT_024"
+msgstr "Backup is complete"
+
+msgid "ALERT_025"
+msgstr "There was no data subject to change."
+
+msgid "ALERT_026"
+msgstr "The index was successfully changed."
+
+msgid "ALERT_027"
+msgstr "Processing was suspended due to there being illegal data."
+
+msgid "ALERT_028"
+msgstr "Master data settings are complete."
+
+msgid "ALERT_029"
+msgstr "Parameter settings is complete."
+
+msgid "ALERT_030"
+msgstr "An error has occurred. Check the details that were input."
+
+msgid "TPL_MAINTITLE_001"
+msgstr "Order receipt management"
+
+msgid "TPL_MAINTITLE_002"
+msgstr "Mail magazine management"
+
+msgid "TPL_MAINTITLE_003"
+msgstr "Design management"
+
+msgid "TPL_MAINTITLE_004"
+msgstr "Member management"
+
+msgid "TPL_MAINTITLE_005"
+msgstr "Contents management"
+
+msgid "TPL_MAINTITLE_006"
+msgstr "Basic information management"
+
+msgid "TPL_MAINTITLE_007"
+msgstr "Product management"
+
+msgid "TPL_MAINTITLE_008"
+msgstr "Owners Store"
+
+msgid "TPL_MAINTITLE_009"
+msgstr "System settings"
+
+msgid "TPL_MAINTITLE_010"
+msgstr "Sales tabulation"
+
+msgid "FORMAT_DATE_LONG"
+msgstr "Y年m月d日H時i分"
+
+msgid "FORMAT_NAME_FULL_SIR"
+msgstr "T_LASTNAME T_FIRSTNAME"
+
+msgid "LC_Page_Abouts_001"
+msgstr "About this site"
+
+msgid "LC_Page_Cart_001"
+msgstr "What is inside your basket now"
+
+msgid "LC_Page_Cart_002"
+msgstr ""
+"The contents of your cart were modified during product purchase. Please "
+"restart the purchasing procedure."
+
+msgid "LC_Page_Contact_001"
+msgstr "Inquiry"
+
+msgid "LC_Page_Contact_002"
+msgstr "Inquiry (input page)"
+
+msgid "LC_Page_Contact_003"
+msgstr "Inquiry (confirmation page)"
+
+msgid "LC_Page_Contact_004"
+msgstr "T_FIELD)"
+
+msgid "LC_Page_Contact_Complete_001"
+msgstr "Inquiry (completion page)"
+
+msgid "LC_Page_Entry_001"
+msgstr "* The corresponding address was not found.<br />"
+
+msgid "LC_Page_Entry_002"
+msgstr "Member registration (confirmation page)"
+
+msgid "LC_Page_Entry_003"
+msgstr "Confirmation of member registration"
+
+msgid "LC_Page_Entry_004"
+msgstr "Completion of member registration"
+
+msgid "LC_Page_Entry_005"
+msgstr "* The input format is inadequate.<br />"
+
+msgid "LC_Page_Entry_006"
+msgstr "* The input format is inadequate.<br />"
+
+msgid "LC_Page_Entry_007"
+msgstr "T_FIELD01 T_FIELD02"
+
+msgid "LC_Page_InputZip_001"
+msgstr "The address is being searched."
+
+msgid "LC_Page_InputZip_002"
+msgstr "No applicable address was found."
+
+msgid "LC_Page_InputZip_003"
+msgstr "* The input format is inadequate.<br />"
+
+msgid "LC_Page_InputZip_004"
+msgstr "* The input format is inadequate.<br />"
+
+msgid "LC_Page_Entry_EmailMobile_001"
+msgstr "Mobile e-mail registration complete"
+
+msgid "LC_Page_Entry_Kiyaku_001"
+msgstr "Usage agreement"
+
+msgid "LC_Page_Error_001"
+msgstr "Error"
+
+msgid "LC_Page_Error_002"
+msgstr "The page you specified does not exist."
+
+msgid "LC_Page_Error_003"
+msgstr "Illegal page migration."
+
+msgid "LC_Page_Error_004"
+msgstr "There are no products in your cart."
+
+msgid "LC_Page_Error_005"
+msgstr ""
+"It is not possible to add products to your cart during purchase processing."
+
+msgid "LC_Page_Error_006"
+msgstr ""
+"This procedure has been voided. The following factors may be attributable. "
+"<br />- The expiration date of the session information has passed <br /> - A "
+"new purchasing procedure was executed during an existing purchasing "
+"procedure <br />- The purchasing procedure has already been completed"
+
+msgid "LC_Page_Error_007"
+msgstr "The category you specified does not exist."
+
+msgid "LC_Page_Error_008"
+msgstr "The e-mail address or password is not correct."
+
+msgid "LC_Page_Error_009"
+msgstr ""
+"The e-mail address or password is not correct.<br />If you have not "
+"completed registration, complete registration from the URL given in the "
+"temporary registration e-mail."
+
+msgid "LC_Page_Error_010"
+msgstr "Unauthorized access."
+
+msgid "LC_Page_Error_011"
+msgstr ""
+"There is a product that sold out immediately before your purchase. This "
+"procedure has been voided. We apologize for the inconvenience."
+
+msgid "LC_Page_Error_012"
+msgstr ""
+"Retrieval of information regarding products in your cart failed. This "
+"procedure has been voided. We apologize for the inconvenience."
+
+msgid "LC_Page_Error_013"
+msgstr ""
+"You do not have enough points. This procedure has been voided. We apologize "
+"for the inconvenience."
+
+msgid "LC_Page_Error_014"
+msgstr "This product is already added to your favorites"
+
+msgid "LC_Page_Error_015"
+msgstr ""
+"File decompression failed.\\nWrite access may not have been granted to the "
+"designated directory."
+
+msgid "LC_Page_Error_016"
+msgstr "FTP download of file failed."
+
+msgid "LC_Page_Error_017"
+msgstr "FTP login failed."
+
+msgid "LC_Page_Error_018"
+msgstr "FTP login failed."
+
+msgid "LC_Page_Error_019"
+msgstr ""
+"DB creation failed. \\nThe user designated by may not have been granted DB "
+"creation access."
+
+msgid "LC_Page_Error_020"
+msgstr ""
+"Import of the database structure failed. \\nThe sql file may be damaged."
+
+msgid "LC_Page_Error_021"
+msgstr "The settings file does not exist in the designated path."
+
+msgid "LC_Page_Error_022"
+msgstr ""
+"It is not possible to write to the settings file.\\nGrant write access to "
+"the settings file."
+
+msgid "LC_Page_Error_023"
+msgstr "The download file does not exist. <br /> Please inquire at the store."
+
+msgid "LC_Page_Error_024"
+msgstr "An error has occurred. "
+
+msgid "LC_Page_Error_DispError_001"
+msgstr "Login error"
+
+msgid "LC_Page_Error_DispError_002"
+msgstr ""
+"The ID or password is not correct.<br />Check and reenter the ID and "
+"password."
+
+msgid "LC_Page_Error_DispError_003"
+msgstr ""
+"It is possible that the expiration date for login authentication has passed. "
+"<br /> Check and log in again."
+
+msgid "LC_Page_Error_DispError_004"
+msgstr "You cannot access this page"
+
+msgid "LC_Page_Error_DispError_005"
+msgstr "Illegal page migration.<br />Check once again, and input again."
+
+msgid "LC_Page_Error_DispError_006"
+msgstr "An error has occurred.<br />Check and log in again."
+
+msgid "LC_Page_Error_SystemError_001"
+msgstr "System error"
+
+msgid "LC_Page_Error_SystemError_002"
+msgstr ""
+"A system error has occurred. <br /> Please contact the site administrator."
+
+msgid "LC_Page_Error_SystemError_003"
+msgstr "▼▼▼ Start of debug information ▼▼▼"
+
+msgid "LC_Page_Error_SystemError_004"
+msgstr "▲▲▲ End of debug information▲▲▲"
+
+msgid "LC_Page_Forgot_001"
+msgstr "If you have forgotten your password"
+
+msgid "LC_Page_Forgot_002"
+msgstr ""
+"The e-mail address you registered is currently temporarily registered.<br/"
+">Access the URL in the e-mail that was sent at the time of registration, and "
+"complete member registration."
+
+msgid "LC_Page_Forgot_003"
+msgstr ""
+"There is an error with your name or this e-mail address is not registered."
+
+msgid "LC_Page_Forgot_004"
+msgstr "The secret question did not match."
+
+msgid "LC_Page_Forgot_005"
+msgstr "The secret question did not match."
+
+msgid "LC_Page_Forgot_006"
+msgstr "The password has been changed."
+
+msgid "LC_Page_Forgot_007"
+msgstr "T_FIELD"
+
+msgid "LC_Page_FrontParts_LoginCheck_001"
+msgstr ""
+"The e-mail address or password is not correct.\\nIf you have not completed "
+"registration, complete registration from the URL given in the temporary "
+"registration e-mail."
+
+msgid "LC_Page_FrontParts_LoginCheck_002"
+msgstr "The e-mail address or password is not correct."
+
+msgid "LC_Page_AbstractMypage_001"
+msgstr "MY page"
+
+msgid "LC_Page_AbstractMypage_002"
+msgstr "MY page (login)"
+
+msgid "LC_Page_MyPage_001"
+msgstr "MY page"
+
+msgid "LC_Page_MyPage_002"
+msgstr "Purchase history list"
+
+msgid "LC_Page_Mypage_Change_001"
+msgstr "Revision of member registration details (input page)"
+
+msgid "LC_Page_Mypage_Change_002"
+msgstr "* The corresponding address was not found.<br />"
+
+msgid "LC_Page_Mypage_Change_003"
+msgstr "Member registration (confirmation page)"
+
+msgid "LC_Page_Mypage_Change_004"
+msgstr "Revision of member registration details (confirmation page)"
+
+msgid "LC_Page_Mypage_Change_005"
+msgstr "* The input format is inadequate.<br />"
+
+msgid "LC_Page_Mypage_Change_006"
+msgstr "* The input format is inadequate.<br />"
+
+msgid "LC_Page_Mypage_ChangeComplete_001"
+msgstr "Revision of member registration details (completion page)"
+
+msgid "LC_Page_Mypage_Delivery_001"
+msgstr "Add or change delivery destination"
+
+msgid "LC_Page_Mypage_DeliveryAddr_001"
+msgstr "Add or change delivery destination"
+
+msgid "LC_Page_Mypage_DeliveryAddr_002"
+msgstr ""
+"The maximum number of separate shipping destinations registered has been met."
+
+msgid "LC_Page_Mypage_DeliveryAddr_003"
+msgstr "There is no separate delivery destination that matches."
+
+msgid "LC_Page_Mypage_DeliveryAddr_004"
+msgstr ""
+"The maximum number of separate shipping destinations registered has been met."
+
+msgid "LC_Page_MyPage_Favorite_001"
+msgstr "List of Favorites"
+
+msgid "LC_Page_Mypage_History_001"
+msgstr "Purchase history details"
+
+msgid "LC_Page_Mypage_MailView_001"
+msgstr "E-mail history details"
+
+msgid "LC_Page_Mypage_Refusal_001"
+msgstr "Withdrawal procedure (input page)"
+
+msgid "LC_Page_Mypage_Refusal_002"
+msgstr "Withdrawal procedure (confirmation page)"
+
+msgid "LC_Page_Mypage_RefusalComplete_001"
+msgstr "MY page"
+
+msgid "LC_Page_Mypage_RefusalComplete_002"
+msgstr "/Withdrawal procedure (completion page)"
+
+msgid "LC_Page_Mypage_RefusalComplete_003"
+msgstr "Withdrawal procedure (completion page)"
+
+msgid "LC_Page_Order_001"
+msgstr "Legal-based notation related to specified commercial transactions"
+
+msgid "LC_Page_Products_Detail_001"
+msgstr "* This product has already been added to Favorites.<br />"
+
+msgid "LC_Page_Products_List_001"
+msgstr "No designation"
+
+msgid "LC_Page_Products_List_002"
+msgstr "No designation"
+
+msgid "LC_Page_Products_List_003"
+msgstr "No designation"
+
+msgid "LC_Page_Products_Review_001"
+msgstr "It is not possible to register a duplicate title."
+
+msgid "LC_Page_Regist_001"
+msgstr "Void access."
+
+msgid "LC_Page_Regist_002"
+msgstr "* Member registration is already complete or the URL is invalid.<br />"
+
+msgid "LC_Page_Regist_003"
+msgstr ""
+"* The URL is invalid. Check the member registration URL listed in the e-mail."
+
+msgid "LC_Page_Regist_004"
+msgstr "Member registration is complete."
+
+msgid "LC_Page_Regist_005"
+msgstr "T_FIELD01 T_FIELD02"
+
+msgid "LC_Page_Regist_Complete_001"
+msgstr "Member registration (completion page)"
+
+msgid "LC_Page_RSS_001"
+msgstr "New information "
+
+msgid "LC_Page_Rss_Products_001"
+msgstr "Product list information"
+
+msgid "LC_Page_Rss_Products_002"
+msgstr "Unlimited inventory"
+
+msgid "LC_Page_Shopping_001"
+msgstr "Login"
+
+msgid "LC_Page_Shopping_002"
+msgstr "Input of customer information"
+
+msgid "LC_Page_Shopping_003"
+msgstr ""
+"For shopping that includes downloaded products, member registration is "
+"necessary.<br />Please carry out member registration."
+
+msgid "LC_Page_Shopping_004"
+msgstr ""
+"The e-mail address or password is not correct.\\nIf you have not completed "
+"registration, complete registration from the URL given in the temporary "
+"registration e-mail."
+
+msgid "LC_Page_Shopping_005"
+msgstr "The e-mail address or password is not correct."
+
+msgid "LC_Page_Shopping_Complete_001"
+msgstr "Order complete"
+
+msgid "LC_Page_Shopping_Confirm_001"
+msgstr "Confirmation of input details"
+
+msgid "LC_Page_Shopping_Deliv_001"
+msgstr "Designation of shipping destination "
+
+msgid "LC_Page_Shopping_LoadPaymentModule_001"
+msgstr "Module file retrieval failed. <br /> This procedure has been voided."
+
+msgid "LC_Page_Shopping_Multiple_001"
+msgstr "Designation of multiple delivery destinations"
+
+msgid "LC_Page_Shopping_Multiple_002"
+msgstr "Please make a selection"
+
+msgid "LC_Page_Shopping_Multiple_003"
+msgstr ""
+"* When the quantity is 0, it is not possible to input a shipping destination."
+"<br />"
+
+msgid "LC_Page_Shopping_Multiple_004"
+msgstr "* The shipping destination is not input.<br />"
+
+msgid "LC_Page_Shopping_Multiple_005"
+msgstr "* Use T_FIELD for the total quantity.<br />"
+
+msgid "LC_Page_Shopping_Payment_001"
+msgstr "Designation of payment method/delivery time, etc."
+
+msgid "LC_Page_Shopping_Payment_002"
+msgstr ""
+"* The number of points you want to use exceeds the number of points you have."
+"<br />"
+
+msgid "LC_Page_Shopping_Payment_003"
+msgstr ""
+"* The number of points you want to use exceeds the amount of your purchase."
+"<br />"
+
+msgid "LC_Page_Shopping_Payment_004"
+msgstr ""
+"* Based on the selected payment method, it is possible to use (T_FIELD01 - "
+"T_FIELD01) points.<br />"
+
+msgid "LC_Page_Unsupported_001"
+msgstr "Devices not supported"
+
+msgid "LC_Page_Upgrade_Download_001"
+msgstr "Installation/update was successful."
+
+msgid "LC_Page_001"
+msgstr "A method for upward compatibility was used."
+
+msgid "LC_Page_Install_001"
+msgstr "Please grant user write access (777, 707, etc.) for T_FIELD"
+
+msgid "LC_Page_Install_002"
+msgstr "○: The table was successfully created.<br />'"
+
+msgid "LC_Page_Install_003"
+msgstr "×: The table was not created.<br />"
+
+msgid "LC_Page_Install_004"
+msgstr "○: Initial data was successfully created.<br />"
+
+msgid "LC_Page_Install_005"
+msgstr "×: Initial data was not created.<br />"
+
+msgid "LC_Page_Install_006"
+msgstr "○: The sequence was successfully created.<br />"
+
+msgid "LC_Page_Install_007"
+msgstr "×: The sequence was not created.<br />"
+
+msgid "LC_Page_Install_008"
+msgstr "○: The table was successfully deleted.<br />"
+
+msgid "LC_Page_Install_009"
+msgstr "×: The table was not deleted.<br />"
+
+msgid "LC_Page_Install_010"
+msgstr "○: The sequence was successfully deleted.<br />"
+
+msgid "LC_Page_Install_011"
+msgstr "×: The sequence was not deleted.<br />"
+
+msgid "LC_Page_Install_012"
+msgstr ""
+">> ×:T_FIELD01(T_FIELD02)\\nPlease grant user write access (777, 707, etc.)"
+
+msgid "LC_Page_Install_013"
+msgstr ""
+">> ×:T_FIELD01(T_FIELD02)\\nPlease grant user write access (666, 606, etc.)"
+
+msgid "LC_Page_Install_014"
+msgstr ">> ×:T_FIELD cannot be found."
+
+msgid "LC_Page_Install_015"
+msgstr ">> ×:PHP safe mode is active."
+
+msgid "LC_Page_Install_016"
+msgstr ">> ×:PHP settings directive 'magic_quotes_gpc' is active."
+
+msgid "LC_Page_Install_017"
+msgstr ">> ○:Access authority is normal."
+
+msgid "LC_Page_Install_018"
+msgstr "Store name"
+
+msgid "LC_Page_Install_019"
+msgstr "Administrator: E-mail address"
+
+msgid "LC_Page_Install_020"
+msgstr "Administrator: Login ID"
+
+msgid "LC_Page_Install_021"
+msgstr "Administrator: Password"
+
+msgid "LC_Page_Install_022"
+msgstr "Management function: Directory"
+
+msgid "LC_Page_Install_023"
+msgstr "Management function: SSL restriction"
+
+msgid "LC_Page_Install_024"
+msgstr "Management function: IP restriction"
+
+msgid "LC_Page_Install_025"
+msgstr "URL (normal)"
+
+msgid "LC_Page_Install_026"
+msgstr "URL (secure)"
+
+msgid "LC_Page_Install_027"
+msgstr "Domain"
+
+msgid "LC_Page_Install_028"
+msgstr "Mailer backend"
+
+msgid "LC_Page_Install_029"
+msgstr "SMTP host"
+
+msgid "LC_Page_Install_030"
+msgstr "SMTP port"
+
+msgid "LC_Page_Install_031"
+msgstr "SMTP user"
+
+msgid "LC_Page_Install_032"
+msgstr "SMTP password"
+
+msgid "LC_Page_Install_033"
+msgstr "DB type"
+
+msgid "LC_Page_Install_034"
+msgstr "DB server"
+
+msgid "LC_Page_Install_035"
+msgstr "DB port"
+
+msgid "LC_Page_Install_036"
+msgstr "DB name"
+
+msgid "LC_Page_Install_037"
+msgstr "DB user"
+
+msgid "LC_Page_Install_038"
+msgstr "DB password"
+
+msgid "LC_Page_Install_039"
+msgstr "* It is not possible to designate a different hierarchy for the URL."
+
+msgid "LC_Page_Install_040"
+msgstr "* It is not possible to designate a different hierarchy for the URL."
+
+msgid "LC_Page_Install_041"
+msgstr "Administrator: Login ID"
+
+msgid "LC_Page_Install_042"
+msgstr "Administrator: Password"
+
+msgid "LC_Page_Install_043"
+msgstr "Management function: Directory"
+
+msgid "LC_Page_Install_044"
+msgstr ""
+"* The designated management function directory already exists. Please "
+"designate a different name."
+
+msgid "LC_Page_Install_045"
+msgstr ">> The script file cannot be found"
+
+msgid "LC_Page_Install_046"
+msgstr ">> Table structure was not changed.<br />"
+
+msgid "LC_Page_Install_047"
+msgstr ""
+"* The designated management function directory already exists. Please "
+"designate a different name."
+
+msgid "LC_Page_Install_048"
+msgstr "* Renaming to T_FIELD failed. Check directory access."
+
+msgid "LC_Page_Admin_Basis_001"
+msgstr "Basic information management"
+
+msgid "LC_Page_Admin_Basis_002"
+msgstr "SHOP master"
+
+msgid "LC_Page_Admin_Basis_003"
+msgstr "Sunday"
+
+msgid "LC_Page_Admin_Basis_004"
+msgstr "Monday"
+
+msgid "LC_Page_Admin_Basis_005"
+msgstr "Tuesday"
+
+msgid "LC_Page_Admin_Basis_006"
+msgstr "Wednesday"
+
+msgid "LC_Page_Admin_Basis_007"
+msgstr "Thursday"
+
+msgid "LC_Page_Admin_Basis_008"
+msgstr "Friday"
+
+msgid "LC_Page_Admin_Basis_009"
+msgstr "Saturday"
+
+msgid "LC_Page_Admin_Basis_011"
+msgstr "SHOP master registration is complete."
+
+msgid "LC_Page_Admin_Basis_012"
+msgstr "UPDATE was executed for dtb_baseinfo."
+
+msgid "LC_Page_Admin_Basis_013"
+msgstr "INSERT was executed for dtb_baseinfo."
+
+msgid "LC_Page_Admin_Basis_Delivery_001"
+msgstr "Basic information management"
+
+msgid "LC_Page_Admin_Basis_Delivery_002"
+msgstr "Delivery method settings"
+
+msgid "LC_Page_Admin_Basis_DeliveryInput_001"
+msgstr "Basic information management"
+
+msgid "LC_Page_Admin_Basis_DeliveryInput_002"
+msgstr "Delivery method settings"
+
+msgid "LC_Page_Admin_Basis_DeliveryInput_004"
+msgstr "Delivery time T_FIELD"
+
+msgid "LC_Page_Admin_Basis_DeliveryInput_005"
+msgstr "Delivery charge T_FIELD"
+
+msgid "LC_Page_Admin_Basis_DeliveryInput_006"
+msgstr "* It is not possible register a combination of the same name.<br>"
+
+msgid "LC_Page_Admin_Basis_Holiday_001"
+msgstr "Basic information management"
+
+msgid "LC_Page_Admin_Basis_Holiday_002"
+msgstr "Regular holiday management"
+
+msgid "LC_Page_Admin_Basis_Holiday_003"
+msgstr "※ 既に同じ日付の登録が存在します。<br>"
+
+msgid "LC_Page_Admin_Basis_Kiyaku_001"
+msgstr "Basic information management"
+
+msgid "LC_Page_Admin_Basis_Kiyaku_002"
+msgstr "Settings for terms and conditions of membership"
+
+msgid "LC_Page_Admin_Basis_Kiyaku_004"
+msgstr "* Registration of the same contents already exists.<br>"
+
+msgid "LC_Page_Admin_Basis_Mail_001"
+msgstr "Basic information management"
+
+msgid "LC_Page_Admin_Basis_Mail_002"
+msgstr "E-mail settings"
+
+msgid "LC_Page_Admin_Basis_Mail_003"
+msgstr "An error has occurred"
+
+msgid "LC_Page_Admin_Basis_Payment_001"
+msgstr "Basic information management"
+
+msgid "LC_Page_Admin_Basis_Payment_002"
+msgstr "Payment method settings"
+
+msgid "LC_Page_Admin_Basis_PaymentInput_001"
+msgstr "Basic information management"
+
+msgid "LC_Page_Admin_Basis_PaymentInput_002"
+msgstr "Payment method settings"
+
+msgid "LC_Page_Admin_Basis_PaymentInput_003"
+msgstr "Make the usage conditions (lower limit) &#38; T_FIELD or more.<br>"
+
+msgid "LC_Page_Admin_Basis_PaymentInput_004"
+msgstr "Make the usage conditions (upper limit) &#38; T_FIELD or less.<br>"
+
+msgid "LC_Page_Admin_Basis_Point_001"
+msgstr "Basic information management"
+
+msgid "LC_Page_Admin_Basis_Point_002"
+msgstr "Point settings"
+
+msgid "LC_Page_Admin_Basis_Seo_001"
+msgstr "Basic information management"
+
+msgid "LC_Page_Admin_Basis_Seo_002"
+msgstr "SEO management"
+
+msgid "LC_Page_Admin_Basis_Seo_003"
+msgstr "PC site"
+
+msgid "LC_Page_Admin_Basis_Seo_004"
+msgstr "Mobile site"
+
+msgid "LC_Page_Admin_Basis_Seo_005"
+msgstr "Smartphone"
+
+msgid "LC_Page_Admin_Basis_Tradelaw_001"
+msgstr "Basic information management"
+
+msgid "LC_Page_Admin_Basis_Tradelaw_002"
+msgstr "Act on Specified Commercial Transactions"
+
+msgid "LC_Page_Admin_Basis_ZipInstall_001"
+msgstr "Basic information management"
+
+msgid "LC_Page_Admin_Basis_ZipInstall_002"
+msgstr "Postal code DB registration"
+
+msgid "LC_Page_Admin_Basis_ZipInstall_003"
+msgstr "'<p>Completed.<br />'"
+
+msgid "LC_Page_Admin_Basis_ZipInstall_004"
+msgstr " items were added.</p>"
+
+msgid "LC_Page_Admin_Basis_ZipInstall_005"
+msgstr "<p><a href='?' target='_top'>Go back</a></p>"
+
+msgid "LC_Page_Admin_Basis_ZipInstall_006"
+msgstr "T_FIELD reading failed."
+
+msgid "LC_Page_Admin_Basis_ZipInstall_007"
+msgstr "T_FIELD cannot be opened."
+
+msgid "LC_Page_Admin_Basis_ZipInstall_008"
+msgstr "T_FIELD retrieval failed."
+
+msgid "LC_Page_Admin_Basis_ZipInstall_009"
+msgstr "T_FIELD writing failed."
+
+msgid "LC_Page_Admin_Basis_ZipInstall_010"
+msgstr " cannot be opened."
+
+msgid "LC_Page_Admin_Basis_ZipInstall_011"
+msgstr "The target file was not found in T_FIELD."
+
+msgid "LC_Page_Admin_Basis_ZipInstall_012"
+msgstr "T_FIELD decompression failed."
+
+msgid "LC_Page_Admin_Basis_ZipInstall_013"
+msgstr " cannot be deleted."
+
+msgid "LC_Page_Admin_Basis_ZipInstall_014"
+msgstr "The file name cannot be changed.: T_FIELD1 -> TFIELF2"
+
+msgid "LC_Page_Admin_Contents_001"
+msgstr "Contents management"
+
+msgid "LC_Page_Admin_Contents_002"
+msgstr "Management of new information"
+
+msgid "LC_Page_Admin_Contents_CSV_001"
+msgstr "Contents management"
+
+msgid "LC_Page_Admin_Contents_CSV_002"
+msgstr "CSV output settings"
+
+msgid "LC_Page_Admin_Contents_CsvSql_001"
+msgstr "Contents management"
+
+msgid "LC_Page_Admin_Contents_CsvSql_002"
+msgstr "CSV output settings"
+
+msgid "LC_Page_Admin_Contents_CsvSql_005"
+msgstr "'* The SQL text is inappropriate. Please revise the SQL text'"
+
+msgid "LC_Page_Admin_Contents_CsvSql_006"
+msgstr "Data table: T_FIELD"
+
+msgid "LC_Page_Admin_Contents_CsvSql_007"
+msgstr "Master table: T_FIELD"
+
+msgid "LC_Page_Admin_Contents_FileManager_001"
+msgstr "Contents management"
+
+msgid "LC_Page_Admin_Contents_FileManager_002"
+msgstr "File management"
+
+msgid "LC_Page_Admin_Contents_FileManager_003"
+msgstr "'* It is not possible to download the directory.<br/>'"
+
+msgid "LC_Page_Admin_Contents_FileManager_005"
+msgstr "* T_FIELD creation failed.<br/>"
+
+msgid "LC_Page_Admin_Contents_Recommend_001"
+msgstr "Contents management"
+
+msgid "LC_Page_Admin_Contents_Recommend_002"
+msgstr "Recommended product management"
+
+msgid "LC_Page_Admin_Contents_RecommendSearch_001"
+msgstr "Product search"
+
+msgid "LC_Page_Admin_Customer_001"
+msgstr "Member management"
+
+msgid "LC_Page_Admin_Customer_002"
+msgstr "Member master"
+
+msgid "LC_Page_Admin_Customer_003"
+msgstr "Unknown"
+
+msgid "LC_Page_Admin_Customer_Edit_001"
+msgstr "Member management"
+
+msgid "LC_Page_Admin_Customer_Edit_002"
+msgstr "Member registration"
+
+msgid "LC_Page_Admin_Customer_Edit_003"
+msgstr "* This address is already used by another member (ID:T_FIELD)."
+
+msgid "LC_Page_Admin_Customer_Edit_004"
+msgstr "* This mobile address is already used by another member (ID:T_FIELD)."
+
+msgid "LC_Page_Admin_Customer_SearchCustomer_001"
+msgstr "Member search"
+
+msgid "LC_Page_Admin_Design_001"
+msgstr "Design management"
+
+msgid "LC_Page_Admin_Design_002"
+msgstr "Layout settings"
+
+msgid "LC_Page_Admin_Design_Bloc_001"
+msgstr "Design management"
+
+msgid "LC_Page_Admin_Design_Bloc_002"
+msgstr "Block settings"
+
+msgid "LC_Page_Admin_Design_Bloc_003"
+msgstr "* Block writing failed<br />"
+
+msgid "LC_Page_Admin_Design_Bloc_004"
+msgstr "* Block deletion failed<br />"
+
+msgid "LC_Page_Admin_Design_Bloc_005"
+msgstr ""
+"* Data for the same file name exists. Input a different file name.<br />"
+
+msgid "LC_Page_Admin_Design_CSS_001"
+msgstr "Design management"
+
+msgid "LC_Page_Admin_Design_CSS_002"
+msgstr "CSS settings"
+
+msgid "LC_Page_Admin_Design_CSS_003"
+msgstr "* Deletion of the old file failed<br />"
+
+msgid "LC_Page_Admin_Design_CSS_004"
+msgstr "* CSS writing failed<br />"
+
+msgid "LC_Page_Admin_Design_CSS_005"
+msgstr "* CSS deletion failed<br />"
+
+msgid "LC_Page_Admin_Design_CSS_006"
+msgstr ""
+"* Data for the same file name exists. Input a different file name.<br />"
+
+msgid "LC_Page_Admin_Design_Header_001"
+msgstr "Design management"
+
+msgid "LC_Page_Admin_Design_Header_002"
+msgstr "Header/footer settings"
+
+msgid "LC_Page_Admin_Design_Header_003"
+msgstr "* File retrieval failed<br />"
+
+msgid "LC_Page_Admin_Design_Header_004"
+msgstr "* File writing failed<br />"
+
+msgid "LC_Page_Admin_Design_MainEdit_001"
+msgstr "Design management"
+
+msgid "LC_Page_Admin_Design_MainEdit_002"
+msgstr "Page detail settings"
+
+msgid "LC_Page_Admin_Design_MainEdit_003"
+msgstr "* PHP file creation failed<br />"
+
+msgid "LC_Page_Admin_Design_MainEdit_004"
+msgstr "* TPL file writing failed<br />"
+
+msgid "LC_Page_Admin_Design_MainEdit_005"
+msgstr "* Input the URL correctly.<br />"
+
+msgid "LC_Page_Admin_Design_MainEdit_006"
+msgstr "* Data for the same URL exists. Input a different URL.<br />"
+
+msgid "LC_Page_Admin_Design_Template_001"
+msgstr "Design management"
+
+msgid "LC_Page_Admin_Design_Template_002"
+msgstr "Template settings"
+
+msgid "LC_Page_Admin_Design_Template_003"
+msgstr ""
+"* The default template and template that is currently selected cannot be "
+"deleted<br />"
+
+msgid "LC_Page_Admin_Design_Template_004"
+msgstr "* The template could not be deleted<br />"
+
+msgid "LC_Page_Admin_Design_Template_005"
+msgstr "* T_FIELD cannot be found.<br />"
+
+msgid "LC_Page_Admin_Design_Template_006"
+msgstr "* Directory creation failed<br />"
+
+msgid "LC_Page_Admin_Design_Template_007"
+msgstr "* Archive file creation failed<br />"
+
+msgid "LC_Page_Admin_Design_UpDown_001"
+msgstr "Design management"
+
+msgid "LC_Page_Admin_Design_UpDown_002"
+msgstr "Template addition"
+
+msgid "LC_Page_Admin_Design_UpDown_003"
+msgstr "* A file with the same name already exists.<br/>"
+
+msgid "LC_Page_Admin_Design_UpDown_004"
+msgstr "* This template code cannot be used.<br/>"
+
+msgid "LC_Page_Admin_Design_UpDown_005"
+msgstr "* This template code is already registered.<br/>"
+
+msgid "LC_Page_Admin_Design_UpDown_006"
+msgstr ""
+"* The template file could not be decompressed. The permissible formats are "
+"tar/tar.gz.<br />"
+
+msgid "LC_Page_Admin_Design_UpDown_007"
+msgstr "* The template folder could not be created.<br/>"
+
+msgid "LC_Page_Admin_Design_UpDown_008"
+msgstr "* Smarty compile folder could not be created.<br/>"
+
+msgid "LC_Page_Admin_Design_UpDown_009"
+msgstr "* Decompression of the template file failed.<br/>"
+
+msgid "LC_Page_Admin_Design_UpDown_010"
+msgstr "* T_FIELD creation failed.<br/>"
+
+msgid "LC_Page_Admin_Mail_001"
+msgstr "Mail magazine management"
+
+msgid "LC_Page_Admin_Mail_002"
+msgstr "Delivery content settings"
+
+msgid "LC_Page_Admin_Mail_003"
+msgstr "Unknown"
+
+msgid "LC_Page_Admin_Mail_004"
+msgstr "Both"
+
+msgid "LC_Page_Admin_Mail_005"
+msgstr "HTML"
+
+msgid "LC_Page_Admin_Mail_006"
+msgstr "TEXT"
+
+msgid "LC_Page_Admin_Mail_History_001"
+msgstr "Mail magazine management"
+
+msgid "LC_Page_Admin_Mail_History_002"
+msgstr "Delivery history"
+
+msgid "LC_Page_Admin_Mail_Preview_001"
+msgstr "Preview"
+
+msgid "LC_Page_Admin_Mail_Template_001"
+msgstr "Mail magazine management"
+
+msgid "LC_Page_Admin_Mail_Template_002"
+msgstr "Template settings"
+
+msgid "LC_Page_Admin_Mail_TemplateInput_001"
+msgstr "Mail magazine management"
+
+msgid "LC_Page_Admin_Mail_TemplateInput_002"
+msgstr "Template settings"
+
+msgid "LC_Page_Admin_Order_001"
+msgstr "Order receipt management"
+
+msgid "LC_Page_Admin_Order_Disp_001"
+msgstr "Order receipt information display"
+
+msgid "LC_Page_Admin_Order_Edit_001"
+msgstr "Order receipt registration"
+
+msgid "LC_Page_Admin_Order_Edit_002"
+msgstr "Order receipt has been registered."
+
+msgid "LC_Page_Admin_Order_Edit_003"
+msgstr "Order receipt has been edited."
+
+msgid "LC_Page_Admin_Order_Edit_004"
+msgstr "None"
+
+msgid "LC_Page_Admin_Order_Edit_005"
+msgstr ""
+"There is an inventory shortage for T_FIELD1/(T_FIELD2)/(T_FIELD3). Up to "
+"T_FIELD4 can be set for the quantity.<br />"
+
+msgid "LC_Page_Admin_Order_Edit_006"
+msgstr "Adjust so that the total amount is not a negative number.<br />"
+
+msgid "LC_Page_Admin_Order_Edit_007"
+msgstr ""
+"Adjust so that a negative number is not displayed for the payment total.<br /"
+">"
+
+msgid "LC_Page_Admin_Order_Edit_008"
+msgstr ""
+"Adjust the final number of points registered so that it does not become a "
+"negative number.<br />"
+
+msgid "LC_Page_Admin_Order_Mail_001"
+msgstr "Order receipt management"
+
+msgid "LC_Page_Admin_Order_MailView_001"
+msgstr "Order receipt management mail confirmation"
+
+msgid "LC_Page_Admin_Order_Multiple_001"
+msgstr "Multiple shipping settings"
+
+msgid "LC_Page_Admin_Order_Pdf_001"
+msgstr "Ledger output"
+
+msgid "LC_Page_Admin_Order_Pdf_002"
+msgstr "Delivery slip"
+
+msgid "LC_Page_Admin_Order_Pdf_003"
+msgstr "Open in browser"
+
+msgid "LC_Page_Admin_Order_Pdf_004"
+msgstr "Save to file"
+
+msgid "LC_Page_Admin_Order_Pdf_005"
+msgstr "Detailed purchase statement (delivery slip)"
+
+msgid "LC_Page_Admin_Order_Pdf_006"
+msgstr "Thank you for your purchase."
+
+msgid "LC_Page_Admin_Order_Pdf_007"
+msgstr "Delivery will be  carried out based on the contents below."
+
+msgid "LC_Page_Admin_Order_Pdf_008"
+msgstr "Please confirm."
+
+msgid "LC_Page_Admin_Order_Pdf_009"
+msgstr "Input a number for the issuance year."
+
+msgid "LC_Page_Admin_Order_Pdf_010"
+msgstr "Input a number for the issuance month."
+
+msgid "LC_Page_Admin_Order_Pdf_011"
+msgstr "Input between 1 - 12 for the issuance month"
+
+msgid "LC_Page_Admin_Order_Pdf_012"
+msgstr "Input a number for the issuance date."
+
+msgid "LC_Page_Admin_Order_Pdf_013"
+msgstr "Input between 1- 31 for the issuance date."
+
+msgid "LC_Page_Admin_Order_ProductSelect_001"
+msgstr "Product selection"
+
+msgid "LC_Page_Admin_Order_Status_001"
+msgstr "Response status management"
+
+msgid "LC_Page_Admin_OwnersStore_001"
+msgstr "Plug-in management"
+
+msgid "LC_Page_Admin_OwnersStore_002"
+msgstr "* T_FIELD is already installed.<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_003"
+msgstr "* DB registration failed.<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_004"
+msgstr "* PLUGIN_CODE is not defined.<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_005"
+msgstr "* PLUGIN_NAME is not defined.<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_006"
+msgstr "* CLASS_NAME is not defined.<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_007"
+msgstr "* CLASS_NAME is not properly defined.<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_008"
+msgstr "* PLUGIN_VERSION is not defined.<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_009"
+msgstr "* COMPLIANT_VERSION is not defined.<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_010"
+msgstr "* AUTHOR is not defined.<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_011"
+msgstr "* DESCRIPTION is not defined.<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_012"
+msgstr "* The plug-in code does not match<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_013"
+msgstr "* Decompression failed.<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_014"
+msgstr "* T_FIELD reading failed.<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_015"
+msgstr "* T_FIELD2 was not found in T_FIELD1.php.<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_016"
+msgstr "Decompression:"
+
+msgid "LC_Page_Admin_OwnersStore_017"
+msgstr "*There is the possibility of competition with T_FIELD.<br/>"
+
+msgid "LC_Page_Admin_OwnersStore_Log_001"
+msgstr "Log management"
+
+msgid "LC_Page_Admin_OwnersStore_Module_001"
+msgstr "Module management"
+
+msgid "LC_Page_Admin_OwnersStore_Settings_001"
+msgstr "Authentication key settings"
+
+msgid "LC_Page_Admin_Products_001"
+msgstr "Product master"
+
+msgid "LC_Page_Admin_Products_Category_001"
+msgstr "Category registration"
+
+msgid "LC_Page_Admin_Products_Category_002"
+msgstr "* Cannot be deleted since a subcategory exists.<br/>"
+
+msgid "LC_Page_Admin_Products_Category_003"
+msgstr ""
+"* The category cannot be deleted since there are products in the category."
+"<br/>"
+
+msgid "LC_Page_Admin_Products_Category_004"
+msgstr ""
+"* The maximum number of categories that can be registered has been exceeded."
+"<br/>"
+
+msgid "LC_Page_Admin_Products_Category_005"
+msgstr ""
+"* Registration of the T_FIELD hierarchy or higher is not possible.<br/>"
+
+msgid "LC_Page_Admin_Products_Category_006"
+msgstr "* Registration of the same contents already exists.<br/>"
+
+msgid "LC_Page_Admin_Products_Class_001"
+msgstr "Standard management"
+
+msgid "LC_Page_Admin_Products_Class_002"
+msgstr "* Registration of the same contents already exists.<br>"
+
+msgid "LC_Page_Admin_Products_ClassCategory_001"
+msgstr "Standard management>category registration"
+
+msgid "LC_Page_Admin_Products_ClassCategory_002"
+msgstr "* Registration of the same contents already exists.<br>"
+
+msgid "LC_Page_Admin_Products_Maker_001"
+msgstr "Manufacturer registration"
+
+msgid "LC_Page_Admin_Products_Maker_002"
+msgstr "* The manufacturer ID is inadequate<br />"
+
+msgid "LC_Page_Admin_Products_Maker_003"
+msgstr "* Registration of the same contents already exists.<br />"
+
+msgid "LC_Page_Admin_Products_Product_001"
+msgstr "Product registration"
+
+msgid "LC_Page_Admin_Products_Product_002"
+msgstr "* This is a related product that is already registered.<br />"
+
+msgid "LC_Page_Admin_Products_ProductClass_001"
+msgstr "Product registration (product specification)"
+
+msgid "LC_Page_Admin_Products_ProductClass_002"
+msgstr "* A standard is not selected.<br />"
+
+msgid "LC_Page_Admin_Products_ProductClass_003"
+msgstr "* T_FIELD is not input. <br />"
+
+msgid "LC_Page_Admin_Products_ProductClass_004"
+msgstr "* Inventory count is not input.<br />"
+
+msgid "LC_Page_Admin_Products_ProductClass_005"
+msgstr "* Select one for the product type.<br />"
+
+msgid "LC_Page_Admin_Products_ProductClass_006"
+msgstr ""
+"* For downloaded products, input the name of the downloaded file.<br />"
+
+msgid "LC_Page_Admin_Products_ProductClass_007"
+msgstr ""
+"* For downloaded products, please upload the file for the downloaded "
+"product. <br />"
+
+msgid "LC_Page_Admin_Products_ProductClass_008"
+msgstr ""
+"* For regular products, it is not possible to set a download file name.<br />"
+
+msgid "LC_Page_Admin_Products_ProductClass_009"
+msgstr ""
+"* For actual products, it is not possible to upload the file for the "
+"downloaded product. <br /> Please cancel the file. <br />"
+
+msgid "LC_Page_Admin_Products_ProductClass_010"
+msgstr "* The file is not uploaded."
+
+msgid "LC_Page_Admin_Products_ProductClass_011"
+msgstr ""
+"* For the file size of the file name for download sales, use one that is "
+"T_FIELD1T_FIELD2 or less <br />'"
+
+msgid "LC_Page_Admin_Products_ProductClass_012"
+msgstr "File name for download sales"
+
+msgid "LC_Page_Admin_Products_ProductClass_013"
+msgstr "* The format permitted for T_FIELD1 is T_FIELD2.<br />"
+
+msgid "LC_Page_Admin_Products_ProductClass_014"
+msgstr "* File upload failed. <br />"
+
+msgid "LC_Page_Admin_Products_ProductRank_001"
+msgstr "Product rearrangement"
+
+msgid "LC_Page_Admin_Products_ProductSelect_001"
+msgstr "Product selection"
+
+msgid "LC_Page_Admin_Products_Review_001"
+msgstr "Review management"
+
+msgid "LC_Page_Admin_Products_ReviewEdit_001"
+msgstr "Review management"
+
+msgid "LC_Page_Admin_Products_UploadCSV_001"
+msgstr "Product registration CSV"
+
+msgid "LC_Page_Admin_Products_UploadCSV_002"
+msgstr "Line T_FIELD1: T_FIELD2"
+
+msgid "LC_Page_Admin_Products_UploadCSV_003"
+msgstr ""
+"* T_FIELD1 was detected for the item quantity. The item quantity is T_FIELD2."
+
+msgid "LC_Page_Admin_Products_UploadCSV_004"
+msgstr "Product ID: T_FIELD1 / Product name: T_FIELD2"
+
+msgid "LC_Page_Admin_Products_UploadCSV_005"
+msgstr "* The designated product specification ID is not registered."
+
+msgid "LC_Page_Admin_Products_UploadCSV_006"
+msgstr ""
+"* During product specification ID designation, it is necessary to designate "
+"a product ID."
+
+msgid "LC_Page_Admin_Products_UploadCSV_007"
+msgstr ""
+"* The designated product ID and production specification ID combination is "
+"not correct."
+
+msgid "LC_Page_Admin_Products_UploadCSV_008"
+msgstr "* The designated display status is not registered."
+
+msgid "LC_Page_Admin_Products_UploadCSV_009"
+msgstr "* The designated manufacturer ID is not registered."
+
+msgid "LC_Page_Admin_Products_UploadCSV_010"
+msgstr "* The designated target delivery date ID is not registered."
+
+msgid "LC_Page_Admin_Products_UploadCSV_011"
+msgstr "※ 指定の商品種別IDは、登録されていません。"
+
+msgid "LC_Page_Admin_Products_UploadCSV_012"
+msgstr "* The designated relevant product ID (T_FIELD) is not registered."
+
+msgid "LC_Page_Admin_Products_UploadCSV_013"
+msgstr "* The designated relevant product ID (T_FIELD) is already registered."
+
+msgid "LC_Page_Admin_Products_UploadCSV_014"
+msgstr "* The designated category ID is not registered."
+
+msgid "LC_Page_Admin_Products_UploadCSV_015"
+msgstr "* The designated product status ID is not registered."
+
+msgid "LC_Page_Admin_Products_UploadCSV_016"
+msgstr ""
+"* Only '0' (active) and '1' (delete) are effective for the deletion flag. "
+
+msgid "LC_Page_Admin_Products_UploadCSV_017"
+msgstr "* For actual products, a download file name cannot be input."
+
+msgid "LC_Page_Admin_Products_UploadCSV_018"
+msgstr ""
+"* For actual products, a file upload for the downloaded product cannot be "
+"input."
+
+msgid "LC_Page_Admin_Products_UploadCSV_019"
+msgstr ""
+"* For downloaded products, the name of the downloaded file is required."
+
+msgid "LC_Page_Admin_Products_UploadCSV_020"
+msgstr ""
+"* For downloaded products, it is necessary to upload the file for the "
+"downloaded product."
+
+msgid "LC_Page_Admin_Products_UploadCSVCategory_001"
+msgstr "Category registration CSV"
+
+msgid "LC_Page_Admin_Products_UploadCSVCategory_002"
+msgstr "Line T_FIELD1: T_FIELD2"
+
+msgid "LC_Page_Admin_Products_UploadCSVCategory_003"
+msgstr ""
+"* T_FIELD1 was detected for the item quantity. The item quantity is T_FIELD2."
+
+msgid "LC_Page_Admin_Products_UploadCSVCategory_004"
+msgstr "Category ID: T_FIELD1 /Category name: T_FIELD2"
+
+msgid "LC_Page_Admin_Products_UploadCSVCategory_005"
+msgstr "* The designated new category ID (T_FIELD) does not exist."
+
+msgid "LC_Page_Admin_Products_UploadCSVCategory_006"
+msgstr ""
+"* Only '0' (active) and '1' (delete) are effective for the deletion flag. "
+
+msgid "LC_Page_Admin_Products_UploadCSVCategory_007"
+msgstr "* A category of the same name already exists."
+
+msgid "LC_Page_Admin_Products_UploadCSVCategory_008"
+msgstr ""
+"* The maximum number of categories that can be registered has been exceeded."
+
+msgid "LC_Page_Admin_Products_UploadCSVCategory_009"
+msgstr "* Registration of the T_FIELD hierarchy or higher is not possible."
+
+msgid "LC_Page_Admin_System_001"
+msgstr "Member management"
+
+msgid "LC_Page_Admin_System_002"
+msgstr "Not operating"
+
+msgid "LC_Page_Admin_System_003"
+msgstr "Operating"
+
+msgid "LC_Page_Admin_System_AdminArea_001"
+msgstr "Management screen settings"
+
+msgid "LC_Page_Admin_System_AdminArea_002"
+msgstr "You do not have access to change T_FIELD."
+
+msgid "LC_Page_Admin_System_AdminArea_003"
+msgstr "T_FIELD already exists. Please designate a different directory name."
+
+msgid "LC_Page_Admin_System_AdminArea_004"
+msgstr "You do not have access to change the T_FIELD directory name."
+
+msgid "LC_Page_Admin_System_AdminArea_005"
+msgstr "The T_FIELD directory name could not be changed."
+
+msgid "LC_Page_Admin_System_Bkup_001"
+msgstr "Backup management"
+
+msgid "LC_Page_Admin_System_Bkup_002"
+msgstr "Backup failed.(T_FIELD)"
+
+msgid "LC_Page_Admin_System_Bkup_003"
+msgstr "Restoration of 'T_FIELD' will begin."
+
+msgid "LC_Page_Admin_System_Bkup_004-1"
+msgstr "「T_FIELD」の"
+
+msgid "LC_Page_Admin_System_Bkup_004-2"
+msgstr "Restoration is complete."
+
+msgid "LC_Page_Admin_System_Bkup_004-3"
+msgstr "Restoration failed."
+
+msgid "LC_Page_Admin_System_Bkup_005"
+msgstr "The backup name is duplicated. Input a different name."
+
+msgid "LC_Page_Admin_System_Bkup_006"
+msgstr "The selected data was not found. It may already have been deleted."
+
+msgid "LC_Page_Admin_System_Bkup_007"
+msgstr "(No record. Only backup file available.)"
+
+msgid "LC_Page_Admin_System_Bkup_008"
+msgstr "Decompression of backup file failed.\\n "
+
+msgid "LC_Page_Admin_System_Bkup_009"
+msgstr "Decompression source: T_FIELD \\n "
+
+msgid "LC_Page_Admin_System_Bkup_010"
+msgstr "Decompression destination: T_FIELD"
+
+msgid "LC_Page_Admin_System_Bkup_011"
+msgstr "Opening the T_FIELD file failed."
+
+msgid "LC_Page_Admin_System_Bkup_012"
+msgstr "Restoration execution: T_FIELD"
+
+msgid "LC_Page_Admin_System_Editdb_001"
+msgstr "Advanced database management"
+
+msgid "LC_Page_Admin_System_Input_001"
+msgstr "Member registration/editing"
+
+msgid "LC_Page_Admin_System_Input_002"
+msgstr "This name is already registered and cannot be used.<br>"
+
+msgid "LC_Page_Admin_System_Input_003"
+msgstr "This ID is already registered and cannot be used.<br>"
+
+msgid "LC_Page_Admin_System_Input_004"
+msgstr "This ID is already registered and cannot be used.<br>"
+
+msgid "LC_Page_Admin_System_Log_001"
+msgstr "EC-CUBE log display"
+
+msgid "LC_Page_Admin_System_Log_002"
+msgstr "An illegal log was designated."
+
+msgid "LC_Page_Admin_System_Log_003"
+msgstr "Standard log file"
+
+msgid "LC_Page_Admin_System_Log_004"
+msgstr "Member login log file"
+
+msgid "LC_Page_Admin_System_Log_005"
+msgstr "Management function log file"
+
+msgid "LC_Page_Admin_System_Log_006"
+msgstr "Debug log file"
+
+msgid "LC_Page_Admin_System_Log_007"
+msgstr "Error log file"
+
+msgid "LC_Page_Admin_System_Log_008"
+msgstr "DB log file"
+
+msgid "LC_Page_Admin_System_Masterdata_001"
+msgstr "Master data management"
+
+msgid "LC_Page_Admin_System_Masterdata_002"
+msgstr "Since T_FIELD is duplicated, registration is not possible."
+
+msgid "LC_Page_Admin_System_Parameter"
+msgstr "Parameter settings"
+
+msgid "LC_Page_Admin_System_System_001"
+msgstr "System information"
+
+msgid "LC_Page_Admin_System_System_002"
+msgstr "EC-CUBE"
+
+msgid "LC_Page_Admin_System_System_003"
+msgstr "Server OS"
+
+msgid "LC_Page_Admin_System_System_004"
+msgstr "DB server"
+
+msgid "LC_Page_Admin_System_System_005"
+msgstr "WEB server"
+
+msgid "LC_Page_Admin_System_System_006"
+msgstr "Enabled"
+
+msgid "LC_Page_Admin_System_System_007"
+msgstr "Inactive"
+
+msgid "LC_Page_Admin_System_System_008"
+msgstr "GD"
+
+msgid "LC_Page_Admin_System_System_009"
+msgstr "HTTP user agent"
+
+msgid "LC_Page_Admin_Total_001"
+msgstr "Tabulate by period"
+
+msgid "LC_Page_Admin_Total_002"
+msgstr "Tabulate by period"
+
+msgid "LC_Page_Admin_Total_003"
+msgstr "Tabulation by product"
+
+msgid "LC_Page_Admin_Total_004"
+msgstr "Tabulation by age group"
+
+msgid "LC_Page_Admin_Total_005"
+msgstr "Tabulation by occupation"
+
+msgid "LC_Page_Admin_Total_006"
+msgstr "Tabulation by member"
+
+msgid "LC_Page_Admin_Total_007"
+msgstr "T_FIELD1年T_FIELD2月T_FIELD3日'"
+
+msgid "LC_Page_Admin_Total_008"
+msgstr "Tabulation period: T_FIELD1 - T_FIELD2"
+
+msgid "LC_Page_Admin_Total_009"
+msgstr "Member"
+
+msgid "LC_Page_Admin_Total_010"
+msgstr "Non-member"
+
+msgid "LC_Page_Admin_Total_011"
+msgstr "Not answered"
+
+msgid "LC_Page_Admin_Total_012"
+msgstr "T_FIELD代'"
+
+msgid "LC_Page_Admin_Total_013"
+msgstr "(Age)"
+
+msgid "LC_Page_Admin_Total_014"
+msgstr "(Total sales)"
+
+msgid "LC_Page_Admin_Total_015"
+msgstr "(By month)"
+
+msgid "LC_Page_Admin_Total_016"
+msgstr "(By year)"
+
+msgid "LC_Page_Admin_Total_017"
+msgstr "(曜日別)"
+
+msgid "LC_Page_Admin_Total_018"
+msgstr "(By time)"
+
+msgid "LC_Page_Admin_Total_019"
+msgstr "(By date)"
+
+msgid "LC_Page_Admin_Total_020"
+msgstr "Total"
+
+msgid "LC_Page_Admin_Total_021"
+msgstr "Product code"
+
+msgid "LC_Page_Admin_Total_022"
+msgstr "Product name"
+
+msgid "LC_Page_Admin_Total_023"
+msgstr "Number of items purchased"
+
+msgid "LC_Page_Admin_Total_024"
+msgstr "Quantity"
+
+msgid "LC_Page_Admin_Total_025"
+msgstr "Unit price"
+
+msgid "LC_Page_Admin_Total_026"
+msgstr "Amount"
+
+msgid "LC_Page_Admin_Total_027"
+msgstr "Occupation"
+
+msgid "LC_Page_Admin_Total_028"
+msgstr "Purchase total"
+
+msgid "LC_Page_Admin_Total_029"
+msgstr "Purchase average"
+
+msgid "LC_Page_Admin_Total_030"
+msgstr "Member"
+
+msgid "LC_Page_Admin_Total_031"
+msgstr "Age"
+
+msgid "LC_Page_Admin_Total_032"
+msgstr "Period"
+
+msgid "LC_Page_Admin_Total_033"
+msgstr "Male"
+
+msgid "LC_Page_Admin_Total_034"
+msgstr "Female"
+
+msgid "LC_Page_Admin_Total_035"
+msgstr "Male (member)"
+
+msgid "LC_Page_Admin_Total_036"
+msgstr "Male (non-member)"
+
+msgid "LC_Page_Admin_Total_037"
+msgstr "Female (member)"
+
+msgid "LC_Page_Admin_Total_038"
+msgstr "Female (non-member)"
+
+msgid "LC_Page_Admin_Total_039"
+msgstr "(Sales ratio)"
+
+msgid "LC_Page_Admin_001"
+msgstr "A method for upward compatibility was used."
+
+msgid "LC_Page_Admin_Home_001"
+msgstr "Home"
+
+msgid "LC_Page_Admin_Home_002"
+msgstr ">> Update information was not obtained."
+
+msgid "LC_Page_Admin_Index_001"
+msgstr "You cannot log in."
+
+msgid "SC_Helper_Address_001"
+msgstr "Correctly designate the customer ID"
+
+msgid "SC_Helper_Address_002"
+msgstr ""
+"The maximum number of separate shipping destinations registered has been met."
+
+msgid "SC_Helper_Address_003"
+msgstr "There is no separate delivery destination that matches."
+
+msgid "SC_Helper_Transform_001"
+msgstr "Not detectable"
+
+msgid "C_Helper_Transform_003"
+msgstr "<br />T_FIELD does not exist"
+
+msgid "SC_Helper_Transform_004"
+msgstr "Template operation failed. T_FIELD"
+
+msgid "SC_Helper_Transform_005"
+msgstr "Template operation failed."
+
+msgid "SC_Utils_001"
+msgstr ""
+"'For &gt;&gt; /install/T_FIELD, delete the file after completing "
+"installation.'"
+
+msgid "SC_Utils_002"
+msgstr "A method for upward compatibility was used."
+
+msgid "SC_Utils_003"
+msgstr "T_FIELD01T_FIELD02: File exists"
+
+msgid "SC_Utils_004"
+msgstr "T_FIELD01T_FIELD02: Copy success"
+
+msgid "SC_Utils_005"
+msgstr "T_FIELD01T_FIELD02: Copy failure"
+
+msgid "GC_Utils_001"
+msgstr "A method for upward compatibility was used."
+
+msgid "tpl_001"
+msgstr "Delivery company"
+
+msgid "tpl_002"
+msgstr "Name"
+
+msgid "tpl_002_1"
+msgstr "Name<span class='attention'> *</span>"
+
+msgid "tpl_003"
+msgstr "Edit"
+
+msgid "tpl_004"
+msgstr "Delete"
+
+msgid "tpl_005"
+msgstr "Move"
+
+msgid "tpl_006"
+msgstr "Newly input delivery method/delivery charge"
+
+msgid "tpl_007"
+msgstr "Newly input delivery method"
+
+msgid "tpl_008"
+msgstr "Delivery method registration"
+
+msgid "tpl_009_1"
+msgstr "Delivery company name<span class='attention'> *</span>"
+
+msgid "tpl_010"
+msgstr "Explanation"
+
+msgid "tpl_011"
+msgstr "Voucher No. URL"
+
+msgid "tpl_012"
+msgstr "Delivery time T_FIELD"
+
+msgid "tpl_013"
+msgstr "Available product types"
+
+msgid "tpl_014"
+msgstr "Product type"
+
+msgid "tpl_014_1"
+msgstr "Product type<span class='attention'> *</span>"
+
+msgid "tpl_015"
+msgstr "Available payment methods"
+
+msgid "tpl_016"
+msgstr "Payment method"
+
+msgid "tpl_016_1"
+msgstr "Payment method<span class='attention'> *</span>"
+
+msgid "tpl_017"
+msgstr "Delivery charge registration"
+
+msgid "tpl_019"
+msgstr "Reflect"
+
+msgid "tpl_020"
+msgstr "Return to previous page"
+
+msgid "tpl_021"
+msgstr "Register with these contents"
+
+msgid "tpl_022"
+msgstr "Title"
+
+msgid "tpl_022_1"
+msgstr "Title<span class='attention'> *</span>"
+
+msgid "tpl_023"
+msgstr "(Upper limit T_FIELD characters)"
+
+msgid "tpl_024"
+msgstr "Date"
+
+msgid "tpl_024_1"
+msgstr "Date<span class='attention'> *</span>"
+
+msgid "tpl_025"
+msgstr ""
+"Compensating holidays are not automatically set. Set the dates for "
+"compensating holidays."
+
+msgid "tpl_026"
+msgstr "being edited"
+
+msgid "tpl_027"
+msgstr "Basic information"
+
+msgid "tpl_028"
+msgstr "Company name"
+
+msgid "tpl_029"
+msgstr "会社名(フリガナ)"
+
+msgid "tpl_030_1"
+msgstr "Store name<span class='attention'> *</span>"
+
+msgid "tpl_031"
+msgstr "店名(フリガナ)"
+
+msgid "tpl_032"
+msgstr "Store name (in English)"
+
+msgid "tpl_033"
+msgstr "Postal code"
+
+msgid "tpl_033_1"
+msgstr "Postal code<span class='attention'> *</span>"
+
+msgid "tpl_034"
+msgstr "Location input"
+
+msgid "tpl_035"
+msgstr "SHOP address<span class='attention'> *</span>"
+
+msgid "tpl_036"
+msgstr "Select a prefecture"
+
+msgid "tpl_037"
+msgstr "TEL"
+
+msgid "tpl_037_1"
+msgstr "TEL<span class='attention'> *</span>"
+
+msgid "tpl_038"
+msgstr "FAX"
+
+msgid "tpl_039"
+msgstr "Store business hours"
+
+msgid "tpl_040"
+msgstr "Product order receipt e-mail address<span class='attention'> *</span>"
+
+msgid "tpl_041"
+msgstr ""
+"E-mail address for receiving inquiries<span class='attention'> *</span>"
+
+msgid "tpl_042"
+msgstr "E-mail address of sender<span class='attention'> *</span>"
+
+msgid "tpl_043"
+msgstr ""
+"E-mail address for receiving sending errors<span class='attention'> *</span>"
+
+msgid "tpl_044"
+msgstr "Available products"
+
+msgid "tpl_045"
+msgstr "Message"
+
+msgid "tpl_046"
+msgstr "Regular holiday settings"
+
+msgid "tpl_047"
+msgstr "Regular holiday"
+
+msgid "tpl_048"
+msgstr "SHOP function"
+
+msgid "tpl_049"
+msgstr "Consumption sales tax rate<span class='attention'> *</span>"
+
+msgid "tpl_050"
+msgstr "Taxation rules<span class='attention'> *</span>"
+
+msgid "tpl_051"
+msgstr "Conditions for free shipping"
+
+msgid "tpl_052"
+msgstr "Number of days during which download is possible"
+
+msgid "tpl_053"
+msgstr "No limit"
+
+msgid "tpl_054"
+msgstr "Map settings"
+
+msgid "tpl_055"
+msgstr "Latitude/longitude information"
+
+msgid "tpl_056"
+msgstr "Latitude : "
+
+msgid "tpl_057"
+msgstr "Longitude: "
+
+msgid "tpl_058"
+msgstr "Automatic retrieval from location"
+
+msgid "tpl_059"
+msgstr "Set using map"
+
+msgid "tpl_060"
+msgstr "Input this position."
+
+msgid "tpl_061"
+msgstr "The address was not found"
+
+msgid "tpl_062"
+msgstr "Agreement title"
+
+msgid "tpl_062_1"
+msgstr "Agreement title<span class='attention'> *</span>"
+
+msgid "tpl_063"
+msgstr "Agreement contents<span class='attention'> *</span>"
+
+msgid "tpl_064"
+msgstr ""
+"The contents are revised. If you continue, the revised contents will be "
+"cancelled. Do you want to continue?"
+
+msgid "tpl_065"
+msgstr "Template<span class='attention'> *</span>"
+
+msgid "tpl_066"
+msgstr "E-mail title<span class='attention'> *</span>"
+
+msgid "tpl_067"
+msgstr "Header"
+
+msgid "tpl_068"
+msgstr "Please make a selection"
+
+msgid "tpl_069"
+msgstr "Dynamic data insertion section"
+
+msgid "tpl_070"
+msgstr "Footer"
+
+msgid "tpl_071"
+msgstr "Return to search results"
+
+msgid "tpl_072"
+msgstr "Text count"
+
+msgid "tpl_073"
+msgstr "Newly input payment method"
+
+msgid "tpl_074"
+msgstr "ID"
+
+msgid "tpl_075"
+msgstr "Processing fee (&#36;)"
+
+msgid "tpl_076"
+msgstr "Usage conditions"
+
+msgid "tpl_077"
+msgstr "To top"
+
+msgid "tpl_078"
+msgstr "To bottom"
+
+msgid "tpl_079"
+msgstr "Payment method registration/editing"
+
+msgid "tpl_080"
+msgstr "Processing fee"
+
+msgid "tpl_080_1"
+msgstr "Processing fee<span class='attention'> *</span>"
+
+msgid "tpl_081"
+msgstr "Cannot be set"
+
+msgid "tpl_082"
+msgstr "Usage conditions (&#36;)"
+
+msgid "tpl_083"
+msgstr "Logo image"
+
+msgid "tpl_084"
+msgstr "[Cancel image]"
+
+msgid "tpl_085"
+msgstr "Upload"
+
+msgid "tpl_086"
+msgstr "Point grant rate (initial value)<span class='attention'> *</span>"
+
+msgid "tpl_087"
+msgstr "Rounded down to nearest decimal"
+
+msgid "tpl_088"
+msgstr ""
+"Points granted during member registration<span class='attention'> *</span>"
+
+msgid "tpl_089"
+msgstr "Meta tag: Author"
+
+msgid "tpl_090"
+msgstr "Meta tag: Description"
+
+msgid "tpl_091"
+msgstr "Meta tag: Keywords"
+
+msgid "tpl_092"
+msgstr "There is no data to be displayed"
+
+msgid "tpl_093"
+msgstr "'Do you want to register?'"
+
+msgid "tpl_094"
+msgstr "SHOP master"
+
+msgid "tpl_095"
+msgstr "Act on Specified Commercial Transactions"
+
+msgid "tpl_096"
+msgstr "Delivery method settings"
+
+msgid "tpl_097"
+msgstr "Payment method settings"
+
+msgid "tpl_098"
+msgstr "Point settings"
+
+msgid "tpl_099"
+msgstr "E-mail settings"
+
+msgid "tpl_100"
+msgstr "SEO management"
+
+msgid "tpl_101"
+msgstr "Settings for terms and conditions of membership"
+
+msgid "tpl_102"
+msgstr "Postal code DB registration"
+
+msgid "tpl_103"
+msgstr "Regular holiday management"
+
+msgid "tpl_104"
+msgstr "Distributor<span class='attention'> *</span>"
+
+msgid "tpl_105"
+msgstr "Operation director<span class='attention'> *</span>"
+
+msgid "tpl_106"
+msgstr ""
+
+msgid "tpl_107"
+msgstr "Location<span class='attention'> *</span>"
+
+msgid "tpl_108"
+msgstr "E-mail address"
+
+msgid "tpl_108_1"
+msgstr "E-mail address<span class='attention'> *</span>"
+
+msgid "tpl_109"
+msgstr "URL"
+
+msgid "tpl_109_1"
+msgstr "URL<span class='attention'> *</span>"
+
+msgid "tpl_110"
+msgstr "Link"
+
+msgid "tpl_111"
+msgstr "Create text"
+
+msgid "tpl_112"
+msgstr "Open in separate window"
+
+msgid "tpl_113"
+msgstr "(Upper limit 3000 characters)"
+
+msgid "tpl_114"
+msgstr "List of new information"
+
+msgid "tpl_115"
+msgstr "Ranking"
+
+msgid "tpl_116"
+msgstr ""
+"Necessary fees other than for the product cost<span class='attention'> *</"
+"span>"
+
+msgid "tpl_117"
+msgstr "Order method<span class='attention'> *</span>"
+
+msgid "tpl_118"
+msgstr "Payment deadline<span class='attention'> *</span>"
+
+msgid "tpl_119"
+msgstr "Delivery period<span class='attention'> *</span>"
+
+msgid "tpl_120"
+msgstr "Returns and exchanges<span class='attention'> *</span>"
+
+msgid "tpl_121"
+msgstr "Date and time of saved postal code CSV update: T_FIELD"
+
+msgid "tpl_122"
+msgstr "Postal code There are T_FIELD lines of data in the CSV."
+
+msgid "tpl_123"
+msgstr "Postal code There are T_FIELD lines of data in the DB."
+
+msgid "tpl_124"
+msgstr "Please carry out registration."
+
+msgid "tpl_125"
+msgstr ""
+"There is a difference in the number of lines. There may be an abnormality in "
+"registration."
+
+msgid "tpl_126"
+msgstr ""
+"Under normal conditions, use [Automatic registration].<br />However, in "
+"environments that time out, repeat [Manual Registration] after timing out "
+"until registration completes normally."
+
+msgid "tpl_127"
+msgstr "Automatic registration"
+
+msgid "tpl_128"
+msgstr ""
+"[Delete] [Postal code CSV update] and [DB manual registration] below will be "
+"carried out in order. If a time out occurs, however, the DB is restored to "
+"its original state."
+
+msgid "tpl_129"
+msgstr ""
+" [Delete] and [DB manual registration] below will be carried out in order. "
+"If a time out occurs, however, the DB is restored to its original state."
+
+msgid "tpl_130"
+msgstr "Automatic registration"
+
+msgid "tpl_131"
+msgstr "DB manual registration"
+
+msgid "tpl_132"
+msgstr ""
+"Postal codes will be registered starting with the designated line number. If "
+"a time out occurs, the "
+
+msgid "tpl_133"
+msgstr "Manual registration"
+
+msgid "tpl_134"
+msgstr "Start line"
+
+msgid "tpl_135"
+msgstr "Postal code CSV update"
+
+msgid "tpl_136"
+msgstr "Cannot be used."
+
+msgid "tpl_137"
+msgstr "* The parameter ZIP_DOWNLOAD_URL is not set."
+
+msgid "tpl_138"
+msgstr "* PHP extension module 'zip' is invalid."
+
+msgid "tpl_139"
+msgstr "A postal code CSV will be obtained from the Japan Post Web site."
+
+msgid "tpl_140"
+msgstr "Update"
+
+msgid "tpl_141"
+msgstr ""
+"All postal codes will be deleted. Automatic address input will not function "
+"until postal codes are re-registered."
+
+msgid "tpl_142"
+msgstr "Items not for CSV output"
+
+msgid "tpl_143"
+msgstr "Items for CSV output"
+
+msgid "tpl_144"
+msgstr "Top"
+
+msgid "tpl_145"
+msgstr "Bottom"
+
+msgid "tpl_146"
+msgstr "Up"
+
+msgid "tpl_147"
+msgstr "Down"
+
+msgid "tpl_148"
+msgstr "Item order"
+
+msgid "tpl_149"
+msgstr "Do you want to register using default settings"
+
+msgid "tpl_150"
+msgstr "* Update successful."
+
+msgid "tpl_151"
+msgstr "Register by returning to initial settings"
+
+msgid "tpl_152"
+msgstr "SQL list"
+
+msgid "tpl_153"
+msgstr "CSV output "
+
+msgid "tpl_156"
+msgstr "Newly input SQL"
+
+msgid "tpl_157"
+msgstr "Do not describe the SELECT in the beginning."
+
+msgid "tpl_158"
+msgstr "SQL text"
+
+msgid "tpl_158_1"
+msgstr ""
+"SQL text<span class='attention'> *</span><br /> (Do not describe the SELECT "
+"in the beginning.)"
+
+msgid "tpl_159"
+msgstr "Confirm syntax error"
+
+msgid "tpl_160"
+msgstr "Table list"
+
+msgid "tpl_161"
+msgstr "Item list"
+
+msgid "tpl_162"
+msgstr "Error contents"
+
+msgid "tpl_163"
+msgstr "There are no errors"
+
+msgid "tpl_164"
+msgstr "File upload"
+
+msgid "tpl_165"
+msgstr "Folder creation"
+
+msgid "tpl_166"
+msgstr "Create"
+
+msgid "tpl_167"
+msgstr "File name"
+
+msgid "tpl_168"
+msgstr "Size"
+
+msgid "tpl_169"
+msgstr "Date of update"
+
+msgid "tpl_170"
+msgstr "Display"
+
+msgid "tpl_171"
+msgstr "Download"
+
+msgid "tpl_172"
+msgstr "Do you want to edit with these contents?"
+
+msgid "tpl_173"
+msgstr "Do you want to register with these contents?"
+
+msgid "tpl_174"
+msgstr "Do you want to delete this new information?"
+
+msgid "tpl_175"
+msgstr "Input a single move ranking."
+
+msgid "tpl_176"
+msgstr "Input a move ranking."
+
+msgid "tpl_177"
+msgstr "Input a move ranking that is 4 digits or less."
+
+msgid "tpl_178"
+msgstr "Input a number for the move ranking."
+
+msgid "tpl_179"
+msgstr "The number to be moved is a duplicate."
+
+msgid "tpl_180"
+msgstr "Input 0 or greater for the move ranking"
+
+msgid "tpl_181"
+msgstr ""
+"The order that was entered exceeds the maximum valued for the number "
+"registered."
+
+msgid "tpl_182"
+msgstr "Currently, there is no data."
+
+msgid "tpl_183"
+msgstr "Please input a comment."
+
+msgid "tpl_184"
+msgstr "Do you want to register with these contents"
+
+msgid "tpl_185"
+msgstr "さきほど選択したT_FIELD位の情報は破棄されます。宜しいでしょうか"
+
+msgid "tpl_186"
+msgstr "Ranking"
+
+msgid "tpl_187"
+msgstr "Product/comment"
+
+msgid "tpl_188"
+msgstr "Product name:"
+
+msgid "tpl_189"
+msgstr "Select a product"
+
+msgid "tpl_189_1"
+msgstr "Select a product<span class='attention'> *</span>"
+
+msgid "tpl_190"
+msgstr "Deletion will be carried out. Is this okay?"
+
+msgid "tpl_191"
+msgstr "Category"
+
+msgid "tpl_192"
+msgstr "Product code"
+
+msgid "tpl_192_1"
+msgstr "Product code<span class='attention'> *</span>"
+
+msgid "tpl_193"
+msgstr "Start search"
+
+msgid "tpl_194"
+msgstr "T_FIELD items were found."
+
+msgid "tpl_195"
+msgstr "Product image"
+
+msgid "tpl_196"
+msgstr "Decided"
+
+msgid "tpl_197"
+msgstr "There is no product registered"
+
+msgid "tpl_198"
+msgstr "Management of new information"
+
+msgid "tpl_199"
+msgstr "Recommended product management"
+
+msgid "tpl_200"
+msgstr "File management"
+
+msgid "tpl_201"
+msgstr "CSV output item settings"
+
+msgid "tpl_202"
+msgstr "Product management"
+
+msgid "tpl_203"
+msgstr "Member management"
+
+msgid "tpl_204"
+msgstr "Order receipt management"
+
+msgid "tpl_205"
+msgstr "Review"
+
+msgid "tpl_206"
+msgstr "Advanced settings"
+
+msgid "tpl_207"
+msgstr "Member ID"
+
+msgid "tpl_207_1"
+msgstr "Member ID<span class='attention'> *</span>"
+
+msgid "tpl_208"
+msgstr "Name"
+
+msgid "tpl_208_1"
+msgstr "Name<span class='attention'> *</span>"
+
+msgid "tpl_209"
+msgstr "Member status"
+
+msgid "tpl_209_1"
+msgstr "Member status<span class='attention'> *</span>"
+
+msgid "tpl_210"
+msgstr "お名前(フリガナ)"
+
+msgid "tpl_210_1"
+msgstr "お名前(フリガナ)<span class='attention'> *</span>"
+
+msgid "tpl_211"
+msgstr "Address input"
+
+msgid "tpl_212"
+msgstr "Address"
+
+msgid "tpl_212_1"
+msgstr "Address<span class='attention'> *</span>"
+
+msgid "tpl_213"
+msgstr "Mobile e-mail address"
+
+msgid "tpl_214"
+msgstr "Telephone number"
+
+msgid "tpl_214_1"
+msgstr "Telephone number<span class='attention'> *</span>"
+
+msgid "tpl_215"
+msgstr "Gender"
+
+msgid "tpl_215_1"
+msgstr "Gender<span class='attention'> *</span>"
+
+msgid "tpl_216"
+msgstr "Occupation"
+
+msgid "tpl_217"
+msgstr "Date of birth"
+
+msgid "tpl_218"
+msgstr "Password"
+
+msgid "tpl_218_1"
+msgstr "Password<span class='attention'> *</span>"
+
+msgid "tpl_219"
+msgstr ""
+"Half-width lower-case alphanumeric characters T_FIELD1 to T_FIELD2 "
+"characters (Symbols cannot be used)"
+
+msgid "tpl_220"
+msgstr "Input twice for confirmation"
+
+msgid "tpl_221"
+msgstr "Hint for when you have forgotten your password"
+
+msgid "tpl_221_1"
+msgstr ""
+"Hint for when you have forgotten your password<span class='attention'> *</"
+"span>"
+
+msgid "tpl_222"
+msgstr "Question:"
+
+msgid "tpl_223"
+msgstr "Answer:"
+
+msgid "tpl_224"
+msgstr "Mail magazine"
+
+msgid "tpl_224_1"
+msgstr "Mail magazine<span class='attention'> *</span>"
+
+msgid "tpl_225"
+msgstr "Memo for SHOP"
+
+msgid "tpl_226"
+msgstr "Points in possession"
+
+msgid "tpl_226_1"
+msgstr "Points in possession<span class='attention'> *</span>"
+
+msgid "tpl_227"
+msgstr "Return to search screen"
+
+msgid "tpl_228"
+msgstr "To confirmation page"
+
+msgid "tpl_229"
+msgstr "Purchase history list"
+
+msgid "tpl_230"
+msgstr ""
+"<span class='attention'>T_FIELD items</span>&nbsp; were found applicable."
+
+msgid "tpl_231"
+msgstr "Order number"
+
+msgid "tpl_232"
+msgstr "Purchase amount"
+
+msgid "tpl_233"
+msgstr "Shipment date"
+
+msgid "tpl_234"
+msgstr "Not shipped"
+
+msgid "tpl_235"
+msgstr "There is no purchase history"
+
+msgid "tpl_236"
+msgstr "Registration is complete."
+
+msgid "tpl_237"
+msgstr "Continue registration"
+
+msgid "tpl_238"
+msgstr "Temporary member"
+
+msgid "tpl_239"
+msgstr "full member"
+
+msgid "tpl_240"
+msgstr "T_FIELD1 T_FIELD2"
+
+msgid "tpl_241"
+msgstr "Telephone number"
+
+msgid "tpl_242"
+msgstr "Not registered"
+
+msgid "tpl_243"
+msgstr "Hint for when you have forgotten your password"
+
+msgid "tpl_244"
+msgstr "HTML"
+
+msgid "tpl_245"
+msgstr "Text"
+
+msgid "tpl_246"
+msgstr "Do not wish to receive"
+
+msgid "tpl_247"
+msgstr "Return to the edit screen"
+
+msgid "tpl_248"
+msgstr "Do you want to delete member information?"
+
+msgid "tpl_249"
+msgstr "Do you wish to receive a temporary registration e-mail again?"
+
+msgid "tpl_250"
+msgstr "Search condition settings"
+
+msgid "tpl_251"
+msgstr "Number of search results displayed"
+
+msgid "tpl_252"
+msgstr "Search using these conditions"
+
+msgid "tpl_253"
+msgstr "List of search results"
+
+msgid "tpl_254"
+msgstr "CSV download"
+
+msgid "tpl_255"
+msgstr "CSV output item settings"
+
+msgid "tpl_256"
+msgstr "Type"
+
+msgid "tpl_257"
+msgstr "お名前/(フリガナ)"
+
+msgid "tpl_258"
+msgstr "Prefecture"
+
+msgid "tpl_259"
+msgstr "Resending temporary registration e-mail"
+
+msgid "tpl_260"
+msgstr "temporary "
+
+msgid "tpl_261"
+msgstr "full "
+
+msgid "tpl_262"
+msgstr "There is no member information."
+
+msgid "tpl_263"
+msgstr "Member master"
+
+msgid "tpl_264"
+msgstr "Member registration"
+
+msgid "tpl_265"
+msgstr "Block name"
+
+msgid "tpl_266"
+msgstr "Enlarge the image"
+
+msgid "tpl_267"
+msgstr "Register"
+
+msgid "tpl_268"
+msgstr "Block that can be edited"
+
+msgid "tpl_269"
+msgstr "Newly input block"
+
+msgid "tpl_270"
+msgstr "CSS file name"
+
+msgid "tpl_271"
+msgstr "CSS contents"
+
+msgid "tpl_272"
+msgstr "CSS file that can be edited"
+
+msgid "tpl_273"
+msgstr "Newly input CSS"
+
+msgid "tpl_274"
+msgstr "The CSS file does not exist."
+
+msgid "tpl_275"
+msgstr "Editing of header"
+
+msgid "tpl_276"
+msgstr "Editing of footer"
+
+msgid "tpl_277"
+msgstr "All pages"
+
+msgid "tpl_278"
+msgstr "Header section"
+
+msgid "tpl_279"
+msgstr "Main"
+
+msgid "tpl_280"
+msgstr "Footer section"
+
+msgid "tpl_281"
+msgstr "Unused blocks"
+
+msgid "tpl_282"
+msgstr "Preview"
+
+msgid "tpl_283"
+msgstr "List of pages that can be edited"
+
+msgid "tpl_284"
+msgstr "Layout"
+
+msgid "tpl_285"
+msgstr "New input of page"
+
+msgid "tpl_286"
+msgstr "Page details"
+
+msgid "tpl_287"
+msgstr "Use a common header"
+
+msgid "tpl_288"
+msgstr "Use a common footer"
+
+msgid "tpl_289"
+msgstr "Layout settings"
+
+msgid "tpl_290"
+msgstr "Page detail settings"
+
+msgid "tpl_291"
+msgstr "Block settings"
+
+msgid "tpl_292"
+msgstr "Header/footer settings"
+
+msgid "tpl_293"
+msgstr "CSS settings"
+
+msgid "tpl_294"
+msgstr "Template settings"
+
+msgid "tpl_295"
+msgstr "PC"
+
+msgid "tpl_296"
+msgstr "Mobile"
+
+msgid "tpl_297"
+msgstr "Smartphone"
+
+msgid "tpl_298"
+msgstr ""
+"When a template is selected and  the 'Register with these contents' button "
+"is pressed,<br />It is possible to change the design to the selected "
+"template."
+
+msgid "tpl_299"
+msgstr "Selection"
+
+msgid "tpl_300"
+msgstr "Name"
+
+msgid "tpl_301"
+msgstr "Saving destination"
+
+msgid "tpl_302"
+msgstr "Download"
+
+msgid "tpl_303"
+msgstr "The template will be changed."
+
+msgid "tpl_304"
+msgstr ""
+"The template package will be uploaded.<br />The package that you want to "
+"upload will be able to be selected from 'Template settings'."
+
+msgid "tpl_305"
+msgstr "Template code"
+
+msgid "tpl_306"
+msgstr "Template name"
+
+msgid "tpl_307"
+msgstr "Template file"
+
+msgid "tpl_308"
+msgstr "* Only .tar/.tar.gz for the file format"
+
+msgid "tpl_309"
+msgstr "Delivery start time"
+
+msgid "tpl_310"
+msgstr "Delivery completion time"
+
+msgid "tpl_311"
+msgstr "Subject"
+
+msgid "tpl_311_1"
+msgstr "Subject<span class='attention'> *</span>"
+
+msgid "tpl_312"
+msgstr "Delivery conditions"
+
+msgid "tpl_313"
+msgstr "Total number delivered"
+
+msgid "tpl_314"
+msgstr "Number already delivered"
+
+msgid "tpl_315"
+msgstr "Number of failed deliveries"
+
+msgid "tpl_316"
+msgstr "Number not delivered"
+
+msgid "tpl_317"
+msgstr "Retry"
+
+msgid "tpl_318"
+msgstr "Confirm"
+
+msgid "tpl_319"
+msgstr "未配信と配信失敗となった宛先に再送信を試みますか?"
+
+msgid "tpl_320"
+msgstr "Execute"
+
+msgid "tpl_321"
+msgstr "Do you want to delete the delivery history?"
+
+msgid "tpl_322"
+msgstr "There is no delivery history"
+
+msgid "tpl_323"
+msgstr "Return to delivery content settings"
+
+msgid "tpl_324"
+msgstr "Settings for delivery destination search conditions"
+
+msgid "tpl_325"
+msgstr "Delivery format"
+
+msgid "tpl_326"
+msgstr "Type of delivery e-mail address"
+
+msgid "tpl_327"
+msgstr "Delete all search results"
+
+msgid "tpl_328"
+msgstr "Set delivery contents"
+
+msgid "tpl_329"
+msgstr "Desired delivery"
+
+msgid "tpl_330"
+msgstr "Registration/update date"
+
+msgid "tpl_331"
+msgstr "Template selection<span class='attention'> *</span>"
+
+msgid "tpl_333"
+msgstr "Text"
+
+msgid "tpl_333_1"
+msgstr ""
+"Text<span class='attention'> *</span><br /> (When inserting a name, use "
+"{name})"
+
+msgid "tpl_334"
+msgstr "Check with HTML"
+
+msgid "tpl_335"
+msgstr "Return to Template settings screen"
+
+msgid "tpl_336"
+msgstr "Delivery slip"
+
+msgid "tpl_337"
+msgstr "(Not designated)"
+
+msgid "tpl_338"
+msgstr "誕生月"
+
+msgid "tpl_339"
+msgstr "Birthday"
+
+msgid "tpl_340"
+msgstr "Occupation"
+
+msgid "tpl_341"
+msgstr "Purchase frequency"
+
+msgid "tpl_342"
+msgstr "Final purchase date"
+
+msgid "tpl_343"
+msgstr "Purchased product name"
+
+msgid "tpl_344"
+msgstr "Purchased product code"
+
+msgid "tpl_346"
+msgstr "(Categories already deleted)"
+
+msgid "tpl_347"
+msgstr "Close the window."
+
+msgid "tpl_348"
+msgstr "Delivery content settings"
+
+msgid "tpl_349"
+msgstr "Delivery history"
+
+msgid "tpl_350"
+msgstr "New template input"
+
+msgid "tpl_351"
+msgstr "Creation date"
+
+msgid "tpl_352"
+msgstr "E-mail format"
+
+msgid "tpl_352_1"
+msgstr "E-mail format<span class='attention'> *</span>"
+
+msgid "tpl_353"
+msgstr "Return to the template list"
+
+msgid "tpl_354"
+msgstr "Text count"
+
+msgid "tpl_355"
+msgstr "Template addition"
+
+msgid "tpl_356"
+msgstr "Rearrangement"
+
+msgid "tpl_357"
+msgstr "Recommended product"
+
+msgid "tpl_358"
+msgstr "入力文字数:"
+
+msgid "tpl_359"
+msgstr "Date of order receipt"
+
+msgid "tpl_360"
+msgstr "Response status"
+
+msgid "tpl_361"
+msgstr "Date of deposit"
+
+msgid "tpl_362"
+msgstr "Orderer information"
+
+msgid "tpl_363"
+msgstr "(Non-member)"
+
+msgid "tpl_364"
+msgstr "お名前(カナ)"
+
+msgid "tpl_365"
+msgstr "Remarks"
+
+msgid "tpl_366"
+msgstr "Current points"
+
+msgid "tpl_367"
+msgstr "Terminal type"
+
+msgid "tpl_368"
+msgstr "Order receipt product information"
+
+msgid "tpl_369"
+msgstr "Confirmation of calculation results"
+
+msgid "tpl_370"
+msgstr "* No product is selected."
+
+msgid "tpl_371"
+msgstr "Standard 1"
+
+msgid "tpl_372"
+msgstr "Unit price"
+
+msgid "tpl_373"
+msgstr "Quantity"
+
+msgid "tpl_374"
+msgstr "Standard 2"
+
+msgid "tpl_375"
+msgstr "Price including tax"
+
+msgid "tpl_376"
+msgstr "Subtotal"
+
+msgid "tpl_377"
+msgstr "Discount"
+
+msgid "tpl_378"
+msgstr "Shipping fee"
+
+msgid "tpl_379"
+msgstr "Total"
+
+msgid "tpl_380"
+msgstr "Payment total"
+
+msgid "tpl_381"
+msgstr "Points used"
+
+msgid "tpl_382"
+msgstr "Birthday points"
+
+msgid "tpl_383"
+msgstr "Points added"
+
+msgid "tpl_384"
+msgstr "Delivery destination information"
+
+msgid "tpl_385"
+msgstr "Delivery destination"
+
+msgid "tpl_386"
+msgstr "Delivery time"
+
+msgid "tpl_387"
+msgstr "Delivery date"
+
+msgid "tpl_388"
+msgstr "No designation"
+
+msgid "tpl_389"
+msgstr "Payment method"
+
+msgid "tpl_390"
+msgstr "T_FIELD information"
+
+msgid "tpl_391"
+msgstr "Memo"
+
+msgid "tpl_392"
+msgstr "Close"
+
+msgid "tpl_393"
+msgstr "Deliver to customers"
+
+msgid "tpl_394"
+msgstr "Addition of new delivery destination"
+
+msgid "tpl_395"
+msgstr "Designated multiple delivery destinations"
+
+msgid "tpl_396"
+msgstr "* When changing to T_FIELD, restore the inventory count manually."
+
+msgid "tpl_397"
+msgstr "Ledger output"
+
+msgid "tpl_398"
+msgstr "A checkbox has not been selected"
+
+msgid "tpl_399"
+msgstr "Date of update"
+
+msgid "tpl_400"
+msgstr "Purchased product"
+
+msgid "tpl_401"
+msgstr "PDF batch output"
+
+msgid "tpl_402"
+msgstr "Batch e-mail notification"
+
+msgid "tpl_403"
+msgstr "Purchase amount (&#36;)"
+
+msgid "tpl_404"
+msgstr "All product delivery dates"
+
+msgid "tpl_405"
+msgstr "Ledger"
+
+msgid "tpl_406"
+msgstr "Batch output"
+
+msgid "tpl_407"
+msgstr "Individual output"
+
+msgid "tpl_408"
+msgstr "Batch notification"
+
+msgid "tpl_409"
+msgstr "Individual notification"
+
+msgid "tpl_410"
+msgstr "E-mail delivery"
+
+msgid "tpl_411"
+msgstr "Processing date"
+
+msgid "tpl_412"
+msgstr "Notification e-mail"
+
+msgid "tpl_413"
+msgstr "Item name"
+
+msgid "tpl_414"
+msgstr "Check the sending details"
+
+msgid "tpl_415"
+msgstr ""
+"* This is an example of a single e-mail. The order information differs for "
+"each e-mail"
+
+msgid "tpl_416"
+msgstr "Return to previous page"
+
+msgid "tpl_417"
+msgstr "E-mail sending"
+
+msgid "tpl_418"
+msgstr "Close the window."
+
+msgid "tpl_419"
+msgstr "Ledger creation"
+
+msgid "tpl_420"
+msgstr "Issuance date"
+
+msgid "tpl_421"
+msgstr "Ledger type"
+
+msgid "tpl_422"
+msgstr "Download method"
+
+msgid "tpl_423"
+msgstr "Ledger title"
+
+msgid "tpl_424"
+msgstr "* The default title is displayed when one has not yet been input."
+
+msgid "tpl_425"
+msgstr "Ledger message"
+
+msgid "tpl_426"
+msgstr "1st line:"
+
+msgid "tpl_427"
+msgstr "2nd line:"
+
+msgid "tpl_428"
+msgstr "3rd line:"
+
+msgid "tpl_429"
+msgstr "* The default message is displayed when one has not yet been input. "
+
+msgid "tpl_430"
+msgstr "* Not displayed when not yet input."
+
+msgid "tpl_431"
+msgstr "Point notation"
+
+msgid "tpl_432"
+msgstr "Yes"
+
+msgid "tpl_433"
+msgstr "No"
+
+msgid "tpl_434"
+msgstr ""
+"* Even if 'Yes' is selected, it is not displayed unless the customer is a "
+"member."
+
+msgid "tpl_435"
+msgstr "Create using these contents"
+
+msgid "tpl_436"
+msgstr "* Input T_FIELD."
+
+msgid "tpl_437"
+msgstr "No applicable data exists."
+
+msgid "tpl_438"
+msgstr "A selection box has not been selected"
+
+msgid "tpl_439"
+msgstr "Extraction conditions"
+
+msgid "tpl_440"
+msgstr "Response status change"
+
+msgid "tpl_441"
+msgstr ""
+"* When T_FIELD or when changing to delete, restore the inventory count "
+"manually."
+
+msgid "tpl_442"
+msgstr "Purchase amount(&#36;)"
+
+msgid "tpl_443"
+msgstr "Not deposited"
+
+msgid "tpl_444"
+msgstr "Order receipt registration"
+
+msgid "tpl_445"
+msgstr "Response status management"
+
+msgid "tpl_446"
+msgstr "Module name"
+
+msgid "tpl_447"
+msgstr "Status"
+
+msgid "tpl_448"
+msgstr "Date"
+
+msgid "tpl_449"
+msgstr "Details"
+
+msgid "tpl_450"
+msgstr "Failure"
+
+msgid "tpl_451"
+msgstr "Success"
+
+msgid "tpl_452"
+msgstr "Backup path"
+
+msgid "tpl_453"
+msgstr "Return to list"
+
+msgid "tpl_454"
+msgstr "Read"
+
+msgid "tpl_455"
+msgstr "Pass"
+
+msgid "tpl_456"
+msgstr "Contents"
+
+msgid "tpl_457"
+msgstr "Retrieve the module list"
+
+msgid "tpl_458"
+msgstr "Do you want to void the plug-in?"
+
+msgid "tpl_459"
+msgstr "Do you want to activate the plug-in?"
+
+msgid "tpl_460"
+msgstr "An error occurred during transmission."
+
+msgid "tpl_461"
+msgstr "Do you want to install the plug-in?"
+
+msgid "tpl_462"
+msgstr ""
+"Data that has been erased cannot be restored. \\n Do you want to delete the "
+"plug-in?"
+
+msgid "tpl_463"
+msgstr "Do you want to update the plug-in?"
+
+msgid "tpl_464"
+msgstr "Plug-in registration"
+
+msgid "tpl_465"
+msgstr "Plug-in<span class='attention'> *</span>"
+
+msgid "tpl_466"
+msgstr "Installation"
+
+msgid "tpl_467"
+msgstr "Plug-in list"
+
+msgid "tpl_468"
+msgstr "Explanation of functions"
+
+msgid "tpl_469"
+msgstr "Priority"
+
+msgid "tpl_470"
+msgstr "Compatible EC-CUBE version :"
+
+msgid "tpl_471"
+msgstr "Plug-in settings"
+
+msgid "tpl_472"
+msgstr "Update"
+
+msgid "tpl_473"
+msgstr "Enabled"
+
+msgid "tpl_474"
+msgstr "Enable"
+
+msgid "tpl_475"
+msgstr "Change"
+
+msgid "tpl_476"
+msgstr "There are no plug-ins registered."
+
+msgid "tpl_477"
+msgstr "Logo"
+
+msgid "tpl_478"
+msgstr "Introduction version"
+
+msgid "tpl_479"
+msgstr "Installation"
+
+msgid "tpl_480"
+msgstr "Settings"
+
+msgid "tpl_481"
+msgstr "Purchase status"
+
+msgid "tpl_482"
+msgstr "Authentication key settings."
+
+msgid "tpl_483"
+msgstr "Plug-in management"
+
+msgid "tpl_484"
+msgstr "Module management"
+
+msgid "tpl_485"
+msgstr "Authentication key settings"
+
+msgid "tpl_486"
+msgstr "Log management"
+
+msgid "tpl_487"
+msgstr "Home"
+
+msgid "tpl_488"
+msgstr "Registration"
+
+msgid "tpl_489"
+msgstr "(Upper limit T_FIELD characters)"
+
+msgid "tpl_490"
+msgstr "Category name"
+
+msgid "tpl_491"
+msgstr "No categories are registered for this hierarchy."
+
+msgid "tpl_492"
+msgstr "Standard name"
+
+msgid "tpl_492_1"
+msgstr "Standard name<span class='attention'> *</span>"
+
+msgid "tpl_493"
+msgstr "Category name"
+
+msgid "tpl_493_1"
+msgstr "Category name<span class='attention'> *</span>"
+
+msgid "tpl_494"
+msgstr "Standard name (registered number)"
+
+msgid "tpl_495"
+msgstr "Category registration"
+
+msgid "tpl_496"
+msgstr "Return to the standard list"
+
+msgid "tpl_497"
+msgstr "Newly register this product"
+
+msgid "tpl_498"
+msgstr "Product category"
+
+msgid "tpl_498_1"
+msgstr "Product category<span class='attention'> *</span>"
+
+msgid "tpl_499"
+msgstr "Disclosed/not disclosed"
+
+msgid "tpl_499_1"
+msgstr "Disclosed/not disclosed<span class='attention'> *</span>"
+
+msgid "tpl_500"
+msgstr "&#36; T_FIELD"
+
+msgid "tpl_501"
+msgstr "Category"
+
+msgid "tpl_502"
+msgstr "Amount"
+
+msgid "tpl_503"
+msgstr "Period"
+
+msgid "tpl_504"
+msgstr "Male"
+
+msgid "tpl_505"
+msgstr "Female"
+
+msgid "tpl_506"
+msgstr "Male (member)"
+
+msgid "tpl_507"
+msgstr "Male (non-member)"
+
+msgid "tpl_508"
+msgstr "Female (member)"
+
+msgid "tpl_509"
+msgstr "Female (non-member)"
+
+msgid "tpl_510"
+msgstr "Tabulate by period"
+
+msgid "tpl_511"
+msgstr "Tabulation by product"
+
+msgid "tpl_512"
+msgstr "Tabulation by age group"
+
+msgid "tpl_513"
+msgstr "Tabulation by occupation"
+
+msgid "tpl_514"
+msgstr "Tabulation by member"
+
+msgid "tpl_515"
+msgstr "By date"
+
+msgid "tpl_516"
+msgstr "By month"
+
+msgid "tpl_517"
+msgstr "By year"
+
+msgid "tpl_518"
+msgstr "曜日別"
+
+msgid "tpl_519"
+msgstr "By time"
+
+msgid "tpl_520"
+msgstr "Overall"
+
+msgid "tpl_521"
+msgstr "Member"
+
+msgid "tpl_522"
+msgstr "Non-member"
+
+msgid "tpl_523"
+msgstr "Enable JavaScript"
+
+msgid "tpl_524"
+msgstr "System settings > System information"
+
+msgid "tpl_525"
+msgstr "EC-CUBE version"
+
+msgid "tpl_526"
+msgstr "PHP version"
+
+msgid "tpl_527"
+msgstr "DB version"
+
+msgid "tpl_528"
+msgstr "Shop status"
+
+msgid "tpl_529"
+msgstr "Current number of members"
+
+msgid "tpl_530"
+msgstr "Sales from yesterday"
+
+msgid "tpl_531"
+msgstr "Number of items sold yesterday"
+
+msgid "tpl_532"
+msgstr "<span>Sales for this month </span><span>(up to yesterday) </span>"
+
+msgid "tpl_533"
+msgstr "<span>Sales for this month </span><span>(up to yesterday) </span>"
+
+msgid "tpl_534"
+msgstr "Number of reviews from yesterday"
+
+msgid "tpl_535"
+msgstr "Member's total registered points"
+
+msgid "tpl_536"
+msgstr "Number of review writings not displayed"
+
+msgid "tpl_537"
+msgstr "Sold-out product"
+
+msgid "tpl_538"
+msgstr "List of new orders received"
+
+msgid "tpl_539"
+msgstr "Return to login page"
+
+msgid "tpl_540"
+msgstr "Management function"
+
+msgid "tpl_541"
+msgstr "ADMIN_MODE ON"
+
+msgid "tpl_542"
+msgstr "Login"
+
+msgid "tpl_543"
+msgstr "LOGOUT"
+
+msgid "tpl_544"
+msgstr "Basic information management"
+
+msgid "tpl_545"
+msgstr "Sales tabulation"
+
+msgid "tpl_546"
+msgstr "Mail magazine management"
+
+msgid "tpl_547"
+msgstr "Contents management"
+
+msgid "tpl_548"
+msgstr "Design management"
+
+msgid "tpl_549"
+msgstr "System settings"
+
+msgid "tpl_550"
+msgstr "Owners Store"
+
+msgid "tpl_551"
+msgstr "Copyright &copy; 2000-T_FIELD LOCKON CO.,LTD. All Rights Reserved."
+
+msgid "tpl_552"
+msgstr "PAGE TOP"
+
+msgid "tpl_553"
+msgstr "SITE CHECK"
+
+msgid "tpl_554"
+msgstr "Product status"
+
+msgid "tpl_555"
+msgstr "Downloaded product file name"
+
+msgid "tpl_555_1"
+msgstr "Downloaded product file name<span class='attention'> *</span>"
+
+msgid "tpl_556"
+msgstr "File for downloaded product"
+
+msgid "tpl_557"
+msgstr "Inventory count"
+
+msgid "tpl_557_1"
+msgstr "Inventory count<span class='attention'> *</span>"
+
+msgid "tpl_558"
+msgstr "Product shipping fee"
+
+msgid "tpl_559"
+msgstr "Point grant rate"
+
+msgid "tpl_559_1"
+msgstr "Point grant rate<span class='attention'> *</span>"
+
+msgid "tpl_560"
+msgstr "Shipment date Target"
+
+msgid "tpl_561"
+msgstr "Number of sales restrictions"
+
+msgid "tpl_562"
+msgstr "Manufacturer"
+
+msgid "tpl_563"
+msgstr "Manufacturer URL"
+
+msgid "tpl_564"
+msgstr "Search word"
+
+msgid "tpl_565"
+msgstr "Remarks column (for SHOP)"
+
+msgid "tpl_566"
+msgstr "List - Main comments"
+
+msgid "tpl_566_1"
+msgstr "List - Main comments<span class='attention'> *</span>"
+
+msgid "tpl_567"
+msgstr "Details - Main comment"
+
+msgid "tpl_568"
+msgstr "List - Main images"
+
+msgid "tpl_569"
+msgstr "Details - Main image"
+
+msgid "tpl_570"
+msgstr "Details - Main enlarged image"
+
+msgid "tpl_571"
+msgstr "Details - Sub title(T_FIELD)"
+
+msgid "tpl_572"
+msgstr "Details - Sub comment(T_FIELD)"
+
+msgid "tpl_573"
+msgstr "Details - Sub image (T_FIELD)"
+
+msgid "tpl_574"
+msgstr "Details - Sub enlarged image(T_FIELD)"
+
+msgid "tpl_575"
+msgstr "Related products(T_FIELD)"
+
+msgid "tpl_576"
+msgstr "Comment:"
+
+msgid "tpl_577"
+msgstr "Product ID"
+
+msgid "tpl_578"
+msgstr "Category display"
+
+msgid "tpl_579"
+msgstr "URL display"
+
+msgid "tpl_580"
+msgstr "Price(&#36;)"
+
+msgid "tpl_581"
+msgstr "Inventory"
+
+msgid "tpl_582"
+msgstr "Standard"
+
+msgid "tpl_583"
+msgstr "Duplication"
+
+msgid "tpl_584"
+msgstr "Category ⇔ URL"
+
+msgid "tpl_585"
+msgstr "Manufacturer name<span class='attention'> *</span>"
+
+msgid "tpl_586"
+msgstr "File upload for downloaded product<span class='attention'> *</span>"
+
+msgid "tpl_587"
+msgstr "[Erase file]"
+
+msgid "tpl_588"
+msgstr ""
+"Extension for which upload registration is possible: T_FIELD (Parameter "
+"DOWNLOAD_EXTENSION)"
+
+msgid "tpl_589"
+msgstr "(Input using half-width numbers)"
+
+msgid "tpl_590"
+msgstr "* Currently invalid"
+
+msgid "tpl_591"
+msgstr "(Parameter OPTION_PRODUCT_DELIV_FEE)"
+
+msgid "tpl_592"
+msgstr "Search word *If multiple words, separate using a comma (,)"
+
+msgid "tpl_593"
+msgstr "Subinformation"
+
+msgid "tpl_594"
+msgstr "(Tags permitted)"
+
+msgid "tpl_595"
+msgstr "Subinformation display/non-display"
+
+msgid "tpl_596"
+msgstr "Display/non-display of related products"
+
+msgid "tpl_597"
+msgstr "Related products"
+
+msgid "tpl_598"
+msgstr "Product specification registration"
+
+msgid "tpl_599"
+msgstr "Display"
+
+msgid "tpl_600"
+msgstr "Delete"
+
+msgid "tpl_601"
+msgstr ""
+"<span class='bold'>Extension that can be uploaded:</span>T_FIELD(Parameter "
+"DOWNLOAD_EXTENSION)"
+
+msgid "tpl_602"
+msgstr "Copy the data on the 1st line"
+
+msgid "tpl_603"
+msgstr "T_FIELD(&#36;)"
+
+msgid "tpl_604"
+msgstr "Downloaded file name"
+
+msgid "tpl_605"
+msgstr "File for downloaded product"
+
+msgid "tpl_606"
+msgstr "Upper limit T_FIELD characters"
+
+msgid "tpl_607"
+msgstr "Downloaded file name"
+
+msgid "tpl_608"
+msgstr "File upload for downloaded product"
+
+msgid "tpl_609"
+msgstr "* A standard is not selected."
+
+msgid "tpl_610"
+msgstr "Go back"
+
+msgid "tpl_611"
+msgstr "<span class='attention'>T_FIELD items</span> were found."
+
+msgid "tpl_612"
+msgstr "Reallocation of internal ranking"
+
+msgid "tpl_613"
+msgstr "(Not disclosed)"
+
+msgid "tpl_614"
+msgstr "Select a category."
+
+msgid "tpl_615"
+msgstr "Poster name"
+
+msgid "tpl_616"
+msgstr "Poster URL"
+
+msgid "tpl_617"
+msgstr "Recommendation level"
+
+msgid "tpl_618"
+msgstr "Post date"
+
+msgid "tpl_619"
+msgstr "Display/Not display"
+
+msgid "tpl_620"
+msgstr "Not displayed"
+
+msgid "tpl_621"
+msgstr "Review display"
+
+msgid "tpl_622"
+msgstr "Product master"
+
+msgid "tpl_623"
+msgstr "Product registration"
+
+msgid "tpl_624"
+msgstr "Product registration CSV"
+
+msgid "tpl_625"
+msgstr "Standard management"
+
+msgid "tpl_626"
+msgstr "Category registration"
+
+msgid "tpl_627"
+msgstr "Category registration CSV"
+
+msgid "tpl_628"
+msgstr "Manufacturer registration"
+
+msgid "tpl_629"
+msgstr "Product rearrangement"
+
+msgid "tpl_630"
+msgstr "Review management"
+
+msgid "tpl_631"
+msgstr "[Value:T_FIELD]"
+
+msgid "tpl_632"
+msgstr "CSV file"
+
+msgid "tpl_633"
+msgstr "(1st line  Title line)"
+
+msgid "tpl_634"
+msgstr "Registration information"
+
+msgid "tpl_635"
+msgstr "T_FIELD1 Item: T_FIELD2"
+
+msgid "tpl_636"
+msgstr "Register with these contents"
+
+msgid "tpl_637"
+msgstr "Go back"
+
+msgid "tpl_638"
+msgstr "CSV registration has been executed."
+
+msgid "tpl_639"
+msgstr ""
+"When erroneous settings are applied, it may no longer be possible to access "
+"the management screen.<br/>Do not change these settings if you are not "
+"familiar with them."
+
+msgid "tpl_640"
+msgstr "Management function settings"
+
+msgid "tpl_641"
+msgstr "Directory name"
+
+msgid "tpl_642"
+msgstr "SSL restrictions"
+
+msgid "tpl_643"
+msgstr "IP restriction"
+
+msgid "tpl_644"
+msgstr "Make SSL mandatory."
+
+msgid "tpl_645"
+msgstr ""
+"* Access to the management function is limited to only connections from a "
+"designated IP address.<br />Input each IP address from which access is "
+"permitted on a different line. If nothing is input, access will be permitted "
+"from all IP addresses."
+
+msgid "tpl_646"
+msgstr "Do you want to restore?"
+
+msgid "tpl_647"
+msgstr ""
+"The database will be backed up.<br />The template file, etc. has not been "
+"backed up."
+
+msgid "tpl_648"
+msgstr "Backup name"
+
+msgid "tpl_648_1"
+msgstr "Backup name<span class='attention'> *</span>"
+
+msgid "tpl_649"
+msgstr "Backup memo"
+
+msgid "tpl_650"
+msgstr "Create backup data"
+
+msgid "tpl_651"
+msgstr "Backup list"
+
+msgid "tpl_652"
+msgstr "Restore"
+
+msgid "tpl_653"
+msgstr "Execution results"
+
+msgid "tpl_654"
+msgstr "Ignore the error and restore"
+
+msgid "tpl_655"
+msgstr "Change"
+
+msgid "tpl_656"
+msgstr "Index"
+
+msgid "tpl_657"
+msgstr "Table name"
+
+msgid "tpl_658"
+msgstr "Column name"
+
+msgid "tpl_659"
+msgstr "ON"
+
+msgid "tpl_660"
+msgstr "OFF"
+
+msgid "tpl_661"
+msgstr "Newly input member"
+
+msgid "tpl_662"
+msgstr "Access"
+
+msgid "tpl_663"
+msgstr "Affiliation"
+
+msgid "tpl_664"
+msgstr "Operating"
+
+msgid "tpl_665"
+msgstr "Member registration/editing"
+
+msgid "tpl_666"
+msgstr "* Input required"
+
+msgid "tpl_667"
+msgstr "Login ID"
+
+msgid "tpl_668"
+msgstr "* Half-width alphanumeric characters T_FIELD1 to T_FIELD2 characters"
+
+msgid "tpl_669"
+msgstr "Operating/Not operating"
+
+msgid "tpl_670"
+msgstr "Not operating"
+
+msgid "tpl_671"
+msgstr ""
+"It is possible to set master data values.<br />It is not possible to "
+"register a duplicate ID.<br />When a blank ID is registered, the value is "
+"deleted.<br />Be careful as the site may no longer function depending on the "
+"settings values."
+
+msgid "tpl_672"
+msgstr "Value:"
+
+msgid "tpl_673"
+msgstr "Additional data"
+
+msgid "tpl_674"
+msgstr ""
+"The parameter value is set as a PHP constant.<br />Surround character "
+"strings with [&quot;].<br />Be careful as the site may no longer function "
+"depending on the settings values."
+
+msgid "tpl_675"
+msgstr "Constant name"
+
+msgid "tpl_676"
+msgstr "Parameter value"
+
+msgid "tpl_677"
+msgstr "Member management"
+
+msgid "tpl_678"
+msgstr "Backup management"
+
+msgid "tpl_679"
+msgstr "Parameter settings"
+
+msgid "tpl_680"
+msgstr "Master data management"
+
+msgid "tpl_681"
+msgstr "Management screen settings"
+
+msgid "tpl_682"
+msgstr "System information"
+
+msgid "tpl_683"
+msgstr "EC-CUBE log display"
+
+msgid "tpl_684"
+msgstr "Advanced database management"
+
+msgid "tpl_685"
+msgstr "Overview"
+
+msgid "tpl_686"
+msgstr "PHP information"
+
+msgid "tpl_687"
+msgstr "Monthly tabulation"
+
+msgid "tpl_688"
+msgstr "Tabulate by month"
+
+msgid "tpl_689"
+msgstr "Period tabulation"
+
+msgid "tpl_690"
+msgstr "Tabulate by period"
+
+msgid "tpl_691"
+msgstr "Age"
+
+msgid "tpl_692"
+msgstr "Number of items purchased"
+
+msgid "tpl_693"
+msgstr "Purchase total"
+
+msgid "tpl_700"
+msgstr "Purchase average"
+
+msgid "tpl_701"
+msgstr "T_FIELD item"
+
+msgid "tpl_703"
+msgstr "SQL settings (being edited:T_FIELD)"
+
+msgid "tpl_704"
+msgstr "SQL settings (Newly input)"
+
+msgid "tpl_705"
+msgstr "Details - Sub image(T_FIELD1)<br />[T_FIELD2×T_FIELD3]"
+
+msgid "tpl_706"
+msgstr "Details - Sub enlarged image(T_FIELD1)<br />[T_FIELD2×T_FIELD3]"
+
+msgid "tpl_708"
+msgstr "* Set to uniform shipping rate for entire nation(&#38;):"
+
+msgid "tpl_709"
+msgstr "T_FIELD<span class='attention'> *</span>"
+
+msgid "tpl_710"
+msgstr "List - Main images<br />[T_FIELD1×T_FIELD2]"
+
+msgid "tpl_711"
+msgstr "Details - Main image<br />[T_FIELD1×T_FIELD2]"
+
+msgid "tpl_712"
+msgstr "Details - Main enlarged image<br />[T_FIELD1×T_FIELD2]"
+
+msgid "tpl_713"
+msgstr "番目へ"
+
+msgid "tpl_714"
+msgstr "円以上購入時無料"
+
+msgid "tpl_715"
+msgstr "日間有効"
+
+msgid "tpl_716"
+msgstr "直近の行："
+
+msgid "tpl_717"
+msgstr "コメント <span class='attention'>*</span>"
+
+msgid "tpl_718"
+msgstr "お届け先住所が入力されていません。"
+
+msgid "tpl_719"
+msgstr "メール"
+
+msgid "tpl_720"
+msgstr "(配送業者の変更に伴う送料の変更は手動にてお願いします。)"
+
+msgid "tpl_721"
+msgstr "(お支払方法の変更に伴う手数料の変更は手動にてお願いします。)"
+
+msgid "tpl_722"
+msgstr "商品の追加"
+
+msgid "tpl_723"
+msgstr "変更"
+
+msgid "tpl_724"
+msgstr "会員検索"
+
+msgid "tpl_725"
+msgstr "T_FIELD名"
+
+msgid "-"
+msgstr " - "
+
+msgid "%"
+msgstr " %"
+
+msgid "currency_prefix"
+msgstr " "
+
+msgid "currency_suffix"
+msgstr "円"
+
+msgid "times_prefix"
+msgstr " "
+
+msgid "times_suffix"
+msgstr " times"
+
+msgid "record_prefix"
+msgstr " "
+
+msgid "record_suffix"
+msgstr " items"
+
+msgid "pt_prefix"
+msgstr " "
+
+msgid "pt_suffix"
+msgstr " pt"
