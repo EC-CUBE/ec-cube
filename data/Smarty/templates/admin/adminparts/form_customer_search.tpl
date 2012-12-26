@@ -65,7 +65,7 @@
             <option value="" selected="selected">--</option>
             <!--{html_options options=$arrDay selected=$arrForm[$key].value}-->
         </select>日
-        <!--{t string="-"}--><!--{t string="-"}-->
+        <!--{t string="-"}-->
         <!--{assign var=key value="search_b_end_year"}-->
         <select name="<!--{$key}-->" <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><!--{sfSetErrorStyle}--><!--{/if}-->>
             <option value="" selected="selected">----</option>
