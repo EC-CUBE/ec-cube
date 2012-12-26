@@ -291,9 +291,7 @@ self.moveTo(20,20);self.focus();
                     <!--{if $arrShipping[$key1] == "" && $arrShipping[$key2] == "" && $arrShipping[$key3] == ""}-->
                         <!--{t string="tpl_388"}-->
                     <!--{else}-->
-                    <!--{$arrShipping[$key1]}-->年
-                    <!--{$arrShipping[$key2]}-->月
-                    <!--{$arrShipping[$key3]}-->日
+                        <!--{t string="tpl_726" T_FIELD1=$arrShipping[$key1] T_FIELD2=$arrShipping[$key2] T_FIELD3=$arrShipping[$key3] }-->
                     <!--{/if}-->
                 </td>
             </tr>

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2012-12-20 17:47+0900\n"
+"PO-Revision-Date: 2012-12-26 21:40+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -5830,6 +5830,15 @@ msgstr "会員検索"
 
 msgid "tpl_725"
 msgstr "T_FIELD名"
+
+msgid "tpl_726"
+msgstr "T_FIELD1年T_FIELD2月T_FIELD3日"
+
+msgid "tpl_727"
+msgstr "T_FIELD1月T_FIELD2日"
+
+msgid "tpl_728"
+msgstr "T_FIELD月"
 
 msgid "-"
 msgstr "～"

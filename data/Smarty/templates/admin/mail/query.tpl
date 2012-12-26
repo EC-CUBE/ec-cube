@@ -69,14 +69,14 @@ self.moveTo(20,20);self.focus();
         </tr>
         <tr>
             <th><!--{t string="tpl_338"}--></th>
-            <td><!--{if $arrSearchData.search_birth_month}--><!--{$arrSearchData.search_birth_month|h}-->月<!--{else}--><!--{t string="tpl_337"}--><!--{/if}--></td>
+            <td><!--{if $arrSearchData.search_birth_month}--><!--{t string="tpl_728" T_FIELD=$arrSearchData.search_birth_month|h}--><!--{else}--><!--{t string="tpl_337"}--><!--{/if}--></td>
         </tr>
         <tr>
             <th><!--{t string="tpl_339"}--></th>
             <td>
             <!--{if $arrSearchData.search_b_start_year}-->
-                <!--{$arrSearchData.search_b_start_year}-->年<!--{$arrSearchData.search_b_start_month}-->月<!--{$arrSearchData.search_b_start_day}-->日&nbsp;<!--{t string="-"}-->
-                <!--{if $arrSearchData.search_b_end_year}-->&nbsp;<!--{$arrSearchData.search_b_end_year}-->年<!--{$arrSearchData.search_b_end_month}-->月<!--{$arrSearchData.search_b_end_day}-->日<!--{/if}-->
+                <!--{t string="tpl_726" T_FIELD1=$arrSearchData.search_b_start_year T_FIELD2=$arrSearchData.search_b_start_month T_FIELD3=$arrSearchData.search_b_start_day}-->&nbsp;<!--{t string="-"}-->
+                <!--{if $arrSearchData.search_b_end_year}-->&nbsp;<!--{t string="tpl_726" T_FIELD1=$arrSearchData.search_b_end_year T_FIELD2=$arrSearchData.search_b_end_month T_FIELD3=$arrSearchData.search_b_end_day}--><!--{/if}-->
             <!--{else}--><!--{t string="tpl_337"}--><!--{/if}-->
             </td>
         </tr>
@@ -122,8 +122,9 @@ self.moveTo(20,20);self.focus();
             <th><!--{t string="tpl_330"}--></th>
             <td>
             <!--{if $arrSearchData.search_start_year}-->
-                <!--{$arrSearchData.search_start_year}-->年<!--{$arrSearchData.search_start_month}-->月<!--{$arrSearchData.search_start_day}-->日&nbsp;<!--{t string="-"}-->
-                <!--{if $arrSearchData.search_end_year}-->&nbsp;<!--{$arrSearchData.search_end_year}-->年<!--{$arrSearchData.search_end_month}-->月<!--{$arrSearchData.search_end_day}-->日<!--{/if}-->
+                <!--{t string="tpl_726" T_FIELD1=$arrSearchData.search_start_year T_FIELD2=$arrSearchData.search_start_month T_FIELD3=$arrSearchData.search_start_day}-->&nbsp;<!--{t string="-"}-->
+            
+            <!--{if $arrSearchData.search_end_year}-->&nbsp;<!--{t string="tpl_726" T_FIELD1=$arrSearchData.search_end_year T_FIELD2=$arrSearchData.search_end_month T_FIELD3=$arrSearchData.search_end_day}--><!--{/if}-->
             <!--{else}--><!--{t string="tpl_337"}--><!--{/if}-->
             </td>
         </tr>
@@ -131,8 +132,8 @@ self.moveTo(20,20);self.focus();
             <th><!--{t string="tpl_342"}--></th>
             <td>
             <!--{if $arrSearchData.search_buy_start_year}-->
-                <!--{$arrSearchData.search_buy_start_year}-->年<!--{$arrSearchData.search_buy_start_month}-->月<!--{$arrSearchData.search_buy_start_day}-->日&nbsp;<!--{t string="-"}-->
-                <!--{if $arrSearchData.search_buy_end_year}-->&nbsp;<!--{$arrSearchData.search_buy_end_year}-->年<!--{$arrSearchData.search_buy_end_month}-->月<!--{$arrSearchData.search_buy_end_day}-->日<!--{/if}-->
+                <!--{t string="tpl_726" T_FIELD1=$arrSearchData.search_buy_start_year T_FIELD2=$arrSearchData.search_buy_start_month T_FIELD3=$arrSearchData.search_buy_start_day}-->&nbsp;<!--{t string="-"}-->
+                <!--{if $arrSearchData.search_buy_end_year}-->&nbsp;<!--{t string="tpl_726" T_FIELD1=$arrSearchData.search_buy_end_year T_FIELD2=$arrSearchData.search_buy_end_month T_FIELD3=$arrSearchData.search_buy_end_day}--><!--{/if}-->
             <!--{else}--><!--{t string="tpl_337"}--><!--{/if}-->
             </td>
         </tr>

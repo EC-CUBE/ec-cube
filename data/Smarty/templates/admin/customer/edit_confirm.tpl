@@ -109,7 +109,13 @@ function func_return(){
             </tr>
             <tr>
                 <th><!--{t string="tpl_217"}--></th>
-                <td><!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}--><!--{$arrForm.year|h}-->年<!--{$arrForm.month|h}-->月<!--{$arrForm.day|h}-->日<!--{else}--><!--{t string="tpl_242"}--><!--{/if}--></td>
+                <td>
+                    <!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}-->
+                        <!--{t string="tpl_726" T_FIELD1=$arrForm.year|h T_FIELD2=$arrForm.month|h T_FIELD3=$arrForm.day|h }-->
+                    <!--{else}-->
+                        <!--{t string="tpl_242"}-->
+                    <!--{/if}-->
+                </td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_218"}--></th>

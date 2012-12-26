@@ -82,7 +82,7 @@
         <tr style="background:<!--{if $tpl_holiday_id != $arrHoliday[cnt].holiday_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->;">
             <!--{assign var=holiday_id value=$arrHoliday[cnt].holiday_id}-->
             <td><!--{$arrHoliday[cnt].title|h}--></td>
-            <td><!--{$arrHoliday[cnt].month|h}-->月<!--{$arrHoliday[cnt].day|h}-->日</td>
+            <td><!--{t string="tpl_727" T_FIELD1=$arrHoliday[cnt].month|h T_FIELD2=$arrHoliday[cnt].day|h}--></td>
             <td class="center">
                 <!--{if $tpl_holiday_id != $arrHoliday[cnt].holiday_id}-->
                 <a href="?" onclick="fnModeSubmit('pre_edit', 'holiday_id', <!--{$arrHoliday[cnt].holiday_id}-->); return false;"><!--{t string="tpl_003"}--></a>
