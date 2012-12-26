@@ -1,0 +1,18 @@
+
+.date-sunday .ui-state-default {    
+/*color:#b7282e !important;*/
+background-image: none !important; background-color: #FF9999 !important;
+}
+
+.date-saturday .ui-state-default {
+/*color:#3e62ad !important;*/
+background-image: none !important; background-color: #66CCFF !important;
+}
+
+.ui-datepicker-month{
+margin-left: 7px !important;
+}
+.ui-datepicker select.ui-datepicker-year,
+.ui-datepicker select.ui-datepicker-month{
+width: 40% !important;
+}

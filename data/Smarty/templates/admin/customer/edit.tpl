@@ -170,19 +170,14 @@
             <tr>
                 <th><!--{t string="tpl_217"}--></th>
                 <td>
-                    <span class="attention"><!--{$arrErr.year}--></span>
-                    <select name="year" <!--{if $arrErr.year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> >
-                        <option value="" selected="selected">------</option>
-                        <!--{html_options options=$arrYear selected=$arrForm.year}-->
-                    </select>年
-                    <select name="month" <!--{if $arrErr.year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> >
-                        <option value="" selected="selected">----</option>
-                        <!--{html_options options=$arrMonth selected=$arrForm.month}-->
-                    </select>月
-                    <select name="day" <!--{if $arrErr.year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> >
-                        <option value="" selected="selected">----</option>
-                        <!--{html_options options=$arrDay selected=$arrForm.day"}-->
-                    </select>日
+                    <!--{assign var=errBirth value="`$arrErr.year``$arrErr.month``$arrErr.day`"}-->
+                    <!--{if $errBirth}-->
+                        <div class="attention"><!--{$errBirth}--></div>
+                    <!--{/if}-->
+                    <input id="datepicker" type="text" value="<!--{if $arrForm.year != "" && $arrForm.month != "" && $arrForm.day != ""}--><!--{$arrForm.year|h}-->/<!--{$arrForm.month|h|string_format:'%02d'}-->/<!--{$arrForm.day|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> readonly="readonly" />
+                    <input type="hidden" name="year" value="<!--{$arrForm.year}-->" />
+                    <input type="hidden" name="month" value="<!--{$arrForm.month}-->" />
+                    <input type="hidden" name="day" value="<!--{$arrForm.day}-->" />
                 </td>
             </tr>
             <tr>
