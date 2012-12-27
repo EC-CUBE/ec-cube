@@ -60,7 +60,7 @@
         <span class="attention"><!--{t string="tpl_441" T_FIELD=$arrORDERSTATUS[$smarty.const.ORDER_CANCEL]}--></span><br />
 
         <p class="remark">
-            <!--{t string="tpl_194"　T_FIELD=$tpl_linemax}-->
+            <!--{t string="tpl_194" T_FIELD=$tpl_linemax}-->
             <!--{$tpl_strnavi}-->
         </p>
 
