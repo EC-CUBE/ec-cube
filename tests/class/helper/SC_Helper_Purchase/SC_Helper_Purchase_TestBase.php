@@ -301,7 +301,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
      ),
    );
 
-   $this->objQuery->insert('dtb_deliv');
+   $this->objQuery->delete('dtb_deliv');
    foreach ($deliv as $key => $item) {
      $this->objQuery->insert('dtb_deliv', $item);
    }
