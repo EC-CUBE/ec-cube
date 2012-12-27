@@ -130,11 +130,11 @@
         </tr>
         <tr>
             <th><!--{t string="tpl_361"}--></th>
-            <td><!--{$arrForm.payment_date.value|sfDispDBDate|default:"未入金"|h}--></td>
+            <td><!--{$arrForm.payment_date.value|sfDispDBDate|default_t:"tpl_443"|h}--></td>
         </tr>
         <tr>
             <th><!--{t string="tpl_233"}--></th>
-            <td><!--{$arrForm.commit_date.value|sfDispDBDate|default:"未発送"|h}--></td>
+            <td><!--{$arrForm.commit_date.value|sfDispDBDate|default_t:"tpl_234"|h}--></td>
         </tr>
     </table>
 
@@ -289,7 +289,7 @@
                 <input type="hidden" name="product_code[<!--{$product_index}-->]" value="<!--{$arrForm.product_code.value[$product_index]|h}-->" id="product_code_<!--{$product_index}-->" />
             </td>
             <td>
-                <!--{$arrForm.product_name.value[$product_index]|h}-->/<!--{$arrForm.classcategory_name1.value[$product_index]|default:"(なし)"|h}-->/<!--{$arrForm.classcategory_name2.value[$product_index]|default:"(なし)"|h}-->
+                <!--{$arrForm.product_name.value[$product_index]|h}-->/<!--{$arrForm.classcategory_name1.value[$product_index]|default_t:"tpl_729"|h}-->/<!--{$arrForm.classcategory_name2.value[$product_index]|default_t:"tpl_729"|h}-->
                 <input type="hidden" name="product_name[<!--{$product_index}-->]" value="<!--{$arrForm.product_name.value[$product_index]|h}-->" id="product_name_<!--{$product_index}-->" />
                 <input type="hidden" name="classcategory_name1[<!--{$product_index}-->]" value="<!--{$arrForm.classcategory_name1.value[$product_index]|h}-->" id="classcategory_name1_<!--{$product_index}-->" />
                 <input type="hidden" name="classcategory_name2[<!--{$product_index}-->]" value="<!--{$arrForm.classcategory_name2.value[$product_index]|h}-->" id="classcategory_name2_<!--{$product_index}-->" />
@@ -448,7 +448,7 @@
                                 <input type="hidden" name="<!--{$key1}-->[<!--{$shipping_index}-->][<!--{$item_index}-->]" value="<!--{$arrShipping[$key1][$item_index]|h}-->" />
                                 <input type="hidden" name="<!--{$key2}-->[<!--{$shipping_index}-->][<!--{$item_index}-->]" value="<!--{$arrShipping[$key2][$item_index]|h}-->" />
                                 <input type="hidden" name="<!--{$key3}-->[<!--{$shipping_index}-->][<!--{$item_index}-->]" value="<!--{$arrShipping[$key3][$item_index]|h}-->" />
-                                <!--{$arrShipping[$key1][$item_index]|h}-->/<!--{$arrShipping[$key2][$item_index]|default:"(なし)"|h}-->/<!--{$arrShipping[$key3][$item_index]|default:"(なし)"|h}-->
+                                <!--{$arrShipping[$key1][$item_index]|h}-->/<!--{$arrShipping[$key2][$item_index]|default_t:"tpl_729"|h}-->/<!--{$arrShipping[$key3][$item_index]|default_t:"tpl_729"|h}-->
                             </td>
                             <td class="right">
                                 <!--{assign var=key value="shipment_price"}-->

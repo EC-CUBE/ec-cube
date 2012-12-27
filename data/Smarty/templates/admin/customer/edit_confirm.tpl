@@ -105,7 +105,7 @@ function func_return(){
             </tr>
             <tr>
                 <th><!--{t string="tpl_216"}--></th>
-                <td><!--{$arrJob[$arrForm.job]|default:"未登録"|h}--></td>
+                <td><!--{$arrJob[$arrForm.job]|default_t:"tpl_242"|h}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_217"}--></th>
@@ -134,7 +134,7 @@ function func_return(){
             </tr>
             <tr>
                 <th><!--{t string="tpl_225"}--></th>
-                <td><!--{$arrForm.note|h|nl2br|default:"未登録"}--></td>
+                <td><!--{$arrForm.note|h|nl2br|default_t:"tpl_242"}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_226"}--></th>

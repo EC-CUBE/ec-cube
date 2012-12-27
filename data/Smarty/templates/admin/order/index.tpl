@@ -395,7 +395,7 @@
             <!--{assign var=payment_id value="`$arrResults[cnt].payment_id`"}-->
             <td class="center"><!--{$arrPayments[$payment_id]}--></td>
             <td class="right"><!--{$arrResults[cnt].total|number_format}--></td>
-            <td class="center"><!--{$arrResults[cnt].commit_date|sfDispDBDate|default:"未発送"}--></td>
+            <td class="center"><!--{$arrResults[cnt].commit_date|sfDispDBDate|default_t:"tpl_234"}--></td>
             <td class="center"><!--{$arrORDERSTATUS[$status]}--></td>
             <td class="center">
                 <input type="checkbox" name="pdf_order_id[]" value="<!--{$arrResults[cnt].order_id}-->" id="pdf_order_id_<!--{$arrResults[cnt].order_id}-->"/><label for="pdf_order_id_<!--{$arrResults[cnt].order_id}-->"><!--{t string="tpl_406"}--></label><br>

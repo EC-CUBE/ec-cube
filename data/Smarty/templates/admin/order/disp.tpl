@@ -47,11 +47,11 @@ self.moveTo(20,20);self.focus();
         </tr>
         <tr>
             <th><!--{t string="tpl_361"}--></th>
-            <td><!--{$arrForm.payment_date.value|sfDispDBDate|default:"未入金"}--></td>
+            <td><!--{$arrForm.payment_date.value|sfDispDBDate|default_t:"tpl_443"}--></td>
         </tr>
         <tr>
             <th><!--{t string="tpl_233"}--></th>
-            <td><!--{$arrForm.commit_date.value|sfDispDBDate|default:"未発送"}--></td>
+            <td><!--{$arrForm.commit_date.value|sfDispDBDate|default_t:"tpl_234"}--></td>
         </tr>
     </table>
 
@@ -131,7 +131,7 @@ self.moveTo(20,20);self.focus();
                 <!--{$arrForm.product_code.value[$product_index]|h}-->
             </td>
             <td>
-                <!--{$arrForm.product_name.value[$product_index]|h}-->/<!--{$arrForm.classcategory_name1.value[$product_index]|default:"(なし)"|h}-->/<!--{$arrForm.classcategory_name2.value[$product_index]|default:"(なし)"|h}-->
+                <!--{$arrForm.product_name.value[$product_index]|h}-->/<!--{$arrForm.classcategory_name1.value[$product_index]|default_t:"tpl_729"|h}-->/<!--{$arrForm.classcategory_name2.value[$product_index]|default_t:"tpl_729"|h}-->
             </td>
             <td align="center">
                     <!--{t string="currency_prefix"}--><!--{$arrForm.price.value[$product_index]|h}--><!--{t string="currency_suffix"}-->
@@ -215,7 +215,7 @@ self.moveTo(20,20);self.focus();
                                 <!--{assign var=key1 value="shipment_product_name"}-->
                                 <!--{assign var=key2 value="shipment_classcategory_name1"}-->
                                 <!--{assign var=key3 value="shipment_classcategory_name2"}-->
-                                <!--{$arrShipping[$key1][$item_index]|h}-->/<!--{$arrShipping[$key2][$item_index]|default:"(なし)"|h}-->/<!--{$arrShipping[$key3][$item_index]|default:"(なし)"|h}-->
+                                <!--{$arrShipping[$key1][$item_index]|h}-->/<!--{$arrShipping[$key2][$item_index]|default_t:"tpl_729"|h}-->/<!--{$arrShipping[$key3][$item_index]|default_t:"tpl_729"|h}-->
                             </td>
                             <td class="right">
                                 <!--{assign var=key value="shipment_price"}-->
@@ -279,7 +279,7 @@ self.moveTo(20,20);self.focus();
             <tr>
                 <th><!--{t string="tpl_386"}--></th>
                 <td>
-                    <!--{$arrDelivTime[$arrShipping.time_id]|default:"指定無し"}-->
+                    <!--{$arrDelivTime[$arrShipping.time_id]|default_t:"tpl_388"}-->
                 </td>
             </tr>
             <tr>

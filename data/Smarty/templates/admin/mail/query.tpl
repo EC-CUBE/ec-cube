@@ -38,7 +38,7 @@ self.moveTo(20,20);self.focus();
     <table class="form">
         <tr>
             <th><!--{t string="tpl_207"}--></th>
-            <td><!--{$arrSearchData.search_customer_id|default:"(未指定)"|h}--></td>
+            <td><!--{$arrSearchData.search_customer_id|default_t:"tpl_337"|h}--></td>
         </tr>
         <tr>
             <th><!--{t string="tpl_258"}--></th>
@@ -50,11 +50,11 @@ self.moveTo(20,20);self.focus();
         </tr>
         <tr>
             <th><!--{t string="tpl_208"}--></th>
-            <td><!--{$arrSearchData.search_name|default:"(未指定)"|h}--></td>
+            <td><!--{$arrSearchData.search_name|default_t:"tpl_337"|h}--></td>
         </tr>
         <tr>
             <th><!--{t string="tpl_210"}--></th>
-            <td><!--{$arrSearchData.search_kana|default:"(未指定)"|h}--></td>
+            <td><!--{$arrSearchData.search_kana|default_t:"tpl_337"|h}--></td>
         </tr>
         <tr>
             <th><!--{t string="tpl_215"}--></th>
@@ -82,15 +82,15 @@ self.moveTo(20,20);self.focus();
         </tr>
         <tr>
             <th><!--{t string="tpl_108"}--></th>
-            <td><!--{$arrSearchData.search_email|default:"(未指定)"|h}--></td>
+            <td><!--{$arrSearchData.search_email|default_t:"tpl_337"|h}--></td>
         </tr>
         <tr>
             <th><!--{t string="tpl_213"}--></th>
-            <td><!--{$arrSearchData.search_email_mobile|default:"(未指定)"|h}--></td>
+            <td><!--{$arrSearchData.search_email_mobile|default_t:"tpl_337"|h}--></td>
         </tr>
         <tr>
             <th><!--{t string="tpl_214"}--></th>
-            <td><!--{$arrSearchData.search_tel|default:"(未指定)"|h}--></td>
+            <td><!--{$arrSearchData.search_tel|default_t:"tpl_337"|h}--></td>
         </tr>
         <tr>
             <th><!--{t string="tpl_340"}--></th>
@@ -139,11 +139,11 @@ self.moveTo(20,20);self.focus();
         </tr>
         <tr>
             <th><!--{t string="tpl_343"}--></th>
-            <td><!--{$arrSearchData.search_buy_product_name|default:"(未指定)"|h}--></td>
+            <td><!--{$arrSearchData.search_buy_product_name|default_t:"tpl_337"|h}--></td>
         </tr>
         <tr>
             <th><!--{t string="tpl_344"}--></th>
-            <td><!--{$arrSearchData.search_buy_product_code|default:"(未指定)"|h}--></td>
+            <td><!--{$arrSearchData.search_buy_product_code|default_t:"tpl_337"|h}--></td>
         </tr>
         <tr>
             <th><!--{t string="tpl_191"}--></th>
@@ -157,11 +157,11 @@ self.moveTo(20,20);self.focus();
         </tr>
         <tr>
             <th><!--{t string="tpl_325"}--></th>
-            <td><!--{$arrHtmlmail[$arrSearchData.search_htmlmail]|default:"(未指定)"|h}--></td>
+            <td><!--{$arrHtmlmail[$arrSearchData.search_htmlmail]|default_t:"tpl_337"|h}--></td>
         </tr>
         <tr>
             <th><!--{t string="tpl_326"}--></th>
-            <td><!--{$arrMailType[$arrSearchData.search_mail_type]|default:"(未指定)"|h}--></td>
+            <td><!--{$arrMailType[$arrSearchData.search_mail_type]|default_t:"tpl_337"|h}--></td>
         </tr>
     </table>
 

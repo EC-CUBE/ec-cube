@@ -154,7 +154,7 @@
         <tr>
             <th><!--{t string="tpl_561"}--></th>
             <td>
-                <!--{$arrForm.sale_limit|default:'無制限'|h}-->
+                <!--{$arrForm.sale_limit|default_t:"tpl_053"|h}-->
             </td>
         </tr>
         <tr>

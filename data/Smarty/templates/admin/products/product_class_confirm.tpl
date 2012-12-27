@@ -57,8 +57,8 @@
         <!--{assign var=class_id2 value=$arrForm[$key2].value|h}-->
         <table class="list">
                 <tr>
-                <th><!--{t string="tpl_371"}-->(<!--{$arrClass[$class_id1]|default:"未選択"|h}-->)</th>
-                <th><!--{t string="tpl_374"}-->(<!--{$arrClass[$class_id2]|default:"未選択"|h}-->)</th>
+                <th><!--{t string="tpl_371"}-->(<!--{$arrClass[$class_id1]|default_t:"tpl_730"|h}-->)</th>
+                <th><!--{t string="tpl_374"}-->(<!--{$arrClass[$class_id2]|default_t:"tpl_730"|h}-->)</th>
                 <th><!--{t string="tpl_192"}--></th>
                 <th><!--{t string="tpl_557"}--></th>
                 <th><!--{t string="tpl_603" T_FIELD=$smarty.const.NORMAL_PRICE_TITLE}--></th>
