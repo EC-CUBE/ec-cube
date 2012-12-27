@@ -157,7 +157,7 @@
 <!--▼検索結果表示-->
 <!--{if $tpl_linemax}-->
     <p>
-        <!--{t string="tpl_194"　T_FIELD=$tpl_linemax}-->
+        <!--{t string="tpl_194" T_FIELD=$tpl_linemax}-->
         <!--{$tpl_strnavi}-->
     </p>
 

@@ -84,7 +84,7 @@ function func_submit(customer_id){
 <!--{if $smarty.post.mode == 'search'}-->
     <!--▼検索結果表示-->
         <!--{if $tpl_linemax > 0}-->
-        <p><!--{t string="tpl_194"　T_FIELD=$tpl_linemax}--><!--{$tpl_strnavi}--></p>
+        <p><!--{t string="tpl_194" T_FIELD=$tpl_linemax}--><!--{$tpl_strnavi}--></p>
         <!--{/if}-->
 
     <!--▼検索後表示部分-->

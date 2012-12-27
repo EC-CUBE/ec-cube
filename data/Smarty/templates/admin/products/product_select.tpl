@@ -69,7 +69,7 @@ function func_submit( id ){
 
 <!--▼検索結果表示-->
 <!--{if $tpl_linemax}-->
-    <p><!--{t string="tpl_194"　T_FIELD=$tpl_linemax}--></p>
+    <p><!--{t string="tpl_194" T_FIELD=$tpl_linemax}--></p>
     <!--{* ▼ページナビ *}-->
     <!--{$tpl_strnavi}-->
     <!--{* ▲ページナビ *}-->
