@@ -12,24 +12,26 @@ $(function(){
 	},changeMonth: 'true'
 	,changeYear: 'true'
 	,onSelect: function(dateText, inst){
-		var dates = dateText.split('/');
-		$("*[name=year]").val(dates[0]);
-		$("*[name=month]").val(dates[1]);
-		$("*[name=day]").val(dates[2]);
+		setDate(dateText);
 	},
 	showButtonPanel: true,
 	beforeShow: showAdditionalButton,       
 	onChangeMonthYear: showAdditionalButton
 	});
-});
+	
+	$("#datepicker").blur( function() {
+		var dateText = $(this).val();
+		setDate(dateText);
+	});
 
+});
 
 var showAdditionalButton = function (input) {
 	setTimeout(function () {
 		var buttonPane = $(input)
 				 .datepicker("widget")
 				 .find(".ui-datepicker-buttonpane");
-		var btn = $('<button class="ui-datepicker-current ui-state-default ui-priority-secondary ui-corner-all" type="button">クリア</button>');
+		var btn = $('<button class="ui-datepicker-current ui-state-default ui-priority-secondary ui-corner-all" type="button">Clear</button>');
 		btn
 				.unbind("click")
 				.bind("click", function () {
@@ -41,3 +43,9 @@ var showAdditionalButton = function (input) {
 		btn.appendTo(buttonPane);
 	}, 1);
 };
+function setDate(dateText){
+var dates = dateText.split('/');
+$("*[name=year]").val(dates[0]);
+$("*[name=month]").val(dates[1]);
+$("*[name=day]").val(dates[2]);
+}

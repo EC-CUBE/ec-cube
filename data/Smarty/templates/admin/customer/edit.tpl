@@ -174,7 +174,7 @@
                     <!--{if $errBirth}-->
                         <div class="attention"><!--{$errBirth}--></div>
                     <!--{/if}-->
-                    <input id="datepicker" type="text" value="<!--{if $arrForm.year != "" && $arrForm.month != "" && $arrForm.day != ""}--><!--{$arrForm.year|h}-->/<!--{$arrForm.month|h|string_format:'%02d'}-->/<!--{$arrForm.day|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> readonly="readonly" />
+                    <input id="datepicker" type="text" value="<!--{if $arrForm.year != "" && $arrForm.month != "" && $arrForm.day != ""}--><!--{$arrForm.year|h}-->/<!--{$arrForm.month|h|string_format:'%02d'}-->/<!--{$arrForm.day|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                     <input type="hidden" name="year" value="<!--{$arrForm.year}-->" />
                     <input type="hidden" name="month" value="<!--{$arrForm.month}-->" />
                     <input type="hidden" name="day" value="<!--{$arrForm.day}-->" />
