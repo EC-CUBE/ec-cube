@@ -59,18 +59,21 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
   protected function setUpShippingOnDb() {
     $shippings = array(
       array(
+        'update_date' => 'CURRENT_TIMESTAMP',
         'shipping_id' => '1',
         'order_id' => '1',
         'shipping_name01' => '配送情報01',
         'shipping_date' => '2012-01-12'
       ),
       array(
+        'update_date' => 'CURRENT_TIMESTAMP',
         'shipping_id' => '2',
         'order_id' => '2',
         'shipping_name01' => '配送情報02',
         'shipping_date' => '2011-10-01'
       ),
       array(
+        'update_date' => 'CURRENT_TIMESTAMP',
         'shipping_id' => '1002',
         'order_id' => '1002',
         'shipping_time' => '午後',
@@ -78,6 +81,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
       )
     );
 
+    $this->objQuery->delete('dtb_shipping');
     foreach ($shippings as $key => $item) {
       $this->objQuery->insert('dtb_shipping', $item);
     }
@@ -104,6 +108,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
         )
       );
 
+    $this->objQuery->delete('dtb_shipment_item');
     foreach ($shipping_items as $key => $item) {
       $this->objQuery->insert('dtb_shipment_item', $item);
     }
@@ -116,6 +121,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
   protected function setUpProductClass() {
       $product_class = array(
         array(
+          'update_date' => 'CURRENT_TIMESTAMP',
           'product_class_id' => '1001',
           'product_id' => '1001',
           'product_type_id' => '1001',
@@ -124,16 +130,21 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
           'classcategory_id2' => '1002',
           'price01' => '1500',
           'price02' => '1500',
+          'creator_id' => '1',
           'del_flg' => '0'
         ),
         array(
+          'update_date' => 'CURRENT_TIMESTAMP',
           'product_class_id' => '1002',
           'product_id' => '1002',
           'product_type_id' => '1002',
+          'price02' => '2500',
+          'creator_id' => '1',
           'del_flg' => '0'
         )
       );
 
+    $this->objQuery->delete('dtb_products_class');
     foreach ($product_class as $key => $item) {
       $this->objQuery->insert('dtb_products_class', $item);
     }
@@ -147,15 +158,22 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
   protected function setUpClassCategory() {
     $class_category = array(
       array(
+        'update_date' => 'CURRENT_TIMESTAMP',
         'classcategory_id' => '1001',
+        'class_id' => '1',
+        'creator_id' => '1',
         'name' => 'cat1001'
       ),
       array(
+        'update_date' => 'CURRENT_TIMESTAMP',
         'classcategory_id' => '1002',
+        'class_id' => '1',
+        'creator_id' => '1',
         'name' => 'cat1002'
       )
     );
 
+    $this->objQuery->delete('dtb_classcategory');
     foreach ($class_category as $key => $item) {
       $this->objQuery->insert('dtb_classcategory', $item);
     }
@@ -167,19 +185,24 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
  protected function setUpProducts() {
    $products = array(
      array(
+       'update_date' => 'CURRENT_TIMESTAMP',
        'product_id' => '1001',
        'name' => '製品名1001',
        'del_flg' => '0',
+       'creator_id' => '1',
        'status' => '1'
      ),
      array(
+       'update_date' => 'CURRENT_TIMESTAMP',
        'product_id' => '1002',
        'name' => '製品名1002',
        'del_flg' => '0',
+       'creator_id' => '1',
        'status' => '2'
      )
    );
 
+   $this->objQuery->delete('dtb_products');
    foreach ($products as $key => $item) {
      $this->objQuery->insert('dtb_products', $item);
    }
@@ -232,6 +255,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
      )
    );
 
+   $this->objQuery->delete('dtb_payment_options');
    foreach ($payment_options as $key => $item) {
      $this->objQuery->insert('dtb_payment_options', $item);
    }
@@ -277,6 +301,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
      ),
    );
 
+   $this->objQuery->insert('dtb_deliv');
    foreach ($deliv as $key => $item) {
      $this->objQuery->insert('dtb_deliv', $item);
    }
@@ -304,6 +329,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
      ),
    );
 
+   $this->objQuery->delete('dtb_delivtime');
    foreach ($deliv_time as $key => $item) {
      $this->objQuery->insert('dtb_delivtime', $item);
    }
@@ -315,45 +341,62 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
  protected function setUpPayment() {
    $payment = array(
      array(
+       'update_date' => 'CURRENT_TIMESTAMP',
        'payment_id' => '1001',
+       'creator_id' => '1',
        'payment_method' => '支払方法1001'
      ),
      array(
+       'update_date' => 'CURRENT_TIMESTAMP',
        'payment_id' => '1002',
+       'creator_id' => '1',
        'payment_method' => '支払方法1002',
        'del_flg' => '1'
      ),
      array(
+       'update_date' => 'CURRENT_TIMESTAMP',
        'payment_id' => '1003',
+       'creator_id' => '1',
        'payment_method' => '支払方法1003'
      ),
      array(
+       'update_date' => 'CURRENT_TIMESTAMP',
        'payment_id' => '3001',
+       'creator_id' => '1',
        'payment_method' => '支払方法3001',
        'del_flg' => '1'
      ),
      array(
+       'update_date' => 'CURRENT_TIMESTAMP',
        'payment_id' => '3002',
+       'creator_id' => '1',
        'payment_method' => '支払方法3002'
      ),
      array(
+       'update_date' => 'CURRENT_TIMESTAMP',
        'payment_id' => '3003',
+       'creator_id' => '1',
        'payment_method' => '支払方法3003',
        'rule_max' => 10000
      ),
      array(
+       'update_date' => 'CURRENT_TIMESTAMP',
        'payment_id' => '3004',
+       'creator_id' => '1',
        'payment_method' => '支払方法3004',
        'upper_rule' => 20000
      ),
      array(
+       'update_date' => 'CURRENT_TIMESTAMP',
        'payment_id' => '3005',
+       'creator_id' => '1',
        'payment_method' => '支払方法3005',
        'rule_max' => 12000,
        'upper_rule' => 21000
      )
    );
 
+   $this->objQuery->delete('dtb_payment');
    foreach ($payment as $key => $item) {
      $this->objQuery->insert('dtb_payment', $item);
    }
@@ -365,6 +408,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
   protected function setUpOrder() {
     $order = array(
       array(
+        'update_date' => 'CURRENT_TIMESTAMP',
         'order_id' => '1001',
         'customer_id' => '1001',
         'order_name01' => '受注情報01',
@@ -372,6 +416,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
         'payment_date' => '2032-12-31 01:20:30' // 日付が変わっても良いように、遠い未来に設定
       ),
       array(
+        'update_date' => 'CURRENT_TIMESTAMP',
         'order_id' => '1002',
         'customer_id' => '1002',
         'order_name01' => '受注情報02',
@@ -381,6 +426,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
       )
     );
 
+    $this->objQuery->delete('dtb_order');
     foreach ($order as $item) {
       $this->objQuery->insert('dtb_order', $item);
     }
@@ -392,11 +438,13 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
   protected function setUpOrderTemp() {
     $order = array(
       array(
+        'update_date' => 'CURRENT_TIMESTAMP',
         'order_temp_id' => '1001',
         'customer_id' => '1001',
         'order_name01' => '受注情報01'
       ),
       array(
+        'update_date' => 'CURRENT_TIMESTAMP',
         'order_temp_id' => '1002',
         'customer_id' => '1002',
         'order_name01' => '受注情報02',
@@ -405,6 +453,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
       )
     );
 
+    $this->objQuery->delete('dtb_order_temp');
     foreach ($order as $item) {
       $this->objQuery->insert('dtb_order_temp', $item);
     }
@@ -449,6 +498,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
      )
    );
 
+   $this->objQuery->delete('dtb_order_detail');
    foreach ($order_detail as $item) {
      $this->objQuery->insert('dtb_order_detail', $item);
    }
