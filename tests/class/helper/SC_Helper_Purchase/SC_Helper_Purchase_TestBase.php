@@ -494,7 +494,8 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
        'order_detail_id' => '1003',
        'order_id' => '1002',
        'product_id' => '1001',
-       'product_class_id' => '1001'
+       'product_class_id' => '1001',
+       'product_name' => '製品名1003'
      )
    );
 
