@@ -248,28 +248,32 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
        'name' => '配送業者del',
        'rank' => '1',
        'creator_id' => '1',
-       'del_flg' => '1'
+       'del_flg' => '1',
+       'update_date' => 'CURRENT_TIMESTAMP'
      ),
      array(
        'deliv_id' => '1001',
        'product_type_id' => '1001',
        'name' => '配送業者01',
        'creator_id' => '1',
-       'rank' => '2'
+       'rank' => '2',
+       'update_date' => 'CURRENT_TIMESTAMP'
      ),
      array(
        'deliv_id' => '1002',
        'product_type_id' => '1001',
        'name' => '配送業者02',
        'creator_id' => '1',
-       'rank' => '3'
+       'rank' => '3',
+       'update_date' => 'CURRENT_TIMESTAMP'
      ),
      array( // 商品種別違い
        'deliv_id' => '1004',
        'product_type_id' => '2001',
        'name' => '配送業者21',
        'creator_id' => '1',
-       'rank' => '4'
+       'rank' => '4',
+       'update_date' => 'CURRENT_TIMESTAMP'
      ),
    );
 
