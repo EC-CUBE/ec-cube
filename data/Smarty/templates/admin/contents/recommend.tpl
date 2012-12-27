@@ -110,7 +110,7 @@ function lfnSortItem(mode,data){
                             </div>
                             <div class="table-detail">
                                 <div class="detail-name"><!--{t string="tpl_188"}--> <!--{$arrItems[$smarty.section.cnt.iteration].name|h}--></div>
-                                <!--{/if}-->
+
                                     <div class="detail-form">
                                         <form name="form<!--{$smarty.section.cnt.iteration}-->" id="form<!--{$smarty.section.cnt.iteration}-->" method="post" action="?">
                                             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
