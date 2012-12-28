@@ -632,11 +632,11 @@ class SC_CartSession {
         }
 
         // 配送業者の送料を加算
-//        if (OPTION_DELIV_FEE == 1
-//            && !SC_Utils_Ex::isBlank($deliv_pref)
-//            && !SC_Utils_Ex::isBlank($deliv_id)) {
-//            $results['deliv_fee'] += $this->sfGetDelivFee($deliv_pref, $deliv_id);
-//        }
+        if (OPTION_DELIV_FEE == 1
+            && !SC_Utils_Ex::isBlank($deliv_pref)
+            && !SC_Utils_Ex::isBlank($deliv_id)) {
+            $results['deliv_fee'] += $this->sfGetDelivFee($deliv_pref, $deliv_id);
+        }
 
         // 送料無料チェック
         if ($this->isDelivFree($productTypeId)) {
