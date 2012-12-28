@@ -45,7 +45,7 @@
 
         <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
             <p class="addbtn">
-                <a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.SCRIPT_NAME|h}-->','new_deiv','600','640'); return false;" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address_on.jpg','addition');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address.jpg','addition');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_add_address.jpg" alt="Add new delivery destination" name="addition" id="addition" /></a>
+                <a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.SCRIPT_NAME|h}-->','new_deiv','600','640'); return false;">Add new delivery destination</a>
             </p>
         <!--{/if}-->
         <form name="form1" id="form1" method="post" action="?">
@@ -124,12 +124,9 @@
             <div class="btn_area">
                 <ul>
                     <li>
-                    <a href="<!--{$smarty.const.CART_URLPATH}-->" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg',back03)">
-                        <img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="Go back" border="0" name="back03" id="back03" /></a>
+                    <a class="bt04" href="<!--{$smarty.const.CART_URLPATH}-->">Go back</a>
                     </li>
-                    <li>
-                    <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_address_select_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_address_select.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_address_select.jpg" alt="Send to the selected delivery destination" class="box190" name="send_button" id="send_button" />
-                    </li>
+                    <li><button class="bt02">Send to the selected delivery destination</button></li>
                 </ul>
             </div>
         </form>

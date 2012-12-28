@@ -38,9 +38,7 @@
                 お届け先等の情報はすべてなくなりますのでご注意ください。</p>
                 <div class="btn_area">
                     <ul>
-                        <li>
-                            <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_refuse_on.jpg',this);" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_refuse.jpg',this);" src="<!--{$TPL_URLPATH}-->img/button/btn_refuse.jpg" alt="Withdraw membership" name="refusal" id="refusal" />
-                        </li>
+                        <li><button class="bt02">Withdraw membership</button></li>
                     </ul>
                 </div>
             </div>

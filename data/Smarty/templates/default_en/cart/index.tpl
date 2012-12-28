@@ -179,14 +179,13 @@
                 <ul>
                     <li>
                         <!--{if $tpl_prev_url != ""}-->
-                            <a href="<!--{$tpl_prev_url|h}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg','back<!--{$key}-->');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg','back<!--{$key}-->');">
-                                <img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="Go back" name="back<!--{$key}-->" /></a>
+                            <a class="bt04" href="<!--{$tpl_prev_url|h}-->">Go back</a>
                         <!--{/if}-->
                     </li>
                     <li>
                         <!--{if strlen($tpl_error) == 0}-->
                             <input type="hidden" name="cartKey" value="<!--{$key}-->" />
-                            <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_buystep_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_buystep.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_buystep.jpg" alt="To purchase procedure" name="confirm" />
+							<button class="bt02">To purchase procedure</button>
                         <!--{/if}-->
                     </li>
                 </ul>

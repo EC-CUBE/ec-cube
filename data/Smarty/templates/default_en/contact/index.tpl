@@ -60,8 +60,7 @@
                         <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="mini">Postal code search</span></a>
                     </p>
                     <p class="zipimg">
-                        <a href="javascript:fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'zip01', 'zip02', 'pref', 'addr01');">
-                            <img src="<!--{$TPL_URLPATH}-->img/button/btn_address_input.jpg" alt="Automatic address input" /></a>
+                        <a class="bt01" href="javascript:fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'zip01', 'zip02', 'pref', 'addr01');">Automatic address input</a>
                         <span class="mini">&nbsp;Click after inputting the postal code.</span>
                     </p>
                 </td>
@@ -123,7 +122,7 @@
         <div class="btn_area">
             <ul>
                 <li>
-                    <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_confirm_on.jpg', this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_confirm.jpg', this)" src="<!--{$TPL_URLPATH}-->img/button/btn_confirm.jpg" alt="To confirmation page" name="confirm" />
+					<button class="bt02">To confirmation page</button>
                 </li>
             </ul>
         </div>

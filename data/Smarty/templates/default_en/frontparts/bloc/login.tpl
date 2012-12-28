@@ -37,7 +37,7 @@
                     </p>
                     <!--{if !$tpl_disable_logout}-->
                         <p class="btn">
-                            <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_bloc_logout_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_bloc_logout.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_bloc_logout.jpg" onclick="fnFormModeSubmit('login_form', 'logout', '', ''); return false;" alt="Log out" />
+							<button class="bt02" onclick="fnFormModeSubmit('login_form', 'logout', '', ''); return false;">Log out</button>						
                         </p>
                     <!--{/if}-->
                 <!--{else}-->
@@ -59,7 +59,7 @@
                         </dd>
                     </dl>
                     <p class="btn">
-                        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_bloc_login_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_bloc_login.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_bloc_login.jpg" alt="Login" />
+						<button class="bt02">Login</button>
                     </p>
                 <!--{/if}-->
             </div>

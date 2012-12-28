@@ -60,15 +60,13 @@
         <div class="btn_area">
             <ul>
                 <li>
-                    <a href="./payment.php" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg', 'back04-top')" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg', 'back04-top')"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="Go back" border="0" name="back04-top" id="back04-top" /></a>
+                    <a class="bt04" href="./payment.php">Go back</a>
                 </li>
                     <!--{if $use_module}-->
-                <li>
-                    <input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_next.jpg" alt="Next" name="next-top" id="next-top" />
-                </li>
+				<li><button class="bt02" onclick="return fnCheckSubmit();">Next</button></li>
+					
                     <!--{else}-->
-                <li>
-                    <input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_order_complete_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_order_complete.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_order_complete.jpg" alt="To order completion page" name="next-top" id="next-top" />
+                <li><button class="bt02" onclick="return fnCheckSubmit();">To order completion page</button>
                 </li>
                 <!--{/if}-->
             </ul>
@@ -292,15 +290,13 @@
         <div class="btn_area">
             <ul>
                 <li>
-                    <a href="./payment.php" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg','back<!--{$key}-->');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg','back<!--{$key}-->');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="Go back" name="back<!--{$key}-->" /></a>
+                    <a class="bt04" href="./payment.php">Go back</a>
                 </li>
                 <!--{if $use_module}-->
-                <li>
-                    <input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_next.jpg" alt="Next" name="next" id="next" />
+                <li><button onclick="return fnCheckSubmit();" class="bt02">Next</button>
                 </li>
                 <!--{else}-->
-                <li>
-                    <input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_order_complete_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_order_complete.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_order_complete.jpg" alt="To order completion page"  name="next" id="next" />
+                <li><button class="bt02" onclick="return fnCheckSubmit();">To order completion page</button>
                 </li>
                 <!--{/if}-->
         </ul>

@@ -50,13 +50,13 @@
             <div id="header_navi">
                 <ul>
                     <li class="mypage">
-                        <a href="<!--{$smarty.const.HTTPS_URL}-->mypage/login.php" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/common/btn_header_mypage_on.jpg','mypage');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/common/btn_header_mypage.jpg','mypage');"><img src="<!--{$TPL_URLPATH}-->img/common/btn_header_mypage.jpg" alt="MY page" name="mypage" id="mypage" /></a>
+                        <a href="<!--{$smarty.const.HTTPS_URL}-->mypage/login.php">MY page</a>
                     </li>
                     <li class="entry">
-                        <a href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/common/btn_header_entry_on.jpg','entry');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/common/btn_header_entry.jpg','entry');"><img src="<!--{$TPL_URLPATH}-->img/common/btn_header_entry.jpg" alt="Member registration" name="entry" id="entry" /></a>
+                        <a href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php">Member registration</a>
                     </li>
-                    <li>
-                        <a href="<!--{$smarty.const.CART_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/common/btn_header_cart_on.jpg','cartin');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/common/btn_header_cart.jpg','cartin');"><img src="<!--{$TPL_URLPATH}-->img/common/btn_header_cart.jpg" alt="View basket" name="cartin" id="cartin" /></a>
+                    <li class="view_basket">
+                        <a href="<!--{$smarty.const.CART_URLPATH}-->"><img src="<!--{$TPL_URLPATH}-->img/button/icon_cart.png" alt="" />View basket</a>
                     </li>
                 </ul>
             </div>

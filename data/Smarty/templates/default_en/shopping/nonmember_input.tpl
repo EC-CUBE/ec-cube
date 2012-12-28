@@ -70,7 +70,7 @@
                     <p class="top">&nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;" class="box60" />&nbsp;-&nbsp;    <input type="text"    name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: disabled;" class="box60" /> 
                         <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="mini">Postal code search</span></a></p>
 
-                    <p class="zipimg"><a href="<!--{$smarty.const.ROOT_URLPATH}-->address/<!--{$smarty.const.DIR_INDEX_PATH}-->" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'order_zip01', 'order_zip02', 'order_pref', 'order_addr01'); return false;" target="_blank"><img src="<!--{$TPL_URLPATH}-->img/button/btn_address_input.jpg" alt="Automatic address input" /></a>
+                    <p class="zipimg"><a class="bt01" href="<!--{$smarty.const.ROOT_URLPATH}-->address/<!--{$smarty.const.DIR_INDEX_PATH}-->" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'order_zip01', 'order_zip02', 'order_pref', 'order_addr01'); return false;" target="_blank">Automatic address input</a>
                         <span class="mini">&nbsp;Click after inputting the postal code.</span></p>
                 </td>
             </tr>
@@ -210,7 +210,7 @@
                     <p class="top">&nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;"    class="box60" />&nbsp;-&nbsp;    <input type="text"    name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: disabled;" class="box60" /> 
                         <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="mini">Postal code search</span></a></p>
 
-                    <p class="zipimg"><a href="<!--{$smarty.const.ROOT_URLPATH}-->address/<!--{$smarty.const.DIR_INDEX_PATH}-->" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'shipping_zip01', 'shipping_zip02', 'shipping_pref', 'shipping_addr01'); return false;" target="_blank"><img src="<!--{$TPL_URLPATH}-->img/button/btn_address_input.jpg" alt="Automatic address input" /></a>
+                    <p class="zipimg"><a class="bt01" href="<!--{$smarty.const.ROOT_URLPATH}-->address/<!--{$smarty.const.DIR_INDEX_PATH}-->" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'shipping_zip01', 'shipping_zip02', 'shipping_pref', 'shipping_addr01'); return false;" target="_blank">Automatic address input</a>
                         <span class="mini">&nbsp;Click after inputting the postal code.</span></p>
                 </td>
             </tr>
@@ -257,16 +257,12 @@
         <div class="btn_area">
             <ul>
                 <!--{if $smarty.const.USE_MULTIPLE_SHIPPING !== false}-->
+                    <li><button class="bt02">Send only to the destination above</button> </li>
                     <li>
-                        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_singular_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_singular.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_singular.jpg" alt="Send only to the destination above" name="singular" id="singular" />
-                    </li>
-                    <li>
-                    <a href="javascript:;" onclick="fnModeSubmit('multiple', '', ''); return false" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_multiple_on.jpg','several');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_multiple.jpg','several');">
-                        <img src="<!--{$TPL_URLPATH}-->img/button/btn_multiple.jpg" alt="Send to multiple destinations" border="0" name="several" id="several" /></a>
+                    <a class="bt02" href="javascript:;" onclick="fnModeSubmit('multiple', '', ''); return false">Send to multiple destinations</a>
                     </li>
                 <!--{else}-->
-                    <li>
-                        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_next.jpg" alt="Next" name="singular" id="singular" />
+                    <li><button class="bt02">Next</button>
                     </li>
                 <!--{/if}-->
             </ul>

@@ -40,7 +40,9 @@
         </table>
         <div class="btn_area">
             <ul>
-                <li><input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_add_address_complete_on.jpg',this);" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_add_address_complete.jpg',this);" src="<!--{$TPL_URLPATH}-->img/button/btn_add_address_complete.jpg" alt="Register" name="register" id="register" /></li>
+                <li>
+					<button class="bt02">Register</button>
+				</li>
             </ul>
         </div>
     </form>

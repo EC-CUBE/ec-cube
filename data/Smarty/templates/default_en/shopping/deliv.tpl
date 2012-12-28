@@ -40,14 +40,14 @@
                 <div class="add_multiple">
                     <p>Will you be sending this product multiple destinations?</p>
 
-                    <a href="javascript:;" onclick="fnModeSubmit('multiple', '', ''); return false" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_several_address_on.jpg','several');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_several_address.jpg','several');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_several_address.jpg" alt="Designate multiple delivery destinations" name="several" id="several" /></a>
+                    <a class="bt01" href="javascript:;" onclick="fnModeSubmit('multiple', '', ''); return false">Designate multiple delivery destinations</a>
                 </div>
             <!--{/if}-->
         </div>
 
         <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
             <p class="addbtn">
-                <a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.SCRIPT_NAME|h}-->','new_deiv','600','640'); return false;" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address_on.jpg','addition');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address.jpg','addition');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_add_address.jpg" alt="Add new delivery destination" name="addition" id="addition" /></a>
+                <a class="bt01" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.SCRIPT_NAME|h}-->','new_deiv','600','640'); return false;">Add new delivery destination</a>
             </p>
         <!--{/if}-->
 
@@ -116,11 +116,9 @@
         <div class="btn_area">
             <ul>
                 <li>
-                    <a href="<!--{$smarty.const.CART_URLPATH}-->" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg',back03)">
-                    <img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="Go back" border="0" name="back03" id="back03" /></a>
+                    <a class="bt04" href="<!--{$smarty.const.CART_URLPATH}-->">Go back</a>
                 </li>
-                <li>
-                <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_next.jpg" alt="Send to the selected delivery destination" name="send_button" id="send_button" />
+                <li><button class="bt02">Send to the selected delivery destination</button>
                 </li>
             </ul>
         </div>

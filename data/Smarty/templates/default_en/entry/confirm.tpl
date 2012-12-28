@@ -136,10 +136,10 @@
         <div class="btn_area">
             <ul>
                 <li>
-                    <a href="?" onclick="fnModeSubmit('return', '', ''); return false;" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg','back')" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg','back')"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="Go back" border="0" name="back" id="back" /></a>
+                    <a class="bt04" href="?" onclick="fnModeSubmit('return', '', ''); return false;">Go back</a>
                 </li>
                 <li>
-                    <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_entry_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_entry.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_entry.jpg" alt="Register as a member" border="0" name="send" id="send" />
+					<button class="bt02 bt_wide">Register as a member</button>
                 </li>
             </ul>
         </div>

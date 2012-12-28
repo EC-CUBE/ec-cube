@@ -243,8 +243,7 @@
                     <div class="cartin_btn">
                         <div id="cartbtn_default">
                             <!--★カゴに入れる★-->
-                            <a href="javascript:void(document.form1.submit())" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_cartin_on.jpg','cart');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_cartin.jpg','cart');">
-                                <img src="<!--{$TPL_URLPATH}-->img/button/btn_cartin.jpg" alt="Place in basket" name="cart" id="cart" /></a>
+                            <a class="bt03" href="javascript:void(document.form1.submit())">Place in basket</a>
                         </div>
                     </div>
                 </div>
@@ -261,9 +260,9 @@
                         <div class="attention"><!--{$arrErr[$add_favorite]}--></div>
                     <!--{/if}-->
                     <!--{if !$is_favorite}-->
-                        <a href="javascript:fnChangeAction('?product_id=<!--{$arrProduct.product_id|h}-->'); fnModeSubmit('add_favorite','favorite_product_id','<!--{$arrProduct.product_id|h}-->');" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_favorite_on.jpg','add_favorite_product');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_favorite.jpg','add_favorite_product');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_add_favorite.jpg" alt="Add to Favorites" name="add_favorite_product" id="add_favorite_product" /></a>
+                        <a class="bt01" href="javascript:fnChangeAction('?product_id=<!--{$arrProduct.product_id|h}-->'); fnModeSubmit('add_favorite','favorite_product_id','<!--{$arrProduct.product_id|h}-->');">Add to Favorites</a>
                     <!--{else}-->
-                        <img src="<!--{$TPL_URLPATH}-->img/button/btn_add_favorite_on.jpg" alt="Registered in Favorites" name="add_favorite_product" id="add_favorite_product" />
+                        <span class="bt01" name="add_favorite_product" id="add_favorite_product">Registered in Favorites</span>
                         <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.tipsy.js"></script>
                         <script type="text/javascript">
                             var favoriteButton = $("#add_favorite_product");
@@ -329,11 +328,8 @@
             <div class="review_btn">
                 <!--{if count($arrReview) < $smarty.const.REVIEW_REGIST_MAX}-->
                     <!--★新規コメントを書き込む★-->
-                    <a href="./review.php"
-                        onclick="win02('./review.php?product_id=<!--{$arrProduct.product_id}-->','review','600','640'); return false;"
-                        onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_comment_on.jpg','review');"
-                        onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_comment.jpg','review');" target="_blank">
-                        <img src="<!--{$TPL_URLPATH}-->img/button/btn_comment.jpg" alt="Write a new comment" name="review" id="review" /></a>
+                    <a class="bt01" href="./review.php"
+                        onclick="win02('./review.php?product_id=<!--{$arrProduct.product_id}-->','review','600','640'); return false;">Write a new comment</a>
                 <!--{/if}-->
             </div>
         </div>

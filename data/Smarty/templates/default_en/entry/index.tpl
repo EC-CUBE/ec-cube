@@ -38,7 +38,7 @@
             <div class="btn_area">
                 <ul>
                     <li>
-                        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_confirm_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_confirm.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_confirm.jpg" alt="To confirmation page" name="confirm" id="confirm" />
+                        <button class="bt02">To confirmation page</button>
                     </li>
                 </ul>
             </div>

@@ -50,7 +50,7 @@
                     <!--{if $smarty.const.USE_POINT !== false}-->
                         / Points in possession: <span class="point"> <!--{$tpl_user_point|number_format|default:0}--> pt</span>&nbsp;&nbsp;
                     <!--{/if}--><!--{if !$tpl_disable_logout}-->
-                        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/common/btn_header_logout_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/common/btn_header_logout.jpg',this)" src="<!--{$TPL_URLPATH}-->img/common/btn_header_logout.jpg" onclick="fnFormModeSubmit('header_login_form', 'logout', '', ''); return false;" alt="Log out" /><!--{/if}-->
+						<button class="bt02" onclick="fnFormModeSubmit('header_login_form', 'logout', '', ''); return false;">Log out</button><!--{/if}-->
                     </p>
             <!--{else}-->
                 <ul class="formlist clearfix">
@@ -62,7 +62,7 @@
                     </li>
                     <li class="password"><input type="password" class="box100" name="login_pass" title="Enter your password." /></li>
                     <li class="btn">
-                        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/common/btn_header_login_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/common/btn_header_login.jpg',this)" src="<!--{$TPL_URLPATH}-->img/common/btn_header_login.jpg" />
+						<button class="bt02">Login</button>					
                     </li>
                     <li class="forgot">
                         <a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->" onclick="win01('<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->','forget','600','400'); return false;" target="_blank">If you have forgotten your password</a>

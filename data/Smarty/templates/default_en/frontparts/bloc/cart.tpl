@@ -41,8 +41,8 @@
                 </p>
                 <!--{/if}-->
             </div>
-            <div class="btn">
-                <a href="<!--{$smarty.const.CART_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_bloc_cart_on.jpg','button_cart');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_bloc_cart.jpg','button_cart');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_bloc_cart.jpg" alt="View basket" border="0" name="button_cart" id="button_cart" /></a>
+            <div class="btn">				
+                <a class="bt03" href="<!--{$smarty.const.CART_URLPATH}-->">View basket</a>
             </div>
         </div>
     </div>

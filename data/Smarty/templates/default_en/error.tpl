@@ -31,9 +31,9 @@
             <ul>
                 <li>
                     <!--{if $return_top}-->
-                        <a href="<!--{$smarty.const.TOP_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage_on.jpg','b_toppage');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage.jpg','b_toppage');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_toppage.jpg" alt="To top page" border="0" name="b_toppage" /></a>
+                        <a class="bt02" href="<!--{$smarty.const.TOP_URLPATH}-->">To top page</a>
                     <!--{else}-->
-                        <a href="javascript:history.back()" onmouseOver="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg','b_back');" onmouseOut="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg','b_back');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="Go back" name="b_back" id="b_back" /></a>
+                        <a class="bt04" href="javascript:history.back()">Go back</a>
                     <!--{/if}-->
                 </li>
             </ul>

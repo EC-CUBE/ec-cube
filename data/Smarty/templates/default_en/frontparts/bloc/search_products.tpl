@@ -50,7 +50,9 @@
                 <dt>Enter the product name</dt>
                 <dd><input type="text" name="name" class="box140" maxlength="50" value="<!--{$smarty.get.name|h}-->" /></dd>
             </dl>
-            <p class="btn"><input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_bloc_search_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_bloc_search.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_bloc_search.jpg" alt="Search" name="search" /></p>
+            <p class="btn">
+				<button class="bt02" name="search">Search</button>
+			</p>
             </form>
         </div>
     </div>

@@ -57,7 +57,7 @@
                 <div class="btn_area">
                     <ul>
                         <li>
-                            <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_login_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_login.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_login.jpg" alt="Login" name="log" id="log" />
+							<button class="bt02">Login</button>
                         </li>
                     </ul>
                 </div>
@@ -80,8 +80,7 @@
                 <div class="btn_area">
                     <ul>
                         <li>
-                            <a href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_on.jpg','b_gotoentry');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry.jpg','b_gotoentry');">
-                            <img src="<!--{$TPL_URLPATH}-->img/button/btn_entry.jpg" alt="Register as a member" border="0" name="b_gotoentry" /></a>
+                            <a class="bt02" href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php">Register as a member</a>
                         </li>
                     </ul>
                 </div>
@@ -96,7 +95,7 @@
                 <div class="btn_area">
                     <ul>
                         <li>
-                            <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_buystep_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_buystep.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_buystep.jpg" alt="To purchase procedure" name="buystep" id="buystep" />
+							<button class="bt02">To purchase procedure</button>
                         </li>
                     </ul>
                 </div>

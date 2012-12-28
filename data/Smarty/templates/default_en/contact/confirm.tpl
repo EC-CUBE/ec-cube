@@ -76,11 +76,9 @@
         <div class="btn_area">
             <ul>
                 <li>
-                    <a href="?" onclick="fnModeSubmit('return', '', ''); return false;" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg','back02');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg','back02');"> <img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="Go back" name="back02" id="back02" /></a>
+                    <a class="bt04" href="?" onclick="fnModeSubmit('return', '', ''); return false;">Go back</a>
                 </li>
-                <li>
-                    <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_complete_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_complete.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_complete.jpg" alt="Send" name="send" id="send" />
-                </li>
+                <li><button class="bt02">Send</button></li>
             </ul>
         </div>
 

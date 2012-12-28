@@ -37,7 +37,7 @@
                 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
                 <p class="btn">
                     <input type="hidden" name="order_id" value="<!--{$tpl_arrOrderData.order_id|h}-->">
-                    <input type="image" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_order_re_on.jpg', this);" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_order_re.jpg', this);" src="<!--{$TPL_URLPATH}-->img/button/btn_order_re.jpg" alt="Place another order with these purchase details" name="submit" value="Place another order with these purchase details" />
+					<button class="bt01">Place another order with these purchase details</button>
                 </p>
             </form>
         </div>
@@ -245,7 +245,7 @@
         <div class="btn_area">
             <ul>
                 <li>
-                    <a href="./<!--{$smarty.const.DIR_INDEX_PATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg','change');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg','change');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="Go back" name="change" id="change" /></a>
+                    <a class="bt04" href="./<!--{$smarty.const.DIR_INDEX_PATH}-->">Go back</a>
                 </li>
             </ul>
         </div>

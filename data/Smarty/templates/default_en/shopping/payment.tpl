@@ -276,13 +276,8 @@
 
         <div class="btn_area">
             <ul>
-                <li>
-                <a href="?mode=return" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg','back03')" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg','back03')">
-                    <img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="Go back" border="0" name="back03" id="back03" /></a>
-                </li>
-                <li>
-                    <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_next.jpg" alt="Next" name="next" id="next" />
-                </li>
+                <li><a class="bt04" href="?mode=return">Go back</a></li>
+                <li><button class="bt02">Next</button></li>
             </ul>
         </div>
         </form>

@@ -67,8 +67,8 @@
     </table>
     <div class="btn_area">
         <ul>
-            <li><input type="image" onclick=" mode.value='return';" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="Go back"    name="back" id="back" /></li>
-            <li><input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_complete_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_complete.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_complete.jpg" alt="Send" name="send" id="send" /></li>
+            <li><button class="bt04" onclick=" mode.value='return';">Go back</button></li>
+            <li><button class="bt02">Send</button></li>
         </ul>
     </div>
     </form>

@@ -63,8 +63,7 @@
         <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="mini">Postal code search</span></a>
         </p>
         <p class="zipimg">
-            <a href="<!--{$smarty.const.ROOT_URLPATH}-->input_zip.php" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', '<!--{$key1}-->', '<!--{$key2}-->', '<!--{$key3}-->', '<!--{$key4}-->'); return false;" target="_blank">
-                <img src="<!--{$TPL_URLPATH}-->img/button/btn_address_input.jpg" alt="Automatic address input" /></a>
+            <a class="bt01" href="<!--{$smarty.const.ROOT_URLPATH}-->input_zip.php" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', '<!--{$key1}-->', '<!--{$key2}-->', '<!--{$key3}-->', '<!--{$key4}-->'); return false;" target="_blank">Automatic address input</a>
             &nbsp;<span class="mini">Click after inputting the postal code.</span>
         </p>
     </td>

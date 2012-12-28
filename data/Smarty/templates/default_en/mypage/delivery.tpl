@@ -34,7 +34,7 @@
             <!--{* 退会時非表示 *}-->
             <!--{if $tpl_login}-->
                 <p class="add_address">
-                    <a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="win03('./delivery_addr.php','delivadd','600','640'); return false;" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address_on.jpg','newadress');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address.jpg','newadress');" target="_blank"><img src="<!--{$TPL_URLPATH}-->img/button/btn_add_address.jpg" alt="Add new delivery destination" border="0" name="newadress" /></a>
+                    <a class="bt01" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="win03('./delivery_addr.php','delivadd','600','640'); return false;" target="_blank">Add new delivery destination</a>
                 </p>
             <!--{/if}-->
         <!--{/if}-->

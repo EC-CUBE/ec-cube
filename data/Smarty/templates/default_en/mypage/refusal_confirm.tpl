@@ -39,11 +39,11 @@
                     お届け先等の情報はすべてなくなりますのでご注意ください。</p>
                     <ul>
                         <li>
-                            <a href="./refusal.php" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_refuse_not_on.jpg','refuse_not');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_refuse_not.jpg','refuse_not');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_refuse_not.jpg" alt="No, I do not wish to withdraw my membership." name="refuse_not" id="refuse_not" /></a>
+                            <a class="bt02 bt_wide" href="./refusal.php">No, I do not wish to withdraw my membership.</a>
                         </li>
                         <li>
-                            <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_refuse_do_on.jpg',this);" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_refuse_do.jpg',this);" src="<!--{$TPL_URLPATH}-->img/button/btn_refuse_do.jpg" alt="Yes, I want to withdraw my membership" name="refuse_do" id="refuse_do" />
-                        </li>
+							<button class="bt04 bt_wide">Yes, I want to withdraw my membership</button>
+						</li>
                     </ul>
                 </div>
             </div>
