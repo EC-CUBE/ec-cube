@@ -49,7 +49,7 @@
                 <!--{if strlen($arrForm.zip01.value) > 0 && strlen($arrForm.zip02.value) > 0}-->
                 <!--{$arrForm.zip01.value|h}-->-<!--{$arrForm.zip02.value|h}-->
                 <!--{/if}--><br />
-                <!--{$arrPref[$arrForm.pref.value]}--><!--{$arrForm.addr01.value|h}--><!--{$arrForm.addr02.value|h}-->
+                <!--{$arrForm.addr01.value|h}--><!--{$arrForm.addr02.value|h}-->
             </dd>
 
             <dt>Telephone number</dt>

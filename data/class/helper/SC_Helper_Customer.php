@@ -361,7 +361,7 @@ class SC_Helper_Customer {
         $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_FIRSTKANA'), 'kana02', STEXT_LEN, 'CKV', array('NO_SPTAB', 'SPTAB_CHECK' ,'MAX_LENGTH_CHECK', 'KANA_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ZIP1'), 'zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'SPTAB_CHECK' ,'NUM_CHECK', 'NUM_COUNT_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ZIP2'), 'zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'SPTAB_CHECK' ,'NUM_CHECK', 'NUM_COUNT_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_PREF'), 'pref', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PREF'), 'pref', INT_LEN, 'n', array('NUM_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ADDR1'), 'addr01', MTEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ADDR2'), 'addr02', MTEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_TEL1'), 'tel01', TEL_ITEM_LEN, 'n', array('EXIST_CHECK', 'SPTAB_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));

@@ -67,7 +67,7 @@
         <!--{if strlen($objSiteInfo->data.zip01)}-->
             <dt>Location</dt>
             <dd><!--{$objSiteInfo->data.zip01|h}-->-<!--{$objSiteInfo->data.zip02|h}--><br />
-                <!--{$objSiteInfo->data.pref|h}--><!--{$objSiteInfo->data.addr01|h}--><!--{$objSiteInfo->data.addr02|h}--></dd>
+                <!--{$objSiteInfo->data.addr01|h}--><!--{$objSiteInfo->data.addr02|h}--></dd>
         <!--{/if}-->
 
         <!--{if strlen($objSiteInfo->data.tel01)}-->

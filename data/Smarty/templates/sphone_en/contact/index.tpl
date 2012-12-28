@@ -72,7 +72,6 @@
             <dd>
                 <!--{assign var=key1 value="`$prefix`zip01"}-->
                 <!--{assign var=key2 value="`$prefix`zip02"}-->
-                <!--{assign var=key3 value="`$prefix`pref"}-->
                 <!--{assign var=key4 value="`$prefix`addr01"}-->
                 <span class="attention"><!--{$arrErr.zip01}--><!--{$arrErr.zip02}--></span>
                 <p>
@@ -90,11 +89,7 @@
 
             <dt>Address</dt>
             <dd>
-                <span class="attention"><!--{$arrErr.pref}--><!--{$arrErr.addr01}--><!--{$arrErr.addr02}--></span>
-                <select name="pref" style="<!--{$arrErr.pref|sfGetErrorColor}-->" class="boxHarf top data-role-none">
-                    <option value="" selected="selected">Prefecture</option>
-                    <!--{html_options options=$arrPref selected=$arrForm.pref.value|default:$arrData.pref|h}-->
-                </select>
+                <span class="attention"><!--{$arrErr.addr01}--><!--{$arrErr.addr02}--></span>
 
                 <input type="text" name="addr01"
                     value="<!--{$arrForm.addr01.value|default:$arrData.addr01|h}-->"

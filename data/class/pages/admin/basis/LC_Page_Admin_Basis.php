@@ -222,7 +222,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         $objFormParam->addParam(t('PARAM_LABEL_ZIP01'), 'zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK','NUM_COUNT_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ZIP02'), 'zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK','NUM_COUNT_CHECK'));
         // 所在地チェック
-        $objFormParam->addParam(t('PARAM_LABEL_PREF'), 'pref', '', 'n', array('EXIST_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PREF'), 'pref', '', 'n');
         $objFormParam->addParam(t('PARAM_LABEL_ADDR01'), 'addr01', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ADDR02'), 'addr02', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         // メールチェック

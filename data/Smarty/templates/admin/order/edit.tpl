@@ -44,7 +44,6 @@
         df['shipping_fax01[0]'].value = df.order_fax01.value;
         df['shipping_fax02[0]'].value = df.order_fax02.value;
         df['shipping_fax03[0]'].value = df.order_fax03.value;
-        df['shipping_pref[0]'].value = df.order_pref.value;
         df['shipping_addr01[0]'].value = df.order_addr01.value;
         df['shipping_addr02[0]'].value = df.order_addr02.value;
     }
@@ -210,12 +209,7 @@
                 -
                 <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="6" class="box6" />
                 <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'order_zip01', 'order_zip02', 'order_pref', 'order_addr01'); return false;"><!--{t string="tpl_211"}--></a><br />
-                <!--{assign var=key value="order_pref"}-->
-                <span class="attention"><!--{$arrErr[$key]}--></span>
-                <select class="top" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-                    <option value="" selected=""><!--{t string="tpl_036"}--></option>
-                    <!--{html_options options=$arrPref selected=$arrForm[$key].value}-->
-                </select><br />
+
                 <!--{assign var=key value="order_addr01"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" size="60" class="box60 top" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /><br />
@@ -504,12 +498,6 @@
                     -
                     <input type="text" name="<!--{$key2}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key2]|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2][$shipping_index]|sfGetErrorColor}-->" size="6" class="box6" />
                     <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'shipping_zip01[<!--{$shipping_index}-->]', 'shipping_zip02[<!--{$shipping_index}-->]', 'shipping_pref[<!--{$shipping_index}-->]', 'shipping_addr01[<!--{$shipping_index}-->]'); return false;"><!--{t string="tpl_211"}--></a><br />
-                    <!--{assign var=key value="shipping_pref"}-->
-                    <span class="attention"><!--{$arrErr[$key][$shipping_index]}--></span>
-                    <select class="top" name="<!--{$key}-->[<!--{$shipping_index}-->]" style="<!--{$arrErr[$key][$shipping_index]|sfGetErrorColor}-->">
-                        <option value="" selected=""><!--{t string="tpl_036"}--></option>
-                        <!--{html_options options=$arrPref selected=$arrShipping[$key]}-->
-                    </select><br />
                     <!--{assign var=key value="shipping_addr01"}-->
                     <span class="attention"><!--{$arrErr[$key][$shipping_index]}--></span>
                     <input type="text" name="<!--{$key}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key]|h}-->" size="60" class="box60 top" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key][$shipping_index]|sfGetErrorColor}-->" /><br />

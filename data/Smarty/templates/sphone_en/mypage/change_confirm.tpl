@@ -53,7 +53,7 @@
             <dt>Address</dt>
             <dd>
                 <!--{$arrForm.zip01}-->-<!--{$arrForm.zip02}--><br />
-                <!--{$arrPref[$arrForm.pref]}--><!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}-->
+                <!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}-->
             </dd>
 
             <dt>Telephone number</dt>

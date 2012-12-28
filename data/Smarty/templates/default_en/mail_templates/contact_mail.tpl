@@ -40,7 +40,7 @@ Thank you for your patience.
 ■Name :<!--{$arrForm.name01.value}--> <!--{$arrForm.name02.value}--> (<!--{$arrForm.kana01.value}--> <!--{$arrForm.kana02.value}-->)
 ■Postal code:<!--{if $arrForm.zip01.value && $arrForm.zip02.value}--><!--{$arrForm.zip01.value}-->-<!--{$arrForm.zip02.value}--><!--{/if}-->
 
-■Address  :<!--{$arrPref[$arrForm.pref.value]}--><!--{$arrForm.addr01.value}--><!--{$arrForm.addr02.value}-->
+■Address  :<!--{$arrForm.addr01.value}--><!--{$arrForm.addr02.value}-->
 ■Telephone number:<!--{$arrForm.tel01.value}-->-<!--{$arrForm.tel02.value}-->-<!--{$arrForm.tel03.value}-->
 ■E-mail address:<!--{$arrForm.email.value}-->
 ■Details of inquiry

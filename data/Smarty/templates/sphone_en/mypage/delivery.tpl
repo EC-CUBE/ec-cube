@@ -56,10 +56,9 @@
                     <!--{section name=cnt loop=$arrOtherDeliv max=$dispNumber}-->
                         <!--▼お届け先 -->
                         <div class="delivBox">
-                            <!--{assign var=OtherPref value="`$arrOtherDeliv[cnt].pref`"}-->
                             <p><em><span class="zip_title">Delivery address<!--{$smarty.section.cnt.iteration}--></span></em>:<br />
                                 <span class="zip01"><!--{$arrOtherDeliv[cnt].zip01}--></span>-<span class="zip02"><!--{$arrOtherDeliv[cnt].zip02}--></span><br />
-                                <span class="address"><!--{$arrPref[$OtherPref]|h}--><!--{$arrOtherDeliv[cnt].addr01|h}--><!--{$arrOtherDeliv[cnt].addr02|h}--></span><br />
+                                <span class="address"><!--{$arrOtherDeliv[cnt].addr01|h}--><!--{$arrOtherDeliv[cnt].addr02|h}--></span><br />
                                 <span class="name01"><!--{$arrOtherDeliv[cnt].name01|h}--></span>&nbsp;<span class="name02"><!--{$arrOtherDeliv[cnt].name02|h}--></span></p>
 
                             <ul class="edit">

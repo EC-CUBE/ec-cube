@@ -91,8 +91,7 @@
                         </label>
                     </td>
                     <td>
-                        <!--{assign var=key value=$arrAddr[cnt].pref}-->
-                        <!--{$arrPref[$key]}--><!--{$arrAddr[cnt].addr01|h}--><!--{$arrAddr[cnt].addr02|h}--><br />
+                        <!--{$arrAddr[cnt].addr01|h}--><!--{$arrAddr[cnt].addr02|h}--><br />
                         <!--{$arrAddr[cnt].name01|h}--> <!--{$arrAddr[cnt].name02|h}-->
                     </td>
                     <td class="alignC">

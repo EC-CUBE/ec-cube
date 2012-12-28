@@ -102,11 +102,7 @@
             <tr>
                 <th><!--{t string="tpl_212_1"}--></th>
                 <td>
-                    <span class="attention"><!--{$arrErr.pref}--><!--{$arrErr.addr01}--><!--{$arrErr.addr02}--></span>
-                    <select class="top" name="pref" <!--{if $arrErr.pref != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->>
-                        <option class="top" value="" selected="selected"><!--{t string="tpl_036"}--></option>
-                        <!--{html_options options=$arrPref selected=$arrForm.pref}-->
-                    </select><br />
+                    <span class="attention"><!--{$arrErr.addr01}--><!--{$arrErr.addr02}--></span>
                     <input type="text" name="addr01" value="<!--{$arrForm.addr01|h}-->" size="60" class="box60" <!--{if $arrErr.addr01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /><br />
                     <!--{$smarty.const.SAMPLE_ADDRESS1}--><br />
                     <input type="text" name="addr02" value="<!--{$arrForm.addr02|h}-->" size="60" class="box60" <!--{if $arrErr.addr02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /><br />

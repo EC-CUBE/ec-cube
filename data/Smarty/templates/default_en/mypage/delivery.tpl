@@ -56,13 +56,12 @@
                     <th colspan="5">Delivery destination</th>
                 </tr>
                 <!--{section name=cnt loop=$arrOtherDeliv}-->
-                    <!--{assign var=OtherPref value="`$arrOtherDeliv[cnt].pref`"}-->
                     <tr>
                         <td class="alignC"><!--{$smarty.section.cnt.iteration}--></td>
                         <td><label for="add<!--{$smarty.section.cnt.iteration}-->">Delivery address</label></td>
                         <td>
                             <!--{$arrOtherDeliv[cnt].zip01}-->-<!--{$arrOtherDeliv[cnt].zip02}--><br />
-                            <!--{$arrPref[$OtherPref]|h}--><!--{$arrOtherDeliv[cnt].addr01|h}--><!--{$arrOtherDeliv[cnt].addr02|h}--><br />
+                            <!--{$arrOtherDeliv[cnt].addr01|h}--><!--{$arrOtherDeliv[cnt].addr02|h}--><br />
                             <!--{$arrOtherDeliv[cnt].name01|h}-->&nbsp;<!--{$arrOtherDeliv[cnt].name02|h}-->
                         </td>
                         <td class="alignC">

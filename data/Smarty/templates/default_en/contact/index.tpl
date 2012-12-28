@@ -60,10 +60,7 @@
             <tr>
                 <th>Address</th>
                 <td>
-                    <span class="attention"><!--{$arrErr.pref}--><!--{$arrErr.addr01}--><!--{$arrErr.addr02}--></span>
-
-                    <select name="pref" style="<!--{$arrErr.pref|sfGetErrorColor}-->">
-                    <option value="">Select a prefecture</option><!--{html_options options=$arrPref selected=$arrForm.pref.value|default:$arrData.pref|h}--></select>
+                    <span class="attention"><!--{$arrErr.addr01}--><!--{$arrErr.addr02}--></span>
 
                     <p>
                         <input type="text" class="box380" name="addr01" value="<!--{$arrForm.addr01.value|default:$arrData.addr01|h}-->" style="<!--{$arrErr.addr01|sfGetErrorColor}-->; ime-mode: active;" /><br />

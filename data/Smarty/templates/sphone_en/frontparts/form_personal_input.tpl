@@ -47,7 +47,6 @@
 <dd>
     <!--{assign var=key1 value="`$prefix`zip01"}-->
     <!--{assign var=key2 value="`$prefix`zip02"}-->
-    <!--{assign var=key3 value="`$prefix`pref"}-->
     <!--{assign var=key4 value="`$prefix`addr01"}-->
     <!--{assign var=key5 value="`$prefix`addr02"}-->
     <!--{if $arrErr[$key1] || $arrErr[$key2]}-->
@@ -60,13 +59,9 @@
 
 <dt>Address&nbsp;<span class="attention">*</span></dt>
 <dd>
-    <!--{if $arrErr[$key3] || $arrErr[$key4] || $arrErr[$key5]}-->
-        <div class="attention"><!--{$arrErr[$key3]}--><!--{$arrErr[$key4]}--><!--{$arrErr[$key5]}--></div>
+    <!--{if $arrErr[$key4] || $arrErr[$key5]}-->
+        <div class="attention"><!--{$arrErr[$key4]}--><!--{$arrErr[$key5]}--></div>
     <!--{/if}-->
-    <select name="<!--{$key3}-->" style="<!--{$arrErr[$key3]|sfGetErrorColor}-->" class="boxHarf top data-role-none">
-        <option value="" selected="selected">Prefecture</option>
-        <!--{html_options options=$arrPref selected=$arrForm[$key3]}-->
-    </select>
 
     <input type="text" name="<!--{$key4}-->" value="<!--{$arrForm[$key4]|h}-->" class="boxLong text top data-role-none" placeholder="Municipality name" />
     <input type="text" name="<!--{$key5}-->" value="<!--{$arrForm[$key5]|h}-->" class="boxLong text data-role-none" placeholder="House number/building name" />

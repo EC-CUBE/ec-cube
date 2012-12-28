@@ -41,7 +41,6 @@
     <td>
         <!--{assign var=key1 value="`$prefix`zip01"}-->
         <!--{assign var=key2 value="`$prefix`zip02"}-->
-        <!--{assign var=key3 value="`$prefix`pref"}-->
         <!--{assign var=key4 value="`$prefix`addr01"}-->
         <!--{assign var=key5 value="`$prefix`addr02"}-->
         <!--{if $arrErr[$key1] || $arrErr[$key2]}-->
@@ -59,13 +58,9 @@
 <tr>
     <th>Address<span class="attention">*</span></th>
     <td>
-        <!--{if $arrErr[$key3] || $arrErr[$key4] || $arrErr[$key5]}-->
-            <div class="attention"><!--{$arrErr[$key3]}--><!--{$arrErr[$key4]}--><!--{$arrErr[$key5]}--></div>
+        <!--{if $arrErr[$key4] || $arrErr[$key5]}-->
+            <div class="attention"><!--{$arrErr[$key4]}--><!--{$arrErr[$key5]}--></div>
         <!--{/if}-->
-        <select name="<!--{$key3}-->" style="<!--{$arrErr[$key3]|sfGetErrorColor}-->">
-                <option value="" selected="selected">Select a prefecture</option>
-                <!--{html_options options=$arrPref selected=$arrForm[$key3]}-->
-        </select>
         <p class="top"><input type="text" name="<!--{$key4}-->" value="<!--{$arrForm[$key4]|h}-->" class="box300" style="<!--{$arrErr[$key4]|sfGetErrorColor}-->; ime-mode: active;" /><br />
             <!--{$smarty.const.SAMPLE_ADDRESS1}--></p>
         <p class="top"><input type="text" name="<!--{$key5}-->" value="<!--{$arrForm[$key5]|h}-->" class="box300" style="<!--{$arrErr[$key5]|sfGetErrorColor}-->; ime-mode: active;" /><br />

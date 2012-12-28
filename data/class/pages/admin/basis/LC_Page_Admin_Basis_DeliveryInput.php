@@ -128,7 +128,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
 
                 if (INPUT_DELIV_FEE) {
                     for ($cnt = 1; $cnt <= DELIVFEE_MAX; $cnt++) {
-                        $objFormParam->addParam(t('LC_Page_Admin_Basis_DeliveryInput_005', array('T_FIELD' => $cnt)), "fee$cnt", PRICE_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+                        $objFormParam->addParam(t('LC_Page_Admin_Basis_DeliveryInput_005', array('T_FIELD' => $cnt)), "fee$cnt", PRICE_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
                     }
                 }
                 break;
@@ -231,17 +231,17 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
             if (INPUT_DELIV_FEE) {
                 $sqlval = array();
                 // 配送料金の設定
-                for ($cnt = 1; $cnt <= DELIVFEE_MAX; $cnt++) {
-                    $keyname = "fee$cnt";
-                    if ($arrRet[$keyname] != '') {
-                        $sqlval['deliv_id'] = $deliv_id;
-                        $sqlval['fee'] = $arrRet[$keyname];
-                        $sqlval['pref'] = $cnt;
-                        // INSERTの実行
-                        $sqlval['fee_id'] = $cnt;
-                        $objQuery->insert('dtb_delivfee', $sqlval);
-                    }
-                }
+//                for ($cnt = 1; $cnt <= DELIVFEE_MAX; $cnt++) {
+//                    $keyname = "fee$cnt";
+//                    if ($arrRet[$keyname] != '') {
+//                        $sqlval['deliv_id'] = $deliv_id;
+//                        $sqlval['fee'] = $arrRet[$keyname];
+//                        $sqlval['pref'] = $cnt;
+//                        // INSERTの実行
+//                        $sqlval['fee_id'] = $cnt;
+//                        $objQuery->insert('dtb_delivfee', $sqlval);
+//                    }
+//                }
             }
         }
 

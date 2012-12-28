@@ -50,7 +50,7 @@
             </tr>
             <tr>
                 <th>Address</th>
-                <td><!--{$arrPref[$arrForm.pref.value]}--><!--{$arrForm.addr01.value|h}--><!--{$arrForm.addr02.value|h}--></td>
+                <td><!--{$arrForm.addr01.value|h}--><!--{$arrForm.addr02.value|h}--></td>
             </tr>
             <tr>
                 <th>Telephone number</th>

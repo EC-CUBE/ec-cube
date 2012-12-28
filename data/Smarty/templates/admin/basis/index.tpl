@@ -153,13 +153,6 @@ $(function() {
             <th><!--{t string="tpl_035"}--></th>
             <td>
                 <p>
-                    <span class="attention"><!--{$arrErr.pref}--></span>
-                    <select class="top" name="pref" style="<!--{if $arrErr.pref != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" >
-                        <option value="" selected="selected"><!--{t string="tpl_036"}--></option>
-                        <!--{html_options options=$arrPref selected=$arrForm.pref}-->
-                    </select>
-                </p>
-                <p>
                     <span class="attention"><!--{$arrErr.addr01}--></span>
                     <input type="text" name="addr01" value="<!--{$arrForm.addr01|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.addr01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="addr01" /><span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.STEXT_LEN}--></span><br />
                     <!--{$smarty.const.SAMPLE_ADDRESS1}-->
