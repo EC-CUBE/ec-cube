@@ -22,7 +22,7 @@
 
 <div class="block_outer">
     <div id="search_area">
-    <h2><span class="title"><img src="<!--{$TPL_URLPATH}-->img/title/tit_bloc_search.gif" alt="Search conditions" /></span></h2>
+    <h2><img src="<!--{$TPL_URLPATH}-->img/title/icon_bloc_search.gif" alt="" /><span class="title">Search conditions</span></h2>
         <div class="block_body">
             <!--検索フォーム-->
             <form name="search_form" id="search_form" method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">

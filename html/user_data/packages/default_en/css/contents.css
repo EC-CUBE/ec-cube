@@ -548,7 +548,16 @@ div#customervoice_area h2 {
     margin-bottom: 20px;
     padding: 6px 0 8px 10px;
     border-top: solid 1px #f90;
-    background: url('../img/background/bg_tit_sub_01.jpg') repeat-x left bottom;
+	border-bottom: 1px solid #ccc;
+    box-shadow: 0 0 1px 1px #fff inset;
+background: #fef3d8; /* Old browsers */
+background: -moz-linear-gradient(top,  #fef3d8 0%, #f7df7f 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fef3d8), color-stop(100%,#f7df7f)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #fef3d8 0%,#f7df7f 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #fef3d8 0%,#f7df7f 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #fef3d8 0%,#f7df7f 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #fef3d8 0%,#f7df7f 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fef3d8', endColorstr='#f7df7f',GradientType=0 ); /* IE6-9 */
 }
 
 div#customervoice_area .review_bloc {
@@ -594,9 +603,18 @@ div#whobought_area {
 
 div#whobought_area h2 {
     border-top: solid 1px #f90;
-    background: url('../img/background/bg_tit_sub_01.jpg') repeat-x left bottom;
     padding: 5px 0 8px 10px;
     font-size: 14px;
+	border-bottom: 1px solid #ccc;
+    box-shadow: 0 0 1px 1px #fff inset;
+background: #fef3d8; /* Old browsers */
+background: -moz-linear-gradient(top,  #fef3d8 0%, #f7df7f 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fef3d8), color-stop(100%,#f7df7f)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #fef3d8 0%,#f7df7f 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #fef3d8 0%,#f7df7f 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #fef3d8 0%,#f7df7f 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #fef3d8 0%,#f7df7f 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fef3d8', endColorstr='#f7df7f',GradientType=0 ); /* IE6-9 */
 }
 
 

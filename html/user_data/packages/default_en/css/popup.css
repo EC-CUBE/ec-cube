@@ -18,9 +18,18 @@ div#windowcolumn h2 {
     padding: 8px;
     border-top: solid 1px #ebeced;
     color: #f60;
-    background: url("../img/background/bg_tit_sub_01.jpg") repeat-x left bottom;
     background-color: #fef3d8;
     font-size: 170%;
+	border-bottom: 1px solid #ccc;
+    box-shadow: 0 0 1px 1px #fff inset;
+background: #fef3d8; /* Old browsers */
+background: -moz-linear-gradient(top,  #fef3d8 0%, #f7df7f 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fef3d8), color-stop(100%,#f7df7f)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #fef3d8 0%,#f7df7f 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #fef3d8 0%,#f7df7f 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #fef3d8 0%,#f7df7f 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #fef3d8 0%,#f7df7f 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fef3d8', endColorstr='#f7df7f',GradientType=0 ); /* IE6-9 */
 }
 
 div#window_area {

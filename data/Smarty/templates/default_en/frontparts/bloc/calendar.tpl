@@ -22,7 +22,7 @@
 
 <div class="block_outer">
     <div id="calender_area">
-    <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_bloc_calender.gif" alt="Calendar" /></h2>
+    <h2><img src="<!--{$TPL_URLPATH}-->img/title/icon_bloc_calender.gif" alt="Calendar" /><span class="title">Calendar</span></h2>
         <div class="block_body">
             <!--{section name=num loop=$arrCalendar}-->
                 <!--{assign var=arrCal value=`$arrCalendar[num]`}-->

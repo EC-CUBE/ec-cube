@@ -82,18 +82,59 @@
 #calender_area h2,
 #cart_area h2,
 #cart h2 {
-    padding: 5px 0 8px 10px;
+	vertical-align: middle;
+    padding: 7px 0 0 10px;
     border-style: solid;
     border-color: #f90 #ccc #ccc;
-    border-width: 1px 1px 0;
-    background: url('../img/background/bg_tit_bloc_01.jpg') repeat-x left bottom;
+    border-width: 1px 1px 1px;
     font-size: 14px;
+	color: #ec5504;
+	text-shadow: 1px 1px 1px #fff;
+    box-shadow: 0 0 1px 1px #fff inset;
+background: #ffffff; /* Old browsers */
+background: -moz-linear-gradient(top,  #ffffff 0%, #e3e3e3 100%); /* FF3.6+ */
+background: -webkit-linear-gradient(top,  #ffffff 0%,#e3e3e3 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #ffffff 0%,#e3e3e3 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #ffffff 0%,#e3e3e3 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #ffffff 0%,#e3e3e3 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e3e3e3',GradientType=0 ); /* IE6-9 */	
 }
+
+#login_area h2 img,
+#search_area h2 img,
+#calender_area h2 img,
+#cart_area h2 img,
+#cart h2 img {
+	float: left;
+	position: relative;
+	top: -1px;
+	margin-bottom: 6px;
+}
+
+
+#login_area h2 .title,
+#search_area h2 .title,
+#calender_area h2 .title,
+#cart_area h2 .title,
+#cart h2 .title {
+	display: block;
+	padding: 0 0 7px 30px;
+	line-height: 1.4;
+}
+
 #category_area h2 {
     border-top: solid 1px #f90;
-    background: url('../img/background/bg_tit_bloc_01.jpg') repeat-x left bottom;
+	border-bottom: 1px solid #ccc;
     padding: 5px 0 8px 10px;
     font-size: 14px;
+    box-shadow: 0 0 1px 1px #fff inset;
+background: #ffffff; /* Old browsers */
+background: -moz-linear-gradient(top,  #ffffff 0%, #e3e3e3 100%); /* FF3.6+ */
+background: -webkit-linear-gradient(top,  #ffffff 0%,#e3e3e3 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #ffffff 0%,#e3e3e3 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #ffffff 0%,#e3e3e3 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #ffffff 0%,#e3e3e3 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e3e3e3',GradientType=0 ); /* IE6-9 */	
 }
 
 /* タイトルの背景 オレンジ */
@@ -102,8 +143,16 @@
     padding: 5px 0 8px 10px;
     border-style: solid;
     border-color: #f90 #ccc #ccc;
-    border-width: 1px 1px 0;
-    background: url('../img/background/bg_btn_bloc_02.jpg') repeat-x left bottom #fef3d8;
+    border-width: 1px 1px 1px;
+    box-shadow: 0 0 1px 1px #fff inset;
+background: #fef3d8; /* Old browsers */
+background: -moz-linear-gradient(top,  #fef3d8 0%, #fedd7e 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fef3d8), color-stop(100%,#fedd7e)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #fef3d8 0%,#fedd7e 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #fef3d8 0%,#fedd7e 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #fef3d8 0%,#fedd7e 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #fef3d8 0%,#fedd7e 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fef3d8', endColorstr='#fedd7e',GradientType=0 ); /* IE6-9 */
 }
 
 
@@ -228,19 +277,23 @@ a.onlink:hover {
 }
 ul.button_like li {
     margin: 0;
-    padding: 0 0 1px 0;
-    background: url("../img/background/bg_btn_list.jpg") bottom repeat-x;
+    border: 1px solid #ccc;
+background: #fdfdfd; /* Old browsers */
+background: -moz-linear-gradient(top,  #fdfdfd 0%, #f1f1f1 91%, #eeeeee 100%); /* FF3.6+ */
+background: -webkit-linear-gradient(top,  #fdfdfd 0%,#f1f1f1 91%,#eeeeee 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #fdfdfd 0%,#f1f1f1 91%,#eeeeee 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #fdfdfd 0%,#f1f1f1 91%,#eeeeee 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #fdfdfd 0%,#f1f1f1 91%,#eeeeee 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdfdfd', endColorstr='#eeeeee',GradientType=0 ); /* IE6-9 */
 }
 ul.button_like li a {
     margin: 0;
     padding: 10px 15px 10px 10px;
-    border: 1px solid;
-    border-bottom: none;
-    border-color: #ccc;
     display: block;
     background: url("../img/icon/ico_arrow_02.gif") no-repeat right;
     text-decoration: none;
     outline: none;
+    box-shadow: 0 0 1px 1px #fff inset;
 }
 
 
