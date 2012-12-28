@@ -47,10 +47,6 @@
                 <td><!--{$arrForm.name01|h}--> <!--{$arrForm.name02|h}--></td>
             </tr>
             <tr>
-                <th>お名前(フリガナ)</th>
-                <td><!--{$arrForm.kana01|h}--> <!--{$arrForm.kana02|h}--></td>
-            </tr>
-            <tr>
                 <th>Postal code</th>
                 <td><!--{$arrForm.zip01}-->-<!--{$arrForm.zip02}--></td>
             </tr>

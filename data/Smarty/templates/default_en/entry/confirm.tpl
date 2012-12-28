@@ -43,13 +43,6 @@
                 </td>
             </tr>
             <tr>
-                <th>お名前(フリガナ)</th>
-                <td>
-                    <!--{$arrForm.kana01|h}-->&nbsp;
-                    <!--{$arrForm.kana02|h}-->
-                </td>
-            </tr>
-            <tr>
                 <th>Postal code</th>
                 <td>
                     <!--{$arrForm.zip01|h}--> - <!--{$arrForm.zip02|h}-->

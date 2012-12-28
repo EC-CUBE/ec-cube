@@ -125,26 +125,10 @@ $(function() {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_029"}--></th>
-            <td>
-                <span class="attention"><!--{$arrErr.company_kana}--></span>
-                <input type="text" name="company_kana" value="<!--{$arrForm.company_kana|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.company_kana != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
-                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.STEXT_LEN}--></span>
-            </td>
-        </tr>
-        <tr>
             <th><!--{t string="tpl_030_1"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.shop_name}--></span>
                 <input type="text" name="shop_name" value="<!--{$arrForm.shop_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.shop_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
-                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.STEXT_LEN}--></span>
-            </td>
-        </tr>
-        <tr>
-            <th><!--{t string="tpl_031"}--></th>
-            <td>
-                <span class="attention"><!--{$arrErr.shop_kana}--></span>
-                <input type="text" name="shop_kana" value="<!--{$arrForm.shop_kana|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.shop_kana != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
                 <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.STEXT_LEN}--></span>
             </td>
         </tr>

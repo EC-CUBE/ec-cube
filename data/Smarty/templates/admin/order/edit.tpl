@@ -36,8 +36,6 @@
         df = document.form1;
         df['shipping_name01[0]'].value = df.order_name01.value;
         df['shipping_name02[0]'].value = df.order_name02.value;
-        df['shipping_kana01[0]'].value = df.order_kana01.value;
-        df['shipping_kana02[0]'].value = df.order_kana02.value;
         df['shipping_zip01[0]'].value = df.order_zip01.value;
         df['shipping_zip02[0]'].value = df.order_zip02.value;
         df['shipping_tel01[0]'].value = df.order_tel01.value;
@@ -160,16 +158,6 @@
             <td>
                 <!--{assign var=key1 value="order_name01"}-->
                 <!--{assign var=key2 value="order_name02"}-->
-                <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
-                <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="15" class="box15" />
-                <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="15" class="box15" />
-            </td>
-        </tr>
-        <tr>
-            <th><!--{t string="tpl_210"}--></th>
-            <td>
-                <!--{assign var=key1 value="order_kana01"}-->
-                <!--{assign var=key2 value="order_kana02"}-->
                 <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
                 <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="15" class="box15" />
                 <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="15" class="box15" />
@@ -472,16 +460,6 @@
                 <td>
                     <!--{assign var=key1 value="shipping_name01"}-->
                     <!--{assign var=key2 value="shipping_name02"}-->
-                    <span class="attention"><!--{$arrErr[$key1][$shipping_index]}--><!--{$arrErr[$key2][$shipping_index]}--></span>
-                    <input type="text" name="<!--{$key1}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key1]|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1][$shipping_index]|sfGetErrorColor}-->" size="15" class="box15" />
-                    <input type="text" name="<!--{$key2}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key2]|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2][$shipping_index]|sfGetErrorColor}-->" size="15" class="box15" />
-                </td>
-            </tr>
-            <tr>
-                <th><!--{t string="tpl_210"}--></th>
-                <td>
-                    <!--{assign var=key1 value="shipping_kana01"}-->
-                    <!--{assign var=key2 value="shipping_kana02"}-->
                     <span class="attention"><!--{$arrErr[$key1][$shipping_index]}--><!--{$arrErr[$key2][$shipping_index]}--></span>
                     <input type="text" name="<!--{$key1}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key1]|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1][$shipping_index]|sfGetErrorColor}-->" size="15" class="box15" />
                     <input type="text" name="<!--{$key2}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key2]|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2][$shipping_index]|sfGetErrorColor}-->" size="15" class="box15" />

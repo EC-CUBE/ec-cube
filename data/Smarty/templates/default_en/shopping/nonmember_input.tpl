@@ -52,16 +52,6 @@
                 </td>
             </tr>
             <tr>
-                <th>お名前(フリガナ)<span class="attention">*</span></th>
-                <td>
-                    <!--{assign var=key1 value="order_kana01"}-->
-                    <!--{assign var=key2 value="order_kana02"}-->
-                    <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
-                    セイ&nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: active;" class="box120" />&nbsp;
-                    メイ&nbsp;<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: active;" class="box120" />
-                </td>
-            </tr>
-            <tr>
                 <th>Postal code<span class="attention">*</span></th>
                 <td>
                     <!--{assign var=key1 value="order_zip01"}-->
@@ -189,16 +179,6 @@
                     <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
                     Last name&nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: active;" class="box120" />&nbsp;
                     Name&nbsp;<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: active;" class="box120" />
-                </td>
-            </tr>
-            <tr>
-                <th>お名前(フリガナ)<span class="attention">*</span></th>
-                <td>
-                    <!--{assign var=key1 value="shipping_kana01"}-->
-                    <!--{assign var=key2 value="shipping_kana02"}-->
-                    <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
-                    セイ&nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: active;" class="box120" />&nbsp;
-                    メイ&nbsp;<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: active;" class="box120" />
                 </td>
             </tr>
             <tr>

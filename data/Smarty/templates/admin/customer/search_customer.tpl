@@ -56,20 +56,12 @@ function func_submit(customer_id){
             <input type="text" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key].value|h}-->" size="30" class="box30" <!--{if $arrErr[$key]}--><!--{sfSetErrorStyle}--><!--{/if}--> />
         </td>
     </tr>
-    <tr>
+    <tr class="n">
         <th class="colmun"><!--{t string="tpl_208"}--></th>
         <td>
             <!--{assign var=key value="search_name"}-->
             <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
             <input type="text" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key].value|h}-->" size="30" class="box30" <!--{if $arrErr[$key]}--><!--{sfSetErrorStyle}--><!--{/if}--> />
-        </td>
-    </tr>
-    <tr class="n">
-        <th class="colmun"><!--{t string="tpl_210"}--></th>
-        <td>
-        <!--{assign var=key value="search_kana"}-->
-        <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
-        <input type="text" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key].value|h}-->" size="30" class="box30" <!--{if $arrErr[$key]}--><!--{sfSetErrorStyle}--><!--{/if}--> />
         </td>
     </tr>
 </table>
@@ -91,7 +83,7 @@ function func_submit(customer_id){
     <table class="list">
         <tr>
             <th><!--{t string="tpl_207"}--></th>
-            <th><!--{t string="tpl_210"}--></th>
+            <th><!--{t string="tpl_208"}--></th>
             <th><!--{t string="tpl_037"}--></th>
             <th><!--{t string="tpl_196"}--></th>
         </tr>
@@ -101,7 +93,7 @@ function func_submit(customer_id){
             <td>
             <!--{$arrCustomer[cnt].customer_id|h}-->
             </td>
-            <td><!--{$arrCustomer[cnt].name01|h}--><!--{$arrCustomer[cnt].name02|h}-->(<!--{$arrCustomer[cnt].kana01|h}--><!--{$arrCustomer[cnt].kana02|h}-->)</td>
+            <td><!--{$arrCustomer[cnt].name01|h}--><!--{$arrCustomer[cnt].name02|h}--></td>
             <td><!--{$arrCustomer[cnt].tel01|h}-->-<!--{$arrCustomer[cnt].tel02|h}-->-<!--{$arrCustomer[cnt].tel03|h}--></td>
             <td align="center"><a href="" onClick="return func_submit(<!--{$arrCustomer[cnt].customer_id|h}-->)"><!--{t string="tpl_196"}--></a></td>
         </tr>

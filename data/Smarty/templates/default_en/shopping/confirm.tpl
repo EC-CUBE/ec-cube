@@ -228,10 +228,6 @@
                     <td><!--{$shippingItem.shipping_name01|h}--> <!--{$shippingItem.shipping_name02|h}--></td>
                 </tr>
                 <tr>
-                    <th scope="row">お名前(フリガナ)</th>
-                    <td><!--{$shippingItem.shipping_kana01|h}--> <!--{$shippingItem.shipping_kana02|h}--></td>
-                </tr>
-                <tr>
                     <th scope="row">Postal code</th>
                     <td><!--{$shippingItem.shipping_zip01|h}-->-<!--{$shippingItem.shipping_zip02|h}--></td>
                 </tr>

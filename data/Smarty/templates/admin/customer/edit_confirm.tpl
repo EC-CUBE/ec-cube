@@ -72,10 +72,6 @@ function func_return(){
                 <td><!--{t string="tpl_240" T_FIELD1=$arrForm.name01|h T_FIELD2=$arrForm.name02|h}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_210"}--></th>
-                <td><!--{t string="tpl_240" T_FIELD1=$arrForm.kana01|h T_FIELD2=$arrForm.kana02|h}--></td>
-            </tr>
-            <tr>
                 <th><!--{t string="tpl_033"}--></th>
                 <td><!--{t string="tpl_106"}--> <!--{$arrForm.zip01|h}--> - <!--{$arrForm.zip02|h}--></td>
             </tr>

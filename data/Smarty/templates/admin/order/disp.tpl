@@ -72,10 +72,6 @@ self.moveTo(20,20);self.focus();
             <td><!--{$arrForm.order_name01.value|h}-->　<!--{$arrForm.order_name02.value|h}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_364"}--></th>
-            <td><!--{$arrForm.order_kana01.value|h}-->　<!--{$arrForm.order_kana02.value|h}--></td>
-        </tr>
-        <tr>
             <th><!--{t string="tpl_108"}--></th>
             <td><!--{$arrForm.order_email.value|h}--></td>
         </tr>
@@ -237,14 +233,6 @@ self.moveTo(20,20);self.focus();
                 <td>
                     <!--{assign var=key1 value="shipping_name01"}-->
                     <!--{assign var=key2 value="shipping_name02"}-->
-                    <!--{$arrShipping[$key1]|h}-->　<!--{$arrShipping[$key2]|h}-->
-                </td>
-            </tr>
-            <tr>
-                <th><!--{t string="tpl_364"}--></th>
-                <td>
-                    <!--{assign var=key1 value="shipping_kana01"}-->
-                    <!--{assign var=key2 value="shipping_kana02"}-->
                     <!--{$arrShipping[$key1]|h}-->　<!--{$arrShipping[$key2]|h}-->
                 </td>
             </tr>

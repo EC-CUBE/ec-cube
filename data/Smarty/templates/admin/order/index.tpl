@@ -142,16 +142,10 @@
         </tr>
         <tr>
             <th><!--{t string="tpl_208"}--></th>
-            <td>
+            <td colspan="3">
             <!--{assign var=key value="search_order_name"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
-            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" />
-            </td>
-            <th><!--{t string="tpl_210"}--></th>
-            <td>
-            <!--{assign var=key value="search_order_kana"}-->
-            <span class="attention"><!--{$arrErr[$key]}--></span>
-            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" />
+            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" />
             </td>
         </tr>
         <tr>

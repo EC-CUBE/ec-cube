@@ -92,13 +92,6 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_210_1"}--></th>
-                <td>
-                    <span class="attention"><!--{$arrErr.kana01}--><!--{$arrErr.kana02}--></span>
-                    <input type="text" name="kana01" value="<!--{$arrForm.kana01|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.kana01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />&nbsp;&nbsp;<input type="text" name="kana02" value="<!--{$arrForm.kana02|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.kana02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
-                </td>
-            </tr>
-            <tr>
                 <th><!--{t string="tpl_033_1"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.zip01}--><!--{$arrErr.zip02}--></span>

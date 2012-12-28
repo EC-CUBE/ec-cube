@@ -41,10 +41,6 @@
                 <td><!--{$arrForm.name01.value|h}--> <!--{$arrForm.name02.value|h}--></td>
             </tr>
             <tr>
-                <th>お名前(フリガナ)<span class="attention">*</span></th>
-                <td><!--{$arrForm.kana01.value|h}--> <!--{$arrForm.kana02.value|h}--></td>
-            </tr>
-            <tr>
                 <th>Postal code</th>
                 <td>
                     <!--{if strlen($arrForm.zip01.value) > 0 && strlen($arrForm.zip02.value) > 0}-->

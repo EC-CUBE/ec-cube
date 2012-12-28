@@ -37,18 +37,6 @@
     </td>
 </tr>
 <tr>
-    <th>お名前(フリガナ)<span class="attention">*</span></th>
-    <td>
-        <!--{assign var=key1 value="`$prefix`kana01"}-->
-        <!--{assign var=key2 value="`$prefix`kana02"}-->
-        <!--{if $arrErr[$key1] || $arrErr[$key2]}-->
-            <div class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></div>
-        <!--{/if}-->
-        セイ&nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1]|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: active;" class="box120" />&nbsp;
-        メイ&nbsp;<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2]|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: active;" class="box120" />
-    </td>
-</tr>
-<tr>
     <th>Postal code<span class="attention">*</span></th>
     <td>
         <!--{assign var=key1 value="`$prefix`zip01"}-->
