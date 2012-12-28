@@ -33,12 +33,12 @@
             var mode = event.target.name;
 
             if(mode === 'disable') {
-                result = window.confirm('<!--{t string="tpl_458"}-->');
+                result = window.confirm('<!--{t string="tpl_458" escape="j"}-->');
                 if(result === false) {
                     $(event.target).attr("checked", "checked");
                 }
             } else if(mode === 'enable') {
-                result = window.confirm('<!--{t string="tpl_459"}-->');
+                result = window.confirm('<!--{t string="tpl_459" escape="j"}-->');
                 if(result === false) {
                     $(event.target).attr("checked", "");
                 }
@@ -54,7 +54,7 @@
      * 通信エラー表示.
      */
     function remoteException(XMLHttpRequest, textStatus, errorThrown) {
-        alert('<!--{t string="tpl_460"}-->');
+        alert('<!--{t string="tpl_460" escape="j"}-->');
     }
 
     /**
@@ -79,7 +79,7 @@
      * インストール
      */
     function install() {
-        if (window.confirm('<!--{t string="tpl_461" kaigyo_escape=true}-->')){
+        if (window.confirm('<!--{t string="tpl_461" escape="j"}-->')){
             fnModeSubmit('install','','');
         }
     }
@@ -88,7 +88,7 @@
      * アンインストール(削除)
      */
     function uninstall(plugin_id, plugin_code) {
-        if (window.confirm('<!--{t string="tpl_462"}-->')){
+        if (window.confirm('<!--{t string="tpl_462" escape="j"}-->')){
             fnSetFormValue('plugin_id', plugin_id);
             fnModeSubmit('uninstall', 'plugin_code', plugin_code);
         }
@@ -98,7 +98,7 @@
      * アップデート処理
      */
     function update(plugin_id, plugin_code) {
-        if (window.confirm('<!--{t string="tpl_463"}-->')){
+        if (window.confirm('<!--{t string="tpl_463" escape="j"}-->')){
             removeUpdateFile('update_file_' + plugin_id);
             fnSetFormValue('plugin_id', plugin_id);
             fnModeSubmit('update','plugin_code', plugin_code);
@@ -127,8 +127,19 @@
 <div id="system" class="contents-main">
     <h2><!--{t string="tpl_464"}--></h2>
     <table class="form">
+        <!--{* 案1 *}-->
         <tr>
-            <th><!--{t string="tpl_465"}--></th>
+            <th><!--{t string="tpl_465"}--> <!--{t string="<require>"}--></th>
+            <td>
+                <!--{assign var=key value="plugin_file"}-->
+                <span class="attention"><!--{$arrErr[$key]}--></span>
+                <input type="file" name="<!--{ $key }-->" class="box45" size="43"  style="<!--{$arrErr[$key]|sfGetErrorColor}--> <!--{if $arrErr[$key]}--> background-color:<!--{$smarty.const.ERR_COLOR|h}--><!--{/if}-->">
+                <a class="btn-action" href="javascript:;" onclick="install(); return false;"><span class="btn-next"><!--{t string="tpl_466"}--></span></a>
+            </td>
+        </tr>
+        <!--{* 案2 *}-->
+        <tr>
+            <th><!--{t string="tpl_465"}--> <span class='attention'><!--{t string="require_mark"}--></span></th>
             <td>
                 <!--{assign var=key value="plugin_file"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>

@@ -44,6 +44,11 @@ function smarty_function_t($params, &$smarty) {
         $options['device_type_id'] = $params['device_type_id'];
         unset($params['device_type_id']);
     }
+    // エスケープの指定がある場合、オプションに移す
+    if (isset($params['escape'])) {
+        $options['escape'] = $params['escape'];
+        unset($params['escape']);
+    }
 
     return t($string, $params, $options);
 }
