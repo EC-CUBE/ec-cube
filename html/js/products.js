@@ -99,7 +99,7 @@ function checkStock($form, product_id, classcat_id1, classcat_id2) {
     var $cartbtn_dynamic = $form.find('[id^=cartbtn_dynamic]');
     if (classcat2 && classcat2['stock_find'] === false) {
 
-        $cartbtn_dynamic.text('申し訳ございませんが、只今品切れ中です。').show();
+        $cartbtn_dynamic.text(fnT('j_products_001')).show();
         $cartbtn_default.hide();
     } else {
         $cartbtn_dynamic.hide();
