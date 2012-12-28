@@ -30,7 +30,8 @@
         <meta name="format-detection" content="telephone=no">
         <!--{* 共通CSS *}-->
         <link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->css/import.css" />
-
+        <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/locales/<!--{$smarty.const.LANG_CODE}-->.js"></script>
+        <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/locale.js"></script>
         <!--{if $tpl_page_category == "abouts"}-->
             <!--{if ($smarty.server.HTTPS != "") && ($smarty.server.HTTPS != "off")}-->
                 <script src="https://maps-api-ssl.google.com/maps/api/js?sensor=false"></script>
