@@ -343,13 +343,15 @@ div#header_navi {
     height: 38px;
 }
 div#header_navi ul li {
-    display: block;
     float: left;
 }
-div#header_navi ul li.mypage,
-div#header_navi ul li.entry {
-    margin-top: 6px;
+div#header_navi ul li.mypage a {
 }
+div#header_navi ul li.entry a {
+}
+div#header_navi ul li.view_cart a {
+}
+
 
 
 /* ==============================================

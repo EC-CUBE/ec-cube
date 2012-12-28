@@ -67,7 +67,7 @@
     margin-bottom: 3px;
     padding-left: 15px;
     background: url("../img/icon/ico_arrow_03.gif") no-repeat left;
-    font-size: 90%;
+    font-size: 0.917em;
 }
 #container .block_outer .block_body dl.formlist span {
     vertical-align: top;
@@ -225,7 +225,6 @@ a.onlink:hover {
 }
 #guide_area li {
     margin-bottom: 5px;
-    letter-spacing: -0.05em;
 }
 ul.button_like li {
     margin: 0;
@@ -271,7 +270,7 @@ ul.button_like li a {
     background: url("../img/icon/ico_arrow_03.gif") no-repeat left;
     width: 90px;
     float: left;
-    font-size: 90%;
+    font-size: 0.917em;
 }
 #container .login_area dl.formlist dd {
     margin-bottom: 5px;
@@ -282,7 +281,6 @@ ul.button_like li a {
 }
 #container div#login_area .block_body .mini {
     margin-top: 5px;
-    letter-spacing: -0.01em;
 }
 
 
@@ -313,7 +311,7 @@ div#search_area .block_body .btn {
     border: none;
     width: 150px;
     margin: 0 auto 5px;
-    font-size: 90%;
+    font-size: 0.917em;
 }
 #calender_area table td {
     padding: 1px 3px;
@@ -331,7 +329,7 @@ div#search_area .block_body .btn {
     margin-bottom: 5px;
     padding-left: 12px;
     background: url("../img/icon/ico_arrow_04.gif") no-repeat left;
-    font-size: 120%;
+    font-size: 1.05em;
 }
 #calender_area .off {
     color: #f00;
@@ -342,7 +340,7 @@ div#search_area .block_body .btn {
 }
 #calender_area .information {
     margin-left: 10px;
-    font-size: 90%;
+    font-size: 0.917em;
 }
 
 

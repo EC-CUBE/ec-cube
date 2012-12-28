@@ -36,8 +36,8 @@ div#undercolumn_contact {
     width: 100%;
 }
 
-.zipimg img {
-    vertical-align: middle;
+.zipimg {
+    padding: 5px 0;
 }
 
 
@@ -66,7 +66,7 @@ div#mynavi_area .mynavi_list li {
     padding-left: 15px;
     float: left;
     background: url('../img/icon/ico_arrow_01.gif') no-repeat left ;
-    font-size: 120%;
+    font-size: 1.05em;
 }
 
 div#mynavi_area div.point_announce {
@@ -88,7 +88,7 @@ div#mypagecolumn h4 {
     margin: 10px auto;
     border-bottom: 1px solid #999;
     text-align: left;
-    font-size: 120%;
+    font-size: 1.05em;
 }
 
 
@@ -262,7 +262,7 @@ div.listrightbloc ul.status_icon li {
 /* 商品名 */
 div.listrightbloc h3 {
     font-weight: bold;
-    font-size: 120%;
+    font-size: 1.05em;
 }
 
 /* コメント */
@@ -610,7 +610,7 @@ div#undercolumn_cart .point_announce {
     margin-bottom: 20px;
     border: solid 1px #ffcc62;
     background: #fffaf0;
-    font-size: 120%;
+    font-size: 1.05em;
     text-align: center;
     line-height: 140%;
 }

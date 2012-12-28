@@ -17,7 +17,6 @@
     border: solid 1px #ffc979;
     height: 30px;
     background: #fef3d3;
-    letter-spacing: -0.075em;
 }
 #header_login_area ul.formlist {
     margin-top: 5px;
@@ -29,19 +28,19 @@
     padding-left: 28px;
     width: 155px;
     background: url("../img/common/ico_arrow_login.gif") no-repeat left;
-    font-size: 90%;
+    font-size: 0.917em;
 }
 #header_login_area ul.formlist li.password {
     padding-right: 5px;
 }
 #header_login_area ul.formlist li.login_memory {
     padding-right: 5px;
-    font-size: 90%;
+    font-size: 0.917em;
 }
 #header_login_area ul.formlist li.forgot {
     margin-top: 3px;
     padding-right: 5px;
-    font-size: 90%;
+    font-size: 0.917em;
 }
 #header_login_area ul.formlist li.btn {
     padding-right: 5px;
@@ -52,8 +51,8 @@
     padding: 5px 0;
     vertical-align: middle;
 }
-#header_login_area p.btn input[type=image] {
-    vertical-align: middle;
+#header_login_area .btn button {
+    padding: 2px 4px;
 }
 
 /* ***********************************************
