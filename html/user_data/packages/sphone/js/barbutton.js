@@ -2,7 +2,7 @@ function setTopButton(topURL) {
     if(!topURL){
         topURL = "/";
     }
-    var buttonText = "TOPへ";
+    var buttonText = fnT("j_breadcrumbs_001");
     var buttonId = "btn-top";
 
     //ボタンの生成・設定

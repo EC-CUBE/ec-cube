@@ -26,7 +26,7 @@
      $.fn.breadcrumbs = function(options) {
          var defaults = {
              bread_crumbs: '',
-             start_node: '<span>ホーム</span>',
+             start_node: fnT('j_breadcrumbs_001'),
              anchor_node: '<a onclick="fnModeSubmit(\'tree\', \'parent_category_id\', '
                  + '{category_id}); return false" href="javascript:;" />',
              delimiter_node: '<span>&nbsp;&gt;&nbsp;</span>'

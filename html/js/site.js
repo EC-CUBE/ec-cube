@@ -52,7 +52,7 @@ function fnCallAddress(php_url, tagname1, tagname2, input1, input2) {
             }
         );
     } else {
-        alert("郵便番号を正しく入力して下さい。");
+        alert(fnT('j_site_001'));
 	}
 }
 
@@ -120,28 +120,28 @@ function fnCancelEnter()
 function fnModeSubmit(mode, keyname, keyid) {
     switch(mode) {
     case 'delete_category':
-        if(!window.confirm('選択したカテゴリとカテゴリ内のすべてのカテゴリを削除します')){
+        if(!window.confirm(fnT('j_site_002'))){
             return;
         }
         break;
     case 'delete':
-        if(!window.confirm('一度削除したデータは、元に戻せません。\n削除しても宜しいですか？')){
+        if(!window.confirm(fnT('j_site_003'))){
             return;
         }
         break;
     case 'delete_order':
-        if(!window.confirm('一度削除したデータは、元に戻せません。\n削除しても宜しいですか？\n\n※ 在庫数は手動で戻してください。')){
+        if(!window.confirm(fnT('j_site_004'))){
             return;
         }
         mode = 'delete';
         break;
     case 'confirm':
-        if(!window.confirm('登録しても宜しいですか')){
+        if(!window.confirm(fnT('j_site_005'))){
             return;
         }
         break;
     case 'delete_all':
-        if(!window.confirm('検索結果をすべて削除しても宜しいですか')){
+        if(!window.confirm(fnT('j_site_006'))){
             return;
         }
         break;
@@ -158,17 +158,17 @@ function fnModeSubmit(mode, keyname, keyid) {
 function fnFormModeSubmit(form, mode, keyname, keyid) {
     switch(mode) {
     case 'delete':
-        if(!window.confirm('一度削除したデータは、元に戻せません。\n削除しても宜しいですか？')){
+        if(!window.confirm(fnT('j_site_007'))){
             return;
         }
         break;
     case 'confirm':
-        if(!window.confirm('登録しても宜しいですか')){
+        if(!window.confirm(fnT('j_site_008'))){
             return;
         }
         break;
     case 'regist':
-        if(!window.confirm('登録しても宜しいですか')){
+        if(!window.confirm(fnT('j_site_009'))){
             return;
         }
         break;
@@ -319,7 +319,7 @@ function fnCheckLogin(formname) {
 
     // 必須項目が入力されていない場合
     if(errflg == true) {
-        alert('メールアドレス/パスワードを入力して下さい。');
+        alert(fnT('j_site_010'));
         return false;
     } else {
         return true;
@@ -366,9 +366,9 @@ function ChangeSize(buttonSelector, textAreaSelector, max, min) {
 
     if ($(textAreaSelector).attr('rows') <= min) {
         $(textAreaSelector).attr('rows', max);
-        $(buttonSelector).text('縮小');
+        $(buttonSelector).text(fnT('j_site_011'));
     } else {
         $(textAreaSelector).attr('rows', min);
-        $(buttonSelector).text('拡大');
+        $(buttonSelector).text(fnT('j_site_012'));
     }
 }

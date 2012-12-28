@@ -42,10 +42,10 @@ function fnRegistMember() {
 
     // 必須項目が入力されていない場合
     if(errflg == true) {
-        alert('必須項目を入力して下さい。');
+        alert(fnT('j_admin_001'));
         return false;
     } else {
-        if(window.confirm('内容を登録しても宜しいでしょうか')){
+        if(window.confirm(fnT('j_admin_002'))){
             return true;
         } else {
             return false;
@@ -76,7 +76,7 @@ function fnSubmitParent() {
 //指定されたidの削除を行うページを実行する。
 function fnDeleteMember(id, pageno) {
     url = "./delete.php?id=" + id + "&pageno=" + pageno;
-    if(window.confirm('登録内容を削除しても宜しいでしょうか')){
+    if(window.confirm(fnT('j_admin_003'))){
         location.href = url;
     }
 }
@@ -158,7 +158,7 @@ function fnClearText(name) {
 
 // カテゴリの追加
 function fnAddCat(cat_id) {
-    if(window.confirm('カテゴリを登録しても宜しいでしょうか')){
+    if(window.confirm(fnT('j_admin_004'))){
         document.form1['mode'].value = 'edit';
         document.form1['cat_id'].value = cat_id;
     }
@@ -176,7 +176,7 @@ function fnEditCat(parent_id, cat_id) {
 function fnCheckCat(obj) {
     val = obj[obj.selectedIndex].value;
     if (val == ""){
-        alert ("親カテゴリは選択できません");
+        alert (fnT("j_admin_005"));
         obj.selectedIndex = 0;
     }
 }
@@ -213,7 +213,7 @@ function fnAllCheck(input, selector) {
 
 //指定されたidの削除を行うページを実行する。
 function fnDelete(url) {
-    if(window.confirm('登録内容を削除しても宜しいでしょうか')){
+    if(window.confirm(fnT('j_admin_006'))){
         location.href = url;
         return false;
     }
@@ -249,7 +249,7 @@ function fnFormSubmit(form) {
 
 // 確認メッセージ
 function fnConfirm() {
-    if(window.confirm('この内容で登録しても宜しいでしょうか')){
+    if(window.confirm(fnT('j_admin_007'))){
         return true;
     }
     return false;
@@ -257,7 +257,7 @@ function fnConfirm() {
 
 //削除確認メッセージ
 function fnDeleteConfirm() {
-    if(window.confirm('削除しても宜しいでしょうか')){
+    if(window.confirm(fnT('j_admin_008'))){
         return true;
     }
     return false;
@@ -265,7 +265,7 @@ function fnDeleteConfirm() {
 
 //メルマガ形式変更確認メッセージ
 function fnmerumagaupdateConfirm() {
-    if(window.confirm("既に登録されているメールアドレスです。\nメルマガの種類が変更されます。宜しいですか？")){
+    if(window.confirm(fnT("j_admin_009"))){
         return true;
     }
     return false;
@@ -341,11 +341,11 @@ function fnDispChange(disp_id, inner_id, disp_flg){
     if (disp_state == "") {
         document.form1[disp_flg].value="none";
         document.getElementById(disp_id).style.display="none";
-        document.getElementById(inner_id).innerHTML = '<FONT Color="#FFFF99"> << 表示 </FONT>';
+        document.getElementById(inner_id).innerHTML = fnT('j_admin_010');
     }else{
         document.form1[disp_flg].value="";
         document.getElementById(disp_id).style.display="";
-        document.getElementById(inner_id).innerHTML = ' <FONT Color="#FFFF99"> >> 非表示 </FONT>';
+        document.getElementById(inner_id).innerHTML = fnT('j_admin_011');
     }
 }
 

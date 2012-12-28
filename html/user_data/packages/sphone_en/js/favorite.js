@@ -23,10 +23,10 @@ function fnAddFavoriteSphone(favoriteProductId) {
            },
            success: function(result){
               if (result == "true") {
-                  alert("お気に入りに登録しました");
-                  $(".btn_favorite").html("<p>お気に入り登録済み</p>");
+                  alert("j_favorite_001");
+                  $(".btn_favorite").html(fnT("j_favorite_002"));
               } else {
-                  alert("お気に入りの登録に失敗しました");
+                  alert(fnT("j_favorite_003"));
               }
               $.mobile.hidePageLoadingMsg();
            }
