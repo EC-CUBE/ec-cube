@@ -32,6 +32,8 @@
 <link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/reset.css" type="text/css" media="all" />
 <link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/admin_contents.css" type="text/css" media="all" />
 <link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/admin_file_manager.css" type="text/css" media="all" />
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/locales/<!--{$smarty.const.LANG_CODE}-->.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/locale.js.php"></script>
 <!--{if $tpl_mainno eq "basis" && $tpl_subno eq "index"}-->
 <!--{if ($smarty.server.HTTPS != "") && ($smarty.server.HTTPS != "off")}-->
 <script type="text/javascript" src="https://maps-api-ssl.google.com/maps/api/js?sensor=false"></script>
@@ -51,7 +53,7 @@
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.ui/jquery-ui-1.8.24.custom.min.js"></script>
 <link rel="stylesheet" href="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.ui/smoothness/jquery-ui-1.8.24.custom.css" type="text/css" media="all" />
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.ui/jquery-ui-i18n.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.ui/ui-datepicker.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.ui/ui-datepicker-<!--{$smarty.const.LANG_CODE}-->.js"></script>
 <!--{/if}-->
 <title><!--{$smarty.const.ADMIN_TITLE}--></title>
 <link rel="shortcut icon" href="<!--{$TPL_URLPATH}-->img/common/favicon.ico" />

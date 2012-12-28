@@ -29,7 +29,7 @@
 <link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/import.css" type="text/css" media="all" />
 <link rel="alternate" type="application/rss+xml" title="RSS" href="<!--{$smarty.const.HTTP_URL}-->rss/<!--{$smarty.const.DIR_INDEX_PATH}-->" />
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/locales/<!--{$smarty.const.LANG_CODE}-->.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/locale.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/locale.js.php"></script>
 <!--{if $tpl_page_category == "abouts"}-->
 <!--{if ($smarty.server.HTTPS != "") && ($smarty.server.HTTPS != "off")}-->
 <script type="text/javascript" src="https://maps-api-ssl.google.com/maps/api/js?sensor=false"></script>
@@ -59,10 +59,6 @@
     <!--{$tpl_javascript}-->
 
     $(function(){
-        cube_i18n.lang_code = '<!--{$smarty.const.LANG_CODE}-->';
-        cube_i18n.root_path = '<!--{$smarty.const.ROOT_URLPATH}-->';
-        //cube_i18n.load();
-        
         <!--{$tpl_onload}-->
     });
 
