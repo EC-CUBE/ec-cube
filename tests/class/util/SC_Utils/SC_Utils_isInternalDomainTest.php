@@ -44,24 +44,27 @@ class SC_Utils_sfIsInternalDomainTest extends Common_TestCase {
 
   /////////////////////////////////////////
   public function testsfIsInternalDomain_ドメインが一致する場合_trueが返る() {
+    $url = 'http://test.local/html/index.php';
     $this->expected = TRUE;
-    $this->actual = SC_Utils::sfIsInternalDomain('http://test.local/html/index.php');
+    $this->actual = SC_Utils::sfIsInternalDomain($url);
 
-    $this->verify();
+    $this->verify($url);
   }
 
   public function testsfIsInternalDomain_アンカーを含むURLの場合_trueが返る() {
+    $url = 'http://test.local/html/index.php#hoge';
     $this->expected = TRUE;
-    $this->actual = SC_Utils::sfIsInternalDomain('http://test.local/html/index.php#hoge');
+    $this->actual = SC_Utils::sfIsInternalDomain($url);
 
-    $this->verify();
+    $this->verify($url);
   }
 
   public function testsfIsInternalDomain_ドメインが一致しない場合_falseが返る() {
+    $url = 'http://test.local.jp/html/index.php';
     $this->expected = TRUE;
-    $this->actual = SC_Utils::sfIsInternalDomain('http://test.local.jp/html/index.php');
+    $this->actual = SC_Utils::sfIsInternalDomain($url);
 
-    $this->verify();
+    $this->verify($url);
   }
 
   //////////////////////////////////////////

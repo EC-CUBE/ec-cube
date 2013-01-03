@@ -53,7 +53,7 @@ class SC_Utils_clearCompliedTemplateTest extends Common_TestCase {
     Test_Utils::array_append($this->actual, SMARTPHONE_COMPILE_REALDIR);
     Test_Utils::array_append($this->actual, MOBILE_COMPILE_REALDIR);
 
-    $this->verify();
+    $this->verify('コンパイル済みファイルの格納先の中身');
   }
 
   //////////////////////////////////////////

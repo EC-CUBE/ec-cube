@@ -25,21 +25,17 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  */
 
 /**
- * SC_Utils::recursiveMkDir()のテストクラス.
+ * SC_Utils::sfUpDirName()のテストクラス.
  *
  *
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_recursiveMkdirTest extends Common_TestCase {
+class SC_Utils_sfUpDirNameTest extends Common_TestCase {
 
-  static $TMP_DIR;
 
   protected function setUp() {
-    self::$TMP_DIR = realpath(dirname(__FILE__)) . "/../../../tmp";
-    SC_Helper_FileManager::deleteFile(self::$TMP_DIR);
-    mkdir(self::$TMP_DIR, 0777, true);
-// parent::setUp();
+    // parent::setUp();
   }
 
   protected function tearDown() {
@@ -47,25 +43,13 @@ class SC_Utils_recursiveMkdirTest extends Common_TestCase {
   }
 
   /////////////////////////////////////////
-  public function testRecursiveMkdir_パーミッションを指定した場合_指定のパーミッションでディレクトリが作られる() {
-    $path = realpath(dirname(__FILE__)) . "/../../../tmp/dir1/dir2/dir3/";
-    $mode = 0755;
+  public function testSfUpDirName__1階層上のディレクトリ名が取得できる() {
+    $_SERVER['SCRIPT_NAME'] = 'dir1/dir2/updir/current';
 
-    $result = SC_Utils::recursiveMkdir($path, $mode);
-    $this->expected = '0755';
-    $this->actual = substr(sprintf('%o', fileperms($path)), -4);
+    $this->expected = 'updir';
+    $this->actual = SC_Utils::sfUpDirName();
 
-    $this->verify('作成したディレクトリのパーミッション');
-  }
-
-  public function testRecursiveMkdir_パーミッションを指定しない場合_0777でディレクトリが作られる() {
-    $path = realpath(dirname(__FILE__)) . "/../../../tmp/dir1/dir2/dir3/";
-
-    $result = SC_Utils::recursiveMkdir($path);
-    $this->expected = '0777';
-    $this->actual = substr(sprintf('%o', fileperms($path)), -4);
-
-    $this->verify('作成したディレクトリのパーミッション');
+    $this->verify('ディレクトリ名');
   }
 
   //////////////////////////////////////////

@@ -70,7 +70,7 @@ class SC_Utils_copyDirectoryTest extends Common_TestCase {
     Test_Utils::array_append($this->actual, Test_Utils::mapCols(SC_Helper_FileManager::sfGetFileList(self::$TMP_DIR . "/dst"), "file_name"));
     Test_Utils::array_append($this->actual, Test_Utils::mapCols(SC_Helper_FileManager::sfGetFileList(self::$TMP_DIR . "/dst/dir20"), "file_name"));
     
-    $this->verify();
+    $this->verify('コピーされたファイル一覧');
   }
 
   public function testCopyDirectory_存在しないパスの場合_何も起こらない() {
@@ -88,7 +88,7 @@ class SC_Utils_copyDirectoryTest extends Common_TestCase {
     $this->expected = array();
     $this->actual = array();
     
-    $this->verify();
+    $this->verify('コピーされたファイル一覧');
   }
 
   public function testCopyDirectory_コピー先のディレクトリが元々存在する場合_上書きされる() {
@@ -115,7 +115,7 @@ class SC_Utils_copyDirectoryTest extends Common_TestCase {
     Test_Utils::array_append($this->actual, Test_Utils::mapCols(SC_Helper_FileManager::sfGetFileList(self::$TMP_DIR . "/dst"), "file_name"));
     Test_Utils::array_append($this->actual, Test_Utils::mapCols(SC_Helper_FileManager::sfGetFileList(self::$TMP_DIR . "/dst/dir20"), "file_name"));
     
-    $this->verify();
+    $this->verify('コピー先のファイル一覧');
 
   }
 
@@ -150,7 +150,7 @@ class SC_Utils_copyDirectoryTest extends Common_TestCase {
     fclose($fp_final);
     $this->actual[] = $read_result;
 
-    $this->verify();
+    $this->verify('コピー先のファイル一覧');
 
   }
 

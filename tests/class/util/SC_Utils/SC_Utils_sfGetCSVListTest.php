@@ -25,21 +25,17 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  */
 
 /**
- * SC_Utils::recursiveMkDir()のテストクラス.
+ * SC_Utils::sfGetCSVList()のテストクラス.
  *
  *
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_recursiveMkdirTest extends Common_TestCase {
+class SC_Utils_sfGetCSVListTest extends Common_TestCase {
 
-  static $TMP_DIR;
 
   protected function setUp() {
-    self::$TMP_DIR = realpath(dirname(__FILE__)) . "/../../../tmp";
-    SC_Helper_FileManager::deleteFile(self::$TMP_DIR);
-    mkdir(self::$TMP_DIR, 0777, true);
-// parent::setUp();
+    // parent::setUp();
   }
 
   protected function tearDown() {
@@ -47,25 +43,22 @@ class SC_Utils_recursiveMkdirTest extends Common_TestCase {
   }
 
   /////////////////////////////////////////
-  public function testRecursiveMkdir_パーミッションを指定した場合_指定のパーミッションでディレクトリが作られる() {
-    $path = realpath(dirname(__FILE__)) . "/../../../tmp/dir1/dir2/dir3/";
-    $mode = 0755;
+  public function testSfGetCSVList_配列が空の場合_falseが返る() {
+    
+    $this->expected = FALSE;
+    $this->actual = SC_Utils::sfGetCSVList(array());
 
-    $result = SC_Utils::recursiveMkdir($path, $mode);
-    $this->expected = '0755';
-    $this->actual = substr(sprintf('%o', fileperms($path)), -4);
-
-    $this->verify('作成したディレクトリのパーミッション');
+    $this->verify();
   }
 
-  public function testRecursiveMkdir_パーミッションを指定しない場合_0777でディレクトリが作られる() {
-    $path = realpath(dirname(__FILE__)) . "/../../../tmp/dir1/dir2/dir3/";
+  public function testSfGetCSVList_配列に要素が存在する場合_CSV形式に変換した文字列が返る() {
+    
+    $this->expected = '"1つ目の要素","カンマを,含む要素","3つ目の要素"' . "\r\n";
+    $this->actual = SC_Utils::sfGetCSVList(
+      array('1つ目の要素', 'カンマを,含む要素', '3つ目の要素')
+    );
 
-    $result = SC_Utils::recursiveMkdir($path);
-    $this->expected = '0777';
-    $this->actual = substr(sprintf('%o', fileperms($path)), -4);
-
-    $this->verify('作成したディレクトリのパーミッション');
+    $this->verify('CSVフォーマットの文字列');
   }
 
   //////////////////////////////////////////
