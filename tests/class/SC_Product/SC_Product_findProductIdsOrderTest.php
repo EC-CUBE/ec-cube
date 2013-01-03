@@ -25,7 +25,7 @@ class SC_Product_findProductsOrderTest extends SC_Product_TestBase {
 
         // 商品ID降順で商品IDを取得する
         $this->objQuery->setOrder('product_id DESC');
-        $this->expected = array('1002', '1001');
+        $this->expected = array('2001','1002', '1001');
 
         $this->actual = $this->objProducts->findProductIdsOrder($this->objQuery);
 
@@ -39,10 +39,25 @@ class SC_Product_findProductsOrderTest extends SC_Product_TestBase {
 
         // 商品名昇順で商品IDを取得する
         $this->objQuery->setOrder('product_id ASC');
-        $this->expected = array('1001', '1002');
+        $this->expected = array('1001', '1002','2001');
 
         $this->actual = $this->objProducts->findProductIdsOrder($this->objQuery);
 
         $this->verify('商品ID昇順');
     }
+    
+    public function testFindProductIdsOrder_arrOrderData設定時() {
+        $this->setUpProductClass();
+        $this->setUpProducts();
+        $this->setUpClassCategory();
+
+        // setProductsOrderを行う
+        $this->objProducts->setProductsOrder('product_id');
+        $this->expected = array('1001', '1002','2001');
+
+        $this->actual = $this->objProducts->findProductIdsOrder($this->objQuery);
+
+        $this->verify('arrOrderData設定時');
+    }
+    
 }
