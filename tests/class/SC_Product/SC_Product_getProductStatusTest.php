@@ -18,7 +18,7 @@ class SC_Product_getProductStatusTest extends SC_Product_TestBase {
 
     /////////////////////////////////////////
 
-    public function testGetProductStatus_商品ID指定なし() {
+    public function testGetProductStatus_商品IDなしは空の配列を返す() {
         $this->setUpProductClass();
         $this->setUpProducts();
         $this->setUpClassCategory();
@@ -32,7 +32,7 @@ class SC_Product_getProductStatusTest extends SC_Product_TestBase {
         $this->verify('空の配列');
     }
     
-    public function testGetProductStatus_商品ID指定() {
+    public function testGetProductStatus_指定した商品IDの商品ステータスを返す() {
         $this->setUpProductClass();
         $this->setUpProducts();
         $this->setUpClassCategory();

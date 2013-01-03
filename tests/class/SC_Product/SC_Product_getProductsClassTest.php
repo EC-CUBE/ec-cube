@@ -18,7 +18,7 @@ class SC_Product_getProductsClassTest extends SC_Product_TestBase {
 
     /////////////////////////////////////////
 
-    public function testGetProductsClass_商品規格ID指定() {
+    public function testGetProductsClass_商品規格IDから規格情報を返す() {
         $this->setUpProductClass();
         $this->setUpProducts();
         $this->setUpClassCategory();

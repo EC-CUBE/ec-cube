@@ -18,7 +18,7 @@ class SC_Product_getProductsClassByQueryTest extends SC_Product_TestBase {
 
     /////////////////////////////////////////
 
-    public function testGetProductsClassByQuery_商品ID指定() {
+    public function testGetProductsClassByQuery_クエリに該当する商品情報を返す() {
         $this->setUpProductClass();
         $this->setUpProducts();
         $this->setUpClassCategory();

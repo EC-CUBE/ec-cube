@@ -46,7 +46,7 @@ class SC_Product_findProductsOrderTest extends SC_Product_TestBase {
         $this->verify('商品ID昇順');
     }
     
-    public function testFindProductIdsOrder_arrOrderData設定時() {
+    public function testFindProductIdsOrder_arrOrderDataの設定による並び順() {
         $this->setUpProductClass();
         $this->setUpProducts();
         $this->setUpClassCategory();
@@ -57,7 +57,7 @@ class SC_Product_findProductsOrderTest extends SC_Product_TestBase {
 
         $this->actual = $this->objProducts->findProductIdsOrder($this->objQuery);
 
-        $this->verify('arrOrderData設定時');
+        $this->verify('arrOrderData設定順');
     }
     
 }

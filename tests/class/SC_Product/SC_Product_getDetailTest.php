@@ -18,7 +18,7 @@ class SC_Product_getDetailTest extends SC_Product_TestBase {
 
     /////////////////////////////////////////
 
-    public function testGetDetail_商品ID指定() {
+    public function testGetDetail_商品IDの詳細情報を返す() {
         $this->setUpProductClass();
         $this->setUpProducts();
         $this->setUpClassCategory();

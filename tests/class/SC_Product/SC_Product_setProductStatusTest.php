@@ -18,7 +18,7 @@ class SC_Product_setProductStatusTest extends SC_Product_TestBase {
 
     /////////////////////////////////////////
 
-    public function testSetProductStatus_商品ステータス登録() {
+    public function testSetProductStatus_登録した商品ステータスを返す() {
         $this->setUpProductClass();
         $this->setUpProducts();
         $this->setUpClassCategory();

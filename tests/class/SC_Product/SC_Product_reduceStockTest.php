@@ -18,7 +18,7 @@ class SC_Product_reduceStockTest extends SC_Product_TestBase {
 
     /////////////////////////////////////////
 
-    public function testReduceStock_減少数０() {
+    public function testReduceStock_減少数０はFalse() {
         $this->setUpProductClass();
         $this->setUpProducts();
         $this->setUpClassCategory();
@@ -31,7 +31,7 @@ class SC_Product_reduceStockTest extends SC_Product_TestBase {
         $this->verify('減少数０');
     }
     
-    public function testReduceStock_減少数1() {
+    public function testReduceStock_減少数1はTrue() {
         $this->setUpProductClass();
         $this->setUpProducts();
         $this->setUpClassCategory();
@@ -44,7 +44,7 @@ class SC_Product_reduceStockTest extends SC_Product_TestBase {
         $this->verify('減少数1');
     }
     
-    public function testReduceStock_在庫数をマイナスにする() {
+    public function testReduceStock_在庫数をマイナスにする数はFalse() {
         $this->setUpProductClass();
         $this->setUpProducts();
         $this->setUpClassCategory();
@@ -58,7 +58,7 @@ class SC_Product_reduceStockTest extends SC_Product_TestBase {
     }
     
         
-    public function testReduceStock_在庫数無限の場合() {
+    public function testReduceStock_在庫数無限の場合はTrue() {
         $this->setUpProductClass();
         $this->setUpProducts();
         $this->setUpClassCategory();

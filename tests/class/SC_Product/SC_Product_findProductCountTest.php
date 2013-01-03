@@ -18,7 +18,7 @@ class SC_Product_findProductCountTest extends SC_Product_TestBase {
 
     /////////////////////////////////////////
 
-    public function testFindProductCount_検索なし() {
+    public function testFindProductCount_すべての商品数を返す() {
         $this->setUpProductClass();
         $this->setUpProducts();
         $this->setUpClassCategory();
@@ -30,7 +30,7 @@ class SC_Product_findProductCountTest extends SC_Product_TestBase {
         $this->verify('商品数');
     }
     
-    public function testFindProductCount_検索条件あり() {
+    public function testFindProductCount_検索条件に一致する商品数を返す() {
         $this->setUpProductClass();
         $this->setUpProducts();
         $this->setUpClassCategory();

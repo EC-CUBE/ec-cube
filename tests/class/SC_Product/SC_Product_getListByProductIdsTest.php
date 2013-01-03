@@ -18,7 +18,7 @@ class SC_Product_getListsByProductIdsTest extends SC_Product_TestBase {
 
     /////////////////////////////////////////
 
-    public function testgetListByProductIds_商品ID指定なし() {
+    public function testGetListByProductIds_商品ID指定がない場合は空配列() {
         $this->setUpProductClass();
         $this->setUpProducts();
         $this->setUpClassCategory();
@@ -30,7 +30,7 @@ class SC_Product_getListsByProductIdsTest extends SC_Product_TestBase {
         $this->verify('商品ID指定なし');
     }
     
-    public function testgetListByProductIds_商品ID指定() {
+    public function testGetListByProductIds_指定の商品IDで情報を取得する() {
         $this->setUpProductClass();
         $this->setUpProducts();
         $this->setUpClassCategory();
