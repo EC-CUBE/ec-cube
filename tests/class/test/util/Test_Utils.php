@@ -65,5 +65,19 @@ class Test_Utils {
     
     return $output_array;
   }
+
+  /**
+   * 配列に別の配列をappendします。
+   * $orig_arrayが直接変更されます。
+   * 
+   * @static
+   * @param orig_array 追加先の配列
+   * @param new_array 追加要素を持つ配列
+   */
+  public static function array_append(&$orig_array, $new_array) {
+    foreach ($new_array as $element) {
+      $orig_array[] = $element;
+    }
+  }
 }
 
