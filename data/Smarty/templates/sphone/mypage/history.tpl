@@ -85,10 +85,11 @@
                                 <!--{/if}-->
                                 <!--←商品種別-->
                             </div>
-
+                            <!--{assign var=tax_rate value=`$orderDetail.tax_rate`}-->
+                            <!--{assign var=tax_rule value=`$orderDetail.tax_rule`}-->
                             <ul>
                                 <li><span class="mini">数量：</span><!--{$quantity|h}--></li>
-                                <li class="result"><span class="mini">小計：</span><!--{$price|sfCalcIncTax|sfMultiply:$quantity|number_format}-->円</li>
+                                <li class="result"><span class="mini">小計：</span><!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|sfMultiply:$quantity|number_format}-->円</li>
                             </ul>
                         </div>
                     </div>

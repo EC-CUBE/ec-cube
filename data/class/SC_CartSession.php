@@ -625,6 +625,10 @@ class SC_CartSession {
         $results['subtotal'] = $this->getAllProductsTotal($productTypeId);
         $results['deliv_fee'] = 0;
 
+        $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
+        $results['order_tax_rate'] = $arrInfo['tax'];
+        $results['order_tax_rule'] = $arrInfo['tax_rule'];
+
         // 商品ごとの送料を加算
         if (OPTION_PRODUCT_DELIV_FEE == 1) {
             $cartItems = $this->getCartList($productTypeId);
