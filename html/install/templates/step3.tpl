@@ -25,7 +25,7 @@
     function fnModeSubmit(mode) {
         switch(mode) {
         case 'drop':
-            if(!window.confirm('一度削除したデータは、元に戻せません。\n削除しても宜しいですか？')){
+            if(!window.confirm('<!--{t string="tpl_783"}-->')){
                 return;
             }
             break;
@@ -48,17 +48,16 @@
 
 <div class="contents">
     <div class="message">
-        <h2>データベースの初期化</h2>
+        <h2><!--{t string="tpl_784"}--></h2>
     </div>
     <div class="result-info02">
     <p class="action-message">
-        <!--{if $tpl_db_version != ""}--><span class="bold">接続情報：</span><br />
+        <!--{if $tpl_db_version != ""}--><span class="bold"><!--{t string="tpl_785"}--></span><br />
             <!--{$tpl_db_version}-->
         <!--{/if}-->
-        データベースの初期化を開始します。<br />
-        ※すでにテーブル等が作成されている場合は中断されます。</P>
+        <!--{t string="tpl_786"}--></P>
         <!--{if $tpl_mode != 'complete'}-->
-            <input type="checkbox" id="skip" name="db_skip" <!--{if $tpl_db_skip == "on"}-->checked="checked"<!--{/if}--> /> <label for="skip">データベースの初期化処理を行わない</label>
+            <input type="checkbox" id="skip" name="db_skip" <!--{if $tpl_db_skip == "on"}-->checked="checked"<!--{/if}--> /> <label for="skip"><!--{t string="tpl_787"}--></label>
         <!--{/if}-->
     </div>
     <div class="result-info02">
@@ -67,7 +66,7 @@
             <span class="attention top"><!--{$arrErr.all}--></span>
             <!--{if $arrErr.all != ""}-->
                 <ul class="btn-area">
-                    <li><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('drop'); return false;">既存データをすべて削除する</a></li>
+                    <li><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('drop'); return false;"><!--{t string="tpl_788"}--></a></li>
                 </ul>
             <!--{/if}-->
         <!--{/if}-->
@@ -77,8 +76,8 @@
 <div class="btn-area-top"></div>
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="document.form1['mode'].value='return_step2';document.form1.submit();return false;"><span class="btn-prev">前へ戻る</span></a></li>
-            <li><a class="btn-action" href="javascript:;" onclick="document.body.style.cursor='wait'; document.form1.submit(); return false;"><span class="btn-next">次へ進む</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="document.form1['mode'].value='return_step2';document.form1.submit();return false;"><span class="btn-prev"><!--{t string="tpl_610"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="document.body.style.cursor='wait'; document.form1.submit(); return false;"><span class="btn-next"><!--{t string="tpl_736"}--></span></a></li>
         </ul>
     </div>
     <div class="btn-area-bottom"></div>

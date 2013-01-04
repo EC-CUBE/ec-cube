@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2012-12-27 16:44+0900\n"
+"PO-Revision-Date: 2013-01-04 16:41+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -5919,6 +5919,268 @@ msgstr "(None)"
 
 msgid "tpl_730"
 msgstr "Not selected"
+
+msgid "tpl_731"
+msgstr "■Agreement to the license agreement"
+
+msgid "tpl_732"
+msgstr ""
+"Please read the license agreement below.<br />It is necessary to agree to "
+"the agreement in order to continue with installation."
+
+msgid "tpl_733"
+msgstr ""
+"Please agree to the software license agreement<br /><br />Lockon Co., Ltd. "
+"(hereinafter referred to as 'our company') requires customers to agree to "
+"the contents of the 'Software License Agreement' below to be able to use "
+"this software. You will be deemed as having agreed to the 'Software License "
+"Agreement' below at the point in time that you install, copy, or use this "
+"software.<br /><br />--------------------- Software License Agreement "
+"---------------------<br /><br />1. License<br /><br />EC-CUBE adopts a "
+"'dual license method' in which you can select either a free GPL license or "
+"paid commercial license for using the EC-CUBE product. The major "
+"characteristics of each license are as follows.<br /><br />1-1. GPL "
+"license<br /><br />Although it is possible to use EC-CUBE for free, and "
+"carry out duplication, modification, and distribution, if distributing an "
+"application that uses EC-CUBE, you must publish the source code for the "
+"application and make it utilizable.<br /><br />* When modifying, you may "
+"modify everything except for the copyright notice in the header section of "
+"the program file (PHP file, etc.) <br /><br />* With regard to the official "
+"conditions of the GPL license (GNU General Public License), please refer to "
+"http://www.fsf.org/licenses/ (Japanese translation: http://www.opensource.jp/"
+"gpl/gpl.ja.html).<br /><br />1-2. Commercial license <br /><br />The EC-CUBE "
+"commercial license is a license for parties who do not want to comply with "
+"the GPL license. <br />When you purchase an EC-CUBE commercial license, it "
+"is not necessary to make your own application an open source, within the "
+"scope of the commercial license. <br /><br />* A commercial license is "
+"necessary for all uses that do not comply with the GPL license. <br /><br /"
+">* For details regarding the commercial license, refer to http://www.ec-cube."
+"net/license/business.php.<br /><br />2. Exclusion of liability<br /><br /"
+">2-1. Users shall confirm and agree that all direct and indirect damages "
+"(data loss, server trouble, halting of operations, claims from a third "
+"party, etc.) and dangers arising from use of this software are entirely the "
+"responsibility of the user.<br />2-2. In any case, and even in cases of "
+"illegal behavior, agreement, or any other legal basis, the suppliers, "
+"resellers, and various information contents providers for this software are "
+"not responsible for any direct, indirect, specific, incidental, or "
+"consequential loss or damage of the customer or other third party, including "
+"the loss of sales value, halting of operations, damage resulting from "
+"computer malfunctions, and any other commercial loss or damages, etc. "
+"Furthermore, our company is not responsible for any claims by a third party. "
+"<br /><br />3. Gathering of site information <br /><br />3-1 When installing "
+"EC-CUBE, the customer confirms and agrees that our company gathers "
+"information such as the site URL, store name, EC-CUBE version, PHP "
+"information, DB information, etc.<br />"
+
+msgid "tpl_734"
+msgstr "Agree"
+
+msgid "tpl_735"
+msgstr "Do not agree"
+
+msgid "tpl_736"
+msgstr "Next"
+
+msgid "tpl_737"
+msgstr "EC CUBE installation is complete."
+
+msgid "tpl_738"
+msgstr "Log in using the ID and password that you just registered."
+
+msgid "tpl_740"
+msgstr "EC-CUBE Installation"
+
+msgid "tpl_741"
+msgstr ""
+"This is a notice from EC-CUBE. Please use a browser that supports iframe for "
+"this section."
+
+msgid "tpl_742"
+msgstr "Check results"
+
+msgid "tpl_743"
+msgstr "When [Next] is clicked, a check will be executed once again."
+
+msgid "tpl_744"
+msgstr "Ignore problems and proceed (for advanced users)"
+
+msgid "tpl_745"
+msgstr ""
+"* If you proceed without resolving the problem, this may lead to problems."
+
+msgid "tpl_746"
+msgstr "Copying of necessary files will begin."
+
+msgid "tpl_747"
+msgstr "Copying of necessary files"
+
+msgid "tpl_748"
+msgstr "EC site settings"
+
+msgid "tpl_749"
+msgstr "Fill in the name of your store."
+
+msgid "tpl_750"
+msgstr "The address will be the one in the order receipt mail, etc."
+
+msgid "tpl_751"
+msgstr "Login ID <span class='attention'>*</span>"
+
+msgid "tpl_752"
+msgstr "ID for logging in to the management function."
+
+msgid "tpl_753"
+msgstr "Password for logging in to the management function."
+
+msgid "tpl_754"
+msgstr "Management function settings"
+
+msgid "tpl_755"
+msgstr "Directory"
+
+msgid "tpl_756"
+msgstr "(Example) eccube@example.com"
+
+msgid "tpl_757"
+msgstr "Directory name for the management function."
+
+msgid "tpl_758"
+msgstr ""
+"Section for 'Management function' for when accessing the management function "
+"below."
+
+msgid "tpl_759"
+msgstr ""
+"https://[Host name].[Domain name]/[Shop directory]/<span class='bold'>"
+"[Directory]</span>/"
+
+msgid "tpl_760"
+msgstr ""
+"Access to the management function is limited to SSL (https) connections."
+
+msgid "tpl_761"
+msgstr "WEB server settings"
+
+msgid "tpl_762"
+msgstr "URL (normal) <span class='attention'>*</span>"
+
+msgid "tpl_763"
+msgstr "URL (secure) <span class='attention'>*</span>"
+
+msgid "tpl_764"
+msgstr "Common domain"
+
+msgid "tpl_765"
+msgstr ""
+"Designated when the subdomain differs based on normal URL and secure URL."
+
+msgid "tpl_766"
+msgstr "&gt;&gt; Option settings"
+
+msgid "tpl_767"
+msgstr "E-mail server settings (option)"
+
+msgid "tpl_768"
+msgstr "Mailer backend <span class='attention'>*</span>"
+
+msgid "tpl_769"
+msgstr ""
+"mail - PHP built-in function  mail() is used to send.<br />SMTP - E-mails "
+"are sent by directly connecting to the SMTP server.<br />sendmail - Sent "
+"through the sendmail program."
+
+msgid "tpl_770"
+msgstr "SMTP host"
+
+msgid "tpl_771"
+msgstr "Designated only when the mailer backend is SMTP."
+
+msgid "tpl_772"
+msgstr "SMTP port"
+
+msgid "tpl_773"
+msgstr "SMTP user"
+
+msgid "tpl_774"
+msgstr "Designated only when the mailer backend is SMTP and SMTP-AUTH is used."
+
+msgid "tpl_775"
+msgstr "SMTP password"
+
+msgid "tpl_776"
+msgstr "Database settings"
+
+msgid "tpl_777"
+msgstr "* It is necessary to newly create a DB before installation."
+
+msgid "tpl_778"
+msgstr "DB type <span class='attention'>*</span>"
+
+msgid "tpl_779"
+msgstr "Port"
+
+msgid "tpl_780"
+msgstr "DB name <span class='attention'>*</span>"
+
+msgid "tpl_781"
+msgstr "DB user <span class='attention'>*</span>"
+
+msgid "tpl_782"
+msgstr "DB password <span class='attention'>*</span>"
+
+msgid "tpl_783"
+msgstr ""
+"Data that has been erased cannot be restored. \n"
+" Do you want to delete?"
+
+msgid "tpl_784"
+msgstr "Database initialization"
+
+msgid "tpl_786"
+msgstr ""
+"Database initialization will begin.<br />* Will be suspended if a table, "
+"etc. is already created."
+
+msgid "tpl_787"
+msgstr "Do not carry out the database initialization process"
+
+msgid "tpl_788"
+msgstr "Delete all existing data"
+
+msgid "tpl_789"
+msgstr "Site information"
+
+msgid "tpl_790"
+msgstr ""
+"Please provide the information below for the purpose of debugging and "
+"improving the EC-CUBE system."
+
+msgid "tpl_791"
+msgstr "Site URL: "
+
+msgid "tpl_792"
+msgstr "Store name: "
+
+msgid "tpl_793"
+msgstr "EC-CUBE version: "
+
+msgid "tpl_794"
+msgstr "PHP information: "
+
+msgid "tpl_795"
+msgstr "DB information: "
+
+msgid "tpl_796"
+msgstr "OS information: "
+
+msgid "tpl_797"
+msgstr "Yes (recommended)"
+
+msgid "tpl_798"
+msgstr "No"
+
+msgid "tpl_799"
+msgstr "EC-CUBE installation will begin."
 
 msgid "-"
 msgstr " - "

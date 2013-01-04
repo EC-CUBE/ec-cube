@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2012-12-28 22:26+0900\n"
+"PO-Revision-Date: 2013-01-04 16:19+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -5845,6 +5845,263 @@ msgstr "(なし)"
 
 msgid "tpl_730"
 msgstr "未選択"
+
+msgid "tpl_731"
+msgstr "■使用許諾契約書の同意"
+
+msgid "tpl_732"
+msgstr ""
+"以下の使用許諾契約書をお読みください。<br/>インストールを続行するにはこの契約"
+"書に同意する必要があります。"
+
+msgid "tpl_733"
+msgstr ""
+"===ソフトウェア使用許諾書にご同意下さい===<br/><br/>株式会社ロックオン(以下"
+"「弊社」という)では、お客様が本ソフトウェアをご利用になるためには、下記「ソフ"
+"トウェア使用契約書」の内容を承諾して頂くことが条件になって<br/>おります。本ソ"
+"フトウェアをインストールまたはコピー、ご使用になった時点で下記「ソフトウェア"
+"使用許諾書」にご同意いただいたものとみなします。<br/><br/"
+">--------------------- ソフトウェア使用許諾書 ---------------------<br/><br/"
+">1.ライセンス<br/><br/>EC-CUBEでは製品の使用にあたって、無償のGPLライセンスと"
+"有償の商用ライセンスのどちらかを選択することができる「デュアルライセンス方"
+"式」を採用しております。各ライセンスの主な特徴は以下の通りです。<br/><br/"
+">1-1.GPLライセンス<br/><br/>無償でEC-CUBEを使用することができ、複製、改変、頒"
+"布を行うことができるが、EC-CUBEを使用したアプリケーションを頒布する場合には、"
+"そのアプリケーションのソースコードを公開し、利用可能な状態にしなくてはならな"
+"い。<br/><br/>※ 改変(カスタマイズ)する際は、プログラムファイル(PHPファイル等)"
+"のヘッダー部分に記載しております著作権表示以外の箇所は全て改変いただけます。"
+"<br/><br/>※ GPLライセンス(GNU 一般公衆利用許諾契約書)の正式な条件については、"
+"http://www.fsf.org/licenses/ (日本語訳http://www.opensource.jp/gpl/gpl.ja."
+"html)を参照して下さい。<br/><br/>1-2.商用ライセンス<br/><br/>EC-CUBE商用ライ"
+"センスは、GPLライセンスに準拠したくない方向けのライセンスです。<br/>EC-CUBE商"
+"用ライセンスを購入いただけますと、商用ライセンスの範囲で、ご自身のアプリケー"
+"ションをオープンソースにする必要はありません。<br/><br/>※ GPLライセンスに準拠"
+"しない全てのご利用において、商用ライセンスが必要となります。<br/><br/>※ 商用"
+"ライセンスの詳細に関しては、http://www.ec-cube.net/license/business.phpを参照"
+"して下さい。<br/><br/>2.免責<br/><br/>2-1.利用者は、本ソフトウエアの使用に基"
+"づいて発生した一切の直接・間接の損害(データ滅失、サーバーダウン、業務停滞、第"
+"三者からのクレーム等)および危険はすべて利用者のみが負うことをここに確認し、同"
+"意するものとします。<br/>2-2.いかなる場合であっても、不法行為、契約その他いか"
+"なる法的根拠による場合でも、本ソフトウエアの供給者、再販売業者、および各情報"
+"コンテンツの提供会社は、お客様その他の第三者に対し、営業価値の喪失、業務の停"
+"止、コンピューターの故障による損害、その他あらゆる商業的損害・損失等を含め一"
+"切の直接的、間接的、特殊的、付随的または結果的損失、損害について責任を負いま"
+"せん。さらに、弊社は、第三者のいかなるクレームに対しても責任を負いません。"
+"<br/><br/>3.サイト情報の収集<br/><br/>3-1 EC-CEBEをインストールする際はサイト"
+"URL、店名、EC-CUBEバージョン、PHP情報、DB情報等の情報を弊社にて収集させて戴く"
+"ことをここに確認し、同意するものとする。<br/>"
+
+msgid "tpl_734"
+msgstr "同意する"
+
+msgid "tpl_735"
+msgstr "同意しない"
+
+msgid "tpl_736"
+msgstr "次へ進む"
+
+msgid "tpl_737"
+msgstr "EC CUBE インストールが完了しました。"
+
+msgid "tpl_738"
+msgstr "先ほど登録したID、パスワードを用いてログインしてください。"
+
+msgid "tpl_739"
+msgstr "管理画面へログインする"
+
+msgid "tpl_740"
+msgstr "EC-CUBEインストール"
+
+msgid "tpl_741"
+msgstr ""
+"こちらはEC-CUBEからのお知らせです。この部分は iframe対応ブラウザでご覧下さ"
+"い。"
+
+msgid "tpl_742"
+msgstr "チェック結果"
+
+msgid "tpl_743"
+msgstr "[次へ進む] をクリックすると、チェックを再実行します。"
+
+msgid "tpl_744"
+msgstr "問題点を無視して次へ進む (上級者向け)"
+
+msgid "tpl_745"
+msgstr ""
+"※ 問題点を解決せずに無視して進めると、トラブルの原因となる場合があります。"
+
+msgid "tpl_746"
+msgstr "必要なファイルのコピーを開始します。"
+
+msgid "tpl_747"
+msgstr "必要なファイルのコピー"
+
+msgid "tpl_748"
+msgstr "ECサイトの設定"
+
+msgid "tpl_749"
+msgstr "あなたの店名をご記入ください。"
+
+msgid "tpl_750"
+msgstr "受注メールなどの宛先になります。"
+
+msgid "tpl_751"
+msgstr "ログインID<span class='attention'>*</span>"
+
+msgid "tpl_752"
+msgstr "管理機能にログインするためのIDです。"
+
+msgid "tpl_753"
+msgstr "管理機能にログインするためのパスワードです。"
+
+msgid "tpl_754"
+msgstr "管理機能の設定"
+
+msgid "tpl_755"
+msgstr "ディレクトリ"
+
+msgid "tpl_756"
+msgstr "(例) eccube@example.com"
+
+msgid "tpl_757"
+msgstr "管理機能のディレクトリ名です。"
+
+msgid "tpl_758"
+msgstr "下記で管理機能にアクセスする場合の[管理機能]の部分です。"
+
+msgid "tpl_759"
+msgstr ""
+"https://[ホスト名].[ドメイン名]/[ショップディレクトリ]/<span class='bold'>"
+"[ディレクトリ]</span>/"
+
+msgid "tpl_760"
+msgstr "管理機能へのアクセスをSSL経由(https)の接続に制限します。"
+
+msgid "tpl_761"
+msgstr "WEBサーバーの設定"
+
+msgid "tpl_762"
+msgstr "URL(通常)<span class='attention'>*</span>"
+
+msgid "tpl_763"
+msgstr "URL(セキュア)<span class='attention'>*</span>"
+
+msgid "tpl_764"
+msgstr "共通ドメイン"
+
+msgid "tpl_765"
+msgstr "通常URLとセキュアURLでサブドメインが異なる場合に指定します。"
+
+msgid "tpl_766"
+msgstr "&gt;&gt; オプション設定"
+
+msgid "tpl_767"
+msgstr "メールサーバーの設定(オプション)"
+
+msgid "tpl_768"
+msgstr "メーラーバックエンド<span class='attention'>*</span>"
+
+msgid "tpl_769"
+msgstr ""
+"mail - PHP の組込関数 mail() を使用して送信します。<br />SMTP - SMTP サーバに"
+"直接接続してメールを送信します。<br />sendmail - sendmail プログラムにより送"
+"信します。"
+
+msgid "tpl_770"
+msgstr "SMTP ホスト"
+
+msgid "tpl_771"
+msgstr "メーラーバックエンドが SMTP の場合のみ指定します。"
+
+msgid "tpl_772"
+msgstr "SMTP ポート"
+
+msgid "tpl_773"
+msgstr "SMTP ユーザー"
+
+msgid "tpl_774"
+msgstr "メーラーバックエンドが SMTP の場合で、SMTP-AUTH 使用時のみ指定します。"
+
+msgid "tpl_775"
+msgstr "SMTP パスワード"
+
+msgid "tpl_776"
+msgstr "データベースの設定"
+
+msgid "tpl_777"
+msgstr "※インストールの前に新しくDBを作成しておく必要があります。"
+
+msgid "tpl_778"
+msgstr "DBの種類<span class='attention'>*</span>"
+
+msgid "tpl_779"
+msgstr "ポート"
+
+msgid "tpl_780"
+msgstr "DB名<span class='attention'>*</span>"
+
+msgid "tpl_781"
+msgstr "DBユーザ<span class='attention'>*</span>"
+
+msgid "tpl_782"
+msgstr "DBパスワード<span class='attention'>*</span>"
+
+msgid "tpl_783"
+msgstr ""
+"一度削除したデータは、元に戻せません。\n"
+"削除しても宜しいですか？"
+
+msgid "tpl_784"
+msgstr "データベースの初期化"
+
+msgid "tpl_785"
+msgstr "接続情報："
+
+msgid "tpl_786"
+msgstr ""
+"データベースの初期化を開始します。<br />※すでにテーブル等が作成されている場合"
+"は中断されます。"
+
+msgid "tpl_787"
+msgstr "データベースの初期化処理を行わない"
+
+msgid "tpl_788"
+msgstr "既存データをすべて削除する"
+
+msgid "tpl_789"
+msgstr "サイト情報について"
+
+msgid "tpl_790"
+msgstr ""
+"EC-CUBEのシステム向上及び、デバッグのため以下の情報のご提供をお願いいたしま"
+"す。"
+
+msgid "tpl_791"
+msgstr "サイトURL："
+
+msgid "tpl_792"
+msgstr "店名："
+
+msgid "tpl_793"
+msgstr "EC-CUBEバージョン："
+
+msgid "tpl_794"
+msgstr "PHP情報："
+
+msgid "tpl_795"
+msgstr "DB情報："
+
+msgid "tpl_796"
+msgstr "OS情報："
+
+msgid "tpl_797"
+msgstr "はい(推奨)"
+
+msgid "tpl_798"
+msgstr "いいえ"
+
+msgid "tpl_799"
+msgstr "EC-CUBEのインストールを開始します。"
 
 msgid "-"
 msgstr "～"

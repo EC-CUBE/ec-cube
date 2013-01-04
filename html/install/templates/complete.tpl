@@ -28,18 +28,18 @@
 <!--{/foreach}-->
 <div class="contents">
   <div class="message">
-        <h2>EC CUBE インストールが完了しました。</h2>
+        <h2><!--{t string="tpl_737"}--></h2>
   </div>
   <div class="result-info02">
         <p><a href="<!--{$tpl_sslurl}--><!--{$smarty.const.ADMIN_DIR}--><!--{$smarty.const.DIR_INDEX_PATH}-->">管理画面</a>にログインできます。<br />
-        先ほど登録したID、パスワードを用いてログインしてください。</p>
+        <!--{t string="tpl_738"}--></p>
   </div>
 </div>
 
 <div class="btn-area-top"></div>
   <div class="btn-area">
     <ul>
-        <li><a class="btn-action" href="<!--{$tpl_sslurl}--><!--{$smarty.const.ADMIN_DIR}--><!--{$smarty.const.DIR_INDEX_PATH}-->"><span class="btn-next">管理画面へログインする</span></a></li>
+        <li><a class="btn-action" href="<!--{$tpl_sslurl}--><!--{$smarty.const.ADMIN_DIR}--><!--{$smarty.const.DIR_INDEX_PATH}-->"><span class="btn-next"><!--{t string="tpl_739"}--></span></a></li>
     </ul>
   </div>
   <div class="btn-area-bottom"></div>

@@ -26,13 +26,13 @@
 <!--{/foreach}-->
 <div class="contents">
     <div class="message">
-        EC-CUBEのインストールを開始します。
+        <!--{t string="tpl_799"}-->
     </div>
 </div>
 <div class="btn-area-top"></div>
 <div class="btn-area">
     <ul>
-        <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next">次へ進む</span></a></li>
+        <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next"><!--{t string="tpl_736"}--></span></a></li>
     </ul>
 </div>
 <div class="btn-area-bottom"></div>

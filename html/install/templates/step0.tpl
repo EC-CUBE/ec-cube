@@ -28,25 +28,25 @@
 <!--{/foreach}-->
 
 <div class="contents">
-    <h2>チェック結果</h2>
+    <h2><!--{t string="tpl_742"}--></h2>
     <div class="result-info01">
         <textarea name="disp_area" cols="50" rows="20" class="box470"><!--{$mess}--></textarea>
     </div>
     <div class="result-info02">
         <!--{if $hasErr}-->
-            <p class="action-message">[次へ進む] をクリックすると、チェックを再実行します。</p>
-            <div><input type="checkbox" name="mode_overwrite" value="step0" id="mode_overwrite" /> <label for="mode_overwrite">問題点を無視して次へ進む (上級者向け)</label></div>
-            <div class="red">※ 問題点を解決せずに無視して進めると、トラブルの原因となる場合があります。</div>
+            <p class="action-message"><!--{t string="tpl_743"}--></p>
+            <div><input type="checkbox" name="mode_overwrite" value="step0" id="mode_overwrite" /> <label for="mode_overwrite"><!--{t string="tpl_744"}--></label></div>
+            <div class="red"><!--{t string="tpl_745"}--></div>
         <!--{else}-->
-            必要なファイルのコピーを開始します。
+            <!--{t string="tpl_746"}-->
         <!--{/if}-->
     </div>
 </div>
 <div class="btn-area-top"></div>
 <div class="btn-area">
     <ul>
-        <li><a class="btn-action" href="javascript:;" onclick="document.form1['mode'].value='return_welcome';document.form1.submit(); return false;"><span class="btn-prev">前へ戻る</span></a></li>
-        <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next">次へ進む</span></a></li>
+        <li><a class="btn-action" href="javascript:;" onclick="document.form1['mode'].value='return_welcome';document.form1.submit(); return false;"><span class="btn-prev"><!--{t string="tpl_610"}--></span></a></li>
+        <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next"><!--{t string="tpl_736"}--></span></a></li>
     </ul>
 </div>
 <div class="btn-area-bottom"></div>

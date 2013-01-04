@@ -29,12 +29,12 @@
         <script type="text/javascript" src="../js/css.js"></script>
         <script type="text/javascript" src="../js/navi.js"></script>
         <script type="text/javascript" src="../js/jquery-1.4.2.min.js"></script>
-        <title>EC-CUBEインストール</title>
+        <title><!--{t string="tpl_740"}--></title>
     </head>
     <body>
         <!--{$GLOBAL_ERR}-->
         <noscript>
-            <p>JavaScript を有効にしてご利用下さい。</p>
+            <p><!--{t string="tpl_523"}--></p>
         </noscript>
         <div id="outside">
             <div id="out-wrap">
@@ -48,7 +48,7 @@
                 <!--{if strlen($install_info_url) != 0}-->
                 <div id="info-area">
                             <iframe src="<!--{$install_info_url}-->" width="562" height="550" frameborder="no" scrolling="no">
-                                                         こちらはEC-CUBEからのお知らせです。この部分は iframe対応ブラウザでご覧下さい。
+                                                         <!--{t string="tpl_741"}-->
                             </iframe>
                  </div>
                 <!--{/if}-->

@@ -36,30 +36,30 @@
 
 <div class="contents">
     <div class="message">
-        <h2>サイト情報について</h2>
-         <p>EC-CUBEのシステム向上及び、デバッグのため以下の情報のご提供をお願いいたします。</p>
+        <h2><!--{t string="tpl_789"}--></h2>
+         <p><!--{t string="tpl_790"}--></p>
     </div>
     <div class="result-info01">
         <ul class="site-info-list">
-            <li><span class="bold">サイトURL：</span><!--{$tpl_site_url}--></li>
-            <li><span class="bold">店名：</span><!--{$tpl_shop_name}--></li>
-            <li><span class="bold">EC-CUBEバージョン：</span><!--{$tpl_cube_ver}--></li>
-            <li><span class="bold">PHP情報：</span><!--{$tpl_php_ver}--></li>
-            <li><span class="bold">DB情報：</span><!--{$tpl_db_ver}--></li>
-            <li><span class="bold">OS情報：</span><!--{""|php_uname|h}--> <!--{$smarty.server.SERVER_SOFTWARE|h}--></li>
+            <li><span class="bold"><!--{t string="tpl_791"}--></span><!--{$tpl_site_url}--></li>
+            <li><span class="bold"><!--{t string="tpl_792"}--></span><!--{$tpl_shop_name}--></li>
+            <li><span class="bold"><!--{t string="tpl_793"}--></span><!--{$tpl_cube_ver}--></li>
+            <li><span class="bold"><!--{t string="tpl_794"}--></span><!--{$tpl_php_ver}--></li>
+            <li><span class="bold"><!--{t string="tpl_795"}--></span><!--{$tpl_db_ver}--></li>
+            <li><span class="bold"><!--{t string="tpl_796"}--></span><!--{""|php_uname|h}--> <!--{$smarty.server.SERVER_SOFTWARE|h}--></li>
         </ul>
     </div>
     <div class="result-info02">
-        <input type="radio" id="ok" name="send_info" checked value="true" /><label for="ok">はい(推奨)</label>&nbsp;
-        <input type="radio" id="ng" name="send_info" value="false" /><label for="ng">いいえ</label>
+        <input type="radio" id="ok" name="send_info" checked value="true" /><label for="ok"><!--{t string="tpl_797"}--></label>&nbsp;
+        <input type="radio" id="ng" name="send_info" value="false" /><label for="ng"><!--{t string="tpl_798"}--></label>
     </div>
     <div class="btn-area-top"></div>
     <div class="btn-area">
         <ul>
             <li><a class="btn-action" href="#" onclick="document.form1['mode'].value='return_step3';document.form1.submit();return false;">
-                <span class="btn-prev">前へ戻る</span></a></li>
+                <span class="btn-prev"><!--{t string="tpl_610"}--></span></a></li>
             <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;">
-                <span class="btn-next">次へ進む</span></a></li>
+                <span class="btn-next"><!--{t string="tpl_736"}--></span></a></li>
         </ul>
     <div class="btn-area-bottom"></div>
 </div>

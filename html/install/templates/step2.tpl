@@ -41,8 +41,8 @@ function lfnChangePort(db_type) {
 <!--{/foreach}-->
 <div class="contents">
     <div class="message">
-        <h2>データベースの設定</h2>
-        ※インストールの前に新しくDBを作成しておく必要があります。
+        <h2><!--{t string="tpl_776"}--></h2>
+        <!--{t string="tpl_777"}-->
         <div class="attention"><!--{$arrErr.all}--></div>
     </div>
     <div class="block">
@@ -50,7 +50,7 @@ function lfnChangePort(db_type) {
             <col width="30%" />
             <col width="70%" />
             <tr>
-                <th>DBの種類<span class="attention">※</span></th>
+                <th><!--{t string="tpl_778"}--></th>
                 <td>
                 <!--{assign var=key value="db_type"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -60,7 +60,7 @@ function lfnChangePort(db_type) {
                 </td>
             </tr>
             <tr>
-                <th>DBサーバー</th>
+                <th><!--{t string="LC_Page_Install_034"}--></th>
                 <td>
                 <!--{assign var=key value="db_server"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -68,7 +68,7 @@ function lfnChangePort(db_type) {
                 </td>
             </tr>
             <tr>
-                <th>ポート</th>
+                <th><!--{t string="tpl_779"}--></th>
                 <td>
                 <!--{assign var=key value="db_port"}-->
                 <span class="attention"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
@@ -76,7 +76,7 @@ function lfnChangePort(db_type) {
                 </td>
             </tr>
             <tr>
-                <th>DB名<span class="attention">※</span></th>
+                <th><!--{t string="tpl_780"}--></th>
                 <td>
                 <!--{assign var=key value="db_name"}-->
                 <span class="attention"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
@@ -84,7 +84,7 @@ function lfnChangePort(db_type) {
                 </td>
             </tr>
             <tr>
-                <th>DBユーザ<span class="attention">※</span></th>
+                <th><!--{t string="tpl_781"}--></th>
                 <td>
                 <!--{assign var=key value="db_user"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -92,7 +92,7 @@ function lfnChangePort(db_type) {
                 </td>
             </tr>
             <tr>
-                <th>DBパスワード<span class="attention">※</span></th>
+                <th><!--{t string="tpl_782"}--></th>
                 <td>
                 <!--{assign var=key value="db_password"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -105,8 +105,8 @@ function lfnChangePort(db_type) {
     <div class="btn-area-top"></div>
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="document.form1['mode'].value='return_step1';document.form1.submit();return false;"><span class="btn-prev">前へ戻る</span></a></li>
-                <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next">次へ進む</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="document.form1['mode'].value='return_step1';document.form1.submit();return false;"><span class="btn-prev"><!--{t string="tpl_610"}--></span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next"><!--{t string="tpl_736"}--></span></a></li>
             </ul>
         </div>
         <div class="btn-area-bottom"></div>
