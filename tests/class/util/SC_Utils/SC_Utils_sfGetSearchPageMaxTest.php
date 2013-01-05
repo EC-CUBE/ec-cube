@@ -1,8 +1,6 @@
 <?php
 
 $HOME = realpath(dirname(__FILE__)) . "/../../../..";
-// テスト用に定数を指定
-define('SEARCH_PMAX', 20);
 require_once($HOME . "/tests/class/Common_TestCase.php");
 /*
  * This file is part of EC-CUBE
@@ -63,7 +61,7 @@ class SC_Utils_sfGetSearchPageMaxTest extends Common_TestCase {
 
   public function testSfGetSearchPageMax_負の数が指定されている場合_デフォルト値が返る() {
     
-    $this->expected = 20;
+    $this->expected = SEARCH_PMAX;
     $this->actual = SC_Utils::sfGetSearchPageMax(-50);
 
     $this->verify();
@@ -71,7 +69,7 @@ class SC_Utils_sfGetSearchPageMaxTest extends Common_TestCase {
 
   public function testSfGetSearchPageMax_指定がない場合_デフォルト値が返る() {
     
-    $this->expected = 20;
+    $this->expected = SEARCH_PMAX;
     $this->actual = SC_Utils::sfGetSearchPageMax();
 
     $this->verify();

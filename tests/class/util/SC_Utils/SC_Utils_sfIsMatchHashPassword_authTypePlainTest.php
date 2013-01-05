@@ -28,7 +28,7 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
 
 /**
  * SC_Utils::sfIsMatchHashPassword()のテストクラス.
- *
+ * TODO まとめて実行する場合は定数の変更ができないためNG
  *
  * @author Hiroko Tamagawa
  * @version $Id$
@@ -45,6 +45,7 @@ class SC_Utils_sfIsMatchHashPassword_authTypePlainTest extends Common_TestCase {
   }
 
   /////////////////////////////////////////
+  /**
   public function testSfIsMatchHashPassword_文字列が一致する場合_trueが返る() {
     $pass = 'ec-cube';
     $hashpass = 'ec-cube';
@@ -64,6 +65,6 @@ class SC_Utils_sfIsMatchHashPassword_authTypePlainTest extends Common_TestCase {
 
     $this->verify('パスワード文字列比較結果');
   }
-
+  */
 }
 

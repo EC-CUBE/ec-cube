@@ -25,36 +25,44 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
  */
 
 /**
- * SC_Helper_Purchase::unsetShippingTemp()のテストクラス.
+ * SC_Helper_Purchase::extractShipping()のテストクラス.
  *
  *
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Helper_Purchase_unsetShippingTempTest extends SC_Helper_Purchase_TestBase {
+class SC_Helper_Purchase_extractShippingTest extends SC_Helper_Purchase_TestBase {
 
   protected function setUp() {
-    parent::setUp();
-
-    // 空にするだけなので適当な値を設定
-    $_SESSION['shipping'] = 'temp01';
-    $_SESSION['multiple_temp'] = 'temp02';
+    // parent::setUp();
   }
 
   protected function tearDown() {
-    parent::tearDown();
+    // parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testUnsetShippingTemp__配送情報がすべて破棄される() {
-    SC_Helper_Purchase::unsetShippingTemp(TRUE);
+  public function testExtractShipping__予め指定されたキーだけが抽出される() {
+    $helper = new SC_Helper_Purchase();
+    $helper->arrShippingKey = array('id', 'name', 'code');
+    $arrSrc = array(
+      'shipping_id' => '1001',
+      'shipping_code' => 'cd1001',
+      'shipping_detail' => 'dt1001', // 無視される
+      'shipping_name' => '名称1001'
+    );
+ 
+    $this->expected = array(
+      'shipping_id' => '1001',
+      'shipping_name' => '名称1001',
+      'shipping_code' => 'cd1001'
+    );
+    $this->actual = $helper->extractShipping($arrSrc);
 
-    $this->expected = array('shipping'=>TRUE, 'multiple_temp'=>TRUE);
-    $this->actual['shipping'] = empty($_SESSION['shipping']);
-    $this->actual['multiple_temp'] = empty($_SESSION['multiple_temp']);
-
-    $this->verify('セッション情報が空かどうか');
+    $this->verify();
   }
+
+  //////////////////////////////////////////
 
 }
 

@@ -25,16 +25,17 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
  */
 
 /**
- * SC_Helper_Purchase::getShippingTemp()のテストクラス.
+ * SC_Helper_Purchase::cleanupSession()のテストクラス.
  *
  *
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Helper_Purchase_getShippingTempTest extends SC_Helper_Purchase_TestBase {
+class SC_Helper_Purchase_cleanupSessionTest extends SC_Helper_Purchase_TestBase {
 
   protected function setUp() {
     parent::setUp();
+    $this->setUpProductClass();
   }
 
   protected function tearDown() {
@@ -42,32 +43,37 @@ class SC_Helper_Purchase_getShippingTempTest extends SC_Helper_Purchase_TestBase
   }
 
   /////////////////////////////////////////
-  public function testGetShippingTemp_保有フラグがOFFの場合_セッション情報を取得する() {
-    $this->setUpShipping($this->getMultipleShipping());
+  public function testCleanupSession__カートとセッションの配送情報が削除される() {
+    // 引数の準備
+    $helper = new SC_Helper_Purchase();
+    $cartSession = new SC_CartSession();
+    $customer = new SC_Customer();
 
-    $this->expected = $this->getMultipleShipping();
-    $this->actual = SC_Helper_Purchase::getShippingTemp();
+    // 削除前のデータを設定
+    $cartSession->addProduct('1001', 5);  // product_type_id=1
+    $cartSession->addProduct('1002', 10); // product_type_id=2
+    $_SESSION['site']['uniqid'] = '100001';
 
-    $this->verify('配送情報');
-  }
-
-  public function testGetShippingTemp_保有フラグがONの場合_商品のある情報のみ取得する() {
-    $this->setUpShipping($this->getMultipleShipping());
+    $helper->cleanupSession('1001', $cartSession, $customer, '1');
 
     $this->expected = array(
-      '00001' => array(
-        'shipment_id' => '00001',
-        'shipment_item' => array('商品1'),
-        'shipping_pref' => '東京都'),
-      '00002' => array(
-        'shipment_id' => '00002',
-        'shipment_item' => array('商品2'),
-        'shipping_pref' => '沖縄県')
+      'cart_max_deleted' => 0,
+      'cart_max_notdeleted' => 1,
+      'uniqid' => '',
+      'shipping' => null,
+      'multiple_temp' => null
     );
-    $this->actual = SC_Helper_Purchase::getShippingTemp(TRUE);
 
-    $this->verify('配送情報');
+    $this->actual['cart_max_deleted'] = $cartSession->getMax('1');
+    $this->actual['cart_max_notdeleted'] = $cartSession->getMax('2');
+    $this->actual['uniqid'] = $_SESSION['site']['uniqid'];
+    $this->actual['shipping'] = $_SESSION['shipping'];
+    $this->actual['multiple_temp'] = $_SESSION['multiple_temp'];
+
+    $this->verify();  
   }
+  
+  //////////////////////////////////////////
 
 }
 

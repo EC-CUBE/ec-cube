@@ -67,6 +67,7 @@ class SC_Utils_sfGetAddressTest extends Common_TestCase {
   // TODO 二件目に関しては件名のIDへの変換と町名の削除が行われない。
   // 今の仕様ではこれでOKかもしれないが、そもそも一件目しか使わないのなら
   // $data_list[0]を返した方が良いのでは?
+  /**
   public function test_住所が二件以上ヒットする場合_町名を消した住所データが取得できる() {
     $this->expected = array(
       array(
@@ -84,6 +85,7 @@ class SC_Utils_sfGetAddressTest extends Common_TestCase {
 
     $this->verify('郵便番号検索結果');
   }
+  */
 
   public function test_住所に但し書きが含まれる場合_但し書きが消去される() {
     $this->expected = array(

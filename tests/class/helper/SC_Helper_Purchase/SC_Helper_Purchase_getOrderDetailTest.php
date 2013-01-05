@@ -62,7 +62,7 @@ class SC_Helper_Purchase_getOrderDetailTest extends SC_Helper_Purchase_TestBase 
        array(
          'product_id' => '1002',
          'product_class_id' => '1002',
-         'product_type_id' => '1002',
+         'product_type_id' => '2',
          'product_code' => 'pc1002',
          'product_name' => '製品名1002',
          'classcategory_name1' => 'cat10021',
@@ -80,7 +80,7 @@ class SC_Helper_Purchase_getOrderDetailTest extends SC_Helper_Purchase_TestBase 
        array(
          'product_id' => '1001',
          'product_class_id' => '1001',
-         'product_type_id' => '1001',
+         'product_type_id' => '1',
          'product_code' => 'pc1001',
          'product_name' => '製品名1001',
          'classcategory_name1' => 'cat10011',
@@ -108,7 +108,7 @@ class SC_Helper_Purchase_getOrderDetailTest extends SC_Helper_Purchase_TestBase 
        array(
          'product_id' => '1002',
          'product_class_id' => '1002',
-         'product_type_id' => '1002',
+         'product_type_id' => '2',
          'product_code' => 'pc1002',
          'product_name' => '製品名1002',
          'classcategory_name1' => 'cat10021',
@@ -126,7 +126,7 @@ class SC_Helper_Purchase_getOrderDetailTest extends SC_Helper_Purchase_TestBase 
        array(
          'product_id' => '1001',
          'product_class_id' => '1001',
-         'product_type_id' => '1001',
+         'product_type_id' => '1',
          'product_code' => 'pc1001',
          'product_name' => '製品名1001',
          'classcategory_name1' => 'cat10011',
