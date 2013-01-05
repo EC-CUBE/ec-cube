@@ -73,7 +73,9 @@ class SC_Helper_Purchase_getOrderDetailTest extends SC_Helper_Purchase_TestBase 
          'status' => '3',
          'payment_date' => '2032-12-31 01:20:30',
          'enable' => '0',
-         'effective' => '1'
+         'effective' => '1',
+         'tax_rate' => '5',
+         'tax_rule' => '0'
        ),
        array(
          'product_id' => '1001',
@@ -89,7 +91,9 @@ class SC_Helper_Purchase_getOrderDetailTest extends SC_Helper_Purchase_TestBase 
          'status' => '3',
          'payment_date' => '2032-12-31 01:20:30',
          'enable' => '1',
-         'effective' => '1'
+         'effective' => '1',
+         'tax_rate' => '3',
+         'tax_rule' => '1'
        )
     );
     $this->actual = SC_Helper_Purchase::getOrderDetail($order_id);
@@ -115,7 +119,9 @@ class SC_Helper_Purchase_getOrderDetailTest extends SC_Helper_Purchase_TestBase 
          // 'status' => '3',
          // 'payment_date' => '2032-12-31 01:20:30',
          'enable' => '0',
-         'effective' => '1'
+         'effective' => '1',
+         'tax_rate' => '5',
+         'tax_rule' => '0'
        ),
        array(
          'product_id' => '1001',
@@ -131,7 +137,9 @@ class SC_Helper_Purchase_getOrderDetailTest extends SC_Helper_Purchase_TestBase 
          // 'status' => '3',
          // 'payment_date' => '2032-12-31 01:20:30',
          'enable' => '1',
-         'effective' => '1'
+         'effective' => '1',
+         'tax_rate' => '3',
+         'tax_rule' => '1'
        )
     );
     $this->actual = SC_Helper_Purchase::getOrderDetail($order_id, false);

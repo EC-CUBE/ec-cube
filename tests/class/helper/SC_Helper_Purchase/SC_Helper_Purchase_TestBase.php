@@ -475,7 +475,9 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
        'classcategory_name2' => 'cat10022',
        'price' => 3000,
        'quantity' => 10,
-       'point_rate' => 5
+       'point_rate' => 5,
+       'tax_rate' => 5,
+       'tax_rule' => 0
      ),
      array(
        'order_detail_id' => '1002',
@@ -488,7 +490,9 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
        'classcategory_name2' => 'cat10012',
        'price' => 4000,
        'quantity' => 15,
-       'point_rate' => 6
+       'point_rate' => 6,
+       'tax_rate' => 3,
+       'tax_rule' => 1
      ),
      array(
        'order_detail_id' => '1003',

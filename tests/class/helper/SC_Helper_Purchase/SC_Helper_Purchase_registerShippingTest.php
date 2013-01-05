@@ -5,7 +5,7 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
 /**
  *
  */
-class SC_Helper_Purchase_registerShippingTempTest extends SC_Helper_Purchase_TestBase {
+class SC_Helper_Purchase_registerShippingTest extends SC_Helper_Purchase_TestBase {
 
   protected function setUp() {
     parent::setUp();
@@ -29,7 +29,7 @@ class SC_Helper_Purchase_registerShippingTempTest extends SC_Helper_Purchase_Tes
        )
     );
  
-    $this->expected['count'] = '3'; // 1件増える
+    $this->expected['count'] = '4'; // 1件増える
     $this->expected['content'] = array(
         'order_id' => '10',
         'shipping_id' => '20',
@@ -66,7 +66,7 @@ class SC_Helper_Purchase_registerShippingTempTest extends SC_Helper_Purchase_Tes
         )
     );
 
-    $this->expected['count'] = '2'; // 件数が変わらない
+    $this->expected['count'] = '3'; // 件数が変わらない
     $this->expected['content'] = array(
         'order_id' => '2',
         'shipping_id' => '30',
@@ -103,7 +103,7 @@ class SC_Helper_Purchase_registerShippingTempTest extends SC_Helper_Purchase_Tes
         )
     );
 
-    $this->expected['count'] = '2';
+    $this->expected['count'] = '3';
     $this->expected['content'] = array(
         'order_id' => '2',
         'shipping_id' => '30',
@@ -140,7 +140,7 @@ class SC_Helper_Purchase_registerShippingTempTest extends SC_Helper_Purchase_Tes
         )
     );
 
-    $this->expected['count'] = '2'; // 件数が変わらない
+    $this->expected['count'] = '3'; // 件数が変わらない
     $this->expected['content'] = array(
         'order_id' => '2',
         'shipping_id' => '30',
