@@ -37,7 +37,7 @@ class SC_Helper_Purchase_saveOrderTempTest extends SC_Helper_Purchase_TestBase {
   protected function setUp() {
     parent::setUp();
     $this->setUpOrderTemp();
-    $this->helper = new SC_Helper_Purchase_Mock();
+    $this->helper = new SC_Helper_Purchase_saveOrderTempMock();
   }
 
   protected function tearDown() {
@@ -134,7 +134,7 @@ class SC_Helper_Purchase_saveOrderTempTest extends SC_Helper_Purchase_TestBase {
 
 }
 
-class SC_Helper_Purchase_Mock extends SC_Helper_Purchase {
+class SC_Helper_Purchase_saveOrderTempMock extends SC_Helper_Purchase {
   function copyFromCustomer($sqlval, $objCustomer) {
     echo('COPY_FROM_CUSTOMER');
   }

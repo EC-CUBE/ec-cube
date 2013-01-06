@@ -46,7 +46,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
    */
   protected function setUpShipping($shipping) {
     if (!$shipping) {
-      $shipping = getSingleShipping(); 
+      $shipping = $this->getSingleShipping(); 
     }
 
     $_SESSION['shipping'] = $shipping;
@@ -84,21 +84,21 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
   protected function setUpShippingOnDb() {
     $shippings = array(
       array(
-        'update_date' => 'CURRENT_TIMESTAMP',
+        'update_date' => '2000-01-01 00:00:00',
         'shipping_id' => '1',
         'order_id' => '1',
         'shipping_name01' => '配送情報01',
         'shipping_date' => '2012-01-12'
       ),
       array(
-        'update_date' => 'CURRENT_TIMESTAMP',
+        'update_date' => '2000-01-01 00:00:00',
         'shipping_id' => '2',
         'order_id' => '2',
         'shipping_name01' => '配送情報02',
         'shipping_date' => '2011-10-01'
       ),
       array(
-        'update_date' => 'CURRENT_TIMESTAMP',
+        'update_date' => '2000-01-01 00:00:00',
         'shipping_id' => '1002',
         'order_id' => '1002',
         'shipping_time' => '午後',
@@ -146,7 +146,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
   protected function setUpProductClass() {
       $product_class = array(
         array(
-          'update_date' => 'CURRENT_TIMESTAMP',
+          'update_date' => '2000-01-01 00:00:00',
           'product_class_id' => '1001',
           'product_id' => '1001',
           'product_type_id' => '1',
@@ -159,7 +159,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
           'del_flg' => '0'
         ),
         array(
-          'update_date' => 'CURRENT_TIMESTAMP',
+          'update_date' => '2000-01-01 00:00:00',
           'product_class_id' => '1002',
           'product_id' => '1002',
           'product_type_id' => '2',
@@ -183,14 +183,14 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
   protected function setUpClassCategory() {
     $class_category = array(
       array(
-        'update_date' => 'CURRENT_TIMESTAMP',
+        'update_date' => '2000-01-01 00:00:00',
         'classcategory_id' => '1001',
         'class_id' => '1',
         'creator_id' => '1',
         'name' => 'cat1001'
       ),
       array(
-        'update_date' => 'CURRENT_TIMESTAMP',
+        'update_date' => '2000-01-01 00:00:00',
         'classcategory_id' => '1002',
         'class_id' => '1',
         'creator_id' => '1',
@@ -210,7 +210,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
  protected function setUpProducts() {
    $products = array(
      array(
-       'update_date' => 'CURRENT_TIMESTAMP',
+       'update_date' => '2000-01-01 00:00:00',
        'product_id' => '1001',
        'name' => '製品名1001',
        'del_flg' => '0',
@@ -218,7 +218,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
        'status' => '1'
      ),
      array(
-       'update_date' => 'CURRENT_TIMESTAMP',
+       'update_date' => '2000-01-01 00:00:00',
        'product_id' => '1002',
        'name' => '製品名1002',
        'del_flg' => '0',
@@ -298,7 +298,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
        'rank' => '1',
        'creator_id' => '1',
        'del_flg' => '1',
-       'update_date' => 'CURRENT_TIMESTAMP'
+       'update_date' => '2000-01-01 00:00:00'
      ),
      array(
        'deliv_id' => '1001',
@@ -306,7 +306,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
        'name' => '配送業者01',
        'creator_id' => '1',
        'rank' => '2',
-       'update_date' => 'CURRENT_TIMESTAMP'
+       'update_date' => '2000-01-01 00:00:00'
      ),
      array(
        'deliv_id' => '1002',
@@ -314,7 +314,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
        'name' => '配送業者02',
        'creator_id' => '1',
        'rank' => '3',
-       'update_date' => 'CURRENT_TIMESTAMP'
+       'update_date' => '2000-01-01 00:00:00'
      ),
      array( // 商品種別違い
        'deliv_id' => '1004',
@@ -322,7 +322,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
        'name' => '配送業者21',
        'creator_id' => '1',
        'rank' => '4',
-       'update_date' => 'CURRENT_TIMESTAMP'
+       'update_date' => '2000-01-01 00:00:00'
      ),
    );
 
@@ -366,53 +366,53 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
  protected function setUpPayment() {
    $payment = array(
      array(
-       'update_date' => 'CURRENT_TIMESTAMP',
+       'update_date' => '2000-01-01 00:00:00',
        'payment_id' => '1001',
        'creator_id' => '1',
        'payment_method' => '支払方法1001'
      ),
      array(
-       'update_date' => 'CURRENT_TIMESTAMP',
+       'update_date' => '2000-01-01 00:00:00',
        'payment_id' => '1002',
        'creator_id' => '1',
        'payment_method' => '支払方法1002',
        'del_flg' => '1'
      ),
      array(
-       'update_date' => 'CURRENT_TIMESTAMP',
+       'update_date' => '2000-01-01 00:00:00',
        'payment_id' => '1003',
        'creator_id' => '1',
        'payment_method' => '支払方法1003'
      ),
      array(
-       'update_date' => 'CURRENT_TIMESTAMP',
+       'update_date' => '2000-01-01 00:00:00',
        'payment_id' => '3001',
        'creator_id' => '1',
        'payment_method' => '支払方法3001',
        'del_flg' => '1'
      ),
      array(
-       'update_date' => 'CURRENT_TIMESTAMP',
+       'update_date' => '2000-01-01 00:00:00',
        'payment_id' => '3002',
        'creator_id' => '1',
        'payment_method' => '支払方法3002'
      ),
      array(
-       'update_date' => 'CURRENT_TIMESTAMP',
+       'update_date' => '2000-01-01 00:00:00',
        'payment_id' => '3003',
        'creator_id' => '1',
        'payment_method' => '支払方法3003',
        'rule_max' => 10000
      ),
      array(
-       'update_date' => 'CURRENT_TIMESTAMP',
+       'update_date' => '2000-01-01 00:00:00',
        'payment_id' => '3004',
        'creator_id' => '1',
        'payment_method' => '支払方法3004',
        'upper_rule' => 20000
      ),
      array(
-       'update_date' => 'CURRENT_TIMESTAMP',
+       'update_date' => '2000-01-01 00:00:00',
        'payment_id' => '3005',
        'creator_id' => '1',
        'payment_method' => '支払方法3005',
@@ -433,21 +433,26 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
   protected function setUpOrder() {
     $order = array(
       array(
-        'update_date' => 'CURRENT_TIMESTAMP',
+        'update_date' => '2000-01-01 00:00:00',
         'order_id' => '1001',
         'customer_id' => '1001',
         'order_name01' => '受注情報01',
         'status' => '3',
-        'payment_date' => '2032-12-31 01:20:30' // 日付が変わっても良いように、遠い未来に設定
+        'payment_date' => '2032-12-31 01:20:30', // 日付が変わっても良いように、遠い未来に設定
+        'use_point' => '10',
+        'add_point' => '20'
       ),
       array(
-        'update_date' => 'CURRENT_TIMESTAMP',
+        'update_date' => '2000-01-01 00:00:00',
         'order_id' => '1002',
         'customer_id' => '1002',
         'order_name01' => '受注情報02',
+        'status' => '5',
         'payment_id' => '1002',
         'payment_method' => '支払方法1001',
-        'deliv_id' => '1002'
+        'deliv_id' => '1002',
+        'use_point' => '10',
+        'add_point' => '20'
       )
     );
 
@@ -463,13 +468,14 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
   protected function setUpOrderTemp() {
     $order = array(
       array(
-        'update_date' => 'CURRENT_TIMESTAMP',
+        'update_date' => '2000-01-01 00:00:00',
         'order_temp_id' => '1001',
         'customer_id' => '1001',
-        'order_name01' => '受注情報01'
+        'order_name01' => '受注情報01',
+        'order_id' => '1001'
       ),
       array(
-        'update_date' => 'CURRENT_TIMESTAMP',
+        'update_date' => '2000-01-01 00:00:00',
         'order_temp_id' => '1002',
         'customer_id' => '1002',
         'order_name01' => '受注情報02',
@@ -531,6 +537,41 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
    $this->objQuery->delete('dtb_order_detail');
    foreach ($order_detail as $item) {
      $this->objQuery->insert('dtb_order_detail', $item);
+   }
+ }
+
+ /**
+  * DBに顧客情報を設定します。
+  */
+ protected function setUpCustomer() {
+   $customer = array(
+     array(
+       'customer_id' => '1001',
+       'name01' => '苗字',
+       'name02' => '名前',
+       'kana01' => 'みょうじ',
+       'kana02' => 'なまえ',
+       'email' => 'test@example.com',
+       'secret_key' => 'hoge',
+       'point' => '100',
+       'update_date' => '2000-01-01 00:00:00'
+     ),
+     array(
+       'customer_id' => '1002',
+       'name01' => '苗字2',
+       'name02' => '名前2',
+       'kana01' => 'みょうじ2',
+       'kana02' => 'なまえ2',
+       'email' => 'test2@example.com',
+       'secret_key' => 'hoge2',
+       'point' => '200',
+       'update_date' => '2000-01-01 00:00:00'
+     )
+   );
+
+   $this->objQuery->delete('dtb_customer');
+   foreach ($customer as $item) {
+     $this->objQuery->insert('dtb_customer', $item);
    }
  }
 
