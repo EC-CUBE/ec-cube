@@ -98,7 +98,8 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
                     // 入力エラーの場合は終了
                     if (count($this->arrErr) == 0) {
                         // 郵便番号検索文作成
-                        $zipcode = $_POST['zip01'] . $_POST['zip02'];
+//                        $zipcode = $_POST['zip01'] . $_POST['zip02'];
+                        $zipcode = $_POST['zipcode'];
 
                         // 郵便番号検索
                         $arrAdsList = SC_Utils_Ex::sfGetAddress($zipcode);
@@ -112,7 +113,8 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
                         }
                         // 該当無し
                         else {
-                            $this->arrErr['zip01'] =  t('LC_Page_Mypage_Change_002');
+//                            $this->arrErr['zip01'] =  t('LC_Page_Mypage_Change_002');
+                            $this->arrErr['zipcode'] =  t('LC_Page_Mypage_Change_002');
                         }
                     }
                     $this->arrForm  = $objFormParam->getHashArray();
@@ -195,20 +197,28 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
         // パラメーター情報の初期化
-        $objFormParam->addParam(t('PARAM_LABEL_ZIP01'), 'zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_COUNT_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ZIP02'), 'zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_COUNT_CHECK', 'NUM_CHECK'));
-        // // リクエスト値をセット
-        $arrData['zip01'] = $arrRequest['zip01'];
-        $arrData['zip02'] = $arrRequest['zip02'];
+//        $objFormParam->addParam(t('PARAM_LABEL_ZIP01'), 'zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_COUNT_CHECK', 'NUM_CHECK'));
+//        $objFormParam->addParam(t('PARAM_LABEL_ZIP02'), 'zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_COUNT_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ZIP'), 'zipcode', ZIPCODE_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+
+        // リクエスト値をセット
+//        $arrData['zip01'] = $arrRequest['zip01'];
+//        $arrData['zip02'] = $arrRequest['zip02'];
+        $arrData['zipcode'] = $arrRequest['zipcode'];
         $objFormParam->setParam($arrData);
         // エラーチェック
         $arrErr = $objFormParam->checkError();
         // 親ウィンドウの戻り値を格納するinputタグのnameのエラーチェック
+        /*
         if (!$this->lfInputNameCheck($addData['zip01'])) {
             $arrErr['zip01'] =  t('LC_Page_Mypage_Change_005');
         }
         if (!$this->lfInputNameCheck($arrdata['zip02'])) {
             $arrErr['zip02'] =  t('LC_Page_Mypage_Change_006');
+        }
+        */
+        if (!$this->lfInputNameCheck($arrData['zipcode'])) {
+            $arrErr['zipcode'] =  t('LC_Page_Mypage_Change_005');
         }
 
         return $arrErr;

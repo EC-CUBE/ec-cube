@@ -93,11 +93,11 @@ function lfPopwinSubmit(formName) {
     <tr>
         <th><!--{t string="tpl_425"}--></th>
         <td><!--{if $arrErr.msg1}--><span class="attention"><!--{$arrErr.msg1}--></span><!--{/if}-->
-            <!--{t string="tpl_426"}--><input type="text" name="msg1" size="40" value="<!--{$arrForm.msg1|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN*3/5}-->"/><br />
+            <!--{t string="tpl_426"}--><input type="text" name="msg1" size="40" value="<!--{$arrForm.msg1|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
             <!--{if $arrErr.msg2}--><span class="attention"><!--{$arrErr.msg1}--></span><!--{/if}-->
-            <!--{t string="tpl_427"}--><input type="text" name="msg2" size="40" value="<!--{$arrForm.msg2|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN*3/5}-->"/><br />
+            <!--{t string="tpl_427"}--><input type="text" name="msg2" size="40" value="<!--{$arrForm.msg2|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
             <!--{if $arrErr.msg3}--><span class="attention"><!--{$arrErr.msg3}--></span><!--{/if}-->
-            <!--{t string="tpl_428"}--><input type="text" name="msg3" size="40" value="<!--{$arrForm.msg3|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN*3/5}-->"/><br />
+            <!--{t string="tpl_428"}--><input type="text" name="msg3" size="40" value="<!--{$arrForm.msg3|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
             <span style="font-size: 80%;"><!--{t string="tpl_429"}--></span><br />
         </td>
     </tr>

@@ -235,7 +235,8 @@
                 </tr>
                 <tr>
                     <th scope="row">郵便番号</th>
-                    <td>〒<!--{$shippingItem.shipping_zip01|h}-->-<!--{$shippingItem.shipping_zip02|h}--></td>
+                    <!--{* <td>〒<!--{$shippingItem.shipping_zip01|h}-->-<!--{$shippingItem.shipping_zip02|h}--></td> *}-->
+                    <td>〒<!--{$shippingItem.shipping_zipcode|h}--></td>
                 </tr>
                 <tr>
                     <th scope="row">住所</th>

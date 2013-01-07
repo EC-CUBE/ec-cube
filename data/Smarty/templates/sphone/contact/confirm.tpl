@@ -46,8 +46,13 @@
 
             <dt>住所</dt>
             <dd>
+                <!--{*
                 <!--{if strlen($arrForm.zip01.value) > 0 && strlen($arrForm.zip02.value) > 0}-->
                 〒<!--{$arrForm.zip01.value|h}-->-<!--{$arrForm.zip02.value|h}-->
+                <!--{/if}--><br />
+                *}-->
+                <!--{if strlen($arrForm.zipcode.value) > 0}-->
+                〒<!--{$arrForm.zipcode.value|h}-->
                 <!--{/if}--><br />
                 <!--{$arrPref[$arrForm.pref.value]}--><!--{$arrForm.addr01.value|h}--><!--{$arrForm.addr02.value|h}-->
             </dd>

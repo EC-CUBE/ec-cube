@@ -149,8 +149,9 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
             'shop_name',
             'shop_kana',
             'shop_name_eng',
-            'zip01',
-            'zip02',
+//            'zip01',
+//            'zip02',
+            'zipcode',
             'pref',
             'addr01',
             'addr02',
@@ -219,8 +220,10 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         $objFormParam->addParam(t('PARAM_LABEL_SHOP_KANA'), 'shop_kana',  STEXT_LEN, 'KVC', array('KANA_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_SHOP_NAME_ENG'), 'shop_name_eng',MTEXT_LEN, 'a', array('GRAPH_CHECK','MAX_LENGTH_CHECK'));
         // 郵便番号チェック
-        $objFormParam->addParam(t('PARAM_LABEL_ZIP01'), 'zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK','NUM_COUNT_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ZIP02'), 'zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK','NUM_COUNT_CHECK'));
+//        $objFormParam->addParam(t('PARAM_LABEL_ZIP01'), 'zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK','NUM_COUNT_CHECK'));
+//        $objFormParam->addParam(t('PARAM_LABEL_ZIP02'), 'zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK','NUM_COUNT_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ZIP'), 'zipcode', ZIPCODE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK','MAX_LENGTH_CHECK'));
+
         // 所在地チェック
         $objFormParam->addParam(t('PARAM_LABEL_PREF'), 'pref', '', 'n');
         $objFormParam->addParam(t('PARAM_LABEL_ADDR01'), 'addr01', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
@@ -267,7 +270,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         $post = $objFormParam->getHashArray();
 
         $objErr = new SC_CheckError_Ex($post);
-        $objErr->doFunc(array(t('PARAM_LABEL_ZIP'), 'zip01', 'zip02'), array('ALL_EXIST_CHECK'));
+//        $objErr->doFunc(array(t('PARAM_LABEL_ZIP'), 'zip01', 'zip02'), array('ALL_EXIST_CHECK'));
 
         // 電話番号チェック
         $objErr->doFunc(array(t('PARAM_LABEL_TEL'), 'tel01', 'tel02', 'tel03'), array('TEL_CHECK'));

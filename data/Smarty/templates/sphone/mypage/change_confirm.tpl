@@ -52,7 +52,8 @@
 
             <dt>住所</dt>
             <dd>
-                〒<!--{$arrForm.zip01}-->-<!--{$arrForm.zip02}--><br />
+                <!--{* 〒<!--{$arrForm.zip01}-->-<!--{$arrForm.zip02}--><br /> *}-->
+                〒<!--{$arrForm.zipcode}--><br />
                 <!--{$arrPref[$arrForm.pref]}--><!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}-->
             </dd>
 

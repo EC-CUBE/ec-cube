@@ -312,6 +312,7 @@ INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, upda
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (76, 2, 'kana02', 'お名前(フリガナ・名)', 5, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (77, 2, 'zip01', '郵便番号1', 6, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (78, 2, 'zip02', '郵便番号2', 7, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (79, 2, 'zipcode', '郵便番号', 8, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (80, 2, 'addr01', '住所1', 9, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (81, 2, 'addr02', '住所2', 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (82, 2, 'email', 'E-MAIL', 11, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
@@ -347,6 +348,7 @@ INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_da
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (112, 3, 'order_fax03', 'FAX3', 14, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'TEL_ITEM_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (113, 3, 'order_zip01', '郵便番号1', 15, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'ZIP01_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK,NUM_COUNT_CHECK');
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (114, 3, 'order_zip02', '郵便番号2', 16, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'ZIP02_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK,NUM_COUNT_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (115, 3, 'order_zipcode', '郵便番号', 17, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'ZIPCODE_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK,NUM_COUNT_CHECK');
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (116, 3, 'order_addr01', '住所1', 18, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'MTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,NUM_CHECK');
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (117, 3, 'order_addr02', '住所2', 19, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'MTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,NUM_CHECK');
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (118, 3, 'order_sex', '性別', 20, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
@@ -1150,6 +1152,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('INT_LEN', '9', 206,
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CREDIT_NO_LEN', '4', 207, 'クレジットカードの文字数 (*モジュールで使用)'); 
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SEARCH_CATEGORY_LEN', '18', 208, '検索カテゴリ最大表示文字数(byte)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('FILE_NAME_LEN', '10', 209, 'ファイル名表示文字数');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ZIPCODE_LEN', '10', 210, '郵便番号');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('COOKIE_EXPIRE', '365', 212, 'クッキー保持期限(日)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SEPA_CATNAVI', '" > "', 235, 'カテゴリ区切り文字');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SHOPPING_URL', 'HTTPS_URL . "shopping/" . DIR_INDEX_PATH', 237, '会員情報入力');

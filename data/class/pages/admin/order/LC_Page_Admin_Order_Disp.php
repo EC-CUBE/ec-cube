@@ -46,8 +46,9 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
         'shipping_fax02',
         'shipping_fax03',
         'shipping_pref',
-        'shipping_zip01',
-        'shipping_zip02',
+//        'shipping_zip01',
+//        'shipping_zip02',
+        'shipping_zipcode',
         'shipping_addr01',
         'shipping_addr02',
         'shipping_date_year',
@@ -156,8 +157,9 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam(t('PARAM_LABEL_MEMBER_KANA1'), 'order_kana01', STEXT_LEN, 'KVCa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_MEMBER_KANA2'), 'order_kana02', STEXT_LEN, 'KVCa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_EMAIL'), 'order_email', null, 'KVCa', array('NO_SPTAB', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ZIP01'), 'order_zip01', ZIP01_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ZIP02'), 'order_zip02', ZIP02_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
+//        $objFormParam->addParam(t('PARAM_LABEL_ZIP01'), 'order_zip01', ZIP01_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
+//        $objFormParam->addParam(t('PARAM_LABEL_ZIP02'), 'order_zip02', ZIP02_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ZIP'), 'order_zipcode', ZIPCODE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_PREF'), 'order_pref', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ADDR1'), 'order_addr01', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ADDR2'), 'order_addr02', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
@@ -220,8 +222,9 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_NAME2'), 'shipping_name02', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_LASTKANA'), 'shipping_kana01', STEXT_LEN, 'KVCa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_FIRSTKANA'), 'shipping_kana02', STEXT_LEN, 'KVCa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ZIP01'), 'shipping_zip01', ZIP01_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ZIP02'), 'shipping_zip02', ZIP02_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
+//        $objFormParam->addParam(t('PARAM_LABEL_ZIP01'), 'shipping_zip01', ZIP01_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
+//        $objFormParam->addParam(t('PARAM_LABEL_ZIP02'), 'shipping_zip02', ZIP02_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ZIP'), 'shipping_zipcode', ZIPCODE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_PREF'), 'shipping_pref', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ADDR1'), 'shipping_addr01', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ADDR2'), 'shipping_addr02', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));

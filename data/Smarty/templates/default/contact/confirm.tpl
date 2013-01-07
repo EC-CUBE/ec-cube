@@ -47,8 +47,13 @@
             <tr>
                 <th>郵便番号</th>
                 <td>
+                    <!--{*
                     <!--{if strlen($arrForm.zip01.value) > 0 && strlen($arrForm.zip02.value) > 0}-->
                         〒<!--{$arrForm.zip01.value|h}-->-<!--{$arrForm.zip02.value|h}-->
+                    <!--{/if}-->
+                    *}-->
+                    <!--{if strlen($arrForm.zipcode.value) > 0}-->
+                        〒<!--{$arrForm.zipcode.value|h}-->
                     <!--{/if}-->
                 </td>
             </tr>

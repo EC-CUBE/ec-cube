@@ -50,17 +50,28 @@
         <tr>
             <th><!--{t string="tpl_033_1"}--></th>
             <td>
-            <!--{assign var=key1 value="law_zip01"}-->
-            <!--{assign var=key2 value="law_zip02"}-->
-            <!--{if $arrErr[$key1] || $arrErr[$key2]}-->
+            <!--{* <!--{assign var=key1 value="law_zip01"}--> *}-->
+            <!--{* <!--{assign var=key2 value="law_zip02"}--> *}-->
+            <!--{assign var=key value="law_zipcode"}-->
+
+            <!--{*
+            <!--{if $arrErr[$key1] || $arrErr[$key2]}--> 
             <span class="attention"><!--{$arrErr[$key1]}--></span>
             <span class="attention"><!--{$arrErr[$key2]}--></span>
             <!--{/if}-->
+            *}-->
+            <!--{if $arrErr[$key]}-->
+            <span class="attention"><!--{$arrErr[$key]}--></span>
+            <!--{/if}-->
+            
             <!--{t string="tpl_106"}-->
+            <!--{*
             <input type="text" name="<!--{$arrForm[$key1].keyname}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->"    size="6" class="box6" />
             -
             <input type="text"    name="<!--{$arrForm[$key2].keyname}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"    size="6" class="box6" />
             <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'law_zip01', 'law_zip02', 'law_pref', 'law_addr01'); return false;"><!--{t string="tpl_034"}--></a>
+            *}-->
+            <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"  size="15" class="box10" />
             </td>
         </tr>
         <tr>
@@ -107,7 +118,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_039"}--></th>
+            <th><!--{t string="tpl_038"}--></th>
             <td>
                 <!--{assign var=key1 value="law_fax01"}-->
                 <!--{assign var=key2 value="law_fax02"}-->

@@ -124,8 +124,9 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex {
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam(t('PARAM_LABEL_SELLER'), 'law_company', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_MANAGER'), 'law_manager', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ZIP01'), 'law_zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'NUM_COUNT_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ZIP02'), 'law_zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'NUM_COUNT_CHECK'));
+//        $objFormParam->addParam(t('PARAM_LABEL_ZIP01'), 'law_zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'NUM_COUNT_CHECK'));
+//        $objFormParam->addParam(t('PARAM_LABEL_ZIP02'), 'law_zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'NUM_COUNT_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ZIP'), 'law_zipcode', ZIPCODE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_PREF'), 'law_pref', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ADDR01'), 'law_addr01', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ADDR02'), 'law_addr02', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
@@ -169,7 +170,7 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex {
         // 電話番号チェック
         $objErr->doFunc(array(t('PARAM_LABEL_TEL'), 'law_tel01', 'law_tel02', 'law_tel03'), array('TEL_CHECK'));
         $objErr->doFunc(array(t('PARAM_LABEL_FAX'), 'law_fax01', 'law_fax02', 'law_fax03'), array('TEL_CHECK'));
-        $objErr->doFunc(array(t('PARAM_LABEL_ZIP'), 'law_zip01', 'law_zip02'), array('ALL_EXIST_CHECK'));
+//        $objErr->doFunc(array(t('PARAM_LABEL_ZIP'), 'law_zip01', 'law_zip02'), array('ALL_EXIST_CHECK'));
 
         return $objErr->arrErr;
     }

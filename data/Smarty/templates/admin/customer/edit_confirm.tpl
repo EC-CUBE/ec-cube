@@ -73,7 +73,8 @@ function func_return(){
             </tr>
             <tr>
                 <th><!--{t string="tpl_033"}--></th>
-                <td><!--{t string="tpl_106"}--> <!--{$arrForm.zip01|h}--> - <!--{$arrForm.zip02|h}--></td>
+                <!--{* <td><!--{t string="tpl_106"}--> <!--{$arrForm.zip01|h}--> - <!--{$arrForm.zip02|h}--></td> *}-->
+                <td><!--{t string="tpl_106"}--> <!--{$arrForm.zipcode|h}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_212"}--></th>

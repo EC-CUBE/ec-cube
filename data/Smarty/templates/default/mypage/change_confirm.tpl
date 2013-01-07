@@ -52,7 +52,8 @@
             </tr>
             <tr>
                 <th>郵便番号</th>
-                <td><!--{$arrForm.zip01}-->-<!--{$arrForm.zip02}--></td>
+                <!--{* <td><!--{$arrForm.zip01}-->-<!--{$arrForm.zip02}--></td> *}-->
+                <td><!--{$arrForm.zipcode}--></td>
             </tr>
             <tr>
                 <th>住所</th>

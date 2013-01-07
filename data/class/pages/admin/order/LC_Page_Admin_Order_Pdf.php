@@ -192,9 +192,9 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_TYPE'), 'type', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_HOW_TO_DOWNLOAD'), 'download', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_TITLE'), 'title', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_MSG1'), 'msg1', STEXT_LEN*3/5, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_MSG2'), 'msg2', STEXT_LEN*3/5, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_MSG3'), 'msg3', STEXT_LEN*3/5, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_MSG1'), 'msg1', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_MSG2'), 'msg2', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_MSG3'), 'msg3', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_NOTE1'), 'etc1', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_NOTE2'), 'etc2', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_NOTE3'), 'etc3', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));

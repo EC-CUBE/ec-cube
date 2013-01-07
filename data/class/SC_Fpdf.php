@@ -105,7 +105,8 @@ class SC_Fpdf extends SC_Helper_FPDI {
         // 会社名
         $this->lfText(125, 68, $arrInfo['law_company'], 8);
         // 郵便番号
-        $text = '〒 ' . $arrInfo['law_zip01'] . ' - ' . $arrInfo['law_zip02'];
+//        $text = '〒 ' . $arrInfo['law_zip01'] . ' - ' . $arrInfo['law_zip02'];
+        $text = '〒 ' . $arrInfo['law_zipcode'];
         $this->lfText(125, 71, $text, 8);
         // 都道府県+所在地
         $text = $this->arrPref[$arrInfo['law_pref']] . $arrInfo['law_addr01'];
@@ -149,7 +150,8 @@ class SC_Fpdf extends SC_Helper_FPDI {
         $this->lfGetOrderData($this->arrData['order_id']);
 
         // 購入者情報
-        $text = '〒 '.$this->arrDisp['order_zip01'].' - '.$this->arrDisp['order_zip02'];
+//        $text = '〒 '.$this->arrDisp['order_zip01'].' - '.$this->arrDisp['order_zip02'];
+        $text = '〒 '.$this->arrDisp['order_zipcode'];
         $this->lfText(23, 43, $text, 10); //購入者郵便番号
         $text = $this->arrPref[$this->arrDisp['order_pref']] . $this->arrDisp['order_addr01'];
         $this->lfText(27, 47, $text, 10); //購入者都道府県+住所1

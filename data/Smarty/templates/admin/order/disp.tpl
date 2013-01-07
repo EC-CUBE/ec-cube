@@ -82,7 +82,8 @@ self.moveTo(20,20);self.focus();
         <tr>
             <th><!--{t string="tpl_212"}--></th>
             <td>
-                <!--{t string="tpl_106"}-->　<!--{$arrForm.order_zip01.value|h}--> - <!--{$arrForm.order_zip02.value|h}--><br />
+                <!--{* <!--{t string="tpl_106"}-->　<!--{$arrForm.order_zip01.value|h}--> - <!--{$arrForm.order_zip02.value|h}--><br /> *}-->
+                <!--{t string="tpl_106"}-->　<!--{$arrForm.order_zipcode.value|h}--><br />
                 <!--{$arrPref[$arrForm.order_pref.value]|h}--><!--{$arrForm.order_addr01.value|h}--><!--{$arrForm.order_addr02.value|h}-->
             </td>
         </tr>
@@ -250,12 +251,17 @@ self.moveTo(20,20);self.focus();
             <tr>
                 <th><!--{t string="tpl_212"}--></th>
                 <td>
-                    <!--{assign var=key1 value="shipping_zip01"}-->
-                    <!--{assign var=key2 value="shipping_zip02"}-->
+                    <!--{* <!--{assign var=key1 value="shipping_zip01"}--> *}-->
+                    <!--{* <!--{assign var=key2 value="shipping_zip02"}--> *}-->
+                    <!--{assign var=key value="shipping_zipcode"}-->
+
                     <!--{t string="tpl_106"}-->
+                    <!--{*
                     <!--{$arrShipping[$key1]|h}-->
                     -
                     <!--{$arrShipping[$key2]|h}-->
+                    *}-->
+                    <!--{$arrShipping[$key]|h}-->
                     <br />
                     <!--{$arrPref[$arrShipping.shipping_pref]|h}-->
                     <!--{assign var=key value="shipping_addr01"}-->

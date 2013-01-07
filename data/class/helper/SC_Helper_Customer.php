@@ -359,8 +359,9 @@ class SC_Helper_Customer {
         $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_FIRSTNAME'), 'name02', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK' , 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_LASTKANA'), 'kana01', STEXT_LEN, 'CKV', array('NO_SPTAB', 'SPTAB_CHECK' ,'MAX_LENGTH_CHECK', 'KANA_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_FIRSTKANA'), 'kana02', STEXT_LEN, 'CKV', array('NO_SPTAB', 'SPTAB_CHECK' ,'MAX_LENGTH_CHECK', 'KANA_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ZIP1'), 'zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'SPTAB_CHECK' ,'NUM_CHECK', 'NUM_COUNT_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ZIP2'), 'zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'SPTAB_CHECK' ,'NUM_CHECK', 'NUM_COUNT_CHECK'));
+//        $objFormParam->addParam(t('PARAM_LABEL_ZIP1'), 'zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'SPTAB_CHECK' ,'NUM_CHECK', 'NUM_COUNT_CHECK'));
+//        $objFormParam->addParam(t('PARAM_LABEL_ZIP2'), 'zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'SPTAB_CHECK' ,'NUM_CHECK', 'NUM_COUNT_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ZIP'), 'zipcode', ZIPCODE_LEN, 'n', array('EXIST_CHECK', 'SPTAB_CHECK' ,'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_PREF'), 'pref', INT_LEN, 'n', array('NUM_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ADDR1'), 'addr01', MTEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ADDR2'), 'addr02', MTEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
@@ -478,7 +479,7 @@ class SC_Helper_Customer {
 
         $objErr->doFunc(array(t('PARAM_LABEL_TEL_NUMBER'), 'tel01', 'tel02', 'tel03'),array('TEL_CHECK'));
         $objErr->doFunc(array(t('PARAM_LABEL_FAX_NUMBER'), 'fax01', 'fax02', 'fax03') ,array('TEL_CHECK'));
-        $objErr->doFunc(array(t('PARAM_LABEL_ZIP'), 'zip01', 'zip02'), array('ALL_EXIST_CHECK'));
+//        $objErr->doFunc(array(t('PARAM_LABEL_ZIP'), 'zip01', 'zip02'), array('ALL_EXIST_CHECK'));
 
         return $objErr;
     }

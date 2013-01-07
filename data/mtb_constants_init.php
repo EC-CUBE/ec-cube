@@ -250,6 +250,8 @@ define('AMOUNT_LEN', 6);
 define('ZIP01_LEN', 3);
 /** 郵便番号2 */
 define('ZIP02_LEN', 4);
+/** 郵便番号 **/
+define('ZIPCODE_LEN', 10);
 /** 電話番号各項目制限 */
 define('TEL_ITEM_LEN', 6);
 /** 電話番号総数 */

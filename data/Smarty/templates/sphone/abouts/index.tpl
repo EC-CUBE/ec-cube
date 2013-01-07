@@ -64,9 +64,16 @@
             <dd><!--{$objSiteInfo->data.company_name|h}--></dd>
         <!--{/if}-->
 
+        <!--{*
         <!--{if strlen($objSiteInfo->data.zip01)}-->
             <dt>所在地</dt>
             <dd>〒<!--{$objSiteInfo->data.zip01|h}-->-<!--{$objSiteInfo->data.zip02|h}--><br />
+                <!--{$objSiteInfo->data.pref|h}--><!--{$objSiteInfo->data.addr01|h}--><!--{$objSiteInfo->data.addr02|h}--></dd>
+        <!--{/if}-->
+        *}-->
+        <!--{if strlen($objSiteInfo->data.zipcode)}-->
+            <dt>所在地</dt>
+            <dd>〒<!--{$objSiteInfo->data.zipcode|h}--><br />
                 <!--{$objSiteInfo->data.pref|h}--><!--{$objSiteInfo->data.addr01|h}--><!--{$objSiteInfo->data.addr02|h}--></dd>
         <!--{/if}-->
 

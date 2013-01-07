@@ -260,6 +260,7 @@ function fnCheckInputDeliv() {
                         'shipping_pref',
                         'shipping_zip01',
                         'shipping_zip02',
+                        'shipping_zipcode',
                         'shipping_addr01',
                         'shipping_addr02',
                         'shipping_tel01',
