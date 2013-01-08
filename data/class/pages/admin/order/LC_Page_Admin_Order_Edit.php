@@ -97,8 +97,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         // 配送業者の取得
         $this->arrDeliv = SC_Helper_DB_Ex::sfGetIDValueList('dtb_deliv', 'deliv_id', 'name');
 
-        $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
-
         $this->httpCacheControl('nocache');
     }
 
@@ -262,6 +260,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $this->arrAllShipping = $objFormParam->getSwapArray(array_merge($this->arrShippingKeys, $this->arrShipmentItemKeys));
         $this->arrDelivTime = $objPurchase->getDelivTime($objFormParam->getValue('deliv_id'));
         $this->tpl_onload .= $this->getAnchorKey($objFormParam);
+        $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
         if ($arrValuesBefore['payment_id'])
             $this->arrPayment[$arrValuesBefore['payment_id']] = $arrValuesBefore['payment_method'];
 
@@ -330,8 +329,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam('商品名', 'product_name');
         $objFormParam->addParam('規格名1', 'classcategory_name1');
         $objFormParam->addParam('規格名2', 'classcategory_name2');
-        $objFormParam->addParam('税率', 'tax_rate');
-        $objFormParam->addParam('課税規則', 'tax_rule');
         $objFormParam->addParam('メモ', 'note', MTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('削除用項番', 'delete_no', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
 
@@ -353,8 +350,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam('備考', 'message');
         $objFormParam->addParam('入金日', 'payment_date');
         $objFormParam->addParam('端末種別', 'device_type_id');
-        $objFormParam->addParam('税率', 'order_tax_rate');
-        $objFormParam->addParam('課税規則', 'order_tax_rule');
 
         // 複数情報
         $objFormParam->addParam('配送数', 'shipping_quantity', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
@@ -581,9 +576,9 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $totaltax = 0;
         for ($i = 0; $i < $max; $i++) {
             // 小計の計算
-            $subtotal += SC_Helper_DB_Ex::sfCalcIncTax($arrValues['price'][$i], $arrValues['tax_rate'][$i], $arrValues['tax_rule'][$i]) * $arrValues['quantity'][$i];
+            $subtotal += SC_Helper_DB_Ex::sfCalcIncTax($arrValues['price'][$i]) * $arrValues['quantity'][$i];
             // 小計の計算
-            $totaltax += SC_Utils_Ex::sfTax($arrValues['price'][$i], $arrValues['tax_rate'][$i], $arrValues['tax_rule'][$i]) * $arrValues['quantity'][$i];
+            $totaltax += SC_Helper_DB_Ex::sfTax($arrValues['price'][$i]) * $arrValues['quantity'][$i];
             // 加算ポイントの計算
             $totalpoint += SC_Utils_Ex::sfPrePoint($arrValues['price'][$i], $arrValues['point_rate'][$i]) * $arrValues['quantity'][$i];
 
@@ -676,8 +671,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
                 'point_rate',
                 'classcategory_name1',
                 'classcategory_name2',
-                'tax_rate',
-                'tax_rule'
         ));
 
         // 変更しようとしている商品情報とDBに登録してある商品情報を比較することで、更新すべき数量を計算
@@ -814,14 +807,12 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
 
             $arrProduct['quantity'] = 1;
             $arrProduct['price'] = $arrProduct['price02'];
-            $arrProduct['tax_rate'] = $objFormParam->getValue('order_tax_rate') == '' ? $this->arrInfo['tax']      : $objFormParam->getValue('order_tax_rate');
-            $arrProduct['tax_rule'] = $objFormParam->getValue('order_tax_rule') == '' ? $this->arrInfo['tax_rule'] : $objFormParam->getValue('order_tax_rule');
             $arrProduct['product_name'] = $arrProduct['name'];
 
             $arrUpdateKeys = array(
                 'product_id', 'product_class_id', 'product_type_id', 'point_rate',
                 'product_code', 'product_name', 'classcategory_name1', 'classcategory_name2',
-                'quantity', 'price', 'tax_rate', 'tax_rule'
+                'quantity', 'price',
             );
             foreach ($arrUpdateKeys as $key) {
                 $arrValues = $objFormParam->getValue($key);
@@ -858,7 +849,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $arrDeleteKeys = array(
             'product_id', 'product_class_id', 'product_type_id', 'point_rate',
             'product_code', 'product_name', 'classcategory_name1', 'classcategory_name2',
-            'quantity', 'price', 'tax_rate', 'tax_rule'
+            'quantity', 'price',
         );
         foreach ($arrDeleteKeys as $key) {
             $arrNewValues = array();

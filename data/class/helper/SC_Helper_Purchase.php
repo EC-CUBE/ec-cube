@@ -856,8 +856,6 @@ class SC_Helper_Purchase {
             $arrDetail[$i]['point_rate'] = $item['point_rate'];
             $arrDetail[$i]['price'] = $item['price'];
             $arrDetail[$i]['quantity'] = $item['quantity'];
-            $arrDetail[$i]['tax_rate'] = $orderParams['order_tax_rate'];
-            $arrDetail[$i]['tax_rule'] = $orderParams['order_tax_rule'];
 
             // 在庫の減少処理
             if (!$objProduct->reduceStock($p['product_class_id'], $item['quantity'])) {
@@ -994,8 +992,6 @@ class SC_Helper_Purchase {
             T2.price,
             T2.quantity,
             T2.point_rate,
-            T2.tax_rate,
-            T2.tax_rule,
 __EOS__;
         if ($has_order_status) {
             $col .= 'T1.status AS status, T1.payment_date AS payment_date,';

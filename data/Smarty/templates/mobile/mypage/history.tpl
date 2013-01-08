@@ -67,11 +67,9 @@
         単価：
         <!--{assign var=price value=`$orderDetail.price`}-->
         <!--{assign var=quantity value=`$orderDetail.quantity`}-->
-        <!--{assign var=tax_rate value=`$orderDetail.tax_rate`}-->
-        <!--{assign var=tax_rule value=`$orderDetail.tax_rule`}-->
-        <!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|number_format|h}-->円<br>
+        <!--{$price|sfCalcIncTax|number_format|h}-->円<br>
         数量：<!--{$quantity|h}--><br>
-        小計：<!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|sfMultiply:$quantity|number_format}-->円<br>
+        小計：<!--{$price|sfCalcIncTax|sfMultiply:$quantity|number_format}-->円<br>
     <!--{/foreach}-->
     <hr>
     小計：<!--{$tpl_arrOrderData.subtotal|number_format}-->円<br>
@@ -110,7 +108,7 @@
                 <!--{if $item.productsClass.classcategory_name2 != ""}-->
                     <!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--><br>
                 <!--{/if}-->
-                単価：<!--{$item.price|sfCalcIncTax:$tpl_arrOrderData.order_tax_rate:$tpl_arrOrderData.order_tax_rule|number_format}-->円<br>
+                単価：<!--{$item.price|sfCalcIncTax|number_format}-->円<br>
                 数量：<!--{$item.quantity}--><br>
                 <br>
             <!--{/foreach}-->

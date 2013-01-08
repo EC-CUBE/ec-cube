@@ -1409,10 +1409,8 @@ __EOS__;
     function sfCalcIncTax($price, $tax = null, $tax_rule = null) {
         // 店舗基本情報を取得
         $CONF = SC_Helper_DB_Ex::sfGetBasisData();
-        $tax      = $tax      === null ? $CONF['tax']      : $tax;
-        $tax_rule = $tax_rule === null ? $CONF['tax_rule'] : $tax_rule;
 
-        return SC_Utils_Ex::sfCalcIncTax($price, $tax, $tax_rule);
+        return SC_Utils_Ex::sfCalcIncTax($price, $CONF['tax'], $CONF['tax_rule']);
     }
 
     /**
