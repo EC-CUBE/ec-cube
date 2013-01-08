@@ -173,7 +173,7 @@
                 <div class="pricebox sale_price">
                     <!--{$smarty.const.SALE_PRICE_TITLE}--> (tax included):
                     <span class="price">
-                        &#38;
+                        &#036;
                         <span id="price02_default_<!--{$id}-->"><!--{strip}-->
                             <!--{if $arrProduct.price02_min_inctax == $arrProduct.price02_max_inctax}-->
                                 <!--{$arrProduct.price02_min_inctax|number_format}-->

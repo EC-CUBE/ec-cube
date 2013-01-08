@@ -229,10 +229,10 @@
                 <h3 class="subtitle">Designated point usage</h3>
 
                     <div class="form_area">
-                        <p class="fb">It is possible to use <span class="point">1 point as &#38; 1</span></p>
+                        <p class="fb">It is possible to use <span class="point">1 point as &#036; 1</span></p>
                         <div class="point_announce">
                             <p>You currently have "<span class="price"><!--{$tpl_user_point|default:0|number_format}--> pt</span>".<br />
-                            Total amount for this purchase:<span class="price">&#38; <!--{$arrPrices.subtotal|number_format}--></span> (Does not include shipping fees and processing fees.)</p>
+                            Total amount for this purchase:<span class="price">&#036; <!--{$arrPrices.subtotal|number_format}--></span> (Does not include shipping fees and processing fees.)</p>
                         </div>
 
                         <!--▼ポイントフォームボックスここから -->

@@ -57,7 +57,7 @@
                             <a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$product_id|u}-->"><img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrFavorite[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="" width="80" height="80" class="photoL productImg" /></a>
                             <div class="favoriteContents clearfix">
                                 <h4><a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$product_id|u}-->" class="productName"><!--{$arrFavorite[cnt].name}--></a></h4>
-                                <p><span class="mini productPrice"><!--{$smarty.const.SALE_PRICE_TITLE}-->:&#38; <!--{if $arrFavorite[cnt].price02_min_inctax == $arrFavorite[cnt].price02_max_inctax}-->
+                                <p><span class="mini productPrice"><!--{$smarty.const.SALE_PRICE_TITLE}-->:&#036; <!--{if $arrFavorite[cnt].price02_min_inctax == $arrFavorite[cnt].price02_max_inctax}-->
                                     <!--{$arrFavorite[cnt].price02_min_inctax|number_format}-->
                                     <!--{else}-->
                                     <!--{$arrFavorite[cnt].price02_min_inctax|number_format}--> - <!--{$arrFavorite[cnt].price02_max_inctax|number_format}-->
@@ -158,9 +158,9 @@
                         var priceVale = "";
                         //販売価格が範囲か判定
                         if (product.price02_min == product.price02_max) {
-                            priceVale = "<!--{$smarty.const.SALE_PRICE_TITLE}-->:&#38; " + product.price02_min_tax_format;
+                            priceVale = "<!--{$smarty.const.SALE_PRICE_TITLE}-->:&#036; " + product.price02_min_tax_format;
                         } else {
-                            priceVale = "<!--{$smarty.const.SALE_PRICE_TITLE}-->:&#38; " + product.price02_min_tax_format + ' - ' + product.price02_max_tax_format;
+                            priceVale = "<!--{$smarty.const.SALE_PRICE_TITLE}-->:&#036; " + product.price02_min_tax_format + ' - ' + product.price02_max_tax_format;
                         }
                         price.append(priceVale);
 

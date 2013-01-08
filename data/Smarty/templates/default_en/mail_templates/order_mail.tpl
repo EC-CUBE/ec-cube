@@ -28,7 +28,7 @@ Dear <!--{$arrOrder.order_name01}--> <!--{$arrOrder.order_name02}-->
 ************************************************
 
 Order number:<!--{$arrOrder.order_id}-->
-Payment total:&#38; <!--{$arrOrder.payment_total|number_format|default:0}-->
+Payment total:&#036; <!--{$arrOrder.payment_total|number_format|default:0}-->
 Payment method:<!--{$arrOrder.payment_method}-->
 Message:<!--{$Message_tmp}-->
 
@@ -51,17 +51,17 @@ Message:<!--{$Message_tmp}-->
 <!--{section name=cnt loop=$arrOrderDetail}-->
 Product code: <!--{$arrOrderDetail[cnt].product_code}-->
 Product name: <!--{$arrOrderDetail[cnt].product_name}--> <!--{$arrOrderDetail[cnt].classcategory_name1}--> <!--{$arrOrderDetail[cnt].classcategory_name2}-->
-Unit price:&#38; <!--{$arrOrderDetail[cnt].price|sfCalcIncTax|number_format}-->
+Unit price:&#036; <!--{$arrOrderDetail[cnt].price|sfCalcIncTax|number_format}-->
 Quantity:<!--{$arrOrderDetail[cnt].quantity}-->
 
 <!--{/section}-->
 -------------------------------------------------
-Subtotal &#38; <!--{$arrOrder.subtotal|number_format|default:0}--> (Of which, sales tax &#38; <!--{$arrOrder.tax|number_format|default:0}-->)
-Discount &#38; <!--{$arrOrder.use_point*$smarty.const.POINT_VALUE+$arrOrder.discount|number_format|default:0}-->
-Shipping fee &#38; <!--{$arrOrder.deliv_fee|number_format|default:0}-->
-Processing fee &#38; <!--{$arrOrder.charge|number_format|default:0}-->
+Subtotal &#036; <!--{$arrOrder.subtotal|number_format|default:0}--> (Of which, sales tax &#036; <!--{$arrOrder.tax|number_format|default:0}-->)
+Discount &#036; <!--{$arrOrder.use_point*$smarty.const.POINT_VALUE+$arrOrder.discount|number_format|default:0}-->
+Shipping fee &#036; <!--{$arrOrder.deliv_fee|number_format|default:0}-->
+Processing fee &#036; <!--{$arrOrder.charge|number_format|default:0}-->
 ============================================
-Total &#38; <!--{$arrOrder.payment_total|number_format|default:0}-->
+Total &#036; <!--{$arrOrder.payment_total|number_format|default:0}-->
 
 <!--{if count($arrShipping) >= 1}-->
 ************************************************
@@ -83,7 +83,7 @@ Total &#38; <!--{$arrOrder.payment_total|number_format|default:0}-->
 <!--{foreach item=item name=item from=$shipping.shipment_item}-->
 Product code: <!--{$item.product_code}-->
 Product name: <!--{$item.product_name}--> <!--{$item.classcategory_name1}--> <!--{$item.classcategory_name2}-->
-Unit price:&#38; <!--{$item.price|sfCalcIncTax|number_format}-->
+Unit price:&#036; <!--{$item.price|sfCalcIncTax|number_format}-->
 Quantity:<!--{$item.quantity}-->
 
 <!--{/foreach}-->

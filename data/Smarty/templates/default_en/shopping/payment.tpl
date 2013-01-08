@@ -241,12 +241,12 @@
         <!--{if $tpl_login == 1 && $smarty.const.USE_POINT !== false}-->
             <div class="point_area">
                 <h3>Designated point usage</h3>
-                    <p>It is possible to use <span class="attention">1 point as &#38; <!--{$smarty.const.POINT_VALUE|number_format}--></span>.<br />
+                    <p>It is possible to use <span class="attention">1 point as &#036; <!--{$smarty.const.POINT_VALUE|number_format}--></span>.<br />
                        If using points, check the box next to "Use points" and enter the number of points you want to use.
                     </p>
                     <div class="point_announce">
                         <p><span class="user_name"><!--{$name01|h}--> <!--{$name02|h}--></span>, you currently have "<span class="point"><!--{$tpl_user_point|default:0|number_format}-->Pt</span>" points.<br />
-                            Total amount for this purchase:<span class="price">&#38; <!--{$arrPrices.subtotal|number_format}--></span> <span class="attention">(Does not include shipping fees and processing fees.)</span>
+                            Total amount for this purchase:<span class="price">&#036; <!--{$arrPrices.subtotal|number_format}--></span> <span class="attention">(Does not include shipping fees and processing fees.)</span>
                         </p>
                         <ul>
                             <li>

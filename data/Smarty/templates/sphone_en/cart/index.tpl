@@ -28,12 +28,12 @@
     <!--{if $smarty.const.USE_POINT !== false}-->
         <!--★ポイント案内★-->
         <div class="information">
-            <p class="fb">The total product amount is "<span class="price">&#38; <!--{$tpl_all_total_inctax|number_format}--></span>".</p>
+            <p class="fb">The total product amount is "<span class="price">&#036; <!--{$tpl_all_total_inctax|number_format}--></span>".</p>
 
             <!--{if $tpl_login}-->
                 <p class="point_announce"><span class="user_name"><!--{$tpl_name|h}--></span>, you currently have "<span class="point"><!--{$tpl_user_point|number_format|default:0}--> pt.</span>"<br />
 
-                    It is possible to use <span class="price">1pt = &#38; <!--{$smarty.const.POINT_VALUE}--></span> when purchasing a product.</p>
+                    It is possible to use <span class="price">1pt = &#036; <!--{$smarty.const.POINT_VALUE}--></span> when purchasing a product.</p>
             <!--{else}-->
                 <p class="point_announce">If using the point system, it is necessary to log in.</p>
             <!--{/if}-->
@@ -68,7 +68,7 @@
                             <div class="bubble_announce clearfix">
                                 <p><a rel="external" href="<!--{$tpl_prev_url|h}-->">
                                     <!--{if !$arrData[$key].is_deliv_free}-->
-                                        <span class="price">Shipping is free</span> if you spend another "<span class="price">&#38; <!--{$tpl_deliv_free[$key]|number_format}--></span>"!
+                                        <span class="price">Shipping is free</span> if you spend another "<span class="price">&#036; <!--{$tpl_deliv_free[$key]|number_format}--></span>"!
                                     <!--{else}-->
                                         "<span class="price">Free shipping</span>" now!!
                                     <!--{/if}-->
@@ -98,7 +98,7 @@
                                 <h3><!--{$arrProductType[$key]}--></h3>
                             </div>
                             <div class="totalmoney_area">
-                                The total amount for <!--{$arrProductType[$key]}--> is "<span class="price">&#38; <!--{$tpl_total_inctax[$key]|number_format}--></span>".
+                                The total amount for <!--{$arrProductType[$key]}--> is "<span class="price">&#036; <!--{$tpl_total_inctax[$key]|number_format}--></span>".
                             </div>
                         <!--{/if}-->
 
@@ -117,7 +117,7 @@
                                                 <!--{if $arrItem.productsClass.classcategory_name2 != ""}-->
                                                     <span class="mini"><!--{$arrItem.productsClass.class_name2}-->:<!--{$arrItem.productsClass.classcategory_name2}--></span><br />
                                                 <!--{/if}-->
-                                                <span class="mini">Price:</span>&#38; <!--{$arrItem.price|sfCalcIncTax|number_format}-->
+                                                <span class="mini">Price:</span>&#036; <!--{$arrItem.price|sfCalcIncTax|number_format}-->
                                             </p>
                                             <p class="btn_delete">
                                                 <img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" onClick="fnFormModeSubmit('form<!--{$key}-->', 'delete', 'cart_no', '<!--{$arrItem.cart_no}-->');" class="pointer" width="21" height="20" alt="Delete" /></p>
@@ -126,7 +126,7 @@
                                             <li class="quantity"><span class="mini">Quantity:</span><!--{$arrItem.quantity|number_format}--></li>
                                             <li class="quantity_btn"><img src="<!--{$TPL_URLPATH}-->img/button/btn_plus.png" width="22" height="21" alt="+" onclick="fnFormModeSubmit('form<!--{$key}-->', 'up','cart_no','<!--{$arrItem.cart_no}-->'); return false" /></li>
                                             <li class="quantity_btn"><img src="<!--{$TPL_URLPATH}-->img/button/btn_minus.png" width="22" height="21" alt="-" onclick="fnFormModeSubmit('form<!--{$key}-->', 'down','cart_no','<!--{$arrItem.cart_no}-->'); return false" /></a></li>
-                                            <li class="result"><span class="mini">Subtotal:</span>&#38; <!--{$arrItem.total_inctax|number_format}--></li>
+                                            <li class="result"><span class="mini">Subtotal:</span>&#036; <!--{$arrItem.total_inctax|number_format}--></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -136,7 +136,7 @@
                         <!--▲カートの中の商品一覧ここまで -->
 
                         <div class="total_area">
-                            <div><span class="mini">Total:</span><span class="price fb">&#38; <!--{$arrData[$key].total-$arrData[$key].deliv_fee|number_format}--></span></div>
+                            <div><span class="mini">Total:</span><span class="price fb">&#036; <!--{$arrData[$key].total-$arrData[$key].deliv_fee|number_format}--></span></div>
                             <!--{if $smarty.const.USE_POINT !== false}-->
                                 <!--{if $arrData[$key].birth_point > 0}-->
                                     <div><span class="mini">Birthday points:</span> <!--{$arrData[$key].birth_point|number_format}--> Pt</div>

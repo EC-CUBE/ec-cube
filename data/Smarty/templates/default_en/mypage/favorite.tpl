@@ -66,7 +66,7 @@
                         <td><a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$product_id|u}-->"><!--{$arrFavorite[cnt].name}--></a></td>
                         <td class="alignR sale_price">
                             <span class="price">
-                                &#38;
+                                &#036;
                                 <!--{if $arrFavorite[cnt].price02_min_inctax == $arrFavorite[cnt].price02_max_inctax}-->
                                     <!--{$arrFavorite[cnt].price02_min_inctax|number_format}-->
                                 <!--{else}-->

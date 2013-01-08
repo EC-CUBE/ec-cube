@@ -33,7 +33,7 @@
                             <h3><a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrBestProducts[cnt].product_id|u}-->"><!--{$arrBestProducts[cnt].name|h}--></a></h3>
                             <p class="mini comment"><!--{$arrBestProducts[cnt].comment|h|nl2br}--></p>
                             <p class="sale_price">
-                                <span class="mini">Sales price (including tax):</span><span class="price">&#38; <!--{$arrBestProducts[cnt].price02_min_inctax|number_format}--></span>
+                                <span class="mini">Sales price (including tax):</span><span class="price">&#036; <!--{$arrBestProducts[cnt].price02_min_inctax|number_format}--></span>
                             </p>
                         </div>
                     </div>

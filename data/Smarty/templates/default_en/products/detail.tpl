@@ -109,7 +109,7 @@
                 <dl class="normal_price">
                     <dt><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(tax included):</dt>
                     <dd class="price">
-                        &#38;
+                        &#036;
                         <span id="price01_default"><!--{strip}-->
                             <!--{if $arrProduct.price01_min_inctax == $arrProduct.price01_max_inctax}-->
                                 <!--{$arrProduct.price01_min_inctax|number_format}-->
@@ -125,7 +125,7 @@
             <dl class="sale_price">
                 <dt><!--{$smarty.const.SALE_PRICE_TITLE}-->(tax included):</dt>
                 <dd class="price">
-                    &#38;
+                    &#036;
                     <span id="price02_default"><!--{strip}-->
                         <!--{if $arrProduct.price02_min_inctax == $arrProduct.price02_max_inctax}-->
                             <!--{$arrProduct.price02_min_inctax|number_format}-->
@@ -363,7 +363,7 @@
                     <div class="productContents">
                         <h3><a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrItem.product_id|u}-->"><!--{$arrItem.name|h}--></a></h3>
                         <p class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}-->(tax included):<span class="price">
-                            &#38;
+                            &#036;
                             <!--{if $price02_min == $price02_max}-->
                                 <!--{$price02_min|number_format}-->
                             <!--{else}-->

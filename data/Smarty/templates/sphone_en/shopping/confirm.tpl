@@ -112,7 +112,7 @@
                                     </div>
                                     <ul>
                                         <li><span class="mini">Quantity:</span><!--{$item.quantity|number_format}--></li>
-                                        <li class="result"><span class="mini">Subtotal:</span>&#38; <!--{$item.total_inctax|number_format}--></li>
+                                        <li class="result"><span class="mini">Subtotal:</span>&#036; <!--{$item.total_inctax|number_format}--></li>
                                     </ul>
                                 </div>
                             </div>
@@ -124,19 +124,19 @@
                     <!--★合計内訳★-->
                     <div class="result_area">
                         <ul>
-                            <li><span class="mini">Subtotal:</span>&#38; <!--{$tpl_total_inctax[$cartKey]|number_format}--></li>
+                            <li><span class="mini">Subtotal:</span>&#036; <!--{$tpl_total_inctax[$cartKey]|number_format}--></li>
                             <!--{if $smarty.const.USE_POINT !== false}-->
                                 <li><span class="mini">Discount (when using points): </span><!--{assign var=discount value=`$arrForm.use_point*$smarty.const.POINT_VALUE`}-->
-                                &#38; -<!--{$discount|number_format|default:0}--></li>
+                                &#036; -<!--{$discount|number_format|default:0}--></li>
                             <!--{/if}-->
-                            <li><span class="mini">Shipping fee:</span>&#38; <!--{$arrForm.deliv_fee|number_format}--></li>
-                            <li><span class="mini">Processing fee:</span>&#38; <!--{$arrForm.charge|number_format}--></li>
+                            <li><span class="mini">Shipping fee:</span>&#036; <!--{$arrForm.deliv_fee|number_format}--></li>
+                            <li><span class="mini">Processing fee:</span>&#036; <!--{$arrForm.charge|number_format}--></li>
                         </ul>
                     </div>
 
                     <!--★合計★-->
                     <div class="total_area">
-                        <span class="mini">Total:</span><span class="price fb">&#38; <!--{$arrForm.payment_total|number_format}--></span>
+                        <span class="mini">Total:</span><span class="price fb">&#036; <!--{$arrForm.payment_total|number_format}--></span>
                     </div>
                 </div><!-- /.formBox -->
 
@@ -224,7 +224,7 @@
                                                 <ul>
                                                     <li><span class="mini">Quantity:</span><!--{$item.quantity}--></li>
                                                     <!--{* XXX デフォルトでは購入小計と誤差が出るためコメントアウト*}-->
-                                                    <li class="result"><span class="mini">Subtotal:</span>&#38; <!--{$item.total_inctax|number_format}--></li>
+                                                    <li class="result"><span class="mini">Subtotal:</span>&#036; <!--{$item.total_inctax|number_format}--></li>
                                                 </ul>
                                             </div>
                                         </div>

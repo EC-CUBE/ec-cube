@@ -172,7 +172,7 @@
                         <p class="normal_price">
                             <span class="mini"><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(tax included):</span>
                             <span id="price01_default">
-                                &#38;
+                                &#036;
                                 <!--{if $arrProduct.price01_min_inctax == $arrProduct.price01_max_inctax}-->
                                     <!--{$arrProduct.price01_min_inctax|number_format}-->
                                 <!--{else}-->
@@ -186,7 +186,7 @@
                     <p class="sale_price">
                         <span class="mini"><!--{$smarty.const.SALE_PRICE_TITLE}-->(tax included):</span>
                         <span class="price"><span id="price02_default">
-                            &#38;
+                            &#036;
                             <!--{if $arrProduct.price02_min_inctax == $arrProduct.price02_max_inctax}-->
                                 <!--{$arrProduct.price02_min_inctax|number_format}-->
                             <!--{else}-->
@@ -399,7 +399,7 @@
                             <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max_inctax`}-->
                             <h3><a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrRecommend[cnt].product_id|u}-->"><!--{$arrRecommend[cnt].name|h}--></a></h3>
                             <p class="sale_price"><span class="price">
-                                &#38;
+                                &#036;
                                 <!--{if $price02_min == $price02_max}-->
                                     <!--{$price02_min|number_format}-->
                                 <!--{else}-->

@@ -40,7 +40,7 @@
                 Product code:<!--{$arrProduct.product_code_max|h|sfMbConvertEncoding:$encode}-->
                 <div><!--{$smarty.const.SALE_PRICE_TITLE}-->:
                     <span class="price">
-                        &#38;
+                        &#036;
                         <!--{if $arrProduct.price02_min_inctax == $arrProduct.price02_max_inctax}-->
                             <!--{$arrProduct.price02_min_inctax|number_format}-->
                         <!--{else}-->

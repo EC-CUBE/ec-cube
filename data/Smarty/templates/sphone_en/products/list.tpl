@@ -96,7 +96,7 @@
                 <p>
                     <span class="pricebox sale_price"><span class="mini">Sales price (including tax):</span></span>
                     <span class="price">
-                        &#38;
+                        &#036;
                         <span id="price02_default_<!--{$id}-->">
                             <!--{if $arrProduct.price02_min_inctax == $arrProduct.price02_max_inctax}-->
                                 <!--{$arrProduct.price02_min_inctax|number_format}-->
@@ -207,9 +207,9 @@
                     var priceVale = "";
                     //販売価格が範囲か判定
                     if (product.price02_min == product.price02_max) {
-                        priceVale = '&#38; ' + product.price02_min_tax_format;
+                        priceVale = '&#036; ' + product.price02_min_tax_format;
                     } else {
-                        priceVale = '&#38; ' + product.price02_min_tax_format + ' - ' + product.price02_max_tax_format;
+                        priceVale = '&#036; ' + product.price02_min_tax_format + ' - ' + product.price02_max_tax_format;
                     }
                     price.append(priceVale);
 

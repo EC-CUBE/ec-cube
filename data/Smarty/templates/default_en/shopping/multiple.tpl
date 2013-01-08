@@ -81,7 +81,7 @@
                             <!--{if $arrForm.classcategory_name2.value[$index] != ""}-->
                                 <!--{$arrForm.class_name2.value[$index]|h}-->:<!--{$arrForm.classcategory_name2.value[$index]|h}--><br />
                             <!--{/if}-->
-                            &#38; <!--{$arrForm.price.value[$index]|sfCalcIncTax|number_format}-->
+                            &#036; <!--{$arrForm.price.value[$index]|sfCalcIncTax|number_format}-->
                         </td>
                         <td>
                             <!--{assign var=key value="quantity"}-->

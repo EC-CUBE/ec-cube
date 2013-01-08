@@ -66,7 +66,7 @@
                                     <!--→金額-->
                                     <!--{assign var=price value=`$orderDetail.price`}-->
                                     <!--{assign var=quantity value=`$orderDetail.quantity`}-->
-                                    <span class="mini">Price:</span>&#38; <!--{$price|number_format|h}--><!--←金額-->
+                                    <span class="mini">Price:</span>&#036; <!--{$price|number_format|h}--><!--←金額-->
                                 </p>
 
                                 <!--→商品種別-->
@@ -88,7 +88,7 @@
 
                             <ul>
                                 <li><span class="mini">Quantity:</span><!--{$quantity|h}--></li>
-                                <li class="result"><span class="mini">Subtotal:</span>&#38; <!--{$price|sfCalcIncTax|sfMultiply:$quantity|number_format}--></li>
+                                <li class="result"><span class="mini">Subtotal:</span>&#036; <!--{$price|sfCalcIncTax|sfMultiply:$quantity|number_format}--></li>
                             </ul>
                         </div>
                     </div>
@@ -99,16 +99,16 @@
             <!--▲ カートの中の商品一覧 -->
 
             <div class="total_area">
-                <div><span class="mini">Subtotal:</span>&#38; <!--{$tpl_arrOrderData.subtotal|number_format}--></div>
+                <div><span class="mini">Subtotal:</span>&#036; <!--{$tpl_arrOrderData.subtotal|number_format}--></div>
                 <!--{if $tpl_arrOrderData.use_point > 0}-->
-                    <div><span class="mini">Point discount:</span>&#38; &minus;<!--{$tpl_arrOrderData.use_point|number_format}--></div>
+                    <div><span class="mini">Point discount:</span>&#036; &minus;<!--{$tpl_arrOrderData.use_point|number_format}--></div>
                 <!--{/if}-->
                 <!--{if $tpl_arrOrderData.discount != '' && $tpl_arrOrderData.discount > 0}-->
-                    <div><span class="mini">Discount:</span>&#38; &minus;<!--{$tpl_arrOrderData.discount|number_format}--></div>
+                    <div><span class="mini">Discount:</span>&#036; &minus;<!--{$tpl_arrOrderData.discount|number_format}--></div>
                 <!--{/if}-->
-                <div><span class="mini">Shipping fee:</span>&#38; <!--{$tpl_arrOrderData.deliv_fee|number_format}--></div>
-                <div><span class="mini">Processing fee:</span>&#38; <!--{$tpl_arrOrderData.charge|number_format}--></div>
-                <div><span class="mini">Total:</span>&#38; <span class="price fb"><!--{$tpl_arrOrderData.payment_total|number_format}--></span></div>
+                <div><span class="mini">Shipping fee:</span>&#036; <!--{$tpl_arrOrderData.deliv_fee|number_format}--></div>
+                <div><span class="mini">Processing fee:</span>&#036; <!--{$tpl_arrOrderData.charge|number_format}--></div>
+                <div><span class="mini">Total:</span>&#036; <span class="price fb"><!--{$tpl_arrOrderData.payment_total|number_format}--></span></div>
                 <div><span class="mini">Points added at this time:</span><!--{$tpl_arrOrderData.add_point|number_format|default:0}-->Pt</div>
             </div>
         </div><!-- /.formBox -->

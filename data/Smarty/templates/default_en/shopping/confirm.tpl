@@ -106,35 +106,35 @@
                         </ul>
                     </td>
                     <td class="alignR">
-                        &#38; <!--{$item.price|sfCalcIncTax|number_format}-->
+                        &#036; <!--{$item.price|sfCalcIncTax|number_format}-->
                     </td>
                     <td class="alignR"><!--{$item.quantity|number_format}--></td>
-                    <td class="alignR">&#38; <!--{$item.total_inctax|number_format}--></td>
+                    <td class="alignR">&#036; <!--{$item.total_inctax|number_format}--></td>
                 </tr>
             <!--{/foreach}-->
             <tr>
                 <th colspan="4" class="alignR" scope="row">Subtotal</th>
-                <td class="alignR">&#38; <!--{$tpl_total_inctax[$cartKey]|number_format}--></td>
+                <td class="alignR">&#036; <!--{$tpl_total_inctax[$cartKey]|number_format}--></td>
             </tr>
             <!--{if $smarty.const.USE_POINT !== false}-->
                 <tr>
                     <th colspan="4" class="alignR" scope="row">Discount (when using points)</th>
                     <td class="alignR">
                         <!--{assign var=discount value=`$arrForm.use_point*$smarty.const.POINT_VALUE`}-->
-                        &#38; -<!--{$discount|number_format|default:0}--></td>
+                        &#036; -<!--{$discount|number_format|default:0}--></td>
                 </tr>
             <!--{/if}-->
             <tr>
                 <th colspan="4" class="alignR" scope="row">Shipping fee</th>
-                <td class="alignR">&#38; <!--{$arrForm.deliv_fee|number_format}--></td>
+                <td class="alignR">&#036; <!--{$arrForm.deliv_fee|number_format}--></td>
             </tr>
             <tr>
                 <th colspan="4" class="alignR" scope="row">Processing fee</th>
-                <td class="alignR">&#38; <!--{$arrForm.charge|number_format}--></td>
+                <td class="alignR">&#036; <!--{$arrForm.charge|number_format}--></td>
             </tr>
             <tr>
                 <th colspan="4" class="alignR" scope="row">Total</th>
-                <td class="alignR"><span class="price">&#38; <!--{$arrForm.payment_total|number_format}--></span></td>
+                <td class="alignR"><span class="price">&#036; <!--{$arrForm.payment_total|number_format}--></span></td>
             </tr>
         </table>
 
@@ -208,11 +208,11 @@
                             <!--{/if}-->
                         </td>
                         <td class="alignR">
-                            &#38; <!--{$item.price|sfCalcIncTax|number_format}-->
+                            &#036; <!--{$item.price|sfCalcIncTax|number_format}-->
                         </td>
                         <td class="alignC"><!--{$item.quantity}--></td>
                         <!--{* XXX 購入小計と誤差が出るためコメントアウト
-                        <td class="alignR">&#38; <!--{$item.total_inctax|number_format}--></td>
+                        <td class="alignR">&#036; <!--{$item.total_inctax|number_format}--></td>
                         *}-->
                     </tr>
                 <!--{/foreach}-->

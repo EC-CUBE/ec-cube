@@ -55,7 +55,7 @@
                                     <em>Order number:</em><span class="order_id"><!--{$arrOrder[cnt].order_id}--><!--{assign var=payment_id value="`$arrOrder[cnt].payment_id`"}--></span><br />
                                     <em>Date and time of purchase:</em><span class="create_date"><!--{$arrOrder[cnt].create_date|sfDispDBDate}--></span><br />
                                     <em>Payment method:</em><span class="payment_id"><!--{$arrPayment[$payment_id]|h}--></span><br />
-                                    <em>Total amount:</em>&#38; <span class="payment_total"><!--{$arrOrder[cnt].payment_total|number_format}--></span><br />
+                                    <em>Total amount:</em>&#036; <span class="payment_total"><!--{$arrOrder[cnt].payment_total|number_format}--></span><br />
                                     <em>Order status:</em>
                                     <!--{if $smarty.const.MYPAGE_ORDER_STATUS_DISP_FLAG }-->
                                         <!--{assign var=order_status_id value="`$arrOrder[cnt].status`"}-->

@@ -50,11 +50,11 @@
                     <p><span class="product_type">[<!--{$key.productTypeName|h}-->]</span></p>
                 <!--{/if}-->
                 <p><span class="mini">Product quantity:</span> <span class="quantity"><!--{$key.quantity|number_format}--></span> items<br />
-                    <span class="mini">Total:</span><span class="money">&#38; <!--{$key.totalInctax|number_format}--></span>(including tax)</p>
+                    <span class="mini">Total:</span><span class="money">&#036; <!--{$key.totalInctax|number_format}--></span>(including tax)</p>
                 <hr class="dashed" />
                 <!--{if $freeRule > 0 && $key.productTypeId|h != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
                     <!--{if $key.delivFree > 0}-->
-                        <p class="attention free_money_area">Shipping is free if you spend another &#38; <span class="free_money"><!--{$key.delivFree|number_format}--></span></p>
+                        <p class="attention free_money_area">Shipping is free if you spend another &#036; <span class="free_money"><!--{$key.delivFree|number_format}--></span></p>
                     <!--{else}-->
                         <p class="attention free_money_area">Currently, shipping is free</p>
                     <!--{/if}-->

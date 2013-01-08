@@ -86,41 +86,41 @@
                     </td>
                     <!--{assign var=price value=`$orderDetail.price`}-->
                     <!--{assign var=quantity value=`$orderDetail.quantity`}-->
-                    <td class="alignR">&#38; <!--{$price|sfCalcIncTax|number_format|h}--></td>
+                    <td class="alignR">&#036; <!--{$price|sfCalcIncTax|number_format|h}--></td>
                     <td class="alignR"><!--{$quantity|h}--></td>
-                    <td class="alignR">&#38; <!--{$price|sfCalcIncTax|sfMultiply:$quantity|number_format}--></td>
+                    <td class="alignR">&#036; <!--{$price|sfCalcIncTax|sfMultiply:$quantity|number_format}--></td>
                 </tr>
             <!--{/foreach}-->
             <tr>
                 <th colspan="5" class="alignR">Subtotal</th>
-                <td class="alignR">&#38; <!--{$tpl_arrOrderData.subtotal|number_format}--></td>
+                <td class="alignR">&#036; <!--{$tpl_arrOrderData.subtotal|number_format}--></td>
             </tr>
             <!--{assign var=point_discount value="`$tpl_arrOrderData.use_point*$smarty.const.POINT_VALUE`"}-->
             <!--{if $point_discount > 0}-->
             <tr>
                 <th colspan="5" class="alignR">Point discount</th>
-                <td class="alignR">&#38; &minus;<!--{$point_discount|number_format}--></td>
+                <td class="alignR">&#036; &minus;<!--{$point_discount|number_format}--></td>
             </tr>
             <!--{/if}-->
             <!--{assign var=key value="discount"}-->
             <!--{if $tpl_arrOrderData[$key] != "" && $tpl_arrOrderData[$key] > 0}-->
             <tr>
                 <th colspan="5" class="alignR">Discount</th>
-                <td class="alignR">&#38; &minus;<!--{$tpl_arrOrderData[$key]|number_format}--></td>
+                <td class="alignR">&#036; &minus;<!--{$tpl_arrOrderData[$key]|number_format}--></td>
             </tr>
             <!--{/if}-->
             <tr>
                 <th colspan="5" class="alignR">Shipping fee</th>
-                <td class="alignR">&#38; <!--{assign var=key value="deliv_fee"}--><!--{$tpl_arrOrderData[$key]|number_format|h}--></td>
+                <td class="alignR">&#036; <!--{assign var=key value="deliv_fee"}--><!--{$tpl_arrOrderData[$key]|number_format|h}--></td>
             </tr>
             <tr>
                 <th colspan="5" class="alignR">Processing fee</th>
                 <!--{assign var=key value="charge"}-->
-                <td class="alignR">&#38; <!--{$tpl_arrOrderData[$key]|number_format|h}--></td>
+                <td class="alignR">&#036; <!--{$tpl_arrOrderData[$key]|number_format|h}--></td>
             </tr>
             <tr>
                 <th colspan="5" class="alignR">Total</th>
-                <td class="alignR"><span class="price">&#38; <!--{$tpl_arrOrderData.payment_total|number_format}--></span></td>
+                <td class="alignR"><span class="price">&#036; <!--{$tpl_arrOrderData.payment_total|number_format}--></span></td>
             </tr>
         </table>
 
@@ -170,11 +170,11 @@
                                 <!--{/if}-->
                             </td>
                             <td class="alignR">
-                                &#38; <!--{$item.price|sfCalcIncTax|number_format}-->
+                                &#036; <!--{$item.price|sfCalcIncTax|number_format}-->
                             </td>
                             <td class="alignC"><!--{$item.quantity}--></td>
                             <!--{* XXX 購入小計と誤差が出るためコメントアウト
-                            <td class="alignR">&#38; <!--{$item.total_inctax|number_format}--></td>
+                            <td class="alignR">&#036; <!--{$item.total_inctax|number_format}--></td>
                             *}-->
                         </tr>
                     <!--{/foreach}-->
