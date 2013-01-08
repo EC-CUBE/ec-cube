@@ -25,7 +25,6 @@
 <script type="text/javascript">
 <!--
 $(function(){
-		$.datepicker.setDefaults( $.datepicker.regional[ "<!--{$smarty.const.LANG_CODE}-->" ] );
 		
 		$( "#datepicker" ).datepicker({
 		beforeShowDay: function(date) {

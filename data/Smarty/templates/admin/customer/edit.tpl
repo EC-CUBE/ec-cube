@@ -31,7 +31,6 @@
     }
 	
 	$(function(){
-		$.datepicker.setDefaults( $.datepicker.regional[ "<!--{$smarty.const.LANG_CODE}-->" ] );
 		
 		$( "#datepickercustomer_edit" ).datepicker({
 		beforeShowDay: function(date) {

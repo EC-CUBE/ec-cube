@@ -53,7 +53,6 @@
     }
 	
 	$(function(){
-		$.datepicker.setDefaults( $.datepicker.regional[ "<!--{$smarty.const.LANG_CODE}-->" ] );
 		
 		$( "#datepickercustomersearch_b_start" ).datepicker({
 		beforeShowDay: function(date) {

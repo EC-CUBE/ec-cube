@@ -81,7 +81,6 @@
     }
 	
 	$(function(){
-		$.datepicker.setDefaults( $.datepicker.regional[ "<!--{$smarty.const.LANG_CODE}-->" ] );
 		
 		<!--{foreach name=shipping from=$arrAllShipping item=arrShipping key=shipping_index}-->
 		$( "#datepickershipping_date<!--{$shipping_index}-->" ).datepicker({

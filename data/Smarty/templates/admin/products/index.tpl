@@ -54,7 +54,6 @@ function lfnDispChange(){
 }
 
 $(function(){
-	$.datepicker.setDefaults( $.datepicker.regional[ "<!--{$smarty.const.LANG_CODE}-->" ] );
 	
 	$( "#datepickersearch_start" ).datepicker({
 	beforeShowDay: function(date) {

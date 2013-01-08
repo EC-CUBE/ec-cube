@@ -105,7 +105,6 @@ function moving(news_id,rank, max_rank) {
 }
 
 	$(function(){
-		$.datepicker.setDefaults( $.datepicker.regional[ "<!--{$smarty.const.LANG_CODE}-->" ] );
 		
 		$( "#datepicker" ).datepicker({
 		beforeShowDay: function(date) {

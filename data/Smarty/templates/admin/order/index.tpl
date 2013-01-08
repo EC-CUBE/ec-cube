@@ -110,7 +110,6 @@
     }
 	
 	$(function(){
-		$.datepicker.setDefaults( $.datepicker.regional[ "<!--{$smarty.const.LANG_CODE}-->" ] );
 		
 		$( "#datepickersearch_sbirth" ).datepicker({
 		beforeShowDay: function(date) {
