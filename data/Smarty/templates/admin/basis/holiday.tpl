@@ -22,6 +22,65 @@
  */
 *}-->
 
+<script type="text/javascript">
+<!--
+$(function(){
+		$.datepicker.setDefaults( $.datepicker.regional[ "<!--{$smarty.const.LANG_CODE}-->" ] );
+		
+		$( "#datepicker" ).datepicker({
+		beforeShowDay: function(date) {
+			if(date.getDay() == 0) {
+				return [true,"date-sunday"]; 
+			} else if(date.getDay() == 6){
+				return [true,"date-saturday"];
+			} else {
+				return [true];
+			}
+		},changeMonth: 'true'
+		,changeYear: 'false'
+		,onSelect: function(dateText, inst){
+			setDate(dateText);
+		},
+		showButtonPanel: true,
+		beforeShow: showAdditionalButton,       
+		onChangeMonthYear: showAdditionalButton
+		});
+		
+		$("#datepicker").blur( function() {
+			var dateText = $(this).val();
+			setDate(dateText);
+		});
+		
+	});
+	
+	var btn = $('<button class="ui-datepicker-current ui-state-default ui-priority-secondary ui-corner-all" type="button">Clear</button>');
+	
+	var showAdditionalButton = function (input) {
+		setTimeout(function () {
+			var buttonPane = $(input)
+					 .datepicker("widget")
+					 .find(".ui-datepicker-buttonpane");
+			btn
+					.unbind("click")
+					.bind("click", function () {
+						$.datepicker._clearDate(input);
+						$("*[name=year]").val("");
+						$("*[name=month]").val("");
+						$("*[name=day]").val("");
+					});
+			btn.appendTo(buttonPane);
+		}, 1);
+	};
+	
+	function setDate(dateText){
+	var dates = dateText.split('/');
+	$("*[name=year]").val(dates[0]);
+	$("*[name=month]").val(dates[1]);
+	$("*[name=day]").val(dates[2]);
+	}
+//-->
+</script>
+
 <form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="edit" />
@@ -45,14 +104,9 @@
                 <span class="attention"><!--{$arrErr.month}--></span>
                 <span class="attention"><!--{$arrErr.day}--></span>
                 <!--{/if}-->
-                <select name="month" style="<!--{$arrErr.month|sfGetErrorColor}-->">
-                    <option value="">--</option>
-                    <!--{html_options options=$arrMonth selected=$arrForm.month}-->
-                </select>月
-                <select name="day" style="<!--{$arrErr.day|sfGetErrorColor}-->">
-                    <option value="">--</option>
-                    <!--{html_options options=$arrDay selected=$arrForm.day}-->
-                </select>日
+                <input id="datepicker" type="text" value="<!--{if $arrForm.month != "" && $arrForm.day != ""}-->/<!--{$arrForm.month|h|string_format:'%02d'}-->/<!--{$arrForm.day|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                <input type="hidden" name="month" value="<!--{$arrForm.month}-->" />
+                <input type="hidden" name="day" value="<!--{$arrForm.day}-->" />
                 <br />
                 <span class="attention"><!--{t string="tpl_025"}--></span>
             </td>

@@ -79,6 +79,65 @@
         document.form1.submit();
         return false;
     }
+	
+	$(function(){
+		$.datepicker.setDefaults( $.datepicker.regional[ "<!--{$smarty.const.LANG_CODE}-->" ] );
+		
+		<!--{foreach name=shipping from=$arrAllShipping item=arrShipping key=shipping_index}-->
+		$( "#datepickershipping_date<!--{$shipping_index}-->" ).datepicker({
+		beforeShowDay: function(date) {
+			if(date.getDay() == 0) {
+				return [true,"date-sunday"]; 
+			} else if(date.getDay() == 6){
+				return [true,"date-saturday"];
+			} else {
+				return [true];
+			}
+		},changeMonth: 'true'
+		,changeYear: 'true'
+		,onSelect: function(dateText, inst){
+			setDateshipping_date<!--{$shipping_index}-->(dateText);
+		},
+		showButtonPanel: true,
+		beforeShow: showAdditionalButtonshipping_date<!--{$shipping_index}-->,       
+		onChangeMonthYear: showAdditionalButtonshipping_date<!--{$shipping_index}-->
+		});
+		
+		$("#datepickershipping_date<!--{$shipping_index}-->").blur( function() {
+			var dateText = $(this).val();
+			setDateshipping_date<!--{$shipping_index}-->(dateText);
+		});
+		<!--{/foreach}-->
+	
+	});
+	
+	var btn = $('<button class="ui-datepicker-current ui-state-default ui-priority-secondary ui-corner-all" type="button">Clear</button>');
+	
+	<!--{foreach name=shipping from=$arrAllShipping item=arrShipping key=shipping_index}-->
+	var showAdditionalButtonshipping_date<!--{$shipping_index}--> = function (input) {
+		setTimeout(function () {
+			var buttonPane = $(input)
+					 .datepicker("widget")
+					 .find(".ui-datepicker-buttonpane");
+			btn
+					.unbind("click")
+					.bind("click", function () {
+						$.datepicker._clearDate(input);
+						$("*[name=shipping_date_year[<!--{$shipping_index}-->]]").val("");
+						$("*[name=shipping_date_month[<!--{$shipping_index}-->]]").val("");
+						$("*[name=shipping_date_day[<!--{$shipping_index}-->]]").val("");
+					});
+			btn.appendTo(buttonPane);
+		}, 1);
+	};
+	
+	function setDateshipping_date<!--{$shipping_index}-->(dateText){
+	var dates = dateText.split('/');
+	$("*[name=shipping_date_year[<!--{$shipping_index}-->]]").val(dates[0]);
+	$("*[name=shipping_date_month[<!--{$shipping_index}-->]]").val(dates[1]);
+	$("*[name=shipping_date_day[<!--{$shipping_index}-->]]").val(dates[2]);
+	}
+	<!--{/foreach}-->
 
 //-->
 </script>
@@ -546,21 +605,17 @@
             <tr>
                 <th><!--{t string="tpl_387"}--></th>
                 <td>
-                    <!--{assign var=key1 value="shipping_date_year"}-->
-                    <!--{assign var=key2 value="shipping_date_month"}-->
-                    <!--{assign var=key3 value="shipping_date_day"}-->
-                    <span class="attention"><!--{$arrErr[$key1][$shipping_index]}--></span>
-                    <span class="attention"><!--{$arrErr[$key2][$shipping_index]}--></span>
-                    <span class="attention"><!--{$arrErr[$key3][$shipping_index]}--></span>
-                    <select name="<!--{$key1}-->[<!--{$shipping_index}-->]" style="<!--{$arrErr[$key1][$shipping_index]|sfGetErrorColor}-->">
-                        <!--{html_options options=$arrYearShippingDate selected=$arrShipping[$key1]|default:""}-->
-                    </select>年
-                    <select name="<!--{$key2}-->[<!--{$shipping_index}-->]" style="<!--{$arrErr[$key2][$shipping_index]|sfGetErrorColor}-->">
-                        <!--{html_options options=$arrMonthShippingDate selected=$arrShipping[$key2]|default:""}-->
-                    </select>月
-                    <select name="<!--{$key3}-->[<!--{$shipping_index}-->]" style="<!--{$arrErr[$key3][$shipping_index]|sfGetErrorColor}-->">
-                        <!--{html_options options=$arrDayShippingDate selected=$arrShipping[$key3]|default:""}-->
-                    </select>日
+            <!--{assign var=key1 value="shipping_date_year"}-->
+            <!--{assign var=key2 value="shipping_date_month"}-->
+            <!--{assign var=key3 value="shipping_date_day"}-->
+            <span class="attention"><!--{$arrErr[$key1][$shipping_index]}--></span>
+            <span class="attention"><!--{$arrErr[$key2][$shipping_index]}--></span>
+            <span class="attention"><!--{$arrErr[$key3][$shipping_index]}--></span>
+            
+            <input id="datepickershipping_date<!--{$shipping_index}-->" type="text" value="<!--{if $arrShipping[$key1] != "" && $arrShipping[$key2] != "" && $arrShipping[$key3] != ""}--><!--{$arrShipping[$key1]|h}-->/<!--{$arrShipping[$key2]|h|string_format:'%02d'}-->/<!--{$arrShipping[$key3]|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr[$key1][$shipping_index] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+            <input type="hidden" name="<!--{$key1}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key1]|default:""}-->" />
+            <input type="hidden" name="<!--{$key2}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key2]|default:""}-->" />
+            <input type="hidden" name="<!--{$key3}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key3]|default:""}-->" />
                 </td>
             </tr>
 

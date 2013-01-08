@@ -22,6 +22,334 @@
  */
 *}-->
 
+<script type="text/javascript">
+<!--
+
+    function fnDelete(customer_id) {
+        if (confirm('<!--{t string="tpl_248"}-->')) {
+            document.form1.mode.value = "delete"
+            document.form1['edit_customer_id'].value = customer_id;
+            document.form1.submit();
+            return false;
+        }
+    }
+
+    function fnEdit(customer_id) {
+        document.form1.action = './edit.php';
+        document.form1.mode.value = "edit_search"
+        document.form1['edit_customer_id'].value = customer_id;
+        document.form1.search_pageno.value = 1;
+        document.form1.submit();
+        return false;
+    }
+
+    function fnReSendMail(customer_id) {
+        if (confirm('<!--{t string="tpl_249"}-->')) {
+            document.form1.mode.value = "resend_mail"
+            document.form1['edit_customer_id'].value = customer_id;
+            document.form1.submit();
+            return false;
+        }
+    }
+	
+	$(function(){
+		$.datepicker.setDefaults( $.datepicker.regional[ "<!--{$smarty.const.LANG_CODE}-->" ] );
+		
+		$( "#datepickercustomersearch_b_start" ).datepicker({
+		beforeShowDay: function(date) {
+			if(date.getDay() == 0) {
+				return [true,"date-sunday"]; 
+			} else if(date.getDay() == 6){
+				return [true,"date-saturday"];
+			} else {
+				return [true];
+			}
+		},changeMonth: 'true'
+		,changeYear: 'true'
+		,onSelect: function(dateText, inst){
+			setDatecustomersearch_b_start(dateText);
+		},
+		showButtonPanel: true,
+		beforeShow: showAdditionalButtoncustomersearch_b_start,       
+		onChangeMonthYear: showAdditionalButtoncustomersearch_b_start
+		});
+		
+		$("#datepickercustomersearch_b_start").blur( function() {
+			var dateText = $(this).val();
+			setDatecustomersearch_b_start(dateText);
+		});
+		
+		$( "#datepickercustomersearch_b_end" ).datepicker({
+		beforeShowDay: function(date) {
+			if(date.getDay() == 0) {
+				return [true,"date-sunday"]; 
+			} else if(date.getDay() == 6){
+				return [true,"date-saturday"];
+			} else {
+				return [true];
+			}
+		},changeMonth: 'true'
+		,changeYear: 'true'
+		,onSelect: function(dateText, inst){
+			setDatecustomersearch_b_end(dateText);
+		},
+		showButtonPanel: true,
+		beforeShow: showAdditionalButtoncustomersearch_b_end,       
+		onChangeMonthYear: showAdditionalButtoncustomersearch_b_end
+		});
+		
+		$("#datepickercustomersearch_b_end").blur( function() {
+			var dateText = $(this).val();
+			setDatecustomersearch_b_end(dateText);
+		});
+		
+		$( "#datepickercustomersearch_start" ).datepicker({
+		beforeShowDay: function(date) {
+			if(date.getDay() == 0) {
+				return [true,"date-sunday"]; 
+			} else if(date.getDay() == 6){
+				return [true,"date-saturday"];
+			} else {
+				return [true];
+			}
+		},changeMonth: 'true'
+		,changeYear: 'true'
+		,onSelect: function(dateText, inst){
+			setDatecustomersearch_start(dateText);
+		},
+		showButtonPanel: true,
+		beforeShow: showAdditionalButtoncustomersearch_start,       
+		onChangeMonthYear: showAdditionalButtoncustomersearch_start
+		});
+		
+		$("#datepickercustomersearch_start").blur( function() {
+			var dateText = $(this).val();
+			setDatecustomersearch_start(dateText);
+		});
+		
+		$( "#datepickercustomersearch_end" ).datepicker({
+		beforeShowDay: function(date) {
+			if(date.getDay() == 0) {
+				return [true,"date-sunday"]; 
+			} else if(date.getDay() == 6){
+				return [true,"date-saturday"];
+			} else {
+				return [true];
+			}
+		},changeMonth: 'true'
+		,changeYear: 'true'
+		,onSelect: function(dateText, inst){
+			setDatecustomersearch_end(dateText);
+		},
+		showButtonPanel: true,
+		beforeShow: showAdditionalButtoncustomersearch_end,       
+		onChangeMonthYear: showAdditionalButtoncustomersearch_end
+		});
+		
+		$("#datepickercustomersearch_end").blur( function() {
+			var dateText = $(this).val();
+			setDatecustomersearch_end(dateText);
+		});
+		
+		$( "#datepickercustomersearch_buy_start" ).datepicker({
+		beforeShowDay: function(date) {
+			if(date.getDay() == 0) {
+				return [true,"date-sunday"]; 
+			} else if(date.getDay() == 6){
+				return [true,"date-saturday"];
+			} else {
+				return [true];
+			}
+		},changeMonth: 'true'
+		,changeYear: 'true'
+		,onSelect: function(dateText, inst){
+			setDatecustomersearch_buy_start(dateText);
+		},
+		showButtonPanel: true,
+		beforeShow: showAdditionalButtoncustomersearch_buy_start,       
+		onChangeMonthYear: showAdditionalButtoncustomersearch_buy_start
+		});
+		
+		$("#datepickercustomersearch_buy_start").blur( function() {
+			var dateText = $(this).val();
+			setDatecustomersearch_buy_start(dateText);
+		});
+		
+		$( "#datepickercustomersearch_buy_end" ).datepicker({
+		beforeShowDay: function(date) {
+			if(date.getDay() == 0) {
+				return [true,"date-sunday"]; 
+			} else if(date.getDay() == 6){
+				return [true,"date-saturday"];
+			} else {
+				return [true];
+			}
+		},changeMonth: 'true'
+		,changeYear: 'true'
+		,onSelect: function(dateText, inst){
+			setDatecustomersearch_buy_end(dateText);
+		},
+		showButtonPanel: true,
+		beforeShow: showAdditionalButtoncustomersearch_buy_end,       
+		onChangeMonthYear: showAdditionalButtoncustomersearch_buy_end
+		});
+		
+		$("#datepickercustomersearch_buy_end").blur( function() {
+			var dateText = $(this).val();
+			setDatecustomersearch_buy_end(dateText);
+		});
+		
+	});
+	
+	var btn = $('<button class="ui-datepicker-current ui-state-default ui-priority-secondary ui-corner-all" type="button">Clear</button>');
+	
+	var showAdditionalButtoncustomersearch_b_start = function (input) {
+		setTimeout(function () {
+			var buttonPane = $(input)
+					 .datepicker("widget")
+					 .find(".ui-datepicker-buttonpane");
+			btn
+					.unbind("click")
+					.bind("click", function () {
+						$.datepicker._clearDate(input);
+						$("*[name=search_b_start_year]").val("");
+						$("*[name=search_b_start_month]").val("");
+						$("*[name=search_b_start_day]").val("");
+					});
+			btn.appendTo(buttonPane);
+		}, 1);
+	};
+	
+	var showAdditionalButtoncustomersearch_b_end = function (input) {
+		setTimeout(function () {
+			var buttonPane = $(input)
+					 .datepicker("widget")
+					 .find(".ui-datepicker-buttonpane");
+			btn
+					.unbind("click")
+					.bind("click", function () {
+						$.datepicker._clearDate(input);
+						$("*[name=search_b_end_year]").val("");
+						$("*[name=search_b_end_month]").val("");
+						$("*[name=search_b_end_day]").val("");
+					});
+			btn.appendTo(buttonPane);
+		}, 1);
+	};
+	
+	var showAdditionalButtoncustomersearch_start = function (input) {
+		setTimeout(function () {
+			var buttonPane = $(input)
+					 .datepicker("widget")
+					 .find(".ui-datepicker-buttonpane");
+			btn
+					.unbind("click")
+					.bind("click", function () {
+						$.datepicker._clearDate(input);
+						$("*[name=search_start_year]").val("");
+						$("*[name=search_start_month]").val("");
+						$("*[name=search_start_day]").val("");
+					});
+			btn.appendTo(buttonPane);
+		}, 1);
+	};
+	
+	var showAdditionalButtoncustomersearch_end = function (input) {
+		setTimeout(function () {
+			var buttonPane = $(input)
+					 .datepicker("widget")
+					 .find(".ui-datepicker-buttonpane");
+			btn
+					.unbind("click")
+					.bind("click", function () {
+						$.datepicker._clearDate(input);
+						$("*[name=search_end_year]").val("");
+						$("*[name=search_end_month]").val("");
+						$("*[name=search_end_day]").val("");
+					});
+			btn.appendTo(buttonPane);
+		}, 1);
+	};
+	
+	var showAdditionalButtoncustomersearch_buy_start = function (input) {
+		setTimeout(function () {
+			var buttonPane = $(input)
+					 .datepicker("widget")
+					 .find(".ui-datepicker-buttonpane");
+			btn
+					.unbind("click")
+					.bind("click", function () {
+						$.datepicker._clearDate(input);
+						$("*[name=search_buy_start_year]").val("");
+						$("*[name=search_buy_start_month]").val("");
+						$("*[name=search_buy_start_day]").val("");
+					});
+			btn.appendTo(buttonPane);
+		}, 1);
+	};
+	
+	var showAdditionalButtoncustomersearch_buy_end = function (input) {
+		setTimeout(function () {
+			var buttonPane = $(input)
+					 .datepicker("widget")
+					 .find(".ui-datepicker-buttonpane");
+			btn
+					.unbind("click")
+					.bind("click", function () {
+						$.datepicker._clearDate(input);
+						$("*[name=search_buy_end_year]").val("");
+						$("*[name=search_buy_end_month]").val("");
+						$("*[name=search_buy_end_day]").val("");
+					});
+			btn.appendTo(buttonPane);
+		}, 1);
+	};
+	
+	function setDatecustomersearch_b_start(dateText){
+	var dates = dateText.split('/');
+	$("*[name=search_b_start_year]").val(dates[0]);
+	$("*[name=search_b_start_month]").val(dates[1]);
+	$("*[name=search_b_start_day]").val(dates[2]);
+	}
+	
+	function setDatecustomersearch_b_end(dateText){
+	var dates = dateText.split('/');
+	$("*[name=search_b_end_year]").val(dates[0]);
+	$("*[name=search_b_end_month]").val(dates[1]);
+	$("*[name=search_b_end_day]").val(dates[2]);
+	}
+	
+	function setDatecustomersearch_start(dateText){
+	var dates = dateText.split('/');
+	$("*[name=search_start_year]").val(dates[0]);
+	$("*[name=search_start_month]").val(dates[1]);
+	$("*[name=search_start_day]").val(dates[2]);
+	}
+	
+	function setDatecustomersearch_end(dateText){
+	var dates = dateText.split('/');
+	$("*[name=search_end_year]").val(dates[0]);
+	$("*[name=search_end_month]").val(dates[1]);
+	$("*[name=search_end_day]").val(dates[2]);
+	}
+	
+	function setDatecustomersearch_buy_start(dateText){
+	var dates = dateText.split('/');
+	$("*[name=search_buy_start_year]").val(dates[0]);
+	$("*[name=search_buy_start_month]").val(dates[1]);
+	$("*[name=search_buy_start_day]").val(dates[2]);
+	}
+	
+	function setDatecustomersearch_buy_end(dateText){
+	var dates = dateText.split('/');
+	$("*[name=search_buy_end_year]").val(dates[0]);
+	$("*[name=search_buy_end_month]").val(dates[1]);
+	$("*[name=search_buy_end_day]").val(dates[2]);
+	}
+
+//-->
+</script>
+
 <div id="mail" class="contents-main">
 <form name="search_form" id="search_form" method="post" action="?">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />

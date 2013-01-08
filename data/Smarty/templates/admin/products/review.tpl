@@ -22,6 +22,111 @@
  */
 *}-->
 
+<script type="text/javascript">
+$(function(){
+	$.datepicker.setDefaults( $.datepicker.regional[ "<!--{$smarty.const.LANG_CODE}-->" ] );
+	
+	$( "#datepickersearch_start" ).datepicker({
+	beforeShowDay: function(date) {
+		if(date.getDay() == 0) {
+			return [true,"date-sunday"]; 
+		} else if(date.getDay() == 6){
+			return [true,"date-saturday"];
+		} else {
+			return [true];
+		}
+	},changeMonth: 'true'
+	,changeYear: 'true'
+	,onSelect: function(dateText, inst){
+		setDatesearch_start(dateText);
+	},
+	showButtonPanel: true,
+	beforeShow: showAdditionalButtonsearch_start,       
+	onChangeMonthYear: showAdditionalButtonsearch_start
+	});
+	
+	$("#datepickersearch_start").blur( function() {
+		var dateText = $(this).val();
+		setDatesearch_start(dateText);
+	});
+	
+	$( "#datepickersearch_end" ).datepicker({
+	beforeShowDay: function(date) {
+		if(date.getDay() == 0) {
+			return [true,"date-sunday"]; 
+		} else if(date.getDay() == 6){
+			return [true,"date-saturday"];
+		} else {
+			return [true];
+		}
+	},changeMonth: 'true'
+	,changeYear: 'true'
+	,onSelect: function(dateText, inst){
+		setDatesearch_end(dateText);
+	},
+	showButtonPanel: true,
+	beforeShow: showAdditionalButtonsearch_end,       
+	onChangeMonthYear: showAdditionalButtonsearch_end
+	});
+	
+	$("#datepickersearch_end").blur( function() {
+		var dateText = $(this).val();
+		setDatesearch_end(dateText);
+	});
+
+});
+
+var btn = $('<button class="ui-datepicker-current ui-state-default ui-priority-secondary ui-corner-all" type="button">Clear</button>');
+
+var showAdditionalButtonsearch_start = function (input) {
+	setTimeout(function () {
+		var buttonPane = $(input)
+				 .datepicker("widget")
+				 .find(".ui-datepicker-buttonpane");
+		btn
+				.unbind("click")
+				.bind("click", function () {
+					$.datepicker._clearDate(input);
+					$("*[name=search_startyear]").val("");
+					$("*[name=search_startmonth]").val("");
+					$("*[name=search_startday]").val("");
+				});
+		btn.appendTo(buttonPane);
+	}, 1);
+};
+
+var showAdditionalButtonsearch_end = function (input) {
+	setTimeout(function () {
+		var buttonPane = $(input)
+				 .datepicker("widget")
+				 .find(".ui-datepicker-buttonpane");
+		btn
+				.unbind("click")
+				.bind("click", function () {
+					$.datepicker._clearDate(input);
+					$("*[name=search_endyear]").val("");
+					$("*[name=search_endmonth]").val("");
+					$("*[name=search_endday]").val("");
+				});
+		btn.appendTo(buttonPane);
+	}, 1);
+};
+
+function setDatesearch_start(dateText){
+var dates = dateText.split('/');
+$("*[name=search_startyear]").val(dates[0]);
+$("*[name=search_startmonth]").val(dates[1]);
+$("*[name=search_startday]").val(dates[2]);
+}
+
+function setDatesearch_end(dateText){
+var dates = dateText.split('/');
+$("*[name=search_endyear]").val(dates[0]);
+$("*[name=search_endmonth]").val(dates[1]);
+$("*[name=search_endday]").val(dates[2]);
+}
+</script>
+
 <div id="products" class="contents-main">
 <form name="search_form" method="post" action="?" >
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -62,31 +167,15 @@
                     <span class="attention"><!--{$arrErr.search_startyear}--></span>
                     <span class="attention"><!--{$arrErr.search_endyear}--></span>
                 <!--{/if}-->
-                <select name="search_startyear" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
-                    <option value="">----</option>
-                    <!--{html_options options=$arrStartYear selected=$arrForm.search_startyear|h}-->
-                </select>年
-                <select name="search_startmonth" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
-                    <option value="">--</option>
-                    <!--{html_options options=$arrStartMonth selected=$arrForm.search_startmonth|h}-->
-                </select>月
-                <select name="search_startday" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
-                    <option value="">--</option>
-                    <!--{html_options options=$arrStartDay selected=$arrForm.search_startday|h}-->
-                </select>日
+                <input id="datepickersearch_start" type="text" value="<!--{if $arrForm.search_startyear != "" && $arrForm.search_startmonth != "" && $arrForm.search_startday != ""}--><!--{$arrForm.search_startyear|h}-->/<!--{$arrForm.search_startmonth|h|string_format:'%02d'}-->/<!--{$arrForm.search_startday|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.search_startyear != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                <input type="hidden" name="search_startyear" value="<!--{$arrForm.search_startyear}-->" />
+                <input type="hidden" name="search_startmonth" value="<!--{$arrForm.search_startmonth}-->" />
+                <input type="hidden" name="search_startday" value="<!--{$arrForm.search_startday}-->" />
                 <!--{t string="-"}-->
-                <select name="search_endyear" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
-                    <option value="">----</option>
-                    <!--{html_options options=$arrEndYear selected=$arrForm.search_endyear|h}-->
-                </select>年
-                <select name="search_endmonth" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
-                    <option value="">--</option>
-                    <!--{html_options options=$arrEndMonth selected=$arrForm.search_endmonth|h}-->
-                </select>月
-                <select name="search_endday" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
-                    <option value="">--</option>
-                    <!--{html_options options=$arrEndDay selected=$arrForm.search_endday|h}-->
-                </select>日
+                <input id="datepickersearch_end" type="text" value="<!--{if $arrForm.search_endyear != "" && $arrForm.search_endmonth != "" && $arrForm.search_endday != ""}--><!--{$arrForm.search_endyear|h}-->/<!--{$arrForm.search_endmonth|h|string_format:'%02d'}-->/<!--{$arrForm.search_endday|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.search_endyear != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                <input type="hidden" name="search_endyear" value="<!--{$arrForm.search_endyear}-->" />
+                <input type="hidden" name="search_endmonth" value="<!--{$arrForm.search_endmonth}-->" />
+                <input type="hidden" name="search_endday" value="<!--{$arrForm.search_endday}-->" />
             </td>
         </tr>
     </table>

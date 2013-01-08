@@ -29,6 +29,61 @@
         document.search_form.submit();
         return false;
     }
+	
+	$(function(){
+		$.datepicker.setDefaults( $.datepicker.regional[ "<!--{$smarty.const.LANG_CODE}-->" ] );
+		
+		$( "#datepickercustomer_edit" ).datepicker({
+		beforeShowDay: function(date) {
+			if(date.getDay() == 0) {
+				return [true,"date-sunday"]; 
+			} else if(date.getDay() == 6){
+				return [true,"date-saturday"];
+			} else {
+				return [true];
+			}
+		},changeMonth: 'true'
+		,changeYear: 'true'
+		,onSelect: function(dateText, inst){
+			setDatecustomer_edit(dateText);
+		},
+		showButtonPanel: true,
+		beforeShow: showAdditionalButtoncustomer_edit,       
+		onChangeMonthYear: showAdditionalButtoncustomer_edit
+		});
+		
+		$("#datepickercustomer_edit").blur( function() {
+			var dateText = $(this).val();
+			setDatecustomer_edit(dateText);
+		});
+		
+	});
+	
+	var btn = $('<button class="ui-datepicker-current ui-state-default ui-priority-secondary ui-corner-all" type="button">Clear</button>');
+	
+	var showAdditionalButtoncustomer_edit = function (input) {
+		setTimeout(function () {
+			var buttonPane = $(input)
+					 .datepicker("widget")
+					 .find(".ui-datepicker-buttonpane");
+			btn
+					.unbind("click")
+					.bind("click", function () {
+						$.datepicker._clearDate(input);
+						$("*[name=year]").val("");
+						$("*[name=month]").val("");
+						$("*[name=day]").val("");
+					});
+			btn.appendTo(buttonPane);
+		}, 1);
+	};
+	
+	function setDatecustomer_edit(dateText){
+	var dates = dateText.split('/');
+	$("*[name=year]").val(dates[0]);
+	$("*[name=month]").val(dates[1]);
+	$("*[name=day]").val(dates[2]);
+	}
 //-->
 </script>
 
@@ -168,7 +223,7 @@
                     <!--{if $errBirth}-->
                         <div class="attention"><!--{$errBirth}--></div>
                     <!--{/if}-->
-                    <input id="datepicker" type="text" value="<!--{if $arrForm.year != "" && $arrForm.month != "" && $arrForm.day != ""}--><!--{$arrForm.year|h}-->/<!--{$arrForm.month|h|string_format:'%02d'}-->/<!--{$arrForm.day|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                    <input id="datepickercustomer_edit" type="text" value="<!--{if $arrForm.year != "" && $arrForm.month != "" && $arrForm.day != ""}--><!--{$arrForm.year|h}-->/<!--{$arrForm.month|h|string_format:'%02d'}-->/<!--{$arrForm.day|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                     <input type="hidden" name="year" value="<!--{$arrForm.year}-->" />
                     <input type="hidden" name="month" value="<!--{$arrForm.month}-->" />
                     <input type="hidden" name="day" value="<!--{$arrForm.day}-->" />

@@ -104,6 +104,61 @@ function moving(news_id,rank, max_rank) {
     }
 }
 
+	$(function(){
+		$.datepicker.setDefaults( $.datepicker.regional[ "<!--{$smarty.const.LANG_CODE}-->" ] );
+		
+		$( "#datepicker" ).datepicker({
+		beforeShowDay: function(date) {
+			if(date.getDay() == 0) {
+				return [true,"date-sunday"]; 
+			} else if(date.getDay() == 6){
+				return [true,"date-saturday"];
+			} else {
+				return [true];
+			}
+		},changeMonth: 'true'
+		,changeYear: 'true'
+		,onSelect: function(dateText, inst){
+			setDate(dateText);
+		},
+		showButtonPanel: true,
+		beforeShow: showAdditionalButton,       
+		onChangeMonthYear: showAdditionalButton
+		});
+		
+		$("#datepicker").blur( function() {
+			var dateText = $(this).val();
+			setDate(dateText);
+		});
+		
+	});
+	
+	var btn = $('<button class="ui-datepicker-current ui-state-default ui-priority-secondary ui-corner-all" type="button">Clear</button>');
+	
+	var showAdditionalButton = function (input) {
+		setTimeout(function () {
+			var buttonPane = $(input)
+					 .datepicker("widget")
+					 .find(".ui-datepicker-buttonpane");
+			btn
+					.unbind("click")
+					.bind("click", function () {
+						$.datepicker._clearDate(input);
+						$("*[name=year]").val("");
+						$("*[name=month]").val("");
+						$("*[name=day]").val("");
+					});
+			btn.appendTo(buttonPane);
+		}, 1);
+	};
+	
+	function setDate(dateText){
+	var dates = dateText.split('/');
+	$("*[name=year]").val(dates[0]);
+	$("*[name=month]").val(dates[1]);
+	$("*[name=day]").val(dates[2]);
+	}
+
 //-->
 </script>
 
@@ -120,18 +175,10 @@ function moving(news_id,rank, max_rank) {
             <th><!--{t string="tpl_024_1"}--></th>
             <td>
                 <!--{if $arrErr.year || $arrErr.month || $arrErr.day}--><span class="attention"><!--{$arrErr.year}--><!--{$arrErr.month}--><!--{$arrErr.day}--></span><!--{/if}-->
-                <select name="year" <!--{if $arrErr.year || $arrErr.month || $arrErr.day }-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->>
-                    <option value="" selected="selected">----</option>
-                    <!--{html_options options=$arrYear selected=$arrForm.year}-->
-                </select>年
-                <select name="month" <!--{if $arrErr.year || $arrErr.month || $arrErr.day}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->>
-                    <option value="" selected="selected">--</option>
-                    <!--{html_options options=$arrMonth selected=$arrForm.month}-->
-                </select>月
-                <select name="day" <!--{if $arrErr.year || $arrErr.month || $arrErr.day}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->>
-                    <option value="" selected="selected">--</option>
-                    <!--{html_options options=$arrDay selected=$arrForm.day}-->
-                </select>日
+                <input id="datepicker" type="text" value="<!--{if $arrForm.year != "" && $arrForm.month != "" && $arrForm.day != ""}--><!--{$arrForm.year|h}-->/<!--{$arrForm.month|h|string_format:'%02d'}-->/<!--{$arrForm.day|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                <input type="hidden" name="year" value="<!--{$arrForm.year}-->" />
+                <input type="hidden" name="month" value="<!--{$arrForm.month}-->" />
+                <input type="hidden" name="day" value="<!--{$arrForm.day}-->" />
             </td>
         </tr>
         <tr>

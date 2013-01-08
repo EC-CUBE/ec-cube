@@ -108,8 +108,303 @@
         fm.action=action;
         fm.submit();
     }
-
-
+	
+	$(function(){
+		$.datepicker.setDefaults( $.datepicker.regional[ "<!--{$smarty.const.LANG_CODE}-->" ] );
+		
+		$( "#datepickersearch_sbirth" ).datepicker({
+		beforeShowDay: function(date) {
+			if(date.getDay() == 0) {
+				return [true,"date-sunday"]; 
+			} else if(date.getDay() == 6){
+				return [true,"date-saturday"];
+			} else {
+				return [true];
+			}
+		},changeMonth: 'true'
+		,changeYear: 'true'
+		,onSelect: function(dateText, inst){
+			setDatesearch_sbirth(dateText);
+		},
+		showButtonPanel: true,
+		beforeShow: showAdditionalButtonsearch_sbirth,       
+		onChangeMonthYear: showAdditionalButtonsearch_sbirth
+		});
+		
+		$("#datepickersearch_sbirth").blur( function() {
+			var dateText = $(this).val();
+			setDatesearch_sbirth(dateText);
+		});
+		
+		$( "#datepickersearch_ebirth" ).datepicker({
+		beforeShowDay: function(date) {
+			if(date.getDay() == 0) {
+				return [true,"date-sunday"]; 
+			} else if(date.getDay() == 6){
+				return [true,"date-saturday"];
+			} else {
+				return [true];
+			}
+		},changeMonth: 'true'
+		,changeYear: 'true'
+		,onSelect: function(dateText, inst){
+			setDatesearch_ebirth(dateText);
+		},
+		showButtonPanel: true,
+		beforeShow: showAdditionalButtonsearch_ebirth,       
+		onChangeMonthYear: showAdditionalButtonsearch_ebirth
+		});
+		
+		$("#datepickersearch_ebirth").blur( function() {
+			var dateText = $(this).val();
+			setDatesearch_ebirth(dateText);
+		});
+		
+		
+		$( "#datepickersearch_sorder" ).datepicker({
+		beforeShowDay: function(date) {
+			if(date.getDay() == 0) {
+				return [true,"date-sunday"]; 
+			} else if(date.getDay() == 6){
+				return [true,"date-saturday"];
+			} else {
+				return [true];
+			}
+		},changeMonth: 'true'
+		,changeYear: 'true'
+		,onSelect: function(dateText, inst){
+			setDatesearch_sorder(dateText);
+		},
+		showButtonPanel: true,
+		beforeShow: showAdditionalButtonsearch_sorder,       
+		onChangeMonthYear: showAdditionalButtonsearch_sorder
+		});
+		
+		$("#datepickersearch_sorder").blur( function() {
+			var dateText = $(this).val();
+			setDatesearch_sorder(dateText);
+		});
+		
+		$( "#datepickersearch_eorder" ).datepicker({
+		beforeShowDay: function(date) {
+			if(date.getDay() == 0) {
+				return [true,"date-sunday"]; 
+			} else if(date.getDay() == 6){
+				return [true,"date-saturday"];
+			} else {
+				return [true];
+			}
+		},changeMonth: 'true'
+		,changeYear: 'true'
+		,onSelect: function(dateText, inst){
+			setDatesearch_eorder(dateText);
+		},
+		showButtonPanel: true,
+		beforeShow: showAdditionalButtonsearch_eorder,       
+		onChangeMonthYear: showAdditionalButtonsearch_eorder
+		});
+		
+		$("#datepickersearch_eorder").blur( function() {
+			var dateText = $(this).val();
+			setDatesearch_eorder(dateText);
+		});
+		
+		
+		$( "#datepickersearch_supdate" ).datepicker({
+		beforeShowDay: function(date) {
+			if(date.getDay() == 0) {
+				return [true,"date-sunday"]; 
+			} else if(date.getDay() == 6){
+				return [true,"date-saturday"];
+			} else {
+				return [true];
+			}
+		},changeMonth: 'true'
+		,changeYear: 'true'
+		,onSelect: function(dateText, inst){
+			setDatesearch_supdate(dateText);
+		},
+		showButtonPanel: true,
+		beforeShow: showAdditionalButtonsearch_supdate,       
+		onChangeMonthYear: showAdditionalButtonsearch_supdate
+		});
+		
+		$("#datepickersearch_supdate").blur( function() {
+			var dateText = $(this).val();
+			setDatesearch_supdate(dateText);
+		});
+		
+		$( "#datepickersearch_eupdate" ).datepicker({
+		beforeShowDay: function(date) {
+			if(date.getDay() == 0) {
+				return [true,"date-sunday"]; 
+			} else if(date.getDay() == 6){
+				return [true,"date-saturday"];
+			} else {
+				return [true];
+			}
+		},changeMonth: 'true'
+		,changeYear: 'true'
+		,onSelect: function(dateText, inst){
+			setDatesearch_eupdate(dateText);
+		},
+		showButtonPanel: true,
+		beforeShow: showAdditionalButtonsearch_eupdate,       
+		onChangeMonthYear: showAdditionalButtonsearch_eupdate
+		});
+		
+		$("#datepickersearch_eupdate").blur( function() {
+			var dateText = $(this).val();
+			setDatesearch_eupdate(dateText);
+		});
+	
+	});
+	
+	var btn = $('<button class="ui-datepicker-current ui-state-default ui-priority-secondary ui-corner-all" type="button">Clear</button>');
+	
+	var showAdditionalButtonsearch_sbirth = function (input) {
+		setTimeout(function () {
+			var buttonPane = $(input)
+					 .datepicker("widget")
+					 .find(".ui-datepicker-buttonpane");
+			btn
+					.unbind("click")
+					.bind("click", function () {
+						$.datepicker._clearDate(input);
+						$("*[name=search_sbirthyear]").val("");
+						$("*[name=search_sbirthmonth]").val("");
+						$("*[name=search_sbirthday]").val("");
+					});
+			btn.appendTo(buttonPane);
+		}, 1);
+	};
+	
+	var showAdditionalButtonsearch_ebirth = function (input) {
+		setTimeout(function () {
+			var buttonPane = $(input)
+					 .datepicker("widget")
+					 .find(".ui-datepicker-buttonpane");
+			btn
+					.unbind("click")
+					.bind("click", function () {
+						$.datepicker._clearDate(input);
+						$("*[name=search_ebirthyear]").val("");
+						$("*[name=search_ebirthmonth]").val("");
+						$("*[name=search_ebirthday]").val("");
+					});
+			btn.appendTo(buttonPane);
+		}, 1);
+	};
+	
+	var showAdditionalButtonsearch_sorder = function (input) {
+		setTimeout(function () {
+			var buttonPane = $(input)
+					 .datepicker("widget")
+					 .find(".ui-datepicker-buttonpane");
+			btn
+					.unbind("click")
+					.bind("click", function () {
+						$.datepicker._clearDate(input);
+						$("*[name=search_sorderyear]").val("");
+						$("*[name=search_sordermonth]").val("");
+						$("*[name=search_sorderday]").val("");
+					});
+			btn.appendTo(buttonPane);
+		}, 1);
+	};
+	
+	var showAdditionalButtonsearch_eorder = function (input) {
+		setTimeout(function () {
+			var buttonPane = $(input)
+					 .datepicker("widget")
+					 .find(".ui-datepicker-buttonpane");
+			btn
+					.unbind("click")
+					.bind("click", function () {
+						$.datepicker._clearDate(input);
+						$("*[name=search_eorderyear]").val("");
+						$("*[name=search_eordermonth]").val("");
+						$("*[name=search_eorderday]").val("");
+					});
+			btn.appendTo(buttonPane);
+		}, 1);
+	};
+	
+	var showAdditionalButtonsearch_supdate = function (input) {
+		setTimeout(function () {
+			var buttonPane = $(input)
+					 .datepicker("widget")
+					 .find(".ui-datepicker-buttonpane");
+			btn
+					.unbind("click")
+					.bind("click", function () {
+						$.datepicker._clearDate(input);
+						$("*[name=search_supdateyear]").val("");
+						$("*[name=search_supdatemonth]").val("");
+						$("*[name=search_supdateday]").val("");
+					});
+			btn.appendTo(buttonPane);
+		}, 1);
+	};
+	
+	var showAdditionalButtonsearch_eupdate = function (input) {
+		setTimeout(function () {
+			var buttonPane = $(input)
+					 .datepicker("widget")
+					 .find(".ui-datepicker-buttonpane");
+			btn
+					.unbind("click")
+					.bind("click", function () {
+						$.datepicker._clearDate(input);
+						$("*[name=search_eupdateyear]").val("");
+						$("*[name=search_eupdatemonth]").val("");
+						$("*[name=search_eupdateday]").val("");
+					});
+			btn.appendTo(buttonPane);
+		}, 1);
+	};
+	
+	function setDatesearch_sbirth(dateText){
+	var dates = dateText.split('/');
+	$("*[name=search_sbirthyear]").val(dates[0]);
+	$("*[name=search_sbirthmonth]").val(dates[1]);
+	$("*[name=search_sbirthday]").val(dates[2]);
+	}
+	
+	function setDatesearch_ebirth(dateText){
+	var dates = dateText.split('/');
+	$("*[name=search_ebirthyear]").val(dates[0]);
+	$("*[name=search_ebirthmonth]").val(dates[1]);
+	$("*[name=search_ebirthday]").val(dates[2]);
+	}
+	
+	function setDatesearch_sorder(dateText){
+	var dates = dateText.split('/');
+	$("*[name=search_sorderyear]").val(dates[0]);
+	$("*[name=search_sordermonth]").val(dates[1]);
+	$("*[name=search_sorderday]").val(dates[2]);
+	}
+	
+	function setDatesearch_eorder(dateText){
+	var dates = dateText.split('/');
+	$("*[name=search_eorderyear]").val(dates[0]);
+	$("*[name=search_eordermonth]").val(dates[1]);
+	$("*[name=search_eorderday]").val(dates[2]);
+	}
+	
+	function setDatesearch_supdate(dateText){
+	var dates = dateText.split('/');
+	$("*[name=search_supdateyear]").val(dates[0]);
+	$("*[name=search_supdatemonth]").val(dates[1]);
+	$("*[name=search_supdateday]").val(dates[2]);
+	}
+	
+	function setDatesearch_eupdate(dateText){
+	var dates = dateText.split('/');
+	$("*[name=search_eupdateyear]").val(dates[0]);
+	$("*[name=search_eupdatemonth]").val(dates[1]);
+	$("*[name=search_eupdateday]").val(dates[2]);
+	}
 //-->
 </script>
 <div id="order" class="contents-main">
@@ -165,33 +460,19 @@
         <tr>
             <th><!--{t string="tpl_217"}--></th>
             <td colspan="3">
-                <span class="attention"><!--{$arrErr.search_sbirthyear}--></span>
-                <span class="attention"><!--{$arrErr.search_ebirthyear}--></span>
-                <select name="search_sbirthyear" style="<!--{$arrErr.search_sbirthyear|sfGetErrorColor}-->">
-                <option value="">----</option>
-                <!--{html_options options=$arrBirthYear selected=$arrForm.search_sbirthyear.value}-->
-                </select>年
-                <select name="search_sbirthmonth" style="<!--{$arrErr.search_sbirthyear|sfGetErrorColor}-->">
-                <option value="">--</option>
-                <!--{html_options options=$arrMonth selected=$arrForm.search_sbirthmonth.value}-->
-                </select>月
-                <select name="search_sbirthday" style="<!--{$arrErr.search_sbirthyear|sfGetErrorColor}-->">
-                <option value="">--</option>
-                <!--{html_options options=$arrDay selected=$arrForm.search_sbirthday.value}-->
-                </select>日
-                <!--{t string="-"}-->
-                <select name="search_ebirthyear" style="<!--{$arrErr.search_ebirthyear|sfGetErrorColor}-->">
-                <option value="">----</option>
-                <!--{html_options options=$arrBirthYear selected=$arrForm.search_ebirthyear.value}-->
-                </select>年
-                <select name="search_ebirthmonth" style="<!--{$arrErr.search_ebirthyear|sfGetErrorColor}-->">
-                <option value="">--</option>
-                <!--{html_options options=$arrMonth selected=$arrForm.search_ebirthmonth.value}-->
-                </select>月
-                <select name="search_ebirthday" style="<!--{$arrErr.search_ebirthyear|sfGetErrorColor}-->">
-                <option value="">--</option>
-                <!--{html_options options=$arrDay selected=$arrForm.search_ebirthday.value}-->
-                </select>日
+            <!--{if $arrErr.search_sbirthyear || $arrErr.search_ebirthyear}-->
+            <span class="attention"><!--{$arrErr.search_sbirthyear}--></span>
+            <span class="attention"><!--{$arrErr.search_ebirthyear}--></span>
+            <!--{/if}-->
+            <input id="datepickersearch_sbirth" type="text" value="<!--{if $arrForm.search_sbirthyear.value != "" && $arrForm.search_sbirthmonth.value != "" && $arrForm.search_sbirthday.value != ""}--><!--{$arrForm.search_sbirthyear.value|h}-->/<!--{$arrForm.search_sbirthmonth.value|h|string_format:'%02d'}-->/<!--{$arrForm.search_sbirthday.value|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.search_sbirthyear != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+            <input type="hidden" name="search_sbirthyear" value="<!--{$arrForm.search_sbirthyear.value}-->" />
+            <input type="hidden" name="search_sbirthmonth" value="<!--{$arrForm.search_sbirthmonth.value}-->" />
+            <input type="hidden" name="search_sbirthday" value="<!--{$arrForm.search_sbirthday.value}-->" />
+            <!--{t string="-"}-->
+            <input id="datepickersearch_ebirth" type="text" value="<!--{if $arrForm.search_ebirthyear.value != "" && $arrForm.search_ebirthmonth.value != "" && $arrForm.search_ebirthday.value != ""}--><!--{$arrForm.search_ebirthyear.value|h}-->/<!--{$arrForm.search_ebirthmonth.value|h|string_format:'%02d'}-->/<!--{$arrForm.search_ebirthday.value|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.search_ebirthyear != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+            <input type="hidden" name="search_ebirthyear" value="<!--{$arrForm.search_ebirthyear.value}-->" />
+            <input type="hidden" name="search_ebirthmonth" value="<!--{$arrForm.search_ebirthmonth.value}-->" />
+            <input type="hidden" name="search_ebirthday" value="<!--{$arrForm.search_ebirthday.value}-->" />
             </td>
         </tr>
         <tr>
@@ -213,65 +494,37 @@
         <tr>
             <th><!--{t string="tpl_359"}--></th>
             <td colspan="3">
-                <!--{if $arrErr.search_sorderyear}--><span class="attention"><!--{$arrErr.search_sorderyear}--></span><!--{/if}-->
-                <!--{if $arrErr.search_eorderyear}--><span class="attention"><!--{$arrErr.search_eorderyear}--></span><!--{/if}-->
-                <select name="search_sorderyear" style="<!--{$arrErr.search_sorderyear|sfGetErrorColor}-->">
-                <option value="">----</option>
-                <!--{html_options options=$arrRegistYear selected=$arrForm.search_sorderyear.value}-->
-                </select>年
-                <select name="search_sordermonth" style="<!--{$arrErr.search_sorderyear|sfGetErrorColor}-->">
-                <option value="">--</option>
-                <!--{html_options options=$arrMonth selected=$arrForm.search_sordermonth.value}-->
-                </select>月
-                <select name="search_sorderday" style="<!--{$arrErr.search_sorderyear|sfGetErrorColor}-->">
-                <option value="">--</option>
-                <!--{html_options options=$arrDay selected=$arrForm.search_sorderday.value}-->
-                </select>日
-                <!--{t string="-"}-->
-                <select name="search_eorderyear" style="<!--{$arrErr.search_eorderyear|sfGetErrorColor}-->">
-                <option value="">----</option>
-                <!--{html_options options=$arrRegistYear selected=$arrForm.search_eorderyear.value}-->
-                </select>年
-                <select name="search_eordermonth" style="<!--{$arrErr.search_eorderyear|sfGetErrorColor}-->">
-                <option value="">--</option>
-                <!--{html_options options=$arrMonth selected=$arrForm.search_eordermonth.value}-->
-                </select>月
-                <select name="search_eorderday" style="<!--{$arrErr.search_eorderyear|sfGetErrorColor}-->">
-                <option value="">--</option>
-                <!--{html_options options=$arrDay selected=$arrForm.search_eorderday.value}-->
-                </select>日
+            <!--{if $arrErr.search_sorderyear || $arrErr.search_eorderyear}-->
+            <span class="attention"><!--{$arrErr.search_sorderyear}--></span>
+            <span class="attention"><!--{$arrErr.search_eorderyear}--></span>
+            <!--{/if}-->
+            <input id="datepickersearch_sorder" type="text" value="<!--{if $arrForm.search_sorderyear.value != "" && $arrForm.search_sordermonth.value != "" && $arrForm.search_sorderday.value != ""}--><!--{$arrForm.search_sorderyear.value|h}-->/<!--{$arrForm.search_sordermonth.value|h|string_format:'%02d'}-->/<!--{$arrForm.search_sorderday.value|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.search_sorderyear != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+            <input type="hidden" name="search_sorderyear" value="<!--{$arrForm.search_sorderyear.value}-->" />
+            <input type="hidden" name="search_sordermonth" value="<!--{$arrForm.search_sordermonth.value}-->" />
+            <input type="hidden" name="search_sorderday" value="<!--{$arrForm.search_sorderday.value}-->" />
+            <!--{t string="-"}-->
+            <input id="datepickersearch_eorder" type="text" value="<!--{if $arrForm.search_eorderyear.value != "" && $arrForm.search_eordermonth.value != "" && $arrForm.search_eorderday.value != ""}--><!--{$arrForm.search_eorderyear.value|h}-->/<!--{$arrForm.search_eordermonth.value|h|string_format:'%02d'}-->/<!--{$arrForm.search_eorderday.value|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.search_eorderyear != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+            <input type="hidden" name="search_eorderyear" value="<!--{$arrForm.search_eorderyear.value}-->" />
+            <input type="hidden" name="search_eordermonth" value="<!--{$arrForm.search_eordermonth.value}-->" />
+            <input type="hidden" name="search_eorderday" value="<!--{$arrForm.search_eorderday.value}-->" />
             </td>
         </tr>
         <tr>
             <th><!--{t string="tpl_399"}--></th>
             <td colspan="3">
-                <!--{if $arrErr.search_supdateyear}--><span class="attention"><!--{$arrErr.search_supdateyear}--></span><!--{/if}-->
-                <!--{if $arrErr.search_eupdateyear}--><span class="attention"><!--{$arrErr.search_eupdateyear}--></span><!--{/if}-->
-                <select name="search_supdateyear" style="<!--{$arrErr.search_supdateyear|sfGetErrorColor}-->">
-                    <option value="">----</option>
-                    <!--{html_options options=$arrRegistYear selected=$arrForm.search_supdateyear.value}-->
-                </select>年
-                <select name="search_supdatemonth" style="<!--{$arrErr.search_supdateyear|sfGetErrorColor}-->">
-                    <option value="">--</option>
-                    <!--{html_options options=$arrMonth selected=$arrForm.search_supdatemonth.value}-->
-                </select>月
-                <select name="search_supdateday" style="<!--{$arrErr.search_supdateyear|sfGetErrorColor}-->">
-                    <option value="">--</option>
-                    <!--{html_options options=$arrDay selected=$arrForm.search_supdateday.value}-->
-                </select>日
-                <!--{t string="-"}-->
-                <select name="search_eupdateyear" style="<!--{$arrErr.search_eupdateyear|sfGetErrorColor}-->">
-                    <option value="">----</option>
-                    <!--{html_options options=$arrRegistYear selected=$arrForm.search_eupdateyear.value}-->
-                </select>年
-                <select name="search_eupdatemonth" style="<!--{$arrErr.search_eupdateyear|sfGetErrorColor}-->">
-                    <option value="">--</option>
-                    <!--{html_options options=$arrMonth selected=$arrForm.search_eupdatemonth.value}-->
-                </select>月
-                <select name="search_eupdateday" style="<!--{$arrErr.search_eupdateyear|sfGetErrorColor}-->">
-                    <option value="">--</option>
-                    <!--{html_options options=$arrDay selected=$arrForm.search_eupdateday.value}-->
-                </select>日
+            <!--{if $arrErr.search_supdateyear || $arrErr.search_eupdateyear}-->
+            <span class="attention"><!--{$arrErr.search_supdateyear}--></span>
+            <span class="attention"><!--{$arrErr.search_eupdateyear}--></span>
+            <!--{/if}-->
+            <input id="datepickersearch_supdate" type="text" value="<!--{if $arrForm.search_supdateyear.value != "" && $arrForm.search_supdatemonth.value != "" && $arrForm.search_supdateday.value != ""}--><!--{$arrForm.search_supdateyear.value|h}-->/<!--{$arrForm.search_supdatemonth.value|h|string_format:'%02d'}-->/<!--{$arrForm.search_supdateday.value|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.search_supdateyear != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+            <input type="hidden" name="search_supdateyear" value="<!--{$arrForm.search_supdateyear.value}-->" />
+            <input type="hidden" name="search_supdatemonth" value="<!--{$arrForm.search_supdatemonth.value}-->" />
+            <input type="hidden" name="search_supdateday" value="<!--{$arrForm.search_supdateday.value}-->" />
+            <!--{t string="-"}-->
+            <input id="datepickersearch_eupdate" type="text" value="<!--{if $arrForm.search_eupdateyear.value != "" && $arrForm.search_eupdatemonth.value != "" && $arrForm.search_eupdateday.value != ""}--><!--{$arrForm.search_eupdateyear.value|h}-->/<!--{$arrForm.search_eupdatemonth.value|h|string_format:'%02d'}-->/<!--{$arrForm.search_eupdateday.value|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.search_eupdateyear != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+            <input type="hidden" name="search_eupdateyear" value="<!--{$arrForm.search_eupdateyear.value}-->" />
+            <input type="hidden" name="search_eupdatemonth" value="<!--{$arrForm.search_eupdatemonth.value}-->" />
+            <input type="hidden" name="search_eupdateday" value="<!--{$arrForm.search_eupdateday.value}-->" />
             </td>
         </tr>
         <tr>
