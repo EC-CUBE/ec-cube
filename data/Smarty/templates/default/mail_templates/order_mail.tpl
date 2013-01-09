@@ -51,12 +51,13 @@
 <!--{section name=cnt loop=$arrOrderDetail}-->
 商品コード: <!--{$arrOrderDetail[cnt].product_code}-->
 商品名: <!--{$arrOrderDetail[cnt].product_name}--> <!--{$arrOrderDetail[cnt].classcategory_name1}--> <!--{$arrOrderDetail[cnt].classcategory_name2}-->
-単価：￥ <!--{$arrOrderDetail[cnt].price|sfCalcIncTax|number_format}-->
+単価：￥ <!--{$arrOrderDetail[cnt].price|sfCalcIncTax:$arrOrderDetail[cnt].tax_rate:$arrOrderDetail[cnt].tax_rule|number_format}-->
 数量：<!--{$arrOrderDetail[cnt].quantity}-->
 
 <!--{/section}-->
 -------------------------------------------------
-小　計 ￥ <!--{$arrOrder.subtotal|number_format|default:0}--> (うち消費税 ￥<!--{$arrOrder.tax|number_format|default:0}-->）
+小　計 ￥ <!--{$arrOrder.subtotal|number_format|default:0}--> <!--{if 0 < $arrOrder.tax}-->(うち消費税 ￥<!--{$arrOrder.tax|number_format|default:0}-->）<!--{/if}-->
+
 値引き ￥ <!--{$arrOrder.use_point*$smarty.const.POINT_VALUE+$arrOrder.discount|number_format|default:0}-->
 送　料 ￥ <!--{$arrOrder.deliv_fee|number_format|default:0}-->
 手数料 ￥ <!--{$arrOrder.charge|number_format|default:0}-->
@@ -83,7 +84,7 @@
 <!--{foreach item=item name=item from=$shipping.shipment_item}-->
 商品コード: <!--{$item.product_code}-->
 商品名: <!--{$item.product_name}--> <!--{$item.classcategory_name1}--> <!--{$item.classcategory_name2}-->
-単価：￥ <!--{$item.price|sfCalcIncTax|number_format}-->
+単価：￥ <!--{$item.price|sfCalcIncTax:$arrOrder.order_tax_rate:$arrOrder.order_tax_rule|number_format}-->
 数量：<!--{$item.quantity}-->
 
 <!--{/foreach}-->

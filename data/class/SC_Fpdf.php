@@ -177,7 +177,7 @@ class SC_Fpdf extends SC_Helper_FPDI {
             $data[0] = $this->arrDisp['quantity'][$i];
 
             // 税込金額（単価）
-            $data[1] = SC_Helper_DB_Ex::sfCalcIncTax($this->arrDisp['price'][$i]);
+            $data[1] = SC_Helper_DB_Ex::sfCalcIncTax($this->arrDisp['price'][$i], $this->arrDisp['tax_rate'][$i], $this->arrDisp['tax_rule'][$i]);
 
             // 小計（商品毎）
             $data[2] = $data[0] * $data[1];
@@ -330,7 +330,7 @@ class SC_Fpdf extends SC_Helper_FPDI {
     // 受注詳細データの取得
     function lfGetOrderDetail($order_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $col = 'product_id, product_class_id, product_code, product_name, classcategory_name1, classcategory_name2, price, quantity, point_rate';
+        $col = 'product_id, product_class_id, product_code, product_name, classcategory_name1, classcategory_name2, price, quantity, point_rate, tax_rate, tax_rule';
         $where = 'order_id = ?';
         $objQuery->setOrder('order_detail_id');
         $arrRet = $objQuery->select($col, 'dtb_order_detail', $where, array($order_id));
