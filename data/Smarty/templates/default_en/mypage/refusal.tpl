@@ -31,8 +31,7 @@
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="confirm" />
         <div id="complete_area">
-            <div class="message">会員を退会された場合には、現在保存されている購入履歴や、<br />
-            お届け先などの情報は、すべて削除されますがよろしいでしょうか？</div>
+            <div class="message">When a member withdraws membership, the information that is currently stored, such as purchase history and delivery addresses will all be deleted. Do you wish to continue?</div>
             <div class="message_area">
                 <p>退会手続きが完了した時点で、現在保存されている購入履歴や、<br />
                 お届け先等の情報はすべてなくなりますのでご注意ください。</p>

@@ -22,12 +22,12 @@
 
 <ul class="footer_navi">
     <!--{if $tpl_login}-->
-        <li><a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php"><img src="<!--{$TPL_URLPATH}-->img/button/btn_footer_mypage_off.png" alt="MY page" width="75" height="50" /></a></li>
-        <li><a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/favorite.php"><img src="<!--{$TPL_URLPATH}-->img/button/btn_footer_favorite_off.png" alt="Favorites" width="75" height="50" /></a></li>
+        <li><a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php"><img src="<!--{$TPL_URLPATH}-->img/button/btn_footer_mypage_off.png" alt="MY page" width="75" height="34" /><br />MY page</a></li>
+        <li><a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/favorite.php"><img src="<!--{$TPL_URLPATH}-->img/button/btn_footer_favorite_off.png" alt="Favorites" width="75" height="34" /><br />Favorites</a></li>
     <!--{else}-->
-        <li><a data-transition="slideup" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php"><img src="<!--{$TPL_URLPATH}-->img/button/btn_footer_mypage_off.png" alt="MY page" width="75" height="50" /></a></li>
-        <li><a data-transition="slideup" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php"><img src="<!--{$TPL_URLPATH}-->img/button/btn_footer_favorite_off.png" alt="Favorites" width="75" height="50" /></a></li>
+        <li><a data-transition="slideup" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php"><img src="<!--{$TPL_URLPATH}-->img/button/btn_footer_mypage_off.png" alt="MY page" width="75" height="34" /><br />MY page</a></li>
+        <li><a data-transition="slideup" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php"><img src="<!--{$TPL_URLPATH}-->img/button/btn_footer_favorite_off.png" alt="Favorites" width="75" height="34" /><br />Favorites</a></li>
     <!--{/if}-->
-    <li><a rel="external" href="<!--{$smarty.const.CART_URLPATH|h}-->"><img src="<!--{$TPL_URLPATH}-->img/button/btn_footer_cart_off.png" alt="View basket" width="75" height="50" /></a></li>
-    <li><a rel="external" href="<!--{$smarty.const.ROOT_URLPATH}-->"><img src="<!--{$TPL_URLPATH}-->img/button/btn_footer_toppage_off.png" alt="To top page" width="75" height="50" /></a></li>
+    <li><a rel="external" href="<!--{$smarty.const.CART_URLPATH|h}-->"><img src="<!--{$TPL_URLPATH}-->img/button/btn_footer_cart_off.png" alt="View basket" width="75" height="34" /><br />View basket</a></li>
+    <li><a rel="external" href="<!--{$smarty.const.ROOT_URLPATH}-->"><img src="<!--{$TPL_URLPATH}-->img/button/btn_footer_toppage_off.png" alt="To top page" width="75" height="34" /><br />To top page</a></li>
 </ul>

@@ -81,13 +81,14 @@
 #search_area h2,
 #calender_area h2,
 #cart_area h2,
-#cart h2 {
+#cart h2,
+#category_area h2 {
 	vertical-align: middle;
     padding: 7px 0 0 10px;
     border-style: solid;
     border-color: #f90 #ccc #ccc;
     border-width: 1px 1px 1px;
-    font-size: 14px;
+    font-size: 13px;
 	color: #ec5504;
 	text-shadow: 1px 1px 1px #fff;
     box-shadow: 0 0 1px 1px #fff inset;
@@ -97,53 +98,21 @@ background: -webkit-linear-gradient(top,  #ffffff 0%,#e3e3e3 100%); /* Chrome10+
 background: -o-linear-gradient(top,  #ffffff 0%,#e3e3e3 100%); /* Opera 11.10+ */
 background: -ms-linear-gradient(top,  #ffffff 0%,#e3e3e3 100%); /* IE10+ */
 background: linear-gradient(to bottom,  #ffffff 0%,#e3e3e3 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e3e3e3',GradientType=0 ); /* IE6-9 */	
-}
-
-#login_area h2 img,
-#search_area h2 img,
-#calender_area h2 img,
-#cart_area h2 img,
-#cart h2 img {
-	float: left;
-	position: relative;
-	top: -1px;
-	margin-bottom: 6px;
-}
-
-
-#login_area h2 .title,
-#search_area h2 .title,
-#calender_area h2 .title,
-#cart_area h2 .title,
-#cart h2 .title {
-	display: block;
-	padding: 0 0 7px 30px;
-	line-height: 1.4;
-}
-
-#category_area h2 {
-    border-top: solid 1px #f90;
-	border-bottom: 1px solid #ccc;
-    padding: 5px 0 8px 10px;
-    font-size: 14px;
-    box-shadow: 0 0 1px 1px #fff inset;
-background: #ffffff; /* Old browsers */
-background: -moz-linear-gradient(top,  #ffffff 0%, #e3e3e3 100%); /* FF3.6+ */
-background: -webkit-linear-gradient(top,  #ffffff 0%,#e3e3e3 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top,  #ffffff 0%,#e3e3e3 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(top,  #ffffff 0%,#e3e3e3 100%); /* IE10+ */
-background: linear-gradient(to bottom,  #ffffff 0%,#e3e3e3 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e3e3e3',GradientType=0 ); /* IE6-9 */	
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e3e3e3',GradientType=0 ); /* IE6-9 */
+zoom: 1;	
 }
 
 /* タイトルの背景 オレンジ */
 #recommend_area h2,
 #news_area h2 {
-    padding: 5px 0 8px 10px;
+	vertical-align: middle;
+    padding: 7px 0 0 10px;
     border-style: solid;
     border-color: #f90 #ccc #ccc;
     border-width: 1px 1px 1px;
+	color: #ec5504;
+    font-size: 13px;
+	text-shadow: 1px 1px 1px #fff;
     box-shadow: 0 0 1px 1px #fff inset;
 background: #fef3d8; /* Old browsers */
 background: -moz-linear-gradient(top,  #fef3d8 0%, #fedd7e 100%); /* FF3.6+ */
@@ -153,7 +122,53 @@ background: -o-linear-gradient(top,  #fef3d8 0%,#fedd7e 100%); /* Opera 11.10+ *
 background: -ms-linear-gradient(top,  #fef3d8 0%,#fedd7e 100%); /* IE10+ */
 background: linear-gradient(to bottom,  #fef3d8 0%,#fedd7e 100%); /* W3C */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fef3d8', endColorstr='#fedd7e',GradientType=0 ); /* IE6-9 */
+zoom: 1;	
 }
+
+#news_area h2 {
+	overflow: hidden;
+}
+
+#login_area h2 img,
+#search_area h2 img,
+#calender_area h2 img,
+#cart_area h2 img,
+#cart h2 img,
+#category_area h2 img,
+#recommend_area h2 img,
+#news_area h2 img {
+	float: left;
+	position: relative;
+	top: -1px;
+	margin-bottom: 6px;
+}
+#recommend_area h2 img {
+	top: -2px;
+}
+#news_area h2 img {
+	top: 0;
+}
+
+
+#login_area h2 .title,
+#search_area h2 .title,
+#calender_area h2 .title,
+#cart_area h2 .title,
+#cart h2 .title,
+#category_area h2 .title,
+#recommend_area h2 .title {
+	display: block;
+	padding: 0 0 7px 30px;
+	line-height: 1.4;
+}
+#news_area h2 .title {
+	float: left;
+	display: block;
+	padding: 0 10px 7px 8px;
+	line-height: 1.4;
+	zoom: 1;
+}
+
 
 
 /* ==============================================
@@ -238,16 +253,16 @@ div#bottomcolumn {
 }
 #category_area li.level1 {
     border-bottom: solid 1px #ccc;
+	padding-top: 9px;
 }
 #category_area li.level1 p {
-    padding-left: 20px;
-    margin: 7px 3px;
+    padding: 0 3px 8px 20px ;
 }
 #category_area li.level1 p {
-    background: url("../img/icon/ico_arrow_01.gif") 2px 3px no-repeat;
+    background: url("../img/icon/ico_arrow_01.gif") 3px 1px no-repeat;
 }
 #category_area li.level1 li p {
-    background: url("../img/icon/ico_level.gif") 7px 7px no-repeat;
+    background: url("../img/icon/ico_level.gif") 7px 1px no-repeat;
 }
 #category_area li a {
     display: block;

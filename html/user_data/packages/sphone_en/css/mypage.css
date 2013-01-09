@@ -129,7 +129,7 @@ MYページナビ
     float: left;
 }
 #historyBox .btn_reorder {
-    width: 5em;
+    width: 20%;
     float: right;
     padding: 15px;
     display: inline;

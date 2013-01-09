@@ -401,6 +401,19 @@ div.listrightbloc .cartin_btn {
     text-align: right;
 }
 
+#two_maincolumn_left .btn a,
+#two_maincolumn_right .btn a {
+	min-width: 130px;
+	width: auto !important;
+	width: 130px;
+}
+#two_maincolumn_left .btn button,
+#two_maincolumn_right .btn button {
+	min-width: 150px;
+	width: auto !important;
+	width: 150px;
+}
+
 /* 3カラム用 */
 #three_maincolumn div#detailphotobloc {
     float: left;
@@ -423,6 +436,18 @@ div.listrightbloc .cartin_btn {
     width: 35%;
     text-align: right;
 }
+
+#three_maincolumn .btn a {
+	min-width: 130px;
+	width: auto !important;
+	width: 130px;
+}
+#three_maincolumn .btn button {
+	min-width: 150px;
+	width: auto !important;
+	width: 150px;
+}
+
 
 /* 商品情報 各種設定
 ----------------------------------------------- */
@@ -546,9 +571,12 @@ div#customervoice_area {
 
 div#customervoice_area h2 {
     margin-bottom: 20px;
-    padding: 6px 0 8px 10px;
+    padding: 7px 0 0 10px;
+    font-size: 13px;
+	color: #444;
     border-top: solid 1px #f90;
 	border-bottom: 1px solid #ccc;
+	text-shadow: 1px 1px 1px #fff;
     box-shadow: 0 0 1px 1px #fff inset;
 background: #fef3d8; /* Old browsers */
 background: -moz-linear-gradient(top,  #fef3d8 0%, #f7df7f 100%); /* FF3.6+ */
@@ -559,6 +587,20 @@ background: -ms-linear-gradient(top,  #fef3d8 0%,#f7df7f 100%); /* IE10+ */
 background: linear-gradient(to bottom,  #fef3d8 0%,#f7df7f 100%); /* W3C */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fef3d8', endColorstr='#f7df7f',GradientType=0 ); /* IE6-9 */
 }
+
+div#customervoice_area h2 img {
+	float: left;
+	position: relative;
+	top: 0;
+	margin-bottom: 6px;
+}
+div#customervoice_area h2 .title {
+	display: block;
+	padding: 0 0 7px 30px;
+	line-height: 1.4;
+}
+
+
 
 div#customervoice_area .review_bloc {
     margin-bottom: 20px;
@@ -602,10 +644,13 @@ div#whobought_area {
 }
 
 div#whobought_area h2 {
+	vertical-align: middle;
     border-top: solid 1px #f90;
-    padding: 5px 0 8px 10px;
-    font-size: 14px;
+    padding: 7px 0 0 10px;
+    font-size: 13px;
+	color: #444;
 	border-bottom: 1px solid #ccc;
+	text-shadow: 1px 1px 1px #fff;
     box-shadow: 0 0 1px 1px #fff inset;
 background: #fef3d8; /* Old browsers */
 background: -moz-linear-gradient(top,  #fef3d8 0%, #f7df7f 100%); /* FF3.6+ */
@@ -615,6 +660,18 @@ background: -o-linear-gradient(top,  #fef3d8 0%,#f7df7f 100%); /* Opera 11.10+ *
 background: -ms-linear-gradient(top,  #fef3d8 0%,#f7df7f 100%); /* IE10+ */
 background: linear-gradient(to bottom,  #fef3d8 0%,#f7df7f 100%); /* W3C */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fef3d8', endColorstr='#f7df7f',GradientType=0 ); /* IE6-9 */
+}
+
+div#whobought_area h2 img {
+	float: left;
+	position: relative;
+	top: -2px;
+	margin-bottom: 6px;
+}
+div#whobought_area h2 .title {
+	display: block;
+	padding: 0 0 7px 30px;
+	line-height: 1.4;
 }
 
 

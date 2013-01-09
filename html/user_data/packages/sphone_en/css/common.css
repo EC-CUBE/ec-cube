@@ -619,6 +619,12 @@ footer.global_footer {
     -webkit-box-shadow: 3px 3px 3px 3px rgba(0,0,0,0.2) inset,-3px -3px 3px 3px rgba(0,0,0,0.2) inset;
     -moz-box-shadow: 3px 3px 3px 3px rgba(0,0,0,0.2) inset,-3px -3px 3px 3px rgba(0,0,0,0.2) inset;
 }
+#footer_utility .footer_navi li a:link,
+#footer_utility .footer_navi li a:visited,
+#footer_utility .footer_navi li a:hover,
+#footer_utility .footer_navi li a:active {
+	color: #fff;
+}
 .footer_status_area {
     margin: 0;
     padding: 20px 10px 10px;

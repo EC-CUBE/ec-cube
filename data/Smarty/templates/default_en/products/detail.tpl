@@ -321,7 +321,7 @@
 
     <!--この商品に対するお客様の声-->
     <div id="customervoice_area">
-        <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_product_voice.jpg" alt="Customer's opinion regarding this product" /></h2>
+        <h2><img src="<!--{$TPL_URLPATH}-->img/title/icon_product_voice.png" alt="" /><span class="title">Customer's opinion regarding this product</span></h2>
 
         <div class="review_bloc clearfix">
             <p>Please share your thoughts regarding this product.</p>
@@ -351,7 +351,7 @@
     <!--▼関連商品-->
     <!--{if $arrRecommend}-->
         <div id="whobought_area">
-            <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_product_recommend.jpg" alt="Other recommended products" /></h2>
+            <h2><img src="<!--{$TPL_URLPATH}-->img/title/icon_product_recommend.png" alt="" /><span class="title">Other recommended products</span></h2>
             <!--{foreach from=$arrRecommend item=arrItem name="arrRecommend"}-->
                 <div class="product_item">
                     <div class="productImage">

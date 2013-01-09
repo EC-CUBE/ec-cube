@@ -292,6 +292,7 @@ style info :ブロック用
     padding-bottom: 4px;
     display: inline-block;
     text-align: center;
+	vertical-align: middle;
     line-height: 0.4;
     width: 1.5em;
     height: 1.3em;
