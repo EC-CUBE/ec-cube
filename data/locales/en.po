@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2013-01-08 15:55+0900\n"
-"Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
+"PO-Revision-Date: 2013-01-09 17:22+0900\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -72,7 +72,7 @@ msgid "SC_CheckError_017"
 msgstr "* Input numbers for T_FIELD. <br />"
 
 msgid "SC_CheckError_018"
-msgstr "* Input half-width alphabetical characters for T_FIELD. <br />"
+msgstr "* Input alphabetical characters for T_FIELD. <br />"
 
 msgid "SC_CheckError_019"
 msgstr "* Input all items for T_FIELD. <br />"
@@ -266,19 +266,19 @@ msgid "SC_Fpdf_014"
 msgstr "Thank you for your purchase."
 
 msgid "SC_Fpdf_015"
-msgstr "Delivery will be based on the following below."
+msgstr "Delivery will be  carried out based on the contents below."
 
 msgid "SC_Fpdf_016"
 msgstr "Please confirm."
 
 msgid "SC_Fpdf_017"
-msgstr "Creation date: T_YEAR年T_MONTH月T_DAY日"
+msgstr "Creation date: T_YEAR/T_MONTH/T_DAY"
 
 msgid "SC_Fpdf_018"
 msgstr "T_PRICE T_UNIT"
 
 msgid "SC_Fpdf_019"
-msgstr "円"
+msgstr "$"
 
 msgid "SC_Fpdf_020"
 msgstr "Pt"
@@ -394,7 +394,7 @@ msgid "SC_Helper_CSV_002"
 msgstr "Member management"
 
 msgid "SC_Helper_CSV_003"
-msgstr "Order receipt management"
+msgstr "Orders"
 
 msgid "SC_Helper_CSV_004"
 msgstr "Review"
@@ -599,13 +599,13 @@ msgid "PARAM_LABEL_BIRTHDAY"
 msgstr "Date of birth"
 
 msgid "PARAM_LABEL_YEAR"
-msgstr "年"
+msgstr "Year"
 
 msgid "PARAM_LABEL_MONTH"
-msgstr "月"
+msgstr "Month"
 
 msgid "PARAM_LABEL_DAY"
-msgstr "日"
+msgstr "Day"
 
 msgid "PARAM_LABEL_MAILMAGAZINE"
 msgstr "Mail magazine"
@@ -710,7 +710,7 @@ msgid "PARAM_LABEL_BD_END_DAY"
 msgstr "Birthday (end date)"
 
 msgid "PARAM_LABEL_BIRTH_MONTH"
-msgstr "誕生月"
+msgstr "Birth month"
 
 msgid "PARAM_LABEL_BUY_TOTAL_FROM"
 msgstr "Purchase amount (start)"
@@ -1897,37 +1897,37 @@ msgid "ALERT_030"
 msgstr "An error has occurred. Check the details that were input."
 
 msgid "TPL_MAINTITLE_001"
-msgstr "Order receipt management"
+msgstr "Orders"
 
 msgid "TPL_MAINTITLE_002"
-msgstr "Mail magazine management"
+msgstr "Mail magazine"
 
 msgid "TPL_MAINTITLE_003"
-msgstr "Design management"
+msgstr "Design"
 
 msgid "TPL_MAINTITLE_004"
-msgstr "Member management"
+msgstr "Member"
 
 msgid "TPL_MAINTITLE_005"
-msgstr "Contents management"
+msgstr "Edit contents "
 
 msgid "TPL_MAINTITLE_006"
-msgstr "Basic information management"
+msgstr "Basic information"
 
 msgid "TPL_MAINTITLE_007"
-msgstr "Product management"
+msgstr "Products"
 
 msgid "TPL_MAINTITLE_008"
 msgstr "Owners Store"
 
 msgid "TPL_MAINTITLE_009"
-msgstr "System settings"
+msgstr "System"
 
 msgid "TPL_MAINTITLE_010"
-msgstr "Sales tabulation"
+msgstr "Sales (history)"
 
 msgid "FORMAT_DATE_LONG"
-msgstr "Y年m月d日H時i分"
+msgstr "Y-m-d H:i"
 
 msgid "FORMAT_NAME_FULL_SIR"
 msgstr "T_LASTNAME T_FIRSTNAME"
@@ -2506,7 +2506,7 @@ msgid "LC_Page_Install_048"
 msgstr "* Renaming to T_FIELD failed. Check directory access."
 
 msgid "LC_Page_Admin_Basis_001"
-msgstr "Basic information management"
+msgstr "Basic information"
 
 msgid "LC_Page_Admin_Basis_002"
 msgstr "SHOP master"
@@ -2719,13 +2719,13 @@ msgid "LC_Page_Admin_Contents_Recommend_001"
 msgstr "Contents management"
 
 msgid "LC_Page_Admin_Contents_Recommend_002"
-msgstr "Recommended product management"
+msgstr "Recommended product"
 
 msgid "LC_Page_Admin_Contents_RecommendSearch_001"
 msgstr "Product search"
 
 msgid "LC_Page_Admin_Customer_001"
-msgstr "Member management"
+msgstr "Members"
 
 msgid "LC_Page_Admin_Customer_002"
 msgstr "Member master"
@@ -2914,7 +2914,7 @@ msgid "LC_Page_Admin_Mail_TemplateInput_002"
 msgstr "Template settings"
 
 msgid "LC_Page_Admin_Order_001"
-msgstr "Order receipt management"
+msgstr "Orders"
 
 msgid "LC_Page_Admin_Order_Disp_001"
 msgstr "Order receipt information display"
@@ -2977,7 +2977,7 @@ msgid "LC_Page_Admin_Order_Pdf_006"
 msgstr "Thank you for your purchase."
 
 msgid "LC_Page_Admin_Order_Pdf_007"
-msgstr "Delivery will be based on the following below."
+msgstr "Delivery will be  carried out based on the contents below."
 
 msgid "LC_Page_Admin_Order_Pdf_008"
 msgstr "Please confirm."
@@ -3421,25 +3421,25 @@ msgid "LC_Page_Admin_System_System_009"
 msgstr "HTTP user agent"
 
 msgid "LC_Page_Admin_Total_001"
-msgstr "Tabulate by period"
+msgstr "Sales by period"
 
 msgid "LC_Page_Admin_Total_002"
-msgstr "Tabulate by period"
+msgstr "Sales by period"
 
 msgid "LC_Page_Admin_Total_003"
-msgstr "Tabulation by product"
+msgstr "Sales by product"
 
 msgid "LC_Page_Admin_Total_004"
-msgstr "Tabulation by age group"
+msgstr "Sales by age group"
 
 msgid "LC_Page_Admin_Total_005"
-msgstr "Tabulation by occupation"
+msgstr "Sales  by occupation"
 
 msgid "LC_Page_Admin_Total_006"
-msgstr "Tabulation by member"
+msgstr "Sales by member"
 
 msgid "LC_Page_Admin_Total_007"
-msgstr "T_FIELD1年T_FIELD2月T_FIELD3日'"
+msgstr "T_FIELD1YearT_FIELD2MonthT_FIELD3Day'"
 
 msgid "LC_Page_Admin_Total_008"
 msgstr "Tabulation period: T_FIELD1 - T_FIELD2"
@@ -3652,13 +3652,13 @@ msgid "tpl_017"
 msgstr "Delivery charge registration"
 
 msgid "tpl_019"
-msgstr "Reflect"
+msgstr "Calculate"
 
 msgid "tpl_020"
 msgstr "Return to previous page"
 
 msgid "tpl_021"
-msgstr "Register with these contents"
+msgstr "Save and continue"
 
 msgid "tpl_022"
 msgstr "Title"
@@ -3667,7 +3667,7 @@ msgid "tpl_022_1"
 msgstr "Title<span class='attention'> *</span>"
 
 msgid "tpl_023"
-msgstr "(Upper limit T_FIELD characters)"
+msgstr "(T_FIELD characters max)"
 
 msgid "tpl_024"
 msgstr "Date"
@@ -3708,7 +3708,7 @@ msgid "tpl_033_1"
 msgstr "Postal code<span class='attention'> *</span>"
 
 msgid "tpl_034"
-msgstr "Location input"
+msgstr "Location finder"
 
 msgid "tpl_035"
 msgstr "SHOP address<span class='attention'> *</span>"
@@ -3717,10 +3717,10 @@ msgid "tpl_036"
 msgstr "Select a prefecture"
 
 msgid "tpl_037"
-msgstr "TEL"
+msgstr "Phone Number"
 
 msgid "tpl_037_1"
-msgstr "TEL<span class='attention'> *</span>"
+msgstr "Phone Number<span class='attention'> *</span>"
 
 msgid "tpl_038"
 msgstr "FAX"
@@ -3794,7 +3794,7 @@ msgid "tpl_060"
 msgstr "Input this position."
 
 msgid "tpl_061"
-msgstr "The address was not found"
+msgstr "The address was not found."
 
 msgid "tpl_062"
 msgstr "Agreement title"
@@ -4009,9 +4009,9 @@ msgstr ""
 
 msgid "tpl_126"
 msgstr ""
-"Under normal conditions, use [Automatic registration].<br />However, in "
-"environments that time out, repeat [Manual Registration] after timing out "
-"until registration completes normally."
+"Under normal conditions, please use [Automatic registration].<br />However, "
+"in the case that the system times out, please use [Manual Registration]until "
+"the registration process completes normally."
 
 msgid "tpl_127"
 msgstr "Automatic registration"
@@ -4095,7 +4095,7 @@ msgid "tpl_150"
 msgstr "* Update successful."
 
 msgid "tpl_151"
-msgstr "Register by returning to initial settings"
+msgstr "Return to initial settings and register"
 
 msgid "tpl_152"
 msgstr "SQL list"
@@ -4114,8 +4114,8 @@ msgstr "SQL text"
 
 msgid "tpl_158_1"
 msgstr ""
-"SQL text<span class='attention'> *</span><br /> (Do not describe the SELECT "
-"in the beginning.)"
+"SQL text<span class='attention'> *</span><br /> (Do not use the word "
+"'SELECT' .)"
 
 msgid "tpl_159"
 msgstr "Confirm syntax error"
@@ -4237,13 +4237,13 @@ msgid "tpl_195"
 msgstr "Product image"
 
 msgid "tpl_196"
-msgstr "Decided"
+msgstr "Confirm"
 
 msgid "tpl_197"
 msgstr "There is no product registered"
 
 msgid "tpl_198"
-msgstr "Management of new information"
+msgstr "Manage new information"
 
 msgid "tpl_199"
 msgstr "Recommended product management"
@@ -4255,13 +4255,13 @@ msgid "tpl_201"
 msgstr "CSV output item settings"
 
 msgid "tpl_202"
-msgstr "Product management"
+msgstr "Products"
 
 msgid "tpl_203"
-msgstr "Member management"
+msgstr "Members"
 
 msgid "tpl_204"
-msgstr "Order receipt management"
+msgstr "Orders"
 
 msgid "tpl_205"
 msgstr "Review"
@@ -4331,8 +4331,8 @@ msgstr "Password<span class='attention'> *</span>"
 
 msgid "tpl_219"
 msgstr ""
-"Half-width lower-case alphanumeric characters T_FIELD1 to T_FIELD2 "
-"characters (Symbols cannot be used)"
+" Lower-case alphanumeric characters T_FIELD1 to T_FIELD2 (Symbols cannot be "
+"used)"
 
 msgid "tpl_220"
 msgstr "Input twice for confirmation"
@@ -4370,7 +4370,7 @@ msgid "tpl_227"
 msgstr "Return to search screen"
 
 msgid "tpl_228"
-msgstr "To confirmation page"
+msgstr "Confirmation page"
 
 msgid "tpl_229"
 msgstr "Purchase history list"
@@ -4443,7 +4443,7 @@ msgid "tpl_251"
 msgstr "Number of search results displayed"
 
 msgid "tpl_252"
-msgstr "Search using these conditions"
+msgstr "Search using above criteria"
 
 msgid "tpl_253"
 msgstr "List of search results"
@@ -4452,7 +4452,7 @@ msgid "tpl_254"
 msgstr "CSV download"
 
 msgid "tpl_255"
-msgstr "CSV output item settings"
+msgstr "CSV output settings"
 
 msgid "tpl_256"
 msgstr "Type"
@@ -4494,7 +4494,7 @@ msgid "tpl_268"
 msgstr "Block that can be edited"
 
 msgid "tpl_269"
-msgstr "Newly input block"
+msgstr "New block"
 
 msgid "tpl_270"
 msgstr "CSS file name"
@@ -4506,7 +4506,7 @@ msgid "tpl_272"
 msgstr "CSS file that can be edited"
 
 msgid "tpl_273"
-msgstr "Newly input CSS"
+msgstr "New CSS"
 
 msgid "tpl_274"
 msgstr "The CSS file does not exist."
@@ -4582,9 +4582,8 @@ msgstr "Smartphone"
 
 msgid "tpl_298"
 msgstr ""
-"When a template is selected and  the 'Register with these contents' button "
-"is pressed,<br />It is possible to change the design to the selected "
-"template."
+"Select a template and click the 'Save and Continue' button to,<br />change "
+"the designtemplate."
 
 msgid "tpl_299"
 msgstr "Selection"
@@ -4768,7 +4767,7 @@ msgid "tpl_356"
 msgstr "Rearrangement"
 
 msgid "tpl_357"
-msgstr "Recommended product"
+msgstr "Recommended products"
 
 msgid "tpl_358"
 msgstr "入力文字数:"
@@ -4885,7 +4884,7 @@ msgid "tpl_395"
 msgstr "Designated multiple delivery destinations"
 
 msgid "tpl_396"
-msgstr "* When changing to T_FIELD, restore the inventory count manually."
+msgstr "* When T_FIELD is selected, restore the inventory count manually."
 
 msgid "tpl_397"
 msgstr "Ledger output"
@@ -4971,7 +4970,7 @@ msgid "tpl_423"
 msgstr "Ledger title"
 
 msgid "tpl_424"
-msgstr "* The default title is displayed when one has not yet been input."
+msgstr "* The default title is displayed when field is blank."
 
 msgid "tpl_425"
 msgstr "Ledger message"
@@ -4986,10 +4985,10 @@ msgid "tpl_428"
 msgstr "3rd line:"
 
 msgid "tpl_429"
-msgstr "* The default message is displayed when one has not yet been input. "
+msgstr "* The default message is displayed when fields are blank. "
 
 msgid "tpl_430"
-msgstr "* Not displayed when not yet input."
+msgstr "* Not displayed when fields are blank."
 
 msgid "tpl_431"
 msgstr "Point notation"
@@ -5247,19 +5246,19 @@ msgid "tpl_509"
 msgstr "Female (non-member)"
 
 msgid "tpl_510"
-msgstr "Tabulate by period"
+msgstr "Sales by period"
 
 msgid "tpl_511"
-msgstr "Tabulation by product"
+msgstr "Sales by product"
 
 msgid "tpl_512"
-msgstr "Tabulation by age group"
+msgstr "Sales by age group"
 
 msgid "tpl_513"
-msgstr "Tabulation by occupation"
+msgstr "Sales by occupation"
 
 msgid "tpl_514"
-msgstr "Tabulation by member"
+msgstr "Sales by member"
 
 msgid "tpl_515"
 msgstr "By date"
@@ -5307,7 +5306,7 @@ msgid "tpl_529"
 msgstr "Current number of members"
 
 msgid "tpl_530"
-msgstr "Sales from yesterday"
+msgstr "Yesterday's sales"
 
 msgid "tpl_531"
 msgstr "Number of items sold yesterday"
@@ -5325,10 +5324,10 @@ msgid "tpl_535"
 msgstr "Member's total registered points"
 
 msgid "tpl_536"
-msgstr "Number of review writings not displayed"
+msgstr "Number of reviews not displayed"
 
 msgid "tpl_537"
-msgstr "Sold-out product"
+msgstr "Sold-out products"
 
 msgid "tpl_538"
 msgstr "List of new orders received"
@@ -5349,25 +5348,25 @@ msgid "tpl_543"
 msgstr "LOGOUT"
 
 msgid "tpl_544"
-msgstr "Basic information management"
+msgstr "Basic information"
 
 msgid "tpl_545"
-msgstr "Sales tabulation"
+msgstr "Sales history"
 
 msgid "tpl_546"
-msgstr "Mail magazine management"
+msgstr "Mail magazine"
 
 msgid "tpl_547"
-msgstr "Contents management"
+msgstr "Edit contents"
 
 msgid "tpl_548"
-msgstr "Design management"
+msgstr "Edit design"
 
 msgid "tpl_549"
 msgstr "System settings"
 
 msgid "tpl_550"
-msgstr "Owners Store"
+msgstr "Owners store"
 
 msgid "tpl_551"
 msgstr "Copyright &copy; 2000-T_FIELD LOCKON CO.,LTD. All Rights Reserved."
@@ -5376,7 +5375,7 @@ msgid "tpl_552"
 msgstr "PAGE TOP"
 
 msgid "tpl_553"
-msgstr "SITE CHECK"
+msgstr "CHECK SITE"
 
 msgid "tpl_554"
 msgstr "Product status"
@@ -5632,7 +5631,7 @@ msgid "tpl_632"
 msgstr "CSV file"
 
 msgid "tpl_633"
-msgstr "(1st line  Title line)"
+msgstr "(First line is title)"
 
 msgid "tpl_634"
 msgstr "Registration information"
@@ -5651,7 +5650,7 @@ msgstr "CSV registration has been executed."
 
 msgid "tpl_639"
 msgstr ""
-"When erroneous settings are applied, it may no longer be possible to access "
+"When incorrect settings are applied, it may no longer be possible to access "
 "the management screen.<br/>Do not change these settings if you are not "
 "familiar with them."
 
@@ -5673,9 +5672,8 @@ msgstr "Make SSL mandatory."
 msgid "tpl_645"
 msgstr ""
 "* Access to the management function is limited to only connections from a "
-"designated IP address.<br />Input each IP address from which access is "
-"permitted on a different line. If nothing is input, access will be permitted "
-"from all IP addresses."
+"designated IP address.<br />You may enter an IP address per line to gain "
+"access. If nothing is entered, access will be permitted to all IP addresses."
 
 msgid "tpl_646"
 msgstr "Do you want to restore?"
@@ -5728,7 +5726,7 @@ msgid "tpl_660"
 msgstr "OFF"
 
 msgid "tpl_661"
-msgstr "Newly input member"
+msgstr "Input new member"
 
 msgid "tpl_662"
 msgstr "Access"
@@ -5749,7 +5747,7 @@ msgid "tpl_667"
 msgstr "Login ID"
 
 msgid "tpl_668"
-msgstr "* Half-width alphanumeric characters T_FIELD1 to T_FIELD2 characters"
+msgstr "* Alphanumeric characters T_FIELD1 to T_FIELD2 "
 
 msgid "tpl_669"
 msgstr "Operating/Not operating"
@@ -5852,7 +5850,7 @@ msgid "tpl_706"
 msgstr "Details - Sub enlarged image(T_FIELD1)<br />[T_FIELD2×T_FIELD3]"
 
 msgid "tpl_708"
-msgstr "* Set to uniform shipping rate for entire nation(&#036;):"
+msgstr "*  Uniform shipping rates(&#036;):"
 
 msgid "tpl_709"
 msgstr "T_FIELD<span class='attention'> *</span>"
@@ -5906,7 +5904,7 @@ msgid "tpl_725"
 msgstr "T_FIELD名"
 
 msgid "tpl_726"
-msgstr "T_FIELD1年T_FIELD2月T_FIELD3日"
+msgstr "T_FIELD1YearT_FIELD2MonthT_FIELD3Day"
 
 msgid "tpl_727"
 msgstr "T_FIELD1月T_FIELD2日"
@@ -6188,10 +6186,10 @@ msgid "%"
 msgstr " %"
 
 msgid "currency_prefix"
-msgstr " "
+msgstr "$"
 
 msgid "currency_suffix"
-msgstr "円"
+msgstr " "
 
 msgid "times_prefix"
 msgstr " "
