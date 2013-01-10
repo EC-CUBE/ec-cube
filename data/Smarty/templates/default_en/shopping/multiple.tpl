@@ -32,9 +32,14 @@
 //]]></script>
 <div id="undercolumn">
     <div id="undercolumn_shopping">
-        <p class="flow_area">
-            <img src="<!--{$TPL_URLPATH}-->img/picture/img_flow_01.jpg" alt="Flow of purchase procedure" />
-        </p>
+        <div class="flow_area">
+			<ol>
+			<li class="active"><span>&gt; STEP1</span><br />Delivery destination</li>
+			<li class="large"><span>&gt; STEP2</span><br />Payment method and delivery time</li>
+			<li><span>&gt; STEP3</span><br />Confirmation</li>
+			<li class="last"><span>&gt; STEP4</span><br />Order complete</li>
+			</ol>
+		</div>
         <h2 class="title"><!--{$tpl_title|h}--></h2>
         <p class="information">Select a delivery destination for each product.<br />(* For the quantity total, match with the quantity in your cart.)</p>
 

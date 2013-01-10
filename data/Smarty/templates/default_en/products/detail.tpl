@@ -79,8 +79,8 @@
             <!--{if count($ps) > 0}-->
                 <ul class="status_icon clearfix">
                     <!--{foreach from=$ps item=status}-->
-                    <li>
-                        <img src="<!--{$TPL_URLPATH}--><!--{$arrSTATUS_IMAGE[$status]}-->" width="60" height="17" alt="<!--{$arrSTATUS[$status]}-->" id="icon<!--{$status}-->" />
+                    <li class="status_<!--{$status}-->">
+                       <span id="icon<!--{$status}-->"><!--{$arrSTATUS[$status]}--></span>
                     </li>
                     <!--{/foreach}-->
                 </ul>

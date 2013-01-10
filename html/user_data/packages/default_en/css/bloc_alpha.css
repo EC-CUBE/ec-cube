@@ -6,7 +6,7 @@
 #headerInternalColumn {
     margin-top: 5px;
     float: right;
-    width: 520px;
+    width: 540px;
     height: 35px;
 }
 
@@ -39,7 +39,6 @@
 }
 #header_login_area ul.formlist li.forgot {
     margin-top: 3px;
-    padding-right: 5px;
     font-size: 0.917em;
 }
 #header_login_area ul.formlist li.btn {

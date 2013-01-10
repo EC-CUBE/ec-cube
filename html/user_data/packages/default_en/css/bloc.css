@@ -45,6 +45,10 @@
     border: solid 1px #ccc;
     border-top: none;
 }
+*:first-child+html .main_column .block_body {
+    border: 0 none;
+}/* for IE7 hack */
+
 .side_column .block_body .box {
     border: solid 1px #ccc;
     width: 145px;
@@ -126,10 +130,11 @@ zoom: 1;
 }
 
 #news_area h2 {
-	overflow: hidden;
+	min-height: 27px;
+	height: auto !important;
+	height: 27px;
 }
 
-#login_area h2 img,
 #search_area h2 img,
 #calender_area h2 img,
 #cart_area h2 img,
@@ -140,13 +145,18 @@ zoom: 1;
 	float: left;
 	position: relative;
 	top: -1px;
-	margin-bottom: 6px;
+}
+#login_area h2 img {
+	float: left;
+	position: relative;
+	top: -2px;
 }
 #recommend_area h2 img {
 	top: -2px;
 }
 #news_area h2 img {
 	top: 0;
+	margin-bottom: 6px;
 }
 
 
@@ -300,6 +310,7 @@ background: -o-linear-gradient(top,  #fdfdfd 0%,#f1f1f1 91%,#eeeeee 100%); /* Op
 background: -ms-linear-gradient(top,  #fdfdfd 0%,#f1f1f1 91%,#eeeeee 100%); /* IE10+ */
 background: linear-gradient(to bottom,  #fdfdfd 0%,#f1f1f1 91%,#eeeeee 100%); /* W3C */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdfdfd', endColorstr='#eeeeee',GradientType=0 ); /* IE6-9 */
+zoom: 1;
 }
 ul.button_like li a {
     margin: 0;

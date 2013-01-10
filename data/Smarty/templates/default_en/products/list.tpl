@@ -157,9 +157,9 @@
                 <!--{if count($productStatus[$id]) > 0}-->
                     <ul class="status_icon clearfix">
                         <!--{foreach from=$productStatus[$id] item=status}-->
-                            <li>
-                                <img src="<!--{$TPL_URLPATH}--><!--{$arrSTATUS_IMAGE[$status]}-->" width="60" height="17" alt="<!--{$arrSTATUS[$status]}-->"/>
-                            </li>
+							<li class="status_<!--{$status}-->">
+							   <span id="icon<!--{$status}-->"><!--{$arrSTATUS[$status]}--></span>
+							</li>						
                         <!--{/foreach}-->
                     </ul>
                 <!--{/if}-->

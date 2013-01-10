@@ -5,7 +5,7 @@
 ************************************************ */
 body {
     color: #666;
-    font-family: Helvetica,Arial,sans-serif;
+    font-family: Arial,sans-serif;
 	font-size: 75%;
     background-color: #f5f5f5;
 }
@@ -271,6 +271,7 @@ background: -o-linear-gradient(top,  #fef3d8 0%,#f7df7f 100%); /* Opera 11.10+ *
 background: -ms-linear-gradient(top,  #fef3d8 0%,#f7df7f 100%); /* IE10+ */
 background: linear-gradient(to bottom,  #fef3d8 0%,#f7df7f 100%); /* W3C */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fef3d8', endColorstr='#f7df7f',GradientType=0 ); /* IE6-9 */
+zoom: 1;
 }
 
 #one_maincolumn .sub_area h3,
@@ -346,13 +347,13 @@ div#undercolumn_login .login_area h4 {
 ----------------------------------------------- */
 div#header_navi {
     float: right;
+	margin-bottom: 4px;
 }
 div#header_navi ul {
 	padding-top: 17px;
 }
 div#header_navi ul li {
     float: left;
-	margin-bottom: 4px;
 }
 div#header_navi ul li:hover {
 	opacity: 0.75;

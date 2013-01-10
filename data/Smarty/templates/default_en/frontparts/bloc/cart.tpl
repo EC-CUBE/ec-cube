@@ -22,7 +22,7 @@
 
 <div class="block_outer">
     <div id="cart_area">
-    <h2 class="cart"><img src="<!--{$TPL_URLPATH}-->img/title/icon_bloc_cart.gif" alt="" /><span class="title">What is inside your basket now</span></h2>
+    <h2 class="cart"><img src="<!--{$TPL_URLPATH}-->img/title/icon_bloc_cart.gif" alt="" /><span class="title">Cart</span></h2>
         <div class="block_body">
             <div class="information">
                 <p class="item">Total quantity:<span class="attention"><!--{$arrCartList.0.TotalQuantity|number_format|default:0}--></span></p>
@@ -42,7 +42,7 @@
                 <!--{/if}-->
             </div>
             <div class="btn">				
-                <a class="bt03" href="<!--{$smarty.const.CART_URLPATH}-->">View basket</a>
+                <a class="bt03" href="<!--{$smarty.const.CART_URLPATH}-->">View cart</a>
             </div>
         </div>
     </div>

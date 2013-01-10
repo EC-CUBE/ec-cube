@@ -258,6 +258,19 @@ div.listrightbloc ul.status_icon li {
     margin-right: 5px;
     float: left;
 }
+div.listrightbloc ul.status_icon li span {
+	display: block;
+	padding: 2px 13px;
+	font-size: 10px;
+	color: #fff;
+	border-radius: 2px;
+}
+div.listrightbloc ul.status_icon li.status_1 span { background: #F5974A;}
+div.listrightbloc ul.status_icon li.status_2 span { background: #913982;}
+div.listrightbloc ul.status_icon li.status_3 span { background: #388DD1;}
+div.listrightbloc ul.status_icon li.status_4 span { background: #80AF20;}
+div.listrightbloc ul.status_icon li.status_5 span { background: #FF5983;}
+
 
 /* 商品名 */
 div.listrightbloc h3 {
@@ -485,6 +498,19 @@ div.listrightbloc .cartin_btn {
     margin-bottom: 3px;
     float: left;
 }
+#detailrightbloc ul.status_icon li span {
+	display: block;
+	padding: 2px 13px;
+	font-size: 10px;
+	color: #fff;
+	border-radius: 2px;
+}
+#detailrightbloc ul.status_icon li.status_1 span { background: #F5974A;}
+#detailrightbloc ul.status_icon li.status_2 span { background: #913982;}
+#detailrightbloc ul.status_icon li.status_3 span { background: #388DD1;}
+#detailrightbloc ul.status_icon li.status_4 span { background: #80AF20;}
+#detailrightbloc ul.status_icon li.status_5 span { background: #FF5983;}
+
 
 /* 通常価格 */
 #detailrightbloc .normal_price dt,
@@ -592,7 +618,6 @@ div#customervoice_area h2 img {
 	float: left;
 	position: relative;
 	top: 0;
-	margin-bottom: 6px;
 }
 div#customervoice_area h2 .title {
 	display: block;
@@ -666,7 +691,6 @@ div#whobought_area h2 img {
 	float: left;
 	position: relative;
 	top: -2px;
-	margin-bottom: 6px;
 }
 div#whobought_area h2 .title {
 	display: block;
@@ -717,7 +741,41 @@ div#undercolumn_customer {
 }
 
 .flow_area {
+	border-top: 1px solid #f90;
     margin: 0 0 20px 0;
+	padding-top: 11px;
+}
+.flow_area ol {
+	width: 100%;
+	overflow: hidden;
+}
+.flow_area ol li {
+	font-size: 12px;
+	width: 23%;
+	padding: 1%;
+	float: left;
+	color: #666;
+	border: 1px solid #ccc;
+	background-color: #eee;
+	margin-right: 1%;
+-moz-box-sizing: border-box;
+-webkit-box-sizing: border-box;
+-o-box-sizing: border-box;
+-ms-box-sizing: border-box;
+}
+.flow_area ol li span {
+	font-weight: bold;
+}
+.flow_area ol li.large {
+	width: 28%;
+}
+.flow_area ol li.last {
+	margin-right: 0;
+}
+.flow_area ol li.active {
+	color: #f60;
+	border: 1px solid #FFCC62;
+	background-color: #FFFAF0;
 }
 
 div#undercolumn_customer th em {

@@ -119,9 +119,14 @@
 //]]></script>
 <div id="undercolumn">
     <div id="undercolumn_shopping">
-        <p class="flow_area">
-            <img src="<!--{$TPL_URLPATH}-->img/picture/img_flow_02.jpg" alt="Flow of purchase procedure" />
-        </p>
+        <div class="flow_area">
+			<ol>
+			<li><span>&gt; STEP1</span><br />Delivery destination</li>
+			<li class="large active"><span>&gt; STEP2</span><br />Payment method and delivery time</li>
+			<li><span>&gt; STEP3</span><br />Confirmation</li>
+			<li class="last"><span>&gt; STEP4</span><br />Order complete</li>
+			</ol>
+		</div>
         <h2 class="title"><!--{$tpl_title|h}--></h2>
 
         <form name="form1" id="form1" method="post" action="?">
