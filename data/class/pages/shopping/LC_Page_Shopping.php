@@ -284,8 +284,8 @@ class LC_Page_Shopping extends LC_Page_Ex {
 
         $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_LASTNAME'), 'order_name01', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_FIRSTNAME'), 'order_name02', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_LASTKANA'), 'order_kana01', STEXT_LEN, 'KVCa', array('EXIST_CHECK', 'KANA_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_FIRSTKANA'), 'order_kana02', STEXT_LEN, 'KVCa', array('EXIST_CHECK', 'KANA_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_LASTKANA'), 'order_kana01', STEXT_LEN, 'KVCa', array('KANA_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_FIRSTKANA'), 'order_kana02', STEXT_LEN, 'KVCa', array('KANA_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
 //        $objFormParam->addParam(t('PARAM_LABEL_ZIP01'), 'order_zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'NUM_COUNT_CHECK'));
 //        $objFormParam->addParam(t('PARAM_LABEL_ZIP02'), 'order_zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'NUM_COUNT_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ZIP'), 'order_zipcode', ZIPCODE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -428,8 +428,8 @@ class LC_Page_Shopping extends LC_Page_Ex {
         if (isset($arrParams['deliv_check']) && $arrParams['deliv_check'] == '1') {
             $objErr->doFunc(array(t('PARAM_LABEL_CUSTOMER_LASTNAME'), 'shipping_name01'), array('EXIST_CHECK'));
             $objErr->doFunc(array(t('PARAM_LABEL_CUSTOMER_FIRSTNAME'), 'shipping_name02'), array('EXIST_CHECK'));
-            $objErr->doFunc(array(t('PARAM_LABEL_CUSTOMER_LASTKANA'), 'shipping_kana01'), array('EXIST_CHECK'));
-            $objErr->doFunc(array(t('PARAM_LABEL_CUSTOMER_FIRSTKANA'), 'shipping_kana02'), array('EXIST_CHECK'));
+//            $objErr->doFunc(array(t('PARAM_LABEL_CUSTOMER_LASTKANA'), 'shipping_kana01'), array('EXIST_CHECK'));
+//            $objErr->doFunc(array(t('PARAM_LABEL_CUSTOMER_FIRSTKANA'), 'shipping_kana02'), array('EXIST_CHECK'));
 //            $objErr->doFunc(array(t('PARAM_LABEL_ZIP01'), 'shipping_zip01'), array('EXIST_CHECK'));
 //            $objErr->doFunc(array(t('PARAM_LABEL_ZIP02'), 'shipping_zip02'), array('EXIST_CHECK'));
             $objErr->doFunc(array(t('PARAM_LABEL_ZIP'), 'shipping_zipcode'), array('EXIST_CHECK'));

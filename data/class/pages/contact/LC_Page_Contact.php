@@ -159,8 +159,8 @@ class LC_Page_Contact extends LC_Page_Ex {
 
         $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_LASTNAME'), 'name01', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_FIRSTNAME'), 'name02', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_LASTKANA'), 'kana01', STEXT_LEN, 'KVCa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK', 'KANA_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_FIRSTKANA'), 'kana02', STEXT_LEN, 'KVCa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK', 'KANA_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_LASTKANA'), 'kana01', STEXT_LEN, 'KVCa', array('SPTAB_CHECK','MAX_LENGTH_CHECK', 'KANA_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_FIRSTKANA'), 'kana02', STEXT_LEN, 'KVCa', array('SPTAB_CHECK','MAX_LENGTH_CHECK', 'KANA_CHECK'));
 //        $objFormParam->addParam(t('PARAM_LABEL_ZIP01'), 'zip01', ZIP01_LEN, 'n',array('SPTAB_CHECK' ,'NUM_CHECK', 'NUM_COUNT_CHECK'));
 //        $objFormParam->addParam(t('PARAM_LABEL_ZIP02'), 'zip02', ZIP02_LEN, 'n',array('SPTAB_CHECK' ,'NUM_CHECK', 'NUM_COUNT_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ZIP'), 'zipcode', ZIPCODE_LEN, 'n',array('SPTAB_CHECK' ,'NUM_CHECK', 'MAX_LENGTH_CHECK'));
