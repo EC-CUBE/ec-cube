@@ -127,19 +127,8 @@
 <div id="system" class="contents-main">
     <h2><!--{t string="tpl_464"}--></h2>
     <table class="form">
-        <!--{* 案1 *}-->
         <tr>
-            <th><!--{t string="tpl_465"}--> <!--{t string="<require>"}--></th>
-            <td>
-                <!--{assign var=key value="plugin_file"}-->
-                <span class="attention"><!--{$arrErr[$key]}--></span>
-                <input type="file" name="<!--{ $key }-->" class="box45" size="43"  style="<!--{$arrErr[$key]|sfGetErrorColor}--> <!--{if $arrErr[$key]}--> background-color:<!--{$smarty.const.ERR_COLOR|h}--><!--{/if}-->">
-                <a class="btn-action" href="javascript:;" onclick="install(); return false;"><span class="btn-next"><!--{t string="tpl_466"}--></span></a>
-            </td>
-        </tr>
-        <!--{* 案2 *}-->
-        <tr>
-            <th><!--{t string="tpl_465"}--> <span class='attention'><!--{t string="require_mark"}--></span></th>
+            <th><!--{t string="tpl_465" escape="none"}--></th>
             <td>
                 <!--{assign var=key value="plugin_file"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>

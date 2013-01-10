@@ -45,10 +45,12 @@ function smarty_function_t($params, &$smarty) {
         unset($params['device_type_id']);
     }
     // エスケープの指定がある場合、オプションに移す
-    if (isset($params['escape'])) {
-        $options['escape'] = $params['escape'];
-        unset($params['escape']);
+    if (strlen($params['escape']) >= 1) {
+        $options['escape'] = explode(',', $params['escape']);
+    } else {
+        $options['escape'] = array('h', 'nl2br');
     }
+    unset($params['escape']);
 
     return t($string, $params, $options);
 }

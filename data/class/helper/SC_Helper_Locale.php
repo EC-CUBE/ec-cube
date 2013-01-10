@@ -38,9 +38,9 @@ class SC_Helper_Locale {
      * Store the instance of SC_Helper_Locale_Ex.
      * @var SC_Helper_Locale
      */
-     static $_instance = NULL;
+    static $_instance = NULL;
 
-     public $_translations = array();
+    public $_translations = array();
 
      /**
      * Return a string which corresponding with message alias.
@@ -49,7 +49,7 @@ class SC_Helper_Locale {
      * @param   array   $options    options
      * @return  string  a string corresponding with message alias
      */
-     public static function get_locale($string, &$options) {
+    public static function get_locale($string, &$options) {
         is_null(SC_Helper_Locale_Ex::$_instance) and SC_Helper_Locale_Ex::$_instance = new SC_Helper_Locale_Ex();
 
         // If language code is not specified, use site default.
@@ -70,6 +70,7 @@ class SC_Helper_Locale {
         }
 
         $return = $string;
+
         // Get string list of specified language.
         if ($lang_code != 'en') {
             $translations = SC_Helper_Locale_Ex::$_instance->get_translations($lang_code, $device_type_id);
@@ -79,98 +80,9 @@ class SC_Helper_Locale {
             }
         }
 
-        $esc_types = $options['escape'];
-        if (is_null($esc_types) && $string[0] !== '<') {
-            $esc_types = 'h';
-        }
-        foreach (explode(',', $esc_types) as $esc_type) {
-            switch ($esc_type) {
-                case 'h':
-                case 'html':
-                    $return = htmlspecialchars($return, ENT_QUOTES);
-                    break;
-
-                case 'j':
-                case 'javascript':
-                    // escape quotes and backslashes, newlines, etc.
-                    $return = strtr($return, array('\\'=>'\\\\',"'"=>"\\'",'"'=>'\\"',"\r"=>'\\r',"\n"=>'\\n','</'=>'<\/'));
-                    break;
-
-                case 'nl2br':
-                    $return = nl2br($return, true);
-                    break;
-
-                case '':
-                case 'none':
-                    break;
-
-                case 'htmlall':
-                    $return = htmlentities($return, ENT_QUOTES);
-                    break;
-
-                case 'u':
-                case 'url':
-                    $return = rawurlencode($return);
-                    break;
-
-                case 'urlpathinfo':
-                    $return = str_replace('%2F','/',rawurlencode($return));
-                    break;
-
-                case 'quotes':
-                    // escape unescaped single quotes
-                    $return = preg_replace("%(?<!\\\\)'%", "\\'", $return);
-                    break;
-
-                case 'hex':
-                    // escape every character into hex
-                    $text = '';
-                    for ($x=0; $x < strlen($return); $x++) {
-                        $text .= '%' . bin2hex($return[$x]);
-                    }
-                    $return = $text;
-                    break;
-
-                case 'hexentity':
-                    $text = '';
-                    for ($x=0; $x < strlen($return); $x++) {
-                        $text .= '&#x' . bin2hex($return[$x]) . ';';
-                    }
-                    $return = $text;
-                    break;
-
-                case 'decentity':
-                    $text = '';
-                    for ($x=0; $x < strlen($return); $x++) {
-                        $text .= '&#' . ord($return[$x]) . ';';
-                    }
-                    $return = $text;
-                    break;
-
-                case 'mail':
-                    // safe way to display e-mail address on a web page
-                    $return = str_replace(array('@', '.'),array(' [AT] ', ' [DOT] '), $return);
-                    break;
-
-                case 'nonstd':
-                   // escape non-standard chars, such as ms document quotes
-                   $_res = '';
-                   for($_i = 0, $_len = strlen($return); $_i < $_len; $_i++) {
-                       $_ord = ord(substr($return, $_i, 1));
-                       // non-standard char, escape it
-                       if($_ord >= 126){
-                           $_res .= '&#' . $_ord . ';';
-                       }
-                       else {
-                           $_res .= substr($return, $_i, 1);
-                       }
-                   }
-                   $return = $_res;
-                    break;
-
-                default:
-                    trigger_error('unknown escape type. ' . var_export(func_get_args(), true), E_USER_WARNING);
-                    break;
+        if (is_array($options['escape'])) {
+            foreach ($options['escape'] as $esc_type) {
+                $return = SC_Helper_Locale_Ex::escape($return, $esc_type);
             }
         }
 
@@ -270,5 +182,107 @@ class SC_Helper_Locale {
         }
 
         return $file_list;
+    }
+
+    /**
+     * 文字列のエスケープを行う
+     *
+     * @param   string  $string     エスケープを行う文字列
+     * @param   string  $esc_type   エスケープの種類
+     * @return  string  エスケープを行った文字列
+     */
+    static function escape($string, $esc_type) {
+        $return = $string;
+
+        switch ($esc_type) {
+            case 'h':
+            case 'html':
+                $return = htmlspecialchars($return, ENT_QUOTES);
+                break;
+
+            case 'j':
+            case 'javascript':
+                // escape quotes and backslashes, newlines, etc.
+                $return = strtr($return, array('\\'=>'\\\\',"'"=>"\\'",'"'=>'\\"',"\r"=>'\\r',"\n"=>'\\n','</'=>'<\/'));
+                break;
+
+            case 'nl2br':
+                $return = nl2br($return, true);
+                break;
+
+            case '':
+            case 'none':
+                break;
+
+            case 'htmlall':
+                $return = htmlentities($return, ENT_QUOTES);
+                break;
+
+            case 'u':
+            case 'url':
+                $return = rawurlencode($return);
+                break;
+
+            case 'urlpathinfo':
+                $return = str_replace('%2F','/',rawurlencode($return));
+                break;
+
+            case 'quotes':
+                // escape unescaped single quotes
+                $return = preg_replace("%(?<!\\\\)'%", "\\'", $return);
+                break;
+
+            case 'hex':
+                // escape every character into hex
+                $text = '';
+                for ($x=0; $x < strlen($return); $x++) {
+                    $text .= '%' . bin2hex($return[$x]);
+                }
+                $return = $text;
+                break;
+
+            case 'hexentity':
+                $text = '';
+                for ($x=0; $x < strlen($return); $x++) {
+                    $text .= '&#x' . bin2hex($return[$x]) . ';';
+                }
+                $return = $text;
+                break;
+
+            case 'decentity':
+                $text = '';
+                for ($x=0; $x < strlen($return); $x++) {
+                    $text .= '&#' . ord($return[$x]) . ';';
+                }
+                $return = $text;
+                break;
+
+            case 'mail':
+                // safe way to display e-mail address on a web page
+                $return = str_replace(array('@', '.'),array(' [AT] ', ' [DOT] '), $return);
+                break;
+
+            case 'nonstd':
+                // escape non-standard chars, such as ms document quotes
+                $_res = '';
+                for($_i = 0, $_len = strlen($return); $_i < $_len; $_i++) {
+                    $_ord = ord(substr($return, $_i, 1));
+                    // non-standard char, escape it
+                    if($_ord >= 126){
+                        $_res .= '&#' . $_ord . ';';
+                    }
+                    else {
+                        $_res .= substr($return, $_i, 1);
+                    }
+                }
+                $return = $_res;
+                break;
+
+            default:
+                trigger_error('unknown escape type. ' . var_export(func_get_args(), true), E_USER_WARNING);
+                break;
+        }
+
+        return $return;
     }
 }

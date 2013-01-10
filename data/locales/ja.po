@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2013-01-08 15:42+0900\n"
+"PO-Revision-Date: 2013-01-11 00:11+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -5029,7 +5029,7 @@ msgid "tpl_464"
 msgstr "プラグイン登録"
 
 msgid "tpl_465"
-msgstr "プラグイン"
+msgstr "プラグイン<span class='attention'> *</span>"
 
 msgid "tpl_466"
 msgstr "インストール"
@@ -6129,9 +6129,3 @@ msgstr " "
 
 msgid "pt_suffix"
 msgstr "pt"
-
-msgid "<require>"
-msgstr "<span class='attention'>*</span>"
-
-msgid "require_mark"
-msgstr "*"
