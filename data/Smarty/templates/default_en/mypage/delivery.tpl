@@ -60,7 +60,8 @@
                         <td class="alignC"><!--{$smarty.section.cnt.iteration}--></td>
                         <td><label for="add<!--{$smarty.section.cnt.iteration}-->">Delivery address</label></td>
                         <td>
-                            <!--{$arrOtherDeliv[cnt].zip01}-->-<!--{$arrOtherDeliv[cnt].zip02}--><br />
+                            <!--{* <!--{$arrOtherDeliv[cnt].zip01}-->-<!--{$arrOtherDeliv[cnt].zip02}--><br /> *}-->
+                            <!--{$arrOtherDeliv[cnt].zipcode}--><br />
                             <!--{$arrOtherDeliv[cnt].addr01|h}--><!--{$arrOtherDeliv[cnt].addr02|h}--><br />
                             <!--{$arrOtherDeliv[cnt].name01|h}-->&nbsp;<!--{$arrOtherDeliv[cnt].name02|h}-->
                         </td>

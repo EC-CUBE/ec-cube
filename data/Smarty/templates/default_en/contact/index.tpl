@@ -44,17 +44,23 @@
             <tr>
                 <th>Postal code</th>
                 <td>
-                    <span class="attention"><!--{$arrErr.zip01}--><!--{$arrErr.zip02}--></span>
+                    <!--{* <span class="attention"><!--{$arrErr.zip01}--><!--{$arrErr.zip02}--></span> *}-->
+                    <span class="attention"><!--{$arrErr.zipcode}--></span>
+
                     <p class="top">
                         &nbsp;
-                        <input type="text" name="zip01" class="box60" value="<!--{$arrForm.zip01.value|default:$arrData.zip01|h}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" style="<!--{$arrErr.zip01|sfGetErrorColor}-->; ime-mode: disabled;" />&nbsp;-&nbsp;
-                        <input type="text" name="zip02" class="box60" value="<!--{$arrForm.zip02.value|default:$arrData.zip02|h}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" style="<!--{$arrErr.zip02|sfGetErrorColor}-->; ime-mode: disabled;" /> 
+                        <!--{* <input type="text" name="zip01" class="box60" value="<!--{$arrForm.zip01.value|default:$arrData.zip01|h}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" style="<!--{$arrErr.zip01|sfGetErrorColor}-->; ime-mode: disabled;" />&nbsp;-&nbsp; *}-->
+                        <!--{* <input type="text" name="zip02" class="box60" value="<!--{$arrForm.zip02.value|default:$arrData.zip02|h}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" style="<!--{$arrErr.zip02|sfGetErrorColor}-->; ime-mode: disabled;" /> *}-->
+                        <input type="text" name="zipcode" class="box60" value="<!--{$arrForm.zipcode.value|default:$arrData.zipcode|h}-->" maxlength="<!--{$smarty.const.ZIPCODE_LEN}-->" style="<!--{$arrErr.zipcode|sfGetErrorColor}-->; ime-mode: disabled;" /> 
                         <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="mini">Postal code search</span></a>
                     </p>
+                    
+                    <!--{*
                     <p class="zipimg">
                         <a class="bt01" href="javascript:fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'zip01', 'zip02', 'pref', 'addr01');">Automatic address input</a>
                         <span class="mini">&nbsp;Click after inputting the postal code.</span>
                     </p>
+                    *}-->
                 </td>
             </tr>
             <tr>

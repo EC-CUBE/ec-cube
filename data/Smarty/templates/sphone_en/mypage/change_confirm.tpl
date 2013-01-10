@@ -52,7 +52,8 @@
 
             <dt>Address</dt>
             <dd>
-                <!--{$arrForm.zip01}-->-<!--{$arrForm.zip02}--><br />
+                <!--{* <!--{$arrForm.zip01}-->-<!--{$arrForm.zip02}--><br /> *}-->
+                <!--{$arrForm.zipcode}--><br />
                 <!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}-->
             </dd>
 

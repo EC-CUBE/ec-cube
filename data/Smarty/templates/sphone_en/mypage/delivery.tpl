@@ -57,7 +57,8 @@
                         <!--▼お届け先 -->
                         <div class="delivBox">
                             <p><em><span class="zip_title">Delivery address<!--{$smarty.section.cnt.iteration}--></span></em>:<br />
-                                <span class="zip01"><!--{$arrOtherDeliv[cnt].zip01}--></span>-<span class="zip02"><!--{$arrOtherDeliv[cnt].zip02}--></span><br />
+                                <!--{* <span class="zip01"><!--{$arrOtherDeliv[cnt].zip01}--></span>-<span class="zip02"><!--{$arrOtherDeliv[cnt].zip02}--></span><br /> *}-->
+                                <span class="zipcode"><!--{$arrOtherDeliv[cnt].zipcode}--></span><br />
                                 <span class="address"><!--{$arrOtherDeliv[cnt].addr01|h}--><!--{$arrOtherDeliv[cnt].addr02|h}--></span><br />
                                 <span class="name01"><!--{$arrOtherDeliv[cnt].name01|h}--></span>&nbsp;<span class="name02"><!--{$arrOtherDeliv[cnt].name02|h}--></span></p>
 
@@ -131,9 +132,11 @@
                         //住所タイトルをセット
                         $($(".delivBox span.zip_title").get(maxCnt)).text('Delivery address' + count);
                         //郵便番号1をセット
-                        $($(".delivBox span.zip01").get(maxCnt)).text(delivery.zip01);
+//                        $($(".delivBox span.zip01").get(maxCnt)).text(delivery.zip01);
                         //郵便番号2をセット
-                        $($(".delivBox span.zip02").get(maxCnt)).text(delivery.zip02);
+//                        $($(".delivBox span.zip02").get(maxCnt)).text(delivery.zip02);
+                        //郵便番号をセット
+                        $($(".delivBox span.zipcode").get(maxCnt)).text(delivery.zipcode);
                         //住所をセット
                         $($(".delivBox span.address").get(maxCnt)).text(delivery.prefname + delivery.addr01 + delivery.addr02);
                         //姓をセット

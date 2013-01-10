@@ -189,7 +189,8 @@
                     </tr>
                     <tr>
                         <th class="alignL">Postal code</th>
-                        <td><!--{$shippingItem.shipping_zip01}-->-<!--{$shippingItem.shipping_zip02}--></td>
+                        <!--{* <td><!--{$shippingItem.shipping_zip01}-->-<!--{$shippingItem.shipping_zip02}--></td> *}-->
+                        <td><!--{$shippingItem.shipping_zipcode}--></td>
                     </tr>
                     <tr>
                         <th class="alignL">Address</th>

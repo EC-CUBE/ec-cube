@@ -39,20 +39,33 @@
 <tr>
     <th>Postal code<span class="attention">*</span></th>
     <td>
-        <!--{assign var=key1 value="`$prefix`zip01"}-->
-        <!--{assign var=key2 value="`$prefix`zip02"}-->
+        <!--{* <!--{assign var=key1 value="`$prefix`zip01"}--> *}-->
+        <!--{* <!--{assign var=key2 value="`$prefix`zip02"}--> *}-->
+        <!--{assign var=key1 value="`$prefix`zipcode"}-->
         <!--{assign var=key4 value="`$prefix`addr01"}-->
         <!--{assign var=key5 value="`$prefix`addr02"}-->
+        
+        <!--{*
         <!--{if $arrErr[$key1] || $arrErr[$key2]}-->
             <div class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></div>
         <!--{/if}-->
-        <p class="top">&nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1]|h}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;" class="box60" />&nbsp;-&nbsp;<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2]|h}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: disabled;" class="box60" />&nbsp;
+        *}-->
+        <!--{if $arrErr[$key1]}-->
+            <div class="attention"><!--{$arrErr[$key1]}--></div>
+        <!--{/if}-->
+        
+        <p class="top">
+        <!--{* &nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1]|h}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;" class="box60" />&nbsp;-&nbsp;<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2]|h}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: disabled;" class="box60" />&nbsp; *}-->
+        &nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1]|h}-->" maxlength="<!--{$smarty.const.ZIPCODE_LEN}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;" class="box60" />&nbsp;
         <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="mini">Postal code search</span></a>
         </p>
+        
+        <!--{*
         <p class="zipimg">
             <a class="bt01" href="<!--{$smarty.const.ROOT_URLPATH}-->input_zip.php" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', '<!--{$key1}-->', '<!--{$key2}-->', '<!--{$key3}-->', '<!--{$key4}-->'); return false;" target="_blank">Automatic address input</a>
             &nbsp;<span class="mini">Click after inputting the postal code.</span>
         </p>
+        *}-->
     </td>
 </tr>
 <tr>

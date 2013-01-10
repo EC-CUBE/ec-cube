@@ -38,7 +38,7 @@ We will contact you as soon as we are able to confirm the issue at hand.
 Thank you for your patience. 
 
 ■Name :<!--{$arrForm.name01.value}--> <!--{$arrForm.name02.value}--> (<!--{$arrForm.kana01.value}--> <!--{$arrForm.kana02.value}-->)
-■Postal code:<!--{if $arrForm.zip01.value && $arrForm.zip02.value}--><!--{$arrForm.zip01.value}-->-<!--{$arrForm.zip02.value}--><!--{/if}-->
+■Postal code:<!--{* <!--{if $arrForm.zip01.value && $arrForm.zip02.value}--><!--{$arrForm.zip01.value}-->-<!--{$arrForm.zip02.value}--><!--{/if}--> *}--><!--{if $arrForm.zipcode.value}--><!--{$arrForm.zipcode.value}--><!--{/if}-->
 
 ■Address  :<!--{$arrForm.addr01.value}--><!--{$arrForm.addr02.value}-->
 ■Telephone number:<!--{$arrForm.tel01.value}-->-<!--{$arrForm.tel02.value}-->-<!--{$arrForm.tel03.value}-->

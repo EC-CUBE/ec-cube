@@ -72,7 +72,7 @@ Total &#036; <!--{$arrOrder.payment_total|number_format|default:0}-->
 ◎Delivery destination <!--{if count($arrShipping) > 1}--><!--{$smarty.foreach.shipping.iteration}--><!--{/if}-->
 
  Name:<!--{$shipping.shipping_name01}--> <!--{$shipping.shipping_name02}-->
- Postal code:<!--{$shipping.shipping_zip01}-->-<!--{$shipping.shipping_zip02}-->
+ Postal code:<!--{* <!--{$shipping.shipping_zip01}-->-<!--{$shipping.shipping_zip02}--> *}--><!--{$shipping.shipping_zipcode}-->
  Address:<!--{$arrPref[$shipping.shipping_pref]}--><!--{$shipping.shipping_addr01}--><!--{$shipping.shipping_addr02}-->
  Telephone number:<!--{$shipping.shipping_tel01}-->-<!--{$shipping.shipping_tel02}-->-<!--{$shipping.shipping_tel03}-->
  Fax number :<!--{if $shipping.shipping_fax01 > 0}--><!--{$shipping.shipping_fax01}-->-<!--{$shipping.shipping_fax02}-->-<!--{$shipping.shipping_fax03}--><!--{/if}-->

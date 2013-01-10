@@ -70,11 +70,16 @@
 
             <dt>Postal code</dt>
             <dd>
-                <!--{assign var=key1 value="`$prefix`zip01"}-->
-                <!--{assign var=key2 value="`$prefix`zip02"}-->
+                <!--{* <!--{assign var=key1 value="`$prefix`zip01"}--> *}-->
+                <!--{* <!--{assign var=key2 value="`$prefix`zip02"}--> *}-->
+                <!--{assign var=key1 value="`$prefix`zipcode"}-->
                 <!--{assign var=key4 value="`$prefix`addr01"}-->
-                <span class="attention"><!--{$arrErr.zip01}--><!--{$arrErr.zip02}--></span>
+
+                <!--{* <span class="attention"><!--{$arrErr.zip01}--><!--{$arrErr.zip02}--></span> *}-->
+                <span class="attention"><!--{$arrErr.zipcode}--></span>
+
                 <p>
+                    <!--{*
                     <input type="tel" name="zip01"
                         value="<!--{$arrForm.zip01.value|default:$arrData.zip01|h}-->"
                         max="<!--{$smarty.const.ZIP01_LEN}-->"
@@ -82,9 +87,15 @@
                         value="<!--{$arrForm.zip02.value|default:$arrData.zip02|h}-->"
                         max="<!--{$smarty.const.ZIP02_LEN}-->"
                         style="<!--{$arrErr.zip02|sfGetErrorColor}-->; ime-mode: disabled;" class="boxShort text data-role-none" />&nbsp;&nbsp;<a href="http://search.post.japanpost.jp/zipcode/" target="_blank" rel="external"><span class="fn">Postal code search</span></a>
+                    *}-->
+                    <input type="tel" name="zipcode"
+                        value="<!--{$arrForm.zipcode.value|default:$arrData.zipcode|h}-->"
+                        max="<!--{$smarty.const.ZIPCODE_LEN}-->"
+                        style="<!--{$arrErr.zipcode|sfGetErrorColor}-->; ime-mode: disabled;" class="boxShort text data-role-none" />
+                        &nbsp;&nbsp;<a href="http://search.post.japanpost.jp/zipcode/" target="_blank" rel="external"><span class="fn">Postal code search</span></a>
                 </p>
 
-                <a href="javascript:fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', '<!--{$key1}-->', '<!--{$key2}-->', '<!--{$key3}-->', '<!--{$key4}-->');" class="btn_sub btn_inputzip" rel="external">Automatic address input from postal code</a>
+                <!--{* <a href="javascript:fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', '<!--{$key1}-->', '<!--{$key2}-->', '<!--{$key3}-->', '<!--{$key4}-->');" class="btn_sub btn_inputzip" rel="external">Automatic address input from postal code</a> *}-->
             </dd>
 
             <dt>Address</dt>

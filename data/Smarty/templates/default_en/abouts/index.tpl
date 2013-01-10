@@ -71,10 +71,18 @@
                 </tr>
             <!--{/if}-->
 
+            <!--{*
             <!--{if strlen($objSiteInfo->data.zip01)}-->
                 <tr>
                     <th>Location</th>
                     <td><!--{$objSiteInfo->data.zip01|h}-->-<!--{$objSiteInfo->data.zip02|h}--><br /><!--{$objSiteInfo->data.addr01|h}--><!--{$objSiteInfo->data.addr02|h}--></td>
+                </tr>
+            <!--{/if}-->
+            *}-->
+            <!--{if strlen($objSiteInfo->data.zipcode)}-->
+                <tr>
+                    <th>Location</th>
+                    <td><!--{$objSiteInfo->data.zipcode|h}--><br /><!--{$objSiteInfo->data.addr01|h}--><!--{$objSiteInfo->data.addr02|h}--></td>
                 </tr>
             <!--{/if}-->
 

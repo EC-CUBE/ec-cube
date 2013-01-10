@@ -48,7 +48,8 @@
             </tr>
             <tr>
                 <th>Postal code</th>
-                <td><!--{$arrForm.zip01}-->-<!--{$arrForm.zip02}--></td>
+                <!--{* <td><!--{$arrForm.zip01}-->-<!--{$arrForm.zip02}--></td> *}-->
+                <td><!--{$arrForm.zipcode}--></td>
             </tr>
             <tr>
                 <th>Address</th>
