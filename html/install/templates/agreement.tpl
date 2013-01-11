@@ -46,7 +46,7 @@ function fnChangeVisible(check_id, mod_id){
 
 <tr><td height="30"></td></tr>
 <tr><td align="left" class="fs12st"><!--{t string="tpl_731"}--></td></tr>
-<tr><td align="left" class="fs12"><!--{t string="tpl_732"}--></td></tr>
+<tr><td align="left" class="fs12"><!--{t string="tpl_732" escape="none"}--></td></tr>
 <tr><td height="10"></td></tr>
 <tr>
     <td bgcolor="#cccccc" class="fs12">
@@ -54,7 +54,7 @@ function fnChangeVisible(check_id, mod_id){
         <tr>
             <td bgcolor="#ffffff" class="fs12">
             <div id="agreement">
-                <!--{t string="tpl_733"}-->
+                <!--{t string="tpl_733" escape="none"}-->
             </div>
             </td>
         </tr>

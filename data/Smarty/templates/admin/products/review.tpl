@@ -216,7 +216,7 @@ $("*[name=search_endday]").val(dates[2]);
     <!--{/foreach}-->
     <h2><!--{t string="tpl_253"}--></h2>
     <div class="btn">
-        <!--検索結果数--><!--{t string="tpl_230" T_FIELD=$tpl_linemax}-->
+        <!--検索結果数--><!--{t string="tpl_230" escape="none" T_FIELD=$tpl_linemax}-->
         <!--{if $smarty.const.ADMIN_MODE == '1'}-->
             <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><span><!--{t string="tpl_327"}--></span></a>
         <!--{/if}-->

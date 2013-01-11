@@ -50,7 +50,7 @@ function lfnChangePort(db_type) {
             <col width="30%" />
             <col width="70%" />
             <tr>
-                <th><!--{t string="tpl_778"}--></th>
+                <th><!--{t string="tpl_778" escape="none"}--></th>
                 <td>
                 <!--{assign var=key value="db_type"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -76,7 +76,7 @@ function lfnChangePort(db_type) {
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_780"}--></th>
+                <th><!--{t string="tpl_780" escape="none"}--></th>
                 <td>
                 <!--{assign var=key value="db_name"}-->
                 <span class="attention"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
@@ -84,7 +84,7 @@ function lfnChangePort(db_type) {
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_781"}--></th>
+                <th><!--{t string="tpl_781" escape="none"}--></th>
                 <td>
                 <!--{assign var=key value="db_user"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -92,7 +92,7 @@ function lfnChangePort(db_type) {
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_782"}--></th>
+                <th><!--{t string="tpl_782" escape="none"}--></th>
                 <td>
                 <!--{assign var=key value="db_password"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>

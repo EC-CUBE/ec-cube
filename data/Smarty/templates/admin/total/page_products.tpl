@@ -50,8 +50,8 @@
             <td class="left"><!--{*商品名*}--><!--{$arrResults[cnt].product_name|sfCutString:40:false|h}--></td>
             <td class="right"><!--{*購入件数*}--><!--{t string="tpl_701" T_FIELD=$arrResults[cnt].order_count}--></td>
             <td class="right"><!--{*数量*}--><!--{$arrResults[cnt].products_count}--></td>
-            <td class="right"><!--{*単価*}--><!--{t string="tpl_500" T_FIELD=$arrResults[cnt].price|number_format}--></td>
-            <td class="right"><!--{*金額*}--><!--{t string="tpl_500" T_FIELD=$arrResults[cnt].total|number_format}--></td>
+            <td class="right"><!--{*単価*}--><!--{t string="tpl_500" escape="none" T_FIELD=$arrResults[cnt].price|number_format}--></td>
+            <td class="right"><!--{*金額*}--><!--{t string="tpl_500" escape="none" T_FIELD=$arrResults[cnt].total|number_format}--></td>
         </tr>
     <!--{/section}-->
 

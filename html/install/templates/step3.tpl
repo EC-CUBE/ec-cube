@@ -55,7 +55,7 @@
         <!--{if $tpl_db_version != ""}--><span class="bold"><!--{t string="tpl_785"}--></span><br />
             <!--{$tpl_db_version}-->
         <!--{/if}-->
-        <!--{t string="tpl_786"}--></P>
+        <!--{t string="tpl_786" escape="none"}--></P>
         <!--{if $tpl_mode != 'complete'}-->
             <input type="checkbox" id="skip" name="db_skip" <!--{if $tpl_db_skip == "on"}-->checked="checked"<!--{/if}--> /> <label for="skip"><!--{t string="tpl_787"}--></label>
         <!--{/if}-->

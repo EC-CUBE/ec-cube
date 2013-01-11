@@ -32,14 +32,14 @@
 
     <table>
         <tr>
-            <th><!--{t string="tpl_009_1"}--></th>
+            <th><!--{t string="tpl_009_1" escape="none"}--></th>
             <td colspan="3">
             <!--{assign var=key value="name"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_002_1"}--></th>
+            <th><!--{t string="tpl_002_1" escape="none"}--></th>
             <td colspan="3">
             <!--{assign var=key value="service_name"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>

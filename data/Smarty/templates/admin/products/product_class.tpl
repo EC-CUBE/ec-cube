@@ -174,7 +174,7 @@
 
     <div class="list-info clearfix">
         <div class="btn"><a class="btn-normal" href="javascript:;" id="copy_from_first"><span><!--{t string="tpl_602"}--></span></a></div>
-        <p><!--{t string="tpl_601" T_FIELD=$smarty.const.DOWNLOAD_EXTENSION}--></p>
+        <p><!--{t string="tpl_601" escape="none" T_FIELD=$smarty.const.DOWNLOAD_EXTENSION}--></p>
     </div>
 
     <!--{if $arrErr.check_empty}-->
@@ -197,12 +197,12 @@
             <th><!--{t string="tpl_371"}--><br>(<!--{$arrClass[$class_id1]|default_t:"tpl_730"|h}-->)</th>
             <th><!--{t string="tpl_374"}--><br>(<!--{$arrClass[$class_id2]|default_t:"tpl_730"|h}-->)</th>
             <th><!--{t string="tpl_192"}--></th>
-            <th><!--{t string="tpl_557_1"}--></th>
-            <th><!--{t string="tpl_603" T_FIELD=$smarty.const.NORMAL_PRICE_TITLE}--></th>
-            <th><!--{t string="tpl_603" T_FIELD=$smarty.const.SALE_PRICE_TITLE}--><span class="attention">*</span></th>
-            <th><!--{t string="tpl_014_1"}--></th>
-            <th><!--{t string="tpl_604"}--><span class="red"><br><!--{t string="tpl_606" T_FIELD=$smarty.const.STEXT_LEN}--></span></th>
-            <th><!--{t string="tpl_605"}--></th>
+            <th><!--{t string="tpl_557_1" escape="none"}--></th>
+            <th><!--{t string="tpl_603" escape="none" T_FIELD=$smarty.const.NORMAL_PRICE_TITLE}--></th>
+            <th><!--{t string="tpl_603" escape="none" T_FIELD=$smarty.const.SALE_PRICE_TITLE}--><span class="attention">*</span></th>
+            <th><!--{t string="tpl_014_1" escape="none"}--></th>
+            <th><!--{t string="tpl_604" escape="none"}--><span class="red"><br><!--{t string="tpl_606" T_FIELD=$smarty.const.STEXT_LEN}--></span></th>
+            <th><!--{t string="tpl_605" escape="none"}--></th>
         </tr>
         <!--{section name=cnt loop=$arrForm.total.value}-->
             <!--{assign var=index value=$smarty.section.cnt.index}-->

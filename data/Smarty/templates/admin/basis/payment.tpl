@@ -44,7 +44,7 @@
         <tr>
             <th class="center"><!--{t string="tpl_074"}--></th>
             <th><!--{t string="tpl_016"}--></th>
-            <th><!--{t string="tpl_075"}--></th>
+            <th><!--{t string="tpl_075" escape="none"}--></th>
             <th><!--{t string="tpl_076"}--></th>
             <th><!--{t string="tpl_003"}--></th>
             <th><!--{t string="tpl_004"}--></th>

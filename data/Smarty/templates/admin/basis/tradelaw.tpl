@@ -28,7 +28,7 @@
 <div id="basis" class="contents-main">
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_104"}--></th>
+            <th><!--{t string="tpl_104" escape="none"}--></th>
             <td>
             <!--{assign var=key value="law_company"}-->
             <!--{if $arrErr[$key]}-->
@@ -39,7 +39,7 @@
 		</td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_105"}--></th>
+            <th><!--{t string="tpl_105" escape="none"}--></th>
             <td>
             <!--{assign var=key value="law_manager"}-->
             <!--{if $arrErr[$key]}-->
@@ -48,7 +48,7 @@
             <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length}--></span></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_033_1"}--></th>
+            <th><!--{t string="tpl_033_1" escape="none"}--></th>
             <td>
             <!--{* <!--{assign var=key1 value="law_zip01"}--> *}-->
             <!--{* <!--{assign var=key2 value="law_zip02"}--> *}-->
@@ -75,7 +75,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_107"}--></th>
+            <th><!--{t string="tpl_107" escape="none"}--></th>
             <td>
                 <!--{assign var=key value="law_pref"}-->
                 <!--{if $arrErr[$key]}-->
@@ -102,7 +102,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_037_1"}--></th>
+            <th><!--{t string="tpl_037_1" escape="none"}--></th>
             <td>
                 <!--{assign var=key1 value="law_tel01"}-->
                 <!--{assign var=key2 value="law_tel02"}-->
@@ -134,7 +134,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_108_1"}--></th>
+            <th><!--{t string="tpl_108_1" escape="none"}--></th>
             <td>
             <!--{assign var=key value="law_email"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -142,7 +142,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_109_1"}--></th>
+            <th><!--{t string="tpl_109_1" escape="none"}--></th>
             <td>
             <!--{assign var=key value="law_url"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -150,42 +150,42 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_116"}--></th>
+            <th><!--{t string="tpl_116" escape="none"}--></th>
             <td>
             <!--{assign var=key value="law_term01"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|h}--></textarea><span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length}--></span></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_117"}--></th>
+            <th><!--{t string="tpl_117" escape="none"}--></th>
             <td>
             <!--{assign var=key value="law_term02"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|h}--></textarea><span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length}--></span></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_016_1"}--></th>
+            <th><!--{t string="tpl_016_1" escape="none"}--></th>
             <td>
             <!--{assign var=key value="law_term03"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|h}--></textarea><span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length}--></span></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_118"}--></th>
+            <th><!--{t string="tpl_118" escape="none"}--></th>
             <td>
             <!--{assign var=key value="law_term04"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|h}--></textarea><span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length}--></span></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_119"}--></th>
+            <th><!--{t string="tpl_119" escape="none"}--></th>
             <td>
             <!--{assign var=key value="law_term05"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|h}--></textarea><span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length}--></span></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_120"}--></th>
+            <th><!--{t string="tpl_120" escape="none"}--></th>
             <td>
             <!--{assign var=key value="law_term06"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>

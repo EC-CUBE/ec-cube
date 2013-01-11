@@ -39,7 +39,7 @@
         <!--{/if}-->
 
         <div class="basis-zip-item info">
-            <p><!--{t string="tpl_126"}--></p>
+            <p><!--{t string="tpl_126" escape="none"}--></p>
         </div>
 
         <div class="basis-zip-item">

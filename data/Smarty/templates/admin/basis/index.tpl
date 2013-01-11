@@ -114,8 +114,8 @@ $(function() {
 <!--{* ▼登録テーブルここから *}-->
 <div id="basis" class="contents-main">
 
-    <h2><!--{t string="tpl_027"}--></h2>
-    <table summary="<!--{t string="tpl_027"}-->" id="basis-index-basis">
+    <h2><!--{t string="tpl_027" escape="none"}--></h2>
+    <table summary="<!--{t string="tpl_027" escape="none"}-->" id="basis-index-basis">
         <tr>
             <th><!--{t string="tpl_028"}--></th>
             <td>
@@ -125,7 +125,7 @@ $(function() {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_030_1"}--></th>
+            <th><!--{t string="tpl_030_1" escape="none"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.shop_name}--></span>
                 <input type="text" name="shop_name" value="<!--{$arrForm.shop_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.shop_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
@@ -141,7 +141,7 @@ $(function() {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_033_1"}--></th>
+            <th><!--{t string="tpl_033_1" escape="none"}--></th>
             <td>
                 <!--{* <span class="attention"><!--{$arrErr.zip01}--></span> *}-->
                 <!--{* <span class="attention"><!--{$arrErr.zip02}--></span> *}-->
@@ -153,7 +153,7 @@ $(function() {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_035"}--></th>
+            <th><!--{t string="tpl_035" escape="none"}--></th>
             <td>
                 <p>
                     <span class="attention"><!--{$arrErr.addr01}--></span>
@@ -194,28 +194,28 @@ $(function() {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_040"}--></th>
+            <th><!--{t string="tpl_040" escape="none"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.email01}--></span>
                 <input type="text" name="email01" value="<!--{$arrForm.email01|h}-->" size="60" class="box60" style="<!--{if $arrErr.email01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_041"}--></th>
+            <th><!--{t string="tpl_041" escape="none"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.email02}--></span>
                 <input type="text" name="email02" value="<!--{$arrForm.email02|h}-->" size="60" class="box60" style="<!--{if $arrErr.email02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_042"}--></th>
+            <th><!--{t string="tpl_042" escape="none"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.email03}--></span>
                 <input type="text" name="email03" value="<!--{$arrForm.email03|h}-->" size="60" class="box60" style="<!--{if $arrErr.email03 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_043"}--></th>
+            <th><!--{t string="tpl_043" escape="none"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.email04}--></span>
                 <input type="text" name="email04" value="<!--{$arrForm.email04|h}-->" size="60" class="box60" style="<!--{if $arrErr.email04 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
@@ -255,14 +255,14 @@ $(function() {
     <h2><!--{t string="tpl_048"}--></h2>
     <table id="basis-index-func">
         <tr>
-            <th><!--{t string="tpl_049"}--></th>
+            <th><!--{t string="tpl_049" escape="none"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.tax}--></span>
                 <input type="text" name="tax" value="<!--{$arrForm.tax|h}-->" maxlength="<!--{$smarty.const.PERCENTAGE_LEN}-->" size="6" class="box6" style="<!--{if $arrErr.tax != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" /> <!--{t string="%"}-->
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_050"}--></th>
+            <th><!--{t string="tpl_050" escape="none"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.tax_rule}--></span>
                 <!--{html_radios name="tax_rule" options=$arrTAXRULE selected=$arrForm.tax_rule}-->

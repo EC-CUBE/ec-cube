@@ -106,8 +106,8 @@ self.moveTo(20,20);self.focus();
         <tr>
             <th><!--{t string="tpl_232"}--></th>
             <td>
-                <!--{if $arrSearchData.search_buy_total_from == null}--><!--{t string="tpl_337"}--><!--{else}--><!--{t string="tpl_500" T_FIELD=$arrSearchData.search_buy_total_from|h}--><!--{/if}--> <!--{t string="-"}-->
-                <!--{if $arrSearchData.search_buy_total_to == null}--><!--{t string="tpl_337"}--><!--{else}--><!--{t string="tpl_500" T_FIELD=$arrSearchData.search_buy_total_to|h}--><!--{/if}-->
+                <!--{if $arrSearchData.search_buy_total_from == null}--><!--{t string="tpl_337"}--><!--{else}--><!--{t string="tpl_500" escape="none" T_FIELD=$arrSearchData.search_buy_total_from|h}--><!--{/if}--> <!--{t string="-"}-->
+                <!--{if $arrSearchData.search_buy_total_to == null}--><!--{t string="tpl_337"}--><!--{else}--><!--{t string="tpl_500" escape="none" T_FIELD=$arrSearchData.search_buy_total_to|h}--><!--{/if}-->
             </td>
         </tr>
         <tr>

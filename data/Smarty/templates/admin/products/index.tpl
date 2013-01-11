@@ -280,7 +280,7 @@ $("*[name=search_endday]").val(dates[2]);
     <!--{/foreach}-->
     <h2><!--{t string="tpl_253"}--></h2>
     <div class="btn">
-        <!--検索結果数--><!--{t string="tpl_230" T_FIELD=$tpl_linemax}-->
+        <!--検索結果数--><!--{t string="tpl_230" escape="none" T_FIELD=$tpl_linemax}-->
         <!--検索結果-->
         <!--{if $smarty.const.ADMIN_MODE == '1'}-->
             <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><!--{t string="tpl_327"}--></a>
@@ -310,7 +310,7 @@ $("*[name=search_endday]").val(dates[2]);
                 <th rowspan="2"><!--{t string="tpl_577"}--></th>
                 <th rowspan="2"><!--{t string="tpl_195"}--></th>
                 <th rowspan="2"><!--{t string="tpl_192"}--></th>
-                <th rowspan="2"><!--{t string="tpl_580"}--></th>
+                <th rowspan="2"><!--{t string="tpl_580" escape="none"}--></th>
                 <th><!--{t string="tpl_189"}--></th>
                 <th rowspan="2"><!--{t string="tpl_581"}--></th>
                 <th rowspan="2"><!--{t string="tpl_256"}--></th>

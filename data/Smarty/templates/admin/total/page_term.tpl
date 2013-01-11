@@ -29,9 +29,9 @@
         <th><!--{t string="tpl_504"}--></th>
         <th><!--{t string="tpl_505"}--></th>
         <th><!--{t string="tpl_506"}--></th>
-        <th><!--{t string="tpl_507"}--></th>
+        <th><!--{t string="tpl_507" escape="none"}--></th>
         <th><!--{t string="tpl_508"}--></th>
-        <th><!--{t string="tpl_509"}--></th>
+        <th><!--{t string="tpl_509" escape="none"}--></th>
         <th><!--{t string="tpl_693"}--></th>
         <th><!--{t string="tpl_700"}--></th>
     </tr>
@@ -68,8 +68,8 @@
             <td class="right"><!--{*男性(非会員)*}--><!--{$arrResults[cnt].men_nonmember|number_format}--></td>
             <td class="right"><!--{*女性(会員)*}--><!--{$arrResults[cnt].women_member|number_format}--></td>
             <td class="right"><!--{*女性(非会員)*}--><!--{$arrResults[cnt].women_nonmember|number_format}--></td>
-            <td class="right"><!--{*購入合計*}--><!--{t string="tpl_500" T_FIELD=$arrResults[cnt].total|number_format}--></td>
-            <td class="right"><!--{*購入平均*}--><!--{t string="tpl_500" T_FIELD=$arrResults[cnt].total_average|number_format}--></td>
+            <td class="right"><!--{*購入合計*}--><!--{t string="tpl_500" escape="none" T_FIELD=$arrResults[cnt].total|number_format}--></td>
+            <td class="right"><!--{*購入平均*}--><!--{t string="tpl_500" escape="none" T_FIELD=$arrResults[cnt].total_average|number_format}--></td>
         </tr>
     <!--{/section}-->
 
@@ -79,9 +79,9 @@
         <th><!--{t string="tpl_504"}--></th>
         <th><!--{t string="tpl_505"}--></th>
         <th><!--{t string="tpl_506"}--></th>
-        <th><!--{t string="tpl_507"}--></th>
+        <th><!--{t string="tpl_507" escape="none"}--></th>
         <th><!--{t string="tpl_508"}--></th>
-        <th><!--{t string="tpl_509"}--></th>
+        <th><!--{t string="tpl_509" escape="none"}--></th>
         <th><!--{t string="tpl_693"}--></th>
         <th><!--{t string="tpl_700"}--></th>
     </tr>

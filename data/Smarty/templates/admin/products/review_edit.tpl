@@ -85,14 +85,14 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_022_1"}--></th>
+            <th><!--{t string="tpl_022_1" escape="none"}--></th>
             <td>
                 <!--{if $arrErr.title}--><span class="attention"><!--{$arrErr.title}--></span><!--{/if}-->
                 <input type="text" class="box60" name="title" value="<!--{$arrForm.title|h}-->" style="<!--{$arrErr.title|sfGetErrorColor}-->" size=30><span class="attention">
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_717"}--></th>
+            <th><!--{t string="tpl_717" escape="none"}--></th>
             <td>
                 <!--{if $arrErr.comment}--><span class="attention"><!--{$arrErr.comment}--></span><!--{/if}-->
                 <textarea name="comment" rows="20" cols="60" class="area60" wrap="soft" style="<!--{$arrErr.comment|sfGetErrorColor}-->" ><!--{"\n"}--><!--{$arrForm.comment|h}--></textarea>

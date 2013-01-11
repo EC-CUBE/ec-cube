@@ -41,7 +41,7 @@
         <input type="hidden" name="mode" value="edit" />
         <input type="hidden" name="master_data_name" value="<!--{$masterDataName}-->" />
         <p class="remark attention">
-            <!--{t string="tpl_671"}-->
+            <!--{t string="tpl_671" escape="none"}-->
         </p>
         <!--{if $errorMessage != ""}-->
             <div class="message">

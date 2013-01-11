@@ -56,7 +56,7 @@ $(function() {
             <col width="30%" />
             <col width="70%" />
             <tr>
-                <th><!--{t string="tpl_030_1"}--></th>
+                <th><!--{t string="tpl_030_1" escape="none"}--></th>
                 <td>
                 <!--{assign var=key value="shop_name"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -65,7 +65,7 @@ $(function() {
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_108_1"}--></th>
+                <th><!--{t string="tpl_108_1" escape="none"}--></th>
                 <td>
                 <!--{assign var=key value="admin_mail"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -75,7 +75,7 @@ $(function() {
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_751"}--><br/><!--{t string="tpl_668" T_FIELD1=$smarty.const.ID_MIN_LEN T_FIELD2=$smarty.const.ID_MAX_LEN}--></th>
+                <th><!--{t string="tpl_751" escape="none"}--><br/><!--{t string="tpl_668" T_FIELD1=$smarty.const.ID_MIN_LEN T_FIELD2=$smarty.const.ID_MAX_LEN}--></th>
                 <td>
                 <!--{assign var=key value="login_id"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -84,7 +84,7 @@ $(function() {
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_218_1"}--><br/><!--{t string="tpl_668" T_FIELD1=$smarty.const.ID_MIN_LEN T_FIELD2=$smarty.const.ID_MAX_LEN}--></th>
+                <th><!--{t string="tpl_218_1" escape="none"}--><br/><!--{t string="tpl_668" T_FIELD1=$smarty.const.ID_MIN_LEN T_FIELD2=$smarty.const.ID_MAX_LEN}--></th>
                 <td>
                 <!--{assign var=key value="login_pass"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -106,7 +106,7 @@ $(function() {
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|default:'admin'|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;" size="50" /><br />
                 <span class="ex-text"><!--{t string="tpl_757"}--><br />
                  <!--{t string="tpl_758"}--><br />
-                 <!--{t string="tpl_759"}--></span><br />
+                 <!--{t string="tpl_759" escape="none"}--></span><br />
                 </td>
             </tr>
             <tr>
@@ -123,7 +123,7 @@ $(function() {
                 <td>
                 <!--{assign var=key value="admin_allow_hosts"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <span class="ex-text"><!--{t string="tpl_645"}--></span><br />
+                <span class="ex-text"><!--{t string="tpl_645" escape="none"}--></span><br />
                 <textarea name="<!--{$key}-->" class="box280" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;"><!--{$arrForm[$key].value|h}--></textarea>
                 </td>
             </tr>
@@ -134,7 +134,7 @@ $(function() {
             <col width="30%" />
             <col width="70%" />
             <tr>
-                <th><!--{t string="tpl_762"}--></th>
+                <th><!--{t string="tpl_762" escape="none"}--></th>
                 <td>
                 <!--{assign var=key value="normal_url"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -142,7 +142,7 @@ $(function() {
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_763"}--></th>
+                <th><!--{t string="tpl_763" escape="none"}--></th>
                 <td>
                 <!--{assign var=key value="secure_url"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -167,12 +167,12 @@ $(function() {
                 <col width="30%" />
                 <col width="70%" />
                 <tr>
-                    <th><!--{t string="tpl_768"}--></th>
+                    <th><!--{t string="tpl_768" escape="none"}--></th>
                     <td>
                       <!--{assign var=key value="mail_backend"}-->
                       <span class="attention"><!--{$arrErr[$key]}--></span>
                       <!--{html_radios name=$key options=$arrMailBackend selected=$arrForm[$key].value|h}--><br />
-                      <span class="ex-text"><!--{t string="tpl_769"}--></span>
+                      <span class="ex-text"><!--{t string="tpl_769" escape="none"}--></span>
                     </td>
                 </tr>
                 <tr>

@@ -125,12 +125,12 @@
         <table class="form">
             <!--{if $arrForm.customer_id}-->
             <tr>
-                <th><!--{t string="tpl_207_1"}--></th>
+                <th><!--{t string="tpl_207_1" escape="none"}--></th>
                 <td><!--{$arrForm.customer_id|h}--></td>
             </tr>
             <!--{/if}-->
             <tr>
-                <th><!--{t string="tpl_209_1"}--></th>
+                <th><!--{t string="tpl_209_1" escape="none"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.status}--></span>
                     <span <!--{if $arrErr.status != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->>
@@ -139,14 +139,14 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_208_1"}--></th>
+                <th><!--{t string="tpl_208_1" escape="none"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.name01}--><!--{$arrErr.name02}--></span>
                     <input type="text" name="name01" value="<!--{$arrForm.name01|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.name01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />&nbsp;&nbsp;<input type="text" name="name02" value="<!--{$arrForm.name02|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.name02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_033_1"}--></th>
+                <th><!--{t string="tpl_033_1" escape="none"}--></th>
                 <td>
                     <!--{* <span class="attention"><!--{$arrErr.zip01}--><!--{$arrErr.zip02}--></span> *}-->
                     <span class="attention"><!--{$arrErr.zipcode}--></span>
@@ -169,7 +169,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_108_1"}--></th>
+                <th><!--{t string="tpl_108_1" escape="none"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.email}--></span>
                     <input type="text" name="email" value="<!--{$arrForm.email|h}-->" size="60" class="box60" <!--{if $arrErr.email != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
@@ -183,7 +183,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_214_1"}--></th>
+                <th><!--{t string="tpl_214_1" escape="none"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.tel01}--><!--{$arrErr.tel02}--><!--{$arrErr.tel03}--></span>
                     <input type="text" name="tel01" value="<!--{$arrForm.tel01|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.tel01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="tel02" value="<!--{$arrForm.tel02|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.tel01 != "" || $arrErr.tel02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="tel03" value="<!--{$arrForm.tel03|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.tel01 != "" || $arrErr.tel03 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
@@ -197,7 +197,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_215_1"}--></th>
+                <th><!--{t string="tpl_215_1" escape="none"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.sex}--></span>
                     <span <!--{if $arrErr.sex != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->>
@@ -229,7 +229,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_218_1"}--></th>
+                <th><!--{t string="tpl_218_1" escape="none"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.password}--><!--{$arrErr.password02}--></span>
                     <input type="password" name="password" value="<!--{$arrForm.password|h}-->" size="30" class="box30" <!--{if $arrErr.password != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />　<!--{t string="tpl_219" T_FIELD1=$smarty.const.PASSWORD_MIN_LEN T_FIELD2=$smarty.const.PASSWORD_MAX_LEN}--><br />
@@ -238,7 +238,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_221_1"}--></th>
+                <th><!--{t string="tpl_221_1" escape="none"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.reminder}--><!--{$arrErr.reminder_answer}--></span>
                     <!--{t string="tpl_222"}-->
@@ -251,7 +251,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_224_1"}--></th>
+                <th><!--{t string="tpl_224_1" escape="none"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.mailmaga_flg}--></span>
                     <span <!--{if $arrErr.mailmaga_flg != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->>
@@ -267,7 +267,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_226_1"}--></th>
+                <th><!--{t string="tpl_226_1" escape="none"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.point}--></span>
                     <!--{t string="pt_prefix"}--><input type="text" name="point" value="<!--{$arrForm.point|h}-->" maxlength="<!--{$smarty.const.TEL_LEN}-->" size="6" class="box6" <!--{if $arrErr.point != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> <!--{t string="pt_suffix"}-->
@@ -288,7 +288,7 @@
 
         <h2><!--{t string="tpl_229"}--></h2>
         <!--{if $tpl_linemax > 0}-->
-        <p><!--購入履歴一覧--><!--{t string="tpl_230" T_FIELD=$tpl_linemax}--></p>
+        <p><!--購入履歴一覧--><!--{t string="tpl_230" escape="none" T_FIELD=$tpl_linemax}--></p>
 
         <!--{include file=$tpl_pager}-->
 
@@ -305,7 +305,7 @@
                     <tr>
                         <td><!--{$arrPurchaseHistory[cnt].create_date|sfDispDBDate}--></td>
                         <td class="center"><a href="../order/edit.php?order_id=<!--{$arrPurchaseHistory[cnt].order_id}-->" ><!--{$arrPurchaseHistory[cnt].order_id}--></a></td>
-                        <td class="center"><!--{t string="tpl_500" T_FIELD=$arrPurchaseHistory[cnt].payment_total|number_format}--></td>
+                        <td class="center"><!--{t string="tpl_500" escape="none" T_FIELD=$arrPurchaseHistory[cnt].payment_total|number_format}--></td>
                         <td class="center"><!--{if $arrPurchaseHistory[cnt].status eq 5}--><!--{$arrPurchaseHistory[cnt].commit_date|sfDispDBDate}--><!--{else}--><!--{t string="tpl_234"}--><!--{/if}--></td>
                         <!--{assign var=payment_id value="`$arrPurchaseHistory[cnt].payment_id`"}-->
                         <td class="center"><!--{$arrPayment[$payment_id]|h}--></td>

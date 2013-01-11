@@ -35,7 +35,7 @@ jQuery(function(){
 <!--{* ▼登録テーブルここから *}-->
 <div id="system" class="contents-main">
     <div class="notice">
-        <p class="remark"><span class="attention"><!--{t string="tpl_639"}--></span></p>
+        <p class="remark"><span class="attention"><!--{t string="tpl_639" escape="none"}--></span></p>
         <!--{if $arrErr.all}-->
             <p class="error"><!--{$arrErr.all|h}--></p>
         <!--{/if}-->
@@ -66,7 +66,7 @@ jQuery(function(){
                 <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{"\n"}--><!--{$arrForm[$key]|h}--></textarea>
                 <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.LTEXT_LEN}--></span><br />
                 
-                <span><!--{t string="tpl_645"}--></span><br />
+                <span><!--{t string="tpl_645" escape="none"}--></span><br />
             </td>
         </tr>
     </table>

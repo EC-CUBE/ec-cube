@@ -36,11 +36,11 @@
 <input type="hidden" name="list_name" value="" />
 <div id="system" class="contents-main">
     <p class="remark">
-        <!--{t string="tpl_647"}-->
+        <!--{t string="tpl_647" escape="none"}-->
     </p>
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_648_1"}--></th>
+            <th><!--{t string="tpl_648_1" escape="none"}--></th>
             <td>
                 <!--{if $arrErr.bkup_name}-->
                 <span class="attention"><!--{$arrErr.bkup_name}--></span>

@@ -72,18 +72,18 @@
             </tr>
             <tr>
                 <th><!--{t string="tpl_530"}--></th>
-                <td><!--{t string="tpl_500" T_FIELD=$order_yesterday_amount|default:"0"|number_format}--></td>
+                <td><!--{t string="tpl_500" escape="none" T_FIELD=$order_yesterday_amount|default:"0"|number_format}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_531"}--></th>
                 <td><!--{t string="tpl_701" T_FIELD=$order_yesterday_cnt|default:"0"|number_format}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_532"}--></th>
-                <td><!--{t string="tpl_500" T_FIELD=$order_month_amount|default:"0"|number_format}--></td>
+                <th><!--{t string="tpl_532" escape="none"}--></th>
+                <td><!--{t string="tpl_500" escape="none" T_FIELD=$order_month_amount|default:"0"|number_format}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_533"}--></th>
+                <th><!--{t string="tpl_533" escape="none"}--></th>
                 <td><!--{t string="tpl_701" T_FIELD=$order_month_cnt|default:"0"|number_format}--></td>
             </tr>
             <tr>
@@ -117,7 +117,7 @@
                 <th class="center"><!--{t string="tpl_208"}--></th>
                 <th class="center"><!--{t string="tpl_400"}--></th>
                 <th class="center"><!--{t string="tpl_016"}--></th>
-                <th class="center"><!--{t string="tpl_403"}--></th>
+                <th class="center"><!--{t string="tpl_403" escape="none"}--></th>
             </tr>
             <!--{section name=i loop=$arrNewOrder}-->
             <tr>
@@ -125,7 +125,7 @@
                 <td><!--{$arrNewOrder[i].name01|h}--> <!--{$arrNewOrder[i].name02|h}--></td>
                 <td><!--{$arrNewOrder[i].product_name|h}--></td>
                 <td><!--{$arrNewOrder[i].payment_method|h}--></td>
-                <td class="right"><!--{t string="tpl_500" T_FIELD=$arrNewOrder[i].total|number_format}--></td>
+                <td class="right"><!--{t string="tpl_500" escape="none" T_FIELD=$arrNewOrder[i].total|number_format}--></td>
             </tr>
             <!--{/section}-->
         </table>

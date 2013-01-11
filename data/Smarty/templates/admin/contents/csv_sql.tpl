@@ -80,7 +80,7 @@ function fnTargetSelf(){
     
     <table id="contents-csv-sqlset" class="form">
         <tr>
-            <th><!--{t string="tpl_002_1"}--></th>
+            <th><!--{t string="tpl_002_1" escape="none"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.sql_name}--></span>
                 <input type="text" name="sql_name" value="<!--{$arrForm.sql_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />
@@ -88,7 +88,7 @@ function fnTargetSelf(){
             </td>
         </tr>
         <tr>
-            <th align="center"><!--{t string="tpl_158_1"}--></td>
+            <th align="center"><!--{t string="tpl_158_1" escape="none"}--></td>
             <td align="left">
                 <span class="attention"><!--{$arrErr.csv_sql}--></span>
                 <div>

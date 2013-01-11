@@ -61,8 +61,8 @@
                 <th><!--{t string="tpl_374"}-->(<!--{$arrClass[$class_id2]|default_t:"tpl_730"|h}-->)</th>
                 <th><!--{t string="tpl_192"}--></th>
                 <th><!--{t string="tpl_557"}--></th>
-                <th><!--{t string="tpl_603" T_FIELD=$smarty.const.NORMAL_PRICE_TITLE}--></th>
-                <th><!--{t string="tpl_603" T_FIELD=$smarty.const.SALE_PRICE_TITLE}--></th>
+                <th><!--{t string="tpl_603" escape="none" T_FIELD=$smarty.const.NORMAL_PRICE_TITLE}--></th>
+                <th><!--{t string="tpl_603" escape="none" T_FIELD=$smarty.const.SALE_PRICE_TITLE}--></th>
                 <th><!--{t string="tpl_014"}--></th>
                 <th><!--{t string="tpl_607"}--></th>
                 <th><!--{t string="tpl_608"}--></th>

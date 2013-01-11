@@ -46,8 +46,8 @@
             <td class="center"><!--{*順位*}--><!--{$smarty.section.cnt.iteration}--></td>
             <td class="center"><!--{*職業*}--><!--{$arrResults[cnt].job_name}--></td>
             <td class="right"><!--{*購入件数*}--><!--{t string="tpl_701" T_FIELD=$arrResults[cnt].order_count}--></td>
-            <td class="right"><!--{*購入合計*}--><!--{t string="tpl_500" T_FIELD=$arrResults[cnt].total|number_format}--></td>
-            <td class="right"><!--{*購入平均*}--><!--{t string="tpl_500" T_FIELD=$arrResults[cnt].total_average|number_format}--></td>
+            <td class="right"><!--{*購入合計*}--><!--{t string="tpl_500" escape="none" T_FIELD=$arrResults[cnt].total|number_format}--></td>
+            <td class="right"><!--{*購入平均*}--><!--{t string="tpl_500" escape="none" T_FIELD=$arrResults[cnt].total_average|number_format}--></td>
         </tr>
     <!--{/section}-->
 

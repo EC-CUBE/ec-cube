@@ -51,7 +51,7 @@ function checkFlagAndSubmit(){
 <div id="basis" class="contents-main">
     <table>
         <tr>
-            <th><!--{t string="tpl_065"}--></th>
+            <th><!--{t string="tpl_065" escape="none"}--></th>
             <td>
             <!--{assign var=key value="template_id"}-->
             <!--{if $arrErr[$key]}-->
@@ -64,7 +64,7 @@ function checkFlagAndSubmit(){
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_066"}--></th>
+            <th><!--{t string="tpl_066" escape="none"}--></th>
             <td>
             <!--{assign var=key value="subject"}-->
             <!--{if $arrErr[$key]}-->

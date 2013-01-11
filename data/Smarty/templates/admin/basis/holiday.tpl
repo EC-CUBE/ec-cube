@@ -96,7 +96,7 @@ $(function(){
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_024_1"}--></th>
+            <th><!--{t string="tpl_024_1" escape="none"}--></th>
             <td>
                 <!--{if $arrErr.date || $arrErr.month || $arrErr.day}-->
                 <span class="attention"><!--{$arrErr.date}--></span>

@@ -29,21 +29,21 @@
 <div id="mail" class="contents-main">
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_352_1"}--></th>
+            <th><!--{t string="tpl_352_1" escape="none"}--></th>
             <td>
                 <span <!--{if $arrErr.mail_method}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{html_radios name="mail_method" options=$arrMagazineType separator="&nbsp;" selected=$arrForm.mail_method}--></span>
                 <!--{if $arrErr.mail_method}--><br /><span class="attention"><!--{$arrErr.mail_method}--></span><!--{/if}-->
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_311_1"}--></th>
+            <th><!--{t string="tpl_311_1" escape="none"}--></th>
             <td>
                 <input type="text" name="subject" size="65" class="box65" <!--{if $arrErr.subject}--><!--{sfSetErrorStyle}--><!--{/if}--> value="<!--{$arrForm.subject|h}-->" />
                 <!--{if $arrErr.subject}--><br /><span class="attention"><!--{$arrErr.subject}--></span><!--{/if}-->
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_333_1"}--></th>
+            <th><!--{t string="tpl_333_1" escape="none"}--></th>
             <td>
                 <textarea name="body" cols="90" rows="40" class="area90 top" <!--{if $arrErr.body}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{"\n"}--><!--{$arrForm.body|h}--></textarea>
                 <!--{if $arrErr.body}--><br /><span class="attention"><!--{$arrErr.body}--></span><!--{/if}-->

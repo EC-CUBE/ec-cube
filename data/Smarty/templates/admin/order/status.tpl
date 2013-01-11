@@ -81,7 +81,7 @@
                 <th><!--{t string="tpl_359"}--></th>
                 <th><!--{t string="tpl_208"}--></th>
                 <th><!--{t string="tpl_016"}--></th>
-                <th><!--{t string="tpl_442"}--></th>
+                <th><!--{t string="tpl_442" escape="none"}--></th>
                 <th><!--{t string="tpl_361"}--></th>
                 <th><!--{t string="tpl_233"}--></th>
             </tr>

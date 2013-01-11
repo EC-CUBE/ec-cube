@@ -30,7 +30,7 @@
 
     <table>
         <tr>
-            <th><!--{t string="tpl_492_1"}--></th>
+            <th><!--{t string="tpl_492_1" escape="none"}--></th>
             <td>
                 <!--{if $arrErr.name}-->
                     <span class="attention"><!--{$arrErr.name}--></span>

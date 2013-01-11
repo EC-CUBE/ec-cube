@@ -58,7 +58,7 @@
 
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_065"}--></th>
+            <th><!--{t string="tpl_065" escape="none"}--></th>
             <td>
                 <!--{assign var=key value="template_id"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -69,7 +69,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_066"}--></th>
+            <th><!--{t string="tpl_066" escape="none"}--></th>
             <td>
                 <!--{assign var=key value="subject"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>

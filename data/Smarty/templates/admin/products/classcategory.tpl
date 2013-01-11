@@ -37,7 +37,7 @@
             <td><!--{$tpl_class_name}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_493_1"}--></th>
+            <th><!--{t string="tpl_493_1" escape="none"}--></th>
             <td>
                 <!--{if $arrErr.name}-->
                     <span class="attention"><!--{$arrErr.name}--></span>

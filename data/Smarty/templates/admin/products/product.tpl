@@ -82,7 +82,7 @@ function selectAll(target) {
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
 <!--{/foreach}-->
 <div id="products" class="contents-main">
-    <h2><!--{t string="tpl_027"}--></h2>
+    <h2><!--{t string="tpl_027" escape="none"}--></h2>
 
     <table class="form">
         <tr>
@@ -90,7 +90,7 @@ function selectAll(target) {
             <td><!--{$arrForm.product_id|h}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_189_1"}--></th>
+            <th><!--{t string="tpl_189_1" escape="none"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.name}--></span>
                 <input type="text" name="name" value="<!--{$arrForm.name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />
@@ -98,7 +98,7 @@ function selectAll(target) {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_498_1"}--></th>
+            <th><!--{t string="tpl_498_1" escape="none"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.category_id}--></span>
                 <table class="layout">
@@ -121,7 +121,7 @@ function selectAll(target) {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_499_1"}--></th>
+            <th><!--{t string="tpl_499_1" escape="none"}--></th>
             <td>
                 <!--{html_radios name="status" options=$arrDISP selected=$arrForm.status separator='&nbsp;&nbsp;'}-->
             </td>
@@ -134,13 +134,13 @@ function selectAll(target) {
         </tr>
         <!--{if $arrForm.has_product_class == false}-->
         <tr>
-            <th><!--{t string="tpl_014_1"}--></th>
+            <th><!--{t string="tpl_014_1" escape="none"}--></th>
             <td>
                 <!--{html_radios name="product_type_id" options=$arrProductType selected=$arrForm.product_type_id separator='&nbsp;&nbsp;'}-->
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_555_1"}--></th>
+            <th><!--{t string="tpl_555_1" escape="none"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.down_filename}--></span>
                 <input type="text" name="down_filename" value="<!--{$arrForm.down_filename|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.down_filename != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" />
@@ -149,7 +149,7 @@ function selectAll(target) {
         </tr>
         <tr>
             <!--{assign var=key value="down_file"}-->
-            <th><!--{t string="tpl_586"}--></th>
+            <th><!--{t string="tpl_586" escape="none"}--></th>
             <td>
                 <a name="<!--{$key}-->"></a>
                 <span class="attention"><!--{$arrErr[$key]}--><!--{$arrErr.down_realfilename}--></span>
@@ -162,7 +162,7 @@ function selectAll(target) {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_192_1"}--></th>
+            <th><!--{t string="tpl_192_1" escape="none"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.product_code}--></span>
                 <input type="text" name="product_code" value="<!--{$arrForm.product_code|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.product_code != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />
@@ -178,7 +178,7 @@ function selectAll(target) {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_709" T_FIELD=$smarty.const.SALE_PRICE_TITLE}--></th>
+            <th><!--{t string="tpl_709" escape="none" T_FIELD=$smarty.const.SALE_PRICE_TITLE}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.price02}--></span>
                 <!--{t string="currency_prefix"}-->
@@ -188,7 +188,7 @@ function selectAll(target) {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_557_1"}--></th>
+            <th><!--{t string="tpl_557_1" escape="none"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.stock}--></span>
                 <input type="text" name="stock" value="<!--{$arrForm.stock|h}-->" size="6" class="box6" maxlength="<!--{$smarty.const.AMOUNT_LEN}-->" style="<!--{if $arrErr.stock != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
@@ -209,7 +209,7 @@ function selectAll(target) {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_559_1"}--></th>
+            <th><!--{t string="tpl_559_1" escape="none"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.point_rate}--></span>
                 <input type="text" name="point_rate" value="<!--{$arrForm.point_rate|default:$arrForm.arrInfo.point_rate|h}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PERCENTAGE_LEN}-->" style="<!--{if $arrErr.point_rate != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/><!--{t string="%"}-->
@@ -269,7 +269,7 @@ function selectAll(target) {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_566_1"}--></th>
+            <th><!--{t string="tpl_566_1" escape="none"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.main_list_comment}--></span>
                 <textarea name="main_list_comment" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{if $arrErr.main_list_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" cols="60" rows="8" class="area60"><!--{"\n"}--><!--{$arrForm.main_list_comment|h}--></textarea><br />
@@ -286,7 +286,7 @@ function selectAll(target) {
         </tr>
         <tr>
             <!--{assign var=key value="main_list_image"}-->
-            <th><!--{t string="tpl_710" T_FIELD1=$smarty.const.SMALL_IMAGE_WIDTH T_FIELD2=$smarty.const.SMALL_IMAGE_HEIGHT }--></th>
+            <th><!--{t string="tpl_710" escape="none" T_FIELD1=$smarty.const.SMALL_IMAGE_WIDTH T_FIELD2=$smarty.const.SMALL_IMAGE_HEIGHT }--></th>
             <td>
                 <a name="<!--{$key}-->"></a>
                 <a name="main_image"></a>
@@ -301,7 +301,7 @@ function selectAll(target) {
         </tr>
         <tr>
             <!--{assign var=key value="main_image"}-->
-            <th><!--{t string="tpl_711" T_FIELD1=$smarty.const.NORMAL_IMAGE_WIDTH T_FIELD2=$smarty.const.NORMAL_IMAGE_HEIGHT }--></th>
+            <th><!--{t string="tpl_711" escape="none" T_FIELD1=$smarty.const.NORMAL_IMAGE_WIDTH T_FIELD2=$smarty.const.NORMAL_IMAGE_HEIGHT }--></th>
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->
@@ -313,7 +313,7 @@ function selectAll(target) {
         </tr>
         <tr>
             <!--{assign var=key value="main_large_image"}-->
-            <th><!--{t string="tpl_712" T_FIELD1=$smarty.const.LARGE_IMAGE_WIDTH T_FIELD2=$smarty.const.LARGE_IMAGE_HEIGHT }--></th>
+            <th><!--{t string="tpl_712" escape="none" T_FIELD1=$smarty.const.LARGE_IMAGE_WIDTH T_FIELD2=$smarty.const.LARGE_IMAGE_HEIGHT }--></th>
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->
@@ -363,7 +363,7 @@ function selectAll(target) {
         </tr>
         <tr>
             <!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
-            <th><!--{t string="tpl_705" T_FIELD1=$smarty.section.cnt.iteration T_FIELD2=$smarty.const.NORMAL_SUBIMAGE_WIDTH T_FIELD3=$smarty.const.NORMAL_SUBIMAGE_HEIGHT}--></th>
+            <th><!--{t string="tpl_705" escape="none" T_FIELD1=$smarty.section.cnt.iteration T_FIELD2=$smarty.const.NORMAL_SUBIMAGE_WIDTH T_FIELD3=$smarty.const.NORMAL_SUBIMAGE_HEIGHT}--></th>
             <td>
                 <a name="<!--{$key}-->"></a>
                 <!--{assign var=largekey value="sub_large_image`$smarty.section.cnt.iteration`"}-->
@@ -378,7 +378,7 @@ function selectAll(target) {
         </tr>
         <tr>
             <!--{assign var=key value="sub_large_image`$smarty.section.cnt.iteration`"}-->
-            <th><!--{t string="tpl_706" T_FIELD1=$smarty.section.cnt.iteration T_FIELD2=$smarty.const.LARGE_SUBIMAGE_WIDTH T_FIELD3=$smarty.const.LARGE_SUBIMAGE_HEIGHT}--></th>
+            <th><!--{t string="tpl_706" escape="none" T_FIELD1=$smarty.section.cnt.iteration T_FIELD2=$smarty.const.LARGE_SUBIMAGE_WIDTH T_FIELD3=$smarty.const.LARGE_SUBIMAGE_HEIGHT}--></th>
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->

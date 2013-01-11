@@ -27,7 +27,7 @@
 <input type="hidden" name="mode" value="update" />
 <div id="basis" class="contents-main">
     <p class="remark attention">
-        <!--{t string="tpl_674"}-->
+        <!--{t string="tpl_674" escape="none"}-->
     </p>
 
     <table class="list">

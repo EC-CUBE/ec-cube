@@ -30,7 +30,7 @@
 
         <table class="form">
             <tr>
-                <th><!--{t string="tpl_585"}--></th>
+                <th><!--{t string="tpl_585" escape="none"}--></th>
                 <td>
                     <!--{if $arrErr.maker_id}--><span class="attention"><!--{$arrErr.maker_id}--></span><br /><!--{/if}-->
                     <!--{if $arrErr.name}--><span class="attention"><!--{$arrErr.name}--></span><!--{/if}-->
