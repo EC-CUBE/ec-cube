@@ -124,12 +124,12 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
         $objQuery       = SC_Query_Ex::getSingletonInstance();
         $objProduct     = new SC_Product_Ex();
 
-        $objQuery->setOrder('create_date DESC');
-        $where = 'customer_id = ?';
+        $objQuery->setOrder('f.create_date DESC');
+        $where = 'f.customer_id = ? and p.status = 1';
         if (NOSTOCK_HIDDEN) {
             $where .= ' AND EXISTS(SELECT * FROM dtb_products_class WHERE product_id = dtb_customer_favorite_products.product_id AND del_flg = 0 AND (stock >= 1 OR stock_unlimited = 1))';
         }
-        $arrProductId  = $objQuery->getCol('product_id', 'dtb_customer_favorite_products', $where, array($customer_id));
+        $arrProductId  = $objQuery->getCol('f.product_id', 'dtb_customer_favorite_products f inner join dtb_products p using (product_id)', $where, array($customer_id));
 
         $objQuery       =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setWhere($this->lfMakeWhere('alldtl.', $arrProductId));
