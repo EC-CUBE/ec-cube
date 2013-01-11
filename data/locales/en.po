@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2013-01-09 17:22+0900\n"
+"PO-Revision-Date: 2013-01-11 15:31+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -2566,7 +2566,7 @@ msgid "LC_Page_Admin_Basis_Holiday_001"
 msgstr "Basic information management"
 
 msgid "LC_Page_Admin_Basis_Holiday_002"
-msgstr "Regular holiday management"
+msgstr "Holiday management"
 
 msgid "LC_Page_Admin_Basis_Holiday_003"
 msgstr "※ 既に同じ日付の登録が存在します。<br>"
@@ -2632,13 +2632,13 @@ msgid "LC_Page_Admin_Basis_Tradelaw_001"
 msgstr "Basic information management"
 
 msgid "LC_Page_Admin_Basis_Tradelaw_002"
-msgstr "Act on Specified Commercial Transactions"
+msgstr "Transaction rules"
 
 msgid "LC_Page_Admin_Basis_ZipInstall_001"
 msgstr "Basic information management"
 
 msgid "LC_Page_Admin_Basis_ZipInstall_002"
-msgstr "Postal code DB registration"
+msgstr "Postal code registration"
 
 msgid "LC_Page_Admin_Basis_ZipInstall_003"
 msgstr "'<p>Completed.<br />'"
@@ -2719,7 +2719,7 @@ msgid "LC_Page_Admin_Contents_Recommend_001"
 msgstr "Contents management"
 
 msgid "LC_Page_Admin_Contents_Recommend_002"
-msgstr "Recommended product"
+msgstr "Recommended products"
 
 msgid "LC_Page_Admin_Contents_RecommendSearch_001"
 msgstr "Product search"
@@ -2914,7 +2914,7 @@ msgid "LC_Page_Admin_Mail_TemplateInput_002"
 msgstr "Template settings"
 
 msgid "LC_Page_Admin_Order_001"
-msgstr "Orders"
+msgstr "Order search"
 
 msgid "LC_Page_Admin_Order_Disp_001"
 msgstr "Order receipt information display"
@@ -3001,7 +3001,7 @@ msgid "LC_Page_Admin_Order_ProductSelect_001"
 msgstr "Product selection"
 
 msgid "LC_Page_Admin_Order_Status_001"
-msgstr "Response status management"
+msgstr "Response status"
 
 msgid "LC_Page_Admin_OwnersStore_001"
 msgstr "Plug-in management"
@@ -3610,7 +3610,7 @@ msgid "tpl_005"
 msgstr "Move"
 
 msgid "tpl_006"
-msgstr "Newly input delivery method/delivery charge"
+msgstr "Input new delivery method/delivery charge"
 
 msgid "tpl_007"
 msgstr "Newly input delivery method"
@@ -3835,7 +3835,7 @@ msgid "tpl_072"
 msgstr "Text count"
 
 msgid "tpl_073"
-msgstr "Newly input payment method"
+msgstr "Input new payment method"
 
 msgid "tpl_074"
 msgstr "ID"
@@ -3905,7 +3905,7 @@ msgid "tpl_094"
 msgstr "SHOP master"
 
 msgid "tpl_095"
-msgstr "Act on Specified Commercial Transactions"
+msgstr "Transaction rules"
 
 msgid "tpl_096"
 msgstr "Delivery method settings"
@@ -3926,10 +3926,10 @@ msgid "tpl_101"
 msgstr "Settings for terms and conditions of membership"
 
 msgid "tpl_102"
-msgstr "Postal code DB registration"
+msgstr "Postal code registration"
 
 msgid "tpl_103"
-msgstr "Regular holiday management"
+msgstr "Holiday management"
 
 msgid "tpl_104"
 msgstr "Distributor<span class='attention'> *</span>"
@@ -4019,13 +4019,13 @@ msgstr "Automatic registration"
 msgid "tpl_128"
 msgstr ""
 "[Delete] [Postal code CSV update] and [DB manual registration] below will be "
-"carried out in order. If a time out occurs, however, the DB is restored to "
-"its original state."
+"carried out in order. If a time out occurs,  the DB will be restored to its "
+"original state."
 
 msgid "tpl_129"
 msgstr ""
 " [Delete] and [DB manual registration] below will be carried out in order. "
-"If a time out occurs, however, the DB is restored to its original state."
+"If a time out occurs,  the DB will be restored to its original state."
 
 msgid "tpl_130"
 msgstr "Automatic registration"
@@ -4035,8 +4035,8 @@ msgstr "DB manual registration"
 
 msgid "tpl_132"
 msgstr ""
-"Postal codes will be registered starting with the designated line number. If "
-"a time out occurs, the "
+"Postal codes will be registered starting with the designated line number.  "
+"If a time out occurs, the DB will be restored to its original state."
 
 msgid "tpl_133"
 msgstr "Manual registration"
@@ -4228,7 +4228,7 @@ msgid "tpl_192_1"
 msgstr "Product code<span class='attention'> *</span>"
 
 msgid "tpl_193"
-msgstr "Start search"
+msgstr "Search"
 
 msgid "tpl_194"
 msgstr "T_FIELD items were found."
@@ -4615,7 +4615,7 @@ msgid "tpl_307"
 msgstr "Template file"
 
 msgid "tpl_308"
-msgstr "* Only .tar/.tar.gz for the file format"
+msgstr "*  .tar/.tar.gz only"
 
 msgid "tpl_309"
 msgstr "Delivery start time"
@@ -4803,7 +4803,7 @@ msgid "tpl_368"
 msgstr "Order receipt product information"
 
 msgid "tpl_369"
-msgstr "Confirmation of calculation results"
+msgstr "Confirm calculation"
 
 msgid "tpl_370"
 msgstr "* No product is selected."
@@ -4878,10 +4878,10 @@ msgid "tpl_393"
 msgstr "Deliver to customers"
 
 msgid "tpl_394"
-msgstr "Addition of new delivery destination"
+msgstr "Add new delivery destination"
 
 msgid "tpl_395"
-msgstr "Designated multiple delivery destinations"
+msgstr " Multiple delivery destinations"
 
 msgid "tpl_396"
 msgstr "* When T_FIELD is selected, restore the inventory count manually."
@@ -5037,7 +5037,7 @@ msgid "tpl_444"
 msgstr "Order receipt registration"
 
 msgid "tpl_445"
-msgstr "Response status management"
+msgstr "Response status"
 
 msgid "tpl_446"
 msgstr "Module name"
@@ -5102,7 +5102,7 @@ msgid "tpl_465"
 msgstr "Plug-in<span class='attention'> *</span>"
 
 msgid "tpl_466"
-msgstr "Installation"
+msgstr "Install"
 
 msgid "tpl_467"
 msgstr "Plug-in list"
@@ -5497,7 +5497,7 @@ msgstr ""
 "DOWNLOAD_EXTENSION)"
 
 msgid "tpl_589"
-msgstr "(Input using half-width numbers)"
+msgstr "(Input using numbers only)"
 
 msgid "tpl_590"
 msgstr "* Currently invalid"
@@ -5886,19 +5886,21 @@ msgid "tpl_719"
 msgstr "メール"
 
 msgid "tpl_720"
-msgstr "(配送業者の変更に伴う送料の変更は手動にてお願いします。)"
+msgstr ""
+"(Due to changes in shipping companies, please manually select a shipping "
+"method.)"
 
 msgid "tpl_721"
-msgstr "(お支払方法の変更に伴う手数料の変更は手動にてお願いします。)"
+msgstr "(Due to changes in payment, please manually select a fee.)"
 
 msgid "tpl_722"
-msgstr "商品の追加"
+msgstr "Add product"
 
 msgid "tpl_723"
 msgstr "変更"
 
 msgid "tpl_724"
-msgstr "会員検索"
+msgstr "Find users"
 
 msgid "tpl_725"
 msgstr "T_FIELD名"
