@@ -81,10 +81,12 @@
                 <!--{if $arrErr[$key]}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
                     <!--{/if}-->
+                    <!--{*
                     <select class="top" name="<!--{$arrForm[$key].keyname}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
                     <option value="" selected="selected"><!--{t string="tpl_036"}--></option>
                     <!--{html_options options=$arrPref selected=$arrForm[$key].value}-->
                     </select><br />
+                    *}-->
                     <!--{assign var=key value="law_addr01"}-->
                     <!--{if $arrErr[$key]}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
