@@ -108,7 +108,7 @@
             </td>
         </tr>
     </table>
-
+    <!--{*
     <!--{if $smarty.const.INPUT_DELIV_FEE}-->
     <h2><!--{t string="tpl_017"}--></h2>
     <div class="btn">
@@ -144,7 +144,7 @@
         <!--{/section}-->
     </table>
     <!--{/if}-->
-
+    *}-->
     <div class="btn-area">
         <ul>
             <li><a class="btn-action" href="javascript:;" onclick="location.href='./delivery.php';"><span class="btn-prev"><!--{t string="tpl_020"}--></span></a></li>
