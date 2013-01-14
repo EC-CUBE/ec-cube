@@ -344,7 +344,7 @@ function selectAll(target) {
         <!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
         <!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
         <tr>
-            <th><!--{t string="tpl_467" T_FIELD=$smarty.section.cnt.iteration}--></th>
+            <th><!--{t string="tpl_571" T_FIELD=$smarty.section.cnt.iteration}--></th>
             <!--{assign var=key value="sub_title`$smarty.section.cnt.iteration`"}-->
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -353,7 +353,7 @@ function selectAll(target) {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_468" T_FIELD=$smarty.section.cnt.iteration}--><span class="attention"><!--{t string="tpl_594"}--></span></th>
+            <th><!--{t string="tpl_572" T_FIELD=$smarty.section.cnt.iteration}--><span class="attention"><!--{t string="tpl_594"}--></span></th>
             <!--{assign var=key value="sub_comment`$smarty.section.cnt.iteration`"}-->
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
