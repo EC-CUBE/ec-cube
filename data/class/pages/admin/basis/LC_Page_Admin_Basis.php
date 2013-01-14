@@ -112,7 +112,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
                     default:
                         break;
                 }
-                $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "'); window.alert(" . t('LC_Page_Admin_Basis_011') .");";
+                $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "'); window.alert(\"" . t('LC_Page_Admin_Basis_011') . "\");";
             }
             if (empty($this->arrForm['regular_holiday_ids'])) {
                 $this->arrSel = array();
