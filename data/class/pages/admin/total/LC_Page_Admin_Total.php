@@ -794,7 +794,7 @@ __EOS__;
         $csv_data = '';
         for ($i = 0; $i < $max; $i++) {
             foreach ($arrDataCol as $val) {
-                $arrRet[$i][$val] = $arrData[$i][$val];
+                $arrRet[$i][$val] = ($arrData[$i][$val]) ? $arrData[$i][$val] : "0";
             }
             // 期間別集計の合計行の「期間」項目に不要な値が表示されてしまわない様、'合計'と表示する
             if (($i === $max -1) && isset($arrRet[$i]['str_date'])) {
