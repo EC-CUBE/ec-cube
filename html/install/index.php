@@ -591,7 +591,7 @@ function lfDispComplete($objPage) {
     if (strlen($member_id) == 0) {
         $member_id = $objQuery->nextVal('dtb_member_member_id');
         $arrVal['member_id'] = $member_id;
-        $arrVal['name'] = '管理者';
+        $arrVal['name'] = t('LC_Page_Install_049');
         $arrVal['creator_id'] = 0;
         $arrVal['authority'] = 0;
         $arrVal['rank'] = 1;

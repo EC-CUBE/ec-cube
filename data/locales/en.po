@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2013-01-14 17:29+0900\n"
+"PO-Revision-Date: 2013-01-15 10:32+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -2504,6 +2504,9 @@ msgstr ""
 
 msgid "LC_Page_Install_048"
 msgstr "* Renaming to T_FIELD failed. Check directory access."
+
+msgid "LC_Page_Install_049"
+msgstr "Administrator"
 
 msgid "LC_Page_Admin_Basis_001"
 msgstr "Basic information"
