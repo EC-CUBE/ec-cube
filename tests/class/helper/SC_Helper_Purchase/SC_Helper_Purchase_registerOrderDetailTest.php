@@ -26,7 +26,6 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
 
 /**
  * SC_Helper_Purchase::registerOrderDetail()のテストクラス.
- * TODO 他のfunctionと、SC_Query_Exのインスタンスの受け取り方が異なっている。
  *
  * @author Hiroko Tamagawa
  * @version $Id$

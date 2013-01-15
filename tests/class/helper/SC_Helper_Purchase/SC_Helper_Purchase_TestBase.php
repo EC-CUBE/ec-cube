@@ -156,6 +156,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
           'price01' => '1500',
           'price02' => '1500',
           'creator_id' => '1',
+          'stock' => '100',
           'del_flg' => '0'
         ),
         array(
@@ -165,6 +166,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase {
           'product_type_id' => '2',
           'price02' => '2500',
           'creator_id' => '1',
+          'stock' => '50',
           'del_flg' => '0'
         )
       );
