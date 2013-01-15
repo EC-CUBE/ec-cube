@@ -94,6 +94,9 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc_Ex {
         $col = 'T1.best_id, T1.category_id, T1.rank, T1.product_id, T1.title, T1.comment, T1.create_date, T1.update_date';
         $table = 'dtb_best_products as T1 INNER JOIN dtb_products as T2 ON T1.product_id = T2.product_id';
         $where = 'T1.del_flg = 0 and T2.status = 1';
+        if (NOSTOCK_HIDDEN) {
+            $where .= ' AND EXISTS(SELECT * FROM dtb_products_class WHERE product_id = T1.product_id AND dtb_products_class.del_flg = 0 AND (stock >= 1 OR stock_unlimited = 1))';
+        }
         $objQuery->setOrder('T1.rank');
         $objQuery->setLimit(RECOMMEND_NUM);
         $arrBestProducts = $objQuery->select($col, $table, $where);
