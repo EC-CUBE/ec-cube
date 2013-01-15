@@ -96,7 +96,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_556"}--></th>
+                <th><!--{t string="tpl_556" escape="none"}--></th>
                 <td>
                     <!--{if $arrForm.down_realfilename != ""}-->
                         <!--{$arrForm.down_realfilename|h}-->

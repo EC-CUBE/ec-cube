@@ -159,7 +159,7 @@
 <!--{* ▼FOOTER *}-->
 <div id="footer">
     <div id="footer-contents">
-        <div id="copyright"><!--{t string="tpl_551" T_FIELD=$smarty.now|date_format:"%Y"}--></div>
+        <div id="copyright"><!--{t string="tpl_551" escape="none" T_FIELD=$smarty.now|date_format:"%Y"}--></div>
         <div id="topagetop">
             <ul class="sites">
                 <li><a href="#top" class="btn-tool-format"><!--{t string="tpl_552"}--></a></li>

@@ -159,7 +159,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_212_1"}--></th>
+                <th><!--{t string="tpl_212_1" escape="none"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.addr01}--><!--{$arrErr.addr02}--></span>
                     <input type="text" name="addr01" value="<!--{$arrForm.addr01|h}-->" size="60" class="box60" <!--{if $arrErr.addr01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /><br />

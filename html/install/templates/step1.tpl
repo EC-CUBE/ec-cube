@@ -160,7 +160,7 @@ $(function() {
             </tr>
         </table>
 
-        <p><a href="javascript:;" id="options"><!--{t string="tpl_766"}--></a></p>
+        <p><a href="javascript:;" id="options"><!--{t string="tpl_766" escape="none"}--></a></p>
         <div class="option">
             <h2><!--{t string="tpl_767"}--></h2>
             <table>

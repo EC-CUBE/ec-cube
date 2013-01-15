@@ -253,7 +253,7 @@ function selectAll(target) {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_592"}--></th>
+            <th><!--{t string="tpl_592" escape="none"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.comment3}--></span>
                 <textarea name="comment3" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr.comment3|sfGetErrorColor}-->"><!--{"\n"}--><!--{$arrForm.comment3|h}--></textarea><br />
