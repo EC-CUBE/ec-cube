@@ -221,12 +221,15 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
             if (empty($arrCSV)) {
                 continue;
             }
-            // 列数が異なる場合はエラー
+            // 列数が多すぎる場合はエラー、列数が少ない場合は未設定として配列を補う
             $col_count = count($arrCSV);
-            if ($col_max_count != $col_count) {
+            if ($col_count > $col_max_count) {
                 $this->addRowErr($line_count, '※ 項目数が' . $col_count . '個検出されました。項目数は' . $col_max_count . '個になります。');
                 $errFlag = true;
                 break;
+            } elseif ($col_count < $col_max_count) {
+                $arrCSV = array_pad($arrCSV, $col_max_count, "");
+                $this->addRowResult($line_count, ($col_count + 1) . "項目以降を空欄として読み込みました");
             }
             // シーケンス配列を格納する。
             $objFormParam->setParam($arrCSV, true);
