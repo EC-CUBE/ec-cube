@@ -37,6 +37,7 @@ class SC_Helper_Purchase_completeOrderTest extends SC_Helper_Purchase_TestBase {
 
   protected function setUp() {
     parent::setUp();
+    $this->setUpOrder();
     $this->setUpOrderTemp(); // order_temp_id = '1001'
     $this->setUpShipping();
     $this->setUpCustomer();
@@ -92,8 +93,6 @@ class SC_Helper_Purchase_completeOrderTest extends SC_Helper_Purchase_TestBase {
     $this->actual = $_SESSION['testResult'];
     $this->verify('適切なfunctionが呼ばれている');
     $last_buy_date = $this->objQuery->get('last_buy_date', 'dtb_customer', 'customer_id = ?', '1002');
-    // TODO Jenkins上でテストに失敗するため、デバッグ用コードを挿入
-    var_dump($this->objQuery->select('*', 'dtb_customer', '', array()));
     $this->assertNotNull($last_buy_date, '最終購入日');
   }
 
