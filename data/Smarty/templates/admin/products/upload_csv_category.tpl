@@ -47,7 +47,8 @@
             <th>CSVファイル</th>
             <td>
                 <!--{if $arrErr.csv_file}--><span class="attention"><!--{$arrErr.csv_file}--></span><!--{/if}-->
-                <input type="file" name="csv_file" size="60" class="box60" /><span class="attention"> (1行目タイトル行)</span>
+                <input type="file" name="csv_file" size="60" class="box60" /><span class="attention"> (1行目タイトル行)
+                (最大アップロードサイズ:<!--{$max_upload_csv_size}-->)</span>
             </td>
         </tr>
         <tr>

@@ -1798,4 +1798,22 @@ class SC_Utils {
             return '[' . preg_quote($charlist, '/') . ']+';
         }
     }
+
+    /**
+     * データ量の単位を付与する
+     * 
+     * @param int $data
+     * @return string
+     */
+    function getUnitDataSize($data){
+
+        if(CSV_SIZE < 1000){
+            $data = CSV_SIZE . "KB";
+        }elseif(CSV_SIZE < 1000000){ 
+            $data = CSV_SIZE/1000 . "MB";
+        }else{
+            $data = CSV_SIZE/1000000 . "GB";
+        }
+        return $data;
+    }
 }

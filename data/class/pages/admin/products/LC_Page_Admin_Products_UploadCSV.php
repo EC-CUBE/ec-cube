@@ -121,6 +121,8 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam, $arrCSVFrame);
 
+        $this->max_upload_csv_size = SC_Utils_Ex::getUnitDataSize(CSV_SIZE);
+
         $objFormParam->setHtmlDispNameArray();
         $this->arrTitle = $objFormParam->getHtmlDispNameArray();
 
