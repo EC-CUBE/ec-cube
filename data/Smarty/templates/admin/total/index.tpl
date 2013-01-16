@@ -241,7 +241,7 @@ $("*[name=search_endday]").val(dates[2]);
             <h2><!--{include file=$tpl_graphsubtitle}--></h2>
 
             <div class="btn">
-                <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;"><span>CSVダウンロード</span></a>
+                <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;"><span><!--{t string="tpl_254"}--></span></a>
             </div>
 
             <!--{* グラフ表示 *}-->

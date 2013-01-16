@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2013-01-16 10:04+0900\n"
+"PO-Revision-Date: 2013-01-16 11:37+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -2320,7 +2320,7 @@ msgstr "※ ご利用ポイントがご購入金額を超えています。<br /
 
 msgid "LC_Page_Shopping_Payment_004"
 msgstr ""
-"※ 選択した支払方法では、ポイントは(T_FIELD01 - T_FIELD01)ポイントまでご利用い"
+"※ 選択した支払方法では、ポイントは(T_FIELD01 - T_FIELD02)ポイントまでご利用い"
 "ただけます。<br />"
 
 msgid "LC_Page_Unsupported_001"
@@ -6105,6 +6105,15 @@ msgstr "いいえ"
 
 msgid "tpl_799"
 msgstr "EC-CUBEのインストールを開始します。"
+
+msgid "tpl_800"
+msgstr ""
+"<span class='attention'>※認証キーは<a href='T_FIELD' target='_blank'>EC-CUBE"
+"オーナーズストア</a>で取得できます。</span>"
+
+msgid "tpl_801"
+msgstr ""
+"<a href='T_FIELD_01T_FIELD_02T_FIELD_03'>管理画面</a>にログインできます。"
 
 msgid "-"
 msgstr "～"

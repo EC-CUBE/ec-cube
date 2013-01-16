@@ -31,7 +31,7 @@
         <h2><!--{t string="tpl_737"}--></h2>
   </div>
   <div class="result-info02">
-        <p><a href="<!--{$tpl_sslurl}--><!--{$smarty.const.ADMIN_DIR}--><!--{$smarty.const.DIR_INDEX_PATH}-->">管理画面</a>にログインできます。<br />
+        <p><!--{t string="tpl_801" escape="none" T_FIELD_01=$tpl_sslurl T_FIELD_02=$smarty.const.ADMIN_DIR T_FIELD_03=$smarty.const.DIR_INDEX_PATH}--><br />
         <!--{t string="tpl_738"}--></p>
   </div>
 </div>
