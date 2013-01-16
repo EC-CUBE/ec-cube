@@ -197,7 +197,7 @@ switch ($mode) {
         }
 
         //マスターデータのキャッシュを削除
-        $cache_dir = '../../data/cache/';
+        $cache_dir = DATA_REALDIR . 'cache/';
         $res_dir = opendir($cache_dir);
         while ($file_name = readdir($res_dir)){
             //dummy以外は削除
