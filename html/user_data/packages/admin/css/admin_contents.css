@@ -378,6 +378,38 @@ a.btn-action-m:visited {
     -moz-border-radius: 5px;
 }
 
+/*ツールボタン (オレンジ)*/
+.btn-tool-format02,
+a.btn-tool-format02:link,
+a.btn-tool-format02:visited {
+    padding: 0 6px;
+    border: solid 1px #FFA801;
+    display: inline-block;
+    color: #393B57;
+    background: url('../img/button/orange-grad.png') repeat-x #eee;
+    background-origin: padding-box;
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: #c9cbcb;
+    font-weight: bold;
+    font-size: 90%;
+    text-decoration: none;
+    cursor: pointer;
+
+    /* CSS3 radius */
+    border-radius: 4px;
+    /* Safari, Chrome radius */
+    -webkit-box-sizing: content-box;
+    -webkit-border-radius: 4px;
+    /* Firefox radius */
+    -moz-border-radius: 4px;
+    /* Safari, Chrome radius */
+    -webkit-box-sizing: content-box;
+    -webkit-border-radius: 4px;
+    /* Firefox radius */
+    -moz-border-radius: 4px;
+}
+
 
 /*戻るボタン*/
 .btn-action .btn-prev {
@@ -408,6 +440,10 @@ a.btn-tool:hover {
 a.btn-tool-format:hover {
     border: solid 1px #363a47;
     color: #6b728b;
+}
+a.btn-tool-format02:hover {
+    border: solid 1px #977742;
+    color: #6b5f53;
 }
 
 a.btn:active,
@@ -482,7 +518,7 @@ a:hover {
 #site-check p.info {
     padding-top: 16px;
     float: left;
-    width: 580px;
+    width: 400px;
     color: #fff;
     font-size: 80%;
 }
@@ -495,6 +531,16 @@ a:hover {
 #site-check ul li {
     margin-right: 10px;
     float: left;
+}
+
+#site-check ul li.bt_forum {
+	padding-right: 14px;
+	margin-right: 0;
+	border-right: 1px solid #343845;
+}
+#site-check ul li.bt_checksite {
+	padding-left: 13px;
+	border-left: 1px solid #717585;
 }
 
 
@@ -1057,6 +1103,17 @@ body > #container {
     width: 280px;
 }
 
+#home-info .banner {
+	padding-bottom: 10px;
+}
+#home-info .banner p {
+	text-align: right;
+	padding-bottom: 10px;
+}
+#home-info .banner p a:hover img {
+	opacity:0.8;
+	filter: alpha(opacity=80);
+}
 .home-info-item {
     margin: 0 0 15px 20px;
     width: 260px;

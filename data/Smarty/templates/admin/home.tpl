@@ -26,6 +26,8 @@
 
     <!--{* お知らせここから *}-->
     <div id="home-info">
+		<div class="banner">
+		<p><a href="http://en.ec-cube.net/forum/" target="_blank"><img src="<!--{$TPL_URLPATH}-->img/banner/bnr_user_forums.jpg" /></a></p></div>
         <!--{foreach item=info from=$arrInfo}-->
             <dl class="home-info-item">
                 <dt class="date"><!--{$info.disp_date|sfDispDBDate:false|h}--></dt>

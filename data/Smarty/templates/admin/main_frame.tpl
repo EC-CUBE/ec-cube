@@ -93,7 +93,8 @@
         <div id="site-check">
             <p class="info"><!--{t string="tpl_542" escape="none" T_FIELD=$smarty.session.login_name|h}--></p>
             <ul>
-                <li><a href="<!--{$smarty.const.HTTP_URL}--><!--{$smarty.const.DIR_INDEX_PATH}-->" class="btn-tool-format" target="_blank"><span><!--{t string="tpl_553"}--></span></a></li>
+                <li class="bt_forum"><a href="http://en.ec-cube.net/forum/" class="btn-tool-format02" target="_blank"><span>USER FORUMS</span></a></li>
+                <li class="bt_checksite"><a href="<!--{$smarty.const.HTTP_URL}--><!--{$smarty.const.DIR_INDEX_PATH}-->" class="btn-tool-format" target="_blank"><span><!--{t string="tpl_553"}--></span></a></li>
                 <li><a href="<!--{$smarty.const.ADMIN_LOGOUT_URLPATH}-->" class="btn-tool-format"><!--{t string="tpl_543"}--></a></li>
             </ul>
         </div>
