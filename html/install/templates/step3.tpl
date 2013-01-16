@@ -25,7 +25,7 @@
     function fnModeSubmit(mode) {
         switch(mode) {
         case 'drop':
-            if(!window.confirm('<!--{t string="tpl_783"}-->')){
+            if(!window.confirm('<!--{t string="tpl_783" escape="j"}-->')){
                 return;
             }
             break;
