@@ -1807,13 +1807,13 @@ class SC_Utils {
      */
     function getUnitDataSize($data){
 
-        if(CSV_SIZE < 1000){
-            $data = CSV_SIZE . "KB";
-        }elseif(CSV_SIZE < 1000000){ 
-            $data = CSV_SIZE/1000 . "MB";
+        if($data < 1000){
+            $return = $data . "KB";
+        }elseif($data < 1000000){ 
+            $return = $data/1000 . "MB";
         }else{
-            $data = CSV_SIZE/1000000 . "GB";
+            $return = $data/1000000 . "GB";
         }
-        return $data;
+        return $return;
     }
 }
