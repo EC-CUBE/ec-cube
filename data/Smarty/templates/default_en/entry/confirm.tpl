@@ -23,8 +23,8 @@
 <div id="undercolumn">
     <div id="undercolumn_entry">
         <h2 class="title"><!--{$tpl_title|h}--></h2>
-        <p>Do you want to send the contents below?<br />
-           Click the "Register as a member" button at the bottom.</p>
+        <p>Please confirm the information below.<br />
+          When finished, please click the "Register" button at the bottom of the page.</p>
         <form name="form1" id="form1" method="post" action="?">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="complete">
@@ -133,7 +133,7 @@
                     <a class="bt04" href="?" onclick="fnModeSubmit('return', '', ''); return false;">Go back</a>
                 </li>
                 <li>
-					<button class="bt02 bt_wide">Register as a member</button>
+					<button class="bt02 bt_wide">Register</button>
                 </li>
             </ul>
         </div>

@@ -28,9 +28,10 @@
     <div id="mycontents_area">
         <h3><!--{$tpl_subtitle|h}--></h3>
         <div id="complete_area">
-            <div class="message">The withdrawal procedure is complete.<br />
+        <div class="message">The cancelation request is now complete.<br />
                 Thank you for using MY page. <br />
                 We look forward to your business in the future.
+
             </div>
 
             <div class="shop_information">

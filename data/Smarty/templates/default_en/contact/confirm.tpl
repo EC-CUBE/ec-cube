@@ -23,8 +23,8 @@
 <div id="undercolumn">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
     <div id="undercolumn_contact">
-        <p>Do you want to send the input contents below?<br />
-           Click the "To completion page" button at the bottom</p>
+        <p>Do you want to send the contents below?<br />
+           Click the "Send" button at the bottom of the page.</p>
         <form name="form1" id="form1" method="post" action="?">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="complete" />
@@ -37,7 +37,7 @@
             <col width="30%" />
             <col width="70%" />
             <tr>
-                <th>Name<span class="attention">*</span></th>
+                <th>First Name<span class="attention">*</span></th>
                 <td><!--{$arrForm.name01.value|h}--> <!--{$arrForm.name02.value|h}--></td>
             </tr>
             <tr>

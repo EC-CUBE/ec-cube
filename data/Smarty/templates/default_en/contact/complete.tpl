@@ -24,9 +24,9 @@
     <h2 class="title"><!--{$tpl_title|h}--></h2>
     <div id="undercolumn_contact">
         <div id="complete_area">
-            <p class="message">The details of your inquiry have been sent.</p>
+            <p class="message">You inquiry has been sent.</p>
             <p>
-                In the event that a response mail is not received, there may be a problem.<br /> Please make another inquiry or inquire by phone.<br />
+                In the event that you do not recieve a confirmation e-mail, <br /> please send it again or inquire by phone.<br />
                 We look forward to doing business with you again in the future.
             </p>
             <div class="shop_information">

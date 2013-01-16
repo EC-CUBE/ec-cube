@@ -33,7 +33,7 @@
             <div class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></div>
         <!--{/if}-->
         Last name&nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1]|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->;" class="box120" />&nbsp;
-        Name&nbsp;<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2]|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->;" class="box120" />
+        First Name&nbsp;<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2]|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->;" class="box120" />
     </td>
 </tr>
 <tr>
@@ -57,7 +57,7 @@
         <p class="top">
         <!--{* &nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1]|h}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;" class="box60" />&nbsp;-&nbsp;<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2]|h}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: disabled;" class="box60" />&nbsp; *}-->
         &nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1]|h}-->" maxlength="<!--{$smarty.const.ZIPCODE_LEN}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;" class="box60" />&nbsp;
-        <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="mini">Postal code search</span></a>
+        <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="mini">Find postal code</span></a>
         </p>
         
         <!--{*
@@ -116,7 +116,7 @@
             <!--{/if}-->
             <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1]|h}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;" class="box300 top" /><br />
             <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2]|h}-->" style="<!--{$arrErr[$key1]|cat:$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: disabled;" class="box300" /><br />
-            <span class="attention mini">Input twice for confirmation</span>
+            <span class="attention mini">Please enter email address twice</span>
         </td>
     </tr>
     <!--{if $emailMobile}-->
@@ -130,7 +130,7 @@
                 <!--{/if}-->
                 <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1]|h}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" class="box300 top" /><br />
                 <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2]|h}-->" style="<!--{$arrErr[$key1]|cat:$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: disabled;" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" class="box300" /><br />
-                <span class="attention mini">Input twice for confirmation</span>
+                <span class="attention mini">Please enter password twice.</span>
             </td>
         </tr>
     <!--{/if}-->
@@ -169,13 +169,13 @@
             <!--{/if}-->
             <select name="year" style="<!--{$errBirth|sfGetErrorColor}-->">
                 <!--{html_options options=$arrYear selected=$arrForm.year|default:''}-->
-            </select>年
+            </select>Year
             <select name="month" style="<!--{$errBirth|sfGetErrorColor}-->">
                 <!--{html_options options=$arrMonth selected=$arrForm.month|default:''}-->
-            </select>月
+            </select>Month
             <select name="day" style="<!--{$errBirth|sfGetErrorColor}-->">
                 <!--{html_options options=$arrDay selected=$arrForm.day|default:''}-->
-            </select>日
+            </select>Day
         </td>
     </tr>
     <!--{if $flgFields > 2}-->
@@ -187,9 +187,9 @@
                     <div class="attention"><!--{$arrErr.password}--><!--{$arrErr.password02}--></div>
                 <!--{/if}-->
                 <input type="password" name="password" value="<!--{$arrForm.password|h}-->" maxlength="<!--{$smarty.const.PASSWORD_MAX_LEN}-->" style="<!--{$arrErr.password|sfGetErrorColor}-->" class="box120" />
-                <p><span class="attention mini">Please use half-width alphanumeric characters <!--{$smarty.const.PASSWORD_MIN_LEN}--> to <!--{$smarty.const.PASSWORD_MAX_LEN}--> characters. (Symbols cannot be used)</span></p>
+                <p><span class="attention mini">Letters and numbers only. Must be between <!--{$smarty.const.PASSWORD_MIN_LEN}--> to <!--{$smarty.const.PASSWORD_MAX_LEN}--> characters. (Symbols cannot be used)</span></p>
                 <input type="password" name="password02" value="<!--{$arrForm.password02|h}-->" maxlength="<!--{$smarty.const.PASSWORD_MAX_LEN}-->" style="<!--{$arrErr.password|cat:$arrErr.password02|sfGetErrorColor}-->" class="box120" />
-                <p><span class="attention mini">Input twice for confirmation</span></p>
+                <p><span class="attention mini">Please enter password twice.</span></p>
             </td>
         </tr>
         <tr>
@@ -216,7 +216,7 @@
                 <span style="<!--{$arrErr.mailmaga_flg|sfGetErrorColor}-->">
                     <input type="radio" name="mailmaga_flg" value="1" id="html" <!--{if $arrForm.mailmaga_flg eq 1}--> checked="checked" <!--{/if}--> /><label for="html">Receive HTML mail + text mail</label><br />
                     <input type="radio" name="mailmaga_flg" value="2" id="text" <!--{if $arrForm.mailmaga_flg eq 2}--> checked="checked" <!--{/if}--> /><label for="text">Receive a text mail</label><br />
-                    <input type="radio" name="mailmaga_flg" value="3" id="no" <!--{if $arrForm.mailmaga_flg eq 3}--> checked="checked" <!--{/if}--> /><label for="no">Not accepted</label>
+                    <input type="radio" name="mailmaga_flg" value="3" id="no" <!--{if $arrForm.mailmaga_flg eq 3}--> checked="checked" <!--{/if}--> /><label for="no">Do not send an email</label>
                 </span>
             </td>
         </tr>

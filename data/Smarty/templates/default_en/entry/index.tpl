@@ -38,7 +38,7 @@
             <div class="btn_area">
                 <ul>
                     <li>
-                        <button class="bt02">To confirmation page</button>
+                        <button class="bt02">Confirm</button>
                     </li>
                 </ul>
             </div>

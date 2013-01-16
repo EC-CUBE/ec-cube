@@ -40,7 +40,7 @@ Thank you for your interest in registering as a member.
 Currently, your status is that of a temporary member. 
    ~~~~~~
 To complete member registration, please access the URL below. 
-*Customer information that is input will be protected 
+*Customer information will be protected 
 based on SSL encryption. 
 
 <!--{$smarty.const.HTTPS_URL}-->regist/<!--{$smarty.const.DIR_INDEX_PATH}-->?mode=regist&id=<!--{$uniqid}--><!--{$etc_value}-->

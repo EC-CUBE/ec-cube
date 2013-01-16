@@ -79,7 +79,7 @@
             <br />
 
         <!--{else}-->
-            <p>There are no favorites registered.</p>
+            <p>There are no favorites saved.</p>
         <!--{/if}-->
         </form>
     </div>

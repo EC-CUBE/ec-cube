@@ -23,7 +23,7 @@
 <div id="undercolumn">
     <div id="undercolumn_order">
         <h2 class="title"><!--{$tpl_title|h}--></h2>
-        <table summary="Legal-based notation related to specified commercial transactions">
+        <table summary="Shipping details and legal information">
             <col width="20%" />
             <col width="80%" />
             <tr>
@@ -56,7 +56,7 @@
                 <td><a href="<!--{$arrOrder.law_url|h}-->"><!--{$arrOrder.law_url|h}--></a></td>
             </tr>
             <tr>
-                <th>Necessary expenses other than for the product</th>
+                <th>Other expenses</th>
                 <td><!--{$arrOrder.law_term01|h|nl2br}--></td>
             </tr>
             <tr>

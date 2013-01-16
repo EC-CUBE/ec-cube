@@ -222,7 +222,7 @@
 
         <br />
 
-        <h3>E-mail delivery history list</h3>
+        <h3>E-mail delivery history</h3>
         <table>
             <tr>
                 <th class="alignC">Processing date</th>

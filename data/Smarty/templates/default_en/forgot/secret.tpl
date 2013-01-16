@@ -23,13 +23,13 @@
 <!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_header.tpl" subtitle="If you have forgotten your password (confirmation page)"}-->
 
 <div id="window_area">
-    <h2>Password reissuance   Confirmation of secret question</h2>
+    <h2>Receive new password   Confirmation of secret question</h2>
     <p class="information">
-        Respond to the question below for which you provided an answer at the time of registration, and click the "Next" button.<br />
-        * If you have forgotten your answer to the question below, contact <a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->"><!--{$arrSiteInfo.email02|escape:'hexentitiy'}--></a>.<br />
+       Please respond to the security question you set during registration. When finished, click the "Next" button.<br />
+        * If you have forgotten the answer, contact <a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->"><!--{$arrSiteInfo.email02|escape:'hexentitiy'}--></a>.<br />
     </p>
     <p class="message">
-        [Important] You will be issued a new password, and you will not be able to use your old password.</p>
+        [Important]  You will be receiving a new password.  You will no longer be able to use your old password.</p>
     </p>
     <form action="?" method="post" name="form1">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />

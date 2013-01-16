@@ -24,7 +24,7 @@
 <div id="header_wrap">
     <div id="header" class="clearfix">
         <div id="logo_area">
-            <p id="site_description">Only with EC-CUBE! Cubic gourmet food, found by traveling throughout the world, delivered to you directly from Cube Captain!</p>
+            <p id="site_description">The Cube Captain has traveled around the world to bring you Cubic gourmet food. Buy it directly from the Captain! Made possible only with EC-CUBE!</p>
             <h1>
                 <a href="<!--{$smarty.const.TOP_URLPATH}-->"><img src="<!--{$TPL_URLPATH}-->img/common/logo.gif" alt="EC-CUBE ONLINE SHOPPING SITE" /><span><!--{$arrSiteInfo.shop_name|h}-->/<!--{$tpl_title|h}--></span></a>
             </h1>
@@ -50,10 +50,14 @@
             <div id="header_navi">
                 <ul>
                     <li class="mypage">
-                        <a href="<!--{$smarty.const.HTTPS_URL}-->mypage/login.php">MY page</a>
+                    <a href="<!--{$smarty.const.HTTPS_URL}-->mypage/login.php">MY page</a>
                     </li>
                     <li class="entry">
-                        <a href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php">Member registration</a>
+					<!--{if $smarty.const.MEMBERS_CONTRACT === true}-->
+                       <a href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php">Member registration</a>
+                    <!--{else}-->
+                        <a href="<!--{$smarty.const.ROOT_URLPATH}-->entry/">Member registration</a>
+                    <!--{/if}-->
                     </li>
                     <li class="view_basket">
                         <a href="<!--{$smarty.const.CART_URLPATH}-->"><img src="<!--{$TPL_URLPATH}-->img/button/icon_cart.png" alt="" />View Cart</a>

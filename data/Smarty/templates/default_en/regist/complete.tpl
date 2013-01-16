@@ -25,7 +25,7 @@
         <h2 class="title"><!--{$tpl_title|h}--></h2>
         <div id="complete_area">
             <p class="message">Registration is complete.<br />
-                Please enjoy your shopping.</p>
+                Please enjoy shopping.</p>
 
             <p>We look forward to doing business with you again in the future.</p>
 
@@ -38,7 +38,7 @@
             <div class="btn_area">
                 <ul>
                     <li>
-                        <a class="bt02" href="<!--{$smarty.const.TOP_URLPATH}-->">To top page</a>
+                        <a class="bt02" href="<!--{$smarty.const.TOP_URLPATH}-->">Home</a>
                     </li>
                 </ul>
             </div>

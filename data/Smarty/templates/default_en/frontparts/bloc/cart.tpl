@@ -25,8 +25,8 @@
     <h2 class="cart"><img src="<!--{$TPL_URLPATH}-->img/title/icon_bloc_cart.gif" alt="" /><span class="title">Cart</span></h2>
         <div class="block_body">
             <div class="information">
-                <p class="item">Total quantity:<span class="attention"><!--{$arrCartList.0.TotalQuantity|number_format|default:0}--></span></p>
-                <p class="total">Product amount:<span class="price">&#36; <!--{$arrCartList.0.ProductsTotal|number_format|default:0}--></span></p>
+                <p class="item">Items in cart:<span class="attention"><!--{$arrCartList.0.TotalQuantity|number_format|default:0}--></span></p>
+                <p class="total">Total amount:<span class="price">&#36; <!--{$arrCartList.0.ProductsTotal|number_format|default:0}--></span></p>
                 <!--{*************************************
                      * カゴの中に商品がある場合にのみ表示
                      * 複数の商品種別が存在する場合は非表示

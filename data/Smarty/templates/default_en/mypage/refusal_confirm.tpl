@@ -32,17 +32,16 @@
     <div id="mycontents_area">
         <h3><!--{$tpl_subtitle|h}--></h3>
         <div id="complete_area">
-            <div class="message">Do you want to execute the withdrawal procedure?</div>
+            <div class="message">Do you want to cancel your membership?</div>
             <div class="message_area">
                 <div class="btn_area">
-                    <p>退会手続きが完了した時点で、現在保存されている購入履歴や、<br />
-                    お届け先等の情報はすべてなくなりますのでご注意ください。</p>
+                    <p>Purchase history and delivery information will be deleted.</p>
                     <ul>
                         <li>
-                            <a class="bt02 bt_wide" href="./refusal.php">No, I do not wish to withdraw my membership.</a>
+                            <a class="bt02 bt_wide" href="./refusal.php">No</a>
                         </li>
                         <li>
-							<button class="bt04 bt_wide">Yes, I want to withdraw my membership</button>
+							<button class="bt04 bt_wide">Yes, I want to cancel my membership</button>
 						</li>
                     </ul>
                 </div>

@@ -80,13 +80,17 @@
                 <div class="btn_area">
                     <ul>
                         <li>
-                            <a class="bt02" href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php">Register as a member</a>
+								<!--{if $smarty.const.MEMBERS_CONTRACT === true}-->
+                         <a class="bt02" href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php">Register as a member</a>
+                    <!--{else}-->
+                          <a class="bt02" href="<!--{$smarty.const.ROOT_URLPATH}-->entry">Register as a member</a>
+                    <!--{/if}-->
                         </li>
                     </ul>
                 </div>
             </div>
 
-            <h4>Proceed to purchasing procedure without registering as a member</h4>
+            <h4>Proceed to purchase items without registering as a member</h4>
             <p class="inputtext">If you want to continue the purchasing procedure without registering as a member, proceed from below.</p>
             <form name="member_form2" id="member_form2" method="post" action="?">
             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -95,7 +99,7 @@
                 <div class="btn_area">
                     <ul>
                         <li>
-							<button class="bt02">To purchase procedure</button>
+							<button class="bt02">Purchase without an account</button>
                         </li>
                     </ul>
                 </div>

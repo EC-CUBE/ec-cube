@@ -27,8 +27,8 @@
     <!--{include file=$tpl_navi}-->
     <div id="mycontents_area">
         <h3><!--{$tpl_subtitle|h}--></h3>
-        <p>Do you want to send the contents below?<br />
-           Click the "To completion page" button at the bottom</p>
+        <p>Do you want to send the information below?<br />
+           Click the "Send" button at the bottom of the page</p>
 
         <form name="form1" id="form1" method="post" action="?">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />

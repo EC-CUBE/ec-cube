@@ -27,7 +27,7 @@
         <h2 class="title"><!--{$tpl_title|h}--></h2>
         <p>
             <!--{if $arrSiteInfo.company_name != ''}--><!--{$arrSiteInfo.company_name|h}-->は、<!--{/if}-->
-            個人情報保護の重要性に鑑み、「個人情報の保護に関する法律」及び本プライバシーポリシーを遵守し、お客さまのプライバシー保護に努めます。
+           <!-- 個人情報保護の重要性に鑑み、「個人情報の保護に関する法律」及び本プライバシーポリシーを遵守し、お客さまのプライバシー保護に努めます。-->
         </p>
         <br />
         <p class="message">Definition of personal information</p>

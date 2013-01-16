@@ -97,16 +97,16 @@
         <div class="pagenumber_area clearfix">
             <div class="change">
                 <!--{if $orderby != 'price'}-->
-                    <a href="javascript:fnChangeOrderby('price');">Price order</a>
+                    <a href="javascript:fnChangeOrderby('price');">By price </a>
                 <!--{else}-->
-                    <strong>Price order</strong>
+                    <strong>By price</strong>
                 <!--{/if}-->&nbsp;
                 <!--{if $orderby != "date"}-->
                         <a href="javascript:fnChangeOrderby('date');">Recent</a>
                 <!--{else}-->
                     <strong>Recent</strong>
                 <!--{/if}-->
-                Number of items displayed
+                Items displayed
                 <select name="disp_number" onchange="javascript:fnChangeDispNumber(this.value);">
                     <!--{foreach from=$arrPRODUCTLISTMAX item="dispnum" key="num"}-->
                         <!--{if $num == $disp_number}-->
@@ -240,7 +240,7 @@
                             <div class="cartin_btn">
                                 <!--★カゴに入れる★-->
                                 <div id="cartbtn_default_<!--{$id}-->">
-									<button class="bt03" onclick="fnInCart(this.form); return false;">Place in basket</button>
+									<button class="bt03" onclick="fnInCart(this.form); return false;">Place in cart</button>
                                 </div>
                                 <div class="attention" id="cartbtn_dynamic_<!--{$id}-->"></div>
                             </div>

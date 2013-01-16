@@ -26,8 +26,8 @@
 
 <div id="window_area">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
-    <p>Input the items below. "<span class="attention">*</span>" indicates that the item is required.<br />
-       After inputting, cluck the "Register" button at the bottom.</p>
+    <p>Please fill out the items below. "<span class="attention">*</span>" indicates that the item is required.<br />
+       When finished, please click the "Register" button at the bottom of the page.</p>
 
     <form name="form1" id="form1" method="post" action="?">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />

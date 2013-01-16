@@ -27,7 +27,7 @@
     <!--{include file=$tpl_navi}-->
     <div id="mycontents_area">
         <h3><!--{$tpl_subtitle|h}--></h3>
-        <p class="inforamtion">Can be used when sending to an address other than a registered address.<br />
+        <p class="inforamtion">You can add multiple addresses here.<br />
         * Up to <span class="attention"><!--{$smarty.const.DELIV_ADDR_MAX|h}--> items</span>  can be registered.</p>
 
         <!--{if $tpl_linemax < $smarty.const.DELIV_ADDR_MAX}-->

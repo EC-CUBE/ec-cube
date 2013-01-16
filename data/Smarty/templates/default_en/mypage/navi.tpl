@@ -29,32 +29,32 @@
             <!--{* 会員状態 *}-->
             <!--{if $tpl_login}-->
                 <li><a href="./<!--{$smarty.const.DIR_INDEX_PATH}-->" class="<!--{if $tpl_mypageno == 'index'}--> selected<!--{/if}-->">
-                    Purchase history list</a></li>
+                    Purchase history</a></li>
                 <!--{if $smarty.const.OPTION_FAVORITE_PRODUCT == 1}-->
                     <li><a href="favorite.php" class="<!--{if $tpl_mypageno == 'favorite'}--> selected<!--{/if}-->">
-                        List of Favorites</a></li>
+                        Favorites</a></li>
                 <!--{/if}-->
                 <li><a href="change.php" class="<!--{if $tpl_mypageno == 'change'}--> selected<!--{/if}-->">
-                    Revision of member registration details</a></li>
+                    Edit registration details</a></li>
                 <li><a href="delivery.php" class="<!--{if $tpl_mypageno == 'delivery'}--> selected<!--{/if}-->">
-                    Add or change delivery destination</a></li>
+                    Delivery options</a></li>
                 <li><a href="refusal.php" class="<!--{if $tpl_mypageno == 'refusal'}--> selected<!--{/if}-->">
-                    Withdrawal procedure</a></li>
+                    Cancel membership</a></li>
 
             <!--{* 退会状態 *}-->
             <!--{else}-->
                 <li><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="<!--{if $tpl_mypageno == 'index'}--> selected<!--{/if}-->">
-                    Purchase history list</a></li>
+                    Purchase history</a></li>
                 <!--{if $smarty.const.OPTION_FAVORITE_PRODUCT == 1}-->
                     <li><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="<!--{if $tpl_mypageno == 'favorite'}--> selected<!--{/if}-->">
-                        List of Favorites</a></li>
+                        Favorites</a></li>
                 <!--{/if}-->
                 <li><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="<!--{if $tpl_mypageno == 'change'}--> selected<!--{/if}-->">
-                    Revision of member registration details</a></li>
+                    Edit registration details</a></li>
                 <li><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="<!--{if $tpl_mypageno == 'delivery'}--> selected<!--{/if}-->">
-                    Add or change delivery destination</a></li>
+                    Delivery options</a></li>
                 <li><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="<!--{if $tpl_mypageno == 'refusal'}--> selected<!--{/if}-->">
-                    Withdrawal procedure</a></li>
+                    Cancel membership</a></li>
             <!--{/if}-->
         </ul>
 

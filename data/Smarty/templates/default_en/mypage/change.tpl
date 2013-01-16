@@ -27,8 +27,8 @@
     <!--{include file=$tpl_navi}-->
     <div id="mycontents_area">
         <h3><!--{$tpl_subtitle|h}--></h3>
-        <p>Input the items below. "<span class="attention">*</span>" indicates that the item is required.<br />
-           After inputting, click the "To confirmation page" button at the bottom.</p>
+   <p>Please fill out the items below. "<span class="attention">*</span>" indicates that the item is required.<br />
+       When finished, please click the "Confirm" button at the bottom of the page.</p>
 
         <form name="form1" id="form1" method="post" action="?">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -40,7 +40,7 @@
         <div class="btn_area">
             <ul>
                 <li>
-                    <button class="bt02">To confirmation page</button>
+                    <button class="bt02">Confirm</button>
                 </li>
             </ul>
         </div>

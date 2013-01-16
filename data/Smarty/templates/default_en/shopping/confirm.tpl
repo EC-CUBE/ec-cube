@@ -30,7 +30,7 @@
             send = false;
             return true;
         } else {
-            alert("Please wait while processing is carried out.");
+            alert("Please wait while processing transaction.");
             return false;
         }
     }
@@ -57,7 +57,7 @@
         <h2 class="title"><!--{$tpl_title|h}--></h2>
 
         <p class="information">Do you want to send the order details below?<br />
-            Click the "<!--{if $use_module}-->Next<!--{else}-->To order completion page<!--{/if}-->" button.</p>
+            Click the "<!--{if $use_module}-->Next<!--{else}-->Completion page<!--{/if}-->" button.</p>
 
         <form name="form1" id="form1" method="post" action="?">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -73,7 +73,7 @@
 				<li><button class="bt02" onclick="return fnCheckSubmit();">Next</button></li>
 					
                     <!--{else}-->
-                <li><button class="bt02" onclick="return fnCheckSubmit();">To order completion page</button>
+                <li><button class="bt02" onclick="return fnCheckSubmit();">Completion page</button>
                 </li>
                 <!--{/if}-->
             </ul>
@@ -300,7 +300,7 @@
                 <li><button onclick="return fnCheckSubmit();" class="bt02">Next</button>
                 </li>
                 <!--{else}-->
-                <li><button class="bt02" onclick="return fnCheckSubmit();">To order completion page</button>
+                <li><button class="bt02" onclick="return fnCheckSubmit();">Completion page</button>
                 </li>
                 <!--{/if}-->
         </ul>

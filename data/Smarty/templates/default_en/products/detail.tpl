@@ -243,7 +243,7 @@
                     <div class="cartin_btn">
                         <div id="cartbtn_default">
                             <!--★カゴに入れる★-->
-                            <a class="bt03" href="javascript:void(document.form1.submit())">Place in basket</a>
+                            <a class="bt03" href="javascript:void(document.form1.submit())">Place in cart</a>
                         </div>
                     </div>
                 </div>
@@ -262,11 +262,11 @@
                     <!--{if !$is_favorite}-->
                         <a class="bt01" href="javascript:fnChangeAction('?product_id=<!--{$arrProduct.product_id|h}-->'); fnModeSubmit('add_favorite','favorite_product_id','<!--{$arrProduct.product_id|h}-->');">Add to Favorites</a>
                     <!--{else}-->
-                        <span class="bt01" name="add_favorite_product" id="add_favorite_product">Registered in Favorites</span>
+                        <span class="bt01" name="add_favorite_product" id="add_favorite_product">Already in favorites</span>
                         <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.tipsy.js"></script>
                         <script type="text/javascript">
                             var favoriteButton = $("#add_favorite_product");
-                            favoriteButton.tipsy({gravity: $.fn.tipsy.autoNS, fallback: "Registered in Favorites", fade: true });
+                            favoriteButton.tipsy({gravity: $.fn.tipsy.autoNS, fallback: "Already in favorites", fade: true });
 
                             <!--{if $just_added_favorite == true}-->
                             favoriteButton.load(function(){$(this).tipsy("show")});

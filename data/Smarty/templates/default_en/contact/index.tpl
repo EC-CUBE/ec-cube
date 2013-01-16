@@ -25,7 +25,7 @@
 
     <div id="undercolumn_contact">
 
-        <p>Depending on the contents, it may take some time to provide a response.<br />
+        <p>Depending on the inquiry, it may take some time to provide a response.<br />
         Please note that on holidays, your request will be handled the next business day or afterwards.</p>
 
         <form name="form1" method="post" action="?">
@@ -52,7 +52,7 @@
                         <!--{* <input type="text" name="zip01" class="box60" value="<!--{$arrForm.zip01.value|default:$arrData.zip01|h}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" style="<!--{$arrErr.zip01|sfGetErrorColor}-->; ime-mode: disabled;" />&nbsp;-&nbsp; *}-->
                         <!--{* <input type="text" name="zip02" class="box60" value="<!--{$arrForm.zip02.value|default:$arrData.zip02|h}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" style="<!--{$arrErr.zip02|sfGetErrorColor}-->; ime-mode: disabled;" /> *}-->
                         <input type="text" name="zipcode" class="box60" value="<!--{$arrForm.zipcode.value|default:$arrData.zipcode|h}-->" maxlength="<!--{$smarty.const.ZIPCODE_LEN}-->" style="<!--{$arrErr.zipcode|sfGetErrorColor}-->; ime-mode: disabled;" /> 
-                        <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="mini">Postal code search</span></a>
+                        <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="mini">Find postal code</span></a>
                     </p>
                     
                     <!--{*
@@ -105,7 +105,7 @@
             </tr>
             <tr>
                 <th>Details of inquiry<span class="attention">*</span><br />
-                <span class="mini">(<!--{$smarty.const.MLTEXT_LEN}--> two-byte characters or less)</span></th>
+                <span class="mini">(<!--{$smarty.const.MLTEXT_LEN}--> characters or less)</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.contents}--></span>
                     <textarea name="contents" class="box380" cols="60" rows="20" style="<!--{$arrErr.contents.value|h|sfGetErrorColor}-->;"><!--{"\n"}--><!--{$arrForm.contents.value|h}--></textarea>
@@ -117,7 +117,7 @@
         <div class="btn_area">
             <ul>
                 <li>
-					<button class="bt02">To confirmation page</button>
+					<button class="bt02">Confirm</button>
                 </li>
             </ul>
         </div>

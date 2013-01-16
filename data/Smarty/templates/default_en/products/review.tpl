@@ -25,10 +25,10 @@
 <!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_header.tpl" subtitle="Form for customer's opinion (input page)"}-->
 
 <div id="window_area">
-    <h2 class="title">Form for customer's opinion</h2>
+    <h2 class="title">Add an opinion</h2>
     <p class="windowtext">Please provide your opinions and thoughts regarding the product below.<br />
-        Items marked with "<span class="attention">*</span>" require input.<br />
-        After inputting, click the "To confirmation page" button at the very bottom.</p>
+        Items marked with "<span class="attention">*</span>" are required feilds.<br />
+        When finished, click the "Confirm" button at the very bottom.</p>
     <form name="form1" method="post" action="?">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="confirm" />
@@ -82,7 +82,7 @@
     </table>
     <div class="btn_area">
         <ul>
-            <li><button class="bt02">To confirmation page</button></li>
+            <li><button class="bt02">Confirm</button></li>
         </ul>
     </div>
     </form>

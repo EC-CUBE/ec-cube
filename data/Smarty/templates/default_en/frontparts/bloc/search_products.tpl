@@ -28,7 +28,7 @@
             <form name="search_form" id="search_form" method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
             <dl class="formlist">
-                <dt>Select from product category</dt>
+                <dt>Product categories</dt>
                 <dd><input type="hidden" name="mode" value="search" />
                 <select name="category_id" class="box145">
                     <option label="All products" value="">All products</option>
@@ -38,7 +38,7 @@
             </dl>
             <dl class="formlist">
                 <!--{if $arrMakerList}-->
-                <dt>Select from manufacturers</dt>
+                <dt>Manufacturers</dt>
                 <dd><select name="maker_id" class="box145">
                     <option label="All manufacturers" value="">All manufacturers</option>
                     <!--{html_options options=$arrMakerList selected=$maker_id}-->
@@ -47,7 +47,7 @@
             </dl>
             <dl class="formlist">
                 <!--{/if}-->
-                <dt>Enter the product name</dt>
+                <dt>Product name</dt>
                 <dd><input type="text" name="name" class="box140" maxlength="50" value="<!--{$smarty.get.name|h}-->" /></dd>
             </dl>
             <p class="btn">

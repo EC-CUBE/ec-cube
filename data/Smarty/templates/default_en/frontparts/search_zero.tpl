@@ -26,7 +26,7 @@
             <!--★エラーメッセージ-->
             <p class="error">
             <!--{if $smarty.get.mode == "search"}-->
-                The number of applicable items is <strong>0</strong>.<br />
+                The number of related items is <strong>0</strong>.<br />
                 Please search again using a different search keyword.
             <!--{else}-->
                 There are currently no products.

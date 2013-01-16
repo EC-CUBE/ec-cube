@@ -29,8 +29,8 @@
                 <!--{section name=cnt loop=$arrCal}-->
                     <!--{if $smarty.section.cnt.first}-->
                         <table>
-                            <caption class="month"><!--{$arrCal[cnt].year}-->年<!--{$arrCal[cnt].month}-->月の定休日</caption>
-                            <thead><tr><th>Sunday</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th></tr></thead>
+                            <caption class="month"><!--{$arrCal[cnt].year}-->/<!--{$arrCal[cnt].month}--> (Holidays)</caption>
+                            <thead><tr><th>Su</th><th>M</th><th>T</th><th>W</th><th>Th</th><th>F</th><th>Sa</th></tr></thead>
                     <!--{/if}-->
                     <!--{if $arrCal[cnt].first}-->
                         <tr>

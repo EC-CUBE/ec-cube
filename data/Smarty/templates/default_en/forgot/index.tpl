@@ -23,9 +23,8 @@
 <!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_header.tpl" subtitle="If you have forgotten your password (input page)"}-->
 
 <div id="window_area">
-    <h2>Password reissuance</h2>
-    <p class="information">Enter the e-mail address and the name that you registered, and click the "Next" button.<br />
-    <span class="attention">* A new password will be issued, and you will no longer be able to use your password.</span></p>
+    <h2>Retrieve Password</h2>
+    <p class="information">Please enter you registered e-mail address and name. When finished, click the 'Next' button.<br /> <span class="attention">*You will receive a new password and you will no longer be able to use your old password.</span></p>
     <form action="?" method="post" name="form1">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="mail_check" />
@@ -45,9 +44,8 @@
                     <!--{$errmsg}-->
                 </p>
                 <p>
-                    Name:&nbsp;
                     Last name&nbsp;<input type="text" class="box120" name="name01" value="<!--{$arrForm.name01|default:''|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name01|sfGetErrorColor}-->;" />
-                    Name&nbsp;<input type="text" class="box120" name="name02" value="<!--{$arrForm.name02|default:''|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name02|sfGetErrorColor}-->;" />
+                    First name&nbsp;<input type="text" class="box120" name="name02" value="<!--{$arrForm.name02|default:''|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name02|sfGetErrorColor}-->;" />
                 </p>
             </div>
         </div>

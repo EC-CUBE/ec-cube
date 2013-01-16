@@ -23,7 +23,7 @@
 <div id="undercolumn">
     <div id="undercolumn_entry">
         <h2 class="title"><!--{$tpl_title|h}--></h2>
-        <p class="message">[Important] Before carrying out member registration, please read the terms of use below.</p>
+        <p class="message">[Important] Before registering, please read the terms of use below.</p>
         <p>In the agreement, your rights and obligations pertaining to use of this service are stipulated.<br />
            When you click the "Agree, proceed to member registration" button, you are agreeing to all of the conditions of this agreement.
         </p>
@@ -38,7 +38,7 @@
                     <a href="<!--{$smarty.const.TOP_URLPATH}-->" class="bt04">Do not agree</a>
                 </li>
                 <li>
-                    <a href="<!--{$smarty.const.ENTRY_URL}-->" class="bt02 bt_wide">Agree and register as a member</a>
+                    <a href="<!--{$smarty.const.ENTRY_URL}-->" class="bt02 bt_wide">Agree</a>
                 </li>
             </ul>
         </div>

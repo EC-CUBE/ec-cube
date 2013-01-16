@@ -173,7 +173,7 @@
                 <!--{/if}-->
             </table>
                 <!--{if strlen($tpl_error) == 0}-->
-                    <p class="alignC">If the contents above are acceptable, click the "To purchasing procedure" button.</p>
+                    <p class="alignC">If you are finished shopping, please click the "Checkout" button.</p>
                 <!--{/if}-->
             <div class="btn_area">
                 <ul>
@@ -185,7 +185,7 @@
                     <li>
                         <!--{if strlen($tpl_error) == 0}-->
                             <input type="hidden" name="cartKey" value="<!--{$key}-->" />
-							<button class="bt02">To purchase procedure</button>
+							<button class="bt02">Checkout</button>
                         <!--{/if}-->
                     </li>
                 </ul>
@@ -194,7 +194,7 @@
         </div>
     <!--{/foreach}-->
     <!--{else}-->
-        <p class="empty"><span class="attention">* There are currently no products in your cart. </span></p>
+        <p class="empty"><span class="attention">* Your shopping cart is empty.  </span></p>
     <!--{/if}-->
     </div>
 </div>

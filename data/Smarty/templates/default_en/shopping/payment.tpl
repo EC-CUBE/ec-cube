@@ -139,7 +139,7 @@
             <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value}-->" id="deliv_id" />
         <!--{else}-->
         <div class="pay_area">
-            <h3>Designate delivery method</h3>
+            <h3>Delivery method</h3>
             <p>Select the delivery method.</p>
 
             <!--{if $arrErr[$key] != ""}-->
@@ -166,7 +166,7 @@
         <!--{/if}-->
 
         <div class="pay_area">
-            <h3>Designation of payment method</h3>
+            <h3>Payment method</h3>
             <p class="select-msg">Select the payment method.</p>
             <p class="non-select-msg">First, select the delivery method.</p>
 
@@ -205,7 +205,7 @@
 
         <!--{if $cartKey != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
         <div class="pay_area02">
-            <h3>Designation of delivery time</h3>
+            <h3>Delivery time</h3>
             <p class="select-msg">If you wish, please select a delivery time.</p>
             <p class="non-select-msg">First, select the delivery method.</p>
             <!--{foreach item=shippingItem name=shippingItem from=$arrShipping}-->
@@ -220,7 +220,7 @@
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 Delivery date:
                 <!--{if !$arrDelivDate}-->
-                    Designation is not possible.
+                    Date is not possible.
                 <!--{else}-->
                     <select name="<!--{$key}-->" id="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
                         <option value="" selected="">No designation</option>
@@ -245,7 +245,7 @@
         <!-- ▼ポイント使用 ここから -->
         <!--{if $tpl_login == 1 && $smarty.const.USE_POINT !== false}-->
             <div class="point_area">
-                <h3>Designated point usage</h3>
+                <h3>Point usage</h3>
                     <p>It is possible to use <span class="attention">1 point as &#036; <!--{$smarty.const.POINT_VALUE|number_format}--></span>.<br />
                        If using points, check the box next to "Use points" and enter the number of points you want to use.
                     </p>

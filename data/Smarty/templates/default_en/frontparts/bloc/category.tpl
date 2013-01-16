@@ -27,7 +27,7 @@
 //]]></script>
 <div class="block_outer">
     <div id="category_area">
-		<h2><img src="<!--{$TPL_URLPATH}-->img/title/icon_bloc_category.gif" alt="" /><span class="title">Product category</span></h2>
+		<h2><img src="<!--{$TPL_URLPATH}-->img/title/icon_bloc_category.gif" alt="" /><span class="title">Categories</span></h2>
         <div class="block_body">
             <!--{strip}-->
                 <ul id="categorytree">

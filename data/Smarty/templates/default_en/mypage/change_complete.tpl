@@ -30,7 +30,7 @@
 
         <div id="complete_area">
             <div class="message">
-                Revision of member registration details is complete.<br />
+               Registration details have been updated.<br />
             </div>
             <p>We look forward to doing business with you again in the future.</p>
         </div>

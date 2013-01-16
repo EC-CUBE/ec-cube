@@ -29,10 +29,10 @@
                     >About this site</a></li>
                 <li>
                     <a href="<!--{$smarty.const.HTTPS_URL}-->contact/<!--{$smarty.const.DIR_INDEX_PATH}-->" class="<!--{if $tpl_page_category == "contact"}--> selected<!--{/if}-->"
-                    >Inquiry</a></li>
+                    >Inquiries</a></li>
                 <li>
                     <a href="<!--{$smarty.const.ROOT_URLPATH}-->order/<!--{$smarty.const.DIR_INDEX_PATH}-->" class="<!--{if $tpl_page_category == "order"}--> selected<!--{/if}-->"
-                    >Notation related to specified commercial transactions</a></li>
+                    >Shipping and legal information</a></li>
                 <li>
                     <a href="<!--{$smarty.const.ROOT_URLPATH}-->guide/privacy.php" class="<!--{if $tpl_page_category == "order"}--> selected<!--{/if}-->"
                     >Privacy policy</a></li>

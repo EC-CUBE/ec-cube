@@ -25,7 +25,7 @@
 <div id="window_area">
     <h2 class="title">If you have forgotten your password</h2>
     <p class="information">A password has been issued. Use the password below when logging in.<br />
-        * The password below can be changed from "Change member registration details" on MY page.</p>
+        * The password below can be changed from "Edit registration details" on MY page.</p>
     <form action="?" method="post" name="form1">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <div id="forgot">

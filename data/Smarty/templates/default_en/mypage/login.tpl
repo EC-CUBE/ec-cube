@@ -32,7 +32,7 @@
 
         <div class="login_area">
             <h3>Customers who have already completed member registration</h3>
-            <p class="inputtext">If you are a member, log in by using the e-mail address and password used during registration</p>
+            <p class="inputtext">If you are a member, please log in with your e-mail address and password.</p>
             <div class="inputbox">
                 <dl class="formlist clearfix">
                     <!--{assign var=key value="login_email"}-->
@@ -43,7 +43,7 @@
                         <p class="login_memory">
                             <!--{assign var=key value="login_memory"}-->
                             <input type="checkbox" name="<!--{$key}-->" value="1"<!--{$tpl_login_memory|sfGetChecked:1}--> id="login_memory" />
-                            <label for="login_memory">Have the computer memorize your e-mail address</label>
+                            <label for="login_memory">Remember e-mail address</label>
                         </p>
                     </dd>
                 </dl>
@@ -66,21 +66,26 @@
                 </div>
             </div>
             <p>
-                * If you have forgotten your password, request for a password to be reissued from <a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->" onclick="win01('<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->','forget','600','460'); return false;" target="_blank">here</a>.<br />
-                * If you have forgotten your e-mail address, inquire from the <a href="<!--{$smarty.const.ROOT_URLPATH}-->contact/<!--{$smarty.const.DIR_INDEX_PATH}-->">Inquiry page</a>.
+                * Forgot your password? Please click <a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->" onclick="win01('<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->','forget','600','460'); return false;" target="_blank">here</a>.<br />
+                * Forgot your e-mail address? Please view the  <a href="<!--{$smarty.const.ROOT_URLPATH}-->contact/<!--{$smarty.const.DIR_INDEX_PATH}-->">Inquiry page</a>.
             </p>
         </div>
 
         <div class="login_area">
-            <h3>Customers who have not yet registered as a member</h3>
-            <p class="inputtext">When you register as a member, you can use the convenient MY page.<br />
+            <h3>Customers who have not yet registered</h3>
+            <p class="inputtext">After you register as a member, you can access MY page.<br />
                 By simply logging in, you can enjoy shopping without having to enter your name and address each time.
             </p>
             <div class="inputbox">
                 <div class="btn_area">
                     <ul>
                         <li>
-                            <a class="bt02 bt_wide" href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php">Register as a member</a>
+						<!--{if $smarty.const.MEMBERS_CONTRACT === true}-->
+                        <a class="bt02 bt_wide" href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php">Register as a member</a>
+                    <!--{else}-->
+                         <a class="bt02 bt_wide" href="<!--{$smarty.const.ROOT_URLPATH}-->entry">Register as a member</a>
+                    <!--{/if}-->
+                           
                         </li>
                     </ul>
                 </div>

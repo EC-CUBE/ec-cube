@@ -32,7 +32,7 @@
                     <p>Welcome<br />
                         <span class="user_name"><!--{$tpl_name1|h}--> <!--{$tpl_name2|h}--></span><br />
                         <!--{if $smarty.const.USE_POINT !== false}-->
-                            Points in possession:<span class="point"> <!--{$tpl_user_point|number_format|default:0}--> pt</span>
+                            Points:<span class="point"> <!--{$tpl_user_point|number_format|default:0}--> pt</span>
                         <!--{/if}-->
                     </p>
                     <!--{if !$tpl_disable_logout}-->
@@ -48,7 +48,7 @@
                         </dd>
                         <dd class="mini">
                             <input type="checkbox" name="login_memory" id="login_memory" value="1" <!--{$tpl_login_memory|sfGetChecked:1}--> />
-                            <label for="login_memory"><span>Record in computer</span></label>
+                            <label for="login_memory"><span>Remember password</span></label>
                         </dd>
                     </dl>
                     <dl class="formlist">
