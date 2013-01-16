@@ -36,7 +36,7 @@ class SC_Helper_Purchase_cancelOrderTest extends SC_Helper_Purchase_TestBase {
 
   protected function setUp() {
     parent::setUp();
-
+    $this->setUpProductClass();
     $this->helper = new SC_Helper_Purchase_cancelOrderMock();
   }
 
@@ -54,7 +54,7 @@ class SC_Helper_Purchase_cancelOrderTest extends SC_Helper_Purchase_TestBase {
     $this->actual['testResult'] = $_SESSION['testResult'];
     $this->actual['productClass'] = $this->objQuery->select(
       'stock', 'dtb_products_class',
-      'product_class_id = ?', array('1001')
+      'product_class_id in (?, ?)', array('1001', '1002')
     );
     $this->expected = array(
       'testResult' => array(
@@ -69,11 +69,10 @@ class SC_Helper_Purchase_cancelOrderTest extends SC_Helper_Purchase_TestBase {
         )
       ),
       'productClass' => array(
-        array('stock') => '105',
-        array('stock') => '51'
+        array('stock' => '105'),
+        array('stock' => '51')
       )
     );
-
     $this->verify();
   }
 
@@ -87,7 +86,7 @@ class SC_Helper_Purchase_cancelOrderTest extends SC_Helper_Purchase_TestBase {
     $this->actual['testResult'] = $_SESSION['testResult'];
     $this->actual['productClass'] = $this->objQuery->select(
       'stock', 'dtb_products_class',
-      'product_class_id = ?', array('1001')
+      'product_class_id in (?, ?)', array('1001', '1002')
     );
     $this->expected = array(
       'testResult' => array(
@@ -102,8 +101,8 @@ class SC_Helper_Purchase_cancelOrderTest extends SC_Helper_Purchase_TestBase {
         )
       ),
       'productClass' => array(
-        array('stock') => '105',
-        array('stock') => '51'
+        array('stock' => '105'),
+        array('stock' => '51')
       )
     );
 
@@ -119,7 +118,7 @@ class SC_Helper_Purchase_cancelOrderTest extends SC_Helper_Purchase_TestBase {
     $this->actual['testResult'] = $_SESSION['testResult'];
     $this->actual['productClass'] = $this->objQuery->select(
       'stock', 'dtb_products_class',
-      'product_class_id = ?', array('1001')
+      'product_class_id in (?, ?)', array('1001', '1002')
     );
     $this->expected = array(
       'testResult' => array(
@@ -135,8 +134,8 @@ class SC_Helper_Purchase_cancelOrderTest extends SC_Helper_Purchase_TestBase {
         )
       ),
       'productClass' => array(
-        array('stock') => '105',
-        array('stock') => '51'
+        array('stock' => '105'),
+        array('stock' => '51')
       )
     );
 
