@@ -32,8 +32,8 @@
         <!--{if $arrErr[$key1] || $arrErr[$key2]}-->
             <div class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></div>
         <!--{/if}-->
-        Last name&nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1]|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: active;" class="box120" />&nbsp;
-        Name&nbsp;<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2]|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: active;" class="box120" />
+        Last name&nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1]|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->;" class="box120" />&nbsp;
+        Name&nbsp;<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2]|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->;" class="box120" />
     </td>
 </tr>
 <tr>
@@ -74,9 +74,9 @@
         <!--{if $arrErr[$key4] || $arrErr[$key5]}-->
             <div class="attention"><!--{$arrErr[$key4]}--><!--{$arrErr[$key5]}--></div>
         <!--{/if}-->
-        <p class="top"><input type="text" name="<!--{$key4}-->" value="<!--{$arrForm[$key4]|h}-->" class="box300" style="<!--{$arrErr[$key4]|sfGetErrorColor}-->; ime-mode: active;" /><br />
+        <p class="top"><input type="text" name="<!--{$key4}-->" value="<!--{$arrForm[$key4]|h}-->" class="box300" style="<!--{$arrErr[$key4]|sfGetErrorColor}-->;" /><br />
             <!--{$smarty.const.SAMPLE_ADDRESS1}--></p>
-        <p class="top"><input type="text" name="<!--{$key5}-->" value="<!--{$arrForm[$key5]|h}-->" class="box300" style="<!--{$arrErr[$key5]|sfGetErrorColor}-->; ime-mode: active;" /><br />
+        <p class="top"><input type="text" name="<!--{$key5}-->" value="<!--{$arrForm[$key5]|h}-->" class="box300" style="<!--{$arrErr[$key5]|sfGetErrorColor}-->;" /><br />
             <!--{$smarty.const.SAMPLE_ADDRESS2}--></p>
         <p class="mini"><span class="attention">Separate the address into two fields. Make sure to write down the building name.</span></p>
     </td>
@@ -204,7 +204,7 @@
                     <!--{html_options options=$arrReminder selected=$arrForm.reminder}-->
                 </select>
                 <br />
-                Answer:<input type="text" name="reminder_answer" value="<!--{$arrForm.reminder_answer|h}-->" style="<!--{$arrErr.reminder_answer|sfGetErrorColor}-->; ime-mode: active;" class="box260" />
+                Answer:<input type="text" name="reminder_answer" value="<!--{$arrForm.reminder_answer|h}-->" style="<!--{$arrErr.reminder_answer|sfGetErrorColor}-->;" class="box260" />
             </td>
         </tr>
         <tr>

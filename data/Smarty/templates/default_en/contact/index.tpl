@@ -37,8 +37,8 @@
                 <th>Name<span class="attention">*</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.name01}--><!--{$arrErr.name02}--></span>
-                    Last name&nbsp;<input type="text" class="box120" name="name01" value="<!--{$arrForm.name01.value|default:$arrData.name01|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name01|sfGetErrorColor}-->; ime-mode: active;" /> 
-                    Name&nbsp;<input type="text" class="box120" name="name02" value="<!--{$arrForm.name02.value|default:$arrData.name02|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name02|sfGetErrorColor}-->; ime-mode: active;" />
+                    Last name&nbsp;<input type="text" class="box120" name="name01" value="<!--{$arrForm.name01.value|default:$arrData.name01|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name01|sfGetErrorColor}-->;" /> 
+                    Name&nbsp;<input type="text" class="box120" name="name02" value="<!--{$arrForm.name02.value|default:$arrData.name02|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name02|sfGetErrorColor}-->;" />
                 </td>
             </tr
             <tr>
@@ -69,12 +69,12 @@
                     <span class="attention"><!--{$arrErr.addr01}--><!--{$arrErr.addr02}--></span>
 
                     <p>
-                        <input type="text" class="box380" name="addr01" value="<!--{$arrForm.addr01.value|default:$arrData.addr01|h}-->" style="<!--{$arrErr.addr01|sfGetErrorColor}-->; ime-mode: active;" /><br />
+                        <input type="text" class="box380" name="addr01" value="<!--{$arrForm.addr01.value|default:$arrData.addr01|h}-->" style="<!--{$arrErr.addr01|sfGetErrorColor}-->;" /><br />
                         <!--{$smarty.const.SAMPLE_ADDRESS1}-->
                     </p>
 
                     <p>
-                        <input type="text" class="box380" name="addr02" value="<!--{$arrForm.addr02.value|default:$arrData.addr02|h}-->" style="<!--{$arrErr.addr02|sfGetErrorColor}-->; ime-mode: active;" /><br />
+                        <input type="text" class="box380" name="addr02" value="<!--{$arrForm.addr02.value|default:$arrData.addr02|h}-->" style="<!--{$arrErr.addr02|sfGetErrorColor}-->;" /><br />
                         <!--{$smarty.const.SAMPLE_ADDRESS2}-->
                     </p>
 
@@ -108,7 +108,7 @@
                 <span class="mini">(<!--{$smarty.const.MLTEXT_LEN}--> two-byte characters or less)</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.contents}--></span>
-                    <textarea name="contents" class="box380" cols="60" rows="20" style="<!--{$arrErr.contents.value|h|sfGetErrorColor}-->; ime-mode: active;"><!--{"\n"}--><!--{$arrForm.contents.value|h}--></textarea>
+                    <textarea name="contents" class="box380" cols="60" rows="20" style="<!--{$arrErr.contents.value|h|sfGetErrorColor}-->;"><!--{"\n"}--><!--{$arrForm.contents.value|h}--></textarea>
                     <p class="mini attention">* Make sure to include the "Order number" for inquiries related to orders.</p>
                 </td>
             </tr>

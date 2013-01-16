@@ -35,12 +35,12 @@
                 <input type="text" name="name01"
                     value="<!--{$arrForm.name01|default:''|h}-->"
                     maxlength="<!--{$smarty.const.STEXT_LEN}-->"
-                    style="<!--{$arrErr.name01|sfGetErrorColor}-->; ime-mode: active;"
+                    style="<!--{$arrErr.name01|sfGetErrorColor}-->;"
                     class="boxHarf text data-role-none" placeholder="Last name"/>&nbsp;&nbsp;
                 <input type="text" name="name02"
                     value="<!--{$arrForm.name02|default:''|h}-->"
                     maxlength="<!--{$smarty.const.STEXT_LEN}-->"
-                    style="<!--{$arrErr.name02|sfGetErrorColor}-->; ime-mode: active;"
+                    style="<!--{$arrErr.name02|sfGetErrorColor}-->;"
                     class="boxHarf text data-role-none" placeholder="Name"/>
             </p>
             <hr />
