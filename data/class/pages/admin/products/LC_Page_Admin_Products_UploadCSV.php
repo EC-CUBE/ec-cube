@@ -159,6 +159,77 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
     }
 
     /**
+     * CSVファイルを読み込んで、保存処理を行う
+     *
+     * @param $objFormParam
+     * @param $fp CSVファイルポインタ
+     * @param $objQuery 保存を行うためのクエリ(指定がない場合、テストのみを行う)
+     * @return boolean errFlag. 読み込みに失敗した場合true
+     */
+    function lfReadCSVFile(&$objFormParam, &$fp, $objQuery = null) {
+        $dry_run = ($objQuery===null) ? true : false;
+        // 登録対象の列数
+        $col_max_count = $objFormParam->getCount();
+        // 行数
+        $line_count = 0;
+        // 処理に失敗した場合にtrue
+        $errFlag = false;
+
+        while (!feof($fp)) {
+            $arrCSV = fgetcsv($fp, CSV_LINE_MAX);
+
+            // 行カウント
+            $line_count++;
+            // ヘッダ行はスキップ
+            if ($line_count == 1) {
+                continue;
+            }
+            // 空行はスキップ
+            if (empty($arrCSV)) {
+                continue;
+            }
+            // 列数が多すぎる場合はエラー、列数が少ない場合は未設定として配列を補う
+            $col_count = count($arrCSV);
+            if ($col_count > $col_max_count) {
+                $this->addRowErr($line_count, '※ 項目数が' . $col_count . '個検出されました。項目数は' . $col_max_count . '個になります。');
+                $errFlag = true;
+                break;
+            } elseif ($col_count < $col_max_count) {
+                $arrCSV = array_pad($arrCSV, $col_max_count, "");
+                if (!$dry_run) {
+                    $this->addRowResult($line_count, ($col_count + 1) . "項目以降を空欄として読み込みました");
+                }
+            }
+
+            // シーケンス配列を格納する。
+            $objFormParam->setParam($arrCSV, true);
+            $arrRet = $objFormParam->getHashArray();
+            $objFormParam->setParam($arrRet);
+            // 入力値の変換
+            $objFormParam->convParam();
+
+            // <br>なしでエラー取得する。
+            $arrCSVErr = $this->lfCheckError($objFormParam);
+            if (count($arrCSVErr) > 0) {
+                foreach ($arrCSVErr as $err) {
+                    $this->addRowErr($line_count, $err);
+                }
+                $errFlag = true;
+                break;
+            }
+
+            if (!$dry_run) {
+                $this->lfRegistProduct($objQuery, $line_count, $objFormParam);
+                $arrParam = $objFormParam->getHashArray();
+
+                $this->addRowResult($line_count, '商品ID：'.$arrParam['product_id'] . ' / 商品名：' . $arrParam['name']);
+            }
+            SC_Utils_Ex::extendTimeOut();
+        }
+        return $errFlag;
+    }
+
+    /**
      * CSVアップロードを実行します.
      *
      * @return void
@@ -191,73 +262,15 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         // 登録フォーム カラム情報
         $this->arrFormKeyList = $objFormParam->getKeyList();
 
-        // 登録対象の列数
-        $col_max_count = $objFormParam->getCount();
-        // 行数
-        $line_count = 0;
-
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
 
-        $errFlag = false;
-        $all_line_checked = false;
-
-        while (!feof($fp)) {
-            $arrCSV = fgetcsv($fp, CSV_LINE_MAX);
-
-            // 全行入力チェック後に、ファイルポインターを先頭に戻す
-            if (feof($fp) && !$all_line_checked) {
-                rewind($fp);
-                $line_count = 0;
-                $all_line_checked = true;
-                continue;
-            }
-
-            // 行カウント
-            $line_count++;
-            // ヘッダ行はスキップ
-            if ($line_count == 1) {
-                continue;
-            }
-            // 空行はスキップ
-            if (empty($arrCSV)) {
-                continue;
-            }
-            // 列数が多すぎる場合はエラー、列数が少ない場合は未設定として配列を補う
-            $col_count = count($arrCSV);
-            if ($col_count > $col_max_count) {
-                $this->addRowErr($line_count, '※ 項目数が' . $col_count . '個検出されました。項目数は' . $col_max_count . '個になります。');
-                $errFlag = true;
-                break;
-            } elseif ($col_count < $col_max_count) {
-                $arrCSV = array_pad($arrCSV, $col_max_count, "");
-                $this->addRowResult($line_count, ($col_count + 1) . "項目以降を空欄として読み込みました");
-            }
-            // シーケンス配列を格納する。
-            $objFormParam->setParam($arrCSV, true);
-            $arrRet = $objFormParam->getHashArray();
-            $objFormParam->setParam($arrRet);
-            // 入力値の変換
-            $objFormParam->convParam();
-            // <br>なしでエラー取得する。
-            $arrCSVErr = $this->lfCheckError($objFormParam);
-
-            // 入力エラーチェック
-            if (count($arrCSVErr) > 0) {
-                foreach ($arrCSVErr as $err) {
-                    $this->addRowErr($line_count, $err);
-                }
-                $errFlag = true;
-                break;
-            }
-
-            if ($all_line_checked) {
-                $this->lfRegistProduct($objQuery, $line_count, $objFormParam);
-                $arrParam = $objFormParam->getHashArray();
-
-                $this->addRowResult($line_count, '商品ID：'.$arrParam['product_id'] . ' / 商品名：' . $arrParam['name']);
-            }
-            SC_Utils_Ex::extendTimeOut();
+        // CSVからの読み込み、入力エラーチェック
+        $errFlag = $this->lfReadCSVFile($objFormParam, $fp);
+        if (!$errFlag) {
+            rewind($fp);
+            // CSVからの読み込み、保存 
+            $errFlag = $this->lfReadCSVFile($objFormParam, $fp, $objQuery);
         }
 
         // 実行結果画面を表示
