@@ -49,6 +49,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         // マスターデータから権限配列を取得
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrAUTHORITY = $masterData->getMasterData('mtb_authority');
+        $this->arrWORK = $masterData->getMasterData('mtb_work');
 
         $this->tpl_subtitle = 'メンバー登録/編集';
         $this->httpCacheControl('nocache');

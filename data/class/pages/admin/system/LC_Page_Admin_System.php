@@ -56,8 +56,7 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex {
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrAUTHORITY = $masterData->getMasterData('mtb_authority');
-        $this->arrWORK[0]   = '非稼働';
-        $this->arrWORK[1]   = '稼働';
+        $this->arrWORK = $masterData->getMasterData('mtb_work');
     }
 
     /**
