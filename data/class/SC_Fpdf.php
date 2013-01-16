@@ -268,7 +268,7 @@ class SC_Fpdf extends SC_Helper_FPDI {
         $this->SetFont('Gothic', 'B', 9);
         $this->MultiCell(0, 6, '＜ 備考 ＞', 'T', 2, 'L', 0, '');
         $this->SetFont('SJIS', '', 8);
-        $text = SC_Utils_Ex::rtrim($this->arrData['etc1'] . "\n" . $this->arrData['etc2'] . "\n" . $this->arrData['etc3']);
+        $text = SC_Utils_Ex::rtrim($this->arrData['etc1'] . " \n" . $this->arrData['etc2'] . " \n" . $this->arrData['etc3']);
         $this->MultiCell(0, 4, $text, '', 2, 'L', 0, '');
     }
 
