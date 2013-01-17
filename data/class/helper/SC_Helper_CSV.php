@@ -99,6 +99,9 @@ class SC_Helper_CSV {
             // カテゴリの場合
             $sql = 'SELECT ' . $cols . ' FROM dtb_category ' . $where;
         }
+        // 「getSqlを使っているcsv_id=1」以外で「order指定」がある場合は末尾に付与
+        // 全csv_idでgetSqlを使用して生成するよう統一する場合は当メソッドの呼び元も要修正
+        $sql = ($csv_id != '1' && strlen($order) >= 1) ? $sql.' order by '.$order : $sql;
         // 固有処理ここまで
         return $this->sfDownloadCsvFromSql($sql, $arrVal, $this->arrSubnavi[$csv_id], $arrOutput['disp_name'], $is_download);
     }
