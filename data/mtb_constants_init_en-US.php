@@ -472,4 +472,7 @@ define('SMARTY_FORCE_COMPILE_MODE', false);
 define('LOGIN_RETRY_INTERVAL', 0);
 /** MY page: Order status display flag */
 define('MYPAGE_ORDER_STATUS_DISP_FLAG', true);
-
+/** メールの文字コード */
+define('MAIL_CHARACTER_CODE', 'UTF-8');
+/** メールヘッダーのコンテンツタイプ */
+define('MAIL_HEADER_CONTENT_TYPE', 'US-ASCII');

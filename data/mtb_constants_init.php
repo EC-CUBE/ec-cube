@@ -472,3 +472,7 @@ define('SMARTY_FORCE_COMPILE_MODE', false);
 define('LOGIN_RETRY_INTERVAL', 0);
 /** MYページ：ご注文状況表示フラグ */
 define('MYPAGE_ORDER_STATUS_DISP_FLAG', true);
+/** メールの文字コード */
+define('MAIL_CHARACTER_CODE', 'JIS');
+/** メールヘッダーのコンテンツタイプ */
+define('MAIL_HEADER_CONTENT_TYPE', 'ISO-2022-JP');

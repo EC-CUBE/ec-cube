@@ -108,14 +108,13 @@ class SC_SendMail {
 
     // 件名の設定
     function setSubject($subject) {
-        $this->subject = mb_encode_mimeheader($subject, 'JIS', 'B', "\n");
+        $this->subject = mb_encode_mimeheader($subject, MAIL_CHARACTER_CODE, 'B', "\n");
         $this->subject = str_replace(array("\r\n", "\r"), "\n", $this->subject);
     }
 
     // 本文の設定
     function setBody($body) {
-        // iso-2022-jpだと特殊文字が？で送信されるのでJISを使用する
-        $this->body = mb_convert_encoding($body, 'JIS', CHAR_CODE);
+        $this->body = mb_convert_encoding($body, MAIL_CHARACTER_CODE, CHAR_CODE);
     }
 
     /**
@@ -156,7 +155,7 @@ class SC_SendMail {
             if ($name != '') {
                 // 制御文字を変換する。
                 $_name = $name;
-                $_name = mb_encode_mimeheader($_name, 'JIS', 'B', "\n");
+                $_name = mb_encode_mimeheader($_name, MAIL_CHARACTER_CODE, 'B', "\n");
                 $_name = str_replace('"', '\"', $_name);
                 $name_address = sprintf('"%s" <%s>', $_name, $mail_address);
             } else {
@@ -237,14 +236,14 @@ class SC_SendMail {
     // ヘッダーを返す
     function getTEXTHeader() {
         $arrHeader = $this->getBaseHeader();
-        $arrHeader['Content-Type'] = 'text/plain; charset="ISO-2022-JP"';
+        $arrHeader['Content-Type'] = 'text/plain; charset="' . MAIL_HEADER_CONTENT_TYPE . '"';
         return $arrHeader;
     }
 
     // ヘッダーを返す
     function getHTMLHeader() {
         $arrHeader = $this->getBaseHeader();
-        $arrHeader['Content-Type'] = 'text/html; charset="ISO-2022-JP"';
+        $arrHeader['Content-Type'] = 'text/html; charset="' . MAIL_HEADER_CONTENT_TYPE . '"';
         return $arrHeader;
     }
 
