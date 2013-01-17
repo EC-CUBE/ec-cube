@@ -1022,7 +1022,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MODULE_REALDIR', 'D
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MAX_LIFETIME', '7200', 26, 'Validity period of DB session (seconds)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MASTER_DATA_REALDIR', 'DATA_REALDIR . "cache/"', 27, 'Master data cache directory');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UPDATE_HTTP', '"http://www.ec-cube.net/info/index.php"', 28, 'Update management file storage location');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LANG_CODE', '"ja"', 38, 'Language code');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LANG_CODE', '"en"', 38, 'Language code');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CHAR_CODE', '"UTF-8"', 39, 'Text code');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LOCALE', '"ja_JP.UTF-8"', 40, 'Locale settings');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ECCUBE_PAYMENT', '"EC-CUBE"', 41, 'Phrase granted to payment module ');
@@ -1169,12 +1169,12 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('NOSTOCK_HIDDEN', 'f
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USE_MOBILE', 'true', 292, 'Do you want to use the mobile site? (true: Use, false: Do not use) (false is partially supported) (*Used in module)'); 
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USE_MULTIPLE_SHIPPING', 'true', 293, 'Do you want to use the multiple shipping destination designation function? (true: Use, false: Do not use)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SLTEXT_LEN', '500', 294, 'Character count of short text');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEFAULT_TEMPLATE_NAME', '"default"', 300, 'Default template name (PC)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEFAULT_TEMPLATE_NAME', '"default_en"', 300, 'Default template name (PC)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_DEFAULT_TEMPLATE_NAME', '"mobile"', 301, 'Default template name (mobile)');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMARTPHONE_DEFAULT_TEMPLATE_NAME', '"sphone"', 302, 'Default template name (smartphone)');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TEMPLATE_NAME', '"default"', 303, 'Template name');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMARTPHONE_DEFAULT_TEMPLATE_NAME', '"sphone_en"', 302, 'Default template name (smartphone)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TEMPLATE_NAME', '"default_en"', 303, 'Template name');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_TEMPLATE_NAME', '"mobile"', 304, 'Mobile template name');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMARTPHONE_TEMPLATE_NAME', '"sphone"', 305, 'Smartphone template name');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMARTPHONE_TEMPLATE_NAME', '"sphone_en"', 305, 'Smartphone template name');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMARTY_TEMPLATES_REALDIR', ' DATA_REALDIR . "Smarty/templates/"', 306, 'SMARTY template');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TEMPLATE_REALDIR', 'SMARTY_TEMPLATES_REALDIR . TEMPLATE_NAME . "/"', 307, 'SMARTY template (PC)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TEMPLATE_ADMIN_REALDIR', 'SMARTY_TEMPLATES_REALDIR . "admin/"', 308, 'SMARTY template (management function)');
