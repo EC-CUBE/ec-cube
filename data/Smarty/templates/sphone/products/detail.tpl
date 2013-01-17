@@ -413,7 +413,7 @@
     <!--▲その他おすすめ商品-->
 
     <div class="btn_area">
-        <p><a href="javascript:void(0);" class="btn_more" data-rel="back">商品一覧に戻る</a></p>
+        <p><a href="javascript:void(0);" class="btn_more" data-rel="back">戻る</a></p>
     </div>
 </section>
 
