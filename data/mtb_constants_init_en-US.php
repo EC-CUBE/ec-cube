@@ -30,7 +30,7 @@ define('MASTER_DATA_REALDIR', DATA_REALDIR . "cache/");
 /** Update management file storage location */
 define('UPDATE_HTTP', "http://www.ec-cube.net/info/index.php");
 /** Language code */
-define('LANG_CODE', "en");
+define('LANG_CODE', "en-US");
 /** Text code */
 define('CHAR_CODE', "UTF-8");
 /** Locale settings */
@@ -323,17 +323,17 @@ define('USE_MULTIPLE_SHIPPING', true);
 /** Character count of short text */
 define('SLTEXT_LEN', 500);
 /** Default template name (PC) */
-define('DEFAULT_TEMPLATE_NAME', "default_en");
+define('DEFAULT_TEMPLATE_NAME', "default_en-US");
 /** Default template name (mobile) */
 define('MOBILE_DEFAULT_TEMPLATE_NAME', "mobile");
 /** Default template name (smartphone) */
-define('SMARTPHONE_DEFAULT_TEMPLATE_NAME', "sphone_en");
+define('SMARTPHONE_DEFAULT_TEMPLATE_NAME', "sphone_en-US");
 /** Template name */
-define('TEMPLATE_NAME', "default_en");
+define('TEMPLATE_NAME', "default_en-US");
 /** Mobile template name */
 define('MOBILE_TEMPLATE_NAME', "mobile");
 /** Smartphone template name */
-define('SMARTPHONE_TEMPLATE_NAME', "sphone_en");
+define('SMARTPHONE_TEMPLATE_NAME', "sphone_en-US");
 /** SMARTY template */
 define('SMARTY_TEMPLATES_REALDIR',  DATA_REALDIR . "Smarty/templates/");
 /** SMARTY template (PC) */

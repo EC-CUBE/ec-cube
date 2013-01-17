@@ -54,7 +54,7 @@ class SC_Helper_Locale {
 
         // If language code is not specified, use site default.
         if (empty($options['lang_code'])) {
-            $lang_code = $options['lang_code'] = defined('LANG_CODE') ? LANG_CODE : 'en';
+            $lang_code = $options['lang_code'] = defined('LANG_CODE') ? LANG_CODE : 'en-US';
         } else {
             $lang_code = $options['lang_code'];
         }
@@ -72,12 +72,10 @@ class SC_Helper_Locale {
         $return = $string;
 
         // Get string list of specified language.
-        if ($lang_code != 'en') {
-            $translations = SC_Helper_Locale_Ex::$_instance->get_translations($lang_code, $device_type_id);
-            // Whether a string which corresponding with alias is exist.
-            if (isset($translations[$return])) {
-                $return = $translations[$return];
-            }
+        $translations = SC_Helper_Locale_Ex::$_instance->get_translations($lang_code, $device_type_id);
+        // Whether a string which corresponding with alias is exist.
+        if (isset($translations[$return])) {
+            $return = $translations[$return];
         }
 
         if (is_array($options['escape'])) {

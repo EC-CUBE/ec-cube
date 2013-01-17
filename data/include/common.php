@@ -67,7 +67,7 @@ function t_plural($count, $single, $plural, $tokens = array(), $options = array(
     } else {
         $translated_single = $single;
         $translated_plural = $plural;
-        $options['lang_code'] = 'en';
+        $options['lang_code'] = 'en-US';
     }
 
     if ($count == 1) {
@@ -102,7 +102,7 @@ function t_plural($count, $single, $plural, $tokens = array(), $options = array(
  * @param string    $lang_code  language code
  * @return integer  index
  */
-function get_plural_index($count, $lang_code = 'en') {
+function get_plural_index($count, $lang_code = 'en-US') {
     static $plural_indexes = array();
 
     if (!isset($plural_indexes[$lang_code][$count])) {
@@ -123,7 +123,7 @@ function get_plural_index($count, $lang_code = 'en') {
 
             $plural_indexes[$lang_code][$count] = $plural;
         // If there is no plural formula for English
-        } elseif ($lang_code == 'en') {
+        } elseif ($lang_code == 'en-US') {
             $plural_indexes[$lang_code][$count] = (int) ($count != 1);
         // Otherwise, return -1 (unknown).
         } else {
