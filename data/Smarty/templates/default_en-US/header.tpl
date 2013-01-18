@@ -53,11 +53,7 @@
                     <a href="<!--{$smarty.const.HTTPS_URL}-->mypage/login.php">MY page</a>
                     </li>
                     <li class="entry">
-					<!--{if $smarty.const.MEMBERS_CONTRACT === true}-->
-                       <a href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php">Member registration</a>
-                    <!--{else}-->
-                        <a href="<!--{$smarty.const.ROOT_URLPATH}-->entry/">Member registration</a>
-                    <!--{/if}-->
+                        <a href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php">Member registration</a>
                     </li>
                     <li class="view_basket">
                         <a href="<!--{$smarty.const.CART_URLPATH}-->"><img src="<!--{$TPL_URLPATH}-->img/button/icon_cart.png" alt="" />View Cart</a>

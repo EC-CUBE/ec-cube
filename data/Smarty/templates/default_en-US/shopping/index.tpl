@@ -80,11 +80,7 @@
                 <div class="btn_area">
                     <ul>
                         <li>
-								<!--{if $smarty.const.MEMBERS_CONTRACT === true}-->
-                         <a class="bt02" href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php">Register as a member</a>
-                    <!--{else}-->
-                          <a class="bt02" href="<!--{$smarty.const.ROOT_URLPATH}-->entry">Register as a member</a>
-                    <!--{/if}-->
+                            <a class="bt02" href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php">Register as a member</a>
                         </li>
                     </ul>
                 </div>
