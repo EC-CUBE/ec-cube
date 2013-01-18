@@ -1024,7 +1024,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MASTER_DATA_REALDIR
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UPDATE_HTTP', '"http://www.ec-cube.net/info/index.php"', 28, 'Update management file storage location');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LANG_CODE', '"en-US"', 38, 'Language code');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CHAR_CODE', '"UTF-8"', 39, 'Text code');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LOCALE', '"ja_JP.UTF-8"', 40, 'Locale settings');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LOCALE', '"en_US.UTF-8"', 40, 'Locale settings');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ECCUBE_PAYMENT', '"EC-CUBE"', 41, 'Phrase granted to payment module ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PEAR_DB_DEBUG', '0', 42, 'PEAR::DB debug mode');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PEAR_DB_PERSISTENT', 'false', 43, 'PEAR::DBの持続的接続オプション');

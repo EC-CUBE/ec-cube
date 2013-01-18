@@ -34,7 +34,7 @@ define('LANG_CODE', "en-US");
 /** Text code */
 define('CHAR_CODE', "UTF-8");
 /** Locale settings */
-define('LOCALE', "ja_JP.UTF-8");
+define('LOCALE', "en_US.UTF-8");
 /** Phrase granted to payment module */
 define('ECCUBE_PAYMENT', "EC-CUBE");
 /** PEAR::DB debug mode */
