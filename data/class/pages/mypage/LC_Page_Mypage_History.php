@@ -73,12 +73,14 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
         $objCustomer    = new SC_Customer_Ex();
         $objDb          = new SC_Helper_DB_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
+        $objProduct  = new SC_Product();
 
         if (!SC_Utils_Ex::sfIsInt($_GET['order_id'])) {
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
 
-        $order_id        = $_GET['order_id'];
+        $order_id               = $_GET['order_id'];
+        $this->is_price_change  = false;
 
         //受注データの取得
         $this->tpl_arrOrderData = $objPurchase->getOrder($order_id, $objCustomer->getValue('customer_id'));
@@ -94,6 +96,15 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
         $this->arrPayment       = $objDb->sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
         // 受注商品明細の取得
         $this->tpl_arrOrderDetail = $objPurchase->getOrderDetail($order_id);
+        foreach ($this->tpl_arrOrderDetail as $product_index => $arrOrderProductDetail) {
+            //必要なのは商品の販売金額のみなので、遅い場合は、別途SQL作成した方が良い
+            $arrTempProductDetail = $objProduct->getProductsClass($arrOrderProductDetail['product_class_id']); 
+            if($this->tpl_arrOrderDetail[$product_index]['price'] != $arrTempProductDetail['price02']) {
+                $this->is_price_change = true;
+            }
+            $this->tpl_arrOrderDetail[$product_index]['product_price'] = ($arrTempProductDetail['price02'])?$arrTempProductDetail['price02']:0;
+        }
+        
         $this->tpl_arrOrderDetail = $this->setMainListImage($this->tpl_arrOrderDetail);
         $objPurchase->setDownloadableFlgTo($this->tpl_arrOrderDetail);
         // モバイルダウンロード対応処理

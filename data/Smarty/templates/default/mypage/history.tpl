@@ -32,6 +32,9 @@
                 <span class="st">購入日時：&nbsp;</span><!--{$tpl_arrOrderData.create_date|sfDispDBDate}--><br />
                 <span class="st">注文番号：&nbsp;</span><!--{$tpl_arrOrderData.order_id}--><br />
                 <span class="st">お支払い方法：&nbsp;</span><!--{$arrPayment[$tpl_arrOrderData.payment_id]|h}-->
+                <!--{if $is_price_change == true}-->    
+                    <div class="attention" Align="right">※金額が変更されている商品があるため、再注文時はご注意ください。</div>
+                <!--{/if}-->
             </p>
             <form action="order.php" method="post">
                 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -83,13 +86,18 @@
                         <!--{$arrProductType[$orderDetail.product_type_id]}-->
                     <!--{/if}-->
                     </td>
-                    <!--{assign var=price value=`$orderDetail.price`}-->
+                    <!--{assign var=order_price   value=`$orderDetail.price`}-->
+                    <!--{assign var=product_price value=`$orderDetail.product_price`}-->
                     <!--{assign var=quantity value=`$orderDetail.quantity`}-->
                     <!--{assign var=tax_rate value=`$orderDetail.tax_rate`}-->
                     <!--{assign var=tax_rule value=`$orderDetail.tax_rule`}-->
-                    <td class="alignR"><!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|number_format|h}-->円</td>
+                    <td class="alignR"><!--{$order_price|sfCalcIncTax:$tax_rate:$tax_rule|number_format|h}-->円
+                    <!--{if $order_price != $product_price}-->
+                        <div class="attention">【現在価格】</div><span class="attention"><!--{$product_price|sfCalcIncTax:$tax_rate:$tax_rule|number_format|h}-->円</span>
+                    <!--{/if}-->
+                    </td>
                     <td class="alignR"><!--{$quantity|h}--></td>
-                    <td class="alignR"><!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|sfMultiply:$quantity|number_format}-->円</td>
+                    <td class="alignR"><!--{$order_price|sfCalcIncTax:$tax_rate:$tax_rule|sfMultiply:$quantity|number_format}-->円</td>
                 </tr>
             <!--{/foreach}-->
             <tr>
