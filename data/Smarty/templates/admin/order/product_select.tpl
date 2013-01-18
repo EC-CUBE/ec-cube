@@ -47,11 +47,10 @@
             fm1.getElementById("no").value = escape('<!--{$tpl_no}-->');
         }
         if (document.getElementById(class1).type == 'select-one' && class1_id == '__unselected') {
-            err_text = class_name1 + "を選択してください。\n";
-            err_text = class_name1 + "を選択してください。\n";
+            err_text = class_name1 + fnT('j_admin_012');
         }
         if (document.getElementById(class2).type == 'select-one' && class2_id == '') {
-            err_text = err_text + class_name2 + "を選択してください。\n";
+            err_text = class_name2 + fnT('j_admin_012');
         }
         if (err_text != '') {
             alert(err_text);

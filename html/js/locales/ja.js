@@ -47,6 +47,7 @@ var cube_locale_messages = {
     'j_admin_009': '既に登録されているメールアドレスです。\nメルマガの種類が変更されます。宜しいですか？',
     'j_admin_010': '<FONT Color="#FFFF99"> << 表示 </FONT>',
     'j_admin_011': ' <FONT Color="#FFFF99"> >> 非表示 </FONT>',
+    'j_admin_012': 'を選択してください。\n',
     // user_data/packages/admin/js/breadcrumbs.js
     'j_breadcrumbs_001': '<span>ホーム</span>',
     // user_data/packages/sphone/js/barbutton.js
