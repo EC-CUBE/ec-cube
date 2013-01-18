@@ -82,7 +82,7 @@ class SC_Utils_sfPrePointTest extends Common_TestCase {
   }
 
   public function testSfPrePoint_丸め方法の指定がない場合_定数で指定された値が使われる() {
-    $this->expected = array(9, 10);
+    $this->expected = array(9, 9);
     $this->actual = array(
       SC_Utils::sfPrePoint(100, 9.4),
       SC_Utils::sfPrePoint(100, 9.5)

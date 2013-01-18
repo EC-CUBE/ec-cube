@@ -41,7 +41,7 @@
             <td><!--{$arrForm.name|h}--></td>
         </tr>
         <tr>
-            <th>Poster name<span class="attention">*</span></th>
+            <th>Poster name</th>
             <td><!--{$arrForm.reviewer_name|h}--></td>
         </tr>
         <tr>
@@ -53,15 +53,15 @@
             <td><!--{if $arrForm.sex eq 1}-->Male<!--{elseif $arrForm.sex eq 2}-->Female<!--{/if}--></td>
         </tr>
         <tr>
-            <th>Recommendation level<span class="attention">*</span></th>
+            <th>Recommendation level</th>
             <td><span class="recommend_level"><!--{$arrRECOMMEND[$arrForm.recommend_level]}--></span></td>
         </tr>
         <tr>
-            <th>Title<span class="attention">*</span></th>
+            <th>Title</th>
             <td><!--{$arrForm.title|h}--></td>
         </tr>
         <tr>
-            <th>Comment<span class="attention">*</span></th>
+            <th>Comment</th>
             <td><!--{$arrForm.comment|h|nl2br}--></td>
         </tr>
     </table>

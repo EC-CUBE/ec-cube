@@ -220,13 +220,23 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
     function changeData(&$objFormParam) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        if (!SC_Utils_Ex::sfIsInt($objFormParam->getValue('template_id'))) {
-            trigger_error('テンプレートが指定されていません。', E_USER_ERROR);
+        $template_id = $objFormParam->getValue('template_id');
+
+        // 未選択時
+        if (strlen($template_id) === 0) {
+            $mailTemplates = null;
+        }
+        // 有効選択時
+        elseif (SC_Utils_Ex::sfIsInt($template_id)) {
+            $where = 'template_id = ?';
+            $arrWhereVal = array($template_id);
+            $mailTemplates = $objQuery->getRow('subject, header, footer', 'dtb_mailtemplate', $where, $arrWhereVal);
+        }
+        // 不正選択時
+        else {
+            trigger_error('テンプレートの指定が不正。', E_USER_ERROR);
         }
 
-        $where = 'template_id = ?';
-        $arrWhereVal = array($objFormParam->getValue('template_id'));
-        $mailTemplates = $objQuery->getRow('subject, header, footer', 'dtb_mailtemplate', $where, $arrWhereVal);
         if (empty($mailTemplates)) {
             foreach (array('subject','header','footer') as $key) {
                 $objFormParam->setValue($key, '');

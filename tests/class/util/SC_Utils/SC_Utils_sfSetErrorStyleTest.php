@@ -1,8 +1,6 @@
 <?php
 
 $HOME = realpath(dirname(__FILE__)) . "/../../../..";
-// テスト用に背景色を設定
-define('ERR_COLOR', 'blue');
 require_once($HOME . "/tests/class/Common_TestCase.php");
 /*
  * This file is part of EC-CUBE
@@ -47,7 +45,7 @@ class SC_Utils_sfSetErrorStyleTest extends Common_TestCase {
   /////////////////////////////////////////
   public function testSfSetErrorStyle__背景色変更用の文字列が返る() {
     
-    $this->expected = 'style="background-color:blue"';
+    $this->expected = 'style="background-color:#ffe8e8"';
     $this->actual = SC_Utils::sfSetErrorStyle();
 
     $this->verify();

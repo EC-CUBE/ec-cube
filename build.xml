@@ -15,6 +15,8 @@
     <delete dir="reports" includeemptydirs="true" />
     <mkdir dir="reports/coverage" />
     <exec dir="."
+      output="reports/stdout.log"
+      error="reports/stderr.log"
       command="phpunit --log-tap reports/tap.log
                --log-junit reports/unitreport.xml
                        --coverage-html reports/coverage

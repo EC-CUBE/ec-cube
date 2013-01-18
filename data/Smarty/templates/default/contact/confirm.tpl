@@ -37,11 +37,11 @@
             <col width="30%" />
             <col width="70%" />
             <tr>
-                <th>お名前<span class="attention">※</span></th>
+                <th>お名前</th>
                 <td><!--{$arrForm.name01.value|h}-->　<!--{$arrForm.name02.value|h}--></td>
             </tr>
             <tr>
-                <th>お名前(フリガナ)<span class="attention">※</span></th>
+                <th>お名前(フリガナ)</th>
                 <td><!--{$arrForm.kana01.value|h}-->　<!--{$arrForm.kana02.value|h}--></td>
             </tr>
             <tr>
@@ -70,11 +70,11 @@
                 </td>
             </tr>
             <tr>
-                <th>メールアドレス<span class="attention">※</span></th>
+                <th>メールアドレス</th>
                 <td><a href="mailto:<!--{$arrForm.email.value|escape:'hex'}-->"><!--{$arrForm.email.value|escape:'hexentity'}--></a></td>
             </tr>
             <tr>
-                <th>お問い合わせ内容<span class="attention">※</span></th>
+                <th>お問い合わせ内容</th>
                 <td><!--{$arrForm.contents.value|h|nl2br}--></td>
             </tr>
         </table>

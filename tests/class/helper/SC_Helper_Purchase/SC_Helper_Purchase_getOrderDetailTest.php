@@ -62,7 +62,7 @@ class SC_Helper_Purchase_getOrderDetailTest extends SC_Helper_Purchase_TestBase 
        array(
          'product_id' => '1002',
          'product_class_id' => '1002',
-         'product_type_id' => '1002',
+         'product_type_id' => '2',
          'product_code' => 'pc1002',
          'product_name' => '製品名1002',
          'classcategory_name1' => 'cat10021',
@@ -73,12 +73,14 @@ class SC_Helper_Purchase_getOrderDetailTest extends SC_Helper_Purchase_TestBase 
          'status' => '3',
          'payment_date' => '2032-12-31 01:20:30',
          'enable' => '0',
-         'effective' => '1'
+         'effective' => '1',
+         'tax_rate' => '5',
+         'tax_rule' => '0'
        ),
        array(
          'product_id' => '1001',
          'product_class_id' => '1001',
-         'product_type_id' => '1001',
+         'product_type_id' => '1',
          'product_code' => 'pc1001',
          'product_name' => '製品名1001',
          'classcategory_name1' => 'cat10011',
@@ -89,7 +91,9 @@ class SC_Helper_Purchase_getOrderDetailTest extends SC_Helper_Purchase_TestBase 
          'status' => '3',
          'payment_date' => '2032-12-31 01:20:30',
          'enable' => '1',
-         'effective' => '1'
+         'effective' => '1',
+         'tax_rate' => '3',
+         'tax_rule' => '1'
        )
     );
     $this->actual = SC_Helper_Purchase::getOrderDetail($order_id);
@@ -104,7 +108,7 @@ class SC_Helper_Purchase_getOrderDetailTest extends SC_Helper_Purchase_TestBase 
        array(
          'product_id' => '1002',
          'product_class_id' => '1002',
-         'product_type_id' => '1002',
+         'product_type_id' => '2',
          'product_code' => 'pc1002',
          'product_name' => '製品名1002',
          'classcategory_name1' => 'cat10021',
@@ -115,12 +119,14 @@ class SC_Helper_Purchase_getOrderDetailTest extends SC_Helper_Purchase_TestBase 
          // 'status' => '3',
          // 'payment_date' => '2032-12-31 01:20:30',
          'enable' => '0',
-         'effective' => '1'
+         'effective' => '1',
+         'tax_rate' => '5',
+         'tax_rule' => '0'
        ),
        array(
          'product_id' => '1001',
          'product_class_id' => '1001',
-         'product_type_id' => '1001',
+         'product_type_id' => '1',
          'product_code' => 'pc1001',
          'product_name' => '製品名1001',
          'classcategory_name1' => 'cat10011',
@@ -131,7 +137,9 @@ class SC_Helper_Purchase_getOrderDetailTest extends SC_Helper_Purchase_TestBase 
          // 'status' => '3',
          // 'payment_date' => '2032-12-31 01:20:30',
          'enable' => '1',
-         'effective' => '1'
+         'effective' => '1',
+         'tax_rate' => '3',
+         'tax_rule' => '1'
        )
     );
     $this->actual = SC_Helper_Purchase::getOrderDetail($order_id, false);

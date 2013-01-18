@@ -37,7 +37,7 @@
             <col width="30%" />
             <col width="70%" />
             <tr>
-                <th>First Name<span class="attention">*</span></th>
+                <th>First Name</th>
                 <td><!--{$arrForm.name01.value|h}--> <!--{$arrForm.name02.value|h}--></td>
             </tr>
             <tr>
@@ -66,11 +66,11 @@
                 </td>
             </tr>
             <tr>
-                <th>E-mail address<span class="attention">*</span></th>
+                <th>E-mail address</th>
                 <td><a href="mailto:<!--{$arrForm.email.value|escape:'hex'}-->"><!--{$arrForm.email.value|escape:'hexentity'}--></a></td>
             </tr>
             <tr>
-                <th>Details of inquiry<span class="attention">*</span></th>
+                <th>Details of inquiry</th>
                 <td><!--{$arrForm.contents.value|h|nl2br}--></td>
             </tr>
         </table>

@@ -583,7 +583,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         }
 
         // 在庫無制限フラグ列を利用する場合、
-        if (array_key_exists('stock_unlimited', $sqlval)) {
+        if (array_key_exists('stock_unlimited', $sqlval) and $sqlval['stock_unlimited'] != '') {
             // 在庫無制限フラグ = 無制限の場合、
             if ($sqlval['stock_unlimited'] == UNLIMITED_FLG_UNLIMITED) {
                 $sqlval['stock'] = null;

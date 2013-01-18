@@ -29,7 +29,7 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
 
 /**
  * SC_Utils::isAppInnerUrl()のテストクラス.
- *
+ * TODO まとめて実行する場合は定数の変更ができないためNG
  *
  * @author Hiroko Tamagawa
  * @version $Id$
@@ -46,6 +46,7 @@ class SC_Utils_isAppInnerUrlTest extends Common_TestCase {
   }
 
   /////////////////////////////////////////
+  /**
   public function testIsAppInnerUrl_非SSLかつアプリ内URLの場合_trueが返る() {
     $input = 'http://sample.eccube.jp/admin/';
     $this->expected = true;
@@ -77,6 +78,7 @@ class SC_Utils_isAppInnerUrlTest extends Common_TestCase {
 
     $this->verify();
   }
+  */
 
   //////////////////////////////////////////
 
