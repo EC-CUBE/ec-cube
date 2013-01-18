@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2013-01-16 11:37+0900\n"
+"PO-Revision-Date: 2013-01-18 17:18+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -4153,6 +4153,9 @@ msgstr "商品/コメント"
 
 msgid "tpl_188"
 msgstr "商品名："
+
+msgid "tpl_188_1"
+msgstr "商品名<span class='attention'> *</span>"
 
 msgid "tpl_189"
 msgstr "商品を選択する"

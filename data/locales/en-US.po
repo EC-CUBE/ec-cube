@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2013-01-18 16:13+0900\n"
+"PO-Revision-Date: 2013-01-18 17:18+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -4210,6 +4210,9 @@ msgstr "Product/comment"
 
 msgid "tpl_188"
 msgstr "Product name:"
+
+msgid "tpl_188_1"
+msgstr "Product name<span class='attention'> *</span>"
 
 msgid "tpl_189"
 msgstr "Select a product"

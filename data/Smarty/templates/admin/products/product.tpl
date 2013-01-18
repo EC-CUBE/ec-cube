@@ -90,7 +90,7 @@ function selectAll(target) {
             <td><!--{$arrForm.product_id|h}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_189_1" escape="none"}--></th>
+            <th><!--{t string="tpl_188_1" escape="none"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.name}--></span>
                 <input type="text" name="name" value="<!--{$arrForm.name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />
