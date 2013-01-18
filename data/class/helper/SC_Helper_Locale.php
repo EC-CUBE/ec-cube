@@ -205,7 +205,7 @@ class SC_Helper_Locale {
                 break;
 
             case 'nl2br':
-                $return = nl2br($return, true);
+                $return = nl2br($return);
                 break;
 
             case '':
