@@ -322,6 +322,6 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
     function initObjQuery(SC_Query &$objQuery) {
         $objQuery->exec('SET SESSION storage_engine = InnoDB');
         $objQuery->exec("SET SESSION sql_mode = 'ANSI'");
-        $objQuery->exec("SET TIME_ZONE = '+9:00'");
+        $objQuery->exec("SET TIME_ZONE = '" . date('P') . "'");
     }
 }
