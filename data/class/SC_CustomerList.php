@@ -328,7 +328,7 @@ class SC_CustomerList extends SC_SelectSql_Ex {
     // 検索用SQL
     function getList() {
         $this->select = 'SELECT customer_id,name01,name02,kana01,kana02,sex,email,email_mobile,tel01,tel02,tel03,pref,status,update_date,mailmaga_flg FROM dtb_customer ';
-        return $this->getSql(0);
+        return $this->getSql(2);
     }
 
     function getListMailMagazine($is_mobile = false) {
