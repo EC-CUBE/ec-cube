@@ -587,6 +587,10 @@ div.listrightbloc .cartin_btn {
     margin-top: 10px;
 }
 
+#detailrightbloc .quantity {
+	margin-bottom: 10px;
+}
+
 
 /* お客様の声
 ----------------------------------------------- */
@@ -762,12 +766,16 @@ div#undercolumn_customer {
 -webkit-box-sizing: border-box;
 -o-box-sizing: border-box;
 -ms-box-sizing: border-box;
+box-sizing: border-box;
+}
+*:first-child+html .flow_area ol li {
+	width: 19%;
 }
 .flow_area ol li span {
 	font-weight: bold;
 }
 .flow_area ol li.large {
-	width: 28%;
+	width: 28% !important;
 }
 .flow_area ol li.last {
 	margin-right: 0;

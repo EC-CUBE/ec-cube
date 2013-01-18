@@ -38,7 +38,7 @@
                     <a href="<!--{$smarty.const.TOP_URLPATH}-->" class="bt04">Do not agree</a>
                 </li>
                 <li>
-                    <a href="<!--{$smarty.const.ENTRY_URL}-->" class="bt02 bt_wide">Agree</a>
+                    <a href="<!--{$smarty.const.ENTRY_URL}-->" class="bt02">Agree</a>
                 </li>
             </ul>
         </div>

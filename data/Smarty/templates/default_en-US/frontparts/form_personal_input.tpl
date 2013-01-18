@@ -22,8 +22,8 @@
  */
 *}-->
 
-<col width="30%" />
-<col width="70%" />
+<col width="24%" />
+<col width="" />
 <tr>
     <th>Name<span class="attention">*</span></th>
     <td>

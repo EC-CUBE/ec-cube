@@ -133,7 +133,7 @@
                     <a class="bt04" href="?" onclick="fnModeSubmit('return', '', ''); return false;">Go back</a>
                 </li>
                 <li>
-					<button class="bt02 bt_wide">Register</button>
+					<button class="bt02">Register</button>
                 </li>
             </ul>
         </div>

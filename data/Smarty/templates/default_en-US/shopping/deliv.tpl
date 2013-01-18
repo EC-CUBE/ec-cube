@@ -122,7 +122,7 @@
                 <li>
                     <a class="bt04" href="<!--{$smarty.const.CART_URLPATH}-->">Go back</a>
                 </li>
-                <li><button class="bt02">Send to the selected delivery destination</button>
+                <li><button class="bt02 bt_wide">Send to the selected delivery destination</button>
                 </li>
             </ul>
         </div>

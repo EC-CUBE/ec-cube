@@ -622,7 +622,7 @@ div#complete_area .shop_information .name {
 
 .main_column .btn_area button,
 #window_area .btn_area button {
-	min-width: 140px;
+	min-width: 145px;
 }
 .main_column a.bt01,.main_column a.bt02,.main_column a.bt03,.main_column a.bt04 {
 	display: inline-block;
@@ -632,7 +632,7 @@ div#complete_area .shop_information .name {
 }
 .main_column .btn_area a.bt_wide,
 .main_column .btn_area button.bt_wide {
-	min-width: 220px;
+	min-width: 240px;
 }
 
 /* ----- button white */

@@ -105,7 +105,7 @@
                         <a href="javascript:fnChangeOrderby('date');">Recent</a>
                 <!--{else}-->
                     <strong>Recent</strong>
-                <!--{/if}-->
+                <!--{/if}-->&nbsp;
                 Items displayed
                 <select name="disp_number" onchange="javascript:fnChangeDispNumber(this.value);">
                     <!--{foreach from=$arrPRODUCTLISTMAX item="dispnum" key="num"}-->

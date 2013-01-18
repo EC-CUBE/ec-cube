@@ -38,7 +38,7 @@
                     <p>Purchase history and delivery information will be deleted.</p>
                     <ul>
                         <li>
-                            <a class="bt02 bt_wide" href="./refusal.php">No</a>
+                            <a class="bt02" href="./refusal.php">No</a>
                         </li>
                         <li>
 							<button class="bt04 bt_wide">Yes, I want to cancel my membership</button>
