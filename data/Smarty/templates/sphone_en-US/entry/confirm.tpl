@@ -40,9 +40,6 @@
             <dt>Name</dt>
             <dd><!--{$arrForm.name01|h}-->&nbsp;<!--{$arrForm.name02|h}--></dd>
 
-            <dt>お名前(フリガナ)</dt>
-            <dd><!--{$arrForm.kana01|h}-->&nbsp;<!--{$arrForm.kana02|h}--></dd>
-
             <dt>Address</dt>
             <dd>
                 <!--{* <!--{$arrForm.zip01|h}--> - <!--{$arrForm.zip02|h}--><br /> *}-->

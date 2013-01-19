@@ -69,23 +69,6 @@
                     class="boxHarf text data-role-none" placeholder="Name"/>
             </dd>
 
-            <dt>お名前(フリガナ)&nbsp;<span class="attention">*</span></dt>
-            <dd>
-                <!--{assign var=key1 value="order_kana01"}-->
-                <!--{assign var=key2 value="order_kana02"}-->
-                <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
-                <input type="text" name="<!--{$key1}-->"
-                    value="<!--{$arrForm[$key1].value|h}-->"
-                    maxlength="<!--{$arrForm[$key1].length}-->"
-                    style="<!--{$arrErr[$key1]|sfGetErrorColor}-->"
-                    class="boxHarf text data-role-none" placeholder="セイ"/>&nbsp;&nbsp;
-                <input type="text" name="<!--{$key2}-->"
-                    value="<!--{$arrForm[$key2].value|h}-->"
-                    maxlength="<!--{$arrForm[$key2].length}-->"
-                    style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"
-                    class="boxHarf text data-role-none" placeholder="メイ"/>
-            </dd>
-
             <dt>Postal code&nbsp;<span class="attention">*</span></dt>
             <dd>
                 <!--{* <!--{assign var=key1 value="order_zip01"}--> *}-->

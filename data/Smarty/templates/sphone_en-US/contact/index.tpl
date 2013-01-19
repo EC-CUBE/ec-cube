@@ -54,20 +54,7 @@
                     maxlength="<!--{$smarty.const.STEXT_LEN}-->"
                     style="<!--{$arrErr.name02|sfGetErrorColor}-->" class="boxHarf text data-role-none" placeholder="Name" />
             </dd>
-
-            <dt>お名前(フリガナ)&nbsp;<span class="attention">*</span></dt>
-            <dd>
-                <span class="attention"><!--{$arrErr.kana01}--><!--{$arrErr.kana02}--></span>
-                <input type="text" name="kana01"
-                    value="<!--{$arrForm.kana01.value|default:$arrData.kana01|h}-->"
-                    maxlength="<!--{$smarty.const.STEXT_LEN}-->"
-                    style="<!--{$arrErr.kana01|sfGetErrorColor}-->"class="boxHarf text data-role-none" placeholder="セイ"/>&nbsp;&nbsp;
-                <input type="text" name="kana02"
-                    value="<!--{$arrForm.kana02.value|default:$arrData.kana02|h}-->"
-                    maxlength="<!--{$smarty.const.STEXT_LEN}-->"
-                    style="<!--{$arrErr.kana02|sfGetErrorColor}-->" class="boxHarf text data-role-none" placeholder="メイ"/>
-            </dd>
-
+			
             <dt>Postal code</dt>
             <dd>
                 <!--{* <!--{assign var=key1 value="`$prefix`zip01"}--> *}-->
