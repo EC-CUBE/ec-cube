@@ -740,6 +740,23 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
                                               $arrShipping['shipping_date_month'],
                                               $arrShipping['shipping_date_day']);
 
+            //商品単価、数量を複数配送にも反映する
+            foreach ($arrDetail as $product_detail) {
+                foreach ($arrAllShipmentItem[$shipping_index]['shipment_product_class_id'] as $relation_index => $shipment_product_class_id) {
+                    if($product_detail['product_class_id'] == $shipment_product_class_id){
+                        $arrAllShipmentItem[$shipping_index]['shipment_price'][$relation_index] = $product_detail['price'];
+                        foreach ($arrStockData as $arrStock) {
+                            //数量は先頭の届け先のみ増加
+                            if($arrStock['product_class_id'] == $shipment_product_class_id && $arrIsNotQuantityUp[$shipment_product_class_id] != true){
+                                $arrIsNotQuantityUp[$shipment_product_class_id] = true;
+                                $arrAllShipmentItem[$shipping_index]['shipment_quantity'][$relation_index] -= $arrStock['quantity'];
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
             // 配送業者IDを取得
             $arrShippingValues[$shipping_index]['deliv_id'] = $objFormParam->getValue('deliv_id');
 
