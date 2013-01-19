@@ -74,11 +74,16 @@
         <tr>
             <th><!--{t string="tpl_554"}--></th>
             <td>
-                <!--{foreach from=$arrForm.product_status item=status}-->
-                    <!--{if $status != ""}-->
-                        <img src="<!--{$TPL_URLPATH_PC}--><!--{$arrSTATUS_IMAGE[$status]}-->">
-                    <!--{/if}-->
-                <!--{/foreach}-->
+                <!--{if count($arrForm.product_status) > 0}-->
+                    <ul class="status_icon clearfix">
+                        <!--{foreach from=$arrForm.product_status item=status}-->
+							<li class="status_<!--{$status}-->">
+							   <span id="icon<!--{$status}-->"><!--{$arrSTATUS[$status]}--></span>
+							</li>						
+                        <!--{/foreach}-->
+                    </ul>
+                <!--{/if}-->
+			    
             </td>
         </tr>
 
