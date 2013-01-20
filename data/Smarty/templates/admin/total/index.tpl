@@ -189,7 +189,12 @@ $("*[name=search_endday]").val(dates[2]);
                         <span class="attention"><!--{$arrErr.search_startyear_m}--></span>
                         <span class="attention"><!--{$arrErr.search_startmonth_m}--></span>
                     <!--{/if}-->
-                    <input id="datepickersearch_start_m" type="text" value="<!--{if $arrForm.search_startyear_m.value != "" && $arrForm.search_startmonth_m.value != ""}--><!--{$arrForm.search_startyear_m.value|h}-->/<!--{$arrForm.search_startmonth_m.value|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.search_startyear_m != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />月度 (<!--{if $smarty.const.CLOSE_DAY == 31}-->末<!--{else}--><!--{$smarty.const.CLOSE_DAY}--><!--{/if}-->日締め)
+                    <input id="datepickersearch_start_m" type="text" value="<!--{if $arrForm.search_startyear_m.value != "" && $arrForm.search_startmonth_m.value != ""}--><!--{$arrForm.search_startyear_m.value|h}-->/<!--{$arrForm.search_startmonth_m.value|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.search_startyear_m != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                    <!--{if $smarty.const.CLOSE_DAY == 31}-->
+						<!--{t string="tpl_802"}-->
+					<!--{else}-->
+						<!--{t string="tpl_803" T_FIELD=$smarty.const.CLOSE_DAY}-->
+					<!--{/if}-->
                     <input type="hidden" name="search_startyear_m" value="<!--{$arrForm.search_startyear_m.value}-->" />
                     <input type="hidden" name="search_startmonth_m" value="<!--{$arrForm.search_startmonth_m.value}-->" />
                     <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('search_form1', 'search', '', ''); return false;" name="subm"><!--{t string="tpl_688"}--></a>
