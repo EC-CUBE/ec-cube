@@ -100,6 +100,7 @@
 
             <dt>Address&nbsp;<span class="attention">*</span></dt>
             <dd>
+                <span class="attention"><!--{$arrErr.order_addr01}--><!--{$arrErr.order_addr02}--></span>
                 <!--{assign var=key value="order_addr01"}-->
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" class="boxLong top data-role-none" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" placeholder="Municipality name" />
                     <!--{assign var=key value="order_addr02"}-->

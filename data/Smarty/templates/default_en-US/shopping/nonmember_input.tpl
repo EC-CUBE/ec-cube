@@ -81,6 +81,7 @@
             <tr>
                 <th>Address<span class="attention">*</span></th>
                 <td>
+                    <span class="attention"><!--{$arrErr.order_addr01}--><!--{$arrErr.order_addr02}--></span>
                     <p>
                         <!--{assign var=key value="order_addr01"}-->
                         <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;" class="box380" /><br />
