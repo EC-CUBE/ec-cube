@@ -160,7 +160,7 @@ function func_submit() {
     <thead>
         <tr>
             <th><!--{t string="tpl_192"}--></th>
-            <th><!--{t string="tpl_189"}-->/<!--{t string="tpl_371"}-->/<!--{t string="tpl_374"}--></th>
+            <th><!--{t string="tpl_188"}-->/<!--{t string="tpl_371"}-->/<!--{t string="tpl_374"}--></th>
             <th><!--{t string="tpl_373"}--></th>
             <th><!--{t string="tpl_385"}--></th>
         </tr>

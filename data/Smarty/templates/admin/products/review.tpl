@@ -141,7 +141,7 @@ $("*[name=search_endday]").val(dates[2]);
             <td><input type="text" name="search_reviewer_url" value="<!--{$arrForm.search_reviewer_url|h}-->" size="30" class="box30" /></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_189"}--></th>
+            <th><!--{t string="tpl_188"}--></th>
             <td><input type="text" name="search_name" value="<!--{$arrForm.search_name|h}-->" size="30" class="box30" /></td>
             <th><!--{t string="tpl_192"}--></th>
             <td><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code|h}-->" size="30" class="box30" /></td>
@@ -231,7 +231,7 @@ $("*[name=search_endday]").val(dates[2]);
             <tr>
                 <th><!--{t string="tpl_618"}--></th>
                 <th><!--{t string="tpl_615"}--></th>
-                <th><!--{t string="tpl_189"}--></th>
+                <th><!--{t string="tpl_188"}--></th>
                 <th><!--{t string="tpl_617"}--></th>
                 <th><!--{t string="tpl_619"}--></th>
                 <th class="edit"><!--{t string="tpl_003"}--></th>

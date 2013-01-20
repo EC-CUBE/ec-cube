@@ -25,7 +25,7 @@
 <table id="ownersstore-products-list" class="list center">
     <tr>
         <th><!--{t string="tpl_477"}--></th>
-        <th><!--{t string="tpl_189"}--></th>
+        <th><!--{t string="tpl_188"}--></th>
         <th><!--{t string="tpl_478"}--></th>
         <th><!--{t string="tpl_479"}--></th>
         <th><!--{t string="tpl_480"}--></th>

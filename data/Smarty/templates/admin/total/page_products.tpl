@@ -26,7 +26,7 @@
     <tr>
         <th><!--{t string="tpl_186"}--></th>
         <th><!--{t string="tpl_192"}--></th>
-        <th><!--{t string="tpl_189"}--></th>
+        <th><!--{t string="tpl_188"}--></th>
         <th><!--{t string="tpl_692"}--></th>
         <th><!--{t string="tpl_373"}--></th>
         <th><!--{t string="tpl_372"}--></th>
@@ -58,7 +58,7 @@
     <tr>
         <th><!--{t string="tpl_186"}--></th>
         <th><!--{t string="tpl_192"}--></th>
-        <th><!--{t string="tpl_189"}--></th>
+        <th><!--{t string="tpl_188"}--></th>
         <th><!--{t string="tpl_692"}--></th>
         <th><!--{t string="tpl_373"}--></th>
         <th><!--{t string="tpl_372"}--></th>

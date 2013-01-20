@@ -123,7 +123,7 @@
 
     <table>
         <tr>
-            <th><!--{t string="tpl_189"}--></th>
+            <th><!--{t string="tpl_188"}--></th>
             <td><!--{$arrForm.product_name.value|h}--></td>
         </tr>
         <tr>

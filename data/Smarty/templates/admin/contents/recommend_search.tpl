@@ -62,7 +62,7 @@ function func_submit( id ){
             <td><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code}-->" size="35" class="box35" /></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_189"}--></th>
+            <th><!--{t string="tpl_188"}--></th>
             <td><input type="text" name="search_name" value="<!--{$arrForm.search_name}-->" size="35" class="box35" /></td>
         </tr>
     </table>
@@ -84,7 +84,7 @@ function func_submit( id ){
         <tr>
             <th><!--{t string="tpl_195"}--></th>
             <th><!--{t string="tpl_192"}--></th>
-            <th><!--{t string="tpl_189"}--></th>
+            <th><!--{t string="tpl_188"}--></th>
             <th><!--{t string="tpl_196"}--></th>
         </tr>
 

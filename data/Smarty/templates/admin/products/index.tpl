@@ -184,7 +184,7 @@ $("*[name=search_endday]").val(dates[2]);
                 <!--{/if}-->
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" />
             </td>
-            <th><!--{t string="tpl_189"}--></th>
+            <th><!--{t string="tpl_188"}--></th>
             <td>
                 <!--{assign var=key value="search_name"}-->
                 <!--{if $arrErr[$key]}-->
@@ -311,7 +311,7 @@ $("*[name=search_endday]").val(dates[2]);
                 <th rowspan="2"><!--{t string="tpl_195"}--></th>
                 <th rowspan="2"><!--{t string="tpl_192"}--></th>
                 <th rowspan="2"><!--{t string="tpl_580" escape="none"}--></th>
-                <th><!--{t string="tpl_189"}--></th>
+                <th><!--{t string="tpl_188"}--></th>
                 <th rowspan="2"><!--{t string="tpl_581"}--></th>
                 <th rowspan="2"><!--{t string="tpl_256"}--></th>
                 <th rowspan="2"><!--{t string="tpl_003"}--></th>

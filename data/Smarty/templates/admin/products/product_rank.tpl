@@ -100,7 +100,7 @@
                 <col width="15%" />
                 <tr class="nodrop nodrag">
                     <th><!--{t string="tpl_192"}--></th>
-                    <th><!--{t string="tpl_189"}--></th>
+                    <th><!--{t string="tpl_188"}--></th>
                     <th><!--{t string="tpl_195"}--></th>
                     <th><!--{t string="tpl_186"}--></th>
                     <th><!--{t string="tpl_005"}--></th>

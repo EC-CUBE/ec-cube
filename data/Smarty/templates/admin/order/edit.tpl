@@ -333,7 +333,7 @@
     <table class="list" id="order-edit-products">
         <tr>
             <th class="id"><!--{t string="tpl_192"}--></th>
-            <th class="name"><!--{t string="tpl_189"}-->/<!--{t string="tpl_371"}-->/<!--{t string="tpl_374"}--></th>
+            <th class="name"><!--{t string="tpl_188"}-->/<!--{t string="tpl_371"}-->/<!--{t string="tpl_374"}--></th>
             <th class="price"><!--{t string="tpl_372"}--></th>
             <th class="qty"><!--{t string="tpl_373"}--></th>
             <th class="price"><!--{t string="tpl_375"}--></th>
@@ -484,7 +484,7 @@
                 <table class="list" id="order-edit-products">
                     <tr>
                         <th class="id"><!--{t string="tpl_192"}--></th>
-                        <th class="name"><!--{t string="tpl_189"}-->/<!--{t string="tpl_371"}-->/<!--{t string="tpl_374"}--></th>
+                        <th class="name"><!--{t string="tpl_188"}-->/<!--{t string="tpl_371"}-->/<!--{t string="tpl_374"}--></th>
                         <th class="price"><!--{t string="tpl_372"}--></th>
                         <th class="qty"><!--{t string="tpl_373"}--></th>
                     </tr>

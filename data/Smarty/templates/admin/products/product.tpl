@@ -425,7 +425,7 @@ function selectAll(target) {
                 <!--{assign var=key value="recommend_comment`$smarty.section.cnt.iteration`"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{t string="tpl_192"}-->:<!--{$arrRecommend[$recommend_no].product_code_min}--><br />
-                <!--{t string="tpl_189"}-->:<!--{$arrRecommend[$recommend_no].name|h}--><br />
+                <!--{t string="tpl_188"}-->:<!--{$arrRecommend[$recommend_no].name|h}--><br />
                 <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{"\n"}--><!--{$arrRecommend[$recommend_no].comment|h}--></textarea><br />
                 <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.LTEXT_LEN}--></span>
             </td>
