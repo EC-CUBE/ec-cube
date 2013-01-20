@@ -100,12 +100,6 @@
 
             <dt>Address&nbsp;<span class="attention">*</span></dt>
             <dd>
-                <!--{assign var=key value="order_pref"}-->
-                <span class="attention"><!--{$arrErr.order_pref}--><!--{$arrErr.order_addr01}--><!--{$arrErr.order_addr02}--></span>
-                <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="boxHarf top data-role-none">
-                    <option value="" selected="selected">Prefecture</option>
-                    <!--{html_options options=$arrPref selected=$arrForm[$key].value}-->
-                </select>
                 <!--{assign var=key value="order_addr01"}-->
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" class="boxLong top data-role-none" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" placeholder="Municipality name" />
                     <!--{assign var=key value="order_addr02"}-->
