@@ -719,14 +719,14 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
 */
         // ダウンロード商品チェック
         if (array_search('product_type_id', $this->arrFormKeyList) !== FALSE
-            && $item['product_type_id'] == PRODUCT_TYPE_NORMAL
+            && $item['product_type_id'] != PRODUCT_TYPE_DOWNLOAD
         ) {
             //実商品の場合
             if ($item['down_filename'] != '') {
-                $arrErr['down_filename'] = '※ 実商品の場合はダウンロードファイル名は入力できません。';
+                $arrErr['down_filename'] = '※ ダウンロード商品ではない場合、ダウンロードファイル名は入力できません。';
             }
             if ($item['down_realfilename'] != '') {
-                $arrErr['down_realfilename'] = '※ 実商品の場合はダウンロード商品用ファイルアップロードは入力できません。';
+                $arrErr['down_realfilename'] = '※ ダウンロード商品ではない場合、ダウンロード商品用ファイルアップロードは入力できません。';
             }
         } elseif (array_search('product_type_id', $this->arrFormKeyList) !== FALSE
                   && $item['product_type_id'] == PRODUCT_TYPE_DOWNLOAD
