@@ -23,7 +23,7 @@
 <!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_header.tpl" subtitle="Form for customer's opinion (completion page)"}-->
 
 <div id="window_area">
-    <h2 class="title">Form for customer's opinion</h2>
+    <h2 class="title">Add comment</h2>
     <div id="completebox">
         <p class="message">Comment has been sent. Thank you.</p>
         <p>Please wait for the comment to be reviewed by our staff. If approved, it will appear on our site.</p>

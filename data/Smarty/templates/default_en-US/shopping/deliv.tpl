@@ -34,11 +34,11 @@
 
         <div id="address_area" class="clearfix">
             <div class="information">
-                <p>Select the delivery address from the list, and click the "Send to the selected delivery destination" button.</p>
+                <p>Select the delivery address from the list and click the "Send to the selected address" button.</p>
                 <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
-                    <p>If you do not find the desired address in the list, add and register it by using "Add new delivery destination".</p>
+                    <p>If you do not find the desired address in the list, add and register it by selecting "Add new delivery destination".</p>
                 <!--{/if}-->
-                <p class="mini attention">* Up to <!--{$smarty.const.DELIV_ADDR_MAX|h}--> items  can be registered.</p>
+                <p class="mini attention">* Up to <!--{$smarty.const.DELIV_ADDR_MAX|h}--> addresses can be registered.</p>
 
             </div>
             <!--{if $smarty.const.USE_MULTIPLE_SHIPPING !== false}-->
@@ -122,7 +122,7 @@
                 <li>
                     <a class="bt04" href="<!--{$smarty.const.CART_URLPATH}-->">Go back</a>
                 </li>
-                <li><button class="bt02 bt_wide">Send to the selected delivery destination</button>
+                <li><button class="bt02 bt_wide">Send to the selected address</button>
                 </li>
             </ul>
         </div>

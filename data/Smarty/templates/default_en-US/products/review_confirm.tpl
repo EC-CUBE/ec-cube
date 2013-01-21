@@ -23,7 +23,7 @@
 <!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_header.tpl" subtitle="Form for customer's opinion (confirmation page)"}-->
 
 <div id="window_area">
-    <h2 class="title">Customer's opinions</h2>
+    <h2 class="title">Add comment</h2>
     <form name="form1" method="post" action="?">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="complete" />

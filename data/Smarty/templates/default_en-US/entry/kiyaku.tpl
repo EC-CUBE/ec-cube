@@ -35,7 +35,7 @@
         <div class="btn_area">
             <ul>
                 <li>
-                    <a href="<!--{$smarty.const.TOP_URLPATH}-->" class="bt04">Do not agree</a>
+                    <a href="<!--{$smarty.const.TOP_URLPATH}-->" class="bt04">Decline</a>
                 </li>
                 <li>
                     <a href="<!--{$smarty.const.ENTRY_URL}-->" class="bt02">Agree</a>

@@ -40,11 +40,11 @@
         <!--{if $smarty.const.USE_POINT !== false}-->
             <div class="point_announce">
                 <!--{if $tpl_login}-->
-                     <span class="user_name"><!--{$tpl_name|h}--></span>, you currently have "<span class="point"><!--{$tpl_user_point|number_format|default:0}--> pt</span>."<br />
+                     <span class="user_name"><!--{$tpl_name|h}--></span>, you currently have "<span class="point"><!--{$tpl_user_point|number_format|default:0}--> pts</span>."<br />
                 <!--{else}-->
                     If using the point system, please complete member registration and log in.<br />
                 <!--{/if}-->
-                It is possible to use <span class="price">1pt = &#36; <!--{$smarty.const.POINT_VALUE}--></span> when purchasing a product.<br />
+                It is possible to use points for this purchase.<span class="price">1pt = &#36; <!--{$smarty.const.POINT_VALUE}--></span>.<br />
             </div>
         <!--{/if}-->
     <!--{/if}-->

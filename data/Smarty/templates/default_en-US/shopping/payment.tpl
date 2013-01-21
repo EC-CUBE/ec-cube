@@ -223,7 +223,7 @@
                     Date is not possible.
                 <!--{else}-->
                     <select name="<!--{$key}-->" id="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-                        <option value="" selected="">No designation</option>
+                        <option value="" selected="">Basic delivery</option>
                         <!--{assign var=shipping_date_value value=$arrForm[$key].value|default:$shippingItem.shipping_date}-->
                         <!--{html_options options=$arrDelivDate selected=$shipping_date_value}-->
                     </select>&nbsp;
@@ -233,7 +233,7 @@
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 Delivery time:
                 <select name="<!--{$key}-->" id="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-                    <option value="" selected="">No designation</option>
+                    <option value="" selected="">Basic delivery</option>
                     <!--{assign var=shipping_time_value value=$arrForm[$key].value|default:$shippingItem.time_id}-->
                     <!--{html_options options=$arrDelivTime selected=$shipping_time_value}-->
                 </select>
@@ -246,7 +246,7 @@
         <!--{if $tpl_login == 1 && $smarty.const.USE_POINT !== false}-->
             <div class="point_area">
                 <h3>Point usage</h3>
-                    <p>It is possible to use <span class="attention">1 point as &#036; <!--{$smarty.const.POINT_VALUE|number_format}--></span>.<br />
+                    <p>It is possible to use points during this purchase. <span class="attention">1 point = &#036; <!--{$smarty.const.POINT_VALUE|number_format}--></span>.<br />
                        If using points, check the box next to "Use points" and enter the number of points you want to use.
                     </p>
                     <div class="point_announce">
@@ -268,7 +268,7 @@
 
         <div class="pay_area02">
             <h3>Other inquiries</h3>
-            <p>If you have any other inquiries, please input them here.</p>
+            <p>If you have any other inquiries, please enter them here.</p>
             <div>
                 <!--★その他お問い合わせ事項★-->
                 <!--{assign var=key value="message"}-->

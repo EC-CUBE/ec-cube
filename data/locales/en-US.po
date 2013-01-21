@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2013-01-20 17:51+0900\n"
+"PO-Revision-Date: 2013-01-21 18:40+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -12,27 +12,26 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 
 msgid "SC_CheckError_001"
-msgstr "* T_TAG, a tag that is not permitted, is included in T_FIELD. <br />"
+msgstr "* T_TAG contains the tag T_FIELD which is not allowed. <br />"
 
 msgid "SC_CheckError_002"
-msgstr "* T_FIELD is not input. <br />"
+msgstr "* T_FIELD is blank. <br />"
 
 msgid "SC_CheckError_003"
 msgstr "* T_FIELD is not selected. <br />"
 
 msgid "SC_CheckError_004"
-msgstr "* T_FIELD is not input. <br />"
+msgstr "* T_FIELD is blank. <br />"
 
 msgid "SC_CheckError_005"
-msgstr ""
-"* Inputs consisting only of spaces, tabs and line breaks are not possible in "
-"T_FIELD. <br />"
+msgstr "* Spaces, tabs and line breaks are not possible in T_FIELD. <br />"
 
 msgid "SC_CheckError_006"
 msgstr "* Do not include spaces, tabs or line breaks in T_FIELD. <br />"
 
 msgid "SC_CheckError_007"
-msgstr "* A numerical value that starts with 0 is input for T_FIELD. <br />"
+msgstr ""
+"* A numerical value that starts with 0 has been entered for T_FIELD. <br />"
 
 msgid "SC_CheckError_008"
 msgstr "* T_FIELD is not selected. <br />"
@@ -46,94 +45,94 @@ msgstr ""
 
 msgid "SC_CheckError_011"
 msgstr ""
-"* It is not possible to input a larger value for T_FIELD_1ST than for "
+"* It is not possible to enter a larger value for T_FIELD_1ST than for "
 "T_FIELD_2ND. <br />"
 
 msgid "SC_CheckError_012"
-msgstr "* For T_FIELD, input T_LENGTH  characters or less. <br />"
+msgstr "* For T_FIELD, enter T_LENGTH  characters or less. <br />"
 
 msgid "SC_CheckError_013_SINGLE"
 msgid_plural "SC_CheckError_013_PLURAL"
-msgstr[0] "* For T_FIELD, input T_COUNT characters or more. <br />"
+msgstr[0] "* For T_FIELD, enter T_COUNT characters or more. <br />"
 msgstr[1] "* For T_FIELD, input T_COUNT characters or more. <br />"
 
 msgid "SC_CheckError_014"
-msgstr "* For T_FIELD, input T_LENGTH or smaller. <br />"
+msgstr "* For T_FIELD, enter T_LENGTH or smaller. <br />"
 
 msgid "SC_CheckError_015_SINGLE"
 msgid_plural "SC_CheckError_015_PLURAL"
-msgstr[0] "* Input T_COUNT or higher for T_FIELD. <br />"
+msgstr[0] "* Enter T_COUNT or higher for T_FIELD. <br />"
 msgstr[1] "* Input T_COUNT or higher for T_FIELD. <br />"
 
 msgid "SC_CheckError_016"
-msgstr "* Input numbers for T_FIELD. <br />"
+msgstr "* Enter numbers for T_FIELD. <br />"
 
 msgid "SC_CheckError_017"
-msgstr "* Input numbers for T_FIELD. <br />"
+msgstr "* Enter numbers for T_FIELD. <br />"
 
 msgid "SC_CheckError_018"
-msgstr "* Input alphabetical characters for T_FIELD. <br />"
+msgstr "* Enter alphabetical characters for T_FIELD. <br />"
 
 msgid "SC_CheckError_019"
-msgstr "* Input all items for T_FIELD. <br />"
+msgstr "* Enter all items for T_FIELD. <br />"
 
 msgid "SC_CheckError_020"
-msgstr "* For T_FIELD, input within a character length of T_LENGTH. <br />"
+msgstr "* T_FIELD must be T_LENGTH characters or less. <br />"
 
 msgid "SC_CheckError_021"
-msgstr "* Input numbers for T_FIELD. <br />"
+msgstr "* Enter numbers for T_FIELD. <br />"
 
 msgid "SC_CheckError_022"
-msgstr "* For T_FIELD, input within a text length of T_LENGTH. <br />"
+msgstr "* For T_FIELD, enter within a text length of T_LENGTH. <br />"
 
 msgid "SC_CheckError_023"
-msgstr "* T_FIELD is not input. <br />"
+msgstr "* T_FIELD is blank. <br />"
 
 msgid "SC_CheckError_024"
-msgstr "* Input all items for T_FIELD. <br />"
+msgstr "* Enter all items for T_FIELD. <br />"
 
 msgid "SC_CheckError_025"
-msgstr "* T_FIELD is not input. <br />"
+msgstr "* T_FIELD is blank. <br />"
 
 msgid "SC_CheckError_026"
-msgstr "* Input items in order, starting at the beginning. <br />"
+msgstr "* Enter items in order, starting at the beginning. <br />"
 
 msgid "SC_CheckError_027"
-msgstr "* For T_FIELD, input using katakana characters. <br />"
+msgstr "* For T_FIELD, enter katakana characters. <br />"
 
 msgid "SC_CheckError_028"
-msgstr "* For T_FIELD, input using katakana characters. <br />"
+msgstr "* For T_FIELD, enter katakana characters. <br />"
 
 msgid "SC_CheckError_029"
-msgstr "* Input using alphanumeric characters for T_FIELD. <br />"
+msgstr "* Enter alphanumeric characters for T_FIELD. <br />"
 
 msgid "SC_CheckError_030"
-msgstr "* Input using alphanumeric symbols for T_FIELD. <br />"
+msgstr "* Enter alphanumeric symbols for T_FIELD. <br />"
 
 msgid "SC_CheckError_031"
-msgstr "* Input at least 1 for T_FIELD. <br />"
+msgstr "* Enter at least 1 for T_FIELD. <br />"
 
 msgid "SC_CheckError_032_SINGLE"
 msgid_plural "SC_CheckError_032_PLURAL"
-msgstr[0] "* For T_FIELD, input between T_COUNT to T_DIGIT_MAX digits. <br />"
+msgstr[0] "*  T_FIELD must be  between T_COUNT - T_DIGIT_MAX digits. <br />"
 msgstr[1] "* For T_FIELD, input between T_COUNT to T_DIGIT_MAX digits. <br />"
 
 msgid "SC_CheckError_033_SINGLE"
 msgid_plural "SC_CheckError_033_PLURAL"
-msgstr[0] "* For T_FIELD, input T_COUNT digit(s). <br />"
+msgstr[0] "* For T_FIELD, enter T_COUNT digit(s). <br />"
 msgstr[1] "* For T_FIELD, input T_COUNT digit(s). <br />"
 
 msgid "SC_CheckError_034"
-msgstr "* The T_FIELD format is inappropriate. <br />"
+msgstr "* The T_FIELD format is incorrect. <br />"
 
 msgid "SC_CheckError_035"
-msgstr "* Input the characters to be used in T_FIELD correctly. <br />"
+msgstr "* Enter the characters to be used in T_FIELD correctly. <br />"
 
 msgid "SC_CheckError_036"
-msgstr "* Input T_FIELD correctly. <br />"
+msgstr "* Enter T_FIELD correctly. <br />"
 
 msgid "SC_CheckError_037"
-msgstr "* Input an IP address in the proper format in T_FIELD. <br />"
+msgstr "* Enter an IP address in the proper format in T_FIELD. <br />"
 
 msgid "SC_CheckError_038"
 msgstr "* The format permitted for T_FIELD is T_EXT. <br />"
@@ -152,7 +151,7 @@ msgid "SC_CheckError_042"
 msgstr "* Do not use Japanese or spaces in the file name for T_FIELD. <br />"
 
 msgid "SC_CheckError_043"
-msgstr "* Input all items for T_FIELD. <br />"
+msgstr "* Enter all items for T_FIELD. <br />"
 
 msgid "SC_CheckError_044"
 msgstr "* T_FIELD is not correct. <br />"
@@ -167,7 +166,7 @@ msgid "SC_CheckError_047"
 msgstr "* The designated T_FIELD does not exist. <br />"
 
 msgid "SC_CheckError_048"
-msgstr "* The T_FIELD format is inappropriate. <br />"
+msgstr "* The T_FIELD format is incorrect. <br />"
 
 msgid "SC_CheckError_049"
 msgstr "* T_FIELD is not for mobile phones. <br />"
@@ -181,10 +180,10 @@ msgstr ""
 "possible to use the same T_FIELD. <br />"
 
 msgid "SC_CheckError_052"
-msgstr "* T_FIELD cannot be input. <br />"
+msgstr "* T_FIELD cannot be entered. <br />"
 
 msgid "SC_CheckError_053"
-msgstr "* The T_FIELD format is inappropriate. <br />"
+msgstr "* The T_FIELD format is incorrect. <br />"
 
 msgid "SC_FormParam_001"
 msgstr "* The file T_NAME does not exist. <br />"
@@ -206,13 +205,13 @@ msgstr "A method that is not operating properly has been called."
 
 msgid "SC_CartSession_002"
 msgstr ""
-"* There was a product that is not being sold at this point in time. The "
-"product was deleted from your cart."
+"* A product in your cart is no longer being sold at this time. The item was "
+"deleted from your cart."
 
 msgid "SC_CartSession_003"
 msgstr ""
-"* Preparations for delivery have not yet been made for T_PRODUCT. Please "
-"inquire using the Inquiry page."
+"* Delivery preparations are not ready  for T_PRODUCT. Please access the "
+"inquiry page for more details."
 
 msgid "SC_CartSession_004"
 msgstr ""
@@ -281,7 +280,7 @@ msgid "SC_Fpdf_019"
 msgstr "$"
 
 msgid "SC_Fpdf_020"
-msgstr "Pt"
+msgstr "Pts"
 
 msgid "SC_Image_001"
 msgstr "File copying failed."
@@ -647,7 +646,7 @@ msgid "PARAM_LABEL_TAGSPERPAGE"
 msgstr "Number of related tag pages"
 
 msgid "PARAM_LABEL_TAGSORT"
-msgstr "関連タグソート"
+msgstr " Sort related tags"
 
 msgid "PARAM_LABEL_CATEGORY_ID"
 msgstr "Category ID"
@@ -923,10 +922,10 @@ msgid "PARAM_LABEL_DELIV"
 msgstr "Delivery company"
 
 msgid "PARAM_LABEL_RULE_MAX"
-msgstr "Usage conditions(～円以上)"
+msgstr "Usage conditions(～$ Above)"
 
 msgid "PARAM_LABEL_UPPER_RULE"
-msgstr "Usage conditions(～円以下)"
+msgstr "Usage conditions(～$ Less than)"
 
 msgid "PARAM_LABEL_FIX"
 msgstr "Fixed"
@@ -1196,7 +1195,7 @@ msgid "PARAM_LABEL_CARTKEY"
 msgstr "Cart key"
 
 msgid "PARAM_LABEL_MONTHLY"
-msgstr "月度"
+msgstr "Monthly"
 
 msgid "PARAM_LABEL_PERIOD"
 msgstr "Period"
@@ -1894,7 +1893,7 @@ msgid "ALERT_029"
 msgstr "Parameter settings is complete."
 
 msgid "ALERT_030"
-msgstr "An error has occurred. Check the details that were input."
+msgstr "An error has occurred. Please check entered data."
 
 msgid "TPL_MAINTITLE_001"
 msgstr "Orders"
@@ -1936,7 +1935,7 @@ msgid "LC_Page_Abouts_001"
 msgstr "About this site"
 
 msgid "LC_Page_Cart_001"
-msgstr "What is inside your basket now"
+msgstr "Items in cart"
 
 msgid "LC_Page_Cart_002"
 msgstr ""
@@ -1947,7 +1946,7 @@ msgid "LC_Page_Contact_001"
 msgstr "Inquiry"
 
 msgid "LC_Page_Contact_002"
-msgstr "Inquiry (input page)"
+msgstr "Inquiries"
 
 msgid "LC_Page_Contact_003"
 msgstr "Inquiry (confirmation page)"
@@ -1962,7 +1961,7 @@ msgid "LC_Page_Entry_001"
 msgstr "* The corresponding address was not found.<br />"
 
 msgid "LC_Page_Entry_002"
-msgstr "Member registration (confirmation page)"
+msgstr "Member registration"
 
 msgid "LC_Page_Entry_003"
 msgstr "Confirmation of member registration"
@@ -1971,10 +1970,10 @@ msgid "LC_Page_Entry_004"
 msgstr "Completion of member registration"
 
 msgid "LC_Page_Entry_005"
-msgstr "* The input format is inadequate.<br />"
+msgstr "* Format is inadequate.<br />"
 
 msgid "LC_Page_Entry_006"
-msgstr "* The input format is inadequate.<br />"
+msgstr "* Format is inadequate.<br />"
 
 msgid "LC_Page_Entry_007"
 msgstr "T_FIELD01 T_FIELD02"
@@ -1986,10 +1985,10 @@ msgid "LC_Page_InputZip_002"
 msgstr "No applicable address was found."
 
 msgid "LC_Page_InputZip_003"
-msgstr "* The input format is inadequate.<br />"
+msgstr "* Format is inadequate.<br />"
 
 msgid "LC_Page_InputZip_004"
-msgstr "* The input format is inadequate.<br />"
+msgstr "* Format is inadequate.<br />"
 
 msgid "LC_Page_Entry_EmailMobile_001"
 msgstr "Mobile e-mail registration complete"
@@ -2107,7 +2106,7 @@ msgid "LC_Page_Error_DispError_004"
 msgstr "You cannot access this page"
 
 msgid "LC_Page_Error_DispError_005"
-msgstr "Illegal page migration.<br />Check once again, and input again."
+msgstr "Illegal page migration.<br />Check page again."
 
 msgid "LC_Page_Error_DispError_006"
 msgstr "An error has occurred.<br />Check and log in again."
@@ -2172,22 +2171,22 @@ msgid "LC_Page_MyPage_002"
 msgstr "Purchase history list"
 
 msgid "LC_Page_Mypage_Change_001"
-msgstr "Revision of member registration details (input page)"
+msgstr "Edit registration details"
 
 msgid "LC_Page_Mypage_Change_002"
 msgstr "* The corresponding address was not found.<br />"
 
 msgid "LC_Page_Mypage_Change_003"
-msgstr "Member registration (confirmation page)"
+msgstr "Member registration"
 
 msgid "LC_Page_Mypage_Change_004"
-msgstr "Revision of member registration details (confirmation page)"
+msgstr "Edit registration details"
 
 msgid "LC_Page_Mypage_Change_005"
-msgstr "* The input format is inadequate.<br />"
+msgstr "* Format is inadequate.<br />"
 
 msgid "LC_Page_Mypage_Change_006"
-msgstr "* The input format is inadequate.<br />"
+msgstr "* Format is inadequate.<br />"
 
 msgid "LC_Page_Mypage_ChangeComplete_001"
 msgstr "Revision of member registration details (completion page)"
@@ -2219,10 +2218,10 @@ msgid "LC_Page_Mypage_MailView_001"
 msgstr "E-mail history details"
 
 msgid "LC_Page_Mypage_Refusal_001"
-msgstr "Withdrawal procedure (input page)"
+msgstr "Cancel membership"
 
 msgid "LC_Page_Mypage_Refusal_002"
-msgstr "Withdrawal procedure (confirmation page)"
+msgstr "Confirm account cancellation"
 
 msgid "LC_Page_Mypage_RefusalComplete_001"
 msgstr "MY page"
@@ -2234,7 +2233,7 @@ msgid "LC_Page_Mypage_RefusalComplete_003"
 msgstr "Withdrawal procedure (completion page)"
 
 msgid "LC_Page_Order_001"
-msgstr "Legal-based notation related to specified commercial transactions"
+msgstr "Shipping and legal information"
 
 msgid "LC_Page_Products_Detail_001"
 msgstr "* This product has already been added to Favorites.<br />"
@@ -2268,7 +2267,7 @@ msgid "LC_Page_Regist_005"
 msgstr "T_FIELD01 T_FIELD02"
 
 msgid "LC_Page_Regist_Complete_001"
-msgstr "Member registration (completion page)"
+msgstr "Member registration"
 
 msgid "LC_Page_RSS_001"
 msgstr "New information "
@@ -2283,7 +2282,7 @@ msgid "LC_Page_Shopping_001"
 msgstr "Login"
 
 msgid "LC_Page_Shopping_002"
-msgstr "Input of customer information"
+msgstr "Enter customer information"
 
 msgid "LC_Page_Shopping_003"
 msgstr ""
@@ -2303,10 +2302,10 @@ msgid "LC_Page_Shopping_Complete_001"
 msgstr "Order complete"
 
 msgid "LC_Page_Shopping_Confirm_001"
-msgstr "Confirmation of input details"
+msgstr "Confirmation"
 
 msgid "LC_Page_Shopping_Deliv_001"
-msgstr "Designation of shipping destination "
+msgstr "Delivery destination"
 
 msgid "LC_Page_Shopping_LoadPaymentModule_001"
 msgstr "Module file retrieval failed. <br /> This procedure has been voided."
@@ -2319,17 +2318,17 @@ msgstr "Please make a selection"
 
 msgid "LC_Page_Shopping_Multiple_003"
 msgstr ""
-"* When the quantity is 0, it is not possible to input a shipping destination."
+"* When the quantity is 0, it is not possible to enter a shipping destination."
 "<br />"
 
 msgid "LC_Page_Shopping_Multiple_004"
-msgstr "* The shipping destination is not input.<br />"
+msgstr "* The shipping destination has not been entered.<br />"
 
 msgid "LC_Page_Shopping_Multiple_005"
 msgstr "* Use T_FIELD for the total quantity.<br />"
 
 msgid "LC_Page_Shopping_Payment_001"
-msgstr "Designation of payment method/delivery time, etc."
+msgstr "Payment method and delivery time"
 
 msgid "LC_Page_Shopping_Payment_002"
 msgstr ""
@@ -2572,13 +2571,13 @@ msgid "LC_Page_Admin_Basis_Holiday_002"
 msgstr "Holiday management"
 
 msgid "LC_Page_Admin_Basis_Holiday_003"
-msgstr "※ 既に同じ日付の登録が存在します。<br>"
+msgstr "※ That day has already been registered. <br>"
 
 msgid "LC_Page_Admin_Basis_Kiyaku_001"
 msgstr "Basic information management"
 
 msgid "LC_Page_Admin_Basis_Kiyaku_002"
-msgstr "Settings for terms and conditions of membership"
+msgstr "Membership terms and conditions"
 
 msgid "LC_Page_Admin_Basis_Kiyaku_004"
 msgstr "* Registration of the same contents already exists.<br>"
@@ -2771,7 +2770,7 @@ msgstr "* Block deletion failed<br />"
 
 msgid "LC_Page_Admin_Design_Bloc_005"
 msgstr ""
-"* Data for the same file name exists. Input a different file name.<br />"
+"* Data for the same file name exists. Enter a different file name.<br />"
 
 msgid "LC_Page_Admin_Design_CSS_001"
 msgstr "Design management"
@@ -2790,7 +2789,7 @@ msgstr "* CSS deletion failed<br />"
 
 msgid "LC_Page_Admin_Design_CSS_006"
 msgstr ""
-"* Data for the same file name exists. Input a different file name.<br />"
+"* Data for the same file name exists. Enter a different file name.<br />"
 
 msgid "LC_Page_Admin_Design_Header_001"
 msgstr "Design management"
@@ -2817,10 +2816,10 @@ msgid "LC_Page_Admin_Design_MainEdit_004"
 msgstr "* TPL file writing failed<br />"
 
 msgid "LC_Page_Admin_Design_MainEdit_005"
-msgstr "* Input the URL correctly.<br />"
+msgstr "* Enter the URL again.<br />"
 
 msgid "LC_Page_Admin_Design_MainEdit_006"
-msgstr "* Data for the same URL exists. Input a different URL.<br />"
+msgstr "* Data for the same URL exists. Enter a different URL.<br />"
 
 msgid "LC_Page_Admin_Design_Template_001"
 msgstr "Design management"
@@ -2986,19 +2985,19 @@ msgid "LC_Page_Admin_Order_Pdf_008"
 msgstr "Please confirm."
 
 msgid "LC_Page_Admin_Order_Pdf_009"
-msgstr "Input a number for the issuance year."
+msgstr "Enter a number for the issuance year."
 
 msgid "LC_Page_Admin_Order_Pdf_010"
-msgstr "Input a number for the issuance month."
+msgstr "Enter a number for the issuance month."
 
 msgid "LC_Page_Admin_Order_Pdf_011"
-msgstr "Input between 1 - 12 for the issuance month"
+msgstr "Enter between 1 - 12 for the issuance month"
 
 msgid "LC_Page_Admin_Order_Pdf_012"
-msgstr "Input a number for the issuance date."
+msgstr "Enter a number for the issuance date."
 
 msgid "LC_Page_Admin_Order_Pdf_013"
-msgstr "Input between 1- 31 for the issuance date."
+msgstr "Enter a number between 1- 31 for the issuance date."
 
 msgid "LC_Page_Admin_Order_ProductSelect_001"
 msgstr "Product selection"
@@ -3126,17 +3125,17 @@ msgid "LC_Page_Admin_Products_ProductClass_002"
 msgstr "* A standard is not selected.<br />"
 
 msgid "LC_Page_Admin_Products_ProductClass_003"
-msgstr "* T_FIELD is not input. <br />"
+msgstr "* T_FIELD is blank. <br />"
 
 msgid "LC_Page_Admin_Products_ProductClass_004"
-msgstr "* Inventory count is not input.<br />"
+msgstr "* Inventory count is not entered.<br />"
 
 msgid "LC_Page_Admin_Products_ProductClass_005"
 msgstr "* Select one for the product type.<br />"
 
 msgid "LC_Page_Admin_Products_ProductClass_006"
 msgstr ""
-"* For downloaded products, input the name of the downloaded file.<br />"
+"* For downloaded products, enter the name of the downloaded file.<br />"
 
 msgid "LC_Page_Admin_Products_ProductClass_007"
 msgstr ""
@@ -3217,7 +3216,7 @@ msgid "LC_Page_Admin_Products_UploadCSV_010"
 msgstr "* The designated target delivery date ID is not registered."
 
 msgid "LC_Page_Admin_Products_UploadCSV_011"
-msgstr "※ 指定の商品種別IDは、登録されていません。"
+msgstr "※ The specified product ID does not exist."
 
 msgid "LC_Page_Admin_Products_UploadCSV_012"
 msgstr "* The designated relevant product ID (T_FIELD) is not registered."
@@ -3236,12 +3235,12 @@ msgstr ""
 "* Only '0' (active) and '1' (delete) are effective for the deletion flag. "
 
 msgid "LC_Page_Admin_Products_UploadCSV_017"
-msgstr "* For actual products, a download file name cannot be input."
+msgstr "* For actual products, a download file name cannot be used."
 
 msgid "LC_Page_Admin_Products_UploadCSV_018"
 msgstr ""
-"* For actual products, a file upload for the downloaded product cannot be "
-"input."
+"* For actual products,  file upload for the downloaded product cannot be "
+"used."
 
 msgid "LC_Page_Admin_Products_UploadCSV_019"
 msgstr ""
@@ -3325,7 +3324,7 @@ msgid "LC_Page_Admin_System_Bkup_004-3"
 msgstr "Restoration failed."
 
 msgid "LC_Page_Admin_System_Bkup_005"
-msgstr "The backup name is duplicated. Input a different name."
+msgstr "The backup name is duplicated. Enter a different name."
 
 msgid "LC_Page_Admin_System_Bkup_006"
 msgstr "The selected data was not found. It may already have been deleted."
@@ -3442,10 +3441,10 @@ msgid "LC_Page_Admin_Total_006"
 msgstr "Sales by member"
 
 msgid "LC_Page_Admin_Total_007"
-msgstr "T_FIELD1YearT_FIELD2MonthT_FIELD3Day'"
+msgstr "T_FIELD1/T_FIELD2/T_FIELD3"
 
 msgid "LC_Page_Admin_Total_008"
-msgstr "Tabulation period: T_FIELD1 - T_FIELD2"
+msgstr "Sales period: T_FIELD1 - T_FIELD2"
 
 msgid "LC_Page_Admin_Total_009"
 msgstr "Member"
@@ -3472,7 +3471,7 @@ msgid "LC_Page_Admin_Total_016"
 msgstr "(By year)"
 
 msgid "LC_Page_Admin_Total_017"
-msgstr "(曜日別)"
+msgstr "(By day)"
 
 msgid "LC_Page_Admin_Total_018"
 msgstr "(By time)"
@@ -3576,7 +3575,7 @@ msgstr "Template operation failed."
 
 msgid "SC_Utils_001"
 msgstr ""
-"For &gt;&gt; /install/T_FIELD, delete the file after completing installation."
+"&gt;&gt; /install/T_FIELD, delete this file after completing installation."
 
 msgid "SC_Utils_002"
 msgstr "A method for upward compatibility was used."
@@ -3612,10 +3611,10 @@ msgid "tpl_005"
 msgstr "Move"
 
 msgid "tpl_006"
-msgstr "Input new delivery method/delivery charge"
+msgstr "Add delivery method/delivery charge"
 
 msgid "tpl_007"
-msgstr "Newly input delivery method"
+msgstr "Enter delivery method"
 
 msgid "tpl_008"
 msgstr "Delivery method registration"
@@ -3793,7 +3792,7 @@ msgid "tpl_059"
 msgstr "Set using map"
 
 msgid "tpl_060"
-msgstr "Input this position."
+msgstr "Enter this position."
 
 msgid "tpl_061"
 msgstr "The address was not found."
@@ -3837,7 +3836,7 @@ msgid "tpl_072"
 msgstr "Text count"
 
 msgid "tpl_073"
-msgstr "Input new payment method"
+msgstr "Add payment method"
 
 msgid "tpl_074"
 msgstr "ID"
@@ -3901,7 +3900,7 @@ msgid "tpl_092"
 msgstr "There is no data to be displayed"
 
 msgid "tpl_093"
-msgstr "'Do you want to register?'"
+msgstr "'Save changes?'"
 
 msgid "tpl_094"
 msgstr "SHOP master"
@@ -3925,7 +3924,7 @@ msgid "tpl_100"
 msgstr "SEO management"
 
 msgid "tpl_101"
-msgstr "Settings for terms and conditions of membership"
+msgstr "Membership terms"
 
 msgid "tpl_102"
 msgstr "Postal code registration"
@@ -4066,8 +4065,8 @@ msgstr "Update"
 
 msgid "tpl_141"
 msgstr ""
-"All postal codes will be deleted. Automatic address input will not function "
-"until postal codes are re-registered."
+"All postal codes will be deleted. Automatic address will not function until "
+"postal codes are re-registered."
 
 msgid "tpl_142"
 msgstr "Items not for CSV output"
@@ -4162,28 +4161,28 @@ msgid "tpl_172"
 msgstr "Do you want to edit with these contents?"
 
 msgid "tpl_173"
-msgstr "Do you want to register with these contents?"
+msgstr "Register and continue?"
 
 msgid "tpl_174"
 msgstr "Do you want to delete this new information?"
 
 msgid "tpl_175"
-msgstr "Input a single move ranking."
+msgstr "Enter a single move ranking."
 
 msgid "tpl_176"
-msgstr "Input a move ranking."
+msgstr "Enter a move ranking."
 
 msgid "tpl_177"
-msgstr "Input a move ranking that is 4 digits or less."
+msgstr "Enter a move ranking that is 4 digits or less."
 
 msgid "tpl_178"
-msgstr "Input a number for the move ranking."
+msgstr "Enter a number for the move ranking."
 
 msgid "tpl_179"
 msgstr "The number to be moved is a duplicate."
 
 msgid "tpl_180"
-msgstr "Input 0 or greater for the move ranking"
+msgstr "Enter 0 or greater for the move ranking"
 
 msgid "tpl_181"
 msgstr ""
@@ -4194,13 +4193,13 @@ msgid "tpl_182"
 msgstr "Currently, there is no data."
 
 msgid "tpl_183"
-msgstr "Please input a comment."
+msgstr "Enter a comment."
 
 msgid "tpl_184"
-msgstr "Do you want to register with these contents"
+msgstr "Register and continue?"
 
 msgid "tpl_185"
-msgstr "さきほど選択したT_FIELD位の情報は破棄されます。宜しいでしょうか"
+msgstr "The selected field T_FIELD will be discarded. Continue? "
 
 msgid "tpl_186"
 msgstr "Ranking"
@@ -4340,7 +4339,7 @@ msgstr ""
 "used)"
 
 msgid "tpl_220"
-msgstr "Input twice for confirmation"
+msgstr "Enter twice for confirmation"
 
 msgid "tpl_221"
 msgstr "Hint for when you have forgotten your password"
@@ -4445,7 +4444,7 @@ msgid "tpl_250"
 msgstr "Search condition settings"
 
 msgid "tpl_251"
-msgstr "Number of search results displayed"
+msgstr "Results displayed"
 
 msgid "tpl_252"
 msgstr "Search using above criteria"
@@ -4656,7 +4655,7 @@ msgid "tpl_318"
 msgstr "Confirm"
 
 msgid "tpl_319"
-msgstr "未配信と配信失敗となった宛先に再送信を試みますか?"
+msgstr "Try to send to failed address again?"
 
 msgid "tpl_320"
 msgstr "Execute"
@@ -4668,10 +4667,10 @@ msgid "tpl_322"
 msgstr "There is no delivery history"
 
 msgid "tpl_323"
-msgstr "Return to delivery content settings"
+msgstr "Return"
 
 msgid "tpl_324"
-msgstr "Settings for delivery destination search conditions"
+msgstr "Delivery search conditions"
 
 msgid "tpl_325"
 msgstr "Delivery format"
@@ -4715,7 +4714,7 @@ msgid "tpl_337"
 msgstr "(Not designated)"
 
 msgid "tpl_338"
-msgstr "誕生月"
+msgstr "Birth month"
 
 msgid "tpl_339"
 msgstr "Birthday"
@@ -4748,7 +4747,7 @@ msgid "tpl_349"
 msgstr "Delivery history"
 
 msgid "tpl_350"
-msgstr "New template input"
+msgstr "Add template"
 
 msgid "tpl_351"
 msgstr "Creation date"
@@ -4775,7 +4774,7 @@ msgid "tpl_357"
 msgstr "Recommended products"
 
 msgid "tpl_358"
-msgstr "入力文字数:"
+msgstr "Character count"
 
 msgid "tpl_359"
 msgstr "Date of order receipt"
@@ -5013,7 +5012,7 @@ msgid "tpl_435"
 msgstr "Create using these contents"
 
 msgid "tpl_436"
-msgstr "* Input T_FIELD."
+msgstr "* Enter T_FIELD."
 
 msgid "tpl_437"
 msgstr "No applicable data exists."
@@ -5275,7 +5274,7 @@ msgid "tpl_517"
 msgstr "By year"
 
 msgid "tpl_518"
-msgstr "曜日別"
+msgstr "By day"
 
 msgid "tpl_519"
 msgstr "By time"
@@ -5502,7 +5501,7 @@ msgstr ""
 "DOWNLOAD_EXTENSION)"
 
 msgid "tpl_589"
-msgstr "(Input using numbers only)"
+msgstr "(Enter using numbers only)"
 
 msgid "tpl_590"
 msgstr "* Currently invalid"
@@ -5731,7 +5730,7 @@ msgid "tpl_660"
 msgstr "OFF"
 
 msgid "tpl_661"
-msgstr "Input new member"
+msgstr "Add member"
 
 msgid "tpl_662"
 msgstr "Access"
@@ -5746,7 +5745,7 @@ msgid "tpl_665"
 msgstr "Member registration/editing"
 
 msgid "tpl_666"
-msgstr "* Input required"
+msgstr "* Enter required"
 
 msgid "tpl_667"
 msgstr "Login ID"
@@ -5816,16 +5815,16 @@ msgid "tpl_686"
 msgstr "PHP information"
 
 msgid "tpl_687"
-msgstr "Monthly tabulation"
+msgstr "Monthly sales"
 
 msgid "tpl_688"
-msgstr "Tabulate by month"
+msgstr "Sales by month"
 
 msgid "tpl_689"
-msgstr "Period tabulation"
+msgstr "Period sales"
 
 msgid "tpl_690"
-msgstr "Tabulate by period"
+msgstr "Sales by period"
 
 msgid "tpl_691"
 msgstr "Age"
@@ -5870,25 +5869,25 @@ msgid "tpl_712"
 msgstr "Details - Main enlarged image<br />[T_FIELD1×T_FIELD2]"
 
 msgid "tpl_713"
-msgstr "番目へ"
+msgstr "The first"
 
 msgid "tpl_714"
-msgstr "円以上購入時無料"
+msgstr " and above is free!"
 
 msgid "tpl_715"
-msgstr "日間有効"
+msgstr "Days active"
 
 msgid "tpl_716"
-msgstr "直近の行："
+msgstr "Nearest line"
 
 msgid "tpl_717"
-msgstr "コメント <span class='attention'>*</span>"
+msgstr "Comment <span class='attention'>*</span>"
 
 msgid "tpl_718"
-msgstr "お届け先住所が入力されていません。"
+msgstr "The delivery destination has not been entered."
 
 msgid "tpl_719"
-msgstr "メール"
+msgstr "Mail"
 
 msgid "tpl_720"
 msgstr ""
@@ -5902,13 +5901,13 @@ msgid "tpl_722"
 msgstr "Add product"
 
 msgid "tpl_723"
-msgstr "変更"
+msgstr "Change"
 
 msgid "tpl_724"
 msgstr "Find users"
 
 msgid "tpl_725"
-msgstr "T_FIELD person"
+msgstr "T_FIELD"
 
 msgid "tpl_726"
 msgstr "T_FIELD1YearT_FIELD2MonthT_FIELD3Day"
@@ -5917,7 +5916,7 @@ msgid "tpl_727"
 msgstr "T_FIELD1/T_FIELD2"
 
 msgid "tpl_728"
-msgstr "T_FIELD月"
+msgstr "T_FIELD"
 
 msgid "tpl_729"
 msgstr "(None)"
@@ -6204,10 +6203,10 @@ msgstr ""
 "screen</a>."
 
 msgid "tpl_802"
-msgstr "月度 (末日締め)"
+msgstr "Monthly (end of month)"
 
 msgid "tpl_803"
-msgstr "月度 (T_FIELD日締め)"
+msgstr "Monthly (by T_FIELD)"
 
 msgid "-"
 msgstr " - "
@@ -6237,4 +6236,4 @@ msgid "pt_prefix"
 msgstr " "
 
 msgid "pt_suffix"
-msgstr " pt"
+msgstr " pts"
