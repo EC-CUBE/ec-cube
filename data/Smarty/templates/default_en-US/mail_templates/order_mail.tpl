@@ -69,7 +69,7 @@ Total $ <!--{$arrOrder.payment_total|number_format|default:0}-->
 ************************************************
 
 <!--{foreach item=shipping name=shipping from=$arrShipping}-->
-◎Delivery destination <!--{if count($arrShipping) > 1}--><!--{$smarty.foreach.shipping.iteration}--><!--{/if}-->
+Delivery destination <!--{if count($arrShipping) > 1}--><!--{$smarty.foreach.shipping.iteration}--><!--{/if}-->
 
  Name:<!--{$shipping.shipping_name01}--> <!--{$shipping.shipping_name02}-->
  Postal code:<!--{* <!--{$shipping.shipping_zip01}-->-<!--{$shipping.shipping_zip02}--> *}--><!--{$shipping.shipping_zipcode}-->
