@@ -33,7 +33,7 @@
             <td>
                 <span class="attention"><!--{$arrErr.kiyaku_title}--></span>
                 <span class="attention"><!--{$arrErr.name}--></span>
-                <input type="text" name="kiyaku_title" value="<!--{$arrForm.kiyaku_title|h}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="<!--{if $arrErr.kiyaku_title != "" || $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60"/>
+                <input type="text" name="kiyaku_title" value="<!--{$arrForm.kiyaku_title.value|h}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="<!--{if $arrErr.kiyaku_title != "" || $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60"/>
                 <span class="attention"> (上限<!--{$smarty.const.SMTEXT_LEN}-->文字)</span>
             </td>
         </tr>
@@ -41,7 +41,7 @@
             <th>規約内容<span class="attention"> *</span></th>
             <td>
             <span class="attention"><!--{$arrErr.kiyaku_text}--></span>
-            <textarea name="kiyaku_text" maxlength="<!--{$smarty.const.MLTEXT_LEN}-->" cols="60" rows="8" class="area60" style="<!--{if $arrErr.kiyaku_text != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" ><!--{"\n"}--><!--{$arrForm.kiyaku_text|h}--></textarea>
+            <textarea name="kiyaku_text" maxlength="<!--{$smarty.const.MLTEXT_LEN}-->" cols="60" rows="8" class="area60" style="<!--{if $arrErr.kiyaku_text != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" ><!--{"\n"}--><!--{$arrForm.kiyaku_text.value|h}--></textarea>
             <span class="attention"> (上限<!--{$smarty.const.MLTEXT_LEN}-->文字)</span>
             </td>
         </tr>
@@ -69,7 +69,7 @@
                 <td><!--{* 規格名 *}--><!--{$arrKiyaku[cnt].kiyaku_title|h}--></td>
                 <td align="center">
                     <!--{if $tpl_kiyaku_id != $arrKiyaku[cnt].kiyaku_id}-->
-                    <a href="?" onclick="fnSetFormSubmit('form1', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;">編集</a>
+                    <a href="?" onclick="fnModeSubmit('pre_edit', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;">編集</a>
                     <!--{else}-->
                     編集中
                     <!--{/if}-->
