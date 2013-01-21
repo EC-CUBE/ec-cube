@@ -476,3 +476,5 @@ define('MYPAGE_ORDER_STATUS_DISP_FLAG', true);
 define('MAIL_CHARACTER_CODE', 'UTF-8');
 /** メールヘッダーのコンテンツタイプ */
 define('MAIL_HEADER_CONTENT_TYPE', 'US-ASCII');
+/** タイムゾーン */
+define('TIMEZONE', 'Etc/GMT+0');

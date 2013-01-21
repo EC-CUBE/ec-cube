@@ -1246,6 +1246,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LOGIN_RETRY_INTERVA
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MYPAGE_ORDER_STATUS_DISP_FLAG', 'true', 1412, 'MY page: Order status display flag');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MAIL_CHARACTER_CODE', '"UTF-8"', 1413, 'メールの文字コード');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MAIL_HEADER_CONTENT_TYPE', '"US-ASCII"', 1414, 'メールヘッダーのコンテンツタイプ');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TIMEZONE', '"Etc/GMT+0"', 1415, 'タイムゾーン');
 
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_customer', 'email_mobile', 0, 'Try when you want to improve the login processing speed when there is an increase in the number of members');
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_products', 'name', 2, 'Try when you want to improve the product name search speed');

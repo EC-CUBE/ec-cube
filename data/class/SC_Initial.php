@@ -476,6 +476,6 @@ class SC_Initial {
      * @return void
      */
     function setTimezone() {
-        date_default_timezone_set('Asia/Tokyo');
+        date_default_timezone_set(TIMEZONE);
     }
 }

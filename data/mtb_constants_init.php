@@ -476,3 +476,5 @@ define('MYPAGE_ORDER_STATUS_DISP_FLAG', true);
 define('MAIL_CHARACTER_CODE', 'JIS');
 /** メールヘッダーのコンテンツタイプ */
 define('MAIL_HEADER_CONTENT_TYPE', 'ISO-2022-JP');
+/** タイムゾーン */
+define('TIMEZONE', 'Asia/Tokyo');
