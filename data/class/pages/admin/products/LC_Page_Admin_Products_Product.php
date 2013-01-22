@@ -501,8 +501,8 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
                 if ($select_recommend_no == preg_replace('/^recommend_id/', '', $key)) {
                     continue;
                 }
-
-                if ($select_recommend_id == $arrForm[$key]) {
+                $delete_key = 'recommend_delete'.intval(str_replace('recommend_id','',$key));
+                if ($select_recommend_id == $arrForm[$key] && $arrForm[$delete_key] != 1) {
                     // 重複した場合、選択されたデータをリセットする
                     $arrForm['recommend_id' . $select_recommend_no] = '';
                     $arrErr['recommend_comment' . $select_recommend_no] = '※ すでに登録されている関連商品です。<br />';
