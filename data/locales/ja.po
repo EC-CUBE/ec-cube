@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2013-01-20 18:11+0900\n"
+"PO-Revision-Date: 2013-01-22 10:32+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -268,13 +268,16 @@ msgid "SC_Fpdf_017"
 msgstr "作成日: T_YEAR年T_MONTH月T_DAY日"
 
 msgid "SC_Fpdf_018"
-msgstr "T_PRICE T_UNIT"
+msgstr "T_LASTNAME　T_FIRSTNAME 様"
 
 msgid "SC_Fpdf_019"
-msgstr "円"
+msgstr "T_FIELD 円"
 
 msgid "SC_Fpdf_020"
 msgstr "Pt"
+
+msgid "SC_Fpdf_021"
+msgstr "〒"
 
 msgid "SC_Image_001"
 msgstr "ファイルのコピーに失敗しました。"
@@ -3890,7 +3893,7 @@ msgid "tpl_105"
 msgstr "運営責任者<span class='attention'> *</span>"
 
 msgid "tpl_106"
-msgstr "〒"
+msgstr "〒 "
 
 msgid "tpl_107"
 msgstr "所在地<span class='attention'> *</span>"

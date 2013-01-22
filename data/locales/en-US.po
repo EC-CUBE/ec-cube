@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2013-01-21 18:40+0900\n"
+"PO-Revision-Date: 2013-01-22 10:30+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -232,7 +232,7 @@ msgid "SC_Fpdf_003"
 msgstr "Unit price"
 
 msgid "SC_Fpdf_004"
-msgstr "Amount (including tax)"
+msgstr "Amount with tax"
 
 msgid "SC_Fpdf_005"
 msgstr "Product total"
@@ -274,13 +274,16 @@ msgid "SC_Fpdf_017"
 msgstr "Creation date: T_YEAR/T_MONTH/T_DAY"
 
 msgid "SC_Fpdf_018"
-msgstr "T_PRICE T_UNIT"
+msgstr "T_LASTNAME T_FIRSTNAME"
 
 msgid "SC_Fpdf_019"
-msgstr "$"
+msgstr "$ T_FIELD"
 
 msgid "SC_Fpdf_020"
 msgstr "Pts"
+
+msgid "SC_Fpdf_021"
+msgstr " "
 
 msgid "SC_Image_001"
 msgstr "File copying failed."
