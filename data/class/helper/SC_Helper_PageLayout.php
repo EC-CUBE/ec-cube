@@ -167,6 +167,18 @@ __EOF__;
         if ($has_realpath) {
             $this->setBlocPathTo($device_type_id, $arrBlocs);
         }
+        
+        //全ページ設定と各ページのブロックの重複を削除
+        foreach ($arrBlocs as $index => $arrBloc) {
+            if($arrBloc['anywhere'] == 1){
+                $arrUniqBlocIds[] = $arrBloc['bloc_id'];
+            }
+        }
+        foreach ($arrBlocs as $bloc_index => $arrBlocData) {
+            if(in_array($arrBlocData['bloc_id'], $arrUniqBlocIds) && $arrBlocData['anywhere'] == 0){
+                unset($arrBlocs[$bloc_index]);
+            }
+        }
         return $arrBlocs;
     }
 
