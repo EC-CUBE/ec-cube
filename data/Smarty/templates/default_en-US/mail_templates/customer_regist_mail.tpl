@@ -23,12 +23,10 @@
  It can be viewed optimally using monospaced font.
 
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
- ※本メールは、
- <!--{$CONF.shop_name}-->より会員登録を希望された方に
- お送りしています。
- もしお心当たりが無い場合は、
- その旨 <!--{* 問い合わせ受付メール *}--><!--{$CONF.email02}--> まで
- ご連絡いただければ幸いです。
+ This is an automatic message sent from
+ <!--{$CONF.shop_name}--> to the end-user.
+ If you think this was by mistake, please contact
+ <!--{* 問い合わせ受付メール *}--><!--{$CONF.email02}-->
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
 Dear <!--{$name01}--><!--{$name02}-->,

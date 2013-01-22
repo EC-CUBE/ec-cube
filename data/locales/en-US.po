@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2013-01-22 10:30+0900\n"
+"PO-Revision-Date: 2013-01-22 18:00+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1871,8 +1871,8 @@ msgstr "Registration is complete."
 
 msgid "ALERT_022"
 msgstr ""
-"Management function settings were revised. If the URL was changed, access "
-"the new URL."
+"Management area settings were revised. If the URL was changed, access the "
+"new URL."
 
 msgid "ALERT_023"
 msgstr "There is an error in the settings details. Check the settings details."
@@ -2423,13 +2423,13 @@ msgid "LC_Page_Install_021"
 msgstr "Administrator: Password"
 
 msgid "LC_Page_Install_022"
-msgstr "Management function: Directory"
+msgstr "Management area: Directory"
 
 msgid "LC_Page_Install_023"
-msgstr "Management function: SSL restriction"
+msgstr "Management area: SSL restriction"
 
 msgid "LC_Page_Install_024"
-msgstr "Management function: IP restriction"
+msgstr "Management area: IP restriction"
 
 msgid "LC_Page_Install_025"
 msgstr "URL (normal)"
@@ -2486,12 +2486,12 @@ msgid "LC_Page_Install_042"
 msgstr "Administrator: Password"
 
 msgid "LC_Page_Install_043"
-msgstr "Management function: Directory"
+msgstr "Management area: Directory"
 
 msgid "LC_Page_Install_044"
 msgstr ""
-"* The designated management function directory already exists. Please "
-"designate a different name."
+"* The designated management directory already exists. Please use a different "
+"name."
 
 msgid "LC_Page_Install_045"
 msgstr ">> The script file cannot be found"
@@ -2501,8 +2501,8 @@ msgstr ">> Table structure was not changed.<br />"
 
 msgid "LC_Page_Install_047"
 msgstr ""
-"* The designated management function directory already exists. Please "
-"designate a different name."
+"* The designated management directory already exists. Please use  a "
+"different name."
 
 msgid "LC_Page_Install_048"
 msgstr "* Renaming to T_FIELD failed. Check directory access."
@@ -3378,7 +3378,7 @@ msgid "LC_Page_Admin_System_Log_004"
 msgstr "Member login log file"
 
 msgid "LC_Page_Admin_System_Log_005"
-msgstr "Management function log file"
+msgstr "Management area log file"
 
 msgid "LC_Page_Admin_System_Log_006"
 msgstr "Debug log file"
@@ -3608,7 +3608,7 @@ msgid "tpl_003"
 msgstr "Edit"
 
 msgid "tpl_004"
-msgstr "Delete"
+msgstr "Remove"
 
 msgid "tpl_005"
 msgstr "Move"
@@ -3833,7 +3833,7 @@ msgid "tpl_070"
 msgstr "Footer"
 
 msgid "tpl_071"
-msgstr "Return to search results"
+msgstr "Return"
 
 msgid "tpl_072"
 msgstr "Text count"
@@ -4383,8 +4383,7 @@ msgid "tpl_229"
 msgstr "Purchase history list"
 
 msgid "tpl_230"
-msgstr ""
-"<span class='attention'>T_FIELD items</span>&nbsp; were found applicable."
+msgstr "<span class='attention'>T_FIELD items</span>&nbsp; were found."
 
 msgid "tpl_231"
 msgstr "Order number"
@@ -4405,7 +4404,7 @@ msgid "tpl_236"
 msgstr "Registration is complete."
 
 msgid "tpl_237"
-msgstr "Continue registration"
+msgstr "Register new item"
 
 msgid "tpl_238"
 msgstr "Temporary member"
@@ -5175,7 +5174,7 @@ msgid "tpl_487"
 msgstr "Home"
 
 msgid "tpl_488"
-msgstr "Registration"
+msgstr "Register"
 
 msgid "tpl_489"
 msgstr "(Upper limit T_FIELD characters)"
@@ -5208,7 +5207,7 @@ msgid "tpl_496"
 msgstr "Return to the standard list"
 
 msgid "tpl_497"
-msgstr "Newly register this product"
+msgstr "Finalize registration"
 
 msgid "tpl_498"
 msgstr "Product category"
@@ -5343,7 +5342,7 @@ msgid "tpl_539"
 msgstr "Return to login page"
 
 msgid "tpl_540"
-msgstr "Management function"
+msgstr "Management area"
 
 msgid "tpl_541"
 msgstr "ADMIN_MODE ON"
@@ -5499,12 +5498,10 @@ msgid "tpl_587"
 msgstr "[Erase file]"
 
 msgid "tpl_588"
-msgstr ""
-"Extension for which upload registration is possible: T_FIELD (Parameter "
-"DOWNLOAD_EXTENSION)"
+msgstr "Extensions for uploaded files: T_FIELD (Parameter DOWNLOAD_EXTENSION)"
 
 msgid "tpl_589"
-msgstr "(Enter using numbers only)"
+msgstr "(Numbers only)"
 
 msgid "tpl_590"
 msgstr "* Currently invalid"
@@ -5522,10 +5519,10 @@ msgid "tpl_594"
 msgstr "(Tags permitted)"
 
 msgid "tpl_595"
-msgstr "Subinformation display/non-display"
+msgstr "Toggle display of subinformation"
 
 msgid "tpl_596"
-msgstr "Display/non-display of related products"
+msgstr "Toggle display of related products"
 
 msgid "tpl_597"
 msgstr "Related products"
@@ -5662,7 +5659,7 @@ msgstr ""
 "familiar with them."
 
 msgid "tpl_640"
-msgstr "Management function settings"
+msgstr "Management area settings"
 
 msgid "tpl_641"
 msgstr "Directory name"
@@ -5678,9 +5675,10 @@ msgstr "Make SSL mandatory."
 
 msgid "tpl_645"
 msgstr ""
-"* Access to the management function is limited to only connections from a "
+"* Access to the management area is limited to only connections from a "
 "designated IP address.<br />You may enter an IP address per line to gain "
-"access. If nothing is entered, access will be permitted to all IP addresses."
+"access to the page. If nothing is entered, access will be permitted to all "
+"IP addresses."
 
 msgid "tpl_646"
 msgstr "Do you want to restore?"
@@ -6037,13 +6035,13 @@ msgid "tpl_751"
 msgstr "Login ID <span class='attention'>*</span>"
 
 msgid "tpl_752"
-msgstr "ID for logging in to the management function."
+msgstr "ID for logging in to the management area."
 
 msgid "tpl_753"
-msgstr "Password for logging in to the management function."
+msgstr "Password for logging in to the management area."
 
 msgid "tpl_754"
-msgstr "Management function settings"
+msgstr "Management area settings"
 
 msgid "tpl_755"
 msgstr "Directory"
@@ -6052,12 +6050,10 @@ msgid "tpl_756"
 msgstr "(Example) eccube@example.com"
 
 msgid "tpl_757"
-msgstr "Directory name for the management function."
+msgstr "Directory name for management area."
 
 msgid "tpl_758"
-msgstr ""
-"Section for 'Management function' for when accessing the management function "
-"below."
+msgstr "Access the management area with link below."
 
 msgid "tpl_759"
 msgstr ""
@@ -6065,8 +6061,7 @@ msgstr ""
 "[Directory]</span>/"
 
 msgid "tpl_760"
-msgstr ""
-"Access to the management function is limited to SSL (https) connections."
+msgstr "Access to the management area is limited to SSL (https) connections."
 
 msgid "tpl_761"
 msgstr "WEB server settings"
@@ -6103,7 +6098,7 @@ msgid "tpl_770"
 msgstr "SMTP host"
 
 msgid "tpl_771"
-msgstr "Designated only when the mailer backend is SMTP."
+msgstr "Use only when the mailer backend is SMTP."
 
 msgid "tpl_772"
 msgstr "SMTP port"
@@ -6112,7 +6107,7 @@ msgid "tpl_773"
 msgstr "SMTP user"
 
 msgid "tpl_774"
-msgstr "Designated only when the mailer backend is SMTP and SMTP-AUTH is used."
+msgstr "Use only when the mailer backend is SMTP and SMTP-AUTH is also used."
 
 msgid "tpl_775"
 msgstr "SMTP password"
@@ -6121,7 +6116,7 @@ msgid "tpl_776"
 msgstr "Database settings"
 
 msgid "tpl_777"
-msgstr "* It is necessary to newly create a DB before installation."
+msgstr "* You must create a new database before installation."
 
 msgid "tpl_778"
 msgstr "DB type <span class='attention'>*</span>"
