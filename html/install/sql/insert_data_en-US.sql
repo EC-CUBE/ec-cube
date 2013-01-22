@@ -706,9 +706,9 @@ INSERT INTO dtb_recommend_products (product_id, recommend_product_id, rank, comm
 INSERT INTO dtb_best_products (best_id, category_id, rank, product_id, title, comment, creator_id, create_date, update_date, del_flg) VALUES (1, 0, 1, 2, NULL, 'How about some hot Nabe once in awhile?', 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO dtb_best_products (best_id, category_id, rank, product_id, title, comment, creator_id, create_date, update_date, del_flg) VALUES (2, 0, 2, 1, NULL, 'Palate freshener.', 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 
-INSERT INTO dtb_templates (template_code, device_type_id, template_name, create_date, update_date) VALUES ('default', 10, 'Default', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_templates (template_code, device_type_id, template_name, create_date, update_date) VALUES ('default_en-US', 10, 'Default', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_templates (template_code, device_type_id, template_name, create_date, update_date) VALUES ('mobile', 1, 'Mobile', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_templates (template_code, device_type_id, template_name, create_date, update_date) VALUES ('sphone', 2, 'Smartphone', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_templates (template_code, device_type_id, template_name, create_date, update_date) VALUES ('sphone_en-US', 2, 'Smartphone', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (0, 'table', 0);
 INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (1, 'tr', 1);
