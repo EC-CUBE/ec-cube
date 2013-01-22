@@ -470,6 +470,12 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         // 商品規格テーブルのカラムに存在しているもののうち、Form投入設定されていないデータは上書きしない。
         $sqlval = SC_Utils_Ex::sfArrayIntersectKeys($arrList, $this->arrProductClassColumn);
 
+        // 商品IDが設定されており、規格IDが設定されていなければ、既存の規格ID取得を試みる(product_class_idは必須入力項目ではない)
+        if ($product_class_id == '' && $product_id != '') {
+            $product_class_id = SC_Utils_Ex::sfGetProductClassId($product_id,$sqlval['classcategory_id1'],$sqlval['classcategory_id2']);
+            $sqlval['product_class_id'] = $product_class_id;
+        }
+
         if ($product_class_id == '') {
             // 新規登録
             // 必須入力では無い項目だが、空文字では問題のある特殊なカラム値の初期値設定
