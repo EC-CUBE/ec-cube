@@ -98,11 +98,13 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
         $this->arrHidden = $objFormParam->getSearchArray();
         $this->arrForm = $objFormParam->getFormParamList();
 
+        $objPurchase = new SC_Helper_Purchase_Ex();
+
         switch ($this->getMode()) {
             // 削除
             case 'delete':
-                $this->doDelete('order_id = ?',
-                                array($objFormParam->getValue('order_id')));
+                $order_id = $objFormParam->getValue('order_id');
+                $objPurchase->cancelOrder($order_id, ORDER_CANCEL, true);
                 // 削除後に検索結果を表示するため breakしない
 
             // 検索パラメーター生成後に処理実行するため breakしない
@@ -141,7 +143,12 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
 
                         // 全件削除(ADMIN_MODE)
                         case 'delete_all':
-                            $this->doDelete($where, $arrWhereVal);
+                            $page_max = 0;
+                            $arrResults = $this->findOrders($where, $arrWhereVal,
+                                                           $page_max, 0, $order);
+                            foreach ($arrResults as $element) {
+                                $objPurchase->cancelOrder($element['order_id'], ORDER_CANCEL, true);
+                            }
                             break;
 
                         // 検索実行
@@ -454,7 +461,9 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
      */
     function findOrders($where, $arrValues, $limit, $offset, $order) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->setLimitOffset($limit, $offset);
+        if ($limit != 0) {
+            $objQuery->setLimitOffset($limit, $offset);
+        }
         $objQuery->setOrder($order);
         return $objQuery->select('*', 'dtb_order', $where, $arrValues);
     }

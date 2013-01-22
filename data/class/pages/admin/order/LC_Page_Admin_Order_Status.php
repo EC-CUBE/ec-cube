@@ -221,18 +221,10 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
             return false;
         }
 
-        $arrUpdate = array(
-            'del_flg'      => 1,
-            'update_date'  => 'CURRENT_TIMESTAMP',
-        );
-
-        $objQuery->begin();
-
+        $objPurchase = new SC_Helper_Purchase_Ex();
         foreach ($arrOrderId as $orderId) {
-            $objQuery->update('dtb_order', $arrUpdate, 'order_id = ?', array($orderId));
+            $objPurchase->cancelOrder($orderId, ORDER_CANCEL, true);
         }
-
-        $objQuery->commit();
 
         $this->tpl_onload = "window.alert('選択項目を削除しました。');";
         return true;
