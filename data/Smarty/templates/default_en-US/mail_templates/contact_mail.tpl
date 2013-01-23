@@ -23,13 +23,13 @@
  * This e-mail has been automatically sent.
  It can be viewed optimally using monospaced font.
 
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+===========================================================
   * This e-mail has been sent by <!--{$tpl_shopname}--> to the party making 
   an inquiry. 
   If you do not recall making an inquiry, please disregard
   this e-mail. 
   In addition, please contact <!--{$tpl_infoemail}--> regarding this matter. 
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+===========================================================
 
 Dear <!--{$arrForm.name01.value}-->,
 
@@ -37,12 +37,12 @@ We have received your inquiry below.
 We will contact you as soon as we are able to confirm the issue at hand.
 Thank you for your patience. 
 
-■Name :<!--{$arrForm.name01.value}--> <!--{$arrForm.name02.value}-->
-■Postal code:<!--{* <!--{if $arrForm.zip01.value && $arrForm.zip02.value}--><!--{$arrForm.zip01.value}-->-<!--{$arrForm.zip02.value}--><!--{/if}--> *}--><!--{if $arrForm.zipcode.value}--><!--{$arrForm.zipcode.value}--><!--{/if}-->
+*Name :<!--{$arrForm.name01.value}--> <!--{$arrForm.name02.value}-->
+*Postal code:<!--{* <!--{if $arrForm.zip01.value && $arrForm.zip02.value}--><!--{$arrForm.zip01.value}-->-<!--{$arrForm.zip02.value}--><!--{/if}--> *}--><!--{if $arrForm.zipcode.value}--><!--{$arrForm.zipcode.value}--><!--{/if}-->
 
-■Address  :<!--{$arrForm.addr01.value}--><!--{$arrForm.addr02.value}-->
-■Telephone number:<!--{$arrForm.tel01.value}-->-<!--{$arrForm.tel02.value}-->-<!--{$arrForm.tel03.value}-->
-■E-mail address:<!--{$arrForm.email.value}-->
-■Details of inquiry
+*Address  :<!--{$arrForm.addr01.value}--><!--{$arrForm.addr02.value}-->
+*Telephone number:<!--{$arrForm.tel01.value}-->-<!--{$arrForm.tel02.value}-->-<!--{$arrForm.tel03.value}-->
+*E-mail address:<!--{$arrForm.email.value}-->
+*Details of inquiry
 <!--{$arrForm.contents.value}-->
 <!--{$tpl_footer}-->
