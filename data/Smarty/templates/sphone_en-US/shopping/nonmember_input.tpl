@@ -92,7 +92,6 @@
                         value="<!--{$arrForm[$key1].value|h}-->"
                         max="<!--{$arrForm[$key1].length}-->"
                         style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;
-                    <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fn">Postal code search</span></a>
                 </p>
 
                 <!--{* <a href="javascript:fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'order_zip01', 'order_zip02', 'order_pref', 'order_addr01');" class="btn_sub btn_inputzip">Automatic address input from postal code</a> *}-->
@@ -283,7 +282,6 @@
                             value="<!--{$arrForm[$key1].value|h}-->"
                             max="<!--{$arrForm[$key1].length}-->"
                             style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;
-                        <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fn">Postal code search</span></a>
                     </p>
 
                     <!--{* <a href="javascript:fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'shipping_zip01', 'shipping_zip02', 'shipping_pref', 'shipping_addr01');" class="btn_sub btn_inputzip">Automatic address input from postal code</a> *}-->

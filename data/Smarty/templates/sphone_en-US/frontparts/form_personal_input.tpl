@@ -50,8 +50,8 @@
         <div class="attention"><!--{$arrErr[$key1]}--></div>
     <!--{/if}-->
 
-    <!--{* <p><input type="tel" name="<!--{$key1}-->" value="<!--{$arrForm[$key1]|h}-->" max="<!--{$smarty.const.ZIP01_LEN}-->" class="boxShort text data-role-none" />&nbsp;-&nbsp;<input type="tel" name="<!--{$key2}-->" value="<!--{$arrForm[$key2]|h}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" class="boxShort text data-role-none" />&nbsp;&nbsp;<a href="http://search.post.japanpost.jp/zipcode/" target="_blank" rel="external"><span class="fn">Postal code search</span></a></p> *}-->
-    <p><input type="tel" name="<!--{$key1}-->" value="<!--{$arrForm[$key1]|h}-->" max="<!--{$smarty.const.ZIPCODE_LEN}-->" class="boxShort text data-role-none" />&nbsp;&nbsp;<a href="http://search.post.japanpost.jp/zipcode/" target="_blank" rel="external"><span class="fn">Postal code search</span></a></p>
+    <!--{* <p><input type="tel" name="<!--{$key1}-->" value="<!--{$arrForm[$key1]|h}-->" max="<!--{$smarty.const.ZIP01_LEN}-->" class="boxShort text data-role-none" />&nbsp;-&nbsp;<input type="tel" name="<!--{$key2}-->" value="<!--{$arrForm[$key2]|h}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" class="boxShort text data-role-none" /></p> *}-->
+    <p><input type="tel" name="<!--{$key1}-->" value="<!--{$arrForm[$key1]|h}-->" max="<!--{$smarty.const.ZIPCODE_LEN}-->" class="boxShort text data-role-none" /></p>
 
     <!--{* <a href="javascript:fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', '<!--{$key1}-->', '<!--{$key2}-->', '<!--{$key3}-->', '<!--{$key4}-->');" class="btn_sub btn_inputzip">Automatic address input from postal code</a> *}-->
 </dd>

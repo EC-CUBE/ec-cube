@@ -73,13 +73,12 @@
                         style="<!--{$arrErr.zip01|sfGetErrorColor}-->; ime-mode: disabled;" class="boxShort text data-role-none" />&nbsp;-&nbsp;<input type="tel" name="zip02"
                         value="<!--{$arrForm.zip02.value|default:$arrData.zip02|h}-->"
                         max="<!--{$smarty.const.ZIP02_LEN}-->"
-                        style="<!--{$arrErr.zip02|sfGetErrorColor}-->; ime-mode: disabled;" class="boxShort text data-role-none" />&nbsp;&nbsp;<a href="http://search.post.japanpost.jp/zipcode/" target="_blank" rel="external"><span class="fn">Postal code search</span></a>
+                        style="<!--{$arrErr.zip02|sfGetErrorColor}-->; ime-mode: disabled;" class="boxShort text data-role-none" />
                     *}-->
                     <input type="tel" name="zipcode"
                         value="<!--{$arrForm.zipcode.value|default:$arrData.zipcode|h}-->"
                         max="<!--{$smarty.const.ZIPCODE_LEN}-->"
                         style="<!--{$arrErr.zipcode|sfGetErrorColor}-->; ime-mode: disabled;" class="boxShort text data-role-none" />
-                        &nbsp;&nbsp;<a href="http://search.post.japanpost.jp/zipcode/" target="_blank" rel="external"><span class="fn">Postal code search</span></a>
                 </p>
 
                 <!--{* <a href="javascript:fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', '<!--{$key1}-->', '<!--{$key2}-->', '<!--{$key3}-->', '<!--{$key4}-->');" class="btn_sub btn_inputzip" rel="external">Automatic address input from postal code</a> *}-->
