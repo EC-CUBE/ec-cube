@@ -461,7 +461,7 @@ class SC_FormParam {
         $pattern = '/^[ 　\r\n\t]*(.*?)[ 　\r\n\t]*$/u';
         if (is_array($value)) {
             foreach ($value as $key => $val) {
-                $this->recursionTrim($value[$key], $convert);
+                $this->recursionTrim($value[$key], $has_wide_space);
             }
         } else {
             if (!SC_Utils_Ex::isBlank($value)) {
