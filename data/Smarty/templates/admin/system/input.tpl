@@ -30,7 +30,7 @@ self.moveTo(20,20);self.focus();
 //-->
 </script>
 
-<form name="form1" id="form1" method="post" action="" onsubmit="return fnRegistMember();">
+<form name="form1" id="form1" method="post" action="">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="<!--{$tpl_mode|h}-->">
 <input type="hidden" name="member_id" value="<!--{$tpl_member_id|h}-->">
@@ -103,7 +103,7 @@ self.moveTo(20,20);self.focus();
 
 <div class="btn-area">
     <ul>
-        <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', '<!--{$tpl_mode|h}-->', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+        <li><a class="btn-action" href="javascript:;" onclick="if (!fnConfirm()) return false; fnFormModeSubmit('form1', '<!--{$tpl_mode|h}-->', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
     </ul>
 </div>
 </form>

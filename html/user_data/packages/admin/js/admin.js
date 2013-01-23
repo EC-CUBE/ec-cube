@@ -19,39 +19,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-// 管理者メンバーを追加する。
-function fnRegistMember() {
-    // 必須項目の名前、ログインID、パスワード、権限
-    var lstitem = new Array();
-    lstitem[0] = 'name';
-    lstitem[1] = 'login_id';
-    lstitem[2] = 'password';
-    lstitem[3] = 'authority';
-
-    var max = lstitem.length;
-    var errflg = false;
-    var cnt = 0;
-
-    //　必須項目のチェック
-    for(cnt = 0; cnt < max; cnt++) {
-        if(document.form1[lstitem[cnt]].value == "") {
-            errflg = true;
-            break;
-        }
-    }
-
-    // 必須項目が入力されていない場合
-    if(errflg == true) {
-        alert('必須項目を入力して下さい。');
-        return false;
-    } else {
-        if(window.confirm('内容を登録しても宜しいでしょうか')){
-            return true;
-        } else {
-            return false;
-        }
-    }
-}
 
 //親ウィンドウのページを変更する。
 function fnUpdateParent(url) {
