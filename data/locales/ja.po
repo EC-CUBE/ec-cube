@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2013-01-22 10:32+0900\n"
+"PO-Revision-Date: 2013-01-23 10:24+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -2715,9 +2715,6 @@ msgstr "会員管理"
 msgid "LC_Page_Admin_Customer_002"
 msgstr "会員マスター"
 
-msgid "LC_Page_Admin_Customer_003"
-msgstr "不明"
-
 msgid "LC_Page_Admin_Customer_Edit_001"
 msgstr "会員管理"
 
@@ -2863,9 +2860,6 @@ msgstr "メルマガ管理"
 
 msgid "LC_Page_Admin_Mail_002"
 msgstr "配信内容設定"
-
-msgid "LC_Page_Admin_Mail_003"
-msgstr "不明"
 
 msgid "LC_Page_Admin_Mail_004"
 msgstr "両方"

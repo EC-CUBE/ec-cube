@@ -53,7 +53,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrJob = $masterData->getMasterData('mtb_job');
-        $this->arrJob[t('LC_Page_Admin_Mail_003')] = t('LC_Page_Admin_Mail_003');
+        $this->arrJob[t('SC_SelectSql_001')] = t('SC_SelectSql_001');
         $this->arrSex = $masterData->getMasterData('mtb_sex');
         $this->arrPageRows = $masterData->getMasterData('mtb_page_max');
         $this->arrHtmlmail = array('' => t('LC_Page_Admin_Mail_004'),  1 => t('LC_Page_Admin_Mail_005'), 2 => t('LC_Page_Admin_Mail_006'));

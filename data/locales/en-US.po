@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2013-01-22 18:00+0900\n"
+"PO-Revision-Date: 2013-01-23 10:24+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -2735,9 +2735,6 @@ msgstr "Members"
 msgid "LC_Page_Admin_Customer_002"
 msgstr "Member master"
 
-msgid "LC_Page_Admin_Customer_003"
-msgstr "Unknown"
-
 msgid "LC_Page_Admin_Customer_Edit_001"
 msgstr "Member management"
 
@@ -2884,9 +2881,6 @@ msgstr "Mail magazine management"
 
 msgid "LC_Page_Admin_Mail_002"
 msgstr "Delivery content settings"
-
-msgid "LC_Page_Admin_Mail_003"
-msgstr "Unknown"
 
 msgid "LC_Page_Admin_Mail_004"
 msgstr "Both"
