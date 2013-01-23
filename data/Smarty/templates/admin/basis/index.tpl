@@ -177,7 +177,7 @@ $(function() {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_039"}--></th>
+            <th><!--{t string="tpl_038"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.fax01}--></span>
                 <input type="text" name="fax01" value="<!--{$arrForm.fax01|h}-->" maxlength="6" size="6" class="box6" style="<!--{if $arrErr.fax01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" /> -

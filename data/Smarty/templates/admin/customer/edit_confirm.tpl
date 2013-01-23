@@ -93,7 +93,7 @@ function func_return(){
                 <td><!--{$arrForm.tel01|h}--> - <!--{$arrForm.tel02|h}--> - <!--{$arrForm.tel03|h}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_039"}--></th>
+                <th><!--{t string="tpl_038"}--></th>
                 <td><!--{if strlen($arrForm.fax01) > 0}--><!--{$arrForm.fax01|h}--> - <!--{$arrForm.fax02|h}--> - <!--{$arrForm.fax03|h}--><!--{else}--><!--{t string="tpl_242"}--><!--{/if}--></td>
             </tr>
             <tr>
