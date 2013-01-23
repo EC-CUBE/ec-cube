@@ -88,7 +88,7 @@ $(function(){
 
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_022"}--></th>
+            <th><!--{t string="tpl_022_1" escape="none"}--></th>
             <td>
                 <!--{if $arrErr.title}--><span class="attention"><!--{$arrErr.title}--></span><!--{/if}-->
                 <input type="text" name="title" value="<!--{$arrForm.title|h}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="" size="60" class="box60"/>
