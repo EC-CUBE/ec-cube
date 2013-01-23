@@ -214,12 +214,7 @@
             <tr>
                 <th>Address<span class="attention">*</span></th>
                 <td>
-                    <!--{assign var=key value="shipping_pref"}-->
-                    <span class="attention"><!--{$arrErr.shipping_pref}--><!--{$arrErr.shipping_addr01}--><!--{$arrErr.shipping_addr02}--></span>
-                    <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-                        <option value="">Select a prefecture</option>
-                        <!--{html_options options=$arrPref selected=$arrForm[$key].value}-->
-                    </select>
+                    <span class="attention"><!--{$arrErr.shipping_addr01}--><!--{$arrErr.shipping_addr02}--></span>
                     <p>
                         <!--{assign var=key value="shipping_addr01"}-->
                         <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;" class="box380" /><br />

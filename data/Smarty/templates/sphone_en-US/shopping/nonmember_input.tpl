@@ -291,12 +291,7 @@
 
                 <dt>Address&nbsp;<span class="attention">*</span></dt>
                 <dd>
-                    <!--{assign var=key value="shipping_pref"}-->
-                    <span class="attention"><!--{$arrErr.shipping_pref}--><!--{$arrErr.shipping_addr01}--><!--{$arrErr.shipping_addr02}--></span>
-                    <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="boxHarf top data-role-none">
-                        <option value="" selected="selected">Prefecture</option>
-                        <!--{html_options options=$arrPref selected=$arrForm[$key].value}-->
-                    </select>
+                    <span class="attention"><!--{$arrErr.shipping_addr01}--><!--{$arrErr.shipping_addr02}--></span>
                     <!--{assign var=key value="shipping_addr01"}-->
                     <input type="text" name="<!--{$key}-->"
                         value="<!--{$arrForm[$key].value|h}-->"
