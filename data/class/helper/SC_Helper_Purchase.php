@@ -257,7 +257,7 @@ class SC_Helper_Purchase {
      * @param integer $uniqId 受注一時情報ID
      * @param array $params 登録する受注情報の配列
      * @param SC_Customer $objCustomer SC_Customer インスタンス
-     * @return array void
+     * @return void
      */
     function saveOrderTemp($uniqId, $params, &$objCustomer = NULL) {
         if (SC_Utils_Ex::isBlank($uniqId)) {

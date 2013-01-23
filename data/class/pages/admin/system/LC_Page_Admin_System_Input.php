@@ -71,11 +71,11 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+        $objFormParam = new SC_FormParam_Ex();
 
         // ページ送りの処理 $_REQUEST['pageno']が信頼しうる値かどうかチェックする。
         $this->tpl_pageno = $this->lfCheckPageNo($_REQUEST['pageno']);
 
-        $objFormParam = new SC_FormParam_Ex();
         $arrErr = array();
         $arrForm = array();
 
@@ -194,7 +194,6 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
      * @return void
      */
     function initForm(&$objFormParam, &$arrParams, $mode = '') {
-
         $objFormParam->addParam('メンバーID', 'member_id', INT_LEN, 'n', array('NUM_CHECK'));
         $objFormParam->addParam('名前', 'name', STEXT_LEN, 'KV', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('所属', 'department', STEXT_LEN, 'KV', array('MAX_LENGTH_CHECK'));
@@ -235,30 +234,30 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
             $objErr->doFunc(array('パスワード', 'password', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK' ,'NUM_RANGE_CHECK'));
             $objErr->doFunc(array('ログインID', 'login_id', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK' ,'NUM_RANGE_CHECK'));
         }
-    $objErr->doFunc(array('パスワード', 'パスワード(確認)', 'password', 'password02') ,array('EQUAL_CHECK'));
+        $objErr->doFunc(array('パスワード', 'パスワード(確認)', 'password', 'password02') ,array('EQUAL_CHECK'));
 
         $arrErr = $objErr->arrErr;
 
         switch ($mode) {
-        case 'new':
-            // 管理者名が登録済みでないか
-            if ($this->memberDataExists('name = ? AND del_flg = 0', $arrParams['name'])) {
-                $arrErr['name'] = '既に登録されている名前なので利用できません。<br>';
-            }
-            // ログインIDが登録済みでないか
-            if ($this->memberDataExists('login_id = ? AND del_flg = 0', $arrParams['login_id'])) {
-                $arrErr['login_id'] = '既に登録されているIDなので利用できません。<br>';
-            }
-            break;
-        case 'edit':
-            // ログインIDが変更されている場合はチェックする。
-            if ($arrParams['login_id'] != $arrParams['old_login_id']) {
+            case 'new':
+                // 管理者名が登録済みでないか
+                if ($this->memberDataExists('name = ? AND del_flg = 0', $arrParams['name'])) {
+                    $arrErr['name'] = '既に登録されている名前なので利用できません。<br>';
+                }
                 // ログインIDが登録済みでないか
                 if ($this->memberDataExists('login_id = ? AND del_flg = 0', $arrParams['login_id'])) {
                     $arrErr['login_id'] = '既に登録されているIDなので利用できません。<br>';
                 }
-            }
-            break;
+                break;
+            case 'edit':
+                // ログインIDが変更されている場合はチェックする。
+                if ($arrParams['login_id'] != $arrParams['old_login_id']) {
+                    // ログインIDが登録済みでないか
+                    if ($this->memberDataExists('login_id = ? AND del_flg = 0', $arrParams['login_id'])) {
+                        $arrErr['login_id'] = '既に登録されているIDなので利用できません。<br>';
+                    }
+                }
+                break;
         }
 
         return $arrErr;

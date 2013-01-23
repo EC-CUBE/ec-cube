@@ -142,9 +142,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
                 break;
         }
 
-        $this->tpl_rnd          = SC_Utils_Ex::sfGetRandomString(3);
-
-
+        $this->tpl_rnd = SC_Utils_Ex::sfGetRandomString(3);
     }
 
     /**
@@ -223,7 +221,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
                     ) DESC
                     ,product_id DESC
 __EOS__;
-                    $objQuery->setOrder($order);
+                $objQuery->setOrder($order);
                 break;
         }
         // 取得範囲の指定(開始行番号、行数のセット)
