@@ -47,7 +47,7 @@ var cube_locale_messages = {
     'j_admin_009': 'This e-mail address is already registered.\nThe type of mail magazine will be changed. Do you wish to continue?',
     'j_admin_010': '<FONT Color="#FFFF99"> << Display </FONT>',
     'j_admin_011': ' <FONT Color="#FFFF99"> >> Not displayed </FONT>',
-    'j_admin_012': 'を選択してください。\n',
+    'j_admin_012': ' must be selected.\n',
     // user_data/packages/admin/js/breadcrumbs.js
     'j_breadcrumbs_001': '<span>Home</span>',
     // user_data/packages/sphone/js/barbutton
