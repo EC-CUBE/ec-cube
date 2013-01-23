@@ -496,9 +496,6 @@ INSERT INTO dtb_delivtime (deliv_id, time_id, deliv_time) VALUES (1, 1, 'A.M.');
 INSERT INTO dtb_delivtime (deliv_id, time_id, deliv_time) VALUES (1, 2, 'P.M.');
 
 INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (1, 'New Years (January 1)', 1, 1, 100, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (2, 'Greenery Day (May 4)', 5, 4, 94, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (3, 'Childrens Day (May 5)', 5, 5, 93, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (4, 'Labor Thanksgiving Day (November 23)', 11, 23, 87, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 
 INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (1, '第1条 (Member)', '1. 「会員」とは、当社が定める手続に従い本規約に同意の上、入会の申し込みを行う個人をいいます。
 2. 「会員情報」とは、会員が当社に開示した会員の属性に関する情報および会員の取引に関する履歴等の情報をいいます。
