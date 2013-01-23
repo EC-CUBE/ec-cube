@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2013-01-23 17:49+0900\n"
+"PO-Revision-Date: 2013-01-23 17:58+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -2885,6 +2885,9 @@ msgstr "HTML"
 
 msgid "LC_Page_Admin_Mail_006"
 msgstr "TEXT"
+
+msgid "LC_Page_Admin_Mail_007"
+msgstr "[T_FIELD]"
 
 msgid "LC_Page_Admin_Mail_History_001"
 msgstr "Mail magazine management"

@@ -218,7 +218,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
     function lfGetMailTemplateList($arrTemplate) {
         if (is_array($arrTemplate)) {
             foreach ($arrTemplate as $line) {
-                $return[$line['template_id']] = '【' . $this->arrHtmlmail[$line['mail_method']] . '】' . $line['subject'];
+                $return[$line['template_id']] = t('LC_Page_Admin_Mail_007', array('T_FIELD' => $this->arrHtmlmail[$line['mail_method']])) . $line['subject'];
             }
         }
         return $return;
