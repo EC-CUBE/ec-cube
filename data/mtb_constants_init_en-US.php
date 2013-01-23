@@ -39,7 +39,7 @@ define('LOCALE', "en_US.UTF-8");
 define('ECCUBE_PAYMENT', "EC-CUBE");
 /** PEAR::DB debug mode */
 define('PEAR_DB_DEBUG', 0);
-/** PEAR::DBの持続的接続オプション */
+/** PEAR::DB persistent option */
 define('PEAR_DB_PERSISTENT', false);
 /** Designation of cutoff date (if last day of the month, specify 31.) */
 define('CLOSE_DAY', 31);
@@ -472,9 +472,9 @@ define('SMARTY_FORCE_COMPILE_MODE', false);
 define('LOGIN_RETRY_INTERVAL', 0);
 /** MY page: Order status display flag */
 define('MYPAGE_ORDER_STATUS_DISP_FLAG', true);
-/** メールの文字コード */
+/** Mail character code */
 define('MAIL_CHARACTER_CODE', 'UTF-8');
-/** メールヘッダーのコンテンツタイプ */
+/** Mail header: contents type */
 define('MAIL_HEADER_CONTENT_TYPE', 'US-ASCII');
-/** タイムゾーン */
+/** Time zone  */
 define('TIMEZONE', 'Etc/GMT+0');

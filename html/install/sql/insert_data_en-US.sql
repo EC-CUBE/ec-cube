@@ -1,6 +1,6 @@
 INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 1, 'Category', 'category.tpl', 'category', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/category.php', 0);
 INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 2, 'Usage guide', 'guide.tpl', 'guide', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 0);
-INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 3, 'Inside of basket', 'cart.tpl', 'cart', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/cart.php', 0);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 3, 'Inside of cart', 'cart.tpl', 'cart', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/cart.php', 0);
 INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 4, 'Product search', 'search_products.tpl', 'search_products', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/search_products.php', 0);
 INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 5, 'New information', 'news.tpl', 'news', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/news.php', 0);
 INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 6, 'Login', 'login.tpl', 'login', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/login.php', 0);
@@ -276,7 +276,7 @@ INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_da
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (40, 1, 'sub_comment5', 'Details - Sub comment (5)', 40, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (41, 1, 'sub_image5', 'Details - Sub image (5)', 41, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (42, 1, 'sub_large_image5', 'Details - Sub enlarged image (5)', 42, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (43, 1, 'deliv_date_id', '発送日目安ID', 43, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (43, 1, 'deliv_date_id', 'Est. delivery ID', 43, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (44, 1, 'del_flg', 'Deletion flag', 44, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (45, 1, 'product_type_id', 'Product type ID', 45, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (46, 1, 'product_code', 'Product code', 46, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
@@ -1027,7 +1027,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CHAR_CODE', '"UTF-8
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LOCALE', '"en_US.UTF-8"', 40, 'Locale settings');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ECCUBE_PAYMENT', '"EC-CUBE"', 41, 'Phrase granted to payment module ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PEAR_DB_DEBUG', '0', 42, 'PEAR::DB debug mode');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PEAR_DB_PERSISTENT', 'false', 43, 'PEAR::DBの持続的接続オプション');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PEAR_DB_PERSISTENT', 'false', 43, 'PEAR::DB persistent option');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CLOSE_DAY', '31', 45, 'Designation of cutoff date (if last day of the month, specify 31.)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('FAVORITE_ERROR', '13', 46, 'General site error');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('GRAPH_REALDIR', 'HTML_REALDIR . "upload/graph_image/"', 49, 'Graph storage directory');
@@ -1244,9 +1244,9 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_ACTIVATE_FLA
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMARTY_FORCE_COMPILE_MODE', 'false', 1401, 'SMARTY compile mode');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LOGIN_RETRY_INTERVAL', '0', 1411, 'Delay time when login fails (seconds) (measure against brute force attack)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MYPAGE_ORDER_STATUS_DISP_FLAG', 'true', 1412, 'MY page: Order status display flag');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MAIL_CHARACTER_CODE', '"UTF-8"', 1413, 'メールの文字コード');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MAIL_HEADER_CONTENT_TYPE', '"US-ASCII"', 1414, 'メールヘッダーのコンテンツタイプ');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TIMEZONE', '"Etc/GMT+0"', 1415, 'タイムゾーン');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MAIL_CHARACTER_CODE', '"UTF-8"', 1413, 'Mail character code');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MAIL_HEADER_CONTENT_TYPE', '"US-ASCII"', 1414, 'Mail header: contents type');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TIMEZONE', '"Etc/GMT+0"', 1415, 'Time zone');
 
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_customer', 'email_mobile', 0, 'Try when you want to improve the login processing speed when there is an increase in the number of members');
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_products', 'name', 2, 'Try when you want to improve the product name search speed');
