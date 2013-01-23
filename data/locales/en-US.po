@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2013-01-23 18:56+0900\n"
+"PO-Revision-Date: 2013-01-23 19:26+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -6200,6 +6200,9 @@ msgstr "Monthly (by T_FIELD)"
 
 msgid "tpl_804"
 msgstr "ID:"
+
+msgid "tpl_805"
+msgstr "T_FIELD:"
 
 msgid "-"
 msgstr " - "

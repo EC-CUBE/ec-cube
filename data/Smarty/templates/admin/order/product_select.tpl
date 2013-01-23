@@ -199,7 +199,7 @@
                         <!--{assign var=class2 value=classcategory_id`$id`_2}-->
                         <!--{if $tpl_classcat_find1[$id]}-->
                         <dl>
-                            <dt><!--{$tpl_class_name1[$id]|h}-->：</dt>
+                            <dt><!--{t string="tpl_805" T_FIELD=$tpl_class_name1[$id]|h}--></dt>
                             <dd>
                                 <select name="classcategory_id1" id="<!--{$class1}-->" style="<!--{$arrErr[$class1]|sfGetErrorColor}-->"    onchange="fnSetClassCategories(this.form);">
                                     <!--{html_options options=$arrClassCat1[$id] selected=$arrForm[$class1]}-->
@@ -215,7 +215,7 @@
 
                         <!--{if $tpl_classcat_find2[$id]}-->
                         <dl>
-                            <dt><!--{$tpl_class_name2[$id]|h}-->：</dt>
+                            <dt><!--{t string="tpl_805" T_FIELD=$tpl_class_name2[$id]|h}--></dt>
                             <dd>
                                 <select name="classcategory_id2" id="<!--{$class2}-->" style="<!--{$arrErr[$class2]|sfGetErrorColor}-->" onchange="fnCheckStock(this.form);"></select>
                                 <!--{if $arrErr[$class2] != ""}-->
