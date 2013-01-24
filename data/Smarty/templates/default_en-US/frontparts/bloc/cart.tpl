@@ -34,7 +34,7 @@
                 <!--{if $arrCartList.0.TotalQuantity > 0 and $arrCartList.0.free_rule > 0 and !$isMultiple and !$hasDownload}-->
                 <p class="postage">
                     <!--{if $arrCartList.0.deliv_free > 0}-->
-                        <span class="price">&#36; <!--{$arrCartList.0.deliv_free|number_format|default:0}--> (including tax)</span> until <span class="point_announce">shipping and processing fees are free</span>.
+                        <span class="price">&#36; <!--{$arrCartList.0.deliv_free|number_format|default:0}--> (including tax)</span> until shipping and processing fees are free.
                     <!--{else}-->
                         Currently, shipping is "<span class="price">free</span>".
                     <!--{/if}-->
