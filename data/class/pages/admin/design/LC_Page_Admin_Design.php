@@ -138,7 +138,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
         // 編集可能ページ一覧
         $this->arrEditPage = $objLayout->getPageProperties($this->device_type_id, null);
         //サブタイトルを取得
-        $this->tpl_subtitle = $this->arrDeviceType[$this->device_type_id] . '＞' . $this->tpl_subtitle;
+        $this->tpl_subtitle = $this->arrDeviceType[$this->device_type_id] . '>' . $this->tpl_subtitle;
 
     }
 

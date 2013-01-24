@@ -99,7 +99,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
                 break;
         }
         //サブタイトルの追加
-        $this->tpl_subtitle = $this->arrDeviceType[$this->device_type_id] . '＞' . $this->tpl_subtitle;
+        $this->tpl_subtitle = $this->arrDeviceType[$this->device_type_id] . '>' . $this->tpl_subtitle;
         $this->arrForm = $objFormParam->getFormParamList();
 
     }

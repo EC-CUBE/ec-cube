@@ -111,7 +111,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
         }
 
         //サブタイトルの追加
-        $this->tpl_subtitle = $this->arrDeviceType[$this->device_type_id] . '＞' . $this->tpl_subtitle;
+        $this->tpl_subtitle = $this->arrDeviceType[$this->device_type_id] . '>' . $this->tpl_subtitle;
 
     }
 

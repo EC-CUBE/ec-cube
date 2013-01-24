@@ -23,7 +23,7 @@
 *}-->
 
 <!--{if $arrForm.page.value == "term" || $arrForm.page.value == ""}-->
-    <strong><!--{t string="tpl_510"}--></strong>&nbsp;（
+    <strong><!--{t string="tpl_510"}--></strong>&nbsp;(
     <!--{if $smarty.post.type == 'day' || $smarty.post.type == ''}-->
         <span class="over"><!--{t string="tpl_515"}--></span>&nbsp;
     <!--{else}-->
@@ -49,11 +49,11 @@
     <!--{else}-->
         <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'hour');"><!--{t string="tpl_519"}--></a>&nbsp;
     <!--{/if}-->
-    ）
+    )
 <!--{/if}-->
 
 <!--{if $arrForm.page.value == "products"}-->
-    <strong><!--{t string="tpl_511"}--></strong>&nbsp;（
+    <strong><!--{t string="tpl_511"}--></strong>&nbsp;(
     <!--{if $smarty.post.type == 'all' || $smarty.post.type == ''}-->
         <span class="over"><!--{t string="tpl_520"}--></span>&nbsp;
     <!--{else}-->
@@ -69,11 +69,11 @@
     <!--{else}-->
         <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'nonmember');"><!--{t string="tpl_522"}--></a>&nbsp;
     <!--{/if}-->
-    ）
+    )
 <!--{/if}-->
 
 <!--{if $arrForm.page.value == "age"}-->
-    <strong><!--{t string="tpl_512"}--></strong>&nbsp;（
+    <strong><!--{t string="tpl_512"}--></strong>&nbsp;(
     <!--{if $smarty.post.type == 'all' || $smarty.post.type == ''}-->
         <span class="over"><!--{t string="tpl_520"}--></span>&nbsp;
     <!--{else}-->
@@ -89,14 +89,14 @@
     <!--{else}-->
         <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'nonmember');"><!--{t string="tpl_522"}--></a>&nbsp;
     <!--{/if}-->
-    ）
+    )
 <!--{/if}-->
 
 <!--{if $arrForm.page.value == "job"}-->
-    <strong><!--{t string="tpl_513"}--></strong>&nbsp;（
+    <strong><!--{t string="tpl_513"}--></strong>&nbsp;(
     <span class="over"><!--{t string="tpl_520"}--></span>
-    ）
-    <!--{*（
+    )
+    <!--{*(
     <!--{if $smarty.post.type == 'all' || $smarty.post.type == ''}-->
         <span class="over"><!--{t string="tpl_520"}--></span>&nbsp;
     <!--{else}-->
@@ -112,7 +112,7 @@
     <!--{else}-->
         <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'nonmember');"><!--{t string="tpl_522"}--></a>&nbsp;
     <!--{/if}-->
-    ）*}-->
+    )*}-->
 <!--{/if}-->
 
 <!--{if $arrForm.page.value == "member"}-->

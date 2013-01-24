@@ -102,7 +102,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
         }
         $this->arrSelected = $this->lfGetSelected($this->tpl_csv_id);
         $this->arrOptions = $this->lfGetOptions($this->tpl_csv_id);
-        $this->tpl_subtitle .= '＞' . $this->arrSubnaviName[ $this->tpl_csv_id ];
+        $this->tpl_subtitle .= '>' . $this->arrSubnaviName[ $this->tpl_csv_id ];
 
         if ($this->tpl_is_update) {
             $this->tpl_onload = "window.alert('" . t('ALERT_003') . "');";
