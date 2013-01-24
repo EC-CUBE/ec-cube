@@ -34,80 +34,85 @@ class SC_Helper_Customer {
     /**
      * 会員情報の登録・編集処理を行う.
      *
-     * @param array $array 登録するデータの配列（SC_FormParamのgetDbArrayの戻り値）
+     * @param array $arrData 登録するデータの配列（SC_FormParamのgetDbArrayの戻り値）
      * @param array $customer_id nullの場合はinsert, 存在する場合はupdate
      * @access public
      * @return integer 登録編集したユーザーのcustomer_id
      */
-    function sfEditCustomerData($array, $customer_id = null) {
+    function sfEditCustomerData($arrData, $customer_id = null) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
 
-        $array['update_date'] = 'CURRENT_TIMESTAMP';    // 更新日
+        $old_version_flag = false;
+
+        $arrData['update_date'] = 'CURRENT_TIMESTAMP';    // 更新日
 
         // salt値の生成(insert時)または取得(update時)。
         if (is_numeric($customer_id)) {
             $salt = $objQuery->get('salt', 'dtb_customer', 'customer_id = ? ', array($customer_id));
 
             // 旧バージョン(2.11未満)からの移行を考慮
-            if (empty($salt)) $old_version_flag = true;
+            if (strlen($salt) === 0) {
+                $old_version_flag = true;
+            }
         } else {
             $salt = SC_Utils_Ex::sfGetRandomString(10);
-            $array['salt'] = $salt;
+            $arrData['salt'] = $salt;
         }
         //-- パスワードの更新がある場合は暗号化
-        if ($array['password'] == DEFAULT_PASSWORD or $array['password'] == '') {
+        if ($arrData['password'] == DEFAULT_PASSWORD or $arrData['password'] == '') {
             //更新しない
-            unset($array['password']);
+            unset($arrData['password']);
         } else {
             // 旧バージョン(2.11未満)からの移行を考慮
             if ($old_version_flag) {
                 $is_password_updated = true;
                 $salt = SC_Utils_Ex::sfGetRandomString(10);
-                $array['salt'] = $salt;
+                $arrData['salt'] = $salt;
             }
 
-            $array['password'] = SC_Utils_Ex::sfGetHashString($array['password'], $salt);
+            $arrData['password'] = SC_Utils_Ex::sfGetHashString($arrData['password'], $salt);
         }
         //-- 秘密の質問の更新がある場合は暗号化
-        if ($array['reminder_answer'] == DEFAULT_PASSWORD or $array['reminder_answer'] == '') {
+        if ($arrData['reminder_answer'] == DEFAULT_PASSWORD or $arrData['reminder_answer'] == '') {
             //更新しない
-            unset($array['reminder_answer']);
+            unset($arrData['reminder_answer']);
 
             // 旧バージョン(2.11未満)からの移行を考慮
             if ($old_version_flag && $is_password_updated) {
                 // パスワードが更新される場合は、平文になっている秘密の質問を暗号化する
                 $reminder_answer = $objQuery->get('reminder_answer', 'dtb_customer', 'customer_id = ? ', array($customer_id));
-                $array['reminder_answer'] = SC_Utils_Ex::sfGetHashString($reminder_answer, $salt);
+                $arrData['reminder_answer'] = SC_Utils_Ex::sfGetHashString($reminder_answer, $salt);
             }
         } else {
             // 旧バージョン(2.11未満)からの移行を考慮
             if ($old_version_flag && !$is_password_updated) {
                 // パスワードが更新されない場合は、平文のままにする
-                unset($array['salt']);
+                unset($arrData['salt']);
             } else {
-                $array['reminder_answer'] = SC_Utils_Ex::sfGetHashString($array['reminder_answer'], $salt);
+                $arrData['reminder_answer'] = SC_Utils_Ex::sfGetHashString($arrData['reminder_answer'], $salt);
             }
         }
 
         //-- 編集登録実行
         if (is_numeric($customer_id)) {
             // 編集
-            $objQuery->update('dtb_customer', $array, 'customer_id = ? ', array($customer_id));
+            $objQuery->update('dtb_customer', $arrData, 'customer_id = ? ', array($customer_id));
         } else {
             // 新規登録
 
             // 会員ID
             $customer_id = $objQuery->nextVal('dtb_customer_customer_id');
-            $array['customer_id'] = $customer_id;
+            $arrData['customer_id'] = $customer_id;
             // 作成日
-            if (is_null($array['create_date'])) {
-                $array['create_date'] = 'CURRENT_TIMESTAMP';
+            if (is_null($arrData['create_date'])) {
+                $arrData['create_date'] = 'CURRENT_TIMESTAMP';
             }
-            $objQuery->insert('dtb_customer', $array);
+            $objQuery->insert('dtb_customer', $arrData);
         }
 
         $objQuery->commit();
+
         return $customer_id;
     }
 
@@ -121,6 +126,7 @@ class SC_Helper_Customer {
      */
     function sfGetCustomerPoint($order_id, $use_point, $add_point) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
+
         $arrRet = $objQuery->select('customer_id', 'dtb_order', 'order_id = ?', array($order_id));
         $customer_id = $arrRet[0]['customer_id'];
         if ($customer_id != '' && $customer_id >= 1) {
@@ -136,6 +142,7 @@ class SC_Helper_Customer {
             $total_point = '';
             $point = '';
         }
+
         return array($point, $total_point);
     }
 
@@ -205,6 +212,7 @@ class SC_Helper_Customer {
             =  strlen($arrResults['email']) >= 1 && $email === $arrResults['email']
             || strlen($arrResults['email_mobile']) >= 1 &&  $email === $arrResults['email_mobile']
         ;
+
         return $return;
     }
 
@@ -238,6 +246,7 @@ class SC_Helper_Customer {
             $arrForm['password02']        = DEFAULT_PASSWORD;
             $arrForm['reminder_answer']   = DEFAULT_PASSWORD;
         }
+
         return $arrForm;
     }
 
@@ -254,6 +263,7 @@ class SC_Helper_Customer {
      */
     function sfGetCustomerDataFromId($customer_id, $add_where = '', $arrAddVal = array()) {
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
+
         if ($add_where == '') {
             $where = 'customer_id = ?';
             $arrData = $objQuery->getRow('*', 'dtb_customer', $where, array($customer_id));
@@ -265,6 +275,7 @@ class SC_Helper_Customer {
             }
             $arrData = $objQuery->getRow('*', 'dtb_customer', $where, $arrAddVal);
         }
+
         return $arrData;
     }
 
@@ -281,6 +292,7 @@ class SC_Helper_Customer {
             $uniqid = SC_Utils_Ex::sfGetUniqRandomId('r');
             $exists = $objQuery->exists('dtb_customer', 'secret_key = ?', array($uniqid));
         } while ($exists);
+
         return $uniqid;
     }
 
@@ -294,6 +306,7 @@ class SC_Helper_Customer {
      */
     function sfGetCustomerId($uniqid, $check_status = false) {
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
+
         $where      = 'secret_key = ?';
 
         if ($check_status) {
@@ -381,7 +394,7 @@ class SC_Helper_Customer {
      * @return void
      */
     function sfCustomerRegisterParam(&$objFormParam, $isAdmin = false, $is_mypage = false) {
-        $objFormParam->addParam('パスワード', 'password', STEXT_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('パスワード', 'password', PASSWORD_MAX_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'));
         $objFormParam->addParam('パスワード確認用の質問の答え', 'reminder_answer', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('パスワード確認用の質問', 'reminder', STEXT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('性別', 'sex', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -393,7 +406,7 @@ class SC_Helper_Customer {
 
         if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE) {
             $objFormParam->addParam('メールアドレス', 'email', null, 'a', array('NO_SPTAB', 'EXIST_CHECK', 'EMAIL_CHECK', 'SPTAB_CHECK' ,'EMAIL_CHAR_CHECK'));
-            $objFormParam->addParam('パスワード(確認)', 'password02', STEXT_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK' ,'ALNUM_CHECK'), '', false);
+            $objFormParam->addParam('パスワード(確認)', 'password02', PASSWORD_MAX_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK' ,'ALNUM_CHECK'), '', false);
             if (!$isAdmin) {
                 $objFormParam->addParam('メールアドレス(確認)', 'email02', null, 'a', array('NO_SPTAB', 'EXIST_CHECK', 'EMAIL_CHECK','SPTAB_CHECK' , 'EMAIL_CHAR_CHECK'), '', false);
             }
@@ -456,6 +469,7 @@ class SC_Helper_Customer {
                 && $objFormParam->getValue('reminder_answer') == DEFAULT_PASSWORD) {
             unset($objErr->arrErr['reminder_answer']);
         }
+
         return $objErr->arrErr;
     }
 
@@ -492,10 +506,10 @@ class SC_Helper_Customer {
      */
     function sfCustomerRegisterErrorCheck(&$objErr, $isAdmin = false) {
         $objErr->doFunc(array('生年月日', 'year', 'month', 'day'), array('CHECK_BIRTHDAY'));
+        $objErr->doFunc(array('パスワード', 'password', PASSWORD_MIN_LEN, PASSWORD_MAX_LEN) ,array('NUM_RANGE_CHECK'));
 
         if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE) {
             if (!$isAdmin) {
-                $objErr->doFunc(array('パスワード', 'password', PASSWORD_MIN_LEN, PASSWORD_MAX_LEN) ,array('SPTAB_CHECK', 'NUM_RANGE_CHECK'));
                 $objErr->doFunc(array('メールアドレス', 'メールアドレス(確認)', 'email', 'email02') ,array('EQUAL_CHECK'));
             }
             $objErr->doFunc(array('パスワード', 'パスワード(確認)', 'password', 'password02') ,array('EQUAL_CHECK'));
@@ -506,6 +520,7 @@ class SC_Helper_Customer {
             $objErr->doFunc(array('メールアドレス', 'email'), array('CHECK_REGIST_CUSTOMER_EMAIL'));
             $objErr->doFunc(array('携帯メールアドレス', 'email_mobile'), array('CHECK_REGIST_CUSTOMER_EMAIL', 'MOBILE_EMAIL_CHECK'));
         }
+
         return $objErr;
     }
 
@@ -599,6 +614,7 @@ class SC_Helper_Customer {
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
         }
+
         return $arrErr;
     }
 
@@ -612,6 +628,7 @@ class SC_Helper_Customer {
     function sfGetSearchData($arrParam, $limitMode = '') {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objSelect = new SC_CustomerList_Ex($arrParam, 'customer');
+
         $page_max = SC_Utils_Ex::sfGetSearchPageMax($arrParam['search_page_max']);
         $disp_pageno = $arrParam['search_pageno'];
         if ($disp_pageno == 0) {
@@ -644,8 +661,10 @@ class SC_Helper_Customer {
      */
     public function checkTempCustomer($login_email) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
+
         $where = 'email = ? AND status = 1 AND del_flg = 0';
         $exists = $objQuery->exists('dtb_customer', $where, array($login_email));
+
         return $exists;
     }
 }
