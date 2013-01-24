@@ -115,7 +115,7 @@
                             <!--{else}-->
                                 <!--{$arrProduct.price01_min_inctax|number_format}-->～<!--{$arrProduct.price01_max_inctax|number_format}-->
                             <!--{/if}-->
-                        </span><span id="price01_dynamic"></span><!--{/strip}-->
+                        <!--{/strip}--></span><span id="price01_dynamic"></span>
                         円
                     </dd>
                 </dl>
@@ -131,7 +131,7 @@
                         <!--{else}-->
                             <!--{$arrProduct.price02_min_inctax|number_format}-->～<!--{$arrProduct.price02_max_inctax|number_format}-->
                         <!--{/if}-->
-                    </span><span id="price02_dynamic"></span><!--{/strip}-->
+                    <!--{/strip}--></span><span id="price02_dynamic"></span>
                     円
                 </dd>
             </dl>
@@ -149,7 +149,7 @@
                                 <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate|number_format}-->～<!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate|number_format}-->
                             <!--{/if}-->
                         <!--{/if}-->
-                    </span><span id="point_dynamic"></span><!--{/strip}-->
+                    <!--{/strip}--></span><span id="point_dynamic"></span>
                     Pt
                 </div>
             <!--{/if}-->
