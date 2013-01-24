@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2013-01-23 19:26+0900\n"
+"PO-Revision-Date: 2013-01-24 11:11+0900\n"
 "Last-Translator: MATSUDA Terutaka <matsudaterutaka@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -4900,6 +4900,9 @@ msgstr "帳票の作成"
 
 msgid "tpl_420"
 msgstr "発行日"
+
+msgid "tpl_420_1"
+msgstr "発行日<span class='attention'> *</span>"
 
 msgid "tpl_421"
 msgstr "帳票の種類"

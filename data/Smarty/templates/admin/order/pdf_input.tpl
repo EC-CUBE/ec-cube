@@ -54,7 +54,7 @@ function lfPopwinSubmit(formName) {
         <td><!--{$arrForm.order_id|@join:', '}--></td>
     </tr>
     <tr>
-        <th><!--{t string="tpl_420"}--><span class="attention">※</span></th>
+        <th><!--{t string="tpl_420_1" escape="none"}--></th>
         <td><!--{if $arrErr.year}--><span class="attention"><!--{$arrErr.year}--></span><!--{/if}-->
             <select name="year">
             <!--{html_options options=$arrYear selected=$arrForm.year}-->
