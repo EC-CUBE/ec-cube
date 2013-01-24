@@ -25,7 +25,17 @@
 <script type="text/javascript">
 <!--
 $(function(){
-		
+        var dateFormat = $.datepicker.regional['<!--{$smarty.const.LANG_CODE}-->'].dateFormat;
+        
+        <!--{if $arrForm.month != '' && $arrForm.day != ''}-->
+        var year  = new Date().getFullYear();
+        var month = '<!--{$arrForm.month|h}-->';
+        var day   = '<!--{$arrForm.day|h}-->';
+        var ymd = $.datepicker.formatDate(dateFormat, new Date(year, month - 1, day));
+        $("#datepicker").val(ymd);
+        // console.log(ymd);
+        <!--{/if}-->
+
 		$( "#datepicker" ).datepicker({
 		beforeShowDay: function(date) {
 			if(date.getDay() == 0) {
@@ -38,16 +48,36 @@ $(function(){
 		},changeMonth: 'true'
 		,changeYear: 'false'
 		,onSelect: function(dateText, inst){
-			setDate(dateText);
+            var year  = inst.selectedYear;
+            var month = inst.selectedMonth + 1;
+            var day   = inst.selectedDay;
+            setDate(year + '/' + month + '/' + day);
 		},
 		showButtonPanel: true,
 		beforeShow: showAdditionalButton,       
 		onChangeMonthYear: showAdditionalButton
 		});
 		
-		$("#datepicker").blur( function() {
-			var dateText = $(this).val();
-			setDate(dateText);
+		$("#datepicker").change( function() {
+            var dateText   = $(this).val();
+            var dateFormat = $.datepicker.regional['<!--{$smarty.const.LANG_CODE}-->'].dateFormat;
+            // console.log(dateText);
+            // console.log(dateFormat);
+            var date;
+            var year  = '';
+            var month = '';
+            var day   = '';
+            try {
+                date = $.datepicker.parseDate(dateFormat, dateText);
+                year  = date.getFullYear();
+                month = date.getMonth() + 1;
+                day   = date.getDay();
+            } catch (e) {
+                // console.log(e);
+                // clear date text
+                $(this).val('');
+            }
+            setDate(year + '/' + month + '/' + day);
 		});
 		
 	});
@@ -103,7 +133,7 @@ $(function(){
                 <span class="attention"><!--{$arrErr.month}--></span>
                 <span class="attention"><!--{$arrErr.day}--></span>
                 <!--{/if}-->
-                <input id="datepicker" type="text" value="<!--{if $arrForm.month != "" && $arrForm.day != ""}-->/<!--{$arrForm.month|h|string_format:'%02d'}-->/<!--{$arrForm.day|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                <input id="datepicker" type="text" value="" <!--{if $arrErr.year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                 <input type="hidden" name="month" value="<!--{$arrForm.month}-->" />
                 <input type="hidden" name="day" value="<!--{$arrForm.day}-->" />
                 <br />
