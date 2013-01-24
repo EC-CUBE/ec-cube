@@ -1218,6 +1218,30 @@ body > #container {
 }
 
 
+/* 商品ステータスアイコン */
+#products ul.status_icon {
+    width: 100%;
+}
+#products ul.status_icon li {
+    margin-right: 5px;
+    margin-bottom: 3px;
+    float: left;
+}
+#products ul.status_icon li span {
+	display: block;
+	padding: 2px 13px;
+	font-size: 10px;
+	color: #fff;
+	border-radius: 2px;
+}
+#products ul.status_icon li.status_1 span { background: #F5974A;}
+#products ul.status_icon li.status_2 span { background: #913982;}
+#products ul.status_icon li.status_3 span { background: #388DD1;}
+#products ul.status_icon li.status_4 span { background: #80AF20;}
+#products ul.status_icon li.status_5 span { background: #FF5983;}
+
+
+
 /* 受注管理
 ----------------------------------------------- */
 /* 対応状況管理 */

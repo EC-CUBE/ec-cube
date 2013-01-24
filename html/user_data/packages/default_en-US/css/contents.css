@@ -78,6 +78,7 @@ div#mynavi_area div.point_announce {
 div#mynavi_area div.point_announce p {
     padding-left: 20px;
     background: url('../img/icon/ico_point.gif') no-repeat left ;
+	line-height: 1.5;
 }
 
 div#mycontents_area p.inforamtion {

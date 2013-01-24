@@ -26,11 +26,11 @@
     <h2 class="title">Add comment</h2>
     <div id="completebox">
         <p class="message">Comment has been sent. Thank you.</p>
-        <p>Please wait for the comment to be reviewed by our staff. If approved, it will appear on our site.</p>
+        <p>Please wait for the comment to be reviewed by our staff.<br />If approved, it will appear on our site.</p>
     </div>
     <div class="btn_area">
         <ul>
-            <li><a class="bt_close" href="javascript:window.close()">Close</a></li>
+            <li><a class="bt04" href="javascript:window.close()">Close</a></li>
         </ul>
     </div>
 </div>

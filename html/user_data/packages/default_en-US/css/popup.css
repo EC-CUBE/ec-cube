@@ -58,7 +58,7 @@ div#window_area table {
 /* お客様の声の書き込み、新しいお届け先の追加・変更
 ----------------------------------------------- */
 div#window_area #forgot {
-    margin: 0 auto;
+    margin: 0 auto 20px;
     padding: 20px;
     width: 440px;
     border: 1px solid #ccc;
@@ -71,6 +71,14 @@ div#window_area #forgot .mailaddres {
 div#window_area #forgot p {
     text-align: center;
 }
+
+div#window_area #completebox {
+    margin-bottom: 30px;
+}
+div#window_area .btn_area .bt04 {
+    padding: 6px 50px;
+}
+
 
 
 /* 商品詳細拡大写真、カート拡大写真

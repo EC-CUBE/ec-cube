@@ -290,6 +290,7 @@ body > #container {
     width:560px;
     background: url('../img/login_back_contents.gif') top left repeat-y;
     text-align: left;
+	padding-bottom: 1px;
 }
 
 #out-area .btn-area-top {

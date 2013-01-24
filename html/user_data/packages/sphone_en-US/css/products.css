@@ -252,12 +252,12 @@ ul.status_icon li {
     border-top: #FFF solid 1px;
 }
 .cartin_btn dl {
-    width: 40%;
+    width: 45%;
     float: left;
     clear: left;
 }
 .cartin_btn dt {
-    width: 30%;
+    width: 50%;
     float: left;
     padding: 15px 5px 0 5px;
     line-height: 1.1;
@@ -273,7 +273,7 @@ ul.status_icon li {
     width: 3em;
 }
 .cartbtn_default {
-    width: 54%;
+    width: auto !important;
     float: right;
     clear: right;
 }

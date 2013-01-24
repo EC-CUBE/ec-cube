@@ -290,7 +290,7 @@ a.b_delete:hover {
 ボタン（商品詳細:カゴに入れる）
 ----------------------------------------------- */
 .cartbtn_default {
-    width: 50%!important;
+    width: auto !important;
     font-size: 15px;
     padding: 10px 0;
     background: #669222;
