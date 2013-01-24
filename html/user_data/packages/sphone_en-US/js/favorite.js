@@ -23,7 +23,7 @@ function fnAddFavoriteSphone(favoriteProductId) {
            },
            success: function(result){
               if (result == "true") {
-                  alert("j_favorite_001");
+                  alert(fnT("j_favorite_001"));
                   $(".btn_favorite").html(fnT("j_favorite_002"));
               } else {
                   alert(fnT("j_favorite_003"));
