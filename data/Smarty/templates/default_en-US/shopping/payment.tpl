@@ -250,14 +250,14 @@
                        If using points, check the box next to "Use points" and enter the number of points you want to use.
                     </p>
                     <div class="point_announce">
-                        <p><span class="user_name"><!--{$name01|h}--> <!--{$name02|h}--></span>, you currently have "<span class="point"><!--{$tpl_user_point|default:0|number_format}-->Pt</span>" points.<br />
+                        <p><span class="user_name"><!--{$name01|h}--> <!--{$name02|h}--></span>, you currently have "<span class="point"><!--{$tpl_user_point|default:0|number_format}-->Pts</span>" points.<br />
                             Total amount for this purchase:<span class="price">&#036; <!--{$arrPrices.subtotal|number_format}--></span> <span class="attention">(Does not include shipping fees and processing fees.)</span>
                         </p>
                         <ul>
                             <li>
                             <input type="radio" id="point_on" name="point_check" value="1" <!--{$arrForm.point_check.value|sfGetChecked:1}--> onclick="fnCheckInputPoint();" /><label for="point_on">Use points</label>
                                 <!--{assign var=key value="use_point"}--><br />
-                                Use <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|default:$tpl_user_point}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box60" /> Pt for this purchase.<span class="attention"><!--{$arrErr[$key]}--></span>
+                                Use <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|default:$tpl_user_point}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box60" /> Pts for this purchase.<span class="attention"><!--{$arrErr[$key]}--></span>
                             </li>
                             <li><input type="radio" id="point_off" name="point_check" value="2" <!--{$arrForm.point_check.value|sfGetChecked:2}--> onclick="fnCheckInputPoint();" /><label for="point_off">Do not use points</label></li>
                         </ul>

@@ -150,7 +150,7 @@
                             <!--{/if}-->
                         <!--{/if}-->
                     </span><span id="point_dynamic"></span><!--{/strip}-->
-                    Pt
+                    Pts
                 </div>
             <!--{/if}-->
 

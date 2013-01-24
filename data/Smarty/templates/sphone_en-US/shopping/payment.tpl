@@ -231,7 +231,7 @@
                     <div class="form_area">
                         <p class="fb">It is possible to use <span class="point">1 point as &#036; 1</span></p>
                         <div class="point_announce">
-                            <p>You currently have "<span class="price"><!--{$tpl_user_point|default:0|number_format}--> pt</span>".<br />
+                            <p>You currently have "<span class="price"><!--{$tpl_user_point|default:0|number_format}--> pts</span>".<br />
                             Total amount for this purchase:<span class="price">&#036; <!--{$arrPrices.subtotal|number_format}--></span> (Does not include shipping fees and processing fees.)</p>
                         </div>
 

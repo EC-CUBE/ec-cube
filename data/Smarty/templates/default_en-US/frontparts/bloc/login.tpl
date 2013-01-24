@@ -32,7 +32,7 @@
                     <p>Welcome<br />
                         <span class="user_name"><!--{$tpl_name1|h}--> <!--{$tpl_name2|h}--></span><br />
                         <!--{if $smarty.const.USE_POINT !== false}-->
-                            Points:<span class="point"> <!--{$tpl_user_point|number_format|default:0}--> pt</span>
+                            Points:<span class="point"> <!--{$tpl_user_point|number_format|default:0}--> pts</span>
                         <!--{/if}-->
                     </p>
                     <!--{if !$tpl_disable_logout}-->

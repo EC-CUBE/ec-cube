@@ -44,7 +44,7 @@
                 <!--{else}-->
                     If using the point system, please complete member registration and log in.<br />
                 <!--{/if}-->
-                It is possible to use points for this purchase.<span class="price">1pt = &#36; <!--{$smarty.const.POINT_VALUE}--></span>.<br />
+                It is possible to use points for this purchase.<span class="price">1pts = &#36; <!--{$smarty.const.POINT_VALUE}--></span>.<br />
             </div>
         <!--{/if}-->
     <!--{/if}-->
@@ -163,12 +163,12 @@
                     <!--{if $arrData[$key].birth_point > 0}-->
                         <tr>
                             <th colspan="5" class="alignR">Birthday points</th>
-                            <td class="alignR"><!--{$arrData[$key].birth_point|number_format}-->pt</td>
+                            <td class="alignR"><!--{$arrData[$key].birth_point|number_format}-->pts</td>
                         </tr>
                     <!--{/if}-->
                     <tr>
                         <th colspan="5" class="alignR">Points added at this time</th>
-                        <td class="alignR"><!--{$arrData[$key].add_point|number_format}-->pt</td>
+                        <td class="alignR"><!--{$arrData[$key].add_point|number_format}-->pts</td>
                     </tr>
                 <!--{/if}-->
             </table>

@@ -145,22 +145,22 @@
                     <!--★ポイント情報★-->
                     <div class="formBox point_confifrm">
                         <dl>
-                            <dt>Points before placing order</dt><dd><!--{$tpl_user_point|number_format|default:0}-->Pt</dd>
+                            <dt>Points before placing order</dt><dd><!--{$tpl_user_point|number_format|default:0}-->Pts</dd>
                         </dl>
                         <dl>
-                            <dt>Points used</dt><dd>-<!--{$arrForm.use_point|number_format|default:0}-->Pt</dd>
+                            <dt>Points used</dt><dd>-<!--{$arrForm.use_point|number_format|default:0}-->Pts</dd>
                         </dl>
                         <!--{if $arrForm.birth_point > 0}-->
                         <dl>
-                            <dt>Birthday points</dt><dd>+<!--{$arrForm.birth_point|number_format|default:0}-->Pt</dd>
+                            <dt>Birthday points</dt><dd>+<!--{$arrForm.birth_point|number_format|default:0}-->Pts</dd>
                         </dl>
                         <!--{/if}-->
                         <dl>
-                            <dt>Points expected to be added at this time</dt><dd>+<!--{$arrForm.add_point|number_format|default:0}-->Pt</dd>
+                            <dt>Points expected to be added at this time</dt><dd>+<!--{$arrForm.add_point|number_format|default:0}-->Pts</dd>
                         </dl>
                         <dl>
                             <!--{assign var=total_point value=`$tpl_user_point-$arrForm.use_point+$arrForm.add_point`}-->
-                            <dt>Points after adding</dt><dd><!--{$total_point|number_format}-->Pt</dd>
+                            <dt>Points after adding</dt><dd><!--{$total_point|number_format}-->Pts</dd>
                         </dl>
                     </div><!-- /.formBox -->
                 <!--{/if}-->

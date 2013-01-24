@@ -109,7 +109,7 @@
                 <div><span class="mini">Shipping fee:</span>&#036; <!--{$tpl_arrOrderData.deliv_fee|number_format}--></div>
                 <div><span class="mini">Processing fee:</span>&#036; <!--{$tpl_arrOrderData.charge|number_format}--></div>
                 <div><span class="mini">Total:</span>&#036; <span class="price fb"><!--{$tpl_arrOrderData.payment_total|number_format}--></span></div>
-                <div><span class="mini">Points added at this time:</span><!--{$tpl_arrOrderData.add_point|number_format|default:0}-->Pt</div>
+                <div><span class="mini">Points added at this time:</span><!--{$tpl_arrOrderData.add_point|number_format|default:0}-->Pts</div>
             </div>
         </div><!-- /.formBox -->
 

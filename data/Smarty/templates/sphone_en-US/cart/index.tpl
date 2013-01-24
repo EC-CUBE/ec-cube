@@ -31,9 +31,9 @@
             <p class="fb">The total product amount is "<span class="price">&#036; <!--{$tpl_all_total_inctax|number_format}--></span>".</p>
 
             <!--{if $tpl_login}-->
-                <p class="point_announce"><span class="user_name"><!--{$tpl_name|h}--></span>, you currently have "<span class="point"><!--{$tpl_user_point|number_format|default:0}--> pt.</span>"<br />
+                <p class="point_announce"><span class="user_name"><!--{$tpl_name|h}--></span>, you currently have "<span class="point"><!--{$tpl_user_point|number_format|default:0}--> pts.</span>"<br />
 
-                    It is possible to use <span class="price">1pt = &#036; <!--{$smarty.const.POINT_VALUE}--></span> when purchasing a product.</p>
+                    It is possible to use <span class="price">1pts = &#036; <!--{$smarty.const.POINT_VALUE}--></span> when purchasing a product.</p>
             <!--{else}-->
                 <p class="point_announce">If using the point system, it is necessary to log in.</p>
             <!--{/if}-->
@@ -139,9 +139,9 @@
                             <div><span class="mini">Total:</span><span class="price fb">&#036; <!--{$arrData[$key].total-$arrData[$key].deliv_fee|number_format}--></span></div>
                             <!--{if $smarty.const.USE_POINT !== false}-->
                                 <!--{if $arrData[$key].birth_point > 0}-->
-                                    <div><span class="mini">Birthday points:</span> <!--{$arrData[$key].birth_point|number_format}--> Pt</div>
+                                    <div><span class="mini">Birthday points:</span> <!--{$arrData[$key].birth_point|number_format}--> Pts</div>
                                 <!--{/if}-->
-                                <div><span class="mini">Points added at this time:</span> <!--{$arrData[$key].add_point|number_format}--> Pt</div>
+                                <div><span class="mini">Points added at this time:</span> <!--{$arrData[$key].add_point|number_format}--> Pts</div>
                             <!--{/if}-->
                         </div>
                         <!--{if strlen($tpl_error) == 0}-->

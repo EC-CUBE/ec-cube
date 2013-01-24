@@ -207,7 +207,7 @@
                                     <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id|number_format}--> - <!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id|number_format}-->
                                 <!--{/if}-->
                             <!--{/if}-->
-                            </span><span id="point_dynamic"></span>Pt
+                            </span><span id="point_dynamic"></span>Pts
                         </p>
                     <!--{/if}-->
 
