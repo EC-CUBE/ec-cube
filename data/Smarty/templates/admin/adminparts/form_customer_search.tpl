@@ -37,15 +37,19 @@
         <span class="attention"><!--{$arrErr.search_b_start_year}--></span>
         <span class="attention"><!--{$arrErr.search_b_endy_ear}--></span>
         <!--{/if}-->
-        <input id="datepickercustomersearch_b_start" type="text" value="<!--{if $arrForm.search_b_start_year.value != "" && $arrForm.search_b_start_month.value != "" && $arrForm.search_b_start_day.value != ""}--><!--{$arrForm.search_b_start_year.value|h}-->/<!--{$arrForm.search_b_start_month.value|h|string_format:'%02d'}-->/<!--{$arrForm.search_b_start_day.value|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.search_b_start_year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
-        <input type="hidden" name="search_b_start_year" value="<!--{$arrForm.search_start_year.value}-->" />
-        <input type="hidden" name="search_b_start_month" value="<!--{$arrForm.search_start_month.value}-->" />
-        <input type="hidden" name="search_b_start_day" value="<!--{$arrForm.search_start_day.value}-->" />
+        <input id="datepickercustomersearch_b_start"
+               type="text"
+               value="" <!--{if $arrErr.search_b_start_year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+        <input type="hidden" name="search_b_start_year" value="<!--{$arrForm.search_b_start_year.value|h}-->" />
+        <input type="hidden" name="search_b_start_month" value="<!--{$arrForm.search_b_start_month.value|h}-->" />
+        <input type="hidden" name="search_b_start_day" value="<!--{$arrForm.search_b_start_day.value|h}-->" />
         <!--{t string="-"}-->
-        <input id="datepickercustomersearch_b_end" type="text" value="<!--{if $arrForm.search_b_end_year.value != "" && $arrForm.search_b_end_month.value != "" && $arrForm.search_b_end_day.value != ""}--><!--{$arrForm.search_b_end_year.value|h}-->/<!--{$arrForm.search_b_end_month.value|h|string_format:'%02d'}-->/<!--{$arrForm.search_b_end_day.value|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.search_b_end_year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
-        <input type="hidden" name="search_b_end_year" value="<!--{$arrForm.search_b_end_year.value}-->" />
-        <input type="hidden" name="search_b_end_month" value="<!--{$arrForm.search_b_end_month.value}-->" />
-        <input type="hidden" name="search_b_end_day" value="<!--{$arrForm.search_b_end_day.value}-->" />
+        <input id="datepickercustomersearch_b_end"
+               type="text"
+               value="" <!--{if $arrErr.search_b_end_year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+        <input type="hidden" name="search_b_end_year" value="<!--{$arrForm.search_b_end_year.value|h}-->" />
+        <input type="hidden" name="search_b_end_month" value="<!--{$arrForm.search_b_end_month.value|h}-->" />
+        <input type="hidden" name="search_b_end_day" value="<!--{$arrForm.search_b_end_day.value|h}-->" />
     </td>
 </tr>
 <tr>
@@ -115,15 +119,19 @@
         <span class="attention"><!--{$arrErr.search_start_year}--></span>
         <span class="attention"><!--{$arrErr.search_endy_ear}--></span>
         <!--{/if}-->
-        <input id="datepickercustomersearch_start" type="text" value="<!--{if $arrForm.search_start_year.value != "" && $arrForm.search_start_month.value != "" && $arrForm.search_start_day.value != ""}--><!--{$arrForm.search_start_year.value|h}-->/<!--{$arrForm.search_start_month.value|h|string_format:'%02d'}-->/<!--{$arrForm.search_start_day.value|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.search_start_year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
-        <input type="hidden" name="search_start_year" value="<!--{$arrForm.search_start_year.value}-->" />
-        <input type="hidden" name="search_start_month" value="<!--{$arrForm.search_start_month.value}-->" />
-        <input type="hidden" name="search_start_day" value="<!--{$arrForm.search_start_day.value}-->" />
+        <input id="datepickercustomersearch_start"
+               type="text"
+               value="" <!--{if $arrErr.search_start_year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+        <input type="hidden" name="search_start_year" value="<!--{$arrForm.search_start_year.value|h}-->" />
+        <input type="hidden" name="search_start_month" value="<!--{$arrForm.search_start_month.value|h}-->" />
+        <input type="hidden" name="search_start_day" value="<!--{$arrForm.search_start_day.value|h}-->" />
         <!--{t string="-"}-->
-        <input id="datepickercustomersearch_end" type="text" value="<!--{if $arrForm.search_end_year.value != "" && $arrForm.search_end_month.value != "" && $arrForm.search_end_day.value != ""}--><!--{$arrForm.search_end_year.value|h}-->/<!--{$arrForm.search_end_month.value|h|string_format:'%02d'}-->/<!--{$arrForm.search_end_day.value|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.search_end_year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
-        <input type="hidden" name="search_end_year" value="<!--{$arrForm.search_end_year.value}-->" />
-        <input type="hidden" name="search_end_month" value="<!--{$arrForm.search_end_month.value}-->" />
-        <input type="hidden" name="search_end_day" value="<!--{$arrForm.search_end_day.value}-->" />
+        <input id="datepickercustomersearch_end"
+               type="text"
+               value="" <!--{if $arrErr.search_end_year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+        <input type="hidden" name="search_end_year" value="<!--{$arrForm.search_end_year.value|h}-->" />
+        <input type="hidden" name="search_end_month" value="<!--{$arrForm.search_end_month.value|h}-->" />
+        <input type="hidden" name="search_end_day" value="<!--{$arrForm.search_end_day.value|h}-->" />
     </td>
 </tr>
 <tr>
@@ -133,15 +141,19 @@
         <span class="attention"><!--{$arrErr.search_buy_start_year}--></span>
         <span class="attention"><!--{$arrErr.search_buy_end_year}--></span>
         <!--{/if}-->
-        <input id="datepickercustomersearch_buy_start" type="text" value="<!--{if $arrForm.search_buy_start_year.value != "" && $arrForm.search_buy_start_month.value != "" && $arrForm.search_buy_start_day.value != ""}--><!--{$arrForm.search_buy_start_year.value|h}-->/<!--{$arrForm.search_buy_start_month.value|h|string_format:'%02d'}-->/<!--{$arrForm.search_buy_start_day.value|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.search_buy_start_year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
-        <input type="hidden" name="search_buy_start_year" value="<!--{$arrForm.search_buy_start_year.value}-->" />
-        <input type="hidden" name="search_buy_start_month" value="<!--{$arrForm.search_buy_start_month.value}-->" />
-        <input type="hidden" name="search_buy_start_day" value="<!--{$arrForm.search_buy_start_day.value}-->" />
+        <input id="datepickercustomersearch_buy_start"
+               type="text"
+               value="" <!--{if $arrErr.search_buy_start_year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+        <input type="hidden" name="search_buy_start_year" value="<!--{$arrForm.search_buy_start_year.value|h}-->" />
+        <input type="hidden" name="search_buy_start_month" value="<!--{$arrForm.search_buy_start_month.value|h}-->" />
+        <input type="hidden" name="search_buy_start_day" value="<!--{$arrForm.search_buy_start_day.value|h}-->" />
         <!--{t string="-"}-->
-        <input id="datepickercustomersearch_buy_end" type="text" value="<!--{if $arrForm.search_buy_end_year.value != "" && $arrForm.search_buy_end_month.value != "" && $arrForm.search_buy_end_day.value != ""}--><!--{$arrForm.search_buy_end_year.value|h}-->/<!--{$arrForm.search_buy_end_month.value|h|string_format:'%02d'}-->/<!--{$arrForm.search_buy_end_day.value|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.search_buy_end_year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
-        <input type="hidden" name="search_buy_end_year" value="<!--{$arrForm.search_buy_end_year.value}-->" />
-        <input type="hidden" name="search_buy_end_month" value="<!--{$arrForm.search_buy_end_month.value}-->" />
-        <input type="hidden" name="search_buy_end_day" value="<!--{$arrForm.search_buy_end_day.value}-->" />
+        <input id="datepickercustomersearch_buy_end"
+               type="text"
+               value="" <!--{if $arrErr.search_buy_end_year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+        <input type="hidden" name="search_buy_end_year" value="<!--{$arrForm.search_buy_end_year.value|h}-->" />
+        <input type="hidden" name="search_buy_end_month" value="<!--{$arrForm.search_buy_end_month.value|h}-->" />
+        <input type="hidden" name="search_buy_end_day" value="<!--{$arrForm.search_buy_end_day.value|h}-->" />
     </td>
 </tr>
 <tr>

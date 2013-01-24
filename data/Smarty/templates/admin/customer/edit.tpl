@@ -31,7 +31,17 @@
     }
 	
 	$(function(){
-		
+        var dateFormat = $.datepicker.regional['<!--{$smarty.const.LANG_CODE}-->'].dateFormat;
+
+        <!--{if $arrForm.year != '' && $arrForm.month != '' && $arrForm.day != ''}-->
+        var year  = '<!--{$arrForm.year|h}-->';
+        var month = '<!--{$arrForm.month|h}-->';
+        var day   = '<!--{$arrForm.day|h}-->';
+        var ymd = $.datepicker.formatDate(dateFormat, new Date(year, month - 1, day));
+        $("#datepickercustomer_edit").val(ymd);
+        // console.log(ymd);
+        <!--{/if}-->
+
 		$( "#datepickercustomer_edit" ).datepicker({
 		beforeShowDay: function(date) {
 			if(date.getDay() == 0) {
@@ -44,16 +54,36 @@
 		},changeMonth: 'true'
 		,changeYear: 'true'
 		,onSelect: function(dateText, inst){
-			setDatecustomer_edit(dateText);
+            var year  = inst.selectedYear;
+            var month = inst.selectedMonth + 1;
+            var day   = inst.selectedDay;
+			setDatecustomer_edit(year + '/' + month + '/' + day);
 		},
 		showButtonPanel: true,
 		beforeShow: showAdditionalButtoncustomer_edit,       
 		onChangeMonthYear: showAdditionalButtoncustomer_edit
 		});
 		
-		$("#datepickercustomer_edit").blur( function() {
-			var dateText = $(this).val();
-			setDatecustomer_edit(dateText);
+		$("#datepickercustomer_edit").change( function() {
+            var dateText   = $(this).val();
+            var dateFormat = $.datepicker.regional['<!--{$smarty.const.LANG_CODE}-->'].dateFormat;
+            // console.log(dateText);
+            // console.log(dateFormat);
+            var date;
+            var year  = '';
+            var month = '';
+            var day   = '';
+            try {
+                date = $.datepicker.parseDate(dateFormat, dateText);
+                year  = date.getFullYear();
+                month = date.getMonth() + 1;
+                day   = date.getDay();
+            } catch (e) {
+                // console.log(e);
+                // clear date text
+                $(this).val('');
+            }
+            setDatecustomer_edit(year + '/' + month + '/' + day);
 		});
 		
 	});
@@ -222,7 +252,9 @@
                     <!--{if $errBirth}-->
                         <div class="attention"><!--{$errBirth}--></div>
                     <!--{/if}-->
-                    <input id="datepickercustomer_edit" type="text" value="<!--{if $arrForm.year != "" && $arrForm.month != "" && $arrForm.day != ""}--><!--{$arrForm.year|h}-->/<!--{$arrForm.month|h|string_format:'%02d'}-->/<!--{$arrForm.day|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                    <input id="datepickercustomer_edit"
+                           type="text"
+                           value="" <!--{if $arrErr.year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                     <input type="hidden" name="year" value="<!--{$arrForm.year}-->" />
                     <input type="hidden" name="month" value="<!--{$arrForm.month}-->" />
                     <input type="hidden" name="day" value="<!--{$arrForm.day}-->" />
