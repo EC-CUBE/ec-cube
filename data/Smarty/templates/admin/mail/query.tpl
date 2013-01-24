@@ -53,10 +53,6 @@ self.moveTo(20,20);self.focus();
             <td><!--{$arrSearchData.search_name|default_t:"tpl_337"|h}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_210"}--></th>
-            <td><!--{$arrSearchData.search_kana|default_t:"tpl_337"|h}--></td>
-        </tr>
-        <tr>
             <th><!--{t string="tpl_215"}--></th>
             <td>
             <!--{assign var=key value="search_sex"}-->
