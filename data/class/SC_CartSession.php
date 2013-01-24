@@ -388,13 +388,6 @@ class SC_CartSession {
     }
 
     /**
-     * @deprected getAllProductClassID を使用して下さい
-     */
-    function getAllProductID($productTypeId) {
-        trigger_error('正しく動作しないメソッドが呼び出されました。', E_USER_ERROR);
-    }
-
-    /**
      * カート内にある商品規格IDを全て取得する.
      *
      * @param integer $productTypeId 商品種別ID
