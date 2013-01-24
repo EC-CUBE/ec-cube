@@ -23,7 +23,7 @@
 <section id="undercolumn">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
     <div class="intro">
-        <p><span class="attention">*</span> is an item that require input.</p>
+        <p><span class="attention">*</span> indicates that the item is required.</p>
     </div>
 
     <form name="form1" id="form1" method="post" action="?">
@@ -35,7 +35,7 @@
         </dl>
 
         <div class="btn_area">
-            <p><input type="submit" value="To confirmation page" class="btn data-role-none" alt="To confirmation page" name="confirm" id="confirm" /></p>
+            <p><input type="submit" value="Confirmation page" class="btn data-role-none" alt="Confirmation page" name="confirm" id="confirm" /></p>
         </div>
     </form>
 </section>
@@ -45,7 +45,7 @@
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="Input keyword" class="searchbox" >
+        <input type="search" name="name" id="search" value="" placeholder="Enter keywords" class="searchbox" >
     </form>
 </section>
 <!--▲検索バー -->

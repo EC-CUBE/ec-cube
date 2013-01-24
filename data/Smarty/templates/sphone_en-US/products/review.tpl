@@ -24,10 +24,10 @@
 *}-->
 
 <div id="windowarea">
-    <h2 class="title">Form for customer's opinion</h2>
+    <h2 class="title">Add comment</h2>
     <p class="windowtext">Please provide your opinions and thoughts regarding the product below.<br />
-        Items marked with "<span class="attention">*</span>" require input.<br />
-        After inputting, click the "To confirmation page" button at the very bottom.</p>
+        Items marked with "<span class="attention">*</span>" are required fields.<br />
+        When finished, click the "Confirm" button at the very bottom of the page.</p>
     <form name="form1" method="post" action="?">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="confirm" />
@@ -53,7 +53,7 @@
                 </td>
             </tr>
             <tr>
-                <th>Recommendation level<span class="attention">*</span></th>
+                <th>Rating<span class="attention">*</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.recommend_level}--></span>
                     <select name="recommend_level" style="<!--{$arrErr.recommend_level|sfGetErrorColor}-->">
@@ -78,7 +78,7 @@
             </tr>
         </table>
         <div class="btn_area">
-                <p><input type="submit" value="Next" class="btn data-role-none" alt="Next" name="next" id="next" /></p>
+                <p><input type="submit" value="Confirm" class="btn data-role-none" alt="Next" name="next" id="next" /></p>
             </div>
     </form>
 </div>

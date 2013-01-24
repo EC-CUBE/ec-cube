@@ -26,13 +26,12 @@
         <p>Member registration has been received.<br />
         You are currently <font color="#FF0000">a temporary member</font>.<br />
         A notification has been sent to the e-mail address you entered. Enjoy shopping after completing member registration.<br />
-        We look forward to doing business with you again in the future.
         </p>
     </div>
     <hr>
     <div id="completetext">
         <p>We look forward to doing business with you again in the future.</p>
-        <a rel="external" class="btn_s btn_sub" href="<!--{$smarty.const.TOP_URLPATH}-->">To top page</a>
+        <a rel="external" class="btn_s btn_sub" href="<!--{$smarty.const.TOP_URLPATH}-->">Home</a>
     </div>
 </section>
 
@@ -41,7 +40,7 @@
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="Input keyword" class="searchbox" >
+        <input type="search" name="name" id="search" value="" placeholder="Enter keywords" class="searchbox" >
     </form>
 </section>
 <!--▲検索バー -->

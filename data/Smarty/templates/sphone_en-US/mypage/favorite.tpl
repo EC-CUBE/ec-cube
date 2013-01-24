@@ -85,7 +85,7 @@
     <!--{else}-->
         <div class="form_area">
             <div class="information">
-                <p>There are no favorites registered.</p>
+                <p>There are no favorites.</p>
             </div>
         </div><!-- /.form_area -->
     <!--{/if}-->
@@ -97,7 +97,7 @@
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="Input keyword" class="searchbox" >
+        <input type="search" name="name" id="search" value="" placeholder="Enter keywords" class="searchbox" >
     </form>
 </section>
 <!--▲検索バー -->

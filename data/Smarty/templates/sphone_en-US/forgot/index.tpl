@@ -21,12 +21,12 @@
  *}-->
 
 <section id="windowcolumn">
-    <h2 class="title">If you have forgotten your password</h2>
+    <h2 class="title">Retrieve Password</h2>
     <form action="?" method="post" name="form1">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="mail_check" />
         <div class="intro">
-            Enter the e-mail address and the name that you registered, and click the "Next" button.</p>
+            Please enter you registered e-mail address and name. When finished, click the 'Next' button..</p>
         </div>
         <div class="window_area clearfix">
             <p>
@@ -53,7 +53,7 @@
             </p>
             <span class="attention"><!--{$errmsg}--></span>
             <hr />
-            <p class="attentionSt">[Important] You will be issued a new password, and you will not be able to use your old password.</p>
+            <p class="attentionSt">[Important] You will receive a new password and you will not be able to use your old password.</p>
         </div>
 
         <div class="btn_area"><p><input class="btn data-role-none" type="submit" value="Next" /></p></div>

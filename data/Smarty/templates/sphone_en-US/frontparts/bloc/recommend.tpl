@@ -23,7 +23,7 @@
 <!-- ▼おすすめ商品 -->
 <!--{if count($arrBestProducts) > 0}-->
     <section id="recommend_area" class="mainImageInit">
-        <h2>Recommended product</h2>
+        <h2>Recommended products</h2>
         <ul>
             <!--{section name=cnt loop=$arrBestProducts}-->
                 <li id="mainImage<!--{$smarty.section.cnt.index}-->">

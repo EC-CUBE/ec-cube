@@ -22,7 +22,7 @@
  *}-->
 
 <div id="windowarea">
-    <h2 class="title">Form for customer's opinion</h2>
+    <h2 class="title">Add comment</h2>
     <form name="form1" method="post" action="?">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="complete" />
@@ -50,7 +50,7 @@
                 <td><!--{if $arrForm.sex eq 1}-->Male<!--{elseif $arrForm.sex eq 2}-->Female<!--{/if}--></td>
             </tr>
             <tr>
-                <th>Recommendation level<span class="attention">*</span></th>
+                <th>Rating<span class="attention">*</span></th>
                 <td><span class="recommend_level"><!--{$arrRECOMMEND[$arrForm.recommend_level]}--></span></td>
             </tr>
             <tr>
@@ -64,7 +64,7 @@
         </table>
         <div class="btn_area">
             <ul class="btn_btm">
-                <li><input type="submit" value="To completion page" class="btn data-role-none" alt="To completion page" name="complete" id="complete" /></li>
+                <li><input type="submit" value="Send" class="btn data-role-none" alt="Complete" name="complete" id="complete" /></li>
                 <li><a class="btn_back" href="Javascript:fnModeSubmit('return', '', '');" rel="external">Go back</a></li>
             </ul>
         </div>

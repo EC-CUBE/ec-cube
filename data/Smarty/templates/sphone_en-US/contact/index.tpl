@@ -33,8 +33,8 @@
 <section id="undercolumn">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
     <div class="intro">
-        <p>We welcome questions and opinions.<br />
-           Please note that on holidays, a response will be sent the next business day or afterwards.</p>
+        <p>We welcome your questions and opinions.<br />
+           Please note that on holidays, a response will be sent out on the next business day or later.</p>
     </div>
 
     <form name="form1" method="post" action="?">
@@ -81,7 +81,7 @@
                         style="<!--{$arrErr.zipcode|sfGetErrorColor}-->; ime-mode: disabled;" class="boxShort text data-role-none" />
                 </p>
 
-                <!--{* <a href="javascript:fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', '<!--{$key1}-->', '<!--{$key2}-->', '<!--{$key3}-->', '<!--{$key4}-->');" class="btn_sub btn_inputzip" rel="external">Automatic address input from postal code</a> *}-->
+                <!--{* <a href="javascript:fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', '<!--{$key1}-->', '<!--{$key2}-->', '<!--{$key3}-->', '<!--{$key4}-->');" class="btn_sub btn_inputzip" rel="external">Automatic address from postal code</a> *}-->
             </dd>
 
             <dt>Address</dt>
@@ -98,7 +98,7 @@
                     style="<!--{$arrErr.addr02|sfGetErrorColor}-->" placeholder="House number/building name" />
             </dd>
 
-            <dt>Telephone number</dt>
+            <dt>Phone number</dt>
             <dd>
                 <span class="attention"><!--{$arrErr.tel01}--><!--{$arrErr.tel02}--><!--{$arrErr.tel03}--></span>
                 <input type="tel" name="tel01"
@@ -124,11 +124,11 @@
                 <input type="email" name="email02"
                     value="<!--{$arrForm.email02.value|default:$email02|h}-->"
                     style="<!--{$arrErr.email02|sfGetErrorColor}-->"
-                    maxlength="<!--{$smarty.const.MTEXT_LEN}-->" class="boxLong text data-role-none" placeholder="Input twice for confirmation" />
+                    maxlength="<!--{$smarty.const.MTEXT_LEN}-->" class="boxLong text data-role-none" placeholder="Enter twice for confirmation" />
             </dd>
 
             <dt>Details of inquiry&nbsp;<span class="attention">*</span>
-                <span class="mini">(<!--{$smarty.const.MLTEXT_LEN}--> two-byte characters or less)</span></dt>
+                <span class="mini">(<!--{$smarty.const.MLTEXT_LEN}--> characters or less)</span></dt>
             <dd><span class="attention"><!--{$arrErr.contents}--></span>
                 <textarea name="contents" id="contents" class="textarea data-role-none" rows="4" cols="42" style="<!--{$arrErr.contents|sfGetErrorColor}-->"><!--{"\n"}--><!--{$arrForm.contents.value|h}--></textarea>
             </dd>
@@ -136,7 +136,7 @@
         </dl>
 
         <div class="btn_area">
-            <input type="submit" value="To confirmation page" class="btn data-role-none" name="confirm" id="confirm" />
+            <input type="submit" value="Confirm" class="btn data-role-none" name="confirm" id="confirm" />
         </div>
     </form>
 </section>
@@ -146,7 +146,7 @@
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="Input keyword" class="searchbox" >
+        <input type="search" name="name" id="search" value="" placeholder="Enter keywords" class="searchbox" >
     </form>
 </section>
 <!--▲検索バー -->

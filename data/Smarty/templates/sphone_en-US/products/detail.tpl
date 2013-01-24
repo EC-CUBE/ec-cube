@@ -298,7 +298,7 @@
                         </div>
                     <!--{else}-->
                         <div class="btn_favorite">
-                            <p>Registered in Favorites</p>
+                            <p>Already in favorites</p>
                         </div>
                     <!--{/if}-->
                 <!--{/if}-->
@@ -425,7 +425,7 @@
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="Input keyword" class="searchbox" >
+        <input type="search" name="name" id="search" value="" placeholder="Enter keywords" class="searchbox" >
     </form>
 </section>
 <!--▲検索バー -->

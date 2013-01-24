@@ -23,15 +23,15 @@
 <section id="undercolumn">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
     <div class="information">
-        <p><span class="attention">[Important] Before carrying out member registration, please read the terms of use below.</span></p>
+        <p><span class="attention">[Important] Before becoming a member, please read the terms of use below.</span></p>
         <p>In the agreement, your rights and obligations pertaining to use of this service are stipulated.<br />
-           When you click the "I agree to the terms and want to register as a member" button, you are agreeing to all of the conditions in this agreement.</p>
+           When you click the "Agree" button, you are agreeing to all of the conditions in this agreement.</p>
     </div>
 
     <div class="btn_area">
         <ul>
-            <li><a href="<!--{$smarty.const.ENTRY_URL}-->" class="btn" rel="external">Agree and register as a member</a></li>
-            <li><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="btn_back" rel="external">Do not agree</a></li>
+            <li><a href="<!--{$smarty.const.ENTRY_URL}-->" class="btn" rel="external">Agree</a></li>
+            <li><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="btn_back" rel="external">Decline</a></li>
         </ul>
     </div>
 
@@ -39,8 +39,8 @@
 
     <div class="btn_area">
         <ul class="btn_btm">
-            <li><a href="<!--{$smarty.const.ENTRY_URL}-->" class="btn" rel="external">Agree and register as a member</a></li>
-            <li><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="btn_back" rel="external">Do not agree</a></li>
+            <li><a href="<!--{$smarty.const.ENTRY_URL}-->" class="btn" rel="external">Agree</a></li>
+            <li><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="btn_back" rel="external">Decline</a></li>
         </ul>
     </div>
 </section>
@@ -50,7 +50,7 @@
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="Input keyword" class="searchbox" >
+        <input type="search" name="name" id="search" value="" placeholder="Enter keywords" class="searchbox" >
     </form>
 </section>
 <!--▲検索バー -->

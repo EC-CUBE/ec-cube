@@ -32,7 +32,7 @@
         <p><span class="mini">Welcome</span><br />
         <a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" rel="external"><!--{$tpl_name1|h}--> <!--{$tpl_name2|h}--></a></p>
         <!--{if $smarty.const.USE_POINT !== false}-->
-            <p>Points in possession <!--{$tpl_user_point|number_format|default:0}-->pts</p>
+            <p>Total points <!--{$tpl_user_point|number_format|default:0}-->pts</p>
         <!--{/if}-->
     <!--{else}-->
         <p>Welcome<br />
@@ -62,7 +62,7 @@
             </div>
         <!--{/foreach}-->
     <!--{else}-->
-        * There are currently no products in your cart. 
+        * Cart is empty. 
     <!--{/if}-->
 </div>
 

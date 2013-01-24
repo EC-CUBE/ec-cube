@@ -30,7 +30,7 @@
 
     <!--★インフォメーション★-->
     <div class="intro">
-        <p>Check the input contents</p>
+        <p>Confirm information</p>
     </div>
 
     <form name="form1" id="form1" method="post" action="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/change.php">
@@ -108,7 +108,7 @@
 
         <div class="btn_area">
             <ul class="btn_btm">
-                <li><input type="submit" value="To completion page" class="btn data-role-none" alt="To completion page" name="complete" id="complete" /></li>
+                <li><input type="submit" value="Confirm" class="btn data-role-none" alt="Confirm" name="complete" id="complete" /></li>
                 <li><a class="btn_back" href="Javascript:fnModeSubmit('return', '', '');" rel="external">Go back</a></li>
             </ul>
         </div>
@@ -120,7 +120,7 @@
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="Input keyword" class="searchbox" >
+        <input type="search" name="name" id="search" value="" placeholder="Enter keywords" class="searchbox" >
     </form>
 </section>
 <!--▲検索バー -->

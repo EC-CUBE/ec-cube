@@ -24,7 +24,7 @@
     <!--☆お問い合わせ内容確認 -->
     <h2 class="title"><!--{$tpl_title|h}--></h2>
         <div class="intro">
-            <p>Check the input contents</p>
+            <p>Confirm information</p>
         </div>
 
         <form name="form1" id="form1" method="post" action="?">
@@ -54,7 +54,7 @@
                 <!--{$arrForm.addr01.value|h}--><!--{$arrForm.addr02.value|h}-->
             </dd>
 
-            <dt>Telephone number</dt>
+            <dt>Phone number</dt>
             <dd>
                 <!--{if strlen($arrForm.tel01.value) > 0 && strlen($arrForm.tel02.value) > 0 && strlen($arrForm.tel03.value) > 0}-->
                     <!--{$arrForm.tel01.value|h}-->-<!--{$arrForm.tel02.value|h}-->-<!--{$arrForm.tel03.value|h}-->
@@ -82,7 +82,7 @@
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="Input keyword" class="searchbox" >
+        <input type="search" name="name" id="search" value="" placeholder="Enter keywords" class="searchbox" >
     </form>
 </section>
 <!--▲検索バー -->

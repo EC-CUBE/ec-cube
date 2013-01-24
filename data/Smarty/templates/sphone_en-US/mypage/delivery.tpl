@@ -29,7 +29,7 @@
     <h3 class="title_mypage"><!--{$tpl_subtitle|h}--></h3>
     <!--★インフォメーション★-->
     <div class="information">
-        <p>This is a list of registered addresses.<p>
+        <p>This is the list of registered addresses.<p>
         <p>A maximum of <!--{$smarty.const.DELIV_ADDR_MAX|h}--> items can be registered.</p>
     </div>
     <!--{if $tpl_linemax < $smarty.const.DELIV_ADDR_MAX}-->
@@ -88,7 +88,7 @@
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="Input keyword" class="searchbox" >
+        <input type="search" name="name" id="search" value="" placeholder="Enter keywords" class="searchbox" >
     </form>
 </section>
 <!--▲検索バー -->

@@ -70,7 +70,7 @@
                 <input type="password" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="passtextBox data-role-none" placeholder="Password" />
             </div><!-- /.loginareaBox -->
 
-            <p class="arrowRtxt"><a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->">If you have forgotten your password</a></p>
+            <p class="arrowRtxt"><a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->">Forgot your password?</a></p>
 
             <div class="btn_area">
                 <input type="submit" value="Login" class="btn data-role-none" name="log" id="log" />
@@ -84,10 +84,10 @@
         <div class="login_area_btm">
             <nav>
                 <ul class="navBox">
-                    <li><a rel="external" href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php">New member registration</a></li>
+                    <li><a rel="external" href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php">Member registration</a></li>
                 </ul>
             </nav>
-            <p>When you register as a member, you can use the convenient MY page.</p>
+            <p>After you register as a member, you can use MY page.</p>
         </div>
     </form>
 </section>
@@ -97,7 +97,7 @@
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="Input keyword" class="searchbox" >
+        <input type="search" name="name" id="search" value="" placeholder="Enter keywords" class="searchbox" >
     </form>
 </section>
 <!--▲検索バー -->

@@ -56,14 +56,14 @@
     <section class="pagenumberarea clearfix">
         <ul>
             <!--{if $orderby != 'price'}-->
-                <li><a href="javascript:fnChangeOrderby('price');" rel="external">Price order</a></li>
+                <li><a href="javascript:fnChangeOrderby('price');" rel="external">By price</a></li>
             <!--{else}-->
-                <li class="on_number">Price order</li>
+                <li class="on_number">By price</li>
             <!--{/if}-->
             <!--{if $orderby != "date"}-->
-                <li><a href="javascript:fnChangeOrderby('date');" rel="external">Recent</a></li>
+                <li><a href="javascript:fnChangeOrderby('date');" rel="external">Most recent</a></li>
             <!--{else}-->
-                <li class="on_number">Recent</li>
+                <li class="on_number">Most recent</li>
             <!--{/if}-->
         </ul>
     </section>
@@ -130,7 +130,7 @@
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="Input keyword" class="searchbox" >
+        <input type="search" name="name" id="search" value="" placeholder="Enter keywords" class="searchbox" >
     </form>
 </section>
 <!--▲検索バー -->

@@ -28,7 +28,7 @@
             send = false;
             return true;
         } else {
-            alert("Currently processing. Please wait awhile.");
+            alert("Please wait while processing transaction.");
             return false;
         }
     }
@@ -79,7 +79,7 @@
 
     <!--★インフォメーション★-->
     <div class="information end">
-        <p>After confirming the order details below, click the "To order completion page" button.</p>
+        <p>After confirming the order details below, click the "Completion page" button.</p>
     </div>
 
     <form name="form1" id="form1" method="post" action="<!--{$smarty.const.ROOT_URLPATH}-->shopping/confirm.php">
@@ -160,7 +160,7 @@
                         </dl>
                         <dl>
                             <!--{assign var=total_point value=`$tpl_user_point-$arrForm.use_point+$arrForm.add_point`}-->
-                            <dt>Points after adding</dt><dd><!--{$total_point|number_format}-->Pts</dd>
+                            <dt>Points added</dt><dd><!--{$total_point|number_format}-->Pts</dd>
                         </dl>
                     </div><!-- /.formBox -->
                 <!--{/if}-->
@@ -270,7 +270,7 @@
                 <!--{if $use_module}-->
                     <li><a rel="external" href="javascript:void(document.form1.submit());" class="btn">Next</a></li>
                 <!--{else}-->
-                    <li><a rel="external" href="javascript:void(document.form1.submit());" class="btn">To order completion page</a></li>
+                    <li><a rel="external" href="javascript:void(document.form1.submit());" class="btn">Completion page</a></li>
                 <!--{/if}-->
                 <li><a rel="external" href="./payment.php" class="btn_back">Go back</a></li>
             </ul>
@@ -284,7 +284,7 @@
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="Input keyword" class="searchbox" >
+        <input type="search" name="name" id="search" value="" placeholder="Enter keyword" class="searchbox" >
     </form>
 </section>
 <!--▲検索バー -->

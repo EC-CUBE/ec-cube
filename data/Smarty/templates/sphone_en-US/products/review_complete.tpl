@@ -23,11 +23,10 @@
 <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`popup_header.tpl" subtitle="Form for customer's opinion (completion page)"}-->
 
 <div id="windowarea">
-    <h2 class="title">Form for customer's opinion</h2>
+    <h2 class="title">Add comment</h2>
     <div id="completebox">
-        <p>Registration is complete. Thank you.<br />
-           After confirming the registered contents at our company, we will then reflect the contents on our home page.<br />
-           Please wait awhile.</p>
+        <p>Comment has been sent. Thank you.<br />
+          Please wait for the comment to be reviewed by our staff. If approved, it will appear on our site.</p>
     </div>
     <div class="btn_area">
             <ul class="btn_btm">

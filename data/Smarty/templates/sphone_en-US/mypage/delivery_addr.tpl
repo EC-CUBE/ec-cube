@@ -29,7 +29,7 @@
 
     <!--★インフォメーション★-->
     <div class="information">
-        <p><span class="attention">*</span> is an item that require input.<br />
+        <p><span class="attention">*</span> are required fields.<br />
            A maximum of <!--{$smarty.const.DELIV_ADDR_MAX|h}--> items can be registered.</p>
     </div>
 

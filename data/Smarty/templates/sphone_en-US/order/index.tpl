@@ -46,7 +46,7 @@
         <dt>URL</dt>
         <dd><a href="<!--{$arrOrder.law_url|h}-->" rel="external"><!--{$arrOrder.law_url|h}--></a></dd>
 
-        <dt>Necessary expenses other than for the product</dt>
+        <dt>Other expenses</dt>
         <dd><!--{$arrOrder.law_term01|h|nl2br}--></dd>
 
         <dt>Order method</dt>
@@ -70,7 +70,7 @@
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="Input keyword" class="searchbox" >
+        <input type="search" name="name" id="search" value="" placeholder="Enter keywords" class="searchbox" >
     </form>
 </section>
 <!--▲CONTENTS-->

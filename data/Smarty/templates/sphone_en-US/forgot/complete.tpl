@@ -35,11 +35,11 @@
                 <p  class="attention">An e-mail was sent to the registered e-mail address.</p>
             <!--{/if}-->
             <hr />
-            <p>* You can change your password from "Change member registration details" on MY page.</p>
+            <p>* You can change your password from "Edit registration details" on MY page.</p>
         </div>
 
         <div class="btn_area">
-            <p><a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" class="btn_sub btn_close">To login screen</a></p>
+            <p><a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" class="btn_sub btn_close">Login screen</a></p>
         </div>
     </form>
 </section>

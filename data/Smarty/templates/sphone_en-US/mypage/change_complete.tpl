@@ -29,7 +29,7 @@
     <h3 class="title_mypage"><!--{$tpl_subtitle|h}--></h3>
 
     <div class="thankstext">
-        <p>Revision of member registration details is complete.</p>
+        <p>Member information has been updated.</p>
     </div>
     <div id="completetext">
         <p>We look forward to doing business with you again in the future.</p>
@@ -41,7 +41,7 @@
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="Input keyword" class="searchbox" >
+        <input type="search" name="name" id="search" value="" placeholder="Enter keywords" class="searchbox" >
     </form>
 </section>
 <!--▲検索バー -->

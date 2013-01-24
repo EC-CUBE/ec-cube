@@ -33,9 +33,9 @@
 
         <!--★インフォメーション★-->
         <div class="refusetxt">
-            <p>When a member withdraws membership, the information that is currently stored, such as purchase history and delivery addresses will all be deleted. Do you wish to continue?</p>
+            <p>If you decide to cancel your membership, purchase history and delivery information will all be deleted. Do you wish to continue?</p>
             <div class="btn_area">
-                <p><input class="btn data-role-none" type="submit" value="Procedure for membership withdrawal" name="refusal" id="refusal" /></p>
+                <p><input class="btn data-role-none" type="submit" value="Cancel membership" name="refusal" id="refusal" /></p>
             </div>
         </div>
     </form>
@@ -46,7 +46,7 @@
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="Input keyword" class="searchbox" >
+        <input type="search" name="name" id="search" value="" placeholder="Enter keywords" class="searchbox" >
     </form>
 </section>
 <!--▲検索バー -->

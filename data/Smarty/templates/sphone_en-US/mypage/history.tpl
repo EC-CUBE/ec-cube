@@ -76,7 +76,7 @@
                                             <a target="_self" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/download.php?order_id=<!--{$tpl_arrOrderData.order_id}-->&amp;product_id=<!--{$orderDetail.product_id}-->&amp;product_class_id=<!--{$orderDetail.product_class_id}-->" rel="external">Download</a><br />
                                         <!--{else}-->
                                             <!--{if $orderDetail.payment_date == "" && $orderDetail.effective == "0"}-->
-                                                <!--{$arrProductType[$orderDetail.product_type_id]}--><br />(Credit being confirmed)
+                                                <!--{$arrProductType[$orderDetail.product_type_id]}--><br />(Credit card being confirmed)
                                             <!--{else}-->
                                                 <!--{$arrProductType[$orderDetail.product_type_id]}--><br />(Expired)
                                             <!--{/if}-->
@@ -143,7 +143,7 @@
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="Input keyword" class="searchbox" >
+        <input type="search" name="name" id="search" value="" placeholder="Enter keywords" class="searchbox" >
     </form>
 </section>
 <!--▲検索バー -->

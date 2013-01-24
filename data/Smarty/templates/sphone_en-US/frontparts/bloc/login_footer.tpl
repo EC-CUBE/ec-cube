@@ -30,11 +30,11 @@
         <p>Welcome, <a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" data-transition="slideup"><!--{$tpl_name1|h}--> <!--{$tpl_name2|h}--></a></p>
 
         <!--{if $smarty.const.USE_POINT !== false}-->
-            <p>Points in possession <!--{$tpl_user_point|number_format|default:0}-->pt</p>
+            <p>Total points <!--{$tpl_user_point|number_format|default:0}-->pts</p>
         <!--{/if}-->
         <p><a rel="external" href="javascript:void(document.login_form_footer.submit())" class="btn_btm">Log out</a></p>
     <!--{else}-->
         <p>Welcome, Guest</p>
-        <p><a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/entry/kiyaku.php" class="btn_btm">New member registration</a></p>
+        <p><a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/entry/kiyaku.php" class="btn_btm">Member registration</a></p>
     <!--{/if}-->
 </section>

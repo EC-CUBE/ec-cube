@@ -22,7 +22,7 @@
 
 <!--商品カテゴリここから-->
 <section id="category_area">
-    <h2 class="title_block">Product category</h2>
+    <h2 class="title_block">Categories</h2>
     <nav id="categorytree">
         <ul id="categorytreelist">
             <!--{assign var=preLev value=1}-->

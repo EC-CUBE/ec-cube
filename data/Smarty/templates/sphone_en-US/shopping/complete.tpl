@@ -40,15 +40,15 @@
     <!-- ▲コンビに決済の場合には表示 -->
 
     <div class="thankstext">
-        <p>Thank you for purchasing <!--{$arrInfo.shop_name|h}--></p>
+        <p>Thank you for your order <!--{$arrInfo.shop_name|h}--></p>
     </div>
     <hr>
     <div id="completetext">
         <p>A confirmation e-mail regarding your order has just been sent.</p>
-        <p>In the event that a response mail is not received, there may be a problem. Please make another inquiry or inquire by phone.</p>
+        <p>In the event that a response mail is not received, please make another inquiry or inquire by phone.</p>
         <p>We look forward to doing business with you again in the future.</p>
         <div class="btn_area">
-            <a href="<!--{$smarty.const.TOP_URLPATH}-->" class="btn_toppage btn_sub" rel="external">To top page</a>
+            <a href="<!--{$smarty.const.TOP_URLPATH}-->" class="btn_toppage btn_sub" rel="external">Home</a>
         </div>
     </div>
     <hr>
@@ -64,7 +64,7 @@
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="Input keyword" class="searchbox" >
+        <input type="search" name="name" id="search" value="" placeholder="Enter keywords" class="searchbox" >
     </form>
 </section>
 <!--▲検索バー -->

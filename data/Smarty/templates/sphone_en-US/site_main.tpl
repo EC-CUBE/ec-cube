@@ -158,7 +158,7 @@
                 <dt><a href="javascript:;" rel="external" target="_blank"></a></dt>
                 <dd id="newsComment"></dd>
             </dl>
-            <p><a href="<!--{$smarty.const.HTTP_URL}-->" class="btn_more" data-rel="back">Return to list of new products</a></p>
+            <p><a href="<!--{$smarty.const.HTTP_URL}-->" class="btn_more" data-rel="back">Back</a></p>
         </div>
     </div>
     <!-- ▲明細情報 -->

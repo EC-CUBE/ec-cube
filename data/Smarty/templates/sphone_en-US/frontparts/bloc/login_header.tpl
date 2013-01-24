@@ -24,10 +24,10 @@
     <!--{if $tpl_login}-->
         <p class="guest">Welcome, <a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" rel="external"><!--{$tpl_name1|h}--> <!--{$tpl_name2|h}--></a></p>
         <!--{if $smarty.const.USE_POINT !== false}-->
-            <p>Points in possession <!--{$tpl_user_point|number_format|default:0}-->pts</p>
+            <p>Total points <!--{$tpl_user_point|number_format|default:0}-->pts</p>
         <!--{/if}-->
     <!--{else}-->
         <p class="guest">Welcome, Guest</p>
-        <p><a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/entry/kiyaku.php">New member registration</a></p>
+        <p><a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/entry/kiyaku.php">Member registration</a></p>
     <!--{/if}-->
 </nav>

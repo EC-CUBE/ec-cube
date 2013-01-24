@@ -33,9 +33,9 @@
             <!--{if $tpl_login}-->
                 <p class="point_announce"><span class="user_name"><!--{$tpl_name|h}--></span>, you currently have "<span class="point"><!--{$tpl_user_point|number_format|default:0}--> pts.</span>"<br />
 
-                    It is possible to use <span class="price">1pts = &#036; <!--{$smarty.const.POINT_VALUE}--></span> when purchasing a product.</p>
+                    It is possible to use points for this purchase. <span class="price">1pt = &#036; <!--{$smarty.const.POINT_VALUE}--></span></p>
             <!--{else}-->
-                <p class="point_announce">If using the point system, it is necessary to log in.</p>
+                <p class="point_announce">The point system requires you to login first.</p>
             <!--{/if}-->
         </div>
     <!--{/if}-->
@@ -147,14 +147,14 @@
                         <!--{if strlen($tpl_error) == 0}-->
                             <div class="btn_area_btm">
                                 <input type="hidden" name="cartKey" value="<!--{$key}-->" />
-                                <input type="submit" value="To purchasing procedure" name="confirm" class="btn data-role-none" />
+                                <input type="submit" value="Checkout" name="confirm" class="btn data-role-none" />
                             </div>
                         <!--{/if}-->
                     </div><!-- /.formBox -->
                 </form>
             <!--{/foreach}-->
         <!--{else}-->
-            <p class="empty"><em>* There are currently no products in your cart. </em></p>
+            <p class="empty"><em>* Cart is empty. </em></p>
         <!--{/if}-->
 
         <p><a rel="external" href="<!--{$smarty.const.ROOT_URLPATH}-->" class="btn_sub">Continue shopping</a></p>
@@ -168,7 +168,7 @@
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="Input keyword" class="searchbox" >
+        <input type="search" name="name" id="search" value="" placeholder="Enter keywords" class="searchbox" >
     </form>
 </section>
 <!--▲検索バー -->

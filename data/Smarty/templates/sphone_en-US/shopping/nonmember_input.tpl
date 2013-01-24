@@ -43,7 +43,7 @@
 <section id="undercolumn">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
     <div class="information end">
-        <span class="attention">*</span> is an item that require input.
+        <span class="attention">*</span> are required fields.
     </div>
 
     <form name="form1" id="form1" method="post" action="?">
@@ -220,7 +220,7 @@
                 <label for="deliv_label"><span class="fb">Designation of delivery destination</span></label>
             </dt>
             <dd>
-                <br />* If the address is the same as the one input above, it can be omitted.
+                <br />* If the address is the same as the one entered above, it can be omitted.
             </dd>
 
             <div id="add_deliv_area">
@@ -330,7 +330,7 @@
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="Input keyword" class="searchbox" >
+        <input type="search" name="name" id="search" value="" placeholder="Enter keywords" class="searchbox" >
     </form>
 </section>
 <!--▲検索バー -->

@@ -31,7 +31,7 @@
     <!--★インフォメーション★-->
     <div id="mycontentsarea">
         <div id="completetext">
-            <p>The withdrawal procedure is complete.</p>
+            <p>The cancelation request is now complete.</p>
             <p>Thank you for using MY page. <br />
                We look forward to your business in the future.</p>
         </div>
@@ -51,7 +51,7 @@
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="Input keyword" class="searchbox" >
+        <input type="search" name="name" id="search" value="" placeholder="Enter keywords" class="searchbox" >
     </form>
 </section>
 <!--▲検索バー -->

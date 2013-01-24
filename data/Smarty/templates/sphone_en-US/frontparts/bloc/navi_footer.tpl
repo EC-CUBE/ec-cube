@@ -29,5 +29,5 @@
         <li><a data-transition="slideup" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php"><img src="<!--{$TPL_URLPATH}-->img/button/btn_footer_favorite_off.png" alt="Favorites" width="75" height="34" /><br />Favorites</a></li>
     <!--{/if}-->
     <li><a rel="external" href="<!--{$smarty.const.CART_URLPATH|h}-->"><img src="<!--{$TPL_URLPATH}-->img/button/btn_footer_cart_off.png" alt="View Cart" width="75" height="34" /><br />View Cart</a></li>
-    <li><a rel="external" href="<!--{$smarty.const.ROOT_URLPATH}-->"><img src="<!--{$TPL_URLPATH}-->img/button/btn_footer_toppage_off.png" alt="To top page" width="75" height="34" /><br />To top page</a></li>
+    <li><a rel="external" href="<!--{$smarty.const.ROOT_URLPATH}-->"><img src="<!--{$TPL_URLPATH}-->img/button/btn_footer_toppage_off.png" alt="To top page" width="75" height="34" /><br />Home</a></li>
 </ul>

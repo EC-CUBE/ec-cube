@@ -30,7 +30,7 @@
         <div class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></div>
     <!--{/if}-->
     <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1]|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" class="boxHarf text data-role-none" placeholder="Last name" />&nbsp;&nbsp;
-    <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2]|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" class="boxHarf text data-role-none" placeholder="Name" />
+    <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2]|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" class="boxHarf text data-role-none" placeholder="First Name" />
 </dd>
 
 <dt>Postal code&nbsp;<span class="attention">*</span></dt>
@@ -162,8 +162,8 @@
                 <div class="attention"><!--{$arrErr.password}--><!--{$arrErr.password02}--></div>
             <!--{/if}-->
             <input type="password" name="password" value="<!--{$arrForm.password|h}-->" maxlength="<!--{$smarty.const.PASSWORD_MAX_LEN}-->" style="<!--{$arrErr.password|sfGetErrorColor}-->" class="boxLong text top data-role-none" />
-            <input type="password" name="password02" value="<!--{$arrForm.password02|h}-->" maxlength="<!--{$smarty.const.PASSWORD_MAX_LEN}-->" style="<!--{$arrErr.password|cat:$arrErr.password02|sfGetErrorColor}-->" class="boxLong text data-role-none" placeholder="Input twice for confirmation" />
-            <p class="attention mini">Half-width alphanumeric characters <!--{$smarty.const.PASSWORD_MIN_LEN}--> to <!--{$smarty.const.PASSWORD_MAX_LEN}--> characters</p>
+            <input type="password" name="password02" value="<!--{$arrForm.password02|h}-->" maxlength="<!--{$smarty.const.PASSWORD_MAX_LEN}-->" style="<!--{$arrErr.password|cat:$arrErr.password02|sfGetErrorColor}-->" class="boxLong text data-role-none" placeholder="Enter twice for confirmation" />
+            <p class="attention mini">Alphanumeric characters <!--{$smarty.const.PASSWORD_MIN_LEN}--> to <!--{$smarty.const.PASSWORD_MAX_LEN}--> characters</p>
         </dd>
 
         <dt>Hint for when you have forgotten your password&nbsp;<span class="attention">*</span></dt>
@@ -187,7 +187,7 @@
             <ul style="<!--{$arrErr.mailmaga_flg|sfGetErrorColor}-->">
                 <li><input type="radio" name="mailmaga_flg" value="1" id="html" <!--{if $arrForm.mailmaga_flg eq 1}--> checked="checked" <!--{/if}--> class="data-role-none" /><label for="html">Receive HTML mail + text mail</label></li>
                 <li><input type="radio" name="mailmaga_flg" value="2" id="text" <!--{if $arrForm.mailmaga_flg eq 2}--> checked="checked" <!--{/if}--> class="data-role-none" /><label for="text">Receive a text mail</label></li>
-                <li><input type="radio" name="mailmaga_flg" value="3" id="no" <!--{if $arrForm.mailmaga_flg eq 3}--> checked="checked" <!--{/if}--> class="data-role-none" /><label for="no">Not accepted</label></li>
+                <li><input type="radio" name="mailmaga_flg" value="3" id="no" <!--{if $arrForm.mailmaga_flg eq 3}--> checked="checked" <!--{/if}--> class="data-role-none" /><label for="no">Do not send an email</label></li>
             </ul>
         </dd>
     <!--{/if}-->

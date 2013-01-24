@@ -23,7 +23,7 @@
 <section id="windowcolumn">
     <h2 class="title">If you have forgotten your password</h2>
     <div class="intro">
-        <p>Respond to the question below for which you provided an answer at the time of registration, and click the "Next" button.</p>
+        <p>Respond to the question you created below during registration. When finished, click the "Next" button.</p>
     </div>
     <form action="?" method="post" name="form1">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />

@@ -33,9 +33,9 @@
 
         <!--★インフォメーション★-->
         <div class="refusetxt">
-            <p>Do you want to execute the withdrawal procedure?</p>
+            <p>Do you want to cancel your membership?</p>
             <ul class="btn_refuse">
-                <li><a class="btn" href="./refusal.php" rel="external">No, I do not wish to withdraw my membership.</a></li>
+                <li><a class="btn" href="./refusal.php" rel="external">No</a></li>
                 <li><input class="btn data-role-none" type="submit" value="Yes, I want to withdraw my membership" name="refuse_do" id="refuse_do" /></li>
             </ul>
         </div>
@@ -47,7 +47,7 @@
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="Input keyword" class="searchbox" >
+        <input type="search" name="name" id="search" value="" placeholder="Enter keywords" class="searchbox" >
     </form>
 </section>
 <!--▲検索バー -->

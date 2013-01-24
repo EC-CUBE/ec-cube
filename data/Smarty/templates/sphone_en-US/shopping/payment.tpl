@@ -133,7 +133,7 @@
             <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value}-->" id="deliv_id" />
         <!--{else}-->
             <section class="pay_area">
-                <h3 class="subtitle">Designate delivery method</h3>
+                <h3 class="subtitle">Delivery method</h3>
                 <!--{if $arrErr[$key] != ""}-->
                     <p class="attention"><!--{$arrErr[$key]}--></p>
                 <!--{/if}-->
@@ -150,7 +150,7 @@
 
         <!--★インフォメーション★-->
         <section class="pay_area">
-            <h3 class="subtitle">Designation of payment method</h3>
+            <h3 class="subtitle">Payment method</h3>
             <!--{assign var=key value="payment_id"}-->
             <!--{if $arrErr[$key] != ""}-->
                 <p class="attention"><!--{$arrErr[$key]}--></p>
@@ -175,7 +175,7 @@
         <!--★お届け時間の指定★-->
         <!--{if $cartKey != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
             <section class="pay_area02">
-                <h3 class="subtitle">Designation of delivery time</h3>
+                <h3 class="subtitle">Delivery time</h3>
 
                 <div class="form_area">
                     <!--{foreach item=shippingItem name=shippingItem from=$arrShipping}-->
@@ -200,10 +200,10 @@
                                 <!--{assign var=key value="deliv_date`$index`"}-->
                                 <span class="attention"><!--{$arrErr[$key]}--></span>
                                 <!--{if !$arrDelivDate}-->
-                                    Designation is not possible.
+                                    Date is not possible.
                                 <!--{else}-->
                                     <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="boxLong top data-role-none">
-                                        <option value="" selected="">Delivery date: Not designation</option>
+                                        <option value="" selected="">Delivery date: basic delivery</option>
                                         <!--{html_options options=$arrDelivDate selected=$arrForm[$key].value}-->
                                     </select>
                                 <!--{/if}-->
@@ -212,7 +212,7 @@
                                 <!--{assign var=key value="deliv_time_id`$index`"}-->
                                 <span class="attention"><!--{$arrErr[$key]}--></span>
                                 <select name="<!--{$key}-->" id="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="boxLong data-role-none">
-                                    <option value="" selected="">Delivery time: No designation</option>
+                                    <option value="" selected="">Delivery time: basic delivery</option>
                                     <!--{html_options options=$arrDelivTime selected=$arrForm[$key].value}-->
                                 </select>
                             </div>
@@ -226,7 +226,7 @@
         <!--★ポイント使用の指定★-->
         <!--{if $tpl_login == 1 && $smarty.const.USE_POINT !== false}-->
             <section class="point_area">
-                <h3 class="subtitle">Designated point usage</h3>
+                <h3 class="subtitle">Point usage</h3>
 
                     <div class="form_area">
                         <p class="fb">It is possible to use <span class="point">1 point as &#036; 1</span></p>
@@ -258,7 +258,7 @@
         <section class="contact_area">
             <h3 class="subtitle">Other inquiries</h3>
             <div class="form_area">
-                <p>If you have any other inquiries, please input them here.</p>
+                <p>If you have any other inquiries, please enter them here.</p>
 
                 <!--{assign var=key value="message"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -269,7 +269,7 @@
         <!--★ボタン★-->
         <div class="btn_area">
             <ul class="btn_btm">
-                <li><a rel="external" href="javascript:void(document.form1.submit());" class="btn">To confirmation page</a></li>
+                <li><a rel="external" href="javascript:void(document.form1.submit());" class="btn">Next</a></li>
                 <li><a rel="external" href="?mode=return" class="btn_back">Go back</a></li>
             </ul>
         </div>
@@ -282,7 +282,7 @@
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="Input keyword" class="searchbox" >
+        <input type="search" name="name" id="search" value="" placeholder="Enter keywords" class="searchbox" >
     </form>
 </section>
 <!--▲検索バー -->

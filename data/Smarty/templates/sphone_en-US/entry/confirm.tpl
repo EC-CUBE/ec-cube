@@ -25,7 +25,7 @@
 
     <!--★インフォメーション★-->
     <div class="information end">
-        <p>Check the input contents</p>
+        <p>Confirm information</p>
     </div>
 
     <form name="form1" id="form1" method="post" action="?">
@@ -47,7 +47,7 @@
                 <!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}-->
             </dd>
 
-            <dt>Telephone number</dt>
+            <dt>Phone number</dt>
             <dd><!--{$arrForm.tel01|h}--> - <!--{$arrForm.tel02|h}--> - <!--{$arrForm.tel03|h}--></dd>
 
             <dt>FAX</dt>
@@ -99,7 +99,7 @@
                 <!--{elseif $arrForm.mailmaga_flg eq 2}-->
                     Receive a text mail
                 <!--{else}-->
-                    Not accepted
+                    Do not send an email
                 <!--{/if}-->
             </dd>
         </dl>
@@ -107,7 +107,7 @@
         <!--★ボタン★-->
         <div class="btn_area">
             <ul class="btn_btm">
-                <li><input type="submit" value="To completion page" class="btn data-role-none" name="send" id="send" /></li>
+                <li><input type="submit" value="Confirm" class="btn data-role-none" name="send" id="send" /></li>
                 <li><a href="#" onclick="fnModeSubmit('return', '', ''); return false;" class="btn_back">Go back</a></li>
             </ul>
         </div>
@@ -119,7 +119,7 @@
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="Input keyword" class="searchbox" >
+        <input type="search" name="name" id="search" value="" placeholder="Enter keywords" class="searchbox" >
     </form>
 </section>
 <!--▲検索バー -->

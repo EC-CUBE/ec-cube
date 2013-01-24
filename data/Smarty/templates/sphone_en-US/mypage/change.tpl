@@ -29,7 +29,7 @@
 
     <!--★インフォメーション★-->
     <div class="intro">
-        <p><span class="attention">*</span> is an item that require input.</p>
+        <p><span class="attention">*</span> indicates that the item is required.</p>
     </div>
 
     <form name="form1" id="form1" method="post" action="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/change.php">
@@ -44,7 +44,7 @@
             <!--{'sfGMOMypageDisplay'|call_user_func}-->
         <!--{/if}-->
         <div class="btn_area">
-            <p><input type="submit" class="btn data-role-none" value="To confirmation page" name="refusal" id="refusal" /></p>
+            <p><input type="submit" class="btn data-role-none" value="Confirm" name="refusal" id="refusal" /></p>
         </div>
     </form>
 </section>
@@ -54,7 +54,7 @@
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="Input keyword" class="searchbox" >
+        <input type="search" name="name" id="search" value="" placeholder="Enter keywords" class="searchbox" >
     </form>
 </section>
 <!--▲検索バー -->

@@ -27,17 +27,17 @@
     </div>
     <hr>
     <div id="completetext">
-        <p>In the event that a response mail is not received, there may be a problem. Please make another inquiry or inquire by phone.</p>
+        <p>In the event that a response mail is not received, please make another inquiry or inquire by phone.</p>
         <p>We look forward to doing business with you again in the future.</p>
     </div>
 
     <div class="btn_area">
-        <a class="btn_s btn_sub" href="<!--{$smarty.const.TOP_URLPATH}-->">To top page</a>
+        <a class="btn_s btn_sub" href="<!--{$smarty.const.TOP_URLPATH}-->">Home</a>
     </div>
     <hr>
     <div class="shopInformation">
         <p><!--{$arrSiteInfo.company_name|h}--></p>
-        <p>TEL:<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}--><br />
+        <p>Phone number:<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}--><br />
             E-mail:<a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->"><!--{$arrSiteInfo.email02|escape:'hexentity'}--></a></p>
     </div>
 </section>
@@ -47,7 +47,7 @@
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="Input keyword" class="searchbox" >
+        <input type="search" name="name" id="search" value="" placeholder="Enter keywords" class="searchbox" >
     </form>
 </section>
 <!--▲検索バー -->
