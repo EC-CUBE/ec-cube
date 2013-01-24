@@ -125,8 +125,8 @@
     <td>
         <!--{assign var=key1 value="search_buy_times_from"}-->
         <!--{assign var=key2 value="search_buy_times_to"}-->
-    <!--{if $arrErr.buy_times_from || $arrErr.buy_times_to}-->
-        <span class="attention"><!--{$arrErr.buy_times_from}--><!--{$arrErr.buy_times_to}--></span><br />
+    <!--{if $arrErr[$key1] || $arrErr[$key2]}-->
+        <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span><br />
     <!--{/if}-->
     <input type="text" name="<!--{$key1}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key1].value|h}-->" size="6" class="box6" <!--{if $arrErr[$key1] || $arrErr[$key2]}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 回 ～
     <input type="text" name="<!--{$key2}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key2].value|h}-->" size="6" class="box6" <!--{if $arrErr[$key1] || $arrErr[$key2]}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 回</td>
