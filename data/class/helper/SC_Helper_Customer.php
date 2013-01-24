@@ -583,8 +583,10 @@ class SC_Helper_Customer {
     function sfCheckErrorSearchParam(&$objFormParam) {
         // パラメーターの基本チェック
         $arrErr = $objFormParam->checkError();
+        // エラーチェック対象のパラメータ取得
+        $array = $objFormParam->getHashArray();
         // 拡張エラーチェック初期化
-        $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
+        $objErr = new SC_CheckError_Ex($array);
         // 拡張エラーチェック
         $objErr->doFunc(array('誕生日(開始日)', 'search_b_start_year', 'search_b_start_month', 'search_b_start_day'), array('CHECK_DATE'));
         $objErr->doFunc(array('誕生日(終了日)', 'search_b_end_year', 'search_b_end_month', 'search_b_end_day'), array('CHECK_DATE'));
@@ -600,7 +602,7 @@ class SC_Helper_Customer {
 
         if (SC_Utils_Ex::sfIsInt($array['search_buy_total_from'])
             && SC_Utils_Ex::sfIsInt($array['search_buy_total_to'])
-            && $array['search_buy_total_from'] > $array['buy_total_to']
+            && $array['search_buy_total_from'] > $array['search_buy_total_to']
         ) {
             $objErr->arrErr['search_buy_total_from'] .= '※ 購入金額の指定範囲が不正です。';
         }
