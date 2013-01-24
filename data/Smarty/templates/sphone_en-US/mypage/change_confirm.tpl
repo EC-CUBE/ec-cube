@@ -87,7 +87,7 @@
             <dt>Date of birth</dt>
             <dd>
                 <!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}-->
-                    <!--{$arrForm.year|h}-->年<!--{$arrForm.month|h}-->月<!--{$arrForm.day|h}-->日
+                    <!--{$arrForm.year|h}--> / <!--{$arrForm.month|h}--> / <!--{$arrForm.day|h}-->
                 <!--{else}-->
                     Not registered
                 <!--{/if}-->

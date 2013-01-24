@@ -28,7 +28,7 @@
             <li>
                 <a id="windowcolumn<!--{$smarty.section.data.index}-->" href="javascript:getNewsDetail(<!--{$arrNews[data].news_id}-->);">
                 <span class="news_title"><!--{$arrNews[data].news_title|h}--></span></a><br />
-                <span class="news_date"><!--{$arrNews[data].news_date_disp|date_format:"%Y年 %m月 %d日"}--></span>
+                <span class="news_date"><!--{$arrNews[data].news_date_disp|date_format:"%Y / %m / %d"}--></span>
             </li>
         <!--{/section}-->
     </ul>
@@ -79,7 +79,7 @@
 
                             //年月をセット
                             var newsDateDispArray = news.news_date_disp.split("-"); //ハイフンで年月日を分解
-                            var newsDateDisp = newsDateDispArray[0] + "年 " + newsDateDispArray[1] + "月 " + newsDateDispArray[2] + "日";
+                            var newsDateDisp = newsDateDispArray[0] + " / " + newsDateDispArray[1] + " / " + newsDateDispArray[2];
                             $($("#news_area ul.newslist li span.news_date").get(maxCnt)).text(newsDateDisp);
                         }
                     }
@@ -134,7 +134,7 @@
 
                         //年月をセット
                         //var newsDateDispArray = news.news_date_disp.split("-"); //ハイフンで年月日を分解
-                        //var newsDateDisp = newsDateDispArray[0] + "年 " + newsDateDispArray[1] + "月 " + newsDateDispArray[2] + "日";
+                        //var newsDateDisp = newsDateDispArray[0] + " / " + newsDateDispArray[1] + " / " + newsDateDispArray[2];
                         //$($("#windowcolumn dl.view_detail dt").get(maxCnt)).text(newsDateDisp);
 
                         //コメントをセット(iphone4の場合、innerHTMLの再描画が行われない為、タイマーで無理やり再描画させる)

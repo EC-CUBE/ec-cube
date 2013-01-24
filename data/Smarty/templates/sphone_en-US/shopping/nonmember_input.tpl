@@ -203,15 +203,15 @@
                 <div class="attention"><!--{$errBirth}--></div>
                 <select name="year" style="<!--{$errBirth|sfGetErrorColor}-->" class="boxShort data-role-none">
                     <!--{html_options options=$arrYear selected=$arrForm.year.value|default:''}-->
-                </select><span class="selectdate">年</span>
+                </select><span class="selectdate">Year</span>
 
                 <select name="month" style="<!--{$errBirth|sfGetErrorColor}-->" class="boxShort data-role-none">
                     <!--{html_options options=$arrMonth selected=$arrForm.month.value|default:''}-->
-                </select><span class="selectdate">月</span>
+                </select><span class="selectdate">Month</span>
 
                 <select name="day" style="<!--{$errBirth|sfGetErrorColor}-->" class="boxShort data-role-none">
                     <!--{html_options options=$arrDay selected=$arrForm.day.value|default:''}-->
-                </select><span class="selectdate">日</span>
+                </select><span class="selectdate">Day</span>
             </dd>
 
             <dt class="bg_head">
