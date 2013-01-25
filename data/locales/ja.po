@@ -75,19 +75,19 @@ msgstr "※ T_FIELDは数字で入力してください。<br />"
 msgid "t_* For T_FIELD, enter within a text length of T_LENGTH. <br />_01"
 msgstr "※ T_FIELDはT_LENGTH文字以内で入力してください。<br />"
 
-msgid "SC_CheckError_026"
+msgid "t_* Enter items in order, starting at the beginning. <br />_01"
 msgstr "※ T_FIELDは先頭の項目から順番に入力して下さい。<br />"
 
-msgid "SC_CheckError_027"
+msgid "t_* For T_FIELD, enter katakana characters. <br />_01"
 msgstr "※ T_FIELDはカタカナで入力してください。<br />"
 
-msgid "SC_CheckError_028"
+msgid "t_* For T_FIELD, enter katakana characters. <br />_02"
 msgstr "※ T_FIELDはカタカナで入力してください。<br />"
 
-msgid "SC_CheckError_029"
+msgid "t_* Enter alphanumeric characters for T_FIELD. <br />_01"
 msgstr "※ T_FIELDは英数字で入力してください。<br />"
 
-msgid "SC_CheckError_030"
+msgid "t_* Enter alphanumeric symbols for T_FIELD. <br />_01"
 msgstr "※ T_FIELDは英数記号で入力してください。<br />"
 
 msgid "SC_CheckError_031"

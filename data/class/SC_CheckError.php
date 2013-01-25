@@ -507,7 +507,7 @@ class SC_CheckError {
         }
 
         if ($error) {
-            $this->arrErr[$value[1]] = t('SC_CheckError_026', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('t_* Enter items in order, starting at the beginning. <br />_01', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -520,7 +520,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^[ァ-ヶｦ-ﾟー]+$/u", $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = t('SC_CheckError_027', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('t_* For T_FIELD, enter katakana characters. <br />_01', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -533,7 +533,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^([　 \t\r\n]|[ァ-ヶ]|[ー])+$/u", $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = t('SC_CheckError_028', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('t_* For T_FIELD, enter katakana characters. <br />_02', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -546,7 +546,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) > 0 && !ctype_alnum($this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = t('SC_CheckError_029', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('t_* Enter alphanumeric characters for T_FIELD. <br />_01', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -559,7 +559,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^[[:graph:][:space:]]+$/i", $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = t('SC_CheckError_030', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('t_* Enter alphanumeric symbols for T_FIELD. <br />_01', array('T_FIELD' => $value[0]));
         }
     }
 
