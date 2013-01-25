@@ -6123,20 +6123,20 @@ msgstr ""
 "<span class='attention'>※認証キーは<a href='T_FIELD' target='_blank'>EC-CUBE"
 "オーナーズストア</a>で取得できます。</span>"
 
-msgid "tpl_801"
+msgid "t_You can log in to <a href='T_FIELD_01T_FIELD_02T_FIELD_03'>the management screen</a>._01"
 msgstr ""
 "<a href='T_FIELD_01T_FIELD_02T_FIELD_03'>管理画面</a>にログインできます。"
 
-msgid "tpl_802"
+msgid "t_Monthly (end of month)_01"
 msgstr "月度 (末日締め)"
 
-msgid "tpl_803"
+msgid "t_Monthly (by T_FIELD)_01"
 msgstr "月度 (T_FIELD日締め)"
 
-msgid "tpl_804"
+msgid "t_ID:_01"
 msgstr "ID："
 
-msgid "tpl_805"
+msgid "t_T_FIELD:_01"
 msgstr "T_FIELD："
 
 msgid "-"
