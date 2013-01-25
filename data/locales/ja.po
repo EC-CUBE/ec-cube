@@ -11,65 +11,65 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-msgid "C_T_TAG contains the tag T_FIELD which is not allowed_01"
+msgid "c_* T_TAG contains the tag T_FIELD which is not allowed. <br />_01"
 msgstr "※ T_FIELDに許可されていないタグ T_TAG が含まれています。<br />"
 
-msgid "SC_CheckError_002"
+msgid "t_* T_FIELD is blank. <br />_01"
 msgstr "※ T_FIELDが入力されていません。<br />"
 
-msgid "SC_CheckError_003"
+msgid "t_* T_FIELD is not selected. <br />_01"
 msgstr "※ T_FIELDが選択されていません。<br />"
 
-msgid "SC_CheckError_004"
+msgid "t_* T_FIELD is blank. <br />_01"
 msgstr "※ T_FIELDが入力されていません。<br />"
 
-msgid "SC_CheckError_005"
+msgid "t_* Spaces, tabs and line breaks are not possible in T_FIELD. <br />_01"
 msgstr "※ T_FIELDにスペース、タブ、改行のみの入力はできません。<br />"
 
-msgid "SC_CheckError_006"
+msgid "t_* Do not include spaces, tabs or line breaks in T_FIELD. <br />_01"
 msgstr "※ T_FIELDにスペース、タブ、改行は含めないで下さい。<br />"
 
-msgid "SC_CheckError_007"
+msgid "t_* A numerical value that starts with 0 has been entered for T_FIELD. <br />_01"
 msgstr "※ T_FIELDに0で始まる数値が入力されています。<br />"
 
-msgid "SC_CheckError_008"
+msgid "t_* T_FIELD is not selected. <br />_01"
 msgstr "※ T_FIELDが選択されていません。<br />"
 
-msgid "SC_CheckError_009"
+msgid "t_* T_FIELD_1ST and T_FIELD_2ND do not match. <br />_01"
 msgstr "※ T_FIELD_1STとT_FIELD_2NDが一致しません。<br />"
 
-msgid "SC_CheckError_010"
+msgid "t_* The same value cannot be used for T_FIELD_1ST and T_FIELD_2ND. <br />_01"
 msgstr "※ T_FIELD_1STとT_FIELD_2NDは、同じ値を使用できません。<br />"
 
-msgid "SC_CheckError_011"
+msgid "t_* It is not possible to enter a larger value for T_FIELD_1ST than for T_FIELD_2ND. <br />_01"
 msgstr "※ T_FIELD_1STはT_FIELD_2NDより大きい値を入力できません。<br />"
 
-msgid "SC_CheckError_012"
+msgid "t_* For T_FIELD, enter T_LENGTH  characters or less. <br />_01"
 msgstr "※ T_FIELDはT_LENGTH字以下で入力してください。<br />"
 
-msgid "SC_CheckError_013_SINGLE"
-msgid_plural "SC_CheckError_013_PLURAL"
+msgid "t_* For T_FIELD, enter T_COUNT characters or more. <br />_01"
+msgid_plural "t_* For T_FIELD, input T_COUNT characters or more. <br />_01"
 msgstr[0] "※ T_FIELDはT_COUNT字以上で入力してください。<br />"
 msgstr[1] "※ T_FIELDはT_COUNT字以上で入力してください。<br />"
 
-msgid "SC_CheckError_014"
+msgid "t_* For T_FIELD, enter T_LENGTH or smaller. <br />_01"
 msgstr "※ T_FIELDはT_LENGTH以下で入力してください。<br />"
 
-msgid "SC_CheckError_015_SINGLE"
-msgid_plural "SC_CheckError_015_PLURAL"
+msgid "t_* Enter T_COUNT or higher for T_FIELD. <br />_01"
+msgid_plural "t_* Input T_COUNT or higher for T_FIELD. <br />_01"
 msgstr[0] "※ T_FIELDはT_COUNT以上で入力してください。<br />"
 msgstr[1] "※ T_FIELDはT_COUNT以上で入力してください。<br />"
 
-msgid "SC_CheckError_016"
+msgid "t_* Enter only numbers for T_FIELD. <br />_01"
 msgstr "※ T_FIELDは数字で入力してください。<br />"
 
-msgid "SC_CheckError_017"
+msgid "t_* Enter only numbers for T_FIELD. <br />_02"
 msgstr "※ T_FIELDは数字で入力してください。<br />"
 
-msgid "SC_CheckError_018"
+msgid "t_* Enter alphabetical characters for T_FIELD. <br />_01"
 msgstr "※ T_FIELDは半角英字で入力してください。<br />"
 
-msgid "SC_CheckError_019"
+msgid "t_* Enter all items for T_FIELD. <br />_01"
 msgstr "※ T_FIELDはすべての項目を入力してください。<br />"
 
 msgid "SC_CheckError_020"
@@ -83,9 +83,6 @@ msgstr "※ T_FIELDはT_LENGTH文字以内で入力してください。<br />"
 
 msgid "SC_CheckError_023"
 msgstr "※ T_FIELDが入力されていません。<br />"
-
-msgid "SC_CheckError_024"
-msgstr "※ T_FIELDはすべての項目を入力して下さい。<br />"
 
 msgid "SC_CheckError_025"
 msgstr "※ T_FIELDが入力されていません。<br />"
@@ -145,9 +142,6 @@ msgstr ""
 
 msgid "SC_CheckError_042"
 msgstr "※ T_FIELDのファイル名に日本語やスペースは使用しないで下さい。<br />"
-
-msgid "SC_CheckError_043"
-msgstr "※ T_FIELDはすべての項目を入力して下さい。<br />"
 
 msgid "SC_CheckError_044"
 msgstr "※ T_FIELDが正しくありません。<br />"

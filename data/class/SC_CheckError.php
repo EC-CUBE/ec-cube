@@ -70,7 +70,7 @@ class SC_CheckError {
         }
         $html_diff_tag_list = implode(', ', $arrDiffTag);
 
-        $this->arrErr[$value[1]] = t('C_T_TAG contains the tag T_FIELD which is not allowed_01', array('T_FIELD' => $value[0], 'T_TAG' => $html_diff_tag_list));
+        $this->arrErr[$value[1]] = t('c_* T_TAG contains the tag T_FIELD which is not allowed. <br />_01', array('T_FIELD' => $value[0], 'T_TAG' => $html_diff_tag_list));
     }
 
     /**
@@ -86,9 +86,9 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (!is_array($this->arrParam[$value[1]]) && strlen($this->arrParam[$value[1]]) == 0) {
-            $this->arrErr[$value[1]] = t('SC_CheckError_002', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('t_* T_FIELD is blank. <br />_01', array('T_FIELD' => $value[0]));
         } else if (is_array($this->arrParam[$value[1]]) && count($this->arrParam[$value[1]]) == 0) {
-            $this->arrErr[$value[1]] = t('SC_CheckError_003', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('t_* T_FIELD is not selected. <br />_01', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -105,7 +105,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[0]]) == 0) {
-            $this->arrErr[$value[0]] = t('SC_CheckError_004', array('T_FIELD' => $value[1]));
+            $this->arrErr[$value[0]] = t('t_* T_FIELD is blank. <br />_01', array('T_FIELD' => $value[1]));
         }
     }
 
@@ -122,7 +122,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) != 0 && preg_match("/^[ 　\t\r\n]+$/", $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = t('SC_CheckError_005', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('t_* Spaces, tabs and line breaks are not possible in T_FIELD. <br />_01', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -139,7 +139,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) != 0 && preg_match("/[　 \t\r\n]+/u", $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = t('SC_CheckError_006', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('t_* Do not include spaces, tabs or line breaks in T_FIELD. <br />_01', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -150,7 +150,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) != 0 && preg_match("/^[0]+[0-9]+$/", $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = t('SC_CheckError_007', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('t_* A numerical value that starts with 0 has been entered for T_FIELD. <br />_01', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -167,7 +167,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) == 0) {
-            $this->arrErr[$value[1]] = t('SC_CheckError_008', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('t_* T_FIELD is not selected. <br />_01', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -185,7 +185,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if ($this->arrParam[$value[2]] !== $this->arrParam[$value[3]]) {
-            $this->arrErr[$value[2]] = t('SC_CheckError_009', array('T_FIELD_1ST' => $value[0], 'T_FIELD_2ND' => $value[1]));
+            $this->arrErr[$value[2]] = t('t_* T_FIELD_1ST and T_FIELD_2ND do not match. <br />_01', array('T_FIELD_1ST' => $value[0], 'T_FIELD_2ND' => $value[1]));
         }
     }
 
@@ -203,7 +203,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if ($this->arrParam[$value[2]] == $this->arrParam[$value[3]]) {
-            $this->arrErr[$value[2]] = t('SC_CheckError_010', array('T_FIELD_1ST' => $value[0], 'T_FIELD_2ND' => $value[1]));
+            $this->arrErr[$value[2]] = t('t_* The same value cannot be used for T_FIELD_1ST and T_FIELD_2ND. <br />_01', array('T_FIELD_1ST' => $value[0], 'T_FIELD_2ND' => $value[1]));
         }
     }
 
@@ -221,7 +221,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if ($this->arrParam[$value[2]] != '' && $this->arrParam[$value[3]] != '' && ($this->arrParam[$value[2]] > $this->arrParam[$value[3]])) {
-            $this->arrErr[$value[2]] = t('SC_CheckError_011', array('T_FIELD_1ST' => $value[0], 'T_FIELD_2ND' => $value[1]));
+            $this->arrErr[$value[2]] = t('t_* It is not possible to enter a larger value for T_FIELD_1ST than for T_FIELD_2ND. <br />_01', array('T_FIELD_1ST' => $value[0], 'T_FIELD_2ND' => $value[1]));
         }
     }
 
@@ -239,7 +239,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if (mb_strlen($this->arrParam[$value[1]]) > $value[2]) {
-            $this->arrErr[$value[1]] = t('SC_CheckError_012', array('T_FIELD' => $value[0], 'T_LENGTH' => $value[2]));
+            $this->arrErr[$value[1]] = t('t_* For T_FIELD, enter T_LENGTH  characters or less. <br />_01', array('T_FIELD' => $value[0], 'T_LENGTH' => $value[2]));
         }
     }
 
@@ -257,7 +257,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if (mb_strlen($this->arrParam[$value[1]]) < $value[2]) {
-            $this->arrErr[$value[1]] = t_plural($value[2], 'SC_CheckError_013', 'SC_CheckError_013_PLURAL', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t_plural($value[2], 'SC_CheckError_013', 't_* For T_FIELD, input T_COUNT characters or more. <br />_01', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -275,7 +275,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if ($this->arrParam[$value[1]] > $value[2]) {
-            $this->arrErr[$value[1]] = t('SC_CheckError_014', array('T_FIELD' => $value[0], 'T_LENGTH' => $value[2]));
+            $this->arrErr[$value[1]] = t('t_* For T_FIELD, enter T_LENGTH or smaller. <br />_01', array('T_FIELD' => $value[0], 'T_LENGTH' => $value[2]));
         }
     }
 
@@ -292,7 +292,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if ($this->arrParam[$value[1]] < $value[2]) {
-            $this->arrErr[$value[1]] = t_plural($value[2], 'SC_CheckError_015_SINGLE', 'SC_CheckError_015_PLURAL', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t_plural($value[2], 't_* Enter T_COUNT or higher for T_FIELD. <br />_01', 't_* Input T_COUNT or higher for T_FIELD. <br />_01', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -309,7 +309,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if ($this->numelicCheck($this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = t('SC_CheckError_016', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('t_* Enter only numbers for T_FIELD. <br />_01', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -326,7 +326,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) > 0 && !is_numeric($this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = t('SC_CheckError_017', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('t_* Enter only numbers for T_FIELD. <br />_02', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -336,7 +336,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) > 0 && !ctype_alpha($this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = t('SC_CheckError_018', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('t_* Enter alphabetical characters for T_FIELD. <br />_01', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -371,7 +371,7 @@ class SC_CheckError {
 
         // すべての項目が満たされていない場合を判定(一部だけ入力されている状態)
         if ($cnt > 0 && $cnt < 3) {
-            $this->arrErr[$value[1]] .= t('SC_CheckError_019', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] .= t('t_* Enter all items for T_FIELD. <br />_01', array('T_FIELD' => $value[0]));
         }
 
         $total_count = 0;
@@ -445,7 +445,7 @@ class SC_CheckError {
         }
 
         if ($blank && $input) {
-            $this->arrErr[$value[1]] = t('SC_CheckError_024', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('t_* Enter all items for T_FIELD. <br />_01', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -805,7 +805,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^[[:alnum:]_\.-]+$/i", $this->arrParam[$value[1]]) || preg_match('/[\\]/' ,$this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = t('SC_CheckError_043', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('SC_CheckError_042', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -823,7 +823,7 @@ class SC_CheckError {
         if ($this->arrParam[$value[1]] > 0 || $this->arrParam[$value[2]] > 0 || $this->arrParam[$value[3]] > 0) {
             // 年月日のどれかが入力されていない。
             if (!(strlen($this->arrParam[$value[1]]) > 0 && strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0)) {
-                $this->arrErr[$value[1]] = t('SC_CheckError_024', array('T_FIELD' => $value[0]));
+                $this->arrErr[$value[1]] = t('t_* Enter all items for T_FIELD. <br />_01', array('T_FIELD' => $value[0]));
             } else if (! checkdate($this->arrParam[$value[2]], $this->arrParam[$value[3]], $this->arrParam[$value[1]])) {
                 $this->arrErr[$value[1]] = t('SC_CheckError_044', array('T_FIELD' => $value[0]));
             }
@@ -846,7 +846,7 @@ class SC_CheckError {
         if ($this->arrParam[$value[1]] > 0 || $this->arrParam[$value[2]] > 0 || $this->arrParam[$value[3]] > 0 || $this->arrParam[$value[4]] >= 0 || $this->arrParam[$value[5]] >= 0) {
             // 年月日時のどれかが入力されていない。
             if (!(strlen($this->arrParam[$value[1]]) > 0 && strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0 && strlen($this->arrParam[$value[4]]) > 0 && strlen($this->arrParam[$value[5]]) > 0)) {
-                $this->arrErr[$value[1]] = t('SC_CheckError_024', array('T_FIELD' => $value[0]));
+                $this->arrErr[$value[1]] = t('t_* Enter all items for T_FIELD. <br />_01', array('T_FIELD' => $value[0]));
             } else if (! checkdate($this->arrParam[$value[2]], $this->arrParam[$value[3]], $this->arrParam[$value[1]])) {
                 $this->arrErr[$value[1]] = t('SC_CheckError_044', array('T_FIELD' => $value[0]));
             }
@@ -866,7 +866,7 @@ class SC_CheckError {
         if ($this->arrParam[$value[1]] > 0 || $this->arrParam[$value[2]] > 0) {
             // 年月日時のどれかが入力されていない。
             if (!(strlen($this->arrParam[$value[1]]) > 0 && strlen($this->arrParam[$value[2]]) > 0)) {
-                $this->arrErr[$value[1]] = t('SC_CheckError_024', array('T_FIELD' => $value[0]));
+                $this->arrErr[$value[1]] = t('t_* Enter all items for T_FIELD. <br />_01', array('T_FIELD' => $value[0]));
             } else if (! checkdate($this->arrParam[$value[2]], 1, $this->arrParam[$value[1]])) {
                 $this->arrErr[$value[1]] = t('SC_CheckError_044', array('T_FIELD' => $value[0]));
             }
