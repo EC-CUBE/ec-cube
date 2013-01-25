@@ -28,7 +28,7 @@ define('MAX_LIFETIME', 7200);
 /** Master data cache directory */
 define('MASTER_DATA_REALDIR', DATA_REALDIR . "cache/");
 /** Update management file storage location */
-define('UPDATE_HTTP', "http://www.ec-cube.net/info/index.php");
+define('UPDATE_HTTP', "");
 /** Language code */
 define('LANG_CODE', "en-US");
 /** Text code */
@@ -381,7 +381,7 @@ define('SESSION_LIFETIME', 1800);
 /** Owners Store URL */
 define('OSTORE_URL', "http://www.ec-cube.net/");
 /** Owners Store URL */
-define('OSTORE_SSLURL', "https://www.ec-cube.net/");
+define('OSTORE_SSLURL', "");
 /** Owners Store log path */
 define('OSTORE_LOG_REALFILE', DATA_REALDIR . "logs/ownersstore.log");
 /** Favorite product registration (active: 1 inactive: 0) */

@@ -1018,7 +1018,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MODULE_DIR', '"down
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MODULE_REALDIR', 'DATA_REALDIR . MODULE_DIR', 23, 'Downloaded module storage directory');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MAX_LIFETIME', '7200', 26, 'Validity period of DB session (seconds)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MASTER_DATA_REALDIR', 'DATA_REALDIR . "cache/"', 27, 'Master data cache directory');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UPDATE_HTTP', '"http://www.ec-cube.net/info/index.php"', 28, 'Update management file storage location');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UPDATE_HTTP', '""', 28, 'Update management file storage location');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LANG_CODE', '"en-US"', 38, 'Language code');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CHAR_CODE', '"UTF-8"', 39, 'Text code');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LOCALE', '"en_US.UTF-8"', 40, 'Locale settings');
@@ -1195,7 +1195,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_SHOPPING_COM
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SESSION_KEEP_METHOD', '"useCookie"', 418, 'Session maintenance method: "useCookie"|"useRequest"');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SESSION_LIFETIME', '1800', 419, 'Session continuation time (seconds)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OSTORE_URL', '"http://www.ec-cube.net/"', 500, 'Owners Store URL');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OSTORE_SSLURL', '"https://www.ec-cube.net/"', 501, 'Owners Store URL');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OSTORE_SSLURL', '""', 501, 'Owners Store URL');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OSTORE_LOG_REALFILE', 'DATA_REALDIR . "logs/ownersstore.log"', 502, 'Owners Store log path');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OPTION_FAVORITE_PRODUCT', '1', 523, 'Favorite product registration (active: 1 inactive: 0)'); 
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('IMAGE_RENAME', 'true', 525, 'Image rename settings (product images only) (true: Rename, false: Do not rename)'); 
