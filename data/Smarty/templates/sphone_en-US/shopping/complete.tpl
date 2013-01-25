@@ -54,7 +54,7 @@
     <hr>
     <div class="shopInformation">
         <p><!--{$arrInfo.shop_name|h}--></p>
-        <p>TEL:<!--{$arrInfo.tel01}-->-<!--{$arrInfo.tel02}-->-<!--{$arrInfo.tel03}--><br />
+        <p>Phone:<!--{$arrInfo.tel01}-->-<!--{$arrInfo.tel02}-->-<!--{$arrInfo.tel03}--><br />
             E-mail:<a href="mailto:<!--{$arrInfo.email02|escape:'hex'}-->" rel="external"><!--{$arrInfo.email02|escape:'hexentity'}--></a></p>
     </div>
 </section>

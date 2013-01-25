@@ -27,7 +27,7 @@
     <h2 class="title"><!--{$tpl_title|h}--></h2>
     <div class="inner">
         <p><em>Definition of personal information</em><br />
-            Refers to information related to individual customers (hereinafter referred to as "personal information") from which it is possible to distinguish the customer, such as the customer's name, address, telephone number, etc. Includes information from which an individual can be distinguished by verifying it with other information.</p>
+            Refers to information related to individual customers (hereinafter referred to as "personal information") from which it is possible to distinguish the customer, such as the customer's name, address, phone number, etc. Includes information from which an individual can be distinguished by verifying it with other information.</p>
     </div>
 </section>
 

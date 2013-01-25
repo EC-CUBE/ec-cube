@@ -89,7 +89,7 @@
             </div><!-- /.formBox -->
 
             <ul class="btn_btm">
-                <li><a rel="external" href="javascript:fnModeSubmit('customer_addr','','');" class="btn bt_wide">Send to the selected delivery destination</a></li>
+                <li><a rel="external" href="javascript:fnModeSubmit('customer_addr','','');" class="btn bt_wide">Send to the selected address</a></li>
                 <li><a rel="external" href="<!--{$smarty.const.CART_URLPATH}-->" class="btn_back">Go back</a></li>
             </ul>
 

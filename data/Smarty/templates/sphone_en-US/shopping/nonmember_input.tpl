@@ -106,7 +106,7 @@
                     <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" class="boxLong data-role-none" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" placeholder="House number/building name" />
             </dd>
 
-            <dt>Telephone number&nbsp;<span class="attention">*</span></dt>
+            <dt>Phone number&nbsp;<span class="attention">*</span></dt>
             <dd>
                 <!--{assign var=key1 value="order_tel01"}-->
                 <!--{assign var=key2 value="order_tel02"}-->
@@ -287,7 +287,7 @@
                         placeholder="House number/building name" />
                 </dd>
 
-                <dt>Telephone number&nbsp;<span class="attention">*</span></dt>
+                <dt>Phone number&nbsp;<span class="attention">*</span></dt>
                 <dd>
                     <!--{assign var=key1 value="shipping_tel01"}-->
                     <!--{assign var=key2 value="shipping_tel02"}-->

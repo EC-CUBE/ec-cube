@@ -32,7 +32,7 @@
         <div id="historyBox">
             <p>
                 <em>Order number</em>:&nbsp;<!--{$tpl_arrOrderData.order_id}--><br />
-                <em>Date and time of purchase</em>:&nbsp;<!--{$tpl_arrOrderData.create_date|sfDispDBDate}--><br />
+                <em>Date/time of purchase</em>:&nbsp;<!--{$tpl_arrOrderData.create_date|sfDispDBDate}--><br />
                 <em>Payment method</em>:&nbsp;<!--{$arrPayment[$tpl_arrOrderData.payment_id]|h}-->
                 <!--{if $tpl_arrOrderData.deliv_time_id != ""}-->
                     <br />
@@ -132,7 +132,7 @@
         </div><!-- /.formBox -->
         <!--▲メール一覧 -->
 
-        <p><a rel="external" class="btn_more" href="./<!--{$smarty.const.DIR_INDEX_PATH}-->">Return to purchase history list</a></p>
+        <p><a rel="external" class="btn_more" href="./<!--{$smarty.const.DIR_INDEX_PATH}-->">Return</a></p>
 
     </div><!-- /.form_area -->
 
@@ -164,7 +164,7 @@
             success: function(result){
                 var maxCnt = 0;
                 $("#windowcolumn h2").text('E-mail details');
-                $("#windowcolumn a[data-rel=back]").text('Return to purchase history details');
+                $("#windowcolumn a[data-rel=back]").text('Return');
                 $($("#windowcolumn dl.view_detail dt").get(maxCnt)).text(result[0].subject);
                 $($("#windowcolumn dl.view_detail dd").get(maxCnt)).html(result[0].mail_body.replace(/\n/g,"<br />"));
                 $("#windowcolumn dl.view_detail dd").css('font-family', 'monospace');

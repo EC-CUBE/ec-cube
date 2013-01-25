@@ -416,7 +416,7 @@
     <!--▲その他おすすめ商品-->
 
     <div class="btn_area">
-        <p><a href="javascript:void(0);" class="btn_more" data-rel="back">Return to product list</a></p>
+        <p><a href="javascript:void(0);" class="btn_more" data-rel="back">Return</a></p>
     </div>
 </section>
 

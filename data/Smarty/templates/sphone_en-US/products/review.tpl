@@ -24,7 +24,7 @@
 *}-->
 
 <div id="windowarea">
-    <h2 class="title">Add comment</h2>
+    <h2 class="title">Add a comment</h2>
     <p class="windowtext">Please provide your opinions and thoughts regarding the product below.<br />
         Items marked with "<span class="attention">*</span>" are required fields.<br />
         When finished, click the "Confirm" button at the very bottom of the page.</p>

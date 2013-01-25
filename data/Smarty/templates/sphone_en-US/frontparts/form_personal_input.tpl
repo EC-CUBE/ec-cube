@@ -66,7 +66,7 @@
     <input type="text" name="<!--{$key5}-->" value="<!--{$arrForm[$key5]|h}-->" class="boxLong text data-role-none" placeholder="House number/building name" />
 </dd>
 
-<dt>Telephone number&nbsp;<span class="attention">*</span></dt>
+<dt>Phone number&nbsp;<span class="attention">*</span></dt>
 <dd>
     <!--{assign var=key1 value="`$prefix`tel01"}-->
     <!--{assign var=key2 value="`$prefix`tel02"}-->

@@ -40,7 +40,7 @@
 
         <div class="shopInformation">
             <p><!--{$arrSiteInfo.company_name|h}--></p>
-            <p>TEL:<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}--><br />
+            <p>Phone:<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}--><br />
                 E-mail:<a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->" rel="external"><!--{$arrSiteInfo.email02|escape:'hexentity'}--></a></p>
         </div>
     </div><!-- /#mycontentsarea -->

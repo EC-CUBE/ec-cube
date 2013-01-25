@@ -54,7 +54,7 @@
                 <!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}-->
             </dd>
 
-            <dt>Telephone number</dt>
+            <dt>Phone number</dt>
             <dd><!--{$arrForm.tel01|h}-->-<!--{$arrForm.tel02}-->-<!--{$arrForm.tel03}--></dd>
 
             <dt>FAX</dt>
