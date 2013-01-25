@@ -194,8 +194,8 @@
         <col width="8%" />
         <tr>
             <th><input type="checkbox" onclick="fnAllCheck(this, 'input[name^=check]')" id="allCheck" /> <label for="allCheck"><br><!--{t string="tpl_488"}--></label></th>
-            <th><!--{t string="tpl_371"}--><br>(<!--{$arrClass[$class_id1]|default_t:"tpl_730"|h}-->)</th>
-            <th><!--{t string="tpl_374"}--><br>(<!--{$arrClass[$class_id2]|default_t:"tpl_730"|h}-->)</th>
+            <th><!--{t string="tpl_371"}--><br>(<!--{$arrClass[$class_id1]|default_t:"t_Not selected_01"|h}-->)</th>
+            <th><!--{t string="tpl_374"}--><br>(<!--{$arrClass[$class_id2]|default_t:"t_Not selected_01"|h}-->)</th>
             <th><!--{t string="tpl_192"}--></th>
             <th><!--{t string="tpl_557_1" escape="none"}--></th>
             <th><!--{t string="tpl_603" escape="none" T_FIELD=$smarty.const.NORMAL_PRICE_TITLE}--></th>
