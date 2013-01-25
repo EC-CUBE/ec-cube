@@ -110,7 +110,16 @@
     }
 	
 	$(function(){
-		
+		var dateFormat = $.datepicker.regional['<!--{$smarty.const.LANG_CODE}-->'].dateFormat;
+
+        <!--{if $arrForm.search_sbirthyear.value != '' && $arrForm.search_sbirthmonth.value != '' && $arrForm.search_sbirthday.value != ''}-->
+        var search_sbirthyear  = '<!--{$arrForm.search_sbirthyear.value|h}-->';
+        var search_sbirthmonth = '<!--{$arrForm.search_sbirthmonth.value|h}-->';
+        var search_sbirthday   = '<!--{$arrForm.search_sbirthday.value|h}-->';
+        var search_sbirth_ymd = $.datepicker.formatDate(dateFormat, new Date(search_sbirthyear, search_sbirthmonth - 1, search_sbirthday));
+        $("#datepickersearch_sbirth").val(search_sbirth_ymd);
+        <!--{/if}-->
+
 		$( "#datepickersearch_sbirth" ).datepicker({
 		beforeShowDay: function(date) {
 			if(date.getDay() == 0) {
@@ -123,18 +132,46 @@
 		},changeMonth: 'true'
 		,changeYear: 'true'
 		,onSelect: function(dateText, inst){
-			setDatesearch_sbirth(dateText);
+            var year  = inst.selectedYear;
+            var month = inst.selectedMonth + 1;
+            var day   = inst.selectedDay;
+            setDatesearch_sbirth(year + '/' + month + '/' + day);
 		},
 		showButtonPanel: true,
 		beforeShow: showAdditionalButtonsearch_sbirth,       
 		onChangeMonthYear: showAdditionalButtonsearch_sbirth
 		});
 		
-		$("#datepickersearch_sbirth").blur( function() {
-			var dateText = $(this).val();
-			setDatesearch_sbirth(dateText);
+		$("#datepickersearch_sbirth").change( function() {
+            var dateText   = $(this).val();
+            var dateFormat = $.datepicker.regional['<!--{$smarty.const.LANG_CODE}-->'].dateFormat;
+            // console.log(dateText);
+            // console.log(dateFormat);
+            var date;
+            var year  = '';
+            var month = '';
+            var day   = '';
+            try {
+                date = $.datepicker.parseDate(dateFormat, dateText);
+                year  = date.getFullYear();
+                month = date.getMonth() + 1;
+                day   = date.getDay();
+            } catch (e) {
+                // console.log(e);
+                // clear date text
+                $(this).val('');
+            }
+            setDatesearch_sbirth(year + '/' + month + '/' + day);
 		});
-		
+
+        <!--{if $arrForm.search_ebirthyear.value != '' && $arrForm.search_ebirthmonth.value != '' && $arrForm.search_ebirthday.value != ''}-->
+        var search_ebirthyear  = '<!--{$arrForm.search_ebirthyear.value|h}-->';
+        var search_ebirthmonth = '<!--{$arrForm.search_ebirthmonth.value|h}-->';
+        var search_ebirthday   = '<!--{$arrForm.search_ebirthday.value|h}-->';
+        var search_ebirth_ymd = $.datepicker.formatDate(dateFormat, new Date(search_ebirthyear, search_ebirthmonth - 1, search_ebirthday));
+        $("#datepickersearch_ebirth").val(search_ebirth_ymd);
+        <!--{/if}-->
+
 		$( "#datepickersearch_ebirth" ).datepicker({
 		beforeShowDay: function(date) {
 			if(date.getDay() == 0) {
@@ -147,19 +184,46 @@
 		},changeMonth: 'true'
 		,changeYear: 'true'
 		,onSelect: function(dateText, inst){
-			setDatesearch_ebirth(dateText);
+            var year  = inst.selectedYear;
+            var month = inst.selectedMonth + 1;
+            var day   = inst.selectedDay;
+            setDatesearch_ebirth(year + '/' + month + '/' + day);
 		},
 		showButtonPanel: true,
 		beforeShow: showAdditionalButtonsearch_ebirth,       
 		onChangeMonthYear: showAdditionalButtonsearch_ebirth
 		});
 		
-		$("#datepickersearch_ebirth").blur( function() {
-			var dateText = $(this).val();
-			setDatesearch_ebirth(dateText);
+		$("#datepickersearch_ebirth").change( function() {
+            var dateText   = $(this).val();
+            var dateFormat = $.datepicker.regional['<!--{$smarty.const.LANG_CODE}-->'].dateFormat;
+            // console.log(dateText);
+            // console.log(dateFormat);
+            var date;
+            var year  = '';
+            var month = '';
+            var day   = '';
+            try {
+                date = $.datepicker.parseDate(dateFormat, dateText);
+                year  = date.getFullYear();
+                month = date.getMonth() + 1;
+                day   = date.getDay();
+            } catch (e) {
+                // console.log(e);
+                // clear date text
+                $(this).val('');
+            }
+            setDatesearch_ebirth(year + '/' + month + '/' + day);
 		});
 		
-		
+        <!--{if $arrForm.search_sorderyear.value != '' && $arrForm.search_sordermonth.value != '' && $arrForm.search_sorderday.value != ''}-->
+        var search_sorderyear  = '<!--{$arrForm.search_sorderyear.value|h}-->';
+        var search_sordermonth = '<!--{$arrForm.search_sordermonth.value|h}-->';
+        var search_sorderday   = '<!--{$arrForm.search_sorderday.value|h}-->';
+        var search_sorder_ymd = $.datepicker.formatDate(dateFormat, new Date(search_sorderyear, search_sordermonth - 1, search_sorderday));
+        $("#datepickersearch_sorder").val(search_sorder_ymd);
+        <!--{/if}-->
+        
 		$( "#datepickersearch_sorder" ).datepicker({
 		beforeShowDay: function(date) {
 			if(date.getDay() == 0) {
@@ -172,18 +236,46 @@
 		},changeMonth: 'true'
 		,changeYear: 'true'
 		,onSelect: function(dateText, inst){
-			setDatesearch_sorder(dateText);
+            var year  = inst.selectedYear;
+            var month = inst.selectedMonth + 1;
+            var day   = inst.selectedDay;
+            setDatesearch_sorder(year + '/' + month + '/' + day);
 		},
 		showButtonPanel: true,
 		beforeShow: showAdditionalButtonsearch_sorder,       
 		onChangeMonthYear: showAdditionalButtonsearch_sorder
 		});
 		
-		$("#datepickersearch_sorder").blur( function() {
-			var dateText = $(this).val();
-			setDatesearch_sorder(dateText);
+		$("#datepickersearch_sorder").change( function() {
+            var dateText   = $(this).val();
+            var dateFormat = $.datepicker.regional['<!--{$smarty.const.LANG_CODE}-->'].dateFormat;
+            // console.log(dateText);
+            // console.log(dateFormat);
+            var date;
+            var year  = '';
+            var month = '';
+            var day   = '';
+            try {
+                date = $.datepicker.parseDate(dateFormat, dateText);
+                year  = date.getFullYear();
+                month = date.getMonth() + 1;
+                day   = date.getDay();
+            } catch (e) {
+                // console.log(e);
+                // clear date text
+                $(this).val('');
+            }
+            setDatesearch_sorder(year + '/' + month + '/' + day);
 		});
-		
+
+        <!--{if $arrForm.search_eorderyear.value != '' && $arrForm.search_eordermonth.value != '' && $arrForm.search_eorderday.value != ''}-->
+        var search_eorderyear  = '<!--{$arrForm.search_eorderyear.value|h}-->';
+        var search_eordermonth = '<!--{$arrForm.search_eordermonth.value|h}-->';
+        var search_eorderday   = '<!--{$arrForm.search_eorderday.value|h}-->';
+        var search_eorder_ymd = $.datepicker.formatDate(dateFormat, new Date(search_eorderyear, search_eordermonth - 1, search_eorderday));
+        $("#datepickersearch_eorder").val(search_eorder_ymd);
+        <!--{/if}-->
+        
 		$( "#datepickersearch_eorder" ).datepicker({
 		beforeShowDay: function(date) {
 			if(date.getDay() == 0) {
@@ -196,19 +288,45 @@
 		},changeMonth: 'true'
 		,changeYear: 'true'
 		,onSelect: function(dateText, inst){
-			setDatesearch_eorder(dateText);
+            var year  = inst.selectedYear;
+            var month = inst.selectedMonth + 1;
+            var day   = inst.selectedDay;
+            setDatesearch_eorder(year + '/' + month + '/' + day);
 		},
 		showButtonPanel: true,
 		beforeShow: showAdditionalButtonsearch_eorder,       
 		onChangeMonthYear: showAdditionalButtonsearch_eorder
 		});
 		
-		$("#datepickersearch_eorder").blur( function() {
-			var dateText = $(this).val();
-			setDatesearch_eorder(dateText);
+		$("#datepickersearch_eorder").change( function() {
+            var dateText   = $(this).val();
+            var dateFormat = $.datepicker.regional['<!--{$smarty.const.LANG_CODE}-->'].dateFormat;
+            // console.log(dateText);
+            // console.log(dateFormat);
+            var date;
+            var year  = '';
+            var month = '';
+            var day   = '';
+            try {
+                date = $.datepicker.parseDate(dateFormat, dateText);
+                year  = date.getFullYear();
+                month = date.getMonth() + 1;
+                day   = date.getDay();
+            } catch (e) {
+                // console.log(e);
+                // clear date text
+                $(this).val('');
+            }
+            setDatesearch_eorder(year + '/' + month + '/' + day);
 		});
 		
-		
+        <!--{if $arrForm.search_supdateyear.value != '' && $arrForm.search_supdatemonth.value != '' && $arrForm.search_supdateday.value != ''}-->
+        var search_supdateyear  = '<!--{$arrForm.search_supdateyear.value|h}-->';
+        var search_supdatemonth = '<!--{$arrForm.search_supdatemonth.value|h}-->';
+        var search_supdateday   = '<!--{$arrForm.search_supdateday.value|h}-->';
+        var search_supdate_ymd = $.datepicker.formatDate(dateFormat, new Date(search_supdateyear, search_supdatemonth - 1, search_supdateday));
+        $("#datepickersearch_supdate").val(search_supdate_ymd);
+        <!--{/if}-->
 		$( "#datepickersearch_supdate" ).datepicker({
 		beforeShowDay: function(date) {
 			if(date.getDay() == 0) {
@@ -221,18 +339,45 @@
 		},changeMonth: 'true'
 		,changeYear: 'true'
 		,onSelect: function(dateText, inst){
-			setDatesearch_supdate(dateText);
+            var year  = inst.selectedYear;
+            var month = inst.selectedMonth + 1;
+            var day   = inst.selectedDay;
+            setDatesearch_supdate(year + '/' + month + '/' + day);
 		},
 		showButtonPanel: true,
 		beforeShow: showAdditionalButtonsearch_supdate,       
 		onChangeMonthYear: showAdditionalButtonsearch_supdate
 		});
 		
-		$("#datepickersearch_supdate").blur( function() {
-			var dateText = $(this).val();
-			setDatesearch_supdate(dateText);
+		$("#datepickersearch_supdate").change( function() {
+            var dateText   = $(this).val();
+            var dateFormat = $.datepicker.regional['<!--{$smarty.const.LANG_CODE}-->'].dateFormat;
+            // console.log(dateText);
+            // console.log(dateFormat);
+            var date;
+            var year  = '';
+            var month = '';
+            var day   = '';
+            try {
+                date = $.datepicker.parseDate(dateFormat, dateText);
+                year  = date.getFullYear();
+                month = date.getMonth() + 1;
+                day   = date.getDay();
+            } catch (e) {
+                // console.log(e);
+                // clear date text
+                $(this).val('');
+            }
+            setDatesearch_supdate(year + '/' + month + '/' + day);
 		});
-		
+
+        <!--{if $arrForm.search_eupdateyear.value != '' && $arrForm.search_eupdatemonth.value != '' && $arrForm.search_eupdateday.value != ''}-->
+        var search_eupdateyear  = '<!--{$arrForm.search_eupdateyear.value|h}-->';
+        var search_eupdatemonth = '<!--{$arrForm.search_eupdatemonth.value|h}-->';
+        var search_eupdateday   = '<!--{$arrForm.search_eupdateday.value|h}-->';
+        var search_eupdate_ymd = $.datepicker.formatDate(dateFormat, new Date(search_eupdateyear, search_eupdatemonth - 1, search_eupdateday));
+        $("#datepickersearch_eupdate").val(search_eupdate_ymd);
+        <!--{/if}-->
 		$( "#datepickersearch_eupdate" ).datepicker({
 		beforeShowDay: function(date) {
 			if(date.getDay() == 0) {
@@ -245,16 +390,36 @@
 		},changeMonth: 'true'
 		,changeYear: 'true'
 		,onSelect: function(dateText, inst){
-			setDatesearch_eupdate(dateText);
+            var year  = inst.selectedYear;
+            var month = inst.selectedMonth + 1;
+            var day   = inst.selectedDay;
+            setDatesearch_eupdate(year + '/' + month + '/' + day);
 		},
 		showButtonPanel: true,
 		beforeShow: showAdditionalButtonsearch_eupdate,       
 		onChangeMonthYear: showAdditionalButtonsearch_eupdate
 		});
 		
-		$("#datepickersearch_eupdate").blur( function() {
-			var dateText = $(this).val();
-			setDatesearch_eupdate(dateText);
+		$("#datepickersearch_eupdate").change( function() {
+            var dateText   = $(this).val();
+            var dateFormat = $.datepicker.regional['<!--{$smarty.const.LANG_CODE}-->'].dateFormat;
+            // console.log(dateText);
+            // console.log(dateFormat);
+            var date;
+            var year  = '';
+            var month = '';
+            var day   = '';
+            try {
+                date = $.datepicker.parseDate(dateFormat, dateText);
+                year  = date.getFullYear();
+                month = date.getMonth() + 1;
+                day   = date.getDay();
+            } catch (e) {
+                // console.log(e);
+                // clear date text
+                $(this).val('');
+            }
+            setDatesearch_eupdate(year + '/' + month + '/' + day);
 		});
 	
 	});
@@ -463,15 +628,15 @@
             <span class="attention"><!--{$arrErr.search_sbirthyear}--></span>
             <span class="attention"><!--{$arrErr.search_ebirthyear}--></span>
             <!--{/if}-->
-            <input id="datepickersearch_sbirth" type="text" value="<!--{if $arrForm.search_sbirthyear.value != "" && $arrForm.search_sbirthmonth.value != "" && $arrForm.search_sbirthday.value != ""}--><!--{$arrForm.search_sbirthyear.value|h}-->/<!--{$arrForm.search_sbirthmonth.value|h|string_format:'%02d'}-->/<!--{$arrForm.search_sbirthday.value|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.search_sbirthyear != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
-            <input type="hidden" name="search_sbirthyear" value="<!--{$arrForm.search_sbirthyear.value}-->" />
-            <input type="hidden" name="search_sbirthmonth" value="<!--{$arrForm.search_sbirthmonth.value}-->" />
-            <input type="hidden" name="search_sbirthday" value="<!--{$arrForm.search_sbirthday.value}-->" />
+            <input id="datepickersearch_sbirth" type="text" value="" <!--{if $arrErr.search_sbirthyear != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+            <input type="hidden" name="search_sbirthyear" value="<!--{$arrForm.search_sbirthyear.value|h}-->" />
+            <input type="hidden" name="search_sbirthmonth" value="<!--{$arrForm.search_sbirthmonth.value|h}-->" />
+            <input type="hidden" name="search_sbirthday" value="<!--{$arrForm.search_sbirthday.value|h}-->" />
             <!--{t string="-"}-->
-            <input id="datepickersearch_ebirth" type="text" value="<!--{if $arrForm.search_ebirthyear.value != "" && $arrForm.search_ebirthmonth.value != "" && $arrForm.search_ebirthday.value != ""}--><!--{$arrForm.search_ebirthyear.value|h}-->/<!--{$arrForm.search_ebirthmonth.value|h|string_format:'%02d'}-->/<!--{$arrForm.search_ebirthday.value|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.search_ebirthyear != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
-            <input type="hidden" name="search_ebirthyear" value="<!--{$arrForm.search_ebirthyear.value}-->" />
-            <input type="hidden" name="search_ebirthmonth" value="<!--{$arrForm.search_ebirthmonth.value}-->" />
-            <input type="hidden" name="search_ebirthday" value="<!--{$arrForm.search_ebirthday.value}-->" />
+            <input id="datepickersearch_ebirth" type="text" value="" <!--{if $arrErr.search_ebirthyear != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+            <input type="hidden" name="search_ebirthyear" value="<!--{$arrForm.search_ebirthyear.value|h}-->" />
+            <input type="hidden" name="search_ebirthmonth" value="<!--{$arrForm.search_ebirthmonth.value|h}-->" />
+            <input type="hidden" name="search_ebirthday" value="<!--{$arrForm.search_ebirthday.value|h}-->" />
             </td>
         </tr>
         <tr>
@@ -497,15 +662,15 @@
             <span class="attention"><!--{$arrErr.search_sorderyear}--></span>
             <span class="attention"><!--{$arrErr.search_eorderyear}--></span>
             <!--{/if}-->
-            <input id="datepickersearch_sorder" type="text" value="<!--{if $arrForm.search_sorderyear.value != "" && $arrForm.search_sordermonth.value != "" && $arrForm.search_sorderday.value != ""}--><!--{$arrForm.search_sorderyear.value|h}-->/<!--{$arrForm.search_sordermonth.value|h|string_format:'%02d'}-->/<!--{$arrForm.search_sorderday.value|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.search_sorderyear != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
-            <input type="hidden" name="search_sorderyear" value="<!--{$arrForm.search_sorderyear.value}-->" />
-            <input type="hidden" name="search_sordermonth" value="<!--{$arrForm.search_sordermonth.value}-->" />
-            <input type="hidden" name="search_sorderday" value="<!--{$arrForm.search_sorderday.value}-->" />
+            <input id="datepickersearch_sorder" type="text" value="" <!--{if $arrErr.search_sorderyear != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+            <input type="hidden" name="search_sorderyear" value="<!--{$arrForm.search_sorderyear.value|h}-->" />
+            <input type="hidden" name="search_sordermonth" value="<!--{$arrForm.search_sordermonth.value|h}-->" />
+            <input type="hidden" name="search_sorderday" value="<!--{$arrForm.search_sorderday.value|h}-->" />
             <!--{t string="-"}-->
-            <input id="datepickersearch_eorder" type="text" value="<!--{if $arrForm.search_eorderyear.value != "" && $arrForm.search_eordermonth.value != "" && $arrForm.search_eorderday.value != ""}--><!--{$arrForm.search_eorderyear.value|h}-->/<!--{$arrForm.search_eordermonth.value|h|string_format:'%02d'}-->/<!--{$arrForm.search_eorderday.value|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.search_eorderyear != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
-            <input type="hidden" name="search_eorderyear" value="<!--{$arrForm.search_eorderyear.value}-->" />
-            <input type="hidden" name="search_eordermonth" value="<!--{$arrForm.search_eordermonth.value}-->" />
-            <input type="hidden" name="search_eorderday" value="<!--{$arrForm.search_eorderday.value}-->" />
+            <input id="datepickersearch_eorder" type="text" value="" <!--{if $arrErr.search_eorderyear != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+            <input type="hidden" name="search_eorderyear" value="<!--{$arrForm.search_eorderyear.value|h}-->" />
+            <input type="hidden" name="search_eordermonth" value="<!--{$arrForm.search_eordermonth.value|h}-->" />
+            <input type="hidden" name="search_eorderday" value="<!--{$arrForm.search_eorderday.value|h}-->" />
             </td>
         </tr>
         <tr>
@@ -515,15 +680,15 @@
             <span class="attention"><!--{$arrErr.search_supdateyear}--></span>
             <span class="attention"><!--{$arrErr.search_eupdateyear}--></span>
             <!--{/if}-->
-            <input id="datepickersearch_supdate" type="text" value="<!--{if $arrForm.search_supdateyear.value != "" && $arrForm.search_supdatemonth.value != "" && $arrForm.search_supdateday.value != ""}--><!--{$arrForm.search_supdateyear.value|h}-->/<!--{$arrForm.search_supdatemonth.value|h|string_format:'%02d'}-->/<!--{$arrForm.search_supdateday.value|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.search_supdateyear != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
-            <input type="hidden" name="search_supdateyear" value="<!--{$arrForm.search_supdateyear.value}-->" />
-            <input type="hidden" name="search_supdatemonth" value="<!--{$arrForm.search_supdatemonth.value}-->" />
-            <input type="hidden" name="search_supdateday" value="<!--{$arrForm.search_supdateday.value}-->" />
+            <input id="datepickersearch_supdate" type="text" value="" <!--{if $arrErr.search_supdateyear != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+            <input type="hidden" name="search_supdateyear" value="<!--{$arrForm.search_supdateyear.value|h}-->" />
+            <input type="hidden" name="search_supdatemonth" value="<!--{$arrForm.search_supdatemonth.value|h}-->" />
+            <input type="hidden" name="search_supdateday" value="<!--{$arrForm.search_supdateday.value|h}-->" />
             <!--{t string="-"}-->
-            <input id="datepickersearch_eupdate" type="text" value="<!--{if $arrForm.search_eupdateyear.value != "" && $arrForm.search_eupdatemonth.value != "" && $arrForm.search_eupdateday.value != ""}--><!--{$arrForm.search_eupdateyear.value|h}-->/<!--{$arrForm.search_eupdatemonth.value|h|string_format:'%02d'}-->/<!--{$arrForm.search_eupdateday.value|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr.search_eupdateyear != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
-            <input type="hidden" name="search_eupdateyear" value="<!--{$arrForm.search_eupdateyear.value}-->" />
-            <input type="hidden" name="search_eupdatemonth" value="<!--{$arrForm.search_eupdatemonth.value}-->" />
-            <input type="hidden" name="search_eupdateday" value="<!--{$arrForm.search_eupdateday.value}-->" />
+            <input id="datepickersearch_eupdate" type="text" value="" <!--{if $arrErr.search_eupdateyear != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+            <input type="hidden" name="search_eupdateyear" value="<!--{$arrForm.search_eupdateyear.value|h}-->" />
+            <input type="hidden" name="search_eupdatemonth" value="<!--{$arrForm.search_eupdatemonth.value|h}-->" />
+            <input type="hidden" name="search_eupdateday" value="<!--{$arrForm.search_eupdateday.value|h}-->" />
             </td>
         </tr>
         <tr>
