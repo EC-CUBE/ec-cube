@@ -41,7 +41,7 @@
             <div class="btn_area">
                 <ul>
                     <li>
-                        <a class="bt02" href="<!--{$smarty.const.TOP_URLPATH}-->">Top of page</a>
+                        <a class="bt02" href="<!--{$smarty.const.TOP_URLPATH}-->">Home</a>
                     </li>
                 </ul>
             </div>
