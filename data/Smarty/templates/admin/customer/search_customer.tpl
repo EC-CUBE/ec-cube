@@ -84,7 +84,7 @@ function func_submit(customer_id){
         <tr>
             <th><!--{t string="tpl_207"}--></th>
             <th><!--{t string="tpl_208"}--></th>
-            <th><!--{t string="tpl_037"}--></th>
+            <th><!--{t string="tpl_Phone Number_01"}--></th>
             <th><!--{t string="tpl_196"}--></th>
         </tr>
         <!--{section name=cnt loop=$arrCustomer}-->

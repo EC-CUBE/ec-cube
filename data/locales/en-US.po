@@ -3577,7 +3577,7 @@ msgstr "T_FIELD01T_FIELD02: Copy failure"
 msgid "GC_Utils_001"
 msgstr "A method for upward compatibility was used."
 
-msgid "t_Delivery company_01"
+msgid "tpl_Delivery company_01"
 msgstr "Delivery company"
 
 msgid "tpl_Name_01"
@@ -3666,87 +3666,87 @@ msgstr ""
 "Compensating holidays are not automatically set. Set the dates for "
 "compensating holidays."
 
-msgid "tpl_026"
+msgid "tpl_being edited_01"
 msgstr "being edited"
 
-msgid "tpl_027"
+msgid "tpl_Basic information_01"
 msgstr "Basic information"
 
-msgid "tpl_028"
+msgid "tpl_Company name_01"
 msgstr "Company name"
 
 msgid "tpl_029"
 msgstr "会社名(フリガナ)"
 
-msgid "tpl_030_1"
+msgid "tpl_Store name<span class='attention'> *</span>_01"
 msgstr "Store name<span class='attention'> *</span>"
 
 msgid "tpl_031"
 msgstr "店名(フリガナ)"
 
-msgid "tpl_032"
+msgid "tpl_Store name (in English)_01"
 msgstr "Store name (in English)"
 
-msgid "tpl_033"
+msgid "tpl_Postal code_01"
 msgstr "Postal code"
 
-msgid "tpl_033_1"
+msgid "tpl_Postal code<span class='attention'> *</span>_01"
 msgstr "Postal code<span class='attention'> *</span>"
 
-msgid "tpl_034"
+msgid "tpl_Location finder_01"
 msgstr "Location finder"
 
-msgid "tpl_035"
+msgid "tpl_SHOP address<span class='attention'> *</span>_01"
 msgstr "SHOP address<span class='attention'> *</span>"
 
-msgid "tpl_036"
+msgid "tpl_Select a prefecture_01"
 msgstr "Select a prefecture"
 
-msgid "tpl_037"
+msgid "tpl_Phone Number_01"
 msgstr "Phone Number"
 
-msgid "tpl_037_1"
+msgid "tpl_Phone Number<span class='attention'> *</span>_01"
 msgstr "Phone Number<span class='attention'> *</span>"
 
-msgid "tpl_038"
+msgid "tpl_FAX_01"
 msgstr "FAX"
 
-msgid "tpl_039"
+msgid "tpl_Store business hours_01"
 msgstr "Store business hours"
 
-msgid "tpl_040"
+msgid "tpl_Product order receipt e-mail address<span class='attention'> *</span>_01"
 msgstr "Product order receipt e-mail address<span class='attention'> *</span>"
 
-msgid "tpl_041"
+msgid "tpl_E-mail address for receiving inquiries<span class='attention'> *</span>_01"
 msgstr ""
 "E-mail address for receiving inquiries<span class='attention'> *</span>"
 
-msgid "tpl_042"
+msgid "tpl_E-mail address of sender<span class='attention'> *</span>_01"
 msgstr "E-mail address of sender<span class='attention'> *</span>"
 
-msgid "tpl_043"
+msgid "tpl_E-mail address for receiving sending errors<span class='attention'> *</span>_01"
 msgstr ""
 "E-mail address for receiving sending errors<span class='attention'> *</span>"
 
-msgid "tpl_044"
+msgid "tpl_Available products_01"
 msgstr "Available products"
 
-msgid "tpl_045"
+msgid "tpl_Message_01"
 msgstr "Message"
 
-msgid "tpl_046"
+msgid "tpl_Regular holiday settings_01"
 msgstr "Regular holiday settings"
 
-msgid "tpl_047"
+msgid "tpl_Regular holiday_01"
 msgstr "Regular holiday"
 
-msgid "tpl_048"
+msgid "tpl_SHOP function_01"
 msgstr "SHOP function"
 
-msgid "tpl_049"
+msgid "tpl_Consumption sales tax rate<span class='attention'> *</span>_01"
 msgstr "Consumption sales tax rate<span class='attention'> *</span>"
 
-msgid "tpl_050"
+msgid "tpl_Taxation rules<span class='attention'> *</span>_01"
 msgstr "Taxation rules<span class='attention'> *</span>"
 
 msgid "tpl_051"

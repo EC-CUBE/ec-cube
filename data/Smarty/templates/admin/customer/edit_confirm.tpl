@@ -72,7 +72,7 @@ function func_return(){
                 <td><!--{t string="tpl_240" T_FIELD1=$arrForm.name01|h T_FIELD2=$arrForm.name02|h}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_033"}--></th>
+                <th><!--{t string="tpl_Postal code_01"}--></th>
                 <!--{* <td><!--{t string="tpl_106"}--> <!--{$arrForm.zip01|h}--> - <!--{$arrForm.zip02|h}--></td> *}-->
                 <td><!--{t string="tpl_106"}--> <!--{$arrForm.zipcode|h}--></td>
             </tr>
@@ -93,7 +93,7 @@ function func_return(){
                 <td><!--{$arrForm.tel01|h}--> - <!--{$arrForm.tel02|h}--> - <!--{$arrForm.tel03|h}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_038"}--></th>
+                <th><!--{t string="tpl_FAX_01"}--></th>
                 <td><!--{if strlen($arrForm.fax01) > 0}--><!--{$arrForm.fax01|h}--> - <!--{$arrForm.fax02|h}--> - <!--{$arrForm.fax03|h}--><!--{else}--><!--{t string="tpl_242"}--><!--{/if}--></td>
             </tr>
             <tr>

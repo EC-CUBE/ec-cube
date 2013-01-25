@@ -170,7 +170,7 @@ $(function(){
                 <!--{if $tpl_holiday_id != $arrHoliday[cnt].holiday_id}-->
                 <a href="?" onclick="fnModeSubmit('pre_edit', 'holiday_id', <!--{$arrHoliday[cnt].holiday_id}-->); return false;"><!--{t string="tpl_Edit_01"}--></a>
                 <!--{else}-->
-                <!--{t string="tpl_026"}-->
+                <!--{t string="tpl_being edited_01"}-->
                 <!--{/if}-->
             </td>
             <td class="center">

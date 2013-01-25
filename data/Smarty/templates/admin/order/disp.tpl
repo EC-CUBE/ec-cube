@@ -76,7 +76,7 @@ self.moveTo(20,20);self.focus();
             <td><!--{$arrForm.order_email.value|h}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_037"}--></th>
+            <th><!--{t string="tpl_Phone Number_01"}--></th>
             <td><!--{$arrForm.order_tel01.value|h}--> - <!--{$arrForm.order_tel02.value|h}--> - <!--{$arrForm.order_tel03.value|h}--></td>
         </tr>
         <tr>
@@ -238,7 +238,7 @@ self.moveTo(20,20);self.focus();
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_037"}--></th>
+                <th><!--{t string="tpl_Phone Number_01"}--></th>
                 <td>
                     <!--{assign var=key1 value="shipping_tel01"}-->
                     <!--{assign var=key2 value="shipping_tel02"}-->
@@ -298,7 +298,7 @@ self.moveTo(20,20);self.focus();
         <a name="deliv"></a>
         <table class="form">
             <tr>
-                <th><!--{t string="tpl_001"}--></th>
+                <th><!--{t string="tpl_Delivery company_01"}--></th>
                 <td>
                     <!--{$arrDeliv[$arrForm.deliv_id.value]|h}-->
                 </td>

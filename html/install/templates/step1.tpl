@@ -56,7 +56,7 @@ $(function() {
             <col width="30%" />
             <col width="70%" />
             <tr>
-                <th><!--{t string="tpl_030_1" escape="none"}--></th>
+                <th><!--{t string="tpl_Store name<span class='attention'> *</span>_01" escape="none"}--></th>
                 <td>
                 <!--{assign var=key value="shop_name"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>

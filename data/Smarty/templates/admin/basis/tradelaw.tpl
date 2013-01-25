@@ -48,7 +48,7 @@
             <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$arrForm[$key].length}--></span></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_033_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Postal code<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
             <!--{* <!--{assign var=key1 value="law_zip01"}--> *}-->
             <!--{* <!--{assign var=key2 value="law_zip02"}--> *}-->
@@ -69,7 +69,7 @@
             <input type="text" name="<!--{$arrForm[$key1].keyname}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->"    size="6" class="box6" />
             -
             <input type="text"    name="<!--{$arrForm[$key2].keyname}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"    size="6" class="box6" />
-            <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'law_zip01', 'law_zip02', 'law_pref', 'law_addr01'); return false;"><!--{t string="tpl_034"}--></a>
+            <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'law_zip01', 'law_zip02', 'law_pref', 'law_addr01'); return false;"><!--{t string="tpl_Location finder_01"}--></a>
             *}-->
             <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"  size="15" class="box10" />
             </td>
@@ -83,7 +83,7 @@
                     <!--{/if}-->
                     <!--{*
                     <select class="top" name="<!--{$arrForm[$key].keyname}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-                    <option value="" selected="selected"><!--{t string="tpl_036"}--></option>
+                    <option value="" selected="selected"><!--{t string="tpl_Select a prefecture_01"}--></option>
                     <!--{html_options options=$arrPref selected=$arrForm[$key].value}-->
                     </select><br />
                     *}-->
@@ -104,7 +104,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_037_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Phone Number<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
                 <!--{assign var=key1 value="law_tel01"}-->
                 <!--{assign var=key2 value="law_tel02"}-->
@@ -120,7 +120,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_038"}--></th>
+            <th><!--{t string="tpl_FAX_01"}--></th>
             <td>
                 <!--{assign var=key1 value="law_fax01"}-->
                 <!--{assign var=key2 value="law_fax02"}-->

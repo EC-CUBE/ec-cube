@@ -48,7 +48,7 @@
         <col width="10%" />
         <col width="15%" />
         <tr>
-            <th><!--{t string="t_Delivery company_01"}--></th>
+            <th><!--{t string="tpl_Delivery company_01"}--></th>
             <th><!--{t string="tpl_Name_01"}--></th>
             <th><!--{t string="tpl_Edit_01"}--></th>
             <th><!--{t string="tpl_Remove_01"}--></th>

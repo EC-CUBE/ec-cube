@@ -3540,8 +3540,8 @@ msgstr "T_FIELD01T_FIELD02：コピー失敗"
 msgid "GC_Utils_001"
 msgstr "前方互換用メソッドが使用されました。"
 
-msgid "tpl_001"
-msgstr "t_Delivery company_01"
+msgid "tpl_Delivery company_01"
+msgstr "配送業者"
 
 msgid "tpl_Name_01"
 msgstr "名称"
@@ -3627,85 +3627,85 @@ msgstr "日付<span class='attention'> *</span>"
 msgid "tpl_Compensating holidays are not automatically set. Set the dates for compensating holidays._01"
 msgstr "振替休日は自動設定されないので、振替え先の日付を設定してください。"
 
-msgid "tpl_026"
+msgid "tpl_being edited_01"
 msgstr "編集中"
 
-msgid "tpl_027"
+msgid "tpl_Basic information_01"
 msgstr "基本情報"
 
-msgid "tpl_028"
+msgid "tpl_Company name_01"
 msgstr "会社名"
 
 msgid "tpl_029"
 msgstr "会社名(フリガナ)"
 
-msgid "tpl_030_1"
+msgid "tpl_Store name<span class='attention'> *</span>_01"
 msgstr "店名<span class='attention'> *</span>"
 
 msgid "tpl_031"
 msgstr "店名(フリガナ)"
 
-msgid "tpl_032"
+msgid "tpl_Store name (in English)_01"
 msgstr "店名(英語表記)"
 
-msgid "tpl_033"
+msgid "tpl_Postal code_01"
 msgstr "郵便番号"
 
-msgid "tpl_033_1"
+msgid "tpl_Postal code<span class='attention'> *</span>_01"
 msgstr "郵便番号<span class='attention'> *</span>"
 
-msgid "tpl_034"
+msgid "tpl_Location finder_01"
 msgstr "所在地入力"
 
-msgid "tpl_035"
+msgid "tpl_SHOP address<span class='attention'> *</span>_01"
 msgstr "SHOP所在地<span class='attention'> *</span>"
 
-msgid "tpl_036"
+msgid "tpl_Select a prefecture_01"
 msgstr "都道府県を選択"
 
-msgid "tpl_037"
+msgid "tpl_Phone Number_01"
 msgstr "TEL"
 
-msgid "tpl_037_1"
+msgid "tpl_Phone Number<span class='attention'> *</span>_01"
 msgstr "TEL<span class='attention'> *</span>"
 
-msgid "tpl_038"
+msgid "tpl_FAX_01"
 msgstr "FAX"
 
-msgid "tpl_039"
+msgid "tpl_Store business hours_01"
 msgstr "店舗営業時間"
 
-msgid "tpl_040"
+msgid "tpl_Product order receipt e-mail address<span class='attention'> *</span>_01"
 msgstr "商品注文受付<br />メールアドレス<span class='attention'> *</span>"
 
-msgid "tpl_041"
+msgid "tpl_E-mail address for receiving inquiries<span class='attention'> *</span>_01"
 msgstr "問い合わせ受付<br />メールアドレス<span class='attention'> *</span>"
 
-msgid "tpl_042"
+msgid "tpl_E-mail address of sender<span class='attention'> *</span>_01"
 msgstr "メール送信元<br />メールアドレス<span class='attention'> *</span>"
 
-msgid "tpl_043"
+msgid "tpl_E-mail address for receiving sending errors<span class='attention'> *</span>_01"
 msgstr "送信エラー受付<br />メールアドレス<span class='attention'> *</span>"
 
-msgid "tpl_044"
+msgid "tpl_Available products_01"
 msgstr "取扱商品"
 
-msgid "tpl_045"
+msgid "tpl_Message_01"
 msgstr "メッセージ"
 
-msgid "tpl_046"
+msgid "tpl_Regular holiday settings_01"
 msgstr "定休日設定"
 
-msgid "tpl_047"
+msgid "tpl_Regular holiday_01"
 msgstr "定休日"
 
-msgid "tpl_048"
+msgid "tpl_SHOP function_01"
 msgstr "SHOP機能"
 
-msgid "tpl_049"
+msgid "tpl_Consumption sales tax rate<span class='attention'> *</span>_01"
 msgstr "消費税率<span class='attention'> *</span>"
 
-msgid "tpl_050"
+msgid "tpl_Taxation rules<span class='attention'> *</span>_01"
 msgstr "課税規則<span class='attention'> *</span>"
 
 msgid "tpl_051"

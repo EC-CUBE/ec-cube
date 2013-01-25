@@ -82,7 +82,7 @@ function selectAll(target) {
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
 <!--{/foreach}-->
 <div id="products" class="contents-main">
-    <h2><!--{t string="tpl_027" escape="none"}--></h2>
+    <h2><!--{t string="tpl_Basic information_01" escape="none"}--></h2>
 
     <table class="form">
         <tr>

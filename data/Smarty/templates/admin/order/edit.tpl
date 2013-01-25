@@ -272,7 +272,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_037"}--></th>
+            <th><!--{t string="tpl_Phone Number_01"}--></th>
             <td>
                 <!--{assign var=key1 value="order_tel01"}-->
                 <!--{assign var=key2 value="order_tel02"}-->
@@ -286,7 +286,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_038"}--></th>
+            <th><!--{t string="tpl_FAX_01"}--></th>
             <td>
                 <!--{assign var=key1 value="order_fax01"}-->
                 <!--{assign var=key2 value="order_fax02"}-->
@@ -568,7 +568,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_037"}--></th>
+                <th><!--{t string="tpl_Phone Number_01"}--></th>
                 <td>
                     <!--{assign var=key1 value="shipping_tel01"}-->
                     <!--{assign var=key2 value="shipping_tel02"}-->
@@ -582,7 +582,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_038"}--></th>
+                <th><!--{t string="tpl_FAX_01"}--></th>
                 <td>
                     <!--{assign var=key1 value="shipping_fax01"}-->
                     <!--{assign var=key2 value="shipping_fax02"}-->
@@ -659,7 +659,7 @@
     <a name="deliv"></a>
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_001"}--><br /><span class="attention"><!--{t string="tpl_720"}--></span></th>
+            <th><!--{t string="tpl_Delivery company_01"}--><br /><span class="attention"><!--{t string="tpl_720"}--></span></th>
             <td>
                 <!--{assign var=key value="deliv_id"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>

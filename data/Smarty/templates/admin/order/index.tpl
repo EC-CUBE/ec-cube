@@ -614,7 +614,7 @@
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" />
             </td>
-            <th><!--{t string="tpl_037"}--></th>
+            <th><!--{t string="tpl_Phone Number_01"}--></th>
             <td>
                 <!--{assign var=key value="search_order_tel"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>

@@ -293,7 +293,7 @@ function moving(news_id,rank, max_rank) {
                 <!--{if $arrNews[data].news_id != $tpl_news_id}-->
                 <a href="#" onclick="return func_edit('<!--{$arrNews[data].news_id|h}-->');"><!--{t string="tpl_Edit_01"}--></a>
                 <!--{else}-->
-                <!--{t string="tpl_026"}-->
+                <!--{t string="tpl_being edited_01"}-->
                 <!--{/if}-->
             </td>
             <td><a href="#" onclick="return func_del('<!--{$arrNews[data].news_id|h}-->');"><!--{t string="tpl_Remove_01"}--></a></td>

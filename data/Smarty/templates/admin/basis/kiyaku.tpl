@@ -71,7 +71,7 @@
                     <!--{if $tpl_kiyaku_id != $arrKiyaku[cnt].kiyaku_id}-->
                     <a href="?" onclick="fnSetFormSubmit('form1', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;"><!--{t string="tpl_Edit_01"}--></a>
                     <!--{else}-->
-                    <!--{t string="tpl_026"}-->
+                    <!--{t string="tpl_being edited_01"}-->
                     <!--{/if}-->
                 </td>
                 <td align="center">
