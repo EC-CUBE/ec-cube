@@ -41,8 +41,8 @@ function lfnChangePort(db_type) {
 <!--{/foreach}-->
 <div class="contents">
     <div class="message">
-        <h2><!--{t string="tpl_776"}--></h2>
-        <!--{t string="tpl_777"}-->
+        <h2><!--{t string="t_Database settings_01"}--></h2>
+        <!--{t string="t_* You must create a new database before installation._01"}-->
         <div class="attention"><!--{$arrErr.all}--></div>
     </div>
     <div class="block">
@@ -50,7 +50,7 @@ function lfnChangePort(db_type) {
             <col width="30%" />
             <col width="70%" />
             <tr>
-                <th><!--{t string="tpl_778" escape="none"}--></th>
+                <th><!--{t string="t_DB type <span class='attention'>*</span>_01" escape="none"}--></th>
                 <td>
                 <!--{assign var=key value="db_type"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -68,7 +68,7 @@ function lfnChangePort(db_type) {
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_779"}--></th>
+                <th><!--{t string="t_Port_01"}--></th>
                 <td>
                 <!--{assign var=key value="db_port"}-->
                 <span class="attention"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
@@ -76,7 +76,7 @@ function lfnChangePort(db_type) {
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_780" escape="none"}--></th>
+                <th><!--{t string="t_DB name <span class='attention'>*</span>_01" escape="none"}--></th>
                 <td>
                 <!--{assign var=key value="db_name"}-->
                 <span class="attention"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
@@ -84,7 +84,7 @@ function lfnChangePort(db_type) {
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_781" escape="none"}--></th>
+                <th><!--{t string="t_DB user <span class='attention'>*</span>_01" escape="none"}--></th>
                 <td>
                 <!--{assign var=key value="db_user"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -92,7 +92,7 @@ function lfnChangePort(db_type) {
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_782" escape="none"}--></th>
+                <th><!--{t string="t_DB password <span class='attention'>*</span>_01" escape="none"}--></th>
                 <td>
                 <!--{assign var=key value="db_password"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>

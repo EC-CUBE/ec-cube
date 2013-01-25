@@ -71,7 +71,7 @@ $(function() {
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  /><br />
                 <span class="ex-text"><!--{t string="t_The address will be the one in the order receipt mail, etc._01"}--><br />
-                <!--{t string="tpl_756"}--></span>
+                <!--{t string="t_(Example) eccube@example.com_01"}--></span>
                 </td>
             </tr>
             <tr>
@@ -99,14 +99,14 @@ $(function() {
             <col width="30%" />
             <col width="70%" />
             <tr>
-                <th><!--{t string="tpl_755"}--><br/><!--{t string="tpl_668" T_FIELD1=$smarty.const.ID_MIN_LEN T_FIELD2=$smarty.const.ID_MAX_LEN}--></th>
+                <th><!--{t string="t_Directory_01"}--><br/><!--{t string="tpl_668" T_FIELD1=$smarty.const.ID_MIN_LEN T_FIELD2=$smarty.const.ID_MAX_LEN}--></th>
                 <td>
                 <!--{assign var=key value="admin_dir"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|default:'admin'|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;" size="50" /><br />
-                <span class="ex-text"><!--{t string="tpl_757"}--><br />
-                 <!--{t string="tpl_758"}--><br />
-                 <!--{t string="tpl_759" escape="none"}--></span><br />
+                <span class="ex-text"><!--{t string="t_Directory name for management area._01"}--><br />
+                 <!--{t string="t_Access the management area with link below._01"}--><br />
+                 <!--{t string="t_https://[Host name].[Domain name]/[Shop directory]/<span class='bold'>[Directory]</span>/_01" escape="none"}--></span><br />
                 </td>
             </tr>
             <tr>
@@ -115,7 +115,7 @@ $(function() {
                 <!--{assign var=key value="admin_force_ssl"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input type="checkbox" name="<!--{$key}-->" id="<!--{$key}-->" value="1" <!--{if $arrForm[$key].value == 1}-->checked="checked"<!--{/if}--> /><label for="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;"><!--{t string="tpl_644"}--></label><br />
-                <span class="ex-text"><!--{t string="tpl_760"}--></span><br />
+                <span class="ex-text"><!--{t string="t_Access to the management area is limited to SSL (https) connections._01"}--></span><br />
                 </td>
             </tr>
             <tr>
@@ -129,12 +129,12 @@ $(function() {
             </tr>
         </table>
 
-        <h2><!--{t string="tpl_761"}--></h2>
+        <h2><!--{t string="t_WEB server settings_01"}--></h2>
         <table>
             <col width="30%" />
             <col width="70%" />
             <tr>
-                <th><!--{t string="tpl_762" escape="none"}--></th>
+                <th><!--{t string="t_URL (normal) <span class='attention'>*</span>_01" escape="none"}--></th>
                 <td>
                 <!--{assign var=key value="normal_url"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -142,7 +142,7 @@ $(function() {
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_763" escape="none"}--></th>
+                <th><!--{t string="t_URL (secure) <span class='attention'>*</span>_01" escape="none"}--></th>
                 <td>
                 <!--{assign var=key value="secure_url"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -150,65 +150,65 @@ $(function() {
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_764"}--></th>
+                <th><!--{t string="t_Common domain_01"}--></th>
                 <td>
                 <!--{assign var=key value="domain"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  /><br />
-                <span class="ex-text"><!--{t string="tpl_765"}--></span>
+                <span class="ex-text"><!--{t string="t_Designated when the subdomain differs based on normal URL and secure URL._01"}--></span>
                 </td>
             </tr>
         </table>
 
-        <p><a href="javascript:;" id="options"><!--{t string="tpl_766" escape="none"}--></a></p>
+        <p><a href="javascript:;" id="options"><!--{t string="t_&gt;&gt; Option settings_01" escape="none"}--></a></p>
         <div class="option">
-            <h2><!--{t string="tpl_767"}--></h2>
+            <h2><!--{t string="t_E-mail server settings (option)_01"}--></h2>
             <table>
                 <col width="30%" />
                 <col width="70%" />
                 <tr>
-                    <th><!--{t string="tpl_768" escape="none"}--></th>
+                    <th><!--{t string="t_Mailer backend <span class='attention'>*</span>_01" escape="none"}--></th>
                     <td>
                       <!--{assign var=key value="mail_backend"}-->
                       <span class="attention"><!--{$arrErr[$key]}--></span>
                       <!--{html_radios name=$key options=$arrMailBackend selected=$arrForm[$key].value|h}--><br />
-                      <span class="ex-text"><!--{t string="tpl_769" escape="none"}--></span>
+                      <span class="ex-text"><!--{t string="t_mail - PHP built-in function  mail() is used to send.<br />SMTP - E-mails are sent by directly connecting to the SMTP server.<br />sendmail - Sent through the sendmail program._01" escape="none"}--></span>
                     </td>
                 </tr>
                 <tr>
-                    <th><!--{t string="tpl_770"}--></th>
+                    <th><!--{t string="t_SMTP host_01"}--></th>
                     <td>
                       <!--{assign var=key value="smtp_host"}-->
                       <span class="attention"><!--{$arrErr[$key]}--></span>
                       <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="smtp" /><br />
-                      <span class="ex-text"><!--{t string="tpl_771"}--></span>
+                      <span class="ex-text"><!--{t string="t_Use only when the mailer backend is SMTP._01"}--></span>
                     </td>
                 </tr>
                 <tr>
-                    <th><!--{t string="tpl_772"}--></th>
+                    <th><!--{t string="t_SMTP port_01"}--></th>
                     <td>
                       <!--{assign var=key value="smtp_port"}-->
                       <span class="attention"><!--{$arrErr[$key]}--></span>
                       <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="5" class="smtp" /><br />
-                      <span class="ex-text"><!--{t string="tpl_771"}--></span>
+                      <span class="ex-text"><!--{t string="t_Use only when the mailer backend is SMTP._01"}--></span>
                     </td>
                 </tr>
                 <tr>
-                    <th><!--{t string="tpl_773"}--></th>
+                    <th><!--{t string="t_SMTP user_01"}--></th>
                     <td>
                       <!--{assign var=key value="smtp_user"}-->
                       <span class="attention"><!--{$arrErr[$key]}--></span>
                       <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="smtp" /><br />
-                      <span class="ex-text"><!--{t string="tpl_774"}--></span>
+                      <span class="ex-text"><!--{t string="t_Use only when the mailer backend is SMTP and SMTP-AUTH is also used._01"}--></span>
                     </td>
                 </tr>
                 <tr>
-                    <th><!--{t string="tpl_775"}--></th>
+                    <th><!--{t string="t_SMTP password_01"}--></th>
                     <td>
                       <!--{assign var=key value="smtp_password"}-->
                       <span class="attention"><!--{$arrErr[$key]}--></span>
                       <input type="password" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="smtp" /><br />
-                      <span class="ex-text"><!--{t string="tpl_774"}--></span>
+                      <span class="ex-text"><!--{t string="t_Use only when the mailer backend is SMTP and SMTP-AUTH is also used._01"}--></span>
                     </td>
                 </tr>
             </table>

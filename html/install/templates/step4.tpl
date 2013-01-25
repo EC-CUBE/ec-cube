@@ -36,22 +36,22 @@
 
 <div class="contents">
     <div class="message">
-        <h2><!--{t string="tpl_789"}--></h2>
-         <p><!--{t string="tpl_790"}--></p>
+        <h2><!--{t string="t_Site information_01"}--></h2>
+         <p><!--{t string="t_Please provide the information below for the purpose of debugging and improving the EC-CUBE system._01"}--></p>
     </div>
     <div class="result-info01">
         <ul class="site-info-list">
-            <li><span class="bold"><!--{t string="tpl_791"}--></span><!--{$tpl_site_url}--></li>
-            <li><span class="bold"><!--{t string="tpl_792"}--></span><!--{$tpl_shop_name}--></li>
-            <li><span class="bold"><!--{t string="tpl_793"}--></span><!--{$tpl_cube_ver}--></li>
-            <li><span class="bold"><!--{t string="tpl_794"}--></span><!--{$tpl_php_ver}--></li>
-            <li><span class="bold"><!--{t string="tpl_795"}--></span><!--{$tpl_db_ver}--></li>
-            <li><span class="bold"><!--{t string="tpl_796"}--></span><!--{""|php_uname|h}--> <!--{$smarty.server.SERVER_SOFTWARE|h}--></li>
+            <li><span class="bold"><!--{t string="t_Site URL: _01"}--></span><!--{$tpl_site_url}--></li>
+            <li><span class="bold"><!--{t string="t_Store name: _01"}--></span><!--{$tpl_shop_name}--></li>
+            <li><span class="bold"><!--{t string="t_EC-CUBE version: _01"}--></span><!--{$tpl_cube_ver}--></li>
+            <li><span class="bold"><!--{t string="t_PHP information: _01"}--></span><!--{$tpl_php_ver}--></li>
+            <li><span class="bold"><!--{t string="t_DB information: _01"}--></span><!--{$tpl_db_ver}--></li>
+            <li><span class="bold"><!--{t string="t_OS information: _01"}--></span><!--{""|php_uname|h}--> <!--{$smarty.server.SERVER_SOFTWARE|h}--></li>
         </ul>
     </div>
     <div class="result-info02">
-        <input type="radio" id="ok" name="send_info" checked value="true" /><label for="ok"><!--{t string="tpl_797"}--></label>&nbsp;
-        <input type="radio" id="ng" name="send_info" value="false" /><label for="ng"><!--{t string="tpl_798"}--></label>
+        <input type="radio" id="ok" name="send_info" checked value="true" /><label for="ok"><!--{t string="t_Yes (recommended)_01"}--></label>&nbsp;
+        <input type="radio" id="ng" name="send_info" value="false" /><label for="ng"><!--{t string="t_No_02"}--></label>
     </div>
     <div class="btn-area-top"></div>
     <div class="btn-area">
