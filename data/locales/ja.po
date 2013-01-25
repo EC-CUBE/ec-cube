@@ -5601,9 +5601,6 @@ msgstr ""
 "間違った設定を適用すると管理画面にアクセス出来なくなる可能性があります。<br/>"
 "良く解らない場合はこの設定は変更しないでください。"
 
-msgid "tpl_640"
-msgstr "管理機能設定"
-
 msgid "tpl_641"
 msgstr "ディレクトリ名"
 
@@ -5960,19 +5957,19 @@ msgstr "ECサイトの設定"
 msgid "t_Fill in the name of your store._01"
 msgstr "あなたの店名をご記入ください。"
 
-msgid "tpl_750"
+msgid "t_The address will be the one in the order receipt mail, etc._01"
 msgstr "受注メールなどの宛先になります。"
 
-msgid "tpl_751"
+msgid "t_Login ID <span class='attention'>*</span>_01"
 msgstr "ログインID<span class='attention'>*</span>"
 
-msgid "tpl_752"
+msgid "t_ID for logging in to the management area._01"
 msgstr "管理機能にログインするためのIDです。"
 
-msgid "tpl_753"
+msgid "t_Password for logging in to the management area._01"
 msgstr "管理機能にログインするためのパスワードです。"
 
-msgid "tpl_754"
+msgid "t_Management area settings_01"
 msgstr "管理機能の設定"
 
 msgid "tpl_755"
