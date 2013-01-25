@@ -111,9 +111,9 @@
             <tr class="nodrop nodrag">
                 <th><!--{t string="tpl_074"}--></th>
                 <th><!--{t string="tpl_490"}--></th>
-                <th class="edit"><!--{t string="tpl_003"}--></th>
-                <th class="delete"><!--{t string="tpl_004"}--></th>
-                <th><!--{t string="tpl_005"}--></th>
+                <th class="edit"><!--{t string="tpl_Edit_01"}--></th>
+                <th class="delete"><!--{t string="tpl_Remove_01"}--></th>
+                <th><!--{t string="tpl_Move_01"}--></th>
             </tr>
 
             <!--{section name=cnt loop=$arrList}-->
@@ -128,13 +128,13 @@
                 </td>
                 <td class="center">
                     <!--{if $arrForm.category_id != $arrList[cnt].category_id}-->
-                    <a href="?" onclick="fnModeSubmit('pre_edit', 'category_id', <!--{$arrList[cnt].category_id}-->); return false;"><!--{t string="tpl_003"}--></a>
+                    <a href="?" onclick="fnModeSubmit('pre_edit', 'category_id', <!--{$arrList[cnt].category_id}-->); return false;"><!--{t string="tpl_Edit_01"}--></a>
                     <!--{else}-->
                     <!--{t string="tpl_026"}-->
                     <!--{/if}-->
                 </td>
                 <td class="center">
-                    <a href="?" onclick="fnModeSubmit('delete', 'category_id', <!--{$arrList[cnt].category_id}-->); return false;"><!--{t string="tpl_004"}--></a>
+                    <a href="?" onclick="fnModeSubmit('delete', 'category_id', <!--{$arrList[cnt].category_id}-->); return false;"><!--{t string="tpl_Remove_01"}--></a>
                 </td>
                 <td class="center">
                 <!--{* 移動 *}-->

@@ -376,12 +376,12 @@ $("*[name=search_endday]").val(dates[2]);
                 <th><!--{t string="tpl_188"}--></th>
                 <th rowspan="2"><!--{t string="tpl_581"}--></th>
                 <th rowspan="2"><!--{t string="tpl_256"}--></th>
-                <th rowspan="2"><!--{t string="tpl_003"}--></th>
+                <th rowspan="2"><!--{t string="tpl_Edit_01"}--></th>
                 <th rowspan="2"><!--{t string="tpl_318"}--></th>
                 <!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
                 <th rowspan="2"><!--{t string="tpl_582"}--></th>
                 <!--{/if}-->
-                <th rowspan="2"><!--{t string="tpl_004"}--></th>
+                <th rowspan="2"><!--{t string="tpl_Remove_01"}--></th>
                 <th rowspan="2"><!--{t string="tpl_583"}--></th>
             </tr>
             <tr>
@@ -417,12 +417,12 @@ $("*[name=search_endday]").val(dates[2]);
                     <!--{* 表示 *}-->
                     <!--{assign var=key value=$arrProducts[cnt].status}-->
                     <td class="menu" rowspan="2"><!--{$arrDISP[$key]}--></td>
-                    <td class="menu" rowspan="2"><span class="icon_edit"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" ><!--{t string="tpl_003"}--></a></span></td>
+                    <td class="menu" rowspan="2"><span class="icon_edit"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" ><!--{t string="tpl_Edit_01"}--></a></span></td>
                     <td class="menu" rowspan="2"><span class="icon_confirm"><a href="<!--{$smarty.const.HTTP_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->&amp;admin=on" target="_blank"><!--{t string="tpl_318"}--></a></span></td>
                     <!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
                     <td class="menu" rowspan="2"><span class="icon_class"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnChangeAction('./product_class.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" ><!--{t string="tpl_582"}--></a></span></td>
                     <!--{/if}-->
-                    <td class="menu" rowspan="2"><span class="icon_delete"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;"><!--{t string="tpl_004"}--></a></span></td>
+                    <td class="menu" rowspan="2"><span class="icon_delete"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;"><!--{t string="tpl_Remove_01"}--></a></span></td>
                     <td class="menu" rowspan="2"><span class="icon_copy"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('copy', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" ><!--{t string="tpl_583"}--></a></span></td>
                 </tr>
                 <tr style="background:<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->;">

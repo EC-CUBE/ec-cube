@@ -648,7 +648,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_016"}--></th>
+            <th><!--{t string="tpl_Payment method_01"}--></th>
             <td colspan="3">
             <!--{assign var=key value="search_payment_id"}-->
             <span class="attention"><!--{$arrErr[$key]|h}--></span>
@@ -787,14 +787,14 @@
             <th><!--{t string="tpl_359"}--></th>
             <th><!--{t string="tpl_231"}--></th>
             <th><!--{t string="tpl_208"}--></th>
-            <th><!--{t string="tpl_016"}--></th>
+            <th><!--{t string="tpl_Payment method_01"}--></th>
             <th><!--{t string="tpl_403" escape="none"}--></th>
             <th><!--{t string="tpl_404"}--></th>
             <th><!--{t string="tpl_360"}--></th>
             <th><label for="pdf_check"><!--{t string="tpl_405"}--></label> <input type="checkbox" name="pdf_check" id="pdf_check" onclick="fnAllCheck(this, 'input[name=pdf_order_id[]]')" /></th>
-            <th><!--{t string="tpl_003"}--></th>
+            <th><!--{t string="tpl_Edit_01"}--></th>
             <th><!--{t string="tpl_719"}--> <input type="checkbox" name="mail_check" id="mail_check" onclick="fnAllCheck(this, 'input[name=mail_order_id[]]')" /></th>
-            <th><!--{t string="tpl_004"}--></th>
+            <th><!--{t string="tpl_Remove_01"}--></th>
         </tr>
 
         <!--{section name=cnt loop=$arrResults}-->
@@ -812,14 +812,14 @@
                 <input type="checkbox" name="pdf_order_id[]" value="<!--{$arrResults[cnt].order_id}-->" id="pdf_order_id_<!--{$arrResults[cnt].order_id}-->"/><label for="pdf_order_id_<!--{$arrResults[cnt].order_id}-->"><!--{t string="tpl_406"}--></label><br>
                 <a href="./" onClick="win02('pdf.php?order_id=<!--{$arrResults[cnt].order_id}-->','pdf_input','620','650'); return false;"><span class="icon_class"><!--{t string="tpl_407"}--></span></a>
             </td>
-            <td class="center"><a href="?" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_EDIT_URLPATH}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrResults[cnt].order_id}-->'); return false;"><span class="icon_edit"><!--{t string="tpl_003"}--></span></a></td>
+            <td class="center"><a href="?" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_EDIT_URLPATH}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrResults[cnt].order_id}-->'); return false;"><span class="icon_edit"><!--{t string="tpl_Edit_01"}--></span></a></td>
             <td class="center">
                 <!--{if $arrResults[cnt].order_email|strlen >= 1}-->
                     <input type="checkbox" name="mail_order_id[]" value="<!--{$arrResults[cnt].order_id}-->" id="mail_order_id_<!--{$arrResults[cnt].order_id}-->"/><label for="mail_order_id_<!--{$arrResults[cnt].order_id}-->"><!--{t string="tpl_408"}--></label><br>
                     <a href="?" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_MAIL_URLPATH}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrResults[cnt].order_id}-->'); return false;"><span class="icon_mail"><!--{t string="tpl_409"}--></span></a>
                 <!--{/if}-->
             </td>
-            <td class="center"><a href="?" onclick="fnModeSubmit('delete_order', 'order_id', <!--{$arrResults[cnt].order_id}-->); return false;"><span class="icon_delete"><!--{t string="tpl_004"}--></span></a></td>
+            <td class="center"><a href="?" onclick="fnModeSubmit('delete_order', 'order_id', <!--{$arrResults[cnt].order_id}-->); return false;"><span class="icon_delete"><!--{t string="tpl_Remove_01"}--></span></a></td>
         </tr>
         <!--{/section}-->
         <!--{/if}-->

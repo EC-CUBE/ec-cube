@@ -48,9 +48,9 @@
             <th><!--{t string="tpl_300"}--></th>
             <th><!--{t string="tpl_663"}--></th>
             <th><!--{t string="tpl_664"}--></th>
-            <th><!--{t string="tpl_003"}--></th>
-            <th><!--{t string="tpl_004"}--></th>
-            <th><!--{t string="tpl_005"}--></th>
+            <th><!--{t string="tpl_Edit_01"}--></th>
+            <th><!--{t string="tpl_Remove_01"}--></th>
+            <th><!--{t string="tpl_Move_01"}--></th>
         </tr>
         <!--{section name=data loop=$list_data}--><!--▼メンバー<!--{$smarty.section.data.iteration}-->-->
         <tr>
@@ -58,8 +58,8 @@
             <td><!--{$list_data[data].name|h}--></td>
             <td><!--{$list_data[data].department|h}--></td>
             <!--{assign var="work" value=$list_data[data].work}--><td><!--{$arrWORK[$work]|h}--></td>
-            <td align="center"><a href="#" onClick="win02('./input.php?id=<!--{$list_data[data].member_id}-->&amp;pageno=<!--{$tpl_disppage}-->','member_edit','620','450'); return false;"><!--{t string="tpl_003"}--></a></td>
-            <td align="center"><!--{if $workmax > 1}--><a href="#" onClick="fnDeleteMember(<!--{$list_data[data].member_id}-->,<!--{$tpl_disppage}-->); return false;"><!--{t string="tpl_004"}--></a><!--{else}-->-<!--{/if}--></td>
+            <td align="center"><a href="#" onClick="win02('./input.php?id=<!--{$list_data[data].member_id}-->&amp;pageno=<!--{$tpl_disppage}-->','member_edit','620','450'); return false;"><!--{t string="tpl_Edit_01"}--></a></td>
+            <td align="center"><!--{if $workmax > 1}--><a href="#" onClick="fnDeleteMember(<!--{$list_data[data].member_id}-->,<!--{$tpl_disppage}-->); return false;"><!--{t string="tpl_Remove_01"}--></a><!--{else}-->-<!--{/if}--></td>
             <td align="center">
             <!--{$tpl_nomove}-->
             <!--{if !($smarty.section.data.first && $tpl_disppage eq 1)}--><a href="./rank.php?id=<!--{$list_data[data].member_id}-->&amp;move=up&amp;pageno=<!--{$tpl_disppage}-->"><!--{t string="tpl_077"}--></a><!--{/if}-->

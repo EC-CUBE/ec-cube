@@ -43,7 +43,7 @@
             <td>
                 <!--{assign var=key value="css_name"}-->
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" />.css
-                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$arrForm[$key].length}--></span>
                 <!--{if $arrErr[$key] != ""}--> <div class="attention"><!--{$arrErr[$key]}--></div> <!--{/if}-->
             </td>
         </tr>
@@ -61,7 +61,7 @@
     </table>
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form_css','confirm','',''); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form_css','confirm','',''); return false;"><span class="btn-next"><!--{t string="tpl_Save and continue_01"}--></span></a></li>
         </ul>
     </div>
     <!--▲CSS設定　ここまで-->
@@ -74,18 +74,18 @@
     <table class="list" id="design-css-list">
         <tr>
             <th class="name"><!--{t string="tpl_167"}--></th>
-            <th class="menu edit"><!--{t string="tpl_003"}--></th>
-            <th class="action delete"><!--{t string="tpl_004"}--></th>
+            <th class="menu edit"><!--{t string="tpl_Edit_01"}--></th>
+            <th class="action delete"><!--{t string="tpl_Remove_01"}--></th>
         </tr>
         <!--{if count($arrCSSList) > 0}-->
         <!--{foreach key=key item=item from=$arrCSSList}-->
         <tr>
             <td style="background:<!--{if $item.css_name == $css_name}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;"><!--{$item.file_name|h}--></td>
             <td class="center" style="background:<!--{if $item.css_name == $css_name}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
-                <a href="?css_name=<!--{$item.css_name|h}-->&amp;device_type_id=<!--{$device_type_id|h}-->"><!--{t string="tpl_003"}--></a>
+                <a href="?css_name=<!--{$item.css_name|h}-->&amp;device_type_id=<!--{$device_type_id|h}-->"><!--{t string="tpl_Edit_01"}--></a>
             </td>
             <td class="center" style="background:<!--{if $item.css_name == $css_name}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
-                <a href="javascript:;" onclick="fnFormModeSubmit('form_css','delete','css_name','<!--{$item.css_name|h}-->'); return false;"><!--{t string="tpl_004"}--></a>
+                <a href="javascript:;" onclick="fnFormModeSubmit('form_css','delete','css_name','<!--{$item.css_name|h}-->'); return false;"><!--{t string="tpl_Remove_01"}--></a>
             </td>
         </tr>
         <!--{/foreach}-->

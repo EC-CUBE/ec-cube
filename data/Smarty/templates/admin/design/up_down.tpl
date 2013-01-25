@@ -79,7 +79,7 @@ function confirmSubmit(mode, msg) {
         </tr>
     </table>
     <div class="btn-area">
-        <a class="btn-action" href="javascript:;" onclick="fnModeSubmit('upload', '', '');return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a>
+        <a class="btn-action" href="javascript:;" onclick="fnModeSubmit('upload', '', '');return false;"><span class="btn-next"><!--{t string="tpl_Save and continue_01"}--></span></a>
     </div>
 </div>
 </form>

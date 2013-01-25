@@ -201,7 +201,7 @@ function moving(news_id,rank, max_rank) {
     <!--{* ▼登録テーブルここから *}-->
     <table>
         <tr>
-            <th><!--{t string="tpl_024_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Date<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
                 <!--{if $arrErr.year || $arrErr.month || $arrErr.day}--><span class="attention"><!--{$arrErr.year}--><!--{$arrErr.month}--><!--{$arrErr.day}--></span><!--{/if}-->
                 <input id="datepicker"
@@ -213,11 +213,11 @@ function moving(news_id,rank, max_rank) {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_022_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Title<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
                 <!--{if $arrErr.news_title}--><span class="attention"><!--{$arrErr.news_title}--></span><!--{/if}-->
                 <textarea name="news_title" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" <!--{if $arrErr.news_title}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->><!--{"\n"}--><!--{$arrForm.news_title|h}--></textarea><br />
-                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.MTEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.MTEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -225,7 +225,7 @@ function moving(news_id,rank, max_rank) {
             <td>
                 <span class="attention"><!--{$arrErr.news_url}--></span>
                 <input type="text" name="news_url" size="60" class="box60"    value="<!--{$arrForm.news_url|h}-->" <!--{if $arrErr.news_url}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}--> maxlength="<!--{$smarty.const.URL_LEN}-->" />
-                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.URL_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.URL_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -245,7 +245,7 @@ function moving(news_id,rank, max_rank) {
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="return func_regist();"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="return func_regist();"><span class="btn-next"><!--{t string="tpl_Save and continue_01"}--></span></a></li>
         </ul>
     </div>
 </form>
@@ -271,11 +271,11 @@ function moving(news_id,rank, max_rank) {
         <col width="25%" />
         <tr>
             <th><!--{t string="tpl_115"}--></th>
-            <th><!--{t string="tpl_024"}--></th>
-            <th><!--{t string="tpl_022"}--></th>
-            <th class="edit"><!--{t string="tpl_003"}--></th>
-            <th class="delete"><!--{t string="tpl_004"}--></th>
-            <th><!--{t string="tpl_005"}--></th>
+            <th><!--{t string="tpl_Date_01"}--></th>
+            <th><!--{t string="tpl_Title_01"}--></th>
+            <th class="edit"><!--{t string="tpl_Edit_01"}--></th>
+            <th class="delete"><!--{t string="tpl_Remove_01"}--></th>
+            <th><!--{t string="tpl_Move_01"}--></th>
         </tr>
         <!--{section name=data loop=$arrNews}-->
         <tr style="background:<!--{if $arrNews[data].news_id != $tpl_news_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->;" class="center">
@@ -291,15 +291,15 @@ function moving(news_id,rank, max_rank) {
             </td>
             <td>
                 <!--{if $arrNews[data].news_id != $tpl_news_id}-->
-                <a href="#" onclick="return func_edit('<!--{$arrNews[data].news_id|h}-->');"><!--{t string="tpl_003"}--></a>
+                <a href="#" onclick="return func_edit('<!--{$arrNews[data].news_id|h}-->');"><!--{t string="tpl_Edit_01"}--></a>
                 <!--{else}-->
                 <!--{t string="tpl_026"}-->
                 <!--{/if}-->
             </td>
-            <td><a href="#" onclick="return func_del('<!--{$arrNews[data].news_id|h}-->');"><!--{t string="tpl_004"}--></a></td>
+            <td><a href="#" onclick="return func_del('<!--{$arrNews[data].news_id|h}-->');"><!--{t string="tpl_Remove_01"}--></a></td>
             <td>
             <!--{if count($arrNews) != 1}-->
-            <input type="text" name="pos-<!--{$arrNews[data].news_id|h}-->" size="3" class="box3" /><!--{t string="tpl_713"}--> <a href="?" onclick="fnFormModeSubmit('move', 'moveRankSet','news_id', '<!--{$arrNews[data].news_id|h}-->'); return false;"><!--{t string="tpl_005"}--></a><br />
+            <input type="text" name="pos-<!--{$arrNews[data].news_id|h}-->" size="3" class="box3" /><!--{t string="tpl_713"}--> <a href="?" onclick="fnFormModeSubmit('move', 'moveRankSet','news_id', '<!--{$arrNews[data].news_id|h}-->'); return false;"><!--{t string="tpl_Move_01"}--></a><br />
             <!--{/if}-->
             <!--{if $arrNews[data].rank ne $max_rank}--><a href="#" onclick="return func_rankMove('up', '<!--{$arrNews[data].news_id|h}-->', '<!--{$max_rank|h}-->');"><!--{t string="tpl_077"}--></a><!--{/if}-->&nbsp;<!--{if $arrNews[data].rank ne 1}--><a href="#" onclick="return func_rankMove('down', '<!--{$arrNews[data].news_id|h}-->', '<!--{$max_rank|h}-->');"><!--{t string="tpl_078"}--></a><!--{/if}-->
             </td>

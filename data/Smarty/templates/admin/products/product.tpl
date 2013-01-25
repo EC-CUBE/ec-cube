@@ -94,7 +94,7 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr.name}--></span>
                 <input type="text" name="name" value="<!--{$arrForm.name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />
-                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.STEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.STEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -109,7 +109,7 @@ function selectAll(target) {
                         </td>
                         <td style="padding: 15px;">
                             <a class="btn-normal" href="javascript:;" name="on_select" onclick="fnMoveSelect('category_id_unselect','category_id'); return false;">&nbsp;&nbsp;&lt;-&nbsp;<!--{t string="tpl_488"}-->&nbsp;&nbsp;</a><br /><br />
-                            <a class="btn-normal" href="javascript:;" name="un_select" onclick="fnMoveSelect('category_id','category_id_unselect'); return false;">&nbsp;&nbsp;<!--{t string="tpl_004"}-->&nbsp;-&gt;&nbsp;&nbsp;</a>
+                            <a class="btn-normal" href="javascript:;" name="un_select" onclick="fnMoveSelect('category_id','category_id_unselect'); return false;">&nbsp;&nbsp;<!--{t string="tpl_Remove_01"}-->&nbsp;-&gt;&nbsp;&nbsp;</a>
                         </td>
                         <td>
                             <select name="category_id_unselect[]" id="category_id_unselect" onchange="" size="10" style="height: 120px; min-width: 200px;" multiple>
@@ -134,7 +134,7 @@ function selectAll(target) {
         </tr>
         <!--{if $arrForm.has_product_class == false}-->
         <tr>
-            <th><!--{t string="tpl_014_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Product type<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
                 <!--{html_radios name="product_type_id" options=$arrProductType selected=$arrForm.product_type_id separator='&nbsp;&nbsp;'}-->
             </td>
@@ -144,7 +144,7 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr.down_filename}--></span>
                 <input type="text" name="down_filename" value="<!--{$arrForm.down_filename|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.down_filename != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" />
-                <span class="red"> <!--{t string="tpl_023" T_FIELD=$smarty.const.STEXT_LEN}--></span>
+                <span class="red"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.STEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -166,7 +166,7 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr.product_code}--></span>
                 <input type="text" name="product_code" value="<!--{$arrForm.product_code|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.product_code != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />
-                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.STEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.STEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -249,7 +249,7 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr.comment1}--></span>
                 <input type="text" name="comment1" value="<!--{$arrForm.comment1|h}-->" maxlength="<!--{$smarty.const.URL_LEN}-->" size="60" class="box60" style="<!--{$arrErr.comment1|sfGetErrorColor}-->" />
-                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.URL_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.URL_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -257,7 +257,7 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr.comment3}--></span>
                 <textarea name="comment3" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr.comment3|sfGetErrorColor}-->"><!--{"\n"}--><!--{$arrForm.comment3|h}--></textarea><br />
-                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.LLTEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.LLTEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -265,7 +265,7 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr.note}--></span>
                 <textarea name="note" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr.note|sfGetErrorColor}-->"><!--{"\n"}--><!--{$arrForm.note|h}--></textarea><br />
-                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.LLTEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.LLTEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -273,7 +273,7 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr.main_list_comment}--></span>
                 <textarea name="main_list_comment" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{if $arrErr.main_list_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" cols="60" rows="8" class="area60"><!--{"\n"}--><!--{$arrForm.main_list_comment|h}--></textarea><br />
-                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.MTEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.MTEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -281,7 +281,7 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr.main_comment}--></span>
                 <textarea name="main_comment" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{if $arrErr.main_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" cols="60" rows="8" class="area60"><!--{"\n"}--><!--{$arrForm.main_comment|h}--></textarea><br />
-                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.LLTEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.LLTEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -349,7 +349,7 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input type="text" name="sub_title<!--{$smarty.section.cnt.iteration}-->" value="<!--{$arrForm[$key]|h}-->" size="60" class="box60" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"/>
-                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.STEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.STEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -358,7 +358,7 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <textarea name="sub_comment<!--{$smarty.section.cnt.iteration}-->" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{"\n"}--><!--{$arrForm[$key]|h}--></textarea><br />
-                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.LLTEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.LLTEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -421,13 +421,13 @@ function selectAll(target) {
                 <input type="hidden" name="<!--{$key}-->" value="<!--{$arrRecommend[$recommend_no].product_id|h}-->" />
                 <a class="btn-normal" href="javascript:;" name="change" onclick="selectAll('category_id'); win03('./product_select.php?no=<!--{$smarty.section.cnt.iteration}-->', 'search', '615', '500'); return false;"><!--{t string="tpl_475"}--></a>
                 <!--{assign var=key value="recommend_delete`$smarty.section.cnt.iteration`"}-->
-                <input type="checkbox" name="<!--{$key}-->" value="1" /><!--{t string="tpl_004"}--><br />
+                <input type="checkbox" name="<!--{$key}-->" value="1" /><!--{t string="tpl_Remove_01"}--><br />
                 <!--{assign var=key value="recommend_comment`$smarty.section.cnt.iteration`"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{t string="tpl_192"}-->:<!--{$arrRecommend[$recommend_no].product_code_min}--><br />
                 <!--{t string="tpl_188"}-->:<!--{$arrRecommend[$recommend_no].name|h}--><br />
                 <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{"\n"}--><!--{$arrRecommend[$recommend_no].comment|h}--></textarea><br />
-                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.LTEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.LTEXT_LEN}--></span>
             </td>
         </tr>
         <!--{/section}-->

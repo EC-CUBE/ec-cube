@@ -32,9 +32,9 @@
             <li><a class="btn-action" href="javascript:;" name="subm2" onclick="fnChangeAction('./delivery_input.php'); fnModeSubmit('pre_edit','',''); return false;">
                 <span class="btn-next">
                     <!--{if $smarty.const.INPUT_DELIV_FEE}-->
-                        <!--{t string="tpl_006"}-->
+                        <!--{t string="tpl_Add delivery method/delivery charge_01"}-->
                     <!--{else}-->
-                        <!--{t string="tpl_007"}-->
+                        <!--{t string="tpl_Enter delivery method_01"}-->
                     <!--{/if}-->
                 </span>
                 </a>
@@ -49,19 +49,19 @@
         <col width="15%" />
         <tr>
             <th><!--{t string="t_Delivery company_01"}--></th>
-            <th><!--{t string="tpl_002"}--></th>
-            <th><!--{t string="tpl_003"}--></th>
-            <th><!--{t string="tpl_004"}--></th>
-            <th><!--{t string="tpl_005"}--></th>
+            <th><!--{t string="tpl_Name_01"}--></th>
+            <th><!--{t string="tpl_Edit_01"}--></th>
+            <th><!--{t string="tpl_Remove_01"}--></th>
+            <th><!--{t string="tpl_Move_01"}--></th>
         </tr>
         <!--{section name=cnt loop=$arrDelivList}-->
             <tr>
                 <td><!--{$arrDelivList[cnt].name|h}--></td>
                 <td><!--{$arrDelivList[cnt].service_name|h}--></td>
                 <td align="center"><a href="?" onclick="fnChangeAction('./delivery_input.php'); fnModeSubmit('pre_edit', 'deliv_id', <!--{$arrDelivList[cnt].deliv_id}-->); return false;">
-                    <!--{t string="tpl_003"}--></a></td>
+                    <!--{t string="tpl_Edit_01"}--></a></td>
                 <td align="center"><a href="?" onclick="fnModeSubmit('delete', 'deliv_id', <!--{$arrDelivList[cnt].deliv_id}-->); return false;">
-                    <!--{t string="tpl_004"}--></a></td>
+                    <!--{t string="tpl_Remove_01"}--></a></td>
                 <td align="center">
                 <!--{if $smarty.section.cnt.iteration != 1}-->
                 <a href="?" onclick="fnModeSubmit('up','deliv_id', '<!--{$arrDelivList[cnt].deliv_id}-->'); return false;"><!--{t string="tpl_077"}--></a>

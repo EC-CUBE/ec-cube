@@ -63,7 +63,7 @@
                 <th><!--{t string="tpl_557"}--></th>
                 <th><!--{t string="tpl_603" escape="none" T_FIELD=$smarty.const.NORMAL_PRICE_TITLE}--></th>
                 <th><!--{t string="tpl_603" escape="none" T_FIELD=$smarty.const.SALE_PRICE_TITLE}--></th>
-                <th><!--{t string="tpl_014"}--></th>
+                <th><!--{t string="tpl_Product type_01"}--></th>
                 <th><!--{t string="tpl_607"}--></th>
                 <th><!--{t string="tpl_608"}--></th>
             </tr>
@@ -113,7 +113,7 @@
         <ul>
             <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'confirm_return','',''); return false"><span class="btn-prev"><!--{t string="tpl_610"}--></span></a></li>
         <!--{if count($arrForm.check.value) > 0}-->
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'complete','',''); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'complete','',''); return false;"><span class="btn-next"><!--{t string="tpl_Save and continue_01"}--></span></a></li>
         <!--{/if}-->
         </ul>
     </div>

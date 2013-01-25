@@ -59,7 +59,7 @@ function fnTargetSelf(){
                     <td>
                         <div class="btn">
                             <a class="btn-normal" href="javascript:;" name='csv' onclick="fnTargetSelf(); fnFormModeSubmit('form1','csv_output','csv_output_id',<!--{$item.sql_id}-->); return false;"><span><!--{t string="tpl_153"}--></span></a>
-                            <a class="btn-normal" href="javascript:;" name='del' onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','sql_id',<!--{$item.sql_id}-->); return false;"><span><!--{t string="tpl_004"}--></span></a>
+                            <a class="btn-normal" href="javascript:;" name='del' onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','sql_id',<!--{$item.sql_id}-->); return false;"><span><!--{t string="tpl_Remove_01"}--></span></a>
                         </div>
                     </td>
                 </tr>
@@ -80,11 +80,11 @@ function fnTargetSelf(){
     
     <table id="contents-csv-sqlset" class="form">
         <tr>
-            <th><!--{t string="tpl_002_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Name<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.sql_name}--></span>
                 <input type="text" name="sql_name" value="<!--{$arrForm.sql_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />
-                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.STEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.STEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -103,7 +103,7 @@ function fnTargetSelf(){
     </div>
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" name="subm" onclick="fnTargetSelf(); fnFormModeSubmit('form1', 'confirm', '', '')"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" name="subm" onclick="fnTargetSelf(); fnFormModeSubmit('form1', 'confirm', '', '')"><span class="btn-next"><!--{t string="tpl_Save and continue_01"}--></span></a></li>
         </ul>
     </div>
 

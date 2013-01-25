@@ -36,13 +36,13 @@
                     <span class="attention"><!--{$arrErr.name}--></span>
                 <!--{/if}-->
                 <input type="text" name="name" value="<!--{$arrForm.name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="" size="30" class="box30" />
-                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.STEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.STEXT_LEN}--></span>
             </td>
         </tr>
     </table>
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_Save and continue_01"}--></span></a></li>
         </ul>
     </div>
 
@@ -55,9 +55,9 @@
         <tr>
             <th><!--{t string="tpl_494"}--></th>
             <th><!--{t string="tpl_495"}--></th>
-            <th class="edit"><!--{t string="tpl_003"}--></th>
-            <th class="delete"><!--{t string="tpl_004"}--></th>
-            <th><!--{t string="tpl_005"}--></th>
+            <th class="edit"><!--{t string="tpl_Edit_01"}--></th>
+            <th class="delete"><!--{t string="tpl_Remove_01"}--></th>
+            <th><!--{t string="tpl_Move_01"}--></th>
         </tr>
         <!--{section name=cnt loop=$arrClass}-->
             <tr style="background:<!--{if $tpl_class_id != $arrClass[cnt].class_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->;">
@@ -66,7 +66,7 @@
                 <td align="center"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnClassCatPage(<!--{$arrClass[cnt].class_id}-->); return false;"><!--{t string="tpl_495"}--></a></td>
                 <td align="center">
                     <!--{if $tpl_class_id != $arrClass[cnt].class_id}-->
-                        <a href="?" onclick="fnModeSubmit('pre_edit', 'class_id', <!--{$arrClass[cnt].class_id}-->); return false;"><!--{t string="tpl_003"}--></a>
+                        <a href="?" onclick="fnModeSubmit('pre_edit', 'class_id', <!--{$arrClass[cnt].class_id}-->); return false;"><!--{t string="tpl_Edit_01"}--></a>
                     <!--{else}-->
                         <!--{t string="tpl_026"}-->
                     <!--{/if}-->
@@ -75,7 +75,7 @@
                     <!--{if $arrClassCatCount[$class_id] > 0}-->
                         -
                     <!--{else}-->
-                        <a href="?" onclick="fnModeSubmit('delete', 'class_id', <!--{$arrClass[cnt].class_id}-->); return false;"><!--{t string="tpl_004"}--></a>
+                        <a href="?" onclick="fnModeSubmit('delete', 'class_id', <!--{$arrClass[cnt].class_id}-->); return false;"><!--{t string="tpl_Remove_01"}--></a>
                     <!--{/if}-->
                 </td>
                 <td align="center">

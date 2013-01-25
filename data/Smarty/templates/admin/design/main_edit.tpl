@@ -44,13 +44,13 @@ function fnTargetSelf(){
     <!--{/if}-->
     <table>
         <tr>
-            <th><!--{t string="tpl_002"}--></th>
+            <th><!--{t string="tpl_Name_01"}--></th>
             <td>
                 <!--{assign var=key value="page_name"}-->
                 <!--{if $arrForm.edit_flg.value == 2}-->
                     <!--{$arrForm[$key].value|h}--><input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" />
                 <!--{else}-->
-                    <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length|h}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length|h}--></span>
+                    <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length|h}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$arrForm[$key].length|h}--></span>
                 <!--{/if}-->
                 <!--{if $arrErr[$key] != ""}-->
                     <div class="message">
@@ -67,7 +67,7 @@ function fnTargetSelf(){
                     <!--{$smarty.const.HTTP_URL|h}--><!--{$arrForm[$key].value|h}-->.php
                     <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" />
                 <!--{else}-->
-                    <!--{$smarty.const.USER_URL|h}--><input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length|h}-->" style="ime-mode: disabled;<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box40" />.php<span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length|h}--></span>
+                    <!--{$smarty.const.USER_URL|h}--><input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length|h}-->" style="ime-mode: disabled;<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box40" />.php<span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$arrForm[$key].length|h}--></span>
                 <!--{/if}-->
                 <!--{if $arrErr[$key] != ""}-->
                     <div class="attention">
@@ -105,10 +105,10 @@ function fnTargetSelf(){
         <col width="10%" />
         <col width="10%" />
         <tr>
-            <th><!--{t string="tpl_002"}--></th>
+            <th><!--{t string="tpl_Name_01"}--></th>
             <th><!--{t string="tpl_284"}--></th>
             <th><!--{t string="tpl_286"}--></th>
-            <th><!--{t string="tpl_004"}--></th>
+            <th><!--{t string="tpl_Remove_01"}--></th>
         </tr>
         <!--{foreach key=key item=item from=$arrPageList}-->
             <tr style="<!--{if $item.page_id == $page_id}-->background-color: <!--{$smarty.const.SELECT_RGB}-->;<!--{/if}-->">
@@ -116,16 +116,16 @@ function fnTargetSelf(){
                     <!--{$item.page_name}-->
                 </td>
                 <td class="center">
-                    <a href="./<!--{$smarty.const.DIR_INDEX_PATH}-->?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->" ><!--{t string="tpl_003"}--></a>
+                    <a href="./<!--{$smarty.const.DIR_INDEX_PATH}-->?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->" ><!--{t string="tpl_Edit_01"}--></a>
                 </td>
                 <td class="center">
                     <!--{if $item.filename|strlen >= 1}-->
-                        <a href="?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->"><!--{t string="tpl_003"}--></a>
+                        <a href="?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->"><!--{t string="tpl_Edit_01"}--></a>
                     <!--{/if}-->
                 </td>
                 <td class="center">
                     <!--{if $item.edit_flg == 1}-->
-                        <a href="javascript:;" onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','delete','page_id','<!--{$item.page_id|escape:'javascript'|h}-->'); return false;"><!--{t string="tpl_004"}--></a>
+                        <a href="javascript:;" onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','delete','page_id','<!--{$item.page_id|escape:'javascript'|h}-->'); return false;"><!--{t string="tpl_Remove_01"}--></a>
                     <!--{/if}-->
                 </td>
             </tr>

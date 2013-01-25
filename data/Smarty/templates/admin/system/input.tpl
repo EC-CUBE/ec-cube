@@ -103,7 +103,7 @@ self.moveTo(20,20);self.focus();
 
 <div class="btn-area">
     <ul>
-        <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', '<!--{$tpl_mode|h}-->', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
+        <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', '<!--{$tpl_mode|h}-->', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_Save and continue_01"}--></span></a></li>
     </ul>
 </div>
 </form>

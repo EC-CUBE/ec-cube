@@ -85,7 +85,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_022_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Title<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
                 <!--{if $arrErr.title}--><span class="attention"><!--{$arrErr.title}--></span><!--{/if}-->
                 <input type="text" class="box60" name="title" value="<!--{$arrForm.title|h}-->" style="<!--{$arrErr.title|sfGetErrorColor}-->" size=30><span class="attention">
@@ -104,7 +104,7 @@
     <div class="btn-area">
         <ul>
             <li><a class="btn-action" href="javascript:;" onclick="document.form1.action='./review.php'; fnModeSubmit('search','',''); return false;" ><span class="btn-prev"><!--{t string="tpl_227"}--></span></a></li>
-            <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('complete','',''); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('complete','',''); return false;"><span class="btn-next"><!--{t string="tpl_Save and continue_01"}--></span></a></li>
         </ul>
     </div>
 </div>

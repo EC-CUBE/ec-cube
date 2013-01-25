@@ -40,8 +40,8 @@
             <th><!--{t string="tpl_351"}--></th>
             <th><!--{t string="tpl_311"}--></th>
             <th><!--{t string="tpl_352"}--></th>
-            <th><!--{t string="tpl_003"}--></th>
-            <th><!--{t string="tpl_004"}--></th>
+            <th><!--{t string="tpl_Edit_01"}--></th>
+            <th><!--{t string="tpl_Remove_01"}--></th>
             <th><!--{t string="tpl_282"}--></th>
         </tr>
         <!--{section name=data loop=$arrTemplates}-->
@@ -50,8 +50,8 @@
             <td class="left"><!--{$arrTemplates[data].subject|h}--></td>
             <!--{assign var=type value=$arrTemplates[data].mail_method|h}-->
             <td><!--{$arrMagazineType[$type]}--></td>
-            <td><a href="./template_input.php?mode=edit&amp;template_id=<!--{$arrTemplates[data].template_id}-->"><!--{t string="tpl_003"}--></a></td>
-            <td><a href="#" onclick="fnDelete('?mode=delete&amp;id=<!--{$arrTemplates[data].template_id}-->'); return false;"><!--{t string="tpl_004"}--></a></td>
+            <td><a href="./template_input.php?mode=edit&amp;template_id=<!--{$arrTemplates[data].template_id}-->"><!--{t string="tpl_Edit_01"}--></a></td>
+            <td><a href="#" onclick="fnDelete('?mode=delete&amp;id=<!--{$arrTemplates[data].template_id}-->'); return false;"><!--{t string="tpl_Remove_01"}--></a></td>
             <td><a href="#" onclick="win03('./preview.php?mode=template&amp;template_id=<!--{$arrTemplates[data].template_id}-->','preview','650','700'); return false;" target="_blank"><!--{t string="tpl_282"}--></a></td>
         </tr>
         <!--{/section}-->

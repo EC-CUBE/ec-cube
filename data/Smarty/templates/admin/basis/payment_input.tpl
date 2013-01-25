@@ -39,7 +39,7 @@
         <col width="20%" />
         <col width="80%" />
             <tr>
-                <th><!--{t string="tpl_016_1" escape="none"}--></th>
+                <th><!--{t string="tpl_Payment method<span class='attention'> *</span>_01" escape="none"}--></th>
                 <td>
                     <!--{assign var=key value="payment_method"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -92,8 +92,8 @@
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="location.href='./payment.php';"><span class="btn-prev"><!--{t string="tpl_020"}--></span></a></li>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="location.href='./payment.php';"><span class="btn-prev"><!--{t string="tpl_Return to previous page_01"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_Save and continue_01"}--></span></a></li>
         </ul>
     </div>
 </div>

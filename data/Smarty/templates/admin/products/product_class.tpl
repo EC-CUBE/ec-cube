@@ -200,7 +200,7 @@
             <th><!--{t string="tpl_557_1" escape="none"}--></th>
             <th><!--{t string="tpl_603" escape="none" T_FIELD=$smarty.const.NORMAL_PRICE_TITLE}--></th>
             <th><!--{t string="tpl_603" escape="none" T_FIELD=$smarty.const.SALE_PRICE_TITLE}--><span class="attention">*</span></th>
-            <th><!--{t string="tpl_014_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Product type<span class='attention'> *</span>_01" escape="none"}--></th>
             <th><!--{t string="tpl_604" escape="none"}--><span class="red"><br><!--{t string="tpl_606" T_FIELD=$smarty.const.STEXT_LEN}--></span></th>
             <th><!--{t string="tpl_605" escape="none"}--></th>
         </tr>

@@ -93,8 +93,8 @@ function lfnSortItem(mode,data){
         <tr>
             <th><!--{t string="tpl_186"}--></th>
             <th><!--{t string="tpl_187"}--></th>
-            <th><!--{t string="tpl_003"}--></th>
-            <th><!--{t string="tpl_004"}--></th>
+            <th><!--{t string="tpl_Edit_01"}--></th>
+            <th><!--{t string="tpl_Remove_01"}--></th>
 			<th><!--{t string="tpl_356"}--></th>
         </tr>
 
@@ -141,14 +141,14 @@ function lfnSortItem(mode,data){
             <td>
                 <!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->
                     <a href="javascript:;" onclick="lfnCheckSetItem('<!--{$smarty.section.cnt.iteration}-->'); return false;" target="_blank">
-                        <!--{t string="tpl_003"}--></a>
+                        <!--{t string="tpl_Edit_01"}--></a>
                 <!--{else}-->
                     - -
                 <!--{/if}-->
             </td>
             <td>
                 <!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->
-                        <a href="javascript:;" onClick="return fnInsertValAndSubmit( document.form<!--{$smarty.section.cnt.iteration}-->, 'mode', 'delete', '<!--{t string="tpl_190"}-->' )"><!--{t string="tpl_004"}--></a>
+                        <a href="javascript:;" onClick="return fnInsertValAndSubmit( document.form<!--{$smarty.section.cnt.iteration}-->, 'mode', 'delete', '<!--{t string="tpl_190"}-->' )"><!--{t string="tpl_Remove_01"}--></a>
                 <!--{else}-->
                     - -
                 <!--{/if}-->
@@ -167,7 +167,7 @@ function lfnSortItem(mode,data){
         <tr><td colspan="4" class="no-border-w" height="20"></td></tr>
         <!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->
         <tr><td colspan="4" class="no-border">
-        <a class="btn-action" href="javascript:;" onclick="lfnCheckSubmit(document.form<!--{$smarty.section.cnt.iteration}-->); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a>
+        <a class="btn-action" href="javascript:;" onclick="lfnCheckSubmit(document.form<!--{$smarty.section.cnt.iteration}-->); return false;"><span class="btn-next"><!--{t string="tpl_Save and continue_01"}--></span></a>
         </td>
         </tr>
         <!--{/if}-->

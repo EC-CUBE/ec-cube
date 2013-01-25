@@ -89,7 +89,7 @@
 
         <!--{if $arrForm.has_product_class != true}-->
             <tr>
-                <th><!--{t string="tpl_014"}--></th>
+                <th><!--{t string="tpl_Product type_01"}--></th>
                 <td>
                     <!--{$arrProductType[$arrForm.product_type_id]}-->
                 </td>
@@ -294,8 +294,8 @@
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('confirm_return','',''); return false;"><span class="btn-prev"><!--{t string="tpl_020"}--></span></a></li>
-            <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('confirm_return','',''); return false;"><span class="btn-prev"><!--{t string="tpl_Return to previous page_01"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next"><!--{t string="tpl_Save and continue_01"}--></span></a></li>
         </ul>
     </div>
 </div>

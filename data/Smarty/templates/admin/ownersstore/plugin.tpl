@@ -199,7 +199,7 @@
                             <!-- アップデート -->
                                 <a class="update_link" href="javascript:;" name="<!--{$plugin.plugin_id}-->"><!--{t string="tpl_472"}--></a>&nbsp;|&nbsp;
                             <!-- 削除 -->
-                                <a  href="javascript:;" name="uninstall" onclick="uninstall(<!--{$plugin.plugin_id}-->, '<!--{$plugin.plugin_code}-->'); return false;"><!--{t string="tpl_004"}--></a>&nbsp;|&nbsp;
+                                <a  href="javascript:;" name="uninstall" onclick="uninstall(<!--{$plugin.plugin_id}-->, '<!--{$plugin.plugin_code}-->'); return false;"><!--{t string="tpl_Remove_01"}--></a>&nbsp;|&nbsp;
                             <!-- 有効/無効 -->
                                 <!--{if $plugin.enable == $smarty.const.PLUGIN_ENABLE_TRUE}-->
                                     <label><input id="plugin_enable" type="checkbox" name="disable" value="<!--{$plugin.plugin_id}-->" id="login_memory" checked="checked"><!--{t string="tpl_473"}--></input></label><br/>

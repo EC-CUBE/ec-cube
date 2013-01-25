@@ -591,8 +591,8 @@
             <th rowspan="2"><!--{t string="tpl_208"}--></th>
             <th rowspan="2"><!--{t string="tpl_215"}--></th>
             <th><!--{t string="tpl_037"}--></th>
-            <th rowspan="2"><!--{t string="tpl_003"}--></th>
-            <th rowspan="2"><!--{t string="tpl_004"}--></th>
+            <th rowspan="2"><!--{t string="tpl_Edit_01"}--></th>
+            <th rowspan="2"><!--{t string="tpl_Remove_01"}--></th>
         </tr>
         <tr>
             <th><!--{t string="tpl_108"}--></th>
@@ -604,8 +604,8 @@
                 <td rowspan="2"><!--{$row.name01|h}--> <!--{$row.name02|h}--></td>
                 <td class="center" rowspan="2"><!--{$arrSex[$row.sex]|h}--></td>
                 <td><!--{$row.tel01|h}-->-<!--{$row.tel02|h}-->-<!--{$row.tel03|h}--></td>
-                <td class="center" rowspan="2"><span class="icon_edit"><a href="#" onclick="return fnEdit('<!--{$row.customer_id|h}-->');"><!--{t string="tpl_003"}--></a></span></td>
-                <td class="center" rowspan="2"><span class="icon_delete"><a href="#" onclick="return fnDelete('<!--{$row.customer_id|h}-->');"><!--{t string="tpl_004"}--></a></span></td>
+                <td class="center" rowspan="2"><span class="icon_edit"><a href="#" onclick="return fnEdit('<!--{$row.customer_id|h}-->');"><!--{t string="tpl_Edit_01"}--></a></span></td>
+                <td class="center" rowspan="2"><span class="icon_delete"><a href="#" onclick="return fnDelete('<!--{$row.customer_id|h}-->');"><!--{t string="tpl_Remove_01"}--></a></span></td>
             </tr>
             <tr>
                 <td><!--{mailto address=$row.email encode="javascript"}--></a><!--{if $row.status eq 1}--><br /><a href="#" onclick="return fnReSendMail('<!--{$row.customer_id|h}-->');"><!--{t string="tpl_259"}--></a><!--{/if}--></td>

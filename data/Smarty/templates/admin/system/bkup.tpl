@@ -45,7 +45,7 @@
                 <!--{if $arrErr.bkup_name}-->
                 <span class="attention"><!--{$arrErr.bkup_name}--></span>
                 <!--{/if}-->
-                <input type="text" name="bkup_name" value="<!--{$arrForm.bkup_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.bkup_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" /><span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.STEXT_LEN}--></span>
+                <input type="text" name="bkup_name" value="<!--{$arrForm.bkup_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.bkup_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" /><span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.STEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -55,7 +55,7 @@
                     <span class="attention"><!--{$arrErr.bkup_memo}--></span>
                 <!--{/if}-->
                 <textarea name="bkup_memo" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" cols="60" rows="5" class="area60" style="<!--{if $arrErr.bkup_memo != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"><!--{"\n"}--><!--{$arrForm.bkup_memo|h}--></textarea>
-                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.MTEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.MTEXT_LEN}--></span>
             </td>
         </tr>
     </table>
@@ -78,7 +78,7 @@
                 <th><!--{t string="tpl_351"}--></th>
                 <th><!--{t string="tpl_652"}--></th>
                 <th><!--{t string="tpl_302"}--></th>
-                <th class="delete"><!--{t string="tpl_004"}--></th>
+                <th class="delete"><!--{t string="tpl_Remove_01"}--></th>
             </tr>
             <!--{section name=cnt loop=$arrBkupList}-->
                 <tr>
@@ -88,7 +88,7 @@
                     <td align="center"><a href="javascript:;" onclick="fnRestore('<!--{$arrBkupList[cnt].bkup_name}-->'); return false;"><!--{t string="tpl_652"}--></a></td>
                     <td align="center"><a href="javascript:;" onclick="fnModeSubmit('download','list_name','<!--{$arrBkupList[cnt].bkup_name}-->'); return false;"><!--{t string="tpl_302"}--></a></td>
                     <td align="center">
-                        <a href="javascript:;" onclick="fnModeSubmit('delete','list_name','<!--{$arrBkupList[cnt].bkup_name}-->'); return false;"><!--{t string="tpl_004"}--></a>
+                        <a href="javascript:;" onclick="fnModeSubmit('delete','list_name','<!--{$arrBkupList[cnt].bkup_name}-->'); return false;"><!--{t string="tpl_Remove_01"}--></a>
                     </td>
                 </tr>
             <!--{/section}-->

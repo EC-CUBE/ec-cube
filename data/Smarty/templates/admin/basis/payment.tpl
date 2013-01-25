@@ -43,12 +43,12 @@
         <col width="15%" />
         <tr>
             <th class="center"><!--{t string="tpl_074"}--></th>
-            <th><!--{t string="tpl_016"}--></th>
+            <th><!--{t string="tpl_Payment method_01"}--></th>
             <th><!--{t string="tpl_075" escape="none"}--></th>
             <th><!--{t string="tpl_076"}--></th>
-            <th><!--{t string="tpl_003"}--></th>
-            <th><!--{t string="tpl_004"}--></th>
-            <th><!--{t string="tpl_005"}--></th>
+            <th><!--{t string="tpl_Edit_01"}--></th>
+            <th><!--{t string="tpl_Remove_01"}--></th>
+            <th><!--{t string="tpl_Move_01"}--></th>
         </tr>
         <!--{section name=cnt loop=$arrPaymentListFree}-->
         <tr>
@@ -62,8 +62,8 @@
             <td class="center">
                 <!--{t string="currency_prefix"}--><!--{if $arrPaymentListFree[cnt].rule_max > 0}--><!--{$arrPaymentListFree[cnt].rule_max|number_format|h}--><!--{else}-->0<!--{/if}--><!--{t string="currency_suffix"}-->
                 <!--{if $arrPaymentListFree[cnt].upper_rule > 0}--><!--{t string="-"}--><!--{t string="currency_prefix"}--><!--{$arrPaymentListFree[cnt].upper_rule|number_format|h}--><!--{t string="currency_suffix"}--><!--{elseif $arrPaymentListFree[cnt].upper_rule == "0"}--><!--{else}--><!--{t string="-"}--><!--{t string="tpl_053"}--><!--{/if}--></td>
-            <td class="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="?" onclick="fnChangeAction('./payment_input.php'); fnModeSubmit('pre_edit', 'payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;"><!--{t string="tpl_003"}--></a><!--{else}-->-<!--{/if}--></td>
-            <td class="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="?" onclick="fnModeSubmit('delete', 'payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;"><!--{t string="tpl_004"}--></a><!--{else}-->-<!--{/if}--></td>
+            <td class="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="?" onclick="fnChangeAction('./payment_input.php'); fnModeSubmit('pre_edit', 'payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;"><!--{t string="tpl_Edit_01"}--></a><!--{else}-->-<!--{/if}--></td>
+            <td class="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="?" onclick="fnModeSubmit('delete', 'payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;"><!--{t string="tpl_Remove_01"}--></a><!--{else}-->-<!--{/if}--></td>
             <td class="center">
             <!--{if $smarty.section.cnt.iteration != 1}-->
             <a href="?" onclick="fnModeSubmit('up','payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;"><!--{t string="tpl_077"}--></a>

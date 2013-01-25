@@ -345,10 +345,10 @@ function fnTargetSelf(){
     </div>
     <table class="list">
     <tr>
-        <th><!--{t string="tpl_002"}--></th>
+        <th><!--{t string="tpl_Name_01"}--></th>
         <th class="edit"><!--{t string="tpl_284"}--></th>
         <th class="edit center"><!--{t string="tpl_286"}--></th>
-        <th class="delete center"><!--{t string="tpl_004"}--></th>
+        <th class="delete center"><!--{t string="tpl_Remove_01"}--></th>
     </tr>
     <!--{foreach key=key item=item from=$arrEditPage}-->
         <tr style="background-color:<!--{if $item.page_id == $page_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
@@ -356,16 +356,16 @@ function fnTargetSelf(){
                 <!--{$item.page_name}-->
             </td>
             <td class="center">
-                <a href="?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->" ><!--{t string="tpl_003"}--></a>
+                <a href="?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->" ><!--{t string="tpl_Edit_01"}--></a>
             </td>
             <td class="center">
                 <!--{if $item.filename|strlen >= 1}-->
-                    <a href="main_edit.php?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->"><!--{t string="tpl_003"}--></a>
+                    <a href="main_edit.php?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->"><!--{t string="tpl_Edit_01"}--></a>
                 <!--{/if}-->
             </td>
             <td class="center">
                 <!--{if $item.edit_flg == 1}-->
-                    <a href="#" onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','page_id','<!--{$item.page_id|h}-->'); return false;"><!--{t string="tpl_004"}--></a>
+                    <a href="#" onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','page_id','<!--{$item.page_id|h}-->'); return false;"><!--{t string="tpl_Remove_01"}--></a>
                 <!--{/if}-->
             </td>
         </tr>

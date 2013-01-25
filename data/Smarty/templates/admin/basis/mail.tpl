@@ -81,7 +81,7 @@ function checkFlagAndSubmit(){
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <!--{/if}-->
             <textarea name="header" cols="75" rows="12" class="area75" onChange="setFlag();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{"\n"}--><!--{$arrForm[$key]|h}--></textarea><br />
-            <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.LTEXT_LEN}-->
+            <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.LTEXT_LEN}-->
             </span>
             <div>
                 <a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','header','cnt_header'); return false;"><span><!--{t string="tpl_072"}--></span></a>
@@ -101,7 +101,7 @@ function checkFlagAndSubmit(){
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <!--{/if}-->
             <textarea name="footer" cols="75" rows="12" class="area75" onChange="setFlag();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{"\n"}--><!--{$arrForm[$key]|h}--></textarea><br />
-            <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.LTEXT_LEN}--></span>
+            <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.LTEXT_LEN}--></span>
             <div>
                 <a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','footer','cnt_footer'); return false;"><span><!--{t string="tpl_072"}--></span></a>
                 <!--{t string="tpl_358"}-->
@@ -113,7 +113,7 @@ function checkFlagAndSubmit(){
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'regist', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'regist', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_Save and continue_01"}--></span></a></li>
         </ul>
     </div>
 </div>

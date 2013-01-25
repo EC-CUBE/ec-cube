@@ -386,7 +386,7 @@
                 <br />
                 <a class="btn-normal" href="javascript:;" name="change" onclick="win03('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php?no=<!--{$product_index}-->&amp;order_id=<!--{$arrForm.order_id.value|h}-->', 'search', '615', '500'); return false;"><!--{t string="tpl_723"}--></a>
                 <!--{if count($arrForm.quantity.value) > 1}-->
-                    <a class="btn-normal" href="javascript:;" name="delete" onclick="fnSetFormVal('form1', 'delete_no', <!--{$product_index}-->); fnModeSubmit('delete_product','anchor_key','order_products'); return false;"><!--{t string="tpl_004"}--></a>
+                    <a class="btn-normal" href="javascript:;" name="delete" onclick="fnSetFormVal('form1', 'delete_no', <!--{$product_index}-->); fnModeSubmit('delete_product','anchor_key','order_products'); return false;"><!--{t string="tpl_Remove_01"}--></a>
                 <!--{/if}-->
             <input type="hidden" name="product_type_id[<!--{$product_index}-->]" value="<!--{$arrForm.product_type_id.value[$product_index]|h}-->" id="product_type_id_<!--{$product_index}-->" />
             <input type="hidden" name="product_id[<!--{$product_index}-->]" value="<!--{$arrForm.product_id.value[$product_index]|h}-->" id="product_id_<!--{$product_index}-->" />
@@ -708,7 +708,7 @@
             <!--{if count($arrSearchHidden) > 0}-->
             <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_URLPATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev"><!--{t string="tpl_227"}--></span></a></li>
             <!--{/if}-->
-            <li><a class="btn-action" href="javascript:;" onclick="return fnFormConfirm(); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="return fnFormConfirm(); return false;"><span class="btn-next"><!--{t string="tpl_Save and continue_01"}--></span></a></li>
         </ul>
     </div>
 </div>

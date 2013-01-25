@@ -118,15 +118,15 @@ $(function(){
 
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_022_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Title<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
                 <!--{if $arrErr.title}--><span class="attention"><!--{$arrErr.title}--></span><!--{/if}-->
                 <input type="text" name="title" value="<!--{$arrForm.title|h}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="" size="60" class="box60"/>
-                <span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.SMTEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.SMTEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_024_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Date<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
                 <!--{if $arrErr.date || $arrErr.month || $arrErr.day}-->
                 <span class="attention"><!--{$arrErr.date}--></span>
@@ -137,14 +137,14 @@ $(function(){
                 <input type="hidden" name="month" value="<!--{$arrForm.month}-->" />
                 <input type="hidden" name="day" value="<!--{$arrForm.day}-->" />
                 <br />
-                <span class="attention"><!--{t string="tpl_025"}--></span>
+                <span class="attention"><!--{t string="tpl_Compensating holidays are not automatically set. Set the dates for compensating holidays._01"}--></span>
             </td>
         </tr>
     </table>
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_Save and continue_01"}--></span></a></li>
         </ul>
     </div>
 
@@ -155,11 +155,11 @@ $(function(){
         <col width="10%" />
         <col width="20%" />
         <tr>
-            <th><!--{t string="tpl_022"}--></th>
-            <th><!--{t string="tpl_024"}--></th>
-            <th class="edit"><!--{t string="tpl_003"}--></th>
-            <th class="delete"><!--{t string="tpl_004"}--></th>
-            <th><!--{t string="tpl_005"}--></th>
+            <th><!--{t string="tpl_Title_01"}--></th>
+            <th><!--{t string="tpl_Date_01"}--></th>
+            <th class="edit"><!--{t string="tpl_Edit_01"}--></th>
+            <th class="delete"><!--{t string="tpl_Remove_01"}--></th>
+            <th><!--{t string="tpl_Move_01"}--></th>
         </tr>
         <!--{section name=cnt loop=$arrHoliday}-->
         <tr style="background:<!--{if $tpl_holiday_id != $arrHoliday[cnt].holiday_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->;">
@@ -168,7 +168,7 @@ $(function(){
             <td><!--{t string="tpl_727" T_FIELD1=$arrHoliday[cnt].month|h T_FIELD2=$arrHoliday[cnt].day|h}--></td>
             <td class="center">
                 <!--{if $tpl_holiday_id != $arrHoliday[cnt].holiday_id}-->
-                <a href="?" onclick="fnModeSubmit('pre_edit', 'holiday_id', <!--{$arrHoliday[cnt].holiday_id}-->); return false;"><!--{t string="tpl_003"}--></a>
+                <a href="?" onclick="fnModeSubmit('pre_edit', 'holiday_id', <!--{$arrHoliday[cnt].holiday_id}-->); return false;"><!--{t string="tpl_Edit_01"}--></a>
                 <!--{else}-->
                 <!--{t string="tpl_026"}-->
                 <!--{/if}-->
@@ -177,7 +177,7 @@ $(function(){
                 <!--{if $arrClassCatCount[$class_id] > 0}-->
                 -
                 <!--{else}-->
-                <a href="?" onclick="fnModeSubmit('delete', 'holiday_id', <!--{$arrHoliday[cnt].holiday_id}-->); return false;"><!--{t string="tpl_004"}--></a>
+                <a href="?" onclick="fnModeSubmit('delete', 'holiday_id', <!--{$arrHoliday[cnt].holiday_id}-->); return false;"><!--{t string="tpl_Remove_01"}--></a>
                 <!--{/if}-->
             </td>
             <td class="center">

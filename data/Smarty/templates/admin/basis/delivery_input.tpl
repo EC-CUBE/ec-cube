@@ -28,32 +28,32 @@
 <!--{assign var=key value="deliv_id"}-->
 <input type="hidden" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" />
 <div id="basis" class="contents-main">
-    <h2><!--{t string="tpl_008"}--></h2>
+    <h2><!--{t string="tpl_Delivery method registration_01"}--></h2>
 
     <table>
         <tr>
-            <th><!--{t string="tpl_009_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Delivery company name<span class='attention'> *</span>_01" escape="none"}--></th>
             <td colspan="3">
             <!--{assign var=key value="name"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_002_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Name<span class='attention'> *</span>_01" escape="none"}--></th>
             <td colspan="3">
             <!--{assign var=key value="service_name"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_010"}--></th>
+            <th><!--{t string="tpl_Explanation_01"}--></th>
             <td colspan="3">
             <!--{assign var=key value="remark"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <textarea name="<!--{$arrForm[$key].keyname}-->" cols="60" rows="8" class="area60" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{"\n"}--><!--{$arrForm[$key].value|h}--></textarea></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_011"}--></th>
+            <th><!--{t string="tpl_Voucher No. URL_01"}--></th>
             <td colspan="3">
             <!--{assign var=key value="confirm_url"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -71,7 +71,7 @@
             </tr>
             <!--{/if}-->
             <tr>
-            <th><!--{t string="tpl_012" T_FIELD=$keyno}--></th>
+            <th><!--{t string="tpl_Delivery time T_FIELD_01" T_FIELD=$keyno}--></th>
             <!--{if $smarty.section.cnt.last}-->
             <!--{assign var=colspan value="3"}-->
             <!--{else}-->
@@ -80,7 +80,7 @@
             <td colspan="<!--{$colspan}-->">
             <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="20" class="box20" /></td>
         <!--{else}-->
-            <th><!--{t string="tpl_012" T_FIELD=$keyno}--></th>
+            <th><!--{t string="tpl_Delivery time T_FIELD_01" T_FIELD=$keyno}--></th>
             <td><input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" size="20" class="box20" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /> </td>
             </tr>
         <!--{/if}-->
@@ -88,20 +88,20 @@
 
     </table>
 
-    <h2><!--{t string="tpl_013"}--></h2>
+    <h2><!--{t string="tpl_Available product types_01"}--></h2>
     <!--{assign var=key value="product_type_id"}-->
     <table>
         <tr>
-            <th><!--{t string="tpl_014"}--></th>
+            <th><!--{t string="tpl_Product type_01"}--></th>
             <td><span class="attention"><!--{$arrErr[$key]}--></span><!--{html_radios name=$key options=$arrProductType selected=$arrForm[$key].value separator='&nbsp;&nbsp;'}--></td>
         </tr>
     </table>
 
-    <h2><!--{t string="tpl_015"}--></h2>
+    <h2><!--{t string="tpl_Available payment methods_01"}--></h2>
     <!--{assign var=key value="payment_ids"}-->
     <table>
         <tr>
-            <th><!--{t string="tpl_016"}--></th>
+            <th><!--{t string="tpl_Payment method_01"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{html_checkboxes name=$key options=$arrPayments selected=$arrForm[$key].value separator='&nbsp;&nbsp;'}-->
@@ -110,9 +110,9 @@
     </table>
     <!--{*
     <!--{if $smarty.const.INPUT_DELIV_FEE}-->
-    <h2><!--{t string="tpl_017"}--></h2>
+    <h2><!--{t string="tpl_Delivery charge registration_01"}--></h2>
     <div class="btn">
-        <!--{t string="tpl_708"}--> <input type='text' name='fee_all' class='box10' />　<a class="btn-normal" href="javascript:;" onclick="fnSetDelivFee(<!--{$smarty.const.DELIVFEE_MAX}-->); return false;"><span><!--{t string="tpl_019"}--></span></a>
+        <!--{t string="tpl_708"}--> <input type='text' name='fee_all' class='box10' />　<a class="btn-normal" href="javascript:;" onclick="fnSetDelivFee(<!--{$smarty.const.DELIVFEE_MAX}-->); return false;"><span><!--{t string="tpl_Calculate_01"}--></span></a>
     </div>
     <table>
         <!--{section name=cnt loop=$smarty.const.DELIVFEE_MAX}-->
@@ -147,8 +147,8 @@
     *}-->
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="location.href='./delivery.php';"><span class="btn-prev"><!--{t string="tpl_020"}--></span></a></li>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="location.href='./delivery.php';"><span class="btn-prev"><!--{t string="tpl_Return to previous page_01"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_Save and continue_01"}--></span></a></li>
         </ul>
     </div>
 </div>

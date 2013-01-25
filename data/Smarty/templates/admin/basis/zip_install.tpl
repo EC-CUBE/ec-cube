@@ -77,9 +77,9 @@
         </div>
 
         <div class="basis-zip-item end">
-            <h2><!--{t string="tpl_004"}--></h2>
+            <h2><!--{t string="tpl_Remove_01"}--></h2>
             <p><!--{t string="tpl_141"}--></p>
-            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_004"}--></span></a></p>
+            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_Remove_01"}--></span></a></p>
         </div>
     </form>
 <!--{else}-->

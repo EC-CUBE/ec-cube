@@ -62,7 +62,7 @@ function submitRegister() {
             <th><!--{t string="tpl_300"}--></th>
             <th><!--{t string="tpl_301"}--></th>
             <th><!--{t string="tpl_302"}--></th>
-            <th class="delete"><!--{t string="tpl_004"}--></th>
+            <th class="delete"><!--{t string="tpl_Remove_01"}--></th>
         </tr>
         <!--{foreach from=$templates item=tpl}-->
         <!--{assign var=tplcode value=$tpl.template_code}-->
@@ -71,13 +71,13 @@ function submitRegister() {
             <td class="left"><!--{$tpl.template_name|h}--></td>
             <td class="left">data/Smarty/templates/<!--{$tplcode|h}-->/</td>
             <td><span class="icon_confirm"><a href="javascript:;" onClick="fnFormModeSubmit('form2', 'download','template_code','<!--{$tplcode}-->');return false;"><!--{t string="tpl_302"}--></a></span></td>
-            <td><span class="icon_delete"><a href="javascript:;" onClick="fnFormModeSubmit('form2', 'delete','template_code','<!--{$tplcode}-->');return false;"><!--{t string="tpl_004"}--></a></span></td>
+            <td><span class="icon_delete"><a href="javascript:;" onClick="fnFormModeSubmit('form2', 'delete','template_code','<!--{$tplcode}-->');return false;"><!--{t string="tpl_Remove_01"}--></a></span></td>
         </tr>
         <!--{/foreach}-->
     </table>
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="submitRegister();return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="submitRegister();return false;"><span class="btn-next"><!--{t string="tpl_Save and continue_01"}--></span></a></li>
         </ul>
     </div>
 </div>

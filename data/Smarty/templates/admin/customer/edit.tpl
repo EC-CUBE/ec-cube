@@ -327,11 +327,11 @@
             <!--{* 購入履歴一覧表示テーブル *}-->
             <table class="list">
                 <tr>
-                    <th><!--{t string="tpl_024"}--></th>
+                    <th><!--{t string="tpl_Date_01"}--></th>
                     <th><!--{t string="tpl_231"}--></th>
                     <th><!--{t string="tpl_232"}--></th>
                     <th><!--{t string="tpl_233"}--></th>
-                    <th><!--{t string="tpl_016"}--></th>
+                    <th><!--{t string="tpl_Payment method_01"}--></th>
                 </tr>
                 <!--{section name=cnt loop=$arrPurchaseHistory}-->
                     <tr>

@@ -41,7 +41,7 @@
                 <th><!--{t string="tpl_315"}--></th>
                 <th><!--{t string="tpl_316"}--></th>
                 <th><!--{t string="tpl_317"}--></th>
-                <th class="delete"><!--{t string="tpl_004"}--></th>
+                <th class="delete"><!--{t string="tpl_Remove_01"}--></th>
             </tr>
             <!--{section name=cnt loop=$arrDataList}-->
             <tr>
@@ -63,7 +63,7 @@
                         <a href="index.php?mode=retry&amp;send_id=<!--{$arrDataList[cnt].send_id|h}-->" onclick="return window.confirm('<!--{t string="tpl_319"}-->');"><!--{t string="tpl_320"}--></a>
                     <!--{/if}-->
                 </td>
-                <td><a href="?mode=delete&send_id=<!--{$arrDataList[cnt].send_id|h}-->" onclick="return window.confirm('<!--{t string="tpl_321"}-->');"><!--{t string="tpl_004"}--></a></td>
+                <td><a href="?mode=delete&send_id=<!--{$arrDataList[cnt].send_id|h}-->" onclick="return window.confirm('<!--{t string="tpl_321"}-->');"><!--{t string="tpl_Remove_01"}--></a></td>
             </tr>
             <!--{/section}-->
         </table>

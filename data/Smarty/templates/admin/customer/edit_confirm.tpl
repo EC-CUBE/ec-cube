@@ -141,7 +141,7 @@ function func_return(){
         <div class="btn-area">
             <ul>
                 <li><a class="btn-action" href="javascript:;" onclick="func_return(); return false;"><span class="btn-prev"><!--{t string="tpl_247"}--></span></a></li>
-                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'complete', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'complete', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_Save and continue_01"}--></span></a></li>
             </ul>
         </div>
     </div>

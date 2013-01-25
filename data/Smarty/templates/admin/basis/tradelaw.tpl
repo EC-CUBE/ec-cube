@@ -35,7 +35,7 @@
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <!--{/if}-->
             <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" />
-			<span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length}--></span>
+			<span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$arrForm[$key].length}--></span>
 		</td>
         </tr>
         <tr>
@@ -45,7 +45,7 @@
             <!--{if $arrErr[$key]}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <!--{/if}-->
-            <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length}--></span></td>
+            <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$arrForm[$key].length}--></span></td>
         </tr>
         <tr>
             <th><!--{t string="tpl_033_1" escape="none"}--></th>
@@ -91,14 +91,14 @@
                     <!--{if $arrErr[$key]}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
                     <!--{/if}-->
-                    <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" size="60" class="box60" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /><span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length}--></span>
+                    <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" size="60" class="box60" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /><span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$arrForm[$key].length}--></span>
                     <br />
                     <!--{$smarty.const.SAMPLE_ADDRESS1}--><br />
                     <!--{assign var=key value="law_addr02"}-->
                     <!--{if $arrErr[$key]}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
                     <!--{/if}-->
-                    <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" size="60" class="box60" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /><span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length}--></span>
+                    <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" size="60" class="box60" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /><span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$arrForm[$key].length}--></span>
                     <br />
                     <!--{$smarty.const.SAMPLE_ADDRESS2}-->
             </td>
@@ -140,7 +140,7 @@
             <td>
             <!--{assign var=key value="law_email"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
-            <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length}--></span>
+            <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$arrForm[$key].length}--></span>
             </td>
         </tr>
         <tr>
@@ -148,7 +148,7 @@
             <td>
             <!--{assign var=key value="law_url"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
-            <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length}--></span>
+            <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$arrForm[$key].length}--></span>
             </td>
         </tr>
         <tr>
@@ -156,48 +156,48 @@
             <td>
             <!--{assign var=key value="law_term01"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
-            <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|h}--></textarea><span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length}--></span></td>
+            <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|h}--></textarea><span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$arrForm[$key].length}--></span></td>
         </tr>
         <tr>
             <th><!--{t string="tpl_117" escape="none"}--></th>
             <td>
             <!--{assign var=key value="law_term02"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
-            <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|h}--></textarea><span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length}--></span></td>
+            <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|h}--></textarea><span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$arrForm[$key].length}--></span></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_016_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Payment method<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
             <!--{assign var=key value="law_term03"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
-            <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|h}--></textarea><span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length}--></span></td>
+            <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|h}--></textarea><span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$arrForm[$key].length}--></span></td>
         </tr>
         <tr>
             <th><!--{t string="tpl_118" escape="none"}--></th>
             <td>
             <!--{assign var=key value="law_term04"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
-            <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|h}--></textarea><span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length}--></span></td>
+            <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|h}--></textarea><span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$arrForm[$key].length}--></span></td>
         </tr>
         <tr>
             <th><!--{t string="tpl_119" escape="none"}--></th>
             <td>
             <!--{assign var=key value="law_term05"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
-            <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|h}--></textarea><span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length}--></span></td>
+            <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|h}--></textarea><span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$arrForm[$key].length}--></span></td>
         </tr>
         <tr>
             <th><!--{t string="tpl_120" escape="none"}--></th>
             <td>
             <!--{assign var=key value="law_term06"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
-            <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|h}--></textarea><span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length}--></span></td>
+            <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|h}--></textarea><span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$arrForm[$key].length}--></span></td>
         </tr>
     </table>
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', '<!--{$tpl_mode}-->', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_021"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', '<!--{$tpl_mode}-->', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_Save and continue_01"}--></span></a></li>
         </ul>
     </div>
 </div>

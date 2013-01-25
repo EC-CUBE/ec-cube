@@ -53,9 +53,9 @@
                 <option value="<!--{$key}-->" ><!--{$item}--></option>
                 <!--{/if}-->
                 <!--{/foreach}-->
-                <option value="delete"><!--{t string="tpl_004"}--></option>
+                <option value="delete"><!--{t string="tpl_Remove_01"}--></option>
             </select>
-            <a class="btn-normal" href="javascript:;" onclick="fnSelectCheckSubmit(); return false;"><span><!--{t string="tpl_005"}--></span></a>
+            <a class="btn-normal" href="javascript:;" onclick="fnSelectCheckSubmit(); return false;"><span><!--{t string="tpl_Move_01"}--></span></a>
         </div>
         <span class="attention"><!--{t string="tpl_441" T_FIELD=$arrORDERSTATUS[$smarty.const.ORDER_CANCEL]}--></span><br />
 
@@ -80,7 +80,7 @@
                 <th><!--{t string="tpl_231"}--></th>
                 <th><!--{t string="tpl_359"}--></th>
                 <th><!--{t string="tpl_208"}--></th>
-                <th><!--{t string="tpl_016"}--></th>
+                <th><!--{t string="tpl_Payment method_01"}--></th>
                 <th><!--{t string="tpl_442" escape="none"}--></th>
                 <th><!--{t string="tpl_361"}--></th>
                 <th><!--{t string="tpl_233"}--></th>

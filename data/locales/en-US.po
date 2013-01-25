@@ -3580,88 +3580,88 @@ msgstr "A method for upward compatibility was used."
 msgid "t_Delivery company_01"
 msgstr "Delivery company"
 
-msgid "tpl_002"
+msgid "tpl_Name_01"
 msgstr "Name"
 
-msgid "tpl_002_1"
+msgid "tpl_Name<span class='attention'> *</span>_01"
 msgstr "Name<span class='attention'> *</span>"
 
-msgid "tpl_003"
+msgid "tpl_Edit_01"
 msgstr "Edit"
 
-msgid "tpl_004"
+msgid "tpl_Remove_01"
 msgstr "Remove"
 
-msgid "tpl_005"
+msgid "tpl_Move_01"
 msgstr "Move"
 
-msgid "tpl_006"
+msgid "tpl_Add delivery method/delivery charge_01"
 msgstr "Add delivery method/delivery charge"
 
-msgid "tpl_007"
+msgid "tpl_Enter delivery method_01"
 msgstr "Enter delivery method"
 
-msgid "tpl_008"
+msgid "tpl_Delivery method registration_01"
 msgstr "Delivery method registration"
 
-msgid "tpl_009_1"
+msgid "tpl_Delivery company name<span class='attention'> *</span>_01"
 msgstr "Delivery company name<span class='attention'> *</span>"
 
-msgid "tpl_010"
+msgid "tpl_Explanation_01"
 msgstr "Explanation"
 
-msgid "tpl_011"
+msgid "tpl_Voucher No. URL_01"
 msgstr "Voucher No. URL"
 
-msgid "tpl_012"
+msgid "tpl_Delivery time T_FIELD_01"
 msgstr "Delivery time T_FIELD"
 
-msgid "tpl_013"
+msgid "tpl_Available product types_01"
 msgstr "Available product types"
 
-msgid "tpl_014"
+msgid "tpl_Product type_01"
 msgstr "Product type"
 
-msgid "tpl_014_1"
+msgid "tpl_Product type<span class='attention'> *</span>_01"
 msgstr "Product type<span class='attention'> *</span>"
 
-msgid "tpl_015"
+msgid "tpl_Available payment methods_01"
 msgstr "Available payment methods"
 
-msgid "tpl_016"
+msgid "tpl_Payment method_01"
 msgstr "Payment method"
 
-msgid "tpl_016_1"
+msgid "tpl_Payment method<span class='attention'> *</span>_01"
 msgstr "Payment method<span class='attention'> *</span>"
 
-msgid "tpl_017"
+msgid "tpl_Delivery charge registration_01"
 msgstr "Delivery charge registration"
 
-msgid "tpl_019"
+msgid "tpl_Calculate_01"
 msgstr "Calculate"
 
-msgid "tpl_020"
+msgid "tpl_Return to previous page_01"
 msgstr "Return to previous page"
 
-msgid "tpl_021"
+msgid "tpl_Save and continue_01"
 msgstr "Save and continue"
 
-msgid "tpl_022"
+msgid "tpl_Title_01"
 msgstr "Title"
 
-msgid "tpl_022_1"
+msgid "tpl_Title<span class='attention'> *</span>_01"
 msgstr "Title<span class='attention'> *</span>"
 
-msgid "tpl_023"
+msgid "tpl_(T_FIELD characters max)_01"
 msgstr "(T_FIELD characters max)"
 
-msgid "tpl_024"
+msgid "tpl_Date_01"
 msgstr "Date"
 
-msgid "tpl_024_1"
+msgid "tpl_Date<span class='attention'> *</span>_01"
 msgstr "Date<span class='attention'> *</span>"
 
-msgid "tpl_025"
+msgid "tpl_Compensating holidays are not automatically set. Set the dates for compensating holidays._01"
 msgstr ""
 "Compensating holidays are not automatically set. Set the dates for "
 "compensating holidays."

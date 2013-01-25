@@ -295,8 +295,8 @@ $("*[name=search_endday]").val(dates[2]);
                 <th><!--{t string="tpl_188"}--></th>
                 <th><!--{t string="tpl_617"}--></th>
                 <th><!--{t string="tpl_619"}--></th>
-                <th class="edit"><!--{t string="tpl_003"}--></th>
-                <th class="delete"><!--{t string="tpl_004"}--></th>
+                <th class="edit"><!--{t string="tpl_Edit_01"}--></th>
+                <th class="delete"><!--{t string="tpl_Remove_01"}--></th>
             </tr>
 
             <!--{section name=cnt loop=$arrReview}-->
@@ -307,8 +307,8 @@ $("*[name=search_endday]").val(dates[2]);
                     <!--{assign var=key value="`$arrReview[cnt].recommend_level`"}-->
                     <td><!--{$arrRECOMMEND[$key]|h}--></td>
                     <td class="menu"><!--{if $arrReview[cnt].status eq 1}--><!--{t string="tpl_170"}--><!--{elseif $arrReview[cnt].status eq 2}--><!--{t string="tpl_620"}--><!--{/if}--></td>
-                    <td class="menu"><a href="javascript:;" onclick="fnChangeAction('./review_edit.php'); fnModeSubmit('','review_id','<!--{$arrReview[cnt].review_id}-->'); return false;"><!--{t string="tpl_003"}--></a></td>
-                    <td class="menu"><a href="javascript:;" onclick="fnModeSubmit('delete','review_id','<!--{$arrReview[cnt].review_id}-->'); return false;"><!--{t string="tpl_004"}--></a></td>
+                    <td class="menu"><a href="javascript:;" onclick="fnChangeAction('./review_edit.php'); fnModeSubmit('','review_id','<!--{$arrReview[cnt].review_id}-->'); return false;"><!--{t string="tpl_Edit_01"}--></a></td>
+                    <td class="menu"><a href="javascript:;" onclick="fnModeSubmit('delete','review_id','<!--{$arrReview[cnt].review_id}-->'); return false;"><!--{t string="tpl_Remove_01"}--></a></td>
                 </tr>
             <!--{/section}-->
         </table>

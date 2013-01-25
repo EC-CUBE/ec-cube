@@ -38,7 +38,7 @@
             <th colspan="2"><!--{t string="tpl_656"}--></th>
             <th rowspan="2"><!--{t string="tpl_657"}--></th>
             <th rowspan="2"><!--{t string="tpl_658"}--></th>
-            <th rowspan="2"><!--{t string="tpl_010"}--></th>
+            <th rowspan="2"><!--{t string="tpl_Explanation_01"}--></th>
         </tr>
         <tr>
             <th><!--{t string="tpl_659"}--></th>

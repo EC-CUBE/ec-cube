@@ -42,7 +42,7 @@
                 <td>
                     <!--{assign var=key value="bloc_name"}-->
                     <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" />
-                    <span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length}--></span>
+                    <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$arrForm[$key].length}--></span>
                     <!--{if $arrErr[$key] != ""}--> <div class="attention"><!--{$arrErr[$key]}--></div> <!--{/if}-->
                 </td>
             </tr>
@@ -51,7 +51,7 @@
                 <td>
                     <!--{assign var=key value="filename"}-->
                     <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" />.tpl
-                    <span class="attention"> <!--{t string="tpl_023" T_FIELD=$arrForm[$key].length}--></span>
+                    <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$arrForm[$key].length}--></span>
                     <!--{if $arrErr[$key] != ""}--> <div class="attention"><!--{$arrErr[$key]}--></div> <!--{/if}-->
                 </td>
             </tr>
@@ -80,19 +80,19 @@
         </div>
         <table class="list">
             <tr>
-                <th><!--{t string="tpl_002"}--></th>
-                <th class="edit"><!--{t string="tpl_003"}--></th>
-                <th class="delete"><!--{t string="tpl_004"}--></th>
+                <th><!--{t string="tpl_Name_01"}--></th>
+                <th class="edit"><!--{t string="tpl_Edit_01"}--></th>
+                <th class="delete"><!--{t string="tpl_Remove_01"}--></th>
             </tr>
             <!--{foreach key=key item=item from=$arrBlocList}-->
                 <tr style="background-color:<!--{if $item.bloc_id == $bloc_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
                     <td><!--{$item.bloc_name}--></td>
                     <td class="center">
-                        <a href="?bloc_id=<!--{$item.bloc_id|h}-->&amp;device_type_id=<!--{$device_type_id|h}-->" ><!--{t string="tpl_003"}--></a>
+                        <a href="?bloc_id=<!--{$item.bloc_id|h}-->&amp;device_type_id=<!--{$device_type_id|h}-->" ><!--{t string="tpl_Edit_01"}--></a>
                     </td>
                     <td class="center">
                         <!--{if $item.deletable_flg == 1}-->
-                            <a href="javascript:;" onclick="fnFormModeSubmit('form_bloc','delete','bloc_id',<!--{$item.bloc_id|h}-->);"><!--{t string="tpl_004"}--></a>
+                            <a href="javascript:;" onclick="fnFormModeSubmit('form_bloc','delete','bloc_id',<!--{$item.bloc_id|h}-->);"><!--{t string="tpl_Remove_01"}--></a>
                             <input type="hidden" value="<!--{$item.bloc_id|h}-->" name="del_id<!--{$item.bloc_id|h}-->" />
                         <!--{/if}-->
                     </td>

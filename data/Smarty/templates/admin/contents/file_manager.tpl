@@ -81,7 +81,7 @@
                 <th><!--{t string="tpl_169"}--></th>
                 <th class="edit"><!--{t string="tpl_170"}--></th>
                 <th><!--{t string="tpl_171"}--></th>
-                <th class="delete"><!--{t string="tpl_004"}--></th>
+                <th class="delete"><!--{t string="tpl_Remove_01"}--></th>
             </tr>
             <!--{if !$tpl_is_top_dir}-->
                 <tr id="parent_dir" onclick="fnSetFormVal('form1', 'select_file', '<!--{$tpl_parent_dir|h}-->');fnSelectFile('parent_dir', '#808080');" onDblClick="setTreeStatus('tree_status');fnDbClick(arrTree, '<!--{$tpl_parent_dir|h}-->', true, '<!--{$tpl_now_dir|h}-->', true)" style="">
@@ -130,7 +130,7 @@
                         </td>
                     <!--{/if}-->
                     <td class="center">
-                        <a href="javascript:;" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|h}-->');fnSelectFile('<!--{$id}-->', '#808080');setTreeStatus('tree_status');fnModeSubmit('delete','',''); return false;"><!--{t string="tpl_004"}--></a>
+                        <a href="javascript:;" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|h}-->');fnSelectFile('<!--{$id}-->', '#808080');setTreeStatus('tree_status');fnModeSubmit('delete','',''); return false;"><!--{t string="tpl_Remove_01"}--></a>
                     </td>
                 </tr>
             <!--{/section}-->
