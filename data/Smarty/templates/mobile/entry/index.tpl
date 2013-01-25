@@ -102,6 +102,17 @@
         &nbsp;-&nbsp;
         <input type="text" size="<!--{$size}-->" name="tel03" value="<!--{$arrForm.tel03|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" istyle="4"><br>
 
+        ●FAX<br>
+        <!--{assign var=key1 value="`$prefix`fax01"}-->
+        <!--{assign var=key2 value="`$prefix`fax02"}-->
+        <!--{assign var=key3 value="`$prefix`fax03"}-->
+        <!--{if $arrErr[fax01] || $arrErr[fax02] || $arrErr[fax03]}-->
+            <font color="#FF0000"><!--{$arrErr[fax01]}--><!--{$arrErr[fax02]}--><!--{$arrErr[fax03]}--></font><br>
+        <!--{/if}-->
+        <input type="text" size="<!--{$size}-->" name="fax01" value="<!--{$arrForm.fax01|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" istyle="4" />&nbsp;-&nbsp;
+        <input type="text" size="<!--{$size}-->" name="fax02" value="<!--{$arrForm.fax02|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" istyle="4" />&nbsp;-&nbsp;
+        <input type="text" size="<!--{$size}-->" name="fax03" value="<!--{$arrForm.fax03|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" istyle="4" /><br>
+        
         ●メールアドレス<font color="#FF0000"> *</font><br>
         <font color="#FF0000"><!--{$arrErr.email}--></font>
         <input type="text" name="email" value="<!--{$arrForm.email|h}-->" istyle="3">
