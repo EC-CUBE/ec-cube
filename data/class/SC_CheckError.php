@@ -70,7 +70,7 @@ class SC_CheckError {
         }
         $html_diff_tag_list = implode(', ', $arrDiffTag);
 
-        $this->arrErr[$value[1]] = t('SC_CheckError_001', array('T_FIELD' => $value[0], 'T_TAG' => $html_diff_tag_list));
+        $this->arrErr[$value[1]] = t('C_T_TAG contains the tag T_FIELD which is not allowed_01', array('T_FIELD' => $value[0], 'T_TAG' => $html_diff_tag_list));
     }
 
     /**

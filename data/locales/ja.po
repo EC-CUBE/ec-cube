@@ -11,7 +11,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-msgid "SC_CheckError_001"
+msgid "C_T_TAG contains the tag T_FIELD which is not allowed_01"
 msgstr "※ T_FIELDに許可されていないタグ T_TAG が含まれています。<br />"
 
 msgid "SC_CheckError_002"
@@ -3559,7 +3559,7 @@ msgid "GC_Utils_001"
 msgstr "前方互換用メソッドが使用されました。"
 
 msgid "tpl_001"
-msgstr "配送業者"
+msgstr "t_Delivery company_01"
 
 msgid "tpl_002"
 msgstr "名称"
@@ -5912,7 +5912,7 @@ msgstr "同意する"
 msgid "tpl_735"
 msgstr "同意しない"
 
-msgid "tpl_736"
+msgid "t_Next_01"
 msgstr "次へ進む"
 
 msgid "tpl_737"
@@ -6115,7 +6115,7 @@ msgstr "はい(推奨)"
 msgid "tpl_798"
 msgstr "いいえ"
 
-msgid "tpl_799"
+msgid "t_EC-CUBE installation will begin_01"
 msgstr "EC-CUBEのインストールを開始します。"
 
 msgid "tpl_800"
