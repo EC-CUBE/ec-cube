@@ -28,17 +28,17 @@
 <!--{/foreach}-->
 
 <div class="contents">
-    <h2><!--{t string="tpl_742"}--></h2>
+    <h2><!--{t string="t_Check results_01"}--></h2>
     <div class="result-info01">
         <textarea name="disp_area" cols="50" rows="20" class="box470"><!--{$mess}--></textarea>
     </div>
     <div class="result-info02">
         <!--{if $hasErr}-->
-            <p class="action-message"><!--{t string="tpl_743"}--></p>
-            <div><input type="checkbox" name="mode_overwrite" value="step0" id="mode_overwrite" /> <label for="mode_overwrite"><!--{t string="tpl_744"}--></label></div>
-            <div class="red"><!--{t string="tpl_745"}--></div>
+            <p class="action-message"><!--{t string="t_When [Next] is clicked, a check will be executed once again._01"}--></p>
+            <div><input type="checkbox" name="mode_overwrite" value="step0" id="mode_overwrite" /> <label for="mode_overwrite"><!--{t string="t_Ignore problems and proceed (for advanced users)_01"}--></label></div>
+            <div class="red"><!--{t string="t_* If you proceed without resolving the problem, this may lead to problems._01"}--></div>
         <!--{else}-->
-            <!--{t string="tpl_746"}-->
+            <!--{t string="t_Copying of necessary files will begin._01"}-->
         <!--{/if}-->
     </div>
 </div>

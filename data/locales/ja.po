@@ -5927,37 +5927,37 @@ msgstr "先ほど登録したID、パスワードを用いてログインして�
 msgid "tpl_739"
 msgstr "管理画面へログインする"
 
-msgid "tpl_740"
+msgid "t_EC-CUBE Installation_01"
 msgstr "EC-CUBEインストール"
 
-msgid "tpl_741"
+msgid "t_This is a notice from EC-CUBE. Please use a browser that supports iframe for this section._01"
 msgstr ""
 "こちらはEC-CUBEからのお知らせです。この部分は iframe対応ブラウザでご覧下さ"
 "い。"
 
-msgid "tpl_742"
+msgid "t_Check results_01"
 msgstr "チェック結果"
 
-msgid "tpl_743"
+msgid "t_When [Next] is clicked, a check will be executed once again._01"
 msgstr "[次へ進む] をクリックすると、チェックを再実行します。"
 
-msgid "tpl_744"
+msgid "t_Ignore problems and proceed (for advanced users)_01"
 msgstr "問題点を無視して次へ進む (上級者向け)"
 
-msgid "tpl_745"
+msgid "t_* If you proceed without resolving the problem, this may lead to problems._01"
 msgstr ""
 "※ 問題点を解決せずに無視して進めると、トラブルの原因となる場合があります。"
 
-msgid "tpl_746"
+msgid "t_Copying of necessary files will begin._01"
 msgstr "必要なファイルのコピーを開始します。"
 
-msgid "tpl_747"
+msgid "t_Copying of necessary files_01"
 msgstr "必要なファイルのコピー"
 
-msgid "tpl_748"
+msgid "t_EC site settings_01"
 msgstr "ECサイトの設定"
 
-msgid "tpl_749"
+msgid "t_Fill in the name of your store._01"
 msgstr "あなたの店名をご記入ください。"
 
 msgid "tpl_750"

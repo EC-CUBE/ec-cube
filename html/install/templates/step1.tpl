@@ -49,7 +49,7 @@ $(function() {
 
 <div class="contents">
     <div class="message">
-        <h2><!--{t string="tpl_748"}--></h2>
+        <h2><!--{t string="t_EC site settings_01"}--></h2>
     </div>
     <div class="block">
         <table>
@@ -61,7 +61,7 @@ $(function() {
                 <!--{assign var=key value="shop_name"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  /><br />
-                <span class="ex-text"><!--{t string="tpl_749"}--></span>
+                <span class="ex-text"><!--{t string="t_Fill in the name of your store._01"}--></span>
                 </td>
             </tr>
             <tr>
