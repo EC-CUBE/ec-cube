@@ -569,7 +569,7 @@ class SC_CheckError {
     function ZERO_CHECK($value) {
         $this->createParam($value);
         if ($this->arrParam[$value[1]] == '0') {
-            $this->arrErr[$value[1]] = t('c_* Enter at least 1 for T_FIELD. <br />_01', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('SC_CheckError_031', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -584,7 +584,7 @@ class SC_CheckError {
         // $this->arrParam[$value[0]] = mb_convert_kana($this->arrParam[$value[0]], 'n');
         $count = strlen($this->arrParam[$value[1]]);
         if (($count > 0) && $value[2] > $count || $value[3] < $count) {
-            $this->arrErr[$value[1]] =  t_plural($value[2], 'c_*  T_FIELD must be  between T_COUNT - T_DIGIT_MAX digits. <br />_01', 'c_* For T_FIELD, input between T_COUNT to T_DIGIT_MAX digits. <br />_01', array('T_FIELD' => $value[0], 'T_DIGIT_MAX' => $value[3]));
+            $this->arrErr[$value[1]] =  t_plural($value[2], 'SC_CheckError_032_SINGLE', 'SC_CheckError_032_PLURAL', array('T_FIELD' => $value[0], 'T_DIGIT_MAX' => $value[3]));
         }
     }
 
@@ -598,7 +598,7 @@ class SC_CheckError {
         $this->createParam($value);
         $count = strlen($this->arrParam[$value[1]]);
         if (($count > 0) && $count != $value[2]) {
-            $this->arrErr[$value[1]] =  t_plural($value[2], 'c_* For T_FIELD, enter T_COUNT digit(s). <br />_01', 'c_* For T_FIELD, input T_COUNT digit(s). <br />_01', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] =  t_plural($value[2], 'SC_CheckError_033_SINGLE', 'SC_CheckError_033_PLURAL', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -646,7 +646,7 @@ class SC_CheckError {
         }
 
         if (!preg_match($regexp, $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = t('c_* The T_FIELD format is incorrect. <br />_01', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('SC_CheckError_034', array('T_FIELD' => $value[0]));
             return;
         }
 
@@ -665,7 +665,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^[a-zA-Z0-9_\.@\+\?-]+$/i",$this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = t('c_* Enter the characters to be used in T_FIELD correctly. <br />_01', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('SC_CheckError_035', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -677,7 +677,7 @@ class SC_CheckError {
             return;
         }
         if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("@^https?://+($|[a-zA-Z0-9_~=:&\?\.\/-])+$@i", $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = t('c_* Enter T_FIELD correctly. <br />_01', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('SC_CheckError_036', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -697,7 +697,7 @@ class SC_CheckError {
             foreach ($params as $param) {
                 $param = trim($param);
                 if (long2ip(ip2long($param)) != trim($param) && !empty($param)) {
-                    $this->arrErr[$value[1]] = t('c_* Enter an IP address in the proper format in T_FIELD. <br />_01', array('T_FIELD' => $value[0]));
+                    $this->arrErr[$value[1]] = t('SC_CheckError_037', array('T_FIELD' => $value[0]));
                 }
             }
         }
@@ -725,7 +725,7 @@ class SC_CheckError {
         }
         if ($match === false) {
             $str_ext = implode('・', $value[2]);
-            $this->arrErr[$value[1]] = t('c_* The format permitted for T_FIELD is T_EXT. <br />_01', array('T_FIELD' => $value[0], 'T_EXT' => $str_ext));
+            $this->arrErr[$value[1]] = t('SC_CheckError_038', array('T_FIELD' => $value[0], 'T_EXT' => $str_ext));
         }
     }
 
@@ -748,7 +748,7 @@ class SC_CheckError {
         $path = str_replace('//', '/', $path);
 
         if ($this->arrParam[$value[1]] != '' && !file_exists($path)) {
-            $this->arrErr[$value[1]] = t('c_* T_PATH cannot be found. <br />_01', array('T_PATH' => $path));
+            $this->arrErr[$value[1]] = t('SC_CheckError_039', array('T_PATH' => $path));
         }
     }
 
@@ -761,7 +761,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (!($_FILES[$value[1]]['size'] != '' && $_FILES[$value[1]]['size'] > 0)) {
-            $this->arrErr[$value[1]] = t('c_* Upload T_FIELD. <br />_01', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('SC_CheckError_040', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -779,7 +779,7 @@ class SC_CheckError {
                 $value[2] = $value[2] / 1000;
                 $byte = 'MB';
             }
-            $this->arrErr[$value[1]] = t('c_* For the T_FIELD file size, use a size that is T_SIZET_UNIT or less. <br />_01', array('T_FIELD' => $value[0], 'T_SIZE' => $value[2], 'T_UNIT' => $byte));
+            $this->arrErr[$value[1]] = t('SC_CheckError_041', array('T_FIELD' => $value[0], 'T_SIZE' => $value[2], 'T_UNIT' => $byte));
         }
     }
 
@@ -792,7 +792,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($_FILES[$value[1]]['name']) > 0 && !preg_match("/^[[:alnum:]_\.-]+$/i", $_FILES[$value[1]]['name'])) {
-            $this->arrErr[$value[1]] = t('c_* Do not use Japanese or spaces in the file name for T_FIELD. <br />_01', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('SC_CheckError_042', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -805,7 +805,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^[[:alnum:]_\.-]+$/i", $this->arrParam[$value[1]]) || preg_match('/[\\]/' ,$this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = t('c_* Do not use Japanese or spaces in the file name for T_FIELD. <br />_01', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('SC_CheckError_042', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -825,7 +825,7 @@ class SC_CheckError {
             if (!(strlen($this->arrParam[$value[1]]) > 0 && strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0)) {
                 $this->arrErr[$value[1]] = t('c_* Enter all items for T_FIELD. <br />_01', array('T_FIELD' => $value[0]));
             } else if (! checkdate($this->arrParam[$value[2]], $this->arrParam[$value[3]], $this->arrParam[$value[1]])) {
-                $this->arrErr[$value[1]] = t('c_* T_FIELD is not correct. <br />_01', array('T_FIELD' => $value[0]));
+                $this->arrErr[$value[1]] = t('SC_CheckError_044', array('T_FIELD' => $value[0]));
             }
         }
     }
@@ -848,7 +848,7 @@ class SC_CheckError {
             if (!(strlen($this->arrParam[$value[1]]) > 0 && strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0 && strlen($this->arrParam[$value[4]]) > 0 && strlen($this->arrParam[$value[5]]) > 0)) {
                 $this->arrErr[$value[1]] = t('c_* Enter all items for T_FIELD. <br />_01', array('T_FIELD' => $value[0]));
             } else if (! checkdate($this->arrParam[$value[2]], $this->arrParam[$value[3]], $this->arrParam[$value[1]])) {
-                $this->arrErr[$value[1]] = t('c_* T_FIELD is not correct. <br />_01', array('T_FIELD' => $value[0]));
+                $this->arrErr[$value[1]] = t('SC_CheckError_044', array('T_FIELD' => $value[0]));
             }
         }
     }
@@ -868,7 +868,7 @@ class SC_CheckError {
             if (!(strlen($this->arrParam[$value[1]]) > 0 && strlen($this->arrParam[$value[2]]) > 0)) {
                 $this->arrErr[$value[1]] = t('c_* Enter all items for T_FIELD. <br />_01', array('T_FIELD' => $value[0]));
             } else if (! checkdate($this->arrParam[$value[2]], 1, $this->arrParam[$value[1]])) {
-                $this->arrErr[$value[1]] = t('c_* T_FIELD is not correct. <br />_01', array('T_FIELD' => $value[0]));
+                $this->arrErr[$value[1]] = t('SC_CheckError_044', array('T_FIELD' => $value[0]));
             }
         }
     }
@@ -931,10 +931,10 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if ((strlen($this->arrParam[$value[2]]) > 0 || strlen($this->arrParam[$value[3]]) > 0 || strlen($this->arrParam[$value[4]]) > 0) && ! checkdate($this->arrParam[$value[3]], $this->arrParam[$value[4]], $this->arrParam[$value[2]])) {
-            $this->arrErr[$value[2]] = t('c_* Specify T_FIELD correctly. <br />_01', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[2]] = t('SC_CheckError_045', array('T_FIELD' => $value[0]));
         }
         if ((strlen($this->arrParam[$value[5]]) > 0 || strlen($this->arrParam[$value[6]]) > 0 || strlen($this->arrParam[$value[7]]) > 0) && ! checkdate($this->arrParam[$value[6]], $this->arrParam[$value[7]], $this->arrParam[$value[5]])) {
-            $this->arrErr[$value[5]] = t('c_* Specify T_FIELD correctly. <br />_01', array('T_FIELD' => $value[1]));
+            $this->arrErr[$value[5]] = t('SC_CheckError_045', array('T_FIELD' => $value[1]));
         }
         if ((strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0 && strlen($this->arrParam[$value[4]]) > 0) &&  (strlen($this->arrParam[$value[5]]) > 0 || strlen($this->arrParam[$value[6]]) > 0 || strlen($this->arrParam[$value[7]]) > 0)) {
 
@@ -942,7 +942,7 @@ class SC_CheckError {
             $date2 = $this->arrParam[$value[5]] .sprintf('%02d', $this->arrParam[$value[6]]) .sprintf('%02d',$this->arrParam[$value[7]]) .'235959';
 
             if (($this->arrErr[$value[2]] == '' && $this->arrErr[$value[5]] == '') && $date1 > $date2) {
-                $this->arrErr[$value[2]] = t('c_* The period specification for T_START and T_END is not correct. <br />_01', array('T_START' => $value[0], 'T_END' => $value[1]));
+                $this->arrErr[$value[2]] = t('SC_CheckError_046', array('T_START' => $value[0], 'T_END' => $value[1]));
             }
         }
     }
@@ -981,10 +981,10 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if ((strlen($this->arrParam[$value[2]]) > 0 || strlen($this->arrParam[$value[3]]) > 0 || strlen($this->arrParam[$value[4]]) > 0 || strlen($this->arrParam[$value[5]]) > 0) && ! checkdate($this->arrParam[$value[3]], $this->arrParam[$value[4]], $this->arrParam[$value[2]])) {
-            $this->arrErr[$value[2]] = t('c_* Specify T_FIELD correctly. <br />_01', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[2]] = t('SC_CheckError_045', array('T_FIELD' => $value[0]));
         }
         if ((strlen($this->arrParam[$value[8]]) > 0 || strlen($this->arrParam[$value[9]]) > 0 || strlen($this->arrParam[$value[10]]) > 0 || strlen($this->arrParam[$value[11]]) > 0) && ! checkdate($this->arrParam[$value[9]], $this->arrParam[$value[10]], $this->arrParam[$value[8]])) {
-            $this->arrErr[$value[8]] = t('c_* Specify T_FIELD correctly. <br />_01', array('T_FIELD' => $value[1]));
+            $this->arrErr[$value[8]] = t('SC_CheckError_045', array('T_FIELD' => $value[1]));
         }
         if ((strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0 && strlen($this->arrParam[$value[4]]) > 0 && strlen($this->arrParam[$value[5]]) > 0) &&  (strlen($this->arrParam[$value[8]]) > 0 || strlen($this->arrParam[$value[9]]) > 0 || strlen($this->arrParam[$value[10]]) > 0 || strlen($this->arrParam[$value[11]]) > 0)) {
 
@@ -992,10 +992,10 @@ class SC_CheckError {
             $date2 = $this->arrParam[$value[8]] .sprintf('%02d', $this->arrParam[$value[9]]) .sprintf('%02d',$this->arrParam[$value[10]]) .sprintf('%02d',$this->arrParam[$value[11]]).sprintf('%02d',$this->arrParam[$value[12]]).sprintf('%02d',$this->arrParam[$value[13]]);
 
             if (($this->arrErr[$value[2]] == '' && $this->arrErr[$value[8]] == '') && $date1 > $date2) {
-                $this->arrErr[$value[2]] = t('c_* The period specification for T_START and T_END is not correct. <br />_01', array('T_START' => $value[0], 'T_END' => $value[1]));
+                $this->arrErr[$value[2]] = t('SC_CheckError_046', array('T_START' => $value[0], 'T_END' => $value[1]));
             }
             if ($date1 == $date2) {
-                $this->arrErr[$value[2]] = t('c_* The period specification for T_START and T_END is not correct. <br />_01', array('T_START' => $value[0], 'T_END' => $value[1]));
+                $this->arrErr[$value[2]] = t('SC_CheckError_046', array('T_START' => $value[0], 'T_END' => $value[1]));
             }
 
         }
@@ -1024,10 +1024,10 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if ((strlen($this->arrParam[$value[2]]) > 0 || strlen($this->arrParam[$value[3]]) > 0) && ! checkdate($this->arrParam[$value[3]], 1, $this->arrParam[$value[2]])) {
-            $this->arrErr[$value[2]] = t('c_* Specify T_FIELD correctly. <br />_01', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[2]] = t('SC_CheckError_045', array('T_FIELD' => $value[0]));
         }
         if ((strlen($this->arrParam[$value[4]]) > 0 || strlen($this->arrParam[$value[5]]) > 0) && ! checkdate($this->arrParam[$value[5]], 1, $this->arrParam[$value[4]])) {
-            $this->arrErr[$value[4]] = t('c_* Specify T_FIELD correctly. <br />_01', array('T_FIELD' => $value[1]));
+            $this->arrErr[$value[4]] = t('SC_CheckError_045', array('T_FIELD' => $value[1]));
         }
         if ((strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0 && (strlen($this->arrParam[$value[4]]) > 0 || strlen($this->arrParam[$value[5]]) > 0))) {
 
@@ -1035,7 +1035,7 @@ class SC_CheckError {
             $date2 = $this->arrParam[$value[4]] .sprintf('%02d', $this->arrParam[$value[5]]);
 
             if (($this->arrErr[$value[2]] == '' && $this->arrErr[$value[5]] == '') && $date1 > $date2) {
-                $this->arrErr[$value[2]] = t('c_* The period specification for T_START and T_END is not correct. <br />_01', array('T_START' => $value[0], 'T_END' => $value[1]));
+                $this->arrErr[$value[2]] = t('SC_CheckError_046', array('T_START' => $value[0], 'T_END' => $value[1]));
             }
         }
     }
@@ -1047,7 +1047,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if (!is_dir($this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = t('c_* The designated T_FIELD does not exist. <br />_01', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('SC_CheckError_047', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -1057,7 +1057,7 @@ class SC_CheckError {
             return;
         }
         if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^\.[^.]+\..+/i", $this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = t('c_* The T_FIELD format is incorrect. <br />_01', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('SC_CheckError_048', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -1071,7 +1071,7 @@ class SC_CheckError {
         $this->createParam($value);
         $objMobile = new SC_Helper_Mobile_Ex();
         if (strlen($this->arrParam[$value[1]]) > 0 && !$objMobile->gfIsMobileMailAddress($this->arrParam[$value[1]])) {
-            $this->arrErr[$value[1]] = t('c_* T_FIELD is not for mobile phones. <br />_01', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('SC_CheckError_049', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -1092,10 +1092,10 @@ class SC_CheckError {
         $register_user_flg =  SC_Helper_Customer_Ex::sfCheckRegisterUserFromEmail($this->arrParam[$value[1]]);
         switch ($register_user_flg) {
             case 1:
-                $this->arrErr[$value[1]] .= t('c_* T_FIELD already used in member registration. <br />_01', array('T_FIELD' => $value[0]));
+                $this->arrErr[$value[1]] .= t('SC_CheckError_050', array('T_FIELD' => $value[0]));
                 break;
             case 2:
-                $this->arrErr[$value[1]] .= t('c_* For a certain period of time after membership withdrawal, it is not possible to use the same T_FIELD. <br />_01', array('T_FIELD' => $value[0]));
+                $this->arrErr[$value[1]] .= t('SC_CheckError_051', array('T_FIELD' => $value[0]));
                 break;
             default:
                 break;
@@ -1119,7 +1119,7 @@ class SC_CheckError {
 
         $pattern = '/' . join('|', $prohibitedStr) . '/i';
         if (preg_match_all($pattern, $targetStr, $matches = array())) {
-            $this->arrErr[$value[1]] = t('c_* T_FIELD cannot be entered. <br />_01', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('SC_CheckError_052', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -1136,7 +1136,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if ($this->evalCheck($value[1]) === false) {
-            $this->arrErr[$value[0]] = t('c_* The T_FIELD format is incorrect. <br />_01', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[0]] = t('SC_CheckError_053', array('T_FIELD' => $value[0]));
         }
     }
 
