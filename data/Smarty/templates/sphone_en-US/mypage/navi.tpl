@@ -33,7 +33,7 @@
                 <!--{if $smarty.const.OPTION_FAVORITE_PRODUCT == 1}-->
                     <li class="nav_favorite"><a href="favorite.php" class="<!--{if $tpl_mypageno == 'favorite'}--> selected<!--{/if}-->" rel="external">Favorites</a></li>
                 <!--{/if}-->
-                    <li class="nav_refusal"><a href="refusal.php" class="<!--{if $tpl_mypageno == 'refusal'}--> selected<!--{/if}-->" rel="external">Cancel membership</a></li>
+                    <li class="nav_refusal"><a href="refusal.php" class="<!--{if $tpl_mypageno == 'refusal'}--> selected<!--{/if}-->" rel="external">Close account</a></li>
                 <!--{else}-->
 
                 <!--{* 退会状態 *}-->
