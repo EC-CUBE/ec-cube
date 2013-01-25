@@ -82,7 +82,7 @@
                     <!--{assign var=key value="payment_image"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
                     <!--{if $arrFile[$key].filepath != ""}-->
-                    <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->">　<br /><a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;"><!--{t string="tpl_084"}--></a><br />
+                    <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->"><br /><a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;"><!--{t string="tpl_084"}--></a><br />
                     <!--{/if}-->
                     <input type="file" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
                     <a class="btn-normal" href="javascript:;" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;"><!--{t string="tpl_085"}--></a>

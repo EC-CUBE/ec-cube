@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2013-01-24 15:40+0900\n"
+"PO-Revision-Date: 2013-01-25 11:10+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -2569,7 +2569,7 @@ msgid "LC_Page_Admin_Basis_Holiday_002"
 msgstr "Holiday management"
 
 msgid "LC_Page_Admin_Basis_Holiday_003"
-msgstr "※ That day has already been registered. <br>"
+msgstr "* That day has already been registered. <br>"
 
 msgid "LC_Page_Admin_Basis_Kiyaku_001"
 msgstr "Basic information management"
@@ -3211,7 +3211,7 @@ msgid "LC_Page_Admin_Products_UploadCSV_010"
 msgstr "* The designated target delivery date ID is not registered."
 
 msgid "LC_Page_Admin_Products_UploadCSV_011"
-msgstr "※ The specified product ID does not exist."
+msgstr "* The specified product ID does not exist."
 
 msgid "LC_Page_Admin_Products_UploadCSV_012"
 msgstr "* The designated relevant product ID (T_FIELD) is not registered."
@@ -3310,7 +3310,7 @@ msgid "LC_Page_Admin_System_Bkup_003"
 msgstr "Restoration of 'T_FIELD' will begin."
 
 msgid "LC_Page_Admin_System_Bkup_004-1"
-msgstr "「T_FIELD」の"
+msgstr "[T_FIELD] "
 
 msgid "LC_Page_Admin_System_Bkup_004-2"
 msgstr "Restoration is complete."
@@ -5845,10 +5845,10 @@ msgid "tpl_704"
 msgstr "SQL settings (Newly input)"
 
 msgid "tpl_705"
-msgstr "Details - Sub image(T_FIELD1)<br />[T_FIELD2×T_FIELD3]"
+msgstr "Details - Sub image(T_FIELD1)<br />[T_FIELD2 x T_FIELD3]"
 
 msgid "tpl_706"
-msgstr "Details - Sub enlarged image(T_FIELD1)<br />[T_FIELD2×T_FIELD3]"
+msgstr "Details - Sub enlarged image(T_FIELD1)<br />[T_FIELD2 x T_FIELD3]"
 
 msgid "tpl_708"
 msgstr "*  Uniform shipping rates(&#036;):"
@@ -5857,13 +5857,13 @@ msgid "tpl_709"
 msgstr "T_FIELD<span class='attention'> *</span>"
 
 msgid "tpl_710"
-msgstr "List - Main images<br />[T_FIELD1×T_FIELD2]"
+msgstr "List - Main images<br />[T_FIELD1 x T_FIELD2]"
 
 msgid "tpl_711"
-msgstr "Details - Main image<br />[T_FIELD1×T_FIELD2]"
+msgstr "Details - Main image<br />[T_FIELD1 x T_FIELD2]"
 
 msgid "tpl_712"
-msgstr "Details - Main enlarged image<br />[T_FIELD1×T_FIELD2]"
+msgstr "Details - Main enlarged image<br />[T_FIELD1 x T_FIELD2]"
 
 msgid "tpl_713"
 msgstr "The first"
@@ -5922,7 +5922,7 @@ msgid "tpl_730"
 msgstr "Not selected"
 
 msgid "tpl_731"
-msgstr "■Agreement to the license agreement"
+msgstr "*Agreement to the license agreement"
 
 msgid "tpl_732"
 msgstr ""

@@ -22,14 +22,14 @@
  * This e-mail has been automatically sent. 
  It can be viewed optimally using monospaced font.
 
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+===========================================================
   * This e-mail has been sent by <!--{$CONF.shop_name}--> to the party wishing
   to register as a member. 
   If you do not recall carrying out member registration, please
   disregard this e-mail and you will not be registered as a 
   member. 
  In addition, please contact <!--{$CONF.email02}--> regarding this matter.
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+===========================================================
 
 Dear <!--{$name01}--> <!--{$name02}-->,
 

@@ -35,7 +35,7 @@
                     <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{/if}-->
                 <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box6" />
-                <!--{t string="%"}-->　<!--{t string="tpl_087"}--></td>
+                <!--{t string="%"}-->&nbsp;<!--{t string="tpl_087"}--></td>
         </tr>
         <tr>
             <th><!--{t string="tpl_088" escape="none"}--></th>
