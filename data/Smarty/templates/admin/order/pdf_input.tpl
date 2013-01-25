@@ -34,6 +34,93 @@ function lfPopwinSubmit(formName) {
     document[formName].submit();
     return false;
 }
+
+	$(function(){
+        console.log(ymd);
+        var dateFormat = $.datepicker.regional['<!--{$smarty.const.LANG_CODE}-->'].dateFormat;
+
+        <!--{if $arrForm.year != '' && $arrForm.month != '' && $arrForm.day != ''}-->
+        var year  = '<!--{$arrForm.year|h}-->';
+        var month = '<!--{$arrForm.month|h}-->';
+        var day   = '<!--{$arrForm.day|h}-->';
+        var ymd = $.datepicker.formatDate(dateFormat, new Date(year, month - 1, day));
+        $("#datepicker").val(ymd);
+        //console.log(ymd);
+        <!--{/if}-->
+
+		$( "#datepicker" ).datepicker({
+		beforeShowDay: function(date) {
+			if(date.getDay() == 0) {
+				return [true,"date-sunday"];
+			} else if(date.getDay() == 6){
+				return [true,"date-saturday"];
+			} else {
+				return [true];
+			}
+		}
+        ,changeMonth: 'true'
+		,changeYear: 'true'
+		,onSelect: function(dateText, inst){
+            var year  = inst.selectedYear;
+            var month = inst.selectedMonth + 1;
+            var day   = inst.selectedDay;
+			setDate(year + '/' + month + '/' + day);
+		},
+		showButtonPanel: true,
+		beforeShow: showAdditionalButton,
+		onChangeMonthYear: showAdditionalButton
+		});
+
+		$("#datepicker").change( function() {
+            var dateText   = $(this).val();
+            var dateFormat = $.datepicker.regional['<!--{$smarty.const.LANG_CODE}-->'].dateFormat;
+            // console.log(dateText);
+            // console.log(dateFormat);
+            var date;
+            var year  = '';
+            var month = '';
+            var day   = '';
+            try {
+                date = $.datepicker.parseDate(dateFormat, dateText);
+                year  = date.getFullYear();
+                month = date.getMonth() + 1;
+                day   = date.getDay();
+            } catch (e) {
+                // console.log(e);
+                // clear date text
+                $(this).val('');
+            }
+            setDate(year + '/' + month + '/' + day);
+		});
+
+	});
+
+	var btn = $('<button class="ui-datepicker-current ui-state-default ui-priority-secondary ui-corner-all" type="button">Clear</button>');
+
+	var showAdditionalButton = function (input) {
+		setTimeout(function () {
+			var buttonPane = $(input)
+					 .datepicker("widget")
+					 .find(".ui-datepicker-buttonpane");
+			btn
+					.unbind("click")
+					.bind("click", function () {
+						$.datepicker._clearDate(input);
+						$("*[name=year]").val("");
+						$("*[name=month]").val("");
+						$("*[name=day]").val("");
+					});
+			btn.appendTo(buttonPane);
+		}, 1);
+	};
+
+    function setDate(dateText){
+        var dates = dateText.split('/');
+        $("*[name=year]").val(dates[0]);
+        $("*[name=month]").val(dates[1]);
+        $("*[name=day]").val(dates[2]);
+    }
+
 //-->
 </script>
 
@@ -56,15 +143,12 @@ function lfPopwinSubmit(formName) {
     <tr>
         <th><!--{t string="tpl_420_1" escape="none"}--></th>
         <td><!--{if $arrErr.year}--><span class="attention"><!--{$arrErr.year}--></span><!--{/if}-->
-            <select name="year">
-            <!--{html_options options=$arrYear selected=$arrForm.year}-->
-            </select>年
-            <select name="month">
-            <!--{html_options options=$arrMonth selected=$arrForm.month}-->
-            </select>月
-            <select name="day">
-            <!--{html_options options=$arrDay selected=$arrForm.day}-->
-            </select>日
+            <input id="datepicker"
+                   type="text"
+                   value="" <!--{if $arrErr.year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+            <input type="hidden" name="year" value="<!--{$arrForm.year|h}-->" />
+            <input type="hidden" name="month" value="<!--{$arrForm.month|h}-->" />
+            <input type="hidden" name="day" value="<!--{$arrForm.day|h}-->" />
         </td>
     </tr>
     <tr>
