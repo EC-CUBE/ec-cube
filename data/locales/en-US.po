@@ -162,19 +162,19 @@ msgstr ""
 msgid "c_* T_FIELD cannot be entered. <br />_01"
 msgstr "* T_FIELD cannot be entered. <br />"
 
-msgid "SC_FormParam_001"
+msgid "c_* The file T_NAME does not exist. <br />_01"
 msgstr "* The file T_NAME does not exist. <br />"
 
-msgid "SC_FormParam_002"
+msgid "c_* Does not support the error check format (T_FUNCTION) **<br />_01"
 msgstr "* Does not support the error check format (T_FUNCTION) **<br />"
 
-msgid "SC_FormParam_003"
+msgid "c_T_NAME<span class=\"red\">(* Required)</span>_01"
 msgstr "T_NAME<span class=\"red\">(* Required)</span>"
 
-msgid "SC_FormParam_004"
+msgid "c_[Default value: T_DEFAULT]_01"
 msgstr " [Default value: T_DEFAULT]"
 
-msgid "SC_FormParam_005"
+msgid "c_ [Registration/update not possible] _01"
 msgstr " [Registration/update not possible] "
 
 msgid "SC_CartSession_001"

@@ -130,15 +130,15 @@ class SC_FormParam {
             }
 
             if ($find) {
-                $this->html_disp_name[$index] = t('SC_FormParam_003', array('T_NAME' => $this->disp_name[$index]));
+                $this->html_disp_name[$index] = t('c_T_NAME<span class=\"red\">(* Required)</span>_01', array('T_NAME' => $this->disp_name[$index]));
             } else {
                 $this->html_disp_name[$index] = $this->disp_name[$index];
             }
             if ($this->arrDefault[$key] != '') {
-                $this->html_disp_name[$index] .= t('SC_FormParam_004', array('T_DEFAULT' => $this->arrDefault[$key]));
+                $this->html_disp_name[$index] .= t('c_[Default value: T_DEFAULT]_01', array('T_DEFAULT' => $this->arrDefault[$key]));
             }
             if ($this->input_db[$index] == false) {
-                $this->html_disp_name[$index] .= t('SC_FormParam_005');
+                $this->html_disp_name[$index] .= t('c_ [Registration/update not possible] _01');
             }
         }
     }
@@ -227,17 +227,17 @@ class SC_FormParam {
                     // ファイルの存在チェック
                     case 'FILE_EXISTS':
                         if ($value != '' && !file_exists($this->check_dir . $value)) {
-                            $arrErr[$key] = t('SC_FormParam_001', array('T_NAME' => $this->disp_name[$index]));
+                            $arrErr[$key] = t('c_* The file T_NAME does not exist. <br />_01', array('T_NAME' => $this->disp_name[$index]));
                         }
                         break;
                     // ダウンロード用ファイルの存在チェック
                     case 'DOWN_FILE_EXISTS':
                         if ($value != '' && !file_exists(DOWN_SAVE_REALDIR . $value)) {
-                            $arrErr[$key] = t('SC_FormParam_001', array('T_NAME' => $this->disp_name[$index]));
+                            $arrErr[$key] = t('c_* The file T_NAME does not exist. <br />_01', array('T_NAME' => $this->disp_name[$index]));
                         }
                         break;
                     default:
-                        $arrErr[$key] = t('SC_FormParam_002', array('T_FUNCTION' => $func));
+                        $arrErr[$key] = t('c_* Does not support the error check format (T_FUNCTION) **<br />_01', array('T_FUNCTION' => $func));
                         break;
                 }
             }

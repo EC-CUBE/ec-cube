@@ -156,19 +156,19 @@ msgstr ""
 msgid "c_* T_FIELD cannot be entered. <br />_01"
 msgstr "※ T_FIELDは入力できません。<br />"
 
-msgid "SC_FormParam_001"
+msgid "c_* The file T_NAME does not exist. <br />_01"
 msgstr "※ T_NAMEのファイルが存在しません。<br />"
 
-msgid "SC_FormParam_002"
+msgid "c_* Does not support the error check format (T_FUNCTION) **<br />_01"
 msgstr "※※　エラーチェック形式(T_FUNCTION)には対応していません　※※ <br />"
 
-msgid "SC_FormParam_003"
+msgid "c_T_NAME<span class=\"red\">(* Required)</span>_01"
 msgstr "T_NAME<span class=\"red\">(※ 必須)</span>"
 
-msgid "SC_FormParam_004"
+msgid "c_[Default value: T_DEFAULT]_01"
 msgstr " [省略時初期値: T_DEFAULT]"
 
-msgid "SC_FormParam_005"
+msgid "c_ [Registration/update not possible] _01"
 msgstr " [登録・更新不可] "
 
 msgid "SC_CartSession_001"
