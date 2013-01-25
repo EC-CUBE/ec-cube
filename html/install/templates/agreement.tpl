@@ -63,7 +63,7 @@ function fnChangeVisible(check_id, mod_id){
 </tr>
 <tr><td height="10"></td></tr>
 <!--{assign var=key value="agreement"}-->
-<tr><td align="left" class="fs12"><input type="radio" id="agreement_yes" name="<!--{$key}-->" value=true onclick="fnChangeVisible('agreement_yes', 'next');" <!--{if $arrHidden[$key]}-->checked<!--{/if}-->><label for="agreement_yes"><!--{t string="tpl_734"}--></label> <input type="radio" id="agreement_no" name="<!--{$key}-->" value=false onclick="fnChangeVisible('agreement_yes', 'next');" <!--{if !$arrHidden[$key]|h}-->checked<!--{/if}-->><label for="agreement_no"><!--{t string="tpl_735"}--></label></td></tr>
+<tr><td align="left" class="fs12"><input type="radio" id="agreement_yes" name="<!--{$key}-->" value=true onclick="fnChangeVisible('agreement_yes', 'next');" <!--{if $arrHidden[$key]}-->checked<!--{/if}-->><label for="agreement_yes"><!--{t string="t_Agree_01"}--></label> <input type="radio" id="agreement_no" name="<!--{$key}-->" value=false onclick="fnChangeVisible('agreement_yes', 'next');" <!--{if !$arrHidden[$key]|h}-->checked<!--{/if}-->><label for="agreement_no"><!--{t string="t_Do not agree_01"}--></label></td></tr>
 </table>
 
 <table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">

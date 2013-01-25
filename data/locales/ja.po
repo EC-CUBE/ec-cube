@@ -5906,22 +5906,22 @@ msgstr ""
 "URL、店名、EC-CUBEバージョン、PHP情報、DB情報等の情報を弊社にて収集させて戴く"
 "ことをここに確認し、同意するものとする。<br/>"
 
-msgid "tpl_734"
+msgid "t_Agree_01"
 msgstr "同意する"
 
-msgid "tpl_735"
+msgid "t_Do not agree_01"
 msgstr "同意しない"
 
 msgid "t_Next_01"
 msgstr "次へ進む"
 
-msgid "tpl_737"
+msgid "t_EC CUBE installation is complete._01"
 msgstr "EC CUBE インストールが完了しました。"
 
-msgid "tpl_738"
+msgid "t_Log in using the ID and password that you just registered._01"
 msgstr "先ほど登録したID、パスワードを用いてログインしてください。"
 
-msgid "tpl_739"
+msgid "t_Log in to management screen_01"
 msgstr "管理画面へログインする"
 
 msgid "t_EC-CUBE Installation_01"

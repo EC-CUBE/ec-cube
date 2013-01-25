@@ -28,18 +28,18 @@
 <!--{/foreach}-->
 <div class="contents">
   <div class="message">
-        <h2><!--{t string="tpl_737"}--></h2>
+        <h2><!--{t string="t_EC CUBE installation is complete._01"}--></h2>
   </div>
   <div class="result-info02">
         <p><!--{t string="tpl_801" escape="none" T_FIELD_01=$tpl_sslurl T_FIELD_02=$smarty.const.ADMIN_DIR T_FIELD_03=$smarty.const.DIR_INDEX_PATH}--><br />
-        <!--{t string="tpl_738"}--></p>
+        <!--{t string="t_Log in using the ID and password that you just registered._01"}--></p>
   </div>
 </div>
 
 <div class="btn-area-top"></div>
   <div class="btn-area">
     <ul>
-        <li><a class="btn-action" href="<!--{$tpl_sslurl}--><!--{$smarty.const.ADMIN_DIR}--><!--{$smarty.const.DIR_INDEX_PATH}-->"><span class="btn-next"><!--{t string="tpl_739"}--></span></a></li>
+        <li><a class="btn-action" href="<!--{$tpl_sslurl}--><!--{$smarty.const.ADMIN_DIR}--><!--{$smarty.const.DIR_INDEX_PATH}-->"><span class="btn-next"><!--{t string="t_Log in to management screen_01"}--></span></a></li>
     </ul>
   </div>
   <div class="btn-area-bottom"></div>
