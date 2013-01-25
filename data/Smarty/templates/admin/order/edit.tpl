@@ -81,8 +81,20 @@
     }
 	
 	$(function(){
-		
+		var dateFormat = $.datepicker.regional['<!--{$smarty.const.LANG_CODE}-->'].dateFormat;
+        
 		<!--{foreach name=shipping from=$arrAllShipping item=arrShipping key=shipping_index}-->
+        
+        <!--{if $arrShipping.shipping_date_year != '' && $arrShipping.shipping_date_month != '' && $arrShipping.shipping_date_day != ''}-->
+        var shipping_date_year<!--{$shipping_index}-->   = '<!--{$arrShipping.shipping_date_year|h}-->';
+        var shipping_date_month<!--{$shipping_index}--> = '<!--{$arrShipping.shipping_date_month|h}-->';
+        var shipping_date_day<!--{$shipping_index}-->   = '<!--{$arrShipping.shipping_date_day|h}-->';
+        var shipping_date_ymd<!--{$shipping_index}-->   = $.datepicker.formatDate(
+            dateFormat, new Date(shipping_date_year<!--{$shipping_index}-->, shipping_date_month<!--{$shipping_index}--> - 1, shipping_date_day<!--{$shipping_index}-->));
+        $("#datepickershipping_date<!--{$shipping_index}-->").val(shipping_date_ymd<!--{$shipping_index}-->);
+        // console.log(ymd);
+        <!--{/if}-->
+        
 		$( "#datepickershipping_date<!--{$shipping_index}-->" ).datepicker({
 		beforeShowDay: function(date) {
 			if(date.getDay() == 0) {
@@ -95,16 +107,36 @@
 		},changeMonth: 'true'
 		,changeYear: 'true'
 		,onSelect: function(dateText, inst){
-			setDateshipping_date<!--{$shipping_index}-->(dateText);
+            var year  = inst.selectedYear;
+            var month = inst.selectedMonth + 1;
+            var day   = inst.selectedDay;
+            setDateshipping_date<!--{$shipping_index}-->(year + '/' + month + '/' + day);
 		},
 		showButtonPanel: true,
 		beforeShow: showAdditionalButtonshipping_date<!--{$shipping_index}-->,       
 		onChangeMonthYear: showAdditionalButtonshipping_date<!--{$shipping_index}-->
 		});
 		
-		$("#datepickershipping_date<!--{$shipping_index}-->").blur( function() {
-			var dateText = $(this).val();
-			setDateshipping_date<!--{$shipping_index}-->(dateText);
+		$("#datepickershipping_date<!--{$shipping_index}-->").change( function() {
+            var dateText   = $(this).val();
+            var dateFormat = $.datepicker.regional['<!--{$smarty.const.LANG_CODE}-->'].dateFormat;
+            // console.log(dateText);
+            // console.log(dateFormat);
+            var date;
+            var year  = '';
+            var month = '';
+            var day   = '';
+            try {
+                date = $.datepicker.parseDate(dateFormat, dateText);
+                year  = date.getFullYear();
+                month = date.getMonth() + 1;
+                day   = date.getDay();
+            } catch (e) {
+                // console.log(e);
+                // clear date text
+                $(this).val('');
+            }
+            setDateshipping_date<!--{$shipping_index}-->(year + '/' + month + '/' + day);
 		});
 		<!--{/foreach}-->
 	
@@ -611,7 +643,9 @@
             <span class="attention"><!--{$arrErr[$key2][$shipping_index]}--></span>
             <span class="attention"><!--{$arrErr[$key3][$shipping_index]}--></span>
             
-            <input id="datepickershipping_date<!--{$shipping_index}-->" type="text" value="<!--{if $arrShipping[$key1] != "" && $arrShipping[$key2] != "" && $arrShipping[$key3] != ""}--><!--{$arrShipping[$key1]|h}-->/<!--{$arrShipping[$key2]|h|string_format:'%02d'}-->/<!--{$arrShipping[$key3]|h|string_format:'%02d'}--><!--{/if}-->" <!--{if $arrErr[$key1][$shipping_index] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+            <input id="datepickershipping_date<!--{$shipping_index}-->"
+                   type="text"
+                   value="" <!--{if $arrErr[$key1][$shipping_index] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
             <input type="hidden" name="<!--{$key1}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key1]|default:""}-->" />
             <input type="hidden" name="<!--{$key2}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key2]|default:""}-->" />
             <input type="hidden" name="<!--{$key3}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key3]|default:""}-->" />
