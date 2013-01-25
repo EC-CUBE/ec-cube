@@ -345,7 +345,7 @@
 		onChangeMonthYear: showAdditionalButtoncustomersearch_buy_end
 		});
 		
-		$("#datepickercustomersearch_buy_end").blur( function() {
+		$("#datepickercustomersearch_buy_end").change( function() {
             var dateText   = $(this).val();
             var dateFormat = $.datepicker.regional['<!--{$smarty.const.LANG_CODE}-->'].dateFormat;
             // console.log(dateText);

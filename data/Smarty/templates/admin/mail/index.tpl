@@ -53,7 +53,16 @@
     }
 	
 	$(function(){
-		
+		var dateFormat = $.datepicker.regional['<!--{$smarty.const.LANG_CODE}-->'].dateFormat;
+
+        <!--{if $arrForm.search_b_start_year.value != '' && $arrForm.search_b_start_month.value != '' && $arrForm.search_b_start_day.value != ''}-->
+        var search_b_start_year  = '<!--{$arrForm.search_b_start_year.value|h}-->';
+        var search_b_start_month = '<!--{$arrForm.search_b_start_month.value|h}-->';
+        var search_b_start_day   = '<!--{$arrForm.search_b_start_day.value|h}-->';
+        var search_b_start_ymd = $.datepicker.formatDate(dateFormat, new Date(search_b_start_year, search_b_start_month - 1, search_b_start_day));
+        $("#datepickercustomersearch_b_start").val(search_b_start_ymd);
+        <!--{/if}-->
+        
 		$( "#datepickercustomersearch_b_start" ).datepicker({
 		beforeShowDay: function(date) {
 			if(date.getDay() == 0) {
@@ -66,18 +75,46 @@
 		},changeMonth: 'true'
 		,changeYear: 'true'
 		,onSelect: function(dateText, inst){
-			setDatecustomersearch_b_start(dateText);
+            var year  = inst.selectedYear;
+            var month = inst.selectedMonth + 1;
+            var day   = inst.selectedDay;
+            setDatecustomersearch_b_start(year + '/' + month + '/' + day);
 		},
 		showButtonPanel: true,
 		beforeShow: showAdditionalButtoncustomersearch_b_start,       
 		onChangeMonthYear: showAdditionalButtoncustomersearch_b_start
 		});
 		
-		$("#datepickercustomersearch_b_start").blur( function() {
-			var dateText = $(this).val();
-			setDatecustomersearch_b_start(dateText);
+		$("#datepickercustomersearch_b_start").change( function() {
+            var dateText   = $(this).val();
+            var dateFormat = $.datepicker.regional['<!--{$smarty.const.LANG_CODE}-->'].dateFormat;
+            // console.log(dateText);
+            // console.log(dateFormat);
+            var date;
+            var year  = '';
+            var month = '';
+            var day   = '';
+            try {
+                date = $.datepicker.parseDate(dateFormat, dateText);
+                year  = date.getFullYear();
+                month = date.getMonth() + 1;
+                day   = date.getDay();
+            } catch (e) {
+                // console.log(e);
+                // clear date text
+                $(this).val('');
+            }
+            setDatecustomersearch_b_start(year + '/' + month + '/' + day);
 		});
-		
+
+        <!--{if $arrForm.search_b_end_year.value != '' && $arrForm.search_b_end_month.value != '' && $arrForm.search_b_end_day.value != ''}-->
+        var search_b_end_year  = '<!--{$arrForm.search_b_end_year.value|h}-->';
+        var search_b_end_month = '<!--{$arrForm.search_b_end_month.value|h}-->';
+        var search_b_end_day   = '<!--{$arrForm.search_b_end_day.value|h}-->';
+        var search_b_end_ymd = $.datepicker.formatDate(dateFormat, new Date(search_b_end_year, search_b_end_month - 1, search_b_end_day));
+        $("#datepickercustomersearch_b_end").val(search_b_end_ymd);
+        <!--{/if}-->
+
 		$( "#datepickercustomersearch_b_end" ).datepicker({
 		beforeShowDay: function(date) {
 			if(date.getDay() == 0) {
@@ -90,18 +127,46 @@
 		},changeMonth: 'true'
 		,changeYear: 'true'
 		,onSelect: function(dateText, inst){
-			setDatecustomersearch_b_end(dateText);
+            var year  = inst.selectedYear;
+            var month = inst.selectedMonth + 1;
+            var day   = inst.selectedDay;
+            setDatecustomersearch_b_end(year + '/' + month + '/' + day);
 		},
 		showButtonPanel: true,
 		beforeShow: showAdditionalButtoncustomersearch_b_end,       
 		onChangeMonthYear: showAdditionalButtoncustomersearch_b_end
 		});
 		
-		$("#datepickercustomersearch_b_end").blur( function() {
-			var dateText = $(this).val();
-			setDatecustomersearch_b_end(dateText);
+		$("#datepickercustomersearch_b_end").change( function() {
+            var dateText   = $(this).val();
+            var dateFormat = $.datepicker.regional['<!--{$smarty.const.LANG_CODE}-->'].dateFormat;
+            // console.log(dateText);
+            // console.log(dateFormat);
+            var date;
+            var year  = '';
+            var month = '';
+            var day   = '';
+            try {
+                date = $.datepicker.parseDate(dateFormat, dateText);
+                year  = date.getFullYear();
+                month = date.getMonth() + 1;
+                day   = date.getDay();
+            } catch (e) {
+                // console.log(e);
+                // clear date text
+                $(this).val('');
+            }
+            setDatecustomersearch_b_end(year + '/' + month + '/' + day);
 		});
-		
+
+        <!--{if $arrForm.search_start_year.value != '' && $arrForm.search_start_month.value != '' && $arrForm.search_start_day.value != ''}-->
+        var search_start_year  = '<!--{$arrForm.search_start_year.value|h}-->';
+        var search_start_month = '<!--{$arrForm.search_start_month.value|h}-->';
+        var search_start_day   = '<!--{$arrForm.search_start_day.value|h}-->';
+        var search_start_day_ymd = $.datepicker.formatDate(dateFormat, new Date(search_start_year, search_start_month - 1, search_start_day));
+        $("#datepickercustomersearch_start").val(search_start_day_ymd);
+        <!--{/if}-->
+        
 		$( "#datepickercustomersearch_start" ).datepicker({
 		beforeShowDay: function(date) {
 			if(date.getDay() == 0) {
@@ -114,18 +179,46 @@
 		},changeMonth: 'true'
 		,changeYear: 'true'
 		,onSelect: function(dateText, inst){
-			setDatecustomersearch_start(dateText);
+            var year  = inst.selectedYear;
+            var month = inst.selectedMonth + 1;
+            var day   = inst.selectedDay;
+            setDatecustomersearch_start(year + '/' + month + '/' + day);
 		},
 		showButtonPanel: true,
 		beforeShow: showAdditionalButtoncustomersearch_start,       
 		onChangeMonthYear: showAdditionalButtoncustomersearch_start
 		});
 		
-		$("#datepickercustomersearch_start").blur( function() {
-			var dateText = $(this).val();
-			setDatecustomersearch_start(dateText);
+		$("#datepickercustomersearch_start").change( function() {
+            var dateText   = $(this).val();
+            var dateFormat = $.datepicker.regional['<!--{$smarty.const.LANG_CODE}-->'].dateFormat;
+            // console.log(dateText);
+            // console.log(dateFormat);
+            var date;
+            var year  = '';
+            var month = '';
+            var day   = '';
+            try {
+                date = $.datepicker.parseDate(dateFormat, dateText);
+                year  = date.getFullYear();
+                month = date.getMonth() + 1;
+                day   = date.getDay();
+            } catch (e) {
+                // console.log(e);
+                // clear date text
+                $(this).val('');
+            }
+            setDatecustomersearch_start(year + '/' + month + '/' + day);
 		});
-		
+
+        <!--{if $arrForm.search_end_year.value != '' && $arrForm.search_end_month.value != '' && $arrForm.search_end_day.value != ''}-->
+        var search_end_year  = '<!--{$arrForm.search_end_year.value|h}-->';
+        var search_end_month = '<!--{$arrForm.search_end_month.value|h}-->';
+        var search_end_day   = '<!--{$arrForm.search_end_day.value|h}-->';
+        var search_end_ymd = $.datepicker.formatDate(dateFormat, new Date(search_end_year, search_end_month - 1, search_end_day));
+        $("#datepickercustomersearch_end").val(search_end_ymd);
+        <!--{/if}-->
+        
 		$( "#datepickercustomersearch_end" ).datepicker({
 		beforeShowDay: function(date) {
 			if(date.getDay() == 0) {
@@ -138,18 +231,46 @@
 		},changeMonth: 'true'
 		,changeYear: 'true'
 		,onSelect: function(dateText, inst){
-			setDatecustomersearch_end(dateText);
+            var year  = inst.selectedYear;
+            var month = inst.selectedMonth + 1;
+            var day   = inst.selectedDay;
+            setDatecustomersearch_end(year + '/' + month + '/' + day);
 		},
 		showButtonPanel: true,
 		beforeShow: showAdditionalButtoncustomersearch_end,       
 		onChangeMonthYear: showAdditionalButtoncustomersearch_end
 		});
 		
-		$("#datepickercustomersearch_end").blur( function() {
-			var dateText = $(this).val();
-			setDatecustomersearch_end(dateText);
+		$("#datepickercustomersearch_end").change( function() {
+            var dateText   = $(this).val();
+            var dateFormat = $.datepicker.regional['<!--{$smarty.const.LANG_CODE}-->'].dateFormat;
+            // console.log(dateText);
+            // console.log(dateFormat);
+            var date;
+            var year  = '';
+            var month = '';
+            var day   = '';
+            try {
+                date = $.datepicker.parseDate(dateFormat, dateText);
+                year  = date.getFullYear();
+                month = date.getMonth() + 1;
+                day   = date.getDay();
+            } catch (e) {
+                // console.log(e);
+                // clear date text
+                $(this).val('');
+            }
+            setDatecustomersearch_end(year + '/' + month + '/' + day);
 		});
-		
+
+        <!--{if $arrForm.search_buy_start_year.value != '' && $arrForm.search_buy_start_month.value != '' && $arrForm.search_buy_start_day.value != ''}-->
+        var search_buy_start_year  = '<!--{$arrForm.search_buy_start_year.value|h}-->';
+        var search_buy_start_month = '<!--{$arrForm.search_buy_start_month.value|h}-->';
+        var search_buy_start_day   = '<!--{$arrForm.search_buy_start_day.value|h}-->';
+        var search_buy_start_ymd = $.datepicker.formatDate(dateFormat, new Date(search_buy_start_year, search_buy_start_month - 1, search_buy_start_day));
+        $("#datepickercustomersearch_buy_start").val(search_buy_start_ymd);
+        <!--{/if}-->
+        
 		$( "#datepickercustomersearch_buy_start" ).datepicker({
 		beforeShowDay: function(date) {
 			if(date.getDay() == 0) {
@@ -162,18 +283,46 @@
 		},changeMonth: 'true'
 		,changeYear: 'true'
 		,onSelect: function(dateText, inst){
-			setDatecustomersearch_buy_start(dateText);
+            var year  = inst.selectedYear;
+            var month = inst.selectedMonth + 1;
+            var day   = inst.selectedDay;
+            setDatecustomersearch_buy_start(year + '/' + month + '/' + day);
 		},
 		showButtonPanel: true,
 		beforeShow: showAdditionalButtoncustomersearch_buy_start,       
 		onChangeMonthYear: showAdditionalButtoncustomersearch_buy_start
 		});
 		
-		$("#datepickercustomersearch_buy_start").blur( function() {
-			var dateText = $(this).val();
-			setDatecustomersearch_buy_start(dateText);
+		$("#datepickercustomersearch_buy_start").change( function() {
+            var dateText   = $(this).val();
+            var dateFormat = $.datepicker.regional['<!--{$smarty.const.LANG_CODE}-->'].dateFormat;
+            // console.log(dateText);
+            // console.log(dateFormat);
+            var date;
+            var year  = '';
+            var month = '';
+            var day   = '';
+            try {
+                date = $.datepicker.parseDate(dateFormat, dateText);
+                year  = date.getFullYear();
+                month = date.getMonth() + 1;
+                day   = date.getDay();
+            } catch (e) {
+                // console.log(e);
+                // clear date text
+                $(this).val('');
+            }
+            setDatecustomersearch_buy_start(year + '/' + month + '/' + day);
 		});
-		
+
+        <!--{if $arrForm.search_buy_end_year.value != '' && $arrForm.search_buy_end_month.value != '' && $arrForm.search_buy_end_day.value != ''}-->
+        var search_buy_end_year  = '<!--{$arrForm.search_buy_end_year.value|h}-->';
+        var search_buy_end_month = '<!--{$arrForm.search_buy_end_month.value|h}-->';
+        var search_buy_end_day   = '<!--{$arrForm.search_buy_end_day.value|h}-->';
+        var search_buy_end_ymd = $.datepicker.formatDate(dateFormat, new Date(search_buy_end_year, search_buy_end_month - 1, search_buy_end_day));
+        $("#datepickercustomersearch_buy_end").val(search_buy_end_ymd);
+        <!--{/if}-->
+
 		$( "#datepickercustomersearch_buy_end" ).datepicker({
 		beforeShowDay: function(date) {
 			if(date.getDay() == 0) {
@@ -186,16 +335,36 @@
 		},changeMonth: 'true'
 		,changeYear: 'true'
 		,onSelect: function(dateText, inst){
-			setDatecustomersearch_buy_end(dateText);
+            var year  = inst.selectedYear;
+            var month = inst.selectedMonth + 1;
+            var day   = inst.selectedDay;
+            setDatecustomersearch_buy_end(year + '/' + month + '/' + day);
 		},
 		showButtonPanel: true,
 		beforeShow: showAdditionalButtoncustomersearch_buy_end,       
 		onChangeMonthYear: showAdditionalButtoncustomersearch_buy_end
 		});
 		
-		$("#datepickercustomersearch_buy_end").blur( function() {
-			var dateText = $(this).val();
-			setDatecustomersearch_buy_end(dateText);
+		$("#datepickercustomersearch_buy_end").change( function() {
+            var dateText   = $(this).val();
+            var dateFormat = $.datepicker.regional['<!--{$smarty.const.LANG_CODE}-->'].dateFormat;
+            // console.log(dateText);
+            // console.log(dateFormat);
+            var date;
+            var year  = '';
+            var month = '';
+            var day   = '';
+            try {
+                date = $.datepicker.parseDate(dateFormat, dateText);
+                year  = date.getFullYear();
+                month = date.getMonth() + 1;
+                day   = date.getDay();
+            } catch (e) {
+                // console.log(e);
+                // clear date text
+                $(this).val('');
+            }
+            setDatecustomersearch_buy_end(year + '/' + month + '/' + day);
 		});
 		
 	});
