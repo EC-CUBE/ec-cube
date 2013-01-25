@@ -108,7 +108,7 @@ $(function(){
 	onChangeMonthYear: showAdditionalButtonsearch_end
 	});
 	
-	$("#datepickersearch_end").blur( function() {
+	$("#datepickersearch_end").change( function() {
         var dateText   = $(this).val();
         var dateFormat = $.datepicker.regional['<!--{$smarty.const.LANG_CODE}-->'].dateFormat;
         // console.log(dateText);
