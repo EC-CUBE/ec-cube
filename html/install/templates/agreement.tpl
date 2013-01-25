@@ -63,7 +63,7 @@ function fnChangeVisible(check_id, mod_id){
 </tr>
 <tr><td height="10"></td></tr>
 <!--{assign var=key value="agreement"}-->
-<tr><td align="left" class="fs12"><input type="radio" id="agreement_yes" name="<!--{$key}-->" value=true onclick="fnChangeVisible('agreement_yes', 'next');" <!--{if $arrHidden[$key]}-->checked<!--{/if}-->><label for="agreement_yes"><!--{t string="t_Agree_01"}--></label> <input type="radio" id="agreement_no" name="<!--{$key}-->" value=false onclick="fnChangeVisible('agreement_yes', 'next');" <!--{if !$arrHidden[$key]|h}-->checked<!--{/if}-->><label for="agreement_no"><!--{t string="t_Do not agree_01"}--></label></td></tr>
+<tr><td align="left" class="fs12"><input type="radio" id="agreement_yes" name="<!--{$key}-->" value=true onclick="fnChangeVisible('agreement_yes', 'next');" <!--{if $arrHidden[$key]}-->checked<!--{/if}-->><label for="agreement_yes"><!--{t string="tpl_Agree_01"}--></label> <input type="radio" id="agreement_no" name="<!--{$key}-->" value=false onclick="fnChangeVisible('agreement_yes', 'next');" <!--{if !$arrHidden[$key]|h}-->checked<!--{/if}-->><label for="agreement_no"><!--{t string="tpl_Do not agree_01"}--></label></td></tr>
 </table>
 
 <table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
@@ -71,7 +71,7 @@ function fnChangeVisible(check_id, mod_id){
     <tr>
         <td align="center">
         <a href="#" onmouseover="chgImg('../img/install/back_on.jpg','back')" onmouseout="chgImg('../img/install/back.jpg','back')" onclick="document.form1['mode'].value='return_welcome';document.form1.submit();" /><img  width="105" src="../img/install/back.jpg"  height="24" alt="<!--{t string="tpl_610"}-->" border="0" name="back"></a>
-        <a href="#" onclick="document.form1.submit();"><input type='image' onMouseover="chgImgImageSubmit('../img/install/next_on.jpg',this)" onMouseout="chgImgImageSubmit('../img/install/next.jpg',this)" src="../img/install/next.jpg" width="105" height="24" alt="<!--{t string="t_Next_01"}-->" border="0" name="next" id="next"></a>
+        <a href="#" onclick="document.form1.submit();"><input type='image' onMouseover="chgImgImageSubmit('../img/install/next_on.jpg',this)" onMouseout="chgImgImageSubmit('../img/install/next.jpg',this)" src="../img/install/next.jpg" width="105" height="24" alt="<!--{t string="tpl_Next_01"}-->" border="0" name="next" id="next"></a>
         </td>
     </tr>
     <tr><td height="30"></td></tr>

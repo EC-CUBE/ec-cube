@@ -59,7 +59,7 @@
             <li><a class="btn-action" href="#" onclick="document.form1['mode'].value='return_step3';document.form1.submit();return false;">
                 <span class="btn-prev"><!--{t string="tpl_610"}--></span></a></li>
             <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;">
-                <span class="btn-next"><!--{t string="t_Next_01"}--></span></a></li>
+                <span class="btn-next"><!--{t string="tpl_Next_01"}--></span></a></li>
         </ul>
     <div class="btn-area-bottom"></div>
 </div>

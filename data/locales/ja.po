@@ -14,80 +14,80 @@ msgstr ""
 msgid "c_* T_TAG contains the tag T_FIELD which is not allowed. <br />_01"
 msgstr "※ T_FIELDに許可されていないタグ T_TAG が含まれています。<br />"
 
-msgid "t_* T_FIELD is blank. <br />_01"
+msgid "c_* T_FIELD is blank. <br />_01"
 msgstr "※ T_FIELDが入力されていません。<br />"
 
-msgid "t_* T_FIELD is not selected. <br />_01"
+msgid "c_* T_FIELD is not selected. <br />_01"
 msgstr "※ T_FIELDが選択されていません。<br />"
 
-msgid "t_* Spaces, tabs and line breaks are not possible in T_FIELD. <br />_01"
+msgid "c_* Spaces, tabs and line breaks are not possible in T_FIELD. <br />_01"
 msgstr "※ T_FIELDにスペース、タブ、改行のみの入力はできません。<br />"
 
-msgid "t_* Do not include spaces, tabs or line breaks in T_FIELD. <br />_01"
+msgid "c_* Do not include spaces, tabs or line breaks in T_FIELD. <br />_01"
 msgstr "※ T_FIELDにスペース、タブ、改行は含めないで下さい。<br />"
 
-msgid "t_* A numerical value that starts with 0 has been entered for T_FIELD. <br />_01"
+msgid "c_* A numerical value that starts with 0 has been entered for T_FIELD. <br />_01"
 msgstr "※ T_FIELDに0で始まる数値が入力されています。<br />"
 
-msgid "t_* T_FIELD_1ST and T_FIELD_2ND do not match. <br />_01"
+msgid "c_* T_FIELD_1ST and T_FIELD_2ND do not match. <br />_01"
 msgstr "※ T_FIELD_1STとT_FIELD_2NDが一致しません。<br />"
 
-msgid "t_* The same value cannot be used for T_FIELD_1ST and T_FIELD_2ND. <br />_01"
+msgid "c_* The same value cannot be used for T_FIELD_1ST and T_FIELD_2ND. <br />_01"
 msgstr "※ T_FIELD_1STとT_FIELD_2NDは、同じ値を使用できません。<br />"
 
-msgid "t_* It is not possible to enter a larger value for T_FIELD_1ST than for T_FIELD_2ND. <br />_01"
+msgid "c_* It is not possible to enter a larger value for T_FIELD_1ST than for T_FIELD_2ND. <br />_01"
 msgstr "※ T_FIELD_1STはT_FIELD_2NDより大きい値を入力できません。<br />"
 
-msgid "t_* For T_FIELD, enter T_LENGTH  characters or less. <br />_01"
+msgid "c_* For T_FIELD, enter T_LENGTH  characters or less. <br />_01"
 msgstr "※ T_FIELDはT_LENGTH字以下で入力してください。<br />"
 
-msgid "t_* For T_FIELD, enter T_COUNT characters or more. <br />_01"
-msgid_plural "t_* For T_FIELD, input T_COUNT characters or more. <br />_01"
+msgid "c_* For T_FIELD, enter T_COUNT characters or more. <br />_01"
+msgid_plural "c_* For T_FIELD, input T_COUNT characters or more. <br />_01"
 msgstr[0] "※ T_FIELDはT_COUNT字以上で入力してください。<br />"
 msgstr[1] "※ T_FIELDはT_COUNT字以上で入力してください。<br />"
 
-msgid "t_* For T_FIELD, enter T_LENGTH or smaller. <br />_01"
+msgid "c_* For T_FIELD, enter T_LENGTH or smaller. <br />_01"
 msgstr "※ T_FIELDはT_LENGTH以下で入力してください。<br />"
 
-msgid "t_* Enter T_COUNT or higher for T_FIELD. <br />_01"
-msgid_plural "t_* Input T_COUNT or higher for T_FIELD. <br />_01"
+msgid "c_* Enter T_COUNT or higher for T_FIELD. <br />_01"
+msgid_plural "c_* Input T_COUNT or higher for T_FIELD. <br />_01"
 msgstr[0] "※ T_FIELDはT_COUNT以上で入力してください。<br />"
 msgstr[1] "※ T_FIELDはT_COUNT以上で入力してください。<br />"
 
-msgid "t_* Enter only numbers for T_FIELD. <br />_01"
+msgid "c_* Enter only numbers for T_FIELD. <br />_01"
 msgstr "※ T_FIELDは数字で入力してください。<br />"
 
-msgid "t_* Enter only numbers for T_FIELD. <br />_02"
+msgid "c_* Enter only numbers for T_FIELD. <br />_02"
 msgstr "※ T_FIELDは数字で入力してください。<br />"
 
-msgid "t_* Enter alphabetical characters for T_FIELD. <br />_01"
+msgid "c_* Enter alphabetical characters for T_FIELD. <br />_01"
 msgstr "※ T_FIELDは半角英字で入力してください。<br />"
 
-msgid "t_* Enter all items for T_FIELD. <br />_01"
+msgid "c_* Enter all items for T_FIELD. <br />_01"
 msgstr "※ T_FIELDはすべての項目を入力してください。<br />"
 
-msgid "t_* T_FIELD must be T_LENGTH characters or less. <br />_01"
+msgid "c_* T_FIELD must be T_LENGTH characters or less. <br />_01"
 msgstr "※ T_FIELDはT_LENGTH字以内で入力してください。<br />"
 
-msgid "t_* Enter numbers for T_FIELD. <br />_01"
+msgid "c_* Enter numbers for T_FIELD. <br />_01"
 msgstr "※ T_FIELDは数字で入力してください。<br />"
 
-msgid "t_* For T_FIELD, enter within a text length of T_LENGTH. <br />_01"
+msgid "c_* For T_FIELD, enter within a text length of T_LENGTH. <br />_01"
 msgstr "※ T_FIELDはT_LENGTH文字以内で入力してください。<br />"
 
-msgid "t_* Enter items in order, starting at the beginning. <br />_01"
+msgid "c_* Enter items in order, starting at the beginning. <br />_01"
 msgstr "※ T_FIELDは先頭の項目から順番に入力して下さい。<br />"
 
-msgid "t_* For T_FIELD, enter katakana characters. <br />_01"
+msgid "c_* For T_FIELD, enter katakana characters. <br />_01"
 msgstr "※ T_FIELDはカタカナで入力してください。<br />"
 
-msgid "t_* For T_FIELD, enter katakana characters. <br />_02"
+msgid "c_* For T_FIELD, enter katakana characters. <br />_02"
 msgstr "※ T_FIELDはカタカナで入力してください。<br />"
 
-msgid "t_* Enter alphanumeric characters for T_FIELD. <br />_01"
+msgid "c_* Enter alphanumeric characters for T_FIELD. <br />_01"
 msgstr "※ T_FIELDは英数字で入力してください。<br />"
 
-msgid "t_* Enter alphanumeric symbols for T_FIELD. <br />_01"
+msgid "c_* Enter alphanumeric symbols for T_FIELD. <br />_01"
 msgstr "※ T_FIELDは英数記号で入力してください。<br />"
 
 msgid "SC_CheckError_031"
@@ -5888,13 +5888,13 @@ msgstr ""
 "URL、店名、EC-CUBEバージョン、PHP情報、DB情報等の情報を弊社にて収集させて戴く"
 "ことをここに確認し、同意するものとする。<br/>"
 
-msgid "t_Agree_01"
+msgid "tpl_Agree_01"
 msgstr "同意する"
 
-msgid "t_Do not agree_01"
+msgid "tpl_Do not agree_01"
 msgstr "同意しない"
 
-msgid "t_Next_01"
+msgid "tpl_Next_01"
 msgstr "次へ進む"
 
 msgid "t_EC CUBE installation is complete._01"

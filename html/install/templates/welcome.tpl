@@ -32,7 +32,7 @@
 <div class="btn-area-top"></div>
 <div class="btn-area">
     <ul>
-        <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next"><!--{t string="t_Next_01"}--></span></a></li>
+        <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next"><!--{t string="tpl_Next_01"}--></span></a></li>
     </ul>
 </div>
 <div class="btn-area-bottom"></div>
