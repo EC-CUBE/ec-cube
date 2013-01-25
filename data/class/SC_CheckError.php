@@ -377,16 +377,16 @@ class SC_CheckError {
         $total_count = 0;
         for ($i = 1; $i <= 3; $i++) {
             if (strlen($this->arrParam[$value[$i]]) > 0 && strlen($this->arrParam[$value[$i]]) > $telItemLen) {
-                $this->arrErr[$value[$i]] .= t('SC_CheckError_020', array('T_FIELD' => $value[0] . $i, 'T_LENGTH' => $telItemLen));
+                $this->arrErr[$value[$i]] .= t('t_* T_FIELD must be T_LENGTH characters or less. <br />_01', array('T_FIELD' => $value[0] . $i, 'T_LENGTH' => $telItemLen));
             } else if ($this->numelicCheck($this->arrParam[$value[1]])) {
-                $this->arrErr[$value[$i]] .= t('SC_CheckError_021', array('T_FIELD' => $value[0] . $i));
+                $this->arrErr[$value[$i]] .= t('t_* Enter numbers for T_FIELD. <br />_01', array('T_FIELD' => $value[0] . $i));
             }
             $total_count += strlen($this->arrParam[$value[$i]]);
         }
 
         // 合計値チェック
         if ($total_count > $telLen) {
-            $this->arrErr[$value[3]] .= t('SC_CheckError_022', array('T_FIELD' => $value[0], 'T_LENGTH' => $telLen));
+            $this->arrErr[$value[3]] .= t('t_* For T_FIELD, enter within a text length of T_LENGTH. <br />_01', array('T_FIELD' => $value[0], 'T_LENGTH' => $telLen));
         }
     }
 
@@ -414,7 +414,7 @@ class SC_CheckError {
         }
 
         if ($blank) {
-            $this->arrErr[$value[1]] = t('SC_CheckError_023', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('t_* T_FIELD is blank. <br />_01', array('T_FIELD' => $value[0]));
         }
     }
 
@@ -473,7 +473,7 @@ class SC_CheckError {
         }
 
         if (!$input) {
-            $this->arrErr[$value[1]] = t('SC_CheckError_025', array('T_FIELD' => $value[0]));
+            $this->arrErr[$value[1]] = t('t_* T_FIELD is blank. <br />_01', array('T_FIELD' => $value[0]));
         }
     }
 

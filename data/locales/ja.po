@@ -20,9 +20,6 @@ msgstr "※ T_FIELDが入力されていません。<br />"
 msgid "t_* T_FIELD is not selected. <br />_01"
 msgstr "※ T_FIELDが選択されていません。<br />"
 
-msgid "t_* T_FIELD is blank. <br />_01"
-msgstr "※ T_FIELDが入力されていません。<br />"
-
 msgid "t_* Spaces, tabs and line breaks are not possible in T_FIELD. <br />_01"
 msgstr "※ T_FIELDにスペース、タブ、改行のみの入力はできません。<br />"
 
@@ -31,9 +28,6 @@ msgstr "※ T_FIELDにスペース、タブ、改行は含めないで下さい�
 
 msgid "t_* A numerical value that starts with 0 has been entered for T_FIELD. <br />_01"
 msgstr "※ T_FIELDに0で始まる数値が入力されています。<br />"
-
-msgid "t_* T_FIELD is not selected. <br />_01"
-msgstr "※ T_FIELDが選択されていません。<br />"
 
 msgid "t_* T_FIELD_1ST and T_FIELD_2ND do not match. <br />_01"
 msgstr "※ T_FIELD_1STとT_FIELD_2NDが一致しません。<br />"
@@ -72,20 +66,14 @@ msgstr "※ T_FIELDは半角英字で入力してください。<br />"
 msgid "t_* Enter all items for T_FIELD. <br />_01"
 msgstr "※ T_FIELDはすべての項目を入力してください。<br />"
 
-msgid "SC_CheckError_020"
+msgid "t_* T_FIELD must be T_LENGTH characters or less. <br />_01"
 msgstr "※ T_FIELDはT_LENGTH字以内で入力してください。<br />"
 
-msgid "SC_CheckError_021"
+msgid "t_* Enter numbers for T_FIELD. <br />_01"
 msgstr "※ T_FIELDは数字で入力してください。<br />"
 
-msgid "SC_CheckError_022"
+msgid "t_* For T_FIELD, enter within a text length of T_LENGTH. <br />_01"
 msgstr "※ T_FIELDはT_LENGTH文字以内で入力してください。<br />"
-
-msgid "SC_CheckError_023"
-msgstr "※ T_FIELDが入力されていません。<br />"
-
-msgid "SC_CheckError_025"
-msgstr "※ T_FIELDが入力されていません。<br />"
 
 msgid "SC_CheckError_026"
 msgstr "※ T_FIELDは先頭の項目から順番に入力して下さい。<br />"
