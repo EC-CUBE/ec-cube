@@ -25,7 +25,7 @@
 <!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_header.tpl" subtitle="Form for customer's opinion (input page)"}-->
 
 <div id="window_area">
-    <h2 class="title">Add comment</h2>
+    <h2 class="title">Add a comment</h2>
     <p class="windowtext">Please provide your opinions and thoughts regarding the product below.<br />
         Items marked with "<span class="attention">*</span>" are required feilds.<br />
         When finished, click the "Confirm" button at the very bottom.</p>
@@ -33,7 +33,7 @@
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="confirm" />
     <input type="hidden" name="product_id" value="<!--{$arrForm.product_id|h}-->" />
-    <table summary="Add comment">
+    <table summary="Add a comment">
         <col width="30%" />
         <col width="70%" />
         <tr>
@@ -56,7 +56,7 @@
             </td>
         </tr>
         <tr>
-            <th>Recommendation level<span class="attention">*</span></th>
+            <th>Rating<span class="attention">*</span></th>
             <td>
                 <span class="attention"><!--{$arrErr.recommend_level}--></span>
                 <select name="recommend_level" style="<!--{$arrErr.recommend_level|sfGetErrorColor}-->">

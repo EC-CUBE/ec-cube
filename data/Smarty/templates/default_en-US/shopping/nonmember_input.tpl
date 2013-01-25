@@ -93,7 +93,7 @@
                     <p class="mini"><span class="attention">Separate the address into two fields. Make sure to write down the building name.</span></p></td>
             </tr>
             <tr>
-                <th>Telephone number<span class="attention">*</span></th>
+                <th>Phone number<span class="attention">*</span></th>
                 <td>
                     <!--{assign var=key1 value="order_tel01"}-->
                     <!--{assign var=key2 value="order_tel02"}-->
@@ -228,7 +228,7 @@
                 </td>
             </tr>
             <tr>
-                <th>Telephone number<span class="attention">*</span></th>
+                <th>Phone number<span class="attention">*</span></th>
                 <td>
                     <!--{assign var=key1 value="shipping_tel01"}-->
                     <!--{assign var=key2 value="shipping_tel02"}-->

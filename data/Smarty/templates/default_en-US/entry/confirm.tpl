@@ -56,7 +56,7 @@
                 </td>
             </tr>
             <tr>
-                <th>Telephone number</th>
+                <th>Phone number</th>
                 <td>
                     <!--{$arrForm.tel01|h}--> - <!--{$arrForm.tel02|h}--> - <!--{$arrForm.tel03|h}-->
                 </td>

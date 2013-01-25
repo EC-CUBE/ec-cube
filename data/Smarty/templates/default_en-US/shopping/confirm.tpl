@@ -244,7 +244,7 @@
                     <td><!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01|h}--><!--{$shippingItem.shipping_addr02|h}--></td>
                 </tr>
                 <tr>
-                    <th scope="row">Telephone number</th>
+                    <th scope="row">Phone number</th>
                     <td><!--{$shippingItem.shipping_tel01}-->-<!--{$shippingItem.shipping_tel02}-->-<!--{$shippingItem.shipping_tel03}--></td>
                 </tr>
                 <tr>

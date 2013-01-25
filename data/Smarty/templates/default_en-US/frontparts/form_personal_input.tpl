@@ -81,7 +81,7 @@
     </td>
 </tr>
 <tr>
-    <th>Telephone number<span class="attention">*</span></th>
+    <th>Phone number<span class="attention">*</span></th>
     <td>
         <!--{assign var=key1 value="`$prefix`tel01"}-->
         <!--{assign var=key2 value="`$prefix`tel02"}-->

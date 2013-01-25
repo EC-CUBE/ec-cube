@@ -58,7 +58,7 @@
                 <td><!--{$arrForm.addr01.value|h}--><!--{$arrForm.addr02.value|h}--></td>
             </tr>
             <tr>
-                <th>Telephone number</th>
+                <th>Phone number</th>
                 <td>
                     <!--{if strlen($arrForm.tel01.value) > 0 && strlen($arrForm.tel02.value) > 0 && strlen($arrForm.tel03.value) > 0}-->
                         <!--{$arrForm.tel01.value|h}-->-<!--{$arrForm.tel02.value|h}-->-<!--{$arrForm.tel03.value|h}-->

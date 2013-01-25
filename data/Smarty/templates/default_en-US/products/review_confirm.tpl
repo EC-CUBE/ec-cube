@@ -23,7 +23,7 @@
 <!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_header.tpl" subtitle="Form for customer's opinion (confirmation page)"}-->
 
 <div id="window_area">
-    <h2 class="title">Add comment</h2>
+    <h2 class="title">Add a comment</h2>
     <form name="form1" method="post" action="?">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="complete" />
@@ -53,7 +53,7 @@
             <td><!--{if $arrForm.sex eq 1}-->Male<!--{elseif $arrForm.sex eq 2}-->Female<!--{/if}--></td>
         </tr>
         <tr>
-            <th>Recommendation level</th>
+            <th>Rating</th>
             <td><span class="recommend_level"><!--{$arrRECOMMEND[$arrForm.recommend_level]}--></span></td>
         </tr>
         <tr>

@@ -26,7 +26,7 @@
     <div id="undercolumn_entry">
         <h2 class="title"><!--{$tpl_title|h}--></h2>
         <p class="message">Definition of personal information</p>
-        <p>Refers to information related to individual customers (hereinafter referred to as "personal information") from which it is possible to distinguish the customer, such as the customer's name, address, telephone number, etc. Includes information from which an individual can be distinguished by verifying it with other information.</p>
+        <p>Refers to information related to individual customers (hereinafter referred to as "personal information") from which it is possible to distinguish the customer, such as the customer's name, address, phone number, etc. Includes information from which an individual can be distinguished by verifying it with other information.</p>
 
     </div>
 </div>

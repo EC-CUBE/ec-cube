@@ -31,7 +31,7 @@
             <ul>
                 <li>
                     <!--{if $return_top}-->
-                        <a class="bt02" href="<!--{$smarty.const.TOP_URLPATH}-->">To top page</a>
+                        <a class="bt02" href="<!--{$smarty.const.TOP_URLPATH}-->">Home</a>
                     <!--{else}-->
                         <a class="bt04" href="javascript:history.back()">Go back</a>
                     <!--{/if}-->

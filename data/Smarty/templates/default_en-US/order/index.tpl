@@ -40,7 +40,7 @@
                 <td><!--{$arrOrder.law_zipcode|h}--><br /><!--{$arrPref[$arrOrder.law_pref]|h}--><!--{$arrOrder.law_addr01|h}--><!--{$arrOrder.law_addr02|h}--></td>
             </tr>
             <tr>
-                <th>Telephone number</th>
+                <th>Phone number</th>
                 <td><!--{$arrOrder.law_tel01|h}-->-<!--{$arrOrder.law_tel02|h}-->-<!--{$arrOrder.law_tel03|h}--></td>
             </tr>
             <tr>

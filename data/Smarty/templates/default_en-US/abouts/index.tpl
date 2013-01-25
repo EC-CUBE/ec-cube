@@ -88,7 +88,7 @@
 
             <!--{if strlen($objSiteInfo->data.tel01)}-->
                 <tr>
-                    <th>Telephone number</th>
+                    <th>Phone number</th>
                     <td><!--{$objSiteInfo->data.tel01|h}-->-<!--{$objSiteInfo->data.tel02|h}-->-<!--{$objSiteInfo->data.tel03|h}--></td>
                 </tr>
             <!--{/if}-->
