@@ -94,93 +94,87 @@ msgstr "* Enter alphanumeric characters for T_FIELD. <br />"
 msgid "c_* Enter alphanumeric symbols for T_FIELD. <br />_01"
 msgstr "* Enter alphanumeric symbols for T_FIELD. <br />"
 
-msgid "SC_CheckError_031"
+msgid "c_* Enter at least 1 for T_FIELD. <br />_01"
 msgstr "* Enter at least 1 for T_FIELD. <br />"
 
-msgid "SC_CheckError_032_SINGLE"
-msgid_plural "SC_CheckError_032_PLURAL"
+msgid "c_*  T_FIELD must be  between T_COUNT - T_DIGIT_MAX digits. <br />_01"
+msgid_plural "c_* For T_FIELD, input between T_COUNT to T_DIGIT_MAX digits. <br />_01"
 msgstr[0] "*  T_FIELD must be  between T_COUNT - T_DIGIT_MAX digits. <br />"
 msgstr[1] "* For T_FIELD, input between T_COUNT to T_DIGIT_MAX digits. <br />"
 
-msgid "SC_CheckError_033_SINGLE"
-msgid_plural "SC_CheckError_033_PLURAL"
+msgid "c_* For T_FIELD, enter T_COUNT digit(s). <br />_01"
+msgid_plural "c_* For T_FIELD, input T_COUNT digit(s). <br />_01"
 msgstr[0] "* For T_FIELD, enter T_COUNT digit(s). <br />"
 msgstr[1] "* For T_FIELD, input T_COUNT digit(s). <br />"
 
-msgid "SC_CheckError_034"
+msgid "c_* The T_FIELD format is incorrect. <br />_01"
 msgstr "* The T_FIELD format is incorrect. <br />"
 
-msgid "SC_CheckError_035"
+msgid "c_* Enter the characters to be used in T_FIELD correctly. <br />_01"
 msgstr "* Enter the characters to be used in T_FIELD correctly. <br />"
 
-msgid "SC_CheckError_036"
+msgid "c_* Enter T_FIELD correctly. <br />_01"
 msgstr "* Enter T_FIELD correctly. <br />"
 
-msgid "SC_CheckError_037"
+msgid "c_* Enter an IP address in the proper format in T_FIELD. <br />_01"
 msgstr "* Enter an IP address in the proper format in T_FIELD. <br />"
 
-msgid "SC_CheckError_038"
+msgid "c_* The format permitted for T_FIELD is T_EXT. <br />_01"
 msgstr "* The format permitted for T_FIELD is T_EXT. <br />"
 
-msgid "SC_CheckError_039"
+msgid "c_* T_PATH cannot be found. <br />_01"
 msgstr "* T_PATH cannot be found. <br />"
 
-msgid "SC_CheckError_040"
+msgid "c_* Upload T_FIELD. <br />_01"
 msgstr "* Upload T_FIELD. <br />"
 
-msgid "SC_CheckError_041"
+msgid "c_* For the T_FIELD file size, use a size that is T_SIZET_UNIT or less. <br />_01"
 msgstr ""
 "* For the T_FIELD file size, use a size that is T_SIZET_UNIT or less. <br />"
 
-msgid "SC_CheckError_042"
+msgid "c_* Do not use Japanese or spaces in the file name for T_FIELD. <br />_01"
 msgstr "* Do not use Japanese or spaces in the file name for T_FIELD. <br />"
 
-msgid "SC_CheckError_044"
+msgid "c_* T_FIELD is not correct. <br />_01"
 msgstr "* T_FIELD is not correct. <br />"
 
-msgid "SC_CheckError_045"
+msgid "c_* Specify T_FIELD correctly. <br />_01"
 msgstr "* Specify T_FIELD correctly. <br />"
 
-msgid "SC_CheckError_046"
+msgid "c_* The period specification for T_START and T_END is not correct. <br />_01"
 msgstr ""
 "* The period specification for T_START and T_END is not correct. <br />"
 
-msgid "SC_CheckError_047"
+msgid "c_* The designated T_FIELD does not exist. <br />_01"
 msgstr "* The designated T_FIELD does not exist. <br />"
 
-msgid "SC_CheckError_048"
-msgstr "* The T_FIELD format is incorrect. <br />"
-
-msgid "SC_CheckError_049"
+msgid "c_* T_FIELD is not for mobile phones. <br />_01"
 msgstr "* T_FIELD is not for mobile phones. <br />"
 
-msgid "SC_CheckError_050"
+msgid "c_* T_FIELD already used in member registration. <br />_01"
 msgstr "* T_FIELD already used in member registration. <br />"
 
-msgid "SC_CheckError_051"
+msgid "c_* For a certain period of time after membership withdrawal, it is not possible to use the same T_FIELD. <br />_01"
 msgstr ""
 "* For a certain period of time after membership withdrawal, it is not "
 "possible to use the same T_FIELD. <br />"
 
-msgid "SC_CheckError_052"
+msgid "c_* T_FIELD cannot be entered. <br />_01"
 msgstr "* T_FIELD cannot be entered. <br />"
 
-msgid "SC_CheckError_053"
-msgstr "* The T_FIELD format is incorrect. <br />"
-
-msgid "SC_FormParam_001"
+msgid "c_* The file T_NAME does not exist. <br />_01"
 msgstr "* The file T_NAME does not exist. <br />"
 
-msgid "SC_FormParam_002"
+msgid "c_* Does not support the error check format (T_FUNCTION) **<br />_01"
 msgstr "* Does not support the error check format (T_FUNCTION) **<br />"
 
-msgid "SC_FormParam_003"
+msgid "c_T_NAME<span class=\"red\">(* Required)</span>_01"
 msgstr "T_NAME<span class=\"red\">(* Required)</span>"
 
-msgid "SC_FormParam_004"
+msgid "c_[Default value: T_DEFAULT]_01"
 msgstr " [Default value: T_DEFAULT]"
 
-msgid "SC_FormParam_005"
+msgid "c_ [Registration/update not possible] _01"
 msgstr " [Registration/update not possible] "
 
 msgid "SC_CartSession_001"
