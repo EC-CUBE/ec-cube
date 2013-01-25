@@ -44,7 +44,7 @@ self.moveTo(20,20);self.focus();
             <th><!--{t string="tpl_258"}--></th>
             <td>
             <!--{if $arrSearchData.search_pref}-->
-                <!--{$arrPref[$arrSearchData.search_pref]|h}-->　
+                <!--{$arrPref[$arrSearchData.search_pref]|h}-->
             <!--{else}--><!--{t string="tpl_337"}--><!--{/if}-->
             </td>
         </tr>
@@ -58,7 +58,7 @@ self.moveTo(20,20);self.focus();
             <!--{assign var=key value="search_sex"}-->
             <!--{if is_array($arrSearchData[$key])}-->
                 <!--{foreach item=item from=$arrSearchData[$key]}-->
-                    <!--{$arrSex[$item]|h}-->　
+                    <!--{$arrSex[$item]|h}-->
                 <!--{/foreach}-->
             <!--{else}--><!--{t string="tpl_337"}--><!--{/if}-->
             </td>
@@ -94,7 +94,7 @@ self.moveTo(20,20);self.focus();
             <!--{assign var=key value="search_job"}-->
             <!--{if is_array($arrSearchData[$key])}-->
                 <!--{foreach item=item from=$arrSearchData[$key]}-->
-                    <!--{$arrJob[$item]|h}-->　
+                    <!--{$arrJob[$item]|h}-->
                 <!--{/foreach}-->
             <!--{else}--><!--{t string="tpl_337"}--><!--{/if}-->
             </td>

@@ -554,7 +554,7 @@ Please check if the below purchased items are correct.
 ============================================
 
 
-This is an automatic message.、
+This is an automatic message.
 Please do not reply to this e-mail.
 
 

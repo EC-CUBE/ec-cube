@@ -116,7 +116,7 @@ function lfPopwinSubmit(formName) {
         <tr>
             <th><!--{t string="tpl_431"}--></th>
             <td>
-                <input type="radio" name="disp_point" value="1" checked="checked" /><!--{t string="tpl_432"}-->　<input type="radio" name="disp_point" value="0" /><!--{t string="tpl_433"}--><br />
+                <input type="radio" name="disp_point" value="1" checked="checked" /><!--{t string="tpl_432"}-->&nbsp;<input type="radio" name="disp_point" value="0" /><!--{t string="tpl_433"}--><br />
                 <span style="font-size: 80%;"><!--{t string="tpl_434"}--></span>
             </td>
         </tr>

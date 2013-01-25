@@ -53,7 +53,7 @@
             <!--{/if}-->
 
             <!--{* スペース繰り返し *}-->
-            <!--{section name=n loop=$level}-->　　<!--{/section}-->
+            <!--{section name=n loop=$level}-->&nbsp;&nbsp;<!--{/section}-->
 
             <!--{* カテゴリ名表示 *}-->
             <!--{assign var=disp_name value="`$arrTree[cnt].category_id`.`$arrTree[cnt].category_name`"}-->

@@ -22,12 +22,12 @@
  * This e-mail has been automatically sent. 
  It can be viewed optimally using monospaced font.
 
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+===========================================================
  This is an automatic message sent from
  <!--{$CONF.shop_name}--> to the end-user.
  If you think this was by mistake, please contact
  <!--{* 問い合わせ受付メール *}--><!--{$CONF.email02}-->
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+===========================================================
 
 Dear <!--{$name01}--><!--{$name02}-->,
 

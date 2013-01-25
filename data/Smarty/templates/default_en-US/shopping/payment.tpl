@@ -212,7 +212,7 @@
             <!--{assign var=index value=$shippingItem.shipping_id}-->
             <div class="delivdate top">
                 <!--{if $is_multiple}-->
-                    <span class="st">▼<!--{$shippingItem.shipping_name01}--><!--{$shippingItem.shipping_name02}-->
+                    <span class="st"><!--{$shippingItem.shipping_name01}--><!--{$shippingItem.shipping_name02}-->
                     <!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01}--><!--{$shippingItem.shipping_addr02}--></span><br/>
                 <!--{/if}-->
                 <!--★お届け日★-->

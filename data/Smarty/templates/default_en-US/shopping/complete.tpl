@@ -34,7 +34,7 @@
 
         <!-- ▼その他決済情報を表示する場合は表示 -->
         <!--{if $arrOther.title.value}-->
-            <p><span class="attention">■<!--{$arrOther.title.name}--> information</span><br />
+            <p><span class="attention">*<!--{$arrOther.title.name}--> information</span><br />
                 <!--{foreach key=key item=item from=$arrOther}-->
                     <!--{if $key != "title"}-->
                         <!--{if $item.name != ""}-->
