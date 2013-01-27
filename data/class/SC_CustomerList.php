@@ -97,7 +97,7 @@ class SC_CustomerList extends SC_SelectSql_Ex {
         // 職業
         if (!isset($this->arrSql['search_job'])) $this->arrSql['search_job'] = '';
         if (is_array($this->arrSql['search_job'])) {
-            if (in_array(t('SC_SelectSql_001'), $this->arrSql['search_job'])) {
+            if (in_array(t('c_Unknown_01'), $this->arrSql['search_job'])) {
                 $arrJobVal = $this->setItemTermWithNull($this->arrSql['search_job'] ,'job');
             } else {
                 $arrJobVal = $this->setItemTerm($this->arrSql['search_job'] ,'job');

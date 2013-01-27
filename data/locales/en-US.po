@@ -259,151 +259,148 @@ msgstr "Pts"
 msgid "c_postal code mark_01"
 msgstr " "
 
-msgid "SC_Image_001"
+msgid "c_File copying failed._01"
 msgstr "File copying failed."
 
-msgid "SC_Image_002"
+msgid "c_Copying of T_FROM->T_TO failed._01"
 msgstr "Copying of T_FROM->T_TO failed."
 
-msgid "SC_Image_003"
+msgid "c_The output source image path or the output destination folder has not been designated._01"
 msgstr ""
 "The output source image path or the output destination folder has not been "
 "designated."
 
-msgid "SC_Image_004"
+msgid "c_The output source image was not found._01"
 msgstr "The output source image was not found."
 
-msgid "SC_Image_005"
+msgid "c_The image format is not supported._01"
 msgstr "The image format is not supported."
 
-msgid "SC_Image_006"
+msgid "c_Image output failed._01"
 msgstr "Image output failed."
 
-msgid "SC_Initial_001"
+msgid "c_<div style=\"color: #F00; font-weight: bold; background-color: #FEB; text-align: center\">Please grant T_CACHE_REALDIR user write access (777, etc.)</div>_01"
 msgstr ""
 "<div style=\"color: #F00; font-weight: bold; background-color: #FEB; text-"
 "align: center\">Please grant T_CACHE_REALDIR user write access (777, etc.)</"
 "div>"
 
-msgid "SC_Initial_002"
+msgid "c_T_CACHE_REALDIR../mtb_constants_init.php does not exist_01"
 msgstr "T_CACHE_REALDIR../mtb_constants_init.php does not exist"
 
-msgid "SC_PageNavi_001"
+msgid "c_&lt;&lt;Back_01"
 msgstr "&lt;&lt;Back"
 
-msgid "SC_PageNavi_002"
+msgid "c_Next&gt;&gt;_01"
 msgstr "Next&gt;&gt;"
 
-msgid "SC_Product_001"
+msgid "c_Please make a selection_01"
 msgstr "Please make a selection"
 
-msgid "SC_Product_002"
+msgid "c_(Sold out)_01"
 msgstr "(Sold out)"
 
-msgid "SC_Query_001"
+msgid "c_An error occurred in DB processing._01"
 msgstr "An error occurred in DB processing."
 
-msgid "SC_SelectSql_001"
+msgid "c_Unknown_01"
 msgstr "Unknown"
 
-msgid "SC_SendMail_001"
+msgid "c_A method for upward compatibility was used._01"
 msgstr "A method for upward compatibility was used."
 
-msgid "SC_SendMail_002"
+msgid "c_Unknown backend.[$backend = T_BACKEND]_01"
 msgstr "Unknown backend.[$backend = T_BACKEND]"
 
-msgid "SC_SendMail_003"
+msgid "c_E-mail sending failed.[T_MESSAGE]_01"
 msgstr "E-mail sending failed.[T_MESSAGE]"
 
-msgid "SC_View_001"
+msgid "c_Processing time: T_TIME seconds_01"
 msgstr "Processing time: T_TIME seconds"
 
-msgid "SC_UploadFile_001"
+msgid "c_* T_DISPNAME is not uploaded. <br />_01"
 msgstr "* T_DISPNAME is not uploaded. <br />"
 
-msgid "SC_UploadFile_002"
+msgid "c_* T_DISPNAME is not uploaded. (If you cannot upload the file, adjust php_value upload_max_filesize for the .htaccess file)<br />_01"
 msgstr ""
 "* T_DISPNAME is not uploaded. (If you cannot upload the file, adjust "
 "php_value upload_max_filesize for the .htaccess file)<br />"
 
-msgid "SC_UploadFile_003"
+msgid "c_* File upload failed. <br />_01"
 msgstr "* File upload failed. <br />"
 
-msgid "SC_Api_Operation_001"
+msgid "c_The operation could not be loaded._01"
 msgstr "The operation could not be loaded."
 
-msgid "SC_Api_Operation_002"
+msgid "c_You do not have execution authority for the operation._01"
 msgstr "You do not have execution authority for the operation."
 
-msgid "SC_Batch_Update_001"
+msgid "c_Creation of backup directory failed_01"
 msgstr "Creation of backup directory failed"
 
-msgid "SC_Batch_Update_002"
+msgid "c_The following file was excluded: _01"
 msgstr "The following file was excluded: "
 
-msgid "SC_Batch_Update_003"
+msgid "c_The hash value does not match and the copy destination cannot be retrieved: _01"
 msgstr ""
 "The hash value does not match and the copy destination cannot be retrieved: "
 
-msgid "SC_Batch_Update_004"
+msgid "c_Files with the same contents were skipped: _01"
 msgstr "Files with the same contents were skipped: "
 
-msgid "SC_Batch_Update_005"
+msgid "c_Creation of backup file failed: _01"
 msgstr "Creation of backup file failed: "
 
-msgid "SC_Batch_Update_006"
+msgid "c_The copying destination does not have write access: _01"
 msgstr "The copying destination does not have write access: "
 
-msgid "SC_Batch_Update_007"
+msgid "c_File copying was successful: _01"
 msgstr "File copying was successful: "
 
-msgid "SC_Batch_Update_008"
+msgid "c_distinfo file creation was successful: _01"
 msgstr "distinfo file creation was successful: "
 
-msgid "SC_Batch_Update_009"
+msgid "c_distinfo file creation failed: _01"
 msgstr "distinfo file creation failed: "
 
-msgid "SC_Helper_CSV_001"
+msgid "c_Product management_01"
 msgstr "Product management"
 
-msgid "SC_Helper_CSV_002"
+msgid "c_Member management_01"
 msgstr "Member management"
 
-msgid "SC_Helper_CSV_003"
+msgid "c_Orders_01"
 msgstr "Orders"
 
-msgid "SC_Helper_CSV_004"
+msgid "c_Review_01"
 msgstr "Review"
 
-msgid "SC_Helper_CSV_005"
-msgstr "Category"
-
-msgid "SC_Helper_Customer_001"
+msgid "c_* This is an e-mail address already used in member registration. <br />_01"
 msgstr ""
 "* This is an e-mail address already used in member registration. <br />"
 
-msgid "SC_Helper_Customer_002"
+msgid "c_* The specified range for the purchase amount is inadequate._01"
 msgstr "* The specified range for the purchase amount is inadequate."
 
-msgid "SC_Helper_Customer_003"
+msgid "c_* The specified range for number of purchases is inadequate._01"
 msgstr "* The specified range for number of purchases is inadequate."
 
-msgid "SC_Helper_DB_001"
+msgid "c_The file exists but cannot be read_01"
 msgstr "The file exists but cannot be read"
 
-msgid "SC_Helper_Mail_001"
+msgid "c_No order exists. (Order number: T_ORDER_ID)_01"
 msgstr "No order exists. (Order number: T_ORDER_ID)"
 
-msgid "SC_Helper_Mail_002"
+msgid "c_The e-mail below has been sent._01"
 msgstr "The e-mail below has been sent."
 
-msgid "SC_Helper_Mail_003"
+msgid "c_Confirmation of member registration_01"
 msgstr "Confirmation of member registration"
 
-msgid "SC_Helper_Mail_004"
+msgid "c_Completion of member registration_01"
 msgstr "Completion of member registration"
 
-msgid "SC_Helper_PageLayout_001"
+msgid "c_The block cannot be found_01"
 msgstr "The block cannot be found"
 
 msgid "API_AddrFromZip_001"
@@ -748,7 +745,7 @@ msgstr "Purchased product name"
 msgid "PARAM_LABEL_BUY_PRODUCT_CODE"
 msgstr "Purchased product code"
 
-msgid "PARAM_LABEL_CATEGORY"
+msgid "c_Category_01"
 msgstr "Category"
 
 msgid "PARAM_LABEL_COMPANY_NAME"
@@ -2303,9 +2300,6 @@ msgstr "Devices not supported"
 msgid "LC_Page_Upgrade_Download_001"
 msgstr "Installation/update was successful."
 
-msgid "LC_Page_001"
-msgstr "A method for upward compatibility was used."
-
 msgid "LC_Page_Install_001"
 msgstr "Please grant user write access (777, 707, etc.) for T_FIELD"
 
@@ -2685,9 +2679,6 @@ msgstr "Members"
 
 msgid "LC_Page_Admin_Customer_002"
 msgstr "Member master"
-
-msgid "LC_Page_Admin_Customer_Edit_001"
-msgstr "Member management"
 
 msgid "LC_Page_Admin_Customer_Edit_002"
 msgstr "Member registration"
@@ -3107,9 +3098,6 @@ msgstr "File name for download sales"
 msgid "LC_Page_Admin_Products_ProductClass_013"
 msgstr "* The format permitted for T_FIELD1 is T_FIELD2.<br />"
 
-msgid "LC_Page_Admin_Products_ProductClass_014"
-msgstr "* File upload failed. <br />"
-
 msgid "LC_Page_Admin_Products_ProductRank_001"
 msgstr "Product rearrangement"
 
@@ -3479,9 +3467,6 @@ msgstr "Female (non-member)"
 msgid "LC_Page_Admin_Total_039"
 msgstr "(Sales ratio)"
 
-msgid "LC_Page_Admin_001"
-msgstr "A method for upward compatibility was used."
-
 msgid "LC_Page_Admin_Home_001"
 msgstr "Home"
 
@@ -3517,9 +3502,6 @@ msgid "SC_Utils_001"
 msgstr ""
 "&gt;&gt; /install/T_FIELD, delete this file after completing installation."
 
-msgid "SC_Utils_002"
-msgstr "A method for upward compatibility was used."
-
 msgid "SC_Utils_003"
 msgstr "T_FIELD01T_FIELD02: File exists"
 
@@ -3528,9 +3510,6 @@ msgstr "T_FIELD01T_FIELD02: Copy success"
 
 msgid "SC_Utils_005"
 msgstr "T_FIELD01T_FIELD02: Copy failure"
-
-msgid "GC_Utils_001"
-msgstr "A method for upward compatibility was used."
 
 msgid "tpl_Delivery company_01"
 msgstr "Delivery company"

@@ -151,7 +151,7 @@ class SC_SelectSql {
 
         if ($arr) {
             foreach ($arr as $data) {
-                if ($data != t('SC_SelectSql_001')) {
+                if ($data != t('c_Unknown_01')) {
                     $item .= " OR {$ItemStr} = ?";
                     $return[] = $data;
                 }

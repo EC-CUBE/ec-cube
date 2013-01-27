@@ -119,7 +119,7 @@ class GC_Utils {
      * @deprecated 2.12.0
      */
     function gfGetLogStr($mess, $log_level = 'Info') {
-        trigger_error(t("GC_Utils_001"), E_USER_WARNING);
+        trigger_error(t("c_A method for upward compatibility was used._01"), E_USER_WARNING);
         // メッセージの前に、ログ出力元関数名とログ出力関数呼び出し部分の行数を付与
         $mess = GC_Utils::gfGetCallerInfo(true) . $mess;
 
@@ -137,7 +137,7 @@ class GC_Utils {
      * @deprecated 2.12.0 GC_Utils_Ex::gfPrintLog を使用すること
      */
     function gfAdminLog($mess, $log_level = 'Info') {
-        trigger_error(t("GC_Utils_001"), E_USER_WARNING);
+        trigger_error(t("c_A method for upward compatibility was used._01"), E_USER_WARNING);
         // ログレベル=Debugの場合は、DEBUG_MODEがtrueの場合のみログ出力する
         if ($log_level === 'Debug' && DEBUG_MODE === false) {
             return;
@@ -153,7 +153,7 @@ class GC_Utils {
      * @deprecated 2.12.0 GC_Utils_Ex::gfPrintLog を使用すること
      */
     function gfFrontLog($mess, $log_level = 'Info') {
-        trigger_error(t("GC_Utils_001"), E_USER_WARNING);
+        trigger_error(t("c_A method for upward compatibility was used._01"), E_USER_WARNING);
         // ログレベル=Debugの場合は、DEBUG_MODEがtrueの場合のみログ出力する
         if ($log_level === 'Debug' && DEBUG_MODE === false) {
             return;

@@ -422,11 +422,11 @@ class SC_Helper_Customer {
         $objCustomer = new SC_Customer_Ex();
         if ($objCustomer->isLoginSuccess(true)
             && SC_Helper_Customer_Ex::sfCustomerEmailDuplicationCheck($objCustomer->getValue('customer_id'), $objFormParam->getValue('email'))) {
-            $objErr->arrErr['email'] .= t('SC_Helper_Customer_001');
+            $objErr->arrErr['email'] .= t('c_* This is an e-mail address already used in member registration. <br />_01');
         }
         if ($objCustomer->isLoginSuccess(true)
             && SC_Helper_Customer_Ex::sfCustomerEmailDuplicationCheck($objCustomer->getValue('customer_id'), $objFormParam->getValue('email_mobile'))) {
-            $objErr->arrErr['email_mobile'] .= t('SC_Helper_Customer_001');
+            $objErr->arrErr['email_mobile'] .= t('c_* This is an e-mail address already used in member registration. <br />_01');
         }
 
         return $objErr->arrErr;
@@ -552,7 +552,7 @@ class SC_Helper_Customer {
         $objFormParam->addParam(t('PARAM_LABEL_BUY_END_DAY'), 'search_buy_end_day', 2, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_BUY_PRODUCT_CODE'), 'search_buy_product_code', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_BUY_PRODUCT_NAME'), 'search_buy_product_name', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_CATEGORY'), 'search_category_id', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Category_01'), 'search_category_id', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_SEX'), 'search_sex', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_STATUS'), 'search_status', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_JOB'), 'search_job', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
@@ -587,14 +587,14 @@ class SC_Helper_Customer {
             && SC_Utils_Ex::sfIsInt($array['search_buy_total_to'])
             && $array['search_buy_total_from'] > $array['buy_total_to']
         ) {
-            $objErr->arrErr['search_buy_total_from'] .= t('SC_Helper_Customer_002');
+            $objErr->arrErr['search_buy_total_from'] .= t('c_* The specified range for the purchase amount is inadequate._01');
         }
 
         if (SC_Utils_Ex::sfIsInt($array['search_buy_times_from'])
             && SC_Utils_Ex::sfIsInt($array['search_buy_times_to'])
             && $array['search_buy_times_from'] > $array['search_buy_times_to']
         ) {
-            $objErr->arrErr['search_buy_times_from'] .= t('SC_Helper_Customer_003');
+            $objErr->arrErr['search_buy_times_from'] .= t('c_* The specified range for number of purchases is inadequate._01');
         }
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);

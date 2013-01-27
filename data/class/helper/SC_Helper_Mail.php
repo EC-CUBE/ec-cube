@@ -126,7 +126,7 @@ class SC_Helper_Mail {
         $arrOrder = $objQuery->getRow('*', 'dtb_order', $where, array($order_id));
 
         if (empty($arrOrder)) {
-            trigger_error(t('SC_Helper_Mail_001', array('T_ORDER_ID' => $order_id)), E_USER_ERROR);
+            trigger_error(t('c_No order exists. (Order number: T_ORDER_ID)_01', array('T_ORDER_ID' => $order_id)), E_USER_ERROR);
         }
 
         $where = 'order_id = ?';
@@ -333,10 +333,10 @@ class SC_Helper_Mail {
 
         // 仮会員が有効の場合
         if (CUSTOMER_CONFIRM_MAIL == true and $arrCustomerData['status'] == 1) {
-            $subject        = $objHelperMail->sfMakeSubject(t('SC_Helper_Mail_003'), $objMailText);
+            $subject        = $objHelperMail->sfMakeSubject(t('c_Confirmation of member registration_01'), $objMailText);
             $toCustomerMail = $objMailText->fetch('mail_templates/customer_mail.tpl');
         } else {
-            $subject        = $objHelperMail->sfMakeSubject(t('SC_Helper_Mail_004'), $objMailText);
+            $subject        = $objHelperMail->sfMakeSubject(t('c_Completion of member registration_01'), $objMailText);
             $toCustomerMail = $objMailText->fetch('mail_templates/customer_regist_mail.tpl');
         }
 
@@ -499,7 +499,7 @@ class SC_Helper_Mail {
                           array($send_id));
 
         // 送信完了　報告メール
-        $compSubject = date(t('FORMAT_DATE_LONG')) . ' '. t('SC_Helper_Mail_002');
+        $compSubject = date(t('FORMAT_DATE_LONG')) . ' '. t('c_The e-mail below has been sent._01');
         // 管理者宛に変更
         $objMail->setTo($objSite['email03']);
         $objMail->setSubject($compSubject);

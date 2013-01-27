@@ -250,7 +250,7 @@ __EOS__;
             $arrProductClasses = $this->getProductsClassFullByProductId($productId, $has_deleted);
 
             $classCats1 = array();
-            $classCats1['__unselected'] = t('SC_Product_001');
+            $classCats1['__unselected'] = t('c_Please make a selection_01');
 
             // 規格1クラス名
             $this->className1[$productId] =
@@ -271,7 +271,7 @@ __EOS__;
 
             $this->stock_find[$productId] = false;
             $classCategories = array();
-            $classCategories['__unselected']['__unselected']['name'] = t('SC_Product_001');
+            $classCategories['__unselected']['__unselected']['name'] = t('c_Please make a selection_01');
             $classCategories['__unselected']['__unselected']['product_class_id'] = $arrProductClasses[0]['product_class_id'];
             // 商品種別
             $classCategories['__unselected']['__unselected']['product_type'] = $arrProductClasses[0]['product_type_id'];
@@ -286,7 +286,7 @@ __EOS__;
                 $stock_find_class = ($arrProductsClass['stock_unlimited'] || $arrProductsClass['stock'] > 0);
 
                 $arrClassCats2['classcategory_id2'] = $classcategory_id2;
-                $arrClassCats2['name'] = $arrProductsClass['classcategory_name2'] . ($stock_find_class ? '' : ' '.t('SC_Product_002'));
+                $arrClassCats2['name'] = $arrProductsClass['classcategory_name2'] . ($stock_find_class ? '' : ' '.t('c_(Sold out)_01'));
 
                 $arrClassCats2['stock_find'] = $stock_find_class;
 
@@ -296,7 +296,7 @@ __EOS__;
 
                 if (!in_array($classcat_id1, $classCats1)) {
                     $classCats1[$classcategory_id1] = $arrProductsClass['classcategory_name1']
-                        . ($classcategory_id2 == 0 && !$stock_find_class ? ' '.t('SC_Product_002') : '');
+                        . ($classcategory_id2 == 0 && !$stock_find_class ? ' '.t('c_(Sold out)_01') : '');
                 }
 
                 // 価格
@@ -327,7 +327,7 @@ __EOS__;
                 }
                 $classCategories[$classcategory_id1]['#'] = array(
                     'classcategory_id2' => '',
-                    'name' => t('SC_Product_001'),
+                    'name' => t('c_Please make a selection_01'),
                 );
                 $classCategories[$classcategory_id1]['#' . $classcategory_id2] = $arrClassCats2;
             }

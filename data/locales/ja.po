@@ -252,147 +252,144 @@ msgstr "Pt"
 msgid "c_postal code mark_01"
 msgstr "〒"
 
-msgid "SC_Image_001"
+msgid "c_File copying failed._01"
 msgstr "ファイルのコピーに失敗しました。"
 
-msgid "SC_Image_002"
+msgid "c_Copying of T_FROM->T_TO failed._01"
 msgstr "T_FROM->T_TOのcopyに失敗しました。"
 
-msgid "SC_Image_003"
+msgid "c_The output source image path or the output destination folder has not been designated._01"
 msgstr "出力元画像パス、または出力先フォルダが指定されていません。"
 
-msgid "SC_Image_004"
+msgid "c_The output source image was not found._01"
 msgstr "出力元画像が見つかりません。"
 
-msgid "SC_Image_005"
+msgid "c_The image format is not supported._01"
 msgstr "画像形式がサポートされていません。"
 
-msgid "SC_Image_006"
+msgid "c_Image output failed._01"
 msgstr "画像の出力に失敗しました。"
 
-msgid "SC_Initial_001"
+msgid "c_<div style=\"color: #F00; font-weight: bold; background-color: #FEB; text-align: center\">Please grant T_CACHE_REALDIR user write access (777, etc.)</div>_01"
 msgstr ""
 "<div style=\"color: #F00; font-weight: bold; background-color: #FEB; text-"
 "align: center\">T_CACHE_REALDIR にユーザ書込み権限(777等)を付与して下さい。</"
 "div>"
 
-msgid "SC_Initial_002"
+msgid "c_T_CACHE_REALDIR../mtb_constants_init.php does not exist_01"
 msgstr "T_CACHE_REALDIR../mtb_constants_init.php が存在しません"
 
-msgid "SC_PageNavi_001"
+msgid "c_&lt;&lt;Back_01"
 msgstr "&lt;&lt;前へ"
 
-msgid "SC_PageNavi_002"
+msgid "c_Next&gt;&gt;_01"
 msgstr "次へ&gt;&gt;"
 
-msgid "SC_Product_001"
+msgid "c_Please make a selection_01"
 msgstr "選択してください"
 
-msgid "SC_Product_002"
+msgid "c_(Sold out)_01"
 msgstr "(品切れ中)"
 
-msgid "SC_Query_001"
-msgstr "DB処理でエラーが発生しました。"
+msgid "c_An error occurred in DB processing._01"
+    msgstr "DB処理でエラーが発生しました。"
 
-msgid "SC_SelectSql_001"
+msgid "c_Unknown_01"
 msgstr "不明"
 
-msgid "SC_SendMail_001"
+msgid "c_A method for upward compatibility was used._01"
 msgstr "前方互換用メソッドが使用されました。"
 
-msgid "SC_SendMail_002"
+msgid "c_Unknown backend.[$backend = T_BACKEND]_01"
 msgstr "不明なバックエンド。[$backend = T_BACKEND]"
 
-msgid "SC_SendMail_003"
+msgid "c_E-mail sending failed.[T_MESSAGE]_01"
 msgstr "メール送信に失敗しました。[T_MESSAGE]"
 
-msgid "SC_View_001"
+msgid "c_Processing time: T_TIME seconds_01"
 msgstr "処理時間: T_TIME秒"
 
-msgid "SC_UploadFile_001"
+msgid "c_* T_DISPNAME is not uploaded. <br />_01"
 msgstr "※ T_DISPNAMEがアップロードされていません。<br />"
 
-msgid "SC_UploadFile_002"
+msgid "c_* T_DISPNAME is not uploaded. (If you cannot upload the file, adjust php_value upload_max_filesize for the .htaccess file)<br />_01"
 msgstr ""
 "※ T_DISPNAMEがアップロードされていません。(ファイルがアップロードできない場合"
 "は、.htaccessファイルのphp_value upload_max_filesizeを調整してください)<br />"
 
-msgid "SC_UploadFile_003"
+msgid "c_* File upload failed. <br />_01"
 msgstr "※ ファイルのアップロードに失敗しました。<br />"
 
-msgid "SC_Api_Operation_001"
+msgid "c_The operation could not be loaded._01"
 msgstr "オペレーションをロード出来ませんでした。"
 
-msgid "SC_Api_Operation_002"
+msgid "c_You do not have execution authority for the operation._01"
 msgstr "オペレーションの実行権限がありません。"
 
-msgid "SC_Batch_Update_001"
+msgid "c_Creation of backup directory failed_01"
 msgstr "バックアップディレクトリの作成に失敗しました"
 
-msgid "SC_Batch_Update_002"
+msgid "c_The following file was excluded: _01"
 msgstr "次のファイルは除外されました: "
 
-msgid "SC_Batch_Update_003"
+msgid "c_The hash value does not match and the copy destination cannot be retrieved: _01"
 msgstr "ハッシュ値が一致しないため, コピー先が取得できません: "
 
-msgid "SC_Batch_Update_004"
+msgid "c_Files with the same contents were skipped: _01"
 msgstr "同じ内容のファイルをスキップしました: "
 
-msgid "SC_Batch_Update_005"
+msgid "c_Creation of backup file failed: _01"
 msgstr "バックアップファイルの作成に失敗しました: "
 
-msgid "SC_Batch_Update_006"
+msgid "c_The copying destination does not have write access: _01"
 msgstr "コピー先に書き込み権限がありません: "
 
-msgid "SC_Batch_Update_007"
+msgid "c_File copying was successful: _01"
 msgstr "ファイルのコピーに成功しました: "
 
-msgid "SC_Batch_Update_008"
+msgid "c_distinfo file creation was successful: _01"
 msgstr "distinfoファイルの作成に成功しました: "
 
-msgid "SC_Batch_Update_009"
+msgid "c_distinfo file creation failed: _01"
 msgstr "distinfoファイルの作成に失敗しました: "
 
-msgid "SC_Helper_CSV_001"
+msgid "c_Product management_01"
 msgstr "商品管理"
 
-msgid "SC_Helper_CSV_002"
+msgid "c_Member management_01"
 msgstr "会員管理"
 
-msgid "SC_Helper_CSV_003"
+msgid "c_Orders_01"
 msgstr "受注管理"
 
-msgid "SC_Helper_CSV_004"
+msgid "c_Review_01"
 msgstr "レビュー"
 
-msgid "SC_Helper_CSV_005"
-msgstr "カテゴリ"
-
-msgid "SC_Helper_Customer_001"
+msgid "c_* This is an e-mail address already used in member registration. <br />_01"
 msgstr "※ すでに会員登録で使用されているメールアドレスです。<br />"
 
-msgid "SC_Helper_Customer_002"
+msgid "c_* The specified range for the purchase amount is inadequate._01"
 msgstr "※ 購入金額の指定範囲が不正です。"
 
-msgid "SC_Helper_Customer_003"
+msgid "c_* The specified range for number of purchases is inadequate._01"
 msgstr "※ 購入回数の指定範囲が不正です。"
 
-msgid "SC_Helper_DB_001"
+msgid "c_The file exists but cannot be read_01"
 msgstr "ファイルは存在するが読み込めない"
 
-msgid "SC_Helper_Mail_001"
+msgid "c_No order exists. (Order number: T_ORDER_ID)_01"
 msgstr "該当する受注が存在しない。(注文番号: T_ORDER_ID)"
 
-msgid "SC_Helper_Mail_002"
+msgid "c_The e-mail below has been sent._01"
 msgstr "下記メールの配信が完了しました。"
 
-msgid "SC_Helper_Mail_003"
+msgid "c_Confirmation of member registration_01"
 msgstr "会員登録のご確認"
 
-msgid "SC_Helper_Mail_004"
+msgid "c_Completion of member registration_01"
 msgstr "会員登録のご完了"
 
-msgid "SC_Helper_PageLayout_001"
+msgid "c_The block cannot be found_01"
 msgstr "ブロックが見つかりません"
 
 msgid "API_AddrFromZip_001"
@@ -737,7 +734,7 @@ msgstr "購入商品名"
 msgid "PARAM_LABEL_BUY_PRODUCT_CODE"
 msgstr "購入商品コード"
 
-msgid "PARAM_LABEL_CATEGORY"
+msgid "c_Category_01"
 msgstr "カテゴリ"
 
 msgid "PARAM_LABEL_COMPANY_NAME"
@@ -2287,9 +2284,6 @@ msgstr "未対応デバイス"
 msgid "LC_Page_Upgrade_Download_001"
 msgstr "インストール/アップデートに成功しました。"
 
-msgid "LC_Page_001"
-msgstr "前方互換用メソッドが使用されました。"
-
 msgid "LC_Page_Install_001"
 msgstr "T_FIELDにユーザ書込み権限(777, 707等)を付与して下さい"
 
@@ -2671,9 +2665,6 @@ msgstr "会員管理"
 
 msgid "LC_Page_Admin_Customer_002"
 msgstr "会員マスター"
-
-msgid "LC_Page_Admin_Customer_Edit_001"
-msgstr "会員管理"
 
 msgid "LC_Page_Admin_Customer_Edit_002"
 msgstr "会員登録"
@@ -3082,9 +3073,6 @@ msgstr "ダウンロード販売用ファイル名"
 msgid "LC_Page_Admin_Products_ProductClass_013"
 msgstr "※ T_FIELD1で許可されている形式は、T_FIELD2です。<br />"
 
-msgid "LC_Page_Admin_Products_ProductClass_014"
-msgstr "※ ファイルのアップロードに失敗しました。<br />"
-
 msgid "LC_Page_Admin_Products_ProductRank_001"
 msgstr "商品並び替え"
 
@@ -3443,9 +3431,6 @@ msgstr "女性(非会員)"
 msgid "LC_Page_Admin_Total_039"
 msgstr "(売上比率)"
 
-msgid "LC_Page_Admin_001"
-msgstr "前方互換用メソッドが使用されました。"
-
 msgid "LC_Page_Admin_Home_001"
 msgstr "ホーム"
 
@@ -3480,9 +3465,6 @@ msgid "SC_Utils_001"
 msgstr ""
 ">> /install/T_FIELD は、インストール完了後にファイルを削除してください。"
 
-msgid "SC_Utils_002"
-msgstr "前方互換用メソッドが使用されました。"
-
 msgid "SC_Utils_003"
 msgstr "T_FIELD01T_FIELD02：ファイルが存在します"
 
@@ -3491,9 +3473,6 @@ msgstr "T_FIELD01T_FIELD02：コピー成功"
 
 msgid "SC_Utils_005"
 msgstr "T_FIELD01T_FIELD02：コピー失敗"
-
-msgid "GC_Utils_001"
-msgstr "前方互換用メソッドが使用されました。"
 
 msgid "tpl_Delivery company_01"
 msgstr "配送業者"
