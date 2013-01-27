@@ -177,26 +177,26 @@ msgstr " [Default value: T_DEFAULT]"
 msgid "c_ [Registration/update not possible] _01"
 msgstr " [Registration/update not possible] "
 
-msgid "SC_CartSession_001"
+msgid "c_ [Registration/update not possible] _01"
 msgstr "A method that is not operating properly has been called."
 
-msgid "SC_CartSession_002"
+msgid "c_* A product in your cart is no longer being sold at this time. The item was deleted from your cart._01"
 msgstr ""
 "* A product in your cart is no longer being sold at this time. The item was "
 "deleted from your cart."
 
-msgid "SC_CartSession_003"
+msgid "c_* Delivery preparations are not ready  for T_PRODUCT. Please access the " "inquiry page for more details._01"
 msgstr ""
 "* Delivery preparations are not ready  for T_PRODUCT. Please access the "
 "inquiry page for more details."
 
-msgid "SC_CartSession_004"
+msgid "c_* There is a sale restriction (or inventory shortage) for T_PRODUCT. It is not possible to purchase a quantity that exceeds T_LIMIT in a single " "purchase._01"
 msgstr ""
 "* There is a sale restriction (or inventory shortage) for T_PRODUCT. It is "
 "not possible to purchase a quantity that exceeds T_LIMIT in a single "
 "purchase."
 
-msgid "SC_CartSession_005"
+msgid "c_* T_PRODUCT is sold out._01"
 msgstr "* T_PRODUCT is sold out."
 
 msgid "SC_Fpdf_001"

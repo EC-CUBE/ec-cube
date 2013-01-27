@@ -171,25 +171,25 @@ msgstr " [省略時初期値: T_DEFAULT]"
 msgid "c_ [Registration/update not possible] _01"
 msgstr " [登録・更新不可] "
 
-msgid "SC_CartSession_001"
+msgid "c_ [Registration/update not possible] _01"
 msgstr "正しく動作しないメソッドが呼び出されました。"
 
-msgid "SC_CartSession_002"
+msgid "c_* A product in your cart is no longer being sold at this time. The item was deleted from your cart._01"
 msgstr ""
 "※ 現時点で販売していない商品が含まれておりました。該当商品をカートから削除し"
 "ました。"
 
-msgid "SC_CartSession_003"
+msgid "c_* Delivery preparations are not ready  for T_PRODUCT. Please access the " "inquiry page for more details._01"
 msgstr ""
 "※「T_PRODUCT」はまだ配送の準備ができておりません。恐れ入りますがお問い合わせ"
 "ページよりお問い合わせください。"
 
-msgid "SC_CartSession_004"
+msgid "c_* There is a sale restriction (or inventory shortage) for T_PRODUCT. It is not possible to purchase a quantity that exceeds T_LIMIT in a single " "purchase._01"
 msgstr ""
 "※「T_PRODUCT」は販売制限(または在庫が不足)しております。一度に数量T_LIMITを超"
 "える購入はできません。"
 
-msgid "SC_CartSession_005"
+msgid "c_* T_PRODUCT is sold out._01"
 msgstr "※「T_PRODUCT」は売り切れました。"
 
 msgid "SC_Fpdf_001"
