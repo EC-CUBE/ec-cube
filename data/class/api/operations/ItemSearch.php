@@ -97,7 +97,7 @@ class API_ItemSearch extends SC_Api_Abstract_Ex {
     }
 
     protected function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_CATEGORY_ID'), 'BrowseNode', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Category ID_01'), 'BrowseNode', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_KEYWORDS'), 'Keywords', STEXT_LEN, 'a', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_MANUFACTURER'), 'Manufacturer', STEXT_LEN, 'a', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ITEMPAGE'), 'ItemPage', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));

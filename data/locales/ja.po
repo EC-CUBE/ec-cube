@@ -533,67 +533,64 @@ msgstr "パスワード確認用の質問"
 msgid "c_Answer to question for confirming password_01"
 msgstr "パスワード確認用の質問の答え"
 
-msgid "PARAM_LABEL_SEX"
+msgid "c_Gender_01"
 msgstr "性別"
 
-msgid "PARAM_LABEL_JOB"
+msgid "c_Occupation_01"
 msgstr "職業"
 
-msgid "PARAM_LABEL_BIRTHDAY"
+msgid "c_Date of birth_01"
 msgstr "生年月日"
 
-msgid "PARAM_LABEL_YEAR"
+msgid "c_Year_01"
 msgstr "年"
 
-msgid "PARAM_LABEL_MONTH"
+msgid "c_Month_01"
 msgstr "月"
 
-msgid "PARAM_LABEL_DAY"
+msgid "c_Day_01"
 msgstr "日"
 
 msgid "PARAM_LABEL_MAILMAGAZINE"
 msgstr "メールマガジン"
 
-msgid "PARAM_LABEL_BROWSENODEID"
-msgstr "対象カテゴリID"
-
-msgid "PARAM_LABEL_RESPONSEGROUP"
+msgid "c_Response type_01"
 msgstr "返答種別"
 
-msgid "PARAM_LABEL_CONDITION"
+msgid "c_Product condition_01"
 msgstr "商品コンディション"
 
-msgid "PARAM_LABEL_IDTYPE"
+msgid "c_Product ID type_01"
 msgstr "商品ID種別"
 
-msgid "PARAM_LABEL_ITEMID"
+msgid "c_Designated ID_01"
 msgstr "指定ID"
 
-msgid "PARAM_LABEL_CSV_FILE"
+msgid "c_CSV file_01"
 msgstr "CSVファイル"
 
-msgid "PARAM_LABEL_RELATEDITEMSPAGE"
+msgid "c_Related product quantity_01"
 msgstr "関連商品数"
 
-msgid "PARAM_LABEL_RELATIONSHIPTYPE"
+msgid "c_Related product type_01"
 msgstr "関連商品種別"
 
-msgid "PARAM_LABEL_REVIEWPAGE"
+msgid "c_Review page number_01"
 msgstr "レビューページ番号"
 
-msgid "PARAM_LABEL_REVIEWSORT"
+msgid "c_Review page sort_01"
 msgstr "レビューページソート"
 
-msgid "PARAM_LABEL_TAGPAGE"
+msgid "c_Related tag pages_01"
 msgstr "関連タグページ"
 
-msgid "PARAM_LABEL_TAGSPERPAGE"
+msgid "c_Number of related tag pages_01"
 msgstr "関連タグページ数"
 
-msgid "PARAM_LABEL_TAGSORT"
+msgid "c_ Sort related tags_01"
 msgstr "関連タグソート"
 
-msgid "PARAM_LABEL_CATEGORY_ID"
+msgid "c_Category ID_01"
 msgstr "カテゴリID"
 
 msgid "PARAM_LABEL_KEYWORDS"
@@ -3358,9 +3355,6 @@ msgstr "購入件数"
 
 msgid "LC_Page_Admin_Total_026"
 msgstr "金額"
-
-msgid "LC_Page_Admin_Total_027"
-msgstr "職業"
 
 msgid "LC_Page_Admin_Total_028"
 msgstr "購入合計"

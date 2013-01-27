@@ -300,11 +300,11 @@ class LC_Page_Shopping extends LC_Page_Ex {
         $objFormParam->addParam(t('c_Fax number 3_01'), 'order_fax03', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
         $objFormParam->addParam(t('c_E-mail address_01'), 'order_email', null, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'NO_SPTAB', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
         $objFormParam->addParam(t('c_E-mail address (confirmation)_01'), 'order_email02', null, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'NO_SPTAB', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'), '', false);
-        $objFormParam->addParam(t('PARAM_LABEL_YEAR'), 'year', INT_LEN, 'n', array('MAX_LENGTH_CHECK'), '', false);
-        $objFormParam->addParam(t('PARAM_LABEL_MONTH'), 'month', INT_LEN, 'n', array('MAX_LENGTH_CHECK'), '', false);
-        $objFormParam->addParam(t('PARAM_LABEL_DAY'), 'day', INT_LEN, 'n', array('MAX_LENGTH_CHECK'), '', false);
-        $objFormParam->addParam(t('PARAM_LABEL_SEX'), 'order_sex', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_JOB'), 'order_job', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('c_Year_01'), 'year', INT_LEN, 'n', array('MAX_LENGTH_CHECK'), '', false);
+        $objFormParam->addParam(t('c_Month_01'), 'month', INT_LEN, 'n', array('MAX_LENGTH_CHECK'), '', false);
+        $objFormParam->addParam(t('c_Day_01'), 'day', INT_LEN, 'n', array('MAX_LENGTH_CHECK'), '', false);
+        $objFormParam->addParam(t('c_Gender_01'), 'order_sex', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('c_Occupation_01'), 'order_job', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_OTHER_DELIV'), 'deliv_check', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('c_Name (last name)_01'), 'shipping_name01', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Name (first name)_01'), 'shipping_name02', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
@@ -319,7 +319,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
         $objFormParam->addParam(t('c_Telephone number 1_01'), 'shipping_tel01', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
         $objFormParam->addParam(t('c_Telephone number 2_01'), 'shipping_tel02', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
         $objFormParam->addParam(t('c_Telephone number 3_01'), 'shipping_tel03', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_MAILMAGAZINE'), 'mail_flag', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
+        $objFormParam->addParam(t('c_Mail magazine_01'), 'mail_flag', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
     }
 
     /**
@@ -446,7 +446,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
 //        $objErr->doFunc(array(t('c_Postal code_01'), 'order_zip01', 'order_zip02'), array('ALL_EXIST_CHECK'));
         $objErr->doFunc(array(t('c_TEL_01'), 'shipping_tel01', 'shipping_tel02', 'shipping_tel03'), array('TEL_CHECK'));
 //        $objErr->doFunc(array(t('c_Postal code_01'), 'shipping_zip01', 'shipping_zip02'), array('ALL_EXIST_CHECK'));
-        $objErr->doFunc(array(t('PARAM_LABEL_BIRTHDAY'), 'year', 'month', 'day'), array('CHECK_BIRTHDAY'));
+        $objErr->doFunc(array(t('c_Date of birth_01'), 'year', 'month', 'day'), array('CHECK_BIRTHDAY'));
         $objErr->doFunc(array(t('c_E-mail address_01'), t('c_E-mail address (confirmation)_01'), 'order_email', 'order_email02'), array('EQUAL_CHECK'));
 
         return $objErr->arrErr;

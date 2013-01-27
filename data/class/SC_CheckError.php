@@ -888,14 +888,14 @@ class SC_CheckError {
         if ($this->arrParam[$value[1]] > 0) {
 
             // 年の数字チェック、最小数値制限チェック
-            $this->doFunc(array($value[0].'(' . t('PARAM_LABEL_YEAR') . ')', $value[1], BIRTH_YEAR), array('NUM_CHECK', 'MIN_CHECK'));
+            $this->doFunc(array($value[0].'(' . t('c_Year_01') . ')', $value[1], BIRTH_YEAR), array('NUM_CHECK', 'MIN_CHECK'));
             // 上のチェックでエラーある場合、中断する。
             if (isset($this->arrErr[$value[1]])) {
                 return;
             }
 
             // 年の最大数値制限チェック
-            $this->doFunc(array($value[0].'(' . t('PARAM_LABEL_YEAR') . ')', $value[1], date('Y',strtotime('now'))), array('MAX_CHECK'));
+            $this->doFunc(array($value[0].'(' . t('c_Year_01') . ')', $value[1], date('Y',strtotime('now'))), array('MAX_CHECK'));
             // 上のチェックでエラーある場合、中断する。
             if (isset($this->arrErr[$value[1]])) {
                 return;

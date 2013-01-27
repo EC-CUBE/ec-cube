@@ -833,7 +833,7 @@ __EOS__;
             // 職業別集計
             case 'job':
                 $arrTitleCol = array(
-                    t('LC_Page_Admin_Total_027'),
+                    t('c_Occupation_01'),
                     t('LC_Page_Admin_Total_023'),
                     t('LC_Page_Admin_Total_028'),
                     t('LC_Page_Admin_Total_029'),

@@ -544,67 +544,64 @@ msgstr "Question for confirming password"
 msgid "c_Answer to question for confirming password_01"
 msgstr "Answer to question for confirming password"
 
-msgid "PARAM_LABEL_SEX"
+msgid "c_Gender_01"
 msgstr "Gender"
 
-msgid "PARAM_LABEL_JOB"
+msgid "c_Occupation_01"
 msgstr "Occupation"
 
-msgid "PARAM_LABEL_BIRTHDAY"
+msgid "c_Date of birth_01"
 msgstr "Date of birth"
 
-msgid "PARAM_LABEL_YEAR"
+msgid "c_Year_01"
 msgstr "Year"
 
-msgid "PARAM_LABEL_MONTH"
+msgid "c_Month_01"
 msgstr "Month"
 
-msgid "PARAM_LABEL_DAY"
+msgid "c_Day_01"
 msgstr "Day"
 
-msgid "PARAM_LABEL_MAILMAGAZINE"
+msgid "c_Mail magazine_01"
 msgstr "Mail magazine"
 
-msgid "PARAM_LABEL_BROWSENODEID"
-msgstr "Applicable category ID"
-
-msgid "PARAM_LABEL_RESPONSEGROUP"
+msgid "c_Response type_01"
 msgstr "Response type"
 
-msgid "PARAM_LABEL_CONDITION"
+msgid "c_Product condition_01"
 msgstr "Product condition"
 
-msgid "PARAM_LABEL_IDTYPE"
+msgid "c_Product ID type_01"
 msgstr "Product ID type"
 
-msgid "PARAM_LABEL_ITEMID"
+msgid "c_Designated ID_01"
 msgstr "Designated ID"
 
-msgid "PARAM_LABEL_CSV_FILE"
+msgid "c_CSV file_01"
 msgstr "CSV file"
 
-msgid "PARAM_LABEL_RELATEDITEMSPAGE"
+msgid "c_Related product quantity_01"
 msgstr "Related product quantity"
 
-msgid "PARAM_LABEL_RELATIONSHIPTYPE"
+msgid "c_Related product type_01"
 msgstr "Related product type"
 
-msgid "PARAM_LABEL_REVIEWPAGE"
+msgid "c_Review page number_01"
 msgstr "Review page number"
 
-msgid "PARAM_LABEL_REVIEWSORT"
+msgid "c_Review page sort_01"
 msgstr "Review page sort"
 
-msgid "PARAM_LABEL_TAGPAGE"
+msgid "c_Related tag pages_01"
 msgstr "Related tag pages"
 
-msgid "PARAM_LABEL_TAGSPERPAGE"
+msgid "c_Number of related tag pages_01"
 msgstr "Number of related tag pages"
 
-msgid "PARAM_LABEL_TAGSORT"
+msgid "c_ Sort related tags_01"
 msgstr " Sort related tags"
 
-msgid "PARAM_LABEL_CATEGORY_ID"
+msgid "c_Category ID_01"
 msgstr "Category ID"
 
 msgid "PARAM_LABEL_KEYWORDS"
@@ -3394,9 +3391,6 @@ msgstr "Number of items purchased"
 
 msgid "LC_Page_Admin_Total_026"
 msgstr "Amount"
-
-msgid "LC_Page_Admin_Total_027"
-msgstr "Occupation"
 
 msgid "LC_Page_Admin_Total_028"
 msgstr "Purchase total"

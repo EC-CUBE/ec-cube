@@ -87,23 +87,23 @@ class API_ItemLookup extends SC_Api_Abstract_Ex {
         case 'product_class_id':
         default:
             $objErr = new SC_CheckError_Ex($arrParam);
-            $objErr->doFunc(array(t('PARAM_LABEL_ITEMID'), 'ItemId', INT_LEN), array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+            $objErr->doFunc(array(t('c_Designated ID_01'), 'ItemId', INT_LEN), array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
             $this->addError($objErr->arrErr);
             break;
         }
     }
 
     protected function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_CONDITION'), 'Condition', STEXT_LEN, 'a', array('ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_IDTYPE'), 'IdType', STEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ITEMID'), 'ItemId', STEXT_LEN, 'a', array('EXIST_CHECK', 'GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_RELATEDITEMSPAGE'), 'RelatedItemsPage', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_RELATIONSHIPTYPE'), 'RelationshipType', STEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_REVIEWPAGE'), 'ReviewPage', INT_LEN, 'N', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_REVIEWSORT'), 'ReviewSort', STEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_TAGPAGE'), 'TagPage', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_TAGSPERPAGE'), 'TagsPerPage', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_TAGSORT'), 'TagSort', STEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Product condition_01'), 'Condition', STEXT_LEN, 'a', array('ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Product ID type_01'), 'IdType', STEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Designated ID_01'), 'ItemId', STEXT_LEN, 'a', array('EXIST_CHECK', 'GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Related product quantity_01'), 'RelatedItemsPage', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Related product type_01'), 'RelationshipType', STEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Review page number_01'), 'ReviewPage', INT_LEN, 'N', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Review page sort_01'), 'ReviewSort', STEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Related tag pages_01'), 'TagPage', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Number of related tag pages_01'), 'TagsPerPage', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_ Sort related tags_01'), 'TagSort', STEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     public function getResponseGroupName() {

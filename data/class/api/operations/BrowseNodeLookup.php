@@ -109,8 +109,8 @@ class API_BrowseNodeLookup extends SC_Api_Abstract_Ex {
     }
 
     protected function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_CATEGORY_ID'), 'BrowseNodeId', INT_LEN, 'a', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_RESPONSEGROUP'), 'ResponseGroup', INT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Category ID_01'), 'BrowseNodeId', INT_LEN, 'a', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Response type_01'), 'ResponseGroup', INT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     public function getResponseGroupName() {

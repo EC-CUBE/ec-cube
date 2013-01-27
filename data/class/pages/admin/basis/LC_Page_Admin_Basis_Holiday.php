@@ -216,8 +216,8 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
         switch ($mode) {
             case 'edit':
                 $objFormParam->addParam(t('PARAM_LABEL_TITLE'), 'title', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(t('PARAM_LABEL_MONTH'), 'month', INT_LEN, 'n', array('SELECT_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(t('PARAM_LABEL_DAY'), 'day', INT_LEN, 'n', array('SELECT_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('c_Month_01'), 'month', INT_LEN, 'n', array('SELECT_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('c_Day_01'), 'day', INT_LEN, 'n', array('SELECT_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
                 // breakしない
             case 'delete':
             case 'pre_edit':
