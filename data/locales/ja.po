@@ -12,7 +12,7 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 
 msgid "SC_CheckError_001"
-msgstr "※ T_FIELDに許可されていないタグ T_TAG が含まれています。<br />"
+msgstr "※ T_FIELDに許可されていないタグ %s2 が含まれています。<br />"
 
 msgid "SC_CheckError_002"
 msgstr "※ T_FIELDが入力されていません。<br />"
@@ -45,7 +45,7 @@ msgid "SC_CheckError_011"
 msgstr "※ T_FIELD_1STはT_FIELD_2NDより大きい値を入力できません。<br />"
 
 msgid "SC_CheckError_012"
-msgstr "※ T_FIELDはT_LENGTH字以下で入力してください。<br />"
+msgstr "※ T_FIELDは%s2字以下で入力してください。<br />"
 
 msgid "SC_CheckError_013_SINGLE"
 msgid_plural "SC_CheckError_013_PLURAL"
@@ -53,7 +53,7 @@ msgstr[0] "※ T_FIELDはT_COUNT字以上で入力してください。<br />"
 msgstr[1] "※ T_FIELDはT_COUNT字以上で入力してください。<br />"
 
 msgid "SC_CheckError_014"
-msgstr "※ T_FIELDはT_LENGTH以下で入力してください。<br />"
+msgstr "※ T_FIELDは%s2以下で入力してください。<br />"
 
 msgid "SC_CheckError_015_SINGLE"
 msgid_plural "SC_CheckError_015_PLURAL"
@@ -73,13 +73,13 @@ msgid "SC_CheckError_019"
 msgstr "※ T_FIELDはすべての項目を入力してください。<br />"
 
 msgid "SC_CheckError_020"
-msgstr "※ T_FIELDはT_LENGTH字以内で入力してください。<br />"
+msgstr "※ T_FIELDは%s2字以内で入力してください。<br />"
 
 msgid "SC_CheckError_021"
 msgstr "※ T_FIELDは数字で入力してください。<br />"
 
 msgid "SC_CheckError_022"
-msgstr "※ T_FIELDはT_LENGTH文字以内で入力してください。<br />"
+msgstr "※ T_FIELDは%s2文字以内で入力してください。<br />"
 
 msgid "SC_CheckError_023"
 msgstr "※ T_FIELDが入力されていません。<br />"
@@ -110,8 +110,8 @@ msgstr "※ T_FIELDは1以上を入力してください。<br />"
 
 msgid "SC_CheckError_032_SINGLE"
 msgid_plural "SC_CheckError_032_PLURAL"
-msgstr[0] "※ T_FIELDはT_COUNT桁～T_DIGIT_MAX桁で入力して下さい。<br />"
-msgstr[1] "※ T_FIELDはT_COUNT桁～T_DIGIT_MAX桁で入力して下さい。<br />"
+msgstr[0] "※ T_FIELDはT_COUNT桁～%s2桁で入力して下さい。<br />"
+msgstr[1] "※ T_FIELDはT_COUNT桁～%s2桁で入力して下さい。<br />"
 
 msgid "SC_CheckError_033_SINGLE"
 msgid_plural "SC_CheckError_033_PLURAL"
@@ -131,17 +131,17 @@ msgid "SC_CheckError_037"
 msgstr "※ T_FIELDに正しい形式のIPアドレスを入力してください。<br />"
 
 msgid "SC_CheckError_038"
-msgstr "※ T_FIELDで許可されている形式は、T_EXTです。<br />"
+msgstr "※ T_FIELDで許可されている形式は、%s2です。<br />"
 
 msgid "SC_CheckError_039"
-msgstr "※ T_PATHが見つかりません。<br />"
+msgstr "※ %s1が見つかりません。<br />"
 
 msgid "SC_CheckError_040"
 msgstr "※ T_FIELDをアップロードして下さい。<br />"
 
 msgid "SC_CheckError_041"
 msgstr ""
-"※ T_FIELDのファイルサイズはT_SIZET_UNIT以下のものを使用してください。<br />"
+"※ T_FIELDのファイルサイズは%s2%s3以下のものを使用してください。<br />"
 
 msgid "SC_CheckError_042"
 msgstr "※ T_FIELDのファイル名に日本語やスペースは使用しないで下さい。<br />"
@@ -156,7 +156,7 @@ msgid "SC_CheckError_045"
 msgstr "※ T_FIELDを正しく指定してください。<br />"
 
 msgid "SC_CheckError_046"
-msgstr "※ T_STARTとT_ENDの期間指定が不正です。<br />"
+msgstr "※ %s1と%s2の期間指定が不正です。<br />"
 
 msgid "SC_CheckError_047"
 msgstr "※ 指定したT_FIELDは存在しません。<br />"
@@ -181,16 +181,16 @@ msgid "SC_CheckError_053"
 msgstr "※ T_FIELDの形式が不正です。<br />"
 
 msgid "SC_FormParam_001"
-msgstr "※ T_NAMEのファイルが存在しません。<br />"
+msgstr "※ %s1のファイルが存在しません。<br />"
 
 msgid "SC_FormParam_002"
-msgstr "※※　エラーチェック形式(T_FUNCTION)には対応していません　※※ <br />"
+msgstr "※※　エラーチェック形式(%s1)には対応していません　※※ <br />"
 
 msgid "SC_FormParam_003"
-msgstr "T_NAME<span class=\"red\">(※ 必須)</span>"
+msgstr "%s1<span class=\"red\">(※ 必須)</span>"
 
 msgid "SC_FormParam_004"
-msgstr " [省略時初期値: T_DEFAULT]"
+msgstr " [省略時初期値: %s1]"
 
 msgid "SC_FormParam_005"
 msgstr " [登録・更新不可] "
@@ -205,16 +205,16 @@ msgstr ""
 
 msgid "SC_CartSession_003"
 msgstr ""
-"※「T_PRODUCT」はまだ配送の準備ができておりません。恐れ入りますがお問い合わせ"
+"※「%s1」はまだ配送の準備ができておりません。恐れ入りますがお問い合わせ"
 "ページよりお問い合わせください。"
 
 msgid "SC_CartSession_004"
 msgstr ""
-"※「T_PRODUCT」は販売制限(または在庫が不足)しております。一度に数量T_LIMITを超"
+"※「%s1」は販売制限(または在庫が不足)しております。一度に数量%s2を超"
 "える購入はできません。"
 
 msgid "SC_CartSession_005"
-msgstr "※「T_PRODUCT」は売り切れました。"
+msgstr "※「%s1」は売り切れました。"
 
 msgid "SC_Fpdf_001"
 msgstr "商品名 / 商品コード / [ 規格 ]"
@@ -265,10 +265,10 @@ msgid "SC_Fpdf_016"
 msgstr "ご確認くださいますよう、お願いいたします。"
 
 msgid "SC_Fpdf_017"
-msgstr "作成日: T_YEAR年T_MONTH月T_DAY日"
+msgstr "作成日: %s1年%s2月%s3日"
 
 msgid "SC_Fpdf_018"
-msgstr "T_LASTNAME　T_FIRSTNAME 様"
+msgstr "%s1　%s2 様"
 
 msgid "SC_Fpdf_019"
 msgstr "T_FIELD 円"
@@ -283,7 +283,7 @@ msgid "SC_Image_001"
 msgstr "ファイルのコピーに失敗しました。"
 
 msgid "SC_Image_002"
-msgstr "T_FROM->T_TOのcopyに失敗しました。"
+msgstr "%s1->%s2のcopyに失敗しました。"
 
 msgid "SC_Image_003"
 msgstr "出力元画像パス、または出力先フォルダが指定されていません。"
@@ -300,11 +300,11 @@ msgstr "画像の出力に失敗しました。"
 msgid "SC_Initial_001"
 msgstr ""
 "<div style=\"color: #F00; font-weight: bold; background-color: #FEB; text-"
-"align: center\">T_CACHE_REALDIR にユーザ書込み権限(777等)を付与して下さい。</"
+"align: center\">%s1 にユーザ書込み権限(777等)を付与して下さい。</"
 "div>"
 
 msgid "SC_Initial_002"
-msgstr "T_CACHE_REALDIR../mtb_constants_init.php が存在しません"
+msgstr "%s1../mtb_constants_init.php が存在しません"
 
 msgid "SC_PageNavi_001"
 msgstr "&lt;&lt;前へ"
@@ -328,20 +328,20 @@ msgid "SC_SendMail_001"
 msgstr "前方互換用メソッドが使用されました。"
 
 msgid "SC_SendMail_002"
-msgstr "不明なバックエンド。[$backend = T_BACKEND]"
+msgstr "不明なバックエンド。[$backend = %s1]"
 
 msgid "SC_SendMail_003"
-msgstr "メール送信に失敗しました。[T_MESSAGE]"
+msgstr "メール送信に失敗しました。[%s1]"
 
 msgid "SC_View_001"
 msgstr "処理時間: T_TIME秒"
 
 msgid "SC_UploadFile_001"
-msgstr "※ T_DISPNAMEがアップロードされていません。<br />"
+msgstr "※ %s1がアップロードされていません。<br />"
 
 msgid "SC_UploadFile_002"
 msgstr ""
-"※ T_DISPNAMEがアップロードされていません。(ファイルがアップロードできない場合"
+"※ %s1がアップロードされていません。(ファイルがアップロードできない場合"
 "は、.htaccessファイルのphp_value upload_max_filesizeを調整してください)<br />"
 
 msgid "SC_UploadFile_003"
@@ -408,7 +408,7 @@ msgid "SC_Helper_DB_001"
 msgstr "ファイルは存在するが読み込めない"
 
 msgid "SC_Helper_Mail_001"
-msgstr "該当する受注が存在しない。(注文番号: T_ORDER_ID)"
+msgstr "該当する受注が存在しない。(注文番号: %s1)"
 
 msgid "SC_Helper_Mail_002"
 msgstr "下記メールの配信が完了しました。"
@@ -1919,7 +1919,7 @@ msgid "FORMAT_DATE_LONG"
 msgstr "Y年m月d日H時i分"
 
 msgid "FORMAT_NAME_FULL_SIR"
-msgstr "T_LASTNAME T_FIRSTNAME 様"
+msgstr "%s1 %s2 様"
 
 msgid "LC_Page_Abouts_001"
 msgstr "当サイトについて"

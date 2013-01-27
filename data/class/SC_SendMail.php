@@ -279,7 +279,7 @@ class SC_SendMail {
         $result = $this->objMail->send($recip, $header, $this->body);
         if (PEAR::isError($result)) {
             // XXX Windows 環境では SJIS でメッセージを受け取るようなので変換する。
-            $tokens = array('T_MESSAGE' => mb_convert_encoding($result->getMessage(), CHAR_CODE, 'auto'));
+            $tokens = array('%s1' => mb_convert_encoding($result->getMessage(), CHAR_CODE, 'auto'));
             $msg = t('SC_SendMail_003', $tokens);
             trigger_error($msg, E_USER_WARNING);
             GC_Utils_Ex::gfDebugLog($header);
@@ -332,7 +332,7 @@ class SC_SendMail {
                 break;
 
             default:
-                trigger_error(t('SC_SendMail_002', array('T_BACKEND' => var_export($backend, true))), E_USER_ERROR);
+                trigger_error(t('SC_SendMail_002', array('%s1' => var_export($backend, true))), E_USER_ERROR);
                 exit;
         }
         return $arrParams;

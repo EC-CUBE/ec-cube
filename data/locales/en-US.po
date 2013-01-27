@@ -12,7 +12,7 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 
 msgid "SC_CheckError_001"
-msgstr "* T_TAG contains the tag T_FIELD which is not allowed. <br />"
+msgstr "* %s2 contains the tag T_FIELD which is not allowed. <br />"
 
 msgid "SC_CheckError_002"
 msgstr "* T_FIELD is blank. <br />"
@@ -49,7 +49,7 @@ msgstr ""
 "T_FIELD_2ND. <br />"
 
 msgid "SC_CheckError_012"
-msgstr "* For T_FIELD, enter T_LENGTH  characters or less. <br />"
+msgstr "* For T_FIELD, enter %s2  characters or less. <br />"
 
 msgid "SC_CheckError_013_SINGLE"
 msgid_plural "SC_CheckError_013_PLURAL"
@@ -57,7 +57,7 @@ msgstr[0] "* For T_FIELD, enter T_COUNT characters or more. <br />"
 msgstr[1] "* For T_FIELD, input T_COUNT characters or more. <br />"
 
 msgid "SC_CheckError_014"
-msgstr "* For T_FIELD, enter T_LENGTH or smaller. <br />"
+msgstr "* For T_FIELD, enter %s2 or smaller. <br />"
 
 msgid "SC_CheckError_015_SINGLE"
 msgid_plural "SC_CheckError_015_PLURAL"
@@ -77,13 +77,13 @@ msgid "SC_CheckError_019"
 msgstr "* Enter all items for T_FIELD. <br />"
 
 msgid "SC_CheckError_020"
-msgstr "* T_FIELD must be T_LENGTH characters or less. <br />"
+msgstr "* T_FIELD must be %s2 characters or less. <br />"
 
 msgid "SC_CheckError_021"
 msgstr "* Enter numbers for T_FIELD. <br />"
 
 msgid "SC_CheckError_022"
-msgstr "* For T_FIELD, enter within a text length of T_LENGTH. <br />"
+msgstr "* For T_FIELD, enter within a text length of %s2. <br />"
 
 msgid "SC_CheckError_023"
 msgstr "* T_FIELD is blank. <br />"
@@ -114,8 +114,8 @@ msgstr "* Enter at least 1 for T_FIELD. <br />"
 
 msgid "SC_CheckError_032_SINGLE"
 msgid_plural "SC_CheckError_032_PLURAL"
-msgstr[0] "*  T_FIELD must be  between T_COUNT - T_DIGIT_MAX digits. <br />"
-msgstr[1] "* For T_FIELD, input between T_COUNT to T_DIGIT_MAX digits. <br />"
+msgstr[0] "*  T_FIELD must be  between T_COUNT - %s2 digits. <br />"
+msgstr[1] "* For T_FIELD, input between T_COUNT to %s2 digits. <br />"
 
 msgid "SC_CheckError_033_SINGLE"
 msgid_plural "SC_CheckError_033_PLURAL"
@@ -135,17 +135,17 @@ msgid "SC_CheckError_037"
 msgstr "* Enter an IP address in the proper format in T_FIELD. <br />"
 
 msgid "SC_CheckError_038"
-msgstr "* The format permitted for T_FIELD is T_EXT. <br />"
+msgstr "* The format permitted for T_FIELD is %s2. <br />"
 
 msgid "SC_CheckError_039"
-msgstr "* T_PATH cannot be found. <br />"
+msgstr "* %s1 cannot be found. <br />"
 
 msgid "SC_CheckError_040"
 msgstr "* Upload T_FIELD. <br />"
 
 msgid "SC_CheckError_041"
 msgstr ""
-"* For the T_FIELD file size, use a size that is T_SIZET_UNIT or less. <br />"
+"* For the T_FIELD file size, use a size that is %s2%s3 or less. <br />"
 
 msgid "SC_CheckError_042"
 msgstr "* Do not use Japanese or spaces in the file name for T_FIELD. <br />"
@@ -161,7 +161,7 @@ msgstr "* Specify T_FIELD correctly. <br />"
 
 msgid "SC_CheckError_046"
 msgstr ""
-"* The period specification for T_START and T_END is not correct. <br />"
+"* The period specification for %s1 and %s2 is not correct. <br />"
 
 msgid "SC_CheckError_047"
 msgstr "* The designated T_FIELD does not exist. <br />"
@@ -187,16 +187,16 @@ msgid "SC_CheckError_053"
 msgstr "* The T_FIELD format is incorrect. <br />"
 
 msgid "SC_FormParam_001"
-msgstr "* The file T_NAME does not exist. <br />"
+msgstr "* The file %s1 does not exist. <br />"
 
 msgid "SC_FormParam_002"
-msgstr "* Does not support the error check format (T_FUNCTION) **<br />"
+msgstr "* Does not support the error check format (%s1) **<br />"
 
 msgid "SC_FormParam_003"
-msgstr "T_NAME<span class=\"red\">(* Required)</span>"
+msgstr "%s1<span class=\"red\">(* Required)</span>"
 
 msgid "SC_FormParam_004"
-msgstr " [Default value: T_DEFAULT]"
+msgstr " [Default value: %s1]"
 
 msgid "SC_FormParam_005"
 msgstr " [Registration/update not possible] "
@@ -211,17 +211,17 @@ msgstr ""
 
 msgid "SC_CartSession_003"
 msgstr ""
-"* Delivery preparations are not ready  for T_PRODUCT. Please access the "
+"* Delivery preparations are not ready  for %s1. Please access the "
 "inquiry page for more details."
 
 msgid "SC_CartSession_004"
 msgstr ""
-"* There is a sale restriction (or inventory shortage) for T_PRODUCT. It is "
-"not possible to purchase a quantity that exceeds T_LIMIT in a single "
+"* There is a sale restriction (or inventory shortage) for %s1. It is "
+"not possible to purchase a quantity that exceeds %s2 in a single "
 "purchase."
 
 msgid "SC_CartSession_005"
-msgstr "* T_PRODUCT is sold out."
+msgstr "* %s1 is sold out."
 
 msgid "SC_Fpdf_001"
 msgstr "Product name / Product code / [Specification]"
@@ -272,10 +272,10 @@ msgid "SC_Fpdf_016"
 msgstr "Please confirm."
 
 msgid "SC_Fpdf_017"
-msgstr "Creation date: T_YEAR/T_MONTH/T_DAY"
+msgstr "Creation date: %s1/%s2/%s3"
 
 msgid "SC_Fpdf_018"
-msgstr "T_LASTNAME T_FIRSTNAME"
+msgstr "%s1 %s2"
 
 msgid "SC_Fpdf_019"
 msgstr "$ T_FIELD"
@@ -290,7 +290,7 @@ msgid "SC_Image_001"
 msgstr "File copying failed."
 
 msgid "SC_Image_002"
-msgstr "Copying of T_FROM->T_TO failed."
+msgstr "Copying of %s1->%s2 failed."
 
 msgid "SC_Image_003"
 msgstr ""
@@ -309,11 +309,11 @@ msgstr "Image output failed."
 msgid "SC_Initial_001"
 msgstr ""
 "<div style=\"color: #F00; font-weight: bold; background-color: #FEB; text-"
-"align: center\">Please grant T_CACHE_REALDIR user write access (777, etc.)</"
+"align: center\">Please grant %s1 user write access (777, etc.)</"
 "div>"
 
 msgid "SC_Initial_002"
-msgstr "T_CACHE_REALDIR../mtb_constants_init.php does not exist"
+msgstr "%s1../mtb_constants_init.php does not exist"
 
 msgid "SC_PageNavi_001"
 msgstr "&lt;&lt;Back"
@@ -337,20 +337,20 @@ msgid "SC_SendMail_001"
 msgstr "A method for upward compatibility was used."
 
 msgid "SC_SendMail_002"
-msgstr "Unknown backend.[$backend = T_BACKEND]"
+msgstr "Unknown backend.[$backend = %s1]"
 
 msgid "SC_SendMail_003"
-msgstr "E-mail sending failed.[T_MESSAGE]"
+msgstr "E-mail sending failed.[%s1]"
 
 msgid "SC_View_001"
 msgstr "Processing time: T_TIME seconds"
 
 msgid "SC_UploadFile_001"
-msgstr "* T_DISPNAME is not uploaded. <br />"
+msgstr "* %s1 is not uploaded. <br />"
 
 msgid "SC_UploadFile_002"
 msgstr ""
-"* T_DISPNAME is not uploaded. (If you cannot upload the file, adjust "
+"* %s1 is not uploaded. (If you cannot upload the file, adjust "
 "php_value upload_max_filesize for the .htaccess file)<br />"
 
 msgid "SC_UploadFile_003"
@@ -419,7 +419,7 @@ msgid "SC_Helper_DB_001"
 msgstr "The file exists but cannot be read"
 
 msgid "SC_Helper_Mail_001"
-msgstr "No order exists. (Order number: T_ORDER_ID)"
+msgstr "No order exists. (Order number: %s1)"
 
 msgid "SC_Helper_Mail_002"
 msgstr "The e-mail below has been sent."
@@ -1933,7 +1933,7 @@ msgid "FORMAT_DATE_LONG"
 msgstr "Y-m-d H:i"
 
 msgid "FORMAT_NAME_FULL_SIR"
-msgstr "T_LASTNAME T_FIRSTNAME"
+msgstr "%s1 %s2"
 
 msgid "LC_Page_Abouts_001"
 msgstr "About this site"

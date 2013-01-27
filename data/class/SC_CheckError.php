@@ -70,7 +70,7 @@ class SC_CheckError {
         }
         $html_diff_tag_list = implode(', ', $arrDiffTag);
 
-        $this->arrErr[$value[1]] = t('SC_CheckError_001', array('T_FIELD' => $value[0], 'T_TAG' => $html_diff_tag_list));
+        $this->arrErr[$value[1]] = t('SC_CheckError_001', array('T_FIELD' => $value[0], '%s2' => $html_diff_tag_list));
     }
 
     /**
@@ -239,7 +239,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if (mb_strlen($this->arrParam[$value[1]]) > $value[2]) {
-            $this->arrErr[$value[1]] = t('SC_CheckError_012', array('T_FIELD' => $value[0], 'T_LENGTH' => $value[2]));
+            $this->arrErr[$value[1]] = t('SC_CheckError_012', array('T_FIELD' => $value[0], '%s2' => $value[2]));
         }
     }
 
@@ -275,7 +275,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if ($this->arrParam[$value[1]] > $value[2]) {
-            $this->arrErr[$value[1]] = t('SC_CheckError_014', array('T_FIELD' => $value[0], 'T_LENGTH' => $value[2]));
+            $this->arrErr[$value[1]] = t('SC_CheckError_014', array('T_FIELD' => $value[0], '%s2' => $value[2]));
         }
     }
 
@@ -377,7 +377,7 @@ class SC_CheckError {
         $total_count = 0;
         for ($i = 1; $i <= 3; $i++) {
             if (strlen($this->arrParam[$value[$i]]) > 0 && strlen($this->arrParam[$value[$i]]) > $telItemLen) {
-                $this->arrErr[$value[$i]] .= t('SC_CheckError_020', array('T_FIELD' => $value[0] . $i, 'T_LENGTH' => $telItemLen));
+                $this->arrErr[$value[$i]] .= t('SC_CheckError_020', array('T_FIELD' => $value[0] . $i, '%s2' => $telItemLen));
             } else if ($this->numelicCheck($this->arrParam[$value[1]])) {
                 $this->arrErr[$value[$i]] .= t('SC_CheckError_021', array('T_FIELD' => $value[0] . $i));
             }
@@ -386,7 +386,7 @@ class SC_CheckError {
 
         // 合計値チェック
         if ($total_count > $telLen) {
-            $this->arrErr[$value[3]] .= t('SC_CheckError_022', array('T_FIELD' => $value[0], 'T_LENGTH' => $telLen));
+            $this->arrErr[$value[3]] .= t('SC_CheckError_022', array('T_FIELD' => $value[0], '%s2' => $telLen));
         }
     }
 
@@ -584,7 +584,7 @@ class SC_CheckError {
         // $this->arrParam[$value[0]] = mb_convert_kana($this->arrParam[$value[0]], 'n');
         $count = strlen($this->arrParam[$value[1]]);
         if (($count > 0) && $value[2] > $count || $value[3] < $count) {
-            $this->arrErr[$value[1]] =  t_plural($value[2], 'SC_CheckError_032_SINGLE', 'SC_CheckError_032_PLURAL', array('T_FIELD' => $value[0], 'T_DIGIT_MAX' => $value[3]));
+            $this->arrErr[$value[1]] =  t_plural($value[2], 'SC_CheckError_032_SINGLE', 'SC_CheckError_032_PLURAL', array('T_FIELD' => $value[0], '%s2' => $value[3]));
         }
     }
 
@@ -725,7 +725,7 @@ class SC_CheckError {
         }
         if ($match === false) {
             $str_ext = implode('・', $value[2]);
-            $this->arrErr[$value[1]] = t('SC_CheckError_038', array('T_FIELD' => $value[0], 'T_EXT' => $str_ext));
+            $this->arrErr[$value[1]] = t('SC_CheckError_038', array('T_FIELD' => $value[0], '%s2' => $str_ext));
         }
     }
 
@@ -748,7 +748,7 @@ class SC_CheckError {
         $path = str_replace('//', '/', $path);
 
         if ($this->arrParam[$value[1]] != '' && !file_exists($path)) {
-            $this->arrErr[$value[1]] = t('SC_CheckError_039', array('T_PATH' => $path));
+            $this->arrErr[$value[1]] = t('SC_CheckError_039', array('%s1' => $path));
         }
     }
 
@@ -779,7 +779,7 @@ class SC_CheckError {
                 $value[2] = $value[2] / 1000;
                 $byte = 'MB';
             }
-            $this->arrErr[$value[1]] = t('SC_CheckError_041', array('T_FIELD' => $value[0], 'T_SIZE' => $value[2], 'T_UNIT' => $byte));
+            $this->arrErr[$value[1]] = t('SC_CheckError_041', array('T_FIELD' => $value[0], '%s2' => $value[2], '%s3' => $byte));
         }
     }
 
@@ -942,7 +942,7 @@ class SC_CheckError {
             $date2 = $this->arrParam[$value[5]] .sprintf('%02d', $this->arrParam[$value[6]]) .sprintf('%02d',$this->arrParam[$value[7]]) .'235959';
 
             if (($this->arrErr[$value[2]] == '' && $this->arrErr[$value[5]] == '') && $date1 > $date2) {
-                $this->arrErr[$value[2]] = t('SC_CheckError_046', array('T_START' => $value[0], 'T_END' => $value[1]));
+                $this->arrErr[$value[2]] = t('SC_CheckError_046', array('%s1' => $value[0], '%s2' => $value[1]));
             }
         }
     }
@@ -992,10 +992,10 @@ class SC_CheckError {
             $date2 = $this->arrParam[$value[8]] .sprintf('%02d', $this->arrParam[$value[9]]) .sprintf('%02d',$this->arrParam[$value[10]]) .sprintf('%02d',$this->arrParam[$value[11]]).sprintf('%02d',$this->arrParam[$value[12]]).sprintf('%02d',$this->arrParam[$value[13]]);
 
             if (($this->arrErr[$value[2]] == '' && $this->arrErr[$value[8]] == '') && $date1 > $date2) {
-                $this->arrErr[$value[2]] = t('SC_CheckError_046', array('T_START' => $value[0], 'T_END' => $value[1]));
+                $this->arrErr[$value[2]] = t('SC_CheckError_046', array('%s1' => $value[0], '%s2' => $value[1]));
             }
             if ($date1 == $date2) {
-                $this->arrErr[$value[2]] = t('SC_CheckError_046', array('T_START' => $value[0], 'T_END' => $value[1]));
+                $this->arrErr[$value[2]] = t('SC_CheckError_046', array('%s1' => $value[0], '%s2' => $value[1]));
             }
 
         }
@@ -1035,7 +1035,7 @@ class SC_CheckError {
             $date2 = $this->arrParam[$value[4]] .sprintf('%02d', $this->arrParam[$value[5]]);
 
             if (($this->arrErr[$value[2]] == '' && $this->arrErr[$value[5]] == '') && $date1 > $date2) {
-                $this->arrErr[$value[2]] = t('SC_CheckError_046', array('T_START' => $value[0], 'T_END' => $value[1]));
+                $this->arrErr[$value[2]] = t('SC_CheckError_046', array('%s1' => $value[0], '%s2' => $value[1]));
             }
         }
     }

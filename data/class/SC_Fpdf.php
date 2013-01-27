@@ -136,9 +136,9 @@ class SC_Fpdf extends SC_Helper_FPDI {
         $this->lfText(27, 74, $this->arrData['msg2'], 8);  //メッセージ2
         $this->lfText(27, 78, $this->arrData['msg3'], 8);  //メッセージ3
         $tokens = array(
-            'T_YEAR' => $this->arrData['year'],
-            'T_MONTH' => $this->arrData['month'],
-            'T_DAY' => $this->arrData['day']
+            '%s1' => $this->arrData['year'],
+            '%s2' => $this->arrData['month'],
+            '%s3' => $this->arrData['day']
         );
         $text = t('SC_Fpdf_017', $tokens);
         $this->lfText(158, 288, $text, 8);  //作成日
@@ -156,7 +156,7 @@ class SC_Fpdf extends SC_Helper_FPDI {
         $text = $this->arrPref[$this->arrDisp['order_pref']] . $this->arrDisp['order_addr01'];
         $this->lfText(27, 47, $text, 10); //購入者都道府県+住所1
         $this->lfText(27, 51, $this->arrDisp['order_addr02'], 10); //購入者住所2
-        $text = t('SC_Fpdf_018', array('T_LASTNAME' => $this->arrDisp['order_name01'], 'T_FIRSTNAME' => $this->arrDisp['order_name02']));
+        $text = t('SC_Fpdf_018', array('%s1' => $this->arrDisp['order_name01'], '%s2' => $this->arrDisp['order_name02']));
         $this->lfText(27, 59, $text, 11); //購入者氏名
 
         // お届け先情報

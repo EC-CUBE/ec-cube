@@ -533,7 +533,7 @@ class SC_CartSession {
                  */
                 $arrDeliv = SC_Helper_Purchase_Ex::getDeliv($productTypeId);
                 if (SC_Utils_Ex::isBlank($arrDeliv)) {
-                    $tpl_message .= t('SC_CartSession_003', array('T_PRODUCT' => $product['name']));
+                    $tpl_message .= t('SC_CartSession_003', array('%s1' => $product['name']));
                     $this->delProduct($arrItem['cart_no'], $productTypeId);
                 }
 
@@ -546,10 +546,10 @@ class SC_CartSession {
                         $this->setProductValue($arrItem['id'], 'quantity', $limit, $productTypeId);
                         $total_inctax = SC_Helper_DB_Ex::sfCalcIncTax($arrItem['price']) * $limit;
                         $this->setProductValue($arrItem['id'], 'total_inctax', $total_inctax, $productTypeId);
-                        $tpl_message .= t('SC_CartSession_004', array('T_PRODUCT' => $product['name'], 'T_LIMIT' => $limit));
+                        $tpl_message .= t('SC_CartSession_004', array('%s1' => $product['name'], '%s2' => $limit));
                     } else {
                         $this->delProduct($arrItem['cart_no'], $productTypeId);
-                        $tpl_message .= t('SC_CartSession_005', array('T_PRODUCT' => $product['name']));
+                        $tpl_message .= t('SC_CartSession_005', array('%s1' => $product['name']));
                         continue;
                     }
                 }
