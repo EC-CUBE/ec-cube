@@ -86,7 +86,7 @@ class SC_Helper_PageLayout {
                     $error = "ブロックが見つかりません\n"
                         . 'tpl_path: ' . $arrBloc['tpl_path'] . "\n"
                         . 'php_path: ' . $arrBloc['php_path'];
-                    GC_Utils_Ex::gfPrintLog($error);
+                    trigger_error($error, E_USER_WARNING);
                 }
             }
         }
