@@ -73,15 +73,15 @@ function func_return(){
             </tr>
             <tr>
                 <th><!--{t string="tpl_Postal code_01"}--></th>
-                <!--{* <td><!--{t string="tpl_106"}--> <!--{$arrForm.zip01|h}--> - <!--{$arrForm.zip02|h}--></td> *}-->
-                <td><!--{t string="tpl_106"}--> <!--{$arrForm.zipcode|h}--></td>
+                <!--{* <td><!--{t string="tpl_Postal code mark_01"}--> <!--{$arrForm.zip01|h}--> - <!--{$arrForm.zip02|h}--></td> *}-->
+                <td><!--{t string="tpl_Postal code mark_01"}--> <!--{$arrForm.zipcode|h}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_212"}--></th>
                 <td><!--{$arrPref[$arrForm.pref]|h}--><!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_108"}--></th>
+                <th><!--{t string="tpl_E-mail address_01"}--></th>
                 <td><!--{$arrForm.email|h}--></td>
             </tr>
             <tr>

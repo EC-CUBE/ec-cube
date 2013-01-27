@@ -595,7 +595,7 @@
             <th rowspan="2"><!--{t string="tpl_Remove_01"}--></th>
         </tr>
         <tr>
-            <th><!--{t string="tpl_108"}--></th>
+            <th><!--{t string="tpl_E-mail address_01"}--></th>
         </tr>
         <!--{foreach from=$arrData item=row}-->
             <tr>

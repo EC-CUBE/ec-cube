@@ -77,7 +77,7 @@ self.moveTo(20,20);self.focus();
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_108"}--></th>
+            <th><!--{t string="tpl_E-mail address_01"}--></th>
             <td><!--{$arrSearchData.search_email|default_t:"tpl_337"|h}--></td>
         </tr>
         <tr>

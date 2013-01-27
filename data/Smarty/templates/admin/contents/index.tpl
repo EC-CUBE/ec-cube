@@ -221,7 +221,7 @@ function moving(news_id,rank, max_rank) {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_109"}--></th>
+            <th><!--{t string="tpl_URL_01"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.news_url}--></span>
                 <input type="text" name="news_url" size="60" class="box60"    value="<!--{$arrForm.news_url|h}-->" <!--{if $arrErr.news_url}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}--> maxlength="<!--{$smarty.const.URL_LEN}-->" />
@@ -229,15 +229,15 @@ function moving(news_id,rank, max_rank) {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_110"}--></th>
-            <td><label><input type="checkbox" name="link_method" value="2" <!--{if $arrForm.link_method eq 2}--> checked <!--{/if}--> /> <!--{t string="tpl_112"}--></label></td>
+            <th><!--{t string="tpl_Link_01"}--></th>
+            <td><label><input type="checkbox" name="link_method" value="2" <!--{if $arrForm.link_method eq 2}--> checked <!--{/if}--> /> <!--{t string="tpl_Open in separate window_01"}--></label></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_111"}--></th>
+            <th><!--{t string="tpl_Create text_01"}--></th>
             <td>
                 <!--{if $arrErr.news_comment}--><span class="attention"><!--{$arrErr.news_comment}--></span><!--{/if}-->
                 <textarea name="news_comment" cols="60" rows="8" wrap="soft" class="area60" maxlength="<!--{$smarty.const.LTEXT_LEN}-->" style="background-color:<!--{if $arrErr.news_comment}--><!--{$smarty.const.ERR_COLOR|h}--><!--{/if}-->"><!--{"\n"}--><!--{$arrForm.news_comment|h}--></textarea><br />
-                <span class="attention"> <!--{t string="tpl_113"}--></span>
+                <span class="attention"> <!--{t string="tpl_(3000 characters max)_01"}--></span>
             </td>
         </tr>
     </table>
@@ -250,7 +250,7 @@ function moving(news_id,rank, max_rank) {
     </div>
 </form>
 
-    <h2><!--{t string="tpl_114"}--></h2>
+    <h2><!--{t string="tpl_List of new information_01"}--></h2>
     <!--{if $arrErr.moveposition}-->
     <p><span class="attention"><!--{$arrErr.moveposition}--></span></p>
     <!--{/if}-->
@@ -270,7 +270,7 @@ function moving(news_id,rank, max_rank) {
         <col width="5%" />
         <col width="25%" />
         <tr>
-            <th><!--{t string="tpl_115"}--></th>
+            <th><!--{t string="tpl_Ranking_01"}--></th>
             <th><!--{t string="tpl_Date_01"}--></th>
             <th><!--{t string="tpl_Title_01"}--></th>
             <th class="edit"><!--{t string="tpl_Edit_01"}--></th>

@@ -602,7 +602,7 @@
         <tr>
             <th><!--{t string="tpl_207"}--></th>
             <th><!--{t string="tpl_300"}--></th>
-            <th><!--{t string="tpl_108"}--></th>
+            <th><!--{t string="tpl_E-mail address_01"}--></th>
             <th><!--{t string="tpl_329"}--></th>
             <th><!--{t string="tpl_330"}--></th>
         </tr>

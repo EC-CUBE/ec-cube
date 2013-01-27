@@ -29,56 +29,56 @@
     <form name="form1" id="form1" method="get" action="?" onsubmit="return false;">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="">
-        <p><!--{t string="tpl_121" T_FIELD=$tpl_csv_datetime|h}--></p>
-        <p><!--{t string="tpl_122" T_FIELD=$tpl_line|h}--></p>
-        <p><!--{t string="tpl_123" T_FIELD=$tpl_count_mtb_zip|h}--></p>
+        <p><!--{t string="tpl_Date and time of saved postal code CSV update: T_FIELD_01" T_FIELD=$tpl_csv_datetime|h}--></p>
+        <p><!--{t string="tpl_Postal code There are T_FIELD lines of data in the CSV._01" T_FIELD=$tpl_line|h}--></p>
+        <p><!--{t string="tpl_Postal code There are T_FIELD lines of data in the DB._01" T_FIELD=$tpl_count_mtb_zip|h}--></p>
         <!--{if $tpl_count_mtb_zip == 0}-->
-            <p class="attention"><!--{t string="tpl_124"}--></p>
+            <p class="attention"><!--{t string="tpl_Please carry out registration._01"}--></p>
         <!--{elseif $tpl_line <> $tpl_count_mtb_zip}-->
-            <p class="attention"><!--{t string="tpl_125"}--></p>
+            <p class="attention"><!--{t string="tpl_There is a difference in the number of lines. There may be an abnormality in registration._01"}--></p>
         <!--{/if}-->
 
         <div class="basis-zip-item info">
-            <p><!--{t string="tpl_126" escape="none"}--></p>
+            <p><!--{t string="tpl_Under normal conditions_01" escape="none"}--></p>
         </div>
 
         <div class="basis-zip-item">
-            <h2><!--{t string="tpl_127"}--></h2>
+            <h2><!--{t string="tpl_Automatic registration_01"}--></h2>
             <p>
                 <!--{if !$tpl_skip_update_csv}-->
-                    <!--{t string="tpl_128"}-->
+                    <!--{t string="tpl_[Delete] [Postal code CSV update] and [DB manual registration] below will be carried out in order._01"}-->
                 <!--{else}-->
-                    <!--{t string="tpl_129"}-->
+                    <!--{t string="tpl_[Delete] and [DB manual registration] below will be carried out in order. _01"}-->
                 <!--{/if}-->
             </p>
-            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('auto', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_130"}--></span></a></p>
+            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('auto', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_Automatic registration_01"}--></span></a></p>
         </div>
 
         <div class="basis-zip-item">
-            <h2><!--{t string="tpl_131"}--></h2>
-            <p><!--{t string="tpl_132"}--></p>
-            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('manual', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_133"}--></span></a> <!--{t string="tpl_134"}-->: <input type="text" name="startRowNum" value="<!--{$arrForm.startRowNum|default:$tpl_count_mtb_zip+1|h}-->" size="8"><span class="attention"><!--{$arrErr.startRowNum}--></span></p>
+            <h2><!--{t string="tpl_DB manual registration_01"}--></h2>
+            <p><!--{t string="tpl_Postal codes will be registered starting with the designated line number._01"}--></p>
+            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('manual', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_Manual registration_01"}--></span></a> <!--{t string="tpl_Start line_01"}-->: <input type="text" name="startRowNum" value="<!--{$arrForm.startRowNum|default:$tpl_count_mtb_zip+1|h}-->" size="8"><span class="attention"><!--{$arrErr.startRowNum}--></span></p>
         </div>
 
         <div class="basis-zip-item">
-            <h2><!--{t string="tpl_135"}--></h2>
+            <h2><!--{t string="tpl_Postal code CSV update_01"}--></h2>
             <!--{if $tpl_skip_update_csv}-->
-                <!--{t string="tpl_136"}-->
+                <!--{t string="tpl_Cannot be used._01"}-->
                 <!--{if $tpl_zip_download_url_empty}-->
-                    <p class="attention"><!--{t string="tpl_137"}--></p>
+                    <p class="attention"><!--{t string="tpl_* PHP extension module 'zip' is invalid._01"}--></p>
                 <!--{/if}-->
                 <!--{if $tpl_zip_function_not_exists}-->
                     <p class="attention"><!--{t string="tpl_138"}--></p>
                 <!--{/if}-->
             <!--{else}-->
-                <p><!--{t string="tpl_139"}--></p>
-                <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('update_csv', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_140"}--></span></a><span class="attention"><!--{$arrErr.startRowNum}--></span></p>
+                <p><!--{t string="tpl_A postal code CSV will be obtained from the Japan Post Web site._01"}--></p>
+                <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('update_csv', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_Update_01"}--></span></a><span class="attention"><!--{$arrErr.startRowNum}--></span></p>
             <!--{/if}-->
         </div>
 
         <div class="basis-zip-item end">
             <h2><!--{t string="tpl_Remove_01"}--></h2>
-            <p><!--{t string="tpl_141"}--></p>
+            <p><!--{t string="tpl_All postal codes will be deleted. _01"}--></p>
             <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_Remove_01"}--></span></a></p>
         </div>
     </form>

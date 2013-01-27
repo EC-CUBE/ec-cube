@@ -264,7 +264,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_108"}--></th>
+            <th><!--{t string="tpl_E-mail address_01"}--></th>
             <td>
                 <!--{assign var=key1 value="order_email"}-->
                 <span class="attention"><!--{$arrErr[$key1]}--></span>
@@ -309,7 +309,7 @@
                 <!--{* <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span> *}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 
-                <!--{t string="tpl_106"}-->
+                <!--{t string="tpl_Postal code mark_01"}-->
                 <!--{*
                 <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="6" class="box6" />
                 -
@@ -605,7 +605,7 @@
                     <!--{* <span class="attention"><!--{$arrErr[$key1][$shipping_index]}--><!--{$arrErr[$key2][$shipping_index]}--></span> *}-->
                     <span class="attention"><!--{$arrErr[$key][$shipping_index]}--></span>
 
-                    <!--{t string="tpl_106"}-->
+                    <!--{t string="tpl_Postal code mark_01"}-->
                     <!--{*
                     <input type="text" name="<!--{$key1}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key1]|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1][$shipping_index]|sfGetErrorColor}-->" size="6" class="box6" />
                     -

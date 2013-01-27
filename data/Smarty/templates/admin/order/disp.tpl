@@ -72,7 +72,7 @@ self.moveTo(20,20);self.focus();
             <td><!--{$arrForm.order_name01.value|h}-->&nbsp;<!--{$arrForm.order_name02.value|h}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_108"}--></th>
+            <th><!--{t string="tpl_E-mail address_01"}--></th>
             <td><!--{$arrForm.order_email.value|h}--></td>
         </tr>
         <tr>
@@ -82,8 +82,8 @@ self.moveTo(20,20);self.focus();
         <tr>
             <th><!--{t string="tpl_212"}--></th>
             <td>
-                <!--{* <!--{t string="tpl_106"}-->　<!--{$arrForm.order_zip01.value|h}--> - <!--{$arrForm.order_zip02.value|h}--><br /> *}-->
-                <!--{t string="tpl_106"}-->&nbsp;<!--{$arrForm.order_zipcode.value|h}--><br />
+                <!--{* <!--{t string="tpl_Postal code mark_01"}-->　<!--{$arrForm.order_zip01.value|h}--> - <!--{$arrForm.order_zip02.value|h}--><br /> *}-->
+                <!--{t string="tpl_Postal code mark_01"}-->&nbsp;<!--{$arrForm.order_zipcode.value|h}--><br />
                 <!--{$arrPref[$arrForm.order_pref.value]|h}--><!--{$arrForm.order_addr01.value|h}--><!--{$arrForm.order_addr02.value|h}-->
             </td>
         </tr>
@@ -255,7 +255,7 @@ self.moveTo(20,20);self.focus();
                     <!--{* <!--{assign var=key2 value="shipping_zip02"}--> *}-->
                     <!--{assign var=key value="shipping_zipcode"}-->
 
-                    <!--{t string="tpl_106"}-->
+                    <!--{t string="tpl_Postal code mark_01"}-->
                     <!--{*
                     <!--{$arrShipping[$key1]|h}-->
                     -

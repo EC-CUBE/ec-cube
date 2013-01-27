@@ -3872,173 +3872,166 @@ msgstr "Postal code registration"
 msgid "tpl_Holiday management_01"
 msgstr "Holiday management"
 
-msgid "tpl_104"
+msgid "tpl_Distributor<span class='attention'> *</span>_01"
 msgstr "Distributor<span class='attention'> *</span>"
 
-msgid "tpl_105"
+msgid "tpl_Operation director<span class='attention'> *</span>_01"
 msgstr "Operation director<span class='attention'> *</span>"
 
-msgid "tpl_106"
+msgid "tpl_Postal code mark_01"
 msgstr " "
 
-msgid "tpl_107"
+msgid "tpl_Location<span class='attention'> *</span>_01"
 msgstr "Location<span class='attention'> *</span>"
 
-msgid "tpl_108"
+msgid "tpl_E-mail address_01"
 msgstr "E-mail address"
 
-msgid "tpl_108_1"
+msgid "tpl_E-mail address<span class='attention'> *</span>_01"
 msgstr "E-mail address<span class='attention'> *</span>"
 
-msgid "tpl_109"
+msgid "tpl_URL_01"
 msgstr "URL"
 
-msgid "tpl_109_1"
+msgid "tpl_URL<span class='attention'> *</span>_01"
 msgstr "URL<span class='attention'> *</span>"
 
-msgid "tpl_110"
+msgid "tpl_Link_01"
 msgstr "Link"
 
-msgid "tpl_111"
+msgid "tpl_Create text_01"
 msgstr "Create text"
 
-msgid "tpl_112"
+msgid "tpl_Open in separate window_01"
 msgstr "Open in separate window"
 
-msgid "tpl_113"
+msgid "tpl_(3000 characters max)_01"
 msgstr "(3000 characters max)"
 
-msgid "tpl_114"
+msgid "tpl_List of new information_01"
 msgstr "List of new information"
 
-msgid "tpl_115"
+msgid "tpl_Ranking_01"
 msgstr "Ranking"
 
-msgid "tpl_116"
-msgstr ""
-"Necessary fees other than for the product cost<span class='attention'> *</"
-"span>"
+msgid "tpl_Necessary fees other than for the product cost<span class='attention'> *</span>_01"
+msgstr "Necessary fees other than for the product cost<span class='attention'> *</span>"
 
-msgid "tpl_117"
+msgid "tpl_Order method<span class='attention'> *</span>_01"
 msgstr "Order method<span class='attention'> *</span>"
 
-msgid "tpl_118"
+msgid "tpl_Payment deadline<span class='attention'> *</span>_01"
 msgstr "Payment deadline<span class='attention'> *</span>"
 
-msgid "tpl_119"
+msgid "tpl_Delivery period<span class='attention'> *</span>_01"
 msgstr "Delivery period<span class='attention'> *</span>"
 
-msgid "tpl_120"
+msgid "tpl_Returns and exchanges<span class='attention'> *</span>_01"
 msgstr "Returns and exchanges<span class='attention'> *</span>"
 
-msgid "tpl_121"
+msgid "tpl_Date and time of saved postal code CSV update: T_FIELD_01"
 msgstr "Date and time of saved postal code CSV update: T_FIELD"
 
-msgid "tpl_122"
+msgid "tpl_Postal code There are T_FIELD lines of data in the CSV._01"
 msgstr "Postal code There are T_FIELD lines of data in the CSV."
 
-msgid "tpl_123"
+msgid "tpl_Postal code There are T_FIELD lines of data in the DB._01"
 msgstr "Postal code There are T_FIELD lines of data in the DB."
 
-msgid "tpl_124"
+msgid "tpl_Please carry out registration._01"
 msgstr "Please carry out registration."
 
-msgid "tpl_125"
-msgstr ""
-"There is a difference in the number of lines. There may be an abnormality in "
-"registration."
+msgid "tpl_There is a difference in the number of lines. There may be an abnormality in registration._01"
+msgstr "There is a difference in the number of lines. There may be an abnormality in registration."
 
-msgid "tpl_126"
+msgid "tpl_Under normal conditions_01"
 msgstr ""
 "Under normal conditions, please use [Automatic registration].<br />However, "
 "in the case that the system times out, please use [Manual Registration]until "
 "the registration process completes normally."
 
-msgid "tpl_127"
+msgid "tpl_Automatic registration_01"
 msgstr "Automatic registration"
 
-msgid "tpl_128"
+msgid "tpl_[Delete] [Postal code CSV update] and [DB manual registration] below will be carried out in order._01"
 msgstr ""
 "[Delete] [Postal code CSV update] and [DB manual registration] below will be "
 "carried out in order. If a time out occurs,  the DB will be restored to its "
 "original state."
 
-msgid "tpl_129"
+msgid "tpl_[Delete] and [DB manual registration] below will be carried out in order. _01"
 msgstr ""
-" [Delete] and [DB manual registration] below will be carried out in order. "
+"[Delete] and [DB manual registration] below will be carried out in order. "
 "If a time out occurs,  the DB will be restored to its original state."
 
-msgid "tpl_130"
-msgstr "Automatic registration"
-
-msgid "tpl_131"
+msgid "tpl_DB manual registration_01"
 msgstr "DB manual registration"
 
-msgid "tpl_132"
+msgid "tpl_Postal codes will be registered starting with the designated line number._01"
 msgstr ""
 "Postal codes will be registered starting with the designated line number.  "
 "If a time out occurs, the DB will be restored to its original state."
 
-msgid "tpl_133"
+msgid "tpl_Manual registration_01"
 msgstr "Manual registration"
 
-msgid "tpl_134"
+msgid "tpl_Start line_01"
 msgstr "Start line"
 
-msgid "tpl_135"
+msgid "tpl_Postal code CSV update_01"
 msgstr "Postal code CSV update"
 
-msgid "tpl_136"
+msgid "tpl_Cannot be used._01"
 msgstr "Cannot be used."
 
-msgid "tpl_137"
+msgid "tpl_* The parameter ZIP_DOWNLOAD_URL is not set._01"
 msgstr "* The parameter ZIP_DOWNLOAD_URL is not set."
 
-msgid "tpl_138"
+msgid "tpl_* PHP extension module 'zip' is invalid._01"
 msgstr "* PHP extension module 'zip' is invalid."
 
-msgid "tpl_139"
+msgid "tpl_A postal code CSV will be obtained from the Japan Post Web site._01"
 msgstr "A postal code CSV will be obtained from the Japan Post Web site."
 
-msgid "tpl_140"
+msgid "tpl_Update_01"
 msgstr "Update"
 
-msgid "tpl_141"
+msgid "tpl_All postal codes will be deleted. _01"
 msgstr ""
 "All postal codes will be deleted. Automatic address will not function until "
 "postal codes are re-registered."
 
-msgid "tpl_142"
+msgid "tpl_Items not for CSV output_01"
 msgstr "Items not for CSV output"
 
-msgid "tpl_143"
+msgid "tpl_Items for CSV output_01"
 msgstr "Items for CSV output"
 
-msgid "tpl_144"
+msgid "tpl_Top_01"
 msgstr "Top"
 
-msgid "tpl_145"
+msgid "tpl_Bottom_01"
 msgstr "Bottom"
 
-msgid "tpl_146"
+msgid "tpl_Up_01"
 msgstr "Up"
 
-msgid "tpl_147"
+msgid "tpl_Down_01"
 msgstr "Down"
 
-msgid "tpl_148"
+msgid "tpl_Item order_01"
 msgstr "Item order"
 
-msgid "tpl_149"
+msgid "tpl_Do you want to register using default settings_01"
 msgstr "Do you want to register using default settings"
 
-msgid "tpl_150"
+msgid "tpl_* Update successful._01"
 msgstr "* Update successful."
 
-msgid "tpl_151"
+msgid "tpl_Return to initial settings and register_01"
 msgstr "Return to initial settings and register"
 
-msgid "tpl_152"
+msgid "tpl_SQL list_01"
 msgstr "SQL list"
 
 msgid "tpl_153"

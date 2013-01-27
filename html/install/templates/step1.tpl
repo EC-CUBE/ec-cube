@@ -65,7 +65,7 @@ $(function() {
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_108_1" escape="none"}--></th>
+                <th><!--{t string="tpl_E-mail address<span class='attention'> *</span>_01" escape="none"}--></th>
                 <td>
                 <!--{assign var=key value="admin_mail"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>

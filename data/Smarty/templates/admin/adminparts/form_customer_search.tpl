@@ -53,7 +53,7 @@
     </td>
 </tr>
 <tr>
-    <th><!--{t string="tpl_108"}--></th>
+    <th><!--{t string="tpl_E-mail address_01"}--></th>
     <td colspan="3">
     <!--{assign var=key value="search_email"}-->
     <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->

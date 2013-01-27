@@ -3829,168 +3829,165 @@ msgstr "郵便番号DB登録"
 msgid "tpl_Holiday management_01"
 msgstr "定休日管理"
 
-msgid "tpl_104"
+msgid "tpl_Distributor<span class='attention'> *</span>_01"
 msgstr "販売業者<span class='attention'> *</span>"
 
-msgid "tpl_105"
+msgid "tpl_Operation director<span class='attention'> *</span>_01"
 msgstr "運営責任者<span class='attention'> *</span>"
 
-msgid "tpl_106"
+msgid "tpl_Postal code mark_01"
 msgstr "〒 "
 
-msgid "tpl_107"
+msgid "tpl_Location<span class='attention'> *</span>_01"
 msgstr "所在地<span class='attention'> *</span>"
 
-msgid "tpl_108"
+msgid "tpl_E-mail address_01"
 msgstr "メールアドレス"
 
-msgid "tpl_108_1"
+msgid "tpl_E-mail address<span class='attention'> *</span>_01"
 msgstr "メールアドレス<span class='attention'> *</span>"
 
-msgid "tpl_109"
+msgid "tpl_URL_01"
 msgstr "URL"
 
-msgid "tpl_109_1"
+msgid "tpl_URL<span class='attention'> *</span>_01"
 msgstr "URL<span class='attention'> *</span>"
 
-msgid "tpl_110"
+msgid "tpl_Link_01"
 msgstr "リンク"
 
-msgid "tpl_111"
+msgid "tpl_Create text_01"
 msgstr "本文作成"
 
-msgid "tpl_112"
+msgid "tpl_Open in separate window_01"
 msgstr "別ウィンドウで開く"
 
-msgid "tpl_113"
+msgid "tpl_(3000 characters max)_01"
 msgstr "(上限3000文字)"
 
-msgid "tpl_114"
+msgid "tpl_List of new information_01"
 msgstr "新着情報一覧"
 
-msgid "tpl_115"
+msgid "tpl_Ranking_01"
 msgstr "順位"
 
-msgid "tpl_116"
+msgid "tpl_Necessary fees other than for the product cost<span class='attention'> *</span>_01"
 msgstr "商品代金以外の必要料金<span class='attention'> *</span>"
 
-msgid "tpl_117"
+msgid "tpl_Order method<span class='attention'> *</span>_01"
 msgstr "注文方法<span class='attention'> *</span>"
 
-msgid "tpl_118"
+msgid "tpl_Payment deadline<span class='attention'> *</span>_01"
 msgstr "支払期限<span class='attention'> *</span>"
 
-msgid "tpl_119"
+msgid "tpl_Delivery period<span class='attention'> *</span>_01"
 msgstr "引き渡し時期<span class='attention'> *</span>"
 
-msgid "tpl_120"
+msgid "tpl_Returns and exchanges<span class='attention'> *</span>_01"
 msgstr "返品・交換について<span class='attention'> *</span>"
 
-msgid "tpl_121"
+msgid "tpl_Date and time of saved postal code CSV update: T_FIELD_01"
 msgstr "保存されている郵便番号CSVの更新日時: T_FIELD"
 
-msgid "tpl_122"
+msgid "tpl_Postal code There are T_FIELD lines of data in the CSV._01"
 msgstr "郵便番号CSVには T_FIELD 行のデータがあります。"
 
-msgid "tpl_123"
+msgid "tpl_Postal code There are T_FIELD lines of data in the DB._01"
 msgstr "郵便番号DBには T_FIELD 行のデータがあります。"
 
-msgid "tpl_124"
+msgid "tpl_Please carry out registration._01"
 msgstr "登録を行なってください。"
 
-msgid "tpl_125"
+msgid "tpl_There is a difference in the number of lines. There may be an abnormality in registration._01"
 msgstr "行数に差異があります。登録に異常がある恐れがあります。"
 
-msgid "tpl_126"
+msgid "tpl_Under normal conditions_01"
 msgstr ""
 "通常は、[自動登録] を利用してください。<br />ただし、タイムアウトしてしまう環"
 "境では、タイムアウトした後に [手動登録] を正常に完了するまで繰り返してくださ"
 "い。"
 
-msgid "tpl_127"
+msgid "tpl_Automatic registration_01"
 msgstr "自動登録"
 
-msgid "tpl_128"
+msgid "tpl_[Delete] [Postal code CSV update] and [DB manual registration] below will be carried out in order._01"
 msgstr ""
 "下の [削除] [郵便番号CSV更新] [DB手動登録] を順に実行します。ただし、タイムア"
 "ウトした場合、DBは元の状態に戻ります。"
 
-msgid "tpl_129"
+msgid "tpl_[Delete] and [DB manual registration] below will be carried out in order. _01"
 msgstr ""
 " 下の [削除] [DB手動登録] を順に実行します。ただし、タイムアウトした場合、DB"
 "は元の状態に戻ります。"
 
-msgid "tpl_130"
-msgstr "自動登録"
-
-msgid "tpl_131"
+msgid "tpl_DB manual registration_01"
 msgstr "DB手動登録"
 
-msgid "tpl_132"
+msgid "tpl_Postal codes will be registered starting with the designated line number._01"
 msgstr ""
 "指定した行数から郵便番号を登録します。タイムアウトした場合、直前まで登録され"
 "ます。"
 
-msgid "tpl_133"
+msgid "tpl_Manual registration_01"
 msgstr "手動登録"
 
-msgid "tpl_134"
+msgid "tpl_Start line_01"
 msgstr "開始行"
 
-msgid "tpl_135"
+msgid "tpl_Postal code CSV update_01"
 msgstr "郵便番号CSV更新"
 
-msgid "tpl_136"
+msgid "tpl_Cannot be used._01"
 msgstr "ご利用頂けません。"
 
-msgid "tpl_137"
+msgid "tpl_* The parameter ZIP_DOWNLOAD_URL is not set._01"
 msgstr "※ パラメーター ZIP_DOWNLOAD_URL が未設定です。"
 
-msgid "tpl_138"
+msgid "tpl_* PHP extension module 'zip' is invalid._01"
 msgstr "※ PHP 拡張モジュール「zip」が無効です。"
 
-msgid "tpl_139"
+msgid "tpl_A postal code CSV will be obtained from the Japan Post Web site._01"
 msgstr "日本郵便の WEB サイトから、郵便番号CSVを取得します。"
 
-msgid "tpl_140"
+msgid "tpl_Update_01"
 msgstr "更新"
 
-msgid "tpl_141"
+msgid "tpl_All postal codes will be deleted. _01"
 msgstr ""
 "全ての郵便番号を削除します。再登録するまで、住所自動入力は機能しなくなりま"
 "す。"
 
-msgid "tpl_142"
+msgid "tpl_Items not for CSV output_01"
 msgstr "CSV出力しない項目"
 
-msgid "tpl_143"
+msgid "tpl_Items for CSV output_01"
 msgstr "CSV出力する項目"
 
-msgid "tpl_144"
+msgid "tpl_Top_01"
 msgstr "一番上"
 
-msgid "tpl_145"
+msgid "tpl_Bottom_01"
 msgstr "一番下"
 
-msgid "tpl_146"
+msgid "tpl_Up_01"
 msgstr "一つ上"
 
-msgid "tpl_147"
+msgid "Down"
 msgstr "一つ下"
 
-msgid "tpl_148"
+msgid "tpl_Item order_01"
 msgstr "項目順序"
 
-msgid "tpl_149"
+msgid "tpl_Do you want to register using default settings_01"
 msgstr "初期設定で登録しても宜しいですか"
 
-msgid "tpl_150"
+msgid "tpl_* Update successful._01"
 msgstr "※ 正常に更新されました。"
 
-msgid "tpl_151"
+msgid "tpl_Return to initial settings and register_01"
 msgstr "初期設定に戻して登録"
 
-msgid "tpl_152"
+msgid "tpl_SQL list_01"
 msgstr "SQL一覧"
 
 msgid "tpl_153"

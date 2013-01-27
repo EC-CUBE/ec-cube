@@ -28,7 +28,7 @@
 <div id="basis" class="contents-main">
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_104" escape="none"}--></th>
+            <th><!--{t string="tpl_Distributor<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
             <!--{assign var=key value="law_company"}-->
             <!--{if $arrErr[$key]}-->
@@ -39,7 +39,7 @@
 		</td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_105" escape="none"}--></th>
+            <th><!--{t string="tpl_Operation director<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
             <!--{assign var=key value="law_manager"}-->
             <!--{if $arrErr[$key]}-->
@@ -64,7 +64,7 @@
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <!--{/if}-->
             
-            <!--{t string="tpl_106"}-->
+            <!--{t string="tpl_Postal code mark_01"}-->
             <!--{*
             <input type="text" name="<!--{$arrForm[$key1].keyname}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->"    size="6" class="box6" />
             -
@@ -75,7 +75,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_107" escape="none"}--></th>
+            <th><!--{t string="tpl_Location<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
                 <!--{assign var=key value="law_pref"}-->
                 <!--{if $arrErr[$key]}-->
@@ -136,7 +136,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_108_1" escape="none"}--></th>
+            <th><!--{t string="tpl_E-mail address<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
             <!--{assign var=key value="law_email"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -144,7 +144,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_109_1" escape="none"}--></th>
+            <th><!--{t string="tpl_URL<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
             <!--{assign var=key value="law_url"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -152,14 +152,14 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_116" escape="none"}--></th>
+            <th><!--{t string="tpl_Necessary fees other than for the product cost<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
             <!--{assign var=key value="law_term01"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|h}--></textarea><span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$arrForm[$key].length}--></span></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_117" escape="none"}--></th>
+            <th><!--{t string="tpl_Order method<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
             <!--{assign var=key value="law_term02"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -173,21 +173,21 @@
             <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|h}--></textarea><span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$arrForm[$key].length}--></span></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_118" escape="none"}--></th>
+            <th><!--{t string="tpl_Payment deadline<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
             <!--{assign var=key value="law_term04"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|h}--></textarea><span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$arrForm[$key].length}--></span></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_119" escape="none"}--></th>
+            <th><!--{t string="tpl_Delivery period<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
             <!--{assign var=key value="law_term05"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|h}--></textarea><span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$arrForm[$key].length}--></span></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_120" escape="none"}--></th>
+            <th><!--{t string="tpl_Returns and exchanges<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
             <!--{assign var=key value="law_term06"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>

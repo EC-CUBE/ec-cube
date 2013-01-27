@@ -60,7 +60,7 @@ function fnTargetSelf(){
             </td>
         </tr>
         <tr>
-        <th><!--{t string="tpl_109"}--></th>
+        <th><!--{t string="tpl_URL_01"}--></th>
             <td>
                 <!--{assign var=key value="filename"}-->
                 <!--{if $arrForm.edit_flg.value == 2}-->

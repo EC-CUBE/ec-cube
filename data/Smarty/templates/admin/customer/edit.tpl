@@ -182,10 +182,10 @@
                     <span class="attention"><!--{$arrErr.zipcode}--></span>
 
                     <!--{*
-                    <!--{t string="tpl_106"}--> <input type="text" name="zip01" value="<!--{$arrForm.zip01|h}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" size="6" class="box6" maxlength="3" <!--{if $arrErr.zip01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="zip02" value="<!--{$arrForm.zip02|h}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" size="6" class="box6" maxlength="4" <!--{if $arrErr.zip02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                    <!--{t string="tpl_Postal code mark_01"}--> <input type="text" name="zip01" value="<!--{$arrForm.zip01|h}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" size="6" class="box6" maxlength="3" <!--{if $arrErr.zip01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="zip02" value="<!--{$arrForm.zip02|h}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" size="6" class="box6" maxlength="4" <!--{if $arrErr.zip02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                     <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'zip01', 'zip02', 'pref', 'addr01'); return false;"><!--{t string="tpl_211"}--></a>
                     *}-->
-                    <!--{t string="tpl_106"}--> <input type="text" name="zipcode" value="<!--{$arrForm.zipcode|h}-->" maxlength="<!--{$smarty.const.ZIPCODE_LEN}-->" size="15" class="box10" maxlength="10" <!--{if $arrErr.zipcode != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                    <!--{t string="tpl_Postal code mark_01"}--> <input type="text" name="zipcode" value="<!--{$arrForm.zipcode|h}-->" maxlength="<!--{$smarty.const.ZIPCODE_LEN}-->" size="15" class="box10" maxlength="10" <!--{if $arrErr.zipcode != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                 </td>
             </tr>
             <tr>
@@ -199,7 +199,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_108_1" escape="none"}--></th>
+                <th><!--{t string="tpl_E-mail address<span class='attention'> *</span>_01" escape="none"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.email}--></span>
                     <input type="text" name="email" value="<!--{$arrForm.email|h}-->" size="60" class="box60" <!--{if $arrErr.email != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />

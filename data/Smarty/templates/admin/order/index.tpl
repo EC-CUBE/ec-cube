@@ -608,7 +608,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_108"}--></th>
+            <th><!--{t string="tpl_E-mail address_01"}--></th>
             <td>
                 <!--{assign var=key value="search_order_email"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>

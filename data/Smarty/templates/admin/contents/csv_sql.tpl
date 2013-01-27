@@ -47,7 +47,7 @@ function fnTargetSelf(){
 <input type="hidden" name="csv_output_id" value="" />
 <input type="hidden" name="select_table" value="" />
 <div id="admin-contents" class="contents-main">
-    <h2><!--{t string="tpl_152"}--></h2>
+    <h2><!--{t string="tpl_SQL list_01"}--></h2>
 
     <!--{if $arrSqlList}-->
         <table id="contents-csv-sqllist" class="list center">

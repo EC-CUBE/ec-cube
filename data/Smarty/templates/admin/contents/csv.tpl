@@ -30,13 +30,13 @@ $().ready(function() {
     $('#output_list').multiselect2side({
         selectedPosition: 'right',
         moveOptions: true,
-        labelsx: '<!--{t string="tpl_142"}-->',
-        labeldx: '<!--{t string="tpl_143"}-->',
-        labelTop: '<!--{t string="tpl_144"}-->',
-        labelBottom: '<!--{t string="tpl_145"}-->',
-        labelUp: '<!--{t string="tpl_146"}-->',
-        labelDown: '<!--{t string="tpl_147"}-->',
-        labelSort: '<!--{t string="tpl_148"}-->'
+        labelsx: '<!--{t string="tpl_Items not for CSV output_01"}-->',
+        labeldx: '<!--{t string="tpl_Items for CSV output_01"}-->',
+        labelTop: '<!--{t string="tpl_Top_01"}-->',
+        labelBottom: '<!--{t string="tpl_Bottom_01"}-->',
+        labelUp: '<!--{t string="tpl_Up_01"}-->',
+        labelDown: '<!--{t string="Down"}-->',
+        labelSort: '<!--{t string="tpl_Item order_01"}-->'
     });
     // multiselect2side の初期選択を解除
     $('.ms2side__div select').val(null);
@@ -46,7 +46,7 @@ $().ready(function() {
 });
 
 function lfFormModeDefautSetSubmit(form, mode) {
-    if (!window.confirm('<!--{t string="tpl_149"}-->')) {
+    if (!window.confirm('<!--{t string="tpl_Do you want to register using default settings_01"}-->')) {
         return;
     }
     return fnSetFormSubmit(form, 'mode', mode);
@@ -60,7 +60,7 @@ function lfFormModeDefautSetSubmit(form, mode) {
 <input type="hidden" name="tpl_subno_csv" value="<!--{$tpl_subno_csv|h}-->" />
 <div id="admin-contents" class="contents-main">
     <!--{if $tpl_is_update}-->
-    <span class="attention"><!--{t string="tpl_150"}--></span>
+    <span class="attention"><!--{t string="tpl_* Update successful._01"}--></span>
     <!--{/if}-->
     <span class="attention"><!--{$arrErr.tpl_subno_csv}--></span>
     <div class="ms2side__area">
@@ -73,7 +73,7 @@ function lfFormModeDefautSetSubmit(form, mode) {
     <div class="btn-area">
         <ul>
             <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'confirm', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_Save and continue_01"}--></span></a></li>
-            <li><a class="btn-action" href="javascript:;" onclick="lfFormModeDefautSetSubmit('form1', 'defaultset', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_151"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="lfFormModeDefautSetSubmit('form1', 'defaultset', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_Return to initial settings and register_01"}--></span></a></li>
         </ul>
     </div>
 
