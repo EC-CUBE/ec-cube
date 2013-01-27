@@ -177,7 +177,7 @@ msgstr " [Default value: T_DEFAULT]"
 msgid "c_ [Registration/update not possible] _01"
 msgstr " [Registration/update not possible] "
 
-msgid "c_ [Registration/update not possible] _01"
+msgid "c_A method that is not operating properly has been called._01"
 msgstr "A method that is not operating properly has been called."
 
 msgid "c_* A product in your cart is no longer being sold at this time. The item was deleted from your cart._01"
@@ -199,25 +199,25 @@ msgstr ""
 msgid "c_* T_PRODUCT is sold out._01"
 msgstr "* T_PRODUCT is sold out."
 
-msgid "SC_Fpdf_001"
+msgid "c_Product name / Product code / [Specification]_01"
 msgstr "Product name / Product code / [Specification]"
 
-msgid "SC_Fpdf_002"
+msgid "c_Quantity_01"
 msgstr "Quantity"
 
-msgid "SC_Fpdf_003"
+msgid "c_Unit price_01"
 msgstr "Unit price"
 
-msgid "SC_Fpdf_004"
+msgid "c_Amount with tax_01"
 msgstr "Amount with tax"
 
-msgid "SC_Fpdf_005"
+msgid "c_Product total_01"
 msgstr "Product total"
 
-msgid "SC_Fpdf_006"
+msgid "c_Shipping fee_01"
 msgstr "Shipping fee"
 
-msgid "SC_Fpdf_007"
+msgid "c_Processing fee_01"
 msgstr "Processing fee"
 
 msgid "SC_Fpdf_008"
@@ -877,12 +877,6 @@ msgstr "Payment method"
 msgid "PARAM_LABEL_CUSTOMER_PAYMENT_METHOD_NAME"
 msgstr "Payment method name"
 
-msgid "PARAM_LABEL_CHARGE"
-msgstr "Processing fee"
-
-msgid "PARAM_LABEL_DELIV_FEE"
-msgstr "Shipping fee"
-
 msgid "PARAM_LABEL_PRODUCT_DELIV_FEE"
 msgstr "Product shipping fee"
 
@@ -969,12 +963,6 @@ msgstr "Response status"
 
 msgid "PARAM_LABEL_PRODUCT_TYPE_ID"
 msgstr "Product type ID"
-
-msgid "PARAM_LABEL_PRICE"
-msgstr "Unit price"
-
-msgid "PARAM_LABEL_QUANTITY"
-msgstr "Quantity"
 
 msgid "PARAM_LABEL_SELL_PRICE"
 msgstr "Sales price"
@@ -3469,12 +3457,6 @@ msgstr "Product name"
 
 msgid "LC_Page_Admin_Total_023"
 msgstr "Number of items purchased"
-
-msgid "LC_Page_Admin_Total_024"
-msgstr "Quantity"
-
-msgid "LC_Page_Admin_Total_025"
-msgstr "Unit price"
 
 msgid "LC_Page_Admin_Total_026"
 msgstr "Amount"

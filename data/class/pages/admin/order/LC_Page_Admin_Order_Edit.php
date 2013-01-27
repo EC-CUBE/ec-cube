@@ -307,8 +307,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
 
         // 受注商品情報
         $objFormParam->addParam(t('PARAM_LABEL_DISCOUNT'), 'discount', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
-        $objFormParam->addParam(t('PARAM_LABEL_DELIV_FEE'), 'deliv_fee', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
-        $objFormParam->addParam(t('PARAM_LABEL_CHARGE'), 'charge', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
+        $objFormParam->addParam(t('c_Shipping fee_01'), 'deliv_fee', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
+        $objFormParam->addParam(t('c_Processing fee_01'), 'charge', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
 
         // ポイント機能ON時のみ
         if (USE_POINT !== false) {
@@ -322,8 +322,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
 
         // 受注詳細情報
         $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_TYPE_ID'), 'product_type_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
-        $objFormParam->addParam(t('PARAM_LABEL_PRICE'), 'price', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
-        $objFormParam->addParam(t('PARAM_LABEL_QUANTITY'), 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
+        $objFormParam->addParam(t('c_Unit price_01'), 'price', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
+        $objFormParam->addParam(t('c_Quantity_01'), 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
         $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_ID'), 'product_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
         $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CLASS_ID'), 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
         $objFormParam->addParam(t('PARAM_LABEL_POINT_RATE'), 'point_rate');
@@ -384,8 +384,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_NAME'), 'shipment_product_name');
         $objFormParam->addParam(t('PARAM_LABEL_CLASS_NAME1'), 'shipment_classcategory_name1');
         $objFormParam->addParam(t('PARAM_LABEL_CLASS_NAME2'), 'shipment_classcategory_name2');
-        $objFormParam->addParam(t('PARAM_LABEL_PRICE'), 'shipment_price', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
-        $objFormParam->addParam(t('PARAM_LABEL_QUANTITY'), 'shipment_quantity', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
+        $objFormParam->addParam(t('c_Unit price_01'), 'shipment_price', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
+        $objFormParam->addParam(t('c_Quantity_01'), 'shipment_quantity', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
 
         $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_NO'), 'no', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ADD_PRODUCT_CLASS_ID'), 'add_product_class_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
@@ -405,8 +405,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_NAME'), 'multiple_product_name', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
         $objFormParam->addParam(t('PARAM_LABEL_CLASS1'), 'multiple_classcategory_name1', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
         $objFormParam->addParam(t('PARAM_LABEL_CLASS2'), 'multiple_classcategory_name2', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
-        $objFormParam->addParam(t('PARAM_LABEL_PRICE'), 'multiple_price', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
-        $objFormParam->addParam(t('PARAM_LABEL_QUANTITY'), 'multiple_quantity', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
+        $objFormParam->addParam(t('c_Unit price_01'), 'multiple_price', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
+        $objFormParam->addParam(t('c_Quantity_01'), 'multiple_quantity', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
         $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_DELIV_ADDRESSEE'), 'multiple_shipping_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
     }
 

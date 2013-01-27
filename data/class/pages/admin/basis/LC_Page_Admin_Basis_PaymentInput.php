@@ -130,7 +130,7 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
                     $arrRet = $objPayment->get($post['payment_id']);
 
                     $objFormParam->addParam(t('PARAM_LABEL_PAYMENT_METHOD'), 'payment_method', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-                    $objFormParam->addParam(t('PARAM_LABEL_CHARGE'), 'charge', PRICE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                    $objFormParam->addParam(t('c_Processing fee_01'), 'charge', PRICE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
                     $objFormParam->addParam(t('PARAM_LABEL_RULE_MAX'), 'rule_max', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
                     $objFormParam->addParam(t('PARAM_LABEL_UPPER_RULE'), 'upper_rule', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
                     $objFormParam->addParam(t('PARAM_LABEL_FIX'), 'fix');
@@ -175,7 +175,7 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
         switch ($mode) {
             case 'edit':
                 $objFormParam->addParam(t('PARAM_LABEL_PAYMENT_METHOD'), 'payment_method', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(t('PARAM_LABEL_CHARGE'), 'charge', PRICE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('c_Processing fee_01'), 'charge', PRICE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
                 $objFormParam->addParam(t('PARAM_LABEL_RULE_MAX'), 'rule_max', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
                 $objFormParam->addParam(t('PARAM_LABEL_UPPER_RULE'), 'upper_rule', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
                 $objFormParam->addParam(t('PARAM_LABEL_FIX'), 'fix');
@@ -187,7 +187,7 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
             case 'delete_image':
                 $objFormParam->addParam(t('PARAM_LABEL_PAYMENT_ID'), 'payment_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
                 $objFormParam->addParam(t('PARAM_LABEL_PAYMENT_METHOD'), 'payment_method', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(t('PARAM_LABEL_CHARGE'), 'charge', PRICE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('c_Processing fee_01'), 'charge', PRICE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
                 $objFormParam->addParam(t('PARAM_LABEL_RULE_MAX'), 'rule_max', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
                 $objFormParam->addParam(t('PARAM_LABEL_UPPER_RULE'), 'upper_rule', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
                 $objFormParam->addParam(t('PARAM_LABEL_FIX'), 'fix');
@@ -201,7 +201,7 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
 
             default:
                 $objFormParam->addParam(t('PARAM_LABEL_PAYMENT_METHOD'), 'payment_method', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(t('PARAM_LABEL_CHARGE'), 'charge', PRICE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('c_Processing fee_01'), 'charge', PRICE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
                 $objFormParam->addParam(t('PARAM_LABEL_RULE_MAX'), 'rule_max', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
                 $objFormParam->addParam(t('PARAM_LABEL_UPPER_RULE'), 'upper_rule', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
                 $objFormParam->addParam(t('PARAM_LABEL_FIX'), 'fix');

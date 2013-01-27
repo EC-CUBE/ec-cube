@@ -41,10 +41,10 @@ class SC_Fpdf extends SC_Helper_FPDI {
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->width_cell = array(110.3,12,21.7,24.5);
 
-        $this->label_cell[] = t('SC_Fpdf_001');
-        $this->label_cell[] = t('SC_Fpdf_002');
-        $this->label_cell[] = t('SC_Fpdf_003');
-        $this->label_cell[] = t('SC_Fpdf_004');
+        $this->label_cell[] = t('c_Product name / Product code / [Specification]_01');
+        $this->label_cell[] = t('c_Quantity_01');
+        $this->label_cell[] = t('c_Unit price_01');
+        $this->label_cell[] = t('c_Amount with tax_01');
 
         $this->arrMessage = array(
             t('SC_Fpdf_014'),
@@ -212,19 +212,19 @@ class SC_Fpdf extends SC_Helper_FPDI {
         $i++;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
-        $arrOrder[$i][2] = t('SC_Fpdf_005');
+        $arrOrder[$i][2] = t('c_Product total_01');
         $arrOrder[$i][3] = t('SC_Fpdf_019', array('T_FIELD' => number_format($this->arrDisp['subtotal'])));
 
         $i++;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
-        $arrOrder[$i][2] = t('SC_Fpdf_006');
+        $arrOrder[$i][2] = t('c_Shipping fee_01');
         $arrOrder[$i][3] = t('SC_Fpdf_019', array('T_FIELD' => number_format($this->arrDisp['deliv_fee'])));
 
         $i++;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
-        $arrOrder[$i][2] = t('SC_Fpdf_007');
+        $arrOrder[$i][2] = t('c_Processing fee_01');
         $arrOrder[$i][3] = t('SC_Fpdf_019', array('T_FIELD' => number_format($this->arrDisp['charge'])));
 
         $i++;

@@ -817,8 +817,8 @@ __EOS__;
                     t('LC_Page_Admin_Total_021'),
                     t('LC_Page_Admin_Total_022'),
                     t('LC_Page_Admin_Total_023'),
-                    t('LC_Page_Admin_Total_024'),
-                    t('LC_Page_Admin_Total_025'),
+                    t('c_Quantity_01'),
+                    t('c_Unit price_01'),
                     t('LC_Page_Admin_Total_026'),
                 );
                 $arrDataCol = array(

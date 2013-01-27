@@ -171,7 +171,7 @@ msgstr " [省略時初期値: T_DEFAULT]"
 msgid "c_ [Registration/update not possible] _01"
 msgstr " [登録・更新不可] "
 
-msgid "c_ [Registration/update not possible] _01"
+msgid "c_A method that is not operating properly has been called._01"
 msgstr "正しく動作しないメソッドが呼び出されました。"
 
 msgid "c_* A product in your cart is no longer being sold at this time. The item was deleted from your cart._01"
@@ -192,25 +192,25 @@ msgstr ""
 msgid "c_* T_PRODUCT is sold out._01"
 msgstr "※「T_PRODUCT」は売り切れました。"
 
-msgid "SC_Fpdf_001"
+msgid "c_Product name / Product code / [Specification]_01"
 msgstr "商品名 / 商品コード / [ 規格 ]"
 
-msgid "SC_Fpdf_002"
+msgid "c_Quantity_01"
 msgstr "数量"
 
-msgid "SC_Fpdf_003"
+msgid "c_Unit price_01"
 msgstr "単価"
 
-msgid "SC_Fpdf_004"
+msgid "c_Amount with tax_01"
 msgstr "金額(税込)"
 
-msgid "SC_Fpdf_005"
+msgid "c_Product total_01"
 msgstr "商品合計"
 
-msgid "SC_Fpdf_006"
+msgid "c_Shipping fee_01"
 msgstr "送料"
 
-msgid "SC_Fpdf_007"
+msgid "c_Processing fee_01"
 msgstr "手数料"
 
 msgid "SC_Fpdf_008"
@@ -866,12 +866,6 @@ msgstr "お支払い方法"
 msgid "PARAM_LABEL_CUSTOMER_PAYMENT_METHOD_NAME"
 msgstr "お支払方法名称"
 
-msgid "PARAM_LABEL_CHARGE"
-msgstr "手数料"
-
-msgid "PARAM_LABEL_DELIV_FEE"
-msgstr "送料"
-
 msgid "PARAM_LABEL_PRODUCT_DELIV_FEE"
 msgstr "商品送料"
 
@@ -958,12 +952,6 @@ msgstr "対応状況"
 
 msgid "PARAM_LABEL_PRODUCT_TYPE_ID"
 msgstr "商品種別ID"
-
-msgid "PARAM_LABEL_PRICE"
-msgstr "単価"
-
-msgid "PARAM_LABEL_QUANTITY"
-msgstr "数量"
 
 msgid "PARAM_LABEL_SELL_PRICE"
 msgstr "販売価格"
@@ -3433,12 +3421,6 @@ msgstr "商品名"
 
 msgid "LC_Page_Admin_Total_023"
 msgstr "購入件数"
-
-msgid "LC_Page_Admin_Total_024"
-msgstr "数量"
-
-msgid "LC_Page_Admin_Total_025"
-msgstr "単価"
 
 msgid "LC_Page_Admin_Total_026"
 msgstr "金額"

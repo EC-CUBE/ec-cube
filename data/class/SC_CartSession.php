@@ -391,7 +391,7 @@ class SC_CartSession {
      * @deprected getAllProductClassID を使用して下さい
      */
     function getAllProductID($productTypeId) {
-        trigger_error(t('c_ [Registration/update not possible] _01'), E_USER_ERROR);
+        trigger_error(t('c_A method that is not operating properly has been called._01'), E_USER_ERROR);
     }
 
     /**
