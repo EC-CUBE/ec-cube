@@ -135,7 +135,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      */
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CLASS_ID'), 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_NAME'), 'name');
+        $objFormParam->addParam(t('c_Product name_01'), 'name');
         $objFormParam->addParam(t('PARAM_LABEL_CLASS1'), 'class_name1');
         $objFormParam->addParam(t('PARAM_LABEL_CLASS2'), 'class_name2');
         $objFormParam->addParam(t('PARAM_LABEL_CLASSCATEGORY1'), 'classcategory_name1');

@@ -122,7 +122,7 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
         // 検索条件のパラメーターを初期化
         parent::lfInitParam($objFormParam);
         $objFormParam->addParam(t('PARAM_LABEL_REVIEW_ID'), 'review_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_NAME'), 'name', '', '', array(), '', false);
+        $objFormParam->addParam(t('c_Product name_01'), 'name', '', '', array(), '', false);
         $objFormParam->addParam(t('PARAM_LABEL_POST_DATE'), 'create_date', '', '', array(), '', false);
 
         // 登録情報

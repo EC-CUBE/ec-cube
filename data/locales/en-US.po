@@ -952,9 +952,6 @@ msgstr "Main image"
 msgid "PARAM_LABEL_DETAIL_MAIN_IMAGE"
 msgstr "Details - Main image"
 
-msgid "PARAM_LABEL_PRODUCT_NAME"
-msgstr "Product name"
-
 msgid "PARAM_LABEL_PRODUCT_CLASS_ID_ALP"
 msgstr "product_class_id"
 
@@ -1032,9 +1029,6 @@ msgstr "Checkbox"
 
 msgid "PARAM_LABEL_FILE_UPLOAD_KEY"
 msgstr "File upload key"
-
-msgid "PARAM_LABEL_PRODUCT_CODE"
-msgstr "Product code"
 
 msgid "PARAM_LABEL_PRODUCT_ID"
 msgstr "Product ID"
@@ -1128,9 +1122,6 @@ msgstr "Cart key"
 
 msgid "PARAM_LABEL_MONTHLY"
 msgstr "Monthly"
-
-msgid "PARAM_LABEL_PERIOD"
-msgstr "Period"
 
 msgid "PARAM_LABEL_PERIOD_1"
 msgstr "Period (Start day)"
@@ -1467,9 +1458,6 @@ msgstr "Item number for deletion"
 
 msgid "PARAM_LABEL_SUBTOTAL"
 msgstr "Subtotal"
-
-msgid "PARAM_LABEL_TOTAL"
-msgstr "Total"
 
 msgid "PARAM_LABEL_PAYMENT_TOTAL"
 msgstr "Payment total"
@@ -3344,9 +3332,6 @@ msgstr "T_FIELD1/T_FIELD2/T_FIELD3"
 msgid "LC_Page_Admin_Total_008"
 msgstr "Sales period: T_FIELD1 - T_FIELD2"
 
-msgid "LC_Page_Admin_Total_009"
-msgstr "Member"
-
 msgid "LC_Page_Admin_Total_010"
 msgstr "Non-member"
 
@@ -3377,55 +3362,55 @@ msgstr "(By time)"
 msgid "LC_Page_Admin_Total_019"
 msgstr "(By date)"
 
-msgid "LC_Page_Admin_Total_020"
+msgid "c_Total_01"
 msgstr "Total"
 
-msgid "LC_Page_Admin_Total_021"
+msgid "c_Product code_01"
 msgstr "Product code"
 
-msgid "LC_Page_Admin_Total_022"
+msgid "c_Product name_01"
 msgstr "Product name"
 
-msgid "LC_Page_Admin_Total_023"
+msgid "c_Number of items purchased_01"
 msgstr "Number of items purchased"
 
-msgid "LC_Page_Admin_Total_026"
+msgid "c_Amount_01"
 msgstr "Amount"
 
-msgid "LC_Page_Admin_Total_028"
+msgid "c_Purchase total_01"
 msgstr "Purchase total"
 
-msgid "LC_Page_Admin_Total_029"
+msgid "c_Purchase average_01"
 msgstr "Purchase average"
 
-msgid "LC_Page_Admin_Total_030"
+msgid "c_Member_01"
 msgstr "Member"
 
-msgid "LC_Page_Admin_Total_031"
+msgid "c_Age_01"
 msgstr "Age"
 
-msgid "LC_Page_Admin_Total_032"
+msgid "c_Period_01"
 msgstr "Period"
 
-msgid "LC_Page_Admin_Total_033"
+msgid "c_Male_01"
 msgstr "Male"
 
-msgid "LC_Page_Admin_Total_034"
+msgid "c_Female_01"
 msgstr "Female"
 
-msgid "LC_Page_Admin_Total_035"
+msgid "c_Male (member)_01"
 msgstr "Male (member)"
 
-msgid "LC_Page_Admin_Total_036"
+msgid "c_Male (non-member)_01"
 msgstr "Male (non-member)"
 
-msgid "LC_Page_Admin_Total_037"
+msgid "c_Female (member)_01"
 msgstr "Female (member)"
 
-msgid "LC_Page_Admin_Total_038"
+msgid "c_Female (non-member)_01"
 msgstr "Female (non-member)"
 
-msgid "LC_Page_Admin_Total_039"
+msgid "c_(Sales ratio)_01"
 msgstr "(Sales ratio)"
 
 msgid "c_Home_01"

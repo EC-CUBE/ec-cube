@@ -189,8 +189,8 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_ID'), 'product_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
         $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CLASS_ID'), 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
         $objFormParam->addParam(t('PARAM_LABEL_POINT_RATE'), 'point_rate');
-        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CODE'), 'product_code');
-        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_NAME'), 'product_name');
+        $objFormParam->addParam(t('c_Product code_01'), 'product_code');
+        $objFormParam->addParam(t('c_Product name_01'), 'product_name');
         $objFormParam->addParam(t('PARAM_LABEL_CLASS_NAME1'), 'classcategory_name1');
         $objFormParam->addParam(t('PARAM_LABEL_CLASS_NAME2'), 'classcategory_name2');
         $objFormParam->addParam(t('PARAM_LABEL_NOTE'), 'note', MTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
@@ -198,7 +198,7 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
 
         // DB読込用
         $objFormParam->addParam(t('PARAM_LABEL_SUBTOTAL'), 'subtotal');
-        $objFormParam->addParam(t('PARAM_LABEL_TOTAL'), 'total');
+        $objFormParam->addParam(t('c_Total_01'), 'total');
         $objFormParam->addParam(t('PARAM_LABEL_PAYMENT_TOTAL'), 'payment_total');
         $objFormParam->addParam(t('c_Points added_01'), 'add_point');
         $objFormParam->addParam(t('PARAM_LABEL_BIRTH_POINT'), 'birth_point');
@@ -239,8 +239,8 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam(t('PARAM_LABEL_SHIPPING_PRODUCT_QUANTITY'), 'shipping_product_quantity', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
 
         $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CLASS_ID'), 'shipment_product_class_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CODE'), 'shipment_product_code');
-        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_NAME'), 'shipment_product_name');
+        $objFormParam->addParam(t('c_Product code_01'), 'shipment_product_code');
+        $objFormParam->addParam(t('c_Product name_01'), 'shipment_product_name');
         $objFormParam->addParam(t('PARAM_LABEL_CLASS_NAME1'), 'shipment_classcategory_name1');
         $objFormParam->addParam(t('PARAM_LABEL_CLASS_NAME2'), 'shipment_classcategory_name2');
         $objFormParam->addParam(t('c_Unit price_01'), 'shipment_price', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
