@@ -82,7 +82,7 @@
                         <!--{assign var=key2 value="stock_unlimited"}-->
                         <td class="right">
                             <!--{if $arrForm[$key2].value[$index] == 1}-->
-                                <!--{t string="tpl_053"}-->
+                                <!--{t string="tpl_No limit"}-->
                             <!--{else}-->
                                 <!--{$arrForm[$key1].value[$index]|h}-->
                             <!--{/if}-->

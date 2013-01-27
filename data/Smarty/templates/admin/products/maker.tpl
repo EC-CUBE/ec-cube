@@ -53,7 +53,7 @@
             <col width="10%" />
             <col width="20%" />
             <tr>
-                <th><!--{t string="tpl_074"}--></th>
+                <th><!--{t string="tpl_ID_01"}--></th>
                 <th><!--{t string="tpl_562"}--></th>
                 <th class="edit"><!--{t string="tpl_Edit_01"}--></th>
                 <th class="delete"><!--{t string="tpl_Remove_01"}--></th>
@@ -80,10 +80,10 @@
                 </td>
                 <td class="center">
                     <!--{if $smarty.section.cnt.iteration != 1}-->
-                    <a href="?" onclick="fnModeSubmit('up', 'maker_id', <!--{$arrMaker[cnt].maker_id}-->); return false;" /><!--{t string="tpl_077"}--></a>
+                    <a href="?" onclick="fnModeSubmit('up', 'maker_id', <!--{$arrMaker[cnt].maker_id}-->); return false;" /><!--{t string="tpl_To top_01"}--></a>
                     <!--{/if}-->
                     <!--{if $smarty.section.cnt.iteration != $smarty.section.cnt.last}-->
-                    <a href="?" onclick="fnModeSubmit('down', 'maker_id', <!--{$arrMaker[cnt].maker_id}-->); return false;" /><!--{t string="tpl_078"}--></a>
+                    <a href="?" onclick="fnModeSubmit('down', 'maker_id', <!--{$arrMaker[cnt].maker_id}-->); return false;" /><!--{t string="tpl_To bottom_01"}--></a>
                     <!--{/if}-->
                 </td>
             </tr>

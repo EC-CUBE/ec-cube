@@ -22,7 +22,7 @@
  */
 *}-->
 
-<form name="form1" id="form1" method="post" action="?" onSubmit="return window.confirm(<!--{t string="tpl_093"}-->);">
+<form name="form1" id="form1" method="post" action="?" onSubmit="return window.confirm(<!--{t string="tpl_'Save changes?'_01"}-->);">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="confirm">
 <input type="hidden" name="device_type_id" value="" />
@@ -32,26 +32,26 @@
         <!--{foreach name=device key=device_key item=arrDevicePageData from=$arrPageData}-->
             <!--{if count($arrDevicePageData) > 0}-->
                 <!--{foreach name=page key=key item=item from=$arrDevicePageData}-->
-                    <!-- <!--{$item.page_name}--> ‚±‚±‚Ü‚Å -->
+                    <!-- <!--{$item.page_name}--> ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ -->
                     <!--{if $smarty.foreach.page.first == true}--><h1><span class="subtitle"><!--{$arrDeviceTypeName[$item.device_type_id]}--></span></h1><!--{/if}-->
                     <h2><!--{$item.page_name}--> <!--{$item.url}--></h2>
 
                     <div id="_<!--{$item.device_type_id}-->_<!--{$item.page_id}-->">
                         <table>
                             <tr>
-                                <th><!--{t string="tpl_089"}--></th>
+                                <th><!--{t string="tpl_Meta tag: Author_01"}--></th>
                                 <td>
                                 <span class="attention"><!--{$arrErr[$item.device_type_id][$item.page_id].author}--></span>
                                 <input type="text" name="meta[<!--{$item.device_type_id}-->][<!--{$item.page_id}-->][author]" value="<!--{$item.author|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style='<!--{if $arrErr[$item.page_id].author != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->' /><span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.STEXT_LEN}--></span></td>
                             </tr>
                             <tr>
-                                <th><!--{t string="tpl_090"}--></th>
+                                <th><!--{t string="tpl_Meta tag: Description_01"}--></th>
                                 <td>
                                 <span class="attention"><!--{$arrErr[$item.device_type_id][$item.page_id].description}--></span>
                                 <input type="text" name="meta[<!--{$item.device_type_id}-->][<!--{$item.page_id}-->][description]" value="<!--{$item.description|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style='<!--{if $arrErr[$item.page_id].description != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->' /><span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.STEXT_LEN}--></span></td>
                             </tr>
                             <tr>
-                                <th><!--{t string="tpl_091"}--></th>
+                                <th><!--{t string="tpl_Meta tag: Keywords_01"}--></th>
                                 <td>
                                 <span class="attention"><!--{$arrErr[$item.device_type_id][$item.page_id].keyword}--></span>
                                 <input type="text" name="meta[<!--{$item.device_type_id}-->][<!--{$item.page_id}-->][keyword]" value="<!--{$item.keyword|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style='<!--{if $arrErr[$item.page_id].keyword != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->' /><span class="attention"> <!--{t string="tpl_023" T_FIELD=$smarty.const.STEXT_LEN}--></span></td>
@@ -65,13 +65,13 @@
                         </div>
 
                     </div>
-                    <!-- <!--{$item.page_name}--> ‚±‚±‚Ü‚Å -->
+                    <!-- <!--{$item.page_name}--> ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ -->
                 <!--{/foreach}-->
             <!--{/if}-->
         <!--{/foreach}-->
     <!--{else}-->
         <div class="no-data">
-            <!--{t string="tpl_092"}-->
+            <!--{t string="tpl_There is no data to be displayed_01"}-->
         </div>
     <!--{/if}-->
 

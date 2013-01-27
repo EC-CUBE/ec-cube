@@ -594,7 +594,7 @@
                 <!--{assign var=key value="search_order_status"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-                <option value=""><!--{t string="tpl_068"}--></option>
+                <option value=""><!--{t string="tpl_Please make a selection_01"}--></option>
                 <!--{html_options options=$arrORDERSTATUS selected=$arrForm[$key].value}-->
                 </select>
             </td>

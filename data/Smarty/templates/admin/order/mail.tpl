@@ -58,18 +58,18 @@
 
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_065" escape="none"}--></th>
+            <th><!--{t string="tpl_Template<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
                 <!--{assign var=key value="template_id"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <select name="template_id" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onchange="fnModeSubmit('change', '', '');">
-                <option value="" selected="selected"><!--{t string="tpl_068"}--></option>
+                <option value="" selected="selected"><!--{t string="tpl_Please make a selection_01"}--></option>
                 <!--{html_options options=$arrMAILTEMPLATE selected=$arrForm[$key].value|h}-->
                 </select>
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_066" escape="none"}--></th>
+            <th><!--{t string="tpl_E-mail title<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
                 <!--{assign var=key value="subject"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -77,7 +77,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_067"}--></th>
+            <th><!--{t string="tpl_Header_01"}--></th>
             <td>
                 <!--{assign var=key value="header"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -85,10 +85,10 @@
             </td>
         </tr>
         <tr>
-            <td colspan="2" class="center"><!--{t string="tpl_069"}--></td>
+            <td colspan="2" class="center"><!--{t string="tpl_Dynamic data insertion section_01"}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_070"}--></th>
+            <th><!--{t string="tpl_Footer_01"}--></th>
             <td>
                 <!--{assign var=key value="footer"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -98,7 +98,7 @@
     </table>
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_URLPATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev"><!--{t string="tpl_071"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_URLPATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev"><!--{t string="tpl_Return_01"}--></span></a></li>
             <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', '', 'mode', 'confirm'); return false;"><span class="btn-next"><!--{t string="tpl_414"}--></span></a></li>
         </ul>
     </div>

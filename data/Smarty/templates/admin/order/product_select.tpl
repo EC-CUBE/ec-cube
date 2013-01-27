@@ -133,7 +133,7 @@
         <th><!--{t string="tpl_191"}--></th>
         <td>
             <select name="search_category_id">
-                <option value="" selected="selected"><!--{t string="tpl_068"}--></option>
+                <option value="" selected="selected"><!--{t string="tpl_Please make a selection_01"}--></option>
                 <!--{html_options options=$arrCatList selected=$arrForm.search_category_id}-->
             </select>
         </td>

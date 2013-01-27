@@ -135,7 +135,7 @@
                 <!--{/if}-->
 
                 <select name="<!--{$key}-->">
-                    <option value=""><!--{t string="tpl_068"}--></option>
+                    <option value=""><!--{t string="tpl_Please make a selection_01"}--></option>
                     <!--{html_options options=$arrClass selected=$arrForm[$key].value}-->
                 </select>
             </td>
@@ -148,7 +148,7 @@
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{/if}-->
                 <select name="<!--{$key}-->">
-                    <option value=""><!--{t string="tpl_068"}--></option>
+                    <option value=""><!--{t string="tpl_Please make a selection_01"}--></option>
                     <!--{html_options options=$arrClass selected=$arrForm[$key].value}-->
                 </select>
             </td>
@@ -156,7 +156,7 @@
     </table>
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URLPATH}-->'); fnModeSubmit('search','',''); return false;" ><span class="btn-prev"><!--{t string="tpl_071"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URLPATH}-->'); fnModeSubmit('search','',''); return false;" ><span class="btn-prev"><!--{t string="tpl_Return_01"}--></span></a></li>
             <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('disp','',''); return false;"><span class="btn-next"><!--{t string="tpl_599"}--></span></a></li>
         <!--{if $arrForm.total.value > 0}-->
             <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('delete','',''); return false;"><span class="btn-next"><!--{t string="tpl_600"}--></span></a></li>
@@ -254,7 +254,7 @@
                     <!--{if $arrErr[$key][$index]}-->
                         <span class="attention"><!--{$arrErr[$key][$index]}--></span>
                     <!--{/if}-->
-                    <input type="checkbox" name="<!--{$key}-->[<!--{$index}-->]" value="1" <!--{if $arrForm[$key].value[$index] == "1"}-->checked="checked"<!--{/if}--> id="chk_<!--{$key}-->_<!--{$index}-->" /><label for="chk_<!--{$key}-->_<!--{$index}-->"><!--{t string="tpl_053"}--></label>
+                    <input type="checkbox" name="<!--{$key}-->[<!--{$index}-->]" value="1" <!--{if $arrForm[$key].value[$index] == "1"}-->checked="checked"<!--{/if}--> id="chk_<!--{$key}-->_<!--{$index}-->" /><label for="chk_<!--{$key}-->_<!--{$index}-->"><!--{t string="tpl_No limit"}--></label>
                 </td>
                 <td class="center">
                     <!--{assign var=key value="price01"}-->
@@ -297,7 +297,7 @@
                         <a href="?" onclick="fnFormModeSubmit('form1', 'file_delete', 'upload_index', '<!--{$index}-->'); return false;"><!--{t string="tpl_587}--></a>
                     <!--{else}-->
                     <input type="file" name="<!--{$key}-->[<!--{$index}-->]" size="10" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /><br />
-                    <a class="btn-normal" href="javascript:;" name="btn" onclick="fnFormModeSubmit('form1', 'file_upload', 'upload_index', '<!--{$index}-->'); return false;"><!--{t string="tpl_085"}--></a>
+                    <a class="btn-normal" href="javascript:;" name="btn" onclick="fnFormModeSubmit('form1', 'file_upload', 'upload_index', '<!--{$index}-->'); return false;"><!--{t string="tpl_Upload_01"}--></a>
                     <!--{/if}-->
                 </td>
             </tr>

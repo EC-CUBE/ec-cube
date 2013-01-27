@@ -28,17 +28,17 @@
 <div id="basis" class="contents-main">
     <table>
         <tr>
-            <th><!--{t string="tpl_086" escape="none"}--></th>
+            <th><!--{t string="tpl_Point grant rate (initial value)<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
                 <!--{assign var=key value="point_rate"}-->
                 <!--{if $arrErr[$key]}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{/if}-->
                 <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box6" />
-                <!--{t string="%"}-->&nbsp;<!--{t string="tpl_087"}--></td>
+                <!--{t string="%"}-->&nbsp;<!--{t string="tpl_Rounded down to nearest decimal_01"}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_088" escape="none"}--></th>
+            <th><!--{t string="tpl_Points granted during member registration<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
                 <!--{assign var=key value="welcome_point"}-->
                 <!--{if $arrErr[$key]}-->

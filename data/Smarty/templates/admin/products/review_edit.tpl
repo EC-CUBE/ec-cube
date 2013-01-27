@@ -79,7 +79,7 @@
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{/if}-->
                 <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" >
-                <option value="" selected="selected"><!--{t string="tpl_068"}--></option>
+                <option value="" selected="selected"><!--{t string="tpl_Please make a selection_01"}--></option>
                 <!--{html_options options=$arrRECOMMEND selected=$arrForm[$key]}-->
                 </select>
             </td>

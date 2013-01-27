@@ -29,7 +29,7 @@
 <div id="basis" class="contents-main">
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_062_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Agreement title_02" escape="none"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.kiyaku_title}--></span>
                 <span class="attention"><!--{$arrErr.name}--></span>
@@ -38,7 +38,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_063" escape="none"}--></th>
+            <th><!--{t string="tpl_Agreement contents" escape="none"}--></th>
             <td>
             <span class="attention"><!--{$arrErr.kiyaku_text}--></span>
             <textarea name="kiyaku_text" maxlength="<!--{$smarty.const.MLTEXT_LEN}-->" cols="60" rows="8" class="area60" style="<!--{if $arrErr.kiyaku_text != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" ><!--{"\n"}--><!--{$arrForm.kiyaku_text|h}--></textarea>
@@ -58,7 +58,7 @@
         <col width="10%" />
         <col width="15%" />
         <tr>
-            <th><!--{t string="tpl_062"}--></th>
+            <th><!--{t string="tpl_Agreement title_01"}--></th>
             <th><!--{t string="tpl_Edit_01"}--></th>
             <th><!--{t string="tpl_Remove_01"}--></th>
             <th><!--{t string="tpl_Move_01"}--></th>
@@ -83,10 +83,10 @@
                 </td>
                 <td align="center">
                     <!--{if $smarty.section.cnt.iteration != 1}-->
-                    <a href="?" onclick="fnModeSubmit('up', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;"><!--{t string="tpl_077"}--></a>
+                    <a href="?" onclick="fnModeSubmit('up', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;"><!--{t string="tpl_To top_01"}--></a>
                     <!--{/if}-->
                     <!--{if $smarty.section.cnt.iteration != $smarty.section.cnt.last}-->
-                    <a href="?" onclick="fnModeSubmit('down', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;"><!--{t string="tpl_078"}--></a>
+                    <a href="?" onclick="fnModeSubmit('down', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;"><!--{t string="tpl_To bottom_01"}--></a>
                     <!--{/if}-->
                 </td>
             </tr>

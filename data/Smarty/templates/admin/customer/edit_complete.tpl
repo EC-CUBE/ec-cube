@@ -78,7 +78,7 @@
         <div class="btn-area">
             <ul>
                 <!--{if $arrSearchData}-->
-                    <li><a class="btn-action" href="javascript:;" onclick="return fnReturn();"><span class="btn-prev"><!--{t string="tpl_071"}--></span></a></li>
+                    <li><a class="btn-action" href="javascript:;" onclick="return fnReturn();"><span class="btn-prev"><!--{t string="tpl_Return_01"}--></span></a></li>
                 <!--{/if}-->
                 <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'complete_return', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_237"}--></span></a></li>
             </ul>

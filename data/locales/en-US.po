@@ -3704,172 +3704,172 @@ msgstr "Consumption sales tax rate<span class='attention'> *</span>"
 msgid "tpl_Taxation rules<span class='attention'> *</span>_01"
 msgstr "Taxation rules<span class='attention'> *</span>"
 
-msgid "tpl_051"
+msgid "tpl_Conditions for free shipping"
 msgstr "Conditions for free shipping"
 
-msgid "tpl_052"
+msgid "tpl_Number of days during which download is possible"
 msgstr "Number of days during which download is possible"
 
-msgid "tpl_053"
+msgid "tpl_No limit"
 msgstr "No limit"
 
-msgid "tpl_054"
+msgid "tpl_Map settings"
 msgstr "Map settings"
 
-msgid "tpl_055"
+msgid "tpl_Latitude/longitude information"
 msgstr "Latitude/longitude information"
 
-msgid "tpl_056"
+msgid "tpl_Latitude : "
 msgstr "Latitude : "
 
-msgid "tpl_057"
+msgid "tpl_Longitude: "
 msgstr "Longitude: "
 
-msgid "tpl_058"
+msgid "tpl_Automatic retrieval from location"
 msgstr "Automatic retrieval from location"
 
-msgid "tpl_059"
+msgid "tpl_Set using map"
 msgstr "Set using map"
 
-msgid "tpl_060"
+msgid "tpl_Enter this position."
 msgstr "Enter this position."
 
-msgid "tpl_061"
+msgid "tpl_The address was not found."
 msgstr "The address was not found."
 
-msgid "tpl_062"
+msgid "tpl_Agreement title_01"
 msgstr "Agreement title"
 
-msgid "tpl_062_1"
+msgid "tpl_Agreement title_02"
 msgstr "Agreement title<span class='attention'> *</span>"
 
-msgid "tpl_063"
+msgid "tpl_Agreement contents"
 msgstr "Agreement contents<span class='attention'> *</span>"
 
-msgid "tpl_064"
+msgid "tpl_The contents are revised. _01"
 msgstr ""
 "The contents are revised. If you continue, the revised contents will be "
 "cancelled. Do you want to continue?"
 
-msgid "tpl_065"
+msgid "tpl_Template<span class='attention'> *</span>_01"
 msgstr "Template<span class='attention'> *</span>"
 
-msgid "tpl_066"
+msgid "tpl_E-mail title<span class='attention'> *</span>_01"
 msgstr "E-mail title<span class='attention'> *</span>"
 
-msgid "tpl_067"
+msgid "tpl_Header_01"
 msgstr "Header"
 
-msgid "tpl_068"
+msgid "tpl_Please make a selection_01"
 msgstr "Please make a selection"
 
-msgid "tpl_069"
+msgid "tpl_Dynamic data insertion section_01"
 msgstr "Dynamic data insertion section"
 
-msgid "tpl_070"
+msgid "tpl_Footer_01"
 msgstr "Footer"
 
-msgid "tpl_071"
+msgid "tpl_Return_01"
 msgstr "Return"
 
-msgid "tpl_072"
+msgid "tpl_Text count_01"
 msgstr "Text count"
 
-msgid "tpl_073"
+msgid "tpl_Add payment method_01"
 msgstr "Add payment method"
 
-msgid "tpl_074"
+msgid "tpl_ID_01"
 msgstr "ID"
 
-msgid "tpl_075"
+msgid "tpl_Processing fee (&#36;)_01"
 msgstr "Processing fee (&#36;)"
 
-msgid "tpl_076"
+msgid "tpl_Usage conditions_01"
 msgstr "Usage conditions"
 
-msgid "tpl_077"
+msgid "tpl_To top_01"
 msgstr "To top"
 
-msgid "tpl_078"
+msgid "tpl_To bottom_01"
 msgstr "To bottom"
 
-msgid "tpl_079"
+msgid "tpl_Payment method registration/editing_01"
 msgstr "Payment method registration/editing"
 
-msgid "tpl_080"
+msgid "tpl_Processing fee_01"
 msgstr "Processing fee"
 
-msgid "tpl_080_1"
+msgid "tpl_Processing fee<span class='attention'> *</span>_01"
 msgstr "Processing fee<span class='attention'> *</span>"
 
-msgid "tpl_081"
+msgid "tpl_Cannot be set_01"
 msgstr "Cannot be set"
 
-msgid "tpl_082"
+msgid "tpl_Usage conditions (&#36;)_01"
 msgstr "Usage conditions (&#36;)"
 
-msgid "tpl_083"
+msgid "tpl_Logo image_01"
 msgstr "Logo image"
 
-msgid "tpl_084"
+msgid "tpl_[Cancel image]_01"
 msgstr "[Cancel image]"
 
-msgid "tpl_085"
+msgid "tpl_Upload_01"
 msgstr "Upload"
 
-msgid "tpl_086"
+msgid "tpl_Point grant rate (initial value)<span class='attention'> *</span>_01"
 msgstr "Point grant rate (initial value)<span class='attention'> *</span>"
 
-msgid "tpl_087"
+msgid "tpl_Rounded down to nearest decimal_01"
 msgstr "Rounded down to nearest decimal"
 
-msgid "tpl_088"
+msgid "tpl_Points granted during member registration<span class='attention'> *</span>_01"
 msgstr ""
 "Points granted during member registration<span class='attention'> *</span>"
 
-msgid "tpl_089"
+msgid "tpl_Meta tag: Author_01"
 msgstr "Meta tag: Author"
 
-msgid "tpl_090"
+msgid "tpl_Meta tag: Description_01"
 msgstr "Meta tag: Description"
 
-msgid "tpl_091"
+msgid "tpl_Meta tag: Keywords_01"
 msgstr "Meta tag: Keywords"
 
-msgid "tpl_092"
+msgid "tpl_There is no data to be displayed_01"
 msgstr "There is no data to be displayed"
 
-msgid "tpl_093"
+msgid "tpl_'Save changes?'_01"
 msgstr "'Save changes?'"
 
-msgid "tpl_094"
+msgid "tpl_SHOP master_01"
 msgstr "SHOP master"
 
-msgid "tpl_095"
+msgid "tpl_Transaction rules_01"
 msgstr "Transaction rules"
 
-msgid "tpl_096"
+msgid "tpl_Delivery method settings_01"
 msgstr "Delivery method settings"
 
-msgid "tpl_097"
+msgid "tpl_Payment method settings_01"
 msgstr "Payment method settings"
 
-msgid "tpl_098"
+msgid "tpl_Point settings_01"
 msgstr "Point settings"
 
-msgid "tpl_099"
+msgid "tpl_E-mail settings_01"
 msgstr "E-mail settings"
 
-msgid "tpl_100"
+msgid "tpl_SEO management_01"
 msgstr "SEO management"
 
-msgid "tpl_101"
+msgid "tpl_Membership terms_01"
 msgstr "Membership terms"
 
-msgid "tpl_102"
+msgid "tpl_Postal code registration_01"
 msgstr "Postal code registration"
 
-msgid "tpl_103"
+msgid "tpl_Holiday management_01"
 msgstr "Holiday management"
 
 msgid "tpl_104"

@@ -182,10 +182,10 @@ $(function(){
             </td>
             <td class="center">
                 <!--{if $smarty.section.cnt.iteration != 1}-->
-                <a href="?" onclick="fnModeSubmit('up', 'holiday_id', <!--{$arrHoliday[cnt].holiday_id}-->); return false;" /><!--{t string="tpl_077"}--></a>
+                <a href="?" onclick="fnModeSubmit('up', 'holiday_id', <!--{$arrHoliday[cnt].holiday_id}-->); return false;" /><!--{t string="tpl_To top_01"}--></a>
                 <!--{/if}-->
                 <!--{if $smarty.section.cnt.iteration != $smarty.section.cnt.last}-->
-                <a href="?" onclick="fnModeSubmit('down', 'holiday_id', <!--{$arrHoliday[cnt].holiday_id}-->); return false;" /><!--{t string="tpl_078"}--></a>
+                <a href="?" onclick="fnModeSubmit('down', 'holiday_id', <!--{$arrHoliday[cnt].holiday_id}-->); return false;" /><!--{t string="tpl_To bottom_01"}--></a>
                 <!--{/if}-->
             </td>
         </tr>

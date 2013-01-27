@@ -177,7 +177,7 @@
     <td colspan="3">
         <!--{assign var=key value="search_category_id"}-->
         <select name="<!--{$key}-->" <!--{if $arrErr[$errkey]}--><!--{sfSetErrorStyle}--><!--{/if}-->>
-            <option value=""><!--{t string="tpl_068"}--></option>
+            <option value=""><!--{t string="tpl_Please make a selection_01"}--></option>
             <!--{html_options options=$arrCatList selected=$arrForm[$key].value}-->
         </select>
     </td>

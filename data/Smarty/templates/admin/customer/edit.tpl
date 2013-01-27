@@ -240,7 +240,7 @@
                 <td>
                     <span class="attention"><!--{$arrErr.job}--></span>
                     <select name="job" <!--{if $arrErr.job != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> >
-                    <option value="" selected="selected"><!--{t string="tpl_068"}--></option>
+                    <option value="" selected="selected"><!--{t string="tpl_Please make a selection_01"}--></option>
                     <!--{html_options options=$arrJob selected=$arrForm.job}-->
                     </select>
                 </td>
@@ -275,7 +275,7 @@
                     <span class="attention"><!--{$arrErr.reminder}--><!--{$arrErr.reminder_answer}--></span>
                     <!--{t string="tpl_222"}-->
                     <select class="top" name="reminder" <!--{if $arrErr.reminder != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> >
-                        <option value="" selected="selected"><!--{t string="tpl_068"}--></option>
+                        <option value="" selected="selected"><!--{t string="tpl_Please make a selection_01"}--></option>
                         <!--{html_options options=$arrReminder selected=$arrForm.reminder}-->
                     </select><br />
                     <!--{t string="tpl_223"}-->

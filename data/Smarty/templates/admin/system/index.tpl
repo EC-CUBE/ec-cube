@@ -62,8 +62,8 @@
             <td align="center"><!--{if $workmax > 1}--><a href="#" onClick="fnDeleteMember(<!--{$list_data[data].member_id}-->,<!--{$tpl_disppage}-->); return false;"><!--{t string="tpl_Remove_01"}--></a><!--{else}-->-<!--{/if}--></td>
             <td align="center">
             <!--{$tpl_nomove}-->
-            <!--{if !($smarty.section.data.first && $tpl_disppage eq 1)}--><a href="./rank.php?id=<!--{$list_data[data].member_id}-->&amp;move=up&amp;pageno=<!--{$tpl_disppage}-->"><!--{t string="tpl_077"}--></a><!--{/if}-->
-            <!--{if !($smarty.section.data.last && $tpl_disppage eq $tpl_pagemax)}--><a href="./rank.php?id=<!--{$list_data[data].member_id}-->&amp;move=down&amp;pageno=<!--{$tpl_disppage}-->"><!--{t string="tpl_078"}--></a><!--{/if}-->
+            <!--{if !($smarty.section.data.first && $tpl_disppage eq 1)}--><a href="./rank.php?id=<!--{$list_data[data].member_id}-->&amp;move=up&amp;pageno=<!--{$tpl_disppage}-->"><!--{t string="tpl_To top_01"}--></a><!--{/if}-->
+            <!--{if !($smarty.section.data.last && $tpl_disppage eq $tpl_pagemax)}--><a href="./rank.php?id=<!--{$list_data[data].member_id}-->&amp;move=down&amp;pageno=<!--{$tpl_disppage}-->"><!--{t string="tpl_To bottom_01"}--></a><!--{/if}-->
             </td>
         </tr>
         <!--▲メンバー<!--{$smarty.section.data.iteration}-->-->

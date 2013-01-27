@@ -218,7 +218,7 @@
                 <!--{assign var=key value="status"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-                    <option value=""><!--{t string="tpl_068"}--></option>
+                    <option value=""><!--{t string="tpl_Please make a selection_01"}--></option>
                     <!--{html_options options=$arrORDERSTATUS selected=$arrForm[$key].value}-->
                 </select><br />
                 <!--{if $smarty.get.mode != 'add'}-->
@@ -434,7 +434,7 @@
             </td>
         </tr>
         <tr>
-            <th colspan="5" class="column right"><!--{t string="tpl_080"}--></th>
+            <th colspan="5" class="column right"><!--{t string="tpl_Processing fee_01"}--></th>
             <td class="right">
                 <!--{assign var=key value="charge"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -664,7 +664,7 @@
                 <!--{assign var=key value="deliv_id"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onchange="fnModeSubmit('deliv','anchor_key','deliv');">
-                    <option value="" selected=""><!--{t string="tpl_068"}--></option>
+                    <option value="" selected=""><!--{t string="tpl_Please make a selection_01"}--></option>
                     <!--{html_options options=$arrDeliv selected=$arrForm[$key].value}-->
                 </select>
             </td>
@@ -675,7 +675,7 @@
                 <!--{assign var=key value="payment_id"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onchange="fnModeSubmit('payment','anchor_key','deliv');">
-                    <option value="" selected=""><!--{t string="tpl_068"}--></option>
+                    <option value="" selected=""><!--{t string="tpl_Please make a selection_01"}--></option>
                     <!--{html_options options=$arrPayment selected=$arrForm[$key].value}-->
                 </select>
             </td>

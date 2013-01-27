@@ -33,7 +33,7 @@
 <!--{/foreach}-->
 <input type="hidden" name="charge_flg" value="<!--{$charge_flg}-->" />
 <div id="basis" class="contents-main">
-    <h2><!--{t string="tpl_079"}--></h2>
+    <h2><!--{t string="tpl_Payment method registration/editing_01"}--></h2>
 
         <table class="form">
         <col width="20%" />
@@ -47,10 +47,10 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_080_1" escape="none"}--></th>
+                <th><!--{t string="tpl_Processing fee<span class='attention'> *</span>_01" escape="none"}--></th>
                 <td>
                     <!--{if $charge_flg == 2}-->
-                        <!--{t string="tpl_081"}-->
+                        <!--{t string="tpl_Cannot be set_01"}-->
                     <!--{else}-->
                         <!--{assign var=key value="charge"}-->
                         <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -61,7 +61,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_082" escape="none"}--></th>
+                <th><!--{t string="tpl_Usage conditions (&#36;)_01" escape="none"}--></th>
                 <td>
                     <!--{assign var=key_from value="rule_max"}-->
                     <!--{assign var=key_to value="upper_rule"}-->
@@ -77,15 +77,15 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_083"}--></th>
+                <th><!--{t string="tpl_Logo image_01"}--></th>
                 <td>
                     <!--{assign var=key value="payment_image"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
                     <!--{if $arrFile[$key].filepath != ""}-->
-                    <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->"><br /><a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;"><!--{t string="tpl_084"}--></a><br />
+                    <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->"><br /><a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;"><!--{t string="tpl_[Cancel image]_01"}--></a><br />
                     <!--{/if}-->
                     <input type="file" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-                    <a class="btn-normal" href="javascript:;" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;"><!--{t string="tpl_085"}--></a>
+                    <a class="btn-normal" href="javascript:;" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;"><!--{t string="tpl_Upload_01"}--></a>
                 </td>
             </tr>
         </table>

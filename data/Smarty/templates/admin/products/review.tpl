@@ -211,7 +211,7 @@ $("*[name=search_endday]").val(dates[2]);
             <td>
                 <!--{assign var=key value=search_recommend_level}-->
                 <select name="<!--{$key}-->">
-                    <option value="" selected="selected"><!--{t string="tpl_068"}--></option>
+                    <option value="" selected="selected"><!--{t string="tpl_Please make a selection_01"}--></option>
                     <!--{html_options options=$arrRECOMMEND selected=$arrForm[$key].value|h}-->
                 </select>
             </td>

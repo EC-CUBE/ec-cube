@@ -128,10 +128,10 @@
                         <input type="text" name="pos-<!--{$arrProductsList[cnt].product_id}-->" size="3" class="box3" /><!--{t string="tpl_713"}--><a href="?" onclick="fnModeSubmit('move','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;"><!--{t string="tpl_Move_01"}--></a><br />
                         <!--{/if}-->
                         <!--{if !($smarty.section.cnt.first && $tpl_disppage eq 1)}-->
-                        <a href="?" onclick="fnModeSubmit('up','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;"><!--{t string="tpl_077"}--></a>
+                        <a href="?" onclick="fnModeSubmit('up','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;"><!--{t string="tpl_To top_01"}--></a>
                         <!--{/if}-->
                         <!--{if !($smarty.section.cnt.last && $tpl_disppage eq $tpl_pagemax)}-->
-                        <a href="?" onclick="fnModeSubmit('down','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;"><!--{t string="tpl_078"}--></a>
+                        <a href="?" onclick="fnModeSubmit('down','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;"><!--{t string="tpl_To bottom_01"}--></a>
                         <!--{/if}-->
                         </td>
                     </tr>

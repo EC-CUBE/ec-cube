@@ -47,7 +47,7 @@
     <!--{if $tpl_linemax > 0}-->
         <div class="btn">
             <select name="change_status">
-                <option value="" selected="selected" style="<!--{$Errormes|sfGetErrorColor}-->" ><!--{t string="tpl_068"}--></option>
+                <option value="" selected="selected" style="<!--{$Errormes|sfGetErrorColor}-->" ><!--{t string="tpl_Please make a selection_01"}--></option>
                 <!--{foreach key=key item=item from=$arrORDERSTATUS}-->
                 <!--{if $key ne $SelectedStatus}-->
                 <option value="<!--{$key}-->" ><!--{$item}--></option>

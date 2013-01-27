@@ -31,7 +31,7 @@ function setFlag(){
 }
 function checkFlagAndSubmit(){
     if ( flag == 1 ){
-        if( confirm('<!--{t string="tpl_064"}-->') ){
+        if( confirm('<!--{t string="tpl_The contents are revised. _01"}-->') ){
             fnSetvalAndSubmit( 'form1', 'mode', 'id_set' );
         } else {
             return false;
@@ -51,20 +51,20 @@ function checkFlagAndSubmit(){
 <div id="basis" class="contents-main">
     <table>
         <tr>
-            <th><!--{t string="tpl_065" escape="none"}--></th>
+            <th><!--{t string="tpl_Template<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
             <!--{assign var=key value="template_id"}-->
             <!--{if $arrErr[$key]}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <!--{/if}-->
             <select name="template_id" onChange="return checkFlagAndSubmit();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-            <option value="" selected="selected"><!--{t string="tpl_068"}--></option>
+            <option value="" selected="selected"><!--{t string="tpl_Please make a selection_01"}--></option>
             <!--{html_options options=$arrMailTEMPLATE selected=$arrForm[$key]}-->
             </select>
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_066" escape="none"}--></th>
+            <th><!--{t string="tpl_E-mail title<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
             <!--{assign var=key value="subject"}-->
             <!--{if $arrErr[$key]}-->
@@ -74,7 +74,7 @@ function checkFlagAndSubmit(){
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_067"}--></th>
+            <th><!--{t string="tpl_Header_01"}--></th>
             <td>
             <!--{assign var=key value="header"}-->
             <!--{if $arrErr[$key]}-->
@@ -84,17 +84,17 @@ function checkFlagAndSubmit(){
             <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.LTEXT_LEN}-->
             </span>
             <div>
-                <a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','header','cnt_header'); return false;"><span><!--{t string="tpl_072"}--></span></a>
+                <a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','header','cnt_header'); return false;"><span><!--{t string="tpl_Text count_01"}--></span></a>
                 <!--{t string="tpl_358"}-->
                 <input type="text" name="cnt_header" size="4" class="box4" readonly = true style="text-align:right" />
             </div>
             </td>
         </tr>
         <tr>
-            <th colspan="2" align="center"><!--{t string="tpl_069"}--></th>
+            <th colspan="2" align="center"><!--{t string="tpl_Dynamic data insertion section_01"}--></th>
         </tr>
         <tr>
-            <th><!--{t string="tpl_070"}--></th>
+            <th><!--{t string="tpl_Footer_01"}--></th>
             <td>
             <!--{assign var=key value="footer"}-->
             <!--{if $arrErr[$key]}-->
@@ -103,7 +103,7 @@ function checkFlagAndSubmit(){
             <textarea name="footer" cols="75" rows="12" class="area75" onChange="setFlag();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{"\n"}--><!--{$arrForm[$key]|h}--></textarea><br />
             <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.LTEXT_LEN}--></span>
             <div>
-                <a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','footer','cnt_footer'); return false;"><span><!--{t string="tpl_072"}--></span></a>
+                <a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','footer','cnt_footer'); return false;"><span><!--{t string="tpl_Text count_01"}--></span></a>
                 <!--{t string="tpl_358"}-->
                 <input type="text" name="cnt_footer" size="4" class="box4" readonly = true style="text-align:right" />
             </div>

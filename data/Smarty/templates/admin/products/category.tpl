@@ -109,7 +109,7 @@
             <col width="10%" />
             <col width="25%" />
             <tr class="nodrop nodrag">
-                <th><!--{t string="tpl_074"}--></th>
+                <th><!--{t string="tpl_ID_01"}--></th>
                 <th><!--{t string="tpl_490"}--></th>
                 <th class="edit"><!--{t string="tpl_Edit_01"}--></th>
                 <th class="delete"><!--{t string="tpl_Remove_01"}--></th>
@@ -139,10 +139,10 @@
                 <td class="center">
                 <!--{* 移動 *}-->
                 <!--{if $smarty.section.cnt.iteration != 1}-->
-                <a href="?" onclick="fnModeSubmit('up','category_id', <!--{$arrList[cnt].category_id}-->); return false;"><!--{t string="tpl_077"}--></a>
+                <a href="?" onclick="fnModeSubmit('up','category_id', <!--{$arrList[cnt].category_id}-->); return false;"><!--{t string="tpl_To top_01"}--></a>
                 <!--{/if}-->
                 <!--{if $smarty.section.cnt.iteration != $smarty.section.cnt.last}-->
-                <a href="?" onclick="fnModeSubmit('down','category_id', <!--{$arrList[cnt].category_id}-->); return false;"><!--{t string="tpl_078"}--></a>
+                <a href="?" onclick="fnModeSubmit('down','category_id', <!--{$arrList[cnt].category_id}-->); return false;"><!--{t string="tpl_To bottom_01"}--></a>
                 <!--{/if}-->
                 </td>
 

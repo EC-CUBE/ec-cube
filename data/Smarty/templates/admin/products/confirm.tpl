@@ -130,7 +130,7 @@
                 <th><!--{t string="tpl_557"}--></th>
                 <td>
                     <!--{if $arrForm.stock_unlimited == 1}-->
-                        <!--{t string="tpl_053"}-->
+                        <!--{t string="tpl_No limit"}-->
                     <!--{else}-->
                         <!--{$arrForm.stock|h}-->
                     <!--{/if}-->
@@ -159,7 +159,7 @@
         <tr>
             <th><!--{t string="tpl_561"}--></th>
             <td>
-                <!--{$arrForm.sale_limit|default_t:"tpl_053"|h}-->
+                <!--{$arrForm.sale_limit|default_t:"tpl_No limit"|h}-->
             </td>
         </tr>
         <tr>

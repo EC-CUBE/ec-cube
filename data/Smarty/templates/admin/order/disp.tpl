@@ -155,7 +155,7 @@ self.moveTo(20,20);self.focus();
             <td class="right"><!--{t string="tpl_500" escape="none" T_FIELD=$arrForm.deliv_fee.value|h}--></td>
         </tr>
         <tr>
-            <th colspan="5" class="column right"><!--{t string="tpl_080"}--></th>
+            <th colspan="5" class="column right"><!--{t string="tpl_Processing fee_01"}--></th>
             <td class="right"><!--{t string="tpl_500" escape="none" T_FIELD=$arrForm.charge.value|h}--></td>
         </tr>
         <tr>

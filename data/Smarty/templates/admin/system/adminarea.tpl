@@ -81,7 +81,7 @@ jQuery(function(){
 <div style="display: none">
     <div id="maparea">
         <div id="maps" style="width: 300px; height: 300px"></div>
-        <a class="btn-normal" href="javascript:;" id="inputPoint"><!--{t string="tpl_060"}--></a>
+        <a class="btn-normal" href="javascript:;" id="inputPoint"><!--{t string="tpl_Enter this position."}--></a>
     </div>
 </div>
 <!--{* ▲登録テーブルここまで *}-->

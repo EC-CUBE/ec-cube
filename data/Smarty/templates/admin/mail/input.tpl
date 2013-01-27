@@ -43,7 +43,7 @@
                 <!--{assign var=key value="template_id"}-->
                 <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
                 <select name="<!--{$key}-->" onchange="return fnInsertValAndSubmit( document.form1, 'mode', 'template', '' ) " style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-                <option value="" selected="selected"><!--{t string="tpl_068"}--></option>
+                <option value="" selected="selected"><!--{t string="tpl_Please make a selection_01"}--></option>
                 <!--{html_options options=$arrTemplate selected=$arrForm[$key].value}-->
                 </select>
             </td>

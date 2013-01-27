@@ -83,7 +83,7 @@ self.moveTo(20,20);self.focus();
         <td>
             <!--{if $arrErr.authority}--><span class="attention"><!--{$arrErr.authority}--></span><!--{/if}-->
             <select name="authority">
-                <option value=""><!--{t string="tpl_068"}--></option>
+                <option value=""><!--{t string="tpl_Please make a selection_01"}--></option>
                 <!--{html_options options=$arrAUTHORITY selected=$arrForm.authority}-->
             </select>
             <span class="attention"><!--{t string="tpl_666"}--></span>
