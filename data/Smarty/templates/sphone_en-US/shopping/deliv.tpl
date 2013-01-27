@@ -45,7 +45,7 @@
                 <!--☆右にスライドボタン -->
                 <div class="bubbleBox">
                     <div class="bubble_announce clearfix">
-                        <p class="fb"><a rel="external" href="javascript:fnModeSubmit('multiple', '', '');">Do you want to send to multiple delivery destinations?</a></p>
+                        <p><a rel="external" href="javascript:fnModeSubmit('multiple', '', '');">Do you want to send to multiple delivery destinations?</a></p>
                     </div>
                     <div class="bubble_arrow_line"><!--矢印空タグ --></div>
                     <div class="bubble_arrow"><!--矢印空タグ --></div>

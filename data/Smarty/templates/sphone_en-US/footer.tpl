@@ -27,7 +27,7 @@
         <p>
             <a rel="external" href="<!--{$smarty.const.HTTP_URL}-->abouts/<!--{$smarty.const.DIR_INDEX_PATH|h}-->">About</a>
             <a rel="external" href="<!--{$smarty.const.HTTPS_URL}-->contact/<!--{$smarty.const.DIR_INDEX_PATH|h}-->">Inquiries</a><br />
-            <a rel="external" href="<!--{$smarty.const.HTTP_URL}-->order/<!--{$smarty.const.DIR_INDEX_PATH|h}-->">Shipping and legal information</a>
+            <a rel="external" href="<!--{$smarty.const.HTTP_URL}-->order/<!--{$smarty.const.DIR_INDEX_PATH|h}-->">Shipping and legal information</a><br />
             <a rel="external" href="<!--{$smarty.const.HTTP_URL}-->guide/privacy.php">Privacy policy</a>
         </p>
     </nav>
