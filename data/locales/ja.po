@@ -2134,15 +2134,6 @@ msgstr "お届け先追加･変更"
 msgid "LC_Page_Mypage_DeliveryAddr_001"
 msgstr "お届け先の追加･変更"
 
-msgid "LC_Page_Mypage_DeliveryAddr_002"
-msgstr "別のお届け先最大登録数に達しています。"
-
-msgid "LC_Page_Mypage_DeliveryAddr_003"
-msgstr "一致する別のお届け先がありません。"
-
-msgid "LC_Page_Mypage_DeliveryAddr_004"
-msgstr "別のお届け先最大登録数に達しています。"
-
 msgid "LC_Page_MyPage_Favorite_001"
 msgstr "お気に入り一覧"
 
@@ -3428,34 +3419,34 @@ msgstr "女性(非会員)"
 msgid "LC_Page_Admin_Total_039"
 msgstr "(売上比率)"
 
-msgid "LC_Page_Admin_Home_001"
+msgid "c_Home_01"
 msgstr "ホーム"
 
-msgid "LC_Page_Admin_Home_002"
+msgid "c_>> Update information was not obtained._01"
 msgstr ">> 更新情報の取得に失敗しました。"
 
-msgid "LC_Page_Admin_Index_001"
+msgid "c_You cannot log in._01"
 msgstr "ログイン出来ません。"
 
-msgid "SC_Helper_Address_001"
+msgid "Correctly designate the customer ID"
 msgstr "顧客IDを正しく指定して下さい"
 
-msgid "SC_Helper_Address_002"
+msgid "c_The maximum number of separate shipping destinations registered has been met._01"
 msgstr "別のお届け先最大登録数に達しています。"
 
-msgid "SC_Helper_Address_003"
+msgid "c_There is no separate delivery destination that matches._01"
 msgstr "一致する別のお届け先がありません。"
 
-msgid "SC_Helper_Transform_001"
+msgid "c_Not detectable_01"
 msgstr "検出不能"
 
-msgid "C_Helper_Transform_003"
+msgid "c_<br />T_FIELD does not exist_01"
 msgstr "<br />T_FIELD が存在しません"
 
-msgid "SC_Helper_Transform_004"
+msgid "c_Template operation failed. T_FIELD_01"
 msgstr "テンプレートの操作に失敗しました。T_FIELD"
 
-msgid "SC_Helper_Transform_005"
+msgid "c_Template operation failed._01"
 msgstr "テンプレートの操作に失敗しました。"
 
 msgid "SC_Utils_001"

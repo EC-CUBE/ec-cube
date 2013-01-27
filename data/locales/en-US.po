@@ -2145,15 +2145,6 @@ msgstr "Add or change delivery destination"
 msgid "LC_Page_Mypage_DeliveryAddr_001"
 msgstr "Add or change delivery destination"
 
-msgid "LC_Page_Mypage_DeliveryAddr_002"
-msgstr "The maximum number of separate shipping destinations has been met."
-
-msgid "LC_Page_Mypage_DeliveryAddr_003"
-msgstr "There is no separate delivery destination that matches."
-
-msgid "LC_Page_Mypage_DeliveryAddr_004"
-msgstr "The maximum number of separate shipping destinations has been met."
-
 msgid "LC_Page_MyPage_Favorite_001"
 msgstr "List of Favorites"
 
@@ -3464,35 +3455,35 @@ msgstr "Female (non-member)"
 msgid "LC_Page_Admin_Total_039"
 msgstr "(Sales ratio)"
 
-msgid "LC_Page_Admin_Home_001"
+msgid "c_Home_01"
 msgstr "Home"
 
-msgid "LC_Page_Admin_Home_002"
+msgid "c_>> Update information was not obtained._01"
 msgstr ">> Update information was not obtained."
 
-msgid "LC_Page_Admin_Index_001"
+msgid "c_You cannot log in._01"
 msgstr "You cannot log in."
 
-msgid "SC_Helper_Address_001"
+msgid "c_Correctly designate the customer ID_01"
 msgstr "Correctly designate the customer ID"
 
-msgid "SC_Helper_Address_002"
+msgid "c_The maximum number of separate shipping destinations registered has been met._01"
 msgstr ""
 "The maximum number of separate shipping destinations registered has been met."
 
-msgid "SC_Helper_Address_003"
+msgid "c_There is no separate delivery destination that matches._01"
 msgstr "There is no separate delivery destination that matches."
 
-msgid "SC_Helper_Transform_001"
+msgid "c_Not detectable_01"
 msgstr "Not detectable"
 
-msgid "C_Helper_Transform_003"
+msgid "c_<br />T_FIELD does not exist_01"
 msgstr "<br />T_FIELD does not exist"
 
-msgid "SC_Helper_Transform_004"
+msgid "c_Template operation failed. T_FIELD_01"
 msgstr "Template operation failed. T_FIELD"
 
-msgid "SC_Helper_Transform_005"
+msgid "c_Template operation failed._01"
 msgstr "Template operation failed."
 
 msgid "SC_Utils_001"
