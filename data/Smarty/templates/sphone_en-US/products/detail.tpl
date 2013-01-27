@@ -352,11 +352,11 @@
     <!--この商品に対するお客様の声-->
     <div class="title_box_sub clearfix">
         <h2>Customer's opinion regarding this product</h2>
-            <span class="b_expand"><img src="<!--{$TPL_URLPATH}-->img/button/btn_minus.png" onclick="fnReviewToggle($('#review_bloc_area'), this);" alt=""></span>
-        </div>
+        <span class="b_expand"><img src="<!--{$TPL_URLPATH}-->img/button/btn_minus.png" onclick="fnReviewToggle($('#review_bloc_area'), this);" alt=""></span>
+    </div>
 
-        <div id="review_bloc_area">
-            <div class="review_bloc clearfix">
+    <div id="review_bloc_area">
+        <div class="review_bloc clearfix">
             <p>Please share your thoughts regarding this product.</p>
             <div class="review_btn">
                 <!--{if count($arrReview) < $smarty.const.REVIEW_REGIST_MAX}-->
@@ -364,20 +364,19 @@
                     <a href="./review.php?product_id=<!--{$arrProduct.product_id}-->" target="_blank" class="btn_sub" />Write a new comment</a>
                 <!--{/if}-->
             </div>
-            </div>
-
-            <!--{if count($arrReview) > 0}-->
-            <ul>
-                <!--{section name=cnt loop=$arrReview}-->
-                    <li>
-                        <p class="voicetitle"><!--{$arrReview[cnt].title|h}--></p>
-                        <p class="voicedate"><!--{$arrReview[cnt].create_date|sfDispDBDate:false}--> Posted by:<!--{if $arrReview[cnt].reviewer_url}--><a href="<!--{$arrReview[cnt].reviewer_url}-->" target="_blank"><!--{$arrReview[cnt].reviewer_name|h}--></a><!--{else}--><!--{$arrReview[cnt].reviewer_name|h}--><!--{/if}--><br />Recommendation level:<span class="recommend_level"><!--{assign var=level value=$arrReview[cnt].recommend_level}--><!--{$arrRECOMMEND[$level]|h}--></span></p>
-                        <p class="voicecomment"><!--{$arrReview[cnt].comment|h|nl2br}--></p>
-                    </li>
-                <!--{/section}-->
-            </ul>
-            <!--{/if}-->
         </div>
+
+        <!--{if count($arrReview) > 0}-->
+        <ul>
+            <!--{section name=cnt loop=$arrReview}-->
+                <li>
+                    <p class="voicetitle"><!--{$arrReview[cnt].title|h}--></p>
+                    <p class="voicedate"><!--{$arrReview[cnt].create_date|sfDispDBDate:false}--> Posted by:<!--{if $arrReview[cnt].reviewer_url}--><a href="<!--{$arrReview[cnt].reviewer_url}-->" target="_blank"><!--{$arrReview[cnt].reviewer_name|h}--></a><!--{else}--><!--{$arrReview[cnt].reviewer_name|h}--><!--{/if}--><br />Recommendation level:<span class="recommend_level"><!--{assign var=level value=$arrReview[cnt].recommend_level}--><!--{$arrRECOMMEND[$level]|h}--></span></p>
+                    <p class="voicecomment"><!--{$arrReview[cnt].comment|h|nl2br}--></p>
+                </li>
+            <!--{/section}-->
+        </ul>
+        <!--{/if}-->
     </div>
     <!--お客様の声ここまで-->
 
