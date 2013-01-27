@@ -480,10 +480,10 @@ class LC_Page_Shopping extends LC_Page_Ex {
         if (count($arrShippingTemp) > 1) {
             $objFormParam->setParam($arrShippingTemp[1]);
         } else {
-            if (empty($arrShippingTemp[1])) {
-                $objFormParam->setParam($arrShippingTemp[0]);
-            } else {
+            if ($arrOrderTemp['deliv_check'] == 1) {
                 $objFormParam->setParam($arrShippingTemp[1]);
+            } else {
+                $objFormParam->setParam($arrShippingTemp[0]);
             }
         }
         $objFormParam->setValue('order_email02', $arrOrderTemp['order_email']);
