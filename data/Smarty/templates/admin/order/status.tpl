@@ -76,9 +76,9 @@
             <col width="12%" />
             <tr>
                 <th><label for="move_check"><!--{t string="tpl_Selection_01"}--></label> <input type="checkbox" name="move_check" id="move_check" onclick="fnAllCheck(this, 'input[name=move[]]')" /></th>
-                <th><!--{t string="tpl_360"}--></th>
+                <th><!--{t string="tpl_Response status_01"}--></th>
                 <th><!--{t string="tpl_Order number_01"}--></th>
-                <th><!--{t string="tpl_359"}--></th>
+                <th><!--{t string="tpl_Date of order receipt_01"}--></th>
                 <th><!--{t string="tpl_Name_02"}--></th>
                 <th><!--{t string="tpl_Payment method_01"}--></th>
                 <th><!--{t string="tpl_442" escape="none"}--></th>

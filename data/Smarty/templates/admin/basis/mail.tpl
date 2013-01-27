@@ -85,7 +85,7 @@ function checkFlagAndSubmit(){
             </span>
             <div>
                 <a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','header','cnt_header'); return false;"><span><!--{t string="tpl_Text count_01"}--></span></a>
-                <!--{t string="tpl_358"}-->
+                <!--{t string="tpl_Character count_01"}-->
                 <input type="text" name="cnt_header" size="4" class="box4" readonly = true style="text-align:right" />
             </div>
             </td>
@@ -104,7 +104,7 @@ function checkFlagAndSubmit(){
             <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.LTEXT_LEN}--></span>
             <div>
                 <a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','footer','cnt_footer'); return false;"><span><!--{t string="tpl_Text count_01"}--></span></a>
-                <!--{t string="tpl_358"}-->
+                <!--{t string="tpl_Character count_01"}-->
                 <input type="text" name="cnt_footer" size="4" class="box4" readonly = true style="text-align:right" />
             </div>
             </td>

@@ -209,11 +209,11 @@
             <td><!--{$arrForm.order_id.value|h}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_359"}--></th>
+            <th><!--{t string="tpl_Date of order receipt_01"}--></th>
             <td><!--{$arrForm.create_date.value|sfDispDBDate|h}--><input type="hidden" name="create_date" value="<!--{$arrForm.create_date.value|h}-->" /></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_360"}--></th>
+            <th><!--{t string="tpl_Response status_01"}--></th>
             <td>
                 <!--{assign var=key value="status"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>

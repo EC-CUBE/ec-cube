@@ -4427,177 +4427,172 @@ msgstr "The template will be changed."
 msgid "tpl_The template package will be uploaded._01"
 msgstr "The template package will be uploaded.<br />The package that you want to upload will be able to be selected from 'Template settings'."
 
-msgid "tpl_305"
+msgid "tpl_Template code_01"
 msgstr "Template code"
 
-msgid "tpl_306"
+msgid "tpl_Template name_01"
 msgstr "Template name"
 
-msgid "tpl_307"
+msgid "tpl_Template file_01"
 msgstr "Template file"
 
-msgid "tpl_308"
+msgid "tpl_*  .tar/.tar.gz only_01"
 msgstr "*  .tar/.tar.gz only"
 
-msgid "tpl_309"
+msgid "tpl_Delivery start time_01"
 msgstr "Delivery start time"
 
-msgid "tpl_310"
+msgid "tpl_Delivery completion time_01"
 msgstr "Delivery completion time"
 
-msgid "tpl_311"
+msgid "tpl_Subject_01"
 msgstr "Subject"
 
-msgid "tpl_311_1"
+msgid "tpl_Subject<span class='attention'> *</span>_01"
 msgstr "Subject<span class='attention'> *</span>"
 
-msgid "tpl_312"
+msgid "tpl_Delivery conditions_01"
 msgstr "Delivery conditions"
 
-msgid "tpl_313"
+msgid "tpl_Total number delivered_01"
 msgstr "Total number delivered"
 
-msgid "tpl_314"
+msgid "tpl_Number already delivered_01"
 msgstr "Number already delivered"
 
-msgid "tpl_315"
+msgid "tpl_Number of failed deliveries_01"
 msgstr "Number of failed deliveries"
 
-msgid "tpl_316"
+msgid "tpl_Number not delivered_01"
 msgstr "Number not delivered"
 
-msgid "tpl_317"
+msgid "tpl_Retry_01"
 msgstr "Retry"
 
-msgid "tpl_318"
+msgid "tpl_Confirm_02"
 msgstr "Confirm"
 
-msgid "tpl_319"
+msgid "tpl_Try to send to failed address again?_01"
 msgstr "Try to send to failed address again?"
 
-msgid "tpl_320"
+msgid "tpl_Execute_01"
 msgstr "Execute"
 
-msgid "tpl_321"
+msgid "tpl_Do you want to delete the delivery history?_01"
 msgstr "Do you want to delete the delivery history?"
 
-msgid "tpl_322"
+msgid "tpl_There is no delivery history_01"
 msgstr "There is no delivery history"
 
-msgid "tpl_323"
+msgid "tpl_Return_02"
 msgstr "Return"
 
-msgid "tpl_324"
+msgid "tpl_Delivery search conditions_01"
 msgstr "Delivery search conditions"
 
-msgid "tpl_325"
+msgid "tpl_Delivery format_01"
 msgstr "Delivery format"
 
-msgid "tpl_326"
+msgid "tpl_Type of delivery e-mail address_01"
 msgstr "Type of delivery e-mail address"
 
-msgid "tpl_327"
+msgid "tpl_Delete all search results_01"
 msgstr "Delete all search results"
 
-msgid "tpl_328"
+msgid "tpl_Set delivery contents_01"
 msgstr "Set delivery contents"
 
-msgid "tpl_329"
+msgid "tpl_Desired delivery_01"
 msgstr "Desired delivery"
 
-msgid "tpl_330"
+msgid "tpl_Registration/update date_01"
 msgstr "Registration/update date"
 
-msgid "tpl_331"
+msgid "tpl_Template selection<span class='attention'> *</span>_01"
 msgstr "Template selection<span class='attention'> *</span>"
 
-msgid "tpl_333"
+msgid "tpl_Text_02"
 msgstr "Text"
 
-msgid "tpl_333_1"
-msgstr ""
-"Text<span class='attention'> *</span><br /> (When inserting a name, use "
-"{name})"
+msgid "tpl_Text<span class='attention'> *</span><br /> (When inserting a name, use {name})_01"
+msgstr "Text<span class='attention'> *</span><br /> (When inserting a name, use {name})"
 
-msgid "tpl_334"
+msgid "tpl_Check with HTML_01"
 msgstr "Check with HTML"
 
-msgid "tpl_335"
+msgid "tpl_Return to Template settings screen_01"
 msgstr "Return to Template settings screen"
 
-msgid "tpl_336"
+msgid "tpl_Send_01"
 msgstr "Send"
 
-msgid "tpl_337"
+msgid "tpl_(Not designated)_01"
 msgstr "(Not designated)"
 
-msgid "tpl_338"
+msgid "tpl_Birth month_01"
 msgstr "Birth month"
 
-msgid "tpl_339"
+msgid "tpl_Birthday_01"
 msgstr "Birthday"
 
-msgid "tpl_340"
+msgid "tpl_Occupation_02"
 msgstr "Occupation"
 
-msgid "tpl_341"
+msgid "tpl_Purchase frequency_01"
 msgstr "Purchase frequency"
 
-msgid "tpl_342"
+msgid "tpl_Final purchase date_01"
 msgstr "Final purchase date"
 
-msgid "tpl_343"
+msgid "tpl_Purchased product name_01"
 msgstr "Purchased product name"
 
-msgid "tpl_344"
+msgid "tpl_Purchased product code_01"
 msgstr "Purchased product code"
 
-msgid "tpl_346"
+msgid "tpl_(Categories already deleted)_01"
 msgstr "(Categories already deleted)"
 
-msgid "tpl_347"
+msgid "tpl_Close the window._01"
 msgstr "Close the window."
 
-msgid "tpl_348"
+msgid "tpl_Delivery content settings_01"
 msgstr "Delivery content settings"
 
-msgid "tpl_349"
+msgid "tpl_Delivery history_01"
 msgstr "Delivery history"
 
-msgid "tpl_350"
+msgid "tpl_Add template_01"
 msgstr "Add template"
 
-msgid "tpl_351"
+msgid "tpl_Creation date_01"
 msgstr "Creation date"
 
-msgid "tpl_352"
+msgid "tpl_E-mail format_01"
 msgstr "E-mail format"
 
-msgid "tpl_352_1"
+msgid "tpl_E-mail format<span class='attention'> *</span>_01"
 msgstr "E-mail format<span class='attention'> *</span>"
 
-msgid "tpl_353"
+msgid "tpl_Return to the template list_01"
 msgstr "Return to the template list"
 
-msgid "tpl_354"
-msgstr "Text count"
-
-msgid "tpl_355"
+msgid "tpl_Template addition_01"
 msgstr "Template addition"
 
-msgid "tpl_356"
+msgid "tpl_Rearrangement_01"
 msgstr "Rearrangement"
 
-msgid "tpl_357"
+msgid "tpl_Recommended products_01"
 msgstr "Recommended products"
 
-msgid "tpl_358"
+msgid "tpl_Character count_01"
 msgstr "Character count"
 
-msgid "tpl_359"
+msgid "tpl_Date of order receipt_01"
 msgstr "Date of order receipt"
 
-msgid "tpl_360"
+msgid "tpl_Response status_01"
 msgstr "Response status"
 
 msgid "tpl_361"

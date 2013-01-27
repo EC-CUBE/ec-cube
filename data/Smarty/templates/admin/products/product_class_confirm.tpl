@@ -22,7 +22,7 @@
  */
 *}-->
 
-<h2><!--{t string="tpl_318"}--></h2>
+<h2><!--{t string="tpl_Confirm_02"}--></h2>
 <form name="form1" id="form1" method="post" action="?" enctype="multipart/form-data">
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />

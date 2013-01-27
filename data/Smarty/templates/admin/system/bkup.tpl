@@ -75,7 +75,7 @@
             <tr>
                 <th><!--{t string="tpl_648"}--></th>
                 <th><!--{t string="tpl_649"}--></th>
-                <th><!--{t string="tpl_351"}--></th>
+                <th><!--{t string="tpl_Creation date_01"}--></th>
                 <th><!--{t string="tpl_652"}--></th>
                 <th><!--{t string="tpl_Download_01"}--></th>
                 <th class="delete"><!--{t string="tpl_Remove_01"}--></th>

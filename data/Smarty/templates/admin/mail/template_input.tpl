@@ -29,27 +29,27 @@
 <div id="mail" class="contents-main">
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_352_1" escape="none"}--></th>
+            <th><!--{t string="tpl_E-mail format<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
                 <span <!--{if $arrErr.mail_method}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{html_radios name="mail_method" options=$arrMagazineType separator="&nbsp;" selected=$arrForm.mail_method}--></span>
                 <!--{if $arrErr.mail_method}--><br /><span class="attention"><!--{$arrErr.mail_method}--></span><!--{/if}-->
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_311_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Subject<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
                 <input type="text" name="subject" size="65" class="box65" <!--{if $arrErr.subject}--><!--{sfSetErrorStyle}--><!--{/if}--> value="<!--{$arrForm.subject|h}-->" />
                 <!--{if $arrErr.subject}--><br /><span class="attention"><!--{$arrErr.subject}--></span><!--{/if}-->
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_333_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Text<span class='attention'> *</span><br /> (When inserting a name, use {name})_01" escape="none"}--></th>
             <td>
                 <textarea name="body" cols="90" rows="40" class="area90 top" <!--{if $arrErr.body}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{"\n"}--><!--{$arrForm.body|h}--></textarea>
                 <!--{if $arrErr.body}--><br /><span class="attention"><!--{$arrErr.body}--></span><!--{/if}-->
                 <div>
-                    <a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','body','cnt_footer'); return false;" name="next" id="next"><span><!--{t string="tpl_354"}--></span></a>
-                    <span><!--{t string="tpl_358"}--><input type="text" name="cnt_footer" size="4" class="box4" readonly = true style="text-align:right" /></span>
+                    <a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','body','cnt_footer'); return false;" name="next" id="next"><span><!--{t string="tpl_Text count_01"}--></span></a>
+                    <span><!--{t string="tpl_Character count_01"}--><input type="text" name="cnt_footer" size="4" class="box4" readonly = true style="text-align:right" /></span>
                 </div>
             </td>
         </tr>

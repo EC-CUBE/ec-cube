@@ -36,7 +36,7 @@
         <div class="btn-area-top"></div>
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="./template.php"><span class="btn-prev"><!--{t string="tpl_353"}--></span></a></li>
+                <li><a class="btn-action" href="./template.php"><span class="btn-prev"><!--{t string="tpl_Return to the template list_01"}--></span></a></li>
             </ul>
         </div>
         <div class="btn-area-bottom"></div>

@@ -51,7 +51,7 @@
             <td><!--{$tpl_subject|h}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_333"}--></th>
+            <th><!--{t string="tpl_Text_02"}--></th>
             <td><!--{$tpl_body|h|nl2br}--></td>
         </tr>
     </table>

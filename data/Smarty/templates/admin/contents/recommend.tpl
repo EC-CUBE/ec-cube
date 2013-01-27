@@ -95,11 +95,11 @@ function lfnSortItem(mode,data){
             <th><!--{t string="tpl_Product/comment_01"}--></th>
             <th><!--{t string="tpl_Edit_01"}--></th>
             <th><!--{t string="tpl_Remove_01"}--></th>
-			<th><!--{t string="tpl_356"}--></th>
+			<th><!--{t string="tpl_Rearrangement_01"}--></th>
         </tr>
 
         <tr>
-            <td><!--{t string="tpl_357"}-->(<!--{$smarty.section.cnt.iteration}-->)</td>
+            <td><!--{t string="tpl_Recommended products_01"}-->(<!--{$smarty.section.cnt.iteration}-->)</td>
                 <!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->
                     <td>
                         <div id="table-wrap" class="clearfix">

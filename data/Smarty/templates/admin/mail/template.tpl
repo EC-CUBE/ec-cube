@@ -25,7 +25,7 @@
 <form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <div class="btn">
-    <a class="btn-action" href="./template_input.php"><span class="btn-next"><!--{t string="tpl_350"}--></span></a>
+    <a class="btn-action" href="./template_input.php"><span class="btn-next"><!--{t string="tpl_Add template_01"}--></span></a>
 </div>
 <!--{if count($arrTemplates) > 0}-->
 <div id="mail" class="contents-main">
@@ -37,9 +37,9 @@
     <col width="10%" />
     <col width="10%" />
         <tr>
-            <th><!--{t string="tpl_351"}--></th>
-            <th><!--{t string="tpl_311"}--></th>
-            <th><!--{t string="tpl_352"}--></th>
+            <th><!--{t string="tpl_Creation date_01"}--></th>
+            <th><!--{t string="tpl_Subject_01"}--></th>
+            <th><!--{t string="tpl_E-mail format_01"}--></th>
             <th><!--{t string="tpl_Edit_01"}--></th>
             <th><!--{t string="tpl_Remove_01"}--></th>
             <th><!--{t string="tpl_Preview_01"}--></th>

@@ -53,7 +53,7 @@ function confirmSubmit(mode, msg) {
     <table>
         <!--{assign var=key value="template_code"}-->
         <tr>
-            <th><!--{t string="tpl_305"}--></th>
+            <th><!--{t string="Template code"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54">
@@ -61,7 +61,7 @@ function confirmSubmit(mode, msg) {
         </tr>
         <!--{assign var=key value="template_name"}-->
         <tr>
-            <th><!--{t string="tpl_306"}--></th>
+            <th><!--{t string="tpl_Template name_01"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54">
@@ -69,8 +69,8 @@ function confirmSubmit(mode, msg) {
         </tr>
         <!--{assign var=key value="template_file"}-->
         <tr>
-            <th><!--{t string="tpl_307"}--><br/>
-                <span class="attention"><span class="fs14n"><!--{t string="tpl_308"}--></span></span>
+            <th><!--{t string="tpl_Template file_01"}--><br/>
+                <span class="attention"><span class="fs14n"><!--{t string="tpl_*  .tar/.tar.gz only_01"}--></span></span>
             </th>
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>

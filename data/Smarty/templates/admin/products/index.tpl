@@ -269,7 +269,7 @@ $("*[name=search_endday]").val(dates[2]);
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_330"}--></th>
+            <th><!--{t string="tpl_Registration/update date_01"}--></th>
             <td colspan="3">
                 <!--{if $arrErr.search_startyear || $arrErr.search_endyear}-->
                     <span class="attention"><!--{$arrErr.search_startyear}--></span>
@@ -345,7 +345,7 @@ $("*[name=search_endday]").val(dates[2]);
         <!--検索結果数--><!--{t string="tpl_<span class='attention'>T_FIELD items</span>&nbsp; were found._01" escape="none" T_FIELD=$tpl_linemax}-->
         <!--検索結果-->
         <!--{if $smarty.const.ADMIN_MODE == '1'}-->
-            <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><!--{t string="tpl_327"}--></a>
+            <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><!--{t string="tpl_Delete all search results_01"}--></a>
         <!--{/if}-->
         <a class="btn-tool" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;"><!--{t string="tpl_CSV download_01"}--></a>
         <a class="btn-tool" href="../contents/csv.php?tpl_subno_csv=product"><!--{t string="tpl_CSV output settings_01"}--></a>
@@ -377,7 +377,7 @@ $("*[name=search_endday]").val(dates[2]);
                 <th rowspan="2"><!--{t string="tpl_581"}--></th>
                 <th rowspan="2"><!--{t string="tpl_Type_01"}--></th>
                 <th rowspan="2"><!--{t string="tpl_Edit_01"}--></th>
-                <th rowspan="2"><!--{t string="tpl_318"}--></th>
+                <th rowspan="2"><!--{t string="tpl_Confirm_02"}--></th>
                 <!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
                 <th rowspan="2"><!--{t string="tpl_582"}--></th>
                 <!--{/if}-->
@@ -418,7 +418,7 @@ $("*[name=search_endday]").val(dates[2]);
                     <!--{assign var=key value=$arrProducts[cnt].status}-->
                     <td class="menu" rowspan="2"><!--{$arrDISP[$key]}--></td>
                     <td class="menu" rowspan="2"><span class="icon_edit"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" ><!--{t string="tpl_Edit_01"}--></a></span></td>
-                    <td class="menu" rowspan="2"><span class="icon_confirm"><a href="<!--{$smarty.const.HTTP_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->&amp;admin=on" target="_blank"><!--{t string="tpl_318"}--></a></span></td>
+                    <td class="menu" rowspan="2"><span class="icon_confirm"><a href="<!--{$smarty.const.HTTP_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->&amp;admin=on" target="_blank"><!--{t string="tpl_Confirm_02"}--></a></span></td>
                     <!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
                     <td class="menu" rowspan="2"><span class="icon_class"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnChangeAction('./product_class.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" ><!--{t string="tpl_582"}--></a></span></td>
                     <!--{/if}-->

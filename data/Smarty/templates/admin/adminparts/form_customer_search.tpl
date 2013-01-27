@@ -20,7 +20,7 @@
         <!--{assign var=key value="search_sex"}-->
         <!--{html_checkboxes name=$key options=$arrSex separator="&nbsp;" selected=$arrForm[$key].value}-->
     </td>
-    <th><!--{t string="tpl_338"}--></th>
+    <th><!--{t string="tpl_Birth month_01"}--></th>
     <td>
         <!--{assign var=key value="search_birth_month"}-->
         <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
@@ -31,7 +31,7 @@
     </td>
 </tr>
 <tr>
-    <th><!--{t string="tpl_339"}--></th>
+    <th><!--{t string="tpl_Birthday_01"}--></th>
     <td colspan="3">
         <!--{if $arrErr.search_b_start_year || $arrErr.search_b_end_year}-->
         <span class="attention"><!--{$arrErr.search_b_start_year}--></span>
@@ -75,7 +75,7 @@
         <input type="text" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key].value|h}-->" size="60" class="box60" /></td>
 </tr>
 <tr>
-    <th><!--{t string="tpl_340"}--></th>
+    <th><!--{t string="tpl_Occupation_02"}--></th>
     <td colspan="3">
         <!--{assign var=key value="search_job"}-->
         <!--{html_checkboxes name=$key options=$arrJob separator="&nbsp;" selected=$arrForm[$key].value}--></td>
@@ -96,7 +96,7 @@
         <input type="text" name="<!--{$key2}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key2].value|h}-->" size="6" class="box6" <!--{if $arrErr[$key1] || $arrErr[$key2]}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 
         <!--{t string="currency_suffix"}-->
     </td>
-    <th><!--{t string="tpl_341"}--></th>
+    <th><!--{t string="tpl_Purchase frequency_01"}--></th>
     <td>
         <!--{assign var=key1 value="search_buy_times_from"}-->
         <!--{assign var=key2 value="search_buy_times_to"}-->
@@ -113,7 +113,7 @@
     </td>
 </tr>
 <tr>
-    <th><!--{t string="tpl_330"}--></th>
+    <th><!--{t string="tpl_Registration/update date_01"}--></th>
     <td colspan="3">
         <!--{if $arrErr.search_start_year || $arrErr.search_end_year}-->
         <span class="attention"><!--{$arrErr.search_start_year}--></span>
@@ -135,7 +135,7 @@
     </td>
 </tr>
 <tr>
-    <th><!--{t string="tpl_342"}--></th>
+    <th><!--{t string="tpl_Final purchase date_01"}--></th>
     <td colspan="3">
         <!--{if $arrErr.search_buy_start_year || $arrErr.search_buy_end_year}-->
         <span class="attention"><!--{$arrErr.search_buy_start_year}--></span>
@@ -157,7 +157,7 @@
     </td>
 </tr>
 <tr>
-    <th><!--{t string="tpl_343"}--></th>
+    <th><!--{t string="tpl_Purchased product name_01"}--></th>
     <td>
         <!--{assign var=key value="search_buy_product_name"}-->
         <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
@@ -165,7 +165,7 @@
         <input type="text" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key].value|h}-->" size="30" class="box30" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"/>
         </span>
     </td>
-    <th><!--{t string="tpl_344"}--></th>
+    <th><!--{t string="tpl_Purchased product code_01"}--></th>
     <td>
         <!--{assign var=key value="search_buy_product_code"}-->
         <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->

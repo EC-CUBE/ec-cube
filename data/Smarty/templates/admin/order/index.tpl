@@ -589,7 +589,7 @@
                 <!--{t string="-"}-->
                 <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="6" class="box6" />
             </td>
-            <th><!--{t string="tpl_360"}--></th>
+            <th><!--{t string="tpl_Response status_01"}--></th>
             <td>
                 <!--{assign var=key value="search_order_status"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -656,7 +656,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_359"}--></th>
+            <th><!--{t string="tpl_Date of order receipt_01"}--></th>
             <td colspan="3">
             <!--{if $arrErr.search_sorderyear || $arrErr.search_eorderyear}-->
             <span class="attention"><!--{$arrErr.search_sorderyear}--></span>
@@ -754,7 +754,7 @@
         <div class="btn">
         <!--検索結果数--><!--{t string="tpl_<span class='attention'>T_FIELD items</span>&nbsp; were found._01" escape="none" T_FIELD=$tpl_linemax}-->
         <!--{if $smarty.const.ADMIN_MODE == '1'}-->
-        <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><span><!--{t string="tpl_327"}--></span></a>
+        <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><span><!--{t string="tpl_Delete all search results_01"}--></span></a>
         <!--{/if}-->
         <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;"><!--{t string="tpl_CSV download_01"}--></a>
         <a class="btn-normal" href="../contents/csv.php?tpl_subno_csv=order"><!--{t string="tpl_CSV output settings_01"}--></a>
@@ -784,13 +784,13 @@
             <!--{include file=$path}-->
         <!--{else}-->
         <tr>
-            <th><!--{t string="tpl_359"}--></th>
+            <th><!--{t string="tpl_Date of order receipt_01"}--></th>
             <th><!--{t string="tpl_Order number_01"}--></th>
             <th><!--{t string="tpl_Name_02"}--></th>
             <th><!--{t string="tpl_Payment method_01"}--></th>
             <th><!--{t string="tpl_403" escape="none"}--></th>
             <th><!--{t string="tpl_404"}--></th>
-            <th><!--{t string="tpl_360"}--></th>
+            <th><!--{t string="tpl_Response status_01"}--></th>
             <th><label for="pdf_check"><!--{t string="tpl_405"}--></label> <input type="checkbox" name="pdf_check" id="pdf_check" onclick="fnAllCheck(this, 'input[name=pdf_order_id[]]')" /></th>
             <th><!--{t string="tpl_Edit_01"}--></th>
             <th><!--{t string="tpl_719"}--> <input type="checkbox" name="mail_check" id="mail_check" onclick="fnAllCheck(this, 'input[name=mail_order_id[]]')" /></th>

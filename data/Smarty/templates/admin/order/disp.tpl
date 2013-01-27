@@ -38,11 +38,11 @@ self.moveTo(20,20);self.focus();
             <input type="hidden" name="order_id" value="<!--{$arrForm.order_id.value|h}-->" />
         </tr>
         <tr>
-            <th><!--{t string="tpl_359"}--></th>
+            <th><!--{t string="tpl_Date of order receipt_01"}--></th>
             <td><!--{$arrForm.create_date.value|sfDispDBDate|h}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_360"}--></th>
+            <th><!--{t string="tpl_Response status_01"}--></th>
             <td><!--{$arrORDERSTATUS[$arrForm.status.value]|h}--></td>
         </tr>
         <tr>

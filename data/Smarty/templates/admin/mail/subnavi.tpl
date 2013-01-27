@@ -23,7 +23,7 @@
 *}-->
 
 <ul class="level1">
-<li<!--{if $tpl_subno == 'index'}--> class="on"<!--{/if}--> id="navi-mail-index"><a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->mail/<!--{$smarty.const.DIR_INDEX_PATH}-->"><span><!--{t string="tpl_348"}--></span></a></li>
+<li<!--{if $tpl_subno == 'index'}--> class="on"<!--{/if}--> id="navi-mail-index"><a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->mail/<!--{$smarty.const.DIR_INDEX_PATH}-->"><span><!--{t string="tpl_Delivery content settings_01"}--></span></a></li>
 <li<!--{if $tpl_subno == 'template'}--> class="on"<!--{/if}--> id="navi-mail-template"><a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->mail/template.php"><span><!--{t string="tpl_Template settings_01"}--></span></a></li>
-<li<!--{if $tpl_subno == 'history'}--> class="on"<!--{/if}--> id="navi-mail-history"><a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->mail/history.php"><span><!--{t string="tpl_349"}--></span></a></li>
+<li<!--{if $tpl_subno == 'history'}--> class="on"<!--{/if}--> id="navi-mail-history"><a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->mail/history.php"><span><!--{t string="Delivery history"}--></span></a></li>
 </ul>

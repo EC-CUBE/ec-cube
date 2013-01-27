@@ -522,13 +522,13 @@
 <form name="search_form" id="search_form" method="post" action="?">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="search" />
-    <h2><!--{t string="tpl_324"}--></h2>
+    <h2><!--{t string="tpl_Delivery search conditions_01"}--></h2>
 
     <!--{* 検索条件設定テーブルここから *}-->
     <table>
         <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`/adminparts/form_customer_search.tpl"}-->
         <tr>
-            <th><!--{t string="tpl_325"}--></th>
+            <th><!--{t string="tpl_Delivery format_01"}--></th>
             <td colspan="3">
                 <!--{assign var=key value="search_htmlmail"}-->
                 <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
@@ -536,7 +536,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_326"}--></th>
+            <th><!--{t string="tpl_Type of delivery e-mail address_01"}--></th>
             <td colspan="3">
                 <!--{assign var=key value="search_mail_type"}-->
                 <!--{html_radios name=$key options=$arrMailType separator="<br />" selected=$arrForm[$key].value|default:1}-->
@@ -582,10 +582,10 @@
     <div class="btn">
         <!--検索結果数--><!--{t string="tpl_<span class='attention'>T_FIELD items</span>&nbsp; were found._01" escape="none" T_FIELD=$tpl_linemax}-->
         <!--{if $smarty.const.ADMIN_MODE == '1'}-->
-            <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><span><!--{t string="tpl_327"}--></span></a>
+            <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><span><!--{t string="tpl_Delete all search results_01"}--></span></a>
         <!--{/if}-->
         <!--{if $tpl_linemax > 0}-->
-            <a class="btn-normal" href="javascript:;" onclick="document.form1['mode'].value='input'; document.form1.submit(); return false;"><span><!--{t string="tpl_328"}--></span></a>
+            <a class="btn-normal" href="javascript:;" onclick="document.form1['mode'].value='input'; document.form1.submit(); return false;"><span><!--{t string="tpl_Set delivery contents_01"}--></span></a>
         <!--{/if}-->
     </div>
     <!--{if count($arrResults) > 0}-->
@@ -603,8 +603,8 @@
             <th><!--{t string="tpl_Member ID_01"}--></th>
             <th><!--{t string="tpl_Name_03"}--></th>
             <th><!--{t string="tpl_E-mail address_01"}--></th>
-            <th><!--{t string="tpl_329"}--></th>
-            <th><!--{t string="tpl_330"}--></th>
+            <th><!--{t string="tpl_Desired delivery_01"}--></th>
+            <th><!--{t string="tpl_Registration/update date_01"}--></th>
         </tr>
         <!--{section name=i loop=$arrResults}-->
         <tr>

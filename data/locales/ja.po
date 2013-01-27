@@ -4383,177 +4383,172 @@ msgstr "テンプレートを変更します。"
 msgid "tpl_The template package will be uploaded._01"
 msgstr "テンプレートパッケージのアップロードを行います。<br />アップロードしたパッケージは、「テンプレート設定」で選択できるようになります。"
 
-msgid "tpl_305"
+msgid "Template code"
 msgstr "テンプレートコード"
 
-msgid "tpl_306"
+msgid "tpl_Template name_01"
 msgstr "テンプレート名"
 
-msgid "tpl_307"
+msgid "tpl_Template file_01"
 msgstr "テンプレートファイル"
 
-msgid "tpl_308"
+msgid "tpl_*  .tar/.tar.gz only_01"
 msgstr "※ファイル形式は.tar/.tar.gzのみ"
 
-msgid "tpl_309"
+msgid "tpl_Delivery start time_01"
 msgstr "配信開始時刻"
 
-msgid "tpl_310"
+msgid "tpl_Delivery completion time_01"
 msgstr "配信終了時刻"
 
-msgid "tpl_311"
+msgid "tpl_Subject_01"
 msgstr "Subject"
 
-msgid "tpl_311_1"
+msgid "tpl_Subject<span class='attention'> *</span>_01"
 msgstr "Subject<span class='attention'> *</span>"
 
-msgid "tpl_312"
+msgid "tpl_Delivery conditions_01"
 msgstr "配信条件"
 
-msgid "tpl_313"
+msgid "tpl_Total number delivered_01"
 msgstr "配信総数"
 
-msgid "tpl_314"
+msgid "tpl_Number already delivered_01"
 msgstr "配信済数"
 
-msgid "tpl_315"
+msgid "tpl_Number of failed deliveries_01"
 msgstr "配信失敗数"
 
-msgid "tpl_316"
+msgid "tpl_Number not delivered_01"
 msgstr "未配信数"
 
-msgid "tpl_317"
+msgid "tpl_Retry_01"
 msgstr "再試行"
 
-msgid "tpl_318"
+msgid "tpl_Confirm_02"
 msgstr "確認"
 
-msgid "tpl_319"
+msgid "tpl_Try to send to failed address again?_01"
 msgstr "未配信と配信失敗となった宛先に再送信を試みますか?"
 
-msgid "tpl_320"
+msgid "tpl_Execute_01"
 msgstr "実行"
 
-msgid "tpl_321"
+msgid "tpl_Do you want to delete the delivery history?_01"
 msgstr "配信履歴を削除しても宜しいでしょうか"
 
-msgid "tpl_322"
+msgid "tpl_There is no delivery history_01"
 msgstr "配信履歴はありません"
 
-msgid "tpl_323"
+msgid "tpl_Return_02"
 msgstr "配信内容設定へ戻る"
 
-msgid "tpl_324"
+msgid "tpl_Delivery search conditions_01"
 msgstr "配信先検索条件設定"
 
-msgid "tpl_325"
+msgid "tpl_Delivery format_01"
 msgstr "配信形式"
 
-msgid "tpl_326"
+msgid "tpl_Type of delivery e-mail address_01"
 msgstr "配信メールアドレス種別"
 
-msgid "tpl_327"
+msgid "tpl_Delete all search results_01"
 msgstr "検索結果をすべて削除"
 
-msgid "tpl_328"
+msgid "tpl_Set delivery contents_01"
 msgstr "配信内容を設定する"
 
-msgid "tpl_329"
+msgid "tpl_Desired delivery_01"
 msgstr "希望配信"
 
-msgid "tpl_330"
+msgid "tpl_Registration/update date_01"
 msgstr "登録・更新日"
 
-msgid "tpl_331"
+msgid "tpl_Template selection<span class='attention'> *</span>_01"
 msgstr "テンプレート選択<span class='attention'> *</span>"
 
-msgid "tpl_333"
+msgid "tpl_Text_02"
 msgstr "本文"
 
-msgid "tpl_333_1"
-msgstr ""
-"本文<span class='attention'> *</span><br />（名前差し込み時は {name} といれて"
-"ください）"
+msgid "tpl_Text<span class='attention'> *</span><br /> (When inserting a name, use {name})_01"
+msgstr "本文<span class='attention'> *</span><br />（名前差し込み時は {name} といれてください）"
 
-msgid "tpl_334"
+msgid "tpl_Check with HTML_01"
 msgstr "HTMLで確認"
 
-msgid "tpl_335"
+msgid "tpl_Return to Template settings screen_01"
 msgstr "テンプレート設定画面へ戻る"
 
-msgid "tpl_336"
+msgid "tpl_Send_01"
 msgstr "配信する"
 
-msgid "tpl_337"
+msgid "(Not designated)"
 msgstr "(未指定)"
 
-msgid "tpl_338"
+msgid "tpl_Birth month_01"
 msgstr "誕生月"
 
-msgid "tpl_339"
+msgid "tpl_Birthday_01"
 msgstr "誕生日"
 
-msgid "tpl_340"
+msgid "tpl_Occupation_02"
 msgstr "職業"
 
-msgid "tpl_341"
+msgid "tpl_Purchase frequency_01"
 msgstr "購入回数"
 
-msgid "tpl_342"
+msgid "tpl_Final purchase date_01"
 msgstr "最終購入日"
 
-msgid "tpl_343"
+msgid "tpl_Purchased product name_01"
 msgstr "購入商品名"
 
-msgid "tpl_344"
+msgid "tpl_Purchased product code_01"
 msgstr "購入商品コード"
 
-msgid "tpl_346"
+msgid "tpl_(Categories already deleted)_01"
 msgstr "(削除済みカテゴリ)"
 
-msgid "tpl_347"
+msgid "tpl_Close the window._01"
 msgstr "ウインドウを閉じる"
 
-msgid "tpl_348"
+msgid "tpl_Delivery content settings_01"
 msgstr "配信内容設定"
 
-msgid "tpl_349"
+msgid "Delivery history"
 msgstr "配信履歴"
 
-msgid "tpl_350"
+msgid "tpl_Add template_01"
 msgstr "テンプレートを新規入力"
 
-msgid "tpl_351"
+msgid "tpl_Creation date_01"
 msgstr "作成日"
 
-msgid "tpl_352"
+msgid "tpl_E-mail format_01"
 msgstr "メール形式"
 
-msgid "tpl_352_1"
+msgid "tpl_E-mail format<span class='attention'> *</span>_01"
 msgstr "メール形式<span class='attention'> *</span>"
 
-msgid "tpl_353"
+msgid "tpl_Return to the template list_01"
 msgstr "テンプレート一覧に戻る"
 
-msgid "tpl_354"
-msgstr "文字数カウント"
-
-msgid "tpl_355"
+msgid "tpl_Template addition_01"
 msgstr "テンプレート追加"
 
-msgid "tpl_356"
+msgid "tpl_Rearrangement_01"
 msgstr "並び替え"
 
-msgid "tpl_357"
+msgid "tpl_Recommended products_01"
 msgstr "おすすめ商品"
 
-msgid "tpl_358"
+msgid "tpl_Character count_01"
 msgstr "入力文字数："
 
-msgid "tpl_359"
+msgid "tpl_Date of order receipt_01"
 msgstr "受注日"
 
-msgid "tpl_360"
+msgid "tpl_Response status_01"
 msgstr "対応状況"
 
 msgid "tpl_361"

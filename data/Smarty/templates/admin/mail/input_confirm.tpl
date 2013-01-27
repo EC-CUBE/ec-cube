@@ -51,24 +51,24 @@ function winSubmitMail(URL,formName,Winname,Wwidth,Wheight){
 <div id="mail" class="contents-main">
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_311_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Subject<span class='attention'> *</span>_01" escape="none"}--></th>
             <td><!--{$arrForm.subject.value|h}--></td>
         </tr>
         <!--{if $arrForm.mail_method.value ne 2}-->
             <tr>
-                <td colspan="2"><a href="javascript:;" onClick="winSubmitMail('','form2','preview',650,700); return false;"><!--{t string="tpl_334"}--></a>
+                <td colspan="2"><a href="javascript:;" onClick="winSubmitMail('','form2','preview',650,700); return false;"><!--{t string="tpl_Check with HTML_01"}--></a>
             </tr>
         <!--{/if}-->
         <tr>
-            <th><!--{t string="tpl_333_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Text<span class='attention'> *</span><br /> (When inserting a name, use {name})_01" escape="none"}--></th>
             <td><!--{$arrForm.body.value|h|nl2br}--></td>
         </tr>
     </table>
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" name="subm02" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_back', '' ); return false;"><span class="btn-prev"><!--{t string="tpl_335"}--></span></a></li>
-            <li><a class="btn-action" href="javascript:;" name="subm03" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' ); return false;"><span class="btn-next"><!--{t string="tpl_336"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" name="subm02" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_back', '' ); return false;"><span class="btn-prev"><!--{t string="tpl_Return to Template settings screen_01"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" name="subm03" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' ); return false;"><span class="btn-next"><!--{t string="tpl_Send_01"}--></span></a></li>
         </ul>
     </div>
 </div>
