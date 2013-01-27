@@ -292,8 +292,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam(t('PARAM_LABEL_ORDER_LASTKANA'), 'order_kana01', STEXT_LEN, 'KVCa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ORDER_FIRSTKANA'), 'order_kana02', STEXT_LEN, 'KVCa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_E-mail address_01'), 'order_email', null, 'KVCa', array('NO_SPTAB', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
-//        $objFormParam->addParam(t('PARAM_LABEL_ZIP01'), 'order_zip01', ZIP01_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
-//        $objFormParam->addParam(t('PARAM_LABEL_ZIP02'), 'order_zip02', ZIP02_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
+//        $objFormParam->addParam(t('c_Postal code 1_01'), 'order_zip01', ZIP01_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
+//        $objFormParam->addParam(t('c_Postal code 2_01'), 'order_zip02', ZIP02_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
         $objFormParam->addParam(t('c_Postal code_01'), 'order_zipcode', ZIPCODE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Prefecture_01'), 'order_pref', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('c_Address 1_01'), 'order_addr01', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
@@ -339,12 +339,12 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam(t('c_Total_01'), 'total');
         $objFormParam->addParam(t('PARAM_LABEL_PAYMENT_TOTAL'), 'payment_total');
         $objFormParam->addParam(t('c_Points added_01'), 'add_point');
-        $objFormParam->addParam(t('PARAM_LABEL_BIRTH_POINT'), 'birth_point', null, 'n', array(), 0);
+        $objFormParam->addParam(t('c_Birthday points_01'), 'birth_point', null, 'n', array(), 0);
         $objFormParam->addParam(t('PARAM_LABEL_TAX_TOTAL'), 'tax');
-        $objFormParam->addParam(t('PARAM_LABEL_TOTAL_POINT'), 'total_point');
+        $objFormParam->addParam(t('c_Final number of points registered_01'), 'total_point');
         $objFormParam->addParam(t('c_Member ID_01'), 'customer_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
         $objFormParam->addParam(t('c_Member ID_01'), 'edit_customer_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
-        $objFormParam->addParam(t('PARAM_LABEL_NOW_POINT'), 'customer_point');
+        $objFormParam->addParam(t('c_Current points_01'), 'customer_point');
         $objFormParam->addParam(t('PARAM_LABEL_BEFORE_POINT'), 'point');
         $objFormParam->addParam(t('PARAM_LABEL_ORDER_NUMBER'), 'order_id');
         $objFormParam->addParam(t('PARAM_LABEL_ORDER_DATE'), 'create_date');
@@ -360,8 +360,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam(t('c_Name (first name)_01'), 'shipping_name02', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_LASTKANA'), 'shipping_kana01', STEXT_LEN, 'KVCa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_FIRSTKANA'), 'shipping_kana02', STEXT_LEN, 'KVCa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-//        $objFormParam->addParam(t('PARAM_LABEL_ZIP01'), 'shipping_zip01', ZIP01_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
-//        $objFormParam->addParam(t('PARAM_LABEL_ZIP02'), 'shipping_zip02', ZIP02_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
+//        $objFormParam->addParam(t('c_Postal code 1_01'), 'shipping_zip01', ZIP01_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
+//        $objFormParam->addParam(t('c_Postal code 2_01'), 'shipping_zip02', ZIP02_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
         $objFormParam->addParam(t('c_Postal code_01'), 'shipping_zipcode', ZIPCODE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Prefecture_01'), 'shipping_pref', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('c_Address 1_01'), 'shipping_addr01', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));

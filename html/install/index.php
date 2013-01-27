@@ -683,7 +683,7 @@ function lfInitWebParam($objWebParam) {
         $smtp_password = SMTP_PASSWORD;
     }
 
-    $objWebParam->addParam(t('LC_Page_Install_018'), 'shop_name', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $shop_name);
+    $objWebParam->addParam(t('c_Store name_01'), 'shop_name', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $shop_name);
     $objWebParam->addParam(t('LC_Page_Install_019'), 'admin_mail', null, '', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'), $admin_mail);
     $objWebParam->addParam(t('LC_Page_Install_020'), 'login_id', ID_MAX_LEN, '', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'));
     $objWebParam->addParam(t('LC_Page_Install_021'), 'login_pass', ID_MAX_LEN, '', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'));

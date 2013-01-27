@@ -198,7 +198,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
         $objFormParam->addParam(t('PARAM_LABEL_PAYMENT_METHOD2'), 'search_payment_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_TOTAL_PRICE1'), 'search_total1', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_TOTAL_PRICE2'), 'search_total2', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_PAGE_MAX'), 'search_page_max', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('c_Number of items displayed_01'), 'search_page_max', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         // 受注日
         $objFormParam->addParam(t('PARAM_LABEL_START_YEAR'), 'search_sorderyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_START_MONTH'), 'search_sordermonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
@@ -220,7 +220,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
         $objFormParam->addParam(t('PARAM_LABEL_END_YEAR'), 'search_ebirthyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_END_MONTH'), 'search_ebirthmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_END_DAY'), 'search_ebirthday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_BUY_PRODUCT'),'search_product_name',STEXT_LEN,'KVa',array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Purchased product_01'),'search_product_name',STEXT_LEN,'KVa',array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_PAGENO'),'search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ORDER_ID'), 'order_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
     }

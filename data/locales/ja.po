@@ -518,7 +518,7 @@ msgstr "郵便番号"
 msgid "c_Postal code 1_01"
 msgstr "郵便番号1"
 
-msgid "c_Postal code 2_02"
+msgid "c_Postal code 2_01"
 msgstr "郵便番号2"
 
 msgid "c_Password_01"
@@ -617,122 +617,116 @@ msgstr "SHOP用メモ"
 msgid "c_Points in possession_01"
 msgstr "所持ポイント"
 
-msgid "PARAM_LABEL_BIRTH_POINT"
+msgid "c_Birthday points_01"
 msgstr "お誕生日ポイント"
 
-msgid "PARAM_LABEL_TOTAL_POINT"
+msgid "c_Final number of points registered_01"
 msgstr "最終保持ポイント"
 
-msgid "PARAM_LABEL_NOW_POINT"
+msgid "c_Current points_01"
 msgstr "現在のポイント"
 
-msgid "PARAM_LABEL_RETURN"
+msgid "c_Go back_01"
 msgstr "戻る"
 
-msgid "PARAM_LABEL_BD_START_YEAR"
+msgid "c_Birthday (start year)_01"
 msgstr "誕生日(開始年)"
 
-msgid "PARAM_LABEL_BD_START_MONTH"
+msgid "c_Birthday (start month)_01"
 msgstr "誕生日(開始月)"
 
-msgid "PARAM_LABEL_BD_START_DAY"
+msgid "c_Birthday (start date)_01"
 msgstr "誕生日(開始日)"
 
-msgid "PARAM_LABEL_BD_END_YEAR"
+msgid "c_Birthday (end year)_01"
 msgstr "誕生日(終了年)"
 
-msgid "PARAM_LABEL_BD_END_MONTH"
+msgid "c_Birthday (end month)_01"
 msgstr "誕生日(終了月)"
 
-msgid "PARAM_LABEL_BD_END_DAY"
+msgid "c_Birthday (end date)_01"
 msgstr "誕生日(終了日)"
 
-msgid "PARAM_LABEL_BIRTH_MONTH"
+msgid "c_Birth month_01"
 msgstr "誕生月"
 
-msgid "PARAM_LABEL_BUY_TOTAL_FROM"
+msgid "c_Purchase amount (start)_01"
 msgstr "購入金額(開始)"
 
-msgid "PARAM_LABEL_BUY_TOTAL_TO"
+msgid "c_Purchase amount (end)_01"
 msgstr "購入金額(終了)"
 
-msgid "PARAM_LABEL_BUY_TIMES_FROM"
+msgid "c_Purchase frequency (start)_01"
 msgstr "購入回数(開始)"
 
-msgid "PARAM_LABEL_BUY_TIMES_TO"
+msgid "c_Purchase frequency (end)_01"
 msgstr "購入回数(終了)"
 
-msgid "PARAM_LABEL_UPDATE_START_YEAR"
+msgid "c_Registration/update date (start year)_01"
 msgstr "登録・更新日(開始年)"
 
-msgid "PARAM_LABEL_UPDATE_START_MONTH"
+msgid "c_Registration/update date (start month)_01"
 msgstr "登録・更新日(開始月)"
 
-msgid "PARAM_LABEL_UPDATE_START_DAY"
+msgid "c_Registration/update date (start date)_01"
 msgstr "登録・更新日(開始日)"
 
-msgid "PARAM_LABEL_UPDATE_END_YEAR"
+msgid "c_Registration/update date (end year)_01"
 msgstr "登録・更新日(終了年)"
 
-msgid "PARAM_LABEL_UPDATE_END_MONTH"
+msgid "c_Registration/update date (end month)_01"
 msgstr "登録・更新日(終了月)"
 
-msgid "PARAM_LABEL_UPDATE_END_DAY"
+msgid "c_Registration/update date (end date)_01"
 msgstr "登録・更新日(終了日)"
 
-msgid "PARAM_LABEL_PAGE_MAX"
+msgid "c_Number of items displayed_01"
 msgstr "表示件数"
 
-msgid "PARAM_LABEL_BUY_START_YEAR"
+msgid "c_Final purchase date (start year)_01"
 msgstr "最終購入日(開始年)"
 
-msgid "PARAM_LABEL_BUY_START_MONTH"
+msgid "c_Final purchase date (start month)_01"
 msgstr "最終購入日(開始月)"
 
-msgid "PARAM_LABEL_BUY_START_DAY"
+msgid "c_Final purchase date (start day)_01"
 msgstr "最終購入日(開始日)"
 
-msgid "PARAM_LABEL_BUY_END_YEAR"
+msgid "c_Final purchase date (end year)_01"
 msgstr "最終購入日(終了年)"
 
-msgid "PARAM_LABEL_BUY_END_MONTH"
+msgid "c_Final purchase date (end month)_01"
 msgstr "最終購入日(終了月)"
 
-msgid "PARAM_LABEL_BUY_END_DAY"
+msgid "c_Final purchase date (end day)_01"
 msgstr "最終購入日(終了日)"
 
-msgid "PARAM_LABEL_BUY_PRODUCT"
+msgid "c_Purchased product_01"
 msgstr "購入商品"
 
-msgid "PARAM_LABEL_BUY_PRODUCT_NAME"
+msgid "c_Purchased product name_01"
 msgstr "購入商品名"
 
-msgid "PARAM_LABEL_BUY_PRODUCT_CODE"
+msgid "c_Purchased product code_01"
 msgstr "購入商品コード"
 
 msgid "c_Category_01"
 msgstr "カテゴリ"
 
-msgid "PARAM_LABEL_COMPANY_NAME"
+msgid "c_Company name_01"
 msgstr "会社名"
 
 msgid "PARAM_LABEL_COMPANY_KANA"
 msgstr "会社名(フリガナ)"
 
-msgid "PARAM_LABEL_SHOP_NAME"
+msgid "c_Store name_01"
 msgstr "店名"
 
 msgid "PARAM_LABEL_SHOP_KANA"
 msgstr "店名(フリガナ)"
 
-msgid "PARAM_LABEL_SHOP_NAME_ENG"
+msgid "c_Store name (in English)_01"
 msgstr "店名(英語表記)"
-
-msgid "PARAM_LABEL_ZIP01"
-msgstr "郵便番号1"
-
-msgid "PARAM_LABEL_ZIP02"
-msgstr "郵便番号2"
 
 msgid "PARAM_LABEL_ADDR01"
 msgstr "所在地1"
@@ -2285,9 +2279,6 @@ msgstr ""
 
 msgid "LC_Page_Install_017"
 msgstr ">> ○：アクセス権限は正常です。"
-
-msgid "LC_Page_Install_018"
-msgstr "店名"
 
 msgid "LC_Page_Install_019"
 msgstr "管理者：メールアドレス"

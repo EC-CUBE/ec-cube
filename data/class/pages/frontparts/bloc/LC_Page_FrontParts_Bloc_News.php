@@ -119,7 +119,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex {
      */
     function lfInitNewsParam(&$objFormParam) {
         $objFormParam->addParam(t('PARAM_LABEL_CURRENT PAGE'), 'pageno', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), '', false);
-        $objFormParam->addParam(t('PARAM_LABEL_PAGE_MAX'), 'disp_number', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), '', false);
+        $objFormParam->addParam(t('c_Number of items displayed_01'), 'disp_number', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), '', false);
         $objFormParam->addParam(t('PARAM_LABEL_NEW_ID'), 'news_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), '', false);
     }
 
