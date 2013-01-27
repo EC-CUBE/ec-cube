@@ -47,7 +47,7 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
         $this->tpl_subno    = 'system';
         $this->tpl_mainno   = 'system';
         $this->tpl_maintitle = t('TPL_MAINTITLE_009');
-        $this->tpl_subtitle = t('LC_Page_Admin_System_System_001');
+        $this->tpl_subtitle = t('c_System information_01');
     }
 
     /**
@@ -116,10 +116,10 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
         $objDB = SC_DB_DBFactory_Ex::getInstance();
 
         $arrSystemInfo = array(
-            array('title' => t('LC_Page_Admin_System_System_002'),     'value' => ECCUBE_VERSION),
-            array('title' => t('LC_Page_Admin_System_System_003'),    'value' => php_uname()),
-            array('title' => t('LC_Page_Admin_System_System_004'),    'value' => $objDB->sfGetDBVersion()),
-            array('title' => t('LC_Page_Admin_System_System_005'),   'value' => $_SERVER['SERVER_SOFTWARE']),
+            array('title' => t('c_EC-CUBE_01'),     'value' => ECCUBE_VERSION),
+            array('title' => t('c_Server OS_01'),    'value' => php_uname()),
+            array('title' => t('c_DB server_01'),    'value' => $objDB->sfGetDBVersion()),
+            array('title' => t('c_WEB server_01'),   'value' => $_SERVER['SERVER_SOFTWARE']),
         );
 
         $value = phpversion() . ' (' . implode(', ', get_loaded_extensions()) . ')';
@@ -130,12 +130,12 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
             foreach (gd_info() as $key => $val) {
                 $arrValue[] = "$key => $val";
             }
-            $value = t('LC_Page_Admin_System_System_006') . ' (' . implode(', ', $arrValue) . ')';
+            $value = t('c_Enabled_01') . ' (' . implode(', ', $arrValue) . ')';
         } else {
-            $value = t('LC_Page_Admin_System_System_007');
+            $value = t('c_Inactive_01');
         }
-        $arrSystemInfo[] = array('title' => t('LC_Page_Admin_System_System_008'), 'value' => $value);
-        $arrSystemInfo[] = array('title' => t('LC_Page_Admin_System_System_009'), 'value' => $_SERVER['HTTP_USER_AGENT']);
+        $arrSystemInfo[] = array('title' => t('c_GD_01'), 'value' => $value);
+        $arrSystemInfo[] = array('title' => t('c_HTTP user agent_01'), 'value' => $_SERVER['HTTP_USER_AGENT']);
 
         return $arrSystemInfo;
     }

@@ -2325,9 +2325,6 @@ msgstr "SMTPパスワード"
 msgid "LC_Page_Install_033"
 msgstr "DBの種類"
 
-msgid "LC_Page_Install_034"
-msgstr "DBサーバー"
-
 msgid "LC_Page_Install_035"
 msgstr "DBポート"
 
@@ -3230,85 +3227,82 @@ msgstr "T_FIELD が重複しているため登録できません."
 msgid "LC_Page_Admin_System_Parameter"
 msgstr "パラメーター設定"
 
-msgid "LC_Page_Admin_System_System_001"
+msgid "c_System information_01"
 msgstr "システム情報"
 
-msgid "LC_Page_Admin_System_System_002"
+msgid "c_EC-CUBE_01"
 msgstr "EC-CUBE"
 
-msgid "LC_Page_Admin_System_System_003"
+msgid "c_Server OS_01"
 msgstr "サーバーOS"
 
-msgid "LC_Page_Admin_System_System_004"
+msgid "c_DB server_01"
 msgstr "DBサーバー"
 
-msgid "LC_Page_Admin_System_System_005"
+msgid "c_WEB server_01"
 msgstr "WEBサーバー"
 
-msgid "LC_Page_Admin_System_System_006"
+msgid "c_Enabled_01"
 msgstr "有効"
 
-msgid "LC_Page_Admin_System_System_007"
+msgid "c_Inactive_01"
 msgstr "無効"
 
-msgid "LC_Page_Admin_System_System_008"
+msgid "c_GD_01"
 msgstr "GD"
 
-msgid "LC_Page_Admin_System_System_009"
+msgid "c_HTTP user agent_01"
 msgstr "HTTPユーザーエージェント"
 
-msgid "LC_Page_Admin_Total_001"
+msgid "c_Sales by period_01"
 msgstr "期間別集計"
 
-msgid "LC_Page_Admin_Total_002"
-msgstr "期間別集計"
-
-msgid "LC_Page_Admin_Total_003"
+msgid "c_Sales by product_01"
 msgstr "商品別集計"
 
-msgid "LC_Page_Admin_Total_004"
+msgid "c_Sales by age group_01"
 msgstr "年代別集計"
 
-msgid "LC_Page_Admin_Total_005"
+msgid "c_Sales  by occupation_01"
 msgstr "職業別集計"
 
-msgid "LC_Page_Admin_Total_006"
+msgid "c_Sales by member_01"
 msgstr "会員別集計"
 
-msgid "LC_Page_Admin_Total_007"
+msgid "c_T_FIELD1/T_FIELD2/T_FIELD3_01"
 msgstr "T_FIELD1年T_FIELD2月T_FIELD3日'"
 
-msgid "LC_Page_Admin_Total_008"
+msgid "c_Sales period: T_FIELD1 - T_FIELD2_01"
 msgstr "集計期間：T_FIELD1 - T_FIELD2"
 
-msgid "LC_Page_Admin_Total_010"
+msgid "c_Non-member_01"
 msgstr "非会員"
 
-msgid "LC_Page_Admin_Total_011"
+msgid "c_Not answered_01"
 msgstr "未回答"
 
-msgid "LC_Page_Admin_Total_012"
+msgid "c_T_FIELDs_01"
 msgstr "T_FIELD代'"
 
-msgid "LC_Page_Admin_Total_013"
+msgid "c_(Age)_01"
 msgstr "(年齢)"
 
-msgid "LC_Page_Admin_Total_014"
+msgid "c_(Total sales)_01"
 msgstr "(売上合計)"
 
-msgid "LC_Page_Admin_Total_015"
+msgid "c_(By month)_01"
 msgstr "(月別)"
 
-msgid "LC_Page_Admin_Total_016"
+msgid "c_(By year)_01"
 msgstr "(年別)"
 
-msgid "LC_Page_Admin_Total_017"
+msgid "c_(By day)_01"
 msgstr "(曜日別)"
 
-msgid "LC_Page_Admin_Total_018"
+msgid "c_(By time)_01"
 msgstr "(時間別)"
 
-msgid "LC_Page_Admin_Total_019"
+msgid "c_(By date)_01"
 msgstr "(日別)"
 
 msgid "c_Total_01"

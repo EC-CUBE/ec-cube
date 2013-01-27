@@ -2340,9 +2340,6 @@ msgstr "SMTP password"
 msgid "LC_Page_Install_033"
 msgstr "DB type"
 
-msgid "LC_Page_Install_034"
-msgstr "DB server"
-
 msgid "LC_Page_Install_035"
 msgstr "DB port"
 
@@ -3266,85 +3263,82 @@ msgstr "Since T_FIELD is duplicated, registration is not possible."
 msgid "LC_Page_Admin_System_Parameter"
 msgstr "Parameter settings"
 
-msgid "LC_Page_Admin_System_System_001"
+msgid "c_System information_01"
 msgstr "System information"
 
-msgid "LC_Page_Admin_System_System_002"
+msgid "c_EC-CUBE_01"
 msgstr "EC-CUBE"
 
-msgid "LC_Page_Admin_System_System_003"
+msgid "c_Server OS_01"
 msgstr "Server OS"
 
-msgid "LC_Page_Admin_System_System_004"
+msgid "c_DB server_01"
 msgstr "DB server"
 
-msgid "LC_Page_Admin_System_System_005"
+msgid "c_WEB server_01"
 msgstr "WEB server"
 
-msgid "LC_Page_Admin_System_System_006"
+msgid "c_Enabled_01"
 msgstr "Enabled"
 
-msgid "LC_Page_Admin_System_System_007"
+msgid "c_Inactive_01"
 msgstr "Inactive"
 
-msgid "LC_Page_Admin_System_System_008"
+msgid "c_GD_01"
 msgstr "GD"
 
-msgid "LC_Page_Admin_System_System_009"
+msgid "c_HTTP user agent_01"
 msgstr "HTTP user agent"
 
-msgid "LC_Page_Admin_Total_001"
+msgid "c_Sales by period_01"
 msgstr "Sales by period"
 
-msgid "LC_Page_Admin_Total_002"
-msgstr "Sales by period"
-
-msgid "LC_Page_Admin_Total_003"
+msgid "c_Sales by product_01"
 msgstr "Sales by product"
 
-msgid "LC_Page_Admin_Total_004"
+msgid "c_Sales by age group_01"
 msgstr "Sales by age group"
 
-msgid "LC_Page_Admin_Total_005"
+msgid "c_Sales  by occupation_01"
 msgstr "Sales  by occupation"
 
-msgid "LC_Page_Admin_Total_006"
+msgid "c_Sales by member_01"
 msgstr "Sales by member"
 
-msgid "LC_Page_Admin_Total_007"
+msgid "c_T_FIELD1/T_FIELD2/T_FIELD3_01"
 msgstr "T_FIELD1/T_FIELD2/T_FIELD3"
 
-msgid "LC_Page_Admin_Total_008"
+msgid "c_Sales period: T_FIELD1 - T_FIELD2_01"
 msgstr "Sales period: T_FIELD1 - T_FIELD2"
 
-msgid "LC_Page_Admin_Total_010"
+msgid "c_Non-member_01"
 msgstr "Non-member"
 
-msgid "LC_Page_Admin_Total_011"
+msgid "c_Not answered_01"
 msgstr "Not answered"
 
-msgid "LC_Page_Admin_Total_012"
+msgid "c_T_FIELDs_01"
 msgstr "T_FIELD's"
 
-msgid "LC_Page_Admin_Total_013"
+msgid "c_(Age)_01"
 msgstr "(Age)"
 
-msgid "LC_Page_Admin_Total_014"
+msgid "c_(Total sales)_01"
 msgstr "(Total sales)"
 
-msgid "LC_Page_Admin_Total_015"
+msgid "c_(By month)_01"
 msgstr "(By month)"
 
-msgid "LC_Page_Admin_Total_016"
+msgid "c_(By year)_01"
 msgstr "(By year)"
 
-msgid "LC_Page_Admin_Total_017"
+msgid "c_(By day)_01"
 msgstr "(By day)"
 
-msgid "LC_Page_Admin_Total_018"
+msgid "c_(By time)_01"
 msgstr "(By time)"
 
-msgid "LC_Page_Admin_Total_019"
+msgid "c_(By date)_01"
 msgstr "(By date)"
 
 msgid "c_Total_01"

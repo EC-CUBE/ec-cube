@@ -736,7 +736,7 @@ function lfInitDBParam($objDBParam) {
     }
 
     $objDBParam->addParam(t('LC_Page_Install_033'), 'db_type', INT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $db_type);
-    $objDBParam->addParam(t('LC_Page_Install_034'), 'db_server', MTEXT_LEN, '', array('MAX_LENGTH_CHECK'), $db_server);
+    $objDBParam->addParam(t('c_DB server_01'), 'db_server', MTEXT_LEN, '', array('MAX_LENGTH_CHECK'), $db_server);
     $objDBParam->addParam(t('LC_Page_Install_035'), 'db_port', INT_LEN, '', array('MAX_LENGTH_CHECK'), $db_port);
     $objDBParam->addParam(t('LC_Page_Install_036'), 'db_name', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $db_name);
     $objDBParam->addParam(t('LC_Page_Install_037'), 'db_user', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $db_user);
