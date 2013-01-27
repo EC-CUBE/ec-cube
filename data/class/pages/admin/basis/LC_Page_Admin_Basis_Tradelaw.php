@@ -126,17 +126,17 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex {
         $objFormParam->addParam(t('PARAM_LABEL_MANAGER'), 'law_manager', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
 //        $objFormParam->addParam(t('PARAM_LABEL_ZIP01'), 'law_zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'NUM_COUNT_CHECK'));
 //        $objFormParam->addParam(t('PARAM_LABEL_ZIP02'), 'law_zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'NUM_COUNT_CHECK'));
-        $objFormParam->addParam(t('c_Postal code_01'), 'law_zipcode', ZIPCODE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('c_Prefecture_01'), 'law_pref', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ZIP'), 'law_zipcode', ZIPCODE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PREF'), 'law_pref', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ADDR01'), 'law_addr01', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ADDR02'), 'law_addr02', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('c_Telephone number 1_01'), 'law_tel01', TEL_ITEM_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam(t('c_Telephone number 2_01'), 'law_tel02', TEL_ITEM_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam(t('c_Telephone number 3_01'), 'law_tel03', TEL_ITEM_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam(t('c_Fax number 1_01'), 'law_fax01', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam(t('c_Fax number 2_01'), 'law_fax02', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam(t('c_Fax number 3_01'), 'law_fax03', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam(t('c_E-mail address_01'), 'law_email', null, 'KVa', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_TEL1'), 'law_tel01', TEL_ITEM_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_TEL2'), 'law_tel02', TEL_ITEM_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_TEL3'), 'law_tel03', TEL_ITEM_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_FAX1'), 'law_fax01', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_FAX2'), 'law_fax02', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_FAX3'), 'law_fax03', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_EMAIL'), 'law_email', null, 'KVa', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_URL'), 'law_url', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'URL_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_REQUIRED_FEE'), 'law_term01', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_TO_ORDER'), 'law_term02', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
@@ -168,9 +168,9 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex {
         $objErr->arrErr = $objFormParam->checkError();
 
         // 電話番号チェック
-        $objErr->doFunc(array(t('c_TEL_01'), 'law_tel01', 'law_tel02', 'law_tel03'), array('TEL_CHECK'));
-        $objErr->doFunc(array(t('c_FAX_01'), 'law_fax01', 'law_fax02', 'law_fax03'), array('TEL_CHECK'));
-//        $objErr->doFunc(array(t('c_Postal code_01'), 'law_zip01', 'law_zip02'), array('ALL_EXIST_CHECK'));
+        $objErr->doFunc(array(t('PARAM_LABEL_TEL'), 'law_tel01', 'law_tel02', 'law_tel03'), array('TEL_CHECK'));
+        $objErr->doFunc(array(t('PARAM_LABEL_FAX'), 'law_fax01', 'law_fax02', 'law_fax03'), array('TEL_CHECK'));
+//        $objErr->doFunc(array(t('PARAM_LABEL_ZIP'), 'law_zip01', 'law_zip02'), array('ALL_EXIST_CHECK'));
 
         return $objErr->arrErr;
     }

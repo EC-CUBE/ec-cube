@@ -188,13 +188,13 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
         $objFormParam->addParam(t('PARAM_LABEL_ORDER_NUMBER1'), 'search_order_id1', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ORDER_NUMBER2'), 'search_order_id2', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ORDER_STATUS'), 'search_order_status', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('c_Name of orderer_01'), 'search_order_name', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_ORDER_NAME'), 'search_order_name', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ORDER_KANA'), 'search_order_kana', STEXT_LEN, 'KVCa', array('KANA_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('c_Gender_01'), 'search_order_sex', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_SEX'), 'search_order_sex', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_AGE1'), 'search_age1', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_AGE2'), 'search_age2', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('c_E-mail address_01'), 'search_order_email', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('c_TEL_01'), 'search_order_tel', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_EMAIL'), 'search_order_email', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_TEL'), 'search_order_tel', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_PAYMENT_METHOD2'), 'search_payment_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_TOTAL_PRICE1'), 'search_total1', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_TOTAL_PRICE2'), 'search_total2', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));

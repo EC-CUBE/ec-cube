@@ -41,7 +41,7 @@ class API_CartModify extends SC_Api_Abstract_Ex {
 
     public function __construct() {
         parent::__construct();
-        $this->operation_description = t('c_Cart repair_01');
+        $this->operation_description = t('API_CartModify_001');
     }
 
     public function doAction($arrParam) {

@@ -165,7 +165,7 @@ class SC_Utils {
      * @deprecated 2.12.0 trigger_error($debugMsg, E_USER_ERROR) を使用すること
      */
     function sfDispException($debugMsg = null) {
-        trigger_error(t("c_A method for upward compatibility was used._01"), E_USER_WARNING);
+        trigger_error(t("SC_Utils_002"), E_USER_WARNING);
         trigger_error($debugMsg, E_USER_ERROR);
     }
 
@@ -1262,7 +1262,7 @@ class SC_Utils {
      * @deprecated 2.12.0 GC_Utils_Ex::printXMLDeclaration を使用すること
      */
     function printXMLDeclaration() {
-        trigger_error(t("c_A method for upward compatibility was used._01"), E_USER_WARNING);
+        trigger_error(t("SC_Utils_002"), E_USER_WARNING);
         GC_Utils_Ex::printXMLDeclaration();
     }
 
@@ -1343,7 +1343,7 @@ class SC_Utils {
      * @deprecated 2.12.0 GC_Utils_Ex::getUrl を使用すること
      */
     function sfGetUrl() {
-        trigger_error(t("c_A method for upward compatibility was used._01"), E_USER_WARNING);
+        trigger_error(t("SC_Utils_002"), E_USER_WARNING);
         return GC_Utils_Ex::getUrl();
     }
 
@@ -1353,7 +1353,7 @@ class SC_Utils {
      * @deprecated 2.12.0 GC_Utils_Ex::toStringBacktrace を使用すること
      */
     function sfBacktraceToString($arrBacktrace) {
-        trigger_error(t("c_A method for upward compatibility was used._01"), E_USER_WARNING);
+        trigger_error(t("SC_Utils_002"), E_USER_WARNING);
         return GC_Utils_Ex::toStringBacktrace($arrBacktrace);
     }
 
@@ -1363,7 +1363,7 @@ class SC_Utils {
      * @deprecated 2.12.0 GC_Utils_Ex::isAdminFunction を使用すること
      */
     function sfIsAdminFunction() {
-        trigger_error(t("c_A method for upward compatibility was used._01"), E_USER_WARNING);
+        trigger_error(t("SC_Utils_002"), E_USER_WARNING);
         return GC_Utils_Ex::isAdminFunction();
     }
 
@@ -1373,7 +1373,7 @@ class SC_Utils {
      * @deprecated 2.12.0 GC_Utils_Ex::isFrontFunction を使用すること
      */
     function sfIsFrontFunction() {
-        trigger_error(t("c_A method for upward compatibility was used._01"), E_USER_WARNING);
+        trigger_error(t("SC_Utils_002"), E_USER_WARNING);
         return GC_Utils_Ex::isFrontFunction();
     }
 
@@ -1383,7 +1383,7 @@ class SC_Utils {
      * @deprecated 2.12.0 GC_Utils_Ex::isInstallFunction を使用すること
      */
     function sfIsInstallFunction() {
-        trigger_error(t("c_A method for upward compatibility was used._01"), E_USER_WARNING);
+        trigger_error(t("SC_Utils_002"), E_USER_WARNING);
         return GC_Utils_Ex::isInstallFunction();
     }
 
@@ -1435,7 +1435,7 @@ class SC_Utils {
      * @deprecated 2.12.0 microtime(true) を使用する。
      */
     function sfMicrotimeFloat() {
-        trigger_error(t("c_A method for upward compatibility was used._01"), E_USER_WARNING);
+        trigger_error(t("SC_Utils_002"), E_USER_WARNING);
         return microtime(true);
     }
 

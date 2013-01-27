@@ -424,7 +424,7 @@ class LC_Page {
      * @deprecated 2.12.0 GC_Utils_Ex::gfPrintLog を使用すること
      */
     function log($mess, $log_level) {
-        trigger_error(t('c_A method for upward compatibility was used._01'), E_USER_WARNING);
+        trigger_error(t('LC_Page_001'), E_USER_WARNING);
         // ログレベル=Debugの場合は、DEBUG_MODEがtrueの場合のみログ出力する
         if ($log_level === 'Debug' && DEBUG_MODE === false) {
             return;

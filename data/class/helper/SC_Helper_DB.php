@@ -1440,7 +1440,7 @@ __EOS__;
             $objQuery =& SC_Query_Ex::getSingletonInstance();
 
             $sqls = file_get_contents($sqlFilePath);
-            if ($sqls === false) trigger_error(t('c_The file exists but cannot be read_01'), E_USER_ERROR);
+            if ($sqls === false) trigger_error(t('SC_Helper_DB_001'), E_USER_ERROR);
 
             foreach (explode(';', $sqls) as $sql) {
                 $sql = trim($sql);

@@ -257,7 +257,7 @@ __EOS__;
         }
 
         $objErr->doFunc(array(t('PARAM_LABEL_PRODUCT_CLASS_ID'), 'product_class_id', INT_LEN), array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objErr->doFunc(array(t('c_Quantity_01'), 'quantity', INT_LEN), array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objErr->doFunc(array(t('PARAM_LABEL_QUANTITY'), 'quantity', INT_LEN), array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
         return $objErr->arrErr;
     }

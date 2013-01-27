@@ -345,7 +345,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam(t('PARAM_LABEL_CLASS1'), 'classcategory_id1', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_CLASS2'), 'classcategory_id2', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('c_Quantity_01'), 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_QUANTITY'), 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ADMIN_LOGIN'), 'admin', INT_LEN, 'a', array('ALNUM_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_ID'), 'product_id', INT_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_FAVORITE_PRODUCT_ID'), 'favorite_product_id', INT_LEN, 'n', array('ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));

@@ -189,7 +189,7 @@ class SC_Initial {
         } elseif (is_file(CACHE_REALDIR . '../mtb_constants_init.php')) {
 
             $mtb_constants = file_get_contents(CACHE_REALDIR . '../mtb_constants_init.php');
-            $errorMessage = t('c_<div style=\"color: #F00; font-weight: bold; background-color: #FEB; text-align: center\">Please grant T_CACHE_REALDIR user write access (777, etc.)</div>_01', array('T_CACHE_REALDIR' => CACHE_REALDIR), array('device_type_id' => FALSE));
+            $errorMessage = t('SC_Initial_001', array('T_CACHE_REALDIR' => CACHE_REALDIR), array('device_type_id' => FALSE));
             if (is_writable(CACHE_REALDIR)) {
                 $handle = fopen(CACHE_REALDIR . 'mtb_constants.php', 'w');
                 if (!$handle) {
@@ -205,7 +205,7 @@ class SC_Initial {
                 die($errorMessage);
             }
         } else {
-            die(t('c_T_CACHE_REALDIR../mtb_constants_init.php does not exist_01', array('T_CACHE_REALDIR' => CACHE_REALDIR), array('device_type_id' => FALSE)));
+            die(t('SC_Initial_002', array('T_CACHE_REALDIR' => CACHE_REALDIR), array('device_type_id' => FALSE)));
         }
     }
 

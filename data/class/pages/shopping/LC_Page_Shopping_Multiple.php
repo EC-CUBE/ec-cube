@@ -135,7 +135,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      */
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CLASS_ID'), 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('c_Product name_01'), 'name');
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_NAME'), 'name');
         $objFormParam->addParam(t('PARAM_LABEL_CLASS1'), 'class_name1');
         $objFormParam->addParam(t('PARAM_LABEL_CLASS2'), 'class_name2');
         $objFormParam->addParam(t('PARAM_LABEL_CLASSCATEGORY1'), 'classcategory_name1');
@@ -143,7 +143,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
         $objFormParam->addParam(t('PARAM_LABEL_MAIN_IMAGE'), 'main_image');
         $objFormParam->addParam(t('PARAM_LABEL_MAIN_LIST_IMAGE'), 'main_list_image');
         $objFormParam->addParam(t('PARAM_LABEL_SELLPRICE'), 'price');
-        $objFormParam->addParam(t('c_Quantity_01'), 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
+        $objFormParam->addParam(t('PARAM_LABEL_QUANTITY'), 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
         $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_DELIV_ADDRESSEE'), 'shipping', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_CART_NO'), 'cart_no', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_LINE_NUM'), 'line_of_num', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));

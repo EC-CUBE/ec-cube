@@ -78,7 +78,7 @@ class SC_PageNavi {
                 $urlParamThis = str_replace('#page#', $this->arrPagenavi['before'], $urlParam);
                 $urlParamThis = htmlentities($urlParamThis, ENT_QUOTES);
                 $before = "<a href=\"?$urlParamThis\" onclick=\"$func_name('{$this->arrPagenavi['before']}'); return false;\">";
-                $before .= t('c_&lt;&lt;Back_01');
+                $before .= t('SC_PageNavi_001');
                 $before .= "</a> ";
             } else {
                 $this->arrPagenavi['before'] = $this->now_page;
@@ -89,7 +89,7 @@ class SC_PageNavi {
                 $urlParamThis = str_replace('#page#', $this->arrPagenavi['next'], $urlParam);
                 $urlParamThis = htmlentities($urlParamThis, ENT_QUOTES);
                 $next = " <a href=\"?$urlParamThis\" onclick=\"$func_name('{$this->arrPagenavi['next']}'); return false;\">";
-                $next .= t('c_Next&gt;&gt;_01');
+                $next .= t('SC_PageNavi_002');
                 $next .= "</a>";
             } else {
                 $this->arrPagenavi['next'] = $this->now_page;

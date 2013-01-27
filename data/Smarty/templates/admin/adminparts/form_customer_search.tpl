@@ -27,7 +27,7 @@
         <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" >
             <option value="" selected="selected">--</option>
             <!--{html_options options=$arrMonth selected=$arrForm[$key].value}-->
-        </select><!--{t string="c_Month_01"}-->
+        </select><!--{t string="PARAM_LABEL_MONTH"}-->
     </td>
 </tr>
 <tr>

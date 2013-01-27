@@ -41,15 +41,15 @@ class SC_Fpdf extends SC_Helper_FPDI {
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->width_cell = array(110.3,12,21.7,24.5);
 
-        $this->label_cell[] = t('c_Product name / Product code / [Specification]_01');
-        $this->label_cell[] = t('c_Quantity_01');
-        $this->label_cell[] = t('c_Unit price_01');
-        $this->label_cell[] = t('c_Amount with tax_01');
+        $this->label_cell[] = t('SC_Fpdf_001');
+        $this->label_cell[] = t('SC_Fpdf_002');
+        $this->label_cell[] = t('SC_Fpdf_003');
+        $this->label_cell[] = t('SC_Fpdf_004');
 
         $this->arrMessage = array(
-            t('c_Thank you for your purchase._01'),
-            t('c_Delivery will be based on the following below._01'),
-            t('c_Please confirm._01')
+            t('SC_Fpdf_014'),
+            t('SC_Fpdf_015'),
+            t('SC_Fpdf_016')
         );
 
         // SJISフォント
@@ -106,7 +106,7 @@ class SC_Fpdf extends SC_Helper_FPDI {
         $this->lfText(125, 68, $arrInfo['law_company'], 8);
         // 郵便番号
 //        $text = '〒 ' . $arrInfo['law_zip01'] . ' - ' . $arrInfo['law_zip02'];
-        $text = t('c_postal code mark_01') . $arrInfo['law_zipcode'];
+        $text = t('SC_Fpdf_021') . $arrInfo['law_zipcode'];
         $this->lfText(125, 71, $text, 8);
         // 都道府県+所在地
         $text = $this->arrPref[$arrInfo['law_pref']] . $arrInfo['law_addr01'];
@@ -140,7 +140,7 @@ class SC_Fpdf extends SC_Helper_FPDI {
             'T_MONTH' => $this->arrData['month'],
             'T_DAY' => $this->arrData['day']
         );
-        $text = t('c_Creation date: T_YEAR/T_MONTH/T_DAY_01', $tokens);
+        $text = t('SC_Fpdf_017', $tokens);
         $this->lfText(158, 288, $text, 8);  //作成日
     }
 
@@ -151,12 +151,12 @@ class SC_Fpdf extends SC_Helper_FPDI {
 
         // 購入者情報
 //        $text = '〒 '.$this->arrDisp['order_zip01'].' - '.$this->arrDisp['order_zip02'];
-        $text = t('c_postal code mark_01') . $this->arrDisp['order_zipcode'];
+        $text = t('SC_Fpdf_021') . $this->arrDisp['order_zipcode'];
         $this->lfText(23, 43, $text, 10); //購入者郵便番号
         $text = $this->arrPref[$this->arrDisp['order_pref']] . $this->arrDisp['order_addr01'];
         $this->lfText(27, 47, $text, 10); //購入者都道府県+住所1
         $this->lfText(27, 51, $this->arrDisp['order_addr02'], 10); //購入者住所2
-        $text = t('f_NAME_FULL_SIR_01', array('T_LASTNAME' => $this->arrDisp['order_name01'], 'T_FIRSTNAME' => $this->arrDisp['order_name02']));
+        $text = t('SC_Fpdf_018', array('T_LASTNAME' => $this->arrDisp['order_name01'], 'T_FIRSTNAME' => $this->arrDisp['order_name02']));
         $this->lfText(27, 59, $text, 11); //購入者氏名
 
         // お届け先情報
@@ -169,12 +169,12 @@ class SC_Fpdf extends SC_Helper_FPDI {
         $this->Cell(0, 66, '', 0, 2, 'R', 0, '');
         $this->Cell(5, 0, '', 0, 0, 'R', 0, '');
         $this->SetFont('SJIS', 'B', 15);
-        $this->Cell(67, 8, t('c_$ T_FIELD_01', array('T_FIELD' => number_format($this->arrDisp['payment_total']))), 0, 2, 'R', 0, '');
+        $this->Cell(67, 8, t('SC_Fpdf_019', array('T_FIELD' => number_format($this->arrDisp['payment_total']))), 0, 2, 'R', 0, '');
         $this->Cell(0, 45, '', 0, 2, '', 0, '');
 
         $this->SetFont('SJIS', '', 8);
 
-        $point_unit = t('c_Pts_01');
+        $point_unit = t('SC_Fpdf_020');
 
         // 購入商品情報
         for ($i = 0; $i < count($this->arrDisp['quantity']); $i++) {
@@ -199,8 +199,8 @@ class SC_Fpdf extends SC_Helper_FPDI {
                 }
             }
             $arrOrder[$i][1]  = number_format($data[0]);
-            $arrOrder[$i][2]  = t('c_$ T_FIELD_01', array('T_FIELD' => number_format($data[1])));
-            $arrOrder[$i][3]  = t('c_$ T_FIELD_01', array('T_FIELD' => number_format($data[2])));
+            $arrOrder[$i][2]  = t('SC_Fpdf_019', array('T_FIELD' => number_format($data[1])));
+            $arrOrder[$i][3]  = t('SC_Fpdf_019', array('T_FIELD' => number_format($data[2])));
 
         }
 
@@ -212,32 +212,32 @@ class SC_Fpdf extends SC_Helper_FPDI {
         $i++;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
-        $arrOrder[$i][2] = t('c_Product total_01');
-        $arrOrder[$i][3] = t('c_$ T_FIELD_01', array('T_FIELD' => number_format($this->arrDisp['subtotal'])));
+        $arrOrder[$i][2] = t('SC_Fpdf_005');
+        $arrOrder[$i][3] = t('SC_Fpdf_019', array('T_FIELD' => number_format($this->arrDisp['subtotal'])));
 
         $i++;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
-        $arrOrder[$i][2] = t('c_Shipping fee_01');
-        $arrOrder[$i][3] = t('c_$ T_FIELD_01', array('T_FIELD' => number_format($this->arrDisp['deliv_fee'])));
+        $arrOrder[$i][2] = t('SC_Fpdf_006');
+        $arrOrder[$i][3] = t('SC_Fpdf_019', array('T_FIELD' => number_format($this->arrDisp['deliv_fee'])));
 
         $i++;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
-        $arrOrder[$i][2] = t('c_Processing fee_01');
-        $arrOrder[$i][3] = t('c_$ T_FIELD_01', array('T_FIELD' => number_format($this->arrDisp['charge'])));
+        $arrOrder[$i][2] = t('SC_Fpdf_007');
+        $arrOrder[$i][3] = t('SC_Fpdf_019', array('T_FIELD' => number_format($this->arrDisp['charge'])));
 
         $i++;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
-        $arrOrder[$i][2] = t('c_Discount_01');
-        $arrOrder[$i][3] = t('c_$ T_FIELD_01', array('T_FIELD' => '- '.number_format(($this->arrDisp['use_point'] * POINT_VALUE) + $this->arrDisp['discount'])));
+        $arrOrder[$i][2] = t('SC_Fpdf_008');
+        $arrOrder[$i][3] = t('SC_Fpdf_019', array('T_FIELD' => '- '.number_format(($this->arrDisp['use_point'] * POINT_VALUE) + $this->arrDisp['discount'])));
 
         $i++;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
-        $arrOrder[$i][2] = t('c_Billing amount_01');
-        $arrOrder[$i][3] = t('c_$ T_FIELD_01', array('T_FIELD' => number_format($this->arrDisp['payment_total'])));
+        $arrOrder[$i][2] = t('SC_Fpdf_009');
+        $arrOrder[$i][3] = t('SC_Fpdf_019', array('T_FIELD' => number_format($this->arrDisp['payment_total'])));
 
         // ポイント表記
         if ($this->arrData['disp_point'] && $this->arrDisp['customer_id']) {
@@ -250,13 +250,13 @@ class SC_Fpdf extends SC_Helper_FPDI {
             $i++;
             $arrOrder[$i][0] = '';
             $arrOrder[$i][1] = '';
-            $arrOrder[$i][2] = t('c_Used points_01');
+            $arrOrder[$i][2] = t('SC_Fpdf_010');
             $arrOrder[$i][3] = number_format($this->arrDisp['use_point']).$point_unit;
 
             $i++;
             $arrOrder[$i][0] = '';
             $arrOrder[$i][1] = '';
-            $arrOrder[$i][2] = t('c_Points added_01');
+            $arrOrder[$i][2] = t('SC_Fpdf_011');
             $arrOrder[$i][3] = number_format($this->arrDisp['add_point']).$point_unit;
         }
 
@@ -272,7 +272,7 @@ class SC_Fpdf extends SC_Helper_FPDI {
     function setEtcData() {
         $this->Cell(0, 10, '', 0, 1, 'C', 0, '');
         $this->SetFont('Gothic', 'B', 9);
-        $this->MultiCell(0, 6, t('c_<Remarks>_01'), 'T', 2, 'L', 0, '');  //備考
+        $this->MultiCell(0, 6, t('SC_Fpdf_012'), 'T', 2, 'L', 0, '');  //備考
         $this->SetFont('SJIS', '', 8);
         $text = SC_Utils_Ex::rtrim($this->arrData['etc1'] . "\n" . $this->arrData['etc2'] . "\n" . $this->arrData['etc3']);
         $this->MultiCell(0, 4, $text, '', 2, 'L', 0, '');
@@ -329,7 +329,7 @@ class SC_Fpdf extends SC_Helper_FPDI {
             if ($this->arrDisp['memo02'] != '') {
                 $this->arrDisp['payment_info'] = unserialize($this->arrDisp['memo02']);
             }
-            $this->arrDisp['payment_type'] = t('c_Payment_01');
+            $this->arrDisp['payment_type'] = t('SC_Fpdf_013');
         }
     }
 

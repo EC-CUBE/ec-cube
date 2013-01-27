@@ -29,7 +29,7 @@
 <div id="ownersstore" class="contents-main">
 
     <!--入力項目ここから-->
-    <p class="remark"><!--{t string="t_<span class='attention'>* The authentication key can be obtained from <a href='T_FIELD' target='_blank'>the EC-CUBE Owners Store</a>.</span>_01" escape="none" T_FIELD=$smarty.const.OSTORE_URL}--></p>
+    <p class="remark"><!--{t string="tpl_800" escape="none" T_FIELD=$smarty.const.OSTORE_URL}--></p>
     <table class="form">
         <tr>
             <th><!--{t string="tpl_482"}--></th>

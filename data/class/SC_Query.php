@@ -1002,7 +1002,7 @@ class SC_Query {
      * エラー処理
      */
     function error($msg) {
-        $msg = t('c_An error occurred in DB processing._01') . "\n" . $msg;
+        $msg = t('SC_Query_001') . "\n" . $msg;
         if (!$this->force_run) {
             trigger_error($msg, E_USER_ERROR);
         } else {

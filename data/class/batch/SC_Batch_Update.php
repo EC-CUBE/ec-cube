@@ -63,7 +63,7 @@ class SC_Batch_Update extends SC_Batch {
         );
 
         if (!is_writable($bkupPath) || !is_writable($bkupPathFile)) {
-            $msg = t('c_Creation of backup directory failed_01');
+            $msg = t('SC_Batch_Update_001');
             $arrLog['err'][] = $msg;
             $this->printLog($msg);
             return $arrLog;
@@ -93,7 +93,7 @@ class SC_Batch_Update extends SC_Batch {
                 // 除外ファイルをスキップ
                 if (in_array($fileName, $excludeArray)) {
                     //$arrLog['ok'][] = '次のファイルは除外されました: ' . $path;
-                    $msg = t('c_The following file was excluded: _01') . $path;
+                    $msg = t('SC_Batch_Update_002') . $path;
                     $this->printLog($msg);
                     continue;
                 }
@@ -114,14 +114,14 @@ class SC_Batch_Update extends SC_Batch {
                         if (!empty($distinfo[$sha1])) {
                             $out = $distinfo[$sha1];
                         } else {
-                            $msg = t('c_The hash value does not match and the copy destination cannot be retrieved: _01') . $path;
+                            $msg = t('SC_Batch_Update_003') . $path;
                             $arrLog['err'][] = $msg;
                             $this->printLog($msg);
                             break 2;
                         }
 
                         if (file_exists($out) && $sha1 == sha1_file($out)) {
-                            $msg = t('c_Files with the same contents were skipped: _01') . $out;
+                            $msg = t('SC_Batch_Update_004') . $out;
                             $this->printLog($msg);
                             continue;
                         }
@@ -132,12 +132,12 @@ class SC_Batch_Update extends SC_Batch {
                             $bkupDistInfoArray[sha1_file($out)] = $out;
 
                             if (!@copy($out, $bkupTo)) {
-                                $msg = t('c_Creation of backup file failed: _01') . $out . ' -> ' . $bkupTo;
+                                $msg = t('SC_Batch_Update_005') . $out . ' -> ' . $bkupTo;
                                 $arrLog['err'][] = $msg;
                                 $this->printLog($msg);
                                 break 2;
                             }
-                            $msg = t('c_Creation of backup file failed: _01') . $out . ' -> ' . $bkupTo;
+                            $msg = t('SC_Batch_Update_005') . $out . ' -> ' . $bkupTo;
                             $this->printLog($msg);
                         }
 
@@ -148,7 +148,7 @@ class SC_Batch_Update extends SC_Batch {
                             $this->lfMkdirRecursive($out);
                             $handle = @fopen($out, 'w');
                             if (!$handle) {
-                                $msg = t('c_The copying destination does not have write access: _01') . $out;
+                                $msg = t('SC_Batch_Update_006') . $out;
                                 $arrLog['err'][] = $msg;
                                 $this->printLog($msg);
                                 continue;
@@ -157,13 +157,13 @@ class SC_Batch_Update extends SC_Batch {
 
                         // 取得した内容を書き込む
                         if (fwrite($handle, $contents) === false) {
-                            $msg = t('c_The copying destination does not have write access: _01') . $out;
+                            $msg = t('SC_Batch_Update_006') . $out;
                             $arrLog['err'][] = $msg;
                             $this->printLog($msg);
                             continue;
                         }
 
-                        $msg = t('c_File copying was successful: _01') . $out;
+                        $msg = t('SC_Batch_Update_007') . $out;
                         $arrLog['ok'][] = $msg;
                         $this->printLog($msg);
                         // ファイルを閉じる
@@ -177,10 +177,10 @@ class SC_Batch_Update extends SC_Batch {
             $handle = @fopen($bkupPath . 'distinfo.php', 'w');
             @fwrite($handle, $src);
             @fclose($handle);
-            $msg = t('c_distinfo file creation was successful: _01') . $bkupPath . 'distinfo.php';
+            $msg = t('SC_Batch_Update_008') . $bkupPath . 'distinfo.php';
             $this->printLog($msg);
         } else {
-            $msg = t('c_distinfo file creation failed: _01') . $bkupPath . 'distinfo.php';
+            $msg = t('SC_Batch_Update_009') . $bkupPath . 'distinfo.php';
             $arrLog['err'][] = $msg;
             $this->printLog($msg);
         }

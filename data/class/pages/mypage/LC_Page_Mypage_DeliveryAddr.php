@@ -182,7 +182,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
             $arrRegist['shipping_' . $key ] = $val;
         }
         if (count($_SESSION['shipping']) >= DELIV_ADDR_MAX) {
-            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, t('c_The maximum number of separate shipping destinations registered has been met._01'));
+            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, t('LC_Page_Mypage_DeliveryAddr_004'));
         } else {
             $_SESSION['shipping'][] = $arrRegist;
         }

@@ -270,7 +270,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitFile(&$objUpFile) {
-        $objUpFile->addFile(t('c_CSV file_01'), 'csv_file', array('csv'), CSV_SIZE, true, 0, 0, false);
+        $objUpFile->addFile(t('PARAM_LABEL_CSV_FILE'), 'csv_file', array('csv'), CSV_SIZE, true, 0, 0, false);
     }
 
     /**

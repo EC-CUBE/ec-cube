@@ -320,7 +320,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
      */
     function lfInitFormParam(&$objFormParam, $arrPost) {
         $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_ID'), 'product_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('c_Product name_01'), 'name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_NAME'), 'name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CATEGORY'), 'category_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_PUBLIC_STATUS'), 'status', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_STATUS'), 'product_status', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -332,7 +332,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
             $objFormParam->addParam(t('PARAM_LABEL_DOWN_PRODUCT_REAL_FILENAME'), 'down_realfilename', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
             $objFormParam->addParam(t('PARAM_LABEL_TEMP_DOWN_FILE'), 'temp_down_file', '', '', array());
             $objFormParam->addParam(t('PARAM_LABEL_SAVE_DOWN_FILE'), 'save_down_file', '', '', array());
-            $objFormParam->addParam(t('c_Product code_01'), 'product_code', STEXT_LEN, 'KVna', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK'));
+            $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CODE'), 'product_code', STEXT_LEN, 'KVna', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK'));
             $objFormParam->addParam(NORMAL_PRICE_TITLE, 'price01', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
             $objFormParam->addParam(SALE_PRICE_TITLE, 'price02', PRICE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
             $objFormParam->addParam(t('PARAM_LABEL_STOCK'), 'stock', AMOUNT_LEN, 'n', array('SPTAB_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));

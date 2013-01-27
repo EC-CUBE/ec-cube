@@ -41,7 +41,7 @@ class API_CartAdd extends SC_Api_Abstract_Ex {
 
     public function __construct() {
         parent::__construct();
-        $this->operation_description = t('c_Add product to cart_01');
+        $this->operation_description = t('API_CartAdd_001');
     }
 
     public function doAction($arrParam) {

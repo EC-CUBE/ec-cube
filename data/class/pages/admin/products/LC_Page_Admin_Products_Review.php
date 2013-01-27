@@ -215,9 +215,9 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam(t('PARAM_LABEL_REVIEWER_NAME'), 'search_reviewer_name', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),'',false);
         $objFormParam->addParam(t('PARAM_LABEL_REVIEWER_URL'), 'search_reviewer_url', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),'',false);
-        $objFormParam->addParam(t('c_Product name_01'), 'search_name', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),'',false);
-        $objFormParam->addParam(t('c_Product code_01'), 'search_product_code', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),'',false);
-        $objFormParam->addParam(t('c_Gender_01'), 'search_sex', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),'',false);
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_NAME'), 'search_name', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),'',false);
+        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CODE'), 'search_product_code', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),'',false);
+        $objFormParam->addParam(t('PARAM_LABEL_SEX'), 'search_sex', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),'',false);
         $objFormParam->addParam(t('PARAM_LABEL_RECOMMEND_LEVEL'), 'search_recommend_level', INT_LEN, 'n', array('MAX_LENGTH_CHECK'),'',false);
         $objFormParam->addParam(t('PARAM_LABEL_POST_YEAR'), 'search_startyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),'',false);
         $objFormParam->addParam(t('PARAM_LABEL_POST_MONTH'), 'search_startmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'),'',false);
