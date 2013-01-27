@@ -142,7 +142,7 @@ self.moveTo(20,20);self.focus();
             <td><!--{$arrSearchData.search_buy_product_code|default_t:"tpl_337"|h}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_191"}--></th>
+            <th><!--{t string="tpl_Category_01"}--></th>
             <td>
             <!--{if $arrSearchData.search_category_id}-->
                 <!--{if $arrCatList[$arrSearchData.search_category_id]}-->

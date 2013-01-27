@@ -159,8 +159,8 @@ function func_submit() {
 <table summary="Delivery information" class="list">
     <thead>
         <tr>
-            <th><!--{t string="tpl_192"}--></th>
-            <th><!--{t string="tpl_188"}-->/<!--{t string="tpl_371"}-->/<!--{t string="tpl_374"}--></th>
+            <th><!--{t string="tpl_Product code_01"}--></th>
+            <th><!--{t string="tpl_Product name_01"}-->/<!--{t string="tpl_371"}-->/<!--{t string="tpl_374"}--></th>
             <th><!--{t string="tpl_373"}--></th>
             <th><!--{t string="tpl_385"}--></th>
         </tr>
@@ -170,7 +170,7 @@ function func_submit() {
 </table>
 <div class="btn-area">
     <ul>
-        <li><a class="btn-action" href="javascript:;" onclick="func_submit(); return false;"><span class="btn-next"><!--{t string="tpl_196"}--></span></a></li>
+        <li><a class="btn-action" href="javascript:;" onclick="func_submit(); return false;"><span class="btn-next"><!--{t string="tpl_Confirm_01"}--></span></a></li>
     </ul>
 </div>
 </form>

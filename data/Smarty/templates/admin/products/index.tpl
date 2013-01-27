@@ -47,7 +47,7 @@ function lfnDispChange(){
             disp_id = 'disp_cat'+i;
             $('#' + disp_id).css("display", "");
 
-            $('#' + inner_id).html('    <!--{t string="tpl_191"}--> <a href="#" onClick="lfnDispChange();"> &gt;&gt; <!--{t string="tpl_579"}--><\/a>');
+            $('#' + inner_id).html('    <!--{t string="tpl_Category_01"}--> <a href="#" onClick="lfnDispChange();"> &gt;&gt; <!--{t string="tpl_579"}--><\/a>');
         }
     }
 
@@ -234,7 +234,7 @@ $("*[name=search_endday]").val(dates[2]);
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_192"}--></th>
+            <th><!--{t string="tpl_Product code_01"}--></th>
             <td>
                 <!--{assign var=key value="search_product_code"}-->
                 <!--{if $arrErr[$key]}-->
@@ -242,7 +242,7 @@ $("*[name=search_endday]").val(dates[2]);
                 <!--{/if}-->
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" />
             </td>
-            <th><!--{t string="tpl_188"}--></th>
+            <th><!--{t string="tpl_Product name_01"}--></th>
             <td>
                 <!--{assign var=key value="search_name"}-->
                 <!--{if $arrErr[$key]}-->
@@ -252,7 +252,7 @@ $("*[name=search_endday]").val(dates[2]);
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_191"}--></th>
+            <th><!--{t string="tpl_Category_01"}--></th>
             <td>
                 <!--{assign var=key value="search_category_id"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -370,10 +370,10 @@ $("*[name=search_endday]").val(dates[2]);
             <col width="5%" />
             <tr>
                 <th rowspan="2"><!--{t string="tpl_577"}--></th>
-                <th rowspan="2"><!--{t string="tpl_195"}--></th>
-                <th rowspan="2"><!--{t string="tpl_192"}--></th>
+                <th rowspan="2"><!--{t string="tpl_Product image_01"}--></th>
+                <th rowspan="2"><!--{t string="tpl_Product code_01"}--></th>
                 <th rowspan="2"><!--{t string="tpl_580" escape="none"}--></th>
-                <th><!--{t string="tpl_188"}--></th>
+                <th><!--{t string="tpl_Product name_01"}--></th>
                 <th rowspan="2"><!--{t string="tpl_581"}--></th>
                 <th rowspan="2"><!--{t string="tpl_256"}--></th>
                 <th rowspan="2"><!--{t string="tpl_Edit_01"}--></th>

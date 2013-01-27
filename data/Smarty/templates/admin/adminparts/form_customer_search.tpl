@@ -173,7 +173,7 @@
     </td>
 </tr>
 <tr>
-    <th><!--{t string="tpl_191"}--></th>
+    <th><!--{t string="tpl_Category_01"}--></th>
     <td colspan="3">
         <!--{assign var=key value="search_category_id"}-->
         <select name="<!--{$key}-->" <!--{if $arrErr[$errkey]}--><!--{sfSetErrorStyle}--><!--{/if}-->>

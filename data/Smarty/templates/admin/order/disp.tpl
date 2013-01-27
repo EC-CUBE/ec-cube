@@ -114,8 +114,8 @@ self.moveTo(20,20);self.focus();
     <h2><!--{t string="tpl_368"}--></h2>
     <table class="list">
         <tr>
-            <th class="id"><!--{t string="tpl_192"}--></th>
-            <th class="name"><!--{t string="tpl_188"}-->/<!--{t string="tpl_371"}-->/<!--{t string="tpl_374"}--></th>
+            <th class="id"><!--{t string="tpl_Product code_01"}--></th>
+            <th class="name"><!--{t string="tpl_Product name_01"}-->/<!--{t string="tpl_371"}-->/<!--{t string="tpl_374"}--></th>
             <th class="price"><!--{t string="tpl_372"}--></th>
             <th class="qty"><!--{t string="tpl_373"}--></th>
             <th class="price"><!--{t string="tpl_375"}--></th>
@@ -196,8 +196,8 @@ self.moveTo(20,20);self.focus();
             <!--{if count($arrShipping.shipment_product_class_id) > 0}-->
                 <table class="list" id="order-edit-products">
                     <tr>
-                        <th class="id"><!--{t string="tpl_192"}--></th>
-                        <th class="name"><!--{t string="tpl_188"}-->/<!--{t string="tpl_371"}-->/<!--{t string="tpl_374"}--></th>
+                        <th class="id"><!--{t string="tpl_Product code_01"}--></th>
+                        <th class="name"><!--{t string="tpl_Product name_01"}-->/<!--{t string="tpl_371"}-->/<!--{t string="tpl_374"}--></th>
                         <th class="price"><!--{t string="tpl_372"}--></th>
                         <th class="qty"><!--{t string="tpl_373"}--></th>
                     </tr>

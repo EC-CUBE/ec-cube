@@ -73,7 +73,7 @@
     </div>
     <table class="list" id="design-css-list">
         <tr>
-            <th class="name"><!--{t string="tpl_167"}--></th>
+            <th class="name"><!--{t string="tpl_File name_01"}--></th>
             <th class="menu edit"><!--{t string="tpl_Edit_01"}--></th>
             <th class="action delete"><!--{t string="tpl_Remove_01"}--></th>
         </tr>

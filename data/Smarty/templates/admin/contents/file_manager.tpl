@@ -59,28 +59,28 @@
     <div id="contents-filemanager-right">
         <table class="now_dir">
             <tr>
-                <th><!--{t string="tpl_164"}--></th>
+                <th><!--{t string="tpl_File upload_01"}--></th>
                 <td>
                     <!--{if $arrErr.upload_file}--><span class="attention"><!--{$arrErr.upload_file}--></span><!--{/if}-->
                     <input type="file" name="upload_file" size="40" <!--{if $arrErr.upload_file}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->><a class="btn-normal" href="javascript:;" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;"><!--{t string="tpl_Upload_01"}--></a>
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_165"}--></th>
+                <th><!--{t string="tpl_Folder creation_01"}--></th>
                 <td>
                     <!--{if $arrErr.create_file}--><span class="attention"><!--{$arrErr.create_file}--></span><!--{/if}-->
-                    <input type="text" name="create_file" value="" style="width:336px;<!--{if $arrErr.create_file}--> background-color:<!--{$smarty.const.ERR_COLOR|h}--><!--{/if}-->"><a class="btn-normal" href="javascript:;" onclick="setTreeStatus('tree_status');fnModeSubmit('create','',''); return false;"><!--{t string="tpl_166"}--></a>
+                    <input type="text" name="create_file" value="" style="width:336px;<!--{if $arrErr.create_file}--> background-color:<!--{$smarty.const.ERR_COLOR|h}--><!--{/if}-->"><a class="btn-normal" href="javascript:;" onclick="setTreeStatus('tree_status');fnModeSubmit('create','',''); return false;"><!--{t string="tpl_Create_01"}--></a>
                 </td>
             </tr>
         </table>
         <h2><!--{* jQuery で挿入される *}--></h2>
         <table class="list">
             <tr>
-                <th><!--{t string="tpl_167"}--></th>
-                <th><!--{t string="tpl_168"}--></th>
-                <th><!--{t string="tpl_169"}--></th>
-                <th class="edit"><!--{t string="tpl_170"}--></th>
-                <th><!--{t string="tpl_171"}--></th>
+                <th><!--{t string="tpl_File name_01"}--></th>
+                <th><!--{t string="tpl_Size_01"}--></th>
+                <th><!--{t string="tpl_Date of update_01"}--></th>
+                <th class="edit"><!--{t string="tpl_Display_01"}--></th>
+                <th><!--{t string="tpl_Download_01"}--></th>
                 <th class="delete"><!--{t string="tpl_Remove_01"}--></th>
             </tr>
             <!--{if !$tpl_is_top_dir}-->
@@ -114,11 +114,11 @@
                     </td>
                     <!--{if $arrFileList[cnt].is_dir}-->
                         <td class="center">
-                            <a href="javascript:;" onclick="fnSetFormVal('form1', 'tree_select_file', '<!--{$arrFileList[cnt].file_path}-->');fnSelectFile('<!--{$id}-->', '#808080');fnModeSubmit('move','',''); return false;"><!--{t string="tpl_170"}--></a>
+                            <a href="javascript:;" onclick="fnSetFormVal('form1', 'tree_select_file', '<!--{$arrFileList[cnt].file_path}-->');fnSelectFile('<!--{$id}-->', '#808080');fnModeSubmit('move','',''); return false;"><!--{t string="tpl_Display_01"}--></a>
                         </td>
                     <!--{else}-->
                         <td class="center">
-                            <a href="javascript:;" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|h}-->');fnSelectFile('<!--{$id}-->', '#808080');fnModeSubmit('view','',''); return false;"><!--{t string="tpl_170"}--></a>
+                            <a href="javascript:;" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|h}-->');fnSelectFile('<!--{$id}-->', '#808080');fnModeSubmit('view','',''); return false;"><!--{t string="tpl_Display_01"}--></a>
                         </td>
                     <!--{/if}-->
                     <!--{if $arrFileList[cnt].is_dir}-->
@@ -126,7 +126,7 @@
                         <td class="center">-</td>
                     <!--{else}-->
                         <td class="center">
-                            <a href="javascript:;" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|h}-->');fnSelectFile('<!--{$id}-->', '#808080');setTreeStatus('tree_status');fnModeSubmit('download','',''); return false;"><!--{t string="tpl_171"}--></a>
+                            <a href="javascript:;" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|h}-->');fnSelectFile('<!--{$id}-->', '#808080');setTreeStatus('tree_status');fnModeSubmit('download','',''); return false;"><!--{t string="tpl_Download_01"}--></a>
                         </td>
                     <!--{/if}-->
                     <td class="center">

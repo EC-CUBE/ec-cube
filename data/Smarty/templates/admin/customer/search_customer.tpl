@@ -68,7 +68,7 @@ function func_submit(customer_id){
 
 <div class="btn-area">
     <ul>
-        <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', ''); return false;" name="subm"><span class="btn-next"><!--{t string="tpl_193"}--></span></a></li>
+        <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', ''); return false;" name="subm"><span class="btn-next"><!--{t string="tpl_Search_01"}--></span></a></li>
     </ul>
 </div>
 
@@ -76,7 +76,7 @@ function func_submit(customer_id){
 <!--{if $smarty.post.mode == 'search'}-->
     <!--▼検索結果表示-->
         <!--{if $tpl_linemax > 0}-->
-        <p><!--{t string="tpl_194" T_FIELD=$tpl_linemax}--><!--{$tpl_strnavi}--></p>
+        <p><!--{t string="tpl_T_FIELD items were found._01" T_FIELD=$tpl_linemax}--><!--{$tpl_strnavi}--></p>
         <!--{/if}-->
 
     <!--▼検索後表示部分-->
@@ -85,7 +85,7 @@ function func_submit(customer_id){
             <th><!--{t string="tpl_207"}--></th>
             <th><!--{t string="tpl_208"}--></th>
             <th><!--{t string="tpl_Phone Number_01"}--></th>
-            <th><!--{t string="tpl_196"}--></th>
+            <th><!--{t string="tpl_Confirm_01"}--></th>
         </tr>
         <!--{section name=cnt loop=$arrCustomer}-->
         <!--▼会員<!--{$smarty.section.cnt.iteration}-->-->
@@ -95,7 +95,7 @@ function func_submit(customer_id){
             </td>
             <td><!--{$arrCustomer[cnt].name01|h}--><!--{$arrCustomer[cnt].name02|h}--></td>
             <td><!--{$arrCustomer[cnt].tel01|h}-->-<!--{$arrCustomer[cnt].tel02|h}-->-<!--{$arrCustomer[cnt].tel03|h}--></td>
-            <td align="center"><a href="" onClick="return func_submit(<!--{$arrCustomer[cnt].customer_id|h}-->)"><!--{t string="tpl_196"}--></a></td>
+            <td align="center"><a href="" onClick="return func_submit(<!--{$arrCustomer[cnt].customer_id|h}-->)"><!--{t string="tpl_Confirm_01"}--></a></td>
         </tr>
         <!--▲会員<!--{$smarty.section.cnt.iteration}-->-->
         <!--{sectionelse}-->

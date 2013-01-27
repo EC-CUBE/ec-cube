@@ -90,7 +90,7 @@ function selectAll(target) {
             <td><!--{$arrForm.product_id|h}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_188_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Product name<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.name}--></span>
                 <input type="text" name="name" value="<!--{$arrForm.name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />
@@ -162,7 +162,7 @@ function selectAll(target) {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_192_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Product code<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.product_code}--></span>
                 <input type="text" name="product_code" value="<!--{$arrForm.product_code|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.product_code != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />
@@ -424,8 +424,8 @@ function selectAll(target) {
                 <input type="checkbox" name="<!--{$key}-->" value="1" /><!--{t string="tpl_Remove_01"}--><br />
                 <!--{assign var=key value="recommend_comment`$smarty.section.cnt.iteration`"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <!--{t string="tpl_192"}-->:<!--{$arrRecommend[$recommend_no].product_code_min}--><br />
-                <!--{t string="tpl_188"}-->:<!--{$arrRecommend[$recommend_no].name|h}--><br />
+                <!--{t string="tpl_Product code_01"}-->:<!--{$arrRecommend[$recommend_no].product_code_min}--><br />
+                <!--{t string="tpl_Product name_01"}-->:<!--{$arrRecommend[$recommend_no].name|h}--><br />
                 <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{"\n"}--><!--{$arrRecommend[$recommend_no].comment|h}--></textarea><br />
                 <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.LTEXT_LEN}--></span>
             </td>

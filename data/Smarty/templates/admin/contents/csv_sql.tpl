@@ -58,7 +58,7 @@ function fnTargetSelf(){
                     </td>
                     <td>
                         <div class="btn">
-                            <a class="btn-normal" href="javascript:;" name='csv' onclick="fnTargetSelf(); fnFormModeSubmit('form1','csv_output','csv_output_id',<!--{$item.sql_id}-->); return false;"><span><!--{t string="tpl_153"}--></span></a>
+                            <a class="btn-normal" href="javascript:;" name='csv' onclick="fnTargetSelf(); fnFormModeSubmit('form1','csv_output','csv_output_id',<!--{$item.sql_id}-->); return false;"><span><!--{t string="tpl_CSV output _01"}--></span></a>
                             <a class="btn-normal" href="javascript:;" name='del' onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','sql_id',<!--{$item.sql_id}-->); return false;"><span><!--{t string="tpl_Remove_01"}--></span></a>
                         </div>
                     </td>
@@ -68,7 +68,7 @@ function fnTargetSelf(){
     <!--{/if}-->
 
     <div class="btn addnew">
-        <a class="btn-normal" href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','',''); return false;"><span><!--{t string="tpl_156"}--></span></a>
+        <a class="btn-normal" href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','',''); return false;"><span><!--{t string="tpl_Newly input SQL_01"}--></span></a>
     </div>
     <h2>
         <!--{if $arrForm.sql_id != ""}-->
@@ -88,7 +88,7 @@ function fnTargetSelf(){
             </td>
         </tr>
         <tr>
-            <th align="center"><!--{t string="tpl_158_1" escape="none"}--></td>
+            <th align="center"><!--{t string="tpl_SQL text<span class='attention'> *</span><br /> (Do not use the word 'SELECT' .)_01" escape="none"}--></td>
             <td align="left">
                 <span class="attention"><!--{$arrErr.csv_sql}--></span>
                 <div>
@@ -99,7 +99,7 @@ function fnTargetSelf(){
     </table>
 
     <div class="btn">
-        <a class="btn-normal" href="javascript:;" name="subm" onclick="doPreview(); return false;"><span><!--{t string="tpl_159"}--></span></a>
+        <a class="btn-normal" href="javascript:;" name="subm" onclick="doPreview(); return false;"><span><!--{t string="tpl_Confirm syntax error_01"}--></span></a>
     </div>
     <div class="btn-area">
         <ul>
@@ -110,13 +110,13 @@ function fnTargetSelf(){
 
 
     <div id="contents-csv-sqltbl">
-        <h3><!--{t string="tpl_160"}--></h3>
+        <h3><!--{t string="tpl_Table list_01"}--></h3>
         <select name="arrTableList[]" size="20" style="width:325px; height:300px;" onChange="mode.value=''; select_table.value=this.value; submit();" onDblClick="csv_sql.value = csv_sql.value +' , ' + this.value;">
             <!--{html_options options=$arrTableList selected=$arrForm.select_table}-->
         </select>
     </div>
     <div id="contents-csv-sqlcol">
-        <h3><!--{t string="tpl_161"}--></h3>
+        <h3><!--{t string="tpl_Item list_01"}--></h3>
         <select name="arrColList[]" size="20" style="width:325px; height:300px;" onDblClick="csv_sql.value = csv_sql.value +' , ' + this.value;">
             <!--{html_options options=$arrColList}-->
         </select>

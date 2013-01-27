@@ -130,7 +130,7 @@
     <col width="20%" />
     <col width="80%" />
     <tr>
-        <th><!--{t string="tpl_191"}--></th>
+        <th><!--{t string="tpl_Category_01"}--></th>
         <td>
             <select name="search_category_id">
                 <option value="" selected="selected"><!--{t string="tpl_Please make a selection_01"}--></option>
@@ -139,24 +139,24 @@
         </td>
     </tr>
     <tr>
-        <th><!--{t string="tpl_188"}--></th>
+        <th><!--{t string="tpl_Product name_01"}--></th>
         <td><input type="text" name="search_name" value="<!--{$arrForm.search_name|h}-->" size="35" class="box35" /></td>
     </tr>
     <tr>
-        <th><!--{t string="tpl_192"}--></th>
+        <th><!--{t string="tpl_Product code_01"}--></th>
         <td><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code|h}-->" size="35" class="box35" /></td>
     </tr>
 </table>
 <div class="btn-area">
     <ul>
-        <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_193"}--></span></a></li>
+        <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_Search_01"}--></span></a></li>
     </ul>
 </div>
 </form>
 <!--▼検索結果表示-->
 <!--{if $tpl_linemax}-->
     <p>
-        <!--{t string="tpl_194" T_FIELD=$tpl_linemax}-->
+        <!--{t string="tpl_T_FIELD items were found._01" T_FIELD=$tpl_linemax}-->
         <!--{$tpl_strnavi}-->
     </p>
 
@@ -167,10 +167,10 @@
     <col width="50%" />
     <col width="10%" />
         <tr>
-            <th class="image"><!--{t string="tpl_195"}--></th>
-            <th class="id"><!--{t string="tpl_192"}--></th>
-            <th class="name"><!--{t string="tpl_188"}--></th>
-            <th class="action"><!--{t string="tpl_196"}--></th>
+            <th class="image"><!--{t string="tpl_Product image_01"}--></th>
+            <th class="id"><!--{t string="tpl_Product code_01"}--></th>
+            <th class="name"><!--{t string="tpl_Product name_01"}--></th>
+            <th class="action"><!--{t string="tpl_Confirm_01"}--></th>
         </tr>
         <!--{section name=cnt loop=$arrProducts}-->
             <!--{assign var=id value=$arrProducts[cnt].product_id}-->
@@ -230,13 +230,13 @@
                         <input type="hidden" name="product_class_id<!--{$id|h}-->" id="product_class_id<!--{$id|h}-->" value="<!--{$tpl_product_class_id[$id]}-->" />
                         <input type="hidden" name="product_type" id="product_type<!--{$id|h}-->" value="<!--{$tpl_product_type[$id]}-->" />
                     </td>
-                    <td class="center"><a href="javascript:;" onclick="return func_submit('<!--{$arrProducts[cnt].product_id}-->', '<!--{$tpl_class_name1[$id]}-->', '<!--{$tpl_class_name2[$id]}-->'); return false;"><!--{t string="tpl_196"}--></a></td>
+                    <td class="center"><a href="javascript:;" onclick="return func_submit('<!--{$arrProducts[cnt].product_id}-->', '<!--{$tpl_class_name1[$id]}-->', '<!--{$tpl_class_name2[$id]}-->'); return false;"><!--{t string="tpl_Confirm_01"}--></a></td>
                 </tr>
                 <!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
             </form>
         <!--{sectionelse}-->
             <tr>
-                <td colspan="4"><!--{t string="tpl_197"}--></td>
+                <td colspan="4"><!--{t string="tpl_There is no product registered_01"}--></td>
             </tr>
         <!--{/section}-->
     </table>

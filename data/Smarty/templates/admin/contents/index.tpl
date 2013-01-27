@@ -26,7 +26,7 @@
 <!--
 
 function func_regist(url) {
-    res = confirm('<!--{if $edit_mode eq "on"}--><!--{t string="tpl_172"}--><!--{else}--><!--{t string="tpl_173"}--><!--{/if}-->');
+    res = confirm('<!--{if $edit_mode eq "on"}--><!--{t string="tpl_Do you want to edit with these contents?_01"}--><!--{else}--><!--{t string="tpl_Register and continue?_01"}--><!--{/if}-->');
     if(res == true) {
         document.form1.mode.value = 'regist';
         document.form1.submit();
@@ -42,7 +42,7 @@ function func_edit(news_id) {
 }
 
 function func_del(news_id) {
-    res = confirm('<!--{t string="tpl_174"}-->');
+    res = confirm('<!--{t string="tpl_Do you want to delete this new information?_01"}-->');
     if(res == true) {
         document.form1.mode.value = "delete";
         document.form1.news_id.value = news_id;
@@ -75,25 +75,25 @@ function moving(news_id,rank, max_rank) {
     }
 
     if ( j > 1) {
-        alert( '<!--{t string="tpl_175"}-->' );
+        alert( '<!--{t string="tpl_Enter a single move ranking._01"}-->' );
         return false;
     } else if( ! val ) {
-        alert( '<!--{t string="tpl_176"}-->' );
+        alert( '<!--{t string="tpl_Enter a move ranking._01"}-->' );
         return false;
     } else if( val.length > 4){
-        alert( '<!--{t string="tpl_177"}-->' );
+        alert( '<!--{t string="tpl_Enter a move ranking that is 4 digits or less._01"}-->' );
         return false;
     } else if( val.match(/[0-9]+/g) != val){
-        alert( '<!--{t string="tpl_178"}-->' );
+        alert( '<!--{t string="tpl_Enter a number for the move ranking._01"}-->' );
         return false;
     } else if( val == rank ){
-        alert( '<!--{t string="tpl_179"}-->' );
+        alert( '<!--{t string="The number to be moved is a duplicate._01"}-->' );
         return false;
     } else if( val == 0 ){
-        alert( '<!--{t string="tpl_180"}-->' );
+        alert( '<!--{t string="tpl_Enter 0 or greater for the move ranking_01"}-->' );
         return false;
     } else if( val > max_rank ){
-        alert( '<!--{t string="tpl_181"}-->' );
+        alert( '<!--{t string="tpl_The order that was entered exceeds the maximum valued for the number registered._01"}-->' );
         return false;
     } else {
         ml.moveposition.value = val;
@@ -306,7 +306,7 @@ function moving(news_id,rank, max_rank) {
         </tr>
         <!--{sectionelse}-->
         <tr class="center">
-            <td colspan="6"><!--{t string="tpl_182"}--></td>
+            <td colspan="6"><!--{t string="tpl_Currently, there is no data._01"}--></td>
         </tr>
         <!--{/section}-->
     </table>

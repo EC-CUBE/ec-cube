@@ -49,7 +49,7 @@ function func_submit( id ){
         <col width="20%" />
         <col width="80%" />
         <tr>
-            <th><!--{t string="tpl_191"}--></th>
+            <th><!--{t string="tpl_Category_01"}--></th>
             <td>
                 <select name="search_category_id">
                     <option value="" selected="selected"><!--{t string="tpl_Please make a selection_01"}--></option>
@@ -58,22 +58,22 @@ function func_submit( id ){
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_192"}--></th>
+            <th><!--{t string="tpl_Product code_01"}--></th>
             <td><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code}-->" size="35" class="box35" /></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_188"}--></th>
+            <th><!--{t string="tpl_Product name_01"}--></th>
             <td><input type="text" name="search_name" value="<!--{$arrForm.search_name}-->" size="35" class="box35" /></td>
         </tr>
     </table>
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_193"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_Search_01"}--></span></a></li>
         </ul>
     </div>
     <!--{* ▼検索結果表示 *}-->
     <!--{if is_numeric($tpl_linemax)}-->
-    <p><!--{t string="tpl_194" T_FIELD=$tpl_linemax}--></p>
+    <p><!--{t string="tpl_T_FIELD items were found._01" T_FIELD=$tpl_linemax}--></p>
     <!--{$tpl_strnavi}-->
 
     <table class="list">
@@ -82,10 +82,10 @@ function func_submit( id ){
         <col width="60%" />
         <col width="12.5%" />
         <tr>
-            <th><!--{t string="tpl_195"}--></th>
-            <th><!--{t string="tpl_192"}--></th>
-            <th><!--{t string="tpl_188"}--></th>
-            <th><!--{t string="tpl_196"}--></th>
+            <th><!--{t string="tpl_Product image_01"}--></th>
+            <th><!--{t string="tpl_Product code_01"}--></th>
+            <th><!--{t string="tpl_Product name_01"}--></th>
+            <th><!--{t string="tpl_Confirm_01"}--></th>
         </tr>
 
         <!--{foreach name=loop from=$arrProducts item=arr}-->
@@ -105,13 +105,13 @@ function func_submit( id ){
                 <!--{/if}-->
             </td>
             <td><!--{$arr.name|h}--></td>
-            <td class="center"><a href="" onClick="return func_submit(<!--{$arr.product_id}-->)"><!--{t string="tpl_196"}--></a></td>
+            <td class="center"><a href="" onClick="return func_submit(<!--{$arr.product_id}-->)"><!--{t string="tpl_Confirm_01"}--></a></td>
         </tr>
         <!--▲商品<!--{$smarty.foreach.loop.iteration}-->-->    
         <!--{/foreach}-->
         <!--{if !$tpl_linemax>0}-->
         <tr>
-            <td colspan="4"><!--{t string="tpl_197"}--></td>
+            <td colspan="4"><!--{t string="tpl_There is no product registered_01"}--></td>
         </tr>
         <!--{/if}-->
         

@@ -99,10 +99,10 @@
                 <col width="7.5%" />
                 <col width="15%" />
                 <tr class="nodrop nodrag">
-                    <th><!--{t string="tpl_192"}--></th>
-                    <th><!--{t string="tpl_188"}--></th>
-                    <th><!--{t string="tpl_195"}--></th>
-                    <th><!--{t string="tpl_186"}--></th>
+                    <th><!--{t string="tpl_Product code_01"}--></th>
+                    <th><!--{t string="tpl_Product name_01"}--></th>
+                    <th><!--{t string="tpl_Product image_01"}--></th>
+                    <th><!--{t string="tpl_Ranking_01"}--></th>
                     <th><!--{t string="tpl_Move_01"}--></th>
                 </tr>
 

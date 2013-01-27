@@ -47,7 +47,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_167"}--></th>
+                <th><!--{t string="tpl_File name_01"}--></th>
                 <td>
                     <!--{assign var=key value="filename"}-->
                     <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" />.tpl

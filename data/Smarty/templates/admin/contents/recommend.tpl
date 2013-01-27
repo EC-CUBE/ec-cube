@@ -34,13 +34,13 @@ function lfnCheckSubmit( fm ){
     */
     if ( ! fm["comment"].value ){
         if ( err ) err += '';
-        err += '<!--{t string="tpl_183"}-->';
+        err += '<!--{t string="tpl_Enter a comment._01"}-->';
     }
     if ( err ){
         alert(err);
         return false;
     } else {
-        if(window.confirm('<!--{t string="tpl_184"}-->')){
+        if(window.confirm('<!--{t string="tpl_Register and continue?_01"}-->')){
                 fm.submit();
                 return true;
         }
@@ -52,7 +52,7 @@ function lfnCheckSetItem( rank ){
     var checkRank = '<!--{$checkRank|h}-->';
     if ( checkRank ){
         if ( rank != checkRank ){
-            if( ! window.confirm('<!--{t string="tpl_185" T_FIELD=$checkRank|h}-->')){
+            if( ! window.confirm('<!--{t string="tpl_The selected field T_FIELD will be discarded. Continue? _01" T_FIELD=$checkRank|h}-->')){
                 flag = false;
             }
         }
@@ -67,7 +67,7 @@ function lfnSortItem(mode,data){
     var flag = true;
     var checkRank = '<!--{$checkRank|h}-->';
     if ( checkRank ){
-        if( ! window.confirm('<!--{t string="tpl_185" T_FIELD=$checkRank|h}-->')){
+        if( ! window.confirm('<!--{t string="tpl_The selected field T_FIELD will be discarded. Continue? _01" T_FIELD=$checkRank|h}-->')){
             flag = false;
         }
     }
@@ -91,8 +91,8 @@ function lfnSortItem(mode,data){
         <col width="7%" />
         <col width="7%" />
         <tr>
-            <th><!--{t string="tpl_186"}--></th>
-            <th><!--{t string="tpl_187"}--></th>
+            <th><!--{t string="tpl_Ranking_01"}--></th>
+            <th><!--{t string="tpl_Product/comment_01"}--></th>
             <th><!--{t string="tpl_Edit_01"}--></th>
             <th><!--{t string="tpl_Remove_01"}--></th>
 			<th><!--{t string="tpl_356"}--></th>
@@ -109,7 +109,7 @@ function lfnSortItem(mode,data){
                                 <!--{/if}-->
                             </div>
                             <div class="table-detail">
-                                <div class="detail-name"><!--{t string="tpl_188"}--> <!--{$arrItems[$smarty.section.cnt.iteration].name|h}--></div>
+                                <div class="detail-name"><!--{t string="tpl_Product name_01"}--> <!--{$arrItems[$smarty.section.cnt.iteration].name|h}--></div>
 
                                     <div class="detail-form">
                                         <form name="form<!--{$smarty.section.cnt.iteration}-->" id="form<!--{$smarty.section.cnt.iteration}-->" method="post" action="?">
@@ -128,7 +128,7 @@ function lfnSortItem(mode,data){
                     </td>
                 <!--{else}-->
                     <td class="AlignLeft">
-                        <a class="btn-action-m" href="javascript:;" onclick="lfnCheckSetItem('<!--{$smarty.section.cnt.iteration}-->'); return false;" target="_blank"><span class="btn-next"><!--{t string="tpl_189"}--></span></a>
+                        <a class="btn-action-m" href="javascript:;" onclick="lfnCheckSetItem('<!--{$smarty.section.cnt.iteration}-->'); return false;" target="_blank"><span class="btn-next"><!--{t string="tpl_Select a product_01"}--></span></a>
                         <form name="form<!--{$smarty.section.cnt.iteration}-->" id="form<!--{$smarty.section.cnt.iteration}-->" method="post" action="?">
                             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
                             <input type="hidden" name="mode" value="regist" />
@@ -148,7 +148,7 @@ function lfnSortItem(mode,data){
             </td>
             <td>
                 <!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->
-                        <a href="javascript:;" onClick="return fnInsertValAndSubmit( document.form<!--{$smarty.section.cnt.iteration}-->, 'mode', 'delete', '<!--{t string="tpl_190"}-->' )"><!--{t string="tpl_Remove_01"}--></a>
+                        <a href="javascript:;" onClick="return fnInsertValAndSubmit( document.form<!--{$smarty.section.cnt.iteration}-->, 'mode', 'delete', '<!--{t string="tpl_Deletion will be carried out. Is this okay?_01"}-->' )"><!--{t string="tpl_Remove_01"}--></a>
                 <!--{else}-->
                     - -
                 <!--{/if}-->

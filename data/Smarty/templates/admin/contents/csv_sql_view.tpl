@@ -26,11 +26,11 @@
 
 <table class="form">
     <tr>
-        <th><!--{t string="tpl_159"}--></th>
+        <th><!--{t string="tpl_Confirm syntax error_01"}--></th>
         <td>SELECT <!--{$arrForm.csv_sql|h|nl2br}--></td>
     </tr>
     <tr>
-        <th><!--{t string="tpl_162"}--></th>
+        <th><!--{t string="tpl_Error contents_01"}--></th>
         <td>
             <!--{if $arrErr}-->
                 <!--{foreach key=key item=item from=$arrErr key=key}-->
@@ -40,7 +40,7 @@
             <!--{if $sqlerr != ""}-->
                 <!--{$sqlerr|h|nl2br}-->
             <!--{elseif !$arrErr}-->
-                <!--{t string="tpl_163"}-->
+                <!--{t string="tpl_There are no errors_01"}-->
             <!--{/if}-->
         </td>
     </tr>

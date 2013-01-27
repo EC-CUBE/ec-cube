@@ -35,7 +35,7 @@
     <!--▼編集テーブルここから-->
     <table>
         <tr>
-            <th><!--{t string="tpl_188"}--></th>
+            <th><!--{t string="tpl_Product name_01"}--></th>
             <td><!--{$arrForm.name|h}-->
             <input type="hidden" name="name" value="<!--{$arrForm.name|h}-->">
             </td>
@@ -50,7 +50,7 @@
             <th><!--{t string="tpl_621"}--></th>
             <td>
                 <!--{if $arrErr.status}--><span class="attention"><!--{$arrErr.status}--></span><!--{/if}-->
-                <input type="radio" name="status" value="2" <!--{if $arrForm.status eq 2}-->checked<!--{/if}-->><!--{t string="tpl_620"}--><!--{if $arrForm.status eq 2 && !$tpl_status_change}--><!--{else}--><input type="radio" name="status" value="1" <!--{if $arrForm.status eq 1}-->checked<!--{/if}-->><!--{t string="tpl_170"}--><!--{/if}-->
+                <input type="radio" name="status" value="2" <!--{if $arrForm.status eq 2}-->checked<!--{/if}-->><!--{t string="tpl_620"}--><!--{if $arrForm.status eq 2 && !$tpl_status_change}--><!--{else}--><input type="radio" name="status" value="1" <!--{if $arrForm.status eq 1}-->checked<!--{/if}-->><!--{t string="tpl_Display_01"}--><!--{/if}-->
             </td>
         </tr>
         <tr>

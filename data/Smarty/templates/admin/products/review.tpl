@@ -198,9 +198,9 @@ $("*[name=search_endday]").val(dates[2]);
             <td><input type="text" name="search_reviewer_url" value="<!--{$arrForm.search_reviewer_url|h}-->" size="30" class="box30" /></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_188"}--></th>
+            <th><!--{t string="tpl_Product name_01"}--></th>
             <td><input type="text" name="search_name" value="<!--{$arrForm.search_name|h}-->" size="30" class="box30" /></td>
-            <th><!--{t string="tpl_192"}--></th>
+            <th><!--{t string="tpl_Product code_01"}--></th>
             <td><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code|h}-->" size="30" class="box30" /></td>
         </tr>
         <tr>
@@ -292,7 +292,7 @@ $("*[name=search_endday]").val(dates[2]);
             <tr>
                 <th><!--{t string="tpl_618"}--></th>
                 <th><!--{t string="tpl_615"}--></th>
-                <th><!--{t string="tpl_188"}--></th>
+                <th><!--{t string="tpl_Product name_01"}--></th>
                 <th><!--{t string="tpl_617"}--></th>
                 <th><!--{t string="tpl_619"}--></th>
                 <th class="edit"><!--{t string="tpl_Edit_01"}--></th>
@@ -306,7 +306,7 @@ $("*[name=search_endday]").val(dates[2]);
                     <td><!--{$arrReview[cnt].name|h}--></td>
                     <!--{assign var=key value="`$arrReview[cnt].recommend_level`"}-->
                     <td><!--{$arrRECOMMEND[$key]|h}--></td>
-                    <td class="menu"><!--{if $arrReview[cnt].status eq 1}--><!--{t string="tpl_170"}--><!--{elseif $arrReview[cnt].status eq 2}--><!--{t string="tpl_620"}--><!--{/if}--></td>
+                    <td class="menu"><!--{if $arrReview[cnt].status eq 1}--><!--{t string="tpl_Display_01"}--><!--{elseif $arrReview[cnt].status eq 2}--><!--{t string="tpl_620"}--><!--{/if}--></td>
                     <td class="menu"><a href="javascript:;" onclick="fnChangeAction('./review_edit.php'); fnModeSubmit('','review_id','<!--{$arrReview[cnt].review_id}-->'); return false;"><!--{t string="tpl_Edit_01"}--></a></td>
                     <td class="menu"><a href="javascript:;" onclick="fnModeSubmit('delete','review_id','<!--{$arrReview[cnt].review_id}-->'); return false;"><!--{t string="tpl_Remove_01"}--></a></td>
                 </tr>

@@ -4010,155 +4010,136 @@ msgstr "Return to initial settings and register"
 msgid "tpl_SQL list_01"
 msgstr "SQL list"
 
-msgid "tpl_153"
+msgid "tpl_CSV output _01"
 msgstr "CSV output "
 
-msgid "tpl_156"
+msgid "tpl_Newly input SQL_01"
 msgstr "Newly input SQL"
 
-msgid "tpl_157"
-msgstr "Do not describe the SELECT in the beginning."
+msgid "tpl_SQL text<span class='attention'> *</span><br /> (Do not use the word 'SELECT' .)_01"
+msgstr "SQL text<span class='attention'> *</span><br /> (Do not use the word 'SELECT' .)"
 
-msgid "tpl_158"
-msgstr "SQL text"
-
-msgid "tpl_158_1"
-msgstr ""
-"SQL text<span class='attention'> *</span><br /> (Do not use the word "
-"'SELECT' .)"
-
-msgid "tpl_159"
+msgid "tpl_Confirm syntax error_01"
 msgstr "Confirm syntax error"
 
-msgid "tpl_160"
+msgid "tpl_Table list_01"
 msgstr "Table list"
 
-msgid "tpl_161"
+msgid "tpl_Item list_01"
 msgstr "Item list"
 
-msgid "tpl_162"
+msgid "tpl_Error contents_01"
 msgstr "Error contents"
 
-msgid "tpl_163"
+msgid "tpl_There are no errors_01"
 msgstr "There are no errors"
 
-msgid "tpl_164"
+msgid "tpl_File upload_01"
 msgstr "File upload"
 
-msgid "tpl_165"
+msgid "tpl_Folder creation_01"
 msgstr "Folder creation"
 
-msgid "tpl_166"
+msgid "tpl_Create_01"
 msgstr "Create"
 
-msgid "tpl_167"
+msgid "tpl_File name_01"
 msgstr "File name"
 
-msgid "tpl_168"
+msgid "tpl_Size_01"
 msgstr "Size"
 
-msgid "tpl_169"
+msgid "tpl_Date of update_01"
 msgstr "Date of update"
 
-msgid "tpl_170"
+msgid "tpl_Display_01"
 msgstr "Display"
 
-msgid "tpl_171"
+msgid "tpl_Download_01"
 msgstr "Download"
 
-msgid "tpl_172"
+msgid "tpl_Do you want to edit with these contents?_01"
 msgstr "Do you want to edit with these contents?"
 
-msgid "tpl_173"
+msgid "tpl_Register and continue?_01"
 msgstr "Register and continue?"
 
-msgid "tpl_174"
+msgid "tpl_Do you want to delete this new information?_01"
 msgstr "Do you want to delete this new information?"
 
-msgid "tpl_175"
+msgid "tpl_Enter a single move ranking._01"
 msgstr "Enter a single move ranking."
 
-msgid "tpl_176"
+msgid "tpl_Enter a move ranking._01"
 msgstr "Enter a move ranking."
 
-msgid "tpl_177"
+msgid "tpl_Enter a move ranking that is 4 digits or less._01"
 msgstr "Enter a move ranking that is 4 digits or less."
 
-msgid "tpl_178"
+msgid "tpl_Enter a number for the move ranking._01"
 msgstr "Enter a number for the move ranking."
 
-msgid "tpl_179"
+msgid "tpl_The number to be moved is a duplicate._01"
 msgstr "The number to be moved is a duplicate."
 
-msgid "tpl_180"
+msgid "tpl_Enter 0 or greater for the move ranking_01"
 msgstr "Enter 0 or greater for the move ranking"
 
-msgid "tpl_181"
-msgstr ""
-"The order that was entered exceeds the maximum valued for the number "
-"registered."
+msgid "tpl_The order that was entered exceeds the maximum valued for the number registered._01"
+msgstr "The order that was entered exceeds the maximum valued for the number registered."
 
-msgid "tpl_182"
+msgid "tpl_Currently, there is no data._01"
 msgstr "Currently, there is no data."
 
-msgid "tpl_183"
+msgid "tpl_Enter a comment._01"
 msgstr "Enter a comment."
 
-msgid "tpl_184"
-msgstr "Register and continue?"
-
-msgid "tpl_185"
+msgid "tpl_The selected field T_FIELD will be discarded. Continue? _01"
 msgstr "The selected field T_FIELD will be discarded. Continue? "
 
-msgid "tpl_186"
-msgstr "Ranking"
-
-msgid "tpl_187"
+msgid "tpl_Product/comment_01"
 msgstr "Product/comment"
 
-msgid "tpl_188"
+msgid "tpl_Product name_01"
 msgstr "Product name"
 
-msgid "tpl_188_1"
+msgid "tpl_Product name<span class='attention'> *</span>_01"
 msgstr "Product name<span class='attention'> *</span>"
 
-msgid "tpl_189"
+msgid "tpl_Select a product_01"
 msgstr "Select a product"
 
-msgid "tpl_189_1"
-msgstr "Select a product<span class='attention'> *</span>"
-
-msgid "tpl_190"
+msgid "tpl_Deletion will be carried out. Is this okay?_01"
 msgstr "Deletion will be carried out. Is this okay?"
 
-msgid "tpl_191"
+msgid "tpl_Category_01"
 msgstr "Category"
 
-msgid "tpl_192"
+msgid "tpl_Product code_01"
 msgstr "Product code"
 
-msgid "tpl_192_1"
+msgid "tpl_Product code<span class='attention'> *</span>_01"
 msgstr "Product code<span class='attention'> *</span>"
 
-msgid "tpl_193"
+msgid "tpl_Search_01"
 msgstr "Search"
 
-msgid "tpl_194"
+msgid "tpl_T_FIELD items were found._01"
 msgstr "T_FIELD items were found."
 
-msgid "tpl_195"
+msgid "tpl_Product image_01"
 msgstr "Product image"
 
-msgid "tpl_196"
+msgid "tpl_Confirm_01"
 msgstr "Confirm"
 
-msgid "tpl_197"
+msgid "tpl_There is no product registered_01"
 msgstr "There is no product registered"
 
-msgid "tpl_198"
+msgid "tpl_Manage new information_01"
 msgstr "Manage new information"
 
-msgid "tpl_199"
+msgid "tpl_Recommended product management_01"
 msgstr "Recommended product management"
 
 msgid "tpl_200"

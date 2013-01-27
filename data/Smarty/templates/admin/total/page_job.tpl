@@ -24,7 +24,7 @@
 
 <table id="total-job" class="list">
     <tr>
-        <th><!--{t string="tpl_186"}--></th>
+        <th><!--{t string="tpl_Ranking_01"}--></th>
         <th><!--{t string="tpl_340"}--></th>
         <th><!--{t string="tpl_692"}--></th>
         <th><!--{t string="tpl_693"}--></th>
@@ -52,7 +52,7 @@
     <!--{/section}-->
 
     <tr>
-        <th><!--{t string="tpl_186"}--></span></th>
+        <th><!--{t string="tpl_Ranking_01"}--></span></th>
         <th><!--{t string="tpl_340"}--></span></th>
         <th><!--{t string="tpl_692"}--></span></th>
         <th><!--{t string="tpl_693"}--></span></th>

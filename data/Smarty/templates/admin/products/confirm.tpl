@@ -51,7 +51,7 @@
 
     <table>
         <tr>
-            <th><!--{t string="tpl_188"}--></th>
+            <th><!--{t string="tpl_Product name_01"}--></th>
             <td>
                 <!--{$arrForm.name|h}-->
             </td>
@@ -109,7 +109,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_192"}--></th>
+                <th><!--{t string="tpl_Product code_01"}--></th>
                 <td>
                     <!--{$arrForm.product_code|h}-->
                 </td>
@@ -280,8 +280,8 @@
                     </th>
                     <td>
                         <!--{if $arrRecommend[$recommend_no].product_id|strlen >= 1}-->
-                            <!--{t string="tpl_192"}-->:<!--{$arrRecommend[$recommend_no].product_code_min}--><br />
-                            <!--{t string="tpl_188"}-->:<!--{$arrRecommend[$recommend_no].name|h}--><br />
+                            <!--{t string="tpl_Product code_01"}-->:<!--{$arrRecommend[$recommend_no].product_code_min}--><br />
+                            <!--{t string="tpl_Product name_01"}-->:<!--{$arrRecommend[$recommend_no].name|h}--><br />
                             <!--{t string="tpl_576"}--><br />
                             <!--{$arrRecommend[$recommend_no].comment|h|nl2br}-->
                         <!--{/if}-->
