@@ -593,28 +593,28 @@ msgstr "関連タグソート"
 msgid "c_Category ID_01"
 msgstr "カテゴリID"
 
-msgid "PARAM_LABEL_KEYWORDS"
+msgid "c_Keyword_01"
 msgstr "キーワード"
 
-msgid "PARAM_LABEL_MANUFACTURER"
+msgid "c_Manufacturer name_01"
 msgstr "メーカー名"
 
-msgid "PARAM_LABEL_ITEMPAGE"
+msgid "c_Page number_01"
 msgstr "ページ番号"
 
-msgid "PARAM_LABEL_SORT"
+msgid "c_Sort_01"
 msgstr "ソート"
 
-msgid "PARAM_LABEL_CUSTOMER_ID"
+msgid "c_Member ID_01"
 msgstr "会員ID"
 
-msgid "PARAM_LABEL_CUSTOMER_STATUS"
+msgid "c_Member status_01"
 msgstr "会員状態"
 
-msgid "PARAM_LABEL_CUSTOMER_NOTE"
+msgid "c_Memo for SHOP_01"
 msgstr "SHOP用メモ"
 
-msgid "PARAM_LABEL_CUSTOMER_POINT"
+msgid "c_Points in possession_01"
 msgstr "所持ポイント"
 
 msgid "PARAM_LABEL_BIRTH_POINT"
@@ -682,9 +682,6 @@ msgstr "登録・更新日(終了日)"
 
 msgid "PARAM_LABEL_PAGE_MAX"
 msgstr "表示件数"
-
-msgid "PARAM_LABEL_PAGE_NO"
-msgstr "ページ番号"
 
 msgid "PARAM_LABEL_BUY_START_YEAR"
 msgstr "最終購入日(開始年)"
@@ -1222,9 +1219,6 @@ msgstr "メーカー"
 
 msgid "PARAM_LABEL_MAKER_ID"
 msgstr "メーカーID"
-
-msgid "PARAM_LABEL_MAKER_NAME"
-msgstr "メーカー名"
 
 msgid "PARAM_LABEL_MAKER_URL"
 msgstr "メーカーURL"

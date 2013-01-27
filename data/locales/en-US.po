@@ -604,28 +604,28 @@ msgstr " Sort related tags"
 msgid "c_Category ID_01"
 msgstr "Category ID"
 
-msgid "PARAM_LABEL_KEYWORDS"
+msgid "c_Keyword_01"
 msgstr "Keyword"
 
-msgid "PARAM_LABEL_MANUFACTURER"
+msgid "c_Manufacturer name_01"
 msgstr "Manufacturer name"
 
-msgid "PARAM_LABEL_ITEMPAGE"
+msgid "c_Page number_01"
 msgstr "Page number"
 
-msgid "PARAM_LABEL_SORT"
+msgid "c_Sort_01"
 msgstr "Sort"
 
-msgid "PARAM_LABEL_CUSTOMER_ID"
+msgid "c_Member ID_01"
 msgstr "Member ID"
 
-msgid "PARAM_LABEL_CUSTOMER_STATUS"
+msgid "c_Member status_01"
 msgstr "Member status"
 
-msgid "PARAM_LABEL_CUSTOMER_NOTE"
+msgid "c_Memo for SHOP_01"
 msgstr "Memo for SHOP"
 
-msgid "PARAM_LABEL_CUSTOMER_POINT"
+msgid "c_Points in possession_01"
 msgstr "Points in possession"
 
 msgid "PARAM_LABEL_BIRTH_POINT"
@@ -693,9 +693,6 @@ msgstr "Registration/update date (end date)"
 
 msgid "PARAM_LABEL_PAGE_MAX"
 msgstr "Number of items displayed"
-
-msgid "PARAM_LABEL_PAGE_NO"
-msgstr "Page number"
 
 msgid "PARAM_LABEL_BUY_START_YEAR"
 msgstr "Final purchase date (start year)"
@@ -1233,9 +1230,6 @@ msgstr "Manufacturer"
 
 msgid "PARAM_LABEL_MAKER_ID"
 msgstr "Manufacturer ID"
-
-msgid "PARAM_LABEL_MAKER_NAME"
-msgstr "Manufacturer name"
 
 msgid "PARAM_LABEL_MAKER_URL"
 msgstr "Manufacturer URL"

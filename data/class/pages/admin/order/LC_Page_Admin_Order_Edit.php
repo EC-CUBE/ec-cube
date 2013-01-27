@@ -342,8 +342,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam(t('PARAM_LABEL_BIRTH_POINT'), 'birth_point', null, 'n', array(), 0);
         $objFormParam->addParam(t('PARAM_LABEL_TAX_TOTAL'), 'tax');
         $objFormParam->addParam(t('PARAM_LABEL_TOTAL_POINT'), 'total_point');
-        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_ID'), 'customer_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
-        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_ID'), 'edit_customer_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
+        $objFormParam->addParam(t('c_Member ID_01'), 'customer_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
+        $objFormParam->addParam(t('c_Member ID_01'), 'edit_customer_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
         $objFormParam->addParam(t('PARAM_LABEL_NOW_POINT'), 'customer_point');
         $objFormParam->addParam(t('PARAM_LABEL_BEFORE_POINT'), 'point');
         $objFormParam->addParam(t('PARAM_LABEL_ORDER_NUMBER'), 'order_id');

@@ -124,7 +124,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
         $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_ID'), 'search_name', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_ID'), 'search_category_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK','NUM_CHECK'));
         $objFormParam->addParam(t('c_Product code_01'), 'search_product_code', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_PAGE_NO'), 'search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK','NUM_CHECK'));
+        $objFormParam->addParam(t('c_Page number_01'), 'search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK','NUM_CHECK'));
     }
 
     /**

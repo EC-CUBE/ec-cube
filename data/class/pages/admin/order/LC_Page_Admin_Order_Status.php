@@ -124,7 +124,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam(t('PARAM_LABEL_ORDER_NUMBER'), 'order_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_BEFORE_ORDER_STATUS'), 'status', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_PAGE_NO'), 'search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('c_Page number_01'), 'search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
 		if ($this->getMode() == 'update') {
         	$objFormParam->addParam(t('PARAM_LABEL_AFTER_ORDER_STATUS'), 'change_status', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         	$objFormParam->addParam(t('PARAM_LABEL_MOVE_ORDER_NUMBER'), 'move', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));

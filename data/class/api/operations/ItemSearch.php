@@ -98,10 +98,10 @@ class API_ItemSearch extends SC_Api_Abstract_Ex {
 
     protected function lfInitParam(&$objFormParam) {
         $objFormParam->addParam(t('c_Category ID_01'), 'BrowseNode', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_KEYWORDS'), 'Keywords', STEXT_LEN, 'a', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_MANUFACTURER'), 'Manufacturer', STEXT_LEN, 'a', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ITEMPAGE'), 'ItemPage', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_SORT'), 'Sort', STEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Keyword_01'), 'Keywords', STEXT_LEN, 'a', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Manufacturer name_01'), 'Manufacturer', STEXT_LEN, 'a', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Page number_01'), 'ItemPage', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Sort_01'), 'Sort', STEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     public function getResponseGroupName() {

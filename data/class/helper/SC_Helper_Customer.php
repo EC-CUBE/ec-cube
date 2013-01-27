@@ -315,11 +315,11 @@ class SC_Helper_Customer {
         SC_Helper_Customer_Ex::sfCustomerCommonParam($objFormParam);
         SC_Helper_Customer_Ex::sfCustomerRegisterParam($objFormParam, $isAdmin);
         if ($isAdmin) {
-            $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_ID'), 'customer_id', INT_LEN, 'n', array('NUM_CHECK'));
+            $objFormParam->addParam(t('c_Member ID_01'), 'customer_id', INT_LEN, 'n', array('NUM_CHECK'));
             $objFormParam->addParam(t('Mobile e-mail address'), 'email_mobile', null, 'a', array('NO_SPTAB', 'EMAIL_CHECK', 'SPTAB_CHECK' ,'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'));
-            $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_STATUS'), 'status', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-            $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_NOTE'), 'note', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-            $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_POINT'), 'point', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'), 0);
+            $objFormParam->addParam(t('c_Member status_01'), 'status', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+            $objFormParam->addParam(t('c_Memo for SHOP_01'), 'note', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+            $objFormParam->addParam(t('c_Points in possession_01'), 'point', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'), 0);
         }
 
         if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
@@ -518,7 +518,7 @@ class SC_Helper_Customer {
      * @return void
      */
     function sfSetSearchParam(&$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_ID'), 'search_customer_id', ID_MAX_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Member ID_01'), 'search_customer_id', ID_MAX_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Name_02'), 'search_name', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_KANA'), 'search_kana', STEXT_LEN, 'CKV', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'KANABLANK_CHECK'));
         $objFormParam->addParam(t('c_Prefecture_01'), 'search_pref', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
@@ -543,7 +543,7 @@ class SC_Helper_Customer {
         $objFormParam->addParam(t('PARAM_LABEL_UPDATE_END_MONTH'), 'search_end_month', 2, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_UPDATE_END_DAY'), 'search_end_day', 2, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_PAGE_MAX'), 'search_page_max', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'), SEARCH_PMAX, false);
-        $objFormParam->addParam(t('PARAM_LABEL_PAGE_NO'), 'search_pageno', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'), 1, false);
+        $objFormParam->addParam(t('c_Page number_01'), 'search_pageno', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'), 1, false);
         $objFormParam->addParam(t('PARAM_LABEL_BUY_START_YEAR'), 'search_buy_start_year', 4, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_BUY_START_MONTH'), 'search_buy_start_month', 2, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_BUY_START_DAY'), 'search_buy_start_day', 2, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
@@ -554,7 +554,7 @@ class SC_Helper_Customer {
         $objFormParam->addParam(t('PARAM_LABEL_BUY_PRODUCT_NAME'), 'search_buy_product_name', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Category_01'), 'search_category_id', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Gender_01'), 'search_sex', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_STATUS'), 'search_status', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Member status_01'), 'search_status', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Occupation_01'), 'search_job', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
     }
 

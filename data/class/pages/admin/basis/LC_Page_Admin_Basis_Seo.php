@@ -164,7 +164,7 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
         $objFormParam->addParam(t('PARAM_LABEL_PAGE_ID'), 'page_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_META_AUTHOR'), 'author', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_META_DESCRIPTION'), 'description', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_KEYWORDS'), 'keyword', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Keyword_01'), 'keyword', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
     }
 
     /**
