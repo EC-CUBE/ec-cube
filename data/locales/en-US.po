@@ -403,38 +403,35 @@ msgstr "Completion of member registration"
 msgid "c_The block cannot be found_01"
 msgstr "The block cannot be found"
 
-msgid "API_AddrFromZip_001"
+msgid "c_Search for an address from the postal code._01"
 msgstr "Search for an address from the postal code."
 
-msgid "API_BrowseNodeLookup_001"
+msgid "c_Category retrieval_01"
 msgstr "Category retrieval"
 
-msgid "API_CartAdd_001"
+msgid "c_Add product to cart_01"
 msgstr "Add product to cart"
 
-msgid "API_CartClear_001"
+msgid "c_Empty cart_01"
 msgstr "Empty cart"
 
-msgid "API_CartCreate_001"
+msgid "c_Newly create cart_01"
 msgstr "Newly create cart"
 
-msgid "API_CartGet_001"
+msgid "c_Cart retrieval_01"
 msgstr "Cart retrieval"
 
-msgid "API_CartModify_001"
+msgid "c_Cart repair_01"
 msgstr "Cart repair"
 
-msgid "API_ItemLookup_001"
+msgid "c_Product details information will be retrieved_01"
 msgstr "Product details information will be retrieved"
 
-msgid "API_ItemLookup_002"
+msgid "c_* The requested information was not found._01"
 msgstr "* The requested information was not found."
 
-msgid "API_ItemSearch_001"
+msgid "c_Product search and product list information are retrieved._01"
 msgstr "Product search and product list information are retrieved."
-
-msgid "API_ItemSearch_002"
-msgstr "* The requested information was not found."
 
 msgid "PARAM_LABEL_EMAIL"
 msgstr "E-mail address"

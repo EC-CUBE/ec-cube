@@ -41,7 +41,7 @@ class API_ItemLookup extends SC_Api_Abstract_Ex {
 
     public function __construct() {
         parent::__construct();
-        $this->operation_description = t('API_ItemLookup_001');
+        $this->operation_description = t('c_Product details information will be retrieved_01');
     }
 
     public function doAction($arrParam) {
@@ -72,7 +72,7 @@ class API_ItemLookup extends SC_Api_Abstract_Ex {
                 $this->setResponse('ItemAttributes', $arrProduct);
                 return true;
             } else {
-                $this->addError('ItemLookup.Error', t('API_ItemLookup_002'));
+                $this->addError('ItemLookup.Error', t('c_* The requested information was not found._01'));
             }
         }
 

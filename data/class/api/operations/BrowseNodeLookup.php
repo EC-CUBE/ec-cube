@@ -41,7 +41,7 @@ class API_BrowseNodeLookup extends SC_Api_Abstract_Ex {
 
     public function __construct() {
         parent::__construct();
-        $this->operation_description = t('API_BrowseNodeLookup_001');
+        $this->operation_description = t('c_Category retrieval_01');
     }
 
     public function doAction($arrParam) {

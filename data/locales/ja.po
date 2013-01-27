@@ -392,38 +392,35 @@ msgstr "会員登録のご完了"
 msgid "c_The block cannot be found_01"
 msgstr "ブロックが見つかりません"
 
-msgid "API_AddrFromZip_001"
+msgid "c_Search for an address from the postal code._01"
 msgstr "郵便番号から住所を検索します。"
 
-msgid "API_BrowseNodeLookup_001"
+msgid "c_Category retrieval_01"
 msgstr "カテゴリ取得"
 
-msgid "API_CartAdd_001"
+msgid "c_Add product to cart_01"
 msgstr "カートへの商品追加"
 
-msgid "API_CartClear_001"
+msgid "c_Empty cart_01"
 msgstr "カートのクリア"
 
-msgid "API_CartCreate_001"
+msgid "c_Newly create cart_01"
 msgstr "カートの新規作成"
 
-msgid "API_CartGet_001"
+msgid "c_Cart retrieval_01"
 msgstr "カートの取得"
 
-msgid "API_CartModify_001"
+msgid "c_Cart repair_01"
 msgstr "カートの修正"
 
-msgid "API_ItemLookup_001"
+msgid "c_Product details information will be retrieved_01"
 msgstr "商品詳細情報を取得します。"
 
-msgid "API_ItemLookup_002"
+msgid "c_* The requested information was not found._01"
 msgstr "※ 要求された情報は見つかりませんでした。"
 
-msgid "API_ItemSearch_001"
+msgid "c_Product search and product list information are retrieved._01"
 msgstr "商品検索・商品一覧情報を取得します。"
-
-msgid "API_ItemSearch_002"
-msgstr "※ 要求された情報は見つかりませんでした。"
 
 msgid "PARAM_LABEL_EMAIL"
 msgstr "メールアドレス"

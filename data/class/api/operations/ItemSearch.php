@@ -41,7 +41,7 @@ class API_ItemSearch extends SC_Api_Abstract_Ex {
 
     public function __construct() {
         parent::__construct();
-        $this->operation_description = t('API_ItemSearch_001');
+        $this->operation_description = t('c_Product search and product list information are retrieved._01');
     }
 
     public function doAction($arrParam) {
@@ -89,7 +89,7 @@ class API_ItemSearch extends SC_Api_Abstract_Ex {
 
                 return true;
             } else {
-                $this->addError('ItemSearch.Error', t('API_ItemSearch_002'));
+                $this->addError('ItemSearch.Error', t('c_* The requested information was not found._01'));
             }
         }
 

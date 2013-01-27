@@ -41,7 +41,7 @@ class API_AddrFromZip extends SC_Api_Abstract_Ex {
 
     public function __construct() {
         parent::__construct();
-        $this->operation_description = t('API_AddrFromZip_001');
+        $this->operation_description = t('c_Search for an address from the postal code._01');
     }
 
     public function doAction($arrParam) {
