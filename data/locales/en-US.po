@@ -529,7 +529,7 @@ msgstr "Postal code"
 msgid "c_Postal code 1_01"
 msgstr "Postal code 1"
 
-msgid "c_Postal code 2_01"
+msgid "c_Postal code 2_02"
 msgstr "Postal code 2"
 
 msgid "c_Password_01"
@@ -628,116 +628,122 @@ msgstr "Memo for SHOP"
 msgid "c_Points in possession_01"
 msgstr "Points in possession"
 
-msgid "c_Birthday points_01"
+msgid "PARAM_LABEL_BIRTH_POINT"
 msgstr "Birthday points"
 
-msgid "c_Final number of points registered_01"
+msgid "PARAM_LABEL_TOTAL_POINT"
 msgstr "Final number of points registered"
 
-msgid "c_Current points_01"
+msgid "PARAM_LABEL_NOW_POINT"
 msgstr "Current points"
 
-msgid "c_Go back_01"
+msgid "PARAM_LABEL_RETURN"
 msgstr "Go back"
 
-msgid "c_Birthday (start year)_01"
+msgid "PARAM_LABEL_BD_START_YEAR"
 msgstr "Birthday (start year)"
 
-msgid "c_Birthday (start month)_01"
+msgid "PARAM_LABEL_BD_START_MONTH"
 msgstr "Birthday (start month)"
 
-msgid "c_Birthday (start date)_01"
+msgid "PARAM_LABEL_BD_START_DAY"
 msgstr "Birthday (start date)"
 
-msgid "c_Birthday (end year)_01"
+msgid "PARAM_LABEL_BD_END_YEAR"
 msgstr "Birthday (end year)"
 
-msgid "c_Birthday (end month)_01"
+msgid "PARAM_LABEL_BD_END_MONTH"
 msgstr "Birthday (end month)"
 
-msgid "c_Birthday (end date)_01"
+msgid "PARAM_LABEL_BD_END_DAY"
 msgstr "Birthday (end date)"
 
-msgid "c_Birth month_01"
+msgid "PARAM_LABEL_BIRTH_MONTH"
 msgstr "Birth month"
 
-msgid "c_Purchase amount (start)_01"
+msgid "PARAM_LABEL_BUY_TOTAL_FROM"
 msgstr "Purchase amount (start)"
 
-msgid "c_Purchase amount (end)_01"
+msgid "PARAM_LABEL_BUY_TOTAL_TO"
 msgstr "Purchase amount (end)"
 
-msgid "c_Purchase frequency (start)_01"
+msgid "PARAM_LABEL_BUY_TIMES_FROM"
 msgstr "Purchase frequency (start)"
 
-msgid "c_Purchase frequency (end)_01"
+msgid "PARAM_LABEL_BUY_TIMES_TO"
 msgstr "Purchase frequency (end)"
 
-msgid "c_Registration/update date (start year)_01"
+msgid "PARAM_LABEL_UPDATE_START_YEAR"
 msgstr "Registration/update date (start year)"
 
-msgid "c_Registration/update date (start month)_01"
+msgid "PARAM_LABEL_UPDATE_START_MONTH"
 msgstr "Registration/update date (start month)"
 
-msgid "c_Registration/update date (start date)_01"
+msgid "PARAM_LABEL_UPDATE_START_DAY"
 msgstr "Registration/update date (start date)"
 
-msgid "c_Registration/update date (end year)_01"
+msgid "PARAM_LABEL_UPDATE_END_YEAR"
 msgstr "Registration/update date (end year)"
 
-msgid "c_Registration/update date (end month)_01"
+msgid "PARAM_LABEL_UPDATE_END_MONTH"
 msgstr "Registration/update date (end month)"
 
-msgid "c_Registration/update date (end date)_01"
+msgid "PARAM_LABEL_UPDATE_END_DAY"
 msgstr "Registration/update date (end date)"
 
-msgid "c_Number of items displayed_01"
+msgid "PARAM_LABEL_PAGE_MAX"
 msgstr "Number of items displayed"
 
-msgid "c_Final purchase date (start year)_01"
+msgid "PARAM_LABEL_BUY_START_YEAR"
 msgstr "Final purchase date (start year)"
 
-msgid "c_Final purchase date (start month)_01"
+msgid "PARAM_LABEL_BUY_START_MONTH"
 msgstr "Final purchase date (start month)"
 
-msgid "c_Final purchase date (start day)_01"
+msgid "PARAM_LABEL_BUY_START_DAY"
 msgstr "Final purchase date (start day)"
 
-msgid "c_Final purchase date (end year)_01"
+msgid "PARAM_LABEL_BUY_END_YEAR"
 msgstr "Final purchase date (end year)"
 
-msgid "c_Final purchase date (end month)_01"
+msgid "PARAM_LABEL_BUY_END_MONTH"
 msgstr "Final purchase date (end month)"
 
-msgid "c_Final purchase date (end day)_01"
+msgid "PARAM_LABEL_BUY_END_DAY"
 msgstr "Final purchase date (end day)"
 
-msgid "c_Purchased product_01"
+msgid "PARAM_LABEL_BUY_PRODUCT"
 msgstr "Purchased product"
 
-msgid "c_Purchased product name_01"
+msgid "PARAM_LABEL_BUY_PRODUCT_NAME"
 msgstr "Purchased product name"
 
-msgid "c_Purchased product code_01"
+msgid "PARAM_LABEL_BUY_PRODUCT_CODE"
 msgstr "Purchased product code"
 
 msgid "c_Category_01"
 msgstr "Category"
 
-msgid "c_Company name_01"
+msgid "PARAM_LABEL_COMPANY_NAME"
 msgstr "Company name"
 
 msgid "PARAM_LABEL_COMPANY_KANA"
 msgstr "会社名(フリガナ)"
 
-msgid "c_Store name_01"
+msgid "PARAM_LABEL_SHOP_NAME"
 msgstr "Store name"
 
 msgid "PARAM_LABEL_SHOP_KANA"
 msgstr "店名(フリガナ)"
 
-msgid "c_Store name (in English)_01"
+msgid "PARAM_LABEL_SHOP_NAME_ENG"
 msgstr "Store name (in English)"
+
+msgid "PARAM_LABEL_ZIP01"
+msgstr "Postal code 1"
+
+msgid "PARAM_LABEL_ZIP02"
+msgstr "Postal code 2"
 
 msgid "PARAM_LABEL_ADDR01"
 msgstr "Location 1"
@@ -2295,6 +2301,9 @@ msgstr ">> ×:PHP settings directive 'magic_quotes_gpc' is active."
 msgid "LC_Page_Install_017"
 msgstr ">> ○:Access authority is normal."
 
+msgid "LC_Page_Install_018"
+msgstr "Store name"
+
 msgid "LC_Page_Install_019"
 msgstr "Administrator: E-mail address"
 
@@ -2339,6 +2348,9 @@ msgstr "SMTP password"
 
 msgid "LC_Page_Install_033"
 msgstr "DB type"
+
+msgid "LC_Page_Install_034"
+msgstr "DB server"
 
 msgid "LC_Page_Install_035"
 msgstr "DB port"
@@ -3263,82 +3275,85 @@ msgstr "Since T_FIELD is duplicated, registration is not possible."
 msgid "LC_Page_Admin_System_Parameter"
 msgstr "Parameter settings"
 
-msgid "c_System information_01"
+msgid "LC_Page_Admin_System_System_001"
 msgstr "System information"
 
-msgid "c_EC-CUBE_01"
+msgid "LC_Page_Admin_System_System_002"
 msgstr "EC-CUBE"
 
-msgid "c_Server OS_01"
+msgid "LC_Page_Admin_System_System_003"
 msgstr "Server OS"
 
-msgid "c_DB server_01"
+msgid "LC_Page_Admin_System_System_004"
 msgstr "DB server"
 
-msgid "c_WEB server_01"
+msgid "LC_Page_Admin_System_System_005"
 msgstr "WEB server"
 
-msgid "c_Enabled_01"
+msgid "LC_Page_Admin_System_System_006"
 msgstr "Enabled"
 
-msgid "c_Inactive_01"
+msgid "LC_Page_Admin_System_System_007"
 msgstr "Inactive"
 
-msgid "c_GD_01"
+msgid "LC_Page_Admin_System_System_008"
 msgstr "GD"
 
-msgid "c_HTTP user agent_01"
+msgid "LC_Page_Admin_System_System_009"
 msgstr "HTTP user agent"
 
-msgid "c_Sales by period_01"
+msgid "LC_Page_Admin_Total_001"
 msgstr "Sales by period"
 
-msgid "c_Sales by product_01"
+msgid "LC_Page_Admin_Total_002"
+msgstr "Sales by period"
+
+msgid "LC_Page_Admin_Total_003"
 msgstr "Sales by product"
 
-msgid "c_Sales by age group_01"
+msgid "LC_Page_Admin_Total_004"
 msgstr "Sales by age group"
 
-msgid "c_Sales  by occupation_01"
+msgid "LC_Page_Admin_Total_005"
 msgstr "Sales  by occupation"
 
-msgid "c_Sales by member_01"
+msgid "LC_Page_Admin_Total_006"
 msgstr "Sales by member"
 
-msgid "c_T_FIELD1/T_FIELD2/T_FIELD3_01"
+msgid "LC_Page_Admin_Total_007"
 msgstr "T_FIELD1/T_FIELD2/T_FIELD3"
 
-msgid "c_Sales period: T_FIELD1 - T_FIELD2_01"
+msgid "LC_Page_Admin_Total_008"
 msgstr "Sales period: T_FIELD1 - T_FIELD2"
 
-msgid "c_Non-member_01"
+msgid "LC_Page_Admin_Total_010"
 msgstr "Non-member"
 
-msgid "c_Not answered_01"
+msgid "LC_Page_Admin_Total_011"
 msgstr "Not answered"
 
-msgid "c_T_FIELDs_01"
+msgid "LC_Page_Admin_Total_012"
 msgstr "T_FIELD's"
 
-msgid "c_(Age)_01"
+msgid "LC_Page_Admin_Total_013"
 msgstr "(Age)"
 
-msgid "c_(Total sales)_01"
+msgid "LC_Page_Admin_Total_014"
 msgstr "(Total sales)"
 
-msgid "c_(By month)_01"
+msgid "LC_Page_Admin_Total_015"
 msgstr "(By month)"
 
-msgid "c_(By year)_01"
+msgid "LC_Page_Admin_Total_016"
 msgstr "(By year)"
 
-msgid "c_(By day)_01"
+msgid "LC_Page_Admin_Total_017"
 msgstr "(By day)"
 
-msgid "c_(By time)_01"
+msgid "LC_Page_Admin_Total_018"
 msgstr "(By time)"
 
-msgid "c_(By date)_01"
+msgid "LC_Page_Admin_Total_019"
 msgstr "(By date)"
 
 msgid "c_Total_01"

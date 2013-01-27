@@ -683,7 +683,7 @@ function lfInitWebParam($objWebParam) {
         $smtp_password = SMTP_PASSWORD;
     }
 
-    $objWebParam->addParam(t('c_Store name_01'), 'shop_name', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $shop_name);
+    $objWebParam->addParam(t('LC_Page_Install_018'), 'shop_name', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $shop_name);
     $objWebParam->addParam(t('LC_Page_Install_019'), 'admin_mail', null, '', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'), $admin_mail);
     $objWebParam->addParam(t('LC_Page_Install_020'), 'login_id', ID_MAX_LEN, '', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'));
     $objWebParam->addParam(t('LC_Page_Install_021'), 'login_pass', ID_MAX_LEN, '', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'));
@@ -736,7 +736,7 @@ function lfInitDBParam($objDBParam) {
     }
 
     $objDBParam->addParam(t('LC_Page_Install_033'), 'db_type', INT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $db_type);
-    $objDBParam->addParam(t('c_DB server_01'), 'db_server', MTEXT_LEN, '', array('MAX_LENGTH_CHECK'), $db_server);
+    $objDBParam->addParam(t('LC_Page_Install_034'), 'db_server', MTEXT_LEN, '', array('MAX_LENGTH_CHECK'), $db_server);
     $objDBParam->addParam(t('LC_Page_Install_035'), 'db_port', INT_LEN, '', array('MAX_LENGTH_CHECK'), $db_port);
     $objDBParam->addParam(t('LC_Page_Install_036'), 'db_name', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $db_name);
     $objDBParam->addParam(t('LC_Page_Install_037'), 'db_user', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $db_user);

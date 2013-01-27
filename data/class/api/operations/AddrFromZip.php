@@ -64,7 +64,7 @@ class API_AddrFromZip extends SC_Api_Abstract_Ex {
 
     protected function lfInitParam(&$objFormParam) {
         $objFormParam->addParam(t('c_Postal code 1_01'), 'zip1', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('c_Postal code 2_01'), 'zip2', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Postal code 2_02'), 'zip2', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     public function getResponseGroupName() {
