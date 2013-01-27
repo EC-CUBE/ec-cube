@@ -175,12 +175,12 @@ class LC_Page_Forgot extends LC_Page_Ex {
      * @return void
      */
     function lfInitMailCheckParam(&$objFormParam, $device_type) {
-        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_LASTNAME'), 'name01', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK' ,'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_FIRSTNAME'), 'name02', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK' , 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Name (last name)_01'), 'name01', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK' ,'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Name (first name)_01'), 'name02', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK' , 'MAX_LENGTH_CHECK'));
         if ($device_type === DEVICE_TYPE_MOBILE) {
-            $objFormParam->addParam(t('PARAM_LABEL_EMAIL'), 'email', null, 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'NO_SPTAB' ,'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'));
+            $objFormParam->addParam(t('c_E-mail address_01'), 'email', null, 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'NO_SPTAB' ,'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'));
         } else {
-            $objFormParam->addParam(t('PARAM_LABEL_EMAIL'), 'email', null, 'a', array('NO_SPTAB', 'EXIST_CHECK', 'EMAIL_CHECK', 'SPTAB_CHECK' ,'EMAIL_CHAR_CHECK'));
+            $objFormParam->addParam(t('c_E-mail address_01'), 'email', null, 'a', array('NO_SPTAB', 'EXIST_CHECK', 'EMAIL_CHECK', 'SPTAB_CHECK' ,'EMAIL_CHAR_CHECK'));
         }
         return;
     }
@@ -256,8 +256,8 @@ class LC_Page_Forgot extends LC_Page_Ex {
         // メールチェックと同等のチェックを再度行う
         $this->lfInitMailCheckParam($objFormParam, $device_type);
         // 秘密の質問チェックの追加
-        $objFormParam->addParam(t('PARAM_LABEL_PASSWORD_REMINDER'), 'reminder', STEXT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_PASSWORD_REMINDER_ANSWER'), 'reminder_answer', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Question for confirming password_01'), 'reminder', STEXT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('c_Answer to question for confirming password_01'), 'reminder_answer', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         return;
     }
 

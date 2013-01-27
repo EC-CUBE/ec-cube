@@ -422,34 +422,28 @@ msgstr "※ 要求された情報は見つかりませんでした。"
 msgid "c_Product search and product list information are retrieved._01"
 msgstr "商品検索・商品一覧情報を取得します。"
 
-msgid "PARAM_LABEL_EMAIL"
+msgid "c_E-mail address_01"
 msgstr "メールアドレス"
 
-msgid "PARAM_LABEL_EMAIL_CONFIRM"
+msgid "c_E-mail address (confirmation)_01"
 msgstr "メールアドレス(確認)"
 
-msgid "PARAM_LABEL_EMAIL_MOBILE"
+msgid "Mobile e-mail address"
 msgstr "携帯メールアドレス"
 
-msgid "PARAM_LABEL_EMAIL_MOBILE_CONFIRM"
+msgid "c_Mobile e-mail address (confirmation)_01"
 msgstr "携帯メールアドレス(確認)"
 
-msgid "PARAM_LABEL_NAME"
+msgid "c_Name_01"
 msgstr "名前"
 
-msgid "PARAM_LABEL_CUSTOMER_NAME"
+msgid "c_Name_02"
 msgstr "お名前"
 
-msgid "PARAM_LABEL_CUSTOMER_NAME1"
-msgstr "お名前1"
-
-msgid "PARAM_LABEL_CUSTOMER_NAME2"
-msgstr "お名前2"
-
-msgid "PARAM_LABEL_CUSTOMER_LASTNAME"
+msgid "c_Name (last name)_01"
 msgstr "お名前(姓)"
 
-msgid "PARAM_LABEL_CUSTOMER_FIRSTNAME"
+msgid "c_Name (first name)_01"
 msgstr "お名前(名)"
 
 msgid "PARAM_LABEL_CUSTOMER_KANA"
@@ -461,10 +455,10 @@ msgstr "お名前(フリガナ・姓)"
 msgid "PARAM_LABEL_CUSTOMER_FIRSTKANA"
 msgstr "お名前(フリガナ・名)"
 
-msgid "PARAM_LABEL_ORDER_LASTNAME"
+msgid "c_Name of orderer (last name)_01"
 msgstr "注文者 お名前(姓)"
 
-msgid "PARAM_LABEL_ORDER_FIRSTNAME"
+msgid "c_Name of orderer (first name)_01"
 msgstr "注文者 お名前(名)"
 
 msgid "PARAM_LABEL_ORDER_LASTKANA"
@@ -473,79 +467,70 @@ msgstr "注文者 お名前(フリガナ・姓)"
 msgid "PARAM_LABEL_ORDER_FIRSTKANA"
 msgstr "注文者 お名前(フリガナ・名)"
 
-msgid "PARAM_LABEL_ORDER_NAME"
+msgid "c_Name of orderer_01"
 msgstr "注文者 お名前"
 
 msgid "PARAM_LABEL_ORDER_KANA"
 msgstr "注文者 お名前(フリガナ)"
 
-msgid "PARAM_LABEL_PREF"
+msgid "c_Prefecture_01"
 msgstr "都道府県"
 
-msgid "PARAM_LABEL_ADDR1"
+msgid "c_Address 1_01"
 msgstr "住所1"
 
-msgid "PARAM_LABEL_ADDR2"
+msgid "c_Address 2_01"
 msgstr "住所2"
 
-msgid "PARAM_LABEL_TEL"
+msgid "c_TEL_01"
 msgstr "TEL"
 
-msgid "PARAM_LABEL_TEL_NUMBER"
+msgid "c_Telephone number_01"
 msgstr "電話番号"
 
-msgid "PARAM_LABEL_TEL1"
+msgid "c_Telephone number 1_01"
 msgstr "電話番号1"
 
-msgid "PARAM_LABEL_TEL2"
+msgid "c_Telephone number 2_01"
 msgstr "電話番号2"
 
-msgid "PARAM_LABEL_TEL3"
+msgid "c_Telephone number 3_01"
 msgstr "電話番号3"
 
-msgid "PARAM_LABEL_CUSTOMER_TEL1"
-msgstr "お電話番号1"
-
-msgid "PARAM_LABEL_CUSTOMER_TEL2"
-msgstr "お電話番号2"
-
-msgid "PARAM_LABEL_CUSTOMER_TEL3"
-msgstr "お電話番号3"
-
-msgid "PARAM_LABEL_FAX"
+msgid "c_FAX_01"
 msgstr "FAX"
 
-msgid "PARAM_LABEL_FAX_NUMBER"
+msgid "c_Fax number_01"
 msgstr "FAX番号"
 
-msgid "PARAM_LABEL_FAX1"
+msgid "c_Fax number 1_01"
 msgstr "FAX番号1"
 
-msgid "PARAM_LABEL_FAX2"
+msgid "c_Fax number 2_01"
 msgstr "FAX番号2"
 
-msgid "PARAM_LABEL_FAX3"
+msgid "c_Fax number 3_01"
 msgstr "FAX番号3"
 
-msgid "PARAM_LABEL_ZIP"
+msgid "c_Postal code_01"
 msgstr "郵便番号"
 
-msgid "PARAM_LABEL_ZIP1"
+msgid "c_Postal code 1_01"
 msgstr "郵便番号1"
 
-msgid "PARAM_LABEL_ZIP2"
+msgid "c_Postal code 2_02"
 msgstr "郵便番号2"
 
-msgid "PARAM_LABEL_PASSWORD"
+msgid "c_Password_01"
 msgstr "パスワード"
 
-msgid "PARAM_LABEL_PASSWORD_CONFIRM"
+msgid "c_Password (confirmation)_01"
 msgstr "パスワード(確認)"
 
-msgid "PARAM_LABEL_REMINDER"
+msgid "c_Question for confirming password_01"
 msgstr "パスワード確認用の質問"
 
-msgid "PARAM_LABEL_REMINDER_ANSWER"
+msgid "c_Answer to question for confirming password_01"
 msgstr "パスワード確認用の質問の答え"
 
 msgid "PARAM_LABEL_SEX"
@@ -1642,12 +1627,6 @@ msgstr "稼働/非稼働"
 
 msgid "PARAM_LABEL_PAGE"
 msgstr "ページ"
-
-msgid "PARAM_LABEL_PASSWORD_REMINDER"
-msgstr "パスワード確認用の質問"
-
-msgid "PARAM_LABEL_PASSWORD_REMINDER_ANSWER"
-msgstr "パスワード確認用の質問の答え"
 
 msgid "PARAM_LABEL_IMG_FILE_NAME"
 msgstr "画像ファイル名"
