@@ -117,9 +117,9 @@
             <tr>
                 <th class="center"><!--{t string="tpl_Date of order receipt_01"}--></th>
                 <th class="center"><!--{t string="tpl_Name_02"}--></th>
-                <th class="center"><!--{t string="tpl_400"}--></th>
+                <th class="center"><!--{t string="tpl_Purchased product_01"}--></th>
                 <th class="center"><!--{t string="tpl_Payment method_01"}--></th>
-                <th class="center"><!--{t string="tpl_403" escape="none"}--></th>
+                <th class="center"><!--{t string="tpl_Purchase amount (&#36;)_01" escape="none"}--></th>
             </tr>
             <!--{section name=i loop=$arrNewOrder}-->
             <tr>

@@ -39,15 +39,15 @@
     <!--{/if}-->
 <!--{/foreach}-->
 <div id="order" class="contents-main">
-    <h2><!--{t string="tpl_410"}--></h2>
+    <h2><!--{t string="tpl_E-mail delivery_01"}--></h2>
     
     
     <!--{if $order_id_count > 1}-->
-    <span class="red"><!--{t string="tpl_415"}--></span><br /><br />
+    <span class="red"><!--{t string="tpl_* This is an example of a single e-mail. The order information differs for each e-mail_01"}--></span><br /><br />
     <!--{/if}-->
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_413"}--></th>
+            <th><!--{t string="tpl_Item name_01"}--></th>
             <td><!--{$tpl_subject|h}--></td>
         </tr>
         <tr>
@@ -58,8 +58,8 @@
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('return', '', ''); return false;"><span class="btn-prev"><!--{t string="tpl_416"}--></span></a></li>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'send', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_417"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('return', '', ''); return false;"><span class="btn-prev"><!--{t string="tpl_Return to previous page_01"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'send', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_E-mail sending_01"}--></span></a></li>
         </ul>
     </div>
 </div>

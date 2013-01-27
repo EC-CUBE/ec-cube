@@ -160,9 +160,9 @@ function func_submit() {
     <thead>
         <tr>
             <th><!--{t string="tpl_Product code_01"}--></th>
-            <th><!--{t string="tpl_Product name_01"}-->/<!--{t string="tpl_371"}-->/<!--{t string="tpl_374"}--></th>
-            <th><!--{t string="tpl_373"}--></th>
-            <th><!--{t string="tpl_385"}--></th>
+            <th><!--{t string="tpl_Product name_01"}-->/<!--{t string="tpl_Standard 1_01"}-->/<!--{t string="tpl_Standard 2_01"}--></th>
+            <th><!--{t string="tpl_Quantity_01"}--></th>
+            <th><!--{t string="tpl_Delivery destination_01"}--></th>
         </tr>
     </thead>
     <tbody>

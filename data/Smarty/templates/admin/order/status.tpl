@@ -82,7 +82,7 @@
                 <th><!--{t string="tpl_Name_02"}--></th>
                 <th><!--{t string="tpl_Payment method_01"}--></th>
                 <th><!--{t string="tpl_442" escape="none"}--></th>
-                <th><!--{t string="tpl_361"}--></th>
+                <th><!--{t string="tpl_Date of deposit_01"}--></th>
                 <th><!--{t string="tpl_Shipment date_01"}--></th>
             </tr>
             <!--{section name=cnt loop=$arrStatus}-->
@@ -146,7 +146,7 @@ function fnSelectCheckSubmit(){
     }
 
     if (checkflag == 0){
-        alert('<!--{t string="tpl_398"}-->');
+        alert('<!--{t string="tpl_A checkbox has not been selected_01"}-->');
         return false;
     }
 

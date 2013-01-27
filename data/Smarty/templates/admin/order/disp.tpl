@@ -46,7 +46,7 @@ self.moveTo(20,20);self.focus();
             <td><!--{$arrORDERSTATUS[$arrForm.status.value]|h}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_361"}--></th>
+            <th><!--{t string="tpl_Date of deposit_01"}--></th>
             <td><!--{$arrForm.payment_date.value|sfDispDBDate|default_t:"tpl_443"}--></td>
         </tr>
         <tr>
@@ -55,7 +55,7 @@ self.moveTo(20,20);self.focus();
         </tr>
     </table>
 
-    <h2><!--{t string="tpl_362"}--></h2>
+    <h2><!--{t string="tpl_Orderer information_01"}--></h2>
     <table class="form">
         <tr>
             <th><!--{t string="tpl_Member ID_01"}--></th>
@@ -63,7 +63,7 @@ self.moveTo(20,20);self.focus();
                 <!--{if $arrForm.customer_id.value > 0}-->
                     <!--{$arrForm.customer_id.value|h}-->
                 <!--{else}-->
-                    <!--{t string="tpl_363"}-->
+                    <!--{t string="tpl_(Non-member)_01"}-->
                 <!--{/if}-->
             </td>
         </tr>
@@ -88,38 +88,38 @@ self.moveTo(20,20);self.focus();
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_365"}--></th>
+            <th><!--{t string="tpl_Remarks_01"}--></th>
             <td><!--{$arrForm.message.value|h|nl2br}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_366"}--></th>
+            <th><!--{t string="tpl_Current points_01"}--></th>
             <td>
                 <!--{if $arrForm.customer_id >0}-->
                     <!--{t string="pt_prefix"}-->
                     <!--{$arrForm.customer_point.value|number_format}-->
                     <!--{t string="pt_suffix"}-->
                 <!--{else}-->
-                    <!--{t string="tpl_363"}-->
+                    <!--{t string="tpl_(Non-member)_01"}-->
                 <!--{/if}-->
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_367"}--></th>
+            <th><!--{t string="tpl_Terminal type_01"}--></th>
             <td><!--{$arrDeviceType[$arrForm.device_type_id.value]|h}--></td>
         </tr>
     </table>
     <!--▲お客様情報ここまで-->
 
     <!--▼受注商品情報ここから-->
-    <h2><!--{t string="tpl_368"}--></h2>
+    <h2><!--{t string="tpl_Order receipt product information_01"}--></h2>
     <table class="list">
         <tr>
             <th class="id"><!--{t string="tpl_Product code_01"}--></th>
-            <th class="name"><!--{t string="tpl_Product name_01"}-->/<!--{t string="tpl_371"}-->/<!--{t string="tpl_374"}--></th>
-            <th class="price"><!--{t string="tpl_372"}--></th>
-            <th class="qty"><!--{t string="tpl_373"}--></th>
-            <th class="price"><!--{t string="tpl_375"}--></th>
-            <th class="price"><!--{t string="tpl_376"}--></th>
+            <th class="name"><!--{t string="tpl_Product name_01"}-->/<!--{t string="tpl_Standard 1_01"}-->/<!--{t string="tpl_Standard 2_01"}--></th>
+            <th class="price"><!--{t string="tpl_Unit price_01"}--></th>
+            <th class="qty"><!--{t string="tpl_Quantity_01"}--></th>
+            <th class="price"><!--{t string="tpl_Price including tax_01"}--></th>
+            <th class="price"><!--{t string="tpl_Subtotal_01"}--></th>
         </tr>
         <!--{section name=cnt loop=$arrForm.quantity.value}-->
         <!--{assign var=product_index value="`$smarty.section.cnt.index`"}-->
@@ -143,15 +143,15 @@ self.moveTo(20,20);self.focus();
         </tr>
         <!--{/section}-->
         <tr>
-            <th colspan="5" class="column right"><!--{t string="tpl_376"}--></th>
+            <th colspan="5" class="column right"><!--{t string="tpl_Subtotal_01"}--></th>
             <td class="right"><!--{t string="tpl_500" escape="none" T_FIELD=$arrForm.subtotal.value|number_format}--></td>
         </tr>
         <tr>
-            <th colspan="5" class="column right"><!--{t string="tpl_377"}--></th>
+            <th colspan="5" class="column right"><!--{t string="tpl_Discount_01"}--></th>
             <td class="right"><!--{t string="tpl_500" escape="none" T_FIELD=$arrForm.discount.value|h}--></td>
         </tr>
         <tr>
-            <th colspan="5" class="column right"><!--{t string="tpl_378"}--></th>
+            <th colspan="5" class="column right"><!--{t string="tpl_Shipping fee_01"}--></th>
             <td class="right"><!--{t string="tpl_500" escape="none" T_FIELD=$arrForm.deliv_fee.value|h}--></td>
         </tr>
         <tr>
@@ -159,36 +159,36 @@ self.moveTo(20,20);self.focus();
             <td class="right"><!--{t string="tpl_500" escape="none" T_FIELD=$arrForm.charge.value|h}--></td>
         </tr>
         <tr>
-            <th colspan="5" class="column right"><!--{t string="tpl_379"}--></th>
+            <th colspan="5" class="column right"><!--{t string="tpl_Total_01"}--></th>
             <td class="right"><!--{t string="currency_prefix"}--><!--{$arrForm.total.value|number_format}--><!--{t string="currency_suffix"}--></td>
         </tr>
         <tr>
-            <th colspan="5" class="column right"><!--{t string="tpl_380"}--></th>
+            <th colspan="5" class="column right"><!--{t string="tpl_Payment total_01"}--></th>
             <td class="right"><!--{t string="currency_prefix"}--><!--{$arrForm.payment_total.value|number_format}--><!--{t string="currency_suffix"}--></td>
         </tr>
         <!--{if $smarty.const.USE_POINT !== false}-->
             <tr>
-                <th colspan="5" class="column right"><!--{t string="tpl_381"}--></th>
+                <th colspan="5" class="column right"><!--{t string="tpl_Points used_01"}--></th>
                 <td class="right"><!--{t string="pt_prefix"}--><!--{$arrForm.use_point.value|default:0|h}--><!--{t string="pt_suffix"}--></td>
             </tr>
             <!--{if $arrForm.birth_point.value > 0}-->
                 <tr>
-                    <th colspan="5" class="column right"><!--{t string="tpl_382"}--></th>
+                    <th colspan="5" class="column right"><!--{t string="tpl_Birthday points_001"}--></th>
                     <td class="right"><!--{t string="pt_prefix"}--><!--{$arrForm.birth_point.value|number_format}--><!--{t string="pt_suffix"}--></td>
                 </tr>
             <!--{/if}-->
             <tr>
-                <th colspan="5" class="column right"><!--{t string="tpl_383"}--></th>
+                <th colspan="5" class="column right"><!--{t string="tpl_Points added_01"}--></th>
                 <td class="right"><!--{t string="pt_prefix"}--><!--{$arrForm.add_point.value|number_format|default:0}--><!--{t string="pt_suffix"}--></td>
             </tr>
         <!--{/if}-->
     </table>
     <!--▼お届け先情報ここから-->
-    <h2><!--{t string="tpl_384"}--></h2>
+    <h2><!--{t string="tpl_Delivery destination information_01"}--></h2>
     <!--{if $arrForm.product_type_id.value[0] != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
     <!--{foreach name=shipping from=$arrAllShipping item=arrShipping key=shipping_index}-->
         <!--{if $arrForm.shipping_quantity.value > 1}-->
-            <h3><!--{t string="tpl_385"}--><!--{$smarty.foreach.shipping.iteration}--></h3>
+            <h3><!--{t string="tpl_Delivery destination_01"}--><!--{$smarty.foreach.shipping.iteration}--></h3>
         <!--{/if}-->
         <!--{assign var=key value="shipping_id"}-->
         <!--{if $arrForm.shipping_quantity.value > 1}-->
@@ -197,9 +197,9 @@ self.moveTo(20,20);self.focus();
                 <table class="list" id="order-edit-products">
                     <tr>
                         <th class="id"><!--{t string="tpl_Product code_01"}--></th>
-                        <th class="name"><!--{t string="tpl_Product name_01"}-->/<!--{t string="tpl_371"}-->/<!--{t string="tpl_374"}--></th>
-                        <th class="price"><!--{t string="tpl_372"}--></th>
-                        <th class="qty"><!--{t string="tpl_373"}--></th>
+                        <th class="name"><!--{t string="tpl_Product name_01"}-->/<!--{t string="tpl_Standard 1_01"}-->/<!--{t string="tpl_Standard 2_01"}--></th>
+                        <th class="price"><!--{t string="tpl_Unit price_01"}--></th>
+                        <th class="qty"><!--{t string="tpl_Quantity_01"}--></th>
                     </tr>
                     <!--{section name=item loop=$arrShipping.shipment_product_class_id|@count}-->
                         <!--{assign var=item_index value="`$smarty.section.item.index`"}-->
@@ -271,19 +271,19 @@ self.moveTo(20,20);self.focus();
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_386"}--></th>
+                <th><!--{t string="tpl_Delivery time_01"}--></th>
                 <td>
-                    <!--{$arrDelivTime[$arrShipping.time_id]|default_t:"tpl_388"}-->
+                    <!--{$arrDelivTime[$arrShipping.time_id]|default_t:"tpl_No designation_01"}-->
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_387"}--></th>
+                <th><!--{t string="tpl_Delivery date_01"}--></th>
                 <td>
                     <!--{assign var=key1 value="shipping_date_year"}-->
                     <!--{assign var=key2 value="shipping_date_month"}-->
                     <!--{assign var=key3 value="shipping_date_day"}-->
                     <!--{if $arrShipping[$key1] == "" && $arrShipping[$key2] == "" && $arrShipping[$key3] == ""}-->
-                        <!--{t string="tpl_388"}-->
+                        <!--{t string="tpl_No designation_01"}-->
                     <!--{else}-->
                         <!--{t string="tpl_726" T_FIELD1=$arrShipping[$key1] T_FIELD2=$arrShipping[$key2] T_FIELD3=$arrShipping[$key3] }-->
                     <!--{/if}-->
@@ -304,7 +304,7 @@ self.moveTo(20,20);self.focus();
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_389"}--></th>
+                <th><!--{t string="tpl_Payment method_01"}--></th>
                 <td>
                     <!--{$arrPayment[$arrForm.payment_id.value]|h}-->
                 </td>
@@ -312,7 +312,7 @@ self.moveTo(20,20);self.focus();
 
             <!--{if $arrForm.payment_info|@count > 0}-->
             <tr>
-                <th><!--{t string="tpl_390" T_FIELD=$arrForm.payment_type}--></th>
+                <th><!--{t string="tpl_T_FIELD information_01" T_FIELD=$arrForm.payment_type}--></th>
                 <td>
                     <!--{foreach key=key item=item from=$arrForm.payment_info}-->
                     <!--{if $key != "title"}--><!--{if $item.name != ""}--><!--{t string="t_T_FIELD:_01" T_FIELD=$item.name}--><!--{/if}--><!--{$item.value}--><br/><!--{/if}-->
@@ -322,7 +322,7 @@ self.moveTo(20,20);self.focus();
             <!--{/if}-->
 
             <tr>
-                <th><!--{t string="tpl_391"}--></th>
+                <th><!--{t string="tpl_Memo_01"}--></th>
                 <td>
                     <!--{$arrForm.note.value|h|nl2br}-->
                 </td>
@@ -331,7 +331,7 @@ self.moveTo(20,20);self.focus();
 
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="window.close(); return false;"><span class="btn-next"><!--{t string="tpl_392"}--></span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="window.close(); return false;"><span class="btn-next"><!--{t string="tpl_Close_01"}--></span></a></li>
             </ul>
         </div>
 

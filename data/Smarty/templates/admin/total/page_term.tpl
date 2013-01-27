@@ -58,7 +58,7 @@
             <!--{if !$smarty.section.cnt.last}-->
                 <td class="center"><!--{*期間*}--><!--{$arrResults[cnt].str_date}--></td>
             <!--{else}-->
-                <td class="center"><!--{*期間*}--><!--{t string="tpl_379"}--></td>
+                <td class="center"><!--{*期間*}--><!--{t string="tpl_Total_01"}--></td>
             <!--{/if}-->
 
             <td class="right"><!--{*購入件数*}--><!--{t string="tpl_701" T_FIELD=$arrResults[cnt].total_order|number_format}--></td>

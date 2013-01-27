@@ -200,8 +200,8 @@
     <table class="form">
         <!--{if $tpl_mode != 'add'}-->
         <tr>
-            <th><!--{t string="tpl_397"}--></th>
-            <td><a class="btn-normal" href="javascript:;" onclick="win02('pdf.php?order_id=<!--{$arrForm.order_id.value|h}-->','pdf','615','650'); return false;"><!--{t string="tpl_397"}--></a></td>
+            <th><!--{t string="tpl_Ledger output_01"}--></th>
+            <td><a class="btn-normal" href="javascript:;" onclick="win02('pdf.php?order_id=<!--{$arrForm.order_id.value|h}-->','pdf','615','650'); return false;"><!--{t string="tpl_Ledger output_01"}--></a></td>
         </tr>
         <!--{/if}-->
         <tr>
@@ -222,12 +222,12 @@
                     <!--{html_options options=$arrORDERSTATUS selected=$arrForm[$key].value}-->
                 </select><br />
                 <!--{if $smarty.get.mode != 'add'}-->
-                    <span class="attention"><!--{t string="tpl_396" T_FIELD=$arrORDERSTATUS[$smarty.const.ORDER_CANCEL]}--></span>
+                    <span class="attention"><!--{t string="tpl_* When T_FIELD is selected, restore the inventory count manually._01" T_FIELD=$arrORDERSTATUS[$smarty.const.ORDER_CANCEL]}--></span>
                 <!--{/if}-->
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_361"}--></th>
+            <th><!--{t string="tpl_Date of deposit_01"}--></th>
             <td><!--{$arrForm.payment_date.value|sfDispDBDate|default_t:"tpl_443"|h}--></td>
         </tr>
         <tr>
@@ -236,7 +236,7 @@
         </tr>
     </table>
 
-    <h2><!--{t string="tpl_362"}-->
+    <h2><!--{t string="tpl_Orderer information_01"}-->
         <!--{if $tpl_mode == 'add'}-->
             <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnOpenWindow('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->customer/search_customer.php','search','600','650'); return false;"><!--{t string="tpl_724"}--></a>
         <!--{/if}-->
@@ -249,7 +249,7 @@
                     <!--{$arrForm.customer_id.value|h}-->
                     <input type="hidden" name="customer_id" value="<!--{$arrForm.customer_id.value|h}-->" />
                 <!--{else}-->
-                    <!--{t string="tpl_363"}-->
+                    <!--{t string="tpl_(Non-member)_01"}-->
                 <!--{/if}-->
             </td>
         </tr>
@@ -327,23 +327,23 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_365"}--></th>
+            <th><!--{t string="tpl_Remarks_01"}--></th>
             <td><!--{$arrForm.message.value|h|nl2br}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_366"}--></th>
+            <th><!--{t string="tpl_Current points_01"}--></th>
             <td>
                 <!--{if $arrForm.customer_id > 0}-->
                     <!--{t string="pt_prefix"}-->
                     <!--{$arrForm.customer_point.value|number_format}-->
                     <!--{t string="pt_suffix"}-->
                 <!--{else}-->
-                    <!--{t string="tpl_363"}-->
+                    <!--{t string="tpl_(Non-member)_01"}-->
             <!--{/if}-->
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_367"}--></th>
+            <th><!--{t string="tpl_Terminal type_01"}--></th>
             <td><!--{$arrDeviceType[$arrForm.device_type_id.value]|h}--></td>
         </tr>
 
@@ -353,23 +353,23 @@
     <!--▼受注商品情報ここから-->
     <a name="order_products"></a>
     <h2 id="order_products">
-        <!--{t string="tpl_368"}-->
-        <a class="btn-normal" href="javascript:;" name="recalculate" onclick="fnModeSubmit('recalculate','anchor_key','order_products');"><!--{t string="tpl_369"}--></a>
+        <!--{t string="tpl_Order receipt product information_01"}-->
+        <a class="btn-normal" href="javascript:;" name="recalculate" onclick="fnModeSubmit('recalculate','anchor_key','order_products');"><!--{t string="tpl_Confirm calculation_01"}--></a>
         <a class="btn-normal" href="javascript:;" name="add_product" onclick="win03('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php?order_id=<!--{$arrForm.order_id.value|h}-->', 'search', '615', '500'); return false;"><!--{t string="tpl_722"}--></a>
     </h2>
 
     <!--{if $arrErr.product_id}-->
-        <span class="attention"><!--{t string="tpl_370"}--></span>
+        <span class="attention"><!--{t string="tpl_* No product is selected._01"}--></span>
     <!--{/if}-->
 
     <table class="list" id="order-edit-products">
         <tr>
             <th class="id"><!--{t string="tpl_Product code_01"}--></th>
-            <th class="name"><!--{t string="tpl_Product name_01"}-->/<!--{t string="tpl_371"}-->/<!--{t string="tpl_374"}--></th>
-            <th class="price"><!--{t string="tpl_372"}--></th>
-            <th class="qty"><!--{t string="tpl_373"}--></th>
-            <th class="price"><!--{t string="tpl_375"}--></th>
-            <th class="price"><!--{t string="tpl_376"}--></th>
+            <th class="name"><!--{t string="tpl_Product name_01"}-->/<!--{t string="tpl_Standard 1_01"}-->/<!--{t string="tpl_Standard 2_01"}--></th>
+            <th class="price"><!--{t string="tpl_Unit price_01"}--></th>
+            <th class="qty"><!--{t string="tpl_Quantity_01"}--></th>
+            <th class="price"><!--{t string="tpl_Price including tax_01"}--></th>
+            <th class="price"><!--{t string="tpl_Subtotal_01"}--></th>
         </tr>
         <!--{section name=cnt loop=$arrForm.quantity.value}-->
         <!--{assign var=product_index value="`$smarty.section.cnt.index`"}-->
@@ -410,11 +410,11 @@
         </tr>
         <!--{/section}-->
         <tr>
-            <th colspan="5" class="column right"><!--{t string="tpl_376"}--></th>
+            <th colspan="5" class="column right"><!--{t string="tpl_Subtotal_01"}--></th>
             <td class="right"><!--{t string="tpl_500" escape="none" T_FIELD=$arrForm.subtotal.value|number_format}--></td>
         </tr>
         <tr>
-            <th colspan="5" class="column right"><!--{t string="tpl_377"}--></th>
+            <th colspan="5" class="column right"><!--{t string="tpl_Discount_01"}--></th>
             <td class="right">
                 <!--{assign var=key value="discount"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -424,7 +424,7 @@
             </td>
         </tr>
         <tr>
-            <th colspan="5" class="column right"><!--{t string="tpl_378"}--></th>
+            <th colspan="5" class="column right"><!--{t string="tpl_Shipping fee_01"}--></th>
             <td class="right">
                 <!--{assign var=key value="deliv_fee"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -444,14 +444,14 @@
             </td>
         </tr>
         <tr>
-            <th colspan="5" class="column right"><!--{t string="tpl_379"}--></th>
+            <th colspan="5" class="column right"><!--{t string="tpl_Total_01"}--></th>
             <td class="right">
                 <span class="attention"><!--{$arrErr.total}--></span>
                 <!--{t string="currency_prefix"}--><!--{$arrForm.total.value|number_format}--><!--{t string="currency_suffix"}-->
             </td>
         </tr>
         <tr>
-            <th colspan="5" class="column right"><!--{t string="tpl_380"}--></th>
+            <th colspan="5" class="column right"><!--{t string="tpl_Payment total_01"}--></th>
             <td class="right">
                 <span class="attention"><!--{$arrErr.payment_total}--></span>
                 <!--{t string="currency_prefix"}--><!--{$arrForm.payment_total.value|number_format}--><!--{t string="currency_suffix"}-->
@@ -459,7 +459,7 @@
         </tr>
         <!--{if $smarty.const.USE_POINT !== false}-->
             <tr>
-                <th colspan="5" class="column right"><!--{t string="tpl_381"}--></th>
+                <th colspan="5" class="column right"><!--{t string="tpl_Points used_01"}--></th>
                 <td class="right">
                     <!--{assign var=key value="use_point"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -470,7 +470,7 @@
             </tr>
             <!--{if $arrForm.birth_point.value > 0}-->
             <tr>
-                <th colspan="5" class="column right"><!--{t string="tpl_382"}--></th>
+                <th colspan="5" class="column right"><!--{t string="tpl_Birthday points_001"}--></th>
                 <td class="right">
                     <!--{t string="pt_prefix"}-->
                     <!--{$arrForm.birth_point.value|number_format}-->
@@ -479,7 +479,7 @@
             </tr>
             <!--{/if}-->
             <tr>
-                <th colspan="5" class="column right"><!--{t string="tpl_383"}--></th>
+                <th colspan="5" class="column right"><!--{t string="tpl_Points added_01"}--></th>
                 <td class="right">
                     <!--{t string="pt_prefix"}-->
                     <!--{$arrForm.add_point.value|number_format|default:0}-->
@@ -492,19 +492,19 @@
     <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" />
     <!--▼お届け先情報ここから-->
     <a name="shipping"></a>
-    <h2><!--{t string="tpl_384"}-->
+    <h2><!--{t string="tpl_Delivery destination information_01"}-->
     <!--{if $arrForm.shipping_quantity.value <= 1}-->
-        <a class="btn-normal" href="javascript:;" onclick="fnCopyFromOrderData();"><!--{t string="tpl_393"}--></a>
+        <a class="btn-normal" href="javascript:;" onclick="fnCopyFromOrderData();"><!--{t string="tpl_Deliver to customers_01"}--></a>
     <!--{/if}-->
     <!--{if $smarty.const.USE_MULTIPLE_SHIPPING !== false}-->
-        <a class="btn-normal" href="javascript:;"  onclick="fnAppendShipping();"><!--{t string="tpl_394"}--></a>
-        <a class="btn-normal" href="javascript:;" onclick="fnMultiple();"><!--{t string="tpl_395"}--></a>
+        <a class="btn-normal" href="javascript:;"  onclick="fnAppendShipping();"><!--{t string="tpl_Add new delivery destination_01"}--></a>
+        <a class="btn-normal" href="javascript:;" onclick="fnMultiple();"><!--{t string="tpl_ Multiple delivery destinations_01"}--></a>
     <!--{/if}-->
     </h2>
 
     <!--{foreach name=shipping from=$arrAllShipping item=arrShipping key=shipping_index}-->
         <!--{if $arrForm.shipping_quantity.value > 1}-->
-            <h3><!--{t string="tpl_385"}--><!--{$smarty.foreach.shipping.iteration}--></h3>
+            <h3><!--{t string="tpl_Delivery destination_01"}--><!--{$smarty.foreach.shipping.iteration}--></h3>
         <!--{/if}-->
         <!--{assign var=key value="shipping_id"}-->
         <input type="hidden" name="<!--{$key}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key]|default:"0"|h}-->" id="<!--{$key}-->_<!--{$shipping_index}-->" />
@@ -516,9 +516,9 @@
                 <table class="list" id="order-edit-products">
                     <tr>
                         <th class="id"><!--{t string="tpl_Product code_01"}--></th>
-                        <th class="name"><!--{t string="tpl_Product name_01"}-->/<!--{t string="tpl_371"}-->/<!--{t string="tpl_374"}--></th>
-                        <th class="price"><!--{t string="tpl_372"}--></th>
-                        <th class="qty"><!--{t string="tpl_373"}--></th>
+                        <th class="name"><!--{t string="tpl_Product name_01"}-->/<!--{t string="tpl_Standard 1_01"}-->/<!--{t string="tpl_Standard 2_01"}--></th>
+                        <th class="price"><!--{t string="tpl_Unit price_01"}--></th>
+                        <th class="qty"><!--{t string="tpl_Quantity_01"}--></th>
                     </tr>
                     <!--{section name=item loop=$arrShipping.shipment_product_class_id|@count}-->
                         <!--{assign var=item_index value="`$smarty.section.item.index`"}-->
@@ -623,18 +623,18 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_386"}--></th>
+                <th><!--{t string="tpl_Delivery time_01"}--></th>
                 <td>
                     <!--{assign var=key value="time_id"}-->
                     <span class="attention"><!--{$arrErr[$key][$shipping_index]}--></span>
                     <select name="<!--{$key}-->[<!--{$shipping_index}-->]" style="<!--{$arrErr[$key][$shipping_index]|sfGetErrorColor}-->">
-                        <option value="" selected="0"><!--{t string="tpl_388"}--></option>
+                        <option value="" selected="0"><!--{t string="tpl_No designation_01"}--></option>
                         <!--{html_options options=$arrDelivTime selected=$arrShipping[$key]}-->
                     </select>
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_387"}--></th>
+                <th><!--{t string="tpl_Delivery date_01"}--></th>
                 <td>
             <!--{assign var=key1 value="shipping_date_year"}-->
             <!--{assign var=key2 value="shipping_date_month"}-->
@@ -670,7 +670,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_389"}--><br /><span class="attention"><!--{t string="tpl_721"}--></span></th>
+            <th><!--{t string="tpl_Payment method_01"}--><br /><span class="attention"><!--{t string="tpl_721"}--></span></th>
             <td>
                 <!--{assign var=key value="payment_id"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -683,7 +683,7 @@
 
         <!--{if $arrForm.payment_info|@count > 0}-->
         <tr>
-            <th><!--{t string="tpl_390" T_FIELD=$arrForm.payment_type}--></th>
+            <th><!--{t string="tpl_T_FIELD information_01" T_FIELD=$arrForm.payment_type}--></th>
             <td>
                 <!--{foreach key=key item=item from=$arrForm.payment_info}-->
                 <!--{if $key != "title"}--><!--{if $item.name != ""}--><!--{t string="t_T_FIELD:_01" T_FIELD=$item.name}--><!--{/if}--><!--{$item.value}--><br/><!--{/if}-->
@@ -693,7 +693,7 @@
         <!--{/if}-->
 
         <tr>
-            <th><!--{t string="tpl_391"}--></th>
+            <th><!--{t string="tpl_Memo_01"}--></th>
             <td>
                 <!--{assign var=key value="note"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>

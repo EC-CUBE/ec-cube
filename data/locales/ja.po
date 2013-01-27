@@ -4695,187 +4695,178 @@ msgstr "受注日"
 msgid "tpl_Response status_01"
 msgstr "対応状況"
 
-msgid "tpl_361"
+msgid "tpl_Date of deposit_01"
 msgstr "入金日"
 
-msgid "tpl_362"
+msgid "tpl_Orderer information_01"
 msgstr "注文者情報"
 
-msgid "tpl_363"
+msgid "tpl_(Non-member)_01"
 msgstr "(非会員)"
 
 msgid "tpl_364"
 msgstr "お名前(カナ)"
 
-msgid "tpl_365"
+msgid "tpl_Remarks_01"
 msgstr "備考"
 
-msgid "tpl_366"
+msgid "tpl_Current points_01"
 msgstr "現在ポイント"
 
-msgid "tpl_367"
+msgid "tpl_Terminal type_01"
 msgstr "端末種別"
 
-msgid "tpl_368"
+msgid "tpl_Order receipt product information_01"
 msgstr "受注商品情報"
 
-msgid "tpl_369"
+msgid "tpl_Confirm calculation_01"
 msgstr "計算結果の確認"
 
-msgid "tpl_370"
+msgid "tpl_* No product is selected._01"
 msgstr "※ 商品が選択されていません。"
 
-msgid "tpl_371"
+msgid "tpl_Standard 1_01"
 msgstr "規格1"
 
-msgid "tpl_372"
+msgid "tpl_Unit price_01"
 msgstr "単価"
 
-msgid "tpl_373"
+msgid "tpl_Quantity_01"
 msgstr "数量"
 
-msgid "tpl_374"
+msgid "tpl_Standard 2_01"
 msgstr "規格2"
 
-msgid "tpl_375"
+msgid "tpl_Price including tax_01"
 msgstr "税込み価格"
 
-msgid "tpl_376"
+msgid "tpl_Subtotal_01"
 msgstr "小計"
 
-msgid "tpl_377"
+msgid "tpl_Discount_01"
 msgstr "値引き"
 
-msgid "tpl_378"
+msgid "tpl_Shipping fee_01"
 msgstr "送料"
 
-msgid "tpl_379"
+msgid "tpl_Total_01"
 msgstr "合計"
 
-msgid "tpl_380"
+msgid "tpl_Payment total_01"
 msgstr "お支払い合計"
 
-msgid "tpl_381"
+msgid "tpl_Points used_01"
 msgstr "使用ポイント"
 
-msgid "tpl_382"
+msgid "tpl_Birthday points_001"
 msgstr "お誕生日ポイント"
 
-msgid "tpl_383"
+msgid "tpl_Points added_01"
 msgstr "加算ポイント"
 
-msgid "tpl_384"
+msgid "tpl_Delivery destination information_01"
 msgstr "お届け先情報"
 
-msgid "tpl_385"
+msgid "tpl_Delivery destination_01"
 msgstr "お届け先"
 
-msgid "tpl_386"
+msgid "tpl_Delivery time_01"
 msgstr "お届け時間"
 
-msgid "tpl_387"
+msgid "tpl_Delivery date_01"
 msgstr "お届け日"
 
-msgid "tpl_388"
+msgid "tpl_No designation_01"
 msgstr "指定無し"
 
-msgid "tpl_389"
-msgstr "お支払方法"
-
-msgid "tpl_390"
+msgid "tpl_T_FIELD information_01"
 msgstr "T_FIELD情報"
 
-msgid "tpl_391"
+msgid "tpl_Memo_01"
 msgstr "メモ"
 
-msgid "tpl_392"
+msgid "tpl_Close_01"
 msgstr "閉じる"
 
-msgid "tpl_393"
+msgid "tpl_Deliver to customers_01"
 msgstr "お客様情報へお届けする"
 
-msgid "tpl_394"
+msgid "tpl_Add new delivery destination_01"
 msgstr "お届け先を新規追加"
 
-msgid "tpl_395"
+msgid "tpl_ Multiple delivery destinations_01"
 msgstr "複数のお届け先を指定する"
 
-msgid "tpl_396"
+msgid "tpl_* When T_FIELD is selected, restore the inventory count manually._01"
 msgstr "※ T_FIELDに変更時には、在庫数を手動で戻してください。"
 
-msgid "tpl_397"
+msgid "tpl_Ledger output_01"
 msgstr "帳票出力"
 
-msgid "tpl_398"
+msgid "tpl_A checkbox has not been selected_01"
 msgstr "チェックボックスが選択されていません"
 
-msgid "tpl_399"
-msgstr "更新日"
-
-msgid "tpl_400"
+msgid "tpl_Purchased product_01"
 msgstr "購入商品"
 
-msgid "tpl_401"
+msgid "tpl_PDF batch output_01"
 msgstr "PDF一括出力"
 
-msgid "tpl_402"
+msgid "tpl_Batch e-mail notification_01"
 msgstr "メール一括通知"
 
-msgid "tpl_403"
+msgid "tpl_Purchase amount (&#36;)_01"
 msgstr "購入金額(円)"
 
-msgid "tpl_404"
+msgid "tpl_All product delivery dates_01"
 msgstr "全商品発送日"
 
-msgid "tpl_405"
+msgid "tpl_Ledger_01"
 msgstr "帳票"
 
-msgid "tpl_406"
+msgid "tpl_Batch outpu_01"
 msgstr "一括出力"
 
-msgid "tpl_407"
+msgid "tpl_Individual output_01"
 msgstr "個別出力"
 
-msgid "tpl_408"
+msgid "tpl_Batch notification_01"
 msgstr "一括通知"
 
-msgid "tpl_409"
+msgid "tpl_Individual notification_01"
 msgstr "個別通知"
 
-msgid "tpl_410"
+msgid "tpl_E-mail delivery_01"
 msgstr "メール配信"
 
-msgid "tpl_411"
+msgid "tpl_Processing date_01"
 msgstr "処理日"
 
-msgid "tpl_412"
+msgid "tpl_Notification e-mail_01"
 msgstr "通知メール"
 
-msgid "tpl_413"
+msgid "tpl_Item name_01"
 msgstr "件名"
 
-msgid "tpl_414"
+msgid "tpl_Check the sending details_01"
 msgstr "送信内容を確認"
 
-msgid "tpl_415"
+msgid "tpl_* This is an example of a single e-mail. The order information differs for each e-mail_01"
 msgstr "※本文は1通分の例です。受注情報は各メールごとに異なります"
 
-msgid "tpl_416"
+msgid "tpl_Return to previous page_01"
 msgstr "前のページへ戻る"
 
-msgid "tpl_417"
+msgid "tpl_E-mail sending_01"
 msgstr "メール送信"
 
-msgid "tpl_418"
-msgstr "ウインドウを閉じる"
-
-msgid "tpl_419"
+msgid "tpl_Ledger creation_01"
 msgstr "帳票の作成"
 
 msgid "tpl_420"
 msgstr "発行日"
 
-msgid "tpl_420_1"
+msgid "tpl_Issuance date<span class='attention'> *</span>_01"
 msgstr "発行日<span class='attention'> *</span>"
 
 msgid "tpl_421"

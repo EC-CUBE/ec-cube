@@ -4739,189 +4739,178 @@ msgstr "Date of order receipt"
 msgid "tpl_Response status_01"
 msgstr "Response status"
 
-msgid "tpl_361"
+msgid "tpl_Date of deposit_01"
 msgstr "Date of deposit"
 
-msgid "tpl_362"
+msgid "tpl_Orderer information_01"
 msgstr "Orderer information"
 
-msgid "tpl_363"
+msgid "tpl_(Non-member)_01"
 msgstr "(Non-member)"
 
 msgid "tpl_364"
 msgstr "お名前(カナ)"
 
-msgid "tpl_365"
+msgid "tpl_Remarks_01"
 msgstr "Remarks"
 
-msgid "tpl_366"
+msgid "tpl_Current points_01"
 msgstr "Current points"
 
-msgid "tpl_367"
+msgid "tpl_Terminal type_01"
 msgstr "Terminal type"
 
-msgid "tpl_368"
+msgid "tpl_Order receipt product information_01"
 msgstr "Order receipt product information"
 
-msgid "tpl_369"
+msgid "tpl_Confirm calculation_01"
 msgstr "Confirm calculation"
 
-msgid "tpl_370"
+msgid "tpl_* No product is selected._01"
 msgstr "* No product is selected."
 
-msgid "tpl_371"
+msgid "tpl_Standard 1_01"
 msgstr "Standard 1"
 
-msgid "tpl_372"
+msgid "tpl_Unit price_01"
 msgstr "Unit price"
 
-msgid "tpl_373"
+msgid "tpl_Quantity_01"
 msgstr "Quantity"
 
-msgid "tpl_374"
+msgid "tpl_Standard 2_01"
 msgstr "Standard 2"
 
-msgid "tpl_375"
+msgid "tpl_Price including tax_01"
 msgstr "Price including tax"
 
-msgid "tpl_376"
+msgid "tpl_Subtotal_01"
 msgstr "Subtotal"
 
-msgid "tpl_377"
+msgid "tpl_Discount_01"
 msgstr "Discount"
 
-msgid "tpl_378"
+msgid "tpl_Shipping fee_01"
 msgstr "Shipping fee"
 
-msgid "tpl_379"
+msgid "tpl_Total_01"
 msgstr "Total"
 
-msgid "tpl_380"
+msgid "tpl_Payment total_01"
 msgstr "Payment total"
 
-msgid "tpl_381"
+msgid "tpl_Points used_01"
 msgstr "Points used"
 
-msgid "tpl_382"
+msgid "tpl_Birthday points_001"
 msgstr "Birthday points"
 
-msgid "tpl_383"
+msgid "tpl_Points added_01"
 msgstr "Points added"
 
-msgid "tpl_384"
+msgid "tpl_Delivery destination information_01"
 msgstr "Delivery destination information"
 
-msgid "tpl_385"
+msgid "tpl_Delivery destination_01"
 msgstr "Delivery destination"
 
-msgid "tpl_386"
+msgid "tpl_Delivery time_01"
 msgstr "Delivery time"
 
-msgid "tpl_387"
+msgid "tpl_Delivery date_01"
 msgstr "Delivery date"
 
-msgid "tpl_388"
+msgid "tpl_No designation_01"
 msgstr "No designation"
 
-msgid "tpl_389"
-msgstr "Payment method"
-
-msgid "tpl_390"
+msgid "tpl_T_FIELD information_01"
 msgstr "T_FIELD information"
 
-msgid "tpl_391"
+msgid "tpl_Memo_01"
 msgstr "Memo"
 
-msgid "tpl_392"
+msgid "tpl_Close_01"
 msgstr "Close"
 
-msgid "tpl_393"
+msgid "tpl_Deliver to customers_01"
 msgstr "Deliver to customers"
 
-msgid "tpl_394"
+msgid "tpl_Add new delivery destination_01"
 msgstr "Add new delivery destination"
 
-msgid "tpl_395"
+msgid "tpl_ Multiple delivery destinations_01"
 msgstr " Multiple delivery destinations"
 
-msgid "tpl_396"
+msgid "tpl_* When T_FIELD is selected, restore the inventory count manually._01"
 msgstr "* When T_FIELD is selected, restore the inventory count manually."
 
-msgid "tpl_397"
+msgid "tpl_Ledger output_01"
 msgstr "Ledger output"
 
-msgid "tpl_398"
+msgid "tpl_A checkbox has not been selected_01"
 msgstr "A checkbox has not been selected"
 
-msgid "tpl_399"
-msgstr "Date of update"
-
-msgid "tpl_400"
+msgid "tpl_Purchased product_01"
 msgstr "Purchased product"
 
-msgid "tpl_401"
+msgid "tpl_PDF batch output_01"
 msgstr "PDF batch output"
 
-msgid "tpl_402"
+msgid "tpl_Batch e-mail notification_01"
 msgstr "Batch e-mail notification"
 
-msgid "tpl_403"
+msgid "tpl_Purchase amount (&#36;)_01"
 msgstr "Purchase amount (&#36;)"
 
-msgid "tpl_404"
+msgid "tpl_All product delivery dates_01"
 msgstr "All product delivery dates"
 
-msgid "tpl_405"
+msgid "tpl_Ledger_01"
 msgstr "Ledger"
 
-msgid "tpl_406"
+msgid "tpl_Batch outpu_01"
 msgstr "Batch output"
 
-msgid "tpl_407"
+msgid "tpl_Individual output_01"
 msgstr "Individual output"
 
-msgid "tpl_408"
+msgid "tpl_Batch notification_01"
 msgstr "Batch notification"
 
-msgid "tpl_409"
+msgid "tpl_Individual notification_01"
 msgstr "Individual notification"
 
-msgid "tpl_410"
+msgid "tpl_E-mail delivery_01"
 msgstr "E-mail delivery"
 
-msgid "tpl_411"
+msgid "tpl_Processing date_01"
 msgstr "Processing date"
 
-msgid "tpl_412"
+msgid "tpl_Notification e-mail_01"
 msgstr "Notification e-mail"
 
-msgid "tpl_413"
+msgid "tpl_Item name_01"
 msgstr "Item name"
 
-msgid "tpl_414"
+msgid "tpl_Check the sending details_01"
 msgstr "Check the sending details"
 
-msgid "tpl_415"
-msgstr ""
-"* This is an example of a single e-mail. The order information differs for "
-"each e-mail"
+msgid "tpl_* This is an example of a single e-mail. The order information differs for each e-mail_01"
+msgstr "* This is an example of a single e-mail. The order information differs for each e-mail"
 
-msgid "tpl_416"
+msgid "tpl_Return to previous page_01"
 msgstr "Return to previous page"
 
-msgid "tpl_417"
+msgid "tpl_E-mail sending_01"
 msgstr "E-mail sending"
 
-msgid "tpl_418"
-msgstr "Close the window."
-
-msgid "tpl_419"
+msgid "tpl_Ledger creation_01"
 msgstr "Ledger creation"
 
 msgid "tpl_420"
 msgstr "Issuance date"
 
-msgid "tpl_420_1"
+msgid "tpl_Issuance date<span class='attention'> *</span>_01"
 msgstr "Issuance date<span class='attention'> *</span>"
 
 msgid "tpl_421"

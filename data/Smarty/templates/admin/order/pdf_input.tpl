@@ -131,7 +131,7 @@ function lfPopwinSubmit(formName) {
     <input type="hidden" name="order_id[]" value="<!--{$order_id|h}-->">
 <!--{/foreach}-->
 
-<h2><!--コンテンツタイトル--><!--{t string="tpl_419"}--></h2>
+<h2><!--コンテンツタイトル--><!--{t string="tpl_Ledger creation_01"}--></h2>
 
 <table class="form">
     <col width="20%" />
@@ -141,7 +141,7 @@ function lfPopwinSubmit(formName) {
         <td><!--{$arrForm.order_id|@join:', '}--></td>
     </tr>
     <tr>
-        <th><!--{t string="tpl_420_1" escape="none"}--></th>
+        <th><!--{t string="tpl_Issuance date<span class='attention'> *</span>_01" escape="none"}--></th>
         <td><!--{if $arrErr.year}--><span class="attention"><!--{$arrErr.year}--></span><!--{/if}-->
             <input id="datepicker"
                    type="text"
@@ -186,7 +186,7 @@ function lfPopwinSubmit(formName) {
         </td>
     </tr>
     <tr>
-        <th><!--{t string="tpl_365"}--></th>
+        <th><!--{t string="tpl_Remarks_01"}--></th>
         <td>
             <!--{t string="tpl_426"}--><input type="text" name="etc1" size="40" value="" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
             <!--{if $arrErr.etc2}--><span class="attention"><!--{$arrErr.msg1}--></span><!--{/if}-->

@@ -36,14 +36,14 @@
     <!--{/if}-->
 <!--{/foreach}-->
 <div id="order" class="contents-main">
-    <h2><!--{t string="tpl_410"}--></h2>
+    <h2><!--{t string="tpl_E-mail delivery_01"}--></h2>
     
     <!--{if $order_id_count == 1}-->
     <table class="list">
         <tr>
-            <th><!--{t string="tpl_411"}--></th>
-            <th><!--{t string="tpl_412"}--></th>
-            <th><!--{t string="tpl_413"}--></th>
+            <th><!--{t string="tpl_Processing date_01"}--></th>
+            <th><!--{t string="tpl_Notification e-mail_01"}--></th>
+            <th><!--{t string="tpl_Item name_01"}--></th>
         </tr>
         <!--{section name=cnt loop=$arrMailHistory}-->
         <tr class="center">
@@ -99,7 +99,7 @@
     <div class="btn-area">
         <ul>
             <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_URLPATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev"><!--{t string="tpl_Return_01"}--></span></a></li>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', '', 'mode', 'confirm'); return false;"><span class="btn-next"><!--{t string="tpl_414"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', '', 'mode', 'confirm'); return false;"><span class="btn-next"><!--{t string="tpl_Check the sending details_01"}--></span></a></li>
         </ul>
     </div>
 </div>
