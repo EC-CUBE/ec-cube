@@ -68,7 +68,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_215"}--></th>
+            <th><!--{t string="tpl_Gender_01"}--></th>
             <td><!--{html_radios_ex name="sex" options=$arrSex selected=$arrForm.sex}--></td>
         </tr>
         <tr>
@@ -103,7 +103,7 @@
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="document.form1.action='./review.php'; fnModeSubmit('search','',''); return false;" ><span class="btn-prev"><!--{t string="tpl_227"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="document.form1.action='./review.php'; fnModeSubmit('search','',''); return false;" ><span class="btn-prev"><!--{t string="tpl_Return to search screen_01"}--></span></a></li>
             <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('complete','',''); return false;"><span class="btn-next"><!--{t string="tpl_Save and continue_01"}--></span></a></li>
         </ul>
     </div>

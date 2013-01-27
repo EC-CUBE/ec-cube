@@ -205,7 +205,7 @@
         </tr>
         <!--{/if}-->
         <tr>
-            <th><!--{t string="tpl_231"}--></th>
+            <th><!--{t string="tpl_Order number_01"}--></th>
             <td><!--{$arrForm.order_id.value|h}--></td>
         </tr>
         <tr>
@@ -231,8 +231,8 @@
             <td><!--{$arrForm.payment_date.value|sfDispDBDate|default_t:"tpl_443"|h}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_233"}--></th>
-            <td><!--{$arrForm.commit_date.value|sfDispDBDate|default_t:"tpl_234"|h}--></td>
+            <th><!--{t string="tpl_Shipment date_01"}--></th>
+            <td><!--{$arrForm.commit_date.value|sfDispDBDate|default_t:"tpl_Not shipped_01"|h}--></td>
         </tr>
     </table>
 
@@ -300,7 +300,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_212"}--></th>
+            <th><!--{t string="tpl_Address_01"}--></th>
             <td>
                 <!--{* <!--{assign var=key1 value="order_zip01"}--> *}-->
                 <!--{* <!--{assign var=key2 value="order_zip02"}--> *}-->
@@ -596,7 +596,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_212"}--></th>
+                <th><!--{t string="tpl_Address_01"}--></th>
                 <td>
                     <!--{* <!--{assign var=key1 value="shipping_zip01"}--> *}-->
                     <!--{* <!--{assign var=key2 value="shipping_zip02"}--> *}-->
@@ -706,7 +706,7 @@
     <div class="btn-area">
         <ul>
             <!--{if count($arrSearchHidden) > 0}-->
-            <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_URLPATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev"><!--{t string="tpl_227"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_URLPATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev"><!--{t string="tpl_Return to search screen_01"}--></span></a></li>
             <!--{/if}-->
             <li><a class="btn-action" href="javascript:;" onclick="return fnFormConfirm(); return false;"><span class="btn-next"><!--{t string="tpl_Save and continue_01"}--></span></a></li>
         </ul>

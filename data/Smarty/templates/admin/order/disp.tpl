@@ -33,7 +33,7 @@ self.moveTo(20,20);self.focus();
     <!--▼お客様情報ここから-->
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_231"}--></th>
+            <th><!--{t string="tpl_Order number_01"}--></th>
             <td><!--{$arrForm.order_id.value|h}--></td>
             <input type="hidden" name="order_id" value="<!--{$arrForm.order_id.value|h}-->" />
         </tr>
@@ -50,8 +50,8 @@ self.moveTo(20,20);self.focus();
             <td><!--{$arrForm.payment_date.value|sfDispDBDate|default_t:"tpl_443"}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_233"}--></th>
-            <td><!--{$arrForm.commit_date.value|sfDispDBDate|default_t:"tpl_234"}--></td>
+            <th><!--{t string="tpl_Shipment date_01"}--></th>
+            <td><!--{$arrForm.commit_date.value|sfDispDBDate|default_t:"tpl_Not shipped_01"}--></td>
         </tr>
     </table>
 
@@ -80,7 +80,7 @@ self.moveTo(20,20);self.focus();
             <td><!--{$arrForm.order_tel01.value|h}--> - <!--{$arrForm.order_tel02.value|h}--> - <!--{$arrForm.order_tel03.value|h}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_212"}--></th>
+            <th><!--{t string="tpl_Address_01"}--></th>
             <td>
                 <!--{* <!--{t string="tpl_Postal code mark_01"}-->　<!--{$arrForm.order_zip01.value|h}--> - <!--{$arrForm.order_zip02.value|h}--><br /> *}-->
                 <!--{t string="tpl_Postal code mark_01"}-->&nbsp;<!--{$arrForm.order_zipcode.value|h}--><br />
@@ -249,7 +249,7 @@ self.moveTo(20,20);self.focus();
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_212"}--></th>
+                <th><!--{t string="tpl_Address_01"}--></th>
                 <td>
                     <!--{* <!--{assign var=key1 value="shipping_zip01"}--> *}-->
                     <!--{* <!--{assign var=key2 value="shipping_zip02"}--> *}-->

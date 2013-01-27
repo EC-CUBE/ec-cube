@@ -219,7 +219,7 @@ $("*[name=search_endday]").val(dates[2]);
 <form name="search_form" id="search_form" method="post" action="?">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="search" />
-    <h2><!--{t string="tpl_250"}--></h2>
+    <h2><!--{t string="tpl_Search condition settings_01"}--></h2>
 
     <!--検索条件設定テーブルここから-->
     <table>
@@ -342,7 +342,7 @@ $("*[name=search_endday]").val(dates[2]);
     <!--{/foreach}-->
     <h2><!--{t string="tpl_253"}--></h2>
     <div class="btn">
-        <!--検索結果数--><!--{t string="tpl_230" escape="none" T_FIELD=$tpl_linemax}-->
+        <!--検索結果数--><!--{t string="tpl_<span class='attention'>T_FIELD items</span>&nbsp; were found._01" escape="none" T_FIELD=$tpl_linemax}-->
         <!--検索結果-->
         <!--{if $smarty.const.ADMIN_MODE == '1'}-->
             <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><!--{t string="tpl_327"}--></a>

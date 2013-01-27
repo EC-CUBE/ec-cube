@@ -26,7 +26,7 @@
 <!--
 
     function fnDelete(customer_id) {
-        if (confirm('<!--{t string="tpl_248"}-->')) {
+        if (confirm('<!--{t string="tpl_Do you want to delete member information?_01"}-->')) {
             document.form1.mode.value = "delete"
             document.form1['edit_customer_id'].value = customer_id;
             document.form1.submit();
@@ -44,7 +44,7 @@
     }
 
     function fnReSendMail(customer_id) {
-        if (confirm('<!--{t string="tpl_249"}-->')) {
+        if (confirm('<!--{t string="tpl_Do you wish to receive a temporary registration e-mail again?_01"}-->')) {
             document.form1.mode.value = "resend_mail"
             document.form1['edit_customer_id'].value = customer_id;
             document.form1.submit();
@@ -523,13 +523,13 @@
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="search" />
 
-    <h2><!--{t string="tpl_250"}--></h2>
+    <h2><!--{t string="tpl_Search condition settings_01"}--></h2>
 
     <!--検索条件設定テーブルここから-->
     <table class="form">
         <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`/adminparts/form_customer_search.tpl"}-->
         <tr>
-            <th><!--{t string="tpl_209"}--></th>
+            <th><!--{t string="tpl_Member status_01"}--></th>
             <td colspan="3"><!--{html_checkboxes name="search_status" options=$arrStatus separator="&nbsp;" selected=$arrForm.search_status.value}--></td>
         </tr>
     </table>
@@ -567,7 +567,7 @@
 
     <h2><!--{t string="tpl_253"}--></h2>
     <div class="btn">
-        <!--検索結果数--><!--{t string="tpl_230" escape="none" T_FIELD=$tpl_linemax}-->
+        <!--検索結果数--><!--{t string="tpl_<span class='attention'>T_FIELD items</span>&nbsp; were found._01" escape="none" T_FIELD=$tpl_linemax}-->
         <!--検索結果-->
         <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;"><!--{t string="tpl_254"}--></a>
         <a class="btn-normal" href="javascript:;" onclick="location.href='../contents/csv.php?tpl_subno_csv=customer'"><!--{t string="tpl_255"}--></a>
@@ -589,7 +589,7 @@
             <th rowspan="2"><!--{t string="tpl_256"}--></th>
             <th rowspan="2"><!--{t string="tpl_Member ID_01"}--></th>
             <th rowspan="2"><!--{t string="tpl_Name_02"}--></th>
-            <th rowspan="2"><!--{t string="tpl_215"}--></th>
+            <th rowspan="2"><!--{t string="tpl_Gender_01"}--></th>
             <th><!--{t string="tpl_Phone Number_01"}--></th>
             <th rowspan="2"><!--{t string="tpl_Edit_01"}--></th>
             <th rowspan="2"><!--{t string="tpl_Remove_01"}--></th>

@@ -4101,10 +4101,10 @@ msgstr "お名前"
 msgid "tpl_Name<span class='attention'> *</span>_02"
 msgstr "お名前<span class='attention'> *</span>"
 
-msgid "tpl_209"
+msgid "tpl_Member status_01"
 msgstr "会員状態"
 
-msgid "tpl_209_1"
+msgid "tpl_Member status<span class='attention'> *</span>_01"
 msgstr "会員状態<span class='attention'> *</span>"
 
 msgid "tpl_210"
@@ -4116,109 +4116,106 @@ msgstr "お名前(フリガナ)<span class='attention'> *</span>"
 msgid "tpl_211"
 msgstr "住所入力"
 
-msgid "tpl_212"
+msgid "tpl_Address_01"
 msgstr "住所"
 
-msgid "tpl_212_1"
+msgid "tpl_Address<span class='attention'> *</span>_01"
 msgstr "住所<span class='attention'> *</span>"
 
-msgid "tpl_213"
+msgid "tpl_Mobile e-mail address_01"
 msgstr "携帯メールアドレス"
 
-msgid "tpl_214"
+msgid "tpl_Telephone number_01"
 msgstr "電話番号"
 
-msgid "tpl_214_1"
+msgid "tpl_Telephone number<span class='attention'> *</span>_01"
 msgstr "電話番号<span class='attention'> *</span>"
 
-msgid "tpl_215"
+msgid "tpl_Gender_01"
 msgstr "性別"
 
-msgid "tpl_215_1"
+msgid "tpl_Gender<span class='attention'> *</span>_01"
 msgstr "性別<span class='attention'> *</span>"
 
-msgid "tpl_216"
+msgid "tpl_Occupation_01"
 msgstr "ご職業"
 
-msgid "tpl_217"
+msgid "tpl_Date of birth_01"
 msgstr "生年月日"
 
-msgid "tpl_218"
+msgid "tpl_Password_01"
 msgstr "パスワード"
 
-msgid "tpl_218_1"
+msgid "tpl_Password<span class='attention'> *</span>_01"
 msgstr "パスワード<span class='attention'> *</span>"
 
-msgid "tpl_219"
+msgid "tpl_Lower-case alphanumeric characters T_FIELD1 to T_FIELD2 (Symbols cannot be used)_01"
 msgstr "半角英数小文字T_FIELD1～T_FIELD2文字（記号不可）"
 
-msgid "tpl_220"
+msgid "tpl_Enter twice for confirmation_01"
 msgstr "確認のために2度入力してください。"
 
-msgid "tpl_221"
-msgstr "パスワードを忘れたときのヒント"
-
-msgid "tpl_221_1"
+msgid "tpl_Hint for when you have forgotten your password<span class='attention'> *</span>_01"
 msgstr "パスワードを忘れたときのヒント<span class='attention'> *</span>"
 
-msgid "tpl_222"
+msgid "tpl_Question:_01"
 msgstr "質問："
 
-msgid "tpl_223"
+msgid "tpl_Answer:_01"
 msgstr "答え："
 
-msgid "tpl_224"
+msgid "tpl_Mail magazine_01"
 msgstr "メールマガジン"
 
-msgid "tpl_224_1"
+msgid "tpl_Mail magazine<span class='attention'> *</span>_01"
 msgstr "メールマガジン<span class='attention'> *</span>"
 
-msgid "tpl_225"
+msgid "tpl_Memo for SHOP_01"
 msgstr "SHOP用メモ"
 
-msgid "tpl_226"
+msgid "tpl_Points in possession_01"
 msgstr "所持ポイント"
 
-msgid "tpl_226_1"
+msgid "tpl_Points in possession<span class='attention'> *</span>_01"
 msgstr "所持ポイント<span class='attention'> *</span>"
 
-msgid "tpl_227"
+msgid "tpl_Return to search screen_01"
 msgstr "検索画面に戻る"
 
-msgid "tpl_228"
+msgid "tpl_Confirmation page_01"
 msgstr "確認ページへ"
 
-msgid "tpl_229"
+msgid "tpl_Purchase history list_01"
 msgstr "購入履歴一覧"
 
-msgid "tpl_230"
+msgid "tpl_<span class='attention'>T_FIELD items</span>&nbsp; were found._01"
 msgstr "<span class='attention'>T_FIELD件</span>&nbsp;が該当しました。"
 
-msgid "tpl_231"
+msgid "tpl_Order number_01"
 msgstr "注文番号"
 
-msgid "tpl_232"
+msgid "tpl_Purchase amount_01"
 msgstr "購入金額"
 
-msgid "tpl_233"
+msgid "tpl_Shipment date_01"
 msgstr "発送日"
 
-msgid "tpl_234"
+msgid "tpl_Not shipped_01"
 msgstr "未発送"
 
-msgid "tpl_235"
+msgid "tpl_There is no purchase history_01"
 msgstr "購入履歴はありません。"
 
 msgid "tpl_236"
 msgstr "登録が完了致しました。"
 
-msgid "tpl_237"
+msgid "tpl_Register new item_01"
 msgstr "続けて登録を行う"
 
-msgid "tpl_238"
+msgid "tpl_Temporary member_01"
 msgstr "仮会員"
 
-msgid "tpl_239"
+msgid "tpl_full member_01"
 msgstr "本会員"
 
 msgid "tpl_240"
@@ -4227,31 +4224,31 @@ msgstr "T_FIELD1T_FIELD2　様"
 msgid "tpl_241"
 msgstr "お電話番号"
 
-msgid "tpl_242"
+msgid "tpl_Not registered_01"
 msgstr "未登録"
 
-msgid "tpl_243"
+msgid "tpl_Hint for when you have forgotten your password_01"
 msgstr "パスワードを忘れたときのヒント"
 
-msgid "tpl_244"
+msgid "tpl_HTML_01"
 msgstr "HTML"
 
-msgid "tpl_245"
+msgid "tpl_Text_01"
 msgstr "テキスト"
 
-msgid "tpl_246"
+msgid "tpl_Do not wish to receive"
 msgstr "希望しない"
 
-msgid "tpl_247"
+msgid "tpl_Return to the edit screen_01"
 msgstr "編集画面に戻る"
 
-msgid "tpl_248"
+msgid "tpl_Do you want to delete member information?_01"
 msgstr "この会員情報を削除しても宜しいですか？"
 
-msgid "tpl_249"
+msgid "tpl_Do you wish to receive a temporary registration e-mail again?_01"
 msgstr "仮登録メールを再送しても宜しいですか？"
 
-msgid "tpl_250"
+msgid "tpl_Search condition settings_01"
 msgstr "検索条件設定"
 
 msgid "tpl_251"

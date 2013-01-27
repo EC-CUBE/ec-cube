@@ -77,13 +77,13 @@
             <tr>
                 <th><label for="move_check"><!--{t string="tpl_299"}--></label> <input type="checkbox" name="move_check" id="move_check" onclick="fnAllCheck(this, 'input[name=move[]]')" /></th>
                 <th><!--{t string="tpl_360"}--></th>
-                <th><!--{t string="tpl_231"}--></th>
+                <th><!--{t string="tpl_Order number_01"}--></th>
                 <th><!--{t string="tpl_359"}--></th>
                 <th><!--{t string="tpl_Name_02"}--></th>
                 <th><!--{t string="tpl_Payment method_01"}--></th>
                 <th><!--{t string="tpl_442" escape="none"}--></th>
                 <th><!--{t string="tpl_361"}--></th>
-                <th><!--{t string="tpl_233"}--></th>
+                <th><!--{t string="tpl_Shipment date_01"}--></th>
             </tr>
             <!--{section name=cnt loop=$arrStatus}-->
             <!--{assign var=status value="`$arrStatus[cnt].status`"}-->
@@ -97,7 +97,7 @@
                 <td><!--{$arrPayment[$payment_id]|h}--></td>
                 <td class="right"><!--{$arrStatus[cnt].total|number_format}--></td>
                 <td><!--{if $arrStatus[cnt].payment_date != ""}--><!--{$arrStatus[cnt].payment_date|sfDispDBDate:false}--><!--{else}--><!--{t string="tpl_443"}--><!--{/if}--></td>
-                <td><!--{if $arrStatus[cnt].status eq 5}--><!--{$arrStatus[cnt].commit_date|sfDispDBDate:false}--><!--{else}--><!--{t string="tpl_234"}--><!--{/if}--></td>
+                <td><!--{if $arrStatus[cnt].status eq 5}--><!--{$arrStatus[cnt].commit_date|sfDispDBDate:false}--><!--{else}--><!--{t string="tpl_Not shipped_01"}--><!--{/if}--></td>
             </tr>
             <!--{/section}-->
         </table>

@@ -4145,10 +4145,10 @@ msgstr "Name"
 msgid "tpl_Name<span class='attention'> *</span>_02"
 msgstr "Name<span class='attention'> *</span>"
 
-msgid "tpl_209"
+msgid "tpl_Member status_01"
 msgstr "Member status"
 
-msgid "tpl_209_1"
+msgid "tpl_Member status<span class='attention'> *</span>_01"
 msgstr "Member status<span class='attention'> *</span>"
 
 msgid "tpl_210"
@@ -4160,113 +4160,106 @@ msgstr "お名前(フリガナ)<span class='attention'> *</span>"
 msgid "tpl_211"
 msgstr "Address input"
 
-msgid "tpl_212"
+msgid "tpl_Address_01"
 msgstr "Address"
 
-msgid "tpl_212_1"
+msgid "tpl_Address<span class='attention'> *</span>_01"
 msgstr "Address<span class='attention'> *</span>"
 
-msgid "tpl_213"
+msgid "tpl_Mobile e-mail address_01"
 msgstr "Mobile e-mail address"
 
-msgid "tpl_214"
+msgid "tpl_Telephone number_01"
 msgstr "Telephone number"
 
-msgid "tpl_214_1"
+msgid "tpl_Telephone number<span class='attention'> *</span>_01"
 msgstr "Telephone number<span class='attention'> *</span>"
 
-msgid "tpl_215"
+msgid "tpl_Gender_01"
 msgstr "Gender"
 
-msgid "tpl_215_1"
+msgid "tpl_Gender<span class='attention'> *</span>_01"
 msgstr "Gender<span class='attention'> *</span>"
 
-msgid "tpl_216"
+msgid "tpl_Occupation_01"
 msgstr "Occupation"
 
-msgid "tpl_217"
+msgid "tpl_Date of birth_01"
 msgstr "Date of birth"
 
-msgid "tpl_218"
+msgid "tpl_Password_01"
 msgstr "Password"
 
-msgid "tpl_218_1"
+msgid "tpl_Password<span class='attention'> *</span>_01"
 msgstr "Password<span class='attention'> *</span>"
 
-msgid "tpl_219"
-msgstr ""
-" Lower-case alphanumeric characters T_FIELD1 to T_FIELD2 (Symbols cannot be "
-"used)"
+msgid "tpl_Lower-case alphanumeric characters T_FIELD1 to T_FIELD2 (Symbols cannot be used)_01"
+msgstr "Lower-case alphanumeric characters T_FIELD1 to T_FIELD2 (Symbols cannot be used)"
 
-msgid "tpl_220"
+msgid "tpl_Enter twice for confirmation_01"
 msgstr "Enter twice for confirmation"
 
-msgid "tpl_221"
-msgstr "Hint for when you have forgotten your password"
+msgid "tpl_Hint for when you have forgotten your password<span class='attention'> *</span>_01"
+msgstr "Hint for when you have forgotten your password<span class='attention'> *</span>"
 
-msgid "tpl_221_1"
-msgstr ""
-"Hint for when you have forgotten your password<span class='attention'> *</"
-"span>"
-
-msgid "tpl_222"
+msgid "tpl_Question:_01"
 msgstr "Question:"
 
-msgid "tpl_223"
+msgid "tpl_Answer:_01"
 msgstr "Answer:"
 
-msgid "tpl_224"
+msgid "tpl_Mail magazine_01"
 msgstr "Mail magazine"
 
-msgid "tpl_224_1"
+msgid "tpl_Mail magazine<span class='attention'> *</span>_01"
 msgstr "Mail magazine<span class='attention'> *</span>"
 
-msgid "tpl_225"
+msgid "tpl_Memo for SHOP_01"
 msgstr "Memo for SHOP"
 
-msgid "tpl_226"
+msgid "tpl_Points in possession_01"
 msgstr "Points in possession"
 
-msgid "tpl_226_1"
+msgid "tpl_Points in possession<span class='attention'> *</span>_01"
 msgstr "Points in possession<span class='attention'> *</span>"
 
-msgid "tpl_227"
+msgid "tpl_Return to search screen_01"
 msgstr "Return to search screen"
 
-msgid "tpl_228"
+msgid "tpl_Confirmation page_01"
 msgstr "Confirmation page"
 
-msgid "tpl_229"
+msgid "tpl_Purchase history list_01"
 msgstr "Purchase history list"
 
-msgid "tpl_230"
+msgid "tpl_<span class='attention'>T_FIELD items</span>&nbsp; were found._01"
 msgstr "<span class='attention'>T_FIELD items</span>&nbsp; were found."
 
-msgid "tpl_231"
+msgid "tpl_Order number_01"
 msgstr "Order number"
 
-msgid "tpl_232"
+msgid "tpl_Purchase amount_01"
 msgstr "Purchase amount"
 
-msgid "tpl_233"
+msgid "tpl_Shipment date_01"
 msgstr "Shipment date"
 
-msgid "tpl_234"
+msgid "tpl_Not shipped_01"
 msgstr "Not shipped"
 
-msgid "tpl_235"
+msgid "tpl_There is no purchase history_01"
 msgstr "There is no purchase history"
 
-msgid "tpl_236"
+msgid "tpl_Registration is complete._01"
 msgstr "Registration is complete."
 
-msgid "tpl_237"
+msgid "tpl_Register new item_01"
 msgstr "Register new item"
 
-msgid "tpl_238"
+msgid "tpl_Temporary member_01"
 msgstr "Temporary member"
 
-msgid "tpl_239"
+msgid "tpl_full member_01"
 msgstr "full member"
 
 msgid "tpl_240"
@@ -4275,31 +4268,31 @@ msgstr "T_FIELD1 T_FIELD2"
 msgid "tpl_241"
 msgstr "Telephone number"
 
-msgid "tpl_242"
+msgid "tpl_Not registered_01"
 msgstr "Not registered"
 
-msgid "tpl_243"
+msgid "tpl_Hint for when you have forgotten your password_01"
 msgstr "Hint for when you have forgotten your password"
 
-msgid "tpl_244"
+msgid "tpl_HTML_01"
 msgstr "HTML"
 
-msgid "tpl_245"
+msgid "tpl_Text_01"
 msgstr "Text"
 
-msgid "tpl_246"
+msgid "tpl_Do not wish to receive"
 msgstr "Do not wish to receive"
 
-msgid "tpl_247"
+msgid "tpl_Return to the edit screen_01"
 msgstr "Return to the edit screen"
 
-msgid "tpl_248"
+msgid "tpl_Do you want to delete member information?_01"
 msgstr "Do you want to delete member information?"
 
-msgid "tpl_249"
+msgid "tpl_Do you wish to receive a temporary registration e-mail again?_01"
 msgstr "Do you wish to receive a temporary registration e-mail again?"
 
-msgid "tpl_250"
+msgid "tpl_Search condition settings_01"
 msgstr "Search condition settings"
 
 msgid "tpl_251"

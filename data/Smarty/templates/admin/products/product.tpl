@@ -440,10 +440,10 @@ function selectAll(target) {
         <!--{if count($arrSearchHidden) > 0}-->
         <!--▼検索結果へ戻る-->
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URLPATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev"><!--{t string="tpl_227"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URLPATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev"><!--{t string="tpl_Return to search screen_01"}--></span></a></li>
         <!--▲検索結果へ戻る-->
         <!--{/if}-->
-            <li><a class="btn-action" href="javascript:;" onclick="selectAll('category_id'); document.form1.submit(); return false;"><span class="btn-next"><!--{t string="tpl_228"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="selectAll('category_id'); document.form1.submit(); return false;"><span class="btn-next"><!--{t string="tpl_Confirmation page_01"}--></span></a></li>
         </ul>
     </div>
 </div>

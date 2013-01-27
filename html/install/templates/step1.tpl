@@ -84,7 +84,7 @@ $(function() {
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_218_1" escape="none"}--><br/><!--{t string="tpl_668" T_FIELD1=$smarty.const.ID_MIN_LEN T_FIELD2=$smarty.const.ID_MAX_LEN}--></th>
+                <th><!--{t string="tpl_Password<span class='attention'> *</span>_01" escape="none"}--><br/><!--{t string="tpl_668" T_FIELD1=$smarty.const.ID_MIN_LEN T_FIELD2=$smarty.const.ID_MAX_LEN}--></th>
                 <td>
                 <!--{assign var=key value="login_pass"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>

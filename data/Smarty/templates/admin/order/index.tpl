@@ -575,11 +575,11 @@
 <form name="search_form" id="search_form" method="post" action="?">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="search" />
-    <h2><!--{t string="tpl_250"}--></h2>
+    <h2><!--{t string="tpl_Search condition settings_01"}--></h2>
     <!--{* 検索条件設定テーブルここから *}-->
     <table>
         <tr>
-            <th><!--{t string="tpl_231"}--></th>
+            <th><!--{t string="tpl_Order number_01"}--></th>
             <td>
                 <!--{assign var=key1 value="search_order_id1"}-->
                 <!--{assign var=key2 value="search_order_id2"}-->
@@ -622,7 +622,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_217"}--></th>
+            <th><!--{t string="tpl_Date of birth_01"}--></th>
             <td colspan="3">
             <!--{if $arrErr.search_sbirthyear || $arrErr.search_ebirthyear}-->
             <span class="attention"><!--{$arrErr.search_sbirthyear}--></span>
@@ -640,7 +640,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_215"}--></th>
+            <th><!--{t string="tpl_Gender_01"}--></th>
             <td colspan="3">
             <!--{assign var=key value="search_order_sex"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -692,7 +692,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_232"}--></th>
+            <th><!--{t string="tpl_Purchase amount_01"}--></th>
             <td>
                 <!--{assign var=key1 value="search_total1"}-->
                 <!--{assign var=key2 value="search_total2"}-->
@@ -752,7 +752,7 @@
 <!--{/foreach}-->
     <h2><!--{t string="tpl_253"}--></h2>
         <div class="btn">
-        <!--検索結果数--><!--{t string="tpl_230" escape="none" T_FIELD=$tpl_linemax}-->
+        <!--検索結果数--><!--{t string="tpl_<span class='attention'>T_FIELD items</span>&nbsp; were found._01" escape="none" T_FIELD=$tpl_linemax}-->
         <!--{if $smarty.const.ADMIN_MODE == '1'}-->
         <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><span><!--{t string="tpl_327"}--></span></a>
         <!--{/if}-->
@@ -785,7 +785,7 @@
         <!--{else}-->
         <tr>
             <th><!--{t string="tpl_359"}--></th>
-            <th><!--{t string="tpl_231"}--></th>
+            <th><!--{t string="tpl_Order number_01"}--></th>
             <th><!--{t string="tpl_Name_02"}--></th>
             <th><!--{t string="tpl_Payment method_01"}--></th>
             <th><!--{t string="tpl_403" escape="none"}--></th>
@@ -806,7 +806,7 @@
             <!--{assign var=payment_id value="`$arrResults[cnt].payment_id`"}-->
             <td class="center"><!--{$arrPayments[$payment_id]}--></td>
             <td class="right"><!--{$arrResults[cnt].total|number_format}--></td>
-            <td class="center"><!--{$arrResults[cnt].commit_date|sfDispDBDate|default_t:"tpl_234"}--></td>
+            <td class="center"><!--{$arrResults[cnt].commit_date|sfDispDBDate|default_t:"tpl_Not shipped_01"}--></td>
             <td class="center"><!--{$arrORDERSTATUS[$status]}--></td>
             <td class="center">
                 <input type="checkbox" name="pdf_order_id[]" value="<!--{$arrResults[cnt].order_id}-->" id="pdf_order_id_<!--{$arrResults[cnt].order_id}-->"/><label for="pdf_order_id_<!--{$arrResults[cnt].order_id}-->"><!--{t string="tpl_406"}--></label><br>

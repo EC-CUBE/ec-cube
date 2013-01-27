@@ -53,7 +53,7 @@ self.moveTo(20,20);self.focus();
             <td><!--{$arrSearchData.search_name|default_t:"tpl_337"|h}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_215"}--></th>
+            <th><!--{t string="tpl_Gender_01"}--></th>
             <td>
             <!--{assign var=key value="search_sex"}-->
             <!--{if is_array($arrSearchData[$key])}-->
@@ -81,11 +81,11 @@ self.moveTo(20,20);self.focus();
             <td><!--{$arrSearchData.search_email|default_t:"tpl_337"|h}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_213"}--></th>
+            <th><!--{t string="tpl_Mobile e-mail address_01"}--></th>
             <td><!--{$arrSearchData.search_email_mobile|default_t:"tpl_337"|h}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_214"}--></th>
+            <th><!--{t string="tpl_Telephone number_01"}--></th>
             <td><!--{$arrSearchData.search_tel|default_t:"tpl_337"|h}--></td>
         </tr>
         <tr>
@@ -100,7 +100,7 @@ self.moveTo(20,20);self.focus();
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_232"}--></th>
+            <th><!--{t string="tpl_Purchase amount_01"}--></th>
             <td>
                 <!--{if $arrSearchData.search_buy_total_from == null}--><!--{t string="tpl_337"}--><!--{else}--><!--{t string="tpl_500" escape="none" T_FIELD=$arrSearchData.search_buy_total_from|h}--><!--{/if}--> <!--{t string="-"}-->
                 <!--{if $arrSearchData.search_buy_total_to == null}--><!--{t string="tpl_337"}--><!--{else}--><!--{t string="tpl_500" escape="none" T_FIELD=$arrSearchData.search_buy_total_to|h}--><!--{/if}-->

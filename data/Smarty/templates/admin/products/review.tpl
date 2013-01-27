@@ -187,7 +187,7 @@ $("*[name=search_endday]").val(dates[2]);
 <form name="search_form" method="post" action="?" >
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="search" />
-    <h2><!--{t string="tpl_250"}--></h2>
+    <h2><!--{t string="tpl_Search condition settings_01"}--></h2>
 
     <!--検索条件設定テーブルここから-->
     <table>
@@ -204,7 +204,7 @@ $("*[name=search_endday]").val(dates[2]);
             <td><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code|h}-->" size="30" class="box30" /></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_215"}--></th>
+            <th><!--{t string="tpl_Gender_01"}--></th>
             <!--{assign var=key value=search_sex}-->
             <td><!--{html_checkboxes name="$key" options=$arrSex selected=$arrForm[$key]}--></td>
             <th><!--{t string="tpl_617"}--></th>
@@ -277,7 +277,7 @@ $("*[name=search_endday]").val(dates[2]);
     <!--{/foreach}-->
     <h2><!--{t string="tpl_253"}--></h2>
     <div class="btn">
-        <!--検索結果数--><!--{t string="tpl_230" escape="none" T_FIELD=$tpl_linemax}-->
+        <!--検索結果数--><!--{t string="tpl_<span class='attention'>T_FIELD items</span>&nbsp; were found._01" escape="none" T_FIELD=$tpl_linemax}-->
         <!--{if $smarty.const.ADMIN_MODE == '1'}-->
             <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><span><!--{t string="tpl_327"}--></span></a>
         <!--{/if}-->

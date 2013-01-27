@@ -30,7 +30,7 @@
         <div class="complete-top"></div>
         <div class="contents">
             <div class="message">
-                <!--{t string="tpl_236"}-->
+                <!--{t string="tpl_Registration is complete._01"}-->
             </div>
         </div>
         <div class="btn-area-top"></div>

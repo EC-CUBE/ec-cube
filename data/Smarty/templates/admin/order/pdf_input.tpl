@@ -137,7 +137,7 @@ function lfPopwinSubmit(formName) {
     <col width="20%" />
     <col width="80%" />
     <tr>
-        <th><!--{t string="tpl_231"}--></th>
+        <th><!--{t string="tpl_Order number_01"}--></th>
         <td><!--{$arrForm.order_id|@join:', '}--></td>
     </tr>
     <tr>

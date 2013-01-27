@@ -64,8 +64,8 @@ function func_return(){
                 <td><!--{$arrForm.customer_id|h}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_209"}--></th>
-                <td><!--{if $arrForm.status == 1}--><!--{t string="tpl_238"}--><!--{else}--><!--{t string="tpl_239"}--><!--{/if}--></td>
+                <th><!--{t string="tpl_Member status_01"}--></th>
+                <td><!--{if $arrForm.status == 1}--><!--{t string="tpl_Temporary member_01"}--><!--{else}--><!--{t string="tpl_full member_01"}--><!--{/if}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_Name_02"}--></th>
@@ -77,7 +77,7 @@ function func_return(){
                 <td><!--{t string="tpl_Postal code mark_01"}--> <!--{$arrForm.zipcode|h}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_212"}--></th>
+                <th><!--{t string="tpl_Address_01"}--></th>
                 <td><!--{$arrPref[$arrForm.pref]|h}--><!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}--></td>
             </tr>
             <tr>
@@ -85,7 +85,7 @@ function func_return(){
                 <td><!--{$arrForm.email|h}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_213"}--></th>
+                <th><!--{t string="tpl_Mobile e-mail address_01"}--></th>
                 <td><!--{$arrForm.email_mobile|h}--></td>
             </tr>
             <tr>
@@ -94,53 +94,53 @@ function func_return(){
             </tr>
             <tr>
                 <th><!--{t string="tpl_FAX_01"}--></th>
-                <td><!--{if strlen($arrForm.fax01) > 0}--><!--{$arrForm.fax01|h}--> - <!--{$arrForm.fax02|h}--> - <!--{$arrForm.fax03|h}--><!--{else}--><!--{t string="tpl_242"}--><!--{/if}--></td>
+                <td><!--{if strlen($arrForm.fax01) > 0}--><!--{$arrForm.fax01|h}--> - <!--{$arrForm.fax02|h}--> - <!--{$arrForm.fax03|h}--><!--{else}--><!--{t string="tpl_Not registered_01"}--><!--{/if}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_215"}--></th>
+                <th><!--{t string="tpl_Gender_01"}--></th>
                 <td><!--{$arrSex[$arrForm.sex]|h}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_216"}--></th>
-                <td><!--{$arrJob[$arrForm.job]|default_t:"tpl_242"|h}--></td>
+                <th><!--{t string="tpl_Occupation_01"}--></th>
+                <td><!--{$arrJob[$arrForm.job]|default_t:"tpl_Not registered_01"|h}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_217"}--></th>
+                <th><!--{t string="tpl_Date of birth_01"}--></th>
                 <td>
                     <!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}-->
                         <!--{t string="tpl_726" T_FIELD1=$arrForm.year|h T_FIELD2=$arrForm.month|h T_FIELD3=$arrForm.day|h }-->
                     <!--{else}-->
-                        <!--{t string="tpl_242"}-->
+                        <!--{t string="tpl_Not registered_01"}-->
                     <!--{/if}-->
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_218"}--></th>
+                <th><!--{t string="tpl_Password_01"}--></th>
                 <td><!--{$smarty.const.DEFAULT_PASSWORD}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_243"}--></th>
+                <th><!--{t string="tpl_Hint for when you have forgotten your password_01"}--></th>
                 <td>
-                    <!--{t string="tpl_222"}--> <!--{$arrReminder[$arrForm.reminder]|h}--><br />
-                    <!--{t string="tpl_223"}--> <!--{$smarty.const.DEFAULT_PASSWORD}-->
+                    <!--{t string="tpl_Question:_01"}--> <!--{$arrReminder[$arrForm.reminder]|h}--><br />
+                    <!--{t string="tpl_Answer:_01"}--> <!--{$smarty.const.DEFAULT_PASSWORD}-->
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_224"}--></th>
-                <td><!--{if $arrForm.mailmaga_flg eq 1}--><!--{t string="tpl_244"}--><!--{elseif $arrForm.mailmaga_flg eq 2}--><!--{t string="tpl_245"}--><!--{else}--><!--{t string="tpl_246"}--><!--{/if}--></td>
+                <th><!--{t string="tpl_Mail magazine_01"}--></th>
+                <td><!--{if $arrForm.mailmaga_flg eq 1}--><!--{t string="tpl_HTML_01"}--><!--{elseif $arrForm.mailmaga_flg eq 2}--><!--{t string="tpl_Text_01"}--><!--{else}--><!--{t string="tpl_Do not wish to receive"}--><!--{/if}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_225"}--></th>
-                <td><!--{$arrForm.note|h|nl2br|default_t:"tpl_242"}--></td>
+                <th><!--{t string="tpl_Memo for SHOP_01"}--></th>
+                <td><!--{$arrForm.note|h|nl2br|default_t:"tpl_Not registered_01"}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_226"}--></th>
+                <th><!--{t string="tpl_Points in possession_01"}--></th>
                 <td><!--{t string="pt_prefix"}--><!--{$arrForm.point|default:"0"|h}--> <!--{t string="pt_suffix"}--></td>
             </tr>
         </table>
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="func_return(); return false;"><span class="btn-prev"><!--{t string="tpl_247"}--></span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="func_return(); return false;"><span class="btn-prev"><!--{t string="tpl_Return to the edit screen_01"}--></span></a></li>
                 <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'complete', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_Save and continue_01"}--></span></a></li>
             </ul>
         </div>

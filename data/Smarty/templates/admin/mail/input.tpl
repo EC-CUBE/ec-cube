@@ -73,8 +73,8 @@
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'back', '' ); return false;"><span class="btn-prev"><!--{t string="tpl_227"}--></span></a></li>
-            <li><a class="btn-action" href="javascript:;" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_confirm', '' ); return false;" ><span class="btn-next"><!--{t string="tpl_228"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'back', '' ); return false;"><span class="btn-prev"><!--{t string="tpl_Return to search screen_01"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_confirm', '' ); return false;" ><span class="btn-next"><!--{t string="tpl_Confirmation page_01"}--></span></a></li>
         </ul>
     </div>
 </div>

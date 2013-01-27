@@ -15,7 +15,7 @@
     </td>
 </tr>
 <tr>
-    <th><!--{t string="tpl_215"}--></th>
+    <th><!--{t string="tpl_Gender_01"}--></th>
     <td>
         <!--{assign var=key value="search_sex"}-->
         <!--{html_checkboxes name=$key options=$arrSex separator="&nbsp;" selected=$arrForm[$key].value}-->
@@ -61,14 +61,14 @@
     </td>
 </tr>
 <tr>
-    <th><!--{t string="tpl_213"}--></th>
+    <th><!--{t string="tpl_Mobile e-mail address_01"}--></th>
     <td colspan="3">
         <!--{assign var=key value="search_email_mobile"}-->
         <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
         <input type="text" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key].value|h}-->" size="60" class="box60" <!--{if $arrErr[$key]}--><!--{sfSetErrorStyle}--><!--{/if}-->/></td>
 </tr>
 <tr>
-    <th><!--{t string="tpl_214"}--></th>
+    <th><!--{t string="tpl_Telephone number_01"}--></th>
     <td colspan="3">
         <!--{assign var=key value="search_tel"}-->
         <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
@@ -81,7 +81,7 @@
         <!--{html_checkboxes name=$key options=$arrJob separator="&nbsp;" selected=$arrForm[$key].value}--></td>
 </tr>
 <tr>
-    <th><!--{t string="tpl_232"}--></th>
+    <th><!--{t string="tpl_Purchase amount_01"}--></th>
     <td>
         <!--{assign var=key1 value="search_buy_total_from"}-->
         <!--{assign var=key2 value="search_buy_total_to"}-->

@@ -67,7 +67,7 @@ self.moveTo(20,20);self.focus();
         </td>
     </tr>
     <tr>
-        <th><!--{t string="tpl_218"}--></th>
+        <th><!--{t string="tpl_Password_01"}--></th>
         <td>
             <!--{if $arrErr.password}--><span class="attention"><!--{$arrErr.password}--><!--{$arrErr.password02}--></span><!--{/if}-->
             <input type="password" name="password" size="20" class="box20" value="<!--{$arrForm.password}-->" onfocus="<!--{$tpl_onfocus}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>
@@ -75,7 +75,7 @@ self.moveTo(20,20);self.focus();
             <!--{t string="tpl_668" T_FIELD1=$smarty.const.ID_MIN_LEN T_FIELD2=$smarty.const.ID_MAX_LEN}-->
             <br />
             <input type="password" name="password02" size="20" class="box20" value="<!--{$arrForm.password02}-->" onfocus="<!--{$tpl_onfocus}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>
-            <p><span class="attention mini"><!--{t string="tpl_220"}--></span></p>
+            <p><span class="attention mini"><!--{t string="tpl_Enter twice for confirmation_01"}--></span></p>
         </td>
     </tr>
     <tr>

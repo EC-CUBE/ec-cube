@@ -71,7 +71,7 @@
         <div class="complete-top"></div>
         <div class="contents">
             <div class="message">
-                <!--{t string="tpl_236"}-->
+                <!--{t string="tpl_Registration is complete._01"}-->
             </div>
         </div>
         <div class="btn-area-top"></div>
@@ -80,7 +80,7 @@
                 <!--{if $arrSearchData}-->
                     <li><a class="btn-action" href="javascript:;" onclick="return fnReturn();"><span class="btn-prev"><!--{t string="tpl_Return_01"}--></span></a></li>
                 <!--{/if}-->
-                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'complete_return', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_237"}--></span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'complete_return', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_Register new item_01"}--></span></a></li>
             </ul>
         </div>
         <div class="btn-area-bottom"></div>
