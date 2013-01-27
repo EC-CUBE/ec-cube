@@ -199,7 +199,7 @@ class SC_Helper_Mail {
         $tosubject = $this->sfMakeSubject($tmp_subject, $objMailView);
 
         $objSendMail->setItem('', $tosubject, $body, $from, $arrInfo['shop_name'], $from, $error, $error, $bcc);
-        $objSendMail->setTo($arrOrder['order_email'], t('FORMAT_NAME_FULL_SIR', array('T_LASTNAME' => $arrOrder['order_name01'], 'T_FIRSTNAME' => $arrOrder['order_name02'])));
+        $objSendMail->setTo($arrOrder['order_email'], t('f_NAME_FULL_SIR_01', array('T_LASTNAME' => $arrOrder['order_name01'], 'T_FIRSTNAME' => $arrOrder['order_name02'])));
 
         // 送信フラグ:trueの場合は、送信する。
         if ($send) {
@@ -358,7 +358,7 @@ class SC_Helper_Mail {
         } else {
             $to_addr = $arrCustomerData['email'];
         }
-        $objMail->setTo($to_addr, t('FORMAT_NAME_FULL_SIR', array('T_LASTNAME' => $arrCustomerData['name01'], 'T_FIRSTNAME' => $arrCustomerData['name02'])));
+        $objMail->setTo($to_addr, t('f_NAME_FULL_SIR_01', array('T_LASTNAME' => $arrCustomerData['name01'], 'T_FIRSTNAME' => $arrCustomerData['name02'])));
 
         $objMail->sendMail();
         return true;

@@ -220,46 +220,43 @@ msgstr "Shipping fee"
 msgid "c_Processing fee_01"
 msgstr "Processing fee"
 
-msgid "SC_Fpdf_008"
+msgid "c_Discount_01"
 msgstr "Discount"
 
-msgid "SC_Fpdf_009"
+msgid "c_Billing amount_01"
 msgstr "Billing amount"
 
-msgid "SC_Fpdf_010"
+msgid "c_Used points_01"
 msgstr "Used points"
 
-msgid "SC_Fpdf_011"
+msgid "c_Points added_01"
 msgstr "Points added"
 
-msgid "SC_Fpdf_012"
+msgid "c_<Remarks>_01"
 msgstr "<Remarks>"
 
-msgid "SC_Fpdf_013"
+msgid "c_Payment_01"
 msgstr "Payment"
 
-msgid "SC_Fpdf_014"
+msgid "c_Thank you for your purchase._01"
 msgstr "Thank you for your purchase."
 
-msgid "SC_Fpdf_015"
+msgid "c_Delivery will be based on the following below._01"
 msgstr "Delivery will be based on the following below."
 
-msgid "SC_Fpdf_016"
+msgid "c_Please confirm._01"
 msgstr "Please confirm."
 
-msgid "SC_Fpdf_017"
+msgid "c_Creation date: T_YEAR/T_MONTH/T_DAY_01"
 msgstr "Creation date: T_YEAR/T_MONTH/T_DAY"
 
-msgid "SC_Fpdf_018"
-msgstr "T_LASTNAME T_FIRSTNAME"
-
-msgid "SC_Fpdf_019"
+msgid "c_$ T_FIELD_01"
 msgstr "$ T_FIELD"
 
-msgid "SC_Fpdf_020"
+msgid "c_Pts_01"
 msgstr "Pts"
 
-msgid "SC_Fpdf_021"
+msgid "c_postal code mark_01"
 msgstr " "
 
 msgid "SC_Image_001"
@@ -655,9 +652,6 @@ msgstr "Memo for SHOP"
 msgid "PARAM_LABEL_CUSTOMER_POINT"
 msgstr "Points in possession"
 
-msgid "PARAM_LABEL_ADD_POINT"
-msgstr "Points added"
-
 msgid "PARAM_LABEL_BIRTH_POINT"
 msgstr "Birthday points"
 
@@ -879,12 +873,6 @@ msgstr "Payment method name"
 
 msgid "PARAM_LABEL_PRODUCT_DELIV_FEE"
 msgstr "Product shipping fee"
-
-msgid "PARAM_LABEL_DISCOUNT"
-msgstr "Discount"
-
-msgid "PARAM_LABEL_USE_POINT"
-msgstr "Used points"
 
 msgid "PARAM_LABEL_POINT"
 msgstr "Points"
@@ -1896,7 +1884,7 @@ msgstr "Sales (history)"
 msgid "FORMAT_DATE_LONG"
 msgstr "Y-m-d H:i"
 
-msgid "FORMAT_NAME_FULL_SIR"
+msgid "f_NAME_FULL_SIR_01"
 msgstr "T_LASTNAME T_FIRSTNAME"
 
 msgid "LC_Page_Abouts_001"
@@ -2937,15 +2925,6 @@ msgstr "Save to file"
 
 msgid "LC_Page_Admin_Order_Pdf_005"
 msgstr "Detailed purchase statement (delivery slip)"
-
-msgid "LC_Page_Admin_Order_Pdf_006"
-msgstr "Thank you for your purchase."
-
-msgid "LC_Page_Admin_Order_Pdf_007"
-msgstr "Delivery will be based on the following below."
-
-msgid "LC_Page_Admin_Order_Pdf_008"
-msgstr "Please confirm."
 
 msgid "LC_Page_Admin_Order_Pdf_009"
 msgstr "Enter a number for the issuance year."

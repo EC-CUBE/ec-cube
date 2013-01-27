@@ -168,13 +168,13 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam(t('PARAM_LABEL_TEL3'), 'order_tel03', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
 
         // 受注商品情報
-        $objFormParam->addParam(t('PARAM_LABEL_DISCOUNT'), 'discount', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
+        $objFormParam->addParam(t('c_Discount_01'), 'discount', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
         $objFormParam->addParam(t('c_Shipping fee_01'), 'deliv_fee', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
         $objFormParam->addParam(t('c_Processing fee_01'), 'charge', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
 
         // ポイント機能ON時のみ
         if (USE_POINT !== false) {
-            $objFormParam->addParam(t('PARAM_LABEL_USE_POINT'), 'use_point', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+            $objFormParam->addParam(t('c_Used points_01'), 'use_point', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         }
 
         $objFormParam->addParam(t('PARAM_LABEL_DELIV'), 'deliv_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
@@ -200,7 +200,7 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam(t('PARAM_LABEL_SUBTOTAL'), 'subtotal');
         $objFormParam->addParam(t('PARAM_LABEL_TOTAL'), 'total');
         $objFormParam->addParam(t('PARAM_LABEL_PAYMENT_TOTAL'), 'payment_total');
-        $objFormParam->addParam(t('PARAM_LABEL_ADD_POINT'), 'add_point');
+        $objFormParam->addParam(t('c_Points added_01'), 'add_point');
         $objFormParam->addParam(t('PARAM_LABEL_BIRTH_POINT'), 'birth_point');
         $objFormParam->addParam(t('PARAM_LABEL_TAX_TOTAL'), 'tax');
         $objFormParam->addParam(t('PARAM_LABEL_TOTAL_POINT'), 'total_point');

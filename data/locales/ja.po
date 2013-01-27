@@ -213,46 +213,43 @@ msgstr "送料"
 msgid "c_Processing fee_01"
 msgstr "手数料"
 
-msgid "SC_Fpdf_008"
+msgid "c_Discount_01"
 msgstr "値引き"
 
-msgid "SC_Fpdf_009"
+msgid "c_Billing amount_01"
 msgstr "請求金額"
 
-msgid "SC_Fpdf_010"
+msgid "c_Used points_01"
 msgstr "利用ポイント"
 
-msgid "SC_Fpdf_011"
+msgid "c_Points added_01"
 msgstr "加算ポイント"
 
-msgid "SC_Fpdf_012"
+msgid "c_<Remarks>_01"
 msgstr "＜ 備 考 ＞"
 
-msgid "SC_Fpdf_013"
+msgid "c_Payment_01"
 msgstr "お支払い"
 
-msgid "SC_Fpdf_014"
+msgid "c_Thank you for your purchase._01"
 msgstr "このたびはお買上げいただきありがとうございます。"
 
-msgid "SC_Fpdf_015"
+msgid "c_Delivery will be based on the following below._01"
 msgstr "下記の内容にて納品させていただきます。"
 
-msgid "SC_Fpdf_016"
+msgid "c_Please confirm._01"
 msgstr "ご確認くださいますよう、お願いいたします。"
 
-msgid "SC_Fpdf_017"
+msgid "c_Creation date: T_YEAR/T_MONTH/T_DAY_01"
 msgstr "作成日: T_YEAR年T_MONTH月T_DAY日"
 
-msgid "SC_Fpdf_018"
-msgstr "T_LASTNAME　T_FIRSTNAME 様"
-
-msgid "SC_Fpdf_019"
+msgid "c_$ T_FIELD_01"
 msgstr "T_FIELD 円"
 
-msgid "SC_Fpdf_020"
+msgid "c_Pts_01"
 msgstr "Pt"
 
-msgid "SC_Fpdf_021"
+msgid "c_postal code mark_01"
 msgstr "〒"
 
 msgid "SC_Image_001"
@@ -644,9 +641,6 @@ msgstr "SHOP用メモ"
 msgid "PARAM_LABEL_CUSTOMER_POINT"
 msgstr "所持ポイント"
 
-msgid "PARAM_LABEL_ADD_POINT"
-msgstr "加算ポイント"
-
 msgid "PARAM_LABEL_BIRTH_POINT"
 msgstr "お誕生日ポイント"
 
@@ -868,12 +862,6 @@ msgstr "お支払方法名称"
 
 msgid "PARAM_LABEL_PRODUCT_DELIV_FEE"
 msgstr "商品送料"
-
-msgid "PARAM_LABEL_DISCOUNT"
-msgstr "値引き"
-
-msgid "PARAM_LABEL_USE_POINT"
-msgstr "利用ポイント"
 
 msgid "PARAM_LABEL_POINT"
 msgstr "ポイント"
@@ -1882,7 +1870,7 @@ msgstr "売上集計"
 msgid "FORMAT_DATE_LONG"
 msgstr "Y年m月d日H時i分"
 
-msgid "FORMAT_NAME_FULL_SIR"
+msgid "f_NAME_FULL_SIR_01"
 msgstr "T_LASTNAME T_FIRSTNAME 様"
 
 msgid "LC_Page_Abouts_001"
@@ -2918,15 +2906,6 @@ msgstr "ファイルに保存"
 
 msgid "LC_Page_Admin_Order_Pdf_005"
 msgstr "お買上げ明細書(納品書)"
-
-msgid "LC_Page_Admin_Order_Pdf_006"
-msgstr "このたびはお買上げいただきありがとうございます。"
-
-msgid "LC_Page_Admin_Order_Pdf_007"
-msgstr "下記の内容にて納品させていただきます。"
-
-msgid "LC_Page_Admin_Order_Pdf_008"
-msgstr "ご確認くださいますよう、お願いいたします。"
 
 msgid "LC_Page_Admin_Order_Pdf_009"
 msgstr "発行年は数値で入力してください。"
