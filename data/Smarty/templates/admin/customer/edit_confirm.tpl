@@ -60,7 +60,7 @@ function func_return(){
     <div id="customer" class="contents-main">
         <table class="form">
             <tr>
-                <th><!--{t string="tpl_207"}--></th>
+                <th><!--{t string="tpl_Member ID_01"}--></th>
                 <td><!--{$arrForm.customer_id|h}--></td>
             </tr>
             <tr>
@@ -68,7 +68,7 @@ function func_return(){
                 <td><!--{if $arrForm.status == 1}--><!--{t string="tpl_238"}--><!--{else}--><!--{t string="tpl_239"}--><!--{/if}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_208"}--></th>
+                <th><!--{t string="tpl_Name_02"}--></th>
                 <td><!--{t string="tpl_240" T_FIELD1=$arrForm.name01|h T_FIELD2=$arrForm.name02|h}--></td>
             </tr>
             <tr>

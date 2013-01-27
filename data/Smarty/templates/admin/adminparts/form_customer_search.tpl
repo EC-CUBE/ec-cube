@@ -1,5 +1,5 @@
 <tr>
-    <th><!--{t string="tpl_207"}--></th>
+    <th><!--{t string="tpl_Member ID_01"}--></th>
     <td colspan="3">
     <!--{assign var=key value="search_customer_id"}-->
     <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
@@ -7,7 +7,7 @@
 
 </tr>
 <tr>
-    <th><!--{t string="tpl_208"}--></th>
+    <th><!--{t string="tpl_Name_02"}--></th>
     <td colspan="3">
             <!--{assign var=key value="search_name"}-->
             <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->

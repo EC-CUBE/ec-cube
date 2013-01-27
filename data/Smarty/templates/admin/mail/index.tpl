@@ -600,7 +600,7 @@
     <col width="15%" />
     <col width="15%" />
         <tr>
-            <th><!--{t string="tpl_207"}--></th>
+            <th><!--{t string="tpl_Member ID_01"}--></th>
             <th><!--{t string="tpl_300"}--></th>
             <th><!--{t string="tpl_E-mail address_01"}--></th>
             <th><!--{t string="tpl_329"}--></th>

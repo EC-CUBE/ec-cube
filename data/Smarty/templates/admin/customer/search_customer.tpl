@@ -49,7 +49,7 @@ function func_submit(customer_id){
     <col width="20%" />
     <col width="80%" />
     <tr>
-        <th class="colmun"><!--{t string="tpl_207"}--></th>
+        <th class="colmun"><!--{t string="tpl_Member ID_01"}--></th>
         <td width="287" colspan="2">
             <!--{assign var=key value="search_customer_id"}-->
             <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
@@ -57,7 +57,7 @@ function func_submit(customer_id){
         </td>
     </tr>
     <tr class="n">
-        <th class="colmun"><!--{t string="tpl_208"}--></th>
+        <th class="colmun"><!--{t string="tpl_Name_02"}--></th>
         <td>
             <!--{assign var=key value="search_name"}-->
             <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
@@ -82,8 +82,8 @@ function func_submit(customer_id){
     <!--▼検索後表示部分-->
     <table class="list">
         <tr>
-            <th><!--{t string="tpl_207"}--></th>
-            <th><!--{t string="tpl_208"}--></th>
+            <th><!--{t string="tpl_Member ID_01"}--></th>
+            <th><!--{t string="tpl_Name_02"}--></th>
             <th><!--{t string="tpl_Phone Number_01"}--></th>
             <th><!--{t string="tpl_Confirm_01"}--></th>
         </tr>

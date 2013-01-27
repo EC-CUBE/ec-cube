@@ -4098,37 +4098,37 @@ msgstr "新着情報管理"
 msgid "tpl_Recommended product management_01"
 msgstr "おすすめ商品管理"
 
-msgid "tpl_200"
+msgid "tpl_File management_01"
 msgstr "ファイル管理"
 
-msgid "tpl_201"
+msgid "tpl_CSV output item settings_01"
 msgstr "CSV出力項目設定"
 
-msgid "tpl_202"
+msgid "tpl_Products_01"
 msgstr "商品管理"
 
-msgid "tpl_203"
+msgid "tpl_Members_01"
 msgstr "会員管理"
 
-msgid "tpl_204"
+msgid "tpl_Orders_01"
 msgstr "受注管理"
 
-msgid "tpl_205"
+msgid "tpl_Review_01"
 msgstr "レビュー"
 
-msgid "tpl_206"
+msgid "tpl_Advanced settings_01"
 msgstr "高度な設定"
 
-msgid "tpl_207"
+msgid "tpl_Member ID_01"
 msgstr "会員ID"
 
-msgid "tpl_207_1"
+msgid "tpl_Member ID<span class='attention'> *</span>_01"
 msgstr "会員ID<span class='attention'> *</span>"
 
-msgid "tpl_208"
+msgid "tpl_Name_02"
 msgstr "お名前"
 
-msgid "tpl_208_1"
+msgid "tpl_Name<span class='attention'> *</span>_02"
 msgstr "お名前<span class='attention'> *</span>"
 
 msgid "tpl_209"

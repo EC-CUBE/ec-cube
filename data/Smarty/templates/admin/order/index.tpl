@@ -600,7 +600,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_208"}--></th>
+            <th><!--{t string="tpl_Name_02"}--></th>
             <td colspan="3">
             <!--{assign var=key value="search_order_name"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -786,7 +786,7 @@
         <tr>
             <th><!--{t string="tpl_359"}--></th>
             <th><!--{t string="tpl_231"}--></th>
-            <th><!--{t string="tpl_208"}--></th>
+            <th><!--{t string="tpl_Name_02"}--></th>
             <th><!--{t string="tpl_Payment method_01"}--></th>
             <th><!--{t string="tpl_403" escape="none"}--></th>
             <th><!--{t string="tpl_404"}--></th>

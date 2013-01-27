@@ -37,7 +37,7 @@ self.moveTo(20,20);self.focus();
 
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_207"}--></th>
+            <th><!--{t string="tpl_Member ID_01"}--></th>
             <td><!--{$arrSearchData.search_customer_id|default_t:"tpl_337"|h}--></td>
         </tr>
         <tr>
@@ -49,7 +49,7 @@ self.moveTo(20,20);self.focus();
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_208"}--></th>
+            <th><!--{t string="tpl_Name_02"}--></th>
             <td><!--{$arrSearchData.search_name|default_t:"tpl_337"|h}--></td>
         </tr>
         <tr>

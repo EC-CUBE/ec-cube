@@ -58,7 +58,7 @@ self.moveTo(20,20);self.focus();
     <h2><!--{t string="tpl_362"}--></h2>
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_207"}--></th>
+            <th><!--{t string="tpl_Member ID_01"}--></th>
             <td>
                 <!--{if $arrForm.customer_id.value > 0}-->
                     <!--{$arrForm.customer_id.value|h}-->
@@ -68,7 +68,7 @@ self.moveTo(20,20);self.focus();
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_208"}--></th>
+            <th><!--{t string="tpl_Name_02"}--></th>
             <td><!--{$arrForm.order_name01.value|h}-->&nbsp;<!--{$arrForm.order_name02.value|h}--></td>
         </tr>
         <tr>
@@ -230,7 +230,7 @@ self.moveTo(20,20);self.focus();
 
         <table class="form">
             <tr>
-                <th><!--{t string="tpl_208"}--></th>
+                <th><!--{t string="tpl_Name_02"}--></th>
                 <td>
                     <!--{assign var=key1 value="shipping_name01"}-->
                     <!--{assign var=key2 value="shipping_name02"}-->

@@ -155,7 +155,7 @@
         <table class="form">
             <!--{if $arrForm.customer_id}-->
             <tr>
-                <th><!--{t string="tpl_207_1" escape="none"}--></th>
+                <th><!--{t string="tpl_Member ID<span class='attention'> *</span>_01" escape="none"}--></th>
                 <td><!--{$arrForm.customer_id|h}--></td>
             </tr>
             <!--{/if}-->
@@ -169,7 +169,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_208_1" escape="none"}--></th>
+                <th><!--{t string="tpl_Name<span class='attention'> *</span>_02" escape="none"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.name01}--><!--{$arrErr.name02}--></span>
                     <input type="text" name="name01" value="<!--{$arrForm.name01|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.name01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />&nbsp;&nbsp;<input type="text" name="name02" value="<!--{$arrForm.name02|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.name02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />

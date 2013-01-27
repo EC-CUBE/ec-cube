@@ -243,7 +243,7 @@
     </h2>
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_207"}--></th>
+            <th><!--{t string="tpl_Member ID_01"}--></th>
             <td>
                 <!--{if $arrForm.customer_id.value > 0}-->
                     <!--{$arrForm.customer_id.value|h}-->
@@ -254,7 +254,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_208"}--></th>
+            <th><!--{t string="tpl_Name_02"}--></th>
             <td>
                 <!--{assign var=key1 value="order_name01"}-->
                 <!--{assign var=key2 value="order_name02"}-->
@@ -558,7 +558,7 @@
 
         <table class="form">
             <tr>
-                <th><!--{t string="tpl_208"}--></th>
+                <th><!--{t string="tpl_Name_02"}--></th>
                 <td>
                     <!--{assign var=key1 value="shipping_name01"}-->
                     <!--{assign var=key2 value="shipping_name02"}-->

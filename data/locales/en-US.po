@@ -4142,37 +4142,37 @@ msgstr "Manage new information"
 msgid "tpl_Recommended product management_01"
 msgstr "Recommended product management"
 
-msgid "tpl_200"
+msgid "tpl_File management_01"
 msgstr "File management"
 
-msgid "tpl_201"
+msgid "tpl_CSV output item settings_01"
 msgstr "CSV output item settings"
 
-msgid "tpl_202"
+msgid "tpl_Products_01"
 msgstr "Products"
 
-msgid "tpl_203"
+msgid "tpl_Members_01"
 msgstr "Members"
 
-msgid "tpl_204"
+msgid "tpl_Orders_01"
 msgstr "Orders"
 
-msgid "tpl_205"
+msgid "tpl_Review_01"
 msgstr "Review"
 
-msgid "tpl_206"
+msgid "tpl_Advanced settings_01"
 msgstr "Advanced settings"
 
-msgid "tpl_207"
+msgid "tpl_Member ID_01"
 msgstr "Member ID"
 
-msgid "tpl_207_1"
+msgid "tpl_Member ID<span class='attention'> *</span>_01"
 msgstr "Member ID<span class='attention'> *</span>"
 
-msgid "tpl_208"
+msgid "tpl_Name_02"
 msgstr "Name"
 
-msgid "tpl_208_1"
+msgid "tpl_Name<span class='attention'> *</span>_02"
 msgstr "Name<span class='attention'> *</span>"
 
 msgid "tpl_209"

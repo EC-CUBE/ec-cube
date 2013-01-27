@@ -587,8 +587,8 @@
         <col width="7%" />
         <tr>
             <th rowspan="2"><!--{t string="tpl_256"}--></th>
-            <th rowspan="2"><!--{t string="tpl_207"}--></th>
-            <th rowspan="2"><!--{t string="tpl_208"}--></th>
+            <th rowspan="2"><!--{t string="tpl_Member ID_01"}--></th>
+            <th rowspan="2"><!--{t string="tpl_Name_02"}--></th>
             <th rowspan="2"><!--{t string="tpl_215"}--></th>
             <th><!--{t string="tpl_Phone Number_01"}--></th>
             <th rowspan="2"><!--{t string="tpl_Edit_01"}--></th>

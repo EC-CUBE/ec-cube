@@ -79,7 +79,7 @@
                 <th><!--{t string="tpl_360"}--></th>
                 <th><!--{t string="tpl_231"}--></th>
                 <th><!--{t string="tpl_359"}--></th>
-                <th><!--{t string="tpl_208"}--></th>
+                <th><!--{t string="tpl_Name_02"}--></th>
                 <th><!--{t string="tpl_Payment method_01"}--></th>
                 <th><!--{t string="tpl_442" escape="none"}--></th>
                 <th><!--{t string="tpl_361"}--></th>
