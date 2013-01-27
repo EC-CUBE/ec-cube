@@ -42,7 +42,7 @@
             <th><!--{t string="tpl_352"}--></th>
             <th><!--{t string="tpl_Edit_01"}--></th>
             <th><!--{t string="tpl_Remove_01"}--></th>
-            <th><!--{t string="tpl_282"}--></th>
+            <th><!--{t string="tpl_Preview_01"}--></th>
         </tr>
         <!--{section name=data loop=$arrTemplates}-->
         <tr>
@@ -52,7 +52,7 @@
             <td><!--{$arrMagazineType[$type]}--></td>
             <td><a href="./template_input.php?mode=edit&amp;template_id=<!--{$arrTemplates[data].template_id}-->"><!--{t string="tpl_Edit_01"}--></a></td>
             <td><a href="#" onclick="fnDelete('?mode=delete&amp;id=<!--{$arrTemplates[data].template_id}-->'); return false;"><!--{t string="tpl_Remove_01"}--></a></td>
-            <td><a href="#" onclick="win03('./preview.php?mode=template&amp;template_id=<!--{$arrTemplates[data].template_id}-->','preview','650','700'); return false;" target="_blank"><!--{t string="tpl_282"}--></a></td>
+            <td><a href="#" onclick="win03('./preview.php?mode=template&amp;template_id=<!--{$arrTemplates[data].template_id}-->','preview','650','700'); return false;" target="_blank"><!--{t string="tpl_Preview_01"}--></a></td>
         </tr>
         <!--{/section}-->
     </table>

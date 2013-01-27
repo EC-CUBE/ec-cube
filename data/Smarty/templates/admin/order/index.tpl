@@ -716,7 +716,7 @@
     </table>
 
     <div class="btn">
-        <p class="page_rows"><!--{t string="tpl_251"}-->
+        <p class="page_rows"><!--{t string="tpl_Results displayed_01"}-->
             <!--{assign var=key value="search_page_max"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <!--{t string="record_prefix"}-->
@@ -727,7 +727,7 @@
         </p>
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_252"}--></span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_Search using above criteria_01"}--></span></a></li>
             </ul>
         </div>
     </div>
@@ -750,14 +750,14 @@
         <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
     <!--{/if}-->
 <!--{/foreach}-->
-    <h2><!--{t string="tpl_253"}--></h2>
+    <h2><!--{t string="tpl_List of search results_01"}--></h2>
         <div class="btn">
         <!--検索結果数--><!--{t string="tpl_<span class='attention'>T_FIELD items</span>&nbsp; were found._01" escape="none" T_FIELD=$tpl_linemax}-->
         <!--{if $smarty.const.ADMIN_MODE == '1'}-->
         <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><span><!--{t string="tpl_327"}--></span></a>
         <!--{/if}-->
-        <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;"><!--{t string="tpl_254"}--></a>
-        <a class="btn-normal" href="../contents/csv.php?tpl_subno_csv=order"><!--{t string="tpl_255"}--></a>
+        <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;"><!--{t string="tpl_CSV download_01"}--></a>
+        <a class="btn-normal" href="../contents/csv.php?tpl_subno_csv=order"><!--{t string="tpl_CSV output settings_01"}--></a>
         <a class="btn-normal" href="javascript:;" onclick="fnSelectCheckSubmit('pdf.php'); return false;"><span><!--{t string="tpl_401"}--></span></a>
         <a class="btn-normal" href="javascript:;" onclick="fnSelectMailCheckSubmit('mail.php'); return false;"><span><!--{t string="tpl_402"}--></span></a>
     </div>

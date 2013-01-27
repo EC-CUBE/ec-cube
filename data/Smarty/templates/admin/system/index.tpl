@@ -45,7 +45,7 @@
         </div>
         <tr>
             <th><!--{t string="tpl_662"}--></th>
-            <th><!--{t string="tpl_300"}--></th>
+            <th><!--{t string="tpl_Name_03"}--></th>
             <th><!--{t string="tpl_663"}--></th>
             <th><!--{t string="tpl_664"}--></th>
             <th><!--{t string="tpl_Edit_01"}--></th>

@@ -78,12 +78,12 @@ function fnTargetSelf(){
         </tr>
         <tr>
             <td colspan="2">
-                <label for="header-chk"><input type="checkbox" name="header_chk" id="header-chk" value="1" <!--{if $arrForm.header_chk.value == "1"}-->checked="checked"<!--{/if}--> /><!--{t string="tpl_287"}--></label>&nbsp;
-                <label for="footer-chk"><input type="checkbox" name="footer_chk" id="footer-chk" value="1" <!--{if $arrForm.footer_chk.value == "1"}-->checked="checked"<!--{/if}--> /><!--{t string="tpl_288"}--></label>
+                <label for="header-chk"><input type="checkbox" name="header_chk" id="header-chk" value="1" <!--{if $arrForm.header_chk.value == "1"}-->checked="checked"<!--{/if}--> /><!--{t string="tpl_Use a common header_01"}--></label>&nbsp;
+                <label for="footer-chk"><input type="checkbox" name="footer_chk" id="footer-chk" value="1" <!--{if $arrForm.footer_chk.value == "1"}-->checked="checked"<!--{/if}--> /><!--{t string="tpl_Use a common footer_01"}--></label>
                 <div>
                     <textarea id="tpl_data" class="top" name="tpl_data" rows=<!--{$text_row}--> style="width: 98%;"><!--{"\n"}--><!--{$arrForm.tpl_data.value|h|smarty:nodefaults}--></textarea>
                     <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" /><br />
-                    <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#tpl_data', 50, 13); return false;"><span><!--{t string="tpl_266"}--></span></a>
+                    <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#tpl_data', 50, 13); return false;"><span><!--{t string="tpl_Enlarge the image_01"}--></span></a>
                 </div>
             </td>
         </tr>
@@ -91,13 +91,13 @@ function fnTargetSelf(){
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','confirm','',''); return false;"><span class="btn-next"><!--{t string="tpl_267"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','confirm','',''); return false;"><span class="btn-next"><!--{t string="tpl_Register_01"}--></span></a></li>
         </ul>
     </div>
 
-    <h2><!--{t string="tpl_283"}--></h2>
+    <h2><!--{t string="tpl_List of pages that can be edited_01"}--></h2>
     <div class="btn addnew">
-        <a class="btn-normal" href="?device_type_id=<!--{$device_type_id|u}-->"><span><!--{t string="tpl_285"}--></span></a>
+        <a class="btn-normal" href="?device_type_id=<!--{$device_type_id|u}-->"><span><!--{t string="tpl_New input of page_01"}--></span></a>
     </div>
     <table class="list">
         <col width="70%" />
@@ -106,8 +106,8 @@ function fnTargetSelf(){
         <col width="10%" />
         <tr>
             <th><!--{t string="tpl_Name_01"}--></th>
-            <th><!--{t string="tpl_284"}--></th>
-            <th><!--{t string="tpl_286"}--></th>
+            <th><!--{t string="tpl_Layout_01"}--></th>
+            <th><!--{t string="tpl_Page details_01"}--></th>
             <th><!--{t string="tpl_Remove_01"}--></th>
         </tr>
         <!--{foreach key=key item=item from=$arrPageList}-->

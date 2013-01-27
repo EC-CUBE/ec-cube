@@ -41,7 +41,7 @@ function confirmSubmit(mode, msg) {
 <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 <div id="disign" class="contents-main">
     <p class="remark">
-        <!--{t string="tpl_304" escape="none"}-->
+        <!--{t string="tpl_The template package will be uploaded._01" escape="none"}-->
     </p>
 
     <!--{if $arrErr.err != ""}-->

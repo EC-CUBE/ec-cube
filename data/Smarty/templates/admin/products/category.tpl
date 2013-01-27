@@ -38,8 +38,8 @@
 <input type="hidden" name="keySet" value="">
 <div id="products" class="contents-main">
     <div class="btn">
-        <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;"><!--{t string="tpl_254"}--></a>
-        <a class="btn-normal" href='../contents/csv.php?tpl_subno_csv=category'><!--{t string="tpl_255"}--></a>
+        <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;"><!--{t string="tpl_CSV download_01"}--></a>
+        <a class="btn-normal" href='../contents/csv.php?tpl_subno_csv=category'><!--{t string="tpl_CSV output settings_01"}--></a>
     </div>
 
     <!--{* ▼画面左 *}-->

@@ -4289,171 +4289,164 @@ msgstr "Do you wish to receive a temporary registration e-mail again?"
 msgid "tpl_Search condition settings_01"
 msgstr "Search condition settings"
 
-msgid "tpl_251"
+msgid "tpl_Results displayed_01"
 msgstr "Results displayed"
 
-msgid "tpl_252"
+msgid "tpl_Search using above criteria_01"
 msgstr "Search using above criteria"
 
-msgid "tpl_253"
+msgid "tpl_List of search results_01"
 msgstr "List of search results"
 
-msgid "tpl_254"
+msgid "tpl_CSV download_01"
 msgstr "CSV download"
 
-msgid "tpl_255"
+msgid "tpl_CSV output settings_01"
 msgstr "CSV output settings"
 
-msgid "tpl_256"
+msgid "tpl_Type_01"
 msgstr "Type"
 
 msgid "tpl_257"
 msgstr "お名前/(フリガナ)"
 
-msgid "tpl_258"
+msgid "tpl_Prefecture_01"
 msgstr "Prefecture"
 
-msgid "tpl_259"
+msgid "tpl_Resending temporary registration e-mail_01"
 msgstr "Resending temporary registration e-mail"
 
-msgid "tpl_260"
+msgid "tpl_temporary _01"
 msgstr "temporary "
 
-msgid "tpl_261"
+msgid "tpl_full _01"
 msgstr "full "
 
-msgid "tpl_262"
+msgid "tpl_There is no member information."
 msgstr "There is no member information."
 
-msgid "tpl_263"
+msgid "tpl_Member master_01"
 msgstr "Member master"
 
-msgid "tpl_264"
+msgid "tpl_Member registration_01"
 msgstr "Member registration"
 
-msgid "tpl_265"
+msgid "tpl_Block name_01"
 msgstr "Block name"
 
-msgid "tpl_266"
+msgid "tpl_Enlarge the image_01"
 msgstr "Enlarge the image"
 
-msgid "tpl_267"
+msgid "tpl_Register_01"
 msgstr "Register"
 
-msgid "tpl_268"
+msgid "tpl_Block that can be edited_01"
 msgstr "Block that can be edited"
 
-msgid "tpl_269"
+msgid "tpl_New block_01"
 msgstr "New block"
 
-msgid "tpl_270"
+msgid "tpl_CSS file name_01"
 msgstr "CSS file name"
 
-msgid "tpl_271"
+msgid "tpl_CSS contents_01"
 msgstr "CSS contents"
 
-msgid "tpl_272"
+msgid "tpl_CSS file that can be edited_01"
 msgstr "CSS file that can be edited"
 
-msgid "tpl_273"
+msgid "tpl_New CSS_01"
 msgstr "New CSS"
 
-msgid "tpl_274"
+msgid "tpl_The CSS file does not exist._01"
 msgstr "The CSS file does not exist."
 
-msgid "tpl_275"
+msgid "tpl_Editing of header_01"
 msgstr "Editing of header"
 
-msgid "tpl_276"
+msgid "tpl_Editing of footer_01"
 msgstr "Editing of footer"
 
-msgid "tpl_277"
+msgid "tpl_All pages_01"
 msgstr "All pages"
 
-msgid "tpl_278"
+msgid "tpl_Header section_01"
 msgstr "Header section"
 
-msgid "tpl_279"
+msgid "tpl_Main_01"
 msgstr "Main"
 
-msgid "tpl_280"
+msgid "tpl_Footer section_01"
 msgstr "Footer section"
 
-msgid "tpl_281"
+msgid "tpl_Unused blocks_01"
 msgstr "Unused blocks"
 
-msgid "tpl_282"
+msgid "tpl_Preview_01"
 msgstr "Preview"
 
-msgid "tpl_283"
+msgid "tpl_List of pages that can be edited_01"
 msgstr "List of pages that can be edited"
 
-msgid "tpl_284"
+msgid "tpl_Layout_01"
 msgstr "Layout"
 
-msgid "tpl_285"
+msgid "tpl_New input of page_01"
 msgstr "New input of page"
 
-msgid "tpl_286"
+msgid "tpl_Page details_01"
 msgstr "Page details"
 
-msgid "tpl_287"
+msgid "tpl_Use a common header_01"
 msgstr "Use a common header"
 
-msgid "tpl_288"
+msgid "tpl_Use a common footer_01"
 msgstr "Use a common footer"
 
-msgid "tpl_289"
+msgid "tpl_Layout settings_01"
 msgstr "Layout settings"
 
-msgid "tpl_290"
+msgid "tpl_Page detail settings_01"
 msgstr "Page detail settings"
 
-msgid "tpl_291"
+msgid "tpl_Block settings_01"
 msgstr "Block settings"
 
-msgid "tpl_292"
+msgid "tpl_Header/footer settings_01"
 msgstr "Header/footer settings"
 
-msgid "tpl_293"
+msgid "tpl_CSS settings_01"
 msgstr "CSS settings"
 
-msgid "tpl_294"
+msgid "tpl_Template settings_01"
 msgstr "Template settings"
 
-msgid "tpl_295"
+msgid "tpl_PC_01"
 msgstr "PC"
 
-msgid "tpl_296"
+msgid "tpl_Mobile_01"
 msgstr "Mobile"
 
-msgid "tpl_297"
+msgid "tpl_Smartphone_01"
 msgstr "Smartphone"
 
-msgid "tpl_298"
-msgstr ""
-"Select a template and click the 'Save and Continue' button to,<br />change "
-"the designtemplate."
+msgid "tpl_Select a template and click the 'Save and Continue' button to,<br />change the designtemplate._01"
+msgstr "Select a template and click the 'Save and Continue' button to,<br />change the designtemplate."
 
-msgid "tpl_299"
+msgid "tpl_Selection_01"
 msgstr "Selection"
 
-msgid "tpl_300"
+msgid "tpl_Name_03"
 msgstr "Name"
 
-msgid "tpl_301"
+msgid "tpl_Saving destination_01"
 msgstr "Saving destination"
 
-msgid "tpl_302"
-msgstr "Download"
-
-msgid "tpl_303"
+msgid "tpl_The template will be changed._01"
 msgstr "The template will be changed."
 
-msgid "tpl_304"
-msgstr ""
-"The template package will be uploaded.<br />The package that you want to "
-"upload will be able to be selected from 'Template settings'."
+msgid "tpl_The template package will be uploaded._01"
+msgstr "The template package will be uploaded.<br />The package that you want to upload will be able to be selected from 'Template settings'."
 
 msgid "tpl_305"
 msgstr "Template code"

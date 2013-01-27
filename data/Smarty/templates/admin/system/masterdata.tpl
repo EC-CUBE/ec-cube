@@ -30,7 +30,7 @@
         <select name="master_data_name" id="master_data_name">
         <!--{html_options output=$arrMasterDataName values=$arrMasterDataName selected=$masterDataName}-->
         </select>
-        <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'show', '', ''); return false;"><span><!--{t string="tpl_299"}--></span></a>
+        <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'show', '', ''); return false;"><span><!--{t string="tpl_Selection_01"}--></span></a>
     </div>
     </form>
 

@@ -38,7 +38,7 @@
         <!--{* ▼ブロック設定 *}-->
         <table>
             <tr>
-                <th><!--{t string="tpl_265"}--></th>
+                <th><!--{t string="tpl_Block name_01"}--></th>
                 <td>
                     <!--{assign var=key value="bloc_name"}-->
                     <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" />
@@ -61,22 +61,22 @@
                     <textarea class="top" id="<!--{$key}-->" name="<!--{$key}-->" rows="<!--{$text_row}-->" style="width: 99%;"><!--{"\n"}--><!--{$arrForm[$key].value|smarty:nodefaults|h}--></textarea>
                     <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
                     <div>
-                        <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#bloc_html', 50, 13); return false;"><!--{t string="tpl_266"}--></a>
+                        <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#bloc_html', 50, 13); return false;"><!--{t string="tpl_Enlarge the image_01"}--></a>
                     </div>
                 </td>
             </tr>
         </table>
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_bloc','confirm','',''); return false;"><span class="btn-next"><!--{t string="tpl_267"}--></span></a></li>
+                <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_bloc','confirm','',''); return false;"><span class="btn-next"><!--{t string="tpl_Register_01"}--></span></a></li>
             </ul>
         </div>
         <!--{* ▲ブロック設定 *}-->
 
         <!--{* ▼ブロック一覧 *}-->
-        <h2><!--{t string="tpl_268"}--></h2>
+        <h2><!--{t string="tpl_Block that can be edited_01"}--></h2>
         <div class="btn addnew">
-            <a class="btn-normal" href="?device_type_id=<!--{$device_type_id|h}-->"><span><!--{t string="tpl_269"}--></span></a>
+            <a class="btn-normal" href="?device_type_id=<!--{$device_type_id|h}-->"><span><!--{t string="tpl_New block_01"}--></span></a>
         </div>
         <table class="list">
             <tr>

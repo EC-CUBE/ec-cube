@@ -31,7 +31,7 @@
     <!--{/if}-->
 
     <!--{* ▼ヘッダー編集ここから *}-->
-    <h2><!--{t string="tpl_275"}--></h2>
+    <h2><!--{t string="tpl_Editing of header_01"}--></h2>
     <form name="form_header" id="form_header" method="post" action="?" >
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="" />
@@ -41,12 +41,12 @@
 
         <textarea id="header-area" class="top" name="header" rows="<!--{$header_row}-->" style="width: 100%;"><!--{"\n"}--><!--{$header_data|h|smarty:nodefaults}--></textarea>
         <div class="btn">
-            <a id="header-area-resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#header-area-resize-btn', '#header-area', 50, 13); $('input[name=header_row]').val($('#header-area').attr('rows'));return false;"><span><!--{t string="tpl_266"}--></span></a>
+            <a id="header-area-resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#header-area-resize-btn', '#header-area', 50, 13); $('input[name=header_row]').val($('#header-area').attr('rows'));return false;"><span><!--{t string="tpl_Enlarge the image_01"}--></span></a>
         </div>
 
         <div class="btn-area">
                 <ul>
-                    <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_header','regist','',''); return false;"><span class="btn-next"><!--{t string="tpl_267"}--></span></a></li>
+                    <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_header','regist','',''); return false;"><span class="btn-next"><!--{t string="tpl_Register_01"}--></span></a></li>
                 </ul>
         </div>
 
@@ -54,7 +54,7 @@
     <!--{* ▲ヘッダー編集ここまで *}-->
 
     <!--{* ▼フッター編集ここから *}-->
-    <h2><!--{t string="tpl_276"}--></h2>
+    <h2><!--{t string="tpl_Editing of footer_01"}--></h2>
     <form name="form_footer" id="form_footer" method="post" action="?" >
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="" />
@@ -64,12 +64,12 @@
 
         <textarea id="footer-area" class="top" name="footer" rows="<!--{$footer_row}-->" style="width: 100%;"><!--{"\n"}--><!--{$footer_data|h|smarty:nodefaults}--></textarea>
         <div class="btn">
-            <a id="footer-area-resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#footer-area-resize-btn', '#footer-area', 50, 13); $('input[name=footer_row]').val($('#footer-area').attr('rows'));return false;"><span><!--{t string="tpl_266"}--></span></a>
+            <a id="footer-area-resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#footer-area-resize-btn', '#footer-area', 50, 13); $('input[name=footer_row]').val($('#footer-area').attr('rows'));return false;"><span><!--{t string="tpl_Enlarge the image_01"}--></span></a>
         </div>
 
         <div class="btn-area">
                 <ul>
-                    <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_footer','regist','',''); return false;"><span class="btn-next"><!--{t string="tpl_267"}--></span></a></li>
+                    <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_footer','regist','',''); return false;"><span class="btn-next"><!--{t string="tpl_Register_01"}--></span></a></li>
                 </ul>
         </div>
 

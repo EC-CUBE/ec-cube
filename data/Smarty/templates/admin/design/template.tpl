@@ -25,7 +25,7 @@
 <script type="text/javascript"><!--
 function submitRegister() {
     var form = document.form1;
-    var msg    = "<!--{t string="tpl_303"}-->";
+    var msg    = "<!--{t string="tpl_The template will be changed._01"}-->";
 
     if (window.confirm(msg)) {
         form['mode'].value = 'register';
@@ -42,7 +42,7 @@ function submitRegister() {
 <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 <div id="design" class="contents-main">
     <p class="remark">
-        <!--{t string="tpl_298" escape="none"}-->
+        <!--{t string="tpl_Select a template and click the 'Save and Continue' button to,<br />change the designtemplate._01" escape="none"}-->
     </p>
 
     <!--{if $arrErr.err != ""}-->
@@ -58,10 +58,10 @@ function submitRegister() {
         <col width="10%" />
         <col width="5%" />
         <tr>
-            <th><!--{t string="tpl_299"}--></th>
-            <th><!--{t string="tpl_300"}--></th>
-            <th><!--{t string="tpl_301"}--></th>
-            <th><!--{t string="tpl_302"}--></th>
+            <th><!--{t string="tpl_Selection_01"}--></th>
+            <th><!--{t string="tpl_Name_03"}--></th>
+            <th><!--{t string="tpl_Saving destination_01"}--></th>
+            <th><!--{t string="tpl_Download_01"}--></th>
             <th class="delete"><!--{t string="tpl_Remove_01"}--></th>
         </tr>
         <!--{foreach from=$templates item=tpl}-->
@@ -70,7 +70,7 @@ function submitRegister() {
             <td><input type="radio" name="template_code" value="<!--{$tplcode|h}-->" <!--{if $tplcode == $tpl_select}-->checked="checked"<!--{/if}--> /></td>
             <td class="left"><!--{$tpl.template_name|h}--></td>
             <td class="left">data/Smarty/templates/<!--{$tplcode|h}-->/</td>
-            <td><span class="icon_confirm"><a href="javascript:;" onClick="fnFormModeSubmit('form2', 'download','template_code','<!--{$tplcode}-->');return false;"><!--{t string="tpl_302"}--></a></span></td>
+            <td><span class="icon_confirm"><a href="javascript:;" onClick="fnFormModeSubmit('form2', 'download','template_code','<!--{$tplcode}-->');return false;"><!--{t string="tpl_Download_01"}--></a></span></td>
             <td><span class="icon_delete"><a href="javascript:;" onClick="fnFormModeSubmit('form2', 'delete','template_code','<!--{$tplcode}-->');return false;"><!--{t string="tpl_Remove_01"}--></a></span></td>
         </tr>
         <!--{/foreach}-->

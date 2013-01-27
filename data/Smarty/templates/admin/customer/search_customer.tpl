@@ -100,7 +100,7 @@ function func_submit(customer_id){
         <!--▲会員<!--{$smarty.section.cnt.iteration}-->-->
         <!--{sectionelse}-->
         <tr>
-            <td colspan="4"><!--{t string="tpl_262"}--></td>
+            <td colspan="4"><!--{t string="There is no member information."}--></td>
         </tr>
         <!--{/section}-->
     </table>

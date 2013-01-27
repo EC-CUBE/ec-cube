@@ -241,7 +241,7 @@ $("*[name=search_endday]").val(dates[2]);
     </table>
 
     <div class="btn">
-        <p class="page_rows"><!--{t string="tpl_251"}-->
+        <p class="page_rows"><!--{t string="tpl_Results displayed_01"}-->
             <!--{assign var=key value="search_page_max"}-->
             <!--{if $arrErr[$key]}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -255,7 +255,7 @@ $("*[name=search_endday]").val(dates[2]);
         <div class="btn-area">
             <ul>
                 <li>
-                    <a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_252"}--></span></a></li>
+                    <a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_Search using above criteria_01"}--></span></a></li>
             </ul>
         </div>
     </div>
@@ -275,13 +275,13 @@ $("*[name=search_endday]").val(dates[2]);
             <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
         <!--{/if}-->
     <!--{/foreach}-->
-    <h2><!--{t string="tpl_253"}--></h2>
+    <h2><!--{t string="tpl_List of search results_01"}--></h2>
     <div class="btn">
         <!--検索結果数--><!--{t string="tpl_<span class='attention'>T_FIELD items</span>&nbsp; were found._01" escape="none" T_FIELD=$tpl_linemax}-->
         <!--{if $smarty.const.ADMIN_MODE == '1'}-->
             <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><span><!--{t string="tpl_327"}--></span></a>
         <!--{/if}-->
-        <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;"><span><!--{t string="tpl_254"}--></span></a>
+        <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;"><span><!--{t string="tpl_CSV download_01"}--></span></a>
     </div>
     <!--{if $arrReview > 0 & $tpl_linemax > 0}-->
 

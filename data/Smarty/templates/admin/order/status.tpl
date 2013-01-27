@@ -75,7 +75,7 @@
             <col width="12%" />
             <col width="12%" />
             <tr>
-                <th><label for="move_check"><!--{t string="tpl_299"}--></label> <input type="checkbox" name="move_check" id="move_check" onclick="fnAllCheck(this, 'input[name=move[]]')" /></th>
+                <th><label for="move_check"><!--{t string="tpl_Selection_01"}--></label> <input type="checkbox" name="move_check" id="move_check" onclick="fnAllCheck(this, 'input[name=move[]]')" /></th>
                 <th><!--{t string="tpl_360"}--></th>
                 <th><!--{t string="tpl_Order number_01"}--></th>
                 <th><!--{t string="tpl_359"}--></th>

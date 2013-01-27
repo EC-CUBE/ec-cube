@@ -63,7 +63,7 @@
                     <!--{* それ以外ならダウンロードボタン表示 *}-->
                     <!--{else}-->
                         <span class="icon_confirm">
-                        <a href="#" onclick="OwnersStore.download(<!--{$product.product_id|h}-->);return false;"><!--{t string="tpl_302"}--></a>
+                        <a href="#" onclick="OwnersStore.download(<!--{$product.product_id|h}-->);return false;"><!--{t string="tpl_Download_01"}--></a>
                         </span>
                     <!--{/if}-->
                     </div>

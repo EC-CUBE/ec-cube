@@ -34,7 +34,7 @@
                 <th><!--{t string="tpl_309"}--></th>
                 <th><!--{t string="tpl_310"}--></th>
                 <th><!--{t string="tpl_311"}--></th>
-                <th><!--{t string="tpl_282"}--></th>
+                <th><!--{t string="tpl_Preview_01"}--></th>
                 <th><!--{t string="tpl_312"}--></th>
                 <th><!--{t string="tpl_313"}--></th>
                 <th><!--{t string="tpl_314"}--></th>

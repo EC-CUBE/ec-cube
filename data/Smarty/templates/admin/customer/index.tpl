@@ -534,7 +534,7 @@
         </tr>
     </table>
     <div class="btn">
-        <p class="page_rows"><!--{t string="tpl_251"}-->
+        <p class="page_rows"><!--{t string="tpl_Results displayed_01"}-->
             <!--{t string="record_prefix"}-->
             <select name="search_page_max">
                 <!--{html_options options=$arrPageMax selected=$arrForm.search_page_max}-->
@@ -543,7 +543,7 @@
         </p>
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_252"}--></span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_Search using above criteria_01"}--></span></a></li>
             </ul>
         </div>
     </div>
@@ -565,12 +565,12 @@
     <!--{/if}-->
 <!--{/foreach}-->
 
-    <h2><!--{t string="tpl_253"}--></h2>
+    <h2><!--{t string="tpl_List of search results_01"}--></h2>
     <div class="btn">
         <!--検索結果数--><!--{t string="tpl_<span class='attention'>T_FIELD items</span>&nbsp; were found._01" escape="none" T_FIELD=$tpl_linemax}-->
         <!--検索結果-->
-        <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;"><!--{t string="tpl_254"}--></a>
-        <a class="btn-normal" href="javascript:;" onclick="location.href='../contents/csv.php?tpl_subno_csv=customer'"><!--{t string="tpl_255"}--></a>
+        <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;"><!--{t string="tpl_CSV download_01"}--></a>
+        <a class="btn-normal" href="javascript:;" onclick="location.href='../contents/csv.php?tpl_subno_csv=customer'"><!--{t string="tpl_CSV output settings_01"}--></a>
     </div>
     <!--{if count($arrData) > 0}-->
 
@@ -586,7 +586,7 @@
         <col width="7%" />
         <col width="7%" />
         <tr>
-            <th rowspan="2"><!--{t string="tpl_256"}--></th>
+            <th rowspan="2"><!--{t string="tpl_Type_01"}--></th>
             <th rowspan="2"><!--{t string="tpl_Member ID_01"}--></th>
             <th rowspan="2"><!--{t string="tpl_Name_02"}--></th>
             <th rowspan="2"><!--{t string="tpl_Gender_01"}--></th>
@@ -599,7 +599,7 @@
         </tr>
         <!--{foreach from=$arrData item=row}-->
             <tr>
-                <td class="center" rowspan="2"><!--{if $row.status eq 1}--><!--{t string="tpl_260"}--><!--{else}--><!--{t string="tpl_261"}--><!--{/if}--></td>
+                <td class="center" rowspan="2"><!--{if $row.status eq 1}--><!--{t string="tpl_temporary _01"}--><!--{else}--><!--{t string="tpl_full _01"}--><!--{/if}--></td>
                 <td rowspan="2"><!--{$row.customer_id|h}--></td>
                 <td rowspan="2"><!--{$row.name01|h}--> <!--{$row.name02|h}--></td>
                 <td class="center" rowspan="2"><!--{$arrSex[$row.sex]|h}--></td>
@@ -608,7 +608,7 @@
                 <td class="center" rowspan="2"><span class="icon_delete"><a href="#" onclick="return fnDelete('<!--{$row.customer_id|h}-->');"><!--{t string="tpl_Remove_01"}--></a></span></td>
             </tr>
             <tr>
-                <td><!--{mailto address=$row.email encode="javascript"}--></a><!--{if $row.status eq 1}--><br /><a href="#" onclick="return fnReSendMail('<!--{$row.customer_id|h}-->');"><!--{t string="tpl_259"}--></a><!--{/if}--></td>
+                <td><!--{mailto address=$row.email encode="javascript"}--></a><!--{if $row.status eq 1}--><br /><a href="#" onclick="return fnReSendMail('<!--{$row.customer_id|h}-->');"><!--{t string="tpl_Resending temporary registration e-mail_01"}--></a><!--{/if}--></td>
             </tr>
         <!--{/foreach}-->
     </table>

@@ -4245,171 +4245,164 @@ msgstr "仮登録メールを再送しても宜しいですか？"
 msgid "tpl_Search condition settings_01"
 msgstr "検索条件設定"
 
-msgid "tpl_251"
+msgid "tpl_Results displayed_01"
 msgstr "検索結果表示件数"
 
-msgid "tpl_252"
+msgid "tpl_Search using above criteria_01"
 msgstr "この条件で検索する"
 
-msgid "tpl_253"
+msgid "tpl_List of search results_01"
 msgstr "検索結果一覧"
 
-msgid "tpl_254"
+msgid "tpl_CSV download_01"
 msgstr "CSV ダウンロード"
 
-msgid "tpl_255"
+msgid "tpl_CSV output settings_01"
 msgstr "CSV 出力項目設定"
 
-msgid "tpl_256"
+msgid "tpl_Type_01"
 msgstr "種別"
 
 msgid "tpl_257"
 msgstr "お名前/(フリガナ)"
 
-msgid "tpl_258"
+msgid "tpl_Prefecture_01"
 msgstr "都道府県"
 
-msgid "tpl_259"
+msgid "tpl_Resending temporary registration e-mail_01"
 msgstr "仮登録メール再送"
 
-msgid "tpl_260"
+msgid "tpl_temporary _01"
 msgstr "仮"
 
-msgid "tpl_261"
+msgid "tpl_full _01"
 msgstr "本"
 
-msgid "tpl_262"
+msgid "There is no member information."
 msgstr "会員情報が存在しません。"
 
-msgid "tpl_263"
+msgid "tpl_Member master_01"
 msgstr "会員マスター"
 
-msgid "tpl_264"
+msgid "tpl_Member registration_01"
 msgstr "会員登録"
 
-msgid "tpl_265"
+msgid "tpl_Block name_01"
 msgstr "ブロック名"
 
-msgid "tpl_266"
+msgid "tpl_Enlarge the image_01"
 msgstr "拡大"
 
-msgid "tpl_267"
+msgid "tpl_Register_01"
 msgstr "登録する"
 
-msgid "tpl_268"
+msgid "tpl_Block that can be edited_01"
 msgstr "編集可能ブロック"
 
-msgid "tpl_269"
+msgid "tpl_New block_01"
 msgstr "ブロックを新規入力"
 
-msgid "tpl_270"
+msgid "tpl_CSS file name_01"
 msgstr "CSSファイル名"
 
-msgid "tpl_271"
+msgid "tpl_CSS contents_01"
 msgstr "CSS内容"
 
-msgid "tpl_272"
+msgid "tpl_CSS file that can be edited_01"
 msgstr "編集可能CSSファイル"
 
-msgid "tpl_273"
+msgid "tpl_New CSS_01"
 msgstr "CSSを新規入力"
 
-msgid "tpl_274"
+msgid "tpl_The CSS file does not exist._01"
 msgstr "CSSファイルが存在しません。"
 
-msgid "tpl_275"
+msgid "tpl_Editing of header_01"
 msgstr "ヘッダー編集"
 
-msgid "tpl_276"
+msgid "tpl_Editing of footer_01"
 msgstr "フッター編集"
 
-msgid "tpl_277"
+msgid "tpl_All pages_01"
 msgstr "全ページ"
 
-msgid "tpl_278"
+msgid "tpl_Header section_01"
 msgstr "ヘッダー部"
 
-msgid "tpl_279"
+msgid "tpl_Main_01"
 msgstr "メイン"
 
-msgid "tpl_280"
+msgid "tpl_Footer section_01"
 msgstr "フッター部"
 
-msgid "tpl_281"
+msgid "tpl_Unused blocks_01"
 msgstr "未使用ブロック"
 
-msgid "tpl_282"
+msgid "tpl_Preview_01"
 msgstr "プレビュー"
 
-msgid "tpl_283"
+msgid "tpl_List of pages that can be edited_01"
 msgstr "編集可能ページ一覧"
 
-msgid "tpl_284"
+msgid "tpl_Layout_01"
 msgstr "レイアウト"
 
-msgid "tpl_285"
+msgid "tpl_New input of page_01"
 msgstr "ページを新規入力"
 
-msgid "tpl_286"
+msgid "tpl_Page details_01"
 msgstr "ページ詳細"
 
-msgid "tpl_287"
+msgid "tpl_Use a common header_01"
 msgstr "共通のヘッダーを使用する"
 
-msgid "tpl_288"
+msgid "tpl_Use a common footer_01"
 msgstr "共通のフッターを使用する"
 
-msgid "tpl_289"
+msgid "tpl_Layout settings_01"
 msgstr "レイアウト設定"
 
-msgid "tpl_290"
+msgid "tpl_Page detail settings_01"
 msgstr "ページ詳細設定"
 
-msgid "tpl_291"
+msgid "tpl_Block settings_01"
 msgstr "ブロック設定"
 
-msgid "tpl_292"
+msgid "tpl_Header/footer settings_01"
 msgstr "ヘッダー/フッター設定"
 
-msgid "tpl_293"
+msgid "tpl_CSS settings_01"
 msgstr "CSS設定"
 
-msgid "tpl_294"
+msgid "tpl_Template settings_01"
 msgstr "テンプレート設定"
 
-msgid "tpl_295"
+msgid "tpl_PC_01"
 msgstr "PC"
 
-msgid "tpl_296"
+msgid "tpl_Mobile_01"
 msgstr "モバイル"
 
-msgid "tpl_297"
+msgid "tpl_Smartphone_01"
 msgstr "スマートフォン"
 
-msgid "tpl_298"
-msgstr ""
-"テンプレートを選択し、「この内容で登録する」ボタンを押すと、<br />選択したテ"
-"ンプレートへデザインを変更することが出来ます。"
+msgid "tpl_Select a template and click the 'Save and Continue' button to,<br />change the designtemplate._01"
+msgstr "テンプレートを選択し、「この内容で登録する」ボタンを押すと、<br />選択したテンプレートへデザインを変更することが出来ます。"
 
-msgid "tpl_299"
+msgid "tpl_Selection_01"
 msgstr "選択"
 
-msgid "tpl_300"
+msgid "tpl_Name_03"
 msgstr "名前"
 
-msgid "tpl_301"
+msgid "tpl_Saving destination_01"
 msgstr "保存先"
 
-msgid "tpl_302"
-msgstr "ダウンロード"
-
-msgid "tpl_303"
+msgid "tpl_The template will be changed._01"
 msgstr "テンプレートを変更します。"
 
-msgid "tpl_304"
-msgstr ""
-"テンプレートパッケージのアップロードを行います。<br />アップロードしたパッ"
-"ケージは、「テンプレート設定」で選択できるようになります。"
+msgid "tpl_The template package will be uploaded._01"
+msgstr "テンプレートパッケージのアップロードを行います。<br />アップロードしたパッケージは、「テンプレート設定」で選択できるようになります。"
 
 msgid "tpl_305"
 msgstr "テンプレートコード"

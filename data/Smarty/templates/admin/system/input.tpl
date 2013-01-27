@@ -43,7 +43,7 @@ self.moveTo(20,20);self.focus();
     <col width="20%" />
     <col width="80%" />
     <tr>
-        <th><!--{t string="tpl_300"}--></th>
+        <th><!--{t string="tpl_Name_03"}--></th>
         <td>
             <!--{if $arrErr.name}--><span class="attention"><!--{$arrErr.name}--></span><!--{/if}-->
             <input type="text" name="name" size="30" class="box30" value="<!--{$arrForm.name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />

@@ -77,7 +77,7 @@
                 <th><!--{t string="tpl_649"}--></th>
                 <th><!--{t string="tpl_351"}--></th>
                 <th><!--{t string="tpl_652"}--></th>
-                <th><!--{t string="tpl_302"}--></th>
+                <th><!--{t string="tpl_Download_01"}--></th>
                 <th class="delete"><!--{t string="tpl_Remove_01"}--></th>
             </tr>
             <!--{section name=cnt loop=$arrBkupList}-->
@@ -86,7 +86,7 @@
                     <td ><!--{$arrBkupList[cnt].bkup_memo}--></td>
                     <td align="center"><!--{$arrBkupList[cnt].create_date|sfCutString:19:true:false}--></td>
                     <td align="center"><a href="javascript:;" onclick="fnRestore('<!--{$arrBkupList[cnt].bkup_name}-->'); return false;"><!--{t string="tpl_652"}--></a></td>
-                    <td align="center"><a href="javascript:;" onclick="fnModeSubmit('download','list_name','<!--{$arrBkupList[cnt].bkup_name}-->'); return false;"><!--{t string="tpl_302"}--></a></td>
+                    <td align="center"><a href="javascript:;" onclick="fnModeSubmit('download','list_name','<!--{$arrBkupList[cnt].bkup_name}-->'); return false;"><!--{t string="tpl_Download_01"}--></a></td>
                     <td align="center">
                         <a href="javascript:;" onclick="fnModeSubmit('delete','list_name','<!--{$arrBkupList[cnt].bkup_name}-->'); return false;"><!--{t string="tpl_Remove_01"}--></a>
                     </td>

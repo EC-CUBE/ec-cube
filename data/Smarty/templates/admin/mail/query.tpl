@@ -41,7 +41,7 @@ self.moveTo(20,20);self.focus();
             <td><!--{$arrSearchData.search_customer_id|default_t:"tpl_337"|h}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_258"}--></th>
+            <th><!--{t string="tpl_Prefecture_01"}--></th>
             <td>
             <!--{if $arrSearchData.search_pref}-->
                 <!--{$arrPref[$arrSearchData.search_pref]|h}-->

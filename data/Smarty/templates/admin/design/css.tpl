@@ -39,7 +39,7 @@
     <!--▼CSS設定ここから-->
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_270"}--></th>
+            <th><!--{t string="tpl_CSS file name_01"}--></th>
             <td>
                 <!--{assign var=key value="css_name"}-->
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" />.css
@@ -48,13 +48,13 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_271"}--></th>
+            <th><!--{t string="tpl_CSS contents_01"}--></th>
             <td>
                 <!--{assign var=key value="css_data"}-->
                 <textarea id="css" class="top" name="<!--{$key}-->" cols="90" rows=<!--{$area_row}--> align="left" style="width: 650px;"><!--{"\n"}--><!--{$arrForm[$key].value|h}--></textarea>
                 <input type="hidden" name="area_row" value="<!--{$area_row}-->" />
                 <div class="btn">
-                    <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#css', 50, 30); return false;"><!--{t string="tpl_266"}--></a>
+                    <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#css', 50, 30); return false;"><!--{t string="tpl_Enlarge the image_01"}--></a>
                 </div>
             </td>
         </tr>
@@ -67,9 +67,9 @@
     <!--▲CSS設定　ここまで-->
 
     <!--▼CSSファイル一覧　ここから-->
-    <h2><!--{t string="tpl_272"}--></h2>
+    <h2><!--{t string="tpl_CSS file that can be edited_01"}--></h2>
     <div class="btn addnew">
-        <a class="btn-normal" href="?device_type_id=<!--{$device_type_id|h}-->"><span><!--{t string="tpl_273"}--></span></a>
+        <a class="btn-normal" href="?device_type_id=<!--{$device_type_id|h}-->"><span><!--{t string="tpl_New CSS_01"}--></span></a>
     </div>
     <table class="list" id="design-css-list">
         <tr>
@@ -91,7 +91,7 @@
         <!--{/foreach}-->
         <!--{else}-->
         <tr>
-            <td colspan="3"><!--{t string="tpl_274"}--></td>
+            <td colspan="3"><!--{t string="tpl_The CSS file does not exist._01"}--></td>
         </tr>
         <!--{/if}-->
     </table>
