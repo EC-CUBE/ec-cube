@@ -34,9 +34,11 @@ OwnersStore.download();やOwnersStore.products_list();を呼び出すことで
 
 <link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/thickbox.css" type="text/css" media="screen" />
 <script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/ownersstore.js.php"></script>
-
+<!--{if $smarty.const.OSTORE_SSLURL != '' }-->
 <form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+
+
 <div id="ownersstore" class="contents-main">
 
     <!--購入商品一覧ここから-->
@@ -51,4 +53,6 @@ OwnersStore.download();やOwnersStore.products_list();を呼び出すことで
         <iframe src="<!--{$smarty.const.OSTORE_SSLURL}-->store_info/" style="width:950px;height:600px;" scrolling="no" marginwidth="0" marginheight="0" frameborder="0"></iframe>
     </div>
 </div>
+
 </form>
+<!--{/if}-->
