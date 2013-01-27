@@ -205,7 +205,7 @@
                                     <!--{html_options options=$arrClassCat1[$id] selected=$arrForm[$class1]}-->
                                 </select>
                                 <!--{if $arrErr[$class1] != ""}-->
-                                <br /><span class="attention"><!--{t string="tpl_436" T_FIELD=$tpl_class_name1[$id]}--></span>
+                                <br /><span class="attention"><!--{t string="tpl_ Enter T_FIELD._01" T_FIELD=$tpl_class_name1[$id]}--></span>
                                 <!--{/if}-->
                             </dd>
                         </dl>
@@ -219,7 +219,7 @@
                             <dd>
                                 <select name="classcategory_id2" id="<!--{$class2}-->" style="<!--{$arrErr[$class2]|sfGetErrorColor}-->" onchange="fnCheckStock(this.form);"></select>
                                 <!--{if $arrErr[$class2] != ""}-->
-                                <br /><span class="attention"><!--{t string="tpl_436" T_FIELD=$tpl_class_name2[$id]}--></span>
+                                <br /><span class="attention"><!--{t string="tpl_ Enter T_FIELD._01" T_FIELD=$tpl_class_name2[$id]}--></span>
                                 <!--{/if}-->
                             </dd>
                         </dl>

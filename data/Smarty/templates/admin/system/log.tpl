@@ -48,7 +48,7 @@
 
 <table class="list log">
     <tr>
-        <th><!--{t string="tpl_448"}--></th>
+        <th><!--{t string="tpl_Date_02"}--></th>
         <th><!--{t string="tpl_455"}--></th>
         <th><!--{t string="tpl_456"}--></th>
     </tr>

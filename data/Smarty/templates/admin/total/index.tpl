@@ -361,7 +361,7 @@ $("*[name=search_endday]").val(dates[2]);
             <!--検索結果表示テーブル-->
             <h2><!--{include file=$tpl_graphsubtitle}--></h2>
             <div class="message">
-                <!--{t string="tpl_437"}-->
+                <!--{t string="tpl_No applicable data exists._01"}-->
             </div>
             <!--検索結果表示テーブル-->
             </form>

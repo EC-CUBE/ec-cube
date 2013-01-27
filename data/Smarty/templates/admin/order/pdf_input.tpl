@@ -152,7 +152,7 @@ function lfPopwinSubmit(formName) {
         </td>
     </tr>
     <tr>
-        <th><!--{t string="tpl_421"}--></th>
+        <th><!--{t string="tpl_Ledger type_01"}--></th>
         <td><!--{if $arrErr.download}--><span class="attention"><!--{$arrErr.download}--></span><!--{/if}-->
             <select name="type">
             <!--{html_options options=$arrType selected=$arrForm.type}-->
@@ -160,7 +160,7 @@ function lfPopwinSubmit(formName) {
         </td>
     </tr>
     <tr>
-        <th><!--{t string="tpl_422"}--></th>
+        <th><!--{t string="tpl_Download method_01"}--></th>
         <td><!--{if $arrErr.download}--><span class="attention"><!--{$arrErr.download}--></span><!--{/if}-->
             <select name="download">
             <!--{html_options options=$arrDownload selected=$arrForm.download}-->
@@ -168,40 +168,40 @@ function lfPopwinSubmit(formName) {
         </td>
     </tr>
     <tr>
-        <th><!--{t string="tpl_423"}--></th>
+        <th><!--{t string="tpl_Ledger title_01"}--></th>
         <td><!--{if $arrErr.title}--><span class="attention"><!--{$arrErr.title}--></span><!--{/if}-->
             <input type="text" name="title" size="40" value="<!--{$arrForm.title}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
-            <span style="font-size: 80%;"><!--{t string="tpl_424"}--></span><br />
+            <span style="font-size: 80%;"><!--{t string="tpl_* The default title is displayed when field is blank._01"}--></span><br />
         </td>
     </tr>
     <tr>
-        <th><!--{t string="tpl_425"}--></th>
+        <th><!--{t string="tpl_Ledger message_01"}--></th>
         <td><!--{if $arrErr.msg1}--><span class="attention"><!--{$arrErr.msg1}--></span><!--{/if}-->
-            <!--{t string="tpl_426"}--><input type="text" name="msg1" size="40" value="<!--{$arrForm.msg1|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
+            <!--{t string="tpl_1st line:_01"}--><input type="text" name="msg1" size="40" value="<!--{$arrForm.msg1|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
             <!--{if $arrErr.msg2}--><span class="attention"><!--{$arrErr.msg1}--></span><!--{/if}-->
-            <!--{t string="tpl_427"}--><input type="text" name="msg2" size="40" value="<!--{$arrForm.msg2|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
+            <!--{t string="tpl_2nd line:_01"}--><input type="text" name="msg2" size="40" value="<!--{$arrForm.msg2|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
             <!--{if $arrErr.msg3}--><span class="attention"><!--{$arrErr.msg3}--></span><!--{/if}-->
-            <!--{t string="tpl_428"}--><input type="text" name="msg3" size="40" value="<!--{$arrForm.msg3|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
-            <span style="font-size: 80%;"><!--{t string="tpl_429"}--></span><br />
+            <!--{t string="tpl_3rd line:_01"}--><input type="text" name="msg3" size="40" value="<!--{$arrForm.msg3|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
+            <span style="font-size: 80%;"><!--{t string="tpl_* The default message is displayed when fields are blank. _01"}--></span><br />
         </td>
     </tr>
     <tr>
         <th><!--{t string="tpl_Remarks_01"}--></th>
         <td>
-            <!--{t string="tpl_426"}--><input type="text" name="etc1" size="40" value="" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
+            <!--{t string="tpl_1st line:_01"}--><input type="text" name="etc1" size="40" value="" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
             <!--{if $arrErr.etc2}--><span class="attention"><!--{$arrErr.msg1}--></span><!--{/if}-->
-            <!--{t string="tpl_427"}--><input type="text" name="etc2" size="40" value="" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
+            <!--{t string="tpl_2nd line:_01"}--><input type="text" name="etc2" size="40" value="" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
             <!--{if $arrErr.etc3}--><span class="attention"><!--{$arrErr.msg3}--></span><!--{/if}-->
-            <!--{t string="tpl_428"}--><input type="text" name="etc3" size="40" value="" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
-            <span style="font-size: 80%;"><!--{t string="tpl_430"}--></span><br />
+            <!--{t string="tpl_3rd line:_01"}--><input type="text" name="etc3" size="40" value="" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
+            <span style="font-size: 80%;"><!--{t string="tpl_* Not displayed when fields are blank._01"}--></span><br />
         </td>
     </tr>
     <!--{if $smarty.const.USE_POINT !== false}-->
         <tr>
-            <th><!--{t string="tpl_431"}--></th>
+            <th><!--{t string="tpl_Point notation_01"}--></th>
             <td>
-                <input type="radio" name="disp_point" value="1" checked="checked" /><!--{t string="tpl_432"}-->&nbsp;<input type="radio" name="disp_point" value="0" /><!--{t string="tpl_433"}--><br />
-                <span style="font-size: 80%;"><!--{t string="tpl_434"}--></span>
+                <input type="radio" name="disp_point" value="1" checked="checked" /><!--{t string="tpl_Yes_01"}-->&nbsp;<input type="radio" name="disp_point" value="0" /><!--{t string="tpl_No_01"}--><br />
+                <span style="font-size: 80%;"><!--{t string="tpl_* Even if 'Yes' is selected, it is not displayed unless the customer is a member._01"}--></span>
             </td>
         </tr>
     <!--{else}-->
@@ -211,7 +211,7 @@ function lfPopwinSubmit(formName) {
 
 <div class="btn-area">
     <ul>
-        <li><a class="btn-action" href="javascript:;" onclick="return lfPopwinSubmit('form1');"><span class="btn-next"><!--{t string="tpl_435"}--></span></a></li>
+        <li><a class="btn-action" href="javascript:;" onclick="return lfPopwinSubmit('form1');"><span class="btn-next"><!--{t string="tpl_Create using these contents_01"}--></span></a></li>
     </ul>
 </div>
 

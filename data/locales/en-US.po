@@ -4898,122 +4898,112 @@ msgstr "Check the sending details"
 msgid "tpl_* This is an example of a single e-mail. The order information differs for each e-mail_01"
 msgstr "* This is an example of a single e-mail. The order information differs for each e-mail"
 
-msgid "tpl_Return to previous page_01"
-msgstr "Return to previous page"
-
 msgid "tpl_E-mail sending_01"
 msgstr "E-mail sending"
 
 msgid "tpl_Ledger creation_01"
 msgstr "Ledger creation"
 
-msgid "tpl_420"
-msgstr "Issuance date"
-
 msgid "tpl_Issuance date<span class='attention'> *</span>_01"
 msgstr "Issuance date<span class='attention'> *</span>"
 
-msgid "tpl_421"
+msgid "tpl_Ledger type_01"
 msgstr "Ledger type"
 
-msgid "tpl_422"
+msgid "tpl_Download method_01"
 msgstr "Download method"
 
-msgid "tpl_423"
+msgid "tpl_Ledger title_01"
 msgstr "Ledger title"
 
-msgid "tpl_424"
+msgid "tpl_* The default title is displayed when field is blank._01"
 msgstr "* The default title is displayed when field is blank."
 
-msgid "tpl_425"
+msgid "tpl_Ledger message_01"
 msgstr "Ledger message"
 
-msgid "tpl_426"
+msgid "tpl_1st line:_01"
 msgstr "1st line:"
 
-msgid "tpl_427"
+msgid "tpl_2nd line:_01"
 msgstr "2nd line:"
 
-msgid "tpl_428"
+msgid "tpl_3rd line:_01"
 msgstr "3rd line:"
 
-msgid "tpl_429"
+msgid "tpl_* The default message is displayed when fields are blank. _01"
 msgstr "* The default message is displayed when fields are blank. "
 
-msgid "tpl_430"
+msgid "tpl_* Not displayed when fields are blank._01"
 msgstr "* Not displayed when fields are blank."
 
-msgid "tpl_431"
+msgid "tpl_Point notation_01"
 msgstr "Point notation"
 
-msgid "tpl_432"
+msgid "tpl_Yes_01"
 msgstr "Yes"
 
-msgid "tpl_433"
+msgid "tpl_No_01"
 msgstr "No"
 
-msgid "tpl_434"
-msgstr ""
-"* Even if 'Yes' is selected, it is not displayed unless the customer is a "
-"member."
+msgid "tpl_* Even if 'Yes' is selected, it is not displayed unless the customer is a member._01"
+msgstr "* Even if 'Yes' is selected, it is not displayed unless the customer is a member."
 
-msgid "tpl_435"
+msgid "tpl_Create using these contents_01"
 msgstr "Create using these contents"
 
-msgid "tpl_436"
+msgid "tpl_ Enter T_FIELD._01"
 msgstr "* Enter T_FIELD."
 
-msgid "tpl_437"
+msgid "tpl_No applicable data exists._01"
 msgstr "No applicable data exists."
 
-msgid "tpl_438"
+msgid "tpl_A selection box has not been selected_01"
 msgstr "A selection box has not been selected"
 
-msgid "tpl_439"
+msgid "tpl_Extraction conditions_01"
 msgstr "Extraction conditions"
 
-msgid "tpl_440"
+msgid "tpl_Response status change_01"
 msgstr "Response status change"
 
 msgid "tpl_441"
-msgstr ""
-"* When T_FIELD or when changing to delete, restore the inventory count "
-"manually."
+msgstr "* When T_FIELD or when changing to delete, restore the inventory count manually."
 
-msgid "tpl_442"
+msgid "tpl_Purchase amount(&#36;)_01"
 msgstr "Purchase amount(&#36;)"
 
-msgid "tpl_443"
+msgid "tpl_Not deposited_01"
 msgstr "Not deposited"
 
-msgid "tpl_444"
+msgid "tpl_Order receipt registration_01"
 msgstr "Order receipt registration"
 
-msgid "tpl_445"
+msgid "tpl_Response status_02"
 msgstr "Response status"
 
-msgid "tpl_446"
+msgid "tpl_Module name_01"
 msgstr "Module name"
 
-msgid "tpl_447"
+msgid "tpl_Status_01"
 msgstr "Status"
 
-msgid "tpl_448"
+msgid "tpl_Date_02"
 msgstr "Date"
 
-msgid "tpl_449"
+msgid "tpl_Details_01"
 msgstr "Details"
 
-msgid "tpl_450"
+msgid "tpl_Failure_01"
 msgstr "Failure"
 
-msgid "tpl_451"
+msgid "tpl_Success_01"
 msgstr "Success"
 
-msgid "tpl_452"
+msgid "tpl_Backup path_01"
 msgstr "Backup path"
 
-msgid "tpl_453"
+msgid "tpl_Return to list_01"
 msgstr "Return to list"
 
 msgid "tpl_454"

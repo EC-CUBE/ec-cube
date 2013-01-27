@@ -228,7 +228,7 @@
         </tr>
         <tr>
             <th><!--{t string="tpl_Date of deposit_01"}--></th>
-            <td><!--{$arrForm.payment_date.value|sfDispDBDate|default_t:"tpl_443"|h}--></td>
+            <td><!--{$arrForm.payment_date.value|sfDispDBDate|default_t:"tpl_Not deposited_01"|h}--></td>
         </tr>
         <tr>
             <th><!--{t string="tpl_Shipment date_01"}--></th>

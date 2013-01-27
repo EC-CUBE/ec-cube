@@ -29,7 +29,7 @@
 <input type="hidden" name="search_pageno" value="<!--{$tpl_pageno}-->" >
 <input type="hidden" name="order_id" value="" />
 <div id="order" class="contents-main">
-    <h2><!--{t string="tpl_439"}--></h2>
+    <h2><!--{t string="tpl_Extraction conditions_01"}--></h2>
         <div class="btn">
         <!--{foreach key=key item=item from=$arrORDERSTATUS}-->
             <a
@@ -42,7 +42,7 @@
             ><!--{$item}--></a>
         <!--{/foreach}-->
         </div>
-    <h2><!--{t string="tpl_440"}--></h2>
+    <h2><!--{t string="tpl_Response status change_01"}--></h2>
     <!--{* 登録テーブルここから *}-->
     <!--{if $tpl_linemax > 0}-->
         <div class="btn">
@@ -57,7 +57,7 @@
             </select>
             <a class="btn-normal" href="javascript:;" onclick="fnSelectCheckSubmit(); return false;"><span><!--{t string="tpl_Move_01"}--></span></a>
         </div>
-        <span class="attention"><!--{t string="tpl_441" T_FIELD=$arrORDERSTATUS[$smarty.const.ORDER_CANCEL]}--></span><br />
+        <span class="attention"><!--{t string="* When T_FIELD or when changing to delete, restore the inventory count manually." T_FIELD=$arrORDERSTATUS[$smarty.const.ORDER_CANCEL]}--></span><br />
 
         <p class="remark">
             <!--{t string="tpl_T_FIELD items were found._01" T_FIELD=$tpl_linemax}-->
@@ -81,7 +81,7 @@
                 <th><!--{t string="tpl_Date of order receipt_01"}--></th>
                 <th><!--{t string="tpl_Name_02"}--></th>
                 <th><!--{t string="tpl_Payment method_01"}--></th>
-                <th><!--{t string="tpl_442" escape="none"}--></th>
+                <th><!--{t string="tpl_Purchase amount(&#36;)_01" escape="none"}--></th>
                 <th><!--{t string="tpl_Date of deposit_01"}--></th>
                 <th><!--{t string="tpl_Shipment date_01"}--></th>
             </tr>
@@ -96,7 +96,7 @@
                 <!--{assign var=payment_id value=`$arrStatus[cnt].payment_id`}-->
                 <td><!--{$arrPayment[$payment_id]|h}--></td>
                 <td class="right"><!--{$arrStatus[cnt].total|number_format}--></td>
-                <td><!--{if $arrStatus[cnt].payment_date != ""}--><!--{$arrStatus[cnt].payment_date|sfDispDBDate:false}--><!--{else}--><!--{t string="tpl_443"}--><!--{/if}--></td>
+                <td><!--{if $arrStatus[cnt].payment_date != ""}--><!--{$arrStatus[cnt].payment_date|sfDispDBDate:false}--><!--{else}--><!--{t string="tpl_Not deposited_01"}--><!--{/if}--></td>
                 <td><!--{if $arrStatus[cnt].status eq 5}--><!--{$arrStatus[cnt].commit_date|sfDispDBDate:false}--><!--{else}--><!--{t string="tpl_Not shipped_01"}--><!--{/if}--></td>
             </tr>
             <!--{/section}-->
@@ -106,7 +106,7 @@
 
     <!--{elseif $arrStatus != "" & $tpl_linemax == 0}-->
         <div class="message">
-            <!--{t string="tpl_437"}-->
+            <!--{t string="tpl_No applicable data exists._01"}-->
         </div>
     <!--{/if}-->
 
@@ -126,7 +126,7 @@ function fnSelectCheckSubmit(){
     }
 
     if (selectflag == 1) {
-        alert('<!--{t string="tpl_438"}-->');
+        alert('<!--{t string="tpl_A selection box has not been selected_01"}-->');
         return false;
     }
     var i;

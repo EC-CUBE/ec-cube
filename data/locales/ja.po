@@ -4854,118 +4854,112 @@ msgstr "送信内容を確認"
 msgid "tpl_* This is an example of a single e-mail. The order information differs for each e-mail_01"
 msgstr "※本文は1通分の例です。受注情報は各メールごとに異なります"
 
-msgid "tpl_Return to previous page_01"
-msgstr "前のページへ戻る"
-
 msgid "tpl_E-mail sending_01"
 msgstr "メール送信"
 
 msgid "tpl_Ledger creation_01"
 msgstr "帳票の作成"
 
-msgid "tpl_420"
-msgstr "発行日"
-
 msgid "tpl_Issuance date<span class='attention'> *</span>_01"
 msgstr "発行日<span class='attention'> *</span>"
 
-msgid "tpl_421"
+msgid "tpl_Ledger type_01"
 msgstr "帳票の種類"
 
-msgid "tpl_422"
+msgid "tpl_Download method_01"
 msgstr "ダウンロード方法"
 
-msgid "tpl_423"
+msgid "tpl_Ledger title_01"
 msgstr "帳票タイトル"
 
-msgid "tpl_424"
+msgid "tpl_* The default title is displayed when field is blank._01"
 msgstr "※未入力時はデフォルトのタイトルが表示されます。"
 
-msgid "tpl_425"
+msgid "tpl_Ledger message_01"
 msgstr "帳票メッセージ"
 
-msgid "tpl_426"
+msgid "tpl_1st line:_01"
 msgstr "1行目："
 
-msgid "tpl_427"
+msgid "tpl_2nd line:_01"
 msgstr "2行目："
 
-msgid "tpl_428"
+msgid "tpl_3rd line:_01"
 msgstr "3行目："
 
-msgid "tpl_429"
+msgid "tpl_* The default message is displayed when fields are blank. _01"
 msgstr "※未入力時はデフォルトのメッセージが表示されます。"
 
-msgid "tpl_430"
+msgid "tpl_* Not displayed when fields are blank._01"
 msgstr "※未入力時は表示されません。"
 
-msgid "tpl_431"
+msgid "tpl_Point notation_01"
 msgstr "ポイント表記"
 
-msgid "tpl_432"
+msgid "tpl_Yes_01"
 msgstr "する"
 
-msgid "tpl_433"
+msgid "tpl_No_01"
 msgstr "しない"
 
-msgid "tpl_434"
+msgid "tpl_* Even if 'Yes' is selected, it is not displayed unless the customer is a member._01"
 msgstr "※「する」を選択されても、お客様が非会員の場合は表示されません。"
 
-msgid "tpl_435"
+msgid "tpl_Create using these contents_01"
 msgstr "この内容で作成する"
 
-msgid "tpl_436"
+msgid "tpl_ Enter T_FIELD._01"
 msgstr "※ T_FIELDを入力して下さい。"
 
-msgid "tpl_437"
+msgid "tpl_No applicable data exists._01"
 msgstr "該当するデータはありません。"
 
-msgid "tpl_438"
+msgid "tpl_A selection box has not been selected_01"
 msgstr "セレクトボックスが選択されていません"
 
-msgid "tpl_439"
+msgid "tpl_Extraction conditions_01"
 msgstr "抽出条件"
 
-msgid "tpl_440"
+msgid "tpl_Response status change_01"
 msgstr "対応状況変更"
 
-msgid "tpl_441"
+msgid "* When T_FIELD or when changing to delete, restore the inventory count manually."
 msgstr "※ T_FIELDもしくは、削除に変更時には、在庫数を手動で戻してください。"
 
-msgid "tpl_442"
+msgid "tpl_Purchase amount(&#36;)_01"
 msgstr "購入金額（円）"
 
-msgid "tpl_443"
+msgid "tpl_Not deposited_01"
 msgstr "未入金"
 
-msgid "tpl_444"
+msgid "tpl_Order receipt registration_01"
 msgstr "受注登録"
 
-msgid "tpl_445"
+msgid "tpl_Response status_02"
 msgstr "対応状況管理"
 
-msgid "tpl_446"
+msgid "tpl_Module name_01"
 msgstr "モジュール名"
 
-msgid "tpl_447"
+msgid "tpl_Status_01"
 msgstr "ステータス"
 
-msgid "tpl_448"
+msgid "tpl_Date_02"
 msgstr "日時"
 
-msgid "tpl_449"
+msgid "tpl_Details_01"
 msgstr "詳細"
 
-msgid "tpl_450"
+msgid "tpl_Failure_01"
 msgstr "失敗"
 
-msgid "tpl_451"
+msgid "tpl_Success_01"
 msgstr "成功"
 
-msgid "tpl_452"
+msgid "tpl_Backup path_01"
 msgstr "バックアップパス"
 
-msgid "tpl_453"
+msgid "tpl_Return to list_01"
 msgstr "一覧へ戻る"
 
 msgid "tpl_454"

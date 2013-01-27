@@ -30,24 +30,24 @@
 
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_446"}--></th>
+            <th><!--{t string="tpl_Module name_01"}--></th>
             <td><!--{$arrLogDetail.module_name|h}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_447"}--></th>
-            <td><!--{if $arrLogDetail.error_flg}--><!--{t string="tpl_450"}--><!--{else}--><!--{t string="tpl_451"}--><!--{/if}--></td>
+            <th><!--{t string="tpl_Status_01"}--></th>
+            <td><!--{if $arrLogDetail.error_flg}--><!--{t string="tpl_Failure_01"}--><!--{else}--><!--{t string="tpl_Success_01"}--><!--{/if}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_448"}--></th>
+            <th><!--{t string="tpl_Date_02"}--></th>
             <td><!--{$arrLogDetail.update_date|sfDispDBDate|h}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_452"}--></th>
+            <th><!--{t string="tpl_Backup path_01"}--></th>
             <td><!--{$arrLogDetail.buckup_path|wordwrap:100:"
 ":true|h|nl2br}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_449"}--></th>
+            <th><!--{t string="tpl_Details_01"}--></th>
             <td>
             <!--{$arrLogDetail.error|wordwrap:100:"
 ":true|h|nl2br}-->
@@ -57,7 +57,7 @@
         </tr>
     </table>
     <div class="btn">
-        <a class="btn-action" href='./log.php'><span class="btn-prev"><!--{t string="tpl_453"}--></span></a>
+        <a class="btn-action" href='./log.php'><span class="btn-prev"><!--{t string="tpl_Return to list_01"}--></span></a>
     </div>
 </div>
 </form>
