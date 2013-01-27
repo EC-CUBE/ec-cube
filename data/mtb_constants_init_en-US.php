@@ -408,7 +408,7 @@ define('DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR', DATA_REALDIR . "downloads/tmp/plugin
 define('PLUGIN_HTML_URLPATH', ROOT_URLPATH . "plugin/");
 /** Number of days Number of digits */
 define('DOWNLOAD_DAYS_LEN', 3);
-/** Extensions possible for registration of downloaded files (comma-delimited)" */
+/** Extensions possible for registration of downloaded files (comma-delimited) */
 define('DOWNLOAD_EXTENSION', "zip,lzh,jpg,jpeg,gif,png,mp3,pdf,csv");
 /** Size limitation for download sales file (KB) */
 define('DOWN_SIZE', 50000);
