@@ -57,10 +57,10 @@
             </select>
             <a class="btn-normal" href="javascript:;" onclick="fnSelectCheckSubmit(); return false;"><span><!--{t string="tpl_Move_01"}--></span></a>
         </div>
-        <span class="attention"><!--{t string="* When T_FIELD or when changing to delete, restore the inventory count manually." T_FIELD=$arrORDERSTATUS[$smarty.const.ORDER_CANCEL]}--></span><br />
+        <span class="attention"><!--{t string="* When %s1 or when changing to delete, restore the inventory count manually." %s1=$arrORDERSTATUS[$smarty.const.ORDER_CANCEL]}--></span><br />
 
         <p class="remark">
-            <!--{t string="tpl_T_FIELD items were found._01" T_FIELD=$tpl_linemax}-->
+            <!--{t string="tpl_%s1 items were found._01" %s1=$tpl_linemax}-->
             <!--{$tpl_strnavi}-->
         </p>
 

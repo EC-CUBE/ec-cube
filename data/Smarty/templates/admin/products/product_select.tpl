@@ -69,7 +69,7 @@ function func_submit( id ){
 
 <!--▼検索結果表示-->
 <!--{if $tpl_linemax}-->
-    <p><!--{t string="tpl_T_FIELD items were found._01" T_FIELD=$tpl_linemax}--></p>
+    <p><!--{t string="tpl_%s1 items were found._01" %s1=$tpl_linemax}--></p>
     <!--{* ▼ページナビ *}-->
     <!--{$tpl_strnavi}-->
     <!--{* ▲ページナビ *}-->

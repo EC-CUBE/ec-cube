@@ -598,7 +598,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
                 $class_name1 = SC_Utils_Ex::isBlank($class_name1) ? t('LC_Page_Admin_Order_Edit_004') : $class_name1;
                 $class_name2 = $arrValues['classcategory_name2'][$i];
                 $class_name2 = SC_Utils_Ex::isBlank($class_name2) ? t('LC_Page_Admin_Order_Edit_004') : $class_name2;                
-                $arrErr['quantity'][$i] .= t('LC_Page_Admin_Order_Edit_005', array('T_FIELD1' => $arrValues['product_name'][$i], 'T_FIELD2' => $class_name1,'T_FIELD3' => $class_name2, 'T_FIELD4' => ($arrOrderDetail['quantity'][$i] + $arrProduct['stock'])));
+                $arrErr['quantity'][$i] .= t('LC_Page_Admin_Order_Edit_005', array('%s1' => $arrValues['product_name'][$i], '%s2' => $class_name1,'%s3' => $class_name2, '%s4' => ($arrOrderDetail['quantity'][$i] + $arrProduct['stock'])));
             }
         }
 

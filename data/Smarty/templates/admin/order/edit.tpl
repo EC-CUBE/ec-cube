@@ -222,7 +222,7 @@
                     <!--{html_options options=$arrORDERSTATUS selected=$arrForm[$key].value}-->
                 </select><br />
                 <!--{if $smarty.get.mode != 'add'}-->
-                    <span class="attention"><!--{t string="tpl_* When T_FIELD is selected, restore the inventory count manually._01" T_FIELD=$arrORDERSTATUS[$smarty.const.ORDER_CANCEL]}--></span>
+                    <span class="attention"><!--{t string="tpl_* When %s1 is selected, restore the inventory count manually._01" %s1=$arrORDERSTATUS[$smarty.const.ORDER_CANCEL]}--></span>
                 <!--{/if}-->
             </td>
         </tr>
@@ -406,12 +406,12 @@
             <!--{assign var=price value=`$arrForm.price.value[$product_index]`}-->
             <!--{assign var=quantity value=`$arrForm.quantity.value[$product_index]`}-->
             <td class="right"><!--{t string="currency_prefix"}--><!--{$price|sfCalcIncTax|number_format}--><!--{t string="currency_suffix"}--></td>
-            <td class="right"><!--{t string="tpl_500" escape="none" T_FIELD=$price|sfCalcIncTax|sfMultiply:$quantity|number_format}--></td>
+            <td class="right"><!--{t string="tpl_500" escape="none" %s1=$price|sfCalcIncTax|sfMultiply:$quantity|number_format}--></td>
         </tr>
         <!--{/section}-->
         <tr>
             <th colspan="5" class="column right"><!--{t string="tpl_Subtotal_01"}--></th>
-            <td class="right"><!--{t string="tpl_500" escape="none" T_FIELD=$arrForm.subtotal.value|number_format}--></td>
+            <td class="right"><!--{t string="tpl_500" escape="none" %s1=$arrForm.subtotal.value|number_format}--></td>
         </tr>
         <tr>
             <th colspan="5" class="column right"><!--{t string="tpl_Discount_01"}--></th>
@@ -542,7 +542,7 @@
                             </td>
                             <td class="right">
                                 <!--{assign var=key value="shipment_price"}-->
-                                <!--{t string="tpl_500" escape="none" T_FIELD=$arrShipping[$key][$item_index]|sfCalcIncTax|number_format}-->
+                                <!--{t string="tpl_500" escape="none" %s1=$arrShipping[$key][$item_index]|sfCalcIncTax|number_format}-->
                                 <input type="hidden" name="<!--{$key}-->[<!--{$shipping_index}-->][<!--{$item_index}-->]" value="<!--{$arrShipping[$key][$item_index]|h}-->" />
                             </td>
                             <td class="right">
@@ -683,10 +683,10 @@
 
         <!--{if $arrForm.payment_info|@count > 0}-->
         <tr>
-            <th><!--{t string="tpl_T_FIELD information_01" T_FIELD=$arrForm.payment_type}--></th>
+            <th><!--{t string="tpl_%s1 information_01" %s1=$arrForm.payment_type}--></th>
             <td>
                 <!--{foreach key=key item=item from=$arrForm.payment_info}-->
-                <!--{if $key != "title"}--><!--{if $item.name != ""}--><!--{t string="t_T_FIELD:_01" T_FIELD=$item.name}--><!--{/if}--><!--{$item.value}--><br/><!--{/if}-->
+                <!--{if $key != "title"}--><!--{if $item.name != ""}--><!--{t string="t_%s1:_01" %s1=$item.name}--><!--{/if}--><!--{$item.value}--><br/><!--{/if}-->
                 <!--{/foreach}-->
             </td>
         </tr>

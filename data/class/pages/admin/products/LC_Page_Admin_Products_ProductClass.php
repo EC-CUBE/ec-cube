@@ -342,7 +342,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                  * 販売価格の必須チェック
                  */
                 if (SC_Utils_Ex::isBlank($arrValues['price02'][$i])) {
-                    $arrErr['price02'][$i] = t('LC_Page_Admin_Products_ProductClass_003', array('T_FIELD' => SALE_PRICE_TITLE));
+                    $arrErr['price02'][$i] = t('LC_Page_Admin_Products_ProductClass_003', array('%s1' => SALE_PRICE_TITLE));
                 }
                 /*
                  * 在庫数の必須チェック
@@ -575,7 +575,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
                 $size = $size / 1000;
                 $byte = 'MB';
             }
-            t('LC_Page_Admin_Products_ProductClass_011', array('T_FIELD1' => $size, 'T_FIELD2' => $byte));
+            t('LC_Page_Admin_Products_ProductClass_011', array('%s1' => $size, '%s2' => $byte));
         } else {
             // SC_CheckError::FILE_EXT_CHECK とのソース互換を強めるための配列
             $value = array(
@@ -598,7 +598,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
 
             if ($match === false) {
                 $str_ext = implode('・', $value[2]);
-                t('LC_Page_Admin_Products_ProductClass_013', array('T_FIELD1' => $value[0], 'T_FIELD2' => $str_ext));
+                t('LC_Page_Admin_Products_ProductClass_013', array('%s1' => $value[0], '%s2' => $str_ext));
             // ▲SC_CheckError::FILE_EXT_CHECK から移植
             } else {
                 $uniqname = date('mdHi') . '_' . uniqid('').'.';

@@ -278,7 +278,7 @@ $("*[name=search_endday]").val(dates[2]);
                     <!--{if $smarty.const.CLOSE_DAY == 31}-->
 						<!--{t string="t_Monthly (end of month)_01"}-->
 					<!--{else}-->
-						<!--{t string="t_Monthly (by T_FIELD)_01" T_FIELD=$smarty.const.CLOSE_DAY}-->
+						<!--{t string="t_Monthly (by %s1)_01" %s1=$smarty.const.CLOSE_DAY}-->
 					<!--{/if}-->
                     <input type="hidden" name="search_startyear_m" value="<!--{$arrForm.search_startyear_m.value|h}-->" />
                     <input type="hidden" name="search_startmonth_m" value="<!--{$arrForm.search_startmonth_m.value|h}-->" />

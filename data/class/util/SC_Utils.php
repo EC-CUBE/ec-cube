@@ -48,7 +48,7 @@ class SC_Utils {
         }
         $path = HTML_REALDIR . 'install/' . DIR_INDEX_FILE;
         if (file_exists($path)) {
-            SC_Utils_Ex::sfErrorHeader(t('SC_Utils_001', array('T_FIELD' => DIR_INDEX_FILE)));
+            SC_Utils_Ex::sfErrorHeader(t('SC_Utils_001', array('%s1' => DIR_INDEX_FILE)));
         }
     }
 
@@ -1147,12 +1147,12 @@ class SC_Utils {
                     $mess = SC_Utils_Ex::sfCopyDir($data_.'/', $des.$data.'/', $mess);
                 } else {
                     if (!$override && file_exists($des.$data)) {
-                        $mess.= t('SC_Utils_003', array('T_FIELD01' => $des, 'T_FIELD02' => $data));
+                        $mess.= t('SC_Utils_003', array('%s1' => $des, '%s2' => $data));
                     } else {
                         if (@copy($data_, $des.$data)) {
-                            $mess.= t('SC_Utils_004', array('T_FIELD01' => $des, 'T_FIELD02' => $data));
+                            $mess.= t('SC_Utils_004', array('%s1' => $des, '%s2' => $data));
                         } else {
-                            $mess.= t('SC_Utils_005', array('T_FIELD01' => $des, 'T_FIELD02' => $data));
+                            $mess.= t('SC_Utils_005', array('%s1' => $des, '%s2' => $data));
                         }
                     }
                     $mod=stat($data_);

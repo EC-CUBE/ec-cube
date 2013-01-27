@@ -169,7 +169,7 @@ class SC_Fpdf extends SC_Helper_FPDI {
         $this->Cell(0, 66, '', 0, 2, 'R', 0, '');
         $this->Cell(5, 0, '', 0, 0, 'R', 0, '');
         $this->SetFont('SJIS', 'B', 15);
-        $this->Cell(67, 8, t('SC_Fpdf_019', array('T_FIELD' => number_format($this->arrDisp['payment_total']))), 0, 2, 'R', 0, '');
+        $this->Cell(67, 8, t('SC_Fpdf_019', array('%s1' => number_format($this->arrDisp['payment_total']))), 0, 2, 'R', 0, '');
         $this->Cell(0, 45, '', 0, 2, '', 0, '');
 
         $this->SetFont('SJIS', '', 8);
@@ -199,8 +199,8 @@ class SC_Fpdf extends SC_Helper_FPDI {
                 }
             }
             $arrOrder[$i][1]  = number_format($data[0]);
-            $arrOrder[$i][2]  = t('SC_Fpdf_019', array('T_FIELD' => number_format($data[1])));
-            $arrOrder[$i][3]  = t('SC_Fpdf_019', array('T_FIELD' => number_format($data[2])));
+            $arrOrder[$i][2]  = t('SC_Fpdf_019', array('%s1' => number_format($data[1])));
+            $arrOrder[$i][3]  = t('SC_Fpdf_019', array('%s1' => number_format($data[2])));
 
         }
 
@@ -213,31 +213,31 @@ class SC_Fpdf extends SC_Helper_FPDI {
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
         $arrOrder[$i][2] = t('SC_Fpdf_005');
-        $arrOrder[$i][3] = t('SC_Fpdf_019', array('T_FIELD' => number_format($this->arrDisp['subtotal'])));
+        $arrOrder[$i][3] = t('SC_Fpdf_019', array('%s1' => number_format($this->arrDisp['subtotal'])));
 
         $i++;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
         $arrOrder[$i][2] = t('SC_Fpdf_006');
-        $arrOrder[$i][3] = t('SC_Fpdf_019', array('T_FIELD' => number_format($this->arrDisp['deliv_fee'])));
+        $arrOrder[$i][3] = t('SC_Fpdf_019', array('%s1' => number_format($this->arrDisp['deliv_fee'])));
 
         $i++;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
         $arrOrder[$i][2] = t('SC_Fpdf_007');
-        $arrOrder[$i][3] = t('SC_Fpdf_019', array('T_FIELD' => number_format($this->arrDisp['charge'])));
+        $arrOrder[$i][3] = t('SC_Fpdf_019', array('%s1' => number_format($this->arrDisp['charge'])));
 
         $i++;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
         $arrOrder[$i][2] = t('SC_Fpdf_008');
-        $arrOrder[$i][3] = t('SC_Fpdf_019', array('T_FIELD' => '- '.number_format(($this->arrDisp['use_point'] * POINT_VALUE) + $this->arrDisp['discount'])));
+        $arrOrder[$i][3] = t('SC_Fpdf_019', array('%s1' => '- '.number_format(($this->arrDisp['use_point'] * POINT_VALUE) + $this->arrDisp['discount'])));
 
         $i++;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
         $arrOrder[$i][2] = t('SC_Fpdf_009');
-        $arrOrder[$i][3] = t('SC_Fpdf_019', array('T_FIELD' => number_format($this->arrDisp['payment_total'])));
+        $arrOrder[$i][3] = t('SC_Fpdf_019', array('%s1' => number_format($this->arrDisp['payment_total'])));
 
         // ポイント表記
         if ($this->arrData['disp_point'] && $this->arrDisp['customer_id']) {

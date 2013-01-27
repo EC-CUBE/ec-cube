@@ -174,7 +174,7 @@
 
     <div class="list-info clearfix">
         <div class="btn"><a class="btn-normal" href="javascript:;" id="copy_from_first"><span><!--{t string="tpl_602"}--></span></a></div>
-        <p><!--{t string="tpl_601" escape="none" T_FIELD=$smarty.const.DOWNLOAD_EXTENSION}--></p>
+        <p><!--{t string="tpl_601" escape="none" %s1=$smarty.const.DOWNLOAD_EXTENSION}--></p>
     </div>
 
     <!--{if $arrErr.check_empty}-->
@@ -198,10 +198,10 @@
             <th><!--{t string="tpl_Standard 2_01"}--><br>(<!--{$arrClass[$class_id2]|default_t:"t_Not selected_01"|h}-->)</th>
             <th><!--{t string="tpl_Product code_01"}--></th>
             <th><!--{t string="tpl_557_1" escape="none"}--></th>
-            <th><!--{t string="tpl_603" escape="none" T_FIELD=$smarty.const.NORMAL_PRICE_TITLE}--></th>
-            <th><!--{t string="tpl_603" escape="none" T_FIELD=$smarty.const.SALE_PRICE_TITLE}--><span class="attention">*</span></th>
+            <th><!--{t string="tpl_603" escape="none" %s1=$smarty.const.NORMAL_PRICE_TITLE}--></th>
+            <th><!--{t string="tpl_603" escape="none" %s1=$smarty.const.SALE_PRICE_TITLE}--><span class="attention">*</span></th>
             <th><!--{t string="tpl_Product type<span class='attention'> *</span>_01" escape="none"}--></th>
-            <th><!--{t string="tpl_604" escape="none"}--><span class="red"><br><!--{t string="tpl_606" T_FIELD=$smarty.const.STEXT_LEN}--></span></th>
+            <th><!--{t string="tpl_604" escape="none"}--><span class="red"><br><!--{t string="tpl_606" %s1=$smarty.const.STEXT_LEN}--></span></th>
             <th><!--{t string="tpl_605" escape="none"}--></th>
         </tr>
         <!--{section name=cnt loop=$arrForm.total.value}-->

@@ -217,7 +217,7 @@ function moving(news_id,rank, max_rank) {
             <td>
                 <!--{if $arrErr.news_title}--><span class="attention"><!--{$arrErr.news_title}--></span><!--{/if}-->
                 <textarea name="news_title" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" <!--{if $arrErr.news_title}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->><!--{"\n"}--><!--{$arrForm.news_title|h}--></textarea><br />
-                <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.MTEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.MTEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -225,7 +225,7 @@ function moving(news_id,rank, max_rank) {
             <td>
                 <span class="attention"><!--{$arrErr.news_url}--></span>
                 <input type="text" name="news_url" size="60" class="box60"    value="<!--{$arrForm.news_url|h}-->" <!--{if $arrErr.news_url}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}--> maxlength="<!--{$smarty.const.URL_LEN}-->" />
-                <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.URL_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.URL_LEN}--></span>
             </td>
         </tr>
         <tr>

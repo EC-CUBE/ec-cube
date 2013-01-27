@@ -144,19 +144,19 @@ self.moveTo(20,20);self.focus();
         <!--{/section}-->
         <tr>
             <th colspan="5" class="column right"><!--{t string="tpl_Subtotal_01"}--></th>
-            <td class="right"><!--{t string="tpl_500" escape="none" T_FIELD=$arrForm.subtotal.value|number_format}--></td>
+            <td class="right"><!--{t string="tpl_500" escape="none" %s1=$arrForm.subtotal.value|number_format}--></td>
         </tr>
         <tr>
             <th colspan="5" class="column right"><!--{t string="tpl_Discount_01"}--></th>
-            <td class="right"><!--{t string="tpl_500" escape="none" T_FIELD=$arrForm.discount.value|h}--></td>
+            <td class="right"><!--{t string="tpl_500" escape="none" %s1=$arrForm.discount.value|h}--></td>
         </tr>
         <tr>
             <th colspan="5" class="column right"><!--{t string="tpl_Shipping fee_01"}--></th>
-            <td class="right"><!--{t string="tpl_500" escape="none" T_FIELD=$arrForm.deliv_fee.value|h}--></td>
+            <td class="right"><!--{t string="tpl_500" escape="none" %s1=$arrForm.deliv_fee.value|h}--></td>
         </tr>
         <tr>
             <th colspan="5" class="column right"><!--{t string="tpl_Processing fee_01"}--></th>
-            <td class="right"><!--{t string="tpl_500" escape="none" T_FIELD=$arrForm.charge.value|h}--></td>
+            <td class="right"><!--{t string="tpl_500" escape="none" %s1=$arrForm.charge.value|h}--></td>
         </tr>
         <tr>
             <th colspan="5" class="column right"><!--{t string="tpl_Total_01"}--></th>
@@ -216,7 +216,7 @@ self.moveTo(20,20);self.focus();
                             </td>
                             <td class="right">
                                 <!--{assign var=key value="shipment_price"}-->
-                                <!--{t string="tpl_500" escape="none" T_FIELD=$arrShipping[$key][$item_index]|sfCalcIncTax|number_format}-->
+                                <!--{t string="tpl_500" escape="none" %s1=$arrShipping[$key][$item_index]|sfCalcIncTax|number_format}-->
                             </td>
                             <td class="right">
                                 <!--{assign var=key value="shipment_quantity"}-->
@@ -285,7 +285,7 @@ self.moveTo(20,20);self.focus();
                     <!--{if $arrShipping[$key1] == "" && $arrShipping[$key2] == "" && $arrShipping[$key3] == ""}-->
                         <!--{t string="tpl_No designation_01"}-->
                     <!--{else}-->
-                        <!--{t string="tpl_726" T_FIELD1=$arrShipping[$key1] T_FIELD2=$arrShipping[$key2] T_FIELD3=$arrShipping[$key3] }-->
+                        <!--{t string="tpl_726" %s1=$arrShipping[$key1] %s2=$arrShipping[$key2] %s3=$arrShipping[$key3] }-->
                     <!--{/if}-->
                 </td>
             </tr>
@@ -312,10 +312,10 @@ self.moveTo(20,20);self.focus();
 
             <!--{if $arrForm.payment_info|@count > 0}-->
             <tr>
-                <th><!--{t string="tpl_T_FIELD information_01" T_FIELD=$arrForm.payment_type}--></th>
+                <th><!--{t string="tpl_%s1 information_01" %s1=$arrForm.payment_type}--></th>
                 <td>
                     <!--{foreach key=key item=item from=$arrForm.payment_info}-->
-                    <!--{if $key != "title"}--><!--{if $item.name != ""}--><!--{t string="t_T_FIELD:_01" T_FIELD=$item.name}--><!--{/if}--><!--{$item.value}--><br/><!--{/if}-->
+                    <!--{if $key != "title"}--><!--{if $item.name != ""}--><!--{t string="t_%s1:_01" %s1=$item.name}--><!--{/if}--><!--{$item.value}--><br/><!--{/if}-->
                     <!--{/foreach}-->
                 </td>
             </tr>

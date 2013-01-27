@@ -122,7 +122,7 @@ $(function(){
             <td>
                 <!--{if $arrErr.title}--><span class="attention"><!--{$arrErr.title}--></span><!--{/if}-->
                 <input type="text" name="title" value="<!--{$arrForm.title|h}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="" size="60" class="box60"/>
-                <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.SMTEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.SMTEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -165,7 +165,7 @@ $(function(){
         <tr style="background:<!--{if $tpl_holiday_id != $arrHoliday[cnt].holiday_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->;">
             <!--{assign var=holiday_id value=$arrHoliday[cnt].holiday_id}-->
             <td><!--{$arrHoliday[cnt].title|h}--></td>
-            <td><!--{t string="tpl_727" T_FIELD1=$arrHoliday[cnt].month|h T_FIELD2=$arrHoliday[cnt].day|h}--></td>
+            <td><!--{t string="tpl_727" %s1=$arrHoliday[cnt].month|h %s2=$arrHoliday[cnt].day|h}--></td>
             <td class="center">
                 <!--{if $tpl_holiday_id != $arrHoliday[cnt].holiday_id}-->
                 <a href="?" onclick="fnModeSubmit('pre_edit', 'holiday_id', <!--{$arrHoliday[cnt].holiday_id}-->); return false;"><!--{t string="tpl_Edit_01"}--></a>

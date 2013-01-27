@@ -123,12 +123,12 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
                 $objFormParam->addParam(t('PARAM_LABEL_HANDLE_PAYMENT_METHOD'), 'payment_ids', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
                 for ($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
-                    $objFormParam->addParam(t('LC_Page_Admin_Basis_DeliveryInput_004', array('T_FIELD' => $cnt)), "deliv_time$cnt", STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+                    $objFormParam->addParam(t('LC_Page_Admin_Basis_DeliveryInput_004', array('%s1' => $cnt)), "deliv_time$cnt", STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
                 }
 
                 if (INPUT_DELIV_FEE) {
                     for ($cnt = 1; $cnt <= DELIVFEE_MAX; $cnt++) {
-                        $objFormParam->addParam(t('LC_Page_Admin_Basis_DeliveryInput_005', array('T_FIELD' => $cnt)), "fee$cnt", PRICE_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+                        $objFormParam->addParam(t('LC_Page_Admin_Basis_DeliveryInput_005', array('%s1' => $cnt)), "fee$cnt", PRICE_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
                     }
                 }
                 break;

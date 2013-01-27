@@ -356,18 +356,18 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         $objFormParam->addParam(t('PARAM_LABEL_TEMP_MAIN_LARGE_IMAGE'), 'temp_main_large_image', '', '', array());
 
         for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
-            $objFormParam->addParam(t('PARAM_LABEL_DETAIL_SUBTITLE_COUNT', array('T_FIELD' => $cnt)), 'sub_title' . $cnt, STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-            $objFormParam->addParam(t('PARAM_LABEL_DETAIL_SUBCOMMENT_COUNT', array('T_FIELD' => $cnt)), 'sub_comment' . $cnt, LLTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-            $objFormParam->addParam(t('PARAM_LABEL_SAVE_SUB_IMAGE_CNT_ALP', array('T_FIELD' => $cnt)), 'save_sub_image' . $cnt, '', '', array());
-            $objFormParam->addParam(t('PARAM_LABEL_SAVE_SUB_LARGE_IMAGE_CNT_ALP', array('T_FIELD' => $cnt)), 'save_sub_large_image' . $cnt, '', '', array());
-            $objFormParam->addParam(t('PARAM_LABEL_TEMP_SUB_IMAGE_CNT_ALP', array('T_FIELD' => $cnt)), 'temp_sub_image' . $cnt, '', '', array());
-            $objFormParam->addParam(t('PARAM_LABEL_TEMP_SUB_LARGE_IMAGE_CNT_ALP', array('T_FIELD' => $cnt)), 'temp_sub_large_image' . $cnt, '', '', array());
+            $objFormParam->addParam(t('PARAM_LABEL_DETAIL_SUBTITLE_COUNT', array('%s1' => $cnt)), 'sub_title' . $cnt, STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+            $objFormParam->addParam(t('PARAM_LABEL_DETAIL_SUBCOMMENT_COUNT', array('%s1' => $cnt)), 'sub_comment' . $cnt, LLTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+            $objFormParam->addParam(t('PARAM_LABEL_SAVE_SUB_IMAGE_CNT_ALP', array('%s1' => $cnt)), 'save_sub_image' . $cnt, '', '', array());
+            $objFormParam->addParam(t('PARAM_LABEL_SAVE_SUB_LARGE_IMAGE_CNT_ALP', array('%s1' => $cnt)), 'save_sub_large_image' . $cnt, '', '', array());
+            $objFormParam->addParam(t('PARAM_LABEL_TEMP_SUB_IMAGE_CNT_ALP', array('%s1' => $cnt)), 'temp_sub_image' . $cnt, '', '', array());
+            $objFormParam->addParam(t('PARAM_LABEL_TEMP_SUB_LARGE_IMAGE_CNT_ALP', array('%s1' => $cnt)), 'temp_sub_large_image' . $cnt, '', '', array());
         }
 
         for ($cnt = 1; $cnt <= RECOMMEND_PRODUCT_MAX; $cnt++) {
-            $objFormParam->addParam(t('PARAM_LABEL_RECOMMEND_COMMENT_CNT', array('T_FIELD' => $cnt)), 'recommend_comment' . $cnt, LTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-            $objFormParam->addParam(t('PARAM_LABEL_RECOMMEND_ID_CNT', array('T_FIELD' => $cnt)), 'recommend_id' . $cnt, INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-            $objFormParam->addParam(t('PARAM_LABEL_RECOMMEND_DELETE_CNT', array('T_FIELD' => $cnt)), 'recommend_delete' . $cnt, '', 'n', array());
+            $objFormParam->addParam(t('PARAM_LABEL_RECOMMEND_COMMENT_CNT', array('%s1' => $cnt)), 'recommend_comment' . $cnt, LTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+            $objFormParam->addParam(t('PARAM_LABEL_RECOMMEND_ID_CNT', array('%s1' => $cnt)), 'recommend_id' . $cnt, INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+            $objFormParam->addParam(t('PARAM_LABEL_RECOMMEND_DELETE_CNT', array('%s1' => $cnt)), 'recommend_delete' . $cnt, '', 'n', array());
         }
 
         $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_ID'), 'copy_product_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -425,8 +425,8 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         $objUpFile->addFile(t('PARAM_LABEL_DETAIL_MAIN_IMAGE'), 'main_image', array('jpg', 'gif', 'png'), IMAGE_SIZE, false, NORMAL_IMAGE_WIDTH, NORMAL_IMAGE_HEIGHT);
         $objUpFile->addFile(t('PARAM_LABEL_MAIN_LARGE_IMAGE'), 'main_large_image', array('jpg', 'gif', 'png'), IMAGE_SIZE, false, LARGE_IMAGE_WIDTH, LARGE_IMAGE_HEIGHT);
         for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
-            $objUpFile->addFile(t('PARAM_LABEL_DETAIL_SUB_IMAGE_CNT', array('T_FIELD' => $cnt)), "sub_image$cnt", array('jpg', 'gif', 'png'), IMAGE_SIZE, false, NORMAL_SUBIMAGE_WIDTH, NORMAL_SUBIMAGE_HEIGHT);
-            $objUpFile->addFile(t('PARAM_LABEL_DETAIL_SUB_LARGE_IMAGE_CNT', array('T_FIELD' => $cnt)), "sub_large_image$cnt", array('jpg', 'gif', 'png'), IMAGE_SIZE, false, LARGE_SUBIMAGE_WIDTH, LARGE_SUBIMAGE_HEIGHT);
+            $objUpFile->addFile(t('PARAM_LABEL_DETAIL_SUB_IMAGE_CNT', array('%s1' => $cnt)), "sub_image$cnt", array('jpg', 'gif', 'png'), IMAGE_SIZE, false, NORMAL_SUBIMAGE_WIDTH, NORMAL_SUBIMAGE_HEIGHT);
+            $objUpFile->addFile(t('PARAM_LABEL_DETAIL_SUB_LARGE_IMAGE_CNT', array('%s1' => $cnt)), "sub_large_image$cnt", array('jpg', 'gif', 'png'), IMAGE_SIZE, false, LARGE_SUBIMAGE_WIDTH, LARGE_SUBIMAGE_HEIGHT);
         }
     }
 
@@ -463,7 +463,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         // HTMLタグ許可チェック
         $objErr->doFunc(array(t('PARAM_LABEL_MAIN_COMMENT'), 'main_comment', $this->arrAllowedTag), array('HTML_TAG_CHECK'));
         for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
-            $objErr->doFunc(array(t('PARAM_LABEL_DETAIL_SUBCOMMENT_COUNT', array('T_FIELD' => $cnt)), 'sub_comment' . $cnt, $this->arrAllowedTag), array('HTML_TAG_CHECK'));
+            $objErr->doFunc(array(t('PARAM_LABEL_DETAIL_SUBCOMMENT_COUNT', array('%s1' => $cnt)), 'sub_comment' . $cnt, $this->arrAllowedTag), array('HTML_TAG_CHECK'));
         }
 
         // 規格情報がない商品の場合のチェック

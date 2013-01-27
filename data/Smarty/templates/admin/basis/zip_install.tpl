@@ -29,9 +29,9 @@
     <form name="form1" id="form1" method="get" action="?" onsubmit="return false;">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="">
-        <p><!--{t string="tpl_Date and time of saved postal code CSV update: T_FIELD_01" T_FIELD=$tpl_csv_datetime|h}--></p>
-        <p><!--{t string="tpl_Postal code There are T_FIELD lines of data in the CSV._01" T_FIELD=$tpl_line|h}--></p>
-        <p><!--{t string="tpl_Postal code There are T_FIELD lines of data in the DB._01" T_FIELD=$tpl_count_mtb_zip|h}--></p>
+        <p><!--{t string="tpl_Date and time of saved postal code CSV update: %s1_01" %s1=$tpl_csv_datetime|h}--></p>
+        <p><!--{t string="tpl_Postal code There are %s1 lines of data in the CSV._01" %s1=$tpl_line|h}--></p>
+        <p><!--{t string="tpl_Postal code There are %s1 lines of data in the DB._01" %s1=$tpl_count_mtb_zip|h}--></p>
         <!--{if $tpl_count_mtb_zip == 0}-->
             <p class="attention"><!--{t string="tpl_Please carry out registration._01"}--></p>
         <!--{elseif $tpl_line <> $tpl_count_mtb_zip}-->

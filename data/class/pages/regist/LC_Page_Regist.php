@@ -178,8 +178,8 @@ class LC_Page_Regist extends LC_Page_Ex {
         );
         // 宛先の設定
         $name = t('LC_Page_Regist_005',
-                              array('T_FIELD01' => $data['name01'],
-                                    'T_FIELD02' => $data['name02']));
+                              array('%s1' => $data['name01'],
+                                    '%s2' => $data['name02']));
         $objMail->setTo($data['email'], $name);
         $objMail->sendMail();
     }

@@ -72,7 +72,7 @@ function fnTargetSelf(){
     </div>
     <h2>
         <!--{if $arrForm.sql_id != ""}-->
-            <!--{t string="tpl_703" T_FIELD=$arrForm.sql_name|h}-->
+            <!--{t string="tpl_703" %s1=$arrForm.sql_name|h}-->
         <!--{else}-->
             <!--{t string="tpl_704"}-->
         <!--{/if}-->
@@ -84,7 +84,7 @@ function fnTargetSelf(){
             <td>
                 <span class="attention"><!--{$arrErr.sql_name}--></span>
                 <input type="text" name="sql_name" value="<!--{$arrForm.sql_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />
-                <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.STEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.STEXT_LEN}--></span>
             </td>
         </tr>
         <tr>

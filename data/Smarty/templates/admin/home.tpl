@@ -70,27 +70,27 @@
         <table summary="Shop status" class="shop-info">
             <tr>
                 <th><!--{t string="tpl_529"}--></th>
-                <td><!--{t string="tpl_725" T_FIELD=$customer_cnt|default:"0"|number_format}--></td>
+                <td><!--{t string="tpl_725" %s1=$customer_cnt|default:"0"|number_format}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_530"}--></th>
-                <td><!--{t string="tpl_500" escape="none" T_FIELD=$order_yesterday_amount|default:"0"|number_format}--></td>
+                <td><!--{t string="tpl_500" escape="none" %s1=$order_yesterday_amount|default:"0"|number_format}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_531"}--></th>
-                <td><!--{t string="tpl_701" T_FIELD=$order_yesterday_cnt|default:"0"|number_format}--></td>
+                <td><!--{t string="tpl_701" %s1=$order_yesterday_cnt|default:"0"|number_format}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_532" escape="none"}--></th>
-                <td><!--{t string="tpl_500" escape="none" T_FIELD=$order_month_amount|default:"0"|number_format}--></td>
+                <td><!--{t string="tpl_500" escape="none" %s1=$order_month_amount|default:"0"|number_format}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_533" escape="none"}--></th>
-                <td><!--{t string="tpl_701" T_FIELD=$order_month_cnt|default:"0"|number_format}--></td>
+                <td><!--{t string="tpl_701" %s1=$order_month_cnt|default:"0"|number_format}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_534"}--></th>
-                <td><!--{t string="tpl_701" T_FIELD=$review_yesterday_cnt|default:"0"}--></th>
+                <td><!--{t string="tpl_701" %s1=$review_yesterday_cnt|default:"0"}--></th>
             </tr>
             <tr>
                 <th><!--{t string="tpl_535"}--></th>
@@ -98,7 +98,7 @@
             </tr>
             <tr>
                 <th><!--{t string="tpl_536"}--></th>
-                <td><!--{t string="tpl_701" T_FIELD=$review_nondisp_cnt|default:"0"}--></td>
+                <td><!--{t string="tpl_701" %s1=$review_nondisp_cnt|default:"0"}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_537"}--></th>
@@ -127,7 +127,7 @@
                 <td><!--{$arrNewOrder[i].name01|h}--> <!--{$arrNewOrder[i].name02|h}--></td>
                 <td><!--{$arrNewOrder[i].product_name|h}--></td>
                 <td><!--{$arrNewOrder[i].payment_method|h}--></td>
-                <td class="right"><!--{t string="tpl_500" escape="none" T_FIELD=$arrNewOrder[i].total|number_format}--></td>
+                <td class="right"><!--{t string="tpl_500" escape="none" %s1=$arrNewOrder[i].total|number_format}--></td>
             </tr>
             <!--{/section}-->
         </table>

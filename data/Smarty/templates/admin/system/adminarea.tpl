@@ -64,7 +64,7 @@ jQuery(function(){
                 <!--{assign var=key value="admin_allow_hosts"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{"\n"}--><!--{$arrForm[$key]|h}--></textarea>
-                <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$smarty.const.LTEXT_LEN}--></span><br />
+                <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.LTEXT_LEN}--></span><br />
                 
                 <span><!--{t string="tpl_645" escape="none"}--></span><br />
             </td>

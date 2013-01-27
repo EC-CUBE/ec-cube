@@ -75,7 +75,7 @@ $(function() {
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="t_Login ID <span class='attention'>*</span>_01" escape="none"}--><br/><!--{t string="tpl_668" T_FIELD1=$smarty.const.ID_MIN_LEN T_FIELD2=$smarty.const.ID_MAX_LEN}--></th>
+                <th><!--{t string="t_Login ID <span class='attention'>*</span>_01" escape="none"}--><br/><!--{t string="tpl_668" %s1=$smarty.const.ID_MIN_LEN %s2=$smarty.const.ID_MAX_LEN}--></th>
                 <td>
                 <!--{assign var=key value="login_id"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -84,7 +84,7 @@ $(function() {
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_Password<span class='attention'> *</span>_01" escape="none"}--><br/><!--{t string="tpl_668" T_FIELD1=$smarty.const.ID_MIN_LEN T_FIELD2=$smarty.const.ID_MAX_LEN}--></th>
+                <th><!--{t string="tpl_Password<span class='attention'> *</span>_01" escape="none"}--><br/><!--{t string="tpl_668" %s1=$smarty.const.ID_MIN_LEN %s2=$smarty.const.ID_MAX_LEN}--></th>
                 <td>
                 <!--{assign var=key value="login_pass"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -99,7 +99,7 @@ $(function() {
             <col width="30%" />
             <col width="70%" />
             <tr>
-                <th><!--{t string="tpl_755"}--><br/><!--{t string="tpl_668" T_FIELD1=$smarty.const.ID_MIN_LEN T_FIELD2=$smarty.const.ID_MAX_LEN}--></th>
+                <th><!--{t string="tpl_755"}--><br/><!--{t string="tpl_668" %s1=$smarty.const.ID_MIN_LEN %s2=$smarty.const.ID_MAX_LEN}--></th>
                 <td>
                 <!--{assign var=key value="admin_dir"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>

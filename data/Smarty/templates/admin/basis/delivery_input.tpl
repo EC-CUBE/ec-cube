@@ -71,7 +71,7 @@
             </tr>
             <!--{/if}-->
             <tr>
-            <th><!--{t string="tpl_Delivery time T_FIELD_01" T_FIELD=$keyno}--></th>
+            <th><!--{t string="tpl_Delivery time %s1_01" %s1=$keyno}--></th>
             <!--{if $smarty.section.cnt.last}-->
             <!--{assign var=colspan value="3"}-->
             <!--{else}-->
@@ -80,7 +80,7 @@
             <td colspan="<!--{$colspan}-->">
             <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="20" class="box20" /></td>
         <!--{else}-->
-            <th><!--{t string="tpl_Delivery time T_FIELD_01" T_FIELD=$keyno}--></th>
+            <th><!--{t string="tpl_Delivery time %s1_01" %s1=$keyno}--></th>
             <td><input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" size="20" class="box20" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /> </td>
             </tr>
         <!--{/if}-->

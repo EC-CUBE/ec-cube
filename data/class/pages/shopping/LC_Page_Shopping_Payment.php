@@ -328,7 +328,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
             // ポイント差し引き後の決済方法チェック
             $arrPayments = $objPurchase->getPaymentsByPaymentsId($arrForm['payment_id']);
             if ($arrPayments['rule_max'] > $subtotal - $arrForm['use_point'] * POINT_VALUE) {
-                $objErr->arrErr['use_point'] = t('LC_Page_Shopping_Payment_004', array('T_FIELD01' => $subtotal, 'T_FIELD02' => $arrPayments['rule_max']));
+                $objErr->arrErr['use_point'] = t('LC_Page_Shopping_Payment_004', array('%s1' => $subtotal, '%s2' => $arrPayments['rule_max']));
             }
         }
         return $objErr->arrErr;

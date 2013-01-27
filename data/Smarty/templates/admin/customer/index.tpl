@@ -567,7 +567,7 @@
 
     <h2><!--{t string="tpl_List of search results_01"}--></h2>
     <div class="btn">
-        <!--検索結果数--><!--{t string="tpl_<span class='attention'>T_FIELD items</span>&nbsp; were found._01" escape="none" T_FIELD=$tpl_linemax}-->
+        <!--検索結果数--><!--{t string="tpl_<span class='attention'>%s1 items</span>&nbsp; were found._01" escape="none" %s1=$tpl_linemax}-->
         <!--検索結果-->
         <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;"><!--{t string="tpl_CSV download_01"}--></a>
         <a class="btn-normal" href="javascript:;" onclick="location.href='../contents/csv.php?tpl_subno_csv=customer'"><!--{t string="tpl_CSV output settings_01"}--></a>

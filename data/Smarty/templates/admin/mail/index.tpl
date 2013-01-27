@@ -580,7 +580,7 @@
 
     <h2><!--{t string="tpl_List of search results_01"}--></h2>
     <div class="btn">
-        <!--検索結果数--><!--{t string="tpl_<span class='attention'>T_FIELD items</span>&nbsp; were found._01" escape="none" T_FIELD=$tpl_linemax}-->
+        <!--検索結果数--><!--{t string="tpl_<span class='attention'>%s1 items</span>&nbsp; were found._01" escape="none" %s1=$tpl_linemax}-->
         <!--{if $smarty.const.ADMIN_MODE == '1'}-->
             <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><span><!--{t string="tpl_Delete all search results_01"}--></span></a>
         <!--{/if}-->

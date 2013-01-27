@@ -334,9 +334,9 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             // メインタイトル作成
             list($sy, $sm, $sd) = preg_split('|[/ ]|' , $sdate);
             list($ey, $em, $ed) = preg_split('|[/ ]|' , $edate);
-            $start_date = t('LC_Page_Admin_Total_007', array('T_FIELD1' => $sy, 'T_FIELD2' => $sm, 'T_FIELD3' => $sd));
-            $end_date = t('LC_Page_Admin_Total_007', array('T_FIELD1' => $ey, 'T_FIELD2' => $em, 'T_FIELD3' => $ed));
-            $objGraphLine->drawTitle(t('LC_Page_Admin_Total_008', array('T_FIELD1' => $start_date, 'T_FIELD2' => $end_date)));
+            $start_date = t('LC_Page_Admin_Total_007', array('%s1' => $sy, '%s2' => $sm, '%s3' => $sd));
+            $end_date = t('LC_Page_Admin_Total_007', array('%s1' => $ey, '%s2' => $em, '%s3' => $ed));
+            $objGraphLine->drawTitle(t('LC_Page_Admin_Total_008', array('%s1' => $start_date, '%s2' => $end_date)));
 
             // グラフ描画
             $objGraphLine->drawGraph();
@@ -378,10 +378,10 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             // メインタイトル作成
             list($sy, $sm, $sd) = preg_split('|[/ ]|' , $sdate);
             list($ey, $em, $ed) = preg_split('|[/ ]|' , $edate);
-            $start_date = t('LC_Page_Admin_Total_007', array('T_FIELD1' => $sy, 'T_FIELD2' => $sm, 'T_FIELD3' => $sd));
-            $end_date = t('LC_Page_Admin_Total_007', array('T_FIELD1' => $ey, 'T_FIELD2' => $em, 'T_FIELD3' => $ed));
+            $start_date = t('LC_Page_Admin_Total_007', array('%s1' => $sy, '%s2' => $sm, '%s3' => $sd));
+            $end_date = t('LC_Page_Admin_Total_007', array('%s1' => $ey, '%s2' => $em, '%s3' => $ed));
             
-            $objGraphPie->drawTitle(t('LC_Page_Admin_Total_008', array('T_FIELD1' => $start_date, 'T_FIELD2' => $end_date)));
+            $objGraphPie->drawTitle(t('LC_Page_Admin_Total_008', array('%s1' => $start_date, '%s2' => $end_date)));
 
             // 円グラフ描画
             $objGraphPie->drawGraph();
@@ -427,9 +427,9 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             $arrKey = array_keys($arrList);
             list($sy, $sm, $sd) = preg_split('|[/ ]|' , $sdate);
             list($ey, $em, $ed) = preg_split('|[/ ]|' , $edate);
-            $start_date = t('LC_Page_Admin_Total_007', array('T_FIELD1' => $sy, 'T_FIELD2' => $sm, 'T_FIELD3' => $sd));
-            $end_date = t('LC_Page_Admin_Total_007', array('T_FIELD1' => $ey, 'T_FIELD2' => $em, 'T_FIELD3' => $ed));
-            $objGraphBar->drawTitle(t('LC_Page_Admin_Total_008', array('T_FIELD1' => $start_date, 'T_FIELD2' => $end_date)));
+            $start_date = t('LC_Page_Admin_Total_007', array('%s1' => $sy, '%s2' => $sm, '%s3' => $sd));
+            $end_date = t('LC_Page_Admin_Total_007', array('%s1' => $ey, '%s2' => $em, '%s3' => $ed));
+            $objGraphBar->drawTitle(t('LC_Page_Admin_Total_008', array('%s1' => $start_date, '%s2' => $end_date)));
 
             $objGraphBar->drawGraph();
 
@@ -638,7 +638,7 @@ __EOS__;
             $arrResult =& $arrTotalResults[$key];
             $age_key = $arrResult['age'];
             if ($age_key != '') {
-                $arrResult['age_name'] = t('LC_Page_Admin_Total_012', array('T_FIELD' => $arrResult['age']));
+                $arrResult['age_name'] = t('LC_Page_Admin_Total_012', array('%s1' => $arrResult['age']));
             } else {
                 $arrResult['age_name'] = t('LC_Page_Admin_Total_011');
             }

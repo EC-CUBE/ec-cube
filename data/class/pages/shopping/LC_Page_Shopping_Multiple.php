@@ -278,7 +278,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
                 if ($arrCartRow['quantity'] != $arrQuantity[$product_class_id]) {
                     foreach ($arrParams as $index => $arrParam) {
                         if ($arrParam['product_class_id'] == $product_class_id) {
-                            $arrErr['quantity'][$index] = t('LC_Page_Shopping_Multiple_005', array('T_FIELD' => $arrCartRow['quantity']));
+                            $arrErr['quantity'][$index] = t('LC_Page_Shopping_Multiple_005', array('%s1' => $arrCartRow['quantity']));
                             
                         }
                     }

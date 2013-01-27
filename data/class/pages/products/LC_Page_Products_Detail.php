@@ -265,7 +265,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
     function lfInitFile($objUpFile) {
         $objUpFile->addFile(t('PARAM_LABEL_DETAIL_MAIN_IMAGE'), 'main_image', array('jpg'), IMAGE_SIZE);
         for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
-            $objUpFile->addFile(t('PARAM_LABEL_DETAIL_SUB_IMAGE_CNT', array('T_FIELD' => $cnt)), "sub_image$cnt", array('jpg'), IMAGE_SIZE);
+            $objUpFile->addFile(t('PARAM_LABEL_DETAIL_SUB_IMAGE_CNT', array('%s1' => $cnt)), "sub_image$cnt", array('jpg'), IMAGE_SIZE);
         }
         return $objUpFile;
     }

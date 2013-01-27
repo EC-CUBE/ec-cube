@@ -73,7 +73,7 @@ function func_submit( id ){
     </div>
     <!--{* ▼検索結果表示 *}-->
     <!--{if is_numeric($tpl_linemax)}-->
-    <p><!--{t string="tpl_T_FIELD items were found._01" T_FIELD=$tpl_linemax}--></p>
+    <p><!--{t string="tpl_%s1 items were found._01" %s1=$tpl_linemax}--></p>
     <!--{$tpl_strnavi}-->
 
     <table class="list">

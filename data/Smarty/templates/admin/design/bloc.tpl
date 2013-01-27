@@ -42,7 +42,7 @@
                 <td>
                     <!--{assign var=key value="bloc_name"}-->
                     <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" />
-                    <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$arrForm[$key].length}--></span>
+                    <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$arrForm[$key].length}--></span>
                     <!--{if $arrErr[$key] != ""}--> <div class="attention"><!--{$arrErr[$key]}--></div> <!--{/if}-->
                 </td>
             </tr>
@@ -51,7 +51,7 @@
                 <td>
                     <!--{assign var=key value="filename"}-->
                     <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" />.tpl
-                    <span class="attention"> <!--{t string="tpl_(T_FIELD characters max)_01" T_FIELD=$arrForm[$key].length}--></span>
+                    <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$arrForm[$key].length}--></span>
                     <!--{if $arrErr[$key] != ""}--> <div class="attention"><!--{$arrErr[$key]}--></div> <!--{/if}-->
                 </td>
             </tr>

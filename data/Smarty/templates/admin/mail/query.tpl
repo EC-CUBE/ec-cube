@@ -65,14 +65,14 @@ self.moveTo(20,20);self.focus();
         </tr>
         <tr>
             <th><!--{t string="tpl_Birth month_01"}--></th>
-            <td><!--{if $arrSearchData.search_birth_month}--><!--{t string="tpl_728" T_FIELD=$arrSearchData.search_birth_month|h}--><!--{else}--><!--{t string="tpl_(Not designated)_01"}--><!--{/if}--></td>
+            <td><!--{if $arrSearchData.search_birth_month}--><!--{t string="tpl_728" %s1=$arrSearchData.search_birth_month|h}--><!--{else}--><!--{t string="tpl_(Not designated)_01"}--><!--{/if}--></td>
         </tr>
         <tr>
             <th><!--{t string="tpl_Birthday_01"}--></th>
             <td>
             <!--{if $arrSearchData.search_b_start_year}-->
-                <!--{t string="tpl_726" T_FIELD1=$arrSearchData.search_b_start_year T_FIELD2=$arrSearchData.search_b_start_month T_FIELD3=$arrSearchData.search_b_start_day}-->&nbsp;<!--{t string="-"}-->
-                <!--{if $arrSearchData.search_b_end_year}-->&nbsp;<!--{t string="tpl_726" T_FIELD1=$arrSearchData.search_b_end_year T_FIELD2=$arrSearchData.search_b_end_month T_FIELD3=$arrSearchData.search_b_end_day}--><!--{/if}-->
+                <!--{t string="tpl_726" %s1=$arrSearchData.search_b_start_year %s2=$arrSearchData.search_b_start_month %s3=$arrSearchData.search_b_start_day}-->&nbsp;<!--{t string="-"}-->
+                <!--{if $arrSearchData.search_b_end_year}-->&nbsp;<!--{t string="tpl_726" %s1=$arrSearchData.search_b_end_year %s2=$arrSearchData.search_b_end_month %s3=$arrSearchData.search_b_end_day}--><!--{/if}-->
             <!--{else}--><!--{t string="tpl_(Not designated)_01"}--><!--{/if}-->
             </td>
         </tr>
@@ -102,8 +102,8 @@ self.moveTo(20,20);self.focus();
         <tr>
             <th><!--{t string="tpl_Purchase amount_01"}--></th>
             <td>
-                <!--{if $arrSearchData.search_buy_total_from == null}--><!--{t string="tpl_(Not designated)_01"}--><!--{else}--><!--{t string="tpl_500" escape="none" T_FIELD=$arrSearchData.search_buy_total_from|h}--><!--{/if}--> <!--{t string="-"}-->
-                <!--{if $arrSearchData.search_buy_total_to == null}--><!--{t string="tpl_(Not designated)_01"}--><!--{else}--><!--{t string="tpl_500" escape="none" T_FIELD=$arrSearchData.search_buy_total_to|h}--><!--{/if}-->
+                <!--{if $arrSearchData.search_buy_total_from == null}--><!--{t string="tpl_(Not designated)_01"}--><!--{else}--><!--{t string="tpl_500" escape="none" %s1=$arrSearchData.search_buy_total_from|h}--><!--{/if}--> <!--{t string="-"}-->
+                <!--{if $arrSearchData.search_buy_total_to == null}--><!--{t string="tpl_(Not designated)_01"}--><!--{else}--><!--{t string="tpl_500" escape="none" %s1=$arrSearchData.search_buy_total_to|h}--><!--{/if}-->
             </td>
         </tr>
         <tr>
@@ -118,9 +118,9 @@ self.moveTo(20,20);self.focus();
             <th><!--{t string="tpl_Registration/update date_01"}--></th>
             <td>
             <!--{if $arrSearchData.search_start_year}-->
-                <!--{t string="tpl_726" T_FIELD1=$arrSearchData.search_start_year T_FIELD2=$arrSearchData.search_start_month T_FIELD3=$arrSearchData.search_start_day}-->&nbsp;<!--{t string="-"}-->
+                <!--{t string="tpl_726" %s1=$arrSearchData.search_start_year %s2=$arrSearchData.search_start_month %s3=$arrSearchData.search_start_day}-->&nbsp;<!--{t string="-"}-->
             
-            <!--{if $arrSearchData.search_end_year}-->&nbsp;<!--{t string="tpl_726" T_FIELD1=$arrSearchData.search_end_year T_FIELD2=$arrSearchData.search_end_month T_FIELD3=$arrSearchData.search_end_day}--><!--{/if}-->
+            <!--{if $arrSearchData.search_end_year}-->&nbsp;<!--{t string="tpl_726" %s1=$arrSearchData.search_end_year %s2=$arrSearchData.search_end_month %s3=$arrSearchData.search_end_day}--><!--{/if}-->
             <!--{else}--><!--{t string="tpl_(Not designated)_01"}--><!--{/if}-->
             </td>
         </tr>
@@ -128,8 +128,8 @@ self.moveTo(20,20);self.focus();
             <th><!--{t string="tpl_Final purchase date_01"}--></th>
             <td>
             <!--{if $arrSearchData.search_buy_start_year}-->
-                <!--{t string="tpl_726" T_FIELD1=$arrSearchData.search_buy_start_year T_FIELD2=$arrSearchData.search_buy_start_month T_FIELD3=$arrSearchData.search_buy_start_day}-->&nbsp;<!--{t string="-"}-->
-                <!--{if $arrSearchData.search_buy_end_year}-->&nbsp;<!--{t string="tpl_726" T_FIELD1=$arrSearchData.search_buy_end_year T_FIELD2=$arrSearchData.search_buy_end_month T_FIELD3=$arrSearchData.search_buy_end_day}--><!--{/if}-->
+                <!--{t string="tpl_726" %s1=$arrSearchData.search_buy_start_year %s2=$arrSearchData.search_buy_start_month %s3=$arrSearchData.search_buy_start_day}-->&nbsp;<!--{t string="-"}-->
+                <!--{if $arrSearchData.search_buy_end_year}-->&nbsp;<!--{t string="tpl_726" %s1=$arrSearchData.search_buy_end_year %s2=$arrSearchData.search_buy_end_month %s3=$arrSearchData.search_buy_end_day}--><!--{/if}-->
             <!--{else}--><!--{t string="tpl_(Not designated)_01"}--><!--{/if}-->
             </td>
         </tr>
