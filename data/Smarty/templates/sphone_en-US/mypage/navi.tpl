@@ -29,7 +29,7 @@
                 <!--{* 会員状態 *}-->
                 <li class="nav_delivadd"><a href="delivery.php" class="<!--{if $tpl_mypageno == 'delivery'}--> selected<!--{/if}-->" rel="external">Delivery options</a></li>
                 <li class="nav_change"><a href="change.php" class="<!--{if $tpl_mypageno == 'change'}--> selected<!--{/if}-->" rel="external">Edit member details</a></li>
-                <li class="nav_history"><a href="./<!--{$smarty.const.DIR_INDEX_PATH}-->" class="<!--{if $tpl_mypageno == 'index'}--> selected<!--{/if}-->" rel="external">Purchase history</a></li>
+                <li class="nav_history"><a href="./<!--{$smarty.const.DIR_INDEX_PATH}-->" class="<!--{if $tpl_mypageno == 'index'}--> selected<!--{/if}-->" rel="external">History</a></li>
                 <!--{if $smarty.const.OPTION_FAVORITE_PRODUCT == 1}-->
                     <li class="nav_favorite"><a href="favorite.php" class="<!--{if $tpl_mypageno == 'favorite'}--> selected<!--{/if}-->" rel="external">Favorites</a></li>
                 <!--{/if}-->
@@ -39,7 +39,7 @@
                 <!--{* 退会状態 *}-->
                 <li class="nav_delivadd"><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="<!--{if $tpl_mypageno == 'delivery'}--> selected<!--{/if}-->" rel="external">Delivery options</a></li>
                 <li class="nav_change"><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="<!--{if $tpl_mypageno == 'change'}--> selected<!--{/if}-->" rel="external">Edit member details</a></li>
-                <li class="nav_history"><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="<!--{if $tpl_mypageno == 'index'}--> selected<!--{/if}-->" rel="external">Purchase history</a></li>
+                <li class="nav_history"><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="<!--{if $tpl_mypageno == 'index'}--> selected<!--{/if}-->" rel="external">History</a></li>
                 <!--{if $smarty.const.OPTION_FAVORITE_PRODUCT == 1}-->
                     <li class="nav_favorite"><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="<!--{if $tpl_mypageno == 'favorite'}--> selected<!--{/if}-->" rel="external">Favorites</a></li>
                 <!--{/if}-->

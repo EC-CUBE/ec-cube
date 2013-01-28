@@ -29,7 +29,7 @@
             <!--{* 会員状態 *}-->
             <!--{if $tpl_login}-->
                 <li><a href="./<!--{$smarty.const.DIR_INDEX_PATH}-->" class="<!--{if $tpl_mypageno == 'index'}--> selected<!--{/if}-->">
-                    History</a></li>
+                    Purchase history</a></li>
                 <!--{if $smarty.const.OPTION_FAVORITE_PRODUCT == 1}-->
                     <li><a href="favorite.php" class="<!--{if $tpl_mypageno == 'favorite'}--> selected<!--{/if}-->">
                         Favorites</a></li>
@@ -44,7 +44,7 @@
             <!--{* 退会状態 *}-->
             <!--{else}-->
                 <li><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="<!--{if $tpl_mypageno == 'index'}--> selected<!--{/if}-->">
-                    History</a></li>
+                    Purchase history</a></li>
                 <!--{if $smarty.const.OPTION_FAVORITE_PRODUCT == 1}-->
                     <li><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="<!--{if $tpl_mypageno == 'favorite'}--> selected<!--{/if}-->">
                         Favorites</a></li>
