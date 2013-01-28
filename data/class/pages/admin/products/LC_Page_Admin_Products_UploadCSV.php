@@ -399,6 +399,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         $objProduct = new SC_Product_Ex();
         // 登録データ対象取得
         $arrList = $objFormParam->getHashArray();
+
         // 登録時間を生成(DBのCURRENT_TIMESTAMPだとcommitした際、すべて同一の時間になってしまう)
         $arrList['update_date'] = $this->lfGetDbFormatTimeWithLine($line);
 
@@ -466,13 +467,22 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      */
     function lfRegistProductClass($objQuery, $arrList, $product_id, $product_class_id) {
         $objProduct = new SC_Product_Ex();
+
+        // FIXME: dtb_csvテーブルの中で古いカラム名(右辺)が設定されている。sfArrayIntersectKeysでフィルタされてしまうので、名称を変更する必要がある
+        if (array_key_exists('classcategory_id', $arrList) && $arrList['classcategory_id'] != '') {
+            $arrList['classcategory_id1'] = $arrList['classcategory_id'];
+        }
+        if (array_key_exists('parent_classcategory_id', $arrList) && $arrList['classcategory_id'] != '') {
+            $arrList['classcategory_id2'] = $arrList['parent_classcategory_id'];
+        }
+
         // 商品規格登録情報を生成する。
         // 商品規格テーブルのカラムに存在しているもののうち、Form投入設定されていないデータは上書きしない。
         $sqlval = SC_Utils_Ex::sfArrayIntersectKeys($arrList, $this->arrProductClassColumn);
 
         // 商品IDが設定されており、規格IDが設定されていなければ、既存の規格ID取得を試みる(product_class_idは必須入力項目ではない)
         if ($product_class_id == '' && $product_id != '') {
-            $product_class_id = SC_Utils_Ex::sfGetProductClassId($product_id,$sqlval['classcategory_id1'],$sqlval['classcategory_id2']);
+            $product_class_id = SC_Utils_Ex::sfGetProductClassId($product_id, $sqlval['classcategory_id1'], $sqlval['classcategory_id2']);
             $sqlval['product_class_id'] = $product_class_id;
         }
 
@@ -657,7 +667,15 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
                 ) {
                     $arrErr['product_class_id'] = '※ 指定の商品IDと商品規格IDの組合せは正しくありません。';
                 }
-            }
+
+                // product_class_idは(product_id, classcategory_id1, classcategory_id2)に対して一意。既に異なるproduct_class_idが存在した場合はエラー
+                $classcategory_id1 = $item['classcategory_id'] ? $item['classcategory_id'] : 0;
+                $classcategory_id2 = $item['parent_classcategory_id'] ? $item['parent_classcategory_id'] : 0;
+                $product_class_id = SC_Utils_Ex::sfGetProductClassId($item['product_id'], $classcategory_id1, $classcategory_id2);
+                if ($product_class_id && $product_class_id != $item['product_class_id']) {
+                    $arrErr['product_class_id'] = '※ 指定の商品ID/規格分類と、商品規格IDの組合せは正しくありません。';
+                }
+             }
         }
         // 表示ステータスの存在チェック
         if (!$this->lfIsArrayRecord($this->arrDISP, 'status', $item)) {
