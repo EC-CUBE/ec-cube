@@ -46,10 +46,11 @@
             <hr />
             <p>
                 メールアドレス<br />
+                <span class="attention"><!--{$arrErr.email}--></span>
                 <input type="email" name="email"
                 value="<!--{$tpl_login_email|h}-->"
-                style="<!--{$errmsg|sfGetErrorColor}-->; ime-mode: disabled;"
-                maxlength="200" class="boxLong data-role-none" />
+                style="<!--{$arrErr.email|sfGetErrorColor}-->; ime-mode: disabled;"
+                maxlength="200" class="text boxLong data-role-none" />
             </p>
             <span class="attention"><!--{$errmsg}--></span>
             <hr />
