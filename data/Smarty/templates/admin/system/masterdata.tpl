@@ -52,7 +52,7 @@
         <table class="form">
             <!--{foreach from=$arrMasterData item=val key=key}-->
                 <tr>
-                    <th><!--{t string="t_ID:_01"}--><input type="text" name="id[]" value="<!--{$key|h}-->" size="6" /></th>
+                    <th><!--{t string="tpl_ID:_01"}--><input type="text" name="id[]" value="<!--{$key|h}-->" size="6" /></th>
                     <td><!--{t string="tpl_Value:_01"}--><input type="text" name="name[]" value="<!--{$val|h}-->" style="" size="60" class="box60" /></td>
                 </tr>
             <!--{/foreach}-->
@@ -61,7 +61,7 @@
         <h2><!--{t string="tpl_Additional data_01"}--></h2>
         <table class="form">
             <tr>
-                <th><!--{t string="t_ID:_01"}--><input type="text" name="id[]" size="6" /></th>
+                <th><!--{t string="tpl_ID:_01"}--><input type="text" name="id[]" size="6" /></th>
                 <td><!--{t string="tpl_Value:_01"}--><input type="text" name="name[]" style="" size="60" class="box60" /></td>
             </tr>
         </table>

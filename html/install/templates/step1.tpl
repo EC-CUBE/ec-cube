@@ -49,7 +49,7 @@ $(function() {
 
 <div class="contents">
     <div class="message">
-        <h2><!--{t string="t_EC site settings_01"}--></h2>
+        <h2><!--{t string="tpl_EC site settings_01"}--></h2>
     </div>
     <div class="block">
         <table>
@@ -61,7 +61,7 @@ $(function() {
                 <!--{assign var=key value="shop_name"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  /><br />
-                <span class="ex-text"><!--{t string="t_Fill in the name of your store._01"}--></span>
+                <span class="ex-text"><!--{t string="tpl_Fill in the name of your store._01"}--></span>
                 </td>
             </tr>
             <tr>
@@ -70,17 +70,17 @@ $(function() {
                 <!--{assign var=key value="admin_mail"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  /><br />
-                <span class="ex-text"><!--{t string="t_The address will be the one in the order receipt mail, etc._01"}--><br />
+                <span class="ex-text"><!--{t string="tpl_The address will be the one in the order receipt mail, etc._01"}--><br />
                 <!--{t string="tpl_756"}--></span>
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="t_Login ID <span class='attention'>*</span>_01" escape="none"}--><br/><!--{t string="tpl_* Alphanumeric characters %s1 to %s2 _01" %s1=$smarty.const.ID_MIN_LEN %s2=$smarty.const.ID_MAX_LEN}--></th>
+                <th><!--{t string="tpl_Login ID <span class='attention'>*</span>_01" escape="none"}--><br/><!--{t string="tpl_* Alphanumeric characters %s1 to %s2 _01" %s1=$smarty.const.ID_MIN_LEN %s2=$smarty.const.ID_MAX_LEN}--></th>
                 <td>
                 <!--{assign var=key value="login_id"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  /><br />
-                <span class="ex-text"><!--{t string="t_ID for logging in to the management area._01"}--></span><br />
+                <span class="ex-text"><!--{t string="tpl_ID for logging in to the management area._01"}--></span><br />
                 </td>
             </tr>
             <tr>
@@ -89,12 +89,12 @@ $(function() {
                 <!--{assign var=key value="login_pass"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input type="password" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$smarty.const.ID_MAX_LEN}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;" size="50"  /><br />
-                <span class="ex-text"><!--{t string="t_Password for logging in to the management area._01"}--></span><br />
+                <span class="ex-text"><!--{t string="tpl_Password for logging in to the management area._01"}--></span><br />
                 </td>
             </tr>
         </table>
 
-        <h2><!--{t string="t_Management area settings_01"}--></h2>
+        <h2><!--{t string="tpl_Management area settings_01"}--></h2>
         <table>
             <col width="30%" />
             <col width="70%" />

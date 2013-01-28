@@ -686,7 +686,7 @@
             <th><!--{t string="tpl_%s1 information_01" %s1=$arrForm.payment_type}--></th>
             <td>
                 <!--{foreach key=key item=item from=$arrForm.payment_info}-->
-                <!--{if $key != "title"}--><!--{if $item.name != ""}--><!--{t string="t_%s1:_01" %s1=$item.name}--><!--{/if}--><!--{$item.value}--><br/><!--{/if}-->
+                <!--{if $key != "title"}--><!--{if $item.name != ""}--><!--{t string="tpl_%s1:_01" %s1=$item.name}--><!--{/if}--><!--{$item.value}--><br/><!--{/if}-->
                 <!--{/foreach}-->
             </td>
         </tr>

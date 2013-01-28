@@ -5915,44 +5915,44 @@ msgstr ""
 "This is a notice from EC-CUBE. Please use a browser that supports iframe for "
 "this section."
 
-msgid "t_Check results_01"
+msgid "tpl_Check results_01"
 msgstr "Check results"
 
-msgid "t_When [Next] is clicked, a check will be executed once again._01"
+msgid "tpl_When [Next] is clicked, a check will be executed once again._01"
 msgstr "When [Next] is clicked, a check will be executed once again."
 
-msgid "t_Ignore problems and proceed (for advanced users)_01"
+msgid "tpl_Ignore problems and proceed (for advanced users)_01"
 msgstr "Ignore problems and proceed (for advanced users)"
 
-msgid "t_* If you proceed without resolving the problem, this may lead to problems._01"
+msgid "tpl_* If you proceed without resolving the problem, this may lead to problems._01"
 msgstr ""
 "* If you proceed without resolving the problem, this may lead to problems."
 
-msgid "t_Copying of necessary files will begin._01"
+msgid "tpl_Copying of necessary files will begin._01"
 msgstr "Copying of necessary files will begin."
 
-msgid "t_Copying of necessary files_01"
+msgid "tpl_Copying of necessary files_01"
 msgstr "Copying of necessary files"
 
-msgid "t_EC site settings_01"
+msgid "tpl_EC site settings_01"
 msgstr "EC site settings"
 
-msgid "t_Fill in the name of your store._01"
+msgid "tpl_Fill in the name of your store._01"
 msgstr "Fill in the name of your store."
 
-msgid "t_The address will be the one in the order receipt mail, etc._01"
+msgid "tpl_The address will be the one in the order receipt mail, etc._01"
 msgstr "The address will be the one in the order receipt mail, etc."
 
-msgid "t_Login ID <span class='attention'>*</span>_01"
+msgid "tpl_Login ID <span class='attention'>*</span>_01"
 msgstr "Login ID <span class='attention'>*</span>"
 
-msgid "t_ID for logging in to the management area._01"
+msgid "tpl_ID for logging in to the management area._01"
 msgstr "ID for logging in to the management area."
 
-msgid "t_Password for logging in to the management area._01"
+msgid "tpl_Password for logging in to the management area._01"
 msgstr "Password for logging in to the management area."
 
-msgid "t_Management area settings_01"
+msgid "tpl_Management area settings_01"
 msgstr "Management area settings"
 
 msgid "tpl_755"
@@ -6107,21 +6107,21 @@ msgstr ""
 "<span class='attention'>* The authentication key can be obtained from <a "
 "href='%s1' target='_blank'>the EC-CUBE Owners Store</a>.</span>"
 
-msgid "t_You can log in to <a href='%s1%s2%s3'>the management screen</a>._01"
+msgid "tpl_You can log in to <a href='%s1%s2%s3'>the management screen</a>._01"
 msgstr ""
 "You can log in to <a href='%s1%s2%s3'>the management "
 "screen</a>."
 
-msgid "t_Monthly (end of month)_01"
+msgid "tpl_Monthly (end of month)_01"
 msgstr "Monthly (end of month)"
 
-msgid "t_Monthly (by %s1)_01"
+msgid "tpl_Monthly (by %s1)_01"
 msgstr "Monthly (by %s1)"
 
-msgid "t_ID:_01"
+msgid "tpl_ID:_01"
 msgstr "ID:"
 
-msgid "t_%s1:_01"
+msgid "tpl_%s1:_01"
 msgstr "%s1:"
 
 msgid "-"

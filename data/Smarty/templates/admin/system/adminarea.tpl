@@ -40,7 +40,7 @@ jQuery(function(){
             <p class="error"><!--{$arrErr.all|h}--></p>
         <!--{/if}-->
     </div>
-    <h2><!--{t string="t_Management area settings_01"}--></h2>
+    <h2><!--{t string="tpl_Management area settings_01"}--></h2>
     <table id="basis-index-admin">
         <tr>
             <th><!--{t string="tpl_Directory name_01"}--></th>

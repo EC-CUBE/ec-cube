@@ -31,7 +31,7 @@
         <h2><!--{t string="tpl_EC CUBE installation is complete._01"}--></h2>
   </div>
   <div class="result-info02">
-        <p><!--{t string="t_You can log in to <a href='%s1%s2%s3'>the management screen</a>._01" escape="none" %s1=$tpl_sslurl %s2=$smarty.const.ADMIN_DIR %s3=$smarty.const.DIR_INDEX_PATH}--><br />
+        <p><!--{t string="tpl_You can log in to <a href='%s1%s2%s3'>the management screen</a>._01" escape="none" %s1=$tpl_sslurl %s2=$smarty.const.ADMIN_DIR %s3=$smarty.const.DIR_INDEX_PATH}--><br />
         <!--{t string="tpl_Log in using the ID and password that you just registered._01"}--></p>
   </div>
 </div>

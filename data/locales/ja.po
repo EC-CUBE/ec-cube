@@ -5861,44 +5861,44 @@ msgstr ""
 "こちらはEC-CUBEからのお知らせです。この部分は iframe対応ブラウザでご覧下さ"
 "い。"
 
-msgid "t_Check results_01"
+msgid "tpl_Check results_01"
 msgstr "チェック結果"
 
-msgid "t_When [Next] is clicked, a check will be executed once again._01"
+msgid "tpl_When [Next] is clicked, a check will be executed once again._01"
 msgstr "[次へ進む] をクリックすると、チェックを再実行します。"
 
-msgid "t_Ignore problems and proceed (for advanced users)_01"
+msgid "tpl_Ignore problems and proceed (for advanced users)_01"
 msgstr "問題点を無視して次へ進む (上級者向け)"
 
-msgid "t_* If you proceed without resolving the problem, this may lead to problems._01"
+msgid "tpl_* If you proceed without resolving the problem, this may lead to problems._01"
 msgstr ""
 "※ 問題点を解決せずに無視して進めると、トラブルの原因となる場合があります。"
 
-msgid "t_Copying of necessary files will begin._01"
+msgid "tpl_Copying of necessary files will begin._01"
 msgstr "必要なファイルのコピーを開始します。"
 
-msgid "t_Copying of necessary files_01"
+msgid "tpl_Copying of necessary files_01"
 msgstr "必要なファイルのコピー"
 
-msgid "t_EC site settings_01"
+msgid "tpl_EC site settings_01"
 msgstr "ECサイトの設定"
 
-msgid "t_Fill in the name of your store._01"
+msgid "tpl_Fill in the name of your store._01"
 msgstr "あなたの店名をご記入ください。"
 
-msgid "t_The address will be the one in the order receipt mail, etc._01"
+msgid "tpl_The address will be the one in the order receipt mail, etc._01"
 msgstr "受注メールなどの宛先になります。"
 
-msgid "t_Login ID <span class='attention'>*</span>_01"
+msgid "tpl_Login ID <span class='attention'>*</span>_01"
 msgstr "ログインID<span class='attention'>*</span>"
 
-msgid "t_ID for logging in to the management area._01"
+msgid "tpl_ID for logging in to the management area._01"
 msgstr "管理機能にログインするためのIDです。"
 
-msgid "t_Password for logging in to the management area._01"
+msgid "tpl_Password for logging in to the management area._01"
 msgstr "管理機能にログインするためのパスワードです。"
 
-msgid "t_Management area settings_01"
+msgid "tpl_Management area settings_01"
 msgstr "管理機能の設定"
 
 msgid "tpl_755"
@@ -6052,20 +6052,20 @@ msgstr ""
 "<span class='attention'>※認証キーは<a href='%s1' target='_blank'>EC-CUBE"
 "オーナーズストア</a>で取得できます。</span>"
 
-msgid "t_You can log in to <a href='%s1%s2%s3'>the management screen</a>._01"
+msgid "tpl_You can log in to <a href='%s1%s2%s3'>the management screen</a>._01"
 msgstr ""
 "<a href='%s1%s2%s3'>管理画面</a>にログインできます。"
 
-msgid "t_Monthly (end of month)_01"
+msgid "tpl_Monthly (end of month)_01"
 msgstr "月度 (末日締め)"
 
-msgid "t_Monthly (by %s1)_01"
+msgid "tpl_Monthly (by %s1)_01"
 msgstr "月度 (%s1日締め)"
 
-msgid "t_ID:_01"
+msgid "tpl_ID:_01"
 msgstr "ID："
 
-msgid "t_%s1:_01"
+msgid "tpl_%s1:_01"
 msgstr "%s1："
 
 msgid "-"
