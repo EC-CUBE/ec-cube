@@ -32,7 +32,7 @@
     <p class="remark"><!--{t string="tpl_800" escape="none" %s1=$smarty.const.OSTORE_URL}--></p>
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_482"}--></th>
+            <th><!--{t string="tpl_Authentication key settings._01"}--></th>
             <td>
                 <!--{assign var="key" value="public_key"}-->
                 <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->

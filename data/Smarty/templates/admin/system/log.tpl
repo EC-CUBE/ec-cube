@@ -43,14 +43,14 @@
     </select>
     <!--{assign var=key value="line_max"}-->
     <!--{t string="tpl_716"}--><input type="text" name="<!--{$key|h}-->" value="<!--{$arrForm[$key].value|h}-->" size="6" maxlength="<!--{$arrForm[$key].length|h}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-    <a class="btn-normal" href="javascript:;" onclick="form1.submit(); return false;"><span><!--{t string="tpl_454"}--></span></a>
+    <a class="btn-normal" href="javascript:;" onclick="form1.submit(); return false;"><span><!--{t string="tpl_Read_01"}--></span></a>
 </form>
 
 <table class="list log">
     <tr>
         <th><!--{t string="tpl_Date_02"}--></th>
-        <th><!--{t string="tpl_455"}--></th>
-        <th><!--{t string="tpl_456"}--></th>
+        <th><!--{t string="tpl_Pass_01"}--></th>
+        <th><!--{t string="tpl_Contents_01"}--></th>
     </tr>
     <!--{foreach from=$tpl_ec_log item=line}-->
         <tr>

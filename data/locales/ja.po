@@ -4962,28 +4962,28 @@ msgstr "バックアップパス"
 msgid "tpl_Return to list_01"
 msgstr "一覧へ戻る"
 
-msgid "tpl_454"
+msgid "tpl_Read_01"
 msgstr "読み込む"
 
-msgid "tpl_455"
+msgid "tpl_Pass_01"
 msgstr "パス"
 
-msgid "tpl_456"
+msgid "tpl_Contents_01"
 msgstr "内容"
 
-msgid "tpl_457"
+msgid "tpl_Retrieve the module list_01"
 msgstr "モジュール一覧を取得する"
 
-msgid "tpl_458"
+msgid "tpl_Do you want to void the plug-in?_01"
 msgstr "プラグインを無効にしても宜しいですか？"
 
-msgid "tpl_459"
+msgid "tpl_Do you want to activate the plug-in?_01"
 msgstr "プラグインを有効にしても宜しいですか？"
 
-msgid "tpl_460"
+msgid "tpl_An error occurred during transmission._01"
 msgstr "通信中にエラーが発生しました。"
 
-msgid "tpl_461"
+msgid "tpl_Do you want to install the plug-in?_01"
 msgstr "プラグインをインストールしても宜しいでしょうか？"
 
 msgid "tpl_462"
@@ -4991,70 +4991,70 @@ msgstr ""
 "一度削除したデータは元に戻せません。\n"
 "プラグインを削除しても宜しいですか？"
 
-msgid "tpl_463"
+msgid "tpl_Do you want to update the plug-in?_01"
 msgstr "プラグインをアップデートしても宜しいですか？"
 
-msgid "tpl_464"
+msgid "tpl_Plug-in registration_01"
 msgstr "プラグイン登録"
 
-msgid "tpl_465"
+msgid "tpl_Plug-in<span class='attention'> *</span>_01"
 msgstr "プラグイン<span class='attention'> *</span>"
 
-msgid "tpl_466"
+msgid "tpl_Install_01"
 msgstr "インストール"
 
-msgid "tpl_467"
+msgid "tpl_Plug-in list_01"
 msgstr "プラグイン一覧"
 
-msgid "tpl_468"
+msgid "tpl_Explanation of functions_01"
 msgstr "機能説明"
 
-msgid "tpl_469"
+msgid "tpl_Priority_01"
 msgstr "優先度"
 
-msgid "tpl_470"
+msgid "tpl_Compatible EC-CUBE version :_01"
 msgstr "対応EC-CUBEバージョン ："
 
-msgid "tpl_471"
+msgid "tpl_Plug-in settings_01"
 msgstr "プラグイン設定"
 
-msgid "tpl_472"
+msgid "tpl_Update_02"
 msgstr "アップデート"
 
-msgid "tpl_473"
+msgid "tpl_Enabled_01"
 msgstr "有効"
 
-msgid "tpl_474"
+msgid "tpl_Enable_01"
 msgstr "有効にする"
 
-msgid "tpl_475"
+msgid "tpl_Change_01"
 msgstr "変更"
 
-msgid "tpl_476"
+msgid "tpl_There are no plug-ins registered._01"
 msgstr "登録されているプラグインはありません。"
 
-msgid "tpl_477"
+msgid "tpl_Logo_01"
 msgstr "ロゴ"
 
-msgid "tpl_478"
+msgid "tpl_Introduction version_01"
 msgstr "導入バージョン"
 
-msgid "tpl_479"
+msgid "tpl_Installation_01"
 msgstr "インストール"
 
-msgid "tpl_480"
+msgid "tpl_Settings_01"
 msgstr "設定"
 
-msgid "tpl_481"
+msgid "tpl_Purchase status_01"
 msgstr "購入ステータス"
 
-msgid "tpl_482"
+msgid "tpl_Authentication key settings._01"
 msgstr "認証キーの設定"
 
-msgid "tpl_483"
+msgid "tpl_Plug-in management_01"
 msgstr "プラグイン管理"
 
-msgid "tpl_484"
+msgid "tpl_Module management_01"
 msgstr "モジュール管理"
 
 msgid "tpl_485"

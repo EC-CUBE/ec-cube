@@ -44,7 +44,7 @@ OwnersStore.download();やOwnersStore.products_list();を呼び出すことで
     <!--購入商品一覧ここまで-->
 
     <div class="btn">
-        <a class="btn-normal" href="javascript:;" onclick="OwnersStore.products_list();return false;"><span><!--{t string="tpl_457"}--></span></a>
+        <a class="btn-normal" href="javascript:;" onclick="OwnersStore.products_list();return false;"><span><!--{t string="tpl_Retrieve the module list_01"}--></span></a>
     </div>
 
     <div id="ownersstore_index">

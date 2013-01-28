@@ -5006,28 +5006,28 @@ msgstr "Backup path"
 msgid "tpl_Return to list_01"
 msgstr "Return to list"
 
-msgid "tpl_454"
+msgid "tpl_Read_01"
 msgstr "Read"
 
-msgid "tpl_455"
+msgid "tpl_Pass_01"
 msgstr "Pass"
 
-msgid "tpl_456"
+msgid "tpl_Contents_01"
 msgstr "Contents"
 
-msgid "tpl_457"
+msgid "tpl_Retrieve the module list_01"
 msgstr "Retrieve the module list"
 
-msgid "tpl_458"
+msgid "tpl_Do you want to void the plug-in?_01"
 msgstr "Do you want to void the plug-in?"
 
-msgid "tpl_459"
+msgid "tpl_Do you want to activate the plug-in?_01"
 msgstr "Do you want to activate the plug-in?"
 
-msgid "tpl_460"
+msgid "tpl_An error occurred during transmission._01"
 msgstr "An error occurred during transmission."
 
-msgid "tpl_461"
+msgid "tpl_Do you want to install the plug-in?_01"
 msgstr "Do you want to install the plug-in?"
 
 msgid "tpl_462"
@@ -5035,70 +5035,70 @@ msgstr ""
 "Data that has been erased cannot be restored. \n"
 "Do you want to delete the plug-in?"
 
-msgid "tpl_463"
+msgid "tpl_Do you want to update the plug-in?_01"
 msgstr "Do you want to update the plug-in?"
 
-msgid "tpl_464"
+msgid "tpl_Plug-in registration_01"
 msgstr "Plug-in registration"
 
-msgid "tpl_465"
+msgid "tpl_Plug-in<span class='attention'> *</span>_01"
 msgstr "Plug-in<span class='attention'> *</span>"
 
-msgid "tpl_466"
+msgid "tpl_Install_01"
 msgstr "Install"
 
-msgid "tpl_467"
+msgid "tpl_Plug-in list_01"
 msgstr "Plug-in list"
 
-msgid "tpl_468"
+msgid "tpl_Explanation of functions_01"
 msgstr "Explanation of functions"
 
-msgid "tpl_469"
+msgid "tpl_Priority_01"
 msgstr "Priority"
 
-msgid "tpl_470"
+msgid "tpl_Compatible EC-CUBE version :_01"
 msgstr "Compatible EC-CUBE version :"
 
-msgid "tpl_471"
+msgid "tpl_Plug-in settings_01"
 msgstr "Plug-in settings"
 
-msgid "tpl_472"
+msgid "tpl_Update_02"
 msgstr "Update"
 
-msgid "tpl_473"
+msgid "tpl_Enabled_01"
 msgstr "Enabled"
 
-msgid "tpl_474"
+msgid "tpl_Enable_01"
 msgstr "Enable"
 
-msgid "tpl_475"
+msgid "tpl_Change_01"
 msgstr "Change"
 
-msgid "tpl_476"
+msgid "tpl_There are no plug-ins registered._01"
 msgstr "There are no plug-ins registered."
 
-msgid "tpl_477"
+msgid "tpl_Logo_01"
 msgstr "Logo"
 
-msgid "tpl_478"
+msgid "tpl_Introduction version_01"
 msgstr "Introduction version"
 
-msgid "tpl_479"
+msgid "tpl_Installation_01"
 msgstr "Installation"
 
-msgid "tpl_480"
+msgid "tpl_Settings_01"
 msgstr "Settings"
 
-msgid "tpl_481"
+msgid "tpl_Purchase status_01"
 msgstr "Purchase status"
 
-msgid "tpl_482"
+msgid "tpl_Authentication key settings._01"
 msgstr "Authentication key settings."
 
-msgid "tpl_483"
+msgid "tpl_Plug-in management_01"
 msgstr "Plug-in management"
 
-msgid "tpl_484"
+msgid "tpl_Module management_01"
 msgstr "Module management"
 
 msgid "tpl_485"

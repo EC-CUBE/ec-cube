@@ -419,7 +419,7 @@ function selectAll(target) {
             <td>
                 <a name="<!--{$anckey}-->"></a>
                 <input type="hidden" name="<!--{$key}-->" value="<!--{$arrRecommend[$recommend_no].product_id|h}-->" />
-                <a class="btn-normal" href="javascript:;" name="change" onclick="selectAll('category_id'); win03('./product_select.php?no=<!--{$smarty.section.cnt.iteration}-->', 'search', '615', '500'); return false;"><!--{t string="tpl_475"}--></a>
+                <a class="btn-normal" href="javascript:;" name="change" onclick="selectAll('category_id'); win03('./product_select.php?no=<!--{$smarty.section.cnt.iteration}-->', 'search', '615', '500'); return false;"><!--{t string="tpl_Change_01"}--></a>
                 <!--{assign var=key value="recommend_delete`$smarty.section.cnt.iteration`"}-->
                 <input type="checkbox" name="<!--{$key}-->" value="1" /><!--{t string="tpl_Remove_01"}--><br />
                 <!--{assign var=key value="recommend_comment`$smarty.section.cnt.iteration`"}-->

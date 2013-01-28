@@ -24,9 +24,9 @@
 
 <ul class="level1">
     <li id="navi-ownersstore-index" class="<!--{if $tpl_subno == 'index'}-->on<!--{/if}-->">
-        <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->ownersstore/<!--{$smarty.const.DIR_INDEX_PATH}-->"><span><!--{t string="tpl_483"}--></span></a></li>
+        <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->ownersstore/<!--{$smarty.const.DIR_INDEX_PATH}-->"><span><!--{t string="tpl_Plug-in management_01"}--></span></a></li>
     <li id="navi-ownersstore-module" class="<!--{if $tpl_subno == 'module'}-->on<!--{/if}-->">
-        <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->ownersstore/module.php"><span><!--{t string="tpl_484"}--></span></a></li>
+        <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->ownersstore/module.php"><span><!--{t string="tpl_Module management_01"}--></span></a></li>
     <li id="navi-ownersstore-settings" class="<!--{if $tpl_subno == 'settings'}-->on<!--{/if}-->">
         <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->ownersstore/settings.php"><span><!--{t string="tpl_485"}--></span></a></li>
     <li id="navi-ownersstore-log" class="<!--{if $tpl_subno == 'log'}-->on<!--{/if}-->">
