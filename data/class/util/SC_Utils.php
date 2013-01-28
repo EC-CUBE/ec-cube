@@ -715,16 +715,22 @@ class SC_Utils {
     }
 
     /**
-     * $classcategory_id1 と $classcategory_id2 が使用されていない。
+     * 商品IDとカテゴリIDから商品規格IDを取得する
      * @param int $product_id
-     * @param int $classcategory_id1
-     * @param int $classcategory_id2
+     * @param int $classcategory_id1 デフォルト値0
+     * @param int $classcategory_id2 デフォルト値0
      * @return int 
      */
-    function sfGetProductClassId($product_id, $classcategory_id1, $classcategory_id2) {
-        $where = 'product_id = ?';
+    function sfGetProductClassId($product_id, $classcategory_id1=0, $classcategory_id2=0) {
+        $where = 'product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ?';
+        if (!$classcategory_id1) { //NULLが入ってきた場合への対策
+          $classcategory_id1 = 0;
+        }
+        if (!$classcategory_id2) {
+          $classcategory_id2 = 0;
+        }
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $ret = $objQuery->get('product_class_id', 'dtb_products_class', $where, Array($product_id));
+        $ret = $objQuery->get('product_class_id', 'dtb_products_class', $where, Array($product_id, $classcategory_id1, $classcategory_id2));
         return $ret;
     }
 
