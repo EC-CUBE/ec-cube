@@ -26,9 +26,9 @@
     <tr>
         <th><!--{t string="tpl_Ranking_01"}--></th>
         <th><!--{t string="tpl_Occupation_02"}--></th>
-        <th><!--{t string="tpl_692"}--></th>
-        <th><!--{t string="tpl_693"}--></th>
-        <th><!--{t string="tpl_700"}--></th>
+        <th><!--{t string="tpl_Number of items purchased_01"}--></th>
+        <th><!--{t string="tpl_Purchase total_01"}--></th>
+        <th><!--{t string="tpl_Purchase average_01"}--></th>
     </tr>
 
     <!--{section name=cnt loop=$arrResults}-->
@@ -45,7 +45,7 @@
         <tr class="<!--{$color}-->">
             <td class="center"><!--{*順位*}--><!--{$smarty.section.cnt.iteration}--></td>
             <td class="center"><!--{*職業*}--><!--{$arrResults[cnt].job_name}--></td>
-            <td class="right"><!--{*購入件数*}--><!--{t string="tpl_701" %s1=$arrResults[cnt].order_count}--></td>
+            <td class="right"><!--{*購入件数*}--><!--{t string="tpl_%s1 item_01" %s1=$arrResults[cnt].order_count}--></td>
             <td class="right"><!--{*購入合計*}--><!--{t string="tpl_&#36; %s1_01" escape="none" %s1=$arrResults[cnt].total|number_format}--></td>
             <td class="right"><!--{*購入平均*}--><!--{t string="tpl_&#36; %s1_01" escape="none" %s1=$arrResults[cnt].total_average|number_format}--></td>
         </tr>
@@ -54,8 +54,8 @@
     <tr>
         <th><!--{t string="tpl_Ranking_01"}--></span></th>
         <th><!--{t string="tpl_Occupation_02"}--></span></th>
-        <th><!--{t string="tpl_692"}--></span></th>
-        <th><!--{t string="tpl_693"}--></span></th>
-        <th><!--{t string="tpl_700"}--></span></th>
+        <th><!--{t string="tpl_Number of items purchased_01"}--></span></th>
+        <th><!--{t string="tpl_Purchase total_01"}--></span></th>
+        <th><!--{t string="tpl_Purchase average_01"}--></span></th>
     </tr>
 </table>

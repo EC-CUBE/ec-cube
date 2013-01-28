@@ -42,7 +42,7 @@
         <!--{html_options options=$arrLogList selected=$arrForm[$key]}-->
     </select>
     <!--{assign var=key value="line_max"}-->
-    <!--{t string="tpl_716"}--><input type="text" name="<!--{$key|h}-->" value="<!--{$arrForm[$key].value|h}-->" size="6" maxlength="<!--{$arrForm[$key].length|h}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
+    <!--{t string="tpl_Nearest line_01"}--><input type="text" name="<!--{$key|h}-->" value="<!--{$arrForm[$key].value|h}-->" size="6" maxlength="<!--{$arrForm[$key].length|h}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
     <a class="btn-normal" href="javascript:;" onclick="form1.submit(); return false;"><span><!--{t string="tpl_Read_01"}--></span></a>
 </form>
 

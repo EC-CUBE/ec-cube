@@ -299,7 +299,7 @@ function moving(news_id,rank, max_rank) {
             <td><a href="#" onclick="return func_del('<!--{$arrNews[data].news_id|h}-->');"><!--{t string="tpl_Remove_01"}--></a></td>
             <td>
             <!--{if count($arrNews) != 1}-->
-            <input type="text" name="pos-<!--{$arrNews[data].news_id|h}-->" size="3" class="box3" /><!--{t string="tpl_713"}--> <a href="?" onclick="fnFormModeSubmit('move', 'moveRankSet','news_id', '<!--{$arrNews[data].news_id|h}-->'); return false;"><!--{t string="tpl_Move_01"}--></a><br />
+            <input type="text" name="pos-<!--{$arrNews[data].news_id|h}-->" size="3" class="box3" /><!--{t string="tpl_The first_01"}--> <a href="?" onclick="fnFormModeSubmit('move', 'moveRankSet','news_id', '<!--{$arrNews[data].news_id|h}-->'); return false;"><!--{t string="tpl_Move_01"}--></a><br />
             <!--{/if}-->
             <!--{if $arrNews[data].rank ne $max_rank}--><a href="#" onclick="return func_rankMove('up', '<!--{$arrNews[data].news_id|h}-->', '<!--{$max_rank|h}-->');"><!--{t string="tpl_To top_01"}--></a><!--{/if}-->&nbsp;<!--{if $arrNews[data].rank ne 1}--><a href="#" onclick="return func_rankMove('down', '<!--{$arrNews[data].news_id|h}-->', '<!--{$max_rank|h}-->');"><!--{t string="tpl_To bottom_01"}--></a><!--{/if}-->
             </td>

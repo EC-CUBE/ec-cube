@@ -77,7 +77,7 @@
     <div class="btn-area">
         <ul>
             <li><a class="btn-action" href="javascript:;" onclick="document.form1['mode'].value='return_step2';document.form1.submit();return false;"><span class="btn-prev"><!--{t string="tpl_Go back_01"}--></span></a></li>
-            <li><a class="btn-action" href="javascript:;" onclick="document.body.style.cursor='wait'; document.form1.submit(); return false;"><span class="btn-next"><!--{t string="tpl_736"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="document.body.style.cursor='wait'; document.form1.submit(); return false;"><span class="btn-next"><!--{t string="tpl_Next_01"}--></span></a></li>
         </ul>
     </div>
     <div class="btn-area-bottom"></div>

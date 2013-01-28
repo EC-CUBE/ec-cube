@@ -128,7 +128,7 @@ self.moveTo(20,20);self.focus();
                 <!--{$arrForm.product_code.value[$product_index]|h}-->
             </td>
             <td>
-                <!--{$arrForm.product_name.value[$product_index]|h}-->/<!--{$arrForm.classcategory_name1.value[$product_index]|default_t:"tpl_729"|h}-->/<!--{$arrForm.classcategory_name2.value[$product_index]|default_t:"tpl_729"|h}-->
+                <!--{$arrForm.product_name.value[$product_index]|h}-->/<!--{$arrForm.classcategory_name1.value[$product_index]|default_t:"tpl_(None)_01"|h}-->/<!--{$arrForm.classcategory_name2.value[$product_index]|default_t:"tpl_(None)_01"|h}-->
             </td>
             <td align="center">
                     <!--{t string="currency_prefix"}--><!--{$arrForm.price.value[$product_index]|h}--><!--{t string="currency_suffix"}-->
@@ -212,7 +212,7 @@ self.moveTo(20,20);self.focus();
                                 <!--{assign var=key1 value="shipment_product_name"}-->
                                 <!--{assign var=key2 value="shipment_classcategory_name1"}-->
                                 <!--{assign var=key3 value="shipment_classcategory_name2"}-->
-                                <!--{$arrShipping[$key1][$item_index]|h}-->/<!--{$arrShipping[$key2][$item_index]|default_t:"tpl_729"|h}-->/<!--{$arrShipping[$key3][$item_index]|default_t:"tpl_729"|h}-->
+                                <!--{$arrShipping[$key1][$item_index]|h}-->/<!--{$arrShipping[$key2][$item_index]|default_t:"tpl_(None)_01"|h}-->/<!--{$arrShipping[$key3][$item_index]|default_t:"tpl_(None)_01"|h}-->
                             </td>
                             <td class="right">
                                 <!--{assign var=key value="shipment_price"}-->
@@ -285,7 +285,7 @@ self.moveTo(20,20);self.focus();
                     <!--{if $arrShipping[$key1] == "" && $arrShipping[$key2] == "" && $arrShipping[$key3] == ""}-->
                         <!--{t string="tpl_No designation_01"}-->
                     <!--{else}-->
-                        <!--{t string="tpl_726" %s1=$arrShipping[$key1] %s2=$arrShipping[$key2] %s3=$arrShipping[$key3] }-->
+                        <!--{t string="tpl_s1Year%s2Month%s3Day_01" %s1=$arrShipping[$key1] %s2=$arrShipping[$key2] %s3=$arrShipping[$key3] }-->
                     <!--{/if}-->
                 </td>
             </tr>

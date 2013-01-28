@@ -25,15 +25,15 @@
 <table id="total-term" class="list">
     <tr>
         <th><!--{t string="tpl_Period_01"}--></th>
-        <th><!--{t string="tpl_692"}--></th>
+        <th><!--{t string="tpl_Number of items purchased_01"}--></th>
         <th><!--{t string="tpl_Male_01"}--></th>
         <th><!--{t string="tpl_Female_01"}--></th>
         <th><!--{t string="tpl_Male (member)_01"}--></th>
         <th><!--{t string="tpl_Male (non-member)_01" escape="none"}--></th>
         <th><!--{t string="tpl_Female (member)_01"}--></th>
         <th><!--{t string="tpl_Female (non-member)_01" escape="none"}--></th>
-        <th><!--{t string="tpl_693"}--></th>
-        <th><!--{t string="tpl_700"}--></th>
+        <th><!--{t string="tpl_Purchase total_01"}--></th>
+        <th><!--{t string="tpl_Purchase average_01"}--></th>
     </tr>
 
     <!--{section name=cnt loop=$arrResults}-->
@@ -61,7 +61,7 @@
                 <td class="center"><!--{*期間*}--><!--{t string="tpl_Total_01"}--></td>
             <!--{/if}-->
 
-            <td class="right"><!--{*購入件数*}--><!--{t string="tpl_701" %s1=$arrResults[cnt].total_order|number_format}--></td>
+            <td class="right"><!--{*購入件数*}--><!--{t string="tpl_%s1 item_01" %s1=$arrResults[cnt].total_order|number_format}--></td>
             <td class="right"><!--{*男性*}--><!--{$arrResults[cnt].men|number_format}--></td>
             <td class="right"><!--{*女性*}--><!--{$arrResults[cnt].women|number_format}--></td>
             <td class="right"><!--{*男性(会員)*}--><!--{$arrResults[cnt].men_member|number_format}--></td>
@@ -75,14 +75,14 @@
 
     <tr>
         <th><!--{t string="tpl_Period_01"}--></th>
-        <th><!--{t string="tpl_692"}--></th>
+        <th><!--{t string="tpl_Number of items purchased_01"}--></th>
         <th><!--{t string="tpl_Male_01"}--></th>
         <th><!--{t string="tpl_Female_01"}--></th>
         <th><!--{t string="tpl_Male (member)_01"}--></th>
         <th><!--{t string="tpl_Male (non-member)_01" escape="none"}--></th>
         <th><!--{t string="tpl_Female (member)_01"}--></th>
         <th><!--{t string="tpl_Female (non-member)_01" escape="none"}--></th>
-        <th><!--{t string="tpl_693"}--></th>
-        <th><!--{t string="tpl_700"}--></th>
+        <th><!--{t string="tpl_Purchase total_01"}--></th>
+        <th><!--{t string="tpl_Purchase average_01"}--></th>
     </tr>
 </table>

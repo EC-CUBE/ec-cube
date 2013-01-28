@@ -178,7 +178,7 @@ function selectAll(target) {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_709" escape="none" %s1=$smarty.const.SALE_PRICE_TITLE}--></th>
+            <th><!--{t string="tpl_%s1<span class='attention'> *</span>_01" escape="none" %s1=$smarty.const.SALE_PRICE_TITLE}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.price02}--></span>
                 <!--{t string="currency_prefix"}-->
@@ -286,7 +286,7 @@ function selectAll(target) {
         </tr>
         <tr>
             <!--{assign var=key value="main_list_image"}-->
-            <th><!--{t string="tpl_710" escape="none" %s1=$smarty.const.SMALL_IMAGE_WIDTH %s2=$smarty.const.SMALL_IMAGE_HEIGHT }--></th>
+            <th><!--{t string="tpl_List - Main images<br />[%s1 x %s2]_01" escape="none" %s1=$smarty.const.SMALL_IMAGE_WIDTH %s2=$smarty.const.SMALL_IMAGE_HEIGHT }--></th>
             <td>
                 <a name="<!--{$key}-->"></a>
                 <a name="main_image"></a>
@@ -301,7 +301,7 @@ function selectAll(target) {
         </tr>
         <tr>
             <!--{assign var=key value="main_image"}-->
-            <th><!--{t string="tpl_711" escape="none" %s1=$smarty.const.NORMAL_IMAGE_WIDTH %s2=$smarty.const.NORMAL_IMAGE_HEIGHT }--></th>
+            <th><!--{t string="tpl_Details - Main image<br />[%s1 x %s2]_01" escape="none" %s1=$smarty.const.NORMAL_IMAGE_WIDTH %s2=$smarty.const.NORMAL_IMAGE_HEIGHT }--></th>
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->
@@ -313,7 +313,7 @@ function selectAll(target) {
         </tr>
         <tr>
             <!--{assign var=key value="main_large_image"}-->
-            <th><!--{t string="tpl_712" escape="none" %s1=$smarty.const.LARGE_IMAGE_WIDTH %s2=$smarty.const.LARGE_IMAGE_HEIGHT }--></th>
+            <th><!--{t string="tpl_Details - Main enlarged image<br />[%s1 x %s2]_01" escape="none" %s1=$smarty.const.LARGE_IMAGE_WIDTH %s2=$smarty.const.LARGE_IMAGE_HEIGHT }--></th>
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->
@@ -363,7 +363,7 @@ function selectAll(target) {
         </tr>
         <tr>
             <!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
-            <th><!--{t string="tpl_705" escape="none" %s1=$smarty.section.cnt.iteration %s2=$smarty.const.NORMAL_SUBIMAGE_WIDTH %s3=$smarty.const.NORMAL_SUBIMAGE_HEIGHT}--></th>
+            <th><!--{t string="tpl_Details - Sub image(%s1)<br />[%s2 x %s3]_01" escape="none" %s1=$smarty.section.cnt.iteration %s2=$smarty.const.NORMAL_SUBIMAGE_WIDTH %s3=$smarty.const.NORMAL_SUBIMAGE_HEIGHT}--></th>
             <td>
                 <a name="<!--{$key}-->"></a>
                 <!--{assign var=largekey value="sub_large_image`$smarty.section.cnt.iteration`"}-->
@@ -378,7 +378,7 @@ function selectAll(target) {
         </tr>
         <tr>
             <!--{assign var=key value="sub_large_image`$smarty.section.cnt.iteration`"}-->
-            <th><!--{t string="tpl_706" escape="none" %s1=$smarty.section.cnt.iteration %s2=$smarty.const.LARGE_SUBIMAGE_WIDTH %s3=$smarty.const.LARGE_SUBIMAGE_HEIGHT}--></th>
+            <th><!--{t string="tpl_Details - Sub enlarged image(%s1)<br />[%s2 x %s3]_01" escape="none" %s1=$smarty.section.cnt.iteration %s2=$smarty.const.LARGE_SUBIMAGE_WIDTH %s3=$smarty.const.LARGE_SUBIMAGE_HEIGHT}--></th>
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->

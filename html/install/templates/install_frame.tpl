@@ -29,7 +29,7 @@
         <script type="text/javascript" src="../js/css.js"></script>
         <script type="text/javascript" src="../js/navi.js"></script>
         <script type="text/javascript" src="../js/jquery-1.4.2.min.js"></script>
-        <title><!--{t string="t_EC-CUBE Installation_01"}--></title>
+        <title><!--{t string="tpl_EC-CUBE Installation_01"}--></title>
     </head>
     <body>
         <!--{$GLOBAL_ERR}-->
@@ -48,7 +48,7 @@
                 <!--{if strlen($install_info_url) != 0}-->
                 <div id="info-area">
                             <iframe src="<!--{$install_info_url}-->" width="562" height="550" frameborder="no" scrolling="no">
-                                                         <!--{t string="t_This is a notice from EC-CUBE. Please use a browser that supports iframe for this section._01"}-->
+                                                         <!--{t string="tpl_This is a notice from EC-CUBE. Please use a browser that supports iframe for this section._01"}-->
                             </iframe>
                  </div>
                 <!--{/if}-->

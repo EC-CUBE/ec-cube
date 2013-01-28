@@ -72,9 +72,9 @@ function fnTargetSelf(){
     </div>
     <h2>
         <!--{if $arrForm.sql_id != ""}-->
-            <!--{t string="tpl_703" %s1=$arrForm.sql_name|h}-->
+            <!--{t string="tpl_SQL settings (being edited:%s1)_01" %s1=$arrForm.sql_name|h}-->
         <!--{else}-->
-            <!--{t string="tpl_704"}-->
+            <!--{t string="tpl_SQL settings (Newly input)_01"}-->
         <!--{/if}-->
     </h2>
     

@@ -27,7 +27,7 @@
         <th><!--{t string="tpl_Ranking_01"}--></th>
         <th><!--{t string="tpl_Product code_01"}--></th>
         <th><!--{t string="tpl_Product name_01"}--></th>
-        <th><!--{t string="tpl_692"}--></th>
+        <th><!--{t string="tpl_Number of items purchased_01"}--></th>
         <th><!--{t string="tpl_Quantity_01"}--></th>
         <th><!--{t string="tpl_Unit price_01"}--></th>
         <th><!--{t string="tpl_Amount_01"}--></th>
@@ -48,7 +48,7 @@
             <td class="center"><!--{*順位*}--><!--{$smarty.section.cnt.iteration}--></td>
             <td class="right"><!--{*商品コード*}--><!--{$arrResults[cnt].product_code|h}--></td>
             <td class="left"><!--{*商品名*}--><!--{$arrResults[cnt].product_name|sfCutString:40:false|h}--></td>
-            <td class="right"><!--{*購入件数*}--><!--{t string="tpl_701" %s1=$arrResults[cnt].order_count}--></td>
+            <td class="right"><!--{*購入件数*}--><!--{t string="tpl_%s1 item_01" %s1=$arrResults[cnt].order_count}--></td>
             <td class="right"><!--{*数量*}--><!--{$arrResults[cnt].products_count}--></td>
             <td class="right"><!--{*単価*}--><!--{t string="tpl_&#36; %s1_01" escape="none" %s1=$arrResults[cnt].price|number_format}--></td>
             <td class="right"><!--{*金額*}--><!--{t string="tpl_&#36; %s1_01" escape="none" %s1=$arrResults[cnt].total|number_format}--></td>
@@ -59,7 +59,7 @@
         <th><!--{t string="tpl_Ranking_01"}--></th>
         <th><!--{t string="tpl_Product code_01"}--></th>
         <th><!--{t string="tpl_Product name_01"}--></th>
-        <th><!--{t string="tpl_692"}--></th>
+        <th><!--{t string="tpl_Number of items purchased_01"}--></th>
         <th><!--{t string="tpl_Quantity_01"}--></th>
         <th><!--{t string="tpl_Unit price_01"}--></th>
         <th><!--{t string="tpl_Amount_01"}--></th>

@@ -108,7 +108,7 @@ function func_return(){
                 <th><!--{t string="tpl_Date of birth_01"}--></th>
                 <td>
                     <!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}-->
-                        <!--{t string="tpl_726" %s1=$arrForm.year|h %s2=$arrForm.month|h %s3=$arrForm.day|h }-->
+                        <!--{t string="tpl_s1Year%s2Month%s3Day_01" %s1=$arrForm.year|h %s2=$arrForm.month|h %s3=$arrForm.day|h }-->
                     <!--{else}-->
                         <!--{t string="tpl_Not registered_01"}-->
                     <!--{/if}-->

@@ -793,7 +793,7 @@
             <th><!--{t string="tpl_Response status_01"}--></th>
             <th><label for="pdf_check"><!--{t string="tpl_Ledger_01"}--></label> <input type="checkbox" name="pdf_check" id="pdf_check" onclick="fnAllCheck(this, 'input[name=pdf_order_id[]]')" /></th>
             <th><!--{t string="tpl_Edit_01"}--></th>
-            <th><!--{t string="tpl_719"}--> <input type="checkbox" name="mail_check" id="mail_check" onclick="fnAllCheck(this, 'input[name=mail_order_id[]]')" /></th>
+            <th><!--{t string="tpl_Mail_01"}--> <input type="checkbox" name="mail_check" id="mail_check" onclick="fnAllCheck(this, 'input[name=mail_order_id[]]')" /></th>
             <th><!--{t string="tpl_Remove_01"}--></th>
         </tr>
 

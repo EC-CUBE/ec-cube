@@ -112,7 +112,7 @@
     <!--{if $smarty.const.INPUT_DELIV_FEE}-->
     <h2><!--{t string="tpl_Delivery charge registration_01"}--></h2>
     <div class="btn">
-        <!--{t string="tpl_708"}--> <input type='text' name='fee_all' class='box10' />　<a class="btn-normal" href="javascript:;" onclick="fnSetDelivFee(<!--{$smarty.const.DELIVFEE_MAX}-->); return false;"><span><!--{t string="tpl_Calculate_01"}--></span></a>
+        <!--{t string="tpl_*  Uniform shipping rates(&#036;):_01"}--> <input type='text' name='fee_all' class='box10' />　<a class="btn-normal" href="javascript:;" onclick="fnSetDelivFee(<!--{$smarty.const.DELIVFEE_MAX}-->); return false;"><span><!--{t string="tpl_Calculate_01"}--></span></a>
     </div>
     <table>
         <!--{section name=cnt loop=$smarty.const.DELIVFEE_MAX}-->

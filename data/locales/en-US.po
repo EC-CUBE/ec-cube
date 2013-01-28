@@ -5714,140 +5714,138 @@ msgstr "Master data management"
 msgid "tpl_Management screen settings_01"
 msgstr "Management screen settings"
 
-msgid "tpl_682"
+msgid "tpl_System information_01"
 msgstr "System information"
 
-msgid "tpl_683"
+msgid "tpl_EC-CUBE log display_01"
 msgstr "EC-CUBE log display"
 
-msgid "tpl_684"
+msgid "tpl_Advanced database management_01"
 msgstr "Advanced database management"
 
-msgid "tpl_685"
+msgid "tpl_Overview_01"
 msgstr "Overview"
 
-msgid "tpl_686"
+msgid "tpl_PHP information_01"
 msgstr "PHP information"
 
-msgid "tpl_687"
+msgid "tpl_Monthly sales_01"
 msgstr "Monthly sales"
 
-msgid "tpl_688"
+msgid "tpl_Sales by month_01"
 msgstr "Sales by month"
 
-msgid "tpl_689"
+msgid "tpl_Period sales_01"
 msgstr "Period sales"
 
 msgid "tpl_Sales by period_02"
 msgstr "Sales by period"
 
-msgid "tpl_691"
+msgid "tpl_Age_01"
 msgstr "Age"
 
-msgid "tpl_692"
+msgid "tpl_Number of items purchased_01"
 msgstr "Number of items purchased"
 
-msgid "tpl_693"
+msgid "tpl_Purchase total_01"
 msgstr "Purchase total"
 
-msgid "tpl_700"
+msgid "tpl_Purchase average_01"
 msgstr "Purchase average"
 
-msgid "tpl_701"
+msgid "tpl_%s1 item_01"
 msgstr "%s1 item"
 
-msgid "tpl_703"
+msgid "tpl_SQL settings (being edited:%s1)_01"
 msgstr "SQL settings (being edited:%s1)"
 
-msgid "tpl_704"
+msgid "tpl_SQL settings (Newly input)_01"
 msgstr "SQL settings (Newly input)"
 
-msgid "tpl_705"
+msgid "tpl_Details - Sub image(%s1)<br />[%s2 x %s3]_01"
 msgstr "Details - Sub image(%s1)<br />[%s2 x %s3]"
 
-msgid "tpl_706"
+msgid "tpl_Details - Sub enlarged image(%s1)<br />[%s2 x %s3]_01"
 msgstr "Details - Sub enlarged image(%s1)<br />[%s2 x %s3]"
 
-msgid "tpl_708"
+msgid "tpl_*  Uniform shipping rates(&#036;):_01"
 msgstr "*  Uniform shipping rates(&#036;):"
 
-msgid "tpl_709"
+msgid "tpl_%s1<span class='attention'> *</span>_01"
 msgstr "%s1<span class='attention'> *</span>"
 
-msgid "tpl_710"
+msgid "tpl_List - Main images<br />[%s1 x %s2]_01"
 msgstr "List - Main images<br />[%s1 x %s2]"
 
-msgid "tpl_711"
+msgid "tpl_Details - Main image<br />[%s1 x %s2]_01"
 msgstr "Details - Main image<br />[%s1 x %s2]"
 
-msgid "tpl_712"
+msgid "tpl_Details - Main enlarged image<br />[%s1 x %s2]_01"
 msgstr "Details - Main enlarged image<br />[%s1 x %s2]"
 
-msgid "tpl_713"
+msgid "tpl_The first_01"
 msgstr "The first"
 
-msgid "tpl_714"
+msgid "tpl_ and above is free!_01"
 msgstr " and above is free!"
 
-msgid "tpl_715"
+msgid "tpl_Days active_01"
 msgstr "Days active"
 
-msgid "tpl_716"
+msgid "tpl_Nearest line_01"
 msgstr "Nearest line"
 
-msgid "tpl_717"
+msgid "tpl_Comment <span class='attention'>*</span>_01"
 msgstr "Comment <span class='attention'>*</span>"
 
-msgid "tpl_718"
+msgid "tpl_The delivery destination has not been entered._01"
 msgstr "The delivery destination has not been entered."
 
-msgid "tpl_719"
+msgid "tpl_Mail_01"
 msgstr "Mail"
 
-msgid "tpl_720"
-msgstr ""
-"(Due to changes in shipping companies, please manually select a shipping "
-"method.)"
+msgid "tpl_(Due to changes in shipping companies, please manually select a shipping method.)_01"
+msgstr "(Due to changes in shipping companies, please manually select a shipping method.)"
 
-msgid "tpl_721"
+msgid "tpl_(Due to changes in payment, please manually select a fee.)_01"
 msgstr "(Due to changes in payment, please manually select a fee.)"
 
-msgid "tpl_722"
+msgid "tpl_Add product_01"
 msgstr "Add product"
 
-msgid "tpl_Change"
+msgid "tpl_723"
 msgstr "Change"
 
-msgid "tpl_724"
+msgid "tpl_Find users_01"
 msgstr "Find users"
 
-msgid "tpl_725"
+msgid "tpl_%s1_01"
 msgstr "%s1"
 
-msgid "tpl_726"
+msgid "tpl_s1Year%s2Month%s3Day_01"
 msgstr "%s1Year%s2Month%s3Day"
 
-msgid "tpl_727"
+msgid "tpl_%s1/%s2_01"
 msgstr "%s1/%s2"
 
-msgid "tpl_728"
+msgid "tpl_%s1_02"
 msgstr "%s1"
 
-msgid "tpl_729"
+msgid "tpl_(None)_01"
 msgstr "(None)"
 
-msgid "t_Not selected_01"
+msgid "tpl_Not selected_01"
 msgstr "Not selected"
 
-msgid "t_■Agreement to the license agreement_01"
+msgid "tpl_*Agreement to the license agreement_01"
 msgstr "*Agreement to the license agreement"
 
-msgid "t_Please read the license agreement below.<br />It is necessary to agree to the agreement in order to continue with installation_01"
+msgid "tpl_Please read the license agreement below.<br />It is necessary to agree to the agreement in order to continue with installation_01"
 msgstr ""
 "Please read the license agreement below.<br />It is necessary to agree to "
 "the agreement in order to continue with installation."
 
-msgid "t_Please agree to the software license agreement<br /><br />Lockon Co., Ltd. (hereinafter referred to as 'our company') requires customers to agree to the contents of the 'Software License Agreement' below to be able to use this software. You will be deemed as having agreed to the 'Software License Agreement' below at the point in time that you install, copy, or use this software.<br /><br />--------------------- Software License Agreement ---------------------<br /><br />1. License<br /><br />EC-CUBE adopts a 'dual license method' in which you can select either a free GPL license or paid commercial license for using the EC-CUBE product. The major characteristics of each license are as follows.<br /><br />1-1. GPL license<br /><br />Although it is possible to use EC-CUBE for free, and carry out duplication, modification, and distribution, if distributing an application that uses EC-CUBE, you must publish the source code for the application and make it utilizable.<br /><br />* When modifying, you may modify everything except for the copyright notice in the header section of the program file (PHP file, etc.) <br /><br />* With regard to the official conditions of the GPL license (GNU General Public License), please refer to http://www.fsf.org/licenses/ (Japanese translation: http://www.opensource.jp/gpl/gpl.ja.html).<br /><br />1-2. Commercial license <br /><br />The EC-CUBE commercial license is a license for parties who do not want to comply with the GPL license. <br />When you purchase an EC-CUBE commercial license, it is not necessary to make your own application an open source, within the scope of the commercial license. <br /><br />* A commercial license is necessary for all uses that do not comply with the GPL license. <br /><br />* For details regarding the commercial license, refer to http://www.ec-cube.net/license/business.php.<br /><br />2. Exclusion of liability<br /><br />2-1. Users shall confirm and agree that all direct and indirect damages (data loss, server trouble, halting of operations, claims from a third party, etc.) and dangers arising from use of this software are entirely the responsibility of the user.<br />2-2. In any case, and even in cases of illegal behavior, agreement, or any other legal basis, the suppliers, resellers, and various information contents providers for this software are not responsible for any direct, indirect, specific, incidental, or consequential loss or damage of the customer or other third party, including the loss of sales value, halting of operations, damage resulting from computer malfunctions, and any other commercial loss or damages, etc. Furthermore, our company is not responsible for any claims by a third party. <br /><br />3. Gathering of site information <br /><br />3-1 When installing EC-CUBE, the customer confirms and agrees that our company gathers information such as the site URL, store name, EC-CUBE version, PHP information, DB information, etc.<br />_01"
+msgid "tpl_Please agree to the software license agreement<br /><br />Lockon Co., Ltd. (hereinafter referred to as 'our company') requires customers to agree to the contents of the 'Software License Agreement' below to be able to use this software. You will be deemed as having agreed to the 'Software License Agreement' below at the point in time that you install, copy, or use this software.<br /><br />--------------------- Software License Agreement ---------------------<br /><br />1. License<br /><br />EC-CUBE adopts a 'dual license method' in which you can select either a free GPL license or paid commercial license for using the EC-CUBE product. The major characteristics of each license are as follows.<br /><br />1-1. GPL license<br /><br />Although it is possible to use EC-CUBE for free, and carry out duplication, modification, and distribution, if distributing an application that uses EC-CUBE, you must publish the source code for the application and make it utilizable.<br /><br />* When modifying, you may modify everything except for the copyright notice in the header section of the program file (PHP file, etc.) <br /><br />* With regard to the official conditions of the GPL license (GNU General Public License), please refer to http://www.fsf.org/licenses/ (Japanese translation: http://www.opensource.jp/gpl/gpl.ja.html).<br /><br />1-2. Commercial license <br /><br />The EC-CUBE commercial license is a license for parties who do not want to comply with the GPL license. <br />When you purchase an EC-CUBE commercial license, it is not necessary to make your own application an open source, within the scope of the commercial license. <br /><br />* A commercial license is necessary for all uses that do not comply with the GPL license. <br /><br />* For details regarding the commercial license, refer to http://www.ec-cube.net/license/business.php.<br /><br />2. Exclusion of liability<br /><br />2-1. Users shall confirm and agree that all direct and indirect damages (data loss, server trouble, halting of operations, claims from a third party, etc.) and dangers arising from use of this software are entirely the responsibility of the user.<br />2-2. In any case, and even in cases of illegal behavior, agreement, or any other legal basis, the suppliers, resellers, and various information contents providers for this software are not responsible for any direct, indirect, specific, incidental, or consequential loss or damage of the customer or other third party, including the loss of sales value, halting of operations, damage resulting from computer malfunctions, and any other commercial loss or damages, etc. Furthermore, our company is not responsible for any claims by a third party. <br /><br />3. Gathering of site information <br /><br />3-1 When installing EC-CUBE, the customer confirms and agrees that our company gathers information such as the site URL, store name, EC-CUBE version, PHP information, DB information, etc.<br />_01"
 msgstr ""
 "Please agree to the software license agreement<br /><br />Lockon Co., Ltd. "
 "(hereinafter referred to as 'our company') requires customers to agree to "
@@ -5891,28 +5889,28 @@ msgstr ""
 "information such as the site URL, store name, EC-CUBE version, PHP "
 "information, DB information, etc.<br />"
 
-msgid "t_Agree_01"
+msgid "tpl_Agree_01"
 msgstr "Agree"
 
-msgid "t_Do not agree_01"
+msgid "tpl_Do not agree_01"
 msgstr "Do not agree"
 
-msgid "tpl_736"
+msgid "tpl_Next_01"
 msgstr "Next"
 
-msgid "t_EC CUBE installation is complete._01"
+msgid "tpl_EC CUBE installation is complete._01"
 msgstr "EC CUBE installation is complete."
 
-msgid "t_Log in using the ID and password that you just registered._01"
+msgid "tpl_Log in using the ID and password that you just registered._01"
 msgstr "Log in using the ID and password that you just registered."
 
-msgid "t_Log in to management screen_01"
+msgid "tpl_Log in to management screen_01"
 msgstr "Log in to management screen"
 
-msgid "t_EC-CUBE Installation_01"
+msgid "tpl_EC-CUBE Installation_01"
 msgstr "EC-CUBE Installation"
 
-msgid "t_This is a notice from EC-CUBE. Please use a browser that supports iframe for this section._01"
+msgid "tpl_This is a notice from EC-CUBE. Please use a browser that supports iframe for this section._01"
 msgstr ""
 "This is a notice from EC-CUBE. Please use a browser that supports iframe for "
 "this section."

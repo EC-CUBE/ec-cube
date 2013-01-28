@@ -24,10 +24,10 @@
 
 <table id="total-age" class="list">
     <tr>
-        <th><!--{t string="tpl_691"}--></th>
-        <th><!--{t string="tpl_692"}--></th>
-        <th><!--{t string="tpl_693"}--></th>
-        <th><!--{t string="tpl_700"}--></th>
+        <th><!--{t string="tpl_Age_01"}--></th>
+        <th><!--{t string="tpl_Number of items purchased_01"}--></th>
+        <th><!--{t string="tpl_Purchase total_01"}--></th>
+        <th><!--{t string="tpl_Purchase average_01"}--></th>
     </tr>
 
     <!--{section name=cnt loop=$arrResults}-->
@@ -43,16 +43,16 @@
 
         <tr class="<!--{$color}-->">
             <td class="center"><!--{*年齢*}--><!--{$arrResults[cnt].age_name}--></td>
-            <td class="right"><!--{*購入件数*}--><!--{t string="tpl_701" %s1=$arrResults[cnt].order_count}--></td>
+            <td class="right"><!--{*購入件数*}--><!--{t string="tpl_%s1 item_01" %s1=$arrResults[cnt].order_count}--></td>
             <td class="right"><!--{*購入合計*}--><!--{t string="tpl_&#36; %s1_01" escape="none" %s1=$arrResults[cnt].total|number_format}--></td>
             <td class="right"><!--{*購入平均*}--><!--{t string="tpl_&#36; %s1_01" escape="none" %s1=$arrResults[cnt].total_average|number_format}--></td>
         </tr>
     <!--{/section}-->
 
     <tr>
-        <th><!--{t string="tpl_691"}--></th>
-        <th><!--{t string="tpl_692"}--></th>
-        <th><!--{t string="tpl_693"}--></th>
-        <th><!--{t string="tpl_700"}--></th>
+        <th><!--{t string="tpl_Age_01"}--></th>
+        <th><!--{t string="tpl_Number of items purchased_01"}--></th>
+        <th><!--{t string="tpl_Purchase total_01"}--></th>
+        <th><!--{t string="tpl_Purchase average_01"}--></th>
     </tr>
 </table>

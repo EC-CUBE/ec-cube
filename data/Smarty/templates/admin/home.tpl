@@ -44,7 +44,7 @@
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 
         <!--{* システム情報ここから *}-->
-        <h2><!--{t string="tpl_682"}--></h2>
+        <h2><!--{t string="tpl_System information_01"}--></h2>
         <table summary="System information" class="shop-info">
             <tr>
                 <th><!--{t string="tpl_EC-CUBE version_01"}--></th>
@@ -70,7 +70,7 @@
         <table summary="Shop status" class="shop-info">
             <tr>
                 <th><!--{t string="tpl_Current number of members_01"}--></th>
-                <td><!--{t string="tpl_725" %s1=$customer_cnt|default:"0"|number_format}--></td>
+                <td><!--{t string="tpl_%s1_01" %s1=$customer_cnt|default:"0"|number_format}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_Yesterday's sales_01"}--></th>
@@ -78,7 +78,7 @@
             </tr>
             <tr>
                 <th><!--{t string="tpl_Number of items sold yesterday_01"}--></th>
-                <td><!--{t string="tpl_701" %s1=$order_yesterday_cnt|default:"0"|number_format}--></td>
+                <td><!--{t string="tpl_%s1 item_01" %s1=$order_yesterday_cnt|default:"0"|number_format}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_<span>Sales for this month </span><span>(up to yesterday) </span>_01" escape="none"}--></th>
@@ -86,11 +86,11 @@
             </tr>
             <tr>
                 <th><!--{t string="tpl_<span>Number of items sold this month </span><span>(up to yesterday) </span>_01" escape="none"}--></th>
-                <td><!--{t string="tpl_701" %s1=$order_month_cnt|default:"0"|number_format}--></td>
+                <td><!--{t string="tpl_%s1 item_01" %s1=$order_month_cnt|default:"0"|number_format}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_Number of reviews from yesterday_01"}--></th>
-                <td><!--{t string="tpl_701" %s1=$review_yesterday_cnt|default:"0"}--></th>
+                <td><!--{t string="tpl_%s1 item_01" %s1=$review_yesterday_cnt|default:"0"}--></th>
             </tr>
             <tr>
                 <th><!--{t string="tpl_Member's total registered points_01"}--></th>
@@ -98,7 +98,7 @@
             </tr>
             <tr>
                 <th><!--{t string="tpl_Number of reviews not displayed_01"}--></th>
-                <td><!--{t string="tpl_701" %s1=$review_nondisp_cnt|default:"0"}--></td>
+                <td><!--{t string="tpl_%s1 item_01" %s1=$review_nondisp_cnt|default:"0"}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_Sold-out products_01"}--></th>

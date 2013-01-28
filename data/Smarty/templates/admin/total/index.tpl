@@ -262,7 +262,7 @@ $("*[name=search_endday]").val(dates[2]);
     <!--{* 検索条件設定テーブルここから *}-->
     <table summary="Search condition settings" class="input-form form">
         <tr>
-            <th><!--{t string="tpl_687"}--></th>
+            <th><!--{t string="tpl_Monthly sales_01"}--></th>
             <td>
                 <form name="search_form1" id="search_form1" method="post" action="?">
                     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -282,12 +282,12 @@ $("*[name=search_endday]").val(dates[2]);
 					<!--{/if}-->
                     <input type="hidden" name="search_startyear_m" value="<!--{$arrForm.search_startyear_m.value|h}-->" />
                     <input type="hidden" name="search_startmonth_m" value="<!--{$arrForm.search_startmonth_m.value|h}-->" />
-                    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('search_form1', 'search', '', ''); return false;" name="subm"><!--{t string="tpl_688"}--></a>
+                    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('search_form1', 'search', '', ''); return false;" name="subm"><!--{t string="tpl_Sales by month_01"}--></a>
                 </form>
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_689"}--></th>
+            <th><!--{t string="tpl_Period sales_01"}--></th>
             <td>
                 <form name="search_form2" id="search_form2" method="post" action="?">
                     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />

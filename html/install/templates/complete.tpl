@@ -28,18 +28,18 @@
 <!--{/foreach}-->
 <div class="contents">
   <div class="message">
-        <h2><!--{t string="t_EC CUBE installation is complete._01"}--></h2>
+        <h2><!--{t string="tpl_EC CUBE installation is complete._01"}--></h2>
   </div>
   <div class="result-info02">
         <p><!--{t string="t_You can log in to <a href='%s1%s2%s3'>the management screen</a>._01" escape="none" %s1=$tpl_sslurl %s2=$smarty.const.ADMIN_DIR %s3=$smarty.const.DIR_INDEX_PATH}--><br />
-        <!--{t string="t_Log in using the ID and password that you just registered._01"}--></p>
+        <!--{t string="tpl_Log in using the ID and password that you just registered._01"}--></p>
   </div>
 </div>
 
 <div class="btn-area-top"></div>
   <div class="btn-area">
     <ul>
-        <li><a class="btn-action" href="<!--{$tpl_sslurl}--><!--{$smarty.const.ADMIN_DIR}--><!--{$smarty.const.DIR_INDEX_PATH}-->"><span class="btn-next"><!--{t string="t_Log in to management screen_01"}--></span></a></li>
+        <li><a class="btn-action" href="<!--{$tpl_sslurl}--><!--{$smarty.const.ADMIN_DIR}--><!--{$smarty.const.DIR_INDEX_PATH}-->"><span class="btn-next"><!--{t string="tpl_Log in to management screen_01"}--></span></a></li>
     </ul>
   </div>
   <div class="btn-area-bottom"></div>

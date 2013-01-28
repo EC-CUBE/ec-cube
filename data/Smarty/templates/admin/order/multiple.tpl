@@ -46,7 +46,7 @@ $(function() {
     // 都道府県の入力チェック
     shipping_pref.each(function() {
         if (!$(this).val()) {
-            alert('<!--{t string="tpl_718"}-->');
+            alert('<!--{t string="tpl_The delivery destination has not been entered._01"}-->');
             window.close();
             return;
         }
